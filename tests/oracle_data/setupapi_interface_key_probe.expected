@@ -1,0 +1,5 @@
+enum_iface ok=1
+open_key invalid=1 gle=e0000204
+open_key_badsize invalid=1 gle=57
+open_key_reserved invalid=1 gle=57
+open_key_badset invalid=1 gle=6

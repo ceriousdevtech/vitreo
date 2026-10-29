@@ -1,0 +1,5 @@
+lsa_null:connect_nullptr st=0xc0030009
+lsa_null:lookup_nullh st=0xc0000140
+lsa_null:call_nullh st=0xc0000140
+# nullh=3 (LsaDeregisterLogonProcess(NULL)) faults with 0xC0000005 on Windows (x64 and x86)
+lsa_null:logon_nullh st=0xc0030004

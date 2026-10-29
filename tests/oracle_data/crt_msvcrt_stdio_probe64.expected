@@ -1,0 +1,31 @@
+x64
+iob_func_is_iob_export=1 
+iob[1] 0x0 0x0 0x0 0x0 0x0 0x0 0x2 0x1 0x0 0x0 0x0 0x0
+iob[2] 0x0 0x0 0x0 0x0 0x0 0x0 0x2 0x2 0x0 0x0 0x0 0x0
+fileno0=0 fileno1=1 fileno2=2 
+fprintf stdout 42|str|1.50
+fprintf_ret=27 
+vfprintf stdout ff|   ab|
+vfprintf_ret=26 
+printf 1.234568e+004|0.0001|0000000000001234
+printf_ret=45 
+fwprintf stdout wide|7|narrow
+fwprintf_ret=30 
+fopen_ok=1 f1=7 f2=4 f3=3 f4=4 errno=42 
+fileno_f=1 fclose=0 
+file="line 1\x0d\x0atwo\x0d\x0aw\xe9\x0d\x0axy\x0d\x0a"
+b1=6 
+file="bin 2\x0a"
+fprintf_null_stream=-1 errno=22 
+fprintf_null_format=-1 errno=22 
+acmdln_export=1 acmdln_is_cmdline=1 wcmdln_export=1 wcmdln_is_cmdline=1 argc_export=1 
+strcpy_s_small=34 errno=34 buf="\x00eZZ"
+strcpy_s_null=22 errno=22 
+itoa_s_small=34 errno=34 buf="\x002ZZ"
+itoa_s_radix=22 errno=22 buf="\x002ZZ"
+wcscpy_s_small=34 errno=34 w0=0x0 w1=0x65 
+strcat_s_small=34 errno=34 buf="\x00bcZ"
+fclose_null=-1 errno=22 
+invalid_parameter_export=1 
+invalid_parameter returned
+done

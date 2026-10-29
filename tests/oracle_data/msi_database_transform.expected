@@ -1,0 +1,205 @@
+mk-p open=0 exec=0
+mk-n open=0 exec=0
+mk-b open=0 exec=0
+p1 open=0 exec=0
+p2 open=0 exec=0
+p3 open=0 exec=0
+p4 open=0 exec=0
+p5 open=0 exec=0
+p6 open=0 exec=0
+n1 open=0 exec=0
+n2 open=0 exec=0
+bin 0
+b-dropme open=0 exec=0
+b-dropme1 open=0 exec=0
+commit 0
+mk-p open=0 exec=0
+mk-n open=0 exec=0
+mk-b open=0 exec=0
+p1 open=0 exec=0
+p2 open=0 exec=0
+p3 open=0 exec=0
+p4 open=0 exec=0
+p5 open=0 exec=0
+p6 open=0 exec=0
+n1 open=0 exec=0
+n2 open=0 exec=0
+bin 0
+v-upd open=0 exec=0
+v-upd2 open=0 exec=0
+v-del open=0 exec=0
+v-ins open=0 exec=0
+v-num open=0 exec=0
+v-num-ins open=0 exec=0
+v-new-table open=0 exec=0
+v-extra open=0 exec=0
+v-empty-table open=0 exec=0
+v-addcol open=0 exec=0
+v-addcol-set open=0 exec=0
+commit 0
+gen 0
+gen lasterr none
+gen-same 0
+gen-same-exists 1
+gen-null-file 0
+gen-bad 6
+summary 0
+summary-bad 1619
+tsi 0
+tsi pid=2 type=30 int=0 str=
+tsi pid=3 type=30 int=0 str=
+tsi pid=4 type=30 int=0 str=
+tsi pid=5 type=30 int=0 str=
+tsi pid=6 type=30 int=0 str=
+tsi pid=7 type=30 int=0 str=Intel;1033
+tsi pid=8 type=30 int=0 str=x64;1033
+tsi pid=9 type=30 int=0 str={11111111-1111-1111-1111-111111111111}1.0.0;{33333333-3333-3333-3333-333333333333}2.0.0;{22222222-2222-2222-2222-222222222222}
+tsi pid=14 type=3 int=200 str=
+tsi pid=16 type=3 int=196611 str=
+tsi pid=18 type=30 int=0 str=
+apply clean cond=0 rc=0
+clean lasterr none
+clean row [2]#|ProductCode|{33333333-3333-3333-3333-333333333333}
+clean row [2]#|Added|new
+clean row [2]#|ProductVersion|2.0.0
+clean row [2]#|UpgradeCode|{22222222-2222-2222-2222-222222222222}
+clean row [2]#|ProductLanguage|1033
+clean row [2]#|Keep|same
+clean end=259 rows=6
+clean row [4]#|1|one|100|9
+clean row [4]#|2|~|222|~
+clean row [4]#|3|three|300|~
+clean end=259 rows=3
+clean row [1]#|Property
+clean row [1]#|Num
+clean row [1]#|Binary
+clean row [1]#|Extra
+clean row [1]#|Empty
+clean end=259 rows=5
+apply onto-new cond=0 rc=1624
+onto-new lasterr [3]~|2252|apply_onto-new.msi|Extra
+onto-new row [2]#|ProductCode|{33333333-3333-3333-3333-333333333333}
+onto-new row [2]#|ProductVersion|2.0.0
+onto-new row [2]#|UpgradeCode|{22222222-2222-2222-2222-222222222222}
+onto-new row [2]#|ProductLanguage|1033
+onto-new row [2]#|Keep|same
+onto-new row [2]#|Added|new
+onto-new end=259 rows=6
+onto-new row [4]#|1|one|100|9
+onto-new row [4]#|2|~|222|~
+onto-new row [4]#|3|three|300|~
+onto-new end=259 rows=3
+onto-new row [1]#|Property
+onto-new row [1]#|Num
+onto-new row [1]#|Binary
+onto-new row [1]#|Extra
+onto-new row [1]#|Empty
+onto-new end=259 rows=5
+apply onto-new-suppress-all cond=0x3f rc=0
+onto-new-suppress-all lasterr none
+onto-new-suppress-all row [2]#|ProductCode|{33333333-3333-3333-3333-333333333333}
+onto-new-suppress-all row [2]#|ProductVersion|2.0.0
+onto-new-suppress-all row [2]#|UpgradeCode|{22222222-2222-2222-2222-222222222222}
+onto-new-suppress-all row [2]#|ProductLanguage|1033
+onto-new-suppress-all row [2]#|Keep|same
+onto-new-suppress-all row [2]#|Added|new
+onto-new-suppress-all end=259 rows=6
+onto-new-suppress-all row [4]#|1|one|100|9
+onto-new-suppress-all row [4]#|2|~|222|~
+onto-new-suppress-all row [4]#|3|three|300|~
+onto-new-suppress-all end=259 rows=3
+onto-new-suppress-all row [1]#|Property
+onto-new-suppress-all row [1]#|Num
+onto-new-suppress-all row [1]#|Binary
+onto-new-suppress-all row [1]#|Extra
+onto-new-suppress-all row [1]#|Empty
+onto-new-suppress-all end=259 rows=5
+apply onto-new-addrow cond=0x1 rc=1624
+onto-new-addrow lasterr [3]~|2252|apply_onto-new-addrow.msi|Extra
+onto-new-addrow row [2]#|ProductCode|{33333333-3333-3333-3333-333333333333}
+onto-new-addrow row [2]#|ProductVersion|2.0.0
+onto-new-addrow row [2]#|UpgradeCode|{22222222-2222-2222-2222-222222222222}
+onto-new-addrow row [2]#|ProductLanguage|1033
+onto-new-addrow row [2]#|Keep|same
+onto-new-addrow row [2]#|Added|new
+onto-new-addrow end=259 rows=6
+onto-new-addrow row [4]#|1|one|100|9
+onto-new-addrow row [4]#|2|~|222|~
+onto-new-addrow row [4]#|3|three|300|~
+onto-new-addrow end=259 rows=3
+onto-new-addrow row [1]#|Property
+onto-new-addrow row [1]#|Num
+onto-new-addrow row [1]#|Binary
+onto-new-addrow row [1]#|Extra
+onto-new-addrow row [1]#|Empty
+onto-new-addrow end=259 rows=5
+apply onto-new-addtable cond=0x5 rc=1624
+onto-new-addtable lasterr [3]~|2253|apply_onto-new-addtable.msi|DropMe
+onto-new-addtable row [2]#|ProductCode|{33333333-3333-3333-3333-333333333333}
+onto-new-addtable row [2]#|ProductVersion|2.0.0
+onto-new-addtable row [2]#|UpgradeCode|{22222222-2222-2222-2222-222222222222}
+onto-new-addtable row [2]#|ProductLanguage|1033
+onto-new-addtable row [2]#|Keep|same
+onto-new-addtable row [2]#|Added|new
+onto-new-addtable end=259 rows=6
+onto-new-addtable row [4]#|1|one|100|9
+onto-new-addtable row [4]#|2|~|222|~
+onto-new-addtable row [4]#|3|three|300|~
+onto-new-addtable end=259 rows=3
+onto-new-addtable row [1]#|Property
+onto-new-addtable row [1]#|Num
+onto-new-addtable row [1]#|Binary
+onto-new-addtable row [1]#|Extra
+onto-new-addtable row [1]#|Empty
+onto-new-addtable end=259 rows=5
+apply view cond=0x100 rc=0
+view lasterr none
+view row [2]#|ProductCode|{11111111-1111-1111-1111-111111111111}
+view row [2]#|ProductVersion|1.0.0
+view row [2]#|UpgradeCode|{22222222-2222-2222-2222-222222222222}
+view row [2]#|ProductLanguage|1033
+view row [2]#|Keep|same
+view row [2]#|Gone|bye
+view end=259 rows=6
+view row [3]#|1|one|100
+view row [3]#|2|two|200
+view end=259 rows=2
+view row [1]#|Property
+view row [1]#|Num
+view row [1]#|Binary
+view row [1]#|DropMe
+view row [1]#|_TransformView
+view end=259 rows=5
+tv-ci names rc=0 [5]~|Table|Column|Row|Data|Current
+tv-ci types rc=0 [5]~|g0|g0|G0|G0|G0
+tv row [5]#|Property|Value|ProductCode|{33333333-3333-3333-3333-333333333333}|{11111111-1111-1111-1111-111111111111}
+tv row [5]#|Property|Value|ProductVersion|2.0.0|1.0.0
+tv row [5]#|Property|Value|Added|new|~
+tv row [5]#|Property|INSERT|Added|~|~
+tv row [5]#|Property|DELETE|Gone|~|~
+tv row [5]#|Num|S|2|~|two
+tv row [5]#|Num|S|3|three|~
+tv row [5]#|Num|L|2|222|200
+tv row [5]#|Num|L|3|300|~
+tv row [5]#|Num|New|~|5378|4
+tv row [5]#|Num|New|1|9|~
+tv row [5]#|Num|New|3|~|~
+tv row [5]#|Num|INSERT|3|~|~
+tv row [5]#|Binary|Data|Blob|Binary.Blob|Binary.Blob
+tv row [5]#|DropMe|DROP|~|~|~
+tv row [5]#|Extra|CREATE|~|~|~
+tv row [5]#|Extra|E|~|11525|1
+tv row [5]#|Extra|X|~|5378|2
+tv row [5]#|Extra|X|e1|5|~
+tv row [5]#|Extra|INSERT|e1|~|~
+tv row [5]#|Empty|CREATE|~|~|~
+tv row [5]#|Empty|E|~|11525|1
+tv end=259 rows=22
+apply-ro 0
+ro row [2]#|Added|new
+ro end=259 rows=1
+apply-missing 110
+apply-missing lasterr [3]~|2203|nope.mst|-2147287038
+apply-notmst 1624
+apply-notmst lasterr [4]~|2246|base.msi||
+apply-bad 6

@@ -1,0 +1,185 @@
+=== A: game filters + renderer in the graph (renderer misc=1)
+load webmsplit64.dll hr=00000000
+load vp8decoder64.dll hr=00000000
+load webmVorbisDecoder64.dll hr=00000000
+add split hr=00000000
+add vp8 hr=00000000
+add vorbis hr=00000000
+add renderer hr=00000000
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Stream sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Stream sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0
+  R.EnumMediaTypes (empty)
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={30385056-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=0 temporal=1 sample=0 cb=88
+      vih 1920x1080 bits=0 comp=30385056 image=0 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={3231564E-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=3231564e image=3111360 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={3231564E-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=12 comp=3231564e image=3111360 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub=MEDIASUBTYPE_YV12 format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=32315659 image=3111360 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub=MEDIASUBTYPE_YV12 format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=12 comp=32315659 image=3111360 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={30323449-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=30323449 image=3111360 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={30323449-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=12 comp=30323449 image=3111360 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={59565955-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=16 comp=59565955 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={59565955-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=16 comp=59565955 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={32595559-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=16 comp=32595559 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={32595559-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=16 comp=32595559 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={56595559-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=16 comp=56595559 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={56595559-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=16 comp=56595559 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={55595659-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=16 comp=55595659 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={55595659-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=16 comp=55595659 image=4147200 avgtime=416666
+  R.EnumMediaTypes (empty)
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7D-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=6220800 cb=88
+      vih 1920x1080 bits=24 comp=00000000 image=6220800 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7C-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=4147200 cb=88
+      vih 1920x1080 bits=16 comp=00000000 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7A-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=2073600 cb=1112
+      vih 1920x1080 bits=8 comp=00000000 image=2073600 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7D-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=6220800 cb=88
+      vih 1920x1080 bits=24 comp=00000000 image=6220800 avgtime=416666
+  R.EnumMediaTypes (empty)
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={773C9AC0-3274-11D0-B724-00AA006C1A01} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=8294400 cb=88
+      vih 1920x1080 bits=32 comp=00000000 image=8294400 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7E-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=8294400 cb=88
+      vih 1920x1080 bits=32 comp=00000000 image=8294400 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7D-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=6220800 cb=88
+      vih 1920x1080 bits=24 comp=00000000 image=6220800 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7B-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=4147200 cb=100
+      vih 1920x1080 bits=16 comp=00000003 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7C-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=4147200 cb=100
+      vih 1920x1080 bits=16 comp=00000003 image=4147200 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={E436EB7A-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=2073600 cb=1112
+      vih 1920x1080 bits=8 comp=00000000 image=2073600 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Audio sub={8D2FD10B-5841-4A6B-8905-588FEC1ADED9} format={B36E107F-A938-4387-93C7-55E966757473} fixed=0 temporal=0 sample=0 cb=4022
+  R.ReceiveConnection -> S_OK
+    mt major=MEDIATYPE_Audio sub=MEDIASUBTYPE_IEEE_FLOAT format=FORMAT_WaveFormatEx fixed=1 temporal=0 sample=8 cb=18
+      wfx tag=0003 ch=2 rate=48000 bits=32 align=8 avgbytes=384000 cbSize=0
+  R.GetAllocator
+  R.GetAllocatorRequirements -> E_NOTIMPL
+  R.NotifyAllocator own=1 readonly=0 buffers=3 size=48000 align=1 prefix=0
+RenderFile hr=00000000
+filter 'Video Renderer' clsid={B87BEB7B-8D29-423F-AE4D-6582C10175AC} miscflags=1 refclock=0
+  pin 'VMR Input0' in -> 'Color Space Converter'.'XForm Out'
+    mt major=MEDIATYPE_Video sub={E436EB7E-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=8294400 cb=88
+      vih 1920x1080 bits=32 comp=00000000 image=8294400 avgtime=416666
+  R.GetMiscFlags
+filter 'Frontier Texture Renderer' clsid={00000000-0000-0000-0000-000000000000} miscflags=1 refclock=0
+  pin 'In' in -> 'Vorbis Decoder'.'PCM (IEEE Float)'
+    mt major=MEDIATYPE_Audio sub=MEDIASUBTYPE_IEEE_FLOAT format=FORMAT_WaveFormatEx fixed=1 temporal=0 sample=8 cb=18
+      wfx tag=0003 ch=2 rate=48000 bits=32 align=8 avgbytes=384000 cbSize=0
+filter 'Color Space Converter' clsid={1643E180-90F5-11CE-97D5-00AA0055595A} miscflags=0 refclock=0
+  pin 'Input' in -> 'AVI Decompressor'.'XForm Out'
+    mt major=MEDIATYPE_Video sub={E436EB7D-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=6220800 cb=88
+      vih 1920x1080 bits=24 comp=00000000 image=6220800 avgtime=416666
+  pin 'XForm Out' out -> 'Video Renderer'.'VMR Input0'
+    mt major=MEDIATYPE_Video sub={E436EB7E-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=8294400 cb=88
+      vih 1920x1080 bits=32 comp=00000000 image=8294400 avgtime=416666
+filter 'Vorbis Decoder' clsid=CLSID_VorbisDec miscflags=0 refclock=0
+  pin 'Vorbis' in -> 'WebM Splitter'.'Track2'
+    mt major=MEDIATYPE_Audio sub={8D2FD10B-5841-4A6B-8905-588FEC1ADED9} format={B36E107F-A938-4387-93C7-55E966757473} fixed=0 temporal=0 sample=0 cb=4022
+  pin 'PCM (IEEE Float)' out -> 'Frontier Texture Renderer'.'In'
+    mt major=MEDIATYPE_Audio sub=MEDIASUBTYPE_IEEE_FLOAT format=FORMAT_WaveFormatEx fixed=1 temporal=0 sample=8 cb=18
+      wfx tag=0003 ch=2 rate=48000 bits=32 align=8 avgbytes=384000 cbSize=0
+filter 'AVI Decompressor' clsid={CF49D4E0-1115-11CE-B03A-0020AF0BA770} miscflags=0 refclock=0
+  pin 'XForm In' in -> 'VP8 Decoder'.'I420'
+    mt major=MEDIATYPE_Video sub={30323449-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=12 comp=30323449 image=3111360 avgtime=416666
+  pin 'XForm Out' out -> 'Color Space Converter'.'Input'
+    mt major=MEDIATYPE_Video sub={E436EB7D-524F-11CE-9F53-0020AF0BA770} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=6220800 cb=88
+      vih 1920x1080 bits=24 comp=00000000 image=6220800 avgtime=416666
+filter 'VP8 Decoder' clsid=CLSID_VP8Dec miscflags=0 refclock=0
+  pin 'VP80' in -> 'WebM Splitter'.'Track1'
+    mt major=MEDIATYPE_Video sub={30385056-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=0 temporal=1 sample=0 cb=88
+      vih 1920x1080 bits=0 comp=30385056 image=0 avgtime=416666
+  pin 'I420' out -> 'AVI Decompressor'.'XForm In'
+    mt major=MEDIATYPE_Video sub={30323449-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=12 comp=30323449 image=3111360 avgtime=416666
+filter 'WebM Splitter' clsid=CLSID_WebmSplit miscflags=0 refclock=0
+  pin 'WebM' in -> 'movies\frontierlogo.webm'.'Output'
+    mt major=MEDIATYPE_Stream sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0
+  pin 'Track1' out -> 'VP8 Decoder'.'VP80'
+    mt major=MEDIATYPE_Video sub={30385056-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=0 temporal=1 sample=0 cb=88
+      vih 1920x1080 bits=0 comp=30385056 image=0 avgtime=416666
+  pin 'Track2' out -> 'Vorbis Decoder'.'Vorbis'
+    mt major=MEDIATYPE_Audio sub={8D2FD10B-5841-4A6B-8905-588FEC1ADED9} format={B36E107F-A938-4387-93C7-55E966757473} fixed=0 temporal=0 sample=0 cb=4022
+filter 'movies\frontierlogo.webm' clsid=CLSID_AsyncReader miscflags=0 refclock=0
+  pin 'Output' out -> 'WebM Splitter'.'WebM'
+    mt major=MEDIATYPE_Stream sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0
+graph sync source: none
+  R.GetMiscFlags
+  R.SetSyncSource clock
+  R.Pause
+Pause hr=00000001
+  R.Receive#1 state=1 time_hr=00000000 start=0 end=1250000 sync=0 disc=0 preroll=1 len=48000 size=48000
+GetState(5000) hr=00000000 fs=1 received=0
+  states after pause: 'Video Renderer'=1(00000000) 'Frontier Texture Renderer'=1(00000000) 'Color Space Converter'=1(00000000) 'Vorbis Decoder'=1(00000000) 'AVI Decompressor'=1(00000000) 'VP8 Decoder'=1(00000000) 'WebM Splitter'=1(00000000) 'movies\frontierlogo.webm'=1(00000000)
+  R.GetMiscFlags
+  R.Run tStart_nonzero=1 tStart_minus_clock_ms_bucket=5
+Run hr=00000000
+  states after run: 'Video Renderer'=2(00000000) 'Frontier Texture Renderer'=2(00000000) 'Color Space Converter'=2(00000000) 'Vorbis Decoder'=2(00000000) 'AVI Decompressor'=2(00000000) 'VP8 Decoder'=2(00000000) 'WebM Splitter'=2(00000000) 'movies\frontierlogo.webm'=2(00000000)
+event code=d p1=0 p2=0
+event code=e p1=0 p2=0
+  R.EndOfStream state=2 received=100
+  R.Notify(EC_COMPLETE) hr=00000000
+event code=1 p1=0 p2=0
+complete=1 received=100 eos=1 first_time_hr=00000000 first_start=0 last_start_gt0=1
+  R.Pause
+  R.Stop
+  R.BeginFlush
+  R.EndFlush
+Stop hr=00000000
+  states after stop: 'Video Renderer'=0(00000000) 'Frontier Texture Renderer'=0(00000000) 'Color Space Converter'=0(00000000) 'Vorbis Decoder'=0(00000000) 'AVI Decompressor'=0(00000000) 'VP8 Decoder'=0(00000000) 'WebM Splitter'=0(00000000) 'movies\frontierlogo.webm'=0(00000000)
+  R.Disconnect
+  R.SetSyncSource NULL
+graph release=0
+=== E: game filters + stock DirectSound Renderer added explicitly
+load webmsplit64.dll hr=00000000
+load webmVorbisDecoder64.dll hr=00000000
+create DSoundRender hr=80040256
+RenderFile hr=80040256
+filter 'Vorbis Decoder' clsid=CLSID_VorbisDec miscflags=0 refclock=0
+  pin 'Vorbis' in (unconnected)
+  pin 'PCM (IEEE Float)' out (unconnected)
+filter 'WebM Splitter' clsid=CLSID_WebmSplit miscflags=0 refclock=0
+  pin 'WebM' in (unconnected)
+graph sync source: none
+graph release=0

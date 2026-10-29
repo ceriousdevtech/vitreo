@@ -1,0 +1,44 @@
+msvcrt.dll dup source=-2 result=-1 errno=9 invalid=0
+msvcrt.dll dup source=-1 result=-1 errno=9 invalid=0
+msvcrt.dll invalid-pair source=-2 target=-2 result=-1 errno=9 invalid=0
+msvcrt.dll invalid-pair source=-2 target=-1 result=-1 errno=9 invalid=0
+msvcrt.dll invalid-pair source=-1 target=-2 result=-1 errno=9 invalid=0
+msvcrt.dll invalid-pair source=-1 target=-1 result=-1 errno=9 invalid=0
+msvcrt.dll dup2 target=-2 result=-1 errno=9 invalid=0
+msvcrt.dll dup2 target=-1 result=-1 errno=9 invalid=0
+msvcrt.dll dup2 target=0 result=0 errno=123 invalid=0 same_handle=0 inherit=1 std_slot_same=1
+msvcrt.dll dup2 target=3 result=0 errno=123 invalid=0 same_handle=0 inherit=1
+msvcrt.dll dup2 target=2047 result=0 errno=123 invalid=0 same_handle=0 inherit=1
+msvcrt.dll dup2 target=2048 result=-1 errno=9 invalid=0
+msvcrt.dll dup2 target=8191 result=-1 errno=9 invalid=0
+msvcrt.dll dup2 target=8192 result=-1 errno=9 invalid=0
+msvcrt.dll dup2 target=2147483647 result=-1 errno=9 invalid=0
+msvcrt.dll shared-position a=a b=b after-close=1 c=c
+msvcrt.dll self result=0 errno=123 invalid=0
+msvcrt.dll text-eof-copy got=0 mode=4000
+msvcrt.dll externally-closed dup=-1 errno=9 invalid=0
+msvcrt.dll externally-closed-self result=0 errno=123 invalid=0
+msvcrt.dll pipe-lookahead wide=0 first=1:0d00 duplicate=0:0000 original=0:0000
+msvcrt.dll pipe-lookahead wide=1 first=2:0d00 duplicate=0:0000 original=0:0000
+ucrtbase.dll dup source=-2 result=-1 errno=9 invalid=0
+ucrtbase.dll dup source=-1 result=-1 errno=9 invalid=1
+ucrtbase.dll invalid-pair source=-2 target=-2 result=-1 errno=9 invalid=0
+ucrtbase.dll invalid-pair source=-2 target=-1 result=-1 errno=9 invalid=0
+ucrtbase.dll invalid-pair source=-1 target=-2 result=-1 errno=9 invalid=1
+ucrtbase.dll invalid-pair source=-1 target=-1 result=-1 errno=9 invalid=1
+ucrtbase.dll dup2 target=-2 result=-1 errno=9 invalid=0
+ucrtbase.dll dup2 target=-1 result=-1 errno=9 invalid=1
+ucrtbase.dll dup2 target=0 result=0 errno=123 invalid=0 same_handle=0 inherit=1 std_slot_same=1
+ucrtbase.dll dup2 target=3 result=0 errno=123 invalid=0 same_handle=0 inherit=1
+ucrtbase.dll dup2 target=2047 result=0 errno=123 invalid=0 same_handle=0 inherit=1
+ucrtbase.dll dup2 target=2048 result=0 errno=123 invalid=0 same_handle=0 inherit=1
+ucrtbase.dll dup2 target=8191 result=0 errno=123 invalid=0 same_handle=0 inherit=1
+ucrtbase.dll dup2 target=8192 result=-1 errno=9 invalid=1
+ucrtbase.dll dup2 target=2147483647 result=-1 errno=9 invalid=1
+ucrtbase.dll shared-position a=a b=b after-close=1 c=c
+ucrtbase.dll self result=0 errno=123 invalid=0
+ucrtbase.dll text-eof-copy got=0 mode=4000
+ucrtbase.dll externally-closed dup=-1 errno=9 invalid=0
+ucrtbase.dll externally-closed-self result=0 errno=123 invalid=0
+ucrtbase.dll pipe-lookahead wide=0 first=1:0d00 duplicate=0:0000 original=0:0000
+ucrtbase.dll pipe-lookahead wide=1 first=2:0d00 duplicate=0:0000 original=0:0000

@@ -1,0 +1,490 @@
+adapter: Microsoft Basic Render Driver
+feature level 0xb000, 64-bit
+QI ID3D11DeviceContext1 -> 0x00000000
+## context type/flags
+immediate GetType=0 GetContextFlags=0x0
+CreateDeferredContext(0) -> 0x00000000
+deferred GetType=1 GetContextFlags=0x0
+GetImmediateContext same=1
+D3D11_OPTIONS -> 0x00000000 ConstantBufferOffsetting=1 ConstantBufferPartialUpdate=1
+## fresh context
+fresh vs cb0-2: - - - | addref 0/0
+fresh vs srv0-2: - - - | addref 0/0
+fresh vs samp0-2: - - - | addref 0/0
+fresh vs shader: - | addref 0/0 nci= 0 ci0=~
+fresh hs cb0-2: - - - | addref 0/0
+fresh hs srv0-2: - - - | addref 0/0
+fresh hs samp0-2: - - - | addref 0/0
+fresh hs shader: - | addref 0/0 nci= 0 ci0=~
+fresh ds cb0-2: - - - | addref 0/0
+fresh ds srv0-2: - - - | addref 0/0
+fresh ds samp0-2: - - - | addref 0/0
+fresh ds shader: - | addref 0/0 nci= 0 ci0=~
+fresh gs cb0-2: - - - | addref 0/0
+fresh gs srv0-2: - - - | addref 0/0
+fresh gs samp0-2: - - - | addref 0/0
+fresh gs shader: - | addref 0/0 nci= 0 ci0=~
+fresh ps cb0-2: - - - | addref 0/0
+fresh ps srv0-2: - - - | addref 0/0
+fresh ps samp0-2: - - - | addref 0/0
+fresh ps shader: - | addref 0/0 nci= 0 ci0=~
+fresh cs cb0-2: - - - | addref 0/0
+fresh cs srv0-2: - - - | addref 0/0
+fresh cs samp0-2: - - - | addref 0/0
+fresh cs shader: - | addref 0/0 nci= 0 ci0=~
+fresh cs uav0-2: - - - | addref 0/0
+fresh ia layout: - | addref 0/0
+fresh ia vb0-2: - - - | addref 0/0 strides 0 0 0 offsets 0 0 0
+fresh ia ib: - | addref 0/0 fmt 0 off 0
+fresh ia topology: 0
+fresh rs state: - | addref 0/0
+fresh rs counts: vp 0 sc 0
+fresh om blend: - | addref 0/0 factor 1 1 1 1 mask 0xffffffff
+fresh om dss: - | addref 0/0 ref 0x0
+fresh om rt+uav: rtv..dsv..uav - - - - - - - - - - - - - - - - - | addref 0/0
+fresh so: - - - - | addref 0/0
+fresh pred: - | addref 0/0 value 0
+fresh vs cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+fresh hs cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+fresh ds cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+fresh gs cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+fresh ps cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+fresh cs cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+device-removed-reason after fresh: 0x00000000
+## references held by bindings
+bound: cbA+0 srvO+0 sampA+0 VS+0 IL+0 vbA+0 ibA+0 RS+0 BS+0 DSS+0 rtvO+0 dsv+0 uavB+0 bSoA+0 PRED+0 tO+0 bMulti+0
+after ClearState: cbA+0 srvO+0 sampA+0 VS+0 IL+0 vbA+0 ibA+0 RS+0 BS+0 DSS+0 rtvO+0 dsv+0 uavB+0 bSoA+0 PRED+0 tO+0 bMulti+0
+tmp sampler create 0x00000000
+tmp sampler: Release-after-bind=0 get-same=1 aniso=7
+tmp sampler: Release-of-get=0
+device-removed-reason after refs: 0x00000000
+## per-stage round trips
+vs cb set(2,2) get(0,5): - - cbA cbB - | addref 2/2
+vs cb set(13,1) get(12,2): - cbC | addref 1/1
+vs cb set(3,1,{NULL}) get(2,2): cbA - | addref 1/1
+vs srv set(0,2)+(126,2) get(125,3): - srvO srv0 | addref 2/2
+vs srv get(0,3): srvO srv0 - | addref 2/2
+vs samp set(0,2) get(0,3): sampA sampB - | addref 2/2
+vs samp set(15,1) get(14,2): - sampA | addref 1/1
+vs shader set: VS | addref 1/1 nci= 0 ci0=~
+vs shader get(ppCI=NULL,&n=9): VS | addref 1/1 n= 0
+vs shader get(ppCI=NULL,pN=NULL): VS | addref 1/1
+vs shader set NULL: - | addref 0/0 nci= 0 ci0=~
+hs cb set(2,2) get(0,5): - - cbA cbB - | addref 2/2
+hs cb set(13,1) get(12,2): - cbC | addref 1/1
+hs cb set(3,1,{NULL}) get(2,2): cbA - | addref 1/1
+hs srv set(0,2)+(126,2) get(125,3): - srvO srv0 | addref 2/2
+hs srv get(0,3): srvO srv0 - | addref 2/2
+hs samp set(0,2) get(0,3): sampA sampB - | addref 2/2
+hs samp set(15,1) get(14,2): - sampA | addref 1/1
+hs shader set: HS | addref 1/1 nci= 0 ci0=~
+hs shader get(ppCI=NULL,&n=9): HS | addref 1/1 n= 0
+hs shader get(ppCI=NULL,pN=NULL): HS | addref 1/1
+hs shader set NULL: - | addref 0/0 nci= 0 ci0=~
+ds cb set(2,2) get(0,5): - - cbA cbB - | addref 2/2
+ds cb set(13,1) get(12,2): - cbC | addref 1/1
+ds cb set(3,1,{NULL}) get(2,2): cbA - | addref 1/1
+ds srv set(0,2)+(126,2) get(125,3): - srvO srv0 | addref 2/2
+ds srv get(0,3): srvO srv0 - | addref 2/2
+ds samp set(0,2) get(0,3): sampA sampB - | addref 2/2
+ds samp set(15,1) get(14,2): - sampA | addref 1/1
+ds shader set: DS | addref 1/1 nci= 0 ci0=~
+ds shader get(ppCI=NULL,&n=9): DS | addref 1/1 n= 0
+ds shader get(ppCI=NULL,pN=NULL): DS | addref 1/1
+ds shader set NULL: - | addref 0/0 nci= 0 ci0=~
+gs cb set(2,2) get(0,5): - - cbA cbB - | addref 2/2
+gs cb set(13,1) get(12,2): - cbC | addref 1/1
+gs cb set(3,1,{NULL}) get(2,2): cbA - | addref 1/1
+gs srv set(0,2)+(126,2) get(125,3): - srvO srv0 | addref 2/2
+gs srv get(0,3): srvO srv0 - | addref 2/2
+gs samp set(0,2) get(0,3): sampA sampB - | addref 2/2
+gs samp set(15,1) get(14,2): - sampA | addref 1/1
+gs shader set: GS | addref 1/1 nci= 0 ci0=~
+gs shader get(ppCI=NULL,&n=9): GS | addref 1/1 n= 0
+gs shader get(ppCI=NULL,pN=NULL): GS | addref 1/1
+gs shader set NULL: - | addref 0/0 nci= 0 ci0=~
+ps cb set(2,2) get(0,5): - - cbA cbB - | addref 2/2
+ps cb set(13,1) get(12,2): - cbC | addref 1/1
+ps cb set(3,1,{NULL}) get(2,2): cbA - | addref 1/1
+ps srv set(0,2)+(126,2) get(125,3): - srvO srv0 | addref 2/2
+ps srv get(0,3): srvO srv0 - | addref 2/2
+ps samp set(0,2) get(0,3): sampA sampB - | addref 2/2
+ps samp set(15,1) get(14,2): - sampA | addref 1/1
+ps shader set: PS | addref 1/1 nci= 0 ci0=~
+ps shader get(ppCI=NULL,&n=9): PS | addref 1/1 n= 0
+ps shader get(ppCI=NULL,pN=NULL): PS | addref 1/1
+ps shader set NULL: - | addref 0/0 nci= 0 ci0=~
+cs cb set(2,2) get(0,5): - - cbA cbB - | addref 2/2
+cs cb set(13,1) get(12,2): - cbC | addref 1/1
+cs cb set(3,1,{NULL}) get(2,2): cbA - | addref 1/1
+cs srv set(0,2)+(126,2) get(125,3): - srvO srv0 | addref 2/2
+cs srv get(0,3): srvO srv0 - | addref 2/2
+cs samp set(0,2) get(0,3): sampA sampB - | addref 2/2
+cs samp set(15,1) get(14,2): - sampA | addref 1/1
+cs shader set: CS | addref 1/1 nci= 0 ci0=~
+cs shader get(ppCI=NULL,&n=9): CS | addref 1/1 n= 0
+cs shader get(ppCI=NULL,pN=NULL): CS | addref 1/1
+cs shader set NULL: - | addref 0/0 nci= 0 ci0=~
+cs uav set(0,2) get(0,3): uavB uav0 - | addref 2/2
+cs uav set(7,1) get(6,2): - uav1 | addref 1/1
+device-removed-reason after roundtrip: 0x00000000
+## input assembler
+ia layout set: IL | addref 1/1
+ia layout NULL: - | addref 0/0
+vb set(1,2) get(0,4): - vbA vbB - | addref 2/2 strides 0 12 24 0 offsets 0 4 8 0
+vb set(8,1) get(8,1): vbA | addref 1/1 strides 16 offsets 32
+vb set(16,1) get(16,1): vbB | addref 1/1 strides 44 offsets 64
+vb set(31,1) get(30,2): - vbB | addref 1/1 strides 0 20 offsets 0 40
+vb set(1,1,{NULL},99,77) get(1,1): - | addref 0/0 strides 99 offsets 77
+vb get(1,2) ppVB=NULL strides 99 24 offsets 77 8
+ib set(ibA,R16,6): ibA | addref 1/1 fmt 57 off 6
+ib set(ibA,R32,8): ibA | addref 1/1 fmt 42 off 8
+ib set(NULL,R16,12): - | addref 0/0 fmt 57 off 12
+ib set(ibA,R8_UINT,0) after R32,8: ibA | addref 1/1 fmt 62 off 0
+ib set(ibA,UNKNOWN,0): ibA | addref 1/1 fmt 0 off 0
+ib set(ibA,R16,3) unaligned: ibA | addref 1/1 fmt 57 off 3
+ib set(NULL,UNKNOWN,0): - | addref 0/0 fmt 0 off 0
+ib get(pOffset=NULL): ibA | addref 1/1 fmt 42
+topology set 4 (after 4): 4
+topology set 1 (after 4): 1
+topology set 2 (after 4): 2
+topology set 3 (after 4): 3
+topology set 5 (after 4): 5
+topology set 10 (after 4): 10
+topology set 11 (after 4): 11
+topology set 12 (after 4): 12
+topology set 13 (after 4): 13
+topology set 33 (after 4): 33
+topology set 64 (after 4): 64
+topology set 6 (after 4): 6
+topology set 9 (after 4): 9
+topology set 14 (after 4): 14
+topology set 32 (after 4): 32
+topology set 65 (after 4): 65
+topology set 100 (after 4): 100
+topology set 0 (after 4): 0
+device-removed-reason after ia: 0x00000000
+## rasterizer
+rs set: RS | addref 1/1
+rs NULL: - | addref 0/0
+rs set 16: vp 16 sc 16
+rs set 17 after 2: vp 2 sc 2
+rs vp get 3 -> n=2 w0=10
+device-removed-reason after rs: 0x00000000
+## output merger state objects
+blend fresh-after-ClearState: - | addref 0/0 factor 1 1 1 1 mask 0xffffffff
+blend set(BS,{.25,.5,.75,1.5},0xF): BS | addref 1/1 factor 0.25 0.5 0.75 1.5 mask 0xf
+blend set(NULL,NULL,0x3): - | addref 0/0 factor 1 1 1 1 mask 0x3
+blend set(BS,NULL,~0) after factor: BS | addref 1/1 factor 1 1 1 1 mask 0xffffffff
+blend set(NULL,{-2,0,100,-0},0): - | addref 0/0 factor -2 0 100 -0 mask 0x0
+blend get(mask only): mask 0x0
+dss set(DSS,0x55): DSS | addref 1/1 ref 0x55
+dss set(NULL,0x1FF): - | addref 0/0 ref 0xff
+dss set(DSS,0xFFFFFFFF): DSS | addref 1/1 ref 0xff
+dss get(ref only): ref 0xff
+device-removed-reason after om state: 0x00000000
+## output merger views
+rt set(2,dsv) get(4): rtv rtv0 rtv1 - - dsv | addref 3/3
+rt set sparse {-,rtv2,-} get(4): rtv - rtv2 - - - | addref 1/1
+rt set(5) get(8): rtv rtv0 rtv1 rtv2 rtv3 rtvO - - - - | addref 5/5
+rt set {rtv3,rtv3} duplicate get(2): rtv rtv0 rtv1 - | addref 2/2
+rt get(0,NULL,&dsv): - | addref 0/0
+rt set 32x32 rtv + 16x16 dsv get(1): rtv rtv0 dsv | addref 2/2
+rt set 16x16 + 32x32 rtvs get(2): rtv rtv0 - dsv | addref 2/2
+# OMSetRenderTargets vs. UAVs bound through the OM
+uavs at 1-2, then OMSetRenderTargets(1,{rtvO}): rtv..dsv..uav rtvO - - - - - - - - - - - - - - - - | addref 1/1
+uavs at 0-1, then OMSetRenderTargets(1,{rtvO}): rtv..dsv..uav rtvO - - - - - - - - - - - - - - - - | addref 1/1
+uavs at 3-4, then OMSetRenderTargets(0,NULL,NULL): rtv..dsv..uav - - - - - - - - - - - - - - - - - | addref 0/0
+uavs at 3-4, then OMSetRenderTargets(0,NULL,dsv): rtv..dsv..uav - - - - - - - - dsv - - - - - - - - | addref 1/1
+# OMSetRenderTargetsAndUnorderedAccessViews
+rtuav (1,{rtv0},dsv,1,2,{uav1,uavB}): rtv..dsv..uav rtv0 - - - - - - - dsv - uav1 uavB - - - - - | addref 4/4
+  OMGetRenderTargets(8): rtv rtv0 - - - - - - - dsv | addref 2/2
+rtuav (4 rtvs,-,4,2,{uav1,uavB}) rtv1/uav1 conflict: rtv..dsv..uav rtv0 - - - - - - - dsv - uav1 uavB - - - - - | addref 4/4
+rtuav (4 rtvs,-,4,2,{uavB,uavAppend}): rtv..dsv..uav rtv0 rtv1 rtv2 rtv3 - - - - - - - - - uavB uavAppend - - | addref 6/6
+rtuav (KEEP,-,dsv ignored,2,1,{uavO}): rtv..dsv..uav rtv0 rtv1 - - - - - - - - - uavO - - - - - | addref 3/3
+rtuav (0,-,-,0,4,{uav0..3}): rtv..dsv..uav - - - - - - - - - uav0 uav1 uav2 uav3 - - - - | addref 4/4
+rtuav (2,{rtv2,rtv3},-,0,KEEP): rtv..dsv..uav rtv2 rtv3 - - - - - - - - - - - - - - - | addref 2/2
+rtuav (1,{rtvO},-,5 ignored,KEEP): rtv..dsv..uav rtvO - - - - - - - - - - - - - - - - | addref 1/1
+rtuav UAVStartSlot(1) < NumRTVs(2): rtv..dsv..uav rtv0 - - - - - - - - - uav2 - - - - - - | addref 2/2
+rtuav start1+num8 > 8: rtv..dsv..uav rtvO - - - - - - - - - uavB - - - - - - | addref 2/2
+rtuav (0,-,-,start 8,0): rtv..dsv..uav - - - - - - - - - - - - - - - - - | addref 0/0
+rtuav (0,-,-,start 9,0): rtv..dsv..uav - - - - - - - - - - - - - - - - - | addref 0/0
+rtuav rtv0 + uav0 same subresource: rtv..dsv..uav rtvO - - - - - - - - - uavB - - - - - - | addref 2/2
+rtuav duplicate uav2 twice: rtv..dsv..uav rtvO - - - - - - - - - uavB - - - - - - | addref 2/2
+rtuav (0,-,-,0,0) clears: rtv..dsv..uav - - - - - - - - - - - - - - - - - | addref 0/0
+om uav2 bound after cs uav2: rtv..dsv..uav - uav2 | addref 1/1
+  cs uav0: - | addref 0/0
+cs uav2 bound (slot1) after om uav2: cs 0-1: - uav2 | addref 1/1
+  om uav0: rtv..dsv..uav - - | addref 0/0
+rtv3 bound after cs uav3: rt: rtv rtv3 - | addref 1/1
+  cs uav0: - | addref 0/0
+cs uav3 bound while rtv3 bound: cs 0-1: - uav3 | addref 1/1
+  rt: rtv - - | addref 0/0
+device-removed-reason after om views: 0x00000000
+## UAV initial counts
+cs set count 7: count=7
+cs set count -1 (keep): count=7
+cs set counts NULL: count=7
+cs set count 0: count=0
+om set count 3 (slot 2): count=3
+om set count -1: count=3
+om set {uavB,uavAppend} counts {11,5}: count=5
+device-removed-reason after initial counts: 0x00000000
+## read/write hazards
+a rtv0 bound: slot0 (srv0): vs hs ds gs ps cs = - - - - - - | addref 0/0
+a rtv0 bound: slot1 (srvO): vs hs ds gs ps cs = srvO srvO srvO srvO srvO srvO | addref 6/6
+b srv0 set while rtv0 bound: slot2: vs hs ds gs ps cs = - - - - - - | addref 0/0
+c cs uav1 bound: slot0 (srv1): vs hs ds gs ps cs = - - - - - - | addref 0/0
+d srv1 set while cs uav1 bound: slot2: vs hs ds gs ps cs = - - - - - - | addref 0/0
+e om uav2 bound: slot0 (srv2): vs hs ds gs ps cs = - - - - - - | addref 0/0
+f srv2 set while om uav2 bound: slot2: vs hs ds gs ps cs = - - - - - - | addref 0/0
+g dsvRO(depth) bound: depth srv: vs hs ds gs ps cs = srvDepth srvDepth srvDepth srvDepth srvDepth srvDepth | addref 6/6
+g dsvRO(depth) bound: stencil srv: vs hs ds gs ps cs = - - - - - - | addref 0/0
+g dsvROS(both) bound: depth srv: vs hs ds gs ps cs = srvDepth srvDepth srvDepth srvDepth srvDepth srvDepth | addref 6/6
+g dsvROS(both) bound: stencil srv: vs hs ds gs ps cs = srvStencil srvStencil srvStencil srvStencil srvStencil srvStencil | addref 6/6
+g dsv(writable) bound: depth srv: vs hs ds gs ps cs = - - - - - - | addref 0/0
+g dsv(writable) bound: stencil srv: vs hs ds gs ps cs = - - - - - - | addref 0/0
+h depth srv set while dsv bound: vs hs ds gs ps cs = - - - - - - | addref 0/0
+h depth srv set while dsvRO bound: vs hs ds gs ps cs = srvDepth srvDepth srvDepth srvDepth srvDepth srvDepth | addref 6/6
+h stencil srv set while dsvRO bound: vs hs ds gs ps cs = - - - - - - | addref 0/0
+i rtvMip1 bound: ps {srvMip0,srvMipAll,srvMip1}: srvMip0 - - | addref 1/1
+i set {srvMip0,srvMipAll,srvMip1} while rtvMip1 bound: srvMip0 - - | addref 1/1
+j cs uavMip1 bound: ps {srvMip0,srvMipAll,srvMip1}: srvMip0 - - | addref 1/1
+k rtvSl1 bound: ps {srvSl0,srvSlBoth,srvSl1}: srvSl0 - - | addref 1/1
+k set {srvSl0,srvSlBoth,srvSl1} while rtvSl1 bound: srvSl0 - - | addref 1/1
+k cs uavSl1 bound: ps {srvSl0,srvSlBoth,srvSl1}: srvSl0 - - | addref 1/1
+k set {srvSl0,srvSlBoth,srvSl1} while cs uavSl1 bound: srvSl0 - - | addref 1/1
+l rtv3dW2 bound: ps {srv3d}: - | addref 0/0
+l cs uav3dW2 bound: ps {srv3d}: - | addref 0/0
+m cs uavB bound: vb0: - | addref 0/0 strides 0 offsets 0
+m cs uavB bound: ib: - | addref 0/0 fmt 0 off 0
+m cs uavB bound: srvB: vs hs ds gs ps cs = - - - - - - | addref 0/0
+m vb set while cs uavB bound: vb1: - | addref 0/0 strides 4 offsets 0
+m ib set while cs uavB bound: ib: - | addref 0/0 fmt 42 off 0
+m srvB set while cs uavB bound: vs hs ds gs ps cs = - - - - - - | addref 0/0
+m om uavB bound: vb0: - | addref 0/0 strides 0 offsets 0
+m om uavB bound: ib: - | addref 0/0 fmt 0 off 0
+m om uavB bound: srvB: vs hs ds gs ps cs = - - - - - - | addref 0/0
+n so bSo bound: vb0: - | addref 0/0 strides 0 offsets 0
+n   so: bSo | addref 1/1
+n vb set while so bSo bound: vb1: - | addref 0/0 strides 16 offsets 0
+n   so: bSo | addref 1/1
+n2 so bSoSrv bound: srv: vs hs ds gs ps cs = - - - - - - | addref 0/0
+n2 srv set while so bound: vs hs ds gs ps cs = - - - - - - | addref 0/0
+n2   so: bSoSrv | addref 1/1
+n3 vb set while om uavB bound: - | addref 0/0 strides 4 offsets 0
+n3 ib set while om uavB bound: - | addref 0/0 fmt 57 off 2
+n3   om uav0: rtv..dsv..uav - uavB | addref 1/1
+o control srvO after unrelated rtv/dsv/uav: vs hs ds gs ps cs = srvO srvO srvO srvO srvO srvO | addref 6/6
+p srv0 set after rtv0 unbound: vs hs ds gs ps cs = srv0 srv0 srv0 srv0 srv0 srv0 | addref 6/6
+device-removed-reason after hazards: 0x00000000
+## stream output targets
+so set 2 get(4): bSoA bSoB - - | addref 2/2
+so set 5 overflow get(4): bSoB bSoA - - | addref 2/2
+so set 1 {bSoB} offsets NULL get(4): bSoB - - - | addref 1/1
+so set {bSoA,bSoA} duplicate get(2): bSoB - | addref 1/1
+so set 0 get(4): - - - - | addref 0/0
+device-removed-reason after so: 0x00000000
+## predication
+pred fresh: - | addref 0/0 value 0
+pred set(PRED,TRUE): PRED | addref 1/1 value 1
+pred set(NULL,TRUE): - | addref 0/0 value 1
+pred set(NULL,5): - | addref 0/0 value 5
+pred get(value only): value 5
+pred after ClearState: - | addref 0/0 value 0
+device-removed-reason after pred: 0x00000000
+## ClearState
+set vs cb0-2: cbA cbB cbC | addref 3/3
+set vs srv0-2: srvO - - | addref 1/1
+set vs samp0-2: - sampB - | addref 1/1
+set vs shader: VS | addref 1/1 nci= 0 ci0=~
+set hs cb0-2: cbA cbB - | addref 2/2
+set hs srv0-2: srvO - - | addref 1/1
+set hs samp0-2: - sampB - | addref 1/1
+set hs shader: HS | addref 1/1 nci= 0 ci0=~
+set ds cb0-2: cbA cbB - | addref 2/2
+set ds srv0-2: srvO - - | addref 1/1
+set ds samp0-2: - sampB - | addref 1/1
+set ds shader: DS | addref 1/1 nci= 0 ci0=~
+set gs cb0-2: cbA cbB - | addref 2/2
+set gs srv0-2: srvO - - | addref 1/1
+set gs samp0-2: - sampB - | addref 1/1
+set gs shader: GS | addref 1/1 nci= 0 ci0=~
+set ps cb0-2: cbA cbB - | addref 2/2
+set ps srv0-2: srvO - - | addref 1/1
+set ps samp0-2: - sampB - | addref 1/1
+set ps shader: PS | addref 1/1 nci= 0 ci0=~
+set cs cb0-2: cbA cbB - | addref 2/2
+set cs srv0-2: srvO - - | addref 1/1
+set cs samp0-2: - sampB - | addref 1/1
+set cs shader: CS | addref 1/1 nci= 0 ci0=~
+set cs uav0-2: uavB - - | addref 1/1
+set ia layout: IL | addref 1/1
+set ia vb0-2: vbA - - | addref 1/1 strides 16 16 0 offsets 16 0 0
+set ia ib: ibA | addref 1/1 fmt 42 off 8
+set ia topology: 3
+set rs state: RS | addref 1/1
+set rs counts: vp 1 sc 1
+set om blend: BS | addref 1/1 factor 0.5 0.5 0.5 0.5 mask 0x3
+set om dss: DSS | addref 1/1 ref 0x9
+set om rt+uav: rtv..dsv..uav rtv0 - - - - - - - dsv - uav1 - - - - - - | addref 3/3
+set so: bSoA - - - | addref 1/1
+set pred: PRED | addref 1/1 value 1
+set vs cb1 0-1: cbA cbB | addref 2/2 first 0 0 num 4096 4096
+set hs cb1 0-1: cbA cbB | addref 2/2 first 0 0 num 4096 4096
+set ds cb1 0-1: cbA cbB | addref 2/2 first 0 0 num 4096 4096
+set gs cb1 0-1: cbA cbB | addref 2/2 first 0 0 num 4096 4096
+set ps cb1 0-1: cbA cbB | addref 2/2 first 0 0 num 4096 4096
+set cs cb1 0-1: cbA cbB | addref 2/2 first 0 0 num 4096 4096
+cleared vs cb0-2: - - - | addref 0/0
+cleared vs srv0-2: - - - | addref 0/0
+cleared vs samp0-2: - - - | addref 0/0
+cleared vs shader: - | addref 0/0 nci= 0 ci0=~
+cleared hs cb0-2: - - - | addref 0/0
+cleared hs srv0-2: - - - | addref 0/0
+cleared hs samp0-2: - - - | addref 0/0
+cleared hs shader: - | addref 0/0 nci= 0 ci0=~
+cleared ds cb0-2: - - - | addref 0/0
+cleared ds srv0-2: - - - | addref 0/0
+cleared ds samp0-2: - - - | addref 0/0
+cleared ds shader: - | addref 0/0 nci= 0 ci0=~
+cleared gs cb0-2: - - - | addref 0/0
+cleared gs srv0-2: - - - | addref 0/0
+cleared gs samp0-2: - - - | addref 0/0
+cleared gs shader: - | addref 0/0 nci= 0 ci0=~
+cleared ps cb0-2: - - - | addref 0/0
+cleared ps srv0-2: - - - | addref 0/0
+cleared ps samp0-2: - - - | addref 0/0
+cleared ps shader: - | addref 0/0 nci= 0 ci0=~
+cleared cs cb0-2: - - - | addref 0/0
+cleared cs srv0-2: - - - | addref 0/0
+cleared cs samp0-2: - - - | addref 0/0
+cleared cs shader: - | addref 0/0 nci= 0 ci0=~
+cleared cs uav0-2: - - - | addref 0/0
+cleared ia layout: - | addref 0/0
+cleared ia vb0-2: - - - | addref 0/0 strides 0 16 0 offsets 0 0 0
+cleared ia ib: - | addref 0/0 fmt 0 off 0
+cleared ia topology: 0
+cleared rs state: - | addref 0/0
+cleared rs counts: vp 0 sc 0
+cleared om blend: - | addref 0/0 factor 1 1 1 1 mask 0xffffffff
+cleared om dss: - | addref 0/0 ref 0x0
+cleared om rt+uav: rtv..dsv..uav - - - - - - - - - - - - - - - - - | addref 0/0
+cleared so: - - - - | addref 0/0
+cleared pred: - | addref 0/0 value 0
+cleared vs cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+cleared hs cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+cleared ds cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+cleared gs cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+cleared ps cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+cleared cs cb1 0-1: - - | addref 0/0 first 0 0 num 4096 4096
+refcount total drift after ClearState: 0
+device-removed-reason after clearstate: 0x00000000
+## ID3D11DeviceContext1 constant-buffer windows
+vs cb1 set(0,2,{16,32},{16,48}) get1(0,3): cbA cbB - | addref 2/2 first 16 32 0 num 16 48 4096
+vs   plain get(0,2): cbA cbB | addref 2/2
+vs plain set(0,{cbA 4096B}) get1(0,2): cbA cbB | addref 2/2 first 0 32 num 4096 48
+hs cb1 set(0,2,{16,32},{16,48}) get1(0,3): cbA cbB - | addref 2/2 first 16 32 0 num 16 48 4096
+hs   plain get(0,2): cbA cbB | addref 2/2
+hs plain set(0,{cbA 4096B}) get1(0,2): cbA cbB | addref 2/2 first 0 32 num 4096 48
+ds cb1 set(0,2,{16,32},{16,48}) get1(0,3): cbA cbB - | addref 2/2 first 16 32 0 num 16 48 4096
+ds   plain get(0,2): cbA cbB | addref 2/2
+ds plain set(0,{cbA 4096B}) get1(0,2): cbA cbB | addref 2/2 first 0 32 num 4096 48
+gs cb1 set(0,2,{16,32},{16,48}) get1(0,3): cbA cbB - | addref 2/2 first 16 32 0 num 16 48 4096
+gs   plain get(0,2): cbA cbB | addref 2/2
+gs plain set(0,{cbA 4096B}) get1(0,2): cbA cbB | addref 2/2 first 0 32 num 4096 48
+ps cb1 set(0,2,{16,32},{16,48}) get1(0,3): cbA cbB - | addref 2/2 first 16 32 0 num 16 48 4096
+ps   plain get(0,2): cbA cbB | addref 2/2
+ps plain set(0,{cbA 4096B}) get1(0,2): cbA cbB | addref 2/2 first 0 32 num 4096 48
+cs cb1 set(0,2,{16,32},{16,48}) get1(0,3): cbA cbB - | addref 2/2 first 16 32 0 num 16 48 4096
+cs   plain get(0,2): cbA cbB | addref 2/2
+cs plain set(0,{cbA 4096B}) get1(0,2): cbA cbB | addref 2/2 first 0 32 num 4096 48
+vs plain set(0,{cbC 256B}) get1(0,1): cbC | addref 1/1 first 0 num 4096
+vs set1(cbA,NULL,NULL) get1: cbA | addref 1/1 first 0 num 4096
+vs set1(cbB,first 8,num 16) not-mult-16 first: cbA | addref 1/1 first 16 num 16
+vs set1(cbB,first 16,num 20) not-mult-16 num: cbA | addref 1/1 first 16 num 16
+vs set1(cbB,first 16,num 4096): cbB | addref 1/1 first 16 num 4096
+vs set1(cbB,first 16,num 4112) >4096: cbA | addref 1/1 first 16 num 16
+vs set1(cbB,first 4096,num 16) past buffer end: cbB | addref 1/1 first 4096 num 16
+vs set1(cbB,first 0,num 0): cbB | addref 1/1 first 0 num 0
+vs set1(cbB,first 65536,num 16): cbB | addref 1/1 first 65536 num 16
+vs set1(cbB,&32,NULL) one-NULL: cbA | addref 1/1 first 16 num 16
+vs set1(cbB,NULL,&16) one-NULL: cbA | addref 1/1 first 16 num 16
+vs set1(NULL,16,16): - | addref 0/0 first 0 num 4096
+device-removed-reason after cb1: 0x00000000
+## CreateInputLayout vs. VS signature (POSITION float3, TEXCOORD0 float2)
+il exact -> 0x00000000
+il exact ppInputLayout=NULL -> 0x00000001 (no object)
+il exact bytecode NULL -> 0x80070057 (no object)
+il extra COLOR -> 0x00000000
+il missing TEXCOORD0 -> 0x80070057 (no object)
+il TEXCOORD1 instead of 0 -> 0x80070057 (no object)
+il lower-case names -> 0x00000000
+il POSITION float4 (wider) -> 0x00000000
+il POSITION float1 (narrower) -> 0x00000000
+il POSITION uint3 into float3 -> 0x00000000
+il vs_int: POSITION float4 into int4 -> 0x00000000
+il vs_int: POSITION sint4 -> 0x00000000
+il duplicate POSITION0 -> 0x80070057 (no object)
+il APPEND_ALIGNED -> 0x00000000
+il InputSlot 31 -> 0x00000000
+il InputSlot 32 -> 0x80070057 (no object)
+il per-instance step 0 -> 0x00000000
+il per-instance step 3 -> 0x00000000
+il per-vertex step 3 -> 0x80070057 (no object)
+il offset 2048 -> 0x00000000
+il offset 2036 -> 0x00000000
+il offset 2 (unaligned float3) -> 0x80070057 (no object)
+il format UNKNOWN -> 0x80070057 (no object)
+il format BC1 -> 0x80070057 (no object)
+il vs_id: 0 elements -> 0x80070057 (no object)
+il vs_id: 0 elements, non-NULL array -> 0x00000000
+il vs_id: SV_VertexID element -> 0x00000000
+il vs_id: unused POSITION -> 0x00000000
+il vs_main: 0 elements -> 0x80070057 (no object)
+il garbage bytecode -> 0x80070057 (no object)
+il PS bytecode -> 0x80070057 (no object)
+device-removed-reason after il: 0x00000000
+## interface dispatch sanity
+cs AddRef-Release delta=1 (AddRef plausible)
+cs QI(IUnknown) -> 0x00000000
+cs GetDevice same=1
+FinishCommandList -> 0x00000000
+cmdlist GetContextFlags=0x0
+cmdlist SetPrivateData -> 0x00000000
+cmdlist GetPrivateData -> 0x00000000 value=0x1234
+## done
+#
+# ---- verdicts: Vitreo build/src/vitreo of 2026-09-27 23:22, x64 and x86 ----
+# (full write-up: .docs/audits/2026-09-28-d3d11-contract-audit/area-05-context-state.md)
+# MATCH: fresh defaults; every in-range per-stage CB/SRV/sampler/shader round
+#   trip with AddRef (x86: all; x64: all but CS); CS UAVs; IA layout, VB slots
+#   0-7, IB (format/offset kept with NULL buffer, invalid formats stored),
+#   topology stored raw; RS state, viewport/scissor counts <= 16; blend state +
+#   factor (NULL -> 1,1,1,1) + mask; OMGetRenderTargets; basic
+#   OMSetRenderTargetsAndUnorderedAccessViews; UAV initial counts (CS and OM);
+#   SRV-refused-while-output-bound on VS..PS; mip granularity; SO round trip;
+#   predication; ClearState (except CB1 NumConstants); Set1/Get1 windows.
+# DIFFER (Vitreo wrong):
+#   deferred GetType 0 (want 1); Get*ConstantBuffers1 NumConstants 0 for a
+#   whole-buffer/unbound slot (want 4096); binding adds a public reference
+#   (want +0, Release-after-bind 0); x64 ID3D11ComputeShader IUnknown methods
+#   and ID3D11CommandList slots 4-7 dispatch to the wrong interface (vtable
+#   overlap); IA VB slots 8-31 dropped; RSSetViewports/ScissorRects(17) clamped
+#   (want dropped); StencilRef not masked to 0xFF; duplicate RTVs / RTV-DSV
+#   size mismatch not dropped; OMSetRenderTargets does not unbind OM UAVs;
+#   OMSetRenderTargetsAndUnorderedAccessViews: UAVs outside the new range kept,
+#   (0,..,0,0) clears nothing, KEEP_* partial unbinds missing, invalid calls
+#   (start+num>8, RTV/UAV conflict, duplicate UAV) not dropped, UAVStartSlot <
+#   NumRTVs binds both; OM<->CS UAV and RTV<->CS UAV mutual unbind missing;
+#   HS/DS/GS SRVs not unbound by RTV/UAV/DSV binds (CS too for DSV); CS SRV not
+#   refused while DSV bound; UAV hazards ignore array slices; RTV of a 3D W
+#   slice does not unbind the volume SRV; no buffer hazards (UAV/SO vs VB, IB,
+#   SRV); duplicate SO targets not dropped; Set*ConstantBuffers1 invalid
+#   windows (first/num not x16, num > 4096, one NULL array) not dropped;
+#   CreateInputLayout never checks the VS signature (missing/renamed/duplicate
+#   semantic), per-vertex step rate, alignment, NULL+0 elements, bytecode.
+# UNDEFINED on Windows (not judged): out-of-range StartSlot/NumX (CB lands in a
+#   15th slot, SRV 127+2 crashed), OMSetRenderTargets(9) crashed, NULL ppShader
+#   / NULL ppConstantBuffers on Get crashed, a non-predicate query passed to
+#   SetPredication removed the WARP device. Vitreo clamps/NULL-fills/drops.

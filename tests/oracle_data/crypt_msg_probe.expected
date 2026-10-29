@@ -1,0 +1,20 @@
+layout	88	18
+query signed	1	0	10001	a	1	1	1
+param type	1	0	1	0	ea	1	1	dead	1	2
+param inner	1	0	1	0	ea	1	1	dead	1	1.3.6.1.4.1.311.2.1.4
+param signers	1	0	1	0	ea	1	1	dead	1	1
+param signer0	1	0	1	0	ea	1	1	0	1	1	3e	0530	2.16.840.1.101.3.4.2.1	0	1.2.840.113549.1.1.1	0	100	3,1.3.6.1.4.1.311.2.1.12:1:2,1.2.840.113549.1.9.3:1:c,1.2.840.113549.1.9.4:1:22	0
+param signer1	0	80091008	0
+param certinfo0	1	0	1	0	ea	1	1	0	1	3e	0530
+param certs	1	0	1	0	ea	1	1	dead	1	2
+param cert0	1	0	1	0	ea	1	1	dead	1	30	365
+param cert1	1	0	1	0	ea	1	1	dead	1	30	356
+param cert9	0	dead	0
+param content	1	0	1	0	ea	1	1	dead	1	6a
+param bogus	0	80091004	0
+find	1	vitrum-probe.test	1	1
+msgclose	1	dead
+storeclose	1	dead
+query unsigned	0	80092009	0	0	0	0	0
+query text	0	80092009	0	0	0	0	0
+query missing	0	80092009	0	0	0	0	0

@@ -1,0 +1,92 @@
+getprotobyname_tcp: name="tcp" proto=6 aliases=[TCP,] off_proto=8
+getprotobyname_TCP: name="tcp" proto=6 aliases=[TCP,] off_proto=8
+getprotobyname_ip: name="ip" proto=0 aliases=[IP,] off_proto=8
+getprotobyname_ipv6: name="ipv6" proto=41 aliases=[IPv6,] off_proto=8
+getprotobyname_icmp: name="icmp" proto=1 aliases=[ICMP,] off_proto=8
+getprotobyname_zzz: NULL err=11004
+getprotobyname_empty: NULL err=11004
+getprotobynumber_6: name="tcp" proto=6 aliases=[TCP,] off_proto=8
+getprotobynumber_17: name="udp" proto=17 aliases=[UDP,] off_proto=8
+getprotobynumber_999: NULL err=11004
+proto_same_thread_same_ptr: v=1 a_name_after="udp"
+proto_other_thread_distinct: v=1 mine="udp"
+getservbyname_http_tcp: name="http" port=80 proto="tcp" aliases=[www,www-http,]
+getservbyname_http_null: name="http" port=80 proto="tcp" aliases=[www,www-http,]
+getservbyname_domain_udp: name="domain" port=53 proto="udp" aliases=[]
+getservbyname_zzz: NULL err=11004
+getservbyport_80_tcp: name="http" port=80 proto="tcp" aliases=[www,www-http,]
+getservbyport_53_null: name="domain" port=53 proto="tcp" aliases=[]
+getservbyport_1_tcp: NULL err=11004
+getservbyport_65000: NULL err=11004
+gethostname: rc=0 len_positive=1
+gethostname_eq_dns_hostname: v=1 case_exact=1
+gethostname_resolves: rc=0 nonnull=1
+gethostbyname_own: nonnull=1 addrtype=2
+gethostname_len1: rc=-1 err=10014
+gethostname_exact_len: rc=-1 err=10014
+gethostname_len_plus1: rc=0
+gethostname_len0: rc=-1 err=10014
+gethostname_null: rc=-1 err=10014
+gethostname_neg: rc=-1 err=10014
+GetHostNameW: rc=0
+GetHostNameW_len1: rc=-1 err=10014
+GetHostNameW_null: rc=-1 err=10014
+GetHostNameW_len_positive: v=1
+gni_numeric_both: rc=0 wsaerr=0 host="127.0.0.1" serv="80"
+gni_numerichost_servname: rc=0 wsaerr=0 host="127.0.0.1" serv="http"
+gni_host_only_numeric: rc=0 wsaerr=0 host="127.0.0.1"
+gni_serv_only: rc=0 wsaerr=0 serv="http"
+gni_neither: rc=0 wsaerr=0
+gni_dgram_53: rc=0 wsaerr=0 serv="domain"
+gni_stream_53: rc=0 wsaerr=0 serv="domain"
+gni_unknown_port: rc=0 wsaerr=0 serv="61234"
+gni_short_salen: rc=10014 wsaerr=10014 host="unset" serv="unset"
+gni_long_salen: rc=0 wsaerr=0 host="127.0.0.1" serv="80"
+gni_bad_family: rc=10047 wsaerr=10047 host="unset" serv="unset"
+gni_hostlen_small: rc=122 wsaerr=122 host="127.t" serv="unset"
+gni_servlen_small: rc=122 wsaerr=122 host="127.0.0.1" serv="80set"
+gni_servname_small: rc=122 wsaerr=122 host="127.0.0.1" serv="httet"
+gni_null_sa: rc=10014 wsaerr=10014 host="unset" serv="unset"
+gni_bad_flags: rc=0 wsaerr=0 host="127.0.0.1" serv="http"
+gni_v6_loop: rc=0 wsaerr=0 host="::1" serv="443"
+gni_v6_linklocal_scope: rc=0 wsaerr=0 host="fe80::1%3"
+gni_v6_mapped: rc=0 wsaerr=0 host="::ffff:10.0.0.1"
+gni_v6_short_salen: rc=10014 wsaerr=10014 host="unset"
+gni_reverse_loopback: rc=0 nonempty=1
+gni_reverse_loopback_namereqd: rc=0
+GetNameInfoW_numeric: rc=0 host="127.0.0.1" serv="80"
+gai_numeric_v4: rc=0 wsaerr=0 {4,2,0,0,16,-,0x7f000001:0} n=1
+gai_numeric_v4_stream: rc=0 wsaerr=0 {4,2,1,0,16,-,0x7f000001:80} n=1
+gai_numeric_v4_dgram: rc=0 wsaerr=0 {4,2,2,17,16,-,0x7f000001:53} n=1
+gai_numeric_v4_raw: rc=0 wsaerr=0 {4,2,3,0,16,-,0x7f000001:0} n=1
+gai_numeric_v6: rc=0 wsaerr=0 {4,23,1,6,28,-,v6:0x1:443} n=1
+gai_localhost_v4: rc=0 wsaerr=0 {0,2,0,0,16,-,0x7f000001:0} n=1
+gai_localhost_v4_stream: rc=0 wsaerr=0 {0,2,1,0,16,-,0x7f000001:80} n=1
+gai_passive_null: rc=0 wsaerr=0 {0,2,1,0,16,-,0x0:8080} n=1
+gai_active_null: rc=0 wsaerr=0 {0,2,1,0,16,-,0x7f000001:8080} n=1
+gai_passive_null_v6: rc=0 wsaerr=0 {0,23,1,0,28,-,v6:0x0:8080} n=1
+gai_null_null: rc=11001 wsaerr=11001 res_null=1
+gai_numerichost_name: rc=11001 wsaerr=11001 res_null=1
+gai_canon_null_node: rc=10022 wsaerr=10022 res_null=1
+gai_canon_fqdn: rc=10022 wsaerr=10022 res_null=1
+gai_canon_numeric: rc=0 wsaerr=0 {4,2,0,0,16,127.0.0.1,0x7f000001:0} n=1
+gai_bad_service: rc=10109 wsaerr=10109 res_null=1
+gai_bad_family: rc=10047 wsaerr=10047 res_null=1
+gai_bad_socktype: rc=10044 wsaerr=10044 res_null=1
+gai_bad_flags: rc=0 wsaerr=0 {4,2,0,0,16,-,0x7f000001:0} n=1
+gai_numericserv_name: rc=11001 wsaerr=11001 res_null=1
+gai_service_num_big: rc=0 wsaerr=0 {4,2,1,0,16,-,0x7f000001:4464} n=1
+gai_socktype_proto_mismatch: rc=0 wsaerr=0 {4,2,1,17,16,-,0x7f000001:0} n=1
+gai_dgram_service_http: rc=10109 wsaerr=10109 res_null=1
+gai_hints_addrlen_nonzero: rc=11003 wsaerr=11003
+gai_hints_next_nonnull: rc=11003 wsaerr=11003
+gai_null_hints: rc=0 wsaerr=0 {4,2,0,0,16,-,0x7f000001:0} n=1
+gai_empty_node: rc=0 n_positive=1 has_v4=1 has_loopback4=0
+gai_empty_node_passive: rc=0 nonnull=1
+gai_20000_with_live_result: fails=0
+freeaddrinfo_null: err=57005
+inet_pton_af30: rc=-1 err=10047
+inet_pton_af23: rc=1
+inet_pton_af2_bad: rc=0
+inet_pton_af99: rc=-1 err=10047
+done

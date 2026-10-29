@@ -1,0 +1,43 @@
+hash SHA1	1	0	14	1	dead	14	02316dcf7b5b310f
+hash SHA256	1	dead	20	1	dead	20	9e3e323e8310dc35
+hash SHA384	1	dead	30	1	dead	30	157fcc049e6a2a81
+hash SHA512	1	dead	40	1	dead	40	4b3a30b600a1745c
+hash MD5	1	dead	10	1	dead	10	52d37b36822f185d
+hash sha256	1	dead	20	1	dead	20	9e3e323e8310dc35
+hash MD4	1	dead	10	1	dead	10	6f43a219293dc516
+hash MD2	1	dead	10	1	dead	10	f5fe7176cce4bba4
+hash BOGUS	0	c0000225	0	0	c0000225	0	
+hash_small	0	ea	14
+hash_flags	1	dead	14
+hash_empty	1	dead	14	da39a3ee
+disp_encoded	1	0	80092005	1	0	1	0
+disp_encoded	2	1	0	0	1	1	1
+disp_encoded	3	1	80092004	0	0	1	0
+disp_encoded	4	1	0	0	0	2	0
+disp_encoded	5	1	0	0	1	1	1
+disp_encoded	6	0	80092005	1	0	1	0
+disp_encoded	7	0	80092005	1	0	1	0
+disp_encoded	0	0	80070057	1	0	1	0
+disp_encoded	8	0	80070057	1	0	1	0
+disp_context	0	6	1	80092004	2
+disp_context	0	7	1	80092004	2
+disp_context	1	6	0	80092005	1
+disp_context	1	7	0	80092005	1
+close_check_pending	0	8009200f	385
+close_check_clean	1	dead
+close_flag80	1	dead
+close_null	1	dead
+acquire	0	8009200b	1	0	0	0
+acquire_ncrypt	0	8009200b
+control	1	0	78
+control	2	0	78
+control	3	0	78
+control	4	0	78
+control	63	0	78
+findchain	0	80092004
+decode_size	1	0	a8
+decode	1	0	a8	c	5	3:a.test	2:x@y.test	7:http://u.test/	8:7f000001	3:b.tex
+decode_alloc	1	0	a8	1
+decode_small	0	ea	a8
+decode_junk	0	8009310b
+decode_eku	1	0	28	1	1.3.6.1.5.5.7.3.1

@@ -1,0 +1,284 @@
+sizes devinfo=1c iface=1c detailw=6 detaila=5 drvdetailw=622 drvinfow=61c
+gcd_null_present inv=1 gle=57
+gcd_a_null_zero inv=1 gle=57
+gcd_badflags inv=0 gle=0
+gcd_bogus_iface inv=0 gle=0 enumif=0 gle=103 enumif_badcb=0 gle=103 enumif_null=0 gle=103 enuminfo=0 gle=103 destroy=1 gle=0 destroy2=0 gle=6
+gcd_bogus_class inv=0 gle=0 enuminfo=0 gle=103 enumif=0 gle=103
+gcd_bad_enumerator inv=0 gle=0
+gcd_empty_enumerator inv=1 gle=d
+gcd_root_all inv=0 gle=0 n>0=1
+gcd_iface_rootid inv=0 gle=0 n=0
+gcd_iface_badid inv=0 gle=0
+gcd_iface_enumname inv=1 gle=d
+gcd_all_iface inv=0 gle=0 ndisp>0=1
+gcd_all_has_root flags=4 has=1
+gcd_all_has_root flags=6 has=1
+gcdex_remote inv=1 gle=78
+gcdex_emptymachine inv=0 gle=0
+gcdex_reserved inv=1 gle=57
+gcdex_badexisting inv=1 gle=6
+gcdex_existing same=1 gle=0 n>0=1
+gcdex_existing_mismatch inv=1 same=0 gle=e0000201 n=0
+gcdex_existing_iface_mismatch inv=0 same=1 gle=0 n=0
+enuminfo_null ok=0 gle=6
+enuminfo_inv ok=0 gle=6
+enuminfo_junk ok=0 gle=6
+destroy_null ok=0 gle=6
+destroy_inv ok=0 gle=6
+enumif_nullset ok=0 gle=6
+disp_class inv=0 n>0=1 enumif=0 gle=103 cls_guid_ok=1 devinst_nz=1 rsv_nz=1 enumif_did=0 gle=103 enuminfo_cb0=0 gle=6f8 enuminfo_cbbig=0 gle=6f8 enuminfo_nullout=0 gle=57 enuminfo_past_nullout=0 gle=103 enuminfo_past_cb0=0 gle=103
+disp_iface inv=0 n>0=1 ninfo>0=1 guid_ok=1 flags=1 rsv_nz=1 other_guid=0 gle=103 null_guid=0 gle=57 null_guid_past=0 gle=57 nullout=0 gle=57 badcb=0 gle=6f8 bigcb=0 gle=6f8 past_badcb=0 gle=103 foreign_did=0 gle=57 own_did=1 gle=0 own_did_badcb=0 gle=57
+enumif_fail_out ok=0 flags=5a5a5a5a d1=5a5a5a5a
+enumif_success_gle ok=1 gle=0
+detw_query ok=0 gle=7a dd_cls_ok=1 dd_devinst_nz=1
+detw_full ok=1 gle=0 req_minus_path=4 req_after=1 cb_after=6 prefix_ok=1 all_lower=1 tail={5b45201d-f2f2-4f3b-85bb-30ff1f953599}
+detw_short2 ok=0 gle=7a req_ok=1 path0=5a5a
+detw_min6 ok=0 gle=7a req_ok=1 path0=5a5a
+detw_5 ok=0 gle=6f8 req_ok=0
+detw_nonnull_size0 ok=0 gle=6f8 req=5555
+detw_null_size100 ok=0 gle=6f8 req=5555
+detw_cb cb=0 ok=0 gle=6f8 req=5555
+detw_cb cb=1 ok=0 gle=6f8 req=5555
+detw_cb cb=2 ok=0 gle=6f8 req=5555
+detw_cb cb=3 ok=0 gle=6f8 req=5555
+detw_cb cb=4 ok=0 gle=6f8 req=5555
+detw_cb cb=5 ok=0 gle=6f8 req=5555
+detw_cb cb=7 ok=0 gle=6f8 req=5555
+detw_cb cb=8 ok=0 gle=6f8 req=5555
+detw_cb cb=9 ok=0 gle=6f8 req=5555
+detw_cb cb=a ok=0 gle=6f8 req=5555
+detw_cb cb=b ok=0 gle=6f8 req=5555
+detw_cb cb=c ok=0 gle=6f8 req=5555
+detw_badcb_small ok=0 gle=6f8 req=5555
+detw_dd_badcb ok=0 gle=6f8 path_written=1 dd_touched=0
+detw_query_dd_badcb ok=0 gle=6f8 req=1
+detw_if_badcb ok=0 gle=57 req=5555
+detw_if_badrsv ok=0 gle=57 req=5555
+detw_if_null ok=0 gle=57
+detw_badset ok=0 gle=6
+detw_foreignset ok=0 gle=57
+detw_query_noreq ok=0 gle=7a
+deta_query ok=0 gle=7a reqa_vs_w=1
+deta_full ok=1 gle=0 req_minus_path=4
+deta_cb_ok cb=5
+deta_min5 ok=0 gle=7a path0=5a
+deta_4 ok=0 gle=6f8
+openif ok=1 gle=0 guid_ok=1 flags=1 ninfo=1 nif=1 again=1 gle=0 nif2=1 upper=1 gle=0 nif3=1
+openif_bogus ok=0 gle=e0000225
+openif_garbage ok=0 gle=e0000225
+openif_null ok=0 gle=57
+openif_badflags ok=0 gle=3ec
+openif_badcb ok=0 gle=6f8
+openif_noadd_nullout ok=1 gle=0
+openif_noadd_fresh ok=0 gle=e0000225 nif=0 ninfo=0
+openif_badset ok=0 gle=6
+openif_classmismatch ok=0 gle=e0000201
+cdil inv=0 gle=0 n=0 enum=0 gle=103
+cdil_class inv=0 gle=0
+cdil_badhwnd inv=0 gle=0
+cdil_remote inv=1 gle=78
+odi_root ok=1 gle=0 cls_null=1 devinst_nz=1 n=1 id=HTREE\ROOT\0 r=d lower=1 gle=0 n2=1
+odi_bogus ok=0 gle=e000020b
+odi_badformat ok=0 gle=e0000205
+odi_badcb_added ok=0 gle=6f8 n=1
+odi_null_is_root ok=1 n=1 id=HTREE\ROOT\0
+odi_empty ok=1 gle=0
+odi_null ok=1 gle=0
+odi_badflags ok=0 gle=3ec
+odi_badcb ok=0 gle=6f8
+odi_nullout ok=1 gle=0
+odi_badset ok=0 gle=6
+odi_classmismatch ok=0 gle=e0000201
+gdp_instid ok=1 gle=0 type=12 req=1a v=HTREE\ROOT\0
+gdp_instid_query ok=0 gle=7a type=12 req=1a
+gdp_instid_small ok=0 gle=7a type=12 req=1a buf0=1
+gdp_class ok=0 gle=490 type=5555 req=5555
+gdp_classguid ok=0 gle=490 type=5555 req=5555
+gdp_parent ok=0 gle=490 type=5555 req=5555
+gdp_bogus ok=0 gle=490 type=5555 req=5555
+gdp_flags ok=0 gle=3ec
+gdp_nullkey ok=0 gle=d
+gdp_nullkey_flags ok=0 gle=3ec
+gdp_nulltype_flags ok=0 gle=3ec
+gdp_root_status ok=1 type=7 req=4 v=4180000a
+gdp_root_problem ok=1 gle=0 type=7 req=4 v=0
+gdp_root_children_small ok=0 gle=7a type=2012 req>2=1
+gdp_root_desc ok=0 gle=490 type=5555
+gdp_root_enumname ok=1 gle=0 type=12 v=HTREE
+gdp_nulltype ok=0 gle=6f8
+gdp_nullbuf_size8 ok=0 gle=6f8
+gdp_nulldid ok=0 gle=57
+gdp_badset ok=0 gle=6
+gdp_badcb ok=0 gle=57
+gdp_badrsv ok=0 gle=57
+gdp_disp_class ok=1 gle=0 type=12 req=10 v=Display
+gdp_disp_classguid ok=1 gle=0 type=d req=10 eq=1
+gdrp_root_class ok=0 gle=d type=5555 req=5555
+gdrp_badprop ok=0 gle=e0000209 type=5555 req=5555
+gdrp_maxprop ok=1 gle=0
+gdrp_lastprop ok=0 gle=d
+gdrp_root_prop p=24 ok=1 gle=0 type=1 req=4e s={00000000-0000-0000-FFFF-FFFFFFFFFFFF}
+gdrp_root_prop p=25 ok=0 gle=e0000209 type=5555 req=5555
+gdrp_disp_class ok=1 gle=0 type=1 req=10 v=Display
+gdrp_disp_class_small ok=0 gle=7a type=1 req=10
+gdrp_disp_class_query ok=0 gle=7a type=1 req=10
+gdrp_nullbuf_size8 ok=0 gle=6f8
+gdrp_nulldid ok=0 gle=57
+gdrpa_disp_class ok=1 gle=0 type=1 req=8 v=Display
+gdiia_root ok=1 gle=0 r=d v=HTREE\ROOT\0
+gdiia_small ok=0 gle=7a r=d
+gdiiw_small ok=0 gle=7a r=d
+gdiiw_query ok=0 gle=7a r=d
+gdiiw_nulldid ok=0 gle=57
+gdiiw_nullbuf_size5 ok=0 gle=7a
+odrk_dev inv=0 gle=0
+odrk_drv inv=0 gle=0
+odrk_root_drv inv=1 gle=e0000204
+odrk_root_dev inv=1 gle=e0000204
+odrk_both inv=1 gle=3ec
+odrk_badscope inv=1 gle=3ec
+odrk_badtype inv=1 gle=3ec
+odrk_nulldid inv=1 gle=57
+odrk_badset inv=1 gle=6
+odrk_dev_all inv=1 gle=5
+ocrk_null inv=0 gle=0
+ocrk_disp inv=0 gle=0 q=0 class=Display
+ocrk_bogus inv=1 gle=e0000206
+ocrk_disp_all inv=1 gle=5
+ocrk_guidnull inv=1 gle=e0000206
+elevated v=0
+cdi_gen ok=0 gle=5 n=0 devinst=77
+cdi_full ok=0 gle=5 n=0
+cdi_exists ok=0 gle=5
+cdi_mismatch ok=0 gle=5
+cdi_badflags ok=0 gle=3ec
+cdi_badname ok=0 gle=5
+cdi_nullname ok=0 gle=e0000205
+cdi_nullclass ok=0 gle=5
+cdi_badset ok=0 gle=6
+cdi_badcb ok=0 gle=5 n=0
+sdrp_reserved ok=0 gle=5
+sdrp_badprop ok=0 gle=e0000209
+sdrp_nullbuf_size ok=0 gle=6f8
+sdrp_badset ok=0 gle=6
+sdrp_nulldid ok=0 gle=57
+sdrp_badcb ok=0 gle=57
+sdrp_hwid_root ok=0 gle=5
+scip_set ok=1 gle=0 flagbit=1 get=1 gle=0 r=14 fn=12 clear=1 gle=0 flagbit2=0 get2=0 gle=e0000215 r=5555
+scip_dev ok=1 gle=0
+scip_null_size ok=0 gle=6f8
+scip_badcb ok=0 gle=6f8
+scip_short ok=0 gle=57
+scip_long ok=0 gle=57
+scip_tiny ok=0 gle=6f8
+scip_badfn ok=1 gle=0
+scip_noparamsfn ok=0 gle=57
+scip_badset ok=0 gle=6
+scip_fn fn=0
+scip_fn fn=1 from=4bc to=4bc
+scip_fn fn=2
+scip_fn fn=3
+scip_fn fn=4
+scip_fn fn=5
+scip_fn fn=6
+scip_fn fn=7
+scip_fn fn=8
+scip_fn fn=9
+scip_fn fn=a
+scip_fn fn=b
+scip_fn fn=c
+scip_fn fn=d
+scip_fn fn=e
+scip_fn fn=f
+scip_fn fn=10 from=70 to=70
+scip_fn fn=11 from=8 to=514
+scip_fn fn=12
+scip_fn fn=13 from=1c to=1c
+scip_fn fn=14
+scip_fn fn=15
+scip_fn fn=16
+scip_fn fn=17
+scip_fn fn=18
+scip_fn fn=19
+scip_fn fn=1a from=64 to=64
+scip_fn fn=1b from=64 to=64
+scip_fn fn=1c from=64 to=64
+scip_fn fn=1d from=64 to=64
+scip_fn fn=1e from=64 to=64
+scip_fn fn=1f
+scip_fn fn=20
+scip_fn fn=21
+scip_fn fn=22
+scip_fn fn=23 from=64 to=64
+scip_fn fn=24 from=64 to=64
+scip_fn fn=25 from=214 to=214
+scip_fn fn=26 from=418 to=418
+scip_fn fn=27 from=408 to=408
+scip_fn fn=28 from=64 to=64
+scip_fn fn=29
+scip_fn fn=2a
+scip_fn fn=2b from=8 to=514
+scip_fn fn=2c from=8 to=514
+scip_fn fn=2d from=8 to=514
+scip_fn fn=2e from=8 to=514
+scip_fn fn=2f from=8 to=514
+scip_fn fn=30
+scip_fn fn=31 from=8 to=514
+scip_fn fn=32 from=8 to=514
+scip_content fn=12 a=1 b=1 c=0 from=14 to=14
+scip_content fn=12 a=0 b=1 c=0
+scip_content fn=12 a=5 b=1 c=0
+scip_content fn=12 a=6 b=1 c=0
+scip_content fn=12 a=1 b=0 c=0
+scip_content fn=12 a=1 b=2 c=0 from=14 to=14
+scip_content fn=12 a=1 b=4 c=0 from=14 to=14
+scip_content fn=12 a=1 b=3 c=0
+scip_content fn=12 a=1 b=8 c=0
+scip_content fn=12 a=2 b=2 c=7 from=14 to=14
+scip_content fn=12 a=3 b=1 c=0 from=14 to=14
+scip_content fn=12 a=4 b=1 c=0
+scip_content fn=12 a=4 b=2 c=0 from=14 to=14
+scip_content fn=12 a=5 b=2 c=0 from=14 to=14
+scip_content fn=12 a=5 b=4 c=0
+scip_content fn=12 a=3 b=2 c=0 from=14 to=14
+scip_content fn=5 a=1 b=0 c=0 from=10 to=10
+scip_content fn=5 a=2 b=0 c=0 from=10 to=10
+scip_content fn=5 a=0 b=0 c=0
+scip_content fn=5 a=3 b=0 c=0
+scip_content fn=5 a=4 b=0 c=0
+scip_content fn=16 a=2 b=0 c=0 from=10 to=10
+scip_content fn=16 a=1 b=0 c=0
+scip_content fn=16 a=0 b=0 c=0
+scip_content fn=16 a=4 b=0 c=0
+scip_content fn=f a=1 b=0 c=0 from=10 to=10
+scip_content fn=f a=0 b=0 c=0
+ddil_class_unbuilt ok=1 gle=0
+ddil_compat_nulldid ok=0 gle=57
+ddil_badtype ok=0 gle=57
+ddil_badset ok=0 gle=6
+ddil_compat_unbuilt ok=1 gle=0
+gdid_unknown ok=0 gle=57 req=5555
+gdid_nulldrv ok=0 gle=57
+gdid_badset ok=0 gle=6
+bdil_disp ok=1 gle=0 n>0=1 q=0 gle=7a req>=sz=1 fixed=0 gle=7a r3=1 badcb=0 gle=6f8 tiny=0 gle=6f8 destroy=1 gle=0
+cci_register_root ok=0 gle=e0000235
+cci_install_nulldid ok=0 gle=e0000235
+cci_propchange_nulldid ok=0 gle=e0000235
+cci_badset ok=0 gle=e0000235
+cci_badfn ok=0 gle=e0000235
+cci_selectbest_root ok=0 gle=e0000235
+cci_register_nulldid ok=0 gle=e0000235
+cci_register_badcb ok=0 gle=e0000235
+coi_valid ok=0 gle=5 dst0=5a r=5555 comp=1
+coi_missing ok=0 gle=2 dst0=5a r=5555
+coi_null ok=0 gle=57
+coi_badmedia ok=0 gle=57
+coi_badstyle ok=0 gle=5
+coi_buf0 ok=0 gle=5
+coi_relative ok=0 gle=2
+sgidsl_machine consistent=1
+sgidsl_leaf consistent=1
+sgidsl_missing ok=0 gle=490 r=5555
+sgidsl_oem ok=0 gle=2 r=5555
+sgidsl_null ok=0 gle=57 r=5555
+sgidsl_query consistent=1

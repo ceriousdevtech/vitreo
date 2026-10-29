@@ -1,0 +1,14 @@
+BLOCKED_WAIT ret=1 err=0 wait=0 exit=0x55 after=0 detached=0 release=1 prev=0 count_left=1
+SPIN ret=1 wait=0 exit=0x56 progressed=1 stopped=1 detached=0
+SUSPENDED ret=1 wait=0 exit=0x57 resume=0x0 resume_err=0 ran=0 detached=0
+SUSPENDED_RUNNING suspend=0 ret=1 wait=0 exit=0x58 detached=0
+NO_ACCESS ret=0 err=5 target_wait=258 TERMINATE_ONLY ret=1 wait=0 exit=0x5a
+ALREADY_TERMINATED ret=1 err=0 exit=0x5a
+NULL_HANDLE ret=0 err=6
+PROCESS_PSEUDO ret=0 err=6
+WRONG_TYPE ret=0 err=6
+ALREADY_EXITED ret=1 err=0 exit=0x3
+SELF wait=0 exit=0x77 after=0 detached=0
+MUTEX_OWNER ret=1 wait=0 mutex_wait=0x80
+SLEEP_INFINITE ret=1 err=0 wait=0 exit=0x5e after=0 detached=0
+CRITSEC ret=1 err=0 wait=0 exit=0x5f after=0 detached=0

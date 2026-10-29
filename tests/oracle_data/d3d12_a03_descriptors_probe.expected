@@ -1,0 +1,458 @@
+heaps Create CBV_SRV_UAV n=0 cpu: 0x00000000 S_OK desc=0/0/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=1 cpu: 0x00000000 S_OK desc=0/1/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=2048 cpu: 0x00000000 S_OK desc=0/2048/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=2049 cpu: 0x00000000 S_OK desc=0/2049/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=1000000 cpu: 0x00000000 S_OK desc=0/1000000/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=1000001 cpu: 0x00000000 S_OK desc=0/1000001/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=0 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create CBV_SRV_UAV n=1 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create CBV_SRV_UAV n=2048 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create CBV_SRV_UAV n=2049 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create CBV_SRV_UAV n=1000000 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create CBV_SRV_UAV n=1000001 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=0 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=1 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=2048 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=2049 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=1000000 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=1000001 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=0 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=1 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=2048 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=2049 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=1000000 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create SAMPLER n=1000001 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create RTV n=0 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create RTV n=1 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create RTV n=2048 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create RTV n=2049 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create RTV n=1000000 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create RTV n=1000001 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create RTV n=0 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create RTV n=1 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create RTV n=2048 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create RTV n=2049 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create RTV n=1000000 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create RTV n=1000001 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create DSV n=0 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create DSV n=1 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create DSV n=2048 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create DSV n=2049 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create DSV n=1000000 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create DSV n=1000001 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create DSV n=0 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create DSV n=1 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create DSV n=2048 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create DSV n=2049 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create DSV n=1000000 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create DSV n=1000001 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create type4 n=0 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create type4 n=1 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create type4 n=2048 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create type4 n=2049 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create type4 n=1000000 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create type4 n=1000001 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create type4 n=0 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create type4 n=1 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create type4 n=2048 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create type4 n=2049 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create type4 n=1000000 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create type4 n=1000001 shader-visible: 0x80070057 E_INVALIDARG out=NULL
+heaps Create flags=0x2: 0x80070057 E_INVALIDARG
+heaps Create NodeMask=1: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+heaps Create NodeMask=2: 0x80070057 E_INVALIDARG
+heaps Create ppvHeap=NULL: 0x00000001 S_FALSE
+heaps Create riid=Resource: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+heaps GetDescriptorHandleIncrementSize(CBV_SRV_UAV): nonzero=1
+# heaps GetDescriptorHandleIncrementSize(CBV_SRV_UAV): 64 (WARP: 64/64/32/8 on x64, DSV 4 on x86)
+heaps GetDescriptorHandleIncrementSize(SAMPLER): nonzero=1
+# heaps GetDescriptorHandleIncrementSize(SAMPLER): 64 (WARP: 64/64/32/8 on x64, DSV 4 on x86)
+heaps GetDescriptorHandleIncrementSize(RTV): nonzero=1
+# heaps GetDescriptorHandleIncrementSize(RTV): 32 (WARP: 64/64/32/8 on x64, DSV 4 on x86)
+heaps GetDescriptorHandleIncrementSize(DSV): nonzero=1
+# heaps GetDescriptorHandleIncrementSize(DSV): 8 (WARP: 64/64/32/8 on x64, DSV 4 on x86)
+heaps GetDescriptorHandleIncrementSize(type4): 0
+heaps create: descriptor heap type=0 n=16 sv=1 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+heaps create: descriptor heap type=0 n=16 sv=1 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+heaps end: GetDeviceRemovedReason 0x887a0020 DXGI_ERROR_DRIVER_INTERNAL_ERROR
+srv base fbuf[0]: 40900000 40b00000 40d00000 40f00000
+srv base fbuf[1]: 41080000 41180000 41280000 41380000
+srv base ubuf[0]: 00000108 00000109 0000010a 0000010b
+srv base ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+srv base raw.Load4(0): 00000104 00000105 00000106 00000107
+srv base raw.Load4(16): 00000108 00000109 0000010a 0000010b
+srv base struct[0],[1]: 00000104 00000105 00000106 00000107
+srv base tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+srv base tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+srv base tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+srv base texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+srv base texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+srv base texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+srv base cb0: cb000100 cb000101 cb000102 cb000103
+srv base cb1: 00000000 00000000 00000000 00000000
+srv base dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+srv NULL-desc textures fbuf[0]: 40900000 40b00000 40d00000 40f00000
+srv NULL-desc textures fbuf[1]: 41080000 41180000 41280000 41380000
+srv NULL-desc textures ubuf[0]: 00000108 00000109 0000010a 0000010b
+srv NULL-desc textures ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+srv NULL-desc textures raw.Load4(0): 00000104 00000105 00000106 00000107
+srv NULL-desc textures raw.Load4(16): 00000108 00000109 0000010a 0000010b
+srv NULL-desc textures struct[0],[1]: 00000104 00000105 00000106 00000107
+srv NULL-desc textures tex dims(mip0) w,h,levels: 00000004 00000004 00000003 00000000
+srv NULL-desc textures tex.Load(0,0,mip0): 00000000 447a0000 44fa0000 453b8000
+srv NULL-desc textures tex.Load(1,0,mip1): 42ca0000 4489a000 45035000 4541d000
+srv NULL-desc textures texa dims w,h,elems,levels: 00000002 00000002 00000004 00000001
+srv NULL-desc textures texa.Load(0,0,slice0): 00000000 447a0000 44fa0000 453b8000
+srv NULL-desc textures texa.Load(0,0,slice1): 41200000 447c8000 44fb4000 453c2000
+srv NULL-desc textures cb0: cb000100 cb000101 cb000102 cb000103
+srv NULL-desc textures cb1: 00000000 00000000 00000000 00000000
+srv NULL-desc textures dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+srv MipLevels=-1, last slice, CBV @0 size 512 fbuf[0]: 40900000 40b00000 40d00000 40f00000
+srv MipLevels=-1, last slice, CBV @0 size 512 fbuf[1]: 41080000 41180000 41280000 41380000
+srv MipLevels=-1, last slice, CBV @0 size 512 ubuf[0]: 00000108 00000109 0000010a 0000010b
+srv MipLevels=-1, last slice, CBV @0 size 512 ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+srv MipLevels=-1, last slice, CBV @0 size 512 raw.Load4(0): 00000104 00000105 00000106 00000107
+srv MipLevels=-1, last slice, CBV @0 size 512 raw.Load4(16): 00000108 00000109 0000010a 0000010b
+srv MipLevels=-1, last slice, CBV @0 size 512 struct[0],[1]: 00000104 00000105 00000106 00000107
+srv MipLevels=-1, last slice, CBV @0 size 512 tex dims(mip0) w,h,levels: 00000004 00000004 00000003 00000000
+srv MipLevels=-1, last slice, CBV @0 size 512 tex.Load(0,0,mip0): 00000000 447a0000 44fa0000 453b8000
+srv MipLevels=-1, last slice, CBV @0 size 512 tex.Load(1,0,mip1): 42ca0000 4489a000 45035000 4541d000
+srv MipLevels=-1, last slice, CBV @0 size 512 texa dims w,h,elems,levels: 00000002 00000002 00000001 00000001
+srv MipLevels=-1, last slice, CBV @0 size 512 texa.Load(0,0,slice0): 41f00000 4480c000 44fdc000 453d6000
+srv MipLevels=-1, last slice, CBV @0 size 512 texa.Load(0,0,slice1): 00000000 00000000 00000000 00000000
+srv MipLevels=-1, last slice, CBV @0 size 512 cb0: cb000000 cb000001 cb000002 cb000003
+srv MipLevels=-1, last slice, CBV @0 size 512 cb1: 00000000 00000000 00000000 00000000
+srv MipLevels=-1, last slice, CBV @0 size 512 dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+srv buffer windows at edges (reads past the window) fbuf[0]: 42720000 42760000 427a0000 427e0000
+srv buffer windows at edges (reads past the window) fbuf[1]: 00000000 00000000 00000000 00000000
+srv buffer windows at edges (reads past the window) ubuf[0]: 00000100 00000101 00000102 00000103
+srv buffer windows at edges (reads past the window) ubuf[1]: 00000104 00000105 00000106 00000107
+srv buffer windows at edges (reads past the window) raw.Load4(0): 0000013c 0000013d 0000013e 0000013f
+srv buffer windows at edges (reads past the window) raw.Load4(16): 00000000 00000000 00000000 00000000
+srv buffer windows at edges (reads past the window) struct[0],[1]: 00000100 00000101 00000102 00000103
+srv buffer windows at edges (reads past the window) tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+srv buffer windows at edges (reads past the window) tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+srv buffer windows at edges (reads past the window) tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+srv buffer windows at edges (reads past the window) texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+srv buffer windows at edges (reads past the window) texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+srv buffer windows at edges (reads past the window) texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+srv buffer windows at edges (reads past the window) cb0: cb000100 cb000101 cb000102 cb000103
+srv buffer windows at edges (reads past the window) cb1: 00000000 00000000 00000000 00000000
+srv buffer windows at edges (reads past the window) dims fbuf,raw,struct n/stride: 00000001 00000010 00000002 00000008
+srv table at heap slot 5 fbuf[0]: 40900000 40b00000 40d00000 40f00000
+srv table at heap slot 5 fbuf[1]: 41080000 41180000 41280000 41380000
+srv table at heap slot 5 ubuf[0]: 00000108 00000109 0000010a 0000010b
+srv table at heap slot 5 ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+srv table at heap slot 5 raw.Load4(0): 00000104 00000105 00000106 00000107
+srv table at heap slot 5 raw.Load4(16): 00000108 00000109 0000010a 0000010b
+srv table at heap slot 5 struct[0],[1]: 00000104 00000105 00000106 00000107
+srv table at heap slot 5 tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+srv table at heap slot 5 tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+srv table at heap slot 5 tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+srv table at heap slot 5 texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+srv table at heap slot 5 texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+srv table at heap slot 5 texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+srv table at heap slot 5 cb0: cb000100 cb000101 cb000102 cb000103
+srv table at heap slot 5 cb1: 00000000 00000000 00000000 00000000
+srv table at heap slot 5 dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+srv end: GetDeviceRemovedReason 0x00000000 S_OK
+null null SRVs + null CBVs fbuf[0]: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs fbuf[1]: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs ubuf[0]: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs ubuf[1]: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs raw.Load4(0): 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs raw.Load4(16): 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs struct[0],[1]: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs tex dims(mip0) w,h,levels: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs tex.Load(0,0,mip0): 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs texa dims w,h,elems,levels: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs texa.Load(0,0,slice0): 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs texa.Load(0,0,slice1): 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs cb0: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs cb1: 00000000 00000000 00000000 00000000
+null null SRVs + null CBVs dims fbuf,raw,struct n/stride: 00000000 00000000 00000000 00000008
+null null texture SRV with FORCE_VALUE_1/0 mapping fbuf[0]: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping fbuf[1]: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping ubuf[0]: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping ubuf[1]: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping raw.Load4(0): 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping raw.Load4(16): 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping struct[0],[1]: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping tex dims(mip0) w,h,levels: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping tex.Load(0,0,mip0): 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping texa dims w,h,elems,levels: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping texa.Load(0,0,slice0): 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping texa.Load(0,0,slice1): 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping cb0: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping cb1: 00000000 00000000 00000000 00000000
+null null texture SRV with FORCE_VALUE_1/0 mapping dims fbuf,raw,struct n/stride: 00000000 00000000 00000000 00000008
+null end: GetDeviceRemovedReason 0x00000000 S_OK
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa fbuf[0]: 3f800000 3f800000 3f800000 3f800000
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa fbuf[1]: 3f800000 3f800000 3f800000 3f800000
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa ubuf[0]: 00000000 00000001 00000108 00000108
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa ubuf[1]: 00000000 00000001 0000010c 0000010c
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa raw.Load4(0): 00000104 00000105 00000106 00000107
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa raw.Load4(16): 00000108 00000109 0000010a 0000010b
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa struct[0],[1]: 00000104 00000105 00000106 00000107
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa tex.Load(0,0,mip0): 4541c000 45034000 44898000 42c80000
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa texa.Load(0,0,slice0): 00000000 3f800000 44fb4000 44fb4000
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa texa.Load(0,0,slice1): 00000000 3f800000 44fc8000 44fc8000
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa cb0: cb000100 cb000101 cb000102 cb000103
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa cb1: 00000000 00000000 00000000 00000000
+swizzle wzyx tex, 1111 fbuf, 01xx ubuf, 01zz texa dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+swizzle xxxx tex, y01w fbuf fbuf[0]: 40b00000 00000000 3f800000 40f00000
+swizzle xxxx tex, y01w fbuf fbuf[1]: 41180000 00000000 3f800000 41380000
+swizzle xxxx tex, y01w fbuf ubuf[0]: 00000108 00000109 0000010a 0000010b
+swizzle xxxx tex, y01w fbuf ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+swizzle xxxx tex, y01w fbuf raw.Load4(0): 00000104 00000105 00000106 00000107
+swizzle xxxx tex, y01w fbuf raw.Load4(16): 00000108 00000109 0000010a 0000010b
+swizzle xxxx tex, y01w fbuf struct[0],[1]: 00000104 00000105 00000106 00000107
+swizzle xxxx tex, y01w fbuf tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+swizzle xxxx tex, y01w fbuf tex.Load(0,0,mip0): 42c80000 42c80000 42c80000 42c80000
+swizzle xxxx tex, y01w fbuf tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+swizzle xxxx tex, y01w fbuf texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+swizzle xxxx tex, y01w fbuf texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+swizzle xxxx tex, y01w fbuf texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+swizzle xxxx tex, y01w fbuf cb0: cb000100 cb000101 cb000102 cb000103
+swizzle xxxx tex, y01w fbuf cb1: 00000000 00000000 00000000 00000000
+swizzle xxxx tex, y01w fbuf dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+swizzle end: GetDeviceRemovedReason 0x00000000 S_OK
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex fbuf[0]: 00000000 3f800000 3f008081 3e4ccccd
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex fbuf[1]: 3b808081 3efefeff 3f7efeff 3f40c0c1
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex ubuf[0]: 00000000 000000ff 00000080 00000033
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex ubuf[1]: 00000001 0000007f 000000fe 000000c0
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex raw.Load4(0): 00000104 00000105 00000106 00000107
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex raw.Load4(16): 00000108 00000109 0000010a 0000010b
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex struct[0],[1]: 00000104 00000105 00000106 00000107
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex tex dims(mip0) w,h,levels: 00000002 00000001 00000001 00000000
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex tex.Load(0,0,mip0): 00000000 3f800000 3e5d0a8b 3e4ccccd
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex cb0: cb000100 cb000101 cb000102 cb000103
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex cb1: 00000000 00000000 00000000 00000000
+formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex dims fbuf,raw,struct n/stride: 00000040 00000040 00000005 00000008
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex fbuf[0]: 00000000 bc010204 bf800000 3ecd9b36
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex fbuf[1]: 3c010204 3f800000 bc810204 bf010204
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex ubuf[0]: 00000000 ffffffff ffffff80 00000033
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex ubuf[1]: 00000001 0000007f fffffffe ffffffc0
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex raw.Load4(0): 00000104 00000105 00000106 00000107
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex raw.Load4(16): 00000108 00000109 0000010a 0000010b
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex struct[0],[1]: 00000104 00000105 00000106 00000107
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex tex dims(mip0) w,h,levels: 00000002 00000001 00000001 00000000
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex tex.Load(0,0,mip0): 00000000 3f800000 3f008081 3e4ccccd
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex cb0: cb000100 cb000101 cb000102 cb000103
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex cb1: 00000000 00000000 00000000 00000000
+formats RGBA8 SNORM fbuf, RGBA8 SINT ubuf, UNORM tex dims fbuf,raw,struct n/stride: 00000040 00000040 00000005 00000008
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) fbuf[0]: ffe00000 3e700000 7fe02000 c01fc000
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) fbuf[1]: ffe00000 3e700000 7fe02000 c01fc000
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) ubuf[0]: 0000ff00 00003380 00000000 00000001
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) ubuf[1]: 00007f01 0000c0fe 00000000 00000001
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) raw.Load4(0): 00000104 00000105 00000106 00000107
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) raw.Load4(16): 00000108 00000109 0000010a 0000010b
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) struct[0],[1]: 00000104 00000105 00000106 00000107
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) cb0: cb000100 cb000101 cb000102 cb000103
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) cb1: 00000000 00000000 00000000 00000000
+formats RGBA16F fbuf, RG16 UINT ubuf (missing channels) dims fbuf,raw,struct n/stride: 00000020 00000040 00000005 00000008
+formats end: GetDeviceRemovedReason 0x00000000 S_OK
+uav dispatch: 0x00000000 S_OK
+uav typed R32_UINT FirstElement=4 NumElements=32 (i*3+7) dwords 0-15: 00000000 00000000 00000000 00000000 00000007 0000000a 0000000d 00000010 00000013 00000016 00000019 0000001c 0000001f 00000022 00000025 00000028
+uav typed dwords 16-47: 0000002b 0000002e 00000031 00000034 00000037 0000003a 0000003d 00000040 00000043 00000046 00000049 0000004c 0000004f 00000052 00000055 00000058 0000005b 0000005e 00000061 00000064 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uav typed dwords 48-63: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uav raw FirstElement=8 (group/thread ids) dwords 0-15: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00010000 00020000 00030000 00000001 00010001 00020001 00030001
+uav raw dwords 16-47: 01000000 01010000 01020000 01030000 01000001 01010001 01020001 01030001 00000100 00010100 00020100 00030100 00000101 00010101 00020101 00030101 01000100 01010100 01020100 01030100 01000101 01010101 01020101 01030101 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uav raw dwords 48-63: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uav structured stride=8 FirstElement=2 dwords 0-31: 00000000 00000000 00000000 00000000 00000000 00000000 00000001 00000001 00000002 00000002 00000003 00000003 00000000 00000004 00000001 00000005 00000002 00000006 00000003 00000007 00000004 00000008 00000005 00000009 00000006 0000000a 00000007 0000000b 00000004 0000000c 00000005 0000000d
+uav structured dwords 32-79: 00000006 0000000e 00000007 0000000f 00000000 00000010 00000001 00000011 00000002 00000012 00000003 00000013 00000000 00000014 00000001 00000015 00000002 00000016 00000003 00000017 00000004 00000018 00000005 00000019 00000006 0000001a 00000007 0000001b 00000004 0000001c 00000005 0000001d 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uav structured dwords 80-127: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uav tex UAV MipSlice=1 row 0: 00000000 00000000 00000000 3e000000 3e000000 00000000 3e000000 3e000000 3e800000 00000000 3e800000 3e000000 3ec00000 00000000 3ec00000 3e000000 3f000000 00000000 00000000 3e000000 3f200000 00000000 3e000000 3e000000 3f400000 00000000 3e800000 3e000000 3f600000 00000000 3ec00000 3e000000
+uav tex UAV MipSlice=1 row 1: 00000000 3e000000 3f000000 3e000000 3e000000 3e000000 3f200000 3e000000 3e800000 3e000000 3f400000 3e000000 3ec00000 3e000000 3f600000 3e000000 3f000000 3e000000 3f000000 3e000000 3f200000 3e000000 3f200000 3e000000 3f400000 3e000000 3f400000 3e000000 3f600000 3e000000 3f600000 3e000000
+uav tex UAV MipSlice=1 row 2: 00000000 3e800000 00000000 3e000000 3e000000 3e800000 3e000000 3e000000 3e800000 3e800000 3e800000 3e000000 3ec00000 3e800000 3ec00000 3e000000 3f000000 3e800000 00000000 3e000000 3f200000 3e800000 3e000000 3e000000 3f400000 3e800000 3e800000 3e000000 3f600000 3e800000 3ec00000 3e000000
+uav tex UAV MipSlice=1 row 3: 00000000 3ec00000 3f000000 3e000000 3e000000 3ec00000 3f200000 3e000000 3e800000 3ec00000 3f400000 3e000000 3ec00000 3ec00000 3f600000 3e000000 3f000000 3ec00000 3f000000 3e000000 3f200000 3ec00000 3f200000 3e000000 3f400000 3ec00000 3f400000 3e000000 3f600000 3ec00000 3f600000 3e000000
+uav tex mip 0 untouched (all zero): 1
+uav end: GetDeviceRemovedReason 0x00000000 S_OK
+rtv_dsv clears: 0x00000000 S_OK
+rtv_dsv rt sub0 (mip 0 slice 0): 00000000 00000000 00000000 00000000 00000000 00ff00ff 00ff00ff 00000000 00000000 00ff00ff 00ff00ff 00000000 00000000 00000000 00000000 00000000
+rtv_dsv rt sub1 (mip 1 slice 0): 00000000 00000000 00000000 00000000
+rtv_dsv rt sub2 (mip 2 slice 0): 00000000
+rtv_dsv rt sub3 (mip 0 slice 1): 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+rtv_dsv rt sub4 (mip 1 slice 1): ff0000ff ff0000ff ff0000ff ff0000ff
+rtv_dsv rt sub5 (mip 2 slice 1): 0000ffff
+rtv_dsv rt1 (NULL-desc RTV, half then 2 red rects): ff0000ff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff 8040bfff ff0000ff
+rtv_dsv ds mip0 (0.75, rect x<2 = 0.5): 3f000000 3f000000 3f400000 3f400000 3f000000 3f000000 3f400000 3f400000 3f000000 3f000000 3f400000 3f400000 3f000000 3f000000 3f400000 3f400000
+rtv_dsv ds mip1 (0.25): 3e800000 3e800000 3e800000 3e800000
+rtv_dsv d24s8 depth plane (1.0) first 4: 00ffffff 00ffffff 00ffffff 00ffffff
+rtv_dsv d24s8 stencil plane (0x5A): 5a5a5a5a 5a5a5a5a 5a5a5a5a 5a5a5a5a rowbytes=4
+rtv_dsv end: GetDeviceRemovedReason 0x00000000 S_OK
+samplers heap samplers dispatch: 0x00000000 S_OK
+samplers heap samplers s0 point clamp (0.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers heap samplers s0 point clamp (1.25,0.75): 40800000 42200000 00000000 3f800000
+samplers heap samplers s1 linear clamp (0.5,0.25): 3fc00000 41700000 00000000 3f800000
+samplers heap samplers s1 linear clamp (0.5,0.5): 40200000 41c80000 00000000 3f800000
+samplers heap samplers s2 point wrap (1.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers heap samplers s2 point wrap (-0.25,0.75): 40800000 42200000 00000000 3f800000
+samplers heap samplers s3 point border (1.5,0.25): 3e800000 3f000000 3f400000 3f800000
+samplers heap samplers s3 point border (0.75,0.75): 40800000 42200000 00000000 3f800000
+samplers reversed samplers (CopyDescriptorsSimple) dispatch: 0x00000000 S_OK
+samplers reversed samplers (CopyDescriptorsSimple) s0 point clamp (0.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers reversed samplers (CopyDescriptorsSimple) s0 point clamp (1.25,0.75): 3e800000 3f000000 3f400000 3f800000
+samplers reversed samplers (CopyDescriptorsSimple) s1 linear clamp (0.5,0.25): 40000000 41a00000 00000000 3f800000
+samplers reversed samplers (CopyDescriptorsSimple) s1 linear clamp (0.5,0.5): 40800000 42200000 00000000 3f800000
+samplers reversed samplers (CopyDescriptorsSimple) s2 point wrap (1.25,0.25): 40000000 41a00000 00000000 3f800000
+samplers reversed samplers (CopyDescriptorsSimple) s2 point wrap (-0.25,0.75): 40400000 41f00000 00000000 3f800000
+samplers reversed samplers (CopyDescriptorsSimple) s3 point border (1.5,0.25): 40000000 41a00000 00000000 3f800000
+samplers reversed samplers (CopyDescriptorsSimple) s3 point border (0.75,0.75): 40800000 42200000 00000000 3f800000
+samplers samplers copied back dispatch: 0x00000000 S_OK
+samplers samplers copied back s0 point clamp (0.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers samplers copied back s0 point clamp (1.25,0.75): 40800000 42200000 00000000 3f800000
+samplers samplers copied back s1 linear clamp (0.5,0.25): 3fc00000 41700000 00000000 3f800000
+samplers samplers copied back s1 linear clamp (0.5,0.5): 40200000 41c80000 00000000 3f800000
+samplers samplers copied back s2 point wrap (1.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers samplers copied back s2 point wrap (-0.25,0.75): 40800000 42200000 00000000 3f800000
+samplers samplers copied back s3 point border (1.5,0.25): 3e800000 3f000000 3f400000 3f800000
+samplers samplers copied back s3 point border (0.75,0.75): 40800000 42200000 00000000 3f800000
+samplers static samplers (border OPAQUE_WHITE) dispatch: 0x00000000 S_OK
+samplers static samplers (border OPAQUE_WHITE) s0 point clamp (0.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers static samplers (border OPAQUE_WHITE) s0 point clamp (1.25,0.75): 40800000 42200000 00000000 3f800000
+samplers static samplers (border OPAQUE_WHITE) s1 linear clamp (0.5,0.25): 3fc00000 41700000 00000000 3f800000
+samplers static samplers (border OPAQUE_WHITE) s1 linear clamp (0.5,0.5): 40200000 41c80000 00000000 3f800000
+samplers static samplers (border OPAQUE_WHITE) s2 point wrap (1.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers static samplers (border OPAQUE_WHITE) s2 point wrap (-0.25,0.75): 40800000 42200000 00000000 3f800000
+samplers static samplers (border OPAQUE_WHITE) s3 point border (1.5,0.25): 3f800000 3f800000 3f800000 3f800000
+samplers static samplers (border OPAQUE_WHITE) s3 point border (0.75,0.75): 40800000 42200000 00000000 3f800000
+samplers static samplers (border TRANSPARENT_BLACK) dispatch: 0x00000000 S_OK
+samplers static samplers (border TRANSPARENT_BLACK) s0 point clamp (0.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers static samplers (border TRANSPARENT_BLACK) s0 point clamp (1.25,0.75): 40800000 42200000 00000000 3f800000
+samplers static samplers (border TRANSPARENT_BLACK) s1 linear clamp (0.5,0.25): 3fc00000 41700000 00000000 3f800000
+samplers static samplers (border TRANSPARENT_BLACK) s1 linear clamp (0.5,0.5): 40200000 41c80000 00000000 3f800000
+samplers static samplers (border TRANSPARENT_BLACK) s2 point wrap (1.25,0.25): 3f800000 41200000 00000000 3f800000
+samplers static samplers (border TRANSPARENT_BLACK) s2 point wrap (-0.25,0.75): 40800000 42200000 00000000 3f800000
+samplers static samplers (border TRANSPARENT_BLACK) s3 point border (1.5,0.25): 00000000 00000000 00000000 00000000
+samplers static samplers (border TRANSPARENT_BLACK) s3 point border (0.75,0.75): 40800000 42200000 00000000 3f800000
+samplers end: GetDeviceRemovedReason 0x00000000 S_OK
+copy CopyDescriptors 2 dst ranges / 3 src ranges fbuf[0]: 40900000 40b00000 40d00000 40f00000
+copy CopyDescriptors 2 dst ranges / 3 src ranges fbuf[1]: 41080000 41180000 41280000 41380000
+copy CopyDescriptors 2 dst ranges / 3 src ranges ubuf[0]: 00000108 00000109 0000010a 0000010b
+copy CopyDescriptors 2 dst ranges / 3 src ranges ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+copy CopyDescriptors 2 dst ranges / 3 src ranges raw.Load4(0): 00000104 00000105 00000106 00000107
+copy CopyDescriptors 2 dst ranges / 3 src ranges raw.Load4(16): 00000108 00000109 0000010a 0000010b
+copy CopyDescriptors 2 dst ranges / 3 src ranges struct[0],[1]: 00000104 00000105 00000106 00000107
+copy CopyDescriptors 2 dst ranges / 3 src ranges tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+copy CopyDescriptors 2 dst ranges / 3 src ranges tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+copy CopyDescriptors 2 dst ranges / 3 src ranges tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+copy CopyDescriptors 2 dst ranges / 3 src ranges texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+copy CopyDescriptors 2 dst ranges / 3 src ranges texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+copy CopyDescriptors 2 dst ranges / 3 src ranges texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+copy CopyDescriptors 2 dst ranges / 3 src ranges cb0: cb000100 cb000101 cb000102 cb000103
+copy CopyDescriptors 2 dst ranges / 3 src ranges cb1: 00000000 00000000 00000000 00000000
+copy CopyDescriptors 2 dst ranges / 3 src ranges dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) fbuf[0]: 40900000 40b00000 40d00000 40f00000
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) fbuf[1]: 41080000 41180000 41280000 41380000
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) ubuf[0]: 00000108 00000109 0000010a 0000010b
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) raw.Load4(0): 00000104 00000105 00000106 00000107
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) raw.Load4(16): 00000108 00000109 0000010a 0000010b
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) struct[0],[1]: 00000104 00000105 00000106 00000107
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) cb0: 00000000 00000000 00000000 00000000
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) cb1: cb000000 cb000001 cb000002 cb000003
+copy CopyDescriptors NULL sizes (b0 <- null CBV, b1 <- CBV @0) dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+copy CopyDescriptorsSimple 8 fbuf[0]: 40900000 40b00000 40d00000 40f00000
+copy CopyDescriptorsSimple 8 fbuf[1]: 41080000 41180000 41280000 41380000
+copy CopyDescriptorsSimple 8 ubuf[0]: 00000108 00000109 0000010a 0000010b
+copy CopyDescriptorsSimple 8 ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+copy CopyDescriptorsSimple 8 raw.Load4(0): 00000104 00000105 00000106 00000107
+copy CopyDescriptorsSimple 8 raw.Load4(16): 00000108 00000109 0000010a 0000010b
+copy CopyDescriptorsSimple 8 struct[0],[1]: 00000104 00000105 00000106 00000107
+copy CopyDescriptorsSimple 8 tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+copy CopyDescriptorsSimple 8 tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+copy CopyDescriptorsSimple 8 tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+copy CopyDescriptorsSimple 8 texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+copy CopyDescriptorsSimple 8 texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+copy CopyDescriptorsSimple 8 texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+copy CopyDescriptorsSimple 8 cb0: cb000100 cb000101 cb000102 cb000103
+copy CopyDescriptorsSimple 8 cb1: 00000000 00000000 00000000 00000000
+copy CopyDescriptorsSimple 8 dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+copy after rewriting the source slot fbuf[0]: 40900000 40b00000 40d00000 40f00000
+copy after rewriting the source slot fbuf[1]: 41080000 41180000 41280000 41380000
+copy after rewriting the source slot ubuf[0]: 00000108 00000109 0000010a 0000010b
+copy after rewriting the source slot ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+copy after rewriting the source slot raw.Load4(0): 00000104 00000105 00000106 00000107
+copy after rewriting the source slot raw.Load4(16): 00000108 00000109 0000010a 0000010b
+copy after rewriting the source slot struct[0],[1]: 00000104 00000105 00000106 00000107
+copy after rewriting the source slot tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+copy after rewriting the source slot tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+copy after rewriting the source slot tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+copy after rewriting the source slot texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+copy after rewriting the source slot texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+copy after rewriting the source slot texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+copy after rewriting the source slot cb0: cb000100 cb000101 cb000102 cb000103
+copy after rewriting the source slot cb1: 00000000 00000000 00000000 00000000
+copy after rewriting the source slot dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+copy end: GetDeviceRemovedReason 0x00000000 S_OK
+volatile rewritten after Close, before Execute fbuf[0]: 42020000 42060000 420a0000 420e0000
+volatile rewritten after Close, before Execute fbuf[1]: 42120000 42160000 421a0000 421e0000
+volatile rewritten after Close, before Execute ubuf[0]: 00000108 00000109 0000010a 0000010b
+volatile rewritten after Close, before Execute ubuf[1]: 0000010c 0000010d 0000010e 0000010f
+volatile rewritten after Close, before Execute raw.Load4(0): 00000104 00000105 00000106 00000107
+volatile rewritten after Close, before Execute raw.Load4(16): 00000108 00000109 0000010a 0000010b
+volatile rewritten after Close, before Execute struct[0],[1]: 00000104 00000105 00000106 00000107
+volatile rewritten after Close, before Execute tex dims(mip0) w,h,levels: 00000002 00000002 00000002 00000000
+volatile rewritten after Close, before Execute tex.Load(0,0,mip0): 42c80000 44898000 45034000 4541c000
+volatile rewritten after Close, before Execute tex.Load(1,0,mip1): 00000000 00000000 00000000 00000000
+volatile rewritten after Close, before Execute texa dims w,h,elems,levels: 00000002 00000002 00000002 00000001
+volatile rewritten after Close, before Execute texa.Load(0,0,slice0): 41200000 447c8000 44fb4000 453c2000
+volatile rewritten after Close, before Execute texa.Load(0,0,slice1): 41a00000 447f0000 44fc8000 453cc000
+volatile rewritten after Close, before Execute cb0: cb000000 cb000001 cb000002 cb000003
+volatile rewritten after Close, before Execute cb1: 00000000 00000000 00000000 00000000
+volatile rewritten after Close, before Execute dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
+volatile end: GetDeviceRemovedReason 0x00000000 S_OK
+sm51 dyn=1 dispatch: 0x00000000 S_OK
+sm51 dyn=1 ta[0]: 42c80000 00000000 00000000 3f800000
+sm51 dyn=1 ta[1]: 42ca0000 3f800000 00000000 3f800000
+sm51 dyn=1 ta[2]: 42cc0000 40000000 00000000 3f800000
+sm51 dyn=1 ta[3]: 42ce0000 40400000 00000000 3f800000
+sm51 dyn=1 ta[dyn]: 42ca0000 3f800000 00000000 3f800000
+sm51 dyn=1 cbs[0]: c0000000 c0000001 c0000002 c0000003
+sm51 dyn=1 cbs[1]: c1000000 c1000001 c1000002 c1000003
+sm51 dyn=1 cbs[dyn&1]: c1000000 c1000001 c1000002 c1000003
+sm51 dyn=1 tu[dyn]: 42d20000 40a00000 00000000 3f800000
+sm51 dyn=1 tu[NonUniform(dyn+2)]: 42d60000 40e00000 00000000 3f800000
+sm51 dyn=1 tu[5] dims w,h,levels + dyn: 00000002 00000002 00000001 00000001
+sm51 dyn=2 dispatch: 0x00000000 S_OK
+sm51 dyn=2 ta[0]: 42c80000 00000000 00000000 3f800000
+sm51 dyn=2 ta[1]: 42ca0000 3f800000 00000000 3f800000
+sm51 dyn=2 ta[2]: 42cc0000 40000000 00000000 3f800000
+sm51 dyn=2 ta[3]: 42ce0000 40400000 00000000 3f800000
+sm51 dyn=2 ta[dyn]: 42cc0000 40000000 00000000 3f800000
+sm51 dyn=2 cbs[0]: c0000000 c0000001 c0000002 c0000003
+sm51 dyn=2 cbs[1]: c1000000 c1000001 c1000002 c1000003
+sm51 dyn=2 cbs[dyn&1]: c0000000 c0000001 c0000002 c0000003
+sm51 dyn=2 tu[dyn]: 42d40000 40c00000 00000000 3f800000
+sm51 dyn=2 tu[NonUniform(dyn+2)]: 42d80000 41000000 00000000 3f800000
+sm51 dyn=2 tu[5] dims w,h,levels + dyn: 00000002 00000002 00000001 00000002
+sm51 end: GetDeviceRemovedReason 0x00000000 S_OK
+invalid_view removed reason before: 0x00000000 S_OK
+invalid_view after SRV RGBA8 texture as BGRA8: 0x887a0001 DXGI_ERROR_INVALID_CALL
+invalid_view end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL

@@ -1,0 +1,136 @@
+== x64
+-- ex_flags
+ex_spin0_flag_00800000 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spin4000_flag_00ffffff ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000000000fa0
+ex_spin4000_flag_40000000 ret=00000000 err=00000057
+ex_spin4000_flag_80000000 ret=00000000 err=00000057
+ex_spin4000_nodebug_forcedebug ret=00000000 err=00000057
+ex_spin0_dynamic ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spin1_dynamic ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spinmax_dynamic ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spin0_resource ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=000000000a0007d0
+ex_spin4000_dynamic_resource ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=000000000a0007d0
+ex_spin4000_all_valid_but_static ret=00000000 err=00000057
+ex_spin4000_static_and_reserved ret=00000000 err=00000057
+ex_spin_flagbyte_static ret=00000000 err=00000057
+ex_spin0_forcedebug ret=00000001 err=0000dead
+  state dbg=00000001 lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spin_ffffffff ret=00000000 err=00000057
+-- and_spin_count
+asc_ff000000 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+asc_02000000 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+asc_02000fa0 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000000000fa0
+asc_00ffffff ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000000ffffff
+asc_ffffffff ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000000ffffff
+-- set_spin_count
+default_set_0 ret=000007d0 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000002000000
+  set_02000000 ret=00000000 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000002000000
+  set_ffffffff ret=00000000 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000002ffffff
+nodebug_set_100 ret=00000fa0 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000001000064
+resource_set_100 ret=00000fa0 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000008000064
+-- debug_info
+default_init_record none
+default_failed_try_enter try=0 dbg=ffffffff
+default_after_contention dbg=00000001 spin_flags=02000000
+  record type=0000 backptr_ok=1 entry_count=00000000 contention_count=00000001 flags=00000000 list_self_linked=0
+  record_after_second type=0000 backptr_ok=1 entry_count=00000000 contention_count=00000002 flags=00000000 list_self_linked=0
+ex0_after_contention dbg=00000001 spin_flags=00000000
+nodebug_after_contention dbg=ffffffff spin_flags=01000000
+  record none
+asc_flagbyte_after_contention dbg=00000001 spin_flags=00000000
+forcedebug_init_record type=0000 backptr_ok=1 entry_count=00000000 contention_count=00000000 flags=00000000 list_self_linked=0
+  record_after_contention type=0000 backptr_ok=1 entry_count=00000000 contention_count=00000001 flags=00000000 list_self_linked=0
+resource_after_contention dbg=00000001 spin_flags=08000000
+-- unwritable_section (child exit codes)
+init_bad ret=41000108 err=00000000
+asc_bad ret=41000108 err=00000000
+ex_bad ret=4100010c err=00000000
+ex_bad_reserved ret=20570000 err=00000000
+ex_bad_static ret=20000001 err=00000000
+set_bad ret=40000120 err=00000000
+-- done
+== x86
+-- ex_flags
+ex_spin0_flag_00800000 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spin4000_flag_00ffffff ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000000000fa0
+ex_spin4000_flag_40000000 ret=00000000 err=00000057
+ex_spin4000_flag_80000000 ret=00000000 err=00000057
+ex_spin4000_nodebug_forcedebug ret=00000000 err=00000057
+ex_spin0_dynamic ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spin1_dynamic ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spinmax_dynamic ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spin0_resource ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=000000000a0007d0
+ex_spin4000_dynamic_resource ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=000000000a0007d0
+ex_spin4000_all_valid_but_static ret=00000000 err=00000057
+ex_spin4000_static_and_reserved ret=00000000 err=00000057
+ex_spin_flagbyte_static ret=00000000 err=00000057
+ex_spin0_forcedebug ret=00000001 err=0000dead
+  state dbg=00000001 lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+ex_spin_ffffffff ret=00000000 err=00000057
+-- and_spin_count
+asc_ff000000 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+asc_02000000 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=00000000020007d0
+asc_02000fa0 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000000000fa0
+asc_00ffffff ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000000ffffff
+asc_ffffffff ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000000ffffff
+-- set_spin_count
+default_set_0 ret=000007d0 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000002000000
+  set_02000000 ret=00000000 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000002000000
+  set_ffffffff ret=00000000 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000002ffffff
+nodebug_set_100 ret=00000fa0 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000001000064
+resource_set_100 ret=00000fa0 err=0000dead
+  state dbg=ffffffff lock=ffffffff sem_nonzero=0 spin=0000000008000064
+-- debug_info
+default_init_record none
+default_failed_try_enter try=0 dbg=ffffffff
+default_after_contention dbg=00000001 spin_flags=02000000
+  record type=0000 backptr_ok=1 entry_count=00000000 contention_count=00000001 flags=00000000 list_self_linked=0
+  record_after_second type=0000 backptr_ok=1 entry_count=00000000 contention_count=00000002 flags=00000000 list_self_linked=0
+ex0_after_contention dbg=00000001 spin_flags=00000000
+nodebug_after_contention dbg=ffffffff spin_flags=01000000
+  record none
+asc_flagbyte_after_contention dbg=00000001 spin_flags=00000000
+forcedebug_init_record type=0000 backptr_ok=1 entry_count=00000000 contention_count=00000000 flags=00000000 list_self_linked=0
+  record_after_contention type=0000 backptr_ok=1 entry_count=00000000 contention_count=00000001 flags=00000000 list_self_linked=0
+resource_after_contention dbg=00000001 spin_flags=08000000
+-- unwritable_section (child exit codes)
+init_bad ret=41000104 err=00000000
+asc_bad ret=41000104 err=00000000
+ex_bad ret=41000104 err=00000000
+ex_bad_reserved ret=20570000 err=00000000
+ex_bad_static ret=20000001 err=00000000
+set_bad ret=40000114 err=00000000
+-- done

@@ -1,0 +1,12 @@
+mode=6 inactive-popup-keeps-other=1
+mode=6 foreground-owner=1
+mode=6 was-visible=1 iconic=1 active=other
+mode=11 inactive-popup-keeps-other=1
+mode=11 foreground-owner=1
+mode=11 was-visible=1 iconic=1 active=other
+mode=2 inactive-popup-keeps-other=1
+mode=2 foreground-owner=1
+mode=2 was-visible=1 iconic=1 active=owner
+mode=7 inactive-popup-keeps-other=1
+mode=7 foreground-owner=1
+mode=7 was-visible=1 iconic=1 active=owner

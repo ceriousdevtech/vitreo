@@ -1,0 +1,120 @@
+# Windows 11 (winoracle). mitig64 = x86_64-w64-mingw32-gcc -O1 -static; mitig32nx = i686 with -Wl,--disable-nxcompat;
+# mitig64nx = x86_64 with -Wl,--disable-nxcompat,--disable-dynamicbase,--disable-high-entropy-va
+# mitig64.exe only cetoff
+setpair UserShadowStack 100 p=15 size=4 ret=1 err=0
+  then 0 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100
+setpair UserShadowStack 0 p=15 size=4 ret=1 err=0
+  then 0 p=15 size=4 ret=1 err=0
+  readback ret=1 flags=0
+setpair UserShadowStack 0 p=15 size=4 ret=1 err=0
+  then 100 p=15 size=4 ret=1 err=0
+  readback ret=1 flags=100
+setpair UserShadowStack 1 p=15 size=4 ret=0 err=5
+  then 0 p=15 size=4 ret=1 err=0
+  readback ret=1 flags=0
+# mitig64.exe only threadopt
+== threadopt flags=0
+threadopt before_policy value=1 size=4 ret=0 err=5
+threadopt other_thread value=1 size=4 ret=0 err=87
+threadopt self_limited value=1 size=4 ret=0 err=87
+threadopt self_setinfo_v0 value=0 size=4 ret=0 err=87
+threadopt self_size8 value=1 size=8 ret=0 err=24
+threadopt self_v2 value=2 size=4 ret=0 err=87
+threadopt self_vffffffff value=ffffffff size=4 ret=0 err=87
+threadopt self_v1 value=1 size=4 ret=0 err=5
+threadopt self_alloc_rwx ok=1 err=0
+threadopt self_protect_rx ok=1 err=0
+threadopt other_thread_alloc_rwx ok=1 err=0
+threadopt self_v0 value=0 size=4 ret=1 err=0
+threadopt self_alloc_rwx_after_v0 ok=1 err=0
+== threadopt flags=1
+threadopt before_policy value=1 size=4 ret=0 err=5
+threadopt set p=2 size=4 ret=1 err=0
+threadopt other_thread value=1 size=4 ret=0 err=87
+threadopt self_limited value=1 size=4 ret=0 err=87
+threadopt self_setinfo_v0 value=0 size=4 ret=0 err=87
+threadopt self_size8 value=1 size=8 ret=0 err=24
+threadopt self_v2 value=2 size=4 ret=0 err=87
+threadopt self_vffffffff value=ffffffff size=4 ret=0 err=87
+threadopt self_v1 value=1 size=4 ret=0 err=5
+threadopt self_alloc_rwx ok=0 err=1655
+threadopt self_protect_rx ok=0 err=1655
+threadopt other_thread_alloc_rwx ok=0 err=1655
+threadopt self_v0 value=0 size=4 ret=1 err=0
+threadopt self_alloc_rwx_after_v0 ok=0 err=1655
+== threadopt flags=3
+threadopt before_policy value=1 size=4 ret=0 err=5
+threadopt set p=2 size=4 ret=1 err=0
+threadopt other_thread value=1 size=4 ret=0 err=87
+threadopt self_limited value=1 size=4 ret=0 err=87
+threadopt self_setinfo_v0 value=0 size=4 ret=0 err=87
+threadopt self_size8 value=1 size=8 ret=0 err=24
+threadopt self_v2 value=2 size=4 ret=0 err=87
+threadopt self_vffffffff value=ffffffff size=4 ret=0 err=87
+threadopt self_v1 value=1 size=4 ret=1 err=0
+threadopt self_alloc_rwx ok=1 err=0
+threadopt self_protect_rx ok=1 err=0
+threadopt other_thread_alloc_rwx ok=0 err=1655
+threadopt self_v0 value=0 size=4 ret=1 err=0
+threadopt self_alloc_rwx_after_v0 ok=0 err=1655
+== threadopt flags=8
+threadopt before_policy value=1 size=4 ret=0 err=5
+threadopt set p=2 size=4 ret=1 err=0
+threadopt other_thread value=1 size=4 ret=0 err=87
+threadopt self_limited value=1 size=4 ret=0 err=87
+threadopt self_setinfo_v0 value=0 size=4 ret=0 err=87
+threadopt self_size8 value=1 size=8 ret=0 err=24
+threadopt self_v2 value=2 size=4 ret=0 err=87
+threadopt self_vffffffff value=ffffffff size=4 ret=0 err=87
+threadopt self_v1 value=1 size=4 ret=0 err=5
+threadopt self_alloc_rwx ok=1 err=0
+threadopt self_protect_rx ok=1 err=0
+threadopt other_thread_alloc_rwx ok=1 err=0
+threadopt self_v0 value=0 size=4 ret=1 err=0
+threadopt self_alloc_rwx_after_v0 ok=1 err=0
+# mitig32nx.exe only depx86
+deppair flags=0 perm=0 p=0 size=8 ret=1 err=0
+  after DEP=0/0 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+  then enable_perm p=0 size=8 ret=1 err=0
+deppair flags=0 perm=1 p=0 size=8 ret=1 err=0
+  after DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+  then enable_perm p=0 size=8 ret=0 err=5
+deppair flags=2 perm=0 p=0 size=8 ret=0 err=87
+  after DEP=0/0 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+  then enable_perm p=0 size=8 ret=1 err=0
+deppair flags=2 perm=1 p=0 size=8 ret=0 err=87
+  after DEP=0/0 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+  then enable_perm p=0 size=8 ret=1 err=0
+deppair flags=3 perm=1 p=0 size=8 ret=1 err=0
+  after DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+  then enable_perm p=0 size=8 ret=0 err=5
+deppair flags=1 perm=1 p=0 size=8 ret=1 err=0
+  after DEP=1/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+  then enable_perm p=0 size=8 ret=0 err=5
+# mitig32nx.exe dep
+dep enable p=0 size=8 ret=0 err=87
+dep_after_enable DEP=0/0 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+dep enable_perm p=0 size=8 ret=1 err=0
+dep atl p=0 size=8 ret=0 err=5
+dep_after_atl DEP=1/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+dep disable p=0 size=8 ret=0 err=5
+dep perm_only p=0 size=8 ret=0 err=5
+dep_end DEP=1/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+GetProcessDEPPolicy ret=1 err=0 flags=1 perm=1
+# mitig64nx.exe setpair 1 <first> <second>
+setpair ASLR 0 p=1 size=4 ret=1 err=0
+  then 1 p=1 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair ASLR 5 p=1 size=4 ret=1 err=0
+  then 0 p=1 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair ASLR 2 p=1 size=4 ret=1 err=0
+  then 0 p=1 size=4 ret=0 err=5
+  readback ret=1 flags=2
+setpair ASLR a p=1 size=4 ret=1 err=0
+  then 0 p=1 size=4 ret=0 err=5
+  readback ret=1 flags=a
+setpair ASLR 4 p=1 size=4 ret=1 err=0
+  then 0 p=1 size=4 ret=1 err=0
+  readback ret=1 flags=0

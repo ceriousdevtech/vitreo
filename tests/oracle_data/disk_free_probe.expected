@@ -1,0 +1,107 @@
+A_root ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+A_null ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+A_drive_noslash ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+A_dir_slash ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+A_dir_noslash ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+A_missing_dir ret=00000000 err=00000002
+  spc=a5a5a5a5
+  bps=00000000
+  free=a5a5a5a5
+  total=a5a5a5a5
+A_file ret=00000000 err=0000010b
+  spc=a5a5a5a5
+  bps=00000000
+  free=a5a5a5a5
+  total=a5a5a5a5
+A_unmounted ret=00000000 err=00000003
+  spc=a5a5a5a5
+  bps=00000000
+  free=a5a5a5a5
+  total=a5a5a5a5
+A_forward_slash ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+A_lowercase ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+A_empty ret=00000000 err=00000003
+  spc=a5a5a5a5
+  bps=a5a5a5a5
+  free=a5a5a5a5
+  total=a5a5a5a5
+W_root ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+W_null ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+W_drive_noslash ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+W_dir_slash ret=00000001 err=0000dead
+  bytes_per_sector=00000200
+  sectors_per_cluster=00000008
+  total_nonzero=00000001
+  free_le_total=00000001
+  total_bytes_gt_2g=00000001
+W_missing_dir ret=00000000 err=00000002
+  spc=a5a5a5a5
+  bps=00000000
+  free=a5a5a5a5
+  total=a5a5a5a5
+W_file ret=00000000 err=0000010b
+  spc=a5a5a5a5
+  bps=00000000
+  free=a5a5a5a5
+  total=a5a5a5a5
+W_unmounted ret=00000000 err=00000003
+  spc=a5a5a5a5
+  bps=00000000
+  free=a5a5a5a5
+  total=a5a5a5a5
+A_all_null_out ret=00000001 err=0000dead
+A_only_free_out ret=00000001 err=0000dead
+  free_written=00000001
+A_vs_ExW ret=00000001 err=00000000
+  free_matches_avail_1pct=00000001
+  total_matches_ex=00000001

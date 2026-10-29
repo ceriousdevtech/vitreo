@@ -1,0 +1,55 @@
+shell tray present=1
+sizes W v1=152 v2=936 v3=952 full=956 A v1=88 v2=488 v3=504 full=508
+add id1 -> 1 err=00000000
+getrect id1 -> hr=00000000 nonempty=1
+getrect id99 (never added) -> hr=80004005 nonempty=0
+getrect cbSize 4 -> hr=80070057 nonempty=0
+getrect null rect -> hr=00000000 nonempty=1
+getrect NULL out -> hr=80004003
+modify id1 hidden -> 1 err=00000000
+getrect id1 hidden -> hr=00000001 nonempty=0
+modify id1 shown -> 1 err=00000000
+getrect id1 shown -> hr=00000000 nonempty=1
+setversion id77 (never added) -> 0 err=80004005
+setfocus id77 (never added) -> 0 err=80004005
+setversion id1 3 -> 1 err=00000000
+setversion id1 2 -> 0 err=80004005
+setversion id1 1 -> 0 err=80004005
+delete id1 -> 1 err=00000000
+add id2 no flags -> 1 err=00000000
+delete id2 -> 1 err=00000000
+add id3 NIF_ICON NULL icon -> 1 err=00000000
+delete id3 -> 1 err=00000000
+add id4 hidden -> 1 err=00000000
+getrect id4 added hidden -> hr=00000001 nonempty=0
+delete id4 -> 1 err=00000000
+add id5 NULL hwnd -> 0 err=80004005
+add id6 V2 size -> 1 err=00000000
+delete id6 V2 size -> 1 err=00000000
+add id7 V2 size NIF_GUID -> 1 err=00000000
+add id8 V3 size -> 1 err=00000000
+delete id8 V3 size -> 1 err=00000000
+add guid (uID 9) -> 1 err=00000000
+modify by guid with uID 10 -> 1 err=00000000
+modify uID 9 without guid -> 0 err=80004005
+getrect by guid -> hr=00000000 nonempty=1
+getrect by guid + hwnd/uID -> hr=00000000 nonempty=1
+getrect by hwnd/uID of a guid icon -> hr=80004005 nonempty=0
+add guid again -> 0 err=80004005
+delete by guid, NULL hwnd -> 1 err=00000000
+delete by guid again -> 0 err=80004005
+add id11 V1 size NIF_INFO -> 1 err=00000000
+A add id12 -> 1 err=00000000
+A add id12 again -> 0 err=80004005
+A modify id12 V1 size -> 1 err=00000000
+A delete id12 -> 1 err=00000000
+A delete id12 again -> 0 err=80004005
+add NULL data -> 0 err=00000057
+delete NULL data -> 0 err=00000057
+A add NULL data -> 0 err=00000057
+getrect NULL identifier -> hr=80004003
+getrect miss rect -> hr=80004005 rect=0,0,0,0
+getrect hidden rect -> hr=00000001 rect=0,0,0,0
+modify after owner destroyed -> 1 err=00000000
+delete after owner destroyed -> 1 err=00000000
+TaskbarCreated registered=1

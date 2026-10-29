@@ -1,0 +1,27 @@
+AB zero case0 r=1 err=57005
+AB zero case1 r=1 err=57005
+AB zero case2 r=1 err=57005
+AB zero case3 r=1 err=57005
+AB null dst r=0 err=57005
+AB null src r=0 err=57005
+TB null dst r=0 err=57005
+TB zero r=0 err=57005
+BitBlt null src SRCCOPY r=0 err=57005
+BitBlt null dst r=0 err=57005
+StretchBlt null src r=0 err=57005
+PatBlt null dc r=0 err=57005
+palcolors after SetPaletteEntries -> 00000000
+palcolors table n=2 000000 000000
+default-pal DIB_PAL_COLORS idx25 -> ok
+  n=4 000000 800000 ffffff 800080
+CreateCompatibleDC(bogus)=NULL err=57005
+ReleaseDC(NULL, bogus)=0 err=57005
+ReleaseDC(NULL, memdc)=0 err=57005
+SetPixel ret=030201 GetPixel(out of bounds)=ffffffff
+SetPixel oob=ffffffff err=57005
+section dib=ok val=11223344
+  dshSection==sec 1 off=4
+section off=2 -> NULL err=57005 bits=null
+section off=8192 -> NULL err=87
+readonly section -> NULL err=87
+section view still mapped after DeleteObject: 11223344

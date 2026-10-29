@@ -1,0 +1,171 @@
+a type=2 box=0,0,10,10 size=48 got=48 n=1 rcbound=0,0,10,10 rects=0,0,10,10
+empty type=1 box=0,0,0,0 size=32 got=32 n=0 rcbound=0,0,0,0 rects=
+inverted type=2 box=0,0,10,10 size=48 got=48 n=1 rcbound=0,0,10,10 rects=0,0,10,10
+indirect type=2 box=2,3,4,5 size=48 got=48 n=1 rcbound=2,3,4,5 rects=2,3,4,5
+combine AND ret=2 type=2 box=5,5,10,10 size=48 got=48 n=1 rcbound=5,5,10,10 rects=5,5,10,10
+combine OR ret=3 type=3 box=0,0,15,15 size=80 got=80 n=3 rcbound=0,0,15,15 rects=0,0,10,5;0,5,15,10;5,10,15,15
+combine XOR ret=3 type=3 box=0,0,15,15 size=96 got=96 n=4 rcbound=0,0,15,15 rects=0,0,10,5;0,5,5,10;10,5,15,10;5,10,15,15
+combine DIFF ret=3 type=3 box=0,0,10,10 size=64 got=64 n=2 rcbound=0,0,10,10 rects=0,0,10,5;0,5,5,10
+combine COPY ret=2 type=2 box=0,0,10,10 size=48 got=48 n=1 rcbound=0,0,10,10 rects=0,0,10,10
+combine bad mode=0 err=57005
+combine bad handle=0 err=57005
+equal same=1 diff=0 bad=0 err=57005
+pt in (0,0)=1 (9,9)=1 (10,10)=0 (10,5)=0 (-1,0)=0
+setrectrgn=1 err=57005
+after setrectrgn inverted type=2 box=10,5,20,30 size=48 got=48 n=1 rcbound=10,5,20,30 rects=10,5,20,30
+getrgnbox bad=0 err=57005
+getregiondata small=0 err=57005
+pt complex (12,2)=0 (12,12)=1
+offsetrgn=3 err=57005
+offset complex type=3 box=3,4,18,19 size=80 got=80 n=3 rcbound=3,4,18,19 rects=3,4,13,9;3,9,18,14;8,14,18,19
+clip none clipbox=2 0,0,64,48 getcliprgn=0 0,0,0,0
+selectcliprgn=2
+clip rgn clipbox=2 4,4,20,20 getcliprgn=1 4,4,20,20
+intersectcliprect=3
+clip intersect clipbox=2 10,4,20,12 getcliprgn=1 10,4,20,12
+excludecliprect=3
+clip exclude clipbox=3 10,4,20,12 getcliprgn=1 10,4,20,12
+selectcliprgn(NULL)=2
+clip reset clipbox=2 0,0,64,48 getcliprgn=0 0,0,0,0
+intersect with vporg=3
+clip vporg clipbox=2 0,0,5,5 getcliprgn=1 10,10,15,15
+selectcliprgn with vporg=2
+clip rgn vporg clipbox=2 -6,-6,10,10 getcliprgn=1 4,4,20,20
+savedc=1
+savedc2=2
+clip level2 clipbox=2 2,2,3,3 getcliprgn=1 2,2,3,3
+restoredc(-1)=1 bk=030201
+clip level1 clipbox=2 1,1,3,3 getcliprgn=1 1,1,3,3
+restoredc(1)=1 bk=030201
+clip level0 clipbox=2 0,0,64,48 getcliprgn=0 0,0,0,0
+restoredc(5)=0 err=57005
+restoredc(-1) empty=0 err=57005
+savedc(NULL)=0 err=57005
+xf initial get=1 1.000,0.000,0.000,1.000,0.000,0.000
+setworld compat=0 err=57005
+setgraphicsmode=1
+setworld adv=1
+xf set get=1 2.000,0.000,0.000,3.000,5.000,7.000
+modify left=1
+xf left get=1 2.000,0.000,0.000,3.000,25.000,67.000
+modify right=1
+xf right get=1 2.000,0.000,0.000,3.000,35.000,87.000
+dptolp=1 -> -18,-29 32,4
+lptodp -> 37,90 41,99
+modify identity=1
+xf identity get=1 1.000,0.000,0.000,1.000,0.000,0.000
+modify bad=0 err=57005
+setworld singular=0 err=57005
+setgraphicsmode compat with xform=2 err=57005
+setgraphicsmode compat=1
+setgraphicsmode bad=0 err=57005
+setmapmode aniso=1
+setwindowext=1
+  old=1,1
+setviewportext=1
+  old=1,1
+aniso dptolp -> 0,0 200,-400
+setviewportorg=1 old=0,0
+setviewportorg again=1 old=7,8
+setmapmode text=8
+setmapmode 0=0 err=57005
+setmapmode 9=0 err=57005
+setviewportext in text=1 err=57005
+setmapmode isotropic=1
+isotropic viewport ext -> 50,50
+setmiterlimit=1 old=4.00
+setmiterlimit 0.5=0 err=57005
+setarcdirection cw=1 then=1
+setarcdirection bad=0 err=57005
+polyline=1
+polyline tri n=40 box=5,5,26,25 y5:5-25/1 y6:24-24/1 y7:24-24/1 y8:23-23/1
+polygon=1
+polygon tri n=231 box=5,5,26,26 y5:5-25/1 y6:5-24/1 y7:6-24/1 y8:6-23/1
+polygon tri nullpen n=210 box=5,5,25,25 y5:5-24/1 y6:6-24/1 y7:6-23/1 y8:7-23/1
+star alternate n=205 box=5,3,35,30 y3:20-20/1 y4:20-20/1 y5:19-21/1 y6:19-21/1
+star winding n=295 box=5,3,35,30 y3:20-20/1 y4:20-20/1 y5:19-21/1 y6:19-21/1
+polyline 1pt=0 err=57005
+polygon 1pt=0 err=57005
+polyline NULL dc=0 err=57005
+fillpath nopath=0 err=57005
+endpath nopath=0 err=57005
+closefigure nopath=0 err=57005
+beginpath=1
+closefigure=1
+polybezierto=1
+fillpath open=0 err=57005
+endpath=1
+getpath n=7
+fillpath=1
+fillpath n=469 box=5,5,49,40 y5:5-29/1 y6:7-37/2 y7:9-39/2 y8:10-41/2
+fillpath again=0 err=57005
+strokepath=1
+strokepath n=65 box=5,5,31,21 y5:5-30/1 y6:6-30/2 y7:8-30/2 y8:10-30/2
+strokeandfillpath=1
+strokeandfill rect n=221 box=4,4,21,17 y4:4-20/1 y5:4-20/1 y6:4-20/1 y7:4-20/1
+fill ellipse path n=418 box=2,3,30,22 y3:11-21/1 y4:9-23/1 y5:7-25/1 y6:6-26/1
+selectclippath=1
+clip path clipbox=2 10,10,40,30 getcliprgn=1 10,10,40,30
+patblt through path clip n=600 box=10,10,40,30 y10:10-39/1 y11:10-39/1 y12:10-39/1 y13:10-39/1
+widenpath=1
+fill widened=1
+fill widened n=171 box=8,8,43,13 y8:9-41/1 y9:8-42/1 y10:8-42/1 y11:8-42/1
+widenpath cosmetic=1 err=57005
+beginpath NULL=0 err=57005
+beginpath again discards=1
+endpath empty=1
+getpath empty n=0
+fillpath empty=1 err=57005
+caps 0=16384 err=57005
+caps 2=1 err=57005
+caps 12=32 err=57005
+caps 14=1 err=57005
+caps 16=-1 err=57005
+caps 18=-1 err=57005
+caps 22=0 err=57005
+caps 24=-1 err=57005
+caps 40=36 err=57005
+caps 42=36 err=57005
+caps 44=51 err=57005
+caps 88=96 err=57005
+caps 90=96 err=57005
+caps 104=0 err=57005
+caps 106=20 err=57005
+caps 108=24 err=57005
+caps 38=32409 err=57005
+caps 28=511 err=57005
+caps 30=254 err=57005
+caps 32=255 err=57005
+caps 34=30727 err=57005
+caps 36=1 err=57005
+caps 120=0 err=57005
+caps 121=0 err=57005
+caps 110=0 err=57005
+caps 111=0 err=57005
+caps 112=0 err=57005
+caps 114=0 err=57005
+caps 119=1 err=57005
+caps 999=0 err=57005
+caps NULL dc=0 err=57005
+ret intersect fresh=3
+ret intersect again inside=3
+ret intersect empty=3
+ret exclude fresh=3
+ret exclude outside=3
+ret selectcliprgn complex=3
+ret intersect on complex=3
+ret extselect and fresh=2
+ret extselect or=3
+ret extselect copy NULL=2
+ret extselect and NULL=0 err=57005
+ret offsetcliprgn none=2
+ret offsetcliprgn=2
+clip after offset 3,3,13,13
+ret intersect NULL dc=0 err=57005
+ret getclipbox NULL dc=0 err=57005
+ptvisible (5,5)=1 (50,50)=0
+rectvisible=1
+elliptic 0,0,10,10 type=3 box=0,0,9,9 size=144 got=144 n=7 rcbound=0,0,9,9 rects=4,0,5,1;1,1,7,2;1,2,8,4;0,4,9,5;1,5,8,7;1,7,7,8;4,8,5,9
+elliptic 0,0,7,5 type=3 box=1,0,5,4 size=80 got=80 n=3 rcbound=1,0,5,4 rects=2,0,4,1;1,1,5,3;2,3,4,4
+roundrect 0,0,20,12,8,8 type=3 box=0,0,19,11 size=112 got=112 n=5 rcbound=0,0,19,11 rects=3,0,16,1;1,1,18,3;0,3,19,8;1,8,18,10;3,10,16,11
+polygon tri type=3 box=0,0,10,8 size=128 got=128 n=6 rcbound=0,0,10,8 rects=0,0,10,1;1,1,10,2;2,2,9,4;3,4,8,5;4,5,7,7;5,7,6,8

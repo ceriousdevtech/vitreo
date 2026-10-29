@@ -1,0 +1,317 @@
+# adapter: Microsoft Basic Render Driver
+# feature level 0xb100
+R1 solid cull=NONE ccw=0 (left CW, right CCW): FFFFF.BBBBB. FFFF..BBBB.. FF....BB.... F.....B.....
+R1 solid cull=NONE ccw=1 (left CW, right CCW): BBBBB.FFFFF. BBBB..FFFF.. BB....FF.... B.....F.....
+R1 solid cull=FRONT ccw=0 (left CW, right CCW): ......BBBBB. ......BBBB.. ......BB.... ......B.....
+R1 solid cull=FRONT ccw=1 (left CW, right CCW): BBBBB....... BBBB........ BB.......... B...........
+R1 solid cull=BACK ccw=0 (left CW, right CCW): FFFFF....... FFFF........ FF.......... F...........
+R1 solid cull=BACK ccw=1 (left CW, right CCW): ......FFFFF. ......FFFF.. ......FF.... ......F.....
+R1 wire cull=NONE ccw=0 (left CW, right CCW): ....FB....BB ...F.B...B.. .FF..B.BB... F....BB.....
+R1 wire cull=NONE ccw=1 (left CW, right CCW): ....BF....FF ...B.F...F.. .BB..F.FF... B....FF.....
+R1 wire cull=FRONT ccw=0 (left CW, right CCW): .....B....BB .....B...B.. .....B.BB... .....BB.....
+R1 wire cull=FRONT ccw=1 (left CW, right CCW): ....BB...... ...B........ .BB......... B...........
+R1 wire cull=BACK ccw=0 (left CW, right CCW): ....FF...... ...F........ .FF......... F...........
+R1 wire cull=BACK ccw=1 (left CW, right CCW): .....F....FF .....F...F.. .....F.FF... .....FF.....
+R1 NULL rasterizer state: FFFFF....... FFFF........ FF.......... F...........
+R1 line row1 + point (3,3), cull none: ............ FFFFFFFFFFFF ............ ...F........
+R1 line + point, cull back (not culled): ............ FFFFFFFFFFFF ............ ...F........
+R1 wireframe zero-area triangle row 2: ............ ............ BBBBBBBBBBBB ............
+R2 vp 0,0 8x8 z0..1: covered=64 (0,0)=0.5,0.5,0.13749999,1 (1,1)=1.5,1.5,0.21249998,1 (3,5)=3.5,5.5,0.46249998,1 (7,7)=7.5,7.5,0.66249996,1
+R2 vp 0,0 8x8 z0..1 w=2: covered=64 (0,0)=0.5,0.5,0.13749999,2 (1,1)=1.5,1.5,0.21249998,2 (3,5)=3.5,5.5,0.46249998,2 (7,7)=7.5,7.5,0.66249996,2
+R2 vp 0.5,0.25 6x6 z0.2..0.8: covered=36 (0,0)=0.5,0.5,0.26999998,1 (1,1)=1.5,1.5,0.32999998,1 (3,5)=3.5,5.5,0.52999997,1 (7,7)=-
+R2 vp -4,-4 16x16: covered=64 (0,0)=0.5,0.5,0.26874995,1 (1,1)=1.5,1.5,0.30624998,1 (3,5)=3.5,5.5,0.43124998,1 (7,7)=7.5,7.5,0.53124994,1
+R2 vp MinDepth 0.8 > MaxDepth 0.2: covered=64 (0,0)=0.5,0.5,0.26874995,1 (1,1)=1.5,1.5,0.30624998,1 (3,5)=3.5,5.5,0.43124998,1 (7,7)=7.5,7.5,0.53124994,1
+R2 vp MinDepth = MaxDepth = 0.5: covered=64 (0,0)=0.5,0.5,0.5,1 (1,1)=1.5,1.5,0.5,1 (3,5)=3.5,5.5,0.5,1 (7,7)=7.5,7.5,0.5,1
+R2 vp zero size: covered=0 (0,0)=- (1,1)=- (3,5)=- (7,7)=-
+R2 no viewport bound (RSSetViewports 0): covered=0 (0,0)=- (1,1)=- (3,5)=- (7,7)=-
+R3 scissor on rect(2,1,6,5):
+    . . . . . . . .
+    . . 1 1 1 1 . .
+    . . 1 1 1 1 . .
+    . . 1 1 1 1 . .
+    . . 1 1 1 1 . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R3 scissor off rect(2,1,6,5) set:
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+R3 scissor on, no rect set:
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R3 scissor on, inverted rect(6,1,2,5):
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R3 scissor on, rect(-3,-3,20,3):
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R3 scissor on, 2 rects (first used):
+    1 1 1 . . . . .
+    1 1 1 . . . . .
+    1 1 1 . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R3 implicit viewport scissor vp(2,2,4,4):
+    . . . . . . . .
+    . . . . . . . .
+    . . 1 1 1 1 . .
+    . . 1 1 1 1 . .
+    . . 1 1 1 1 . .
+    . . 1 1 1 1 . .
+    . . . . . . . .
+    . . . . . . . .
+R3 implicit viewport scissor vp(1.5,1.5,4,4):
+    . . . . . . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R4 D16   bias=0 slope=0 clamp=0: z.5=00008000(0.50000763) z.25=00004000(0.250003815) slope=00006ccc(0.424994278)
+R4 D16   bias=1 slope=0 clamp=0: z.5=00008000(0.50000763) z.25=00004001(0.250019074) slope=00006ccd(0.425009537)
+R4 D16   bias=100 slope=0 clamp=0: z.5=00008064(0.501533532) z.25=00004064(0.251529717) slope=00006d30(0.42652018)
+R4 D16   bias=-100 slope=0 clamp=0: z.5=00007f9c(0.498481727) z.25=00003f9c(0.248477913) slope=00006c68(0.423468376)
+R4 D16   bias=1000 slope=0 clamp=0.0001: z.5=00008006(0.500099184) z.25=00004006(0.250095369) slope=00006cd3(0.425101091)
+R4 D16   bias=-1000 slope=0 clamp=-0.0001: z.5=00007ff9(0.499900816) z.25=00003ff9(0.249897002) slope=00006cc6(0.424902724)
+R4 D16   bias=-1000 slope=0 clamp=0.0001: z.5=00007c18(0.484748608) z.25=00003c18(0.234744793) slope=000068e4(0.409735256)
+R4 D16   bias=0 slope=1 clamp=0: z.5=00008000(0.50000763) z.25=00004000(0.250003815) slope=00007999(0.474998093)
+R4 D16   bias=0 slope=2.5 clamp=0.01: z.5=00008000(0.50000763) z.25=00004000(0.250003815) slope=00006f5c(0.435004196)
+R4 D16   bias=100 slope=1 clamp=0: z.5=00008064(0.501533532) z.25=00004064(0.251529717) slope=000079fd(0.476523995)
+R4 D16   bias=0 slope=-1 clamp=0: z.5=00008000(0.50000763) z.25=00004000(0.250003815) slope=00006000(0.375005722)
+R4 D16   bias=1000 line z=0.5: 00008000(0.50000763) | wireframe tri z=0.5 edge: 000083e7(0.515251392)
+R4 D24S8 bias=0 slope=0 clamp=0: z.5=00800000(0.50000003) z.25=00400000(0.250000015) slope=006ccccc(0.424999978)
+R4 D24S8 bias=1 slope=0 clamp=0: z.5=00800000(0.50000003) z.25=00400000(0.250000015) slope=006ccccd(0.425000037)
+R4 D24S8 bias=100 slope=0 clamp=0: z.5=00800063(0.500005931) z.25=00400064(0.250005975) slope=006ccd30(0.425005938)
+R4 D24S8 bias=-100 slope=0 clamp=0: z.5=007fff9c(0.499994069) z.25=003fff9c(0.249994054) slope=006ccc68(0.424994017)
+R4 D24S8 bias=1000 slope=0 clamp=0.0001: z.5=008003e7(0.500059575) z.25=004003e8(0.25005962) slope=006cd0b4(0.425059582)
+R4 D24S8 bias=-1000 slope=0 clamp=-0.0001: z.5=007ffc18(0.499940425) z.25=003ffc18(0.24994041) slope=006cc8e4(0.424940373)
+R4 D24S8 bias=-1000 slope=0 clamp=0.0001: z.5=007ffc18(0.499940425) z.25=003ffc18(0.24994041) slope=006cc8e4(0.424940373)
+R4 D24S8 bias=0 slope=1 clamp=0: z.5=00800000(0.50000003) z.25=00400000(0.250000015) slope=00799998(0.474999933)
+R4 D24S8 bias=0 slope=2.5 clamp=0.01: z.5=00800000(0.50000003) z.25=00400000(0.250000015) slope=006f5c28(0.434999969)
+R4 D24S8 bias=100 slope=1 clamp=0: z.5=00800063(0.500005931) z.25=00400064(0.250005975) slope=007999fd(0.475005953)
+R4 D24S8 bias=0 slope=-1 clamp=0: z.5=00800000(0.50000003) z.25=00400000(0.250000015) slope=00600000(0.375000022)
+R4 D24S8 bias=1000 line z=0.5: 00800000(0.50000003) | wireframe tri z=0.5 edge: 008003e7(0.500059575)
+R4 D32   bias=0 slope=0 clamp=0: z.5=3f000000(0.5) z.25=3e800000(0.25) slope=3ed99999(0.424999982)
+R4 D32   bias=1 slope=0 clamp=0: z.5=3f000001(0.50000006) z.25=3e800001(0.25000003) slope=3ed9999b(0.425000042)
+R4 D32   bias=100 slope=0 clamp=0: z.5=3f000064(0.50000596) z.25=3e800064(0.25000298) slope=3ed99a61(0.425005943)
+R4 D32   bias=-100 slope=0 clamp=0: z.5=3effff38(0.49999404) z.25=3e7fff38(0.24999702) slope=3ed998d1(0.424994022)
+R4 D32   bias=1000 slope=0 clamp=0.0001: z.5=3f0003e8(0.500059605) z.25=3e8003e8(0.250029802) slope=3ed9a169(0.425059587)
+R4 D32   bias=-1000 slope=0 clamp=-0.0001: z.5=3efff830(0.499940395) z.25=3e7ff830(0.249970198) slope=3ed991c9(0.424940377)
+R4 D32   bias=-1000 slope=0 clamp=0.0001: z.5=3efff830(0.499940395) z.25=3e7ff830(0.249970198) slope=3ed991c9(0.424940377)
+R4 D32   bias=0 slope=1 clamp=0: z.5=3f000000(0.5) z.25=3e800000(0.25) slope=3ef33332(0.474999964)
+R4 D32   bias=0 slope=2.5 clamp=0.01: z.5=3f000000(0.5) z.25=3e800000(0.25) slope=3edeb852(0.435000002)
+R4 D32   bias=100 slope=1 clamp=0: z.5=3f000064(0.50000596) z.25=3e800064(0.25000298) slope=3ef333fb(0.475005955)
+R4 D32   bias=0 slope=-1 clamp=0: z.5=3f000000(0.5) z.25=3e800000(0.25) slope=3ec00000(0.375)
+R4 D32   bias=1000 line z=0.5: 3f000000(0.5) | wireframe tri z=0.5 edge: 3f0003e8(0.500059605)
+R4 D32S8 bias=0 slope=0 clamp=0: z.5=3f000000(0.5) z.25=3e800000(0.25) slope=3ed99999(0.424999982)
+R4 D32S8 bias=1 slope=0 clamp=0: z.5=3f000001(0.50000006) z.25=3e800001(0.25000003) slope=3ed9999b(0.425000042)
+R4 D32S8 bias=100 slope=0 clamp=0: z.5=3f000064(0.50000596) z.25=3e800064(0.25000298) slope=3ed99a61(0.425005943)
+R4 D32S8 bias=-100 slope=0 clamp=0: z.5=3effff38(0.49999404) z.25=3e7fff38(0.24999702) slope=3ed998d1(0.424994022)
+R4 D32S8 bias=1000 slope=0 clamp=0.0001: z.5=3f0003e8(0.500059605) z.25=3e8003e8(0.250029802) slope=3ed9a169(0.425059587)
+R4 D32S8 bias=-1000 slope=0 clamp=-0.0001: z.5=3efff830(0.499940395) z.25=3e7ff830(0.249970198) slope=3ed991c9(0.424940377)
+R4 D32S8 bias=-1000 slope=0 clamp=0.0001: z.5=3efff830(0.499940395) z.25=3e7ff830(0.249970198) slope=3ed991c9(0.424940377)
+R4 D32S8 bias=0 slope=1 clamp=0: z.5=3f000000(0.5) z.25=3e800000(0.25) slope=3ef33332(0.474999964)
+R4 D32S8 bias=0 slope=2.5 clamp=0.01: z.5=3f000000(0.5) z.25=3e800000(0.25) slope=3edeb852(0.435000002)
+R4 D32S8 bias=100 slope=1 clamp=0: z.5=3f000064(0.50000596) z.25=3e800064(0.25000298) slope=3ef333fb(0.475005955)
+R4 D32S8 bias=0 slope=-1 clamp=0: z.5=3f000000(0.5) z.25=3e800000(0.25) slope=3ec00000(0.375)
+R4 D32S8 bias=1000 line z=0.5: 3f000000(0.5) | wireframe tri z=0.5 edge: 3f0003e8(0.500059605)
+R5 D16 clip=1 vp z0.0..1.0: z1.5->0.2500038 z-0.5->0.2500038 z0.9->0.9000076 z0.1->0.1000076 oDepth1.5->1 oDepth-0.5->0 oDepth0.6->0.6
+R5 D16 clip=1 vp z0.2..0.8: z1.5->0.2500038 z-0.5->0.2500038 z0.9->0.7400015 z0.1->0.2599985 oDepth1.5->0.8 oDepth-0.5->0.2 oDepth0.6->0.6
+R5 D16 clip=0 vp z0.0..1.0: z1.5->1 z-0.5->0 z0.9->0.9000076 z0.1->0.1000076 oDepth1.5->1 oDepth-0.5->0 oDepth0.6->0.6
+R5 D16 clip=0 vp z0.2..0.8: z1.5->0.8 z-0.5->0.2 z0.9->0.7400015 z0.1->0.2599985 oDepth1.5->0.8 oDepth-0.5->0.2 oDepth0.6->0.6
+R5 D32 clip=1 vp z0.0..1.0: z1.5->0.25 z-0.5->0.25 z0.9->0.9 z0.1->0.1 oDepth1.5->1 oDepth-0.5->0 oDepth0.6->0.6
+R5 D32 clip=1 vp z0.2..0.8: z1.5->0.25 z-0.5->0.25 z0.9->0.74 z0.1->0.26 oDepth1.5->0.8 oDepth-0.5->0.2 oDepth0.6->0.6
+R5 D32 clip=0 vp z0.0..1.0: z1.5->1 z-0.5->0 z0.9->0.9 z0.1->0.1 oDepth1.5->1 oDepth-0.5->0 oDepth0.6->0.6
+R5 D32 clip=0 vp z0.2..0.8: z1.5->0.8 z-0.5->0.2 z0.9->0.74 z0.1->0.26 oDepth1.5->0.8 oDepth-0.5->0.2 oDepth0.6->0.6
+R6 quad (1.5..5.5) edges through centres:
+    . . . . . . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R6 fan of 4 around centre (4.5,4.5), corners at centres:
+    1 1 1 1 1 1 1 .
+    1 1 1 1 1 1 1 .
+    1 1 1 1 1 1 1 .
+    1 1 1 1 1 1 1 .
+    1 1 1 1 1 1 1 .
+    1 1 1 1 1 1 1 .
+    1 1 1 1 1 1 1 .
+    . . . . . . . .
+R6 tri top+left edges on centres:
+    1 1 1 1 1 1 . .
+    1 1 1 1 1 . . .
+    1 1 1 1 . . . .
+    1 1 1 . . . . .
+    1 1 . . . . . .
+    1 . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R6 tri bottom+right edges on centres:
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . 1 .
+    . . . . . 1 1 .
+    . . . . 1 1 1 .
+    . . . 1 1 1 1 .
+    . . 1 1 1 1 1 .
+    . . . . . . . .
+R6 snap: left/top edge at 1.5 + 1/1024:
+    . . . . . . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R6 snap: left/top edge at 1.5 + 1/600:
+    . . . . . . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . 1 1 1 1 . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R6 snap: left/top edge at 1.5 + 1/128:
+    . . . . . . . .
+    . . . . . . . .
+    . . 1 1 1 . . .
+    . . 1 1 1 . . .
+    . . 1 1 1 . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R6 sliver y 1.0..1.4:
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+R7 lines aliased (alpha, blend off):
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. ff ff .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. ff ff .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. ff ff ff .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. ff ff ff .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. ff ff .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. ff .. ..
+    .. .. .. .. .. .. .. .. .. ff .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. ff .. .. ff .. .. ..
+    .. ff ff ff ff ff .. .. .. ff .. .. .. ff .. ..
+    .. .. .. .. .. .. .. .. .. ff .. .. .. .. ff ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+R7 lines alpha-AA (alpha, blend off):
+    .. .. 18 00 .. .. .. .. .. .. .. .. .. .. .. ..
+    .. ac 83 5a 31 07 00 .. .. .. .. .. .. .. .. ..
+    .. 41 6a 93 9c 72 49 20 00 00 .. .. .. .. .. ..
+    .. 00 00 28 52 7b a4 8b 62 39 10 00 .. .. .. ..
+    .. .. .. .. 00 10 39 62 8b a4 7b 52 28 00 00 ..
+    .. .. .. .. .. .. 00 00 20 49 72 9c 93 6a 41 ..
+    .. .. .. .. .. .. .. .. .. 00 07 31 5a 83 .. ..
+    .. 00 00 00 00 00 .. 00 39 ac 39 .. 5b 0a .. ..
+    .. 39 39 39 39 39 .. 00 39 ac 39 5b ac 5b 0a ..
+    .. ac ac ac ac ac .. 00 39 ac 39 0a 5b ac 5b 0a
+    .. 39 39 39 39 39 .. 00 39 ac 39 .. 0a 5b ac ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. 0a .. ..
+R7 lines quad(MSAA) (alpha, blend off):
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. ff ff .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. ff ff ff ff .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. ff ff ff ff .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. ff ff ff ff .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. ff ff ff ff .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. ff .. ..
+    .. .. .. .. .. .. .. .. .. ff .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. ff .. .. ff .. .. ..
+    .. ff ff ff ff ff .. .. .. ff .. .. .. ff .. ..
+    .. .. .. .. .. .. .. .. .. ff .. .. .. .. ff ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+R7 points (2.5,2.5) (6,5) (10.25,1.75) (13.5,9):
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. ff .. .. .. .. ..
+    .. .. ff .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. ff .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. ff .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+R7 wireframe triangle:
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+    .. ff ff ff .. .. .. .. .. .. .. .. .. .. .. ..
+    .. ff .. .. ff ff ff ff ff ff .. .. .. .. .. ..
+    .. .. ff .. .. .. .. .. .. .. ff ff ff ff .. ..
+    .. .. ff .. .. .. .. .. .. .. .. .. ff .. .. ..
+    .. .. ff .. .. .. .. .. .. .. ff ff .. .. .. ..
+    .. .. .. ff .. .. .. .. .. ff .. .. .. .. .. ..
+    .. .. .. ff .. .. .. .. ff .. .. .. .. .. .. ..
+    .. .. .. ff .. .. ff ff .. .. .. .. .. .. .. ..
+    .. .. .. .. ff ff .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. ff .. .. .. .. .. .. .. .. .. .. ..
+    .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+R7 alpha-AA line blended, red channel row 4: 00 00 00 00 00 10 39 62 8b a4 7b 52 28 00 00 00
+R8 4x quality=0 edge x<1.5 pixel(1,0) samples: 1 0 1 0
+R8 4x quality=0 edge y<2.5 pixel(0,2) samples: 1 1 0 0
+R8 4x quality=STANDARD edge x<1.5 pixel(1,0) samples: 1 0 1 0
+R8 4x quality=STANDARD edge y<2.5 pixel(0,2) samples: 1 1 0 0
+# winoracle 2026-09-28, WARP, FL 11_1, x64 (x86 identical). Vitreo verdicts:
+#  R1 cull x front x fill, NULL state, IsFrontFace for lines/points/wireframe: CORRECT
+#  R2 viewport transform, pixel centre, SV_Position.w, zero-size/unset viewport: CORRECT
+#  R2 MinDepth > MaxDepth: WRONG (Windows skips the RSSetViewports call,
+#     spec 15.6.1; Vitreo binds it and inverts depth)
+#  R3 scissor with no rect set: WRONG (Windows: nothing, default rect is
+#     {0,0,0,0}; Vitreo: scissor off). Inverted rect: WRONG (Vitreo draws
+#     all). Negative left/top: WRONG (Vitreo draws nothing; Windows clamps)
+#  R3 implicit viewport scissor incl. fractional origin: CORRECT
+#  R4 D24S8 DepthBias: WRONG (float r = 2^(exp(z)-23) used for a UNORM
+#     buffer: bias halves for z<0.5); D16: within 1-2 units (minor);
+#     D32/D32S8 constant+slope+clamp, line no-bias, wireframe bias: CORRECT
+#  R5 DepthClipEnable, viewport depth clamp: CORRECT. SV_Depth with
+#     DepthClip on: WRONG (not clamped to MinDepth/MaxDepth, spec 15.6)
+#     (D16 0.25 clear reads 0x3FFF: ClearDepthStencilView rounding, area 06)
+#  R6 top-left rule, 16.8 snapping, slivers: CORRECT
+#  R7 aliased lines, points, wireframe: CORRECT. Alpha-AA lines
+#     (AntialiasedLineEnable) and quadrilateral lines (MultisampleEnable):
+#     MISSING (drawn aliased)
+#  R8 4x coverage per sample (quality 0): CORRECT; quality
+#     D3D11_STANDARD_MULTISAMPLE_PATTERN: create E_INVALIDARG (area 01/02)

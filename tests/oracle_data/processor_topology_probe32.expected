@@ -1,0 +1,252 @@
+sizeof SLPI 24 GROUP_AFFINITY 12 SLPIEX_header 8 PROCESSOR_REL 36 CACHE_REL 44 NUMA_REL 36 GROUP_REL 68 PGI 44 CPUSET 32
+offsets SLPI.Relationship 4 SLPI.union 8 PR.GroupCount 22 PR.GroupMask 24 CR.CacheSize 4 CR.Type 8 CR.GroupCount 30 CR.GroupMask 32 NR.GroupCount 22 NR.GroupMask 24 GR.GroupInfo 24 PGI.ActiveProcessorMask 40
+sysinfo arch 0 type 586 level 6 revision 9702 count 16 mask ffff
+counts active_all 16 active0 16 max_all 16 groups 1 maxgroups 1
+installed_memory_ok 1
+glpi null ok 0 err 122 length 696
+glpi short ok 0 err 122 length 696
+glpi full ok 1 err 4660 length 696
+glpi 0 rel 0 mask 3 flags 1
+glpi 1 rel 2 mask 3 level 1 assoc 8 line 64 size 32768 type 2
+glpi 2 rel 2 mask 3 level 1 assoc 8 line 64 size 65536 type 1
+glpi 3 rel 0 mask c flags 1
+glpi 4 rel 2 mask c level 1 assoc 8 line 64 size 32768 type 2
+glpi 5 rel 2 mask c level 1 assoc 8 line 64 size 65536 type 1
+glpi 6 rel 0 mask 30 flags 1
+glpi 7 rel 2 mask 30 level 1 assoc 8 line 64 size 32768 type 2
+glpi 8 rel 2 mask 30 level 1 assoc 8 line 64 size 65536 type 1
+glpi 9 rel 0 mask c0 flags 1
+glpi 10 rel 2 mask c0 level 1 assoc 8 line 64 size 32768 type 2
+glpi 11 rel 2 mask c0 level 1 assoc 8 line 64 size 65536 type 1
+glpi 12 rel 2 mask ff level 2 assoc 16 line 64 size 2097152 type 0
+glpi 13 rel 0 mask 300 flags 1
+glpi 14 rel 2 mask 300 level 1 assoc 8 line 64 size 32768 type 2
+glpi 15 rel 2 mask 300 level 1 assoc 8 line 64 size 65536 type 1
+glpi 16 rel 0 mask c00 flags 1
+glpi 17 rel 2 mask c00 level 1 assoc 8 line 64 size 32768 type 2
+glpi 18 rel 2 mask c00 level 1 assoc 8 line 64 size 65536 type 1
+glpi 19 rel 0 mask 3000 flags 1
+glpi 20 rel 2 mask 3000 level 1 assoc 8 line 64 size 32768 type 2
+glpi 21 rel 2 mask 3000 level 1 assoc 8 line 64 size 65536 type 1
+glpi 22 rel 3 mask ffff reserved 0 0
+glpi 23 rel 0 mask c000 flags 1
+glpi 24 rel 2 mask c000 level 1 assoc 8 line 64 size 32768 type 2
+glpi 25 rel 2 mask c000 level 1 assoc 8 line 64 size 65536 type 1
+glpi 26 rel 2 mask ff00 level 2 assoc 16 line 64 size 2097152 type 0
+glpi 27 rel 2 mask ffff level 3 assoc 12 line 64 size 31457280 type 0
+glpi 28 rel 1 mask ffff node 0
+glpiex type 0 null ok 0 err 122 length 352
+glpiex type 0 short ok 0 err 122 length 352
+glpiex type 0 full ok 1 err 4660 length 352
+  rec @0 rel 0 size 44 flags 1 eff 0 groups 1 [g0 3]
+  rec @44 rel 0 size 44 flags 1 eff 0 groups 1 [g0 c]
+  rec @88 rel 0 size 44 flags 1 eff 0 groups 1 [g0 30]
+  rec @132 rel 0 size 44 flags 1 eff 0 groups 1 [g0 c0]
+  rec @176 rel 0 size 44 flags 1 eff 0 groups 1 [g0 300]
+  rec @220 rel 0 size 44 flags 1 eff 0 groups 1 [g0 c00]
+  rec @264 rel 0 size 44 flags 1 eff 0 groups 1 [g0 3000]
+  rec @308 rel 0 size 44 flags 1 eff 0 groups 1 [g0 c000]
+glpiex type 1 null ok 0 err 122 length 44
+glpiex type 1 short ok 0 err 122 length 44
+glpiex type 1 full ok 1 err 4660 length 44
+  rec @0 rel 1 size 44 node 0 groups 1 [g0 ffff]
+glpiex type 2 null ok 0 err 122 length 988
+glpiex type 2 short ok 0 err 122 length 988
+glpiex type 2 full ok 1 err 4660 length 988
+  rec @0 rel 2 size 52 level 1 assoc 12 line 64 size 49152 type 2 groups 1 [g0 3]
+  rec @52 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 1 groups 1 [g0 3]
+  rec @104 rel 2 size 52 level 2 assoc 10 line 64 size 1310720 type 0 groups 1 [g0 ff]
+  rec @156 rel 2 size 52 level 3 assoc 12 line 64 size 31457280 type 0 groups 1 [g0 ffff]
+  rec @208 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 c]
+  rec @260 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 c]
+  rec @312 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 30]
+  rec @364 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 30]
+  rec @416 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 c0]
+  rec @468 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 c0]
+  rec @520 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 300]
+  rec @572 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 300]
+  rec @624 rel 2 size 52 level 2 assoc 16 line 64 size 2097152 type 0 groups 1 [g0 ff00]
+  rec @676 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 c00]
+  rec @728 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 c00]
+  rec @780 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 3000]
+  rec @832 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 3000]
+  rec @884 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 c000]
+  rec @936 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 c000]
+glpiex type 3 null ok 0 err 122 length 44
+glpiex type 3 short ok 0 err 122 length 44
+glpiex type 3 full ok 1 err 4660 length 44
+  rec @0 rel 3 size 44 flags 0 eff 0 groups 1 [g0 ffff]
+glpiex type 4 null ok 0 err 122 length 76
+glpiex type 4 short ok 0 err 122 length 76
+glpiex type 4 full ok 1 err 4660 length 76
+  rec @0 rel 4 size 76 max 1 active 1 [max 16 active 16 mask ffff]
+glpiex type 5 null ok 0 err 122 length 44
+glpiex type 5 short ok 0 err 122 length 44
+glpiex type 5 full ok 1 err 4660 length 44
+  rec @0 rel 5 size 44 flags 0 eff 0 groups 1 [g0 ffff]
+glpiex type 6 null ok 0 err 122 length 44
+glpiex type 6 short ok 0 err 122 length 44
+glpiex type 6 full ok 1 err 4660 length 44
+  rec @0 rel 1 size 44 node 0 groups 1 [g0 ffff]
+glpiex type 7 null ok 0 err 122 length 88
+glpiex type 7 short ok 0 err 122 length 88
+glpiex type 7 full ok 1 err 4660 length 88
+  rec @0 rel 7 size 44 flags 0 eff 0 groups 1 [g0 ff]
+  rec @44 rel 7 size 44 flags 0 eff 0 groups 1 [g0 ff00]
+glpiex type 65535 null ok 0 err 122 length 1592
+glpiex type 65535 short ok 0 err 122 length 1592
+glpiex type 65535 full ok 1 err 4660 length 1592
+  rec @0 rel 3 size 44 flags 0 eff 0 groups 1 [g0 ffff]
+  rec @44 rel 0 size 44 flags 1 eff 0 groups 1 [g0 3]
+  rec @88 rel 7 size 44 flags 0 eff 0 groups 1 [g0 ff]
+  rec @132 rel 2 size 52 level 1 assoc 12 line 64 size 49152 type 2 groups 1 [g0 3]
+  rec @184 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 1 groups 1 [g0 3]
+  rec @236 rel 2 size 52 level 2 assoc 10 line 64 size 1310720 type 0 groups 1 [g0 ff]
+  rec @288 rel 2 size 52 level 3 assoc 12 line 64 size 31457280 type 0 groups 1 [g0 ffff]
+  rec @340 rel 0 size 44 flags 1 eff 0 groups 1 [g0 c]
+  rec @384 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 c]
+  rec @436 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 c]
+  rec @488 rel 0 size 44 flags 1 eff 0 groups 1 [g0 30]
+  rec @532 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 30]
+  rec @584 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 30]
+  rec @636 rel 0 size 44 flags 1 eff 0 groups 1 [g0 c0]
+  rec @680 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 c0]
+  rec @732 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 c0]
+  rec @784 rel 0 size 44 flags 1 eff 0 groups 1 [g0 300]
+  rec @828 rel 7 size 44 flags 0 eff 0 groups 1 [g0 ff00]
+  rec @872 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 300]
+  rec @924 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 300]
+  rec @976 rel 2 size 52 level 2 assoc 16 line 64 size 2097152 type 0 groups 1 [g0 ff00]
+  rec @1028 rel 0 size 44 flags 1 eff 0 groups 1 [g0 c00]
+  rec @1072 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 c00]
+  rec @1124 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 c00]
+  rec @1176 rel 0 size 44 flags 1 eff 0 groups 1 [g0 3000]
+  rec @1220 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 3000]
+  rec @1272 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 3000]
+  rec @1324 rel 0 size 44 flags 1 eff 0 groups 1 [g0 c000]
+  rec @1368 rel 2 size 52 level 1 assoc 8 line 64 size 32768 type 2 groups 1 [g0 c000]
+  rec @1420 rel 2 size 52 level 1 assoc 8 line 64 size 65536 type 1 groups 1 [g0 c000]
+  rec @1472 rel 1 size 44 node 0 groups 1 [g0 ffff]
+  rec @1516 rel 4 size 76 max 1 active 1 [max 16 active 16 mask ffff]
+glpiex type 8 null ok 0 err 31 length 0
+cpuset null ok 0 err 122 length 512
+cpuset full ok 1 err 4660 length 512
+  cpuset size 32 type 0 id 256 group 0 lp 0 core 0 llc 0 numa 0 eff 0 flags 00 sched 0 tag 0
+  cpuset size 32 type 0 id 257 group 0 lp 1 core 0 llc 0 numa 0 eff 0 flags 00 sched 0 tag 0
+  cpuset size 32 type 0 id 258 group 0 lp 2 core 2 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 259 group 0 lp 3 core 2 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 260 group 0 lp 4 core 4 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 261 group 0 lp 5 core 4 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 262 group 0 lp 6 core 6 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 263 group 0 lp 7 core 6 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 264 group 0 lp 8 core 8 llc 0 numa 0 eff 0 flags 00 sched 0 tag 0
+  cpuset size 32 type 0 id 265 group 0 lp 9 core 8 llc 0 numa 0 eff 0 flags 00 sched 0 tag 0
+  cpuset size 32 type 0 id 266 group 0 lp 10 core 10 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 267 group 0 lp 11 core 10 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 268 group 0 lp 12 core 12 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 269 group 0 lp 13 core 12 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 270 group 0 lp 14 core 14 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+  cpuset size 32 type 0 id 271 group 0 lp 15 core 14 llc 0 numa 0 eff 0 flags 01 sched 0 tag 0
+power exact status 0
+  power 0 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 1 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 2 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 3 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 4 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 5 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 6 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 7 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 8 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 9 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 10 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 11 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 12 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 13 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 14 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+  power 15 max 3187 cur 3187 limit 3187 maxidle 1 curidle 1
+power short status c0000023
+power one status c0000023
+power larger status 0 number_after 807431023
+process_affinity ffff system ffff
+sta zero ret 0 err 87
+sta outside ret 0 err 87
+sta two ret ffff err 4660
+pinned current 1 ex 0/1
+sta partly_outside ret 2 err 4660
+sta restore ret ffff err 4660
+gtga ok 1 err 4660 mask ffff group 0
+sta partly_outside stored ffff
+stga zero ok 1 err 4660 prior ffff group 0 res 0 now ffff
+stga group1 ok 0 err 87 prior cccccccc group 52428 res 52428 now ffff
+stga reserved ok 0 err 87 prior cccccccc group 52428 res 52428 now ffff
+stga four ok 1 err 4660 prior ffff group 0 res 0 now 4
+stga outside ok 0 err 87 prior cccccccc group 52428 res 52428 now ffff
+stga partly_outside ok 0 err 87 prior cccccccc group 52428 res 52428 now ffff
+stga null_prior ok 1 err 4660
+stip 32 ret 2 err 4660
+stip 3 ret 2 err 4660
+stip 32 ret 3 err 4660
+stip 63 ret 3 err 4660
+stip 32 ret 3 err 4660
+stip 16 ret 3 err 4660
+stip 15 ret 3 err 4660
+gtipex ok 1 err 4660 group 0 number 15
+stipex five ok 1 err 4660 previous 0/15/0 now 5
+stipex count ok 0 err 87 previous 52428/204/204 now 5
+stipex max ok 0 err 87 previous 52428/204/204 now 5
+stipex group1 ok 0 err 87 previous 52428/204/204 now 5
+stipex reserved ok 0 err 87 previous 52428/204/204 now 5
+stipex null_previous ok 1 err 4660
+reg HARDWARE\DESCRIPTION\System\CentralProcessor\0
+  Component Information type 3 len 16 hex 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  Identifier type 1 len 38 "Intel64 Family 6 Model 151 Stepping 2"
+  Configuration Data type 9 len 16 hex ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00
+  ProcessorNameString type 1 len 38 "12th Gen Intel(R) Core(TM) i9-12900KF"
+  VendorIdentifier type 1 len 13 "GenuineIntel"
+  FeatureSet type 4 len 4 1025195519 (0x3d1b3dff)
+  ~MHz type 4 len 4 3187 (0xc73)
+  Update Revision type 3 len 4 hex 3e 00 00 00
+  Patch Source type 4 len 4 1 (0x1)
+  Record Type type 4 len 4 2 (0x2)
+  CPU Family Model Stepping type 4 len 4 591474 (0x90672)
+  CPU Meta Data type 4 len 4 1 (0x1)
+  Firmware Record Version type 4 len 4 62 (0x3e)
+  Previous Record Version type 4 len 4 62 (0x3e)
+  Current Record Version type 4 len 4 62 (0x3e)
+  Preferred Record Version type 4 len 4 0 (0x0)
+  Patch Configuration Used type 4 len 1 0 (0x0)
+  Update Status type 4 len 4 6 (0x6)
+  Update Environment type 4 len 4 1 (0x1)
+  Previous Update Revision type 3 len 4 hex 3e 00 00 00
+  Platform Specific Field 1 type 4 len 4 1 (0x1)
+reg HARDWARE\DESCRIPTION\System\CentralProcessor\1
+  Component Information type 3 len 16 hex 00 00 00 00 00 00 00 00 01 00 00 00 00 00 01 00
+  Identifier type 1 len 38 "Intel64 Family 6 Model 151 Stepping 2"
+  Configuration Data type 9 len 16 hex ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00
+  ProcessorNameString type 1 len 38 "12th Gen Intel(R) Core(TM) i9-12900KF"
+  VendorIdentifier type 1 len 13 "GenuineIntel"
+  FeatureSet type 4 len 4 1025195519 (0x3d1b3dff)
+  ~MHz type 4 len 4 3187 (0xc73)
+  Update Revision type 3 len 8 hex 00 00 00 00 3e 00 00 00
+reg HARDWARE\DESCRIPTION\System\BIOS
+  BiosMajorRelease type 4 len 4 0 (0x0)
+  BiosMinorRelease type 4 len 4 0 (0x0)
+  ECFirmwareMajorRelease type 4 len 4 255 (0xff)
+  ECFirmwareMinorRelease type 4 len 4 255 (0xff)
+  EnclosureType type 4 len 4 1 (0x1)
+  BaseBoardManufacturer type 1 len 1 ""
+  BaseBoardProduct type 1 len 1 ""
+  BaseBoardVersion type 1 len 1 ""
+  BIOSReleaseDate type 1 len 11 "02/02/2022"
+  BIOSVendor type 1 len 7 "EDK II"
+  BIOSVersion type 1 len 8 "unknown"
+  SystemFamily type 1 len 1 ""
+  SystemManufacturer type 1 len 5 "QEMU"
+  SystemProductName type 1 len 34 "Standard PC (i440FX + PIIX, 1996)"
+  SystemSKU type 1 len 1 ""
+  SystemVersion type 1 len 14 "pc-i440fx-7.1"
+reg HARDWARE\DESCRIPTION\System
+  Component Information type 3 len 16 hex 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  Identifier type 1 len 17 "AT/AT COMPATIBLE"
+  Configuration Data type 9 len 68 hex ff ff ff ff ff ff ff ff 00 00 00 00 02 00 00 00
+  SystemBiosVersion type 7 len 35 "BOCHS  - 1" "unknown" "EDK II - 10000"

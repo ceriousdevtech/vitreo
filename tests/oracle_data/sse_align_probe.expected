@@ -1,0 +1,62 @@
+legacy SSE, 16-byte operand misaligned by 1
+movups xmm0,[eax] ok
+movaps xmm0,[eax] FAULT code=c0000005
+movdqu xmm0,[eax] ok
+movdqa xmm0,[eax] FAULT code=c0000005
+xorps  xmm0,[eax] FAULT code=c0000005
+xorpd  xmm0,[eax] FAULT code=c0000005
+pxor   xmm0,[eax] FAULT code=c0000005
+andps  xmm0,[eax] FAULT code=c0000005
+pand   xmm0,[eax] FAULT code=c0000005
+orps   xmm0,[eax] FAULT code=c0000005
+por    xmm0,[eax] FAULT code=c0000005
+paddb  xmm0,[eax] FAULT code=c0000005
+paddd  xmm0,[eax] FAULT code=c0000005
+psubq  xmm0,[eax] FAULT code=c0000005
+pmullw xmm0,[eax] FAULT code=c0000005
+pmaddwd xmm0,[eax] FAULT code=c0000005
+pminub xmm0,[eax] FAULT code=c0000005
+pavgb  xmm0,[eax] FAULT code=c0000005
+psadbw xmm0,[eax] FAULT code=c0000005
+pandn  xmm0,[eax] FAULT code=c0000005
+packsswb xmm0,[eax] FAULT code=c0000005
+psllw  xmm0,[eax] FAULT code=c0000005
+psrad  xmm0,[eax] FAULT code=c0000005
+pcmpeqb xmm0,[eax] FAULT code=c0000005
+cmpps  xmm0,[eax],0 FAULT code=c0000005
+cmppd  xmm0,[eax],0 FAULT code=c0000005
+shufps xmm0,[eax],0 FAULT code=c0000005
+shufpd xmm0,[eax],0 FAULT code=c0000005
+pshufd xmm0,[eax],0 FAULT code=c0000005
+unpcklps xmm0,[eax] FAULT code=c0000005
+unpckhps xmm0,[eax] FAULT code=c0000005
+unpcklpd xmm0,[eax] FAULT code=c0000005
+punpcklbw xmm0,[eax] FAULT code=c0000005
+punpcklqdq xmm0,[eax] FAULT code=c0000005
+cvtdq2ps xmm0,[eax] FAULT code=c0000005
+cvtps2dq xmm0,[eax] FAULT code=c0000005
+cvttps2dq xmm0,[eax] FAULT code=c0000005
+cvtpd2ps xmm0,[eax] FAULT code=c0000005
+movntps [eax],xmm0 FAULT code=c0000005
+movntdq [eax],xmm0 FAULT code=c0000005
+lddqu  xmm0,[eax] ok
+movd   xmm0,[eax] ok
+movq   xmm0,[eax] ok
+movss  xmm0,[eax] ok
+movsd  xmm0,[eax] ok
+movlps xmm0,[eax] ok
+pcmpistri xmm0,[eax],0 ok
+pcmpistrm xmm0,[eax],0 ok
+pcmpestri xmm0,[eax],0 ok
+pcmpestrm xmm0,[eax],0 ok
+movshdup xmm0,[eax] FAULT code=c0000005
+movsldup xmm0,[eax] FAULT code=c0000005
+cvtdq2pd xmm0,[eax] ok
+cvtps2pd xmm0,[eax] ok
+movddup xmm0,[eax] ok
+pmovsxbw xmm0,[eax] ok
+pmovzxbd xmm0,[eax] ok
+insertps xmm0,[eax],0 ok
+cvtpd2dq xmm0,[eax] FAULT code=c0000005
+cvttpd2dq xmm0,[eax] FAULT code=c0000005
+done

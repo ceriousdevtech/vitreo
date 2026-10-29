@@ -1,0 +1,101 @@
+loop_select: rc=0
+loop_connect: rc=-1 err=10035
+loop_connect_wait: wait=0
+loop_connect_enum: rc=0 events=0x12
+loop_after_connect_drain: wait=258
+loop_data_wait: wait=0
+loop_data_enum: rc=0 events=0x1
+loop_drain_before_recv: wait=258
+loop_drain_enum: rc=0 events=0x0
+loop_more_data_before_recv: wait=0
+loop_more_data_enum: rc=0 events=0x1
+loop_recv_part: n=3
+loop_after_part_wait: wait=0
+loop_after_part_enum: rc=0 events=0x1
+loop_recv_rest: n=7
+loop_after_rest_wait: wait=258
+loop_after_rest_enum: rc=0 events=0x0
+loop_recv_empty: rc=-1 err=10035
+loop_after_empty_recv_wait: wait=0
+loop_after_empty_recv_enum: rc=0 events=0x1
+loop_recv_last: n=2
+loop_close_wait: wait=0
+loop_close_enum: rc=0 events=0x20
+loop_after_close_drain: wait=258
+loop_recv_eof: n=0
+loop_after_eof_wait: wait=258
+loop_after_eof_enum: rc=0 events=0x0
+reset_select: rc=0
+reset_data_wait: wait=0
+reset_enum_null: rc=0 events=0x1
+reset_after_enum_null: signaled=1
+reset_enum_handle: rc=0 events=0x0
+reset_after_enum_handle: signaled=0
+reset_enum_other: rc=0 events=0x0
+reset_other_after: signaled=0
+reset_assoc_after_other: signaled=1
+selecttime_select: rc=0
+selecttime_wait: wait=0
+selecttime_enum: rc=0 events=0x3
+reselect_first: rc=0
+reselect_first_wait: wait=258
+reselect_second: rc=0
+reselect_event_after: signaled=0
+reselect_enum: rc=0 events=0x0
+accept_on_connected_select: rc=0
+accept_on_connected_wait: wait=258
+accept_on_connected_enum: rc=0 events=0x0
+select_null_event: rc=-1 err=10022
+select_cancel: rc=0
+cancelled_wait: wait=258
+cancelled_enum: rc=0 events=0x0
+close_pending_wait: wait=0
+close_pending_enum: rc=0 events=0x21
+close_pending_recv: n=3
+close_pending_after_recv_wait: wait=258
+close_pending_after_recv_enum: rc=0 events=0x0
+close_pending_eof: n=0
+abort_wait: wait=0
+abort_enum: rc=0 events=0x20 err_close=10053
+abort_after_drain: wait=258
+abort_recv: rc=-1 err=10054
+refused_connect: rc=-1 err=10035
+refused_wait: wait=0
+refused_enum: rc=0 events=0x10 err_connect=10061
+refused_after_drain: wait=258
+accept_select: rc=0
+accept_wait: wait=0
+accept_enum: rc=0 events=0x8
+accept_drain_before_accept: wait=258
+accept_first: ok=1
+accept_second_pending_wait: wait=0
+accept_second_pending_enum: rc=0 events=0x8
+accepted_socket_enum: rc=0 events=0x2
+accept_second: ok=1
+accept_none_pending_enum: rc=0 events=0x0
+write_initial_wait: wait=0
+write_initial_enum: rc=0 events=0x2
+write_after_ok_send_wait: wait=258
+write_blocked: ok=1
+write_drained_wait: wait=0
+write_drained_enum: rc=0 events=0x2
+write_after_drained_wait: wait=258
+udp_select: rc=0
+udp_select_wait: wait=0
+udp_select_enum: rc=0 events=0x2
+udp_datagram_wait: wait=0
+udp_datagram_enum: rc=0 events=0x1
+udp_second_datagram_wait: wait=0
+udp_second_datagram_enum: rc=0 events=0x1
+udp_recv_first: n=3
+udp_after_first_recv_wait: wait=0
+udp_after_first_recv_enum: rc=0 events=0x1
+udp_recv_second: n=2
+udp_after_second_recv_wait: wait=258
+tcp_unconnected_select: rc=0
+tcp_unconnected_wait: wait=258
+tcp_unconnected_enum: rc=0 events=0x0
+tcp_bound_select: rc=0
+tcp_bound_wait: wait=258
+tcp_bound_enum: rc=0 events=0x0
+done

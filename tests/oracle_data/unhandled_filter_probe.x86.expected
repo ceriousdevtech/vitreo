@@ -1,0 +1,16 @@
+before mode=none
+exit=e1234567
+before mode=execute
+filter code=e1234567 flags=0 nargs=2 same-thread=1
+exit=e1234567
+before mode=search
+filter code=e1234567 flags=0 nargs=2 same-thread=1
+exit=e1234567
+before mode=continue
+filter code=e1234567 flags=0 nargs=2 same-thread=1
+resumed calls=1
+exit=0000004d
+before mode=noncontinuable
+filter code=e1234567 flags=1 nargs=2 same-thread=1
+filter code=c0000025 flags=1 nargs=0 same-thread=1
+exit=c0000025

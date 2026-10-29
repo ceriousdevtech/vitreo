@@ -1,0 +1,23 @@
+bitness=32
+== clipboard
+empty GetUpdatedClipboardFormats(cap=16) -> 1 err=0 out=0 list=eeee eeee eeee eeee eeee eeee eeee eeee 
+while-open GetUpdatedClipboardFormats(cap=16) -> 1 err=0 out=1 list=d eeee eeee eeee eeee eeee eeee eeee 
+after-close GetUpdatedClipboardFormats(cap=16) -> 1 err=0 out=4 list=d 10 1 7 eeee eeee eeee eeee 
+cap1 GetUpdatedClipboardFormats(cap=1) -> 0 err=122 out=4 list=eeee eeee 
+cap0 GetUpdatedClipboardFormats(cap=0) -> 0 err=122 out=4 list=eeee 
+null-buf-cap0 GetUpdatedClipboardFormats(cap=0) -> 0 err=122 out=4 list=
+null-out GetUpdatedClipboardFormats(cap=16) -> 0 err=998 out=0 list=eeee eeee eeee eeee eeee eeee eeee eeee 
+== gesture
+default GetGestureConfig(flags=0) -> 1 err=0 n=5 [id=3 want=0x0 block=0x0] [id=4 want=0x0 block=0x0] [id=5 want=0x0 block=0x0] [id=6 want=0x0 block=0x0] [id=7 want=0x0 block=0x0]
+default-ancestors GetGestureConfig(flags=1) -> 1 err=0 n=5 [id=3 want=0x0 block=0x0] [id=4 want=0x0 block=0x0] [id=5 want=0x0 block=0x0] [id=6 want=0x0 block=0x0] [id=7 want=0x0 block=0x0]
+set-two SetGestureConfig(count=2 cb=12) -> 1 err=0
+after-set-two GetGestureConfig(flags=0) -> 1 err=0 n=5 [id=3 want=0x0 block=0x1] [id=4 want=0x2 block=0x8] [id=5 want=0x0 block=0x0] [id=6 want=0x0 block=0x0] [id=7 want=0x0 block=0x0]
+set-all SetGestureConfig(count=1 cb=12) -> 1 err=0
+after-set-all GetGestureConfig(flags=0) -> 1 err=0 n=5 [id=3 want=0x1 block=0x0] [id=4 want=0x1f block=0x0] [id=5 want=0x1 block=0x0] [id=6 want=0x1 block=0x0] [id=7 want=0x1 block=0x0]
+bad-cb SetGestureConfig(count=2 cb=16) -> 0 err=87
+reserved SetGestureConfig(count=2 cb=12) -> 1 err=0
+count0 SetGestureConfig(count=0 cb=12) -> 0 err=87
+null-cfg SetGestureConfig(count=2 cb=12) -> 0 err=87
+bad-id SetGestureConfig(count=1 cb=12) -> 0 err=87
+bad-hwnd SetGestureConfig(count=2 cb=12) -> 0 err=1400
+desktop SetGestureConfig(count=2 cb=12) -> 0 err=1400

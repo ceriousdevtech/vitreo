@@ -1,0 +1,742 @@
+== x64
+-- create_popup_hidden
+  ? WM_NCCREATE pos=30,40 size=200,100 style=80000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=80000000 ex=08000000
+  ? WM_SIZE w=0 200x100
+  ? WM_MOVE 30,40
+  state main vis=0 icon=0 zoom=0 style=84000000 ex=08000000 wr=30,40,230,140 cr=200x100
+-- create_popup_thickframe_hidden
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCREATE pos=30,40 size=200,100 style=80040000 ex=08000100
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=80040000 ex=08000100
+  ? WM_SIZE w=0 186x86
+  ? WM_MOVE 37,47
+  state main vis=0 icon=0 zoom=0 style=84040000 ex=08000100 wr=30,40,230,140 cr=186x86
+-- create_popup_caption_hidden
+  ? WM_NCCREATE pos=30,40 size=200,100 style=80c00000 ex=08000100
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=80c00000 ex=08000100
+  ? WM_SIZE w=0 194x71
+  ? WM_MOVE 33,66
+  state main vis=0 icon=0 zoom=0 style=84c00000 ex=08000100 wr=30,40,230,140 cr=194x71
+-- create_overlapped_plain_hidden
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCREATE pos=30,40 size=200,100 style=00000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=00000000 ex=08000000
+  state main vis=0 icon=0 zoom=0 style=04c00000 ex=08000100 wr=30,40,230,140 cr=194x71
+-- create_overlapped_plain_visible
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCREATE pos=30,40 size=200,100 style=10000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=10000000 ex=08000000
+  ? WM_SHOWWINDOW w=1 l=0
+  ? WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0043
+  ? WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0003
+  ? WM_ACTIVATEAPP w=00000001
+  ? WM_NCACTIVATE w=00000000
+  ? WM_ACTIVATE w=00000001
+  ? WM_SETFOCUS w=00000000
+  ? WM_NCPAINT
+  ? WM_ERASEBKGND
+  ? WM_WINDOWPOSCHANGED after=other pos=30,40 size=200,100 flags=1843
+  ? WM_SIZE w=0 194x71
+  ? WM_MOVE 33,66
+  state main vis=1 icon=0 zoom=0 style=14c00000 ex=08000100 wr=30,40,230,140 cr=194x71
+-- create_popup_minimize_hidden
+  ? WM_NCCREATE pos=30,40 size=200,100 style=a0000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=a0000000 ex=08000000
+  ? WM_SIZE w=0 0x0
+  ? WM_MOVE 30,40
+  ? WM_WINDOWPOSCHANGING after=other pos=0,1004 size=160,28 flags=8130
+  ? WM_NCCALCSIZE w=1 r0=0,1004,160,1032
+  ? WM_WINDOWPOSCHANGED after=other pos=0,1004 size=160,28 flags=8938
+  ? WM_MOVE 0,1004
+  ? WM_SIZE w=1 0x0
+  state main vis=0 icon=1 zoom=0 style=a4000000 ex=08000000 wr=0,1004,160,1032 cr=0x0
+-- create_overlapped_minimize_hidden
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCREATE pos=30,40 size=200,100 style=20cf0000 ex=08000100
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=20cf0000 ex=08000100
+  ? WM_WINDOWPOSCHANGING after=other pos=0,1004 size=160,28 flags=8130
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCALCSIZE w=1 r0=0,1004,160,1032
+  ? WM_WINDOWPOSCHANGED after=other pos=0,1004 size=160,28 flags=8938
+  ? WM_MOVE 0,1004
+  ? WM_SIZE w=1 0x0
+  state main vis=0 icon=1 zoom=0 style=24cf0000 ex=08000100 wr=0,1004,160,1032 cr=0x0
+-- create_popup_maximize_hidden
+  ? WM_NCCREATE pos=30,40 size=200,100 style=81000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=81000000 ex=08000000
+  ? WM_SIZE w=0 200x100
+  ? WM_MOVE 30,40
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_WINDOWPOSCHANGING after=other pos=0,0 size=1920,1080 flags=8030
+  ? WM_NCCALCSIZE w=1 r0=0,0,1920,1080
+  ? WM_WINDOWPOSCHANGED after=other pos=0,0 size=1920,1080 flags=8038
+  ? WM_MOVE 0,0
+  ? WM_SIZE w=2 1920x1080
+  state main vis=0 icon=0 zoom=1 style=85000000 ex=08000000 wr=0,0,1920,1080 cr=1920x1080
+-- create_child_hidden
+  ? WM_NCCREATE pos=1,2 size=30,20 style=40000000 ex=00000000
+  ? WM_NCCALCSIZE w=0 r0=31,42,61,62
+  ? WM_CREATE pos=1,2 size=30,20 style=40000000 ex=00000000
+  ? WM_SIZE w=0 30x20
+  ? WM_MOVE 1,2
+  M WM_PARENTNOTIFY event=0001
+-- create_child_noparentnotify
+  ? WM_NCCREATE pos=1,2 size=30,20 style=50000000 ex=00000004
+  ? WM_NCCALCSIZE w=0 r0=31,42,61,62
+  ? WM_CREATE pos=1,2 size=30,20 style=50000000 ex=00000004
+  ? WM_SIZE w=0 30x20
+  ? WM_MOVE 1,2
+  ? WM_SHOWWINDOW w=1 l=0
+-- destroy_child_noparentnotify
+  O WM_SHOWWINDOW w=0 l=0
+  O WM_DESTROY w=00000000
+  O WM_NCDESTROY w=00000000
+-- swp flag bits
+swpbit 0 ret=1 err=0000dead
+swpbit 1 ret=1 err=0000dead
+swpbit 2 ret=1 err=0000dead
+swpbit 3 ret=1 err=0000dead
+swpbit 4 ret=1 err=0000dead
+swpbit 5 ret=1 err=0000dead
+swpbit 6 ret=1 err=0000dead
+swpbit 7 ret=1 err=0000dead
+swpbit 8 ret=1 err=0000dead
+swpbit 9 ret=1 err=0000dead
+swpbit 10 ret=1 err=0000dead
+swpbit 11 ret=0 err=000003ec
+swpbit 12 ret=0 err=000003ec
+swpbit 13 ret=1 err=0000dead
+swpbit 14 ret=1 err=0000dead
+swpbit 15 ret=0 err=000003ec
+swpbit 16 ret=0 err=000003ec
+swpbit 17 ret=1 err=0000dead
+swpbit 18 ret=0 err=000003ec
+swpbit 19 ret=0 err=000003ec
+swpbit 20 ret=0 err=000003ec
+swpbit 21 ret=0 err=000003ec
+swpbit 22 ret=0 err=000003ec
+swpbit 23 ret=0 err=000003ec
+swpbit 24 ret=0 err=000003ec
+swpbit 25 ret=0 err=000003ec
+swpbit 26 ret=0 err=000003ec
+swpbit 27 ret=0 err=000003ec
+swpbit 28 ret=0 err=000003ec
+swpbit 29 ret=0 err=000003ec
+swpbit 30 ret=0 err=000003ec
+swpbit 31 ret=0 err=000003ec
+-- swp_changing_edits
+  M WM_WINDOWPOSCHANGING after=TOP pos=50,60 size=210,110 flags=0014
+  M WM_NCCALCSIZE w=1 r0=53,60,263,174
+  M WM_WINDOWPOSCHANGED after=TOP pos=53,60 size=210,114 flags=001c
+  M WM_MOVE 53,60
+  M WM_SIZE w=0 210x114
+  ret ret=00000001 err=0000dead
+  state main vis=0 icon=0 zoom=0 style=84000000 ex=00000000 wr=53,60,263,174 cr=210x114
+-- swp_child_show_hidden_parent
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=0,0 flags=0047
+  C WM_CHILDACTIVATE w=00000000
+  C WM_WINDOWPOSCHANGED after=TOP pos=1,2 size=30,20 flags=184f
+  ret ret=00000001 err=0000dead
+  state child vis=0 icon=0 zoom=0 style=50000000 ex=00000000 wr=54,62,84,82 cr=30x20
+-- swp_async
+  M WM_WINDOWPOSCHANGING after=TOP pos=55,65 size=0,0 flags=4015
+  M WM_WINDOWPOSCHANGED after=TOP pos=55,65 size=210,114 flags=481d
+  M WM_MOVE 55,65
+  ret ret=00000001 err=0000dead
+  state main vis=0 icon=0 zoom=0 style=84000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- swp_zorder_only_hidden
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0013
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=181b
+  ret ret=00000001 err=00000000
+-- showwindow_show_popup
+  M WM_SHOWWINDOW w=1 l=0
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0043
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0003
+  M WM_ACTIVATEAPP w=00000001
+  M WM_NCACTIVATE w=00000000
+  M WM_ACTIVATE w=00000001
+  M WM_SETFOCUS w=00000000
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=1847
+  ret ret=00000000 err=00000002
+  state main vis=1 icon=0 zoom=0 style=94000000 ex=00000000 wr=55,65,265,179 cr=210x114
+  active_is_main ret=00000001 err=00000000
+-- showwindow_show_again
+  ret ret=00000018 err=0000dead
+-- showwindow_maximize
+  M WM_GETMINMAXINFO w=00000000
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=1920,1080 flags=8020
+  M WM_NCCALCSIZE w=1 r0=0,0,1920,1080
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=0,0 size=1920,1080 flags=8020
+  M WM_MOVE 0,0
+  M WM_SIZE w=2 1920x1080
+  ret ret=00000018 err=00000000
+  state main vis=1 icon=0 zoom=1 style=95000000 ex=00000000 wr=0,0,1920,1080 cr=1920x1080
+-- showwindow_maximize_again
+  ret ret=00000018 err=0000dead
+-- showwindow_restore_from_max
+  M WM_WINDOWPOSCHANGING after=other pos=55,65 size=210,114 flags=8020
+  M WM_NCCALCSIZE w=1 r0=55,65,265,179
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=8024
+  M WM_MOVE 55,65
+  M WM_SIZE w=0 210x114
+  ret ret=00000018 err=00000000
+  state main vis=1 icon=0 zoom=0 style=94000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- showwindow_minimize_activating
+  M WM_KILLFOCUS w=00000000
+  M WM_WINDOWPOSCHANGING after=TOP pos=-32000,-32000 size=160,28 flags=8174
+  M WM_NCCALCSIZE w=1 r0=-32000,-32000,-31840,-31972
+  M WM_WINDOWPOSCHANGED after=TOP pos=-32000,-32000 size=160,28 flags=8134
+  M WM_MOVE -32000,-32000
+  M WM_SIZE w=1 0x0
+  ret ret=00000018 err=00000000
+  state main vis=1 icon=1 zoom=0 style=b4000000 ex=00000000 wr=-32000,-32000,-31840,-31972 cr=0x0
+  placement show=2 flags=0 min=-32000,-32000 normal=55,65,265,179
+-- showwindow_shownormal_from_min
+  M WM_QUERYOPEN w=00000000
+  M WM_NCACTIVATE w=00000001
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0003
+  M WM_WINDOWPOSCHANGED after=other pos=-32000,-32000 size=160,28 flags=1803
+  M WM_WINDOWPOSCHANGING after=other pos=55,65 size=210,114 flags=8120
+  M WM_NCCALCSIZE w=1 r0=55,65,265,179
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=8124
+  M WM_MOVE 55,65
+  M WM_SIZE w=0 210x114
+  M WM_SETFOCUS w=00000000
+  M WM_ACTIVATE w=00000001
+  ret ret=00000018 err=00000000
+  state main vis=1 icon=0 zoom=0 style=94000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- closewindow
+  M WM_KILLFOCUS w=00000000
+  M WM_WINDOWPOSCHANGING after=other pos=-32000,-32000 size=160,28 flags=8160
+  M WM_NCCALCSIZE w=1 r0=-32000,-32000,-31840,-31972
+  M WM_WINDOWPOSCHANGED after=other pos=-32000,-32000 size=160,28 flags=8124
+  M WM_MOVE -32000,-32000
+  M WM_SIZE w=1 0x0
+  ret ret=00000001 err=00000000
+  state main vis=1 icon=1 zoom=0 style=b4000000 ex=00000000 wr=-32000,-32000,-31840,-31972 cr=0x0
+-- closewindow_again
+  ret ret=00000001 err=0000dead
+-- openicon
+  M WM_QUERYOPEN w=00000000
+  M WM_WINDOWPOSCHANGING after=other pos=55,65 size=210,114 flags=8120
+  M WM_NCCALCSIZE w=1 r0=55,65,265,179
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=8124
+  M WM_MOVE 55,65
+  M WM_SIZE w=0 210x114
+  M WM_SETFOCUS w=00000000
+  M WM_ACTIVATE w=00000001
+  ret ret=00000001 err=00000000
+  state main vis=1 icon=0 zoom=0 style=94000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- showwindow_hide_visible_popup
+  M WM_SHOWWINDOW w=0 l=0
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0083
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=1887
+  M WM_NCACTIVATE w=00000000
+  M WM_ACTIVATE w=00000000
+  M WM_ACTIVATEAPP w=00000000
+  M WM_KILLFOCUS w=00000000
+  ret ret=00000018 err=00000000
+-- showwindow_child_maximize
+  C WM_GETMINMAXINFO w=00000000
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=210,114 flags=8020
+  C WM_NCCALCSIZE w=1 r0=0,0,210,114
+  C WM_CHILDACTIVATE w=00000000
+  C WM_WINDOWPOSCHANGED after=TOP pos=0,0 size=210,114 flags=802c
+  C WM_MOVE 0,0
+  C WM_SIZE w=2 210x114
+  ret ret=00000018 err=0000dead
+  state child vis=0 icon=0 zoom=1 style=51000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- movewindow_child_repaint
+  C WM_WINDOWPOSCHANGING after=TOP pos=3,4 size=31,21 flags=0014
+  C WM_NCCALCSIZE w=1 r0=3,4,34,25
+  C WM_WINDOWPOSCHANGED after=TOP pos=3,4 size=31,21 flags=001c
+  C WM_MOVE 3,4
+  C WM_SIZE w=0 31x21
+  ret ret=00000001 err=0000dead
+-- defer
+-- defer_two_children
+  begin_nonnull ret=00000001 err=00000000
+  defer1_same_handle ret=00000001 err=00000000
+  defer2_nonnull ret=00000001 err=00000000
+  (end)
+  C WM_WINDOWPOSCHANGING after=TOP pos=5,6 size=0,0 flags=0015
+  O WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=40,30 flags=0016
+  O WM_NCCALCSIZE w=1 r0=50,2,90,32
+  C WM_WINDOWPOSCHANGED after=TOP pos=5,6 size=31,21 flags=081d
+  C WM_MOVE 5,6
+  O WM_WINDOWPOSCHANGED after=TOP pos=50,2 size=40,30 flags=101e
+  O WM_SIZE w=0 40x30
+  end ret=00000001 err=0000dead
+  state child vis=0 icon=0 zoom=0 style=50000000 ex=00000000 wr=60,71,91,92 cr=31x21
+begin_negative ret=00000000 err=00000057
+begin_zero_nonnull ret=00000001 err=0000dead
+defer_invalid_hwnd ret=00000000 err=00000578
+defer_after_failure_same_handle ret=00000001 err=0000dead
+end_after_failure ret=00000001 err=0000dead
+defer_invalid_hdwp ret=00000000 err=0000057d
+end_invalid_hdwp ret=00000000 err=0000057d
+defer_mixed_parents_nonnull ret=00000001 err=0000dead
+defer_mixed_parents_second ret=00000001 err=0000dead
+end_mixed ret=00000001 err=000005a1
+defer_bad_flags ret=00000000 err=000003ec
+-- setparent
+-- setparent_between_visible_parents
+  C WM_SHOWWINDOW w=0 l=0
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=0,0 flags=0097
+  M WM_ERASEBKGND
+  C WM_WINDOWPOSCHANGED after=TOP pos=0,0 size=31,21 flags=1897
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=0,0 flags=0005
+  C WM_CHILDACTIVATE w=00000000
+  C WM_WINDOWPOSCHANGED after=TOP pos=0,0 size=31,21 flags=080d
+  C WM_MOVE 0,0
+  C WM_SHOWWINDOW w=1 l=0
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=0,0 flags=0057
+  ? WM_ERASEBKGND
+  C WM_WINDOWPOSCHANGED after=TOP pos=0,0 size=31,21 flags=1857
+  prev_is_main ret=00000001 err=00000000
+  state child vis=1 icon=0 zoom=0 style=50000000 ex=00000000 wr=300,300,331,321 cr=31x21
+setparent_to_self ret=00000000 err=00000057
+setparent_to_own_child ret=00000000 err=00000057
+setparent_invalid_parent ret=00000000 err=00000578
+setparent_invalid_child ret=00000000 err=00000578
+setparent_desktop_returns_prev_is_p2 ret=00000001 err=0000dead
+  style_after_desktop ret=54000000 err=00000000
+  getparent_after_desktop_null ret=00000000 err=00000000
+  ga_parent_desktop ret=00000001 err=00000000
+-- destroy order
+-- destroy_owner_with_owned_and_children
+  O WM_DESTROY w=00000000
+  O WM_NCDESTROY w=00000000
+  M WM_DESTROY w=00000000
+  C WM_DESTROY w=00000000
+  ? WM_DESTROY w=00000000
+  ? WM_NCDESTROY w=00000000
+  C WM_NCDESTROY w=00000000
+  M WM_NCDESTROY w=00000000
+  ret ret=00000001 err=00000000
+-- destroy_parent_with_two_children
+  M WM_DESTROY w=00000000
+  C WM_DESTROY w=00000000
+  ? WM_DESTROY w=00000000
+  O WM_DESTROY w=00000000
+  ? WM_NCDESTROY w=00000000
+  C WM_NCDESTROY w=00000000
+  O WM_NCDESTROY w=00000000
+  M WM_NCDESTROY w=00000000
+  ret ret=00000001 err=00000000
+-- overlapped_swp_then_first_show
+  M WM_WINDOWPOSCHANGING after=TOP pos=40,50 size=220,120 flags=0014
+  M WM_GETMINMAXINFO w=00000000
+  M WM_NCCALCSIZE w=1 r0=40,50,260,170
+  M WM_WINDOWPOSCHANGED after=TOP pos=40,50 size=220,120 flags=001c
+  M WM_MOVE 43,76
+  M WM_SIZE w=0 214x91
+  swp ret=00000001 err=0000dead
+  M WM_SHOWWINDOW w=1 l=0
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0053
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=40,50 size=220,120 flags=1853
+  M WM_SIZE w=0 214x91
+  M WM_MOVE 43,76
+  show ret=00000000 err=0000dead
+-- swp_tiny_without_dwp_changing
+  M WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=5,5 flags=0016
+  M WM_NCCALCSIZE w=1 r0=30,40,35,45
+  M WM_WINDOWPOSCHANGED after=TOP pos=30,40 size=5,5 flags=101e
+  M WM_SIZE w=0 0x0
+  ret ret=00000001 err=0000dead
+  state main vis=0 icon=0 zoom=0 style=04cf0000 ex=00000100 wr=30,40,35,45 cr=0x0
+-- enumthreadwindows
+enumthreadwindows_live_thread_no_windows ret=1 err=00000057 n=0
+enumthreadwindows_exited_thread ret=1 err=00000057 n=0
+enumthreadwindows_self ret=1 err=0000dead has_windows=1
+done
+== x86
+-- create_popup_hidden
+  ? WM_NCCREATE pos=30,40 size=200,100 style=80000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=80000000 ex=08000000
+  ? WM_SIZE w=0 200x100
+  ? WM_MOVE 30,40
+  state main vis=0 icon=0 zoom=0 style=84000000 ex=08000000 wr=30,40,230,140 cr=200x100
+-- create_popup_thickframe_hidden
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCREATE pos=30,40 size=200,100 style=80040000 ex=08000100
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=80040000 ex=08000100
+  ? WM_SIZE w=0 186x86
+  ? WM_MOVE 37,47
+  state main vis=0 icon=0 zoom=0 style=84040000 ex=08000100 wr=30,40,230,140 cr=186x86
+-- create_popup_caption_hidden
+  ? WM_NCCREATE pos=30,40 size=200,100 style=80c00000 ex=08000100
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=80c00000 ex=08000100
+  ? WM_SIZE w=0 194x71
+  ? WM_MOVE 33,66
+  state main vis=0 icon=0 zoom=0 style=84c00000 ex=08000100 wr=30,40,230,140 cr=194x71
+-- create_overlapped_plain_hidden
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCREATE pos=30,40 size=200,100 style=00000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=00000000 ex=08000000
+  state main vis=0 icon=0 zoom=0 style=04c00000 ex=08000100 wr=30,40,230,140 cr=194x71
+-- create_overlapped_plain_visible
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCREATE pos=30,40 size=200,100 style=10000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=10000000 ex=08000000
+  ? WM_SHOWWINDOW w=1 l=0
+  ? WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0043
+  ? WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0003
+  ? WM_ACTIVATEAPP w=00000001
+  ? WM_NCACTIVATE w=00000000
+  ? WM_ACTIVATE w=00000001
+  ? WM_SETFOCUS w=00000000
+  ? WM_NCPAINT
+  ? WM_ERASEBKGND
+  ? WM_WINDOWPOSCHANGED after=other pos=30,40 size=200,100 flags=1843
+  ? WM_SIZE w=0 194x71
+  ? WM_MOVE 33,66
+  state main vis=1 icon=0 zoom=0 style=14c00000 ex=08000100 wr=30,40,230,140 cr=194x71
+-- create_popup_minimize_hidden
+  ? WM_NCCREATE pos=30,40 size=200,100 style=a0000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=a0000000 ex=08000000
+  ? WM_SIZE w=0 0x0
+  ? WM_MOVE 30,40
+  ? WM_WINDOWPOSCHANGING after=other pos=0,1004 size=160,28 flags=8130
+  ? WM_NCCALCSIZE w=1 r0=0,1004,160,1032
+  ? WM_WINDOWPOSCHANGED after=other pos=0,1004 size=160,28 flags=8938
+  ? WM_MOVE 0,1004
+  ? WM_SIZE w=1 0x0
+  state main vis=0 icon=1 zoom=0 style=a4000000 ex=08000000 wr=0,1004,160,1032 cr=0x0
+-- create_overlapped_minimize_hidden
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCREATE pos=30,40 size=200,100 style=20cf0000 ex=08000100
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=20cf0000 ex=08000100
+  ? WM_WINDOWPOSCHANGING after=other pos=0,1004 size=160,28 flags=8130
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_NCCALCSIZE w=1 r0=0,1004,160,1032
+  ? WM_WINDOWPOSCHANGED after=other pos=0,1004 size=160,28 flags=8938
+  ? WM_MOVE 0,1004
+  ? WM_SIZE w=1 0x0
+  state main vis=0 icon=1 zoom=0 style=24cf0000 ex=08000100 wr=0,1004,160,1032 cr=0x0
+-- create_popup_maximize_hidden
+  ? WM_NCCREATE pos=30,40 size=200,100 style=81000000 ex=08000000
+  ? WM_NCCALCSIZE w=0 r0=30,40,230,140
+  ? WM_CREATE pos=30,40 size=200,100 style=81000000 ex=08000000
+  ? WM_SIZE w=0 200x100
+  ? WM_MOVE 30,40
+  ? WM_GETMINMAXINFO w=00000000
+  ? WM_WINDOWPOSCHANGING after=other pos=0,0 size=1920,1080 flags=8030
+  ? WM_NCCALCSIZE w=1 r0=0,0,1920,1080
+  ? WM_WINDOWPOSCHANGED after=other pos=0,0 size=1920,1080 flags=8038
+  ? WM_MOVE 0,0
+  ? WM_SIZE w=2 1920x1080
+  state main vis=0 icon=0 zoom=1 style=85000000 ex=08000000 wr=0,0,1920,1080 cr=1920x1080
+-- create_child_hidden
+  ? WM_NCCREATE pos=1,2 size=30,20 style=40000000 ex=00000000
+  ? WM_NCCALCSIZE w=0 r0=31,42,61,62
+  ? WM_CREATE pos=1,2 size=30,20 style=40000000 ex=00000000
+  ? WM_SIZE w=0 30x20
+  ? WM_MOVE 1,2
+  M WM_PARENTNOTIFY event=0001
+-- create_child_noparentnotify
+  ? WM_NCCREATE pos=1,2 size=30,20 style=50000000 ex=00000004
+  ? WM_NCCALCSIZE w=0 r0=31,42,61,62
+  ? WM_CREATE pos=1,2 size=30,20 style=50000000 ex=00000004
+  ? WM_SIZE w=0 30x20
+  ? WM_MOVE 1,2
+  ? WM_SHOWWINDOW w=1 l=0
+-- destroy_child_noparentnotify
+  O WM_SHOWWINDOW w=0 l=0
+  O WM_DESTROY w=00000000
+  O WM_NCDESTROY w=00000000
+-- swp flag bits
+swpbit 0 ret=1 err=0000dead
+swpbit 1 ret=1 err=0000dead
+swpbit 2 ret=1 err=0000dead
+swpbit 3 ret=1 err=0000dead
+swpbit 4 ret=1 err=0000dead
+swpbit 5 ret=1 err=0000dead
+swpbit 6 ret=1 err=0000dead
+swpbit 7 ret=1 err=0000dead
+swpbit 8 ret=1 err=0000dead
+swpbit 9 ret=1 err=0000dead
+swpbit 10 ret=1 err=0000dead
+swpbit 11 ret=0 err=000003ec
+swpbit 12 ret=0 err=000003ec
+swpbit 13 ret=1 err=0000dead
+swpbit 14 ret=1 err=0000dead
+swpbit 15 ret=0 err=000003ec
+swpbit 16 ret=0 err=000003ec
+swpbit 17 ret=1 err=0000dead
+swpbit 18 ret=0 err=000003ec
+swpbit 19 ret=0 err=000003ec
+swpbit 20 ret=0 err=000003ec
+swpbit 21 ret=0 err=000003ec
+swpbit 22 ret=0 err=000003ec
+swpbit 23 ret=0 err=000003ec
+swpbit 24 ret=0 err=000003ec
+swpbit 25 ret=0 err=000003ec
+swpbit 26 ret=0 err=000003ec
+swpbit 27 ret=0 err=000003ec
+swpbit 28 ret=0 err=000003ec
+swpbit 29 ret=0 err=000003ec
+swpbit 30 ret=0 err=000003ec
+swpbit 31 ret=0 err=000003ec
+-- swp_changing_edits
+  M WM_WINDOWPOSCHANGING after=TOP pos=50,60 size=210,110 flags=0014
+  M WM_NCCALCSIZE w=1 r0=53,60,263,174
+  M WM_WINDOWPOSCHANGED after=TOP pos=53,60 size=210,114 flags=001c
+  M WM_MOVE 53,60
+  M WM_SIZE w=0 210x114
+  ret ret=00000001 err=0000dead
+  state main vis=0 icon=0 zoom=0 style=84000000 ex=00000000 wr=53,60,263,174 cr=210x114
+-- swp_child_show_hidden_parent
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=0,0 flags=0047
+  C WM_CHILDACTIVATE w=00000000
+  C WM_WINDOWPOSCHANGED after=TOP pos=1,2 size=30,20 flags=184f
+  ret ret=00000001 err=0000dead
+  state child vis=0 icon=0 zoom=0 style=50000000 ex=00000000 wr=54,62,84,82 cr=30x20
+-- swp_async
+  M WM_WINDOWPOSCHANGING after=TOP pos=55,65 size=0,0 flags=4015
+  M WM_WINDOWPOSCHANGED after=TOP pos=55,65 size=210,114 flags=481d
+  M WM_MOVE 55,65
+  ret ret=00000001 err=0000dead
+  state main vis=0 icon=0 zoom=0 style=84000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- swp_zorder_only_hidden
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0013
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=181b
+  ret ret=00000001 err=00000000
+-- showwindow_show_popup
+  M WM_SHOWWINDOW w=1 l=0
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0043
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0003
+  M WM_ACTIVATEAPP w=00000001
+  M WM_NCACTIVATE w=00000000
+  M WM_ACTIVATE w=00000001
+  M WM_SETFOCUS w=00000000
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=1847
+  ret ret=00000000 err=00000002
+  state main vis=1 icon=0 zoom=0 style=94000000 ex=00000000 wr=55,65,265,179 cr=210x114
+  active_is_main ret=00000001 err=00000000
+-- showwindow_show_again
+  ret ret=00000018 err=0000dead
+-- showwindow_maximize
+  M WM_GETMINMAXINFO w=00000000
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=1920,1080 flags=8020
+  M WM_NCCALCSIZE w=1 r0=0,0,1920,1080
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=0,0 size=1920,1080 flags=8020
+  M WM_MOVE 0,0
+  M WM_SIZE w=2 1920x1080
+  ret ret=00000018 err=00000000
+  state main vis=1 icon=0 zoom=1 style=95000000 ex=00000000 wr=0,0,1920,1080 cr=1920x1080
+-- showwindow_maximize_again
+  ret ret=00000018 err=0000dead
+-- showwindow_restore_from_max
+  M WM_WINDOWPOSCHANGING after=other pos=55,65 size=210,114 flags=8020
+  M WM_NCCALCSIZE w=1 r0=55,65,265,179
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=8024
+  M WM_MOVE 55,65
+  M WM_SIZE w=0 210x114
+  ret ret=00000018 err=00000000
+  state main vis=1 icon=0 zoom=0 style=94000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- showwindow_minimize_activating
+  M WM_KILLFOCUS w=00000000
+  M WM_WINDOWPOSCHANGING after=TOP pos=-32000,-32000 size=160,28 flags=8174
+  M WM_NCCALCSIZE w=1 r0=-32000,-32000,-31840,-31972
+  M WM_WINDOWPOSCHANGED after=TOP pos=-32000,-32000 size=160,28 flags=8134
+  M WM_MOVE -32000,-32000
+  M WM_SIZE w=1 0x0
+  ret ret=00000018 err=00000000
+  state main vis=1 icon=1 zoom=0 style=b4000000 ex=00000000 wr=-32000,-32000,-31840,-31972 cr=0x0
+  placement show=2 flags=0 min=-32000,-32000 normal=55,65,265,179
+-- showwindow_shownormal_from_min
+  M WM_QUERYOPEN w=00000000
+  M WM_NCACTIVATE w=00000001
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0003
+  M WM_WINDOWPOSCHANGED after=other pos=-32000,-32000 size=160,28 flags=1803
+  M WM_WINDOWPOSCHANGING after=other pos=55,65 size=210,114 flags=8120
+  M WM_NCCALCSIZE w=1 r0=55,65,265,179
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=8124
+  M WM_MOVE 55,65
+  M WM_SIZE w=0 210x114
+  M WM_SETFOCUS w=00000000
+  M WM_ACTIVATE w=00000001
+  ret ret=00000018 err=00000000
+  state main vis=1 icon=0 zoom=0 style=94000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- closewindow
+  M WM_KILLFOCUS w=00000000
+  M WM_WINDOWPOSCHANGING after=other pos=-32000,-32000 size=160,28 flags=8160
+  M WM_NCCALCSIZE w=1 r0=-32000,-32000,-31840,-31972
+  M WM_WINDOWPOSCHANGED after=other pos=-32000,-32000 size=160,28 flags=8124
+  M WM_MOVE -32000,-32000
+  M WM_SIZE w=1 0x0
+  ret ret=00000001 err=00000000
+  state main vis=1 icon=1 zoom=0 style=b4000000 ex=00000000 wr=-32000,-32000,-31840,-31972 cr=0x0
+-- closewindow_again
+  ret ret=00000001 err=0000dead
+-- openicon
+  M WM_QUERYOPEN w=00000000
+  M WM_WINDOWPOSCHANGING after=other pos=55,65 size=210,114 flags=8120
+  M WM_NCCALCSIZE w=1 r0=55,65,265,179
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=8124
+  M WM_MOVE 55,65
+  M WM_SIZE w=0 210x114
+  M WM_SETFOCUS w=00000000
+  M WM_ACTIVATE w=00000001
+  ret ret=00000001 err=00000000
+  state main vis=1 icon=0 zoom=0 style=94000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- showwindow_hide_visible_popup
+  M WM_SHOWWINDOW w=0 l=0
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0083
+  M WM_WINDOWPOSCHANGED after=other pos=55,65 size=210,114 flags=1887
+  M WM_NCACTIVATE w=00000000
+  M WM_ACTIVATE w=00000000
+  M WM_ACTIVATEAPP w=00000000
+  M WM_KILLFOCUS w=00000000
+  ret ret=00000018 err=00000000
+-- showwindow_child_maximize
+  C WM_GETMINMAXINFO w=00000000
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=210,114 flags=8020
+  C WM_NCCALCSIZE w=1 r0=0,0,210,114
+  C WM_CHILDACTIVATE w=00000000
+  C WM_WINDOWPOSCHANGED after=TOP pos=0,0 size=210,114 flags=802c
+  C WM_MOVE 0,0
+  C WM_SIZE w=2 210x114
+  ret ret=00000018 err=0000dead
+  state child vis=0 icon=0 zoom=1 style=51000000 ex=00000000 wr=55,65,265,179 cr=210x114
+-- movewindow_child_repaint
+  C WM_WINDOWPOSCHANGING after=TOP pos=3,4 size=31,21 flags=0014
+  C WM_NCCALCSIZE w=1 r0=3,4,34,25
+  C WM_WINDOWPOSCHANGED after=TOP pos=3,4 size=31,21 flags=001c
+  C WM_MOVE 3,4
+  C WM_SIZE w=0 31x21
+  ret ret=00000001 err=0000dead
+-- defer
+-- defer_two_children
+  begin_nonnull ret=00000001 err=00000000
+  defer1_same_handle ret=00000001 err=00000000
+  defer2_nonnull ret=00000001 err=00000000
+  (end)
+  C WM_WINDOWPOSCHANGING after=TOP pos=5,6 size=0,0 flags=0015
+  O WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=40,30 flags=0016
+  O WM_NCCALCSIZE w=1 r0=50,2,90,32
+  C WM_WINDOWPOSCHANGED after=TOP pos=5,6 size=31,21 flags=081d
+  C WM_MOVE 5,6
+  O WM_WINDOWPOSCHANGED after=TOP pos=50,2 size=40,30 flags=101e
+  O WM_SIZE w=0 40x30
+  end ret=00000001 err=0000dead
+  state child vis=0 icon=0 zoom=0 style=50000000 ex=00000000 wr=60,71,91,92 cr=31x21
+begin_negative ret=00000000 err=00000057
+begin_zero_nonnull ret=00000001 err=0000dead
+defer_invalid_hwnd ret=00000000 err=00000578
+defer_after_failure_same_handle ret=00000001 err=0000dead
+end_after_failure ret=00000001 err=0000dead
+defer_invalid_hdwp ret=00000000 err=0000057d
+end_invalid_hdwp ret=00000000 err=0000057d
+defer_mixed_parents_nonnull ret=00000001 err=0000dead
+defer_mixed_parents_second ret=00000001 err=0000dead
+end_mixed ret=00000001 err=000005a1
+defer_bad_flags ret=00000000 err=000003ec
+-- setparent
+-- setparent_between_visible_parents
+  C WM_SHOWWINDOW w=0 l=0
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=0,0 flags=0097
+  M WM_ERASEBKGND
+  C WM_WINDOWPOSCHANGED after=TOP pos=0,0 size=31,21 flags=1897
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=0,0 flags=0005
+  C WM_CHILDACTIVATE w=00000000
+  C WM_WINDOWPOSCHANGED after=TOP pos=0,0 size=31,21 flags=080d
+  C WM_MOVE 0,0
+  C WM_SHOWWINDOW w=1 l=0
+  C WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=0,0 flags=0057
+  ? WM_ERASEBKGND
+  C WM_WINDOWPOSCHANGED after=TOP pos=0,0 size=31,21 flags=1857
+  prev_is_main ret=00000001 err=00000000
+  state child vis=1 icon=0 zoom=0 style=50000000 ex=00000000 wr=300,300,331,321 cr=31x21
+setparent_to_self ret=00000000 err=00000057
+setparent_to_own_child ret=00000000 err=00000057
+setparent_invalid_parent ret=00000000 err=00000578
+setparent_invalid_child ret=00000000 err=00000578
+setparent_desktop_returns_prev_is_p2 ret=00000001 err=0000dead
+  style_after_desktop ret=54000000 err=00000000
+  getparent_after_desktop_null ret=00000000 err=00000000
+  ga_parent_desktop ret=00000001 err=00000000
+-- destroy order
+-- destroy_owner_with_owned_and_children
+  O WM_DESTROY w=00000000
+  O WM_NCDESTROY w=00000000
+  M WM_DESTROY w=00000000
+  C WM_DESTROY w=00000000
+  ? WM_DESTROY w=00000000
+  ? WM_NCDESTROY w=00000000
+  C WM_NCDESTROY w=00000000
+  M WM_NCDESTROY w=00000000
+  ret ret=00000001 err=00000000
+-- destroy_parent_with_two_children
+  M WM_DESTROY w=00000000
+  C WM_DESTROY w=00000000
+  ? WM_DESTROY w=00000000
+  O WM_DESTROY w=00000000
+  ? WM_NCDESTROY w=00000000
+  C WM_NCDESTROY w=00000000
+  O WM_NCDESTROY w=00000000
+  M WM_NCDESTROY w=00000000
+  ret ret=00000001 err=00000000
+-- overlapped_swp_then_first_show
+  M WM_WINDOWPOSCHANGING after=TOP pos=40,50 size=220,120 flags=0014
+  M WM_GETMINMAXINFO w=00000000
+  M WM_NCCALCSIZE w=1 r0=40,50,260,170
+  M WM_WINDOWPOSCHANGED after=TOP pos=40,50 size=220,120 flags=001c
+  M WM_MOVE 43,76
+  M WM_SIZE w=0 214x91
+  swp ret=00000001 err=0000dead
+  M WM_SHOWWINDOW w=1 l=0
+  M WM_WINDOWPOSCHANGING after=other pos=0,0 size=0,0 flags=0053
+  M WM_NCPAINT
+  M WM_ERASEBKGND
+  M WM_WINDOWPOSCHANGED after=other pos=40,50 size=220,120 flags=1857
+  M WM_SIZE w=0 214x91
+  M WM_MOVE 43,76
+  show ret=00000000 err=0000dead
+-- swp_tiny_without_dwp_changing
+  M WM_WINDOWPOSCHANGING after=TOP pos=0,0 size=5,5 flags=0016
+  M WM_NCCALCSIZE w=1 r0=30,40,35,45
+  M WM_WINDOWPOSCHANGED after=TOP pos=30,40 size=5,5 flags=101e
+  M WM_SIZE w=0 0x0
+  ret ret=00000001 err=0000dead
+  state main vis=0 icon=0 zoom=0 style=04cf0000 ex=00000100 wr=30,40,35,45 cr=0x0
+-- enumthreadwindows
+enumthreadwindows_live_thread_no_windows ret=1 err=00000057 n=0
+enumthreadwindows_exited_thread ret=1 err=00000057 n=0
+enumthreadwindows_self ret=1 err=0000dead has_windows=1
+done

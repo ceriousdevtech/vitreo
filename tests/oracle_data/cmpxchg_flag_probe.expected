@@ -1,0 +1,20 @@
+LOCK CMPXCHG memory probe
+lock8 acc=01 mem=02 src=55 -> mem=02 acc=02 flags=0095
+      acc-mem=0095  mem-acc=0000
+lock8 acc=02 mem=01 src=55 -> mem=01 acc=01 flags=0000
+      acc-mem=0000  mem-acc=0095
+lock8 acc=80 mem=01 src=55 -> mem=01 acc=01 flags=0810
+      acc-mem=0810  mem-acc=0885
+lock8 acc=01 mem=80 src=55 -> mem=80 acc=80 flags=0885
+      acc-mem=0885  mem-acc=0810
+lock8 acc=00 mem=ff src=55 -> mem=ff acc=ff flags=0011
+      acc-mem=0011  mem-acc=0084
+lock8 acc=ff mem=00 src=55 -> mem=00 acc=00 flags=0084
+      acc-mem=0084  mem-acc=0011
+lock8 acc=08 mem=09 src=55 -> mem=09 acc=09 flags=0095
+      acc-mem=0095  mem-acc=0000
+lock8 acc=7f mem=80 src=55 -> mem=80 acc=80 flags=0885
+      acc-mem=0885  mem-acc=0810
+lock8 acc=42 mem=42 src=55 -> mem=55 acc=42 flags=0044
+      acc-mem=0044  mem-acc=0044
+done

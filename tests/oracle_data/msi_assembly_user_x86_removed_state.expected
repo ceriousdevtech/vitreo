@@ -1,0 +1,9 @@
+[LocalMachine/64] SOFTWARE\Classes\Installer\Assemblies
+[LocalMachine/64] SOFTWARE\Classes\Installer\Assemblies\Global
+  stdole,fileVersion="7.0.9466.1",version="7.0.3300.0",culture="neutral",publicKeyToken="B03F5F7F11D50A3A" = MultiString:<X5tJLhPrc8)(f%Wz0*[A>+Ox0Iul3g(W'z?VXB]2d>
+[LocalMachine/32] SOFTWARE\Classes\Installer\Assemblies
+[LocalMachine/32] SOFTWARE\Classes\Installer\Assemblies\Global
+  stdole,fileVersion="7.0.9466.1",version="7.0.3300.0",culture="neutral",publicKeyToken="B03F5F7F11D50A3A" = MultiString:<X5tJLhPrc8)(f%Wz0*[A>+Ox0Iul3g(W'z?VXB]2d>
+[files]
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab <dir>

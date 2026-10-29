@@ -1,0 +1,16 @@
+pointer=4 STATSTG.size=72 STATSTG.cbSize=8
+STATFLAG_NONAME=1 STREAM_SEEK_SET=0 STREAM_SEEK_CUR=1 STREAM_SEEK_END=2
+IStream.QueryInterface=0
+IStream.AddRef=1
+IStream.Release=2
+IStream.Read=3
+IStream.Write=4
+IStream.Seek=5
+IStream.SetSize=6
+IStream.CopyTo=7
+IStream.Commit=8
+IStream.Revert=9
+IStream.LockRegion=10
+IStream.UnlockRegion=11
+IStream.Stat=12
+IStream.Clone=13

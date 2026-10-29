@@ -1,0 +1,12 @@
+read_pending r=0 gle=3e5 event_reset=102
+ex_0ms r=0 gle=3e4
+ex_50ms r=0 gle=102
+gor_nowait r=0 gle=3e4
+ex_done r=1 gle=0 n=5
+gor_file_object_wait r=1 gle=0 n=4
+small_read_pending r=0 gle=3e5
+more_data r=0 gle=ea n=4 internal=80000005
+remainder r=1 gle=0 n=6
+broken r=0 gle=6d n=0 internal=c000014b
+skip_set_event_mode r=1
+skip_set_event_explicit wait=0

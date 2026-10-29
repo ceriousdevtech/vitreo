@@ -1,0 +1,80 @@
+crlf rc=0
+crlf row [2]#|x|5
+crlf row [2]#|y|~
+crlf end=259 rows=2
+crlf names rc=0 [2]~|K|V
+crlf types rc=0 [2]~|s10|I2
+lf rc=0
+lf row [2]#|x|5
+lf row [2]#|y|~
+lf end=259 rows=2
+lf names rc=0 [2]~|K|V
+lf types rc=0 [2]~|S10|I2
+escapes rc=0
+escapes row [2]#|x|tab\x0009cr\x000dlf\x000aback\x005cslash
+escapes end=259 rows=1
+escapes names rc=0 [2]~|K|V
+escapes types rc=0 [2]~|s10|S0
+codepage rc=0
+codepage row [2]#|x|\x00e9
+codepage end=259 rows=1
+codepage names rc=0 [2]~|K|V
+codepage types rc=0 [2]~|s10|S0
+cp-after open=1615
+cp-after lasterr [4]~|2228|i2.msi|_ForceCodepage|SELECT * FROM `_ForceCodepage`
+binary rc=1627
+binary lasterr [4]~|2216|i2.msi|k1.ibd|4
+nullable-key rc=0
+nullable-key row [3]#|a|~|nullkey
+nullable-key row [3]#|b|2|ok
+nullable-key end=259 rows=2
+nullable-key names rc=0 [3]~|K|I|V
+nullable-key types rc=0 [3]~|s10|I2|S0
+null-notnull rc=1627
+null-notnull lasterr [4]~|2216|i2.msi|g.idt|4
+dupkey rc=1627
+dupkey lasterr [4]~|2216|i2.msi|h.idt|5
+extra-field rc=1627
+extra-field lasterr [4]~|2216|i2.msi|i.idt|5
+missing-field rc=1627
+missing-field lasterr [4]~|2216|i2.msi|j.idt|4
+existing-table rc=0
+existing-table row [2]#|z|9
+existing-table end=259 rows=1
+existing-table names rc=0 [2]~|K|V
+existing-table types rc=0 [2]~|s10|i2
+localizable rc=0
+localizable row [2]#|x|loc
+localizable end=259 rows=1
+localizable names rc=0 [2]~|K|V
+localizable types rc=0 [2]~|s10|l0
+blank-line rc=1627
+blank-line lasterr [4]~|2216|i2.msi|m.idt|5
+no-rows rc=0
+no-rows end=259 rows=0
+no-rows names rc=0 [1]~|K
+no-rows types rc=0 [1]~|s10
+key-not-first rc=1627
+key-not-first lasterr [4]~|2216|i2.msi|o.idt|3
+overflow rc=1627
+overflow lasterr [4]~|2216|i2.msi|p.idt|4
+forcecp rc=0
+forcecp row [2]#|z|9
+forcecp end=259 rows=1
+forcecp names rc=0 [2]~|K|V
+forcecp types rc=0 [2]~|s10|i2
+si rc=0
+si row [2]#|z|9
+si end=259 rows=1
+si names rc=0 [2]~|K|V
+si types rc=0 [2]~|s10|i2
+export-a 0
+export-c 0
+export-cp 0
+export-null-file 87
+export-null-table 87
+export-bad 6
+import-null-file 87
+import-null-dir 87
+import-relative 161
+import-bad 6

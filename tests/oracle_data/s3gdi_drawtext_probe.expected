@@ -1,0 +1,52 @@
+extent Hello=29x16
+left|top ret=16 err=0 rc=10,5,90,30 box=10,5,39,21
+calcrect ret=16 err=0 rc=10,5,39,21 box=160,80,0,0
+calcrect singleline ret=16 err=0 rc=10,5,39,21 box=160,80,0,0
+calcrect multiline ret=32 err=0 rc=10,5,24,37 box=160,80,0,0
+multiline ret=32 err=0 rc=10,5,90,30 box=10,5,24,30
+crlf ret=32 err=0 rc=10,5,90,30 box=10,5,24,30
+cr only ret=32 err=0 rc=10,5,90,30 box=10,5,24,30
+singleline with newline ret=16 err=0 rc=10,5,90,30 box=10,5,38,21
+calcrect wordbreak ret=64 err=0 rc=10,5,48,69 box=160,80,0,0
+wordbreak ret=64 err=0 rc=10,5,60,70 box=10,5,48,69
+calcrect wordbreak longword ret=32 err=0 rc=10,5,115,37 box=160,80,0,0
+wordbreak longword ret=32 err=0 rc=10,5,60,70 box=10,5,60,37
+calcrect wordbreak spaces ret=48 err=0 rc=10,5,24,53 box=160,80,0,0
+center|vcenter|single ret=28 err=0 rc=10,10,110,50 box=45,22,74,38
+right|bottom|single ret=40 err=0 rc=10,10,110,50 box=81,34,110,50
+center multiline ret=32 err=0 rc=10,10,110,50 box=45,10,74,42
+vcenter multiline(ignored) ret=32 err=0 rc=10,10,110,50 box=10,10,39,42
+bottom no singleline ret=16 err=0 rc=10,10,110,50 box=10,10,39,26
+prefix ret=16 err=0 rc=10,5,90,30 box=10,5,31,21
+calcrect prefix ret=16 err=0 rc=10,5,31,21 box=160,80,0,0
+calcrect noprefix ret=16 err=0 rc=10,5,40,21 box=160,80,0,0
+double amp ret=16 err=0 rc=10,5,37,21 box=160,80,0,0
+hideprefix ret=16 err=0 rc=10,5,90,30 box=10,5,31,21
+prefixonly ret=16 err=0 rc=10,5,90,30 box=10,19,18,20
+calcrect tab ret=16 err=0 rc=10,5,24,21 box=160,80,0,0
+calcrect expandtabs ret=16 err=0 rc=10,5,65,21 box=160,80,0,0
+calcrect tabstop 4 ret=16 err=0 rc=10,5,90,30 box=10,5,41,21
+clip ret=16 err=0 rc=10,5,40,30 box=10,5,40,21
+noclip ret=16 err=0 rc=10,5,40,30 box=10,5,77,21
+end ellipsis ret=16 err=0 rc=10,5,40,30 box=10,5,38,21
+calcrect end ellipsis ret=16 err=0 rc=10,5,38,21 box=160,80,0,0
+word ellipsis ret=16 err=0 rc=10,5,40,30 box=10,5,38,21
+path ellipsis ret=16 err=0 rc=10,5,40,30 box=10,5,40,21
+empty ret=1 err=57005 rc=10,5,90,30 box=160,80,0,0
+calcrect empty ret=1 err=57005 rc=10,5,10,5 box=160,80,0,0
+count 0 ret=1 err=57005 rc=10,5,90,30 box=160,80,0,0
+count 2 ret=16 err=0 rc=10,5,90,30 box=10,5,24,21
+calcrect negative rect ret=16 err=0 rc=50,40,79,56 box=160,80,0,0
+calcrect trailing newline ret=32 err=0 rc=10,5,24,37 box=160,80,0,0
+transparent ret=16 err=0 rc=10,5,90,30 box=11,8,38,18
+with ta_right|baseline ret=16 err=0 rc=10,5,90,30 box=160,80,0,0
+with updatecp ret=16 err=0 rc=10,5,90,30 box=30,20,59,30
+cp after=59,20
+calcrect 2 lines -16 ret=36 err=0 rc=10,5,19,41 box=160,80,0,0
+calcrect 2 lines -16 externalleading ret=38 err=0 rc=10,5,19,43 box=160,80,0,0
+ex margins ret=16 rc=10,5,90,30 box=15,5,68,21 drawn=7
+ex calcrect margins ret=16 rc=10,5,51,21 drawn=5
+ex bad cbSize ret=0 err=87
+NULL dc ret=0 err=57005
+NULL text ret=0 err=57005
+A calcrect ret=16 rc=10,5,39,21 err=0

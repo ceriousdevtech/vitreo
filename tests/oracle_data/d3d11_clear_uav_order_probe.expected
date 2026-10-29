@@ -1,0 +1,4 @@
+CreateComputeShader -> 0x00000000
+dispatch-then-clear nonzero=0 of 1024
+clear-then-dispatch mismatches=0 of 1024
+dispatch-clear-dispatch-clear nonzero=0 of 1024

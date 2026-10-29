@@ -1,0 +1,32 @@
+manual signaled, null timeout        0x00000000
+manual signaled, zero timeout        0x00000000
+manual unsignaled, zero timeout      0x00000102
+unsignaled, 30 ms relative           0x00000102
+  waited at least 25 ms              yes
+unsignaled, absolute 1 (past)        0x00000102
+auto signaled, zero timeout          0x00000000
+auto after the wait consumed it      0x00000102
+semaphore count 1                    0x00000000
+semaphore count 0                    0x00000102
+mutex owned by caller                0x00000000
+mutex abandoned                      0x00000080
+mutex after abandoned wait           0x00000000
+exited thread handle                 0x00000000
+current process, zero timeout        0x00000102
+current thread, zero timeout         0x00000102
+invalid handle 0x1234                0xc0000008
+null handle                          0xc0000008
+registry key handle                  0xc0000022
+section handle                       0xc0000022
+file handle                          0x00000000
+signaled, no SYNCHRONIZE access      0xc0000022
+bad timeout pointer                  0xc0000005
+nonalertable, apc queued             0x00000102
+  apcs run                           0
+alertable, apc queued                0x000000c0
+  apcs run                           1
+alertable, apc queued, signaled      0x000000c0
+  apcs run                           2
+nonalertable, thread alerted         0x00000102
+alertable, thread alerted            0x00000101
+alertable, alert consumed            0x00000102

@@ -1,0 +1,169 @@
+opt_access req=80000000 ok=1 gle=dead granted=2001a
+opt_access req=40000000 ok=1 gle=dead granted=201e0
+opt_access req=20000000 ok=1 gle=dead granted=20005
+opt_access req=10000000 ok=1 gle=dead granted=f01ff
+opt_access req=2000000 ok=1 gle=dead granted=f01ff
+opt_access req=200 ok=0 gle=5 out=0
+opt_access req=10000200 ok=0 gle=5 out=0
+opt_access req=100008 ok=0 gle=5 out=0
+opt_access req=0 ok=0 gle=5 out=0
+ott_generic_read ok=1 granted=2001a
+ctm_null_everyone ok=1 gle=dead member=1
+ctm_null_user ok=1 gle=dead member=1
+ctm_null_system ok=1 gle=dead member=0
+ctm_null_random ok=1 gle=dead member=0
+ctm_null_au ok=1 gle=dead member=1
+ctm_null_admin_matches_elevation eq=1
+ctm_primary ok=0 gle=51d member=0
+ctm_pseudo_process ok=1 gle=dead member=1
+ctm_pseudo_thread ok=0 gle=3f0 member=0
+ctm_pseudo_effective ok=1 gle=dead member=1
+ctm_primary_noquery ok=0 gle=5 member=0
+ctm_badhandle ok=0 gle=6 member=0
+ctm_event ok=0 gle=6 member=0
+ctm_imp_noquery ok=0 gle=5 member=0
+ctm_imp_everyone ok=1 gle=dead member=1
+ctm_imp_user ok=1 gle=dead member=1
+ctm_imp_random ok=1 gle=dead member=0
+ctm_ident_everyone ok=1 gle=dead member=1
+ctm_anon_everyone ok=0 gle=542 member=0
+ctm_deleg_everyone ok=1 gle=dead member=1
+restricted_create ok=1
+ctm_restr_everyone ok=1 gle=dead member=0
+ctm_restr_user ok=1 gle=dead member=1
+ctm_restr_au ok=1 gle=dead member=0
+ctm_restr_primary ok=0 gle=51d member=0
+ctm_thread_restr_au ok=0 gle=5 member=0
+ctm_thread_restr_user ok=0 gle=5 member=0
+ctm_restr2_everyone ok=1 gle=dead member=1
+ctm_restr2_au ok=1 gle=dead member=0
+ctm_denyonly_admin ok=1 gle=dead member=0
+ctm_thread_self_everyone ok=1 gle=dead member=1
+src_dup_query type=1 level=55 granted=a
+dte_zero ok=1 gle=dead
+  kind type=2 level=2 granted=a
+dte_max ok=1 gle=dead
+  kind type=2 level=2 granted=f01ff
+dte_generic_all ok=1 gle=dead
+  kind type=2 level=2 granted=f01ff
+dte_generic_read ok=1 gle=dead
+  kind type=2 level=2 granted=2001a
+dte_generic_write ok=1 gle=dead
+  kind type=0 level=55 granted=201e0
+dte_generic_exec ok=1 gle=dead
+  kind type=0 level=55 granted=20005
+dte_query ok=1 gle=dead
+  kind type=2 level=2 granted=8
+dte_primary_zero ok=1 gle=dead
+  kind type=1 level=55 granted=a
+dte_primary_max ok=1 gle=dead
+  kind type=1 level=55 granted=f01ff
+dte_level4 ok=0 gle=542 out=0
+dte_level_ff ok=0 gle=542 out=0
+dte_type0 ok=0 gle=57 out=0
+dte_type3 ok=0 gle=57 out=0
+dte_primary_level9 ok=0 gle=542 out=0
+dte_all_access ok=1 gle=dead
+  kind type=2 level=2 granted=f01ff
+dte_bogus_bits ok=1 gle=dead
+  kind type=0 level=55 granted=0
+dte_access_system_security ok=1 gle=dead
+  kind type=0 level=55 granted=1000000
+dte_src_nodup ok=0 gle=5 out=0
+dte_badhandle ok=0 gle=6 out=0
+dte_pseudo_process_token ok=0 gle=6 out=0
+dte_ident_to_primary ok=0 gle=542 out=0
+dte_ident_to_impers ok=0 gle=542 out=0
+dte_ident_to_ident ok=1 gle=dead
+  kind type=2 level=1 granted=8
+dte_ident_to_anon ok=1 gle=dead
+  kind type=2 level=0 granted=8
+dte_imp_to_primary ok=1 gle=dead
+  kind type=1 level=55 granted=8
+dte_imp_to_deleg ok=0 gle=542 out=0
+dt_nodup ok=0 gle=5 out=0
+dt_badlevel ok=0 gle=542 out=0
+dt_ok ok=1 gle=dead
+  kind type=2 level=2 granted=c
+ac_primary ok=0 gle=51d granted=5555 status=5555 pslen=40 privCount=0
+ac_noquery ok=0 gle=5 granted=5555 status=5555 pslen=40 privCount=0
+ac_badtoken ok=0 gle=6 granted=5555 status=5555 pslen=40 privCount=0
+ac_nulldacl ok=1 gle=dead granted=1 status=1 pslen=40 privCount=0
+ac_nulldacl_max ok=1 gle=dead granted=1f01ff status=1 pslen=40 privCount=0
+ac_nodacl ok=1 gle=dead granted=1 status=1 pslen=40 privCount=0
+ac_emptydacl ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_allow_wd ok=1 gle=dead granted=1 status=1 pslen=40 privCount=0
+ac_allow_wd_partial ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_deny_first ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_deny_other_bits ok=1 gle=dead granted=1 status=1 pslen=40 privCount=0
+ac_allow_then_deny ok=1 gle=dead granted=1 status=1 pslen=40 privCount=0
+ac_generic_desired ok=0 gle=550 granted=5555 status=5555 pslen=40 privCount=0
+ac_generic_ace ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_max_fr ok=1 gle=dead granted=120089 status=1 pslen=40 privCount=0
+ac_max_deny ok=1 gle=dead granted=d00e9 status=1 pslen=40 privCount=0
+ac_max_empty ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_max_plus_read ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_inherit_only ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_random_sid ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_zero_desired ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_zero_desired_empty ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_owner_implicit ok=1 gle=dead granted=60000 status=1 pslen=40 privCount=0
+ac_owner_max ok=1 gle=dead granted=160089 status=1 pslen=40 privCount=0
+ac_owner_rights_ace ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_user_ace ok=1 gle=dead granted=2 status=1 pslen=40 privCount=0
+ac_no_owner ok=0 gle=53a granted=5555 status=5555 pslen=40 privCount=0
+ac_no_group ok=0 gle=53a granted=5555 status=5555 pslen=40 privCount=0
+ac_system_security ok=1 gle=dead granted=1000000 status=1 pslen=40 privCount=1
+ac_label_nw_ok ok=1 gle=dead granted=2 status=1 pslen=40 privCount=0
+ac_label_sys_nw ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_label_sys_read ok=1 gle=dead granted=1 status=1 pslen=40 privCount=0
+ac_label_sys_nr ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_label_sys_max ok=1 gle=dead granted=1200a9 status=1 pslen=40 privCount=0
+ac_pslen0 ok=0 gle=7a granted=5555 status=5555 pslen=14 privCount=cccccccc
+ac_pslen7 ok=0 gle=7a granted=5555 status=5555 pslen=14 privCount=cccccccc
+ac_pslen8 ok=0 gle=7a granted=5555 status=5555 pslen=14 privCount=cccccccc
+ac_pslen20 ok=1 gle=dead granted=1 status=1 pslen=14 privCount=0
+ac_restr_wd_allow ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_restr_wd_deny ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_restr_user ok=1 gle=dead granted=1 status=1 pslen=40 privCount=0
+ac_restr_au ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_restr_split_max ok=1 gle=dead granted=120116 status=1 pslen=40 privCount=0
+priv_state security=3 takeown=3
+ac_sacl_priv_disabled ok=1 gle=522 granted=0 status=0 pslen=40 privCount=0
+ac_sacl_priv_enabled ok=1 gle=dead granted=1000000 status=1 pslen=40 privCount=1
+ac_sacl_priv_enabled_max ok=1 gle=dead granted=1120089 status=1 pslen=40 privCount=1
+ac_writeowner_no_ace ok=1 gle=dead granted=80000 status=1 pslen=40 privCount=1
+ac_writeowner_takeown ok=1 gle=dead granted=80000 status=1 pslen=40 privCount=1
+ac_writeowner_takeown_max ok=1 gle=dead granted=120089 status=1 pslen=40 privCount=0
+ac_sacl_priv_removed ok=1 gle=522 granted=0 status=0 pslen=40 privCount=0
+dte_sacl_priv_removed ok=1 gle=dead
+  kind type=0 level=55 granted=1000000
+set_low_integrity ok=1
+ac_low_vs_me_write ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_low_vs_me_read ok=1 gle=dead granted=1 status=1 pslen=40 privCount=0
+ac_low_vs_me_max ok=1 gle=dead granted=1200a9 status=1 pslen=40 privCount=0
+ac_low_nolabel_write ok=1 gle=5 granted=0 status=0 pslen=40 privCount=0
+ac_low_vs_low_write ok=1 gle=dead granted=2 status=1 pslen=40 privCount=0
+anon_impersonate ok=1 gle=dead
+anon_open_thread_token ok=1 gle=dead
+  anon_user S-1-5-7 groups=1 S-1-16-0/60 type=2 level=2 privs=0 integrity=0
+anon_ctm_everyone ok=1 gle=dead member=0
+anon_ctm_anonymous ok=1 gle=0 member=1
+anon_badhandle ok=0 gle=6
+anon_event ok=0 gle=6
+inpc_event ok=0 gle=6
+inpc_badhandle ok=0 gle=6
+inpc_default_before_read ok=0 gle=558
+inpc_default_after_read ok=1 gle=dead
+  thread_token ok=1 gle=0 sameUser=1 level=2
+  revert ok=1 gle=dead
+inpc_ident_before_read ok=1 gle=dead
+inpc_ident_after_read ok=1 gle=dead
+  thread_token ok=1 gle=0 sameUser=1 level=1
+  revert ok=1 gle=dead
+inpc_anon_before_read ok=1 gle=dead
+inpc_anon_after_read ok=1 gle=dead
+  thread_token ok=0 gle=543
+  revert ok=1 gle=dead
+imp_survives_close ok=1 gle=dead
+after_revert ok=0 gle=3f0

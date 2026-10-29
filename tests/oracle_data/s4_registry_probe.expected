@@ -1,0 +1,38 @@
+create r=0
+enumw_all_0 r=0 cch=5 type=4 cb=4 d0=44 d1=33 n0=61 name='alpha'
+enumw_all_1 r=0 cch=f type=1 cb=c d0=68 d1=0 n0=62 name='bravo_long_name'
+enumw_all_2 r=0 cch=1 type=3 cb=7 d0=1 d1=2 n0=63 name='c'
+enumw_all_3 r=0 cch=5 type=7 cb=e d0=61 d1=0 n0=6d name='multi'
+enumw_all_4 r=0 cch=0 type=1 cb=8 d0=64 d1=0 n0=0 name=''
+enumw_all_5 r=103 cch=40 type=0 cb=40 d0=cc d1=cc n0=23 name='####################'
+enumw_name_exact r=ea cch=f type=1 cb=0 d0=cc d1=cc n0=23 name='####################'
+enumw_name_plus1 r=0 cch=f type=1 cb=0 d0=cc d1=cc n0=62 name='bravo_long_name'
+enumw_name_small r=ea cch=4 type=1 cb=0 d0=cc d1=cc n0=23 name='####################'
+enumw_name_zero r=ea cch=0 type=1 cb=0 d0=cc d1=cc n0=23 name='####################'
+enumw_name_null r=57 cch=10 type=aaaa cb=0 d0=cc d1=cc
+enumw_data_small r=ea cch=f type=1 cb=c d0=cc d1=cc n0=62 name='bravo_long_name'
+enumw_data_exact r=0 cch=f type=1 cb=c d0=68 d1=0 n0=62 name='bravo_long_name'
+enumw_data_nonul r=ea cch=f type=1 cb=c d0=cc d1=cc n0=62 name='bravo_long_name'
+enumw_data_sizeonly r=0 cch=f type=1 cb=c d0=cc d1=cc n0=62 name='bravo_long_name'
+enumw_data_noptr_size r=57 cch=40 type=aaaa cb=0 d0=cc d1=cc n0=23 name='####################'
+enumw_dword_small r=ea cch=5 type=4 cb=4 d0=cc d1=cc n0=61 name='alpha'
+enumw_both_small r=ea cch=4 type=1 cb=c d0=cc d1=cc n0=23 name='####################'
+enumw_past_end r=103 cch=40 type=0 cb=40 d0=cc d1=cc n0=23 name='####################'
+enumw_bad_key r=6 cch=40 type=0 cb=40 d0=cc d1=cc n0=23 name='####################'
+enuma_all_0 r=0 cch=5 type=4 cb=4 d0=44 d1=33 d2=22 n0=61 name='alpha'
+enuma_all_1 r=0 cch=f type=1 cb=6 d0=68 d1=65 d2=6c n0=62 name='bravo_long_name'
+enuma_all_2 r=0 cch=1 type=3 cb=7 d0=1 d1=2 d2=3 n0=63 name='c'
+enuma_all_3 r=0 cch=5 type=7 cb=7 d0=61 d1=62 d2=0 n0=6d name='multi'
+enuma_all_4 r=0 cch=0 type=1 cb=4 d0=64 d1=65 d2=66 n0=0 name=''
+enuma_all_5 r=103 cch=40 type=aaaa cb=40 d0=cc d1=cc d2=cc n0=23 name='####################'
+enuma_name_exact r=ea cch=f type=1 cb=0 d0=cc d1=cc d2=cc n0=62 name='bravo_long_nam'
+enuma_name_plus1 r=0 cch=f type=1 cb=0 d0=cc d1=cc d2=cc n0=62 name='bravo_long_name'
+enuma_data_small r=ea cch=40 type=1 cb=6 d0=cc d1=cc d2=cc n0=23 name='####################'
+enuma_data_sizeonly r=0 cch=f type=1 cb=6 d0=cc d1=cc d2=cc n0=62 name='bravo_long_name'
+enuma_multi r=0 cch=5 type=7 cb=7 d0=61 d1=62 d2=0 n0=6d name='multi'
+qikw r=0 ccls=0 cls0=0 nsub=2 msub=a mcls=0 nval=5 mvn=f mvd=e sd_nonzero=1 ft_nonzero=1
+qikw_cls_zero r=0 ccls=0 cls0=23
+qikw_nulls r=0 nsub=2
+qikw_cls_no_len r=57
+qikw_bad_key r=6 nsub=0
+qika r=0 ccls=0 cls0=0 nsub=2 msub=a mcls=0 nval=5 mvn=f mvd=e sd_nonzero=1 ft_nonzero=1

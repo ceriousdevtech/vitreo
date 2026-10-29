@@ -1,0 +1,10 @@
+cache=0 action=0 factory=00000000 initial=57 palette=00000000 color=8000ff00 cursor=57 copy=00000000 pixel=00800080 cursor=111
+cache=0 action=1 factory=00000000 initial=57 first_palette=00000000 first_cursor=57 palette=00000000 color=8000ff00 cursor=57 copy=00000000 pixel=00800080 cursor=111
+cache=0 action=2 factory=00000000 initial=57 first_copy=00000000 first_pixel=00800080 first_cursor=111 palette=00000000 color=8000ff00 cursor=111 copy=00000000 pixel=00800080 cursor=111
+cache=0 action=3 factory=00000000 initial=57 palette=00000000 color=8000ff00 cursor=57 copy=00000000 pixel=00800080 cursor=111
+cache=0 action=4 factory=00000000 initial=57 palette=00000000 color=8000ff00 cursor=57 copy=8003001e pixel=00000000 cursor=71
+cache=1 action=0 factory=00000000 initial=111 palette=00000000 color=8000ff00 cursor=111 copy=00000000 pixel=00800080 cursor=111
+cache=1 action=1 factory=00000000 initial=111 first_palette=00000000 first_cursor=111 palette=00000000 color=8000ff00 cursor=111 copy=00000000 pixel=00800080 cursor=111
+cache=1 action=2 factory=00000000 initial=111 first_copy=00000000 first_pixel=00800080 first_cursor=111 palette=00000000 color=8000ff00 cursor=111 copy=00000000 pixel=00800080 cursor=111
+cache=1 action=3 factory=00000000 initial=111 palette=00000000 color=8000ff00 cursor=111 copy=00000000 pixel=00800080 cursor=111
+cache=1 action=4 factory=00000000 initial=111 palette=00000000 color=8000ff00 cursor=111 copy=8003001e pixel=00000000 cursor=71

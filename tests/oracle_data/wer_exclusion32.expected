@@ -1,0 +1,34 @@
+bits 32
+WerAddExcludedApplication(L"vitreo_wer_probe.exe", FALSE) -> 0x00000000
+  HKCU: value 'vitreo_wer_probe.exe' type 4 len 4 data 01 00 00 00
+WerAddExcludedApplication(L"vitreo_wer_probe.exe", FALSE) -> 0x00000000
+  HKCU: value 'vitreo_wer_probe.exe' type 4 len 4 data 01 00 00 00
+WerAddExcludedApplication(L"VITREO_WER_PROBE.EXE", FALSE) -> 0x00000000
+  HKCU: value 'vitreo_wer_probe.exe' type 4 len 4 data 01 00 00 00
+WerAddExcludedApplication(L"C:\\Dir\\vitreo_path.exe", FALSE) -> 0x00000000
+  HKCU: value 'vitreo_wer_probe.exe' type 4 len 4 data 01 00 00 00
+  HKCU: value 'vitreo_path.exe' type 4 len 4 data 01 00 00 00
+WerAddExcludedApplication(L"vitreo_noext", FALSE) -> 0x00000000
+  HKCU: value 'vitreo_wer_probe.exe' type 4 len 4 data 01 00 00 00
+  HKCU: value 'vitreo_path.exe' type 4 len 4 data 01 00 00 00
+  HKCU: value 'vitreo_noext' type 4 len 4 data 01 00 00 00
+WerAddExcludedApplication(L"", FALSE) -> 0x80070057
+WerAddExcludedApplication(longname, FALSE) -> 0x00000000
+WerAddExcludedApplication(longname, FALSE) -> 0x00000000
+WerAddExcludedApplication(longname, FALSE) -> 0x00000000
+WerRemoveExcludedApplication(longname, FALSE) -> 0x00000000
+WerRemoveExcludedApplication(L"vitreo_wer_probe.exe", FALSE) -> 0x00000000
+  HKCU: value 'vitreo_path.exe' type 4 len 4 data 01 00 00 00
+  HKCU: value 'vitreo_noext' type 4 len 4 data 01 00 00 00
+WerRemoveExcludedApplication(L"vitreo_wer_probe.exe", FALSE) -> 0x80004005
+WerRemoveExcludedApplication(L"VITREO_WER_PROBE.EXE", FALSE) -> 0x80004005
+WerRemoveExcludedApplication(L"C:\\Dir\\vitreo_path.exe", FALSE) -> 0x00000000
+WerRemoveExcludedApplication(L"vitreo_noext", FALSE) -> 0x00000000
+WerRemoveExcludedApplication(L"", FALSE) -> 0x80070057
+WerAddExcludedApplication(L"vitreo_wer_all.exe", TRUE) -> 0x00000000
+  HKLM: open 2
+WerRemoveExcludedApplication(L"vitreo_wer_all.exe", TRUE) -> 0x00000000
+  HKLM: open 2
+WerAddExcludedApplication(NULL, FALSE) -> 0x80070057
+WerRemoveExcludedApplication(NULL, FALSE) -> 0x80070057
+done

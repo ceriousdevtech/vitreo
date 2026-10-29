@@ -1,0 +1,259 @@
+load: secur32=1 sspicli=1
+qspi_w:unisp rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Microsoft Unified Security Protocol Provider" comment="Schannel Security Package" free=0x0
+qspi_a:unisp rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Microsoft Unified Security Protocol Provider" comment="Schannel Security Package" free=0x0
+qspi_w:schannel rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Schannel" comment="Schannel Security Package" free=0x0
+qspi_a:schannel rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Schannel" comment="Schannel Security Package" free=0x0
+qspi_w:default_tls rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Default TLS SSP" comment="Schannel Security Package" free=0x0
+qspi_a:default_tls rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Default TLS SSP" comment="Schannel Security Package" free=0x0
+qspi_w:schannel_lower rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Schannel" comment="Schannel Security Package" free=0x0
+qspi_a:schannel_lower rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Schannel" comment="Schannel Security Package" free=0x0
+qspi_w:unisp_upper rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Microsoft Unified Security Protocol Provider" comment="Schannel Security Package" free=0x0
+qspi_a:unisp_upper rc=0x0 caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Microsoft Unified Security Protocol Provider" comment="Schannel Security Package" free=0x0
+qspi_w:unisp_trailing_space rc=0x80090305 out_untouched=1
+qspi_a:unisp_trailing_space rc=0x80090305 out_untouched=1
+qspi_w:bogus rc=0x80090305 out_untouched=1
+qspi_a:bogus rc=0x80090305 out_untouched=1
+qspi_w:empty rc=0x80090305 out_untouched=1
+qspi_a:empty rc=0x80090305 out_untouched=1
+enum_w: rc=0x0 nonzero_count=1
+enum_w_pkg: caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Schannel" comment="Schannel Security Package"
+enum_w_pkg: caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Microsoft Unified Security Protocol Provider" comment="Schannel Security Package"
+enum_w_pkg: caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Default TLS SSP" comment="Schannel Security Package"
+enum_w_free: rc=0x0
+enum_a: rc=0x0 nonzero_count=1
+enum_a_pkg: caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Schannel" comment="Schannel Security Package"
+enum_a_pkg: caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Microsoft Unified Security Protocol Provider" comment="Schannel Security Package"
+enum_a_pkg: caps=0x4107b3 ver=1 rpcid=14 maxtok=0x6000 name="Default TLS SSP" comment="Schannel Security Package"
+enum_a_free: rc=0x0
+qspi_w:negotiate rc=0x0 caps=0x883bb3 ver=1 rpcid=9 maxtok=0xbc80 name="Negotiate" comment="Microsoft Package Negotiator" free=0x0
+qspi_w:ntlm rc=0x0 caps=0x2882b37 ver=1 rpcid=10 maxtok=0xb48 name="NTLM" comment="NTLM Security Package" free=0x0
+qspi_w:kerberos rc=0x0 caps=0x28f3bbf ver=1 rpcid=16 maxtok=0xbb80 name="Kerberos" comment="Microsoft Kerberos V1.0" free=0x0
+qspi_a:ntlm rc=0x0 caps=0x2882b37 ver=1 rpcid=10 maxtok=0xb48 name="NTLM" comment="NTLM Security Package" free=0x0
+ach_w:bogus rc=0x80090305 cred_written=0 exp="untouched" esp_delta=0
+ach_w:empty rc=0x80090305 cred_written=0 exp="untouched" esp_delta=0
+ach_w:unisp_null_auth rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:schannel_null_auth rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:schannel_lower rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:default_tls rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:unisp_v4 rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:unisp_v5 rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:ver00 rc=0x8009030d cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:ver01 rc=0x8009030d cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:ver02 rc=0x8009030d cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:ver03 rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:ver06 rc=0x8009030d cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:ver99 rc=0x8009030d cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:use0 rc=0x8009030e cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:use_inbound rc=0x8009030e cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:use_both rc=0x8009030e cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:use4 rc=0x8009030e cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:inbound_v4_nocert rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:use0_v4 rc=0x8009030e cred_written=0 exp_lo=0x0 exp_hi=0x0 esp_delta=0
+ach_w:use_both_v4 rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_a:unisp rc=0x0 cred_written=1 free=0x0
+ach_a:bogus rc=0x80090305 cred_written=0
+ach_w:negotiate rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:ntlm rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0 free=0x0
+ach_w:kerberos rc=0x8009030e cred_written=0 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0
+ach_a:ntlm rc=0x0 cred_written=1 free=0x0
+fch_bogus: rc=0x80090301
+fch_zero: rc=0x80090301
+ach_w:double_free rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0
+fch_first: rc=0x0
+fch_second: rc=0x80090301
+dsc_bogus: rc=0x80090301
+dsc_zero: rc=0x0
+qca_bogus: rc=0x80090301
+ach_w:isc_cred rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0
+isc:bad_cred rc=0x80090301 ctx_written=0 attr="untouched" exp="untouched" esp_delta=0 out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+isc:null_cred rc=0x80090301 ctx_written=0 attr="untouched" exp="untouched" esp_delta=0 out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+isc:alloc_token_alert rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 } out1{ type=17 cb=0 pv="null" }
+free_token: rc=0x0
+isc:alloc_empty rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+dsc:alloc_empty rc=0x0
+isc:user_big rc=0x90312 ctx_written=1 attr=0x801c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="same" b0=0x16 }
+dsc:user_big rc=0x0
+isc:user_small rc=0x80090321 ctx_written=0 attr=0x801c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb=10 pv="same" b0=0xcc }
+user_small_bytes: changed_inside=0 changed_beyond=0
+isc:user_null rc=0x80090300 ctx_written=0 attr=0x1c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb=0 pv="null" }
+isc:user_empty_type rc=0x80090308 ctx_written=0 attr=0x1c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=0 cb_ge16=1 pv="same" b0=0xcc }
+isc:out_null rc=0x80090308 ctx_written=0 attr=0x1c exp_lo=0x0 exp_hi=0x0 esp_delta=0
+isc:manual_req rc=0x90312 ctx_written=1 attr=0x8811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+dsc:manual_req rc=0x0
+isc:delegate rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+dsc:delegate rc=0x0
+isc:prompt rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+dsc:prompt rc=0x0
+isc:req_zero_alloc_only rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+dsc:req_zero_alloc_only rc=0x0
+isc:alloc_with_user_buf rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+dsc:alloc_with_user_buf rc=0x0
+isc_attr: bit=0 rc=0x90312 attr=0x811c
+isc_attr: bit=1 rc=0x90312 attr=0x811e
+isc_attr: bit=2 rc=0x90312 attr=0x811c
+isc_attr: bit=3 rc=0x90312 attr=0x811c
+isc_attr: bit=4 rc=0x90312 attr=0x811c
+isc_attr: bit=5 rc=0x90312 attr=0x811c
+isc_attr: bit=6 rc=0x90312 attr=0x811c
+isc_attr: bit=7 rc=0x90312 attr=0x819c
+isc_attr: bit=8 rc=0x90312 attr=0x811c
+isc_attr: bit=9 rc=0x90312 attr=0x811c
+isc_attr: bit=10 rc=0x90312 attr=0x851c
+isc_attr: bit=11 rc=0x90312 attr=0x91c
+isc_attr: bit=12 rc=0x90312 attr=0x811c
+isc_attr: bit=13 rc=0x90312 attr=0x811c
+isc_attr: bit=14 rc=0x90312 attr=0xc11c
+isc_attr: bit=15 rc=0x90312 attr=0x811c
+isc_attr: bit=16 rc=0x90312 attr=0x811c
+isc_attr: bit=17 rc=0x90312 attr=0x811c
+isc_attr: bit=18 rc=0x90312 attr=0x811c
+isc_attr: bit=19 rc=0x90312 attr=0x8811c
+isc_attr: bit=20 rc=0x90312 attr=0x811c
+isc_attr: bit=21 rc=0x90312 attr=0x811c
+isc_attr: bit=22 rc=0x90312 attr=0x811c
+isc_attr: bit=23 rc=0x90312 attr=0x811c
+isc_attr: bit=24 rc=0x90312 attr=0x811c
+isc_attr: bit=25 rc=0x90312 attr=0x811c
+isc_attr: bit=26 rc=0x90312 attr=0x811c
+isc_attr: bit=27 rc=0x90312 attr=0x811c
+isc_attr: bit=28 rc=0x90312 attr=0x811c
+isc_attr: bit=29 rc=0x90312 attr=0x811c
+isc_attr: bit=30 rc=0x90312 attr=0x811c
+isc_attr: bit=31 rc=0x90312 attr=0x811c
+isc:fresh_null_cred rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+isc2:fresh_null_cred rc=0x80090301 newctx_same=0 newctx_untouched=1 attr=0x1c in0{ type=2 cb=5 } in1{ type=0 cb=0 pv="null" } out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+dsc:fresh_null_cred rc=0x0
+isc:garbage_record rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+isc2:garbage_record rc=0x90312 newctx_same=1 newctx_untouched=0 attr=0x811c in0{ type=2 cb=9 } in1{ type=0 cb=0 pv="null" } out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+dsc:garbage_record rc=0x0
+isc:fatal_alert rc=0x90312 ctx_written=1 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb_ge16=1 pv="new" b0=0x16 }
+free_token: rc=0x0
+isc2:fatal_alert rc=0x80090326 newctx_same=0 newctx_untouched=1 attr=0x811c in0{ type=2 cb=7 } in1{ type=0 cb=0 pv="null" } out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+dsc:fatal_alert rc=0x0
+ach_w:inbound_cred_for_isc rc=0x0 cred_written=1 exp_lo=0xd5969fff exp_hi=0x7fffff36 esp_delta=0
+isc:inbound_cred rc=0x80090331 ctx_written=0 attr=0x811c exp_lo=0x0 exp_hi=0x0 esp_delta=0 out0{ type=2 cb=0 pv="null" }
+isc:zero_ctx_first: rc=0x80090301 ctx_written=0 attr="untouched"
+isc2:incomplete_hdr5 rc=0x80090318 newctx_same=0 newctx_untouched=1 attr=0x811c in0{ type=2 cb=5 } in1{ type=4 cb=100 pv="null" } out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+isc2:incomplete_hdr3 rc=0x80090318 newctx_same=0 newctx_untouched=1 attr=0x811c in0{ type=2 cb=3 } in1{ type=4 cb=2 pv="null" } out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+isc2:incomplete_body50 rc=0x80090318 newctx_same=0 newctx_untouched=1 attr=0x811c in0{ type=2 cb=55 } in1{ type=4 cb=50 pv="null" } out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+isc2:incomplete_null_cred rc=0x80090301 newctx_same=0 newctx_untouched=1 attr=0x1c in0{ type=2 cb=5 } in1{ type=0 cb=0 pv="null" } out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+isc2:bad_ctx rc=0x80090301 newctx_same=0 newctx_untouched=1 attr="untouched" in0{ type=2 cb=5 } in1{ type=0 cb=0 pv="null" } out0{ type=2 cb=0 pv="null" } out1{ type=17 cb=0 pv="null" }
+qca_stream_sizes_incomplete: rc=0x80090301
+encrypt_incomplete: rc=0x80090301
+encrypt_no_data_buffer_bogus_ctx: rc=0x80090301
+decrypt_incomplete_ctx: rc=0x80090301 b0{ type=1 cb=8 } b1{ type=0 cb=0 } b2{ type=0 cb=0 } b3{ type=0 cb=0 }
+decrypt_bogus_ctx: rc=0x80090301
+dsc_keep_first: rc=0x0
+dsc_keep_second: rc=0x80090301
+fch_isc_cred: rc=0x0
+gunex_w:secur32 fmt=0 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=1 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=2 ok=1 err=0xdead val="<C>\<U>" nsize_is_len=1
+gunex_w:secur32 fmt=3 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=4 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=5 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=6 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=7 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=8 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=9 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=10 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=11 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=12 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=13 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=14 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:secur32 fmt=15 ok=0 err=0x57 nsize_600=1 buf_untouched=1
+gunex_w_size:secur32_null0 ok=0 err=0xea nsize=len+1 chars_written=0
+gunex_w_size:secur32_buf0 ok=0 err=0xea nsize=len+1 chars_written=0
+gunex_w_size:secur32_buf1 ok=0 err=0xea nsize=len+1 chars_written=0
+gunex_w_size:secur32_exact_len ok=0 err=0xea nsize=len+1 chars_written=len+0 prefix=len+0 nul_at="none"
+gunex_w_size:secur32_len_plus1 ok=1 err=0xdead nsize=len+0 chars_written=len+1 prefix=len+0 nul_at=len+0
+gunex_w:sspicli fmt=0 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=1 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=2 ok=1 err=0xdead val="<C>\<U>" nsize_is_len=1
+gunex_w:sspicli fmt=3 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=4 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=5 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=6 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=7 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=8 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=9 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=10 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=11 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=12 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=13 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=14 ok=0 err=0x534 nsize_600=1 buf_untouched=1
+gunex_w:sspicli fmt=15 ok=0 err=0x57 nsize_600=1 buf_untouched=1
+gunex_w_size:sspicli_null0 ok=0 err=0xea nsize=len+1 chars_written=0
+gunex_w_size:sspicli_buf0 ok=0 err=0xea nsize=len+1 chars_written=0
+gunex_w_size:sspicli_buf1 ok=0 err=0xea nsize=len+1 chars_written=0
+gunex_w_size:sspicli_exact_len ok=0 err=0xea nsize=len+1 chars_written=len+0 prefix=len+0 nul_at="none"
+gunex_w_size:sspicli_len_plus1 ok=1 err=0xdead nsize=len+0 chars_written=len+1 prefix=len+0 nul_at=len+0
+gunex_a:secur32 fmt=0 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=1 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=2 ok=1 err=0xdead val="<C>\<U>" nsize_is_len=1
+gunex_a:secur32 fmt=3 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=4 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=5 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=6 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=7 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=8 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=9 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=10 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=11 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=12 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=13 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=14 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:secur32 fmt=15 ok=0 err=0x57 nsize=1200 buf_untouched=1
+gunex_a_size:secur32_null0 ok=0 err=0xea nsize=2*(len+1)+0 chars_written=0
+gunex_a_size:secur32_buf1 ok=0 err=0xea nsize=2*(len+1)+0 chars_written=0
+gunex_a_size:secur32_exact_len ok=0 err=0xea nsize=2*(len+1)+0 chars_written=0
+gunex_a_size:secur32_len_plus1 ok=1 err=0xdead nsize=len+0 chars_written=len+1
+gunex_a:sspicli fmt=0 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=1 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=2 ok=1 err=0xdead val="<C>\<U>" nsize_is_len=1
+gunex_a:sspicli fmt=3 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=4 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=5 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=6 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=7 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=8 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=9 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=10 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=11 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=12 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=13 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=14 ok=0 err=0x534 nsize=1200 buf_untouched=1
+gunex_a:sspicli fmt=15 ok=0 err=0x57 nsize=1200 buf_untouched=1
+gunex_a_size:sspicli_null0 ok=0 err=0xea nsize=2*(len+1)+0 chars_written=0
+gunex_a_size:sspicli_buf1 ok=0 err=0xea nsize=2*(len+1)+0 chars_written=0
+gunex_a_size:sspicli_exact_len ok=0 err=0xea nsize=2*(len+1)+0 chars_written=0
+gunex_a_size:sspicli_len_plus1 ok=1 err=0xdead nsize=len+0 chars_written=len+1
+lsa_connect:secur32 st=0x0 handle_nonzero=1 esp_delta=0
+lsa_lookup:secur32 pkg="Negotiate" st=0x0 id=0 esp_delta=0
+lsa_lookup:secur32 pkg="MICROSOFT_AUTHENTICATION_PACKAGE_V1_0" st=0x0 id=11 esp_delta=0
+lsa_lookup:secur32 pkg="Kerberos" st=0x0 id=2 esp_delta=0
+lsa_lookup:secur32 pkg="Bogus" st=0xc00000fe id=4294967295 esp_delta=0
+lsa_lookup:secur32 pkg="" st=0xc00000fe id=4294967295 esp_delta=0
+lsa_call_bogus_pkg:secur32 st=0xc00000fe ret="null" retlen=0 pstatus=0x0 esp_delta=0
+lsa_logon_bogus_pkg:secur32 st=0xc00000bb prof_untouched=1 proflen=0 luid_untouched=1 tok_untouched=1 sub=0x0 esp_delta=0
+lsa_free_null:secur32 st=0xc00000a0
+lsa_dereg:secur32 st=0x0 esp_delta=0
+lsa_connect:sspicli st=0x0 handle_nonzero=1 esp_delta=0
+lsa_lookup:sspicli pkg="Negotiate" st=0x0 id=0 esp_delta=0
+lsa_lookup:sspicli pkg="MICROSOFT_AUTHENTICATION_PACKAGE_V1_0" st=0x0 id=11 esp_delta=0
+lsa_lookup:sspicli pkg="Kerberos" st=0x0 id=2 esp_delta=0
+lsa_lookup:sspicli pkg="Bogus" st=0xc00000fe id=4294967295 esp_delta=0
+lsa_lookup:sspicli pkg="" st=0xc00000fe id=4294967295 esp_delta=0
+lsa_call_bogus_pkg:sspicli st=0xc00000fe ret="null" retlen=0 pstatus=0x0 esp_delta=0
+lsa_logon_bogus_pkg:sspicli st=0xc00000bb prof_untouched=1 proflen=0 luid_untouched=1 tok_untouched=1 sub=0x0 esp_delta=0
+lsa_free_null:sspicli st=0xc00000a0
+lsa_dereg:sspicli st=0x0 esp_delta=0
+done:

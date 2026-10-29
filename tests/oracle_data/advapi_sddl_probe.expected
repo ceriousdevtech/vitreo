@@ -1,0 +1,847 @@
+machine_sid_known v=1
+sid "DA" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "DG" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "DU" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "ED" ok=1 gle=0 sid=S-1-5-9 len=c valid=1 bytes=010100000000000509000000 | sdOk=1 sdGle=0 owner=S-1-5-9 back="O:ED"
+sid "DD" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "DC" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "BA" ok=1 gle=0 sid=S-1-5-32-544 len=10 valid=1 bytes=01020000000000052000000020020000 | sdOk=1 sdGle=0 owner=S-1-5-32-544 back="O:BA"
+sid "BG" ok=1 gle=0 sid=S-1-5-32-546 len=10 valid=1 bytes=01020000000000052000000022020000 | sdOk=1 sdGle=0 owner=S-1-5-32-546 back="O:BG"
+sid "BU" ok=1 gle=0 sid=S-1-5-32-545 len=10 valid=1 bytes=01020000000000052000000021020000 | sdOk=1 sdGle=0 owner=S-1-5-32-545 back="O:BU"
+sid "LA" ok=1 gle=0 sid=S-1-5-21-1000000000-2000000000-3000000000-500 len=1c valid=1 bytes=01050000000000051500000000ca9a3b00943577005ed0b2f4010000 | sdOk=1 sdGle=0 owner=S-1-5-21-1000000000-2000000000-3000000000-500 back="O:LA"
+sid "LG" ok=1 gle=0 sid=S-1-5-21-1000000000-2000000000-3000000000-501 len=1c valid=1 bytes=01050000000000051500000000ca9a3b00943577005ed0b2f5010000 | sdOk=1 sdGle=0 owner=S-1-5-21-1000000000-2000000000-3000000000-501 back="O:LG"
+sid "AO" ok=1 gle=0 sid=S-1-5-32-548 len=10 valid=1 bytes=01020000000000052000000024020000 | sdOk=1 sdGle=0 owner=S-1-5-32-548 back="O:AO"
+sid "BO" ok=1 gle=0 sid=S-1-5-32-551 len=10 valid=1 bytes=01020000000000052000000027020000 | sdOk=1 sdGle=0 owner=S-1-5-32-551 back="O:BO"
+sid "PO" ok=1 gle=0 sid=S-1-5-32-550 len=10 valid=1 bytes=01020000000000052000000026020000 | sdOk=1 sdGle=0 owner=S-1-5-32-550 back="O:PO"
+sid "SO" ok=1 gle=0 sid=S-1-5-32-549 len=10 valid=1 bytes=01020000000000052000000025020000 | sdOk=1 sdGle=0 owner=S-1-5-32-549 back="O:SO"
+sid "AU" ok=1 gle=0 sid=S-1-5-11 len=c valid=1 bytes=01010000000000050b000000 | sdOk=1 sdGle=0 owner=S-1-5-11 back="O:AU"
+sid "PS" ok=1 gle=0 sid=S-1-5-10 len=c valid=1 bytes=01010000000000050a000000 | sdOk=1 sdGle=0 owner=S-1-5-10 back="O:PS"
+sid "CO" ok=1 gle=0 sid=S-1-3-0 len=c valid=1 bytes=010100000000000300000000 | sdOk=1 sdGle=0 owner=S-1-3-0 back="O:CO"
+sid "CG" ok=1 gle=0 sid=S-1-3-1 len=c valid=1 bytes=010100000000000301000000 | sdOk=1 sdGle=0 owner=S-1-3-1 back="O:CG"
+sid "SY" ok=1 gle=0 sid=S-1-5-18 len=c valid=1 bytes=010100000000000512000000 | sdOk=1 sdGle=0 owner=S-1-5-18 back="O:SY"
+sid "PU" ok=1 gle=0 sid=S-1-5-32-547 len=10 valid=1 bytes=01020000000000052000000023020000 | sdOk=1 sdGle=0 owner=S-1-5-32-547 back="O:PU"
+sid "WD" ok=1 gle=0 sid=S-1-1-0 len=c valid=1 bytes=010100000000000100000000 | sdOk=1 sdGle=0 owner=S-1-1-0 back="O:WD"
+sid "RE" ok=1 gle=0 sid=S-1-5-32-552 len=10 valid=1 bytes=01020000000000052000000028020000 | sdOk=1 sdGle=0 owner=S-1-5-32-552 back="O:RE"
+sid "IU" ok=1 gle=0 sid=S-1-5-4 len=c valid=1 bytes=010100000000000504000000 | sdOk=1 sdGle=0 owner=S-1-5-4 back="O:IU"
+sid "NU" ok=1 gle=0 sid=S-1-5-2 len=c valid=1 bytes=010100000000000502000000 | sdOk=1 sdGle=0 owner=S-1-5-2 back="O:NU"
+sid "SU" ok=1 gle=0 sid=S-1-5-6 len=c valid=1 bytes=010100000000000506000000 | sdOk=1 sdGle=0 owner=S-1-5-6 back="O:SU"
+sid "RC" ok=1 gle=0 sid=S-1-5-12 len=c valid=1 bytes=01010000000000050c000000 | sdOk=1 sdGle=0 owner=S-1-5-12 back="O:RC"
+sid "WR" ok=1 gle=0 sid=S-1-5-33 len=c valid=1 bytes=010100000000000521000000 | sdOk=1 sdGle=0 owner=S-1-5-33 back="O:WR"
+sid "AN" ok=1 gle=0 sid=S-1-5-7 len=c valid=1 bytes=010100000000000507000000 | sdOk=1 sdGle=0 owner=S-1-5-7 back="O:AN"
+sid "SA" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "CA" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "RS" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "EA" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "PA" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "RU" ok=1 gle=0 sid=S-1-5-32-554 len=10 valid=1 bytes=0102000000000005200000002a020000 | sdOk=1 sdGle=0 owner=S-1-5-32-554 back="O:RU"
+sid "LS" ok=1 gle=0 sid=S-1-5-19 len=c valid=1 bytes=010100000000000513000000 | sdOk=1 sdGle=0 owner=S-1-5-19 back="O:LS"
+sid "NS" ok=1 gle=0 sid=S-1-5-20 len=c valid=1 bytes=010100000000000514000000 | sdOk=1 sdGle=0 owner=S-1-5-20 back="O:NS"
+sid "RD" ok=1 gle=0 sid=S-1-5-32-555 len=10 valid=1 bytes=0102000000000005200000002b020000 | sdOk=1 sdGle=0 owner=S-1-5-32-555 back="O:RD"
+sid "NO" ok=1 gle=0 sid=S-1-5-32-556 len=10 valid=1 bytes=0102000000000005200000002c020000 | sdOk=1 sdGle=0 owner=S-1-5-32-556 back="O:NO"
+sid "MU" ok=1 gle=0 sid=S-1-5-32-558 len=10 valid=1 bytes=0102000000000005200000002e020000 | sdOk=1 sdGle=0 owner=S-1-5-32-558 back="O:MU"
+sid "LU" ok=1 gle=0 sid=S-1-5-32-559 len=10 valid=1 bytes=0102000000000005200000002f020000 | sdOk=1 sdGle=0 owner=S-1-5-32-559 back="O:LU"
+sid "IS" ok=1 gle=0 sid=S-1-5-32-568 len=10 valid=1 bytes=01020000000000052000000038020000 | sdOk=1 sdGle=0 owner=S-1-5-32-568 back="O:IS"
+sid "CY" ok=1 gle=0 sid=S-1-5-32-569 len=10 valid=1 bytes=01020000000000052000000039020000 | sdOk=1 sdGle=0 owner=S-1-5-32-569 back="O:CY"
+sid "OW" ok=1 gle=0 sid=S-1-3-4 len=c valid=1 bytes=010100000000000304000000 | sdOk=1 sdGle=0 owner=S-1-3-4 back="O:OW"
+sid "ER" ok=1 gle=0 sid=S-1-5-32-573 len=10 valid=1 bytes=0102000000000005200000003d020000 | sdOk=1 sdGle=0 owner=S-1-5-32-573 back="O:ER"
+sid "RO" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "CD" ok=1 gle=0 sid=S-1-5-32-574 len=10 valid=1 bytes=0102000000000005200000003e020000 | sdOk=1 sdGle=0 owner=S-1-5-32-574 back="O:CD"
+sid "AC" ok=1 gle=0 sid=S-1-15-2-1 len=10 valid=1 bytes=010200000000000f0200000001000000 | sdOk=1 sdGle=0 owner=S-1-15-2-1 back="O:AC"
+sid "RA" ok=1 gle=0 sid=S-1-5-32-575 len=10 valid=1 bytes=0102000000000005200000003f020000 | sdOk=1 sdGle=0 owner=S-1-5-32-575 back="O:RA"
+sid "ES" ok=1 gle=0 sid=S-1-5-32-576 len=10 valid=1 bytes=01020000000000052000000040020000 | sdOk=1 sdGle=0 owner=S-1-5-32-576 back="O:ES"
+sid "MS" ok=1 gle=0 sid=S-1-5-32-577 len=10 valid=1 bytes=01020000000000052000000041020000 | sdOk=1 sdGle=0 owner=S-1-5-32-577 back="O:MS"
+sid "UD" ok=1 gle=0 sid=S-1-5-84-0-0-0-0-0 len=20 valid=1 bytes=0106000000000005540000000000000000000000000000000000000000000000 | sdOk=1 sdGle=0 owner=S-1-5-84-0-0-0-0-0 back="O:UD"
+sid "HA" ok=1 gle=0 sid=S-1-5-32-578 len=10 valid=1 bytes=01020000000000052000000042020000 | sdOk=1 sdGle=0 owner=S-1-5-32-578 back="O:HA"
+sid "CN" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "AA" ok=1 gle=0 sid=S-1-5-32-579 len=10 valid=1 bytes=01020000000000052000000043020000 | sdOk=1 sdGle=0 owner=S-1-5-32-579 back="O:AA"
+sid "RM" ok=1 gle=0 sid=S-1-5-32-580 len=10 valid=1 bytes=01020000000000052000000044020000 | sdOk=1 sdGle=0 owner=S-1-5-32-580 back="O:RM"
+sid "AS" ok=1 gle=0 sid=S-1-18-1 len=c valid=1 bytes=010100000000001201000000 | sdOk=1 sdGle=0 owner=S-1-18-1 back="O:AS"
+sid "SS" ok=1 gle=0 sid=S-1-18-2 len=c valid=1 bytes=010100000000001202000000 | sdOk=1 sdGle=0 owner=S-1-18-2 back="O:SS"
+sid "AP" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "KA" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "EK" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "HO" ok=1 gle=0 sid=S-1-5-32-584 len=10 valid=1 bytes=01020000000000052000000048020000 | sdOk=1 sdGle=0 owner=S-1-5-32-584 back="O:HO"
+sid "SH" ok=1 gle=0 sid=S-1-5-32-585 len=10 valid=1 bytes=01020000000000052000000049020000 | sdOk=1 sdGle=0 owner=S-1-5-32-585 back="O:SH"
+sid "LW" ok=1 gle=0 sid=S-1-16-4096 len=c valid=1 bytes=010100000000001000100000 | sdOk=1 sdGle=0 owner=S-1-16-4096 back="O:LW"
+sid "ME" ok=1 gle=0 sid=S-1-16-8192 len=c valid=1 bytes=010100000000001000200000 | sdOk=1 sdGle=0 owner=S-1-16-8192 back="O:ME"
+sid "MP" ok=1 gle=0 sid=S-1-16-8448 len=c valid=1 bytes=010100000000001000210000 | sdOk=1 sdGle=0 owner=S-1-16-8448 back="O:MP"
+sid "HI" ok=1 gle=0 sid=S-1-16-12288 len=c valid=1 bytes=010100000000001000300000 | sdOk=1 sdGle=0 owner=S-1-16-12288 back="O:HI"
+sid "SI" ok=1 gle=0 sid=S-1-16-16384 len=c valid=1 bytes=010100000000001000400000 | sdOk=1 sdGle=0 owner=S-1-16-16384 back="O:SI"
+sid "XX" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "wd" ok=1 gle=0 sid=S-1-1-0 len=c valid=1 bytes=010100000000000100000000 | sdOk=1 sdGle=0 owner=S-1-1-0 back="O:WD"
+sid "Wd" ok=1 gle=0 sid=S-1-1-0 len=c valid=1 bytes=010100000000000100000000 | sdOk=1 sdGle=0 owner=S-1-1-0 back="O:WD"
+sid "sy" ok=1 gle=0 sid=S-1-5-18 len=c valid=1 bytes=010100000000000512000000 | sdOk=1 sdGle=0 owner=S-1-5-18 back="O:SY"
+sid "S-1-5-18" ok=1 gle=0 sid=S-1-5-18 len=c valid=1 bytes=010100000000000512000000 | sdOk=1 sdGle=0 owner=S-1-5-18 back="O:SY"
+sid "s-1-5-18" ok=1 gle=0 sid=S-1-5-18 len=c valid=1 bytes=010100000000000512000000 | sdOk=1 sdGle=0 owner=S-1-5-18 back="O:SY"
+sid "S-1-5-0x12" ok=1 gle=0 sid=S-1-5-18 len=c valid=1 bytes=010100000000000512000000 | sdOk=1 sdGle=0 owner=S-1-5-18 back="O:SY"
+sid "S-1-0x123456789ABC-1" ok=1 gle=0 sid=S-1-0x123456789ABC-1 len=c valid=1 bytes=0101123456789abc01000000 | sdOk=1 sdGle=0 owner=S-1-0x123456789ABC-1 back="O:S-1-0x123456789ABC-1"
+sid "S-1-5" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "S-1" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "S-1-5-" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "S-2-5-18" ok=1 gle=0 sid=(null) toStrGle=539 len=c valid=0 bytes=020100000000000512000000 | sdOk=1 sdGle=0 owner=(null) back="(null)" backGle=539
+sid "S-1-5-18-" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid " S-1-5-18" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "S-1-5-4294967295" ok=1 gle=0 sid=S-1-5-4294967295 len=c valid=1 bytes=0101000000000005ffffffff | sdOk=1 sdGle=0 owner=S-1-5-4294967295 back="O:S-1-5-4294967295"
+sid "S-1-5-4294967296" ok=1 gle=0 sid=S-1-5-4294967295 len=c valid=1 bytes=0101000000000005ffffffff | sdOk=1 sdGle=0 owner=S-1-5-4294967295 back="O:S-1-5-4294967295"
+sid "S-1-281474976710655-1" ok=1 gle=0 sid=S-1-0xFFFFFFFFFFFF-1 len=c valid=1 bytes=0101ffffffffffff01000000 | sdOk=1 sdGle=0 owner=S-1-0xFFFFFFFFFFFF-1 back="O:S-1-0xFFFFFFFFFFFF-1"
+sid "S-1-281474976710656-1" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "S-1-5-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15" ok=1 gle=0 sid=S-1-5-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15 len=44 valid=1 bytes=010f0000000000050100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000 | sdOk=1 sdGle=0 owner=S-1-5-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15 back="O:S-1-5-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15"
+sid "S-1-5-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16" ok=1 gle=0 sid=(null) toStrGle=539 len=48 valid=0 bytes=01100000000000050100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000 | sdOk=1 sdGle=0 owner=(null) back="(null)" backGle=539
+sid "S-1-5-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-17" ok=1 gle=0 sid=(null) toStrGle=539 len=4c valid=0 bytes=01110000000000050100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000 | sdOk=1 sdGle=0 owner=(null) back="(null)" backGle=539
+sid "BA " ok=0 gle=539 out=1 | sdOk=1 sdGle=0 owner=S-1-5-32-544 back="O:BA"
+sid "BAx" ok=0 gle=539 out=1 | sdOk=0 sdGle=57
+sid "B" ok=0 gle=539 out=1 | sdOk=0 sdGle=534
+sid "" ok=0 gle=539 out=1 | sdOk=0 sdGle=534
+sid "S-0-5-18" ok=1 gle=0 sid=(null) toStrGle=539 len=c valid=0 bytes=000100000000000512000000 | sdOk=1 sdGle=0 owner=(null) back="(null)" backGle=539
+sid "S-255-5-18" ok=1 gle=0 sid=(null) toStrGle=539 len=c valid=0 bytes=ff0100000000000512000000 | sdOk=1 sdGle=0 owner=(null) back="(null)" backGle=539
+sid "S-256-5-18" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "S-0x1-5-18" ok=1 gle=0 sid=S-1-5-24 len=c valid=1 bytes=010100000000000518000000 | sdOk=1 sdGle=0 owner=S-1-5-24 back="O:S-1-5-24"
+sid "S-1-0x5-18" ok=1 gle=0 sid=S-1-5-18 len=c valid=1 bytes=010100000000000512000000 | sdOk=1 sdGle=0 owner=S-1-5-18 back="O:SY"
+sid "S-1-5-18 " ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "S-1-4294967296-1" ok=1 gle=0 sid=S-1-0x100000000-1 len=c valid=1 bytes=010100010000000001000000 | sdOk=1 sdGle=0 owner=S-1-0x100000000-1 back="O:S-1-0x100000000-1"
+sid "S-1-5-0x" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+sid "S-1-5-0xFFFFFFFFF" ok=1 gle=0 sid=S-1-5-4294967295 len=c valid=1 bytes=0101000000000005ffffffff | sdOk=1 sdGle=0 owner=S-1-5-4294967295 back="O:S-1-5-4294967295"
+sid "S-1-5-99999999999" ok=1 gle=0 sid=S-1-5-4294967295 len=c valid=1 bytes=0101000000000005ffffffff | sdOk=1 sdGle=0 owner=S-1-5-4294967295 back="O:S-1-5-4294967295"
+sid "s-1-5-32-544" ok=1 gle=0 sid=S-1-5-32-544 len=10 valid=1 bytes=01020000000000052000000020020000 | sdOk=1 sdGle=0 owner=S-1-5-32-544 back="O:BA"
+sid "S-1-5-32-0544" ok=1 gle=0 sid=S-1-5-32-544 len=10 valid=1 bytes=01020000000000052000000020020000 | sdOk=1 sdGle=0 owner=S-1-5-32-544 back="O:BA"
+sid "LA" ok=1 gle=0 sid=S-1-5-21-1000000000-2000000000-3000000000-500 len=1c valid=1 bytes=01050000000000051500000000ca9a3b00943577005ed0b2f4010000 | sdOk=1 sdGle=0 owner=S-1-5-21-1000000000-2000000000-3000000000-500 back="O:LA"
+sid "la" ok=1 gle=0 sid=S-1-5-21-1000000000-2000000000-3000000000-500 len=1c valid=1 bytes=01050000000000051500000000ca9a3b00943577005ed0b2f4010000 | sdOk=1 sdGle=0 owner=S-1-5-21-1000000000-2000000000-3000000000-500 back="O:LA"
+sid "DA" ok=0 gle=539 out=1 | sdOk=0 sdGle=539
+right "GA" ok=1 gle=0 mask=10000000 back="D:(A;;GA;;;WD)"
+right "GR" ok=1 gle=0 mask=80000000 back="D:(A;;GR;;;WD)"
+right "GW" ok=1 gle=0 mask=40000000 back="D:(A;;GW;;;WD)"
+right "GX" ok=1 gle=0 mask=20000000 back="D:(A;;GX;;;WD)"
+right "RC" ok=1 gle=0 mask=20000 back="D:(A;;RC;;;WD)"
+right "SD" ok=1 gle=0 mask=10000 back="D:(A;;SD;;;WD)"
+right "WD" ok=1 gle=0 mask=40000 back="D:(A;;WD;;;WD)"
+right "WO" ok=1 gle=0 mask=80000 back="D:(A;;WO;;;WD)"
+right "RP" ok=1 gle=0 mask=10 back="D:(A;;RP;;;WD)"
+right "WP" ok=1 gle=0 mask=20 back="D:(A;;WP;;;WD)"
+right "CC" ok=1 gle=0 mask=1 back="D:(A;;CC;;;WD)"
+right "DC" ok=1 gle=0 mask=2 back="D:(A;;DC;;;WD)"
+right "LC" ok=1 gle=0 mask=4 back="D:(A;;LC;;;WD)"
+right "SW" ok=1 gle=0 mask=8 back="D:(A;;SW;;;WD)"
+right "LO" ok=1 gle=0 mask=80 back="D:(A;;LO;;;WD)"
+right "DT" ok=1 gle=0 mask=40 back="D:(A;;DT;;;WD)"
+right "CR" ok=1 gle=0 mask=100 back="D:(A;;CR;;;WD)"
+right "FA" ok=1 gle=0 mask=1f01ff back="D:(A;;FA;;;WD)"
+right "FR" ok=1 gle=0 mask=120089 back="D:(A;;FR;;;WD)"
+right "FW" ok=1 gle=0 mask=120116 back="D:(A;;FW;;;WD)"
+right "FX" ok=1 gle=0 mask=1200a0 back="D:(A;;FX;;;WD)"
+right "KA" ok=1 gle=0 mask=f003f back="D:(A;;KA;;;WD)"
+right "KR" ok=1 gle=0 mask=20019 back="D:(A;;KR;;;WD)"
+right "KW" ok=1 gle=0 mask=20006 back="D:(A;;KW;;;WD)"
+right "KX" ok=1 gle=0 mask=20019 back="D:(A;;KR;;;WD)"
+right "NR" ok=0 gle=538
+right "NW" ok=0 gle=538
+right "NX" ok=0 gle=538
+right "ga" ok=1 gle=0 mask=10000000 back="D:(A;;GA;;;WD)"
+right "0x1F" ok=1 gle=0 mask=1f back="D:(A;;CCDCLCSWRP;;;WD)"
+right "0X1F" ok=1 gle=0 mask=1f back="D:(A;;CCDCLCSWRP;;;WD)"
+right "31" ok=1 gle=0 mask=1f back="D:(A;;CCDCLCSWRP;;;WD)"
+right "017" ok=1 gle=0 mask=f back="D:(A;;CCDCLCSW;;;WD)"
+right "0x" ok=0 gle=538
+right "0xFFFFFFFF" ok=1 gle=0 mask=ffffffff back="D:(A;;0xffffffff;;;WD)"
+right "0x100000000" ok=1 gle=0 mask=ffffffff back="D:(A;;0xffffffff;;;WD)"
+right "4294967295" ok=1 gle=0 mask=ffffffff back="D:(A;;0xffffffff;;;WD)"
+right "4294967296" ok=1 gle=0 mask=ffffffff back="D:(A;;0xffffffff;;;WD)"
+right "0x1f01ff" ok=1 gle=0 mask=1f01ff back="D:(A;;FA;;;WD)"
+right "GAGA" ok=1 gle=0 mask=10000000 back="D:(A;;GA;;;WD)"
+right "FAGA" ok=1 gle=0 mask=101f01ff back="D:(A;;0x101f01ff;;;WD)"
+right "0x1GA" ok=1 gle=0 mask=10000001 back="D:(A;;CCGA;;;WD)"
+right "GA0x1" ok=1 gle=0 mask=10000001 back="D:(A;;CCGA;;;WD)"
+right " GA" ok=1 gle=0 mask=10000000 back="D:(A;;GA;;;WD)"
+right "XX" ok=0 gle=538
+right "" ok=1 gle=0 mask=0 back="D:(A;;;;;WD)"
+mask m=1f01ff ok=1 gle=0 len=f back="D:(A;;FA;;;WD)"
+mask m=120089 ok=1 gle=0 len=f back="D:(A;;FR;;;WD)"
+mask m=120116 ok=1 gle=0 len=f back="D:(A;;FW;;;WD)"
+mask m=1200a0 ok=1 gle=0 len=f back="D:(A;;FX;;;WD)"
+mask m=f003f ok=1 gle=0 len=f back="D:(A;;KA;;;WD)"
+mask m=20019 ok=1 gle=0 len=f back="D:(A;;KR;;;WD)"
+mask m=20006 ok=1 gle=0 len=f back="D:(A;;KW;;;WD)"
+mask m=100e003f ok=1 gle=0 len=21 back="D:(A;;CCDCLCSWRPWPRCWDWOGA;;;WD)"
+mask m=1200a9 ok=1 gle=0 len=17 back="D:(A;;0x1200a9;;;WD)"
+mask m=12019b ok=1 gle=0 len=17 back="D:(A;;0x12019b;;;WD)"
+mask m=1f0001 ok=1 gle=0 len=17 back="D:(A;;0x1f0001;;;WD)"
+mask m=f01ff ok=1 gle=0 len=27 back="D:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)"
+mask m=1f01fe ok=1 gle=0 len=17 back="D:(A;;0x1f01fe;;;WD)"
+mask m=101f01ff ok=1 gle=0 len=17 back="D:(A;;0x101f01ff;;;WD)"
+mask m=7 ok=1 gle=0 len=13 back="D:(A;;CCDCLC;;;WD)"
+mask m=3f ok=1 gle=0 len=19 back="D:(A;;CCDCLCSWRPWP;;;WD)"
+mask m=13f ok=1 gle=0 len=1b back="D:(A;;CCDCLCSWRPWPCR;;;WD)"
+mask m=10000 ok=1 gle=0 len=f back="D:(A;;SD;;;WD)"
+mask m=30000 ok=1 gle=0 len=11 back="D:(A;;SDRC;;;WD)"
+mask m=f0000 ok=1 gle=0 len=15 back="D:(A;;SDRCWDWO;;;WD)"
+mask m=e0000000 ok=1 gle=0 len=13 back="D:(A;;GXGWGR;;;WD)"
+mask m=0 ok=1 gle=0 len=d back="D:(A;;;;;WD)"
+mask m=1f0fff ok=1 gle=0 len=17 back="D:(A;;0x1f0fff;;;WD)"
+mask m=1f0003 ok=1 gle=0 len=17 back="D:(A;;0x1f0003;;;WD)"
+mask m=120000 ok=1 gle=0 len=17 back="D:(A;;0x120000;;;WD)"
+mask m=100000 ok=1 gle=0 len=17 back="D:(A;;0x100000;;;WD)"
+mask m=100 ok=1 gle=0 len=f back="D:(A;;CR;;;WD)"
+mask m=200 ok=1 gle=0 len=17 back="D:(A;;0x200;;;WD)"
+mask m=400 ok=1 gle=0 len=17 back="D:(A;;0x400;;;WD)"
+mask m=800 ok=1 gle=0 len=17 back="D:(A;;0x800;;;WD)"
+mask m=1000000 ok=1 gle=0 len=17 back="D:(A;;0x1000000;;;WD)"
+mask m=2000000 ok=1 gle=0 len=17 back="D:(A;;0x2000000;;;WD)"
+mask m=4000000 ok=1 gle=0 len=17 back="D:(A;;0x4000000;;;WD)"
+mask m=8000000 ok=1 gle=0 len=17 back="D:(A;;0x8000000;;;WD)"
+mask m=10000000 ok=1 gle=0 len=f back="D:(A;;GA;;;WD)"
+mask m=20000000 ok=1 gle=0 len=f back="D:(A;;GX;;;WD)"
+mask m=40000000 ok=1 gle=0 len=f back="D:(A;;GW;;;WD)"
+mask m=80000000 ok=1 gle=0 len=f back="D:(A;;GR;;;WD)"
+mask m=1 ok=1 gle=0 len=f back="D:(A;;CC;;;WD)"
+mask m=2 ok=1 gle=0 len=f back="D:(A;;DC;;;WD)"
+mask m=4 ok=1 gle=0 len=f back="D:(A;;LC;;;WD)"
+mask m=8 ok=1 gle=0 len=f back="D:(A;;SW;;;WD)"
+mask m=10 ok=1 gle=0 len=f back="D:(A;;RP;;;WD)"
+mask m=20 ok=1 gle=0 len=f back="D:(A;;WP;;;WD)"
+mask m=40 ok=1 gle=0 len=f back="D:(A;;DT;;;WD)"
+mask m=80 ok=1 gle=0 len=f back="D:(A;;LO;;;WD)"
+mask m=40000 ok=1 gle=0 len=f back="D:(A;;WD;;;WD)"
+mask m=80000 ok=1 gle=0 len=f back="D:(A;;WO;;;WD)"
+mask m=20000 ok=1 gle=0 len=f back="D:(A;;RC;;;WD)"
+mask m=10000 ok=1 gle=0 len=f back="D:(A;;SD;;;WD)"
+mask m=200000 ok=1 gle=0 len=17 back="D:(A;;0x200000;;;WD)"
+mask m=400000 ok=1 gle=0 len=17 back="D:(A;;0x400000;;;WD)"
+mask m=800000 ok=1 gle=0 len=17 back="D:(A;;0x800000;;;WD)"
+mask m=1000 ok=1 gle=0 len=17 back="D:(A;;0x1000;;;WD)"
+mask m=2000 ok=1 gle=0 len=17 back="D:(A;;0x2000;;;WD)"
+mask m=4000 ok=1 gle=0 len=17 back="D:(A;;0x4000;;;WD)"
+mask m=8000 ok=1 gle=0 len=17 back="D:(A;;0x8000;;;WD)"
+aceflags "CI" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000202140000000010010100000000000100000000 back="S:(AU;CI;GA;;;WD)"
+aceflags "OI" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000201140000000010010100000000000100000000 back="S:(AU;OI;GA;;;WD)"
+aceflags "NP" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000204140000000010010100000000000100000000 back="S:(AU;NP;GA;;;WD)"
+aceflags "IO" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000208140000000010010100000000000100000000 back="S:(AU;IO;GA;;;WD)"
+aceflags "ID" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000210140000000010010100000000000100000000 back="S:(AU;ID;GA;;;WD)"
+aceflags "SA" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000240140000000010010100000000000100000000 back="S:(AU;SA;GA;;;WD)"
+aceflags "FA" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000280140000000010010100000000000100000000 back="S:(AU;FA;GA;;;WD)"
+aceflags "TP" ok=0 gle=3ec
+aceflags "CR" ok=0 gle=3ec
+aceflags "OICI" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000203140000000010010100000000000100000000 back="S:(AU;OICI;GA;;;WD)"
+aceflags "CIOI" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000203140000000010010100000000000100000000 back="S:(AU;OICI;GA;;;WD)"
+aceflags "OIOI" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000201140000000010010100000000000100000000 back="S:(AU;OI;GA;;;WD)"
+aceflags "CIOINPIOIDSAFA" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c000100000002df140000000010010100000000000100000000 back="S:(AU;OICINPIOIDSAFA;GA;;;WD)"
+aceflags "oi" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000201140000000010010100000000000100000000 back="S:(AU;OI;GA;;;WD)"
+aceflags "XX" ok=0 gle=3ec
+aceflags " OI" ok=1 gle=0 bytes=010010800000000000000000140000000000000002001c00010000000201140000000010010100000000000100000000 back="S:(AU;OI;GA;;;WD)"
+aceflags "0x3" ok=0 gle=3ec
+sd "D:(A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "S:(ML;;NW;;;LW)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001100140001000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=10 str="S:(ML;;NW;;;LW)"
+sd "D:P(A;;GA;;;SY)(A;;GA;;;BA)" ok=1 gle=0 size=48 bytes=010004900000000000000000000000001400000002003400020000000000140000000010010100000000000512000000000018000000001001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=1d str="D:P(A;;GA;;;SY)(A;;GA;;;BA)"
+sd "O:BAG:SYD:(D;OICI;FA;;;AN)(A;OICI;0x1200a9;;;BU)" ok=1 gle=0 size=64 bytes=0100048048000000580000000000000014000000020034000200000001031400ff011f0001010000000000050700000000031800a90012000102000000000005200000002102000001020000000000052000000020020000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=34 str="O:BAG:SYD:(D;OICI;FA;;;AN)(A;OICI;0x1200a9;;;BU)"
+sd "" ok=1 gle=0 size=14 bytes=0100008000000000000000000000000000000000
+  rt si=1f ok=1 gle=0 len=0 str=""
+sd "garbage" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;XX)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;S-1-5-21-1-2-3-4)" ok=1 gle=0 size=40 bytes=010004800000000000000000000000001400000002002c0001000000000024000000001001050000000000051500000001000000020000000300000004000000
+  rt si=1f ok=1 gle=0 len=1d str="D:(A;;GA;;;S-1-5-21-1-2-3-4)"
+sd "O:SYG:SYD:(A;;0x001f0001;;;SY)" ok=1 gle=0 size=48 bytes=01000480300000003c000000000000001400000002001c00010000000000140001001f00010100000000000512000000010100000000000512000000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=1f str="O:SYG:SYD:(A;;0x1f0001;;;SY)"
+sd "D:NO_ACCESS_CONTROL" ok=1 gle=0 size=14 bytes=0100048000000000000000000000000000000000
+  rt si=1f ok=1 gle=0 len=14 str="D:NO_ACCESS_CONTROL"
+sd "D:" ok=1 gle=0 size=1c bytes=01000480000000000000000000000000140000000200080000000000
+  rt si=1f ok=1 gle=0 len=2 str="D:"
+sd "S:" ok=1 gle=0 size=1c bytes=01001080000000000000000014000000000000000200080000000000
+  rt si=1f ok=1 gle=0 len=2 str="S:"
+sd "D:PAI(A;OICIID;FA;;;SY)(A;OICIIOID;GA;;;CO)" ok=1 gle=0 size=44 bytes=0100049400000000000000000000000014000000020030000200000000131400ff011f00010100000000000512000000001b140000000010010100000000000300000000
+  rt si=1f ok=1 gle=0 len=2d str="D:PAI(A;OICIID;FA;;;SY)(A;OICIIOID;GA;;;CO)"
+sd "D:AR(A;;FR;;;WD)" ok=1 gle=0 size=30 bytes=010004810000000000000000000000001400000002001c00010000000000140089001200010100000000000100000000
+  rt si=1f ok=1 gle=0 len=11 str="D:AR(A;;FR;;;WD)"
+sd "D:(A;;GRGWGX;;;WD)(A;;RCSDWDWO;;;BA)" ok=1 gle=0 size=48 bytes=0100048000000000000000000000000014000000020034000200000000001400000000e00101000000000001000000000000180000000f0001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=26 str="D:(A;;GXGWGR;;;WD)(A;;SDRCWDWO;;;BA)"
+sd "D:(A;;RPWPCCDCLCSWLODTCR;;;AU)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c000100000000001400ff01000001010000000000050b000000
+  rt si=1f ok=1 gle=0 len=1f str="D:(A;;CCDCLCSWRPWPDTLOCR;;;AU)"
+sd "D:(A;;RPWPCCDCLCSWRCWDWOGA;;;S-1-0-0)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c0001000000000014003f000e10010100000000000000000000
+  rt si=1f ok=1 gle=0 len=26 str="D:(A;;CCDCLCSWRPWPRCWDWOGA;;;S-1-0-0)"
+sd "D:(A;;KAKRKWKX;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c0001000000000014003f000f00010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;KA;;;WD)"
+sd "D:(A;;FAFRFWFX;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c000100000000001400ff011f00010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;FA;;;WD)"
+sd "S:(ML;;NRNWNX;;;HI)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001100140007000000010100000000001000300000
+  rt si=1f ok=1 gle=0 len=14 str="S:(ML;;NWNRNX;;;HI)"
+sd "S:(ML;OICI;NW;;;ME)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001103140001000000010100000000001000200000
+  rt si=1f ok=1 gle=0 len=14 str="S:(ML;OICI;NW;;;ME)"
+sd "S:(AU;SAFA;GA;;;WD)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c000100000002c0140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=14 str="S:(AU;SAFA;GA;;;WD)"
+sd "S:(AL;SA;GA;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "S:(AU;SAFA;WDWOSDWPCCDCSW;;;WD)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c000100000002c014002b000d00010100000000000100000000
+  rt si=1f ok=1 gle=0 len=20 str="S:(AU;SAFA;CCDCSWWPSDWDWO;;;WD)"
+sd "D:(OA;;CCDC;bf967aba-0de6-11d0-a285-00aa003049e2;;AO)" ok=1 gle=0 size=48 bytes=0100048000000000000000000000000014000000040034000100000005002c000300000001000000ba7a96bfe60dd011a28500aa003049e201020000000000052000000024020000
+  rt si=1f ok=1 gle=0 len=36 str="D:(OA;;CCDC;bf967aba-0de6-11d0-a285-00aa003049e2;;AO)"
+sd "D:(OA;;CCDC;;;AO)" ok=1 gle=0 size=38 bytes=0100048000000000000000000000000014000000040024000100000000001800030000000102000000000005200000002402000000000000
+  rt si=1f ok=1 gle=0 len=11 str="D:(A;;CCDC;;;AO)"
+sd "D:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;bf967aba-0de6-11d0-a285-00aa003049e2;WD)" ok=1 gle=0 size=54 bytes=01000480000000000000000000000000140000000400400001000000060038000001000003000000531a72ab2f1ed011981900aa0040529bba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+  rt si=1f ok=1 gle=0 len=58 str="D:(OD;;CR;ab721a53-1e2f-11d0-9819-00aa0040529b;bf967aba-0de6-11d0-a285-00aa003049e2;WD)"
+sd "D:(OA;;RP;;bf967aba-0de6-11d0-a285-00aa003049e2;WD)" ok=1 gle=0 size=44 bytes=01000480000000000000000000000000140000000400300001000000050028001000000002000000ba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+  rt si=1f ok=1 gle=0 len=34 str="D:(OA;;RP;;bf967aba-0de6-11d0-a285-00aa003049e2;WD)"
+sd "D:(OD;;RP;;;WD)" ok=1 gle=0 size=34 bytes=01000480000000000000000000000000140000000400200001000000010014001000000001010000000000010000000000000000
+  rt si=1f ok=1 gle=0 len=f str="D:(D;;RP;;;WD)"
+sd "D:(OA;;RP;BF967ABA-0DE6-11D0-A285-00AA003049E2;;WD)" ok=1 gle=0 size=44 bytes=01000480000000000000000000000000140000000400300001000000050028001000000001000000ba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+  rt si=1f ok=1 gle=0 len=34 str="D:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)"
+sd "D:(OA;;RP;{bf967aba-0de6-11d0-a285-00aa003049e2};;WD)" ok=0 gle=6a9 sdOut=1 sizeOut=0
+sd "D:(OA;;RP;bf967aba-0de6-11d0-a285;;WD)" ok=0 gle=6a9 sdOut=1 sizeOut=0
+sd "S:(OU;SA;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)" ok=1 gle=0 size=44 bytes=01001080000000000000000014000000000000000400300001000000074028001000000001000000ba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+  rt si=1f ok=1 gle=0 len=36 str="S:(OU;SA;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)"
+sd "S:(OL;SA;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;0x7FFFFFFF;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c000100000000001400ffffff7f010100000000000100000000
+  rt si=1f ok=1 gle=0 len=17 str="D:(A;;0x7fffffff;;;WD)"
+sd "D:(A;;123;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c0001000000000014007b000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=19 str="D:(A;;CCDCSWRPWPDT;;;WD)"
+sd "D:(A;;;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=d str="D:(A;;;;;WD)"
+sd "D:(A;;GA;;;)" ok=0 gle=534 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(Q;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(A;ZZ;GA;;;WD)" ok=0 gle=3ec sdOut=1 sizeOut=0
+sd "D:(A;;ZZ;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "O:BA" ok=1 gle=0 size=24 bytes=010000801400000000000000000000000000000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=4 str="O:BA"
+sd "G:BU" ok=1 gle=0 size=24 bytes=010000800000000014000000000000000000000001020000000000052000000021020000
+  rt si=1f ok=1 gle=0 len=4 str="G:BU"
+sd "O:S-1-5-32-544G:S-1-5-18" ok=1 gle=0 size=30 bytes=010000801400000024000000000000000000000001020000000000052000000020020000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=8 str="O:BAG:SY"
+sd " D: (A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD) (A;;GA;;;BA)" ok=1 gle=0 size=48 bytes=010004800000000000000000000000001400000002003400020000000000140000000010010100000000000100000000000018000000001001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;GA;;;WD)(A;;GA;;;BA)"
+sd "D:( A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD )" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "d:(a;;ga;;;wd)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A; ;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)D:(A;;GA;;;BA)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "O:BAO:SY" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:P" ok=1 gle=0 size=1c bytes=01000490000000000000000000000000140000000200080000000000
+  rt si=1f ok=1 gle=0 len=3 str="D:P"
+sd "D:PNO_ACCESS_CONTROL" ok=1 gle=0 size=14 bytes=0100049000000000000000000000000000000000
+  rt si=1f ok=1 gle=0 len=15 str="D:PNO_ACCESS_CONTROL"
+sd "D:NO_ACCESS_CONTROLP" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "S:NO_ACCESS_CONTROL" ok=1 gle=0 size=14 bytes=0100108000000000000000000000000000000000
+  rt si=1f ok=1 gle=0 len=14 str="S:NO_ACCESS_CONTROL"
+sd "D:(A;;GA;;;S-1-15-2-1)" ok=1 gle=0 size=34 bytes=010004800000000000000000000000001400000002002000010000000000180000000010010200000000000f0200000001000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;AC)"
+sd "D:(A;;GA;;;AC)" ok=1 gle=0 size=34 bytes=010004800000000000000000000000001400000002002000010000000000180000000010010200000000000f0200000001000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;AC)"
+sd "O:LAG:LG" ok=1 gle=0 size=4c bytes=010000801400000030000000000000000000000001050000000000051500000000ca9a3b00943577005ed0b2f401000001050000000000051500000000ca9a3b00943577005ed0b2f5010000
+  rt si=1f ok=1 gle=0 len=8 str="O:LAG:LG"
+sd "O:DA" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:DU" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "S:(ML;;NW;;;S-1-16-4096)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001100140001000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=10 str="S:(ML;;NW;;;LW)"
+sd "D:(A;CIOI;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000003140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=13 str="D:(A;OICI;GA;;;WD)"
+sd "D:(A;NPIO;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c0001000000000c140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=13 str="D:(A;NPIO;GA;;;WD)"
+sd "S:(ML;;;;;LW)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001100140000000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=e str="S:(ML;;;;;LW)"
+sd "D:(XA;;FA;;;WD;(@User.Title=="PM"))" ok=1 gle=0 size=50 bytes=010004800000000000000000000000001400000002003c000100000009003400ff011f0001010000000000010000000061727478f90a0000005400690074006c006500100400000050004d0080000000
+  rt si=1f ok=1 gle=0 len=26 str="D:(XA;;FA;;;WD;(@USER.Title == "PM"))"
+sd "D:(XA;;FA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(XD;;FA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "S:(XU;SA;FA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(ZA;;FA;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "S:(RA;CI;;;;S-1-1-0;("Project",TS,0,"Windows","SQL"))" ok=1 gle=0 size=70 bytes=010010800000000000000000140000000000000002005c00010000001202540000000000010100000000000100000000180000000300000000000000020000002800000038000000500072006f006a006500630074000000570069006e0064006f00770073000000530051004c000000
+  rt si=1f ok=1 gle=0 len=2 str="S:"
+sd "S:(RA;CI;;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "S:(TL;;0x0200;;;S-1-19-512-1024)" ok=1 gle=0 size=34 bytes=01001080000000000000000014000000000000000200200001000000140018000002000001020000000000130002000000040000
+  rt si=1f ok=1 gle=0 len=2 str="S:"
+sd "S:(SP;;;;;S-1-17-1)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001300140000000000010100000000001101000000
+  rt si=1f ok=1 gle=0 len=2 str="S:"
+sd "S:(FL;;;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)S:(ML;;NW;;;LW)" ok=1 gle=0 size=4c bytes=010014800000000000000000140000003000000002001c0001000000110014000100000001010000000000100010000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=1f str="D:(A;;GA;;;WD)S:(ML;;NW;;;LW)"
+sd "S:(ML;;NW;;;LW)D:(A;;GA;;;WD)" ok=1 gle=0 size=4c bytes=010014800000000000000000140000003000000002001c0001000000110014000100000001010000000000100010000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=1f str="D:(A;;GA;;;WD)S:(ML;;NW;;;LW)"
+sd "O:BAG:BAD:(A;;GA;;;WD)S:(AU;FA;GA;;;WD)" ok=1 gle=0 size=6c bytes=010014804c0000005c000000140000003000000002001c0001000000028014000000001001010000000000010000000002001c000100000000001400000000100101000000000001000000000102000000000005200000002002000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=29 str="O:BAG:BAD:(A;;GA;;;WD)S:(AU;FA;GA;;;WD)"
+sd "S:(AU;FA;GA;;;WD)G:BAD:(A;;GA;;;WD)O:SY" ok=1 gle=0 size=68 bytes=010014804c00000058000000140000003000000002001c0001000000028014000000001001010000000000010000000002001c0001000000000014000000001001010000000000010000000001010000000000051200000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=29 str="O:SYG:BAD:(A;;GA;;;WD)S:(AU;FA;GA;;;WD)"
+sd "D:(A;ID;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000010140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=11 str="D:(A;ID;GA;;;WD)"
+sd "D:(A;;GA;;;WD);" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)x" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)(" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;0xFFFFFFFFF;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c000100000000001400ffffffff010100000000000100000000
+  rt si=1f ok=1 gle=0 len=17 str="D:(A;;0xffffffff;;;WD)"
+sd "D:(A;;GAGA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;OIOI;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000001140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=11 str="D:(A;OI;GA;;;WD)"
+sd "D:(A;;GA;;;WD)(A;;GA;;;WD)" ok=1 gle=0 size=44 bytes=0100048000000000000000000000000014000000020030000200000000001400000000100101000000000001000000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;GA;;;WD)(A;;GA;;;WD)"
+sd "D:(A;;GA;;;S-1-5)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;S-1-0x123456789ABC-5)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c000100000000001400000000100101123456789abc05000000
+  rt si=1f ok=1 gle=0 len=21 str="D:(A;;GA;;;S-1-0x123456789ABC-5)"
+sd "D:ARAIP(A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004950000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=14 str="D:PARAI(A;;GA;;;WD)"
+sd "D:PP(A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004900000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=10 str="D:P(A;;GA;;;WD)"
+sd "D:(D;;GA;;;WD)(A;;GA;;;WD)" ok=1 gle=0 size=44 bytes=0100048000000000000000000000000014000000020030000200000001001400000000100101000000000001000000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=1c str="D:(D;;GA;;;WD)(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)S:(ML;;;;;LW)" ok=1 gle=0 size=4c bytes=010014800000000000000000140000003000000002001c0001000000110014000000000001010000000000100010000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=1d str="D:(A;;GA;;;WD)S:(ML;;;;;LW)"
+sd "D:(A;;GA;;;SY)(A;;GA;;;OW)" ok=1 gle=0 size=44 bytes=0100048000000000000000000000000014000000020030000200000000001400000000100101000000000005120000000000140000000010010100000000000304000000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;GA;;;SY)(A;;GA;;;OW)"
+sd "S:(ML;;NW;;;LW)D:(A;;0x12019b;;;WD)" ok=1 gle=0 size=4c bytes=010014800000000000000000140000003000000002001c0001000000110014000100000001010000000000100010000002001c0001000000000014009b011200010100000000000100000000
+  rt si=1f ok=1 gle=0 len=27 str="D:(A;;0x12019b;;;WD)S:(ML;;NW;;;LW)"
+sd "D:(A;;0x1;;;WD)(A;;0x2;;;WD)(A;;0x4;;;WD)" ok=1 gle=0 size=58 bytes=01000480000000000000000000000000140000000200440003000000000014000100000001010000000000010000000000001400020000000101000000000001000000000000140004000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=29 str="D:(A;;CC;;;WD)(A;;DC;;;WD)(A;;LC;;;WD)"
+sd "D:(A;;GA;;;S-1-5-5-0-12345)" ok=1 gle=0 size=38 bytes=0100048000000000000000000000000014000000020024000100000000001c00000000100103000000000005050000000000000039300000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;GA;;;S-1-5-5-0-12345)"
+sd "O:WD" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=4 str="O:WD"
+sd "O:" ok=0 gle=534 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)O:" ok=0 gle=534 sdOut=1 sizeOut=0
+sd "X:(A;;GA;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "O:BA G:SY" ok=1 gle=0 size=30 bytes=010000801400000024000000000000000000000001020000000000052000000020020000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=8 str="O:BAG:SY"
+sd "O:BAx" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)\t" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)" ok=1 gle=0 size=bc bytes=01000480000000000000000000000000140000000200a8000800000000001400000000100101000000000001000000000000140000000010010100000000000100000000000014000000001001010000000000010000000000001400000000100101000000000001000000000000140000000010010100000000000100000000000014000000001001010000000000010000000000001400000000100101000000000001000000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=6a str="D:(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)"
+sd "D:(a;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "d:(A;;GA;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "o:BA" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:p(A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004900000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=10 str="D:P(A;;GA;;;WD)"
+sd "D:ai(A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004840000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=11 str="D:AI(A;;GA;;;WD)"
+sd "D:no_access_control" ok=1 gle=0 size=14 bytes=0100048000000000000000000000000000000000
+  rt si=1f ok=1 gle=0 len=14 str="D:NO_ACCESS_CONTROL"
+sd "D:(A;;GA;;;WD);x" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)x;" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)xy" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)x(A;;GA;;;BA)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:x(A;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:PX(A;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D: P(A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004900000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=10 str="D:P(A;;GA;;;WD)"
+sd "D:P (A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004900000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=10 str="D:P(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)O:BA" ok=1 gle=0 size=40 bytes=010004803000000000000000000000001400000002001c0001000000000014000000001001010000000000010000000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=13 str="O:BAD:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)xO:BA" ok=1 gle=0 size=40 bytes=010004803000000000000000000000001400000002001c0001000000000014000000001001010000000000010000000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=13 str="O:BAD:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD) O:BA" ok=1 gle=0 size=40 bytes=010004803000000000000000000000001400000002001c0001000000000014000000001001010000000000010000000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=13 str="O:BAD:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD);;;;;" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;GA;;WD);" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;GA;;;BA" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)()" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:()" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD;)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD;x)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD;;)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;x;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;x;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;GA;;;BA)x(A;;GA;;;SY)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "O:XXX" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:BAx" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "O:S-1-5-18x" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:S-1-5-18 " ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O: BA" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:BA " ok=1 gle=0 size=24 bytes=010000801400000000000000000000000000000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=4 str="O:BA"
+sd "O:B A" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:S-1-5-18G" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:S-1-5-18G:" ok=0 gle=534 sdOut=1 sizeOut=0
+sd "O:BAG:" ok=0 gle=534 sdOut=1 sizeOut=0
+sd "G:BAO:SY" ok=1 gle=0 size=30 bytes=010000801400000020000000000000000000000001010000000000051200000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=8 str="O:SYG:BA"
+sd "O:BA:" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "O:BAD:" ok=1 gle=0 size=2c bytes=010004801c000000000000000000000014000000020008000000000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=6 str="O:BAD:"
+sd "O:BAS:" ok=1 gle=0 size=2c bytes=010010801c000000000000001400000000000000020008000000000001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=6 str="O:BAS:"
+sd "O:S-1-5-21-1000000000-2000000000-3000000000-513" ok=1 gle=0 size=30 bytes=010000801400000000000000000000000000000001050000000000051500000000ca9a3b00943577005ed0b201020000
+  rt si=1f ok=1 gle=0 len=2f str="O:S-1-5-21-1000000000-2000000000-3000000000-513"
+sd "O:S-1-5-21-1000000000-2000000000-3000000000-512" ok=1 gle=0 size=30 bytes=010000801400000000000000000000000000000001050000000000051500000000ca9a3b00943577005ed0b200020000
+  rt si=1f ok=1 gle=0 len=2f str="O:S-1-5-21-1000000000-2000000000-3000000000-512"
+sd "O:S-1-5-21-1000000000-2000000000-3000000000-1001" ok=1 gle=0 size=30 bytes=010000801400000000000000000000000000000001050000000000051500000000ca9a3b00943577005ed0b2e9030000
+  rt si=1f ok=1 gle=0 len=30 str="O:S-1-5-21-1000000000-2000000000-3000000000-1001"
+sd "O:S-1-5-32" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000520000000
+  rt si=1f ok=1 gle=0 len=a str="O:S-1-5-32"
+sd "O:S-1-5-32-544-" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:S-1-5--544" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:S-01-5-18" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=4 str="O:SY"
+sd "O:S-1-05-18" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=4 str="O:SY"
+sd "O:S-1-5-018" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=4 str="O:SY"
+sd "O:S-1-5-+18" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:S-1-5- 18" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "O:S-1-0X5-18" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=4 str="O:SY"
+sd "O:S-1-0x5-18" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=4 str="O:SY"
+sd "O:S-1-5-0X12" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=4 str="O:SY"
+sd "O:S-1-4294967296-1" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100010000000001000000
+  rt si=1f ok=1 gle=0 len=13 str="O:S-1-0x100000000-1"
+sd "O:S-1-5-18-0x" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "S:P(ML;;NW;;;LW)" ok=1 gle=0 size=30 bytes=010010a00000000000000000140000000000000002001c00010000001100140001000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=11 str="S:P(ML;;NW;;;LW)"
+sd "S:PAIAR(AU;SA;GA;;;WD)" ok=1 gle=0 size=30 bytes=010010aa0000000000000000140000000000000002001c00010000000240140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=17 str="S:PARAI(AU;SA;GA;;;WD)"
+sd "S:(ML;;NW;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "S:(ML;;GA;;;LW)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "S:(ML;;0x7;;;LW)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001100140007000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=14 str="S:(ML;;NWNRNX;;;LW)"
+sd "S:(ML;;0x8;;;LW)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "S:(ML;;NWFA;;;LW)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "S:(ML;;NW;;;LW)(ML;;NR;;;HI)" ok=1 gle=0 size=44 bytes=0100108000000000000000001400000000000000020030000200000011001400010000000101000000000010001000001100140002000000010100000000001000300000
+  rt si=1f ok=1 gle=0 len=1e str="S:(ML;;NW;;;LW)(ML;;NR;;;HI)"
+sd "D:(ML;;NW;;;LW)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "S:(A;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(AU;SA;GA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "S:(D;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "S:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(OU;SA;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(TL;;0x0200;;;S-1-19-512-1024)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "S:(TL;;;;;S-1-19-512-1024)" ok=1 gle=0 size=34 bytes=01001080000000000000000014000000000000000200200001000000140018000000000001020000000000130002000000040000
+  rt si=1f ok=1 gle=0 len=2 str="S:"
+sd "S:(TL;;0x200;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "S:(SP;;;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "S:(SP;;GA;;;S-1-17-1)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)" ok=1 gle=0 size=58 bytes=010004800000000000000000000000001400000004004400020000000000140000000010010100000000000100000000050028001000000001000000ba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+  rt si=1f ok=1 gle=0 len=41 str="D:(A;;GA;;;WD)(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)"
+sd "D:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)(A;;GA;;;WD)" ok=1 gle=0 size=58 bytes=01000480000000000000000000000000140000000400440002000000050028001000000001000000ba7a96bfe60dd011a28500aa003049e20101000000000001000000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=41 str="D:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)(A;;GA;;;WD)"
+sd "D:(OA;;RP;;;WD)(OA;;RP;;;BA)" ok=1 gle=0 size=50 bytes=010004800000000000000000000000001400000004003c000200000000001400100000000101000000000001000000000000180010000000010200000000000520000000200200000000000000000000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;RP;;;WD)(A;;RP;;;BA)"
+sd "D:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;ab721a53-1e2f-11d0-9819-00aa0040529b;WD)" ok=1 gle=0 size=54 bytes=01000480000000000000000000000000140000000400400001000000050038001000000003000000ba7a96bfe60dd011a28500aa003049e2531a72ab2f1ed011981900aa0040529b010100000000000100000000
+  rt si=1f ok=1 gle=0 len=58 str="D:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;ab721a53-1e2f-11d0-9819-00aa0040529b;WD)"
+sd "D:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2x;;WD)" ok=0 gle=6a9 sdOut=1 sizeOut=0
+sd "D:(OA;;RP;bf967aba0de611d0a28500aa003049e2;;WD)" ok=0 gle=6a9 sdOut=1 sizeOut=0
+sd "D:(A;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(D;;RP;;bf967aba-0de6-11d0-a285-00aa003049e2;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)S:(AU;SA;GA;;;WD)(ML;;NW;;;LW)" ok=1 gle=0 size=60 bytes=010014800000000000000000140000004400000002003000020000000240140000000010010100000000000100000000110014000100000001010000000000100010000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=2f str="D:(A;;GA;;;WD)S:(AU;SA;GA;;;WD)(ML;;NW;;;LW)"
+sd "D:NO_ACCESS_CONTROL(A;;GA;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:PAI" ok=1 gle=0 size=1c bytes=01000494000000000000000000000000140000000200080000000000
+  rt si=1f ok=1 gle=0 len=5 str="D:PAI"
+sd "D:AI" ok=1 gle=0 size=1c bytes=01000484000000000000000000000000140000000200080000000000
+  rt si=1f ok=1 gle=0 len=4 str="D:AI"
+sd "D:AR" ok=1 gle=0 size=1c bytes=01000481000000000000000000000000140000000200080000000000
+  rt si=1f ok=1 gle=0 len=4 str="D:AR"
+sd "S:AI" ok=1 gle=0 size=1c bytes=01001088000000000000000014000000000000000200080000000000
+  rt si=1f ok=1 gle=0 len=4 str="S:AI"
+sd "S:AR" ok=1 gle=0 size=1c bytes=01001082000000000000000014000000000000000200080000000000
+  rt si=1f ok=1 gle=0 len=4 str="S:AR"
+sd "S:P" ok=1 gle=0 size=1c bytes=010010a0000000000000000014000000000000000200080000000000
+  rt si=1f ok=1 gle=0 len=3 str="S:P"
+sd "D:PAIARNO_ACCESS_CONTROL" ok=1 gle=0 size=14 bytes=0100049500000000000000000000000000000000
+  rt si=1f ok=1 gle=0 len=19 str="D:PARAINO_ACCESS_CONTROL"
+sd "D:P(A;;GA;;;WD)S:P(AU;SA;GA;;;WD)" ok=1 gle=0 size=4c bytes=010014b00000000000000000140000003000000002001c0001000000024014000000001001010000000000010000000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=23 str="D:P(A;;GA;;;WD)S:P(AU;SA;GA;;;WD)"
+sd "D:(A;;0x-1;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;-1;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c000100000000001400ffffffff010100000000000100000000
+  rt si=1f ok=1 gle=0 len=17 str="D:(A;;0xffffffff;;;WD)"
+sd "D:(A;;0x1 0x2;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140003000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=11 str="D:(A;;CCDC;;;WD)"
+sd "D:(A;;GA GR;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000090010100000000000100000000
+  rt si=1f ok=1 gle=0 len=11 str="D:(A;;GAGR;;;WD)"
+sd "D:(A;;G A;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GAG;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;08;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140008000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;SW;;;WD)"
+sd "D:(A;;0;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=d str="D:(A;;;;;WD)"
+sd "D:(A;OI CI;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000003140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=13 str="D:(A;OICI;GA;;;WD)"
+sd "D:(A;OIC;GA;;;WD)" ok=0 gle=3ec sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)S:(ML;;NW;;;LW)O:BAG:SY" ok=1 gle=0 size=68 bytes=010014804c0000005c000000140000003000000002001c0001000000110014000100000001010000000000100010000002001c0001000000000014000000001001010000000000010000000001020000000000052000000020020000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=27 str="O:BAG:SYD:(A;;GA;;;WD)S:(ML;;NW;;;LW)"
+sd "D:(" ok=1 gle=0 size=1c bytes=01000480000000000000000000000000140000000200080000000000
+  rt si=1f ok=1 gle=0 len=2 str="D:"
+sd "D:)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:x" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:;" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:;;;;;" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:A;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:A;;GA;;;WD" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:((A;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)x;;;;" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)x;;;;;" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)();;;;;" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD))" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)))" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)(x" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)x)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD) ;" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;GA;;;BA)x" ok=1 gle=0 size=48 bytes=010004800000000000000000000000001400000002003400020000000000140000000010010100000000000100000000000018000000001001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;GA;;;WD)(A;;GA;;;BA)"
+sd "D:(A;;GA;;;WD)(A;;GA;;;BA);" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)x(" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)(A;;GA;;;BA)(" ok=1 gle=0 size=48 bytes=010004800000000000000000000000001400000002003400020000000000140000000010010100000000000100000000000018000000001001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;GA;;;WD)(A;;GA;;;BA)"
+sd "D:(A;;GA;;;WD)(A;;GA;;;BA)()" ok=1 gle=0 size=48 bytes=010004800000000000000000000000001400000002003400020000000000140000000010010100000000000100000000000018000000001001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;GA;;;WD)(A;;GA;;;BA)"
+sd "D:(A;;GA;;;WD)x;;;;;(A;;GA;;;BA)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;GA;;;BA)(A" ok=1 gle=0 size=48 bytes=010004800000000000000000000000001400000002003400020000000000140000000010010100000000000100000000000018000000001001020000000000052000000020020000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;GA;;;WD)(A;;GA;;;BA)"
+sd "D:(A;;GA;;;WD)(A" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)(A;" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;;;" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;;;;" ok=0 gle=534 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;;;;WD" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;;;;WD)" ok=1 gle=0 size=44 bytes=0100048000000000000000000000000014000000020030000200000000001400000000100101000000000001000000000000140000000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=1a str="D:(A;;GA;;;WD)(A;;;;;WD)"
+sd "D:(A;;GA;;;WD)G" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)Gx:BA" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)S" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)S:" ok=1 gle=0 size=38 bytes=010014800000000000000000140000001c000000020008000000000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=11 str="D:(A;;GA;;;WD)S:"
+sd "D:(A;;GA;;;WD)(XA;;FA;;;WD;(@User.Title=="PM"))" ok=1 gle=0 size=64 bytes=01000480000000000000000000000000140000000200500002000000000014000000001001010000000000010000000009003400ff011f0001010000000000010000000061727478f90a0000005400690074006c006500100400000050004d0080000000
+  rt si=1f ok=1 gle=0 len=33 str="D:(A;;GA;;;WD)(XA;;FA;;;WD;(@USER.Title == "PM"))"
+sd "D:(XA;;FA;;;WD;(@User.Title=="PM"));" ok=1 gle=0 size=50 bytes=010004800000000000000000000000001400000002003c000100000009003400ff011f0001010000000000010000000061727478f90a0000005400690074006c006500100400000050004d0080000000
+  rt si=1f ok=1 gle=0 len=26 str="D:(XA;;FA;;;WD;(@USER.Title == "PM"))"
+sd "D:(XA;;FA;;;WD;(@User.Title=="PM"))(A;;GA;;;WD)" ok=1 gle=0 size=64 bytes=0100048000000000000000000000000014000000020050000200000009003400ff011f0001010000000000010000000061727478f90a0000005400690074006c006500100400000050004d00800000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=33 str="D:(XA;;FA;;;WD;(@USER.Title == "PM"))(A;;GA;;;WD)"
+sd "D:(XA;;FA;;;WD;(@User.Title=="PM"))x" ok=1 gle=0 size=50 bytes=010004800000000000000000000000001400000002003c000100000009003400ff011f0001010000000000010000000061727478f90a0000005400690074006c006500100400000050004d0080000000
+  rt si=1f ok=1 gle=0 len=26 str="D:(XA;;FA;;;WD;(@USER.Title == "PM"))"
+sd "D:(XA;;FA;;;WD;(@User.Title=="PM;"))" ok=1 gle=0 size=50 bytes=010004800000000000000000000000001400000002003c000100000009003400ff011f0001010000000000010000000061727478f90a0000005400690074006c006500100600000050004d003b008000
+  rt si=1f ok=1 gle=0 len=27 str="D:(XA;;FA;;;WD;(@USER.Title == "PM;"))"
+sd "D:(A;;+1;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140001000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;CC;;;WD)"
+sd "D:(A;; 1;;;WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140001000000010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;CC;;;WD)"
+sd "D:(A;;1 ;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;0x1GA ;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "S:(AL;;GA;;;WD)" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(AL;;GA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(OL;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(AU;;GA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;SA;GA;;;WD)" ok=0 gle=3ec sdOut=1 sizeOut=0
+sd "D:(A;FA;GA;;;WD)" ok=0 gle=3ec sdOut=1 sizeOut=0
+sd "S:(AU;;GA;;;WD)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000000200140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=10 str="S:(AU;;GA;;;WD)"
+sd "S:(ML;SA;NW;;;LW)" ok=0 gle=3ec sdOut=1 sizeOut=0
+sd "S:(ML;ID;NW;;;LW)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001110140001000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=12 str="S:(ML;ID;NW;;;LW)"
+sd "S:(ML;OICINPIO;NW;;;LW)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c0001000000110f140001000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=18 str="S:(ML;OICINPIO;NW;;;LW)"
+sd "S:(OU;;RP;;;WD)" ok=1 gle=0 size=34 bytes=01001080000000000000000014000000000000000400200001000000020014001000000001010000000000010000000000000000
+  rt si=1f ok=1 gle=0 len=10 str="S:(AU;;RP;;;WD)"
+sd "S:(OU;SA;RP;;;WD)" ok=1 gle=0 size=34 bytes=01001080000000000000000014000000000000000400200001000000024014001000000001010000000000010000000000000000
+  rt si=1f ok=1 gle=0 len=12 str="S:(AU;SA;RP;;;WD)"
+sd "D:(A;;GA;;;S-1-5-18 )" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;; WD)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:(A;;GA;;;W D)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WDx)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;S-1-5-18x)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;wd)" ok=1 gle=0 size=30 bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;GA;;;WD)"
+sd "D:( A ;;GA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A ;;GA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(OA;;RP; bf967aba-0de6-11d0-a285-00aa003049e2;;WD)" ok=1 gle=0 size=44 bytes=01000480000000000000000000000000140000000400300001000000050028001000000001000000ba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+  rt si=1f ok=1 gle=0 len=34 str="D:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2;;WD)"
+sd "D:(OA;;RP;bf967aba-0de6-11d0-a285-00aa003049e2 ;;WD)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:(oa;;RP;;;WD)" ok=1 gle=0 size=34 bytes=01000480000000000000000000000000140000000400200001000000000014001000000001010000000000010000000000000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;RP;;;WD)"
+sd "D:(Oa;;RP;;;WD)" ok=1 gle=0 size=34 bytes=01000480000000000000000000000000140000000400200001000000000014001000000001010000000000010000000000000000
+  rt si=1f ok=1 gle=0 len=f str="D:(A;;RP;;;WD)"
+sd "S:(ml;;nw;;;lw)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001100140001000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=10 str="S:(ML;;NW;;;LW)"
+sd "S:(ML;;nw;;;lw)" ok=1 gle=0 size=30 bytes=010010800000000000000000140000000000000002001c00010000001100140001000000010100000000001000100000
+  rt si=1f ok=1 gle=0 len=10 str="S:(ML;;NW;;;LW)"
+sd "D:(OA;;RP;;;WD)(A;;GA;;;WD)" ok=1 gle=0 size=48 bytes=010004800000000000000000000000001400000004003400020000000000140010000000010100000000000100000000000014000000001001010000000000010000000000000000
+  rt si=1f ok=1 gle=0 len=1c str="D:(A;;RP;;;WD)(A;;GA;;;WD)"
+sd "S:(OU;SA;RP;;;WD)(AU;SA;GA;;;WD)" ok=1 gle=0 size=48 bytes=010010800000000000000000140000000000000004003400020000000240140010000000010100000000000100000000024014000000001001010000000000010000000000000000
+  rt si=1f ok=1 gle=0 len=22 str="S:(AU;SA;RP;;;WD)(AU;SA;GA;;;WD)"
+sd "D:(A;;GA;;;S-1-15-3-1024-1065365936-1281604716-3511738428-1654721687-432734479-3232135806-4053264122-3456934681)" ok=1 gle=0 size=54 bytes=010004800000000000000000000000001400000002004000010000000000380000000010010a00000000000f0300000000040000b031803f6cbc634c3ce050d1970ca1620f01cb197e7aa6c0fae697f119a30cce
+  rt si=1f ok=1 gle=0 len=71 str="D:(A;;GA;;;S-1-15-3-1024-1065365936-1281604716-3511738428-1654721687-432734479-3232135806-4053264122-3456934681)"
+sd "D:(A;;GA;;;S-1-5-80-0)" ok=1 gle=0 size=34 bytes=01000480000000000000000000000000140000000200200001000000000018000000001001020000000000055000000000000000
+  rt si=1f ok=1 gle=0 len=17 str="D:(A;;GA;;;S-1-5-80-0)"
+sd "O:S-1-5-80-0" ok=1 gle=0 size=24 bytes=010000801400000000000000000000000000000001020000000000055000000000000000
+  rt si=1f ok=1 gle=0 len=c str="O:S-1-5-80-0"
+sd "O:S-1-16-8192" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000001000200000
+  rt si=1f ok=1 gle=0 len=4 str="O:ME"
+sd "O:S-1-18-1" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000001201000000
+  rt si=1f ok=1 gle=0 len=4 str="O:AS"
+sd "O:S-1-5-84-0-0-0-0-0" ok=1 gle=0 size=34 bytes=01000080140000000000000000000000000000000106000000000005540000000000000000000000000000000000000000000000
+  rt si=1f ok=1 gle=0 len=4 str="O:UD"
+sd "O:S-1-15-2-2" ok=1 gle=0 size=24 bytes=0100008014000000000000000000000000000000010200000000000f0200000002000000
+  rt si=1f ok=1 gle=0 len=c str="O:S-1-15-2-2"
+sd "O:S-1-5-32-583" ok=1 gle=0 size=24 bytes=010000801400000000000000000000000000000001020000000000052000000047020000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-5-32-583"
+sd "O:S-1-5-32-586" ok=1 gle=0 size=24 bytes=01000080140000000000000000000000000000000102000000000005200000004a020000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-5-32-586"
+sd "O:S-1-5-113" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000571000000
+  rt si=1f ok=1 gle=0 len=b str="O:S-1-5-113"
+sd "O:S-1-5-114" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000572000000
+  rt si=1f ok=1 gle=0 len=b str="O:S-1-5-114"
+sd "O:S-1-2-0" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000200000000
+  rt si=1f ok=1 gle=0 len=9 str="O:S-1-2-0"
+sd "O:S-1-2-1" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000201000000
+  rt si=1f ok=1 gle=0 len=9 str="O:S-1-2-1"
+sd "O:S-1-5-64-10" ok=1 gle=0 size=24 bytes=01000080140000000000000000000000000000000102000000000005400000000a000000
+  rt si=1f ok=1 gle=0 len=d str="O:S-1-5-64-10"
+sd "O:S-1-5-1000" ok=1 gle=0 size=20 bytes=01000080140000000000000000000000000000000101000000000005e8030000
+  rt si=1f ok=1 gle=0 len=c str="O:S-1-5-1000"
+sd "O:S-1-3-2" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000302000000
+  rt si=1f ok=1 gle=0 len=9 str="O:S-1-3-2"
+sd "O:S-1-3-3" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000303000000
+  rt si=1f ok=1 gle=0 len=9 str="O:S-1-3-3"
+sd "O:S-1-5-3" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000503000000
+  rt si=1f ok=1 gle=0 len=9 str="O:S-1-5-3"
+sd "O:S-1-5-1" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000501000000
+  rt si=1f ok=1 gle=0 len=9 str="O:S-1-5-1"
+sd "O:S-1-5-8" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000508000000
+  rt si=1f ok=1 gle=0 len=9 str="O:S-1-5-8"
+sd "O:S-1-5-13" ok=1 gle=0 size=20 bytes=010000801400000000000000000000000000000001010000000000050d000000
+  rt si=1f ok=1 gle=0 len=a str="O:S-1-5-13"
+sd "O:S-1-5-14" ok=1 gle=0 size=20 bytes=010000801400000000000000000000000000000001010000000000050e000000
+  rt si=1f ok=1 gle=0 len=a str="O:S-1-5-14"
+sd "O:S-1-5-15" ok=1 gle=0 size=20 bytes=010000801400000000000000000000000000000001010000000000050f000000
+  rt si=1f ok=1 gle=0 len=a str="O:S-1-5-15"
+sd "O:S-1-5-17" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000000511000000
+  rt si=1f ok=1 gle=0 len=a str="O:S-1-5-17"
+sd "O:S-1-5-32-557" ok=1 gle=0 size=24 bytes=01000080140000000000000000000000000000000102000000000005200000002d020000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-5-32-557"
+sd "O:S-1-5-32-560" ok=1 gle=0 size=24 bytes=010000801400000000000000000000000000000001020000000000052000000030020000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-5-32-560"
+sd "O:S-1-5-32-561" ok=1 gle=0 size=24 bytes=010000801400000000000000000000000000000001020000000000052000000031020000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-5-32-561"
+sd "O:S-1-5-32-562" ok=1 gle=0 size=24 bytes=010000801400000000000000000000000000000001020000000000052000000032020000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-5-32-562"
+sd "O:S-1-5-32-553" ok=1 gle=0 size=24 bytes=010000801400000000000000000000000000000001020000000000052000000029020000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-5-32-553"
+sd "O:S-1-16-0" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000001000000000
+  rt si=1f ok=1 gle=0 len=a str="O:S-1-16-0"
+sd "O:S-1-16-20480" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000001000500000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-16-20480"
+sd "O:S-1-16-28672" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000001000700000
+  rt si=1f ok=1 gle=0 len=e str="O:S-1-16-28672"
+sd "O:S-1-16-8448" ok=1 gle=0 size=20 bytes=0100008014000000000000000000000000000000010100000000001000210000
+  rt si=1f ok=1 gle=0 len=4 str="O:MP"
+sd "O:B" ok=0 gle=534 sdOut=1 sizeOut=0
+sd "O: " ok=0 gle=534 sdOut=1 sizeOut=0
+sd "O:  G:SY" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:NO_ACCESS_CONTROLx" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:NO_ACCESS_CONTROL " ok=1 gle=0 size=14 bytes=0100048000000000000000000000000000000000
+  rt si=1f ok=1 gle=0 len=14 str="D:NO_ACCESS_CONTROL"
+sd "D:( " ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(x" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:( x" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:P(" ok=1 gle=0 size=1c bytes=01000490000000000000000000000000140000000200080000000000
+  rt si=1f ok=1 gle=0 len=3 str="D:P"
+sd "D:NO_ACCESS_CONTROL(" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "S:(AU;SA;GA;;;WD)(A;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(AU;SA;GA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)" ok=1 gle=0 size=f8 bytes=01000480000000000000000000000000140000000200e4000b00000000001400000000100101000000000001000000000000140000000010010100000000000100000000000014000000001001010000000000010000000000001400000000100101000000000001000000000000140000000010010100000000000100000000000014000000001001010000000000010000000000001400000000100101000000000001000000000000140000000010010100000000000100000000000014000000001001010000000000010000000000001400000000100101000000000001000000000000140000000010010100000000000100000000
+  rt si=1f ok=1 gle=0 len=91 str="D:(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)(A;;GA;;;WD)"
+sd "D:(A;;GA;;;WD)(A;;GA;;;AN)S:(ML;;NW;;;S-1-16-0)" ok=1 gle=0 size=60 bytes=010014800000000000000000140000003000000002001c00010000001100140001000000010100000000001000000000020030000200000000001400000000100101000000000001000000000000140000000010010100000000000507000000
+  rt si=1f ok=1 gle=0 len=32 str="D:(A;;GA;;;WD)(A;;GA;;;AN)S:(ML;;NW;;;S-1-16-0)"
+sd "D:(A;;FA;;;AU)(A;;FA;;;BA)(A;;GRGWGX;;;S-1-15-2-1)(A;;GRGWGX;;;S-1-15-2-2)" ok=1 gle=0 size=78 bytes=0100048000000000000000000000000014000000020064000400000000001400ff011f0001010000000000050b00000000001800ff011f000102000000000005200000002002000000001800000000e0010200000000000f020000000100000000001800000000e0010200000000000f0200000002000000
+  rt si=1f ok=1 gle=0 len=46 str="D:(A;;FA;;;AU)(A;;FA;;;BA)(A;;GXGWGR;;;AC)(A;;GXGWGR;;;S-1-15-2-2)"
+sd "D:(A;;GA;;;SY)(A;;GWGR;;;S-1-15-2-1)S:(ML;;;;;S-1-16-0)" ok=1 gle=0 size=64 bytes=010014800000000000000000140000003000000002001c000100000011001400000000000101000000000010000000000200340002000000000014000000001001010000000000051200000000001800000000c0010200000000000f0200000001000000
+  rt si=1f ok=1 gle=0 len=32 str="D:(A;;GA;;;SY)(A;;GWGR;;;AC)S:(ML;;;;;S-1-16-0)"
+sd "D:P(A;;0x1F0003;;;SY)(A;;0x1F0003;;;IU)" ok=1 gle=0 size=44 bytes=010004900000000000000000000000001400000002003000020000000000140003001f000101000000000005120000000000140003001f00010100000000000504000000
+  rt si=1f ok=1 gle=0 len=2d str="D:P(A;;0x1f0003;;;SY)(A;;0x1f0003;;;IU)"
+sd "D:(A;;FA;;;S-1-5-21-1000000000-2000000000-3000000000-1001)(A;;FA;;;SY)" ok=1 gle=0 size=54 bytes=0100048000000000000000000000000014000000020040000200000000002400ff011f0001050000000000051500000000ca9a3b00943577005ed0b2e903000000001400ff011f00010100000000000512000000
+  rt si=1f ok=1 gle=0 len=48 str="D:(A;;FA;;;S-1-5-21-1000000000-2000000000-3000000000-1001)(A;;FA;;;SY)"
+sd "D:(A;;GA;;;S-2-5-18)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "S:(ML;;NW;;;S-1-16)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "S:(ML;;NW;;;S-1-16-4096-1)" ok=1 gle=0 size=34 bytes=01001080000000000000000014000000000000000200200001000000110018000100000001020000000000100010000001000000
+  rt si=1f ok=1 gle=0 len=1b str="S:(ML;;NW;;;S-1-16-4096-1)"
+sd "S:(TL;;;;;S-1-19)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)\r\n(A;;GA;;;BA)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)S:(ML;;NW;;;LW)G:SYO:BA" ok=1 gle=0 size=68 bytes=010014804c0000005c000000140000003000000002001c0001000000110014000100000001010000000000100010000002001c0001000000000014000000001001010000000000010000000001020000000000052000000020020000010100000000000512000000
+  rt si=1f ok=1 gle=0 len=27 str="O:BAG:SYD:(A;;GA;;;WD)S:(ML;;NW;;;LW)"
+sd "D:\t(A;;GA;;;WD)" ok=0 gle=70c sdOut=1 sizeOut=0
+sd "O:BA\tG:SY" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;\tOI;GA;;;WD)" ok=0 gle=3ec sdOut=1 sizeOut=0
+sd "\tO:BA" ok=0 gle=57 sdOut=1 sizeOut=0
+sd "D:(A;;\tGA;;;WD)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;\tWD)" ok=0 gle=539 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD\t)" ok=0 gle=538 sdOut=1 sizeOut=0
+sd "D:(A;;GA;;;WD)\n(A;;GA;;;BA)" ok=0 gle=70c sdOut=1 sizeOut=0
+rev_good rev=0 ok=0 gle=519 sdOut=1 size=5555
+rev_bad rev=0 ok=0 gle=519 sdOut=1
+rev_null rev=0 ok=0 gle=57 sdOut=1
+rev_good rev=2 ok=0 gle=519 sdOut=1 size=5555
+rev_bad rev=2 ok=0 gle=519 sdOut=1
+rev_null rev=2 ok=0 gle=57 sdOut=1
+rev_good rev=ffffffff ok=0 gle=519 sdOut=1 size=5555
+rev_bad rev=ffffffff ok=0 gle=519 sdOut=1
+rev_null rev=ffffffff ok=0 gle=57 sdOut=1
+null_string ok=0 gle=57 sdOut=1
+null_out ok=0 gle=57
+null_size ok=1 gle=0 sdNonNull=1
+  localsize sz=30 flags=0
+ansi ok=1 gle=0 size=64 bytes=0100048048000000580000000000000014000000020034000200000001031400ff011f0001010000000000050700000000031800a90012000102000000000005200000002102000001020000000000052000000020020000010100000000000512000000 aOk=1 aGle=0 aLen=35 aStr="O:BAG:SYD:(D;OICI;FA;;;AN)(A;OICI;0x1200a9;;;BU)"
+ansi_len "O:BA" ok=1 len=5 lsz=5 str="O:BA"
+  wide len=4 lsz=a
+ansi_len "D:(A;;GA;;;WD)" ok=1 len=10 lsz=10 str="D:(A;;GA;;;WD)"
+  wide len=f lsz=20
+ansi_len "D:(A;;0x200;;;WD)(A;;GA;;;BA)" ok=1 len=25 lsz=25 str="D:(A;;0x200;;;WD)(A;;GA;;;BA)"
+  wide len=24 lsz=4a
+ansi_len "D:" ok=1 len=3 lsz=3 str="D:"
+  wide len=2 lsz=6
+ansi_len "O:BAG:SYD:PAI(A;OICI;FA;;;SY)S:(ML;;NW;;;LW)" ok=1 len=2f lsz=2f str="O:BAG:SYD:PAI(A;OICI;FA;;;SY)S:(ML;;NW;;;LW)"
+  wide len=2e lsz=5e
+ansi_nullsd ok=1 len=1 untouched=0 lsz=1 first=0
+ansi_bad ok=0 gle=57 sdOut=1
+  si si=0 ok=1 gle=0 len=0 str=""
+  si si=1 ok=1 gle=0 len=4 str="O:BA"
+  si si=2 ok=1 gle=0 len=4 str="G:SY"
+  si si=4 ok=1 gle=0 len=16 str="D:PAI(A;OICI;FA;;;SY)"
+  si si=8 ok=1 gle=0 len=15 str="S:PAI(AU;SA;GA;;;WD)"
+  si si=10 ok=1 gle=0 len=13 str="S:PAI(ML;;NW;;;LW)"
+  si si=18 ok=1 gle=0 len=23 str="S:PAI(ML;;NW;;;LW)(AU;SA;GA;;;WD)"
+  si si=1f ok=1 gle=0 len=41 str="O:BAG:SYD:PAI(A;OICI;FA;;;SY)S:PAI(ML;;NW;;;LW)(AU;SA;GA;;;WD)"
+  si si=80000000 ok=1 gle=0 len=0 str=""
+  si si=40000000 ok=1 gle=0 len=0 str=""
+  si si=20000000 ok=1 gle=0 len=0 str=""
+  si si=10000000 ok=1 gle=0 len=0 str=""
+  si si=20 ok=1 gle=0 len=5 str="S:PAI"
+  si si=40 ok=1 gle=0 len=17 str="S:PAI(SP;;;;;S-1-17-1)"
+  si si=80 ok=1 gle=0 len=28 str="S:PAI(TL;;0x200;;;S-1-19-512-1024)"
+  si si=10000 ok=1 gle=0 len=0 str=""
+tostr_rev2 ok=0 gle=519 outNull=0 len=5555
+tostr_nullsd ok=1 gle=0 outNull=0 outUntouched=0 len=0 str="" lsz=2
+tostr_nullout ok=0 gle=57 len=5555
+tostr_nulllen ok=1 gle=0
+  abs_empty si=1f ok=1 gle=0 len=0 str=""
+  abs_nulldacl si=1f ok=1 gle=0 len=14 str="D:NO_ACCESS_CONTROL"
+  abs_emptydacl si=1f ok=1 gle=0 len=2 str="D:"
+  abs_emptydacl_flags si=1f ok=1 gle=0 len=7 str="D:PARAI"
+  abs_nullsacl si=1f ok=1 gle=0 len=1b str="D:PARAIS:NO_ACCESS_CONTROL"
+  bad_rev si=4 ok=0 gle=519 len=5555 outNull=0
+  unknown_ace si=4 ok=0 gle=538 len=5555 outNull=0
+  ml_in_dacl si=4 ok=0 gle=538 len=5555 outNull=0
+  au_in_dacl si=4 ok=0 gle=538 len=5555 outNull=0
+  flag20 si=4 ok=1 gle=0 len=11 str="D:(A;CR;CC;;;WD)"
+  a_in_sacl si=8 ok=0 gle=538 len=5555 outNull=0
+  ml_mask8 si=10 ok=1 gle=0 len=18 str="S:(ML;;0x8;;;WD)"
+  ml_mask3 si=10 ok=1 gle=0 len=12 str="S:(ML;;NWNR;;;WD)"
+  oa_noguid si=4 ok=1 gle=0 len=f str="D:(A;;RP;;;WD)"
+sidtostr_bigauth str="S-1-0x100000000-1"

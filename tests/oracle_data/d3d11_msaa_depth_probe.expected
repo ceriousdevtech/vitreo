@@ -1,0 +1,21 @@
+feature level 0xb000
+levels fmt 40: x1=1(hr 00000000) x2=1(hr 00000000) x4=1(hr 00000000) x8=1(hr 00000000)
+levels fmt 45: x1=1(hr 00000000) x2=1(hr 00000000) x4=1(hr 00000000) x8=1(hr 00000000)
+levels fmt 20: x1=1(hr 00000000) x2=1(hr 00000000) x4=1(hr 00000000) x8=1(hr 00000000)
+levels fmt 55: x1=1(hr 00000000) x2=1(hr 00000000) x4=1(hr 00000000) x8=1(hr 00000000)
+levels fmt 39: x1=1(hr 00000000) x2=1(hr 00000000) x4=1(hr 00000000) x8=1(hr 00000000)
+levels fmt 44: x1=1(hr 00000000) x2=1(hr 00000000) x4=1(hr 00000000) x8=1(hr 00000000)
+levels fmt 28: x1=1(hr 00000000) x2=1(hr 00000000) x4=1(hr 00000000) x8=1(hr 00000000)
+D32 x4 DS                                    hr=0x00000000
+D24S8 x4 DS                                  hr=0x00000000
+R32_TYPELESS x4 DS|SRV                       hr=0x00000000
+R24G8_TYPELESS x4 DS|SRV                     hr=0x00000000
+D32 x4 DS mips=2                             hr=0x80070057
+D32 x4 DS|SRV (typed)                        hr=0x80070057
+D32 x8 DS                                    hr=0x00000000
+R8G8B8A8 x4 RT|UAV                           hr=0x80070057
+R8G8B8A8 x4 SRV only                         hr=0x00000000
+D32 x1 DS|SRV (typed)                        hr=0x80070057
+D24S8 x1 DS|SRV (typed)                      hr=0x80070057
+R32_TYPELESS x1 SRV only                     hr=0x00000000
+R32_TYPELESS x4 DS                           hr=0x00000000

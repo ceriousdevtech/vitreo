@@ -1,0 +1,23 @@
+srv buffer 2+3               00000029 00000001 00000002 00000003 00000000 00000000
+srv buffer 2+3               GetResource == resource
+srv bufferex raw 4+5         00000027 0000000b 00000004 00000005 00000001 00000000
+srv bufferex raw 4+5         GetResource == resource
+srv structured NULL desc     00000000 00000001 00000000 00000020 00000000 00000000
+srv structured NULL desc     GetResource == resource
+uav structured append 1+6    00000000 00000001 00000001 00000006 00000002
+uav structured append 1+6    GetResource == resource
+uav raw 3+7                  hr=0x80070057
+srv tex1darray m1 -1 s1 2    00000029 00000003 00000001 00000002 00000001 00000002
+srv tex1darray m1 -1 s1 2    GetResource == resource
+srv tex1d m0 2               00000029 00000002 00000000 00000002 00000000 00000000
+srv tex1d m0 2               GetResource == resource
+uav tex1darray m1 s2 2       00000029 00000003 00000001 00000002 00000002
+uav tex1darray m1 s2 2       GetResource == resource
+rtv tex1darray m2 s1 -1      00000029 00000003 00000002 00000001 00000003
+rtv tex1darray m2 s1 -1      GetResource == resource
+rtv tex1d m1                 00000029 00000002 00000001 00000000 00000000
+rtv tex1d m1                 GetResource == resource
+rtv tex1darray NULL desc     00000029 00000003 00000000 00000000 00000004
+rtv tex1darray NULL desc     GetResource == resource
+rtv tex3d m1 w1 -1           00000029 00000008 00000001 00000001 00000003
+rtv tex3d m1 w1 -1           GetResource == resource

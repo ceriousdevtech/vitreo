@@ -1,0 +1,18 @@
+winoracle (Windows 11), 2026-10-27; keyboard, c_dfDIKeyboard, DIPROP_BUFFERSIZE 16,
+acquired DISCL_NONEXCLUSIVE|DISCL_BACKGROUND, buffer empty, *pdwInOut sentinel 7.
+
+IDirectInputDevice8 (DirectInput8Create):
+  x64: sizeof(DIDEVICEOBJECTDATA)=24. cb=24 -> DI_OK, count=0.
+       cb=0,8,15,16,17,20,28,32 -> 0x80070057 (DIERR_INVALIDPARAM), count left 7
+       (and left INFINITE for the NULL/DIGDD_PEEK form).
+  x86: sizeof(DIDEVICEOBJECTDATA)=20. cb=20 -> DI_OK, count=0.
+       cb=0,8,15,16,17,24,28,32 -> 0x80070057, count left unchanged.
+  The DX3 size (16) is rejected by a DirectInput 8 device in both bitnesses.
+
+IDirectInputDevice7 (dinput.dll DirectInputCreateEx 0x0700), x64 and x86:
+  cb=16 -> DI_OK, count=0.
+  cb=0,8,15,17,20,24,28,32 -> DI_OK, count left 7 (nothing written).
+
+uAppData not observed: SendInput returns 0 in the SSH session (no
+interactive desktop), so no record was buffered. Learn: "Ignore this value
+if you are not using action mapping."

@@ -1,0 +1,19 @@
+ordinal17-match=1
+null-path hr=80070057 output=1234 error=dead
+refs=1
+null-handler hr=80070057 output=1234 error=dead
+refs=1
+null-out hr=80004003 output=1234 error=dead
+refs=1
+empty hr=0 output=1 error=0
+callback hr=0 result=80070002 object=0 other-thread=1
+refs=1
+missing hr=0 output=1 error=0
+callback hr=0 result=80070002 object=0 other-thread=1
+refs=1
+render hr=0 output=1 error=0
+callback hr=0 result=80070490 object=0 other-thread=1
+refs=1
+unknown-iid hr=0 output=1 error=0
+callback hr=0 result=80004002 object=0 other-thread=1
+refs=1

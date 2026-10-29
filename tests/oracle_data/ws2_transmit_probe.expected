@@ -1,0 +1,19 @@
+tf_resolved: v=1
+tf_file_ok: v=1
+tf_full: rc=1
+tf_full_peer: b="ABCDEFGHIJ"
+tf_full_fptr: pos=0
+tf_partial4: rc=1
+tf_partial4_peer: b="ABCD"
+tf_partial4_fptr: pos=0
+tf_head_file_tail: rc=1
+tf_head_file_tail_peer: b="HDREFGHIJTLR"
+tf_head_only: rc=1
+tf_head_only_peer: b="ONLY"
+tf_reuse_implies_disconnect: note="skip_hang"
+tp_resolved: v=1
+tp_mem_file: rc=1
+tp_mem_file_peer: b="MEM234"
+tp_file_rest: rc=1
+tp_file_rest_peer: b="56789"
+done

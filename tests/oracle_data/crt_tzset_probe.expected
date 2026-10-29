@@ -1,0 +1,3 @@
+pst8pdt daylight=1 timezone=28800 dstbias=-3600  name0=PST name1=PDT
+est5 daylight=0 timezone=18000 
+gst daylight=1 timezone=-3600  name0=GST name1=GDT

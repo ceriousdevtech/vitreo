@@ -1,0 +1,31 @@
+mk open=0 exec=0
+r1 open=0 exec=0
+mk open=0 exec=0
+r1 open=0 exec=0
+upd open=0 exec=0
+r2 open=0 exec=0
+gen16 0
+mk open=0 exec=0
+r1 open=0 exec=0
+mk open=0 exec=0
+r1 open=0 exec=0
+upd open=0 exec=0
+r2 open=0 exec=0
+gen17 0
+mk open=0 exec=0
+r1 open=0 exec=0
+mk open=0 exec=0
+r1 open=0 exec=0
+upd open=0 exec=0
+r2 open=0 exec=0
+gen24 0
+mk open=0 exec=1627
+mk lasterr [4]~|2280|w32_0.msi|C31|W
+r1 open=0 exec=0
+mk open=0 exec=1627
+mk lasterr [4]~|2280|w32_1.msi|C31|W
+r1 open=0 exec=0
+upd open=1615 exec=65535
+upd lasterr [4]~|2235|w32_1.msi|C31|UPDATE `W` SET `C31` = 5 WHERE `K` = 1
+r2 open=0 exec=0
+gen32 0

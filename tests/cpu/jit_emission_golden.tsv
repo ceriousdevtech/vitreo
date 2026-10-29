@@ -1,0 +1,59 @@
+# JIT emission golden baseline.
+# Regenerate ONLY when emission is meant to change:
+#   VITREO_GOLDEN_WRITE=1 ./build/tests/vitreo_cpu_tests \
+#       --gtest_filter='JitEmissionGolden.*'
+# MOVZ/MOVK immediates targeting X16 are masked before hashing;
+# they are host helper addresses that move on every relink.
+# A row marked D is delegate-bearing: its hash covers metadata
+# only, because delegate stencils bake a run-dependent heap
+# address. native_insns still gates it.
+# name	hash	words	native_insns	pin_layout	link_off	call_off	mode
+add32_jz	b366396d59f97859	45	4	41c83104c5	20	180	N
+sub32_jnz	b8fab5aad198d9c4	45	4	41c83104c5	20	180	N
+cmp32_jb	5949da1cd6595253	47	4	41c83104c5	20	188	N
+test32_js	bf4ca6432d0608a	47	4	41c83104c5	20	188	N
+inc32_jo	254866d97f0dc02e	130	4	41c83104c5	20	520	N
+add32_mov_jz	a9a3795627e8026	46	5	41c83104c5	20	184	N
+add_clc_jb	759069eb23bb7ffd	69	5	41c83104c5	20	276	N
+add_stc_jb	6ab62b73d96de0ad	69	5	41c83104c5	20	276	N
+add_cmc_jb	79e865e0249b4ce2	169	5	41c83104c5	20	676	N
+add_bt_jb	af9e93b8bd18f6e6	77	5	41c83104c5	20	308	N
+adc32_chain	e4bd327aa7a12c27	170	3	41c83104c5	20	680	N
+sbb32_chain	4b137343ef764d34	170	3	41c83104c5	20	680	N
+add_adc_pair	a38b3394ecaf1893	42	2	41c83104c5	20	168	N
+ror32_1	dabf007a592c5c5e	42	1	41c83104c5	20	168	N
+rol32_cl	e4983e3b1f5498bd	50	1	41c83104c5	20	200	N
+shl32_imm	4e1d3da51240094c	34	1	41c83104c5	20	136	N
+shr32_zero_cnt	9c5771c33b4733f7	22	1	41c83104c5	20	88	N
+cmp_setb	97350c2e234a630e	34	2	41c83104c5	20	136	N
+cmp_cmovz	c4257f2b1926da0c	31	2	41c83104c5	20	124	N
+load32_disp	c7ebacae7d56126e	87	1	41c83104c5	20	348	N
+store32_disp	46908127256bf09f	96	1	41c83104c5	20	384	N
+load8_zx	f3e935d5fa3cbc7c	83	1	41c83104c5	20	332	N
+rmw_add_mem	e59cdfc206201baf	148	1	41c83104c5	20	592	N
+lock_add_mem	ff507eb15606ff58	62	1	41c83104c5	20	248	N
+fld_fstp_m32	71afe42e5bf06c4b	413	2	41c83104c5	20	1652	N
+fadd_m64	961c07b2e0d16024	261	1	41c83104c5	20	1044	N
+fdiv_m32	83bd90ecda481cf7	290	1	41c83104c5	20	1160	N
+sse_addps	d2e4ea9377538eb8	74	1	41c83104c5	20	296	N
+sse_cvtsi2sd	8d89441fb17ee5b6	43	1	41c83104c5	20	172	N
+call_rel32	ba44708e1f990569	98	1	41c83104c5	20	392	N
+ret	6cdf399ad4ee93f2	88	1	41c83104c5	20	352	N
+jmp_indirect	daffae49004fdb6b	21	1	41c83104c5	20	84	N
+push_pop	78c2a48f3d08ebfb	148	2	41c83104c5	20	592	N
+rep_movsd	2c964064ae920f10	273	1	41c83104c5	20	1092	N
+rep_stosd	8e5c71d96ed28e37	177	1	41c83104c5	20	708	N
+cmp_m8_ja	16cc81b0fb0ca5db	98	4	141c8208cc5	20	392	N
+cmp_m8_jb	de38dbdc50669dc7	98	4	141c8208cc5	20	392	N
+cmp_r8_ja	51a0009eae5a3595	63	4	141c62204c5	20	252	N
+cmp_m32_ja	404f214b6e42982a	79	4	141c8208cc5	20	316	N
+add64_jz	9f083d1d8e2e9ecf	37	4	141c62204c5	20	148	N
+cmp64_jb	17ae13559fd20472	39	4	141c62204c5	20	156	N
+adc64_chain	3974231bd5460710	177	2	141c81188c5	20	708	N
+add64_clc_jb	b4a4f1023be32daf	61	5	141c62204c5	20	244	N
+ror64_1	999ec276ede27361	39	1	141c83104c5	20	156	N
+load64_rip_rel	fe40d785da2f384	61	1	141c83104c5	20	244	N
+store64_reg	364b1e6080c37683	67	1	141c62204c5	20	268	N
+movzx64_mem	5dc8739f6cbffea4	59	1	141c62204c5	20	236	N
+lock_xadd64	37787963d5bfc4e2	50	1	141c62204c5	20	200	N
+push_pop64	62596855227f0cbb	99	2	141c83104c5	20	396	N

@@ -1,0 +1,512 @@
+sizes wavehdr=20 mmtime=c
+sizes2 woca=34 wocw=54 wica=30 wicw=50 moca=34 mocw=54 mica=2c micw=4c mxca=30 mxcw=50
+sizes3 mla=a8 mlw=118 mlca=18 mlcw=18 mca=94 mcw=e4 mcd=18 ltxa=48 ltxw=88 midihdr=40
+info counts waveout=1 wavein=0 midiout=1 midiin=0 mixer=1
+waveout_has_devices v=1
+caps_a_0 r=0 name_nonempty=1 name_term=1 after=0
+info caps_a mid=1 pid=64 ver=a00 fmts=fffff ch=2 res1=75c0 sup=2e name=Remote Audio
+caps_w_0 r=0 size=54 name_nonempty=1 after=0
+info caps_w mid=1 pid=64 fmts=fffff ch=2 sup=2e name=Remote Audio
+caps_a_mapper r=0 name_nonempty=1 name_term=1 after=0
+info caps_a mid=1 pid=2 ver=500 fmts=fffff ch=2 res1=75c0 sup=2e name=Microsoft Sound Mapper
+caps_w_mapper r=0 size=54 name_nonempty=1 after=0
+info caps_w mid=1 pid=2 fmts=fffff ch=2 sup=2e name=Microsoft Sound Mapper
+caps_a_baddev r=2
+caps_w_baddev r=2
+caps_a_baddev100 r=2
+caps_a_null r=b
+caps_w_null r=b
+caps_a_null_mapper r=b
+caps_a_cb0 r=0 touched=0
+caps_w_cb0 r=0 touched=0
+caps_a_cb0_baddev r=0
+caps_a_cb10 r=0 touched=3ff
+caps_w_cb10 r=b touched=0
+caps_a_cb200 r=0 touched_52_60=ff
+caps_w_cb200 r=0 touched_84_92=ff
+caps_a_cb cb=1 r=0 t0=1 t64=0 t128=0
+caps_a_cb cb=8 r=0 t0=ff t64=0 t128=0
+caps_a_cb cb=33 r=0 t0=7ffffffffffff t64=0 t128=0
+caps_a_cb cb=34 r=0 t0=fffffffffffff t64=0 t128=0
+caps_a_cb cb=35 r=0 t0=1fffffffffffff t64=0 t128=0
+caps_a_cb cb=64 r=0 t0=ffffffffffffffff t64=fffffffff t128=0
+caps_a_cb cb=65 r=0 t0=ffffffffffffffff t64=fffffffff t128=0
+caps_w_cb cb=1 r=b t0=0 t64=0 t128=0
+caps_w_cb cb=2 r=b t0=0 t64=0 t128=0
+caps_w_cb cb=8 r=b t0=0 t64=0 t128=0
+caps_w_cb cb=9 r=b t0=0 t64=0 t128=0
+caps_w_cb cb=47 r=b t0=0 t64=0 t128=0
+caps_w_cb cb=48 r=b t0=0 t64=0 t128=0
+caps_w_cb cb=49 r=b t0=0 t64=0 t128=0
+caps_w_cb cb=53 r=b t0=0 t64=0 t128=0
+caps_w_cb cb=54 r=0 t0=ffffffffffffffff t64=fffff t128=0
+caps_w_cb cb=55 r=0 t0=ffffffffffffffff t64=fffff t128=0
+caps_w_cb cb=83 r=0 t0=ffffffffffffffff t64=fffff t128=0
+caps_w_cb cb=84 r=0 t0=ffffffffffffffff t64=fffff t128=0
+caps_w_cb cb=85 r=0 t0=ffffffffffffffff t64=fffff t128=0
+info caps2_w id=0 g=d5a47fa8 g=11d16d98 g=a0001aa2 g=963122c9 g=e36dc310 g=11d16d9a g=a0001aa2 g=963122c9 g=0 g=0 g=0 g=0
+info caps2_a id=0 g=d5a47fa8 g=11d16d98 g=a0001aa2 g=963122c9 g=e36dc310 g=11d16d9a g=a0001aa2 g=963122c9 g=0 g=0 g=0 g=0
+info caps2_w id=ffffffff g=cccccccc g=cccccccc g=cccccccc g=cccccccc g=cccccccc g=cccccccc g=cccccccc g=cccccccc g=cccccccc g=cccccccc g=cccccccc g=cccccccc
+info caps2_a id=ffffffff g=0 g=0 g=0 g=0 g=0 g=0 g=0 g=0 g=0 g=0 g=0 g=0
+caps_a_badhandle r=2
+wot_a e=0 r=0 "The specified command was carried out."
+wot_a e=1 r=0 "Undefined external error."
+wot_a e=2 r=0 "A device ID has been used that is out of range for your system."
+wot_a e=3 r=0 "The driver was not enabled."
+wot_a e=4 r=0 "The specified device is already in use.  Wait until it is free, and then try again."
+wot_a e=5 r=0 "The specified device handle is invalid."
+wot_a e=6 r=0 "There is no driver installed on your system."
+wot_a e=7 r=0 "There is not enough memory available for this task.  Quit one or more applications to increase available memory, and then try again."
+wot_a e=8 r=0 "This function is not supported.  Use the Capabilities function to determine which functions and messages the driver supports."
+wot_a e=9 r=0 "An error number was specified that is not defined in the system."
+wot_a e=a r=0 "An invalid flag was passed to a system function."
+wot_a e=b r=0 "An invalid parameter was passed to a system function."
+wot_a e=c r=0 "Handle being used simultaneously on another thread (eg callback)."
+wot_a e=d r=0 "Specified alias not found in WIN.INI."
+wot_a e=e r=0 "The registry database is corrupt."
+wot_a e=f r=0 "The specified registry key was not found."
+wot_a e=10 r=0 "The registry could not be opened or could not be read."
+wot_a e=11 r=0 "The registry could not be written to."
+wot_a e=12 r=0 "The specified registry key could not be deleted."
+wot_a e=13 r=0 "The specified registry key value could not be found."
+wot_a e=14 r=0 "The driver did not generate a valid OPEN callback."
+wot_a e=15 r=9 buf0=0
+wot_a e=16 r=9 buf0=0
+wot_a e=1f r=9 buf0=0
+wot_a e=20 r=0 "The specified format is not supported or cannot be translated.  Use the Capabilities function to determine the supported formats."
+wot_a e=21 r=0 "Cannot perform this operation while media data is still playing.  Reset the device, or wait until the data is finished playing."
+wot_a e=22 r=0 "The wave header was not prepared.  Use the Prepare function to prepare the header, and then try again."
+wot_a e=23 r=0 "Cannot open the device without using the WAVE_ALLOWSYNC flag.  Use the flag, and then try again."
+wot_a e=24 r=9 buf0=0
+wot_a e=3f r=9 buf0=0
+wot_a e=40 r=9 buf0=0
+wot_a e=41 r=9 buf0=0
+wot_a e=42 r=9 buf0=0
+wot_a e=43 r=9 buf0=0
+wot_a e=44 r=9 buf0=0
+wot_a e=45 r=9 buf0=0
+wot_a e=46 r=9 buf0=0
+wot_a e=47 r=9 buf0=0
+wot_a e=48 r=9 buf0=0
+wot_a e=60 r=9 buf0=0
+wot_a e=61 r=9 buf0=0
+wot_a e=100 r=9 buf0=0
+wot_a e=3e8 r=9 buf0=0
+mot_a e=0 r=0 "The specified command was carried out."
+mot_a e=1 r=0 "Undefined external error."
+mot_a e=2 r=0 "A device ID has been used that is out of range for your system."
+mot_a e=3 r=0 "The driver was not enabled."
+mot_a e=4 r=0 "The specified device is already in use.  Wait until it is free, and then try again."
+mot_a e=5 r=0 "The specified device handle is invalid."
+mot_a e=6 r=0 "There is no driver installed on your system."
+mot_a e=7 r=0 "There is not enough memory available for this task.  Quit one or more applications to increase available memory, and then try again."
+mot_a e=8 r=0 "This function is not supported.  Use the Capabilities function to determine which functions and messages the driver supports."
+mot_a e=9 r=0 "An error number was specified that is not defined in the system."
+mot_a e=a r=0 "An invalid flag was passed to a system function."
+mot_a e=b r=0 "An invalid parameter was passed to a system function."
+mot_a e=c r=0 "Handle being used simultaneously on another thread (eg callback)."
+mot_a e=d r=0 "Specified alias not found in WIN.INI."
+mot_a e=e r=0 "The registry database is corrupt."
+mot_a e=f r=0 "The specified registry key was not found."
+mot_a e=10 r=0 "The registry could not be opened or could not be read."
+mot_a e=11 r=0 "The registry could not be written to."
+mot_a e=12 r=0 "The specified registry key could not be deleted."
+mot_a e=13 r=0 "The specified registry key value could not be found."
+mot_a e=14 r=0 "The driver did not generate a valid OPEN callback."
+mot_a e=15 r=9 buf0=0
+mot_a e=16 r=9 buf0=0
+mot_a e=1f r=9 buf0=0
+mot_a e=20 r=9 buf0=0
+mot_a e=21 r=9 buf0=0
+mot_a e=22 r=9 buf0=0
+mot_a e=23 r=9 buf0=0
+mot_a e=24 r=9 buf0=0
+mot_a e=3f r=9 buf0=0
+mot_a e=40 r=0 "The MIDI header was not prepared.  Use the Prepare function to prepare the header, and then try again."
+mot_a e=41 r=0 "Cannot perform this operation while media data is still playing.  Reset the device, or wait until the data is finished playing."
+mot_a e=42 r=0 "A MIDI map was not found.  There may be a problem with the driver, or the MIDIMAP.CFG file may be corrupt or missing."
+mot_a e=43 r=0 "The port is transmitting data to the device.  Wait until the data has been transmitted, and then try again."
+mot_a e=44 r=0 "The current MIDI Mapper setup refers to a MIDI device that is not installed on the system.  Use MIDI Mapper to edit the setup."
+mot_a e=45 r=0 "The current MIDI setup is damaged.  Copy the original MIDIMAP.CFG file to the Windows SYSTEM directory, and then try again."
+mot_a e=46 r=0 "A MIDI call was made which is invalid with the current open mode. Reopen the device with the correct mode."
+mot_a e=47 r=0 "Driver condition - do not callback this input event"
+mot_a e=48 r=9 buf0=0
+mot_a e=60 r=9 buf0=0
+mot_a e=61 r=9 buf0=0
+mot_a e=100 r=9 buf0=0
+mot_a e=3e8 r=9 buf0=0
+wit_a e=0 r=0 "The specified command was carried out."
+wit_a e=1 r=0 "Undefined external error."
+wit_a e=2 r=0 "A device ID has been used that is out of range for your system."
+wit_a e=3 r=0 "The driver was not enabled."
+wit_a e=4 r=0 "The specified device is already in use.  Wait until it is free, and then try again."
+wit_a e=5 r=0 "The specified device handle is invalid."
+wit_a e=6 r=0 "There is no driver installed on your system."
+wit_a e=7 r=0 "There is not enough memory available for this task.  Quit one or more applications to increase available memory, and then try again."
+wit_a e=8 r=0 "This function is not supported.  Use the Capabilities function to determine which functions and messages the driver supports."
+wit_a e=9 r=0 "An error number was specified that is not defined in the system."
+wit_a e=a r=0 "An invalid flag was passed to a system function."
+wit_a e=b r=0 "An invalid parameter was passed to a system function."
+wit_a e=c r=0 "Handle being used simultaneously on another thread (eg callback)."
+wit_a e=d r=0 "Specified alias not found in WIN.INI."
+wit_a e=e r=0 "The registry database is corrupt."
+wit_a e=f r=0 "The specified registry key was not found."
+wit_a e=10 r=0 "The registry could not be opened or could not be read."
+wit_a e=11 r=0 "The registry could not be written to."
+wit_a e=12 r=0 "The specified registry key could not be deleted."
+wit_a e=13 r=0 "The specified registry key value could not be found."
+wit_a e=14 r=0 "The driver did not generate a valid OPEN callback."
+wit_a e=15 r=9 buf0=0
+wit_a e=16 r=9 buf0=0
+wit_a e=1f r=9 buf0=0
+wit_a e=20 r=0 "The specified format is not supported or cannot be translated.  Use the Capabilities function to determine the supported formats."
+wit_a e=21 r=0 "Cannot perform this operation while media data is still playing.  Reset the device, or wait until the data is finished playing."
+wit_a e=22 r=0 "The wave header was not prepared.  Use the Prepare function to prepare the header, and then try again."
+wit_a e=23 r=0 "Cannot open the device without using the WAVE_ALLOWSYNC flag.  Use the flag, and then try again."
+wit_a e=24 r=9 buf0=0
+wit_a e=3f r=9 buf0=0
+wit_a e=40 r=9 buf0=0
+wit_a e=41 r=9 buf0=0
+wit_a e=42 r=9 buf0=0
+wit_a e=43 r=9 buf0=0
+wit_a e=44 r=9 buf0=0
+wit_a e=45 r=9 buf0=0
+wit_a e=46 r=9 buf0=0
+wit_a e=47 r=9 buf0=0
+wit_a e=48 r=9 buf0=0
+wit_a e=60 r=9 buf0=0
+wit_a e=61 r=9 buf0=0
+wit_a e=100 r=9 buf0=0
+wit_a e=3e8 r=9 buf0=0
+wot_w_2 r=0 "A device ID has been used that is out of range for your system."
+wot_w_33 r=0 "Cannot perform this operation while media data is still playing.  Reset the device, or wait until the data is finished playing."
+wot_w_bad r=9 buf0=0
+mot_w_68 r=0 "The current MIDI Mapper setup refers to a MIDI device that is not installed on the system.  Use MIDI Mapper to edit the setup."
+wot_a_cch0 r=0 buf0=cc
+wot_a_null r=b
+wot_a_null0 r=0
+wot_a_cch5 r=0 b4=0 b5=cc "A de"
+wot_w_cch5 r=0 w4=0 w5=cccc
+wot_a_cch1 r=0 b0=0 b1=cc
+wot_a_bad_cch0 r=0
+q_pcm_null_phwo r=0
+q_pcm_phwo r=0 phwo_touched=0
+q_pcm_dev0 r=0
+q_pcm_baddev r=2
+q_null_fmt r=b
+q_bad_align r=0
+q_bad_avg r=0
+q_8bit_mono_11k r=0
+q_16bit_stereo_22k r=0
+q_12bit r=20
+q_0ch r=20
+q_0rate r=20
+q_float32 r=0
+q_ext_pcm16 r=0
+q_ext_float32 r=0
+q_ext_cb0 r=20
+q_tag_unknown r=20
+q_6ch r=20
+q_8bit_stereo r=0
+q_24bit r=0
+q_32bit_int r=0
+q_192k r=0
+q_1k r=0
+q_dev0_bad_align r=0
+q_pcm_cbsize_junk r=0
+q_dev0_float32 r=0
+q_float64 r=0
+q_float16 r=0
+q_float_mono r=0
+q_ext_pcm24 r=0
+q_ext_pcm32v24 r=0
+q_ext_pcm_6ch r=0
+q_ext_sub_unknown r=20
+q_direct_pcm r=0
+o_null_fmt r=b phwo_touched=0
+o_null_phwo r=b
+o_baddev r=2 phwo_touched=1 h=0
+o_real_bad_align r=20
+o_dev0_float r=0
+o_real_bad_avg r=0
+o_real_float16 r=20
+getid_dev0 r=0 id=0
+o_bad_align r=20 phwo_touched=1
+o_cbtype t=40000 r=0
+o_cbtype t=60000 r=0
+o_cbtype t=70000 r=0
+o_func_null r=0
+o_window_bad r=b
+o_window_null r=0
+o_thread_bad r=0
+o_thread_null r=0
+o_event_bad r=0
+o_event_null r=0
+fn_open r=0 h_nonzero=1 cb_at_return=1
+fn_open_cbs n=1 [3bb same hwo inst]
+getid r=0 id=ffffffff
+getid_null r=b
+getid_bad r=5 id=cccc
+getid_zero r=5 id=cccc
+caps_a_handle r=0
+info caps_a_handle pid=2
+prep_small r=b f=0
+prep_null r=b
+prep_badh r=5
+write_unprepared r=22 f=0
+unprep_unprepared r=0 f=0
+prep r=0 f=2
+prep_again r=0 f=2
+write r=0 f=12
+write_again r=21
+unprep_inqueue r=21
+close_inqueue r=21
+write_done done=1 f=3
+fn_done_cbs n=1 [3bd other hwo inst f=3]
+done_p1_is_hdr v=1
+unprep r=0 f=1
+write_empty_hdr r=0 done=1 f=3
+write_null_hdr r=b
+write_small_cb r=b
+unprep_small_cb r=b
+unprep_null r=b
+reset_idle r=0
+pause r=0
+paused_flags f=12 f=12 f=12
+pos_paused r=0 type=4 lt_4410=1
+reset r=0 cb_at_return=3 f=3 f=3 f=3
+reset_cbs n=3 [3bd other hwo inst f=3] [3bd other hwo inst f=3] [3bd other hwo inst f=3]
+pos_after_reset r=0 type=4 cb=0
+pos_ms r=0 type=4
+pos_samples r=0 type=2
+pos_smpte r=0 type=4
+pos_cb4 r=1
+pos_cb11 r=1
+pos_cb16 r=0
+pos_type_junk r=0 type=4
+pos_cb8 r=1
+pos_null r=b
+pos_badh r=5
+after_reset_write done=1
+restart r=0
+after_restart done=1
+restart_again r=0
+pause_twice r=0 r=0
+close r=0 cb_at_return=1
+close_cbs n=1 [3bc same hwo inst]
+close_again r=5
+write_closed r=22
+getid_closed r=5
+reset_bad r=5
+pause_bad r=5
+restart_bad r=5
+close_null r=5
+ev_open r=0 signaled_at_return=1
+ev_done wait=0 f=3
+ev_close r=0 signaled_at_return=1
+th_open r=0
+th_open_msg got=1 m=3bb wp_is_h=1 lp=0 hwnd=0
+th_done_msg got=1 m=3bd wp_is_h=1 lp_is_hdr=1 f=3
+th_close_msg r=0 got=1 m=3bc wp_is_h=1 lp=0
+wn_open r=0
+wn_open_msg got=1 m=3bb wp_is_h=1 lp=0
+wn_close_msg r=0 got=1 m=3bc wp_is_h=1
+multi_open ra=0 rb=0 distinct=1
+multi_write ra=0 rb=0
+multi_done a=1 b=1
+multi_close ra=0 rb=0
+msg_pref r=0 d1=cccccccc00000000 d2=cccccccc00000000
+msg_voice r=0 d1=cccccccc00000000 d2=cccccccc00000000
+msg_pref_null r=b
+msg_unknown_mapper r=8
+msg_badh r=2
+msg_zero_h r=b
+msg_dev0_unknown r=8
+msg_mapper_ifsize r=0
+msg_mapper_pref_d2null r=b
+msg_handle_pref r=8
+msg_handle_unknown r=8
+wi_caps_bad r=2
+wi_close_bad r=5
+wi_open_bad r=2
+wi_msg_pref r=0 d1_hi=cccccccc d2_hi=cccccccc
+mo_caps_a_bad r=2
+mo_caps_w_bad r=2
+mo_caps_a_cb0 r=0
+mo_open_bad r=2 h_touched=1 h=0
+mo_open_null r=b
+info mo_caps_mapper r=0 mid=1 pid=1 ver=500 tech=5 voices=0 notes=0 chmask=ffff sup=9 name=Microsoft MIDI Mapper
+info mo_caps_0 r=0 mid=1 pid=1b ver=100 tech=7 voices=20 notes=20 chmask=ffff sup=1 name=Microsoft GS Wavetable Synth
+info mo_caps_w_cb8 r=0 t=ff
+info mo_caps_a_cb8 r=0 t=ff
+info mo_open_mapper r=0
+mi_open_mapper r=2 h=0
+mo_caps_w_cb0 r=0
+mo_caps_a_null r=b
+mi_caps_a_bad r=2
+mi_caps_a_cb0 r=0
+mo_close_bad r=5
+mo_short_bad r=5
+mo_reset_bad r=5
+mi_open_bad r=2 h_touched=1
+mi_caps_w_bad r=2
+mi_close_bad r=5
+mx_open_bad r=2 h=cccccccc00000000
+mx_open_badwaveout r=5 h=cccccccc00000000
+mx_open_m1 r=2 h=cccccccc00000000
+mx_open_null r=b
+mx_open_badwaveid r=2 h=cccccccc00000000
+mx_open_badflag r=b h=cccccccc00000000
+mx_open_badwnd r=b h=cccccccc00000000
+mx_open_flag1 r=a h=cccccccc00000000
+mx_open_cbfunc r=a h=cccccccc00000000
+mx_open_nullwnd r=2 h=cccccccc00000000
+mx_getid_null r=b
+mx_getid_badwaveid r=2 id=ffffffff
+mx_getid_badflag r=b id=ffffffff
+mx_close_bad r=5
+mx_getid_badh r=5 id=ffffffff
+mx_getid_badid r=2 id=ffffffff
+mx_getid_badwaveout r=5 id=ffffffff
+mx_caps_a_bad r=2
+mx_caps_w_bad r=2
+mx_caps_a_cb0 r=0
+mx_caps_a_null r=b
+mx_caps_w_null r=b
+mx_line_a_badid r=2
+mx_line_w_badid r=2
+mx_line_a_badh r=5
+mx_line_w_badh r=5
+mx_line_a_null r=b
+mx_line_a_cb0 r=b
+mx_line_a_cbbig r=2
+mx_line_a_badquery r=a
+mx_line_w_cb_a r=b
+mx_ctl_a_valid_badid r=2
+mx_ctl_a_valid_badh r=5
+mx_ctl_a_cctl0 r=b
+mx_ctl_a_cbctl4 r=b
+mx_ctl_a_nullarr r=2
+mx_ctl_a_cbstruct4 r=b
+mx_ctl_a_onebyid r=2
+mx_ctl_a_badquery r=a
+mx_ctl_a_null r=b
+mx_ctl_w_valid_badid r=2
+mx_ctl_w_valid_badh r=5
+mx_ctl_w_cbctl_a r=b
+mx_det_valid_badid r=2
+mx_det_w_valid_badid r=2
+mx_det_valid_badh r=5
+mx_set_valid_badid r=2
+mx_set_valid_badh r=5
+mx_det_ch0 r=2
+mx_det_nullarr r=b
+mx_det_cbstruct4 r=b
+mx_det_badquery r=a
+mx_det_listtext r=b
+mx_set_badquery r=a
+mx_det_null r=b
+mx_det_multi r=2
+mx_ctl_a_badid r=b
+mx_ctl_w_badid r=b
+mx_ctl_a_badh r=b
+mx_det_a_badid r=b
+mx_det_w_badid r=b
+mx_det_a_badh r=b
+mx_set_badid r=b
+mx_set_badh r=b
+x_wo_getvol_badh r=2
+x_wo_getvol_badid r=2
+x_wo_getvol_null r=b
+x_wo_setvol_badh r=2
+x_wo_breakloop_badh r=5
+x_wo_getpitch_badh r=5
+x_wo_setpitch_badh r=5
+x_wo_getrate_badh r=5
+x_wo_setrate_badh r=5
+info x_wo_getpitch r=8
+info x_wo_getrate r=0
+info x_wo_getvol r=0 v=ffffffff
+x_wo_getvol_h_null r=b
+x_wo_breakloop r=0
+x_wi_getid_badh r=5
+x_wi_getid_null r=b
+x_wi_getpos_badh r=5
+x_wi_getpos_cb4 r=5
+x_mo_getid_badh r=5
+x_mi_getid_badh r=5
+x_mo_msg_badh r=2
+x_mi_msg_badh r=2
+x_mi_stop_badh r=5
+x_mo_getvol_badh r=2
+x_mo_setvol_badh r=2
+x_ms_open_bad r=2 h=0
+x_ms_open_nullid r=b
+x_ms_open_nullh r=b
+x_ms_close_badh r=5
+x_ms_out_badh r=5
+x_ms_pause_badh r=5
+x_ms_restart_badh r=5
+x_ms_stop_badh r=5
+x_ms_pos_badh r=5
+x_ms_prop_badh r=5
+x_m_connect_badh r=5
+x_m_disconnect_badh r=5
+x_mo_cachepatch_badh r=5
+x_mo_cachedrum_badh r=5
+x_mx_msg_badh r=2
+ps_file_sync r=1 le=0
+ps_file_w_sync r=1 le=0
+ps_file_async r=1 le=0
+ps_file_async2 r=1 le=dead
+ps_stop_idle r=1 le=0
+ps_stop_idle2 r=1 le=dead
+ps_file_hmod r=1 le=0
+ps_missing_nodefault r=0 le=2
+ps_missing_w_nodefault r=0 le=3
+ps_noflag_file r=1 le=0
+ps_noflag_missing r=0 le=2
+ps_alias_missing r=0 le=2
+ps_alias_w_missing r=0 le=2
+ps_alias_file_path r=1 le=0
+ps_aliasid_bad r=0 le=716
+ps_mem r=1 le=0
+ps_mem_junk r=0 le=dead
+ps_res_id r=1 le=0
+ps_res_w_id r=1 le=0
+ps_res_name r=1 le=0
+ps_res_w_name r=1 le=0
+ps_res_hash r=1 le=0
+ps_res_missing r=0 le=716
+ps_res_null_hmod r=1 le=0
+ps_res_k32 r=0 le=715
+ps_loop_sync r=1 le=0
+ps_loop_sync_waited v=1
+ps_loop_async r=1 le=dead
+ps_nostop_busy r=0 le=dead
+ps_stop_null r=1 le=0
+ps_nostop_idle r=1 le=0
+ps_purge r=1 le=dead
+ps_stop_w_null r=1 le=dead
+ps_loop_async2 r=1 le=dead
+ps_purge_busy r=1 le=0
+ps_loop_async3 r=1 le=dead
+ps_replace_busy r=1 le=dead
+ps_mem_w r=1 le=0
+ps_mem_async r=1 le=dead
+ps_mem_badtag r=0 le=0
+ps_mem_notwave r=0 le=dead
+ps_mem_nodata r=0 le=dead
+ps_alias_and_file r=1 le=0
+ps_app_missing r=0 le=2
+ps_file_relative_missing r=0 le=2
+ps_file_empty r=1 le=dead
+ps_noflag_empty r=1 le=dead
+ps_res_hmod_file r=1 le=0
+ps_file_and_res r=0 le=716
+snd_file r=1 le=0
+snd_missing r=0 le=2
+snd_w_file r=1 le=0
+snd_mem r=1 le=0
+snd_null r=1 le=dead
+end

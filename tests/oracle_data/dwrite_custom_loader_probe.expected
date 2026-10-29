@@ -1,0 +1,61 @@
+bits=64
+first(key=1,arial): CreateEnumeratorFromKey(1,4) MoveNext->1 GetCurrentFontFile CreateStreamFromKey(7,4) GetFileSize Read(0+117) ReleaseFragment Read(0+7) ReleaseFragment Read(0+16) ReleaseFragment Read(0+12) ReleaseFragment Read(12+384) ReleaseFragment Read(0+12) ReleaseFragment Read(12+384) Read(520+96) Read(396+54) Read(452+36) ReleaseFragment Read(488+6) Read(616+18604) ReleaseFragment ReleaseFragment Read(616+18604) GetLastWriteTime Read(140128+20274) ReleaseFragment Read(883228+11906) Read(883228+11906) ReleaseFragment Read(895136+32) ReleaseFragment ReleaseFragment Read(883228+11906) Read(883228+11906) ReleaseFragment Read(895136+32) ReleaseFragment ReleaseFragment Read(895136+32) ReleaseFragment Read(883228+11906) Read(1045624+96) Read(883228+11906) ReleaseFragment Read(895136+32) ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment StreamFinalRelease MoveNext->0 EnumeratorFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Arial'
+  during family enumeration: <no loader calls>
+first faces: glyph('A')=36 units=2048
+  face loader calls: CreateStreamFromKey(7,4) Read(0+12) ReleaseFragment Read(12+384) Read(520+96) Read(396+54) Read(452+36) ReleaseFragment Read(488+6) Read(616+18604) ReleaseFragment ReleaseFragment Read(616+18604) GetLastWriteTime Read(140128+20274) ReleaseFragment Read(883228+11906) Read(883228+11906) ReleaseFragment Read(895136+32) ReleaseFragment ReleaseFragment Read(883228+11906) Read(883228+11906) ReleaseFragment Read(895136+32) ReleaseFragment ReleaseFragment Read(895136+32) ReleaseFragment Read(883228+11906) Read(1045624+96) Read(883228+11906) ReleaseFragment Read(895136+32) ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment StreamFinalRelease CreateStreamFromKey(7,4) Read(0+12) ReleaseFragment Read(12+384) Read(520+96) Read(396+54) Read(452+36) ReleaseFragment Read(488+6) Read(616+18604) ReleaseFragment ReleaseFragment Read(616+18604) Read(140128+20274) ReleaseFragment Read(895168+16) ReleaseFragment Read(23876+4500) ReleaseFragment Read(140128+20274) ReleaseFragment Read(1016176+29414) ReleaseFragment Read(1016176+29414) ReleaseFragment Read(896096+120078) ReleaseFragment Read(877756+5472) ReleaseFragment Read(1016176+29414) ReleaseFragment Read(896096+120078) ReleaseFragment Read(877756+5472) ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment
+repeat(key=1,arial): StreamFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Arial'
+  during family enumeration: <no loader calls>
+  same_object=0
+changed(key=1,georgia,new size+time): <no loader calls>
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Arial'
+  during family enumeration: <no loader calls>
+  same_object=0
+otherkey(key=2,georgia): CreateEnumeratorFromKey(2,4) MoveNext->1 GetCurrentFontFile CreateStreamFromKey(7,4) GetFileSize Read(0+117) ReleaseFragment Read(0+7) ReleaseFragment Read(0+16) ReleaseFragment Read(0+12) ReleaseFragment Read(12+352) ReleaseFragment StreamFinalRelease MoveNext->0 EnumeratorFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Arial'
+  during family enumeration: <no loader calls>
+otherkey faces: glyph('A')=36 units=2048
+  face loader calls: <no loader calls>
+damaged(key=3,zeroed sfnt header): CreateEnumeratorFromKey(3,4) MoveNext->1 GetCurrentFontFile CreateStreamFromKey(7,4) GetFileSize Read(0+117) ReleaseFragment Read(0+7) ReleaseFragment Read(0+16) ReleaseFragment Read(0+64) ReleaseFragment StreamFinalRelease MoveNext->0 EnumeratorFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=0
+  during family enumeration: <no loader calls>
+collections released: <no loader calls>
+  live_streams=0 live_fragments=0
+after_release(key=1,georgia): <no loader calls>
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Arial'
+  during family enumeration: <no loader calls>
+fresh_damaged(key=4,filekey=8,zeroed header): CreateEnumeratorFromKey(4,4) MoveNext->1 GetCurrentFontFile CreateStreamFromKey(8,4) GetFileSize Read(0+117) ReleaseFragment Read(0+7) ReleaseFragment Read(0+16) ReleaseFragment Read(0+64) ReleaseFragment StreamFinalRelease MoveNext->0 EnumeratorFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=0
+  during family enumeration: <no loader calls>
+second_isolated_factory(key=1,georgia): CreateEnumeratorFromKey(1,4) MoveNext->1 GetCurrentFontFile CreateStreamFromKey(7,4) GetFileSize Read(0+117) ReleaseFragment Read(0+7) ReleaseFragment Read(0+16) ReleaseFragment Read(0+12) ReleaseFragment Read(12+352) ReleaseFragment Read(0+12) ReleaseFragment Read(12+352) Read(488+96) Read(364+54) Read(420+36) ReleaseFragment Read(456+6) Read(584+3452) ReleaseFragment ReleaseFragment Read(584+3452) GetLastWriteTime Read(28984+1636) ReleaseFragment Read(196976+2831) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment Read(196976+2831) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment Read(199808+32) ReleaseFragment Read(196976+2831) Read(219640+72) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment StreamFinalRelease MoveNext->0 EnumeratorFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Georgia'
+  during family enumeration: <no loader calls>
+second factory released: <no loader calls>
+shared_factory(key=1,georgia): CreateEnumeratorFromKey(1,4) MoveNext->1 GetCurrentFontFile CreateStreamFromKey(7,4) GetFileSize Read(0+117) ReleaseFragment Read(0+7) ReleaseFragment Read(0+16) ReleaseFragment Read(0+12) ReleaseFragment Read(12+352) ReleaseFragment Read(0+12) ReleaseFragment Read(12+352) Read(488+96) Read(364+54) Read(420+36) ReleaseFragment Read(456+6) Read(584+3452) ReleaseFragment ReleaseFragment Read(584+3452) GetLastWriteTime Read(28984+1636) ReleaseFragment Read(196976+2831) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment Read(196976+2831) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment Read(199808+32) ReleaseFragment Read(196976+2831) Read(219640+72) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment StreamFinalRelease MoveNext->0 EnumeratorFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Georgia'
+  during family enumeration: <no loader calls>
+shared_factory_repeat(key=1,georgia): <no loader calls>
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Georgia'
+  during family enumeration: <no loader calls>
+shared factory released: <no loader calls>
+collection_loader_reregistered(key=1,georgia): CreateEnumeratorFromKey(1,4) MoveNext->1 GetCurrentFontFile CreateStreamFromKey(7,4) GetFileSize Read(0+117) ReleaseFragment Read(0+7) ReleaseFragment Read(0+16) ReleaseFragment Read(0+12) ReleaseFragment Read(12+352) ReleaseFragment StreamFinalRelease MoveNext->0 EnumeratorFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Arial'
+  during family enumeration: <no loader calls>
+file_loader_reregistered(key=5,georgia): CreateEnumeratorFromKey(5,4) MoveNext->1 GetCurrentFontFile CreateStreamFromKey(7,4) GetFileSize Read(0+117) ReleaseFragment Read(0+7) ReleaseFragment Read(0+16) ReleaseFragment Read(0+12) ReleaseFragment Read(12+352) ReleaseFragment Read(0+12) ReleaseFragment Read(12+352) Read(488+96) Read(364+54) Read(420+36) ReleaseFragment Read(456+6) Read(584+3452) ReleaseFragment ReleaseFragment Read(584+3452) GetLastWriteTime Read(28984+1636) ReleaseFragment Read(196976+2831) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment Read(196976+2831) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment Read(199808+32) ReleaseFragment Read(196976+2831) Read(219640+72) Read(196976+2831) ReleaseFragment Read(199808+32) ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment ReleaseFragment StreamFinalRelease MoveNext->0 EnumeratorFinalRelease
+  hr=0x00000000 live_streams=0 live_fragments=0
+  families=1 'Georgia'
+  during family enumeration: <no loader calls>
+factory released: <no loader calls>
+  live_streams=0 live_fragments=0

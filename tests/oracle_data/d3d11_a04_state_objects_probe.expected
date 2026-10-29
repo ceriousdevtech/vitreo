@@ -1,0 +1,376 @@
+adapter: Microsoft Basic Render Driver
+feature level: 0xb000 (11_0)
+caps options: hr=0x00000000 OutputMergerLogicOp=1 UAVOnlyRenderingForcedSampleCount=1 MultisampleRTVWithForcedSampleCountOne=1
+caps options1: hr=0x00000000 MinMaxFiltering=1 TiledResourcesTier=1
+caps options2: hr=0x00000000 ConservativeRasterizationTier=0
+device1=1 device3=1
+blend null-desc: hr=0x80070057 out=null
+blend null-out: hr=0x00000001
+blend null-both: hr=0x80070057
+blend null-out invalid-desc: hr=0x80070057
+blend default: hr=0x00000000 out=object
+blend zero-filled: hr=0x00000000 out=object
+blend zero-filled mask=F: hr=0x00000000 out=object
+blend en=1 rt0 src=0: hr=0x80070057 out=null
+blend en=1 rt0 src=12: hr=0x80070057 out=null
+blend en=1 rt0 src=13: hr=0x80070057 out=null
+blend en=1 rt0 src=20: hr=0x80070057 out=null
+blend en=1 rt0 dst=0: hr=0x80070057 out=null
+blend en=1 rt0 dst=12: hr=0x80070057 out=null
+blend en=1 rt0 dst=20: hr=0x80070057 out=null
+blend en=1 rt0 op=0: hr=0x80070057 out=null
+blend en=1 rt0 op=6: hr=0x80070057 out=null
+blend en=1 rt0 srca=0: hr=0x80070057 out=null
+blend en=1 rt0 srca=20: hr=0x80070057 out=null
+blend en=1 rt0 dsta=0: hr=0x80070057 out=null
+blend en=1 rt0 dsta=20: hr=0x80070057 out=null
+blend en=1 rt0 opa=0: hr=0x80070057 out=null
+blend en=1 rt0 opa=6: hr=0x80070057 out=null
+blend en=0 rt0 src=0: hr=0x00000000 out=object
+blend en=0 rt0 src=12: hr=0x00000000 out=object
+blend en=0 rt0 src=13: hr=0x00000000 out=object
+blend en=0 rt0 src=20: hr=0x00000000 out=object
+blend en=0 rt0 dst=0: hr=0x00000000 out=object
+blend en=0 rt0 dst=12: hr=0x00000000 out=object
+blend en=0 rt0 dst=20: hr=0x00000000 out=object
+blend en=0 rt0 op=0: hr=0x00000000 out=object
+blend en=0 rt0 op=6: hr=0x00000000 out=object
+blend en=0 rt0 srca=0: hr=0x00000000 out=object
+blend en=0 rt0 srca=20: hr=0x00000000 out=object
+blend en=0 rt0 dsta=0: hr=0x00000000 out=object
+blend en=0 rt0 dsta=20: hr=0x00000000 out=object
+blend en=0 rt0 opa=0: hr=0x00000000 out=object
+blend en=0 rt0 opa=6: hr=0x00000000 out=object
+blend en=1 src accepted: 1 2 3 4 5 6 7 8 9 10 11 14 15 16 17 18 19
+blend en=1 dst accepted: 1 2 3 4 5 6 7 8 9 10 11 14 15 16 17 18 19
+blend en=1 srca accepted: 1 2 5 6 7 8 11 14 15 18 19
+blend en=1 dsta accepted: 1 2 5 6 7 8 11 14 15 18 19
+blend en=0 srca=SRC_COLOR: hr=0x00000000 out=object
+blend en=0 dsta=INV_DEST_COLOR: hr=0x00000000 out=object
+blend en=1 op accepted: 1 2 3 4 5
+blend dual rt0 indep=0: hr=0x00000000 out=object
+blend dual rt1 indep=1 en=1: hr=0x80070057 out=null
+blend dual rt1 indep=1 en=0: hr=0x00000000 out=object
+blend dual rt0 + blend rt1 indep=1: hr=0x80070057 out=null
+blend dual rt0 op=MIN: hr=0x80070057 out=null
+blend dual rt0 op=REV_SUBTRACT: hr=0x00000000 out=object
+blend dual alpha-only rt0 op=MAX opa=ADD: hr=0x00000000 out=object
+blend dual alpha-only rt0 op=ADD opa=MIN: hr=0x80070057 out=null
+blend dual rt0 + rt1 blend off indep=1: hr=0x00000000 out=object
+blend rt0 mask=0x00: hr=0x00000000 out=object
+blend rt0 mask=0x05: hr=0x00000000 out=object
+blend rt0 mask=0x0f: hr=0x00000000 out=object
+blend rt0 mask=0x10: hr=0x80070057 out=null
+blend rt0 mask=0x1f: hr=0x80070057 out=null
+blend rt0 mask=0xff: hr=0x80070057 out=null
+blend indep=1 rt3 mask=0x30: hr=0x80070057 out=null
+blend indep=0 rt3 mask=0x30: hr=0x00000000 out=object
+blend rt0 mask padding garbage: hr=0x00000000
+blend padding-garbage getdesc: a2c=0 indep=0 rt0={en=0 src=2 dst=1 op=1 srca=2 dsta=1 opa=1 mask=0x0f}
+blend indep=0 rt1 invalid: hr=0x00000000 out=object
+blend indep=1 rt1 invalid: hr=0x80070057 out=null
+blend indep=1 rt7 srca=DEST_COLOR: hr=0x80070057 out=null
+blend bools a2c=2 indep=3 en=5: hr=0x00000000
+blend bools getdesc: a2c=1 indep=1 rt0={en=1 src=2 dst=1 op=1 srca=2 dsta=1 opa=1 mask=0x0f}
+blend indep=0 rt1..7 differ: hr=0x00000000
+blend indep=0 getdesc: a2c=0 indep=0 rt0={en=1 src=5 dst=6 op=1 srca=2 dsta=1 opa=1 mask=0x07}
+blend indep=0 getdesc: a2c=0 indep=0 rt1={en=1 src=5 dst=6 op=1 srca=2 dsta=1 opa=1 mask=0x07}
+blend indep=0 getdesc: a2c=0 indep=0 rt7={en=1 src=5 dst=6 op=1 srca=2 dsta=1 opa=1 mask=0x07}
+blend dedup indep=0 rt1..7=rt0 vs differ: hr=0x00000000 same=1
+blend dedup indep=0 rt1..7=default vs differ: hr=0x00000000 same=1
+blend indep=1 getdesc: a2c=0 indep=1 rt0={en=1 src=5 dst=6 op=1 srca=2 dsta=1 opa=1 mask=0x07}
+blend indep=1 getdesc: a2c=0 indep=1 rt5={en=1 src=9 dst=2 op=5 srca=2 dsta=1 opa=1 mask=0x05}
+blend en=0 odd-factors getdesc: a2c=0 indep=0 rt0={en=0 src=2 dst=1 op=1 srca=2 dsta=1 opa=1 mask=0x0f}
+blend dedup en=0 odd-factors vs default: same=1
+blend dedup first: hr=0x00000000 refs=1
+blend dedup second: hr=0x00000000 same=1 refs=2
+blend dedup private-data set-on-first get-on-second: set=0x00000000 get=0x00000000 value=0xa04b1e0d
+blend dedup release: second->1 first->0
+blend after-last-release recreate: hr=0x00000000 refs=1 private-data get=0x887a0002
+blend bound-then-released: release->0 recreate hr=0x00000000 refs=1 private-data get=0x00000000
+blend unbind: refs=1
+blend getdevice: same=1 device-refs 5->6
+blend qi BlendState1: hr=0x00000000 same=1
+blend qi DeviceChild: hr=0x00000000 same=1
+blend qi SamplerState: hr=0x80004002
+blend1 null-desc: hr=0x80070057 out=null
+blend1 null-out: hr=0x00000001
+blend1 default: hr=0x00000000 out=object
+blend1 zero-filled: hr=0x00000000 out=object
+blend1 logic rt0 indep=0: hr=0x00000000 out=object
+blend1 logic+blend rt0: hr=0x80070057 out=null
+blend1 logic rt0 indep=1: hr=0x80070057 out=null
+blend1 logic rt1 indep=1: hr=0x80070057 out=null
+blend1 logic rt1 indep=0 (ignored?): hr=0x00000000 out=object
+blend1 logicop=16 enable=0: hr=0x00000000 out=object
+blend1 logicop=16 enable=1: hr=0x80070057 out=null
+blend1 logicop=CLEAR enable=0: hr=0x00000000 out=object
+blend1 en=1 srca=SRC_COLOR: hr=0x80070057 out=null
+blend1 mask=0x10: hr=0x80070057 out=null
+blend1 dual rt2 indep=1: hr=0x80070057 out=null
+blend1 dedup vs CreateBlendState (LogicOp NOOP): hr=0x00000000 same=1 refs=2
+blend1 dedup vs CreateBlendState (LogicOp CLEAR, disabled): hr=0x00000000 same=1
+blend blend1-object base getdesc: a2c=0 indep=0 rt0={en=1 src=5 dst=6 op=1 srca=2 dsta=1 opa=1 mask=0x09}
+ds null-desc: hr=0x80070057 out=null
+ds null-out: hr=0x00000001
+ds default: hr=0x00000000 out=object
+ds zero-filled: hr=0x00000000 out=object
+ds depth=1 func=0: hr=0x80070057 out=null
+ds depth=1 func=1: hr=0x00000000 out=object
+ds depth=1 func=8: hr=0x00000000 out=object
+ds depth=1 func=9: hr=0x80070057 out=null
+ds depth=1 writemask=2: hr=0x80070057 out=null
+ds depth=0 func=0: hr=0x00000000 out=object
+ds depth=0 func=1: hr=0x00000000 out=object
+ds depth=0 func=8: hr=0x00000000 out=object
+ds depth=0 func=9: hr=0x00000000 out=object
+ds depth=0 writemask=2: hr=0x80070057 out=null
+ds stencil=1 front fail=0: hr=0x80070057 out=null
+ds stencil=1 front fail=9: hr=0x80070057 out=null
+ds stencil=1 front dfail=0: hr=0x80070057 out=null
+ds stencil=1 front dfail=9: hr=0x80070057 out=null
+ds stencil=1 front pass=0: hr=0x80070057 out=null
+ds stencil=1 front pass=9: hr=0x80070057 out=null
+ds stencil=1 front func=0: hr=0x80070057 out=null
+ds stencil=1 front func=9: hr=0x80070057 out=null
+ds stencil=1 back fail=0: hr=0x80070057 out=null
+ds stencil=1 back fail=9: hr=0x80070057 out=null
+ds stencil=1 back dfail=0: hr=0x80070057 out=null
+ds stencil=1 back dfail=9: hr=0x80070057 out=null
+ds stencil=1 back pass=0: hr=0x80070057 out=null
+ds stencil=1 back pass=9: hr=0x80070057 out=null
+ds stencil=1 back func=0: hr=0x80070057 out=null
+ds stencil=1 back func=9: hr=0x80070057 out=null
+ds stencil=0 front fail=0: hr=0x00000000 out=object
+ds stencil=0 front fail=9: hr=0x00000000 out=object
+ds stencil=0 front dfail=0: hr=0x00000000 out=object
+ds stencil=0 front dfail=9: hr=0x00000000 out=object
+ds stencil=0 front pass=0: hr=0x00000000 out=object
+ds stencil=0 front pass=9: hr=0x00000000 out=object
+ds stencil=0 front func=0: hr=0x00000000 out=object
+ds stencil=0 front func=9: hr=0x00000000 out=object
+ds stencil=0 back fail=0: hr=0x00000000 out=object
+ds stencil=0 back fail=9: hr=0x00000000 out=object
+ds stencil=0 back dfail=0: hr=0x00000000 out=object
+ds stencil=0 back dfail=9: hr=0x00000000 out=object
+ds stencil=0 back pass=0: hr=0x00000000 out=object
+ds stencil=0 back pass=9: hr=0x00000000 out=object
+ds stencil=0 back func=0: hr=0x00000000 out=object
+ds stencil=0 back func=9: hr=0x00000000 out=object
+ds stencil=1 front pass accepted: 1 2 3 4 5 6 7 8
+ds roundtrip create: hr=0x00000000
+ds roundtrip getdesc: depth=1 write=0 func=7 stencil=1 rmask=0x12 wmask=0x34 front={4,8,3,3} back={6,1,1,6}
+ds stencil=0 odd-ops getdesc: depth=1 write=1 func=2 stencil=0 rmask=0xff wmask=0xff front={1,1,1,8} back={1,1,1,8}
+ds dedup stencil=0 odd-ops vs default: same=1
+ds depth=0 func=0 write=ZERO getdesc: depth=0 write=1 func=2 stencil=0 rmask=0xff wmask=0xff front={1,1,1,8} back={1,1,1,8}
+ds zero-filled getdesc: depth=0 write=1 func=2 stencil=0 rmask=0xff wmask=0xff front={1,1,1,8} back={1,1,1,8}
+ds dedup depth=0 func ALWAYS vs LESS: same=1
+ds dedup: hr=0x00000000 same=1 refs=2
+ds release 1,0 then recreate: refs=1 private-data get=0x887a0002
+ds getdevice: same=1 device-refs 5->6
+ds qi DeviceChild: hr=0x00000000 same=1
+rs null-desc: hr=0x80070057 out=null
+rs null-out: hr=0x00000001
+rs default: hr=0x00000000 out=object
+rs zero-filled: hr=0x80070057 out=null
+rs fill=0: hr=0x80070057 out=null
+rs fill=1: hr=0x80070057 out=null
+rs fill=2: hr=0x00000000 out=object
+rs fill=3: hr=0x00000000 out=object
+rs fill=4: hr=0x80070057 out=null
+rs cull=0: hr=0x80070057 out=null
+rs cull=1: hr=0x00000000 out=object
+rs cull=3: hr=0x00000000 out=object
+rs cull=4: hr=0x80070057 out=null
+rs clamp=NaN: hr=0x80070057 out=null
+rs clamp=+Inf: hr=0x00000000 out=object
+rs clamp=-5: hr=0x00000000 out=object
+rs slope=NaN: hr=0x80070057 out=null
+rs slope=-Inf: hr=0x00000000 out=object
+rs bias=INT_MIN: hr=0x00000000 out=object
+rs ms=1 aa=1: hr=0x00000000 out=object
+rs roundtrip create: hr=0x00000000
+rs roundtrip getdesc: fill=2 cull=2 ccw=1 bias=-7 clamp=c0200000 slope=3fc00000 clip=1 scissor=1 ms=1 aa=1
+rs dedup: same=1 refs=2
+rs dedup scissor=2 vs scissor=1: same=1
+rs base-object qi RasterizerState1: hr=0x00000000 same=1
+rs base-object getdesc1: cull=1 scissor=1 forced=0
+rs base-object qi RasterizerState2: hr=0x00000000 same=1
+rs base-object getdesc2: cull=1 forced=0 conservative=0
+rs1 dedup vs CreateRasterizerState: hr=0x00000000 same=1
+rs2 dedup vs CreateRasterizerState: hr=0x00000000 same=1
+rs release->0 then recreate: refs=1 private-data get=0x887a0002
+rs getdevice: same=1 device-refs 5->6
+rs1 null-desc: hr=0x80070057 out=null
+rs1 null-out: hr=0x00000001
+rs1 forced=0 ms=0: hr=0x00000000 out=object
+rs1 forced=0 ms=1: hr=0x00000000 out=object
+rs1 forced=1 ms=0: hr=0x00000000 out=object
+rs1 forced=1 ms=1: hr=0x80070057 out=null
+rs1 forced=2 ms=0: hr=0x80070057 out=null
+rs1 forced=2 ms=1: hr=0x80070057 out=null
+rs1 forced=3 ms=0: hr=0x80070057 out=null
+rs1 forced=3 ms=1: hr=0x80070057 out=null
+rs1 forced=4 ms=0: hr=0x00000000 out=object
+rs1 forced=4 ms=1: hr=0x00000000 out=object
+rs1 forced=8 ms=0: hr=0x00000000 out=object
+rs1 forced=8 ms=1: hr=0x00000000 out=object
+rs1 forced=16 ms=0: hr=0x80070057 out=null
+rs1 forced=16 ms=1: hr=0x80070057 out=null
+rs1 forced=32 ms=0: hr=0x80070057 out=null
+rs1 forced=32 ms=1: hr=0x80070057 out=null
+rs1 forced=1 aa=1: hr=0x00000000 out=object
+rs1 forced=4 fill=0: hr=0x80070057 out=null
+rs1 forced=1 getdesc1: forced=1 cull=3; base getdesc cull=3
+rs2 null-desc: hr=0x80070057 out=null
+rs2 null-out: hr=0x00000001
+rs2 conservative=0: hr=0x00000000 out=object
+rs2 conservative=1: hr=0x80070057 out=null
+rs2 conservative=2: hr=0x80070057 out=null
+rs2 conservative=1 forced=1: hr=0x80070057 out=null
+rs2 conservative=1 wireframe: hr=0x80070057 out=null
+rs2 conservative=1 aa=1: hr=0x80070057 out=null
+rs2 forced=8: hr=0x00000000 out=object
+rs2 getdesc2: cull=2 ccw=1 bias=3 scissor=1 forced=0 conservative=0; getdesc1 forced=0 cull=2
+smp null-desc: hr=0x80070057 out=null
+smp null-out: hr=0x00000001
+smp default: hr=0x00000000 out=object
+smp zero-filled: hr=0x80070057 out=null
+smp zero-filled addr=WRAP: hr=0x00000000 out=object
+smp filter accepted: 0 1 4 5 10 11 14 15 55 80 81 84 85 90 91 94 95 d5 100 101 104 105 110 111 114 115 155 180 181 184 185 190 191 194 195 1d5 (count=36)
+smp filter=0x200: hr=0x80070057 out=null
+smp filter=0x215: hr=0x80070057 out=null
+smp filter=0x10000: hr=0x80070057 out=null
+smp filter=0x80000000: hr=0x80070057 out=null
+smp addressU=0: hr=0x80070057 out=null
+smp addressU=1: hr=0x00000000 out=object
+smp addressU=5: hr=0x00000000 out=object
+smp addressU=6: hr=0x80070057 out=null
+smp addressV=0: hr=0x80070057 out=null
+smp addressV=1: hr=0x00000000 out=object
+smp addressV=5: hr=0x00000000 out=object
+smp addressV=6: hr=0x80070057 out=null
+smp addressW=0: hr=0x80070057 out=null
+smp addressW=1: hr=0x00000000 out=object
+smp addressW=5: hr=0x00000000 out=object
+smp addressW=6: hr=0x80070057 out=null
+smp ANISOTROPIC aniso=0: hr=0x00000000 out=object
+smp ANISOTROPIC aniso=1: hr=0x00000000 out=object
+smp ANISOTROPIC aniso=2: hr=0x00000000 out=object
+smp ANISOTROPIC aniso=16: hr=0x00000000 out=object
+smp ANISOTROPIC aniso=17: hr=0x80070057 out=null
+smp ANISOTROPIC aniso=4294967295: hr=0x80070057 out=null
+smp CMP_ANISOTROPIC aniso=0: hr=0x00000000 out=object
+smp CMP_ANISOTROPIC aniso=1: hr=0x00000000 out=object
+smp CMP_ANISOTROPIC aniso=2: hr=0x00000000 out=object
+smp CMP_ANISOTROPIC aniso=16: hr=0x00000000 out=object
+smp CMP_ANISOTROPIC aniso=17: hr=0x80070057 out=null
+smp CMP_ANISOTROPIC aniso=4294967295: hr=0x80070057 out=null
+smp LINEAR aniso=0: hr=0x00000000 out=object
+smp LINEAR aniso=1: hr=0x00000000 out=object
+smp LINEAR aniso=2: hr=0x00000000 out=object
+smp LINEAR aniso=16: hr=0x00000000 out=object
+smp LINEAR aniso=17: hr=0x80070057 out=null
+smp LINEAR aniso=4294967295: hr=0x80070057 out=null
+smp POINT aniso=0: hr=0x00000000 out=object
+smp POINT aniso=1: hr=0x00000000 out=object
+smp POINT aniso=2: hr=0x00000000 out=object
+smp POINT aniso=16: hr=0x00000000 out=object
+smp POINT aniso=17: hr=0x80070057 out=null
+smp POINT aniso=4294967295: hr=0x80070057 out=null
+smp LINEAR cmp=0: hr=0x00000000 out=object
+smp LINEAR cmp=1: hr=0x00000000 out=object
+smp LINEAR cmp=8: hr=0x00000000 out=object
+smp LINEAR cmp=9: hr=0x00000000 out=object
+smp CMP_LINEAR cmp=0: hr=0x80070057 out=null
+smp CMP_LINEAR cmp=1: hr=0x00000000 out=object
+smp CMP_LINEAR cmp=8: hr=0x00000000 out=object
+smp CMP_LINEAR cmp=9: hr=0x80070057 out=null
+smp MIN_LINEAR cmp=0: hr=0x00000000 out=object
+smp MIN_LINEAR cmp=1: hr=0x00000000 out=object
+smp MIN_LINEAR cmp=8: hr=0x00000000 out=object
+smp MIN_LINEAR cmp=9: hr=0x00000000 out=object
+smp minlod=5 maxlod=1: hr=0x00000000 out=object
+smp minlod=maxlod=2: hr=0x00000000 out=object
+smp minlod=NaN: hr=0x80070057 out=null
+smp maxlod=NaN: hr=0x80070057 out=null
+smp minlod=-Inf maxlod=+Inf: hr=0x00000000 out=object
+smp bias=c1800000: hr=0x00000000 out=object
+smp bias=c1800000 getdesc bias=c1800000
+smp bias=417fd70a: hr=0x00000000 out=object
+smp bias=417fd70a getdesc bias=417fd70a
+smp bias=c1840000: hr=0x80070057 out=null
+smp bias=41800000: hr=0x80070057 out=null
+smp bias=42c80000: hr=0x80070057 out=null
+smp bias=NaN: hr=0x80070057 out=null
+smp bias=+Inf: hr=0x80070057 out=null
+smp border arbitrary linear: hr=0x00000000 out=object
+smp border arbitrary comparison: hr=0x00000000 out=object
+smp border NaN comparison: hr=0x00000000 out=object
+smp border NaN linear: hr=0x00000000 out=object
+smp border out-of-range: hr=0x00000000 out=object
+smp roundtrip create: hr=0x00000000
+smp roundtrip getdesc: filter=0x4 addr=1,2,5 bias=bfa00000 aniso=0 cmp=1 border=00000000,00000000,00000000,00000000 minlod=3f000000 maxlod=41100000
+smp dedup aniso 7 vs 3 on non-aniso filter: same=1
+smp dedup cmp GREATER vs LESS on non-cmp filter: same=1
+smp dedup border differs, no BORDER mode: same=1
+smp ANISOTROPIC aniso=0 getdesc (hr=0x00000000): filter=0x55 addr=3,3,3 bias=00000000 aniso=0 cmp=1 border=00000000,00000000,00000000,00000000 minlod=ff7fffff maxlod=7f7fffff
+smp ANISOTROPIC aniso=9 getdesc (hr=0x00000000): filter=0x55 addr=3,3,3 bias=00000000 aniso=9 cmp=1 border=00000000,00000000,00000000,00000000 minlod=ff7fffff maxlod=7f7fffff
+smp CMP_LINEAR cmp=GREATER border getdesc (hr=0x00000000): filter=0x95 addr=4,4,4 bias=00000000 aniso=0 cmp=5 border=3f000000,3e800000,3e000000,3f400000 minlod=ff7fffff maxlod=7f7fffff
+smp LINEAR cmp=0 border getdesc (hr=0x00000000): filter=0x15 addr=4,4,4 bias=00000000 aniso=0 cmp=1 border=3f000000,3e800000,3e000000,3f400000 minlod=ff7fffff maxlod=7f7fffff
+smp MIN_LINEAR cmp=GREATER getdesc (hr=0x00000000): filter=0x115 addr=3,3,3 bias=00000000 aniso=0 cmp=1 border=00000000,00000000,00000000,00000000 minlod=ff7fffff maxlod=7f7fffff
+smp dedup: same=1 refs=2
+smp dedup bias -0.0 vs +0.0: same=0
+smp bias -0.0 getdesc bias=80000000
+smp release 1,0 then recreate: refs=1 private-data get=0x00000000
+smp getdevice: same=1 device-refs 5->6
+smp qi DeviceChild: hr=0x00000000 same=1
+smp qi SamplerState: hr=0x00000000 same=1
+blend setprivatedatainterface: set=0x00000000 ctx-refs 1->2 get=0x00000000 size=8 same=1 clear=0x00000000 ctx-refs-after=1
+ds setprivatedatainterface: set=0x00000000 ctx-refs 1->2 get=0x00000000 size=8 same=1 clear=0x00000000 ctx-refs-after=1
+rs setprivatedatainterface: set=0x00000000 ctx-refs 1->2 get=0x00000000 size=8 same=1 clear=0x00000000 ctx-refs-after=1
+smp setprivatedatainterface: set=0x00000000 ctx-refs 1->2 get=0x00000000 size=8 same=1 clear=0x00000000 ctx-refs-after=1
+limit sampler: tried=4200 made=4095 first-fail=4095 hr=0x887c0001 existing-desc-at-limit hr=0x00000000 same=1
+limit sampler after release-all: hr=0x00000000
+limit blend: tried=4200 made=4095 first-fail=4095 hr=0x887c0001 existing-desc-at-limit hr=0x00000000 same=1
+limit rasterizer: tried=4200 made=4095 first-fail=4095 hr=0x887c0001
+limit depthstencil: tried=4200 made=4095 first-fail=4095 hr=0x887c0001
+blend getdesc1 via qi: hr=0x00000000 (next line is the GetDesc1 call)
+blend base-object getdesc1: rt0={en=0 logicen=0 src=2 dst=1 op=1 logicop=4 mask=0x06} rt1 logicop=4
+blend1 getdesc1 logicop=AND disabled: rt0 logicen=0 logicop=4 mask=0x03 rt4 logicop=4
+device final release -> 0
+done
+#
+# Above: winoracle (WARP, Windows 11, D3D11 runtime) x64 at FEATURE_LEVEL_11_0,
+# verbatim. The x86 build prints the same lines except the four
+# "setprivatedatainterface" lines, which report size=4 (pointer size).
+# `./a04_x64.exe max` (FL 12_1) differs only in: caps (TiledResourcesTier=2,
+# ConservativeRasterizationTier=3), rs1 forced=1 ms=1 and forced=16 accepted,
+# and rs2 conservative=1 (+forced=1, +aa=1) accepted.
+#
+# Verdicts against the Vitreo build of 2026-09-27 23:22 (x64 and x86 identical):
+#   WRONG   ds zero-filled / depth=0 func=0|9: Vitreo E_INVALIDARG; DepthFunc is
+#           only validated when DepthEnable is TRUE.
+#   CRASH   blend getdesc1 (either creation path): Vitreo's blend vtable has 8
+#           slots (0-7); GetDesc1 is slot 8 -> call through NULL, 0xC000001D
+#           at rip 0.
+#   MISSING dedup for all four families (same=0, refs=1 everywhere); the 4096
+#           limit (0x887C0001 at the 4096th unique incl. the runtime's default).
+#   WRONG   GetDesc normalisation: BOOLs -> 1; blend RT1..7 = RT0 when
+#           IndependentBlendEnable FALSE; disabled blend -> ONE/ZERO/ADD;
+#           disabled depth -> write ALL, func LESS; disabled stencil -> masks FF,
+#           KEEP/ALWAYS; sampler: aniso 0 unless anisotropic, cmp NEVER unless
+#           comparison, border 0 unless a BORDER address mode.
+#   WRONG   sampler: aniso=0 with ANISOTROPIC refused, aniso>16 on other filters
+#           accepted, minlod>maxlod refused, bias outside [-16,15.99]/NaN/Inf
+#           accepted, comparison + arbitrary border E_NOTIMPL.
+#   WRONG   rs base-object QI RasterizerState1/2 E_NOINTERFACE; rs
+#           SetPrivateDataInterface E_NOTIMPL; clamp/slope NaN accepted;
+#           ForcedSampleCount 1/4/8 E_NOTIMPL (2/16 E_NOTIMPL instead of
+#           E_INVALIDARG); ConservativeRaster=1 E_NOTIMPL instead of E_INVALIDARG.
+#   MISSING blend validation: enum ranges when BlendEnable, _COLOR in alpha,
+#           mask > 0xF, dual-source op and other-RT rules.
+#   CORRECT NULL desc/out, out=NULL on failure, fill/cull, depth write mask,
+#           stencil ops, filter encodings, address modes, ComparisonFunc rules,
+#           LOD NaN, GetDevice AddRef, QI identities, logic-op rules (Vitreo's
+#           refusal of LogicOpEnable matches its OutputMergerLogicOp=FALSE).

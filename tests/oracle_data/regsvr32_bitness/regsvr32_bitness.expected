@@ -1,0 +1,196 @@
+== x64 System32\regsvr32
+same-bitness [/s "C:\rsbit\bitdll_x64.dll"] exit=0 children=0
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=v1.0\powershell.exe parent_state=running
+    cmdline=["C:\WINDOWS\System32\regsvr32.exe" /s "C:\rsbit\bitdll_x64.dll"]
+register [/s "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll"]
+register-unquoted [/s C:\rsbit\bitdll_x86.dll] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s C:\rsbit\bitdll_x86.dll]
+register-fail [/s "C:\rsbit\bitdll_x86.dll"] exit=5 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll"]
+register-hr-1 [/s "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll"]
+unregister [/s /u "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllUnregisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /u "C:\rsbit\bitdll_x86.dll"]
+unregister-fail [/s /u "C:\rsbit\bitdll_x86.dll"] exit=5 children=1
+  DllUnregisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /u "C:\rsbit\bitdll_x86.dll"]
+install [/s /i:hello "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /i:hello "C:\rsbit\bitdll_x86.dll"]
+  DllInstall(TRUE) arg=[hello] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /i:hello "C:\rsbit\bitdll_x86.dll"]
+install-quoted-cmd [/s "/i:a b" "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "/i:a b" "C:\rsbit\bitdll_x86.dll"]
+  DllInstall(TRUE) arg=[a b] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "/i:a b" "C:\rsbit\bitdll_x86.dll"]
+install-nocmd [/s /i "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /i "C:\rsbit\bitdll_x86.dll"]
+  DllInstall(TRUE) arg=[] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /i "C:\rsbit\bitdll_x86.dll"]
+install-noreg [/s /n /i:hello "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllInstall(TRUE) arg=[hello] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /n /i:hello "C:\rsbit\bitdll_x86.dll"]
+install-noreg-nocmd [/s /n /i "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllInstall(TRUE) arg=[] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /n /i "C:\rsbit\bitdll_x86.dll"]
+uninstall [/s /u /i:bye "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllInstall(FALSE) arg=[bye] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /u /i:bye "C:\rsbit\bitdll_x86.dll"]
+  DllUnregisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /u /i:bye "C:\rsbit\bitdll_x86.dll"]
+uninstall-noreg [/s /u /n /i:bye "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllInstall(FALSE) arg=[bye] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /u /n /i:bye "C:\rsbit\bitdll_x86.dll"]
+install-fail [/s /n /i:x "C:\rsbit\bitdll_x86.dll"] exit=5 children=1
+  DllInstall(TRUE) arg=[x] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s /n /i:x "C:\rsbit\bitdll_x86.dll"]
+switch-after-dll ["C:\rsbit\bitdll_x86.dll" /s] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ "C:\rsbit\bitdll_x86.dll" /s]
+dash-upper [-S -U "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllUnregisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ -S -U "C:\rsbit\bitdll_x86.dll"]
+space-path [/s "C:\rsbit\sp ace\bitdll_x86.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\sp ace\bitdll_x86.dll"]
+relative [/s bitdll_x86.dll] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s bitdll_x86.dll]
+missing-dep-other [/s "C:\rsbit\depdll_x86.dll"] exit=3 children=1
+missing-dep-same [/s "C:\rsbit\depdll_x64.dll"] exit=3 children=0
+two-other [/s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x86.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x86.dll"]
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x86.dll"]
+same-then-other [/s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x86.dll"] exit=(still running after timeout, killed) children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=v1.0\powershell.exe parent_state=running
+    cmdline=["C:\WINDOWS\System32\regsvr32.exe" /s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x86.dll"]
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x86.dll"]
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x86.dll"]
+  ... (log continues, endless hand-off)
+other-then-same [/s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x64.dll"] exit=(still running after timeout, killed) children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x64.dll"]
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x64.dll"]
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x64.dll"]
+  ... (log continues, endless hand-off)
+no-entry-other [/s "C:\rsbit\noentry_x86.dll"] exit=4 children=1
+no-entry-same [/s "C:\rsbit\noentry_x64.dll"] exit=4 children=0
+not-pe [/s "C:\rsbit\text.dll"] exit=3 children=0
+missing [/s "C:\rsbit\nope.dll"] exit=3 children=0
+n-without-i [/s /n "C:\rsbit\bitdll_x86.dll"] exit=1 children=0
+bad-switch [/s /q "C:\rsbit\bitdll_x86.dll"] exit=1 children=0
+not-silent ["C:\rsbit\bitdll_x86.dll"] exit=(still running after timeout, killed) children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ "C:\rsbit\bitdll_x86.dll"]
+== x86 SysWOW64\regsvr32
+same-bitness [/s "C:\rsbit\bitdll_x86.dll"] exit=0 children=0
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=v1.0\powershell.exe parent_state=running
+    cmdline=["C:\WINDOWS\SysWOW64\regsvr32.exe" /s "C:\rsbit\bitdll_x86.dll"]
+register [/s "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll"]
+register-unquoted [/s C:\rsbit\bitdll_x64.dll] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s C:\rsbit\bitdll_x64.dll]
+register-fail [/s "C:\rsbit\bitdll_x64.dll"] exit=5 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll"]
+register-hr-1 [/s "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll"]
+unregister [/s /u "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllUnregisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /u "C:\rsbit\bitdll_x64.dll"]
+unregister-fail [/s /u "C:\rsbit\bitdll_x64.dll"] exit=5 children=1
+  DllUnregisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /u "C:\rsbit\bitdll_x64.dll"]
+install [/s /i:hello "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /i:hello "C:\rsbit\bitdll_x64.dll"]
+  DllInstall(TRUE) arg=[hello] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /i:hello "C:\rsbit\bitdll_x64.dll"]
+install-quoted-cmd [/s "/i:a b" "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "/i:a b" "C:\rsbit\bitdll_x64.dll"]
+  DllInstall(TRUE) arg=[a b] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "/i:a b" "C:\rsbit\bitdll_x64.dll"]
+install-nocmd [/s /i "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /i "C:\rsbit\bitdll_x64.dll"]
+  DllInstall(TRUE) arg=[] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /i "C:\rsbit\bitdll_x64.dll"]
+install-noreg [/s /n /i:hello "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllInstall(TRUE) arg=[hello] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /n /i:hello "C:\rsbit\bitdll_x64.dll"]
+install-noreg-nocmd [/s /n /i "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllInstall(TRUE) arg=[] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /n /i "C:\rsbit\bitdll_x64.dll"]
+uninstall [/s /u /i:bye "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllInstall(FALSE) arg=[bye] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /u /i:bye "C:\rsbit\bitdll_x64.dll"]
+  DllUnregisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /u /i:bye "C:\rsbit\bitdll_x64.dll"]
+uninstall-noreg [/s /u /n /i:bye "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllInstall(FALSE) arg=[bye] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /u /n /i:bye "C:\rsbit\bitdll_x64.dll"]
+install-fail [/s /n /i:x "C:\rsbit\bitdll_x64.dll"] exit=5 children=1
+  DllInstall(TRUE) arg=[x] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s /n /i:x "C:\rsbit\bitdll_x64.dll"]
+switch-after-dll ["C:\rsbit\bitdll_x64.dll" /s] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ "C:\rsbit\bitdll_x64.dll" /s]
+dash-upper [-S -U "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllUnregisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ -S -U "C:\rsbit\bitdll_x64.dll"]
+space-path [/s "C:\rsbit\sp ace\bitdll_x64.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\sp ace\bitdll_x64.dll"]
+relative [/s bitdll_x64.dll] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s bitdll_x64.dll]
+missing-dep-other [/s "C:\rsbit\depdll_x64.dll"] exit=3 children=1
+missing-dep-same [/s "C:\rsbit\depdll_x86.dll"] exit=3 children=0
+two-other [/s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x64.dll"] exit=0 children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x64.dll"]
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x64.dll"]
+same-then-other [/s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x64.dll"] exit=(still running after timeout, killed) children=1
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=v1.0\powershell.exe parent_state=running
+    cmdline=["C:\WINDOWS\SysWOW64\regsvr32.exe" /s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x64.dll"]
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x64.dll"]
+  DllRegisterServer arg=[(none)] bits=32 process=SysWOW64\regsvr32.exe parent=System32\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x86.dll" "C:\rsbit\bitdll_x64.dll"]
+  ... (log continues, endless hand-off)
+other-then-same [/s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x86.dll"] exit=(still running after timeout, killed) children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x86.dll"]
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x86.dll"]
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ /s "C:\rsbit\bitdll_x64.dll" "C:\rsbit\bitdll_x86.dll"]
+  ... (log continues, endless hand-off)
+no-entry-other [/s "C:\rsbit\noentry_x64.dll"] exit=4 children=1
+no-entry-same [/s "C:\rsbit\noentry_x86.dll"] exit=4 children=0
+not-pe [/s "C:\rsbit\text.dll"] exit=3 children=0
+missing [/s "C:\rsbit\nope.dll"] exit=3 children=0
+n-without-i [/s /n "C:\rsbit\bitdll_x64.dll"] exit=1 children=0
+bad-switch [/s /q "C:\rsbit\bitdll_x64.dll"] exit=1 children=0
+not-silent ["C:\rsbit\bitdll_x64.dll"] exit=(still running after timeout, killed) children=1
+  DllRegisterServer arg=[(none)] bits=64 process=System32\regsvr32.exe parent=SysWOW64\regsvr32.exe parent_state=running
+    cmdline=[ "C:\rsbit\bitdll_x64.dll"]

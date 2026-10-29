@@ -1,0 +1,51 @@
+alias_buffer write A: 0x00000000 S_OK
+alias_buffer B[0..3] after writing A (aliasing barrier A->B): a0000000 a0000001 a0000002 a0000003
+alias_buffer C[0..3] (second half of A): a0004000 a0004001 a0004002 a0004003
+alias_buffer C last dword: a0007fff
+alias_buffer madd +0x10 through B: 0x00000000 S_OK
+alias_buffer A[0..3] after the UAV write through B: a0000010 a0000011 a0000012 a0000013
+alias_buffer A[16384..16387] (C's range, untouched): a0004000 a0004001 a0004002 a0004003
+alias_buffer B[i] = C[i] + 1 for 16 dwords: 0x00000000 S_OK
+alias_buffer A[0..3] (B = C + 1): a0004001 a0004002 a0004003 a0004004
+alias_buffer A[16..19] (past the 16 written dwords: earlier madd result): a0000020 a0000021 a0000022 a0000023
+alias_buffer copy A[64K..] into READBACK alias R1: 0x00000000 S_OK
+alias_buffer R2 (same READBACK memory) [0..3]: a0004000 a0004001 a0004002 a0004003
+alias_buffer end: GetDeviceRemovedReason 0x00000000 S_OK
+uav_barrier chains: 0x00000000 S_OK
+uav_barrier b[0..3]: ((v*2+1)*3+2)*5+3: 0000001c 0000003a 00000058 00000076
+uav_barrier b[32..35]: from b2 = v*7+1: 000000e1 000000e8 000000ef 000000f6
+uav_barrier b[31], b[63]: 000003be 000001ba
+uav_barrier end: GetDeviceRemovedReason 0x00000000 S_OK
+transitions per-subresource clear + copy + split barrier: 0x00000000 S_OK
+transitions sub 0 (mip 0 slice 0) first row: 00000000 00000000 00000000 00000000
+transitions sub 1 (mip 1 slice 0) first row: 11223344 55667788
+transitions sub 2 (mip 0 slice 1) first row: ffff00ff ffff00ff ffff00ff ffff00ff
+transitions sub 3 (mip 1 slice 1) first row: 00000000 00000000
+transitions list 1: copy into a COMMON buffer (no barrier): 0x00000000 S_OK
+transitions list 2: copy out of it (no barrier): 0x00000000 S_OK
+transitions list 3: copy to READBACK (no barrier): 0x00000000 S_OK
+transitions promoted/decayed chain result: 11223344 55667788 99aabbcc ddeeff00
+transitions end: GetDeviceRemovedReason 0x00000000 S_OK
+discard DiscardResource(buffer, NULL region): Close: 0x00000000 S_OK
+discard DiscardResource(RT texture, NULL region): Close: 0x00000000 S_OK
+discard DiscardResource(RT texture, subresources 1..2): Close: 0x00000000 S_OK
+discard DiscardResource(RT texture, subresource 0 with 1 rect): Close: 0x00000000 S_OK
+discard DiscardResource(RT texture, subresources 0..3 with 1 rect): Close: 0x80070057 E_INVALIDARG
+discard DiscardResource(RT texture, subresource 4 (past the end)): Close: 0x80070057 E_INVALIDARG
+discard DiscardResource(non-RT/DS/UAV texture): Close: 0x00000000 S_OK
+discard end: GetDeviceRemovedReason 0x00000000 S_OK
+write_immediate WriteBufferImmediate x5, AtomicCopyBufferUINT/UINT64: 0x00000000 S_OK
+write_immediate dwords 0-3: 11111111 22222222 55555555 00000000
+write_immediate dword 16 (MARKER_OUT): 33333333
+write_immediate dword 63: 44444444
+write_immediate dwords 32-35 (atomic copies of src[5], src[6..7]): 5a000005 00000000 5a000006 5a000007
+write_immediate WriteBufferImmediate(mode 3): Close: 0x80070057 E_INVALIDARG
+write_immediate WriteBufferImmediate(VA+2, not 4-aligned): Close: 0x00000000 S_OK
+write_immediate end: GetDeviceRemovedReason 0x00000000 S_OK
+enhanced OPTIONS12.EnhancedBarriersSupported: 0x00000000 S_OK 1
+enhanced copy -> Barrier -> dispatch -> Barrier -> copy: 0x00000000 S_OK
+enhanced v*3*2+1 [0..3], [63]: 00000001 00000007 0000000d 00000013 0000017b
+enhanced buffer barrier Offset 16 Size 64: Close: 0x80070057 E_INVALIDARG
+enhanced texture barrier on a buffer: Close: 0x80070057 E_INVALIDARG
+enhanced SyncBefore NONE with AccessBefore COPY_DEST: Close: 0x80070057 E_INVALIDARG
+enhanced end: GetDeviceRemovedReason 0x00000000 S_OK

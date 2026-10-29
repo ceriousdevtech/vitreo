@@ -1,0 +1,191 @@
+== ordinals ==
+dsound.dll #1 DirectSoundCreate: ord=set name=set same=1
+dsound.dll #3 DirectSoundEnumerateW: ord=set name=set same=1
+dsound.dll #6 DirectSoundCaptureCreate: ord=set name=set same=1
+dsound.dll #8 DirectSoundCaptureEnumerateW: ord=set name=set same=1
+dsound.dll #9 GetDeviceID: ord=set name=set same=1
+d3d12.dll #101 D3D12CreateDevice: ord=set name=set same=1
+d3d12.dll #102 D3D12GetDebugInterface: ord=set name=set same=1
+ext-ms-win-dx-d3dkmt-dxcore-l1-1-0.dll #124 D3DKMTOpenAdapterFromLuid: ord=set
+ext-ms-win-dx-d3dkmt-dxcore-l1-1-0.dll #36 D3DKMTCloseAdapter: ord=set
+ext-ms-win-dx-d3dkmt-dxcore-l1-1-0.dll #2 D3DKMTCreateAllocation2: ord=set
+ext-ms-win-dx-d3dkmt-dxcore-l1-1-1.dll #220 D3DKMTPinResources: ord=set
+ext-ms-win-dx-d3dkmt-dxcore-l1-1-3.dll #227 D3DKMTCancelPresents: ord=set
+ext-ms-win-dx-d3dkmt-dxcore-l1-1-4.dll #229 D3DKMTCreateNativeFence: ord=set
+ext-ms-win-dx-d3dkmt-dxcore-l1-1-5.dll #235 D3DKMTIsFeatureEnabled: ord=set
+xaudio2_9redist.dll load=null err=0x7e
+== msdmo ==
+msdmo sizeof(DMO_MEDIA_TYPE)=88 off.pUnk=64 off.cb=72 off.pb=80
+msdmo exports init=set free=set copy=set create=set delete=set dup=set
+MoInitMediaType(16) hr=0x0
+  after init16: major.d1=0xcccccccc sub.d1=0xcccccccc fixed=0xcccccccc temporal=0xcccccccc sample=0xcccccccc fmt.d1=0xcccccccc pUnk=null cb=0x10 pb=set
+  task_size(pb)=16
+MoFreeMediaType hr=0x0
+  after free: major.d1=0xcccccccc sub.d1=0xcccccccc fixed=0xcccccccc temporal=0xcccccccc sample=0xcccccccc fmt.d1=0xcccccccc pUnk=null cb=0x10 pb=null
+MoFreeMediaType(again) hr=0x0
+MoInitMediaType(0) hr=0x0
+  after init0: major.d1=0xcccccccc sub.d1=0xcccccccc fixed=0xcccccccc temporal=0xcccccccc sample=0xcccccccc fmt.d1=0xcccccccc pUnk=null cb=0x0 pb=null
+MoInitMediaType(NULL) hr=0x80004003
+MoFreeMediaType(NULL) hr=0x80004003
+MoCopyMediaType hr=0x0
+  dest: major.d1=0x11111111 sub.d1=0x22222222 fixed=0x1 temporal=0x0 sample=0x1000 fmt.d1=0x33333333 pUnk=null cb=0x4 pb=set
+  dest.pb_distinct=1 dest.pUnk_same=0 bytes=0x10x4 task_size=4
+  unk after copy: qi=0x0 addref=0x0 release=0x0 m3=0x0 m4=0x0 m5=0x0 m6=0x0
+  free dest hr=0x0
+  unk after free dest: qi=0x0 addref=0x0 release=0x0 m3=0x0 m4=0x0 m5=0x0 m6=0x0
+  dest after free: major.d1=0x11111111 sub.d1=0x22222222 fixed=0x1 temporal=0x0 sample=0x1000 fmt.d1=0x33333333 pUnk=null cb=0x4 pb=null
+MoCopyMediaType(NULL,src) hr=0x80004003
+MoCopyMediaType(dst,NULL) hr=0x80004003
+MoDuplicateMediaType hr=0x0 p=set task_size(p)=88
+  dup: major.d1=0x11111111 sub.d1=0x22222222 fixed=0x1 temporal=0x0 sample=0x1000 fmt.d1=0x33333333 pUnk=null cb=0x4 pb=set
+  unk after dup: qi=0x0 addref=0x0 release=0x0 m3=0x0 m4=0x0 m5=0x0 m6=0x0
+MoDeleteMediaType(dup) hr=0x0
+  unk after delete: qi=0x0 addref=0x0 release=0x0 m3=0x0 m4=0x0 m5=0x0 m6=0x0
+MoDuplicateMediaType(NULL,src) hr=0x80004003
+MoDuplicateMediaType(pp,NULL) hr=0x80004003 p=untouched
+MoFreeMediaType(src with pUnk) hr=0x0
+  unk after free src: qi=0x0 addref=0x0 release=0x0 m3=0x0 m4=0x0 m5=0x0 m6=0x0
+  src.pUnk_after_free=null
+MoCreateMediaType(8) hr=0x0 p=set task_size(p)=88
+  created: pUnk=null cb=0x8 pb=set
+  task_size(pb)=8
+MoDeleteMediaType hr=0x0
+MoCreateMediaType(0) hr=0x0 p=set
+  created0: pUnk=null cb=0x0 pb=null
+MoCreateMediaType(NULL) hr=0x80004003
+MoDeleteMediaType(NULL) hr=0x80004003
+== uia ==
+uia notify=set
+UiaRaiseNotificationEvent(NULL,...) hr=0x80070057
+UiaRaiseNotificationEvent(prov,0,0,s,a) hr=0x0
+UiaRaiseNotificationEvent(prov,4,4,NULL,a) hr=0x0
+UiaRaiseNotificationEvent(prov,0,0,s,NULL) hr=0x0
+UiaRaiseNotificationEvent(prov,99,99,s,a) hr=0x0
+  provider traffic: qi=0x0 addref=0x0 release=0x0 m3=0x0 m4=0x0 m5=0x0 m6=0x0
+== dwm ==
+dwm blur=set composition=0
+Blur(NULL,NULL) hr=0x80070057
+Blur(wnd,NULL) hr=0x80070057
+Blur(NULL,&bb) hr=0x80070057
+Blur(bogus,&bb) hr=0x80070057
+Blur(wnd,enable) hr=0x80263001
+Blur(wnd,disable) hr=0x80263001
+Blur(wnd,flags0) hr=0x80070057
+Blur(wnd,badflags) hr=0x80070057
+Blur(wnd,rgn) hr=0x80263001
+Blur(wnd,badrgn) hr=0x80263001
+Blur(wnd,transition) hr=0x80263001
+Blur(child,enable) hr=0x80070057
+== d3d11on12 ==
+d3d11 D3D11On12CreateDevice=set
+On12(NULL) hr=0x80070057 dev=null ctx=null fl=0xdead
+On12(nonD3D12) hr=0x80070057 dev=null ctx=null fl=0xdead
+  object traffic: qi=0x1 addref=0x0 release=0x0 m3=0x0 m4=0x0 m5=0x0 m6=0x0
+== opengl ==
+opengl32 loaded=set
+  glCopyTexImage1D=set
+  glCopyTexImage2D=set
+  glCopyTexSubImage1D=set
+  glCopyTexSubImage2D=set
+  glDrawBuffer=set
+  glGetDoublev=set
+  glGetTexImage=set
+  glGetTexLevelParameterfv=set
+  glGetTexParameterfv=set
+  glGetTexParameteriv=set
+  glLogicOp=set
+  glPixelStoref=set
+  glPointSize=set
+  glTexImage1D=set
+  glTexParameterfv=set
+  glTexParameteriv=set
+  glTexSubImage1D=set
+  wglSwapBuffers=set
+  wglSwapLayerBuffers=set
+wglSwapBuffers(NULL) r=0 err=0x6
+wglSwapLayerBuffers(NULL,1) r=0 err=0xdead
+wglSwapBuffers(dc,no pf) r=0 err=0x6
+wglSwapLayerBuffers(dc,no pf) r=0 err=0xdead
+GetPixelFormat(before) =0 err=0xdead
+GetPixelFormat(after)==chosen 1
+SetPixelFormat(same again) r=1 err=0xdead
+SetPixelFormat(different) r=0 err=0x7d0
+GetPixelFormat(after 2nd set)==chosen 1
+gl context pf_set=1 rc=set current=1
+wglSwapBuffers(dc) r=1 err=0xdead
+wglSwapLayerBuffers(dc,MAIN) r=1 err=0xdead
+wglSwapLayerBuffers(dc,OVERLAY1) r=1 err=0xdead
+wglSwapLayerBuffers(dc,0) r=1 err=0xdead
+POINT_SIZE=1000e-3,-12345000e-3 err=0x0
+glPointSize(3.5) err=0x0
+POINT_SIZE=3500e-3,-12345000e-3 err=0x0
+glPointSize(0) err=0x501
+POINT_SIZE=3500e-3,-12345000e-3 err=0x0
+glPointSize(-1) err=0x501
+POINT_SIZE(i)=0x4 err=0x0
+LOGIC_OP_MODE=0x1503 err=0x0
+glLogicOp(XOR) err=0x0
+LOGIC_OP_MODE=0x1506 err=0x0
+glLogicOp(bad) err=0x500
+LOGIC_OP_MODE=0x1506 err=0x0
+DRAW_BUFFER=0x405 err=0x0
+glDrawBuffer(FRONT) err=0x0
+DRAW_BUFFER=0x404 err=0x0
+glDrawBuffer(bad) err=0x500
+DRAW_BUFFER=0x404 err=0x0
+glDrawBuffer(AUX3) err=0x502
+DRAW_BUFFER=0x404 err=0x0
+glDrawBuffer(NONE) err=0x0
+DRAW_BUFFER=0x0 err=0x0
+glDrawBuffer(BACK) err=0x0
+UNPACK_ALIGNMENT=0x4 err=0x0
+glPixelStoref(UNPACK_ALIGNMENT,2.4) err=0x0
+UNPACK_ALIGNMENT=0x2 err=0x0
+glPixelStoref(UNPACK_ALIGNMENT,3) err=0x501
+UNPACK_ALIGNMENT=0x2 err=0x0
+glPixelStoref(PACK_ROW_LENGTH,7.6) err=0x0
+PACK_ROW_LENGTH=0x8 err=0x0
+glPixelStoref(PACK_ROW_LENGTH,-1) err=0x501
+PACK_ROW_LENGTH=0x8 err=0x0
+glPixelStoref(UNPACK_SWAP_BYTES,0.4) err=0x0
+UNPACK_SWAP_BYTES=0x0 err=0x0
+glPixelStoref(UNPACK_SWAP_BYTES,0.6) err=0x0
+UNPACK_SWAP_BYTES=0x0 err=0x0
+glPixelStoref(bad) err=0x500
+MODELVIEW_MATRIX=1000e-3,0e-3 err=0x0
+DEPTH_RANGE=0e-3,1000e-3 err=0x0
+COLOR_CLEAR_VALUE=0e-3,0e-3 err=0x0
+glGetDoublev(bad) err=0x500
+TEX2D MIN_FILTER=0x2702 err=0x0
+TEX2D MAG_FILTER=0x2601 err=0x0
+TEX2D WRAP_S=0x2901 err=0x0
+TEX2D BORDER_COLOR=0e-3,0e-3 err=0x0
+TEX2D PRIORITY=1000e-3 err=0x0
+TEX2D RESIDENT=0x2901 err=0x500
+glTexParameteriv(MIN,NEAREST) err=0x0
+TEX2D MIN_FILTER=0x2600 err=0x0
+TEX2D MIN_FILTER(f)=9728000e-3 err=0x0
+glTexParameteriv(MIN,bad) err=0x500
+glTexParameteriv(MAG,NEAREST_MIPMAP_LINEAR) err=0x500
+glTexParameterfv(BORDER_COLOR) err=0x0
+TEX2D BORDER_COLOR=250e-3,500e-3,750e-3,1000e-3 err=0x0
+TEX2D BORDER_COLOR(i)=0x1ffffee0,0x7ffffb80 err=0x0
+glTexParameterfv(PRIORITY,3) err=0x0
+TEX2D PRIORITY=1000e-3 err=0x0
+glTexParameterfv(WRAP_S,CLAMP_TO_EDGE) err=0x500
+glTexParameterfv(WRAP_S,CLAMP) err=0x0
+TEX2D WRAP_S=0x2900 err=0x0
+glTexParameteriv(bad target) err=0x500
+glTexParameteriv(bad pname) err=0x500
+glGetTexParameteriv(bad target) err=0x500
+glGetTexParameteriv(1D MIN) err=0x0
+TEX1D MIN_FILTER=0x2702
+TEX2D L0 WIDTH(f)=0e-3 err=0x0
+TEX2D L0 COMPONENTS(f)=1000e-3 err=0x0
+TEX2D L0 COMPONENTS(i)=0x1 err=0x0
+TEX2D L0 BORDER(f)=0e-3 err=0x0
+TEX2D L-1 WIDTH(f) err=0x501
+TEX2D L0 bad pname err=0x500
+bad target L0 WIDTH err=0x500
+TEX1D L0 HEIGHT(f)=0e-3 err=0x0
+done

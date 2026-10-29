@@ -1,0 +1,174 @@
+find any	ec	legacy	self	codesign	expired	root	inter	leaf	end:80092004
+find sha1	leaf	end:80092004
+find sha256	leaf	end:80092004
+find md5	leaf	end:80092004
+find sighash	leaf	end:80092004
+find keyid	self	codesign	expired	leaf	end:80092004
+find pubkeymd5	self	codesign	expired	leaf	end:80092004
+find pubkey	self	codesign	expired	leaf	end:80092004
+find subject_name	codesign	expired	leaf	end:80092004
+find issuer_name	codesign	expired	leaf	end:80092004
+find subject_str_vitreo	ec	legacy	self	codesign	expired	root	inter	leaf	end:80092004
+find subject_str_root	root	end:80092004
+find subject_str_a	inter	end:80092004
+find subject_str_o	end:80092004
+find subject_str_comma	codesign	expired	leaf	end:80092004
+find subject_str_empty	ec	legacy	self	codesign	expired	root	inter	leaf	end:80092004
+find issuer_str_root	root	inter	end:80092004
+find issuer_of	inter	end:80092004
+find subject_cert	leaf	end:80092004
+find existing	leaf	end:80092004
+find certid_issuer_serial	leaf	end:80092004
+find certid_keyid	self	codesign	expired	leaf	end:80092004
+find certid_sha1	leaf	end:80092004
+find property_sha1	ec	legacy	self	codesign	expired	root	inter	leaf	end:80092004
+find property_friendly	end:80092004
+find property_friendly_set	inter	end:80092004
+find has_private_key	end:80092004
+find key_spec	end:80092004
+find hash_str	leaf	end:80092004
+find eku_server	ec	expired	leaf	end:80092004
+find eku_server_optional	ec	legacy	self	expired	root	inter	leaf	end:80092004
+find eku_server_ext	ec	expired	leaf	end:80092004
+find eku_both	end:80092004
+find eku_both_or	ec	codesign	expired	leaf	end:80092004
+find eku_none_flag	legacy	self	root	inter	end:80092004
+find eku_empty	ec	codesign	expired	leaf	end:80092004
+find unknown_type	end:80092004
+find ctl_other	ec	legacy	self	codesign	expired	root	inter	leaf	end:80092004
+names leaf
+  name 1s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 1i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 2s	26	0	26	CN=vitreo-probe.test, O=Vitreo Oracle	4	43,4e,3d,0	26	CN=vitreo-probe.test, O=Vitreo Oracle
+  name 2i	2e	0	2e	CN=Vitreo Probe Intermediate, O=Vitreo Oracle	4	43,4e,3d,0	2e	CN=Vitreo Probe Intermediate, O=Vitreo Oracle
+  name 3s	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 3i	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 4s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 4i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 5s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 5i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 6s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 6i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 7s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 7i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8i	1	80092004	1		1	0,7777,7777,7777	1	
+names inter
+  name 1s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 1i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 2s	2e	0	2e	CN=Vitreo Probe Intermediate, O=Vitreo Oracle	4	43,4e,3d,0	2e	CN=Vitreo Probe Intermediate, O=Vitreo Oracle
+  name 2i	26	0	26	CN=Vitreo Probe Root, O=Vitreo Oracle	4	43,4e,3d,0	26	CN=Vitreo Probe Root, O=Vitreo Oracle
+  name 3s	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 3i	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 4s	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 4i	12	0	12	Vitreo Probe Root	4	56,69,74,0	12	Vitreo Probe Root
+  name 5s	7	dead	7	marked	4	6d,61,72,0	7	marked
+  name 5i	7	dead	7	marked	4	6d,61,72,0	7	marked
+  name 6s	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 6i	12	0	12	Vitreo Probe Root	4	56,69,74,0	12	Vitreo Probe Root
+  name 7s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 7i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8i	1	80092004	1		1	0,7777,7777,7777	1	
+names root
+  name 1s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 1i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 2s	26	0	26	CN=Vitreo Probe Root, O=Vitreo Oracle	4	43,4e,3d,0	26	CN=Vitreo Probe Root, O=Vitreo Oracle
+  name 2i	26	0	26	CN=Vitreo Probe Root, O=Vitreo Oracle	4	43,4e,3d,0	26	CN=Vitreo Probe Root, O=Vitreo Oracle
+  name 3s	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 3i	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 4s	12	0	12	Vitreo Probe Root	4	56,69,74,0	12	Vitreo Probe Root
+  name 4i	12	0	12	Vitreo Probe Root	4	56,69,74,0	12	Vitreo Probe Root
+  name 5s	12	0	12	Vitreo Probe Root	4	56,69,74,0	12	Vitreo Probe Root
+  name 5i	12	0	12	Vitreo Probe Root	4	56,69,74,0	12	Vitreo Probe Root
+  name 6s	12	0	12	Vitreo Probe Root	4	56,69,74,0	12	Vitreo Probe Root
+  name 6i	12	0	12	Vitreo Probe Root	4	56,69,74,0	12	Vitreo Probe Root
+  name 7s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 7i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8i	1	80092004	1		1	0,7777,7777,7777	1	
+names expired
+  name 1s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 1i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 2s	26	0	26	CN=vitreo-probe.test, O=Vitreo Oracle	4	43,4e,3d,0	26	CN=vitreo-probe.test, O=Vitreo Oracle
+  name 2i	2e	0	2e	CN=Vitreo Probe Intermediate, O=Vitreo Oracle	4	43,4e,3d,0	2e	CN=Vitreo Probe Intermediate, O=Vitreo Oracle
+  name 3s	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 3i	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 4s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 4i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 5s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 5i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 6s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 6i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 7s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 7i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8i	1	80092004	1		1	0,7777,7777,7777	1	
+names codesign
+  name 1s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 1i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 2s	26	0	26	CN=vitreo-probe.test, O=Vitreo Oracle	4	43,4e,3d,0	26	CN=vitreo-probe.test, O=Vitreo Oracle
+  name 2i	2e	0	2e	CN=Vitreo Probe Intermediate, O=Vitreo Oracle	4	43,4e,3d,0	2e	CN=Vitreo Probe Intermediate, O=Vitreo Oracle
+  name 3s	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 3i	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 4s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 4i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 5s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 5i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 6s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 6i	1a	0	1a	Vitreo Probe Intermediate	4	56,69,74,0	1a	Vitreo Probe Intermediate
+  name 7s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 7i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8i	1	80092004	1		1	0,7777,7777,7777	1	
+names self
+  name 1s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 1i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 2s	26	0	26	CN=Vitreo Probe Self, O=Vitreo Oracle	4	43,4e,3d,0	26	CN=Vitreo Probe Self, O=Vitreo Oracle
+  name 2i	26	0	26	CN=Vitreo Probe Self, O=Vitreo Oracle	4	43,4e,3d,0	26	CN=Vitreo Probe Self, O=Vitreo Oracle
+  name 3s	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 3i	e	0	e	Vitreo Oracle	4	56,69,74,0	e	Vitreo Oracle
+  name 4s	12	0	12	Vitreo Probe Self	4	56,69,74,0	12	Vitreo Probe Self
+  name 4i	12	0	12	Vitreo Probe Self	4	56,69,74,0	12	Vitreo Probe Self
+  name 5s	12	0	12	Vitreo Probe Self	4	56,69,74,0	12	Vitreo Probe Self
+  name 5i	12	0	12	Vitreo Probe Self	4	56,69,74,0	12	Vitreo Probe Self
+  name 6s	12	0	12	Vitreo Probe Self	4	56,69,74,0	12	Vitreo Probe Self
+  name 6i	12	0	12	Vitreo Probe Self	4	56,69,74,0	12	Vitreo Probe Self
+  name 7s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 7i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8i	1	80092004	1		1	0,7777,7777,7777	1	
+names legacy
+  name 1s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 1i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 2s	17	0	17	CN=Vitreo Probe Legacy	4	43,4e,3d,0	17	CN=Vitreo Probe Legacy
+  name 2i	17	0	17	CN=Vitreo Probe Legacy	4	43,4e,3d,0	17	CN=Vitreo Probe Legacy
+  name 3s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 3i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 4s	14	0	14	Vitreo Probe Legacy	4	56,69,74,0	14	Vitreo Probe Legacy
+  name 4i	14	0	14	Vitreo Probe Legacy	4	56,69,74,0	14	Vitreo Probe Legacy
+  name 5s	14	0	14	Vitreo Probe Legacy	4	56,69,74,0	14	Vitreo Probe Legacy
+  name 5i	14	0	14	Vitreo Probe Legacy	4	56,69,74,0	14	Vitreo Probe Legacy
+  name 6s	14	0	14	Vitreo Probe Legacy	4	56,69,74,0	14	Vitreo Probe Legacy
+  name 6i	14	0	14	Vitreo Probe Legacy	4	56,69,74,0	14	Vitreo Probe Legacy
+  name 7s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 7i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8i	1	80092004	1		1	0,7777,7777,7777	1	
+names ec
+  name 1s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 1i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 2s	13	0	13	CN=Vitreo Probe EC	4	43,4e,3d,0	13	CN=Vitreo Probe EC
+  name 2i	13	0	13	CN=Vitreo Probe EC	4	43,4e,3d,0	13	CN=Vitreo Probe EC
+  name 3s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 3i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 4s	10	0	10	Vitreo Probe EC	4	56,69,74,0	10	Vitreo Probe EC
+  name 4i	10	0	10	Vitreo Probe EC	4	56,69,74,0	10	Vitreo Probe EC
+  name 5s	10	0	10	Vitreo Probe EC	4	56,69,74,0	10	Vitreo Probe EC
+  name 5i	10	0	10	Vitreo Probe EC	4	56,69,74,0	10	Vitreo Probe EC
+  name 6s	12	0	12	vitreo-probe.test	4	76,69,74,0	12	vitreo-probe.test
+  name 6i	10	0	10	Vitreo Probe EC	4	56,69,74,0	10	Vitreo Probe EC
+  name 7s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 7i	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8s	1	80092004	1		1	0,7777,7777,7777	1	
+  name 8i	1	80092004	1		1	0,7777,7777,7777	1	

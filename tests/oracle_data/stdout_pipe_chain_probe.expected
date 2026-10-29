@@ -1,0 +1,144 @@
+== 64 relay
+parent: started relay
+parent: ReadFile ended err=109
+parent: child exit=0 bytes=316
+parent: received:
+relay: std in=null out=pipe err=pipe crt_in=invalid crt_out=pipe crt_err=pipe crt_out_same=1\n
+leaf: std out=pipe err=pipe fd1_osf=pipe fd2_osf=pipe\n
+leaf: WriteFile ok=1 wrote=54\n
+leaf: isatty1=0 fileno_stdout=1 fstat1=0 mode=0x1000\n
+leaf: _write(1)\r\n
+leaf: _write returned 16\n
+{"leaf":"printf"}\r\n
+leaf: printf returned 18\n
+<end>
+== 64 leaf
+parent: started leaf
+parent: ReadFile ended err=109
+parent: child exit=0 bytes=223
+parent: received:
+leaf: std out=pipe err=pipe fd1_osf=pipe fd2_osf=pipe\n
+leaf: WriteFile ok=1 wrote=54\n
+leaf: isatty1=0 fileno_stdout=1 fstat1=0 mode=0x1000\n
+leaf: _write(1)\r\n
+leaf: _write returned 16\n
+{"leaf":"printf"}\r\n
+leaf: printf returned 18\n
+<end>
+== 64 bare
+bare: std in=null out=null err=null
+bare: _get_osfhandle(0)=-2 errno=0
+bare: _get_osfhandle(1)=-2 errno=0
+bare: _get_osfhandle(2)=-2 errno=0
+bare: _fileno(stdin)=-2 _fileno(stdout)=-2 _fileno(stderr)=-2
+bare: _write(1)=-1 errno=9
+bare: printf=2 fflush=-1 errno=9 ferror=1
+bare: isatty1=64 errno=0
+== 32 relay
+parent: started relay
+parent: ReadFile ended err=109
+parent: child exit=0 bytes=316
+parent: received:
+relay: std in=null out=pipe err=pipe crt_in=invalid crt_out=pipe crt_err=pipe crt_out_same=1\n
+leaf: std out=pipe err=pipe fd1_osf=pipe fd2_osf=pipe\n
+leaf: WriteFile ok=1 wrote=54\n
+leaf: isatty1=0 fileno_stdout=1 fstat1=0 mode=0x1000\n
+leaf: _write(1)\r\n
+leaf: _write returned 16\n
+{"leaf":"printf"}\r\n
+leaf: printf returned 18\n
+<end>
+== 32 leaf
+parent: started leaf
+parent: ReadFile ended err=109
+parent: child exit=0 bytes=223
+parent: received:
+leaf: std out=pipe err=pipe fd1_osf=pipe fd2_osf=pipe\n
+leaf: WriteFile ok=1 wrote=54\n
+leaf: isatty1=0 fileno_stdout=1 fstat1=0 mode=0x1000\n
+leaf: _write(1)\r\n
+leaf: _write returned 16\n
+{"leaf":"printf"}\r\n
+leaf: printf returned 18\n
+<end>
+== 32 bare
+bare: std in=null out=null err=null
+bare: _get_osfhandle(0)=-2 errno=0
+bare: _get_osfhandle(1)=-2 errno=0
+bare: _get_osfhandle(2)=-2 errno=0
+bare: _fileno(stdin)=-2 _fileno(stdout)=-2 _fileno(stderr)=-2
+bare: _write(1)=-1 errno=9
+bare: printf=2 fflush=-1 errno=9 ferror=1
+bare: isatty1=64 errno=0
+== _ucrt64 relay
+parent: started relay
+parent: ReadFile ended err=109
+parent: child exit=0 bytes=316
+parent: received:
+relay: std in=null out=pipe err=pipe crt_in=invalid crt_out=pipe crt_err=pipe crt_out_same=1\n
+leaf: std out=pipe err=pipe fd1_osf=pipe fd2_osf=pipe\n
+leaf: WriteFile ok=1 wrote=54\n
+leaf: isatty1=0 fileno_stdout=1 fstat1=0 mode=0x1000\n
+leaf: _write(1)\r\n
+leaf: _write returned 16\n
+{"leaf":"printf"}\r\n
+leaf: printf returned 18\n
+<end>
+== _ucrt64 leaf
+parent: started leaf
+parent: ReadFile ended err=109
+parent: child exit=0 bytes=223
+parent: received:
+leaf: std out=pipe err=pipe fd1_osf=pipe fd2_osf=pipe\n
+leaf: WriteFile ok=1 wrote=54\n
+leaf: isatty1=0 fileno_stdout=1 fstat1=0 mode=0x1000\n
+leaf: _write(1)\r\n
+leaf: _write returned 16\n
+{"leaf":"printf"}\r\n
+leaf: printf returned 18\n
+<end>
+== _ucrt64 bare
+bare: std in=null out=null err=null
+bare: _get_osfhandle(0)=-2 errno=0
+bare: _get_osfhandle(1)=-2 errno=0
+bare: _get_osfhandle(2)=-2 errno=0
+bare: _fileno(stdin)=-2 _fileno(stdout)=-2 _fileno(stderr)=-2
+bare: _write(1)=-1 errno=9
+bare: printf=2 fflush=-1 errno=9 ferror=1
+bare: isatty1=64 errno=0
+== _ucrt32 relay
+parent: started relay
+parent: ReadFile ended err=109
+parent: child exit=0 bytes=316
+parent: received:
+relay: std in=null out=pipe err=pipe crt_in=invalid crt_out=pipe crt_err=pipe crt_out_same=1\n
+leaf: std out=pipe err=pipe fd1_osf=pipe fd2_osf=pipe\n
+leaf: WriteFile ok=1 wrote=54\n
+leaf: isatty1=0 fileno_stdout=1 fstat1=0 mode=0x1000\n
+leaf: _write(1)\r\n
+leaf: _write returned 16\n
+{"leaf":"printf"}\r\n
+leaf: printf returned 18\n
+<end>
+== _ucrt32 leaf
+parent: started leaf
+parent: ReadFile ended err=109
+parent: child exit=0 bytes=223
+parent: received:
+leaf: std out=pipe err=pipe fd1_osf=pipe fd2_osf=pipe\n
+leaf: WriteFile ok=1 wrote=54\n
+leaf: isatty1=0 fileno_stdout=1 fstat1=0 mode=0x1000\n
+leaf: _write(1)\r\n
+leaf: _write returned 16\n
+{"leaf":"printf"}\r\n
+leaf: printf returned 18\n
+<end>
+== _ucrt32 bare
+bare: std in=null out=null err=null
+bare: _get_osfhandle(0)=-2 errno=0
+bare: _get_osfhandle(1)=-2 errno=0
+bare: _get_osfhandle(2)=-2 errno=0
+bare: _fileno(stdin)=-2 _fileno(stdout)=-2 _fileno(stderr)=-2
+bare: _write(1)=-1 errno=9
+bare: printf=2 fflush=-1 errno=9 ferror=1
+bare: isatty1=64 errno=0

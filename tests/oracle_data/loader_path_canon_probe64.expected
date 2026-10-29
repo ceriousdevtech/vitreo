@@ -1,0 +1,59 @@
+bitness=64
+== canonical first (version.dll)
+LoadLibraryW(canon) -> other
+GetModuleHandleW(dotdot) -> same
+LoadLibraryW(dotdot) -> same
+GetModuleHandleW(dot) -> same
+LoadLibraryW(dot) -> same
+GetModuleHandleW(slash) -> same
+LoadLibraryW(slash) -> same
+GetModuleHandleW(double-sep) -> same
+LoadLibraryW(double-sep) -> same
+GetModuleHandleW(missing-dir-dotdot) -> same
+LoadLibraryW(missing-dir-dotdot) -> same
+GetModuleHandleW(trailing-dot) -> same
+LoadLibraryW(trailing-dot) -> same
+GetModuleHandleW(trailing-space) -> same
+LoadLibraryW(trailing-space) -> same
+GetModuleHandleW(upper) -> same
+LoadLibraryW(upper) -> same
+== fresh via dot (msimg32.dll)
+pre-loaded -> null err=7e
+LoadLibraryW(odd) -> other
+after odd load name=<sys>\msimg32.dll
+GetModuleHandleW(odd) -> same
+GetModuleHandleW(canon) -> same
+GetModuleHandleW(base) -> same
+LoadLibraryW(canon) -> same
+== fresh via missing-dir dotdot (winusb.dll)
+pre-loaded -> null err=7e
+LoadLibraryW(odd) -> other
+after odd load name=<sys>\winusb.dll
+GetModuleHandleW(odd) -> same
+GetModuleHandleW(canon) -> same
+GetModuleHandleW(base) -> same
+LoadLibraryW(canon) -> same
+== fresh via double-sep (mfplay.dll)
+pre-loaded -> null err=7e
+LoadLibraryW(odd) -> other
+after odd load name=<sys>\mfplay.dll
+GetModuleHandleW(odd) -> same
+GetModuleHandleW(canon) -> same
+GetModuleHandleW(base) -> same
+LoadLibraryW(canon) -> same
+== fresh via slash (oledlg.dll)
+pre-loaded -> null err=7e
+LoadLibraryW(odd) -> other
+after odd load name=<sys>\oledlg.dll
+GetModuleHandleW(odd) -> same
+GetModuleHandleW(canon) -> same
+GetModuleHandleW(base) -> same
+LoadLibraryW(canon) -> same
+== fresh via trailing-dot (httpapi.dll)
+pre-loaded -> null err=7e
+LoadLibraryW(odd) -> other
+after odd load name=<sys>\httpapi.dll
+GetModuleHandleW(odd) -> same
+GetModuleHandleW(canon) -> same
+GetModuleHandleW(base) -> same
+LoadLibraryW(canon) -> same

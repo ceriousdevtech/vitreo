@@ -1,0 +1,58 @@
+== RoGetApartmentIdentifier
+no apartment -> 800401f0
+  id=0
+MTA -> 0
+  id!=0=1
+implicit-MTA thread -> 0
+  same MTA id=1
+== RoRegisterForApartmentShutdown (MTA)
+register -> 0
+  id==mta=1
+  cookie!=0=1
+  refs=2
+unregister -> 0
+  refs=1
+unregister again -> 80070057
+unregister NULL -> 80070057
+== RoRegisterForApartmentShutdown (STA, fires on uninit)
+  sta!=mta=1
+register -> 0
+  id==sta=1
+  callback calls=1
+  callback id==sta=1
+  refs after uninit=1
+unregister after uninit -> 800401f0
+  refs=1
+== WindowsCompareStringOrdinal
+a vs b -> 0
+  r=ffffffff
+b vs a -> 0
+  r=1
+a vs a -> 0
+  r=0
+ab vs abc -> 0
+  r=ffffffff
+NULL vs NULL -> 0
+  r=0
+NULL vs a -> 0
+  r=ffffffff
+embedded vs ab -> 0
+  r=ffffffff
+NULL result -> 80070057
+abc vs ABC -> 0
+  r=1
+== WindowsCreateString / DeleteString
+Create(NULL,0) -> 0
+  h=0
+Create(NULL,3) -> 80004003
+  h=0
+Create(abc,3,NULL out) -> 80070057
+Delete(NULL) -> 0
+Reference(abc,0) -> 80000017
+  h=0
+Reference(unterminated) -> 80000017
+== RoActivateInstance / RoGetActivationFactory
+activate unknown -> 80040154
+  out=0
+factory unknown -> 80040154
+  out=0

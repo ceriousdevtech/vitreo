@@ -1,0 +1,14 @@
+nt-without-zw NtCurrentTeb stub=no
+nt-without-zw NtGetTickCount stub=no
+nt-without-zw NtdllDefWindowProc_A stub=no
+nt-without-zw NtdllDefWindowProc_W stub=no
+nt-without-zw NtdllDialogWndProc_A stub=no
+nt-without-zw NtdllDialogWndProc_W stub=no
+interleaved RtlGetNativeSystemInformation
+names=2523 zw=510 nt=516
+zw: nt twin same rva=510, twin missing=0
+zw: stub shape=510, number==rank=411, low word==rank=510 of 510
+zw: distinct steps=509 stride min=0x10 max=0x30
+nt without zw=6, non-service exports inside stub range=1
+first stub ZwAccessCheck number=0, last stub ZwWow64GetCurrentProcessorNumber number=509
+service 0xfff -> 0xc0000005

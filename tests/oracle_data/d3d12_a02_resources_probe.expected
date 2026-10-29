@@ -1,0 +1,586 @@
+buffers DEFAULT width=0: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT width=1: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=1 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT width=255: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=255 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT width=256: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=256 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT width=65536: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT width=65537: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65537 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT width=1099511627776: 0x8007000e E_OUTOFMEMORY out=NULL
+buffers DEFAULT width=18446744073709551615: 0x8007000e E_OUTOFMEMORY out=NULL
+buffers DEFAULT alignment=1: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT alignment=256: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT alignment=4096: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT alignment=65536: 0x00000000 S_OK out=obj
+buffers DEFAULT alignment=4194304: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT alignment=12345: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT Height=2: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT Height=0: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT DepthOrArraySize=2: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT DepthOrArraySize=0: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT MipLevels=0: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT MipLevels=2: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT Format=R8: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT SampleDesc.Count=2: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT SampleDesc.Count=0: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT SampleDesc.Quality=1: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT Layout=UNKNOWN: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT Layout=64KB_UNDEFINED_SWIZZLE: 0x80070057 E_INVALIDARG out=NULL
+buffers Dimension=UNKNOWN: 0x80070057 E_INVALIDARG out=NULL
+buffers Dimension=7: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT flags=ALLOW_RENDER_TARGET: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x1
+buffers DEFAULT flags=ALLOW_DEPTH_STENCIL: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT flags=ALLOW_UNORDERED_ACCESS: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x4
+buffers DEFAULT flags=DENY_SHADER_RESOURCE: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x8
+buffers DEFAULT flags=ALLOW_CROSS_ADAPTER: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT flags=ALLOW_SIMULTANEOUS_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT flags=VIDEO_DECODE_REFERENCE_ONLY: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT flags=0x80 (RAYTRACING_ACCELERATION_STRUCTURE): 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT flags=0x100 (VIDEO_ENCODE_REFERENCE_ONLY): 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT flags=UAV|DENY_SHADER_RESOURCE: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0xc
+buffers DEFAULT flags=0x8000: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT ALLOW_CROSS_ADAPTER + heap SHARED|SHARED_CROSS_ADAPTER: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT state=COMMON: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=GENERIC_READ: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=COPY_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=COPY_SOURCE: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=UNORDERED_ACCESS: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=VERTEX_AND_CONSTANT_BUFFER: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=RENDER_TARGET: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=DEPTH_WRITE: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=RESOLVE_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=INDIRECT_ARGUMENT: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT state=0x80000000: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers UPLOAD state=COMMON: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers UPLOAD state=GENERIC_READ: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers UPLOAD state=COPY_DEST: 0x80070057 E_INVALIDARG out=NULL
+buffers UPLOAD state=COPY_SOURCE: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers UPLOAD state=UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+buffers UPLOAD state=VERTEX_AND_CONSTANT_BUFFER: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers UPLOAD state=RENDER_TARGET: 0x80070057 E_INVALIDARG out=NULL
+buffers UPLOAD state=DEPTH_WRITE: 0x80070057 E_INVALIDARG out=NULL
+buffers UPLOAD state=RESOLVE_DEST: 0x80070057 E_INVALIDARG out=NULL
+buffers UPLOAD state=INDIRECT_ARGUMENT: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers UPLOAD state=0x80000000: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK state=COMMON: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers READBACK state=GENERIC_READ: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK state=COPY_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers READBACK state=COPY_SOURCE: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK state=UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK state=VERTEX_AND_CONSTANT_BUFFER: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK state=RENDER_TARGET: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK state=DEPTH_WRITE: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK state=RESOLVE_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers READBACK state=INDIRECT_ARGUMENT: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK state=0x80000000: 0x80070057 E_INVALIDARG out=NULL
+buffers UPLOAD flags=ALLOW_UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+buffers READBACK flags=ALLOW_UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+buffers heap type 0 (no custom props): 0x80070057 E_INVALIDARG out=NULL
+buffers heap type 4 (no custom props): 0x80070057 E_INVALIDARG out=NULL
+buffers heap type 5 (no custom props): 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers heap type 6 (no custom props): 0x80070057 E_INVALIDARG out=NULL
+buffers heap type 7 (no custom props): 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM UNKNOWN/UNKNOWN state=COMMON: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM UNKNOWN/UNKNOWN state=COPY_DEST: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM NOT_AVAILABLE/L0 state=COMMON: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers CUSTOM NOT_AVAILABLE/L0 state=COPY_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers CUSTOM WRITE_COMBINE/L0 state=COMMON: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers CUSTOM WRITE_COMBINE/L0 state=COPY_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers CUSTOM WRITE_BACK/L0 state=COMMON: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers CUSTOM WRITE_BACK/L0 state=COPY_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers CUSTOM NOT_AVAILABLE/L1 state=COMMON: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM NOT_AVAILABLE/L1 state=COPY_DEST: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM WRITE_BACK/L1 state=COMMON: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM WRITE_BACK/L1 state=COPY_DEST: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM WRITE_BACK/UNKNOWN state=COMMON: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM WRITE_BACK/UNKNOWN state=COPY_DEST: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM UNKNOWN/L0 state=COMMON: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM UNKNOWN/L0 state=COPY_DEST: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM page 7/L0 state=COMMON: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM page 7/L0 state=COPY_DEST: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT with CPUPageProperty=WRITE_BACK: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT with MemoryPoolPreference=L0: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT node masks 0/0: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT CreationNodeMask=2: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT CreationNodeMask=3: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT VisibleNodeMask=2: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT VisibleNodeMask=0 (creation 1): 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT heap-flags=SHARED: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT heap-flags=DENY_BUFFERS: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT heap-flags=ALLOW_DISPLAY: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT heap-flags=SHARED_CROSS_ADAPTER: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT heap-flags=DENY_RT_DS_TEXTURES: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT heap-flags=DENY_NON_RT_DS_TEXTURES: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT heap-flags=HARDWARE_PROTECTED: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT heap-flags=ALLOW_WRITE_WATCH: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT heap-flags=ALLOW_SHADER_ATOMICS: 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT heap-flags=CREATE_NOT_RESIDENT: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT heap-flags=CREATE_NOT_ZEROED: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT heap-flags=0x2000 (TOOLS_USE_MANUAL_WRITE_TRACKING): 0x80070057 E_INVALIDARG out=NULL
+buffers DEFAULT heap-flags=0x40000000: 0x80070057 E_INVALIDARG out=NULL
+buffers CUSTOM WRITE_BACK/L0 heap-flags=ALLOW_WRITE_WATCH: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers UPLOAD heap-flags=ALLOW_WRITE_WATCH: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+buffers DEFAULT with clear value: 0x80070057 E_INVALIDARG out=NULL
+buffers riid=IUnknown: 0x00000000 S_OK out=obj
+buffers riid=Object: 0x00000000 S_OK out=obj
+buffers riid=Pageable: 0x00000000 S_OK out=obj
+buffers riid=Resource1: 0x00000000 S_OK out=obj
+buffers riid=Resource2: 0x00000000 S_OK out=obj
+buffers riid=Heap: 0x80004002 E_NOINTERFACE out=NULL
+buffers riid=Fence: 0x80004002 E_NOINTERFACE out=NULL
+buffers ppvResource=NULL: 0x00000001 S_FALSE
+buffers ppvResource=NULL with bad state: 0x00000001 S_FALSE
+buffers end: GetDeviceRemovedReason 0x00000000 S_OK
+textures 2D 16x16 RGBA8: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D width=0: 0x80070057 E_INVALIDARG out=NULL
+textures 2D height=0: 0x80070057 E_INVALIDARG out=NULL
+textures 2D array=0: 0x80070057 E_INVALIDARG out=NULL
+textures 2D 16384x1: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16384 h=1 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D 16385x1: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16385 h=1 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D 1x16385: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=1 h=16385 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D width=2^32: 0x80070057 E_INVALIDARG out=NULL
+textures 2D 4x4 array=2048: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=4 h=4 da=2048 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D 4x4 array=2049: 0x80070057 E_INVALIDARG out=NULL
+textures 1D 16384: 0x00000000 S_OK out=obj desc-after: dim=2 align=65536 w=16384 h=1 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 1D 16385: 0x80070057 E_INVALIDARG out=NULL
+textures 1D height=2: 0x80070057 E_INVALIDARG out=NULL
+textures 1D array=2048: 0x00000000 S_OK out=obj desc-after: dim=2 align=65536 w=16 h=1 da=2048 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 1D array=2049: 0x80070057 E_INVALIDARG out=NULL
+textures 3D 2048x1x1: 0x00000000 S_OK out=obj desc-after: dim=4 align=65536 w=2048 h=1 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 3D 2049x1x1: 0x80070057 E_INVALIDARG out=NULL
+textures 3D 1x1x2048: 0x00000000 S_OK out=obj desc-after: dim=4 align=65536 w=1 h=1 da=2048 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 3D 1x1x2049: 0x80070057 E_INVALIDARG out=NULL
+textures 3D depth=0: 0x80070057 E_INVALIDARG out=NULL
+textures 2D 16x16 mips=0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=5 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D 16x16 mips=5: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=5 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D 16x16 mips=6: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=6 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D 16x4 mips=0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=4 da=1 mips=5 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D 17x3 mips=0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=17 h=3 da=1 mips=5 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 3D 8x4x2 mips=0: 0x00000000 S_OK out=obj desc-after: dim=4 align=65536 w=8 h=4 da=2 mips=4 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 1D 64 mips=0: 0x00000000 S_OK out=obj desc-after: dim=2 align=65536 w=64 h=1 da=1 mips=7 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D UNKNOWN: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8_TYPELESS: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8_TYPELESS ms=1/0 layout=0 flags=0x0
+textures 2D BC1 16x16: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=BC1 ms=1/0 layout=0 flags=0x0
+textures 2D BC1 6x6: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=6 h=6 da=1 mips=1 fmt=BC1 ms=1/0 layout=0 flags=0x0
+textures 2D BC1 16x16 mips=0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=5 fmt=BC1 ms=1/0 layout=0 flags=0x0
+textures 2D BC1 RT: 0x80070057 E_INVALIDARG out=NULL
+textures 2D BC1 UAV: 0x80070057 E_INVALIDARG out=NULL
+textures 3D BC1 16x16x4: 0x00000000 S_OK out=obj desc-after: dim=4 align=65536 w=16 h=16 da=4 mips=1 fmt=BC1 ms=1/0 layout=0 flags=0x0
+textures 1D BC1: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGB32F: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGB32F ms=1/0 layout=0 flags=0x0
+textures 2D RGB32F RT: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGB32F ms=1/0 layout=0 flags=0x1
+textures 2D RGB32F UAV: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGB9E5 RT: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGB9E5 ms=1/0 layout=0 flags=0x1
+textures 2D R1: 0x80070057 E_INVALIDARG out=NULL
+textures 2D B5G6R5 RT: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=B5G6R5 ms=1/0 layout=0 flags=0x1
+textures 2D format 0xFFFF: 0x80070057 E_INVALIDARG out=NULL
+textures 2D D24S8 DS: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=D24S8 ms=1/0 layout=0 flags=0x2
+textures 2D D24S8 no DS flag: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=D24S8 ms=1/0 layout=0 flags=0x0
+textures 2D D32F DS|UAV: 0x80070057 E_INVALIDARG out=NULL
+textures 2D D32F DS|RT: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 DS flag: 0x80070057 E_INVALIDARG out=NULL
+textures 2D D32F DS mips=0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=5 fmt=D32F ms=1/0 layout=0 flags=0x2
+textures 2D D32FS8 DS: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=D32FS8 ms=1/0 layout=0 flags=0x2
+textures 2D R24G8_TYPELESS DS: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=R24G8_TYPELESS ms=1/0 layout=0 flags=0x2
+textures 1D D32F DS: 0x00000000 S_OK out=obj desc-after: dim=2 align=65536 w=16 h=1 da=1 mips=1 fmt=D32F ms=1/0 layout=0 flags=0x2
+textures 3D D32F DS: 0x80070057 E_INVALIDARG out=NULL
+textures 2D NV12 16x16: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=NV12 ms=1/0 layout=0 flags=0x0
+textures 2D NV12 15x15: 0x80070057 E_INVALIDARG out=NULL
+textures 2D NV12 16x16 mips=2: 0x80070057 E_INVALIDARG out=NULL
+textures 2D NV12 RT: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=NV12 ms=1/0 layout=0 flags=0x1
+textures 2D RGBA8 x2 RT: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=2/0 layout=0 flags=0x1
+textures 2D RGBA8 x4 RT: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=4/0 layout=0 flags=0x1
+textures 2D RGBA8 x8 RT: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=8/0 layout=0 flags=0x1
+textures 2D RGBA8 x16 RT: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=16/0 layout=0 flags=0x1
+textures 2D RGBA8 x3 RT: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 x4 no RT/DS: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 x4 RT mips=2: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 x4 RT mips=0: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 x4 RT quality=1: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 x4 RT quality=0xFFFFFFFF: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=4/4294967295 layout=0 flags=0x1
+textures 2D RGBA8 x4 RT|UAV: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=4/0 layout=0 flags=0x5
+textures 2D RGBA8 x4 RT array=2: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=16 h=16 da=2 mips=1 fmt=RGBA8 ms=4/0 layout=0 flags=0x1
+textures 2D D32F x4 DS: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=16 h=16 da=1 mips=1 fmt=D32F ms=4/0 layout=0 flags=0x2
+textures 1D RGBA8 x4 RT: 0x80070057 E_INVALIDARG out=NULL
+textures 3D RGBA8 x4 RT: 0x80070057 E_INVALIDARG out=NULL
+textures 2D BC1 x4: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 x1 quality=1: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/1 layout=0 flags=0x0
+textures 2D ROW_MAJOR: 0x80070057 E_INVALIDARG out=NULL
+textures 2D 64KB_UNDEFINED_SWIZZLE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=2 flags=0x0
+textures 2D 64KB_STANDARD_SWIZZLE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=3 flags=0x0
+textures 2D layout=7: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RT|DS: 0x80070057 E_INVALIDARG out=NULL
+textures 2D DENY_SHADER_RESOURCE (no DS): 0x80070057 E_INVALIDARG out=NULL
+textures 2D D32F DS|DENY_SHADER_RESOURCE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=D32F ms=1/0 layout=0 flags=0xa
+textures 2D RT|SIMULTANEOUS_ACCESS: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x21
+textures 2D D32F DS|SIMULTANEOUS_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+textures 2D x4 RT|SIMULTANEOUS_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RT|UAV: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x5
+textures 2D SRGB UAV: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8_SRGB ms=1/0 layout=0 flags=0x4
+textures 2D ALLOW_CROSS_ADAPTER (UNKNOWN layout): 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 16x16 alignment=4096: 0x00000000 S_OK out=obj
+textures 2D RGBA8 1024x1024 alignment=4096: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 RT alignment=4096: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 alignment=65536: 0x00000000 S_OK out=obj
+textures 2D RGBA8 alignment=4194304: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RGBA8 x4 RT alignment=65536: 0x00000000 S_OK out=obj
+textures 2D RGBA8 x4 RT alignment=4194304: 0x00000000 S_OK out=obj
+textures 2D RGBA8 alignment=12345: 0x80070057 E_INVALIDARG out=NULL
+textures 2D on UPLOAD: 0x80070057 E_INVALIDARG out=NULL
+textures 2D on READBACK: 0x80070057 E_INVALIDARG out=NULL
+textures 2D on CUSTOM WRITE_BACK/L0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D on CUSTOM WRITE_COMBINE/L0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D RT on CUSTOM WRITE_BACK/L0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x1
+textures 2D ROW_MAJOR on CUSTOM WRITE_BACK/L0: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RT state=RENDER_TARGET: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x1
+textures 2D (no RT) state=RENDER_TARGET: 0x80070057 E_INVALIDARG out=NULL
+textures 2D (no UAV) state=UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+textures 2D (no DS) state=DEPTH_WRITE: 0x80070057 E_INVALIDARG out=NULL
+textures 2D D32F DS state=DEPTH_READ|PIXEL_SHADER_RESOURCE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=D32F ms=1/0 layout=0 flags=0x2
+textures 2D D32F DS state=DEPTH_WRITE|DEPTH_READ: 0x80070057 E_INVALIDARG out=NULL
+textures 2D state=GENERIC_READ: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D state=COPY_DEST: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D state=VERTEX_AND_CONSTANT_BUFFER: 0x80070057 E_INVALIDARG out=NULL
+textures 2D state=RESOLVE_SOURCE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+textures 2D RT|SIMULTANEOUS state=RENDER_TARGET: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x21
+textures 2D RT clear RGBA8: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x1
+textures 2D (no RT) clear RGBA8: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RT_TYPELESS clear RGBA8: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8_TYPELESS ms=1/0 layout=0 flags=0x1
+textures 2D RT RGBA8 clear SRGB: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x1
+textures 2D RT RGBA8 clear R32F: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RT clear UNKNOWN: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RT_TYPELESS clear UNKNOWN: 0x80070057 E_INVALIDARG out=NULL
+textures 2D D32F DS clear D32F: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=D32F ms=1/0 layout=0 flags=0x2
+textures 2D R32_TYPELESS DS clear D32F: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=R32_TYPELESS ms=1/0 layout=0 flags=0x2
+textures 2D D32F DS clear D24S8: 0x80070057 E_INVALIDARG out=NULL
+textures 2D D32F DS clear RGBA8: 0x80070057 E_INVALIDARG out=NULL
+textures 2D RT RGBA8 clear D32F: 0x80070057 E_INVALIDARG out=NULL
+textures end: GetDeviceRemovedReason 0x00000000 S_OK
+heaps DEFAULT size=0: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT size=1: 0x00000000 S_OK out=obj desc-after: size=1 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT size=4096: 0x00000000 S_OK out=obj desc-after: size=4096 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT size=65536: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT size=65537: 0x00000000 S_OK out=obj desc-after: size=65537 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT size=1048576: 0x00000000 S_OK out=obj desc-after: size=1048576 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT alignment=0: 0x00000000 S_OK out=obj desc-after: size=4194304 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT alignment=1: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT alignment=4096: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT alignment=65536: 0x00000000 S_OK out=obj
+heaps DEFAULT alignment=131072: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT alignment=4194304: 0x00000000 S_OK out=obj
+heaps DEFAULT alignment=8388608: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT alignment=12345: 0x80070057 E_INVALIDARG out=NULL
+heaps heap type 0: 0x80070057 E_INVALIDARG out=NULL
+heaps heap type 1: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps heap type 2: 0x00000000 S_OK out=obj desc-after: size=65536 type=2 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps heap type 3: 0x00000000 S_OK out=obj desc-after: size=65536 type=3 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps heap type 4: 0x80070057 E_INVALIDARG out=NULL
+heaps heap type 5: 0x00000000 S_OK out=obj desc-after: size=65536 type=5 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps heap type 6: 0x80070057 E_INVALIDARG out=NULL
+heaps heap type 7: 0x80070057 E_INVALIDARG out=NULL
+heaps CUSTOM WRITE_BACK/L0: 0x00000000 S_OK out=obj desc-after: size=65536 type=4 cpu=3 pool=1 cnode=1 vnode=1 align=65536 flags=0x0
+heaps CUSTOM WRITE_COMBINE/L0: 0x00000000 S_OK out=obj desc-after: size=65536 type=4 cpu=2 pool=1 cnode=1 vnode=1 align=65536 flags=0x0
+heaps CUSTOM NOT_AVAILABLE/L0: 0x00000000 S_OK out=obj desc-after: size=65536 type=4 cpu=1 pool=1 cnode=1 vnode=1 align=65536 flags=0x0
+heaps CUSTOM NOT_AVAILABLE/L1: 0x80070057 E_INVALIDARG out=NULL
+heaps CUSTOM UNKNOWN/L0: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT flags=NONE: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT flags=ALLOW_ONLY_BUFFERS: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0xc0
+heaps DEFAULT flags=ALLOW_ONLY_NON_RT_DS_TEXTURES: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x44
+heaps DEFAULT flags=ALLOW_ONLY_RT_DS_TEXTURES: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x84
+heaps DEFAULT flags=DENY_BUFFERS|DENY_RT_DS|DENY_NON_RT_DS: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT flags=SHARED: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x1
+heaps DEFAULT flags=SHARED|SHARED_CROSS_ADAPTER: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x21
+heaps DEFAULT flags=SHARED_CROSS_ADAPTER: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT flags=ALLOW_DISPLAY: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT flags=ALLOW_ONLY_RT_DS_TEXTURES|ALLOW_DISPLAY: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT flags=HARDWARE_PROTECTED: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x100
+heaps DEFAULT flags=ALLOW_WRITE_WATCH: 0x80070057 E_INVALIDARG out=NULL
+heaps DEFAULT flags=ALLOW_SHADER_ATOMICS: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x400
+heaps DEFAULT flags=CREATE_NOT_RESIDENT: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT flags=CREATE_NOT_ZEROED: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT flags=0x40000000: 0x80070057 E_INVALIDARG out=NULL
+heaps UPLOAD flags=ALLOW_ONLY_RT_DS_TEXTURES: 0x00000000 S_OK out=obj desc-after: size=65536 type=2 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x84
+heaps UPLOAD flags=ALLOW_ONLY_NON_RT_DS_TEXTURES: 0x00000000 S_OK out=obj desc-after: size=65536 type=2 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x44
+heaps UPLOAD flags=ALLOW_WRITE_WATCH: 0x00000000 S_OK out=obj desc-after: size=65536 type=2 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x200
+heaps CUSTOM WRITE_BACK/L0 flags=ALLOW_WRITE_WATCH: 0x00000000 S_OK out=obj desc-after: size=65536 type=4 cpu=3 pool=1 cnode=1 vnode=1 align=65536 flags=0x200
+heaps DEFAULT node masks 0/0: 0x00000000 S_OK out=obj desc-after: size=65536 type=1 cpu=0 pool=0 cnode=1 vnode=1 align=65536 flags=0x0
+heaps DEFAULT CreationNodeMask=2: 0x80070057 E_INVALIDARG out=NULL
+heaps riid=Heap1: 0x00000000 S_OK out=obj
+heaps riid=Resource: 0x80004002 E_NOINTERFACE
+heaps ppvHeap=NULL: 0x00000001 S_FALSE
+heaps end: GetDeviceRemovedReason 0x00000000 S_OK
+placed buffer heap: 64K buffer @0: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed buffer heap: 64K buffer @65536: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed buffer heap: 64K buffer @196608 (last): 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed buffer heap: 64K buffer @262144 (end): 0x80070057 E_INVALIDARG out=NULL
+placed buffer heap: 64K buffer @4096: 0x80070057 E_INVALIDARG out=NULL
+placed buffer heap: 256B buffer @256: 0x80070057 E_INVALIDARG out=NULL
+placed buffer heap: 256B buffer @196608+65280: 0x80070057 E_INVALIDARG out=NULL
+placed buffer heap: 256K buffer @0 (exact fit): 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=262144 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed buffer heap: 256K+1 buffer @0: 0x80070057 E_INVALIDARG out=NULL
+placed buffer heap: 64K buffer @2^40: 0x80070057 E_INVALIDARG out=NULL
+placed buffer heap: 64K buffer @~0-65535: 0x80070057 E_INVALIDARG out=NULL
+placed buffer heap: texture: 0x80070057 E_INVALIDARG out=NULL
+placed buffer heap: UAV buffer state=UNORDERED_ACCESS: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x4
+placed texture heap: texture @0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=64 h=64 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+placed texture heap: texture @4096: 0x80070057 E_INVALIDARG out=NULL
+placed texture heap: small texture (align 4096) @4096: 0x00000000 S_OK out=obj
+placed texture heap: small texture (align 4096) @2048: 0x80070057 E_INVALIDARG out=NULL
+placed texture heap: RT texture: 0x80070057 E_INVALIDARG out=NULL
+placed texture heap: DS texture: 0x80070057 E_INVALIDARG out=NULL
+placed texture heap: buffer: 0x80070057 E_INVALIDARG out=NULL
+placed RT/DS heap: RT texture: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=64 h=64 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x1
+placed RT/DS heap: DS texture: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=64 h=64 da=1 mips=1 fmt=D32F ms=1/0 layout=0 flags=0x2
+placed RT/DS heap: plain texture: 0x80070057 E_INVALIDARG out=NULL
+placed RT/DS heap: buffer: 0x80070057 E_INVALIDARG out=NULL
+placed RT/DS heap: MSAA RT (64K-aligned heap): 0x80070057 E_INVALIDARG out=NULL
+placed all heap: buffer: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed all heap: texture: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=64 h=64 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
+placed all heap: RT texture: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=64 h=64 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x1
+placed 4M-aligned RT/DS heap: MSAA RT @0: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=64 h=64 da=1 mips=1 fmt=RGBA8 ms=4/0 layout=0 flags=0x1
+placed 4M-aligned RT/DS heap: MSAA RT @65536: 0x80070057 E_INVALIDARG out=NULL
+placed 4M-aligned RT/DS heap: MSAA RT @4194304: 0x00000000 S_OK out=obj desc-after: dim=3 align=4194304 w=64 h=64 da=1 mips=1 fmt=RGBA8 ms=4/0 layout=0 flags=0x1
+placed UPLOAD heap: buffer GENERIC_READ: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed UPLOAD heap: buffer COMMON: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed UPLOAD heap: buffer COPY_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed READBACK heap: buffer COPY_DEST: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed READBACK heap: buffer GENERIC_READ: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+placed RT/DS heap: RT texture with clear value: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=64 h=64 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x1
+placed buffer heap: buffer with clear value: 0x80070057 E_INVALIDARG out=NULL
+placed pHeap=NULL: 0x80070057 E_INVALIDARG out=NULL
+placed ppvResource=NULL: 0x8000ffff E_UNEXPECTED
+placed two buffers at offset 0: 0x00000000 S_OK 0x00000000 S_OK
+placed placed GetHeapProperties: 0x00000000 S_OK type=1 cpu=0 pool=0 cnode=1 vnode=1 flags=0xc0
+placed end: GetDeviceRemovedReason 0x00000000 S_OK
+reserved buffer 64K: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+reserved buffer 1 byte: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=1 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+reserved buffer UAV: 0x00000000 S_OK out=obj desc-after: dim=1 align=65536 w=65536 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x4
+reserved buffer 64 GiB: 0x8007000e E_OUTOFMEMORY out=NULL
+reserved 2D 256x256 64KB_UNDEFINED_SWIZZLE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=256 h=256 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=2 flags=0x0
+reserved 2D 256x256 64KB_UNDEFINED_SWIZZLE mips=0: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=256 h=256 da=1 mips=9 fmt=RGBA8 ms=1/0 layout=2 flags=0x0
+reserved 2D 256x256 UNKNOWN layout: 0x80070057 E_INVALIDARG out=NULL
+reserved 2D 256x256 64KB_STANDARD_SWIZZLE: 0x80070057 E_INVALIDARG out=NULL
+reserved 2D 256x256 ROW_MAJOR: 0x80070057 E_INVALIDARG out=NULL
+reserved 2D array=4 RT 64KB_UNDEFINED_SWIZZLE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=256 h=256 da=4 mips=1 fmt=RGBA8 ms=1/0 layout=2 flags=0x1
+reserved 2D D32F DS 64KB_UNDEFINED_SWIZZLE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=256 h=256 da=1 mips=1 fmt=D32F ms=1/0 layout=2 flags=0x2
+reserved 2D BC1 512x512 mips=0 64KB_UNDEFINED_SWIZZLE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=512 h=512 da=1 mips=10 fmt=BC1 ms=1/0 layout=2 flags=0x0
+reserved 2D x4 RT 64KB_UNDEFINED_SWIZZLE: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=256 h=256 da=1 mips=1 fmt=RGBA8 ms=4/0 layout=2 flags=0x1
+reserved 3D 64x64x16 64KB_UNDEFINED_SWIZZLE: 0x00000000 S_OK out=obj desc-after: dim=4 align=65536 w=64 h=64 da=16 mips=1 fmt=RGBA8 ms=1/0 layout=2 flags=0x0
+reserved 1D 4096 64KB_UNDEFINED_SWIZZLE: 0x80070057 E_INVALIDARG out=NULL
+reserved 2D NV12 64KB_UNDEFINED_SWIZZLE: 0x80070057 E_INVALIDARG out=NULL
+reserved reserved GetHeapProperties: 0x80070057 E_INVALIDARG type=-286331154 flags=0xdead
+reserved reserved Map: 0x80070057 E_INVALIDARG ptr=NULL
+reserved reserved GetGPUVirtualAddress: nonzero=1 64K-aligned=1
+reserved end: GetDeviceRemovedReason 0x00000000 S_OK
+alloc_info buffer 1: size=65536 align=65536
+alloc_info buffer 65537: size=131072 align=65536
+alloc_info buffers 1 + 65537 + 256: size=262144 align=65536
+alloc_info buffer 0 (invalid): size=18446744073709551615 align=65536
+alloc_info buffer alignment=4096 (invalid): size=18446744073709551615 align=65536
+alloc_info 0 descs: size=0 align=1
+alloc_info 2D 16x16 RGBA8 alignment=4096: align=4096 size%align=0
+# alloc_info 2D 16x16 RGBA8 alignment=4096: size=4096 (WARP's texture layout)
+alloc_info 2D 16x16 RGBA8 alignment=0: align=65536 size%align=0
+# alloc_info 2D 16x16 RGBA8 alignment=0: size=65536 (WARP's texture layout)
+alloc_info 2D 1024x1024 RGBA8 alignment=4096 (too big to be small): size=18446744073709551615 align=65536
+alloc_info 2D 16x16 RT alignment=4096: size=18446744073709551615 align=65536
+alloc_info 2D 256x256 RT mips=0: align=65536 size%align=0
+# alloc_info 2D 256x256 RT mips=0: size=393216 (WARP's texture layout)
+alloc_info 2D 256x256 x4 RT: align=4194304 size%align=0
+# alloc_info 2D 256x256 x4 RT: size=4194304 (WARP's texture layout)
+alloc_info 2D 256x256 x4 RT alignment=65536: align=65536 size%align=0
+# alloc_info 2D 256x256 x4 RT alignment=65536: size=1048576 (WARP's texture layout)
+alloc_info 2D width=0 (invalid): size=18446744073709551615 align=65536
+alloc_info 2D RT|DS (invalid): size=18446744073709551615 align=65536
+alloc_info buffer 1000 + 2D 64x64: align=65536 size%align=0
+# alloc_info buffer 1000 + 2D 64x64: size=131072 (WARP's texture layout)
+alloc_info GetResourceAllocationInfo1(3 buffers): size=262144 align=65536
+alloc_info GetResourceAllocationInfo1 info[0]: offset=0 align=65536 size=65536
+alloc_info GetResourceAllocationInfo1 info[1]: offset=65536 align=65536 size=131072
+alloc_info GetResourceAllocationInfo1 info[2]: offset=196608 align=65536 size=65536
+alloc_info GetResourceAllocationInfo1(NULL info): size=262144 align=65536
+alloc_info end: GetDeviceRemovedReason 0x00000000 S_OK
+footprints 2D RGBA8 16x16 mips=5 [0+5 base=0] total: 7684
+footprints 2D RGBA8 16x16 mips=5 sub0: off=0 fmt=RGBA8 w=16 h=16 d=1 pitch=256 rows=16 rowsize=64
+footprints 2D RGBA8 16x16 mips=5 sub1: off=4096 fmt=RGBA8 w=8 h=8 d=1 pitch=256 rows=8 rowsize=32
+footprints 2D RGBA8 16x16 mips=5 sub2: off=6144 fmt=RGBA8 w=4 h=4 d=1 pitch=256 rows=4 rowsize=16
+footprints 2D RGBA8 16x16 mips=5 sub3: off=7168 fmt=RGBA8 w=2 h=2 d=1 pitch=256 rows=2 rowsize=8
+footprints 2D RGBA8 16x16 mips=5 sub4: off=7680 fmt=RGBA8 w=1 h=1 d=1 pitch=256 rows=1 rowsize=4
+footprints 2D RGBA8 17x5 [0+1 base=0] total: 1092
+footprints 2D RGBA8 17x5 sub0: off=0 fmt=RGBA8 w=17 h=5 d=1 pitch=256 rows=5 rowsize=68
+footprints 2D RGBA8 65x3 mips=2 [0+2 base=0] total: 1664
+footprints 2D RGBA8 65x3 mips=2 sub0: off=0 fmt=RGBA8 w=65 h=3 d=1 pitch=512 rows=3 rowsize=260
+footprints 2D RGBA8 65x3 mips=2 sub1: off=1536 fmt=RGBA8 w=32 h=1 d=1 pitch=256 rows=1 rowsize=128
+footprints 2D BC1 16x16 mips=5 [0+5 base=0] total: 2568
+footprints 2D BC1 16x16 mips=5 sub0: off=0 fmt=BC1 w=16 h=16 d=1 pitch=256 rows=4 rowsize=32
+footprints 2D BC1 16x16 mips=5 sub1: off=1024 fmt=BC1 w=8 h=8 d=1 pitch=256 rows=2 rowsize=16
+footprints 2D BC1 16x16 mips=5 sub2: off=1536 fmt=BC1 w=4 h=4 d=1 pitch=256 rows=1 rowsize=8
+footprints 2D BC1 16x16 mips=5 sub3: off=2048 fmt=BC1 w=4 h=4 d=1 pitch=256 rows=1 rowsize=8
+footprints 2D BC1 16x16 mips=5 sub4: off=2560 fmt=BC1 w=4 h=4 d=1 pitch=256 rows=1 rowsize=8
+footprints 2D BC3 20x12 mips=3 [0+3 base=0] total: 1568
+footprints 2D BC3 20x12 mips=3 sub0: off=0 fmt=BC3 w=20 h=12 d=1 pitch=256 rows=3 rowsize=80
+footprints 2D BC3 20x12 mips=3 sub1: off=1024 fmt=BC3 w=12 h=8 d=1 pitch=256 rows=2 rowsize=48
+footprints 2D BC3 20x12 mips=3 sub2: off=1536 fmt=BC3 w=8 h=4 d=1 pitch=256 rows=1 rowsize=32
+footprints 2D BC7 6x6 (invalid size) [0+1 base=0] total: 288
+footprints 2D BC7 6x6 (invalid size) sub0: off=0 fmt=BC7 w=8 h=8 d=1 pitch=256 rows=2 rowsize=32
+footprints 2D RGB32F 3x3 [0+1 base=0] total: 548
+footprints 2D RGB32F 3x3 sub0: off=0 fmt=RGB32F w=3 h=3 d=1 pitch=256 rows=3 rowsize=36
+footprints 2D RGBA32F 7x2 [0+1 base=0] total: 368
+footprints 2D RGBA32F 7x2 sub0: off=0 fmt=RGBA32F w=7 h=2 d=1 pitch=256 rows=2 rowsize=112
+footprints 2D R8 5x5 mips=3 [0+3 base=0] total: 2049
+footprints 2D R8 5x5 mips=3 sub0: off=0 fmt=R8 w=5 h=5 d=1 pitch=256 rows=5 rowsize=5
+footprints 2D R8 5x5 mips=3 sub1: off=1536 fmt=R8 w=2 h=2 d=1 pitch=256 rows=2 rowsize=2
+footprints 2D R8 5x5 mips=3 sub2: off=2048 fmt=R8 w=1 h=1 d=1 pitch=256 rows=1 rowsize=1
+footprints 2D D24S8 8x8 (2 planes) [0+2 base=0] total: 7688
+footprints 2D D24S8 8x8 (2 planes) sub0: off=0 fmt=R32_TYPELESS w=8 h=8 d=1 pitch=512 rows=8 rowsize=32
+footprints 2D D24S8 8x8 (2 planes) sub1: off=4096 fmt=R8_TYPELESS w=8 h=8 d=1 pitch=512 rows=8 rowsize=8
+footprints 2D D32FS8 8x8 (2 planes) [0+2 base=0] total: 7688
+footprints 2D D32FS8 8x8 (2 planes) sub0: off=0 fmt=R32_TYPELESS w=8 h=8 d=1 pitch=512 rows=8 rowsize=32
+footprints 2D D32FS8 8x8 (2 planes) sub1: off=4096 fmt=R8_TYPELESS w=8 h=8 d=1 pitch=512 rows=8 rowsize=8
+footprints 2D D32F 8x8 mips=2 [0+2 base=0] total: 2832
+footprints 2D D32F 8x8 mips=2 sub0: off=0 fmt=D32F w=8 h=8 d=1 pitch=256 rows=8 rowsize=32
+footprints 2D D32F 8x8 mips=2 sub1: off=2048 fmt=D32F w=4 h=4 d=1 pitch=256 rows=4 rowsize=16
+footprints 2D D16 9x9 [0+1 base=0] total: 2066
+footprints 2D D16 9x9 sub0: off=0 fmt=D16 w=9 h=9 d=1 pitch=256 rows=9 rowsize=18
+footprints 2D R24G8_TYPELESS 8x8 [0+2 base=0] total: 7688
+footprints 2D R24G8_TYPELESS 8x8 sub0: off=0 fmt=R32_TYPELESS w=8 h=8 d=1 pitch=512 rows=8 rowsize=32
+footprints 2D R24G8_TYPELESS 8x8 sub1: off=4096 fmt=R8_TYPELESS w=8 h=8 d=1 pitch=512 rows=8 rowsize=8
+footprints 2D NV12 16x16 (2 planes) [0+2 base=0] total: 11792
+footprints 2D NV12 16x16 (2 planes) sub0: off=0 fmt=R8_TYPELESS w=16 h=16 d=1 pitch=512 rows=16 rowsize=16
+footprints 2D NV12 16x16 (2 planes) sub1: off=8192 fmt=RG8_TYPELESS w=8 h=8 d=1 pitch=512 rows=8 rowsize=16
+footprints 2D RGBA8 4x4 array=3 mips=2 [0+6 base=0] total: 4360
+footprints 2D RGBA8 4x4 array=3 mips=2 sub0: off=0 fmt=RGBA8 w=4 h=4 d=1 pitch=256 rows=4 rowsize=16
+footprints 2D RGBA8 4x4 array=3 mips=2 sub1: off=1024 fmt=RGBA8 w=2 h=2 d=1 pitch=256 rows=2 rowsize=8
+footprints 2D RGBA8 4x4 array=3 mips=2 sub2: off=1536 fmt=RGBA8 w=4 h=4 d=1 pitch=256 rows=4 rowsize=16
+footprints 2D RGBA8 4x4 array=3 mips=2 sub3: off=2560 fmt=RGBA8 w=2 h=2 d=1 pitch=256 rows=2 rowsize=8
+footprints 2D RGBA8 4x4 array=3 mips=2 sub4: off=3072 fmt=RGBA8 w=4 h=4 d=1 pitch=256 rows=4 rowsize=16
+footprints 2D RGBA8 4x4 array=3 mips=2 sub5: off=4096 fmt=RGBA8 w=2 h=2 d=1 pitch=256 rows=2 rowsize=8
+footprints 2D RGBA8 4x4 array=3 mips=2 [3+2 base=0] total: 1296
+footprints 2D RGBA8 4x4 array=3 mips=2 sub3: off=0 fmt=RGBA8 w=2 h=2 d=1 pitch=256 rows=2 rowsize=8
+footprints 2D RGBA8 4x4 array=3 mips=2 sub4: off=512 fmt=RGBA8 w=4 h=4 d=1 pitch=256 rows=4 rowsize=16
+footprints 3D RGBA8 4x4x4 mips=3 [0+3 base=0] total: 5124
+footprints 3D RGBA8 4x4x4 mips=3 sub0: off=0 fmt=RGBA8 w=4 h=4 d=4 pitch=256 rows=4 rowsize=16
+footprints 3D RGBA8 4x4x4 mips=3 sub1: off=4096 fmt=RGBA8 w=2 h=2 d=2 pitch=256 rows=2 rowsize=8
+footprints 3D RGBA8 4x4x4 mips=3 sub2: off=5120 fmt=RGBA8 w=1 h=1 d=1 pitch=256 rows=1 rowsize=4
+footprints 3D BC1 8x8x3 [0+1 base=0] total: 1296
+footprints 3D BC1 8x8x3 sub0: off=0 fmt=BC1 w=8 h=8 d=3 pitch=256 rows=2 rowsize=16
+footprints 1D RGBA8 64 array=2 mips=7 [0+14 base=0] total: 6660
+footprints 1D RGBA8 64 array=2 mips=7 sub0: off=0 fmt=RGBA8 w=64 h=1 d=1 pitch=256 rows=1 rowsize=256
+footprints 1D RGBA8 64 array=2 mips=7 sub1: off=512 fmt=RGBA8 w=32 h=1 d=1 pitch=256 rows=1 rowsize=128
+footprints 1D RGBA8 64 array=2 mips=7 sub2: off=1024 fmt=RGBA8 w=16 h=1 d=1 pitch=256 rows=1 rowsize=64
+footprints 1D RGBA8 64 array=2 mips=7 sub3: off=1536 fmt=RGBA8 w=8 h=1 d=1 pitch=256 rows=1 rowsize=32
+footprints 1D RGBA8 64 array=2 mips=7 sub4: off=2048 fmt=RGBA8 w=4 h=1 d=1 pitch=256 rows=1 rowsize=16
+footprints 1D RGBA8 64 array=2 mips=7 sub5: off=2560 fmt=RGBA8 w=2 h=1 d=1 pitch=256 rows=1 rowsize=8
+footprints 1D RGBA8 64 array=2 mips=7 sub6: off=3072 fmt=RGBA8 w=1 h=1 d=1 pitch=256 rows=1 rowsize=4
+footprints 1D RGBA8 64 array=2 mips=7 sub7: off=3584 fmt=RGBA8 w=64 h=1 d=1 pitch=256 rows=1 rowsize=256
+footprints 1D RGBA8 64 array=2 mips=7 sub8: off=4096 fmt=RGBA8 w=32 h=1 d=1 pitch=256 rows=1 rowsize=128
+footprints 1D RGBA8 64 array=2 mips=7 sub9: off=4608 fmt=RGBA8 w=16 h=1 d=1 pitch=256 rows=1 rowsize=64
+footprints 1D RGBA8 64 array=2 mips=7 sub10: off=5120 fmt=RGBA8 w=8 h=1 d=1 pitch=256 rows=1 rowsize=32
+footprints 1D RGBA8 64 array=2 mips=7 sub11: off=5632 fmt=RGBA8 w=4 h=1 d=1 pitch=256 rows=1 rowsize=16
+footprints 1D RGBA8 64 array=2 mips=7 sub12: off=6144 fmt=RGBA8 w=2 h=1 d=1 pitch=256 rows=1 rowsize=8
+footprints 1D RGBA8 64 array=2 mips=7 sub13: off=6656 fmt=RGBA8 w=1 h=1 d=1 pitch=256 rows=1 rowsize=4
+footprints 2D RGBA8 16x16 mips=0 [0+5 base=0] total: 7684
+footprints 2D RGBA8 16x16 mips=0 sub0: off=0 fmt=RGBA8 w=16 h=16 d=1 pitch=256 rows=16 rowsize=64
+footprints 2D RGBA8 16x16 mips=0 sub1: off=4096 fmt=RGBA8 w=8 h=8 d=1 pitch=256 rows=8 rowsize=32
+footprints 2D RGBA8 16x16 mips=0 sub2: off=6144 fmt=RGBA8 w=4 h=4 d=1 pitch=256 rows=4 rowsize=16
+footprints 2D RGBA8 16x16 mips=0 sub3: off=7168 fmt=RGBA8 w=2 h=2 d=1 pitch=256 rows=2 rowsize=8
+footprints 2D RGBA8 16x16 mips=0 sub4: off=7680 fmt=RGBA8 w=1 h=1 d=1 pitch=256 rows=1 rowsize=4
+footprints 2D RGBA8 16x16 x4 [0+1 base=0] total: 3904
+footprints 2D RGBA8 16x16 x4 sub0: off=0 fmt=RGBA8 w=16 h=16 d=1 pitch=256 rows=16 rowsize=64
+footprints buffer 1000 [0+1 base=0] total: 1000
+footprints buffer 1000 sub0: off=0 fmt=UNKNOWN w=1000 h=1 d=1 pitch=1024 rows=1 rowsize=1000
+footprints buffer 65536 [0+1 base=0] total: 65536
+footprints buffer 65536 sub0: off=0 fmt=UNKNOWN w=65536 h=1 d=1 pitch=65536 rows=1 rowsize=65536
+footprints 2D RGBA8 16x16 mips=2 [0+2 base=1] total: 5920
+footprints 2D RGBA8 16x16 mips=2 sub0: off=1 fmt=RGBA8 w=16 h=16 d=1 pitch=256 rows=16 rowsize=64
+footprints 2D RGBA8 16x16 mips=2 sub1: off=4097 fmt=RGBA8 w=8 h=8 d=1 pitch=256 rows=8 rowsize=32
+footprints 2D RGBA8 16x16 mips=2 [0+2 base=512] total: 5920
+footprints 2D RGBA8 16x16 mips=2 sub0: off=512 fmt=RGBA8 w=16 h=16 d=1 pitch=256 rows=16 rowsize=64
+footprints 2D RGBA8 16x16 mips=2 sub1: off=4608 fmt=RGBA8 w=8 h=8 d=1 pitch=256 rows=8 rowsize=32
+footprints 2D RGBA8 16x16 mips=2 [0+2 base=1000] total: 5920
+footprints 2D RGBA8 16x16 mips=2 sub0: off=1000 fmt=RGBA8 w=16 h=16 d=1 pitch=256 rows=16 rowsize=64
+footprints 2D RGBA8 16x16 mips=2 sub1: off=5096 fmt=RGBA8 w=8 h=8 d=1 pitch=256 rows=8 rowsize=32
+footprints 2D RGBA8 16x16 mips=2 [1+1 base=0] total: 1824
+footprints 2D RGBA8 16x16 mips=2 sub1: off=0 fmt=RGBA8 w=8 h=8 d=1 pitch=256 rows=8 rowsize=32
+footprints 2D RGBA8 16x16 mips=2 (range past end) [1+2 base=0] total: -1
+footprints 2D RGBA8 16x16 mips=2 (range past end) sub1: off=-1 fmt=fmt-1 w=4294967295 h=4294967295 d=4294967295 pitch=4294967295 rows=-1 rowsize=-1
+footprints 2D RGBA8 16x16 mips=2 (range past end) sub2: off=-1 fmt=fmt-1 w=4294967295 h=4294967295 d=4294967295 pitch=4294967295 rows=-1 rowsize=-1
+footprints 2D RGBA8 16x16 mips=2 (first past end) [2+1 base=0] total: -1
+footprints 2D RGBA8 16x16 mips=2 (first past end) sub2: off=-1 fmt=fmt-1 w=4294967295 h=4294967295 d=4294967295 pitch=4294967295 rows=-1 rowsize=-1
+footprints 2D RGBA8 16x16 mips=2 (num=0) [0+0 base=0] total: 0
+footprints 2D width=0 (invalid) [0+1 base=0] total: -1
+footprints 2D width=0 (invalid) sub0: off=-1 fmt=fmt-1 w=4294967295 h=4294967295 d=4294967295 pitch=4294967295 rows=-1 rowsize=-1
+footprints 2D UNKNOWN format (invalid) [0+1 base=0] total: -1
+footprints 2D UNKNOWN format (invalid) sub0: off=-1 fmt=fmt-1 w=4294967295 h=4294967295 d=4294967295 pitch=4294967295 rows=-1 rowsize=-1
+footprints 2D RGBA8 16x16 mips=5 total only: 7684
+footprints GetCopyableFootprints1 2D RGBA8 17x5 mips=2: total=1824 off1=1536 pitch0=256 pitch1=256 rows=5,2
+footprints end: GetDeviceRemovedReason 0x00000000 S_OK
+map UPLOAD Map(0, NULL, &p): 0x00000000 S_OK ptr=set 16-aligned=1
+map UPLOAD initial contents all zero: 1
+map UPLOAD Map again: 0x00000000 S_OK same-pointer=1
+map UPLOAD Map(empty read range) after unmaps: 0x00000000 S_OK data=11223344
+map UPLOAD Map(subresource 1): 0x80070057 E_INVALIDARG
+map UPLOAD Map(0, NULL, NULL): 0x00000000 S_OK
+map UPLOAD Map(read range begin>end): 0x00000000 S_OK ptr=set
+map UPLOAD Map(read range past end): 0x80070057 E_INVALIDARG ptr=NULL
+map DEFAULT Map: 0x80070057 E_INVALIDARG ptr=untouched
+map DEFAULT Map(ppData NULL): 0x80070057 E_INVALIDARG
+map READBACK Map: 0x00000000 S_OK ptr=set
+map READBACK initial contents all zero: 1
+map DEFAULT initial contents (first 64 bytes) all zero: 1
+map UPLOAD -> READBACK copy of written bytes: 11223344 00000000
+map persistently mapped write seen by GPU copy: a7
+map CUSTOM WRITE_BACK buffer Map: 0x00000000 S_OK ptr=set
+map CUSTOM WRITE_BACK 8x8 texture: 0x00000000 S_OK
+map texture Map(0, NULL, &p): 0x80070057 E_INVALIDARG ptr=NULL
+map WriteToSubresource before Map: 0x00000000 S_OK
+map texture Map(0, NULL, NULL): 0x00000000 S_OK
+map WriteToSubresource(sub 0, whole): 0x00000000 S_OK
+map WriteToSubresource(box 2..4 x 2..3): 0x00000000 S_OK
+map ReadFromSubresource(sub 0): 0x00000000 S_OK row0=01020300 01020301 01020302 01020303
+map ReadFromSubresource row2: 01020310 01020311 aabbccdd 11223344 01020314 01020315
+map ReadFromSubresource(box 1..3 x 2..4): 0x00000000 S_OK 01020311 aabbccdd 01020319 0102031a
+map WriteToSubresource(sub 5 out of range): 0x80070057 E_INVALIDARG
+map texture Map(1, NULL, NULL): 0x00000000 S_OK
+map WriteToSubresource(sub 1): 0x00000000 S_OK
+map WriteToSubresource after Unmap: 0x00000000 S_OK
+map GPU copy of written texture row2: 01020310 01020311 01020312 01020313 01020314 01020315
+map DEFAULT texture WriteToSubresource: 0x80070057 E_INVALIDARG
+map placed UPLOAD heap initial contents zero: 1
+map write via A @0 read via B @0: 5c (same-pointer=1)
+map buffer @65536 untouched by A: 6d
+map end: GetDeviceRemovedReason 0x00000000 S_OK
+gpuva DEFAULT 256-byte buffer VA: nonzero=1 64K-aligned=1 stable=1
+gpuva UPLOAD 256-byte buffer VA: nonzero=1 64K-aligned=1 stable=1
+gpuva READBACK 256-byte buffer VA: nonzero=1 64K-aligned=1 stable=1
+gpuva texture VA: 0
+gpuva two committed 64K buffers disjoint: 1
+gpuva placed @65536 - placed @0: 65536
+gpuva placed @0 twice same VA: 1
+gpuva placed @196608 - placed @0: 196608
+gpuva placed @0 VA 64K-aligned: 1
+gpuva end: GetDeviceRemovedReason 0x00000000 S_OK
+desc GetCustomHeapProperties(DEFAULT): type=4 cpu=1 pool=1 cnode=1 vnode=1
+desc GetCustomHeapProperties(UPLOAD): type=4 cpu=3 pool=1 cnode=1 vnode=1
+desc GetCustomHeapProperties(READBACK): type=4 cpu=3 pool=1 cnode=1 vnode=1
+desc GetCustomHeapProperties(CUSTOM): type=0 cpu=0 pool=0 cnode=1 vnode=1
+desc GetCustomHeapProperties(node 1, UPLOAD): type=4 cpu=3 pool=1 cnode=1 vnode=1
+desc committed DEFAULT GetHeapProperties: 0x00000000 S_OK type=1 cpu=0 pool=0 cnode=1 vnode=1 flags=0xc0
+desc committed DEFAULT GetHeapProperties (NULL, NULL): 0x00000000 S_OK
+desc committed UPLOAD GetHeapProperties: 0x00000000 S_OK type=2 cpu=0 pool=0 cnode=1 vnode=1 flags=0xc0
+desc committed UPLOAD GetHeapProperties (NULL, NULL): 0x00000000 S_OK
+desc committed READBACK GetHeapProperties: 0x00000000 S_OK type=3 cpu=0 pool=0 cnode=1 vnode=1 flags=0xc0
+desc committed READBACK GetHeapProperties (NULL, NULL): 0x00000000 S_OK
+desc committed CUSTOM WRITE_BACK/L0 (NOT_ZEROED) GetHeapProperties: 0x00000000 S_OK type=4 cpu=3 pool=1 cnode=1 vnode=1 flags=0xc0
+desc committed CUSTOM WRITE_BACK/L0 (NOT_ZEROED) GetHeapProperties (NULL, NULL): 0x00000000 S_OK
+desc committed DEFAULT SHARED GetHeapProperties: 0x00000000 S_OK type=1 cpu=0 pool=0 cnode=1 vnode=1 flags=0xc1
+desc committed DEFAULT SHARED GetHeapProperties (NULL, NULL): 0x00000000 S_OK
+desc committed DEFAULT node masks 0/0 GetHeapProperties: 0x00000000 S_OK type=1 cpu=0 pool=0 cnode=1 vnode=1 flags=0xc0
+desc committed DEFAULT node masks 0/0 GetHeapProperties (NULL, NULL): 0x00000000 S_OK
+desc committed RT texture GetHeapProperties: 0x00000000 S_OK type=1 cpu=0 pool=0 cnode=1 vnode=1 flags=0x84
+desc committed RT texture GetHeapProperties (NULL, NULL): 0x00000000 S_OK
+desc RT texture GetDesc: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x1
+desc RT texture GetDesc1: w=16 h=16 mips=1 fmt=RGBA8 align=65536 sfmip=0/0/0
+desc GetProtectedResourceSession: 0x887a0002 DXGI_ERROR_NOT_FOUND out=NULL
+desc buffer 1000 GetDesc: dim=1 align=65536 w=1000 h=1 da=1 mips=1 fmt=UNKNOWN ms=1/0 layout=1 flags=0x0
+desc BC1 64x32 array=3 mips=0 GetDesc: dim=3 align=65536 w=64 h=32 da=3 mips=7 fmt=BC1 ms=1/0 layout=0 flags=0x0
+desc x4 RT GetDesc: dim=3 align=4194304 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=4/0 layout=0 flags=0x1
+desc end: GetDeviceRemovedReason 0x00000000 S_OK

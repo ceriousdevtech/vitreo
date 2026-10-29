@@ -1,0 +1,91 @@
+redirected HKLM\SOFTWARE -> \REGISTRY\MACHINE\SOFTWARE\WOW6432Node
+shared HKLM\SOFTWARE\Classes -> \REGISTRY\MACHINE\SOFTWARE\Classes
+redirected HKLM\SOFTWARE\Classes\CLSID -> \REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID
+redirected HKLM\SOFTWARE\Classes\DirectShow -> \REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\DirectShow
+redirected HKLM\SOFTWARE\Classes\Interface -> \REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\Interface
+redirected HKLM\SOFTWARE\Classes\Media Type -> \REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\Media Type
+redirected HKLM\SOFTWARE\Classes\MediaFoundation -> \REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\MediaFoundation
+shared HKLM\SOFTWARE\Clients -> \REGISTRY\MACHINE\SOFTWARE\Clients
+shared HKLM\SOFTWARE\Microsoft\Cellular -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Cellular
+shared HKLM\SOFTWARE\Microsoft\COM3 -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\COM3
+shared HKLM\SOFTWARE\Microsoft\Cryptography\Calais\Current -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Cryptography\Calais\Current
+shared HKLM\SOFTWARE\Microsoft\Cryptography\Calais\Readers -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Cryptography\Calais\Readers
+shared HKLM\SOFTWARE\Microsoft\Cryptography\Services -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Cryptography\Services
+shared HKLM\SOFTWARE\Microsoft\CTF\SystemShared -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\CTF\SystemShared
+shared HKLM\SOFTWARE\Microsoft\CTF\TIP -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\CTF\TIP
+shared HKLM\SOFTWARE\Microsoft\DeviceReg -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\DeviceReg
+shared HKLM\SOFTWARE\Microsoft\DFS -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\DFS
+shared HKLM\SOFTWARE\Microsoft\Driver Signing -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Driver Signing
+error HKLM\SOFTWARE\Microsoft\EAPSIMMethods\18\FastReauthContext -> <err 5>
+error HKLM\SOFTWARE\Microsoft\EAPSIMMethods\23\FastReauthContext -> <err 5>
+error HKLM\SOFTWARE\Microsoft\EAPSIMMethods\50\FastReauthContext -> <err 5>
+shared HKLM\SOFTWARE\Microsoft\EnterpriseCertificates -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\EnterpriseCertificates
+shared HKLM\SOFTWARE\Microsoft\EventSystem -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\EventSystem
+shared HKLM\SOFTWARE\Microsoft\FingerKB -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\FingerKB
+shared HKLM\SOFTWARE\Microsoft\FuzzyDS -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\FuzzyDS
+shared HKLM\SOFTWARE\Microsoft\Input -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Input
+shared HKLM\SOFTWARE\Microsoft\LanguageOverlay -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\LanguageOverlay
+shared HKLM\SOFTWARE\Microsoft\Messaging -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Messaging
+shared HKLM\SOFTWARE\Microsoft\MSMQ -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\MSMQ
+shared HKLM\SOFTWARE\Microsoft\MTF -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\MTF
+shared HKLM\SOFTWARE\Microsoft\MTFFuzzyFactors -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\MTFFuzzyFactors
+shared HKLM\SOFTWARE\Microsoft\MTFInputType -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\MTFInputType
+shared HKLM\SOFTWARE\Microsoft\MTFKeyboardMappings -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\MTFKeyboardMappings
+shared HKLM\SOFTWARE\Microsoft\Non-Driver Signing -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Non-Driver Signing
+shared HKLM\SOFTWARE\Microsoft\Notepad\DefaultFonts -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Notepad\DefaultFonts
+shared HKLM\SOFTWARE\Microsoft\Ole -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Ole
+shared HKLM\SOFTWARE\Microsoft\Phone -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Phone
+shared HKLM\SOFTWARE\Microsoft\Pim -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Pim
+shared HKLM\SOFTWARE\Microsoft\Poom -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Poom
+shared HKLM\SOFTWARE\Microsoft\Ras -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Ras
+shared HKLM\SOFTWARE\Microsoft\Rpc -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Rpc
+shared HKLM\SOFTWARE\Microsoft\SecurityManager -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\SecurityManager
+shared HKLM\SOFTWARE\Microsoft\SEMgr -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\SEMgr
+shared HKLM\SOFTWARE\Microsoft\Shell -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Shell
+shared HKLM\SOFTWARE\Microsoft\Software\Microsoft\Shared Tools\Msinfo -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Software\Microsoft\Shared Tools\Msinfo
+shared HKLM\SOFTWARE\Microsoft\SystemCertificates -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\SystemCertificates
+shared HKLM\SOFTWARE\Microsoft\TermServLicensing -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\TermServLicensing
+shared HKLM\SOFTWARE\Microsoft\Transaction Server -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Transaction Server
+shared HKLM\SOFTWARE\Microsoft\Unified Store -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Unified Store
+shared HKLM\SOFTWARE\Microsoft\UserData -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\UserData
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths
+error HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModel\CloudExtensions -> <err 5>
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\Cursors\Schemes -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\Cursors\Schemes
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\Theme -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\Theme
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\ThemeVolatile -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\ThemeVolatile
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\DriveIcons -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\DriveIcons
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Kindmap -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Kindmap
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Parental Controls -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Parental Controls
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\PreviewHandlers -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\PreviewHandlers
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup
+shared HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Telephony\Locations -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Telephony\Locations
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Containers -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Containers
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontDPI -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontDPI
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontLink -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontLink
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontMapper -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontMapper
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\LanguagePack -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\LanguagePack
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Ports -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Ports
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Print -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Print
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
+shared HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\HvSocket -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\HvSocket
+shared HKLM\SOFTWARE\Microsoft\Windows Search -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows Search
+shared HKLM\SOFTWARE\Microsoft\XAML -> \REGISTRY\MACHINE\SOFTWARE\Microsoft\XAML
+shared HKLM\SOFTWARE\Policies -> \REGISTRY\MACHINE\SOFTWARE\Policies
+error HKLM\SOFTWARE\Policies\Microsoft\Windows Advanced Threat Protection\Task -> <err 5>
+shared HKLM\SOFTWARE\RegisteredApplications -> \REGISTRY\MACHINE\SOFTWARE\RegisteredApplications
+shared HKCU\Software -> \REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001\Software
+redirected HKCU\Software\Classes\CLSID -> \REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node\CLSID
+redirected HKCU\Software\Classes\Interface -> \REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node\Interface
+visited=67457

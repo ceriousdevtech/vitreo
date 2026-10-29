@@ -1,0 +1,589 @@
+0	0	0	1234	0	0	5	eeee	0	0	dead	61	62	63	64	0	cccc	cccc	cccc
+0	1	0	1234	0	0	5	eeee	0	0	dead	61	62	63	64	0	cccc	cccc	cccc
+0	2	0	1234	0	0	3	eeee	0	0	dead	61	62	0	cccc	cccc	cccc	cccc	cccc
+0	3	0	1234	0	0	5	eeee	0	0	dead	61	62	63	64	0	cccc	cccc	cccc
+0	4	22	22	1	1234	0	eeee	0	0	dead	0	62	63	64	cccc	cccc	cccc	cccc
+0	5	50	1234	0	0	4	eeee	0	0	dead	61	62	63	0	cccc	cccc	cccc	cccc
+0	6	0	1234	0	0	4	eeee	0	0	dead	61	62	63	0	cccc	cccc	cccc	cccc
+0	7	0	1234	0	0	5	eeee	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	8	0	1234	0	0	5	eeee	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	9	16	16	1	1234	5a5a5a5a5a5a5a5a	eeee	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	a	16	16	1	1234	5a5a5a5a5a5a5a5a	eeee	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	b	16	16	1	1234	0	eeee	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	c	0	1234	0	0	1	eeee	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	d	0	1234	0	0	4	eeee	0	0	dead	80	e9	ff	0	cccc	cccc	cccc	cccc
+0	e	50	1234	0	0	1	eeee	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	f	0	1234	0	0	1	eeee	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	10	0	1234	0	0	1	eeee	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	11	0	1234	0	0	5a5a5a5a5a5a5a5a	eeee	0	0	dead	61	62	63	64	0	cccc	cccc	cccc
+0	12	0	1234	0	0	4	eeee	0	0	dead	61	81	62	0	cccc	cccc	cccc	cccc
+0	13	0	1234	0	0	4	eeee	0	0	dead	61	81	62	0	cccc	cccc	cccc	cccc
+0	14	0	1234	0	0	4	eeee	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+0	16	0	1234	0	0	2	eeee	0	0	dead	61	0	cccc	cccc	cccc	cccc	cccc	cccc
+0	17	22	22	1	1234	0	eeee	0	0	dead	0	62	63	cccc	cccc	cccc	cccc	cccc
+0	18	16	16	1	1234	0	eeee	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	0	0	1234	0	0	5	ffff	0	0	dead	61	62	63	64	0	cccc	cccc	cccc
+1	1	0	1234	0	0	5	ffff	0	0	dead	61	62	63	64	0	cccc	cccc	cccc
+1	2	0	1234	0	0	3	2	0	0	dead	61	62	0	cccc	cccc	cccc	cccc	cccc
+1	3	0	1234	0	0	5	4	0	0	dead	61	62	63	64	0	cccc	cccc	cccc
+1	4	0	1234	0	0	5	4	0	0	dead	0	62	63	64	cccc	cccc	cccc	cccc
+1	5	0	1234	0	0	5	4	0	0	dead	0	62	63	64	cccc	cccc	cccc	cccc
+1	6	0	1234	0	0	4	3	0	0	dead	61	62	63	0	cccc	cccc	cccc	cccc
+1	7	0	1234	0	0	5	0	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	8	0	1234	0	0	5	0	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	9	16	16	1	1234	ffffffffffffffff	0	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	a	16	16	1	1234	ffffffffffffffff	0	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	b	0	1234	0	0	1	eeee	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	c	0	1234	0	0	1	ffff	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	d	0	1234	0	0	4	ffff	0	0	dead	80	e9	ff	0	cccc	cccc	cccc	cccc
+1	e	0	1234	0	0	2	1	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	f	0	1234	0	0	1	0	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	10	0	1234	0	0	1	0	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	11	0	1234	0	0	5a5a5a5a5a5a5a5a	ffff	0	0	dead	61	62	63	64	0	cccc	cccc	cccc
+1	12	0	1234	0	0	4	ffff	0	0	dead	61	81	62	0	cccc	cccc	cccc	cccc
+1	13	0	1234	0	0	4	ffff	0	0	dead	61	81	62	0	cccc	cccc	cccc	cccc
+1	14	0	1234	0	0	4	0	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	15	16	16	1	1234	ffffffffffffffff	eeee	0	0	dead	0	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+1	16	0	1234	0	0	2	1	0	0	dead	61	0	cccc	cccc	cccc	cccc	cccc	cccc
+1	17	0	1234	0	0	4	3	0	0	dead	0	62	63	cccc	cccc	cccc	cccc	cccc
+1	18	0	1234	0	0	1	eeee	0	0	dead	cccc	cccc	cccc	cccc	cccc	cccc	cccc	cccc
+2	0	0	1234	0	0	5	ffff	0	0	dead	61	62	63	64	0	cc	cc	cc
+2	1	0	1234	0	0	5	ffff	0	0	dead	61	62	63	64	0	cc	cc	cc
+2	2	0	1234	0	0	3	2	0	0	dead	61	62	0	cc	cc	cc	cc	cc
+2	3	0	1234	0	0	5	4	0	0	dead	61	62	63	64	0	cc	cc	cc
+2	4	22	22	1	1234	ffffffffffffffff	4	0	0	dead	0	62	63	64	cc	cc	cc	cc
+2	5	22	22	1	1234	ffffffffffffffff	4	0	0	dead	0	62	63	64	cc	cc	cc	cc
+2	6	0	1234	0	0	4	3	0	0	dead	61	62	63	0	cc	cc	cc	cc
+2	7	0	1234	0	0	5	0	0	0	dead	cc	cc	cc	cc	cc	cc	cc	cc
+2	8	0	1234	0	0	5	0	0	0	dead	cc	cc	cc	cc	cc	cc	cc	cc
+2	9	16	16	1	1234	ffffffffffffffff	0	0	0	dead	cc	cc	cc	cc	cc	cc	cc	cc
+2	a	16	16	1	1234	ffffffffffffffff	0	0	0	dead	cc	cc	cc	cc	cc	cc	cc	cc
+2	c	0	1234	0	0	1	ffff	0	0	dead	0	cc	cc	cc	cc	cc	cc	cc
+2	d	0	1234	0	0	4	ffff	0	0	dead	80	e9	ff	0	cc	cc	cc	cc
+2	e	22	22	1	1234	ffffffffffffffff	1	0	0	dead	0	cc	cc	cc	cc	cc	cc	cc
+2	f	0	1234	0	0	1	0	0	0	dead	0	cc	cc	cc	cc	cc	cc	cc
+2	10	0	1234	0	0	1	0	0	0	dead	0	cc	cc	cc	cc	cc	cc	cc
+2	11	0	1234	0	0	5a5a5a5a5a5a5a5a	ffff	0	0	dead	61	62	63	64	0	cc	cc	cc
+2	12	2a	2a	0	0	ffffffffffffffff	1	0	0	dead	0	cc	cc	cc	cc	cc	cc	cc
+2	13	2a	2a	0	0	ffffffffffffffff	1	0	0	dead	0	cc	cc	cc	cc	cc	cc	cc
+2	14	2a	2a	0	0	ffffffffffffffff	0	0	0	dead	cc	cc	cc	cc	cc	cc	cc	cc
+2	15	16	16	1	1234	ffffffffffffffff	eeee	0	0	dead	0	cc	cc	cc	cc	cc	cc	cc
+2	16	0	1234	0	0	2	1	0	0	dead	61	0	cc	cc	cc	cc	cc	cc
+2	17	22	22	1	1234	ffffffffffffffff	3	0	0	dead	0	62	63	cc	cc	cc	cc	cc
+b	0	2	1234	0	0	1	0	2
+b	1	ff	1234	0	0	3	0	201
+b	2	0	1234	0	0	2	0	20
+b	3	4	1234	0	0	3	0	234
+b	4	ff	1234	0	0	3	0	234
+b	5	ff	1234	0	0	2	0	20
+b	6	ff	1234	0	0	0	0	0
+b	7	ff	1234	0	0	0	0	0
+b	8	ff	16	1	16	0	0	0
+b	9	ff	1234	0	0	2	4	20
+b	a	ff	16	1	16	0	0	0
+b	b	ff	16	1	16	0	0	0
+b	c	3	1234	0	0	3	0	123
+b	d	ff	1234	0	0	1	0	0
+b	e	0	1234	0	0	1	0	0
+b	f	ff	16	1	16	0	0	0
+b	10	ff	1234	0	0	0	0	0
+m	fmin	0	0	0	0
+m	fmin	0	1	8000000000000000	0
+m	fmin	0	2	0	0
+m	fmin	0	3	bff0000000000000	0
+m	fmin	0	4	0	0
+m	fmin	0	5	fff0000000000000	0
+m	fmin	0	6	0	0
+m	fmin	0	7	0	0
+m	fmin	0	8	0	80000
+m	fmin	0	9	0	0
+m	fmin	1	0	8000000000000000	0
+m	fmin	1	1	8000000000000000	0
+m	fmin	1	2	8000000000000000	0
+m	fmin	1	3	bff0000000000000	0
+m	fmin	1	4	8000000000000000	0
+m	fmin	1	5	fff0000000000000	0
+m	fmin	1	6	8000000000000000	0
+m	fmin	1	7	8000000000000000	0
+m	fmin	1	8	8000000000000000	80000
+m	fmin	1	9	8000000000000000	0
+m	fmin	2	0	0	0
+m	fmin	2	1	8000000000000000	0
+m	fmin	2	2	3ff0000000000000	0
+m	fmin	2	3	bff0000000000000	0
+m	fmin	2	4	3ff0000000000000	0
+m	fmin	2	5	fff0000000000000	0
+m	fmin	2	6	3ff0000000000000	0
+m	fmin	2	7	3ff0000000000000	0
+m	fmin	2	8	1	80000
+m	fmin	2	9	3ff0000000000000	0
+m	fmin	3	0	bff0000000000000	0
+m	fmin	3	1	bff0000000000000	0
+m	fmin	3	2	bff0000000000000	0
+m	fmin	3	3	bff0000000000000	0
+m	fmin	3	4	bff0000000000000	0
+m	fmin	3	5	fff0000000000000	0
+m	fmin	3	6	bff0000000000000	0
+m	fmin	3	7	bff0000000000000	0
+m	fmin	3	8	bff0000000000000	80000
+m	fmin	3	9	bff0000000000000	0
+m	fmin	4	0	0	0
+m	fmin	4	1	8000000000000000	0
+m	fmin	4	2	3ff0000000000000	0
+m	fmin	4	3	bff0000000000000	0
+m	fmin	4	4	7ff0000000000000	0
+m	fmin	4	5	fff0000000000000	0
+m	fmin	4	6	7ff0000000000000	0
+m	fmin	4	7	7ff0000000000000	0
+m	fmin	4	8	1	80000
+m	fmin	4	9	7ff0000000000000	0
+m	fmin	5	0	fff0000000000000	0
+m	fmin	5	1	fff0000000000000	0
+m	fmin	5	2	fff0000000000000	0
+m	fmin	5	3	fff0000000000000	0
+m	fmin	5	4	fff0000000000000	0
+m	fmin	5	5	fff0000000000000	0
+m	fmin	5	6	fff0000000000000	0
+m	fmin	5	7	fff0000000000000	0
+m	fmin	5	8	fff0000000000000	80000
+m	fmin	5	9	fff0000000000000	0
+m	fmin	6	0	0	0
+m	fmin	6	1	8000000000000000	0
+m	fmin	6	2	3ff0000000000000	0
+m	fmin	6	3	bff0000000000000	0
+m	fmin	6	4	7ff0000000000000	0
+m	fmin	6	5	fff0000000000000	0
+m	fmin	6	6	7ff8000000000123	0
+m	fmin	6	7	fff8000000000456	0
+m	fmin	6	8	1	0
+m	fmin	6	9	7ff0000000000123	0
+m	fmin	7	0	0	0
+m	fmin	7	1	8000000000000000	0
+m	fmin	7	2	3ff0000000000000	0
+m	fmin	7	3	bff0000000000000	0
+m	fmin	7	4	7ff0000000000000	0
+m	fmin	7	5	fff0000000000000	0
+m	fmin	7	6	7ff8000000000123	0
+m	fmin	7	7	fff8000000000456	0
+m	fmin	7	8	1	0
+m	fmin	7	9	7ff0000000000123	0
+m	fmin	8	0	0	80000
+m	fmin	8	1	8000000000000000	80000
+m	fmin	8	2	1	80000
+m	fmin	8	3	bff0000000000000	80000
+m	fmin	8	4	1	80000
+m	fmin	8	5	fff0000000000000	80000
+m	fmin	8	6	1	0
+m	fmin	8	7	1	0
+m	fmin	8	8	1	80000
+m	fmin	8	9	1	0
+m	fmin	9	0	0	0
+m	fmin	9	1	8000000000000000	0
+m	fmin	9	2	3ff0000000000000	0
+m	fmin	9	3	bff0000000000000	0
+m	fmin	9	4	7ff0000000000000	0
+m	fmin	9	5	fff0000000000000	0
+m	fmin	9	6	7ff8000000000123	0
+m	fmin	9	7	fff8000000000456	0
+m	fmin	9	8	1	0
+m	fmin	9	9	7ff0000000000123	0
+m	fminl	0	0	0	0
+m	fminl	0	1	8000000000000000	0
+m	fminl	0	2	0	0
+m	fminl	0	3	bff0000000000000	0
+m	fminl	0	4	0	0
+m	fminl	0	5	fff0000000000000	0
+m	fminl	0	6	0	0
+m	fminl	0	7	0	0
+m	fminl	0	8	0	80000
+m	fminl	0	9	0	0
+m	fminl	1	0	8000000000000000	0
+m	fminl	1	1	8000000000000000	0
+m	fminl	1	2	8000000000000000	0
+m	fminl	1	3	bff0000000000000	0
+m	fminl	1	4	8000000000000000	0
+m	fminl	1	5	fff0000000000000	0
+m	fminl	1	6	8000000000000000	0
+m	fminl	1	7	8000000000000000	0
+m	fminl	1	8	8000000000000000	80000
+m	fminl	1	9	8000000000000000	0
+m	fminl	2	0	0	0
+m	fminl	2	1	8000000000000000	0
+m	fminl	2	2	3ff0000000000000	0
+m	fminl	2	3	bff0000000000000	0
+m	fminl	2	4	3ff0000000000000	0
+m	fminl	2	5	fff0000000000000	0
+m	fminl	2	6	3ff0000000000000	0
+m	fminl	2	7	3ff0000000000000	0
+m	fminl	2	8	1	80000
+m	fminl	2	9	3ff0000000000000	0
+m	fminl	3	0	bff0000000000000	0
+m	fminl	3	1	bff0000000000000	0
+m	fminl	3	2	bff0000000000000	0
+m	fminl	3	3	bff0000000000000	0
+m	fminl	3	4	bff0000000000000	0
+m	fminl	3	5	fff0000000000000	0
+m	fminl	3	6	bff0000000000000	0
+m	fminl	3	7	bff0000000000000	0
+m	fminl	3	8	bff0000000000000	80000
+m	fminl	3	9	bff0000000000000	0
+m	fminl	4	0	0	0
+m	fminl	4	1	8000000000000000	0
+m	fminl	4	2	3ff0000000000000	0
+m	fminl	4	3	bff0000000000000	0
+m	fminl	4	4	7ff0000000000000	0
+m	fminl	4	5	fff0000000000000	0
+m	fminl	4	6	7ff0000000000000	0
+m	fminl	4	7	7ff0000000000000	0
+m	fminl	4	8	1	80000
+m	fminl	4	9	7ff0000000000000	0
+m	fminl	5	0	fff0000000000000	0
+m	fminl	5	1	fff0000000000000	0
+m	fminl	5	2	fff0000000000000	0
+m	fminl	5	3	fff0000000000000	0
+m	fminl	5	4	fff0000000000000	0
+m	fminl	5	5	fff0000000000000	0
+m	fminl	5	6	fff0000000000000	0
+m	fminl	5	7	fff0000000000000	0
+m	fminl	5	8	fff0000000000000	80000
+m	fminl	5	9	fff0000000000000	0
+m	fminl	6	0	0	0
+m	fminl	6	1	8000000000000000	0
+m	fminl	6	2	3ff0000000000000	0
+m	fminl	6	3	bff0000000000000	0
+m	fminl	6	4	7ff0000000000000	0
+m	fminl	6	5	fff0000000000000	0
+m	fminl	6	6	7ff8000000000123	0
+m	fminl	6	7	fff8000000000456	0
+m	fminl	6	8	1	0
+m	fminl	6	9	7ff0000000000123	0
+m	fminl	7	0	0	0
+m	fminl	7	1	8000000000000000	0
+m	fminl	7	2	3ff0000000000000	0
+m	fminl	7	3	bff0000000000000	0
+m	fminl	7	4	7ff0000000000000	0
+m	fminl	7	5	fff0000000000000	0
+m	fminl	7	6	7ff8000000000123	0
+m	fminl	7	7	fff8000000000456	0
+m	fminl	7	8	1	0
+m	fminl	7	9	7ff0000000000123	0
+m	fminl	8	0	0	80000
+m	fminl	8	1	8000000000000000	80000
+m	fminl	8	2	1	80000
+m	fminl	8	3	bff0000000000000	80000
+m	fminl	8	4	1	80000
+m	fminl	8	5	fff0000000000000	80000
+m	fminl	8	6	1	0
+m	fminl	8	7	1	0
+m	fminl	8	8	1	80000
+m	fminl	8	9	1	0
+m	fminl	9	0	0	0
+m	fminl	9	1	8000000000000000	0
+m	fminl	9	2	3ff0000000000000	0
+m	fminl	9	3	bff0000000000000	0
+m	fminl	9	4	7ff0000000000000	0
+m	fminl	9	5	fff0000000000000	0
+m	fminl	9	6	7ff8000000000123	0
+m	fminl	9	7	fff8000000000456	0
+m	fminl	9	8	1	0
+m	fminl	9	9	7ff0000000000123	0
+m	fmaxl	0	0	0	0
+m	fmaxl	0	1	0	0
+m	fmaxl	0	2	3ff0000000000000	0
+m	fmaxl	0	3	0	0
+m	fmaxl	0	4	7ff0000000000000	0
+m	fmaxl	0	5	0	0
+m	fmaxl	0	6	0	0
+m	fmaxl	0	7	0	0
+m	fmaxl	0	8	1	80000
+m	fmaxl	0	9	0	0
+m	fmaxl	1	0	0	0
+m	fmaxl	1	1	8000000000000000	0
+m	fmaxl	1	2	3ff0000000000000	0
+m	fmaxl	1	3	8000000000000000	0
+m	fmaxl	1	4	7ff0000000000000	0
+m	fmaxl	1	5	8000000000000000	0
+m	fmaxl	1	6	8000000000000000	0
+m	fmaxl	1	7	8000000000000000	0
+m	fmaxl	1	8	1	80000
+m	fmaxl	1	9	8000000000000000	0
+m	fmaxl	2	0	3ff0000000000000	0
+m	fmaxl	2	1	3ff0000000000000	0
+m	fmaxl	2	2	3ff0000000000000	0
+m	fmaxl	2	3	3ff0000000000000	0
+m	fmaxl	2	4	7ff0000000000000	0
+m	fmaxl	2	5	3ff0000000000000	0
+m	fmaxl	2	6	3ff0000000000000	0
+m	fmaxl	2	7	3ff0000000000000	0
+m	fmaxl	2	8	3ff0000000000000	80000
+m	fmaxl	2	9	3ff0000000000000	0
+m	fmaxl	3	0	0	0
+m	fmaxl	3	1	8000000000000000	0
+m	fmaxl	3	2	3ff0000000000000	0
+m	fmaxl	3	3	bff0000000000000	0
+m	fmaxl	3	4	7ff0000000000000	0
+m	fmaxl	3	5	bff0000000000000	0
+m	fmaxl	3	6	bff0000000000000	0
+m	fmaxl	3	7	bff0000000000000	0
+m	fmaxl	3	8	1	80000
+m	fmaxl	3	9	bff0000000000000	0
+m	fmaxl	4	0	7ff0000000000000	0
+m	fmaxl	4	1	7ff0000000000000	0
+m	fmaxl	4	2	7ff0000000000000	0
+m	fmaxl	4	3	7ff0000000000000	0
+m	fmaxl	4	4	7ff0000000000000	0
+m	fmaxl	4	5	7ff0000000000000	0
+m	fmaxl	4	6	7ff0000000000000	0
+m	fmaxl	4	7	7ff0000000000000	0
+m	fmaxl	4	8	7ff0000000000000	80000
+m	fmaxl	4	9	7ff0000000000000	0
+m	fmaxl	5	0	0	0
+m	fmaxl	5	1	8000000000000000	0
+m	fmaxl	5	2	3ff0000000000000	0
+m	fmaxl	5	3	bff0000000000000	0
+m	fmaxl	5	4	7ff0000000000000	0
+m	fmaxl	5	5	fff0000000000000	0
+m	fmaxl	5	6	fff0000000000000	0
+m	fmaxl	5	7	fff0000000000000	0
+m	fmaxl	5	8	1	80000
+m	fmaxl	5	9	fff0000000000000	0
+m	fmaxl	6	0	0	0
+m	fmaxl	6	1	8000000000000000	0
+m	fmaxl	6	2	3ff0000000000000	0
+m	fmaxl	6	3	bff0000000000000	0
+m	fmaxl	6	4	7ff0000000000000	0
+m	fmaxl	6	5	fff0000000000000	0
+m	fmaxl	6	6	7ff8000000000123	0
+m	fmaxl	6	7	fff8000000000456	0
+m	fmaxl	6	8	1	0
+m	fmaxl	6	9	7ff0000000000123	0
+m	fmaxl	7	0	0	0
+m	fmaxl	7	1	8000000000000000	0
+m	fmaxl	7	2	3ff0000000000000	0
+m	fmaxl	7	3	bff0000000000000	0
+m	fmaxl	7	4	7ff0000000000000	0
+m	fmaxl	7	5	fff0000000000000	0
+m	fmaxl	7	6	7ff8000000000123	0
+m	fmaxl	7	7	fff8000000000456	0
+m	fmaxl	7	8	1	0
+m	fmaxl	7	9	7ff0000000000123	0
+m	fmaxl	8	0	1	80000
+m	fmaxl	8	1	1	80000
+m	fmaxl	8	2	3ff0000000000000	80000
+m	fmaxl	8	3	1	80000
+m	fmaxl	8	4	7ff0000000000000	80000
+m	fmaxl	8	5	1	80000
+m	fmaxl	8	6	1	0
+m	fmaxl	8	7	1	0
+m	fmaxl	8	8	1	80000
+m	fmaxl	8	9	1	0
+m	fmaxl	9	0	0	0
+m	fmaxl	9	1	8000000000000000	0
+m	fmaxl	9	2	3ff0000000000000	0
+m	fmaxl	9	3	bff0000000000000	0
+m	fmaxl	9	4	7ff0000000000000	0
+m	fmaxl	9	5	fff0000000000000	0
+m	fmaxl	9	6	7ff8000000000123	0
+m	fmaxl	9	7	fff8000000000456	0
+m	fmaxl	9	8	1	0
+m	fmaxl	9	9	7ff0000000000123	0
+m	fminf	0	0	0	0
+m	fminf	0	1	80000000	0
+m	fminf	0	2	0	0
+m	fminf	0	3	bf800000	0
+m	fminf	0	4	0	0
+m	fminf	0	5	ff800000	0
+m	fminf	0	6	0	0
+m	fminf	0	7	0	0
+m	fminf	0	8	0	80000
+m	fminf	0	9	0	0
+m	fminf	1	0	80000000	0
+m	fminf	1	1	80000000	0
+m	fminf	1	2	80000000	0
+m	fminf	1	3	bf800000	0
+m	fminf	1	4	80000000	0
+m	fminf	1	5	ff800000	0
+m	fminf	1	6	80000000	0
+m	fminf	1	7	80000000	0
+m	fminf	1	8	80000000	80000
+m	fminf	1	9	80000000	0
+m	fminf	2	0	0	0
+m	fminf	2	1	80000000	0
+m	fminf	2	2	3f800000	0
+m	fminf	2	3	bf800000	0
+m	fminf	2	4	3f800000	0
+m	fminf	2	5	ff800000	0
+m	fminf	2	6	3f800000	0
+m	fminf	2	7	3f800000	0
+m	fminf	2	8	1	80000
+m	fminf	2	9	3f800000	0
+m	fminf	3	0	bf800000	0
+m	fminf	3	1	bf800000	0
+m	fminf	3	2	bf800000	0
+m	fminf	3	3	bf800000	0
+m	fminf	3	4	bf800000	0
+m	fminf	3	5	ff800000	0
+m	fminf	3	6	bf800000	0
+m	fminf	3	7	bf800000	0
+m	fminf	3	8	bf800000	80000
+m	fminf	3	9	bf800000	0
+m	fminf	4	0	0	0
+m	fminf	4	1	80000000	0
+m	fminf	4	2	3f800000	0
+m	fminf	4	3	bf800000	0
+m	fminf	4	4	7f800000	0
+m	fminf	4	5	ff800000	0
+m	fminf	4	6	7f800000	0
+m	fminf	4	7	7f800000	0
+m	fminf	4	8	1	80000
+m	fminf	4	9	7f800000	0
+m	fminf	5	0	ff800000	0
+m	fminf	5	1	ff800000	0
+m	fminf	5	2	ff800000	0
+m	fminf	5	3	ff800000	0
+m	fminf	5	4	ff800000	0
+m	fminf	5	5	ff800000	0
+m	fminf	5	6	ff800000	0
+m	fminf	5	7	ff800000	0
+m	fminf	5	8	ff800000	80000
+m	fminf	5	9	ff800000	0
+m	fminf	6	0	0	0
+m	fminf	6	1	80000000	0
+m	fminf	6	2	3f800000	0
+m	fminf	6	3	bf800000	0
+m	fminf	6	4	7f800000	0
+m	fminf	6	5	ff800000	0
+m	fminf	6	6	7fc00123	0
+m	fminf	6	7	ffc00456	0
+m	fminf	6	8	1	0
+m	fminf	6	9	7f800123	0
+m	fminf	7	0	0	0
+m	fminf	7	1	80000000	0
+m	fminf	7	2	3f800000	0
+m	fminf	7	3	bf800000	0
+m	fminf	7	4	7f800000	0
+m	fminf	7	5	ff800000	0
+m	fminf	7	6	7fc00123	0
+m	fminf	7	7	ffc00456	0
+m	fminf	7	8	1	0
+m	fminf	7	9	7f800123	0
+m	fminf	8	0	0	80000
+m	fminf	8	1	80000000	80000
+m	fminf	8	2	1	80000
+m	fminf	8	3	bf800000	80000
+m	fminf	8	4	1	80000
+m	fminf	8	5	ff800000	80000
+m	fminf	8	6	1	0
+m	fminf	8	7	1	0
+m	fminf	8	8	1	80000
+m	fminf	8	9	1	0
+m	fminf	9	0	0	0
+m	fminf	9	1	80000000	0
+m	fminf	9	2	3f800000	0
+m	fminf	9	3	bf800000	0
+m	fminf	9	4	7f800000	0
+m	fminf	9	5	ff800000	0
+m	fminf	9	6	7fc00123	0
+m	fminf	9	7	ffc00456	0
+m	fminf	9	8	1	0
+m	fminf	9	9	7f800123	0
+m	fmaxf	0	0	0	0
+m	fmaxf	0	1	0	0
+m	fmaxf	0	2	3f800000	0
+m	fmaxf	0	3	0	0
+m	fmaxf	0	4	7f800000	0
+m	fmaxf	0	5	0	0
+m	fmaxf	0	6	0	0
+m	fmaxf	0	7	0	0
+m	fmaxf	0	8	1	80000
+m	fmaxf	0	9	0	0
+m	fmaxf	1	0	0	0
+m	fmaxf	1	1	80000000	0
+m	fmaxf	1	2	3f800000	0
+m	fmaxf	1	3	80000000	0
+m	fmaxf	1	4	7f800000	0
+m	fmaxf	1	5	80000000	0
+m	fmaxf	1	6	80000000	0
+m	fmaxf	1	7	80000000	0
+m	fmaxf	1	8	1	80000
+m	fmaxf	1	9	80000000	0
+m	fmaxf	2	0	3f800000	0
+m	fmaxf	2	1	3f800000	0
+m	fmaxf	2	2	3f800000	0
+m	fmaxf	2	3	3f800000	0
+m	fmaxf	2	4	7f800000	0
+m	fmaxf	2	5	3f800000	0
+m	fmaxf	2	6	3f800000	0
+m	fmaxf	2	7	3f800000	0
+m	fmaxf	2	8	3f800000	80000
+m	fmaxf	2	9	3f800000	0
+m	fmaxf	3	0	0	0
+m	fmaxf	3	1	80000000	0
+m	fmaxf	3	2	3f800000	0
+m	fmaxf	3	3	bf800000	0
+m	fmaxf	3	4	7f800000	0
+m	fmaxf	3	5	bf800000	0
+m	fmaxf	3	6	bf800000	0
+m	fmaxf	3	7	bf800000	0
+m	fmaxf	3	8	1	80000
+m	fmaxf	3	9	bf800000	0
+m	fmaxf	4	0	7f800000	0
+m	fmaxf	4	1	7f800000	0
+m	fmaxf	4	2	7f800000	0
+m	fmaxf	4	3	7f800000	0
+m	fmaxf	4	4	7f800000	0
+m	fmaxf	4	5	7f800000	0
+m	fmaxf	4	6	7f800000	0
+m	fmaxf	4	7	7f800000	0
+m	fmaxf	4	8	7f800000	80000
+m	fmaxf	4	9	7f800000	0
+m	fmaxf	5	0	0	0
+m	fmaxf	5	1	80000000	0
+m	fmaxf	5	2	3f800000	0
+m	fmaxf	5	3	bf800000	0
+m	fmaxf	5	4	7f800000	0
+m	fmaxf	5	5	ff800000	0
+m	fmaxf	5	6	ff800000	0
+m	fmaxf	5	7	ff800000	0
+m	fmaxf	5	8	1	80000
+m	fmaxf	5	9	ff800000	0
+m	fmaxf	6	0	0	0
+m	fmaxf	6	1	80000000	0
+m	fmaxf	6	2	3f800000	0
+m	fmaxf	6	3	bf800000	0
+m	fmaxf	6	4	7f800000	0
+m	fmaxf	6	5	ff800000	0
+m	fmaxf	6	6	7fc00123	0
+m	fmaxf	6	7	ffc00456	0
+m	fmaxf	6	8	1	0
+m	fmaxf	6	9	7f800123	0
+m	fmaxf	7	0	0	0
+m	fmaxf	7	1	80000000	0
+m	fmaxf	7	2	3f800000	0
+m	fmaxf	7	3	bf800000	0
+m	fmaxf	7	4	7f800000	0
+m	fmaxf	7	5	ff800000	0
+m	fmaxf	7	6	7fc00123	0
+m	fmaxf	7	7	ffc00456	0
+m	fmaxf	7	8	1	0
+m	fmaxf	7	9	7f800123	0
+m	fmaxf	8	0	1	80000
+m	fmaxf	8	1	1	80000
+m	fmaxf	8	2	3f800000	80000
+m	fmaxf	8	3	1	80000
+m	fmaxf	8	4	7f800000	80000
+m	fmaxf	8	5	1	80000
+m	fmaxf	8	6	1	0
+m	fmaxf	8	7	1	0
+m	fmaxf	8	8	1	80000
+m	fmaxf	8	9	1	0
+m	fmaxf	9	0	0	0
+m	fmaxf	9	1	80000000	0
+m	fmaxf	9	2	3f800000	0
+m	fmaxf	9	3	bf800000	0
+m	fmaxf	9	4	7f800000	0
+m	fmaxf	9	5	ff800000	0
+m	fmaxf	9	6	7fc00123	0
+m	fmaxf	9	7	ffc00456	0
+m	fmaxf	9	8	1	0
+m	fmaxf	9	9	7f800123	0

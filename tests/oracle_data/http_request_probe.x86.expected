@@ -1,0 +1,84 @@
+write-before-send: rc=0 err=12019 written=77
+send-total: rc=1 err=0
+write-1: rc=1 err=0 written=4
+write-2: rc=1 err=0 written=3
+write-beyond: rc=0 err=87 written=77
+receive-post: rc=1 err=0
+post-echo: body="POST /echo HTTP/1.1\nContent-Length: 10\nContent-Type: text/plain\nBODY:abcdefghij\n"
+send-total-less-than-optional: rc=0 err=87
+send-total-zero: rc=0 err=87
+write-no-total: rc=0 err=12019 written=77
+  receive: rc=0 err=12019
+send-total-short: rc=1 err=0
+receive-short-body: rc=0 err=12002
+send-headers-explicit-len: rc=1 err=0
+explicit-len-echo: body="GET /echo HTTP/1.1\nX-A: 12\nBODY:\n"
+send-bad-header: rc=0 err=87
+add-c: rc=1 err=0
+add-d1: rc=1 err=0
+add-d2: rc=1 err=0
+add-e1: rc=1 err=0
+add-e2-ifnew: rc=0 err=12155
+add-f1: rc=1 err=0
+add-f2-comma: rc=1 err=0
+add-g1: rc=1 err=0
+add-g2-semi: rc=1 err=0
+add-h1: rc=1 err=0
+add-h2-replace: rc=1 err=0
+add-i1: rc=1 err=0
+add-i-remove: rc=1 err=0
+add-j-replace-missing: rc=0 err=12150
+add-k-replace-add: rc=1 err=0
+add-l-coalesce-new: rc=1 err=0
+add-l2-coalesce: rc=1 err=0
+add-m-nomods: rc=1 err=0
+add-m2-nomods: rc=1 err=0
+add-nocolon: rc=0 err=87
+add-multi: rc=1 err=0
+add-explicit-len: rc=1 err=0
+add-spaces: rc=1 err=0
+add-null: rc=0 err=87
+add-empty: rc=0 err=87
+add-badflag: rc=1 err=0
+send-headers: rc=1 err=0
+query-before-receive: rc=0 err=12019 len=64 buf0=0x2323
+receive: rc=1 err=0
+status: rc=1 err=0 len=6 value="200" nul=1
+status-number: rc=1 err=0 len=4 number=200
+status-number-small: rc=0 err=122 len=3 buf0=0x2323
+status-size: rc=0 err=122 len=8
+status-exact: rc=1 err=0 len=6 value="200" nul=1
+status-short: rc=0 err=122 len=8 buf0=0x2323
+content-type: rc=1 err=0 len=50 value="text/plain; charset=utf-8" nul=1
+content-length: rc=1 err=0 len=6 value="172" nul=1
+content-length-number: rc=1 err=0 len=4 number=172
+last-modified-time: rc=1 err=0 len=16 y=1994 mo=11 dow=2 d=15 h=8 mi=12 s=31 ms=0
+last-modified-time-small: rc=0 err=122 len=16 buf0=0x2323
+multi-0: rc=1 err=0 len=6 index=1 value="one" nul=1
+multi-1: rc=1 err=0 len=6 index=2 value="two" nul=1
+multi-2: rc=0 err=12150 len=256 index=2 buf0=0x2323
+multi-noindex: rc=1 err=0 len=6 value="one" nul=1
+number-custom: rc=1 err=0 len=4 number=12345
+bad-number: rc=1 err=0 len=4 number=12
+empty-header: rc=1 err=0 len=0 value="" nul=1
+missing: rc=0 err=12150 len=256 buf0=0x2323
+missing-level: rc=0 err=12150 len=256 buf0=0x2323
+custom-null-name: rc=0 err=87 len=256 buf0=0x2323
+bad-level: rc=0 err=87 len=256 buf0=0x2323
+request-header: rc=1 err=0 len=2 value="1" nul=1
+request-header-d: rc=1 err=0 len=2 index=1 value="1" nul=1
+request-header-d1: rc=1 err=0 len=2 index=2 value="2" nul=1
+status-text: rc=1 err=0 len=30 value="Everything Fine" nul=1
+version: rc=1 err=0 len=16 value="HTTP/1.1" nul=1
+raw-crlf-size: rc=0 err=122 len=470
+echo: body="GET /echo HTTP/1.1\nX-A: 1\nX-B: 2\nX-C: 3\nX-D: 1\nX-D: 2\nX-E: 1\nX-F: 1, 2\nX-G: 1; 2\nX-H: 2\nX-K: 2\nX-L: 1, 2\nX-M: 1\nX-M: 2\nX-N: 1\nX-O: 2\nX-P: 12\nX-Q:    spaced   \nX-R: 1\nBODY:\n"
+available-at-eof: rc=1 err=0 n=0
+slow-available: rc=1 err=0 nonzero=1
+slow-available: rc=1 err=0 nonzero=1
+slow-available: rc=1 err=0 nonzero=0
+slow-total: n=10
+reset: read-error err=12030 got=10
+url-port0: rc=1 err=0 url="http://127.0.0.1/p"
+url-port0-secure: rc=1 err=0 url="https://127.0.0.1/p"
+url-port443-plain: rc=1 err=0 url="http://127.0.0.1:443/p"
+url-port80-secure: rc=1 err=0 url="https://127.0.0.1:80/p"

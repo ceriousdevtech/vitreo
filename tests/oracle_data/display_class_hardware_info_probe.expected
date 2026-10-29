@@ -1,0 +1,21 @@
+[0000] DriverDesc type=REG_SZ size=46 "Red Hat QXL controller"
+[0000] HardwareInformation.AdapterString type=REG_SZ size=8 "QXL"
+[0000] HardwareInformation.ChipType type=REG_SZ size=18 "QEMU QXL"
+[0000] HardwareInformation.DacType type=REG_SZ size=18 "QXL 1B36"
+[0000] HardwareInformation.BiosString type=REG_SZ size=24 "SEABIOS QXL"
+[0000] HardwareInformation.MemorySize type=REG_DWORD size=4 0x00000000
+[0000] HardwareInformation.qwMemorySize status=2
+[0007] DriverDesc type=REG_SZ size=46 "Red Hat QXL controller"
+[0007] HardwareInformation.AdapterString type=REG_SZ size=8 "QXL"
+[0007] HardwareInformation.ChipType type=REG_SZ size=18 "QEMU QXL"
+[0007] HardwareInformation.DacType type=REG_SZ size=18 "QXL 1B36"
+[0007] HardwareInformation.BiosString type=REG_SZ size=24 "SEABIOS QXL"
+[0007] HardwareInformation.MemorySize type=REG_DWORD size=4 0x00000000
+[0007] HardwareInformation.qwMemorySize status=2
+[0008] DriverDesc type=REG_SZ size=54 "NVIDIA GeForce GTX 1050 Ti"
+[0008] HardwareInformation.AdapterString type=REG_SZ size=54 "NVIDIA GeForce GTX 1050 Ti"
+[0008] HardwareInformation.ChipType type=REG_SZ size=54 "NVIDIA GeForce GTX 1050 Ti"
+[0008] HardwareInformation.DacType type=REG_SZ size=36 "Integrated RAMDAC"
+[0008] HardwareInformation.BiosString type=REG_SZ size=40 "Version86.7.22.0.50"
+[0008] HardwareInformation.MemorySize type=REG_DWORD size=4 0xfff00000
+[0008] HardwareInformation.qwMemorySize type=REG_QWORD size=8 0x0000000100000000

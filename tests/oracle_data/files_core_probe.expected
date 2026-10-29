@@ -1,0 +1,224 @@
+# TEB.LastErrorValue mirror
+DeleteFileW_missing ret=00000000 err=00000002
+  teb_after_DeleteFileW_missing=00000002
+  teb_after_SetLastError=00001234
+  GetLastError_after_teb_write=00004321
+  teb_after_CreateDirectory_missing_parent=00000003
+# CreateFile
+CreateFileW_CREATE_ALWAYS_new ret=00000001 err=00000000
+CreateFileW_CREATE_ALWAYS_existing ret=00000001 err=000000b7
+CreateFileW_OPEN_ALWAYS_existing ret=00000001 err=000000b7
+CreateFileW_OPEN_ALWAYS_new ret=00000001 err=00000000
+CreateFileW_CREATE_NEW_existing ret=00000000 err=00000050
+CreateFileW_missing_parent ret=00000000 err=00000003
+  parent_not_created ret=ffffffff err=00000002
+CreateFileW_missing_parent_openexisting ret=00000000 err=00000003
+CreateFileW_missing_file ret=00000000 err=00000002
+CreateFileW_disposition_0 ret=00000000 err=00000057
+CreateFileW_disposition_6 ret=00000000 err=00000057
+CreateFileW_empty_name ret=00000000 err=00000003
+# sharing
+share0_then_read ret=00000000 err=00000020
+share0_then_attr_only ret=00000001 err=00000000
+shareR_then_read ret=00000001 err=00000000
+shareR_then_write ret=00000000 err=00000020
+shareR_then_delete_access ret=00000000 err=00000020
+writer_then_reader_denying_write ret=00000000 err=00000020
+writer_then_reader_sharing_write ret=00000001 err=00000000
+writer_then_DeleteFileW ret=00000000 err=00000020
+writer_then_MoveFileW ret=00000000 err=00000020
+shareRWD_then_DeleteFileW ret=00000001 err=0000dead
+  reopen_delete_pending ret=00000000 err=00000002
+  attrs_delete_pending ret=ffffffff err=00000002
+  attrs_after_close ret=ffffffff err=00000002
+# delete on close
+doc_open ret=00000001 err=0000dead
+doc_reopen_shareRWD ret=00000001 err=00000000
+doc_reopen_shareRW ret=00000000 err=00000020
+doc_gone ret=ffffffff err=00000002
+doc_when_other_lacks_share_delete ret=00000000 err=00000020
+doc_without_delete_access ret=00000001 err=00000000
+# attributes on create
+create_readonly_hidden ret=00000001 err=00000000
+  attrs ret=00000023 err=0000dead
+  open_for_write ret=00000000 err=00000005
+  CREATE_ALWAYS_normal_on_hidden ret=00000000 err=00000005
+  CREATE_ALWAYS_normal_on_hidden_rw ret=00000000 err=00000005
+  CREATE_ALWAYS_hidden_on_hidden ret=00000001 err=000000b7
+  attrs_after ret=00000022 err=0000dead
+  CREATE_ALWAYS_temporary ret=00000001 err=000000b7
+  attrs_temporary ret=00000122 err=0000dead
+  OPEN_ALWAYS_existing_ignores_attrs ret=00000001 err=000000b7
+  attrs_open_always ret=00000122 err=0000dead
+create_plain_attrs ret=00000020 err=00000000
+# directories
+dir_OPEN_EXISTING_no_backup ret=00000000 err=00000005
+dir_OPEN_EXISTING_backup ret=00000001 err=00000000
+dir_OPEN_ALWAYS_backup ret=00000001 err=000000b7
+dir_OPEN_ALWAYS ret=00000000 err=00000005
+dir_CREATE_ALWAYS ret=00000000 err=00000005
+dir_CREATE_NEW ret=00000000 err=00000005
+dir_TRUNCATE_EXISTING ret=00000000 err=00000005
+dir_write_backup ret=00000001 err=00000000
+file_with_trailing_backslash ret=00000000 err=00000002
+# truncate
+TRUNCATE_EXISTING_read_only_access ret=00000000 err=00000057
+  size_after ret=0000000a err=0000dead
+TRUNCATE_EXISTING_write ret=00000001 err=00000000
+  size_after ret=00000000 err=0000dead
+TRUNCATE_EXISTING_missing ret=00000000 err=00000002
+# MAXIMUM_ALLOWED
+max_allowed_read ret=00000001 err=0000dead
+  n=00000004
+max_allowed_write ret=00000001 err=0000dead
+template_file_invalid_handle ret=00000001 err=00000000
+# ReadFile/WriteFile
+sync_ReadFile_overlapped ret=00000001 err=0000dead
+  n=00000003
+  ov.Internal=00000000
+  ov.InternalHigh=00000003
+  pointer_after ret=00000005 err=0000dead
+sync_ReadFile_overlapped_past_eof ret=00000000 err=00000026
+  n=00000000
+  ov.Internal=c0000011
+  pointer_after ret=00000005 err=0000dead
+sync_WriteFile_overlapped ret=00000001 err=0000dead
+  n=00000002
+  pointer_after ret=00000006 err=0000dead
+sync_WriteFile_append ret=00000001 err=0000dead
+  n=00000002
+  size ret=0000000c err=0000dead
+  pointer_after ret=0000000c err=0000dead
+sync_ReadFile_offset_all_ones ret=00000000 err=00000057
+  n=00000000
+sync_ReadFile_offset_negative ret=00000000 err=00000057
+  n=00000000
+sync_WriteFile_offset_ffff_fffe ret=00000001 err=0000dead
+  n=00000002
+sync_WriteFile_offset_negative ret=00000000 err=00000057
+  n=00000000
+ReadFile_write_only_handle ret=00000000 err=00000005
+  n=00000000
+WriteFile_read_only_handle ret=00000000 err=00000005
+  n=00000000
+ReadFile_readonly_buffer ret=00000000 err=000003e6
+  n=00000000
+  pointer_after ret=00000000 err=0000dead
+WriteFile_noaccess_buffer ret=00000000 err=000006f8
+  n=00000000
+ReadFile_invalid_handle ret=00000000 err=00000006
+  n=00000000
+WriteFile_invalid_handle ret=00000000 err=00000006
+  n=00000000
+ReadFile_event_handle ret=00000000 err=00000006
+  n=00000000
+ReadFile_null_bytes_null_ov ret=00000001 err=0000dead
+WriteFile_null_bytes_null_ov ret=00000001 err=0000dead
+# async handle
+async_ReadFile_at_eof ret=00000000 err=000003e5
+  n=00000000
+  ov.Internal=c0000011
+  GetOverlappedResult ret=00000000 err=00000026
+  n=00000000
+async_ReadFile_ok ret=00000001 err=000003e5
+  GetOverlappedResult ret=00000001 err=00000000
+  n=00000002
+  pointer_after ret=00000000 err=0000dead
+# LockFile/UnlockFile
+LockFile_h1_0_10 ret=00000001 err=0000dead
+LockFile_h2_overlap ret=00000000 err=00000021
+LockFile_h1_overlap_self ret=00000000 err=00000021
+LockFile_h2_disjoint ret=00000001 err=0000dead
+LockFile_h1_past_eof ret=00000001 err=0000dead
+LockFile_zero_length ret=00000001 err=0000dead
+ReadFile_h2_locked_region ret=00000000 err=00000021
+  n=00000000
+  pointer_after ret=00000000 err=0000dead
+WriteFile_h2_locked_region ret=00000000 err=00000021
+ReadFile_h2_unlocked_region ret=00000001 err=0000dead
+ReadFile_h2_own_lock ret=00000001 err=0000dead
+ReadFile_h1_other_lock ret=00000000 err=00000021
+ReadFile_h1_own_lock ret=00000001 err=0000dead
+UnlockFile_partial ret=00000000 err=0000009e
+UnlockFile_other_handles_lock ret=00000000 err=0000009e
+UnlockFile_exact ret=00000001 err=0000dead
+UnlockFile_again ret=00000000 err=0000009e
+LockFile_h2_after_unlock ret=00000001 err=0000dead
+LockFile_invalid_handle ret=00000000 err=00000006
+UnlockFile_invalid_handle ret=00000000 err=00000006
+LockFile_null_handle ret=00000000 err=00000006
+LockFile_h1_after_h2_closed ret=00000001 err=0000dead
+LockFileEx_shared ret=00000001 err=0000dead
+LockFileEx_shared_other ret=00000001 err=0000dead
+LockFileEx_excl_other ret=00000000 err=00000021
+UnlockFileEx ret=00000001 err=0000dead
+# FlushFileBuffers
+Flush_read_only_handle ret=00000000 err=00000005
+Flush_write_handle ret=00000001 err=0000dead
+Flush_invalid ret=00000000 err=00000006
+Flush_event ret=00000000 err=00000006
+Flush_pipe_write_end ret=00000001 err=0000dead
+Flush_pipe_read_end ret=00000000 err=00000005
+GetFileType_pipe ret=00000003 err=0000dead
+# GetFileSize/Type
+GetFileSize ret=0000000a err=0000dead
+  hi=00000000
+  pointer_unchanged ret=00000003 err=0000dead
+GetFileSizeEx ret=00000001 err=0000dead
+  size=0000000a
+GetFileType_disk ret=00000001 err=0000dead
+GetFileSize_invalid ret=ffffffff err=00000006
+  hi=00000077
+GetFileSizeEx_invalid ret=00000000 err=00000006
+GetFileType_invalid ret=00000000 err=00000006
+GetFileType_event ret=00000000 err=00000006
+GetFileType_socket ret=00000003 err=0000dead
+volume_open ret=00000001 err=0000dead
+GetFileType_volume ret=00000001 err=0000dead
+GetFileType_nul ret=00000002 err=0000dead
+# SetFilePointer(Ex)
+SFP_low_ffffffff ret=ffffffff err=00000000
+  hi=00000000
+SFP_1_ffffffff ret=ffffffff err=00000000
+  hi=00000001
+  ex_current ret=00000001 err=0000dead
+  pos=ffffffff
+SFP_invalid_method ret=ffffffff err=00000057
+SFP_invalid_handle ret=ffffffff err=00000006
+SFP_null_high_overflow ret=e0000000 err=0000dead
+  pointer_after ret=e0000000 err=0000dead
+SFP_null_high_to_2G ret=80000000 err=0000dead
+  pointer_after ret=80000000 err=0000dead
+SFP_negative ret=ffffffff err=00000083
+  pointer_after ret=00000005 err=0000dead
+SFP_begin_negative_high ret=ffffffff err=00000083
+  hi=ffffffff
+SFPEx_ffffffff ret=00000001 err=0000dead
+  pos=ffffffff
+SFPEx_1ffffffff ret=00000001 err=0000dead
+  pos=ffffffff
+SFPEx_begin_negative ret=00000000 err=00000083
+  pos=ffffffff
+SFPEx_invalid_method ret=00000000 err=00000057
+SFPEx_invalid_handle ret=00000000 err=00000006
+SFPEx_null_out ret=00000001 err=0000dead
+  pointer_after ret=0000000a err=0000dead
+# NO_BUFFERING seek
+SFP_nobuf_begin_1 ret=ffffffff err=00000057
+SFP_nobuf_begin_512 ret=00000200 err=0000dead
+SFP_nobuf_cur_256 ret=ffffffff err=00000057
+SFPEx_nobuf_100 ret=00000000 err=00000057
+  pos=00000000
+SFPEx_nobuf_512 ret=00000001 err=0000dead
+# SetEndOfFile
+SetEndOfFile_shrink ret=00000001 err=0000dead
+  size ret=00000004 err=0000dead
+  mapping ret=00000001 err=0000dead
+SetEndOfFile_mapped_shrink ret=00000000 err=000004c8
+SetEndOfFile_mapped_grow ret=00000001 err=0000dead
+SetEndOfFile_view_open_mapping_closed ret=00000000 err=000004c8
+SetEndOfFile_unmapped ret=00000001 err=0000dead
+  size ret=00000002 err=0000dead
+SetEndOfFile_read_only_handle ret=00000000 err=00000005
+SetEndOfFile_invalid ret=00000000 err=00000006
+done

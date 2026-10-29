@@ -1,0 +1,2 @@
+manual_reset alertable_wait_object0=all alertable_wait_io_completion=none apc_pending_after_alertable_wait=all plain_wait_object0=all apc_pending_after_plain_wait=all apcs_run=all
+synchronization alertable_wait_object0=all alertable_wait_io_completion=none apc_pending_after_alertable_wait=all plain_wait_object0=all apc_pending_after_plain_wait=all apcs_run=all

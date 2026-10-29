@@ -1,0 +1,98 @@
+mode=0 pos=0 vendor=0 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=0 pos=0 vendor=1 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=0 pos=0 vendor=2 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=0 pos=7 vendor=0 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=0 pos=7 vendor=1 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=0 pos=7 vendor=2 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=0 pos=76 vendor=0 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=0 pos=76 vendor=1 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=0 pos=76 vendor=2 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=1 pos=0 vendor=0 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=1 pos=0 vendor=1 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=1 pos=0 vendor=2 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=1 pos=7 vendor=0 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=1 pos=7 vendor=1 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=1 pos=7 vendor=2 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=1 pos=76 vendor=0 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=1 pos=76 vendor=1 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=1 pos=76 vendor=2 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=2 pos=0 vendor=0 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=2 pos=0 vendor=1 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=2 pos=0 vendor=2 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=2 pos=7 vendor=0 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=2 pos=7 vendor=1 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=2 pos=7 vendor=2 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=2 pos=76 vendor=0 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=2 pos=76 vendor=1 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=2 pos=76 vendor=2 hr=00000000 out=set refs=2,1 cursor=41 frames=1 error=00000000
+mode=3 pos=0 vendor=0 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=3 pos=0 vendor=1 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=3 pos=0 vendor=2 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=3 pos=7 vendor=0 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=3 pos=7 vendor=1 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=3 pos=7 vendor=2 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=3 pos=76 vendor=0 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=3 pos=76 vendor=1 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=3 pos=76 vendor=2 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=2147483647 pos=0 vendor=0 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=2147483647 pos=0 vendor=1 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=2147483647 pos=0 vendor=2 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=2147483647 pos=7 vendor=0 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=2147483647 pos=7 vendor=1 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=2147483647 pos=7 vendor=2 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=2147483647 pos=76 vendor=0 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=2147483647 pos=76 vendor=1 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=2147483647 pos=76 vendor=2 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=4294967295 pos=0 vendor=0 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=4294967295 pos=0 vendor=1 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=4294967295 pos=0 vendor=2 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=4294967295 pos=7 vendor=0 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=4294967295 pos=7 vendor=1 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=4294967295 pos=7 vendor=2 hr=88982f50 out=same refs=1,1 cursor=7 frames=0 error=00000000
+mode=4294967295 pos=76 vendor=0 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=4294967295 pos=76 vendor=1 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+mode=4294967295 pos=76 vendor=2 hr=00000000 out=set refs=2,1 cursor=72 frames=1 error=00000000
+invalid=0 hr=80070057 out=same refs=1
+invalid=1 hr=80070057 out=same refs=1
+invalid=2 hr=00000000 out=set refs=2
+invalid=3 hr=8003001e out=same refs=1
+invalid=4 hr=80030019 out=same refs=1
+invalid=5 hr=80030005 out=same refs=1
+lifetime=0 created=2 decoder_released=2 copy=00000000 pixel=0000ffff frame_released=1
+lifetime=1 created=2 decoder_released=2 copy=00000000 pixel=0000ffff frame_released=1
+mutate_before_frame=0 frame=00000000 hr=00000000 refs=2 cursor=72 bytes=00000000000000000000000000000000
+mutate_before_frame=1 frame=00000000 hr=00000000 refs=2 cursor=72 bytes=00000000000000000000000000000000
+premul=0 hr=00000000 bytes=0000ffff00ff00ffff0000ff80808080
+premul=1 hr=00000000 bytes=0000ffff00ff00ffff0000ff80808080
+truncated=0 mode=0 factory=88982f50 out=same cursor=0
+truncated=1 mode=0 factory=88982f50 out=same cursor=0
+truncated=2 mode=0 factory=88982f50 out=same cursor=0
+truncated=8 mode=0 factory=88982f07 out=same cursor=0
+truncated=24 mode=0 factory=88982f07 out=same cursor=0
+truncated=33 mode=0 factory=88982f07 out=same cursor=0
+truncated=41 mode=0 factory=88982f07 out=same cursor=0
+truncated=42 mode=0 factory=00000000 out=set cursor=41 frame=00000000 copy=00000000
+truncated=64 mode=0 factory=00000000 out=set cursor=41 frame=00000000 copy=00000000
+truncated=72 mode=0 factory=00000000 out=set cursor=41 frame=00000000 copy=00000000
+truncated=76 mode=0 factory=00000000 out=set cursor=41 frame=00000000 copy=00000000
+truncated=0 mode=1 factory=88982f50 out=same cursor=0
+truncated=1 mode=1 factory=88982f50 out=same cursor=0
+truncated=2 mode=1 factory=88982f50 out=same cursor=0
+truncated=8 mode=1 factory=88982f07 out=same cursor=0
+truncated=24 mode=1 factory=88982f07 out=same cursor=0
+truncated=33 mode=1 factory=88982f07 out=same cursor=0
+truncated=41 mode=1 factory=88982f07 out=same cursor=0
+truncated=42 mode=1 factory=00000000 out=set cursor=41 frame=00000000 copy=00000000
+truncated=64 mode=1 factory=00000000 out=set cursor=41 frame=00000000 copy=00000000
+truncated=72 mode=1 factory=00000000 out=set cursor=41 frame=00000000 copy=00000000
+truncated=76 mode=1 factory=00000000 out=set cursor=72 frame=00000000 copy=00000000
+frame_read_error=0 hr=00000000 out=set
+copy_read_error=0 hr=8003001e pixel=00000000
+frame_read_error=1 hr=00000000 out=set
+copy_read_error=1 hr=8003001e pixel=00000000
+mutate_after_frame mode=0 hr=00000000 refs=2 cursor=72 bytes=00000000000000000000000000000000 released_refs=1
+before_mutation=0 hr=00000000 bytes=0000ffff00ff00ffff0000ffffffff80
+mutate_after_copy mode=0 hr=00000000 refs=2 cursor=72 bytes=00000000000000000000000000000000 released_refs=1
+mutate_after_frame mode=1 hr=00000000 refs=2 cursor=72 bytes=00000000000000000000000000000000 released_refs=1
+before_mutation=1 hr=00000000 bytes=0000ffff00ff00ffff0000ffffffff80
+mutate_after_copy mode=1 hr=00000000 refs=2 cursor=72 bytes=00000000000000000000000000000000 released_refs=1

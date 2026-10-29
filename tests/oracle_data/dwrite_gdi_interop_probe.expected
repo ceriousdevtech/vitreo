@@ -1,0 +1,556 @@
+bits=64 sizeof(LOGFONTW)=92
+clf 'Arial' w=0 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=0 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Italic'(n=26) win32fam='Arial'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=100 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=100 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Italic'(n=26) win32fam='Arial'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=400 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Italic'(n=26) win32fam='Arial'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=700 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold'(n=26) win32fam='Arial'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=700 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold Italic'(n=26) win32fam='Arial'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=900 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold'(n=1) win32fam='Arial'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=1
+clf 'Arial' w=900 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Italic Bold'(n=1) win32fam='Arial'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=1
+clf 'Tahoma' w=0 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Regular'(n=26) win32fam='Tahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=0
+clf 'Tahoma' w=0 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Oblique'(n=1) win32fam='Tahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=2
+clf 'Tahoma' w=100 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Regular'(n=26) win32fam='Tahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=0
+clf 'Tahoma' w=100 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Oblique'(n=1) win32fam='Tahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=2
+clf 'Tahoma' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Regular'(n=26) win32fam='Tahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=0
+clf 'Tahoma' w=400 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Oblique'(n=1) win32fam='Tahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=2
+clf 'Tahoma' w=700 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Bold'(n=26) win32fam='Tahoma'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=0
+clf 'Tahoma' w=700 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Bold Oblique'(n=1) win32fam='Tahoma'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=2
+clf 'Tahoma' w=900 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Bold'(n=1) win32fam='Tahoma'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=1
+clf 'Tahoma' w=900 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Bold Oblique'(n=1) win32fam='Tahoma'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=1 sim=3 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=3
+clf 'Segoe UI' w=0 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=0 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Italic'(n=26) win32fam='Segoe UI'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=100 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=100 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Italic'(n=26) win32fam='Segoe UI'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=400 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Italic'(n=26) win32fam='Segoe UI'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=700 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=700 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold Italic'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=900 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Segoe UI' w=900 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Italic Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Courier New' w=0 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Regular'(n=26) win32fam='Courier New'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Courier New' w=0 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Italic'(n=26) win32fam='Courier New'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Courier New' w=100 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Regular'(n=26) win32fam='Courier New'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Courier New' w=100 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Italic'(n=26) win32fam='Courier New'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Courier New' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Regular'(n=26) win32fam='Courier New'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Courier New' w=400 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Italic'(n=26) win32fam='Courier New'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Courier New' w=700 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Bold'(n=26) win32fam='Courier New'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Courier New' w=700 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Bold Italic'(n=26) win32fam='Courier New'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Courier New' w=900 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Bold'(n=1) win32fam='Courier New'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=1
+clf 'Courier New' w=900 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Courier New'(n=1) face='Italic Bold'(n=1) win32fam='Courier New'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Courier New' term=11 tail(cc=0,0=20,x=0) facesim=1
+clf 'Times New Roman' w=0 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Regular'(n=26) win32fam='Times New Roman'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=0
+clf 'Times New Roman' w=0 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Italic'(n=26) win32fam='Times New Roman'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=0
+clf 'Times New Roman' w=100 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Regular'(n=26) win32fam='Times New Roman'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=0
+clf 'Times New Roman' w=100 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Italic'(n=26) win32fam='Times New Roman'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=0
+clf 'Times New Roman' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Regular'(n=26) win32fam='Times New Roman'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=0
+clf 'Times New Roman' w=400 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Italic'(n=26) win32fam='Times New Roman'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=0
+clf 'Times New Roman' w=700 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Bold'(n=26) win32fam='Times New Roman'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=0
+clf 'Times New Roman' w=700 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Bold Italic'(n=26) win32fam='Times New Roman'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=0
+clf 'Times New Roman' w=900 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Bold'(n=1) win32fam='Times New Roman'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=1
+clf 'Times New Roman' w=900 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Times New Roman'(n=1) face='Italic Bold'(n=1) win32fam='Times New Roman'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Times New Roman' term=15 tail(cc=0,0=16,x=0) facesim=1
+clf 'Arial' w=400 i=0 cs=0 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=400 i=0 cs=2 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=400 i=0 cs=128 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=400 i=0 cs=161 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=400 i=0 cs=255 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=400 i=0 cs=255 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf '' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'MS Shell Dlg' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'MS Shell Dlg 2' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'Helv' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'MS Sans Serif' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'Microsoft Sans Serif' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Microsoft Sans Serif'(n=1) face='Regular'(n=26) win32fam='Microsoft Sans Serif'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Microsoft Sans Serif' term=20 tail(cc=0,0=11,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Microsoft Sans Serif' term=20 tail(cc=0,0=11,x=0) facesim=0
+clf 'System' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'Courier' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'Helvetica' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'Times' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'arial' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'ARIAL' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial Bold' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold'(n=26) win32fam='Arial'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial Black' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Black'(n=1) win32fam='Arial Black'(n=1) win32sub='Regular'(n=25) w=900 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Segoe UI Semibold' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Semibold'(n=1) win32fam='Segoe UI Semibold'(n=1) win32sub='Regular'(n=1) w=600 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) facesim=0
+clf 'Segoe UI Light' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Light'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=300 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=0
+clf 'Segoe UI Black' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Black'(n=1) win32fam='Segoe UI Black'(n=1) win32sub='Regular'(n=1) w=900 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Black' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Black' term=14 tail(cc=0,0=17,x=0) facesim=0
+clf 'Segoe UI Bold' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf '@Arial' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf ' Arial' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'Arial ' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'NoSuchFontXYZ' w=400 i=0 cs=1 -> hr=88985002 out=NULL
+clf 'Segoe UI' w=-1 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=1 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=350 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=550 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=600 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Segoe UI' w=999 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Segoe UI' w=1000 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Segoe UI' w=1001 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Arial' w=400 i=2 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Italic'(n=26) win32fam='Arial'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial' w=400 i=255 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Italic'(n=26) win32fam='Arial'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Segoe UI' w=500 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=551 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Segoe UI' w=552 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Segoe UI' w=649 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=650 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=651 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=699 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=701 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=800 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=850 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+clf 'Segoe UI' w=851 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Segoe UI' w=852 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=1
+clf 'Segoe UI Light' w=100 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Light'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=300 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=0
+clf 'Segoe UI Light' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Light'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=300 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=0
+clf 'Segoe UI Light' w=451 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=1
+clf 'Segoe UI Light' w=452 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=1
+clf 'Segoe UI Light' w=700 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=1
+clf 'Segoe UI Light' w=900 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Bold'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=1
+clf 'Segoe UI Light' w=700 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Italic Bold'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Italic'(n=1) w=700 st=5 sy=2 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=451 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=1
+clf 'Segoe UI Semibold' w=700 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Semibold'(n=1) win32fam='Segoe UI Semibold'(n=1) win32sub='Regular'(n=1) w=600 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) facesim=0
+clf 'Segoe UI Semibold' w=900 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Segoe UI'(n=1) face='Italic Bold'(n=1) win32fam='Segoe UI Semibold'(n=1) win32sub='Italic'(n=1) w=700 st=5 sy=2 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=751 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=751 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) facesim=1
+clf 'Arial Black' w=100 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Black'(n=1) win32fam='Arial Black'(n=1) win32sub='Regular'(n=25) w=900 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) facesim=0
+clf 'Arial Black' w=900 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Black Oblique'(n=1) win32fam='Arial Black'(n=1) win32sub='Regular'(n=25) w=900 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) facesim=2
+clf 'Microsoft Sans Serif' w=700 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Microsoft Sans Serif'(n=1) face='Bold Oblique'(n=1) win32fam='Microsoft Sans Serif'(n=1) win32sub='Regular'(n=26) w=700 st=5 sy=1 sim=3 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Microsoft Sans Serif' term=20 tail(cc=0,0=11,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Microsoft Sans Serif' term=20 tail(cc=0,0=11,x=0) facesim=3
+clf 'Arial Bold' w=100 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold'(n=26) win32fam='Arial'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Arial Bold' w=900 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold'(n=1) win32fam='Arial'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=851 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=1
+clf 'Arial Bold' w=400 i=1 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold Oblique'(n=1) win32fam='Arial'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=2
+clf 'Arial Italic' w=700 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Italic Bold'(n=1) win32fam='Arial'(n=1) win32sub='Italic'(n=26) w=700 st=5 sy=2 sim=1 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=551 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=1
+clf 'Arial Bold Italic' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold Italic'(n=26) win32fam='Arial'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf 'Tahoma Bold' w=400 i=0 cs=1 -> hr=00000000 out=font
+  font: family='Tahoma'(n=1) face='Bold'(n=26) win32fam='Tahoma'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=0
+clf 'Arial' all-fields -> hr=00000000 out=font
+  font: family='Arial'(n=1) face='Bold Italic'(n=26) win32fam='Arial'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+clf unterminated 'AAAA...' -> hr=88985002 out=NULL
+family 'Segoe UI' fonts=18
+ [0]  font: family='Segoe UI'(n=1) face='Light'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=300 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=0
+ [1]  font: family='Segoe UI'(n=1) face='Light Italic'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Italic'(n=1) w=300 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=0
+ [2]  font: family='Segoe UI'(n=1) face='Semilight'(n=1) win32fam='Segoe UI Semilight'(n=1) win32sub='Regular'(n=1) w=350 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=350 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semilight' term=18 tail(cc=0,0=13,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=350 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semilight' term=18 tail(cc=0,0=13,x=0) facesim=0
+ [3]  font: family='Segoe UI'(n=1) face='Semilight Italic'(n=1) win32fam='Segoe UI Semilight'(n=1) win32sub='Italic'(n=1) w=350 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=350 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semilight' term=18 tail(cc=0,0=13,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=350 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semilight' term=18 tail(cc=0,0=13,x=0) facesim=0
+ [4]  font: family='Segoe UI'(n=1) face='Regular'(n=25) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+ [5]  font: family='Segoe UI'(n=1) face='Italic'(n=26) win32fam='Segoe UI'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+ [6]  font: family='Segoe UI'(n=1) face='Semibold'(n=1) win32fam='Segoe UI Semibold'(n=1) win32sub='Regular'(n=1) w=600 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) facesim=0
+ [7]  font: family='Segoe UI'(n=1) face='Semibold Italic'(n=1) win32fam='Segoe UI Semibold'(n=1) win32sub='Italic'(n=1) w=600 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) facesim=0
+ [8]  font: family='Segoe UI'(n=1) face='Bold'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+ [9]  font: family='Segoe UI'(n=1) face='Bold Italic'(n=26) win32fam='Segoe UI'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=0
+ [10]  font: family='Segoe UI'(n=1) face='Black'(n=1) win32fam='Segoe UI Black'(n=1) win32sub='Regular'(n=1) w=900 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Black' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Black' term=14 tail(cc=0,0=17,x=0) facesim=0
+ [11]  font: family='Segoe UI'(n=1) face='Black Italic'(n=1) win32fam='Segoe UI Black'(n=1) win32sub='Italic'(n=1) w=900 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Black' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Black' term=14 tail(cc=0,0=17,x=0) facesim=0
+ [12]  font: family='Segoe UI'(n=1) face='Light Oblique'(n=1) win32fam='Segoe UI Light'(n=1) win32sub='Regular'(n=1) w=300 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=300 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Light' term=14 tail(cc=0,0=17,x=0) facesim=2
+ [13]  font: family='Segoe UI'(n=1) face='Semilight Oblique'(n=1) win32fam='Segoe UI Semilight'(n=1) win32sub='Regular'(n=1) w=350 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=350 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semilight' term=18 tail(cc=0,0=13,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=350 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semilight' term=18 tail(cc=0,0=13,x=0) facesim=2
+ [14]  font: family='Segoe UI'(n=1) face='Oblique'(n=1) win32fam='Segoe UI'(n=1) win32sub='Regular'(n=25) w=400 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=2
+ [15]  font: family='Segoe UI'(n=1) face='Semibold Oblique'(n=1) win32fam='Segoe UI Semibold'(n=1) win32sub='Regular'(n=1) w=600 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=600 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Semibold' term=17 tail(cc=0,0=14,x=0) facesim=2
+ [16]  font: family='Segoe UI'(n=1) face='Bold Oblique'(n=1) win32fam='Segoe UI'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI' term=8 tail(cc=0,0=23,x=0) facesim=2
+ [17]  font: family='Segoe UI'(n=1) face='Black Oblique'(n=1) win32fam='Segoe UI Black'(n=1) win32sub='Regular'(n=1) w=900 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Black' term=14 tail(cc=0,0=17,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Segoe UI Black' term=14 tail(cc=0,0=17,x=0) facesim=2
+family 'Arial' fonts=8
+ [0]  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+ [1]  font: family='Arial'(n=1) face='Italic'(n=26) win32fam='Arial'(n=1) win32sub='Italic'(n=26) w=400 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+ [2]  font: family='Arial'(n=1) face='Bold'(n=26) win32fam='Arial'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+ [3]  font: family='Arial'(n=1) face='Bold Italic'(n=26) win32fam='Arial'(n=1) win32sub='Bold Italic'(n=26) w=700 st=5 sy=2 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+ [4]  font: family='Arial'(n=1) face='Black'(n=1) win32fam='Arial Black'(n=1) win32sub='Regular'(n=25) w=900 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) facesim=0
+ [5]  font: family='Arial'(n=1) face='Oblique'(n=1) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=2
+ [6]  font: family='Arial'(n=1) face='Bold Oblique'(n=1) win32fam='Arial'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=2
+ [7]  font: family='Arial'(n=1) face='Black Oblique'(n=1) win32fam='Arial Black'(n=1) win32sub='Regular'(n=25) w=900 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=900 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial Black' term=11 tail(cc=0,0=20,x=0) facesim=2
+family 'Tahoma' fonts=4
+ [0]  font: family='Tahoma'(n=1) face='Regular'(n=26) win32fam='Tahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=0
+ [1]  font: family='Tahoma'(n=1) face='Bold'(n=26) win32fam='Tahoma'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=0
+ [2]  font: family='Tahoma'(n=1) face='Oblique'(n=1) win32fam='Tahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=2
+ [3]  font: family='Tahoma'(n=1) face='Bold Oblique'(n=1) win32fam='Tahoma'(n=1) win32sub='Bold'(n=26) w=700 st=5 sy=1 sim=2 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) sys=00000001
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=700 it=1 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Tahoma' term=6 tail(cc=0,0=25,x=0) facesim=2
+private: AddFontResourceExW(FR_PRIVATE)=1
+private: GDI GetTextFace='Zahoma'
+clf private 'Zahoma' (shared factory) -> hr=88985002 out=NULL
+clf private 'Zahoma' (isolated factory) -> hr=88985002 out=NULL
+private: CreateFontFaceFromHdc hr=00000000
+  fcvt(private hdc face) hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Zahoma' term=6 tail(cc=0,0=25,x=0)
+private: RemoveFontResourceExW=1
+custom Zahoma families=1
+  font: family='Zahoma'(n=1) face='Regular'(n=26) win32fam='Zahoma'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Zahoma' term=6 tail(cc=0,0=25,x=0) sys=00000000
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Zahoma' term=6 tail(cc=0,0=25,x=0) facesim=0
+custom arial.ttf families=1
+  font: family='Arial'(n=1) face='Regular'(n=26) win32fam='Arial'(n=1) win32sub='Regular'(n=26) w=400 st=5 sy=0 sim=0 sym=0
+  cvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) sys=00000000
+  fcvt hr=00000000 h=0 wd=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=1 op=8 cp=0 q=0 pf=0 face='Arial' term=5 tail(cc=0,0=26,x=0) facesim=0
+null 1 CreateFontFromLOGFONT(NULL, &font) -> hr=80070057 created=NULL sys=cccccccc lf.wt=-858993460 lf.face0=cccc
+null 2 exit=c0000005
+null 3 ConvertFontToLOGFONT(NULL, &lf, &sys) -> hr=80070057 created=untouched sys=00000000 lf.wt=0 lf.face0=0000
+null 4 exit=c0000005
+null 5 exit=c0000005
+null 6 ConvertFontFaceToLOGFONT(NULL, &lf) -> hr=80070057 created=untouched sys=cccccccc lf.wt=0 lf.face0=0000
+null 7 exit=c0000005
+null 8 exit=c0000005
+done

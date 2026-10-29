@@ -1,0 +1,948 @@
+# d3d10_contract_probe x86
+# modules d3d10=1 d3d10_1=1 CreateDevice=1 CreateDevice1=1
+# device10=obj device10_1=obj
+
+== exp ==
+[exp] d3d10.dll: named: D3D10CompileEffectFromMemory D3D10CompileShader D3D10CreateBlob D3D10CreateDevice D3D10CreateDeviceAndSwapChain D3D10CreateEffectFromMemory D3D10CreateEffectPoolFromMemory D3D10CreateStateBlock D3D10DisassembleEffect D3D10DisassembleShader D3D10GetGeometryShaderProfile D3D10GetInputAndOutputSignatureBlob D3D10GetInputSignatureBlob D3D10GetOutputSignatureBlob D3D10GetPixelShaderProfile D3D10GetShaderDebugInfo D3D10GetVersion D3D10GetVertexShaderProfile D3D10PreprocessShader D3D10ReflectShader D3D10RegisterLayers D3D10StateBlockMaskDifference D3D10StateBlockMaskDisableAll D3D10StateBlockMaskDisableCapture D3D10StateBlockMaskEnableAll D3D10StateBlockMaskEnableCapture D3D10StateBlockMaskGetSetting D3D10StateBlockMaskIntersect D3D10StateBlockMaskUnion
+[exp] d3d10.dll: ordinal 1 = D3D10CompileEffectFromMemory
+[exp] d3d10.dll: ordinal 2 = D3D10CompileShader
+[exp] d3d10.dll: ordinal 3 = D3D10CreateBlob
+[exp] d3d10.dll: ordinal 4 = D3D10CreateDevice
+[exp] d3d10.dll: ordinal 5 = D3D10CreateDeviceAndSwapChain
+[exp] d3d10.dll: ordinal 6 = D3D10CreateEffectFromMemory
+[exp] d3d10.dll: ordinal 7 = D3D10CreateEffectPoolFromMemory
+[exp] d3d10.dll: ordinal 8 = D3D10CreateStateBlock
+[exp] d3d10.dll: ordinal 9 = D3D10DisassembleEffect
+[exp] d3d10.dll: ordinal 10 = D3D10DisassembleShader
+[exp] d3d10.dll: ordinal 11 = D3D10GetGeometryShaderProfile
+[exp] d3d10.dll: ordinal 12 = D3D10GetInputAndOutputSignatureBlob
+[exp] d3d10.dll: ordinal 13 = D3D10GetInputSignatureBlob
+[exp] d3d10.dll: ordinal 14 = D3D10GetOutputSignatureBlob
+[exp] d3d10.dll: ordinal 15 = D3D10GetPixelShaderProfile
+[exp] d3d10.dll: ordinal 16 = D3D10GetShaderDebugInfo
+[exp] d3d10.dll: ordinal 17 = D3D10GetVersion
+[exp] d3d10.dll: ordinal 18 = D3D10GetVertexShaderProfile
+[exp] d3d10.dll: ordinal 19 = D3D10PreprocessShader
+[exp] d3d10.dll: ordinal 20 = D3D10ReflectShader
+[exp] d3d10.dll: ordinal 21 = D3D10RegisterLayers
+[exp] d3d10.dll: ordinal 22 = D3D10StateBlockMaskDifference
+[exp] d3d10.dll: ordinal 23 = D3D10StateBlockMaskDisableAll
+[exp] d3d10.dll: ordinal 24 = D3D10StateBlockMaskDisableCapture
+[exp] d3d10.dll: ordinal 25 = D3D10StateBlockMaskEnableAll
+[exp] d3d10.dll: ordinal 26 = D3D10StateBlockMaskEnableCapture
+[exp] d3d10.dll: ordinal 27 = D3D10StateBlockMaskGetSetting
+[exp] d3d10.dll: ordinal 28 = D3D10StateBlockMaskIntersect
+[exp] d3d10.dll: ordinal 29 = D3D10StateBlockMaskUnion
+[exp] d3d10.dll: ordinal 30 absent
+[exp] d3d10_1.dll: named: D3D10CompileEffectFromMemory D3D10CompileShader D3D10CreateBlob D3D10CreateDevice1 D3D10CreateDeviceAndSwapChain1 D3D10CreateEffectFromMemory D3D10CreateEffectPoolFromMemory D3D10CreateStateBlock D3D10DisassembleEffect D3D10DisassembleShader D3D10GetGeometryShaderProfile D3D10GetInputAndOutputSignatureBlob D3D10GetInputSignatureBlob D3D10GetOutputSignatureBlob D3D10GetPixelShaderProfile D3D10GetShaderDebugInfo D3D10GetVersion D3D10GetVertexShaderProfile D3D10PreprocessShader D3D10ReflectShader D3D10RegisterLayers D3D10StateBlockMaskDifference D3D10StateBlockMaskDisableAll D3D10StateBlockMaskDisableCapture D3D10StateBlockMaskEnableAll D3D10StateBlockMaskEnableCapture D3D10StateBlockMaskGetSetting D3D10StateBlockMaskIntersect D3D10StateBlockMaskUnion
+[exp] d3d10_1.dll: ordinal 1 = D3D10CompileEffectFromMemory
+[exp] d3d10_1.dll: ordinal 2 = D3D10CompileShader
+[exp] d3d10_1.dll: ordinal 3 = D3D10CreateBlob
+[exp] d3d10_1.dll: ordinal 4 = D3D10CreateDevice1
+[exp] d3d10_1.dll: ordinal 5 = D3D10CreateDeviceAndSwapChain1
+[exp] d3d10_1.dll: ordinal 6 = D3D10CreateEffectFromMemory
+[exp] d3d10_1.dll: ordinal 7 = D3D10CreateEffectPoolFromMemory
+[exp] d3d10_1.dll: ordinal 8 = D3D10CreateStateBlock
+[exp] d3d10_1.dll: ordinal 9 = D3D10DisassembleEffect
+[exp] d3d10_1.dll: ordinal 10 = D3D10DisassembleShader
+[exp] d3d10_1.dll: ordinal 11 = D3D10GetGeometryShaderProfile
+[exp] d3d10_1.dll: ordinal 12 = D3D10GetInputAndOutputSignatureBlob
+[exp] d3d10_1.dll: ordinal 13 = D3D10GetInputSignatureBlob
+[exp] d3d10_1.dll: ordinal 14 = D3D10GetOutputSignatureBlob
+[exp] d3d10_1.dll: ordinal 15 = D3D10GetPixelShaderProfile
+[exp] d3d10_1.dll: ordinal 16 = D3D10GetShaderDebugInfo
+[exp] d3d10_1.dll: ordinal 17 = D3D10GetVersion
+[exp] d3d10_1.dll: ordinal 18 = D3D10GetVertexShaderProfile
+[exp] d3d10_1.dll: ordinal 19 = D3D10PreprocessShader
+[exp] d3d10_1.dll: ordinal 20 = D3D10ReflectShader
+[exp] d3d10_1.dll: ordinal 21 = D3D10RegisterLayers
+[exp] d3d10_1.dll: ordinal 22 = D3D10StateBlockMaskDifference
+[exp] d3d10_1.dll: ordinal 23 = D3D10StateBlockMaskDisableAll
+[exp] d3d10_1.dll: ordinal 24 = D3D10StateBlockMaskDisableCapture
+[exp] d3d10_1.dll: ordinal 25 = D3D10StateBlockMaskEnableAll
+[exp] d3d10_1.dll: ordinal 26 = D3D10StateBlockMaskEnableCapture
+[exp] d3d10_1.dll: ordinal 27 = D3D10StateBlockMaskGetSetting
+[exp] d3d10_1.dll: ordinal 28 = D3D10StateBlockMaskIntersect
+[exp] d3d10_1.dll: ordinal 29 = D3D10StateBlockMaskUnion
+[exp] d3d10_1.dll: ordinal 30 absent
+[exp] d3d10core.dll: named: D3D10CoreCreateDevice D3D10CoreGetVersion D3D10CoreGetSupportedVersions D3D10CoreRegisterLayers OpenAdapter10 OpenAdapter10_2 D3DKMTCloseAdapter D3DKMTQueryAdapterInfo
+[exp] d3d10core.dll: ordinals 1..40
+[exp] d3d10_1core.dll: named: D3D10CoreCreateDevice1 D3D10CoreGetVersion D3D10CoreGetSupportedVersions D3D10CoreRegisterLayers OpenAdapter10 OpenAdapter10_2 D3DKMTCloseAdapter D3DKMTQueryAdapterInfo
+[exp] d3d10_1core.dll: ordinals 1..40
+
+== ver ==
+[ver] d3d10.dll D3D10GetVersion=0x00041770
+[ver] d3d10.dll D3D10RegisterLayers=0x80004001
+[ver] d3d10_1.dll D3D10GetVersion=0x00041770
+[ver] d3d10_1.dll D3D10RegisterLayers=0x80004001
+[ver] d3d10core.dll D3D10CoreGetVersion=0x00041770
+
+== create ==
+[create] D3D10CreateDevice(hw) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(hw NULL out) hr=0x80070057 out=-
+[create] D3D10CreateDevice(sdk 0) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(sdk 28) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(sdk 30) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(sdk 32 (10.1)) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(sdk 7 (11)) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(reference) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(null driver) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(software NULL module) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(software kernel32) hr=0x8007007f out=NULL
+[create] D3D10CreateDevice(hw + software module) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(warp) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(type 4) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(type 6) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(adapter hw) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(adapter warp) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(adapter reference) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice(adapter null) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(adapter hw 10_1) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] adapter refcount before=1 with device=2 after=1
+[create] D3D10CreateDevice(flag 0x1) hr=0x00000000 out=obj flags=0x1 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x2) hr=0x887a002d out=NULL
+[create] D3D10CreateDevice(flag 0x4) hr=0x887a002d out=NULL
+[create] D3D10CreateDevice(flag 0x8) hr=0x00000000 out=obj flags=0x8 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x10) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x20) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x40) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x80) hr=0x00000000 out=obj flags=0x80 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x100) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x200) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x400) hr=0x887a002d out=NULL
+[create] D3D10CreateDevice(flag 0x800) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x1000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x2000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x4000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x8000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x10000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x20000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x40000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x80000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x100000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x200000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x400000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x800000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x1000000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x2000000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x4000000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x8000000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x10000000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x20000000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x40000000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice(flag 0x80000000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x1) hr=0x00000000 out=obj flags=0x1 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x2) hr=0x887a002d out=NULL
+[create] D3D10CreateDevice1(10_1 flag 0x4) hr=0x887a002d out=NULL
+[create] D3D10CreateDevice1(10_1 flag 0x8) hr=0x00000000 out=obj flags=0x8 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x10) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x20) hr=0x00000000 out=obj flags=0x20 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x40) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x80) hr=0x00000000 out=obj flags=0x80 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x100) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x200) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x400) hr=0x887a002d out=NULL
+[create] D3D10CreateDevice1(10_1 flag 0x800) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x1000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x2000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x4000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x8000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x10000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x20000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x40000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x80000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x100000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x200000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x400000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x800000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x1000000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x2000000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x4000000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x8000000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x10000000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x20000000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x40000000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 flag 0x80000000) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(level 0xa100) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(level 0xa000) hr=0x00000000 out=obj flags=0x0 level=0xa000 release=0
+[create] D3D10CreateDevice1(level 0x9300) hr=0x00000000 out=obj flags=0x0 level=0x9300 release=0
+[create] D3D10CreateDevice1(level 0x9200) hr=0x00000000 out=obj flags=0x0 level=0x9200 release=0
+[create] D3D10CreateDevice1(level 0x9100) hr=0x00000000 out=obj flags=0x0 level=0x9100 release=0
+[create] D3D10CreateDevice1(level 0xb000) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(level 0xb100) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(level 0x9000) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(level 0x1234) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(level 0x0) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(10_1 NULL out) hr=0x80070057 out=-
+[create] D3D10CreateDevice1(10_1 sdk 29) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(10_1 sdk 0) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(10_1 sdk 33) hr=0x80070057 out=NULL
+[create] D3D10CreateDevice1(10_1 warp) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 null) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 reference) hr=0x00000000 out=obj flags=0x0 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 singlethreaded) hr=0x00000000 out=obj flags=0x1 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 bgra) hr=0x00000000 out=obj flags=0x20 level=0xa100 release=0
+[create] D3D10CreateDevice1(10_1 debug) hr=0x887a002d out=NULL
+[create] D3D10CreateDevice: BGRA8 texture hr=0x80070057 CheckFormatSupport(BGRA8) hr=0x80004005 support=0x00000000 (B5G6R5) hr=0x80004005 support=0x00000000 flags=0x0
+[create] D3D10CreateDevice BGRA: BGRA8 texture hr=0x80070057 CheckFormatSupport(BGRA8) hr=0x80004005 support=0x00000000 (B5G6R5) hr=0x80004005 support=0x00000000 flags=0x0
+[create] D3D10CreateDevice1: BGRA8 texture hr=0x00000000 CheckFormatSupport(BGRA8) hr=0x00000000 support=0x017ef3f3 (B5G6R5) hr=0x00000000 support=0x0066f3f3 flags=0x0
+[create] D3D10CreateDevice1 BGRA: BGRA8 texture hr=0x00000000 CheckFormatSupport(BGRA8) hr=0x00000000 support=0x017ef3f3 (B5G6R5) hr=0x00000000 support=0x0066f3f3 flags=0x20
+[create] 10.1 API level 0xa100 bgra8 hr=0x00000000 misc=0x0 misc11=0x0 keyedmutex=0
+[create] 10.1 API level 0xa100 bgra8 keyedmutex 0x10 hr=0x80070057
+[create] 10.1 API level 0xa100 rgba8 keyedmutex 0x10 hr=0x80070057
+[create] 10.1 API level 0xa100 bgra8 gdi 0x20 hr=0x00000000 misc=0x20 misc11=0x200 keyedmutex=0
+[create] 10.1 API level 0xa100 bgra8 misc 0x100 hr=0x80070057
+[create] 10.1 API level 0xa100 bgra8 misc 0x200 hr=0x80070057
+[create] 10.1 API level 0xa100 b5g6r5 hr=0x00000000 misc=0x0 misc11=0x0 keyedmutex=0
+[create] 10.1 API level 0xa000 bgra8 hr=0x00000000 misc=0x0 misc11=0x0 keyedmutex=0
+[create] 10.1 API level 0xa000 bgra8 keyedmutex 0x10 hr=0x80070057
+[create] 10.1 API level 0xa000 rgba8 keyedmutex 0x10 hr=0x80070057
+[create] 10.1 API level 0xa000 bgra8 gdi 0x20 hr=0x00000000 misc=0x20 misc11=0x200 keyedmutex=0
+[create] 10.1 API level 0xa000 bgra8 misc 0x100 hr=0x80070057
+[create] 10.1 API level 0xa000 bgra8 misc 0x200 hr=0x80070057
+[create] 10.1 API level 0xa000 b5g6r5 hr=0x00000000 misc=0x0 misc11=0x0 keyedmutex=0
+[create] 10.1 API level 0x9300 bgra8 hr=0x00000000 misc=0x0 misc11=0x0 keyedmutex=0
+[create] 10.1 API level 0x9300 bgra8 keyedmutex 0x10 hr=0x80070057
+[create] 10.1 API level 0x9300 rgba8 keyedmutex 0x10 hr=0x80070057
+[create] 10.1 API level 0x9300 bgra8 gdi 0x20 hr=0x00000000 misc=0x20 misc11=0x200 keyedmutex=0
+[create] 10.1 API level 0x9300 bgra8 misc 0x100 hr=0x80070057
+[create] 10.1 API level 0x9300 bgra8 misc 0x200 hr=0x80070057
+[create] 10.1 API level 0x9300 b5g6r5 hr=0x00000000 misc=0x0 misc11=0x0 keyedmutex=0
+[create] 10.1 API level 0x9100 bgra8 hr=0x00000000 misc=0x0 misc11=0x0 keyedmutex=0
+[create] 10.1 API level 0x9100 bgra8 keyedmutex 0x10 hr=0x80070057
+[create] 10.1 API level 0x9100 rgba8 keyedmutex 0x10 hr=0x80070057
+[create] 10.1 API level 0x9100 bgra8 gdi 0x20 hr=0x00000000 misc=0x20 misc11=0x200 keyedmutex=0
+[create] 10.1 API level 0x9100 bgra8 misc 0x100 hr=0x80070057
+[create] 10.1 API level 0x9100 bgra8 misc 0x200 hr=0x80070057
+[create] 10.1 API level 0x9100 b5g6r5 hr=0x00000000 misc=0x0 misc11=0x0 keyedmutex=0
+[create] device count=1
+[create] QI(ID3D11Device) hr=0x00000000 count=2
+[create] ID3D11Device level=0xa000 flags=0x0
+[create] final release=0
+
+== qi ==
+[qi] device10: answers: IUnknown 10Device 10Device1 10Multithread 11Device 11Device1 11Device2 11Device3 11Device4 11Device5 DXGIObject DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4
+[qi] device10: same pointer as the object: 10Device 10Device1
+[qi] device10: IUnknown is self=0
+[qi] device10_1: answers: IUnknown 10Device 10Device1 10Multithread 11Device 11Device1 11Device2 11Device3 11Device4 11Device5 DXGIObject DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4
+[qi] device10_1: same pointer as the object: 10Device 10Device1
+[qi] device10_1: IUnknown is self=0
+[qi] device10 singlethreaded: answers: IUnknown 10Device 10Device1 11Device 11Device1 11Device2 11Device3 11Device4 11Device5 DXGIObject DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4
+[qi] device10 singlethreaded: same pointer as the object: 10Device 10Device1
+[qi] device10 singlethreaded: IUnknown is self=0
+[qi] device10.as_IDXGIDevice: answers: IUnknown 10Device 10Device1 10Multithread 11Device 11Device1 11Device2 11Device3 11Device4 11Device5 DXGIObject DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4
+[qi] device10.as_IDXGIDevice: same pointer as the object: DXGIObject DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4
+[qi] device10.as_IDXGIDevice: IUnknown is self=0
+[qi] device10.as_ID3D11Device: answers: IUnknown 10Device 10Device1 10Multithread 11Device 11Device1 11Device2 11Device3 11Device4 11Device5 DXGIObject DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4
+[qi] device10.as_ID3D11Device: same pointer as the object: 11Device 11Device1 11Device2 11Device3 11Device4 11Device5
+[qi] device10.as_ID3D11Device: IUnknown is self=0
+[qi] device10 ID3D11Device GetImmediateContext=obj
+[qi] device10.immediate_context: answers: IUnknown 10Multithread 11DeviceContext 11DeviceContext1 11DeviceContext2 11DeviceContext3 11DeviceContext4 UserDefinedAnnotation 11VideoContext 11DeviceChild
+[qi] device10.immediate_context: same pointer as the object: 11DeviceContext 11DeviceContext1 11DeviceContext2 11DeviceContext3 11DeviceContext4 11DeviceChild
+[qi] device10.immediate_context: IUnknown is self=0
+[qi] IDXGIDevice::GetAdapter hr=0x00000000 out=obj
+[qi] IDXGIDevice -> ID3D10Device is the device=1
+[qi] ID3D10Multithread hr=0x00000000
+[qi] ID3D10Multithread GetMultithreadProtected=1
+[qi] ID3D10Multithread SetMultithreadProtected(TRUE) previous=1
+[qi] ID3D10Multithread GetMultithreadProtected=1
+
+== obj ==
+[obj] CreateBuffer(vb default) hr=0x00000000 out=obj desc={64,0,0x1,0x0,0x0} desc11={64,0,0x1,0x0,0x0,0}
+[obj] CreateBuffer(vb default data) hr=0x00000000 out=obj desc={64,0,0x1,0x0,0x0} desc11={64,0,0x1,0x0,0x0,0}
+[obj] CreateBuffer(vb NULL out) hr=0x00000001 out=-
+[obj] CreateBuffer(zero bytes) hr=0x80070057 out=NULL
+[obj] CreateBuffer(cb 16) hr=0x00000000 out=obj desc={16,0,0x4,0x0,0x0} desc11={16,0,0x4,0x0,0x0,0}
+[obj] CreateBuffer(cb 20) hr=0x80070057 out=NULL
+[obj] CreateBuffer(cb 65536) hr=0x00000000 out=obj desc={65536,0,0x4,0x0,0x0} desc11={65536,0,0x4,0x0,0x0,0}
+[obj] CreateBuffer(cb 65552) hr=0x00000000 out=obj desc={65552,0,0x4,0x0,0x0} desc11={65552,0,0x4,0x0,0x0,0}
+[obj] CreateBuffer(cb|vb) hr=0x80070057 out=NULL
+[obj] CreateBuffer(cb dynamic) hr=0x00000000 out=obj desc={64,2,0x4,0x10000,0x0} desc11={64,2,0x4,0x10000,0x0,0}
+[obj] CreateBuffer(dynamic no cpu) hr=0x80070057 out=NULL
+[obj] CreateBuffer(dynamic read) hr=0x80070057 out=NULL
+[obj] CreateBuffer(immutable no data) hr=0x80070057 out=NULL
+[obj] CreateBuffer(immutable data) hr=0x00000000 out=obj desc={64,1,0x1,0x0,0x0} desc11={64,1,0x1,0x0,0x0,0}
+[obj] CreateBuffer(staging) hr=0x00000000 out=obj desc={64,3,0x0,0x30000,0x0} desc11={64,3,0x0,0x30000,0x0,0}
+[obj] CreateBuffer(staging bound) hr=0x80070057 out=NULL
+[obj] CreateBuffer(so|vb) hr=0x00000000 out=obj desc={64,0,0x11,0x0,0x0} desc11={64,0,0x11,0x0,0x0,0}
+[obj] CreateBuffer(srv buffer) hr=0x00000000 out=obj desc={64,0,0x8,0x0,0x0} desc11={64,0,0x8,0x0,0x0,0}
+[obj] CreateBuffer(rt buffer) hr=0x00000000 out=obj desc={64,0,0x20,0x0,0x0} desc11={64,0,0x20,0x0,0x0,0}
+[obj] CreateBuffer(ds buffer) hr=0x80070057 out=NULL
+[obj] CreateBuffer(bind 0x80 (uav)) hr=0x80070057 out=NULL
+[obj] CreateBuffer(bind 0) hr=0x00000000 out=obj desc={64,0,0x0,0x0,0x0} desc11={64,0,0x0,0x0,0x0,0}
+[obj] CreateBuffer(usage 4) hr=0x80070057 out=NULL
+[obj] CreateBuffer(misc shared) hr=0x00000000 out=obj desc={64,0,0x1,0x0,0x2} desc11={64,0,0x1,0x0,0x2,0}
+[obj] CreateBuffer(misc 0x8) hr=0x80070057 out=NULL
+[obj] CreateBuffer(misc 0x40 (11 structured)) hr=0x80070057 out=NULL
+[obj] CreateBuffer(misc 0x20 (10 gdi)) hr=0x80070057 out=NULL
+[obj] CreateBuffer(misc 0x10 (10 keyedmutex)) hr=0x80070057 out=NULL
+[obj] CreateBuffer(cpu 0x1) hr=0x80070057 out=NULL
+[obj] CreateBuffer(NULL desc) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(rgba8 rt|srv) hr=0x00000000 out=obj desc={16x16 mips=1 arr=1 fmt=28 s=1/0 u=0 b=0x28 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(mips 0) hr=0x00000000 out=obj desc={16x16 mips=5 arr=1 fmt=28 s=1/0 u=0 b=0x8 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(gen mips) hr=0x00000000 out=obj desc={16x16 mips=5 arr=1 fmt=28 s=1/0 u=0 b=0x28 c=0x0 m=0x1} misc11=0x1
+[obj] CreateTexture2D(cube) hr=0x00000000 out=obj desc={16x16 mips=1 arr=6 fmt=28 s=1/0 u=0 b=0x8 c=0x0 m=0x4} misc11=0x4
+[obj] CreateTexture2D(cube array 12) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(shared) hr=0x00000000 out=obj desc={16x16 mips=1 arr=1 fmt=28 s=1/0 u=0 b=0x28 c=0x0 m=0x2} misc11=0x2
+[obj] CreateTexture2D(keyedmutex 0x10) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(gdi 0x20) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(misc 0x100 (11 keyedmutex)) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(misc 0x8) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(misc 0x80 (11 clamp)) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(depth) hr=0x00000000 out=obj desc={16x16 mips=1 arr=1 fmt=45 s=1/0 u=0 b=0x40 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(depth typeless srv) hr=0x00000000 out=obj desc={16x16 mips=1 arr=1 fmt=44 s=1/0 u=0 b=0x48 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(msaa 4) hr=0x00000000 out=obj desc={16x16 mips=1 arr=1 fmt=28 s=4/0 u=0 b=0x20 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(staging) hr=0x00000000 out=obj desc={16x16 mips=1 arr=1 fmt=28 s=1/0 u=3 b=0x0 c=0x20000 m=0x0} misc11=0x0
+[obj] CreateTexture2D(uav bind 0x80) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(8192) hr=0x00000000 out=obj desc={8192x8192 mips=1 arr=1 fmt=61 s=1/0 u=0 b=0x8 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(8193) hr=0x00000000 out=obj desc={8193x1 mips=1 arr=1 fmt=61 s=1/0 u=0 b=0x8 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(array 512) hr=0x00000000 out=obj desc={4x4 mips=1 arr=512 fmt=61 s=1/0 u=0 b=0x8 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(array 513) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(bc1) hr=0x00000000 out=obj desc={16x16 mips=1 arr=1 fmt=71 s=1/0 u=0 b=0x8 c=0x0 m=0x0} misc11=0x0
+[obj] CreateTexture2D(gdi 0x20 bgra) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(bgra8 (bgra flag off)) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(NULL desc) hr=0x80070057 out=NULL
+[obj] CreateTexture2D(NULL out) hr=0x00000001
+[obj] CreateTexture1D hr=0x00000000
+[obj] Texture1D desc={16 mips=1 arr=2 fmt=28 u=0 b=0x28 c=0x0 m=0x0} type=2
+[qi] tex1d: answers: IUnknown 10DeviceChild 10Resource 10Texture1D 11DeviceChild 11Resource 11Texture1D DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1
+[qi] tex1d: same pointer as the object: 10DeviceChild 10Resource 10Texture1D
+[qi] tex1d: IUnknown is self=0
+[obj] tex1d GetDevice is device10=1 count 2->3
+[obj] tex1d 11 facet GetDevice is the device's ID3D11Device=1
+[obj] CreateTexture3D hr=0x00000000
+[obj] Texture3D desc={8x8x4 mips=1 fmt=28 u=0 b=0x28 c=0x0 m=0x0} type=4
+[qi] tex3d: answers: IUnknown 10DeviceChild 10Resource 10Texture3D 11DeviceChild 11Resource 11Texture3D 11Texture3D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1
+[qi] tex3d: same pointer as the object: 10DeviceChild 10Resource 10Texture3D
+[qi] tex3d: IUnknown is self=0
+[obj] vb count=1 device count=4
+[obj] vb GetType=1 eviction=0x78000000
+[obj] vb eviction after set=0x28000000 via 11=0x28000000
+[obj] vb 11 facet -> ID3D10Buffer is the same pointer=1
+[qi] buffer: answers: IUnknown 10DeviceChild 10Resource 10Buffer 11DeviceChild 11Resource 11Buffer DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2
+[qi] buffer: same pointer as the object: 10DeviceChild 10Resource 10Buffer
+[qi] buffer: IUnknown is self=0
+[obj] buffer GetDevice is device10=1 count 4->5
+[obj] buffer 11 facet GetDevice is the device's ID3D11Device=1
+[qi] tex2d: answers: IUnknown 10DeviceChild 10Resource 10Texture2D 11DeviceChild 11Resource 11Texture2D 11Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2
+[qi] tex2d: same pointer as the object: 10DeviceChild 10Resource 10Texture2D
+[qi] tex2d: IUnknown is self=0
+[qi] tex2d_depth: answers: IUnknown 10DeviceChild 10Resource 10Texture2D 11DeviceChild 11Resource 11Texture2D 11Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2
+[qi] tex2d_depth: same pointer as the object: 10DeviceChild 10Resource 10Texture2D
+[qi] tex2d_depth: IUnknown is self=0
+[obj] tex2d GetDevice is device10=1 count 4->5
+[obj] tex2d 11 facet GetDevice is the device's ID3D11Device=1
+[obj] CreateShaderResourceView(NULL desc) hr=0x00000000
+[obj] CreateRenderTargetView(NULL desc) hr=0x00000000
+[obj] CreateDepthStencilView(NULL desc) hr=0x00000000
+[qi] srv: answers: IUnknown 10DeviceChild 10View 10SRV 10SRV1 11DeviceChild 11View 11SRV 11SRV1 DXGIObject DXGIDeviceSubObject DXGISurface
+[qi] srv: same pointer as the object: 10DeviceChild 10View 10SRV 10SRV1
+[qi] srv: IUnknown is self=0
+[qi] rtv: answers: IUnknown 10DeviceChild 10View 10RTV 11DeviceChild 11View 11RTV 11RTV1
+[qi] rtv: same pointer as the object: 10DeviceChild 10View 10RTV
+[qi] rtv: IUnknown is self=0
+[qi] dsv: answers: IUnknown 10DeviceChild 10View 10DSV 11DeviceChild 11View 11DSV
+[qi] dsv: same pointer as the object: 10DeviceChild 10View 10DSV
+[qi] dsv: IUnknown is self=0
+[obj] srv GetDevice is device10=1 count 7->8
+[obj] srv 11 facet GetDevice is the device's ID3D11Device=1
+[obj] srv desc fmt=28 dim=4 mip=0 levels=1
+[obj] srv GetResource is the tex=1 count 1->2
+[obj] srv GetDesc1 fmt=28 dim=4
+[obj] dsv desc fmt=45 dim=3 mip=0
+[obj] dsv 11 desc fmt=45 dim=3 flags=0x0
+[obj] SRV explicit tex2d hr=0x00000000 out=obj
+[obj] SRV mips out of range hr=0x80070057 out=NULL
+[obj] SRV dim 10 via CreateShaderResourceView hr=0x80070057 out=NULL
+[obj] SRV dim 11 hr=0x80070057 out=NULL
+[obj] SRV NULL out hr=0x00000001
+[obj] SRV NULL resource hr=0x80070057 out=NULL
+[obj] SRV buffer hr=0x00000000 out=obj desc fmt=41 dim=1 off=2 width=8
+[obj] DSV mip 1 of 1 hr=0x80070057 out=NULL
+[obj] RTV explicit hr=0x00000000 out=obj desc fmt=28 dim=4 mip=0
+[obj] RTV of a depth texture hr=0x80070057 out=NULL
+[obj] 10_1 CreateShaderResourceView1(cube array) hr=0x00000000 out=obj desc1 dim=10 cubes=2 desc dim=10
+[obj] 10_1 CreateShaderResourceView1(NULL desc, cube x2) hr=0x00000000 out=obj dim=10
+[obj] 10_0 cube array texture created=0
+[obj] CreateBlendState hr=0x00000000 out=obj
+[obj] blend GetDesc a2c=0 enable=10100000 src=5 dst=6 op=1 srcA=2 dstA=1 opA=1 mask=f3ffffff
+[obj] blend same desc -> same object=1
+[obj] blend 11 desc independent=1 rt0={1 5 6 1 2 1 1 f} rt1={0 3} rt2={1 5 f} rt7={0 2 f}
+[qi] blend: answers: IUnknown 10DeviceChild 10BlendState 10BlendState1 11DeviceChild 11BlendState 11BlendState1
+[qi] blend: same pointer as the object: 10DeviceChild 10BlendState 10BlendState1
+[qi] blend: IUnknown is self=0
+[obj] blend GetDevice is device10=1 count 8->9
+[obj] blend 11 facet GetDevice is the device's ID3D11Device=1
+[obj] default blend 11 desc independent=0 rt7={0 2 1 f}
+[obj] all-enabled blend 11 desc independent=0 rt0={1 5 6} rt7={1 5 6 f}
+[obj] disabled blend GetDesc src=2 dst=1; 11 desc independent=0 rt0={0 2 1} rt7={2 1}
+[obj] CreateBlendState(src 0, disabled) hr=0x00000000 out=obj
+[obj] src 0 GetDesc src=2
+[obj] CreateBlendState(src 0, RT1 enabled) hr=0x80070057 out=untouched
+[obj] CreateBlendState(src1 color) hr=0x00000000 out=obj
+[obj] CreateBlendState(alpha src = SRC_COLOR) hr=0x80070057 out=untouched
+[obj] CreateBlendState(NULL) hr=0x80070057 out=untouched
+[obj] CreateBlendState(NULL out) hr=0x00000001
+[obj] CreateBlendState1(independent) hr=0x00000000 out=obj desc1 independent=1 rt3={1 5 6} desc enable=0001 src=5 dst=6
+[obj] 10_1 CreateBlendState answers BlendState1 hr=0x00000000
+[obj] CreateRasterizerState hr=0x00000000 out=obj desc={3 3 0 3 0.5 1.5 1 0 0 0}
+[qi] rasterizer: answers: IUnknown 10DeviceChild 10RasterizerState 11DeviceChild 11RasterizerState 11RasterizerState1 11RasterizerState2
+[qi] rasterizer: same pointer as the object: 10DeviceChild 10RasterizerState
+[qi] rasterizer: IUnknown is self=0
+[obj] CreateRasterizerState(fill 1) hr=0x80070057 out=NULL
+[obj] CreateDepthStencilState hr=0x00000000 out=obj desc={1 1 2 1 f0 f 1 7 3 3}
+[qi] depth_stencil: answers: IUnknown 10DeviceChild 10DepthStencilState 11DeviceChild 11DepthStencilState
+[qi] depth_stencil: same pointer as the object: 10DeviceChild 10DepthStencilState
+[qi] depth_stencil: IUnknown is self=0
+[obj] CreateSamplerState hr=0x00000000 out=obj desc={0x55 1 3 4 0.25 8 1 0.4 10}
+[qi] sampler: answers: IUnknown 10DeviceChild 10SamplerState 11DeviceChild 11SamplerState
+[qi] sampler: same pointer as the object: 10DeviceChild 10SamplerState
+[qi] sampler: IUnknown is self=0
+[obj] CreateSamplerState(TEXT_1BIT) hr=0x80070057 out=NULL
+[obj] CreateSamplerState(aniso 17, linear) hr=0x80070057 out=NULL
+[obj] CreateVertexShader(vs_4_0) hr=0x00000000 out=obj
+[qi] vertex_shader: answers: IUnknown 10DeviceChild 10VertexShader 11DeviceChild 11VertexShader
+[qi] vertex_shader: same pointer as the object: 10DeviceChild 10VertexShader
+[qi] vertex_shader: IUnknown is self=0
+[obj] 10_0 CreateVertexShader(vs_4_1) hr=0x80070057 out=NULL
+[obj] 10_0 CreateVertexShader(vs_5_0) hr=0x80070057 out=NULL
+[obj] CreateVertexShader(ps bytecode) hr=0x80070057 out=NULL
+[obj] 10_0 CreateVertexShader(vs_4_0_level_9_3) hr=0x00000000 out=obj
+[obj] CreateVertexShader(truncated) hr=0x80070057 out=NULL
+[obj] CreateVertexShader(NULL out) hr=0x00000001
+[obj] 10_1 CreateVertexShader(vs_4_1) hr=0x00000000 out=obj
+[obj] CreatePixelShader hr=0x00000000
+[qi] pixel_shader: answers: IUnknown 10DeviceChild 10PixelShader 11DeviceChild 11PixelShader
+[qi] pixel_shader: same pointer as the object: 10DeviceChild 10PixelShader
+[qi] pixel_shader: IUnknown is self=0
+[obj] CreateGeometryShader hr=0x00000000
+[qi] geometry_shader: answers: IUnknown 10DeviceChild 10GeometryShader 11DeviceChild 11GeometryShader
+[qi] geometry_shader: same pointer as the object: 10DeviceChild 10GeometryShader
+[qi] geometry_shader: IUnknown is self=0
+[obj] geometry_shader GetDevice is device10=1 count 10->11
+[obj] geometry_shader 11 facet GetDevice is the device's ID3D11Device=1
+[obj] CreateGeometryShaderWithStreamOutput hr=0x00000000 out=obj
+[obj] CreateGeometryShaderWithStreamOutput(vs bytecode) hr=0x00000000 out=obj
+[obj] CreateGeometryShaderWithStreamOutput(stride 28 < 32) hr=0x80070057 out=NULL
+[obj] CreateGeometryShaderWithStreamOutput(stride 48) hr=0x00000000 out=obj
+[obj] CreateGeometryShaderWithStreamOutput(two slots, stride 0) hr=0x00000000 out=obj
+[obj] CreateGeometryShaderWithStreamOutput(slot 1 has two entries) hr=0x80070057 out=NULL
+[obj] CreateGeometryShaderWithStreamOutput(unknown semantic) hr=0x80070057 out=NULL
+[obj] CreateGeometryShaderWithStreamOutput(gap entry) hr=0x00000000 out=obj
+[obj] CreateInputLayout hr=0x00000000 out=obj
+[qi] input_layout: answers: IUnknown 10DeviceChild 10InputLayout 11DeviceChild 11InputLayout
+[qi] input_layout: same pointer as the object: 10DeviceChild 10InputLayout
+[qi] input_layout: IUnknown is self=0
+[obj] CreateInputLayout(missing COLOR) hr=0x80070057 out=NULL
+[obj] CreateQuery(0) hr=0x00000000 out=obj size=4 desc={0,0}
+[obj] CreatePredicate(0) hr=0x80070057 out=NULL
+[obj] CreateQuery(1) hr=0x00000000 out=obj size=8 desc={1,0}
+[obj] CreatePredicate(1) hr=0x80070057 out=NULL
+[obj] CreateQuery(2) hr=0x00000000 out=obj size=8 desc={2,0}
+[obj] CreatePredicate(2) hr=0x80070057 out=NULL
+[obj] CreateQuery(3) hr=0x00000000 out=obj size=16 desc={3,0}
+[obj] CreatePredicate(3) hr=0x80070057 out=NULL
+[obj] CreateQuery(4) hr=0x00000000 out=obj size=64 desc={4,0}
+[obj] CreatePredicate(4) hr=0x80070057 out=NULL
+[obj] CreateQuery(5) hr=0x00000000 out=obj size=4 desc={5,0}
+[obj] CreatePredicate(5) hr=0x00000000 out=obj
+[obj] CreateQuery(6) hr=0x00000000 out=obj size=16 desc={6,0}
+[obj] CreatePredicate(6) hr=0x80070057 out=NULL
+[obj] CreateQuery(7) hr=0x00000000 out=obj size=4 desc={7,0}
+[obj] CreatePredicate(7) hr=0x00000000 out=obj
+[obj] CreateQuery(8) hr=0x80070057 out=NULL
+[obj] CreatePredicate(8) hr=0x80070057 out=NULL
+[obj] CreateQuery(occlusion, PREDICATEHINT) hr=0x80070057 out=NULL
+[qi] predicate: answers: IUnknown 10DeviceChild 10Asynchronous 10Query 10Predicate 11DeviceChild 11Asynchronous 11Query 11Query1 11Predicate
+[qi] predicate: same pointer as the object: 10DeviceChild 10Asynchronous 10Query 10Predicate
+[qi] predicate: IUnknown is self=0
+[qi] query_event: answers: IUnknown 10DeviceChild 10Asynchronous 10Query 11DeviceChild 11Asynchronous 11Query 11Query1
+[qi] query_event: same pointer as the object: 10DeviceChild 10Asynchronous 10Query
+[qi] query_event: IUnknown is self=0
+[obj] query_event GetDevice is device10=1 count 8->9
+[obj] query_event 11 facet GetDevice is the device's ID3D11Device=1
+[obj] CreateQuery(NULL desc) hr=0x80070057 out=NULL
+[obj] CreateQuery(NULL out) hr=0x00000001
+[obj] device count after releasing everything=1
+
+== map ==
+[map] dynamic vb WRITE_DISCARD hr=0x00000000 out=obj
+[map] dynamic vb WRITE_NO_OVERWRITE hr=0x00000000 out=obj
+[map] dynamic vb WRITE hr=0x80070057 out=NULL
+[map] dynamic vb READ hr=0x80070057 out=NULL
+[map] dynamic cb WRITE_DISCARD hr=0x00000000 out=obj
+[map] dynamic cb WRITE_NO_OVERWRITE hr=0x00000000 out=obj
+[map] default vb WRITE_DISCARD hr=0x80070057 out=NULL
+[map] default vb READ hr=0x80070057 out=NULL
+[map] staging READ hr=0x00000000 out=obj
+[map] staging WRITE hr=0x00000000 out=obj
+[map] staging READ_WRITE hr=0x00000000 out=obj
+[map] staging WRITE_DISCARD hr=0x80070057 out=NULL
+[map] staging type 0 hr=0x80070057 out=NULL
+[map] staging type 6 hr=0x80070057 out=NULL
+[map] staging READ flags 0x1 hr=0x80070057 out=NULL
+[map] staging READ DO_NOT_WAIT hr=0x00000000 out=obj
+[map] staging mapped twice hr1=0x00000000 hr2=0x00000000 out2=obj
+[map] Unmap of an unmapped buffer returned
+[map] staging after CopyResource: 0 1 2 3 .. 63
+[map] staging after dynamic write: 0x5a 0x5a
+[map] UpdateSubresource box: 7 200 207 16
+[map] CopySubresourceRegion: 0 1 2 3
+[map] tex2d staging READ hr=0x00000000 pitch=64 [1][2]=0xff000012
+[map] tex2d staging mip1 READ hr=0x00000000 pitch=32
+[map] tex2d staging sub 2 (out of range) hr=0x80070057 pdata=NULL
+[map] tex2d default READ hr=0x80070057
+[map] tex2d dynamic WRITE_DISCARD hr=0x00000000 pitch=64
+[map] tex2d dynamic WRITE_NO_OVERWRITE hr=0x80070057
+[map] tex2d dynamic -> staging row 3 byte 0x43
+[map] staging write round trip 0x11223344
+[map] tex1d staging READ_WRITE hr=0x00000000 out=obj
+[map] tex3d staging READ hr=0x00000000 row=32 depth=128
+
+== draw ==
+[draw] clear pixel=0xffff0000
+[draw] vs/ps pixel=0xff4080ff
+[draw] occlusion hr=0x00000000 samples=256
+[draw] occlusion GetData(size 4) hr=0x80070057
+[draw] occlusion GetData(NULL,0) hr=0x00000000
+[draw] pipeline stats hr=0x00000000 ia=3/1 vs=3 gs=0/0 c=1/3 ps=288
+[draw] pipeline stats GetData(D3D11 size 88) hr=0x80070057
+[draw] event hr=0x00000000 done=1
+[draw] tinted pixel=0xff408000
+[draw] gs pixel=0xffff8000
+[draw] texture pixel=0xff804000
+[draw] blend pixel=0xffff2000
+[draw] viewport (5,5)=0xff408000 (1,1)=0xffff0000
+[draw] scissor (2,2)=0xff408000 (12,12)=0xffff0000
+[draw] depth 0.25 LESS pixel=0xffff0000
+[draw] depth 0.75 LESS pixel=0xff408000
+[draw] empty predicate hr=0x00000000 result=0
+[draw] predicated (FALSE, no samples) pixel=0x00000000
+[draw] predicated clear pixel=0x00000000
+[draw] so stats hr=0x00000000 written=1 needed=1 size=16
+[draw] so vertex0 pos=(-1 -1 0.5 1) col=(2 1 0.5 2) vertex3 x=0
+[draw] DrawAuto pixel=0xff80ff00
+[draw] DrawIndexed pixel=0xff408000
+[draw] DrawIndexedInstanced pixel=0xff408000
+[draw] DrawInstanced pixel=0xff408000
+[draw] GenerateMips mip2=0xff0000ff
+[draw] ResolveSubresource pixel=0xff00ff00
+
+== getset ==
+[getset] defaults topo=0 blend=NULL factor=1,1,1,1 mask=0xffffffff dss=NULL ref=0 viewports=0 scissors=0 pred=NULL value=0
+[getset] text filter size default=0x0
+[getset] text filter size after set 7x3=0x0
+[getset] exception mode=0x0
+[getset] SetExceptionMode(1) hr=0x00000000 mode=0x1
+[getset] SetExceptionMode(2) hr=0x80070057 mode=0x1
+[getset] GetDeviceRemovedReason=0x00000000
+[getset] vb count after bind 1->1
+[getset] IAGetVertexBuffers slot2=NULL slot3 same=1 stride=12 offset=4 slot4 same=1 stride=16 offset=8 count=2
+[getset] IAGetIndexBuffer same=1 fmt=42 offset=12
+[getset] VSGetConstantBuffers slot13 same=1 slot14=NULL
+[getset] GSGetConstantBuffers same=1
+[getset] PSGetConstantBuffers same=1
+[getset] SOGetTargets slot0 same=1 offset=4294967295 slot1=NULL offset=4294967295 slot3 offset=0
+[getset] SOGetTargets(NULL offsets) slot0 same=1
+[getset] after SOSetTargets(1, offset 16): offsets=4294967295,0,0,0 slot0 same=1
+[getset] after SOSetTargets(1, NULL): offsets=4294967295,0,0,0
+[getset] after SOSetTargets(0): offsets=0,0,0,0
+[getset] RSGetViewports count=2 n3=2 vp0={1 2 30 40 0.25 0.75} vp1={-5 -6 7 8} vp2.x=0x0
+[getset] RSGetViewports(1 of 2) n=1 vp0.w=30 vp1.x=0xcccccccc
+[getset] RSGetScissorRects n=2 r1={5 6 7 8}
+[getset] topology=11
+[getset] topology after setting 33=33
+[getset] OMGetBlendState same=1 factor=0.1,0.2,0.3,0.4 mask=0xff0f
+[getset] OMSetBlendState(NULL factor) -> factor=1,1,1,1
+[getset] OMGetBlendState(NULL,NULL,NULL) returned
+[getset] OMGetDepthStencilState same=1 ref=0xab
+[getset] OMGetRenderTargets rt0=NULL rt1 same=1 rt2=NULL dsv same=1
+[getset] SRV of a bound render target: PSGetShaderResources=NULL
+[getset] VSGetShaderResources slot127 same=1
+[getset] GSGetShaderResources same=1
+[getset] PSGetSamplers slot15 same=1
+[getset] VSGetSamplers same=1
+[getset] GSGetSamplers same=1
+[getset] shaders same vs=1 ps=1 gs=1 il=1
+[getset] RSGetState same=1
+[getset] GetPredication same=1 value=1
+[getset] after ClearState vs=NULL topo=0 vb=NULL stride=0 offset=0 viewports=0 textfilter=0x0
+[getset] after ClearState vb stride=0 offset=0
+[getset] device SetPrivateData hr=0x00000000
+[getset] device private data via D3D11 hr=0x00000000 size=5
+[getset] device private data via DXGI hr=0x00000000 size=5
+[getset] buffer private data via D3D11 hr=0x00000000 value=0x1234
+[getset] buffer GetPrivateData(missing) hr=0x887a0002 size=0
+[getset] SetPrivateDataInterface hr=0x00000000 vb1 count=2
+[getset] after delete vb1 count=1
+[getset] Flush returned
+
+== fmt ==
+[fmt] 0 d3d10 hr=0x00000000 support=0x00020001 d3d11 hr=0x00000000 support=0x00020001
+[fmt] 2 d3d10 hr=0x00000000 support=0x0076f3fb d3d11 hr=0x00000000 support=0x0076f3fb
+[fmt] 6 d3d10 hr=0x00000000 support=0x0076f3fb d3d11 hr=0x00000000 support=0x0076f3fb
+[fmt] 10 d3d10 hr=0x00000000 support=0x007ef3f3 d3d11 hr=0x00000000 support=0x007ef3f3
+[fmt] 16 d3d10 hr=0x00000000 support=0x0076f3fb d3d11 hr=0x00000000 support=0x0076f3fb
+[fmt] 24 d3d10 hr=0x00000000 support=0x007ef3f3 d3d11 hr=0x00000000 support=0x007ef3f3
+[fmt] 26 d3d10 hr=0x00000000 support=0x0066f3f3 d3d11 hr=0x00000000 support=0x0066f3f3
+[fmt] 28 d3d10 hr=0x00000000 support=0x007ef3f3 d3d11 hr=0x00000000 support=0x007ef3f3
+[fmt] 29 d3d10 hr=0x00000000 support=0x007ef3f0 d3d11 hr=0x00000000 support=0x007ef3f0
+[fmt] 40 d3d10 hr=0x00000000 support=0x003310b0 d3d11 hr=0x00000000 support=0x003310b0
+[fmt] 41 d3d10 hr=0x00000000 support=0x0076f7fb d3d11 hr=0x00000000 support=0x0076f7fb
+[fmt] 45 d3d10 hr=0x00000000 support=0x003310b0 d3d11 hr=0x00000000 support=0x003310b0
+[fmt] 49 d3d10 hr=0x00000000 support=0x0076f3f3 d3d11 hr=0x00000000 support=0x0076f3f3
+[fmt] 54 d3d10 hr=0x00000000 support=0x0076f3f3 d3d11 hr=0x00000000 support=0x0076f3f3
+[fmt] 56 d3d10 hr=0x00000000 support=0x0076f7f3 d3d11 hr=0x00000000 support=0x0076f7f3
+[fmt] 57 d3d10 hr=0x00000000 support=0x007251f7 d3d11 hr=0x00000000 support=0x007251f7
+[fmt] 61 d3d10 hr=0x00000000 support=0x0076f3f3 d3d11 hr=0x00000000 support=0x0076f3f3
+[fmt] 65 d3d10 hr=0x00000000 support=0x0066f3f0 d3d11 hr=0x00000000 support=0x0066f3f0
+[fmt] 67 d3d10 hr=0x00000000 support=0x000213f0 d3d11 hr=0x00000000 support=0x000213f0
+[fmt] 71 d3d10 hr=0x00000000 support=0x001213e0 d3d11 hr=0x00000000 support=0x001213e0
+[fmt] 77 d3d10 hr=0x00000000 support=0x001213e0 d3d11 hr=0x00000000 support=0x001213e0
+[fmt] 80 d3d10 hr=0x00000000 support=0x001213e0 d3d11 hr=0x00000000 support=0x001213e0
+[fmt] 83 d3d10 hr=0x00000000 support=0x001213e0 d3d11 hr=0x00000000 support=0x001213e0
+[fmt] 85 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 86 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 87 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 88 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 91 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 95 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 98 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 103 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 115 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 130 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 999 d3d10 hr=0x80004005 support=0x00000000 d3d11 hr=0x80004005 support=0x00000000
+[fmt] 10_1 device R8G8B8A8 support=0x017ef3f3
+[fmt] 10_1 device R32_FLOAT support=0x00f6f7fb
+[fmt] MSAA 0 rgba8 hr=0x80004005 q=0x0 d24s8 hr=0x80004005 q=0x0
+[fmt] MSAA 1 rgba8 hr=0x00000000 q=0x1 d24s8 hr=0x00000000 q=0x1
+[fmt] MSAA 2 rgba8 hr=0x00000000 q=0x1 d24s8 hr=0x00000000 q=0x1
+[fmt] MSAA 4 rgba8 hr=0x00000000 q=0x1 d24s8 hr=0x00000000 q=0x1
+[fmt] MSAA 8 rgba8 hr=0x00000000 q=0x1 d24s8 hr=0x00000000 q=0x1
+[fmt] MSAA 16 rgba8 hr=0x00000000 q=0x1 d24s8 hr=0x00000000 q=0x1
+[fmt] MSAA 32 rgba8 hr=0x00000000 q=0x0 d24s8 hr=0x00000000 q=0x0
+[fmt] MSAA 33 rgba8 hr=0x80004005 q=0x0 d24s8 hr=0x80004005 q=0x0
+[fmt] CheckCounterInfo last=0x0 simultaneous=0 units=1
+[fmt] CreateCounter(0x0) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x0) hr=0x00000000 type=0 active=0 name(9)="GPU Idle" units(9)="fraction" desc(91)="A well-known counter to estimate the fractional amount of time " first=47/66/41
+[fmt] CheckCounter(0x0, size query) hr=0x00000000 lengths=9/9/91
+[fmt] CheckCounter(0x0, 4-byte name) hr=0x00000000 length=9 bytes=475055005a
+[fmt] CreateCounter(0x1) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x1) hr=0x00000000 type=0 active=0 name(18)="Vertex Processing" units(9)="fraction" desc(114)="A well-known counter to estimate the fractional amount of time " first=56/66/41
+[fmt] CheckCounter(0x1, size query) hr=0x00000000 lengths=18/9/114
+[fmt] CheckCounter(0x1, 4-byte name) hr=0x00000000 length=18 bytes=566572005a
+[fmt] CreateCounter(0x2) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x2) hr=0x00000000 type=0 active=0 name(20)="Geometry Processing" units(9)="fraction" desc(116)="A well-known counter to estimate the fractional amount of time " first=47/66/41
+[fmt] CheckCounter(0x2, size query) hr=0x00000000 lengths=20/9/116
+[fmt] CheckCounter(0x2, 4-byte name) hr=0x00000000 length=20 bytes=47656f005a
+[fmt] CreateCounter(0x3) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x3) hr=0x00000000 type=0 active=0 name(17)="Pixel Processing" units(9)="fraction" desc(113)="A well-known counter to estimate the fractional amount of time " first=50/66/41
+[fmt] CheckCounter(0x3, size query) hr=0x00000000 lengths=17/9/113
+[fmt] CheckCounter(0x3, 4-byte name) hr=0x00000000 length=17 bytes=506978005a
+[fmt] CreateCounter(0x4) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x4) hr=0x00000000 type=0 active=0 name(21)="Other GPU Processing" units(9)="fraction" desc(176)="A well-known counter to estimate the fractional amount of time " first=4f/66/41
+[fmt] CheckCounter(0x4, size query) hr=0x00000000 lengths=21/9/176
+[fmt] CheckCounter(0x4, 4-byte name) hr=0x00000000 length=21 bytes=4f7468005a
+[fmt] CreateCounter(0x5) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x5) hr=0x00000000 type=0 active=0 name(35)="Host Adapter Bandwidth Utilization" units(9)="fraction" desc(91)="A well-known counter to estimate the fractional amount of host " first=48/66/41
+[fmt] CheckCounter(0x5, size query) hr=0x00000000 lengths=35/9/91
+[fmt] CheckCounter(0x5, 4-byte name) hr=0x00000000 length=35 bytes=486f73005a
+[fmt] CreateCounter(0x6) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x6) hr=0x00000000 type=0 active=0 name(41)="Local Video Memory Bandwidth Utilization" units(9)="fraction" desc(97)="A well-known counter to estimate the fractional amount of local" first=4c/66/41
+[fmt] CheckCounter(0x6, size query) hr=0x00000000 lengths=41/9/97
+[fmt] CheckCounter(0x6, 4-byte name) hr=0x00000000 length=41 bytes=4c6f63005a
+[fmt] CreateCounter(0x7) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x7) hr=0x00000000 type=0 active=0 name(30)="Vertex Throughput Utilization" units(9)="fraction" desc(86)="A well-known counter to estimate the fractional amount of verte" first=56/66/41
+[fmt] CheckCounter(0x7, size query) hr=0x00000000 lengths=30/9/86
+[fmt] CheckCounter(0x7, 4-byte name) hr=0x00000000 length=30 bytes=566572005a
+[fmt] CreateCounter(0x8) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x8) hr=0x00000000 type=0 active=0 name(38)="Triangle Setup Throughput Utilization" units(9)="fraction" desc(94)="A well-known counter to estimate the fractional amount of trian" first=54/66/41
+[fmt] CheckCounter(0x8, size query) hr=0x00000000 lengths=38/9/94
+[fmt] CheckCounter(0x8, 4-byte name) hr=0x00000000 length=38 bytes=547269005a
+[fmt] CreateCounter(0x9) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x9) hr=0x00000000 type=0 active=0 name(22)="Fill Rate Utilization" units(9)="fraction" desc(89)="A well-known counter to estimate the fractional amount of fill " first=46/66/41
+[fmt] CheckCounter(0x9, size query) hr=0x00000000 lengths=22/9/89
+[fmt] CheckCounter(0x9, 4-byte name) hr=0x00000000 length=22 bytes=46696c005a
+[fmt] CreateCounter(0xa) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0xa) hr=0x00000000 type=0 active=0 name(29)="Vertex Shader Memory Limited" units(9)="fraction" desc(112)="A well-known counter to estimate the fractional amount of time " first=56/66/41
+[fmt] CheckCounter(0xa, size query) hr=0x00000000 lengths=29/9/112
+[fmt] CheckCounter(0xa, 4-byte name) hr=0x00000000 length=29 bytes=566572005a
+[fmt] CreateCounter(0xb) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0xb) hr=0x00000000 type=0 active=0 name(34)="Vertex Shader Computation Limited" units(9)="fraction" desc(108)="A well-known counter to estimate the fractional amount of time " first=56/66/41
+[fmt] CheckCounter(0xb, size query) hr=0x00000000 lengths=34/9/108
+[fmt] CheckCounter(0xb, 4-byte name) hr=0x00000000 length=34 bytes=566572005a
+[fmt] CreateCounter(0xc) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0xc) hr=0x00000000 type=0 active=0 name(31)="Geometry Shader Memory Limited" units(9)="fraction" desc(114)="A well-known counter to estimate the fractional amount of time " first=47/66/41
+[fmt] CheckCounter(0xc, size query) hr=0x00000000 lengths=31/9/114
+[fmt] CheckCounter(0xc, 4-byte name) hr=0x00000000 length=31 bytes=47656f005a
+[fmt] CreateCounter(0xd) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0xd) hr=0x00000000 type=0 active=0 name(36)="Geometry Shader Computation Limited" units(9)="fraction" desc(110)="A well-known counter to estimate the fractional amount of time " first=47/66/41
+[fmt] CheckCounter(0xd, size query) hr=0x00000000 lengths=36/9/110
+[fmt] CheckCounter(0xd, 4-byte name) hr=0x00000000 length=36 bytes=47656f005a
+[fmt] CreateCounter(0xe) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0xe) hr=0x00000000 type=0 active=0 name(28)="Pixel Shader Memory Limited" units(9)="fraction" desc(111)="A well-known counter to estimate the fractional amount of time " first=50/66/41
+[fmt] CheckCounter(0xe, size query) hr=0x00000000 lengths=28/9/111
+[fmt] CheckCounter(0xe, 4-byte name) hr=0x00000000 length=28 bytes=506978005a
+[fmt] CreateCounter(0xf) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0xf) hr=0x00000000 type=0 active=0 name(33)="Pixel Shader Computation Limited" units(9)="fraction" desc(107)="A well-known counter to estimate the fractional amount of time " first=50/66/41
+[fmt] CheckCounter(0xf, size query) hr=0x00000000 lengths=33/9/107
+[fmt] CheckCounter(0xf, 4-byte name) hr=0x00000000 length=33 bytes=506978005a
+[fmt] CreateCounter(0x10) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x10) hr=0x00000000 type=0 active=0 name(41)="Post Vertex-Shader Vertex Cache Hit Rate" units(9)="fraction" desc(168)="A well-known counter to estimate the fractional amount of post " first=50/66/41
+[fmt] CheckCounter(0x10, size query) hr=0x00000000 lengths=41/9/168
+[fmt] CheckCounter(0x10, 4-byte name) hr=0x00000000 length=41 bytes=506f73005a
+[fmt] CreateCounter(0x11) hr=0x887a0004 out=untouched
+[fmt] CheckCounter(0x11) hr=0x00000000 type=0 active=0 name(23)="Texture Cache Hit Rate" units(9)="fraction" desc(159)="A well-known counter to estimate the fractional amount of textu" first=54/66/41
+[fmt] CheckCounter(0x11, size query) hr=0x00000000 lengths=23/9/159
+[fmt] CheckCounter(0x11, 4-byte name) hr=0x00000000 length=23 bytes=546578005a
+[fmt] CreateCounter(0x12) hr=0x80070057 out=untouched
+[fmt] CheckCounter(0x12) hr=0x80070057 type=99 active=99 name(64)="" units(64)="" desc(64)="" first=00/00/00
+[fmt] CheckCounter(0x12, size query) hr=0x80070057 lengths=0/0/0
+[fmt] CheckCounter(0x12, 4-byte name) hr=0x80070057 length=4 bytes=005a5a5a5a
+[fmt] CreateCounter(0x40000000) hr=0x80070057 out=untouched
+[fmt] CheckCounter(0x40000000) hr=0x80070057 type=99 active=99 name(64)="" units(64)="" desc(64)="" first=5a/5a/5a
+[fmt] CheckCounter(0x40000000, size query) hr=0x80070057 lengths=0/0/0
+[fmt] CheckCounter(0x40000000, 4-byte name) hr=0x80070057 length=4 bytes=5a5a5a5a5a
+
+== blob ==
+[blob] D3D10CreateBlob(0) hr=0x00000000 out=obj size=0 ptr=obj count=1 QI(blob)=0x00000000 same=1 QI(bogus)=0x80004002 release=0
+[blob] D3D10CreateBlob(1) hr=0x00000000 out=obj size=1 ptr=obj count=1 QI(blob)=0x00000000 same=1 QI(bogus)=0x80004002 release=0
+[blob] D3D10CreateBlob(16) hr=0x00000000 out=obj size=16 ptr=obj count=1 zeroed=0 QI(blob)=0x00000000 same=1 QI(bogus)=0x80004002 release=0
+[blob] D3D10CreateBlob(1000) hr=0x00000000 out=obj size=1000 ptr=obj count=1 QI(blob)=0x00000000 same=1 QI(bogus)=0x80004002 release=0
+[blob] D3D10CreateBlob(NULL out) hr=0x8876086c
+[blob] input signature of vs40 hr=0x00000000 out=obj
+[blob] input signature of vs40 size=116 DXBC total=116 chunks=1: ISGN(72) hash=f0a79f70 ver=1
+[blob] input signature of vs40 bytes:44584243f0a79f70e952e6bdc51b7ba7eaec6d9a010000007400000001000000240000004953474e48000000020000000800000038000000000000000000000003000000000000000707000041000000000000000000000003000000010000000f0f0000504f534954494f4e00434f4c4f5200ab
+[blob] input signature of ps40 hr=0x00000000 out=obj
+[blob] input signature of ps40 size=120 DXBC total=120 chunks=1: ISGN(76) hash=c4794fd7 ver=1
+[blob] input signature of ps40 bytes:44584243c4794fd7eba7dab296646e1888b4dc91010000007800000001000000240000004953474e4c000000020000000800000038000000000000000100000003000000000000000f00000044000000000000000000000003000000010000000f0f000053565f506f736974696f6e00434f4c4f5200abab
+[blob] input signature of gsso40 hr=0x00000000 out=obj
+[blob] input signature of gsso40 size=120 DXBC total=120 chunks=1: ISGN(76) hash=a966c671 ver=1
+[blob] input signature of gsso40 bytes:44584243a966c671272ca24909542c0fb24f561d010000007800000001000000240000004953474e4c000000020000000800000038000000000000000100000003000000000000000f0f000044000000000000000000000003000000010000000f0f000053565f506f736974696f6e00434f4c4f5200abab
+[blob] input signature of vs50 hr=0x80004005 out=untouched
+[blob] input signature of junk hr=0x80004005 out=untouched
+[blob] input signature of truncated hr=0x80004005 out=untouched
+[blob] input signature of NULL hr=0x80004005 out=untouched
+[blob] input signature NULL out hr=0x00000000
+[blob] output signature of vs40 hr=0x00000000 out=obj
+[blob] output signature of vs40 size=120 DXBC total=120 chunks=1: OSGN(76) hash=8fb31ed4 ver=1
+[blob] output signature of vs40 bytes:445842438fb31ed4028ce3c031dfeddc30ec507b010000007800000001000000240000004f53474e4c000000020000000800000038000000000000000100000003000000000000000f00000044000000000000000000000003000000010000000f00000053565f506f736974696f6e00434f4c4f5200abab
+[blob] output signature of ps40 hr=0x00000000 out=obj
+[blob] output signature of ps40 size=88 DXBC total=88 chunks=1: OSGN(44) hash=7d56f9ed ver=1
+[blob] output signature of ps40 bytes:445842437d56f9edefa97712685e6ca43409a351010000005800000001000000240000004f53474e2c000000010000000800000020000000000000000000000003000000000000000f00000053565f54617267657400abab
+[blob] output signature of gsso40 hr=0x00000000 out=obj
+[blob] output signature of gsso40 size=120 DXBC total=120 chunks=1: OSGN(76) hash=8fb31ed4 ver=1
+[blob] output signature of gsso40 bytes:445842438fb31ed4028ce3c031dfeddc30ec507b010000007800000001000000240000004f53474e4c000000020000000800000038000000000000000100000003000000000000000f00000044000000000000000000000003000000010000000f00000053565f506f736974696f6e00434f4c4f5200abab
+[blob] output signature of vs50 hr=0x80004005 out=untouched
+[blob] output signature of junk hr=0x80004005 out=untouched
+[blob] output signature of truncated hr=0x80004005 out=untouched
+[blob] output signature of NULL hr=0x80004005 out=untouched
+[blob] output signature NULL out hr=0x00000000
+[blob] in+out signature of vs40 hr=0x00000000 out=obj
+[blob] in+out signature of vs40 size=204 DXBC total=204 chunks=2: ISGN(72) OSGN(76) hash=d6c9fd31 ver=1
+[blob] in+out signature of vs40 bytes:44584243d6c9fd317e66874982024fabbd48eb7801000000cc0000000200000028000000780000004953474e48000000020000000800000038000000000000000000000003000000000000000707000041000000000000000000000003000000010000000f0f0000504f534954494f4e00434f4c4f5200ab4f53474e4c000000020000000800000038000000000000000100000003000000000000000f00000044000000000000000000000003000000010000000f00000053565f506f736974696f6e00434f4c4f5200abab
+[blob] in+out signature of ps40 hr=0x00000000 out=obj
+[blob] in+out signature of ps40 size=176 DXBC total=176 chunks=2: ISGN(76) OSGN(44) hash=df530af5 ver=1
+[blob] in+out signature of ps40 bytes:44584243df530af5df321340820e4028905698a101000000b000000002000000280000007c0000004953474e4c000000020000000800000038000000000000000100000003000000000000000f00000044000000000000000000000003000000010000000f0f000053565f506f736974696f6e00434f4c4f5200abab4f53474e2c000000010000000800000020000000000000000000000003000000000000000f00000053565f54617267657400abab
+[blob] in+out signature of gsso40 hr=0x00000000 out=obj
+[blob] in+out signature of gsso40 size=208 DXBC total=208 chunks=2: ISGN(76) OSGN(76) hash=4c71bedb ver=1
+[blob] in+out signature of gsso40 bytes:445842434c71bedb9dd8249ef806a160f3780d4601000000d000000002000000280000007c0000004953474e4c000000020000000800000038000000000000000100000003000000000000000f0f000044000000000000000000000003000000010000000f0f000053565f506f736974696f6e00434f4c4f5200abab4f53474e4c000000020000000800000038000000000000000100000003000000000000000f00000044000000000000000000000003000000010000000f00000053565f506f736974696f6e00434f4c4f5200abab
+[blob] in+out signature of vs50 hr=0x80004005 out=untouched
+[blob] in+out signature of junk hr=0x80004005 out=untouched
+[blob] in+out signature of truncated hr=0x80004005 out=untouched
+[blob] in+out signature of NULL hr=0x80004005 out=untouched
+[blob] in+out signature NULL out hr=0x00000000
+[blob] D3D10GetShaderDebugInfo(no debug info) hr=0x00000000 out=obj
+[blob] 10_0 profiles vs_4_0 gs_4_0 ps_4_0
+[blob] 10_1 profiles vs_4_0 gs_4_0 ps_4_0
+[blob] 9_3 profiles vs_4_0 gs_4_0 ps_4_0
+[blob] 9_1 profiles vs_4_0 gs_4_0 ps_4_0
+[blob] profile string is static=1
+
+== sb ==
+[sb] sizeof(D3D10_STATE_BLOCK_MASK)=76
+[sb] EnableAll hr=0x00000000
+[sb] all:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+[sb] DisableAll hr=0x00000000
+[sb] none:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] EnableAll(NULL)=0x80070057 DisableAll(NULL)=0x80070057
+[sb] enable(type 0, 0, 1) hr=0x80070057 bytes: get0=0 get1=0
+[sb] enable(type 1, 0, 1) hr=0x00000000 bytes: 74:01 get0=1 get1=0
+[sb] enable(type 2, 0, 1) hr=0x00000000 bytes: 68:01 get0=1 get1=0
+[sb] enable(type 3, 0, 1) hr=0x00000000 bytes: 69:01 get0=1 get1=0
+[sb] enable(type 4, 0, 1) hr=0x00000000 bytes: 70:01 get0=1 get1=0
+[sb] enable(type 5, 0, 1) hr=0x00000000 bytes: 0:01 get0=1 get1=0
+[sb] enable(type 6, 0, 1) hr=0x00000000 bytes: 1:01 get0=1 get1=0
+[sb] enable(type 7, 0, 1) hr=0x00000000 bytes: 3:01 get0=1 get1=0
+[sb] enable(type 8, 0, 1) hr=0x00000000 bytes: 19:01 get0=1 get1=0
+[sb] enable(type 9, 0, 1) hr=0x00000000 bytes: 21:01 get0=1 get1=0
+[sb] enable(type 10, 0, 1) hr=0x00000000 bytes: 22:01 get0=1 get1=0
+[sb] enable(type 11, 0, 1) hr=0x00000000 bytes: 24:01 get0=1 get1=0
+[sb] enable(type 12, 0, 1) hr=0x00000000 bytes: 40:01 get0=1 get1=0
+[sb] enable(type 13, 0, 1) hr=0x00000000 bytes: 42:01 get0=1 get1=0
+[sb] enable(type 14, 0, 1) hr=0x00000000 bytes: 43:01 get0=1 get1=0
+[sb] enable(type 15, 0, 1) hr=0x00000000 bytes: 45:01 get0=1 get1=0
+[sb] enable(type 16, 0, 1) hr=0x00000000 bytes: 61:01 get0=1 get1=0
+[sb] enable(type 17, 0, 1) hr=0x00000000 bytes: 63:01 get0=1 get1=0
+[sb] enable(type 18, 0, 1) hr=0x00000000 bytes: 65:01 get0=1 get1=0
+[sb] enable(type 19, 0, 1) hr=0x00000000 bytes: 66:01 get0=1 get1=0
+[sb] enable(type 20, 0, 1) hr=0x00000000 bytes: 67:01 get0=1 get1=0
+[sb] enable(type 21, 0, 1) hr=0x00000000 bytes: 71:01 get0=1 get1=0
+[sb] enable(type 22, 0, 1) hr=0x00000000 bytes: 72:01 get0=1 get1=0
+[sb] enable(type 23, 0, 1) hr=0x00000000 bytes: 73:01 get0=1 get1=0
+[sb] enable(type 24, 0, 1) hr=0x00000000 bytes: 75:01 get0=1 get1=0
+[sb] enable(type 25, 0, 1) hr=0x80070057 bytes: get0=0 get1=0
+[sb] enable(type 6, 3, 5) hr=0x00000000:00f80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 6, 15, 1) hr=0x00000000:00008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 6, 16, 1) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 6, 10, 7) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 7, 120, 8) hr=0x00000000:000000000000000000000000000000000000ff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 7, 127, 2) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 8, 13, 1) hr=0x00000000:00000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 8, 14, 1) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 17, 15, 1) hr=0x00000000:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000
+[sb] enable(type 17, 16, 1) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 1, 0, 2) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 18, 0, 2) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 5, 1, 1) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 7, 0, 0) hr=0x80070057:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] enable(type 7, 0, 128) hr=0x00000000:000000ffffffffffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[sb] disable(PS SRV 8..16) hr=0x00000000
+[sb] all minus PS SRV 8..16:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00feffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+[sb] get(PS SRV 7)=128 get(8)=0 get(16)=0 get(17)=2 get(200)=0 get(type 0)=0 get(type 25)=0
+[sb] get(NULL mask)=0
+[sb] enable(NULL) hr=0x80070057
+[sb] Union hr=0x00000000
+[sb] union:010000000000000000000000000000000000000000000000000000000000000000000000000000000000003f0000000000000000000000000000000000000000000000000000000000000001
+[sb] Intersect hr=0x00000000
+[sb] intersect:000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000000
+[sb] Difference hr=0x00000000
+[sb] difference:01000000000000000000000000000000000000000000000000000000000000000000000000000000000000330000000000000000000000000000000000000000000000000000000000000001
+[sb] Union(NULL)=0x80070057 Intersect(a,NULL)=0x80070057 Difference(a,b,NULL)=0x80070057
+[sb] D3D10CreateStateBlock hr=0x00000000 out=obj
+[qi] state_block: answers:
+[qi] state_block: same pointer as the object:
+[qi] state_block: IUnknown is self=0
+[sb] Capture hr=0x00000000 vs count 1->2
+[sb] Apply hr=0x00000000 vs same=1 cb same=1 topo=1 viewport={1 2 3 4} n=1
+[sb] GetDevice hr=0x00000000 same=1
+[sb] ReleaseAllDeviceObjects hr=0x00000000 vs count=1
+[sb] Apply after ReleaseAllDeviceObjects hr=0x80004005 vs=NULL topo=0
+[sb] release=0
+[sb] VS-only block: vs same=1 topo=2
+[sb] Apply of a never-captured block hr=0x80004005 vs=obj
+
+== fx ==
+[fx] D3D10CompileShader hr=0x00000000 code=obj errors=NULL
+[fx] D3D10DisassembleShader hr=0x00000000 out=obj
+[fx] D3D10ReflectShader hr=0x00000000 out=obj
+[fx] D3D10CreateEffectFromMemory(junk) hr=0x80004005 out=NULL
+[fx] D3D10CreateEffectPoolFromMemory(junk) hr=0x80004005 out=NULL
+
+== emu ==
+[emu] D3D11CreateDevice(NULL levels) level=0xb000 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice({11_0}) level=0xb000 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice({11_1}) level=0xb100 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice({11_0,10_1}) level=0xb000 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice({10_1}) level=0xa100 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice({10_0}) level=0xa000 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice({9_3}) level=0x9300 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice(NULL levels bgra) level=0xb000 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice({11_0} bgra) level=0xb000 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11CreateDevice(NULL levels singlethreaded) level=0xb000 QI(ID3D10Device)=0x80004002 QI(ID3D10Device1)=0x80004002
+[emu] D3D11 device QI(ID3D10Device1) hr=0x80004002
+[emu] after a failed CreateDeviceContextState (0x80070057): QI(ID3D10Device1)=0x00000000
+[emu] after CreateDeviceContextState(ID3D11Device1, NULL out) (0x00000001): QI(ID3D10Device1)=0x00000000
+[emu] QI(ID3D10Device)=0x00000000 same as ID3D10Device1=1
+[qi] d3d11 device as ID3D10Device1: answers: IUnknown 10Device 10Device1 10Multithread 11Device 11Device1 11Device2 11Device3 11Device4 11Device5 DXGIObject DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4
+[qi] d3d11 device as ID3D10Device1: same pointer as the object: 10Device 10Device1
+[qi] d3d11 device as ID3D10Device1: IUnknown is self=0
+[emu] inactive: GetFeatureLevel=0xb000 GetCreationFlags=0x0
+[emu] inactive CreateTexture2D hr=0x00000000
+[emu] inactive CreateRenderTargetView hr=0x00000000
+[emu] D3D11 clear red -> 0xff0000ff
+[emu] inactive D3D10 clear green -> 0xff0000ff
+[emu] inactive D3D10 IASetPrimitiveTopology(LINELIST): d3d10 get=0 d3d11 get=0
+[emu] inactive D3D10 IAGetPrimitiveTopology after D3D11 set strip=0
+[emu] inactive CreateBuffer=obj
+[emu] inactive VSSet/GetConstantBuffers -> NULL
+[emu] inactive GetDeviceRemovedReason=0x00000000
+[emu] inactive OMGetBlendState=NULL factor=1,1,1,1 mask=0xffffffff RSGetViewports n=0 OMGetDepthStencilState=NULL ref=0
+[emu] inactive CreateBlendState hr=0x00000000 out=obj
+[emu] inactive CreateBlendState1 hr=0x00000000 out=obj
+[emu] inactive GetTextFilterSize=0x0
+[emu] CreateDeviceContextState(ID3D10Device1) hr=0x00000000 chosen=0xa100
+[emu] swapped in: GetFeatureLevel=0xa100 d3d11 level=0xa100
+[emu] active: fresh state topology=0
+[emu] active: D3D10 clear green then D3D11 clear blue -> 0xff00ff00
+[emu] active: D3D11 context Map hr=0x00000000
+[emu] active: D3D11 IASetPrimitiveTopology(POINTLIST): d3d11 get=0 d3d10 get=0
+[emu] active: D3D10 set TRIANGLELIST, d3d11 get=0
+[emu] active: d3d11 IAGetVertexBuffers=NULL stride=0 offset=0
+[emu] active: d3d11 OMGetBlendState=NULL factor=1,1,1,1 mask=0xffffffff RSGetViewports n=0
+[emu] active: d3d11 GetType=0 GetContextFlags=0x0
+[emu] swapped back: again==s10 1 GetFeatureLevel=0xb000
+[emu] swapped back: d3d11 topology=5 d3d10 get=0
+[emu] swapped back: D3D11 clear red -> 0xff0000ff
+[emu] D3D10 device: D3D11 context IAGetPrimitiveTopology after D3D10 set LINESTRIP=0
+[emu] D3D10 device: context answers ID3D11DeviceContext1=1
+[emu] D3D10 device: CreateDeviceContextState(ID3D11Device) hr=0x00000000 chosen=0xa000
+[emu] D3D10 device, D3D11 state swapped in: d3d11 topology=1 d3d10 get=0
+[emu] D3D10 device, original state back: d3d10 topology=3
+
+== dxgi ==
+[dxgi] CheckInterfaceSupport(ID3D10Device) hr=0x00000000 version nonzero=1
+[dxgi] CheckInterfaceSupport(ID3D10Device1) hr=0x00000000 version nonzero=1
+[dxgi] CheckInterfaceSupport(IDXGIDevice) hr=0x00000000 version nonzero=1
+[dxgi] CheckInterfaceSupport(ID3D11Device) hr=0x887a0004 version nonzero=0
+[dxgi] window created=1
+[dxgi] D3D10CreateDeviceAndSwapChain hr=0x00000000 sc=obj dev=obj
+[dxgi] GetBuffer(ID3D10Texture2D) hr=0x00000000
+[dxgi] back buffer 32x32 fmt=28 bind=0x20 misc=0x0
+[qi] back_buffer: answers: IUnknown 10DeviceChild 10Resource 10Texture2D 11DeviceChild 11Resource 11Texture2D 11Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2
+[qi] back_buffer: same pointer as the object: 10DeviceChild 10Resource 10Texture2D
+[qi] back_buffer: IUnknown is self=0
+[dxgi] back buffer GetDevice is the device=1
+[dxgi] CreateRenderTargetView(back buffer) hr=0x00000000
+[dxgi] Present hr=0x087a0001
+[dxgi] swap chain GetDevice(ID3D10Device) hr=0x00000000 same=1
+[dxgi] ResizeBuffers hr=0x00000000
+[dxgi] D3D10CreateDeviceAndSwapChain(NULL desc) hr=0x00000000 sc=NULL dev=obj
+[dxgi] D3D10CreateDeviceAndSwapChain(NULL ppSwapChain) hr=0x00000000 dev=obj
+[dxgi] D3D10CreateDeviceAndSwapChain(NULL ppDevice) hr=0x80070057 sc=NULL
+[dxgi] D3D10CreateDeviceAndSwapChain1 hr=0x00000000 sc=obj dev=obj
+[dxgi] level=0xa100
+[dxgi] D3D10CreateDeviceAndSwapChain1(11_0) hr=0x80070057 sc=NULL dev=NULL
+[dxgi] IDXGIFactory::CreateSwapChain(D3D10 device) hr=0x00000000
+[dxgi] GetBuffer(ID3D11Texture2D) on a D3D10 chain hr=0x00000000
+
+# final device release=0
+#
+# ---------------------------------------------------------------------------
+# Verdicts: Vitreo build 2026-09-28 (build/src/vitreo run d3d10_contract_probe
+# <arch>.exe), compared with the lines above ignoring '#' lines. x64 62 lines
+# differ (+1 host "Execution completed" line), x86 66 (the x64 set plus the two
+# REFERENCE lines below). Every remaining line:
+#
+# [create] WARP (x2): Vitreo has no WARP device (area-01 decision; the D3D11
+#   WARP driver type is DXGI_ERROR_UNSUPPORTED too).                  DECIDED
+# [create] REFERENCE, x86 only (x2): winoracle's SysWOW64 carries d3d11ref.dll
+#   (developer-tools environment); x64 has none and answers exactly as Vitreo.
+#                                                                ENVIRONMENT
+# [create] B5G6R5 support, [fmt] 6/41/56, 10_1 R32_FLOAT, MSAA 8/16: D3D11
+#   format-caps table / Metal sample counts (area 08; same answers on the
+#   D3D11 device).                                                PRE-EXISTING
+# [qi] 11VideoDevice answered, IUnknown identity of the ID3D11Device /
+#   immediate-context facets: D3D11 identity model (area 12).     PRE-EXISTING
+# [draw] pipeline stats E_NOTIMPL: D3D11 PIPELINE_STATISTICS fails loudly (no
+#   Metal counters for these stages).                             PRE-EXISTING
+# [blob] zeroed=1: Windows hands back uninitialised heap; Vitreo zero-fills.
+#                                                                 UNSPECIFIED
+# [blob] GetShaderDebugInfo, [fx] CompileShader / DisassembleShader /
+#   ReflectShader / CreateEffect(Pool)FromMemory: fail loudly (E_NOTIMPL,
+#   outputs NULL, one "[vitreo] UNIMPLEMENTED d3d10!<fn>" line).  FAIL-LOUDLY
+# [emu] D3D11CreateDevice({11_1}): FL 11_1 not claimable on Apple GPUs
+#   (AFL111).                                                         DECIDED
+# [dxgi] Present 0x087a0001 (DXGI_STATUS_OCCLUDED): winoracle's console
+#   session (locked, reached over ssh) reports every window occluded.
+#                                                                ENVIRONMENT

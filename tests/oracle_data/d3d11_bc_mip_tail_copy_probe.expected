@@ -1,0 +1,7 @@
+source -> 0x00000000
+destination -> 0x00000000
+mip 0 16x16 box 16x16: 128/128 bytes copied
+mip 1 8x8 box 8x8: 32/32 bytes copied
+mip 2 4x4 box 4x4: 8/8 bytes copied
+mip 3 2x2 box 4x4: 8/8 bytes copied
+mip 4 1x1 box 4x4: 8/8 bytes copied

@@ -1,0 +1,31 @@
+hasstrings
+  dlgcode=0x81
+  find ap start=-1 -> 0 cursel=1
+  find ap start=0 -> 2 cursel=1
+  find ap start=2 -> 3 cursel=1
+  find ap start=3 -> 0 cursel=1
+  find ap start=4 -> 0 cursel=1
+  find ap start=100 -> 0 cursel=1
+  find ap start=-2 -> 0 cursel=1
+  find BAN start=-1 -> 1 cursel=1
+  find tab start=-1 -> -1 cursel=1
+  find empty start=-1 -> -1 cursel=1
+  find empty start=1 -> -1 cursel=1
+  exact ap start=-1 -> 3 cursel=1
+  exact appl start=-1 -> -1 cursel=1
+  exact apple start=0 -> 0 cursel=1
+  select zz start=-1 -> -1 cursel=1
+  select apr start=-1 -> 2 cursel=2
+  select tab start=-1 -> -1 cursel=2
+data
+  dlgcode=0x81
+  find 1111 start=-1 -> 0 cursel=-1
+  find 1111 start=0 -> 2 cursel=-1
+  find 3333 start=-1 -> -1 cursel=-1
+  exact 2222 start=-1 -> 1 cursel=-1
+  select 2222 start=-1 -> 1 cursel=1
+empty
+  find a start=-1 -> -1 cursel=-1
+  select a start=-1 -> -1 cursel=-1
+plain
+  dlgcode=0x81

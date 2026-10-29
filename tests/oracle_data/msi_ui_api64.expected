@@ -1,0 +1,332 @@
+bits 64
+internal initial 1
+internal set 0x0 -> ret 0x1 now 0x1
+internal set 0x1 -> ret 0x1 now 0x1
+internal set 0x2 -> ret 0x1 now 0x2
+internal set 0x3 -> ret 0x2 now 0x3
+internal set 0x4 -> ret 0x3 now 0x4
+internal set 0x5 -> ret 0x4 now 0x5
+internal set 0x6 -> ret 0x0 now 0x5
+internal set 0x7 -> ret 0x0 now 0x5
+internal set 0x20 -> ret 0x5 now 0x25
+internal set 0x40 -> ret 0x5 now 0x45
+internal set 0x80 -> ret 0x5 now 0x85
+internal set 0x100 -> ret 0x5 now 0x105
+internal set 0x200 -> ret 0x5 now 0x205
+internal set 0x400 -> ret 0x0 now 0x5
+internal set 0x800 -> ret 0x0 now 0x5
+internal set 0x82 -> ret 0x5 now 0x82
+internal set 0x43 -> ret 0x2 now 0x43
+internal set 0x23 -> ret 0x3 now 0x23
+internal set 0x85 -> ret 0x3 now 0x85
+internal set 0x102 -> ret 0x5 now 0x102
+internal set 0x202 -> ret 0x2 now 0x202
+internal set 0x45 -> ret 0x2 now 0x45
+internal set 0x24 -> ret 0x5 now 0x24
+internal set 0x105 -> ret 0x4 now 0x105
+internal set 0x302 -> ret 0x5 now 0x302
+internal set 0x63 -> ret 0x2 now 0x63
+internal set 0xe3 -> ret 0x3 now 0xe3
+internal set 0x81 -> ret 0x3 now 0x81
+internal set 0x80 -> ret 0x1 now 0x81
+internal set 0x405 -> ret 0x0 now 0x1
+internal set 0x1003 -> ret 0x0 now 0x1
+internal set 0xffffffff -> ret 0x0 now 0x3e1
+internal set 0x5 -> ret 0x1 now 0x5
+internal set 0x27 -> ret 0x0 now 0x25
+internal set 0x3e7 -> ret 0x0 now 0x3e5
+internal set 0x3e6 -> ret 0x0 now 0x3e5
+internal set 0x3e5 -> ret 0x5 now 0x3e5
+internal set 0x3e8 -> ret 0x0 now 0x3e5
+internal set 0x15 -> ret 0x0 now 0x5
+internal set 0x8 -> ret 0x0 now 0x5
+internal set 0xf -> ret 0x0 now 0x5
+internal set 0x10 -> ret 0x0 now 0x5
+internal set 0x3 -> ret 0x5 now 0x3
+internal set 0xffffffe5 -> ret 0x0 now 0x3e3
+internal set 0x80000005 -> ret 0x0 now 0x3
+internal set 0xfffffc05 -> ret 0x0 now 0x3
+internal set 0x24 -> ret 0x3 now 0x24
+internal set 0x7ff -> ret 0x0 now 0x3e4
+internal set 0x3ff -> ret 0x0 now 0x3e4
+internal set 0x3f5 -> ret 0x0 now 0x3e4
+internal set 0x0 -> ret 0x4 now 0x4
+owner set1 ret 0x1 out 0000000000000000
+owner set2 ret 0x1 out 0000000000001234
+owner invalid ret 0x0 out 0000000000009ABC
+owner query ret 0x2 out 0000000000005678
+owner after-null ret 0x2 out 0000000000000000
+extW1 prev null
+extW2 prev hW
+extA1 prev null
+extW3 prev null
+extA2 prev null
+extW4 prev null
+extW5 filter0 prev null
+extW6 prev hW
+extR1 ret 0 prev null
+extR2 ret 0 prev hR
+extR3 ret 0
+extR4 ret 0 prev null
+extR5 ret 0 prev null
+extW-after-record prev null
+log null/0 0
+log null/mode 0
+log path/0 87
+log path/err 0 exists 0
+log path/allbits 0
+log path/attrbits 0
+log baddir 0
+log empty 0
+logA path/err 0
+log off 0
+--- install 1: record handler returns 0, string handler returns 0
+REC ctx=0000000000000011 type=0x0c000000 hrec=0
+STR ctx=0000000000000022 type=0x0c000000 '(null)'
+REC ctx=0000000000000011 type=0x0b000000 n=3 [0]null [1]i0 [2]i1033 [3]i1252
+STR ctx=0000000000000022 type=0x0b000000 '#: # #: #### #: #### '
+REC ctx=0000000000000011 type=0x0a000000 n=0 [0]null
+STR ctx=0000000000000022 type=0x0a000000 ''
+REC ctx=0000000000000011 type=0x0a000000 n=2 [0]null [1]i2 [2]i20480
+STR ctx=0000000000000022 type=0x0a000000 '#: # #: ##### '
+REC ctx=0000000000000011 type=0x0b000000 n=3 [0]null [1]i0 [2]i1033 [3]i0
+STR ctx=0000000000000022 type=0x0b000000 '#: # #: #### #: # '
+REC ctx=0000000000000011 type=0x04000010 n=0 [0]'=== Logging started: ##/##/####  ##:##:## ==='
+STR ctx=0000000000000022 type=0x04000010 '=== Logging started: ##/##/####  ##:##:## ==='
+REC ctx=0000000000000011 type=0x0b000000 n=3 [0]'Message type: [#], Argument: [#]{, [#]}' [1]i0 [2]i1033 [3]i0
+STR ctx=0000000000000022 type=0x0b000000 'Message type: #, Argument: ####, #'
+REC ctx=0000000000000011 type=0x0b000000 n=2 [0]'Message type: [#], Argument: [#]{, [#]}' [1]i1 [2]'Vitreo UI Probe'
+STR ctx=0000000000000022 type=0x0b000000 'Message type: #, Argument: Vitreo UI Probe'
+REC ctx=0000000000000011 type=0x08000000 n=3 [0]'Action ##:##:##: [#]. [#]' [1]'INSTALL' [2]null [3]null
+STR ctx=0000000000000022 type=0x08000000 'Action ##:##:##: INSTALL. '
+REC ctx=0000000000000011 type=0x04000000 n=1 [0]'Action start ##:##:##: [#].' [1]'INSTALL'
+STR ctx=0000000000000022 type=0x04000000 'Action start ##:##:##: INSTALL.'
+REC ctx=0000000000000011 type=0x1a000000 n=2 [0]null [1]'Vitreo UI Probe' [2]'{#B#C#D##-#F#A-#C#E-#A##-#D#E#F#A#B#C}'
+STR ctx=0000000000000022 type=0x1a000000 '#: Vitreo UI Probe #: {#B#C#D##-#F#A-#C#E-#A##-#D#E#F#A#B#C} '
+REC ctx=0000000000000011 type=0x08000000 n=3 [0]'Action ##:##:##: [#]. [#]' [1]'SetP' [2]'Setting probe property' [3]'Value: [#]'
+STR ctx=0000000000000022 type=0x08000000 'Action ##:##:##: SetP. Setting probe property'
+REC ctx=0000000000000011 type=0x04000000 n=1 [0]'Action start ##:##:##: [#].' [1]'SetP'
+STR ctx=0000000000000022 type=0x04000000 'Action start ##:##:##: SetP.'
+REC ctx=0000000000000011 type=0x04000000 n=2 [0]'Action ended ##:##:##: [#]. Return value [#].' [1]'SetP' [2]i1
+STR ctx=0000000000000022 type=0x04000000 'Action ended ##:##:##: SetP. Return value #.'
+REC ctx=0000000000000011 type=0x08000000 n=3 [0]'Action ##:##:##: [#]. [#]' [1]'InstallInitialize' [2]null [3]null
+STR ctx=0000000000000022 type=0x08000000 'Action ##:##:##: InstallInitialize. '
+REC ctx=0000000000000011 type=0x04000000 n=2 [0]'Action start ##:##:##: [#].' [1]'InstallInitialize' [2]i1
+STR ctx=0000000000000022 type=0x04000000 'Action start ##:##:##: InstallInitialize.'
+REC ctx=0000000000000011 type=0x04000000 n=2 [0]'Action ended ##:##:##: [#]. Return value [#].' [1]'InstallInitialize' [2]i3
+STR ctx=0000000000000022 type=0x04000000 'Action ended ##:##:##: InstallInitialize. Return value #.'
+REC ctx=0000000000000011 type=0x04000000 n=2 [0]'Action ended ##:##:##: [#]. Return value [#].' [1]'INSTALL' [2]i3
+STR ctx=0000000000000022 type=0x04000000 'Action ended ##:##:##: INSTALL. Return value #.'
+REC ctx=0000000000000011 type=0x1b000000 n=3 [0]null [1]'Vitreo UI Probe' [2]'{#B#C#D##-#F#A-#C#E-#A##-#D#E#F#A#B#C}' [3]i3
+STR ctx=0000000000000022 type=0x1b000000 '#: Vitreo UI Probe #: {#B#C#D##-#F#A-#C#E-#A##-#D#E#F#A#B#C} #: # '
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 property-dump-line
+STR ctx=0000000000000022 type=0x04000010 property-dump-line
+REC ctx=0000000000000011 type=0x04000010 n=0 [0]'=== Logging stopped: ##/##/####  ##:##:## ==='
+STR ctx=0000000000000022 type=0x04000010 '=== Logging stopped: ##/##/####  ##:##:## ==='
+REC ctx=0000000000000011 type=0x0b000000 n=2 [0]null [1]i2 [2]i0
+STR ctx=0000000000000022 type=0x0b000000 '#: # #: # '
+REC ctx=0000000000000011 type=0x0b000000 n=2 [0]null [1]i2 [2]i1
+STR ctx=0000000000000022 type=0x0b000000 '#: # #: # '
+REC ctx=0000000000000011 type=0x0d000000 hrec=0
+STR ctx=0000000000000022 type=0x0d000000 '(null)'
+install1 1603
+--- uninstall: record handler returns 1
+REC ctx=0000000000000011 type=0x0c000000 hrec=0
+REC ctx=0000000000000011 type=0x0b000000 n=3 [0]null [1]i0 [2]i1033 [3]i1252
+REC ctx=0000000000000011 type=0x0a000000 n=0 [0]null
+REC ctx=0000000000000011 type=0x0a000000 n=2 [0]null [1]i2 [2]i20480
+REC ctx=0000000000000011 type=0x0b000000 n=3 [0]null [1]i0 [2]i1033 [3]i0
+REC ctx=0000000000000011 type=0x04000000 n=3 [0]'[#]{
+
+[#]}' [1]i1605 [2]'This action is only valid for products that are currently installed.' [3]'C:\Users\Owner\AppData\Local\Temp\vitreo_ui_probe.msi'
+REC ctx=0000000000000011 type=0x0b000000 n=2 [0]null [1]i2 [2]i0
+REC ctx=0000000000000011 type=0x0b000000 n=2 [0]null [1]i2 [2]i1
+REC ctx=0000000000000011 type=0x0d000000 hrec=0
+uninstall 1605
+--- install 2: filter ACTIONSTART|PROGRESS only on record, IDCANCEL on first ACTIONSTART
+REC ctx=0000000000000033 type=0x08000000 n=3 [0]'Action ##:##:##: [#]. [#]' [1]'INSTALL' [2]null [3]null
+install2 1602
+reopen 0
+preview badhandle 6 out 85
+preview nullout 87
+preview ok 0 nonzero 1
+previewdlg unknown 1626
+previewdlg D1 0
+previewdlg D1 again 0
+previewdlgA D1 0
+previewbb unknownbb 1627
+previewbb notbb 1627
+previewbb nullbb 0
+previewbb nullctl 87
+previewdlg null 1626
+previewdlg empty 0
+previewdlg badhandle 6
+previewbb badhandle 6
+preview second 14
+preview close 0

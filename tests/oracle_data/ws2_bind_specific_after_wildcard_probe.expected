@@ -1,0 +1,18 @@
+specific_after_wildcard udp first=0 second=0 first_rc=0 rc=0
+specific_after_wildcard udp first=0 second=1 first_rc=0 rc=0
+specific_after_wildcard udp first=0 second=2 first_rc=0 rc=0
+specific_after_wildcard udp first=1 second=0 first_rc=0 rc=0
+specific_after_wildcard udp first=1 second=1 first_rc=0 rc=0
+specific_after_wildcard udp first=1 second=2 first_rc=0 rc=0
+specific_after_wildcard udp first=2 second=0 first_rc=0 rc=-1 err=10013
+specific_after_wildcard udp first=2 second=1 first_rc=0 rc=-1 err=10013
+specific_after_wildcard udp first=2 second=2 first_rc=0 rc=-1 err=10013
+specific_after_wildcard tcp first=0 second=0 first_rc=0 rc=0
+specific_after_wildcard tcp first=0 second=1 first_rc=0 rc=0
+specific_after_wildcard tcp first=0 second=2 first_rc=0 rc=0
+specific_after_wildcard tcp first=1 second=0 first_rc=0 rc=0
+specific_after_wildcard tcp first=1 second=1 first_rc=0 rc=0
+specific_after_wildcard tcp first=1 second=2 first_rc=0 rc=0
+specific_after_wildcard tcp first=2 second=0 first_rc=0 rc=-1 err=10013
+specific_after_wildcard tcp first=2 second=1 first_rc=0 rc=-1 err=10013
+specific_after_wildcard tcp first=2 second=2 first_rc=0 rc=-1 err=10013

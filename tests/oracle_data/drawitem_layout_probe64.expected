@@ -1,0 +1,13 @@
+size=64
+CtlType=0
+CtlID=4
+itemID=8
+itemAction=12
+itemState=16
+hwndItem=24
+hDC=32
+rcItem.left=40
+rcItem.top=44
+rcItem.right=48
+rcItem.bottom=52
+itemData=56

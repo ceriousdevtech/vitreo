@@ -1,0 +1,60 @@
+device hr=0x00000000
+
+== map ==
+[map] vb NO_OVERWRITE first hr=0x887c0004 pData=NULL
+[map] vb DISCARD NULL out hr=0x80070057
+[map] vb DISCARD hr=0x00000000 RowPitch=0x0 DepthPitch=0x0
+[map] vb NO_OVERWRITE after DISCARD hr=0x00000000
+[map] vb DISCARD subresource 1 hr=0x80070057
+[map] vb READ hr=0x80070057
+[map] vb WRITE hr=0x80070057
+[map] vb type 0 hr=0x80070057
+[map] vb DISCARD flags=0x1234 hr=0x80070057
+[map] vb NO_OVERWRITE after FinishCommandList hr=0x887c0004
+[map] cb NO_OVERWRITE first hr=0x887c0004
+[map] cb DISCARD hr=0x00000000
+[map] cb NO_OVERWRITE after DISCARD hr=0x00000000
+[map] structured DISCARD hr=0x00000000
+[map] structured NO_OVERWRITE after DISCARD hr=0x00000000
+[map] default buffer DISCARD hr=0x80070057
+[map] staging buffer READ_WRITE hr=0x80070057
+[map] staging buffer DISCARD hr=0x80070057
+[map] dynamic texture NO_OVERWRITE first hr=0x887c0004
+[map] dynamic texture DISCARD hr=0x00000000 RowPitch=0x0 DepthPitch=0x0
+[map] dynamic texture DISCARD on the IMMEDIATE context hr=0x00000000 RowPitch=0x10 DepthPitch=0x40
+[map] dynamic texture NO_OVERWRITE after DISCARD hr=0x887c0004
+[map] staging texture WRITE hr=0x80070057
+[map] Unmap without Map returned
+
+== exec ==
+[exec] before: dst=0,0,0 upd[2..5]=0,0,0,0 uav=0,0 texel=00000000
+[exec] immediate view of the dynamic buffer before Execute: 11111111,11111111
+[exec] after: dst=a0,b1,a2 dst2=a0,b1,a2 upd[1..10]=0,c2,c3,c4,c5,0,0,d0,d1,0 uav=55,55,55,55 texel=3c3c3c3c
+[exec] texture box: (1,1)=47464544 (2,1)=4b4a4948 (1,2)=87868584 (0,0)=00000000
+[exec] immediate view of the dynamic buffer after Execute: a0,b1,a2
+[exec] second Execute: dst=a0,b1,a2 dst2=a0,b1,a2 upd[2..5]=c2,c3,c4,c5
+
+== query ==
+[query] EVENT ended on deferred, immediate GetData before Execute hr=0x887a0001 data=7
+[query] OCCLUSION on deferred, immediate GetData before Execute hr=0x887a0001 data=77
+[query] deferred GetData(NULL, 0) hr=0x887a0001
+[query] EVENT after Execute hr=0x00000000 data=1
+[query] OCCLUSION after Execute hr=0x00000000 data=0
+
+== misc ==
+[misc] deferred Signal hr=0x887a0001 completed=0
+[misc] deferred Wait hr=0x887a0001
+[misc] after Execute fence completed=0
+[misc] deferred Flush1 returned
+[misc] deferred GetPredication same=1 value=1
+[misc] immediate GetPredication null=1
+[misc] deferred Flush returned
+[misc] deferred ClearState then GetType=1
+[misc] deferred last Release=0
+#
+# winoracle (WARP, FL 11_0), x64 and x86 identical. Vitreo differs on one line
+# by choice: "[map] dynamic texture DISCARD" reports the subresource's real
+# RowPitch/DepthPitch (0x10/0x40, what the immediate context reports) where
+# WARP's deferred Map reports 0/0. A texture written with a 0 row pitch keeps
+# only its first row, so no application can depend on it; for buffers the 0/0
+# is matched. Open: a hardware (non-WARP) oracle for the texture pitch.

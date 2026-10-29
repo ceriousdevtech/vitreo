@@ -1,0 +1,81 @@
+layout result=28 error=10
+offsets result=10 error=18
+errors result=6 error=57
+errors2 result=32 error=2b02
+create result=1 error=0
+loopback result=1 error=0
+reply result=0 error=c
+payload result=1 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+invalid-handle result=0 error=57
+failure-first-byte result=cc error=0
+cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 
+small-struct result=0 error=57
+failure-first-byte result=cc error=0
+cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 
+small-data result=0 error=2b2a
+failure-first-byte result=0 error=0
+0 0 0 0 2a 2b 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 
+null-reply result=0 error=57
+failure-first-byte result=cc error=0
+cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 
+null-request result=0 error=3e6
+failure-first-byte result=cc error=0
+cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 
+empty-request result=1 error=0
+reply result=0 error=0
+payload result=0 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+ttl-zero result=1 error=0
+reply result=0 error=c
+payload result=1 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+ttl-one result=1 error=0
+reply result=0 error=c
+payload result=1 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+flags-df result=1 error=0
+reply result=0 error=c
+payload result=1 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+flags-reverse result=1 error=0
+reply result=0 error=c
+payload result=1 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+flags-unknown result=1 error=0
+reply result=0 error=c
+payload result=1 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+options-null-data result=0 error=3e6
+failure-first-byte result=cc error=0
+cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 
+options-native-eol result=1 error=0
+reply result=0 error=c
+payload result=1 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+options-packed-eol result=0 error=3e6
+failure-first-byte result=cc error=0
+cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 
+options-oversize result=0 error=2b2a
+failure-first-byte result=0 error=0
+0 0 0 0 2a 2b 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 
+remote-ttl-zero result=1 error=0
+reply result=2b05 error=0
+payload result=0 error=80
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+remote-ttl-one result=1 error=0
+reply result=2b05 error=0
+payload result=0 error=40
+reply-offsets result=28 error=0
+reply-options result=0 error=0
+close-null result=0 error=57
+close result=1 error=dead

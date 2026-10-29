@@ -1,0 +1,8 @@
+cab_unsigned.cab	800b0100
+cab_signed.cab	800b0109
+cab_tampered.cab	80096010
+cab_reserved1.cab	800b0109
+cab_reserve12.cab	800b0109
+cab_icabinet.cab	80096010
+cab_lead.cab	800b0100
+cab_tail.cab	80096010

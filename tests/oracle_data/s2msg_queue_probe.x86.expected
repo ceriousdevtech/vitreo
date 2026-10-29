@@ -1,0 +1,220 @@
+== x86
+create ok=1
+hidden_invalidate_status ret=00000000 err=dead
+  quit hwnd=0 wparam=5 lparam=0
+order: S U1 U2 U3(thread) QUIT PAINT TIMER end
+quit_peek_range_user_noremove ret=00000012 err=dead
+quit_peek_hwnd_filter_noremove ret=00000012 err=dead
+quit_peek_minus1_filter_noremove ret=00000012 err=dead
+quit_status ret=01080000 err=dead
+quit_still_there ret=00000012 err=dead
+  wparam ret=00000003 err=dead
+quit_consumed ret=0000ffff err=dead
+quit_twice ret=00000012 err=dead
+  wparam ret=00000009 err=dead
+quit_twice_second ret=0000ffff err=dead
+quit_then_post_first ret=00000401 err=dead
+quit_then_post_second ret=00000012 err=dead
+posted_quit ret=00000012 err=dead
+  wparam ret=0000000b err=dead
+  lparam ret=0000000c err=dead
+getmessage_quit ret=00000000 err=dead
+  wparam ret=00000006 err=dead
+quit_vs_paint ret=00000012 err=dead
+quit_vs_timer ret=00000012 err=dead
+filter_timer_only ret=00000113 err=dead
+filter_paint_only ret=0000000f err=dead
+filter_hwnd_minus1 ret=0000ffff err=dead
+filter_hwnd_minus1_thread_msg ret=00000403 err=dead
+filter_min_gt_max ret=0000000f err=dead
+inverted_range_1 ret=0000ffff err=dead
+inverted_range_2 ret=0000ffff err=dead
+inverted_range_3 ret=0000ffff err=dead
+inverted_range_paint ret=0000000f err=dead
+inverted_range_timer ret=00000113 err=dead
+inverted_range_quit ret=00000012 err=dead
+thread_timer_minus1_filter ret=0000ffff err=dead
+thread_timer_hwnd_filter ret=0000ffff err=dead
+thread_timer_null_filter ret=00000113 err=dead
+pm_qs_paint ret=0000000f err=dead
+pm_qs_postmessage ret=00000401 err=dead
+pm_noyield ret=00000401 err=dead
+peek_null_msg ret=00000000 err=3e6
+peek_invalid_hwnd ret=00000000 err=578
+getmessage_invalid_hwnd ret=ffffffff err=578
+  quit_left ret=00000401 err=dead
+parent_filter_child_msg ret=00000405 err=dead
+child_filter_child_msg ret=00000012 err=dead
+status_posted_keydown ret=00080008 err=dead
+input_state_posted_keydown ret=00000000 err=dead
+pm_qs_input_posted_keydown ret=0000ffff err=dead
+status_empty ret=00000000 err=dead
+status_post ret=00080008 err=dead
+status_post_again ret=00080000 err=dead
+status_post_mask_timer ret=00000000 err=dead
+status_post_after_mask_timer ret=00080008 err=dead
+status_paint ret=00200020 err=dead
+status_timer ret=00100010 err=dead
+status_after_killtimer ret=00000000 err=dead
+status_other_thread_post ret=00000000 err=dead
+status_invalid_flags ret=00000000 err=3ec
+  status_bit_200_rejected err=3ec r=0
+  status_bit_2000_rejected err=3ec r=0
+  status_bit_8000_rejected err=3ec r=0
+  status_bit_10000_rejected err=3ec r=0
+  status_bit_20000_rejected err=3ec r=0
+  status_bit_40000_rejected err=3ec r=0
+  status_bit_80000_rejected err=3ec r=0
+  status_bit_100000_rejected err=3ec r=0
+  status_bit_200000_rejected err=3ec r=0
+  status_bit_400000_rejected err=3ec r=0
+  status_bit_800000_rejected err=3ec r=0
+  status_bit_1000000_rejected err=3ec r=0
+  status_bit_2000000_rejected err=3ec r=0
+  status_bit_4000000_rejected err=3ec r=0
+  status_bit_8000000_rejected err=3ec r=0
+  status_bit_10000000_rejected err=3ec r=0
+  status_bit_20000000_rejected err=3ec r=0
+  status_bit_40000000_rejected err=3ec r=0
+  status_bit_80000000_rejected err=3ec r=0
+input_state ret=00000000 err=dead
+post_invalid_hwnd ret=00000000 err=578
+post_settext_ptr ret=00000000 err=487
+post_gettext ret=00000000 err=487
+post_copydata ret=00000000 err=487
+post_msg_over_ffff ret=00000001 err=dead
+  peek ret=00010005 err=dead
+post_null_hwnd ret=00000001 err=dead
+  peek_hwnd_null ret=00000000 err=dead
+post_thread_bogus ret=00000000 err=5a4
+post_thread_zero ret=00000000 err=5a4
+post_thread_settext ret=00000000 err=487
+post_broadcast_registered ret=1
+send_notify_invalid ret=00000000 err=578
+send_notify_same_thread ret=00000001 err=dead
+  seq ret=00000028 err=dead
+send_invalid ret=00000000 err=578
+synconly: 1 c d e 14 1a 1b 24 27 2b 2c 2d 31 38 39 3c(err=5) 46 47 49 4a 53 59 5a 70 7c 7d 81 83 85 87 8b 8c 90 91 92 93 94 95 b0 b2 b3 b4 c2 c4 cb e3 e9 ea eb 108 10a 110 119(err=57) 11a 11b(err=3ea) 11c 124 132 133 134 135 136 137 138 140 143 148 149 14a 14c 14d 152 158 164 180 181 189 18a 18c 18f 191 192 196 198 1a2 1aa 1ab 1ac 1ad 1b2 1eb 210 213 214 216 220 229 22a 22b 22d 22e 22f 240(err=57) 241(err=3ea) 242(err=3ea) 243(err=3ea) 244(err=3ea) 245(err=3ea) 246(err=3ea) 247(err=3ea) 248(err=3ea) 249(err=3ea) 24a(err=3ea) 24b(err=3ea) 24c(err=3ea) 24d 24e(err=3ea) 24f(err=3ea) 250(err=3ea) 251(err=3ea) 252(err=3ea) 253(err=3ea) 254(err=3ea) 255(err=3ea) 256(err=3ea) 257(err=3ea) 281 283 288 2e0 2e1 2e2 2e3 2e4 2e5 2e6(err=5) 2ed(err=5) 2ee(err=5) 2fa 2fb(err=5) 309 30b 30c 314 32c(err=5) 32d(err=5) 32e(err=5) 32f(err=5) 33f 341(err=5) 342(err=5) 343(err=5) 344(err=5) 345(err=5) 346(err=5) 347(err=5) 348(err=5) 349(err=5) count=158
+post_invalid_hwnd_settext ret=0 err=578
+sendnotify_settext_same_thread ret=0 err=487
+post_broadcast_settext ret=0 err=487
+regmsg range_ok=1 same_ci=1 same_as_clipfmt=1
+regmsg_empty ret=00000000 err=dead
+regmsg_emptyA ret=00000000 err=dead
+regmsg_299_chars ret=00000000 err=ea
+regmsg_255_chars ret=00000001 err=dead
+same_thread insend=0 insendex=0
+reply_not_in_send ret=00000000 err=dead
+  cross mode=0 result=61
+cross mode=0 insend=1 insendex=1 reply=99
+  cross mode=1 result=42
+cross mode=1 insend=1 insendex=109 reply=1
+  cross mode=2 result=1
+cross mode=2 insend=1 insendex=2 reply=99
+pm_qs_paint_with_pending_send ret=0000ffff err=dead
+  send_dispatched=1
+pm_qs_sendmessage ret=0000ffff err=dead
+  send_dispatched=1
+pm_qs_paint_after_send ret=0000000f err=dead
+peek_all_with_pending_send_and_paint ret=0000000f err=dead
+  send_dispatched=1
+pm_qs_postmessage_with_pending_send ret=0000ffff err=dead
+  send_dispatched=0
+settimer_hwnd_id0 ret=00000001 err=dead
+settimer_hwnd_id7 ret=00000007 err=dead
+settimer_hwnd_id7_again ret=00000007 err=dead
+killtimer_7 ret=00000001 err=dead
+killtimer_7_again ret=00000000 err=dead
+killtimer_null_bogus ret=00000000 err=dead
+killtimer_invalid_hwnd ret=00000000 err=578
+settimer_invalid_hwnd ret=00000000 err=578
+settimer_null_null nonzero=1
+settimer_null_replace same=1
+settimer_null_unknown_id same_as_requested=0 nonzero=1
+null_timer_msg ret=00000113 err=dead
+  hwnd_null=1 id_is_t1_or_t3=1 lparam_zero=1
+killtimer_null_t1 ret=00000001 err=dead
+killtimer_null_t3 ret=00000001 err=dead
+killtimer_hwnd_t1 ret=00000000 err=dead
+settimer_wide_id ret=00000001 err=dead
+wide_timer_msg ret=00000113 err=dead
+  wide_id_matches=1
+killtimer_wide ret=00000001 err=dead
+coalesced_timer_count=1
+timer_after_kill ret=0000ffff err=dead
+timerproc_msg ret=00000113 err=dead
+  lparam_is_proc=1
+  timerproc hwnd_is_main=1 msg=113 id=a
+fake_timerproc_msg ret=00000113 err=dead
+  dispatch ret=00000000 err=dead
+min_elapse_500ms_count_bucket=20-50
+coalescable_default ret=0000000c err=dead
+coalescable_no ret=0000000d err=dead
+coalescable_max ret=0000000e err=dead
+coalescable_over ret=00000000 err=57
+coalescable_ffff_fffe ret=00000000 err=57
+settimer_other_thread_window ret=00000001 err=dead
+killtimer_other_thread_window ret=00000001 err=dead
+settimer_other_thread_null nonzero=1
+settimer_other_thread_window_armed ret=00000017 err=dead
+  setter_thread_sees_timer ret=0000ffff err=dead
+owner_thread_sees_timer ret=00000017 err=dead
+hook_id -2 thread ok=0 err=592 global_self ok=0 err=592
+hook_id -1 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 0 thread ok=0 err=5 global_self ok=0 err=5
+hook_id 1 thread ok=0 err=5 global_self ok=0 err=5
+hook_id 2 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 3 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 4 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 5 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 6 thread ok=0 err=595 global_self ok=0 err=594
+hook_id 7 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 8 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 9 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 10 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 11 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 12 thread ok=1 err=dead global_self ok=0 err=594
+hook_id 13 thread ok=0 err=595 global_self ok=1 err=dead
+hook_id 14 thread ok=0 err=595 global_self ok=1 err=dead
+hook_id 15 thread ok=0 err=592 global_self ok=0 err=592
+hook_id 16 thread ok=0 err=592 global_self ok=0 err=592
+hook_invalid_id ret=00000000 err=592
+hook_null_proc ret=00000000 err=593
+hook_bogus_thread ret=00000000 err=57
+hook_global_no_hmod ret=00000000 err=594
+hook_journalrecord ret=00000000 err=5
+hook_keyboard_ll_null_hmod ok=1 err=0
+hook_mouse_ll_self ok=1
+hook_keyboard_ll_thread ret=00000000 err=595
+unhook_null ret=00000000 err=57c
+unhook_bogus ret=00000000 err=57c
+hooks_installed a=1 b=1
+getmsg_chain n=2 order=BA next_ret=aa msg_wparam=a
+getmsg_noremove n=2
+peek_empty_calls_hook ret=00000000 err=dead
+  n=0
+unhook_b ret=00000001 err=dead
+unhook_b_again ret=00000000 err=57c
+unhook_a ret=00000001 err=dead
+callnext_null_hook ret=00000000 err=dead
+callwndproc n=2 order=cr lresult=0
+callwndproc_dispatch n=0
+callwndproc_cross_thread_wparam=1
+posted_input_hooks kbd=0 mouse=0
+winevent_min_gt_max ret=00000000 err=592
+winevent_null_proc ret=00000000 err=593
+winevent_incontext_no_hmod ret=00000000 err=594
+winevent_bad_flags ret=00000000 err=3ec
+winevent_hook ok=1
+winevent_after_notify=0
+  winevent ev=8005 hwnd_is_main=1 obj=-4 child=0 tid_is_self=1
+winevent_after_peek=1
+winevent_outside_range=1
+unhook_winevent ret=00000001 err=dead
+unhook_winevent_again ret=00000000 err=6
+unhook_winevent_null ret=00000000 err=6
+winevent_skipownthread=0
+waitmessage ret=00000001 err=dead
+  waited_for_new_message=1
+msgtime_matches=1 msgpos_matches=1 extra=0
+done

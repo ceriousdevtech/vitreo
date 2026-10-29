@@ -1,0 +1,8 @@
+bitness=64
+main before CoInitialize first=3221 second=3221
+main after CoInitialize=3221
+thread 0 tid_reused=0 first=3222 second=3222
+thread 1 tid_reused=0 first=3223 second=3223
+thread 2 tid_reused=0 first=3224 second=3224
+main again=3221
+main after CoUninitialize=3221

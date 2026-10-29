@@ -1,0 +1,29 @@
+PdhOpenQueryW(NULL,0,&q) -> 0
+  q!=0=1
+PdhOpenQueryA(NULL,0,&q) -> 0
+PdhOpenQueryW(NULL out) -> c0000bbd
+PdhCollectQueryData(empty) -> 800007d5
+AddEnglishW(no such object) -> c0000bb8
+  c=0
+AddEnglishW(no such counter) -> c0000bb9
+  c=0
+AddEnglishW(garbage) -> c0000bc0
+  c=0
+AddEnglishA(no such object) -> c0000bb8
+AddEnglishW(bad query) -> c0000bbc
+AddEnglishW(NULL query) -> c0000bbc
+AddCounterW(no such object) -> c0000bb8
+PdhCollectQueryData(still empty) -> 800007d5
+PdhCollectQueryData(bad) -> c0000bbc
+PdhCollectQueryData(NULL) -> c0000bbc
+GetFormattedCounterValue(bad) -> c0000bbc
+GetFormattedCounterValue(NULL) -> c0000bbc
+GetFormattedCounterArrayA(bad) -> c0000bbc
+  size=0
+  count=0
+GetFormattedCounterArrayA(NULL) -> c0000bbc
+PdhCloseQuery(q) -> 0
+PdhCloseQuery(q again) -> c0000bbc
+PdhCloseQuery(bad) -> c0000bbc
+PdhCloseQuery(NULL) -> c0000bbc
+PdhCloseQuery(qa) -> 0

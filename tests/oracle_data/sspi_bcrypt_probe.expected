@@ -1,0 +1,12 @@
+open:sha256_null_impl st=0x0 out=set
+open:sha256_primitive st=0x0 out=set
+open:sha256_primitive_lower st=0x0 out=set
+open:sha256_empty_impl st=0x0 out=set
+open:sha256_bogus_impl st=0xc0000225 out=untouched
+open:sha256_smartcard_ksp st=0xc0000225 out=untouched
+open:rng_primitive st=0x0 out=set
+open:aes_primitive st=0x0 out=set
+open:md5_hmac_primitive st=0x0 out=set
+open:bogus_alg_primitive st=0xc0000225 out=untouched
+open:bogus_alg_bogus_impl st=0xc0000225 out=untouched
+done:

@@ -1,0 +1,200 @@
+bte_suspended count_before=0 resume_prev=1 count_after=1 exit=11 tid_nonzero=1
+bte_running_suspend suspend_prev=0 resume_prev=1 count=1 exit=12
+[ip-handler]bte_null_start h=0x0 errno=22 ip=1
+[ip-handler]bt_null_start h=0xffffffffffffffff errno=22 ip=1
+bt_run ok=1 count=1 errno=0 ip=0
+endthreadex exit=7 after_end_ran=0
+errno_per_thread main=5 thread_initial=0 strerror_same_ptr=0 [No such file or directory]
+strerror_s_trunc r=0 "No s\x00ZZZ" errno=0 ip=0
+strerror_s_unknown r=0 "Unknown\x00" errno=0 ip=0
+[ip-handler]strerror_s_null r=22 errno=22 ip=1
+[ip-handler]strerror_s_zero r=22 errno=22 ip=1
+sys_nerr n=43
+sys_errlist42 [Illegal byte sequence] 43 [Unknown error]
+strerror_table
+ 0=No error
+ 1=Operation not permitted
+ 2=No such file or directory
+ 3=No such process
+ 4=Interrupted function call
+ 5=Input/output error
+ 6=No such device or address
+ 7=Arg list too long
+ 8=Exec format error
+ 9=Bad file descriptor
+ 10=No child processes
+ 11=Resource temporarily unavailable
+ 12=Not enough space
+ 13=Permission denied
+ 14=Bad address
+ 15=Unknown error
+ 16=Resource device
+ 17=File exists
+ 18=Improper link
+ 19=No such device
+ 20=Not a directory
+ 21=Is a directory
+ 22=Invalid argument
+ 23=Too many open files in system
+ 24=Too many open files
+ 25=Inappropriate I/O control operation
+ 26=Unknown error
+ 27=File too large
+ 28=No space left on device
+ 29=Invalid seek
+ 30=Read-only file system
+ 31=Too many links
+ 32=Broken pipe
+ 33=Domain error
+ 34=Result too large
+ 35=Unknown error
+ 36=Resource deadlock avoided
+ 37=Unknown error
+ 38=Filename too long
+ 39=No locks available
+ 40=Function not implemented
+ 41=Directory not empty
+ 42=Illegal byte sequence
+ 43=Unknown error
+ 44=Unknown error
+ 45=Unknown error
+ 46=Unknown error
+ 47=Unknown error
+ 48=Unknown error
+ 49=Unknown error
+ 50=Unknown error
+ 51=Unknown error
+ 52=Unknown error
+ 53=Unknown error
+ 54=Unknown error
+ 55=Unknown error
+ 56=Unknown error
+ 57=Unknown error
+ 58=Unknown error
+ 59=Unknown error
+ 60=Unknown error
+ 61=Unknown error
+ 62=Unknown error
+ 63=Unknown error
+ 64=Unknown error
+ 65=Unknown error
+ 66=Unknown error
+ 67=Unknown error
+ 68=Unknown error
+ 69=Unknown error
+ 70=Unknown error
+ 71=Unknown error
+ 72=Unknown error
+ 73=Unknown error
+ 74=Unknown error
+ 75=Unknown error
+ 76=Unknown error
+ 77=Unknown error
+ 78=Unknown error
+ 79=Unknown error
+ 80=Unknown error
+ 81=Unknown error
+ 82=Unknown error
+ 83=Unknown error
+ 84=Unknown error
+ 85=Unknown error
+ 86=Unknown error
+ 87=Unknown error
+ 88=Unknown error
+ 89=Unknown error
+ 90=Unknown error
+ 91=Unknown error
+ 92=Unknown error
+ 93=Unknown error
+ 94=Unknown error
+ 95=Unknown error
+ 96=Unknown error
+ 97=Unknown error
+ 98=Unknown error
+ 99=Unknown error
+ 100=address in use
+ 101=address not available
+ 102=address family not supported
+ 103=connection already in progress
+ 104=bad message
+ 105=operation canceled
+ 106=connection aborted
+ 107=connection refused
+ 108=connection reset
+ 109=destination address required
+ 110=host unreachable
+ 111=identifier removed
+ 112=operation in progress
+ 113=already connected
+ 114=too many symbolic link levels
+ 115=message size
+ 116=network down
+ 117=network reset
+ 118=network unreachable
+ 119=no buffer space
+ 120=no message available
+ 121=no link
+ 122=no message
+ 123=no protocol option
+ 124=no stream resources
+ 125=not a stream
+ 126=not connected
+ 127=state not recoverable
+ 128=not a socket
+ 129=not supported
+ 130=operation not supported
+ 131=Unknown error
+ 132=value too large
+ 133=owner dead
+ 134=protocol error
+ 135=protocol not supported
+ 136=wrong protocol type
+ 137=stream timeout
+ 138=timed out
+ 139=text file busy
+ 140=operation would block
+ 141=Unknown error
+ 142=Unknown error
+ 143=Unknown error
+ 144=Unknown error
+strerror43 [Unknown error] 100 [address in use] -1 [Unknown error]
+signal_invalid r=0xffffffffffffffff errno=22 ip=0
+signal_int prev_is_dfl=0x1 errno=0 ip=0
+[sig 2] raise_int r=0 seen=2 errno=0 ip=0
+signal_after_raise prev_is_dfl=1 prev_is_handler=0 errno=0 ip=0
+raise_ign r=0 errno=0 ip=0
+[ip-handler]raise_invalid r=-1 errno=22 ip=1
+signal_sigack r=0xffffffffffffffff errno=22 ip=0
+seh_filter_dll_nohandler r=0 errno=0 ip=0
+seh_filter_exe_nohandler r=0 errno=0 ip=0
+seh_filter_dll_handler r=0 seen=0 errno=0 ip=0
+seh_filter_exe_handler [sig 11]r=-1 seen=11 errno=0 ip=0
+seh_filter_exe_ign r=-1 errno=0 ip=0
+seh_filter_exe_fpe r=0 seen=0 errno=0 ip=0
+seh_filter_exe_other r=0 errno=0 ip=0
+[ip-handler] ipn_noinfo_returned errno=0 ip=1
+onexit init=0 reg1=0 reg2=0 reinit=0 reinit_kept=1 ox_2 ox_late ox_1 exec=0 after_first_null=0
+initterm it_1 it_2
+initterm_e ite_1 ite_2 r=5
+exit: crt_atexit_c atexit_b atexit_a  -> exit=0x5
+exit_flushed "buffered"
+_exit:  -> exit=0x6
+cexit: atexit_b atexit_a after_cexit  -> exit=0x8
+abort:  -> exit=0xc0000409
+abort_handler: [abrt-handler 22]
+ -> exit=0xc0000409
+abort_noreport:  -> exit=0x3
+raise_term:  -> exit=0x3
+raise_int:  -> exit=0x3
+raise_abrt:  -> exit=0x3
+ipn_noreturn_handler: [ip-handler] -> exit=0xc0000409
+ipn_noreturn:  -> exit=0xc0000409
+ipn_noinfo:  -> exit=0xc0000409
+watson:  -> exit=0xc0000409
+strerror_s_null:  -> exit=0xc0000409
+argv: rc=0 argc=12 [argv][a][b c][d"e][f\"g][h\i j][k\\l m][][xy][q"r][tail\] term=1 -> exit=0x0
+argv_unexpanded: rc=0 argc=3 [argv][wc_*.tst] term=1 -> exit=0x0
+argv2_wild: rc=0 argc=7 [argv2][wc_a.tst][wc_b.tst][wc_a.tst][wc_b.tst][*.nomatch] term=1 -> exit=0x0
+argv0: rc=0 argc=0 argv=NULL -> exit=0x0
+wargv: rc=0 argc=5 [wargv][a][b c][d"e] term=1 -> exit=0x0
+exit=0

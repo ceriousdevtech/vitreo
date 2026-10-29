@@ -1,0 +1,16 @@
+w_null_null_delay r=0 gle=3
+a_null_null_delay r=0 gle=3
+a_null_null_0 r=0 gle=3
+a_null_src r=0 gle=3
+a_null_dst r=0 gle=3 src=5
+a_case_only_replace r=1 gle=dead size=5
+case_only_name ALPHA.TXT
+w_empty_empty r=0 gle=3
+a_same_path_replace r=1 gle=dead size=5
+a_same_path_0 r=1 gle=dead size=5
+a_case_only_0 r=1 gle=dead size=5
+a_exists_no_replace r=0 gle=b7 src=5 dst=2
+a_exists_replace r=1 gle=dead src=ffffffff dst=5
+a_copy_and_delay r=0 gle=57
+a_write_through r=1 gle=dead dst=5
+a_bad_flag r=1 gle=dead src=ffffffff

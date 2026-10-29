@@ -1,0 +1,522 @@
+adapter: Microsoft Basic Render Driver
+feature level 0xb000, pointer size 8
+
+[H] initial data contents (readback)
+H BUF DEF data create                                      hr=0x00000000
+H BUF STG data create                                      hr=0x00000000
+H BUF STG own data                                         match
+H BUF DEF data via copy                                    match
+H T2D pitch64 last row ends at page end                    hr=0x00000000
+H T3D slice256 last slice ends at page end                 hr=0x00000000
+H T1D arr2 mips4 pitch=3 DEF create                        hr=0x00000000
+H T1D arr2 mips4 pitch=3 DEF readback                      sub0:match sub1:match sub2:match sub3:match sub4:match sub5:match sub6:match sub7:match
+H T1D arr2 mips4 STG create                                hr=0x00000000
+H T1D arr2 mips4 STG readback                              sub0:match sub1:match sub2:match sub3:match sub4:match sub5:match sub6:match sub7:match
+H T1D arr1 mips1 DEF create                                hr=0x00000000
+H T1D arr1 mips1 DEF readback                              sub0:match
+H T2D 5x3 pitch32 DEF create                               hr=0x00000000
+H T2D 5x3 pitch32 DEF readback                             sub0:match
+H T2D 4x4 arr2 mips3 mixed pitches DEF create              hr=0x00000000
+H T2D 4x4 arr2 mips3 mixed pitches DEF readback            sub0:match sub1:match sub2:match sub3:match sub4:match sub5:match
+H T2D 8x1 pitch0 DEF create                                hr=0x80070057
+H T2D 4x4 pitch0 DEF create                                hr=0x80070057
+H T2D 4x4 pitch8 (<row) DEF create                         hr=0x00000000
+H T2D 4x4 pitch8 (<row) DEF readback                       sub0:match
+H T2D 5x3 pitch32 STG create                               hr=0x00000000
+H T2D 5x3 pitch32 STG readback                             sub0:match
+H T2D 5x3 pitch32 DYN create                               hr=0x00000000
+H T2D 5x3 pitch32 DYN readback                             sub0:match
+H T2D 5x3 pitch32 IMM create                               hr=0x00000000
+H T2D 5x3 pitch32 IMM readback                             sub0:match
+H BC1 8x8 mips4 tight DEF create                           hr=0x00000000
+H BC1 8x8 mips4 tight DEF readback                         sub0:match sub1:match sub2:match sub3:match
+H BC1 8x8 mips4 padded DEF create                          hr=0x00000000
+H BC1 8x8 mips4 padded DEF readback                        sub0:match sub1:match sub2:match sub3:match
+H BC1 8x8 mips4 padded STG create                          hr=0x00000000
+H BC1 8x8 mips4 padded STG readback                        sub0:match sub1:match sub2:match sub3:match
+H T3D 4x3x2 pitch20 slice80 DEF create                     hr=0x00000000
+H T3D 4x3x2 pitch20 slice80 DEF readback                   sub0:match
+H T3D 4x4x4 mips3 tight DEF create                         hr=0x00000000
+H T3D 4x4x4 mips3 tight DEF readback                       sub0:match sub1:match sub2:match
+H T3D 4x4x1 slice0 DEF create                              hr=0x80070057
+H T3D 4x3x2 pitch20 slice80 STG create                     hr=0x00000000
+H T3D 4x3x2 pitch20 slice80 STG readback                   sub0:match
+H T3D 4x3x2 pitch20 slice80 DYN create                     hr=0x00000000
+H T3D 4x3x2 pitch20 slice80 DYN readback                   sub0:match
+H BC1 3D 8x8x2 pitch24 slice64 DEF create                  hr=0x00000000
+H BC1 3D 8x8x2 pitch24 slice64 DEF readback                sub0:match
+H BC1 3D 8x8x2 pitch24 slice64 STG create                  hr=0x00000000
+H BC1 3D 8x8x2 pitch24 slice64 STG readback                sub0:match
+
+[A] CreateBuffer limits and rules
+A ByteWidth=0 DEF VB                                       hr=0x80070057
+A CB 16                                                    hr=0x00000000
+A CB 20 (not x16)                                          hr=0x80070057
+A CB 8                                                     hr=0x80070057
+A CB 65536                                                 hr=0x00000000
+A CB 65552 (>4096 constants)                               hr=0x00000000
+A CB 1048576                                               hr=0x00000000
+A CB 65552 DYN W                                           hr=0x00000000
+A CB 65552 IMM data                                        hr=0x00000000
+A CB|SRV 256                                               hr=0x80070057
+A CB|UAV 256                                               hr=0x80070057
+A CB DYN RW                                                hr=0x80070057
+A ST stride=0 BW256 SRV                                    hr=0x80070057
+A ST stride=2 BW256 SRV                                    hr=0x80070057
+A ST stride=4 BW256 SRV                                    hr=0x00000000
+A ST stride=6 BW252 SRV                                    hr=0x80070057
+A ST stride=12 BW256 SRV (256%12!=0)                       hr=0x80070057
+A ST stride=12 BW240 SRV                                   hr=0x00000000
+A ST stride=16 BW8 SRV (BW<stride)                         hr=0x80070057
+A ST stride=16 BW24 SRV                                    hr=0x80070057
+A ST stride=2048 BW4096 SRV                                hr=0x00000000
+A ST stride=2052 BW4104 SRV                                hr=0x80070057
+A ST stride=4096 BW8192 SRV                                hr=0x80070057
+A ST stride=16 BW256 UAV                                   hr=0x00000000
+A ST stride=16 STG RW                                      hr=0x00000000
+A non-ST stride=16 VB                                      hr=0x00000000
+A non-ST stride=7 VB                                       hr=0x00000000
+A non-ST stride=16 RAW SRV                                 hr=0x00000000
+A RAW BW6 SRV                                              hr=0x00000000
+A RAW BW2 SRV                                              hr=0x00000000
+A RAW VB only                                              hr=0x80070057
+A RAW IB only                                              hr=0x80070057
+A RAW UAV                                                  hr=0x00000000
+A RAW CB                                                   hr=0x80070057
+A RAW SO                                                   hr=0x80070057
+A DI BW4 UAV                                               hr=0x80070057
+A DI BW1 0                                                 hr=0x80070057
+A DI BW8 UAV                                               hr=0x80070057
+A DI BW12 UAV                                              hr=0x00000000
+A DI BW16 UAV                                              hr=0x00000000
+A DI BW20 UAV                                              hr=0x00000000
+A DI BW13 UAV                                              hr=0x00000000
+A DI|RAW BW256 SRV                                         hr=0x00000000
+A SO|UAV                                                   hr=0x80070057
+A SO|SRV                                                   hr=0x00000000
+A SO|IB                                                    hr=0x00000000
+A SO|VB|UAV                                                hr=0x80070057
+A VB|UAV                                                   hr=0x00000000
+A IB|UAV                                                   hr=0x00000000
+A RT buffer                                                hr=0x00000000
+A RT|SRV buffer                                            hr=0x00000000
+A DS buffer                                                hr=0x80070057
+A IMM no data                                              hr=0x80070057
+A IMM pSysMem NULL                                         hr=0x80070057
+A DEF pSysMem NULL                                         hr=0x80070057
+A DYN pSysMem NULL                                         hr=0x80070057
+A STG pSysMem NULL                                         hr=0x80070057
+A Usage=4                                                  hr=0x80070057
+A cpu W|0x40000 DYN                                        hr=0x80070057
+A cpu 0x1 DEF                                              hr=0x80070057
+A DYN cpu 0                                                hr=0x80070057
+A DYN cpu RW                                               hr=0x80070057
+A DYN cpu R                                                hr=0x80070057
+A STG cpu 0                                                hr=0x80070057
+A STG VB cpu R                                             hr=0x80070057
+A bind 0x400 (VIDEO_ENCODER)                               hr=0x00000000
+A bind 0x800                                               hr=0x80070057
+A misc 0x400                                               hr=0x80070057
+A misc TILED 0x40000                                       hr=0x00000000
+A misc TILE_POOL 0x20000                                   hr=0x00000000
+A misc HW_PROTECTED 0x80000                                hr=0x80070057
+A misc RESTRICTED_CONTENT 0x1000                           hr=0x80070057
+A BW 128MiB SRV                                            hr=0x00000000
+A BW 128MiB+16 SRV                                         hr=0x00000000
+A BW 512MiB SRV                                            hr=0x00000000
+A BW 1GiB+16 SRV                                           hr=0x00000000
+A BW 2GiB SRV                                              hr=0x00000000
+A BW 0xFFFFFFF0 SRV                                        hr=0x8007000e
+A pDesc NULL                                               hr=0x80070057 out=NULL
+
+[B] CreateTexture1D limits and rules
+B W=0                                                      hr=0x80070057
+B W=16384 R8                                               hr=0x00000000
+B W=16385 R8                                               hr=0x80070057
+B Array=0                                                  hr=0x80070057
+B Array=2048                                               hr=0x00000000
+B Array=2049                                               hr=0x80070057
+B Mips=0 W=64 Arr=3                                        hr=0x00000000 GetDesc W=64 Mips=7 Arr=3 Fmt=28 U=0 B=0x8 C=0x0 M=0x0
+B Mips=7 W=64 (full)                                       hr=0x00000000
+B Mips=8 W=64 (too many)                                   hr=0x80070057
+B Mips=16 W=64                                             hr=0x80070057
+B BC1 W=8                                                  hr=0x80070057
+B GM SRV only                                              hr=0x80070057
+B GM RT|SRV mips0                                          hr=0x00000000
+B IMM no data                                              hr=0x80070057
+B IMM data                                                 hr=0x00000000
+B IMM RT data                                              hr=0x80070057
+B STG SRV cpuR                                             hr=0x80070057
+B STG cpuR                                                 hr=0x00000000
+B STG cpu0                                                 hr=0x80070057
+B DYN SRV W                                                hr=0x00000000
+B DYN SRV R                                                hr=0x80070057
+B DYN mips=2                                               hr=0x80070057
+B DYN arr=2                                                hr=0x80070057
+B DYN UAV                                                  hr=0x80070057
+B DEF cpuW (map-on-default)                                hr=0x00000000
+B fmt 200                                                  hr=0x80070057
+B fmt UNKNOWN                                              hr=0x80070057
+B fmt R32G32B32_FLOAT SRV                                  hr=0x00000000
+B D32 DS                                                   hr=0x00000000
+B D32 DS|SRV                                               hr=0x80070057
+B R32_TYPELESS DS|SRV                                      hr=0x00000000
+B RGBA8 DS                                                 hr=0x80070057
+B D32 RT                                                   hr=0x80070057
+B CUBE arr6                                                hr=0x80070057
+B SHARED|NT RT|SRV                                         hr=0x80070057
+B CL SRV                                                   hr=0x00000000
+B VB bind                                                  hr=0x80070057
+B pSysMem NULL DEF                                         hr=0x80070057
+B pSysMem NULL IMM                                         hr=0x80070057
+B data arr=3 mips=2 DEF                                    hr=0x00000000
+B data arr=3 mips=2 STG                                    hr=0x00000000
+B data arr=1 mips=1 STG                                    hr=0x00000000
+
+[C] CreateTexture2D limits and rules
+C W=0                                                      hr=0x80070057
+C H=0                                                      hr=0x80070057
+C W=16384 H=1 R8                                           hr=0x00000000
+C W=16385 H=1 R8                                           hr=0x00000000
+C W=1 H=16385 R8                                           hr=0x00000000
+C Arr=0                                                    hr=0x80070057
+C Arr=2048 4x4 R8                                          hr=0x00000000
+C Arr=2049 4x4 R8                                          hr=0x80070057
+C Mips=0 32x16 Arr=2                                       hr=0x00000000 GetDesc 32x16 Mips=6 Arr=2 Fmt=28 S=1/0 U=0 B=0x8 C=0x0 M=0x0
+C Mips=6 32x16 (full)                                      hr=0x00000000
+C Mips=7 32x16 (too many)                                  hr=0x80070057
+C Mips=2 1x1                                               hr=0x80070057
+C Mips=15 16384x1 R8                                       hr=0x00000000
+C Mips=16 16384x1 R8                                       hr=0x80070057
+C Mips=5 4x4 (too many)                                    hr=0x80070057
+C CUBE 64x64 arr6                                          hr=0x00000000
+C CUBE 64x32 arr6 (non-square)                             hr=0x80070057
+C CUBE arr12                                               hr=0x00000000
+C CUBE arr7                                                hr=0x00000000
+C CUBE arr1                                                hr=0x80070057
+C CUBE arr2046 4x4 R8                                      hr=0x00000000
+C CUBE arr2052 4x4 R8                                      hr=0x80070057
+C CUBE 64x64 mips0 SRV|RT                                  hr=0x00000000 GetDesc 64x64 Mips=7 Arr=6 M=0x4
+C CUBE BC1 8x8                                             hr=0x00000000
+C CUBE R32_TYPELESS DS|SRV                                 hr=0x00000000
+C CUBE IMM data                                            hr=0x00000000
+C CUBE DYN                                                 hr=0x80070057
+C CUBE STG R                                               hr=0x00000000
+C CUBE MSAA4                                               hr=0x80070057
+C S=0                                                      hr=0x80070057
+C S=1 Q=1                                                  hr=0x80070057
+C S=1 Q=0xFFFFFFFF                                         hr=0x00000000
+C S=4 Q=0 RT                                               hr=0x00000000
+C S=4 Q=1 RT                                               hr=0x80070057
+C S=4 Q=STANDARD(0xFFFFFFFF) RT                            hr=0x00000000
+C S=4 Q=CENTER(0xFFFFFFFE) RT                              hr=0x00000000
+C S=8 Q=STANDARD RT                                        hr=0x00000000
+C S=4 Q=STANDARD D32 DS                                    hr=0x00000000
+C S=2 Q=0 RT                                               hr=0x00000000
+C S=3 Q=0 RT                                               hr=0x80070057
+C S=16 Q=0 RT                                              hr=0x00000000
+C S=32 Q=0 RT                                              hr=0x80070057
+C S=4 mips0 RT                                             hr=0x80070057
+C S=4 mips2 RT                                             hr=0x80070057
+C S=4 arr2 RT                                              hr=0x00000000
+C S=4 SRV only                                             hr=0x00000000
+C S=4 bind 0                                               hr=0x80070057
+C S=4 IMM data                                             hr=0x80070057
+C S=4 STG R                                                hr=0x80070057
+C S=4 DYN                                                  hr=0x00000000
+C S=4 DEF RT data                                          hr=0x80070057
+C S=4 BC1 SRV                                              hr=0x80070057
+C S=4 R32G32B32A32_FLOAT RT                                hr=0x00000000
+C S=4 R32_UINT RT                                          hr=0x00000000
+C S=4 RT GM                                                hr=0x00000000
+C S=4 RT SHARED                                            hr=0x00000000
+C S=4 RT CL                                                hr=0x00000000
+C S=4 D24S8 DS GetDesc                                     hr=0x00000000 GetDesc 16x16 Mips=1 Arr=1 Fmt=45 S=4/0 B=0x40
+C S=4 Q=STANDARD GetDesc                                   hr=0x00000000 GetDesc S=4/0xffffffff
+C BC1 4x4                                                  hr=0x00000000
+C BC1 5x5                                                  hr=0x80070057
+C BC1 6x8                                                  hr=0x80070057
+C BC1 8x6                                                  hr=0x80070057
+C BC1 2x2                                                  hr=0x80070057
+C BC1 1x1                                                  hr=0x80070057
+C BC1 5x5 mips0                                            hr=0x80070057
+C BC1 8x8 mips0                                            hr=0x00000000
+C BC7 12x12                                                hr=0x00000000
+C BC7 13x12                                                hr=0x80070057
+C BC1 5x5 IMM data                                         hr=0x80070057
+C BC1 5x5 STG R                                            hr=0x80070057
+C BC1 8x8 DYN                                              hr=0x00000000
+C BC1 8x8 RT                                               hr=0x80070057
+C BC1 8x8 UAV                                              hr=0x80070057
+C BC1_TYPELESS 8x8 SRV                                     hr=0x00000000
+C R8G8_B8G8 3x2 SRV                                        hr=0x80070057
+C R8G8_B8G8 4x2 SRV                                        hr=0x00000000
+C GDI BGRA8 RT                                             hr=0x00000000
+C GDI BGRA8 RT|SRV                                         hr=0x00000000
+C GDI BGRA8 SRV only                                       hr=0x80070057
+C GDI BGRA8_TYPELESS RT                                    hr=0x00000000
+C GDI BGRA8_SRGB RT                                        hr=0x00000000
+C GDI RGBA8 RT                                             hr=0x80070057
+C GDI BGRA8 RT mips2                                       hr=0x80070057
+C GDI BGRA8 RT arr2                                        hr=0x00000000
+C GDI BGRA8 RT MSAA4                                       hr=0x80070057
+C GDI|KM BGRA8 RT                                          hr=0x00000000
+C GDI|SH BGRA8 RT                                          hr=0x00000000
+C GDI|CL BGRA8 RT                                          hr=0x80070057
+C GDI BGRA8 STG                                            hr=0x80070057
+C SH RGBA8 RT|SRV                                          hr=0x00000000
+C SH RGBA8 mips2                                           hr=0x00000000
+C SH RGBA8 arr2                                            hr=0x00000000
+C SH|KM                                                    hr=0x80070057
+C NT alone                                                 hr=0x80070057
+C SH|NT RGBA8                                              hr=0x00000000
+C KM|NT RGBA8                                              hr=0x00000000
+C SH|NT mips2                                              hr=0x00000000
+C SH|NT arr2                                               hr=0x00000000
+C SH|NT BC1 SRV                                            hr=0x00000000
+C SH|NT R32_FLOAT RT|SRV                                   hr=0x00000000
+C SH|NT RGBA16F RT|SRV                                     hr=0x00000000
+C SH|NT D24S8 DS                                           hr=0x80070057
+C SH|NT RGBA8 UAV|SRV                                      hr=0x00000000
+C SH|NT RGBA8 SRV only                                     hr=0x00000000
+C SH RGBA8 STG                                             hr=0x00000000
+C GM RGBA8 RT|SRV mips0                                    hr=0x00000000
+C GM RGBA8 RT|SRV mips1                                    hr=0x00000000
+C GM RGBA8 SRV only                                        hr=0x80070057
+C GM RGBA8 RT only                                         hr=0x80070057
+C GM R32_UINT RT|SRV                                       hr=0x00000000
+C GM R8G8B8A8_SINT RT|SRV                                  hr=0x00000000
+C GM R32G32B32A32_UINT RT|SRV                              hr=0x00000000
+C GM R32G32B32A32_FLOAT RT|SRV                             hr=0x00000000
+C GM R16G16B16A16_FLOAT RT|SRV                             hr=0x00000000
+C GM RGBA8_TYPELESS RT|SRV                                 hr=0x00000000
+C GM R32_TYPELESS RT|SRV                                   hr=0x00000000
+C GM RGBA8 RT|SRV|UAV                                      hr=0x00000000
+C GM IMM data                                              hr=0x80070057
+C GM CUBE RT|SRV mips0                                     hr=0x00000000
+C DYN mips2 arr1                                           hr=0x80070057
+C DYN mips0 arr1                                           hr=0x80070057
+C DYN mips1 arr2                                           hr=0x80070057
+C DYN bind0                                                hr=0x80070057
+C DYN SRV|RT                                               hr=0x80070057
+C DYN D32 bind0                                            hr=0x80070057
+C DYN R32_TYPELESS SRV                                     hr=0x00000000
+C DYN BC1 8x8                                              hr=0x00000000
+C DYN BC3 64x64 mips0                                      hr=0x80070057
+C DYN CL                                                   hr=0x80070057
+C DYN data                                                 hr=0x00000000
+C STG arr3 mips0                                           hr=0x00000000
+C STG SRV                                                  hr=0x80070057
+C STG cpuW                                                 hr=0x00000000
+C STG cpu0                                                 hr=0x80070057
+C STG D24S8                                                hr=0x00000000
+C STG GM                                                   hr=0x80070057
+C STG CL                                                   hr=0x80070057
+C STG data                                                 hr=0x00000000
+C IMM bind0 data                                           hr=0x80070057
+C IMM SRV|RT data                                          hr=0x80070057
+C IMM no data                                              hr=0x80070057
+C IMM pSysMem NULL                                         hr=0x80070057
+C DEF pSysMem NULL                                         hr=0x80070057
+C IMM D32 bind0 data                                       hr=0x80070057
+C D32 DS|UAV                                               hr=0x80070057
+C R32_TYPELESS DS|RT                                       hr=0x80070057
+C R32_TYPELESS DS|UAV                                      hr=0x80070057
+C R24G8 DS|UAV                                             hr=0x80070057
+C R24G8 SRV only                                           hr=0x00000000
+C R24G8 bind0                                              hr=0x00000000
+C R24_UNORM_X8 SRV only                                    hr=0x00000000
+C R24_UNORM_X8 DS                                          hr=0x80070057
+C R16_TYPELESS DS|SRV                                      hr=0x00000000
+C R32G8X24 DS|SRV                                          hr=0x00000000
+C D32 bind0                                                hr=0x00000000
+C D24S8 DS mips0                                           hr=0x00000000 GetDesc Mips=7
+C D32 DS GM                                                hr=0x80070057
+C D32 DS data                                              hr=0x00000000
+C fmt UNKNOWN                                              hr=0x80070057
+C fmt 200                                                  hr=0x80070057
+C Usage=4                                                  hr=0x80070057
+C bind 0x400                                               hr=0x80070057
+C misc 0x10000000                                          hr=0x80070057
+C misc TILED                                               hr=0x00000000
+C misc HW_PROTECTED                                        hr=0x80070057
+C misc RESTRICTED_CONTENT                                  hr=0x00000000
+C cpu 0x40000 STG                                          hr=0x80070057
+C pDesc NULL                                               hr=0x80070057 out=NULL
+
+[D] CreateTexture3D limits and rules
+D W=0                                                      hr=0x80070057
+D D=0                                                      hr=0x80070057
+D W=2048 R8                                                hr=0x00000000
+D W=2049 R8                                                hr=0x80070057
+D D=2049 R8                                                hr=0x80070057
+D Mips=0 32x16x8                                           hr=0x00000000 GetDesc 32x16x8 Mips=6 Fmt=28 U=0 B=0x8 C=0x0 M=0x0
+D Mips=0 4x4x32 (depth-led)                                hr=0x00000000 GetDesc Mips=6
+D Mips=7 32x16x8 (too many)                                hr=0x80070057
+D BC1 4x4x4                                                hr=0x00000000
+D BC1 5x5x1                                                hr=0x80070057
+D BC1 8x8x3 mips0                                          hr=0x00000000
+D BC1 RT                                                   hr=0x80070057
+D D32 SRV                                                  hr=0x80070057
+D D32 bind0                                                hr=0x80070057
+D R32_TYPELESS SRV                                         hr=0x00000000
+D R24G8 SRV                                                hr=0x80070057
+D R32_TYPELESS DS                                          hr=0x80070057
+D DYN mips2                                                hr=0x80070057
+D DYN BC1 8x8x2                                            hr=0x00000000
+D IMM bind0 data                                           hr=0x80070057
+D IMM no data                                              hr=0x80070057
+D IMM CL data                                              hr=0x00000000
+D STG CL                                                   hr=0x80070057
+D GM RT|SRV mips0                                          hr=0x00000000
+D GM RT|SRV|UAV mips0                                      hr=0x00000000
+D GM SRV only                                              hr=0x80070057
+D CUBE                                                     hr=0x80070057
+D SH|NT                                                    hr=0x80070057
+D bind0 DEF                                                hr=0x00000000
+D pSysMem NULL DEF                                         hr=0x80070057
+D pSysMem NULL IMM                                         hr=0x80070057
+D fmt 200                                                  hr=0x80070057
+D R32G32B32_FLOAT SRV                                      hr=0x00000000
+D pDesc NULL                                               hr=0x80070057 out=NULL
+
+[E] ppResource == NULL validation-only
+E BUF valid                                                hr=0x00000001
+E BUF invalid (CB 20)                                      hr=0x80070057
+E BUF IMM data                                             hr=0x00000001
+E BUF IMM no data                                          hr=0x80070057
+E T1D valid                                                hr=0x00000001
+E T1D invalid (IMM no data)                                hr=0x80070057
+E T1D invalid (W=16385)                                    hr=0x80070057
+E T2D valid                                                hr=0x00000001
+E T2D valid IMM data                                       hr=0x00000001
+E T2D invalid (IMM no data)                                hr=0x80070057
+E T2D MSAA valid                                           hr=0x00000001
+E T3D valid                                                hr=0x00000001
+E T3D invalid (D=2049)                                     hr=0x80070057
+
+[F] GetDesc round trip
+F BUF VB stride16 non-structured                           hr=0x00000000 BW=256 U=0 B=0x1 C=0x0 M=0x0 S=0
+F BUF structured 12                                        hr=0x00000000 BW=240 U=0 B=0x88 C=0x0 M=0x40 S=12
+F BUF DYN CB                                               hr=0x00000000 BW=256 U=2 B=0x4 C=0x10000 M=0x0 S=0
+F BUF STG RW                                               hr=0x00000000 BW=256 U=3 B=0x0 C=0x30000 M=0x0 S=0
+F T2D SHARED                                               hr=0x00000000 64x64 Mips=1 Arr=1 Fmt=28 S=1/0 U=0 B=0x28 C=0x0 M=0x2
+F T2D STG RW mips0 arr3                                    hr=0x00000000 64x32 Mips=7 Arr=3 Fmt=28 S=1/0 U=3 B=0x0 C=0x30000 M=0x0
+F T2D GM mips0                                             hr=0x00000000 Mips=7 M=0x1
+F T2D GDI                                                  hr=0x00000000 M=0x200
+F T2D RESOURCE_CLAMP                                       hr=0x00000000 M=0x80
+F T3D STG mips0                                            hr=0x00000000 16x8x4 Mips=5 Fmt=28 U=3 B=0x0 C=0x20000 M=0x0
+F T1D STG mips0 arr2                                       hr=0x00000000 W=64 Mips=7 Arr=2 Fmt=28 U=3 B=0x0 C=0x30000 M=0x0
+
+[G] GetType / eviction priority
+G buffer     GetType=1 default-priority=0x78000000 after-HIGH=0xa0000000 after-0x12345678=0x12345678 QI(IDXGIResource)=0x00000000 dxgi-get=0x00000000/0x12345678 dxgi-set-LOW=0x00000000 d3d-get=0x50000000 QI: Buf=ok T1D=no T2D=no T3D=no
+G tex1d      GetType=2 default-priority=0x78000000 after-HIGH=0xa0000000 after-0x12345678=0x12345678 QI(IDXGIResource)=0x00000000 dxgi-get=0x00000000/0x12345678 dxgi-set-LOW=0x00000000 d3d-get=0x50000000 QI: Buf=no T1D=ok T2D=no T3D=no
+G tex2d      GetType=3 default-priority=0x78000000 after-HIGH=0xa0000000 after-0x12345678=0x12345678 QI(IDXGIResource)=0x00000000 dxgi-get=0x00000000/0x12345678 dxgi-set-LOW=0x00000000 d3d-get=0x50000000 QI: Buf=no T1D=no T2D=ok T3D=no
+G tex2d-stg  GetType=3 default-priority=0x78000000 after-HIGH=0xa0000000 after-0x12345678=0x12345678 QI(IDXGIResource)=0x00000000 dxgi-get=0x00000000/0x12345678 dxgi-set-LOW=0x00000000 d3d-get=0x50000000 QI: Buf=no T1D=no T2D=ok T3D=no
+G tex3d      GetType=4 default-priority=0x78000000 after-HIGH=0xa0000000 after-0x12345678=0x12345678 QI(IDXGIResource)=0x00000000 dxgi-get=0x00000000/0x12345678 dxgi-set-LOW=0x00000000 d3d-get=0x50000000 QI: Buf=no T1D=no T2D=no T3D=ok
+
+[I] ID3D11Device3 CreateTexture2D1/3D1
+I caps ExtendedResourceSharing=1 MapOnDefaultBuffers=1 TiledTier(opt1)=1 MapOnDefaultTextures=1 StandardSwizzle=1 UMA=1 TiledTier(opt2)=1
+I QI ID3D11Device3                                         hr=0x00000000
+I 2D1 layout=0 usage=0 bind=0x8 cpu=0x0                    hr=0x00000000 GetDesc1 layout=0 mips=1 U=0
+I 2D1 layout=0 usage=0 bind=0x0 cpu=0x30000                hr=0x00000000 GetDesc1 layout=0 mips=1 U=0
+I 2D1 layout=0 usage=0 bind=0x8 cpu=0x30000                hr=0x00000000 GetDesc1 layout=0 mips=1 U=0
+I 2D1 layout=0 usage=3 bind=0x0 cpu=0x30000                hr=0x00000000 GetDesc1 layout=0 mips=1 U=3
+I 2D1 layout=1 usage=0 bind=0x8 cpu=0x0                    hr=0x80070057
+I 2D1 layout=1 usage=0 bind=0x0 cpu=0x30000                hr=0x00000000 GetDesc1 layout=1 mips=1 U=0
+I 2D1 layout=1 usage=0 bind=0x8 cpu=0x30000                hr=0x80070057
+I 2D1 layout=1 usage=3 bind=0x0 cpu=0x30000                hr=0x00000000 GetDesc1 layout=1 mips=1 U=3
+I 2D1 layout=2 usage=0 bind=0x8 cpu=0x0                    hr=0x80070057
+I 2D1 layout=2 usage=0 bind=0x0 cpu=0x30000                hr=0x00000000 GetDesc1 layout=2 mips=1 U=0
+I 2D1 layout=2 usage=0 bind=0x8 cpu=0x30000                hr=0x00000000 GetDesc1 layout=2 mips=1 U=0
+I 2D1 layout=2 usage=3 bind=0x0 cpu=0x30000                hr=0x00000000 GetDesc1 layout=2 mips=1 U=3
+I 2D1 layout=3 usage=0 bind=0x8 cpu=0x0                    hr=0x80070057
+I 2D1 layout=3 usage=0 bind=0x0 cpu=0x30000                hr=0x00000000 GetDesc1 layout=3 mips=1 U=0
+I 2D1 layout=3 usage=0 bind=0x8 cpu=0x30000                hr=0x00000000 GetDesc1 layout=3 mips=1 U=0
+I 2D1 layout=3 usage=3 bind=0x0 cpu=0x30000                hr=0x00000000 GetDesc1 layout=3 mips=1 U=3
+I 2D1 layout0 ppTexture NULL                               hr=0x00000001
+I 2D1 ROW_MAJOR ppTexture NULL                             hr=0x80070057
+I 2D1 mips0                                                hr=0x00000000 GetDesc1 mips=7 layout=0
+I 3D1 layout=0 DEF SRV                                     hr=0x00000000 GetDesc1 layout=0 mips=1
+I 3D1 layout=1 DEF SRV                                     hr=0x80070057
+I 3D1 layout=2 DEF SRV                                     hr=0x80070057
+I 3D1 layout=3 DEF SRV                                     hr=0x80070057
+I base 2D QI Texture2D1 GetDesc1                           hr=0x00000000 layout=0
+I base 3D QI Texture3D1 GetDesc1                           hr=0x00000000 layout=0
+
+done
+#
+# ---- verdicts (area 02, 2026-09-28; winoracle = WARP, FL 11_0 device) ----
+# Output above is the x64 build. The x86 build is identical except:
+#   A BW 1GiB+16 SRV  hr=0x8007000e   (32-bit WARP runs out of address space)
+#   A BW 2GiB SRV     hr=0x8007000e
+# i.e. an over-large buffer is E_OUTOFMEMORY, never E_INVALIDARG.
+#
+# Vitreo must be run with a skip list, because these cases ABORT THE HOST
+# PROCESS (Metal texture-descriptor validation, SIGABRT) instead of returning
+# E_INVALIDARG:
+#   B W=16385 R8, B Array=2049, B Mips=8 W=64 (too many), B Mips=16 W=64,
+#   C Mips=7 32x16 (too many), C Mips=2 1x1, C Mips=16 16384x1 R8,
+#   C Mips=5 4x4 (too many), C S=4 BC1 SRV
+# and "GetDesc1" (every ID3D11Texture2D1/3D1::GetDesc1 call jumps to a NULL
+# vtable slot: the texture vtable has 11 slots, GetDesc1 is slot 11).
+#   ./build/src/vitreo run a02c64.exe -- "B W=16385 R8,B Array=2049,..."
+#
+# WRONG / MISSING / FATAL against the lines above (Vitreo build 2026-09-27):
+#   A CB 65552 / 1048576 / DYN / IMM      Windows S_OK, Vitreo IA (11.1 runtime
+#                                        allows CBs > 4096 constants)
+#   A ST stride=2052 / 4096               Windows IA, Vitreo OK (max 2048)
+#   A RAW BW6 / BW2                       Windows OK, Vitreo IA
+#   A DI BW1 / BW4 / BW8                  Windows IA, Vitreo OK (min 12 bytes)
+#   A SO|UAV, SO|VB|UAV                   Windows IA, Vitreo OK
+#   A RT buffer, RT|SRV buffer            Windows OK, Vitreo IA
+#   A BW 1GiB+16 / 2GiB / 0xFFFFFFF0      Windows OK or E_OUTOFMEMORY, Vitreo IA
+#   B (Texture1D)                         no validation: every invalid case
+#                                        returns S_OK (or S_FALSE with a NULL
+#                                        out pointer); W>16384, Array>2048 and
+#                                        too many mips abort the host;
+#                                        unknown formats return E_NOTIMPL;
+#                                        pSysMem NULL is silently skipped;
+#                                        initial data fails (E_FAIL) for any
+#                                        STAGING 1D texture and, on x64, for
+#                                        any 1D texture with >1 subresource
+#   C Mips > full chain                   host abort (Windows IA)
+#   C S=4 BC1                             host abort (Windows IA)
+#   C S=* Q=STANDARD/CENTER               Windows OK, Vitreo IA
+#   C CUBE STG                            Windows OK, Vitreo IA
+#   C BC top level not multiple of 4      Windows IA, Vitreo OK
+#   C BC RT / UAV                         Windows IA, Vitreo OK
+#   C BC DYN                              Windows OK, Vitreo IA
+#   C GDI_COMPATIBLE (all legal shapes)   Windows OK, Vitreo IA
+#   C DYN mips>1 / array>1                Windows IA, Vitreo OK
+#   C depth DS|UAV                        Windows IA, Vitreo OK
+#   C R24G8 SRV/bind0, R24_UNORM_X8 SRV,
+#     D32 bind0                           Windows OK, Vitreo IA
+#   C R24_UNORM_X8 DS, SH|NT D24S8 DS     Windows IA, Vitreo OK
+#   C R8G8_B8G8 4x2, D R32G32B32_FLOAT    Windows OK, Vitreo IA (formats)
+#   D bind0 DEF, IMM CL, GM RT|SRV|UAV    Windows OK, Vitreo IA
+#   D BC1 5x5x1                           Windows IA, Vitreo OK
+#   E T1D invalid + NULL out              Windows IA, Vitreo S_FALSE
+#   F BUF non-structured stride           Windows GetDesc S=0, Vitreo echoes 16
+#   F GDI / RESOURCE_CLAMP                (creation refused, see C)
+#   G default eviction priority           Windows 0x78000000 (NORMAL), Vitreo 0
+#   G buffer / tex3d QI(IDXGIResource)    Windows S_OK, Vitreo E_NOINTERFACE
+#   G tex1d QI                            Windows answers ID3D11Texture1D only;
+#                                        Vitreo answers ID3D11Texture2D and
+#                                        refuses ID3D11Texture1D
+#   H T2D pitch8 (<row)                   Windows OK (reads at the given
+#                                        pitch), Vitreo IA
+#   H T2D/T3D last row/slice at page end Windows OK, Vitreo IA: Vitreo reads
+#                                        pitch*rows (slice*depth) bytes, i.e.
+#                                        past the last row the guest owns
+#   H BC1 3D DEF readback                 Vitreo MISMATCH; the STG twin
+#                                        matches, so the defect is CopyResource
+#                                        of a compressed volume (area 06):
+#                                        readback_w_slice refuses BC
+#   I GetDesc1                            guest jumps to NULL (FATAL)
+# Capability-gated (correct as Vitreo advertises): DEFAULT+CPU access
+# (MapOnDefault*=0), TextureLayout ROW_MAJOR/64K_STANDARD_SWIZZLE
+# (StandardSwizzle=0), TILED/TILE_POOL (TiledResourcesTier=0), S=16
+# (CheckMultisampleQualityLevels(16)=0), RESTRICTED_CONTENT.
+# WARP leniency not required by Learn: 2D W/H 16385, CUBE ArraySize 7,
+# TextureLayout 3, SHARED mips>1, MSAA DYNAMIC/GENERATE_MIPS/SHARED.

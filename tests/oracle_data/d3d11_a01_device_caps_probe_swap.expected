@@ -1,0 +1,102 @@
+bits: 64
+adapter: Microsoft Basic Render Driver
+main device {11_0}: hr=0x00000000 fl=0xb000
+== D3D11CreateDeviceAndSwapChain ==
+sc valid, all outputs: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+sc desc NULL ppSwap NULL: hr=0x00000000 dev=obj fl=0xb000 ctx=obj
+sc desc valid ppSwap NULL: hr=0x00000000 dev=obj fl=0xb000 ctx=obj
+sc desc NULL ppSwap set: hr=0x00000000 sc=null dev=obj fl=0xb000 ctx=obj
+sc valid, only ppSwap: hr=0x00000000 sc=obj
+sc valid, ppSwap+fl: hr=0x00000000 sc=obj fl=0xb000
+sc desc NULL, only fl: hr=0x00000001 fl=0xb000
+sc WARP valid: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+sc DEBUG: hr=0x887a002d sc=null dev=null fl=0x0 ctx=null
+sc UNKNOWN driver: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+sc levels {0xffff}: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+sc levels {10_0}: hr=0x00000000 sc=obj dev=obj fl=0xa000 ctx=obj
+sc hwnd NULL: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+sc BufferCount 0: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+sc format UNKNOWN: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+sc FLIP_DISCARD BufferCount 1: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+sc format R32G32B32A32_FLOAT: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+----
+bits: 32
+adapter: Microsoft Basic Render Driver
+main device {11_0}: hr=0x00000000 fl=0xb000
+== D3D11CreateDeviceAndSwapChain ==
+sc valid, all outputs: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+sc desc NULL ppSwap NULL: hr=0x00000000 dev=obj fl=0xb000 ctx=obj
+sc desc valid ppSwap NULL: hr=0x00000000 dev=obj fl=0xb000 ctx=obj
+sc desc NULL ppSwap set: hr=0x00000000 sc=null dev=obj fl=0xb000 ctx=obj
+sc valid, only ppSwap: hr=0x00000000 sc=obj
+sc valid, ppSwap+fl: hr=0x00000000 sc=obj fl=0xb000
+sc desc NULL, only fl: hr=0x00000001 fl=0xb000
+sc WARP valid: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+sc DEBUG: hr=0x887a002d sc=null dev=null fl=0x0 ctx=null
+sc UNKNOWN driver: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+sc levels {0xffff}: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+sc levels {10_0}: hr=0x00000000 sc=obj dev=obj fl=0xa000 ctx=obj
+sc hwnd NULL: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+sc BufferCount 0: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+sc format UNKNOWN: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+sc FLIP_DISCARD BufferCount 1: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+sc format R32G32B32A32_FLOAT: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+----
+# swapfmt N (x64), N in 2 10 11 23 24 26 27 28 29 41 61 85 87 88 89 91, one process each:
+swapfmt 2: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 2 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 10: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 10 flip: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 11: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 11 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 23: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 23 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 24: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 24 flip: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 26: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 26 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 27: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 27 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 28: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 28 flip: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 29: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 29 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 41: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 41 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 61: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 61 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 85: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 85 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 87: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 87 flip: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 88: hr=0x80070057 sc=null dev=null fl=0x0 ctx=null
+swapfmt 88 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 89: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 89 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+swapfmt 91: hr=0x00000000 sc=obj dev=obj fl=0xb000 ctx=obj
+swapfmt 91 flip: hr=0x887a0001 sc=null dev=null fl=0x0 ctx=null
+# ---------------------------------------------------------------------------
+# winoracle "swap" and "swapfmt" modes, run from a scheduled task in the
+# logged-on session (from ssh every swap chain is
+# DXGI_ERROR_NOT_CURRENTLY_AVAILABLE 0x887a0022). Verdicts vs Vitreo (x64 and
+# x86 identical):
+#  sc desc NULL ppSwap NULL       WIN S_OK (device only)  VIT E_INVALIDARG  WRONG
+#  sc desc valid ppSwap NULL      WIN S_OK (device only)  VIT E_INVALIDARG  WRONG
+#  sc desc NULL ppSwap set        WIN S_OK, *ppSwap=NULL  VIT E_INVALIDARG  WRONG
+#  sc desc NULL, only fl          WIN S_FALSE             VIT E_INVALIDARG  WRONG
+#  sc WARP valid                  WIN S_OK                VIT DXGI_ERROR_UNSUPPORTED MISSING
+#  sc format UNKNOWN              WIN E_INVALIDARG        VIT DXGI_ERROR_INVALID_CALL WRONG
+#  sc FLIP_DISCARD BufferCount 1  WIN DXGI_ERROR_INVALID_CALL VIT S_OK      WRONG (area 11)
+#  sc format R32G32B32A32_FLOAT   WIN E_INVALIDARG        VIT HOST ABORT     CRASH
+#  swapfmt: Windows accepts back-buffer formats {10,24,28,29,87,89,91} for
+#   bitblt and {10,24,28,87} for flip; anything else is E_INVALIDARG (bitblt)
+#   or DXGI_ERROR_INVALID_CALL (flip). Vitreo:
+#    2, 11, 26, 41 -> HOST ABORT: uncaught NSException 'CAMetalLayerInvalid'
+#       "invalid pixel format 125/110/92/55" from -[CAMetalLayer
+#       setPixelFormat:] (metal_swapchain.mm). The Metal format goes to the
+#       layer unchecked.                                           CRASH
+#    23, 27, 61 (typeless / R8) -> S_OK on both models               WRONG
+#    29, 91 flip (sRGB flip back buffer) -> S_OK                     WRONG
+#    89 bitblt -> DXGI_ERROR_INVALID_CALL (Windows S_OK)             MISSING
+#    85, 88 -> DXGI_ERROR_INVALID_CALL (Windows E_INVALIDARG bitblt) WRONG code
+#  all other lines match.

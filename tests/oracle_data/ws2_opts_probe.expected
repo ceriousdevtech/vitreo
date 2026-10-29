@@ -1,0 +1,418 @@
+SIOCATMARK_none: rc=0
+SIOCATMARK_none_v: v=0x1
+SIOCATMARK_oob: rc=0
+SIOCATMARK_oob_v: v=0x0
+FIONBIO_null: rc=-1 err=10014
+FIONREAD_null: rc=-1 err=10014
+SIOCATMARK_null: rc=-1 err=10014
+unknown_cmd: rc=-1 err=10045
+FIONREAD_bogus_socket: rc=-1 err=10038
+FIONBIO0_after_eventselect: rc=-1 err=10022
+FIONBIO1_after_eventselect: rc=0
+FIONBIO0_after_cancel: rc=0
+FIONBIO0_after_mask0: rc=0
+FIONREAD_udp: rc=0
+FIONREAD_udp_v: v=30
+wsaioctl_FIONBIO: rc=0 ret=0
+wsaioctl_FIONBIO_noin: rc=-1 err=10014 ret=57005
+wsaioctl_FIONREAD: rc=0 ret=4
+wsaioctl_FIONREAD_v: v=3
+wsaioctl_FIONREAD_short: rc=-1 err=10014 ret=57005
+wsaioctl_SIOCATMARK: rc=0 ret=4
+wsaioctl_SIOCATMARK_v: v=0x1
+wsaioctl_unknown: rc=-1 err=10045 ret=0
+wsaioctl_unknown_vendor: rc=-1 err=10045 ret=0
+wsaioctl_bogus_socket: rc=-1 err=10038 ret=57005
+keepalive_vals_tcp: rc=0 ret=0
+keepalive_after_vals: SO_KEEPALIVE=0xde01 len=1
+keepidle_after_vals: rc=0 v=5
+keepintvl_after_vals: rc=0 v=1
+keepalive_vals_off: rc=0 ret=0
+keepalive_after_off: SO_KEEPALIVE=0xde00
+keepidle_after_off: v=5
+keepalive_vals_short: rc=-1 err=10014 ret=0
+keepalive_vals_null: rc=-1 err=10014 ret=0
+keepalive_vals_udp: rc=-1 err=10045 ret=0
+keepalive_vals_bogus: rc=-1 err=10038 ret=57005
+keepalive_vals_unconnected: rc=0 ret=0
+keepidle_unconnected_after_vals: v=5
+ext_connectex: rc=0 ret=8
+ext_connectex_nonnull: v=1
+ext_transmitfile: rc=0 ret=8
+ext_transmitfile_nonnull: v=1
+ext_transmitpackets: rc=0 ret=8
+ext_transmitpackets_nonnull: v=1
+ext_acceptex: rc=0 ret=8
+ext_disconnectex: rc=0 ret=8
+ext_recvmsg: rc=0 ret=8
+ext_sendmsg: rc=0 ret=8
+ext_gaes: rc=0 ret=8
+ext_bogus_guid: rc=-1 err=10022 ret=57005
+ext_out_short: rc=-1 err=10014 ret=57005
+ext_out_null: rc=-1 err=10014 ret=57005
+ext_in_short: rc=-1 err=10014 ret=57005
+ext_in_null: rc=-1 err=10014 ret=57005
+ext_bogus_socket: rc=-1 err=10038 ret=57005
+ext_connectex_udp: rc=0 ret=8
+bsp_handle: rc=0 ret=8
+bsp_handle_same: v=1
+bsp_handle_short: rc=-1 err=10014 ret=57005
+bsp_handle_null: rc=-1 err=10014 ret=57005
+base_handle: rc=0 ret=8
+base_handle_same: v=1
+bsp_handle_select: rc=0 ret=8
+bsp_handle_select_same: v=1
+bsp_handle_poll: rc=0 ret=8
+bsp_handle_poll_same: v=1
+bsp_handle_poll_overlapped: rc=-1 err=10045 ret=0
+bsp_handle_bogus: rc=-1 err=10038 ret=57005
+udp_connreset_udp: rc=0 ret=57005
+udp_connreset_short: rc=0 ret=57005
+udp_connreset_tcp: rc=-1 err=10022 ret=57005
+loopback_fast_path: rc=0 ret=0
+broadcast_addr_udp: rc=0 ret=16
+broadcast_addr_udp_out: fam=2 addr=0xffffffff port=0
+broadcast_addr_short: rc=-1 err=10014 ret=57005
+broadcast_addr_tcp: rc=-1 err=10022 ret=57005
+routing_iface_query: rc=0 ret=16
+routing_iface_query_out: fam=2 addr=0x7f000001 port=0
+routing_iface_query_short: rc=-1 err=10014 ret=16
+address_list_query_short: rc=-1 err=10014 ret=40
+address_list_query: rc=0 count_positive=1
+iflist_loopback: flags=0x15 mask=0xff000000 bcast=0x0
+iflist: rc=0 stride_ok=1 has_loopback=1
+iflist_short: rc=-1 err=10014 ret=0
+tcp_SO_DEBUG: rc=0 len=4 v=0x0
+tcp_SO_ACCEPTCONN: rc=0 len=4 v=0x0
+listen_SO_ACCEPTCONN: rc=0 len=4 v=0x1
+udp_SO_ACCEPTCONN: rc=-1 err=10042
+tcp_SO_REUSEADDR: rc=0 len=4 v=0x0
+tcp_SO_KEEPALIVE: rc=0 len=1 v=0xcccccc00
+tcp_SO_DONTROUTE: rc=0 len=1 v=0xcccccc00
+udp_SO_BROADCAST: rc=0 len=4 v=0x0
+tcp_SO_BROADCAST: rc=-1 err=10042
+tcp_SO_USELOOPBACK: rc=-1 err=10042
+tcp_SO_LINGER: rc=0 len=4 v=0x0
+udp_SO_LINGER: rc=-1 err=10042
+tcp_SO_DONTLINGER: rc=0 len=4 v=0x1
+udp_SO_DONTLINGER: rc=-1 err=10042
+tcp_SO_OOBINLINE: rc=0 len=4 v=0x0
+tcp_SO_EXCLUSIVEADDRUSE: rc=0 len=4 v=0x0
+tcp_SO_SNDBUF: rc=0 len=4 v=0x10000
+tcp_SO_RCVBUF: rc=0 len=4 v=0x10000
+udp_SO_SNDBUF: rc=0 len=4 v=0x10000
+udp_SO_RCVBUF: rc=0 len=4 v=0x10000
+tcp_SO_SNDLOWAT: rc=-1 err=10042
+tcp_SO_RCVLOWAT: rc=-1 err=10042
+tcp_SO_SNDTIMEO: rc=0 len=4 v=0x0
+tcp_SO_RCVTIMEO: rc=0 len=4 v=0x0
+tcp_SO_ERROR: rc=0 len=4 v=0x0
+tcp_SO_TYPE: rc=0 len=4 v=0x1
+udp_SO_TYPE: rc=0 len=4 v=0x2
+tcp_SO_BSP_STATE_len4: rc=-1 err=10014
+tcp_SO_GROUP_ID: rc=0 len=4 v=0x0
+tcp_SO_GROUP_PRIORITY: rc=0 len=4 v=0x0
+tcp_SO_MAX_MSG_SIZE: rc=0 len=4 v=0xffffffff
+udp_SO_MAX_MSG_SIZE: rc=0 len=4 v=0xffe3
+tcp_SO_CONDITIONAL_ACCEPT: rc=0 len=4 v=0x0
+tcp_SO_PAUSE_ACCEPT: rc=0 len=1 v=0xcccccc00
+tcp_SO_COMPARTMENT_ID: rc=0 len=4 v=0x1
+tcp_SO_RANDOMIZE_PORT: rc=0 len=4 v=0x0
+tcp_SO_PORT_SCALABILITY: rc=0 len=1 v=0xcccccc00
+tcp_SO_REUSE_UNICASTPORT: rc=0 len=1 v=0xcccccc00
+udp_SO_REUSE_MULTICASTPORT: rc=-1 err=10022
+tcp_SO_CONNECT_TIME: rc=0 len=4 v=0xffffffff
+conn_SO_CONNECT_TIME: rc=0 len=4 v=0x0
+tcp_SO_UPDATE_ACCEPT_CONTEXT: rc=-1 err=10042
+tcp_SO_UPDATE_CONNECT_CONTEXT: rc=-1 err=10042
+tcp_SO_OPENTYPE: rc=0 len=4 v=0x0
+tcp_SO_MAXDG: rc=0 len=4 v=0xffffffff
+tcp_SO_MAXPATHDG: rc=0 len=4 v=0xffffffff
+tcp_SOL_unknown_0x7777: rc=-1 err=10042
+udp_SO_EXCLUSIVEADDRUSE: rc=0 len=4 v=0x0
+tcp_IP_OPTIONS: rc=0 len=0 v=0xcccccccc
+tcp_IP_HDRINCL: rc=-1 err=10022
+udp_IP_HDRINCL: rc=-1 err=10022
+tcp_IP_TOS: rc=0 len=4 v=0x0
+tcp_IP_TTL: rc=0 len=4 v=0x80
+udp_IP_TTL: rc=0 len=4 v=0x80
+udp_IP_MULTICAST_IF: rc=0 len=4 v=0x0
+udp_IP_MULTICAST_TTL: rc=0 len=4 v=0x1
+udp_IP_MULTICAST_LOOP: rc=0 len=4 v=0x1
+tcp_IP_MULTICAST_TTL: rc=-1 err=10022
+udp_IP_DONTFRAGMENT: rc=0 len=4 v=0x0
+tcp_IP_DONTFRAGMENT: rc=0 len=4 v=0x1
+udp_IP_PKTINFO: rc=0 len=4 v=0x0
+udp_IP_HOPLIMIT: rc=0 len=4 v=0x0
+udp_IP_RECEIVE_BROADCAST: rc=0 len=4 v=0x1
+udp_IP_RECVIF: rc=0 len=4 v=0x0
+udp_IP_RECVDSTADDR: rc=0 len=4 v=0x0
+udp_IP_UNICAST_IF: rc=0 len=4 v=0x0
+udp_IP_RECVTOS: rc=0 len=4 v=0x0
+udp_IP_TCLASS: rc=0 len=4 v=0x0
+udp_IP_ORIGINAL_ARRIVAL_IF: rc=0 len=4 v=0x0
+udp_IP_RECVECN: rc=0 len=4 v=0x0
+udp_IP_PKTINFO_EX: rc=0 len=4 v=0x0
+udp_IP_MTU_DISCOVER: rc=0 len=4 v=0x0
+tcp_IP_MTU_DISCOVER: rc=0 len=4 v=0x0
+udp_IP_MTU: rc=-1 err=10057
+conn_IP_MTU: rc=0 len=4 v=0xffff
+udp_IP_RECVERR: rc=0 len=4 v=0x0
+udp_IP_USER_MTU: rc=0 len=4 v=0xffffffff
+udp_IP_unknown_99: rc=-1 err=10042
+tcp6_IP_TTL: rc=0 len=4 v=0x80
+tcp6_IPV6_V6ONLY: rc=0 len=4 v=0x1
+udp6_IPV6_V6ONLY: rc=0 len=1 v=0xcccccc01
+udp6_IPV6_V6ONLY_len1: rc=0 len=1 b0=0x1 b1=0xcc b4=0xcc
+tcp6_IPV6_V6ONLY_len1: rc=-1 err=10014 len=0 b0=0xcc b1=0xcc b4=0xcc
+tcp6_IPV6_UNICAST_HOPS: rc=0 len=4 v=0x80
+udp6_IPV6_MULTICAST_IF: rc=0 len=4 v=0x0
+udp6_IPV6_MULTICAST_HOPS: rc=0 len=4 v=0x1
+udp6_IPV6_MULTICAST_LOOP: rc=0 len=4 v=0x1
+udp6_IPV6_DONTFRAG: rc=0 len=4 v=0x0
+udp6_IPV6_PKTINFO: rc=0 len=4 v=0x0
+udp6_IPV6_HOPLIMIT: rc=0 len=4 v=0x0
+udp6_IPV6_PROTECTION_LEVEL: rc=0 len=4 v=0xa
+udp6_IPV6_RECVIF: rc=0 len=4 v=0x0
+udp6_IPV6_UNICAST_IF: rc=0 len=4 v=0x0
+udp6_IPV6_TCLASS: rc=0 len=4 v=0x0
+udp6_IPV6_RECVTCLASS: rc=0 len=4 v=0x0
+udp6_IPV6_RECVECN: rc=0 len=4 v=0x0
+udp6_IPV6_MTU_DISCOVER: rc=0 len=4 v=0x0
+udp6_IPV6_MTU: rc=-1 err=10057
+udp6_IPV6_USER_MTU: rc=0 len=4 v=0xffffffff
+udp6_IPV6_RECVERR: rc=0 len=4 v=0x0
+udp4_IPV6_V6ONLY: rc=0 len=1 v=0xcccccc01
+tcp_TCP_NODELAY: rc=0 len=1 v=0xcccccc00
+tcp_TCP_EXPEDITED_1122: rc=0 len=1 v=0xcccccc00
+tcp_TCP_KEEPALIVE: rc=0 len=4 v=0x1c20
+tcp_TCP_MAXSEG: rc=-1 err=10042
+conn_TCP_MAXSEG: rc=0 len=4 v=0xffd7
+tcp_TCP_MAXRT: rc=0 len=4 v=0x0
+tcp_TCP_STDURG: rc=0 len=1 v=0xcccccc00
+tcp_TCP_NOURG: rc=0 len=1 v=0xcccccc00
+tcp_TCP_ATMARK: rc=0 len=1 v=0xcccccc00
+tcp_TCP_NOSYNRETRIES: rc=0 len=1 v=0xcccccc00
+tcp_TCP_TIMESTAMPS: rc=0 len=1 v=0xcccccc00
+tcp_TCP_CONGESTION_ALGORITHM: rc=0 len=4 v=0x0
+tcp_TCP_DELAY_FIN_ACK: rc=0 len=1 v=0xcccccc00
+tcp_TCP_MAXRTMS: rc=0 len=4 v=0x0
+tcp_TCP_FASTOPEN: rc=0 len=1 v=0xcccccc00
+tcp_TCP_KEEPCNT: rc=0 len=4 v=0xa
+tcp_TCP_KEEPINTVL: rc=0 len=4 v=0x1
+tcp_TCP_FAIL_CONNECT_ON_ICMP_ERROR: rc=0 len=1 v=0xcccccc00
+tcp_TCP_ICMP_ERROR_INFO: rc=-1 err=10014
+udp_TCP_NODELAY: rc=-1 err=10022
+tcp_TCP_unknown_99: rc=-1 err=10042
+tcp_level_99: rc=-1 err=10022
+udp_level_udp_1: rc=0 len=1 v=0xcccccc00
+SO_RCVBUF_len2: rc=-1 err=10014 len=2 b0=0x0 b1=0x0 b4=0xcc
+SO_RCVBUF_len8: rc=0 len=4 b0=0x0 b1=0x0 b4=0x0
+SO_KEEPALIVE_len1: rc=0 len=1 b0=0x0 b1=0xcc b4=0xcc
+SO_KEEPALIVE_len0: rc=-1 err=10014 len=0 b0=0xcc b1=0xcc b4=0xcc
+SO_LINGER_len2: rc=-1 err=10014 len=2 b0=0x0 b1=0x0 b4=0xcc
+TCP_NODELAY_len1: rc=0 len=1 b0=0x0 b1=0xcc b4=0xcc
+SO_ERROR_len2: rc=-1 err=10014 len=2 b0=0x0 b1=0x0 b4=0xcc
+IP_TTL_len1: rc=0 len=1 b0=0x80 b1=0xcc b4=0xcc
+SO_RCVBUF_nullval: rc=-1 err=10014
+SO_RCVBUF_nulllen: rc=-1 err=10014
+bogus_socket_opt: rc=-1 err=10038
+SO_ERROR_clears_wsaerr: v=0
+SO_TYPE_keeps_wsaerr: v=0
+set_SO_KEEPALIVE: rc=0
+get_SO_KEEPALIVE_after: rc=0 len=1 v=0xcccccc01
+set_SO_KEEPALIVE_7: rc=0
+get_SO_KEEPALIVE_after7: rc=0 len=1 v=0xcccccc01
+set_SO_KEEPALIVE_len1: rc=0
+get_SO_KEEPALIVE_after_len1: rc=0 len=1 v=0xcccccc00
+set_SO_KEEPALIVE_len0: rc=-1 err=10014
+set_SO_REUSEADDR: rc=0
+get_SO_REUSEADDR_after: rc=0 len=4 v=0x1
+set_SO_EXCL_after_reuse: rc=-1 err=10022
+set_SO_EXCL_false_after_reuse: rc=0
+set_SO_REUSEADDR_off: rc=0
+set_SO_EXCL: rc=0
+get_SO_EXCL_after: rc=0 len=4 v=0x1
+get_SO_REUSEADDR_after_excl: rc=0 len=4 v=0x0
+set_SO_REUSEADDR_after_excl: rc=-1 err=10022
+set_SO_REUSEADDR0_after_excl: rc=0
+set_SO_EXCL_off: rc=0
+get_SO_EXCL_after_off: rc=0 len=4 v=0x0
+set_SO_BROADCAST_udp: rc=0
+get_SO_BROADCAST_after: rc=0 len=4 v=0x1
+set_SO_BROADCAST_tcp: rc=-1 err=10042
+set_SO_OOBINLINE: rc=0
+get_SO_OOBINLINE_after: rc=0 len=4 v=0x1
+set_SO_DEBUG: rc=0
+get_SO_DEBUG_after: rc=0 len=4 v=0x1
+set_SO_DONTROUTE: rc=0
+get_SO_DONTROUTE_after: rc=0 len=1 v=0xcccccc01
+set_SO_USELOOPBACK: rc=-1 err=10042
+set_SO_RCVLOWAT: rc=-1 err=10042
+get_SO_RCVLOWAT_after: rc=-1 err=10042
+set_SO_SNDLOWAT: rc=-1 err=10042
+set_SO_CONDITIONAL_ACCEPT: rc=0
+get_SO_CONDITIONAL_ACCEPT_after: rc=0 len=4 v=0x1
+set_SO_PORT_SCALABILITY: rc=0
+get_SO_PORT_SCALABILITY_after: rc=0 len=1 v=0xcccccc01
+set_SO_REUSE_UNICASTPORT: rc=0
+get_SO_REUSE_UNICASTPORT_after: rc=0 len=1 v=0xcccccc00
+set_SO_RANDOMIZE_PORT: rc=0
+get_SO_RANDOMIZE_PORT_after: rc=0 len=4 v=0x1
+set_SO_UPDATE_ACCEPT_CONTEXT_bad: rc=-1 err=10014
+set_SO_UPDATE_CONNECT_CONTEXT_unconn: rc=-1 err=10057
+set_SO_TYPE: rc=-1 err=10042
+set_SO_ERROR: rc=0
+set_SO_ACCEPTCONN: rc=-1 err=10042
+set_SO_MAX_MSG_SIZE: rc=-1 err=10042
+set_SOL_unknown: rc=-1 err=10042
+set_SO_RCVBUF: rc=0
+get_SO_RCVBUF_after: rc=0 len=4 v=0x8000
+set_SO_SNDBUF0: rc=0
+get_SO_SNDBUF0_after: rc=0 len=4 v=0x0
+set_SO_RCVBUF_len2: rc=-1 err=10014
+set_SO_LINGER: rc=0
+get_SO_LINGER_after: rc=0 len=4 v=0x20001
+get_SO_DONTLINGER_after_linger: rc=0 len=4 v=0x0
+set_SO_LINGER_short: rc=-1 err=10014
+set_SO_LINGER_7_300: rc=0
+get_SO_LINGER_after_7: rc=0 len=4 v=0x12c0007
+set_SO_DONTLINGER: rc=0
+get_SO_LINGER_after_dontlinger: rc=0 len=4 v=0x12c0000
+get_SO_DONTLINGER_after_dontlinger: rc=0 len=4 v=0x1
+set_SO_DONTLINGER0: rc=0
+get_SO_LINGER_after_dontlinger0: rc=0 len=4 v=0x12c0001
+set_SO_LINGER_udp: rc=-1 err=10042
+set_SO_DONTLINGER_udp: rc=-1 err=10042
+set_SO_RCVTIMEO: rc=0
+get_SO_RCVTIMEO_after: rc=0 len=4 v=0x5dc
+set_SO_SNDTIMEO: rc=0
+get_SO_SNDTIMEO_after: rc=0 len=4 v=0x9c4
+set_SO_RCVTIMEO_len2: rc=-1 err=10014
+set_SO_RCVTIMEO_1: rc=0
+get_SO_RCVTIMEO_1_after: rc=0 len=4 v=0x1
+rcvtimeo_recv: rc=-1 err=10060 waited_ge_400=1 waited_lt_3000=1
+rcvtimeo_recv_after_timeout: rc=2
+rcvtimeo_udp_recv: rc=-1 err=10060
+set_IP_TTL: rc=0
+get_IP_TTL_after: rc=0 len=4 v=0x21
+set_IP_TTL_300: rc=-1 err=10022
+set_IP_TOS: rc=0
+get_IP_TOS_after: rc=0 len=4 v=0x10
+set_IP_PKTINFO: rc=0
+get_IP_PKTINFO_after: rc=0 len=4 v=0x1
+set_IP_RECVDSTADDR: rc=0
+get_IP_RECVDSTADDR_after: rc=0 len=4 v=0x1
+set_IP_RECVIF: rc=0
+get_IP_RECVIF_after: rc=0 len=4 v=0x1
+set_IP_HOPLIMIT: rc=0
+get_IP_HOPLIMIT_after: rc=0 len=4 v=0x1
+set_IP_DONTFRAGMENT: rc=0
+get_IP_DONTFRAGMENT_after: rc=0 len=4 v=0x1
+set_IP_MTU_DISCOVER: rc=-1 err=10022
+get_IP_MTU_DISCOVER_after: rc=0 len=4 v=0x0
+set_IP_MTU_DISCOVER_9: rc=-1 err=10022
+set_IP_RECVTOS: rc=0
+get_IP_RECVTOS_after: rc=0 len=4 v=0x1
+set_IP_RECVECN: rc=0
+get_IP_RECVECN_after: rc=0 len=4 v=0x1
+set_IP_MULTICAST_TTL: rc=0
+get_IP_MULTICAST_TTL_after: rc=0 len=4 v=0x5
+set_IP_MULTICAST_LOOP: rc=0
+get_IP_MULTICAST_LOOP_after: rc=0 len=4 v=0x0
+set_IP_UNICAST_IF: rc=0
+set_IP_RECEIVE_BROADCAST: rc=0
+get_IP_RECEIVE_BROADCAST_after: rc=0 len=4 v=0x0
+set_IP_ADD_SOURCE_MEMBERSHIP_junk: rc=-1 err=10014
+set_IP_unknown_99: rc=-1 err=10042
+set_IP_HDRINCL_udp: rc=-1 err=10022
+set_IP_TTL_tcp: rc=0
+get_IP_TTL_tcp_after: rc=0 len=4 v=0x2c
+set_IP_ADD_MEMBERSHIP: rc=0
+set_IP_DROP_MEMBERSHIP: rc=0
+set_IP_DROP_MEMBERSHIP_again: rc=-1 err=10049
+set_IP_ADD_MEMBERSHIP_short: rc=-1 err=10014
+set_IP_MULTICAST_IF: rc=0
+get_IP_MULTICAST_IF_after: rc=0 len=4 v=0x100007f
+set_IPV6_V6ONLY0: rc=0
+get_IPV6_V6ONLY0_after: rc=0 len=4 v=0x0
+set_IPV6_DONTFRAG: rc=0
+get_IPV6_DONTFRAG_after: rc=0 len=4 v=0x1
+set_IPV6_PKTINFO: rc=0
+get_IPV6_PKTINFO_after: rc=0 len=4 v=0x1
+set_IPV6_HOPLIMIT: rc=0
+get_IPV6_HOPLIMIT_after: rc=0 len=4 v=0x1
+set_IPV6_UNICAST_HOPS: rc=0
+get_IPV6_UNICAST_HOPS_after: rc=0 len=4 v=0x11
+set_IPV6_RECVTCLASS: rc=0
+get_IPV6_RECVTCLASS_after: rc=0 len=4 v=0x1
+set_IPV6_V6ONLY_bound: rc=0
+set_IPV6_V6ONLY_after_bind: rc=-1 err=10022
+set_IPV6_unknown_99: rc=-1 err=10042
+set_TCP_NODELAY: rc=0
+get_TCP_NODELAY_after: rc=0 len=1 v=0xcccccc01
+set_TCP_NODELAY_len1: rc=0
+get_TCP_NODELAY_after_len1: rc=0 len=1 v=0xcccccc00
+set_TCP_KEEPALIVE: rc=0
+get_TCP_KEEPALIVE_after: rc=0 len=4 v=0x1e
+set_TCP_KEEPINTVL: rc=0
+get_TCP_KEEPINTVL_after: rc=0 len=4 v=0x3
+set_TCP_KEEPCNT: rc=0
+get_TCP_KEEPCNT_after: rc=0 len=4 v=0x4
+set_TCP_KEEPCNT_300: rc=-1 err=10022
+set_TCP_MAXSEG: rc=-1 err=10042
+set_TCP_MAXRT: rc=0
+get_TCP_MAXRT_after: rc=0 len=4 v=0xa
+set_TCP_TIMESTAMPS: rc=0
+get_TCP_TIMESTAMPS_after: rc=0 len=1 v=0xcccccc01
+set_TCP_FASTOPEN: rc=0
+get_TCP_FASTOPEN_after: rc=0 len=1 v=0xcccccc01
+set_TCP_NOSYNRETRIES: rc=0
+set_TCP_EXPEDITED_1122: rc=0
+set_TCP_MAXRTMS: rc=0
+get_TCP_MAXRTMS_after: rc=0 len=4 v=0x1388
+set_TCP_FAIL_CONNECT_ON_ICMP_ERROR: rc=0
+set_TCP_unknown_99: rc=-1 err=10042
+set_TCP_NODELAY_udp: rc=-1 err=10022
+set_level_99: rc=-1 err=10022
+set_null_optval: rc=-1 err=10014
+set_bogus_socket: rc=-1 err=10038
+rebind: udp first=0 second=0 rc=-1 err=10048
+rebind_any: udp first=0 second=0 rc=0
+rebind: udp first=0 second=1 rc=-1 err=10013
+rebind_any: udp first=0 second=1 rc=0
+rebind: udp first=0 second=2 rc=-1 err=10048
+rebind_any: udp first=0 second=2 rc=-1 err=10048
+rebind: udp first=1 second=0 rc=-1 err=10048
+rebind_any: udp first=1 second=0 rc=0
+rebind: udp first=1 second=1 rc=0
+rebind_any: udp first=1 second=1 rc=0
+rebind: udp first=1 second=2 rc=-1 err=10048
+rebind_any: udp first=1 second=2 rc=-1 err=10048
+rebind: udp first=2 second=0 rc=-1 err=10048
+rebind_any: udp first=2 second=0 rc=0
+rebind: udp first=2 second=1 rc=-1 err=10013
+rebind_any: udp first=2 second=1 rc=0
+rebind: udp first=2 second=2 rc=-1 err=10048
+rebind_any: udp first=2 second=2 rc=-1 err=10048
+rebind: tcp first=0 second=0 rc=-1 err=10048
+rebind_any: tcp first=0 second=0 rc=0
+rebind: tcp first=0 second=1 rc=-1 err=10013
+rebind_any: tcp first=0 second=1 rc=0
+rebind: tcp first=0 second=2 rc=-1 err=10048
+rebind_any: tcp first=0 second=2 rc=-1 err=10048
+rebind: tcp first=1 second=0 rc=-1 err=10048
+rebind_any: tcp first=1 second=0 rc=0
+rebind: tcp first=1 second=1 rc=0
+rebind_any: tcp first=1 second=1 rc=0
+rebind: tcp first=1 second=2 rc=-1 err=10048
+rebind_any: tcp first=1 second=2 rc=-1 err=10048
+rebind: tcp first=2 second=0 rc=-1 err=10048
+rebind_any: tcp first=2 second=0 rc=0
+rebind: tcp first=2 second=1 rc=-1 err=10013
+rebind_any: tcp first=2 second=1 rc=0
+rebind: tcp first=2 second=2 rc=-1 err=10048
+rebind_any: tcp first=2 second=2 rc=-1 err=10048
+set_SO_REUSEADDR_after_bind: rc=0
+set_SO_EXCL_after_bind: rc=0
+done

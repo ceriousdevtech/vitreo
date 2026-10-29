@@ -1,0 +1,59 @@
+# Measured SM5 opcode numbers — fxc 10.1 (Windows SDK 10.0.26100) on winoracle.
+#
+# Reproduce:
+#   scp tools/oracle_probe/dxbc_opcode_probe.hlsl winoracle:
+#   ssh winoracle '& "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\fxc.exe" \
+#       /nologo /T cs_5_0 /E main /Od /Fc probe.asm /Fo probe.cso dxbc_opcode_probe.hlsl'
+#   scp winoracle:probe.asm winoracle:probe.cso .
+#   python3 tools/oracle_probe/dxbc_token_decode.py probe.cso
+#
+# The /Fc listing gives the mnemonics in order and the decode gives the opcode
+# numbers in the same order, so the mapping is read off directly. /Od keeps the
+# compiler from reordering or eliding the instructions.
+#
+# mnemonic                opcode
+atomic_and                   169
+atomic_or                    170
+atomic_xor                   171
+atomic_cmp_store             172
+atomic_iadd                  173
+atomic_imax                  174
+atomic_imin                  175
+atomic_umax                  176
+atomic_umin                  177
+imm_atomic_alloc             178
+imm_atomic_consume           179
+imm_atomic_iadd              180
+imm_atomic_and               181
+imm_atomic_or                182
+imm_atomic_xor               183
+imm_atomic_exch              184
+imm_atomic_cmp_exch          185
+imm_atomic_imax              186
+imm_atomic_imin              187
+imm_atomic_umax              188
+imm_atomic_umin              189
+sync_g_t / sync_uglobal_g    190
+#
+# Anchors measured in the same run (probe2), confirming the blocks either side:
+f32tof16                     130
+f16tof32                     131
+countbits                    134
+ld_structured                167
+store_structured             168
+#
+# What this overturned (2026-09-22): src/graphics/shaders/dxbc_to_spirv.cpp had
+# IMM_ATOMIC_IADD=179 .. EXCH=183 (each low by one, because alloc/consume were
+# not accounted for) and had IMAX/IMIN transposed with UMAX/UMIN. Consequences,
+# all silent:
+#   - imm_atomic_iadd (180) decoded as IMM_ATOMIC_AND  -> add became and
+#   - imm_atomic_and  (181) decoded as IMM_ATOMIC_OR
+#   - imm_atomic_or   (182) decoded as IMM_ATOMIC_XOR
+#   - imm_atomic_xor  (183) decoded as IMM_ATOMIC_EXCH
+#   - imm_atomic_imax (186) decoded as IMM_ATOMIC_UMAX -> wrong for negatives
+#   - imm_atomic_imin (187) decoded as IMM_ATOMIC_UMIN
+#   - imm_atomic_umax (188) decoded as IMM_ATOMIC_IMAX
+#   - imm_atomic_umin (189) decoded as IMM_ATOMIC_IMIN
+# and two that failed loudly instead, which is how this was noticed:
+#   - imm_atomic_exch     (184) -> "Unsupported opcode: 184"
+#   - imm_atomic_cmp_exch (185) -> "Unsupported opcode: 185"

@@ -1,0 +1,477 @@
+create 0
+mk-t open=0 exec=0
+mk-u open=0 exec=0
+t1 open=0 exec=0
+t2 open=0 exec=0
+t3 open=0 exec=0
+t4 open=0 exec=0
+t5 open=0 exec=0
+u1 open=0 exec=0
+u2 open=0 exec=0
+u3 open=0 exec=0
+u4 open=0 exec=0
+u5 open=0 exec=0
+kw-lower row [3]#|1|a|5
+kw-lower row [3]#|1|c|3
+kw-lower end=259 rows=2
+kw-mixed row [1]#|b
+kw-mixed end=259 rows=1
+unquoted row [1]#|b
+unquoted end=259 rows=1
+table-case open=1615
+table-case lasterr [4]~|2228|sql.msi|u|SELECT * FROM `u`
+column-case open=1615
+column-case lasterr [4]~|2235|sql.msi|b|SELECT `b` FROM `U`
+ws open=1615
+ws lasterr [4]~|2237|sql.msi|SELECT\x0009`B`\x000d\x000aFROM   `U`\x000aWHERE `A` = 2|
+trailing open=1615
+trailing lasterr [4]~|2237|sql.msi|SELECT * FROM `U` garbage|
+semicolon open=1615
+semicolon lasterr [4]~|2237|sql.msi|SELECT * FROM `U`;|
+dquote open=1615
+dquote lasterr [4]~|2235|sql.msi|"a"|SELECT * FROM `U` WHERE `B` = "a"
+qualified row [1]#|b
+qualified end=259 rows=1
+qualified-unq row [1]#|b
+qualified-unq end=259 rows=1
+const-select row [2]#|1|a
+const-select row [2]#|1|c
+const-select row [2]#|1|b
+const-select row [2]#|1|a
+const-select row [2]#|1|d
+const-select end=259 rows=5
+const-str-select row [2]#|x|a
+const-str-select row [2]#|x|c
+const-str-select row [2]#|x|b
+const-str-select row [2]#|x|a
+const-str-select row [2]#|x|d
+const-str-select end=259 rows=5
+dup-select row [2]#|1|1
+dup-select row [2]#|1|1
+dup-select row [2]#|2|2
+dup-select row [2]#|3|3
+dup-select row [2]#|4|4
+dup-select end=259 rows=5
+no-from open=1615
+no-from lasterr [4]~|2238|sql.msi|SELECT `A`|
+empty open=1615
+empty lasterr [4]~|2237|sql.msi||
+star-col row [4]#|1|a|5|1
+star-col row [4]#|1|c|3|1
+star-col row [4]#|2|b|4|2
+star-col row [4]#|3|a|3|3
+star-col row [4]#|4|d|~|4
+star-col end=259 rows=5
+bad-column open=1615
+bad-column lasterr [4]~|2235|sql.msi|Nope|SELECT `Nope` FROM `U`
+bad-where-column open=1615
+bad-where-column lasterr [4]~|2235|sql.msi|Nope|SELECT * FROM `U` WHERE `Nope` = 1
+bad-table open=1615
+bad-table lasterr [4]~|2228|sql.msi|Nope|SELECT * FROM `Nope`
+keyword-name open=1615
+keyword-name lasterr [4]~|2235|sql.msi|Table|SELECT * FROM `U` WHERE `Table` = 1
+int-gt row [2]#|a|1
+int-gt row [2]#|c|3
+int-gt row [2]#|d|3
+int-gt end=259 rows=3
+int-lt row [2]#|a|1
+int-lt row [2]#|b|-2
+int-lt end=259 rows=2
+int-ge row [2]#|c|3
+int-ge row [2]#|d|3
+int-ge end=259 rows=2
+int-le row [2]#|b|-2
+int-le end=259 rows=1
+int-ne row [2]#|a|1
+int-ne row [2]#|b|-2
+int-ne row [2]#|10|~
+int-ne end=259 rows=3
+int-eq-neg row [1]#|b
+int-eq-neg end=259 rows=1
+int-eq-str open=1615
+int-eq-str lasterr [4]~|2232|sql.msi|3|SELECT `K` FROM `T` WHERE `I2` = '3'
+int-is-null row [1]#|10
+int-is-null end=259 rows=1
+int-is-not-null row [1]#|a
+int-is-not-null row [1]#|b
+int-is-not-null row [1]#|c
+int-is-not-null row [1]#|10
+int-is-not-null end=259 rows=4
+int-big end=259 rows=0
+int-hex open=1615
+int-hex lasterr [4]~|2235|sql.msi|0x64|SELECT `K` FROM `T` WHERE `I4` = 0x64
+int-plus open=1615
+int-plus lasterr [4]~|2235|sql.msi|+100|SELECT `K` FROM `T` WHERE `I4` = +100
+int-col-col end=259 rows=0
+int-null-ne row [1]#|a
+int-null-ne row [1]#|b
+int-null-ne row [1]#|d
+int-null-ne row [1]#|10
+int-null-ne end=259 rows=4
+str-eq row [1]#|a
+str-eq end=259 rows=1
+str-ne row [1]#|b
+str-ne row [1]#|c
+str-ne row [1]#|d
+str-ne row [1]#|10
+str-ne end=259 rows=4
+str-eq-empty row [1]#|c
+str-eq-empty row [1]#|d
+str-eq-empty end=259 rows=2
+str-ne-empty row [1]#|a
+str-ne-empty row [1]#|b
+str-ne-empty row [1]#|10
+str-ne-empty end=259 rows=3
+str-gt open=1615
+str-gt lasterr [4]~|2237|sql.msi|SELECT `K` FROM `T` WHERE `S` > 'x'|
+str-lt open=1615
+str-lt lasterr [4]~|2237|sql.msi|SELECT `K` FROM `T` WHERE `K` < 'b'|
+str-eq-int open=1615
+str-eq-int lasterr [4]~|2232|sql.msi|2|SELECT `K` FROM `T` WHERE `S` = 2
+str-eq-int-key open=1615
+str-eq-int-key lasterr [4]~|2232|sql.msi|10|SELECT `K` FROM `T` WHERE `K` = 10
+str-is-null row [1]#|c
+str-is-null row [1]#|d
+str-is-null end=259 rows=2
+str-case end=259 rows=0
+obj-null row [1]#|a
+obj-null row [1]#|b
+obj-null row [1]#|c
+obj-null row [1]#|d
+obj-null row [1]#|10
+obj-null end=259 rows=5
+obj-eq open=1615
+obj-eq lasterr [4]~|2232|sql.msi|1|SELECT `K` FROM `T` WHERE `B` = 1
+and-or row [1]#|a
+and-or end=259 rows=1
+paren row [1]#|a
+paren end=259 rows=1
+not open=1615
+not lasterr [4]~|2232|sql.msi|NOT|SELECT `K` FROM `T` WHERE NOT `K` = 'a'
+const-left open=1615
+const-left lasterr [4]~|2232|sql.msi|1|SELECT `K` FROM `T` WHERE 1 = `I2`
+const-const open=1615
+const-const lasterr [4]~|2232|sql.msi|1|SELECT `K` FROM `T` WHERE 1 = 1
+nested-paren row [1]#|a
+nested-paren end=259 rows=1
+order-int row [3]#|4|d|~
+order-int row [3]#|1|c|3
+order-int row [3]#|3|a|3
+order-int row [3]#|2|b|4
+order-int row [3]#|1|a|5
+order-int end=259 rows=5
+order-multi row [3]#|4|d|~
+order-multi row [3]#|1|c|3
+order-multi row [3]#|3|a|3
+order-multi row [3]#|2|b|4
+order-multi row [3]#|1|a|5
+order-multi end=259 rows=5
+order-null row [2]#|10|~
+order-null row [2]#|b|-2
+order-null row [2]#|a|1
+order-null row [2]#|c|3
+order-null row [2]#|d|3
+order-null end=259 rows=5
+order-str row [1]#|c
+order-str row [1]#|d
+order-str row [1]#|a
+order-str row [1]#|b
+order-str row [1]#|10
+order-str end=259 rows=5
+order-hidden row [1]#|d
+order-hidden row [1]#|c
+order-hidden row [1]#|a
+order-hidden row [1]#|b
+order-hidden row [1]#|a
+order-hidden end=259 rows=5
+order-desc open=1615
+order-desc lasterr [4]~|2237|sql.msi|SELECT `B` FROM `U` ORDER BY `C` DESC|
+order-qualified row [1]#|d
+order-qualified row [1]#|c
+order-qualified row [1]#|a
+order-qualified row [1]#|b
+order-qualified row [1]#|a
+order-qualified end=259 rows=5
+distinct row [1]#|1
+distinct row [1]#|2
+distinct row [1]#|3
+distinct row [1]#|4
+distinct end=259 rows=4
+distinct-multi row [1]#|~
+distinct-multi row [1]#|3
+distinct-multi row [1]#|4
+distinct-multi row [1]#|5
+distinct-multi end=259 rows=4
+distinct-star row [3]#|1|a|5
+distinct-star row [3]#|1|c|3
+distinct-star row [3]#|2|b|4
+distinct-star row [3]#|3|a|3
+distinct-star row [3]#|4|d|~
+distinct-star end=259 rows=5
+join row [2]#|a|1
+join row [2]#|c|1
+join row [2]#|b|2
+join row [2]#|a|3
+join row [2]#|d|4
+join end=259 rows=5
+join-star row [8]#|a|x|1|100|~|1|a|5
+join-star row [8]#|c|~|3|0|~|1|c|3
+join-star row [8]#|b|y|-2|-200|~|2|b|4
+join-star row [8]#|a|x|1|100|~|3|a|3
+join-star row [8]#|d|~|3|~|~|4|d|~
+join-star end=259 rows=5
+join-cross row [2]#|a|1
+join-cross row [2]#|a|1
+join-cross row [2]#|a|2
+join-cross row [2]#|a|3
+join-cross row [2]#|a|4
+join-cross end=259 rows=5
+join-int row [2]#|a|a
+join-int row [2]#|a|c
+join-int row [2]#|c|a
+join-int row [2]#|d|a
+join-int end=259 rows=4
+join-ambig open=1615
+join-ambig lasterr [4]~|2235|sql.msi|B|SELECT `B` FROM `T`, `U`
+join-str-int open=1615
+join-str-int lasterr [4]~|2237|sql.msi|SELECT `T`.`K` FROM `T`, `U` WHERE `T`.`K` = `U`.`A`|
+join-self open=1615
+join-self lasterr [4]~|2230|sql.msi|T|SELECT `K` FROM `T`, `T`
+join-or row [2]#|a|1
+join-or row [2]#|c|1
+join-or row [2]#|b|2
+join-or row [2]#|a|3
+join-or row [2]#|a|4
+join-or row [2]#|b|4
+join-or row [2]#|c|4
+join-or row [2]#|d|4
+join-or row [2]#|10|4
+join-or end=259 rows=9
+join-order row [2]#|a|1
+join-order row [2]#|c|1
+join-order row [2]#|b|2
+join-order row [2]#|a|3
+join-order row [2]#|d|4
+join-order end=259 rows=5
+param-int exec=0
+param-int row [1]#|a
+param-int row [1]#|c
+param-str-for-int exec=1627
+param-str-for-int lasterr [3]~|2258|sql.msi|1
+param-str exec=0
+param-str row [1]#|1
+param-str row [1]#|3
+param-int-for-str exec=0
+param-missing exec=1627
+param-missing lasterr [4]~|2208|sql.msi||
+param-null exec=0
+param-null row [1]#|10
+param-two exec=0
+param-two row [1]#|3
+param-short exec=1627
+param-short lasterr [4]~|2208|sql.msi||
+param-insert exec=0
+param-delete exec=0
+param-update exec=0
+after-param-update row [5]#|d|q|1|~|~
+after-param-update end=259 rows=1
+param-select-list exec=0
+param-select-list row [1]#|1
+param-select-list row [1]#|1
+param-select-list row [1]#|1
+param-select-list row [1]#|1
+param-select-list row [1]#|1
+ins-dup open=0 exec=1627
+ins-dup lasterr [4]~|2259|sql.msi||
+ins-missing-notnull open=0 exec=1627
+ins-missing-notnull lasterr [4]~|2259|sql.msi||
+ins-str-into-int open=0 exec=1627
+ins-str-into-int lasterr [4]~|2259|sql.msi||
+ins-numstr-into-int open=0 exec=0
+ins-int-into-str open=0 exec=0
+after-ins-types row [3]#|12|e|~
+after-ins-types row [3]#|13|14|~
+after-ins-types end=259 rows=2
+ins-count open=1615 exec=65535
+ins-count lasterr [4]~|2239|sql.msi|INSERT INTO `U` (`A`,`B`) VALUES (20)|
+ins-bad-col open=1615 exec=65535
+ins-bad-col lasterr [4]~|2235|sql.msi|Z|INSERT INTO `U` (`A`,`Z`) VALUES (21,'z')
+ins-star open=1615 exec=65535
+ins-star lasterr [4]~|2237|sql.msi|INSERT INTO `U` * VALUES (22,'z',1)|
+ins-null-literal open=0 exec=0
+ins-empty-key open=0 exec=1627
+ins-empty-key lasterr [3]~|2210|sql.msi|0
+ins-short-overflow open=0 exec=1627
+ins-short-overflow lasterr [3]~|2210|sql.msi|1
+ins-short-min open=0 exec=0
+ins-long-min open=0 exec=0
+after-ranges row [3]#|a|1|100
+after-ranges row [3]#|b|-2|-200
+after-ranges row [3]#|c|3|0
+after-ranges row [3]#|d|1|~
+after-ranges row [3]#|10|~|2
+after-ranges row [3]#|f|~|~
+after-ranges row [3]#|g|~|~
+after-ranges end=259 rows=7
+ins-temp open=0 exec=0
+ins-long-str open=0 exec=0
+after-long row [1]#|0123456789abcdef
+after-long end=259 rows=1
+upd open=0 exec=0
+after-upd row [3]#|1|a|77
+after-upd row [3]#|3|a|77
+after-upd end=259 rows=2
+upd-key open=0 exec=1627
+upd-key lasterr [4]~|2259|sql.msi||
+upd-null open=0 exec=0
+after-upd-null row [2]#|2|~
+after-upd-null end=259 rows=1
+upd-null-notnull open=0 exec=0
+upd-bad-col open=1615 exec=65535
+upd-bad-col lasterr [4]~|2235|sql.msi|Z|UPDATE `U` SET `Z` = 1
+upd-all open=0 exec=0
+upd-multi-table open=0 exec=0
+after-upd-multi row [2]#|a|6
+after-upd-multi row [2]#|b|6
+after-upd-multi row [2]#|c|6
+after-upd-multi row [2]#|d|6
+after-upd-multi row [2]#|10|5
+after-upd-multi row [2]#|f|5
+after-upd-multi row [2]#|g|5
+after-upd-multi end=259 rows=7
+del open=0 exec=0
+del-none open=0 exec=0
+after-del row [2]#|1|a
+after-del row [2]#|1|c
+after-del row [2]#|2|b
+after-del row [2]#|4|d
+after-del row [2]#|12|e
+after-del row [2]#|13|14
+after-del row [2]#|23|z
+after-del row [2]#|30|t
+after-del row [2]#|31|0123456789abcdef
+after-del end=259 rows=9
+create-exists open=1615 exec=65535
+create-exists lasterr [4]~|2204|sql.msi|U|CREATE TABLE `U` (`A` SHORT PRIMARY KEY `A`)
+create-nokey open=1615 exec=65535
+create-nokey lasterr [4]~|2237|sql.msi|CREATE TABLE `N1` (`A` SHORT)|
+create-256 open=1615 exec=65535
+create-256 lasterr [4]~|2237|sql.msi|CREATE TABLE `N2` (`A` CHAR(256) PRIMARY KEY `A`)|
+create-255 open=0 exec=0
+create-2obj open=0 exec=0
+create-31 open=0 exec=0
+create-32 open=0 exec=0
+create-keyorder open=0 exec=0
+ci-n5 names rc=0 [2]~|B|A
+ci-n5 types rc=0 [2]~|I2|I2
+create-types open=0 exec=0
+ci-n6 names rc=0 [6]~|A|B|C|D|E|F
+ci-n6 types rc=0 [6]~|i2|I2|L8|S0|s0|I4
+create-objkey open=0 exec=0
+create-lockey open=0 exec=0
+create-dupcol open=1615 exec=65535
+create-dupcol lasterr [4]~|2242|sql.msi|A|CREATE TABLE `N9` (`A` SHORT, `A` SHORT PRIMARY KEY `A`)
+create-hold-temp open=0 exec=0
+h-ins open=0 exec=0
+h-ins-persist open=0 exec=0
+h-sel row [2]#|1|y
+h-sel row [2]#|2|z
+h-sel end=259 rows=2
+ci-h names rc=0 [2]~|X|Y
+ci-h types rc=0 [2]~|J2|G5
+persist-H 0
+h-hold open=0 exec=0
+h-free1 open=0 exec=0
+h-sel1 row [2]#|1|y
+h-sel1 row [2]#|2|z
+h-sel1 end=259 rows=2
+h-free2 open=0 exec=0
+h-sel2 open=1615
+h-sel2 lasterr [4]~|2228|sql.msi|H|SELECT * FROM `H`
+h-free3 open=1615 exec=65535
+h-free3 lasterr [4]~|2228|sql.msi|H|ALTER TABLE `H` FREE
+alter-tmp-hold open=0 exec=0
+ci-u-tmp names rc=0 [4]~|A|B|C|TMP
+ci-u-tmp types rc=0 [4]~|i2|s10|I4|J2
+tmp-upd open=0 exec=0
+tmp-sel row [2]#|1|5
+tmp-sel row [2]#|1|5
+tmp-sel row [2]#|2|~
+tmp-sel row [2]#|4|~
+tmp-sel row [2]#|12|~
+tmp-sel row [2]#|13|~
+tmp-sel row [2]#|23|~
+tmp-sel row [2]#|30|~
+tmp-sel row [2]#|31|~
+tmp-sel end=259 rows=9
+alter-free open=0 exec=0
+ci-u-free names rc=0 [4]~|A|B|C|TMP
+ci-u-free types rc=0 [4]~|i2|s10|I4|J2
+free-unheld open=0 exec=0
+hold-persistent open=0 exec=0
+alter-exists open=1615 exec=65535
+alter-exists lasterr [4]~|2242|sql.msi|C|ALTER TABLE `U` ADD `C` SHORT
+alter-notnull open=0 exec=1627
+alter-notnull lasterr [4]~|2280|sql.msi|NN|U
+alter-notnull-sel open=1615
+alter-notnull-sel lasterr [4]~|2235|sql.msi|NN|SELECT `A`,`NN` FROM `U`
+alter-obj open=0 exec=1627
+alter-obj lasterr [4]~|2280|sql.msi|OB|U
+alter-missing open=1615 exec=65535
+alter-missing lasterr [4]~|2228|sql.msi|Nope|ALTER TABLE `Nope` ADD `X` SHORT
+drop open=0 exec=0
+drop-missing open=1615 exec=65535
+drop-missing lasterr [4]~|2228|sql.msi|N3|DROP TABLE `N3`
+drop-system open=0 exec=1627
+drop-system lasterr [4]~|2205|sql.msi|_Tables|
+tables row [1]#|T
+tables row [1]#|U
+tables row [1]#|N4
+tables row [1]#|abcdefghijabcdefghijabcdefghija
+tables row [1]#|abcdefghijabcdefghijabcdefghijab
+tables row [1]#|N5
+tables row [1]#|N6
+tables row [1]#|N7
+tables row [1]#|N8
+tables end=259 rows=9
+columns-u row [4]#|U|1|A|9474
+columns-u row [4]#|U|2|B|11530
+columns-u row [4]#|U|3|C|4356
+columns-u end=259 rows=3
+sys-ins-tables open=0 exec=1627
+sys-ins-tables lasterr [4]~|2259|sql.msi||
+sys-del-columns open=0 exec=0
+sys-columns-n5 end=259 rows=0
+sys-streams-data end=259 rows=0
+fetch-before-exec 1627
+exec1 0
+fetch1 0
+exec-again 0
+close 0
+close-again 0
+fetch-after-close 1627
+exec2 0
+rows-after-reexec 9
+fetch-at-end 0 handle=0
+ins-exec 0
+ins-fetch 1627
+ins-colinfo 0
+ins-exec-again 1627
+drop-n5 open=0 exec=0
+drop-while-open 0
+exec-dropped 0
+colinfo-badarg 6
+colinfo-badkind 87
+colinfo-nullout 87
+colinfo-before-exec 0
+openview-null-out 87
+openview-null-sql 1615
+openview-bad-db 6
+exec-bad 6
+fetch-bad 6
+fetch-nullout 87
+close-bad 6
+where-32 open=0
+where-33 open=1615
+where-34 open=1615
+where-41 open=1615

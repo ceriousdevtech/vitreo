@@ -1,0 +1,838 @@
+[layout]
+layout 0 D3D12_OPTIONS sizeof=60
+layout 1 ARCHITECTURE sizeof=16
+layout 2 FEATURE_LEVELS sizeof=12
+layout 3 FORMAT_SUPPORT sizeof=12
+layout 4 MULTISAMPLE_QUALITY_LEVELS sizeof=16
+layout 5 FORMAT_INFO sizeof=8
+layout 6 GPU_VIRTUAL_ADDRESS_SUPPORT sizeof=8
+layout 7 SHADER_MODEL sizeof=4
+layout 8 D3D12_OPTIONS1 sizeof=24
+layout 10 PROTECTED_RESOURCE_SESSION_SUPPORT sizeof=8
+layout 12 ROOT_SIGNATURE sizeof=4
+layout 16 ARCHITECTURE1 sizeof=20
+layout 18 D3D12_OPTIONS2 sizeof=8
+layout 19 SHADER_CACHE sizeof=4
+layout 20 COMMAND_QUEUE_PRIORITY sizeof=12
+layout 21 D3D12_OPTIONS3 sizeof=20
+layout 22 EXISTING_HEAPS sizeof=4
+layout 23 D3D12_OPTIONS4 sizeof=12
+layout 24 SERIALIZATION sizeof=8
+layout 25 CROSS_NODE sizeof=8
+layout 27 D3D12_OPTIONS5 sizeof=12
+layout 28 DISPLAYABLE sizeof=8
+layout 30 D3D12_OPTIONS6 sizeof=20
+layout 31 QUERY_META_COMMAND sizeof=36
+layout 32 D3D12_OPTIONS7 sizeof=8
+layout 33 PROTECTED_RESOURCE_SESSION_TYPE_COUNT sizeof=8
+layout 34 PROTECTED_RESOURCE_SESSION_TYPES sizeof=12
+layout 36 D3D12_OPTIONS8 sizeof=4
+layout 37 D3D12_OPTIONS9 sizeof=24
+layout 39 D3D12_OPTIONS10 sizeof=8
+layout 40 D3D12_OPTIONS11 sizeof=4
+layout 41 D3D12_OPTIONS12 sizeof=12
+layout 42 D3D12_OPTIONS13 sizeof=24
+layout 43 D3D12_OPTIONS14 sizeof=12
+layout 44 D3D12_OPTIONS15 sizeof=8
+layout 45 D3D12_OPTIONS16 sizeof=8
+layout 46 D3D12_OPTIONS17 sizeof=8
+layout 47 D3D12_OPTIONS18 sizeof=4
+layout 48 D3D12_OPTIONS19 sizeof=40
+layout 49 D3D12_OPTIONS20 sizeof=8
+layout 50 PREDICATION sizeof=4
+layout 51 PLACED_RESOURCE_SUPPORT_INFO sizeof=32
+layout 52 HARDWARE_COPY sizeof=4
+layout 53 D3D12_OPTIONS21 sizeof=16
+layout 56 APPLICATION_SPECIFIC_DRIVER_STATE sizeof=4
+layout 57 BYTECODE_BYPASS_HASH_SUPPORTED sizeof=4
+layout 61 SHADER_CACHE_ABI_SUPPORT sizeof=288
+layout ptr=4
+[scan]
+scan 0 D3D12_OPTIONS 60:0x00000000
+scan 1 ARCHITECTURE 16:0x00000000
+scan 2 FEATURE_LEVELS 12:0x00000000
+scan 3 FORMAT_SUPPORT 12:0x00000000
+scan 4 MULTISAMPLE_QUALITY_LEVELS 16:0x00000000
+scan 5 FORMAT_INFO 8:0x00000000
+scan 6 GPU_VIRTUAL_ADDRESS_SUPPORT 8:0x00000000
+scan 7 SHADER_MODEL 4:0x00000000
+scan 8 D3D12_OPTIONS1 24:0x00000000
+scan 9 -
+scan 10 PROTECTED_RESOURCE_SESSION_SUPPORT 8:0x00000000
+scan 11 -
+scan 12 ROOT_SIGNATURE 4:0x00000000
+scan 13 -
+scan 14 -
+scan 15 -
+scan 16 ARCHITECTURE1 20:0x00000000
+scan 17 -
+scan 18 D3D12_OPTIONS2 8:0x00000000
+scan 19 SHADER_CACHE 4:0x00000000
+scan 20 COMMAND_QUEUE_PRIORITY 12:0x00000000
+scan 21 D3D12_OPTIONS3 20:0x00000000
+scan 22 EXISTING_HEAPS 4:0x00000000
+scan 23 D3D12_OPTIONS4 12:0x00000000
+scan 24 SERIALIZATION 8:0x00000000
+scan 25 CROSS_NODE 8:0x00000000
+scan 26 -
+scan 27 D3D12_OPTIONS5 12:0x00000000
+scan 28 DISPLAYABLE 8:0x00000000
+scan 29 -
+scan 30 D3D12_OPTIONS6 20:0x00000000
+scan 31 QUERY_META_COMMAND
+scan 32 D3D12_OPTIONS7 8:0x00000000
+scan 33 PROTECTED_RESOURCE_SESSION_TYPE_COUNT 8:0x00000000
+scan 34 PROTECTED_RESOURCE_SESSION_TYPES 12:0x00000000
+scan 35 -
+scan 36 D3D12_OPTIONS8 4:0x00000000
+scan 37 D3D12_OPTIONS9 24:0x00000000
+scan 38 -
+scan 39 D3D12_OPTIONS10 8:0x00000000
+scan 40 D3D12_OPTIONS11 4:0x00000000
+scan 41 D3D12_OPTIONS12 12:0x00000000
+scan 42 D3D12_OPTIONS13 24:0x00000000
+scan 43 D3D12_OPTIONS14 12:0x00000000
+scan 44 D3D12_OPTIONS15 8:0x00000000
+scan 45 D3D12_OPTIONS16 8:0x00000000
+scan 46 D3D12_OPTIONS17 8:0x00000000
+scan 47 D3D12_OPTIONS18 4:0x00000000
+scan 48 D3D12_OPTIONS19 40:0x00000000
+scan 49 D3D12_OPTIONS20 8:0x00000000
+scan 50 PREDICATION 4:0x8000ffff
+scan 51 PLACED_RESOURCE_SUPPORT_INFO 32:0x8000ffff
+scan 52 HARDWARE_COPY 4:0x8000ffff
+scan 53 D3D12_OPTIONS21 16:0x00000000
+scan 54 - 4:0x00000000
+scan 55 - 16:0x00000000
+scan 56 APPLICATION_SPECIFIC_DRIVER_STATE 4:0x00000000
+scan 57 BYTECODE_BYPASS_HASH_SUPPORTED 4:0x00000000
+scan 58 - 4:0x00000000
+scan 59 -
+scan 60 -
+scan 61 SHADER_CACHE_ABI_SUPPORT 288:0x80004005
+scan 62 -
+scan 63 -
+scan 64 -
+scan 65 -
+scan 66 -
+scan 67 -
+scan 68 -
+scan 69 -
+scan 70 -
+[dump]
+dump D3D12_OPTIONS 0 hr=0x00000000 bytes=0100000001000000030000000300000003000000010000000100000001000000030000001f0000000100000000000000010000000100000002000000
+dump ARCHITECTURE 1 hr=0x00000000 bytes=00000000000000000100000001000000
+dump FEATURE_LEVELS 2 hr=0x00000000 bytes=0400000040d4530000c10000
+dump FORMAT_SUPPORT 3 hr=0x00000000 bytes=1c000000f3d3fc03c0020000
+dump MULTISAMPLE_QUALITY_LEVELS 4 hr=0x00000000 bytes=1c000000040000000000000001000000
+dump FORMAT_INFO 5 hr=0x00000000 bytes=1c00000001cdcdcd
+dump GPU_VIRTUAL_ADDRESS_SUPPORT 6 hr=0x00000000 bytes=1f0000001f000000
+dump SHADER_MODEL 7 hr=0x00000000 bytes=68000000
+dump D3D12_OPTIONS1 8 hr=0x00000000 bytes=010000000400000004000000400000000100000001000000
+dump PROTECTED_RESOURCE_SESSION_SUPPORT 10 hr=0x00000000 bytes=0000000000000000
+dump ROOT_SIGNATURE 12 hr=0x00000000 bytes=03000000
+dump ARCHITECTURE1 16 hr=0x00000000 bytes=0000000000000000010000000100000000000000
+dump D3D12_OPTIONS2 18 hr=0x00000000 bytes=0100000002000000
+dump SHADER_CACHE 19 hr=0x00000000 bytes=63000000
+dump COMMAND_QUEUE_PRIORITY 20 hr=0x00000000 bytes=000000000000000001000000
+dump D3D12_OPTIONS3 21 hr=0x00000000 bytes=01000000010000000f0000000100000001000000
+dump EXISTING_HEAPS 22 hr=0x00000000 bytes=01000000
+dump D3D12_OPTIONS4 23 hr=0x00000000 bytes=010000000200000001000000
+dump SERIALIZATION 24 hr=0x00000000 bytes=000000000a000000
+dump CROSS_NODE 25 hr=0x00000000 bytes=0000000000000000
+dump D3D12_OPTIONS5 27 hr=0x00000000 bytes=01000000000000000b000000
+dump DISPLAYABLE 28 hr=0x00000000 bytes=0100000002000000
+dump D3D12_OPTIONS6 30 hr=0x00000000 bytes=0100000000000000010000000000000000000000
+dump QUERY_META_COMMAND 31 hr=0x80070057 bytes=0000000000000000000000000000000000000000000000000000000060d4530040000000
+dump D3D12_OPTIONS7 32 hr=0x00000000 bytes=0a00000064000000
+dump PROTECTED_RESOURCE_SESSION_TYPE_COUNT 33 hr=0x00000000 bytes=0000000000000000
+dump PROTECTED_RESOURCE_SESSION_TYPES 34 hr=0x00000000 bytes=000000000000000000000000
+dump D3D12_OPTIONS8 36 hr=0x00000000 bytes=01000000
+dump D3D12_OPTIONS9 37 hr=0x00000000 bytes=010000000100000001000000010000000100000000000000
+dump D3D12_OPTIONS10 39 hr=0x00000000 bytes=0000000000000000
+dump D3D12_OPTIONS11 40 hr=0x00000000 bytes=01000000
+dump D3D12_OPTIONS12 41 hr=0x00000000 bytes=000000000100000001000000
+dump D3D12_OPTIONS13 42 hr=0x00000000 bytes=010000000100000001000000000000000100000001000000
+dump D3D12_OPTIONS14 43 hr=0x00000000 bytes=010000000100000001000000
+dump D3D12_OPTIONS15 44 hr=0x00000000 bytes=0100000001000000
+dump D3D12_OPTIONS16 45 hr=0x00000000 bytes=0100000001000000
+dump D3D12_OPTIONS17 46 hr=0x00000000 bytes=0100000000000000
+dump D3D12_OPTIONS18 47 hr=0x00000000 bytes=01000000
+dump D3D12_OPTIONS19 48 hr=0x00000000 bytes=010000001f0000000100000001000000010000000100000000002000000020000000200000000000
+dump D3D12_OPTIONS20 49 hr=0x00000000 bytes=0100000000000000
+dump PREDICATION 50 hr=0x8000ffff bytes=cdcdcdcd
+dump PLACED_RESOURCE_SUPPORT_INFO 51 hr=0x8000ffff bytes=1c000000030000000400000001000000010000000100000001000000cdcdcdcd
+dump HARDWARE_COPY 52 hr=0x8000ffff bytes=cdcdcdcd
+dump D3D12_OPTIONS21 53 hr=0x00000000 bytes=0a0000000b0000000100000001000000
+dump APPLICATION_SPECIFIC_DRIVER_STATE 56 hr=0x00000000 bytes=00000000
+dump BYTECODE_BYPASS_HASH_SUPPORTED 57 hr=0x00000000 bytes=01000000
+dump SHADER_CACHE_ABI_SUPPORT 61 hr=0x80004005 bytes=000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+[input]
+node ARCHITECTURE node=0 1 hr=0x00000000 bytes=00000000000000000100000001000000
+node ARCHITECTURE node=1 1 hr=0x80070057 bytes=01000000cdcdcdcdcdcdcdcdcdcdcdcd
+node ARCHITECTURE node=2 1 hr=0x80070057 bytes=02000000cdcdcdcdcdcdcdcdcdcdcdcd
+node ARCHITECTURE node=4294967295 1 hr=0x80070057 bytes=ffffffffcdcdcdcdcdcdcdcdcdcdcdcd
+node ARCHITECTURE1 node=0 16 hr=0x00000000 bytes=0000000000000000010000000100000000000000
+node ARCHITECTURE1 node=1 16 hr=0x80070057 bytes=01000000cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+node ARCHITECTURE1 node=2 16 hr=0x80070057 bytes=02000000cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+node ARCHITECTURE1 node=4294967295 16 hr=0x80070057 bytes=ffffffffcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+node SERIALIZATION node=0 24 hr=0x00000000 bytes=000000000a000000
+node SERIALIZATION node=1 24 hr=0x80070057 bytes=01000000cdcdcdcd
+node SERIALIZATION node=2 24 hr=0x80070057 bytes=02000000cdcdcdcd
+node SERIALIZATION node=4294967295 24 hr=0x80070057 bytes=ffffffffcdcdcdcd
+node PROTECTED_RESOURCE_SESSION_SUPPORT node=0 10 hr=0x00000000 bytes=0000000000000000
+node PROTECTED_RESOURCE_SESSION_SUPPORT node=1 10 hr=0x80070057 bytes=01000000cdcdcdcd
+node PROTECTED_RESOURCE_SESSION_SUPPORT node=2 10 hr=0x80070057 bytes=02000000cdcdcdcd
+node PROTECTED_RESOURCE_SESSION_SUPPORT node=4294967295 10 hr=0x80070057 bytes=ffffffffcdcdcdcd
+node PROTECTED_RESOURCE_SESSION_TYPE_COUNT node=0 33 hr=0x00000000 bytes=0000000000000000
+node PROTECTED_RESOURCE_SESSION_TYPE_COUNT node=1 33 hr=0x80070057 bytes=01000000cdcdcdcd
+node PROTECTED_RESOURCE_SESSION_TYPE_COUNT node=2 33 hr=0x80070057 bytes=02000000cdcdcdcd
+node PROTECTED_RESOURCE_SESSION_TYPE_COUNT node=4294967295 33 hr=0x80070057 bytes=ffffffffcdcdcdcd
+node PROTECTED_RESOURCE_SESSION_TYPES node=0 34 hr=0x00000000 bytes=000000000000000000000000
+node PROTECTED_RESOURCE_SESSION_TYPES node=1 34 hr=0x80070057 bytes=010000000000000000000000
+node PROTECTED_RESOURCE_SESSION_TYPES node=2 34 hr=0x80070057 bytes=020000000000000000000000
+node PROTECTED_RESOURCE_SESSION_TYPES node=4294967295 34 hr=0x80070057 bytes=ffffffff0000000000000000
+levels one_11_0 hr=0x00000000 max=0xb000 count=1
+levels one_12_2 hr=0x887a0004 max=0x0 count=1
+levels one_9_1 hr=0x00000000 max=0x9100 count=1
+levels one_1_0_core hr=0x00000000 max=0x1000 count=1
+levels one_1_0_generic hr=0x00000000 max=0x100 count=1
+levels all hr=0x00000000 max=0xc000 count=6
+levels desc hr=0x00000000 max=0xc100 count=3
+levels bogus hr=0x00000000 max=0xb000 count=2
+levels bogus_only hr=0x00000000 max=0x1234 count=1
+levels zero_level hr=0x00000000 max=0xb000 count=2
+levels future hr=0x00000000 max=0xb000 count=2
+levels dup hr=0x00000000 max=0xb000 count=3
+levels count0 hr=0x80070057 max=0xcdcdcdcd count=0
+levels count0_null hr=0x80070057 max=0xcdcdcdcd count=0
+levels null_ptr hr=0x80070057 max=0xcdcdcdcd count=2
+shader_model in=0x0 hr=0x80070057 out=0x0
+shader_model in=0x40 hr=0x80070057 out=0x40
+shader_model in=0x50 hr=0x80070057 out=0x50
+shader_model in=0x51 hr=0x00000000 out=0x51
+shader_model in=0x52 hr=0x80070057 out=0x52
+shader_model in=0x5f hr=0x80070057 out=0x5f
+shader_model in=0x60 hr=0x00000000 out=0x60
+shader_model in=0x62 hr=0x00000000 out=0x62
+shader_model in=0x65 hr=0x00000000 out=0x65
+shader_model in=0x66 hr=0x00000000 out=0x66
+shader_model in=0x67 hr=0x00000000 out=0x67
+shader_model in=0x68 hr=0x00000000 out=0x68
+shader_model in=0x69 hr=0x00000000 out=0x68
+shader_model in=0x6a hr=0x80070057 out=0x6a
+shader_model in=0x70 hr=0x80070057 out=0x70
+shader_model in=0x99 hr=0x80070057 out=0x99
+shader_model in=0xffff hr=0x80070057 out=0xffff
+shader_model in=0xffffffff hr=0x80070057 out=0xffffffff
+root_signature in=0x0 hr=0x80070057 out=0x0
+root_signature in=0x1 hr=0x00000000 out=0x1
+root_signature in=0x2 hr=0x00000000 out=0x2
+root_signature in=0x3 hr=0x00000000 out=0x3
+root_signature in=0x4 hr=0x80070057 out=0x4
+root_signature in=0xff hr=0x80070057 out=0xff
+root_signature in=0xffffffff hr=0x80070057 out=0xffffffff
+queue_priority type=0 prio=0 hr=0x00000000 bytes=000000000000000001000000
+queue_priority type=0 prio=1 hr=0x80070057 bytes=0000000001000000cdcdcdcd
+queue_priority type=0 prio=99 hr=0x80070057 bytes=0000000063000000cdcdcdcd
+queue_priority type=0 prio=100 hr=0x00000000 bytes=000000006400000001000000
+queue_priority type=0 prio=101 hr=0x80070057 bytes=0000000065000000cdcdcdcd
+queue_priority type=0 prio=10000 hr=0x00000000 bytes=000000001027000001000000
+queue_priority type=0 prio=4294967295 hr=0x80070057 bytes=00000000ffffffffcdcdcdcd
+queue_priority type=1 prio=0 hr=0x00000000 bytes=010000000000000001000000
+queue_priority type=1 prio=1 hr=0x80070057 bytes=0100000001000000cdcdcdcd
+queue_priority type=1 prio=99 hr=0x80070057 bytes=0100000063000000cdcdcdcd
+queue_priority type=1 prio=100 hr=0x00000000 bytes=010000006400000001000000
+queue_priority type=1 prio=101 hr=0x80070057 bytes=0100000065000000cdcdcdcd
+queue_priority type=1 prio=10000 hr=0x00000000 bytes=010000001027000001000000
+queue_priority type=1 prio=4294967295 hr=0x80070057 bytes=01000000ffffffffcdcdcdcd
+queue_priority type=2 prio=0 hr=0x00000000 bytes=020000000000000001000000
+queue_priority type=2 prio=1 hr=0x80070057 bytes=0200000001000000cdcdcdcd
+queue_priority type=2 prio=99 hr=0x80070057 bytes=0200000063000000cdcdcdcd
+queue_priority type=2 prio=100 hr=0x00000000 bytes=020000006400000001000000
+queue_priority type=2 prio=101 hr=0x80070057 bytes=0200000065000000cdcdcdcd
+queue_priority type=2 prio=10000 hr=0x00000000 bytes=020000001027000001000000
+queue_priority type=2 prio=4294967295 hr=0x80070057 bytes=02000000ffffffffcdcdcdcd
+queue_priority type=3 prio=0 hr=0x00000000 bytes=030000000000000001000000
+queue_priority type=3 prio=1 hr=0x80070057 bytes=0300000001000000cdcdcdcd
+queue_priority type=3 prio=99 hr=0x80070057 bytes=0300000063000000cdcdcdcd
+queue_priority type=3 prio=100 hr=0x00000000 bytes=030000006400000001000000
+queue_priority type=3 prio=101 hr=0x80070057 bytes=0300000065000000cdcdcdcd
+queue_priority type=3 prio=10000 hr=0x00000000 bytes=030000001027000001000000
+queue_priority type=3 prio=4294967295 hr=0x80070057 bytes=03000000ffffffffcdcdcdcd
+queue_priority type=4 prio=0 hr=0x00000000 bytes=040000000000000001000000
+queue_priority type=4 prio=1 hr=0x80070057 bytes=0400000001000000cdcdcdcd
+queue_priority type=4 prio=99 hr=0x80070057 bytes=0400000063000000cdcdcdcd
+queue_priority type=4 prio=100 hr=0x00000000 bytes=040000006400000001000000
+queue_priority type=4 prio=101 hr=0x80070057 bytes=0400000065000000cdcdcdcd
+queue_priority type=4 prio=10000 hr=0x00000000 bytes=040000001027000001000000
+queue_priority type=4 prio=4294967295 hr=0x80070057 bytes=04000000ffffffffcdcdcdcd
+queue_priority type=5 prio=0 hr=0x00000000 bytes=050000000000000001000000
+queue_priority type=5 prio=1 hr=0x80070057 bytes=0500000001000000cdcdcdcd
+queue_priority type=5 prio=99 hr=0x80070057 bytes=0500000063000000cdcdcdcd
+queue_priority type=5 prio=100 hr=0x00000000 bytes=050000006400000001000000
+queue_priority type=5 prio=101 hr=0x80070057 bytes=0500000065000000cdcdcdcd
+queue_priority type=5 prio=10000 hr=0x00000000 bytes=050000001027000001000000
+queue_priority type=5 prio=4294967295 hr=0x80070057 bytes=05000000ffffffffcdcdcdcd
+queue_priority type=6 prio=0 hr=0x00000000 bytes=060000000000000001000000
+queue_priority type=6 prio=1 hr=0x80070057 bytes=0600000001000000cdcdcdcd
+queue_priority type=6 prio=99 hr=0x80070057 bytes=0600000063000000cdcdcdcd
+queue_priority type=6 prio=100 hr=0x00000000 bytes=060000006400000001000000
+queue_priority type=6 prio=101 hr=0x80070057 bytes=0600000065000000cdcdcdcd
+queue_priority type=6 prio=10000 hr=0x00000000 bytes=060000001027000001000000
+queue_priority type=6 prio=4294967295 hr=0x80070057 bytes=06000000ffffffffcdcdcdcd
+queue_priority type=7 prio=0 hr=0x80070057 bytes=0700000000000000cdcdcdcd
+queue_priority type=7 prio=1 hr=0x80070057 bytes=0700000001000000cdcdcdcd
+queue_priority type=7 prio=99 hr=0x80070057 bytes=0700000063000000cdcdcdcd
+queue_priority type=7 prio=100 hr=0x80070057 bytes=0700000064000000cdcdcdcd
+queue_priority type=7 prio=101 hr=0x80070057 bytes=0700000065000000cdcdcdcd
+queue_priority type=7 prio=10000 hr=0x80070057 bytes=0700000010270000cdcdcdcd
+queue_priority type=7 prio=4294967295 hr=0x80070057 bytes=07000000ffffffffcdcdcdcd
+queue_priority type=99 prio=0 hr=0x80070057 bytes=6300000000000000cdcdcdcd
+queue_priority type=99 prio=1 hr=0x80070057 bytes=6300000001000000cdcdcdcd
+queue_priority type=99 prio=99 hr=0x80070057 bytes=6300000063000000cdcdcdcd
+queue_priority type=99 prio=100 hr=0x80070057 bytes=6300000064000000cdcdcdcd
+queue_priority type=99 prio=101 hr=0x80070057 bytes=6300000065000000cdcdcdcd
+queue_priority type=99 prio=10000 hr=0x80070057 bytes=6300000010270000cdcdcdcd
+queue_priority type=99 prio=4294967295 hr=0x80070057 bytes=63000000ffffffffcdcdcdcd
+session_types count=0 ptr=0 hr=0x00000000 count_out=0 types=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+session_types count=0 ptr=1 hr=0x00000000 count_out=0 types=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+session_types count=1 ptr=0 hr=0x80070057 count_out=1 types=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+session_types count=1 ptr=1 hr=0x80070057 count_out=1 types=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+session_types count=2 ptr=0 hr=0x80070057 count_out=2 types=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+session_types count=2 ptr=1 hr=0x80070057 count_out=2 types=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+meta_command v=0 hr=0x80070057 out=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+meta_command v=1 hr=0x80070057 out=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+meta_command v=2 hr=0x80070057 out=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+meta_command v=3 hr=0x80070057 out=cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+placed fmt=0 dim=0 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=0 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=0 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=0 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=0 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=0 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=0 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=1 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=1 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=1 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=1 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=1 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=1 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=1 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=2 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=2 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=2 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=2 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=2 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=2 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=2 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=3 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=3 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=3 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=3 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=3 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=3 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=3 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=4 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=4 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=4 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=4 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=4 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=4 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=4 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=5 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=5 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=5 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=5 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=5 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=5 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=0 dim=5 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=0 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=0 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=0 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=0 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=0 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=0 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=0 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=1 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=1 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=1 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=1 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=1 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=1 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=1 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=2 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=2 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=2 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=2 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=2 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=2 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=2 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=3 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=3 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=3 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=3 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=3 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=3 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=3 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=4 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=4 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=4 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=4 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=4 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=4 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=4 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=5 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=5 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=5 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=5 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=5 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=5 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=2 dim=5 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=0 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=0 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=0 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=0 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=0 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=0 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=0 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=1 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=1 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=1 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=1 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=1 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=1 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=1 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=2 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=2 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=2 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=2 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=2 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=2 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=2 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=3 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=3 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=3 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=3 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=3 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=3 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=3 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=4 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=4 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=4 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=4 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=4 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=4 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=4 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=5 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=5 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=5 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=5 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=5 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=5 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=28 dim=5 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=0 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=0 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=0 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=0 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=0 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=0 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=0 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=1 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=1 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=1 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=1 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=1 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=1 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=1 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=2 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=2 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=2 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=2 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=2 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=2 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=2 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=3 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=3 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=3 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=3 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=3 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=3 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=3 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=4 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=4 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=4 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=4 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=4 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=4 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=4 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=5 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=5 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=5 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=5 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=5 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=5 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=40 dim=5 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=0 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=0 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=0 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=0 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=0 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=0 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=0 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=1 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=1 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=1 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=1 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=1 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=1 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=1 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=2 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=2 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=2 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=2 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=2 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=2 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=2 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=3 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=3 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=3 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=3 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=3 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=3 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=3 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=4 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=4 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=4 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=4 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=4 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=4 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=4 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=5 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=5 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=5 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=5 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=5 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=5 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=45 dim=5 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=0 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=0 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=0 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=0 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=0 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=0 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=0 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=1 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=1 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=1 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=1 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=1 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=1 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=1 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=2 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=2 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=2 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=2 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=2 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=2 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=2 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=3 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=3 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=3 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=3 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=3 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=3 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=3 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=4 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=4 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=4 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=4 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=4 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=4 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=4 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=5 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=5 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=5 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=5 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=5 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=5 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=71 dim=5 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=0 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=0 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=0 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=0 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=0 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=0 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=0 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=1 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=1 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=1 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=1 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=1 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=1 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=1 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=2 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=2 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=2 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=2 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=2 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=2 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=2 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=3 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=3 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=3 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=3 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=3 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=3 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=3 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=4 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=4 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=4 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=4 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=4 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=4 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=4 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=5 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=5 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=5 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=5 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=5 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=5 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=103 dim=5 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=0 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=0 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=0 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=0 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=0 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=0 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=0 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=1 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=1 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=1 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=1 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=1 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=1 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=1 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=2 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=2 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=2 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=2 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=2 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=2 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=2 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=3 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=3 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=3 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=3 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=3 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=3 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=3 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=4 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=4 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=4 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=4 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=4 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=4 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=4 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=5 heap=1 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=5 heap=2 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=5 heap=3 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=5 heap=4 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=5 heap=5 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=5 heap=0 hr=0x8000ffff supported=0xcdcdcdcd
+placed fmt=999 dim=5 heap=9 hr=0x8000ffff supported=0xcdcdcdcd
+[format]
+format 0 support hr=0x00000000 s1=0x00000001 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 1 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 2 support hr=0x00000000 s1=0x02f4d3fb s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 3 support hr=0x00000000 s1=0x027051fb s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 4 support hr=0x00000000 s1=0x027051fb s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 5 support hr=0x00000000 s1=0x001010f0 s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:0 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 6 support hr=0x00000000 s1=0x00f4d3fb s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:0 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 7 support hr=0x00000000 s1=0x007051fb s2=0x00000100 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:0 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 8 support hr=0x00000000 s1=0x007051fb s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:0 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 9 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 10 support hr=0x00000000 s1=0x02fcd3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 11 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 12 support hr=0x00000000 s1=0x027051f3 s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 13 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 14 support hr=0x00000000 s1=0x027051f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 15 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 16 support hr=0x00000000 s1=0x02f4d3fb s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 17 support hr=0x00000000 s1=0x027051fb s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 18 support hr=0x00000000 s1=0x027051fb s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 19 support hr=0x00000000 s1=0x001010b0 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:0 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 20 support hr=0x00000000 s1=0x003110b0 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:0 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 21 support hr=0x00000000 s1=0x04d017b0 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 22 support hr=0x00000000 s1=0x005011b0 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 23 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 24 support hr=0x00000000 s1=0x03fcd3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 25 support hr=0x00000000 s1=0x027051f3 s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 26 support hr=0x00000000 s1=0x02e4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 27 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 28 support hr=0x00000000 s1=0x03fcd3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 29 support hr=0x00000000 s1=0x01fcd3f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 30 support hr=0x00000000 s1=0x027051f3 s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 31 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 32 support hr=0x00000000 s1=0x027051f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 33 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 34 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 35 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 36 support hr=0x00000000 s1=0x027051f3 s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 37 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 38 support hr=0x00000000 s1=0x027051f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 39 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 40 support hr=0x00000000 s1=0x003110b0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 41 support hr=0x00000000 s1=0x06f4d7fb s2=0x000002c8 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 42 support hr=0x00000000 s1=0x027051ff s2=0x000003ff info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 43 support hr=0x00000000 s1=0x027051fb s2=0x000002ff info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 44 support hr=0x00000000 s1=0x001010b0 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:0 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 45 support hr=0x00000000 s1=0x003110b0 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:0 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 46 support hr=0x00000000 s1=0x04d017b0 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 47 support hr=0x00000000 s1=0x005011b0 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 48 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 49 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 50 support hr=0x00000000 s1=0x027051f3 s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 51 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 52 support hr=0x00000000 s1=0x027051f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 53 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 54 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 55 support hr=0x00000000 s1=0x003110b0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 56 support hr=0x00000000 s1=0x06f4d7f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 57 support hr=0x00000000 s1=0x027051f7 s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 58 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 59 support hr=0x00000000 s1=0x027051f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 60 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 61 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 62 support hr=0x00000000 s1=0x027051f3 s2=0x000003c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 63 support hr=0x00000000 s1=0x02f4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 64 support hr=0x00000000 s1=0x027051f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 65 support hr=0x00000000 s1=0x02e4d3f0 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 66 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 67 support hr=0x00000000 s1=0x02ecd3f1 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 68 support hr=0x00000000 s1=0x008013f0 s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 69 support hr=0x00000000 s1=0x008013f0 s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 70 support hr=0x00000000 s1=0x001010e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 71 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 72 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 73 support hr=0x00000000 s1=0x001010e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 74 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 75 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 76 support hr=0x00000000 s1=0x001010e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 77 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 78 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 79 support hr=0x00000000 s1=0x001010e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 80 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 81 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 82 support hr=0x00000000 s1=0x001010e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 83 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 84 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 85 support hr=0x00000000 s1=0x02e4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 86 support hr=0x00000000 s1=0x02e4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 87 support hr=0x00000000 s1=0x03fcd3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 88 support hr=0x00000000 s1=0x00f4d3f3 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 89 support hr=0x00000000 s1=0x01180020 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 90 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 91 support hr=0x00000000 s1=0x01fcd3f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 92 support hr=0x00000000 s1=0x001010f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 93 support hr=0x00000000 s1=0x00f4d3f0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 94 support hr=0x00000000 s1=0x001010e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 95 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 96 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 97 support hr=0x00000000 s1=0x001010e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 98 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 99 support hr=0x00000000 s1=0x009013e0 s2=0x00000200 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 100 support hr=0x00000000 s1=0x0280d320 s2=0x00000080 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 101 support hr=0x00000000 s1=0x02800320 s2=0x00000080 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 102 support hr=0x00000000 s1=0x02801320 s2=0x00000080 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 103 support hr=0x00000000 s1=0x0280c320 s2=0x00000080 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 104 support hr=0x00000000 s1=0x0280c320 s2=0x00000080 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 105 support hr=0x00000000 s1=0x0280c320 s2=0x00000080 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 106 support hr=0x00000000 s1=0x00000020 s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 107 support hr=0x00000000 s1=0x02800320 s2=0x00000080 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 108 support hr=0x00000000 s1=0x02800320 s2=0x00000080 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 109 support hr=0x00000000 s1=0x02800320 s2=0x00000080 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 110 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x00000000 planes=2 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 111 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 112 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 113 support hr=0x00000000 s1=0x00000020 s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 114 support hr=0x00000000 s1=0x00000020 s2=0x00000000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 115 support hr=0x00000000 s1=0x02e4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 116 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 117 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 118 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 119 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 120 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 121 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 122 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 123 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 124 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 125 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 126 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 127 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 128 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 129 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 130 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 131 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 132 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 133 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 134 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 135 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 136 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 137 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 138 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 139 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 140 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 141 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 142 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 143 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 144 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 145 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 146 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 147 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 148 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 149 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 150 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 151 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 152 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 153 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 154 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 155 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 156 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 157 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 158 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 159 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 160 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 161 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 162 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 163 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 164 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 165 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 166 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 167 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 168 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 169 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 170 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 171 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 172 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 173 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 174 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 175 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 176 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 177 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 178 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 179 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 180 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 181 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 182 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 183 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 184 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 185 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 186 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 187 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 188 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+format 189 support hr=0x00000000 s1=0x00001020 s2=0x00008000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 190 support hr=0x00000000 s1=0x00001020 s2=0x00008000 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:0 1/2:0:1 2/0:0:0 2/1:0:0 2/2:0:0 4/0:0:0 4/1:0:0 4/2:0:0 8/0:0:0 8/1:0:0 8/2:0:0 16/0:0:0 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 191 support hr=0x00000000 s1=0x02e4d3f3 s2=0x000002c0 info hr=0x00000000 planes=1 msaa 0/0:80004005:0 0/1:80004005:0 0/2:80004005:0 1/0:0:1 1/1:0:1 1/2:0:1 2/0:0:1 2/1:0:0 2/2:0:0 4/0:0:1 4/1:0:1 4/2:0:1 8/0:0:1 8/1:0:0 8/2:0:0 16/0:0:1 16/1:0:0 16/2:0:0 32/0:0:0 32/1:0:0 32/2:0:0 64/0:80004005:0 64/1:80004005:0 64/2:80004005:0
+format 192 support hr=0x80004005 s1=0x00000000 s2=0x00000000 info hr=0x80070057 planes=205 msaa 0/0:80004005:cdcdcdcd 0/1:80004005:cdcdcdcd 0/2:80004005:cdcdcdcd 1/0:80004005:cdcdcdcd 1/1:80004005:cdcdcdcd 1/2:80004005:cdcdcdcd 2/0:80004005:cdcdcdcd 2/1:80004005:cdcdcdcd 2/2:80004005:cdcdcdcd 4/0:80004005:cdcdcdcd 4/1:80004005:cdcdcdcd 4/2:80004005:cdcdcdcd 8/0:80004005:cdcdcdcd 8/1:80004005:cdcdcdcd 8/2:80004005:cdcdcdcd 16/0:80004005:cdcdcdcd 16/1:80004005:cdcdcdcd 16/2:80004005:cdcdcdcd 32/0:80004005:cdcdcdcd 32/1:80004005:cdcdcdcd 32/2:80004005:cdcdcdcd 64/0:80004005:cdcdcdcd 64/1:80004005:cdcdcdcd 64/2:80004005:cdcdcdcd
+done

@@ -1,0 +1,511 @@
+ptrsize=4
+== formats
+fmt 00030101 create=0 flags=2 pf=00030101 psize=16 dpi=96,96 type=1 pal=0 flags=2 count=2 ff000000 ffffffff small=2 lock=0 w=3 h=2 stride=4 pf=00030101 row0=00000000
+  getpixel0=0 ff000000 graphics=0
+  setget ff123456:0/0=ff000000 80ff4020:0/0=ff000000 00ffffff:0/0=ffffffff 01020304:0/0=ff000000 ffffffff:0/0=ffffffff 7f808080:0/0=ffffffff ff000000:0/0=ff000000 c0c0c0c0:0/0=ffffffff
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 00030402 create=0 flags=2 pf=00030402 psize=72 dpi=96,96 type=1 pal=0 flags=0 count=16 ff000000 ff800000 ff008000 ff808000 ff000080 ff800080 ff008080 ff808080 ffc0c0c0 ffff0000 ff00ff00 ffffff00 ff0000ff ffff00ff ff00ffff ffffffff small=2 lock=0 w=3 h=2 stride=4 pf=00030402 row0=00000000
+  getpixel0=0 ff000000 graphics=0
+  setget ff123456:0/0=ff000080 80ff4020:0/0=ffff0000 00ffffff:0/0=ffffffff 01020304:0/0=ff000000 ffffffff:0/0=ffffffff 7f808080:0/0=ff808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=ffc0c0c0
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 00030803 create=0 flags=2 pf=00030803 psize=1032 dpi=96,96 type=1 pal=0 flags=4 count=256 ff000000 ff800000 ff008000 ff808000 ff000080 ff800080 ff008080 ff808080 ffc0c0c0 ffff0000 ff00ff00 ffffff00 ff0000ff ffff00ff ff00ffff ffffffff 00000000 00000000 00000000 00000000 ... [255]=ffffffff small=2 lock=0 w=3 h=2 stride=4 pf=00030803 row0=00000000
+  getpixel0=0 ff000000 graphics=0
+  setget ff123456:0/0=ff003366 80ff4020:0/0=ffff3333 00ffffff:0/0=ffffffff 01020304:0/0=ff000000 ffffffff:0/0=ffffffff 7f808080:0/0=ff808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=ffcccccc
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 00101004 create=0 flags=0 pf=00101004 psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=8 pf=00101004 row0=0000000000000000
+  getpixel0=2 00000001 graphics=3
+  setget ff123456:2/2=020615d8 80ff4020:2/2=020615d8 00ffffff:2/2=020615d8 01020304:2/2=020615d8 ffffffff:2/2=020615d8 7f808080:2/2=020615d8 ff000000:2/2=020615d8 c0c0c0c0:2/2=020615d8
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 00021005 create=0 flags=0 pf=00021005 psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=8 pf=00021005 row0=0000000000000000
+  getpixel0=0 ff000000 graphics=0
+  setget ff123456:0/0=ff103152 80ff4020:0/0=ffff4221 00ffffff:0/0=ffffffff 01020304:0/0=ff000000 ffffffff:0/0=ffffffff 7f808080:0/0=ff848484 ff000000:0/0=ff000000 c0c0c0c0:0/0=ffc6c6c6
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 00021006 create=0 flags=0 pf=00021006 psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=8 pf=00021006 row0=0000000000000000
+  getpixel0=0 ff000000 graphics=0
+  setget ff123456:0/0=ff103452 80ff4020:0/0=ffff4121 00ffffff:0/0=ffffffff 01020304:0/0=ff000000 ffffffff:0/0=ffffffff 7f808080:0/0=ff848284 ff000000:0/0=ff000000 c0c0c0c0:0/0=ffc6c3c6
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 00061007 create=0 flags=2 pf=00061007 psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=8 pf=00061007 row0=0000000000000000
+  getpixel0=0 00000000 graphics=3
+  setget ff123456:0/0=ff103152 80ff4020:0/0=ffff4221 00ffffff:0/0=00ffffff 01020304:0/0=00000000 ffffffff:0/0=ffffffff 7f808080:0/0=00848484 ff000000:0/0=ff000000 c0c0c0c0:0/0=ffc6c6c6
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 00021808 create=0 flags=0 pf=00021808 psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=12 pf=00021808 row0=000000000000000000000000
+  getpixel0=0 ff000000 graphics=0
+  setget ff123456:0/0=ff123456 80ff4020:0/0=ffff4020 00ffffff:0/0=ffffffff 01020304:0/0=ff020304 ffffffff:0/0=ffffffff 7f808080:0/0=ff808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=ffc0c0c0
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 00022009 create=0 flags=0 pf=00022009 psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=12 pf=00022009 row0=000000000000000000000000
+  getpixel0=0 ff000000 graphics=0
+  setget ff123456:0/0=ff123456 80ff4020:0/0=ffff4020 00ffffff:0/0=ffffffff 01020304:0/0=ff020304 ffffffff:0/0=ffffffff 7f808080:0/0=ff808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=ffc0c0c0
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 0026200a create=0 flags=2 pf=0026200a psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=12 pf=0026200a row0=000000000000000000000000
+  getpixel0=0 00000000 graphics=0
+  setget ff123456:0/0=ff123456 80ff4020:0/0=80ff4020 00ffffff:0/0=00ffffff 01020304:0/0=01020304 ffffffff:0/0=ffffffff 7f808080:0/0=7f808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=c0c0c0c0
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 000e200b create=0 flags=2 pf=000e200b psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=12 pf=000e200b row0=000000000000000000000000
+  getpixel0=0 00000000 graphics=0
+  setget ff123456:0/0=ff123456 80ff4020:0/0=80ff3f1f 00ffffff:0/0=00000000 01020304:0/0=01000000 ffffffff:0/0=ffffffff 7f808080:0/0=7f808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=c0c0c0c0
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 0010300c create=0 flags=0 pf=0010300c psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=20 pf=0010300c row0=0000000000000000000000000000000000000000
+  getpixel0=0 ff000000 graphics=0
+  setget ff123456:0/0=ff123456 80ff4020:0/0=ffff4020 00ffffff:0/0=ffffffff 01020304:0/0=ff020304 ffffffff:0/0=ffffffff 7f808080:0/0=ff808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=ffc0c0c0
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 0034400d create=0 flags=2 pf=0034400d psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=24 pf=0034400d row0=000000000000000000000000000000000000000000000000
+  getpixel0=0 00000000 graphics=0
+  setget ff123456:0/0=ff123456 80ff4020:0/0=7fff4020 00ffffff:0/0=00ffffff 01020304:0/0=00020304 ffffffff:0/0=ffffffff 7f808080:0/0=7e808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=bfc0c0c0
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 001c400e create=0 flags=2 pf=001c400e psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=24 pf=001c400e row0=000000000000000000000000000000000000000000000000
+  getpixel0=0 00000000 graphics=0
+  setget ff123456:0/0=ff123456 80ff4020:0/0=7fff4020 00ffffff:0/0=00000000 01020304:0/0=00000000 ffffffff:0/0=ffffffff 7f808080:0/0=7e808080 ff000000:0/0=ff000000 c0c0c0c0:0/0=bfc0c0c0
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+fmt 0000200f create=0 flags=0 pf=0000200f psize=12 dpi=96,96 type=1 pal=0 flags=3 count=0 small=2 lock=0 w=3 h=2 stride=12 pf=0000200f row0=000000000000000000000000
+  getpixel0=2 00000001 graphics=3
+  setget ff123456:2/2=020615d8 80ff4020:2/2=020615d8 00ffffff:2/2=020615d8 01020304:2/2=020615d8 ffffffff:2/2=020615d8 7f808080:2/2=020615d8 ff000000:2/2=020615d8 c0c0c0c0:2/2=020615d8
+  getpixel_oob=2 setpixel_oob=2 getpixel_neg=2
+== create
+create(0,2,0,0026200a,null)=2 out=null
+create(2,0,0,0026200a,null)=2 out=null
+create(-1,2,0,0026200a,null)=2 out=null
+create(2,2,0,0026200a,buf)=2 out=untouched
+create(2,2,8,0026200a,buf)=0 out=set
+create(2,2,10,0026200a,buf)=2 out=null
+create(2,2,4,0026200a,buf)=0 out=set
+create(2,2,-8,0026200a,buf)=0 out=set
+create(2,2,8,0026200a,null)=0 out=set
+create(2,2,6,00021808,buf)=2 out=null
+create(3,2,9,00021808,buf)=2 out=null
+create(3,2,12,00021808,buf)=0 out=set
+create(2,2,0,00000000,null)=2 out=null
+create(2,2,0,12345678,null)=2 out=null
+create(2,2,0,0126200a,null)=0 out=set
+create(2,2,0,0020000a,null)=2 out=null
+create(100000,100000,0,0026200a,null)=2 out=null
+create_nullout=2
+negstride_buf[56..72)=00000000887766554433221100000000
+negstride_buf[64..72)=4433221100000000
+negstride_lock=0 stride=-8 scan0_is_buf=1
+bufwrite_visible_orig=11223399 clone=11223399
+== lockconvert
+read 00030101=0 stride=4 20000602
+read 00030402=0 stride=4 49f30602
+read 00030803=0 stride=4 30e30f9b
+read 00101004=2
+read 00021005=0 stride=8 ca08047dff7f0441
+read 00021006=0 stride=8 aa1104faffff0482
+read 00061007=0 stride=8 ca8804fdff7f0441
+read 00021808=0 stride=12 5634122040ffffffff204080
+read 00022009=0 stride=16 563412ff2040ff80ffffff0020408040
+read 0026200a=0 stride=16 563412ff2040ff80ffffff0020408040
+read 000e200b=0 stride=16 563412ff102080800000000008102040
+read 0010300c=0 stride=24 fa02190132007600a40100200020002000207600a401e806
+read 0034400d=0 stride=32 fa021901320000207600a4010020101000200020002000007600a401e8060808
+read 001c400e=0 stride=32 fa021901320000203b00d2001010101000000000000000001d006900bb010808
+read 0000200f=2
+write 00030101=0 unlock=0 4x1 ff000000 ff000000 ff000000 ff000000
+write 00030402=0 unlock=0 4x1 ff000000 ff000000 ff800000 ff008000
+write 00030803=0 unlock=0 4x1 ff000000 00000000 00000000 ff006666
+write 00101004=0 unlock=2 4x1 00000000 00000000 00000000 00000000
+write 00021005=0 unlock=0 4x1 ff218400 ff6b8c21 ffb59442 ffff9c63
+write 00021006=0 unlock=0 4x1 ff104100 ff31c721 ff5a4942 ff7bcf63
+write 00061007=0 unlock=0 4x1 00218400 006b8c21 00b59442 00ff9c63
+write 00021808=0 unlock=0 4x1 ff241200 ff5a4836 ff907e6c ffc6b4a2
+write 00022009=0 unlock=0 4x1 ff241200 ff6c5a48 ffb4a290 fffcead8
+write 0026200a=0 unlock=0 4x1 36241200 7e6c5a48 c6b4a290 0ffcead8
+write 000e200b=0 unlock=0 4x1 36a95400 7edab691 c6e7d0b9 0fffffff
+write 0010300c=0 unlock=0 4x1 ffffffc6 ff0000ff ffffbb00 ff00ffff
+write 0034400d=0 unlock=0 4x1 ffffffc6 7f000000 00ffffff ffa50000
+write 001c400e=0 unlock=0 4x1 ffffffc6 7f0000ff 00ffffff ffa50000
+write 0000200f=2
+to64: 0 2 5 7 10 12 15 17 20 22 25 27 30 33 36 39 42 46 50 53 57 61 66 70 75 80 85 90 95 101 106 112 118 125 131 138 145 152 159 166 174 182 190 198 206 215 224 233 242 252 261 271 281 292 302 313 324 335 347 358 370 382 395 407 420 433 446 460 474 488 502 516 531 546 561 576 592 608 624 641 657 674 691 709 726 744 762 781 799 818 838 857 877 897 917 937 958 979 1001 1022 1044 1066 1088 1111 1134 1157 1181 1204 1228 1253 1277 1302 1327 1353 1378 1404 1431 1457 1484 1511 1539 1566 1594 1623 1651 1680 1709 1739 1768 1798 1829 1859 1890 1921 1953 1985 2017 2049 2082 2115 2148 2182 2216 2250 2285 2320 2355 2390 2426 2462 2498 2535 2572 2610 2647 2685 2723 2762 2801 2840 2880 2920 2960 3000 3041 3082 3124 3166 3208 3250 3293 3336 3380 3423 3467 3512 3557 3602 3647 3693 3739 3785 3832 3879 3927 3974 4022 4071 4120 4169 4218 4268 4318 4369 4419 4471 4522 4574 4626 4679 4732 4785 4838 4892 4947 5001 5056 5111 5167 5223 5280 5336 5393 5451 5509 5567 5625 5684 5743 5803 5863 5923 5984 6045 6106 6168 6230 6293 6356 6419 6482 6546 6611 6675 6740 6806 6871 6938 7004 7071 7138 7206 7274 7342 7411 7480 7550 7619 7690 7760 7831 7903 7974 8047 8119 8192
+alpha64: a0=420,1768,8192,0/p0,0,0,0/32p00000000 a15=420,1768,8192,481/p24,103,481,481/32p0f0f0804 a30=420,1768,8192,963/p49,207,963,963/32p1e1e0f08 a45=420,1768,8192,1445/p74,311,1445,1445/32p2d2d170b a60=420,1768,8192,1927/p98,415,1927,1927/32p3c3c1e0f a75=420,1768,8192,2409/p123,519,2409,2409/32p4b4b2613 a90=420,1768,8192,2891/p148,623,2891,2891/32p5a5a2d17 a105=420,1768,8192,3373/p172,727,3373,3373/32p6969351a a120=420,1768,8192,3855/p197,831,3855,3855/32p78783c1e a135=420,1768,8192,4336/p222,935,4336,4336/32p87874422 a150=420,1768,8192,4818/p247,1039,4818,4818/32p96964b26 a165=420,1768,8192,5300/p271,1143,5300,5300/32pa5a55329 a180=420,1768,8192,5782/p296,1247,5782,5782/32pb4b45a2d a195=420,1768,8192,6264/p321,1351,6264,6264/32pc3c36231 a210=420,1768,8192,6746/p345,1455,6746,6746/32pd2d26935 a225=420,1768,8192,7228/p370,1559,7228,7228/32pe1e17138 a240=420,1768,8192,7710/p395,1663,7710,7710/32pf0f0783c a255=420,1768,8192,8192/p420,1768,8192,8192/32pffff8040
+from64: 0=00 64=16 128=22 192=2a 256=31 320=38 384=3d 448=42 512=47 576=4b 640=4f 704=53 768=56 832=5a 896=5d 960=60 1024=63 1088=66 1152=69 1216=6b 1280=6e 1344=71 1408=73 1472=76 1536=78 1600=7a 1664=7c 1728=7f 1792=81 1856=83 1920=85 1984=87 2048=89 2112=8b 2176=8d 2240=8f 2304=91 2368=92 2432=94 2496=96 2560=98 2624=99 2688=9b 2752=9d 2816=9e 2880=a0 2944=a2 3008=a3 3072=a5 3136=a6 3200=a8 3264=a9 3328=ab 3392=ac 3456=ae 3520=af 3584=b1 3648=b2 3712=b3 3776=b5 3840=b6 3904=b8 3968=b9 4032=ba 4096=bc 4160=bd 4224=be 4288=bf 4352=c1 4416=c2 4480=c3 4544=c4 4608=c6 4672=c7 4736=c8 4800=c9 4864=ca 4928=cc 4992=cd 5056=ce 5120=cf 5184=d0 5248=d1 5312=d3 5376=d4 5440=d5 5504=d6 5568=d7 5632=d8 5696=d9 5760=da 5824=db 5888=dc 5952=dd 6016=df 6080=e0 6144=e1 6208=e2 6272=e3 6336=e4 6400=e5 6464=e6 6528=e7 6592=e8 6656=e9 6720=ea 6784=eb 6848=ec 6912=ed 6976=ee 7040=ef 7104=ef 7168=f0 7232=f1 7296=f2 7360=f3 7424=f4 7488=f5 7552=f6 7616=f7 7680=f8 7744=f9 7808=fa 7872=fb 7936=fb 8000=fc 8064=fd 8128=fe 8192=ff 8256=ff 8320=ff 8384=ff 8448=ff
+from64alpha: 0=00bcbcbc 512=0fbcbcbc 1024=1fbcbcbc 1536=2fbcbcbc 2048=3fbcbcbc 2560=4fbcbcbc 3072=5fbcbcbc 3584=6fbcbcbc 4096=7fbcbcbc 4608=8fbcbcbc 5120=9fbcbcbc 5632=afbcbcbc 6144=bfbcbcbc 6656=cfbcbcbc 7168=dfbcbcbc 7680=efbcbcbc 8192=ffbcbcbc
+48own=7600a401e806
+8bpp_idx 4x1 ff000000 ffff0000 ff000000 ffffffff
+8bpp_as32=0 000000ff0000ffff000000ffffffffff
+8bpp_as4=0
+8bpp_write32=0 unlock=0 4x1 ffff0000 ff00ff00 ff0000ff ff003366
+ idx=090a0c30
+1bpp 9x1 ffffffff ff000000 ffffffff ff000000 ff000000 ffffffff ff000000 ffffffff ffffffff
+1bpp_write32=0 9x1 ffffffff ff000000 ffffffff ff000000 ffffffff ff000000 ffffffff ff000000 ffffffff
+4bpp 3x1 ff800000 ffffffff ffff0000
+== lockrules
+rect(0,0,4,4)=0 w=4 h=4 stride=16 first=ff000000 reserved=nonzero
+rect(1,1,2,2)=0 w=2 h=2 stride=16 first=ff555555 reserved=nonzero
+rect(-1,0,2,2)=2 bd_untouched=1
+rect(0,0,5,4)=2 bd_untouched=1
+rect(0,0,0,1)=2 bd_untouched=1
+rect(3,3,1,1)=0 w=1 h=1 stride=16 first=ffffffff reserved=nonzero
+rect(4,0,1,1)=2 bd_untouched=1
+rect(0,0,-1,2)=2 bd_untouched=1
+mode 0=0 unlock=0
+mode 1=0 unlock=0
+mode 2=0 unlock=0
+mode 3=0 unlock=0
+mode 4=0 unlock=0
+mode 5=0 unlock=0
+mode 7=0 unlock=0
+mode 8=0 unlock=0
+mode 10=0 unlock=0
+userbuf_null=2
+userbuf_stride8=0 w=4 stride=8 ub=ff000000,ff111111,ff444444
+userbuf_neg=0 ub48=ff000000 ub36=ffcccccc ub0=00000000
+userbuf_write=0 unlock=0 4x4 ff000000 ff111111 ff222222 ff333333 ff444444 80000000 80000001 ff777777 ff888888 80000004 80000005 ffbbbbbb ffcccccc ffdddddd ffeeeeee ffffffff
+locked: relock=8 getpixel=8 setpixel=8 width=0 w=4 graphics=0 clone=0 clonearea=0 hbitmap=0 setres=0 rotate=0 convert=0
+unlock_other=7 unlock=7 unlock_again=7 unlock_null=2
+lock_null_out=2 lock_null_bmp=2
+after_locked_ops 4x4 ff333333 ff222222 ff111111 ff000000 ff777777 ff000001 ff000000 ff444444 ffbbbbbb ff000005 ff000004 ff888888 ffffffff ffeeeeee ffdddddd ffcccccc
+readlock_write_kept=ff333333
+readlock24_write_kept=ff333301
+writelock_initial=ff000001 writelock24_initial=d01506602306
+after_w24_untouched 4x4 ff0615d0 ff062360 ff111111 ff000000 ff777777 ff000001 ff00006f ff003315 ff0615d0 ff0600c0 ff000004 ff888888 ffffffff ffeeeeee ffdddddd ffcccccc
+== rotate
+rf0=0 3x2 ff000001 ff000002 ff000003 ff000004 ff000005 ff000006
+rf1=0 2x3 ff000004 ff000001 ff000005 ff000002 ff000006 ff000003
+rf2=0 3x2 ff000006 ff000005 ff000004 ff000003 ff000002 ff000001
+rf3=0 2x3 ff000003 ff000006 ff000002 ff000005 ff000001 ff000004
+rf4=0 3x2 ff000003 ff000002 ff000001 ff000006 ff000005 ff000004
+rf5=0 2x3 ff000001 ff000004 ff000002 ff000005 ff000003 ff000006
+rf6=0 3x2 ff000004 ff000005 ff000006 ff000001 ff000002 ff000003
+rf7=0 2x3 ff000006 ff000003 ff000005 ff000002 ff000004 ff000001
+rf8=2 3x2 ff000001 ff000002 ff000003 ff000004 ff000005 ff000006
+rf_4bpp=0 dpi=100,50 pf=00030402 2x3 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000
+rf_null=2
+== attributes
+none=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+fresh=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+cm_set=0
+scale=0 4x1 803fff7f 80096755 407f7f1f 8000ff00
+translate=0 4x1 ffb3678d ff451b63 80ff272d ff33e60d
+swap=0 4x1 ff808080 ff563412 801f3fff ff00ff00
+invert=0 4x1 ff7f7f7f ffedcba9 8000bfdf ffff00ff
+m44_2=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+col4=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+skipgrays_set=0
+skipgrays=0 4x1 ff808080 ffedcba9 8000bfdf ffff00ff
+altgray_set=0
+altgray=0 4x1 ff808080 ffedcba9 8000bfdf ffff00ff
+altgray_null=2 flags3=2 flags4=2 nullmatrix=2 disable_null=0 type5=2 type6=2 type_neg=2
+after_disable=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+default_inv_bitmap_swap=0 4x1 ff808080 ff563412 801f3fff ff00ff00
+bitmap_gamma_only_plus_swap=0 4x1 ff404040 ff1d0b01 80030fff ff00ff00
+reset_bitmap=0 4x1 ff7f7f7f ffedcba9 8000bfdf ffff00ff
+noop_bitmap=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+noop_off=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+identity_bitmap=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+brush_only=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+reset_bad=2 identity_bad=2 noop_bad=2
+threshold0(0)=0 4x1 ffffffff ffffffff 80ffffff ffffffff
+threshold0.3(0)=0 4x1 ffffffff ff0000ff 80ff0000 ff00ff00
+threshold0.5(0)=0 4x1 ffffffff ff000000 80ff0000 ff00ff00
+threshold1(0)=0 4x1 ff000000 ff000000 80ff0000 ff00ff00
+threshold-0.1(0)=0 4x1 ff000000 ff000000 80ff0000 ff00ff00
+threshold1.5(0)=0 4x1 ffffffff ff000000 80ff0000 ff00ff00
+gamma0.5(0)=0 4x1 ffb5b5b5 ff447394 80ff7f59 ff00ff00
+gamma1(0)=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+gamma2.2(0)=0 4x1 ff383838 ff010817 80ff0b03 ff00ff00
+gamma0(2)=0 4x1 ff383838 ff010817 80ff0b03 ff00ff00
+gamma-1(2)=0 4x1 ff383838 ff010817 80ff0b03 ff00ff00
+gamma0.05(0)=0 4x1 fff6f6f6 ffdfecf2 80ffede5 ff00ff00
+gamma10(0)=0 4x1 ff000000 ff000000 80ff0000 ff00ff00
+gamma0.09(0)=0 4x1 fff0f0f0 ffc9dde7 80ffe1d3 ff00ff00
+gamma11(0)=0 4x1 ff000000 ff000000 80ff0000 ff00ff00
+gamma2_translate=0 4x1 ff7e2a4e ff130326 80ff0507 ff0acf01
+ck_set=0
+colorkey=0 4x1 ff808080 00000000 00000000 ff00ff00
+colorkey_gray=0 4x1 00000000 ff123456 80ff3f1f ff00ff00
+ck_lowgthigh=2
+colorkey_inverted=0 4x1 00000000 ff123456 80ff3f1f ff00ff00
+colorkey_then_invert=0 4x1 00000000 ffedcba9 8000bfdf ffff00ff
+remap_set=0 zero=2 null=2
+remap=0 4x1 ff808080 ff00ff00 4000007f ffff0000
+remap_then_swap=0 4x1 ff808080 ff00ff00 407f0000 ff0000ff
+channel0(0)=0 4x1 ffc0c0c0 ff151515 80ffffff ff5c5c5c
+channel1(0)=0 4x1 ffcacaca ff424242 80000000 ffffffff
+channel2(0)=0 4x1 ffcdcdcd ffb5b5b5 80010101 ff000000
+channel3(0)=0 4x1 ffa4a4a4 ff8e8e8e 80ffffff ffffffff
+channel4(2)=0 4x1 ffa4a4a4 ff8e8e8e 80ffffff ffffffff
+channel5(2)=0 4x1 ffa4a4a4 ff8e8e8e 80ffffff ffffffff
+profile_null=7 profile_missing=3 profile_off=0
+profile_srgb=0
+profile_srgb=0 4x1 ff808080 ff123456 80ff3f1f ff00ff00
+wrap=0 wrap_bad=0 cached=0
+wrap0=0 6x1 ff0000ff ffff0000 ff0000ff ffff0000 ff0000ff ffff0000
+wrap_none=0 6x1 00000000 00000000 ff0000ff ffff0000 00000000 00000000
+wrap1=0 6x1 ffff0000 ff0000ff ff0000ff ffff0000 ffff0000 ff0000ff
+wrap_none=0 6x1 00000000 00000000 ff0000ff ffff0000 00000000 00000000
+wrap2=0 6x1 ff0000ff ffff0000 ff0000ff ffff0000 ff0000ff ffff0000
+wrap_none=0 6x1 00000000 00000000 ff0000ff ffff0000 00000000 00000000
+wrap3=0 6x1 ffff0000 ff0000ff ff0000ff ffff0000 ffff0000 ff0000ff
+wrap_none=0 6x1 00000000 00000000 ff0000ff ffff0000 00000000 00000000
+wrap4=0 6x1 8000ff00 8000ff00 ff0000ff ffff0000 8000ff00 8000ff00
+wrap_none=0 6x1 00000000 00000000 ff0000ff ffff0000 00000000 00000000
+clone=0
+clone_inv=0 4x1 ff7f7f7f ffedcba9 8000bfdf ffff00ff
+adjpal=0 flags=0 ff7f7f7f ffedcba9 8000bfdf ffff00ff
+adjpal_default=2 ff123456 adjpal_null=2 adjpal_count0=2 adjpal_type5=2
+adjpal_ck 00808080 ffc0c0c0
+dispose_null=2 create_null=2 clone_null=2
+== gdi
+hbitmap bg=ff0000ff s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 8080007f 000000ff ff00ff00 404040ff
+hbitmap bg=000000ff s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 8080007f 000000ff ff00ff00 404040ff
+hbitmap bg=800000ff s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 8080007f 000000ff ff00ff00 404040ff
+hbitmap bg=ffffffff s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 80ff7f7f 00ffffff ff00ff00 40ffffff
+hbitmap_null_out=2 null_bmp=2
+hbitmap_from 00021808 s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 ffff0000 ff000000 ff00ff00 ffffffff
+hbitmap_from 00030803 s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 ffff0000 ff000000 ff00ff00 ffffffff
+hbitmap_from 00030101 s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 ff000000 ff000000 ff000000 ffffffff
+hbitmap_from 00021006 s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 ffff0000 ff000000 ff00ff00 ffffffff
+hbitmap_from 0034400d s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 7f7f0080 000000ff ff00ff00 3f3f3fff
+hbitmap_from 000e200b s=0 obj=2,2,bpp=32,bits=set,dib=1,biHeight=2 lines=2 8080007f 000000ff ff00ff00 404040ff
+hicon=0 fIcon=1 hot=1,1 color=set
+ color obj=2,2,bpp=32,bits=null,dib=0 lines=2 80800000 00000000 ff00ff00 40404040
+ mask 2x2 bpp=1 bits=c0004000
+fromhicon=0 pf=0026200a 2x2 00000000 00000000 ff00ff00 00000000
+hicon_null=2
+fromhicon_mask=0 2x2 ffff0000 00000000 ff0000ff ffffffff
+fromhicon_bad=2 fromhicon_nullout=2
+fromhbitmap_ddb32=0 pf=00022009 2x1 ffff0000 ff00ff00
+fromhbitmap_compat=0 pf=00022009
+fromhbitmap_dib32=0 pf=00022009 psize=12 2x2 ff708090 ffa0b0c0 ff102030 ff405060
+fromgdidib32=0 pf=00022009 2x2 ff708090 ffa0b0c0 ff102030 ff405060
+  gdidib_aliases=ff1020cf
+fromgdidib32_topdown=0 2x2 ff1020cf ff405060 ff708090 ffa0b0c0
+fromgdidib_rle=2
+fromgdidib_null=2,2,2
+fromhbitmap_dib24=0 pf=00021808 psize=12 2x2 ff708090 ff000000 ff102030 ff405060
+fromgdidib24=0 pf=00021808 2x2 ff708090 ff000000 ff102030 ff405060
+  gdidib_aliases=ff1020cf
+fromhbitmap_dib16=0 pf=00021005 psize=12 2x2 ff0000ff ffffffff ffff0000 ff00ff00
+fromgdidib16=0 pf=00021005 2x2 ff0000ff ffffffff ffff0000 ff00ff00
+  gdidib_aliases=ffff39ff
+fromgdidib565=0 pf=00021006 2x2 ff8400ff ff7bffff ff7b9eff ff007d00
+fromhbitmap_dib8=0 pf=00030803 psize=1032 2x2 ff112233 ffaabbcc ffaabbcc ff112233
+fromgdidib8=0 pf=00030803 2x2 ff112233 ffaabbcc ffaabbcc ff112233
+  gdidib_aliases=ff000000
+fromhbitmap_dib4=0 pf=00030402 psize=72 2x2 ff112233 ffaabbcc ffaabbcc ff112233
+fromgdidib4=0 pf=00030402 2x2 ff112233 ffaabbcc ffaabbcc ff112233
+  gdidib_aliases=ff000000
+fromhbitmap_dib1=0 pf=00030101 psize=16 2x2 ff112233 ffaabbcc ffaabbcc ff112233
+fromgdidib1=0 pf=00030101 2x2 ff112233 ffaabbcc ffaabbcc ff112233
+  gdidib_aliases=ff112233
+fromhbitmap_bad=7 null=7
+== clone
+cloneareaI 0026200a=0 pf=0026200a dpi=120 2x1 80ff4020 00ffffff
+cloneareaI 00021808=0 pf=00021808 dpi=120 2x1 ffff4020 ffffffff
+cloneareaI 00030803=0 pf=00030803 dpi=120 2x1 ffff3333 ffffffff
+cloneareaI 00030101=0 pf=00030101 dpi=120 2x1 ff000000 ffffffff
+cloneareaI 00021005=0 pf=00021005 dpi=120 2x1 ffff4221 ffffffff
+cloneareaI 001c400e=0 pf=001c400e dpi=120 2x1 7fff4020 00000000
+cloneareaI 00000000=0 pf=0026200a dpi=120 2x1 80ff4020 00ffffff
+cloneareaI 00101004=3
+cloneareaI 0000200f=3
+clone_oob=3 clone_neg=3 clone_zero=3
+clonearea(0.5,0,2,1)=0 2x1 80ff4020 00ffffff
+clonearea(0.4,0,2.6,1)=0 3x1 ff123456 80ff4020 00ffffff
+clonearea(1.5,0,2.5,1)=3
+clonearea(0.6,0,2.4,1)=0 2x1 80ff4020 00ffffff
+clonearea(3.4,0,1,1)=0 1x1 40804020
+== convert
+convert 00021808 d0 p0=0 pf=00021808 8x1 ff123456 ffff4020 ffffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+convert 00021006 d0 p0=0 pf=00021006 8x1 ff103452 ffff4121 ffffffff ffc6c3c6 ff000000 ffffffff ff7b7d7b ff00ff84
+convert 00021006 d1 p0=0 pf=00021006 8x1 ff103452 ffff4121 ffffffff ffc6c3c6 ff000000 ffffffff ff7b7d7b ff00ff84
+convert 00021006 d2 p0=0 pf=00021006 8x1 ff103452 ffff4121 ffffffff ffc6c3c6 ff000000 ffffffff ff847d84 ff00ff84
+convert 00061007 d0 p0=0 pf=00061007 8x1 ff103152 ffff4221 00ffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+initpal=0 count=256 convert 00030803 d0 p0=2 pf=0026200a 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+initpal=0 count=224 convert 00030803 d1 p7=0 pf=00030803 8x1 ff003366 ffff3333 ff000000 ffcccccc ff000000 ffffffff ff808080 ff00ff99
+initpal=0 count=224 convert 00030803 d2 p7=0 pf=00030803 8x1 ff333366 ffff3333 ff000000 ffcccccc ff000000 ffffffff ff999999 ff00ff66
+initpal=0 count=224 convert 00030803 d10 p7=2 pf=0026200a 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+initpal=0 count=7 convert 00030803 d1 p1=0 pf=00030803 8x1 ff123456 ffff4020 ff000000 ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+initpal=0 count=7 convert 00030803 d2 p1=2 pf=0026200a 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+initpal=0 count=16 convert 00030402 d1 p3=0 pf=00030402 8x1 ff000080 ffff0000 ff000000 ffc0c0c0 ff000000 ffffffff ff808080 ff00ffff
+initpal=0 count=2 convert 00030101 d1 p2=0 pf=00030101 8x1 ff000000 ff000000 ff000000 ffffffff ff000000 ffffffff ff000000 ffffffff
+initpal=0 count=2 convert 00030101 d3 p2=2 pf=0026200a 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+initpal=0 count=2 convert 00030101 d0 p2=2 pf=0026200a 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+convert 0026200a d1 p2=0 pf=0026200a 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+convert 0034400d d0 p0=0 pf=0034400d 8x1 ff123456 7fff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+initpal=0 count=224 convert 00030803 d10 p7=2 pf=0026200a 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+initpal=0 count=16 convert 00030803 d1 p10=0 pf=00030803 8x1 ff000080 ffff0000 ff000000 ffc0c0c0 ff000000 ffffffff ff808080 ff00ffff
+convert_alpha0=0 8x1 ff003366 ffff3333 ffffffff ffcccccc ff000000 ffffffff ff808080 ff00ff99
+convert_alpha50=0 8x1 ff003366 ffff3333 00000000 ffcccccc ff000000 ffffffff ff808080 ff00ff99
+convert_alpha100=0 8x1 ff003366 00000000 00000000 ffcccccc ff000000 ffffffff ff808080 ff00ff99
+== initpal
+initpal t0 transp0=0 flags=eeeeeeee count=256 eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee ... last=eeeeeeee
+initpal t0 transp1=0 flags=eeeeeeee count=256 eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee eeeeeeee ... last=eeeeeeee
+initpal t1 transp0=0 flags=0 count=4 ffbdbd7b ff3a3a7b ff3abd7b ffbd3a7b
+initpal t1 transp1=0 flags=0 count=4 ff3a7b7b ffbdbd7b ffbd3a7b 00000000
+initpal t2 transp0=0 flags=200 count=2 ff000000 ffffffff
+initpal t2 transp1=0 flags=200 count=3 ff000000 ffffffff 00000000
+initpal t3 transp0=0 flags=300 count=16 ff000000 ff0000ff ff00ff00 ff00ffff ffff0000 ffff00ff ffffff00 ffffffff ffc0c0c0 ff808080 ff800000 ff008000 ff000080 ff808000 ff800080 ff008080
+initpal t3 transp1=0 flags=300 count=17 ff000000 ff0000ff ff00ff00 ff00ffff ffff0000 ffff00ff ffffff00 ffffffff ffc0c0c0 ff808080 ff800000 ff008000 ff000080 ff808000 ff800080 ff008080 00000000
+initpal t4 transp0=0 flags=400 count=35 ff000000 ff00007f ff0000ff ff007f00 ff007f7f ff007fff ff00ff00 ff00ff7f ff00ffff ff7f0000 ff7f007f ff7f00ff ff7f7f00 ff7f7f7f ff7f7fff ff7fff00 ff7fff7f ff7fffff ffff0000 ffff007f ffff00ff ffff7f00 ffff7f7f ffff7fff ffffff00 ffffff7f ffffffff ffc0c0c0 ff808080 ff800000 ff008000 ff000080 ff808000 ff800080 ff008080
+initpal t4 transp1=0 flags=400 count=36 ff000000 ff00007f ff0000ff ff007f00 ff007f7f ff007fff ff00ff00 ff00ff7f ff00ffff ff7f0000 ff7f007f ff7f00ff ff7f7f00 ff7f7f7f ff7f7fff ff7fff00 ff7fff7f ff7fffff ffff0000 ffff007f ffff00ff ffff7f00 ffff7f7f ffff7fff ffffff00 ffffff7f ffffffff ffc0c0c0 ff808080 ff800000 ff008000 ff000080 ff808000 ff800080 ff008080 00000000
+initpal t5 transp0=0 flags=500 count=72 ff000000 ff000055 ff0000aa ff0000ff ff005500 ff005555 ff0055aa ff0055ff ff00aa00 ff00aa55 ff00aaaa ff00aaff ff00ff00 ff00ff55 ff00ffaa ff00ffff ff550000 ff550055 ff5500aa ff5500ff ff555500 ff555555 ff5555aa ff5555ff ff55aa00 ff55aa55 ff55aaaa ff55aaff ff55ff00 ff55ff55 ff55ffaa ff55ffff ffaa0000 ffaa0055 ffaa00aa ffaa00ff ffaa5500 ffaa5555 ffaa55aa ffaa55ff ... last=ff008080
+initpal t5 transp1=0 flags=500 count=73 ff000000 ff000055 ff0000aa ff0000ff ff005500 ff005555 ff0055aa ff0055ff ff00aa00 ff00aa55 ff00aaaa ff00aaff ff00ff00 ff00ff55 ff00ffaa ff00ffff ff550000 ff550055 ff5500aa ff5500ff ff555500 ff555555 ff5555aa ff5555ff ff55aa00 ff55aa55 ff55aaaa ff55aaff ff55ff00 ff55ff55 ff55ffaa ff55ffff ffaa0000 ffaa0055 ffaa00aa ffaa00ff ffaa5500 ffaa5555 ffaa55aa ffaa55ff ... last=00000000
+initpal t6 transp0=0 flags=600 count=133 ff000000 ff00003f ff00007f ff0000bf ff0000ff ff003f00 ff003f3f ff003f7f ff003fbf ff003fff ff007f00 ff007f3f ff007f7f ff007fbf ff007fff ff00bf00 ff00bf3f ff00bf7f ff00bfbf ff00bfff ff00ff00 ff00ff3f ff00ff7f ff00ffbf ff00ffff ff3f0000 ff3f003f ff3f007f ff3f00bf ff3f00ff ff3f3f00 ff3f3f3f ff3f3f7f ff3f3fbf ff3f3fff ff3f7f00 ff3f7f3f ff3f7f7f ff3f7fbf ff3f7fff ... last=ff008080
+initpal t6 transp1=0 flags=600 count=134 ff000000 ff00003f ff00007f ff0000bf ff0000ff ff003f00 ff003f3f ff003f7f ff003fbf ff003fff ff007f00 ff007f3f ff007f7f ff007fbf ff007fff ff00bf00 ff00bf3f ff00bf7f ff00bfbf ff00bfff ff00ff00 ff00ff3f ff00ff7f ff00ffbf ff00ffff ff3f0000 ff3f003f ff3f007f ff3f00bf ff3f00ff ff3f3f00 ff3f3f3f ff3f3f7f ff3f3fbf ff3f3fff ff3f7f00 ff3f7f3f ff3f7f7f ff3f7fbf ff3f7fff ... last=00000000
+initpal t7 transp0=0 flags=700 count=224 ff000000 ff000033 ff000066 ff000099 ff0000cc ff0000ff ff003300 ff003333 ff003366 ff003399 ff0033cc ff0033ff ff006600 ff006633 ff006666 ff006699 ff0066cc ff0066ff ff009900 ff009933 ff009966 ff009999 ff0099cc ff0099ff ff00cc00 ff00cc33 ff00cc66 ff00cc99 ff00cccc ff00ccff ff00ff00 ff00ff33 ff00ff66 ff00ff99 ff00ffcc ff00ffff ff330000 ff330033 ff330066 ff330099 ... last=ff008080
+initpal t7 transp1=0 flags=700 count=225 ff000000 ff000033 ff000066 ff000099 ff0000cc ff0000ff ff003300 ff003333 ff003366 ff003399 ff0033cc ff0033ff ff006600 ff006633 ff006666 ff006699 ff0066cc ff0066ff ff009900 ff009933 ff009966 ff009999 ff0099cc ff0099ff ff00cc00 ff00cc33 ff00cc66 ff00cc99 ff00cccc ff00ccff ff00ff00 ff00ff33 ff00ff66 ff00ff99 ff00ffcc ff00ffff ff330000 ff330033 ff330066 ff330099 ... last=00000000
+initpal t8 transp0=0 flags=800 count=252 ff000000 ff000033 ff000066 ff000099 ff0000cc ff0000ff ff002a00 ff002a33 ff002a66 ff002a99 ff002acc ff002aff ff005500 ff005533 ff005566 ff005599 ff0055cc ff0055ff ff007f00 ff007f33 ff007f66 ff007f99 ff007fcc ff007fff ff00aa00 ff00aa33 ff00aa66 ff00aa99 ff00aacc ff00aaff ff00d400 ff00d433 ff00d466 ff00d499 ff00d4cc ff00d4ff ff00ff00 ff00ff33 ff00ff66 ff00ff99 ... last=ffffffff
+initpal t8 transp1=0 flags=800 count=253 ff000000 ff000033 ff000066 ff000099 ff0000cc ff0000ff ff002a00 ff002a33 ff002a66 ff002a99 ff002acc ff002aff ff005500 ff005533 ff005566 ff005599 ff0055cc ff0055ff ff007f00 ff007f33 ff007f66 ff007f99 ff007fcc ff007fff ff00aa00 ff00aa33 ff00aa66 ff00aa99 ff00aacc ff00aaff ff00d400 ff00d433 ff00d466 ff00d499 ff00d4cc ff00d4ff ff00ff00 ff00ff33 ff00ff66 ff00ff99 ... last=00000000
+initpal t9 transp0=0 flags=900 count=256 ff000000 ff000055 ff0000aa ff0000ff ff002400 ff002455 ff0024aa ff0024ff ff004800 ff004855 ff0048aa ff0048ff ff006d00 ff006d55 ff006daa ff006dff ff009100 ff009155 ff0091aa ff0091ff ff00b600 ff00b655 ff00b6aa ff00b6ff ff00da00 ff00da55 ff00daaa ff00daff ff00fe00 ff00fe55 ff00feaa ff00feff ff240000 ff240055 ff2400aa ff2400ff ff242400 ff242455 ff2424aa ff2424ff ... last=fffefeff
+initpal t9 transp1=0 flags=900 count=256 ff000000 ff000055 ff0000aa ff0000ff ff002400 ff002455 ff0024aa ff0024ff ff004800 ff004855 ff0048aa ff0048ff ff006d00 ff006d55 ff006daa ff006dff ff009100 ff009155 ff0091aa ff0091ff ff00b600 ff00b655 ff00b6aa ff00b6ff ff00da00 ff00da55 ff00daaa ff00daff ff00fe00 ff00fe55 ff00feaa ff00feff ff240000 ff240055 ff2400aa ff2400ff ff242400 ff242455 ff2424aa ff2424ff ... last=00000000
+initpal t10 transp0=0 flags=a00 count=16 ff000000 ffffffff ffc0c0c0 ff808080 ff800000 ffff0000 ff008000 ff00ff00 ff000080 ff0000ff ff808000 ffffff00 ff800080 ffff00ff ff008080 ff00ffff
+initpal t10 transp1=0 flags=a00 count=17 ff000000 ffffffff ffc0c0c0 ff808080 ff800000 ffff0000 ff008000 ff00ff00 ff000080 ff0000ff ff808000 ffffff00 ff800080 ffff00ff ff008080 ff00ffff 00000000
+initpal_small=1 optimal_nobmp=2 custom=0 null=2
+initpal_bw_transp_count2=1 count=2 ff000000 ffffffff
+halftone n=256 00000000 00800000 00008000 00808000 00000080 00800080 00008080 00c0c0c0 00c0dcc0 00a6caf0 04040404 04080808 040c0c0c 04111111 04161616 041c1c1c 04222222 04292929 04555555 044d4d4d 04424242 04393939 04ff7c80 04ff5050 04d60093 04ccecff 04efd6c6 04e7e7d6 04ada990 04330000 04660000 04990000 04cc0000 04003300 04333300 04663300 04993300 04cc3300 04ff3300 04006600 04336600 04666600 04996600 04cc6600 04ff6600 04009900 04339900 04669900 04999900 04cc9900 04ff9900 0400cc00 0433cc00 0466cc00 0499cc00 04cccc00 04ffcc00 0466ff00 0499ff00 04ccff00 04000033 04330033 04660033 04990033 04cc0033 04ff0033 04003333 04333333 04663333 04993333 04cc3333 04ff3333 04006633 04336633 04666633 04996633 04cc6633 04ff6633 04009933 04339933 04669933 04999933 04cc9933 04ff9933 0400cc33 0433cc33 0466cc33 0499cc33 04cccc33 04ffcc33 0433ff33 0466ff33 0499ff33 04ccff33 04ffff33 04000066 04330066 04660066 04990066 04cc0066 04ff0066 04003366 04333366 04663366 04993366 04cc3366 04ff3366 04006666 04336666 04666666 04996666 04cc6666 04009966 04339966 04669966 04999966 04cc9966 04ff9966 0400cc66 0433cc66 0499cc66 04cccc66 04ffcc66 0400ff66 0433ff66 0499ff66 04ccff66 04ff00cc 04cc00ff 04009999 04993399 04990099 04cc0099 04000099 04333399 04660099 04cc3399 04ff0099 04006699 04336699 04663399 04996699 04cc6699 04ff3399 04339999 04669999 04999999 04cc9999 04ff9999 0400cc99 0433cc99 0466cc66 0499cc99 04cccc99 04ffcc99 0400ff99 0433ff99 0466cc99 0499ff99 04ccff99 04ffff99 040000cc 04330099 046600cc 049900cc 04cc00cc 04003399 043333cc 046633cc 049933cc 04cc33cc 04ff33cc 040066cc 043366cc 04666699 049966cc 04cc66cc 04ff6699 040099cc 043399cc 046699cc 049999cc 04cc99cc 04ff99cc 0400cccc 0433cccc 0466cccc 0499cccc 04cccccc 04ffcccc 0400ffcc 0433ffcc 0466ff99 0499ffcc 04ccffcc 04ffffcc 043300cc 046600ff 049900ff 040033cc 043333ff 046633ff 049933ff 04cc33ff 04ff33ff 040066ff 043366ff 046666cc 049966ff 04cc66ff 04ff66cc 040099ff 043399ff 046699ff 049999ff 04cc99ff 04ff99ff 0400ccff 0433ccff 0466ccff 0499ccff 04ccccff 04ffccff 0433ffff 0466ffcc 0499ffff 04ccffff 04ff6666 0466ff66 04ffff66 046666ff 04ff66ff 0466ffff 04a50021 045f5f5f 04777777 04868686 04969696 04cbcbcb 04b2b2b2 04d7d7d7 04dddddd 04e3e3e3 04eaeaea 04f1f1f1 04f8f8f8 00fffbf0 00a0a0a4 00808080 00ff0000 0000ff00 00ffff00 000000ff 00ff00ff 0000ffff 00ffffff
+halftone_same=0
+== draw
+graphics_dpi=96
+drawI dpi96=0 covered=4 max=2,2 bounds=0,0,2,2 unit=2 dim=2,2
+drawI dpi48=0 covered=16 max=4,4 bounds=0,0,2,2 unit=2 dim=2,2
+drawI dpi192=0 covered=1 max=1,1 bounds=0,0,2,2 unit=2 dim=2,2
+drawI dpi72=0 covered=9 max=3,3 bounds=0,0,2,2 unit=2 dim=2,2
+points3=0 p00=ff00ff00 p30=ffff0000 points4=6 points2=2 points0=2 null=2
+pointsI=0 pointsrect_unit_inch=0 pointsrect_world=2 pointsrect_display=2 pointsrect_mm=0
+pointrect_inch=0 pointrect_pixel=0 rectrect_inch=0 rectrect_neg_src=0 rectrect_zero_src=0 rectrect_zero_dst=0 rectrect_neg_dst=0
+pointrect_dpi48_covered=16
+rectrect_mirror=0 ff00ff00 ffff0000
+abort_false=0 calls=1 abort_true=9 calls=1 drawn=00000000
+draw_locked=8 draw_self=0 draw_null_img=2 draw_null_g=2
+fx_null=0 fx_src=0 fx_unit_inch=0
+fx_matrix=0 covered=16 minx=1
+cached_create=0 draw=0 px33=ffff0000 px44=ffffffff draw_translated=0 px43=ffff0000 draw_rotated=8 draw_scaled=8 null_create=2,2,2 delete_null=2 draw_null=2
+srcover=ff80007f srcover_on_clear=80ff0000
+== misc
+setres0=2 setres_neg=2 setres_ok=0 setres_big=0 dpi=72.5,300 flags=2
+bounds=0,0,3,2 unit=2 dim=3,2
+force=0 force_null=2 setabort_null=0 setabort_nullimg=2
+finditem=2 findnext=2 finditem_null=2
+setpal32=0 psize=16 flags=2
+setpal8=0 psize=16 flags=2 2x1 ff112233 ff112233
+setpal_count0=2 setpal_count300=2 setpal_null=2 setpal1_count4=0 psize=24
+getters_null: w=2 h=2 pf=2 flags=2 type=2 dim=2 bounds=2 dpi=2 psize=2 pal=2
+flags24=0 flags8=2
+fromgraphics=0 pf=000e200b dpi=120,144 5x4 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+fromgraphics_zero=2 neg=2 null=2
+fromgraphics_hdc=0 pf=000e200b dpi=96
+clone_null=2 dispose_null=2
+== extra
+pal8_default psize=1032 s=0 flags=4 count=256 ff000000 ff800000 ff008000 ff808000 ff000080 ff800080 ff008080 ff808080 ffc0c0c0 ffff0000 ff00ff00 ffffff00 ff0000ff ffff00ff ff00ffff ffffffff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 ff000000 ff000033 ff000066 ff000099 ff0000cc ff0000ff ff003300 ff003333 ff003366 ff003399 ff0033cc ff0033ff ff006600 ff006633 ff006666 ff006699 ff0066cc ff0066ff ff009900 ff009933 ff009966 ff009999 ff0099cc ff0099ff ff00cc00 ff00cc33 ff00cc66 ff00cc99 ff00cccc ff00ccff ff00ff00 ff00ff33 ff00ff66 ff00ff99 ff00ffcc ff00ffff ff330000 ff330033 ff330066 ff330099 ff3300cc ff3300ff ff333300 ff333333 ff333366 ff333399 ff3333cc ff3333ff ff336600 ff336633 ff336666 ff336699 ff3366cc ff3366ff ff339900 ff339933 ff339966 ff339999 ff3399cc ff3399ff ff33cc00 ff33cc33 ff33cc66 ff33cc99 ff33cccc ff33ccff ff33ff00 ff33ff33 ff33ff66 ff33ff99 ff33ffcc ff33ffff ff660000 ff660033 ff660066 ff660099 ff6600cc ff6600ff ff663300 ff663333 ff663366 ff663399 ff6633cc ff6633ff ff666600 ff666633 ff666666 ff666699 ff6666cc ff6666ff ff669900 ff669933 ff669966 ff669999 ff6699cc ff6699ff ff66cc00 ff66cc33 ff66cc66 ff66cc99 ff66cccc ff66ccff ff66ff00 ff66ff33 ff66ff66 ff66ff99 ff66ffcc ff66ffff ff990000 ff990033 ff990066 ff990099 ff9900cc ff9900ff ff993300 ff993333 ff993366 ff993399 ff9933cc ff9933ff ff996600 ff996633 ff996666 ff996699 ff9966cc ff9966ff ff999900 ff999933 ff999966 ff999999 ff9999cc ff9999ff ff99cc00 ff99cc33 ff99cc66 ff99cc99 ff99cccc ff99ccff ff99ff00 ff99ff33 ff99ff66 ff99ff99 ff99ffcc ff99ffff ffcc0000 ffcc0033 ffcc0066 ffcc0099 ffcc00cc ffcc00ff ffcc3300 ffcc3333 ffcc3366 ffcc3399 ffcc33cc ffcc33ff ffcc6600 ffcc6633 ffcc6666 ffcc6699 ffcc66cc ffcc66ff ffcc9900 ffcc9933 ffcc9966 ffcc9999 ffcc99cc ffcc99ff ffcccc00 ffcccc33 ffcccc66 ffcccc99 ffcccccc ffccccff ffccff00 ffccff33 ffccff66 ffccff99 ffccffcc ffccffff ffff0000 ffff0033 ffff0066 ffff0099 ffff00cc ffff00ff ffff3300 ffff3333 ffff3366 ffff3399 ffff33cc ffff33ff ffff6600 ffff6633 ffff6666 ffff6699 ffff66cc ffff66ff ffff9900 ffff9933 ffff9966 ffff9999 ffff99cc ffff99ff ffffcc00 ffffcc33 ffffcc66 ffffcc99 ffffcccc ffffccff ffffff00 ffffff33 ffffff66 ffffff99 ffffffcc ffffffff
+indexed_graphics=0 fill=0 clear=0 drawimage=0
+fmtcheck 0000200a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0002200a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0004200a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 8026200a create=0 pf=8026200a lock=0 pf=8026200a clone=0
+fmtcheck 00001808 create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0002180a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0026180a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0026200b create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0026200e create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0000000a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 00002000 create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0001200a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0003010a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 00030401 create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0002100f create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 0000100f create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 00002010 create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 00002011 create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 00a6200a create=2 pf=00000000 lock=2 pf=00000000 clone=3
+fmtcheck 4026200a create=0 pf=4026200a lock=0 pf=4026200a clone=0
+readlock_same_write 2x1 ffabcdef ff405060
+readlock_24_write 2x1 ffabcdef ff405060
+rwlock24_initial=abcdef 2x1 ffabcd01 ff405060
+thr0.3 base75=0 4x1 ff000000 ff000000 ffffffff ffffffff
+thr0.5 base126=0 4x1 ff000000 ff000000 ffffffff ffffffff
+thr0.2 base50=0 4x1 ff000000 ffffffff ffffffff ffffffff
+thr-0.1 base229=0 4x1 ff000000 ff000000 ffffffff ffffffff
+thr1.5 base124=0 4x1 ff000000 ff000000 ff000000 ffffffff
+thr0.25 base62=0 4x1 ff000000 ff000000 ffffffff ffffffff
+thr2 base253=0 4x1 ff000000 ffffffff ffffffff ffffffff
+thr-1 base-1=0 4x1 ff000000 ff000000 ffffffff ffffffff
+gray_default=0 5x1 ff7f7f7f ffedcba9 80bfbfbf ff7e7f7f ffffffff
+gray_skip=0 5x1 ff808080 ffedcba9 803f3f3f ff7e7f7f ff000000
+gray_alt=0 5x1 ff404040 ffedcba9 ff202020 ff7e7f7f ff000000
+gray_alt_red=0 5x1 ffff0000 ffedcba9 ffff0000 ff7e7f7f ffff0000
+remap_key808080=0 4x1 ff123456 00000000 ff404040 ffc0c0c0
+thr0.4_gamma0.5=0 4x1 ffffffff ff00ffff ffffffff ffffffff
+thr0.6_inv=0 4x1 ff000000 ffffffff ffffffff ff000000
+thr0.6_key000-404040=0 4x1 ff000000 ff000000 00000000 ffffffff
+channelK_inv=0 4x1 ffa2a2a2 ffffffff fff0f0f0 ff333333
+chan0=0 8x1 ffffffff ff5c5c5c ff020202 ffffffff ffffffff ffe3e3e3 ffe9e9e9 80f1f1f1
+chan1=0 8x1 ff000000 ffffffff ff565656 ffffffff ffffffff ffe1e1e1 ffe2e2e2 80ffffff
+chan2=0 8x1 ff000000 ff000000 ffffffff ffffffff ffffffff ffe2e2e2 ffe4e4e4 80050505
+chan3=0 8x1 fffdfdfd ffffffff ffd5d5d5 ff000000 ffffffff ff343434 fff1f1f1 80ffffff
+ck_r=2 ck_g=2 ck_b=2 ck_a=0
+remap_alpha=0 2x1 ff123456 ff00ff00
+third=0 6x1 ff000100 ff010100 ff020301 ff2a550d ff55a919 ff55aa1a
+alphahalf=0 6x1 80010101 80010101 80050505 807f7f7f 80fdfdfd 80ffffff
+hicon_mask6=f400
+hicon_color6 obj=6,1,bpp=32,bits=null,dib=0 lines=1 7f7f0000 80800000 81810000 fefe0000 ffff0000 01010000
+fromhicon6 6x1 00000000 00000000 00000000 00000000 ffff0000 00000000
+fromhicon_alpha=0 2x2 ff800000 ff000000 ff00ff00 ff404040
+hicon5x3 hot=2,1 mask=5x3 color=set
+hbitmap_round obj=4,1,bpp=32,bits=set,dib=1,biHeight=1 lines=1 81617080 7f5f6f7f 01416180 fe010204
+gdidib8_pal psize=16 s=0 flags=0 count=2 ff110000 ff0000cc
+hbitmap8_pal psize=1032 s=0 flags=0 count=256 ff110000 ff0000cc ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000
+hbitmap8_px 2x1 ff0000cc ff110000
+hbitmap8_after_change 2x1 ff0000cc ff110000
+gdidib4_clrused0_pal psize=72 s=0 flags=0 count=16 ff110000 ff0000cc ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff000000 ff800000 ff062158
+pal24 psize=12 s=0 flags=eeeeeeee count=0
+dither0 tgt0=0 8x1 ff003366 ffff3333 ffffffff ffcccccc ff000000 ffffffff ff808080 ff00ff99
+dither0 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither0 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither1 tgt0=0 8x1 ff003366 ffff3333 ffffffff ffcccccc ff000000 ffffffff ff808080 ff00ff99
+dither1 tgt1=0 8x1 ff000000 ff000000 ffffffff ffffffff ff000000 ffffffff ff000000 ffffffff
+dither1 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither2 tgt0=0 8x1 ff333366 ffff3333 ffffffff ffcccccc ff000000 ffffffff ff999999 ff00ff66
+dither2 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither2 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff848484 ff00ff84
+dither3 tgt0=0 8x1 ff336666 ffff3333 ffffffff ffcccccc ff000000 ffffffff ff999999 ff00ff66
+dither3 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither3 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither4 tgt0=0 8x1 ff336666 ffff3333 ffffffff ffcccccc ff000000 ffffffff ff999999 ff00ff66
+dither4 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither4 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither5 tgt0=0 8x1 ff003333 ffff3333 ffffffff ff999999 ff000000 ffffffff ff666666 ff00ff66
+dither5 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither5 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither6 tgt0=0 8x1 ff003333 ffff3300 ffffffff ffcccccc ff000000 ffffffff ff666666 ff00ff66
+dither6 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither6 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither7 tgt0=0 8x1 ff333366 ffff6633 ffffffff ff999999 ff000000 ffffffff ff666666 ff00ff66
+dither7 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither7 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither8 tgt0=0 8x1 ff003366 ffff6633 ffffffff ffcccccc ff000000 ffffffff ff666666 ff00ff66
+dither8 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither8 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither9 tgt0=0 8x1 ff003366 ffff3300 ffffffff ffcccccc ff000000 ffffffff ff808080 ff00ff99
+dither9 tgt1=0 8x1 ff000000 ff000000 ffffffff ffffffff ff000000 ffffffff ff000000 ffffffff
+dither9 tgt2=0 8x1 ff103152 ffff4221 ffffffff ffc6c6c6 ff000000 ffffffff ff7b7b7b ff00ff84
+dither10 tgt0=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither10 tgt1=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+dither10 tgt2=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+optimal1=2 count=256 ff000000 ffffffff ff000066 ff000099 ff0000cc ff0000ff ff003300 ff003333 ff003366 ff003399 ff0033cc ff0033ff ff006600 ff006633 ff006666 ff006699
+optimal2=0 count=2 ffbd7b7b ff3a7b7b
+optimal4=0 count=4 ff3abd7b ffbd3a7b ffbdbd7b ff3a3a7b
+optimal8=0 count=8 ff3abd3a ffbd3a3a ffbdbdbd ff3abdbd ffbd3abd ff3a3abd ffbdbd3a ff3a3a3a
+optimal300=2 count=256
+optimal0=2 count=256
+convert_optimal_nopal=2
+convert_fixed_nopal=2 8x1 ff123456 80ff4020 00ffffff ffc0c0c0 ff000000 ffffffff ff7f7f7f ff00ff80
+convert_fixed_nopal_pal psize=12 s=0 flags=eeeeeeee count=0
+convert_8_to_32=0 8x1 ff003366 ffff3333 ffffffff ffcccccc ff000000 ffffffff ff808080 ff00ff99
+initpal_full t8: 000000 000033 000066 000099 0000cc 0000ff 002a00 002a33 002a66 002a99 002acc 002aff 005500 005533 005566 005599 0055cc 0055ff 007f00 007f33 007f66 007f99 007fcc 007fff 00aa00 00aa33 00aa66 00aa99 00aacc 00aaff 00d400 00d433 00d466 00d499 00d4cc 00d4ff 00ff00 00ff33 00ff66 00ff99 00ffcc 00ffff 330000 330033 330066 330099 3300cc 3300ff 332a00 332a33 332a66 332a99 332acc 332aff 335500 335533 335566 335599 3355cc 3355ff 337f00 337f33 337f66 337f99 337fcc 337fff 33aa00 33aa33 33aa66 33aa99 33aacc 33aaff 33d400 33d433 33d466 33d499 33d4cc 33d4ff 33ff00 33ff33 33ff66 33ff99 33ffcc 33ffff 660000 660033 660066 660099 6600cc 6600ff 662a00 662a33 662a66 662a99 662acc 662aff 665500 665533 665566 665599 6655cc 6655ff 667f00 667f33 667f66 667f99 667fcc 667fff 66aa00 66aa33 66aa66 66aa99 66aacc 66aaff 66d400 66d433 66d466 66d499 66d4cc 66d4ff 66ff00 66ff33 66ff66 66ff99 66ffcc 66ffff 990000 990033 990066 990099 9900cc 9900ff 992a00 992a33 992a66 992a99 992acc 992aff 995500 995533 995566 995599 9955cc 9955ff 997f00 997f33 997f66 997f99 997fcc 997fff 99aa00 99aa33 99aa66 99aa99 99aacc 99aaff 99d400 99d433 99d466 99d499 99d4cc 99d4ff 99ff00 99ff33 99ff66 99ff99 99ffcc 99ffff cc0000 cc0033 cc0066 cc0099 cc00cc cc00ff cc2a00 cc2a33 cc2a66 cc2a99 cc2acc cc2aff cc5500 cc5533 cc5566 cc5599 cc55cc cc55ff cc7f00 cc7f33 cc7f66 cc7f99 cc7fcc cc7fff ccaa00 ccaa33 ccaa66 ccaa99 ccaacc ccaaff ccd400 ccd433 ccd466 ccd499 ccd4cc ccd4ff ccff00 ccff33 ccff66 ccff99 ccffcc ccffff ff0000 ff0033 ff0066 ff0099 ff00cc ff00ff ff2a00 ff2a33 ff2a66 ff2a99 ff2acc ff2aff ff5500 ff5533 ff5566 ff5599 ff55cc ff55ff ff7f00 ff7f33 ff7f66 ff7f99 ff7fcc ff7fff ffaa00 ffaa33 ffaa66 ffaa99 ffaacc ffaaff ffd400 ffd433 ffd466 ffd499 ffd4cc ffd4ff ffff00 ffff33 ffff66 ffff99 ffffcc ffffff
+initpal_full t9: 000000 000055 0000aa 0000ff 002400 002455 0024aa 0024ff 004800 004855 0048aa 0048ff 006d00 006d55 006daa 006dff 009100 009155 0091aa 0091ff 00b600 00b655 00b6aa 00b6ff 00da00 00da55 00daaa 00daff 00fe00 00fe55 00feaa 00feff 240000 240055 2400aa 2400ff 242400 242455 2424aa 2424ff 244800 244855 2448aa 2448ff 246d00 246d55 246daa 246dff 249100 249155 2491aa 2491ff 24b600 24b655 24b6aa 24b6ff 24da00 24da55 24daaa 24daff 24fe00 24fe55 24feaa 24feff 480000 480055 4800aa 4800ff 482400 482455 4824aa 4824ff 484800 484855 4848aa 4848ff 486d00 486d55 486daa 486dff 489100 489155 4891aa 4891ff 48b600 48b655 48b6aa 48b6ff 48da00 48da55 48daaa 48daff 48fe00 48fe55 48feaa 48feff 6d0000 6d0055 6d00aa 6d00ff 6d2400 6d2455 6d24aa 6d24ff 6d4800 6d4855 6d48aa 6d48ff 6d6d00 6d6d55 6d6daa 6d6dff 6d9100 6d9155 6d91aa 6d91ff 6db600 6db655 6db6aa 6db6ff 6dda00 6dda55 6ddaaa 6ddaff 6dfe00 6dfe55 6dfeaa 6dfeff 910000 910055 9100aa 9100ff 912400 912455 9124aa 9124ff 914800 914855 9148aa 9148ff 916d00 916d55 916daa 916dff 919100 919155 9191aa 9191ff 91b600 91b655 91b6aa 91b6ff 91da00 91da55 91daaa 91daff 91fe00 91fe55 91feaa 91feff b60000 b60055 b600aa b600ff b62400 b62455 b624aa b624ff b64800 b64855 b648aa b648ff b66d00 b66d55 b66daa b66dff b69100 b69155 b691aa b691ff b6b600 b6b655 b6b6aa b6b6ff b6da00 b6da55 b6daaa b6daff b6fe00 b6fe55 b6feaa b6feff da0000 da0055 da00aa da00ff da2400 da2455 da24aa da24ff da4800 da4855 da48aa da48ff da6d00 da6d55 da6daa da6dff da9100 da9155 da91aa da91ff dab600 dab655 dab6aa dab6ff dada00 dada55 dadaaa dadaff dafe00 dafe55 dafeaa dafeff fe0000 fe0055 fe00aa fe00ff fe2400 fe2455 fe24aa fe24ff fe4800 fe4855 fe48aa fe48ff fe6d00 fe6d55 fe6daa fe6dff fe9100 fe9155 fe91aa fe91ff feb600 feb655 feb6aa feb6ff feda00 feda55 fedaaa fedaff fefe00 fefe55 fefeaa fefeff
+initpal_full t10: 000000 ffffff c0c0c0 808080 800000 ff0000 008000 00ff00 000080 0000ff 808000 ffff00 800080 ff00ff 008080 00ffff
+== extra2
+imageabort ret=00000000 set=0 draw=0 calls=1 px=ffff0000
+imageabort ret=00000001 set=0 draw=0 calls=1 px=ffff0000
+imageabort ret=80004004 set=0 draw=9 calls=1 px=00000000
+imageabort ret=80004005 set=0 draw=1 calls=1 px=00000000
+pom0 1:1: 000000 000000 000000 000000 000000 ff0000 00ff00 000000 000000 0000ff ffffff 000000 000000 000000 000000 000000 | 2x: ff0000 00ff00 00ff00 000000 0000ff ffffff ffffff 000000 0000ff ffffff ffffff 000000 000000 000000 000000 000000
+pom1 1:1: 000000 000000 000000 000000 000000 ff0000 00ff00 000000 000000 0000ff ffffff 000000 000000 000000 000000 000000 | 2x: ff0000 00ff00 00ff00 000000 0000ff ffffff ffffff 000000 0000ff ffffff ffffff 000000 000000 000000 000000 000000
+pom2 1:1: 000000 000000 000000 000000 000000 ff0000 00ff00 000000 000000 0000ff ffffff 000000 000000 000000 000000 000000 | 2x: ff0000 ff0000 00ff00 00ff00 ff0000 ff0000 00ff00 00ff00 0000ff 0000ff ffffff ffffff 0000ff 0000ff ffffff ffffff
+pom3 1:1: 000000 000000 000000 000000 000000 ff0000 00ff00 000000 000000 0000ff ffffff 000000 000000 000000 000000 000000 | 2x: ff0000 00ff00 00ff00 000000 0000ff ffffff ffffff 000000 0000ff ffffff ffffff 000000 000000 000000 000000 000000
+pom4 1:1: 000000 000000 000000 000000 000000 ff0000 00ff00 000000 000000 0000ff ffffff 000000 000000 000000 000000 000000 | 2x: ff0000 ff0000 00ff00 00ff00 ff0000 ff0000 00ff00 00ff00 0000ff 0000ff ffffff ffffff 0000ff 0000ff ffffff ffffff
+draw_gray=2 draw_cmyk=2 hbitmap_gray=2 clone_gray=0 rotate_gray=0 convert_gray_to_argb=2 convert_to_gray=2
+world2x: 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 ff0000 ff0000 00ff00 00ff00 000000 000000 000000 000000 ff0000 ff0000 00ff00 00ff00 000000 000000 000000 000000 0000ff 0000ff ffffff ffffff 000000 000000 000000 000000 0000ff 0000ff ffffff ffffff 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000
+pageinch_draw=0 covered=4
+== wrongclass
+image_as_graphics: width=4 getpixel=4 setpixel=4 lock=4 res=4 clone=4 clonearea=4 rotate=4 graphics=4 draw_img=4 draw_g=2 draw_ia=4 ia_gamma=4 ia_dispose=4 ia_clone=4 hbitmap=4 cached=4 dispose=4

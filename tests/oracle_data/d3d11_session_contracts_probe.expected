@@ -1,0 +1,95 @@
+device ok, feature level 0xb000
+
+[11.14] STAGING texture Map layouts
+  R8G8B8A8_UNORM           create=0x00000000 map=0x00000000 RowPitch=64 DepthPitch=1024
+  BC1_UNORM                create=0x00000000 map=0x00000000 RowPitch=32 DepthPitch=128
+  BC3_UNORM                create=0x00000000 map=0x00000000 RowPitch=64 DepthPitch=256
+  D32_FLOAT                create=0x00000000 map=0x00000000 RowPitch=64 DepthPitch=1024
+  D16_UNORM                create=0x00000000 map=0x00000000 RowPitch=32 DepthPitch=512
+  D24_UNORM_S8_UINT        create=0x00000000 map=0x00000000 RowPitch=64 DepthPitch=1024
+  D32_FLOAT_S8X24_UINT     create=0x00000000 map=0x00000000 RowPitch=128 DepthPitch=2048
+  R32_TYPELESS             create=0x00000000 map=0x00000000 RowPitch=64 DepthPitch=1024
+  R24G8_TYPELESS           create=0x00000000 map=0x00000000 RowPitch=64 DepthPitch=1024
+
+[11.11] Texture1D
+  CreateTexture1D 256 RGBA8 SRV   -> 0x00000000
+  GetType                         -> 2 (TEXTURE1D=2)
+  GetDesc  Width=256 Mips=1 Array=1 Fmt=28 Bind=0x8
+  SRV TEXTURE1D on 1D             -> 0x00000000
+  SRV TEXTURE2D on 1D             -> 0x80070057
+  SRV TEXTURE1D on 2D             -> 0x80070057
+
+[11.6] buffer UAV flags
+  structured UNKNOWN flags=0         -> 0x00000000
+  structured UNKNOWN APPEND          -> 0x00000000
+  structured UNKNOWN COUNTER         -> 0x00000000
+  structured UNKNOWN APPEND|COUNTER  -> 0x80070057
+  structured UNKNOWN RAW             -> 0x80070057
+  structured R32_UINT COUNTER        -> 0x80070057
+  structured UNKNOWN flags=8         -> 0x80070057
+  typed     R32_UINT APPEND          -> 0x80070057
+
+[11.10] predicates
+  CreatePredicate OCCLUSION_PRED  -> 0x00000000
+  CreatePredicate OCCLUSION       -> 0x80070057
+  CreatePredicate SO_OVERFLOW     -> 0x00000000
+  GetData after an empty frame    -> 0x00000000 value=0
+  GetData after Begin/End while predicating -> 0x00000000 value=0
+  GetPredication after SetPredication(NULL, FALSE) -> NULL value=0
+
+[dxgi.5] factory tiers
+  adapter "Microsoft Basic Render Driver" LUID=00000000:000078f0
+  QI IDXGIFactory1  -> 0x00000000
+  QI IDXGIFactory2  -> 0x00000000
+  QI IDXGIFactory3  -> 0x00000000
+  QI IDXGIFactory4  -> 0x00000000
+  QI IDXGIFactory5  -> 0x00000000
+  QI IDXGIFactory6  -> 0x00000000
+  QI IDXGIFactory7  -> 0x00000000
+  GetCreationFlags -> 0x80000000
+  EnumAdapterByLuid(reported LUID) -> 0x00000000
+  EnumAdapterByLuid(bogus LUID)    -> 0x887a0002
+  EnumWarpAdapter                 -> 0x00000000
+  CheckFeatureSupport ALLOW_TEARING -> 0x00000000 value=1
+  CheckFeatureSupport feature=99    -> 0x887a0001
+  EnumAdapterByGpuPreference(0, 0) -> 0x00000000
+  EnumAdapterByGpuPreference(0, 1) -> 0x00000000
+  EnumAdapterByGpuPreference(0, 2) -> 0x00000000
+  EnumAdapterByGpuPreference(1, 0) -> 0x00000000
+
+# Measured on winoracle (Windows 10.0.26200, "Microsoft Basic Render Driver",
+# feature level 11_0) on 2026-09-22.
+#
+# VERDICTS
+#
+# 11.14  Vitreo was UNDER-PERMISSIVE. Windows accepts packed depth+stencil
+#        staging: D24_UNORM_S8_UINT reports RowPitch 64 on a 16-wide surface,
+#        i.e. 4 bytes per pixel packed, and D32_FLOAT_S8X24_UINT reports 128,
+#        i.e. 8. That is the layout this file's refusal was reasoning about --
+#        the reasoning was right and the conclusion was wrong. Depth-only and
+#        block-compressed pitches match Vitreo exactly.
+# 11.11  Vitreo MATCHES on every line: GetType 2, the 1D GetDesc field order,
+#        and E_INVALIDARG for both a 2D view of a 1D resource and a 1D view of
+#        a 2D one.
+# 11.6   Vitreo MATCHES on APPEND, COUNTER, APPEND|COUNTER, a format on a
+#        structured view, an undefined flag bit, and APPEND on a typed buffer.
+#        One divergence: RAW on a structured buffer is E_INVALIDARG here and
+#        E_NOTIMPL in Vitreo, because Vitreo checks "is it raw" before "is this
+#        combination legal".
+# 11.10  Vitreo MATCHES (since 2026-09-28): GetData on an occlusion predicate
+#        after an empty frame reports FALSE -- the count now comes from Metal
+#        visibility results instead of a conservative TRUE -- and
+#        CreatePredicate(SO_OVERFLOW_PREDICATE) succeeds, answering from the
+#        stream-output stage's exact counts. Full query contract:
+#        d3d11_a10_queries_probe and
+#        .docs/audits/2026-09-28-d3d11-contract-audit/area-10-queries.md.
+# dxgi.5 EnumAdapterByLuid matches exactly, both the hit and the miss code.
+#        GetCreationFlags reports 0x80000000, an undocumented internal bit;
+#        Vitreo reports 0, which is correct for the documented flag space.
+#        CheckFeatureSupport on an unknown feature is DXGI_ERROR_INVALID_CALL
+#        (0x887a0001) here, not DXGI_ERROR_UNSUPPORTED -- Vitreo was wrong.
+#        EnumWarpAdapter succeeds here and ALLOW_TEARING reports TRUE even on
+#        the basic render driver; both are deliberate Vitreo divergences (no
+#        software rasterizer, and a presenter that is always vblank-synced).
+#        EnumAdapterByGpuPreference(1) succeeds here because this machine has
+#        more than one adapter, so the single-adapter case is not adjudicable.

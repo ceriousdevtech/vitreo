@@ -1,0 +1,11 @@
+== x64
+initial=0
+set_55 prev=0 err=dead now=55
+after_getmessage_posted=0
+after_empty_peek ret=0 value=66
+after_noremove_peek=0
+after_remove_peek=0
+after_thread_message=0
+after_same_thread_send=69
+other_thread_saw=0 this_thread_now=70
+done

@@ -1,0 +1,905 @@
+x64
+c000 fmt="%d %d" in="12 -34"
+ msvcrt r=2 ip=0  s0=0c000000 s1=deffffff
+ ucrt r=2 ip=0  s0=0c000000 s1=deffffff
+ mswscanf r=2 ip=0  s0=0c000000 s1=deffffff
+ uwscanf r=2 ip=0  s0=0c000000 s1=deffffff
+ m120 r=2 ip=0  s0=0c000000 s1=deffffff
+ m120w r=2 ip=0  s0=0c000000 s1=deffffff
+c001 fmt="%i %i %i" in="0x1f 017 -9"
+ msvcrt r=3 ip=0  s0=1f000000 s1=0f000000 s2=f7ffffff
+ ucrt r=3 ip=0  s0=1f000000 s1=0f000000 s2=f7ffffff
+ mswscanf r=3 ip=0  s0=1f000000 s1=0f000000 s2=f7ffffff
+ uwscanf r=3 ip=0  s0=1f000000 s1=0f000000 s2=f7ffffff
+ m120 r=3 ip=0  s0=1f000000 s1=0f000000 s2=f7ffffff
+ m120w r=3 ip=0  s0=1f000000 s1=0f000000 s2=f7ffffff
+c002 fmt="%x %X %o" in="ff 1A 777"
+ msvcrt r=3 ip=0  s0=ff000000 s1=1a000000 s2=ff010000
+ ucrt r=3 ip=0  s0=ff000000 s1=1a000000 s2=ff010000
+ mswscanf r=3 ip=0  s0=ff000000 s1=1a000000 s2=ff010000
+ uwscanf r=3 ip=0  s0=ff000000 s1=1a000000 s2=ff010000
+ m120 r=3 ip=0  s0=ff000000 s1=1a000000 s2=ff010000
+ m120w r=3 ip=0  s0=ff000000 s1=1a000000 s2=ff010000
+c003 fmt="%u" in="-1"
+ msvcrt r=1 ip=0  s0=ffffffff
+ ucrt r=1 ip=0  s0=ffffffff
+ mswscanf r=1 ip=0  s0=ffffffff
+ uwscanf r=1 ip=0  s0=ffffffff
+ m120 r=1 ip=0  s0=ffffffff
+ m120w r=1 ip=0  s0=ffffffff
+c004 fmt="%hd %hhd %ld %lld %I64d" in="70000 300 -5 12345678901 -9"
+ msvcrt r=5 ip=0  s0=7011 s1=2c010000 s2=fbffffff s3=351cdcdf02000000 s4=f7ffffffffffffff
+ ucrt r=5 ip=0  s0=7011 s1=2c s2=fbffffff s3=351cdcdf02000000 s4=f7ffffffffffffff
+ mswscanf r=5 ip=0  s0=7011 s1=2c010000 s2=fbffffff s3=351cdcdf02000000 s4=f7ffffffffffffff
+ uwscanf r=5 ip=0  s0=7011 s1=2c s2=fbffffff s3=351cdcdf02000000 s4=f7ffffffffffffff
+ m120 r=5 ip=0  s0=7011 s1=2c010000 s2=fbffffff s3=351cdcdf02000000 s4=f7ffffffffffffff
+ m120w r=5 ip=0  s0=7011 s1=2c010000 s2=fbffffff s3=351cdcdf02000000 s4=f7ffffffffffffff
+c005 fmt="%f %lf %e %g" in="1.5 2.25 3e2 -0.5"
+ msvcrt r=4 ip=0  s0=0000c03f s1=0000000000000240 s2=00009643 s3=000000bf
+ ucrt r=4 ip=0  s0=0000c03f s1=0000000000000240 s2=00009643 s3=000000bf
+ mswscanf r=4 ip=0  s0=0000c03f s1=0000000000000240 s2=00009643 s3=000000bf
+ uwscanf r=4 ip=0  s0=0000c03f s1=0000000000000240 s2=00009643 s3=000000bf
+ m120 r=4 ip=0  s0=0000c03f s1=0000000000000240 s2=00009643 s3=000000bf
+ m120w r=4 ip=0  s0=0000c03f s1=0000000000000240 s2=00009643 s3=000000bf
+c006 fmt="%s %s" in="hello world"
+ msvcrt r=2 ip=0  s0=68656c6c6f00 s1=776f726c6400
+ ucrt r=2 ip=0  s0=68656c6c6f00 s1=776f726c6400
+ mswscanf r=2 ip=0  s0=680065006c006c006f000000 s1=77006f0072006c0064000000
+ uwscanf r=2 ip=0  s0=680065006c006c006f000000 s1=77006f0072006c0064000000
+ m120 r=2 ip=0  s0=68656c6c6f00 s1=776f726c6400
+ m120w r=2 ip=0  s0=680065006c006c006f000000 s1=77006f0072006c0064000000
+c007 fmt="%5s%s" in="abcdefgh"
+ msvcrt r=2 ip=0  s0=616263646500 s1=66676800
+ ucrt r=2 ip=0  s0=616263646500 s1=66676800
+ mswscanf r=2 ip=0  s0=610062006300640065000000 s1=6600670068000000
+ uwscanf r=2 ip=0  s0=610062006300640065000000 s1=6600670068000000
+ m120 r=2 ip=0  s0=616263646500 s1=66676800
+ m120w r=2 ip=0  s0=610062006300640065000000 s1=6600670068000000
+c008 fmt="%c%c%3c" in="xyzabc"
+ msvcrt r=3 ip=0  s0=78 s1=79 s2=7a6162
+ ucrt r=3 ip=0  s0=78 s1=79 s2=7a6162
+ mswscanf r=3 ip=0  s0=7800 s1=7900 s2=7a0061006200
+ uwscanf r=3 ip=0  s0=7800 s1=7900 s2=7a0061006200
+ m120 r=3 ip=0  s0=78 s1=79 s2=7a6162
+ m120w r=3 ip=0  s0=7800 s1=7900 s2=7a0061006200
+c009 fmt="%[a-z]%[^,],%s" in="abc123,rest"
+ msvcrt r=3 ip=0  s0=61626300 s1=31323300 s2=7265737400
+ ucrt r=3 ip=0  s0=61626300 s1=31323300 s2=7265737400
+ mswscanf r=3 ip=0  s0=6100620063000000 s1=3100320033000000 s2=72006500730074000000
+ uwscanf r=3 ip=0  s0=6100620063000000 s1=3100320033000000 s2=72006500730074000000
+ m120 r=3 ip=0  s0=61626300 s1=31323300 s2=7265737400
+ m120w r=3 ip=0  s0=6100620063000000 s1=3100320033000000 s2=72006500730074000000
+c010 fmt="%d%n %d" in="5 6"
+ msvcrt r=2 ip=0  s0=05000000 s1=01000000 s2=06000000
+ ucrt r=2 ip=0  s0=05000000 s1=01000000 s2=06000000
+ mswscanf r=2 ip=0  s0=05000000 s1=01000000 s2=06000000
+ uwscanf r=2 ip=0  s0=05000000 s1=01000000 s2=06000000
+ m120 r=2 ip=0  s0=05000000 s1=01000000 s2=06000000
+ m120w r=2 ip=0  s0=05000000 s1=01000000 s2=06000000
+c011 fmt="%*d %d" in="1 2"
+ msvcrt r=1 ip=0  s0=02000000
+ ucrt r=1 ip=0  s0=02000000
+ mswscanf r=1 ip=0  s0=02000000
+ uwscanf r=1 ip=0  s0=02000000
+ m120 r=1 ip=0  s0=02000000
+ m120w r=1 ip=0  s0=02000000
+c012 fmt="%d" in=""
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c013 fmt="%d" in="   "
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c014 fmt="%d" in="abc"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c015 fmt="abc%d" in="abx5"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c016 fmt="%p" in="0000ABCD"
+ msvcrt r=1 ip=0  s0=cdab000000000000
+ ucrt r=1 ip=0  s0=cdab000000000000
+ mswscanf r=1 ip=0  s0=cdab000000000000
+ uwscanf r=1 ip=0  s0=cdab000000000000
+ m120 r=1 ip=0  s0=cdab000000000000
+ m120w r=1 ip=0  s0=cdab000000000000
+c017 fmt="%lf" in="nan"
+ msvcrt r=0 ip=0 
+ ucrt r=1 ip=0  s0=ffffffffffffff7f
+ mswscanf r=0 ip=0 
+ uwscanf r=1 ip=0  s0=ffffffffffffff7f
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c018 fmt="%lf" in="inf"
+ msvcrt r=0 ip=0 
+ ucrt r=1 ip=0  s0=000000000000f07f
+ mswscanf r=0 ip=0 
+ uwscanf r=1 ip=0  s0=000000000000f07f
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c019 fmt="%lf" in="0x1p3"
+ msvcrt r=1 ip=0  s0=0000000000000000
+ ucrt r=1 ip=0  s0=0000000000002040
+ mswscanf r=1 ip=0  s0=0000000000000000
+ uwscanf r=1 ip=0  s0=0000000000002040
+ m120 r=1 ip=0  s0=0000000000000000
+ m120w r=1 ip=0  s0=0000000000000000
+c020 fmt="%d.%d" in="4.6"
+ msvcrt r=2 ip=0  s0=04000000 s1=06000000
+ ucrt r=2 ip=0  s0=04000000 s1=06000000
+ mswscanf r=2 ip=0  s0=04000000 s1=06000000
+ uwscanf r=2 ip=0  s0=04000000 s1=06000000
+ m120 r=2 ip=0  s0=04000000 s1=06000000
+ m120w r=2 ip=0  s0=04000000 s1=06000000
+c021 fmt="%3d%d" in="12345"
+ msvcrt r=2 ip=0  s0=7b000000 s1=2d000000
+ ucrt r=2 ip=0  s0=7b000000 s1=2d000000
+ mswscanf r=2 ip=0  s0=7b000000 s1=2d000000
+ uwscanf r=2 ip=0  s0=7b000000 s1=2d000000
+ m120 r=2 ip=0  s0=7b000000 s1=2d000000
+ m120w r=2 ip=0  s0=7b000000 s1=2d000000
+c022 fmt="%%%d" in="%7"
+ msvcrt r=1 ip=0  s0=07000000
+ ucrt r=1 ip=0  s0=07000000
+ mswscanf r=1 ip=0  s0=07000000
+ uwscanf r=1 ip=0  s0=07000000
+ m120 r=1 ip=0  s0=07000000
+ m120w r=1 ip=0  s0=07000000
+c023 fmt="%ls" in="wide"
+ msvcrt r=1 ip=0  s0=77006900640065000000
+ ucrt r=1 ip=0  s0=77006900640065000000
+ mswscanf r=1 ip=0  s0=77006900640065000000
+ uwscanf r=1 ip=0  s0=77006900640065000000
+ m120 r=1 ip=0  s0=77006900640065000000
+ m120w r=1 ip=0  s0=77006900640065000000
+c024 fmt="%S" in="cap"
+ msvcrt r=1 ip=0  s0=6300610070000000
+ ucrt r=1 ip=0  s0=6300610070000000
+ mswscanf r=1 ip=0  s0=63617000
+ uwscanf r=1 ip=0  s0=63617000
+ m120 r=1 ip=0  s0=6300610070000000
+ m120w r=1 ip=0  s0=63617000
+c025 fmt="%[]abc]" in="]a"
+ msvcrt r=1 ip=0  s0=5d6100
+ ucrt r=1 ip=0  s0=5d6100
+ mswscanf r=1 ip=0  s0=5d0061000000
+ uwscanf r=1 ip=0  s0=5d0061000000
+ m120 r=1 ip=0  s0=5d6100
+ m120w r=1 ip=0  s0=5d0061000000
+c026 fmt="%[^]]x" in="ab]x"
+ msvcrt r=1 ip=0  s0=616200
+ ucrt r=1 ip=0  s0=616200
+ mswscanf r=1 ip=0  s0=610062000000
+ uwscanf r=1 ip=0  s0=610062000000
+ m120 r=1 ip=0  s0=616200
+ m120w r=1 ip=0  s0=610062000000
+c027 fmt="%zd %jd %td" in="1 2 3"
+ msvcrt r=3 ip=0  s0=0100000000000000 s1=0200000000000000 s2=0300000000000000
+ ucrt r=3 ip=0  s0=0100000000000000 s1=0200000000000000 s2=0300000000000000
+ mswscanf r=3 ip=0  s0=0100000000000000 s1=0200000000000000 s2=0300000000000000
+ uwscanf r=3 ip=0  s0=0100000000000000 s1=0200000000000000 s2=0300000000000000
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c028 fmt="%I32d %Id" in="4 5"
+ msvcrt r=2 ip=0  s0=04000000 s1=0500000000000000
+ ucrt r=2 ip=0  s0=04000000 s1=0500000000000000
+ mswscanf r=2 ip=0  s0=04000000 s1=0500000000000000
+ uwscanf r=2 ip=0  s0=04000000 s1=0500000000000000
+ m120 r=2 ip=0  s0=04000000 s1=0500000000000000
+ m120w r=2 ip=0  s0=04000000 s1=0500000000000000
+c029 fmt="%d%n" in="8"
+ msvcrt r=1 ip=0  s0=08000000 s1=01000000
+ ucrt r=1 ip=0  s0=08000000 s1=01000000
+ mswscanf r=1 ip=0  s0=08000000 s1=01000000
+ uwscanf r=1 ip=0  s0=08000000 s1=01000000
+ m120 r=1 ip=0  s0=08000000 s1=01000000
+ m120w r=1 ip=0  s0=08000000 s1=01000000
+c030 fmt="%d %d" in="1"
+ msvcrt r=1 ip=0  s0=01000000
+ ucrt r=1 ip=0  s0=01000000
+ mswscanf r=1 ip=0  s0=01000000
+ uwscanf r=1 ip=0  s0=01000000
+ m120 r=1 ip=0  s0=01000000
+ m120w r=1 ip=0  s0=01000000
+c031 fmt=" %c" in="  x"
+ msvcrt r=1 ip=0  s0=78
+ ucrt r=1 ip=0  s0=78
+ mswscanf r=1 ip=0  s0=7800
+ uwscanf r=1 ip=0  s0=7800
+ m120 r=1 ip=0  s0=78
+ m120w r=1 ip=0  s0=7800
+c032 fmt="%2lc" in="ab"
+ msvcrt r=1 ip=0  s0=61006200
+ ucrt r=1 ip=0  s0=61006200
+ mswscanf r=1 ip=0  s0=61006200
+ uwscanf r=1 ip=0  s0=61006200
+ m120 r=1 ip=0  s0=61006200
+ m120w r=1 ip=0  s0=61006200
+c033 fmt="%lg %le" in="1e400 -1e-400"
+ msvcrt r=2 ip=0  s0=000000000000f07f s1=0000000000000080
+ ucrt r=2 ip=0  s0=000000000000f07f s1=0000000000000080
+ mswscanf r=2 ip=0  s0=000000000000f07f s1=0000000000000080
+ uwscanf r=2 ip=0  s0=000000000000f07f s1=0000000000000080
+ m120 r=2 ip=0  s0=000000000000f07f s1=0000000000000080
+ m120w r=2 ip=0  s0=000000000000f07f s1=0000000000000080
+c034 fmt="%f" in="1e40"
+ msvcrt r=1 ip=0  s0=0000807f
+ ucrt r=1 ip=0  s0=0000807f
+ mswscanf r=1 ip=0  s0=0000807f
+ uwscanf r=1 ip=0  s0=0000807f
+ m120 r=1 ip=0  s0=0000807f
+ m120w r=1 ip=0  s0=0000807f
+c035 fmt="%d" in="99999999999"
+ msvcrt r=1 ip=0  s0=ffe77648
+ ucrt r=1 ip=0  s0=ffe77648
+ mswscanf r=1 ip=0  s0=ffe77648
+ uwscanf r=1 ip=0  s0=ffe77648
+ m120 r=1 ip=0  s0=ffe77648
+ m120w r=1 ip=0  s0=ffe77648
+c036 fmt="%hhu %hu" in="257 65537"
+ msvcrt r=2 ip=0  s0=01010000 s1=0100
+ ucrt r=2 ip=0  s0=01 s1=0100
+ mswscanf r=2 ip=0  s0=01010000 s1=0100
+ uwscanf r=2 ip=0  s0=01 s1=0100
+ m120 r=2 ip=0  s0=01010000 s1=0100
+ m120w r=2 ip=0  s0=01010000 s1=0100
+c037 fmt="%x" in="0x"
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c038 fmt="%i" in="08"
+ msvcrt r=1 ip=0  s0=00000000
+ ucrt r=1 ip=0  s0=00000000
+ mswscanf r=1 ip=0  s0=00000000
+ uwscanf r=1 ip=0  s0=00000000
+ m120 r=1 ip=0  s0=00000000
+ m120w r=1 ip=0  s0=00000000
+c039 fmt="%5f" in="123.456"
+ msvcrt r=1 ip=0  s0=cdccf642
+ ucrt r=1 ip=0  s0=cdccf642
+ mswscanf r=1 ip=0  s0=cdccf642
+ uwscanf r=1 ip=0  s0=cdccf642
+ m120 r=1 ip=0  s0=cdccf642
+ m120w r=1 ip=0  s0=cdccf642
+c040 fmt="%[a-c-e]" in="a-e"
+ msvcrt r=1 ip=0  s0=612d6500
+ ucrt r=1 ip=0  s0=612d6500
+ mswscanf r=1 ip=0  s0=61002d0065000000
+ uwscanf r=1 ip=0  s0=61002d0065000000
+ m120 r=1 ip=0  s0=612d6500
+ m120w r=1 ip=0  s0=61002d0065000000
+c041 fmt="%[z-a]" in="-az"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c042 fmt="%Lf" in="2.5"
+ msvcrt r=1 ip=0  s0=0000000000000440
+ ucrt r=1 ip=0  s0=0000000000000440
+ mswscanf r=1 ip=0  s0=0000000000000440
+ uwscanf r=1 ip=0  s0=0000000000000440
+ m120 r=1 ip=0  s0=0000000000000440
+ m120w r=1 ip=0  s0=0000000000000440
+c043 fmt="%4c" in="ab"
+ msvcrt r=1 ip=0  s0=6162
+ ucrt r=-1 ip=0  s0=6162
+ mswscanf r=1 ip=0  s0=61006200
+ uwscanf r=-1 ip=0  s0=61006200
+ m120 r=1 ip=0  s0=6162
+ m120w r=1 ip=0  s0=61006200
+c044 fmt="%y" in="1"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c045 fmt="%d%" in="3"
+ msvcrt r=1 ip=0  s0=03000000
+ ucrt r=1 ip=0  s0=03000000
+ mswscanf r=1 ip=0  s0=03000000
+ uwscanf r=1 ip=0  s0=03000000
+ m120 r=1 ip=0  s0=03000000
+ m120w r=1 ip=0  s0=03000000
+c046 fmt="%lf%s" in="1ex"
+ msvcrt r=2 ip=0  s0=000000000000f03f s1=7800
+ ucrt r=0 ip=0 
+ mswscanf r=2 ip=0  s0=000000000000f03f s1=78000000
+ uwscanf r=0 ip=0 
+ m120 r=2 ip=0  s0=000000000000f03f s1=7800
+ m120w r=2 ip=0  s0=000000000000f03f s1=78000000
+c047 fmt="%lf%s" in="1e+x"
+ msvcrt r=2 ip=0  s0=000000000000f03f s1=7800
+ ucrt r=0 ip=0 
+ mswscanf r=2 ip=0  s0=000000000000f03f s1=78000000
+ uwscanf r=0 ip=0 
+ m120 r=2 ip=0  s0=000000000000f03f s1=7800
+ m120w r=2 ip=0  s0=000000000000f03f s1=78000000
+c048 fmt="%lf%s" in="0xg"
+ msvcrt r=2 ip=0  s0=0000000000000000 s1=786700
+ ucrt r=0 ip=0 
+ mswscanf r=2 ip=0  s0=0000000000000000 s1=780067000000
+ uwscanf r=0 ip=0 
+ m120 r=2 ip=0  s0=0000000000000000 s1=786700
+ m120w r=2 ip=0  s0=0000000000000000 s1=780067000000
+c049 fmt="%lf%s" in="infx"
+ msvcrt r=0 ip=0 
+ ucrt r=2 ip=0  s0=000000000000f07f s1=7800
+ mswscanf r=0 ip=0 
+ uwscanf r=2 ip=0  s0=000000000000f07f s1=78000000
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c050 fmt="%lf%s" in="infinx"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c051 fmt="%lf%s" in="nan(x"
+ msvcrt r=0 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c052 fmt="%lf%s" in="nan(ab)c"
+ msvcrt r=0 ip=0 
+ ucrt r=2 ip=0  s0=ffffffffffffff7f s1=6300
+ mswscanf r=0 ip=0 
+ uwscanf r=2 ip=0  s0=ffffffffffffff7f s1=63000000
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c053 fmt="%lf" in="-"
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c054 fmt="%d%s" in="-x"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c055 fmt="%d" in="+"
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c056 fmt="%x%s" in="0xg"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c057 fmt="abc%d" in="ab"
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c058 fmt="x%d" in=""
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c059 fmt="" in=""
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c060 fmt="%n" in=""
+ msvcrt r=0 ip=0  s0=00000000
+ ucrt r=0 ip=0  s0=00000000
+ mswscanf r=0 ip=0  s0=00000000
+ uwscanf r=0 ip=0  s0=00000000
+ m120 r=0 ip=0  s0=00000000
+ m120w r=0 ip=0  s0=00000000
+c061 fmt="%*d" in=""
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c062 fmt="%c" in=""
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c063 fmt="%s" in=""
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c064 fmt=" " in=""
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c065 fmt="%1d%d" in="-5"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c066 fmt="%2x%s" in="0x1"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c067 fmt="%lf" in="."
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c068 fmt="%f%s" in=".5x"
+ msvcrt r=2 ip=0  s0=0000003f s1=7800
+ ucrt r=2 ip=0  s0=0000003f s1=7800
+ mswscanf r=2 ip=0  s0=0000003f s1=78000000
+ uwscanf r=2 ip=0  s0=0000003f s1=78000000
+ m120 r=2 ip=0  s0=0000003f s1=7800
+ m120w r=2 ip=0  s0=0000003f s1=78000000
+c069 fmt="%3lf%s" in="1.2345"
+ msvcrt r=2 ip=0  s0=333333333333f33f s1=33343500
+ ucrt r=2 ip=0  s0=333333333333f33f s1=33343500
+ mswscanf r=2 ip=0  s0=333333333333f33f s1=3300340035000000
+ uwscanf r=2 ip=0  s0=333333333333f33f s1=3300340035000000
+ m120 r=2 ip=0  s0=333333333333f33f s1=33343500
+ m120w r=2 ip=0  s0=333333333333f33f s1=3300340035000000
+c070 fmt="%e%s" in="1.5e+"
+ msvcrt r=1 ip=0  s0=0000c03f
+ ucrt r=-1 ip=0 
+ mswscanf r=1 ip=0  s0=0000c03f
+ uwscanf r=-1 ip=0 
+ m120 r=1 ip=0  s0=0000c03f
+ m120w r=1 ip=0  s0=0000c03f
+c071 fmt="%lf" in="1e"
+ msvcrt r=1 ip=0  s0=000000000000f03f
+ ucrt r=-1 ip=0 
+ mswscanf r=1 ip=0  s0=000000000000f03f
+ uwscanf r=-1 ip=0 
+ m120 r=1 ip=0  s0=000000000000f03f
+ m120w r=1 ip=0  s0=000000000000f03f
+c072 fmt="%lf%s" in="0x"
+ msvcrt r=2 ip=0  s0=0000000000000000 s1=7800
+ ucrt r=-1 ip=0 
+ mswscanf r=2 ip=0  s0=0000000000000000 s1=78000000
+ uwscanf r=-1 ip=0 
+ m120 r=2 ip=0  s0=0000000000000000 s1=7800
+ m120w r=2 ip=0  s0=0000000000000000 s1=78000000
+c073 fmt="%lf%s" in="0x.8p1z"
+ msvcrt r=2 ip=0  s0=0000000000000000 s1=782e3870317a00
+ ucrt r=2 ip=0  s0=000000000000f03f s1=7a00
+ mswscanf r=2 ip=0  s0=0000000000000000 s1=78002e003800700031007a000000
+ uwscanf r=2 ip=0  s0=000000000000f03f s1=7a000000
+ m120 r=2 ip=0  s0=0000000000000000 s1=782e3870317a00
+ m120w r=2 ip=0  s0=0000000000000000 s1=78002e003800700031007a000000
+c074 fmt="%lf%s" in="1.5E3x"
+ msvcrt r=2 ip=0  s0=0000000000709740 s1=7800
+ ucrt r=2 ip=0  s0=0000000000709740 s1=7800
+ mswscanf r=2 ip=0  s0=0000000000709740 s1=78000000
+ uwscanf r=2 ip=0  s0=0000000000709740 s1=78000000
+ m120 r=2 ip=0  s0=0000000000709740 s1=7800
+ m120w r=2 ip=0  s0=0000000000709740 s1=78000000
+c075 fmt="%d" in="99999999999999999999"
+ msvcrt r=1 ip=0  s0=ffff0f63
+ ucrt r=1 ip=0  s0=ffffffff
+ mswscanf r=1 ip=0  s0=ffff0f63
+ uwscanf r=1 ip=0  s0=ffffffff
+ m120 r=1 ip=0  s0=ffff0f63
+ m120w r=1 ip=0  s0=ffff0f63
+c076 fmt="%lld" in="-99999999999999999999"
+ msvcrt r=1 ip=0  s0=0100f09cd2a13894
+ ucrt r=1 ip=0  s0=0000000000000080
+ mswscanf r=1 ip=0  s0=0100f09cd2a13894
+ uwscanf r=1 ip=0  s0=0000000000000080
+ m120 r=1 ip=0  s0=0100f09cd2a13894
+ m120w r=1 ip=0  s0=0100f09cd2a13894
+c077 fmt="%llx" in="fffffffffffffffff"
+ msvcrt r=1 ip=0  s0=ffffffffffffffff
+ ucrt r=1 ip=0  s0=ffffffffffffffff
+ mswscanf r=1 ip=0  s0=ffffffffffffffff
+ uwscanf r=1 ip=0  s0=ffffffffffffffff
+ m120 r=1 ip=0  s0=ffffffffffffffff
+ m120w r=1 ip=0  s0=ffffffffffffffff
+c078 fmt="%u" in="4294967296"
+ msvcrt r=1 ip=0  s0=00000000
+ ucrt r=1 ip=0  s0=00000000
+ mswscanf r=1 ip=0  s0=00000000
+ uwscanf r=1 ip=0  s0=00000000
+ m120 r=1 ip=0  s0=00000000
+ m120w r=1 ip=0  s0=00000000
+c079 fmt="%d" in="2147483648"
+ msvcrt r=1 ip=0  s0=00000080
+ ucrt r=1 ip=0  s0=00000080
+ mswscanf r=1 ip=0  s0=00000080
+ uwscanf r=1 ip=0  s0=00000080
+ m120 r=1 ip=0  s0=00000080
+ m120w r=1 ip=0  s0=00000080
+c080 fmt="%hd" in="-1"
+ msvcrt r=1 ip=0  s0=ffff
+ ucrt r=1 ip=0  s0=ffff
+ mswscanf r=1 ip=0  s0=ffff
+ uwscanf r=1 ip=0  s0=ffff
+ m120 r=1 ip=0  s0=ffff
+ m120w r=1 ip=0  s0=ffff
+c081 fmt="%o" in="-10"
+ msvcrt r=1 ip=0  s0=f8ffffff
+ ucrt r=1 ip=0  s0=f8ffffff
+ mswscanf r=1 ip=0  s0=f8ffffff
+ uwscanf r=1 ip=0  s0=f8ffffff
+ m120 r=1 ip=0  s0=f8ffffff
+ m120w r=1 ip=0  s0=f8ffffff
+c082 fmt="%i" in="-0x10"
+ msvcrt r=1 ip=0  s0=f0ffffff
+ ucrt r=1 ip=0  s0=f0ffffff
+ mswscanf r=1 ip=0  s0=f0ffffff
+ uwscanf r=1 ip=0  s0=f0ffffff
+ m120 r=1 ip=0  s0=f0ffffff
+ m120w r=1 ip=0  s0=f0ffffff
+c083 fmt="%o%s" in="9"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c084 fmt="%[a-]" in="a-b"
+ msvcrt r=1 ip=0  s0=612d00
+ ucrt r=1 ip=0  s0=612d00
+ mswscanf r=1 ip=0  s0=61002d000000
+ uwscanf r=1 ip=0  s0=61002d000000
+ m120 r=1 ip=0  s0=612d00
+ m120w r=1 ip=0  s0=61002d000000
+c085 fmt="%[-a]" in="-ab"
+ msvcrt r=1 ip=0  s0=2d6100
+ ucrt r=1 ip=0  s0=2d6100
+ mswscanf r=1 ip=0  s0=2d0061000000
+ uwscanf r=1 ip=0  s0=2d0061000000
+ m120 r=1 ip=0  s0=2d6100
+ m120w r=1 ip=0  s0=2d0061000000
+c086 fmt="%0d" in="5"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c087 fmt="%3s%s" in="ab cd"
+ msvcrt r=2 ip=0  s0=616200 s1=636400
+ ucrt r=2 ip=0  s0=616200 s1=636400
+ mswscanf r=2 ip=0  s0=610062000000 s1=630064000000
+ uwscanf r=2 ip=0  s0=610062000000 s1=630064000000
+ m120 r=2 ip=0  s0=616200 s1=636400
+ m120w r=2 ip=0  s0=610062000000 s1=630064000000
+c088 fmt="%[^
+]" in=""
+ msvcrt r=-1 ip=0 
+ ucrt r=-1 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=-1 ip=0 
+ m120 r=-1 ip=0 
+ m120w r=-1 ip=0 
+c089 fmt="a b" in="a   b"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c090 fmt="%d,%d" in="1 ,2"
+ msvcrt r=1 ip=0  s0=01000000
+ ucrt r=1 ip=0  s0=01000000
+ mswscanf r=1 ip=0  s0=01000000
+ uwscanf r=1 ip=0  s0=01000000
+ m120 r=1 ip=0  s0=01000000
+ m120w r=1 ip=0  s0=01000000
+c091 fmt="%*s%n" in="abc"
+ msvcrt r=0 ip=0  s0=03000000
+ ucrt r=0 ip=0  s0=03000000
+ mswscanf r=0 ip=0  s0=03000000
+ uwscanf r=0 ip=0  s0=03000000
+ m120 r=0 ip=0  s0=03000000
+ m120w r=0 ip=0  s0=03000000
+c092 fmt="%*c%c" in="xy"
+ msvcrt r=1 ip=0  s0=79
+ ucrt r=1 ip=0  s0=79
+ mswscanf r=1 ip=0  s0=7900
+ uwscanf r=1 ip=0  s0=7900
+ m120 r=1 ip=0  s0=79
+ m120w r=1 ip=0  s0=7900
+c093 fmt="%hs" in="hs"
+ msvcrt r=1 ip=0  s0=687300
+ ucrt r=1 ip=0  s0=687300
+ mswscanf r=1 ip=0  s0=687300
+ uwscanf r=1 ip=0  s0=687300
+ m120 r=1 ip=0  s0=687300
+ m120w r=1 ip=0  s0=687300
+c094 fmt="%wc%wc" in="wc"
+ msvcrt r=2 ip=0  s0=7700 s1=6300
+ ucrt r=2 ip=0  s0=7700 s1=6300
+ mswscanf r=2 ip=0  s0=7700 s1=6300
+ uwscanf r=2 ip=0  s0=7700 s1=6300
+ m120 r=2 ip=0  s0=7700 s1=6300
+ m120w r=2 ip=0  s0=7700 s1=6300
+c095 fmt="%hc" in="q"
+ msvcrt r=1 ip=0  s0=71
+ ucrt r=1 ip=0  s0=71
+ mswscanf r=1 ip=0  s0=71
+ uwscanf r=1 ip=0  s0=71
+ m120 r=1 ip=0  s0=71
+ m120w r=1 ip=0  s0=71
+c096 fmt="%C" in="C"
+ msvcrt r=1 ip=0  s0=4300
+ ucrt r=1 ip=0  s0=4300
+ mswscanf r=1 ip=0  s0=43
+ uwscanf r=1 ip=0  s0=43
+ m120 r=1 ip=0  s0=4300
+ m120w r=1 ip=0  s0=43
+c097 fmt="%hS" in="hS"
+ msvcrt r=1 ip=0  s0=685300
+ ucrt r=1 ip=0  s0=685300
+ mswscanf r=1 ip=0  s0=685300
+ uwscanf r=1 ip=0  s0=685300
+ m120 r=1 ip=0  s0=685300
+ m120w r=1 ip=0  s0=685300
+c098 fmt="%lS" in="lS"
+ msvcrt r=1 ip=0  s0=6c0053000000
+ ucrt r=1 ip=0  s0=6c0053000000
+ mswscanf r=1 ip=0  s0=6c0053000000
+ uwscanf r=1 ip=0  s0=6c0053000000
+ m120 r=1 ip=0  s0=6c0053000000
+ m120w r=1 ip=0  s0=6c0053000000
+c099 fmt="%T" in="t"
+ msvcrt r=0 ip=0 
+ ucrt r=0 ip=0 
+ mswscanf r=0 ip=0 
+ uwscanf r=0 ip=0 
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c100 fmt="%Ld" in="7"
+ msvcrt r=1 ip=0  s0=07000000
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=07000000
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=07000000
+ m120w r=1 ip=0  s0=07000000
+c101 fmt="%hf" in="1.5"
+ msvcrt r=1 ip=0  s0=000000000000f83f
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=000000000000f83f
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=000000000000f83f
+ m120w r=1 ip=0  s0=000000000000f83f
+c102 fmt="%llf" in="1.5"
+ msvcrt r=1 ip=0  s0=0000c03f
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=0000c03f
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=0000c03f
+ m120w r=1 ip=0  s0=0000c03f
+c103 fmt="%ll[a]" in="a"
+ msvcrt r=1 ip=0  s0=6100
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=61000000
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=6100
+ m120w r=1 ip=0  s0=61000000
+c104 fmt="%hhn%d" in="4"
+ msvcrt r=1 ip=0  s0=00000000 s1=04000000
+ ucrt r=1 ip=0  s0=00 s1=04000000
+ mswscanf r=1 ip=0  s0=00000000 s1=04000000
+ uwscanf r=1 ip=0  s0=00 s1=04000000
+ m120 r=1 ip=0  s0=00000000 s1=04000000
+ m120w r=1 ip=0  s0=00000000 s1=04000000
+c105 fmt="%Lx" in="f"
+ msvcrt r=1 ip=0  s0=0f000000
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=0f000000
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=0f000000
+ m120w r=1 ip=0  s0=0f000000
+c106 fmt="%a" in="2.5"
+ msvcrt r=0 ip=0 
+ ucrt r=1 ip=0  s0=00002040
+ mswscanf r=0 ip=0 
+ uwscanf r=1 ip=0  s0=00002040
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c107 fmt="%A" in="2.5"
+ msvcrt r=0 ip=0 
+ ucrt r=1 ip=0  s0=00002040
+ mswscanf r=0 ip=0 
+ uwscanf r=1 ip=0  s0=00002040
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c108 fmt="%F" in="2.5"
+ msvcrt r=0 ip=0 
+ ucrt r=1 ip=0  s0=00002040
+ mswscanf r=0 ip=0 
+ uwscanf r=1 ip=0  s0=00002040
+ m120 r=0 ip=0 
+ m120w r=0 ip=0 
+c109 fmt="%Ff" in="2.5"
+ msvcrt r=1 ip=0  s0=00002040
+ ucrt r=1 ip=0  s0=00002040
+ mswscanf r=1 ip=0  s0=00002040
+ uwscanf r=1 ip=0  s0=00002040
+ m120 r=1 ip=0  s0=00002040
+ m120w r=1 ip=0  s0=00002040
+c110 fmt="%Nd" in="6"
+ msvcrt r=1 ip=0  s0=06000000
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=06000000
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=06000000
+ m120w r=1 ip=0  s0=06000000
+c111 fmt="%Iu" in="7"
+ msvcrt r=1 ip=0  s0=0700000000000000
+ ucrt r=1 ip=0  s0=0700000000000000
+ mswscanf r=1 ip=0  s0=0700000000000000
+ uwscanf r=1 ip=0  s0=0700000000000000
+ m120 r=1 ip=0  s0=0700000000000000
+ m120w r=1 ip=0  s0=0700000000000000
+c112 fmt="%E %G" in="1 2"
+ msvcrt r=2 ip=0  s0=0000803f s1=00000040
+ ucrt r=2 ip=0  s0=0000803f s1=00000040
+ mswscanf r=2 ip=0  s0=0000803f s1=00000040
+ uwscanf r=2 ip=0  s0=0000803f s1=00000040
+ m120 r=2 ip=0  s0=0000803f s1=00000040
+ m120w r=2 ip=0  s0=0000803f s1=00000040
+c113 fmt="%Ix" in="ff"
+ msvcrt r=1 ip=0  s0=ff00000000000000
+ ucrt r=1 ip=0  s0=ff00000000000000
+ mswscanf r=1 ip=0  s0=ff00000000000000
+ uwscanf r=1 ip=0  s0=ff00000000000000
+ m120 r=1 ip=0  s0=ff00000000000000
+ m120w r=1 ip=0  s0=ff00000000000000
+c114 fmt="%I64u" in="9"
+ msvcrt r=1 ip=0  s0=0900000000000000
+ ucrt r=1 ip=0  s0=0900000000000000
+ mswscanf r=1 ip=0  s0=0900000000000000
+ uwscanf r=1 ip=0  s0=0900000000000000
+ m120 r=1 ip=0  s0=0900000000000000
+ m120w r=1 ip=0  s0=0900000000000000
+c115 fmt="%hhhd" in="5"
+ msvcrt r=1 ip=0  s0=05000000
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=05000000
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=05000000
+ m120w r=1 ip=0  s0=05000000
+c116 fmt="%lls" in="ls"
+ msvcrt r=1 ip=0  s0=6c7300
+ ucrt r=1 ip=0  s0=6c0073000000
+ mswscanf r=1 ip=0  s0=6c0073000000
+ uwscanf r=1 ip=0  s0=6c0073000000
+ m120 r=1 ip=0  s0=6c7300
+ m120w r=1 ip=0  s0=6c0073000000
+c117 fmt="%hls" in="hl"
+ msvcrt r=1 ip=0  s0=686c00
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=68006c000000
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=686c00
+ m120w r=1 ip=0  s0=68006c000000
+c118 fmt="%lhs" in="lh"
+ msvcrt r=1 ip=0  s0=6c6800
+ ucrt r=0 ip=0 
+ mswscanf r=1 ip=0  s0=6c0068000000
+ uwscanf r=0 ip=0 
+ m120 r=1 ip=0  s0=6c6800
+ m120w r=1 ip=0  s0=6c0068000000
+c119 fmt="%wS" in="wS"
+ msvcrt r=1 ip=0  s0=770053000000
+ ucrt r=1 ip=0  s0=770053000000
+ mswscanf r=1 ip=0  s0=770053000000
+ uwscanf r=1 ip=0  s0=770053000000
+ m120 r=1 ip=0  s0=770053000000
+ m120w r=1 ip=0  s0=770053000000
+u0 fmt="%[^]" in="x]"
+ ucrt r=0 ip=0 
+ ucrt_s r=0 ip=1 
+ uwscanf r=0 ip=0 
+u1 fmt="%[abc" in="abc"
+ ucrt r=0 ip=0 
+ ucrt_s r=0 ip=1 
+ uwscanf r=0 ip=0 
+u2 fmt="%[" in="a"
+ ucrt r=0 ip=0 
+ ucrt_s r=0 ip=1 
+ uwscanf r=0 ip=0 
+uw hs 263a r=1 ip=0  s0=616200000000
+ errno=42 
+uw_s hs 263a r=1 ip=0  s0=61620000000000
+ errno=42 
+mswscanf hs 263a r=1 ip=0  s0=616200000000
+ errno=42 
+uw hc 263a r=1 ip=0  s0=616200000000
+ errno=42 
+uw arabic d r=1 ip=0  s0=22000000
+mswscanf arabic d r=0 ip=0 
+uw u3000 d r=1 ip=0  s0=05000000
+mswscanf u3000 d r=1 ip=0  s0=05000000
+uw u3000 ls r=1 ip=0  s0=6100003062000000
+mswscanf u3000 ls r=1 ip=0  s0=6100003062000000
+sscanf_s small s r=0 ip=0  s0=00656c
+sscanf_s fit s r=1 ip=0  s0=68656c6c6f00
+sscanf_s bracket r=0 ip=0  s0=0062
+sscanf_s c small r=0 ip=0  s0=00
+sscanf_s full at end r=0 ip=0  s0=00
+sscanf_s zero r=0 ip=0  s0=00
+sscanf_s bad fmt r=1 ip=0  s0=0c000000
+m120_s small s r=0 ip=0  s0=00656c
+ errno=12 
+m120_s fit s r=1 ip=0  s0=68656c6c6f00
+m120_s bracket r=0 ip=0  s0=0062
+m120_s c small r=0 ip=0  s0=00
+m120_s zero r=0 ip=0  s0=00
+m120_s bad fmt r=1 ip=0  s0=0c000000
+m120 null input r=-1 ip=1 
+ errno=22 
+m120 null format r=-1 ip=1 
+ errno=22 
+ucrt_s small s r=0 ip=0  s0=00656c
+ errno=12 
+ucrt_s c small r=-1 ip=0  s0=00
+ucrt_s full at end r=-1 ip=0  s0=00
+ucrt_s zero r=0 ip=0 
+ucrt_s zero legacy r=0 ip=0  s0=00
+ucrt_s bad fmt r=1 ip=1  s0=0c000000
+ucrt_s null buf r=0 ip=1 
+ucrt null dest r=-1 ip=1 
+ucrt erange r=1 ip=0  s0=ffffffffffffff7f
+ errno=34 
+msvcrt erange r=1 ip=0  s0=ffff0f632d5ec76b
+ errno=0 
+ucrt count 2 r=1 ip=0  s0=0c000000
+ucrt_s bracket r=0 ip=0  s0=0062
+ucrt_s mixed r=2 ip=0  s0=0c000000 s1=616200
+snscanf 3 r=1 ip=0  s0=7b000000
+ucrt null input r=-1 errno=22 ip=1 
+done

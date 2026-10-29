@@ -1,0 +1,709 @@
+layout properties=16 format=0 alpha=4 dpiX=8 dpiY=12 wicrect=16
+target=1 hr=00000000
+format target=1 source=0 prop=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=1 source=0 prop=1 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=1 source=0 prop=2 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=1 source=0 prop=3 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=1 source=0 prop=4 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=0 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=0 prop=6 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=0 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=0 prop=8 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=0 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=1 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=1 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=1 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=1 prop=3 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=1 source=1 prop=4 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=1 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=1 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=1 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=1 prop=8 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=1 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=2 prop=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=1 dpi=42c00000,42c00000
+format target=1 source=2 prop=1 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=1 dpi=42c00000,42c00000
+format target=1 source=2 prop=2 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=2 prop=3 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=2 prop=4 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=2 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=2 prop=6 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=1 dpi=42c00000,42c00000
+format target=1 source=2 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=1 source=2 prop=8 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=2 prop=9 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=3 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=4 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=1 source=3 prop=8 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=3 prop=9 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=4 prop=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=4 prop=1 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=4 prop=2 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=4 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=4 prop=4 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=4 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=4 prop=6 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=4 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=1 source=4 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=4 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=5 prop=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=1 source=5 prop=1 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=1 source=5 prop=2 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=5 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=5 prop=4 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=5 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=5 prop=6 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=1 source=5 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=1 source=5 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=5 prop=9 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=4 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=7 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=6 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=4 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=7 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=7 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=4 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=7 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=1 source=8 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+edge target=1 variant=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=42c00000,42c00000 size=40000000,40000000
+edge target=1 variant=1 hr=80070057 out=null fault=0 calls=0,0,0,0 refs=1
+edge target=1 variant=2 hr=80070057 out=null fault=0 calls=0,0,0,0 refs=1
+edge target=1 variant=3 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=42f00000,43100000 size=3fcccccd,3faaaaab
+edge target=1 variant=4 hr=80070057 out=null fault=0 calls=0,0,0,0 refs=1
+edge target=1 variant=5 hr=80070057 out=null fault=0 calls=0,0,0,0 refs=1
+edge target=1 variant=6 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=7f800000,42c00000 size=00000000,40000000
+edge target=1 variant=7 hr=80070057 out=null fault=0 calls=1,1,1,0 refs=1
+edge target=1 variant=8 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=42c00000,42c00000 size=40000000,00000000
+edge target=1 variant=9 hr=80070005 out=null fault=0 calls=1,1,0,0 refs=1
+edge target=1 variant=10 hr=80070005 out=null fault=0 calls=0,1,0,0 refs=1
+edge target=1 variant=11 hr=80070005 out=null fault=0 calls=1,1,1,0 refs=1
+edge target=1 variant=12 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=0 address=0
+edge target=1 variant=13 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=1 address=0
+edge target=1 variant=14 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=42c00000,42c00000 size=40000000,40000000
+edge target=1 variant=15 hr=c0000005 out=null fault=1 calls=0,0,0,0 refs=1 direction=0 address=1
+edge target=1 variant=16 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=0 address=1
+edge target=1 variant=17 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=1 address=1
+edge target=1 variant=18 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=0 address=0
+target=2 hr=00000000
+format target=2 source=0 prop=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=2 source=0 prop=1 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=2 source=0 prop=2 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=2 source=0 prop=3 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=2 source=0 prop=4 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=0 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=0 prop=6 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=0 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=0 prop=8 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=0 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=1 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=1 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=1 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=1 prop=3 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=1 dpi=42c00000,42c00000
+format target=2 source=1 prop=4 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=1 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=1 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=1 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=1 prop=8 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=1 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=2 prop=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=1 dpi=42c00000,42c00000
+format target=2 source=2 prop=1 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=1 dpi=42c00000,42c00000
+format target=2 source=2 prop=2 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=2 prop=3 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=2 prop=4 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=2 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=2 prop=6 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=1 dpi=42c00000,42c00000
+format target=2 source=2 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=2 source=2 prop=8 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=2 prop=9 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=3 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=4 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=2 source=3 prop=8 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=3 prop=9 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=4 prop=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=4 prop=1 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=4 prop=2 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=4 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=4 prop=4 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=4 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=4 prop=6 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=4 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=87 alpha=3 dpi=42c00000,42c00000
+format target=2 source=4 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=4 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=5 prop=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=2 source=5 prop=1 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=2 source=5 prop=2 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=5 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=5 prop=4 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=5 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=5 prop=6 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=2 source=5 prop=7 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 format=28 alpha=3 dpi=42c00000,42c00000
+format target=2 source=5 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=5 prop=9 hr=80070057 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=4 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=7 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=6 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=4 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=7 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=7 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=0 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=1 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=2 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=3 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=4 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=5 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=6 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=7 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=8 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+format target=2 source=8 prop=9 hr=88982f80 out=null fault=0 calls=0,1,0,0 refs=1
+edge target=2 variant=0 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=42c00000,42c00000 size=40000000,40000000
+edge target=2 variant=1 hr=80070057 out=null fault=0 calls=0,0,0,0 refs=1
+edge target=2 variant=2 hr=80070057 out=null fault=0 calls=0,0,0,0 refs=1
+edge target=2 variant=3 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=42f00000,43100000 size=3fcccccd,3faaaaab
+edge target=2 variant=4 hr=80070057 out=null fault=0 calls=0,0,0,0 refs=1
+edge target=2 variant=5 hr=80070057 out=null fault=0 calls=0,0,0,0 refs=1
+edge target=2 variant=6 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=7f800000,42c00000 size=00000000,40000000
+edge target=2 variant=7 hr=80070057 out=null fault=0 calls=1,1,1,0 refs=1
+edge target=2 variant=8 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=42c00000,42c00000 size=40000000,00000000
+edge target=2 variant=9 hr=80070005 out=null fault=0 calls=1,1,0,0 refs=1
+edge target=2 variant=10 hr=80070005 out=null fault=0 calls=0,1,0,0 refs=1
+edge target=2 variant=11 hr=80070005 out=null fault=0 calls=1,1,1,0 refs=1
+edge target=2 variant=12 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=0 address=0
+edge target=2 variant=13 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=1 address=0
+edge target=2 variant=14 hr=00000000 out=set fault=0 calls=1,1,1,0 refs=1 dpi=42c00000,42c00000 size=40000000,40000000
+edge target=2 variant=15 hr=c0000005 out=null fault=1 calls=0,0,0,0 refs=1 direction=0 address=1
+edge target=2 variant=16 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=0 address=1
+edge target=2 variant=17 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=1 address=1
+edge target=2 variant=18 hr=c0000005 out=same fault=1 calls=0,0,0,0 refs=1 direction=0 address=0
+domain source=1 target=1 foreign=0 create=00000000 draw=00000000 tags=0,0 pixel=ff80007f
+domain source=1 target=1 foreign=1 create=00000000 draw=88990012 tags=17,29 pixel=00000000
+domain source=1 target=2 foreign=0 create=00000000 draw=88990015 tags=17,29 pixel=00000000
+domain source=1 target=2 foreign=1 create=00000000 draw=88990012 tags=17,29 pixel=00000000
+domain source=2 target=1 foreign=0 create=00000000 draw=88990015 tags=17,29 pixel=00000000
+domain source=2 target=1 foreign=1 create=00000000 draw=88990012 tags=17,29 pixel=00000000
+domain source=2 target=2 foreign=0 create=00000000 draw=00000000 tags=0,0 pixel=ff80007f
+domain source=2 target=2 foreign=1 create=00000000 draw=88990012 tags=17,29 pixel=00000000
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=902b1721902b1721902b1729902b1729902b1721902b1721902b1729902b1729902b2721902b2721902b2729902b2729902b2721902b2721902b2729902b2729
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26902b1729902b1729800d1a26800d1a26902b1729902b1729800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26902b1721902b1729800d1a26800d1a26902b2721902b2729800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=a04a131ca04a131ca04a132ca04a132ca04a131ca04a131ca04a132ca04a132ca04a331ca04a331ca04a332ca04a332ca04a331ca04a331ca04a332ca04a332c
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a04a132ca04a132c800d1a26800d1a26a04a132ca04a132c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a04a131ca04a132c800d1a26800d1a26a04a331ca04a332c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=a859121aa859121aa859122ea859122ea859121aa859121aa859122ea859122ea8593a1aa8593a1aa8593a2ea8593a2ea8593a1aa8593a1aa8593a2ea8593a2e
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a859122ea859122e800d1a26800d1a26a859122ea859122e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a859121aa859122e800d1a26800d1a26a8593a1aa8593a2e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=c0860d13c0860d13c0860d33c0860d33c0860d13c0860d13c0860d33c0860d33c0864d13c0864d13c0864d33c0864d33c0864d13c0864d13c0864d33c0864d33
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0860d33c0860d33800d1a26800d1a26c0860d33c0860d33800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0860d13c0860d33800d1a26800d1a26c0864d13c0864d33800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=902b1721902b1723902b1727902b1729902b1b21902b1b23902b1b27902b1b29902b2321902b2323902b2327902b2329902b2721902b2723902b2727902b2729
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26902b1727902b1729800d1a26800d1a26902b1b27902b1b29800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26902b1721902b1729800d1a26800d1a26902b2721902b2729800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=a04a131ca04a1320a04a1328a04a132ca04a1b1ca04a1b20a04a1b28a04a1b2ca04a2b1ca04a2b20a04a2b28a04a2b2ca04a331ca04a3320a04a3328a04a332c
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a04a1328a04a132c800d1a26800d1a26a04a1b28a04a1b2c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a04a131ca04a132c800d1a26800d1a26a04a331ca04a332c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=a859121aa859121fa8591229a859122ea8591c1aa8591c1fa8591c29a8591c2ea859301aa859301fa8593029a859302ea8593a1aa8593a1fa8593a29a8593a2e
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a8591229a859122e800d1a26800d1a26a8591c29a8591c2e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a859121aa859122e800d1a26800d1a26a8593a1aa8593a2e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=c0860d13c0860d1bc0860d2bc0860d33c0861d13c0861d1bc0861d2bc0861d33c0863d13c0863d1bc0863d2bc0863d33c0864d13c0864d1bc0864d2bc0864d33
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0860d2bc0860d33800d1a26800d1a26c0861d2bc0861d33800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0860d13c0860d33800d1a26800d1a26c0864d13c0864d33800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=a02a131ca02a131ca02a1324a02a1324a02a131ca02a131ca02a1324a02a1324a02a231ca02a231ca02a2324a02a2324a02a231ca02a231ca02a2324a02a2324
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a02a1324a02a1324800d1a26800d1a26a02a1324a02a1324800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a02a131ca02a1324800d1a26800d1a26a02a231ca02a2324800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=c0460d13c0460d13c0460d23c0460d23c0460d13c0460d13c0460d23c0460d23c0462d13c0462d13c0462d23c0462d23c0462d13c0462d13c0462d23c0462d23
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0460d23c0460d23800d1a26800d1a26c0460d23c0460d23800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0460d13c0460d23800d1a26800d1a26c0462d13c0462d23800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=cf550a0ecf550a0ecf550a22cf550a22cf550a0ecf550a0ecf550a22cf550a22cf55320ecf55320ecf553222cf553222cf55320ecf55320ecf553222cf553222
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf550a22cf550a22800d1a26800d1a26cf550a22cf550a22800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf550a0ecf550a22800d1a26800d1a26cf55320ecf553222800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff800000ff800000ff800020ff800020ff800000ff800000ff800020ff800020ff804000ff804000ff804020ff804020ff804000ff804000ff804020ff804020
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff800020ff800020800d1a26800d1a26ff800020ff800020800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff800000ff800020800d1a26800d1a26ff804000ff804020800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=a02a131ca02a131ea02a1322a02a1324a02a171ca02a171ea02a1722a02a1724a02a1f1ca02a1f1ea02a1f22a02a1f24a02a231ca02a231ea02a2322a02a2324
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a02a1322a02a1324800d1a26800d1a26a02a1722a02a1724800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a02a131ca02a1324800d1a26800d1a26a02a231ca02a2324800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=c0460d13c0460d17c0460d1fc0460d23c0461513c0461517c046151fc0461523c0462513c0462517c046251fc0462523c0462d13c0462d17c0462d1fc0462d23
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0460d1fc0460d23800d1a26800d1a26c046151fc0461523800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0460d13c0460d23800d1a26800d1a26c0462d13c0462d23800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=cf550a0ecf550a13cf550a1dcf550a22cf55140ecf551413cf55141dcf551422cf55280ecf552813cf55281dcf552822cf55320ecf553213cf55321dcf553222
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf550a1dcf550a22800d1a26800d1a26cf55141dcf551422800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf550a0ecf550a22800d1a26800d1a26cf55320ecf553222800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff800000ff800008ff800018ff800020ff801000ff801008ff801018ff801020ff803000ff803008ff803018ff803020ff804000ff804008ff804018ff804020
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff800018ff800020800d1a26800d1a26ff801018ff801020800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff800000ff800020800d1a26800d1a26ff804000ff804020800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=900b1741900b17419013174190131741900b1741900b17419013174190131741900b2741900b27419013274190132741900b2741900b27419013274190132741
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a269013174190131741800d1a26800d1a269013174190131741800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26900b174190131741800d1a26800d1a26900b274190132741800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=a00a135ca00a135ca01a135ca01a135ca00a135ca00a135ca01a135ca01a135ca00a335ca00a335ca01a335ca01a335ca00a335ca00a335ca01a335ca01a335c
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a01a135ca01a135c800d1a26800d1a26a01a135ca01a135c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a00a135ca01a135c800d1a26800d1a26a00a335ca01a335c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=a809126aa809126aa81d126aa81d126aa809126aa809126aa81d126aa81d126aa8093a6aa8093a6aa81d3a6aa81d3a6aa8093a6aa8093a6aa81d3a6aa81d3a6a
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a81d126aa81d126a800d1a26800d1a26a81d126aa81d126a800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a809126aa81d126a800d1a26800d1a26a8093a6aa81d3a6a800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=c0060d93c0060d93c0260d93c0260d93c0060d93c0060d93c0260d93c0260d93c0064d93c0064d93c0264d93c0264d93c0064d93c0064d93c0264d93c0264d93
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0260d93c0260d93800d1a26800d1a26c0260d93c0260d93800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0060d93c0260d93800d1a26800d1a26c0064d93c0264d93800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=900b1741900d17419011174190131741900b1b41900d1b4190111b4190131b41900b2341900d23419011234190132341900b2741900d27419011274190132741
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a269011174190131741800d1a26800d1a2690111b4190131b41800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26900b174190131741800d1a26800d1a26900b274190132741800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=a00a135ca00e135ca016135ca01a135ca00a1b5ca00e1b5ca0161b5ca01a1b5ca00a2b5ca00e2b5ca0162b5ca01a2b5ca00a335ca00e335ca016335ca01a335c
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a016135ca01a135c800d1a26800d1a26a0161b5ca01a1b5c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a00a135ca01a135c800d1a26800d1a26a00a335ca01a335c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=a809126aa80e126aa818126aa81d126aa8091c6aa80e1c6aa8181c6aa81d1c6aa809306aa80e306aa818306aa81d306aa8093a6aa80e3a6aa8183a6aa81d3a6a
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a818126aa81d126a800d1a26800d1a26a8181c6aa81d1c6a800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a809126aa81d126a800d1a26800d1a26a8093a6aa81d3a6a800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=c0060d93c00e0d93c01e0d93c0260d93c0061d93c00e1d93c01e1d93c0261d93c0063d93c00e3d93c01e3d93c0263d93c0064d93c00e4d93c01e4d93c0264d93
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c01e0d93c0260d93800d1a26800d1a26c01e1d93c0261d93800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0060d93c0260d93800d1a26800d1a26c0064d93c0264d93800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=a00a133ca00a133ca012133ca012133ca00a133ca00a133ca012133ca012133ca00a233ca00a233ca012233ca012233ca00a233ca00a233ca012233ca012233c
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a012133ca012133c800d1a26800d1a26a012133ca012133c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a00a133ca012133c800d1a26800d1a26a00a233ca012233c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=c0060d53c0060d53c0160d53c0160d53c0060d53c0060d53c0160d53c0160d53c0062d53c0062d53c0162d53c0162d53c0062d53c0062d53c0162d53c0162d53
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0160d53c0160d53800d1a26800d1a26c0160d53c0160d53800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0060d53c0160d53800d1a26800d1a26c0062d53c0162d53800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=cf050a5ecf050a5ecf190a5ecf190a5ecf050a5ecf050a5ecf190a5ecf190a5ecf05325ecf05325ecf19325ecf19325ecf05325ecf05325ecf19325ecf19325e
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf190a5ecf190a5e800d1a26800d1a26cf190a5ecf190a5e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf050a5ecf190a5e800d1a26800d1a26cf05325ecf19325e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff000080ff000080ff200080ff200080ff000080ff000080ff200080ff200080ff004080ff004080ff204080ff204080ff004080ff004080ff204080ff204080
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff200080ff200080800d1a26800d1a26ff200080ff200080800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff000080ff200080800d1a26800d1a26ff004080ff204080800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=a00a133ca00c133ca010133ca012133ca00a173ca00c173ca010173ca012173ca00a1f3ca00c1f3ca0101f3ca0121f3ca00a233ca00c233ca010233ca012233c
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a010133ca012133c800d1a26800d1a26a010173ca012173c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a00a133ca012133c800d1a26800d1a26a00a233ca012233c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=c0060d53c00a0d53c0120d53c0160d53c0061553c00a1553c0121553c0161553c0062553c00a2553c0122553c0162553c0062d53c00a2d53c0122d53c0162d53
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0120d53c0160d53800d1a26800d1a26c0121553c0161553800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0060d53c0160d53800d1a26800d1a26c0062d53c0162d53800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=cf050a5ecf0a0a5ecf140a5ecf190a5ecf05145ecf0a145ecf14145ecf19145ecf05285ecf0a285ecf14285ecf19285ecf05325ecf0a325ecf14325ecf19325e
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf140a5ecf190a5e800d1a26800d1a26cf14145ecf19145e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf050a5ecf190a5e800d1a26800d1a26cf05325ecf19325e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff000080ff080080ff180080ff200080ff001080ff081080ff181080ff201080ff003080ff083080ff183080ff203080ff004080ff084080ff184080ff204080
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff180080ff200080800d1a26800d1a26ff181080ff201080800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff000080ff200080800d1a26800d1a26ff004080ff204080800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=ff372d42ff372d42ff372d4aff372d4aff372d42ff372d42ff372d4aff372d4aff373d42ff373d42ff373d4aff373d4aff373d42ff373d42ff373d4aff373d4a
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff372d4aff372d4aff1a334cff1a334cff372d4aff372d4aff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff372d42ff372d4aff1a334cff1a334cff373d42ff373d4aff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=ff532639ff532639ff532649ff532649ff532639ff532639ff532649ff532649ff534639ff534639ff534649ff534649ff534639ff534639ff534649ff534649
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff532649ff532649ff1a334cff1a334cff532649ff532649ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff532639ff532649ff1a334cff1a334cff534639ff534649ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=ff622334ff622334ff622348ff622348ff622334ff622334ff622348ff622348ff624b34ff624b34ff624b48ff624b48ff624b34ff624b34ff624b48ff624b48
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff622348ff622348ff1a334cff1a334cff622348ff622348ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff622334ff622348ff1a334cff1a334cff624b34ff624b48ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff8d1926ff8d1926ff8d1946ff8d1946ff8d1926ff8d1926ff8d1946ff8d1946ff8d5926ff8d5926ff8d5946ff8d5946ff8d5926ff8d5926ff8d5946ff8d5946
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff8d1946ff8d1946ff1a334cff1a334cff8d1946ff8d1946ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff8d1926ff8d1946ff1a334cff1a334cff8d5926ff8d5946ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=ff372d42ff372d44ff372d48ff372d4aff373142ff373144ff373148ff37314aff373942ff373944ff373948ff37394aff373d42ff373d44ff373d48ff373d4a
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff372d48ff372d4aff1a334cff1a334cff373148ff37314aff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff372d42ff372d4aff1a334cff1a334cff373d42ff373d4aff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=ff532639ff53263dff532645ff532649ff532e39ff532e3dff532e45ff532e49ff533e39ff533e3dff533e45ff533e49ff534639ff53463dff534645ff534649
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff532645ff532649ff1a334cff1a334cff532e45ff532e49ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff532639ff532649ff1a334cff1a334cff534639ff534649ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=ff622334ff622339ff622343ff622348ff622d34ff622d39ff622d43ff622d48ff624134ff624139ff624143ff624148ff624b34ff624b39ff624b43ff624b48
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff622343ff622348ff1a334cff1a334cff622d43ff622d48ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff622334ff622348ff1a334cff1a334cff624b34ff624b48ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff8d1926ff8d192eff8d193eff8d1946ff8d2926ff8d292eff8d293eff8d2946ff8d4926ff8d492eff8d493eff8d4946ff8d5926ff8d592eff8d593eff8d5946
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff8d193eff8d1946ff1a334cff1a334cff8d293eff8d2946ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff8d1926ff8d1946ff1a334cff1a334cff8d5926ff8d5946ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=ff332639ff332639ff332641ff332641ff332639ff332639ff332641ff332641ff333639ff333639ff333641ff333641ff333639ff333639ff333641ff333641
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff332641ff332641ff1a334cff1a334cff332641ff332641ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff332639ff332641ff1a334cff1a334cff333639ff333641ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=ff4d1926ff4d1926ff4d1936ff4d1936ff4d1926ff4d1926ff4d1936ff4d1936ff4d3926ff4d3926ff4d3936ff4d3936ff4d3926ff4d3926ff4d3936ff4d3936
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff4d1936ff4d1936ff1a334cff1a334cff4d1936ff4d1936ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff4d1926ff4d1936ff1a334cff1a334cff4d3926ff4d3936ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=ff5a131dff5a131dff5a1331ff5a1331ff5a131dff5a131dff5a1331ff5a1331ff5a3b1dff5a3b1dff5a3b31ff5a3b31ff5a3b1dff5a3b1dff5a3b31ff5a3b31
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff5a1331ff5a1331ff1a334cff1a334cff5a1331ff5a1331ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff5a131dff5a1331ff1a334cff1a334cff5a3b1dff5a3b31ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff800000ff800000ff800020ff800020ff800000ff800000ff800020ff800020ff804000ff804000ff804020ff804020ff804000ff804000ff804020ff804020
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff800020ff800020ff1a334cff1a334cff800020ff800020ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff800000ff800020ff1a334cff1a334cff804000ff804020ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=ff332639ff33263bff33263fff332641ff332a39ff332a3bff332a3fff332a41ff333239ff33323bff33323fff333241ff333639ff33363bff33363fff333641
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff33263fff332641ff1a334cff1a334cff332a3fff332a41ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff332639ff332641ff1a334cff1a334cff333639ff333641ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=ff4d1926ff4d192aff4d1932ff4d1936ff4d2126ff4d212aff4d2132ff4d2136ff4d3126ff4d312aff4d3132ff4d3136ff4d3926ff4d392aff4d3932ff4d3936
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff4d1932ff4d1936ff1a334cff1a334cff4d2132ff4d2136ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff4d1926ff4d1936ff1a334cff1a334cff4d3926ff4d3936ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=ff5a131dff5a1322ff5a132cff5a1331ff5a1d1dff5a1d22ff5a1d2cff5a1d31ff5a311dff5a3122ff5a312cff5a3131ff5a3b1dff5a3b22ff5a3b2cff5a3b31
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff5a132cff5a1331ff1a334cff1a334cff5a1d2cff5a1d31ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff5a131dff5a1331ff1a334cff1a334cff5a3b1dff5a3b31ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff800000ff800008ff800018ff800020ff801000ff801008ff801018ff801020ff803000ff803008ff803018ff803020ff804000ff804008ff804018ff804020
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff800018ff800020ff1a334cff1a334cff801018ff801020ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff800000ff800020ff1a334cff1a334cff804000ff804020ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=ff172d62ff172d62ff1f2d62ff1f2d62ff172d62ff172d62ff1f2d62ff1f2d62ff173d62ff173d62ff1f3d62ff1f3d62ff173d62ff173d62ff1f3d62ff1f3d62
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1f2d62ff1f2d62ff1a334cff1a334cff1f2d62ff1f2d62ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff172d62ff1f2d62ff1a334cff1a334cff173d62ff1f3d62ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=ff132679ff132679ff232679ff232679ff132679ff132679ff232679ff232679ff134679ff134679ff234679ff234679ff134679ff134679ff234679ff234679
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff232679ff232679ff1a334cff1a334cff232679ff232679ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff132679ff232679ff1a334cff1a334cff134679ff234679ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=ff122384ff122384ff262384ff262384ff122384ff122384ff262384ff262384ff124b84ff124b84ff264b84ff264b84ff124b84ff124b84ff264b84ff264b84
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff262384ff262384ff1a334cff1a334cff262384ff262384ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff122384ff262384ff1a334cff1a334cff124b84ff264b84ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff0d19a6ff0d19a6ff2d19a6ff2d19a6ff0d19a6ff0d19a6ff2d19a6ff2d19a6ff0d59a6ff0d59a6ff2d59a6ff2d59a6ff0d59a6ff0d59a6ff2d59a6ff2d59a6
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff2d19a6ff2d19a6ff1a334cff1a334cff2d19a6ff2d19a6ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0d19a6ff2d19a6ff1a334cff1a334cff0d59a6ff2d59a6ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=ff172d62ff192d62ff1d2d62ff1f2d62ff173162ff193162ff1d3162ff1f3162ff173962ff193962ff1d3962ff1f3962ff173d62ff193d62ff1d3d62ff1f3d62
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1d2d62ff1f2d62ff1a334cff1a334cff1d3162ff1f3162ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff172d62ff1f2d62ff1a334cff1a334cff173d62ff1f3d62ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=ff132679ff172679ff1f2679ff232679ff132e79ff172e79ff1f2e79ff232e79ff133e79ff173e79ff1f3e79ff233e79ff134679ff174679ff1f4679ff234679
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1f2679ff232679ff1a334cff1a334cff1f2e79ff232e79ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff132679ff232679ff1a334cff1a334cff134679ff234679ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=ff122384ff172384ff212384ff262384ff122d84ff172d84ff212d84ff262d84ff124184ff174184ff214184ff264184ff124b84ff174b84ff214b84ff264b84
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff212384ff262384ff1a334cff1a334cff212d84ff262d84ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff122384ff262384ff1a334cff1a334cff124b84ff264b84ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff0d19a6ff1519a6ff2519a6ff2d19a6ff0d29a6ff1529a6ff2529a6ff2d29a6ff0d49a6ff1549a6ff2549a6ff2d49a6ff0d59a6ff1559a6ff2559a6ff2d59a6
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff2519a6ff2d19a6ff1a334cff1a334cff2529a6ff2d29a6ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0d19a6ff2d19a6ff1a334cff1a334cff0d59a6ff2d59a6ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=ff132659ff132659ff1b2659ff1b2659ff132659ff132659ff1b2659ff1b2659ff133659ff133659ff1b3659ff1b3659ff133659ff133659ff1b3659ff1b3659
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1b2659ff1b2659ff1a334cff1a334cff1b2659ff1b2659ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff132659ff1b2659ff1a334cff1a334cff133659ff1b3659ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=ff0d1966ff0d1966ff1d1966ff1d1966ff0d1966ff0d1966ff1d1966ff1d1966ff0d3966ff0d3966ff1d3966ff1d3966ff0d3966ff0d3966ff1d3966ff1d3966
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1d1966ff1d1966ff1a334cff1a334cff1d1966ff1d1966ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0d1966ff1d1966ff1a334cff1a334cff0d3966ff1d3966ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=ff0a136dff0a136dff1e136dff1e136dff0a136dff0a136dff1e136dff1e136dff0a3b6dff0a3b6dff1e3b6dff1e3b6dff0a3b6dff0a3b6dff1e3b6dff1e3b6d
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1e136dff1e136dff1a334cff1a334cff1e136dff1e136dff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0a136dff1e136dff1a334cff1a334cff0a3b6dff1e3b6dff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff000080ff000080ff200080ff200080ff000080ff000080ff200080ff200080ff004080ff004080ff204080ff204080ff004080ff004080ff204080ff204080
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff200080ff200080ff1a334cff1a334cff200080ff200080ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff000080ff200080ff1a334cff1a334cff004080ff204080ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=ff132659ff152659ff192659ff1b2659ff132a59ff152a59ff192a59ff1b2a59ff133259ff153259ff193259ff1b3259ff133659ff153659ff193659ff1b3659
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff192659ff1b2659ff1a334cff1a334cff192a59ff1b2a59ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff132659ff1b2659ff1a334cff1a334cff133659ff1b3659ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=ff0d1966ff111966ff191966ff1d1966ff0d2166ff112166ff192166ff1d2166ff0d3166ff113166ff193166ff1d3166ff0d3966ff113966ff193966ff1d3966
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff191966ff1d1966ff1a334cff1a334cff192166ff1d2166ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0d1966ff1d1966ff1a334cff1a334cff0d3966ff1d3966ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=ff0a136dff0f136dff19136dff1e136dff0a1d6dff0f1d6dff191d6dff1e1d6dff0a316dff0f316dff19316dff1e316dff0a3b6dff0f3b6dff193b6dff1e3b6d
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff19136dff1e136dff1a334cff1a334cff191d6dff1e1d6dff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0a136dff1e136dff1a334cff1a334cff0a3b6dff1e3b6dff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff000080ff080080ff180080ff200080ff001080ff081080ff181080ff201080ff003080ff083080ff183080ff203080ff004080ff084080ff184080ff204080
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff180080ff200080ff1a334cff1a334cff181080ff201080ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=1 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff000080ff200080ff1a334cff1a334cff004080ff204080ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=902b1721902b1721902b1729902b1729902b1721902b1721902b1729902b1729902b2721902b2721902b2729902b2729902b2721902b2721902b2729902b2729
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26902b1729902b1729800d1a26800d1a26902b1729902b1729800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26902b1721902b1729800d1a26800d1a26902b2721902b2729800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=a04a131ca04a131ca04a132ca04a132ca04a131ca04a131ca04a132ca04a132ca04a331ca04a331ca04a332ca04a332ca04a331ca04a331ca04a332ca04a332c
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a04a132ca04a132c800d1a26800d1a26a04a132ca04a132c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a04a131ca04a132c800d1a26800d1a26a04a331ca04a332c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=a859121aa859121aa859122ea859122ea859121aa859121aa859122ea859122ea8593a1aa8593a1aa8593a2ea8593a2ea8593a1aa8593a1aa8593a2ea8593a2e
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a859122ea859122e800d1a26800d1a26a859122ea859122e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a859121aa859122e800d1a26800d1a26a8593a1aa8593a2e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=c0860d13c0860d13c0860d33c0860d33c0860d13c0860d13c0860d33c0860d33c0864d13c0864d13c0864d33c0864d33c0864d13c0864d13c0864d33c0864d33
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0860d33c0860d33800d1a26800d1a26c0860d33c0860d33800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0860d13c0860d33800d1a26800d1a26c0864d13c0864d33800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=902b1721902b1723902b1727902b1729902b1b21902b1b23902b1b27902b1b29902b2321902b2323902b2327902b2329902b2721902b2723902b2727902b2729
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26902b1727902b1729800d1a26800d1a26902b1b27902b1b29800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26902b1721902b1729800d1a26800d1a26902b2721902b2729800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=a04a131ca04a1320a04a1328a04a132ca04a1b1ca04a1b20a04a1b28a04a1b2ca04a2b1ca04a2b20a04a2b28a04a2b2ca04a331ca04a3320a04a3328a04a332c
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a04a1328a04a132c800d1a26800d1a26a04a1b28a04a1b2c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a04a131ca04a132c800d1a26800d1a26a04a331ca04a332c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=a859121aa859121fa8591229a859122ea8591c1aa8591c1fa8591c29a8591c2ea859301aa859301fa8593029a859302ea8593a1aa8593a1fa8593a29a8593a2e
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a8591229a859122e800d1a26800d1a26a8591c29a8591c2e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a859121aa859122e800d1a26800d1a26a8593a1aa8593a2e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=c0860d13c0860d1bc0860d2bc0860d33c0861d13c0861d1bc0861d2bc0861d33c0863d13c0863d1bc0863d2bc0863d33c0864d13c0864d1bc0864d2bc0864d33
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0860d2bc0860d33800d1a26800d1a26c0861d2bc0861d33800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=1 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0860d13c0860d33800d1a26800d1a26c0864d13c0864d33800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=a02a131ca02a131ca02a1324a02a1324a02a131ca02a131ca02a1324a02a1324a02a231ca02a231ca02a2324a02a2324a02a231ca02a231ca02a2324a02a2324
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a02a1324a02a1324800d1a26800d1a26a02a1324a02a1324800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a02a131ca02a1324800d1a26800d1a26a02a231ca02a2324800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=c0460d13c0460d13c0460d23c0460d23c0460d13c0460d13c0460d23c0460d23c0462d13c0462d13c0462d23c0462d23c0462d13c0462d13c0462d23c0462d23
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0460d23c0460d23800d1a26800d1a26c0460d23c0460d23800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0460d13c0460d23800d1a26800d1a26c0462d13c0462d23800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=cf550a0ecf550a0ecf550a22cf550a22cf550a0ecf550a0ecf550a22cf550a22cf55320ecf55320ecf553222cf553222cf55320ecf55320ecf553222cf553222
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf550a22cf550a22800d1a26800d1a26cf550a22cf550a22800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf550a0ecf550a22800d1a26800d1a26cf55320ecf553222800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff800000ff800000ff800020ff800020ff800000ff800000ff800020ff800020ff804000ff804000ff804020ff804020ff804000ff804000ff804020ff804020
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff800020ff800020800d1a26800d1a26ff800020ff800020800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff800000ff800020800d1a26800d1a26ff804000ff804020800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=a02a131ca02a131ea02a1322a02a1324a02a171ca02a171ea02a1722a02a1724a02a1f1ca02a1f1ea02a1f22a02a1f24a02a231ca02a231ea02a2322a02a2324
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a02a1322a02a1324800d1a26800d1a26a02a1722a02a1724800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a02a131ca02a1324800d1a26800d1a26a02a231ca02a2324800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=c0460d13c0460d17c0460d1fc0460d23c0461513c0461517c046151fc0461523c0462513c0462517c046251fc0462523c0462d13c0462d17c0462d1fc0462d23
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0460d1fc0460d23800d1a26800d1a26c046151fc0461523800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0460d13c0460d23800d1a26800d1a26c0462d13c0462d23800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=cf550a0ecf550a13cf550a1dcf550a22cf55140ecf551413cf55141dcf551422cf55280ecf552813cf55281dcf552822cf55320ecf553213cf55321dcf553222
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf550a1dcf550a22800d1a26800d1a26cf55141dcf551422800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf550a0ecf550a22800d1a26800d1a26cf55320ecf553222800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff800000ff800008ff800018ff800020ff801000ff801008ff801018ff801020ff803000ff803008ff803018ff803020ff804000ff804008ff804018ff804020
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff800018ff800020800d1a26800d1a26ff801018ff801020800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=0 alpha=3 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff800000ff800020800d1a26800d1a26ff804000ff804020800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=900b1741900b17419013174190131741900b1741900b17419013174190131741900b2741900b27419013274190132741900b2741900b27419013274190132741
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a269013174190131741800d1a26800d1a269013174190131741800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26900b174190131741800d1a26800d1a26900b274190132741800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=a00a135ca00a135ca01a135ca01a135ca00a135ca00a135ca01a135ca01a135ca00a335ca00a335ca01a335ca01a335ca00a335ca00a335ca01a335ca01a335c
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a01a135ca01a135c800d1a26800d1a26a01a135ca01a135c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a00a135ca01a135c800d1a26800d1a26a00a335ca01a335c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=a809126aa809126aa81d126aa81d126aa809126aa809126aa81d126aa81d126aa8093a6aa8093a6aa81d3a6aa81d3a6aa8093a6aa8093a6aa81d3a6aa81d3a6a
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a81d126aa81d126a800d1a26800d1a26a81d126aa81d126a800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a809126aa81d126a800d1a26800d1a26a8093a6aa81d3a6a800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=c0060d93c0060d93c0260d93c0260d93c0060d93c0060d93c0260d93c0260d93c0064d93c0064d93c0264d93c0264d93c0064d93c0064d93c0264d93c0264d93
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0260d93c0260d93800d1a26800d1a26c0260d93c0260d93800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0060d93c0260d93800d1a26800d1a26c0064d93c0264d93800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=900b1741900d17419011174190131741900b1b41900d1b4190111b4190131b41900b2341900d23419011234190132341900b2741900d27419011274190132741
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a269011174190131741800d1a26800d1a2690111b4190131b41800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26900b174190131741800d1a26800d1a26900b274190132741800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=a00a135ca00e135ca016135ca01a135ca00a1b5ca00e1b5ca0161b5ca01a1b5ca00a2b5ca00e2b5ca0162b5ca01a2b5ca00a335ca00e335ca016335ca01a335c
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a016135ca01a135c800d1a26800d1a26a0161b5ca01a1b5c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a00a135ca01a135c800d1a26800d1a26a00a335ca01a335c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=a809126aa80e126aa818126aa81d126aa8091c6aa80e1c6aa8181c6aa81d1c6aa809306aa80e306aa818306aa81d306aa8093a6aa80e3a6aa8183a6aa81d3a6a
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a818126aa81d126a800d1a26800d1a26a8181c6aa81d1c6a800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a809126aa81d126a800d1a26800d1a26a8093a6aa81d3a6a800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=c0060d93c00e0d93c01e0d93c0260d93c0061d93c00e1d93c01e1d93c0261d93c0063d93c00e3d93c01e3d93c0263d93c0064d93c00e4d93c01e4d93c0264d93
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c01e0d93c0260d93800d1a26800d1a26c01e1d93c0261d93800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=1 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0060d93c0260d93800d1a26800d1a26c0064d93c0264d93800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=a00a133ca00a133ca012133ca012133ca00a133ca00a133ca012133ca012133ca00a233ca00a233ca012233ca012233ca00a233ca00a233ca012233ca012233c
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a012133ca012133c800d1a26800d1a26a012133ca012133c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a00a133ca012133c800d1a26800d1a26a00a233ca012233c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=c0060d53c0060d53c0160d53c0160d53c0060d53c0060d53c0160d53c0160d53c0062d53c0062d53c0162d53c0162d53c0062d53c0062d53c0162d53c0162d53
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0160d53c0160d53800d1a26800d1a26c0160d53c0160d53800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0060d53c0160d53800d1a26800d1a26c0062d53c0162d53800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=cf050a5ecf050a5ecf190a5ecf190a5ecf050a5ecf050a5ecf190a5ecf190a5ecf05325ecf05325ecf19325ecf19325ecf05325ecf05325ecf19325ecf19325e
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf190a5ecf190a5e800d1a26800d1a26cf190a5ecf190a5e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf050a5ecf190a5e800d1a26800d1a26cf05325ecf19325e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff000080ff000080ff200080ff200080ff000080ff000080ff200080ff200080ff004080ff004080ff204080ff204080ff004080ff004080ff204080ff204080
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff200080ff200080800d1a26800d1a26ff200080ff200080800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff000080ff200080800d1a26800d1a26ff004080ff204080800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=a00a133ca00c133ca010133ca012133ca00a173ca00c173ca010173ca012173ca00a1f3ca00c1f3ca0101f3ca0121f3ca00a233ca00c233ca010233ca012233c
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a010133ca012133c800d1a26800d1a26a010173ca012173c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26a00a133ca012133c800d1a26800d1a26a00a233ca012233c800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=c0060d53c00a0d53c0120d53c0160d53c0061553c00a1553c0121553c0161553c0062553c00a2553c0122553c0162553c0062d53c00a2d53c0122d53c0162d53
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0120d53c0160d53800d1a26800d1a26c0121553c0161553800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26c0060d53c0160d53800d1a26800d1a26c0062d53c0162d53800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=cf050a5ecf0a0a5ecf140a5ecf190a5ecf05145ecf0a145ecf14145ecf19145ecf05285ecf0a285ecf14285ecf19285ecf05325ecf0a325ecf14325ecf19325e
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf140a5ecf190a5e800d1a26800d1a26cf14145ecf19145e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26cf050a5ecf190a5e800d1a26800d1a26cf05325ecf19325e800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff000080ff080080ff180080ff200080ff001080ff081080ff181080ff201080ff003080ff083080ff183080ff203080ff004080ff084080ff184080ff204080
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff180080ff200080800d1a26800d1a26ff181080ff201080800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=1 format=1 alpha=3 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=800d1a26800d1a26800d1a26800d1a26800d1a26ff000080ff200080800d1a26800d1a26ff004080ff204080800d1a26800d1a26800d1a26800d1a26800d1a26
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=ff372d42ff372d42ff372d4aff372d4aff372d42ff372d42ff372d4aff372d4aff373d42ff373d42ff373d4aff373d4aff373d42ff373d42ff373d4aff373d4a
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff372d4aff372d4aff1a334cff1a334cff372d4aff372d4aff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff372d42ff372d4aff1a334cff1a334cff373d42ff373d4aff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=ff532639ff532639ff532649ff532649ff532639ff532639ff532649ff532649ff534639ff534639ff534649ff534649ff534639ff534639ff534649ff534649
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff532649ff532649ff1a334cff1a334cff532649ff532649ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff532639ff532649ff1a334cff1a334cff534639ff534649ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=ff622334ff622334ff622348ff622348ff622334ff622334ff622348ff622348ff624b34ff624b34ff624b48ff624b48ff624b34ff624b34ff624b48ff624b48
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff622348ff622348ff1a334cff1a334cff622348ff622348ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff622334ff622348ff1a334cff1a334cff624b34ff624b48ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff8d1926ff8d1926ff8d1946ff8d1946ff8d1926ff8d1926ff8d1946ff8d1946ff8d5926ff8d5926ff8d5946ff8d5946ff8d5926ff8d5926ff8d5946ff8d5946
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff8d1946ff8d1946ff1a334cff1a334cff8d1946ff8d1946ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff8d1926ff8d1946ff1a334cff1a334cff8d5926ff8d5946ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=ff372d42ff372d44ff372d48ff372d4aff373142ff373144ff373148ff37314aff373942ff373944ff373948ff37394aff373d42ff373d44ff373d48ff373d4a
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff372d48ff372d4aff1a334cff1a334cff373148ff37314aff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff372d42ff372d4aff1a334cff1a334cff373d42ff373d4aff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=ff532639ff53263dff532645ff532649ff532e39ff532e3dff532e45ff532e49ff533e39ff533e3dff533e45ff533e49ff534639ff53463dff534645ff534649
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff532645ff532649ff1a334cff1a334cff532e45ff532e49ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff532639ff532649ff1a334cff1a334cff534639ff534649ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=ff622334ff622339ff622343ff622348ff622d34ff622d39ff622d43ff622d48ff624134ff624139ff624143ff624148ff624b34ff624b39ff624b43ff624b48
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff622343ff622348ff1a334cff1a334cff622d43ff622d48ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff622334ff622348ff1a334cff1a334cff624b34ff624b48ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff8d1926ff8d192eff8d193eff8d1946ff8d2926ff8d292eff8d293eff8d2946ff8d4926ff8d492eff8d493eff8d4946ff8d5926ff8d592eff8d593eff8d5946
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff8d193eff8d1946ff1a334cff1a334cff8d293eff8d2946ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=1 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff8d1926ff8d1946ff1a334cff1a334cff8d5926ff8d5946ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=ff332639ff332639ff332641ff332641ff332639ff332639ff332641ff332641ff333639ff333639ff333641ff333641ff333639ff333639ff333641ff333641
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff332641ff332641ff1a334cff1a334cff332641ff332641ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff332639ff332641ff1a334cff1a334cff333639ff333641ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=ff4d1926ff4d1926ff4d1936ff4d1936ff4d1926ff4d1926ff4d1936ff4d1936ff4d3926ff4d3926ff4d3936ff4d3936ff4d3926ff4d3926ff4d3936ff4d3936
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff4d1936ff4d1936ff1a334cff1a334cff4d1936ff4d1936ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff4d1926ff4d1936ff1a334cff1a334cff4d3926ff4d3936ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=ff5a131dff5a131dff5a1331ff5a1331ff5a131dff5a131dff5a1331ff5a1331ff5a3b1dff5a3b1dff5a3b31ff5a3b31ff5a3b1dff5a3b1dff5a3b31ff5a3b31
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff5a1331ff5a1331ff1a334cff1a334cff5a1331ff5a1331ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff5a131dff5a1331ff1a334cff1a334cff5a3b1dff5a3b31ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff800000ff800000ff800020ff800020ff800000ff800000ff800020ff800020ff804000ff804000ff804020ff804020ff804000ff804000ff804020ff804020
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff800020ff800020ff1a334cff1a334cff800020ff800020ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff800000ff800020ff1a334cff1a334cff804000ff804020ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=ff332639ff33263bff33263fff332641ff332a39ff332a3bff332a3fff332a41ff333239ff33323bff33323fff333241ff333639ff33363bff33363fff333641
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff33263fff332641ff1a334cff1a334cff332a3fff332a41ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff332639ff332641ff1a334cff1a334cff333639ff333641ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=ff4d1926ff4d192aff4d1932ff4d1936ff4d2126ff4d212aff4d2132ff4d2136ff4d3126ff4d312aff4d3132ff4d3136ff4d3926ff4d392aff4d3932ff4d3936
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff4d1932ff4d1936ff1a334cff1a334cff4d2132ff4d2136ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff4d1926ff4d1936ff1a334cff1a334cff4d3926ff4d3936ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=ff5a131dff5a1322ff5a132cff5a1331ff5a1d1dff5a1d22ff5a1d2cff5a1d31ff5a311dff5a3122ff5a312cff5a3131ff5a3b1dff5a3b22ff5a3b2cff5a3b31
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff5a132cff5a1331ff1a334cff1a334cff5a1d2cff5a1d31ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff5a131dff5a1331ff1a334cff1a334cff5a3b1dff5a3b31ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff800000ff800008ff800018ff800020ff801000ff801008ff801018ff801020ff803000ff803008ff803018ff803020ff804000ff804008ff804018ff804020
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff800018ff800020ff1a334cff1a334cff801018ff801020ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=0 alpha=3 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff800000ff800020ff1a334cff1a334cff804000ff804020ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=ff172d62ff172d62ff1f2d62ff1f2d62ff172d62ff172d62ff1f2d62ff1f2d62ff173d62ff173d62ff1f3d62ff1f3d62ff173d62ff173d62ff1f3d62ff1f3d62
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1f2d62ff1f2d62ff1a334cff1a334cff1f2d62ff1f2d62ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff172d62ff1f2d62ff1a334cff1a334cff173d62ff1f3d62ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=ff132679ff132679ff232679ff232679ff132679ff132679ff232679ff232679ff134679ff134679ff234679ff234679ff134679ff134679ff234679ff234679
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff232679ff232679ff1a334cff1a334cff232679ff232679ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff132679ff232679ff1a334cff1a334cff134679ff234679ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=ff122384ff122384ff262384ff262384ff122384ff122384ff262384ff262384ff124b84ff124b84ff264b84ff264b84ff124b84ff124b84ff264b84ff264b84
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff262384ff262384ff1a334cff1a334cff262384ff262384ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff122384ff262384ff1a334cff1a334cff124b84ff264b84ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff0d19a6ff0d19a6ff2d19a6ff2d19a6ff0d19a6ff0d19a6ff2d19a6ff2d19a6ff0d59a6ff0d59a6ff2d59a6ff2d59a6ff0d59a6ff0d59a6ff2d59a6ff2d59a6
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff2d19a6ff2d19a6ff1a334cff1a334cff2d19a6ff2d19a6ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0d19a6ff2d19a6ff1a334cff1a334cff0d59a6ff2d59a6ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=ff172d62ff192d62ff1d2d62ff1f2d62ff173162ff193162ff1d3162ff1f3162ff173962ff193962ff1d3962ff1f3962ff173d62ff193d62ff1d3d62ff1f3d62
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1d2d62ff1f2d62ff1a334cff1a334cff1d3162ff1f3162ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff172d62ff1f2d62ff1a334cff1a334cff173d62ff1f3d62ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=ff132679ff172679ff1f2679ff232679ff132e79ff172e79ff1f2e79ff232e79ff133e79ff173e79ff1f3e79ff233e79ff134679ff174679ff1f4679ff234679
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1f2679ff232679ff1a334cff1a334cff1f2e79ff232e79ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff132679ff232679ff1a334cff1a334cff134679ff234679ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=ff122384ff172384ff212384ff262384ff122d84ff172d84ff212d84ff262d84ff124184ff174184ff214184ff264184ff124b84ff174b84ff214b84ff264b84
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff212384ff262384ff1a334cff1a334cff212d84ff262d84ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff122384ff262384ff1a334cff1a334cff124b84ff264b84ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff0d19a6ff1519a6ff2519a6ff2d19a6ff0d29a6ff1529a6ff2529a6ff2d29a6ff0d49a6ff1549a6ff2549a6ff2d49a6ff0d59a6ff1559a6ff2559a6ff2d59a6
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff2519a6ff2d19a6ff1a334cff1a334cff2529a6ff2d29a6ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=1 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0d19a6ff2d19a6ff1a334cff1a334cff0d59a6ff2d59a6ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=1 variant=0 create=00000000 draw=00000000 data=ff132659ff132659ff1b2659ff1b2659ff132659ff132659ff1b2659ff1b2659ff133659ff133659ff1b3659ff1b3659ff133659ff133659ff1b3659ff1b3659
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1b2659ff1b2659ff1a334cff1a334cff1b2659ff1b2659ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff132659ff1b2659ff1a334cff1a334cff133659ff1b3659ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=2 variant=0 create=00000000 draw=00000000 data=ff0d1966ff0d1966ff1d1966ff1d1966ff0d1966ff0d1966ff1d1966ff1d1966ff0d3966ff0d3966ff1d3966ff1d3966ff0d3966ff0d3966ff1d3966ff1d3966
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1d1966ff1d1966ff1a334cff1a334cff1d1966ff1d1966ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0d1966ff1d1966ff1a334cff1a334cff0d3966ff1d3966ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=3 variant=0 create=00000000 draw=00000000 data=ff0a136dff0a136dff1e136dff1e136dff0a136dff0a136dff1e136dff1e136dff0a3b6dff0a3b6dff1e3b6dff1e3b6dff0a3b6dff0a3b6dff1e3b6dff1e3b6d
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1e136dff1e136dff1a334cff1a334cff1e136dff1e136dff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0a136dff1e136dff1a334cff1a334cff0a3b6dff1e3b6dff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=4 variant=0 create=00000000 draw=00000000 data=ff000080ff000080ff200080ff200080ff000080ff000080ff200080ff200080ff004080ff004080ff204080ff204080ff004080ff004080ff204080ff204080
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff200080ff200080ff1a334cff1a334cff200080ff200080ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=0 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff000080ff200080ff1a334cff1a334cff004080ff204080ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=0 variant=0 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=0 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=0 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=1 variant=0 create=00000000 draw=00000000 data=ff132659ff152659ff192659ff1b2659ff132a59ff152a59ff192a59ff1b2a59ff133259ff153259ff193259ff1b3259ff133659ff153659ff193659ff1b3659
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=1 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff192659ff1b2659ff1a334cff1a334cff192a59ff1b2a59ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=1 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff132659ff1b2659ff1a334cff1a334cff133659ff1b3659ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=2 variant=0 create=00000000 draw=00000000 data=ff0d1966ff111966ff191966ff1d1966ff0d2166ff112166ff192166ff1d2166ff0d3166ff113166ff193166ff1d3166ff0d3966ff113966ff193966ff1d3966
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=2 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff191966ff1d1966ff1a334cff1a334cff192166ff1d2166ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=2 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0d1966ff1d1966ff1a334cff1a334cff0d3966ff1d3966ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=3 variant=0 create=00000000 draw=00000000 data=ff0a136dff0f136dff19136dff1e136dff0a1d6dff0f1d6dff191d6dff1e1d6dff0a316dff0f316dff19316dff1e316dff0a3b6dff0f3b6dff193b6dff1e3b6d
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=3 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff19136dff1e136dff1a334cff1a334cff191d6dff1e1d6dff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=3 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff0a136dff1e136dff1a334cff1a334cff0a3b6dff1e3b6dff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=4 variant=0 create=00000000 draw=00000000 data=ff000080ff080080ff180080ff200080ff001080ff081080ff181080ff201080ff003080ff083080ff183080ff203080ff004080ff084080ff184080ff204080
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=4 variant=1 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff180080ff200080ff1a334cff1a334cff181080ff201080ff1a334cff1a334cff1a334cff1a334cff1a334c
+pixels target=2 target_alpha=3 format=1 alpha=3 interpolation=1 opacity=4 variant=2 create=00000000 draw=00000000 data=ff1a334cff1a334cff1a334cff1a334cff1a334cff000080ff200080ff1a334cff1a334cff004080ff204080ff1a334cff1a334cff1a334cff1a334cff1a334c

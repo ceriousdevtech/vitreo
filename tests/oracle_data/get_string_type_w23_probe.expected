@@ -1,0 +1,20 @@
+c2_A r=1 e=dead t=1
+c2_he r=1 e=dead t=2
+c2_ar r=1 e=dead t=2
+c2_5 r=1 e=dead t=3
+c2_sp r=1 e=dead t=a
+c2_nl r=1 e=dead t=8
+c2_dot r=1 e=dead t=7
+c2_comb r=1 e=dead t=b
+c3_A r=1 e=dead t=8040
+c3_cjk r=1 e=dead t=8100
+c3_hira r=1 e=dead t=8020
+c3_kata r=1 e=dead t=8090
+c3_comb r=1 e=dead t=3
+c3_sym r=1 e=dead t=8
+c3_fw r=1 e=dead t=8080
+c3_hw r=1 e=dead t=8050
+bad_type r=1 e=dead
+null_src r=0 e=57
+null_out r=0 e=57
+neg2 r=1 e=dead t0=382 t1=382

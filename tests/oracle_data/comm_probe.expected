@@ -1,0 +1,303 @@
+file ClearCommBreak ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file ClearCommError ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file ClearCommError_nulls ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file EscapeCommFunction_SETDTR ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file GetCommConfig ret=00000000 err=00000057 buf_touched=0032 word=00000034
+file GetCommMask ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file GetCommModemStatus ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file GetCommProperties ret=00000000 err=00000057 buf_touched=0040 word=cccccccc
+file GetCommState ret=00000000 err=00000057 buf_touched=001c word=cccccccc
+file GetCommTimeouts ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file PurgeComm ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file PurgeComm_badflags ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file SetCommBreak ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file SetCommConfig ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file SetCommMask ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file SetCommState ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file SetCommTimeouts ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file SetupComm ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file TransmitCommChar ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+file WaitCommEvent ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir ClearCommBreak ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir ClearCommError ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir ClearCommError_nulls ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir EscapeCommFunction_SETDTR ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir GetCommConfig ret=00000000 err=00000057 buf_touched=0032 word=00000034
+dir GetCommMask ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir GetCommModemStatus ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir GetCommProperties ret=00000000 err=00000057 buf_touched=0040 word=cccccccc
+dir GetCommState ret=00000000 err=00000057 buf_touched=001c word=cccccccc
+dir GetCommTimeouts ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir PurgeComm ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir PurgeComm_badflags ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir SetCommBreak ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir SetCommConfig ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir SetCommMask ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir SetCommState ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir SetCommTimeouts ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir SetupComm ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir TransmitCommChar ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+dir WaitCommEvent ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+anon_pipe ClearCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe ClearCommError ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe ClearCommError_nulls ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe EscapeCommFunction_SETDTR ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+anon_pipe GetCommConfig ret=00000000 err=00000001 buf_touched=0032 word=00000034
+anon_pipe GetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe GetCommModemStatus ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe GetCommProperties ret=00000000 err=00000001 buf_touched=0040 word=cccccccc
+anon_pipe GetCommState ret=00000000 err=00000001 buf_touched=001c word=cccccccc
+anon_pipe GetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe PurgeComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe PurgeComm_badflags ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe SetCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe SetCommConfig ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe SetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe SetCommState ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe SetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe SetupComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe TransmitCommChar ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+anon_pipe WaitCommEvent ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe ClearCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe ClearCommError ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe ClearCommError_nulls ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe EscapeCommFunction_SETDTR ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+named_pipe GetCommConfig ret=00000000 err=00000001 buf_touched=0032 word=00000034
+named_pipe GetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe GetCommModemStatus ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe GetCommProperties ret=00000000 err=00000001 buf_touched=0040 word=cccccccc
+named_pipe GetCommState ret=00000000 err=00000001 buf_touched=001c word=cccccccc
+named_pipe GetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe PurgeComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe PurgeComm_badflags ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe SetCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe SetCommConfig ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe SetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe SetCommState ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe SetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe SetupComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe TransmitCommChar ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+named_pipe WaitCommEvent ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+event ClearCommBreak ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event ClearCommError ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event ClearCommError_nulls ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event EscapeCommFunction_SETDTR ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+event GetCommConfig ret=00000000 err=00000006 buf_touched=0032 word=00000034
+event GetCommMask ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event GetCommModemStatus ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event GetCommProperties ret=00000000 err=00000006 buf_touched=0040 word=cccccccc
+event GetCommState ret=00000000 err=00000006 buf_touched=001c word=cccccccc
+event GetCommTimeouts ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event PurgeComm ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event PurgeComm_badflags ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event SetCommBreak ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event SetCommConfig ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event SetCommMask ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event SetCommState ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event SetCommTimeouts ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event SetupComm ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event TransmitCommChar ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+event WaitCommEvent ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+nul ClearCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul ClearCommError ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul ClearCommError_nulls ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul EscapeCommFunction_SETDTR ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+nul GetCommConfig ret=00000000 err=00000001 buf_touched=0032 word=00000034
+nul GetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul GetCommModemStatus ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul GetCommProperties ret=00000000 err=00000001 buf_touched=0040 word=cccccccc
+nul GetCommState ret=00000000 err=00000001 buf_touched=001c word=cccccccc
+nul GetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul PurgeComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul PurgeComm_badflags ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul SetCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul SetCommConfig ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul SetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul SetCommState ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul SetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul SetupComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul TransmitCommChar ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+nul WaitCommEvent ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout_open=ok
+conout ClearCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout ClearCommError ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout ClearCommError_nulls ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout EscapeCommFunction_SETDTR ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+conout GetCommConfig ret=00000000 err=00000001 buf_touched=0032 word=00000034
+conout GetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout GetCommModemStatus ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout GetCommProperties ret=00000000 err=00000001 buf_touched=0040 word=cccccccc
+conout GetCommState ret=00000000 err=00000001 buf_touched=001c word=cccccccc
+conout GetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout PurgeComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout PurgeComm_badflags ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout SetCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout SetCommConfig ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout SetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout SetCommState ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout SetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout SetupComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout TransmitCommChar ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+conout WaitCommEvent ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot_open=ok
+mailslot ClearCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot ClearCommError ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot ClearCommError_nulls ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot EscapeCommFunction_SETDTR ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+mailslot GetCommConfig ret=00000000 err=00000001 buf_touched=0032 word=00000034
+mailslot GetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot GetCommModemStatus ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot GetCommProperties ret=00000000 err=00000001 buf_touched=0040 word=cccccccc
+mailslot GetCommState ret=00000000 err=00000001 buf_touched=001c word=cccccccc
+mailslot GetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot PurgeComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot PurgeComm_badflags ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot SetCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot SetCommConfig ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot SetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot SetCommState ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot SetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot SetupComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot TransmitCommChar ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+mailslot WaitCommEvent ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume_open=ok
+volume ClearCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume ClearCommError ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume ClearCommError_nulls ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume EscapeCommFunction_SETDTR ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+volume GetCommConfig ret=00000000 err=00000001 buf_touched=0032 word=00000034
+volume GetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume GetCommModemStatus ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume GetCommProperties ret=00000000 err=00000001 buf_touched=0040 word=cccccccc
+volume GetCommState ret=00000000 err=00000001 buf_touched=001c word=cccccccc
+volume GetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume PurgeComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume PurgeComm_badflags ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume SetCommBreak ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume SetCommConfig ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume SetCommMask ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume SetCommState ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume SetCommTimeouts ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume SetupComm ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume TransmitCommChar ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+volume WaitCommEvent ret=00000000 err=00000001 buf_touched=0000 word=cccccccc
+null ClearCommBreak ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null ClearCommError ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null ClearCommError_nulls ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null EscapeCommFunction_SETDTR ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+null GetCommConfig ret=00000000 err=00000006 buf_touched=0032 word=00000034
+null GetCommMask ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null GetCommModemStatus ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null GetCommProperties ret=00000000 err=00000006 buf_touched=0040 word=cccccccc
+null GetCommState ret=00000000 err=00000006 buf_touched=001c word=cccccccc
+null GetCommTimeouts ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null PurgeComm ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null PurgeComm_badflags ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null SetCommBreak ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null SetCommConfig ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null SetCommMask ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null SetCommState ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null SetCommTimeouts ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null SetupComm ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null TransmitCommChar ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+null WaitCommEvent ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid ClearCommBreak ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid ClearCommError ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid ClearCommError_nulls ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid EscapeCommFunction_SETDTR ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+invalid GetCommConfig ret=00000000 err=00000006 buf_touched=0032 word=00000034
+invalid GetCommMask ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid GetCommModemStatus ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid GetCommProperties ret=00000000 err=00000006 buf_touched=0040 word=cccccccc
+invalid GetCommState ret=00000000 err=00000006 buf_touched=001c word=cccccccc
+invalid GetCommTimeouts ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid PurgeComm ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid PurgeComm_badflags ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid SetCommBreak ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid SetCommConfig ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid SetCommMask ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid SetCommState ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid SetCommTimeouts ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid SetupComm ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid TransmitCommChar ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+invalid WaitCommEvent ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus ClearCommBreak ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus ClearCommError ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus ClearCommError_nulls ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus EscapeCommFunction_SETDTR ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus EscapeCommFunction_bad ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+bogus GetCommConfig ret=00000000 err=00000006 buf_touched=0032 word=00000034
+bogus GetCommMask ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus GetCommModemStatus ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus GetCommProperties ret=00000000 err=00000006 buf_touched=0040 word=cccccccc
+bogus GetCommState ret=00000000 err=00000006 buf_touched=001c word=cccccccc
+bogus GetCommTimeouts ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus PurgeComm ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus PurgeComm_badflags ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus SetCommBreak ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus SetCommConfig ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus SetCommMask ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus SetCommState ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus SetCommTimeouts ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus SetupComm ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus TransmitCommChar ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+bogus WaitCommEvent ret=00000000 err=00000006 buf_touched=0000 word=cccccccc
+# output bytes left by failing calls (file handle)
+GetCommProperties_bytes=00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+GetCommConfig_bytes=34000000010000001c0000000000000001000000000000000000000000000000000000000100000000000000000000000000cccc
+GetCommState_bytes=1c000000000000000100000000000000000000000000000000000000
+file GetCommConfig_small ret=00000000 err=00000057 buf_touched=0000 word=00000034
+file GetCommConfig_big ret=00000000 err=00000057 buf_touched=0032 word=00000034
+event GetCommConfig_size0 ret=00000000 err=00000057 buf_touched=0000 word=00000034
+file GetCommState_len0 ret=00000000 err=00000057 buf_touched=001c word=cccccccc
+GetCommState_len0_bytes=1c000000000000000100000000000000000000000000000000000000
+# EscapeCommFunction code validation (event handle)
+EscapeCommFunction code=00 ret=00000000 err=00000057
+EscapeCommFunction code=01 ret=00000000 err=00000006
+EscapeCommFunction code=02 ret=00000000 err=00000006
+EscapeCommFunction code=03 ret=00000000 err=00000006
+EscapeCommFunction code=04 ret=00000000 err=00000006
+EscapeCommFunction code=05 ret=00000000 err=00000006
+EscapeCommFunction code=06 ret=00000000 err=00000006
+EscapeCommFunction code=07 ret=00000000 err=00000006
+EscapeCommFunction code=08 ret=00000000 err=00000006
+EscapeCommFunction code=09 ret=00000000 err=00000006
+EscapeCommFunction code=0a ret=00000000 err=00000057
+EscapeCommFunction code=0b ret=00000000 err=00000057
+EscapeCommFunction code=0c ret=00000000 err=00000057
+# name-based
+CreateFileW_COM1 ok=1 err=00000000
+CreateFileW_dotCOM1 ok=1 err=00000000
+CreateFileW_COM9 ok=0 err=00000002
+CreateFileW_LPT1 ok=0 err=00000002
+CreateFileW_COM0 ok=0 err=00000002
+name GetDefaultCommConfigW_COM1 ret=00000000 err=00000057 buf_touched=0030 word=00000034
+name GetDefaultCommConfigA_COM1 ret=00000000 err=00000057 buf_touched=0030 word=00000034
+name GetDefaultCommConfigW_COM1_small ret=00000000 err=0000007a buf_touched=0000 word=00000034
+name GetDefaultCommConfigW_BOGUS ret=00000000 err=00000057 buf_touched=0000 word=00000034
+name GetDefaultCommConfigW_COM9 ret=00000000 err=00000057 buf_touched=0000 word=00000034
+name GetDefaultCommConfigA_COM9 ret=00000000 err=00000057 buf_touched=0000 word=00000034
+name GetDefaultCommConfigW_COM9_small ret=00000000 err=00000057 buf_touched=0000 word=00000004
+name GetDefaultCommConfigW_null ret=00000000 err=00000057 buf_touched=0000 word=00000034
+name SetDefaultCommConfigW_COM1 ret=00000001 err=00000006 buf_touched=0000 word=cccccccc
+name SetDefaultCommConfigA_COM1 ret=00000001 err=00000006 buf_touched=0000 word=cccccccc
+name SetDefaultCommConfigW_COM9 ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+name SetDefaultCommConfigA_COM9 ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+name SetDefaultCommConfigW_BOGUS ret=00000000 err=00000057 buf_touched=0000 word=cccccccc
+GetCommPorts_present=1 OpenCommPort_present=1
+GetCommPorts hr=00000000 err=00000000 found=00000001 ports0=00000001
+GetCommPorts_null hr=000000ea err=000000ea found=00000001
+OpenCommPort_0 ok=0 err=00000002
+OpenCommPort_1 ok=1 err=00000000
+OpenCommPort_2 ok=0 err=00000002

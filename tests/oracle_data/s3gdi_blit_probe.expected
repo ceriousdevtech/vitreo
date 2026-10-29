@@ -1,0 +1,433 @@
+# reserved byte left by each op (dst preset 80aabbcc, src 40112233)
+FillRect r=1 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+FillRect row0 r=1 80aabbcc 00ff0000 00ff0000 80aabbcc
+SetPixel r=197121 80aabbcc 00010203 80aabbcc 80aabbcc
+SetPixelV r=1 80aabbcc 80aabbcc 00010203 80aabbcc
+GetPixel r=13417386 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+BitBlt SRCCOPY r=1 80aabbcc 40112233 40112233 80aabbcc
+BitBlt SRCAND r=1 80aabbcc 00002200 00002200 80aabbcc
+BitBlt SRCPAINT r=1 80aabbcc c0bbbbff c0bbbbff 80aabbcc
+BitBlt SRCINVERT r=1 80aabbcc c0bb99ff c0bb99ff 80aabbcc
+BitBlt NOTSRCCOPY r=1 80aabbcc bfeeddcc bfeeddcc 80aabbcc
+BitBlt DSTINVERT r=1 80aabbcc 7f554433 7f554433 80aabbcc
+BitBlt BLACKNESS r=1 80aabbcc 00000000 00000000 80aabbcc
+BitBlt WHITENESS r=1 80aabbcc ffffffff ffffffff 80aabbcc
+BitBlt PATCOPY r=1 80aabbcc 00ff0000 00ff0000 80aabbcc
+PatBlt PATCOPY r=1 80aabbcc 00ff0000 00ff0000 80aabbcc
+PatBlt PATINVERT r=1 80aabbcc 8055bbcc 8055bbcc 80aabbcc
+PatBlt DSTINVERT r=1 80aabbcc 7f554433 7f554433 80aabbcc
+PatBlt BLACKNESS r=1 80aabbcc 00000000 00000000 80aabbcc
+PatBlt WHITENESS r=1 80aabbcc ffffffff ffffffff 80aabbcc
+PatBlt SRCCOPY(invalid) r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=57005
+BitBlt MERGECOPY r=1 80aabbcc 00110000 00110000 80aabbcc
+BitBlt MERGEPAINT r=1 80aabbcc bfeeffcc bfeeffcc 80aabbcc
+BitBlt PATPAINT r=1 80aabbcc bfffffcc bfffffcc 80aabbcc
+BitBlt NOTSRCERASE r=1 80aabbcc 3f444400 3f444400 80aabbcc
+BitBlt SRCERASE r=1 80aabbcc 40110033 40110033 80aabbcc
+BitBlt 0xB8074A r=1 80aabbcc 00ee2200 00ee2200 80aabbcc
+BitBlt 0xE20746 r=1 80aabbcc 80bb99cc 80bb99cc 80aabbcc
+BitBlt 0x00AA0029(D) r=1 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+BitBlt 0x0096xxxx r=1 80aabbcc c04499ff c04499ff 80aabbcc
+BitBlt rop-lowword-junk r=1 80aabbcc 40112233 40112233 80aabbcc
+BitBlt CAPTUREBLT|SRCCOPY r=1 80aabbcc 40112233 40112233 80aabbcc
+BitBlt NOMIRRORBITMAP|SRCCOPY r=1 80aabbcc 40112233 40112233 80aabbcc
+StretchBlt SRCCOPY 2x r=1 40112233 40112233 40112233 40112233
+StretchDIBits-like BitBlt negative width r=1 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+LineTo r=1 0000ff00 0000ff00 0000ff00 80aabbcc
+Rectangle r=1 0000ff00 0000ff00 0000ff00 0000ff00
+ExtTextOut opaque empty r=1 00102030 00102030 80aabbcc 80aabbcc
+# ROP3 boolean on full 32 bits
+rop 00000042 r=1 -> 00000000
+rop 00010289 r=1 -> f0005000
+rop 00020c89 r=1 -> 000c0003
+rop 000300aa r=1 -> f00c5003
+rop 00050329 r=1 -> ff005500
+rop 000a0329 r=1 -> 00cc0033
+rop 000f0001 r=1 -> ffcc5533
+rop 00110c6a r=1 -> f000f000
+rop 00220326 r=1 -> 000f000f
+rop 0030032a r=1 -> 0003a00c
+rop 00330008 r=1 -> f00ff00f
+rop 003c004a r=1 -> 0fc3a53c
+rop 00440328 r=1 -> 0f000f00
+rop 00500325 r=1 -> 0000aa00
+rop 00550009 r=1 -> ff00ff00
+rop 005a0049 r=1 -> 00ccaa33
+rop 005f00e9 r=1 -> ffccff33
+rop 00660046 r=1 -> 0f0f0f0f
+rop 00770e06 r=1 -> ff0fff0f
+rop 00880c6a r=1 -> 00f000f0
+rop 00990066 r=1 -> f0f0f0f0
+rop 00aa0029 r=1 -> 00ff00ff
+rop 00af0229 r=1 -> ffff55ff
+rop 00b8074a r=1 -> 00f3a0fc
+rop 00bb0226 r=1 -> f0fff0ff
+rop 00c000ca r=1 -> 00300ac0
+rop 00cc0020 r=1 -> 0ff00ff0
+rop 00dd0228 r=1 -> fff0fff0
+rop 00e20746 r=1 -> 003f0acf
+rop 00ee0086 r=1 -> 0fff0fff
+rop 00f00021 r=1 -> 0033aacc
+rop 00fb0a09 r=1 -> f0fffaff
+rop 00ff0062 r=1 -> ffffffff
+rop 006a01e9 r=1 -> 00cf0a3f
+rop 00c5ffff r=1 -> ff305fc0
+# colour <-> monochrome
+color->mono srcbk=102030 bits=0000
+color->mono srcbk=ffffff bits=8000
+color->mono srcbk=808080 bits=1000
+mono->color SRCCOPY text=112233 bk=445566 r=1
+  00445566 00112233 00445566 00112233 00112233 00445566 00112233 00445566
+  00112233 00112233 00112233 00112233 00445566 00445566 00445566 00445566
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+mono->color src dc colours changed r=1
+  00445566 00112233 00445566 00112233 00112233 00445566 00112233 00445566
+  00112233 00112233 00112233 00112233 00445566 00445566 00445566 00445566
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+mono->color SRCAND r=1
+  00001144 00002200 00001144 00002200 00002200 00001144 00002200 00001144
+  00002200 00002200 00002200 00002200 00001144 00001144 00001144 00001144
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+mono->color SRCINVERT r=1
+  80eeeeaa 80bb99ff 80eeeeaa 80bb99ff 80bb99ff 80eeeeaa 80bb99ff 80eeeeaa
+  80bb99ff 80bb99ff 80bb99ff 80bb99ff 80eeeeaa 80eeeeaa 80eeeeaa 80eeeeaa
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+mono draw 000000 fill=00 setpixel_ret=000000 getpixel=000000 row1=00
+mono draw ffffff fill=ff setpixel_ret=ffffff getpixel=ffffff row1=80
+mono draw 808080 fill=00 setpixel_ret=ffffff getpixel=ffffff row1=80
+mono draw 7f7f7f fill=00 setpixel_ret=000000 getpixel=000000 row1=00
+mono draw 0000ff fill=00 setpixel_ret=000000 getpixel=000000 row1=00
+mono draw ffff00 fill=00 setpixel_ret=ffffff getpixel=ffffff row1=80
+mono draw c0c0c0 fill=00 setpixel_ret=ffffff getpixel=ffffff row1=80
+mono draw 101010 fill=00 setpixel_ret=000000 getpixel=000000 row1=00
+mono draw 808080 with bk=808080 fill=ff
+mono->mono copy bits=a5000f00
+mono->mono notsrc bits=5a00f000
+# clipping and mapping
+BitBlt clipped r=1
+  80aabbcc 40112233 40112233 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 40112233 40112233 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+FillRect clipped r=1
+  80aabbcc 00ff0000 00ff0000 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 00ff0000 00ff0000 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+BitBlt vporg(2,1) r=1
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 40112233 40112233 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+FillRect vporg(2,1) r=1
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 00ff0000 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+BitBlt src vporg(1,0) r=1
+  01010203 02020406 03030609 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+BitBlt src out of bounds r=1
+  1e1e3c5a 1f1f3e5d 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+BitBlt src negative r=1
+  80aabbcc 00000000 01010203 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+FillRect intersect+exclude r=1
+  00ff0000 00ff0000 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 00ff0000 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00ff0000 00ff0000 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00ff0000 00ff0000 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+# StretchBlt
+stretch up 3x2->8x4 mode=1 r=1
+  00000010 00000010 00000010 00100010 00100010 00200010 00200010 00200010
+  00000010 00000010 00000010 00100010 00100010 00200010 00200010 00200010
+  00001010 00001010 00001010 00101010 00101010 00201010 00201010 00201010
+  00001010 00001010 00001010 00101010 00101010 00201010 00201010 00201010
+stretch down 8x4->3x2 mode=1 r=1
+  00000010 00000010 00400010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00002010 00002010 00402010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+stretch up 3x2->8x4 mode=2 r=1
+  00000010 00000010 00000010 00100010 00100010 00200010 00200010 00200010
+  00000010 00000010 00000010 00100010 00100010 00200010 00200010 00200010
+  00001010 00001010 00001010 00101010 00101010 00201010 00201010 00201010
+  00001010 00001010 00001010 00101010 00101010 00201010 00201010 00201010
+stretch down 8x4->3x2 mode=2 r=1
+  00101010 00701010 00701010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00103010 00703010 00703010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+stretch up 3x2->8x4 mode=3 r=1
+  00000010 00000010 00000010 00100010 00100010 00200010 00200010 00200010
+  00000010 00000010 00000010 00100010 00100010 00200010 00200010 00200010
+  00001010 00001010 00001010 00101010 00101010 00201010 00201010 00201010
+  00001010 00001010 00001010 00101010 00101010 00201010 00201010 00201010
+stretch down 8x4->3x2 mode=3 r=1
+  00101010 00401010 00601010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00103010 00403010 00603010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+stretch up 3x2->8x4 mode=4 r=1
+  00000010 00000010 00000010 00100010 00100010 00200010 00200010 00200010
+  00000010 00000010 00000010 00100010 00100010 00200010 00200010 00200010
+  00001010 00001010 00001010 00101010 00101010 00201010 00201010 00201010
+  00001010 00001010 00001010 00101010 00101010 00201010 00201010 00201010
+stretch down 8x4->3x2 mode=4 r=1
+  00080410 00380410 00670410 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00082c10 00382c10 00672c10 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+stretch mirror x r=1
+  80aabbcc 00200010 00100010 00000010 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+stretch mirror src x r=1
+  00300010 00200010 00100010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+stretch mirror y r=1
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00001010 00101010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00000010 00100010 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SetStretchBltMode(0)=5 SetStretchBltMode(5)=3 get=3
+# AlphaBlend
+AB per-pixel 255 r=1 c0957d76 ff804020 80aabbcc a0bfccd9
+AB per-pixel 255 dstA=0 r=1 80957d76 ff804020 00aabbcc 40bfccd9
+AB per-pixel 128 r=1 a09f9ca1 c0957d76 80aabbcc 90b5c4d2
+AB const 128 r=1 80756d6e c0957d76 40555d66 60757d86
+AB const 255 r=1 80402010 ff804020 00000000 40404040
+AB const 0 r=1 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+AB stretch 2->4 r=1 c0957d76 c0957d76 ff804020 ff804020
+AB src out of bounds r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=87
+AB negative width r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=87
+AB blendop=1 r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=87
+AB flags=1 r=1 c0957d76 ff804020 80aabbcc a0bfccd9
+  err=57005
+AB alphaformat=2 r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=87
+AB same dc overlap r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=87
+AB sweep a=  0 src=00000000 dst=c0336699
+AB sweep a= 17 src=110d0500 dst=c43d648f
+AB sweep a= 34 src=221a0b00 dst=c8466385
+AB sweep a= 51 src=33281101 dst=cd51637b
+AB sweep a= 68 src=44351601 dst=d15a6171
+AB sweep a= 85 src=55421c02 dst=d5646068
+AB sweep a=102 src=66502202 dst=d96f5f5e
+AB sweep a=119 src=775d2703 dst=dd785d55
+AB sweep a=136 src=886a2d03 dst=e2825d4a
+AB sweep a=153 src=99783304 dst=e68c5c41
+AB sweep a=170 src=aa853804 dst=ea965a37
+AB sweep a=187 src=bb923e05 dst=eea0592e
+AB sweep a=204 src=cca04405 dst=f2aa5824
+AB sweep a=221 src=ddad4906 dst=f7b4571a
+AB sweep a=238 src=eeba4f06 dst=fbbd5610
+AB sweep a=255 src=ffc85507 dst=ffc85507
+AB const sweep ca=  1 dst=c0336699
+AB const sweep ca= 52 dst=b32c7fab
+AB const sweep ca=103 dst=a62597bc
+AB const sweep ca=154 dst=991eb0ce
+AB const sweep ca=205 dst=8c17c8df
+# TransparentBlt
+TB key ff00ff r=1 00123456 80aabbcc 00123456 80aabbcc
+TB key 563412 r=1 00123456 00ff00ff 00123456 00ff00ff
+TB stretch r=1 00123456 00123456 80aabbcc 80aabbcc
+TB negative r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=57005
+# GradientFill
+GF rect H r=1
+  80ff0000 8fdf001f 9fbf003f af9f005f bf7f007f cf5f009f df3f00bf ef1f00df
+  80ff0000 8fdf001f 9fbf003f af9f005f bf7f007f cf5f009f df3f00bf ef1f00df
+  80ff0000 8fdf001f 9fbf003f af9f005f bf7f007f cf5f009f df3f00bf ef1f00df
+  80ff0000 8fdf001f 9fbf003f af9f005f bf7f007f cf5f009f df3f00bf ef1f00df
+GF rect V r=1
+  80ff0000 80ff0000 80ff0000 80ff0000 80ff0000 80ff0000 80ff0000 80ff0000
+  9fbf003f 9fbf003f 9fbf003f 9fbf003f 9fbf003f 9fbf003f 9fbf003f 9fbf003f
+  bf7f007f bf7f007f bf7f007f bf7f007f bf7f007f bf7f007f bf7f007f bf7f007f
+  df3f00bf df3f00bf df3f00bf df3f00bf df3f00bf df3f00bf df3f00bf df3f00bf
+GF triangle r=1
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  60bf3f00 7fbf1f1f 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  407f7f00 5f7f5f1f 7f7f3f3f 9f7f1f5f 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  203fbf00 3f3f9f1f 5f3f7f3f 7f3f5f5f 9f3f3f7f bf3f1f9f 80aabbcc 80aabbcc
+GF bad mode r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=87
+GF bad index r=0 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  err=57005
+# hatch brushes (bk opaque 102030 / transparent), text colour ignored
+hatch 0 mode=1
+  ........
+  ........
+  ........
+  XXXXXXXX
+hatch 0 mode=2
+  ........
+  ........
+  ........
+  XXXXXXXX
+hatch 1 mode=1
+  ....X...
+  ....X...
+  ....X...
+  ....X...
+hatch 1 mode=2
+  ....X...
+  ....X...
+  ....X...
+  ....X...
+hatch 2 mode=1
+  X.......
+  .X......
+  ..X.....
+  ...X....
+hatch 2 mode=2
+  X.......
+  .X......
+  ..X.....
+  ...X....
+hatch 3 mode=1
+  .......X
+  ......X.
+  .....X..
+  ....X...
+hatch 3 mode=2
+  .......X
+  ......X.
+  .....X..
+  ....X...
+hatch 4 mode=1
+  ....X...
+  ....X...
+  ....X...
+  XXXXXXXX
+hatch 4 mode=2
+  ....X...
+  ....X...
+  ....X...
+  XXXXXXXX
+hatch 5 mode=1
+  X......X
+  .X....X.
+  ..X..X..
+  ...XX...
+hatch 5 mode=2
+  X......X
+  .X....X.
+  ..X..X..
+  ...XX...
+hatch cross brushorg(3,1)
+  .......X
+  .......X
+  .......X
+  .......X
+# StretchDIBits / SetDIBitsToDevice
+SDIB bu 3x2 r=2
+  04040404 05050505 06060606 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  01010101 02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB bu src(1,1) 2x1 r=2
+  05050505 06060606 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB bu stretch 6x4 r=2
+  04040404 04040404 05050505 05050505 06060606 06060606 80aabbcc 80aabbcc
+  04040404 04040404 05050505 05050505 06060606 06060606 80aabbcc 80aabbcc
+  01010101 01010101 02020202 02020202 03030303 03030303 80aabbcc 80aabbcc
+  01010101 01010101 02020202 02020202 03030303 03030303 80aabbcc 80aabbcc
+SDIB bu SRCINVERT r=2
+  84aebfc8 85afbec9 86acbdca 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  81abbacd 82a8b9ce 83a9b8cf 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB flip dst h r=2
+  01010101 02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  04040404 05050505 06060606 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB td 3x2 r=2
+  01010101 02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  04040404 05050505 06060606 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB td src(1,1) 2x1 r=2
+  02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDTD bu all r=2
+  04040404 05050505 06060606 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  01010101 02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDTD bu start1 lines1 r=1
+  01010101 02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDTD bu ysrc1 r=2
+  04040404 05050505 06060606 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDTD bu lines5 r=2
+  04040404 05050505 06060606 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  01010101 02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDTD td all r=2
+  01010101 02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  04040404 05050505 06060606 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDTD td start1 lines1 r=1
+  01010101 02020202 03030303 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB 1bpp r=2
+  00112233 00445566 00445566 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  00445566 00112233 00445566 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB 16bpp 565 r=1
+  00ff0000 0000ff00 000000ff 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB 16bpp 555 expand r=1
+  00080808 00181818 00ffffff 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB 32bpp BGR-swapped bitfields r=1
+  00332211 00665544 00998877 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB 32bpp narrow bitfields r=1
+  00ffffff 00860811 00000400 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+  80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc 80aabbcc
+SDIB null bits r=0 err=57005

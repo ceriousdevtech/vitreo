@@ -1,0 +1,147 @@
+# loader_contract_probe.exe run from C:\oracle\prc with loader_contract_dll.dll, loader_contract_exe.exe, lc_data.dll, lc_app.dll, sub\lc_sub.dll (Windows 11 x64)
+== exe as library
+LoadLibraryW(exe) -> module
+exe_fn found
+exe_fn() -> 7
+GetModuleHandleW(dependency) -> null err=7e
+FreeLibrary(exe) -> 1 err=dead
+== DllMain FALSE
+  [dll loader_contract_dll.dll] reason=1 reserved=null -> FALSE
+  [dll loader_contract_dll.dll] reason=0 reserved=null -> TRUE
+LoadLibraryW(dll) fail#1 -> null err=45a
+GetModuleHandleW after fail -> null err=7e
+  [dll loader_contract_dll.dll] reason=1 reserved=null -> FALSE
+  [dll loader_contract_dll.dll] reason=0 reserved=null -> TRUE
+LoadLibraryW(dll) fail#2 -> null err=45a
+  [dll loader_contract_dll.dll] reason=1 reserved=null -> TRUE
+LoadLibraryW(dll) ok -> module
+== FreeLibrary to zero
+  [dll loader_contract_dll.dll] reason=0 reserved=null -> TRUE
+FreeLibrary#1 -> 1 err=0
+GetModuleHandleW after free -> null err=7e
+GetModuleHandleExW(UNCHANGED) after free -> 0 err=7e
+FreeLibrary#2 (stale) -> 0 err=7e
+== DONT_RESOLVE_DLL_REFERENCES
+LoadLibraryExW(DONT_RESOLVE) -> module
+prc_value found
+LoadLibraryW after DONT_RESOLVE -> module
+same handle yes
+GetModuleHandleW after both frees -> null err=7e
+== AS_DATAFILE family
+flags=2
+  LoadLibraryExW(lc_data) -> tag+1
+  second load same handle no
+  GetModuleHandleW(lc_data) -> null err=7e
+  GetProcAddress(data,prc_value) -> 0 err=7e
+  LoadStringW(7) -> 13 err=dead
+  text=hello from resource
+  FindResourceW(RT_STRING,1) nonnull -> 1 err=dead
+  SizeofResource -> 46
+  GetModuleFileNameW(data) -> 0 err=7e
+  FreeLibrary(data)#1 -> 1 err=dead
+  FreeLibrary(data)#2 -> 1 err=dead
+flags=40
+  LoadLibraryExW(lc_data) -> tag+1
+  second load same handle no
+  GetModuleHandleW(lc_data) -> null err=7e
+  GetProcAddress(data,prc_value) -> 0 err=7e
+  LoadStringW(7) -> 13 err=dead
+  text=hello from resource
+  FindResourceW(RT_STRING,1) nonnull -> 1 err=dead
+  SizeofResource -> 46
+  GetModuleFileNameW(data) -> 0 err=7e
+  FreeLibrary(data)#1 -> 1 err=dead
+  FreeLibrary(data)#2 -> 1 err=dead
+flags=20
+  LoadLibraryExW(lc_data) -> tag+2
+  second load same handle no
+  GetModuleHandleW(lc_data) -> null err=7e
+  GetProcAddress(data,prc_value) -> 0 err=7e
+  LoadStringW(7) -> 13 err=dead
+  text=hello from resource
+  FindResourceW(RT_STRING,1) nonnull -> 1 err=dead
+  SizeofResource -> 46
+  GetModuleFileNameW(data) -> 0 err=7e
+  FreeLibrary(data)#1 -> 1 err=dead
+  FreeLibrary(data)#2 -> 1 err=dead
+flags=22
+  LoadLibraryExW(lc_data) -> tag+2
+  second load same handle no
+  GetModuleHandleW(lc_data) -> null err=7e
+  GetProcAddress(data,prc_value) -> 0 err=7e
+  LoadStringW(7) -> 13 err=dead
+  text=hello from resource
+  FindResourceW(RT_STRING,1) nonnull -> 1 err=dead
+  SizeofResource -> 46
+  GetModuleFileNameW(data) -> 0 err=7e
+  FreeLibrary(data)#1 -> 1 err=dead
+  FreeLibrary(data)#2 -> 1 err=dead
+flags=60
+  LoadLibraryExW(lc_data) -> tag+2
+  second load same handle no
+  GetModuleHandleW(lc_data) -> null err=7e
+  GetProcAddress(data,prc_value) -> 0 err=7e
+  LoadStringW(7) -> 13 err=dead
+  text=hello from resource
+  FindResourceW(RT_STRING,1) nonnull -> 1 err=dead
+  SizeofResource -> 46
+  GetModuleFileNameW(data) -> 0 err=7e
+  FreeLibrary(data)#1 -> 1 err=dead
+  FreeLibrary(data)#2 -> 1 err=dead
+flags=42
+  LoadLibraryExW(lc_data) -> null err=57
+AS_DATAFILE(missing file) -> null err=2
+AS_DATAFILE(missing abs) -> null err=2
+  [dll loader_contract_dll.dll] reason=1 reserved=null -> TRUE
+AS_DATAFILE(loaded image) -> module
+same as image yes
+GetModuleHandleW after 1 free -> module
+  [dll loader_contract_dll.dll] reason=0 reserved=null -> TRUE
+GetModuleHandleW after 2 frees -> null err=7e
+AS_DATAFILE(kernel32) == GetModuleHandle yes
+AS_IMAGE_RESOURCE(kernel32) == GetModuleHandle yes
+== parameter validation
+hFile=1 -> null err=57
+ALTERED|SEARCH_SYSTEM32 -> null err=57
+SEARCH_DLL_LOAD_DIR relative -> null err=57
+unknown flag 0x80000000 -> null err=57
+NULL name -> null err=57
+LoadLibraryW(NULL) -> null err=57
+LoadLibraryW("") -> null err=57
+== search flags
+SEARCH_SYSTEM32 app-dir dll -> null err=7e
+SEARCH_USER_DIRS app-dir dll -> null err=7e
+  [dll lc_app.dll] reason=1 reserved=null -> TRUE
+SEARCH_APPLICATION_DIR app-dir dll -> module
+  [dll lc_app.dll] reason=0 reserved=null -> TRUE
+SEARCH_SYSTEM32 kernel32 == GetModuleHandle yes
+AddDllDirectory(sub) nonnull -> 1 err=dead
+plain LoadLibraryW(lc_sub) with user dir added -> null err=7e
+  [dll lc_sub.dll] reason=1 reserved=null -> TRUE
+SEARCH_USER_DIRS lc_sub -> module
+  [dll lc_sub.dll] reason=0 reserved=null -> TRUE
+== relative paths
+  [dll lc_sub.dll] reason=1 reserved=null -> TRUE
+LoadLibraryW(sub\lc_sub.dll) cwd=C:\ -> module
+  [dll lc_sub.dll] reason=0 reserved=null -> TRUE
+  [dll lc_app.dll] reason=1 reserved=null -> TRUE
+LoadLibraryW(.\lc_app.dll) cwd=C:\ -> module
+  [dll lc_app.dll] reason=0 reserved=null -> TRUE
+== GetModuleHandle names
+GetModuleHandleW(KERNEL32) -> module
+GetModuleHandleW(kernel32.) -> null err=7e
+GetModuleHandleW(C:\nowhere\kernel32.dll) -> null err=7e
+GetModuleHandleW(C:\Windows\System32\kernel32.dll) -> module
+== GetModuleHandleEx
+GetModuleHandleExW(0, kernel32, NULL) -> 0 err=57
+GetModuleHandleExW(FROM_ADDRESS, NULL out) -> 0 err=57
+FROM_ADDRESS(kernel32!GetTickCount) -> 1 err=dead
+  == kernel32 yes == kernelbase no
+FROM_ADDRESS(0x10) -> 0 err=7e
+  out zeroed yes
+== GetProcAddress
+GetProcAddress(NULL, GetProcAddress) nonnull -> 0 err=7f
+GetProcAddress(NULL, probe_main) nonnull -> 0 err=7f
+== exit
+  [dll loader_contract_dll.dll] reason=1 reserved=null -> TRUE
+  [dll loader_contract_dll.dll] reason=0 reserved=nonnull -> TRUE

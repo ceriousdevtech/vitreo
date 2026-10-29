@@ -1,0 +1,36 @@
+# What SetThreadStackGuarantee does, measured 2026-09-22 on winoracle (x64),
+# two runs, identical except rsp-relative lines (a few hundred bytes).
+#
+#   x86_64-w64-mingw32-gcc -O0 -nostdlib -e probe_main \
+#       -o stack_guarantee_probe.exe tools/oracle_probe/stack_guarantee_probe.c -lkernel32
+#
+# In/out: returns TRUE and the PREVIOUS value; 0 queries; a smaller request is
+# ignored; requests round up to a page (0x10001 -> 0x11000); the value is stored
+# in TEB.GuaranteedStackBytes (+0x1748). The guard top becomes
+# DeallocationStack + 0x2000 + max(0x2000, guarantee): the overflow arrives in
+# the page below 0x13000 instead of 0x4000 (stack_overflow_probe), leaving the
+# handler the guarantee to run on. StackLimit still ends at DeallocationStack+4K.
+#
+# Vitreo difference still open: pre_lim-dea -- Windows commits the stack on
+# demand, so StackLimit before the overflow is the committed bottom (0x3e000
+# here); Vitreo commits the whole stack and reports the guard top (0x13000).
+query_ok    0x0000000000000001
+query_prev  0x0000000000000000
+set64k_ok   0x0000000000000001
+set64k_prev 0x0000000000000000
+set8k_ok    0x0000000000000001
+set8k_prev  0x0000000000010000
+after_odd   0x0000000000011000
+teb_guar_pre0x0000000000011000
+pre_lim-dea 0x000000000003e000
+code        0x00000000c00000fd
+flags       0x0000000000000000
+nparams     0x0000000000000002
+info0       0x0000000000000001
+info1-rsp   0x0000000000000020
+limit-deall 0x0000000000001000
+rsp-limit   0x0000000000011cb0
+rsp-deall   0x0000000000012cb0
+hndlr-deall 0x0000000000012230
+base-deall  0x0000000000040000
+teb_guar    0x0000000000011000

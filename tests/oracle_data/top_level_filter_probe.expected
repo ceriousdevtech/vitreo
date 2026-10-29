@@ -1,0 +1,20 @@
+# x64 SetUnhandledExceptionFilter. Measured 2026-09-22 on winoracle.
+#   x86_64-w64-mingw32-gcc -O0 -nostdlib -e probe_main -o p.exe \
+#       tools/oracle_probe/top_level_filter_probe.c -lkernel32
+filter call 0x0000000000000001 code 0x00000000c0000005 nparams 0x0000000000000002 info1 0x0000000000000008
+resumed after CONTINUE_EXECUTION
+exit=0xc0000005
+#
+# The filter runs once no frame handler exists, sees the real record, and
+# EXCEPTION_CONTINUE_EXECUTION resumes at the context it edited. The second
+# fault ends the process with the exception code.
+#
+# Windows does NOT call the filter for the second fault, and that is this
+# probe's doing, not a contract: `resumed` is a naked label with no .pdata
+# entry, so the frame walk from after_resume cannot unwind through it and
+# never reaches RtlUserThreadStart's handler. Vitreo treats the unwindable
+# prefix as unhandled and calls the filter again (ret=1), then exits with the
+# same code. Do not "fix" that without a probe whose resume target unwinds.
+#
+# Vitreo before 2026-09-22: no filter call at all on x64 (only the 32-bit
+# dispatcher invoked it), so the first fault terminated the process silently.

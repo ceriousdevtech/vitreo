@@ -1,0 +1,68 @@
+palette1 entries=2 vga_index: 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 1
+palette4 entries=16 vga_index: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+palette8 entries=256 vga_index: 0 1 2 3 4 5 6 248 7 249 250 251 252 253 254 255
+nearest4: 0 4 4 12 0 4 4 12 2 6 6 12 2 6 6 14 10 6 6 14 10 10 14 14 0 4 4 12 0 4 4 12 2 6 6 12 2 6 6 14 10 6 6 14 10 10 14 14 1 5 5 12 1 5 5 12 3 7 7 7 3 7 7 8 3 7 7 8 10 10 8 14 1 5 5 13 1 5 5 13 3 7 7 8 3 7 7 8 3 7 8 8 11 8 8 8 9 5 5 13 9 5 5 13 3 7 7 8 3 7 8 8 11 8 8 8 11 11 8 15 9 9 13 13 9 9 13 13 9 9 8 13 11 8 8 8 11 11 8 15 11 11 15 15
+ extra4: 0 7 8 7 0 8 6 5
+nearest8: 0 64 192 252 16 144 208 0 24 88 216 216 40 104 232 232 48 121 240 185 250 184 254 254 10 66 194 252 18 81 210 209 34 162 226 160 42 106 234 234 58 186 254 254 0 0 0 0 1 67 195 195 19 147 211 0 27 91 219 219 43 107 235 235 51 124 243 188 59 187 0 0 1 69 197 197 21 149 213 0 29 93 221 221 45 109 247 237 53 124 245 9 61 189 9 0 14 70 198 253 22 87 214 215 38 166 230 0 46 110 238 238 62 190 8 255 0 0 0 0 249 71 199 253 31 159 223 0 39 167 231 0 55 183 8 0 63 127 191 191 251 251 246 255
+ extra8: 80 164 7 164 82 247 226 135
+sweep order: r in 0..255 step 51, g step 51, b step 85 (n=144)
+stockfont 10 ret=92 h=12 w=8 e=0 o=0 wt=400 i=0 u=0 s=0 cs=255 op=1 cp=2 q=2 pf=49 face=Terminal
+  big ret=356 tail=5400650072006d00
+stockfont 11 ret=92 h=12 w=9 e=0 o=0 wt=400 i=0 u=0 s=0 cs=0 op=0 cp=2 q=2 pf=1 face=Courier
+  big ret=356 tail=0000000000000000
+stockfont 12 ret=92 h=12 w=9 e=0 o=0 wt=400 i=0 u=0 s=0 cs=0 op=0 cp=2 q=2 pf=2 face=MS Sans Serif
+  big ret=356 tail=0000000000000000
+stockfont 13 ret=92 h=16 w=7 e=0 o=0 wt=700 i=0 u=0 s=0 cs=0 op=1 cp=2 q=2 pf=34 face=System
+  big ret=356 tail=5300790073007400
+stockfont 14 ret=92 h=16 w=7 e=0 o=0 wt=700 i=0 u=0 s=0 cs=0 op=1 cp=2 q=2 pf=34 face=System
+  big ret=356 tail=0000000000000000
+stockfont 16 ret=92 h=15 w=8 e=0 o=0 wt=400 i=0 u=0 s=0 cs=0 op=1 cp=2 q=2 pf=49 face=Fixedsys
+  big ret=356 tail=4600690078006500
+stockfont 17 ret=92 h=-11 w=0 e=0 o=0 wt=400 i=0 u=0 s=0 cs=0 op=0 cp=0 q=0 pf=0 face=MS Shell Dlg
+  big ret=356 tail=0000000000000000
+createdfont big ret=356 bytes92..: 0000000000000000 ... last8: 6476000800000000
+createdfontA big ret=260
+caps 0 screen=16384 mem=16384 monodc=16384
+caps 2 screen=1 mem=1 monodc=1
+caps 4 screen=271 mem=271 monodc=271
+caps 6 screen=203 mem=203 monodc=203
+caps 8 screen=1024 mem=1024 monodc=1024
+caps 10 screen=768 mem=768 monodc=768
+caps 12 screen=32 mem=32 monodc=32
+caps 14 screen=1 mem=1 monodc=1
+caps 16 screen=-1 mem=-1 monodc=-1
+caps 18 screen=-1 mem=-1 monodc=-1
+caps 20 screen=0 mem=0 monodc=0
+caps 22 screen=0 mem=0 monodc=0
+caps 24 screen=-1 mem=-1 monodc=-1
+caps 26 screen=0 mem=0 monodc=0
+caps 28 screen=511 mem=511 monodc=511
+caps 30 screen=254 mem=254 monodc=254
+caps 32 screen=255 mem=255 monodc=255
+caps 34 screen=30727 mem=30727 monodc=30727
+caps 36 screen=1 mem=1 monodc=1
+caps 38 screen=32409 mem=32409 monodc=32409
+caps 40 screen=36 mem=36 monodc=36
+caps 42 screen=36 mem=36 monodc=36
+caps 44 screen=51 mem=51 monodc=51
+caps 88 screen=96 mem=96 monodc=96
+caps 90 screen=96 mem=96 monodc=96
+caps 104 screen=0 mem=0 monodc=0
+caps 106 screen=20 mem=20 monodc=20
+caps 108 screen=24 mem=24 monodc=24
+caps 110 screen=0 mem=0 monodc=0
+caps 111 screen=0 mem=0 monodc=0
+caps 112 screen=0 mem=0 monodc=0
+caps 113 screen=0 mem=0 monodc=0
+caps 114 screen=0 mem=0 monodc=0
+caps 115 screen=0 mem=0 monodc=0
+caps 116 screen=60 mem=60 monodc=60
+caps 117 screen=768 mem=768 monodc=768
+caps 118 screen=1024 mem=1024 monodc=1024
+caps 119 screen=1 mem=1 monodc=1
+caps 120 screen=0 mem=0 monodc=0
+caps 121 screen=0 mem=0 monodc=0
+caps 1 screen=0 mem=0 monodc=0
+caps 3 screen=0 mem=0 monodc=0
+caps 200 screen=0 mem=0 monodc=0
+caps NULL dc=0 err=57005

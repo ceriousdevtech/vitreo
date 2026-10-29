@@ -1,0 +1,517 @@
+wks t=0 ok=1 gle=dead cb=c sid=S-1-0-0 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-0-0 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=1 ok=1 gle=dead cb=c sid=S-1-1-0 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-1-0 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=2 ok=1 gle=dead cb=c sid=S-1-2-0 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-2-0 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=3 ok=1 gle=dead cb=c sid=S-1-3-0 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-3-0 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=4 ok=1 gle=dead cb=c sid=S-1-3-1 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-3-1 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=5 ok=1 gle=dead cb=c sid=S-1-3-2 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-3-2 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=6 ok=1 gle=dead cb=c sid=S-1-3-3 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-3-3 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=7 ok=1 gle=dead cb=8 sid=S-1-5 isWk=1
+  dom ok=1 gle=dead cb=8 sid=S-1-5 isWk=1
+  size ok=0 gle=7a cb=8
+wks t=8 ok=1 gle=dead cb=c sid=S-1-5-1 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-1 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=9 ok=1 gle=dead cb=c sid=S-1-5-2 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-2 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=a ok=1 gle=dead cb=c sid=S-1-5-3 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-3 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=b ok=1 gle=dead cb=c sid=S-1-5-4 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-4 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=c ok=1 gle=dead cb=c sid=S-1-5-6 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-6 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=d ok=1 gle=dead cb=c sid=S-1-5-7 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-7 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=e ok=1 gle=dead cb=c sid=S-1-5-8 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-8 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=f ok=1 gle=dead cb=c sid=S-1-5-9 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-9 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=10 ok=1 gle=dead cb=c sid=S-1-5-10 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-10 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=11 ok=1 gle=dead cb=c sid=S-1-5-11 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-11 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=12 ok=1 gle=dead cb=c sid=S-1-5-12 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-12 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=13 ok=1 gle=dead cb=c sid=S-1-5-13 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-13 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=14 ok=1 gle=dead cb=c sid=S-1-5-14 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-14 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=15 ok=0 gle=57 cb=44
+  dom ok=0 gle=57 cb=44
+  size ok=0 gle=57 cb=0
+wks t=16 ok=1 gle=dead cb=c sid=S-1-5-18 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-18 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=17 ok=1 gle=dead cb=c sid=S-1-5-19 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-19 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=18 ok=1 gle=dead cb=c sid=S-1-5-20 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-20 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=19 ok=1 gle=dead cb=c sid=S-1-5-32 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-32 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=1a ok=1 gle=dead cb=10 sid=S-1-5-32-544 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-544 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=1b ok=1 gle=dead cb=10 sid=S-1-5-32-545 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-545 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=1c ok=1 gle=dead cb=10 sid=S-1-5-32-546 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-546 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=1d ok=1 gle=dead cb=10 sid=S-1-5-32-547 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-547 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=1e ok=1 gle=dead cb=10 sid=S-1-5-32-548 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-548 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=1f ok=1 gle=dead cb=10 sid=S-1-5-32-549 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-549 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=20 ok=1 gle=dead cb=10 sid=S-1-5-32-550 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-550 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=21 ok=1 gle=dead cb=10 sid=S-1-5-32-551 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-551 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=22 ok=1 gle=dead cb=10 sid=S-1-5-32-552 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-552 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=23 ok=1 gle=dead cb=10 sid=S-1-5-32-554 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-554 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=24 ok=1 gle=dead cb=10 sid=S-1-5-32-555 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-555 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=25 ok=1 gle=dead cb=10 sid=S-1-5-32-556 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-556 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=26 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-500 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=27 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-501 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=28 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-502 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=29 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-512 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=2a ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-513 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=2b ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-514 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=2c ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-515 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=2d ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-516 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=2e ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-517 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=2f ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-518 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=30 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-519 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=31 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-520 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=32 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-553 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=33 ok=1 gle=dead cb=10 sid=S-1-5-64-10 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-64-10 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=34 ok=1 gle=dead cb=10 sid=S-1-5-64-21 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-64-21 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=35 ok=1 gle=dead cb=10 sid=S-1-5-64-14 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-64-14 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=36 ok=1 gle=dead cb=c sid=S-1-5-15 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-15 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=37 ok=1 gle=dead cb=c sid=S-1-5-1000 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-1000 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=38 ok=1 gle=dead cb=10 sid=S-1-5-32-557 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-557 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=39 ok=1 gle=dead cb=10 sid=S-1-5-32-558 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-558 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=3a ok=1 gle=dead cb=10 sid=S-1-5-32-559 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-559 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=3b ok=1 gle=dead cb=10 sid=S-1-5-32-560 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-560 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=3c ok=1 gle=dead cb=10 sid=S-1-5-32-561 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-561 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=3d ok=1 gle=dead cb=10 sid=S-1-5-32-562 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-562 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=3e ok=1 gle=dead cb=10 sid=S-1-5-32-568 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-568 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=3f ok=1 gle=dead cb=c sid=S-1-5-17 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-17 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=40 ok=1 gle=dead cb=10 sid=S-1-5-32-569 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-569 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=41 ok=1 gle=dead cb=c sid=S-1-16-0 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-16-0 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=42 ok=1 gle=dead cb=c sid=S-1-16-4096 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-16-4096 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=43 ok=1 gle=dead cb=c sid=S-1-16-8192 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-16-8192 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=44 ok=1 gle=dead cb=c sid=S-1-16-12288 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-16-12288 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=45 ok=1 gle=dead cb=c sid=S-1-16-16384 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-16-16384 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=46 ok=1 gle=dead cb=c sid=S-1-5-33 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-33 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=47 ok=1 gle=dead cb=c sid=S-1-3-4 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-3-4 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=48 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-571 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=49 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-572 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=4a ok=1 gle=dead cb=c sid=S-1-5-22 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-22 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=4b ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-521 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=4c ok=1 gle=dead cb=10 sid=S-1-5-32-573 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-573 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=4d ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-498 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=4e ok=1 gle=dead cb=10 sid=S-1-5-32-574 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-574 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=4f ok=1 gle=dead cb=c sid=S-1-16-8448 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-16-8448 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=50 ok=0 gle=57 cb=44
+  dom ok=0 gle=57 cb=44
+  size ok=0 gle=57 cb=0
+wks t=51 ok=1 gle=dead cb=c sid=S-1-2-1 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-2-1 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=52 ok=1 gle=dead cb=10 sid=S-1-5-65-1 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-65-1 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=53 ok=0 gle=57 cb=44
+  dom ok=0 gle=57 cb=44
+  size ok=0 gle=57 cb=0
+wks t=54 ok=1 gle=dead cb=10 sid=S-1-15-2-1 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-2-1 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=55 ok=1 gle=dead cb=10 sid=S-1-15-3-1 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-1 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=56 ok=1 gle=dead cb=10 sid=S-1-15-3-2 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-2 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=57 ok=1 gle=dead cb=10 sid=S-1-15-3-3 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-3 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=58 ok=1 gle=dead cb=10 sid=S-1-15-3-4 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-4 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=59 ok=1 gle=dead cb=10 sid=S-1-15-3-5 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-5 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=5a ok=1 gle=dead cb=10 sid=S-1-15-3-6 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-6 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=5b ok=1 gle=dead cb=10 sid=S-1-15-3-7 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-7 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=5c ok=1 gle=dead cb=10 sid=S-1-15-3-9 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-9 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=5d ok=1 gle=dead cb=10 sid=S-1-15-3-8 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-8 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=5e ok=1 gle=dead cb=10 sid=S-1-15-3-10 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-10 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=5f ok=1 gle=dead cb=10 sid=S-1-5-32-575 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-575 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=60 ok=1 gle=dead cb=10 sid=S-1-5-32-576 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-576 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=61 ok=1 gle=dead cb=10 sid=S-1-5-32-577 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-577 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=62 ok=1 gle=dead cb=20 sid=S-1-5-84-0-0-0-0-0 isWk=1
+  dom ok=1 gle=dead cb=20 sid=S-1-5-84-0-0-0-0-0 isWk=1
+  size ok=0 gle=7a cb=20
+wks t=63 ok=1 gle=dead cb=10 sid=S-1-5-32-578 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-578 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=64 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-522 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=65 ok=1 gle=dead cb=10 sid=S-1-5-32-579 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-579 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=66 ok=1 gle=dead cb=10 sid=S-1-5-32-580 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-580 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=67 ok=1 gle=dead cb=c sid=S-1-18-1 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-18-1 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=68 ok=1 gle=dead cb=c sid=S-1-18-2 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-18-2 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=69 ok=1 gle=dead cb=c sid=S-1-5-113 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-113 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=6a ok=1 gle=dead cb=c sid=S-1-5-114 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-5-114 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=6b ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-525 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=6c ok=1 gle=dead cb=10 sid=S-1-15-3-11 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-11 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=6d ok=1 gle=dead cb=10 sid=S-1-15-3-12 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-15-3-12 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=6e ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-503 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=6f ok=1 gle=dead cb=10 sid=S-1-5-32-581 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-581 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=70 ok=1 gle=dead cb=10 sid=S-1-5-32-582 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-582 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=71 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-526 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=72 ok=0 gle=57 cb=44
+  dom ok=1 gle=dead cb=1c sid=S-1-5-21-111-222-333-527 isWk=1
+  size ok=0 gle=7a cb=1c
+wks t=73 ok=1 gle=dead cb=c sid=S-1-18-4 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-18-4 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=74 ok=1 gle=dead cb=c sid=S-1-18-5 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-18-5 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=75 ok=1 gle=dead cb=c sid=S-1-18-6 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-18-6 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=76 ok=1 gle=dead cb=c sid=S-1-18-3 isWk=1
+  dom ok=1 gle=dead cb=c sid=S-1-18-3 isWk=1
+  size ok=0 gle=7a cb=c
+wks t=77 ok=1 gle=dead cb=10 sid=S-1-5-32-583 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-583 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=78 ok=1 gle=dead cb=10 sid=S-1-5-32-584 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-584 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=79 ok=1 gle=dead cb=10 sid=S-1-5-32-585 isWk=1
+  dom ok=1 gle=dead cb=10 sid=S-1-5-32-585 isWk=1
+  size ok=0 gle=7a cb=10
+wks t=7a ok=0 gle=57 cb=44
+  dom ok=0 gle=57 cb=44
+  size ok=0 gle=57 cb=0
+wks t=7b ok=0 gle=57 cb=44
+  dom ok=0 gle=57 cb=44
+  size ok=0 gle=57 cb=0
+wks t=7c ok=0 gle=57 cb=44
+  dom ok=0 gle=57 cb=44
+  size ok=0 gle=57 cb=0
+wks t=7d ok=0 gle=57 cb=44
+  dom ok=0 gle=57 cb=44
+  size ok=0 gle=57 cb=0
+world_cb11 ok=0 gle=7a cb=c
+world_cb12 ok=1 gle=dead cb=c
+world_nullsid_cb100 ok=0 gle=57 cb=c
+admin_notdomain ok=1 gle=dead cb=10 sid=S-1-5-32-500
+admin_baddomain ok=0 gle=57 cb=44
+admin_domain14 ok=0 gle=57 cb=44
+admin_domain15 ok=0 gle=57 cb=44
+admin_domain "S-1-5" ok=0 gle=57 cb=44
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21" ok=1 gle=dead cb=10 sid=S-1-5-21-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1" ok=1 gle=dead cb=14 sid=S-1-5-21-1-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2" ok=1 gle=dead cb=18 sid=S-1-5-21-1-2-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3" ok=1 gle=dead cb=1c sid=S-1-5-21-1-2-3-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4" ok=1 gle=dead cb=20 sid=S-1-5-21-1-2-3-4-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4-5" ok=1 gle=dead cb=24 sid=S-1-5-21-1-2-3-4-5-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4-5-6" ok=1 gle=dead cb=28 sid=S-1-5-21-1-2-3-4-5-6-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4-5-6-7" ok=1 gle=dead cb=2c sid=S-1-5-21-1-2-3-4-5-6-7-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4-5-6-7-8" ok=1 gle=dead cb=30 sid=S-1-5-21-1-2-3-4-5-6-7-8-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4-5-6-7-8-9" ok=1 gle=dead cb=34 sid=S-1-5-21-1-2-3-4-5-6-7-8-9-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4-5-6-7-8-9-10" ok=1 gle=dead cb=38 sid=S-1-5-21-1-2-3-4-5-6-7-8-9-10-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4-5-6-7-8-9-10-11" ok=1 gle=dead cb=3c sid=S-1-5-21-1-2-3-4-5-6-7-8-9-10-11-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-21-1-2-3-4-5-6-7-8-9-10-11-12" ok=1 gle=dead cb=40 sid=S-1-5-21-1-2-3-4-5-6-7-8-9-10-11-12-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-1-0" ok=1 gle=dead cb=10 sid=S-1-1-0-500
+  world_with_domain ok=1 gle=dead cb=c
+admin_domain "S-1-5-32" ok=1 gle=dead cb=10 sid=S-1-5-32-500
+  world_with_domain ok=1 gle=dead cb=c
+world_nullcb ok=0 gle=57
+iswk_admin_any_domain v=1
+iswk_world_wrongtype v=0
+lpv "SeCreateTokenPrivilege" ok=1 gle=0 lo=2 hi=0 aOk=1 aGle=0 aLo=2
+lpv "SeAssignPrimaryTokenPrivilege" ok=1 gle=0 lo=3 hi=0 aOk=1 aGle=0 aLo=3
+lpv "SeLockMemoryPrivilege" ok=1 gle=0 lo=4 hi=0 aOk=1 aGle=0 aLo=4
+lpv "SeIncreaseQuotaPrivilege" ok=1 gle=0 lo=5 hi=0 aOk=1 aGle=0 aLo=5
+lpv "SeUnsolicitedInputPrivilege" ok=0 gle=521 lo=0 hi=0 aOk=0 aGle=521 aLo=0
+lpv "SeMachineAccountPrivilege" ok=1 gle=0 lo=6 hi=0 aOk=1 aGle=0 aLo=6
+lpv "SeTcbPrivilege" ok=1 gle=0 lo=7 hi=0 aOk=1 aGle=0 aLo=7
+lpv "SeSecurityPrivilege" ok=1 gle=0 lo=8 hi=0 aOk=1 aGle=0 aLo=8
+lpv "SeTakeOwnershipPrivilege" ok=1 gle=0 lo=9 hi=0 aOk=1 aGle=0 aLo=9
+lpv "SeLoadDriverPrivilege" ok=1 gle=0 lo=a hi=0 aOk=1 aGle=0 aLo=a
+lpv "SeSystemProfilePrivilege" ok=1 gle=0 lo=b hi=0 aOk=1 aGle=0 aLo=b
+lpv "SeSystemtimePrivilege" ok=1 gle=0 lo=c hi=0 aOk=1 aGle=0 aLo=c
+lpv "SeProfileSingleProcessPrivilege" ok=1 gle=0 lo=d hi=0 aOk=1 aGle=0 aLo=d
+lpv "SeIncreaseBasePriorityPrivilege" ok=1 gle=0 lo=e hi=0 aOk=1 aGle=0 aLo=e
+lpv "SeCreatePagefilePrivilege" ok=1 gle=0 lo=f hi=0 aOk=1 aGle=0 aLo=f
+lpv "SeCreatePermanentPrivilege" ok=1 gle=0 lo=10 hi=0 aOk=1 aGle=0 aLo=10
+lpv "SeBackupPrivilege" ok=1 gle=0 lo=11 hi=0 aOk=1 aGle=0 aLo=11
+lpv "SeRestorePrivilege" ok=1 gle=0 lo=12 hi=0 aOk=1 aGle=0 aLo=12
+lpv "SeShutdownPrivilege" ok=1 gle=0 lo=13 hi=0 aOk=1 aGle=0 aLo=13
+lpv "SeDebugPrivilege" ok=1 gle=0 lo=14 hi=0 aOk=1 aGle=0 aLo=14
+lpv "SeAuditPrivilege" ok=1 gle=0 lo=15 hi=0 aOk=1 aGle=0 aLo=15
+lpv "SeSystemEnvironmentPrivilege" ok=1 gle=0 lo=16 hi=0 aOk=1 aGle=0 aLo=16
+lpv "SeChangeNotifyPrivilege" ok=1 gle=0 lo=17 hi=0 aOk=1 aGle=0 aLo=17
+lpv "SeRemoteShutdownPrivilege" ok=1 gle=0 lo=18 hi=0 aOk=1 aGle=0 aLo=18
+lpv "SeUndockPrivilege" ok=1 gle=0 lo=19 hi=0 aOk=1 aGle=0 aLo=19
+lpv "SeSyncAgentPrivilege" ok=1 gle=0 lo=1a hi=0 aOk=1 aGle=0 aLo=1a
+lpv "SeEnableDelegationPrivilege" ok=1 gle=0 lo=1b hi=0 aOk=1 aGle=0 aLo=1b
+lpv "SeManageVolumePrivilege" ok=1 gle=0 lo=1c hi=0 aOk=1 aGle=0 aLo=1c
+lpv "SeImpersonatePrivilege" ok=1 gle=0 lo=1d hi=0 aOk=1 aGle=0 aLo=1d
+lpv "SeCreateGlobalPrivilege" ok=1 gle=0 lo=1e hi=0 aOk=1 aGle=0 aLo=1e
+lpv "SeTrustedCredManAccessPrivilege" ok=1 gle=0 lo=1f hi=0 aOk=1 aGle=0 aLo=1f
+lpv "SeRelabelPrivilege" ok=1 gle=0 lo=20 hi=0 aOk=1 aGle=0 aLo=20
+lpv "SeIncreaseWorkingSetPrivilege" ok=1 gle=0 lo=21 hi=0 aOk=1 aGle=0 aLo=21
+lpv "SeTimeZonePrivilege" ok=1 gle=0 lo=22 hi=0 aOk=1 aGle=0 aLo=22
+lpv "SeCreateSymbolicLinkPrivilege" ok=1 gle=0 lo=23 hi=0 aOk=1 aGle=0 aLo=23
+lpv "SeDelegateSessionUserImpersonatePrivilege" ok=1 gle=0 lo=24 hi=0 aOk=1 aGle=0 aLo=24
+lpv "sedebugprivilege" ok=1 gle=0 lo=14 hi=0 aOk=1 aGle=0 aLo=14
+lpv "SEDEBUGPRIVILEGE" ok=1 gle=0 lo=14 hi=0 aOk=1 aGle=0 aLo=14
+lpv "SeDebugPrivilege " ok=0 gle=521 lo=0 hi=0 aOk=0 aGle=521 aLo=0
+lpv " SeDebugPrivilege" ok=0 gle=521 lo=0 hi=0 aOk=0 aGle=521 aLo=0
+lpv "SeDebug" ok=0 gle=521 lo=0 hi=0 aOk=0 aGle=521 aLo=0
+lpv "SeFooPrivilege" ok=0 gle=521 lo=0 hi=0 aOk=0 aGle=521 aLo=0
+lpv "" ok=0 gle=521 lo=0 hi=0 aOk=0 aGle=521 aLo=0
+lpv "SeInteractiveLogonRight" ok=0 gle=521 lo=0 hi=0 aOk=0 aGle=521 aLo=0
+lpv "SeBatchLogonRight" ok=0 gle=521 lo=0 hi=0 aOk=0 aGle=521 aLo=0
+lpv_system "" ok=1 gle=0 lo=14
+lpv_system "." ok=1 gle=3e5 lo=14
+lpv_system "\\." ok=1 gle=3e5 lo=14
+lpv_system "localhost" ok=1 gle=3e5 lo=14
+lpv_system "\\no-such-host-vitreo" ok=0 gle=6ba lo=14
+lpn luid=0 ok=0 gle=521 cch=40
+lpn luid=1 ok=0 gle=521 cch=40
+lpn luid=2 ok=1 gle=0 cch=16 name=SeCreateTokenPrivilege
+lpn luid=3 ok=1 gle=0 cch=1d name=SeAssignPrimaryTokenPrivilege
+lpn luid=4 ok=1 gle=0 cch=15 name=SeLockMemoryPrivilege
+lpn luid=5 ok=1 gle=0 cch=18 name=SeIncreaseQuotaPrivilege
+lpn luid=6 ok=1 gle=0 cch=19 name=SeMachineAccountPrivilege
+lpn luid=7 ok=1 gle=0 cch=e name=SeTcbPrivilege
+lpn luid=8 ok=1 gle=0 cch=13 name=SeSecurityPrivilege
+lpn luid=9 ok=1 gle=0 cch=18 name=SeTakeOwnershipPrivilege
+lpn luid=a ok=1 gle=0 cch=15 name=SeLoadDriverPrivilege
+lpn luid=b ok=1 gle=0 cch=18 name=SeSystemProfilePrivilege
+lpn luid=c ok=1 gle=0 cch=15 name=SeSystemtimePrivilege
+lpn luid=d ok=1 gle=0 cch=1f name=SeProfileSingleProcessPrivilege
+lpn luid=e ok=1 gle=0 cch=1f name=SeIncreaseBasePriorityPrivilege
+lpn luid=f ok=1 gle=0 cch=19 name=SeCreatePagefilePrivilege
+lpn luid=10 ok=1 gle=0 cch=1a name=SeCreatePermanentPrivilege
+lpn luid=11 ok=1 gle=0 cch=11 name=SeBackupPrivilege
+lpn luid=12 ok=1 gle=0 cch=12 name=SeRestorePrivilege
+lpn luid=13 ok=1 gle=0 cch=13 name=SeShutdownPrivilege
+lpn luid=14 ok=1 gle=0 cch=10 name=SeDebugPrivilege
+lpn luid=15 ok=1 gle=0 cch=10 name=SeAuditPrivilege
+lpn luid=16 ok=1 gle=0 cch=1c name=SeSystemEnvironmentPrivilege
+lpn luid=17 ok=1 gle=0 cch=17 name=SeChangeNotifyPrivilege
+lpn luid=18 ok=1 gle=0 cch=19 name=SeRemoteShutdownPrivilege
+lpn luid=19 ok=1 gle=0 cch=11 name=SeUndockPrivilege
+lpn luid=1a ok=1 gle=0 cch=14 name=SeSyncAgentPrivilege
+lpn luid=1b ok=1 gle=0 cch=1b name=SeEnableDelegationPrivilege
+lpn luid=1c ok=1 gle=0 cch=17 name=SeManageVolumePrivilege
+lpn luid=1d ok=1 gle=0 cch=16 name=SeImpersonatePrivilege
+lpn luid=1e ok=1 gle=0 cch=17 name=SeCreateGlobalPrivilege
+lpn luid=1f ok=1 gle=0 cch=1f name=SeTrustedCredManAccessPrivilege
+lpn luid=20 ok=1 gle=0 cch=12 name=SeRelabelPrivilege
+lpn luid=21 ok=1 gle=0 cch=1d name=SeIncreaseWorkingSetPrivilege
+lpn luid=22 ok=1 gle=0 cch=13 name=SeTimeZonePrivilege
+lpn luid=23 ok=1 gle=0 cch=1d name=SeCreateSymbolicLinkPrivilege
+lpn luid=24 ok=1 gle=0 cch=29 name=SeDelegateSessionUserImpersonatePrivilege
+lpn luid=25 ok=0 gle=521 cch=40
+lpn luid=26 ok=0 gle=521 cch=40
+lpn luid=27 ok=0 gle=521 cch=40
+lpn luid=28 ok=0 gle=521 cch=40
+lpn_query ok=0 gle=7a cch=11
+lpn_exact ok=0 gle=7a cch=11
+lpn_exact_plus1 ok=1 gle=0 cch=10
+lpn_highpart ok=0 gle=521 cch=40
+lpna ok=1 gle=0 cch=10 name=SeDebugPrivilege
+lpna_small ok=0 gle=7a cch=11

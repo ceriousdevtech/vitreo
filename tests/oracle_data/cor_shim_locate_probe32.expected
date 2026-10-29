@@ -1,0 +1,21 @@
+probe bits=32
+== default
+  mscoree=loaded
+  GetCORVersion hr=0x80131700 ver= len=0
+  mscoreei=%windir%\Microsoft.NET\Framework\v4.0.30319\mscoreei.dll
+== root-30319
+  mscoree=loaded
+  GetCORVersion hr=0x80131700 ver= len=0
+  mscoreei=<probe>\rootA\v4.0.30319\mscoreei.dll
+== root-99999
+  mscoree=loaded
+  GetCORVersion hr=0x80131700 ver= len=0
+  mscoreei=not loaded
+== root-empty
+  mscoree=loaded
+  GetCORVersion hr=0x80131700 ver= len=0
+  mscoreei=not loaded
+== version-99999
+  mscoree=loaded
+  GetCORVersion hr=0x80131700 ver= len=0
+  mscoreei=%windir%\Microsoft.NET\Framework\v4.0.30319\mscoreei.dll

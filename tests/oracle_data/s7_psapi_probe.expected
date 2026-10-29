@@ -1,0 +1,149 @@
+exe_base_len=14
+== GetProcessMemoryInfo
+GPMI(self, cb=sizeof PMC) -> 1 err=dead
+  cb=48
+  PageFaultCount>0=1
+  WorkingSetSize>0=1
+  Peak>=WS=1
+  PagefileUsage>0=1
+  PeakPagefile>=Pagefile=1
+  byte_after_cb=cc
+GPMI(self, cb=sizeof PMC - 1) -> 0 err=7a
+  cb_field=cccccccc
+GPMI(self, cb=sizeof PMC_EX) -> 1 err=dead
+  cb=50
+  PrivateUsage>0=1
+  byte_after_ex=cc
+GPMI(self, cb=sizeof PMC_EX + 1) -> 1 err=dead
+  cb=50
+GPMI(self, cb=sizeof PMC_EX2) -> 1 err=dead
+  cb=60
+  PrivateWorkingSetSize>0=1
+  byte_after_ex2=cc
+GPMI(self, cb=200) -> 1 err=dead
+  cb=60
+GPMI(self, cb=0) -> 0 err=7a
+GPMI(self, NULL, cb=sizeof) -> 0 err=57
+GPMI(0x1234) -> 0 err=6
+GPMI(NULL handle) -> 0 err=6
+GPMI(event) -> 0 err=6
+GPMI(QUERY_LIMITED) -> 1 err=dead
+GPMI(SYNCHRONIZE) -> 0 err=5
+== GetModuleBaseNameW
+GMBNW(self,NULL,MAX_PATH) == exe_len -> 1 err=dead
+  match=1
+GMBNW(self,exe,4) -> 4 err=dead
+  buf=73 37 5f 0 cccc 
+GMBNW(self,exe,len) == len -> 1 err=dead
+  buf[len-1]=0
+  buf[len]=cccc
+GMBNW(self,exe,len+1) == len -> 1 err=dead
+  buf[len]=0
+GMBNW(self,exe,0) -> 0 err=dead
+  buf[0]=cccc
+GMBNW(self,exe,1) -> 1 err=dead
+  buf[0]=0
+GMBNW(self,bogus) -> 0 err=6
+GMBNW(0x1234) -> 0 err=6
+GMBNW(event) -> 0 err=6
+== GetModuleBaseNameA
+GMBNA(self,NULL,MAX_PATH) == exe_len -> 1 err=dead
+GMBNA(self,exe,4) -> 4 err=dead
+  buf=73 37 5f 0 cc 
+GMBNA(self,exe,0) -> 0 err=57
+GMBNA(self,bogus) -> 0 err=6
+== GetModuleFileNameExW
+GMFNEW(self,NULL,MAX_PATH) == GetModuleFileNameW -> 1 err=dead
+  match=1
+GMFNEW(self,exe,4) -> 4 err=dead
+  buf=43 3a 5c 0 cccc 
+GMFNEW(self,exe,flen) == flen -> 1 err=dead
+  buf[flen-1]=0
+  buf[flen]=cccc
+GMFNEW(self,exe,0) -> 0 err=7a
+  buf[0]=cccc
+GMFNEW(self,bogus) -> 0 err=6
+GMFNEW(0x1234,NULL) -> 0 err=6
+GMFNEW(event,NULL) -> 0 err=6
+== GetModuleFileNameExA
+GMFNEA(self,NULL,MAX_PATH) == GetModuleFileNameA -> 1 err=dead
+  match=1
+GMFNEA(self,exe,4) -> 4 err=dead
+  buf=43 3a 5c 0 cc 
+GMFNEA(self,exe,0) -> 0 err=7a
+GMFNEA(self,bogus) -> 0 err=6
+== GetModuleInformation
+GMI(self,exe,sizeof) -> 1 err=dead
+  base==exe=1
+  size>0=1
+  entry in image=1
+GMI(self,exe,sizeof-1) -> 0 err=7a
+GMI(self,NULL,sizeof) -> 1 err=dead
+GMI(self,bogus) -> 0 err=6
+GMI(0x1234,exe) -> 0 err=6
+== EnumProcessModules
+EPM(self,NULL,0) -> 1 err=dead
+  needed>0=1
+EPM(self,mods,1 handle) -> 1 err=dead
+  needed==full=1
+  mods[0]==exe=1
+EPM(self,mods,sizeof) -> 1 err=dead
+  needed==full=1
+EPM(self,mods,sizeof,NULL needed) -> 0 err=3e6
+EPM(0x1234) -> 0 err=6
+EPM(NULL handle) -> 0 err=6
+== access rights
+rights=100000
+  GPMI -> 0 err=5
+  EPM -> 0 err=5
+  GMBNW(NULL)!=0 -> 0 err=5
+  GMBNA(exe)!=0 -> 0 err=5
+  GMFNEW(NULL)!=0 -> 0 err=5
+  GMFNEW(exe)!=0 -> 0 err=5
+  GMFNEA(NULL)!=0 -> 0 err=5
+  GMI(exe) -> 0 err=5
+rights=1000
+  GPMI -> 1 err=dead
+  EPM -> 0 err=5
+  GMBNW(NULL)!=0 -> 0 err=5
+  GMBNA(exe)!=0 -> 0 err=5
+  GMFNEW(NULL)!=0 -> 1 err=dead
+  GMFNEW(exe)!=0 -> 0 err=5
+  GMFNEA(NULL)!=0 -> 1 err=dead
+  GMI(exe) -> 0 err=5
+rights=400
+  GPMI -> 1 err=dead
+  EPM -> 0 err=5
+  GMBNW(NULL)!=0 -> 0 err=5
+  GMBNA(exe)!=0 -> 0 err=5
+  GMFNEW(NULL)!=0 -> 1 err=dead
+  GMFNEW(exe)!=0 -> 0 err=5
+  GMFNEA(NULL)!=0 -> 1 err=dead
+  GMI(exe) -> 0 err=5
+rights=10
+  GPMI -> 0 err=5
+  EPM -> 0 err=5
+  GMBNW(NULL)!=0 -> 0 err=5
+  GMBNA(exe)!=0 -> 0 err=5
+  GMFNEW(NULL)!=0 -> 0 err=5
+  GMFNEW(exe)!=0 -> 0 err=5
+  GMFNEA(NULL)!=0 -> 0 err=5
+  GMI(exe) -> 0 err=5
+rights=1010
+  GPMI -> 1 err=dead
+  EPM -> 1 err=dead
+  GMBNW(NULL)!=0 -> 1 err=dead
+  GMBNA(exe)!=0 -> 1 err=dead
+  GMFNEW(NULL)!=0 -> 1 err=dead
+  GMFNEW(exe)!=0 -> 1 err=dead
+  GMFNEA(NULL)!=0 -> 1 err=dead
+  GMI(exe) -> 1 err=dead
+rights=410
+  GPMI -> 1 err=dead
+  EPM -> 1 err=dead
+  GMBNW(NULL)!=0 -> 1 err=dead
+  GMBNA(exe)!=0 -> 1 err=dead
+  GMFNEW(NULL)!=0 -> 1 err=dead
+  GMFNEW(exe)!=0 -> 1 err=dead
+  GMFNEA(NULL)!=0 -> 1 err=dead
+  GMI(exe) -> 1 err=dead

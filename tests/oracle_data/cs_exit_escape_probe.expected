@@ -1,0 +1,4 @@
+parent_spawning_child
+child_calling_ExitProcess
+wait_result 0x00000000
+exit_code 0x000000a1

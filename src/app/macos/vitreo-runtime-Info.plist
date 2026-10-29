@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Embedded in the vitreo executable as __TEXT,__info_plist (src/CMakeLists.txt).
+  A guest re-executes itself as its app bundle responsible for itself
+  (platform/macos/tcc_responsibility.hpp); TCC then judges the vitreo
+  executable the bundle links to and reads the usage strings from this
+  plist. Every TCC-gated host service a guest can reach needs its key here
+  as well as in the guest bundle's Info.plist (src/main.cpp).
+-->
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>dev.vitreo.runtime</string>
+    <key>CFBundleName</key>
+    <string>Vitreo</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Windows applications run by Vitreo record from the microphone when they ask for audio input.</string>
+    <!-- Windows has no App Transport Security: WinHTTP, WinInet and crypt32's
+         root auto-update fetch plain http:// URLs, which NSURLSession refuses
+         (-1022) once this plist is embedded without an exception. User
+         decision 2026-10-27: allow arbitrary loads, as Windows does. -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Windows applications run by Vitreo use Bluetooth to reach the devices they ask for.</string>
+</dict>
+</plist>

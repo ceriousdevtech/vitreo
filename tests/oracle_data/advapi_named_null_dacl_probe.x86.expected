@@ -1,0 +1,5 @@
+fresh_dir_owner_dacl ret=0 o=1 d=2 control=8004 ownerOff=1 groupOff=1 daclOff=1 count=3 [0,13] [0,13] [0,13]
+fresh_dir_gfs_dacl ok=1 gle=0 control=8004 ownerOff=0 groupOff=0 daclOff=1 count=3 [0,3] [0,3] [0,3]
+set_null_dacl ret=0
+after_null_gfs_dacl ok=1 gle=0 control=9404 ownerOff=0 groupOff=0 daclOff=0
+after_null_named_dacl ret=0 o=0 d=0 control=9404 ownerOff=0 groupOff=0 daclOff=0

@@ -1,0 +1,6 @@
+md5_root_self	1	00000000
+md5_root_tampered	0	80090006
+oiw_leaf	1	00000000
+oiw_leaf_tampered	0	80090006
+oiw_leaf_wrong_key	0	00000057
+md5_root_wrong_key	0	80090006

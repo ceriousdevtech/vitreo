@@ -1,0 +1,6 @@
+u16 prev=16384 errno=0 ok=1 
+back_text prev=65536 errno=0 
+u8 prev=16384 errno=0 
+wtext prev=262144 errno=0 
+bin prev=65536 errno=0 
+text prev=32768 errno=0 

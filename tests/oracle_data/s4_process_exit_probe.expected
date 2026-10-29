@@ -1,0 +1,2 @@
+five_children_waited ok=1
+child_with_grandchild wait=0 code=5 under_1500ms=1

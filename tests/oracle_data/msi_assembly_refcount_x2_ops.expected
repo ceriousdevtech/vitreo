@@ -1,0 +1,17 @@
+Action ended: MsiUnpublishAssemblies. Return value 1.
+Action ended: RemoveFiles. Return value 0.
+Action ended: InstallFiles. Return value 1.
+Action ended: MsiPublishAssemblies. Return value 1.
+Executing op: ComponentUnregister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000002},,BinaryType=0,)
+Executing op: ActionStart(Name=MsiUnpublishAssemblies,Description=Unpublishing assembly information Application Context:[1], Assembly Name:[2],)
+Executing op: AssemblyUnpublish(,,AssemblyType=1,,AssemblyName=Vitreo.Probe.Msil,Version="1.2.3.4",Culture="neutral",PublicKeyToken="809ea388321253ab",ProcessorArchitecture="MSIL",Descriptor=+.7@hr)+v?h@dP,5-yDEFeatMain<)
+Action ended: InstallFinalize. Return value 1.
+Property(S): MsiNetAssemblySupport = 4.8.9221.0
+Property(S): MsiWin32AssemblySupport = 6.3.26100.9278
+== deferred
+C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab
+C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab\Vitreo.Probe.Msil.dll
+== commit
+File Not Found
+== after
+File Not Found

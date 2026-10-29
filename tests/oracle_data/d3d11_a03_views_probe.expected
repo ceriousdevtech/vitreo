@@ -1,0 +1,521 @@
+adapter: Microsoft Basic Render Driver
+feature level 0xb000, 64-bit
+QI ID3D11Device3 hr=0x00000000
+--- resources
+create tex1d 16 m3                             hr=0x00000000
+create tex1darr 16 m3 a4                       hr=0x00000000
+create tex2d 8x8 m3                            hr=0x00000000
+create tex2darr 8x8 m3 a4                      hr=0x00000000
+create tex2dms 8x8 x4                          hr=0x00000000
+create tex2dmsarr 8x8 x4 a3                    hr=0x00000000
+create tex3d 8x8x8 m3                          hr=0x00000000
+create cube 8x8 m3 a6                          hr=0x00000000
+create cubearr 8x8 m3 a12                      hr=0x00000000
+create tex2d SRV-only                          hr=0x00000000
+create tex2d RT-only                           hr=0x00000000
+--- SRV NULL desc per resource type
+srv NULL tex1d                                 hr=0x00000000 desc 0000001c 00000002 00000000 00000003 00000000 00000000 res=same
+srv NULL tex1darr                              hr=0x00000000 desc 0000001c 00000003 00000000 00000003 00000000 00000004 res=same
+srv NULL tex2d                                 hr=0x00000000 desc 0000001c 00000004 00000000 00000003 00000000 00000000 res=same
+srv NULL tex2darr                              hr=0x00000000 desc 0000001c 00000005 00000000 00000003 00000000 00000004 res=same
+srv NULL tex2dms                               hr=0x00000000 desc 0000001c 00000006 00000000 00000000 00000000 00000000 res=same
+srv NULL tex2dmsarr                            hr=0x00000000 desc 0000001c 00000007 00000000 00000003 00000000 00000000 res=same
+srv NULL tex3d                                 hr=0x00000000 desc 0000001c 00000008 00000000 00000003 00000000 00000000 res=same
+srv NULL cube                                  hr=0x00000000 desc 0000001c 00000009 00000000 00000003 00000000 00000000 res=same
+srv NULL cubearr                               hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000000 00000002 res=same
+srv NULL rt-only (no SRV bind)                 hr=0x80070057
+srv NULL resource=NULL                         hr=0x80070057
+--- SRV dimension / window
+srv tex2d 2D {0,-1}                            hr=0x00000000 desc 0000001c 00000004 00000000 00000003 00000000 00000000 res=same
+srv tex2d 2D {1,-1}                            hr=0x00000000 desc 0000001c 00000004 00000001 00000002 00000000 00000000 res=same
+srv tex2d 2D {2,1}                             hr=0x00000000 desc 0000001c 00000004 00000002 00000001 00000000 00000000 res=same
+srv tex2d 2D {3,1} mip past end                hr=0x80070057
+srv tex2d 2D {1,3} levels past end             hr=0x80070057
+srv tex2d 2D {0,0} levels 0                    hr=0x80070057
+srv tex2d 2D {3,-1} -1 past end                hr=0x80070057
+srv tex2d as 2DARRAY {0,-1,0,1}                hr=0x00000000 desc 0000001c 00000005 00000000 00000003 00000000 00000001 res=same
+srv tex2d as 2DARRAY {0,-1,0,-1}               hr=0x00000000 desc 0000001c 00000005 00000000 00000003 00000000 00000001 res=same
+srv tex2d as 1D                                hr=0x80070057
+srv tex2d as 3D                                hr=0x80070057
+srv tex2d as CUBE                              hr=0x80070057
+srv tex2d as 2DMS                              hr=0x00000000 desc 0000001c 00000006 00000000 00000000 00000000 00000000 res=same
+srv tex2d as BUFFER                            hr=0x80070057
+srv tex2d dim UNKNOWN(0)                       hr=0x80070057
+srv tex2d dim 12                               hr=0x80070057
+srv tex2darr 2DARRAY {0,1,1,-1}                hr=0x00000000 desc 0000001c 00000005 00000000 00000001 00000001 00000003 res=same
+srv tex2darr 2DARRAY {0,1,3,2} past            hr=0x80070057
+srv tex2darr 2DARRAY {0,1,4,1} first past      hr=0x80070057
+srv tex2darr 2DARRAY {0,1,0,0} size 0          hr=0x80070057
+srv tex2darr as 2D {0,1}                       hr=0x00000000 desc 0000001c 00000004 00000000 00000001 00000000 00000000 res=same
+srv tex2dms 2DMS                               hr=0x00000000 desc 0000001c 00000006 00000000 00000000 00000000 00000000 res=same
+srv tex2dms as 2D                              hr=0x80070057
+srv tex2dms as 2DMSARRAY {0,1}                 hr=0x00000000 desc 0000001c 00000007 00000000 00000001 00000000 00000000 res=same
+srv tex2dms as 2DMSARRAY {0,-1}                hr=0x00000000 desc 0000001c 00000007 00000000 00000001 00000000 00000000 res=same
+srv tex2dmsarr 2DMSARRAY {1,-1}                hr=0x00000000 desc 0000001c 00000007 00000001 00000002 00000000 00000000 res=same
+srv tex2dmsarr 2DMSARRAY {1,2}                 hr=0x00000000 desc 0000001c 00000007 00000001 00000002 00000000 00000000 res=same
+srv tex2dmsarr 2DMSARRAY {2,2} past            hr=0x80070057
+srv tex2dmsarr 2DMSARRAY {0,0}                 hr=0x80070057
+srv tex2dmsarr as 2DMS                         hr=0x00000000 desc 0000001c 00000006 00000000 00000000 00000000 00000000 res=same
+srv tex2dmsarr as 2DARRAY                      hr=0x80070057
+srv tex3d 3D {0,-1}                            hr=0x00000000 desc 0000001c 00000008 00000000 00000003 00000000 00000000 res=same
+srv tex3d 3D {2,-1}                            hr=0x00000000 desc 0000001c 00000008 00000002 00000001 00000000 00000000 res=same
+srv tex3d 3D {3,1} past                        hr=0x80070057
+srv tex3d as 2D                                hr=0x80070057
+srv tex3d as 2DARRAY                           hr=0x80070057
+srv cube CUBE {0,-1}                           hr=0x00000000 desc 0000001c 00000009 00000000 00000003 00000000 00000000 res=same
+srv cube CUBE {1,1}                            hr=0x00000000 desc 0000001c 00000009 00000001 00000001 00000000 00000000 res=same
+srv cube as 2DARRAY {0,-1,0,6}                 hr=0x00000000 desc 0000001c 00000005 00000000 00000003 00000000 00000006 res=same
+srv cube as 2DARRAY {0,-1,2,-1}                hr=0x00000000 desc 0000001c 00000005 00000000 00000003 00000002 00000004 res=same
+srv cube as 2D                                 hr=0x00000000 desc 0000001c 00000004 00000000 00000003 00000000 00000000 res=same
+srv cube as CUBEARRAY {0,-1,0,1}               hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000000 00000001 res=same
+srv cubearr CUBEARRAY {0,-1,0,2}               hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000000 00000002 res=same
+srv cubearr CUBEARRAY {0,-1,6,1}               hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000006 00000001 res=same
+srv cubearr CUBEARRAY {0,-1,1,1} face 1        hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000001 00000001 res=same
+srv cubearr CUBEARRAY {0,-1,3,1} face 3        hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000003 00000001 res=same
+srv cubearr CUBEARRAY {0,-1,0,-1}              hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000000 00000002 res=same
+srv cubearr CUBEARRAY {0,-1,0,3} past          hr=0x80070057
+srv cubearr CUBEARRAY {0,-1,0,0}               hr=0x80070057
+srv cubearr as CUBE                            hr=0x00000000 desc 0000001c 00000009 00000000 00000003 00000000 00000000 res=same
+srv cubearr as 2DARRAY {0,-1,4,-1}             hr=0x00000000 desc 0000001c 00000005 00000000 00000003 00000004 00000008 res=same
+srv tex1d 1D {0,-1}                            hr=0x00000000 desc 0000001c 00000002 00000000 00000003 00000000 00000000 res=same
+srv tex1d as 1DARRAY {0,-1,0,1}                hr=0x00000000 desc 0000001c 00000003 00000000 00000003 00000000 00000001 res=same
+srv tex1d as 2D                                hr=0x80070057
+srv tex1darr 1DARRAY {0,-1,1,-1}               hr=0x00000000 desc 0000001c 00000003 00000000 00000003 00000001 00000003 res=same
+srv tex1darr as 1D                             hr=0x00000000 desc 0000001c 00000002 00000000 00000001 00000000 00000000 res=same
+srv tex2d Format UNKNOWN explicit              hr=0x00000000 desc 0000001c 00000004 00000000 00000001 00000000 00000000 res=same
+--- SRV format compatibility
+create rgba8 UNORM SR|RT|UA                    hr=0x00000000
+create rgba8 TYPELESS SR|RT|UA                 hr=0x00000000
+create bgra8 TYPELESS SR|RT                    hr=0x00000000
+create bgra8 UNORM SR|RT                       hr=0x00000000
+create bgrx8 TYPELESS SR|RT                    hr=0x00000000
+create r10g10b10a2 TYPELESS SR|RT              hr=0x00000000
+create r24g8 TYPELESS SR|DS                    hr=0x00000000
+create r32g8x24 TYPELESS SR|DS                 hr=0x00000000
+create r32 TYPELESS SR|DS                      hr=0x00000000
+create r16 TYPELESS SR|DS                      hr=0x00000000
+create bc1 TYPELESS SR                         hr=0x00000000
+create r32 TYPELESS SR|RT                      hr=0x00000000
+srv UNORM res as UNORM_SRGB                    hr=0x80070057
+srv UNORM res as UINT                          hr=0x80070057
+srv UNORM res as TYPELESS                      hr=0x80070057
+srv UNORM res as B8G8R8A8_UNORM                hr=0x80070057
+srv UNORM res as R32_FLOAT                     hr=0x80070057
+srv TYPELESS res NULL desc                     hr=0x80070057
+srv TYPELESS res as TYPELESS                   hr=0x80070057
+srv TYPELESS res as UNKNOWN                    hr=0x80070057
+srv TYPELESS res as UNORM                      hr=0x00000000 desc 0000001c 00000004 00000000 00000001 00000000 00000000 res=same
+srv TYPELESS res as UNORM_SRGB                 hr=0x00000000 desc 0000001d 00000004 00000000 00000001 00000000 00000000 res=same
+srv TYPELESS res as UINT                       hr=0x00000000 desc 0000001e 00000004 00000000 00000001 00000000 00000000 res=same
+srv TYPELESS res as SNORM                      hr=0x00000000 desc 0000001f 00000004 00000000 00000001 00000000 00000000 res=same
+srv TYPELESS res as SINT                       hr=0x00000000 desc 00000020 00000004 00000000 00000001 00000000 00000000 res=same
+srv TYPELESS res as B8G8R8A8_UNORM             hr=0x80070057
+srv TYPELESS res as R32_UINT                   hr=0x80070057
+srv BGRA_TL res as B8G8R8A8_UNORM              hr=0x00000000 desc 00000057 00000004 00000000 00000001 00000000 00000000 res=same
+srv BGRA_TL res as B8G8R8A8_UNORM_SRGB         hr=0x00000000 desc 0000005b 00000004 00000000 00000001 00000000 00000000 res=same
+srv BGRA_TL res as B8G8R8X8_UNORM              hr=0x80070057
+srv BGRA_TL res as R8G8B8A8_UNORM              hr=0x80070057
+srv BGRA_UNORM res as B8G8R8A8_UNORM_SRGB      hr=0x80070057
+srv BGRX_TL res as B8G8R8X8_UNORM              hr=0x00000000 desc 00000058 00000004 00000000 00000001 00000000 00000000 res=same
+srv BGRX_TL res as B8G8R8X8_UNORM_SRGB         hr=0x00000000 desc 0000005d 00000004 00000000 00000001 00000000 00000000 res=same
+srv R10G10B10A2_TL res as UNORM                hr=0x00000000 desc 00000018 00000004 00000000 00000001 00000000 00000000 res=same
+srv R10G10B10A2_TL res as UINT                 hr=0x00000000 desc 00000019 00000004 00000000 00000001 00000000 00000000 res=same
+srv R10G10B10A2_TL res as XR_BIAS              hr=0x80070057
+srv R24G8_TL res NULL desc                     hr=0x80070057
+srv R24G8_TL res as R24_UNORM_X8_TYPELESS      hr=0x00000000 desc 0000002e 00000004 00000000 00000001 00000000 00000000 res=same
+srv R24G8_TL res as X24_TYPELESS_G8_UINT       hr=0x00000000 desc 0000002f 00000004 00000000 00000001 00000000 00000000 res=same
+srv R24G8_TL res as D24_UNORM_S8_UINT          hr=0x80070057
+srv R32G8X24_TL res as R32_FLOAT_X8X24_TL      hr=0x00000000 desc 00000015 00000004 00000000 00000001 00000000 00000000 res=same
+srv R32G8X24_TL res as X32_TL_G8X24_UINT       hr=0x00000000 desc 00000016 00000004 00000000 00000001 00000000 00000000 res=same
+srv R32G8X24_TL res as D32_FLOAT_S8X24         hr=0x80070057
+srv R32_TL(DS) res as R32_FLOAT                hr=0x00000000 desc 00000029 00000004 00000000 00000001 00000000 00000000 res=same
+srv R32_TL(DS) res as R32_UINT                 hr=0x00000000 desc 0000002a 00000004 00000000 00000001 00000000 00000000 res=same
+srv R32_TL(DS) res as D32_FLOAT                hr=0x80070057
+srv R16_TL(DS) res as R16_UNORM                hr=0x00000000 desc 00000038 00000004 00000000 00000001 00000000 00000000 res=same
+srv R16_TL(DS) res as R16_FLOAT                hr=0x00000000 desc 00000036 00000004 00000000 00000001 00000000 00000000 res=same
+srv R16_TL(DS) res as D16_UNORM                hr=0x80070057
+srv BC1_TL res as BC1_UNORM                    hr=0x00000000 desc 00000047 00000004 00000000 00000001 00000000 00000000 res=same
+srv BC1_TL res as BC1_UNORM_SRGB               hr=0x00000000 desc 00000048 00000004 00000000 00000001 00000000 00000000 res=same
+srv BC1_TL res as BC3_UNORM                    hr=0x80070057
+srv BC1_TL res NULL desc                       hr=0x80070057
+--- RTV
+rtv NULL tex1d                                 hr=0x00000000 desc 0000001c 00000002 00000000 00000000 00000000 res=same
+rtv NULL tex1darr                              hr=0x00000000 desc 0000001c 00000003 00000000 00000000 00000004 res=same
+rtv NULL tex2d                                 hr=0x00000000 desc 0000001c 00000004 00000000 00000000 00000000 res=same
+rtv NULL tex2darr                              hr=0x00000000 desc 0000001c 00000005 00000000 00000000 00000004 res=same
+rtv NULL tex2dms                               hr=0x00000000 desc 0000001c 00000006 00000000 00000000 00000000 res=same
+rtv NULL tex2dmsarr                            hr=0x00000000 desc 0000001c 00000007 00000000 00000003 00000000 res=same
+rtv NULL tex3d                                 hr=0x00000000 desc 0000001c 00000008 00000000 00000000 00000008 res=same
+rtv NULL cube                                  hr=0x00000000 desc 0000001c 00000005 00000000 00000000 00000006 res=same
+rtv NULL cubearr                               hr=0x00000000 desc 0000001c 00000005 00000000 00000000 0000000c res=same
+rtv NULL srv-only (no RT bind)                 hr=0x80070057
+rtv NULL resource=NULL                         hr=0x80070057
+rtv tex2d 2D {1}                               hr=0x00000000 desc 0000001c 00000004 00000001 00000000 00000000 res=same
+rtv tex2d 2D {3} past                          hr=0x80070057
+rtv tex2d as 2DARRAY {0,0,1}                   hr=0x00000000 desc 0000001c 00000005 00000000 00000000 00000001 res=same
+rtv tex2d as 2DARRAY {0,0,-1}                  hr=0x00000000 desc 0000001c 00000005 00000000 00000000 00000001 res=same
+rtv tex2d as 2DMS                              hr=0x00000000 desc 0000001c 00000006 00000000 00000000 00000000 res=same
+rtv tex2d as 3D                                hr=0x80070057
+rtv tex2d dim UNKNOWN(0)                       hr=0x80070057
+rtv tex2d Format UNKNOWN explicit              hr=0x00000000 desc 0000001c 00000004 00000000 00000000 00000000 res=same
+rtv tex2darr 2DARRAY {0,1,-1}                  hr=0x00000000 desc 0000001c 00000005 00000000 00000001 00000003 res=same
+rtv tex2darr 2DARRAY {2,3,1}                   hr=0x00000000 desc 0000001c 00000005 00000002 00000003 00000001 res=same
+rtv tex2darr 2DARRAY {0,4,1} past              hr=0x80070057
+rtv tex2darr 2DARRAY {0,1,0}                   hr=0x80070057
+rtv tex2darr as 2D {1}                         hr=0x00000000 desc 0000001c 00000004 00000001 00000000 00000000 res=same
+rtv tex2dms 2DMS                               hr=0x00000000 desc 0000001c 00000006 00000000 00000000 00000000 res=same
+rtv tex2dms as 2DMSARRAY {0,-1}                hr=0x00000000 desc 0000001c 00000007 00000000 00000001 00000000 res=same
+rtv tex2dms as 2D                              hr=0x80070057
+rtv tex2dmsarr 2DMSARRAY {1,-1}                hr=0x00000000 desc 0000001c 00000007 00000001 00000002 00000000 res=same
+rtv tex2dmsarr 2DMSARRAY {2,2} past            hr=0x80070057
+rtv tex2dmsarr as 2DMS                         hr=0x00000000 desc 0000001c 00000006 00000000 00000000 00000000 res=same
+rtv tex3d 3D {0,0,-1}                          hr=0x00000000 desc 0000001c 00000008 00000000 00000000 00000008 res=same
+rtv tex3d 3D {1,1,-1}                          hr=0x00000000 desc 0000001c 00000008 00000001 00000001 00000003 res=same
+rtv tex3d 3D {1,0,5} past                      hr=0x80070057
+rtv tex3d 3D {2,1,1}                           hr=0x00000000 desc 0000001c 00000008 00000002 00000001 00000001 res=same
+rtv tex3d 3D {0,8,1} past                      hr=0x80070057
+rtv tex3d 3D {0,0,0}                           hr=0x80070057
+rtv tex3d as 2DARRAY                           hr=0x80070057
+rtv tex1darr 1DARRAY {1,1,-1}                  hr=0x00000000 desc 0000001c 00000003 00000001 00000001 00000003 res=same
+rtv tex1d as 2D                                hr=0x80070057
+rtv cube 2DARRAY {0,2,-1}                      hr=0x00000000 desc 0000001c 00000005 00000000 00000002 00000004 res=same
+rtv TYPELESS res NULL desc                     hr=0x80070057
+rtv TYPELESS res as TYPELESS                   hr=0x80070057
+rtv TYPELESS res as UNKNOWN                    hr=0x80070057
+rtv TYPELESS res as UNORM_SRGB                 hr=0x00000000 desc 0000001d 00000004 00000000 00000000 00000000 res=same
+rtv TYPELESS res as UINT                       hr=0x00000000 desc 0000001e 00000004 00000000 00000000 00000000 res=same
+rtv TYPELESS res as B8G8R8A8_UNORM             hr=0x80070057
+rtv UNORM res as UNORM_SRGB                    hr=0x80070057
+rtv UNORM res as UINT                          hr=0x80070057
+rtv BGRA_TL res as B8G8R8A8_UNORM_SRGB         hr=0x00000000 desc 0000005b 00000004 00000000 00000000 00000000 res=same
+rtv BGRA_UNORM res as B8G8R8A8_UNORM_SRGB      hr=0x80070057
+rtv BGRX_TL res as B8G8R8X8_UNORM              hr=0x00000000 desc 00000058 00000004 00000000 00000000 00000000 res=same
+rtv R10G10B10A2_TL res as XR_BIAS              hr=0x80070057
+rtv R32_TL(RT) res as R32_FLOAT                hr=0x00000000 desc 00000029 00000004 00000000 00000000 00000000 res=same
+rtv R32_TL(RT) res as D32_FLOAT                hr=0x80070057
+--- buffers
+create buf typed 256 SR|UA                     hr=0x00000000
+create buf raw 256 SR|UA ALLOW_RAW             hr=0x00000000
+create buf structured 256 s8 SR|UA             hr=0x00000000
+create buf typed 256 SR only                   hr=0x00000000
+create buf vertex-only 256                     hr=0x00000000
+create buf 256 SR|RT                           hr=0x00000000
+srv buf typed NULL desc                        hr=0x80070057
+srv buf raw NULL desc                          hr=0x80070057
+srv buf structured NULL desc                   hr=0x00000000 desc 00000000 00000001 00000000 00000020 00000000 00000000 res=same
+srv buf typed R32_FLOAT {0,64}                 hr=0x00000000 desc 00000029 00000001 00000000 00000040 00000000 00000000 res=same
+srv buf typed R32_FLOAT {0,65} past            hr=0x80070057
+srv buf typed R32_FLOAT {63,1}                 hr=0x00000000 desc 00000029 00000001 0000003f 00000001 00000000 00000000 res=same
+srv buf typed R32_FLOAT {64,1} past            hr=0x80070057
+srv buf typed R32_FLOAT {0,0}                  hr=0x80070057
+srv buf typed R32G32B32_FLOAT {0,21}           hr=0x00000000 desc 00000006 00000001 00000000 00000015 00000000 00000000 res=same
+srv buf typed R32G32B32_FLOAT {0,22} past      hr=0x80070057
+srv buf typed UNKNOWN {0,4}                    hr=0x80070057
+srv buf typed R32_TYPELESS {0,4}               hr=0x80070057
+srv buf typed R8G8B8A8_UNORM_SRGB {0,4}        hr=0x80070057
+srv buf typed BC1_UNORM {0,4}                  hr=0x80070057
+srv buf typed D32_FLOAT {0,4}                  hr=0x80070057
+srv buf typed BUFFEREX flags0 R32_FLOAT        hr=0x00000000 desc 00000029 0000000b 00000000 00000004 00000000 00000000 res=same
+srv buf typed BUFFEREX flags2                  hr=0x00000000 desc 00000029 0000000b 00000000 00000004 00000002 00000000 res=same
+srv buf typed BUFFEREX RAW (no ALLOW_RAW)      hr=0x80070057
+srv buf raw BUFFEREX RAW {0,64}                hr=0x00000000 desc 00000027 0000000b 00000000 00000040 00000001 00000000 res=same
+srv buf raw BUFFEREX RAW {0,65} past           hr=0x80070057
+srv buf raw BUFFEREX RAW R32_UINT              hr=0x80070057
+srv buf raw BUFFER R32_UINT {0,4}              hr=0x00000000 desc 0000002a 00000001 00000000 00000004 00000000 00000000 res=same
+srv buf raw BUFFER R32_TYPELESS {0,4}          hr=0x80070057
+srv buf struct BUFFER UNKNOWN {0,32}           hr=0x00000000 desc 00000000 00000001 00000000 00000020 00000000 00000000 res=same
+srv buf struct BUFFER UNKNOWN {0,33} past      hr=0x80070057
+srv buf struct BUFFER R32_FLOAT {0,4}          hr=0x80070057
+srv buf struct BUFFEREX flags0 UNKNOWN         hr=0x00000000 desc 00000000 0000000b 00000000 00000004 00000000 00000000 res=same
+srv buf struct BUFFEREX RAW                    hr=0x80070057
+srv buf vertex-only                            hr=0x80070057
+srv buf as TEXTURE2D                           hr=0x80070057
+uav buf typed NULL desc                        hr=0x80070057
+uav buf raw NULL desc                          hr=0x80070057
+uav buf structured NULL desc                   hr=0x00000000 desc 00000000 00000001 00000000 00000020 00000000 res=same
+uav buf typed R32_FLOAT {0,64}                 hr=0x00000000 desc 00000029 00000001 00000000 00000040 00000000 res=same
+uav buf typed R32_FLOAT {0,65} past            hr=0x80070057
+uav buf typed R32_FLOAT {0,0}                  hr=0x80070057
+uav buf typed UNKNOWN                          hr=0x80070057
+uav buf typed R32_TYPELESS (no RAW)            hr=0x80070057
+uav buf typed R8G8B8A8_UNORM                   hr=0x00000000 desc 0000001c 00000001 00000000 00000004 00000000 res=same
+uav buf typed R8G8B8A8_UNORM_SRGB              hr=0x80070057
+uav buf typed R32_FLOAT APPEND                 hr=0x80070057
+uav buf typed R32_FLOAT COUNTER                hr=0x80070057
+uav buf typed RAW (no ALLOW_RAW)               hr=0x80070057
+uav buf raw RAW {0,64}                         hr=0x00000000 desc 00000027 00000001 00000000 00000040 00000001 res=same
+uav buf raw RAW R32_UINT                       hr=0x80070057
+uav buf raw RAW|COUNTER                        hr=0x80070057
+uav buf raw RAW|APPEND                         hr=0x80070057
+uav buf raw typed R32_UINT                     hr=0x00000000 desc 0000002a 00000001 00000000 00000004 00000000 res=same
+uav buf struct UNKNOWN {0,32}                  hr=0x00000000 desc 00000000 00000001 00000000 00000020 00000000 res=same
+uav buf struct UNKNOWN {0,33} past             hr=0x80070057
+uav buf struct APPEND                          hr=0x00000000 desc 00000000 00000001 00000000 00000020 00000002 res=same
+uav buf struct COUNTER                         hr=0x00000000 desc 00000000 00000001 00000000 00000020 00000004 res=same
+uav buf struct APPEND|COUNTER                  hr=0x80070057
+uav buf struct flags 8                         hr=0x80070057
+uav buf struct R32_FLOAT                       hr=0x80070057
+uav buf struct R32_FLOAT COUNTER               hr=0x80070057
+uav buf SRV-only                               hr=0x80070057
+uav buf as TEXTURE2D                           hr=0x80070057
+rtv buf SR|RT BUFFER R32_FLOAT {2,4}           hr=0x00000000 desc 00000029 00000001 00000002 00000004 00000000 res=same
+rtv buf SR|RT BUFFER R32_FLOAT {0,65} past     hr=0x80070057
+rtv buf SR|RT NULL desc                        hr=0x80070057
+rtv buf typed (no RT bind)                     hr=0x80070057
+dsv buf                                        hr=0x80070057
+--- UAV textures
+uav NULL tex1d                                 hr=0x00000000 desc 0000001c 00000002 00000000 00000000 00000000 res=same
+uav NULL tex1darr                              hr=0x00000000 desc 0000001c 00000003 00000000 00000000 00000004 res=same
+uav NULL tex2d                                 hr=0x00000000 desc 0000001c 00000004 00000000 00000000 00000000 res=same
+uav NULL tex2darr                              hr=0x00000000 desc 0000001c 00000005 00000000 00000000 00000004 res=same
+uav NULL tex3d                                 hr=0x00000000 desc 0000001c 00000008 00000000 00000000 00000008 res=same
+uav NULL cube                                  hr=0x00000000 desc 0000001c 00000005 00000000 00000000 00000006 res=same
+uav NULL srv-only (no UAV bind)                hr=0x80070057
+uav NULL tex2dms (no UAV bind)                 hr=0x80070057
+uav NULL resource=NULL                         hr=0x80070057
+uav tex2d 2D {1}                               hr=0x00000000 desc 0000001c 00000004 00000001 00000000 00000000 res=same
+uav tex2d 2D {3} past                          hr=0x80070057
+uav tex2d as 2DARRAY {0,0,1}                   hr=0x00000000 desc 0000001c 00000005 00000000 00000000 00000001 res=same
+uav tex2d as 2DARRAY {0,0,-1}                  hr=0x00000000 desc 0000001c 00000005 00000000 00000000 00000001 res=same
+uav tex2d as 1D                                hr=0x80070057
+uav tex2d as 3D                                hr=0x80070057
+uav tex2d dim UNKNOWN(0)                       hr=0x80070057
+uav tex2d dim 6 (not a UAV dim)                hr=0x80070057
+uav tex2d Format UNKNOWN explicit              hr=0x00000000 desc 0000001c 00000004 00000000 00000000 00000000 res=same
+uav tex2darr 2DARRAY {1,1,-1}                  hr=0x00000000 desc 0000001c 00000005 00000001 00000001 00000003 res=same
+uav tex2darr 2DARRAY {0,1,2}                   hr=0x00000000 desc 0000001c 00000005 00000000 00000001 00000002 res=same
+uav tex2darr 2DARRAY {0,3,2} past              hr=0x80070057
+uav tex2darr 2DARRAY {0,1,0}                   hr=0x80070057
+uav tex2darr as 2D {0}                         hr=0x00000000 desc 0000001c 00000004 00000000 00000000 00000000 res=same
+uav tex3d 3D {0,0,-1}                          hr=0x00000000 desc 0000001c 00000008 00000000 00000000 00000008 res=same
+uav tex3d 3D {1,1,-1}                          hr=0x00000000 desc 0000001c 00000008 00000001 00000001 00000003 res=same
+uav tex3d 3D {1,0,5} past                      hr=0x80070057
+uav tex3d 3D {2,0,2}                           hr=0x00000000 desc 0000001c 00000008 00000002 00000000 00000002 res=same
+uav tex3d 3D {0,0,0}                           hr=0x80070057
+uav tex3d 3D {3,0,1} mip past                  hr=0x80070057
+uav tex3d as 2DARRAY                           hr=0x80070057
+uav tex1d as 1DARRAY {0,0,1}                   hr=0x00000000 desc 0000001c 00000003 00000000 00000000 00000001 res=same
+uav cube 2DARRAY {0,2,-1}                      hr=0x00000000 desc 0000001c 00000005 00000000 00000002 00000004 res=same
+uav TYPELESS res NULL desc                     hr=0x80070057
+uav TYPELESS res as TYPELESS                   hr=0x80070057
+uav TYPELESS res as UNKNOWN                    hr=0x80070057
+uav TYPELESS res as UNORM                      hr=0x00000000 desc 0000001c 00000004 00000000 00000000 00000000 res=same
+uav TYPELESS res as UNORM_SRGB                 hr=0x80070057
+uav TYPELESS res as UINT                       hr=0x00000000 desc 0000001e 00000004 00000000 00000000 00000000 res=same
+uav TYPELESS res as R32_UINT                   hr=0x00000000 desc 0000002a 00000004 00000000 00000000 00000000 res=same
+uav UNORM res as UINT                          hr=0x80070057
+--- DSV
+create D32_FLOAT DS                            hr=0x00000000
+create D24_UNORM_S8_UINT DS                    hr=0x00000000
+create D16_UNORM DS                            hr=0x00000000
+create D32_FLOAT_S8X24_UINT DS                 hr=0x00000000
+create D32_FLOAT cube DS                       hr=0x00000000
+create R32_TYPELESS SR only                    hr=0x00000000
+dsv D32 NULL                                   hr=0x00000000 desc 00000028 00000003 00000000 00000000 00000000 00000000 res=same
+dsv D32 flags RO_DEPTH                         hr=0x00000000 desc 00000028 00000003 00000001 00000000 00000000 00000000 res=same
+dsv D32 flags RO_STENCIL                       hr=0x80070057
+dsv D32 flags RO_DEPTH|RO_STENCIL              hr=0x80070057
+dsv D32 flags 4                                hr=0x80070057
+dsv D32 Format UNKNOWN explicit                hr=0x00000000 desc 00000028 00000003 00000000 00000000 00000000 00000000 res=same
+dsv D32 as D24 format                          hr=0x80070057
+dsv D32 dim UNKNOWN(0)                         hr=0x80070057
+dsv D32 mip 1 past                             hr=0x80070057
+dsv D24 NULL                                   hr=0x00000000 desc 0000002d 00000003 00000000 00000000 00000000 00000000 res=same
+dsv D24 flags RO_DEPTH                         hr=0x00000000 desc 0000002d 00000003 00000001 00000000 00000000 00000000 res=same
+dsv D24 flags RO_STENCIL                       hr=0x00000000 desc 0000002d 00000003 00000002 00000000 00000000 00000000 res=same
+dsv D24 flags RO_DEPTH|RO_STENCIL              hr=0x00000000 desc 0000002d 00000003 00000003 00000000 00000000 00000000 res=same
+dsv D16 NULL                                   hr=0x00000000 desc 00000037 00000003 00000000 00000000 00000000 00000000 res=same
+dsv D16 flags RO_STENCIL                       hr=0x80070057
+dsv D32S8 NULL                                 hr=0x00000000 desc 00000014 00000003 00000000 00000000 00000000 00000000 res=same
+dsv D32S8 flags RO_STENCIL                     hr=0x00000000 desc 00000014 00000003 00000002 00000000 00000000 00000000 res=same
+dsv D32 cube NULL                              hr=0x00000000 desc 00000028 00000004 00000000 00000000 00000000 00000006 res=same
+dsv D32 cube 2DARRAY {0,2,-1}                  hr=0x00000000 desc 00000028 00000004 00000000 00000000 00000002 00000004 res=same
+dsv R24G8_TL NULL                              hr=0x80070057
+dsv R24G8_TL as D24_UNORM_S8_UINT              hr=0x00000000 desc 0000002d 00000003 00000000 00000000 00000000 00000000 res=same
+dsv R24G8_TL as R24_UNORM_X8_TYPELESS          hr=0x80070057
+dsv R24G8_TL as D24 RO_STENCIL                 hr=0x00000000 desc 0000002d 00000003 00000002 00000000 00000000 00000000 res=same
+dsv R32G8X24_TL as D32_FLOAT_S8X24             hr=0x00000000 desc 00000014 00000003 00000000 00000000 00000000 00000000 res=same
+dsv R32G8X24_TL as R32_FLOAT_X8X24_TL          hr=0x80070057
+dsv R32_TL as D32_FLOAT                        hr=0x00000000 desc 00000028 00000003 00000000 00000000 00000000 00000000 res=same
+dsv R32_TL as R32_FLOAT                        hr=0x80070057
+dsv R32_TL as D32 RO_STENCIL                   hr=0x80070057
+dsv R16_TL as D16_UNORM                        hr=0x00000000 desc 00000037 00000003 00000000 00000000 00000000 00000000 res=same
+dsv R32_TL SR-only as D32_FLOAT                hr=0x80070057
+dsv RGBA8 RT tex (no DS bind)                  hr=0x80070057
+dsv NULL resource=NULL                         hr=0x80070057
+--- ppView NULL (validate only)
+srv valid, ppView NULL                         hr=0x00000001
+srv invalid, ppView NULL                       hr=0x80070057
+srv NULL desc, ppView NULL                     hr=0x00000001
+srv buf valid, ppView NULL                     hr=0x00000001
+rtv valid, ppView NULL                         hr=0x00000001
+rtv invalid, ppView NULL                       hr=0x80070057
+uav valid, ppView NULL                         hr=0x00000001
+uav 3D bad window, ppView NULL                 hr=0x80070057
+uav buf valid, ppView NULL                     hr=0x00000001
+dsv valid, ppView NULL                         hr=0x00000001
+dsv invalid, ppView NULL                       hr=0x80070057
+--- View1 QI of base-created views
+QI srv -> SRV1 hr=0x00000000
+QI rtv -> RTV1 hr=0x00000000
+QI uav -> UAV1 hr=0x00000000
+--- ID3D11Device3 `1` creators (GetDesc1 words)
+srv1 tex2d NULL                                hr=0x00000000 desc 0000001c 00000004 00000000 00000003 00000000 00000000 00000000 res=same
+srv1 tex2darr NULL                             hr=0x00000000 desc 0000001c 00000005 00000000 00000003 00000000 00000004 00000000 res=same
+srv1 tex2d 2D {1,-1,plane0}                    hr=0x00000000 desc 0000001c 00000004 00000001 00000002 00000000 00000000 00000000 res=same
+srv1 tex2d 2D {0,1,plane1}                     hr=0x80070057
+srv1 tex2darr 2DARRAY {0,-1,1,2,plane0}        hr=0x00000000 desc 0000001c 00000005 00000000 00000003 00000001 00000002 00000000 res=same
+srv1 tex2darr 2DARRAY {0,-1,1,2,plane1}        hr=0x80070057
+srv1 cube CUBE {0,-1}                          hr=0x00000000 desc 0000001c 00000009 00000000 00000003 00000000 00000000 00000000 res=same
+srv1 buf typed {0,4}                           hr=0x00000000 desc 00000029 00000001 00000000 00000004 00000000 00000000 00000000 res=same
+srv1 tex2d invalid mip                         hr=0x80070057
+srv1 tex2d valid ppView NULL                   hr=0x00000001
+uav1 tex2d NULL                                hr=0x00000000 desc 0000001c 00000004 00000000 00000000 00000000 00000000 res=same
+uav1 tex2d 2D {1,plane0}                       hr=0x00000000 desc 0000001c 00000004 00000001 00000000 00000000 00000000 res=same
+uav1 tex2d 2D {0,plane1}                       hr=0x80070057
+uav1 tex2darr 2DARRAY {0,1,-1,plane0}          hr=0x00000000 desc 0000001c 00000005 00000000 00000001 00000003 00000000 res=same
+uav1 tex2darr 2DARRAY {0,1,-1,plane1}          hr=0x80070057
+uav1 tex3d 3D {0,0,-1}                         hr=0x00000000 desc 0000001c 00000008 00000000 00000000 00000008 00000000 res=same
+uav1 buf struct {0,32} COUNTER                 hr=0x00000000 desc 00000000 00000001 00000000 00000020 00000004 00000000 res=same
+rtv1 tex2d NULL                                hr=0x00000000 desc 0000001c 00000004 00000000 00000000 00000000 00000000 res=same
+rtv1 tex2d 2D {1,plane0}                       hr=0x00000000 desc 0000001c 00000004 00000001 00000000 00000000 00000000 res=same
+rtv1 tex2d 2D {0,plane1}                       hr=0x80070057
+rtv1 tex2darr 2DARRAY {0,1,-1,plane0}          hr=0x00000000 desc 0000001c 00000005 00000000 00000001 00000003 00000000 res=same
+rtv1 tex2darr 2DARRAY {0,1,-1,plane1}          hr=0x80070057
+rtv1 tex3d 3D {1,1,-1}                         hr=0x00000000 desc 0000001c 00000008 00000001 00000001 00000003 00000000 res=same
+--- UAV R32 casting of 32bpp typeless resources
+create r16g16 TYPELESS SR|UA                   hr=0x00000000
+create r10g10b10a2 TYPELESS SR|UA              hr=0x00000000
+create bgra8 TYPELESS SR|UA                    hr=0x00000000
+create rgba16 TYPELESS SR|UA                   hr=0x00000000
+create r11g11b10 FLOAT SR|UA                   hr=0x00000000
+uav RGBA8_TL as R32_SINT                       hr=0x00000000 desc 0000002b 00000004 00000000 00000000 00000000 res=same
+uav RGBA8_TL as R32_FLOAT                      hr=0x00000000 desc 00000029 00000004 00000000 00000000 00000000 res=same
+uav RGBA8_TL as R16G16_UINT                    hr=0x80070057
+uav RGBA8 UNORM (typed) as R32_UINT            hr=0x80070057
+uav R16G16_TL as R32_UINT                      hr=0x00000000 desc 0000002a 00000004 00000000 00000000 00000000 res=same
+uav R16G16_TL as R16G16_FLOAT                  hr=0x00000000 desc 00000022 00000004 00000000 00000000 00000000 res=same
+uav R10G10B10A2_TL as R32_UINT                 hr=0x00000000 desc 0000002a 00000004 00000000 00000000 00000000 res=same
+uav B8G8R8A8_TL as R32_UINT                    hr=0x00000000 desc 0000002a 00000004 00000000 00000000 00000000 res=same
+uav B8G8R8A8_TL as B8G8R8A8_UNORM              hr=0x00000000 desc 00000057 00000004 00000000 00000000 00000000 res=same
+uav R16G16B16A16_TL as R32G32_UINT             hr=0x80070057
+uav R16G16B16A16_TL as R32_UINT                hr=0x80070057
+uav R11G11B10_FLOAT (typed) as R32_UINT        hr=0x80070057
+srv R16G16_TL as R32_UINT                      hr=0x80070057
+rtv RGBA8_TL as R32_UINT                       hr=0x80070057
+--- more dimension edges
+dsv D32 (1 sample) as 2DMS                     hr=0x00000000 desc 00000028 00000005 00000000 00000000 00000000 00000000 res=same
+dsv D32 (1 sample) as 2DMSARRAY {0,1}          hr=0x00000000 desc 00000028 00000006 00000000 00000000 00000001 00000000 res=same
+srv tex2d as 2DMSARRAY {0,1}                   hr=0x00000000 desc 0000001c 00000007 00000000 00000001 00000000 00000000 res=same
+rtv tex2darr as 2DMSARRAY {1,2}                hr=0x00000000 desc 0000001c 00000007 00000001 00000002 00000000 res=same
+srv cubearr CUBEARRAY {0,-1,3,-1}              hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000003 00000001 res=same
+srv cubearr CUBEARRAY {0,-1,7,-1}              hr=0x80070057
+srv cubearr CUBEARRAY {0,-1,6,-1}              hr=0x00000000 desc 0000001c 0000000a 00000000 00000003 00000006 00000001 res=same
+srv cubearr CUBEARRAY {0,-1,7,2} past          hr=0x80070057
+srv cubearr CUBEARRAY {0,-1,12,1} past         hr=0x80070057
+srv cube CUBE mip {3,1} past                   hr=0x80070057
+--- typed buffer format coverage (SRV then UAV)
+srv buf typed fmt 2 {0,4}                      hr=0x00000000 desc 00000002 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 2 {0,4}                      hr=0x00000000 desc 00000002 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 6 {0,4}                      hr=0x00000000 desc 00000006 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 6 {0,4}                      hr=0x80070057
+srv buf typed fmt 7 {0,4}                      hr=0x00000000 desc 00000007 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 7 {0,4}                      hr=0x80070057
+srv buf typed fmt 8 {0,4}                      hr=0x00000000 desc 00000008 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 8 {0,4}                      hr=0x80070057
+srv buf typed fmt 10 {0,4}                     hr=0x00000000 desc 0000000a 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 10 {0,4}                     hr=0x00000000 desc 0000000a 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 16 {0,4}                     hr=0x00000000 desc 00000010 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 16 {0,4}                     hr=0x00000000 desc 00000010 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 24 {0,4}                     hr=0x00000000 desc 00000018 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 24 {0,4}                     hr=0x00000000 desc 00000018 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 26 {0,4}                     hr=0x00000000 desc 0000001a 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 26 {0,4}                     hr=0x00000000 desc 0000001a 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 28 {0,4}                     hr=0x00000000 desc 0000001c 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 28 {0,4}                     hr=0x00000000 desc 0000001c 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 30 {0,4}                     hr=0x00000000 desc 0000001e 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 30 {0,4}                     hr=0x00000000 desc 0000001e 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 31 {0,4}                     hr=0x00000000 desc 0000001f 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 31 {0,4}                     hr=0x00000000 desc 0000001f 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 34 {0,4}                     hr=0x00000000 desc 00000022 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 34 {0,4}                     hr=0x00000000 desc 00000022 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 41 {0,4}                     hr=0x00000000 desc 00000029 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 41 {0,4}                     hr=0x00000000 desc 00000029 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 49 {0,4}                     hr=0x00000000 desc 00000031 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 49 {0,4}                     hr=0x00000000 desc 00000031 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 54 {0,4}                     hr=0x00000000 desc 00000036 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 54 {0,4}                     hr=0x00000000 desc 00000036 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 56 {0,4}                     hr=0x00000000 desc 00000038 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 56 {0,4}                     hr=0x00000000 desc 00000038 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 61 {0,4}                     hr=0x00000000 desc 0000003d 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 61 {0,4}                     hr=0x00000000 desc 0000003d 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 62 {0,4}                     hr=0x00000000 desc 0000003e 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 62 {0,4}                     hr=0x00000000 desc 0000003e 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 67 {0,4}                     hr=0x80070057
+uav buf typed fmt 67 {0,4}                     hr=0x80070057
+srv buf typed fmt 85 {0,4}                     hr=0x00000000 desc 00000055 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 85 {0,4}                     hr=0x00000000 desc 00000055 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 87 {0,4}                     hr=0x00000000 desc 00000057 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 87 {0,4}                     hr=0x00000000 desc 00000057 00000001 00000000 00000004 00000000 res=same
+srv buf typed fmt 88 {0,4}                     hr=0x00000000 desc 00000058 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 88 {0,4}                     hr=0x80070057
+srv buf typed fmt 115 {0,4}                    hr=0x00000000 desc 00000073 00000001 00000000 00000004 00000000 00000000 res=same
+uav buf typed fmt 115 {0,4}                    hr=0x00000000 desc 00000073 00000001 00000000 00000004 00000000 res=same
+--- cross-device resource
+create foreign tex2d                            hr=0x00000000
+srv of other device's texture                  hr=0x8007000e
+rtv of other device's texture                  hr=0x8007000e
+--- lifetime / refcounts
+create lifetime tex2d                          hr=0x00000000
+tex AddRef/Release before any view: 2 1
+srv hr=0x00000000; tex AddRef/Release with view: 2 1
+after GetResource (same): tex AddRef/Release: 3 2
+release GetResource ref: 1
+release app tex ref (view alive): 0
+GetResource after app released tex: same
+  resource still usable: GetType=3, release=0
+release view: 0
+create lifetime tex2d #2                       hr=0x00000000
+create lifetime D32                            hr=0x00000000
+rtv: tex AddRef/Release 2 1
+dsv: tex AddRef/Release 2 1
+uav: buf AddRef/Release 2 1
+done
+#
+# winoracle (WARP, FL 11_0), x64, 2026-09-28. The x86 build returns the same
+# HRESULT on every line; its GetDesc leaves runtime stack garbage in the union
+# words the dimension does not use (undefined words -- compare only the used
+# fields on x86).
+#
+# Verdicts for Vitreo build of 2026-09-27 23:22 (x64 and x86 identical):
+#  - srv1/rtv1/uav1 lines: Vitreo's View vtables have 9 slots, so GetDesc1
+#    (slot 9) is NULL -> guest branch to 0 (probe prints GetDesc1-slot-NULL).
+#  - lifetime: Windows views do NOT add to the resource's public refcount
+#    (2 1 / release app ref -> 0 while the view keeps it alive); Vitreo 3 2 / 1.
+#  - uav NULL tex2darr / cube: Windows TEXTURE2DARRAY {0,0,N}; Vitreo TEXTURE2D.
+#  - uav 2DARRAY GetDesc: Vitreo reports FirstArraySlice/ArraySize as 0,0.
+#  - typeless view formats (NULL desc / TYPELESS / UNKNOWN over a typeless
+#    resource, BC1_TYPELESS, R24G8_TYPELESS): Windows E_INVALIDARG; Vitreo S_OK.
+#  - D* formats as SRV (20/40/45/55) and D32 as RTV: Windows E_INVALIDARG; Vitreo S_OK.
+#  - sRGB UAV (texture and buffer): Windows E_INVALIDARG; Vitreo S_OK.
+#  - UAV R32_UINT/SINT/FLOAT of 32bpp typeless (spec 5.3.9.5): Windows S_OK;
+#    Vitreo E_INVALIDARG.
+#  - SRV 2DMSARRAY ArraySize -1, CUBEARRAY any First2DArrayFace / NumCubes -1:
+#    Windows S_OK; Vitreo E_INVALIDARG.
+#  - 2DMS/2DMSARRAY views of a 1-sample resource (SRV/RTV/DSV): Windows S_OK;
+#    Vitreo E_INVALIDARG.
+#  - structured buffer SRV/UAV NULL desc: Windows S_OK {UNKNOWN,BUFFER,0,32};
+#    Vitreo E_INVALIDARG. Structured + typed format: Windows E_INVALIDARG;
+#    Vitreo S_OK. Typed buffer R32_TYPELESS / sRGB: Windows E_INVALIDARG;
+#    Vitreo S_OK.
+#  - format-mismatch / unsupported-format refusals: Windows E_INVALIDARG;
+#    Vitreo E_NOTIMPL (0x80004001).
+#  - BUFFEREX flags 2: Windows S_OK and echoes 2; Vitreo E_NOTIMPL.
+#  - R32G32B32_* typed buffer SRV: Windows S_OK (required); Vitreo E_NOTIMPL.
+#  - DSV READ_ONLY_STENCIL on D32/D16: Windows E_INVALIDARG; Vitreo S_OK.
+#  - uav 3D bad window with ppView NULL: Windows E_INVALIDARG; Vitreo S_FALSE.
+#  - rtv of a buffer: Windows S_OK; Vitreo refuses the SR|RT buffer at
+#    creation (area 02) and has no BUFFER RTV path.
+#  - bgrx8 TYPELESS SR|RT creation: Windows S_OK; Vitreo E_INVALIDARG (area 02).
+#  - cross-device resource: Windows 0x8007000e; Vitreo E_INVALIDARG (both fail).
+# Every other line matches.

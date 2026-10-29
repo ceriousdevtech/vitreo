@@ -1,0 +1,30 @@
+bits=32
+initenv export=1 winitenv export=1
+start initenv=environ winitenv=null
+after getmainargs initenv=null env=environ
+after wgetmainargs winitenv=envp wenv=wenviron
+exports vft=1 ctor0=1 ctor1=1 ctor2=1 copy=1 assign=1 dtor=1 what=1
+vftable[1]==what 1
+vftable[0]==??_G 0 ==??_E 1
+col sig=0 off=0 cd=0 type=.?AVexception@@
+ctor0 ret=this vfptr=vftable what=null free=0
+ctor0 what='Unknown exception'
+ctor1 ret=this vfptr=vftable what=copy free=1
+ctor1 what='probe text'
+ctor2 ret=this vfptr=vftable what=same free=0
+ctor2 what='probe text'
+ctor2-0 ret=this vfptr=vftable what=same free=0
+ctor1-null ret=this vfptr=vftable what=null free=0
+ctor1-null what='Unknown exception'
+ctor2-null ret=this vfptr=vftable what=null free=0
+ctor2-null what='Unknown exception'
+copy-of-ctor1 ret=this vfptr=vftable what=copy free=1
+copy-of-ctor1 what='probe text' srcsame=0
+copy-of-ctor2 ret=this vfptr=vftable what=same free=0
+copy-of-ctor0 ret=this vfptr=vftable what=null free=0
+assign-from-ctor2 ret=this vfptr=vftable what=same free=0
+assign-from-ctor1 ret=this vfptr=vftable what=copy free=1
+assign-from-ctor1 srcsame=0
+assign-self ret=this vfptr=vftable what=same free=1
+dtor vfptr=vftable what=kept free=1
+deleting0 ret=this vfptr=vftable

@@ -1,0 +1,61 @@
+input desktop=1
+promotion key found=1
+version 0 getrect hr=00000000 size=32x48
+ left click
+  wParam=1 lParam=WM_MOUSEMOVE
+  wParam=1 lParam=WM_LBUTTONDOWN
+  wParam=1 lParam=WM_LBUTTONUP
+ right click
+  wParam=1 lParam=WM_MOUSEMOVE
+  wParam=1 lParam=WM_RBUTTONDOWN
+  wParam=1 lParam=WM_RBUTTONUP
+ double click
+  wParam=1 lParam=WM_MOUSEMOVE
+  wParam=1 lParam=WM_LBUTTONDOWN
+  wParam=1 lParam=WM_LBUTTONUP
+  wParam=1 lParam=WM_LBUTTONDBLCLK
+  wParam=1 lParam=WM_LBUTTONUP
+version 3 getrect hr=00000000 size=32x48
+ left click
+  wParam=1 lParam=WM_MOUSEMOVE
+  wParam=1 lParam=WM_LBUTTONDOWN
+  wParam=1 lParam=WM_LBUTTONUP
+  wParam=1 lParam=NIN_SELECT
+ right click
+  wParam=1 lParam=WM_MOUSEMOVE
+  wParam=1 lParam=WM_RBUTTONDOWN
+  wParam=1 lParam=WM_RBUTTONUP
+  wParam=1 lParam=WM_CONTEXTMENU
+ double click
+  wParam=1 lParam=WM_MOUSEMOVE
+  wParam=1 lParam=WM_LBUTTONDOWN
+  wParam=1 lParam=WM_LBUTTONUP
+  wParam=1 lParam=NIN_SELECT
+  wParam=1 lParam=WM_LBUTTONDBLCLK
+  wParam=1 lParam=WM_LBUTTONUP
+  wParam=1 lParam=NIN_SELECT
+version 4 getrect hr=00000000 size=32x48
+ left click
+  NIN_POPUPOPEN id=1 anchor=outside dx=16 dy=-1008
+  WM_MOUSEMOVE id=1 anchor=in-icon dx=16 dy=24
+  WM_LBUTTONDOWN id=1 anchor=in-icon dx=15 dy=24
+  WM_LBUTTONUP id=1 anchor=in-icon dx=15 dy=24
+  NIN_SELECT id=1 anchor=in-icon dx=15 dy=24
+  NIN_POPUPCLOSE id=1 anchor=outside dx=16 dy=-1008
+ right click
+  NIN_POPUPOPEN id=1 anchor=outside dx=16 dy=-1008
+  WM_MOUSEMOVE id=1 anchor=in-icon dx=16 dy=24
+  WM_RBUTTONDOWN id=1 anchor=in-icon dx=15 dy=24
+  WM_RBUTTONUP id=1 anchor=in-icon dx=15 dy=24
+  WM_CONTEXTMENU id=1 anchor=in-icon dx=15 dy=24
+  NIN_POPUPCLOSE id=1 anchor=outside dx=16 dy=-1008
+ double click
+  NIN_POPUPOPEN id=1 anchor=outside dx=16 dy=-1008
+  WM_MOUSEMOVE id=1 anchor=in-icon dx=16 dy=24
+  WM_LBUTTONDOWN id=1 anchor=in-icon dx=15 dy=24
+  WM_LBUTTONUP id=1 anchor=in-icon dx=15 dy=24
+  NIN_SELECT id=1 anchor=in-icon dx=15 dy=24
+  WM_LBUTTONDBLCLK id=1 anchor=in-icon dx=15 dy=24
+  WM_LBUTTONUP id=1 anchor=in-icon dx=15 dy=24
+  NIN_SELECT id=1 anchor=in-icon dx=15 dy=24
+  NIN_POPUPCLOSE id=1 anchor=outside dx=16 dy=-1008

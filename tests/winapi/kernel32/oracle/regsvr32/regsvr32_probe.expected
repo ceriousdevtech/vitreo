@@ -1,0 +1,92 @@
+== x64 System32\regsvr32
+register exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+register-fail exit=5
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+unregister exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllUnregisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+unregister-fail exit=5
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllUnregisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+install exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllInstall(TRUE) arg=[hello] apt_hr=0 apt=3 coinit=0x1 bits=64
+install-noreg exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllInstall(TRUE) arg=[hello] apt_hr=0 apt=3 coinit=0x1 bits=64
+install-nocmd exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllInstall(TRUE) arg=[] apt_hr=0 apt=3 coinit=0x1 bits=64
+uninstall exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllInstall(FALSE) arg=[bye] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllUnregisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+install-fail exit=5
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllInstall(TRUE) arg=[x] apt_hr=0 apt=3 coinit=0x1 bits=64
+missing-dll exit=3
+no-entry exit=4
+no-args exit=1
+n-without-i exit=1
+two-dlls exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+bad-switch exit=1
+relative exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+dash-switch exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=64
+== x86 SysWOW64\regsvr32
+register exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+register-fail exit=5
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+unregister exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllUnregisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+unregister-fail exit=5
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllUnregisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+install exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllInstall(TRUE) arg=[hello] apt_hr=0 apt=3 coinit=0x1 bits=32
+install-noreg exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllInstall(TRUE) arg=[hello] apt_hr=0 apt=3 coinit=0x1 bits=32
+install-nocmd exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllInstall(TRUE) arg=[] apt_hr=0 apt=3 coinit=0x1 bits=32
+uninstall exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllInstall(FALSE) arg=[bye] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllUnregisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+install-fail exit=5
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllInstall(TRUE) arg=[x] apt_hr=0 apt=3 coinit=0x1 bits=32
+missing-dll exit=3
+no-entry exit=4
+no-args exit=1
+n-without-i exit=1
+two-dlls exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+bad-switch exit=1
+relative exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+dash-switch exit=0
+  DllMain(PROCESS_ATTACH) arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32
+  DllRegisterServer arg=[(none)] apt_hr=0 apt=3 coinit=0x1 bits=32

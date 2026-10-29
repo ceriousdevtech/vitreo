@@ -1,0 +1,494 @@
+# winoracle (Windows 11 26200, Microsoft Basic Render Driver / WARP), 2026-09-28.
+# x64 and x86 builds print identical lines. The '# d3d11_share_probe (N-bit)' banner
+# is the only bitness-dependent line and is a comment.
+# Notes: 'OpenSharedResource(kmt) after creator released' and 'kmt released child' open
+# on WARP because the runtime destroys the resource lazily; Learn IDXGIResource::
+# GetSharedHandle says the handle is invalid once no resource object refers to it.
+# d3d11_share_probe (64-bit)
+[caps]
+  feature_level                              0xb000
+  OPTIONS.ExtendedResourceSharing            hr=0x00000000 1
+  OPTIONS4.ExtendedNV12SharedTexture         hr=0x00000000 1
+  OPTIONS5.SharedResourceTier                hr=0x00000000 3
+  SHAREABLE R8G8B8A8_UNORM                       hr=0x00000000 1
+  SHAREABLE R8G8B8A8_UNORM_SRGB                  hr=0x00000000 1
+  SHAREABLE B8G8R8A8_UNORM                       hr=0x00000000 1
+  SHAREABLE B8G8R8A8_UNORM_SRGB                  hr=0x00000000 1
+  SHAREABLE B8G8R8X8_UNORM                       hr=0x00000000 1
+  SHAREABLE B8G8R8X8_UNORM_SRGB                  hr=0x00000000 1
+  SHAREABLE R10G10B10A2_UNORM                    hr=0x00000000 1
+  SHAREABLE R16G16B16A16_FLOAT                   hr=0x00000000 1
+  SHAREABLE R32G32B32A32_TYPELESS                hr=0x00000000 1
+  SHAREABLE R32G32B32A32_FLOAT                   hr=0x00000000 1
+  SHAREABLE R32G32B32A32_UINT                    hr=0x00000000 1
+  SHAREABLE R32G32B32A32_SINT                    hr=0x00000000 1
+  SHAREABLE R16G16B16A16_TYPELESS                hr=0x00000000 1
+  SHAREABLE R16G16B16A16_UNORM                   hr=0x00000000 1
+  SHAREABLE R16G16B16A16_UINT                    hr=0x00000000 1
+  SHAREABLE R16G16B16A16_SNORM                   hr=0x00000000 1
+  SHAREABLE R16G16B16A16_SINT                    hr=0x00000000 1
+  SHAREABLE R10G10B10A2_UINT                     hr=0x00000000 1
+  SHAREABLE R8G8B8A8_TYPELESS                    hr=0x00000000 1
+  SHAREABLE R8G8B8A8_UINT                        hr=0x00000000 1
+  SHAREABLE R8G8B8A8_SNORM                       hr=0x00000000 1
+  SHAREABLE R8G8B8A8_SINT                        hr=0x00000000 1
+  SHAREABLE B8G8R8A8_TYPELESS                    hr=0x00000000 1
+  SHAREABLE B8G8R8X8_TYPELESS                    hr=0x00000000 1
+  SHAREABLE R32_TYPELESS                         hr=0x00000000 1
+  SHAREABLE R32_FLOAT                            hr=0x00000000 1
+  SHAREABLE R32_UINT                             hr=0x00000000 1
+  SHAREABLE R32_SINT                             hr=0x00000000 1
+  SHAREABLE R16_TYPELESS                         hr=0x00000000 1
+  SHAREABLE R16_FLOAT                            hr=0x00000000 1
+  SHAREABLE R16_UNORM                            hr=0x00000000 1
+  SHAREABLE R16_UINT                             hr=0x00000000 1
+  SHAREABLE R16_SNORM                            hr=0x00000000 1
+  SHAREABLE R16_SINT                             hr=0x00000000 1
+  SHAREABLE R8_TYPELESS                          hr=0x00000000 1
+  SHAREABLE R8_UNORM                             hr=0x00000000 1
+  SHAREABLE R8_UINT                              hr=0x00000000 1
+  SHAREABLE R8_SNORM                             hr=0x00000000 1
+  SHAREABLE R8_SINT                              hr=0x00000000 1
+  SHAREABLE A8_UNORM                             hr=0x00000000 1
+  SHAREABLE AYUV                                 hr=0x00000000 1
+  SHAREABLE YUY2                                 hr=0x00000000 1
+  SHAREABLE NV12                                 hr=0x00000000 1
+  SHAREABLE NV11                                 hr=0x80004005 0
+  SHAREABLE P016                                 hr=0x00000000 1
+  SHAREABLE P010                                 hr=0x00000000 1
+  SHAREABLE Y216                                 hr=0x00000000 1
+  SHAREABLE Y210                                 hr=0x00000000 1
+  SHAREABLE Y416                                 hr=0x00000000 1
+  SHAREABLE Y410                                 hr=0x00000000 1
+  SHAREABLE R11G11B10_FLOAT                      hr=0x00000000 1
+  SHAREABLE R8G8_UNORM                           hr=0x00000000 1
+  SHAREABLE R16G16_FLOAT                         hr=0x00000000 1
+  SHAREABLE R32G32_FLOAT                         hr=0x00000000 0
+  SHAREABLE R10G10B10_XR_BIAS_A2_UNORM           hr=0x00000000 1
+  SHAREABLE B5G6R5_UNORM                         hr=0x00000000 0
+  SHAREABLE R9G9B9E5_SHAREDEXP                   hr=0x00000000 0
+  SHAREABLE R32G32B32_FLOAT                      hr=0x80004005 0
+  SHAREABLE BC1_UNORM                            hr=0x00000000 1
+  SHAREABLE D24_UNORM_S8_UINT                    hr=0x80004005 0
+  SHAREABLE D32_FLOAT                            hr=0x00000000 1
+[formats] 16x8, 1 mip, 1 slice, DEFAULT
+  R8G8B8A8_UNORM SH                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8G8B8A8_UNORM KM                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8G8B8A8_UNORM SHNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8G8B8A8_UNORM KMNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8G8B8A8_UNORM_SRGB SH                       create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f29/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8G8B8A8_UNORM_SRGB KM                       create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f29/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8G8B8A8_UNORM_SRGB SHNT                     create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f29/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8G8B8A8_UNORM_SRGB KMNT                     create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f29/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  B8G8R8A8_UNORM SH                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  B8G8R8A8_UNORM KM                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  B8G8R8A8_UNORM SHNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  B8G8R8A8_UNORM KMNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  B8G8R8A8_UNORM_SRGB SH                       create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f91/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  B8G8R8A8_UNORM_SRGB KM                       create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f91/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  B8G8R8A8_UNORM_SRGB SHNT                     create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f91/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  B8G8R8A8_UNORM_SRGB KMNT                     create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f91/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  B8G8R8X8_UNORM SH                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f88/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  B8G8R8X8_UNORM KM                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f88/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  B8G8R8X8_UNORM SHNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f88/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  B8G8R8X8_UNORM KMNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f88/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  B8G8R8X8_UNORM_SRGB SH                       create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f93/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  B8G8R8X8_UNORM_SRGB KM                       create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f93/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  B8G8R8X8_UNORM_SRGB SHNT                     create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f93/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  B8G8R8X8_UNORM_SRGB KMNT                     create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f93/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R10G10B10A2_UNORM SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f24/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R10G10B10A2_UNORM KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f24/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R10G10B10A2_UNORM SHNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f24/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R10G10B10A2_UNORM KMNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f24/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16G16B16A16_FLOAT SH                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f10/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16G16B16A16_FLOAT KM                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f10/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16G16B16A16_FLOAT SHNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f10/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16G16B16A16_FLOAT KMNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f10/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32G32B32A32_TYPELESS SH                     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f1/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32G32B32A32_TYPELESS KM                     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f1/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32G32B32A32_TYPELESS SHNT                   create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f1/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R32G32B32A32_TYPELESS KMNT                   create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f1/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32G32B32A32_FLOAT SH                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f2/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32G32B32A32_FLOAT KM                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f2/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32G32B32A32_FLOAT SHNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f2/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R32G32B32A32_FLOAT KMNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f2/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32G32B32A32_UINT SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f3/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32G32B32A32_UINT KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f3/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32G32B32A32_UINT SHNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f3/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R32G32B32A32_UINT KMNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f3/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32G32B32A32_SINT SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f4/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32G32B32A32_SINT KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f4/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32G32B32A32_SINT SHNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f4/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R32G32B32A32_SINT KMNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f4/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16G16B16A16_TYPELESS SH                     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f9/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16G16B16A16_TYPELESS KM                     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f9/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16G16B16A16_TYPELESS SHNT                   create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f9/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16G16B16A16_TYPELESS KMNT                   create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f9/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16G16B16A16_UNORM SH                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f11/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16G16B16A16_UNORM KM                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f11/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16G16B16A16_UNORM SHNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f11/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16G16B16A16_UNORM KMNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f11/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16G16B16A16_UINT SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f12/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16G16B16A16_UINT KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f12/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16G16B16A16_UINT SHNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f12/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16G16B16A16_UINT KMNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f12/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16G16B16A16_SNORM SH                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f13/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16G16B16A16_SNORM KM                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f13/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16G16B16A16_SNORM SHNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f13/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16G16B16A16_SNORM KMNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f13/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16G16B16A16_SINT SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f14/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16G16B16A16_SINT KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f14/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16G16B16A16_SINT SHNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f14/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16G16B16A16_SINT KMNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f14/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R10G10B10A2_UINT SH                          create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f25/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R10G10B10A2_UINT KM                          create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f25/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R10G10B10A2_UINT SHNT                        create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f25/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R10G10B10A2_UINT KMNT                        create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f25/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8G8B8A8_TYPELESS SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f27/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8G8B8A8_TYPELESS KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f27/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8G8B8A8_TYPELESS SHNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f27/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8G8B8A8_TYPELESS KMNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f27/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8G8B8A8_UINT SH                             create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f30/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8G8B8A8_UINT KM                             create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f30/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8G8B8A8_UINT SHNT                           create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f30/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8G8B8A8_UINT KMNT                           create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f30/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8G8B8A8_SNORM SH                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f31/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8G8B8A8_SNORM KM                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f31/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8G8B8A8_SNORM SHNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f31/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8G8B8A8_SNORM KMNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f31/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8G8B8A8_SINT SH                             create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f32/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8G8B8A8_SINT KM                             create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f32/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8G8B8A8_SINT SHNT                           create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f32/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8G8B8A8_SINT KMNT                           create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f32/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  B8G8R8A8_TYPELESS SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f90/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  B8G8R8A8_TYPELESS KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f90/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  B8G8R8A8_TYPELESS SHNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f90/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  B8G8R8A8_TYPELESS KMNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f90/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  B8G8R8X8_TYPELESS SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f92/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  B8G8R8X8_TYPELESS KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f92/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  B8G8R8X8_TYPELESS SHNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f92/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  B8G8R8X8_TYPELESS KMNT                       create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f92/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32_TYPELESS SH                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f39/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32_TYPELESS KM                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f39/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32_TYPELESS SHNT                            create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f39/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R32_TYPELESS KMNT                            create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f39/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32_FLOAT SH                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f41/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32_FLOAT KM                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f41/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32_FLOAT SHNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f41/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R32_FLOAT KMNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f41/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32_UINT SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f42/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32_UINT KM                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f42/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32_UINT SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f42/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R32_UINT KMNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f42/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32_SINT SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f43/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32_SINT KM                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f43/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32_SINT SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f43/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R32_SINT KMNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f43/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16_TYPELESS SH                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f53/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16_TYPELESS KM                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f53/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16_TYPELESS SHNT                            create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f53/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16_TYPELESS KMNT                            create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f53/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16_FLOAT SH                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f54/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16_FLOAT KM                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f54/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16_FLOAT SHNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f54/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16_FLOAT KMNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f54/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16_UNORM SH                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f56/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16_UNORM KM                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f56/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16_UNORM SHNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f56/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16_UNORM KMNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f56/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16_UINT SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f57/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16_UINT KM                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f57/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16_UINT SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f57/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16_UINT KMNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f57/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16_SNORM SH                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f58/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16_SNORM KM                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f58/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16_SNORM SHNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f58/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16_SNORM KMNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f58/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16_SINT SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f59/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16_SINT KM                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f59/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16_SINT SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f59/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16_SINT KMNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f59/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8_TYPELESS SH                               create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f60/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8_TYPELESS KM                               create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f60/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8_TYPELESS SHNT                             create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f60/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8_TYPELESS KMNT                             create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f60/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8_UNORM SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f61/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8_UNORM KM                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f61/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8_UNORM SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f61/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8_UNORM KMNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f61/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8_UINT SH                                   create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f62/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8_UINT KM                                   create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f62/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8_UINT SHNT                                 create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f62/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8_UINT KMNT                                 create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f62/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8_SNORM SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f63/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8_SNORM KM                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f63/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8_SNORM SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f63/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8_SNORM KMNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f63/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8_SINT SH                                   create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f64/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8_SINT KM                                   create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f64/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8_SINT SHNT                                 create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f64/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8_SINT KMNT                                 create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f64/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  A8_UNORM SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f65/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  A8_UNORM KM                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f65/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  A8_UNORM SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f65/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  A8_UNORM KMNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f65/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  AYUV SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f100/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  AYUV KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f100/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  AYUV SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f100/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  AYUV KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f100/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  YUY2 SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f107/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  YUY2 KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f107/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  YUY2 SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f107/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  YUY2 KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f107/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  NV12 SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f103/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  NV12 KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f103/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  NV12 SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f103/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  NV12 KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f103/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  NV11 SH                                      create=0x80070057
+  NV11 KM                                      create=0x80070057
+  NV11 SHNT                                    create=0x80070057
+  NV11 KMNT                                    create=0x80070057
+  P016 SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f105/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  P016 KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f105/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  P016 SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f105/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  P016 KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f105/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  P010 SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f104/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  P010 KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f104/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  P010 SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f104/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  P010 KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f104/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  Y216 SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f109/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  Y216 KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f109/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  Y216 SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f109/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  Y216 KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f109/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  Y210 SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f108/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  Y210 KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f108/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  Y210 SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f108/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  Y210 KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f108/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  Y416 SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f102/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  Y416 KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f102/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  Y416 SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f102/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  Y416 KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f102/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  Y410 SH                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f101/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  Y410 KM                                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f101/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  Y410 SHNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f101/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  Y410 KMNT                                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f101/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  R11G11B10_FLOAT SH                           create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f26/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R11G11B10_FLOAT KM                           create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f26/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R11G11B10_FLOAT SHNT                         create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f26/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R11G11B10_FLOAT KMNT                         create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f26/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R8G8_UNORM SH                                create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f49/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R8G8_UNORM KM                                create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f49/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R8G8_UNORM SHNT                              create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f49/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R8G8_UNORM KMNT                              create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f49/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R16G16_FLOAT SH                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f34/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R16G16_FLOAT KM                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f34/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R16G16_FLOAT SHNT                            create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f34/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R16G16_FLOAT KMNT                            create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f34/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  R32G32_FLOAT SH                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f16/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32G32_FLOAT KM                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f16/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32G32_FLOAT SHNT                            create=0x80070057
+  R32G32_FLOAT KMNT                            create=0x80070057
+  R10G10B10_XR_BIAS_A2_UNORM SH                create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f89/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R10G10B10_XR_BIAS_A2_UNORM KM                create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f89/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R10G10B10_XR_BIAS_A2_UNORM SHNT              create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f89/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  R10G10B10_XR_BIAS_A2_UNORM KMNT              create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f89/s1.0/u0/b0x28/c0x0/x0x900 km=1 data=match
+  B5G6R5_UNORM SH                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f85/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  B5G6R5_UNORM KM                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f85/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  B5G6R5_UNORM SHNT                            create=0x80070057
+  B5G6R5_UNORM KMNT                            create=0x80070057
+  R9G9B9E5_SHAREDEXP SH                        create=0x80070057
+  R9G9B9E5_SHAREDEXP KM                        create=0x80070057
+  R9G9B9E5_SHAREDEXP SHNT                      create=0x80070057
+  R9G9B9E5_SHAREDEXP KMNT                      create=0x80070057
+  R32G32B32_FLOAT SH                           create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f6/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  R32G32B32_FLOAT KM                           create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f6/s1.0/u0/b0x28/c0x0/x0x100 km=1 data=match
+  R32G32B32_FLOAT SHNT                         create=0x80070057
+  R32G32B32_FLOAT KMNT                         create=0x80070057
+  BC1_UNORM SH                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f71/s1.0/u0/b0x8/c0x0/x0x2 km=0
+  BC1_UNORM KM                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f71/s1.0/u0/b0x8/c0x0/x0x100 km=1
+  BC1_UNORM SHNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f71/s1.0/u0/b0x8/c0x0/x0x802 km=0
+  BC1_UNORM KMNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f71/s1.0/u0/b0x8/c0x0/x0x900 km=1
+  D24_UNORM_S8_UINT SH                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f45/s1.0/u0/b0x40/c0x0/x0x2 km=0
+  D24_UNORM_S8_UINT KM                         create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f45/s1.0/u0/b0x40/c0x0/x0x100 km=1
+  D24_UNORM_S8_UINT SHNT                       create=0x80070057
+  D24_UNORM_S8_UINT KMNT                       create=0x80070057
+  D32_FLOAT SH                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f40/s1.0/u0/b0x40/c0x0/x0x2 km=0
+  D32_FLOAT KM                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f40/s1.0/u0/b0x40/c0x0/x0x100 km=1
+  D32_FLOAT SHNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f40/s1.0/u0/b0x40/c0x0/x0x802 km=0
+  D32_FLOAT KMNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f40/s1.0/u0/b0x40/c0x0/x0x900 km=1
+[shapes] B8G8R8A8_UNORM unless named
+  mips2 SH                                     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m2/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  mips0(full) SH                               create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m5/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  array2 SH                                    create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a2/f87/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  bind none SH                                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x0/c0x0/x0x2 km=0 data=match
+  bind RTV SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x20/c0x0/x0x2 km=0 data=match
+  bind SRV SH                                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x8/c0x0/x0x2 km=0 data=match
+  R8G8B8A8 bind SRV|RTV|UAV SH                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0xa8/c0x0/x0x2 km=0 data=match
+  R8G8B8A8 bind SRV|UAV SH                     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0x88/c0x0/x0x2 km=0 data=match
+  GENERATE_MIPS mips0 SH                       create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m5/a1/f87/s1.0/u0/b0x28/c0x0/x0x3 km=0 data=match
+  GDI_COMPATIBLE SH                            create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x20/c0x0/x0x202 km=0 data=match
+  TEXTURECUBE SH                               create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x16/m1/a6/f87/s1.0/u0/b0x28/c0x0/x0x6 km=0
+  MSAA 4x SH                                   create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s4.0/u0/b0x28/c0x0/x0x2 km=0
+  RESOURCE_CLAMP SH                            create=0x80070057
+  RESTRICTED_CONTENT SH                        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x1002 km=0 data=match
+  RESTRICT_SHARED_RESOURCE SH                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x2002 km=0 data=match
+  RESTRICT_SHARED_RESOURCE_DRIVER SH           create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x4002 km=0 data=match
+  RESTRICT_SHARED_RESOURCE|_DRIVER SH          create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x6002 km=0 data=match
+  STAGING read SH                              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u3/b0x0/c0x20000/x0x2 km=0
+  DYNAMIC SH                                   create=0x80070057
+  R16G16B16A16_FLOAT mips3 array2 SH           create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m3/a2/f10/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  1x1 SH                                       create=0x00000000 kmt=0x00000000/set open=0x00000000 od=1x1/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 km=0
+  4096x2 SH                                    create=0x00000000 kmt=0x00000000/set open=0x00000000 od=4096x2/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 km=0
+  mips2 SHNT                                   create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m2/a1/f87/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  mips0(full) SHNT                             create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m5/a1/f87/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  array2 SHNT                                  create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a2/f87/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  bind none SHNT                               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x0/c0x0/x0x802 km=0 data=match
+  bind RTV SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x20/c0x0/x0x802 km=0 data=match
+  bind SRV SHNT                                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x8/c0x0/x0x802 km=0 data=match
+  R8G8B8A8 bind SRV|RTV|UAV SHNT               create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0xa8/c0x0/x0x802 km=0 data=match
+  R8G8B8A8 bind SRV|UAV SHNT                   create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0x88/c0x0/x0x802 km=0 data=match
+  GENERATE_MIPS mips0 SHNT                     create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m5/a1/f87/s1.0/u0/b0x28/c0x0/x0x803 km=0 data=match
+  GDI_COMPATIBLE SHNT                          create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x20/c0x0/x0xa02 km=0 data=match
+  TEXTURECUBE SHNT                             create=0x80070057
+  MSAA 4x SHNT                                 create=0x80070057
+  RESOURCE_CLAMP SHNT                          create=0x80070057
+  RESTRICTED_CONTENT SHNT                      create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x1802 km=0 data=match
+  RESTRICT_SHARED_RESOURCE SHNT                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x2802 km=0 data=match
+  RESTRICT_SHARED_RESOURCE_DRIVER SHNT         create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x4802 km=0 data=match
+  RESTRICT_SHARED_RESOURCE|_DRIVER SHNT        create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x6802 km=0 data=match
+  STAGING read SHNT                            create=0x80070057
+  DYNAMIC SHNT                                 create=0x80070057
+  R16G16B16A16_FLOAT mips3 array2 SHNT         create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m3/a2/f10/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  1x1 SHNT                                     create=0x00000000 nt=0x00000000/set open=0x00000000 od=1x1/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x802 km=0
+  4096x2 SHNT                                  create=0x00000000 nt=0x00000000/set open=0x00000000 od=4096x2/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x802 km=0
+  IMMUTABLE SH                                 create=0x00000000 kmt=0x00000000/set open=0x80070057
+[handles]
+  GetSharedHandle                              hr=0x00000000
+  GetSharedHandle again same value             hr=0x00000000 same=1
+  CreateSharedHandle RW                        hr=0x00000000
+  GetHandleInformation(nt)                     ok=1 flags=0x0
+  GetHandleInformation(kmt)                    ok=0 gle=6
+  WaitForSingleObject(nt, 0)                   0xffffffff
+  OpenSharedResource(kmt)                      hr=0x00000000 data=match
+  OpenSharedResource(kmt) again                hr=0x00000000 same=0
+  opened GetSharedHandle                       hr=0x00000000 same=1
+  opened CreateSharedHandle                    hr=0x80070057
+  OpenSharedResource(kmt) on creating device   hr=0x00000000 same=0
+  OpenSharedResource1(nt)                      hr=0x00000000 data=match
+  NT-opened GetSharedHandle                    hr=0x80070057
+  NT-opened CreateSharedHandle                 hr=0x00000000
+  OpenSharedResource(nt)                       hr=0x80070057
+  OpenSharedResource1(kmt)                     hr=0x80070057
+  OpenSharedResource(NULL)                     hr=0x80070057 out=null
+  OpenSharedResource1(NULL)                    hr=0x80070057
+  OpenSharedResource(kmt, ppResource NULL)     hr=0x00000001
+  OpenSharedResource1(nt, ppResource NULL)     hr=0x00000001
+  OpenSharedResource(kmt, IDXGIKeyedMutex, NULL) hr=0x00000001
+  GetSharedResourceAdapterLuid(kmt)            hr=0x00000000
+  GetSharedResourceAdapterLuid(nt)             hr=0x00000000
+  DuplicateHandle(nt) same process             ok=1
+  OpenSharedResource1(duplicate)               hr=0x00000000 data=match
+  CloseHandle(duplicate)                       ok=1
+  CloseHandle(duplicate) again                 ok=0 gle=6
+  OpenSharedResource(kmt, IUnknown          ) hr=0x00000000 out=set
+  OpenSharedResource(kmt, ID3D11Resource    ) hr=0x00000000 out=set
+  OpenSharedResource(kmt, ID3D11Texture2D   ) hr=0x00000000 out=set
+  OpenSharedResource(kmt, ID3D11Texture2D1  ) hr=0x00000000 out=set
+  OpenSharedResource(kmt, IDXGIResource     ) hr=0x00000000 out=set
+  OpenSharedResource(kmt, IDXGIResource1    ) hr=0x00000000 out=set
+  OpenSharedResource(kmt, IDXGISurface      ) hr=0x00000000 out=set
+  OpenSharedResource(kmt, IDXGIKeyedMutex   ) hr=0x80004002 out=null
+  OpenSharedResource(kmt, ID3D11Texture1D   ) hr=0x80004002 out=null
+  OpenSharedResource(kmt, ID3D11Buffer      ) hr=0x80004002 out=null
+  CreateSharedHandle access 0                            hr=0x00000000 open=0x80070005
+  CreateSharedHandle access READ                         hr=0x00000000 open=0x00000000
+  CreateSharedHandle access WRITE                        hr=0x00000000 open=0x80070005
+  CreateSharedHandle access GENERIC_ALL                  hr=0x00000000 open=0x00000000
+  CreateSharedHandle access GENERIC_READ|GENERIC_WRITE   hr=0x00000000 open=0x00000000
+  CreateSharedHandle access 0x2                          hr=0x00000000 open=0x80070005
+  CreateSharedHandle access 0x10000000                   hr=0x00000000 open=0x00000000
+  CreateSharedHandle inheritable               hr=0x00000000 inherit=1
+  CreateSharedHandle pHandle NULL              hr=0x887a0001
+  CreateSharedHandle named                     hr=0x00000000
+  CreateSharedHandle same name same resource   hr=0x887a002c
+  CreateSharedHandle same name other resource  hr=0x887a002c
+  CreateSharedHandle name of an event          hr=0x887a002c
+  CreateEvent with a shared resource's name    ok=0 gle=6
+  OpenSharedResourceByName exact RW             hr=0x00000000 data=match
+  OpenSharedResourceByName exact READ           hr=0x00000000 data=match
+  OpenSharedResourceByName exact WRITE          hr=0x8876086a data=-
+  OpenSharedResourceByName exact 0              hr=0x8876086a data=-
+  OpenSharedResourceByName exact GENERIC_ALL    hr=0x00000000 data=match
+  OpenSharedResourceByName no Local prefix      hr=0x00000000 data=match
+  OpenSharedResourceByName other case           hr=0x00000000 data=match
+  OpenSharedResourceByName unknown              hr=0x80070057 data=-
+  OpenSharedResourceByName event name           hr=0x80070057 data=-
+  OpenSharedResourceByName NULL                 hr=0x80070057 data=-
+  OpenSharedResourceByName after CloseHandle   hr=0x80070057
+  OpenSharedResource(kmt) after creator released hr=0x00000000
+  OpenSharedResource1(nt) after creator released hr=0x00000000 data=match
+  reopened CreateSharedHandle                  hr=0x00000000
+  CloseHandle(nt)                              ok=1
+  OpenSharedResource(kmt) creator gone, opening alive hr=0x00000000 data=match
+  CreateBuffer SHARED                          hr=0x00000000 qi=0x00000000 kmt=0x00000000/set open=0x00000000
+  CreateTexture1D SHARED                       hr=0x00000000 qi=0x00000000 kmt=0x00000000/set
+  CreateTexture3D SHARED                       hr=0x00000000 qi=0x00000000 kmt=0x00000000/set
+  KMNT open                                    hr=0x00000000
+  KMNT creator AcquireSync(0,0)                hr=0x00000000
+  KMNT opened AcquireSync(0,0) while owned     hr=0x00000102
+  KMNT creator ReleaseSync(3)                  hr=0x00000000
+  KMNT opened AcquireSync(3,0)                 hr=0x00000000
+  KMNT opened ReleaseSync(4)                   hr=0x00000000
+  KMNT third AcquireSync(4,0)                  hr=0x00000000
+  KMNT creator AcquireSync(4,100) after owner released object hr=0x00000080
+  KMNT creator AcquireSync(9,0) abandoned again hr=0x00000080
+  KMNT creator ReleaseSync(4) abandoned        hr=0x887a0001
+  KMNT opened AcquireSync(4,0) abandoned       hr=0x00000080
+[fl9_3]
+  create FL9_3 device                        hr=0x00000000
+  SHAREABLE R8G8B8A8_UNORM                       hr=0x00000000 1
+  R8G8B8A8_UNORM SH   create=0x80070057
+  R8G8B8A8_UNORM KM   create=0x80070057
+  R8G8B8A8_UNORM SHNT create=0x80070057
+  SHAREABLE R8G8B8A8_UNORM_SRGB                  hr=0x00000000 1
+  R8G8B8A8_UNORM_SRGB SH   create=0x80070057
+  R8G8B8A8_UNORM_SRGB KM   create=0x80070057
+  R8G8B8A8_UNORM_SRGB SHNT create=0x80070057
+  SHAREABLE B8G8R8A8_UNORM                       hr=0x00000000 1
+  B8G8R8A8_UNORM SH   create=0x00000000
+  B8G8R8A8_UNORM KM   create=0x00000000
+  B8G8R8A8_UNORM SHNT create=0x00000000
+  SHAREABLE R16G16B16A16_FLOAT                   hr=0x00000000 1
+  R16G16B16A16_FLOAT SH   create=0x00000000
+  R16G16B16A16_FLOAT KM   create=0x00000000
+  R16G16B16A16_FLOAT SHNT create=0x00000000
+[xproc]
+  kmt B8G8R8A8_UNORM child:open hr=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  kmt R8G8B8A8_UNORM_SRGB child:open hr=0x00000000 od=16x8/m1/a1/f29/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  kmt R10G10B10A2_UNORM child:open hr=0x00000000 od=16x8/m1/a1/f24/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  kmt R16G16B16A16_FLOAT child:open hr=0x00000000 od=16x8/m1/a1/f10/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  kmt B8G8R8X8_UNORM child:open hr=0x00000000 od=16x8/m1/a1/f88/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  kmt R32_FLOAT child:open hr=0x00000000 od=16x8/m1/a1/f41/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  kmt R8_UNORM child:open hr=0x00000000 od=16x8/m1/a1/f61/s1.0/u0/b0x28/c0x0/x0x2 km=0 data=match
+  kmt released child:open hr=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 km=0
+  named CreateSharedHandle hr=0x00000000
+  named child:open hr=0x00000000 od=16x8/m1/a1/f28/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  dup CreateSharedHandle hr=0x00000000
+  dup DuplicateHandle into child ok=1
+  dup ResumeThread(child) 0x1
+  dup child:GetHandleInformation(duplicated) ok=1
+  dup child:open hr=0x00000000 od=16x8/m1/a1/f10/s1.0/u0/b0x28/c0x0/x0x802 km=0 data=match
+  raw nt value child:open hr=0x80070057
+  keyed create/handle hr=0x00000000
+  keyed parent AcquireSync(0,0) hr=0x00000000
+  keyed parent ReleaseSync(1) hr=0x00000000
+  keyed child:open hr=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x100 km=1
+  keyed child:AcquireSync(0,0) hr=0x00000102
+  keyed child:AcquireSync(1,5000) hr=0x00000000 data=match
+  keyed child:ReleaseSync(2) hr=0x00000000
+  keyed parent AcquireSync(2,5000) hr=0x00000000 data=match
+  keyed parent ReleaseSync(5) hr=0x00000000
+  keyedexit child:open hr=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x100 km=1
+  keyedexit child:AcquireSync(5,5000) hr=0x00000000 exiting while owner
+  keyed parent AcquireSync(6,200) after owner exited hr=0x00000080
+  keyed parent AcquireSync(5,200) after owner exited hr=0x00000080

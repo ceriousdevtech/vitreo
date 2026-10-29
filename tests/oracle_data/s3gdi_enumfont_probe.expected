@@ -1,0 +1,117 @@
+Arial ansi:
+  lf h=36 w=14 esc=0 wt=400 it=0 cs=0 op=3 cp=2 q=1 pf=22 face=Arial full=Arial style=Regular script=Western type=4 | tm h=36 a=29 d=7 il=4 el=1 ave=14 max=86 wt=400 ch=32,65532,31,32 pf=27 cs=0 ntm flags=40 em=2048 cell=2288 avg=904 usb=e0002eff,c000785b,9,0 csb=400001ff,ffff0000
+  lf h=36 w=15 esc=0 wt=700 it=0 cs=0 op=3 cp=2 q=1 pf=22 face=Arial full=Arial Bold style=Bold script=Western type=4 | tm h=36 a=29 d=7 il=4 el=1 ave=15 max=85 wt=700 ch=32,65532,31,32 pf=27 cs=0 ntm flags=20 em=2048 cell=2288 avg=980 usb=e0002eff,c000785b,9,0 csb=400001ff,ffff0000
+  lf h=36 w=15 esc=0 wt=700 it=255 cs=0 op=3 cp=2 q=1 pf=22 face=Arial full=Arial Bold Italic style=Bold Italic script=Western type=4 | tm h=36 a=29 d=7 il=4 el=1 ave=15 max=63 wt=700 ch=32,65532,31,32 pf=27 cs=0 ntm flags=21 em=2048 cell=2288 avg=980 usb=e0000eff,4000785b,1,0 csb=400001bf,dff70000
+  lf h=36 w=14 esc=0 wt=400 it=255 cs=0 op=3 cp=2 q=1 pf=22 face=Arial full=Arial Italic style=Italic script=Western type=4 | tm h=36 a=29 d=7 il=4 el=1 ave=14 max=60 wt=400 ch=32,65532,31,32 pf=27 cs=0 ntm flags=1 em=2048 cell=2288 avg=904 usb=e0000eff,785b,1,0 csb=400001bf,dff70000
+Arial ansi ret=1 calls=4 err=57005
+Arial default:
+  cs=0 script=Western full=Arial
+  cs=177 script=Hebrew full=Arial
+  cs=178 script=Arabic full=Arial
+  cs=161 script=Greek full=Arial
+  cs=162 script=Turkish full=Arial
+  cs=186 script=Baltic full=Arial
+  cs=238 script=Central European full=Arial
+  cs=204 script=Cyrillic full=Arial
+  cs=163 script=Vietnamese full=Arial
+  cs=0 script=Western full=Arial Bold
+  cs=177 script=Hebrew full=Arial Bold
+  cs=178 script=Arabic full=Arial Bold
+  cs=161 script=Greek full=Arial Bold
+  cs=162 script=Turkish full=Arial Bold
+  cs=186 script=Baltic full=Arial Bold
+  cs=238 script=Central European full=Arial Bold
+  cs=204 script=Cyrillic full=Arial Bold
+  cs=163 script=Vietnamese full=Arial Bold
+  cs=0 script=Western full=Arial Bold Italic
+  cs=177 script=Hebrew full=Arial Bold Italic
+  cs=161 script=Greek full=Arial Bold Italic
+  cs=162 script=Turkish full=Arial Bold Italic
+  cs=186 script=Baltic full=Arial Bold Italic
+  cs=238 script=Central European full=Arial Bold Italic
+  cs=204 script=Cyrillic full=Arial Bold Italic
+  cs=163 script=Vietnamese full=Arial Bold Italic
+  cs=0 script=Western full=Arial Italic
+  cs=177 script=Hebrew full=Arial Italic
+  cs=161 script=Greek full=Arial Italic
+  cs=162 script=Turkish full=Arial Italic
+  cs=186 script=Baltic full=Arial Italic
+  cs=238 script=Central European full=Arial Italic
+  cs=204 script=Cyrillic full=Arial Italic
+  cs=163 script=Vietnamese full=Arial Italic
+Arial default ret=1 calls=34 err=57005
+Segoe UI default:
+  cs=0 script=Western full=Segoe UI
+  cs=177 script=Hebrew full=Segoe UI
+  cs=178 script=Arabic full=Segoe UI
+  cs=161 script=Greek full=Segoe UI
+  cs=162 script=Turkish full=Segoe UI
+  cs=186 script=Baltic full=Segoe UI
+  cs=238 script=Central European full=Segoe UI
+  cs=204 script=Cyrillic full=Segoe UI
+  cs=163 script=Vietnamese full=Segoe UI
+  cs=0 script=Western full=Segoe UI Bold
+  cs=177 script=Hebrew full=Segoe UI Bold
+  cs=178 script=Arabic full=Segoe UI Bold
+  cs=161 script=Greek full=Segoe UI Bold
+  cs=162 script=Turkish full=Segoe UI Bold
+  cs=186 script=Baltic full=Segoe UI Bold
+  cs=238 script=Central European full=Segoe UI Bold
+  cs=204 script=Cyrillic full=Segoe UI Bold
+  cs=163 script=Vietnamese full=Segoe UI Bold
+  cs=0 script=Western full=Segoe UI Bold Italic
+  cs=161 script=Greek full=Segoe UI Bold Italic
+  cs=162 script=Turkish full=Segoe UI Bold Italic
+  cs=186 script=Baltic full=Segoe UI Bold Italic
+  cs=238 script=Central European full=Segoe UI Bold Italic
+  cs=204 script=Cyrillic full=Segoe UI Bold Italic
+  cs=163 script=Vietnamese full=Segoe UI Bold Italic
+  cs=0 script=Western full=Segoe UI Italic
+  cs=161 script=Greek full=Segoe UI Italic
+  cs=162 script=Turkish full=Segoe UI Italic
+  cs=186 script=Baltic full=Segoe UI Italic
+  cs=238 script=Central European full=Segoe UI Italic
+  cs=204 script=Cyrillic full=Segoe UI Italic
+  cs=163 script=Vietnamese full=Segoe UI Italic
+Segoe UI default ret=1 calls=32 err=57005
+MS Gothic default:
+  cs=0 script=Western full=MS Gothic
+  cs=128 script=Japanese full=MS Gothic
+  cs=161 script=Greek full=MS Gothic
+  cs=162 script=Turkish full=MS Gothic
+  cs=186 script=Baltic full=MS Gothic
+  cs=238 script=Central European full=MS Gothic
+  cs=204 script=Cyrillic full=MS Gothic
+MS Gothic default ret=1 calls=7 err=57005
+Courier New ansi:
+  lf h=36 w=19 esc=0 wt=400 it=0 cs=0 op=3 cp=2 q=1 pf=31 face=Courier New full=Courier New style=Regular script=Western type=4 | tm h=36 a=26 d=10 il=4 el=0 ave=19 max=24 wt=400 ch=32,65532,31,32 pf=36 cs=0 ntm flags=40 em=2048 cell=2320 avg=1229 usb=e0002eff,c0007843,9,0 csb=400001ff,ffff0000
+  lf h=36 w=19 esc=0 wt=700 it=0 cs=0 op=3 cp=2 q=1 pf=31 face=Courier New full=Courier New Bold style=Bold script=Western type=4 | tm h=36 a=26 d=10 il=4 el=0 ave=19 max=28 wt=700 ch=32,65532,31,32 pf=36 cs=0 ntm flags=20 em=2048 cell=2320 avg=1229 usb=e0002eff,c0007843,9,0 csb=400001ff,ffff0000
+  lf h=36 w=19 esc=0 wt=700 it=255 cs=0 op=3 cp=2 q=1 pf=31 face=Courier New full=Courier New Bold Italic style=Bold Italic script=Western type=4 | tm h=36 a=26 d=10 il=4 el=0 ave=19 max=30 wt=700 ch=32,65532,31,32 pf=36 cs=0 ntm flags=21 em=2048 cell=2320 avg=1229 usb=e0000eff,40007843,1,0 csb=400001bf,dff70000
+  lf h=36 w=19 esc=0 wt=400 it=255 cs=0 op=3 cp=2 q=1 pf=31 face=Courier New full=Courier New Italic style=Italic script=Western type=4 | tm h=36 a=26 d=10 il=4 el=0 ave=19 max=28 wt=400 ch=32,65532,31,32 pf=36 cs=0 ntm flags=1 em=2048 cell=2320 avg=1229 usb=e0000eff,40007843,1,0 csb=400001bf,dff70000
+Courier New ansi ret=1 calls=4 err=57005
+Tahoma ansi:
+  lf h=39 w=14 esc=0 wt=400 it=0 cs=0 op=3 cp=2 q=1 pf=22 face=Tahoma full=Tahoma style=Regular script=Western type=4 | tm h=39 a=32 d=7 il=7 el=0 ave=14 max=79 wt=400 ch=32,65533,31,32 pf=27 cs=0 ntm flags=40 em=2048 cell=2472 avg=910 usb=e1002eff,c000605b,29,0 csb=200101ff,20280000
+  lf h=39 w=16 esc=0 wt=700 it=0 cs=0 op=3 cp=2 q=1 pf=22 face=Tahoma full=Tahoma Bold style=Bold script=Western type=4 | tm h=39 a=32 d=7 il=7 el=0 ave=16 max=94 wt=700 ch=32,65533,31,32 pf=27 cs=0 ntm flags=20 em=2048 cell=2472 avg=1036 usb=e1002eff,c000605b,29,0 csb=200101ff,20280000
+Tahoma ansi ret=1 calls=2 err=57005
+Arial stop:
+Arial stop ret=0 calls=1 err=57005
+Arial ret77:
+Arial ret77 ret=77 calls=4 err=57005
+missing:
+missing ret=1 calls=0 err=57005
+Arial shiftjis:
+Arial shiftjis ret=1 calls=0 err=57005
+MS Shell Dlg:
+  lf h=36 w=14 esc=0 wt=400 it=0 cs=0 op=3 cp=2 q=1 pf=22 face=MS Shell Dlg full=Microsoft Sans Serif style=Regular script=Western type=4 | tm h=36 a=29 d=7 il=4 el=0 ave=14 max=65 wt=400 ch=32,65533,31,32 pf=27 cs=0 ntm flags=40 em=2048 cell=2318 avg=901 usb=e5002eff,c000605b,29,0 csb=200101ff,20280000
+MS Shell Dlg ret=1 calls=1 err=57005
+System:
+  lf h=16 w=7 esc=0 wt=700 it=0 cs=0 op=1 cp=2 q=1 pf=22 face=System full=System style= script=Western type=1 | tm h=16 a=13 d=3 il=3 el=0 ave=7 max=14 wt=700 ch=32,8482,8364,32 pf=21 cs=0 ntm flags=10020 em=13 cell=16 avg=7 usb=0,0,0,0 csb=0,0
+System ret=1 calls=1 err=57005
+  A lf h=36 cs=0 face=Arial full=Arial style=Regular script=Western type=4 tm h=36 ch=30,255,31,32
+  A lf h=36 cs=0 face=Arial full=Arial Bold style=Bold script=Western type=4 tm h=36 ch=30,255,31,32
+  A lf h=36 cs=0 face=Arial full=Arial Bold Italic style=Bold Italic script=Western type=4 tm h=36 ch=30,255,31,32
+  A lf h=36 cs=0 face=Arial full=Arial Italic style=Italic script=Western type=4 tm h=36 ch=30,255,31,32
+A Arial ret=1 calls=4
+all ansi ret=1 calls>50=1
+NULL dc ret=0 err=6
+NULL logfont ret=1 err=57005 calls>50=1

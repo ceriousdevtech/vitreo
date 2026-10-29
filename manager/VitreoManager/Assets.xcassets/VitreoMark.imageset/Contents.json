@@ -1,0 +1,18 @@
+{
+  "images" : [
+    {
+      "filename" : "vitreo-glass-icon.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "vitreo-glass-icon@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

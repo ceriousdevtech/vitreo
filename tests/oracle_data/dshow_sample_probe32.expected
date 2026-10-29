@@ -1,0 +1,25 @@
+create hr=00000000
+setprops hr=00000000
+getbuffer uncommitted hr=80040211 s_null=1
+commit hr=00000000
+getbuffer hr=00000000
+fresh GetTime hr=80040249 start=111 end=222
+settime(start,NULL) hr=00000000
+start-only GetTime hr=00040270 start=1000 end=1001
+settime(start,end) hr=00000000
+both GetTime hr=00000000 start=1000 end=2000
+settime(NULL,end) hr=00000000
+null-start GetTime hr=80040249 start=111 end=222
+IsSyncPoint fresh=00000001 IsPreroll=00000001 IsDiscontinuity=00000001
+after set: IsSyncPoint=00000000 IsPreroll=00000000 IsDiscontinuity=00000000
+getmediatime fresh hr=80040251 a=7 b=8
+getmediatime set hr=00000000 a=10 b=20
+size=4096 actual=4096
+setactual(5000) hr=8004020d setactual(10) hr=00000000 actual=4096
+getmediatype hr=00000001 null=1
+release sample=0
+getbuffer again hr=00000000
+recycled GetTime hr=80040249 start=111 end=222
+recycled: IsSyncPoint=00000001 IsPreroll=00000001 IsDiscontinuity=00000001 actual=10
+decommit hr=00000000
+getbuffer decommitted hr=80040211 s_null=1

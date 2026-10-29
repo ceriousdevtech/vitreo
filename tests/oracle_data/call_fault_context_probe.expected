@@ -1,0 +1,11 @@
+# CONTEXT reported when a CALL's return-address push is the faulting access
+# (stack overflow via `recurse: call recurse`). Measured 2026-09-22; Vitreo
+# matches Windows on every line.
+code        0x00000000c00000fd
+rip-recurse 0x0000000000000000      RIP names the CALL itself
+addr-rsp    0xfffffffffffffff8      faulting address = RSP - 8: RSP NOT yet decremented
+rsp&15      0x0000000000000000
+[rsp]-ret   0x0000000000000000      [RSP] still holds the previous return address
+# call_r11_fault_probe.c is the same probe through `call r11` (41 ff d3), the
+# exact instruction PEAK's overflow faulted on; identical except
+# rip-recurse = 0x7 (the CALL follows a 7-byte LEA). Also matches.

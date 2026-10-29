@@ -1,0 +1,159 @@
+aais_9 ok=0 gle=539
+aais_2 ok=1 gle=dead valid=1 len=10
+freesid ret=0 gle=dead
+aais_0 ok=1 gle=dead len=8
+copysid_short ok=0 gle=7a
+copysid_ok ok=1 gle=dead eq=1
+gti class=1 ok=1 gle=0
+gti_null class=1 ok=0 gle=7a lenNonZero=1
+gti class=2 ok=1 gle=0
+gti_null class=2 ok=0 gle=7a lenNonZero=1
+gti class=3 ok=1 gle=0
+gti_null class=3 ok=0 gle=7a lenNonZero=1
+gti class=4 ok=1 gle=0
+gti_null class=4 ok=0 gle=7a lenNonZero=1
+gti class=5 ok=1 gle=0
+gti_null class=5 ok=0 gle=7a lenNonZero=1
+gti class=6 ok=1 gle=0
+gti_null class=6 ok=0 gle=7a lenNonZero=1
+gti class=7 ok=1 gle=0 len=10
+gti_null class=7 ok=0 gle=7a lenNonZero=1
+gti class=8 ok=1 gle=0 len=4 val=1
+gti_null class=8 ok=0 gle=7a lenNonZero=1
+gti class=9 ok=0 gle=57
+gti_null class=9 ok=0 gle=57 lenNonZero=0
+gti class=a ok=1 gle=0 len=38
+gti_null class=a ok=0 gle=7a lenNonZero=1
+gti class=b ok=1 gle=0
+gti_null class=b ok=0 gle=7a lenNonZero=1
+gti class=c ok=1 gle=0 len=4 val=0
+gti_null class=c ok=0 gle=7a lenNonZero=1
+gti class=d ok=1 gle=0 sidCount=d
+gti_null class=d ok=0 gle=7a lenNonZero=1
+gti class=e ok=0 gle=57
+gti_null class=e ok=0 gle=57 lenNonZero=0
+gti class=f ok=1 gle=0 len=4 val=0
+gti_null class=f ok=0 gle=7a lenNonZero=1
+gti class=10 ok=1 gle=0 len=1f
+gti_null class=10 ok=0 gle=7a lenNonZero=1
+gti class=11 ok=1 gle=0 len=8
+gti_null class=11 ok=0 gle=7a lenNonZero=1
+gti class=12 ok=1 gle=0 len=4
+gti_null class=12 ok=0 gle=7a lenNonZero=1
+gti class=13 ok=0 gle=18
+gti_null class=13 ok=0 gle=18 lenNonZero=1
+gti class=14 ok=0 gle=18
+gti_null class=14 ok=0 gle=18 lenNonZero=1
+gti class=15 ok=1 gle=0 len=1 val=0
+gti_null class=15 ok=0 gle=7a lenNonZero=1
+gti class=16 ok=1 gle=0
+gti_null class=16 ok=0 gle=7a lenNonZero=1
+gti class=17 ok=1 gle=0 len=4 val=0
+gti_null class=17 ok=0 gle=7a lenNonZero=1
+gti class=18 ok=1 gle=0 len=4 val=0
+gti_null class=18 ok=0 gle=7a lenNonZero=1
+gti class=19 ok=1 gle=0 len=1c
+gti_null class=19 ok=0 gle=7a lenNonZero=1
+gti class=1a ok=1 gle=0 len=4 val=0
+gti_null class=1a ok=0 gle=7a lenNonZero=1
+gti class=1b ok=1 gle=0 len=4 val=3
+gti_null class=1b ok=0 gle=7a lenNonZero=1
+gti class=1c ok=1 gle=0
+gti_null class=1c ok=0 gle=7a lenNonZero=1
+gti class=1d ok=1 gle=0 len=4 val=0
+gti_null class=1d ok=0 gle=7a lenNonZero=1
+gti class=1e ok=1 gle=0 len=8
+gti_null class=1e ok=0 gle=7a lenNonZero=1
+gti class=1f ok=1 gle=0 len=8 ptrNull=1
+gti_null class=1f ok=0 gle=7a lenNonZero=1
+gti class=20 ok=1 gle=0 len=4 val=0
+gti_null class=20 ok=0 gle=7a lenNonZero=1
+gti class=21 ok=1 gle=0 len=10 ver=1 count=0
+gti_null class=21 ok=0 gle=7a lenNonZero=1
+gti class=22 ok=1 gle=0 len=10 ver=1 count=0
+gti_null class=22 ok=0 gle=7a lenNonZero=1
+gti class=23 ok=0 gle=57
+gti_null class=23 ok=0 gle=57 lenNonZero=0
+gti class=24 ok=0 gle=57
+gti_null class=24 ok=0 gle=57 lenNonZero=0
+gti class=25 ok=1 gle=0 len=18 count=0
+gti_null class=25 ok=0 gle=7a lenNonZero=1
+gti class=26 ok=0 gle=57
+gti_null class=26 ok=0 gle=57 lenNonZero=0
+gti class=27 ok=1 gle=0 len=68
+gti_null class=27 ok=0 gle=7a lenNonZero=1
+gti class=28 ok=1 gle=0 len=4 val=0
+gti_null class=28 ok=0 gle=7a lenNonZero=1
+gti class=29 ok=1 gle=0 len=8 ptrNull=1
+gti_null class=29 ok=0 gle=7a lenNonZero=1
+gti class=2a ok=1 gle=0 len=4 val=0
+gti_null class=2a ok=0 gle=7a lenNonZero=1
+gti class=2b ok=1 gle=0 len=10
+gti_null class=2b ok=0 gle=7a lenNonZero=1
+gti class=2c ok=1 gle=0 len=10 enabled=0 prefixNull=1
+gti_null class=2c ok=0 gle=7a lenNonZero=1
+gti class=2d ok=0 gle=57
+gti_null class=2d ok=0 gle=57 lenNonZero=0
+gti class=2e ok=0 gle=57
+gti_null class=2e ok=0 gle=57 lenNonZero=0
+gti class=2f ok=1 gle=0 len=4 val=0
+gti_null class=2f ok=0 gle=7a lenNonZero=1
+gti class=30 ok=1 gle=0 len=4 val=0
+gti_null class=30 ok=0 gle=7a lenNonZero=1
+elev_exact ok=1 gle=dead len=4
+elev_8 ok=0 gle=18 len=4
+linked_exact ok=0 gle=520 len=8
+session_8 ok=1 gle=dead len=4
+session_2 ok=0 gle=7a len=4
+user_short ok=0 gle=7a lenNonZero=1
+gap restr=0 restrNull=1 sidsInBuf=1 authIdEqStat=1
+stat_groupcount_matches eq=1
+integrity_attrs attr=60
+elevation_type_len len=4
+origin_len len=8
+gti_noquery ok=0 gle=5
+opt_null ok=0 gle=6
+opt_event ok=0 gle=6
+opt_garbage ok=0 gle=6
+adjust ok=1 gle=0
+adjust_seen_by_second_handle enabled=1
+duptoken ok=1 gle=dead
+dup_adjust ok=0 gle=5
+dup_noaccess ok=0 gle=5
+ott_none ok=0 gle=3f0
+ott_anon ok=0 gle=543
+ott_realhandle ok=1 gle=1
+las S-1-16-8192 ok=1 name=Medium Mandatory Level dom=Mandatory Label use=a
+las S-1-16-12288 ok=1 name=High Mandatory Level dom=Mandatory Label use=a
+las S-1-16-4096 ok=1 name=Low Mandatory Level dom=Mandatory Label use=a
+las S-1-16-16384 ok=1 name=System Mandatory Level dom=Mandatory Label use=a
+las S-1-5-19 ok=1 name=LOCAL SERVICE dom=NT AUTHORITY use=5
+las S-1-5-20 ok=1 name=NETWORK SERVICE dom=NT AUTHORITY use=5
+las S-1-5-2 ok=1 name=NETWORK dom=NT AUTHORITY use=5
+las S-1-5-3 ok=1 name=BATCH dom=NT AUTHORITY use=5
+las S-1-5-4 ok=1 name=INTERACTIVE dom=NT AUTHORITY use=5
+las S-1-5-6 ok=1 name=SERVICE dom=NT AUTHORITY use=5
+las S-1-5-7 ok=1 name=ANONYMOUS LOGON dom=NT AUTHORITY use=5
+las S-1-5-11 ok=1 name=Authenticated Users dom=NT AUTHORITY use=5
+las S-1-5-18 ok=1 name=SYSTEM dom=NT AUTHORITY use=5
+las S-1-5-32-544 ok=1 name=Administrators dom=BUILTIN use=4
+las S-1-5-32-545 ok=1 name=Users dom=BUILTIN use=4
+las S-1-5-32-546 ok=1 name=Guests dom=BUILTIN use=4
+las S-1-5-32-547 ok=1 name=Power Users dom=BUILTIN use=4
+las S-1-5-32-555 ok=1 name=Remote Desktop Users dom=BUILTIN use=4
+las S-1-2-0 ok=1 name=LOCAL dom= use=5
+las S-1-2-1 ok=1 name=CONSOLE LOGON dom= use=5
+las S-1-1-0 ok=1 name=Everyone dom= use=5
+las S-1-0-0 ok=1 name=NULL SID dom= use=5
+las S-1-3-0 ok=1 name=CREATOR OWNER dom= use=5
+las S-1-3-1 ok=1 name=CREATOR GROUP dom= use=5
+las S-1-3-4 ok=1 name=OWNER RIGHTS dom= use=5
+las S-1-15-2-1 ok=1 name=ALL APPLICATION PACKAGES dom=APPLICATION PACKAGE AUTHORITY use=5
+las S-1-15-2-2 ok=1 name=ALL RESTRICTED APPLICATION PACKAGES dom=APPLICATION PACKAGE AUTHORITY use=5
+las S-1-5-5-0-12345 ok=1 name=LogonSessionId_0_12345 dom=NT AUTHORITY use=b
+las S-1-5-14 ok=1 name=REMOTE INTERACTIVE LOGON dom=NT AUTHORITY use=5
+las S-1-5-15 ok=1 name=This Organization dom=NT AUTHORITY use=5
+las S-1-5-113 ok=1 name=Local account dom=NT AUTHORITY use=5
+las S-1-5-114 ok=1 name=Local account and member of Administrators group dom=NT AUTHORITY use=5
+las_remote ok=0 gle=6ba
+evreg_null ret=57 h=1122334455667788

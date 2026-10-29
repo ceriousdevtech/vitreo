@@ -1,0 +1,670 @@
+bits=64
+open probe class=(null) style=0x2 -> ok lasterr=0 line=0
+open probe-class class=VitreoProbe style=0x2 -> ok lasterr=0 line=0
+open probe-class-case class=vitreoprobe style=0x2 -> ok lasterr=0 line=0
+open probe-wrongclass class=Other style=0x2 -> INVALID lasterr=0xe0000201 line=0
+open probe-oldnt class=(null) style=0x1 -> INVALID lasterr=0xe0000100 line=0
+open probe-both class=(null) style=0x3 -> ok lasterr=0 line=0
+open probe-style0 class=(null) style=0 -> INVALID lasterr=0xe0000100 line=0
+open missing class=(null) style=0x2 -> INVALID lasterr=0x2 line=0
+open relative class=(null) style=0x2 -> INVALID lasterr=0x2 line=0
+open noversion class=(null) style=0x2 -> INVALID lasterr=0xe0000100 line=0
+open badsection class=(null) style=0x2 -> INVALID lasterr=0xe0000001 line=0x3
+open chicago class=(null) style=0x2 -> ok lasterr=0 line=0
+open empty class=(null) style=0x2 -> INVALID lasterr=0xe0000003 line=0
+open oldnt-file-win4 class=(null) style=0x2 -> INVALID lasterr=0xe0000100 line=0
+open oldnt-file-oldnt class=(null) style=0x1 -> ok lasterr=0 line=0
+open unicode class=VitreoProbe style=0x2 -> ok lasterr=0 line=0
+info hinf size-query -> 1 lasterr=0xdead req=356
+info hinf short -> 0 lasterr=0x7a req=356
+info hinf full -> 1 lasterr=0xdead req=356
+  hinf style=2 count=1 bytes=356 data:\x00\x00\x00\x00\xc7\xd0P\x9c:f\xdd\x01\x07\x006\x00\x0e\x01\x00\x00\x5c\x01\x00\x00C\x00:\x00\x5c\x00v\x00p\x00r\x00o\x00b\x00e\x00\x5c\x006\x004\x00\x5c\x00s\x00r\x00c\x00\x5c\x00p\x00r\x00o\x00b\x00e\x00.\x00i\x00n\x00f\x00\x00\x00S\x00i\x00g\x00n\x00a\x00t\x00u\x00r\x00e\x00\x00\x00$\x00W\x00i\x00n\x00d\x00o\x00w\x00s\x00 \x00N\x00T\x00$\x00\x00\x00C\x00l\x00a\x00s\x00s\x00\x00\x00V\x00i\x00t\x00r\x00e\x00o\x00P\x00r\x00o\x00b\x00e\x00\x00\x00A\x00d\x00v\x00a\x00n\x00c\x00e\x00d\x00I\x00N\x00F\x00\x00\x002\x00.\x000\x00\x00\x00P\x00r\x00o\x00v\x00i\x00d\x00e\x00r\x00\x00\x00V\x00i\x00t\x00r\x00e\x00o\x00 \x00"\x00P\x00r\x00o\x00b\x00e\x00"\x00\x00\x00D\x00r\x00i\x00v\x00e\x00r\x00V\x00e\x00r\x00\x00\x000\x002\x00-\x000\x004\x00-\x002\x000\x001\x000\x00\x00\x00C\x00a\x00t\x00a\x00l\x00o\x00g\x00F\x00i\x00l\x00e\x00\x00\x00p\x00r\x00o\x00b\x00e\x00.\x00c\x00a\x00t\x00\x00\x00Q\x00u\x00o\x00t\x00e\x00d\x00\x00\x00a\x00;\x00b\x00\x00\x00
+  query-version Provider -> 1 lasterr=0 req=15 value=[Vitreo "Probe"]
+  query-file -> 1 req=27 value=[<W>\src\probe.inf]
+info name -> 1 lasterr=0xce req=356
+  name style=2 count=1 bytes=356 data:\x00\x00\x00\x00\xc7\xd0P\x9c:f\xdd\x01\x07\x006\x00\x0e\x01\x00\x00\x5c\x01\x00\x00C\x00:\x00\x5c\x00v\x00p\x00r\x00o\x00b\x00e\x00\x5c\x006\x004\x00\x5c\x00s\x00r\x00c\x00\x5c\x00p\x00r\x00o\x00b\x00e\x00.\x00i\x00n\x00f\x00\x00\x00S\x00i\x00g\x00n\x00a\x00t\x00u\x00r\x00e\x00\x00\x00$\x00W\x00i\x00n\x00d\x00o\x00w\x00s\x00 \x00N\x00T\x00$\x00\x00\x00C\x00l\x00a\x00s\x00s\x00\x00\x00V\x00i\x00t\x00r\x00e\x00o\x00P\x00r\x00o\x00b\x00e\x00\x00\x00A\x00d\x00v\x00a\x00n\x00c\x00e\x00d\x00I\x00N\x00F\x00\x00\x002\x00.\x000\x00\x00\x00P\x00r\x00o\x00v\x00i\x00d\x00e\x00r\x00\x00\x00V\x00i\x00t\x00r\x00e\x00o\x00 \x00"\x00P\x00r\x00o\x00b\x00e\x00"\x00\x00\x00D\x00r\x00i\x00v\x00e\x00r\x00V\x00e\x00r\x00\x00\x000\x002\x00-\x000\x004\x00-\x002\x000\x001\x000\x00\x00\x00C\x00a\x00t\x00a\x00l\x00o\x00g\x00F\x00i\x00l\x00e\x00\x00\x00p\x00r\x00o\x00b\x00e\x00.\x00c\x00a\x00t\x00\x00\x00Q\x00u\x00o\x00t\x00e\x00d\x00\x00\x00a\x00;\x00b\x00\x00\x00
+info chicago -> 1 lasterr=0 req=162
+  chicago style=2 count=1 bytes=162 data:\x00\x00\x00\x00\x16\xf8P\x9c:f\xdd\x01\x02\x00:\x00H\x00\x00\x00\x9a\x00\x00\x00C\x00:\x00\x5c\x00v\x00p\x00r\x00o\x00b\x00e\x00\x5c\x006\x004\x00\x5c\x00s\x00r\x00c\x00\x5c\x00c\x00h\x00i\x00c\x00a\x00g\x00o\x00.\x00i\x00n\x00f\x00\x00\x00S\x00i\x00g\x00n\x00a\x00t\x00u\x00r\x00e\x00\x00\x00$\x00C\x00H\x00I\x00C\x00A\x00G\x00O\x00$\x00\x00\x00A\x00d\x00v\x00a\x00n\x00c\x00e\x00d\x00I\x00N\x00F\x00\x00\x002\x00.\x000\x00\x00\x00
+info missing -> 0 lasterr=0x2
+info badsearch -> 0 lasterr=0x57
+find Version/(null) -> 1 lasterr=0
+     line=0 text-> 1 lasterr=0 req=13 [$Windows NT$] fields=1: 0=[Signature]/10(int !0xd) 1=[$Windows NT$]/13(int !0xd) 2=!0x57(int !0x57)
+     line=1 text-> 1 lasterr=0 req=12 [VitreoProbe] fields=1: 0=[Class]/6(int !0xd) 1=[VitreoProbe]/12(int !0xd) 2=!0x57(int !0x57)
+     line=2 text-> 1 lasterr=0 req=4 [2.0] fields=1: 0=[AdvancedINF]/12(int !0xd) 1=[2.0]/4(int !0xd) 2=!0x57(int !0x57)
+     line=3 text-> 1 lasterr=0 req=15 [Vitreo "Probe"] fields=1: 0=[Provider]/9(int !0xd) 1=[Vitreo "Probe"]/15(int !0xd) 2=!0x57(int !0x57)
+     line=4 text-> 1 lasterr=0 req=22 [02-04-2010,5.3.1.0904] fields=2: 0=[DriverVer]/10(int !0xd) 1=[02-04-2010]/11(int !0xd) 2=[5.3.1.0904]/11(int !0xd) 3=!0x57(int !0x57)
+     line=5 text-> 1 lasterr=0 req=10 [probe.cat] fields=1: 0=[CatalogFile]/12(int !0xd) 1=[probe.cat]/10(int !0xd) 2=!0x57(int !0x57)
+     line=6 text-> 1 lasterr=0 req=25 [a;b,c  d,%Lit% %Unknown%] fields=3: 0=[Quoted]/7(int !0xd) 1=[a;b]/4(int !0xd) 2=[c  d]/5(int !0xd) 3=[%Lit% %Unknown%]/16(int !0xd) 4=!0x57(int !0x57)
+  next-end lasterr=0xe0000102
+find SourceDisksNames/2 -> 1 lasterr=0
+     line=1 text-> 1 lasterr=0 req=23 [Probe Disk,probe.cab,,] fields=4: 0=[2]/2(int 2) 1=[Probe Disk]/11(int !0xd) 2=[probe.cab]/10(int !0xd) 3=[]/1(int 0) 4=[]/1(int 0) 5=!0x57(int !0x57)
+     line=2 text-> 1 lasterr=0 req=28 [Probe Disk,absent.cab,0,,-1] fields=5: 0=[3]/2(int 3) 1=[Probe Disk]/11(int !0xd) 2=[absent.cab]/11(int !0xd) 3=[0]/2(int 0) 4=[]/1(int 0) 5=[-1]/3(int -1) 6=!0x57(int !0x57)
+     line=3 text-> 1 lasterr=0 req=26 [Probe Disk,flag.cab,0,,-1] fields=5: 0=[4]/2(int 4) 1=[Probe Disk]/11(int !0xd) 2=[flag.cab]/9(int !0xd) 3=[0]/2(int 0) 4=[]/1(int 0) 5=[-1]/3(int -1) 6=!0x57(int !0x57)
+     line=4 text-> 1 lasterr=0 req=28 [Probe Disk,flag.cab,0,,0x10] fields=5: 0=[5]/2(int 5) 1=[Probe Disk]/11(int !0xd) 2=[flag.cab]/9(int !0xd) 3=[0]/2(int 0) 4=[]/1(int 0) 5=[0x10]/5(int 16) 6=!0x57(int !0x57)
+     line=5 text-> 1 lasterr=0 req=30 [Probe Disk,absent.cab,0,,0x10] fields=5: 0=[6]/2(int 6) 1=[Probe Disk]/11(int !0xd) 2=[absent.cab]/11(int !0xd) 3=[0]/2(int 0) 4=[]/1(int 0) 5=[0x10]/5(int 16) 6=!0x57(int !0x57)
+  next-end lasterr=0xe0000102
+find Loose_Files/(null) -> 1 lasterr=0
+     line=0 text-> 1 lasterr=0 req=10 [loose.txt] fields=1: 0=[loose.txt]/10(int !0xd) 1=[loose.txt]/10(int !0xd) 2=!0x57(int !0x57)
+     line=1 text-> 1 lasterr=0 req=22 [renamed.txt,loose.txt] fields=2: 0=!0x57(int !0x57) 1=[renamed.txt]/12(int !0xd) 2=[loose.txt]/10(int !0xd) 3=!0x57(int !0x57)
+  next-end lasterr=0xe0000102
+find DxStyle/(null) -> 1 lasterr=0
+     line=0 text-> 1 lasterr=0 req=20 [dxdllreg.exe -PATCH] fields=1: 0=[dxdllreg.exe -PATCH]/20(int !0xd) 1=[dxdllreg.exe -PATCH]/20(int !0xd) 2=!0x57(int !0x57)
+     line=1 text-> 1 lasterr=0 req=35 [infinst.exe X3DAudio1_7_x64_xp.inf] fields=1: 0=[infinst.exe X3DAudio1_7_x64_xp.inf]/35(int !0xd) 1=[infinst.exe X3DAudio1_7_x64_xp.inf]/35(int !0xd) 2=!0x57(int !0x57)
+     line=2 text-> 1 lasterr=0 req=29 [d3dx9_24_x86.inf,x64_Install] fields=2: 0=!0x57(int !0x57) 1=[d3dx9_24_x86.inf]/17(int !0xd) 2=[x64_Install]/12(int !0xd) 3=!0x57(int !0x57)
+     line=3 text-> 1 lasterr=0 req=19 [dxdllreg_x86.cab,2] fields=2: 0=!0x57(int !0x57) 1=[dxdllreg_x86.cab]/17(int !0xd) 2=[2]/2(int 2) 3=!0x57(int !0x57)
+     line=4 text-> 1 lasterr=0 req=2 [1] fields=1: 0=[CopyCount]/10(int !0xd) 1=[1]/2(int 1) 2=!0x57(int !0x57)
+     line=5 text-> 1 lasterr=0 req=3 [21] fields=1: 0=[Size]/5(int !0xd) 1=[21]/3(int 21) 2=!0x57(int !0x57)
+     line=6 text-> 1 lasterr=0 req=8 [a,b,c,,] fields=4: 0=[Q]/2(int !0xd) 1=[a,b]/4(int !0xd) 2=[c]/2(int !0xd) 3=[]/1(int 0) 4=[]/1(int 0) 5=!0x57(int !0x57)
+     line=7 text-> 1 lasterr=0 req=44 [Vitreo "Probe",xProbe Disky,%Lit%,%Unknown%] fields=4: 0=[Probe Disk]/11(int !0xd) 1=[Vitreo "Probe"]/15(int !0xd) 2=[xProbe Disky]/13(int !0xd) 3=[%Lit%]/6(int !0xd) 4=[%Unknown%]/10(int !0xd) 5=!0x57(int !0x57)
+     line=8 text-> 1 lasterr=0 req=19 [0x1F,-3,12abc,,077] fields=5: 0=[Num]/4(int !0xd) 1=[0x1F]/5(int 31) 2=[-3]/3(int -3) 3=[12abc]/6(int !0xd) 4=[]/1(int 0) 5=[077]/4(int 77) 6=!0x57(int !0x57)
+     line=9 text-> 1 lasterr=0 req=38 [C:\WINDOWS\system32\xactengine2_0.dll] fields=1: 0=[C:\WINDOWS\system32\xactengine2_0.dll]/38(int !0xd) 1=[C:\WINDOWS\system32\xactengine2_0.dll]/38(int !0xd) 2=!0x57(int !0x57)
+     line=10 text-> 1 lasterr=0 req=201 [C:\WINDOWS,C:\WINDOWS\system32,C:\WINDOWS\system32\DRIVERS,C:\WINDOWS\INF,C:\vprobe\64\src,C:\vprobe\64\src,C:\,C:\Program Files,C:\WINDOWS\SysWOW64,C:\Program Files (x86),,%99999%,C:\WINDOWS\system32] fields=13: 0=[Dirs]/5(int !0xd) 1=[C:\WINDOWS]/11(int !0xd) 2=[C:\WINDOWS\system32]/20(int !0xd) 3=[C:\WINDOWS\system32\DRIVERS]/28(int !0xd) 4=[C:\WINDOWS\INF]/15(int !0xd) 5=[C:\vprobe\64\src]/17(int !0xd) 6=[C:\vprobe\64\src]/17(int !0xd) 7=[C:\]/4(int !0xd) 8=[C:\Program Files]/17(int !0xd) 9=[C:\WINDOWS\SysWOW64]/20(int !0xd) 10=[C:\Program Files (x86)]/23(int !0xd) 11=[]/1(int 0) 12=[%99999%]/8(int !0xd) 13=[C:\WINDOWS\system32]/20(int !0xd) 14=!0x57(int !0x57)
+  next-end lasterr=0xe0000102
+find NoSuch/(null) -> 0 lasterr=0xe0000102
+find Empty_Install/(null) -> 0 lasterr=0xe0000102
+find Version/NoKey -> 0 lasterr=0xe0000102
+find version/signature -> 1 lasterr=0
+     line=0 text-> 1 lasterr=0 req=13 [$Windows NT$] fields=1: 0=[Signature]/10(int !0xd) 1=[$Windows NT$]/13(int !0xd) 2=!0x57(int !0x57)
+     line=1 text-> 1 lasterr=0 req=12 [VitreoProbe] fields=1: 0=[Class]/6(int !0xd) 1=[VitreoProbe]/12(int !0xd) 2=!0x57(int !0x57)
+     line=2 text-> 1 lasterr=0 req=4 [2.0] fields=1: 0=[AdvancedINF]/12(int !0xd) 1=[2.0]/4(int !0xd) 2=!0x57(int !0x57)
+     line=3 text-> 1 lasterr=0 req=15 [Vitreo "Probe"] fields=1: 0=[Provider]/9(int !0xd) 1=[Vitreo "Probe"]/15(int !0xd) 2=!0x57(int !0x57)
+     line=4 text-> 1 lasterr=0 req=22 [02-04-2010,5.3.1.0904] fields=2: 0=[DriverVer]/10(int !0xd) 1=[02-04-2010]/11(int !0xd) 2=[5.3.1.0904]/11(int !0xd) 3=!0x57(int !0x57)
+     line=5 text-> 1 lasterr=0 req=10 [probe.cat] fields=1: 0=[CatalogFile]/12(int !0xd) 1=[probe.cat]/10(int !0xd) 2=!0x57(int !0x57)
+     line=6 text-> 1 lasterr=0 req=25 [a;b,c  d,%Lit% %Unknown%] fields=3: 0=[Quoted]/7(int !0xd) 1=[a;b]/4(int !0xd) 2=[c  d]/5(int !0xd) 3=[%Lit% %Unknown%]/16(int !0xd) 4=!0x57(int !0x57)
+  next-end lasterr=0xe0000102
+linetext by key size-query -> 1 lasterr=0 req=15
+linetext short -> 0 lasterr=0x7a req=15
+linetext missing key -> 0 lasterr=0xe0000102
+nextmatch Provider -> 1 lasterr=0 line=3
+nextmatch Nope -> 0 lasterr=0xe0000102
+linecount DxStyle -> 11 lasterr=0
+linecount NoSuch -> -1 lasterr=0xe0000101
+byindex 2 -> 1 lasterr=0 line=2
+byindex 99 -> 0 lasterr=0xe0000102
+ctx-size 24
+default-ctx ok
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x2 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Loose_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  dir dest: loose.txt=12 renamed.txt=12
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x2 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Loose_Install flags=0x10 root=(null) copy=0 -> 1 lasterr=0
+  dir dest: loose.txt=12 renamed.txt=12
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0x300 p2=0 -> 1
+  cb ctx=ok note=0x14 p1=0x23223857250 p2=0x23223849d90 -> 0
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0x300 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install NoOver_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\sub\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\sub\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Sub_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  dir dest/sub: loose.txt=12
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x3 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\sub\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\sub\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Both_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Direct_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  dir dest: loose.txt=12
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x2 -> 1
+  cb ctx=ok note=0xe tag=probe.cab desc=Probe Disk path=<W>\src file=incab1.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\incab1.txt source=<W>\src\probe.cab err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\incab1.txt source=<W>\src\probe.cab err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\incab2.txt source=<W>\src\probe.cab err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\incab2.txt source=<W>\src\probe.cab err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Cab_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  dir dest: incab1.txt=27 incab2.txt=45
+  dir src: badsection.inf=51 chicago.inf=51 empty.inf=0 flag.cab=138 loose.txt=12 noversion.inf=12 oldnt.inf=41 probe.cab=178 probe.inf=2535 unicode.inf=114 ver1.dll=4608 ver2.dll=4608
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x2 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 2
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 2
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Loose_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  dir dest:
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x2 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Loose_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0x2 p2=0x1 -> 1
+  cb ctx=ok note=0x5 target=<WIN>\Temp\vprobe64\renamed.txt source=- err=0 flags=0 p2=0x2 -> 1
+  cb ctx=ok note=0x6 target=<WIN>\Temp\vprobe64\renamed.txt source=- err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0x2 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Del_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  dir dest: loose.txt=12
+install Loose_Install flags=0x4 root=<W>\src copy=0 -> 1 lasterr=0
+  dir dest: loose.txt=12
+install Empty_Install flags=0x3ff root=<W>\src copy=0 -> 1 lasterr=0
+install NoSuch_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+install NoSuch_Install flags=0x4 root=<W>\src copy=0 -> 1 lasterr=0
+install Loose_Install flags=0 root=<W>\src copy=0 -> 1 lasterr=0
+install Reg_Install flags=0x4 root=<W>\src copy=0 -> 1 lasterr=0
+  reg open -> 0
+  reg Str -> 0 type=1 size=15 [Vitreo "Probe"]
+  reg Dw -> 0 type=4 size=4 0x1234
+install RegDel_Install flags=0x4 root=<W>\src copy=0 -> 1 lasterr=0
+  reg open after DelReg -> 2
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x3 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\system32\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 2
+  cb ctx=ok note=0xc target=<WIN>\system32\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\SysWOW64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 2
+  cb ctx=ok note=0xc target=<WIN>\SysWOW64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 2
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Sys_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x3 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=loose.txt flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 2
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 2
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\renamed.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\sub\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 2
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\sub\loose.txt source=<W>\src\loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Cont_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  nullctx note=0x1 -> 0
+install nullctx -> 0 lasterr=0x57
+  dir dest:
+-- style 0x4, target absent
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x4 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x4 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x4 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x4, target v2, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver2.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V2_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x4 p2=0 -> 1
+  cb ctx=ok note=0x40000 p1=0x23223857650 p2=0 -> 0
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x4 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x4 -> 1 lasterr=0
+  dest version: 2.0
+-- style 0x4, target v1, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x4 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x4 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x4 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x144, target absent
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x144 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x144 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x144 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x144, target v2, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver2.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V2_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x144 p2=0 -> 1
+  cb ctx=ok note=0x40000 p1=0x23223857650 p2=0 -> 0
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x144 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x144 -> 1 lasterr=0
+  dest version: 2.0
+-- style 0x144, target v1, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x144 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x144 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x144 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x10000, target absent
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x10000 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x10000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x10000 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x10000, target v2, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver2.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V2_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x10000 p2=0 -> 1
+  cb ctx=ok note=0x40000 p1=0x23223857790 p2=0 -> 0
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x10000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x10000 -> 1 lasterr=0
+  dest version: 2.0
+-- style 0x10000, target v1, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x10000 p2=0 -> 1
+  cb ctx=ok note=0x40000 p1=0x23223857670 p2=0 -> 0
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x10000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x10000 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x2000, target absent
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x2000 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x2000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x2000 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x2000, target v2, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver2.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V2_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x2000 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x2000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x2000 -> 1 lasterr=0
+  dest version: 2.0
+-- style 0x2000, target v1, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x2000 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x2000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x2000 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x8, target absent
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x8 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x8 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x8 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x8, target v2, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver2.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V2_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x8 p2=0 -> 1
+  cb ctx=ok note=0x20000 p1=0x23223857650 p2=0 -> 0
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x8 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x8 -> 1 lasterr=0
+  dest version: 2.0
+-- style 0x8, target v1, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x8 p2=0 -> 1
+  cb ctx=ok note=0x20000 p1=0x23223857470 p2=0 -> 0
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x8 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x8 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x40, target absent
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x40 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x40 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x40 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x40, target v2, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver2.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V2_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x40 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x40 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x40 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x40, target v1, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x40 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x40 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x40 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x100, target absent
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x100 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x100 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x100 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x100, target v2, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver2.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V2_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x100 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x100 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x100 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x100, target v1, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x100 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x100 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x100 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x1000, target absent
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x1000 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x1000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x1000 -> 1 lasterr=0
+  dest version: 1.0
+-- style 0x1000, target v2, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver2.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver2.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V2_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x1000 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x1000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x1000 -> 1 lasterr=0
+  dest version: 2.0
+-- style 0x1000, target v1, source v1
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=ver1.dll flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x1000 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\ver.dll source=<W>\src\ver1.dll err=0 flags=0x1000 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install V1_Install flags=0x10 root=<W>\src copy=0x1000 -> 1 lasterr=0
+  dest version: 1.0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=absent.cab flags=0 -> 0
+  cb ctx=ok note=0x2 p1=0 p2=0 -> 1
+install FlagLoose_Install flags=0x10 root=<W>\src copy=0 -> 0 lasterr=0x2
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=flag.cab flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\flagcab.txt source=<W>\src\flag.cab err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\flagcab.txt source=<W>\src\flag.cab err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install FlagCab_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=flag.cab flags=0 -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\flag10.txt source=<W>\src\flag.cab err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\flag10.txt source=<W>\src\flag.cab err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Flag10_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=absent.cab flags=0 -> 0
+  cb ctx=ok note=0x2 p1=0 p2=0 -> 1
+install Flag10Loose_Install flags=0x10 root=<W>\src copy=0 -> 0 lasterr=0x2
+  dir dest: flag10.txt=16 flagcab.txt=15
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=absent.cab flags=0 (default 0) -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=flagloose.txt flags=0 (default 1) -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\flagloose.txt source=<W>\src\flagloose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\flagloose.txt source=<W>\src\flagloose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install FlagLoose_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=absent.cab flags=0 (default 0) -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=flag10loose.txt flags=0 (default 1) -> 1
+  cb ctx=ok note=0xb target=<WIN>\Temp\vprobe64\flag10loose.txt source=<W>\src\flag10loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0xc target=<WIN>\Temp\vprobe64\flag10loose.txt source=<W>\src\flag10loose.txt err=0 flags=0 p2=0 -> 1
+  cb ctx=ok note=0x4 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x2 p1=0x1 p2=0 -> 1
+install Flag10Loose_Install flags=0x10 root=<W>\src copy=0 -> 1 lasterr=0
+  dir dest: flag10.txt=16 flag10loose.txt=14 flagcab.txt=15 flagloose.txt=12
+  cb ctx=ok note=0x1 p1=0 p2=0 -> 1
+  cb ctx=ok note=0x3 p1=0 p2=0x1 -> 1
+  cb ctx=ok note=0xe tag=(null) desc=Probe Disk path=<W>\src file=missing.txt flags=0 -> 0
+  cb ctx=ok note=0x2 p1=0 p2=0 -> 1
+install Missing_Install flags=0x10 root=<W>\src copy=0 -> 0 lasterr=0x2
+  dir dest: flag10.txt=16 flag10loose.txt=14 flagcab.txt=15 flagloose.txt=12
+  cab ctx=ok note=0x10 path=<W>\src\ file= disk= set=20816 num=0 p2=0 -> 0
+  cab ctx=ok note=0x11 name=incab1.txt size=27 err=0 date=0x3c44 time=0x4880 attr=0x20 full=[] p2=<W>\src\probe.cab -> 0x1
+  cab ctx=ok note=0x13 target=<W>\it\incab1.txt source=<W>\src\probe.cab err=0 flags=0 p2=0 -> 0
+  cab ctx=ok note=0x11 name=incab2.txt size=45 err=0 date=0x3c44 time=0x4880 attr=0x20 full=[] p2=<W>\src\probe.cab -> 0x2
+iterate probe mode=0 -> 1 lasterr=0
+  dir it: incab1.txt=27
+  cab ctx=ok note=0x10 path=<W>\src\ file= disk= set=20816 num=0 p2=0 -> 0
+  cab ctx=ok note=0x11 name=incab1.txt size=27 err=0 date=0x3c44 time=0x4880 attr=0x20 full=[] p2=<W>\src\probe.cab -> 0
+iterate probe mode=1 -> 1 lasterr=0
+  cab ctx=ok note=0x10 path=<W>\src\ file= disk= set=20816 num=0 p2=0 -> 0xdead
+iterate probe mode=2 -> 0 lasterr=0xdead
+iterate text mode=0 -> 0 lasterr=0xd
+iterate missing mode=0 -> 0 lasterr=0x2
+export SetupQueryRegisteredOsComponent absent
+export SetupRegisterOsComponent absent
+export SetupUnRegisterOsComponent absent
+export SetupQueryRegisteredOsComponentsOrder absent
+export SetupEnumInfSectionsA present code: 48 89 5c 24 08 48 89 74 24 10 44 89 4c 24 20 4c 89 44 24 18 57 41 54 41

@@ -1,0 +1,40 @@
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName
+    (Default)    REG_SZ    mnmsrvc
+    ComputerName    REG_SZ    TINY11
+
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName
+    ComputerName    REG_SZ    TINY11
+
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+    Hostname    REG_SZ    Tiny11
+
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters
+    NV Hostname    REG_SZ    Tiny11
+
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+    ComSpec    REG_EXPAND_SZ    %SystemRoot%\system32\cmd.exe
+    DriverData    REG_SZ    C:\Windows\System32\Drivers\DriverData
+    OS    REG_SZ    Windows_NT
+    PATHEXT    REG_SZ    .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+    PROCESSOR_ARCHITECTURE    REG_SZ    AMD64
+    PSModulePath    REG_EXPAND_SZ    %ProgramFiles%\WindowsPowerShell\Modules;%SystemRoot%\system32\WindowsPowerShell\v1.0\Modules
+    TEMP    REG_EXPAND_SZ    %SystemRoot%\TEMP
+    TMP    REG_EXPAND_SZ    %SystemRoot%\TEMP
+    USERNAME    REG_SZ    SYSTEM
+    windir    REG_EXPAND_SZ    %SystemRoot%
+    _JAVA_OPTIONS    REG_SZ    -Xmx512M
+    NDI_RUNTIME_DIR_V2    REG_SZ    C:\Program Files\NDI\NDI 5 Tools\Runtime
+    NDI_RUNTIME_DIR_V3    REG_SZ    C:\Program Files\NDI\NDI 5 Tools\Runtime
+    NDI_RUNTIME_DIR_V4    REG_SZ    C:\Program Files\NDI\NDI 5 Tools\Runtime
+    NDI_RUNTIME_DIR_V5    REG_SZ    C:\Program Files\NDI\NDI 5 Tools\Runtime
+    Path    REG_EXPAND_SZ    C:\Program Files (x86)\Common Files\Oracle\Java\javapath;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;%SYSTEMROOT%\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\
+    NUMBER_OF_PROCESSORS    REG_SZ    16
+    PROCESSOR_LEVEL    REG_SZ    6
+    PROCESSOR_IDENTIFIER    REG_SZ    Intel64 Family 6 Model 151 Stepping 2, GenuineIntel
+    PROCESSOR_REVISION    REG_SZ    9702
+

@@ -1,0 +1,40 @@
+[LocalMachine/64] SOFTWARE\Classes\Installer\Assemblies
+[LocalMachine/64] SOFTWARE\Classes\Installer\Assemblies\Global
+  stdole,fileVersion="7.0.9466.1",version="7.0.3300.0",culture="neutral",publicKeyToken="B03F5F7F11D50A3A" = MultiString:<X5tJLhPrc8)(f%Wz0*[A>+Ox0Iul3g(W'z?VXB]2d>
+  Vitreo.Probe.Msil,Version="1.2.3.4",Culture="neutral",PublicKeyToken="809ea388321253ab",ProcessorArchitecture="MSIL" = MultiString:<+.7@hr)+v?h@dP,5-yDEFeatMain<>
+[LocalMachine/64] SOFTWARE\Classes\Installer\Features\1B9A7E4CF3D526A4B980E7D1C2F3A4B5
+  FeatAbsent = String:
+  FeatClr2 = String:
+  FeatMain = String:
+  FeatW32 = String:
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products\1B9A7E4CF3D526A4B980E7D1C2F3A4B5\Features
+  FeatAbsent = String:
+  FeatClr2 = String:
+  FeatMain = String:v9c@P8`i.@p$!!!%6__!
+  FeatW32 = String:
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000020
+  1B9A7E4CF3D526A4B980E7D1C2F3A4B5 = String:<\Vitreo.Probe.Msil,Version="1.2.3.4",Culture="neutral",PublicKeyToken="809ea388321253ab",ProcessorArchitecture="MSIL"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000020\1B9A7E4CF3D526A4B980E7D1C2F3A4B5
+  ComponentVersion = String:
+  File = String:FileMsil
+  IsFullFile = String:0
+  MediaCabinet = String:
+  PatchAttributes = String:0
+  PatchGUID = String:
+  PatchSequence = String:0
+  PatchSize = String:0
+  ProductVersion = String:1.0.0
+  SharedComponent = String:0
+[LocalMachine/32] SOFTWARE\Classes\Installer\Assemblies
+[LocalMachine/32] SOFTWARE\Classes\Installer\Assemblies\Global
+  stdole,fileVersion="7.0.9466.1",version="7.0.3300.0",culture="neutral",publicKeyToken="B03F5F7F11D50A3A" = MultiString:<X5tJLhPrc8)(f%Wz0*[A>+Ox0Iul3g(W'z?VXB]2d>
+  Vitreo.Probe.Msil,Version="1.2.3.4",Culture="neutral",PublicKeyToken="809ea388321253ab",ProcessorArchitecture="MSIL" = MultiString:<+.7@hr)+v?h@dP,5-yDEFeatMain<>
+[LocalMachine/32] SOFTWARE\Classes\Installer\Features\1B9A7E4CF3D526A4B980E7D1C2F3A4B5
+  FeatAbsent = String:
+  FeatClr2 = String:
+  FeatMain = String:
+  FeatW32 = String:
+[files]
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab\Vitreo.Probe.Msil.dll 3584

@@ -1,0 +1,197 @@
+acp=1252 oemcp=437
+-- ischar
+ischarw 7b220000b2bb070bb0b7bf307b7b2233003327b000203b70
+ctype1  7b220000b2bb070bb0b7bf307b7b2233003327b000203b70
+ischara0 0000000000000000000000000000000000000000000000002222222222000000
+ischara1 077777777777777777777777777000000bbbbbbbbbbbbbbbbbbbbbbbbbb00000
+ischara2 000b0000007070700000000000b0b0b70000000000b0000000220b0002b00000
+ischara3 7777777777777777777777707777777bbbbbbbbbbbbbbbbbbbbbbbb0bbbbbbbb
+acpc1_0 0000000000000000000000000000000000000000000000002222222222000000
+acpc1_1 077777777777777777777777777000000bbbbbbbbbbbbbbbbbbbbbbbbbb00000
+acpc1_2 000b0000007070700000000000b0b0b70000000000b0000000220b0002b00000
+acpc1_3 7777777777777777777777707777777bbbbbbbbbbbbbbbbbbbbbbbb0bbbbbbbb
+ischaralphaw_A ret=00000001 err=dead
+ischaralphanumericw_5 ret=00000001 err=dead
+ischarupperw_a ret=00000000 err=dead
+ischarlowera_a ret=00000001 err=dead
+ischaralphaw_hiword ret=00000001 err=dead
+ischaralphaa_hibyte ret=00000001 err=dead
+-- oem
+chartooema ret=00000001 err=dead
+  oem=82 41 dd 5f 98 00 55 55 
+chartooema_same ret=00000001 err=dead
+  oem=82 41 dd 5f 98 00 55 55 
+chartooema_null_src ret=00000000 err=dead
+chartooema_null_dst ret=00000000 err=dead
+chartooembuffa ret=00000001 err=dead
+  oem=82 41 dd 55 55 55 55 55 
+chartooembuffa_zero ret=00000001 err=dead
+  oem=55 55 55 55 55 55 55 55 
+chartooembuffa_null_src ret=00000000 err=dead
+chartooembuffa_null_dst ret=00000000 err=dead
+chartooemw ret=00000001 err=dead
+  oem=82 41 5f b0 5f 00 55 55 
+chartooemw_null_src ret=00000000 err=dead
+chartooemw_null_dst ret=00000000 err=dead
+chartooemw_same ret=00000000 err=dead
+  oem=e9 00 41 00 91 25 00 00 
+chartooembuffw_null_src ret=00000000 err=dead
+chartooembuffw_null_dst ret=00000000 err=dead
+chartooembuffw_zero ret=00000001 err=57
+  oem=55 55 55 55 
+oemtocharw ret=00000001 err=dead
+  w=00e9 0041 2591 00a3 00a0 0000 5555 5555 
+oemtocharw_null_src ret=00000000 err=dead
+oemtocharw_null_dst ret=00000000 err=dead
+oemtocharbuffw ret=00000001 err=dead
+  w=00e9 0041 2591 5555 5555 5555 5555 5555 
+oemtocharbuffw_zero ret=00000000 err=57
+  w=5555 5555 
+oemtocharbuffw_null_src ret=00000000 err=dead
+oemtocharbuffw_null_dst ret=00000000 err=dead
+oemtochara_null_src ret=00000000 err=dead
+oemtochara_null_dst ret=00000000 err=dead
+oemtocharbuffa_null_src ret=00000000 err=dead
+oemtocharbuffa_null_dst ret=00000000 err=dead
+oemtocharbuffa_zero ret=00000001 err=dead
+  a=55 55 55 55 
+  ansi80_oem=5f 5f 2c 9f 2c 2e 2b d8 5e 25 53 3c 4f 5f 5a 5f 5f 60 27 22 22 07 2d 2d 7e 54 73 3e 6f 5f 7a 59 ff ad 9b 9c 0f 9d dd 15 22 63 a6 ae aa 2d 72 5f f8 f1 fd 33 27 e6 14 fa 2c 31 a7 af ac ab 5f a8 
+  ansiC0_oem=41 41 41 41 8e 8f 92 80 45 90 45 45 49 49 49 49 44 a5 4f 4f 4f 4f 99 78 4f 55 55 55 9a 59 5f e1 85 a0 83 61 84 86 91 87 8a 82 88 89 8d a1 8c 8b 64 a4 95 a2 93 6f 94 f6 6f 97 a3 96 81 79 5f 98 
+  oem80_w=00c7 00fc 00e9 00e2 00e4 00e0 00e5 00e7 00ea 00eb 00e8 00ef 00ee 00ec 00c4 00c5 00c9 00e6 00c6 00f4 00f6 00f2 00fb 00f9 00ff 00d6 00dc 00a2 00a3 00a5 20a7 0192 
+  oemA0_w=00e1 00ed 00f3 00fa 00f1 00d1 00aa 00ba 00bf 2310 00ac 00bd 00bc 00a1 00ab 00bb 2591 2592 2593 2502 2524 2561 2562 2556 2555 2563 2551 2557 255d 255c 255b 2510 
+  oemC0_w=2514 2534 252c 251c 2500 253c 255e 255f 255a 2554 2569 2566 2560 2550 256c 2567 2568 2564 2565 2559 2558 2552 2553 256b 256a 2518 250c 2588 2584 258c 2590 2580 
+  oemE0_w=03b1 00df 0393 03c0 03a3 03c3 00b5 03c4 03a6 0398 03a9 03b4 221e 03c6 03b5 2229 2261 00b1 2265 2264 2320 2321 00f7 2248 00b0 2219 00b7 221a 207f 00b2 25a0 00a0 
+  oem01_w=263a 263b 2665 2666 2663 2660 2022 25d8 25cb 25d9 2642 2640 266a 266b 263c 25ba 25c4 2195 203c 00b6 00a7 25ac 21a8 2191 2193 2192 2190 221f 2194 25b2 25bc 
+  oem7f_w=2302 
+  oem01_a=01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e a4 10 11 12 13 b6 a7 16 17 18 19 1a 1b 1c 1d 1e 1f 
+  oem7f_a=7f 
+  ansi01_oem=01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 
+  glyphs_oem=01 7f 08 
+chartooembuffw_same ret=00000000 err=dead
+  oem=e9 00 41 00 91 25 00 00 
+chartooembuffa_same ret=00000001 err=dead
+  oem=82 41 dd 00 
+oemtocharbuffa_same ret=00000001 err=dead
+  ansi=e9 41 a6 00 
+oemtocharw_same ret=00000000 err=dead
+  w=82 41 b0 00 55 55 55 55 
+oemtocharbuffw_same ret=00000000 err=dead
+  w=82 41 b0 00 55 55 55 55 
+-- ddelparam
+pack msg=3e0 err=dead makelp=1 hi=0 packed=0 low4=0 unpack=1 lo=1234 hi=abcd err=dead free=1 err=dead
+pack msg=3e1 err=dead makelp=1 hi=0 packed=0 low4=0 unpack=1 lo=1234 hi=abcd err=dead free=1 err=dead
+pack msg=3e2 err=dead makelp=0 hi=0 packed=1 low4=8 unpack=1 lo=1234 hi=abcd err=dead free=1 err=dead
+pack msg=3e3 err=dead makelp=1 hi=0 packed=0 low4=0 unpack=1 lo=1234 hi=abcd err=dead free=1 err=dead
+pack msg=3e4 err=dead makelp=0 hi=0 packed=1 low4=8 unpack=1 lo=1234 hi=abcd err=dead free=1 err=dead
+pack msg=3e5 err=dead makelp=0 hi=0 packed=1 low4=8 unpack=1 lo=1234 hi=abcd err=dead free=1 err=dead
+pack msg=3e6 err=dead makelp=1 hi=0 packed=0 low4=0 unpack=1 lo=1234 hi=abcd err=dead free=1 err=dead
+pack msg=3e7 err=dead makelp=0 hi=0 packed=1 low4=8 unpack=1 lo=1234 hi=abcd err=dead free=1 err=dead
+pack msg=3e8 err=dead makelp=0 hi=1 packed=0 low4=0 unpack=1 lo=0 hi=abcd err=dead free=1 err=dead
+pack_initiate_big=ffffffff:def05678
+pack_execute_big=ffffffff:9abcdef0
+unpack_initiate_big=1 lo=0:0000def0 hi=0:00009abc
+unpack_execute_big=1 lo=0:00000000 hi=0:9abcdef0
+unpack_ack_zero=0 lo=0 hi=0 err=dead
+unpack_ack_bogus=0 lo=0 hi=0 err=6
+unpack_null_out=1 err=dead
+unpack_lo_only=1 lo=5
+unpack_cross_msg=1 lo=5 hi=6
+free1=1 err=dead
+packed_global size=8 flags=0 lock=1 v=51,52
+packed_global fixed=1
+packed_global after_unlock flags=0
+packed_global free=1
+free_zero=1 err=dead
+free_unpacked=1 err=dead
+reuse_packed_packed same=1 lo=3 hi=4
+reuse_packed_unpacked=0:00000008
+reuse_unpacked_packed packed=1 lo=9 hi=a
+reuse_unpacked_unpacked=0:000c000b
+reuse_null_packed nonzero=0 err=dead unpack=0 lo=0 hi=0
+pack_wmuser=0:00220011 unpack=1 lo=0:00000011 hi=0:00000022 free=1
+-- ddeml
+ddeinit=0
+create nonzero=1 lasterr=0
+getdata_size=6
+getdata_size_off=4
+getdata_3_1=3
+  b=65 6c 6c 55 55 55 
+getdata_16_0=6
+  b=68 65 6c 6c 6f 00 55 55 
+getdata_off_end=0 lasterr=4006
+getdata_off_past=0 lasterr=4006
+getdata_null_off_past=0 lasterr=4006
+access ok=1 cb=6 first=h lasterr=0
+access_again ok=1 same=1 lasterr=0
+unaccess=1 lasterr=0
+unaccess2=1 lasterr=0
+unaccess3=1 lasterr=0
+getdata_after_write=1 b0=J
+adddata nonzero=1 same=1 lasterr=0 size=11
+getdata_grown=11
+  b=4a 65 6c 6c 6f 00 00 00 58 59 5a 
+old_handle_size=b lasterr=0
+adddata_inside same=1 size=11
+adddata_zero_cb=1 lasterr=0
+adddata_null_src=1 lasterr=0
+free=1 lasterr=0
+free_again=0 lasterr=0
+getdata_freed=0 lasterr=4006
+access_freed=0 lasterr=0
+free_zero=0 lasterr=0
+getdata_zero=0 lasterr=4006
+access_zero=0 lasterr=0
+unaccess_zero=0 lasterr=0
+adddata_zero=0 lasterr=0
+free_bogus=0 lasterr=0
+create_null_src nonzero=1 size=4
+create_zero_cb nonzero=1
+create_zero_cb_size=0 lasterr=4006
+create_off nonzero=1 size=5
+  b=00 00 68 65 6c 55 
+create_appowned nonzero=1 size=6
+free_appowned=1
+create_badflag nonzero=0 lasterr=4006
+create_badinst nonzero=0 lasterr=4006
+create_badhsz nonzero=1 lasterr=0
+inst2_err=0 inst1_err=0
+transact=0 err=4006
+handle_after_transact_size=6 lasterr=0
+free_after_transact=1 lasterr=0
+after_uninit size=0 free=0
+-- showwindowasync
+sw_ref ret=0 visible=1 showmsgs=1 wparam=1
+sw_ref2 ret=24 visible=1
+swa_own ret=1 err=dead visible_now=0 showmsgs_now=0
+swa_own after_peek visible=1 showmsgs=1 wparam=1 retrieved=1
+swa_visible ret=1 err=dead
+swa_hide ret=1 err=dead visible_now=1
+swa_hide after_peek visible=0
+swa_queue_status=400040
+swa_after_filtered_peek visible=0
+swa_invalid ret=0 err=578
+swa_null ret=0 err=578
+swa_badcmd ret=0 err=57
+swa_badcmd after visible=0
+swa_other ret=1 err=dead
+swa_other visible_eventually=1
+-- comboboxinfo
+cbi_custom ret=7 err=dead calls=1 lparam_is_caller=0 size=52
+cbi_custom_badsize ret=0 err=57 calls=0 size=52
+cbi_custom_null ret=0 err=3e6 calls=0
+cbi style=1 ret=1 err=dead size=52 client=120,200 item=3,3,117,21 button=0,0,0,0 state=8000 self=1 itemcls=Edit listcls=ComboLBox list_parent_is_combo=1
+  cb_getcomboboxinfo=1
+cbi style=2 ret=1 err=dead size=52 client=120,24 item=3,3,100,21 button=101,2,118,22 state=0 self=1 itemcls=Edit listcls=ComboLBox list_parent_is_combo=0
+  cb_getcomboboxinfo=1
+cbi_size0 ret=0 err=57
+cbi_size_minus1 ret=0 err=57
+cbi_size_plus4 ret=0 err=57
+cbi_null ret=0 err=3e6
+cbi style=3 ret=1 err=dead size=52 client=120,24 item=3,3,100,21 button=101,2,118,22 state=0 self=1 itemcls= listcls=ComboLBox list_parent_is_combo=0
+  cb_getcomboboxinfo=1
+cbi_notcombo ret=0 err=dead
+cbi_button ret=0 err=dead
+cbi_invalid ret=0 err=578
+cbi_nullhwnd ret=0 err=578
+sizeof_comboboxinfo=52
+-- end

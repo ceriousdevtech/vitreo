@@ -1,0 +1,15 @@
+catch_int=42
+dtor_order=321
+catch_base_ref_b=7
+catch_base_is_derived=1
+catch_std_what_ok=1
+rethrow=11
+nested_in_catch=2
+uncaught_in_dtor=1
+uncaught_after=0
+rethrow_exception_ok=1
+mismatch_to_outer=7
+seh_av_caught=1
+finally_on_cxx_unwind=1
+loop_1000=1000
+done

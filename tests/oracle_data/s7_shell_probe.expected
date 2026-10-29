@@ -1,0 +1,88 @@
+== ordinals
+  #2==SHChangeNotifyRegister=1
+  #4==SHChangeNotifyDeregister=1
+  #152==ILGetSize=1
+  #155==ILFree=1
+  #165==SHCreateDirectory=1
+  #190==ILCreateFromPathW=1
+  #680==IsUserAnAdmin=1
+  #506==SHGetFolderPathW=1
+  #515==SHGetKnownFolderPath=1
+  #273==CommandLineToArgvW=1
+  #195==SHFree=1
+  #100==SHRestricted=1
+  SHFlushClipboard by name=0
+  CoTaskMemFree by name=0
+== SHCreateDirectoryExW
+deep (creates parents) -> 0 err=0
+  deep exists=1
+deep again -> b7 err=b7
+relative -> a1 err=a1
+  relative created=0
+empty -> a1 err=a1
+unc-ish \\?\ prefix none -> 35 err=35
+existing file -> b7 err=b7
+under a file -> 3 err=3
+bad drive Q: -> 3 err=3
+component>248 total>260 -> ce err=3
+len==248 -> ce err=ce
+len==247 -> 0 err=0
+SHCreateDirectory(#165) deep -> 0 err=0
+SHCreateDirectory(#165) again -> b7 err=b7
+SHCreateDirectory(#165) relative -> a1 err=a1
+== ILCreateFromPathW / ILFree / ILGetSize
+ILCreateFromPathW(existing dir)!=0 -> 1 err=57
+  SHGetPathFromIDListW ok=1
+  roundtrip match=1
+  ILGetSize>2=1
+ILCreateFromPathW(existing file)!=0 -> 1 err=57
+ILFree(file pidl) -> 0 err=dead
+ILCreateFromPathW(missing) -> 0 err=3
+ILFree(NULL) -> 0 err=dead
+ILGetSize(NULL) -> 0 err=dead
+== SHChangeNotifyRegister / Deregister
+register(hwnd, shell level, all, 1 entry)!=0 -> 0 err=7a
+deregister(id) -> 0 err=0
+deregister(id) again -> 0 err=0
+deregister(0x7777) -> 0 err=0
+register(NULL hwnd) -> 0 err=578
+register(0 entries)!=0 -> 0 err=7a
+== SHGetFileInfoW layout
+SHGetFileInfoW(dir, DISPLAYNAME|TYPENAME|ATTRIBUTES) -> 1 err=0
+  sizeof=2b8
+  off.iIcon=8
+  off.dwAttributes=c
+  off.szDisplayName=10
+  off.szTypeName=218
+  attr&SFGAO_FOLDER=1
+  attr&SFGAO_FILESYSTEM=1
+  display==s7shell_tmp=1
+  hIcon=0
+  iIcon untouched=1
+  attributes=f080017f
+  typename=File folder
+  szDisplayName[len+1] untouched=1
+SHGetFileInfoW(file f.txt, DISPLAYNAME|TYPENAME|ATTRIBUTES) -> 1 err=0
+  hIcon=0
+  attributes=40400177
+  display=f.txt
+  typename=Text Document
+SHGetFileInfoW(file, ATTRIBUTES only) -> 1 err=0
+  hIcon=0
+  display[0]=0
+  typename[0]=0
+SHGetFileInfoW(q.zzq USEFILEATTRIBUTES TYPENAME) -> 1 err=0
+  typename=ZZQ File
+SHGetFileInfoW(noext USEFILEATTRIBUTES TYPENAME) -> 1 err=0
+  typename=File
+SHGetFileInfoW(dirx DIRECTORY USEFILEATTRIBUTES TYPENAME|ATTRIBUTES) -> 1 err=0
+  typename=File folder
+  attributes=0
+SHGetFileInfoW(cb=sizeof-1) -> 1 err=0
+SHGetFileInfoW(cb=0) -> 1 err=0
+SHGetFileInfoW(self, EXETYPE) -> 4550 err=0
+SHGetFileInfoW(txt, EXETYPE) -> 0 err=dead
+SHGetFileInfoW(missing, ATTRIBUTES) -> 0 err=3
+SHGetFileInfoW(USEFILEATTRIBUTES, DISPLAYNAME) -> 1 err=0
+  display==x.txt=1
+SHGetFileInfoW(psfi NULL) -> 0 err=dead

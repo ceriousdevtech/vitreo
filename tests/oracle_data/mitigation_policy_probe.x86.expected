@@ -1,0 +1,1385 @@
+bitness=32
+initial DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+get_default p=0 size=8 ret=1 err=0 bytes=0300000001cccccccccccccccccccccccccccccccccccccc
+get_default p=1 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=2 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=3 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=4 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=5 size=16 ret=1 err=0 bytes=03333333333333333033333333333303cccccccccccccccc
+get_default p=6 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=7 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=8 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=9 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=10 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=11 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=12 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=13 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=14 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=15 size=4 ret=1 err=0 bytes=00010000cccccccccccccccccccccccccccccccccccccccc
+get_default p=16 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=17 size=4 ret=0 err=50 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_default p=18 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+get_default p=19 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_default p=20 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_default p=2147483647 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_default p=-1 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=0 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=1 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=5 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=7 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=8 ret=1 err=0 bytes=0300000001cccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=9 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=12 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=16 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=17 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=0 size=24 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=0 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=1 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=5 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=7 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=8 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=9 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=12 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=16 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=17 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=1 size=24 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=0 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=1 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=5 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=7 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=8 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=9 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=12 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=16 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=17 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=2 size=24 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=5 size=0 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=5 size=1 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=5 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=5 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=5 size=5 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=5 size=7 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=5 size=8 ret=1 err=0 bytes=0333333333333333cccccccccccccccccccccccccccccccc
+get_size p=5 size=9 ret=1 err=0 bytes=033333333333333330cccccccccccccccccccccccccccccc
+get_size p=5 size=12 ret=1 err=0 bytes=033333333333333330333333cccccccccccccccccccccccc
+get_size p=5 size=16 ret=1 err=0 bytes=03333333333333333033333333333303cccccccccccccccc
+get_size p=5 size=17 ret=1 err=0 bytes=0333333333333333303333333333330300cccccccccccccc
+get_size p=5 size=24 ret=1 err=0 bytes=033333333333333330333333333333030000000000000000
+get_size p=7 size=0 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=1 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=5 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=7 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=8 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=9 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=12 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=16 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=17 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=7 size=24 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=0 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=1 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=5 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=7 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=8 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=9 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=12 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=16 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=17 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=18 size=24 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=0 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=1 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=5 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=7 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=8 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=9 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=12 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=16 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=17 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_size p=19 size=24 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_mask size=16 ret=1 bytes=03333333333333333033333333333303cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+get_mask size=24 ret=1 bytes=033333333333333330333333333333030000000000000000cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+get_mask size=32 ret=1 bytes=0333333333333333303333333333330300000000000000000000000000000000cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+get_mask size=40 ret=1 bytes=03333333333333333033333333333303000000000000000000000000000000000000000000000000cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+get_mask size=48 ret=1 bytes=033333333333333330333333333333030000000000000000000000000000000000000000000000000000000000000000cccccccccccccccccccccccccccccccccccccccccccccccc
+get_mask size=56 ret=1 bytes=0333333333333333303333333333330300000000000000000000000000000000000000000000000000000000000000000000000000000000cccccccccccccccccccccccccccccccc
+get_mask size=64 ret=1 bytes=03333333333333333033333333333303000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000cccccccccccccccc
+bigmask size=8192 ret=1 err=0 last_written=8191
+bigmask size=4096 ret=1 err=0 last_written=4095
+bigmask size=65 ret=1 err=0 last_written=64
+== get_null (child; exit code shows a fault)
+  [getnull 1 4] exit=0xc0000005
+getnull p=1 size=0 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+getnull p=1 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+  [getnull 5 8] exit=0xc0000005
+getnull p=99 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+  [setnull 2 4] exit=0xc0000005
+  [setnull 1 4] exit=0xc0000005
+setnull p=1 size=3 ret=0 err=87
+setnull p=99 size=4 ret=0 err=87
+setnull p=5 size=16 ret=0 err=87
+get_h_null p=1 size=4 ret=0 err=6 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_bad p=1 size=4 ret=0 err=6 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_bad_badsize p=1 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_bad_badpol p=99 size=4 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_thread_pseudo p=1 size=4 ret=0 err=6 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_event p=1 size=4 ret=0 err=6 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_event_mask p=5 size=16 ret=1 err=0 bytes=03333333333333333033333333333303cccccccccccccccc
+get_h_self_qli p=1 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+get_h_self_qli_badsize p=1 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_self_qli_mask p=5 size=16 ret=1 err=0 bytes=03333333333333333033333333333303cccccccccccccccc
+get_h_self_qi p=1 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+get_h_self_qi_badsize p=1 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_self_qi_mask p=5 size=16 ret=1 err=0 bytes=03333333333333333033333333333303cccccccccccccccc
+get_h_self_sync p=1 size=4 ret=0 err=5 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_self_sync_badsize p=1 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_self_sync_mask p=5 size=16 ret=1 err=0 bytes=03333333333333333033333333333303cccccccccccccccc
+get_h_self_vmread p=1 size=4 ret=0 err=5 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_self_vmread_badsize p=1 size=3 ret=0 err=87 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+get_h_self_vmread_mask p=5 size=16 ret=1 err=0 bytes=03333333333333333033333333333303cccccccccccccccc
+get_h_child_all p=1 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+get_h_child_all_dyn p=2 size=4 ret=1 err=0 bytes=00000000cccccccccccccccccccccccccccccccccccccccc
+child_self_qli p=1 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+child_self_qi p=1 size=4 ret=1 err=0 bytes=01000000cccccccccccccccccccccccccccccccccccccccc
+child_self_sync p=1 size=4 ret=0 err=5 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+child_self_vmread p=1 size=4 ret=0 err=5 bytes=cccccccccccccccccccccccccccccccccccccccccccccccc
+set_zero p=0 size=8 ret=0 err=5
+set_zero p=1 size=4 ret=0 err=5
+set_zero p=2 size=4 ret=1 err=0
+set_zero p=3 size=4 ret=1 err=0
+set_zero p=4 size=4 ret=1 err=0
+set_zero p=5 size=16 ret=0 err=87
+set_zero p=6 size=4 ret=1 err=0
+set_zero p=7 size=4 ret=0 err=5
+set_zero p=8 size=4 ret=1 err=0
+set_zero p=9 size=4 ret=1 err=0
+set_zero p=10 size=4 ret=1 err=0
+set_zero p=11 size=4 ret=0 err=87
+set_zero p=12 size=4 ret=0 err=87
+set_zero p=13 size=4 ret=1 err=0
+set_zero p=14 size=4 ret=1 err=0
+set_zero p=15 size=4 ret=0 err=5
+set_zero p=16 size=4 ret=0 err=5
+set_zero p=17 size=4 ret=0 err=87
+set_zero p=18 size=4 ret=0 err=87
+set_zero p=19 size=4 ret=0 err=87
+set_zero p=20 size=4 ret=0 err=87
+set_zero p=2147483647 size=4 ret=0 err=87
+set_size p=0 size=0 ret=0 err=87
+set_size p=0 size=3 ret=0 err=87
+set_size p=0 size=5 ret=0 err=87
+set_size p=0 size=7 ret=0 err=87
+set_size p=0 size=8 ret=0 err=5
+set_size p=0 size=9 ret=0 err=87
+set_size p=0 size=16 ret=0 err=87
+set_size p=1 size=0 ret=0 err=87
+set_size p=1 size=3 ret=0 err=87
+set_size p=1 size=5 ret=0 err=87
+set_size p=1 size=7 ret=0 err=87
+set_size p=1 size=8 ret=0 err=87
+set_size p=1 size=9 ret=0 err=87
+set_size p=1 size=16 ret=0 err=87
+set_size p=2 size=0 ret=0 err=87
+set_size p=2 size=3 ret=0 err=87
+set_size p=2 size=5 ret=0 err=87
+set_size p=2 size=7 ret=0 err=87
+set_size p=2 size=8 ret=0 err=87
+set_size p=2 size=9 ret=0 err=87
+set_size p=2 size=16 ret=0 err=87
+set_size p=3 size=0 ret=0 err=87
+set_size p=3 size=3 ret=0 err=87
+set_size p=3 size=5 ret=0 err=87
+set_size p=3 size=7 ret=0 err=87
+set_size p=3 size=8 ret=0 err=87
+set_size p=3 size=9 ret=0 err=87
+set_size p=3 size=16 ret=0 err=87
+set_size p=5 size=0 ret=0 err=87
+set_size p=5 size=3 ret=0 err=87
+set_size p=5 size=5 ret=0 err=87
+set_size p=5 size=7 ret=0 err=87
+set_size p=5 size=8 ret=0 err=87
+set_size p=5 size=9 ret=0 err=87
+set_size p=5 size=16 ret=0 err=87
+set_size p=6 size=0 ret=0 err=87
+set_size p=6 size=3 ret=0 err=87
+set_size p=6 size=5 ret=0 err=87
+set_size p=6 size=7 ret=0 err=87
+set_size p=6 size=8 ret=0 err=87
+set_size p=6 size=9 ret=0 err=87
+set_size p=6 size=16 ret=0 err=87
+set_size p=7 size=0 ret=0 err=87
+set_size p=7 size=3 ret=0 err=87
+set_size p=7 size=5 ret=0 err=87
+set_size p=7 size=7 ret=0 err=87
+set_size p=7 size=8 ret=0 err=87
+set_size p=7 size=9 ret=0 err=87
+set_size p=7 size=16 ret=0 err=87
+after_set_basic DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+dep enable p=0 size=8 ret=0 err=87
+dep_after_enable DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+dep enable_perm p=0 size=8 ret=0 err=5
+dep atl p=0 size=8 ret=0 err=5
+dep_after_atl DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+dep disable p=0 size=8 ret=0 err=5
+dep perm_only p=0 size=8 ret=0 err=5
+dep_end DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+GetProcessDEPPolicy ret=1 err=0 flags=3 perm=1
+acg set 1 p=2 size=4 ret=1 err=0
+acg_after DEP=3/1 ASLR=1 DynCode=1 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg protect_unmapped_rx ok=0 err=487 old=1
+acg protect_unmapped_rw ok=0 err=487 old=1
+acg protect_badprot ok=0 err=87 old=0
+acg alloc_rx_targets_invalid ok=0 err=1655
+acg allocex_self_rwx ok=0 err=1655
+acg alloc_badprot ok=0 err=50
+acg alloc_commit prot=10 ok=0 err=1655
+acg alloc_reserve prot=10 ok=0 err=1655
+acg alloc_commit prot=20 ok=0 err=1655
+acg alloc_reserve prot=20 ok=0 err=1655
+acg alloc_commit prot=40 ok=0 err=1655
+acg alloc_reserve prot=40 ok=0 err=1655
+acg alloc_commit prot=4 ok=1 err=0
+acg alloc_reserve prot=4 ok=1 err=0
+acg alloc_commit prot=120 ok=0 err=1655
+acg alloc_reserve prot=120 ok=0 err=1655
+acg commit_into_reserved RX ok=0 err=1655
+acg protect_rw_to 2 ok=1 err=0 old=4
+acg protect_rw_to 10 ok=0 err=1655 old=1
+acg protect_rw_to 20 ok=0 err=1655 old=1
+acg protect_rw_to 40 ok=0 err=1655 old=1
+acg protect_rw_to 1 ok=1 err=0 old=2
+acg protect_rw_to 4 ok=1 err=0 old=1
+acg image_page found=1 type=1000000
+acg protect_image_to 40 ok=0 err=1655 old=1
+acg protect_image_to 4 ok=1 err=0 old=20
+acg protect_image_to 80 ok=0 err=1655 old=1
+acg protect_image_to 8 ok=1 err=0 old=8
+acg protect_image_to 2 ok=1 err=0 old=8
+acg protect_image_to 20 ok=0 err=1655 old=1
+acg section_rwx ok=1 err=0
+acg map_exec_read ok=0 err=1655
+acg map_exec_write ok=0 err=1655
+acg map_write ok=1 err=0
+acg protect_view_to_rx ok=0 err=1655
+acg pre_rwx_to_rw ok=1 err=0 old=40
+acg pre_rw_back_to_rwx ok=0 err=1655
+acg pre_rx_to_rwx ok=0 err=1655
+acg pre_rx_to_x ok=1 err=0
+acg pre_rx_to_r ok=1 err=0
+acg pre_r_back_to_rx ok=0 err=1655
+acg thread_optout ret=0 err=5
+acg relax p=2 size=4 ret=0 err=5
+acg_end DEP=3/1 ASLR=1 DynCode=1 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg set 3 p=2 size=4 ret=1 err=0
+acg_after DEP=3/1 ASLR=1 DynCode=3 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg protect_unmapped_rx ok=0 err=487 old=1
+acg protect_unmapped_rw ok=0 err=487 old=1
+acg protect_badprot ok=0 err=87 old=0
+acg alloc_rx_targets_invalid ok=0 err=1655
+acg allocex_self_rwx ok=0 err=1655
+acg alloc_badprot ok=0 err=50
+acg alloc_commit prot=10 ok=0 err=1655
+acg alloc_reserve prot=10 ok=0 err=1655
+acg alloc_commit prot=20 ok=0 err=1655
+acg alloc_reserve prot=20 ok=0 err=1655
+acg alloc_commit prot=40 ok=0 err=1655
+acg alloc_reserve prot=40 ok=0 err=1655
+acg alloc_commit prot=4 ok=1 err=0
+acg alloc_reserve prot=4 ok=1 err=0
+acg alloc_commit prot=120 ok=0 err=1655
+acg alloc_reserve prot=120 ok=0 err=1655
+acg commit_into_reserved RX ok=0 err=1655
+acg protect_rw_to 2 ok=1 err=0 old=4
+acg protect_rw_to 10 ok=0 err=1655 old=1
+acg protect_rw_to 20 ok=0 err=1655 old=1
+acg protect_rw_to 40 ok=0 err=1655 old=1
+acg protect_rw_to 1 ok=1 err=0 old=2
+acg protect_rw_to 4 ok=1 err=0 old=1
+acg image_page found=1 type=1000000
+acg protect_image_to 40 ok=0 err=1655 old=1
+acg protect_image_to 4 ok=1 err=0 old=20
+acg protect_image_to 80 ok=0 err=1655 old=1
+acg protect_image_to 8 ok=1 err=0 old=8
+acg protect_image_to 2 ok=1 err=0 old=8
+acg protect_image_to 20 ok=0 err=1655 old=1
+acg section_rwx ok=1 err=0
+acg map_exec_read ok=0 err=1655
+acg map_exec_write ok=0 err=1655
+acg map_write ok=1 err=0
+acg protect_view_to_rx ok=0 err=1655
+acg pre_rwx_to_rw ok=1 err=0 old=40
+acg pre_rw_back_to_rwx ok=0 err=1655
+acg pre_rx_to_rwx ok=0 err=1655
+acg pre_rx_to_x ok=1 err=0
+acg pre_rx_to_r ok=1 err=0
+acg pre_r_back_to_rx ok=0 err=1655
+acg thread_optout ret=1 err=0
+acg optout_alloc_rwx ok=1 err=0
+acg relax p=2 size=4 ret=0 err=5
+acg_end DEP=3/1 ASLR=1 DynCode=3 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg set 5 p=2 size=4 ret=1 err=0
+acg_after DEP=3/1 ASLR=1 DynCode=5 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg protect_unmapped_rx ok=0 err=487 old=1
+acg protect_unmapped_rw ok=0 err=487 old=1
+acg protect_badprot ok=0 err=87 old=0
+acg alloc_rx_targets_invalid ok=0 err=1655
+acg allocex_self_rwx ok=0 err=1655
+acg alloc_badprot ok=0 err=50
+acg alloc_commit prot=10 ok=0 err=1655
+acg alloc_reserve prot=10 ok=0 err=1655
+acg alloc_commit prot=20 ok=0 err=1655
+acg alloc_reserve prot=20 ok=0 err=1655
+acg alloc_commit prot=40 ok=0 err=1655
+acg alloc_reserve prot=40 ok=0 err=1655
+acg alloc_commit prot=4 ok=1 err=0
+acg alloc_reserve prot=4 ok=1 err=0
+acg alloc_commit prot=120 ok=0 err=1655
+acg alloc_reserve prot=120 ok=0 err=1655
+acg commit_into_reserved RX ok=0 err=1655
+acg protect_rw_to 2 ok=1 err=0 old=4
+acg protect_rw_to 10 ok=0 err=1655 old=1
+acg protect_rw_to 20 ok=0 err=1655 old=1
+acg protect_rw_to 40 ok=0 err=1655 old=1
+acg protect_rw_to 1 ok=1 err=0 old=2
+acg protect_rw_to 4 ok=1 err=0 old=1
+acg image_page found=1 type=1000000
+acg protect_image_to 40 ok=0 err=1655 old=1
+acg protect_image_to 4 ok=1 err=0 old=20
+acg protect_image_to 80 ok=0 err=1655 old=1
+acg protect_image_to 8 ok=1 err=0 old=8
+acg protect_image_to 2 ok=1 err=0 old=8
+acg protect_image_to 20 ok=0 err=1655 old=1
+acg section_rwx ok=1 err=0
+acg map_exec_read ok=0 err=1655
+acg map_exec_write ok=0 err=1655
+acg map_write ok=1 err=0
+acg protect_view_to_rx ok=0 err=1655
+acg pre_rwx_to_rw ok=1 err=0 old=40
+acg pre_rw_back_to_rwx ok=0 err=1655
+acg pre_rx_to_rwx ok=0 err=1655
+acg pre_rx_to_x ok=1 err=0
+acg pre_rx_to_r ok=1 err=0
+acg pre_r_back_to_rx ok=0 err=1655
+acg thread_optout ret=0 err=5
+acg relax p=2 size=4 ret=0 err=5
+acg_end DEP=3/1 ASLR=1 DynCode=5 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg set 9 p=2 size=4 ret=1 err=0
+acg_after DEP=3/1 ASLR=1 DynCode=1 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg protect_unmapped_rx ok=0 err=487 old=1
+acg protect_unmapped_rw ok=0 err=487 old=1
+acg protect_badprot ok=0 err=87 old=0
+acg alloc_rx_targets_invalid ok=0 err=1655
+acg allocex_self_rwx ok=0 err=1655
+acg alloc_badprot ok=0 err=50
+acg alloc_commit prot=10 ok=0 err=1655
+acg alloc_reserve prot=10 ok=0 err=1655
+acg alloc_commit prot=20 ok=0 err=1655
+acg alloc_reserve prot=20 ok=0 err=1655
+acg alloc_commit prot=40 ok=0 err=1655
+acg alloc_reserve prot=40 ok=0 err=1655
+acg alloc_commit prot=4 ok=1 err=0
+acg alloc_reserve prot=4 ok=1 err=0
+acg alloc_commit prot=120 ok=0 err=1655
+acg alloc_reserve prot=120 ok=0 err=1655
+acg commit_into_reserved RX ok=0 err=1655
+acg protect_rw_to 2 ok=1 err=0 old=4
+acg protect_rw_to 10 ok=0 err=1655 old=1
+acg protect_rw_to 20 ok=0 err=1655 old=1
+acg protect_rw_to 40 ok=0 err=1655 old=1
+acg protect_rw_to 1 ok=1 err=0 old=2
+acg protect_rw_to 4 ok=1 err=0 old=1
+acg image_page found=1 type=1000000
+acg protect_image_to 40 ok=0 err=1655 old=1
+acg protect_image_to 4 ok=1 err=0 old=20
+acg protect_image_to 80 ok=0 err=1655 old=1
+acg protect_image_to 8 ok=1 err=0 old=8
+acg protect_image_to 2 ok=1 err=0 old=8
+acg protect_image_to 20 ok=0 err=1655 old=1
+acg section_rwx ok=1 err=0
+acg map_exec_read ok=0 err=1655
+acg map_exec_write ok=0 err=1655
+acg map_write ok=1 err=0
+acg protect_view_to_rx ok=0 err=1655
+acg pre_rwx_to_rw ok=1 err=0 old=40
+acg pre_rw_back_to_rwx ok=0 err=1655
+acg pre_rx_to_rwx ok=0 err=1655
+acg pre_rx_to_x ok=1 err=0
+acg pre_rx_to_r ok=1 err=0
+acg pre_r_back_to_rx ok=0 err=1655
+acg thread_optout ret=0 err=5
+acg relax p=2 size=4 ret=0 err=5
+acg_end DEP=3/1 ASLR=1 DynCode=1 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg set 8 p=2 size=4 ret=1 err=0
+acg_after DEP=3/1 ASLR=1 DynCode=8 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg protect_unmapped_rx ok=0 err=487 old=1
+acg protect_unmapped_rw ok=0 err=487 old=1
+acg protect_badprot ok=0 err=87 old=0
+acg alloc_rx_targets_invalid ok=1 err=0
+acg allocex_self_rwx ok=1 err=0
+acg alloc_badprot ok=0 err=50
+acg alloc_commit prot=10 ok=1 err=0
+acg alloc_reserve prot=10 ok=1 err=0
+acg alloc_commit prot=20 ok=1 err=0
+acg alloc_reserve prot=20 ok=1 err=0
+acg alloc_commit prot=40 ok=1 err=0
+acg alloc_reserve prot=40 ok=1 err=0
+acg alloc_commit prot=4 ok=1 err=0
+acg alloc_reserve prot=4 ok=1 err=0
+acg alloc_commit prot=120 ok=1 err=0
+acg alloc_reserve prot=120 ok=1 err=0
+acg commit_into_reserved RX ok=1 err=0
+acg protect_rw_to 2 ok=1 err=0 old=4
+acg protect_rw_to 10 ok=1 err=0 old=2
+acg protect_rw_to 20 ok=1 err=0 old=10
+acg protect_rw_to 40 ok=1 err=0 old=20
+acg protect_rw_to 1 ok=1 err=0 old=40
+acg protect_rw_to 4 ok=1 err=0 old=1
+acg image_page found=1 type=1000000
+acg protect_image_to 40 ok=1 err=0 old=20
+acg protect_image_to 4 ok=1 err=0 old=80
+acg protect_image_to 80 ok=1 err=0 old=8
+acg protect_image_to 8 ok=1 err=0 old=80
+acg protect_image_to 2 ok=1 err=0 old=8
+acg protect_image_to 20 ok=1 err=0 old=2
+acg section_rwx ok=1 err=0
+acg map_exec_read ok=1 err=0
+acg map_exec_write ok=1 err=0
+acg map_write ok=1 err=0
+acg protect_view_to_rx ok=0 err=87
+acg pre_rwx_to_rw ok=1 err=0 old=40
+acg pre_rw_back_to_rwx ok=1 err=0
+acg pre_rx_to_rwx ok=1 err=0
+acg pre_rx_to_x ok=1 err=0
+acg pre_rx_to_r ok=1 err=0
+acg pre_r_back_to_rx ok=1 err=0
+acg thread_optout ret=0 err=5
+acg relax p=2 size=4 ret=1 err=0
+acg_end DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg set 80000001 p=2 size=4 ret=0 err=87
+acg_after DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+acg protect_unmapped_rx ok=0 err=487 old=1
+acg protect_unmapped_rw ok=0 err=487 old=1
+acg protect_badprot ok=0 err=87 old=0
+acg alloc_rx_targets_invalid ok=1 err=0
+acg allocex_self_rwx ok=1 err=0
+acg alloc_badprot ok=0 err=50
+acg alloc_commit prot=10 ok=1 err=0
+acg alloc_reserve prot=10 ok=1 err=0
+acg alloc_commit prot=20 ok=1 err=0
+acg alloc_reserve prot=20 ok=1 err=0
+acg alloc_commit prot=40 ok=1 err=0
+acg alloc_reserve prot=40 ok=1 err=0
+acg alloc_commit prot=4 ok=1 err=0
+acg alloc_reserve prot=4 ok=1 err=0
+acg alloc_commit prot=120 ok=1 err=0
+acg alloc_reserve prot=120 ok=1 err=0
+acg commit_into_reserved RX ok=1 err=0
+acg protect_rw_to 2 ok=1 err=0 old=4
+acg protect_rw_to 10 ok=1 err=0 old=2
+acg protect_rw_to 20 ok=1 err=0 old=10
+acg protect_rw_to 40 ok=1 err=0 old=20
+acg protect_rw_to 1 ok=1 err=0 old=40
+acg protect_rw_to 4 ok=1 err=0 old=1
+acg image_page found=1 type=1000000
+acg protect_image_to 40 ok=1 err=0 old=20
+acg protect_image_to 4 ok=1 err=0 old=80
+acg protect_image_to 80 ok=1 err=0 old=8
+acg protect_image_to 8 ok=1 err=0 old=80
+acg protect_image_to 2 ok=1 err=0 old=8
+acg protect_image_to 20 ok=1 err=0 old=2
+acg section_rwx ok=1 err=0
+acg map_exec_read ok=1 err=0
+acg map_exec_write ok=1 err=0
+acg map_write ok=1 err=0
+acg protect_view_to_rx ok=0 err=87
+acg pre_rwx_to_rw ok=1 err=0 old=40
+acg pre_rw_back_to_rwx ok=1 err=0
+acg pre_rx_to_rwx ok=1 err=0
+acg pre_rx_to_x ok=1 err=0
+acg pre_rx_to_r ok=1 err=0
+acg pre_r_back_to_rx ok=1 err=0
+acg thread_optout ret=0 err=5
+acg relax p=2 size=4 ret=1 err=0
+acg_end DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+setbit ASLR 1 p=1 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax ASLR p=1 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again ASLR p=1 size=4 ret=1 err=0
+setbit ASLR 2 p=1 size=4 ret=0 err=5
+  readback ret=1 flags=1 perm=0
+  relax ASLR p=1 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again ASLR p=1 size=4 ret=0 err=5
+setbit ASLR 4 p=1 size=4 ret=0 err=5
+  readback ret=1 flags=1 perm=0
+  relax ASLR p=1 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again ASLR p=1 size=4 ret=0 err=5
+setbit ASLR 8 p=1 size=4 ret=0 err=5
+  readback ret=1 flags=1 perm=0
+  relax ASLR p=1 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again ASLR p=1 size=4 ret=0 err=5
+setbit ASLR 80000000 p=1 size=4 ret=0 err=87
+  readback ret=1 flags=1 perm=0
+  relax ASLR p=1 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again ASLR p=1 size=4 ret=0 err=87
+setbit DynCode 1 p=2 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax DynCode p=2 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again DynCode p=2 size=4 ret=1 err=0
+setbit DynCode 2 p=2 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax DynCode p=2 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again DynCode p=2 size=4 ret=0 err=87
+setbit DynCode 4 p=2 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax DynCode p=2 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again DynCode p=2 size=4 ret=0 err=87
+setbit DynCode 8 p=2 size=4 ret=1 err=0
+  readback ret=1 flags=8 perm=0
+  relax DynCode p=2 size=4 ret=0 err=5
+  readback2 ret=1 flags=8 perm=0
+  again DynCode p=2 size=4 ret=1 err=0
+setbit DynCode 80000000 p=2 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax DynCode p=2 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again DynCode p=2 size=4 ret=0 err=87
+setbit StrictHandle 1 p=3 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax StrictHandle p=3 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again StrictHandle p=3 size=4 ret=0 err=87
+setbit StrictHandle 2 p=3 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax StrictHandle p=3 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again StrictHandle p=3 size=4 ret=0 err=87
+setbit StrictHandle 80000000 p=3 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax StrictHandle p=3 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again StrictHandle p=3 size=4 ret=0 err=87
+setbit SysCallDisable 1 p=4 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax SysCallDisable p=4 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again SysCallDisable p=4 size=4 ret=1 err=0
+setbit SysCallDisable 2 p=4 size=4 ret=1 err=0
+  readback ret=1 flags=2 perm=0
+  relax SysCallDisable p=4 size=4 ret=0 err=5
+  readback2 ret=1 flags=2 perm=0
+  again SysCallDisable p=4 size=4 ret=1 err=0
+setbit SysCallDisable 4 p=4 size=4 ret=1 err=0
+  readback ret=1 flags=4 perm=0
+  relax SysCallDisable p=4 size=4 ret=0 err=5
+  readback2 ret=1 flags=4 perm=0
+  again SysCallDisable p=4 size=4 ret=1 err=0
+setbit SysCallDisable 8 p=4 size=4 ret=1 err=0
+  readback ret=1 flags=8 perm=0
+  relax SysCallDisable p=4 size=4 ret=0 err=5
+  readback2 ret=1 flags=8 perm=0
+  again SysCallDisable p=4 size=4 ret=1 err=0
+setbit SysCallDisable 80000000 p=4 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax SysCallDisable p=4 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again SysCallDisable p=4 size=4 ret=0 err=87
+setbit ExtPoint 1 p=6 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax ExtPoint p=6 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again ExtPoint p=6 size=4 ret=1 err=0
+setbit ExtPoint 80000000 p=6 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax ExtPoint p=6 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again ExtPoint p=6 size=4 ret=0 err=87
+setbit CFG 1 p=7 size=4 ret=0 err=5
+  readback ret=1 flags=0 perm=0
+  relax CFG p=7 size=4 ret=0 err=5
+  readback2 ret=1 flags=0 perm=0
+  again CFG p=7 size=4 ret=0 err=5
+setbit CFG 2 p=7 size=4 ret=0 err=5
+  readback ret=1 flags=0 perm=0
+  relax CFG p=7 size=4 ret=0 err=5
+  readback2 ret=1 flags=0 perm=0
+  again CFG p=7 size=4 ret=0 err=5
+setbit CFG 4 p=7 size=4 ret=0 err=5
+  readback ret=1 flags=0 perm=0
+  relax CFG p=7 size=4 ret=0 err=5
+  readback2 ret=1 flags=0 perm=0
+  again CFG p=7 size=4 ret=0 err=5
+setbit CFG 8 p=7 size=4 ret=0 err=50
+  readback ret=1 flags=0 perm=0
+  relax CFG p=7 size=4 ret=0 err=5
+  readback2 ret=1 flags=0 perm=0
+  again CFG p=7 size=4 ret=0 err=50
+setbit CFG 10 p=7 size=4 ret=0 err=50
+  readback ret=1 flags=0 perm=0
+  relax CFG p=7 size=4 ret=0 err=5
+  readback2 ret=1 flags=0 perm=0
+  again CFG p=7 size=4 ret=0 err=50
+setbit CFG 80000000 p=7 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax CFG p=7 size=4 ret=0 err=5
+  readback2 ret=1 flags=0 perm=0
+  again CFG p=7 size=4 ret=0 err=87
+setbit Signature 1 p=8 size=4 ret=1 err=0
+  readback ret=1 flags=5 perm=0
+  relax Signature p=8 size=4 ret=0 err=5
+  readback2 ret=1 flags=5 perm=0
+  again Signature p=8 size=4 ret=1 err=0
+setbit Signature 2 p=8 size=4 ret=0 err=5
+  readback ret=1 flags=0 perm=0
+  relax Signature p=8 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again Signature p=8 size=4 ret=0 err=5
+setbit Signature 4 p=8 size=4 ret=1 err=0
+  readback ret=1 flags=4 perm=0
+  relax Signature p=8 size=4 ret=1 err=0
+  readback2 ret=1 flags=4 perm=0
+  again Signature p=8 size=4 ret=1 err=0
+setbit Signature 8 p=8 size=4 ret=1 err=0
+  readback ret=1 flags=c perm=0
+  relax Signature p=8 size=4 ret=0 err=5
+  readback2 ret=1 flags=c perm=0
+  again Signature p=8 size=4 ret=1 err=0
+setbit Signature 10 p=8 size=4 ret=1 err=0
+  readback ret=1 flags=14 perm=0
+  relax Signature p=8 size=4 ret=0 err=5
+  readback2 ret=1 flags=14 perm=0
+  again Signature p=8 size=4 ret=1 err=0
+setbit Signature 80000000 p=8 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Signature p=8 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again Signature p=8 size=4 ret=0 err=87
+setbit Font 1 p=9 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax Font p=9 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again Font p=9 size=4 ret=1 err=0
+setbit Font 2 p=9 size=4 ret=1 err=0
+  readback ret=1 flags=2 perm=0
+  relax Font p=9 size=4 ret=0 err=5
+  readback2 ret=1 flags=2 perm=0
+  again Font p=9 size=4 ret=1 err=0
+setbit Font 80000000 p=9 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Font p=9 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again Font p=9 size=4 ret=0 err=87
+setbit ImageLoad 1 p=10 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax ImageLoad p=10 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again ImageLoad p=10 size=4 ret=1 err=0
+setbit ImageLoad 2 p=10 size=4 ret=1 err=0
+  readback ret=1 flags=2 perm=0
+  relax ImageLoad p=10 size=4 ret=0 err=5
+  readback2 ret=1 flags=2 perm=0
+  again ImageLoad p=10 size=4 ret=1 err=0
+setbit ImageLoad 4 p=10 size=4 ret=1 err=0
+  readback ret=1 flags=4 perm=0
+  relax ImageLoad p=10 size=4 ret=0 err=5
+  readback2 ret=1 flags=4 perm=0
+  again ImageLoad p=10 size=4 ret=1 err=0
+setbit ImageLoad 8 p=10 size=4 ret=1 err=0
+  readback ret=1 flags=8 perm=0
+  relax ImageLoad p=10 size=4 ret=0 err=5
+  readback2 ret=1 flags=8 perm=0
+  again ImageLoad p=10 size=4 ret=1 err=0
+setbit ImageLoad 10 p=10 size=4 ret=1 err=0
+  readback ret=1 flags=10 perm=0
+  relax ImageLoad p=10 size=4 ret=0 err=5
+  readback2 ret=1 flags=10 perm=0
+  again ImageLoad p=10 size=4 ret=1 err=0
+setbit ImageLoad 80000000 p=10 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax ImageLoad p=10 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again ImageLoad p=10 size=4 ret=0 err=87
+setbit SysCallFilter 1 p=11 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax SysCallFilter p=11 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again SysCallFilter p=11 size=4 ret=0 err=87
+setbit SysCallFilter 2 p=11 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax SysCallFilter p=11 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again SysCallFilter p=11 size=4 ret=0 err=87
+setbit SysCallFilter 4 p=11 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax SysCallFilter p=11 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again SysCallFilter p=11 size=4 ret=0 err=87
+setbit SysCallFilter 8 p=11 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax SysCallFilter p=11 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again SysCallFilter p=11 size=4 ret=0 err=87
+setbit SysCallFilter 80000000 p=11 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax SysCallFilter p=11 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again SysCallFilter p=11 size=4 ret=0 err=87
+setbit Payload 1 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 2 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 4 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 8 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 10 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 20 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 40 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 80 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 100 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 200 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 400 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 800 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit Payload 80000000 p=12 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax Payload p=12 size=4 ret=0 err=87
+  readback2 ret=1 flags=0 perm=0
+  again Payload p=12 size=4 ret=0 err=87
+setbit ChildProc 1 p=13 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax ChildProc p=13 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again ChildProc p=13 size=4 ret=1 err=0
+setbit ChildProc 2 p=13 size=4 ret=1 err=0
+  readback ret=1 flags=2 perm=0
+  relax ChildProc p=13 size=4 ret=0 err=5
+  readback2 ret=1 flags=2 perm=0
+  again ChildProc p=13 size=4 ret=1 err=0
+setbit ChildProc 4 p=13 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax ChildProc p=13 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again ChildProc p=13 size=4 ret=0 err=87
+setbit ChildProc 80000000 p=13 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax ChildProc p=13 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again ChildProc p=13 size=4 ret=0 err=87
+setbit SideChannel 1 p=14 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax SideChannel p=14 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again SideChannel p=14 size=4 ret=1 err=0
+setbit SideChannel 2 p=14 size=4 ret=1 err=0
+  readback ret=1 flags=2 perm=0
+  relax SideChannel p=14 size=4 ret=0 err=5
+  readback2 ret=1 flags=2 perm=0
+  again SideChannel p=14 size=4 ret=1 err=0
+setbit SideChannel 4 p=14 size=4 ret=1 err=0
+  readback ret=1 flags=4 perm=0
+  relax SideChannel p=14 size=4 ret=0 err=5
+  readback2 ret=1 flags=4 perm=0
+  again SideChannel p=14 size=4 ret=1 err=0
+setbit SideChannel 8 p=14 size=4 ret=1 err=0
+  readback ret=1 flags=8 perm=0
+  relax SideChannel p=14 size=4 ret=0 err=5
+  readback2 ret=1 flags=8 perm=0
+  again SideChannel p=14 size=4 ret=1 err=0
+setbit SideChannel 10 p=14 size=4 ret=0 err=50
+  readback ret=1 flags=0 perm=0
+  relax SideChannel p=14 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again SideChannel p=14 size=4 ret=0 err=50
+setbit SideChannel 80000000 p=14 size=4 ret=0 err=87
+  readback ret=1 flags=0 perm=0
+  relax SideChannel p=14 size=4 ret=1 err=0
+  readback2 ret=1 flags=0 perm=0
+  again SideChannel p=14 size=4 ret=0 err=87
+setbit UserShadowStack 1 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 2 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 4 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 8 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 10 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 20 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 40 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 80 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 100 p=15 size=4 ret=1 err=0
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=1 err=0
+setbit UserShadowStack 200 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=5
+setbit UserShadowStack 80000000 p=15 size=4 ret=0 err=87
+  readback ret=1 flags=100 perm=0
+  relax UserShadowStack p=15 size=4 ret=0 err=5
+  readback2 ret=1 flags=100 perm=0
+  again UserShadowStack p=15 size=4 ret=0 err=87
+setbit RedirTrust 1 p=16 size=4 ret=1 err=0
+  readback ret=1 flags=1 perm=0
+  relax RedirTrust p=16 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again RedirTrust p=16 size=4 ret=1 err=0
+setbit RedirTrust 2 p=16 size=4 ret=0 err=5
+  readback ret=1 flags=1 perm=0
+  relax RedirTrust p=16 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again RedirTrust p=16 size=4 ret=0 err=5
+setbit RedirTrust 80000000 p=16 size=4 ret=0 err=87
+  readback ret=1 flags=1 perm=0
+  relax RedirTrust p=16 size=4 ret=0 err=5
+  readback2 ret=1 flags=1 perm=0
+  again RedirTrust p=16 size=4 ret=0 err=87
+setbit PointerAuth 1 p=17 size=4 ret=0 err=87
+  readback ret=0 flags=0 perm=0
+  relax PointerAuth p=17 size=4 ret=0 err=87
+  readback2 ret=0 flags=0 perm=0
+  again PointerAuth p=17 size=4 ret=0 err=87
+setbit PointerAuth 80000000 p=17 size=4 ret=0 err=87
+  readback ret=0 flags=0 perm=0
+  relax PointerAuth p=17 size=4 ret=0 err=87
+  readback2 ret=0 flags=0 perm=0
+  again PointerAuth p=17 size=4 ret=0 err=87
+setbit SEHOP 1 p=18 size=4 ret=0 err=87
+  readback ret=1 flags=1 perm=0
+  relax SEHOP p=18 size=4 ret=0 err=87
+  readback2 ret=1 flags=1 perm=0
+  again SEHOP p=18 size=4 ret=0 err=87
+setbit SEHOP 80000000 p=18 size=4 ret=0 err=87
+  readback ret=1 flags=1 perm=0
+  relax SEHOP p=18 size=4 ret=0 err=87
+  readback2 ret=1 flags=1 perm=0
+  again SEHOP p=18 size=4 ret=0 err=87
+setpair ASLR 1 p=1 size=4 ret=1 err=0
+  then 3 p=1 size=4 ret=1 err=0
+  readback ret=1 flags=3
+setpair ASLR 1 p=1 size=4 ret=1 err=0
+  then 9 p=1 size=4 ret=0 err=87
+  readback ret=1 flags=1
+setpair ASLR 1 p=1 size=4 ret=1 err=0
+  then 5 p=1 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair ASLR 3 p=1 size=4 ret=1 err=0
+  then 0 p=1 size=4 ret=0 err=5
+  readback ret=1 flags=3
+setpair ASLR 0 p=1 size=4 ret=0 err=5
+  then 0 p=1 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair ASLR 1 p=1 size=4 ret=1 err=0
+  then 1 p=1 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair DynCode 1 p=2 size=4 ret=1 err=0
+  then 9 p=2 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair DynCode 1 p=2 size=4 ret=1 err=0
+  then 3 p=2 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair DynCode 8 p=2 size=4 ret=1 err=0
+  then 1 p=2 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair DynCode 1 p=2 size=4 ret=1 err=0
+  then 8 p=2 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair DynCode 8 p=2 size=4 ret=1 err=0
+  then 9 p=2 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair DynCode 3 p=2 size=4 ret=1 err=0
+  then 1 p=2 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair DynCode 5 p=2 size=4 ret=1 err=0
+  then 1 p=2 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair DynCode 1 p=2 size=4 ret=1 err=0
+  then 5 p=2 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair DynCode 3 p=2 size=4 ret=1 err=0
+  then 7 p=2 size=4 ret=0 err=5
+  readback ret=1 flags=3
+setpair DynCode 0 p=2 size=4 ret=1 err=0
+  then 0 p=2 size=4 ret=1 err=0
+  readback ret=1 flags=0
+setpair StrictHandle 3 p=3 size=4 ret=1 err=0
+  then 0 p=3 size=4 ret=0 err=5
+  readback ret=1 flags=3
+setpair StrictHandle 3 p=3 size=4 ret=1 err=0
+  then 3 p=3 size=4 ret=1 err=0
+  readback ret=1 flags=3
+setpair StrictHandle 3 p=3 size=4 ret=1 err=0
+  then 1 p=3 size=4 ret=0 err=87
+  readback ret=1 flags=3
+setpair StrictHandle 0 p=3 size=4 ret=1 err=0
+  then 3 p=3 size=4 ret=1 err=0
+  readback ret=1 flags=3
+setpair SysCallDisable 1 p=4 size=4 ret=1 err=0
+  then 2 p=4 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair SysCallDisable 1 p=4 size=4 ret=1 err=0
+  then 3 p=4 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair SysCallDisable 3 p=4 size=4 ret=1 err=0
+  then 1 p=4 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair SysCallDisable 5 p=4 size=4 ret=1 err=0
+  then 0 p=4 size=4 ret=0 err=5
+  readback ret=1 flags=5
+setpair ExtPoint 1 p=6 size=4 ret=1 err=0
+  then 1 p=6 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair Signature 1 p=8 size=4 ret=1 err=0
+  then 4 p=8 size=4 ret=0 err=5
+  readback ret=1 flags=5
+setpair Signature 1 p=8 size=4 ret=1 err=0
+  then 8 p=8 size=4 ret=0 err=5
+  readback ret=1 flags=5
+setpair Signature 8 p=8 size=4 ret=1 err=0
+  then 1 p=8 size=4 ret=1 err=0
+  readback ret=1 flags=5
+setpair Signature 9 p=8 size=4 ret=1 err=0
+  then 0 p=8 size=4 ret=0 err=5
+  readback ret=1 flags=5
+setpair Signature 4 p=8 size=4 ret=1 err=0
+  then 1 p=8 size=4 ret=1 err=0
+  readback ret=1 flags=5
+setpair Signature 5 p=8 size=4 ret=1 err=0
+  then 4 p=8 size=4 ret=0 err=5
+  readback ret=1 flags=5
+setpair Signature 1 p=8 size=4 ret=1 err=0
+  then 5 p=8 size=4 ret=1 err=0
+  readback ret=1 flags=5
+setpair Signature 18 p=8 size=4 ret=0 err=87
+  then 0 p=8 size=4 ret=1 err=0
+  readback ret=1 flags=0
+setpair Signature c p=8 size=4 ret=1 err=0
+  then 4 p=8 size=4 ret=0 err=5
+  readback ret=1 flags=c
+setpair Font 1 p=9 size=4 ret=1 err=0
+  then 2 p=9 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair Font 1 p=9 size=4 ret=1 err=0
+  then 3 p=9 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair Font 2 p=9 size=4 ret=1 err=0
+  then 1 p=9 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair ImageLoad 1 p=10 size=4 ret=1 err=0
+  then 2 p=10 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair ImageLoad 1 p=10 size=4 ret=1 err=0
+  then 3 p=10 size=4 ret=1 err=0
+  readback ret=1 flags=3
+setpair ImageLoad 7 p=10 size=4 ret=1 err=0
+  then 3 p=10 size=4 ret=0 err=5
+  readback ret=1 flags=7
+setpair ImageLoad 1f p=10 size=4 ret=1 err=0
+  then 0 p=10 size=4 ret=0 err=5
+  readback ret=1 flags=7
+setpair ChildProc 1 p=13 size=4 ret=1 err=0
+  then 2 p=13 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair ChildProc 2 p=13 size=4 ret=1 err=0
+  then 1 p=13 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair ChildProc 3 p=13 size=4 ret=1 err=0
+  then 1 p=13 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair ChildProc 5 p=13 size=4 ret=1 err=0
+  then 0 p=13 size=4 ret=0 err=5
+  readback ret=1 flags=5
+setpair ChildProc 6 p=13 size=4 ret=0 err=87
+  then 0 p=13 size=4 ret=1 err=0
+  readback ret=1 flags=0
+setpair SideChannel 1 p=14 size=4 ret=1 err=0
+  then 2 p=14 size=4 ret=0 err=5
+  readback ret=1 flags=1
+setpair SideChannel 3 p=14 size=4 ret=1 err=0
+  then 1 p=14 size=4 ret=0 err=5
+  readback ret=1 flags=3
+setpair SideChannel f p=14 size=4 ret=1 err=0
+  then 0 p=14 size=4 ret=0 err=5
+  readback ret=1 flags=f
+setpair UserShadowStack 100 p=15 size=4 ret=1 err=0
+  then 100 p=15 size=4 ret=1 err=0
+  readback ret=1 flags=100
+setpair UserShadowStack 100 p=15 size=4 ret=1 err=0
+  then 0 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100
+setpair UserShadowStack 0 p=15 size=4 ret=0 err=5
+  then 0 p=15 size=4 ret=0 err=5
+  readback ret=1 flags=100
+setpair RedirTrust 1 p=16 size=4 ret=1 err=0
+  then 1 p=16 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair RedirTrust 1 p=16 size=4 ret=1 err=0
+  then 3 p=16 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair RedirTrust 3 p=16 size=4 ret=1 err=0
+  then 1 p=16 size=4 ret=1 err=0
+  readback ret=1 flags=1
+setpair DEP 0 p=0 size=8 ret=0 err=5
+  then 0 p=0 size=8 ret=0 err=5
+  readback ret=1 flags=3
+== creation policy1 shift=0 val=1
+creation DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=1 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=2 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=8 val=1
+creation DEP=0/1 ASLR=3 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=8 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=8 val=3
+creation DEP=0/1 ASLR=b DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=12 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=12 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=12 val=3
+  [creation] CreateProcess failed 87
+== creation policy1 shift=16 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=16 val=2
+creation DEP=0/1 ASLR=0 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=16 val=3
+  [creation] CreateProcess failed 87
+== creation policy1 shift=20 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=20 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=20 val=3
+  [creation] CreateProcess failed 87
+== creation policy1 shift=24 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=3 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=24 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=24 val=3
+  [creation] CreateProcess failed 87
+== creation policy1 shift=28 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=1 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=28 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=28 val=3
+  [creation] CreateProcess failed 87
+== creation policy1 shift=32 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=1 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=32 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=32 val=3
+  [creation] CreateProcess failed 87
+== creation policy1 shift=36 val=1
+creation DEP=0/1 ASLR=1 DynCode=1 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=36 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=36 val=3
+creation DEP=0/1 ASLR=1 DynCode=3 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=40 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=1 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=40 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=40 val=3
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=3 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=44 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=5 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=44 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=44 val=3
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=6 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=48 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=1 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=48 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=48 val=3
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=2 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=52 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=1 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=52 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=52 val=3
+  [creation] CreateProcess failed 87
+== creation policy1 shift=56 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=2 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=56 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=56 val=3
+  [creation] CreateProcess failed 87
+== creation policy1 shift=60 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=4 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=60 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 shift=60 val=3
+  [creation] CreateProcess failed 87
+== creation policy2 shift=4 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=4 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=4 val=3
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=8 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=8 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=8 val=3
+  [creation] CreateProcess failed 87
+== creation policy2 shift=12 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=12 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=12 val=3
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=16 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=1 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=16 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=16 val=3
+  [creation] CreateProcess failed 87
+== creation policy2 shift=20 val=1
+creation DEP=0/1 ASLR=1 DynCode=4 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=20 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=20 val=3
+  [creation] CreateProcess failed 87
+== creation policy2 shift=24 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=8 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=24 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=24 val=3
+  [creation] CreateProcess failed 87
+== creation policy2 shift=28 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=28 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=28 val=3
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=32 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=32 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=32 val=3
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=36 val=1
+  [creation] CreateProcess failed 5
+== creation policy2 shift=36 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=36 val=3
+  [creation] CreateProcess failed 5
+== creation policy2 shift=40 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=40 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=40 val=3
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=44 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=44 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=44 val=3
+  [creation] CreateProcess failed 87
+== creation policy2 shift=48 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=48 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=0 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=48 val=3
+  [creation] CreateProcess failed 87
+== creation policy2 shift=52 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=52 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=52 val=3
+  [creation] CreateProcess failed 87
+== creation policy2 shift=56 val=1
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=4 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=56 val=2
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy2 shift=56 val=3
+  [creation] CreateProcess failed 87
+== creation combo 10000000000:100
+  [creation] CreateProcess failed 1657
+== creation combo 30000000000:100
+  [creation] CreateProcess failed 1657
+== creation combo 10000000000:10000000000
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=1 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation combo 10000000000:30000000000
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=1 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation combo 1000000000:100000
+creation DEP=0/1 ASLR=1 DynCode=5 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation combo 3000000000:100000
+creation DEP=0/1 ASLR=1 DynCode=7 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation combo 11001101000000:0
+creation DEP=0/1 ASLR=1 DynCode=1 StrictHandle=3 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=1 CFG=0 Signature=0 Font=1 ImageLoad=1 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation none16
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation policy1 bit3
+  [creation] CreateProcess failed 87
+== creation policy2 bit0
+  [creation] CreateProcess failed 87
+== creation size4
+creation DEP=0/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+== creation size24
+update attr failed 24
+== threadopt flags=0
+threadopt before_policy value=1 size=4 ret=0 err=5
+threadopt other_thread value=1 size=4 ret=0 err=87
+threadopt self_limited value=1 size=4 ret=0 err=87
+threadopt self_setinfo_v0 value=0 size=4 ret=0 err=87
+threadopt self_size8 value=1 size=8 ret=0 err=24
+threadopt self_v2 value=2 size=4 ret=0 err=87
+threadopt self_vffffffff value=ffffffff size=4 ret=0 err=87
+threadopt self_v1 value=1 size=4 ret=0 err=5
+threadopt self_alloc_rwx ok=1 err=0
+threadopt self_protect_rx ok=1 err=0
+threadopt other_thread_alloc_rwx ok=1 err=0
+threadopt self_v0 value=0 size=4 ret=1 err=0
+threadopt self_alloc_rwx_after_v0 ok=1 err=0
+== threadopt flags=1
+threadopt before_policy value=1 size=4 ret=0 err=5
+threadopt set p=2 size=4 ret=1 err=0
+threadopt other_thread value=1 size=4 ret=0 err=87
+threadopt self_limited value=1 size=4 ret=0 err=87
+threadopt self_setinfo_v0 value=0 size=4 ret=0 err=87
+threadopt self_size8 value=1 size=8 ret=0 err=24
+threadopt self_v2 value=2 size=4 ret=0 err=87
+threadopt self_vffffffff value=ffffffff size=4 ret=0 err=87
+threadopt self_v1 value=1 size=4 ret=0 err=5
+threadopt self_alloc_rwx ok=0 err=1655
+threadopt self_protect_rx ok=0 err=1655
+threadopt other_thread_alloc_rwx ok=0 err=1655
+threadopt self_v0 value=0 size=4 ret=1 err=0
+threadopt self_alloc_rwx_after_v0 ok=0 err=1655
+== threadopt flags=3
+threadopt before_policy value=1 size=4 ret=0 err=5
+threadopt set p=2 size=4 ret=1 err=0
+threadopt other_thread value=1 size=4 ret=0 err=87
+threadopt self_limited value=1 size=4 ret=0 err=87
+threadopt self_setinfo_v0 value=0 size=4 ret=0 err=87
+threadopt self_size8 value=1 size=8 ret=0 err=24
+threadopt self_v2 value=2 size=4 ret=0 err=87
+threadopt self_vffffffff value=ffffffff size=4 ret=0 err=87
+threadopt self_v1 value=1 size=4 ret=1 err=0
+threadopt self_alloc_rwx ok=1 err=0
+threadopt self_protect_rx ok=1 err=0
+threadopt other_thread_alloc_rwx ok=0 err=1655
+threadopt self_v0 value=0 size=4 ret=1 err=0
+threadopt self_alloc_rwx_after_v0 ok=0 err=1655
+== threadopt flags=8
+threadopt before_policy value=1 size=4 ret=0 err=5
+threadopt set p=2 size=4 ret=1 err=0
+threadopt other_thread value=1 size=4 ret=0 err=87
+threadopt self_limited value=1 size=4 ret=0 err=87
+threadopt self_setinfo_v0 value=0 size=4 ret=0 err=87
+threadopt self_size8 value=1 size=8 ret=0 err=24
+threadopt self_v2 value=2 size=4 ret=0 err=87
+threadopt self_vffffffff value=ffffffff size=4 ret=0 err=87
+threadopt self_v1 value=1 size=4 ret=0 err=5
+threadopt self_alloc_rwx ok=1 err=0
+threadopt self_protect_rx ok=1 err=0
+threadopt other_thread_alloc_rwx ok=1 err=0
+threadopt self_v0 value=0 size=4 ret=1 err=0
+threadopt self_alloc_rwx_after_v0 ok=1 err=0
+== child process policy attribute
+child_policy=0 update=1 err=0
+childpolicy DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+child_policy=1 update=1 err=0
+childpolicy DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=1 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+child_policy=2 update=1 err=0
+childpolicy DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+child_policy=3 update=1 err=0
+childpolicy DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=1 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+child_policy=4 update=1 err=0
+childpolicy DEP=3/1 ASLR=1 DynCode=0 StrictHandle=0 SysCallDisable=0 Mask=3333333333333303:333333333333330 ExtPoint=0 CFG=0 Signature=0 Font=0 ImageLoad=0 SysCallFilter=0 Payload=0 ChildProc=0 SideChannel=0 UserShadowStack=100 RedirTrust=1 PointerAuth=E50 SEHOP=1
+done

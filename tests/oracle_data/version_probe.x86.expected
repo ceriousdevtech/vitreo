@@ -1,0 +1,10 @@
+size_self size=294 h=0 gle=0
+info_full ok=1 gle=0 wLength=148
+info_short40 ok=0 gle=7a wLength=cccc b39=cc b40=cc
+info_zero ok=0 gle=7a
+query_root ok=1 len=34 ms=10002
+query_company ok=1 len=d
+size_missing_path size=0 gle=2
+size_missing_bare size=0 gle=2
+size_not_pe size=0 gle=714
+size_bare_system nonzero=1 gle=0

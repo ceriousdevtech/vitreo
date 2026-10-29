@@ -1,0 +1,4 @@
+heap_handle h=0xfb40000 nonnull=1 
+malloc nonnull=1 
+heap_size sz=0x40 ok=1 
+heap_validate ok=1 

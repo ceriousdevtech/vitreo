@@ -1,0 +1,179 @@
+isd rev=0 ok=0 gle=519 bytes=cccccccccccccccccccccccccccccccccccccccc
+isd rev=1 ok=1 gle=dead bytes=0100000000000000000000000000000000000000
+isd rev=2 ok=0 gle=519 bytes=cccccccccccccccccccccccccccccccccccccccc
+isd rev=ffffffff ok=0 gle=519 bytes=cccccccccccccccccccccccccccccccccccccccc
+ivsd_fresh v=1 gle=dead
+ivsd_rev2 v=0 gle=53a
+ivsd_bad_dacl v=0 gle=53a
+ivsd_null_dacl v=1 gle=dead
+ivsd_bad_owner v=0 gle=53a
+ivsd_sbz1 v=1 gle=dead
+ivsd_selfrel v=1 gle=dead
+ivsd_selfrel_bad_dacl v=0 gle=53a
+iacl size=0 ok=0 gle=7a bytes=cccccccccccccccc
+iacl size=7 ok=0 gle=7a bytes=cccccccccccccccc
+iacl size=8 ok=1 gle=dead bytes=0200080000000000
+iacl size=9 ok=1 gle=dead bytes=0200080000000000
+iacl size=a ok=1 gle=dead bytes=0200080000000000
+iacl size=c ok=1 gle=dead bytes=02000c0000000000
+iacl size=fffc ok=1 gle=dead bytes=0200fcff00000000
+iacl size=ffff ok=0 gle=57 bytes=cccccccccccccccc
+iacl size=10000 ok=0 gle=57 bytes=cccccccccccccccc
+iacl size=10004 ok=0 gle=57 bytes=cccccccccccccccc
+iacl_rev rev=0 ok=0 gle=57 bytes=cccccccccccccccc
+iacl_rev rev=1 ok=0 gle=57 bytes=cccccccccccccccc
+iacl_rev rev=2 ok=1 gle=dead bytes=0200100000000000
+iacl_rev rev=3 ok=1 gle=dead bytes=0300100000000000
+iacl_rev rev=4 ok=1 gle=dead bytes=0400100000000000
+iacl_rev rev=5 ok=0 gle=57 bytes=cccccccccccccccc
+ivacl_empty v=1 gle=dead
+ivacl_rev1 v=0 gle=538
+ivacl_rev3 v=1 gle=dead
+ivacl_rev4 v=1 gle=dead
+ivacl_rev5 v=0 gle=538
+ivacl_size6 v=0 gle=538
+ivacl_size10 v=1 gle=dead
+ivacl_count_overflow v=0 gle=538
+ivacl_sbz1 v=1 gle=dead
+ivacl_sbz2 v=1 gle=dead
+ivacl_one_ace v=1 gle=dead
+ivacl_ace_badsid v=0 gle=538
+ivacl_ace_size_odd v=0 gle=538
+ivacl_ace_size_big v=0 gle=538
+ivacl_ace_unknown_type v=1 gle=dead
+ivacl_obj_ace_in_rev2 v=0 gle=538
+ivacl_obj_ace_in_rev4 v=1 gle=dead
+ivacl_ml_in_rev2 v=1 gle=dead
+aaa_ok ok=1 gle=dead bytes=02004000010000000000140000000010010100000000000100000000
+aaa_rev rev=0 ok=1 gle=dead bytes=0200400001000000
+aaa_rev rev=1 ok=1 gle=dead bytes=0200400001000000
+aaa_rev rev=3 ok=1 gle=dead bytes=0300400001000000
+aaa_rev rev=4 ok=1 gle=dead bytes=0400400001000000
+aaa_rev rev=5 ok=0 gle=51a bytes=0200400000000000
+aaa_rev2_into_rev4 ok=1 gle=dead bytes=0400400001000000
+aaa_badsid ok=0 gle=539
+aaa_full ok=0 gle=540 bytes=0200180000000000
+aaa_badacl ok=0 gle=51a
+aaaex_flags flags=1f ok=1 gle=dead bytes=001f1400
+  adaex ok=1 gle=dead bytes=011f1400
+  auditex ok=1 gle=dead bytes=02df1400
+aaaex_flags flags=20 ok=1 gle=dead bytes=00201400
+  adaex ok=0 gle=3ec bytes=cccccccc
+  auditex ok=0 gle=3ec bytes=cccccccc
+aaaex_flags flags=40 ok=0 gle=3ec bytes=cccccccc
+  adaex ok=0 gle=3ec bytes=cccccccc
+  auditex ok=1 gle=dead bytes=02c01400
+aaaex_flags flags=80 ok=0 gle=3ec bytes=cccccccc
+  adaex ok=0 gle=3ec bytes=cccccccc
+  auditex ok=1 gle=dead bytes=02c01400
+aaaex_flags flags=100 ok=0 gle=3ec bytes=cccccccc
+  adaex ok=0 gle=3ec bytes=cccccccc
+  auditex ok=0 gle=3ec bytes=cccccccc
+aaaex_flags flags=c0 ok=0 gle=3ec bytes=cccccccc
+  adaex ok=0 gle=3ec bytes=cccccccc
+  auditex ok=1 gle=dead bytes=02c01400
+ada_ok ok=1 gle=dead bytes=02004000010000000100140001000000010100000000000100000000
+audit_success ok=1 gle=dead bytes=02004000010000000240140001000000010100000000000100000000
+audit_neither ok=1 gle=dead bytes=02004000010000000200140001000000010100000000000100000000
+ama_policy p=0 ok=1 gle=dead bytes=02004000010000001100140000000000010100000000001000100000
+ama_policy p=1 ok=1 gle=dead bytes=02004000010000001100140001000000010100000000001000100000
+ama_policy p=7 ok=1 gle=dead bytes=02004000010000001100140007000000010100000000001000100000
+ama_policy p=8 ok=0 gle=57 bytes=0200400000000000cccccccccccccccccccccccccccccccccccccccc
+ama_policy p=ffffffff ok=0 gle=57 bytes=0200400000000000cccccccccccccccccccccccccccccccccccccccc
+ama_non_label_sid ok=0 gle=57 bytes=0200400000000000cccccccccccccccccccccccccccccccccccccccc
+ama_flag40 ok=0 gle=57
+ama_flags1f ok=1 gle=dead bytes=111f1400
+ama_rev4 ok=1 gle=dead bytes=0400400001000000
+aaoa_noguid ok=1 gle=dead bytes=04004000010000000000140010000000010100000000000100000000cccccccc
+aaoa_guid ok=1 gle=dead bytes=0400400001000000050028001000000001000000ba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+aaoa_rev2 ok=0 gle=51a bytes=0200400000000000
+adoa_inh ok=1 gle=dead bytes=0400400001000000060228001000000002000000ba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+auoa_both ok=1 gle=dead bytes=040040000100000007c038001000000003000000ba7a96bfe60dd011a28500aa003049e2ba7a96bfe60dd011a28500aa003049e2010100000000000100000000
+aaoa_flag40 ok=0 gle=3ec
+addace_append ok=1 gle=dead bytes=0200400001000000
+addace_front ok=1 gle=dead bytes=020040000200000000001400020000000101000000000001000000000000140001000000010100000000000100000000
+addace_index_beyond ok=1 gle=dead bytes=020040000200000000001400010000000101000000000001000000000000140002000000010100000000000100000000
+addace_index_count ok=1 gle=dead bytes=0200400002000000
+addace_rev4 ok=1 gle=dead bytes=0400400002000000
+addace_rev1 ok=1 gle=dead bytes=0200400002000000
+addace_rev5 ok=1 gle=dead bytes=0500400002000000
+addace_len19 ok=0 gle=57 bytes=0200400001000000
+addace_two ok=0 gle=7a bytes=0200400001000000
+addace_full ok=0 gle=7a bytes=0200180000000000
+ssdc bit=1000 ok=1 gle=dead control=1000 clearOk=1 clearGle=dead control2=0
+ssdc bit=400 ok=1 gle=dead control=400 clearOk=1 clearGle=dead control2=0
+ssdc bit=100 ok=1 gle=dead control=100 clearOk=1 clearGle=dead control2=0
+ssdc bit=2000 ok=1 gle=dead control=2000 clearOk=1 clearGle=dead control2=0
+ssdc bit=800 ok=1 gle=dead control=800 clearOk=1 clearGle=dead control2=0
+ssdc bit=200 ok=1 gle=dead control=200 clearOk=1 clearGle=dead control2=0
+ssdc bit=4 ok=0 gle=57 control=0 clearOk=0 clearGle=57 control2=0
+ssdc bit=1 ok=0 gle=57 control=0 clearOk=0 clearGle=57 control2=0
+ssdc bit=8000 ok=0 gle=57 control=0 clearOk=0 clearGle=57 control2=0
+ssdc bit=4000 ok=0 gle=57 control=0 clearOk=0 clearGle=57 control2=0
+ssdc bit=40 ok=1 gle=dead control=40 clearOk=1 clearGle=dead control2=0
+ssdc bit=80 ok=1 gle=dead control=80 clearOk=1 clearGle=dead control2=0
+ssdc_mask_subset control=1000
+ssdc_rev2 ok=1 gle=dead control=1000
+ssdc_selfrel ok=1 gle=dead control=9004
+gsdc_selfrel ok=1 gle=dead control=9004 rev=1
+gsds_fresh ok=1 gle=dead present=0 acl=1 def=0
+ssds_set rev=1 sbz1=0 control=30 owner=0 group=0 sacl=2 dacl=0
+gsds_set ok=1 present=1 aclIsOurs=1 def=1
+gsds_null ok=1 present=1 acl=0 def=0
+ssds_notpresent rev=1 sbz1=0 control=0 owner=0 group=0 sacl=0 dacl=0
+gsds_notpresent ok=1 present=0 acl=1 def=0
+ssdd_set rev=1 sbz1=0 control=c owner=0 group=0 sacl=0 dacl=2 ok=1 gle=dead
+ssdd_notpresent rev=1 sbz1=0 control=8 owner=0 group=0 sacl=0 dacl=2 ok=1 gle=dead
+ssdd_fresh_false_def rev=1 sbz1=0 control=0 owner=0 group=0 sacl=0 dacl=0
+ssdd_fresh_false_nodef rev=1 sbz1=0 control=0 owner=0 group=0 sacl=0 dacl=0
+ssds_fresh_false_def rev=1 sbz1=0 control=0 owner=0 group=0 sacl=0 dacl=0
+ssdd_set_then_false_null rev=1 sbz1=0 control=0 owner=0 group=0 sacl=0 dacl=2
+gsdd_after_false ok=1 gle=dead present=0 acl=1 def=0
+ssds_set_then_false rev=1 sbz1=0 control=0 owner=0 group=0 sacl=2 dacl=0
+ssdd_rev2 ok=0 gle=519
+ssds_rev2 ok=0 gle=519
+ssdd_selfrel ok=0 gle=53a bytes=010004800000000000000000000000001400000002001c00010000000000140000000010010100000000000100000000
+ssds_selfrel ok=0 gle=53a
+ssdo_selfrel ok=0 gle=53a
+gsds_selfrel ok=1 present=1 aclOffset=14 def=0
+gsds_rev3 ok=0 gle=519 present=55
+bsd_empty ret=0 gle=7a size=14 bytes=0100148000000000000000000000000000000000 sddl="D:NO_ACCESS_CONTROLS:NO_ACCESS_CONTROL"
+bsd_owner_two_aces ret=0 gle=7a size=64 bytes=01001480440000005400000000000000140000000200300002000000010314000200000001010000000000050700000000001400000000100101000000000001000000000102000000000005200000002002000001020000000000052000000020020000 sddl="O:BAG:BAD:(D;OICI;DC;;;AN)(A;;GA;;;WD)S:NO_ACCESS_CONTROL"
+bsd_merge_old ret=0 gle=7a size=64 bytes=01001480440000005400000000000000140000000200300002000000010314000200000001010000000000050700000000001400000000800101000000000001000000000102000000000005200000002002000001020000000000052000000020020000 sddl="O:BAG:BAD:(D;OICI;DC;;;AN)(A;;GR;;;WD)S:NO_ACCESS_CONTROL"
+bsd_copy_old ret=0 gle=7a size=64 sddl="O:BAG:BAD:(D;OICI;DC;;;AN)(A;;GA;;;WD)S:NO_ACCESS_CONTROL"
+bsd_current_user ret=0 gle=7a daclCount=1 aceType=0 mask=10000000
+bsd_bogus_owner ret=534 gle=534 sdOut=1 size=5555
+bsd_audit ret=0 gle=7a size=30 sddl="D:NO_ACCESS_CONTROLS:(AU;SA;GA;;;WD)"
+geea_w ret=0 gle=dead n=2
+  w perm=10000000 mode=1 inh=3 form=0 type=0 multi=0 op=0 sid=S-1-1-0
+  w perm=120089 mode=3 inh=0 form=0 type=0 multi=0 op=0 sid=S-1-5-7
+geea_a ret=0 gle=dead n=2
+  a perm=10000000 mode=1 inh=3 form=0 type=0 sid=S-1-1-0
+  a perm=120089 mode=3 inh=0 form=0 type=0 sid=S-1-5-7
+geea_a_null ret=0 gle=dead n=0 outNull=1
+geea_a_empty ret=0 gle=dead n=0 outNull=1
+gsi_unnamed_event ret=0 gle=7a d=0 sddl=""
+ssi_unnamed_event ret=546 gle=546
+gsi_badhandle ret=6 gle=6
+gsi_null ret=6 gle=dead
+gsi_event_dacl ret=0 gle=7a o=1 g=1 d=2 s=1
+gsi_event_sacl ret=5 gle=5
+gsi_event_label ret=0 gle=7a sddl=""
+ssi_event_dacl ret=0 gle=dead
+gsi_after_set ret=0 sddl="D:(A;;0x1f0003;;;WD)(D;;CC;;;AN)"
+ssi_event_empty ret=0 gle=dead
+gsi_after_empty ret=0 sddl="D:P"
+ssi_badhandle ret=6 gle=6
+ssi_event_sacl ret=5 gle=5
+ssi_event_zero_info ret=0 gle=dead
+ssi_event_null_dacl ret=0 gle=dead
+gsi_after_null ret=0 sddl="D:PNO_ACCESS_CONTROL"
+gsi_second_event_unaffected ret=0 hasDacl=1
+gsi_dup_handle_sees_object ret=0 sddl="D:PNO_ACCESS_CONTROL"
+sfs_dacl_empty ok=1 gle=dead daclPresent=1 daclNull=0 aces=0 protected=0
+sfs_dacl_protected ok=1 gle=dead daclPresent=1 daclNull=0 aces=1 protected=0
+sfs_dacl_unprotected ok=1 gle=dead daclPresent=1 daclNull=0 aces=1 protected=0
+sfs_label ok=1 gle=dead daclPresent=1 daclNull=0 aces=1 protected=0
+sfs_dacl_null ok=1 gle=dead daclPresent=1 daclNull=1 aces=0 protected=0
+sfs_zero_info ok=0 gle=5 daclPresent=1 daclNull=1 aces=0 protected=0
+sfs_bogus_info ok=1 gle=dead daclPresent=1 daclNull=1 aces=0 protected=0

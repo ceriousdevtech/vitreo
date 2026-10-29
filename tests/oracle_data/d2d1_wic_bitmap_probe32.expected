@@ -1,0 +1,4 @@
+bitmap=00000000
+size=2.00,2.00 pixels=2,2 dpi=96.00,96.00 format=87,1 same_factory=1
+stage=0 draw=00000000 pixels=ffff0000ffff0000ff00ff00ff00ff00ffff0000ffff0000ff00ff00ff00ff00ff0000ffff0000ffffff8080ffff8080ff0000ffff0000ffffff8080ffff8080
+stage=1 draw=00000000 pixels=ff0000ffff0000ffff0000ffff0000ffff0000ffff00807fff00807fff0000ffff0000ffff00807fff00807fff0000ffff0000ffff0000ffff0000ffff0000ff

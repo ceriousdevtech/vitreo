@@ -1,0 +1,3 @@
+pf_reset r=1 e=dead
+priv_reset r=1 e=dead
+file_reset r=0 e=4c8

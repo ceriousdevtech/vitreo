@@ -1,0 +1,53 @@
+sizes: MIB_TCPROW=20 MIB_TCPROW_OWNER_PID=24 MIB_TCP6ROW_OWNER_PID=56 MIB_TCPROW_OWNER_MODULE=160 MIB_TCPTABLE_OWNER_MODULE.table=8 DHCPCAPI_PARAMS=20 DHCPCAPI_PARAMS_ARRAY=8 DHCPCAPI_PARAMS.Data=12 DHCPCAPI_PARAMS.nBytesData=16 DHCPCAPI_VERSION_V2=2 ERROR_MORE_DATA=234
+tcp-null-size: rc=87 le=0xdead
+tcp-bad-class: class=9 rc=87 size=0x1234 le=0xdead
+tcp-bad-class: class=10 rc=87 size=0x1234 le=0xdead
+tcp-bad-class: class=65535 rc=87 size=0x1234 le=0xdead
+tcp-bad-af: af=0 rc=87 size=0x1234 le=0xdead
+tcp-bad-af: af=1 rc=87 size=0x1234 le=0xdead
+tcp-bad-af: af=3 rc=87 size=0x1234 le=0xdead
+tcp-bad-af: af=17 rc=87 size=0x1234 le=0xdead
+tcp-bad-af: af=24 rc=87 size=0x1234 le=0xdead
+tcp-reserved-nonzero: rc=122 le=0x0
+tcp6-basic: class=0 rc=87 size=0x1234 le=0xdead
+tcp6-basic: class=1 rc=87 size=0x1234 le=0xdead
+tcp6-basic: class=2 rc=87 size=0x1234 le=0xdead
+tcp4: class="basic_listener" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=3 mine_conn=0 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp4: class="basic_connections" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=0 mine_conn=1 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp4: class="basic_all" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=3 mine_conn=1 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp4: class="pid_listener" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=3 mine_conn=0 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp4: class="pid_connections" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=0 mine_conn=1 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp4: class="pid_all" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=3 mine_conn=1 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp4: class="module_listener" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=3 mine_conn=0 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp4: class="module_connections" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=0 mine_conn=1 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp4: class="module_all" size_rc=122 size_le=0x0 size_holds_header=1 fill_rc=0 mine_listen=3 mine_conn=1 pid_ok=1 port_hi_zero=1 size_unchanged=0 le=0x0 ordered_rc=0 sorted=1
+tcp6-pid: size_rc=122 size_holds_header=1 fill_rc=0 mine=1 sorted=1
+release-null: rc=87 le=0xdead
+renew-null: rc=87 le=0xdead
+release-empty-name: rc=87 le=0xdead
+renew-empty-name: rc=87 le=0xdead
+release-missing: rc=87 le=0x0
+renew-missing: rc=87 le=0x0
+release-garbage: rc=123 le=0xdead
+renew-garbage: rc=123 le=0xdead
+dhcp-init: rc=0 version=0x2 le=0xdead
+dhcp-init-null: rc=0 le=0xdead
+dhcp-request-missing-adapter: rc=87 size=256 le=0x0 nBytesData=0
+dhcp-request-null-adapter: rc=87 size=256 le=0xdead
+dhcp-request-null-size: rc=87 le=0xdead
+dhcp-request-no-flags: rc=87 le=0xdead
+dhcp-request-bad-flags: rc=87 le=0xdead
+dhcp-cleanup: le=0xdead
+uuid-create: status=0 version4=1 variant_rfc4122=1 unique=1
+x86-frame: api="DhcpCApiInitialize" slots=1 balanced=1 rc=0
+x86-frame: api="DhcpCApiCleanup" slots=0 balanced=1
+x86-frame: api="DhcpRequestParams" slots=11 balanced=1 rc=87
+x86-frame: api="GetAdaptersInfo" slots=2 balanced=1 rc=87
+x86-frame: api="GetAdaptersAddresses" slots=5 balanced=1 rc=87
+x86-frame: api="GetInterfaceInfo" slots=2 balanced=1 rc=87
+x86-frame: api="GetExtendedTcpTable" slots=6 balanced=1 rc=87
+x86-frame: api="IpReleaseAddress" slots=1 balanced=1 rc=87
+x86-frame: api="IpRenewAddress" slots=1 balanced=1 rc=87
+x86-frame: api="FreeMibTable" slots=1 balanced=1
+x86-frame: api="ConvertInterfaceGuidToLuid" slots=2 balanced=1 rc=87
+x86-frame: api="GetNetworkParams" slots=2 balanced=1 rc=87

@@ -1,0 +1,21 @@
+arch x64
+apple_Banana_0 r=1 e=0
+Banana_apple_0 r=3 e=dead
+apple_Banana_ic r=1 e=dead
+E_e_0 r=3 e=dead
+E_e_ic r=2 e=dead
+a_a r=2 e=dead
+coop_coop_hyphen_0 r=1 e=dead
+coop_coop_hyphen_ss r=3 e=dead
+bills_billapos_0 r=1 e=dead
+bills_billapos_ss r=3 e=dead
+2_10_0 r=3 e=dead
+2_10_dig r=1 e=dead
+ab_abc_len2 r=2 e=dead
+abc_ab_len r=3 e=dead
+bad_flags r=0 e=3ec
+null_s1 r=0 e=57
+ex_enUS_apple_Banana r=1 e=dead
+ex_inv_apple_Banana r=1 e=dead
+a_aacute_0 r=1 e=dead
+a_aacute_ignspace r=2 e=dead

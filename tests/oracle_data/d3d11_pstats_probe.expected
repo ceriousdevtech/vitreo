@@ -1,0 +1,246 @@
+# d3d11_pstats_probe, pointer size 8, FL 0xb100
+# columns: HRESULT IAV IAP VS HS DS GS GSP C CP PS CS | occlusion samples
+
+[ps] PSInvocations; 64x64, triangle list, cull none
+  full quad                                        0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  full quad twice (overdraw, depth off)            0x00000000 12 4 12 0 0 0 0 4 4 8448 0 | occ 8192
+  quarter quad                                     0x00000000 6 2 6 0 0 0 0 2 2 1088 0 | occ 1024
+  depth LESS all fail, plain                       0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 0
+  depth LESS all pass, plain                       0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  depth LESS left half fails, plain                0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 2048
+  depth LESS all fail, discard-capable             0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 0
+  depth LESS all pass, discard-capable             0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  depth LESS left half fails, discard-capable      0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 2048
+  depth LESS all fail, SV_Depth=0.7                0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 0
+  depth LESS all pass, SV_Depth=0.7                0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 0
+  depth LESS left half fails, SV_Depth=0.7         0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 2048
+  depth LESS all fail, earlydepthstencil           0x00000000 6 2 6 0 0 0 0 2 2 0 0 | occ 0
+  depth LESS all pass, earlydepthstencil           0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  depth LESS left half fails, earlydepthstencil    0x00000000 6 2 6 0 0 0 0 2 2 2112 0 | occ 2048
+  stencil NEVER, plain                             0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 0
+  PS discards every pixel                          0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 0
+  no RTV, DSV only, depth passes                   0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  no RTV, no DSV                                   0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  one point at a pixel centre                      0x00000000 1 1 1 0 0 0 0 1 1 4 0 | occ 1
+  four points, two sharing a quad                  0x00000000 4 4 4 0 0 0 0 4 4 16 0 | occ 4
+  horizontal line of ten pixels                    0x00000000 2 1 2 0 0 0 0 1 1 28 0 | occ 10
+  diagonal line of twenty pixels                   0x00000000 2 1 2 0 0 0 0 1 1 88 0 | occ 20
+  tiny triangle, no pixel centre                   0x00000000 3 1 3 0 0 0 0 1 1 0 0 | occ 0
+  triangle over one pixel centre                   0x00000000 3 1 3 0 0 0 0 1 1 4 0 | occ 1
+  triangle over pixel centres (10,10),(11,10)      0x00000000 3 1 3 0 0 0 0 1 1 4 0 | occ 2
+  triangle over pixel centres (11,11),(12,11)      0x00000000 3 1 3 0 0 0 0 1 1 8 0 | occ 2
+  full quad, viewport 10x7 at (0,0)                0x00000000 6 2 6 0 0 0 0 2 2 96 0 | occ 70
+  full quad, viewport 10x7 at (5,3)                0x00000000 6 2 6 0 0 0 0 2 2 112 0 | occ 70
+  full quad, scissor 10x7 at (0,0)                 0x00000000 6 2 6 0 0 0 0 2 2 92 0 | occ 70
+  full quad, scissor 10x7 at (5,3)                 0x00000000 6 2 6 0 0 0 0 2 2 112 0 | occ 70
+  MSAA x4 full quad, pixel frequency               0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 16384
+  MSAA x4 quarter quad, pixel frequency            0x00000000 6 2 6 0 0 0 0 2 2 1088 0 | occ 4096
+  MSAA x4 one diagonal triangle, pixel frequency   0x00000000 3 1 3 0 0 0 0 1 1 2112 0 | occ 8192
+  MSAA x4 triangle over one sample, pixel frequency 0x00000000 3 1 3 0 0 0 0 1 1 4 0 | occ 1
+  MSAA x4 full quad SampleMask 0x1, pixel frequency 0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  MSAA x4 full quad SampleMask 0x0, pixel frequency 0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 0
+  MSAA x4 full quad, sample frequency              0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 16384
+  MSAA x4 quarter quad, sample frequency           0x00000000 6 2 6 0 0 0 0 2 2 1088 0 | occ 4096
+  MSAA x4 one diagonal triangle, sample frequency  0x00000000 3 1 3 0 0 0 0 1 1 2112 0 | occ 8192
+  MSAA x4 triangle over one sample, sample frequency 0x00000000 3 1 3 0 0 0 0 1 1 4 0 | occ 1
+  MSAA x4 full quad SampleMask 0x1, sample frequency 0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  MSAA x4 full quad SampleMask 0x0, sample frequency 0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 0
+  1x triangle over one 4x sample position          0x00000000 3 1 3 0 0 0 0 1 1 0 0 | occ 0
+
+[vs] VSInvocations and IA counts; indexed draws
+  list of 12 indices, all 0                        0x00000000 12 4 1 0 0 0 0 4 4 0 0 | occ 0
+  17x17 grid, 512 triangles, row-major             0x00000000 1536 512 328 0 0 0 0 512 512 0 0 | occ 0
+  tri 0,1,2; 200 fresh tris; tri 0,1,2 again       0x00000000 606 202 606 0 0 0 0 202 202 0 0 | occ 0
+  100 x {0,1,2}                                    0x00000000 300 100 3 0 0 0 0 100 100 0 0 | occ 0
+  strip {0,1,2,3,cut,4,5,6,7}                      0x00000000 9 4 8 0 0 0 0 4 4 0 0 | occ 0
+  list {0,1,2,3,cut,4,5,6,7}                       0x00000000 9 2 6 0 0 0 0 2 2 0 0 | occ 0
+  line strip {0,1,cut,2,3,4}                       0x00000000 6 3 5 0 0 0 0 3 3 0 0 | occ 0
+  {0,1,2,2,1,5} x 3 instances                      0x00000000 18 6 12 0 0 0 0 6 6 0 0 | occ 0
+  {0,1,2,2,1,5} base vertex 3                      0x00000000 6 2 4 0 0 0 0 2 2 0 0 | occ 0
+  strip Draw(6)                                    0x00000000 6 4 6 0 0 0 0 4 4 0 0 | occ 0
+  TRIANGLELIST_ADJ Draw(12), no GS                 0x00000000 12 2 12 0 0 0 0 2 2 0 0 | occ 0
+  LINELIST_ADJ Draw(8), no GS                      0x00000000 8 2 8 0 0 0 0 2 2 0 0 | occ 0
+  list Draw(7) (one vertex spare)                  0x00000000 7 2 6 0 0 0 0 2 2 0 0 | occ 0
+
+[vsbatch] VSInvocations of an index stream of zeros
+  trilist x507, 1 inst, start 0                    0x00000000 507 169 1 0 0 0 0 169 169 0 0 | occ 0
+  trilist x510, 1 inst, start 0                    0x00000000 510 170 1 0 0 0 0 170 170 0 0 | occ 0
+  trilist x513, 1 inst, start 0                    0x00000000 513 171 2 0 0 0 0 171 171 0 0 | occ 0
+  trilist x1020, 1 inst, start 0                   0x00000000 1020 340 2 0 0 0 0 340 340 0 0 | occ 0
+  trilist x1023, 1 inst, start 0                   0x00000000 1023 341 3 0 0 0 0 341 341 0 0 | occ 0
+  trilist x1026, 1 inst, start 0                   0x00000000 1026 342 3 0 0 0 0 342 342 0 0 | occ 0
+  trilist x1530, 1 inst, start 0                   0x00000000 1530 510 3 0 0 0 0 510 510 0 0 | occ 0
+  trilist x1533, 1 inst, start 0                   0x00000000 1533 511 4 0 0 0 0 511 511 0 0 | occ 0
+  linelist x510, 1 inst, start 0                   0x00000000 510 255 1 0 0 0 0 255 255 0 0 | occ 0
+  linelist x512, 1 inst, start 0                   0x00000000 512 256 1 0 0 0 0 256 256 0 0 | occ 0
+  linelist x514, 1 inst, start 0                   0x00000000 514 257 2 0 0 0 0 257 257 0 0 | occ 0
+  linelist x1024, 1 inst, start 0                  0x00000000 1024 512 2 0 0 0 0 512 512 0 0 | occ 0
+  linelist x1026, 1 inst, start 0                  0x00000000 1026 513 3 0 0 0 0 513 513 0 0 | occ 0
+  pointlist x511, 1 inst, start 0                  0x00000000 511 511 1 0 0 0 0 511 511 2044 0 | occ 511
+  pointlist x512, 1 inst, start 0                  0x00000000 512 512 1 0 0 0 0 512 512 2048 0 | occ 512
+  pointlist x513, 1 inst, start 0                  0x00000000 513 513 2 0 0 0 0 513 513 2052 0 | occ 513
+  pointlist x1024, 1 inst, start 0                 0x00000000 1024 1024 2 0 0 0 0 1024 1024 4096 0 | occ 1024
+  pointlist x1025, 1 inst, start 0                 0x00000000 1025 1025 3 0 0 0 0 1025 1025 4100 0 | occ 1025
+  tristrip x510, 1 inst, start 0                   0x00000000 510 508 3 0 0 0 0 508 508 0 0 | occ 0
+  tristrip x511, 1 inst, start 0                   0x00000000 511 509 3 0 0 0 0 509 509 0 0 | occ 0
+  tristrip x512, 1 inst, start 0                   0x00000000 512 510 3 0 0 0 0 510 510 0 0 | occ 0
+  tristrip x513, 1 inst, start 0                   0x00000000 513 511 4 0 0 0 0 511 511 0 0 | occ 0
+  tristrip x514, 1 inst, start 0                   0x00000000 514 512 4 0 0 0 0 512 512 0 0 | occ 0
+  tristrip x1024, 1 inst, start 0                  0x00000000 1024 1022 7 0 0 0 0 1022 1022 0 0 | occ 0
+  tristrip x1026, 1 inst, start 0                  0x00000000 1026 1024 7 0 0 0 0 1024 1024 0 0 | occ 0
+  linestrip x511, 1 inst, start 0                  0x00000000 511 510 2 0 0 0 0 510 510 0 0 | occ 0
+  linestrip x512, 1 inst, start 0                  0x00000000 512 511 2 0 0 0 0 511 511 0 0 | occ 0
+  linestrip x513, 1 inst, start 0                  0x00000000 513 512 2 0 0 0 0 512 512 0 0 | occ 0
+  linestrip x514, 1 inst, start 0                  0x00000000 514 513 3 0 0 0 0 513 513 0 0 | occ 0
+  trilist x12, 100 inst, start 0                   0x00000000 1200 400 100 0 0 0 0 400 400 0 0 | occ 0
+  trilist x600, 2 inst, start 0                    0x00000000 1200 400 4 0 0 0 0 400 400 0 0 | occ 0
+  trilist x513, 1 inst, start 5                    0x00000000 513 171 2 0 0 0 0 171 171 0 0 | occ 0
+  trilist_adj x12, 1 inst, start 0                 0x00000000 12 2 1 0 0 0 0 2 2 0 0 | occ 0
+  trilist_adj x1020, 1 inst, start 0               0x00000000 1020 170 2 0 0 0 0 170 170 0 0 | occ 0
+  trilist_adj x1026, 1 inst, start 0               0x00000000 1026 171 3 0 0 0 0 171 171 0 0 | occ 0
+  tristrip {0,0,0,cut} x300                        0x00000000 1200 300 2 0 0 0 0 300 300 0 0 | occ 0
+  trilist {0,0,0,cut} x300                         0x00000000 1200 300 2 0 0 0 0 300 300 0 0 | occ 0
+  non-indexed trilist Draw(1024)                   0x00000000 1024 341 1023 0 0 0 0 341 341 0 0 | occ 0
+  non-indexed tristrip Draw(1024)                  0x00000000 1024 1022 1036 0 0 0 0 1022 1022 0 0 | occ 0
+  non-indexed linestrip Draw(1)                    0x00000000 1 0 0 0 0 0 0 0 0 0 0 | occ 0
+  non-indexed tristrip Draw(2)                     0x00000000 2 0 0 0 0 0 0 0 0 0 0 | occ 0
+  non-indexed trilist_adj Draw(13)                 0x00000000 13 2 12 0 0 0 0 2 2 0 0 | occ 0
+
+[indirect] indirect draws and a GPU-writable index buffer
+  DrawInstancedIndirect {6,1,0,0} full quad        0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  DrawInstancedIndirect {6,2,0,0} full quad        0x00000000 12 4 12 0 0 0 0 4 4 8448 0 | occ 8192
+  DrawInstancedIndirect quad (0,0)-(2,2)           0x00000000 6 2 6 0 0 0 0 2 4 1088 0 | occ 1024
+  DrawIndexedInstancedIndirect {0,1,2,2,1,5} x3    0x00000000 18 6 12 0 0 0 0 6 6 12672 0 | occ 12288
+  DrawIndexedInstancedIndirect 17x17 grid          0x00000000 1536 512 328 0 0 0 0 512 512 0 0 | occ 0
+  DrawIndexed 17x17 grid, UAV index buffer         0x00000000 1536 512 328 0 0 0 0 512 512 0 0 | occ 0
+  DrawIndexed quad (0,0)-(2,2), UAV index buffer   0x00000000 6 2 4 0 0 0 0 2 4 248 0 | occ 197
+
+[clip] CInvocations / CPrimitives
+  inside                                           0x00000000 3 1 3 0 0 0 0 1 1 576 0 | occ 512
+  one vertex past +x                               0x00000000 3 1 3 0 0 0 0 1 2 796 0 | occ 704
+  one vertex past -x                               0x00000000 3 1 3 0 0 0 0 1 2 796 0 | occ 704
+  one vertex past +y                               0x00000000 3 1 3 0 0 0 0 1 2 804 0 | occ 704
+  two vertices past +x                             0x00000000 3 1 3 0 0 0 0 1 1 236 0 | occ 207
+  corner +x+y cut (generic)                        0x00000000 3 1 3 0 0 0 0 1 2 336 0 | occ 274
+  corner cut, one vertex past +x and +y            0x00000000 3 1 3 0 0 0 0 1 3 460 0 | occ 311
+  fullscreen triangle (-1,-1),(3,-1),(-1,3)        0x00000000 3 1 3 0 0 0 0 1 3 4224 0 | occ 4096
+  fullscreen triangle (-1,1),(3,1),(-1,-3)         0x00000000 3 1 3 0 0 0 0 1 3 4224 0 | occ 4096
+  big triangle (-1.3,-1.2),(3.4,-1.1),(-1.2,3.3)   0x00000000 3 1 3 0 0 0 0 1 2 4224 0 | occ 4096
+  huge triangle (-1,-1),(100,-1),(-1,100)          0x00000000 3 1 3 0 0 0 0 1 2 4224 0 | occ 4096
+  triangle containing the viewport (-5,-5),(9,-5),(-5,9) 0x00000000 3 1 3 0 0 0 0 1 2 4224 0 | occ 4096
+  one vertex z<0                                   0x00000000 3 1 3 0 0 0 0 1 2 480 0 | occ 384
+  two vertices z<0                                 0x00000000 3 1 3 0 0 0 0 1 1 160 0 | occ 128
+  one vertex z>w                                   0x00000000 3 1 3 0 0 0 0 1 2 480 0 | occ 384
+  one vertex z>w, DepthClipEnable FALSE            0x00000000 3 1 3 0 0 0 0 1 1 576 0 | occ 512
+  one vertex z<0, DepthClipEnable FALSE            0x00000000 3 1 3 0 0 0 0 1 1 576 0 | occ 512
+  one vertex w<0                                   0x00000000 3 1 3 0 0 0 0 1 2 304 0 | occ 202
+  all vertices w<0                                 0x00000000 3 1 3 0 0 0 0 1 0 0 0 | occ 0
+  fully past +x                                    0x00000000 3 1 3 0 0 0 0 1 0 0 0 | occ 0
+  fully past -y                                    0x00000000 3 1 3 0 0 0 0 1 0 0 0 | occ 0
+  outside, no single plane (spans +x/+y corner)    0x00000000 3 1 3 0 0 0 0 1 0 0 0 | occ 0
+  vertex exactly on x=w                            0x00000000 3 1 3 0 0 0 0 1 1 720 0 | occ 632
+  edge on x=w                                      0x00000000 3 1 3 0 0 0 0 1 1 576 0 | occ 512
+  zero area, collinear, inside                     0x00000000 3 1 3 0 0 0 0 1 1 0 0 | occ 0
+  zero area, three equal vertices                  0x00000000 3 1 3 0 0 0 0 1 1 0 0 | occ 0
+  zero area, collinear, crossing +x                0x00000000 3 1 3 0 0 0 0 1 2 0 0 | occ 0
+  CULL_BACK, winding a                             0x00000000 3 1 3 0 0 0 0 1 1 0 0 | occ 0
+  CULL_BACK, winding b                             0x00000000 3 1 3 0 0 0 0 1 1 576 0 | occ 512
+  CULL_BACK, winding a, past +x                    0x00000000 3 1 3 0 0 0 0 1 2 0 0 | occ 0
+  CULL_BACK, winding b, past +x                    0x00000000 3 1 3 0 0 0 0 1 2 796 0 | occ 704
+  quad (0,0)-(2,2) half off-screen                 0x00000000 6 2 6 0 0 0 0 2 4 1088 0 | occ 1024
+  quad (0.1,0.2)-(2.3,2.1)                         0x00000000 6 2 6 0 0 0 0 2 2 832 0 | occ 754
+  quad (-2,-2)-(2,2) around the target             0x00000000 6 2 6 0 0 0 0 2 4 4224 0 | occ 4096
+  full quad, viewport 32x32                        0x00000000 6 2 6 0 0 0 0 2 2 1088 0 | occ 1024
+  quad (0,0)-(2,2), viewport 32x32                 0x00000000 6 2 6 0 0 0 0 2 4 288 0 | occ 256
+  line inside                                      0x00000000 2 1 2 0 0 0 0 1 1 94 0 | occ 32
+  line crossing +x                                 0x00000000 2 1 2 0 0 0 0 1 1 116 0 | occ 48
+  line fully past +x                               0x00000000 2 1 2 0 0 0 0 1 0 0 0 | occ 0
+  point inside                                     0x00000000 1 1 1 0 0 0 0 1 1 4 0 | occ 1
+  point past +x                                    0x00000000 1 1 1 0 0 0 0 1 0 0 0 | occ 0
+  point on x=w                                     0x00000000 1 1 1 0 0 0 0 1 1 4 0 | occ 1
+  clip distance x>=0, full quad                    0x00000000 6 2 6 0 0 0 0 2 3 2176 0 | occ 2048
+  clip distance x>=0, quad in x<0                  0x00000000 6 2 6 0 0 0 0 2 0 0 0 | occ 0
+  clip distance x>=0, quad in x>=0                 0x00000000 6 2 6 0 0 0 0 2 2 2176 0 | occ 2048
+  NULL PS, depth test on (rasterizes)              0x00000000 6 2 6 0 0 0 0 2 2 0 0 | occ 4096
+  NULL PS, depth on, half off-screen               0x00000000 6 2 6 0 0 0 0 2 4 0 0 | occ 1024
+
+[gs] geometry shaders over the full quad (2 triangles)
+  pass-through                                     0x00000000 6 2 6 0 0 2 2 2 2 4224 0 | occ 4096
+  emits nothing                                    0x00000000 6 2 6 0 0 2 0 0 0 0 0 | occ 0
+  4-vertex strip                                   0x00000000 6 2 6 0 0 2 4 4 4 6336 0 | occ 6176
+  2 vertices + cut (incomplete)                    0x00000000 6 2 6 0 0 2 0 0 0 0 0 | occ 0
+  5-vertex strip, cut, 3-vertex strip              0x00000000 6 2 6 0 0 2 8 8 8 16896 0 | occ 16384
+  [instance(3)] pass-through                       0x00000000 6 2 6 0 0 6 6 6 6 12672 0 | occ 12288
+  3 points                                         0x00000000 6 2 6 0 0 2 6 6 6 8 0 | occ 2
+  3-vertex line strip                              0x00000000 6 2 6 0 0 2 4 4 4 752 0 | occ 256
+  pass-through, quad (0,0)-(2,2)                   0x00000000 6 2 6 0 0 2 2 2 4 1088 0 | occ 1024
+  pass-through, DrawIndexed {0,1,2,2,1,5}          0x00000000 6 2 4 0 0 2 2 2 2 4224 0 | occ 4096
+  two streams, SO both, rasterized 0               0x00000000 6 2 6 0 0 2 6 2 2 0 0 | occ 0
+  two streams, SO both, rasterized 1               0x00000000 6 2 6 0 0 2 6 4 4 8 0 | occ 2
+  two streams, SO both, rasterized none            0x00000000 6 2 6 0 0 2 6 0 0 0 0 | occ 0
+  pass-through GS, SO, no rasterized stream        0x00000000 6 2 6 0 0 2 2 0 0 0 0 | occ 0
+  stream-output VS (no GS program), rasterized 0   0x00000000 6 2 6 0 0 0 0 2 2 4224 0 | occ 4096
+  stream-output VS, no rasterized stream           0x00000000 6 2 6 0 0 0 0 0 0 0 0 | occ 0
+
+[tess] two tri patches over the full quad / one quad patch
+  tri integer factor 1                             0x00000000 6 2 6 2 6 0 0 2 2 4224 0 | occ 4096
+  tri integer factor 2                             0x00000000 6 2 6 2 36 0 0 12 12 4868 0 | occ 4096
+  tri integer factor 3                             0x00000000 6 2 6 2 78 0 0 26 26 4932 0 | occ 4096
+  tri integer factor 0 (culled)                    0x00000000 6 2 6 2 0 0 0 0 0 0 0 | occ 0
+  tri integer factor 2, point output               0x00000000 6 2 6 2 14 0 0 14 14 32 0 | occ 8
+  tri fractional_odd factor 1.5                    0x00000000 6 2 6 2 78 0 0 26 26 5020 0 | occ 4096
+  tri fractional_odd factor 2.5                    0x00000000 6 2 6 2 78 0 0 26 26 5340 0 | occ 4096
+  quad integer factor 1                            0x00000000 4 1 4 1 6 0 0 2 2 4224 0 | occ 4096
+  quad integer factor 3                            0x00000000 4 1 4 1 54 0 0 18 18 5004 0 | occ 4096
+  tri integer factor 2 + pass-through GS           0x00000000 6 2 6 2 36 12 12 12 12 4868 0 | occ 4096
+  tri integer factor 1 + 4-vertex-strip GS         0x00000000 6 2 6 2 6 2 4 4 4 4224 0 | occ 4096
+  isoline detail 1 density 2                       0x00000000 2 1 2 1 4 0 0 2 2 128 0 | occ 226
+  isoline detail 1 density 2, point output         0x00000000 2 1 2 1 3 0 0 3 3 12 0 | occ 3
+  isoline detail 2 density 3                       0x00000000 2 1 2 1 12 0 0 6 6 280 0 | occ 403
+  isoline detail 2 density 3, point output         0x00000000 2 1 2 1 8 0 0 8 8 32 0 | occ 8
+  isoline detail 3 density 1                       0x00000000 2 1 2 1 6 0 0 3 3 406 0 | occ 459
+  isoline detail 3 density 1, point output         0x00000000 2 1 2 1 6 0 0 6 6 24 0 | occ 6
+# ---------------------------------------------------------------------------
+# winoracle 2026-09-28, WARP ("Microsoft Basic Render Driver"), x64 above.
+# The i686 build prints the same bytes except "pointer size 4" and the three
+# isoline lines' PSInvocations/occlusion columns: WARP's own coverage of those
+# tessellated lines differs between its x86 and x64 builds (x86: occ 255 /
+# 390 / 395); every other counter agrees.
+# What WARP shows where D3D11.3 20.4.7 leaves a range (the rules Vitreo
+# reproduces, graphics/shaders/pipeline_stats.hpp):
+#   VSInvocations  distinct vertices per batch of 512 / (vertices per
+#                  primitive) assembled primitives (170 triangles, 256 lines,
+#                  512 points, 85 triangles with adjacency) per instance; a
+#                  spare vertex no primitive uses is not shaded; a strip
+#                  re-shades the two vertices a batch boundary splits.
+#   CPrimitives    Sutherland-Hodgman against -w<=x,y<=w, 0<=z<=w (z only
+#                  with DepthClipEnable) and SV_ClipDistance, inside when
+#                  >= 0, coincident vertices kept (a fullscreen triangle
+#                  through the viewport corner is 3); no guard band.
+#   CInvocations   every primitive reaching the clipper (degenerate and
+#                  back-facing ones too).
+#   DSInvocations  every vertex of every output primitive (3 a triangle, 2 an
+#                  isoline segment -- no reuse); unique points for point
+#                  output. GSPrimitives counts every stream.
+#   PSInvocations  every lane of each 2x2 stamp holding a covered pixel
+#                  (helpers included), whatever the depth/stencil result or a
+#                  discard; [earlydepthstencil] stamps whose pixels all fail
+#                  are not shaded. At 4x, pixel and sample frequency alike,
+#                  pixel stamps again (4224 for the full quad).
+# Verdict for Vitreo (pstats pass, 2026-09-28): 186 -> 47 differing lines
+# (x64 and x86), every one in the PSInvocations column alone. On 44 the
+# OCCLUSION column is equal -- the same pixels are covered, and only helper
+# pixels differ (D3D11.3 20.4.7: PSInvocations "may include or exclude helper
+# pixels"); the other 3 are the isolines, whose coverage differs (see above:
+# WARP disagrees with itself across builds there):
+#   - 4x MSAA (12 lines): Vitreo counts each covered pixel once, helpers
+#     excluded (Metal runs a memory-writing fragment function per sample and
+#     its helper lanes carry no coverage, so one stamp's invocations cannot
+#     be joined): 4160 where WARP counts 4224.
+#   - lines (5), clipped or viewport-crossing triangles and quads (18),
+#     tessellated triangles (6): WARP rasterizes the clipper's fan or its own
+#     line triangles, whose internal edges add helper stamps; Metal's
+#     rasterizer splits differently (a guard band) -- e.g. one vertex past +x
+#     796 / 784, the fullscreen triangle 4224 / 4232.
+#   - a scissor rectangle at an odd offset (1): 112 / 104.
+#   - the DepthClipEnable FALSE triangles (2): 576 / 640 (Metal's depth clamp).

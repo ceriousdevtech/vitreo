@@ -1,0 +1,136 @@
+== x64
+create_main ret=00000001 err=0000dead
+smto_wm_null ret=00000001 err=0000dead
+  result ret=00000000 err=0000dead
+smto_user1 ret=00000001 err=0000dead
+  result ret=0000000c err=0000dead
+smto_user2_wide_result ret=00000001 err=0000dead
+  result_low ret=12345678 err=0000dead
+  result_high ret=ffffffff err=0000dead
+smto_null_result_ptr ret=00000001 err=0000dead
+smto_invalid_hwnd ret=00000000 err=00000578
+  result_untouched ret=00000000 err=0000dead
+smto_null_hwnd ret=00000000 err=00000578
+  result_untouched ret=00000000 err=0000dead
+smto_broadcast ret=00000001 err=0000dead
+smto_busy_timeout ret=00000000 err=000005b4
+  result_untouched ret=00000000 err=0000dead
+  returned_in_time ret=00000001 err=0000dead
+smto_busy_block_timeout ret=00000000 err=000005b4
+smto_cross_thread ret=00000001 err=0000dead
+  result ret=00000007 err=0000dead
+gwtpid_other_thread_matches ret=00000001 err=0000dead
+gw_enabledpopup_hidden_popup ret=00000000 err=0000dead
+gw_enabledpopup_owned ret=00000002 err=0000dead
+gw_enabledpopup_disabled ret=00000000 err=0000dead
+gw_enabledpopup_from_popup ret=00000000 err=0000dead
+gw_enabledpopup_owner_visible_popup_hidden ret=00000000 err=0000dead
+gw_enabledpopup_owner_visible_popup_visible ret=00000002 err=0000dead
+gw_enabledpopup_owner_disabled ret=00000000 err=0000dead
+gw_hwndfirst_child ret=00000001 err=0000dead
+gw_hwndnext_top_is_not_self ret=00000001 err=0000dead
+gw_owner ret=00000001 err=0000dead
+gw_invalid_hwnd ret=00000000 err=00000578
+gw_bad_cmd ret=00000000 err=000005a3
+gw_child_none ret=00000000 err=0000dead
+setstyle_visible_bit ret=00000001 err=0000dead
+clearstyle_visible_bit ret=00000000 err=0000dead
+visible_invalid ret=00000000 err=00000578
+enumwindows_stop_keeps_error ret=00000000 err=00001234
+gwtpid_invalid ret=00000000 err=00000578
+gwtpid_desktop_nonzero ret=00000001 err=0000dead
+  desktop_pid_is_self ret=00000000 err=0000dead
+mwmo_alertable_apc ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+mwmo_not_alertable_apc ret=00000102 err=0000dead
+  apc_ran ret=00000000 err=0000dead
+mwmo_seen_input_waits ret=00000102 err=0000dead
+mwmo_seen_input_inputavailable ret=00000000 err=0000dead
+mwmo_waitall_signaled ret=00000102 err=0000dead
+wfii_invalid_handle ret=ffffffff err=00000006
+wfii_current_process ret=ffffffff err=0000dead
+create_child ret=00000001 err=00000000
+wfii_child ret=00000000 err=0000dead
+enumwindows_sees_child_window ret=00000001 err=0000dead
+findwindow_matches_enum ret=00000001 err=0000dead
+gwtpid_child_tid_matches ret=00000001 err=0000dead
+  child_pid_matches ret=00000001 err=0000dead
+smto_child_user1 ret=00000001 err=0000dead
+  result ret=0000002a err=0000dead
+smto_child_settext ret=00000001 err=0000dead
+smto_child_gettext ret=00000001 err=0000dead
+  length ret=0000000a err=0000dead
+  text_matches ret=00000001 err=0000dead
+smto_child_copydata ret=00000001 err=0000dead
+  result ret=00000fac err=0000dead
+sendmessage_child_user1 ret=00000003 err=0000dead
+smto_child_close ret=00000001 err=0000dead
+child_exit ret=00000000 err=0000dead
+== x86
+create_main ret=00000001 err=0000dead
+smto_wm_null ret=00000001 err=0000dead
+  result ret=00000000 err=0000dead
+smto_user1 ret=00000001 err=0000dead
+  result ret=0000000c err=0000dead
+smto_user2_wide_result ret=00000001 err=0000dead
+  result_low ret=12345678 err=0000dead
+  result_high ret=00000000 err=0000dead
+smto_null_result_ptr ret=00000001 err=0000dead
+smto_invalid_hwnd ret=00000000 err=00000578
+  result_untouched ret=00000000 err=0000dead
+smto_null_hwnd ret=00000000 err=00000578
+  result_untouched ret=00000000 err=0000dead
+smto_broadcast ret=00000001 err=0000dead
+smto_busy_timeout ret=00000000 err=000005b4
+  result_untouched ret=00000000 err=0000dead
+  returned_in_time ret=00000001 err=0000dead
+smto_busy_block_timeout ret=00000000 err=000005b4
+smto_cross_thread ret=00000001 err=0000dead
+  result ret=00000007 err=0000dead
+gwtpid_other_thread_matches ret=00000001 err=0000dead
+gw_enabledpopup_hidden_popup ret=00000000 err=0000dead
+gw_enabledpopup_owned ret=00000002 err=0000dead
+gw_enabledpopup_disabled ret=00000000 err=0000dead
+gw_enabledpopup_from_popup ret=00000000 err=0000dead
+gw_enabledpopup_owner_visible_popup_hidden ret=00000000 err=0000dead
+gw_enabledpopup_owner_visible_popup_visible ret=00000002 err=0000dead
+gw_enabledpopup_owner_disabled ret=00000000 err=0000dead
+gw_hwndfirst_child ret=00000001 err=0000dead
+gw_hwndnext_top_is_not_self ret=00000001 err=0000dead
+gw_owner ret=00000001 err=0000dead
+gw_invalid_hwnd ret=00000000 err=00000578
+gw_bad_cmd ret=00000000 err=000005a3
+gw_child_none ret=00000000 err=0000dead
+setstyle_visible_bit ret=00000001 err=0000dead
+clearstyle_visible_bit ret=00000000 err=0000dead
+visible_invalid ret=00000000 err=00000578
+enumwindows_stop_keeps_error ret=00000000 err=00001234
+gwtpid_invalid ret=00000000 err=00000578
+gwtpid_desktop_nonzero ret=00000001 err=0000dead
+  desktop_pid_is_self ret=00000000 err=0000dead
+mwmo_alertable_apc ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+mwmo_not_alertable_apc ret=00000102 err=0000dead
+  apc_ran ret=00000000 err=0000dead
+mwmo_seen_input_waits ret=00000102 err=0000dead
+mwmo_seen_input_inputavailable ret=00000000 err=0000dead
+mwmo_waitall_signaled ret=00000102 err=0000dead
+wfii_invalid_handle ret=ffffffff err=00000006
+wfii_current_process ret=ffffffff err=0000dead
+create_child ret=00000001 err=00000000
+wfii_child ret=00000000 err=0000dead
+enumwindows_sees_child_window ret=00000001 err=0000dead
+findwindow_matches_enum ret=00000001 err=0000dead
+gwtpid_child_tid_matches ret=00000001 err=0000dead
+  child_pid_matches ret=00000001 err=0000dead
+smto_child_user1 ret=00000001 err=0000dead
+  result ret=0000002a err=0000dead
+smto_child_settext ret=00000001 err=0000dead
+smto_child_gettext ret=00000001 err=0000dead
+  length ret=0000000a err=0000dead
+  text_matches ret=00000001 err=0000dead
+smto_child_copydata ret=00000001 err=0000dead
+  result ret=00000fac err=0000dead
+sendmessage_child_user1 ret=00000003 err=0000dead
+smto_child_close ret=00000001 err=0000dead
+child_exit ret=00000000 err=0000dead

@@ -1,0 +1,49 @@
+bitness=32
+== disconnect while connect pending
+ConnectNamedPipe(ov) -> 0 err=3e5
+  Internal=103
+DisconnectNamedPipe -> 1 err=0
+  event wait -> signaled
+  Internal=c00000b0 InternalHigh=0
+  GetOverlappedResult(FALSE) -> 0 err=e9
+  bytes=0
+-- second connect after disconnect
+ConnectNamedPipe(ov) -> 0 err=3e5
+  Internal=103
+CancelIo -> 1 err=0
+  event wait -> signaled
+  Internal=c0000120 InternalHigh=0
+  GetOverlappedResult(FALSE) -> 0 err=3e3
+  bytes=0
+== close while connect pending
+ConnectNamedPipe(ov) -> 0 err=3e5
+  Internal=103
+CloseHandle -> 1 err=0
+  event wait -> signaled
+  Internal=c000014b InternalHigh=0
+== disconnect then close while connect pending
+ConnectNamedPipe(ov) -> 0 err=3e5
+  Internal=103
+DisconnectNamedPipe -> 1 err=0
+CloseHandle -> 1 err=0
+  event wait -> signaled
+  Internal=c00000b0 InternalHigh=0
+== CancelIo while connect pending
+ConnectNamedPipe(ov) -> 0 err=3e5
+  Internal=103
+CancelIo -> 1 err=0
+  event wait -> signaled
+  Internal=c0000120 InternalHigh=0
+  GetOverlappedResult(FALSE) -> 0 err=3e3
+  bytes=0
+DisconnectNamedPipe after cancel -> 1 err=0
+== CancelIoEx(ov) while connect pending
+ConnectNamedPipe(ov) -> 0 err=3e5
+  Internal=103
+CancelIoEx -> 1 err=0
+  event wait -> signaled
+  Internal=c0000120 InternalHigh=0
+  GetOverlappedResult(FALSE) -> 0 err=3e3
+  bytes=0
+== disconnect with no connect armed
+DisconnectNamedPipe -> 1 err=0

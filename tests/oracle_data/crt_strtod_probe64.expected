@@ -1,0 +1,124 @@
+x64
+ucrt strtof=1 wcstof=1 wtof=1 
+ucrt 0 strtod=0x3ff8000000000000 end=3 errno=0 ip=0 strtof=0x3fc00000 end=3 errno=0 wcstod=0x3ff8000000000000 end=3 errno=0 wcstof=0x3fc00000 end=3 errno=0 atof=0x3ff8000000000000 errno=0 wtof=0x3ff8000000000000 errno=0 
+ucrt 1 strtod=0xc0a1940000000000 end=9 errno=0 ip=0 strtof=0xc50ca000 end=9 errno=0 wcstod=0xc0a1940000000000 end=9 errno=0 wcstof=0xc50ca000 end=9 errno=0 atof=0xc0a1940000000000 errno=0 wtof=0xc0a1940000000000 errno=0 
+ucrt 2 strtod=0x401c000000000000 end=7 errno=0 ip=0 strtof=0x40e00000 end=7 errno=0 wcstod=0x401c000000000000 end=7 errno=0 wcstof=0x40e00000 end=7 errno=0 atof=0x401c000000000000 errno=0 wtof=0x401c000000000000 errno=0 
+ucrt 3 strtod=0x3fe0000000000000 end=3 errno=0 ip=0 strtof=0x3f000000 end=3 errno=0 wcstod=0x3fe0000000000000 end=3 errno=0 wcstof=0x3f000000 end=3 errno=0 atof=0x3fe0000000000000 errno=0 wtof=0x3fe0000000000000 errno=0 
+ucrt 4 strtod=0x8000000000000000 end=2 errno=0 ip=0 strtof=0x80000000 end=2 errno=0 wcstod=0x8000000000000000 end=2 errno=0 wcstof=0x80000000 end=2 errno=0 atof=0x8000000000000000 errno=0 wtof=0x8000000000000000 errno=0 
+ucrt 5 strtod=0x4020000000000000 end=5 errno=0 ip=0 strtof=0x41000000 end=5 errno=0 wcstod=0x4020000000000000 end=5 errno=0 wcstof=0x41000000 end=5 errno=0 atof=0x4020000000000000 errno=0 wtof=0x4020000000000000 errno=0 
+ucrt 6 strtod=0x3fe8000000000000 end=8 errno=0 ip=0 strtof=0x3f400000 end=8 errno=0 wcstod=0x3fe8000000000000 end=8 errno=0 wcstof=0x3f400000 end=8 errno=0 atof=0x3fe8000000000000 errno=0 wtof=0x3fe8000000000000 errno=0 
+ucrt 7 strtod=0x0 end=1 errno=0 ip=0 strtof=0x0 end=1 errno=0 wcstod=0x0 end=1 errno=0 wcstof=0x0 end=1 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 8 strtod=0x0 end=1 errno=0 ip=0 strtof=0x0 end=1 errno=0 wcstod=0x0 end=1 errno=0 wcstof=0x0 end=1 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 9 strtod=0x3fe0000000000000 end=4 errno=0 ip=0 strtof=0x3f000000 end=4 errno=0 wcstod=0x3fe0000000000000 end=4 errno=0 wcstof=0x3f000000 end=4 errno=0 atof=0x3fe0000000000000 errno=0 wtof=0x3fe0000000000000 errno=0 
+ucrt 10 strtod=0x3ff0000000000000 end=1 errno=0 ip=0 strtof=0x3f800000 end=1 errno=0 wcstod=0x3ff0000000000000 end=1 errno=0 wcstof=0x3f800000 end=1 errno=0 atof=0x3ff0000000000000 errno=0 wtof=0x3ff0000000000000 errno=0 
+ucrt 11 strtod=0x3ff0000000000000 end=1 errno=0 ip=0 strtof=0x3f800000 end=1 errno=0 wcstod=0x3ff0000000000000 end=1 errno=0 wcstof=0x3f800000 end=1 errno=0 atof=0x3ff0000000000000 errno=0 wtof=0x3ff0000000000000 errno=0 
+ucrt 12 strtod=0x3f847ae147ae147b end=4 errno=0 ip=0 strtof=0x3c23d70a end=4 errno=0 wcstod=0x3f847ae147ae147b end=4 errno=0 wcstof=0x3c23d70a end=4 errno=0 atof=0x3f847ae147ae147b errno=0 wtof=0x3f847ae147ae147b errno=0 
+ucrt 13 strtod=0x4059000000000000 end=4 errno=0 ip=0 strtof=0x42c80000 end=4 errno=0 wcstod=0x4059000000000000 end=4 errno=0 wcstof=0x42c80000 end=4 errno=0 atof=0x4059000000000000 errno=0 wtof=0x4059000000000000 errno=0 
+ucrt 14 strtod=0x0 end=0 errno=0 ip=0 strtof=0x0 end=0 errno=0 wcstod=0x0 end=0 errno=0 wcstof=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 15 strtod=0x0 end=0 errno=0 ip=0 strtof=0x0 end=0 errno=0 wcstod=0x0 end=0 errno=0 wcstof=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 16 strtod=0x0 end=0 errno=0 ip=0 strtof=0x0 end=0 errno=0 wcstod=0x0 end=0 errno=0 wcstof=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 17 strtod=0x0 end=0 errno=0 ip=0 strtof=0x0 end=0 errno=0 wcstod=0x0 end=0 errno=0 wcstof=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 18 strtod=0x7ff0000000000000 end=3 errno=0 ip=0 strtof=0x7f800000 end=3 errno=0 wcstod=0x7ff0000000000000 end=3 errno=0 wcstof=0x7f800000 end=3 errno=0 atof=0x7ff0000000000000 errno=0 wtof=0x7ff0000000000000 errno=0 
+ucrt 19 strtod=0xfff0000000000000 end=9 errno=0 ip=0 strtof=0xff800000 end=9 errno=0 wcstod=0xfff0000000000000 end=9 errno=0 wcstof=0xff800000 end=9 errno=0 atof=0xfff0000000000000 errno=0 wtof=0xfff0000000000000 errno=0 
+ucrt 20 strtod=0x7ff0000000000000 end=3 errno=0 ip=0 strtof=0x7f800000 end=3 errno=0 wcstod=0x7ff0000000000000 end=3 errno=0 wcstof=0x7f800000 end=3 errno=0 atof=0x7ff0000000000000 errno=0 wtof=0x7ff0000000000000 errno=0 
+ucrt 21 strtod=0x7ff0000000000000 end=8 errno=0 ip=0 strtof=0x7f800000 end=8 errno=0 wcstod=0x7ff0000000000000 end=8 errno=0 wcstof=0x7f800000 end=8 errno=0 atof=0x7ff0000000000000 errno=0 wtof=0x7ff0000000000000 errno=0 
+ucrt 22 strtod=0x7fffffffffffffff end=3 errno=0 ip=0 strtof=0x7fffffff end=3 errno=0 wcstod=0x7fffffffffffffff end=3 errno=0 wcstof=0x7fffffff end=3 errno=0 atof=0x7fffffffffffffff errno=0 wtof=0x7fffffffffffffff errno=0 
+ucrt 23 strtod=0xffffffffffffffff end=4 errno=0 ip=0 strtof=0xffffffff end=4 errno=0 wcstod=0xffffffffffffffff end=4 errno=0 wcstof=0xffffffff end=4 errno=0 atof=0xffffffffffffffff errno=0 wtof=0xffffffffffffffff errno=0 
+ucrt 24 strtod=0x7fffffffffffffff end=8 errno=0 ip=0 strtof=0x7fffffff end=8 errno=0 wcstod=0x7fffffffffffffff end=8 errno=0 wcstof=0x7fffffff end=8 errno=0 atof=0x7fffffffffffffff errno=0 wtof=0x7fffffffffffffff errno=0 
+ucrt 25 strtod=0x7ff0000000000001 end=9 errno=0 ip=0 strtof=0x7f800001 end=9 errno=0 wcstod=0x7ff0000000000001 end=9 errno=0 wcstof=0x7f800001 end=9 errno=0 atof=0x7ff0000000000001 errno=0 wtof=0x7ff0000000000001 errno=0 
+ucrt 26 strtod=0xfff8000000000000 end=8 errno=0 ip=0 strtof=0xffc00000 end=8 errno=0 wcstod=0xfff8000000000000 end=8 errno=0 wcstof=0xffc00000 end=8 errno=0 atof=0xfff8000000000000 errno=0 wtof=0xfff8000000000000 errno=0 
+ucrt 27 strtod=0xfff8000000000000 end=8 errno=0 ip=0 strtof=0xffc00000 end=8 errno=0 wcstod=0xfff8000000000000 end=8 errno=0 wcstof=0xffc00000 end=8 errno=0 atof=0xfff8000000000000 errno=0 wtof=0xfff8000000000000 errno=0 
+ucrt 28 strtod=0x7fffffffffffffff end=3 errno=0 ip=0 strtof=0x7fffffff end=3 errno=0 wcstod=0x7fffffffffffffff end=3 errno=0 wcstof=0x7fffffff end=3 errno=0 atof=0x7fffffffffffffff errno=0 wtof=0x7fffffffffffffff errno=0 
+ucrt 29 strtod=0x7fffffffffffffff end=3 errno=0 ip=0 strtof=0x7fffffff end=3 errno=0 wcstod=0x7fffffffffffffff end=3 errno=0 wcstof=0x7fffffff end=3 errno=0 atof=0x7fffffffffffffff errno=0 wtof=0x7fffffffffffffff errno=0 
+ucrt 30 strtod=0x7fffffffffffffff end=5 errno=0 ip=0 strtof=0x7fffffff end=5 errno=0 wcstod=0x7fffffffffffffff end=5 errno=0 wcstof=0x7fffffff end=5 errno=0 atof=0x7fffffffffffffff errno=0 wtof=0x7fffffffffffffff errno=0 
+ucrt 31 strtod=0x7fe1ccf385ebc8a0 end=5 errno=0 ip=0 strtof=0x7f800000 end=5 errno=34 wcstod=0x7fe1ccf385ebc8a0 end=5 errno=0 wcstof=0x7f800000 end=5 errno=34 atof=0x7fe1ccf385ebc8a0 errno=0 wtof=0x7fe1ccf385ebc8a0 errno=0 
+ucrt 32 strtod=0x7ff0000000000000 end=5 errno=34 ip=0 strtof=0x7f800000 end=5 errno=34 wcstod=0x7ff0000000000000 end=5 errno=34 wcstof=0x7f800000 end=5 errno=34 atof=0x7ff0000000000000 errno=0 wtof=0x7ff0000000000000 errno=0 
+ucrt 33 strtod=0xfff0000000000000 end=6 errno=34 ip=0 strtof=0xff800000 end=6 errno=34 wcstod=0xfff0000000000000 end=6 errno=34 wcstof=0xff800000 end=6 errno=34 atof=0xfff0000000000000 errno=0 wtof=0xfff0000000000000 errno=0 
+ucrt 34 strtod=0xfffffffffffff end=23 errno=0 ip=0 strtof=0x0 end=23 errno=34 wcstod=0xfffffffffffff end=23 errno=0 wcstof=0x0 end=23 errno=34 atof=0xfffffffffffff errno=0 wtof=0xfffffffffffff errno=0 
+ucrt 35 strtod=0x1 end=8 errno=0 ip=0 strtof=0x0 end=8 errno=34 wcstod=0x1 end=8 errno=0 wcstof=0x0 end=8 errno=34 atof=0x1 errno=0 wtof=0x1 errno=0 
+ucrt 36 strtod=0x0 end=6 errno=34 ip=0 strtof=0x0 end=6 errno=34 wcstod=0x0 end=6 errno=34 wcstof=0x0 end=6 errno=34 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 37 strtod=0x0 end=6 errno=34 ip=0 strtof=0x0 end=6 errno=34 wcstod=0x0 end=6 errno=34 wcstof=0x0 end=6 errno=34 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 38 strtod=0x7fefffffffffffff end=314 errno=0 ip=0 strtof=0x7f800000 end=314 errno=34 wcstod=0x7fefffffffffffff end=314 errno=0 wcstof=0x7f800000 end=314 errno=34 atof=0x7fefffffffffffff errno=0 wtof=0x7fefffffffffffff errno=0 
+ucrt 39 strtod=0x3fb999999999999a end=57 errno=0 ip=0 strtof=0x3dcccccd end=57 errno=0 wcstod=0x3fb999999999999a end=57 errno=0 wcstof=0x3dcccccd end=57 errno=0 atof=0x3fb999999999999a errno=0 wtof=0x3fb999999999999a errno=0 
+ucrt 40 strtod=0x3fb999999999999a end=57 errno=0 ip=0 strtof=0x3dcccccd end=57 errno=0 wcstod=0x3fb999999999999a end=57 errno=0 wcstof=0x3dcccccd end=57 errno=0 atof=0x3fb999999999999a errno=0 wtof=0x3fb999999999999a errno=0 
+ucrt 41 strtod=0x3696d601ad376ab9 end=5 errno=0 ip=0 strtof=0x1 end=5 errno=0 wcstod=0x3696d601ad376ab9 end=5 errno=0 wcstof=0x1 end=5 errno=0 atof=0x3696d601ad376ab9 errno=0 wtof=0x3696d601ad376ab9 errno=0 
+ucrt 42 strtod=0x369ff868bf4d956a end=7 errno=0 ip=0 strtof=0x1 end=7 errno=0 wcstod=0x369ff868bf4d956a end=7 errno=0 wcstof=0x1 end=7 errno=0 atof=0x369ff868bf4d956a errno=0 wtof=0x369ff868bf4d956a errno=0 
+ucrt 43 strtod=0x368ff868bf4d956a end=5 errno=0 ip=0 strtof=0x0 end=5 errno=34 wcstod=0x368ff868bf4d956a end=5 errno=0 wcstof=0x0 end=5 errno=34 atof=0x368ff868bf4d956a errno=0 wtof=0x368ff868bf4d956a errno=0 
+ucrt 44 strtod=0x47efffffe54daff8 end=12 errno=0 ip=0 strtof=0x7f7fffff end=12 errno=0 wcstod=0x47efffffe54daff8 end=12 errno=0 wcstof=0x7f7fffff end=12 errno=0 atof=0x47efffffe54daff8 errno=0 wtof=0x47efffffe54daff8 errno=0 
+ucrt 45 strtod=0x47effffff514a7bc end=12 errno=0 ip=0 strtof=0x7f800000 end=12 errno=34 wcstod=0x47effffff514a7bc end=12 errno=0 wcstof=0x7f800000 end=12 errno=34 atof=0x47effffff514a7bc errno=0 wtof=0x47effffff514a7bc errno=0 
+ucrt 46 strtod=0x483d6329f1c35ca5 end=4 errno=0 ip=0 strtof=0x7f800000 end=4 errno=34 wcstod=0x483d6329f1c35ca5 end=4 errno=0 wcstof=0x7f800000 end=4 errno=34 atof=0x483d6329f1c35ca5 errno=0 wtof=0x483d6329f1c35ca5 errno=0 
+ucrt 47 strtod=0x45f8ee90ff6c373e end=30 errno=0 ip=0 strtof=0x6fc77488 end=30 errno=0 wcstod=0x45f8ee90ff6c373e end=30 errno=0 wcstof=0x6fc77488 end=30 errno=0 atof=0x45f8ee90ff6c373e errno=0 wtof=0x45f8ee90ff6c373e errno=0 
+ucrt 48 strtod=0x3ff0000000000000 end=1 errno=0 ip=0 strtof=0x3f800000 end=1 errno=0 wcstod=0x3ff0000000000000 end=1 errno=0 wcstof=0x3f800000 end=1 errno=0 atof=0x3ff0000000000000 errno=0 wtof=0x3ff0000000000000 errno=0 
+ucrt 49 strtod=0x3ff0000000000000 end=1 errno=0 ip=0 strtof=0x3f800000 end=1 errno=0 wcstod=0x3ff0000000000000 end=1 errno=0 wcstof=0x3f800000 end=1 errno=0 atof=0x3ff0000000000000 errno=0 wtof=0x3ff0000000000000 errno=0 
+ucrt 50 strtod=0x0 end=8 errno=0 ip=0 strtof=0x0 end=8 errno=0 wcstod=0x0 end=8 errno=0 wcstof=0x0 end=8 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+ucrt 51 strtod=0x7ff0000000000000 end=13 errno=34 ip=0 strtof=0x7f800000 end=13 errno=34 wcstod=0x7ff0000000000000 end=13 errno=34 wcstof=0x7f800000 end=13 errno=34 atof=0x7ff0000000000000 errno=0 wtof=0x7ff0000000000000 errno=0 
+ucrt 52 strtod=0x0 end=0 errno=0 ip=0 strtof=0x0 end=0 errno=0 wcstod=0x4014000000000000 end=2 errno=0 wcstof=0x40a00000 end=2 errno=0 atof=0x0 errno=0 wtof=0x4014000000000000 errno=0 
+ucrt wide 0 wcstod=0x402899999999999a end=4 errno=0 
+ucrt wide 1 wcstod=0x4028000000000000 end=2 errno=0 
+ucrt wide 2 wcstod=0x4014000000000000 end=2 errno=0 
+ucrt wide 3 wcstod=0x4018000000000000 end=2 errno=0 
+ucrt wide 4 wcstod=0x4059000000000000 end=3 errno=0 
+ucrt strtod null=0x0 end_null=1 errno=22 ip=1 
+ucrt atof null=0x0 errno=22 ip=1 
+msvcrt strtof=0 wcstof=0 wtof=1 
+msvcrt 0 strtod=0x3ff8000000000000 end=3 errno=0 ip=0 wcstod=0x3ff8000000000000 end=3 errno=0 atof=0x3ff8000000000000 errno=0 wtof=0x3ff8000000000000 errno=0 
+msvcrt 1 strtod=0xc0a1940000000000 end=9 errno=0 ip=0 wcstod=0xc0a1940000000000 end=9 errno=0 atof=0xc0a1940000000000 errno=0 wtof=0xc0a1940000000000 errno=0 
+msvcrt 2 strtod=0x401c000000000000 end=7 errno=0 ip=0 wcstod=0x401c000000000000 end=7 errno=0 atof=0x401c000000000000 errno=0 wtof=0x401c000000000000 errno=0 
+msvcrt 3 strtod=0x3fe0000000000000 end=3 errno=0 ip=0 wcstod=0x3fe0000000000000 end=3 errno=0 atof=0x3fe0000000000000 errno=0 wtof=0x3fe0000000000000 errno=0 
+msvcrt 4 strtod=0x8000000000000000 end=2 errno=0 ip=0 wcstod=0x8000000000000000 end=2 errno=0 atof=0x8000000000000000 errno=0 wtof=0x8000000000000000 errno=0 
+msvcrt 5 strtod=0x0 end=1 errno=0 ip=0 wcstod=0x0 end=1 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 6 strtod=0x0 end=1 errno=0 ip=0 wcstod=0x0 end=1 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 7 strtod=0x0 end=1 errno=0 ip=0 wcstod=0x0 end=1 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 8 strtod=0x0 end=1 errno=0 ip=0 wcstod=0x0 end=1 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 9 strtod=0x0 end=1 errno=0 ip=0 wcstod=0x0 end=1 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 10 strtod=0x3ff0000000000000 end=1 errno=0 ip=0 wcstod=0x3ff0000000000000 end=1 errno=0 atof=0x3ff0000000000000 errno=0 wtof=0x3ff0000000000000 errno=0 
+msvcrt 11 strtod=0x3ff0000000000000 end=1 errno=0 ip=0 wcstod=0x3ff0000000000000 end=1 errno=0 atof=0x3ff0000000000000 errno=0 wtof=0x3ff0000000000000 errno=0 
+msvcrt 12 strtod=0x3f847ae147ae147b end=4 errno=0 ip=0 wcstod=0x3f847ae147ae147b end=4 errno=0 atof=0x3f847ae147ae147b errno=0 wtof=0x3f847ae147ae147b errno=0 
+msvcrt 13 strtod=0x4059000000000000 end=4 errno=0 ip=0 wcstod=0x4059000000000000 end=4 errno=0 atof=0x4059000000000000 errno=0 wtof=0x4059000000000000 errno=0 
+msvcrt 14 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 15 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 16 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 17 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 18 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 19 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 20 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 21 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 22 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 23 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 24 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 25 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 26 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 27 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 28 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 29 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 30 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x0 end=0 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 31 strtod=0x7fe1ccf385ebc8a0 end=5 errno=0 ip=0 wcstod=0x7fe1ccf385ebc8a0 end=5 errno=0 atof=0x7fe1ccf385ebc8a0 errno=0 wtof=0x7fe1ccf385ebc8a0 errno=0 
+msvcrt 32 strtod=0x7ff0000000000000 end=5 errno=34 ip=0 wcstod=0x7ff0000000000000 end=5 errno=34 atof=0x7ff0000000000000 errno=0 wtof=0x7ff0000000000000 errno=0 
+msvcrt 33 strtod=0xfff0000000000000 end=6 errno=34 ip=0 wcstod=0xfff0000000000000 end=6 errno=34 atof=0xfff0000000000000 errno=0 wtof=0xfff0000000000000 errno=0 
+msvcrt 34 strtod=0xfffffffffffff end=23 errno=0 ip=0 wcstod=0xfffffffffffff end=23 errno=0 atof=0xfffffffffffff errno=0 wtof=0xfffffffffffff errno=0 
+msvcrt 35 strtod=0x1 end=8 errno=0 ip=0 wcstod=0x1 end=8 errno=0 atof=0x1 errno=0 wtof=0x1 errno=0 
+msvcrt 36 strtod=0x0 end=6 errno=34 ip=0 wcstod=0x0 end=6 errno=34 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 37 strtod=0x0 end=6 errno=34 ip=0 wcstod=0x0 end=6 errno=34 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 38 strtod=0x7fefffffffffffff end=314 errno=0 ip=0 wcstod=0x7fefffffffffffff end=314 errno=0 atof=0x7fefffffffffffff errno=0 wtof=0x7fefffffffffffff errno=0 
+msvcrt 39 strtod=0x3fb999999999999a end=57 errno=0 ip=0 wcstod=0x3fb999999999999a end=57 errno=0 atof=0x3fb999999999999a errno=0 wtof=0x3fb999999999999a errno=0 
+msvcrt 40 strtod=0x3fb999999999999a end=57 errno=0 ip=0 wcstod=0x3fb999999999999a end=57 errno=0 atof=0x3fb999999999999a errno=0 wtof=0x3fb999999999999a errno=0 
+msvcrt 41 strtod=0x3696d601ad376ab9 end=5 errno=0 ip=0 wcstod=0x3696d601ad376ab9 end=5 errno=0 atof=0x3696d601ad376ab9 errno=0 wtof=0x3696d601ad376ab9 errno=0 
+msvcrt 42 strtod=0x369ff868bf4d956a end=7 errno=0 ip=0 wcstod=0x369ff868bf4d956a end=7 errno=0 atof=0x369ff868bf4d956a errno=0 wtof=0x369ff868bf4d956a errno=0 
+msvcrt 43 strtod=0x368ff868bf4d956a end=5 errno=0 ip=0 wcstod=0x368ff868bf4d956a end=5 errno=0 atof=0x368ff868bf4d956a errno=0 wtof=0x368ff868bf4d956a errno=0 
+msvcrt 44 strtod=0x47efffffe54daff8 end=12 errno=0 ip=0 wcstod=0x47efffffe54daff8 end=12 errno=0 atof=0x47efffffe54daff8 errno=0 wtof=0x47efffffe54daff8 errno=0 
+msvcrt 45 strtod=0x47effffff514a7bc end=12 errno=0 ip=0 wcstod=0x47effffff514a7bc end=12 errno=0 atof=0x47effffff514a7bc errno=0 wtof=0x47effffff514a7bc errno=0 
+msvcrt 46 strtod=0x483d6329f1c35ca5 end=4 errno=0 ip=0 wcstod=0x483d6329f1c35ca5 end=4 errno=0 atof=0x483d6329f1c35ca5 errno=0 wtof=0x483d6329f1c35ca5 errno=0 
+msvcrt 47 strtod=0x45f8ee90ff6c373e end=30 errno=0 ip=0 wcstod=0x45f8ee90ff6c373e end=30 errno=0 atof=0x45f8ee90ff6c373e errno=0 wtof=0x45f8ee90ff6c373e errno=0 
+msvcrt 48 strtod=0x3ff0000000000000 end=1 errno=0 ip=0 wcstod=0x3ff0000000000000 end=1 errno=0 atof=0x3ff0000000000000 errno=0 wtof=0x3ff0000000000000 errno=0 
+msvcrt 49 strtod=0x3ff0000000000000 end=1 errno=0 ip=0 wcstod=0x3ff0000000000000 end=1 errno=0 atof=0x3ff0000000000000 errno=0 wtof=0x3ff0000000000000 errno=0 
+msvcrt 50 strtod=0x0 end=8 errno=0 ip=0 wcstod=0x0 end=8 errno=0 atof=0x0 errno=0 wtof=0x0 errno=0 
+msvcrt 51 strtod=0x7ff0000000000000 end=13 errno=34 ip=0 wcstod=0x7ff0000000000000 end=13 errno=34 atof=0x7ff0000000000000 errno=0 wtof=0x7ff0000000000000 errno=0 
+msvcrt 52 strtod=0x0 end=0 errno=0 ip=0 wcstod=0x4014000000000000 end=2 errno=0 atof=0x0 errno=0 wtof=0x4014000000000000 errno=0 
+msvcrt wide 0 wcstod=0x0 end=0 errno=0 
+msvcrt wide 1 wcstod=0x0 end=0 errno=0 
+msvcrt wide 2 wcstod=0x4014000000000000 end=2 errno=0 
+msvcrt wide 3 wcstod=0x4018000000000000 end=2 errno=0 
+msvcrt wide 4 wcstod=0x3ff0000000000000 end=1 errno=0 
+msvcrt strtod null=0x0 end_null=1 errno=22 ip=0 
+msvcrt atof null=0x0 errno=22 ip=0 
+done

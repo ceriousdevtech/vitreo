@@ -1,0 +1,558 @@
+== x64
+-- menus
+createpopupmenu_nonnull ret=00000001 err=00000000
+ismenu ret=00000001 err=0000dead
+ismenu_bogus ret=00000000 err=00000579
+getmenuitemcount_empty ret=00000000 err=0000dead
+appendmenu_string ret=00000001 err=0000dead
+appendmenu_separator ret=00000001 err=0000dead
+appendmenu_popup ret=00000001 err=0000dead
+appendmenu_sub_item ret=00000001 err=0000dead
+appendmenu_bogus_menu ret=00000000 err=00000579
+appendmenu_popup_bogus_submenu ret=00000001 err=00000579
+getmenuitemcount ret=00000004 err=0000dead
+getmenuitemcount_bogus ret=ffffffff err=00000579
+insertmenu_byposition_1 ret=00000001 err=0000dead
+insertmenu_bycommand_100 ret=00000001 err=0000dead
+insertmenu_byposition_past_end ret=00000001 err=0000dead
+insertmenu_bycommand_missing ret=00000001 err=0000dead
+insertmenu_byposition_minus1 ret=00000001 err=0000dead
+getmenuitemcount_after ret=00000009 err=0000dead
+  item 0 id=102
+  item 1 id=100
+  item 2 id=101
+  item 3 id=0
+  item 4 id=-1
+  item 5 id=74565
+  item 6 id=103
+  item 7 id=104
+  item 8 id=105
+insertmenuiteminfo ret=00000001 err=0000dead
+  mii_cb=80
+insertmenuiteminfo_old_cb ret=00000000 err=00000057
+insertmenuiteminfo_bad_cb ret=00000000 err=00000057
+insertmenuiteminfo_big_cb ret=00000000 err=00000057
+getmenuiteminfo_len_query ret=00000001 err=0000dead
+  cch=3
+  ftype=00000000
+  fstate=00000000
+  wid=100
+getmenuiteminfo_truncated ret=00000001 err=0000dead
+  cch=1
+  text="O"
+getmenuiteminfo_full ret=00000001 err=0000dead
+  cch=3
+  text="One"
+getmenuiteminfo_popup_by_pos ret=00000001 err=0000dead
+  hsubmenu_is_sub ret=00000001 err=00000000
+  ftype=00000000
+getmenuiteminfo_separator ret=00000001 err=0000dead
+  ftype=00000000
+getmenuiteminfo_missing ret=00000000 err=000005b0
+getmenuiteminfo_bad_cb ret=00000000 err=00000057
+setmenuiteminfo ret=00000001 err=0000dead
+setmenuiteminfo_missing ret=00000000 err=000005b0
+getmenustring ret=00000003 err=0000dead
+  text="Uno"
+checkmenuitem ret=00000000 err=0000dead
+checkmenuitem_again ret=00000008 err=0000dead
+checkmenuitem_missing ret=ffffffff err=0000dead
+checkmenuitem_popup_parent ret=00000008 err=0000dead
+enablemenuitem_gray ret=00000000 err=0000dead
+enablemenuitem_enable ret=00000001 err=0000dead
+enablemenuitem_missing ret=ffffffff err=0000dead
+enablemenuitem_bogus_menu ret=ffffffff err=00000579
+getmenustate ret=00000000 err=0000dead
+getmenustate_sub_popup ret=00000110 err=0000dead
+setmenudefaultitem ret=00000001 err=0000dead
+getmenudefaultitem ret=00000064 err=0000dead
+setmenudefaultitem_missing ret=00000000 err=0000dead
+getmenudefaultitem_after_missing ret=00000064 err=0000dead
+setmenudefaultitem_clear ret=00000001 err=0000dead
+getmenudefaultitem_none ret=ffffffff err=0000dead
+getmenuinfo ret=00000001 err=0000dead
+  cb=40
+  style=00000000
+  maxheight=0
+  help=0
+setmenuinfo ret=00000001 err=0000dead
+getmenuinfo_after ret=00000001 err=0000dead
+  style=08000000
+  data=85
+getmenuinfo_bad_cb ret=00000000 err=00000057
+setmenuinfo_bad_mask ret=00000001 err=0000dead
+deletemenu_bycommand ret=00000001 err=0000dead
+deletemenu_missing ret=00000000 err=0000dead
+deletemenu_popup_destroys_sub ret=00000001 err=0000dead
+  ismenu_sub_after_delete ret=00000001 err=0000dead
+removemenu_missing ret=00000000 err=0000dead
+setmenu_popup_window ret=00000000 err=00000057
+  getmenu_is_m ret=00000000 err=00000000
+setmenu_child_window ret=00000000 err=00000578
+setmenu_bogus_menu ret=00000000 err=00000579
+setmenu_null ret=00000001 err=00000000
+getmenu_null_after ret=00000000 err=0000dead
+getmenu_invalid_hwnd ret=00000000 err=00000578
+getsystemmenu_nonnull ret=00000001 err=00000000
+  sysmenu_count ret=00000007 err=0000dead
+  sys item 0 id=0000f120
+  sys item 1 id=0000f010
+  sys item 2 id=0000f000
+  sys item 3 id=0000f020
+  sys item 4 id=0000f030
+  sys item 5 id=00000000
+  sys item 6 id=0000f060
+getsystemmenu_popup_no_sysmenu ret=00000000 err=0000dead
+getsystemmenu_revert ret=00000000 err=0000dead
+getsystemmenu_invalid ret=00000000 err=00000578
+trackpopupmenu_bogus_menu ret=00000000 err=00000579
+trackpopupmenu_invalid_hwnd ret=00000000 err=00000578
+destroymenu ret=00000001 err=0000dead
+destroymenu_again ret=00000000 err=00000579
+ismenu_after_destroy ret=00000000 err=00000579
+destroymenu_null ret=00000000 err=00000579
+-- dialogs
+-- dialog init
+  getdlgitem_ok_nonnull ret=00000001 err=00000000
+  getdlgctrlid_ok ret=00000001 err=0000dead
+  getdlgctrlid_dialog ret=00000000 err=0000dead
+  getdlgctrlid_invalid ret=00000000 err=00000578
+  dialog_class="#32770"
+  gdi_123 v=123 tr=1 err=00000000
+  gdi_minus5_signed v=-5 tr=1
+  gdi_minus5_unsigned v=0 tr=0
+  gdi_spaces v=42 tr=0
+  gdi_trailing_text v=12 tr=0
+  gdi_overflow v=0 tr=0
+  gdi_plus v=0 tr=0
+  gdi_empty v=0 tr=0
+  gdi_missing v=0 tr=0 err=0000058d
+  setdlgitemint_signed ret=00000001 err=00000000
+  text="-7"
+  setdlgitemint_unsigned ret=00000001 err=00000000
+  text="4294967289"
+  setdlgitemint_missing ret=00000000 err=0000058d
+  checkdlgbutton ret=00000001 err=0000dead
+  isdlgbuttonchecked ret=00000001 err=0000dead
+  checkdlgbutton_indeterminate ret=00000001 err=0000dead
+  isdlgbuttonchecked2 ret=00000002 err=0000dead
+  checkdlgbutton_missing ret=00000000 err=0000058d
+  mapdialogrect ret=00000001 err=0000dead
+  mapped rect=8,16,8,16
+  mapdialogrect_non_dialog ret=00000000 err=0000058c
+  enddialog ret=00000001 err=0000dead
+  enddialog_again ret=00000001 err=0000dead
+dialogboxindirect_ret ret=0000002b err=00000000
+  font_dialog_mapdialogrect ret=00000001 err=0000dead
+  mapped rect=6,13,6,13
+dialogboxindirect_font_ret ret=00000007 err=00000000
+dialogbase_units ret=00100008 err=0000dead
+dialogboxparam_missing_resource ret=ffffffff err=00000714
+createdialogparam_missing_resource ret=00000000 err=00000714
+createdialogindirect_nonnull ret=00000001 err=00000000
+  modeless_isvisible ret=00000000 err=0000dead
+  enddialog_modeless ret=00000001 err=00000000
+  modeless_isvisible_after_end ret=00000000 err=0000dead
+  modeless_iswindow_after_end ret=00000001 err=0000dead
+enddialog_non_dialog ret=00000000 err=0000058c
+enddialog_invalid ret=00000000 err=00000578
+-- wsprintf
+wsprintfa n=61 s=-12|4000000000|ff|FF|00000abc|3    |    4|str|Z|7|-8|wide|%|9
+wsprintfw n=34 s=-1|w|narrow|h|Q|n|beef|tr|    a|10
+wsprintfa_unsupported n=24 s=0000000000001234|5|f|e|n
+wsprintfa_1024_limit n=1024 len=1024
+wsprintfa_null_string n=2 s=|x
+wsprintfa_flags n=27 s=ab      |-0000005|+d| d|0x3
+-- desktops
+getprocesswindowstation_nonnull ret=00000001 err=00000000
+uoi_name_winsta ret=00000001 err=0000dead
+  name="WinSta0"
+  need=16
+getthreaddesktop_nonnull ret=00000001 err=00000000
+uoi_name_desktop ret=00000001 err=0000dead
+  name="Default"
+  need=16
+uoi_type_desktop ret=00000001 err=0000dead
+  type="Desktop"
+  need=16
+uoi_type_winsta ret=00000001 err=0000dead
+  type="WindowStation"
+uoi_flags_winsta ret=00000001 err=0000dead
+  inherit=0
+  flags=00000001
+  need=12
+uoi_flags_desktop ret=00000001 err=0000dead
+  flags=00000000
+uoi_name_small_buffer ret=00000000 err=0000007a
+  need=16
+uoi_name_null_need ret=00000001 err=0000dead
+uoi_bad_index ret=00000000 err=00000057
+uoi_invalid_handle ret=00000000 err=0000dead
+uoi_io_desktop ret=00000001 err=0000dead
+  io=1
+getthreaddesktop_bogus_tid ret=00000000 err=0000dead
+opendesktop_default_nonnull ret=00000001 err=00000000
+closedesktop_opened ret=00000001 err=0000dead
+opendesktop_missing ret=00000000 err=00000002
+closedesktop_thread_desktop ret=00000000 err=000000aa
+closedesktop_invalid ret=00000000 err=00000006
+createdesktop_nonnull ret=00000001 err=00000000
+setthreaddesktop_thread_with_windows ret=00000000 err=000000aa
+setthreaddesktop_same ret=00000000 err=000000aa
+closedesktop_created ret=00000001 err=0000dead
+setprocesswindowstation_same ret=00000001 err=0000dead
+setprocesswindowstation_invalid ret=00000000 err=00000006
+createwindowstation_nonnull ret=00000000 err=00000000
+closewindowstation_invalid ret=00000000 err=00000006
+-- dde
+ddeinitialize ret=00000000 err=00000000
+  inst_nonzero ret=00000001 err=00000000
+ddecreatestringhandle_nonzero ret=00000001 err=00000000
+ddecreatestringhandle_bad_codepage ret=00000000 err=0000dead
+  ddegetlasterror_after_bad_cp ret=00004006 err=0000dead
+ddegetlasterror_fresh ret=00000000 err=0000dead
+ddeconnect_null ret=00000001 err=00000000
+  ddegetlasterror ret=0000400a err=0000dead
+  ddegetlasterror_again ret=00000000 err=0000dead
+ddeclienttransaction_null_conv ret=00000000 err=0000dead
+  ddegetlasterror ret=00004006 err=0000dead
+ddedisconnect_null ret=00000000 err=0000dead
+ddefreestringhandle ret=00000001 err=0000dead
+ddefreestringhandle_again ret=00000001 err=00000006
+ddefreestringhandle_bad_inst ret=00000000 err=0000dead
+ddegetlasterror_bad_inst ret=00004006 err=0000dead
+ddeuninitialize ret=00000001 err=00000000
+ddeuninitialize_again ret=00000000 err=0000dead
+ddeinitialize_nonzero_inst ret=00004006 err=0000dead
+ddeinitialize_null_cb ret=00000000 err=0000dead
+-- notifications
+registerdevicenotification_nonnull ret=00000001 err=00000000
+unregisterdevicenotification ret=00000001 err=00000000
+unregisterdevicenotification_again ret=00000000 err=00000006
+unregisterdevicenotification_null ret=00000000 err=00000006
+rdn_all_classes ret=00000001 err=00000000
+rdn_small_size ret=00000001 err=00000000
+rdn_invalid_hwnd ret=00000001 err=00000000
+rdn_bad_flags ret=00000001 err=00000000
+rdn_null_filter ret=00000000 err=00000057
+rdn_oem_type ret=00000000 err=0000000d
+registerdevicenotificationa_nonnull ret=00000001 err=00000000
+registerpowersettingnotification_nonnull ret=00000001 err=00000000
+unregisterpowersettingnotification ret=00000001 err=0000dead
+unregisterpowersettingnotification_again ret=00000000 err=00000057
+rpsn_invalid_hwnd ret=00000001 err=00000000
+rpsn_bad_flags ret=00000000 err=00000057
+registersuspendresume_nonnull ret=00000001 err=00000000
+unregistersuspendresume ret=00000001 err=0000dead
+unregistersuspendresume_again ret=00000000 err=00000057
+rsrn_bad_flags ret=00000000 err=00000057
+rsrn_invalid_hwnd ret=00000001 err=0000dead
+-- shutdownblock
+sbrq_none ret=00000000 err=00000057
+sbrc ret=00000001 err=0000dead
+sbrq_len ret=00000001 err=0000dead
+  cch=7
+sbrq_text ret=00000001 err=0000dead
+  text="Saving"
+  cch=7
+sbrq_small ret=00000001 err=0000dead
+  cch=7
+sbrc_again_replaces ret=00000001 err=0000dead
+sbrc_invalid_hwnd ret=00000000 err=00000578
+sbrc_null_reason ret=00000000 err=00000057
+sbrd ret=00000001 err=0000dead
+sbrd_again ret=00000000 err=00000057
+sbrd_invalid_hwnd ret=00000000 err=00000578
+-- defwindowproc text
+dwp_settext ret=00000001 err=0000dead
+dwp_gettextlength ret=00000005 err=0000dead
+dwp_gettext_small ret=00000002 err=0000dead
+  text="He"
+dwp_gettext_zero ret=00000000 err=0000dead
+dwpa_gettextlength ret=00000005 err=0000dead
+dwpa_gettext ret=00000005 err=0000dead
+  text="Hello"
+dwp_settext_null ret=00000001 err=0000dead
+  gettextlength_after_null ret=00000000 err=0000dead
+dwp_unknown_message ret=00000000 err=0000dead
+dwp_invalid_hwnd ret=00000000 err=00000578
+done
+== x86
+-- menus
+createpopupmenu_nonnull ret=00000001 err=00000000
+ismenu ret=00000001 err=0000dead
+ismenu_bogus ret=00000000 err=00000579
+getmenuitemcount_empty ret=00000000 err=0000dead
+appendmenu_string ret=00000001 err=0000dead
+appendmenu_separator ret=00000001 err=0000dead
+appendmenu_popup ret=00000001 err=0000dead
+appendmenu_sub_item ret=00000001 err=0000dead
+appendmenu_bogus_menu ret=00000000 err=00000579
+appendmenu_popup_bogus_submenu ret=00000001 err=00000579
+getmenuitemcount ret=00000004 err=0000dead
+getmenuitemcount_bogus ret=ffffffff err=00000579
+insertmenu_byposition_1 ret=00000001 err=0000dead
+insertmenu_bycommand_100 ret=00000001 err=0000dead
+insertmenu_byposition_past_end ret=00000001 err=0000dead
+insertmenu_bycommand_missing ret=00000001 err=0000dead
+insertmenu_byposition_minus1 ret=00000001 err=0000dead
+getmenuitemcount_after ret=00000009 err=0000dead
+  item 0 id=102
+  item 1 id=100
+  item 2 id=101
+  item 3 id=0
+  item 4 id=-1
+  item 5 id=74565
+  item 6 id=103
+  item 7 id=104
+  item 8 id=105
+insertmenuiteminfo ret=00000001 err=0000dead
+  mii_cb=48
+insertmenuiteminfo_old_cb ret=00000001 err=0000dead
+insertmenuiteminfo_bad_cb ret=00000000 err=00000057
+insertmenuiteminfo_big_cb ret=00000000 err=00000057
+getmenuiteminfo_len_query ret=00000001 err=0000dead
+  cch=3
+  ftype=00000000
+  fstate=00000000
+  wid=100
+getmenuiteminfo_truncated ret=00000001 err=0000dead
+  cch=1
+  text="O"
+getmenuiteminfo_full ret=00000001 err=0000dead
+  cch=3
+  text="One"
+getmenuiteminfo_popup_by_pos ret=00000001 err=0000dead
+  hsubmenu_is_sub ret=00000000 err=00000000
+  ftype=00000800
+getmenuiteminfo_separator ret=00000001 err=0000dead
+  ftype=00000000
+getmenuiteminfo_missing ret=00000000 err=000005b0
+getmenuiteminfo_bad_cb ret=00000000 err=00000057
+setmenuiteminfo ret=00000001 err=0000dead
+setmenuiteminfo_missing ret=00000000 err=000005b0
+getmenustring ret=00000003 err=0000dead
+  text="Uno"
+checkmenuitem ret=00000000 err=0000dead
+checkmenuitem_again ret=00000008 err=0000dead
+checkmenuitem_missing ret=ffffffff err=0000dead
+checkmenuitem_popup_parent ret=00000008 err=0000dead
+enablemenuitem_gray ret=00000000 err=0000dead
+enablemenuitem_enable ret=00000001 err=0000dead
+enablemenuitem_missing ret=ffffffff err=0000dead
+enablemenuitem_bogus_menu ret=ffffffff err=00000579
+getmenustate ret=00000000 err=0000dead
+getmenustate_sub_popup ret=00000803 err=0000dead
+setmenudefaultitem ret=00000001 err=0000dead
+getmenudefaultitem ret=00000064 err=0000dead
+setmenudefaultitem_missing ret=00000000 err=0000dead
+getmenudefaultitem_after_missing ret=00000064 err=0000dead
+setmenudefaultitem_clear ret=00000001 err=0000dead
+getmenudefaultitem_none ret=ffffffff err=0000dead
+getmenuinfo ret=00000001 err=0000dead
+  cb=28
+  style=00000000
+  maxheight=0
+  help=0
+setmenuinfo ret=00000001 err=0000dead
+getmenuinfo_after ret=00000001 err=0000dead
+  style=08000000
+  data=85
+getmenuinfo_bad_cb ret=00000000 err=00000057
+setmenuinfo_bad_mask ret=00000001 err=0000dead
+deletemenu_bycommand ret=00000001 err=0000dead
+deletemenu_missing ret=00000000 err=0000dead
+deletemenu_popup_destroys_sub ret=00000001 err=0000dead
+  ismenu_sub_after_delete ret=00000000 err=00000579
+removemenu_missing ret=00000000 err=0000dead
+setmenu_popup_window ret=00000000 err=00000057
+  getmenu_is_m ret=00000000 err=00000000
+setmenu_child_window ret=00000000 err=00000578
+setmenu_bogus_menu ret=00000000 err=00000579
+setmenu_null ret=00000001 err=00000000
+getmenu_null_after ret=00000000 err=0000dead
+getmenu_invalid_hwnd ret=00000000 err=00000578
+getsystemmenu_nonnull ret=00000001 err=00000000
+  sysmenu_count ret=00000007 err=0000dead
+  sys item 0 id=0000f120
+  sys item 1 id=0000f010
+  sys item 2 id=0000f000
+  sys item 3 id=0000f020
+  sys item 4 id=0000f030
+  sys item 5 id=00000000
+  sys item 6 id=0000f060
+getsystemmenu_popup_no_sysmenu ret=00000000 err=0000dead
+getsystemmenu_revert ret=00000000 err=0000dead
+getsystemmenu_invalid ret=00000000 err=00000578
+trackpopupmenu_bogus_menu ret=00000000 err=00000579
+trackpopupmenu_invalid_hwnd ret=00000000 err=00000578
+destroymenu ret=00000001 err=0000dead
+destroymenu_again ret=00000000 err=00000579
+ismenu_after_destroy ret=00000000 err=00000579
+destroymenu_null ret=00000000 err=00000579
+-- dialogs
+-- dialog init
+  getdlgitem_ok_nonnull ret=00000001 err=00000000
+  getdlgctrlid_ok ret=00000001 err=0000dead
+  getdlgctrlid_dialog ret=00000000 err=0000dead
+  getdlgctrlid_invalid ret=00000000 err=00000578
+  dialog_class="#32770"
+  gdi_123 v=123 tr=1 err=00000000
+  gdi_minus5_signed v=-5 tr=1
+  gdi_minus5_unsigned v=0 tr=0
+  gdi_spaces v=42 tr=0
+  gdi_trailing_text v=12 tr=0
+  gdi_overflow v=0 tr=0
+  gdi_plus v=0 tr=0
+  gdi_empty v=0 tr=0
+  gdi_missing v=0 tr=0 err=0000058d
+  setdlgitemint_signed ret=00000001 err=00000000
+  text="-7"
+  setdlgitemint_unsigned ret=00000001 err=00000000
+  text="4294967289"
+  setdlgitemint_missing ret=00000000 err=0000058d
+  checkdlgbutton ret=00000001 err=0000dead
+  isdlgbuttonchecked ret=00000001 err=0000dead
+  checkdlgbutton_indeterminate ret=00000001 err=0000dead
+  isdlgbuttonchecked2 ret=00000002 err=0000dead
+  checkdlgbutton_missing ret=00000000 err=0000058d
+  mapdialogrect ret=00000001 err=0000dead
+  mapped rect=8,16,8,16
+  mapdialogrect_non_dialog ret=00000000 err=0000058c
+  enddialog ret=00000001 err=0000dead
+  enddialog_again ret=00000001 err=0000dead
+dialogboxindirect_ret ret=0000002b err=00000000
+  font_dialog_mapdialogrect ret=00000001 err=0000dead
+  mapped rect=6,13,6,13
+dialogboxindirect_font_ret ret=00000007 err=00000000
+dialogbase_units ret=00100008 err=0000dead
+dialogboxparam_missing_resource ret=ffffffff err=00000714
+createdialogparam_missing_resource ret=00000000 err=00000714
+createdialogindirect_nonnull ret=00000001 err=00000000
+  modeless_isvisible ret=00000000 err=0000dead
+  enddialog_modeless ret=00000001 err=00000000
+  modeless_isvisible_after_end ret=00000000 err=0000dead
+  modeless_iswindow_after_end ret=00000001 err=0000dead
+enddialog_non_dialog ret=00000000 err=0000058c
+enddialog_invalid ret=00000000 err=00000578
+-- wsprintf
+wsprintfa n=61 s=-12|4000000000|ff|FF|00000abc|3    |    4|str|Z|7|-8|wide|%|9
+wsprintfw n=34 s=-1|w|narrow|h|Q|n|beef|tr|    a|10
+wsprintfa_unsupported n=16 s=00001234|5|f|e|n
+wsprintfa_1024_limit n=1024 len=1024
+wsprintfa_null_string n=2 s=|x
+wsprintfa_flags n=27 s=ab      |-0000005|+d| d|0x3
+-- desktops
+getprocesswindowstation_nonnull ret=00000001 err=00000000
+uoi_name_winsta ret=00000001 err=0000dead
+  name="WinSta0"
+  need=16
+getthreaddesktop_nonnull ret=00000001 err=00000000
+uoi_name_desktop ret=00000001 err=0000dead
+  name="Default"
+  need=16
+uoi_type_desktop ret=00000001 err=0000dead
+  type="Desktop"
+  need=16
+uoi_type_winsta ret=00000001 err=0000dead
+  type="WindowStation"
+uoi_flags_winsta ret=00000001 err=0000dead
+  inherit=0
+  flags=00000001
+  need=12
+uoi_flags_desktop ret=00000001 err=0000dead
+  flags=00000000
+uoi_name_small_buffer ret=00000000 err=0000007a
+  need=16
+uoi_name_null_need ret=00000001 err=0000dead
+uoi_bad_index ret=00000000 err=0000dead
+uoi_invalid_handle ret=00000000 err=0000dead
+uoi_io_desktop ret=00000001 err=0000dead
+  io=1
+getthreaddesktop_bogus_tid ret=00000000 err=0000dead
+opendesktop_default_nonnull ret=00000001 err=00000000
+closedesktop_opened ret=00000001 err=0000dead
+opendesktop_missing ret=00000000 err=00000002
+closedesktop_thread_desktop ret=00000000 err=000000aa
+closedesktop_invalid ret=00000000 err=00000006
+createdesktop_nonnull ret=00000001 err=00000000
+setthreaddesktop_thread_with_windows ret=00000000 err=000000aa
+setthreaddesktop_same ret=00000000 err=000000aa
+closedesktop_created ret=00000001 err=0000dead
+setprocesswindowstation_same ret=00000001 err=0000dead
+setprocesswindowstation_invalid ret=00000000 err=00000006
+createwindowstation_nonnull ret=00000000 err=00000000
+closewindowstation_invalid ret=00000000 err=00000006
+-- dde
+ddeinitialize ret=00000000 err=00000000
+  inst_nonzero ret=00000001 err=00000000
+ddecreatestringhandle_nonzero ret=00000001 err=00000000
+ddecreatestringhandle_bad_codepage ret=00000000 err=0000dead
+  ddegetlasterror_after_bad_cp ret=00004006 err=0000dead
+ddegetlasterror_fresh ret=00000000 err=0000dead
+ddeconnect_null ret=00000001 err=00000000
+  ddegetlasterror ret=0000400a err=0000dead
+  ddegetlasterror_again ret=00000000 err=0000dead
+ddeclienttransaction_null_conv ret=00000000 err=0000dead
+  ddegetlasterror ret=00004006 err=0000dead
+ddedisconnect_null ret=00000000 err=0000dead
+ddefreestringhandle ret=00000001 err=0000dead
+ddefreestringhandle_again ret=00000001 err=00000006
+ddefreestringhandle_bad_inst ret=00000000 err=0000dead
+ddegetlasterror_bad_inst ret=00004006 err=0000dead
+ddeuninitialize ret=00000001 err=00000000
+ddeuninitialize_again ret=00000000 err=0000dead
+ddeinitialize_nonzero_inst ret=00004006 err=0000dead
+ddeinitialize_null_cb ret=00000000 err=0000dead
+-- notifications
+registerdevicenotification_nonnull ret=00000001 err=00000000
+unregisterdevicenotification ret=00000001 err=00000000
+unregisterdevicenotification_again ret=00000000 err=00000006
+unregisterdevicenotification_null ret=00000000 err=00000006
+rdn_all_classes ret=00000001 err=00000000
+rdn_small_size ret=00000001 err=00000000
+rdn_invalid_hwnd ret=00000001 err=00000000
+rdn_bad_flags ret=00000001 err=00000000
+rdn_null_filter ret=00000000 err=00000057
+rdn_oem_type ret=00000000 err=0000000d
+registerdevicenotificationa_nonnull ret=00000001 err=00000000
+registerpowersettingnotification_nonnull ret=00000001 err=00000000
+unregisterpowersettingnotification ret=00000001 err=0000dead
+unregisterpowersettingnotification_again ret=00000000 err=00000057
+rpsn_invalid_hwnd ret=00000001 err=00000000
+rpsn_bad_flags ret=00000000 err=00000057
+registersuspendresume_nonnull ret=00000001 err=00000000
+unregistersuspendresume ret=00000001 err=0000dead
+unregistersuspendresume_again ret=00000000 err=00000057
+rsrn_bad_flags ret=00000000 err=00000057
+rsrn_invalid_hwnd ret=00000001 err=0000dead
+-- shutdownblock
+sbrq_none ret=00000000 err=00000057
+sbrc ret=00000001 err=0000dead
+sbrq_len ret=00000001 err=0000dead
+  cch=7
+sbrq_text ret=00000001 err=0000dead
+  text="Saving"
+  cch=7
+sbrq_small ret=00000001 err=0000dead
+  cch=7
+sbrc_again_replaces ret=00000001 err=0000dead
+sbrc_invalid_hwnd ret=00000000 err=00000578
+sbrc_null_reason ret=00000000 err=00000057
+sbrd ret=00000001 err=0000dead
+sbrd_again ret=00000000 err=00000057
+sbrd_invalid_hwnd ret=00000000 err=00000578
+-- defwindowproc text
+dwp_settext ret=00000001 err=0000dead
+dwp_gettextlength ret=00000005 err=0000dead
+dwp_gettext_small ret=00000002 err=0000dead
+  text="He"
+dwp_gettext_zero ret=00000000 err=0000dead
+dwpa_gettextlength ret=00000005 err=0000dead
+dwpa_gettext ret=00000005 err=0000dead
+  text="Hello"
+dwp_settext_null ret=00000001 err=0000dead
+  gettextlength_after_null ret=00000000 err=0000dead
+dwp_unknown_message ret=00000000 err=0000dead
+dwp_invalid_hwnd ret=00000000 err=00000578
+done

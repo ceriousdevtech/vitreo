@@ -1,0 +1,29 @@
+main initial focus=1
+worker set ret=2 focus=2
+main after worker focus=1
+worker query focus=2
+main clear ret=1 focus=0
+worker query focus=2
+attach=1 main focus=2
+worker query focus=2
+worker set ret=2 focus=2
+main joined focus=2
+detach=1 main focus=0
+worker query focus=2
+worker clear ret=2 focus=0
+main after worker clear focus=0
+worker set ret=0 focus=2
+reverse attach=1 main focus=2
+worker query focus=2
+reverse detach=1 main focus=0
+worker query focus=2
+worker set ret=2 focus=2
+null target attach=1 main focus=2
+worker query focus=2
+null target detach=1 main focus=0
+worker query focus=2
+worker set ret=2 focus=2
+main last attach=1 main focus=2
+worker query focus=2
+main last detach=1 main focus=0
+worker query focus=2

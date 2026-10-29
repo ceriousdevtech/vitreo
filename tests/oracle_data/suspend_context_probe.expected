@@ -1,0 +1,20 @@
+# What a garbage collector sees through SuspendThread + GetThreadContext.
+# Measured 2026-09-22 on winoracle (x64), 200 suspends per thread:
+#   x86_64-w64-mingw32-gcc -O1 -nostdlib -e probe_main -o p.exe \
+#       tools/oracle_probe/suspend_context_probe.c -lkernel32
+spinning  in_regs=0xc8 via_stack=0x0  MISSING=0x0 rsp_outside=0x0 api_fail=0x0
+blocked   in_regs=0x0  via_stack=0xc8 MISSING=0x0 rsp_outside=0x0 api_fail=0x0
+#
+# Windows stops a thread wherever it is. The spinning thread's callee-saved
+# magic is always in its registers; the blocked thread's callee saved it to
+# the stack. MISSING is the column that matters: a GC scanning registers and
+# stack never loses the value.
+#
+# Vitreo before 2026-09-22: the probe HUNG. SuspendThread waits (no timeout)
+# for the target to park at a checkpoint, and a hot guest loop never reaches
+# one -- both dispatch loops chain JIT blocks in an inner do/while that only
+# leaves on cold blocks, thunks or stale code. The hang dump showed the target
+# at suspend_depth=1 with its counter still climbing.
+#
+# Vitreo after: spinning in_regs=0xc8, blocked in_regs=0xc8 (not via_stack:
+# Vitreo's host thunks do not clobber callee-saved registers), MISSING=0 both.

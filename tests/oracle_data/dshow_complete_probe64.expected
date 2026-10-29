@@ -1,0 +1,43 @@
+one renderer, running:
+  [A.GetMiscFlags]
+[A.SetSync][A.Pause]  [A.GetMiscFlags]
+[A.Run]  event code=d p1=0 p2=0
+  (queue empty)
+  A notify(1) hr=00000000
+  event code=1 p1=0 p2=0
+  (queue empty)
+one renderer, EC_COMPLETE with failure hr:
+[A.Pause][A.Stop][A.Pause][A.Run]  (queue empty)
+  A notify(1) hr=00000000
+  event code=1 p1=ffffffff80004005 p2=0
+  (queue empty)
+one renderer, paused:
+[A.Pause][A.Stop][A.Pause]  event code=e p1=0 p2=0
+  (queue empty)
+  A notify(1) hr=00000000
+  (queue empty)
+then run:
+[GetState ms=0 tid_main=1][A.Run]  (queue empty)
+[A.Pause][A.Stop]stopped:
+  A notify(1) hr=00000000
+  (queue empty)
+[B.SetSync]two renderers, running:
+[B.Pause][A.Pause]  [B.GetMiscFlags]
+  [A.GetMiscFlags]
+[B.Run][A.Run]  (queue empty)
+  A notify(1) hr=00000000
+  (queue empty)
+  A notify(1) hr=00000000
+  event code=1 p1=0 p2=0
+  (queue empty)
+  B notify(1) hr=00000000
+  (queue empty)
+restart run (stop/run) after complete:
+[B.Pause][A.Pause][B.Stop][A.Stop][B.Pause][A.Pause][B.Run][A.Run]  B notify(1) hr=00000000
+  (queue empty)
+cancel default handling:
+  cancel hr=00000000
+[B.Pause][A.Pause][B.Stop][A.Stop][B.Pause][A.Pause][B.Run][A.Run]  A notify(1) hr=00000000
+  event code=1 p1=0 p2=A
+  (queue empty)
+[B.Pause][A.Pause][B.Stop][A.Stop][B.SetSyncNull][GetState ms=0 tid_main=1][A.SetSyncNull][GetState ms=0 tid_main=1]

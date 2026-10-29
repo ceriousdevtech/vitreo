@@ -1,0 +1,4 @@
+rtv 2darray s1 -1: hr=0x00000000 size=3
+srv 2darray s2 -1: hr=0x00000000 size=2
+srv 2darray s1 5 (past end): hr=0x80070057
+rtv 2d over 4-slice array: hr=0x00000000

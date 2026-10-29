@@ -1,0 +1,24 @@
+== osver64
+RtlGetVersion 10.0 build=real platform=2
+RtlGetNtVersionNumbers 10.0 build=real flags=f0000000
+KUSER NtMajor=10 NtMinor=0 NtBuildNumber=real (raw high=0)
+PEB OSMajor=10 OSMinor=0 OSBuild=real OSCSDVersion=0 OSPlatformId=2
+GetVersionExW 6.2 build=9200
+== osver32
+RtlGetVersion 10.0 build=real platform=2
+RtlGetNtVersionNumbers 10.0 build=real flags=f0000000
+KUSER NtMajor=10 NtMinor=0 NtBuildNumber=real (raw high=0)
+PEB OSMajor=10 OSMinor=0 OSBuild=real OSCSDVersion=0 OSPlatformId=2
+GetVersionExW 6.2 build=9200
+== osver64m
+RtlGetVersion 10.0 build=real platform=2
+RtlGetNtVersionNumbers 10.0 build=real flags=f0000000
+KUSER NtMajor=10 NtMinor=0 NtBuildNumber=real (raw high=0)
+PEB OSMajor=10 OSMinor=0 OSBuild=real OSCSDVersion=0 OSPlatformId=2
+GetVersionExW 10.0 build=real
+== osver32m
+RtlGetVersion 10.0 build=real platform=2
+RtlGetNtVersionNumbers 10.0 build=real flags=f0000000
+KUSER NtMajor=10 NtMinor=0 NtBuildNumber=real (raw high=0)
+PEB OSMajor=10 OSMinor=0 OSBuild=real OSCSDVersion=0 OSPlatformId=2
+GetVersionExW 10.0 build=real

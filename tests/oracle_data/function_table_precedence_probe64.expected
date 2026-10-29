@@ -1,0 +1,13 @@
+baseline_in_func result=1 callback_calls=0
+baseline_in_header result=0 callback_calls=0
+install_null_callback ok=1 range_u32=1
+nullcb_in_func result=1 callback_calls=0
+nullcb_in_header result=0 callback_calls=0
+nullcb_in_heap result=0 callback_calls=1
+install_entry_callback ok=1
+entrycb_in_func result=1 callback_calls=0
+entrycb_in_header result=0 callback_calls=0
+entrycb_in_heap result=2 callback_calls=1
+add_table_over_image ok=1
+table_in_func result=1 callback_calls=0
+done

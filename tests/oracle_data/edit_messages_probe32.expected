@@ -1,0 +1,107 @@
+== single style=0x00000080 created=1
+single empty linecount=1 li(-1)=0 li(0)=0 li(1)=0
+single empty len(idx0=0)=0 len(idx1=0)=0 len(idx2=0)=0 len(-1)=0 lfc(-1)=0 lfc(999)=0
+single empty getline(0)=0 buf="" after=0x0028
+single empty getline(1)=0 buf="" after=0x0028
+single empty getline_small=0 b0=0x0002 b1=0x7777 b2=0x7777
+single empty getsel=0x00000000 start=0 end=0
+single empty modify=0 canundo=0 limit=30000 firstvis=0 pwchar=0 margins=0x00000000
+single crlf linecount=1 li(-1)=0 li(0)=0 li(1)=0
+single crlf len(idx0=0)=13 len(idx1=0)=13 len(idx2=0)=13 len(-1)=13 lfc(-1)=0 lfc(999)=0
+single crlf getline(0)=13 buf="ab\r\ncd\r\n\r\nxyz" after=0x7777
+single crlf getline(1)=13 buf="ab\r\ncd\r\n\r\nxyz" after=0x7777
+single crlf getline_small=2 b0=0x0061 b1=0x0062 b2=0x7777
+single crlf textlen=13 modify=0 canundo=0
+single lonelf linecount=1 li(-1)=0 li(0)=0 li(1)=0
+single lonelf len(idx0=0)=5 len(idx1=0)=5 len(idx2=0)=5 len(-1)=5 lfc(-1)=0 lfc(999)=0
+single lonelf getline(0)=5 buf="a\nb\rc" after=0x7777
+single lonelf getline(1)=5 buf="a\nb\rc" after=0x7777
+single lonelf getline_small=2 b0=0x0061 b1=0x000a b2=0x7777
+lonelf_text="a\nb\rc"
+single trailing linecount=1 li(-1)=0 li(0)=0 li(1)=0
+single trailing len(idx0=0)=8 len(idx1=0)=8 len(idx2=0)=8 len(-1)=8 lfc(-1)=0 lfc(999)=0
+single trailing getline(0)=8 buf="ab\r\ncd\r\n" after=0x7777
+single trailing getline(1)=8 buf="ab\r\ncd\r\n" after=0x7777
+single trailing getline_small=2 b0=0x0061 b1=0x0062 b2=0x7777
+single setsel(7,2) getsel=0x00070002 start=2 end=7
+single setsel(0,-1) getsel=0x000b0000 start=0 end=11
+single setsel(-1,0) getsel=0x00030003 start=3 end=3
+single setsel(50,60) getsel=0x000b000b start=11 end=11
+single setsel(-5,4) getsel=0x000b0004 start=4 end=11
+single getsel_null=0x00050002
+single linelength(-1) with sel(2,5)=11
+single replacesel getsel=0x000b000b start=11 end=11
+replacesel_text="hello there" modify=1 canundo=1
+single undo=1 text="hello world" canundo=1 modify=1
+single after_undo getsel=0x000b0006 start=6 end=11
+single redo=1 text="hello there"
+single replacesel_noundo canundo=0
+single settext_resets canundo=0 modify=0
+single limit5 getlimit=5
+single settext_over_limit len=10
+single replacesel_over_limit text="012AB"
+single limit0 getlimit=2147483646
+single limitmax getlimit=2147483646
+single setreadonly=1 style_ro=1 clear=1 style_ro=0
+single pwchar=42 style_pw=1 cleared=0 style_pw=0
+single settabstops=0 settabstops0=0
+single margins_after=0x00070003
+single setcue=1 getcue=1 cue="Type here" getcue_small=1 cue="Typ"
+single fmtlines=0 scroll_linedown=0x00000000 linescroll=0 scrollcaret=0 getthumb=0
+single gethandle_nonzero=0 getwordbreak=0 getimestatus=0
+== multi style=0x003000c4 created=1
+multi empty linecount=1 li(-1)=0 li(0)=0 li(1)=-1
+multi empty len(idx0=0)=0 len(idx1=-1)=0 len(idx2=-1)=0 len(-1)=0 lfc(-1)=0 lfc(999)=0
+multi empty getline(0)=0 buf="" after=0x0028
+multi empty getline(1)=0 buf="" after=0x0028
+multi empty getline_small=0 b0=0x0002 b1=0x7777 b2=0x7777
+multi empty getsel=0x00000000 start=0 end=0
+multi empty modify=0 canundo=0 limit=30000 firstvis=0 pwchar=0 margins=0x00000000
+multi crlf linecount=4 li(-1)=0 li(0)=0 li(1)=4 li(2)=8 li(3)=10 li(4)=-1
+multi crlf len(idx0=0)=2 len(idx1=4)=2 len(idx2=8)=0 len(idx3=10)=3 len(idx4=-1)=3 len(idx5=-1)=3 len(-1)=2 lfc(-1)=0 lfc(999)=3
+multi crlf getline(0)=2 buf="ab" after=0x7777
+multi crlf getline(1)=2 buf="cd" after=0x7777
+multi crlf getline(2)=0 buf="" after=0x0028
+multi crlf getline(3)=3 buf="xyz" after=0x7777
+multi crlf getline(4)=0 buf="" after=0x0028
+multi crlf getline_small=2 b0=0x0061 b1=0x0062 b2=0x7777
+multi crlf textlen=13 modify=0 canundo=0
+multi lonelf linecount=1 li(-1)=0 li(0)=0 li(1)=-1
+multi lonelf len(idx0=0)=5 len(idx1=-1)=5 len(idx2=-1)=5 len(-1)=5 lfc(-1)=0 lfc(999)=0
+multi lonelf getline(0)=5 buf="a\nb\rc" after=0x7777
+multi lonelf getline(1)=0 buf="" after=0x0028
+multi lonelf getline_small=2 b0=0x0061 b1=0x000a b2=0x7777
+lonelf_text="a\nb\rc"
+multi trailing linecount=3 li(-1)=0 li(0)=0 li(1)=4 li(2)=8 li(3)=-1
+multi trailing len(idx0=0)=2 len(idx1=4)=2 len(idx2=8)=0 len(idx3=-1)=0 len(idx4=-1)=0 len(-1)=2 lfc(-1)=0 lfc(999)=2
+multi trailing getline(0)=2 buf="ab" after=0x7777
+multi trailing getline(1)=2 buf="cd" after=0x7777
+multi trailing getline(2)=0 buf="" after=0x0028
+multi trailing getline(3)=0 buf="" after=0x0028
+multi trailing getline_small=2 b0=0x0061 b1=0x0062 b2=0x7777
+multi setsel(7,2) getsel=0x00070002 start=2 end=7
+multi setsel(0,-1) getsel=0x000b0000 start=0 end=11
+multi setsel(-1,0) getsel=0x00030003 start=3 end=3
+multi setsel(50,60) getsel=0x000b000b start=11 end=11
+multi setsel(-5,4) getsel=0x000b0004 start=4 end=11
+multi getsel_null=0x00050002
+multi linelength(-1) with sel(2,5)=8
+multi replacesel getsel=0x000b000b start=11 end=11
+replacesel_text="hello there" modify=1 canundo=1
+multi undo=1 text="hello world" canundo=1 modify=1
+multi after_undo getsel=0x000b0006 start=6 end=11
+multi redo=1 text="hello there"
+multi replacesel_noundo canundo=0
+multi settext_resets canundo=0 modify=0
+multi limit5 getlimit=5
+multi settext_over_limit len=10
+multi replacesel_over_limit text="012AB"
+multi limit0 getlimit=-1
+multi limitmax getlimit=2147483647
+multi setreadonly=1 style_ro=1 clear=1 style_ro=0
+multi pwchar=42 style_pw=1 cleared=0 style_pw=0
+multi settabstops=1 settabstops0=1
+multi margins_after=0x00070003
+multi setcue=0 getcue=0 cue="\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777\u7777" getcue_small=0 cue="\u7777\u7777\u7777\u7777"
+multi fmtlines=1 scroll_linedown=0x00000000 linescroll=1 scrollcaret=1 getthumb=0
+multi gethandle_nonzero=1 getwordbreak=0 getimestatus=0

@@ -1,0 +1,991 @@
+open rc=0 handle_nonzero=1
+open_by_handle_string rc=6
+openex_bad_flag rc=87
+open_missing rc=1618
+open_null rc=87
+open_nullout rc=87
+gp nullbuf n0 rc=0 n=3
+gp nullbuf n99 rc=0 n=3
+gp buf n0 rc=234 n=3 b0=122
+gp buf n3 rc=234 n=3 b=ab
+gp buf n4 rc=0 n=3 b=abc
+gp missing rc=0 n=0 b0=0
+gp nullname rc=87 n=8
+gp emptyname rc=0 n=0
+gp nullpcch rc=87
+gp h0 rc=6 n=8
+gp hbad rc=6
+gpA n2 rc=234 n=3 b=a
+gpA nullbuf rc=0 n=3
+gp wrongtype rc=6
+sp new rc=0
+prop NewP=v
+sp empty rc=0
+prop NewP=
+sp nullval rc=0
+prop S=
+sp nullname rc=87
+sp emptyname rc=1627
+sp h0 rc=6
+sp lower rc=0
+prop s=lowercase-s
+prop S=abc
+sp builtin rc=0
+prop VersionNT=1
+mode 0 -> 0
+mode 1 -> 0
+mode 2 -> 0
+mode 3 -> 1
+mode 4 -> 0
+mode 5 -> 0
+mode 6 -> 0
+mode 7 -> 0
+mode 8 -> 1
+mode 9 -> 0
+mode 10 -> 0
+mode 11 -> 0
+mode 12 -> 0
+mode 13 -> 1
+mode 14 -> 0
+mode 15 -> 0
+mode 16 -> 0
+mode 17 -> 0
+mode 18 -> 0
+mode 19 -> 0
+mode h0 -> 0
+setmode 0 on -> 5
+setmode 1 on -> 5
+setmode 2 on -> 5
+setmode 3 on -> 5
+setmode 4 on -> 5
+setmode 5 on -> 5
+setmode 6 on -> 0
+setmode 7 on -> 0
+setmode 8 on -> 5
+setmode 9 on -> 5
+setmode 10 on -> 5
+setmode 11 on -> 5
+setmode 12 on -> 5
+setmode 13 on -> 5
+setmode 14 on -> 5
+setmode 15 on -> 5
+setmode 16 on -> 5
+setmode 17 on -> 5
+setmode 18 on -> 5
+setmode 19 on -> 5
+after setmode 6 -> 1 7 -> 1
+setmode h0 -> 6
+lang -> 1033
+lang h0 -> 6
+cond [] -> 2
+cond [   ] -> 2
+cond [A] -> 1
+cond [B] -> 1
+cond [S] -> 1
+cond [NoSuch] -> 0
+cond [NOT A] -> 0
+cond [not A] -> 0
+cond [A AND B] -> 1
+cond [A and B] -> 1
+cond [A OR B] -> 1
+cond [A XOR A] -> 0
+cond [A EQV B] -> 1
+cond [A IMP B] -> 1
+cond [B IMP A] -> 1
+cond [N > N2] -> 1
+cond [N > "9"] -> 0
+cond [N = 10] -> 1
+cond [N = "10"] -> 1
+cond [N > 9] -> 1
+cond [S = "abc"] -> 1
+cond [S = abc] -> 0
+cond [S ~= "ABC"] -> 1
+cond [S = "ABC"] -> 0
+cond [S < "abd"] -> 1
+cond [S > 5] -> 0
+cond [S <> 5] -> 1
+cond [S = 5] -> 0
+cond [S >< "b"] -> 1
+cond [S << "a"] -> 1
+cond [S >> "bc"] -> 1
+cond [S ~>< "B"] -> 1
+cond [S ~<< "A"] -> 1
+cond [S ~>> "BC"] -> 1
+cond [Bits >< 2] -> 1
+cond [Bits >< 4] -> 0
+cond [Bits << 3] -> 1
+cond [Bits >> 3] -> 1
+cond [Neg < 0] -> 1
+cond [Neg = -5] -> 1
+cond [Big > 1] -> 1
+cond [Big = 99999999999] -> 1
+cond [Hex = 16] -> 0
+cond [Sp = 5] -> 0
+cond [Plus = 5] -> 0
+cond [V > "1.2"] -> 1
+cond [V >= 1] -> 0
+cond [NoSuch = ""] -> 1
+cond [NoSuch = 0] -> 0
+cond [NoSuch <> 0] -> 1
+cond [NoSuch < 1] -> 0
+cond ["" = NoSuch] -> 1
+cond [(A)] -> 1
+cond [((A OR B) AND NOT B)] -> 0
+cond [A = ] -> 3
+cond [(A] -> 3
+cond [A)] -> 3
+cond [A AND] -> 3
+cond ["unterminated] -> 3
+cond [A == 1] -> 3
+cond [A !] -> 3
+cond [1] -> 1
+cond [0] -> 0
+cond [-1] -> 1
+cond ["0"] -> 1
+cond [""] -> 0
+cond ["x"] -> 1
+cond [%PATH] -> 1
+cond [%NOSUCHENVVAR] -> 0
+cond [%path >< "\"] -> 1
+cond [$C1] -> 0
+cond [$C1 = -1] -> 0
+cond [?C1] -> 0
+cond [?C1 = -1] -> 0
+cond [&F1] -> 0
+cond [&F1 = -1] -> 0
+cond [!F1] -> 0
+cond [!F1 = -1] -> 0
+cond [$NoComp = -1] -> 0
+cond [&NoFeat] -> 0
+cond [&NoFeat = -1] -> 0
+cond [&NoFeat = ""] -> 1
+cond [$C1 = 3] -> 0
+cond [Installed] -> 0
+cond [NOT Installed] -> 1
+cond [VersionNT] -> 1
+cond [VersionNT >= 600] -> 0
+cond [VersionNT64] -> 1
+cond [A AND B OR A] -> 1
+cond [B OR A AND B] -> 1
+cond [NOT B AND A] -> 0
+cond [NOT NOT A] -> 1
+cond [A=1] -> 1
+cond [A<>1] -> 0
+cond [A>=1] -> 1
+cond [A<=1] -> 1
+cond [lower] -> 1
+cond [Lower] -> 0
+cond [S><""] -> 1
+cond [S<<""] -> 1
+cond [2147483647 > 2147483646] -> 1
+cond [2147483648 > 1] -> 1
+cond [A ~= 1] -> 1
+cond [U ~= S] -> 1
+cond [N ~> "9"] -> 0
+cond [A AND (B] -> 3
+cond [Ref] -> 1
+cond [[S]] -> 3
+cond [S = "a""b"] -> 3
+cond [MsiNTProductType = 1] -> 1
+cond [A or B and B] -> 1
+cond [A Or B] -> 1
+cond [x64] -> 0
+cond [Intel] -> 1
+cond null -> 2
+cond h0 -> 3
+fmt [[S]] rc=0 n=3 -> [abc]
+fmt [[NoSuch]x] rc=0 n=1 -> [x]
+fmt [[[Ref]]] rc=0 n=3 -> [abc]
+fmt [[[Ref2]]] rc=0 n=1 -> [S]
+fmt [[[NoSuch]]] rc=0 n=0 -> []
+fmt [[\[]S[\]]] rc=0 n=3 -> [[S]]
+fmt [[\abc]] rc=0 n=1 -> [a]
+fmt [[\]] rc=0 n=3 -> [[\]]
+fmt [a[~]b] rc=0 n=3 -> [a\0b]
+fmt [[~]] rc=0 n=1 -> [\0]
+fmt [{abc}] rc=0 n=5 -> [{abc}]
+fmt [{[S]x}] rc=0 n=4 -> [abcx]
+fmt [{[NoSuch]x}] rc=0 n=0 -> []
+fmt [{[S][NoSuch]}] rc=0 n=0 -> []
+fmt [{{[S]}}] rc=0 n=0 -> []
+fmt [{{[NoSuch]}}] rc=0 n=0 -> []
+fmt [{{abc}}] rc=0 n=0 -> []
+fmt [[1]-[2]] rc=0 n=7 -> [one-two]
+fmt [[1]-[2]] rc=0 n=4 -> [one-]
+fmt [{[1]-[2]}] rc=0 n=0 -> []
+fmt [{[1]-[2]}] rc=0 n=7 -> [one-two]
+fmt [[3]] rc=0 n=0 -> []
+fmt [[1]] rc=0 n=3 -> [abc]
+fmt [[1]] rc=0 n=3 -> [[1]]
+fmt [[0]] rc=0 n=3 -> [[0]]
+fmt [[%PATH]] rc=0 n=317 -> [C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Users\<M1>\AppData\Local\Microsoft\WindowsApps;]
+fmt [[%NOSUCHENV]] rc=0 n=0 -> []
+fmt [[#NoFile]] rc=0 n=0 -> []
+fmt [[!NoFile]] rc=0 n=0 -> []
+fmt [[$C1]] rc=0 n=0 -> []
+fmt [[$NoComp]] rc=0 n=0 -> []
+fmt [[Br]] rc=0 n=3 -> [[S]]
+fmt [[Self]] rc=0 n=7 -> [[Self]x]
+fmt [a[b] rc=0 n=3 -> [a[b]
+fmt [a]b] rc=0 n=3 -> [a]b]
+fmt [a{b] rc=0 n=3 -> [a{b]
+fmt [a}b] rc=0 n=3 -> [a}b]
+fmt [[]] rc=0 n=0 -> []
+fmt [[ S ]] rc=0 n=0 -> []
+fmt [[s]] rc=0 n=11 -> [lowercase-s]
+fmt [[[S]] rc=0 n=4 -> [[[S]]
+fmt [[S]]] rc=0 n=4 -> [abc]]
+fmt [[1]] rc=0 n=0 -> []
+fmt [{[1]}] rc=0 n=0 -> []
+fmt [[S][\[][S]] rc=0 n=7 -> [abc[abc]
+fmt [[ProductCode]] rc=0 n=38 -> [{6C1F0E4B-5A7D-4E21-9B3C-0D8E2F4A6B19}]
+fmt [[TARGETDIR]] rc=0 n=0 -> []
+fmt [[SourceDir]] rc=0 n=0 -> []
+fmt nulltemplate rc=0 n=15 -> [1: a 2: 7 3: c ]
+fmt nulltemplate h0 rc=0 -> [1: a 2: 7 3: c ]
+fmt h0 props rc=0 -> [a[S]]
+fmt sizequery rc=234 n=4
+fmt small rc=234 n=4 b=a
+fmt nullbuf rc=0 n=4
+fmt badrec rc=6
+fmt badinstall rc=6
+doaction SetX rc=0
+prop X=1-set
+doaction nosuch rc=1626
+doaction empty rc=0
+doaction h0 rc=6
+doaction Fail rc=1603
+doaction FailCont rc=1603
+doaction DirCA rc=1603
+prop PROBEDIR=
+doaction CostInitialize rc=0
+doaction InstallFiles rc=1603
+doaction InstallInitialize rc=1603
+doaction lowercase rc=1626
+seq ProbeSeq rc=0
+prop X=1-set
+prop Y=1-set+y
+prop Z=
+prop W=w
+prop T=
+prop Q=
+seq ProbeSeqBad rc=1603
+prop W=
+seq ProbeSeqFail rc=1603
+prop W=
+prop Q=q
+prop T=
+seq ProbeSeqStop rc=1603
+prop W=
+seq nosuch rc=0
+seq mode1 rc=87
+seq null rc=87
+seq h0 rc=6
+msg error -> 0
+msg error|MB_OKCANCEL -> 0
+msg warning -> 0
+msg user -> 0
+msg info -> 0
+msg fatal -> 0
+msg actionstart -> 0
+msg actiondata -> 0
+msg progress -> 0
+msg commondata -> -1
+msg filesinuse -> 0
+msg resolvesource -> 0
+msg outofdisk -> 0
+msg rmfilesinuse -> -1
+msg initialize -> -1
+msg terminate -> -1
+msg showdialog -> -1
+msg 0x10000000 -> -1
+msg 0x1A000000 -> -1
+msg h0 -> -1
+msg rec0 -> -1
+prop ALLUSERS=
+prop AdminUser=1
+prop Privileged=1
+prop VersionNT=1
+prop VersionNT64=602
+prop WindowsBuild=9200
+prop ServicePackLevel=0
+prop ServicePackLevelMinor=0
+prop MsiNTProductType=1
+prop Intel=6
+prop Intel64=
+prop Msix64=6
+prop AMD64=
+prop MsiAMD64=6
+prop ARM64=
+prop Version9X=
+prop VersionMsi=5.00
+prop VersionDatabase=200
+prop ProgramFilesFolder=C:\Program Files (x86)\
+prop ProgramFiles64Folder=C:\Program Files\
+prop ProgramFiles6432Folder=
+prop CommonFilesFolder=C:\Program Files (x86)\Common Files\
+prop CommonFiles64Folder=C:\Program Files\Common Files\
+prop CommonFiles6432Folder=
+prop SystemFolder=C:\WINDOWS\SysWOW64\
+prop System64Folder=C:\WINDOWS\system32\
+prop System16Folder=
+prop WindowsFolder=C:\WINDOWS\
+prop WindowsVolume=C:\
+prop TempFolder=C:\Users\<M1>\AppData\Local\Temp\
+prop AppDataFolder=C:\Users\<M1>\AppData\Roaming\
+prop LocalAppDataFolder=C:\Users\<M1>\AppData\Local\
+prop CommonAppDataFolder=C:\ProgramData\
+prop DesktopFolder=C:\Users\<M1>\Desktop\
+prop FavoritesFolder=C:\Users\<M1>\Favorites\
+prop FontsFolder=C:\WINDOWS\Fonts\
+prop NetHoodFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Network Shortcuts\
+prop PersonalFolder=C:\Users\<M1>\Documents\
+prop PrintHoodFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Printer Shortcuts\
+prop ProgramMenuFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\
+prop RecentFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Recent\
+prop SendToFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\SendTo\
+prop StartMenuFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\
+prop StartupFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\
+prop TemplateFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Templates\
+prop MyPicturesFolder=C:\Users\<M1>\Pictures\
+prop AdminToolsFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Administrative Tools\
+prop ROOTDRIVE=C:\
+prop TARGETDIR=
+prop SourceDir=
+prop SOURCEDIR=
+prop OriginalDatabase=C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi
+prop DATABASE=C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi
+prop UserSID=<SID>
+prop LogonUser=<M1>
+prop ComputerName=<M0>
+prop USERNAME=<M1>
+prop COMPANYNAME=
+prop Date=99/99/9999
+prop Time=99:99:99
+prop PhysicalMemory=99999
+prop VirtualMemory=99999
+prop ScreenX=1024
+prop ScreenY=768
+prop ColorBits=32
+prop TextHeight=16
+prop BorderSide=1
+prop BorderTop=1
+prop CaptionHeight=23
+prop UserLanguageID=1033
+prop SystemLanguageID=1033
+prop ProductState=-1
+prop Installed=
+prop ProductLanguage=1033
+prop PackageCode={8E3B2A6D-7C9F-4A43-BD5E-2FA04B6C8D3B}
+prop ProductCode=<guid>
+prop ACTION=INSTALL
+prop UILevel=2
+prop EXECUTEACTION=
+prop ClientUILevel=
+prop ClientProcessId=
+prop MsiLogFileLocation=
+prop MsiLogging=
+prop MsiNetAssemblySupport=4.8.9221.0
+prop MsiWin32AssemblySupport=6.2.26100.9278
+prop Alpha=
+prop OLEAdvtSupport=1
+prop RedirectedDllSupport=2
+prop ShellAdvtSupport=1
+prop TerminalServer=
+prop RemoteAdminTS=1
+prop MsiTabletPC=
+prop MsiSystemRebootPending=1
+prop MsiRunningElevated=1
+prop Preselected=
+prop Resume=
+prop RESUME=
+prop UpgradeCode={7D2A1F5C-6B8E-4F32-AC4D-1E9F3A5B7C2A}
+prop Manufacturer=Vitreo Probe
+prop SecureCustomProperties=SECUREPROP
+prop ProductToBeRegistered=
+prop CostingComplete=0
+prop OutOfDiskSpace=
+prop OutOfNoRbDiskSpace=
+prop PrimaryVolumeSpaceAvailable=
+prop PrimaryVolumePath=
+prop Note=
+prop PROMPTROLLBACKCOST=
+prop INSTALLLEVEL=
+prop REINSTALLMODE=
+prop ROOTDRIVE=C:\
+prop LIMITUI=
+prop MsiHiddenProperties=
+prop SHORTFILENAMES=
+prop ProgramFiles=
+prop MsiUIHideCancel=
+prop MsiUIProgressOnly=
+prop MsiUISourceResOnly=
+prop MsiUIUACOnly=
+prop Msix86=
+prop RollbackDisabled=
+prop MsiPatchRemovalList=
+prop PATCH=
+close rc=0
+close again rc=6
+install pass 0 rc=0
+l0 ==== Verbose logging started: <date>  <time>  Build type: SHIP UNICODE 5.00.10011.00  Calling process: <probe> ===
+l0 = Machine policy value 'Debug' is 0
+l0 =           ******* Product: C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi
+l0 = Machine policy value 'Debug' is 0
+l0 =           ******* Product: C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi
+l0 = Machine policy value 'DisableUserInstalls' is 0
+l0 = Note: 1: 2203 2: C:\WINDOWS\Installer\inprogressinstallinfo.ipi 3: -2147287038 
+l0 = Note: 1: 1402 2: HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer 3: 2 
+l0 = Note: 1: 2262 2: DigitalSignature 3: -2147287038 
+l0 = Machine policy value 'TransformsSecure' is 0
+l0 = Note: 1: 2205 2:  3: File 
+l0 = Note: 1: 2205 2:  3: MsiFileHash 
+l0 = Machine policy value 'DisablePatch' is 0
+l0 = Machine policy value 'AllowLockdownPatch' is 0
+l0 = Machine policy value 'DisableLUAPatching' is 0
+l0 = Machine policy value 'DisableFlyWeightPatching' is 0
+l0 = Note: 1: 2205 2:  3: File 
+l0 = Note: 1: 2205 2:  3: Control 
+l0 = PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.log'.
+l0 = PROPERTY CHANGE: Adding PackageCode property. Its value is '{8E3B2A6D-7C9F-4A43-BD5E-2FA04B6C8D3B}'.
+l0 = PROPERTY CHANGE: Adding ProductState property. Its value is '-1'.
+l0 = PROPERTY CHANGE: Adding PackagecodeChanging property. Its value is '1'.
+l0 = Note: 1: 2262 2: AdminProperties 3: -2147287038 
+l0 = Machine policy value 'DisableMsi' is 0
+l0 = Machine policy value 'AlwaysInstallElevated' is 0
+l0 = Running product '{6C1F0E4B-5A7D-4E21-9B3C-0D8E2F4A6B19}' with user privileges: It's not assigned.
+l0 = PROPERTY CHANGE: Adding PUBPROP property. Its value is 'cmdline'.
+l0 = PROPERTY CHANGE: Adding CMDPRIV property. Its value is 'x'.
+l0 = PROPERTY CHANGE: Adding CURRENTDIRECTORY property. Its value is 'C:\Users\<M1>'.
+l0 = PROPERTY CHANGE: Adding CLIENTUILEVEL property. Its value is '3'.
+l0 = PROPERTY CHANGE: Adding CLIENTPROCESSID property. Its value is '<pid>'.
+l0 = Machine policy value 'DisableAutomaticApplicationShutdown' is 0
+l0 = PROPERTY CHANGE: Adding MsiRestartManagerSessionKey property. Its value is '<key>'.
+l0 = PROPERTY CHANGE: Adding MsiSystemRebootPending property. Its value is '1'.
+l0 = PROPERTY CHANGE: Adding VersionDatabase property. Its value is '200'.
+l0 = Note: 1: 2898 2: MS Sans Serif 3: MS Sans Serif 4: 0 5: 16 
+l0 = PROPERTY CHANGE: Adding MsiRunningElevated property. Its value is '1'.
+l0 = PROPERTY CHANGE: Adding Privileged property. Its value is '1'.
+l0 = Note: 1: 1402 2: HKEY_CURRENT_USER\Software\Microsoft\MS Setup (ACME)\User Info 3: 2 
+l0 = PROPERTY CHANGE: Adding USERNAME property. Its value is '<M1>'.
+l0 = Note: 1: 1402 2: HKEY_CURRENT_USER\Software\Microsoft\MS Setup (ACME)\User Info 3: 2 
+l0 = PROPERTY CHANGE: Adding DATABASE property. Its value is 'C:\WINDOWS\Installer\<cached>.msi'.
+l0 = PROPERTY CHANGE: Adding OriginalDatabase property. Its value is 'C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi'.
+l0 = Machine policy value 'MsiDisableEmbeddedUI' is 0
+l0 = Note: 1: 2205 2:  3: PatchPackage 
+l0 = Machine policy value 'DisableRollback' is 0
+l0 = PROPERTY CHANGE: Adding UILevel property. Its value is '2'.
+l0 ==== Logging started: <date>  <time> ===
+l0 = Note: 1: 2203 2: C:\WINDOWS\Installer\inprogressinstallinfo.ipi 3: -2147287038 
+l0 = Note: 1: 2205 2:  3: LaunchCondition 
+l0 = Note: 1: 2228 2:  3: LaunchCondition 4: SELECT `Condition` FROM `LaunchCondition` 
+l0 = PROPERTY CHANGE: Adding ACTION property. Its value is 'INSTALL'.
+l0 = Doing action: INSTALL
+l0 Action start INSTALL.
+l0 = Doing action: CostInitialize
+l0 = Machine policy value 'MaxPatchCacheSize' is 10
+l0 = PROPERTY CHANGE: Adding ROOTDRIVE property. Its value is 'C:\'.
+l0 = PROPERTY CHANGE: Adding CostingComplete property. Its value is '0'.
+l0 = Note: 1: 2205 2:  3: File 
+l0 = Note: 1: 2205 2:  3: Patch 
+l0 = Note: 1: 2205 2:  3: PatchPackage 
+l0 = Note: 1: 2205 2:  3: MsiPatchHeaders 
+l0 = Note: 1: 2205 2:  3: File 
+l0 = Note: 1: 2205 2:  3: __MsiPatchFileList 
+l0 = Note: 1: 2205 2:  3: Media 
+l0 = Note: 1: 2228 2:  3: Media 4: SELECT `DiskId`, `LastSequence` FROM `Media` ORDER BY `DiskId`  
+l0 = Note: 1: 2205 2:  3: Patch 
+l0 Action start CostInitialize.
+l0 = Doing action: FileCost
+l0 Action ended CostInitialize. Return value 1.
+l0 = Note: 1: 2205 2:  3: MsiAssembly 
+l0 = Note: 1: 2205 2:  3: Registry 
+l0 = Note: 1: 2205 2:  3: Registry 
+l0 = Note: 1: 2205 2:  3: Class 
+l0 = Note: 1: 2205 2:  3: Extension 
+l0 = Note: 1: 2205 2:  3: TypeLib 
+l0 Action start FileCost.
+l0 = Doing action: CostFinalize
+l0 Action ended FileCost. Return value 1.
+l0 = PROPERTY CHANGE: Adding OutOfDiskSpace property. Its value is '0'.
+l0 = PROPERTY CHANGE: Adding OutOfNoRbDiskSpace property. Its value is '0'.
+l0 = PROPERTY CHANGE: Adding PrimaryVolumeSpaceAvailable property. Its value is '0'.
+l0 = PROPERTY CHANGE: Adding PrimaryVolumeSpaceRequired property. Its value is '0'.
+l0 = PROPERTY CHANGE: Adding PrimaryVolumeSpaceRemaining property. Its value is '0'.
+l0 = Note: 1: 2205 2:  3: File 
+l0 = Note: 1: 2205 2:  3: Condition 
+l0 = PROPERTY CHANGE: Adding TARGETDIR property. Its value is 'C:\'.
+l0 = PROPERTY CHANGE: Adding PROBEDIR property. Its value is 'C:\probe\'.
+l0 = PROPERTY CHANGE: Adding INSTALLLEVEL property. Its value is '1'.
+l0 Action start CostFinalize.
+l0 = Doing action: DirCA
+l0 Action ended CostFinalize. Return value 1.
+l0 = Note: 1: 2235 2:  3: ExtendedType 4: SELECT `Action`,`Type`,`Source`,`Target`, NULL, `ExtendedType` FROM `CustomAction` WHERE `Action` = 'DirCA' 
+l0 = PROPERTY CHANGE: Modifying PROBEDIR property. Its current value is 'C:\probe\'. Its new value: 'C:\sub\'.
+l0 Action start DirCA.
+l0 = Doing action: InstallValidate
+l0 Action ended DirCA. Return value 1.
+l0 = PROPERTY CHANGE: Deleting MsiRestartManagerSessionKey property. Its current value is '<key>'.
+l0 = Note: 1: 2205 2:  3: Dialog 
+l0 = Note: 1: 2205 2:  3: File 
+l0 = Note: 1: 2205 2:  3: Registry 
+l0 = Note: 1: 2205 2:  3: BindImage 
+l0 = Note: 1: 2205 2:  3: ProgId 
+l0 = Note: 1: 2205 2:  3: PublishComponent 
+l0 = Note: 1: 2205 2:  3: SelfReg 
+l0 = Note: 1: 2205 2:  3: Extension 
+l0 = Note: 1: 2205 2:  3: Font 
+l0 = Note: 1: 2205 2:  3: Shortcut 
+l0 = Note: 1: 2205 2:  3: Class 
+l0 = Note: 1: 2205 2:  3: Icon 
+l0 = Note: 1: 2205 2:  3: TypeLib 
+l0 Action start InstallValidate.
+l0 = Note: 1: 2205 2:  3: MsiAssembly 
+l0 = Note: 1: 2228 2:  3: MsiAssembly 4:  SELECT `MsiAssembly`.`Attributes`, `MsiAssembly`.`File_Application`, `MsiAssembly`.`File_Manifest`,  `Component`.`KeyPath` FROM `MsiAssembly`, `Component` WHERE  `MsiAssembly`.`Component_` = `Component`.`Component` AND `MsiAssembly`.`Component_` = ? 
+l0 = Note: 1: 2205 2:  3: File 
+l0 = Note: 1: 2228 2:  3: File 4: SELECT `FileName`,`Version`,`State`,`File`.`Attributes`,`TempAttributes`,`File`,`FileSize`,`Language`,`Sequence`,`Directory_`,`Installed`,`Action`,`Component` FROM `File`,`Component` WHERE `Component`=`Component_` AND `Component_`=? AND `Directory_`=? 
+l0 = PROPERTY CHANGE: Modifying CostingComplete property. Its current value is '0'. Its new value: '1'.
+l0 = Note: 1: 2205 2:  3: File 
+l0 = Note: 1: 2205 2:  3: Registry 
+l0 = Note: 1: 2205 2:  3: BindImage 
+l0 = Note: 1: 2205 2:  3: ProgId 
+l0 = Note: 1: 2205 2:  3: PublishComponent 
+l0 = Note: 1: 2205 2:  3: SelfReg 
+l0 = Note: 1: 2205 2:  3: Extension 
+l0 = Note: 1: 2205 2:  3: Font 
+l0 = Note: 1: 2205 2:  3: Shortcut 
+l0 = Note: 1: 2205 2:  3: Class 
+l0 = Note: 1: 2205 2:  3: Icon 
+l0 = Note: 1: 2205 2:  3: TypeLib 
+l0 = Note: 1: 2727 2:  
+l0 = Note: 1: 2205 2:  3: FilesInUse 
+l0 = Note: 1: 2727 2:  
+l0 = Doing action: InstallInitialize
+l0 Action ended InstallValidate. Return value 1.
+l0 = Machine policy value 'AlwaysInstallElevated' is 0
+l0 = Note: 1: 2203 2: C:\WINDOWS\Installer\inprogressinstallinfo.ipi 3: -2147287038 
+l0 = Note: 1: 2203 2: C:\WINDOWS\Installer\inprogressinstallinfo.ipi 3: -2147287038 
+l0 Action start InstallInitialize.
+l0 = Doing action: InstallFinalize
+l0 Action ended InstallInitialize. Return value 1.
+l0 = Note: 1: 2265 2:  3: -2147287035 
+l0 = Machine policy value 'DisableRollback' is 0
+l0 = Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2 
+l0 Action start InstallFinalize.
+l0 = Note: 1: 2265 2:  3: -2147287035 
+l0 = Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2 
+l0 = Doing action: SetExecDone
+l0 Action ended InstallFinalize. Return value 1.
+l0 = Note: 1: 2235 2:  3: ExtendedType 4: SELECT `Action`,`Type`,`Source`,`Target`, NULL, `ExtendedType` FROM `CustomAction` WHERE `Action` = 'SetExecDone' 
+l0 = PROPERTY CHANGE: Adding EXECDONE property. Its value is '1'.
+l0 Action start SetExecDone.
+l0 Action ended SetExecDone. Return value 1.
+l0 Action ended INSTALL. Return value 1.
+p0-S ProductCode=<guid>
+p0-S UpgradeCode={7D2A1F5C-6B8E-4F32-AC4D-1E9F3A5B7C2A}
+p0-S ProductName=Vitreo Engine Probe
+p0-S ProductVersion=1.2.3
+p0-S Manufacturer=Vitreo Probe
+p0-S ProductLanguage=1033
+p0-S A=1
+p0-S B=0
+p0-S S=abc
+p0-S U=ABC
+p0-S N=10
+p0-S N2=9
+p0-S Neg=-5
+p0-S Big=99999999999
+p0-S Ref=S
+p0-S Ref2=Ref
+p0-S Hex=0x10
+p0-S Sp= 5
+p0-S V=1.2.3
+p0-S Plus=+5
+p0-S Bits=196611
+p0-S Br=[S]
+p0-S Self=[Self]x
+p0-S lower=low
+p0-S SecureCustomProperties=SECUREPROP
+p0-S PUBPROP=cmdline
+p0-S EXECDONE=1
+p0-S PROBEDIR=C:\sub\
+p0-S TARGETDIR=C:\
+p0-S PackageCode={8E3B2A6D-7C9F-4A43-BD5E-2FA04B6C8D3B}
+p0-S MsiLogFileLocation=C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.log
+p0-S ProductState=-1
+p0-S PackagecodeChanging=1
+p0-S CMDPRIV=x
+p0-S CURRENTDIRECTORY=C:\Users\<M1>
+p0-S CLIENTUILEVEL=3
+p0-S CLIENTPROCESSID=<pid>
+p0-S MsiSystemRebootPending=1
+p0-S VersionDatabase=200
+p0-S VersionMsi=5.00
+p0-S VersionNT=603
+p0-S VersionNT64=603
+p0-S WindowsBuild=9600
+p0-S ServicePackLevel=0
+p0-S ServicePackLevelMinor=0
+p0-S MsiNTProductType=1
+p0-S WindowsFolder=C:\WINDOWS\
+p0-S WindowsVolume=C:\
+p0-S System64Folder=C:\WINDOWS\system32\
+p0-S SystemFolder=C:\WINDOWS\SysWOW64\
+p0-S RemoteAdminTS=1
+p0-S TempFolder=C:\Users\<M1>\AppData\Local\Temp\
+p0-S ProgramFilesFolder=C:\Program Files (x86)\
+p0-S CommonFilesFolder=C:\Program Files (x86)\Common Files\
+p0-S ProgramFiles64Folder=C:\Program Files\
+p0-S CommonFiles64Folder=C:\Program Files\Common Files\
+p0-S AppDataFolder=C:\Users\<M1>\AppData\Roaming\
+p0-S FavoritesFolder=C:\Users\<M1>\Favorites\
+p0-S NetHoodFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Network Shortcuts\
+p0-S PersonalFolder=C:\Users\<M1>\Documents\
+p0-S PrintHoodFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Printer Shortcuts\
+p0-S RecentFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Recent\
+p0-S SendToFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\SendTo\
+p0-S TemplateFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Templates\
+p0-S CommonAppDataFolder=C:\ProgramData\
+p0-S LocalAppDataFolder=C:\Users\<M1>\AppData\Local\
+p0-S MyPicturesFolder=C:\Users\<M1>\Pictures\
+p0-S AdminToolsFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Administrative Tools\
+p0-S StartupFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\
+p0-S ProgramMenuFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\
+p0-S StartMenuFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\
+p0-S DesktopFolder=C:\Users\<M1>\Desktop\
+p0-S FontsFolder=C:\WINDOWS\Fonts\
+p0-S GPTSupport=1
+p0-S OLEAdvtSupport=1
+p0-S ShellAdvtSupport=1
+p0-S MsiAMD64=6
+p0-S Msix64=6
+p0-S Intel=6
+p0-S PhysicalMemory=99999
+p0-S VirtualMemory=99999
+p0-S AdminUser=1
+p0-S MsiTrueAdminUser=1
+p0-S LogonUser=<M1>
+p0-S UserSID=<SID>
+p0-S UserLanguageID=1033
+p0-S ComputerName=<M0>
+p0-S SystemLanguageID=1033
+p0-S ScreenX=1024
+p0-S ScreenY=768
+p0-S CaptionHeight=23
+p0-S BorderTop=1
+p0-S BorderSide=1
+p0-S TextHeight=16
+p0-S TextInternalLeading=3
+p0-S ColorBits=32
+p0-S TTCSupport=1
+p0-S Time=99:99:99
+p0-S Date=99/99/9999
+p0-S MsiNetAssemblySupport=4.8.9221.0
+p0-S MsiWin32AssemblySupport=6.3.26100.9278
+p0-S RedirectedDllSupport=2
+p0-S MsiRunningElevated=1
+p0-S Privileged=1
+p0-S USERNAME=<M1>
+p0-S DATABASE=C:\WINDOWS\Installer\<cached>.msi
+p0-S OriginalDatabase=C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi
+p0-S UILevel=2
+p0-S ACTION=INSTALL
+p0-S ROOTDRIVE=C:\
+p0-S CostingComplete=1
+p0-S OutOfDiskSpace=0
+p0-S OutOfNoRbDiskSpace=0
+p0-S PrimaryVolumeSpaceAvailable=0
+p0-S PrimaryVolumeSpaceRequired=0
+p0-S PrimaryVolumeSpaceRemaining=0
+p0-S INSTALLLEVEL=1
+l0 = Note: 1: 1707 
+l0 = Product: Vitreo Engine Probe -- Installation completed successfully.
+l0 = MainEngineThread is returning 0
+l0 ==== Logging stopped: <date>  <time> ===
+l0 = Machine policy value 'DisableRollback' is 0
+l0 = Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2 
+l0 = Note: 1: 2265 2:  3: -2147287035 
+l0 = Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2 
+l0 = MainEngineThread is returning 0
+l0 ==== Verbose logging stopped: <date>  <time> ===
+install pass 1 rc=0
+l1 ==== Verbose logging started: <date>  <time>  Build type: SHIP UNICODE 5.00.10011.00  Calling process: <probe> ===
+l1 = Machine policy value 'Debug' is 0
+l1 =           ******* Product: C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi
+l1 = Machine policy value 'Debug' is 0
+l1 =           ******* Product: C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi
+l1 = Machine policy value 'DisableUserInstalls' is 0
+l1 = Note: 1: 2203 2: C:\WINDOWS\Installer\inprogressinstallinfo.ipi 3: -2147287038 
+l1 = Note: 1: 1402 2: HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer 3: 2 
+l1 = Note: 1: 2262 2: DigitalSignature 3: -2147287038 
+l1 = Machine policy value 'TransformsSecure' is 0
+l1 = Note: 1: 2205 2:  3: File 
+l1 = Note: 1: 2205 2:  3: MsiFileHash 
+l1 = Machine policy value 'DisablePatch' is 0
+l1 = Machine policy value 'AllowLockdownPatch' is 0
+l1 = Machine policy value 'DisableLUAPatching' is 0
+l1 = Machine policy value 'DisableFlyWeightPatching' is 0
+l1 = Note: 1: 2205 2:  3: File 
+l1 = Note: 1: 2205 2:  3: Control 
+l1 = PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.log'.
+l1 = PROPERTY CHANGE: Adding PackageCode property. Its value is '{8E3B2A6D-7C9F-4A43-BD5E-2FA04B6C8D3B}'.
+l1 = PROPERTY CHANGE: Adding ProductState property. Its value is '-1'.
+l1 = PROPERTY CHANGE: Adding PackagecodeChanging property. Its value is '1'.
+l1 = Note: 1: 2262 2: AdminProperties 3: -2147287038 
+l1 = Machine policy value 'DisableMsi' is 0
+l1 = Machine policy value 'AlwaysInstallElevated' is 0
+l1 = Running product '{6C1F0E4B-5A7D-4E21-9B3C-0D8E2F4A6B19}' with user privileges: It's not assigned.
+l1 = PROPERTY CHANGE: Adding PUBPROP property. Its value is 'cmdline'.
+l1 = PROPERTY CHANGE: Adding CMDPRIV property. Its value is 'x'.
+l1 = PROPERTY CHANGE: Adding CURRENTDIRECTORY property. Its value is 'C:\Users\<M1>'.
+l1 = PROPERTY CHANGE: Adding CLIENTUILEVEL property. Its value is '3'.
+l1 = PROPERTY CHANGE: Adding CLIENTPROCESSID property. Its value is '<pid>'.
+l1 = Machine policy value 'DisableAutomaticApplicationShutdown' is 0
+l1 = PROPERTY CHANGE: Adding MsiRestartManagerSessionKey property. Its value is '<key>'.
+l1 = PROPERTY CHANGE: Adding MsiSystemRebootPending property. Its value is '1'.
+l1 = PROPERTY CHANGE: Adding VersionDatabase property. Its value is '200'.
+l1 = Note: 1: 2898 2: MS Sans Serif 3: MS Sans Serif 4: 0 5: 16 
+l1 = PROPERTY CHANGE: Adding MsiRunningElevated property. Its value is '1'.
+l1 = PROPERTY CHANGE: Adding Privileged property. Its value is '1'.
+l1 = Note: 1: 1402 2: HKEY_CURRENT_USER\Software\Microsoft\MS Setup (ACME)\User Info 3: 2 
+l1 = PROPERTY CHANGE: Adding USERNAME property. Its value is '<M1>'.
+l1 = Note: 1: 1402 2: HKEY_CURRENT_USER\Software\Microsoft\MS Setup (ACME)\User Info 3: 2 
+l1 = PROPERTY CHANGE: Adding DATABASE property. Its value is 'C:\WINDOWS\Installer\<cached>.msi'.
+l1 = PROPERTY CHANGE: Adding OriginalDatabase property. Its value is 'C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi'.
+l1 = Machine policy value 'MsiDisableEmbeddedUI' is 0
+l1 = Note: 1: 2205 2:  3: PatchPackage 
+l1 = Machine policy value 'DisableRollback' is 0
+l1 = PROPERTY CHANGE: Adding UILevel property. Its value is '2'.
+l1 ==== Logging started: <date>  <time> ===
+l1 = Note: 1: 2203 2: C:\WINDOWS\Installer\inprogressinstallinfo.ipi 3: -2147287038 
+l1 = Note: 1: 2205 2:  3: LaunchCondition 
+l1 = Note: 1: 2228 2:  3: LaunchCondition 4: SELECT `Condition` FROM `LaunchCondition` 
+l1 = PROPERTY CHANGE: Adding ACTION property. Its value is 'INSTALL'.
+l1 = Doing action: INSTALL
+l1 Action start INSTALL.
+l1 = Doing action: CostInitialize
+l1 = Machine policy value 'MaxPatchCacheSize' is 10
+l1 = PROPERTY CHANGE: Adding ROOTDRIVE property. Its value is 'C:\'.
+l1 = PROPERTY CHANGE: Adding CostingComplete property. Its value is '0'.
+l1 = Note: 1: 2205 2:  3: File 
+l1 = Note: 1: 2205 2:  3: Patch 
+l1 = Note: 1: 2205 2:  3: PatchPackage 
+l1 = Note: 1: 2205 2:  3: MsiPatchHeaders 
+l1 = Note: 1: 2205 2:  3: File 
+l1 = Note: 1: 2205 2:  3: __MsiPatchFileList 
+l1 = Note: 1: 2205 2:  3: Media 
+l1 = Note: 1: 2228 2:  3: Media 4: SELECT `DiskId`, `LastSequence` FROM `Media` ORDER BY `DiskId`  
+l1 = Note: 1: 2205 2:  3: Patch 
+l1 Action start CostInitialize.
+l1 = Doing action: FileCost
+l1 Action ended CostInitialize. Return value 1.
+l1 = Note: 1: 2205 2:  3: MsiAssembly 
+l1 = Note: 1: 2205 2:  3: Registry 
+l1 = Note: 1: 2205 2:  3: Registry 
+l1 = Note: 1: 2205 2:  3: Class 
+l1 = Note: 1: 2205 2:  3: Extension 
+l1 = Note: 1: 2205 2:  3: TypeLib 
+l1 Action start FileCost.
+l1 = Doing action: CostFinalize
+l1 Action ended FileCost. Return value 1.
+l1 = PROPERTY CHANGE: Adding OutOfDiskSpace property. Its value is '0'.
+l1 = PROPERTY CHANGE: Adding OutOfNoRbDiskSpace property. Its value is '0'.
+l1 = PROPERTY CHANGE: Adding PrimaryVolumeSpaceAvailable property. Its value is '0'.
+l1 = PROPERTY CHANGE: Adding PrimaryVolumeSpaceRequired property. Its value is '0'.
+l1 = PROPERTY CHANGE: Adding PrimaryVolumeSpaceRemaining property. Its value is '0'.
+l1 = Note: 1: 2205 2:  3: File 
+l1 = Note: 1: 2205 2:  3: Condition 
+l1 = PROPERTY CHANGE: Adding TARGETDIR property. Its value is 'C:\'.
+l1 = PROPERTY CHANGE: Adding PROBEDIR property. Its value is 'C:\probe\'.
+l1 = PROPERTY CHANGE: Adding INSTALLLEVEL property. Its value is '1'.
+l1 Action start CostFinalize.
+l1 = Doing action: DirCA
+l1 Action ended CostFinalize. Return value 1.
+l1 = Note: 1: 2235 2:  3: ExtendedType 4: SELECT `Action`,`Type`,`Source`,`Target`, NULL, `ExtendedType` FROM `CustomAction` WHERE `Action` = 'DirCA' 
+l1 = PROPERTY CHANGE: Modifying PROBEDIR property. Its current value is 'C:\probe\'. Its new value: 'C:\sub\'.
+l1 Action start DirCA.
+l1 = Doing action: InstallValidate
+l1 Action ended DirCA. Return value 1.
+l1 = PROPERTY CHANGE: Deleting MsiRestartManagerSessionKey property. Its current value is '<key>'.
+l1 = Note: 1: 2205 2:  3: Dialog 
+l1 = Note: 1: 2205 2:  3: File 
+l1 = Note: 1: 2205 2:  3: Registry 
+l1 = Note: 1: 2205 2:  3: BindImage 
+l1 = Note: 1: 2205 2:  3: ProgId 
+l1 = Note: 1: 2205 2:  3: PublishComponent 
+l1 = Note: 1: 2205 2:  3: SelfReg 
+l1 = Note: 1: 2205 2:  3: Extension 
+l1 = Note: 1: 2205 2:  3: Font 
+l1 = Note: 1: 2205 2:  3: Shortcut 
+l1 = Note: 1: 2205 2:  3: Class 
+l1 = Note: 1: 2205 2:  3: Icon 
+l1 = Note: 1: 2205 2:  3: TypeLib 
+l1 Action start InstallValidate.
+l1 = Note: 1: 2205 2:  3: MsiAssembly 
+l1 = Note: 1: 2228 2:  3: MsiAssembly 4:  SELECT `MsiAssembly`.`Attributes`, `MsiAssembly`.`File_Application`, `MsiAssembly`.`File_Manifest`,  `Component`.`KeyPath` FROM `MsiAssembly`, `Component` WHERE  `MsiAssembly`.`Component_` = `Component`.`Component` AND `MsiAssembly`.`Component_` = ? 
+l1 = Note: 1: 2205 2:  3: File 
+l1 = Note: 1: 2228 2:  3: File 4: SELECT `FileName`,`Version`,`State`,`File`.`Attributes`,`TempAttributes`,`File`,`FileSize`,`Language`,`Sequence`,`Directory_`,`Installed`,`Action`,`Component` FROM `File`,`Component` WHERE `Component`=`Component_` AND `Component_`=? AND `Directory_`=? 
+l1 = PROPERTY CHANGE: Modifying CostingComplete property. Its current value is '0'. Its new value: '1'.
+l1 = Note: 1: 2205 2:  3: File 
+l1 = Note: 1: 2205 2:  3: Registry 
+l1 = Note: 1: 2205 2:  3: BindImage 
+l1 = Note: 1: 2205 2:  3: ProgId 
+l1 = Note: 1: 2205 2:  3: PublishComponent 
+l1 = Note: 1: 2205 2:  3: SelfReg 
+l1 = Note: 1: 2205 2:  3: Extension 
+l1 = Note: 1: 2205 2:  3: Font 
+l1 = Note: 1: 2205 2:  3: Shortcut 
+l1 = Note: 1: 2205 2:  3: Class 
+l1 = Note: 1: 2205 2:  3: Icon 
+l1 = Note: 1: 2205 2:  3: TypeLib 
+l1 = Note: 1: 2727 2:  
+l1 = Note: 1: 2205 2:  3: FilesInUse 
+l1 = Note: 1: 2727 2:  
+l1 = Doing action: InstallInitialize
+l1 Action ended InstallValidate. Return value 1.
+l1 = Machine policy value 'AlwaysInstallElevated' is 0
+l1 = Note: 1: 2203 2: C:\WINDOWS\Installer\inprogressinstallinfo.ipi 3: -2147287038 
+l1 = Note: 1: 2203 2: C:\WINDOWS\Installer\inprogressinstallinfo.ipi 3: -2147287038 
+l1 Action start InstallInitialize.
+l1 = Doing action: InstallFinalize
+l1 Action ended InstallInitialize. Return value 1.
+l1 = Note: 1: 2265 2:  3: -2147287035 
+l1 = Machine policy value 'DisableRollback' is 0
+l1 = Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2 
+l1 Action start InstallFinalize.
+l1 = Note: 1: 2265 2:  3: -2147287035 
+l1 = Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2 
+l1 = Doing action: SetExecDone
+l1 Action ended InstallFinalize. Return value 1.
+l1 = Note: 1: 2235 2:  3: ExtendedType 4: SELECT `Action`,`Type`,`Source`,`Target`, NULL, `ExtendedType` FROM `CustomAction` WHERE `Action` = 'SetExecDone' 
+l1 = PROPERTY CHANGE: Adding EXECDONE property. Its value is '1'.
+l1 Action start SetExecDone.
+l1 Action ended SetExecDone. Return value 1.
+l1 Action ended INSTALL. Return value 1.
+p1-S ProductCode=<guid>
+p1-S UpgradeCode={7D2A1F5C-6B8E-4F32-AC4D-1E9F3A5B7C2A}
+p1-S ProductName=Vitreo Engine Probe
+p1-S ProductVersion=1.2.3
+p1-S Manufacturer=Vitreo Probe
+p1-S ProductLanguage=1033
+p1-S A=1
+p1-S B=0
+p1-S S=abc
+p1-S U=ABC
+p1-S N=10
+p1-S N2=9
+p1-S Neg=-5
+p1-S Big=99999999999
+p1-S Ref=S
+p1-S Ref2=Ref
+p1-S Hex=0x10
+p1-S Sp= 5
+p1-S V=1.2.3
+p1-S Plus=+5
+p1-S Bits=196611
+p1-S Br=[S]
+p1-S Self=[Self]x
+p1-S lower=low
+p1-S SecureCustomProperties=SECUREPROP
+p1-S PUBPROP=cmdline
+p1-S EXECDONE=1
+p1-S PROBEDIR=C:\sub\
+p1-S TARGETDIR=C:\
+p1-S PackageCode={8E3B2A6D-7C9F-4A43-BD5E-2FA04B6C8D3B}
+p1-S MsiLogFileLocation=C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.log
+p1-S ProductState=-1
+p1-S PackagecodeChanging=1
+p1-S CMDPRIV=x
+p1-S CURRENTDIRECTORY=C:\Users\<M1>
+p1-S CLIENTUILEVEL=3
+p1-S CLIENTPROCESSID=<pid>
+p1-S MsiSystemRebootPending=1
+p1-S VersionDatabase=200
+p1-S VersionMsi=5.00
+p1-S VersionNT=603
+p1-S VersionNT64=603
+p1-S WindowsBuild=9600
+p1-S ServicePackLevel=0
+p1-S ServicePackLevelMinor=0
+p1-S MsiNTProductType=1
+p1-S WindowsFolder=C:\WINDOWS\
+p1-S WindowsVolume=C:\
+p1-S System64Folder=C:\WINDOWS\system32\
+p1-S SystemFolder=C:\WINDOWS\SysWOW64\
+p1-S RemoteAdminTS=1
+p1-S TempFolder=C:\Users\<M1>\AppData\Local\Temp\
+p1-S ProgramFilesFolder=C:\Program Files (x86)\
+p1-S CommonFilesFolder=C:\Program Files (x86)\Common Files\
+p1-S ProgramFiles64Folder=C:\Program Files\
+p1-S CommonFiles64Folder=C:\Program Files\Common Files\
+p1-S AppDataFolder=C:\Users\<M1>\AppData\Roaming\
+p1-S FavoritesFolder=C:\Users\<M1>\Favorites\
+p1-S NetHoodFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Network Shortcuts\
+p1-S PersonalFolder=C:\Users\<M1>\Documents\
+p1-S PrintHoodFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Printer Shortcuts\
+p1-S RecentFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Recent\
+p1-S SendToFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\SendTo\
+p1-S TemplateFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Templates\
+p1-S CommonAppDataFolder=C:\ProgramData\
+p1-S LocalAppDataFolder=C:\Users\<M1>\AppData\Local\
+p1-S MyPicturesFolder=C:\Users\<M1>\Pictures\
+p1-S AdminToolsFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Administrative Tools\
+p1-S StartupFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\
+p1-S ProgramMenuFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\
+p1-S StartMenuFolder=C:\Users\<M1>\AppData\Roaming\Microsoft\Windows\Start Menu\
+p1-S DesktopFolder=C:\Users\<M1>\Desktop\
+p1-S FontsFolder=C:\WINDOWS\Fonts\
+p1-S GPTSupport=1
+p1-S OLEAdvtSupport=1
+p1-S ShellAdvtSupport=1
+p1-S MsiAMD64=6
+p1-S Msix64=6
+p1-S Intel=6
+p1-S PhysicalMemory=99999
+p1-S VirtualMemory=99999
+p1-S AdminUser=1
+p1-S MsiTrueAdminUser=1
+p1-S LogonUser=<M1>
+p1-S UserSID=<SID>
+p1-S UserLanguageID=1033
+p1-S ComputerName=<M0>
+p1-S SystemLanguageID=1033
+p1-S ScreenX=1024
+p1-S ScreenY=768
+p1-S CaptionHeight=23
+p1-S BorderTop=1
+p1-S BorderSide=1
+p1-S TextHeight=16
+p1-S TextInternalLeading=3
+p1-S ColorBits=32
+p1-S TTCSupport=1
+p1-S Time=99:99:99
+p1-S Date=99/99/9999
+p1-S MsiNetAssemblySupport=4.8.9221.0
+p1-S MsiWin32AssemblySupport=6.3.26100.9278
+p1-S RedirectedDllSupport=2
+p1-S MsiRunningElevated=1
+p1-S Privileged=1
+p1-S USERNAME=<M1>
+p1-S DATABASE=C:\WINDOWS\Installer\<cached>.msi
+p1-S OriginalDatabase=C:\Users\<M1>\AppData\Local\Temp\vtm_engine_probe.msi
+p1-S UILevel=2
+p1-S ACTION=INSTALL
+p1-S ROOTDRIVE=C:\
+p1-S CostingComplete=1
+p1-S OutOfDiskSpace=0
+p1-S OutOfNoRbDiskSpace=0
+p1-S PrimaryVolumeSpaceAvailable=0
+p1-S PrimaryVolumeSpaceRequired=0
+p1-S PrimaryVolumeSpaceRemaining=0
+p1-S INSTALLLEVEL=1
+l1 = Note: 1: 1707 
+l1 = Product: Vitreo Engine Probe -- Installation completed successfully.
+l1 = MainEngineThread is returning 0
+l1 ==== Logging stopped: <date>  <time> ===
+l1 = Machine policy value 'DisableRollback' is 0
+l1 = Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2 
+l1 = Note: 1: 2265 2:  3: -2147287035 
+l1 = Note: 1: 1402 2: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Installer\Rollback\Scripts 3: 2 
+l1 = MainEngineThread is returning 0
+l1 ==== Verbose logging stopped: <date>  <time> ===

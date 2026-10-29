@@ -1,0 +1,261 @@
+clear record+execute: 0x00000000 S_OK
+clear RGBA8 8x8 (red, mix rect, 2 blue rects, empty rect, saturated px0) row  0: ff8000ff ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff
+clear RGBA8 8x8 (red, mix rect, 2 blue rects, empty rect, saturated px0) row  1: ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff
+clear RGBA8 8x8 (red, mix rect, 2 blue rects, empty rect, saturated px0) row  2: ff0000ff ff0000ff ffbf4080 ffbf4080 ffbf4080 ffbf4080 ff0000ff ff0000ff
+clear RGBA8 8x8 (red, mix rect, 2 blue rects, empty rect, saturated px0) row  3: ff0000ff ff0000ff ffbf4080 ffbf4080 ffbf4080 ffbf4080 ff0000ff ff0000ff
+clear RGBA8 8x8 (red, mix rect, 2 blue rects, empty rect, saturated px0) row  4: ff0000ff ff0000ff ffbf4080 ffbf4080 ffbf4080 ffbf4080 ff0000ff ff0000ff
+clear RGBA8 8x8 (red, mix rect, 2 blue rects, empty rect, saturated px0) row  5: ff0000ff ff0000ff ffbf4080 ffbf4080 ffbf4080 ffbf4080 ff0000ff ff0000ff
+clear RGBA8 8x8 (red, mix rect, 2 blue rects, empty rect, saturated px0) row  6: ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff ffff0000 ffff0000
+clear RGBA8 8x8 (red, mix rect, 2 blue rects, empty rect, saturated px0) row  7: ffff0000 ff0000ff ff0000ff ff0000ff ff0000ff ff0000ff ffff0000 ffff0000
+clear RGBA32F clear {0.1, -0.0, 1e-40, 65504}: 3dcccccd 80000000 00000000 477fe000
+clear RGBA16F clear {1/3, 65520, -1e-8, 0.1}: 5535ff7b 0080662e
+clear RGBA32_UINT clear {3.7, -2, 2^32, 1.5}: 00000003 00000000 ffffffff 00000001
+clear SRGB view clear {0.5, 0.214, 1, 0.5}: bc7fff80
+clear D32F clear 0.3: 3e99999a
+clear D24S8 clear 0.3 depth plane: 004ccccc
+clear D24S8 clear 0xA7 stencil plane: a7
+clear D16 clear 0.3: cc4c
+clear buffer: typed R32_UINT [4,12) {0x11111111..} dwords 0-15: 00000000 00000000 00000000 00000000 11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111 00000000 00000000 00000000 00000000
+clear buffer: raw [32,40) {0xDEADBEEF} dwords 28-43: 00000000 00000000 00000000 00000000 deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 00000000 00000000 00000000 00000000
+clear RGBA32F UAV clear row 0 px 0: 3fc00000 c0000000 3e800000 41000000
+clear RGBA32F UAV rect {1,1,3,2} row 1: 3fc00000 c0000000 3e800000 41000000 41100000 41100000 41100000 41100000 41100000 41100000 41100000 41100000 3fc00000 c0000000 3e800000 41000000
+clear RGBA8 UAV ClearUint {0x1FF, 0x80, 0x7F, 0x100}: ff807f00 ff807f00
+clear R8_UNORM UAV ClearFloat 0.5: 80808080
+clear end: GetDeviceRemovedReason 0x00000000 S_OK
+triangle draws: 0x00000000 S_OK
+triangle 16x16 row  0: ff00ff00 ff00ff00 ff00ffff ff00ffff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000
+triangle 16x16 row  1: ff00ff00 ff00ff00 ff00ffff ff00ffff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000
+triangle 16x16 row  2: ff00ff00 ff00ff00 ff00ffff ff00ffff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000
+triangle 16x16 row  3: ff00ff00 ff00ff00 ff00ffff ff00ffff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000
+triangle 16x16 row  4: ff00ff00 ff00ff00 ff00ffff ff00ffff ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ffff0000 ffff0000 ffff0000 ffff0000
+triangle 16x16 row  5: ff00ff00 ff00ff00 ff00ffff ff00ffff ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ffff0000 ffff0000 ffff0000 ffff0000
+triangle 16x16 row  6: ff00ff00 ff00ff00 ff00ffff ff00ffff ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ffff0000 ffff0000 ffff0000 ffff0000
+triangle 16x16 row  7: ff00ff00 ff00ff00 ff00ffff ff00ffff ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ffff0000 ffff0000 ffff0000 ffff0000
+triangle 16x16 row  8: ff00ff00 ff00ff00 ff00ffff ff00ffff ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 00000000 00000000 00000000 00000000
+triangle 16x16 row  9: ff00ff00 ff00ff00 ff00ffff ff00ffff ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 00000000 00000000 00000000 00000000
+triangle 16x16 row 10: ff00ff00 ff00ff00 ff00ffff ff00ffff ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 00000000 00000000 00000000 00000000
+triangle 16x16 row 11: ff00ff00 ff00ff00 ff00ffff ff00ffff ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 ff00ff00 00000000 00000000 00000000 00000000
+triangle 16x16 row 12: ff00ff00 ff00ff00 ff00ffff ff00ffff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 ffff00ff ffff00ff 00000000 00000000
+triangle 16x16 row 13: ff00ff00 ff00ff00 ff00ffff ff00ffff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 ffff00ff ffff00ff 00000000 00000000
+triangle 16x16 row 14: ff00ff00 ff00ff00 ff00ffff ff00ffff 00000000 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffffff00 ffffff00
+triangle 16x16 row 15: ff00ff00 ff00ff00 ff00ffff ff00ffff 00000000 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffffff00 ffffff00
+triangle end: GetDeviceRemovedReason 0x00000000 S_OK
+textured pass 0 draw: 0x00000000 S_OK
+textured static point sampler 8x8 row  0: ff0000ff ff0000ff ff1008ef ff1008ef ff2010df ff2010df ff3018cf ff3018cf
+textured static point sampler 8x8 row  1: ff0000ff ff0000ff ff1008ef ff1008ef ff2010df ff2010df ff3018cf ff3018cf
+textured static point sampler 8x8 row  2: ff4020bf ff4020bf ff5028af ff5028af ff60309f ff60309f ff70388f ff70388f
+textured static point sampler 8x8 row  3: ff4020bf ff4020bf ff5028af ff5028af ff60309f ff60309f ff70388f ff70388f
+textured static point sampler 8x8 row  4: ff80407f ff80407f ff90486f ff90486f ffa0505f ffa0505f ffb0584f ffb0584f
+textured static point sampler 8x8 row  5: ff80407f ff80407f ff90486f ff90486f ffa0505f ffa0505f ffb0584f ffb0584f
+textured static point sampler 8x8 row  6: ffc0603f ffc0603f ffd0682f ffd0682f ffe0701f ffe0701f fff0780f fff0780f
+textured static point sampler 8x8 row  7: ffc0603f ffc0603f ffd0682f ffd0682f ffe0701f ffe0701f fff0780f fff0780f
+textured pass 1 draw: 0x00000000 S_OK
+textured heap point WRAP sampler, uv 0..2 row  0: ff0000ff ff1008ef ff2010df ff3018cf ff0000ff ff1008ef ff2010df ff3018cf
+textured heap point WRAP sampler, uv 0..2 row  1: ff4020bf ff5028af ff60309f ff70388f ff4020bf ff5028af ff60309f ff70388f
+textured heap point WRAP sampler, uv 0..2 row  2: ff80407f ff90486f ffa0505f ffb0584f ff80407f ff90486f ffa0505f ffb0584f
+textured heap point WRAP sampler, uv 0..2 row  3: ffc0603f ffd0682f ffe0701f fff0780f ffc0603f ffd0682f ffe0701f fff0780f
+textured heap point WRAP sampler, uv 0..2 row  4: ff0000ff ff1008ef ff2010df ff3018cf ff0000ff ff1008ef ff2010df ff3018cf
+textured heap point WRAP sampler, uv 0..2 row  5: ff4020bf ff5028af ff60309f ff70388f ff4020bf ff5028af ff60309f ff70388f
+textured heap point WRAP sampler, uv 0..2 row  6: ff80407f ff90486f ffa0505f ffb0584f ff80407f ff90486f ffa0505f ffb0584f
+textured heap point WRAP sampler, uv 0..2 row  7: ffc0603f ffd0682f ffe0701f fff0780f ffc0603f ffd0682f ffe0701f fff0780f
+textured pass 2 draw: 0x00000000 S_OK
+textured linear RGBA32F row 0 (x0 x1 x2 x7, red channel): 00000000 3f800000 40400000 41400000
+textured linear RGBA32F row 3 (x0 x1 x2 x7, red channel): 41a00000 41a80000 41b80000 42000000
+textured linear RGBA32F row 6 (x0 x1 x2 x7, red channel): 42300000 42340000 423c0000 42600000
+textured end: GetDeviceRemovedReason 0x00000000 S_OK
+root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) dispatch: 0x00000000 S_OK
+root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) cbv: a0000040 a0000041 a0000042 a0000043
+root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) raw.Load4(0): a0000004 a0000005 a0000006 a0000007
+root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) raw.Load4(4): a0000005 a0000006 a0000007 a0000008
+root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) struct[0]: a0000008 a0000009 a000000a a000000b
+root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) struct[1]: a000000c a000000d a000000e a000000f
+root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) dims raw/struct n,stride: stride=00000010 marker=0000c0de
+# root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) dims raw/struct n,stride: fffffffc 0fffffff
+root_views CBV@256 raw@16 struct@32 UAV@0 (DEFAULT) dwords written outside the UAV window: 0
+root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) dispatch: 0x00000000 S_OK
+root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) cbv: b0000080 b0000081 b0000082 b0000083
+root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) raw.Load4(0): a0000001 a0000002 a0000003 a0000004
+root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) raw.Load4(4): a0000002 a0000003 a0000004 a0000005
+root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) struct[0]: a000000c a000000d a000000e a000000f
+root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) struct[1]: a0000010 a0000011 a0000012 a0000013
+root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) dims raw/struct n,stride: stride=00000010 marker=0000c0de
+# root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) dims raw/struct n,stride: fffffffc 0fffffff
+root_views CBV@512 raw@4 struct@48 UAV@256 (CBV from UPLOAD) dwords written outside the UAV window: 0
+root_views CBV@0 raw@992 struct@960 UAV@128 dispatch: 0x00000000 S_OK
+root_views CBV@0 raw@992 struct@960 UAV@128 cbv: a0000000 a0000001 a0000002 a0000003
+root_views CBV@0 raw@992 struct@960 UAV@128 raw.Load4(0): a00000f8 a00000f9 a00000fa a00000fb
+root_views CBV@0 raw@992 struct@960 UAV@128 raw.Load4(4): a00000f9 a00000fa a00000fb a00000fc
+root_views CBV@0 raw@992 struct@960 UAV@128 struct[0]: a00000f0 a00000f1 a00000f2 a00000f3
+root_views CBV@0 raw@992 struct@960 UAV@128 struct[1]: a00000f4 a00000f5 a00000f6 a00000f7
+root_views CBV@0 raw@992 struct@960 UAV@128 dims raw/struct n,stride: stride=00000010 marker=0000c0de
+# root_views CBV@0 raw@992 struct@960 UAV@128 dims raw/struct n,stride: fffffffc 0fffffff
+root_views CBV@0 raw@992 struct@960 UAV@128 dwords written outside the UAV window: 0
+root_views end: GetDeviceRemovedReason 0x00000000 S_OK
+compute cs_uav Dispatch(0,1,1)+(2,0,1)+(2,2,1): 0x00000000 S_OK
+compute typed u[i] = i*5+3: 00000003 00000008 0000000d 00000012 00000017 0000001c 00000021 00000026 0000002b 00000030 00000035 0000003a 0000003f 00000044 00000049 0000004e 00000053 00000058 0000005d 00000062 00000067 0000006c 00000071 00000076 0000007b 00000080 00000085 0000008a 0000008f 00000094 00000099 0000009e
+compute raw gid.x|gid.y<<8|gt.x<<16|gt.y<<24: 00000000 00010000 00020000 00030000 00000001 00010001 00020001 00030001 01000000 01010000 01020000 01030000 01000001 01010001 01020001 01030001 00000100 00010100 00020100 00030100 00000101 00010101 00020101 00030101 01000100 01010100 01020100 01030100 01000101 01010101 01020101 01030101
+compute struct (gi, i) 0-15: 00000000 00000000 00000001 00000001 00000002 00000002 00000003 00000003 00000000 00000004 00000001 00000005 00000002 00000006 00000003 00000007 00000004 00000008 00000005 00000009 00000006 0000000a 00000007 0000000b 00000004 0000000c 00000005 0000000d 00000006 0000000e 00000007 0000000f
+compute struct (gi, i) 16-31: 00000000 00000010 00000001 00000011 00000002 00000012 00000003 00000013 00000000 00000014 00000001 00000015 00000002 00000016 00000003 00000017 00000004 00000018 00000005 00000019 00000006 0000001a 00000007 0000001b 00000004 0000001c 00000005 0000001d 00000006 0000001e 00000007 0000001f
+compute tex (x,y,gi,1)/8 row  0: 00000000 00000000 00000000 3e000000 3e000000 00000000 3e000000 3e000000 3e800000 00000000 3e800000 3e000000 3ec00000 00000000 3ec00000 3e000000 3f000000 00000000 00000000 3e000000 3f200000 00000000 3e000000 3e000000 3f400000 00000000 3e800000 3e000000 3f600000 00000000 3ec00000 3e000000
+compute tex (x,y,gi,1)/8 row  1: 00000000 3e000000 3f000000 3e000000 3e000000 3e000000 3f200000 3e000000 3e800000 3e000000 3f400000 3e000000 3ec00000 3e000000 3f600000 3e000000 3f000000 3e000000 3f000000 3e000000 3f200000 3e000000 3f200000 3e000000 3f400000 3e000000 3f400000 3e000000 3f600000 3e000000 3f600000 3e000000
+compute tex (x,y,gi,1)/8 row  2: 00000000 3e800000 00000000 3e000000 3e000000 3e800000 3e000000 3e000000 3e800000 3e800000 3e800000 3e000000 3ec00000 3e800000 3ec00000 3e000000 3f000000 3e800000 00000000 3e000000 3f200000 3e800000 3e000000 3e000000 3f400000 3e800000 3e800000 3e000000 3f600000 3e800000 3ec00000 3e000000
+compute tex (x,y,gi,1)/8 row  3: 00000000 3ec00000 3f000000 3e000000 3e000000 3ec00000 3f200000 3e000000 3e800000 3ec00000 3f400000 3e000000 3ec00000 3ec00000 3f600000 3e000000 3f000000 3ec00000 3f000000 3e000000 3f200000 3ec00000 3f200000 3e000000 3f400000 3ec00000 3f400000 3e000000 3f600000 3ec00000 3f600000 3e000000
+compute cs_reduce Dispatch(4,1,1): 0x00000000 S_OK
+compute group sums (3 * sum of 64 ids): 000017a0 000047a0 000077a0 0000a7a0
+compute end: GetDeviceRemovedReason 0x00000000 S_OK
+copy buffer copies: 0x00000000 S_OK
+copy a dwords 0-7 (upload, then 12 bytes @4 from upload+2056): c0000000 c0000202 c0000203 c0000204 c0000004 c0000005 c0000006 c0000007
+copy a dword 255 (from b[0]): c0000000
+copy b = CopyResource(a) dwords 0-7: c0000000 c0000001 c0000002 c0000003 c0000004 c0000005 c0000006 c0000007
+copy texture copies: 0x00000000 S_OK
+copy t mip0 (footprint @512 pitch 256) row  0: ff000000 ff000001 ff000002 ff000003
+copy t mip0 (footprint @512 pitch 256) row  1: ff000040 ff000041 ff000042 ff000043
+copy t mip0 (footprint @512 pitch 256) row  2: ff000080 ff000081 ff000082 ff000083
+copy t mip0 (footprint @512 pitch 256) row  3: ff0000c0 ff0000c1 ff0000c2 ff0000c3
+copy t mip1 (box 2x2) row  0: ff000000 ff000001
+copy t mip1 (box 2x2) row  1: ff000040 ff000041
+copy t2 slice0 (t mip1 at (0,2)) row  0: 00000000 00000000 00000000 00000000
+copy t2 slice0 (t mip1 at (0,2)) row  1: 00000000 00000000 00000000 00000000
+copy t2 slice0 (t mip1 at (0,2)) row  2: ff000000 ff000001 00000000 00000000
+copy t2 slice0 (t mip1 at (0,2)) row  3: ff000040 ff000041 00000000 00000000
+copy t2 slice1 (t box {1,1}-{3,3} at (2,0)) row  0: 00000000 00000000 ff000041 ff000042
+copy t2 slice1 (t box {1,1}-{3,3} at (2,0)) row  1: 00000000 00000000 ff000081 ff000082
+copy t2 slice1 (t box {1,1}-{3,3} at (2,0)) row  2: 00000000 00000000 00000000 00000000
+copy t2 slice1 (t box {1,1}-{3,3} at (2,0)) row  3: 00000000 00000000 00000000 00000000
+copy t3 (whole t mip0) row  0: ff000000 ff000001 ff000002 ff000003
+copy t3 (whole t mip0) row  1: ff000040 ff000041 ff000042 ff000043
+copy t3 (whole t mip0) row  2: ff000080 ff000081 ff000082 ff000083
+copy t3 (whole t mip0) row  3: ff0000c0 ff0000c1 ff0000c2 ff0000c3
+copy 3D 2x2x3 (slices as rows of 2) row  0: ff000000 ff000001
+copy 3D 2x2x3 (slices as rows of 2) row  1: ff000040 ff000041
+copy 3D 2x2x3 (slices as rows of 2) row  2: ff000080 ff000081
+copy 3D 2x2x3 (slices as rows of 2) row  3: ff0000c0 ff0000c1
+copy 3D 2x2x3 (slices as rows of 2) row  4: c0000180 c0000181
+copy 3D 2x2x3 (slices as rows of 2) row  5: c00001c0 c00001c1
+copy bc (block rows) row  0: 0bc10000 0bc10001 0bc10002 0bc10003
+copy bc (block rows) row  1: c0000340 c0000341 c0000342 c0000343
+copy bc2 (block (1,1) of bc at (0,0)) row  0: c0000342 c0000343 00000000 00000000
+copy bc2 (block (1,1) of bc at (0,0)) row  1: 00000000 00000000 00000000 00000000
+copy texture -> buffer @1024 pitch 512 row 0: ff000001 ff000002 ff000003
+copy texture -> buffer row 1: ff000041 ff000042 ff000043
+copy bytes between rows untouched (dword 259): 00000000
+copy end: GetDeviceRemovedReason 0x00000000 S_OK
+resolve draw+resolve: 0x00000000 S_OK
+resolve ResolveSubresource row 0 (4 px RGBA16F): 00000000 3c000000 38003800 3c003800 3c003c00 3c003c00 00000000 3c000000
+resolve ResolveSubresource row 1: 00000000 3c000000 38003800 3c003800 3c003c00 3c003c00 00000000 3c000000
+resolve ResolveSubresourceRegion row 0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+resolve ResolveSubresourceRegion row 1: 38003800 3c003800 3c003c00 3c003c00 00000000 00000000 00000000 00000000
+resolve end: GetDeviceRemovedReason 0x00000000 S_OK
+blend draws: 0x00000000 S_OK
+blend RT0 SRC_ALPHA/INV_SRC_ALPHA ADD: 3ee00000 3ea00000 3f700000 3e800000
+blend RT0 ONE/ONE ADD: 3f400000 3f400000 3fe00000 3f400000
+blend RT0 ONE/ONE SUBTRACT, alpha REV_SUBTRACT: be800000 3e800000 be800000 3e800000
+blend RT0 MIN (factors ignored): 3e800000 3e800000 3f400000 3f000000
+blend RT0 DEST_COLOR/SRC_COLOR ADD: 3e800000 3e800000 3fc00000 3e000000
+blend RT0 BLEND_FACTOR/INV_BLEND_FACTOR (0.125,0.5,1,0.75): 3ef00000 3ec00000 3f400000 3e400000
+blend RT0 no blend, write mask R|A: 3e800000 3e800000 3f800000 3e800000
+blend RT0 SRC_ALPHA_SAT/ONE ADD: 3f100000 3ec00000 3f980000 3f400000
+blend RT1 (ONE/ONE ADD of the reversed colour) px 0: 3f400000 3f800000 3fc00000 3f400000
+blend RT1 identical in all 8 px (independent blend): 1
+blend end: GetDeviceRemovedReason 0x00000000 S_OK
+depth_stencil draws: 0x00000000 S_OK
+depth_stencil colour px0..7: ff0000ff ff00ffff ffff00ff ff404040 ff102030 ffaabbcc ff0f0f0f 00000000
+depth_stencil depth (24-bit) px0..7: 00400000 00600000 00bfffff 00800000 00800000 00800000 00800000 00800000
+depth_stencil stencil px0..7: 12121214 12e21112
+depth_stencil end: GetDeviceRemovedReason 0x00000000 S_OK
+instancing per-instance element with InstanceDataStepRate 0: PSO created
+instancing draws: 0x00000000 S_OK
+instancing row 0: x4=v0/i0/a5 x5=v1/i0/a5
+instancing row 1: x2=v0/i0/a5 x3=v1/i0/a5 x4=v2/i0/a5
+instancing row 2: x2=v0/i1/a5 x3=v1/i1/a5 x4=v2/i1/a5
+instancing row 3: x0=v2/i0/a5 x3=v5/i0/a5 x7=v9/i0/a5
+instancing row 4: x12=v0/i1/a5
+instancing row 5: x12=v0/i3/a5
+instancing row 6: x5=v0/i0/a5 x8=v3/i0/a5 x12=v7/i0/a5
+instancing row 7: x14=v0/i2/a5
+instancing end: GetDeviceRemovedReason 0x00000000 S_OK
+pso CS: valid: 0x00000000 S_OK out=obj
+pso CS: NULL root signature: 0x80070057 E_INVALIDARG out=NULL
+pso CS: root signature with 2 of the 4 UAVs: 0x80070057 E_INVALIDARG out=NULL
+pso CS: root constants b0 x1 (shader reads 4): 0x80070057 E_INVALIDARG out=NULL
+pso CS: VS bytecode: 0x80070057 E_INVALIDARG out=NULL
+pso CS: bytecode length 0: 0x80070057 E_INVALIDARG out=NULL
+pso CS: bytecode truncated to 64 bytes: 0x80070057 E_INVALIDARG out=NULL
+pso CS: corrupted checksum: 0x80004005 E_FAIL out=NULL
+pso CS: NodeMask 1: 0x00000000 S_OK out=obj
+pso CS: NodeMask 2: 0x80070057 E_INVALIDARG out=NULL
+pso CS: Flags TOOL_DEBUG: 0x80070057 E_INVALIDARG out=NULL
+pso CS: Flags 0x8: 0x00000000 S_OK out=obj
+pso CS: DXIL cs_6_0: 0x00000000 S_OK out=obj
+pso CS: SM 5.1 descriptor-array shader, mismatched root signature: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: valid: 0x00000000 S_OK out=obj
+pso GFX: NULL root signature: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: root signature without ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: no VS: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: no PS: 0x00000000 S_OK out=obj
+pso GFX: PS bytecode in VS slot: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: input layout missing COLOR: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: no input layout: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: input layout with an extra unused element: 0x00000000 S_OK out=obj
+pso GFX: COLOR as R8G8B8A8_UNORM: 0x00000000 S_OK out=obj
+pso GFX: COLOR as R32G32B32A32_UINT (type mismatch): 0x00000000 S_OK out=obj
+pso GFX: COLOR at APPEND_ALIGNED_ELEMENT: 0x00000000 S_OK out=obj
+pso GFX: COLOR in slot 16: 0x00000000 S_OK out=obj
+pso GFX: COLOR in slot 32: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: COLOR per-instance in the per-vertex slot 0: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: NumRenderTargets 0 (PS writes SV_Target0): 0x80070057 E_INVALIDARG out=NULL
+pso GFX: NumRenderTargets 1, RTVFormats[0] UNKNOWN: 0x00000000 S_OK out=obj
+pso GFX: NumRenderTargets 9: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: RTVFormats[1] set beyond NumRenderTargets: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: RTVFormats[0] TYPELESS: 0x00000000 S_OK out=obj
+pso GFX: RTVFormats[0] BC1: 0x00000000 S_OK out=obj
+pso GFX: RTVFormats[0] UINT (PS writes float): 0x00000000 S_OK out=obj
+pso GFX: DSVFormat D32F, depth disabled: 0x00000000 S_OK out=obj
+pso GFX: DSVFormat D32F, depth enabled: 0x00000000 S_OK out=obj
+pso GFX: depth enabled, DSVFormat UNKNOWN: 0x00000000 S_OK out=obj
+pso GFX: DSVFormat RGBA8: 0x00000000 S_OK out=obj
+pso GFX: DepthFunc 0, depth disabled: 0x00000000 S_OK out=obj
+pso GFX: DepthFunc 0, depth enabled: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: topology type UNDEFINED: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: topology type POINT: 0x00000000 S_OK out=obj
+pso GFX: topology type LINE: 0x00000000 S_OK out=obj
+pso GFX: topology type PATCH without HS/DS: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: topology type 7: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: IBStripCutValue 0xFFFF with triangle topology type: 0x00000000 S_OK out=obj
+pso GFX: IBStripCutValue 3: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: SampleDesc 4: 0x00000000 S_OK out=obj
+pso GFX: SampleDesc 3: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: SampleDesc 0: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: SampleDesc 1/1: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: LogicOp XOR on RGBA8_UNORM: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: LogicOp XOR on RGBA32_UINT: 0x00000000 S_OK out=obj
+pso GFX: LogicOp and BlendEnable both: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: SrcBlendAlpha SRC_COLOR: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: SrcBlend 0: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: SrcBlend SRC1_COLOR (PS has no second output): 0x00000000 S_OK out=obj
+pso GFX: FillMode 1: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: FillMode WIREFRAME: 0x00000000 S_OK out=obj
+pso GFX: CullMode 0: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: ConservativeRaster ON: 0x00000000 S_OK out=obj
+pso GFX: ForcedSampleCount 4 with a render target: 0x00000000 S_OK out=obj
+pso GFX: stream output from the VS (no GS): 0x80070057 E_INVALIDARG out=NULL
+pso GFX: root constants b0 x8 for rc_* shaders: 0x00000000 S_OK out=obj
+pso GFX: root signature without the b0 the shaders read: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: SM 5.1 VS + PS: 0x00000000 S_OK out=obj
+pso GFX: SM 5.0 VS + SM 5.1 PS: 0x00000000 S_OK out=obj
+pso GFX: NodeMask 2: 0x80070057 E_INVALIDARG out=NULL
+pso GFX: CachedPSO garbage blob: 0x80070057 E_INVALIDARG out=NULL
+pso GetCachedBlob: 0x00000000 S_OK blob=obj nonempty=1
+# pso GetCachedBlob size: 3662
+pso GFX: CachedPSO from GetCachedBlob: 0x00000000 S_OK out=obj
+pso GFX: CachedPSO from GetCachedBlob, different desc: 0x80070057 E_INVALIDARG out=NULL
+pso CreatePipelineState(root signature + CS stream): 0x00000000 S_OK out=obj
+pso CreatePipelineState(empty stream): 0x80070057 E_INVALIDARG out=NULL
+pso CreatePipelineState(unknown subobject type 200): 0x80070057 E_INVALIDARG out=NULL
+pso CreatePipelineState(root signature twice): 0x80070057 E_INVALIDARG out=NULL
+pso CreateRootSignature(junk DXBC): 0x80070057 E_INVALIDARG out=NULL
+pso CreateRootSignature(shader without an RTS0 part): 0x80004005 E_FAIL out=NULL
+pso CreateRootSignature(NodeMask 2): 0x80070057 E_INVALIDARG out=NULL
+pso CreateRootSignature(size 0): 0x80070057 E_INVALIDARG out=NULL
+pso CreateRootSignature twice from one blob: same object: 1
+pso end: GetDeviceRemovedReason 0x00000000 S_OK

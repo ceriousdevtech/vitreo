@@ -1,0 +1,438 @@
+ptr=4
+pre-startup CreateFromHDC st=18
+pre-startup GdipAlloc nonnull=0
+startup null-token st=2
+startup null-input st=2
+startup version=0 st=17 token_nonzero=0
+startup version=1 st=0 token_nonzero=1
+startup version=2 st=0 token_nonzero=1
+startup version=3 st=0 token_nonzero=1
+startup version=4 st=17 token_nonzero=0
+startup no-suppress st=0 out.hook=untouched
+startup suppress null-output st=2
+startup suppress st=0 hook_is_export=0 unhook_is_export=0
+hook st=0 token_nonzero=1
+hook again st=0 token_nonzero=1 same=0
+unhook ok
+startup nested tokens_differ=1
+after one of two shutdowns CreateFromHDC st=0
+after shutdown CreateFromHDC st=18
+export hook without suppress st=1 token_nonzero=0
+export hook under suppress st=0 token_nonzero=1
+CreateFromHDC(NULL) st=3
+CreateFromHDC(out NULL) st=2
+CreateFromHDC(bogus) st=3
+CreateFromHDC2(dc,NULL) st=0
+hdc2 cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=0,0/0 unit=1/0 scale=1/0 dpi=96,96/0,0
+hdc2 world st=0 [1 0 0 1 0 0]
+CreateFromHDC2(NULL,NULL) st=3
+CreateFromHWND(NULL) st=0
+hwnd0 cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=0,0/0 unit=1/0 scale=1/0 dpi=96,96/0,0
+hwnd0 world st=0 [1 0 0 1 0 0]
+hwnd0 GetDC st=0 nonnull=1
+CreateFromHWND(bogus) st=3
+CreateFromHWND(out NULL) st=2
+CreateFromHWND(wnd) st=0
+hwnd cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=0,0/0 unit=1/0 scale=1/0 dpi=96,96/0,0
+hwnd world st=0 [1 0 0 1 0 0]
+hwnd GetDC st=0 nonnull=1 wfdc=1
+hwnd clipbounds -4.1943e+06 -4.1943e+06 8.38861e+06 8.38861e+06
+CreateFromHWNDICM(wnd) st=0
+hwndicm cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=0,0/0 unit=1/0 scale=1/0 dpi=96,96/0,0
+hwndicm world st=0 [1 0 0 1 0 0]
+CreateFromHDC(memdc mono 1x1) st=0
+mono clipbounds -4.1943e+06 -4.1943e+06 8.38861e+06 8.38861e+06
+DeleteGraphics(NULL) st=2
+CreateFromHDC st=0
+hdc fresh cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=0,0/0 unit=1/0 scale=1/0 dpi=96,96/0,0
+hdc fresh world st=0 [1 0 0 1 0 0]
+hdc clipbounds -4.1943e+06 -4.1943e+06 8.38861e+06 8.38861e+06
+LOGPIXELSX=96
+null-graphics getters: 2 2 2 2 2 2 2 2 2 2 2
+null-out GetCompositingMode st=2
+null-out GetCompositingQuality st=2
+null-out GetSmoothingMode st=2
+null-out GetInterpolationMode st=AV
+null-out GetPixelOffsetMode st=2
+null-out GetTextRenderingHint st=2
+null-out GetTextContrast st=2
+null-out GetRenderingOrigin(x) st=2
+null-out GetRenderingOrigin(y) st=2
+null-out GetPageUnit st=2
+null-out GetPageScale st=2
+null-out GetDpiX st=2
+null-out GetDpiY st=2
+null-graphics setters: 2 2 2 2 2 2 2 2 2 2
+null transforms: SetW(NULL g)=2 GetW(NULL g)=2 SetW(NULL m)=2 GetW(NULL m)=2 ResetW(NULL)=2 Mul(NULL m)=0 Trans(NULL)=2 ResetPage(NULL)=2 Rot(NULL)=2
+set CompositingMode(-1) st=0 get=-1/0
+set CompositingMode(0) st=0 get=0/0
+set CompositingMode(1) st=0 get=1/0
+set CompositingMode(2) st=0 get=2/0
+set CompositingMode(100) st=0 get=100
+set CompositingQuality(-1) st=0 get=-1/0
+set CompositingQuality(0) st=0 get=0/0
+set CompositingQuality(1) st=0 get=1/0
+set CompositingQuality(2) st=0 get=2/0
+set CompositingQuality(3) st=0 get=3/0
+set CompositingQuality(4) st=0 get=4/0
+set CompositingQuality(5) st=0 get=5/0
+set CompositingQuality(100) st=0 get=100
+set SmoothingMode(-1) st=2 get=3/0
+set SmoothingMode(0) st=0 get=3/0
+set SmoothingMode(1) st=0 get=3/0
+set SmoothingMode(2) st=0 get=4/0
+set SmoothingMode(3) st=0 get=3/0
+set SmoothingMode(4) st=0 get=4/0
+set SmoothingMode(5) st=0 get=5/0
+set SmoothingMode(6) st=2 get=5/0
+set SmoothingMode(100) st=2 get=5
+set InterpolationMode(-1) st=2 get=3/0
+set InterpolationMode(0) st=0 get=3/0
+set InterpolationMode(1) st=0 get=3/0
+set InterpolationMode(2) st=0 get=7/0
+set InterpolationMode(3) st=0 get=3/0
+set InterpolationMode(4) st=0 get=4/0
+set InterpolationMode(5) st=0 get=5/0
+set InterpolationMode(6) st=0 get=6/0
+set InterpolationMode(7) st=0 get=7/0
+set InterpolationMode(8) st=2 get=7/0
+set InterpolationMode(100) st=2 get=7
+set PixelOffsetMode(-1) st=2 get=0/0
+set PixelOffsetMode(0) st=0 get=0/0
+set PixelOffsetMode(1) st=0 get=1/0
+set PixelOffsetMode(2) st=0 get=2/0
+set PixelOffsetMode(3) st=0 get=3/0
+set PixelOffsetMode(4) st=0 get=4/0
+set PixelOffsetMode(5) st=2 get=4/0
+set PixelOffsetMode(100) st=2 get=4
+set TextRenderingHint(-1) st=2 get=0/0
+set TextRenderingHint(0) st=0 get=0/0
+set TextRenderingHint(1) st=0 get=1/0
+set TextRenderingHint(2) st=0 get=2/0
+set TextRenderingHint(3) st=0 get=3/0
+set TextRenderingHint(4) st=0 get=4/0
+set TextRenderingHint(5) st=0 get=5/0
+set TextRenderingHint(6) st=2 get=5/0
+set TextRenderingHint(100) st=2 get=5
+set PageUnit(-1) st=2 get=1/0
+set PageUnit(0) st=2 get=1/0
+set PageUnit(1) st=0 get=1/0
+set PageUnit(2) st=0 get=2/0
+set PageUnit(3) st=0 get=3/0
+set PageUnit(4) st=0 get=4/0
+set PageUnit(5) st=0 get=5/0
+set PageUnit(6) st=0 get=6/0
+set PageUnit(7) st=2 get=6/0
+set PageUnit(100) st=2 get=6
+set TextContrast(0) st=0 get=0
+set TextContrast(1) st=0 get=1
+set TextContrast(12) st=0 get=12
+set TextContrast(13) st=2 get=12
+set TextContrast(100) st=2 get=12
+set TextContrast(4294967295) st=2 get=12
+set PageScale(0) st=2 get=1
+set PageScale(-1) st=2 get=1
+set PageScale(0.5) st=0 get=0.5
+set PageScale(1e+09) st=0 get=1e+09
+set PageScale(1e+10) st=2 get=1e+09
+set PageScale(9.99999e-10) st=2 get=1e+09
+set RenderingOrigin(-5,7) st=0 get=-5,7
+ResetPageTransform st=0 unit=1 scale=1
+SourceCopy then TRH ClearType st=0
+SetWorldTransform(singular) st=2
+after singular world st=0 [1 0 0 1 0 0]
+Multiply(singular) st=2
+SetWorldTransform(1..6) st=0
+set 1..6 world st=0 [1 2 3 4 5 6]
+Translate(10,20,Prepend) st=0
+Scale(2,3,Append) st=0
+T then S world st=0 [2 0 0 3 20 60]
+Rotate(90,Prepend) st=0
+rot90 prepend world st=0 [-8.74227e-08 3 -2 -1.31134e-07 20 60]
+Rotate(30,Append) st=0
+rot30 append world st=0 [-1.5 2.59807 -1.73205 -1 -12.6794 61.9615]
+Translate order2 st=2
+Translate order-1 st=2
+Scale order2 st=2
+Rotate order2 st=2
+Multiply order2 st=2
+Scale(0,0) st=2
+scale00 world st=0 [1 0 0 1 0 0]
+Scale(0,1) st=2
+Multiply(1..6,Prepend) st=0
+M then T prepend world st=0 [1 2 3 4 9 12]
+T then M append world st=0 [1 2 3 4 9 12]
+rot45 world st=0 [0.707106 0.707106 -0.707106 0.707106 0 0]
+rot360 world st=0 [1 1.74845e-07 -1.74845e-07 1 0 0]
+rot-90 world st=0 [-4.37113e-08 -1 1 -4.37113e-08 0 0]
+inch2 TP(2<-0) st=0 (384,576) (576,960)
+inch2 TP(0<-2) st=0 (0,-1.5) (0.00520837,-1.48958)
+inch2 TP(1<-0) st=0 (2,3) (3,5)
+inch2 TP(0<-1) st=0 (0,-1) (1,1)
+inch2 TP(2<-1) st=0 (192,192) (384,576)
+inch2 TP(1<-2) st=0 (1,1) (1.0052,1.01041)
+inch2 TP(0<-0) st=0 (1,1) (2,3)
+inch2 TP(3<-0) st=2 (1,1) (2,3)
+inch2 TP(0<-3) st=2 (1,1) (2,3)
+inch2 TP(-1<-0) st=2 (1,1) (2,3)
+TP count0 st=2
+TP count-1 st=2
+TP null st=2
+TP null-graphics st=2
+TPI count0 st=2
+TPI scale.5 st=0 1,1 2,2 3,3 0,0 -1,-1 4,-3
+TPI scale.25 st=0 1,2 3,4 0,-1 -2,-3
+hdc unit1 TP(2<-0) st=0 (1,1) (2,3)
+hdc unit2 TP(2<-0) st=0 (1,1) (2,3)
+hdc unit3 TP(2<-0) st=0 (1.33333,1.33333) (2.66666,4)
+hdc unit4 TP(2<-0) st=0 (96,96) (192,288)
+hdc unit5 TP(2<-0) st=0 (0.319999,0.319999) (0.639999,0.959999)
+hdc unit6 TP(2<-0) st=0 (3.77952,3.77952) (7.55905,11.3385)
+pom half TP(2<-0) st=0 (0.5,0.5) (1.5,2.5)
+save tokens 4255387069 4255321534 4255255999
+SaveGraphics(NULL out) st=2
+Restore(s2) st=0
+after restore s2 sm=4
+Restore(s3 popped) st=0
+after restore s3 sm=4
+Restore(12345) st=0
+Restore(0) st=0
+Restore(s1) st=0
+after restore s1 sm=3
+Restore(s1 again) st=0
+save after restores 4255190461
+BeginContainer2 st=0 token=0
+in container2 cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=3,4/0 unit=1/0 scale=1/0 dpi=96,96/0,0
+in container2 world st=0 [1 0 0 1 0 0]
+container2 clipbounds -4.19454e+06 -4.19459e+06 8.3886e+06 8.3886e+06
+in container2 TP(2<-0) st=0 (239.5,287.5) (240.5,289.5)
+in container2 TP(1<-0) st=0 (0,0) (1,2)
+in container2 modified TP(2<-0) st=0 (240.5,287.5) (241.5,289.5)
+save inside container token=4255059390
+EndContainer st=0
+after container2 cm=1/0 cq=2/0 sm=4/0 im=5/0 pom=4/0 trh=4/0 tc=7/0 origin=3,4/0 unit=4/0 scale=0.5/0 dpi=96,96/0,0
+after container2 world st=0 [1 0 0 1 5 6]
+Restore(save inside ended container) st=0
+EndContainer(again) st=0
+EndContainer(save token) st=0
+after EndContainer(save token) sm=4
+Restore(container token) st=0
+after Restore(container token) sm=3
+BeginContainer2(NULL) st=2
+nested tokens 4254862783 4254797248
+EndContainer(outer) st=0
+after end outer sm=3
+EndContainer(inner after outer) st=0
+BeginContainer(pixel) st=0
+in container pixel world st=0 [1 0 0 1 0 0]
+in container pixel TP(2<-0) st=0 (10,20) (12,24)
+in container pixel TP(2<-0) st=0 (110,70) (112,74)
+in container pixel TP(1<-0) st=0 (50,25) (51,27)
+BeginContainer(point, outer inch+T) st=0
+in container point TP(2<-0) st=0 (1440,2400) (1584,2688)
+in container point TP(2<-0) st=0 (8639.99,5999.99) (8783.99,6287.99)
+in container point cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=0,0/0 unit=1/0 scale=1/0 dpi=96,96/0,0
+in container point world st=0 [1 0 0 1 0 0]
+BeginContainer(unit 0) st=2
+BeginContainer(unit 1) st=2
+BeginContainer(unit 2) st=0 (50,25)->(110,70)
+BeginContainer(unit 3) st=0 (50,25)->(84.9999,57.4999)
+BeginContainer(unit 4) st=0 (50,25)->(11.0416,20.5208)
+BeginContainer(unit 5) st=0 (50,25)->(322.5,176.25)
+BeginContainer(unit 6) st=0 (50,25)->(36.4583,33.2291)
+BeginContainer(unit 7) st=2
+BeginContainer(src w0) st=0
+src w0 TP(2<-0) st=0 (1,1) (2,3)
+BeginContainer(src h0) st=0
+src h0 TP(2<-0) st=0 (1,1) (2,3)
+BeginContainer(dst w0) st=0
+dst w0 TP(2<-0) st=0 (10,22) (10,26)
+BeginContainer(src w-50) st=0
+src w-50 TP(2<-0) st=0 (10,20) (8,24)
+BeginContainer(dst w-100) st=0
+dst w-100 TP(2<-0) st=0 (10,20) (8,24)
+BeginContainer(null dst) st=2
+BeginContainer(null src) st=2
+BeginContainer(null out) st=2
+BeginContainerI st=0
+in containerI TP(2<-0) st=0 (110,70) (112,74)
+container rect clipbounds -4.1943e+06 -4.1943e+06 8.3886e+06 8.3886e+06
+GetDC st=0 same=0
+GetDC again st=4
+GetSmoothing while out st=4
+SetSmoothing while out st=4
+Fill while out st=4
+SetWorld while out st=4
+Save while out st=4
+TP while out st=4
+ReleaseDC(wrong) st=0
+ReleaseDC(NULL) st=2
+ReleaseDC st=2
+ReleaseDC again st=2
+GetDC(NULL out) st=2
+GetDC(NULL graphics) st=2
+ReleaseDC(NULL graphics) st=2
+Delete while out st=4
+img26200a GetDC st=0 nonnull=1 objtype=10
+img26200a dc bitmap getobject=84 8x8 bpp=32 dib=1
+img26200a dc vporg=0,0 gm=1 xf.dx=0 cliptype=2 clip=0,0,8,8
+img26200a dc GetPixel(0,0)=000c0b0d (7,7)=000c0b0d
+img26200a ReleaseDC st=0
+img26200a after: (0,0)=80112133 (3,3)=ffff0000 (5,5)=ffff0000 (7,0)=ff0000ff (7,7)=80112133
+imge200b GetDC st=0 nonnull=1 objtype=10
+imge200b dc bitmap getobject=84 8x8 bpp=32 dib=1
+imge200b dc vporg=0,0 gm=1 xf.dx=0 cliptype=2 clip=0,0,8,8
+imge200b dc GetPixel(0,0)=000c0b0d (7,7)=000c0b0d
+imge200b ReleaseDC st=0
+imge200b after: (0,0)=80112133 (3,3)=ffff0000 (5,5)=ffff0000 (7,0)=ff0000ff (7,7)=80112133
+img21808 GetDC st=0 nonnull=1 objtype=10
+img21808 dc bitmap getobject=84 8x8 bpp=32 dib=1
+img21808 dc vporg=0,0 gm=1 xf.dx=0 cliptype=2 clip=0,0,8,8
+img21808 dc GetPixel(0,0)=000c0b0d (7,7)=000c0b0d
+img21808 ReleaseDC st=0
+img21808 after: (0,0)=ff09111a (3,3)=ffff0000 (5,5)=ffff0000 (7,0)=ff0000ff (7,7)=ff09111a
+img fresh cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=0,0/0 unit=1/0 scale=1/0 dpi=96,96/0,0
+img fresh world st=0 [1 0 0 1 0 0]
+img unit1 TP(2<-0) st=0 (1,1) (2,3)
+img unit2 TP(2<-0) st=0 (1,1) (2,3)
+img unit3 TP(2<-0) st=0 (1.33333,1.33333) (2.66666,4)
+img unit4 TP(2<-0) st=0 (96,96) (192,288)
+img unit5 TP(2<-0) st=0 (0.319999,0.319999) (0.639999,0.959999)
+img unit6 TP(2<-0) st=0 (3.77952,3.77952) (7.55905,11.3385)
+img nearest st=0 80123456
+nearest null st=2
+Flush(0) st=0 Flush(1) st=0 Flush(2) st=0 Flush(-1) st=0
+img Comment st=2 Comment(0,NULL) st=2 Comment(NULL g) st=2
+Flush(NULL) st=2
+SetAbort(NULL abort) st=0 SetAbort(NULL g) st=2
+PlayTSClientRecord(g,0..) st=10011 (NULL g) st=10011 (g,1,2,3,4) st=1
+img 72x150 cm=0/0 cq=0/0 sm=3/0 im=3/0 pom=0/0 trh=0/0 tc=4/0 origin=0,0/0 unit=1/0 scale=1/0 dpi=72,150/0,0
+img 72x150 world st=0 [1 0 0 1 0 0]
+img 72x150 inch TP(2<-0) st=0 (72,150) (144,450)
+img 72x150 display TP(2<-0) st=0 (1,1) (2,3)
+img24 nearest st=0 80123456
+img555 nearest st=0 ff123456
+hdc32 nearest st=0 80123456
+hdc Comment st=2
+hdc16 nearest st=0 ff123456
+hdc8 nearest st=0 ff123456
+vporg10,5 TP(2<-0) st=0 (10,5) (11,7)
+vporg10,5 fill first=10,5 last=11,6 count=4 px=ffff0000
+vporg changed after create first=10,5 last=11,6 count=4 px=ffff0000
+vporg clipbounds -4.19431e+06 -4.1943e+06 8.3886e+06 8.3886e+06
+winorg3,4 TP(2<-0) st=0 (-3,-4) (-2,-2)
+winorg3,4 fill(5,5) first=2,1 last=3,2 count=4 px=ffff0000
+aniso x2 TP(2<-0) st=0 (2,2) (4,6)
+aniso x2 fill(1,1,2,2) first=2,2 last=5,5 count=16 px=ffff0000
+gdi world 7,2 TP(2<-0) st=0 (7,2) (8,4)
+gdi world 7,2 fill first=7,2 last=8,3 count=4 px=ffff0000
+dc clip clipbounds -4.1943e+06 -4.1943e+06 8.3886e+06 8.3886e+06
+dc clip 4,4,8,8 fill all first=4,4 last=7,7 count=16 px=ffff0000
+vporg6 dc clip clipbounds -4.19431e+06 -4.19431e+06 8.3886e+06 8.3886e+06
+alpha pre=00336699 fill=ffff0000 -> in=ffff0000 out=00336699
+alpha pre=00336699 fill=80ff0000 -> in=8099334c out=00336699
+alpha pre=00336699 fill=00ff0000 -> in=00336699 out=00336699
+alpha pre=00336699 clear=40102030 -> 4004080c
+alpha pre=00336699 sourcecopy fill=80ff0000 -> 80800000
+alpha pre=00336699 aa edge fill -> edge=00336699 corner=00336699 interior=ffff0000
+alpha pre=12336699 fill=ffff0000 -> in=ffff0000 out=12336699
+alpha pre=12336699 fill=80ff0000 -> in=8999334c out=12336699
+alpha pre=12336699 fill=00ff0000 -> in=12336699 out=12336699
+alpha pre=12336699 clear=40102030 -> 4004080c
+alpha pre=12336699 sourcecopy fill=80ff0000 -> 80800000
+alpha pre=12336699 aa edge fill -> edge=12336699 corner=12336699 interior=ffff0000
+GdipAlloc(0) nonnull=1
+GdipAlloc(32) nonnull=1 aligned8=1
+GdipFree(NULL) ok
+c2 outer scale2,3 TP(2<-0) st=0 (0,0) (2,6)
+c2 outer scale2,3 TP(2<-0) st=0 (2,0) (4,6)
+  inner inch TP(2<-0) st=0 (192,0) (384,576)
+c2 outer rot90 TP(2<-0) st=0 (0,0) (-2,0.999999)
+c2 outer rot90 TP(2<-0) st=0 (-4.37113e-08,1) (-2,1.99999)
+  inner inch TP(2<-0) st=0 (-4.19629e-06,96) (-192,191.999)
+c2 outer inch TP(2<-0) st=0 (0,0) (1,2)
+c2 outer inch TP(2<-0) st=0 (1,0) (2,2)
+  inner inch TP(2<-0) st=0 (96,0) (192,192)
+c2 outer pixel scale2 TP(2<-0) st=0 (0,0) (1,2)
+c2 outer pixel scale2 TP(2<-0) st=0 (1,0) (2,2)
+  inner inch TP(2<-0) st=0 (96,0) (192,192)
+c2 outer inch T5,6 TP(2<-0) st=0 (480,576) (481,578)
+c2 outer inch T5,6 TP(2<-0) st=0 (481,576) (482,578)
+  inner inch TP(2<-0) st=0 (576,576) (672,768)
+c2 outer scale2 T5,6 TP(2<-0) st=0 (5,6) (7,10)
+c2 outer scale2 T5,6 TP(2<-0) st=0 (7,6) (9,10)
+  inner inch TP(2<-0) st=0 (197,6) (389,390)
+c2 outer pom half TP(2<-0) st=0 (-0.5,-0.5) (0.5,1.5)
+c2 outer pom half TP(2<-0) st=0 (0.5,-0.5) (1.5,1.5)
+c2 outer+inner pom half TP(2<-0) st=0 (-1,-1) (0,1)
+  inner inch TP(2<-0) st=0 (95,-1) (191,191)
+nested c2 scale2 then 3 TP(2<-0) st=0 (6,0) (12,12)
+rc outer scale2,1 pixel TP(2<-0) st=0 (20,20) (24,24)
+rc outer scale2,1 pixel TP(2<-0) st=0 (220,70) (224,74)
+rc outer scale2,1 pixel TP(1<-0) st=0 (50,25) (51,27)
+rc outer scale2,1 pixel world st=0 [1 0 0 1 0 0]
+rc src offset pixel TP(2<-0) st=0 (-10,10) (-8,14)
+rc src offset pixel TP(2<-0) st=0 (90,60) (92,64)
+rc src offset pixel TP(1<-0) st=0 (50,25) (51,27)
+rc src offset pixel world st=0 [1 0 0 1 0 0]
+rc src offset point TP(2<-0) st=0 (-10,10) (-8.5,13)
+rc src offset point TP(2<-0) st=0 (64.9999,47.4999) (66.4999,50.4999)
+rc src offset point TP(1<-0) st=0 (50,25) (51,27)
+rc src offset point world st=0 [1 0 0 1 0 0]
+rc outer pagescale2 TP(2<-0) st=0 (20,40) (24,48)
+rc outer pagescale2 TP(2<-0) st=0 (220,140) (224,148)
+rc outer pagescale2 TP(1<-0) st=0 (50,25) (51,27)
+rc outer pagescale2 world st=0 [1 0 0 1 0 0]
+rc outer inch TP(2<-0) st=0 (960,1920) (1152,2304)
+rc outer inch TP(2<-0) st=0 (10560,6720) (10752,7104)
+rc outer inch TP(1<-0) st=0 (50,25) (51,27)
+rc outer inch world st=0 [1 0 0 1 0 0]
+mix EndContainer(save) st=0 sm=4 then Restore(save) st=0 sm=3
+mix Restore(container) st=0 sm=4 then EndContainer st=0 sm=3
+mix Restore(save below container) st=0 sm=3 after TP(2<-0) st=0 (2,0) (4,4)
+mix EndContainer(container above restored save) st=0
+mix EndContainer(container below save) st=0 sm=3 Restore(save above ended) st=0 sm=3
+token seq 4249882045 4249816510 4249750975 4249685440 diff 65535 65535 65535
+token after pop 4249619901
+token on new graphics 4249488829
+pagescale 9.99999971e-10 st=2
+pagescale 1.00000008e-09 st=0
+pagescale 9.99999993e-09 st=0
+pagescale 1.00000001e-07 st=0
+pagescale 9.99999997e-07 st=0
+pagescale 9.99999974e-06 st=0
+pagescale 9.99999974e-05 st=0
+pagescale 0.00100000004 st=0
+pagescale 1e+09 st=0
+pagescale 1.00000006e+09 st=2
+pagescale 1.00009996e+09 st=2
+pagescale 1e9 inch st=0
+pagescale 1e-6 inch st=0
+pageunit inch->? keeps scale
+pageunit point after scale 1e9 st=0
+pagescale nan st=0
+SetWorld tiny st=0
+SetWorld huge st=0
+SetWorld det0 st=2
+Rotate(nan) st=2
+after rot nan world st=0 [1e+20 0 0 1e+20 0 0]
+hdc GetDC objtype=10 samebitmap=1
+hdc after ReleaseDC objtype=10
+img GetDC raw[0]=000d0b0c all-same=1 topdown=0
+img sentinel (1,1)=ff445566 near(2,2)=ff0d0b0d raw7f00ff00(3,0)=ff00ff00 sentinel+a1(0,1)=ff445566 untouched=ff445566
+img(transparent) GetDC raw[0]=000d0b0c
+ddb bpp=32 fill 80ff0000 over 996633 -> in=80cc3319 out=00996633
+dib24 fill 80ff0000 over 336699 -> in=99334c
+dib32 fill 40000000 over 10ffffff -> 4cbfbfbf
+dib32 quality AssumeLinear fill 80ff0000 -> 8099334c
+dib32 quality HighQuality fill 80ff0000 -> 7fbf496f
+stream read open st=6 nonnull=0
+stream write open existing st=6
+stream write open new st=6
+stream missing st=6 out=00000000
+stream rw st=6
+stream access0 st=6
+stream access-exec st=6
+stream null-name st=6
+stream null-out st=6
+done

@@ -1,0 +1,8 @@
+interrupt_time_advances_without_api_calls=1
+interrupt_time_step_at_most_16ms=1
+system_time_tracks_interrupt_time=1
+tick_count_tracks_interrupt_time=1
+tick_count_matches_gettickcount64=1
+tick_count_multiplier_is_15_625ms=1
+tick_count_low_deprecated_is_zero=1
+interrupt_time_advances_across_sleep100=1

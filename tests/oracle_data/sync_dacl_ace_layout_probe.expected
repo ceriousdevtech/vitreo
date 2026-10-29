@@ -1,0 +1,67 @@
+case exact create 1 0
+open 00100000 1 4660
+open 00000001 1 4660
+open 001f0001 1 4660
+open 00120001 1 4660
+secinfo 2 28 1 0/0/20
+readback 2 28 1 0/0/20
+case slack4 create 1 0
+open 00100000 1 4660
+open 00000001 1 4660
+open 001f0001 1 4660
+open 00120001 1 4660
+secinfo 2 32 1 0/0/24
+readback 2 32 1 0/0/24
+case slack4_fill create 1 0
+open 00100000 1 4660
+open 00000001 1 4660
+open 001f0001 1 4660
+open 00120001 1 4660
+secinfo 2 32 1 0/0/24
+readback 2 32 1 0/0/24
+case slack8 create 1 0
+open 00100000 1 4660
+open 00000001 1 4660
+open 001f0001 1 4660
+open 00120001 1 4660
+secinfo 2 36 1 0/0/28
+readback 2 36 1 0/0/28
+case deny_slack4 create 1 0
+open 00100000 1 4660
+open 00000001 0 5
+open 001f0001 0 5
+open 00120001 0 5
+secinfo 2 52 2 1/0/24 0/0/20
+readback 2 52 2 1/0/24 0/0/20
+case odd22 create 0 1336
+case odd21 create 0 1336
+case cut16 create 0 1336
+case cut18 create 0 1336
+case rev3 create 1 0
+open 00100000 1 4660
+open 00000001 1 4660
+open 001f0001 1 4660
+open 00120001 1 4660
+secinfo 3 28 1 0/0/20
+readback 3 28 1 0/0/20
+case rev4 create 1 0
+open 00100000 1 4660
+open 00000001 1 4660
+open 001f0001 1 4660
+open 00120001 1 4660
+secinfo 4 28 1 0/0/20
+readback 4 28 1 0/0/20
+case acl_slack8 create 1 0
+open 00100000 1 4660
+open 00000001 1 4660
+open 001f0001 1 4660
+open 00120001 1 4660
+secinfo 2 28 1 0/0/20
+readback 2 28 1 0/0/20
+case acl_odd create 1 0
+open 00100000 1 4660
+open 00000001 1 4660
+open 001f0001 1 4660
+open 00120001 1 4660
+secinfo 2 28 1 0/0/20
+readback 2 28 1 0/0/20

@@ -1,0 +1,461 @@
+ptr=8
+mm EnumAudioEndpoints(eCapture,ACTIVE) hr=00000000 nonzero=1
+mm capture[0] IMMEndpoint hr=00000000 flow=1 state=1 id-prefix-0.0.1=1
+mm capture[0] PKEY_AudioEngine_DeviceFormat hr=00000000 vt=65 blob=40
+mm GetDefaultAudioEndpoint(eCapture,role=0) hr=00000000 in-list=1
+mm GetDefaultAudioEndpoint(eCapture,role=1) hr=00000000 in-list=1
+mm GetDefaultAudioEndpoint(eCapture,role=2) hr=00000000 in-list=1
+mm EnumAudioEndpoints(eAll,ACTIVE) hr=00000000 captures-agree=1
+mm GetDevice(capture id) hr=00000000
+mm GetDevice(unknown capture-form id) hr=80070490 out=null
+mm GetDevice(bogus) hr=80070057 out=null
+ds CaptureEnumerateW hr=00000000 count-is-1+endpoints=1
+ds enum[0] null-guid=1 desc=Primary Sound Capture Driver module-empty=1
+ds enum[1..] guid-set=1 default-first-then-mm-order=1 desc-is-friendly-name=1 module-is-endpoint-id=1 guid-is-endpoint-id-guid=1
+ds CaptureEnumerateA hr=00000000 count-agree=1 first=Primary Sound Capture Driver
+ds CaptureEnumerateW(callback FALSE) hr=00000000 calls=1
+ds CaptureEnumerateW(NULL) hr=80070057
+ds GetDeviceID(DefaultCapture) hr=00000000 is-console-default=1
+ds GetDeviceID(DefaultVoiceCapture) hr=00000000 is-communications-default=1
+ds GetDeviceID(device guid) hr=00000000 same=1
+ds GetDeviceID(unknown guid) hr=88780078 out-untouched=1
+ds GetDeviceID(GUID_NULL) hr=88780078
+ds GetDeviceID(NULL,out) hr=80070057
+ds GetDeviceID(src,NULL) hr=80070057
+env-norender ds GetDeviceID(DefaultPlayback) hr=88780078
+ds CaptureCreate8(NULL) hr=00000000 out=set
+ds CaptureCreate8(DefaultCapture) hr=00000000 out=set
+ds CaptureCreate8(DefaultVoiceCapture) hr=00000000 out=set
+ds CaptureCreate8(device) hr=00000000 out=set
+ds CaptureCreate8(GUID_NULL) hr=00000000 out=set
+ds CaptureCreate8(DefaultPlayback) hr=88780078 out=untouched
+ds CaptureCreate8(unknown) hr=88780078 out=untouched
+ds CaptureCreate8(ppDSC NULL) hr=80070057
+ds CaptureCreate8(outer) hr=80040110 out=untouched
+ds CaptureCreate(NULL) hr=00000000 out=set
+ds capture QI(IUnknown) hr=00000000 same=0
+ds capture QI(IDirectSoundCapture) hr=00000000 same=1
+ds capture QI(IDirectSound) hr=80004002 out=null
+ds capture QI(IDirectSoundFullDuplex) hr=80004002 out=null
+ds capture AddRef=2 Release=1
+ds capture GetCaps(NULL) hr=80070057
+ds capture GetCaps(dwSize=0) hr=80070057
+ds capture GetCaps(dwSize=big) hr=80070057
+ds capture GetCaps hr=00000000 flags=1 formats=fffff channels-1-or-2=1
+ds capture Initialize(NULL) on created hr=88780082
+ds capture Initialize(DefaultCapture) on created hr=88780082
+ds CoCreateInstance(CLSID_DirectSoundCapture8) hr=00000000
+ds uninit GetCaps hr=887800aa
+ds uninit CreateCaptureBuffer hr=887800aa out=untouched
+ds uninit Initialize(NULL) hr=00000000
+ds uninit Initialize again hr=88780082
+ds CoCreateInstance(CLSID_DirectSoundCapture) hr=00000000
+ds uninit Initialize(unknown guid) hr=88780078
+ds CreateCaptureBuffer(NULL,NULL) hr=80070057
+ds CreateCaptureBuffer(out NULL) hr=80070057
+ds CreateCaptureBuffer(desc NULL) hr=80070057 out=untouched
+ds CreateCaptureBuffer(outer) hr=80040110 out=untouched
+ds CreateCaptureBuffer(dwSize=0) hr=80070057 out=untouched
+ds CreateCaptureBuffer(dwSize=DSCBUFFERDESC1) hr=00000000 out=set
+ds CreateCaptureBuffer(dwSize=big) hr=80070057 out=untouched
+ds CreateCaptureBuffer(format NULL) hr=80070057 out=untouched
+ds CreateCaptureBuffer(bytes=0) hr=80070057 out=untouched
+ds CreateCaptureBuffer(bytes=3 align=2) hr=80070057 out=untouched
+ds CreateCaptureBuffer(bytes=2) hr=80070057
+ds CreateCaptureBuffer(flags=0x1) hr=80070057
+ds CreateCaptureBuffer(flags=0x10) hr=80070057
+ds CreateCaptureBuffer(WAVEMAPPED) hr=00000000 caps-flags=80000000
+ds CreateCaptureBuffer(CTRLFX, no effects) hr=00000000
+ds CreateCaptureBuffer(CTRLFX + NS) hr=00000000 out=set
+ds CreateCaptureBuffer(NS without CTRLFX) hr=80070057 out=untouched
+ds CreateCaptureBuffer(pcm16-mono-16k) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm8-mono-22k) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm16-stereo-44k) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm16-stereo-48k) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm24-stereo-48k) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm32-stereo-48k) hr=00000000 out=set
+ds CreateCaptureBuffer(float-stereo-48k) hr=00000000 out=set
+ds CreateCaptureBuffer(float-mono-16k) hr=00000000 out=set
+ds CreateCaptureBuffer(ext-pcm16-stereo-48k) hr=00000000 out=set
+ds CreateCaptureBuffer(ext-float-stereo-48k) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm16-6ch-48k) hr=88780078 out=null
+ds CreateCaptureBuffer(pcm16-mono-192k) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm16-mono-1k) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm12-mono-16k) hr=80070057 out=untouched
+ds CreateCaptureBuffer(adpcm-tag) hr=88780064 out=null
+ds CreateCaptureBuffer(channels-0) hr=80070057 out=untouched
+ds CreateCaptureBuffer(rate-0) hr=80070057 out=untouched
+ds CreateCaptureBuffer(bad-blockalign) hr=80070057 out=untouched
+ds CreateCaptureBuffer(bad-avgbytes) hr=00000000 out=set
+ds CreateCaptureBuffer(pcm8 bytes=2) hr=80070057
+ds CreateCaptureBuffer(pcm8 bytes=3) hr=80070057
+ds CreateCaptureBuffer(pcm8 bytes=4) hr=00000000
+ds CreateCaptureBuffer(pcm8 bytes=6) hr=00000000
+ds CreateCaptureBuffer(pcm8 bytes=8) hr=00000000
+ds CreateCaptureBuffer(pcm8 bytes=DSBSIZE_MAX) hr=00000000
+ds CreateCaptureBuffer(pcm8 bytes=DSBSIZE_MAX+1) hr=80070057
+ds CreateCaptureBuffer(pcm16 3 channels) hr=88780078 out=null
+ds CreateCaptureBuffer(pcm16 4 channels) hr=88780078 out=null
+ds CreateCaptureBuffer(pcm16 5 channels) hr=88780078 out=null
+ds CreateCaptureBuffer(pcm16 6 channels) hr=88780078 out=null
+ds CreateCaptureBuffer(pcm16 7 channels) hr=88780078 out=null
+ds CreateCaptureBuffer(pcm16 8 channels) hr=88780078 out=null
+ds CreateCaptureBuffer(pcm cbSize=4) hr=00000000 format-size=18 cbSize-back=0
+ds CreateCaptureBuffer(ext float) hr=00000000 format-size=40
+ds CreateCaptureBuffer(ext cbSize=10) hr=80070057
+ds CreateCaptureBuffer(ext subformat ADPCM) hr=88780064
+ds CreateCaptureBuffer(ext pcm24 valid=20) hr=88780064
+ds CreateCaptureBuffer(ext pcm24 valid=24) hr=00000000
+ds CreateCaptureBuffer(ext valid>bits) hr=80070057
+ds CreateCaptureBuffer(ext pcm16 3ch) hr=00000000
+ds CreateCaptureBuffer(dwReserved=5) hr=80070057
+ds fx CreateCaptureBuffer(NS soft) hr=00000000 out=set fx-flags-out=2
+ds fx CreateCaptureBuffer(NS hard) hr=00000000 out=set fx-flags-out=1
+ds fx CreateCaptureBuffer(NS no location) hr=80070057 out=untouched fx-flags-out=0
+ds fx CreateCaptureBuffer(NS both locations) hr=80070057 out=untouched fx-flags-out=3
+ds fx CreateCaptureBuffer(AEC soft) hr=00000000 out=set fx-flags-out=2
+ds fx CreateCaptureBuffer(AEC system) hr=00000000 out=set fx-flags-out=2
+ds fx CreateCaptureBuffer(class NS instance AEC) hr=00000000 out=set fx-flags-out=2
+ds fx CreateCaptureBuffer(unknown class) hr=80070057 out=untouched fx-flags-out=2
+ds fx CreateCaptureBuffer(unknown instance) hr=80070057 out=untouched fx-flags-out=2
+ds fx CreateCaptureBuffer(dwSize=0) hr=80070057 out=untouched fx-flags-out=2
+ds fx CreateCaptureBuffer(reserved1=1) hr=80070057 out=untouched fx-flags-out=2
+ds fx CreateCaptureBuffer(AEC+NS) hr=00000000
+ds fx buffer caps-flags=200 GetFXStatus(2) hr=80070057 GetFXStatus(1) hr=80070057 status-untouched=1 GetObjectInPath hr=88781161 out=untouched
+ds fx CreateCaptureBuffer(count=1 desc NULL) hr=80070057
+ds fx CreateCaptureBuffer(count=0 desc set) hr=80070057
+ds fx CreateCaptureBuffer(CTRLFX on DirectSoundCaptureCreate object) hr=887800be
+ds DirectSoundCaptureCreate buffer QI(IDirectSoundCaptureBuffer8) hr=80004002 out=null
+ds CreateCaptureBuffer(second) hr=8878000a out=null
+ds CreateCaptureBuffer(second, bytes=3) hr=80070057
+ds CreateCaptureBuffer(second, DSCBUFFERDESC1) hr=8878000a
+ds CreateCaptureBuffer(second object while first captures-ready) hr=00000000
+ds capture Release with live buffer -> 0
+ds buf CreateCaptureBuffer hr=00000000
+ds buf GetCaps(NULL) hr=80070057
+ds buf GetCaps(dwSize=0) hr=80070057
+ds buf GetCaps hr=00000000 flags=0 bytes=32000 reserved=0
+ds buf GetFormat(NULL,0,NULL) hr=80070057
+ds buf GetFormat(NULL,0,&wr) hr=00000000 wr=18
+ds buf GetFormat(buf,10) hr=80070057 wr=77 byte10=cc
+ds buf GetFormat(buf,16) hr=80070057 wr=77 byte16=cc
+ds buf GetFormat(buf,64) hr=00000000 wr=18 tag=1 ch=1 rate=16000 avg=32000 align=2 bits=16 cb=0 byte18=cc
+ds buf GetFormat(buf,64,NULL) hr=00000000
+ds buf GetStatus(NULL) hr=80070057
+ds buf GetCurrentPosition(NULL,NULL) hr=80070057
+ds buf GetCurrentPosition(cap only) hr=00000000 cap=0
+ds buf GetCurrentPosition(read only) hr=00000000 read=0
+ds buf Initialize hr=88780082
+ds buf QI(IDirectSoundCaptureBuffer8) hr=00000000 same=1
+ds buf QI(IUnknown) hr=00000000 same=0
+ds buf QI(IDirectSoundBuffer) hr=80004002 out=null
+ds buf QI(IDirectSoundNotify) hr=00000000 same-as-buffer=0
+ds notify QI(IDirectSoundCaptureBuffer) hr=00000000 back-is-buffer=1
+ds buf8 GetObjectInPath(no fx) hr=8878001e out=untouched
+ds buf8 GetFXStatus(0,NULL) hr=80070057
+ds buf8 GetFXStatus(1) hr=80070057
+ds notify Set(0,NULL) hr=00000000
+ds notify Set(1,NULL) hr=80070057
+ds notify Set(offset=size) hr=80070057
+ds notify Set(unsorted) hr=00000000
+ds notify Set(duplicate) hr=80070057
+ds notify Set(NULL event) hr=80070057
+ds notify Set(bogus event) hr=00000000
+ds notify Set(OFFSETSTOP first) hr=00000000
+ds notify Set(3) hr=00000000
+ds buf Lock(0 bytes) hr=80070057 p1=null l1=0 l2=0 p2=null
+ds buf Lock(bytes>size) hr=80070057 p1=null l1=0 l2=0 p2=null
+ds buf Lock(offset=size) hr=80070057 p1=null l1=0 l2=0 p2=null
+ds buf Lock(ppv1 NULL) hr=80070057 p1=untouched l1=77 l2=77 p2=untouched
+ds buf Lock(pdw1 NULL) hr=80070057 p1=null l1=77 l2=77 p2=untouched
+ds buf Lock(flags=2) hr=80070057 p1=null l1=0 l2=0 p2=null
+ds buf Lock(ENTIRE offset=500) hr=00000000 p1=set l1=31500 l2=500 p2=set
+ds buf   Unlock hr=00000000
+ds buf Lock(100+32000) hr=00000000 p1=set l1=31900 l2=100 p2=set
+ds buf   Unlock hr=00000000
+ds buf Lock(offset=1) hr=00000000 p1=set l1=10 l2=0 p2=null
+ds buf   Unlock hr=00000000
+ds buf Lock(bytes=11) hr=00000000 p1=set l1=11 l2=0 p2=null
+ds buf   Unlock hr=00000000
+ds buf Lock(pdw2 NULL) hr=00000000 p1=set l1=10 l2=77 p2=null
+ds buf   Unlock hr=00000000
+ds buf Lock(ppv2 NULL) hr=00000000 p1=set l1=10 l2=0 p2=untouched
+ds buf   Unlock hr=00000000
+ds buf Lock(wrap) hr=00000000 l1=1000 l2=1000 p2-is-start=1
+ds buf Lock while locked hr=80070057 q1=null m1=0
+ds buf Unlock(wrong ptr) hr=80070057
+ds buf Unlock(more bytes) hr=00000000
+ds buf Unlock(fewer bytes) hr=80070057
+ds buf Unlock again hr=80070057
+ds buf Lock(after unlock) hr=00000000 p1=set l1=10 l2=0 p2=null
+ds buf   Unlock hr=00000000
+ds buf Lock(100) hr=00000000 Unlock(50) hr=00000000 relock hr=00000000
+ds buf Lock(final check) hr=00000000
+ds buf Start(flags=2) hr=80070057
+ds buf status after bad Start=0
+ds buf Start(LOOPING) hr=00000000 status=3
+ds notify Set while capturing hr=88780032
+ds notify Set(0,NULL) while capturing hr=88780032
+ds buf first notify index=0 read>=16000=1 cap>=read=1 read-aligned=1
+ds buf read advanced in 200ms 4000..9000=1
+ds buf Lock while capturing hr=00000000
+ds buf   Unlock hr=00000000
+ds buf Start while capturing hr=00000000
+ds buf Start(0) while looping hr=00000000 status=3
+ds buf Stop hr=00000000 status=0 offsetstop-signaled=1
+ds buf position frozen after Stop=1 cap==read=1
+ds buf Stop again hr=00000000 offsetstop-signaled=0
+ds buf restart hr=00000000 read-continues=1
+ds once Start(0) hr=00000000 status=1
+ds once end status=0 offsetstop-signaled=1 read=0 cap=0
+ds once Lock(wrap, no second ptr) hr=00000000 l1=200
+ds once   Unlock(p1, l1, NULL, 0) hr=00000000
+ds once Lock(after) hr=80070057
+env-norender ds FullDuplexCreate hr=88780078 fd=untouched cb=untouched rb=untouched
+ds FullDuplexCreate(ppDSFD NULL) hr=80070057
+ds FullDuplexCreate(capture desc NULL) hr=80070057
+ds FullDuplexCreate(outer) hr=80040110 fd=untouched
+wi GetNumDevs agrees-with-mmdevice=1
+wi GetDevCapsW(0) r=0 mid=1 pid=101 ver=a00 formats=fffff channels-1-or-2=1 reserved=0
+wi device ids default-first-then-mm-order=1 name-is-friendly-truncated=1
+wi Message(0, FUNCTIONINSTANCEIDSIZE) r=0 size-is-id-bytes=1
+wi Message(0, FUNCTIONINSTANCEID) r=0 is-console-default-id=1
+wi Message(0, FUNCTIONINSTANCEID, 8-byte buffer) r=21
+wi Message(n, FUNCTIONINSTANCEIDSIZE) r=2
+wi Message(0, DEVICEINTERFACESIZE) r=0 nonzero=1
+wi Message(0, DEVICEINTERFACE) r=0 size-is-name-bytes=1 ks-filter-path=1 is-endpoint-id=0
+wi Message(0, DEVICEINTERFACE, 8-byte buffer) r=21 untouched=0
+wi Message(0, DEVICEINTERFACE, NULL) r=11
+wi Message(0, DEVICEINTERFACESIZE, NULL) r=11
+wi Message(n, DEVICEINTERFACESIZE) r=2
+wi Message(MAPPER, DEVICEINTERFACESIZE) r=0 size=2
+wi Message(MAPPER, DEVICEINTERFACE, 4 bytes) r=0 first=0000 second=7777
+wi Message(MAPPER, DEVICEINTERFACE, 1 byte) r=21 first=7777
+wi Message(0, unknown 0x7777) r=8
+wi Message(MAPPER, PREFERRED_GET) r=0 pref=0 flags=0
+wi Message(MAPPER, CONSOLEVOICECOM_GET) r=0 is-communications-default=1 flags=0
+wi GetDevCapsW(0, cb=512) r=0 bytes-written=512 past-caps2-zero=1
+wi GetDevCapsA(0, cb=512) r=0 bytes-written=96
+wi GetDevCapsA(0, cb=10) r=0 bytes-written=10
+wi GetDevCapsW(MAPPER, cb=512) r=0 bytes-written=80
+wi GetDevCapsA(MAPPER, cb=512) r=0 bytes-written=96
+wi GetDevCapsW(0, cb=79) r=11
+wi GetDevCapsW(0, cb=80) r=0
+wi GetDevCapsA(n) r=2
+wi GetDevCapsW(cb=0) r=0
+wi GetDevCapsW(NULL) r=11
+wi GetDevCapsW(cb=10) r=11 byte10=cc
+wi GetDevCapsW(n) r=2
+wi GetDevCapsW(MAPPER) r=0 mid=1 pid=2 ver=500 name=Microsoft Sound Mapper formats=fffff
+wi GetDevCapsA(0, caps2) r=0 guids-written=1
+wi GetDevCapsW(0, caps2) r=0 guids-written=1
+wi Open(phwi NULL) r=11
+wi Open(QUERY) r=0 phwi=untouched
+wi Open(QUERY, phwi NULL) r=0
+wi Open(pwfx NULL) r=11 phwi=untouched
+wi Open(bad id) r=2 phwi=null
+wi Open(adpcm) r=32 phwi=null
+wi Open(bad align) r=11 phwi=null
+wi Open(float 48k) r=0
+wi Open(pcm8 stereo 11k) r=0
+wi Open(callback type 0x40000) r=0
+wi Open(bad window) r=11 phwi=untouched
+wi Open(MAPPER) r=0 GetID r=0 id-is-mapper=1
+wi Open(MAPPER, DEFAULT_COMMUNICATION) r=0
+wi Open(0, DEFAULT_COMMUNICATION) r=10
+wi Open(ALLOWSYNC) r=0
+wi Open(flag 0x100) r=0
+wi Open(EVENT) r=0 signaled-at-return=1
+wi Close(EVENT) signaled-at-return=1
+wi Open(THREAD) r=0 MM_WIM_OPEN-queued=1 wparam-is-handle=1
+wi Close(THREAD) MM_WIM_CLOSE-queued=1
+wi Open(FUNCTION) r=0 WIM_OPEN-before-return=1 same-thread=1
+wi Open(same device twice) r=0
+wi GetID r=0 id=0
+wi GetID(NULL) r=11
+wi GetDevCapsW(handle) r=0 same-as-device=1
+wi GetDevCapsW(bad handle) r=2
+wi bad handle: AddBuffer(unprepared) r=34
+wi bad handle: AddBuffer(NULL) r=11
+wi bad handle: PrepareHeader(NULL) r=11
+wi bad handle: PrepareHeader(cb small) r=11
+wi bad handle: UnprepareHeader(INQUEUE) r=33
+wi bad handle: AddBuffer(prepared) r=5
+wi bad handle: GetPosition(NULL) r=11
+wi bad handle: GetID(NULL) r=11
+wi bad handle: Stop r=5 Reset r=5
+wi PrepareHeader(NULL) r=11
+wi PrepareHeader(cb small) r=11
+wi PrepareHeader(bad handle) r=5
+wi AddBuffer(unprepared) r=34
+wi PrepareHeader(flags=DONE) r=0 flags=2
+wi PrepareHeader flags=2
+wi PrepareHeader again r=0 flags=2
+wi AddBuffer(NULL) r=11
+wi AddBuffer(cb small) r=11
+wi AddBuffer(bad handle) r=5
+wi AddBuffer r=0 flags=12 recorded=0
+wi AddBuffer(already queued) r=33
+wi UnprepareHeader(queued) r=33
+wi GetPosition before Start r=0 type=4 bytes=0
+wi Start r=0
+wi Start again r=0
+wi WIM_DATA count=2 param1-is-header=1 other-thread=1
+wi done header flags=3 recorded=3200
+wi GetPosition(BYTES) r=0 type=4 >=6400=1 even=1
+wi GetPosition(SAMPLES) r=0 type=2 >=3200=1
+wi GetPosition(MS) r=0 type=4
+wi GetPosition(SMPTE) r=0 type=4
+wi GetPosition(cb=4) r=0
+wi GetPosition(cb=0) r=0
+wi GetPosition(NULL) r=11
+wi GetPosition(TICKS) type=4
+wi GetPosition(type 0x77) type=4
+wi Stop r=0 partial-returned=1 recorded-partial=1 empty-still-queued=1
+wi Stop flags partial=3 empty=12
+wi Stop again r=0
+wi Close while queued r=33
+wi Reset r=0 returned=1 recorded=0 flags=3 position-zero=1 was-nonzero=1
+wi Reset again r=0
+wi UnprepareHeader r=0 flags=1
+wi UnprepareHeader(unprepared) r=0
+wi UnprepareHeader(cb small) r=11
+wi UnprepareHeader(flags claim INQUEUE) r=33
+wi AddBuffer(flags claim INQUEUE) r=33
+wi zero-length Prepare r=0 AddBuffer r=0 flags=12
+wi zero-length after Reset flags=3
+wi PrepareHeader(lpData NULL) r=0
+wi odd-length buffer recorded=3201 flags=3
+wi Start(no buffers) r=0
+wi Reset(running) r=0
+wi Close r=0 WIM_CLOSE-before-return=1
+wi Close again r=5
+wi Start(closed) r=5
+wi Message(handle, FUNCTIONINSTANCEIDSIZE) r=2
+wasapi Activate hr=00000000
+wasapi GetMixFormat hr=00000000 tag=fffe bits=32 cb=22
+wasapi period def=100000 min=30000
+wasapi IsFormatSupported(mix) hr=00000000 closest=null
+wasapi IsFormatSupported(16k mono) hr=00000001 closest=set
+wasapi Initialize(LOOPBACK on capture) hr=88890003
+wasapi Initialize(16k mono, no autoconvert) hr=88890008
+wasapi Initialize(16k mono, AUTOCONVERTPCM, 20ms) hr=00000000 buffer=356
+wasapi 16k packet=129
+wasapi autoconvert rate=9 hr=88890008 buffer=0 packets=
+wasapi autoconvert rate=10 hr=00000000 buffer=4 packets=
+wasapi autoconvert rate=50 hr=00000000 buffer=4 packets=
+wasapi autoconvert rate=100 hr=00000000 buffer=6 packets=1@15360,1@15840,1@16320,1@16800,1@17280,1@17760
+wasapi autoconvert rate=1000 hr=00000000 buffer=26 packets=9@1920,10@2400,10@2880,10@3360,10@3840,10@4320
+wasapi autoconvert rate=2000 hr=00000000 buffer=48 packets=9@960,20@1440,20@1920,20@2400,20@2880,20@3360
+wasapi autoconvert rate=3000 hr=00000000 buffer=68 packets=29@960,30@1440,30@1920,30@2400,30@2880,30@3360
+wasapi autoconvert rate=4000 hr=00000000 buffer=92 packets=9@480,40@960,40@1440,40@1920,40@2400,40@2880
+wasapi autoconvert rate=7000 hr=00000000 buffer=156 packets=39@480,70@960,70@1440,70@1920,70@2400,70@2880
+wasapi autoconvert rate=7999 hr=00000000 buffer=178 packets=49@480,80@960,80@1440,80@1920,80@2400,80@2880
+wasapi autoconvert rate=8000 hr=00000000 buffer=180 packets=49@480,80@960,80@1440,80@1920,80@2400,80@2880
+wasapi autoconvert rate=8001 hr=00000000 buffer=180 packets=49@480,80@960,80@1440,80@1920,80@2400,80@2880
+wasapi autoconvert rate=11025 hr=00000000 buffer=246 packets=80@480,110@960,110@1440,110@1920,111@2400,110@2880
+wasapi autoconvert rate=12345 hr=00000000 buffer=274 packets=93@480,123@960,124@1440,123@1920,124@2400,123@2880
+wasapi autoconvert rate=16000 hr=00000000 buffer=356 packets=129@480,160@960,160@1440,160@1920,160@2400,160@2880
+wasapi autoconvert rate=20000 hr=00000000 buffer=442 packets=169@480,200@960,200@1440,200@1920,200@2400,200@2880
+wasapi autoconvert rate=22050 hr=00000000 buffer=488 packets=190@480,220@960,221@1440,220@1920,221@2400,220@2880
+wasapi autoconvert rate=24000 hr=00000000 buffer=530 packets=209@480,240@960,240@1440,240@1920,240@2400,240@2880
+wasapi autoconvert rate=32000 hr=00000000 buffer=708 packets=289@480,320@960,320@1440,320@1920,320@2400,320@2880
+wasapi autoconvert rate=44100 hr=00000000 buffer=974 packets=410@480,441@960,441@1440,441@1920,441@2400,441@2880
+wasapi autoconvert rate=46000 hr=00000000 buffer=1014 packets=429@480,460@960,460@1440,460@1920,460@2400,460@2880
+wasapi autoconvert rate=47000 hr=00000000 buffer=1038 packets=439@480,470@960,470@1440,470@1920,470@2400,470@2880
+wasapi autoconvert rate=47999 hr=00000000 buffer=1058 packets=449@480,480@960,480@1440,480@1920,480@2400,480@2880
+wasapi autoconvert rate=48000 hr=00000000 buffer=1056 packets=480@480,480@960,480@1440,480@1920,480@2400,480@2880
+wasapi autoconvert rate=48001 hr=00000000 buffer=1060 packets=449@480,480@960,480@1440,480@1920,480@2400,480@2880
+wasapi autoconvert rate=49000 hr=00000000 buffer=1082 packets=458@480,490@960,490@1440,490@1920,490@2400,490@2880
+wasapi autoconvert rate=50000 hr=00000000 buffer=1102 packets=467@480,500@960,500@1440,500@1920,500@2400,500@2880
+wasapi autoconvert rate=56000 hr=00000000 buffer=1234 packets=523@480,560@960,560@1440,560@1920,560@2400,560@2880
+wasapi autoconvert rate=64000 hr=00000000 buffer=1412 packets=598@480,640@960,640@1440,640@1920,640@2400,640@2880
+wasapi autoconvert rate=64100 hr=00000000 buffer=1414 packets=599@480,641@960,641@1440,641@1920,641@2400,641@2880
+wasapi autoconvert rate=72000 hr=00000000 buffer=1586 packets=673@480,720@960,720@1440,720@1920,720@2400,720@2880
+wasapi autoconvert rate=88200 hr=00000000 buffer=1944 packets=824@480,882@960,882@1440,882@1920,882@2400,882@2880
+wasapi autoconvert rate=96000 hr=00000000 buffer=2114 packets=897@480,960@960,960@1440,960@1920,960@2400,960@2880
+wasapi autoconvert rate=128000 hr=00000000 buffer=2820 packets=1195@480,1280@960,1280@1440,1280@1920,1280@2400,1280@2880
+wasapi autoconvert rate=160000 hr=00000000 buffer=3522 packets=1494@480,1600@960,1600@1440,1600@1920,1600@2400,1600@2880
+wasapi autoconvert rate=176400 hr=00000000 buffer=3884 packets=1647@480,1764@960,1764@1440,1764@1920,1764@2400,1764@2880
+wasapi autoconvert rate=192000 hr=00000000 buffer=4226 packets=1793@480,1920@960,1920@1440,1920@1920,1920@2400,1920@2880
+wasapi autoconvert rate=200000 hr=00000000 buffer=4402 packets=1867@480,2000@960,2000@1440,2000@1920,2000@2400,2000@2880
+wasapi autoconvert rate=250000 hr=00000000 buffer=5504 packets=2334@480,2500@960,2500@1440,2500@1920,2500@2400,2500@2880
+wasapi autoconvert rate=384000 hr=00000000 buffer=8450 packets=3585@480,3840@960,3840@1440,3840@1920,3840@2400,3840@2880
+wasapi autoconvert rate=384001 hr=88890008 buffer=0 packets=
+wasapi src quality=default rate=8000 hr=00000000 buffer0=180 packets=100 first=480 contiguous=1 sizes=49*1,80*99
+wasapi src quality=default rate=11025 hr=00000000 buffer0=246 packets=100 first=480 contiguous=1 sizes=80*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3
+wasapi src quality=default rate=12000 hr=00000000 buffer0=266 packets=100 first=480 contiguous=1 sizes=89*1,120*99
+wasapi src quality=default rate=16000 hr=00000000 buffer0=356 packets=100 first=480 contiguous=1 sizes=129*1,160*99
+wasapi src quality=default rate=22050 hr=00000000 buffer0=488 packets=100 first=480 contiguous=1 sizes=190*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1
+wasapi src quality=default rate=24000 hr=00000000 buffer0=530 packets=100 first=480 contiguous=1 sizes=209*1,240*99
+wasapi src quality=default rate=32000 hr=00000000 buffer0=708 packets=100 first=480 contiguous=1 sizes=289*1,320*99
+wasapi src quality=default rate=44100 hr=00000000 buffer0=974 packets=100 first=480 contiguous=1 sizes=410*1,441*99
+wasapi src quality=default rate=64000 hr=00000000 buffer0=1412 packets=100 first=480 contiguous=1 sizes=598*1,640*99
+wasapi src quality=default rate=88200 hr=00000000 buffer0=1944 packets=100 first=480 contiguous=1 sizes=824*1,882*99
+wasapi src quality=default rate=96000 hr=00000000 buffer0=2114 packets=100 first=480 contiguous=1 sizes=897*1,960*99
+wasapi src quality=default rate=176400 hr=00000000 buffer0=3884 packets=100 first=480 contiguous=1 sizes=1647*1,1764*99
+wasapi src quality=default rate=192000 hr=00000000 buffer0=4226 packets=100 first=480 contiguous=1 sizes=1793*1,1920*99
+wasapi src quality=default rate=352800 hr=00000000 buffer0=7764 packets=100 first=480 contiguous=1 sizes=3293*1,3528*99
+wasapi src quality=default rate=384000 hr=00000000 buffer0=8450 packets=100 first=480 contiguous=1 sizes=3585*1,3840*99
+wasapi src quality=fast rate=8000 hr=00000000 buffer0=180 packets=100 first=480 contiguous=1 sizes=75*1,80*99
+wasapi src quality=fast rate=11025 hr=00000000 buffer0=246 packets=100 first=480 contiguous=1 sizes=105*1,110*1,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*3,111*1,110*1
+wasapi src quality=fast rate=12000 hr=00000000 buffer0=266 packets=100 first=480 contiguous=1 sizes=115*1,120*99
+wasapi src quality=fast rate=16000 hr=00000000 buffer0=356 packets=100 first=480 contiguous=1 sizes=155*1,160*99
+wasapi src quality=fast rate=22050 hr=00000000 buffer0=488 packets=100 first=480 contiguous=1 sizes=215*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1,220*1,221*1
+wasapi src quality=fast rate=24000 hr=00000000 buffer0=530 packets=100 first=480 contiguous=1 sizes=235*1,240*99
+wasapi src quality=fast rate=32000 hr=00000000 buffer0=708 packets=100 first=480 contiguous=1 sizes=315*1,320*99
+wasapi src quality=fast rate=44100 hr=00000000 buffer0=974 packets=100 first=480 contiguous=1 sizes=435*1,441*99
+wasapi src quality=fast rate=64000 hr=00000000 buffer0=1412 packets=100 first=480 contiguous=1 sizes=633*1,640*99
+wasapi src quality=fast rate=88200 hr=00000000 buffer0=1944 packets=100 first=480 contiguous=1 sizes=871*1,882*99
+wasapi src quality=fast rate=96000 hr=00000000 buffer0=2114 packets=100 first=480 contiguous=1 sizes=949*1,960*99
+wasapi src quality=fast rate=176400 hr=00000000 buffer0=3884 packets=100 first=480 contiguous=1 sizes=1742*1,1764*99
+wasapi src quality=fast rate=192000 hr=00000000 buffer0=4226 packets=100 first=480 contiguous=1 sizes=1897*1,1920*99
+wasapi src quality=fast rate=352800 hr=00000000 buffer0=7764 packets=100 first=480 contiguous=1 sizes=3484*1,3528*99
+wasapi src quality=fast rate=384000 hr=00000000 buffer0=8450 packets=100 first=480 contiguous=1 sizes=3793*1,3840*99
+wasapi positions first=480 period-aligned=1 restart-continues=1 reset-keeps-position=1 clock-after-reset=0
+wasapi 16k positions first=480 step=480 first-frames=129
+wasapi Initialize(pull, 0) hr=00000000 buffer=1056 latency=0
+wasapi Initialize(pull, 200ms) hr=00000000 buffer=9600
+wasapi Initialize(event, mix) hr=00000000 buffer=1056
+wasapi GetService(IAudioRenderClient) on capture hr=88890003 out=null
+wasapi GetService(IAudioCaptureClient) hr=00000000 second-same=1
+wasapi capture IAudioClock hr=00000000 freq-is-avgbytes=1
+wasapi pre-start GetCurrentPadding hr=00000000 pad=0
+wasapi pre-start GetNextPacketSize hr=00000000 n=0
+wasapi GetNextPacketSize(NULL) hr=80004003
+wasapi pre-start GetBuffer hr=08890001 n=0 flags=99 data-null=1 dp=77 qp=77
+wasapi ReleaseBuffer(0) after empty hr=00000000
+wasapi ReleaseBuffer(5) with nothing held hr=88890007
+wasapi GetBuffer(ppData NULL) hr=80004003
+wasapi GetBuffer(pNumFrames NULL) hr=80004003
+wasapi GetBuffer(pdwFlags NULL) hr=80004003
+wasapi Start hr=00000000
+wasapi packet[0] wait=0 next-eq-n=1 pad>=n=1 hr=00000000 n=480 flags=1 dp-step=0 qpc-recent=1
+wasapi GetBuffer while held hr=88890007
+wasapi ReleaseBuffer(n+1) hr=88890009
+wasapi ReleaseBuffer(1 partial) hr=88890009
+wasapi ReleaseBuffer(n) hr=00000000
+wasapi packet[1] wait=0 next-eq-n=1 pad>=n=1 hr=00000000 n=480 flags=0 dp-step=480 qpc-recent=1
+wasapi ReleaseBuffer(n) hr=00000000
+wasapi packet[2] wait=0 next-eq-n=1 pad>=n=1 hr=00000000 n=480 flags=0 dp-step=480 qpc-recent=1
+wasapi ReleaseBuffer(n) hr=00000000
+wasapi packet[3] wait=0 next-eq-n=1 pad>=n=1 hr=00000000 n=480 flags=0 dp-step=480 qpc-recent=1
+wasapi ReleaseBuffer(n) hr=00000000
+wasapi overrun padding-is-buffer=1 held-is-buffer=1 held-contiguous=1 first-dp-minus-expected=0 packets(frames/flags)=480/0,480/0,96/1
+wasapi after overrun next packet hr=00000000 flags=1 dp-jumped=1
+wasapi Reset(running) hr=88890005
+wasapi Stop hr=00000000
+wasapi Stop again hr=00000001
+wasapi GetBuffer after Stop hr=00000000 data-kept=1
+wasapi clock GetPosition stopped hr=00000000 nonzero=1
+wasapi Reset hr=00000000
+wasapi clock after Reset pos=0
+wasapi after Reset next=0 pad=0
+wasapi Reset again hr=00000000
+wasapi restart first packet hr=00000000 flags=1
+activate DEVINTERFACE_AUDIO_CAPTURE hr=00000000 result=00000000 object=1
+activate capture-endpoint-id hr=00000000 result=80070002 object=0
+activate SWD capture path hr=00000000 result=00000000 object=1
+activate SWD capture endpoint with render class hr=00000000 result=80070002 object=0
+activate lowercase DEVINTERFACE_AUDIO_CAPTURE hr=00000000 result=00000000 object=1
+consent denied: unmeasured (winoracle microphone access is allowed)

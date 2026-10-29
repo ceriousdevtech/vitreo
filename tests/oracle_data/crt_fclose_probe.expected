@@ -1,0 +1,13 @@
+case_null_raw exit=0xc0000409  out=
+case_null_handler exit=0x0  out=fclose_null_handler r=-1 errno=22 
+case_unknown_handler exit=0xc0000005  out=
+case_stdin exit=0x0  out=fclose_stdin r=0 errno=0 
+case_stdout exit=0x0  out=fclose_stdout r=0 errno=0 
+case_stderr exit=0x0  out=fclose_stderr r=0 errno=0 
+case_reuse exit=0x0  out=fopen1 p=0x239479ab420 
+fileno1 fd=3 
+fclose1 r=0 errno=0 
+fopen2 p=0x239479ab420 same_ptr=1 
+fileno2 fd=3 
+case_fd_after exit=0x0  out=write_after_fclose r=-1 errno=9 
+close_after_fclose r=-1 errno=9 

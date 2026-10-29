@@ -1,0 +1,74 @@
+mk open=0 exec=0
+ins1 0
+ins2 0
+mk2 open=0 exec=0
+exp-t 0
+exp-e 0
+exp-si 0
+exp-cp 0
+exp-tables 1627
+exp-streams 1627
+exp-missing 1627
+exp-missing lasterr [3]~|2205|e.msi|Nope
+exp-relative 161
+exp-baddir 1627
+exp-baddir lasterr [4]~|2214|e.msi|x.idt|
+T.idt 4b0949094c095309420d0a733130094932096934094c300956300d0a313235320954094b09490d0a610931092d3709746162106865726511196e6577196c696e655c6261636be9090d0a620909320909622e2e6962640d0a
+E.idt 4b0d0a7331300d0a45094b0d0a
+si.idt 50726f706572747949640956616c75650d0a6932096c3235350d0a5f53756d6d617279496e666f726d6174696f6e0950726f706572747949640d0a32095469746c650d0a313209323032302f31302f32362031333a32303a33320d0a3134093230300d0a
+cp.idt 0d0a0d0a30095f466f726365436f6465706167650d0a
+tables.idt missing
+streams.idt missing
+T-dir b..ibd 8
+imp-t 1627
+imp-si 0
+imp-cp 0
+imp-again 1627
+imp-missing 1627
+imp-missing lasterr [4]~|2215|i.msi|nope.idt|
+imp-bad 1627
+imp-bad lasterr [4]~|2216|i.msi|bad.idt|2
+imp-lf 1627
+imp-badtype 1627
+imp-badtype lasterr [4]~|2216|i.msi|badtype.idt|2
+imp-badint 1627
+imp-badint lasterr [4]~|2216|i.msi|badint.idt|4
+imp open=1615
+imp lasterr [4]~|2228|i.msi|T|SELECT * FROM `T`
+hand open=1615
+hand lasterr [4]~|2228|i.msi|Hand|SELECT * FROM `Hand`
+imp-ci open=1615
+hand-ci open=1615
+imp-si-2 type=30 Title
+imp-si-12 type=64 01d6abcd12704000
+a-mk open=0 exec=0
+a-1 open=0 exec=0
+a-2 open=0 exec=0
+b-mk open=0 exec=0
+b-1 open=0 exec=0
+b-2 open=0 exec=0
+b-3 open=0 exec=0
+b-mk2 open=0 exec=0
+b-q open=0 exec=0
+merge 1627
+merge lasterr [3]~|2268|ma.msi|1
+merge-p row [2]#|same|1
+merge-p row [2]#|diff|a
+merge-p row [2]#|new|n
+merge-p end=259 rows=3
+merge-q row [1]#|5
+merge-q end=259 rows=1
+merge-err row [2]#|P|1
+merge-err end=259 rows=1
+merge-err-ci names rc=0 [2]~|Table|NumRowMergeConflicts
+merge-err-ci types rc=0 [2]~|s255|i2
+merge-p-ci names rc=0 [2]~|K|V
+merge-p-ci types rc=0 [2]~|s20|S10
+persist-err 1
+merge-noerrtable 1627
+merge-noerrtable lasterr [3]~|2268|ma.msi|1
+b-mk3 open=0 exec=0
+a-mk3 open=0 exec=0
+merge-mismatch 1629
+merge-mismatch lasterr [4]~|2248|ma.msi|R|1
+merge-bad 6

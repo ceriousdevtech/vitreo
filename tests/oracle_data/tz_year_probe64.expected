@@ -1,0 +1,21 @@
+sizeof_TZI=172 sizeof_DTZI=432
+current_id=2 current Bias=420 StdBias=0 DltBias=-60 Std=0/11/0/1 2:0:0.0 Dlt=0/3/0/2 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+dynamic_id=2 key="Mountain Standard Time" disabled=0 Bias=420 StdBias=0 DltBias=-60 Std=0/11/0/1 2:0:0.0 Dlt=0/3/0/2 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year_null_2024 ok=1  Bias=420 StdBias=0 DltBias=-60 Std=0/11/0/1 2:0:0.0 Dlt=0/3/0/2 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year_null_0 ok=1 err=0
+year Mountain Standard Time 2024 ok=1 err=57005 Bias=420 StdBias=0 DltBias=-60 Std=0/11/0/1 2:0:0.0 Dlt=0/3/0/2 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year Mountain Standard Time 2006 ok=1 err=57005 Bias=420 StdBias=0 DltBias=-60 Std=0/10/0/5 2:0:0.0 Dlt=0/4/0/1 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year Pacific Standard Time 2024 ok=1 err=0 Bias=480 StdBias=0 DltBias=-60 Std=0/11/0/1 2:0:0.0 Dlt=0/3/0/2 2:0:0.0 StdName="Pacific Standard Time" DltName="Pacific Daylight Time"
+year US Mountain Standard Time 2024 ok=1 err=0 Bias=420 StdBias=0 DltBias=-60 Std=0/0/0/0 0:0:0.0 Dlt=0/0/0/0 0:0:0.0 StdName="US Mountain Standard Time" DltName="US Mountain Daylight Time"
+year AUS Eastern Standard Time 2024 ok=1 err=0 Bias=-600 StdBias=0 DltBias=-60 Std=0/4/0/1 3:0:0.0 Dlt=0/10/0/1 2:0:0.0 StdName="AUS Eastern Standard Time" DltName="AUS Eastern Daylight Time"
+year GMT Standard Time 2024 ok=1 err=0 Bias=0 StdBias=0 DltBias=-60 Std=0/10/0/5 2:0:0.0 Dlt=0/3/0/5 1:0:0.0 StdName="GMT Standard Time" DltName="GMT Daylight Time"
+year UTC 2024 ok=1 err=0 Bias=0 StdBias=0 DltBias=0 Std=0/0/0/0 0:0:0.0 Dlt=0/0/0/0 0:0:0.0 StdName="Coordinated Universal Time" DltName="Coordinated Universal Time"
+year Tokyo Standard Time 2024 ok=1 err=0 Bias=-540 StdBias=0 DltBias=-60 Std=0/0/0/0 0:0:0.0 Dlt=0/0/0/0 0:0:0.0 StdName="Tokyo Standard Time" DltName="Tokyo Daylight Time"
+year Morocco Standard Time 2024 ok=1 err=0 Bias=0 StdBias=0 DltBias=-60 Std=0/3/0/2 3:0:0.0 Dlt=0/4/0/2 2:0:0.0 StdName="Morocco Standard Time" DltName="Morocco Daylight Time"
+year mountain standard time 2006 ok=1 err=0 Bias=420 StdBias=0 DltBias=-60 Std=0/10/0/5 2:0:0.0 Dlt=0/4/0/1 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year Mountain Standard Time 2006 disabled ok=1 err=57005 Bias=420 StdBias=0 DltBias=-60 Std=0/11/0/1 2:0:0.0 Dlt=0/3/0/2 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year Mountain Standard Time 2024 disabled ok=1 err=57005 Bias=420 StdBias=0 DltBias=-60 Std=0/11/0/1 2:0:0.0 Dlt=0/3/0/2 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year Mountain Standard Time 1990 ok=1 err=57005 Bias=420 StdBias=0 DltBias=-60 Std=0/10/0/5 2:0:0.0 Dlt=0/4/0/1 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year Mountain Standard Time 2100 ok=1 err=57005 Bias=420 StdBias=0 DltBias=-60 Std=0/11/0/1 2:0:0.0 Dlt=0/3/0/2 2:0:0.0 StdName="Mountain Standard Time" DltName="Mountain Daylight Time"
+year No Such Zone 2024 ok=0 err=2 first_dword=0xcccccccc
+year  2024 ok=0 err=2 first_dword=0xcccccccc

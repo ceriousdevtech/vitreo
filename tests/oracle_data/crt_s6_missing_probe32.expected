@@ -1,0 +1,174 @@
+x86
+lgamma_exports=3 
+lgamma 0x3fe0000000000000 -> 0x3fe250d048e7a1bd errno=0 ip=0 
+lgammal 0x3fe0000000000000 -> 0x3fe250d048e7a1bd errno=0 ip=0 
+lgammaf 0x3f000000 -> 0x3f128682 errno=0 ip=0 
+lgamma 0x3ff0000000000000 -> 0x0 errno=0 ip=0 
+lgammal 0x3ff0000000000000 -> 0x0 errno=0 ip=0 
+lgammaf 0x3f800000 -> 0x0 errno=0 ip=0 
+lgamma 0x4000000000000000 -> 0x0 errno=0 ip=0 
+lgammal 0x4000000000000000 -> 0x0 errno=0 ip=0 
+lgammaf 0x40000000 -> 0x0 errno=0 ip=0 
+lgamma 0x4008000000000000 -> 0x3fe62e42fefa39ef errno=0 ip=0 
+lgammal 0x4008000000000000 -> 0x3fe62e42fefa39ef errno=0 ip=0 
+lgammaf 0x40400000 -> 0x3f317218 errno=0 ip=0 
+lgamma 0x4004000000000000 -> 0x3fd2383e809a67e8 errno=0 ip=0 
+lgammal 0x4004000000000000 -> 0x3fd2383e809a67e8 errno=0 ip=0 
+lgammaf 0x40200000 -> 0x3e91c1f4 errno=0 ip=0 
+lgamma 0x4024000000000000 -> 0x40299a8921a7f7cf errno=0 ip=0 
+lgammal 0x4024000000000000 -> 0x40299a8921a7f7cf errno=0 ip=0 
+lgammaf 0x41200000 -> 0x414cd449 errno=0 ip=0 
+lgamma 0x4059000000000000 -> 0x40767225b4879463 errno=0 ip=0 
+lgammal 0x4059000000000000 -> 0x40767225b4879463 errno=0 ip=0 
+lgammaf 0x42c80000 -> 0x43b3912e errno=0 ip=0 
+lgamma 0x4202a05f20000000 -> 0x4249a43710f467c1 errno=0 ip=0 
+lgammal 0x4202a05f20000000 -> 0x4249a43710f467c1 errno=0 ip=0 
+lgammaf 0x501502f9 -> 0x524d21b8 errno=0 ip=0 
+lgamma 0x7e37e43c8800759c -> 0x7ed017f38e7a1ab5 errno=0 ip=0 
+lgammal 0x7e37e43c8800759c -> 0x7ed017f38e7a1ab5 errno=0 ip=0 
+lgammaf 0x7f800000 -> 0x7f800000 errno=0 ip=0 
+lgamma 0x3f50624dd2f1a9fc -> 0x401ba0f3807161ac errno=0 ip=0 
+lgammal 0x3f50624dd2f1a9fc -> 0x401ba0f3807161ac errno=0 ip=0 
+lgammaf 0x3a83126f -> 0x40dd079c errno=0 ip=0 
+lgamma 0xbfe0000000000000 -> 0x3ff43f89a3f0edd6 errno=0 ip=0 
+lgammal 0xbfe0000000000000 -> 0x3ff43f89a3f0edd6 errno=0 ip=0 
+lgammaf 0xbf000000 -> 0x3fa1fc4d errno=0 ip=0 
+lgamma 0xbff8000000000000 -> 0x3feb858151820f86 errno=0 ip=0 
+lgammal 0xbff8000000000000 -> 0x3feb858151820f86 errno=0 ip=0 
+lgammaf 0xbfc00000 -> 0x3f5c2c0b errno=0 ip=0 
+lgamma 0xc004000000000000 -> 0xbfaccbf9f5ed0f16 errno=0 ip=0 
+lgammal 0xc004000000000000 -> 0xbfaccbf9f5ed0f16 errno=0 ip=0 
+lgammaf 0xc0200000 -> 0xbd665fd0 errno=0 ip=0 
+lgamma 0xbff0000000000000 -> 0x7ff0000000000000 errno=34 ip=0 
+lgammal 0xbff0000000000000 -> 0x7ff0000000000000 errno=34 ip=0 
+lgammaf 0xbf800000 -> 0x7f800000 errno=34 ip=0 
+lgamma 0x0 -> 0x7ff0000000000000 errno=34 ip=0 
+lgammal 0x0 -> 0x7ff0000000000000 errno=34 ip=0 
+lgammaf 0x0 -> 0x7f800000 errno=34 ip=0 
+lgamma 0x8000000000000000 -> 0x7ff0000000000000 errno=34 ip=0 
+lgammal 0x8000000000000000 -> 0x7ff0000000000000 errno=34 ip=0 
+lgammaf 0x80000000 -> 0x7f800000 errno=34 ip=0 
+lgamma 0xc008000000000000 -> 0x7ff0000000000000 errno=34 ip=0 
+lgammal 0xc008000000000000 -> 0x7ff0000000000000 errno=34 ip=0 
+lgammaf 0xc0400000 -> 0x7f800000 errno=34 ip=0 
+lgamma 0x1fa0 -> 0x4086fb870ef96810 errno=0 ip=0 
+lgammal 0x1fa0 -> 0x4086fb870ef96810 errno=0 ip=0 
+lgammaf 0x0 -> 0x7f800000 errno=34 ip=0 
+lgamma 0x4065500000000000 -> 0x4086000911686cd6 errno=0 ip=0 
+lgammal 0x4065500000000000 -> 0x4086000911686cd6 errno=0 ip=0 
+lgammaf 0x432a8000 -> 0x44300049 errno=0 ip=0 
+lgamma 0x4065766666666666 -> 0x4086315f769af3d9 errno=0 ip=0 
+lgammal 0x4065766666666666 -> 0x4086315f769af3d9 errno=0 ip=0 
+lgammaf 0x432bb333 -> 0x44318afb errno=0 ip=0 
+lgamma 0x1a56e1fc2f8f359 -> 0x4085963447f87fb5 errno=0 ip=0 
+lgammal 0x1a56e1fc2f8f359 -> 0x4085963447f87fb5 errno=0 ip=0 
+lgammaf 0x0 -> 0x7f800000 errno=34 ip=0 
+lgamma 0x401d333333333333 -> 0x401c97712336d05f errno=0 ip=0 
+lgammal 0x401d333333333333 -> 0x401c97712336d05f errno=0 ip=0 
+lgammaf 0x40e9999a -> 0x40e4bb8b errno=0 ip=0 
+lgamma 0xc01d333333333333 -> 0xc01f1dccd151776d errno=0 ip=0 
+lgammal 0xc01d333333333333 -> 0xc01f1dccd151776d errno=0 ip=0 
+lgammaf 0xc0e9999a -> 0xc0f8ee67 errno=0 ip=0 
+lgamma inf -> 0x7ff0000000000000 errno=0 ip=0 
+lgamma -inf -> 0x7ff0000000000000 errno=0 ip=0 
+lgamma nan -> 0x7ff8000000000001 errno=0 ip=0 
+wcstof 0 -> 0x3fc00000 end=3 errno=0 ip=0 
+wcstof 1 -> 0xc50ca000 end=9 errno=0 ip=0 
+wcstof 2 -> 0x7f7fffff end=12 errno=0 ip=0 
+wcstof 3 -> 0x7f800000 end=6 errno=34 ip=0 
+wcstof 4 -> 0x0 end=5 errno=34 ip=0 
+wcstof 5 -> 0x116c2 end=5 errno=0 ip=0 
+wcstof 6 -> 0x41000000 end=5 errno=0 ip=0 
+wcstof 7 -> 0x7f800000 end=3 errno=0 ip=0 
+wcstof 8 -> 0xff800000 end=9 errno=0 ip=0 
+wcstof 9 -> 0x7fffffff end=3 errno=0 ip=0 
+wcstof 10 -> 0x7fffffff end=8 errno=0 ip=0 
+wcstof 11 -> 0x0 end=0 errno=0 ip=0 
+wcstof 12 -> 0x0 end=0 errno=0 ip=0 
+wcstof 13 -> 0x3f800000 end=1 errno=0 ip=0 
+wcstof 14 -> 0x3f800000 end=1 errno=0 ip=0 
+wcstof 15 -> 0x3f000000 end=3 errno=0 ip=0 
+wcstof null -> 0x0 errno=22 ip=1 
+aom 0 ok=1 aligned=1 msize=100 realloc_ok=1 realigned=1 kept=1 errno=0 ip=0 
+aom 1 ok=1 aligned=1 msize=100 realloc_ok=1 realigned=1 kept=1 errno=0 ip=0 
+aom 2 ok=1 aligned=1 msize=100 realloc_ok=1 realigned=1 kept=1 errno=0 ip=0 
+aom 3 ok=1 aligned=1 msize=100 realloc_ok=1 realigned=1 kept=1 errno=0 ip=0 
+aom 4 ok=1 aligned=1 msize=100 realloc_ok=1 realigned=1 kept=1 errno=0 ip=0 
+aom badalign p=0 errno=22 ip=1 
+aom offset=size p=0 errno=22 ip=1 
+aom size0 p=1 errno=0 ip=0 
+aom huge p=0 errno=12 ip=0 
+amsize null n=4294967295 errno=22 ip=1 
+strlwr_s r=0 buf="abc\xc9z\x00QQ" errno=0 ip=0 
+strlwr_s unterminated r=22 buf="\x00BCD" errno=22 ip=1 
+strlwr_s null r=22 errno=22 ip=1 
+strlwr_s size0 r=22 buf="\x00Y" errno=22 ip=1 
+callnewh none r=0 called=-1 
+callnewh set prev_null=1 r=1 called=42 
+callnewh zero prev_is_first=1 r=0 called=9 
+mbscmp=-1 eq=0 gt=1 hi=1 prefix=-1 
+mbscmp_null=2147483647 errno=22 
+makepath c:dir\name.txt
+makepath d:a/n.e
+makepath n
+makepath \x\.ext
+wmakepath_s r=0 errno=0 w=0x63 0x3a 0x64 0x5c 0x66 0x2e 0x65 0x0 0x5a5a 
+wmakepath_s small r=34 errno=34 w=0x0 0x3a 0x64 0x69 0x5a5a 0x5a5a 
+wmakepath_s null r=22 errno=22 
+wmakepath_s size0 r=22 errno=22 
+undname_export=1 
+undname ?func@@YAHXZ ret_is_buf=0 text=
+undname alloc ?func@@YAHXZ ret_is_buf=1 text=int __cdecl func(void)
+undname nameonly ?func@@YAHXZ text=func
+undname .?AVFoo@@ ret_is_buf=0 text=
+undname alloc .?AVFoo@@ ret_is_buf=1 text=.?AVFoo@@
+undname nameonly .?AVFoo@@ text=.?AVFoo@@
+undname ?x@ns@@3HA ret_is_buf=0 text=
+undname alloc ?x@ns@@3HA ret_is_buf=1 text=int ns::x
+undname nameonly ?x@ns@@3HA text=ns::x
+undname ??0Bar@@QAE@XZ ret_is_buf=0 text=
+undname alloc ??0Bar@@QAE@XZ ret_is_buf=1 text=public: __thiscall Bar::Bar(void)
+undname nameonly ??0Bar@@QAE@XZ text=Bar::Bar
+undname notmangled ret_is_buf=0 text=
+undname alloc notmangled ret_is_buf=1 text=notmangled
+undname nameonly notmangled text=notmangled
+_ftol export=1 
+_ftol 0x3ff8000000000000 -> 0x1 top_delta=0 
+_ftol 0xbff8000000000000 -> 0xffffffffffffffff top_delta=0 
+_ftol 0x4004000000000000 -> 0x2 top_delta=0 
+_ftol 0x41e65a0bc0000000 -> 0xb2d05e00 top_delta=0 
+_ftol 0xc1e65a0bc0000000 -> 0xffffffff4d2fa200 top_delta=0 
+_ftol 0x43e158e460913d00 -> 0x8000000000000000 top_delta=0 
+_ftol 0x7ff8000000000000 -> 0x8000000000000000 top_delta=0 
+_ftol 0x7ff0000000000000 -> 0x8000000000000000 top_delta=0 
+_ftol 0x43e0000000000000 -> 0x8000000000000000 top_delta=0 
+_ftol 0xc3e0000000000000 -> 0x8000000000000000 top_delta=0 
+_ftol 0x41f00000000b3333 -> 0x100000000 top_delta=0 
+_ftol 0xc1e0000000200000 -> 0xffffffff7fffffff top_delta=0 
+_ftol2 export=1 
+_ftol2 0x3ff8000000000000 -> 0x1 top_delta=0 
+_ftol2 0xbff8000000000000 -> 0xffffffffffffffff top_delta=0 
+_ftol2 0x4004000000000000 -> 0x2 top_delta=0 
+_ftol2 0x41e65a0bc0000000 -> 0xb2d05e00 top_delta=0 
+_ftol2 0xc1e65a0bc0000000 -> 0xffffffff4d2fa200 top_delta=0 
+_ftol2 0x43e158e460913d00 -> 0x8000000000000000 top_delta=0 
+_ftol2 0x7ff8000000000000 -> 0x8000000000000000 top_delta=0 
+_ftol2 0x7ff0000000000000 -> 0x8000000000000000 top_delta=0 
+_ftol2 0x43e0000000000000 -> 0x8000000000000000 top_delta=0 
+_ftol2 0xc3e0000000000000 -> 0x8000000000000000 top_delta=0 
+_ftol2 0x41f00000000b3333 -> 0x100000000 top_delta=0 
+_ftol2 0xc1e0000000200000 -> 0xffffffff7fffffff top_delta=0 
+_ftol2_sse export=1 
+_ftol2_sse 0x3ff8000000000000 -> 0x1 top_delta=0 
+_ftol2_sse 0xbff8000000000000 -> 0xffffffff top_delta=0 
+_ftol2_sse 0x4004000000000000 -> 0x2 top_delta=0 
+_ftol2_sse 0x41e65a0bc0000000 -> 0x80000000 top_delta=0 
+_ftol2_sse 0xc1e65a0bc0000000 -> 0x80000000 top_delta=0 
+_ftol2_sse 0x43e158e460913d00 -> 0x80000000 top_delta=0 
+_ftol2_sse 0x7ff8000000000000 -> 0x80000000 top_delta=0 
+_ftol2_sse 0x7ff0000000000000 -> 0x80000000 top_delta=0 
+_ftol2_sse 0x43e0000000000000 -> 0x80000000 top_delta=0 
+_ftol2_sse 0xc3e0000000000000 -> 0x80000000 top_delta=0 
+_ftol2_sse 0x41f00000000b3333 -> 0x80000000 top_delta=0 
+_ftol2_sse 0xc1e0000000200000 -> 0x80000000 top_delta=0 
+done

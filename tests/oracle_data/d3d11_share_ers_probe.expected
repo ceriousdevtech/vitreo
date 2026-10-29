@@ -1,0 +1,116 @@
+# winoracle (Windows 11 26200, Microsoft Basic Render Driver / WARP), 2026-09-28.
+# x64 and x86 builds print identical lines, twice each (deterministic). The '# d3d11_share_ers_probe (N-bit)'
+# banner is the only bitness-dependent line and is a comment.
+# Notes: an OPENED STAGING resource does not Map (E_OUTOFMEMORY) -- only its creator's does -- but GPU
+# copies into and out of the opening reach the creator's storage. NTHANDLE refuses cube, MSAA, B5G6R5,
+# Texture1D, Texture3D and buffers. RESTRICT_SHARED_RESOURCE: another process's open is E_INVALIDARG
+# (the creating process opens it); WARP applies no RESTRICT_SHARED_RESOURCE_DRIVER restriction.
+# d3d11_share_ers_probe (64-bit)
+[cases] create/handle/open on device B, then the child process
+  2D mips5 SH                    create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m5/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m5/a1/f87/s1.0/u0/b0x28/c0x0/x0x2 data=match] back=match
+  2D mips5 SHNT                  create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m5/a1/f87/s1.0/u0/b0x28/c0x0/x0x802 data=match
+                                 child[open=0x00000000 od=16x8/m5/a1/f87/s1.0/u0/b0x28/c0x0/x0x802 data=match] back=match
+  2D array3 SH                   create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a3/f87/s1.0/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m1/a3/f87/s1.0/u0/b0x28/c0x0/x0x2 data=match] back=match
+  2D mips2 array3 KMNT           create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m2/a3/f87/s1.0/u0/b0x28/c0x0/x0x900 data=match
+                                 child[open=0x00000000 od=16x8/m2/a3/f87/s1.0/u0/b0x28/c0x0/x0x900 data=match release=0x00000000] back=match
+  2D RGBA16F mips3 array2 SH     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m3/a2/f10/s1.0/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m3/a2/f10/s1.0/u0/b0x28/c0x0/x0x2 data=match] back=match
+  2D R32 mips4 SRV|UAV SH        create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m4/a1/f41/s1.0/u0/b0x88/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m4/a1/f41/s1.0/u0/b0x88/c0x0/x0x2 data=match] back=match
+  2D cube SH                     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=8x8/m1/a6/f87/s1.0/u0/b0x28/c0x0/x0x6 data=match
+                                 child[open=0x00000000 od=8x8/m1/a6/f87/s1.0/u0/b0x28/c0x0/x0x6 data=match] back=match
+  2D cube mips2 KM               create=0x00000000 kmt=0x00000000/set open=0x00000000 od=8x8/m2/a6/f87/s1.0/u0/b0x28/c0x0/x0x104 data=match
+                                 child[open=0x00000000 od=8x8/m2/a6/f87/s1.0/u0/b0x28/c0x0/x0x104 data=match release=0x00000000] back=match
+  2D cube SHNT                   create=0x80070057
+  2D msaa4 SH                    create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s4.0/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f87/s4.0/u0/b0x28/c0x0/x0x2 data=match] back=match
+  2D msaa4 array2 SH             create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a2/f87/s4.0/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m1/a2/f87/s4.0/u0/b0x28/c0x0/x0x2 data=match] back=match
+  2D msaa4 SHNT                  create=0x80070057
+  2D STAGING rw SH               create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u3/b0x0/c0x30000/x0x2 map=0x8007000e copyout=match copyin=done creator=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f87/s1.0/u3/b0x0/c0x30000/x0x2 map=0x8007000e copyout=match copyin=done] back=match
+  2D STAGING mips2 array2 SH     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m2/a2/f87/s1.0/u3/b0x0/c0x30000/x0x2 map=0x8007000e copyout=match copyin=done creator=match
+                                 child[open=0x00000000 od=16x8/m2/a2/f87/s1.0/u3/b0x0/c0x30000/x0x2 map=0x8007000e copyout=match copyin=done] back=match
+  2D BC1 mips2 SH                create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m2/a1/f71/s1.0/u0/b0x8/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m2/a1/f71/s1.0/u0/b0x8/c0x0/x0x2 data=match] back=match
+  2D BC3 SHNT                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f77/s1.0/u0/b0x8/c0x0/x0x802 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f77/s1.0/u0/b0x8/c0x0/x0x802 data=match] back=match
+  2D B5G6R5 SH                   create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f85/s1.0/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f85/s1.0/u0/b0x28/c0x0/x0x2 data=match] back=match
+  2D B5G6R5 SHNT                 create=0x80070057
+  2D XR_BIAS SHNT                create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f89/s1.0/u0/b0x28/c0x0/x0x802 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f89/s1.0/u0/b0x28/c0x0/x0x802 data=match] back=match
+  2D R11G11B10 mips2 SH          create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m2/a1/f26/s1.0/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m2/a1/f26/s1.0/u0/b0x28/c0x0/x0x2 data=match] back=match
+  2D D32 SH                      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f40/s1.0/u0/b0x40/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f40/s1.0/u0/b0x40/c0x0/x0x2 data=match] back=match
+  2D D32 SHNT                    create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f40/s1.0/u0/b0x40/c0x0/x0x802 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f40/s1.0/u0/b0x40/c0x0/x0x802 data=match] back=match
+  2D D24S8 array2 SH             create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a2/f45/s1.0/u0/b0x40/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m1/a2/f45/s1.0/u0/b0x40/c0x0/x0x2 data=match] back=match
+  2D R32_TYPELESS DSV|SRV SH     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f39/s1.0/u0/b0x48/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f39/s1.0/u0/b0x48/c0x0/x0x2 data=match] back=match
+  2D RESTRICT_SHARED SH          create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x2002 data=match
+                                 child[open=0x80070057] back=mismatch
+  2D RESTRICT_DRIVER KMNT        create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x4900 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f87/s1.0/u0/b0x28/c0x0/x0x4900 data=match release=0x00000000] back=match
+  2D NV12 SH                     create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f103/s1.0/u0/b0x8/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f103/s1.0/u0/b0x8/c0x0/x0x2 data=match] back=match
+  2D NV12 SHNT                   create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f103/s1.0/u0/b0x28/c0x0/x0x802 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f103/s1.0/u0/b0x28/c0x0/x0x802 data=match] back=match
+  2D NV12 array2 KM              create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8/m1/a2/f103/s1.0/u0/b0x8/c0x0/x0x100 data=match
+                                 child[open=0x00000000 od=16x8/m1/a2/f103/s1.0/u0/b0x8/c0x0/x0x100 data=match release=0x00000000] back=match
+  2D P010 SHNT                   create=0x00000000 nt=0x00000000/set open=0x00000000 od=16x8/m1/a1/f104/s1.0/u0/b0x8/c0x0/x0x802 data=match
+                                 child[open=0x00000000 od=16x8/m1/a1/f104/s1.0/u0/b0x8/c0x0/x0x802 data=match] back=match
+  1D mips2 array2 SH             create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16/m2/a2/f87/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16/m2/a2/f87/u0/b0x28/c0x0/x0x2 data=match] back=match
+  1D SHNT                        create=0x80070057
+  3D mips2 SH                    create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8x4/m2/f87/u0/b0x28/c0x0/x0x2 data=match
+                                 child[open=0x00000000 od=16x8x4/m2/f87/u0/b0x28/c0x0/x0x2 data=match] back=match
+  3D KM                          create=0x00000000 kmt=0x00000000/set open=0x00000000 od=16x8x2/m1/f87/u0/b0x8/c0x0/x0x100 data=match
+                                 child[open=0x00000000 od=16x8x2/m1/f87/u0/b0x8/c0x0/x0x100 data=match release=0x00000000] back=match
+  3D SHNT                        create=0x80070057
+  BUF vertex SH                  create=0x00000000 kmt=0x00000000/set open=0x00000000 od=256/u0/b0x1/c0x0/x0x2/s0 data=match
+                                 child[open=0x00000000 od=256/u0/b0x1/c0x0/x0x2/s0 data=match] back=match
+  BUF structured SRV|UAV SH      create=0x00000000 kmt=0x00000000/set open=0x00000000 od=256/u0/b0x88/c0x0/x0x42/s16 data=match
+                                 child[open=0x00000000 od=256/u0/b0x88/c0x0/x0x42/s16 data=match] back=match
+  BUF raw SRV|UAV KM             create=0x00000000 kmt=0x00000000/set open=0x00000000 od=256/u0/b0x88/c0x0/x0x120/s0 data=match
+                                 child[open=0x00000000 od=256/u0/b0x88/c0x0/x0x120/s0 data=match release=0x00000000] back=match
+  BUF SHNT                       create=0x80070057
+  BUF STAGING SH                 create=0x00000000 kmt=0x00000000/set open=0x00000000 od=256/u3/b0x0/c0x30000/x0x2/s0 map=0x8007000e copyout=match copyin=done creator=match
+                                 child[open=0x00000000 od=256/u3/b0x0/c0x30000/x0x2/s0 map=0x8007000e copyout=match copyin=done] back=match
+[iid]
+  1D mips2 array2 SH             as ID3D11Buffer     hr=0x80004002 out=null
+  1D mips2 array2 SH             as ID3D11Texture1D  hr=0x00000000 out=set
+  1D mips2 array2 SH             as ID3D11Texture2D  hr=0x80004002 out=null
+  1D mips2 array2 SH             as ID3D11Texture3D  hr=0x80004002 out=null
+  1D mips2 array2 SH             as ID3D11Resource   hr=0x00000000 out=set
+  1D mips2 array2 SH             as IDXGIResource    hr=0x00000000 out=set
+  1D mips2 array2 SH             as IDXGISurface     hr=0x80004002 out=null
+  1D mips2 array2 SH             as IDXGIKeyedMutex  hr=0x80004002 out=null
+  3D mips2 SH                    as ID3D11Buffer     hr=0x80004002 out=null
+  3D mips2 SH                    as ID3D11Texture1D  hr=0x80004002 out=null
+  3D mips2 SH                    as ID3D11Texture2D  hr=0x80004002 out=null
+  3D mips2 SH                    as ID3D11Texture3D  hr=0x00000000 out=set
+  3D mips2 SH                    as ID3D11Resource   hr=0x00000000 out=set
+  3D mips2 SH                    as IDXGIResource    hr=0x00000000 out=set
+  3D mips2 SH                    as IDXGISurface     hr=0x80004002 out=null
+  3D mips2 SH                    as IDXGIKeyedMutex  hr=0x80004002 out=null
+  BUF vertex SH                  as ID3D11Buffer     hr=0x00000000 out=set
+  BUF vertex SH                  as ID3D11Texture1D  hr=0x80004002 out=null
+  BUF vertex SH                  as ID3D11Texture2D  hr=0x80004002 out=null
+  BUF vertex SH                  as ID3D11Texture3D  hr=0x80004002 out=null
+  BUF vertex SH                  as ID3D11Resource   hr=0x00000000 out=set
+  BUF vertex SH                  as IDXGIResource    hr=0x00000000 out=set
+  BUF vertex SH                  as IDXGISurface     hr=0x00000000 out=set
+  BUF vertex SH                  as IDXGIKeyedMutex  hr=0x80004002 out=null
+  BUF raw SRV|UAV KM             as ID3D11Buffer     hr=0x00000000 out=set
+  BUF raw SRV|UAV KM             as ID3D11Texture1D  hr=0x80004002 out=null
+  BUF raw SRV|UAV KM             as ID3D11Texture2D  hr=0x80004002 out=null
+  BUF raw SRV|UAV KM             as ID3D11Texture3D  hr=0x80004002 out=null
+  BUF raw SRV|UAV KM             as ID3D11Resource   hr=0x00000000 out=set
+  BUF raw SRV|UAV KM             as IDXGIResource    hr=0x00000000 out=set
+  BUF raw SRV|UAV KM             as IDXGISurface     hr=0x00000000 out=set
+  BUF raw SRV|UAV KM             as IDXGIKeyedMutex  hr=0x00000000 out=set

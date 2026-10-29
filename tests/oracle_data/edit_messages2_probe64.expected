@@ -1,0 +1,66 @@
+create notify=[]
+== single exstyle=0x0 eol=0 pwchar=0x0 zoom=0(-7/-7) hilite=-1 cue_none=0/0x0000
+settext notify=[0x400,0x300]
+single setsel_ret=1 caret=5 caret_rev=5 setcaret_ret=1 sel=4,4 caret=4
+setsel notify=[]
+replacesel notify=[0x400,0x300]
+em_undo notify=[0x400,0x300]
+single wm_undo=1 text="hello there"
+wm_undo notify=[0x400,0x300]
+single wm_clear=0 text="there" canundo=1 modify=1
+wm_clear notify=[0x400,0x300]
+single maxtext text="thereXY"
+maxtext notify=[0x501,0x400,0x300]
+maxtext_full notify=[0x501]
+settext2 notify=[0x400,0x300]
+single fileline count=1 idx1=0 idx9=0 len(5)=0 fromchar(5)=0 fromchar(-1)=0
+single getfileline(1)=0 b0=0x7777 b1=0x7777 b2=0x7777
+single getfileline_sized(1)=0 b0=0x000a b1=0x7777 b2=0x7777
+single posfromchar0_isneg1=0 posfromchar_len_isneg1=1 posfromchar_last_isneg1=0 charfrompos(1,1)=0x00000000 charfrompos_far_hi=0
+single setimestatus=1 getimestatus=0 setimestatus_bad=1 enablefeature0=1 enablefeature9=0
+destroy notify=[]
+create notify=[]
+== multi exstyle=0x0 eol=1 pwchar=0x0 zoom=0(-7/-7) hilite=0 cue_none=0/0x7777
+settext notify=[]
+multi setsel_ret=1 caret=5 caret_rev=2 setcaret_ret=1 sel=4,4 caret=4
+setsel notify=[]
+replacesel notify=[0x400,0x300,0x400,0x300]
+em_undo notify=[0x400,0x300,0x400,0x300]
+multi wm_undo=1 text="hello there"
+wm_undo notify=[0x400,0x300,0x400,0x300]
+multi wm_clear=0 text="there" canundo=1 modify=1
+wm_clear notify=[0x400,0x300]
+multi maxtext text="thereXY"
+maxtext notify=[0x400,0x300,0x501]
+maxtext_full notify=[0x501]
+settext2 notify=[]
+multi fileline count=3 idx1=4 idx9=-1 len(5)=2 fromchar(5)=1 fromchar(-1)=0
+multi getfileline(1)=2 b0=0x0063 b1=0x0064 b2=0x7777
+multi getfileline_sized(1)=2 b0=0x0063 b1=0x0064 b2=0x7777
+multi posfromchar0_isneg1=0 posfromchar_len_isneg1=1 posfromchar_last_isneg1=0 charfrompos(1,1)=0x00000000 charfrompos_far_hi=65535
+multi setimestatus=1 getimestatus=0 setimestatus_bad=1 enablefeature0=1 enablefeature9=0
+multi setexstyle=0x0 getexstyle=0x2 seteol=1 geteol=3
+multi allow_lf linecount=2
+destroy notify=[]
+create notify=[]
+== password exstyle=0x0 eol=0 pwchar=0x25cf zoom=0(-7/-7) hilite=-1 cue_none=0/0x0000
+settext notify=[0x400,0x300]
+password setsel_ret=1 caret=5 caret_rev=5 setcaret_ret=1 sel=4,4 caret=4
+setsel notify=[]
+replacesel notify=[0x400,0x300]
+em_undo notify=[0x400,0x300]
+password wm_undo=1 text="hello "
+wm_undo notify=[]
+password wm_clear=0 text="" canundo=0 modify=1
+wm_clear notify=[0x400,0x300]
+password maxtext text="XYZ"
+maxtext notify=[0x400,0x300]
+maxtext_full notify=[0x400,0x300]
+settext2 notify=[0x400,0x300]
+password fileline count=1 idx1=0 idx9=0 len(5)=0 fromchar(5)=0 fromchar(-1)=0
+password getfileline(1)=0 b0=0x7777 b1=0x7777 b2=0x7777
+password getfileline_sized(1)=0 b0=0x000a b1=0x7777 b2=0x7777
+password posfromchar0_isneg1=0 posfromchar_len_isneg1=1 posfromchar_last_isneg1=0 charfrompos(1,1)=0x00000000 charfrompos_far_hi=0
+password setimestatus=1 getimestatus=0 setimestatus_bad=1 enablefeature0=1 enablefeature9=0
+destroy notify=[]
+EXIT=0

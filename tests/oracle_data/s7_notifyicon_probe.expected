@@ -1,0 +1,17 @@
+shell tray present=0
+NIM_ADD id1 -> 0 err=80004005
+NIM_ADD id1 again -> 0 err=80004005
+NIM_MODIFY id2 (never added) -> 0 err=80004005
+NIM_DELETE id2 (never added) -> 0 err=80004005
+NIM_MODIFY id1 -> 0 err=80004005
+NIM_SETVERSION 4 -> 0 err=80004005
+NIM_SETVERSION 5 -> 0 err=80004005
+NIM_SETVERSION 0 -> 0 err=80004005
+NIM_SETFOCUS -> 0 err=80004005
+NIM_DELETE id1 -> 0 err=80004005
+NIM_DELETE id1 again -> 0 err=80004005
+message 7 -> 0 err=80004005
+NIM_ADD cbSize 10 -> 0 err=80004005
+NIM_ADD V1 size -> 0 err=80004005
+NIM_DELETE V1 size -> 0 err=80004005
+NIM_ADD bad hwnd -> 0 err=80004005

@@ -1,0 +1,97 @@
+STACK main reserve=280000
+STACK 0 ok=1 err=dead reserve=280000 limit_below_base=5000 committed=1000
+STACK commit_64k ok=1 err=dead reserve=280000 limit_below_base=10000 committed=1000
+STACK commit_1m ok=1 err=dead reserve=280000 limit_below_base=100000 committed=1000
+STACK commit_eq_reserve ok=1 err=dead reserve=300000 limit_below_base=280000 committed=1000
+STACK commit_3m_plus1 ok=1 err=dead reserve=400000 limit_below_base=301000 committed=1000
+STACK commit_1 ok=1 err=dead reserve=280000 limit_below_base=1000 committed=1000
+STACK reserve_64k ok=1 err=dead reserve=10000 limit_below_base=5000 committed=1000
+STACK reserve_9m ok=1 err=dead reserve=900000 limit_below_base=5000 committed=1000
+STACK reserve_odd ok=1 err=dead reserve=130000 limit_below_base=5000 committed=1000
+STACK reserve_0 ok=1 err=dead reserve=280000 limit_below_base=5000 committed=1000
+STACK reserve_1 ok=1 err=dead reserve=100000 limit_below_base=5000 committed=1000
+SUSPENDED_START ok=1 err=dead ip=RtlUserThreadStart eax=start ebx=param ecx=0 edx=0 esi=0 edi=0 ebp=0 eflags=202
+START_REG_REDIRECT set_ok=1 fn=2 param=5678 exit=2 sp_below_base=1 sp_align_rem=0
+EFLAGS set=ffffffff ok=1 readback=ffffffff set0_readback=0
+GETCTX_NULL ret=0 err=3e6
+GETCTX_NULLHANDLE ret=0 err=6
+SUSPENDED_IP_REDIRECT set_ok=1 wait=0 ran=1 on_our_stack=1 exit=4d
+BLOCKED_GET prev=0 ok=1 ip_in_ntdll=1
+BLOCKED_SET set_ok=1 ran_before_signal=0 wait=0 ran=1 rax_at_redirect=0 original_path_ran=0 exit=58
+RESUME_SELF_PSEUDO ret=0 err=dead
+SUSPEND_NULL ret=ffffffff err=6
+RESUME_NULL ret=ffffffff err=6
+SUSPEND_BOGUS ret=ffffffff err=6
+RESUME_BOGUS ret=ffffffff err=6
+SUSPEND_EVENT ret=ffffffff err=6
+SUSPEND_EXITED ret=ffffffff err=5
+RESUME_EXITED ret=0 err=dead
+SUSPEND_COUNT_LIMIT ret=ffffffff err=9c
+  after_ok=7e last_prev=7e
+RESUME_AT_LIMIT ret=7f err=dead
+SUSPEND_NO_ACCESS ret=ffffffff err=5
+RESUME_NO_ACCESS ret=ffffffff err=5
+GETCTX_NO_ACCESS ret=0 err=5
+SETPRIO_NO_ACCESS ret=0 err=5
+GETPRIO_QUERY_ACCESS ret=0 err=dead
+SELF_SUSPEND back_before_resume=0 resume_ret=1 resume_err=dead self_ret=0 back=1
+NOTIFY exit_thread order=aABdD detach_before_signal=1
+NOTIFY return order=aABdD
+TLSFREE_OUT_OF_RANGE ret=0 err=57
+TLSFREE_TWICE ret=0 err=57
+TLSALLOC_EXHAUST allocated=43e err=8
+TLS_REUSE same_index=1 other_thread_sees=0
+SETPRIO value=2 ret=1 err=dead readback=2
+SETPRIO value=7 ret=0 err=57 readback=2
+SETPRIO value=64 ret=0 err=57 readback=2
+SETPRIO value=fffffff9 ret=0 err=57 readback=2
+SETPRIO value=3 ret=0 err=57 readback=2
+SETPRIO value=fffffffd ret=0 err=57 readback=2
+SETPRIO value=f ret=1 err=dead readback=f
+SETPRIO value=fffffff1 ret=1 err=dead readback=fffffff1
+SETPRIO value=6 ret=0 err=57 readback=fffffff1
+SETPRIO value=fffffffa ret=0 err=57 readback=fffffff1
+SETPRIO value=1 ret=1 err=dead readback=1
+SETPRIO_BOGUS ret=0 err=6
+GETPRIO_BOGUS ret=7fffffff err=6
+BG_BEGIN ret=1 err=dead
+BG_BEGIN_AGAIN ret=0 err=190
+GETPRIO_IN_BG ret=fffffffc err=dead
+BG_END ret=1 err=dead
+BG_END_AGAIN ret=0 err=191
+BG_BEGIN_OTHER ret=0 err=57
+SETPRIO_OTHER ret=1 err=dead
+GETPRIO_OTHER ret=fffffffe err=dead
+QUEUEAPC_SUSPENDED ret=1 err=dead
+APC_BEFORE_START order=PT
+QUEUEAPC_NULL_FN ret=1 err=dead
+QUEUEAPC_BOGUS ret=0 err=6
+APC_KINDS readfileex=1 sleepex=c0 order=1R2
+OPEN_EXITED_HANDLE_OPEN ok=1 code=3
+OPEN_EXITED_ALL_CLOSED ret=0 err=57
+WAIT_NO_SYNCHRONIZE ret=ffffffff err=5
+OPEN_INHERIT flags=1
+CREATE_INHERIT flags=1
+EXPORTS k32_pidofthread=1 kb_pidofthread=1 k32_setdesc=1 kb_setdesc=1 k32_getdesc=1 kb_getdesc=1
+PIDOFTHREAD_CUR_MATCH ret=1 err=dead
+PIDOFTHREAD_BOGUS ret=0 err=6
+THREADID_BOGUS ret=0 err=6
+THREADID_CUR_MATCH ret=1 err=dead
+GETDESC_UNSET hr=10000000 err=dead nonnull=1 first=0
+SETDESC hr=10000000 err=dead
+GETDESC hr=10000000 text=probe-desc free=1
+SETDESC_BOGUS hr=d0000008 err=dead
+GETDESC_BOGUS hr=d0000008 err=dead out=0
+KERNELBASE_GETCURRENTTHREAD value=fffffffe
+PCTOFILEHEADER_K32 ret_is_k32=1 base_is_k32=1
+PCTOFILEHEADER_NTDLL ret_is_nt=1 base_is_nt=1
+RAISE two_args params=2 info0=11
+RAISE null_args_count3 params=0
+RAISE ms_vc_exception veh_saw=1
+UEF filter_returns_1 ret=1 calls=1 code=e0000042
+UEF filter_returns_m1 ret=ffffffff calls=2
+CREATE_NULL_START ok=1 err=dead
+MAIN ExitThread(5)
+AFTER_MAIN_EXIT worker_running=1 main_signaled=1 main_code=5 main_detach_seen=1
+process_detach from_main=0
+exit=42

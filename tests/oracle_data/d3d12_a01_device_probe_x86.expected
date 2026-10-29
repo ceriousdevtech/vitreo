@@ -1,0 +1,406 @@
+exports LoadLibrary(d3d12.dll): ok
+exports d3d12 named exports missing: none
+exports ordinal 101: = D3D12CreateDevice
+exports ordinal 102: = D3D12GetDebugInterface
+exports LoadLibrary(dxgi.dll): ok
+exports dxgi exports missing: none
+stdcall x86 D3D12CreateDevice argument bytes popped: 16 (stdcall 16)
+stdcall x86 D3D12GetDebugInterface argument bytes popped: 8 (stdcall 8)
+stdcall x86 D3D12EnableExperimentalFeatures argument bytes popped: 16 (stdcall 16)
+stdcall x86 D3D12GetInterface argument bytes popped: 12 (stdcall 12)
+stdcall x86 D3D12SerializeRootSignature argument bytes popped: 16 (stdcall 16)
+stdcall x86 D3D12SerializeVersionedRootSignature argument bytes popped: 12 (stdcall 12)
+stdcall x86 D3D12CreateRootSignatureDeserializer argument bytes popped: 16 (stdcall 16)
+stdcall x86 D3D12CreateVersionedRootSignatureDeserializer argument bytes popped: 16 (stdcall 16)
+create D3D12CreateDevice(NULL, 0, Device, NULL): 0x80070057 E_INVALIDARG
+create D3D12CreateDevice(NULL, 0, Device, &out): 0x80070057 E_INVALIDARG out=NULL
+create D3D12CreateDevice(NULL, 1_0_GENERIC, Device, NULL): 0x00000001 S_FALSE
+create D3D12CreateDevice(NULL, 1_0_GENERIC, Device, &out): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 1_0_CORE, Device, NULL): 0x00000001 S_FALSE
+create D3D12CreateDevice(NULL, 1_0_CORE, Device, &out): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 9_1, Device, NULL): 0x80070057 E_INVALIDARG
+create D3D12CreateDevice(NULL, 9_1, Device, &out): 0x80070057 E_INVALIDARG out=NULL
+create D3D12CreateDevice(NULL, 9_3, Device, NULL): 0x80070057 E_INVALIDARG
+create D3D12CreateDevice(NULL, 9_3, Device, &out): 0x80070057 E_INVALIDARG out=NULL
+create D3D12CreateDevice(NULL, 10_0, Device, NULL): 0x80070057 E_INVALIDARG
+create D3D12CreateDevice(NULL, 10_0, Device, &out): 0x80070057 E_INVALIDARG out=NULL
+create D3D12CreateDevice(NULL, 10_1, Device, NULL): 0x80070057 E_INVALIDARG
+create D3D12CreateDevice(NULL, 10_1, Device, &out): 0x80070057 E_INVALIDARG out=NULL
+create D3D12CreateDevice(NULL, 11_0, Device, NULL): 0x00000001 S_FALSE
+create D3D12CreateDevice(NULL, 11_0, Device, &out): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_1, Device, NULL): 0x00000001 S_FALSE
+create D3D12CreateDevice(NULL, 11_1, Device, &out): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 12_0, Device, NULL): 0x00000001 S_FALSE
+create D3D12CreateDevice(NULL, 12_0, Device, &out): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 12_1, Device, NULL): 0x00000001 S_FALSE
+create D3D12CreateDevice(NULL, 12_1, Device, &out): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 12_2, Device, NULL): 0x887a0004 DXGI_ERROR_UNSUPPORTED
+create D3D12CreateDevice(NULL, 12_2, Device, &out): 0x887a0004 DXGI_ERROR_UNSUPPORTED out=NULL
+create D3D12CreateDevice(NULL, 0xffff, Device, NULL): 0x80070057 E_INVALIDARG
+create D3D12CreateDevice(NULL, 0xffff, Device, &out): 0x80070057 E_INVALIDARG out=NULL
+create D3D12CreateDevice(NULL, 11_0, IUnknown): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Object): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, DeviceChild): 0x80004002 E_NOINTERFACE out=NULL
+create D3D12CreateDevice(NULL, 11_0, Device): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device1): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device2): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device3): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device4): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device5): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device6): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device7): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device8): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device9): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device10): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device11): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device12): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device13): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, Device14): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, DeviceTools): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, DeviceTools1): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, DeviceFactory): 0x80004002 E_NOINTERFACE out=NULL
+create D3D12CreateDevice(NULL, 11_0, DeviceConfiguration): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, DeviceConfiguration1): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, CompatibilityDevice): 0x00000000 S_OK out=obj
+create D3D12CreateDevice(NULL, 11_0, D3D11Device): 0x80004002 E_NOINTERFACE out=NULL
+create D3D12CreateDevice(NULL, 11_0, DXGIDevice): 0x80004002 E_NOINTERFACE out=NULL
+create D3D12CreateDevice(NULL, 11_0, Bogus): 0x80004002 E_NOINTERFACE out=NULL
+create first create: 0x00000000 S_OK refcount=1
+create second create (11_0): 0x00000000 S_OK same-object=1 refcount=3
+create third create (12_0): 0x00000000 S_OK same-object=1
+create create as Device1: 0x00000000 S_OK same-identity=1
+create release all: final Release returned 0
+create create after final release: 0x00000000 S_OK refcount=1
+create CreateDXGIFactory2(IDXGIFactory4): 0x00000000 S_OK
+create EnumAdapters1(0): 0x00000000 S_OK
+# create adapter 0: Microsoft Basic Render Driver vendor=0x1414 device=0x008c flags=0x0 luid=00000000:000078f0
+create D3D12CreateDevice(adapter 0): 0x00000000 S_OK same-as-NULL-adapter=1
+create GetAdapterLuid == adapter 0 desc LUID: 1
+create D3D12CreateDevice(adapter 0 as IDXGIAdapter): 0x00000000 S_OK same-as-NULL-adapter=1
+create EnumWarpAdapter: 0x00000000 S_OK
+create D3D12CreateDevice(WARP adapter): 0x00000000 S_OK out=obj
+# create WARP device same as default device: 0
+create D3D12CreateDevice(factory as adapter): 0x80070057 E_INVALIDARG out=NULL
+qi_device device answers: IUnknown Object Device Device1 Device2 Device3 Device4 Device5 Device6 Device7 Device8 Device9 Device10 Device11 Device12 Device13 Device14 DRED DRED1 DRED2 DeviceTools DeviceTools1 DeviceConfiguration DeviceConfiguration1 CompatibilityDevice DestructionNotifier
+qi_device device refused-not-E_NOINTERFACE+NULL: none
+qi_device device identity-mismatch: none
+qi_device device not-transitive: none
+qi_device device null-vtable-slots: none
+qi_device device QI(Device, NULL): 0x80004003 E_POINTER
+qi_device end: GetDeviceRemovedReason 0x00000000 S_OK
+qi_child queue(DIRECT) answers: IUnknown Object DeviceChild Pageable CommandQueue DestructionNotifier
+qi_child queue(DIRECT) refused-not-E_NOINTERFACE+NULL: none
+qi_child queue(DIRECT) identity-mismatch: none
+qi_child queue(DIRECT) not-transitive: none
+qi_child queue(DIRECT) null-vtable-slots: none
+qi_child queue(COPY) answers: IUnknown Object DeviceChild Pageable CommandQueue DestructionNotifier
+qi_child queue(COPY) refused-not-E_NOINTERFACE+NULL: none
+qi_child queue(COPY) identity-mismatch: none
+qi_child queue(COPY) not-transitive: none
+qi_child queue(COPY) null-vtable-slots: none
+qi_child allocator answers: IUnknown Object DeviceChild Pageable CommandAllocator DestructionNotifier
+qi_child allocator refused-not-E_NOINTERFACE+NULL: none
+qi_child allocator identity-mismatch: none
+qi_child allocator not-transitive: none
+qi_child allocator null-vtable-slots: none
+qi_child list(DIRECT) answers: IUnknown Object DeviceChild CommandList GraphicsCommandList GraphicsCommandList1 GraphicsCommandList2 GraphicsCommandList3 GraphicsCommandList4 GraphicsCommandList5 GraphicsCommandList6 GraphicsCommandList7 GraphicsCommandList8 GraphicsCommandList9 GraphicsCommandList10 DestructionNotifier
+qi_child list(DIRECT) refused-not-E_NOINTERFACE+NULL: none
+qi_child list(DIRECT) identity-mismatch: none
+qi_child list(DIRECT) not-transitive: none
+qi_child list(DIRECT) null-vtable-slots: none
+qi_child list(BUNDLE) answers: IUnknown Object DeviceChild CommandList GraphicsCommandList GraphicsCommandList1 GraphicsCommandList2 GraphicsCommandList3 GraphicsCommandList4 GraphicsCommandList5 GraphicsCommandList6 GraphicsCommandList7 GraphicsCommandList8 GraphicsCommandList9 GraphicsCommandList10 DestructionNotifier
+qi_child list(BUNDLE) refused-not-E_NOINTERFACE+NULL: none
+qi_child list(BUNDLE) identity-mismatch: none
+qi_child list(BUNDLE) not-transitive: none
+qi_child list(BUNDLE) null-vtable-slots: none
+qi_child fence answers: IUnknown Object DeviceChild Pageable Fence Fence1 DestructionNotifier
+qi_child fence refused-not-E_NOINTERFACE+NULL: none
+qi_child fence identity-mismatch: none
+qi_child fence not-transitive: none
+qi_child fence null-vtable-slots: none
+qi_child heap answers: IUnknown Object DeviceChild Pageable Heap Heap1 PageableTools DestructionNotifier
+qi_child heap refused-not-E_NOINTERFACE+NULL: none
+qi_child heap identity-mismatch: none
+qi_child heap not-transitive: none
+qi_child heap null-vtable-slots: none
+qi_child buffer(committed) answers: IUnknown Object DeviceChild Pageable Resource Resource1 Resource2 PageableTools DestructionNotifier
+qi_child buffer(committed) refused-not-E_NOINTERFACE+NULL: none
+qi_child buffer(committed) identity-mismatch: none
+qi_child buffer(committed) not-transitive: none
+qi_child buffer(committed) null-vtable-slots: none
+qi_child tex2d(committed) answers: IUnknown Object DeviceChild Pageable Resource Resource1 Resource2 PageableTools DestructionNotifier
+qi_child tex2d(committed) refused-not-E_NOINTERFACE+NULL: none
+qi_child tex2d(committed) identity-mismatch: none
+qi_child tex2d(committed) not-transitive: none
+qi_child tex2d(committed) null-vtable-slots: none
+qi_child buffer(placed) answers: IUnknown Object DeviceChild Pageable Resource Resource1 Resource2 PageableTools DestructionNotifier
+qi_child buffer(placed) refused-not-E_NOINTERFACE+NULL: none
+qi_child buffer(placed) identity-mismatch: none
+qi_child buffer(placed) not-transitive: none
+qi_child buffer(placed) null-vtable-slots: none
+qi_child buffer(reserved) answers: IUnknown Object DeviceChild Pageable Resource Resource1 Resource2 PageableTools DestructionNotifier
+qi_child buffer(reserved) refused-not-E_NOINTERFACE+NULL: none
+qi_child buffer(reserved) identity-mismatch: none
+qi_child buffer(reserved) not-transitive: none
+qi_child buffer(reserved) null-vtable-slots: none
+qi_child descriptor-heap answers: IUnknown Object DeviceChild Pageable DescriptorHeap DestructionNotifier
+qi_child descriptor-heap refused-not-E_NOINTERFACE+NULL: none
+qi_child descriptor-heap identity-mismatch: none
+qi_child descriptor-heap not-transitive: none
+qi_child descriptor-heap null-vtable-slots: none
+qi_child root-signature answers: IUnknown Object DeviceChild RootSignature DestructionNotifier
+qi_child root-signature refused-not-E_NOINTERFACE+NULL: none
+qi_child root-signature identity-mismatch: none
+qi_child root-signature not-transitive: none
+qi_child root-signature null-vtable-slots: none
+qi_child pso(compute) answers: IUnknown Object DeviceChild Pageable PipelineState DestructionNotifier
+qi_child pso(compute) refused-not-E_NOINTERFACE+NULL: none
+qi_child pso(compute) identity-mismatch: none
+qi_child pso(compute) not-transitive: none
+qi_child pso(compute) null-vtable-slots: none
+qi_child pso(graphics) answers: IUnknown Object DeviceChild Pageable PipelineState DestructionNotifier
+qi_child pso(graphics) refused-not-E_NOINTERFACE+NULL: none
+qi_child pso(graphics) identity-mismatch: none
+qi_child pso(graphics) not-transitive: none
+qi_child pso(graphics) null-vtable-slots: none
+qi_child query-heap answers: IUnknown Object DeviceChild Pageable QueryHeap DestructionNotifier
+qi_child query-heap refused-not-E_NOINTERFACE+NULL: none
+qi_child query-heap identity-mismatch: none
+qi_child query-heap not-transitive: none
+qi_child query-heap null-vtable-slots: none
+qi_child command-signature answers: IUnknown Object DeviceChild Pageable CommandSignature DestructionNotifier
+qi_child command-signature refused-not-E_NOINTERFACE+NULL: none
+qi_child command-signature identity-mismatch: none
+qi_child command-signature not-transitive: none
+qi_child command-signature null-vtable-slots: none
+qi_child pipeline-library answers: IUnknown Object DeviceChild PipelineLibrary PipelineLibrary1 DestructionNotifier
+qi_child pipeline-library refused-not-E_NOINTERFACE+NULL: none
+qi_child pipeline-library identity-mismatch: none
+qi_child pipeline-library not-transitive: none
+qi_child pipeline-library null-vtable-slots: none
+qi_child end: GetDeviceRemovedReason 0x00000000 S_OK
+refcount device refcount after create: 1
+refcount CreateCommandQueue(DIRECT): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommandQueue(COMPUTE): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommandQueue(COPY): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommandAllocator(DIRECT): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommandAllocator(BUNDLE): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommandList(DIRECT): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommandList(BUNDLE): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateFence: 0x00000000 S_OK out=obj device-refs+1
+refcount CreateHeap(DEFAULT, buffers): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommittedResource(buffer): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommittedResource(tex2d): 0x00000000 S_OK out=obj device-refs+1
+refcount CreatePlacedResource(buffer): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateReservedResource(buffer): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateDescriptorHeap(CBV_SRV_UAV, visible): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateDescriptorHeap(RTV): 0x00000000 S_OK out=obj device-refs+1
+refcount D3D12SerializeRootSignature: 0x00000000 S_OK
+refcount CreateRootSignature: 0x00000000 S_OK out=obj device-refs+1
+refcount CreateComputePipelineState: 0x00000000 S_OK out=obj device-refs+1
+refcount CreateGraphicsPipelineState: 0x00000000 S_OK out=obj device-refs+1
+refcount CreateQueryHeap(OCCLUSION): 0x00000000 S_OK out=obj device-refs+1
+refcount CreateCommandSignature(dispatch): 0x00000000 S_OK out=obj device-refs+1
+refcount CreatePipelineLibrary(NULL, 0): 0x00000000 S_OK out=obj device-refs+1
+refcount queue GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount queue GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount queue GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount queue refcount: 1
+refcount allocator GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount allocator GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount allocator GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount allocator refcount: 1
+refcount list GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount list GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount list GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount list refcount: 1
+refcount fence GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount fence GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount fence GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount fence refcount: 1
+refcount heap GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount heap GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount heap GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount heap refcount: 1
+refcount buffer GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount buffer GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount buffer GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount buffer refcount: 1
+refcount placed GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount placed GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount placed GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount placed refcount: 1
+refcount descriptor-heap GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount descriptor-heap GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount descriptor-heap GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount descriptor-heap refcount: 1
+refcount root-signature GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount root-signature GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount root-signature GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount root-signature refcount: 1
+refcount pso GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount pso GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount pso GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount pso refcount: 1
+refcount query-heap GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount query-heap GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount query-heap GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount query-heap refcount: 1
+refcount command-signature GetDevice(Device): 0x00000000 S_OK same=1 device-refs+1
+refcount command-signature GetDevice(Device5): 0x00000000 S_OK out=obj
+refcount command-signature GetDevice(Bogus): 0x80004002 E_NOINTERFACE out=NULL
+refcount command-signature refcount: 1
+refcount CreatePlacedResource heap-refs: 0x00000000 S_OK +0
+refcount release placed heap-refs: +0
+refcount CreateUnorderedAccessView resource-refs: +0
+refcount recording SetPipelineState pso-refs: +0
+refcount recording SetComputeRootSignature rs-refs: +0
+refcount recording root UAV resource-refs: +0
+refcount open list allocator-refs: +0
+refcount Close: 0x00000000 S_OK
+refcount Queue::Signal fence-refs (right after): +0
+refcount device refs after releasing every child: -21 (now 1)
+refcount end: GetDeviceRemovedReason 0x00000000 S_OK
+privdata device Get(missing, size query): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata device Get(missing, 16-byte buffer): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0 buf=eeeeeeee
+privdata device Set(A, 4 bytes): 0x00000000 S_OK
+privdata device Get(A, size query): 0x00000000 S_OK size=4
+privdata device Get(A, 2-byte buffer): 0x887a0003 DXGI_ERROR_MORE_DATA size=4 buf=eeeeeeee
+privdata device Get(A, 8-byte buffer): 0x00000000 S_OK size=4 buf=44332211 eeeeeeee
+privdata device Get(A, 0-byte buffer): 0x887a0003 DXGI_ERROR_MORE_DATA size=4
+privdata device Set(A) again then Get: 0x00000000 S_OK buf=88776655
+privdata device Set(A, 0, NULL) delete: 0x00000000 S_OK
+privdata device Get(A) after delete: 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata device Set(A, 0, NULL) delete again: 0x00000001 S_FALSE
+privdata device Set(A, 4, NULL): 0x00000001 S_FALSE
+privdata device Set(A, 0, data): 0x00000000 S_OK
+privdata device Get(A) after Set(A, 0, data): 0x00000000 S_OK size=0
+privdata device SetPrivateDataInterface(B, obj): 0x00000000 S_OK obj-refs+1
+privdata device Get(B, size query): 0x00000000 S_OK size=sizeof(void*)
+privdata device Get(B) interface: 0x00000000 S_OK same=1 obj-refs+2
+privdata device SetPrivateDataInterface(B, same obj) again: 0x00000000 S_OK obj-refs+1
+privdata device Set(B, data) over interface: 0x00000000 S_OK obj-refs+0
+privdata device SetPrivateDataInterface(B, NULL): 0x00000000 S_OK obj-refs+0
+privdata device Get(B) after interface NULL: 0x00000000 S_OK size=sizeof(void*)
+privdata device Set(B, 0, NULL) over interface: 0x00000000 S_OK obj-refs+0
+privdata device SetName("probe-name"): 0x00000000 S_OK
+privdata device Get(D3DDebugObjectNameW, size query): 0x00000000 S_OK size=22
+privdata device Get(D3DDebugObjectNameW): 0x00000000 S_OK size=22 text="probe-name"
+privdata device Get(D3DDebugObjectName) after SetName: 0x887a0002 DXGI_ERROR_NOT_FOUND size=0 text=""
+privdata device Set(D3DDebugObjectName, "abcd"): 0x00000000 S_OK
+privdata device Get(D3DDebugObjectNameW) after narrow set: 0x00000000 S_OK size=22 text="probe-name"
+privdata device Set(D3DDebugObjectNameW, "xy") then Get: 0x00000000 S_OK 0x00000000 S_OK size=6 text="xy"
+privdata device SetName("") then Get(W, size): 0x00000000 S_OK 0x00000000 S_OK size=2
+privdata device Get(D3D12UniqueObjectId, size query): 0x00000000 S_OK size=8
+privdata device Get(CommentStringW, size query): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata buffer Get(missing, size query): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata buffer Get(missing, 16-byte buffer): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0 buf=eeeeeeee
+privdata buffer Set(A, 4 bytes): 0x00000000 S_OK
+privdata buffer Get(A, size query): 0x00000000 S_OK size=4
+privdata buffer Get(A, 2-byte buffer): 0x887a0003 DXGI_ERROR_MORE_DATA size=4 buf=eeeeeeee
+privdata buffer Get(A, 8-byte buffer): 0x00000000 S_OK size=4 buf=44332211 eeeeeeee
+privdata buffer Get(A, 0-byte buffer): 0x887a0003 DXGI_ERROR_MORE_DATA size=4
+privdata buffer Set(A) again then Get: 0x00000000 S_OK buf=88776655
+privdata buffer Set(A, 0, NULL) delete: 0x00000000 S_OK
+privdata buffer Get(A) after delete: 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata buffer Set(A, 0, NULL) delete again: 0x00000001 S_FALSE
+privdata buffer Set(A, 4, NULL): 0x00000001 S_FALSE
+privdata buffer Set(A, 0, data): 0x00000000 S_OK
+privdata buffer Get(A) after Set(A, 0, data): 0x00000000 S_OK size=0
+privdata buffer SetPrivateDataInterface(B, obj): 0x00000000 S_OK obj-refs+1
+privdata buffer Get(B, size query): 0x00000000 S_OK size=sizeof(void*)
+privdata buffer Get(B) interface: 0x00000000 S_OK same=1 obj-refs+2
+privdata buffer SetPrivateDataInterface(B, same obj) again: 0x00000000 S_OK obj-refs+1
+privdata buffer Set(B, data) over interface: 0x00000000 S_OK obj-refs+0
+privdata buffer SetPrivateDataInterface(B, NULL): 0x00000000 S_OK obj-refs+0
+privdata buffer Get(B) after interface NULL: 0x00000000 S_OK size=sizeof(void*)
+privdata buffer Set(B, 0, NULL) over interface: 0x00000000 S_OK obj-refs+0
+privdata buffer SetName("probe-name"): 0x00000000 S_OK
+privdata buffer Get(D3DDebugObjectNameW, size query): 0x00000000 S_OK size=22
+privdata buffer Get(D3DDebugObjectNameW): 0x00000000 S_OK size=22 text="probe-name"
+privdata buffer Get(D3DDebugObjectName) after SetName: 0x887a0002 DXGI_ERROR_NOT_FOUND size=0 text=""
+privdata buffer Set(D3DDebugObjectName, "abcd"): 0x00000000 S_OK
+privdata buffer Get(D3DDebugObjectNameW) after narrow set: 0x00000000 S_OK size=22 text="probe-name"
+privdata buffer Set(D3DDebugObjectNameW, "xy") then Get: 0x00000000 S_OK 0x00000000 S_OK size=6 text="xy"
+privdata buffer SetName("") then Get(W, size): 0x00000000 S_OK 0x00000000 S_OK size=2
+privdata buffer Get(D3D12UniqueObjectId, size query): 0x00000000 S_OK size=8
+privdata buffer Get(CommentStringW, size query): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata list Get(missing, size query): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata list Get(missing, 16-byte buffer): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0 buf=eeeeeeee
+privdata list Set(A, 4 bytes): 0x00000000 S_OK
+privdata list Get(A, size query): 0x00000000 S_OK size=4
+privdata list Get(A, 2-byte buffer): 0x887a0003 DXGI_ERROR_MORE_DATA size=4 buf=eeeeeeee
+privdata list Get(A, 8-byte buffer): 0x00000000 S_OK size=4 buf=44332211 eeeeeeee
+privdata list Get(A, 0-byte buffer): 0x887a0003 DXGI_ERROR_MORE_DATA size=4
+privdata list Set(A) again then Get: 0x00000000 S_OK buf=88776655
+privdata list Set(A, 0, NULL) delete: 0x00000000 S_OK
+privdata list Get(A) after delete: 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata list Set(A, 0, NULL) delete again: 0x00000001 S_FALSE
+privdata list Set(A, 4, NULL): 0x00000001 S_FALSE
+privdata list Set(A, 0, data): 0x00000000 S_OK
+privdata list Get(A) after Set(A, 0, data): 0x00000000 S_OK size=0
+privdata list SetPrivateDataInterface(B, obj): 0x00000000 S_OK obj-refs+1
+privdata list Get(B, size query): 0x00000000 S_OK size=sizeof(void*)
+privdata list Get(B) interface: 0x00000000 S_OK same=1 obj-refs+2
+privdata list SetPrivateDataInterface(B, same obj) again: 0x00000000 S_OK obj-refs+1
+privdata list Set(B, data) over interface: 0x00000000 S_OK obj-refs+0
+privdata list SetPrivateDataInterface(B, NULL): 0x00000000 S_OK obj-refs+0
+privdata list Get(B) after interface NULL: 0x00000000 S_OK size=sizeof(void*)
+privdata list Set(B, 0, NULL) over interface: 0x00000000 S_OK obj-refs+0
+privdata list SetName("probe-name"): 0x00000000 S_OK
+privdata list Get(D3DDebugObjectNameW, size query): 0x00000000 S_OK size=22
+privdata list Get(D3DDebugObjectNameW): 0x00000000 S_OK size=22 text="probe-name"
+privdata list Get(D3DDebugObjectName) after SetName: 0x887a0002 DXGI_ERROR_NOT_FOUND size=0 text=""
+privdata list Set(D3DDebugObjectName, "abcd"): 0x00000000 S_OK
+privdata list Get(D3DDebugObjectNameW) after narrow set: 0x00000000 S_OK size=22 text="probe-name"
+privdata list Set(D3DDebugObjectNameW, "xy") then Get: 0x00000000 S_OK 0x00000000 S_OK size=6 text="xy"
+privdata list SetName("") then Get(W, size): 0x00000000 S_OK 0x00000000 S_OK size=2
+privdata list Get(D3D12UniqueObjectId, size query): 0x00000000 S_OK size=8
+privdata list Get(CommentStringW, size query): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0
+privdata final Release of owner: returned 0 victim-refs +1 then +0
+privdata end: GetDeviceRemovedReason 0x00000000 S_OK
+misc GetNodeCount: 1
+misc GetAdapterLuid nonzero: 1
+misc EnumAdapterByLuid(GetAdapterLuid): 0x00000000 S_OK
+misc adapter desc LUID == GetAdapterLuid: 1
+# misc adapter: Microsoft Basic Render Driver
+misc GetDeviceRemovedReason: 0x00000000 S_OK
+misc D3D12GetDebugInterface(Bogus): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING out=NULL
+misc D3D12GetDebugInterface(ID3D12Debug): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING out=NULL
+misc D3D12EnableExperimentalFeatures(0): 0x00000000 S_OK
+misc D3D12EnableExperimentalFeatures(Bogus): 0x80004002 E_NOINTERFACE
+# misc D3D12EnableExperimentalFeatures(ExperimentalShaderModels): 0x80004002 E_NOINTERFACE (developer-mode dependent)
+misc GetDeviceRemovedReason after experimental: 0x00000000 S_OK
+misc D3D12GetInterface(CLSID_D3D12Debug/ID3D12Debug): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING out=untouched
+misc D3D12GetInterface(CLSID_D3D12Tools/ID3D12Tools): 0x80004002 E_NOINTERFACE out=untouched
+misc D3D12GetInterface(CLSID_D3D12DeviceRemovedExtendedData/DREDSettings): 0x00000000 S_OK out=obj
+misc D3D12GetInterface(CLSID_D3D12DeviceRemovedExtendedData/DREDSettings1): 0x00000000 S_OK out=obj
+misc D3D12GetInterface(CLSID_D3D12SDKConfiguration/SDKConfiguration): 0x00000000 S_OK out=obj
+misc D3D12GetInterface(CLSID_D3D12SDKConfiguration/SDKConfiguration1): 0x00000000 S_OK out=obj
+misc D3D12GetInterface(CLSID_D3D12DeviceFactory/DeviceFactory): 0x00000000 S_OK out=obj
+misc D3D12GetInterface(CLSID_D3D12DSRDeviceFactory/DSRDeviceFactory): 0x80004002 E_NOINTERFACE out=untouched
+misc D3D12GetInterface(CLSID_D3D12Debug/Bogus): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING out=untouched
+misc D3D12GetInterface(Bogus/IUnknown): 0x80004002 E_NOINTERFACE out=untouched
+misc MakeResident(1 heap): 0x00000000 S_OK
+misc Evict(1 heap): 0x00000000 S_OK
+misc Evict(1 heap) again: 0x00000000 S_OK
+misc MakeResident(1 heap) after evict: 0x00000000 S_OK
+misc MakeResident(0, NULL): 0x00000000 S_OK
+misc SetResidencyPriority(1 heap, HIGH): 0x00000000 S_OK
+misc EnqueueMakeResident(fence=7): 0x00000000 S_OK signalled=1 value=7
+misc EnqueueMakeResident(DENY_OVERBUDGET): 0x00000000 S_OK
+misc EnqueueMakeResident(flags 0x80): 0x80070057 E_INVALIDARG
+misc OpenExistingHeapFromAddress(64 KiB VirtualAlloc): 0x00000000 S_OK out=obj
+misc existing heap desc: size=65536 type=4 cpu=3 pool=1 flags=0x421 align=65536
+misc OpenExistingHeapFromAddress(unaligned +4096): 0x80070057 E_INVALIDARG out=NULL
+misc CreateHeap(SHARED): 0x00000000 S_OK
+misc CreateSharedHandle(shared heap): 0x00000000 S_OK handle=set
+misc OpenSharedHandle: 0x00000000 S_OK same-object=0
+misc opened heap desc: size=65536 flags=0x1
+misc CreateSharedHandle(non-shared heap): 0x80070057 E_INVALIDARG handle=NULL
+misc OpenSharedHandle(bogus handle): 0x80070006 E_HANDLE out=NULL
+misc end: GetDeviceRemovedReason 0x00000000 S_OK
+stablepower SetStablePowerState(FALSE): 0x80004005 E_FAIL
+stablepower GetDeviceRemovedReason after FALSE: 0x887a0001 DXGI_ERROR_INVALID_CALL
+# stablepower SetStablePowerState(TRUE): 0x80004005 E_FAIL (developer-mode dependent)
+# stablepower GetDeviceRemovedReason after TRUE: 0x887a0001 DXGI_ERROR_INVALID_CALL

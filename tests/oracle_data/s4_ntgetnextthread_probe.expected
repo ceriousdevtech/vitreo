@@ -1,0 +1,7 @@
+have r=1
+iterate end_status=8000001a count_ge3=1 found=7 first_is_main=1 out_on_end=0
+flags_1 status=c000000d out=0
+bad_process status=c0000008 out=0
+bad_thread status=c0000008 out=0
+inherit_attr status=0 handle_flags=1
+bad_attr_bit status=0

@@ -1,0 +1,21 @@
+bits=32
+Button               ok style=0x0000008B clsExtra=0 wndExtra=8 bg=00000000 cursor=yes
+Edit                 ok style=0x00000088 clsExtra=0 wndExtra=8 bg=00000000 cursor=yes
+Static               ok style=0x00000088 clsExtra=0 wndExtra=8 bg=00000000 cursor=yes
+ListBox              ok style=0x00000088 clsExtra=0 wndExtra=8 bg=00000000 cursor=yes
+ComboBox             ok style=0x0000008B clsExtra=0 wndExtra=8 bg=00000000 cursor=yes
+ScrollBar            ok style=0x00000088 clsExtra=0 wndExtra=80 bg=00000000 cursor=yes
+ComboLBox            ok style=0x00000808 clsExtra=0 wndExtra=8 bg=00000000 cursor=yes
+MDIClient            ok style=0x00000000 clsExtra=0 wndExtra=16 bg=0000000D cursor=yes
+SysListView32        ok style=0x00004008 clsExtra=0 wndExtra=4 bg=00000006 cursor=yes
+SysTreeView32        ok style=0x00004008 clsExtra=0 wndExtra=4 bg=00000000 cursor=yes
+SysTabControl32      ok style=0x0000400B clsExtra=0 wndExtra=4 bg=00000010 cursor=yes
+msctls_progress32    ok style=0x00004003 clsExtra=0 wndExtra=4 bg=00000010 cursor=yes
+msctls_trackbar32    ok style=0x00004000 clsExtra=0 wndExtra=4 bg=00000010 cursor=yes
+SysHeader32          ok style=0x00004008 clsExtra=0 wndExtra=4 bg=00000010 cursor=no
+ToolbarWindow32      ok style=0x00004008 clsExtra=0 wndExtra=4 bg=00000010 cursor=yes
+tooltips_class32     ok style=0x00004808 clsExtra=0 wndExtra=4 bg=00000000 cursor=yes
+SysAnimate32         ok style=0x00004008 clsExtra=0 wndExtra=4 bg=00000010 cursor=yes
+msctls_updown32      ok style=0x00004003 clsExtra=0 wndExtra=4 bg=00000010 cursor=yes
+ReBarWindow32        ok style=0x00004008 clsExtra=0 wndExtra=4 bg=00000010 cursor=no
+msctls_statusbar32   ok style=0x00004009 clsExtra=0 wndExtra=4 bg=00000010 cursor=yes

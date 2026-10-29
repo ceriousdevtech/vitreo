@@ -1,0 +1,38 @@
+# Measured SM5 double-precision opcode numbers -- fxc 10.1 (Windows SDK
+# 10.0.26100) on winoracle.
+#
+# Reproduce:
+#   scp tools/oracle_probe/dxbc_double_opcode_probe.hlsl winoracle:
+#   ssh winoracle '& "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\fxc.exe" \
+#       /nologo /T cs_5_0 /E main /Od /Fc dprobe.asm /Fo dprobe.cso dxbc_double_opcode_probe.hlsl'
+#   scp winoracle:dprobe.asm winoracle:dprobe.cso .
+#   python3 tools/oracle_probe/dxbc_token_decode.py dprobe.cso
+#
+# The /Fc listing and the decode pair one-to-one (249 instructions); each
+# mnemonic below is the first token of its kind, e.g. dadd = 0x070000bf.
+# The listing also shows fxc's forms: `-x` is `dmov r, -r` / a `-` source
+# modifier, abs(x) is dmax(x, -x) (fxc never emits |x| on a double),
+# saturate(x) is dmax/dmin with d(0.0, 0.0) / d(1.0, 0.0) (4-DWORD
+# Immediate64 operands), and the shader carries dcl_globalFlags
+# enableDoublePrecisionFloatOps | enable11_1DoubleExtensions (SFI0 0x21).
+#
+# mnemonic                opcode
+dadd                         191
+dmax                         192
+dmin                         193
+dmul                         194
+deq                          195
+dge                          196
+dlt                          197
+dne                          198
+dmov                         199
+dmovc                        200
+dtof                         201
+ftod                         202
+ddiv                         210
+dfma                         211
+drcp                         212
+dtoi                         214
+dtou                         215
+itod                         216
+utod                         217

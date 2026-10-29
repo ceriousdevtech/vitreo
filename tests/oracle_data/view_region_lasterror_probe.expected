@@ -1,0 +1,35 @@
+bits=64
+img32 section=ok err=0
+img32 mapex view=ok err=57005
+img32 region off=0x0 size=0x1000 state=0x1000 prot=0x2 aprot=0x80 type=0x1000000
+img32 region off=0x1000 size=0x1000 state=0x1000 prot=0x20 aprot=0x80 type=0x1000000
+img32 region off=0x2000 size=0x2000 state=0x1000 prot=0x2 aprot=0x80 type=0x1000000
+img32 region off=0x4000 size=0x1000 state=0x1000 prot=0x8 aprot=0x80 type=0x1000000
+img32 map2 view=ok distinct=1 err=57005
+img32 unmap=1 err=57005
+img32 after_unmap tail state=0x10000
+img32 remap_at_old_base view=ok same=1 err=57005
+img64 section=ok err=0
+img64 mapex view=ok err=57005
+img64 region off=0x0 size=0x1000 state=0x1000 prot=0x2 aprot=0x80 type=0x1000000
+img64 region off=0x1000 size=0x1000 state=0x1000 prot=0x20 aprot=0x80 type=0x1000000
+img64 region off=0x2000 size=0x2000 state=0x1000 prot=0x2 aprot=0x80 type=0x1000000
+img64 region off=0x4000 size=0x1000 state=0x1000 prot=0x8 aprot=0x80 type=0x1000000
+img64 map2 view=ok distinct=1 err=57005
+img64 unmap=1 err=57005
+img64 after_unmap tail state=0x10000
+img64 remap_at_old_base view=ok same=1 err=57005
+data create err=0
+data create_existing same_object=1 err=183
+data map view=ok err=57005
+data region off=0x0 size=0x4000 state=0x1000 prot=0x4 aprot=0x4 type=0x40000
+data_split region off=0x0 size=0x1000 state=0x1000 prot=0x4 aprot=0x4 type=0x40000
+data_split region off=0x1000 size=0x1000 state=0x1000 prot=0x2 aprot=0x4 type=0x40000
+data_split region off=0x2000 size=0x2000 state=0x1000 prot=0x4 aprot=0x4 type=0x40000
+data_rejoined region off=0x0 size=0x4000 state=0x1000 prot=0x4 aprot=0x4 type=0x40000
+data unmap=1 err=57005
+data mapex_at_base view=ok same=1 err=57005
+data map_copy view=ok err=57005
+copy_dirty region off=0x0 size=0x1000 state=0x1000 prot=0x8 aprot=0x8 type=0x40000
+copy_dirty region off=0x1000 size=0x1000 state=0x1000 prot=0x4 aprot=0x8 type=0x40000
+copy_dirty region off=0x2000 size=0x2000 state=0x1000 prot=0x8 aprot=0x8 type=0x40000

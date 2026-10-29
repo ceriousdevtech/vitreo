@@ -1,0 +1,202 @@
+ptr_bits=64
+GetUserDefaultUILanguage=0x0409 GetSystemDefaultUILanguage=0x0409
+  A[1] "0409"
+A default flags=0x00000000 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "0409"
+A id flags=0x00000004 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "en-US"
+A name flags=0x00000008 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A id|name flags=0x0000000c -> ret=0 err=1004 calls=0 lparam_bad=0
+A null-proc flags=0x00000000 -> ret=0 err=87 calls=0 lparam_bad=0
+A null-proc-name flags=0x00000008 -> ret=0 err=87 calls=0 lparam_bad=0
+A null-proc-badflag flags=0x80000000 -> ret=0 err=87 calls=0 lparam_bad=0
+A null-proc-id|name flags=0x0000000c -> ret=0 err=87 calls=0 lparam_bad=0
+A stop-first flags=0x00000000 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A stop-first-name flags=0x00000008 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit00 flags=0x00000001 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit00|name flags=0x00000009 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit01 flags=0x00000002 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit01|name flags=0x0000000a -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit02 flags=0x00000004 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit02|name flags=0x0000000c -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit03 flags=0x00000008 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit03|name flags=0x00000008 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit04 flags=0x00000010 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit04|name flags=0x00000018 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit05 flags=0x00000020 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit05|name flags=0x00000028 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit06 flags=0x00000040 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit06|name flags=0x00000048 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit07 flags=0x00000080 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit07|name flags=0x00000088 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A bit08 flags=0x00000100 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit08|name flags=0x00000108 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit09 flags=0x00000200 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit09|name flags=0x00000208 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit10 flags=0x00000400 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit10|name flags=0x00000408 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit11 flags=0x00000800 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit11|name flags=0x00000808 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit12 flags=0x00001000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit12|name flags=0x00001008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit13 flags=0x00002000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit13|name flags=0x00002008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit14 flags=0x00004000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit14|name flags=0x00004008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit15 flags=0x00008000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit15|name flags=0x00008008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit16 flags=0x00010000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit16|name flags=0x00010008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit17 flags=0x00020000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit17|name flags=0x00020008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit18 flags=0x00040000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit18|name flags=0x00040008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit19 flags=0x00080000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit19|name flags=0x00080008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit20 flags=0x00100000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit20|name flags=0x00100008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit21 flags=0x00200000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit21|name flags=0x00200008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit22 flags=0x00400000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit22|name flags=0x00400008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit23 flags=0x00800000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit23|name flags=0x00800008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit24 flags=0x01000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit24|name flags=0x01000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit25 flags=0x02000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit25|name flags=0x02000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit26 flags=0x04000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit26|name flags=0x04000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit27 flags=0x08000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit27|name flags=0x08000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit28 flags=0x10000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit28|name flags=0x10000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit29 flags=0x20000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit29|name flags=0x20000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit30 flags=0x40000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit30|name flags=0x40000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit31 flags=0x80000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+A bit31|name flags=0x80000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+A 0x10|0x20 flags=0x00000030 -> ret=0 err=1004 calls=0 lparam_bad=0
+A 0x10|0x40 flags=0x00000050 -> ret=0 err=1004 calls=0 lparam_bad=0
+A 0x10|0x80 flags=0x00000090 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "0409"
+A 0x10|id flags=0x00000014 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "en-US"
+A 0x10|name flags=0x00000018 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A 0x20|0x40 flags=0x00000060 -> ret=0 err=1004 calls=0 lparam_bad=0
+A 0x20|0x80 flags=0x000000a0 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "0409"
+A 0x20|id flags=0x00000024 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "en-US"
+A 0x20|name flags=0x00000028 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A 0x40|0x80 flags=0x000000c0 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "0409"
+A 0x40|id flags=0x00000044 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "en-US"
+A 0x40|name flags=0x00000048 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "0409"
+A 0x80|id flags=0x00000084 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  A[1] "en-US"
+A 0x80|name flags=0x00000088 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+A 0x10|0x20|0x40|0x80 flags=0x000000f0 -> ret=0 err=1004 calls=0 lparam_bad=0
+  W[1] "0409"
+W default flags=0x00000000 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "0409"
+W id flags=0x00000004 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "en-US"
+W name flags=0x00000008 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W id|name flags=0x0000000c -> ret=0 err=1004 calls=0 lparam_bad=0
+W null-proc flags=0x00000000 -> ret=0 err=87 calls=0 lparam_bad=0
+W null-proc-name flags=0x00000008 -> ret=0 err=87 calls=0 lparam_bad=0
+W null-proc-badflag flags=0x80000000 -> ret=0 err=87 calls=0 lparam_bad=0
+W null-proc-id|name flags=0x0000000c -> ret=0 err=87 calls=0 lparam_bad=0
+W stop-first flags=0x00000000 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W stop-first-name flags=0x00000008 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit00 flags=0x00000001 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit00|name flags=0x00000009 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit01 flags=0x00000002 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit01|name flags=0x0000000a -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit02 flags=0x00000004 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit02|name flags=0x0000000c -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit03 flags=0x00000008 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit03|name flags=0x00000008 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit04 flags=0x00000010 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit04|name flags=0x00000018 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit05 flags=0x00000020 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit05|name flags=0x00000028 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit06 flags=0x00000040 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit06|name flags=0x00000048 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit07 flags=0x00000080 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit07|name flags=0x00000088 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W bit08 flags=0x00000100 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit08|name flags=0x00000108 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit09 flags=0x00000200 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit09|name flags=0x00000208 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit10 flags=0x00000400 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit10|name flags=0x00000408 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit11 flags=0x00000800 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit11|name flags=0x00000808 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit12 flags=0x00001000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit12|name flags=0x00001008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit13 flags=0x00002000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit13|name flags=0x00002008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit14 flags=0x00004000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit14|name flags=0x00004008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit15 flags=0x00008000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit15|name flags=0x00008008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit16 flags=0x00010000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit16|name flags=0x00010008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit17 flags=0x00020000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit17|name flags=0x00020008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit18 flags=0x00040000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit18|name flags=0x00040008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit19 flags=0x00080000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit19|name flags=0x00080008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit20 flags=0x00100000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit20|name flags=0x00100008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit21 flags=0x00200000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit21|name flags=0x00200008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit22 flags=0x00400000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit22|name flags=0x00400008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit23 flags=0x00800000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit23|name flags=0x00800008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit24 flags=0x01000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit24|name flags=0x01000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit25 flags=0x02000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit25|name flags=0x02000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit26 flags=0x04000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit26|name flags=0x04000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit27 flags=0x08000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit27|name flags=0x08000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit28 flags=0x10000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit28|name flags=0x10000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit29 flags=0x20000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit29|name flags=0x20000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit30 flags=0x40000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit30|name flags=0x40000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit31 flags=0x80000000 -> ret=0 err=1004 calls=0 lparam_bad=0
+W bit31|name flags=0x80000008 -> ret=0 err=1004 calls=0 lparam_bad=0
+W 0x10|0x20 flags=0x00000030 -> ret=0 err=1004 calls=0 lparam_bad=0
+W 0x10|0x40 flags=0x00000050 -> ret=0 err=1004 calls=0 lparam_bad=0
+W 0x10|0x80 flags=0x00000090 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "0409"
+W 0x10|id flags=0x00000014 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "en-US"
+W 0x10|name flags=0x00000018 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W 0x20|0x40 flags=0x00000060 -> ret=0 err=1004 calls=0 lparam_bad=0
+W 0x20|0x80 flags=0x000000a0 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "0409"
+W 0x20|id flags=0x00000024 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "en-US"
+W 0x20|name flags=0x00000028 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W 0x40|0x80 flags=0x000000c0 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "0409"
+W 0x40|id flags=0x00000044 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "en-US"
+W 0x40|name flags=0x00000048 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "0409"
+W 0x80|id flags=0x00000084 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+  W[1] "en-US"
+W 0x80|name flags=0x00000088 -> ret=1 err=3735928559(unchanged) calls=1 lparam_bad=0
+W 0x10|0x20|0x40|0x80 flags=0x000000f0 -> ret=0 err=1004 calls=0 lparam_bad=0

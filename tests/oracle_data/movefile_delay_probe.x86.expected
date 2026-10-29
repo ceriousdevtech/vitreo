@@ -1,0 +1,42 @@
+bits=32
+W delete flags=0x4 ret=1 err=0
+  value: r=0 type=7 added_bytes=106 strings=*1\??\<TMP>\vmfd_a.txt|||
+  files: a=1 b=1 c=1
+W rename flags=0x4 ret=1 err=0
+  value: r=0 type=7 added_bytes=206 strings=*1\??\<TMP>\vmfd_b.txt|*1\??\<TMP>\vmfd_c.txt||
+  files: a=1 b=1 c=1
+W rename_replace flags=0x5 ret=1 err=0
+  value: r=0 type=7 added_bytes=208 strings=*1\??\<TMP>\vmfd_b.txt|*1!\??\<TMP>\vmfd_c.txt||
+  files: a=1 b=1 c=1
+W rename_writethrough flags=0xc ret=1 err=0
+  value: r=0 type=7 added_bytes=206 strings=*1\??\<TMP>\vmfd_b.txt|*1\??\<TMP>\vmfd_c.txt||
+  files: a=1 b=1 c=1
+W missing_source flags=0x4 ret=1 err=0
+  value: r=0 type=7 added_bytes=218 strings=*2\??\<TMP>\vmfd_missing.txt|*1\??\<TMP>\vmfd_c.txt||
+  files: a=1 b=1 c=1
+W missing_delete flags=0x4 ret=1 err=57005
+  value: r=0 type=7 added_bytes=118 strings=*2\??\<TMP>\vmfd_missing.txt|||
+  files: a=1 b=1 c=1
+W dir_delete flags=0x4 ret=1 err=0
+  value: r=0 type=7 added_bytes=102 strings=*1\??\<TMP>\vmfd_dir|||
+  files: a=1 b=1 c=1
+W copy_allowed flags=0x6 ret=0 err=87
+  value: r=0 type=7 added_bytes=2 strings=|
+  files: a=1 b=1 c=1
+W relative flags=0x4 ret=1 err=0
+  value: r=0 type=7 added_bytes=140 strings=*2\??\C:\Users\Jared\vmfd_rel.txt|*1\??\C:\Users\Jared\vmfd_rel2.txt||
+  files: a=1 b=1 c=1
+W forward_slashes flags=0x4 ret=1 err=57005
+  value: r=0 type=7 added_bytes=44 strings=*2\??\C:\vmfd_x.txt|||
+  files: a=1 b=1 c=1
+W empty_dest flags=0x4 ret=0 err=3
+  value: r=0 type=7 added_bytes=2 strings=|
+  files: a=1 b=1 c=1
+W fail_if_not_trackable flags=0x24 ret=1 err=0
+  value: r=0 type=7 added_bytes=206 strings=*1\??\<TMP>\vmfd_b.txt|*1\??\<TMP>\vmfd_c.txt||
+  files: a=1 b=1 c=1
+A delete flags=0x4 ret=1 err=0
+  value: r=0 type=7 added_bytes=106 strings=*1\??\<TMP>\vmfd_a.txt|||
+W second rename ret=1 err=0
+  value: r=0 type=7 added_bytes=310 strings=*1\??\<TMP>\vmfd_a.txt||*1\??\<TMP>\vmfd_b.txt|*1\??\<TMP>\vmfd_c.txt||
+restored had_value=1

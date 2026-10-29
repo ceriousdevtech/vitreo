@@ -1,0 +1,11 @@
+init_LockCount 0xffffffff
+init_LockSemaphore 0x0000000000000000
+enter_LockCount 0xfffffffe
+enter_LockSemaphore 0x0000000000000000
+enter_RecursionCount 0x00000001
+waiter_LockCount 0xfffffffa
+waiter_LockSemaphore 0xffffffffffffffff
+after_both_LockCount 0xffffffff
+after_both_LockSemaphore 0xffffffffffffffff
+idle_LockCount 0xffffffff
+idle_LockSemaphore 0xffffffffffffffff

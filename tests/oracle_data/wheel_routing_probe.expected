@@ -1,0 +1,24 @@
+get ok=1 err=dead value=2
+get ignored parameter ok=0 err=57 value=2
+get null ok=0 err=3e6 value=999
+get invalid ok=0 err=3e6 value=999
+get invalid flags ok=1 err=dead value=2
+set parameter2 pointer0 ok=0 err=57 value=2
+set parameter0 pointer2 ok=0 err=57 value=2
+set parameter1 null ok=1 err=dead value=0
+set parameter2 invalid pointer ok=1 err=dead value=1
+set ignored parameter ok=1 err=dead value=2
+set invalid value ok=0 err=57 value=2
+set invalid flags ok=1 err=dead value=2
+wheel target=1 delta=-120 focus=1
+mode=0 sent=1 received=1 focus=1
+hwheel target=1 delta=-120 focus=1
+horizontal mode=0 sent=1 received=1 focus=1
+wheel target=1 delta=-120 focus=1
+mode=1 sent=1 received=1 focus=1
+hwheel target=1 delta=-120 focus=1
+horizontal mode=1 sent=1 received=1 focus=1
+wheel target=2 delta=-120 focus=1
+mode=2 sent=1 received=1 focus=1
+hwheel target=2 delta=-120 focus=1
+horizontal mode=2 sent=1 received=1 focus=1

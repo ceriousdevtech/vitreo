@@ -1,0 +1,15 @@
+MB cb0 ret=0 err=87
+MB nullsrc ret=0 err=87
+MB cbm1 ret=3 err=0
+MB cbneg5 ret=3 err=0
+MB samebuf ret=0 err=87
+WC cch0 ret=0 err=87
+WC nullsrc ret=0 err=87
+WC cchneg ret=3 err=0
+WC nulldst_nz ret=0 err=87
+WC query ret=2 err=0
+WC samebuf ret=0 err=87
+MB COMPOSITE E9 ret=1 err=0 out=101
+MB USEGLYPH E9 ret=1 err=0 out=233
+MB COMPOSITE|PRECOMPOSED ret=0 err=1004
+MB USEGLYPH 437 01 ret=1 err=0 out=9786

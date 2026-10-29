@@ -1,0 +1,275 @@
+bits 32 dpi 96
+== font 'Tahoma' 8 bold 0 dialog 410x330: preview 0
+previewdialog 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'MsiDialogCloseClass' visible 1
+  top 00000000 class 'ComboLBox' visible 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'ComboLBox' visible 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'ComboLBox' visible 0
+  top 00000000 class 'ComboLBox' visible 0
+  top 00000000 class 'MsiHiddenWindow' visible 0
+  top 00000000 class 'IME' visible 0
+  top 00000000 class 'MSCTFIME UI' visible 0
+  top 00000000 class 'IME' visible 0
+dialog class 'MsiDialogCloseClass' style 0x14c80000 ex 0x00040100 window 552x469 client 546x440 title 'Title Layout Probe' font none owner 0
+defid 0x534b00bf
+  child id 192 class 'RichEdit20W' style 0x50830088 ex 0x00000200 rect 13,53,133,20 vis 1 en 1 text '' font none
+  child id 93 class 'Button' style 0x50032000 ex 0x00000000 rect 13,6,74,22 vis 1 en 1 text '&Next' font -11/0 w400 'Tahoma' ul0
+  child id 97 class 'msctls_progress32' style 0x58020000 ex 0x00000000 rect 226,329,133,13 vis 1 en 0 text '' font -11/0 w400 'Tahoma' ul0
+  child id 100 class 'Button' style 0x58032000 ex 0x00000000 rect 242,6,74,22 vis 1 en 0 text 'Shield' font -11/0 w400 'Tahoma' ul0
+  child id 153 class 'Button' style 0x58020007 ex 0x00000000 rect 13,394,133,40 vis 1 en 0 text 'Box' font -11/0 w400 'Tahoma' ul0
+  child id 191 class 'Button' style 0x50032001 ex 0x00000000 rect 93,6,74,22 vis 1 en 1 text 'Default' font -11/0 w400 'Tahoma' ul0
+  child id 198 class 'Button' style 0x50032080 ex 0x00000000 rect 173,6,29,22 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 200 class 'Button' style 0x50032040 ex 0x00000000 rect 208,6,29,22 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 203 class 'Static' style 0x50020000 ex 0x00000000 rect 13,34,160,13 vis 1 en 1 text 'Plain text' font -11/0 w400 'Tahoma' ul0
+  child id 205 class 'Static' style 0x50020000 ex 0x00000020 rect 186,34,160,13 vis 1 en 1 text 'Big & text' font -16/0 w700 'Tahoma' ul1
+  child id 206 class 'Static' style 0x50020000 ex 0x00000000 rect 360,34,120,13 vis 1 en 1 text '6028MB' font -11/0 w400 'Tahoma' ul0
+  child id 210 class 'RichEdit20W' style 0x508300cc ex 0x00000200 rect 160,53,133,40 vis 1 en 1 text '' font none
+  child id 212 class 'Edit' style 0x508300a0 ex 0x00000200 rect 306,53,133,20 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 214 class 'RichEdit20W' style 0x50830088 ex 0x00000200 rect 13,100,200,20 vis 1 en 1 text '' font none
+  child id 218 class 'Static' style 0x50020000 ex 0x00010200 rect 226,100,200,20 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+    child id 0 class 'Edit' style 0x50012080 ex 0x00000000 rect 228,102,26,20 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+    child id 1 class 'Static' style 0x50000000 ex 0x00000020 rect 256,105,4,20 vis 1 en 1 text '-' font -11/0 w400 'Tahoma' ul0
+    child id 2 class 'Edit' style 0x50012080 ex 0x00000000 rect 262,102,32,20 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 220 class 'Button' style 0x50032002 ex 0x00000000 rect 13,126,133,16 vis 1 en 1 text '&Check me' font -11/0 w400 'Tahoma' ul0
+  child id 223 class 'Button' style 0x50033002 ex 0x00000000 rect 160,126,80,22 vis 1 en 1 text 'Push like' font -11/0 w400 'Tahoma' ul0
+  child id 226 class 'Button' style 0x5202000b ex 0x00010000 rect 13,149,200,53 vis 1 en 1 text 'Group' font -11/0 w400 'Tahoma' ul0
+    child id 124 class 'Button' style 0x50022004 ex 0x00000000 rect 19,155,133,16 vis 1 en 1 text '&Alpha' font -11/0 w400 'Tahoma' ul0
+    child id 115 class 'Button' style 0x50002004 ex 0x00000000 rect 19,175,133,16 vis 1 en 1 text 'Beta' font -11/0 w400 'Tahoma' ul0
+  child id 228 class 'Button' style 0x52020007 ex 0x00010000 rect 226,149,200,53 vis 1 en 1 text 'Bordered' font -11/0 w400 'Tahoma' ul0
+    child id 124 class 'Button' style 0x50022004 ex 0x00000000 rect 232,155,133,16 vis 1 en 1 text 'Gamma' font -11/0 w400 'Tahoma' ul0
+    child id 115 class 'Button' style 0x50002004 ex 0x00000000 rect 232,175,133,10 vis 1 en 1 text 'Delta' font -16/0 w700 'Tahoma' ul1
+    child id 130 class 'Button' style 0x50002004 ex 0x00000000 rect 232,189,133,10 vis 1 en 1 text '&Eps' font -16/0 w700 'Tahoma' ul1
+  child id 229 class 'ComboBox' style 0x50030342 ex 0x00000000 rect 13,209,133,21 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 0
+    child id 1001 class 'Edit' style 0x50000380 ex 0x00000000 rect 16,212,110,15 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 230 class 'ComboBox' style 0x50030243 ex 0x00000000 rect 160,209,133,21 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 0
+  child id 231 class 'ListBox' style 0x50830003 ex 0x00000200 rect 306,209,133,32 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 0
+  child id 232 class 'SysListView32' style 0x5093405d ex 0x00000200 rect 453,209,80,53 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+    child id 0 class 'SysHeader32' style 0x500000ca ex 0x00000000 rect 456,212,76,0 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 234 class 'ComboBox' style 0x50030313 ex 0x00000000 rect 13,269,133,24 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 0
+  child id 236 class 'SysListView32' style 0x5083035f ex 0x00000200 rect 160,269,133,53 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 239 class 'SysListView32' style 0x50830141 ex 0x00000200 rect 306,269,133,53 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+    child id 0 class 'SysHeader32' style 0x500000c2 ex 0x00000000 rect 309,272,129,24 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 242 class 'ComboBox' style 0x50030313 ex 0x00000000 rect 453,269,80,24 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 1
+  child id 244 class 'SysTreeView32' style 0x50830037 ex 0x00000200 rect 13,329,200,53 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 246 class 'msctls_progress32' style 0x58020000 ex 0x00000000 rect 226,346,133,13 vis 1 en 0 text '' font -11/0 w400 'Tahoma' ul0
+  child id 248 class 'Static' style 0x5802020e ex 0x00000000 rect 373,329,53,26 vis 1 en 0 text 'BmpData' font none
+  child id 250 class 'Static' style 0x58020203 ex 0x00000000 rect 440,329,21,21 vis 1 en 0 text 'IcoData' font none
+  child id 252 class 'Static' style 0x58021010 ex 0x00020000 rect 13,389,398,2 vis 1 en 0 text '' font none
+  child id 257 class 'RichEdit20W' style 0x5003084c ex 0x00000200 rect 306,394,133,40 vis 1 en 1 text 'Scroll text' font none
+  child id 260 class 'SysLink' style 0x50030000 ex 0x00000000 rect 453,394,80,16 vis 1 en 1 text '<a href="http://example.invalid">link</a>' font -11/0 w400 'Tahoma' ul0
+taborder 192 93 191 198 200 210 212 214 0 2 220 223 229 230 231 232 234 236 239 242 244 257 260
+previewbillboard 0
+  child id 192 class 'RichEdit20W' style 0x50830088 ex 0x00000200 rect 13,53,133,20 vis 1 en 1 text '' font none
+  child id 93 class 'Button' style 0x50032000 ex 0x00000000 rect 13,6,74,22 vis 1 en 1 text '&Next' font -11/0 w400 'Tahoma' ul0
+  child id 97 class 'msctls_progress32' style 0x58020000 ex 0x00000000 rect 226,329,133,13 vis 1 en 0 text '' font -11/0 w400 'Tahoma' ul0
+  child id 100 class 'Button' style 0x58032000 ex 0x00000000 rect 242,6,74,22 vis 1 en 0 text 'Shield' font -11/0 w400 'Tahoma' ul0
+  child id 153 class 'Button' style 0x58020007 ex 0x00000000 rect 13,394,133,40 vis 1 en 0 text 'Box' font -11/0 w400 'Tahoma' ul0
+  child id 191 class 'Button' style 0x50032001 ex 0x00000000 rect 93,6,74,22 vis 1 en 1 text 'Default' font -11/0 w400 'Tahoma' ul0
+  child id 198 class 'Button' style 0x50032080 ex 0x00000000 rect 173,6,29,22 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 200 class 'Button' style 0x50032040 ex 0x00000000 rect 208,6,29,22 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 203 class 'Static' style 0x50020000 ex 0x00000000 rect 13,34,160,13 vis 1 en 1 text 'Plain text' font -11/0 w400 'Tahoma' ul0
+  child id 205 class 'Static' style 0x50020000 ex 0x00000020 rect 186,34,160,13 vis 1 en 1 text 'Big & text' font -16/0 w700 'Tahoma' ul1
+  child id 206 class 'Static' style 0x50020000 ex 0x00000000 rect 360,34,120,13 vis 1 en 1 text '6028MB' font -11/0 w400 'Tahoma' ul0
+  child id 210 class 'RichEdit20W' style 0x508300cc ex 0x00000200 rect 160,53,133,40 vis 1 en 1 text '' font none
+  child id 212 class 'Edit' style 0x508300a0 ex 0x00000200 rect 306,53,133,20 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 214 class 'RichEdit20W' style 0x50830088 ex 0x00000200 rect 13,100,200,20 vis 1 en 1 text '' font none
+  child id 218 class 'Static' style 0x50020000 ex 0x00010200 rect 226,100,200,20 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+    child id 0 class 'Edit' style 0x50012080 ex 0x00000000 rect 228,102,26,20 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+    child id 1 class 'Static' style 0x50000000 ex 0x00000020 rect 256,105,4,20 vis 1 en 1 text '-' font -11/0 w400 'Tahoma' ul0
+    child id 2 class 'Edit' style 0x50012080 ex 0x00000000 rect 262,102,32,20 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 220 class 'Button' style 0x50032002 ex 0x00000000 rect 13,126,133,16 vis 1 en 1 text '&Check me' font -11/0 w400 'Tahoma' ul0
+  child id 223 class 'Button' style 0x50033002 ex 0x00000000 rect 160,126,80,22 vis 1 en 1 text 'Push like' font -11/0 w400 'Tahoma' ul0
+  child id 226 class 'Button' style 0x5202000b ex 0x00010000 rect 13,149,200,53 vis 1 en 1 text 'Group' font -11/0 w400 'Tahoma' ul0
+    child id 124 class 'Button' style 0x50022004 ex 0x00000000 rect 19,155,133,16 vis 1 en 1 text '&Alpha' font -11/0 w400 'Tahoma' ul0
+    child id 115 class 'Button' style 0x50002004 ex 0x00000000 rect 19,175,133,16 vis 1 en 1 text 'Beta' font -11/0 w400 'Tahoma' ul0
+  child id 228 class 'Button' style 0x52020007 ex 0x00010000 rect 226,149,200,53 vis 1 en 1 text 'Bordered' font -11/0 w400 'Tahoma' ul0
+    child id 124 class 'Button' style 0x50022004 ex 0x00000000 rect 232,155,133,16 vis 1 en 1 text 'Gamma' font -11/0 w400 'Tahoma' ul0
+    child id 115 class 'Button' style 0x50002004 ex 0x00000000 rect 232,175,133,10 vis 1 en 1 text 'Delta' font -16/0 w700 'Tahoma' ul1
+    child id 130 class 'Button' style 0x50002004 ex 0x00000000 rect 232,189,133,10 vis 1 en 1 text '&Eps' font -16/0 w700 'Tahoma' ul1
+  child id 229 class 'ComboBox' style 0x50030342 ex 0x00000000 rect 13,209,133,21 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 0
+    child id 1001 class 'Edit' style 0x50000380 ex 0x00000000 rect 16,212,110,15 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 230 class 'ComboBox' style 0x50030243 ex 0x00000000 rect 160,209,133,21 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 0
+  child id 231 class 'ListBox' style 0x50830003 ex 0x00000200 rect 306,209,133,32 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 0
+  child id 232 class 'SysListView32' style 0x5093405d ex 0x00000200 rect 453,209,80,53 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+    child id 0 class 'SysHeader32' style 0x500000ca ex 0x00000000 rect 456,212,76,0 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 234 class 'ComboBox' style 0x50030313 ex 0x00000000 rect 13,269,133,24 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 0
+  child id 236 class 'SysListView32' style 0x5083035f ex 0x00000200 rect 160,269,133,53 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 239 class 'SysListView32' style 0x50830141 ex 0x00000200 rect 306,269,133,53 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+    child id 0 class 'SysHeader32' style 0x500000c2 ex 0x00000000 rect 309,272,129,24 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 242 class 'ComboBox' style 0x50030313 ex 0x00000000 rect 453,269,80,24 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0 items 1
+  child id 244 class 'SysTreeView32' style 0x50830037 ex 0x00000200 rect 13,329,200,53 vis 1 en 1 text '' font -11/0 w400 'Tahoma' ul0
+  child id 246 class 'msctls_progress32' style 0x58020000 ex 0x00000000 rect 226,346,133,13 vis 1 en 0 text '' font -11/0 w400 'Tahoma' ul0
+  child id 248 class 'Static' style 0x5802020e ex 0x00000000 rect 373,329,53,26 vis 1 en 0 text 'BmpData' font none
+  child id 250 class 'Static' style 0x58020203 ex 0x00000000 rect 440,329,21,21 vis 1 en 0 text 'IcoData' font none
+  child id 252 class 'Static' style 0x58021010 ex 0x00020000 rect 13,389,398,2 vis 1 en 0 text '' font none
+  child id 257 class 'RichEdit20W' style 0x5003084c ex 0x00000200 rect 306,394,133,40 vis 1 en 1 text 'Scroll text' font none
+  child id 260 class 'SysLink' style 0x50030000 ex 0x00000000 rect 453,394,80,16 vis 1 en 1 text '<a href="http://example.invalid">link</a>' font -11/0 w400 'Tahoma' ul0
+  child id 421 class 'Static' style 0x58020000 ex 0x00000000 rect 162,397,80,13 vis 1 en 0 text 'Billboard text' font -11/0 w400 'Tahoma' ul0
+previewdialog D2 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'MsiDialogNoCloseClass' visible 1
+  top 00000000 class 'MsiHiddenWindow' visible 0
+  top 00000000 class 'IME' visible 0
+  top 00000000 class 'MSCTFIME UI' visible 0
+  top 00000000 class 'IME' visible 0
+dialog D2 class 'MsiDialogNoCloseClass' style 0x14c80000 ex 0x00040100 window 406x429 client 400x400
+  child id 154 class 'Static' style 0x50020000 ex 0x00000000 rect 6,6,266,16 vis 1 en 1 text '0KB' font -11/0 w400 'Tahoma' ul0
+  child id 158 class 'Static' style 0x50020000 ex 0x00000000 rect 6,25,266,16 vis 1 en 1 text '512B' font -11/0 w400 'Tahoma' ul0
+  child id 159 class 'Static' style 0x50020000 ex 0x00000000 rect 6,44,266,16 vis 1 en 1 text '1KB' font -11/0 w400 'Tahoma' ul0
+  child id 161 class 'Static' style 0x50020000 ex 0x00000000 rect 6,62,266,16 vis 1 en 1 text '1KB' font -11/0 w400 'Tahoma' ul0
+  child id 163 class 'Static' style 0x50020000 ex 0x00000000 rect 6,81,266,16 vis 1 en 1 text '10KB' font -11/0 w400 'Tahoma' ul0
+  child id 165 class 'Static' style 0x50020000 ex 0x00000000 rect 6,100,266,16 vis 1 en 1 text '1023KB' font -11/0 w400 'Tahoma' ul0
+  child id 167 class 'Static' style 0x50020000 ex 0x00000000 rect 6,118,266,16 vis 1 en 1 text '1024KB' font -11/0 w400 'Tahoma' ul0
+  child id 169 class 'Static' style 0x50020000 ex 0x00000000 rect 6,137,266,16 vis 1 en 1 text '10239KB' font -11/0 w400 'Tahoma' ul0
+  child id 171 class 'Static' style 0x50020000 ex 0x00000000 rect 6,156,266,16 vis 1 en 1 text '10MB' font -11/0 w400 'Tahoma' ul0
+  child id 173 class 'Static' style 0x50020000 ex 0x00000000 rect 6,174,266,16 vis 1 en 1 text '100MB' font -11/0 w400 'Tahoma' ul0
+  child id 175 class 'Static' style 0x50020000 ex 0x00000000 rect 6,193,266,16 vis 1 en 1 text '1023MB' font -11/0 w400 'Tahoma' ul0
+  child id 177 class 'Static' style 0x50020000 ex 0x00000000 rect 6,212,266,16 vis 1 en 1 text '1024MB' font -11/0 w400 'Tahoma' ul0
+  child id 179 class 'Static' style 0x50020000 ex 0x00000000 rect 6,230,266,16 vis 1 en 1 text '10239MB' font -11/0 w400 'Tahoma' ul0
+  child id 181 class 'Static' style 0x50020000 ex 0x00000000 rect 6,249,266,16 vis 1 en 1 text '10GB' font -11/0 w400 'Tahoma' ul0
+  child id 183 class 'Static' style 0x50020000 ex 0x00000000 rect 6,268,266,16 vis 1 en 1 text '102GB' font -11/0 w400 'Tahoma' ul0
+  child id 185 class 'Static' style 0x50020000 ex 0x00000000 rect 6,286,266,16 vis 1 en 1 text '6028MB' font -11/0 w400 'Tahoma' ul0
+  child id 187 class 'Static' style 0x50020000 ex 0x00000000 rect 6,305,266,16 vis 1 en 1 text '0KB' font -11/0 w400 'Tahoma' ul0
+  child id 189 class 'Static' style 0x50020000 ex 0x00000000 rect 6,324,266,16 vis 1 en 1 text '-2KB' font -11/0 w400 'Tahoma' ul0
+== font 'Tahoma' 10 bold 0 dialog 410x330: preview 0
+previewdialog 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'MsiDialogCloseClass' visible 1
+  top 00000000 class 'ComboLBox' visible 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'ComboLBox' visible 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'ComboLBox' visible 0
+  top 00000000 class 'ComboLBox' visible 0
+  top 00000000 class 'MsiHiddenWindow' visible 0
+  top 00000000 class 'IME' visible 0
+  top 00000000 class 'MSCTFIME UI' visible 0
+  top 00000000 class 'IME' visible 0
+dialog class 'MsiDialogCloseClass' style 0x14c80000 ex 0x00040100 window 552x469 client 546x440 title 'Title Layout Probe' font none owner 0
+defid 0x534b00bf
+  child id 192 class 'RichEdit20W' style 0x50830088 ex 0x00000200 rect 13,53,133,20 vis 1 en 1 text '' font none
+  child id 93 class 'Button' style 0x50032000 ex 0x00000000 rect 13,6,74,22 vis 1 en 1 text '&Next' font -13/0 w400 'Tahoma' ul0
+  child id 97 class 'msctls_progress32' style 0x58020000 ex 0x00000000 rect 226,329,133,13 vis 1 en 0 text '' font -13/0 w400 'Tahoma' ul0
+  child id 100 class 'Button' style 0x58032000 ex 0x00000000 rect 242,6,74,22 vis 1 en 0 text 'Shield' font -13/0 w400 'Tahoma' ul0
+  child id 153 class 'Button' style 0x58020007 ex 0x00000000 rect 13,394,133,40 vis 1 en 0 text 'Box' font -13/0 w400 'Tahoma' ul0
+  child id 191 class 'Button' style 0x50032001 ex 0x00000000 rect 93,6,74,22 vis 1 en 1 text 'Default' font -13/0 w400 'Tahoma' ul0
+  child id 198 class 'Button' style 0x50032080 ex 0x00000000 rect 173,6,29,22 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 200 class 'Button' style 0x50032040 ex 0x00000000 rect 208,6,29,22 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 203 class 'Static' style 0x50020000 ex 0x00000000 rect 13,34,160,13 vis 1 en 1 text 'Plain text' font -13/0 w400 'Tahoma' ul0
+  child id 205 class 'Static' style 0x50020000 ex 0x00000020 rect 186,34,160,13 vis 1 en 1 text 'Big & text' font -16/0 w700 'Tahoma' ul1
+  child id 206 class 'Static' style 0x50020000 ex 0x00000000 rect 360,34,120,13 vis 1 en 1 text '6028MB' font -13/0 w400 'Tahoma' ul0
+  child id 210 class 'RichEdit20W' style 0x508300cc ex 0x00000200 rect 160,53,133,40 vis 1 en 1 text '' font none
+  child id 212 class 'Edit' style 0x508300a0 ex 0x00000200 rect 306,53,133,20 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 214 class 'RichEdit20W' style 0x50830088 ex 0x00000200 rect 13,100,200,20 vis 1 en 1 text '' font none
+  child id 218 class 'Static' style 0x50020000 ex 0x00010200 rect 226,100,200,20 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+    child id 0 class 'Edit' style 0x50012080 ex 0x00000000 rect 228,102,29,20 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+    child id 1 class 'Static' style 0x50000000 ex 0x00000020 rect 259,104,5,20 vis 1 en 1 text '-' font -13/0 w400 'Tahoma' ul0
+    child id 2 class 'Edit' style 0x50012080 ex 0x00000000 rect 266,102,36,20 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 220 class 'Button' style 0x50032002 ex 0x00000000 rect 13,126,133,16 vis 1 en 1 text '&Check me' font -13/0 w400 'Tahoma' ul0
+  child id 223 class 'Button' style 0x50033002 ex 0x00000000 rect 160,126,80,22 vis 1 en 1 text 'Push like' font -13/0 w400 'Tahoma' ul0
+  child id 226 class 'Button' style 0x5202000b ex 0x00010000 rect 13,149,200,53 vis 1 en 1 text 'Group' font -13/0 w400 'Tahoma' ul0
+    child id 124 class 'Button' style 0x50022004 ex 0x00000000 rect 19,155,133,16 vis 1 en 1 text '&Alpha' font -13/0 w400 'Tahoma' ul0
+    child id 115 class 'Button' style 0x50002004 ex 0x00000000 rect 19,175,133,16 vis 1 en 1 text 'Beta' font -13/0 w400 'Tahoma' ul0
+  child id 228 class 'Button' style 0x52020007 ex 0x00010000 rect 226,149,200,53 vis 1 en 1 text 'Bordered' font -13/0 w400 'Tahoma' ul0
+    child id 124 class 'Button' style 0x50022004 ex 0x00000000 rect 232,155,133,16 vis 1 en 1 text 'Gamma' font -13/0 w400 'Tahoma' ul0
+    child id 115 class 'Button' style 0x50002004 ex 0x00000000 rect 232,175,133,10 vis 1 en 1 text 'Delta' font -16/0 w700 'Tahoma' ul1
+    child id 130 class 'Button' style 0x50002004 ex 0x00000000 rect 232,189,133,10 vis 1 en 1 text '&Eps' font -16/0 w700 'Tahoma' ul1
+  child id 229 class 'ComboBox' style 0x50030342 ex 0x00000000 rect 13,209,133,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 0
+    child id 1001 class 'Edit' style 0x50000380 ex 0x00000000 rect 16,212,110,18 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 230 class 'ComboBox' style 0x50030243 ex 0x00000000 rect 160,209,133,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 0
+  child id 231 class 'ListBox' style 0x50830003 ex 0x00000200 rect 306,209,133,38 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 0
+  child id 232 class 'SysListView32' style 0x5093405d ex 0x00000200 rect 453,209,80,53 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+    child id 0 class 'SysHeader32' style 0x500000ca ex 0x00000000 rect 456,212,76,0 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 234 class 'ComboBox' style 0x50030313 ex 0x00000000 rect 13,269,133,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 0
+  child id 236 class 'SysListView32' style 0x5083035f ex 0x00000200 rect 160,269,133,53 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 239 class 'SysListView32' style 0x50830141 ex 0x00000200 rect 306,269,133,53 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+    child id 0 class 'SysHeader32' style 0x500000c2 ex 0x00000000 rect 309,272,129,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 242 class 'ComboBox' style 0x50030313 ex 0x00000000 rect 453,269,80,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 1
+  child id 244 class 'SysTreeView32' style 0x50830037 ex 0x00000200 rect 13,329,200,53 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 246 class 'msctls_progress32' style 0x58020000 ex 0x00000000 rect 226,346,133,13 vis 1 en 0 text '' font -13/0 w400 'Tahoma' ul0
+  child id 248 class 'Static' style 0x5802020e ex 0x00000000 rect 373,329,53,26 vis 1 en 0 text 'BmpData' font none
+  child id 250 class 'Static' style 0x58020203 ex 0x00000000 rect 440,329,21,21 vis 1 en 0 text 'IcoData' font none
+  child id 252 class 'Static' style 0x58021010 ex 0x00020000 rect 13,389,398,2 vis 1 en 0 text '' font none
+  child id 257 class 'RichEdit20W' style 0x5003084c ex 0x00000200 rect 306,394,133,40 vis 1 en 1 text 'Scroll text' font none
+  child id 260 class 'SysLink' style 0x50030000 ex 0x00000000 rect 453,394,80,16 vis 1 en 1 text '<a href="http://example.invalid">link</a>' font -13/0 w400 'Tahoma' ul0
+taborder 192 93 191 198 200 210 212 214 0 2 220 223 229 230 231 232 234 236 239 242 244 257 260
+previewbillboard 0
+  child id 192 class 'RichEdit20W' style 0x50830088 ex 0x00000200 rect 13,53,133,20 vis 1 en 1 text '' font none
+  child id 93 class 'Button' style 0x50032000 ex 0x00000000 rect 13,6,74,22 vis 1 en 1 text '&Next' font -13/0 w400 'Tahoma' ul0
+  child id 97 class 'msctls_progress32' style 0x58020000 ex 0x00000000 rect 226,329,133,13 vis 1 en 0 text '' font -13/0 w400 'Tahoma' ul0
+  child id 100 class 'Button' style 0x58032000 ex 0x00000000 rect 242,6,74,22 vis 1 en 0 text 'Shield' font -13/0 w400 'Tahoma' ul0
+  child id 153 class 'Button' style 0x58020007 ex 0x00000000 rect 13,394,133,40 vis 1 en 0 text 'Box' font -13/0 w400 'Tahoma' ul0
+  child id 191 class 'Button' style 0x50032001 ex 0x00000000 rect 93,6,74,22 vis 1 en 1 text 'Default' font -13/0 w400 'Tahoma' ul0
+  child id 198 class 'Button' style 0x50032080 ex 0x00000000 rect 173,6,29,22 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 200 class 'Button' style 0x50032040 ex 0x00000000 rect 208,6,29,22 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 203 class 'Static' style 0x50020000 ex 0x00000000 rect 13,34,160,13 vis 1 en 1 text 'Plain text' font -13/0 w400 'Tahoma' ul0
+  child id 205 class 'Static' style 0x50020000 ex 0x00000020 rect 186,34,160,13 vis 1 en 1 text 'Big & text' font -16/0 w700 'Tahoma' ul1
+  child id 206 class 'Static' style 0x50020000 ex 0x00000000 rect 360,34,120,13 vis 1 en 1 text '6028MB' font -13/0 w400 'Tahoma' ul0
+  child id 210 class 'RichEdit20W' style 0x508300cc ex 0x00000200 rect 160,53,133,40 vis 1 en 1 text '' font none
+  child id 212 class 'Edit' style 0x508300a0 ex 0x00000200 rect 306,53,133,20 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 214 class 'RichEdit20W' style 0x50830088 ex 0x00000200 rect 13,100,200,20 vis 1 en 1 text '' font none
+  child id 218 class 'Static' style 0x50020000 ex 0x00010200 rect 226,100,200,20 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+    child id 0 class 'Edit' style 0x50012080 ex 0x00000000 rect 228,102,29,20 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+    child id 1 class 'Static' style 0x50000000 ex 0x00000020 rect 259,104,5,20 vis 1 en 1 text '-' font -13/0 w400 'Tahoma' ul0
+    child id 2 class 'Edit' style 0x50012080 ex 0x00000000 rect 266,102,36,20 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 220 class 'Button' style 0x50032002 ex 0x00000000 rect 13,126,133,16 vis 1 en 1 text '&Check me' font -13/0 w400 'Tahoma' ul0
+  child id 223 class 'Button' style 0x50033002 ex 0x00000000 rect 160,126,80,22 vis 1 en 1 text 'Push like' font -13/0 w400 'Tahoma' ul0
+  child id 226 class 'Button' style 0x5202000b ex 0x00010000 rect 13,149,200,53 vis 1 en 1 text 'Group' font -13/0 w400 'Tahoma' ul0
+    child id 124 class 'Button' style 0x50022004 ex 0x00000000 rect 19,155,133,16 vis 1 en 1 text '&Alpha' font -13/0 w400 'Tahoma' ul0
+    child id 115 class 'Button' style 0x50002004 ex 0x00000000 rect 19,175,133,16 vis 1 en 1 text 'Beta' font -13/0 w400 'Tahoma' ul0
+  child id 228 class 'Button' style 0x52020007 ex 0x00010000 rect 226,149,200,53 vis 1 en 1 text 'Bordered' font -13/0 w400 'Tahoma' ul0
+    child id 124 class 'Button' style 0x50022004 ex 0x00000000 rect 232,155,133,16 vis 1 en 1 text 'Gamma' font -13/0 w400 'Tahoma' ul0
+    child id 115 class 'Button' style 0x50002004 ex 0x00000000 rect 232,175,133,10 vis 1 en 1 text 'Delta' font -16/0 w700 'Tahoma' ul1
+    child id 130 class 'Button' style 0x50002004 ex 0x00000000 rect 232,189,133,10 vis 1 en 1 text '&Eps' font -16/0 w700 'Tahoma' ul1
+  child id 229 class 'ComboBox' style 0x50030342 ex 0x00000000 rect 13,209,133,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 0
+    child id 1001 class 'Edit' style 0x50000380 ex 0x00000000 rect 16,212,110,18 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 230 class 'ComboBox' style 0x50030243 ex 0x00000000 rect 160,209,133,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 0
+  child id 231 class 'ListBox' style 0x50830003 ex 0x00000200 rect 306,209,133,38 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 0
+  child id 232 class 'SysListView32' style 0x5093405d ex 0x00000200 rect 453,209,80,53 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+    child id 0 class 'SysHeader32' style 0x500000ca ex 0x00000000 rect 456,212,76,0 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 234 class 'ComboBox' style 0x50030313 ex 0x00000000 rect 13,269,133,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 0
+  child id 236 class 'SysListView32' style 0x5083035f ex 0x00000200 rect 160,269,133,53 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 239 class 'SysListView32' style 0x50830141 ex 0x00000200 rect 306,269,133,53 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+    child id 0 class 'SysHeader32' style 0x500000c2 ex 0x00000000 rect 309,272,129,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 242 class 'ComboBox' style 0x50030313 ex 0x00000000 rect 453,269,80,24 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0 items 1
+  child id 244 class 'SysTreeView32' style 0x50830037 ex 0x00000200 rect 13,329,200,53 vis 1 en 1 text '' font -13/0 w400 'Tahoma' ul0
+  child id 246 class 'msctls_progress32' style 0x58020000 ex 0x00000000 rect 226,346,133,13 vis 1 en 0 text '' font -13/0 w400 'Tahoma' ul0
+  child id 248 class 'Static' style 0x5802020e ex 0x00000000 rect 373,329,53,26 vis 1 en 0 text 'BmpData' font none
+  child id 250 class 'Static' style 0x58020203 ex 0x00000000 rect 440,329,21,21 vis 1 en 0 text 'IcoData' font none
+  child id 252 class 'Static' style 0x58021010 ex 0x00020000 rect 13,389,398,2 vis 1 en 0 text '' font none
+  child id 257 class 'RichEdit20W' style 0x5003084c ex 0x00000200 rect 306,394,133,40 vis 1 en 1 text 'Scroll text' font none
+  child id 260 class 'SysLink' style 0x50030000 ex 0x00000000 rect 453,394,80,16 vis 1 en 1 text '<a href="http://example.invalid">link</a>' font -13/0 w400 'Tahoma' ul0
+  child id 421 class 'Static' style 0x58020000 ex 0x00000000 rect 162,397,80,13 vis 1 en 0 text 'Billboard text' font -13/0 w400 'Tahoma' ul0
+previewdialog D2 0
+  top 00000000 class 'tooltips_class32' visible 0
+  top 00000000 class 'MsiDialogNoCloseClass' visible 1
+  top 00000000 class 'MsiHiddenWindow' visible 0
+  top 00000000 class 'IME' visible 0
+  top 00000000 class 'MSCTFIME UI' visible 0
+  top 00000000 class 'IME' visible 0
+dialog D2 class 'MsiDialogNoCloseClass' style 0x14c80000 ex 0x00040100 window 406x429 client 400x400
+  child id 154 class 'Static' style 0x50020000 ex 0x00000000 rect 6,6,266,16 vis 1 en 1 text '0KB' font -13/0 w400 'Tahoma' ul0
+  child id 158 class 'Static' style 0x50020000 ex 0x00000000 rect 6,25,266,16 vis 1 en 1 text '512B' font -13/0 w400 'Tahoma' ul0
+  child id 159 class 'Static' style 0x50020000 ex 0x00000000 rect 6,44,266,16 vis 1 en 1 text '1KB' font -13/0 w400 'Tahoma' ul0
+  child id 161 class 'Static' style 0x50020000 ex 0x00000000 rect 6,62,266,16 vis 1 en 1 text '1KB' font -13/0 w400 'Tahoma' ul0
+  child id 163 class 'Static' style 0x50020000 ex 0x00000000 rect 6,81,266,16 vis 1 en 1 text '10KB' font -13/0 w400 'Tahoma' ul0
+  child id 165 class 'Static' style 0x50020000 ex 0x00000000 rect 6,100,266,16 vis 1 en 1 text '1023KB' font -13/0 w400 'Tahoma' ul0
+  child id 167 class 'Static' style 0x50020000 ex 0x00000000 rect 6,118,266,16 vis 1 en 1 text '1024KB' font -13/0 w400 'Tahoma' ul0
+  child id 169 class 'Static' style 0x50020000 ex 0x00000000 rect 6,137,266,16 vis 1 en 1 text '10239KB' font -13/0 w400 'Tahoma' ul0
+  child id 171 class 'Static' style 0x50020000 ex 0x00000000 rect 6,156,266,16 vis 1 en 1 text '10MB' font -13/0 w400 'Tahoma' ul0
+  child id 173 class 'Static' style 0x50020000 ex 0x00000000 rect 6,174,266,16 vis 1 en 1 text '100MB' font -13/0 w400 'Tahoma' ul0
+  child id 175 class 'Static' style 0x50020000 ex 0x00000000 rect 6,193,266,16 vis 1 en 1 text '1023MB' font -13/0 w400 'Tahoma' ul0
+  child id 177 class 'Static' style 0x50020000 ex 0x00000000 rect 6,212,266,16 vis 1 en 1 text '1024MB' font -13/0 w400 'Tahoma' ul0
+  child id 179 class 'Static' style 0x50020000 ex 0x00000000 rect 6,230,266,16 vis 1 en 1 text '10239MB' font -13/0 w400 'Tahoma' ul0
+  child id 181 class 'Static' style 0x50020000 ex 0x00000000 rect 6,249,266,16 vis 1 en 1 text '10GB' font -13/0 w400 'Tahoma' ul0
+  child id 183 class 'Static' style 0x50020000 ex 0x00000000 rect 6,268,266,16 vis 1 en 1 text '102GB' font -13/0 w400 'Tahoma' ul0
+  child id 185 class 'Static' style 0x50020000 ex 0x00000000 rect 6,286,266,16 vis 1 en 1 text '6028MB' font -13/0 w400 'Tahoma' ul0
+  child id 187 class 'Static' style 0x50020000 ex 0x00000000 rect 6,305,266,16 vis 1 en 1 text '0KB' font -13/0 w400 'Tahoma' ul0
+  child id 189 class 'Static' style 0x50020000 ex 0x00000000 rect 6,324,266,16 vis 1 en 1 text '-2KB' font -13/0 w400 'Tahoma' ul0

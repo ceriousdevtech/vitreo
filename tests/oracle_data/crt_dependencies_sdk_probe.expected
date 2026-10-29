@@ -1,0 +1,4 @@
+api Beep 8 4
+api SetLocalTime 4 4
+constant ERROR_CALL_NOT_IMPLEMENTED 120
+constant FALSE 0

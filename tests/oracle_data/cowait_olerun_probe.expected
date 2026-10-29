@@ -1,0 +1,247 @@
+bits=64 mode=none
+none_signaled|hr=0x00000000|idx=0x00000000|le=0x12345678|
+none_timeout0|hr=0x80010115|idx=0x00000102|le=0x12345678|
+none_timeout30|hr=0x80010115|idx=0x00000102|le=0x12345678|
+none_second_of_two|hr=0x00000000|idx=0x00000001|le=0x12345678|
+none_waitall_mixed|hr=0x80010115|idx=0x00000102|le=0x12345678|
+none_waitall_set|hr=0x80070057|idx=0xffffffff|le=0x00000057|
+none_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+none_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+none_count0|hr=0x80010120|idx=0x00000000|le=0x12345678|
+none_count0_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+none_count0_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+none_flag_0x20|hr=0x80070057|idx=0x00000000|le=0x12345678|
+none_flag_0x80000000|hr=0x80070057|idx=0x00000000|le=0x12345678|
+none_flag_0x20_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+none_flag_0x20_count0|hr=0x80070057|idx=0x00000000|le=0x12345678|
+none_flags_all_valid|hr=0x00000000|idx=0x00000000|le=0x12345678|
+none_flag_inputavailable|hr=0x80010115|idx=0x00000102|le=0x12345678|
+none_flag_dispatch_calls|hr=0x00000000|idx=0x00000000|le=0x12345678|
+none_invalid_handle|hr=0x80070006|idx=0xffffffff|le=0x00000006|
+none_null_handle_value|hr=0x80070006|idx=0xffffffff|le=0x00000006|
+none_abandoned_second|hr=0x80075678|idx=0x00000081|le=0x12345678|
+none_owned_after_abandon|hr=0x00000000|idx=0x00000000|le=0x12345678|
+none_alertable_apc|hr=0x80075678|idx=0x000000c0|le=0|apc_runs=1
+none_nonalertable_apc|hr=0x80010115|idx=0x00000102|le=0|apc_runs=0
+bits=64 mode=mta
+coinit=0x00000000
+mta_signaled|hr=0x00000000|idx=0x00000000|le=0x12345678|
+mta_timeout0|hr=0x80010115|idx=0x00000102|le=0x12345678|
+mta_timeout30|hr=0x80010115|idx=0x00000102|le=0x12345678|
+mta_second_of_two|hr=0x00000000|idx=0x00000001|le=0x12345678|
+mta_waitall_mixed|hr=0x80010115|idx=0x00000102|le=0x12345678|
+mta_waitall_set|hr=0x80070057|idx=0xffffffff|le=0x00000057|
+mta_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+mta_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+mta_count0|hr=0x80010120|idx=0x00000000|le=0x12345678|
+mta_count0_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+mta_count0_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+mta_flag_0x20|hr=0x80070057|idx=0x00000000|le=0x12345678|
+mta_flag_0x80000000|hr=0x80070057|idx=0x00000000|le=0x12345678|
+mta_flag_0x20_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+mta_flag_0x20_count0|hr=0x80070057|idx=0x00000000|le=0x12345678|
+mta_flags_all_valid|hr=0x00000000|idx=0x00000000|le=0x12345678|
+mta_flag_inputavailable|hr=0x80010115|idx=0x00000102|le=0x12345678|
+mta_flag_dispatch_calls|hr=0x00000000|idx=0x00000000|le=0x12345678|
+mta_invalid_handle|hr=0x80070006|idx=0xffffffff|le=0x00000006|
+mta_null_handle_value|hr=0x80070006|idx=0xffffffff|le=0x00000006|
+mta_abandoned_second|hr=0x80075678|idx=0x00000081|le=0x12345678|
+mta_owned_after_abandon|hr=0x00000000|idx=0x00000000|le=0x12345678|
+mta_alertable_apc|hr=0x80075678|idx=0x000000c0|le=0|apc_runs=1
+mta_nonalertable_apc|hr=0x80010115|idx=0x00000102|le=0|apc_runs=0
+bits=64 mode=sta
+coinit=0x00000000
+sta_signaled|hr=0x00000000|idx=0x00000000|le=0x000003f0|
+sta_timeout0|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_timeout30|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_second_of_two|hr=0x00000000|idx=0x00000001|le=0x12345678|
+sta_waitall_mixed|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_waitall_set|hr=0x80010115|idx=0xdeadbeef|le=0x00000057|
+sta_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_count0|hr=0x80010120|idx=0x00000000|le=0x12345678|
+sta_count0_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_count0_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_flag_0x20|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x80000000|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_count0|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flags_all_valid|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_flag_inputavailable|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_flag_dispatch_calls|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_invalid_handle|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_null_handle_value|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_abandoned_second|hr=0x00000000|idx=0x00000081|le=0x12345678|
+sta_owned_after_abandon|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_alertable_apc|hr=0x00000000|idx=0x000000c0|le=0|apc_runs=1
+sta_nonalertable_apc|hr=0x80010115|idx=0xdeadbeef|le=0|apc_runs=0
+sta1_posted_flags0x0|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_thread_flags0x0|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_paint_flags0x0|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=0
+sta1_sent_flags0x0|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=1 paint=0 left=0
+sta_flags0|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+sta_dispatch_calls|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+bits=64 mode=sta
+coinit=0x00000000
+sta_signaled|hr=0x00000000|idx=0x00000000|le=0x000003f0|
+sta_timeout0|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_timeout30|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_second_of_two|hr=0x00000000|idx=0x00000001|le=0x12345678|
+sta_waitall_mixed|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_waitall_set|hr=0x80010115|idx=0xdeadbeef|le=0x00000057|
+sta_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_count0|hr=0x80010120|idx=0x00000000|le=0x12345678|
+sta_count0_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_count0_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_flag_0x20|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x80000000|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_count0|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flags_all_valid|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_flag_inputavailable|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_flag_dispatch_calls|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_invalid_handle|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_null_handle_value|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_abandoned_second|hr=0x00000000|idx=0x00000081|le=0x12345678|
+sta_owned_after_abandon|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_alertable_apc|hr=0x00000000|idx=0x000000c0|le=0|apc_runs=1
+sta_nonalertable_apc|hr=0x80010115|idx=0xdeadbeef|le=0|apc_runs=0
+sta1_posted_flags0x2|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_thread_flags0x2|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_paint_flags0x2|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=0
+sta1_sent_flags0x2|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=1 paint=0 left=0
+sta_flags0|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+sta_dispatch_calls|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+bits=64 mode=sta
+coinit=0x00000000
+sta_signaled|hr=0x00000000|idx=0x00000000|le=0x000003f0|
+sta_timeout0|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_timeout30|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_second_of_two|hr=0x00000000|idx=0x00000001|le=0x12345678|
+sta_waitall_mixed|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_waitall_set|hr=0x80010115|idx=0xdeadbeef|le=0x00000057|
+sta_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_count0|hr=0x80010120|idx=0x00000000|le=0x12345678|
+sta_count0_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_count0_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_flag_0x20|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x80000000|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_count0|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flags_all_valid|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_flag_inputavailable|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_flag_dispatch_calls|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_invalid_handle|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_null_handle_value|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_abandoned_second|hr=0x00000000|idx=0x00000081|le=0x12345678|
+sta_owned_after_abandon|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_alertable_apc|hr=0x00000000|idx=0x000000c0|le=0|apc_runs=1
+sta_nonalertable_apc|hr=0x80010115|idx=0xdeadbeef|le=0|apc_runs=0
+sta1_posted_flags0x8|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_thread_flags0x8|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_paint_flags0x8|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=0
+sta1_sent_flags0x8|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=1 paint=0 left=0
+sta_flags0|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+sta_dispatch_calls|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+bits=64 mode=sta
+coinit=0x00000000
+sta_signaled|hr=0x00000000|idx=0x00000000|le=0x000003f0|
+sta_timeout0|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_timeout30|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_second_of_two|hr=0x00000000|idx=0x00000001|le=0x12345678|
+sta_waitall_mixed|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_waitall_set|hr=0x80010115|idx=0xdeadbeef|le=0x00000057|
+sta_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_count0|hr=0x80010120|idx=0x00000000|le=0x12345678|
+sta_count0_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_count0_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_flag_0x20|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x80000000|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_count0|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flags_all_valid|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_flag_inputavailable|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_flag_dispatch_calls|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_invalid_handle|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_null_handle_value|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_abandoned_second|hr=0x00000000|idx=0x00000081|le=0x12345678|
+sta_owned_after_abandon|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_alertable_apc|hr=0x00000000|idx=0x000000c0|le=0|apc_runs=1
+sta_nonalertable_apc|hr=0x80010115|idx=0xdeadbeef|le=0|apc_runs=0
+sta1_posted_flags0x10|hr=0x80004021|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_thread_flags0x10|hr=0x80004021|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_paint_flags0x10|hr=0x80004021|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=0
+sta1_sent_flags0x10|hr=0x80004021|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=0
+sta_flags0|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+sta_dispatch_calls|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+bits=64 mode=sta
+coinit=0x00000000
+sta_signaled|hr=0x00000000|idx=0x00000000|le=0x000003f0|
+sta_timeout0|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_timeout30|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_second_of_two|hr=0x00000000|idx=0x00000001|le=0x12345678|
+sta_waitall_mixed|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_waitall_set|hr=0x80010115|idx=0xdeadbeef|le=0x00000057|
+sta_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_count0|hr=0x80010120|idx=0x00000000|le=0x12345678|
+sta_count0_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_count0_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_flag_0x20|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x80000000|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_count0|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flags_all_valid|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_flag_inputavailable|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_flag_dispatch_calls|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_invalid_handle|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_null_handle_value|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_abandoned_second|hr=0x00000000|idx=0x00000081|le=0x12345678|
+sta_owned_after_abandon|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_alertable_apc|hr=0x00000000|idx=0x000000c0|le=0|apc_runs=1
+sta_nonalertable_apc|hr=0x80010115|idx=0xdeadbeef|le=0|apc_runs=0
+sta1_posted_flags0x18|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_thread_flags0x18|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=1
+sta1_paint_flags0x18|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=0 paint=0 left=0
+sta1_sent_flags0x18|hr=0x80010115|idx=0xdeadbeef|le=0|posted=0 sent=1 paint=0 left=0
+sta_flags0|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+sta_dispatch_calls|hr=0x80010115|idx=0xdeadbeef|le=0|dispatched posted=0 sent=1 timer=0 paint=0 left posted=1 thread=1 timer=0 paint=0
+bits=64 mode=sta
+coinit=0x00000000
+sta_signaled|hr=0x00000000|idx=0x00000000|le=0x000003f0|
+sta_timeout0|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_timeout30|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_second_of_two|hr=0x00000000|idx=0x00000001|le=0x12345678|
+sta_waitall_mixed|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_waitall_set|hr=0x80010115|idx=0xdeadbeef|le=0x00000057|
+sta_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_count0|hr=0x80010120|idx=0x00000000|le=0x12345678|
+sta_count0_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_count0_null_index|hr=0x80070057|idx=0xdeadbeef|le=0x12345678|
+sta_flag_0x20|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x80000000|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_null_handles|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flag_0x20_count0|hr=0x80070057|idx=0x00000000|le=0x12345678|
+sta_flags_all_valid|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_flag_inputavailable|hr=0x80010115|idx=0xdeadbeef|le=0x12345678|
+sta_flag_dispatch_calls|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_invalid_handle|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_null_handle_value|hr=0x80010115|idx=0xdeadbeef|le=0x00000006|
+sta_abandoned_second|hr=0x00000000|idx=0x00000081|le=0x12345678|
+sta_owned_after_abandon|hr=0x00000000|idx=0x00000000|le=0x12345678|
+sta_alertable_apc|hr=0x00000000|idx=0x000000c0|le=0|apc_runs=1
+sta_nonalertable_apc|hr=0x80010115|idx=0xdeadbeef|le=0|apc_runs=0
+sta1_posted_flags0x4|hr=HUNG|idx=HUNG|le=0|did not return within 3 s
+bits=64 mode=olerun
+coinit=0x00000000
+olerun_no_runnable|hr=0x00000000|idx=0|le=0|run_calls=0 run_arg_null=0 refs=1
+olerun_runnable_ok|hr=0x00000000|idx=0|le=0|run_calls=1 run_arg_null=1 refs=1
+olerun_runnable_fails|hr=0x80041234|idx=0|le=0|run_calls=1 run_arg_null=1 refs=1
+olerun_runnable_s_false|hr=0x00000001|idx=0|le=0|run_calls=1 run_arg_null=1 refs=1
+olerun_uninit_runnable|hr=0x00041234|idx=0|le=0|run_calls=1 run_arg_null=1 refs=1
+bits=64 mode=olerun_null
+olerun_null|hr=0x80070057|idx=0|le=0|

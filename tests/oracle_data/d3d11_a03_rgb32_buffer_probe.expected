@@ -1,0 +1,25 @@
+adapter: Microsoft Basic Render Driver
+create cs hr=0x00000000
+create src hr=0x00000000
+create srv t0 fmt=6 {1,4} hr=0x00000000
+create srv t1 fmt=7 {0,5} hr=0x00000000
+create srv t2 fmt=8 {2,3} hr=0x00000000
+create uav hr=0x00000000
+thread 0 float 40900000 40b00000 40d00000 3f800000  uint 3fc00000 40200000 40600000 00000001  sint 40f00000 41080000 41180000 00000001  dims 4 5 3 c0de
+thread 1 float 40f00000 41080000 41180000 3f800000  uint 40900000 40b00000 40d00000 00000001  sint 41280000 41380000 41480000 00000001  dims 4 5 3 c0de
+thread 2 float 41280000 41380000 41480000 3f800000  uint 40f00000 41080000 41180000 00000001  sint 41580000 41680000 41780000 00000001  dims 4 5 3 c0de
+thread 3 float 41580000 41680000 41780000 3f800000  uint 41280000 41380000 41480000 00000001  sint 00000000 00000000 00000000 00000001  dims 4 5 3 c0de
+thread 4 float 00000000 00000000 00000000 3f800000  uint 41580000 41680000 41780000 00000001  sint 00000000 00000000 00000000 00000001  dims 4 5 3 c0de
+thread 5 float 00000000 00000000 00000000 3f800000  uint 00000000 00000000 00000000 00000001  sint 00000000 00000000 00000000 00000001  dims 4 5 3 c0de
+getdesc t0 fmt=6 dim=1 first=1 count=4
+getdesc t1 fmt=7 dim=1 first=0 count=5
+getdesc t2 fmt=8 dim=1 first=2 count=3
+uav fmt=6 hr=0x80070057
+uav fmt=7 hr=0x80070057
+uav fmt=8 hr=0x80070057
+done
+#
+# Above: winoracle (WARP, Windows 11) x64 at FEATURE_LEVEL_11_0, verbatim.
+# R32G32B32 typed buffer views load three components per element with alpha
+# 1, also past the view's end ((0,0,0,1)); GetDimensions counts elements; no
+# UAV takes these formats.

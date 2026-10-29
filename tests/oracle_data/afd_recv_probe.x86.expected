@@ -1,0 +1,22 @@
+sizeof_info=16
+udp_sync_data: ret=00000000 iosb=00000000 info=9 data="hello-afd"
+udp_peek: ret=c000000d iosb=eeeeeeee info=61166 data="hello-afd"
+udp_after_peek: ret=00000000 iosb=00000000 info=6 data="peekme"
+udp_truncated: ret=80000005 iosb=80000005 info=4 data="0123"
+udp_after_truncated: ret=00000000 iosb=00000000 info=4 data="next"
+tdi_0: ret=c000000d iosb=eeeeeeee info=61166
+tdi_a0: ret=00000000 iosb=00000000 info=3
+tdi_40: ret=c00000bb iosb=eeeeeeee info=61166
+tdi_100: ret=c000000d iosb=eeeeeeee info=61166
+blocking_waits: ret=00000103 iosb=eeeeeeee info=61166 waited_ge_200ms=0
+short_input: ret=c000000d iosb=eeeeeeee info=61166 data=""
+nonblocking_empty: ret=c00000a3 iosb=eeeeeeee info=61166 data=""
+event_pending: ret=00000103 event_signaled_now=0
+event_completed: ret=00000000 iosb=00000000 info=4 data="late"
+iocp_pending: ret=00000103
+iocp_completed: ok=1 bytes=8 key=5151 ov_is_ctx=1 ov_is_iosb=0 iosb=00000000 info=8
+iocp_immediate: ret=00000000 iosb=00000000 info=5 posted=1 bytes=5
+iocp_skip_on_success: ret=00000000 info=4 posted=0
+unknown_afd_code: ret=c0000010
+tcp_data: ret=00000000 iosb=00000000 info=7 data="tcpdata"
+tcp_graceful_close: ret=00000000 iosb=00000000 info=0 data=""

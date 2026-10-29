@@ -1,0 +1,163 @@
+# installed classes: 127
+class {05f5cfe2-4733-4950-a6bb-07aad01a3a84} XboxComposite
+class {091bc97e-2352-4362-a539-10a6d8ff7596} RDPDR
+class {1264760f-a5c8-4bfe-b314-d56a7b44a362} DXGKrnl
+class {13cfe1b1-6b17-424c-ac3f-16ace8733898} I3C
+class {13e42dfa-85d9-424d-8646-28a70f864f9c} RemotePosDevice
+class {14b62f50-3f15-11dd-ae16-0800200c9a66} DigitalMediaDevices
+class {1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc} PrintQueue
+class {242681d1-eed3-41d2-a1ef-1468fc843106} Primitive
+class {25dbce51-6c8f-4a72-8a6d-b54c2b4fc835} WCEUSBS
+class {268c95a1-edfe-11d3-95c3-0010dc4050a5} SecurityAccelerator
+class {2a9fe532-0cdc-44f9-9827-76192f2ca2fb} HidMsr
+class {2db15374-706e-4131-a0c7-d7c78eb0289a} SystemRecovery
+class {3163c566-d381-4467-87bc-a65a18d5b648} fvevol
+class {3163c566-d381-4467-87bc-a65a18d5b649} fvevol
+class {36fc9e60-c465-11cf-8056-444553540000} USB
+class {3a1380f4-708f-49de-b2ef-04d25eb009d5} PROCMON24
+class {3e3f0674-c83c-4558-bb26-9820e1eba5c5} ContentScreener
+class {43675d81-502a-4a82-9f84-b75f418c5dea} Media Center Extender
+class {4658ee7e-f050-11d1-b6bd-00c04fa372a7} PnpPrinters
+class {48721b56-6795-11d2-b1a8-0080c72e74a2} Dot4
+class {48d3ebc4-4cf8-48ff-b869-9c68ad42eb9f} Replication
+class {49ce6ac8-6f86-11d2-b1e5-0080c72e74a2} Dot4Print
+class {4d36e965-e325-11ce-bfc1-08002be10318} CDROM
+class {4d36e966-e325-11ce-bfc1-08002be10318} Computer
+class {4d36e967-e325-11ce-bfc1-08002be10318} DiskDrive
+class {4d36e968-e325-11ce-bfc1-08002be10318} Display
+class {4d36e969-e325-11ce-bfc1-08002be10318} FDC
+class {4d36e96a-e325-11ce-bfc1-08002be10318} HDC
+class {4d36e96b-e325-11ce-bfc1-08002be10318} Keyboard
+class {4d36e96c-e325-11ce-bfc1-08002be10318} MEDIA
+class {4d36e96d-e325-11ce-bfc1-08002be10318} Modem
+class {4d36e96e-e325-11ce-bfc1-08002be10318} Monitor
+class {4d36e96f-e325-11ce-bfc1-08002be10318} Mouse
+class {4d36e970-e325-11ce-bfc1-08002be10318} MTD
+class {4d36e971-e325-11ce-bfc1-08002be10318} MultiFunction
+class {4d36e972-e325-11ce-bfc1-08002be10318} Net
+class {4d36e973-e325-11ce-bfc1-08002be10318} NetClient
+class {4d36e974-e325-11ce-bfc1-08002be10318} NetService
+class {4d36e975-e325-11ce-bfc1-08002be10318} NetTrans
+class {4d36e977-e325-11ce-bfc1-08002be10318} PCMCIA
+class {4d36e978-e325-11ce-bfc1-08002be10318} Ports
+class {4d36e979-e325-11ce-bfc1-08002be10318} Printer
+class {4d36e97b-e325-11ce-bfc1-08002be10318} SCSIAdapter
+class {4d36e97d-e325-11ce-bfc1-08002be10318} System
+class {4d36e97e-e325-11ce-bfc1-08002be10318} Unknown
+class {4d36e980-e325-11ce-bfc1-08002be10318} FloppyDisk
+class {4fc9541c-0fe6-4480-a4f6-9495a0d17cd2} HidLineDisplay
+class {50127dc3-0f36-415e-a6cc-4cb3be910b65} Processor
+class {50906cb8-ba12-11d1-bf5d-0000f805f530} MultiPortSerial
+class {5099944a-f6b9-4057-a056-8c550228544c} Memory
+class {50dd5230-ba8a-11d1-bf5d-0000f805f530} SmartCardReader
+class {5175d334-c371-4806-b3ba-71fd53c9258d} Sensor
+class {533c5b84-ec70-11d2-9505-00c04f79deaf} VolumeSnapshot
+class {53487c23-680f-4585-acc3-1f10d6777e82} SmrDisk
+class {53966cb1-4d46-4166-bf23-c522403cd495} ScmDisk
+class {53b3cf03-8f5a-4788-91b6-d19ed9fcccbf} SmrVolume
+class {53ccb149-e543-4c84-b6e0-bce4f6b7e806} ScmVolume
+class {53d29ef7-377c-4d14-864b-eb3a85769359} Biometric
+class {5630831c-06c9-4856-b327-f5d32586e060} Proximity
+class {5989fce8-9cd0-467d-8a6a-5419e31529d4} AudioProcessingObject
+class {5aea001d-9372-4ed7-97f3-b79bf15a53c5} OposLegacyDevice
+class {5c4c3332-344d-483c-8739-259e934c9cc8} SoftwareComponent
+class {5d1b9aaa-01e2-46af-849f-272b3f324c46} FSFilterSystem
+class {62f9c741-b25a-46ce-b54c-9bccce08b6f2} SoftwareDevice
+class {6a0a8e78-bba6-4fc4-a709-1e33cd09d67e} PhysicalQuotaManagement
+class {6bdd1fc1-810f-11d0-bec7-08002be2092f} 1394
+class {6bdd1fc5-810f-11d0-bec7-08002be2092f} Infrared
+class {6bdd1fc6-810f-11d0-bec7-08002be2092f} Image
+class {6d807884-7d21-11cf-801c-08002be10318} TapeDrive
+class {6fae73b7-b735-4b50-a0da-0dc2484b1f1a} BasicDisplay
+class {6fde7547-1b65-48ae-b628-80be62016026} VirtioSerial
+class {71a27cdd-812a-11d0-bec7-08002be2092f} Volume
+class {71aa14f8-6fad-4622-ad77-92bb9d7e6947} ContinuousBackup
+class {72631e54-78a4-11d0-bcf7-00aa00b7b32a} Battery
+class {745a17a0-74d3-11d0-b6fe-00a0c90f57da} HIDClass
+class {75416e63-5912-4dfa-ae8f-3efaccaffb14} NvmeDisk
+class {762ec895-f9c4-4107-a81a-08d8e437c3e5} MidiEndpoint
+class {772e18f2-8925-4229-a5ac-6453cb482fda} HidCashDrawer
+class {7ebefbc0-3200-11d2-b4c2-00a0c9697d07} 61883
+class {8503c911-a6c7-4919-8f79-5028f5866b0c} QuotaManagement
+class {87ef9ad1-8f70-49ee-b215-ab1fcadcbe3c} NetDriver
+class {88a1c342-4539-11d3-b88d-00c04fad5171} TS_Generic
+class {88bae032-5a81-49f0-bc3d-a4ff138216d6} USBDevice
+class {89786ff1-9c12-402f-9c9e-17753c7f4375} CopyProtection
+class {8ecc055d-047f-11d1-a537-0000f8753ed1} LegacyDriver
+class {990a2bd7-e738-46c7-b26f-1cf8fb9f1391} SmartCard
+class {9d6d66a6-0b0c-4563-9077-a0e9a7955ae4} Ramdisk
+class {9da2b80f-f89f-4a49-a5c2-511b085b9e8a} EhStorSilo
+class {a0a588a4-c46f-4b37-b7ea-c82fe89870c6} SDHost
+class {a0a701c0-a511-42ff-aa6c-06dc0395576f} Encryption
+class {a3e32dba-ba89-4f17-8386-2d0127fbd4cc} rdpbus
+class {a5553e52-faae-49b3-a259-16813401e0aa} EyeGaze
+class {a57f9624-6c8d-4d54-9a7e-4254cce942ec} CDD
+class {a73c93f1-9727-4d1d-ace1-0e333ba4e7db} nvlddmkm
+class {b1d1a169-c54f-4379-81db-bee7d88d7454} AntiVirus
+class {b2728d24-ac56-42db-9e02-8edaf5db652f} RDCamera
+class {b86dff51-a31e-4bac-b3cf-e8cfe75c9fc2} ActivityMonitor
+class {bbbe8734-08fa-4966-b6a6-4e5ad010cdd7} USBFunctionController
+class {c06ff265-ae09-48f0-812c-16753d7cba83} AVC
+class {c166523c-fe0c-4a94-a586-f1a80cfbbf3e} AudioEndpoint
+class {c243ffbd-3afc-45e9-b3d3-2ba18bc7ebc5} BarcodeScanner
+class {c30ecea0-11ef-4ef9-b02e-6af81e6e65c0} WSDPrintDevice
+class {c7bc9b22-21f0-4f0d-9bb6-66c229b8cd33} POSPrinter
+class {ca301ce1-74fc-45ea-a557-461ef48b9e37} Thermal
+class {ca3e7ab9-b4c3-4ae6-8251-579ef933890f} Camera
+class {cc41eba2-ab57-4f4e-8c3d-1bc33b1e74e3} RDPDR
+class {cdcf0939-b75b-4630-bf76-80f7ba655884} CFSMetadataServer
+class {ce5939ae-ebde-11d0-b181-0000f8753ec4} MediumChanger
+class {d02bc3da-0c8e-4945-9bd5-f1883c226c8c} SecurityEnhancer
+class {d421b08e-6d16-41ca-9c4d-9147e5ac98e0} Miracast
+class {d48179be-ec20-11d1-b6b8-00c04fa372a7} SBP2
+class {d546500a-2aeb-45f6-9482-f4b1799c3177} HSM
+class {d61ca365-5af4-4486-998b-9db4734c6ca3} XnaComposite
+class {d94ee5d8-d189-4994-83d2-f68d7d41b0e6} SecurityDevices
+class {db4f6ddd-9c0e-45e4-9597-78dbbad0f412} SmartCardFilter
+class {e0cbf06c-cd8b-4647-bb8a-263b43f0f974} Bluetooth
+class {e2f84ce7-8efa-411c-aa69-97454ca4cb57} Extension
+class {e55fa6f9-128c-4d04-abab-630c74b1453a} Infrastructure
+class {e6f1aa1c-7f3b-4473-b2e8-c97d8ac71d53} UCM
+class {eec5ad98-8080-425f-922a-dabf3de3f69a} WPD
+class {f01a9d53-3ff6-48d2-9f97-c8a7004be10c} ComputeAccelerator
+class {f2e7dd72-6468-4e36-b6f1-6488f42c1b52} Firmware
+class {f3586baf-b5aa-49b5-8d6c-0569284c639f} Compression
+class {f75a86c0-10d8-4c3a-b233-ed60e4cdfaac} Virtualization
+class {f8ecafa6-66d1-41a5-899b-66585d7216b7} OpenFileBackup
+class {fe8f1572-c67a-48c0-bbac-0b5c6d66cafb} Undelete
+class {ff494df1-c4ed-4fac-9b3f-3786f6e91e7e} Generic
+# SetupDiClassGuidsFromName
+W Ports size=64 ret=1 err=00000000 required=00000001 touched=16 {4d36e978-e325-11ce-bfc1-08002be10318}
+W ports size=64 ret=1 err=00000000 required=00000001 touched=16 {4d36e978-e325-11ce-bfc1-08002be10318}
+W PORTS_query size=0 ret=0 err=0000007a required=00000001 touched=0
+W Modem size=64 ret=1 err=00000000 required=00000001 touched=16 {4d36e96d-e325-11ce-bfc1-08002be10318}
+W Display size=64 ret=1 err=00000000 required=00000001 touched=16 {4d36e968-e325-11ce-bfc1-08002be10318}
+W HIDClass size=64 ret=1 err=00000000 required=00000001 touched=16 {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+W Net size=64 ret=1 err=00000000 required=00000001 touched=16 {4d36e972-e325-11ce-bfc1-08002be10318}
+W NoSuchClass size=64 ret=1 err=00000000 required=00000000 touched=0
+W NoSuchClass_query size=0 ret=1 err=00000000 required=00000000 touched=0
+W empty size=64 ret=1 err=00000000 required=00000000 touched=0
+W null size=64 ret=0 err=00000057 required=cccccccc touched=0
+W Ports_nullreq size=64 ret=0 err=00000057 required=cccccccc touched=16
+W Ports_query_nullreq size=0 ret=0 err=00000057 required=cccccccc touched=0
+W trailing_space size=64 ret=1 err=00000000 required=00000000 touched=0
+W fvevol_1 size=1 ret=0 err=0000007a required=00000002 touched=16
+W fvevol_2 size=2 ret=1 err=00000000 required=00000002 touched=32 {3163c566-d381-4467-87bc-a65a18d5b648} {3163c566-d381-4467-87bc-a65a18d5b649}
+W FVEVOL_64 size=64 ret=1 err=00000000 required=00000002 touched=32 {3163c566-d381-4467-87bc-a65a18d5b648} {3163c566-d381-4467-87bc-a65a18d5b649}
+A Ports size=64 ret=1 err=00000000 required=00000001
+A PORTS_query size=0 ret=0 err=0000007a required=00000001
+A NoSuchClass size=64 ret=1 err=00000000 required=00000000
+A null size=64 ret=0 err=00000057 required=cccccccc
+ExW Ports ret=1 err=00000000 required=00000001
+ExW Ports_emptymachine ret=1 err=00000000 required=00000001
+ExW Ports_reserved ret=0 err=00000057 required=00000001
+ExA Ports ret=1 err=00000000 required=00000001
+# SetupDiClassNameFromGuid
+NameW ports ret=1 err=00000000 req=00000006 name=Ports
+NameW ports_small ret=0 err=0000007a req=00000006
+NameW bogus ret=0 err=e0000206 req=cccccccc
+NameW ports_nullreq ret=1 err=00000000 name=Ports
+NameW ports_small_nullreq ret=0 err=0000007a
+NameExW ports ret=1 err=00000000 req=00000006
+NameW nullguid ret=0 err=000006f8 req=cccccccc
+NameA ports ret=1 err=00000000 req=00000006 name=Ports

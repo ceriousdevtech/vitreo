@@ -1,0 +1,54 @@
+Action ended: MsiUnpublishAssemblies. Return value 1.
+Action ended: RemoveFiles. Return value 0.
+Action ended: InstallFiles. Return value 1.
+Action ended: MsiPublishAssemblies. Return value 1.
+Executing op: ComponentUnregister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000008},,BinaryType=1,PreviouslyPinned=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000001},KeyPath=C:\Program Files\VitreoAsm1\VitreoApp.exe,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000002},KeyPath=<\Vitreo.Probe.Msil,version="1.2.3.4",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL",State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000003},KeyPath=<\policy.1.2.Vitreo.Probe.Msil,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL",State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000004},KeyPath=<\Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86",State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000005},KeyPath=<Vitreo.Probe.X86.config\policy.1.0.Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86",State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000006},KeyPath=<\Vitreo.Probe.Culture,version="1.0.0.0",culture="de",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL",State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000007},KeyPath=C:\Program Files\VitreoAsm1\Vitreo.Probe.Priv.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000009},KeyPath=<\Vitreo.Probe.Clr2,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL",State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-00000000000A},KeyPath=<\Vitreo.Probe.X64,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="AMD64",State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-00000000000B},KeyPath=>VitreoW32.dll\Vitreo.Probe.W32,version="1.0.0.0",publicKeyToken="ef51ea1264a47dc2",processorArchitecture="amd64",type="win32",State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: ComponentRegister(ComponentId={7D5C0E10-A55E-4B1A-9C00-00000000000C},KeyPath=C:\Program Files\VitreoAsm1\VitreoW32P.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=1)
+Executing op: AssemblyCopy(SourceName=VPMSIL.DLL|Vitreo.Probe.Msil.dll,SourceCabKey=FileMsil,DestName=Vitreo.Probe.Msil.dll,Attributes=0,FileSize=3584,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000002},IsManifest=1,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=POLICY~1.DLL|policy.1.2.Vitreo.Probe.Msil.dll,SourceCabKey=FilePolMsil,DestName=policy.1.2.Vitreo.Probe.Msil.dll,Attributes=0,FileSize=3584,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000003},IsManifest=1,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VPMSIL.CON|Vitreo.Probe.Msil.config,SourceCabKey=FilePolMsilCfg,DestName=Vitreo.Probe.Msil.config,Attributes=0,FileSize=331,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000003},,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VPX86.DLL|Vitreo.Probe.X86.dll,SourceCabKey=FileX86,DestName=Vitreo.Probe.X86.dll,Attributes=0,FileSize=3584,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000004},IsManifest=1,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=POLICY~2.DLL|policy.1.0.Vitreo.Probe.X86.dll,SourceCabKey=FilePolX86,DestName=policy.1.0.Vitreo.Probe.X86.dll,Attributes=0,FileSize=3584,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000005},IsManifest=1,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VPX86.CON|Vitreo.Probe.X86.config,SourceCabKey=FilePolX86Cfg,DestName=Vitreo.Probe.X86.config,Attributes=0,FileSize=330,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000005},,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VPCULT.DLL|Vitreo.Probe.Culture.dll,SourceCabKey=FileCulture,DestName=Vitreo.Probe.Culture.dll,Attributes=0,FileSize=3584,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000006},IsManifest=1,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VPCLR2.DLL|Vitreo.Probe.Clr2.dll,SourceCabKey=FileClr2,DestName=Vitreo.Probe.Clr2.dll,Attributes=0,FileSize=2048,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-000000000009},IsManifest=1,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VPX64.DLL|Vitreo.Probe.X64.dll,SourceCabKey=FileX64,DestName=Vitreo.Probe.X64.dll,Attributes=0,FileSize=3072,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-00000000000A},IsManifest=1,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VITW32.DLL|VitreoW32.dll,SourceCabKey=FileW32Dll,DestName=VitreoW32.dll,Attributes=0,FileSize=6217,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-00000000000B},,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VPW32.MAN|Vitreo.Probe.W32.manifest,SourceCabKey=FileW32Man,DestName=Vitreo.Probe.W32.manifest,Attributes=0,FileSize=805,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-00000000000B},IsManifest=1,,,AssemblyMode=0,)
+Executing op: AssemblyCopy(SourceName=VPW32.CAT|Vitreo.Probe.W32.cat,SourceCabKey=FileW32Cat,DestName=Vitreo.Probe.W32.cat,Attributes=0,FileSize=1916,PerTick=65536,,VerifyMedia=1,,,,,ComponentId={7D5C0E10-A55E-4B1A-9C00-00000000000B},,,,AssemblyMode=0,)
+Executing op: ActionStart(Name=MsiPublishAssemblies,Description=Publishing assembly information Application Context:[1], Assembly Name:[2],)
+Executing op: AssemblyPublish(Feature=FeatMain,Component={7D5C0E10-A55E-4B1A-9C00-000000000002},AssemblyType=1,,AssemblyName=Vitreo.Probe.Msil,version="1.2.3.4",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL",)
+Executing op: AssemblyPublish(Feature=FeatMain,Component={7D5C0E10-A55E-4B1A-9C00-000000000003},AssemblyType=1,,AssemblyName=policy.1.2.Vitreo.Probe.Msil,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL",)
+Executing op: AssemblyPublish(Feature=FeatMain,Component={7D5C0E10-A55E-4B1A-9C00-000000000004},AssemblyType=1,,AssemblyName=Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86",)
+Executing op: AssemblyPublish(Feature=FeatMain,Component={7D5C0E10-A55E-4B1A-9C00-000000000005},AssemblyType=1,,AssemblyName=policy.1.0.Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86",)
+Executing op: AssemblyPublish(Feature=FeatMain,Component={7D5C0E10-A55E-4B1A-9C00-000000000006},AssemblyType=1,,AssemblyName=Vitreo.Probe.Culture,version="1.0.0.0",culture="de",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL",)
+Executing op: AssemblyPublish(Feature=FeatClr2,Component={7D5C0E10-A55E-4B1A-9C00-000000000009}[~]1,AssemblyType=1,,AssemblyName=Vitreo.Probe.Clr2,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL",)
+Executing op: AssemblyPublish(Feature=FeatMain,Component={7D5C0E10-A55E-4B1A-9C00-00000000000A},AssemblyType=1,,AssemblyName=Vitreo.Probe.X64,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="AMD64",)
+Executing op: AssemblyPublish(Feature=FeatW32,Component={7D5C0E10-A55E-4B1A-9C00-00000000000B}[~]1,AssemblyType=2,,AssemblyName=Vitreo.Probe.W32,version="1.0.0.0",publicKeyToken="ef51ea1264a47dc2",processorArchitecture="amd64",type="win32",)
+Executing op: AssemblyPublish(Feature=FeatMain,Component={7D5C0E10-A55E-4B1A-9C00-000000000007},AssemblyType=3,AppCtx=C:\Program Files\VitreoAsm1\VitreoApp.exe,AssemblyName=Vitreo.Probe.Priv,version="1.0.0.0",culture="neutral",)
+Executing op: AssemblyPublish(Feature=FeatMain,Component={7D5C0E10-A55E-4B1A-9C00-00000000000C},AssemblyType=4,AppCtx=C:\Program Files\VitreoAsm1\VitreoApp.exe,AssemblyName=Vitreo.Probe.W32P,version="1.0.0.0",processorArchitecture="amd64",type="win32",)
+Executing op: FeaturePublish(Feature=FeatMain,,Absent=2,Component=v9c@P8`i.@p$!!!$,CC!v9c@P8`i.@p$!!!%6__!v9c@P8`i.@p$!!!&Czz!v9c@P8`i.@p$!!!'L?@$v9c@P8`i.@p$!!!(UZ[$v9c@P8`i.@p$!!!)_vw$v9c@P8`i.@p$!!!*h79%v9c@P8`i.@p$!!!-(46&v9c@P8`i.@p$!!!0?oq&)
+Executing op: FeaturePublish(Feature=FeatClr2,,Absent=2,Component=v9c@P8`i.@p$!!!,zrt%)
+Executing op: FeaturePublish(Feature=FeatW32,,Absent=2,Component=v9c@P8`i.@p$!!!.2SU&)
+Executing op: FeaturePublish(Feature=FeatAbsent,,Absent=3,Component=v9c@P8`i.@p$!!!+qVX%)
+Action ended: InstallFinalize. Return value 1.
+Property(S): MsiNetAssemblySupport = 4.8.9221.0
+Property(S): MsiWin32AssemblySupport = 6.3.26100.9278
+== deferred
+C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab
+== commit
+C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab
+C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab\Vitreo.Probe.Msil.dll
+== after
+C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab
+C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab\Vitreo.Probe.Msil.dll

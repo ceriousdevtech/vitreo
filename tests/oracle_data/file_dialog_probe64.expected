@@ -1,0 +1,180 @@
+open create -> 0x00000000
+  open answers: IUnknown IModalWindow IFileDialog IFileOpenDialog IFileDialogCustomize IFileDialog2 IObjectWithSite IOleWindow
+  GetOptions -> 0x00000000 opt=0x00001808
+  GetOptions(NULL) -> 0x80070057
+  GetFileTypeIndex -> 0x00000000 idx=0
+  GetFileName -> 0x80004005 name=NULL
+  GetResult before Show -> 0x8000ffff item=untouched
+  GetFolder -> 0x00000000 item=set
+  GetCurrentSelection -> 0x80004005 item=untouched
+  SetFileTypes(0) -> 0x00000000
+  SetFileTypes(2,NULL) -> 0x80070057
+  SetFileTypes(2) -> 0x00000000
+  SetFileTypes again -> 0x8000ffff
+  index after SetFileTypes=0
+  SetFileTypeIndex(0) -> 0x00000000 idx=1
+  SetFileTypeIndex(5) -> 0x00000000 idx=2
+  SetFileTypeIndex(2) -> 0x00000000 idx=2
+  SetOptions(PICKFOLDERS) -> 0x00000000 opt=0x00001020
+  SetOptions(0) -> 0x00000000 opt=0x00000000
+  SetFileName("a.txt") -> 0x00000000 get=0x00000000 "a.txt"
+  SetFileName(NULL) -> 0x00000000
+  SetTitle(NULL) -> 0x00000000
+  SetOkButtonLabel(NULL) -> 0x00000000
+  SetDefaultExtension(NULL) -> 0x00000000
+  SetFolder(NULL) -> 0x00000000
+  SetDefaultFolder(NULL) -> 0x00000000
+  Advise(NULL) -> 0x80070057
+  Unadvise(12345) -> 0x80070057
+  Close(S_OK) before Show -> 0x00000000
+  SetFilter(NULL) -> 0x00000000
+  SetClientGuid -> 0x00000000
+  ClearClientData -> 0x80004005
+  GetResults before Show -> 0x80004005 arr=NULL
+  GetSelectedItems before Show -> 0x80004005 arr=NULL
+  Release -> 0
+save create -> 0x00000000
+  save answers: IUnknown IModalWindow IFileDialog IFileSaveDialog IFileDialogCustomize IFileDialog2 IObjectWithSite IOleWindow
+  GetOptions -> 0x00000000 opt=0x0000880a
+  GetOptions(NULL) -> 0x80070057
+  GetFileTypeIndex -> 0x00000000 idx=0
+  GetFileName -> 0x80004005 name=NULL
+  GetResult before Show -> 0x8000ffff item=untouched
+  GetFolder -> 0x00000000 item=set
+  GetCurrentSelection -> 0x80004005 item=untouched
+  SetFileTypes(0) -> 0x00000000
+  SetFileTypes(2,NULL) -> 0x80070057
+  SetFileTypes(2) -> 0x00000000
+  SetFileTypes again -> 0x8000ffff
+  index after SetFileTypes=0
+  SetFileTypeIndex(0) -> 0x00000000 idx=1
+  SetFileTypeIndex(5) -> 0x00000000 idx=2
+  SetFileTypeIndex(2) -> 0x00000000 idx=2
+  SetOptions(PICKFOLDERS) -> 0x80070057 opt=0x0000880a
+  SetOptions(0) -> 0x00000000 opt=0x00000000
+  SetFileName("a.txt") -> 0x00000000 get=0x00000000 "a.txt"
+  SetFileName(NULL) -> 0x00000000
+  SetTitle(NULL) -> 0x00000000
+  SetOkButtonLabel(NULL) -> 0x00000000
+  SetDefaultExtension(NULL) -> 0x00000000
+  SetFolder(NULL) -> 0x00000000
+  SetDefaultFolder(NULL) -> 0x00000000
+  Advise(NULL) -> 0x80070057
+  Unadvise(12345) -> 0x80070057
+  Close(S_OK) before Show -> 0x00000000
+  SetFilter(NULL) -> 0x00000000
+  SetClientGuid -> 0x00000000
+  ClearClientData -> 0x80004005
+  Release -> 0
+folder SHCreateItemFromParsingName -> 0x00000000 item=set
+  folder answers: IUnknown IShellItem IShellItem2
+  NORMALDISPLAY -> 0x00000000 "Windows"
+  PARENTRELATIVEPARSING -> 0x00000000 "Windows"
+  DESKTOPABSOLUTEPARSING -> 0x00000000 "C:\Windows"
+  PARENTRELATIVEEDITING -> 0x00000000 "Windows"
+  DESKTOPABSOLUTEEDITING -> 0x00000000 "C:\Windows"
+  FILESYSPATH -> 0x00000000 "C:\Windows"
+  URL -> 0x00000000 "file:///C:/Windows"
+  PARENTRELATIVEFORADDRESSBAR -> 0x00000000 "Windows"
+  PARENTRELATIVE -> 0x00000000 "Windows"
+  PARENTRELATIVEFORUI -> 0x00000000 "Windows"
+  GetDisplayName(bad 0x1234) -> 0x00000000
+  GetAttributes(mix) -> 0x00000001 attrs=0xf0000000
+  GetAttributes(FILESYSTEM) -> 0x00000000 attrs=0x40000000
+  GetParent -> 0x00000000 parent_fs="C:\"
+  Compare(same) -> 0x00000000 order=0
+  Compare(other) -> 0x00000001 order_sign=-1
+file SHCreateItemFromParsingName -> 0x00000000 item=set
+  file answers: IUnknown IShellItem IShellItem2
+  NORMALDISPLAY -> 0x00000000 "notepad.exe"
+  PARENTRELATIVEPARSING -> 0x00000000 "notepad.exe"
+  DESKTOPABSOLUTEPARSING -> 0x00000000 "C:\Windows\notepad.exe"
+  PARENTRELATIVEEDITING -> 0x00000000 "notepad.exe"
+  DESKTOPABSOLUTEEDITING -> 0x00000000 "C:\Windows\notepad.exe"
+  FILESYSPATH -> 0x00000000 "C:\Windows\notepad.exe"
+  URL -> 0x00000000 "file:///C:/Windows/notepad.exe"
+  PARENTRELATIVEFORADDRESSBAR -> 0x00000000 "notepad.exe"
+  PARENTRELATIVE -> 0x00000000 "notepad.exe"
+  PARENTRELATIVEFORUI -> 0x00000000 "notepad.exe"
+  GetDisplayName(bad 0x1234) -> 0x00000000
+  GetAttributes(mix) -> 0x00000001 attrs=0x40400000
+  GetAttributes(FILESYSTEM) -> 0x00000000 attrs=0x40000000
+  GetParent -> 0x00000000 parent_fs="C:\Windows"
+  Compare(same) -> 0x00000000 order=0
+  Compare(other) -> 0x00000001 order_sign=1
+root SHCreateItemFromParsingName -> 0x00000000 item=set
+  root answers: IUnknown IShellItem IShellItem2
+  NORMALDISPLAY -> 0x00000000 "Local Disk (C:)"
+  PARENTRELATIVEPARSING -> 0x00000000 "C:"
+  DESKTOPABSOLUTEPARSING -> 0x00000000 "C:\"
+  PARENTRELATIVEEDITING -> 0x00000000 "Local Disk"
+  DESKTOPABSOLUTEEDITING -> 0x00000000 "C:\"
+  FILESYSPATH -> 0x00000000 "C:\"
+  URL -> 0x00000000 "file:///C:/"
+  PARENTRELATIVEFORADDRESSBAR -> 0x00000000 "C:"
+  PARENTRELATIVE -> 0x00000000 "Local Disk (C:)"
+  PARENTRELATIVEFORUI -> 0x00000000 "Local Disk (C:)"
+  GetDisplayName(bad 0x1234) -> 0x00000000
+  GetAttributes(mix) -> 0x00000001 attrs=0xf0000000
+  GetAttributes(FILESYSTEM) -> 0x00000000 attrs=0x40000000
+  GetParent -> 0x00000000 parent_fs=(none)
+  Compare(same) -> 0x00000000 order=0
+  Compare(other) -> 0x00000001 order_sign=-1
+lowercase SHCreateItemFromParsingName -> 0x00000000 item=set
+  lowercase answers: IUnknown IShellItem IShellItem2
+  NORMALDISPLAY -> 0x00000000 "notepad.exe"
+  PARENTRELATIVEPARSING -> 0x00000000 "notepad.exe"
+  DESKTOPABSOLUTEPARSING -> 0x00000000 "C:\Windows\notepad.exe"
+  PARENTRELATIVEEDITING -> 0x00000000 "notepad.exe"
+  DESKTOPABSOLUTEEDITING -> 0x00000000 "C:\Windows\notepad.exe"
+  FILESYSPATH -> 0x00000000 "C:\Windows\notepad.exe"
+  URL -> 0x00000000 "file:///C:/Windows/notepad.exe"
+  PARENTRELATIVEFORADDRESSBAR -> 0x00000000 "notepad.exe"
+  PARENTRELATIVE -> 0x00000000 "notepad.exe"
+  PARENTRELATIVEFORUI -> 0x00000000 "notepad.exe"
+  GetDisplayName(bad 0x1234) -> 0x00000000
+  GetAttributes(mix) -> 0x00000001 attrs=0x40400000
+  GetAttributes(FILESYSTEM) -> 0x00000000 attrs=0x40000000
+  GetParent -> 0x00000000 parent_fs="C:\Windows"
+  Compare(same) -> 0x00000000 order=0
+  Compare(other) -> 0x00000001 order_sign=1
+trailing-slash SHCreateItemFromParsingName -> 0x00000000 item=set
+  trailing-slash answers: IUnknown IShellItem IShellItem2
+  NORMALDISPLAY -> 0x00000000 "Windows"
+  PARENTRELATIVEPARSING -> 0x00000000 "Windows"
+  DESKTOPABSOLUTEPARSING -> 0x00000000 "C:\Windows"
+  PARENTRELATIVEEDITING -> 0x00000000 "Windows"
+  DESKTOPABSOLUTEEDITING -> 0x00000000 "C:\Windows"
+  FILESYSPATH -> 0x00000000 "C:\Windows"
+  URL -> 0x00000000 "file:///C:/Windows"
+  PARENTRELATIVEFORADDRESSBAR -> 0x00000000 "Windows"
+  PARENTRELATIVE -> 0x00000000 "Windows"
+  PARENTRELATIVEFORUI -> 0x00000000 "Windows"
+  GetDisplayName(bad 0x1234) -> 0x00000000
+  GetAttributes(mix) -> 0x00000001 attrs=0xf0000000
+  GetAttributes(FILESYSTEM) -> 0x00000000 attrs=0x40000000
+  GetParent -> 0x00000000 parent_fs="C:\"
+  Compare(same) -> 0x00000000 order=0
+  Compare(other) -> 0x00000001 order_sign=-1
+missing SHCreateItemFromParsingName -> 0x80070002 item=NULL
+missing-dir SHCreateItemFromParsingName -> 0x80070002 item=NULL
+relative SHCreateItemFromParsingName -> 0x80070002 item=NULL
+empty SHCreateItemFromParsingName -> 0x00000000 item=set
+  empty answers: IUnknown IShellItem IShellItem2
+  NORMALDISPLAY -> 0x00000000 "This PC"
+  PARENTRELATIVEPARSING -> 0x00000000 "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+  DESKTOPABSOLUTEPARSING -> 0x00000000 "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+  PARENTRELATIVEEDITING -> 0x00000000 "This PC"
+  DESKTOPABSOLUTEEDITING -> 0x00000000 "This PC"
+  FILESYSPATH -> 0x80070057 
+  URL -> 0x80004001 
+  PARENTRELATIVEFORADDRESSBAR -> 0x00000000 "This PC"
+  PARENTRELATIVE -> 0x00000000 "This PC"
+  PARENTRELATIVEFORUI -> 0x00000000 "This PC"
+  GetDisplayName(bad 0x1234) -> 0x00000000
+  GetAttributes(mix) -> 0x00000001 attrs=0xb0000000
+  GetAttributes(FILESYSTEM) -> 0x00000001 attrs=0x00000000
+  GetParent -> 0x00000000 parent_fs="C:\Users\<user>\Desktop"
+  Compare(same) -> 0x00000000 order=0
+  Compare(other) -> 0x00000001 order_sign=-1
+done

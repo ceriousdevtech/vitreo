@@ -1,0 +1,42 @@
+msvcrt.dll initial-oshandle result=-2 errno=123 invalid=0
+msvcrt.dll zero-read result=0 errno=123 invalid=0
+msvcrt.dll read result=-1 errno=9 invalid=0
+msvcrt.dll null-read result=-1 errno=22 invalid=0
+msvcrt.dll dup result=3 errno=123 invalid=0
+msvcrt.dll copy-oshandle real=1 thread=1 inherit=1 errno=123 invalid=0
+msvcrt.dll copy-zero-read result=0 errno=123 invalid=0
+msvcrt.dll copy-read result=-1 errno=9 invalid=0
+msvcrt.dll copy-self result=0 errno=123 invalid=0
+msvcrt.dll copy-close result=0 errno=123 invalid=0
+msvcrt.dll dup-to-descriptor result=0 errno=123 invalid=0
+msvcrt.dll descriptor-oshandle real=1 thread=1 inherit=1 errno=123 invalid=0
+msvcrt.dll descriptor-close result=0 errno=123 invalid=0
+msvcrt.dll dup-to-standard result=0 errno=123 invalid=0
+msvcrt.dll standard-oshandle real=1 thread=1 inherit=1 errno=123 invalid=0
+msvcrt.dll dup-self result=0 errno=123 invalid=0
+msvcrt.dll close result=0 errno=123 invalid=0
+msvcrt.dll closed-zero-read result=-1 errno=9 invalid=0
+msvcrt.dll closed-oshandle result=-1 errno=9 invalid=0
+msvcrt.dll reused-fd=0
+msvcrt.dll dup-to-none result=0 errno=123 invalid=0
+ucrtbase.dll initial-oshandle result=-2 errno=123 invalid=0
+ucrtbase.dll zero-read result=0 errno=123 invalid=0
+ucrtbase.dll read result=-1 errno=9 invalid=0
+ucrtbase.dll null-read result=-1 errno=22 invalid=1
+ucrtbase.dll dup result=3 errno=123 invalid=0
+ucrtbase.dll copy-oshandle real=1 thread=1 inherit=1 errno=123 invalid=0
+ucrtbase.dll copy-zero-read result=0 errno=123 invalid=0
+ucrtbase.dll copy-read result=-1 errno=9 invalid=0
+ucrtbase.dll copy-self result=0 errno=123 invalid=0
+ucrtbase.dll copy-close result=0 errno=123 invalid=0
+ucrtbase.dll dup-to-descriptor result=0 errno=123 invalid=0
+ucrtbase.dll descriptor-oshandle real=1 thread=1 inherit=1 errno=123 invalid=0
+ucrtbase.dll descriptor-close result=0 errno=123 invalid=0
+ucrtbase.dll dup-to-standard result=0 errno=123 invalid=0
+ucrtbase.dll standard-oshandle real=1 thread=1 inherit=1 errno=123 invalid=0
+ucrtbase.dll dup-self result=0 errno=123 invalid=0
+ucrtbase.dll close result=0 errno=123 invalid=0
+ucrtbase.dll closed-zero-read result=-1 errno=9 invalid=1
+ucrtbase.dll closed-oshandle result=-1 errno=9 invalid=1
+ucrtbase.dll reused-fd=0
+ucrtbase.dll dup-to-none result=0 errno=123 invalid=0

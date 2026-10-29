@@ -1,0 +1,19 @@
+== x64
+msgboxw_bogus_owner ret=0 err=578
+msgboxw_bad_button_type ret=0 err=59e
+msgboxw_bad_icon ret=1 err=0
+msgboxw_ok ret=1 err=0
+msgboxw_okcancel ret=1 err=0
+msgboxw_yesno ret=6 err=0
+msgboxw_yesno_defbutton2 ret=7 err=0
+msgboxw_null_text_caption ret=1 err=0
+msgboxa_ok ret=1 err=0
+msgboxa_bogus_owner ret=0 err=578
+indirect_yesno ret=6 err=0
+indirect_yesno_defbutton2 ret=7 err=0
+indirect_okcancel ret=1 err=0
+indirect_bad_button_type ret=0 err=59e
+indirect_bogus_owner ret=0 err=578
+indirect_cbsize_zero ret=1 err=0
+indirect_cbsize_big ret=1 err=0
+done

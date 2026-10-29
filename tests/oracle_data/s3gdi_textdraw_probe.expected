@@ -1,0 +1,26 @@
+extent Hi=12x16
+opaque mono box=5,3,17,19 a=159 b=33 other=0 sample_other=00000000
+transparent mono box=6,6,16,16 a=0 b=33 other=0 sample_other=00000000
+transparent antialiased box=6,6,16,16 a=0 b=33 other=0 sample_other=00000000
+transparent default box=5,6,17,16 a=0 b=5 other=82 sample_other=007f6699
+align left|top at 40,20 box=40,20,52,36 a=159 b=33 other=0 sample_other=00000000
+align center|top at 40,20 box=34,20,46,36 a=159 b=33 other=0 sample_other=00000000
+align right|top at 40,20 box=28,20,40,36 a=159 b=33 other=0 sample_other=00000000
+align left|baseline at 40,20 box=40,7,52,23 a=159 b=33 other=0 sample_other=00000000
+align left|bottom at 40,20 box=40,4,52,20 a=159 b=33 other=0 sample_other=00000000
+updatecp from 10,4 box=10,4,22,20 a=159 b=33 other=0 sample_other=00000000
+updatecp after=22,4
+updatecp|right from 60,4 box=48,4,60,20 a=159 b=33 other=0 sample_other=00000000
+updatecp|right after=48,4
+exttextout dx 20,15 box=5,3,40,19 a=527 b=33 other=0 sample_other=00000000
+eto_opaque rect 2,2,30,12 box=2,2,30,19 a=331 b=33 other=0 sample_other=00000000
+eto_opaque no text box=2,2,30,12 a=280 b=0 other=0 sample_other=00000000
+eto_clipped box=5,3,17,12 a=87 b=21 other=0 sample_other=00000000
+eto_clipped|opaque box=2,2,30,12 a=259 b=21 other=0 sample_other=00000000
+eto_opaque transparent-mode box=2,2,30,16 a=259 b=33 other=0 sample_other=00000000
+underline transparent box=5,6,17,18 a=0 b=45 other=0 sample_other=00000000
+charextra 3 box=5,3,23,19 a=255 b=33 other=0 sample_other=00000000
+TextOutW(NULL)=0 err=57005
+TextOutW(c=0)=1 err=57005
+TextOutW(c=-1)=0 err=57005
+ExtTextOutW(NULL)=0 err=57005

@@ -1,0 +1,504 @@
+== x64
+GetCurrentProcess=ffffffffffffffff
+GetCurrentThread=fffffffffffffffe
+dup_thread_all_access ret=00000001 err=0000dead
+  dup_is_real ret=00000001 err=0000dead
+  GetThreadId_matches ret=00000001 err=0000dead
+  close ret=00000001 err=0000dead
+dup_thread_synchronize ret=00000001 err=0000dead
+  wait_self_0 ret=00000102 err=0000dead
+dup_thread_same_access ret=00000001 err=0000dead
+dup_process_all_access ret=00000001 err=0000dead
+  GetProcessId_matches ret=00000001 err=0000dead
+dup_null_target_close_source ret=00000001 err=0000dead
+  source_closed ret=00000000 err=00000006
+wfsoex_signaled_0_alertable ret=00000000 err=0000dead
+wfsoex_unsignaled_0_alertable ret=00000102 err=0000dead
+wfmoex_any_0_alertable ret=00000001 err=0000dead
+sleepex_0_alertable_no_apc ret=00000000 err=0000dead
+wfsoex_semaphore_0_alertable ret=00000000 err=0000dead
+  semaphore_consumed ret=00000102 err=0000dead
+wfsoex_signaled_0_alertable_apc_pending ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+sleepex_0_alertable_apc_pending ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+soaw_apc_pending ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+  to_signal_state ret=00000000 err=0000dead
+soaw_zero_timeout_signaled ret=00000000 err=0000dead
+  to_signal_state ret=00000000 err=0000dead
+-- sync_errors
+release_mutex_not_owner ret=00000000 err=00000120
+release_mutex_invalid ret=00000000 err=00000006
+release_mutex_null ret=00000000 err=00000006
+release_mutex_on_event ret=00000000 err=00000006
+reset_event_invalid ret=00000000 err=00000006
+reset_event_null ret=00000000 err=00000006
+reset_event_on_mutex ret=00000000 err=00000006
+set_event_on_mutex ret=00000000 err=00000006
+set_event_null ret=00000000 err=00000006
+pulse_event_invalid ret=00000000 err=00000006
+release_sem_over_max ret=00000000 err=0000012a
+  prev_untouched ret=00005555 err=0000dead
+  count_unchanged ret=00000000 err=0000dead
+release_sem_zero ret=00000000 err=00000057
+  prev_untouched ret=00005555 err=0000dead
+release_sem_negative ret=00000000 err=00000057
+release_sem_null ret=00000000 err=00000006
+release_sem_invalid ret=00000000 err=00000006
+release_sem_on_event ret=00000000 err=00000006
+release_sem_on_mutex ret=00000000 err=00000006
+  prev_untouched ret=00005555 err=0000dead
+soaw_mutex_not_owner ret=ffffffff err=00000120
+soaw_sem_over_max ret=ffffffff err=0000012a
+soaw_signal_thread ret=ffffffff err=00000006
+soaw_signal_invalid ret=ffffffff err=00000006
+soaw_signal_null ret=ffffffff err=00000006
+soaw_wait_invalid ret=ffffffff err=00000006
+  to_signal_state ret=00000102 err=0000dead
+soaw_wait_null ret=ffffffff err=00000006
+  to_signal_state ret=00000102 err=0000dead
+soaw_mutex_owned_wait_self ret=00000000 err=0000dead
+  release_1 ret=00000001 err=0000dead
+  release_2 ret=00000000 err=00000120
+soaw_sem_ok ret=ffffffff err=0000012a
+  sem_signaled ret=00000000 err=0000dead
+-- names_and_inheritance
+create_mutex_on_event_name ret=00000000 err=00000006
+create_mutex_on_sem_name ret=00000000 err=00000006
+create_mutex_on_timer_name ret=00000000 err=00000006
+create_sem_on_event_name ret=00000000 err=00000006
+create_sem_on_mutex_name ret=00000000 err=00000006
+create_event_on_mutex_name ret=00000000 err=00000006
+create_event_on_sem_name ret=00000000 err=00000006
+create_timer_on_mutex_name ret=00000000 err=00000006
+open_mutex_on_event_name ret=00000000 err=00000006
+open_sem_on_event_name ret=00000000 err=00000006
+open_event_on_mutex_name ret=00000000 err=00000006
+open_mutex_null_name ret=00000000 err=00000057
+open_sem_null_name ret=00000000 err=00000057
+open_event_null_name ret=00000000 err=00000057
+open_mutex_missing ret=00000000 err=00000002
+open_sem_missing ret=00000000 err=00000002
+create_mutex_existing_owned ret=00000001 err=000000b7
+  not_owner ret=00000000 err=00000120
+mutex_sa_inherit_flags ret=00000001 err=0000dead
+mutex_no_sa_flags ret=00000000 err=0000dead
+sem_sa_inherit_flags ret=00000001 err=0000dead
+event_sa_inherit_flags ret=00000001 err=0000dead
+mutex_existing_sa_inherit_flags ret=00000001 err=0000dead
+sem_existing_sa_inherit_flags ret=00000001 err=0000dead
+open_mutex_inherit_flags ret=00000001 err=0000dead
+open_mutex_noinherit_flags ret=00000000 err=0000dead
+open_sem_inherit_flags ret=00000001 err=0000dead
+open_event_inherit_flags ret=00000001 err=0000dead
+dup_pseudo_thread_inherit_flags ret=00000001 err=0000dead
+dup_pseudo_thread_sync_inherit_flags ret=00000001 err=0000dead
+-- access_rights
+set_event_sync_only ret=00000000 err=00000005
+reset_event_sync_only ret=00000000 err=00000005
+pulse_event_sync_only ret=00000000 err=00000005
+wait_event_sync_only ret=00000102 err=0000dead
+set_event_modify_only ret=00000001 err=0000dead
+wait_event_modify_only ret=ffffffff err=00000005
+wfmo_event_modify_only ret=ffffffff err=00000005
+reset_event_modify_only ret=00000001 err=0000dead
+wait_mutex_sync_only ret=00000000 err=0000dead
+release_mutex_sync_only ret=00000001 err=0000dead
+wait_mutex_modify_only ret=ffffffff err=00000005
+release_mutex_modify_only ret=00000001 err=0000dead
+release_sem_sync_only ret=00000000 err=00000005
+release_sem_modify_only ret=00000001 err=0000dead
+wait_sem_modify_only ret=ffffffff err=00000005
+dup_event_sync_only_set ret=00000000 err=00000005
+dup_event_modify_only_set ret=00000001 err=0000dead
+dup_event_modify_only_wait ret=ffffffff err=00000005
+dup_event_modify_only_soaw ret=ffffffff err=00000005
+wfmo_mixed_access ret=ffffffff err=00000005
+dup_sem_sync_only_release ret=00000000 err=00000005
+soaw_sem_sync_only ret=ffffffff err=00000005
+set_event_on_timer ret=00000000 err=00000006
+reset_event_on_timer ret=00000000 err=00000006
+pulse_event_on_timer ret=00000000 err=00000006
+release_mutex_on_timer ret=00000000 err=00000006
+-- abandoned_and_pseudo
+wfmo_all_abandoned_index1 ret=00000080 err=0000dead
+  owned_release ret=00000001 err=0000dead
+  second_wait_clean ret=00000000 err=0000dead
+wfmo_all_two_abandoned ret=00000080 err=0000dead
+wfmoex_all_abandoned_alertable ret=00000080 err=0000dead
+wfmo_any_abandoned_index1 ret=00000081 err=0000dead
+wfso_abandoned ret=00000080 err=0000dead
+soaw_wait_abandoned ret=00000080 err=0000dead
+wfso_pseudo_thread_0 ret=00000102 err=0000dead
+wfso_pseudo_process_30 ret=00000102 err=0000dead
+wfsoex_pseudo_thread_alertable_0 ret=00000102 err=0000dead
+wfsoex_pseudo_process_alertable_30 ret=00000102 err=0000dead
+wfmo_pseudo_any_0 ret=ffffffff err=00000006
+wfmoex_pseudo_any_alertable_0 ret=ffffffff err=00000006
+wfmo_pseudo_all_0 ret=ffffffff err=00000006
+wfmo_pseudo_any_signaled_1 ret=ffffffff err=00000006
+wfsoex_pseudo_thread_infinite_apc ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+wfmoex_pseudo_infinite_apc ret=ffffffff err=00000006
+  apc_ran ret=00000000 err=0000dead
+soaw_wait_pseudo_thread_0 ret=00000102 err=0000dead
+change_notification_created ret=00000001 err=0000dead
+wait_change_notification_0 ret=00000102 err=0000dead
+wfmo_change_notification_0 ret=00000102 err=0000dead
+wait_low_memory_notification_0 ret=00000102 err=0000dead
+-- critical_sections
+init dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000020007d0
+enter1 dbg=ffffffff lock=fffffffe rec=00000001 owner_is_me=1 owner_zero=0 sem_nonzero=0 spin=00000000020007d0
+enter2 dbg=ffffffff lock=fffffffe rec=00000002 owner_is_me=1 owner_zero=0 sem_nonzero=0 spin=00000000020007d0
+try_enter_recursive ret=00000001 err=0000dead
+enter3 dbg=ffffffff lock=fffffffe rec=00000003 owner_is_me=1 owner_zero=0 sem_nonzero=0 spin=00000000020007d0
+leave2 dbg=ffffffff lock=fffffffe rec=00000001 owner_is_me=1 owner_zero=0 sem_nonzero=0 spin=00000000020007d0
+waiter dbg=00000001 lock=fffffffa rec=00000001 owner_is_me=1 owner_zero=0 sem_nonzero=1
+after_waiter dbg=00000001 lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=1
+init_ex_no_debug_info ret=00000001 err=0000dead
+ex_nodebug dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000001000fa0
+init_ex_0 ret=00000001 err=0000dead
+ex_0 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+init_ex_reserved_flag ret=00000000 err=00000057
+init_ex_spin_high_bits ret=00000000 err=00000057
+init_ex_flag_in_spin ret=00000000 err=00000057
+init_ex_dynamic_spin_flag ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000020007d0
+init_ex_both_flags ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000030007d0
+init_ex_resource_type_flag ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000008000fa0
+init_ex_force_debug_flag ret=00000001 err=0000dead
+  state dbg=00000001 lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+init_ex_low_bit_flag ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+init_ex_zero_spin_nodebug ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000030007d0
+init_ex_zero_spin ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000020007d0
+init_ex_spin_1 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000001
+init_ex_spin_max ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000ffffff
+init_ex_static_init_flag ret=00000001 err=0000dead
+  untouched ret=00000001 err=0000dead
+init_spin_4000 ret=00000001 err=0000dead
+spin_4000 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+set_spin_prev ret=00000fa0 err=0000dead
+spin_100 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000064
+init_spin_0 ret=00000001 err=0000dead
+spin_0 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000020007d0
+set_spin_on_default ret=000007d0 err=0000dead
+default_then_100 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000002000064
+set_spin_flag_bits ret=00000064 err=0000dead
+then_flag_bits dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000002000010
+init_spin_high_bit ret=00000001 err=0000dead
+spin_high_bit dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+init_spin_flag_byte ret=00000001 err=0000dead
+spin_flag_byte dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+-- slists
+sizeof_header ret=00000010 err=0000dead
+seq_init depth_seq=0000000000000000
+seq_push depth_seq=0000000000020001
+seq_push depth_seq=0000000000040002
+seq_pop depth_seq=0000000000040001
+seq_pop depth_seq=0000000000040000
+seq_pop_empty depth_seq=0000000000040000
+seq_push depth_seq=0000000000060001
+seq_flush depth_seq=0000000000060000
+seq_flush_empty depth_seq=0000000000060000
+push_list_prev_null ret=00000001 err=0000dead
+seq_push_list depth_seq=0000000000080002
+  first_t0 ret=00000001 err=0000dead
+  end_links_null ret=00000001 err=0000dead
+depth_0 ret=00000000 err=0000dead
+push_1_prev_null ret=00000001 err=0000dead
+push_2_prev_e0 ret=00000001 err=0000dead
+push_3_prev_e1 ret=00000001 err=0000dead
+depth_3 ret=00000003 err=0000dead
+first_e2 ret=00000001 err=0000dead
+pop_e2 ret=00000001 err=0000dead
+depth_2 ret=00000002 err=0000dead
+x64_depth_seq_word ret=00060002 err=0000dead
+flush_e1 ret=00000001 err=0000dead
+  chain_e0 ret=00000001 err=0000dead
+  chain_end ret=00000001 err=0000dead
+depth_after_flush ret=00000000 err=0000dead
+pop_empty ret=00000001 err=0000dead
+flush_empty ret=00000001 err=0000dead
+-- handle_misc
+close_face_range ret=00000000 err=00000006
+close_ce_range ret=00000000 err=00000006
+close_cc_range ret=00000000 err=00000006
+close_bad ret=00000000 err=00000006
+close_ok ret=00000001 err=0000dead
+close_again ret=00000000 err=00000006
+snapshot_set_inherit ret=00000001 err=0000dead
+  flags ret=00000001 err=0000dead
+snapshot_set_protect ret=00000001 err=0000dead
+  flags ret=00000003 err=0000dead
+  close_protected ret=00000000 err=00000006
+  close_unprotected ret=00000001 err=0000dead
+iocp_set_inherit ret=00000001 err=0000dead
+  flags ret=00000001 err=0000dead
+  close ret=00000001 err=0000dead
+set_info_bad ret=00000000 err=00000006
+get_info_bad ret=00000000 err=00000006
+-- cross_process
+child_bits ret=0000007f err=00000000
+parent_sem_prev ret=00000003 err=0000dead
+parent_event_state ret=00000000 err=0000dead
+wfmo_bad_handles_pointer_child ret=c0000005 err=00000000
+== x86
+GetCurrentProcess=00000000ffffffff
+GetCurrentThread=00000000fffffffe
+dup_thread_all_access ret=00000001 err=0000dead
+  dup_is_real ret=00000001 err=0000dead
+  GetThreadId_matches ret=00000001 err=0000dead
+  close ret=00000001 err=0000dead
+dup_thread_synchronize ret=00000001 err=0000dead
+  wait_self_0 ret=00000102 err=0000dead
+dup_thread_same_access ret=00000001 err=0000dead
+dup_process_all_access ret=00000001 err=0000dead
+  GetProcessId_matches ret=00000001 err=0000dead
+dup_null_target_close_source ret=00000001 err=0000dead
+  source_closed ret=00000000 err=00000006
+wfsoex_signaled_0_alertable ret=00000000 err=0000dead
+wfsoex_unsignaled_0_alertable ret=00000102 err=0000dead
+wfmoex_any_0_alertable ret=00000001 err=0000dead
+sleepex_0_alertable_no_apc ret=00000000 err=0000dead
+wfsoex_semaphore_0_alertable ret=00000000 err=0000dead
+  semaphore_consumed ret=00000102 err=0000dead
+wfsoex_signaled_0_alertable_apc_pending ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+sleepex_0_alertable_apc_pending ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+soaw_apc_pending ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+  to_signal_state ret=00000000 err=0000dead
+soaw_zero_timeout_signaled ret=00000000 err=0000dead
+  to_signal_state ret=00000000 err=0000dead
+-- sync_errors
+release_mutex_not_owner ret=00000000 err=00000120
+release_mutex_invalid ret=00000000 err=00000006
+release_mutex_null ret=00000000 err=00000006
+release_mutex_on_event ret=00000000 err=00000006
+reset_event_invalid ret=00000000 err=00000006
+reset_event_null ret=00000000 err=00000006
+reset_event_on_mutex ret=00000000 err=00000006
+set_event_on_mutex ret=00000000 err=00000006
+set_event_null ret=00000000 err=00000006
+pulse_event_invalid ret=00000000 err=00000006
+release_sem_over_max ret=00000000 err=0000012a
+  prev_untouched ret=00005555 err=0000dead
+  count_unchanged ret=00000000 err=0000dead
+release_sem_zero ret=00000000 err=00000057
+  prev_untouched ret=00005555 err=0000dead
+release_sem_negative ret=00000000 err=00000057
+release_sem_null ret=00000000 err=00000006
+release_sem_invalid ret=00000000 err=00000006
+release_sem_on_event ret=00000000 err=00000006
+release_sem_on_mutex ret=00000000 err=00000006
+  prev_untouched ret=00005555 err=0000dead
+soaw_mutex_not_owner ret=ffffffff err=00000120
+soaw_sem_over_max ret=ffffffff err=0000012a
+soaw_signal_thread ret=ffffffff err=00000006
+soaw_signal_invalid ret=ffffffff err=00000006
+soaw_signal_null ret=ffffffff err=00000006
+soaw_wait_invalid ret=ffffffff err=00000006
+  to_signal_state ret=00000102 err=0000dead
+soaw_wait_null ret=ffffffff err=00000006
+  to_signal_state ret=00000102 err=0000dead
+soaw_mutex_owned_wait_self ret=00000000 err=0000dead
+  release_1 ret=00000001 err=0000dead
+  release_2 ret=00000000 err=00000120
+soaw_sem_ok ret=ffffffff err=0000012a
+  sem_signaled ret=00000000 err=0000dead
+-- names_and_inheritance
+create_mutex_on_event_name ret=00000000 err=00000006
+create_mutex_on_sem_name ret=00000000 err=00000006
+create_mutex_on_timer_name ret=00000000 err=00000006
+create_sem_on_event_name ret=00000000 err=00000006
+create_sem_on_mutex_name ret=00000000 err=00000006
+create_event_on_mutex_name ret=00000000 err=00000006
+create_event_on_sem_name ret=00000000 err=00000006
+create_timer_on_mutex_name ret=00000000 err=00000006
+open_mutex_on_event_name ret=00000000 err=00000006
+open_sem_on_event_name ret=00000000 err=00000006
+open_event_on_mutex_name ret=00000000 err=00000006
+open_mutex_null_name ret=00000000 err=00000057
+open_sem_null_name ret=00000000 err=00000057
+open_event_null_name ret=00000000 err=00000057
+open_mutex_missing ret=00000000 err=00000002
+open_sem_missing ret=00000000 err=00000002
+create_mutex_existing_owned ret=00000001 err=000000b7
+  not_owner ret=00000000 err=00000120
+mutex_sa_inherit_flags ret=00000001 err=0000dead
+mutex_no_sa_flags ret=00000000 err=0000dead
+sem_sa_inherit_flags ret=00000001 err=0000dead
+event_sa_inherit_flags ret=00000001 err=0000dead
+mutex_existing_sa_inherit_flags ret=00000001 err=0000dead
+sem_existing_sa_inherit_flags ret=00000001 err=0000dead
+open_mutex_inherit_flags ret=00000001 err=0000dead
+open_mutex_noinherit_flags ret=00000000 err=0000dead
+open_sem_inherit_flags ret=00000001 err=0000dead
+open_event_inherit_flags ret=00000001 err=0000dead
+dup_pseudo_thread_inherit_flags ret=00000001 err=0000dead
+dup_pseudo_thread_sync_inherit_flags ret=00000001 err=0000dead
+-- access_rights
+set_event_sync_only ret=00000000 err=00000005
+reset_event_sync_only ret=00000000 err=00000005
+pulse_event_sync_only ret=00000000 err=00000005
+wait_event_sync_only ret=00000102 err=0000dead
+set_event_modify_only ret=00000001 err=0000dead
+wait_event_modify_only ret=ffffffff err=00000005
+wfmo_event_modify_only ret=ffffffff err=00000005
+reset_event_modify_only ret=00000001 err=0000dead
+wait_mutex_sync_only ret=00000000 err=0000dead
+release_mutex_sync_only ret=00000001 err=0000dead
+wait_mutex_modify_only ret=ffffffff err=00000005
+release_mutex_modify_only ret=00000001 err=0000dead
+release_sem_sync_only ret=00000000 err=00000005
+release_sem_modify_only ret=00000001 err=0000dead
+wait_sem_modify_only ret=ffffffff err=00000005
+dup_event_sync_only_set ret=00000000 err=00000005
+dup_event_modify_only_set ret=00000001 err=0000dead
+dup_event_modify_only_wait ret=ffffffff err=00000005
+dup_event_modify_only_soaw ret=ffffffff err=00000005
+wfmo_mixed_access ret=ffffffff err=00000005
+dup_sem_sync_only_release ret=00000000 err=00000005
+soaw_sem_sync_only ret=ffffffff err=00000005
+set_event_on_timer ret=00000000 err=00000006
+reset_event_on_timer ret=00000000 err=00000006
+pulse_event_on_timer ret=00000000 err=00000006
+release_mutex_on_timer ret=00000000 err=00000006
+-- abandoned_and_pseudo
+wfmo_all_abandoned_index1 ret=00000080 err=0000dead
+  owned_release ret=00000001 err=0000dead
+  second_wait_clean ret=00000000 err=0000dead
+wfmo_all_two_abandoned ret=00000080 err=0000dead
+wfmoex_all_abandoned_alertable ret=00000080 err=0000dead
+wfmo_any_abandoned_index1 ret=00000081 err=0000dead
+wfso_abandoned ret=00000080 err=0000dead
+soaw_wait_abandoned ret=00000080 err=0000dead
+wfso_pseudo_thread_0 ret=00000102 err=0000dead
+wfso_pseudo_process_30 ret=00000102 err=0000dead
+wfsoex_pseudo_thread_alertable_0 ret=00000102 err=0000dead
+wfsoex_pseudo_process_alertable_30 ret=00000102 err=0000dead
+wfmo_pseudo_any_0 ret=ffffffff err=00000006
+wfmoex_pseudo_any_alertable_0 ret=ffffffff err=00000006
+wfmo_pseudo_all_0 ret=ffffffff err=00000006
+wfmo_pseudo_any_signaled_1 ret=ffffffff err=00000006
+wfsoex_pseudo_thread_infinite_apc ret=000000c0 err=0000dead
+  apc_ran ret=00000001 err=0000dead
+wfmoex_pseudo_infinite_apc ret=ffffffff err=00000006
+  apc_ran ret=00000000 err=0000dead
+soaw_wait_pseudo_thread_0 ret=00000102 err=0000dead
+change_notification_created ret=00000001 err=0000dead
+wait_change_notification_0 ret=00000102 err=0000dead
+wfmo_change_notification_0 ret=00000102 err=0000dead
+wait_low_memory_notification_0 ret=00000102 err=0000dead
+-- critical_sections
+init dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000020007d0
+enter1 dbg=ffffffff lock=fffffffe rec=00000001 owner_is_me=1 owner_zero=0 sem_nonzero=0 spin=00000000020007d0
+enter2 dbg=ffffffff lock=fffffffe rec=00000002 owner_is_me=1 owner_zero=0 sem_nonzero=0 spin=00000000020007d0
+try_enter_recursive ret=00000001 err=0000dead
+enter3 dbg=ffffffff lock=fffffffe rec=00000003 owner_is_me=1 owner_zero=0 sem_nonzero=0 spin=00000000020007d0
+leave2 dbg=ffffffff lock=fffffffe rec=00000001 owner_is_me=1 owner_zero=0 sem_nonzero=0 spin=00000000020007d0
+waiter dbg=00000001 lock=fffffffa rec=00000001 owner_is_me=1 owner_zero=0 sem_nonzero=1
+after_waiter dbg=00000001 lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=1
+init_ex_no_debug_info ret=00000001 err=0000dead
+ex_nodebug dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000001000fa0
+init_ex_0 ret=00000001 err=0000dead
+ex_0 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+init_ex_reserved_flag ret=00000000 err=00000057
+init_ex_spin_high_bits ret=00000000 err=00000057
+init_ex_flag_in_spin ret=00000000 err=00000057
+init_ex_dynamic_spin_flag ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000020007d0
+init_ex_both_flags ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000030007d0
+init_ex_resource_type_flag ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000008000fa0
+init_ex_force_debug_flag ret=00000001 err=0000dead
+  state dbg=00000001 lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+init_ex_low_bit_flag ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+init_ex_zero_spin_nodebug ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000030007d0
+init_ex_zero_spin ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000020007d0
+init_ex_spin_1 ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000001
+init_ex_spin_max ret=00000001 err=0000dead
+  state dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000ffffff
+init_ex_static_init_flag ret=00000001 err=0000dead
+  untouched ret=00000001 err=0000dead
+init_spin_4000 ret=00000001 err=0000dead
+spin_4000 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+set_spin_prev ret=00000fa0 err=0000dead
+spin_100 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000064
+init_spin_0 ret=00000001 err=0000dead
+spin_0 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=00000000020007d0
+set_spin_on_default ret=000007d0 err=0000dead
+default_then_100 dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000002000064
+set_spin_flag_bits ret=00000064 err=0000dead
+then_flag_bits dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000002000010
+init_spin_high_bit ret=00000001 err=0000dead
+spin_high_bit dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+init_spin_flag_byte ret=00000001 err=0000dead
+spin_flag_byte dbg=ffffffff lock=ffffffff rec=00000000 owner_is_me=0 owner_zero=1 sem_nonzero=0 spin=0000000000000fa0
+-- slists
+sizeof_header ret=00000008 err=0000dead
+seq_init depth_seq=00000000
+seq_push depth_seq=00000001
+seq_push depth_seq=00000002
+seq_pop depth_seq=00000001
+seq_pop depth_seq=00000000
+seq_pop_empty depth_seq=00000000
+seq_push depth_seq=00000001
+seq_flush depth_seq=00000000
+seq_flush_empty depth_seq=00000000
+push_list_prev_null ret=00000001 err=0000dead
+seq_push_list depth_seq=00000002
+  first_t0 ret=00000001 err=0000dead
+  end_links_null ret=00000001 err=0000dead
+depth_0 ret=00000000 err=0000dead
+push_1_prev_null ret=00000001 err=0000dead
+push_2_prev_e0 ret=00000001 err=0000dead
+push_3_prev_e1 ret=00000001 err=0000dead
+depth_3 ret=00000003 err=0000dead
+first_e2 ret=00000001 err=0000dead
+pop_e2 ret=00000001 err=0000dead
+depth_2 ret=00000002 err=0000dead
+x86_depth_seq_dword ret=00000002 err=0000dead
+flush_e1 ret=00000001 err=0000dead
+  chain_e0 ret=00000001 err=0000dead
+  chain_end ret=00000001 err=0000dead
+depth_after_flush ret=00000000 err=0000dead
+pop_empty ret=00000001 err=0000dead
+flush_empty ret=00000001 err=0000dead
+-- handle_misc
+close_face_range ret=00000000 err=00000006
+close_ce_range ret=00000000 err=00000006
+close_cc_range ret=00000000 err=00000006
+close_bad ret=00000000 err=00000006
+close_ok ret=00000001 err=0000dead
+close_again ret=00000000 err=00000006
+snapshot_set_inherit ret=00000001 err=0000dead
+  flags ret=00000001 err=0000dead
+snapshot_set_protect ret=00000001 err=0000dead
+  flags ret=00000003 err=0000dead
+  close_protected ret=00000000 err=00000006
+  close_unprotected ret=00000001 err=0000dead
+iocp_set_inherit ret=00000001 err=0000dead
+  flags ret=00000001 err=0000dead
+  close ret=00000001 err=0000dead
+set_info_bad ret=00000000 err=00000006
+get_info_bad ret=00000000 err=00000006
+-- cross_process
+child_bits ret=0000007f err=00000000
+parent_sem_prev ret=00000003 err=0000dead
+parent_event_state ret=00000000 err=0000dead
+wfmo_bad_handles_pointer_child ret=c0000005 err=00000000

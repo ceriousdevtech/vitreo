@@ -1,0 +1,4 @@
+device ok, feature level 0xb000
+iterations=300 stale_full=0 stale_offset=0 stale_late=0 first_bad=0
+append: iterations=300 bad_count=0 bad_list=0 first_bad=0 (count=0)
+discard-upload: rounds=20 rounds_bad=0 rows_bad=0

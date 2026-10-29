@@ -1,0 +1,252 @@
+=== vitreo_64.msi (x64 msi.dll)
+open 0
+table-Z row0 [1]#|a
+table-Z row1 [1]#|b
+table-Z row2 [1]#|c
+table-Z rows=3
+table-Z names rc=0 [1]~|N
+table-Z types rc=0 [1]~|s10
+table-W row0 [1]#|c
+table-W row1 [1]#|m
+table-W row2 [1]#|k
+table-W rows=3
+table-W names rc=0 [1]~|N
+table-W types rc=0 [1]~|s10
+table-T row0 [6]#|a|sa|~|-32767|2147483647|~
+table-T row1 [6]#|c|sc|lc|3|-3|~
+table-T row2 [6]#|d|~|~|~|9|<s5>
+table-T rows=3
+table-T names rc=0 [6]~|K|S|L|I2|I4|B
+table-T types rc=0 [6]~|s72|S0|L0|I2|i4|V0
+stream [2]#|T.d|<s5>
+reopen-transact 0
+create open=0 exec=0
+insert open=0 exec=0
+commit 0
+winadded row [1]#|win
+winadded end=259 rows=1
+=== vitreo_64.msi (x86 msi.dll)
+open 0
+table-Z row0 [1]#|a
+table-Z row1 [1]#|b
+table-Z row2 [1]#|c
+table-Z rows=3
+table-Z names rc=0 [1]~|N
+table-Z types rc=0 [1]~|s10
+table-W row0 [1]#|c
+table-W row1 [1]#|m
+table-W row2 [1]#|k
+table-W rows=3
+table-W names rc=0 [1]~|N
+table-W types rc=0 [1]~|s10
+table-T row0 [6]#|a|sa|~|-32767|2147483647|~
+table-T row1 [6]#|c|sc|lc|3|-3|~
+table-T row2 [6]#|d|~|~|~|9|<s5>
+table-T rows=3
+table-T names rc=0 [6]~|K|S|L|I2|I4|B
+table-T types rc=0 [6]~|s72|S0|L0|I2|i4|V0
+stream [2]#|T.d|<s5>
+reopen-transact 0
+create open=0 exec=0
+insert open=0 exec=0
+commit 0
+winadded row [1]#|win
+winadded end=259 rows=1
+=== vitreo_64.msi (COM)
+com Z 3
+com W 3
+com T 3
+com summary-count 0
+=== vitreo_32.msi (x64 msi.dll)
+open 0
+table-Z row0 [1]#|a
+table-Z row1 [1]#|b
+table-Z row2 [1]#|c
+table-Z rows=3
+table-Z names rc=0 [1]~|N
+table-Z types rc=0 [1]~|s10
+table-W row0 [1]#|c
+table-W row1 [1]#|m
+table-W row2 [1]#|k
+table-W rows=3
+table-W names rc=0 [1]~|N
+table-W types rc=0 [1]~|s10
+table-T row0 [6]#|a|sa|~|-32767|2147483647|~
+table-T row1 [6]#|c|sc|lc|3|-3|~
+table-T row2 [6]#|d|~|~|~|9|<s5>
+table-T rows=3
+table-T names rc=0 [6]~|K|S|L|I2|I4|B
+table-T types rc=0 [6]~|s72|S0|L0|I2|i4|V0
+stream [2]#|T.d|<s5>
+reopen-transact 0
+create open=0 exec=0
+insert open=0 exec=0
+commit 0
+winadded row [1]#|win
+winadded end=259 rows=1
+=== vitreo_32.msi (x86 msi.dll)
+open 0
+table-Z row0 [1]#|a
+table-Z row1 [1]#|b
+table-Z row2 [1]#|c
+table-Z rows=3
+table-Z names rc=0 [1]~|N
+table-Z types rc=0 [1]~|s10
+table-W row0 [1]#|c
+table-W row1 [1]#|m
+table-W row2 [1]#|k
+table-W rows=3
+table-W names rc=0 [1]~|N
+table-W types rc=0 [1]~|s10
+table-T row0 [6]#|a|sa|~|-32767|2147483647|~
+table-T row1 [6]#|c|sc|lc|3|-3|~
+table-T row2 [6]#|d|~|~|~|9|<s5>
+table-T rows=3
+table-T names rc=0 [6]~|K|S|L|I2|I4|B
+table-T types rc=0 [6]~|s72|S0|L0|I2|i4|V0
+stream [2]#|T.d|<s5>
+reopen-transact 0
+create open=0 exec=0
+insert open=0 exec=0
+commit 0
+winadded row [1]#|win
+winadded end=259 rows=1
+=== vitreo_32.msi (COM)
+com Z 3
+com W 3
+com T 3
+com summary-count 0
+=== vitreo_big64.msi (x64 msi.dll)
+open 0
+table-S row0 [1]#|k00000
+table-S row1 [1]#|k00001
+table-S row2 [1]#|k00002
+table-S row9999 [1]#|k09999
+table-S row19999 [1]#|k19999
+table-S row29999 [1]#|k29999
+table-S row39999 [1]#|k39999
+table-S row49999 [1]#|k49999
+table-S row59999 [1]#|k59999
+table-S row69999 [1]#|k69999
+table-S rows=70000
+table-S names rc=0 [1]~|K
+table-S types rc=0 [1]~|s16
+table-Bin row0 [3]#|zz_bin|<s3>|7
+table-Bin rows=1
+table-Bin names rc=0 [3]~|Name|Data|N
+table-Bin types rc=0 [3]~|s16|V0|I2
+table-L row0 [2]#|long|<rc234>
+table-L rows=1
+table-L names rc=0 [2]~|K|V
+table-L types rc=0 [2]~|s4|S0
+stream [2]#|Huge|<s10485760>
+stream [2]#|Bin.zz_bin|<s3>
+reopen-transact 0
+create open=0 exec=0
+insert open=0 exec=0
+commit 0
+winadded row [1]#|win
+winadded end=259 rows=1
+=== vitreo_big64.msi (x86 msi.dll)
+open 0
+table-S row0 [1]#|k00000
+table-S row1 [1]#|k00001
+table-S row2 [1]#|k00002
+table-S row9999 [1]#|k09999
+table-S row19999 [1]#|k19999
+table-S row29999 [1]#|k29999
+table-S row39999 [1]#|k39999
+table-S row49999 [1]#|k49999
+table-S row59999 [1]#|k59999
+table-S row69999 [1]#|k69999
+table-S rows=70000
+table-S names rc=0 [1]~|K
+table-S types rc=0 [1]~|s16
+table-Bin row0 [3]#|zz_bin|<s3>|7
+table-Bin rows=1
+table-Bin names rc=0 [3]~|Name|Data|N
+table-Bin types rc=0 [3]~|s16|V0|I2
+table-L row0 [2]#|long|<rc234>
+table-L rows=1
+table-L names rc=0 [2]~|K|V
+table-L types rc=0 [2]~|s4|S0
+stream [2]#|Huge|<s10485760>
+stream [2]#|Bin.zz_bin|<s3>
+reopen-transact 0
+create open=0 exec=0
+insert open=0 exec=0
+commit 0
+winadded row [1]#|win
+winadded end=259 rows=1
+=== vitreo_big64.msi (COM)
+com S 70000
+com Bin 1
+com L 1
+com summary-count 0
+=== vitreo_big32.msi (x64 msi.dll)
+open 0
+table-S row0 [1]#|k00000
+table-S row1 [1]#|k00001
+table-S row2 [1]#|k00002
+table-S row9999 [1]#|k09999
+table-S row19999 [1]#|k19999
+table-S row29999 [1]#|k29999
+table-S row39999 [1]#|k39999
+table-S row49999 [1]#|k49999
+table-S row59999 [1]#|k59999
+table-S row69999 [1]#|k69999
+table-S rows=70000
+table-S names rc=0 [1]~|K
+table-S types rc=0 [1]~|s16
+table-Bin row0 [3]#|zz_bin|<s3>|7
+table-Bin rows=1
+table-Bin names rc=0 [3]~|Name|Data|N
+table-Bin types rc=0 [3]~|s16|V0|I2
+table-L row0 [2]#|long|<rc234>
+table-L rows=1
+table-L names rc=0 [2]~|K|V
+table-L types rc=0 [2]~|s4|S0
+stream [2]#|Huge|<s10485760>
+stream [2]#|Bin.zz_bin|<s3>
+reopen-transact 0
+create open=0 exec=0
+insert open=0 exec=0
+commit 0
+winadded row [1]#|win
+winadded end=259 rows=1
+=== vitreo_big32.msi (x86 msi.dll)
+open 0
+table-S row0 [1]#|k00000
+table-S row1 [1]#|k00001
+table-S row2 [1]#|k00002
+table-S row9999 [1]#|k09999
+table-S row19999 [1]#|k19999
+table-S row29999 [1]#|k29999
+table-S row39999 [1]#|k39999
+table-S row49999 [1]#|k49999
+table-S row59999 [1]#|k59999
+table-S row69999 [1]#|k69999
+table-S rows=70000
+table-S names rc=0 [1]~|K
+table-S types rc=0 [1]~|s16
+table-Bin row0 [3]#|zz_bin|<s3>|7
+table-Bin rows=1
+table-Bin names rc=0 [3]~|Name|Data|N
+table-Bin types rc=0 [3]~|s16|V0|I2
+table-L row0 [2]#|long|<rc234>
+table-L rows=1
+table-L names rc=0 [2]~|K|V
+table-L types rc=0 [2]~|s4|S0
+stream [2]#|Huge|<s10485760>
+stream [2]#|Bin.zz_bin|<s3>
+reopen-transact 0
+create open=0 exec=0
+insert open=0 exec=0
+commit 0
+winadded row [1]#|win
+winadded end=259 rows=1
+=== vitreo_big32.msi (COM)
+com S 70000
+com Bin 1
+com L 1
+com summary-count 0

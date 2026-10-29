@@ -1,0 +1,101 @@
+Action ended: LaunchConditions. Return value 0.
+PROPERTY CHANGE: Adding NEWERFOUND property. Its value is '{7F843F90-4A97-4F2D-997E-8F4F9A245EC0}'.
+Action ended: FindRelatedProducts. Return value 1.
+Action ended: ValidateProductID. Return value 1.
+Action ended: CostInitialize. Return value 1.
+Action ended: FileCost. Return value 1.
+Action ended: CostFinalize. Return value 1.
+Action ended: MigrateFeatureStates. Return value 0.
+Action ended: InstallValidate. Return value 1.
+Doing action: RemoveExistingProducts
+Action ended: InstallInitialize. Return value 1.
+Action start: RemoveExistingProducts.
+Action ended: RemoveExistingProducts. Return value 1.
+Action ended: ProcessComponents. Return value 1.
+Action ended: UnpublishComponents. Return value 1.
+Action ended: UnpublishFeatures. Return value 1.
+Action ended: RemoveRegistryValues. Return value 1.
+Action ended: UnregisterClassInfo. Return value 1.
+Action ended: UnregisterExtensionInfo. Return value 1.
+Action ended: UnregisterProgIdInfo. Return value 1.
+Action ended: UnregisterMIMEInfo. Return value 1.
+Action ended: RemoveShortcuts. Return value 1.
+Action ended: RemoveFiles. Return value 0.
+Action ended: RemoveFolders. Return value 1.
+Action ended: CreateFolders. Return value 1.
+Action ended: InstallFiles. Return value 1.
+Action ended: CreateShortcuts. Return value 1.
+Action ended: RegisterClassInfo. Return value 1.
+Action ended: RegisterExtensionInfo. Return value 1.
+Action ended: RegisterProgIdInfo. Return value 1.
+Action ended: RegisterMIMEInfo. Return value 1.
+Action ended: WriteRegistryValues. Return value 1.
+Action ended: RegisterUser. Return value 1.
+PROPERTY CHANGE: Adding ProductToBeRegistered property. Its value is '1'.
+Action ended: RegisterProduct. Return value 1.
+Action ended: PublishComponents. Return value 1.
+Action ended: PublishFeatures. Return value 1.
+Action ended: PublishProduct. Return value 1.
+Executing op: Header(Signature=1397708873,Version=500,Timestamp=1566290636,LangId=1033,Platform=0,ScriptType=1,ScriptMajorVersion=21,ScriptMinorVersion=4,ScriptAttributes=1)
+Executing op: ProductInfo(ProductKey={EA844198-B6C8-4E38-9ABA-6BA7E226E338},ProductName=Vitreo Registration Probe,PackageName=rp.msi,Language=1033,Version=16908291,Assignment=1,ObsoleteArg=0,,,PackageCode={626981AD-DB11-4521-AE67-15B9B8C2A693},,,InstanceType=0,LUASetting=0,RemoteURTInstalls=0,ProductDeploymentFlags=3)
+Executing op: DialogInfo(Type=0,Argument=1033)
+Executing op: DialogInfo(Type=1,Argument=Vitreo Registration Probe)
+Executing op: RollbackInfo(,RollbackAction=Rollback,RollbackDescription=Rolling back action: [1],,CleanupAction=RollbackCleanup,CleanupDescription=Removing backup files File: [1],)
+Executing op: SetBaseline(Baseline=0,)
+Executing op: SetBaseline(Baseline=1,)
+Executing op: ActionStart(Name=ProcessComponents,Description=Updating component registration,)
+Executing op: ProgressTotal(Total=1,Type=1,ByteEquivalent=24000)
+Executing op: UnregisterSharedComponentProvider(Component={D2A4D7FF-8734-4D25-83DD-61AB15B73F07},ProductCode={EA844198-B6C8-4E38-9ABA-6BA7E226E338})
+Executing op: ComponentUnregister(ComponentId={D2A4D7FF-8734-4D25-83DD-61AB15B73F07},,BinaryType=0,PreviouslyPinned=1)
+Executing op: ProgressTotal(Total=3,Type=1,ByteEquivalent=24000)
+Executing op: ComponentRegister(ComponentId={E5371B0F-C703-4264-9D9A-800DEA3AE7AD},KeyPath=C:\Program Files (x86)\VitreoRP\main.dll,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=0)
+Executing op: ComponentRegister(ComponentId={A2DD1F8C-F078-4E15-AB6A-DF2C1DC67078},KeyPath=02:\Software\VitreoRegProbe\Installed,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=0)
+Executing op: ComponentRegister(ComponentId={BD02CD4F-7A91-4B7F-A41F-3D8F6DFEF98C},KeyPath=C:\Program Files (x86)\VitreoRP\data\,State=3,,Disk=1,SharedDllRefCount=0,BinaryType=0)
+Executing op: ActionStart(Name=CreateFolders,Description=Creating folders Folder: [1],)
+Executing op: FolderCreate(Folder=C:\Program Files (x86)\VitreoRP\data\,Foreign=0,,)
+Executing op: ActionStart(Name=InstallFiles,Description=Copying new files File: [1],  Directory: [9],  Size: [6],)
+Executing op: ProgressTotal(Total=35,Type=0,ByteEquivalent=1)
+Executing op: SetTargetFolder(Folder=C:\Program Files (x86)\VitreoRP\)
+Executing op: SetSourceFolder(Folder=1\PFiles\VitreoRP\)
+Executing op: ChangeMedia(MediaVolumeLabel=PROBE1,MediaPrompt=Please insert the disk: ,,BytesPerTick=65536,CopierType=0,,,,,,IsFirstPhysicalMedia=1)
+Executing op: FileCopy(SourceName=main.dll,SourceCabKey=FileMain,DestName=main.dll,Attributes=0,FileSize=35,PerTick=65536,,VerifyMedia=1,,,,,CheckCRC=0,,,InstallMode=58982400,,,,,,,)
+Executing op: CacheSizeFlush(,)
+Executing op: ActionStart(Name=CreateShortcuts,Description=Creating shortcuts Shortcut: [1],)
+Executing op: SetTargetFolder(Folder=23\VitreoRP\)
+Executing op: ShortcutCreate(Name=Probe|Vitreo Probe,,,FileName=C:\Program Files (x86)\VitreoRP\main.dll,Arguments=/probe,WorkingDir=C:\Program Files (x86)\VitreoRP\,,,,,Description=probe shortcut,,,,)
+Executing op: ActionStart(Name=RegisterClassInfo,Description=Registering Class servers Class Id: [1],)
+Executing op: RegClassInfoRegister(Feature=FeatMain,Component={E5371B0F-C703-4264-9D9A-800DEA3AE7AD}[~]1,FileName=C:\Program Files (x86)\VitreoRP\main.dll,ClsId={499C6982-7157-444B-B54D-23419DCF7EAB},ProgId=Vitreo.Probe.1,VIProgId=Vitreo.Probe,Description=Vitreo Probe Class,Context=InprocServer32,,,,,,,,,,)
+Executing op: ActionStart(Name=RegisterExtensionInfo,Description=Registering extension servers Extension: [1],)
+Executing op: RegExtensionInfoRegister(Feature=FeatMain,Component={E5371B0F-C703-4264-9D9A-800DEA3AE7AD}[~]1,FileName=C:\Program Files (x86)\VitreoRP\main.dll,Extension=vrp,ProgId=Vitreo.Probe.1,,,ContentType=application/x-vitreo-probe,Order=1)
+Executing op: ActionStart(Name=RegisterProgIdInfo,Description=Registering program identifiers ProgId: [1],)
+Executing op: RegProgIdInfoRegister(ProgId=Vitreo.Probe.1,ClsId={499C6982-7157-444B-B54D-23419DCF7EAB},Extension=vrp,Description=Vitreo Probe Object,,,VIProgId=Vitreo.Probe,VIProgIdDescription=Vitreo Probe Object (VI),,)
+Executing op: ActionStart(Name=RegisterMIMEInfo,Description=Registering MIME info MIME Content Type: [1], Extension: [2],)
+Executing op: RegMIMEInfoRegister(ContentType=application/x-vitreo-probe,Extension=vrp,ClsId={499C6982-7157-444B-B54D-23419DCF7EAB},)
+Executing op: ActionStart(Name=WriteRegistryValues,Description=Writing system registry values Key: [1], Name: [2], Value: [3],)
+Executing op: ProgressTotal(Total=1,Type=1,ByteEquivalent=13200)
+Executing op: RegOpenKey(Root=-1,Key=Software\VitreoRegProbe,,BinaryType=0,,)
+Executing op: RegAddValue(Name=Installed,Value=#1,)
+Executing op: ActionStart(Name=RegisterProduct,Description=Registering product [1],)
+Executing op: ChangeMedia(MediaVolumeLabel=PROBE1,MediaPrompt=Please insert the disk: ,,BytesPerTick=0,CopierType=0,,,,,,IsFirstPhysicalMedia=1)
+Executing op: DatabaseCopy(DatabasePath=C:\WINDOWS\Installer\17b3ebae.msi,ProductCode={EA844198-B6C8-4E38-9ABA-6BA7E226E338},,,)
+Executing op: ProductRegister(UpgradeCode={665B9F8B-95FD-4EE0-9518-7A88AB659F5F},VersionString=1.2.3,HelpLink=https://example.invalid/help,HelpTelephone=555-0100,,InstallSource=C:\Users\Owner\msireg\x86v1\,Publisher=Vitreo Probe Authors,URLInfoAbout=https://example.invalid/about,URLUpdateInfo=https://example.invalid/update,,,NoRepair=1,,Comments=probe comments,Contact=probe contact,Readme=readme.txt,Size=7,,EstimatedSize=35,,,,)
+Executing op: ProductCPDisplayInfoRegister()
+Executing op: ActionStart(Name=PublishComponents,Description=Publishing Qualified Components Component ID: [1], Qualifier: [2],)
+Executing op: ComponentPublish(Feature=FeatMain,Component={E5371B0F-C703-4264-9D9A-800DEA3AE7AD}[~]1,ComponentId={C318B68A-7537-474E-800A-9A7790816101},Qualifier=probe-qualifier,AppData=probe appdata)
+Executing op: ActionStart(Name=PublishFeatures,Description=Publishing Product Features Feature: [1],)
+Executing op: FeaturePublish(Feature=FeatMain,,Absent=2,Component=p-varD-mD9CvrD'4jpt`)
+Executing op: FeaturePublish(Feature=FeatSub,Parent=FeatMain,Absent=2,Component=Tw9E]J?6+AJ6sK2JaAeN)
+Executing op: FeaturePublish(Feature=FeatData,,Absent=2,Component=ZNXheT?T=@dZ-&VqOCBU)
+Executing op: FeaturePublish(Feature=FeatAbsent,,Absent=3,Component=xSWdlVXWl@Ap{)`7c%D%)
+Executing op: FeaturePublish(Feature=FeatAbsentChild,Parent=FeatMain,Absent=3,)
+Executing op: ActionStart(Name=PublishProduct,Description=Publishing product information,)
+Executing op: CleanupConfigData()
+Executing op: RegisterPatchOrder(Continue=0,SequenceType=1,Remove=0)
+Executing op: ProductPublish(PackageKey={626981AD-DB11-4521-AE67-15B9B8C2A693})
+Executing op: UpgradeCodePublish(UpgradeCode={665B9F8B-95FD-4EE0-9518-7A88AB659F5F})
+Executing op: SourceListPublish(,,,,NumberOfDisks=1)
+Executing op: ProductPublishClient(,,)
+Executing op: SourceListRegisterLastUsed(SourceProduct={EA844198-B6C8-4E38-9ABA-6BA7E226E338},LastUsedSource=C:\Users\Owner\msireg\x86v1\)
+Executing op: End(Checksum=0,ProgressTotalHDWord=0,ProgressTotalLDWord=133811)
+Action ended: InstallFinalize. Return value 1.
+Action ended: INSTALL. Return value 1.

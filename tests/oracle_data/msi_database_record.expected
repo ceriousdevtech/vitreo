@@ -1,0 +1,160 @@
+create0 handle
+create65535 handle
+create65536 0
+isnull-new 1 1 1
+isnull-bad 0
+datasize-null 0
+datasize-bad 0
+setstr 0
+setstr-empty 0 isnull=1
+setstr-out 87
+setstr-bad 6
+datasize-str 5
+setint 0
+datasize-int 4
+isnull-int 0
+w-int rc=0 cch=3 buf=002d.0034.0032.0000.0023.0023.0023.0023.
+w-exact rc=0 cch=5 buf=0068.0065.006c.006c.006f.0000.0023.0023.
+w-short rc=234 cch=5 buf=0068.0065.006c.006c.0000.0023.0023.0023.
+w-one rc=234 cch=5 buf=0000.0023.0023.0023.0023.0023.0023.0023.
+w-zero rc=234 cch=5 buf=0023.0023.0023.0023.0023.0023.0023.0023.
+w-nullbuf rc=0 cch=5 buf=
+w-nullbuf-cap rc=0 cch=5 buf=
+w-null-field rc=0 cch=0 buf=0000.0023.0023.0023.0023.0023.0023.0023.
+w-out-field rc=0 cch=0 buf=0000.0023.0023.0023.0023.0023.0023.0023.
+w-nullpcch rc=87
+w-buf-nullpcch rc=87
+a-exact rc=0 cch=5 buf=68.65.6c.6c.6f.00.23.23.
+a-short rc=234 cch=5 buf=68.65.6c.6c.00.23.23.23.
+a-nullbuf rc=0 cch=5 buf=
+a-nonascii rc=0 cch=2 buf=e9.3f.00.23.23.23.23.23.
+w-nonascii rc=0 cch=2 buf=00e9.4e2d.0000.0023.0023.0023.0023.0023.
+datasize-nonascii 2
+seta 0
+w-from-a rc=0 cch=2 buf=00e9.0078.0000.0023.0023.0023.0023.0023.
+getint-str -2147483648
+getint-out -2147483648
+set0 0
+w-field0 rc=0 cch=3 buf=005b.0031.005d.0000.0023.0023.0023.0023.
+count 3
+setstream 0
+datasize-stream 10
+isnull-stream 0
+w-stream rc=1804 cch=0 buf=0023.0023.0023.0023.0023.0023.0023.0023.
+getint-stream 10
+read4 rc=0 n=4 0123
+read-size rc=0 n=6
+read-rest rc=0 n=6 456789
+read-eof rc=0 n=0
+datasize-after-read 10
+setstream-null-reset 0
+read-after-reset rc=0 n=3 012
+read-string-field rc=1804 n=4
+read-int-field rc=1804 n=4
+read-out-field rc=13 n=0
+read-nullpcb rc=87
+read-bad rc=6
+setstream-missing 161
+setstream-null-on-string 1804
+setstream-empty-file 0 size=4 isnull=0
+setstream-out 87
+setstream-field0 87
+setstream-missing lasterr none
+cleardata 0
+after-clear isnull0=1 isnull1=1 count=3
+cleardata-bad 6
+setint-null 0 isnull=1
+close 0
+close-again 6
+close-zero 0
+closeall 4
+closeall-again 0
+lasterr-none 0
+si-ro 0
+si-count rc=0 n=99
+si-new pid=0 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=1 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=2 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=3 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=4 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=5 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=6 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=7 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=8 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=9 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=10 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=11 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=12 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=13 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=14 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=15 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=16 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=17 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=18 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=19 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-new pid=20 rc=1608 type=57005 int=4660 ft=2222222211111111 cch=128 str=
+si-ro-set 1627
+si-rw 0
+set-1-i2 0
+set-1-i4 0
+set-2-i4 1629
+set-14-str 1629
+set-0 1629
+set-17 1629
+set-20 1608
+set-12-ft 0
+set-12-nullft 87
+set-2-nullstr 87
+set-3 0
+set-4-over 1627
+set-3-again 0
+set-3-empty-type 0
+set-bad 6
+si-count2 rc=0 n=99
+si-rw pid=1 rc=0 type=2 int=1252 ft=2222222211111111 cch=128 str=
+si-rw pid=2 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-rw pid=3 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-rw pid=4 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-rw pid=12 rc=0 type=64 int=4660 ft=01d0000089abcdef cch=128 str=
+get-short rc=0 cch=4
+get-nullbuf rc=0 cch=0
+get-a-short rc=0 cch=4
+get-int-nullout rc=0
+get-str-nullout rc=0
+get-bad rc=6
+get-unknown rc=1608
+persist 0
+persist-again 1627
+commit 0
+si-path 0
+si-count3 rc=0 n=99
+si-file pid=1 rc=0 type=2 int=1252 ft=2222222211111111 cch=128 str=
+si-file pid=2 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=3 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=4 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=5 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=6 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=7 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=8 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=9 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=10 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=11 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=12 rc=0 type=64 int=4660 ft=01d0000089abcdef cch=128 str=
+si-file pid=13 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=14 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=15 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=16 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=17 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=18 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+si-file pid=19 rc=0 type=0 int=4660 ft=2222222211111111 cch=128 str=
+persist-ro 1627
+si-path-rw 0
+set-9 0
+persist-path 0
+si-file2 pid=9 rc=0 type=30 int=4660 ft=2222222211111111 cch=5 str={REV}
+si-missing 1619
+si-nullout 87
+si-noargs 87
+si-ro-db-rw 0
+set-on-ro-db 1627
+persist-on-ro-db 1627

@@ -1,0 +1,10 @@
+== x86
+child_wait=0
+child_post_app ok=1 err_untouched=1
+child_post_settext_sync_only=1
+child_post_bogus_invalid_hwnd=1
+child_post_second=1
+received msg=WM_APP+1 wParam=12345678 lParam=7654321 hwnd_is_target=1
+received msg=WM_APP+3 wParam=0 lParam=0 hwnd_is_target=1
+received_count=2
+done

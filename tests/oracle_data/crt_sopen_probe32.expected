@@ -1,0 +1,32 @@
+x86
+msvcrt
+wsopen_denyrw_ok=1 errno=0 
+second_denyno=-1 errno=13 ip=0 
+open_rdonly_while_denyrw=-1 errno=13 
+write=3 close=0 
+sopen_denywr=1 second_reader=1 writer=-1 errno=13 
+bad_shflag=-1 errno=22 ip=0 
+bad_access=-1 errno=22 ip=0 
+null_path=-1 errno=22 ip=0 
+open_pmode_0644=1 errno=0 ro=0 
+sopen_s_pmode_0644=22 fh=-1 errno=22 ip=0 
+readonly_pmode=1 ro=1 
+zero_pmode=1 ro=1 
+sopen_s_missing=2 fh=-1 errno=2 
+sopen_s_null_pfh=22 errno=22 ip=0 
+ucrt
+wsopen_denyrw_ok=1 errno=0 
+second_denyno=-1 errno=13 ip=0 
+open_rdonly_while_denyrw=-1 errno=13 
+write=3 close=0 
+sopen_denywr=1 second_reader=1 writer=-1 errno=13 
+bad_shflag=-1 errno=22 ip=1 
+bad_access=-1 errno=13 ip=1 
+null_path=-1 errno=22 ip=1 
+open_pmode_0644=1 errno=0 ro=0 
+sopen_s_pmode_0644=22 fh=-1 errno=22 ip=1 
+readonly_pmode=1 ro=1 
+zero_pmode=1 ro=1 
+sopen_s_missing=2 fh=-1 errno=2 
+sopen_s_null_pfh=22 errno=22 ip=1 
+done

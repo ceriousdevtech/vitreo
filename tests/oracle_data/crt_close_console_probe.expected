@@ -1,0 +1,44 @@
+crt=msvcrt.dll
+kind=0 close=0 errno=0 invalid=0 type=0 winerr=6
+kind=0 os_after=-1 errno=9 invalid=0
+kind=1 close=0 errno=0 invalid=0 type=0 winerr=6
+kind=1 os_after=-1 errno=9 invalid=0
+kind=2 close=0 errno=0 invalid=0 type=0 winerr=6
+kind=2 os_after=-1 errno=9 invalid=0
+kind=3 close=-1 errno=9 invalid=0 type=0 winerr=6
+kind=3 os_after=-1 errno=9 invalid=0
+kind=4 close=-1 errno=9 invalid=0 type=1 winerr=0
+kind=4 os_after=-1 errno=9 invalid=0
+standard_before tty=64 fileno=1 errno=0
+standard_close=0 errno=0 invalid=0 slot_same=0 type=0 winerr=6
+standard_os_after=-1 errno=9 invalid=0
+standard_fileno_after=1
+standard_tty_after=0 errno=0 invalid=0
+standard_close_again=-1 errno=9 invalid=0
+standard_reused_fd=1
+standard_fclose_after_close=-1 errno=9 invalid=0
+alias_close=0 type=0 winerr=6
+alias_fclose_after_close=-1 errno=9 invalid=0
+alias_fclose_os_closed=-1 errno=9 invalid=0
+crt=ucrtbase.dll
+kind=0 close=0 errno=0 invalid=0 type=0 winerr=6
+kind=0 os_after=-1 errno=9 invalid=1
+kind=1 close=0 errno=0 invalid=0 type=0 winerr=6
+kind=1 os_after=-1 errno=9 invalid=1
+kind=2 close=0 errno=0 invalid=0 type=0 winerr=6
+kind=2 os_after=-1 errno=9 invalid=1
+kind=3 close=-1 errno=9 invalid=0 type=0 winerr=6
+kind=3 os_after=-1 errno=9 invalid=1
+kind=4 close=-1 errno=9 invalid=0 type=1 winerr=0
+kind=4 os_after=-1 errno=9 invalid=1
+standard_before tty=64 fileno=1 errno=0
+standard_close=0 errno=0 invalid=0 slot_same=0 type=0 winerr=6
+standard_os_after=-1 errno=9 invalid=1
+standard_fileno_after=1
+standard_tty_after=0 errno=0 invalid=0
+standard_close_again=-1 errno=9 invalid=1
+standard_reused_fd=1
+standard_fclose_after_close=-1 errno=9 invalid=1
+alias_close=0 type=0 winerr=6
+alias_fclose_after_close=-1 errno=9 invalid=1
+alias_fclose_os_closed=-1 errno=9 invalid=0

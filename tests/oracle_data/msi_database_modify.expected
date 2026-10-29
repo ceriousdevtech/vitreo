@@ -1,0 +1,278 @@
+create 0
+mk open=0 exec=0
+m1 open=0 exec=0
+m2 open=0 exec=0
+mk2 open=0 exec=0
+n1 open=0 exec=0
+refresh 0
+update 0
+update-key-changed 1627
+replace-key-changed 0
+after-replace row [3]#|b|2|y
+after-replace row [3]#|a2|10|x
+after-replace end=259 rows=2
+refresh-after-replace 0
+[3]#|a2|10|x
+delete 0
+delete-again 1627
+update-deleted 1627
+refresh-deleted 1627
+insert 0
+insert-dup 1627
+update-after-insert 1627
+assign-existing 0
+assign-new 0
+merge-same 0
+merge-diff 1627
+merge-new 0
+insert-temp 0
+persist-check 1
+seek 0
+[3]#|b|2|y
+seek-missing 1627
+insert-short-record 0
+insert-long-record 0
+insert-str-in-int 0
+insert-str-in-int lasterr none
+insert-numstr-in-int 1627
+insert-null-key 1627
+insert-null-key lasterr [3]~|2210|mod.msi|0
+modify-bad-mode 87
+modify-bad-mode-neg 87
+modify-bad-record 6
+modify-bad-view 6
+update-unfetched 1627
+delete-unfetched 1627
+refresh-unfetched 1627
+replace-unfetched 1627
+insert-closed-view 0
+after-modes row [3]#|d|33|~
+after-modes row [3]#|b|2|y
+after-modes row [3]#|c|33|~
+after-modes row [3]#|e|44|~
+after-modes row [3]#|t|44|~
+after-modes row [3]#|f|~|~
+after-modes row [3]#|g|~|~
+after-modes row [3]#|h|~|~
+after-modes row [3]#|q|~|~
+after-modes end=259 rows=9
+partial-update 0
+partial-delete 0
+partial-seek 1627
+partial-insert 1627
+after-partial row [3]#|b|2|y
+after-partial row [3]#|c|33|~
+after-partial row [3]#|e|44|~
+after-partial row [3]#|t|44|~
+after-partial row [3]#|f|~|~
+after-partial row [3]#|g|~|~
+after-partial row [3]#|h|~|~
+after-partial row [3]#|q|~|~
+after-partial end=259 rows=8
+update-field0-changed 1627
+join-fetch 259
+join-update 6
+join-delete 6
+join-insert 6
+join-refresh 6
+join-validate 6
+nonselect-insert 1627
+insert-before-exec 0
+validate-no-table 1627
+validate-no-table err0=0 cch=0 col=
+mkval open=0 exec=0
+mkvt open=0 exec=0
+vt1 open=0 exec=0
+val-k open=0 exec=0
+val-c open=0 exec=0
+cat text rc=0 err=0 col= next=0
+cat upper-ok rc=0 err=0 col= next=0
+cat upper-bad rc=13 err=8 col=C next=0
+cat lower-ok rc=0 err=0 col= next=0
+cat lower-bad rc=13 err=8 col=C next=0
+cat ident-ok rc=0 err=0 col= next=0
+cat ident-digit rc=13 err=11 col=C next=0
+cat ident-dash rc=13 err=11 col=C next=0
+cat ident-space rc=13 err=11 col=C next=0
+cat prop-ok rc=0 err=0 col= next=0
+cat prop-pct rc=0 err=0 col= next=0
+cat prop-bad rc=13 err=21 col=C next=0
+cat file-ok rc=0 err=0 col= next=0
+cat file-long rc=0 err=0 col= next=0
+cat file-long-only rc=13 err=13 col=C next=0
+cat file-short-bad rc=13 err=13 col=C next=0
+cat file-star rc=13 err=13 col=C next=0
+cat file-slash rc=13 err=13 col=C next=0
+cat file-colon rc=13 err=13 col=C next=0
+cat file-ext4 rc=13 err=13 col=C next=0
+cat file-twodots rc=13 err=13 col=C next=0
+cat file-space-short rc=13 err=13 col=C next=0
+cat wild-ok rc=0 err=0 col= next=0
+cat wild-q rc=0 err=0 col= next=0
+cat wild-bad rc=13 err=10 col=C next=0
+cat path-ok rc=0 err=0 col= next=0
+cat path-unc rc=0 err=0 col= next=0
+cat path-rel rc=13 err=14 col=C next=0
+cat path-fmt rc=0 err=0 col= next=0
+cat paths-ok rc=0 err=0 col= next=0
+cat anypath-rel rc=0 err=0 col= next=0
+cat anypath-name rc=0 err=0 col= next=0
+cat defdir-ok rc=13 err=18 col=C next=0
+cat defdir-dot rc=13 err=18 col=C next=0
+cat defdir-sourcedir rc=0 err=0 col= next=0
+cat defdir-bad rc=13 err=18 col=C next=0
+cat defdir-colons rc=13 err=18 col=C next=0
+cat reg-ok rc=0 err=0 col= next=0
+cat reg-lead rc=13 err=19 col=C next=0
+cat reg-trail rc=13 err=19 col=C next=0
+cat fmt-ok rc=0 err=0 col= next=0
+cat fmt-open rc=13 err=16 col=C next=0
+cat fmt-close rc=13 err=16 col=C next=0
+cat fmt-empty rc=13 err=16 col=C next=0
+cat fmtsddl-ok rc=0 err=0 col= next=0
+cat tmpl-ok rc=0 err=0 col= next=0
+cat tmpl-bad rc=13 err=17 col=C next=0
+cat cond-ok rc=0 err=0 col= next=0
+cat cond-bad rc=13 err=15 col=C next=0
+cat cond-paren rc=13 err=15 col=C next=0
+cat guid-ok rc=13 err=23 col=C next=0
+cat guid-lower rc=13 err=23 col=C next=0
+cat guid-nobrace rc=13 err=23 col=C next=0
+cat guid-short rc=13 err=23 col=C next=0
+cat ver-ok rc=0 err=0 col= next=0
+cat ver-one rc=0 err=0 col= next=0
+cat ver-five rc=13 err=7 col=C next=0
+cat ver-big rc=13 err=7 col=C next=0
+cat ver-alpha rc=13 err=7 col=C next=0
+cat lang-ok rc=0 err=0 col= next=0
+cat lang-list rc=0 err=0 col= next=0
+cat lang-zero rc=0 err=0 col= next=0
+cat lang-bad rc=13 err=12 col=C next=0
+cat lang-big rc=13 err=12 col=C next=0
+cat custsrc-ok rc=0 err=0 col= next=0
+cat custsrc-bad rc=0 err=0 col= next=0
+cat cab-ok rc=0 err=0 col= next=0
+cat cab-embedded rc=0 err=0 col= next=0
+cat cab-bad rc=13 err=26 col=C next=0
+cat cab-long rc=0 err=0 col= next=0
+cat shortcut-ok rc=0 err=0 col= next=0
+cat shortcut-fmt rc=0 err=0 col= next=0
+cat shortcut-bad rc=13 err=27 col=C next=0
+cat binary-cat rc=13 err=23 col=C next=0
+cat bad-category rc=13 err=23 col=C next=0
+cat set-ok rc=0 err=0 col= next=0
+cat set-bad rc=0 err=0 col= next=0
+cat set-case rc=0 err=0 col= next=0
+cat null-ok rc=0 err=0 col= next=0
+val-c-notnull open=0 exec=0
+cat required rc=13 err=2 col=C next=0
+val-c-at open=0 exec=0
+cat nullable-at rc=13 err=2 col=C next=0
+val-c-y open=0 exec=0
+val-c-key open=0 exec=0
+cat key-ok rc=0 err=0 col= next=0
+cat key-missing rc=13 err=3 col=C next=0
+val-c-keylist open=0 exec=0
+cat keylist-second rc=0 err=0 col= next=0
+val-c-badkey open=0 exec=0
+cat badkeytable rc=13 err=24 col=C next=0
+val-c-nokey open=0 exec=0
+mkvs open=0 exec=0
+val-vs-k open=0 exec=0
+val-vs-c open=0 exec=0
+overflow rc=13
+overflow err0=28 cch=1 col=C
+overflow err1=0 cch=0 col=
+two-errors rc=13
+two-errors err0=11 cch=1 col=K
+two-errors err1=28 cch=1 col=C
+two-errors err2=0 cch=0 col=
+valid rc=0
+valid err0=0 cch=0 col=
+insert-valid 0
+dupkey rc=13
+dupkey err0=1 cch=1 col=K
+dupkey err1=0 cch=0 col=
+validate-existing rc=1627
+validate-existing err0=0 cch=0 col=
+validate-field rc=1627
+validate-field err0=0 cch=0 col=
+validate-delete rc=1627
+validate-delete err0=0 cch=0 col=
+geterror-small -2 cch=1
+geterror-nullpcch -3
+geterror-bad -3
+geterror-nullbuf 0 cch=0
+mkvi open=0 exec=0
+val-vi-k open=0 exec=0
+val-vi-i open=0 exec=0
+underflow rc=13
+underflow err0=5 cch=1 col=K
+underflow err1=22 cch=1 col=X
+underflow err2=0 cch=0 col=
+overflow-int rc=13
+overflow-int err0=4 cch=1 col=K
+overflow-int err1=22 cch=1 col=X
+overflow-int err2=0 cch=0 col=
+notinset-int rc=13
+notinset-int err0=6 cch=1 col=I
+notinset-int err1=22 cch=1 col=X
+notinset-int err2=0 cch=0 col=
+missingdata rc=13
+missingdata err0=22 cch=1 col=X
+missingdata err1=0 cch=0 col=
+val-vi-x open=0 exec=0
+badmaxmin rc=13
+badmaxmin err0=25 cch=1 col=X
+badmaxmin err1=0 cch=0 col=
+val-n-r open=0 exec=0
+val-n-k open=0 exec=0
+val-m-k open=0 exec=0
+n2 open=0 exec=0
+validate-delete-ref rc=13
+validate-delete-ref err0=2 cch=1 col=K
+validate-delete-ref err1=0 cch=0 col=
+pk-m 0 [1]M|K
+pk-val 0 [2]_Validation|Table|Column
+pk-tables 1628 
+pk-streams 1628 
+pk-missing 1628
+pk-case 1628
+pk-bad 6
+pk-nullout 87
+pk-nullname 87
+pk lasterr [4]~|2220|mod.msi||
+commit 0
+open-missing-ro 110
+open-missing-ro lasterr none
+open-missing-transact 110
+open-junk 110
+open-junk lasterr none
+open-badmode 0
+open-nullout 87
+open-nullpath 87
+nullpath-state 0
+open-nullpath-create 87
+open-transact 0 state=1
+tx-insert open=0 exec=0
+tx-uncommitted end=259 rows=0
+direct-state 1
+direct-insert open=0 exec=0
+direct-uncommitted row [1]#|dr
+direct-uncommitted end=259 rows=1
+open-output 0
+output-state 1
+output-exists-before 1
+out-insert open=0 exec=1627
+out-insert lasterr [4]~|2259|mod.msi||
+output-commit 0
+output-file row [1]#|out
+output-file end=259 rows=1
+output-source row [1]#|out
+output-source end=259 rows=1
+create-exists-before 0 1
+create-uncommitted-exists 0
+create-over-existing 0
+reopen-after-create 110
+state-bad -1
+commit-bad 6

@@ -1,0 +1,113 @@
+# Builds the macOS arm64 disk image. Publishing is opt-in and creates a draft
+# release only; the draft stays unpublished until someone publishes it.
+# A beta is a pre-release: GitHub lists it but never marks it "Latest".
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version label for the DMG (for example 1.0.0 or 0.1.0-beta.1). Required when publish is on.
+        required: false
+        type: string
+      publish:
+        description: Create a draft GitHub Release containing this DMG
+        required: true
+        default: false
+        type: boolean
+      prerelease:
+        description: Mark the release as a pre-release (beta). A version with a suffix such as -beta.1 is always a pre-release.
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  dmg:
+    name: Build DMG
+    # Apple Silicon only. macos-26-intel is a different product and is not built.
+    runs-on: macos-26
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check publish inputs
+        if: inputs.publish
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VERSION}" ]; then
+            echo "error: version is required when publish is on" >&2
+            exit 1
+          fi
+          if [[ ! "${VERSION}" =~ ^[0-9A-Za-z][0-9A-Za-z._+-]*$ ]]; then
+            echo "error: version must be a filename-safe label such as 1.0.0" >&2
+            exit 1
+          fi
+
+      - name: Build the disk image
+        env:
+          VITREO_VERSION: ${{ inputs.version }}
+        run: manager/package-dmg.sh
+
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vitreo-arm64-dmg
+          path: |
+            dist/*.dmg
+            dist/*.sha256
+          if-no-files-found: error
+
+      - name: Create draft release
+        if: inputs.publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+          PRERELEASE: ${{ inputs.prerelease }}
+        run: |
+          set -euo pipefail
+          dmg=""
+          sum=""
+          dmg_count=0
+          sum_count=0
+          for path in dist/*.dmg; do
+            [ -f "${path}" ] || continue
+            dmg="${path}"
+            dmg_count=$((dmg_count + 1))
+          done
+          for path in dist/*.sha256; do
+            [ -f "${path}" ] || continue
+            sum="${path}"
+            sum_count=$((sum_count + 1))
+          done
+          if [ "${dmg_count}" -ne 1 ] || [ "${sum_count}" -ne 1 ]; then
+            echo "error: expected exactly one DMG and one checksum under dist/" >&2
+            exit 1
+          fi
+          # A SemVer pre-release suffix (1.0.0-beta.1) is never published as
+          # the latest release, whatever the checkbox says.
+          kind="release"
+          prerelease_flag=""
+          if [ "${PRERELEASE}" = "true" ] || [[ "${VERSION}" == *-* ]]; then
+            kind="pre-release (beta)"
+            prerelease_flag="--prerelease"
+          fi
+          cat > dist/release-notes.txt <<EOF
+          Draft macOS arm64 disk image for Vitreo ${VERSION}, published as a ${kind}.
+
+          This build is ad-hoc signed and is not notarized. Gatekeeper will not treat a downloaded copy as a trusted app until it is signed with a Developer ID certificate and notarized.
+
+          The .sha256 file is the SHA-256 of the disk image.
+          EOF
+          gh release create "v${VERSION}" "${dmg}" "${sum}" \
+            --draft \
+            ${prerelease_flag:+"${prerelease_flag}"} \
+            --title "Vitreo ${VERSION}" \
+            --notes-file dist/release-notes.txt

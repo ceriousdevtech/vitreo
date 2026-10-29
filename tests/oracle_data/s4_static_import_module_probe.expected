@@ -1,0 +1,8 @@
+static_import_loaded=1
+GetModuleHandleA(setupapi.dll) nonnull=1 same=1 gle=0
+GetModuleHandleA(SETUPAPI.DLL) nonnull=1 same=1 gle=0
+GetModuleHandleA(SetupAPI.dll) nonnull=1 same=1 gle=0
+GetModuleHandleA(setupapi) nonnull=1 same=1 gle=0
+GetModuleHandleA(SETUPAPI) nonnull=1 same=1 gle=0
+GetModuleFileNameA_nonzero=1
+LoadLibraryA_same=1

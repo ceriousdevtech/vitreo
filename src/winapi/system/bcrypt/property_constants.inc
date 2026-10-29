@@ -1,0 +1,15 @@
+// Generated from Windows SDK 10.0.26100.0 shared/{ntstatus.h,bcrypt.h}.
+// Source values verified by bcrypt_set_property_probe on Windows x86/x64.
+static constexpr u32 STATUS_NOT_SUPPORTED = 0xC00000BBu;
+static constexpr u32 STATUS_ACCESS_DENIED = 0xC0000022u;
+static constexpr u32 STATUS_INVALID_BUFFER_SIZE = 0xC0000206u;
+static constexpr std::string_view BCRYPT_CHAINING_MODE = "ChainingMode";
+static constexpr std::string_view BCRYPT_CHAIN_MODE_CBC = "ChainingModeCBC";
+static constexpr std::string_view BCRYPT_CHAIN_MODE_ECB = "ChainingModeECB";
+static constexpr std::string_view BCRYPT_CHAIN_MODE_CFB = "ChainingModeCFB";
+static constexpr std::string_view BCRYPT_CHAIN_MODE_CCM = "ChainingModeCCM";
+static constexpr std::string_view BCRYPT_CHAIN_MODE_GCM = "ChainingModeGCM";
+static constexpr std::string_view BCRYPT_CHAIN_MODE_NA = "ChainingModeN/A";
+static constexpr u32 BCRYPT_ALGORITHM_PSEUDO_HANDLES[] = {
+    0x00000001u, 0x00000011u, 0x00000021u, 0x00000031u, 0x00000041u, 0x00000051u, 0x00000061u, 0x00000071u, 0x00000081u, 0x00000091u, 0x000000a1u, 0x000000b1u, 0x000000c1u, 0x000000d1u, 0x000000e1u, 0x000000f1u, 0x00000101u, 0x00000111u, 0x00000121u, 0x00000131u, 0x00000141u, 0x00000151u, 0x00000161u, 0x00000171u, 0x00000181u, 0x00000191u, 0x000001a1u, 0x000001b1u, 0x000001c1u, 0x000001d1u, 0x000001e1u, 0x000001f1u, 0x00000201u, 0x00000211u, 0x00000221u, 0x00000231u, 0x00000241u, 0x00000251u, 0x00000261u, 0x00000271u, 0x00000281u, 0x00000291u, 0x000002a1u, 0x000002b1u, 0x000002c1u, 0x000002d1u, 0x000002e1u, 0x000002f1u, 0x00000301u, 0x00000311u, 0x00000321u, 0x00000331u, 0x00000341u, 0x00000351u, 0x00000361u, 0x00000371u, 0x00000381u, 0x00000391u, 0x000003A1u, 0x000003B1u, 0x000003C1u, 0x000003D1u, 0x000003E1u, 0x000003F1u, 0x00000401u, 0x00000411u, 0x00000421u, 0x00000431u, 0x00000441u, 0x00000451u, 0x00000461u, 0x00000471u, 0x00000481u
+};

@@ -1,0 +1,13 @@
+== x86
+open_switch nonzero=1 err=dead
+name ok=1 err=dead name=Default need=16
+switchdesktop ok=1 err=dead
+closedesktop ok=1 err=dead
+closedesktop_again ok=0 err=6
+open_allowhook_generic_all nonzero=1 err=dead
+  inherit_flag=1
+open_bad_flag nonzero=1 err=dead
+open_no_access nonzero=1 err=dead
+threaddesktop nonzero=1 err=dead
+close_thread_desktop ok=0 err=aa
+done

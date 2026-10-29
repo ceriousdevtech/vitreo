@@ -1,0 +1,5 @@
+fmt 45 depth 0.2500 stencil 0x5a resource: map hr=0x00000000 pitch=16 px0=0000405a row1px3=0000405a
+fmt 45 depth 1.0000 stencil 0xff region: map hr=0x00000000 pitch=16 px0=ffffffff row1px3=ffffffff
+fmt 45 depth 0.0000 stencil 0x01 resource: map hr=0x00000000 pitch=16 px0=00000001 row1px3=00000001
+fmt 20 depth 0.2500 stencil 0x5a resource: map hr=0x00000000 pitch=32 px0=0000803e5a000000 row1px3=0000803e5a000000
+fmt 20 depth 0.7500 stencil 0xc3 region: map hr=0x00000000 pitch=32 px0=0000403fc3000000 row1px3=0000403fc3000000

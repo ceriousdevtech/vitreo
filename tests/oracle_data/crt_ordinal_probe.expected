@@ -1,0 +1,11 @@
+ucrtbase.dll sin ord=2375 name_ok=1 ord_ok=1 same=1 
+ucrtbase.dll fopen ord=2204 name_ok=1 ord_ok=1 same=1 
+ucrtbase.dll _stricmp ord=1816 name_ok=1 ord_ok=1 same=1 
+ucrtbase.dll _initterm ord=377 name_ok=1 ord_ok=1 same=1 
+ucrtbase.dll malloc ord=2297 name_ok=1 ord_ok=1 same=1 
+ucrtbase.dll _o_malloc ord=1600 name_ok=1 ord_ok=1 same=1 
+msvcrt.dll sin ord=1219 name_ok=1 ord_ok=1 same=1 
+msvcrt.dll fopen ord=1106 name_ok=1 ord_ok=1 same=1 
+msvcrt.dll _stricmp ord=776 name_ok=1 ord_ok=1 same=1 
+msvcrt.dll _initterm ord=395 name_ok=1 ord_ok=1 same=1 
+msvcrt.dll malloc ord=1173 name_ok=1 ord_ok=1 same=1 

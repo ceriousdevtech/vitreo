@@ -1,0 +1,5 @@
+# dll_search_path_probe.exe C:\oracle\pathdir vitreo_path_probe.dll probe_export  (Windows 11 x64)
+before_path_ret=null err=000000000000007e
+after_path_ret=non-null err=0000000000000000
+loaded_from=C:\oracle\pathdir\vitreo_path_probe.dll
+export probe_export=found

@@ -1,0 +1,11 @@
+open_desktop_inherit nonnull=1 ghi=1 flags=1 gle=0
+open_desktop_noinherit nonnull=1 ghi=1 flags=0 gle=0
+open_winsta_inherit nonnull=1 ghi=1 flags=1 gle=0
+thread_desktop nonnull=1 ghi=1 flags=0 gle=0
+set_desktop_protect r=1
+  desktop_after_set nonnull=1 ghi=1 flags=2 gle=0
+closedesktop r=1 gle=0
+  desktop_after_closedesktop nonnull=1 ghi=0 flags=0 gle=6
+closehandle_desktop r=0 gle=6
+  desktop_after_closehandle nonnull=1 ghi=1 flags=0 gle=0
+closedesktop_thread_desktop r=0 gle=170

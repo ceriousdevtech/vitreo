@@ -1,0 +1,63 @@
+layout	30	10	80	2c	3c
+file unsigned	800b0100	800b0100	1
+  provider	1	88	0	800b0100	0	80001000	0	0
+  close	0	dead	0
+  ignore	800b0100	800b0100
+  revoke	800b0100	800b0100
+file signed	800b010a	800b010a	1
+  provider	1	88	0	800b010a	1	80001000	0	1	2c	2	0	0	0	1	1	cert0:vitrum-probe.test:d9e776a2:3c:0:0:0:0:11100000:1	cert1:Vitrum Probe Intermediate:022f9e18:3c:0:0:800b010a:0:11100000:1
+  close	0	dead	0
+  ignore	800b010a	800b010a
+  revoke	800b010a	800b010a
+file tampered	80096010	80096010	1
+  provider	1	88	0	80096010	1	80001000	0	1	2c	2	0	0	0	1	1	cert0:vitrum-probe.test:d9e776a2:3c:0:0:0:0:11100000:1	cert1:Vitrum Probe Intermediate:022f9e18:3c:0:0:0:0:11100000:1
+  close	0	dead	0
+  ignore	80096010	80096010
+  revoke	80096010	80096010
+file missing	80092003	80092003	1
+  provider	1	88	0	80092003	0	80001000	0	0
+  close	0	dead	0
+  ignore	80092003	80092003
+  revoke	80092003	80092003
+file badsig	800b0100	800b0100	1
+  provider	1	88	0	800b0100	1	80001000	0	1	2c	2	0	0	c000a000	1	1	cert0:vitrum-probe.test:d9e776a2:3c:0:0:0:0:11100000:1	cert1:Vitrum Probe Intermediate:022f9e18:3c:0:0:0:0:11100000:1
+  close	0	dead	0
+  ignore	800b0100	800b0100
+  revoke	800b0100	800b0100
+file badmd	800b0100	800b0100	1
+  provider	1	88	0	800b0100	1	80001000	0	1	2c	2	0	0	80091007	1	1	cert0:vitrum-probe.test:d9e776a2:3c:0:0:0:0:11100000:1	cert1:Vitrum Probe Intermediate:022f9e18:3c:0:0:0:0:11100000:1
+  close	0	dead	0
+  ignore	800b0100	800b0100
+  revoke	800b0100	800b0100
+file withroot	800b0109	800b0109	1
+  provider	1	88	0	800b0109	1	80001000	0	1	2c	3	0	0	0	1	1	cert0:vitrum-probe.test:d9e776a2:3c:0:0:0:0:11100000:1	cert1:Vitrum Probe Intermediate:022f9e18:3c:0:0:0:0:11100000:1	cert2:Vitrum Probe Root:47fef7f7:3c:1:0:800b0109:0:11100000:1
+  close	0	dead	0
+  ignore	800b0109	800b0109
+  revoke	800b0109	800b0109
+file text	800b0003	800b0003	1
+  provider	1	88	0	800b0003	0	80001000	0	0
+  close	0	dead	0
+  ignore	800b0003	800b0003
+  revoke	800b0003	800b0003
+file trusted	0	0	1
+  provider	1	88	0	0	1	80001000	0	1	2c	4	0	1	0	1	1	cert0:Valve Corp.:ecff2f42:3c:0:0:0:0:11100000:1	cert1:DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1:7b0f360b:3c:0:0:0:0:11100000:1	cert2:DigiCert Trusted Root G4:a99d5b79:3c:0:0:0:0:11100000:1	cert3:DigiCert Assured ID Root CA:0563b863:3c:1:1:0:0:11100000:1
+  close	0	dead	0
+  ignore	0	0
+  revoke	0	0
+action unknown	800b0001	0
+action chain_verify	800b010a	800b010a
+action driver	800b0109	800b0109
+cbstruct	0	1	1
+cbstruct	4	1	1
+cbstruct	8	1	1
+cbstruct	c	1	1
+cbstruct	10	800b010a	800b010a
+cbstruct	14	800b010a	800b010a
+cbstruct	18	800b010a	800b010a
+cbstruct	1c	800b010a	800b010a
+cbstruct	20	800b010a	800b010a
+cbstruct	24	800b010a	800b010a
+cbstruct	28	800b010a	800b010a
+cbstruct	2c	800b010a	800b010a
+cbstruct	30	800b010a	800b010a
+exception	c0000005

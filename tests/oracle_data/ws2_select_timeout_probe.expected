@@ -1,0 +1,26 @@
+# winoracle, 2026-10-06, x64 static mingw build. Timing, not exact output:
+# what is load-bearing is that a nonzero timeout never returns early, that
+# every sub-millisecond timeout waits about one millisecond, and that the wait
+# is floor(timeout) + 1 ms at both timer periods.
+default tv={0,0}: min=0us median=0us max=5us rc=0
+default tv={0,1}: min=903us median=998us max=1048us rc=0
+default tv={0,100}: min=935us median=1001us max=1059us rc=0
+default tv={0,500}: min=939us median=1004us max=1057us rc=0
+default tv={0,999}: min=988us median=1954us max=2018us rc=0
+default tv={0,1000}: min=974us median=1989us max=2021us rc=0
+default tv={0,1001}: min=985us median=1985us max=2088us rc=0
+default tv={0,1500}: min=1939us median=1999us max=2038us rc=0
+default tv={0,2000}: min=1993us median=2962us max=3059us rc=0
+default tv={0,5000}: min=4988us median=5964us max=6032us rc=0
+default tv={0,16000}: min=15982us median=16954us max=17072us rc=0
+period1 tv={0,0}: min=0us median=0us max=8us rc=0
+period1 tv={0,1}: min=780us median=1001us max=1057us rc=0
+period1 tv={0,100}: min=899us median=998us max=1095us rc=0
+period1 tv={0,500}: min=963us median=999us max=1052us rc=0
+period1 tv={0,999}: min=984us median=1098us max=2053us rc=0
+period1 tv={0,1000}: min=965us median=1957us max=2230us rc=0
+period1 tv={0,1001}: min=991us median=1999us max=2039us rc=0
+period1 tv={0,1500}: min=1918us median=1996us max=2087us rc=0
+period1 tv={0,2000}: min=1972us median=2961us max=3126us rc=0
+period1 tv={0,5000}: min=4988us median=5976us max=6019us rc=0
+period1 tv={0,16000}: min=15983us median=16959us max=17034us rc=0

@@ -1,0 +1,2 @@
+kernel32.dll tz_to_utc r=1 utc=2026-1-15 17:34
+kernelbase.dll tz_to_utc r=1 utc=2026-1-15 17:34

@@ -1,0 +1,24 @@
+sizes W=294 A=294
+infoW full ok=1 wLength=148
+  tail @144: 9 4 b0 4 46 45 32 58 cc cc cc cc
+  end @28c: cc cc cc cc cc cc cc cc cc cc cc cc
+  first CC after wLength+4 at =14c
+infoW exact wLength ok=1 gle=0
+  past @148: cc cc cc cc cc cc
+infoW wLength+2 ok=1 gle=0
+  past @148: cc cc cc cc cc cc
+infoW wLength-1 ok=1 gle=0 wLength=a0
+infoA full ok=1 wLength=148
+  tail @144: 9 4 b0 4 46 45 32 58 cc cc cc cc
+A \ ok=1 gle=0 len=34 off=28 text="½ïþ"
+A \StringFileInfo\040904b0\CompanyName ok=1 gle=0 len=d off=204 text="Vitreo Probe"
+A \StringFileInfo\040904b0\FileVersion ok=1 gle=0 len=8 off=240 text="1.2.3.4"
+A \VarFileInfo\Translation ok=1 gle=0 len=4 off=144 text="	°"
+A \StringFileInfo\040904b0\NoSuchValue ok=0 gle=715 len=0
+A  ok=1 gle=0 len=34 off=28 text="½ïþ"
+A \StringFileInfo\040904b0 ok=1 gle=0 len=0 off=96 text=""
+  after A queries @148: 46 45 32 58 cc cc cc cc
+W CompanyName ok=1 gle=0 len=d off=b8
+W empty ok=1 gle=0 len=34 off=28
+W NoSuchValue ok=0 gle=715 len=0
+A \StringFileInfo\040904b0\CompanyName ok=1 gle=0 len=d off=204 text="Vitreo Probe"

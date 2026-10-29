@@ -1,0 +1,129 @@
+bits=64
+PF 0: value=0 ksd-eq
+PF 1: value=0 ksd-eq
+PF 2: eq-cpuid ksd-eq
+PF 3: eq-cpuid ksd-eq
+PF 4: value=0 ksd-eq
+PF 5: value=0 ksd-eq
+PF 6: eq-cpuid ksd-eq
+PF 7: eq-cpuid ksd-eq
+PF 8: eq-cpuid ksd-eq
+PF 9: value=1 ksd-eq
+PF 10: eq-cpuid ksd-eq
+PF 11: value=0 ksd-eq
+PF 12: value=1 ksd-eq
+PF 13: eq-cpuid ksd-eq
+PF 14: implied-ok ksd-eq
+PF 15: value=0 ksd-eq
+PF 16: value=0 ksd-eq
+PF 17: eq-cpuid ksd-eq
+PF 18: value=0 ksd-eq
+PF 19: value=0 ksd-eq
+PF 20: os-state ksd-eq
+PF 21: os-state ksd-eq
+PF 22: implied-ok ksd-eq
+PF 23: value=1 ksd-eq
+PF 24: value=0 ksd-eq
+PF 25: value=0 ksd-eq
+PF 26: value=0 ksd-eq
+PF 27: value=0 ksd-eq
+PF 28: eq-cpuid ksd-eq
+PF 29: value=0 ksd-eq
+PF 30: value=0 ksd-eq
+PF 31: value=0 ksd-eq
+PF 32: eq-cpuid ksd-eq
+PF 33: eq-cpuid ksd-eq
+PF 34: value=0 ksd-eq
+PF 35: eq-cpuid ksd-eq
+PF 36: eq-cpuid ksd-eq
+PF 37: eq-cpuid ksd-eq
+PF 38: eq-cpuid ksd-eq
+PF 39: eq-cpuid ksd-eq
+PF 40: eq-cpuid ksd-eq
+PF 41: eq-cpuid ksd-eq
+PF 42: eq-cpuid ksd-eq
+PF 43: value=0 ksd-eq
+PF 44: value=0 ksd-eq
+PF 45: value=0 ksd-eq
+PF 46: value=0 ksd-eq
+PF 47: value=0 ksd-eq
+PF 48: value=0 ksd-eq
+PF 49: value=0 ksd-eq
+PF 50: value=0 ksd-eq
+PF 51: value=0 ksd-eq
+PF 52: value=0 ksd-eq
+PF 53: value=0 ksd-eq
+PF 54: value=0 ksd-eq
+PF 55: value=0 ksd-eq
+PF 56: value=0 ksd-eq
+PF 57: value=0 ksd-eq
+PF 58: value=0 ksd-eq
+PF 59: value=0 ksd-eq
+PF 60: eq-cpuid ksd-eq
+PF 61: eq-cpuid ksd-eq
+PF 62: value=0 ksd-eq
+PF 63: value=0 ksd-eq
+PF 64: value=0
+PF 65: value=0
+PF 66: value=0
+PF 67: value=0
+PF 68: value=0
+PF 69: value=0
+PF 70: value=0
+PF 71: value=0
+PF 72: value=0
+PF 73: value=0
+PF 74: value=0
+PF 75: value=0
+PF 76: value=0
+PF 77: value=0
+PF 78: value=0
+PF 79: value=0
+PF 80: value=0
+PF 81: value=0
+PF 82: value=0
+PF 83: value=0
+PF 84: value=0
+PF 85: value=0
+PF 86: value=0
+PF 87: value=0
+PF 88: value=0
+PF 89: value=0
+PF 90: value=0
+PF 91: value=0
+PF 92: value=0
+PF 93: value=0
+PF 94: value=0
+PF 95: value=0
+PF 96: value=0
+PF 97: value=0
+PF 98: value=0
+PF 99: value=0
+PF 100: value=0
+PF 101: value=0
+PF 102: value=0
+PF 103: value=0
+PF 104: value=0
+PF 105: value=0
+PF 106: value=0
+PF 107: value=0
+PF 108: value=0
+PF 109: value=0
+PF 110: value=0
+PF 111: value=0
+PF 112: value=0
+PF 113: value=0
+PF 114: value=0
+PF 115: value=0
+PF 116: value=0
+PF 117: value=0
+PF 118: value=0
+PF 119: value=0
+PF 120: value=0
+PF 121: value=0
+PF 122: value=0
+PF 123: value=0
+PF 124: value=0
+PF 125: value=0
+PF 126: value=0
+PF 127: value=0

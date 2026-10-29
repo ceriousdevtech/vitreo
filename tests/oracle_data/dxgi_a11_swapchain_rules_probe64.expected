@@ -1,0 +1,205 @@
+ptr=64-bit
+
+[present.combos]
+  DISCARD Present(0, 0x3)                                          hr=0x087a0001 count+0
+  DISCARD Present(0, 0x5)                                          hr=0x087a0001 count+0
+  DISCARD Present(0, 0x6)                                          hr=0x087a0001 count+0
+  DISCARD Present(0, 0xa)                                          hr=0x087a0001 count+0
+  DISCARD Present(0, 0xc)                                          hr=0x087a0001 count+0
+  DISCARD Present(0, 0x101)                                        hr=0x087a0001 count+0
+  DISCARD Present(0, 0x9)                                          hr=0x087a0001 count+0
+  DISCARD Present(1, 0x9)                                          hr=0x087a0001 count+0
+  DISCARD Present(0, 0x109)                                        hr=0x087a0001 count+0
+  DISCARD Present(5, 0x1)                                          hr=0x887a0001 count+0
+  DISCARD Present(0, 0x201)                                        hr=0x887a0001 count+0
+  DISCARD Present(0, 0x202)                                        hr=0x887a0001 count+0
+  DISCARD Present(0, 0x208)                                        hr=0x887a0001 count+0
+  DISCARD Present(0, 0x204)                                        hr=0x887a0001 count+0
+  DISCARD Present(0, 0x102)                                        hr=0x087a0001 count+0
+  DISCARD Present(0, 0x108)                                        hr=0x087a0001 count+0
+  DISCARD Present(0, 0x11)                                         hr=0x887a0001 count+0
+  DISCARD Present(0, 0x41)                                         hr=0x887a0001 count+0
+  DISCARD Present(0, 0x400)                                        hr=0x087a0001 count+0
+  DISCARD Present(0, 0x800)                                        hr=0x087a0001 count+0
+  DISCARD Present(0, 0x1000)                                       hr=0x087a0001 count+0
+  DISCARD Present(0, 0x10000)                                      hr=0x087a0001 count+0
+  FLIP_DISCARD Present(0, 0x3)                                     hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x5)                                     hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x6)                                     hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0xa)                                     hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0xc)                                     hr=0x087a0001 count+1
+  FLIP_DISCARD Present(0, 0x101)                                   hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x9)                                     hr=0x887a0001 count+0
+  FLIP_DISCARD Present(1, 0x9)                                     hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x109)                                   hr=0x887a0001 count+0
+  FLIP_DISCARD Present(5, 0x1)                                     hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x201)                                   hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x202)                                   hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x208)                                   hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x204)                                   hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x102)                                   hr=0x087a0001 count+1
+  FLIP_DISCARD Present(0, 0x108)                                   hr=0x087a0001 count+1
+  FLIP_DISCARD Present(0, 0x11)                                    hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x41)                                    hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x400)                                   hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x800)                                   hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x1000)                                  hr=0x887a0001 count+0
+  FLIP_DISCARD Present(0, 0x10000)                                 hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x3)                             hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x5)                             hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x6)                             hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0xa)                             hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0xc)                             hr=0x087a0001 count+1
+  FLIP_DISCARD TEARING Present(0, 0x101)                           hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x9)                             hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(1, 0x9)                             hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x109)                           hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(5, 0x1)                             hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x201)                           hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x202)                           hr=0x087a0001 count+1
+  FLIP_DISCARD TEARING Present(0, 0x208)                           hr=0x087a0001 count+1
+  FLIP_DISCARD TEARING Present(0, 0x204)                           hr=0x087a0001 count+1
+  FLIP_DISCARD TEARING Present(0, 0x102)                           hr=0x087a0001 count+1
+  FLIP_DISCARD TEARING Present(0, 0x108)                           hr=0x087a0001 count+1
+  FLIP_DISCARD TEARING Present(0, 0x11)                            hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x41)                            hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x400)                           hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x800)                           hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x1000)                          hr=0x887a0001 count+0
+  FLIP_DISCARD TEARING Present(0, 0x10000)                         hr=0x887a0001 count+0
+
+[create.flags]
+  create DISCARD flags=0x10                                        hr=0x00000000
+  create DISCARD flags=0x100                                       hr=0x887a0001
+  create DISCARD flags=0x200                                       hr=0x887a0001
+  create DISCARD flags=0x400                                       hr=0x887a0001
+  create DISCARD flags=0x1000                                      hr=0x00000000
+  create DISCARD flags=0x18                                        hr=0x00000000
+  create FLIP_DISCARD flags=0x10                                   hr=0x80070057
+  create FLIP_DISCARD flags=0x100                                  hr=0x887a0001
+  create FLIP_DISCARD flags=0x200                                  hr=0x887a0001
+  create FLIP_DISCARD flags=0x400                                  hr=0x887a0001
+  create FLIP_DISCARD flags=0x1000                                 hr=0x00000000
+  create FLIP_DISCARD flags=0x18                                   hr=0x80070057
+  create DISCARD samples=3.0                                       hr=0x80070057 quality_levels=0
+  create DISCARD samples=16.0                                      hr=0x00000000 quality_levels=1
+  create DISCARD samples=32.0                                      hr=0x80070057 quality_levels=0
+  create DISCARD samples=4.STANDARD_PATTERN                        hr=0x00000000
+
+[colorspace]
+  CheckColorSpaceSupport DISCARD fmt=28                            create=0x00000000 0:1 1:0 2:0 3:0 12:0 13:0 14:0 17:0 18:0 22:0 24:0 25:0 
+  CheckColorSpaceSupport(NULL) DISCARD fmt=28                      hr=0x80070057
+  CheckColorSpaceSupport DISCARD fmt=24                            create=0x00000000 0:1 1:0 2:0 3:0 12:0 13:0 14:0 17:0 18:0 22:0 24:0 25:0 
+  CheckColorSpaceSupport(NULL) DISCARD fmt=24                      hr=0x80070057
+  CheckColorSpaceSupport DISCARD fmt=10                            create=0x00000000 0:0 1:1 2:0 3:0 12:0 13:0 14:0 17:0 18:0 22:0 24:0 25:0 
+  CheckColorSpaceSupport(NULL) DISCARD fmt=10                      hr=0x80070057
+  CheckColorSpaceSupport FLIP_DISCARD fmt=28                       create=0x00000000 0:1 1:0 2:1 3:1 12:1 13:0 14:1 17:1 18:0 22:0 24:0 25:0 
+  CheckColorSpaceSupport(NULL) FLIP_DISCARD fmt=28                 hr=0x80070057
+  CheckColorSpaceSupport FLIP_DISCARD fmt=24                       create=0x00000000 0:1 1:0 2:1 3:1 12:1 13:0 14:1 17:1 18:0 22:0 24:0 25:0 
+  CheckColorSpaceSupport(NULL) FLIP_DISCARD fmt=24                 hr=0x80070057
+  CheckColorSpaceSupport FLIP_DISCARD fmt=10                       create=0x00000000 0:0 1:1 2:0 3:0 12:0 13:0 14:0 17:0 18:0 22:0 24:0 25:0 
+  CheckColorSpaceSupport(NULL) FLIP_DISCARD fmt=10                 hr=0x80070057
+
+[latency]
+  two GetFrameLatencyWaitableObject calls                          same=0
+  immediate waits after create (latency 1)                         1
+  SetMaximumFrameLatency(3) then immediate waits                   hr=0x00000000 n=2
+  SetMaximumFrameLatency(1) then immediate waits                   hr=0x00000000 n=0
+  after one Present + 200ms, immediate waits                       1
+  after two Presents + 200ms, immediate waits                      1
+  after Present(TEST) + 200ms, immediate waits                     0
+  SetMaximumFrameLatency(16)                                       hr=0x00000000 get=16 waits=15
+  SetMaximumFrameLatency(17)                                       hr=0x00000000 get=17 waits=1
+  SetMaximumFrameLatency(100)                                      hr=0x887a0001 get=17 waits=0
+  SetMaximumFrameLatency(1000)                                     hr=0x887a0001 get=17 waits=0
+  SetMaximumFrameLatency(4294967295)                               hr=0x887a0001 get=17 waits=0
+  GetMaximumFrameLatency(NULL)                                     hr=0x887a0001
+  SetSourceSize(0,48) then Get                                     hr=0x00000000 0x48
+  SetSourceSize(0,0) then Get                                      hr=0x00000000 0x0
+  SetSourceSize(32,24) + ResizeBuffers(100x80) then Get            hr=0x00000000 100x80
+  GetSourceSize(NULL, NULL)                                        hr=0x887a0001
+
+[defaults]
+  DISCARD default GetBackgroundColor                               hr=0x00000000 0.00 0.00 0.00 1.00
+  DISCARD default GetRotation                                      hr=0x887a0001 value=99
+  DISCARD SetRotation(UNSPECIFIED)                                 hr=0x887a0001
+  DISCARD SetRotation(5)                                           hr=0x887a0001
+  DISCARD GetBackgroundColor(NULL)                                 hr=0x887a0001
+  DISCARD SetBackgroundColor(NULL)                                 hr=0x887a0001
+  DISCARD ResizeBuffers(flags=0x1)                                 hr=0x887a0001 -> flags=0x0
+  DISCARD ResizeBuffers(flags=0x20)                                hr=0x887a0001 -> flags=0x0
+  DISCARD ResizeBuffers(flags=0x80)                                hr=0x80070057 -> flags=0x0
+  DISCARD ResizeBuffers(flags=0x10)                                hr=0x00000000 -> flags=0x10
+  DISCARD ResizeBuffers(flags=0x8)                                 hr=0x00000000 -> flags=0x8
+  DISCARD ResizeBuffers(RGBA, GDI_COMPATIBLE)                      hr=0x80070057 -> fmt=28 flags=0x4
+  DISCARD ResizeBuffers(20000x20000)                               hr=0x00000000 -> 20000x20000
+  DISCARD ResizeBuffers(R32_FLOAT)                                 hr=0x80070057 -> fmt=41 64x48
+  DISCARD ResizeBuffers(32x32 R32_FLOAT)                           hr=0x80070057 -> fmt=41 32x32
+    GetBuffer after failed ResizeBuffers                           hr=0x887a0001 0x0 fmt=0
+    Present after failed ResizeBuffers                             hr=0x887a0001
+    ResizeBuffers(UNKNOWN) after                                   hr=0x80070057 -> fmt=41
+  FLIP_DISCARD default GetBackgroundColor                          hr=0x00000000 0.00 0.00 0.00 1.00
+  FLIP_DISCARD default GetRotation                                 hr=0x00000000 value=1
+  FLIP_DISCARD SetRotation(UNSPECIFIED)                            hr=0x887a0001
+  FLIP_DISCARD SetRotation(5)                                      hr=0x887a0001
+  FLIP_DISCARD GetBackgroundColor(NULL)                            hr=0x887a0001
+  FLIP_DISCARD SetBackgroundColor(NULL)                            hr=0x887a0001
+  FLIP_DISCARD ResizeBuffers(flags=0x1)                            hr=0x887a0001 -> flags=0x0
+  FLIP_DISCARD ResizeBuffers(flags=0x20)                           hr=0x887a0001 -> flags=0x0
+  FLIP_DISCARD ResizeBuffers(flags=0x80)                           hr=0x80070057 -> flags=0x0
+  FLIP_DISCARD ResizeBuffers(flags=0x10)                           hr=0x80070057 -> flags=0x10
+  FLIP_DISCARD ResizeBuffers(flags=0x8)                            hr=0x00000000 -> flags=0x8
+  FLIP_DISCARD ResizeBuffers(RGBA, GDI_COMPATIBLE)                 hr=0x80070057 -> fmt=28 flags=0x4
+  FLIP_DISCARD ResizeBuffers(20000x20000)                          hr=0x00000000 -> 20000x20000
+
+[composition]
+  composition create                                               hr=0x00000000
+  composition create alpha=IGNORE                                  hr=0x00000000
+  composition create scaling=ASPECT_RATIO_STRETCH                  hr=0x887a0001
+  composition GetMatrixTransform (default)                         hr=0x00000000 1.00 0.00 0.00 1.00 0.00 0.00
+  composition SetMatrixTransform #0                                hr=0x00000000 get=0x00000000 1.00 0.00 0.00 1.00 0.00 0.00
+  composition SetMatrixTransform #1                                hr=0x00000000 get=0x00000000 2.00 0.00 0.00 0.50 3.00 4.00
+  composition SetMatrixTransform #2                                hr=0x887a0001 get=0x00000000 2.00 0.00 0.00 0.50 3.00 4.00
+  composition SetMatrixTransform #3                                hr=0x00000000 get=0x00000000 -1.00 0.00 0.00 1.00 0.00 0.00
+  composition SetMatrixTransform #4                                hr=0x00000000 get=0x00000000 0.00 0.00 0.00 0.00 0.00 0.00
+  composition SetMatrixTransform #5                                hr=0x887a0001 get=0x00000000 0.00 0.00 0.00 0.00 0.00 0.00
+  composition SetMatrixTransform(NULL)                             hr=0x887a0001
+  composition GetMatrixTransform(NULL)                             hr=0x887a0001
+  composition SetSourceSize(32,24)                                 hr=0x00000000 get=32x24
+
+[hwnd]
+  DISCARD then FLIP_DISCARD on one hwnd                            0x00000000 0x00000000
+  FLIP_DISCARD then DISCARD on one hwnd                            0x00000000 0x00000000
+  ForHwnd FLIP on hwnd with a live FLIP chain                      0x80070005 out=null
+  ForHwnd fullscreen desc Windowed=FALSE                           hr=0x087a0001 fs=0
+  bogus-HWND chain create / Present                                0x00000000 0x087a0001
+  bogus-HWND chain width 0                                         hr=0x887a0001
+
+done
+#
+# Windows 11 10.0.26200 (winoracle, WARP "Microsoft Basic Render Driver"),
+# run on the logged-on desktop via schtasks /it (session disconnected, so
+# every Present that reaches the screen answers DXGI_STATUS_OCCLUDED and a
+# bitblt Present does not count). 2026-09-28. x86 differs from x64 only in
+# FLIP_DISCARD ResizeBuffers(20000x20000): E_OUTOFMEMORY in the 32-bit
+# address space.
+#
+# Rules this measured (implemented in src/winapi/graphics/d3d11/d3d11.cpp):
+#  - flip Present: TEST only alone; DO_NOT_SEQUENCE not with RESTART or
+#    DO_NOT_WAIT; bits outside DXGI_PRESENT refused. Bitblt ignores them.
+#  - creation flags: RESTRICT_SHARED_RESOURCE_DRIVER is E_INVALIDARG on flip,
+#    FULLSCREEN_VIDEO / YUV_VIDEO / HW_PROTECTED INVALID_CALL, HOLOGRAPHIC ok.
+#  - colour spaces: bitblt sRGB only; 8/10-bit flip adds studio G22 P709,
+#    G2084/G22 P2020 and their studio variants; FP16 linear scRGB only.
+#  - waitable object: a new handle per call; one frame free at latency 1,
+#    raising the latency frees the difference; latency 17 ok, 100 refused.
+#  - SetSourceSize(0, h) accepted; ResizeBuffers resets it to the buffer.
+#  - a failed bitblt ResizeBuffers (R32_FLOAT) keeps the new description and
+#    leaves no buffers: GetBuffer / Present INVALID_CALL until a good resize.
+#  - composition SetMatrixTransform: scale/translate only (INVALID_CALL).
+#  - a live flip chain refuses a second flip chain on its HWND (ACCESSDENIED);
+#    fullscreen desc Windowed=FALSE -> DXGI_STATUS_OCCLUDED, windowed.
+# Vitreo differences that remain: OCCLUDED vs S_OK and bitblt present counts
+# (disconnected session), DO_NOT_WAIT answering WAS_STILL_DRAWING when the
+# Metal queue is full, 16x MSAA and 20000x20000 (Metal limits: E_INVALIDARG /
+# E_OUTOFMEMORY), studio-range colour spaces (no presenter support).

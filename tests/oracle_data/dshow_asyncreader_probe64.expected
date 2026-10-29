@@ -1,0 +1,77 @@
+create hr=00000000
+qi IFileSourceFilter hr=00000000
+pins before Load: next hr=00000001 n=0
+GetCurFile before Load hr=00000000 name_null=1
+Load missing hr=80070002
+Load hr=00000000
+Load again hr=8000ffff
+GetCurFile hr=00000000 name=movies\frontierlogo.webm
+  curfile mt major={E436EB83-524F-11CE-9F53-0020AF0BA770} sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0 punk=0
+filter name before AddFilter=''
+classid={E436EBB5-524F-11CE-9F53-0020AF0BA770}
+qi IAMFilterMiscFlags=80004002 IReferenceClock=80004002 IMediaSeeking=80004002 IAsyncReader=80004002
+pins after Load: hr=00000000 n=1
+second pin hr=00000001 n=0
+pin name='Output' dir=1
+pin id='Output'
+  enum mt[0] major={E436EB83-524F-11CE-9F53-0020AF0BA770} sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0 punk=0
+  enum mt[1] major={E436EB83-524F-11CE-9F53-0020AF0BA770} sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0 punk=0
+QueryAccept(Stream/NULL)=00000000 (Stream/Avi)=00000000 (Video)=00000001
+ConnectedTo=80040209 null=0 ConnectionMediaType=80040209
+FindPin(Output)=00000000
+qi IAsyncReader on pin hr=00000000
+Length hr=00000000 total=7468099 avail=7468099
+SyncRead(0,4) hr=00000000 bytes=1a 45 df a3
+SyncRead(3,5) unaligned hr=00000000 bytes=a3 9f 42 86
+SyncRead(total-2,8) hr=00000001 bytes=81 02 ee ee
+SyncRead(past end) hr=00000001
+RequestAllocator(NULL pref, align1) hr=00000000
+  actual buffers=4 size=65536 align=512 prefix=0
+RequestAllocator(align512) hr=00000000
+  actual buffers=4 size=65536 align=512 prefix=0
+RequestAllocator(preferred) hr=00000000 same=1
+  actual buffers=4 size=65536 align=512 prefix=0
+Request(0..512 bytes as time*1e7) hr=00000000
+Request(1024..2048) hr=00000000
+Request(512..600 unaligned length) hr=8004020e
+Request(longer than buffer) hr=80070057
+Request(no stop time) hr=00000000
+WaitForNext hr=00000000 user=11 actual=512 time_hr=00000000 start=0 end=5120000000 bytes=1a 45 df a3
+WaitForNext hr=00000000 user=22 actual=1024 time_hr=00000000 start=10240000000 end=20480000000 bytes=90 61 20 34
+WaitForNext hr=00000000 user=97 actual=0 time_hr=80040249 start=0 end=0 bytes=00 00 00 00
+Request(tail past end) hr=00000000
+WaitForNext hr=00000000 user=33 actual=67 end_bytes=445
+  tail buffer[0..4]=82 10 c9 53 matches_start=1 matches_last_partial_block=1
+  tail buffer[512..516] matches file[start+512]=-1
+Request(wholly past end) hr=80070026
+WaitForNext hr=8004022e sample_null=1 user=0
+SyncReadAligned(512..1024) hr=00000000 actual=512 bytes=ce 39 67 18
+BeginFlush hr=00000000
+Request while flushing hr=80040227
+WaitForNext while flushing hr=80040227 sample_null=1 user=7
+EndFlush hr=00000000
+WaitForNext idle(100) hr=8004022e sample_null=1 waited=1
+Request hr=00000000
+WaitForNext after BeginFlush with pending hr=00000000 sample=s1 user=66
+AddSourceFilter hr=00000000
+  name='movies\frontierlogo.webm' clsid={E436EBB5-524F-11CE-9F53-0020AF0BA770}
+AddSourceFilter(name) hr=00000000
+  name='Mine'
+AddSourceFilter(missing) hr=80040216 null=0
+AddSourceFilter(abs) hr=00000000
+  name='C:\oracle\pc\movies\frontierlogo.webm'
+RenderFile(missing) hr=80040216
+SystemClock hr=00000000
+GetTime delta_ms~100=1 monotonic_qpc_scale=1
+GetTime vs QPC diff_ms=-24 vs timeGetTime diff_ms=0
+AdviseTime(past) hr=00000000 cookie_nonzero=1 wait=0
+AdviseTime(+200ms) hr=00000000
+  fired=0 elapsed_ge150=1
+Unadvise(fired) hr=00000001
+Unadvise(pending) hr=00000000 wait=258
+AdviseTime(NULL event) hr=80070057
+AdviseTime(base -1) hr=80070057
+AdvisePeriodic(50ms) hr=00000000
+  count after ~275ms in 4..7=1 unadvise=00000000
+AdvisePeriodic(period 0) hr=80070057
+Unadvise(bogus) hr=00000001

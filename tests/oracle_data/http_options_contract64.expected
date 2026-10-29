@@ -1,0 +1,23 @@
+credentials-null 0 6
+credentials-session 0 6
+credentials-target 0 87
+credentials-scheme 0 87
+credentials-reserved 1 0
+credentials-no-user 0 87
+credentials-no-password 0 87
+credentials-basic 1 0
+timeouts-null 0 12018
+timeouts-connection 0 12018
+timeouts-negative 0 87
+timeouts-session 1 0
+inherited-receive 200
+timeouts-request 1 0
+timeouts-infinite 1 0
+infinite-option-2 4294967295
+infinite-option-3 4294967295
+infinite-option-5 4294967295
+infinite-option-6 4294967295
+credentials-unicode 0 87
+credentials-latin1 1 0
+wire-Authorization: Basic dek6cP8=
+send 1 0

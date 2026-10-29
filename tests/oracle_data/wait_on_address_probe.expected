@@ -1,0 +1,80 @@
+== x64
+resolved=7
+-- validation
+size_0 ret=00000000 err=00000057
+size_3 ret=00000000 err=00000057
+size_5 ret=00000000 err=00000057
+size_16 ret=00000000 err=00000057
+size_3_differs ret=00000000 err=00000057
+null_address_child ret=40000000 err=00000000
+null_compare_child ret=40000000 err=00000000
+bad_address_child ret=40000010 err=00000000
+bad_compare_child ret=40000010 err=00000000
+wake_null_child ret=00030000 err=00000000
+both_bad_child ret=40000020 err=00000000
+bad_size_null_address_child ret=00010057 err=00000000
+-- compare
+byte1_differs_size1 ret=00000000 err=000005b4
+byte1_differs_size2 ret=00000001 err=0000dead
+byte1_differs_size4 ret=00000001 err=0000dead
+byte1_differs_size8 ret=00000001 err=0000dead
+byte7_differs_size4 ret=00000000 err=000005b4
+byte7_differs_size8 ret=00000001 err=0000dead
+equal_timeout_0 ret=00000000 err=000005b4 elapsed=fast
+equal_timeout_300 ret=00000000 err=000005b4 elapsed=slow
+unaligned_size4_equal_timeout_0 ret=00000000 err=000005b4 elapsed=fast
+unaligned_size4_differs ret=00000001 err=0000dead
+-- wakes
+wake_before_wait_not_kept ret=00000000 err=000005b4 elapsed=slow
+wake_single_no_change ret=00000001 err=0000dead order=1 elapsed=fast
+single_fifo after_one waiter0=1 waiter1=0 waiter2=0
+single_fifo after_two waiter0=1 waiter1=2 waiter2=0
+  waiter0 ret=00000001 err=0000dead
+  waiter1 ret=00000001 err=0000dead
+  waiter2 ret=00000001 err=0000dead
+mixed_size_wake_all size4 ret=00000001 err=0000dead
+  size1 ret=00000001 err=0000dead
+mixed_size_wake_single size1_order=1 size4_order=0
+exact_address_neighbour_not_woken ret=00000000 err=000005b4 order=1 elapsed=slow
+store_without_wake ret=00000000 err=000005b4 order=1 elapsed=slow
+-- done
+== x86
+resolved=7
+-- validation
+size_0 ret=00000000 err=00000057
+size_3 ret=00000000 err=00000057
+size_5 ret=00000000 err=00000057
+size_16 ret=00000000 err=00000057
+size_3_differs ret=00000000 err=00000057
+null_address_child ret=40000000 err=00000000
+null_compare_child ret=40000000 err=00000000
+bad_address_child ret=40000010 err=00000000
+bad_compare_child ret=40000010 err=00000000
+wake_null_child ret=00030000 err=00000000
+both_bad_child ret=40000020 err=00000000
+bad_size_null_address_child ret=00010057 err=00000000
+-- compare
+byte1_differs_size1 ret=00000000 err=000005b4
+byte1_differs_size2 ret=00000001 err=0000dead
+byte1_differs_size4 ret=00000001 err=0000dead
+byte1_differs_size8 ret=00000001 err=0000dead
+byte7_differs_size4 ret=00000000 err=000005b4
+byte7_differs_size8 ret=00000001 err=0000dead
+equal_timeout_0 ret=00000000 err=000005b4 elapsed=fast
+equal_timeout_300 ret=00000000 err=000005b4 elapsed=slow
+unaligned_size4_equal_timeout_0 ret=00000000 err=000005b4 elapsed=fast
+unaligned_size4_differs ret=00000001 err=0000dead
+-- wakes
+wake_before_wait_not_kept ret=00000000 err=000005b4 elapsed=slow
+wake_single_no_change ret=00000001 err=0000dead order=1 elapsed=fast
+single_fifo after_one waiter0=1 waiter1=0 waiter2=0
+single_fifo after_two waiter0=1 waiter1=2 waiter2=0
+  waiter0 ret=00000001 err=0000dead
+  waiter1 ret=00000001 err=0000dead
+  waiter2 ret=00000001 err=0000dead
+mixed_size_wake_all size4 ret=00000001 err=0000dead
+  size1 ret=00000001 err=0000dead
+mixed_size_wake_single size1_order=1 size4_order=0
+exact_address_neighbour_not_woken ret=00000000 err=000005b4 order=1 elapsed=slow
+store_without_wake ret=00000000 err=000005b4 order=1 elapsed=slow
+-- done

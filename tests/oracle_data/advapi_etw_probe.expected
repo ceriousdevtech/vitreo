@@ -1,0 +1,64 @@
+sizeof_props v=78
+ctw_query_name ret=1069 gle=1069 bufsize=1078 wflags=20000 loggerName0=0
+ctw_stop_name ret=1069 gle=1069 bufsize=1078 wflags=20000 loggerName0=0
+ctw_flush_name ret=1069 gle=1069 bufsize=1078 wflags=20000 loggerName0=0
+ctw_update_name ret=1069 gle=1069 bufsize=1078 wflags=20000 loggerName0=0
+ctw_code_99 ret=57 gle=57 bufsize=1078 wflags=20000 loggerName0=0
+ctw_code_5 ret=1069 gle=1069 bufsize=1078 wflags=20000 loggerName0=0
+ctw_null_props ret=57 gle=57
+ctw_null_both ret=57 gle=57 bufsize=1078 wflags=20000 loggerName0=0
+ctw_bad_handle ret=6 gle=6 bufsize=1078 wflags=20000 loggerName0=0
+ctw_bad_handle_and_name ret=1069 gle=1069 bufsize=1078 wflags=20000 loggerName0=0
+ctw_size_small ret=18 gle=18 bufsize=77 wflags=20000 loggerName0=0
+ctw_size_zero ret=18 gle=18 bufsize=0 wflags=20000 loggerName0=0
+ctw_size_exact_noname ret=1069 gle=1069 bufsize=78 wflags=20000 loggerName0=0
+ctw_size_exact_nameoff ret=1069 gle=1069 bufsize=78 wflags=20000 loggerName0=0
+ctw_nameoff_beyond ret=57 gle=57 bufsize=1078 wflags=20000 loggerName0=0
+ctw_nameoff_inside ret=57 gle=57 bufsize=1078 wflags=20000 loggerName0=0
+ctw_fileoff_beyond ret=57 gle=57 bufsize=1078 wflags=20000 loggerName0=0
+ctw_kernel_logger ret=1069 gle=1069 bufsize=1078 wflags=20000 loggerName0=0
+ctw_systemguid_wrongname ret=57 gle=57 bufsize=1078 wflags=20000 loggerName0=0
+ctw_bad_logfilemode ret=1069 gle=1069 bufsize=1078 wflags=20000 loggerName0=0
+ctw_no_traced_guid_flag ret=1069 gle=1069 bufsize=1078 wflags=0 loggerName0=0
+cta_query_name ret=1069 gle=1069
+stopa_name ret=1069 gle=1069
+stopw_name ret=1069 gle=1069
+stopw_handle ret=6 gle=6
+stopw_none ret=57 gle=57
+stopw_nullprops ret=57 gle=57
+queryw_name ret=1069 gle=1069
+flushw_name ret=1069 gle=1069
+openw_null ret=ffffffffffffffff gle=57
+openw_empty ret=ffffffffffffffff gle=3
+openw_realtime_missing handleValid=1 gle=0 lfLoggerName=1 lfIsKernel=0 lfBufferSize=0 lfBuffersRead=0 lfLogfileHeaderBufferSize=0 lfLogFileMode=10000100
+  processtrace_realtime_missing ret=1069 gle=1069
+  closetrace_realtime ret=0 gle=dead
+  closetrace_again ret=6 gle=dead
+openw_two_handles_differ v=1 delta=1
+openw_file_missing ret=ffffffffffffffff gle=3
+openw_name_no_realtime_mode ret=ffffffffffffffff gle=3
+opena_null ret=ffffffffffffffff gle=57
+opena_realtime_missing handleValid=1 gle=0
+opena_empty ret=ffffffffffffffff gle=3
+closetrace_bad ret=6 gle=dead
+processtrace_null ret=18 gle=dead
+processtrace_bad ret=6 gle=dead
+enabletrace_badhandle ret=57 gle=57
+enabletrace_nullguid ret=57 gle=57
+enabletrace_zerohandle ret=57 gle=57
+enabletrace_disable_bad ret=57 gle=57
+enabletrace_minus1 ret=57 gle=57
+tracemessage_bad ret=6 gle=dead
+tracemessage_zero ret=6 gle=dead
+tracemessage_args ret=6 gle=dead
+tracemessageva_bad ret=6 gle=dead
+tracemessage_noguid ret=6 gle=dead
+traceevent_bad ret=6 gle=dead
+traceevent_zero ret=6 gle=dead
+traceevent_nullheader ret=57 gle=dead
+traceevent_small ret=6 gle=dead
+gettraceloggerhandle_bad ret=ffffffffffffffff gle=6
+gettraceloggerhandle_zero ret=0 gle=dead
+gettraceenablelevel_bad ret=0 gle=6
+gettraceenableflags_bad ret=0 gle=6
+gettraceenablelevel_zero ret=0 gle=6

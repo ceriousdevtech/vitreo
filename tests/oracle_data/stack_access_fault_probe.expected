@@ -1,0 +1,44 @@
+# winoracle (12th Gen Intel Core i9-12900KF, Windows 10.0.26200.9457), 2026-10-11; the POPAD register
+# rows (seeded EDI/ESI/EBP, stub set-up 2+15 bytes, hence ip=+17) re-measured twice on 2026-10-12.
+# x86_64-w64-mingw32-gcc -O1 (first block) and i686-w64-mingw32-gcc -O1 (second block).
+# A stack WRITE fault outside the guard (PUSH, CALL, PUSHF, ENTER, PUSHAD) is STATUS_ACCESS_VIOLATION --
+# never STATUS_STACK_OVERFLOW -- and undeliverable here (the dispatch frame would land in the same no-access
+# page), so the process ends with 0xC0000005 (WER can take over 20 s to end it; the probe waits 120 s).
+# A stack READ fault (POP, POPF, RET, RET imm16, POPAD, LEAVE) is delivered as STATUS_ACCESS_VIOLATION,
+# [0]=0, [1]=the first inaccessible byte, at the instruction, with the STARTING stack pointer (ctxsp=+0) --
+# even for LEAVE, whose RSP<-RBP step and pop fault as one instruction, and for POPAD after four successful
+# pops. POPAD is not all-or-nothing, though: the registers popped before the faulting slot hold the slot
+# values (popad partial: EDI/ESI/EBP = slots 0..2, 0x5107000n), while a fault on the first slot leaves the
+# seeds (0x5EED000n).
+64-bit, word 8, stub set-up 3 bytes (+3 with bp)
+push r64        sp=B+8 undeliverable: process exit status c0000005
+push imm32      sp=B+8 undeliverable: process exit status c0000005
+pushfq          sp=B+8 undeliverable: process exit status c0000005
+call rel32      sp=B+8 undeliverable: process exit status c0000005
+enter 16,0      sp=B+8 undeliverable: process exit status c0000005
+push r64 strad  sp=B+4 undeliverable: process exit status c0000005
+pop r64         sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+3
+popfq           sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+3
+ret             sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+3
+ret 8           sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+3
+pop r64 strad   sp=B-4 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+3
+leave           sp=B-64 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+6
+32-bit, word 4, stub set-up 2 bytes (+2 with bp)
+push r32        sp=B+4 undeliverable: process exit status c0000005
+push imm32      sp=B+4 undeliverable: process exit status c0000005
+pushfd          sp=B+4 undeliverable: process exit status c0000005
+call rel32      sp=B+4 undeliverable: process exit status c0000005
+enter 16,0      sp=B+4 undeliverable: process exit status c0000005
+push r32 strad  sp=B+2 undeliverable: process exit status c0000005
+pushad          sp=B+4 undeliverable: process exit status c0000005
+pushad partial  sp=B+4104 undeliverable: process exit status c0000005
+pop r32         sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+2
+popfd           sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+2
+ret             sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+2
+ret 8           sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+2
+pop r32 strad   sp=B-2 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+2
+popad           sp=B+0 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+17
+                  edi=5eed0007 esi=5eed0006 ebp=5eed0005 (kept: no register committed)
+popad partial   sp=B-16 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+17
+                  edi=51070000 esi=51070001 ebp=51070002 (CHANGED)
+leave           sp=B-64 code=c0000005 np=2 i0=0 i1=B+0 ctxsp=+0 ip=+4

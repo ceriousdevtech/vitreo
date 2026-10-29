@@ -1,0 +1,39 @@
+variable+hasstrings style=0x61
+  created
+  measure ctl=2 id=7 itemID=0 itemData=0x7ff6f60440c0 h_in=16 count=1 len=5 gettext=5 data=0x0 text="alpha"
+  add alpha -> 0
+  measure ctl=2 id=7 itemID=1 itemData=0x7ff6f60440e0 h_in=16 count=2 len=4 gettext=4 data=0x0 text="beta"
+  add beta -> 1
+  measure ctl=2 id=7 itemID=0 itemData=0x7ff6f60440fe h_in=16 count=3 len=4 gettext=4 data=0x0 text="zero"
+  insert zero@0 -> 0
+  measure ctl=2 id=7 itemID=3 itemData=0x7ff6f6044120 h_in=16 count=4 len=4 gettext=4 data=0x0 text="last"
+  insert last@-1 -> 3
+  height[0]=26
+  height[1]=20
+  height[2]=23
+  height[3]=29
+variable style=0x20
+  created
+  measure ctl=2 id=7 itemID=0 itemData=0x7ff6f60440c0 h_in=16 count=1 len=8 gettext=8 data=0xf60440c0 text="???"
+  add alpha -> 0
+  measure ctl=2 id=7 itemID=1 itemData=0x7ff6f60440e0 h_in=16 count=2 len=8 gettext=8 data=0xf60440e0 text="???"
+  add beta -> 1
+  measure ctl=2 id=7 itemID=0 itemData=0x7ff6f60440fe h_in=16 count=3 len=8 gettext=8 data=0xf60440fe text="???"
+  insert zero@0 -> 0
+  measure ctl=2 id=7 itemID=3 itemData=0x7ff6f6044120 h_in=16 count=4 len=8 gettext=8 data=0xf6044120 text="???"
+  insert last@-1 -> 3
+  height[0]=26
+  height[1]=20
+  height[2]=23
+  height[3]=29
+fixed+hasstrings style=0x50
+  measure ctl=2 id=7 itemID=0 itemData=0x0 h_in=16 (during create)
+  created
+  add alpha -> 0
+  add beta -> 1
+  insert zero@0 -> 0
+  insert last@-1 -> 3
+  height[0]=20
+  height[1]=20
+  height[2]=20
+  height[3]=20

@@ -1,0 +1,57 @@
+init_null ok=0 gle=6 h=0
+init_invalid ok=0 gle=6 h=0
+init_file ok=0 gle=6 h=0
+free_null ok=1 gle=dead
+assoc_null ok=0 gle=6
+desc_null ok=0 gle=6
+qis_null ok=0 gle=6
+qdi_null ok=0 gle=6
+setalt_null ok=0 gle=6
+getalt_null ok=0 gle=6
+qpipe_null ok=0 gle=6
+qpipeex_null ok=0 gle=6
+setpipepol_null ok=0 gle=6
+getpipepol_null ok=0 gle=6
+read_null ok=0 gle=6
+write_null ok=0 gle=6
+control_null ok=0 gle=6
+reset_null ok=0 gle=6
+abort_null ok=0 gle=6
+flush_null ok=0 gle=6
+setpow_null ok=0 gle=6
+getpow_null ok=0 gle=6
+adjframe ok=0 gle=57
+ n=4
+regisoch_null ok=0 gle=6
+unregisoch_null ok=0 gle=6
+wisoch_null ok=0 gle=57
+risoch_null ok=0 gle=57
+wisochasap_null ok=0 gle=57
+risochasap_null ok=0 gle=57
+abortasync_null ok=0 gle=6
+resetasync_null ok=0 gle=6
+setaltasync_null ok=0 gle=6
+timesync i=0 ok=0 gle=57
+timesync i=1 ok=0 gle=57
+timesync i=2 ok=0 gle=57
+pcd_any off=9
+pcd_if0_alt1 off=19
+pcd_if1 off=22
+pcd_class3 off=22
+pcd_proto3 off=19
+pcd_sub1_proto2 off=9
+pcd_none off=eeee
+pcd_start_after_first off=eeee
+pcd_start_at_first off=9
+pcd_start_end off=eeee
+pd_endpoint off=12
+pd_endpoint_next off=34
+pd_endpoint_last off=eeee
+pd_hid off=2b
+pd_config off=0
+pd_missing off=eeee
+pd_short off=12
+pd_short_edge off=12
+pd_start_outside off=eeee
+pd_zero_len off=12
+pcd_zero_len off=eeee

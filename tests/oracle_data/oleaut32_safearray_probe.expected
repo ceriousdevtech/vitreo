@@ -1,0 +1,144 @@
+create_vt vt=0 NULL
+create_vt vt=1 NULL
+create_vt vt=2 cb=2 ff=80 hvt=2 gvhr=0 gv=2
+create_vt vt=3 cb=4 ff=80 hvt=3 gvhr=0 gv=3
+create_vt vt=4 cb=4 ff=80 hvt=4 gvhr=0 gv=4
+create_vt vt=5 cb=8 ff=80 hvt=5 gvhr=0 gv=5
+create_vt vt=6 cb=8 ff=80 hvt=6 gvhr=0 gv=6
+create_vt vt=7 cb=8 ff=80 hvt=7 gvhr=0 gv=7
+create_vt vt=8 cb=8 ff=180 hvt=8 gvhr=0 gv=8
+create_vt vt=9 cb=8 ff=440 gvhr=0 gv=9
+create_vt vt=a cb=4 ff=80 hvt=a gvhr=0 gv=a
+create_vt vt=b cb=2 ff=80 hvt=b gvhr=0 gv=b
+create_vt vt=c cb=18 ff=880 hvt=c gvhr=0 gv=c
+create_vt vt=d cb=8 ff=240 gvhr=0 gv=d
+create_vt vt=e cb=10 ff=80 hvt=e gvhr=0 gv=e
+create_vt vt=f NULL
+create_vt vt=10 cb=1 ff=80 hvt=10 gvhr=0 gv=10
+create_vt vt=11 cb=1 ff=80 hvt=11 gvhr=0 gv=11
+create_vt vt=12 cb=2 ff=80 hvt=12 gvhr=0 gv=12
+create_vt vt=13 cb=4 ff=80 hvt=13 gvhr=0 gv=13
+create_vt vt=14 cb=8 ff=80 hvt=14 gvhr=0 gv=14
+create_vt vt=15 cb=8 ff=80 hvt=15 gvhr=0 gv=15
+create_vt vt=16 cb=4 ff=80 hvt=16 gvhr=0 gv=16
+create_vt vt=17 cb=4 ff=80 hvt=17 gvhr=0 gv=17
+create_vt vt=18 NULL
+create_vt vt=19 NULL
+create_vt vt=1a NULL
+create_vt vt=1b NULL
+create_vt vt=1c NULL
+create_vt vt=1d NULL
+create_vt vt=1e NULL
+create_vt vt=1f NULL
+create_vt vt=20 NULL
+create_vt vt=21 NULL
+create_vt vt=22 NULL
+create_vt vt=23 NULL
+create_vt vt=24 NULL
+create_vt vt=25 cb=8 ff=80 hvt=25 gvhr=0 gv=25
+create_vt vt=26 cb=8 ff=80 hvt=26 gvhr=0 gv=26
+create_vt vt=27 NULL
+create_vt vt=28 NULL
+create_vt vt=29 NULL
+create_vt vt=2a NULL
+create_vt vt=2b NULL
+create_vt vt=2c NULL
+create_vt vt=2d NULL
+create_vt vt=2e NULL
+create_vt vt=2f NULL
+create_vt vt=30 NULL
+create_vt vt=31 NULL
+create_vt vt=32 NULL
+create_vt vt=33 NULL
+create_vt vt=34 NULL
+create_vt vt=35 NULL
+create_vt vt=36 NULL
+create_vt vt=37 NULL
+create_vt vt=38 NULL
+create_vt vt=39 NULL
+create_vt vt=3a NULL
+create_vt vt=3b NULL
+create_vt vt=3c NULL
+create_vt vt=3d NULL
+create_vt vt=3e NULL
+create_vt vt=3f NULL
+create_vt vt=40 NULL
+create_vt vt=41 NULL
+create_vt vt=42 NULL
+create_vt vt=43 NULL
+create_vt vt=44 NULL
+create_vt vt=45 NULL
+create_vt vt=46 NULL
+create_vt vt=47 NULL
+create_vt vt=48 NULL
+create_vt vt=49 NULL
+create_vt vt=4a NULL
+create_odd vt=ffff null=1
+create_odd vt=2003 null=1
+create_odd vt=4003 null=1
+create_odd vt=1003 null=1
+create_odd vt=7fff null=1
+create_odd vt=fff null=1
+md cDims=2 fFeatures=80 cbElements=4 cLocks=0 pvDataNonNull=1 hiddenVt=3 raw_c=2 raw_l=17 raw_c=2a raw_l=1
+md_bound dim=0 lhr=8002000b lb=5555 uhr=8002000b ub=5555
+md_bound dim=1 lhr=0 lb=1 uhr=0 ub=2a
+md_bound dim=2 lhr=0 lb=17 uhr=0 ub=18
+md_bound dim=3 lhr=8002000b lb=5555 uhr=8002000b ub=5555
+md_put_3_23 hr=0 off=8
+md_put_3_24 hr=0 off=b0
+md_put_1_23 hr=0
+md_put_43_23 hr=8002000b
+md_ptr_bad hr=8002000b
+md_ptr_nullout hr=80070057
+md_ptr_nullpsa hr=80070057
+md_data c2=1111 c44=2222
+md_get_3_24 hr=0 v=2222
+zero_dim cDims=2 fFeatures=80 cbElements=4 cLocks=0 pvDataNonNull=1 hiddenVt=3 raw_c=5 raw_l=1 raw_c=0 raw_l=2a
+zero_dim_lb2 hr=0 lb=1 uhr1=0 ub1=29
+ubound_ovf created=1 hr=8002000a ub=ffffffff
+cdims17 created=1 dim=11
+cdims0 created=0
+nullbounds created=0
+huge_wrap created=0
+big_68mb created=1
+redim hr=0 lb=2 ub=9
+destroy_locked hr=8002000d cLocks=1 pv=1
+destroy_unlocked hr=0
+destroy_null hr=0
+unlock_null hr=80070057
+unk_put hr=0 a_add=1 a_rel=0 cellIsObj=1
+unk_overwrite hr=0 a_rel=1 b_add=1
+unk_get hr=0 isB=1 b_add=2
+unk_destroy hr=0 b_rel=1 a_rel=1
+disp_sa cDims=1 fFeatures=440 cbElements=8 cLocks=0 pvDataNonNull=1 raw_c=2 raw_l=0
+unk_sa_ff cDims=1 fFeatures=240 cbElements=8 cLocks=0 pvDataNonNull=1 raw_c=2 raw_l=0
+var_put_bstr hr=0 vt=8 sameBstr=0 len=5
+var_put_unk hr=0 a_add=1
+var_get_unk hr=0 vt=d a_add=2
+var_destroy hr=0 a_rel=2
+ubound_ovf2 hr=8002000a ub=ffffffff
+ubound_empty_min hr=8002000a ub=ffffffff
+ubound_empty hr=0 ub=4
+redim2d hr=0 l1=0 u1=2 l2=14 u2=19 cell5=77
+redim_locked hr=8002000d
+redim_fixed hr=8002000d
+unlock_zero hr=8000ffff cLocks=0
+lock hr=0 cLocks=1
+elemsize cb=4
+vartype_nohave_i4 hr=80070057 vt=5555
+vartype_nohave_bstr hr=80070057 vt=5555
+vartype_null hr=80070057
+vector cDims=1 fFeatures=2080 cbElements=4 cLocks=0 pvDataNonNull=1 hiddenVt=3 raw_c=3 raw_l=5
+ dataAfterDesc=20
+vector_put hr=0 c2=99
+vector_destroy hr=0
+vector_empty_bstr cDims=1 fFeatures=2180 cbElements=8 cLocks=0 pvDataNonNull=1 hiddenVt=8 raw_c=0 raw_l=0
+vector_empty_vt null=1
+copy_bstr hr=0 ff=180 hvt=8 distinct=1 len=2 null0=1
+copy_null hr=0 out=0
+bstr_align mod8=0 len=3
+bstr_huge null=1
+bstr_huge2 null=1
+bstr_bytelen blen=5 len=2 b4=65 b5=0 b6=0
+bstr_odd_roundtrip hr=0 blen=5
+bstr_18mb null=0 len=900000

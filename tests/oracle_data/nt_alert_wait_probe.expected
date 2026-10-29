@@ -1,0 +1,104 @@
+== x64
+resolved value=00000007
+-- alert_semantics
+wait_zero_no_alert status=00000102
+alert_self status=00000000
+wait_null_timeout_after_alert status=00000101 elapsed=fast
+alert_self_1 status=00000000
+alert_self_2 status=00000000
+  wait_zero_first status=00000101
+  wait_zero_second status=00000102
+wait_null_address_zero status=00000102
+alert_self status=00000000
+  wait_null_address_alerted status=00000101
+wait_bad_timeout_ptr status=c0000005
+alert_tid_0 status=c000000b
+alert_tid_unknown status=c000000b
+alert_tid_odd status=00000000
+  wait_zero_after_odd status=00000101
+alert_exited_thread_handle_open status=00000000
+alert_exited_thread_handle_closed status=c000000b
+alert_other_process_thread status=c0000022
+alert_wakes_null_timeout_waiter alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+alert_before_worker_waits alert_status=00000000 worker_status=00000101
+wait_with_queued_apc status=00000102 elapsed=fast apc_ran=0
+  apc_ran_after_sleepex value=00000001
+-- alert_timeouts
+wait_abs_1 status=00000102 elapsed=fast
+wait_abs_past_1s status=00000102 elapsed=fast
+wait_abs_future_300ms status=00000102 elapsed=slow
+wait_rel_300ms status=00000102 elapsed=slow
+wait_rel_1 status=00000102 elapsed=fast
+wait_abs_future_10s alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+wait_abs_max alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+wait_rel_max alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+wait_int64_min alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+-- delay_execution
+delay_zero status=40000024 elapsed=fast
+delay_abs_1 status=00000000 elapsed=fast
+delay_abs_past_1s status=00000000 elapsed=fast
+delay_abs_future_300ms status=00000000 elapsed=slow
+delay_rel_300ms status=00000000 elapsed=slow
+delay_zero_alertable_queued_apc status=000000c0 apc_ran=1
+delay_null_ptr status=c0000005
+delay_bad_ptr status=c0000005
+delay_alertable_queued_apc status=000000c0 elapsed=fast apc_ran=1
+delay_nonalertable_queued_apc status=00000000 elapsed=slow apc_ran=0
+  apc_ran_after_sleepex value=00000001
+delay_alertable_no_apc_100ms status=00000000 elapsed=fast
+delay_alertable_then_alert_by_tid alert_status=00000000 delay_status=00000000 delay_elapsed=slow later_wait_status=00000101
+delay_rel_max_apc joined=1 status=000000c0 elapsed=fast apc_ran=1
+delay_abs_max_apc joined=1 status=000000c0 elapsed=fast apc_ran=1
+-- done
+== x86
+resolved value=00000007
+-- alert_semantics
+wait_zero_no_alert status=00000102
+alert_self status=00000000
+wait_null_timeout_after_alert status=00000101 elapsed=fast
+alert_self_1 status=00000000
+alert_self_2 status=00000000
+  wait_zero_first status=00000101
+  wait_zero_second status=00000102
+wait_null_address_zero status=00000102
+alert_self status=00000000
+  wait_null_address_alerted status=00000101
+wait_bad_timeout_ptr status=c0000005
+alert_tid_0 status=c000000b
+alert_tid_unknown status=c000000b
+alert_tid_odd status=00000000
+  wait_zero_after_odd status=00000101
+alert_exited_thread_handle_open status=00000000
+alert_exited_thread_handle_closed status=c000000b
+alert_other_process_thread status=c0000022
+alert_wakes_null_timeout_waiter alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+alert_before_worker_waits alert_status=00000000 worker_status=00000101
+wait_with_queued_apc status=00000102 elapsed=fast apc_ran=0
+  apc_ran_after_sleepex value=00000001
+-- alert_timeouts
+wait_abs_1 status=00000102 elapsed=fast
+wait_abs_past_1s status=00000102 elapsed=fast
+wait_abs_future_300ms status=00000102 elapsed=slow
+wait_rel_300ms status=00000102 elapsed=slow
+wait_rel_1 status=00000102 elapsed=fast
+wait_abs_future_10s alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+wait_abs_max alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+wait_rel_max alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+wait_int64_min alert_status=00000000 joined=1 worker_status=00000101 worker_elapsed=fast
+-- delay_execution
+delay_zero status=40000024 elapsed=fast
+delay_abs_1 status=00000000 elapsed=fast
+delay_abs_past_1s status=00000000 elapsed=fast
+delay_abs_future_300ms status=00000000 elapsed=slow
+delay_rel_300ms status=00000000 elapsed=slow
+delay_zero_alertable_queued_apc status=000000c0 apc_ran=1
+delay_null_ptr status=c0000005
+delay_bad_ptr status=c0000005
+delay_alertable_queued_apc status=000000c0 elapsed=fast apc_ran=1
+delay_nonalertable_queued_apc status=00000000 elapsed=slow apc_ran=0
+  apc_ran_after_sleepex value=00000001
+delay_alertable_no_apc_100ms status=00000000 elapsed=fast
+delay_alertable_then_alert_by_tid alert_status=00000000 delay_status=00000000 delay_elapsed=slow later_wait_status=00000101
+delay_rel_max_apc joined=1 status=000000c0 elapsed=fast apc_ran=1
+delay_abs_max_apc joined=1 status=000000c0 elapsed=fast apc_ran=1
+-- done

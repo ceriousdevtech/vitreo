@@ -1,0 +1,69 @@
+== x64
+== create_A_hidden
+  active=0 focus=0 foreground=0
+== show_A
+  A WM_ACTIVATEAPP w=1 l=0
+  A WM_NCACTIVATE w=0 l=0
+  A WM_ACTIVATE state=1 minimized=0 l=0
+  A WM_SETFOCUS prev=0
+  active=A focus=A foreground=0
+== foreground_A
+  active=A focus=A foreground=0
+== show_B_same_thread
+  A WM_NCACTIVATE w=0 l=B
+  A WM_ACTIVATE state=0 minimized=0 l=B
+  B WM_NCACTIVATE w=0 l=A
+  B WM_ACTIVATE state=1 minimized=0 l=A
+  A WM_KILLFOCUS next=B
+  B WM_SETFOCUS prev=A
+  active=B focus=B foreground=0
+== setactive_A
+  B WM_NCACTIVATE w=0 l=A
+  B WM_ACTIVATE state=0 minimized=0 l=A
+  A WM_NCACTIVATE w=0 l=B
+  A WM_ACTIVATE state=1 minimized=0 l=B
+  B WM_KILLFOCUS next=A
+  A WM_SETFOCUS prev=B
+  active=A focus=A foreground=0
+== setfocus_null
+  A WM_KILLFOCUS next=0
+  active=A focus=0 foreground=0
+== setfocus_A
+  A WM_SETFOCUS prev=0
+  active=A focus=A foreground=0
+== other_process_foreground
+  active=A focus=A foreground=0
+  set_foreground_A_ret=0
+== foreground_A_from_other_process
+  active=A focus=A foreground=0
+== other_process_exited
+  active=A focus=A foreground=0
+  setactive_invalid ret=0 err=00000578
+== setactive_invalid
+  active=A focus=A foreground=0
+  setactive_child ret=A err=0000dead
+== setactive_child
+  active=A focus=A foreground=0
+== destroy_child
+  active=A focus=A foreground=0
+  setactive_null ret=0 err=0000dead
+== setactive_null
+  active=A focus=A foreground=0
+== setactive_B
+  A WM_NCACTIVATE w=0 l=B
+  A WM_ACTIVATE state=0 minimized=0 l=B
+  B WM_NCACTIVATE w=0 l=A
+  B WM_ACTIVATE state=1 minimized=0 l=A
+  A WM_KILLFOCUS next=B
+  B WM_SETFOCUS prev=A
+  active=B focus=B foreground=0
+== destroy_active_B
+  B WM_NCACTIVATE w=0 l=A
+  B WM_ACTIVATE state=0 minimized=0 l=A
+  A WM_NCACTIVATE w=0 l=B
+  A WM_ACTIVATE state=1 minimized=0 l=B
+  B WM_KILLFOCUS next=A
+  A WM_SETFOCUS prev=B
+  active=A focus=A foreground=0
+== destroy_A
+  active=0 focus=0 foreground=0

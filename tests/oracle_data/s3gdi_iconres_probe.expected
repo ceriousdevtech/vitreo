@@ -1,0 +1,7 @@
+CreateIconFromResource cursor 8x8 fIcon=0 hot=4,8 mask 32x64 color=null
+Ex 0,0,0 fIcon=0 hot=1,2 mask 8x16 color=null
+Ex DEFAULTSIZE fIcon=0 hot=4,8 mask 32x64 color=null
+CopyIcon(bogus)=NULL err=1402
+DestroyIcon(bogus)=0 err=57005
+GetIconInfo(NULL)=0 err=57005
+GetIconInfo(bogus)=0 err=57005

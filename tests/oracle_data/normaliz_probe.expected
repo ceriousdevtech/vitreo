@@ -1,0 +1,456 @@
+bits=64 procs=11111 ord1=1
+IdnToAscii|ascii_nul|arg=0|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=12|err=305419896|out=0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000
+IdnToAscii|ascii_query|arg=0|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=0|buf=0|ret=12|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|ascii_query_bufnonnull|arg=0|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=0|buf=1|ret=12|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|ascii_explicit_len|arg=0|in=11:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d|cap=128|buf=1|ret=11|err=305419896|out=0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d
+IdnToAscii|ascii_explicit_len_with_nul|arg=0|in=12:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=12|err=305419896|out=0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000
+IdnToAscii|ascii_prefix_len|arg=0|in=7:0065 0078 0061 006d 0070 006c 0065|cap=128|buf=1|ret=7|err=305419896|out=0065 0078 0061 006d 0070 006c 0065
+IdnToAscii|ascii_small_buf|arg=0|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=5|buf=1|ret=0|err=122|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|ascii_exact_buf|arg=0|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=12|buf=1|ret=12|err=305419896|out=0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000
+IdnToAscii|ascii_null_out_nonzero|arg=0|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=10|buf=0|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|null_in|arg=0|in=null:-1|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|null_in_zero|arg=0|in=null:0|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|zero_len|arg=0|in=0:|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|empty_nul|arg=0|in=-1:0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|len_minus2|arg=0|in=-2:|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|out_len_negative|arg=0|in=-1:0061 0062 0063 0000|cap=-1|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|upper_ascii|arg=0|in=-1:0045 0058 0041 004d 0050 004c 0045 002e 0043 004f 004d 0000|cap=128|buf=1|ret=12|err=305419896|out=0045 0058 0041 004d 0050 004c 0045 002e 0043 004f 004d 0000
+IdnToAscii|trailing_dot|arg=0|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 002e 0000|cap=128|buf=1|ret=13|err=305419896|out=0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 002e 0000
+IdnToAscii|empty_label|arg=0|in=-1:0061 002e 002e 0062 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|leading_dot|arg=0|in=-1:002e 0061 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|only_dot|arg=0|in=-1:002e 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|label_63|arg=0|in=-1:0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0063 006f 006d 0000|cap=128|buf=1|ret=68|err=305419896|out=0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0063 006f 006d 0000
+IdnToAscii|label_64|arg=0|in=-1:0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|name_299|arg=0|in=-1:0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|name_299_query|arg=0|in=-1:0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0000|cap=0|buf=0|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|name_254|arg=0|in=-1:0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0000|cap=0|buf=0|ret=255|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|name_253|arg=0|in=-1:0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0061 0061 0061 0000|cap=0|buf=0|ret=254|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|buecher|arg=0|in=-1:0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000|cap=128|buf=1|ret=17|err=305419896|out=0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000
+IdnToAscii|BUECHER|arg=0|in=-1:0042 00dc 0043 0048 0045 0052 002e 0064 0065 0000|cap=128|buf=1|ret=17|err=305419896|out=0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000
+IdnToAscii|fass_sharp_s|arg=0|in=-1:0066 0061 00df 002e 0064 0065 0000|cap=128|buf=1|ret=8|err=305419896|out=0066 0061 0073 0073 002e 0064 0065 0000
+IdnToAscii|final_sigma|arg=0|in=-1:03b2 03cc 03bb 03bf 03c2 002e 0063 006f 006d 0000|cap=128|buf=1|ret=17|err=305419896|out=0078 006e 002d 002d 006e 0078 0061 0073 006d 0071 0036 0062 002e 0063 006f 006d 0000
+IdnToAscii|japanese|arg=0|in=-1:4f8b 3048 002e 30c6 30b9 30c8 0000|cap=128|buf=1|ret=23|err=305419896|out=0078 006e 002d 002d 0072 0038 006a 007a 0034 0035 0067 002e 0078 006e 002d 002d 007a 0063 006b 007a 0061 0068 0000
+IdnToAscii|ideographic_stop|arg=0|in=-1:4f8b 3048 3002 30c6 30b9 30c8 0000|cap=128|buf=1|ret=23|err=305419896|out=0078 006e 002d 002d 0072 0038 006a 007a 0034 0035 0067 002e 0078 006e 002d 002d 007a 0063 006b 007a 0061 0068 0000
+IdnToAscii|fullwidth_stop|arg=0|in=-1:0061 ff0e 0062 0000|cap=128|buf=1|ret=4|err=305419896|out=0061 002e 0062 0000
+IdnToAscii|compat_roman8|arg=0|in=-1:2167 002e 0063 006f 006d 0000|cap=128|buf=1|ret=9|err=305419896|out=0076 0069 0069 0069 002e 0063 006f 006d 0000
+IdnToAscii|fullwidth_A|arg=0|in=-1:ff21 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=7|err=305419896|out=0061 0062 002e 0063 006f 006d 0000
+IdnToAscii|soft_hyphen|arg=0|in=-1:0061 0062 00ad 0063 002e 0063 006f 006d 0000|cap=128|buf=1|ret=8|err=305419896|out=0061 0062 0063 002e 0063 006f 006d 0000
+IdnToAscii|zwj_alone|arg=0|in=-1:0061 200d 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=7|err=305419896|out=0061 0062 002e 0063 006f 006d 0000
+IdnToAscii|zwnj_alone|arg=0|in=-1:0061 200c 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=7|err=305419896|out=0061 0062 002e 0063 006f 006d 0000
+IdnToAscii|decomposed_e|arg=0|in=-1:0065 0301 002e 0063 006f 006d 0000|cap=128|buf=1|ret=12|err=305419896|out=0078 006e 002d 002d 0039 0063 0061 002e 0063 006f 006d 0000
+IdnToAscii|combining_first|arg=0|in=-1:0301 0061 002e 0063 006f 006d 0000|cap=128|buf=1|ret=14|err=305419896|out=0078 006e 002d 002d 0061 002d 0077 0062 0062 002e 0063 006f 006d 0000
+IdnToAscii|bidi_mixed|arg=0|in=-1:0061 05d0 002e 0063 006f 006d 0000|cap=128|buf=1|ret=14|err=305419896|out=0078 006e 002d 002d 0061 002d 0030 0068 0063 002e 0063 006f 006d 0000
+IdnToAscii|bidi_rtl|arg=0|in=-1:05d0 05d1 002e 0063 006f 006d 0000|cap=128|buf=1|ret=13|err=305419896|out=0078 006e 002d 002d 0034 0064 0062 0063 002e 0063 006f 006d 0000
+IdnToAscii|hyphen34|arg=0|in=-1:0061 0062 002d 002d 0063 0064 002e 0063 006f 006d 0000|cap=128|buf=1|ret=11|err=305419896|out=0061 0062 002d 002d 0063 0064 002e 0063 006f 006d 0000
+IdnToAscii|already_xn|arg=0|in=-1:0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000|cap=128|buf=1|ret=17|err=305419896|out=0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000
+IdnToAscii|already_xn_upper|arg=0|in=-1:0058 004e 002d 002d 0042 0043 0048 0045 0052 002d 004b 0056 0041 002e 0064 0065 0000|cap=128|buf=1|ret=17|err=305419896|out=0058 004e 002d 002d 0042 0043 0048 0045 0052 002d 004b 0056 0041 002e 0064 0065 0000
+IdnToAscii|bad_xn|arg=0|in=-1:0078 006e 002d 002d 007a 007a 002e 0064 0065 0000|cap=128|buf=1|ret=10|err=305419896|out=0078 006e 002d 002d 007a 007a 002e 0064 0065 0000
+IdnToAscii|bad_xn_raw|arg=8|in=-1:0078 006e 002d 002d 007a 007a 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|xn_ascii_only|arg=0|in=-1:0078 006e 002d 002d 0061 0062 0063 002d 002e 0064 0065 0000|cap=128|buf=1|ret=12|err=305419896|out=0078 006e 002d 002d 0061 0062 0063 002d 002e 0064 0065 0000
+IdnToAscii|raw_punycode_unicode|arg=8|in=-1:0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|raw_punycode_upper|arg=8|in=-1:0042 00dc 0043 0048 0045 0052 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|raw_punycode_sharp_s|arg=8|in=-1:0066 0061 00df 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|space|arg=0|in=-1:0061 0020 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=8|err=305419896|out=0061 0020 0062 002e 0063 006f 006d 0000
+IdnToAscii|control|arg=0|in=-1:0061 0001 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|del|arg=0|in=-1:0061 007f 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|embedded_nul|arg=0|in=7:0061 0000 0062 002e 0063 006f 006d|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|underscore|arg=0|in=-1:0061 005f 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=8|err=305419896|out=0061 005f 0062 002e 0063 006f 006d 0000
+IdnToAscii|underscore_std3|arg=2|in=-1:0061 005f 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|slash|arg=0|in=-1:0061 002f 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=8|err=305419896|out=0061 002f 0062 002e 0063 006f 006d 0000
+IdnToAscii|slash_std3|arg=2|in=-1:0061 002f 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|lead_hyphen|arg=0|in=-1:002d 0061 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=8|err=305419896|out=002d 0061 0062 002e 0063 006f 006d 0000
+IdnToAscii|lead_hyphen_std3|arg=2|in=-1:002d 0061 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|trail_hyphen_std3|arg=2|in=-1:0061 0062 002d 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|lone_high|arg=0|in=-1:0061 d800 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|lone_low|arg=0|in=-1:0061 dc00 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|surrogate_pair|arg=0|in=-1:0061 d83d de00 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=17|err=305419896|out=0078 006e 002d 002d 0061 0062 002d 006e 006f 0038 0032 0061 002e 0063 006f 006d 0000
+IdnToAscii|unassigned|arg=0|in=-1:0061 0378 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|unassigned_allow|arg=1|in=-1:0061 0378 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=15|err=305419896|out=0078 006e 002d 002d 0061 0062 002d 0067 0034 0062 002e 0063 006f 006d 0000
+IdnToAscii|noncharacter|arg=0|in=-1:0061 fffe 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|private_use|arg=0|in=-1:0061 e000 0062 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|unassigned_query|arg=0|in=-1:0061 0378 0062 002e 0063 006f 006d 0000|cap=0|buf=0|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|flag_allow|arg=1|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=12|err=305419896|out=0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000
+IdnToAscii|flag_std3|arg=2|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=12|err=305419896|out=0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000
+IdnToAscii|flag_email_plain|arg=4|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=12|err=305419896|out=0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000
+IdnToAscii|flag_raw|arg=8|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|flag_all|arg=15|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|flag_0x10|arg=16|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|flag_0x80000000|arg=2147483648|in=-1:0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|flag_bad_and_null_in|arg=16|in=null:-1|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToAscii|email_no_flag|arg=0|in=-1:0075 0073 0065 0072 0040 0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000|cap=128|buf=1|ret=22|err=305419896|out=0078 006e 002d 002d 0075 0073 0065 0072 0040 0062 0063 0068 0065 0072 002d 0066 0065 0062 002e 0064 0065 0000
+IdnToAscii|email_flag|arg=4|in=-1:0075 0073 0065 0072 0040 0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000|cap=128|buf=1|ret=22|err=305419896|out=0075 0073 0065 0072 0040 0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000
+IdnToAscii|email_unicode_local|arg=4|in=-1:00fc 0073 0065 0072 0040 0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000|cap=128|buf=1|ret=24|err=305419896|out=0078 006c 002d 002d 0073 0065 0072 002d 0067 006f 0061 0040 0065 0078 0061 006d 0070 006c 0065 002e 0063 006f 006d 0000
+IdnToAscii|email_two_at|arg=4|in=-1:0061 0040 0062 0040 0063 002e 0063 006f 006d 0000|cap=128|buf=1|ret=10|err=305419896|out=0061 0040 0062 0040 0063 002e 0063 006f 006d 0000
+IdnToAscii|email_no_domain|arg=4|in=-1:0075 0073 0065 0072 0040 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_xn|arg=0|in=-1:0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000|cap=128|buf=1|ret=10|err=305419896|out=0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000
+IdnToUnicode|u_xn_query|arg=0|in=-1:0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000|cap=0|buf=0|ret=10|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_xn_explicit|arg=0|in=16:0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065|cap=128|buf=1|ret=9|err=305419896|out=0062 00fc 0063 0068 0065 0072 002e 0064 0065
+IdnToUnicode|u_xn_upper|arg=0|in=-1:0058 004e 002d 002d 0042 0043 0048 0045 0052 002d 004b 0056 0041 002e 0044 0045 0000|cap=128|buf=1|ret=10|err=305419896|out=0062 00fc 0063 0068 0065 0072 002e 0044 0045 0000
+IdnToUnicode|u_plain|arg=0|in=-1:0045 0078 0061 006d 0070 006c 0065 002e 0043 004f 004d 0000|cap=128|buf=1|ret=12|err=305419896|out=0045 0078 0061 006d 0070 006c 0065 002e 0043 004f 004d 0000
+IdnToUnicode|u_sharp_s|arg=0|in=-1:0078 006e 002d 002d 0066 0061 002d 0068 0069 0061 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_bad_xn|arg=0|in=-1:0078 006e 002d 002d 007a 007a 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_bad_xn_raw|arg=8|in=-1:0078 006e 002d 002d 007a 007a 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_xn_decodes_ascii|arg=0|in=-1:0078 006e 002d 002d 0061 0062 0063 002d 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_xn_uppercase_inside|arg=0|in=-1:0078 006e 002d 002d 0042 0043 0048 0045 0052 002d 006b 0076 0061 002e 0064 0065 0000|cap=128|buf=1|ret=10|err=305419896|out=0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000
+IdnToUnicode|u_non_ascii_in|arg=0|in=-1:0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_small|arg=0|in=-1:0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000|cap=4|buf=1|ret=0|err=122|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_space|arg=0|in=-1:0061 0020 0062 002e 0064 0065 0000|cap=128|buf=1|ret=7|err=305419896|out=0061 0020 0062 002e 0064 0065 0000
+IdnToUnicode|u_underscore|arg=0|in=-1:0061 005f 0062 002e 0064 0065 0000|cap=128|buf=1|ret=7|err=305419896|out=0061 005f 0062 002e 0064 0065 0000
+IdnToUnicode|u_underscore_std3|arg=2|in=-1:0061 005f 0062 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_empty|arg=0|in=-1:0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_null|arg=0|in=null:-1|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_flag_bad|arg=16|in=-1:0061 002e 0064 0065 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToUnicode|u_email|arg=4|in=-1:0075 0073 0065 0072 0040 0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000|cap=128|buf=1|ret=15|err=305419896|out=0075 0073 0065 0072 0040 0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000
+IdnToUnicode|u_xn_to_disallowed|arg=0|in=-1:0078 006e 002d 002d 0061 002d 0035 0066 0061 002e 0064 0065 0000|cap=128|buf=1|ret=6|err=305419896|out=00e7 0061 002e 0064 0065 0000
+IdnToUnicode|u_trailing_dot|arg=0|in=-1:0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 002e 0000|cap=128|buf=1|ret=11|err=305419896|out=0062 00fc 0063 0068 0065 0072 002e 0064 0065 002e 0000
+IdnToUnicode|u_label_64|arg=0|in=-1:0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 0061 002e 0063 006f 006d 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToNameprepUnicode|np_upper|arg=0|in=-1:0042 00dc 0043 0048 0045 0052 002e 0064 0065 0000|cap=128|buf=1|ret=10|err=305419896|out=0062 00fc 0063 0068 0065 0072 002e 0064 0065 0000
+IdnToNameprepUnicode|np_sharp_s|arg=0|in=-1:0066 0061 00df 002e 0064 0065 0000|cap=128|buf=1|ret=8|err=305419896|out=0066 0061 0073 0073 002e 0064 0065 0000
+IdnToNameprepUnicode|np_roman8|arg=0|in=-1:2167 0000|cap=128|buf=1|ret=5|err=305419896|out=0076 0069 0069 0069 0000
+IdnToNameprepUnicode|np_soft_hyphen|arg=0|in=-1:0061 0062 00ad 0063 0000|cap=128|buf=1|ret=4|err=305419896|out=0061 0062 0063 0000
+IdnToNameprepUnicode|np_ascii_upper|arg=0|in=-1:0041 0042 0043 0000|cap=128|buf=1|ret=4|err=305419896|out=0041 0042 0043 0000
+IdnToNameprepUnicode|np_query|arg=0|in=-1:0042 00dc 0043 0048 0045 0052 002e 0064 0065 0000|cap=0|buf=0|ret=10|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToNameprepUnicode|np_explicit|arg=0|in=3:0041 0042 0043|cap=128|buf=1|ret=3|err=305419896|out=0041 0042 0043
+IdnToNameprepUnicode|np_xn|arg=0|in=-1:0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000|cap=128|buf=1|ret=17|err=305419896|out=0078 006e 002d 002d 0062 0063 0068 0065 0072 002d 006b 0076 0061 002e 0064 0065 0000
+IdnToNameprepUnicode|np_space|arg=0|in=-1:0061 0020 0062 0000|cap=128|buf=1|ret=4|err=305419896|out=0061 0020 0062 0000
+IdnToNameprepUnicode|np_unassigned|arg=0|in=-1:0061 0378 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToNameprepUnicode|np_unassigned_allow|arg=1|in=-1:0061 0378 0000|cap=128|buf=1|ret=3|err=305419896|out=0061 0378 0000
+IdnToNameprepUnicode|np_lone_high|arg=0|in=-1:0061 d800 0000|cap=128|buf=1|ret=0|err=123|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToNameprepUnicode|np_flag_bad|arg=16|in=-1:0061 0062 0063 0000|cap=128|buf=1|ret=0|err=1004|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToNameprepUnicode|np_small|arg=0|in=-1:0062 0075 0063 0068 0065 0072 0000|cap=3|buf=1|ret=0|err=122|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IdnToNameprepUnicode|np_ideographic_stop|arg=0|in=-1:0061 3002 0062 0000|cap=128|buf=1|ret=4|err=305419896|out=0061 002e 0062 0000
+NormalizeString|e_acute_f1|arg=1|in=-1:00e9 0000|cap=128|buf=1|ret=2|err=0|out=00e9 0000
+NormalizeString|e_acute_f1_query|arg=1|in=-1:00e9 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|e_acute_f1_explicit|arg=1|in=1:00e9|cap=128|buf=1|ret=1|err=0|out=00e9
+NormalizeString|e_acute_f1_explicit_query|arg=1|in=1:00e9|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|e_acute_f2|arg=2|in=-1:00e9 0000|cap=128|buf=1|ret=3|err=0|out=0065 0301 0000
+NormalizeString|e_acute_f2_query|arg=2|in=-1:00e9 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|e_acute_f2_explicit|arg=2|in=1:00e9|cap=128|buf=1|ret=2|err=0|out=0065 0301
+NormalizeString|e_acute_f2_explicit_query|arg=2|in=1:00e9|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|e_acute_f5|arg=5|in=-1:00e9 0000|cap=128|buf=1|ret=2|err=0|out=00e9 0000
+NormalizeString|e_acute_f5_query|arg=5|in=-1:00e9 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_acute_f5_explicit|arg=5|in=1:00e9|cap=128|buf=1|ret=1|err=0|out=00e9
+NormalizeString|e_acute_f5_explicit_query|arg=5|in=1:00e9|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_acute_f6|arg=6|in=-1:00e9 0000|cap=128|buf=1|ret=3|err=0|out=0065 0301 0000
+NormalizeString|e_acute_f6_query|arg=6|in=-1:00e9 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_acute_f6_explicit|arg=6|in=1:00e9|cap=128|buf=1|ret=2|err=0|out=0065 0301
+NormalizeString|e_acute_f6_explicit_query|arg=6|in=1:00e9|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_combining_f1|arg=1|in=-1:0065 0301 0000|cap=128|buf=1|ret=2|err=0|out=00e9 0000
+NormalizeString|e_combining_f1_query|arg=1|in=-1:0065 0301 0000|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_combining_f1_explicit|arg=1|in=2:0065 0301|cap=128|buf=1|ret=1|err=0|out=00e9
+NormalizeString|e_combining_f1_explicit_query|arg=1|in=2:0065 0301|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|e_combining_f2|arg=2|in=-1:0065 0301 0000|cap=128|buf=1|ret=3|err=0|out=0065 0301 0000
+NormalizeString|e_combining_f2_query|arg=2|in=-1:0065 0301 0000|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_combining_f2_explicit|arg=2|in=2:0065 0301|cap=128|buf=1|ret=2|err=0|out=0065 0301
+NormalizeString|e_combining_f2_explicit_query|arg=2|in=2:0065 0301|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|e_combining_f5|arg=5|in=-1:0065 0301 0000|cap=128|buf=1|ret=2|err=0|out=00e9 0000
+NormalizeString|e_combining_f5_query|arg=5|in=-1:0065 0301 0000|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_combining_f5_explicit|arg=5|in=2:0065 0301|cap=128|buf=1|ret=1|err=0|out=00e9
+NormalizeString|e_combining_f5_explicit_query|arg=5|in=2:0065 0301|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_combining_f6|arg=6|in=-1:0065 0301 0000|cap=128|buf=1|ret=3|err=0|out=0065 0301 0000
+NormalizeString|e_combining_f6_query|arg=6|in=-1:0065 0301 0000|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|e_combining_f6_explicit|arg=6|in=2:0065 0301|cap=128|buf=1|ret=2|err=0|out=0065 0301
+NormalizeString|e_combining_f6_explicit_query|arg=6|in=2:0065 0301|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|fi_ligature_f1|arg=1|in=-1:fb01 0000|cap=128|buf=1|ret=2|err=0|out=fb01 0000
+NormalizeString|fi_ligature_f1_query|arg=1|in=-1:fb01 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|fi_ligature_f1_explicit|arg=1|in=1:fb01|cap=128|buf=1|ret=1|err=0|out=fb01
+NormalizeString|fi_ligature_f1_explicit_query|arg=1|in=1:fb01|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|fi_ligature_f2|arg=2|in=-1:fb01 0000|cap=128|buf=1|ret=2|err=0|out=fb01 0000
+NormalizeString|fi_ligature_f2_query|arg=2|in=-1:fb01 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|fi_ligature_f2_explicit|arg=2|in=1:fb01|cap=128|buf=1|ret=1|err=0|out=fb01
+NormalizeString|fi_ligature_f2_explicit_query|arg=2|in=1:fb01|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|fi_ligature_f5|arg=5|in=-1:fb01 0000|cap=128|buf=1|ret=3|err=0|out=0066 0069 0000
+NormalizeString|fi_ligature_f5_query|arg=5|in=-1:fb01 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|fi_ligature_f5_explicit|arg=5|in=1:fb01|cap=128|buf=1|ret=2|err=0|out=0066 0069
+NormalizeString|fi_ligature_f5_explicit_query|arg=5|in=1:fb01|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|fi_ligature_f6|arg=6|in=-1:fb01 0000|cap=128|buf=1|ret=3|err=0|out=0066 0069 0000
+NormalizeString|fi_ligature_f6_query|arg=6|in=-1:fb01 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|fi_ligature_f6_explicit|arg=6|in=1:fb01|cap=128|buf=1|ret=2|err=0|out=0066 0069
+NormalizeString|fi_ligature_f6_explicit_query|arg=6|in=1:fb01|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|long_s_dot_f1|arg=1|in=-1:1e9b 0323 0000|cap=128|buf=1|ret=3|err=0|out=1e9b 0323 0000
+NormalizeString|long_s_dot_f1_query|arg=1|in=-1:1e9b 0323 0000|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|long_s_dot_f1_explicit|arg=1|in=2:1e9b 0323|cap=128|buf=1|ret=2|err=0|out=1e9b 0323
+NormalizeString|long_s_dot_f1_explicit_query|arg=1|in=2:1e9b 0323|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|long_s_dot_f2|arg=2|in=-1:1e9b 0323 0000|cap=128|buf=1|ret=4|err=0|out=017f 0323 0307 0000
+NormalizeString|long_s_dot_f2_query|arg=2|in=-1:1e9b 0323 0000|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|long_s_dot_f2_explicit|arg=2|in=2:1e9b 0323|cap=128|buf=1|ret=3|err=0|out=017f 0323 0307
+NormalizeString|long_s_dot_f2_explicit_query|arg=2|in=2:1e9b 0323|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|long_s_dot_f5|arg=5|in=-1:1e9b 0323 0000|cap=128|buf=1|ret=2|err=0|out=1e69 0000
+NormalizeString|long_s_dot_f5_query|arg=5|in=-1:1e9b 0323 0000|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|long_s_dot_f5_explicit|arg=5|in=2:1e9b 0323|cap=128|buf=1|ret=1|err=0|out=1e69
+NormalizeString|long_s_dot_f5_explicit_query|arg=5|in=2:1e9b 0323|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|long_s_dot_f6|arg=6|in=-1:1e9b 0323 0000|cap=128|buf=1|ret=4|err=0|out=0073 0323 0307 0000
+NormalizeString|long_s_dot_f6_query|arg=6|in=-1:1e9b 0323 0000|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|long_s_dot_f6_explicit|arg=6|in=2:1e9b 0323|cap=128|buf=1|ret=3|err=0|out=0073 0323 0307
+NormalizeString|long_s_dot_f6_explicit_query|arg=6|in=2:1e9b 0323|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_jamo_f1|arg=1|in=-1:1100 1161 11a8 0000|cap=128|buf=1|ret=2|err=0|out=ac01 0000
+NormalizeString|hangul_jamo_f1_query|arg=1|in=-1:1100 1161 11a8 0000|cap=0|buf=0|ret=12|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_jamo_f1_explicit|arg=1|in=3:1100 1161 11a8|cap=128|buf=1|ret=1|err=0|out=ac01
+NormalizeString|hangul_jamo_f1_explicit_query|arg=1|in=3:1100 1161 11a8|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_jamo_f2|arg=2|in=-1:1100 1161 11a8 0000|cap=128|buf=1|ret=4|err=0|out=1100 1161 11a8 0000
+NormalizeString|hangul_jamo_f2_query|arg=2|in=-1:1100 1161 11a8 0000|cap=0|buf=0|ret=12|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_jamo_f2_explicit|arg=2|in=3:1100 1161 11a8|cap=128|buf=1|ret=3|err=0|out=1100 1161 11a8
+NormalizeString|hangul_jamo_f2_explicit_query|arg=2|in=3:1100 1161 11a8|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_jamo_f5|arg=5|in=-1:1100 1161 11a8 0000|cap=128|buf=1|ret=2|err=0|out=ac01 0000
+NormalizeString|hangul_jamo_f5_query|arg=5|in=-1:1100 1161 11a8 0000|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_jamo_f5_explicit|arg=5|in=3:1100 1161 11a8|cap=128|buf=1|ret=1|err=0|out=ac01
+NormalizeString|hangul_jamo_f5_explicit_query|arg=5|in=3:1100 1161 11a8|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_jamo_f6|arg=6|in=-1:1100 1161 11a8 0000|cap=128|buf=1|ret=4|err=0|out=1100 1161 11a8 0000
+NormalizeString|hangul_jamo_f6_query|arg=6|in=-1:1100 1161 11a8 0000|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_jamo_f6_explicit|arg=6|in=3:1100 1161 11a8|cap=128|buf=1|ret=3|err=0|out=1100 1161 11a8
+NormalizeString|hangul_jamo_f6_explicit_query|arg=6|in=3:1100 1161 11a8|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_syllable_f1|arg=1|in=-1:ac01 0000|cap=128|buf=1|ret=2|err=0|out=ac01 0000
+NormalizeString|hangul_syllable_f1_query|arg=1|in=-1:ac01 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_syllable_f1_explicit|arg=1|in=1:ac01|cap=128|buf=1|ret=1|err=0|out=ac01
+NormalizeString|hangul_syllable_f1_explicit_query|arg=1|in=1:ac01|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|hangul_syllable_f2|arg=2|in=-1:ac01 0000|cap=128|buf=1|ret=4|err=0|out=1100 1161 11a8 0000
+NormalizeString|hangul_syllable_f2_query|arg=2|in=-1:ac01 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_syllable_f2_explicit|arg=2|in=1:ac01|cap=128|buf=1|ret=3|err=0|out=1100 1161 11a8
+NormalizeString|hangul_syllable_f2_explicit_query|arg=2|in=1:ac01|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|hangul_syllable_f5|arg=5|in=-1:ac01 0000|cap=128|buf=1|ret=2|err=0|out=ac01 0000
+NormalizeString|hangul_syllable_f5_query|arg=5|in=-1:ac01 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_syllable_f5_explicit|arg=5|in=1:ac01|cap=128|buf=1|ret=1|err=0|out=ac01
+NormalizeString|hangul_syllable_f5_explicit_query|arg=5|in=1:ac01|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_syllable_f6|arg=6|in=-1:ac01 0000|cap=128|buf=1|ret=4|err=0|out=1100 1161 11a8 0000
+NormalizeString|hangul_syllable_f6_query|arg=6|in=-1:ac01 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|hangul_syllable_f6_explicit|arg=6|in=1:ac01|cap=128|buf=1|ret=3|err=0|out=1100 1161 11a8
+NormalizeString|hangul_syllable_f6_explicit_query|arg=6|in=1:ac01|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|angstrom_f1|arg=1|in=-1:212b 0000|cap=128|buf=1|ret=2|err=0|out=00c5 0000
+NormalizeString|angstrom_f1_query|arg=1|in=-1:212b 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|angstrom_f1_explicit|arg=1|in=1:212b|cap=128|buf=1|ret=1|err=0|out=00c5
+NormalizeString|angstrom_f1_explicit_query|arg=1|in=1:212b|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|angstrom_f2|arg=2|in=-1:212b 0000|cap=128|buf=1|ret=3|err=0|out=0041 030a 0000
+NormalizeString|angstrom_f2_query|arg=2|in=-1:212b 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|angstrom_f2_explicit|arg=2|in=1:212b|cap=128|buf=1|ret=2|err=0|out=0041 030a
+NormalizeString|angstrom_f2_explicit_query|arg=2|in=1:212b|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|angstrom_f5|arg=5|in=-1:212b 0000|cap=128|buf=1|ret=2|err=0|out=00c5 0000
+NormalizeString|angstrom_f5_query|arg=5|in=-1:212b 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|angstrom_f5_explicit|arg=5|in=1:212b|cap=128|buf=1|ret=1|err=0|out=00c5
+NormalizeString|angstrom_f5_explicit_query|arg=5|in=1:212b|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|angstrom_f6|arg=6|in=-1:212b 0000|cap=128|buf=1|ret=3|err=0|out=0041 030a 0000
+NormalizeString|angstrom_f6_query|arg=6|in=-1:212b 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|angstrom_f6_explicit|arg=6|in=1:212b|cap=128|buf=1|ret=2|err=0|out=0041 030a
+NormalizeString|angstrom_f6_explicit_query|arg=6|in=1:212b|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|ascii_f1|arg=1|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=6|err=0|out=0070 006c 0061 0069 006e 0000
+NormalizeString|ascii_f1_query|arg=1|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|ascii_f1_explicit|arg=1|in=5:0070 006c 0061 0069 006e|cap=128|buf=1|ret=5|err=0|out=0070 006c 0061 0069 006e
+NormalizeString|ascii_f1_explicit_query|arg=1|in=5:0070 006c 0061 0069 006e|cap=0|buf=0|ret=15|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|ascii_f2|arg=2|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=6|err=0|out=0070 006c 0061 0069 006e 0000
+NormalizeString|ascii_f2_query|arg=2|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|ascii_f2_explicit|arg=2|in=5:0070 006c 0061 0069 006e|cap=128|buf=1|ret=5|err=0|out=0070 006c 0061 0069 006e
+NormalizeString|ascii_f2_explicit_query|arg=2|in=5:0070 006c 0061 0069 006e|cap=0|buf=0|ret=15|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|ascii_f5|arg=5|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=6|err=0|out=0070 006c 0061 0069 006e 0000
+NormalizeString|ascii_f5_query|arg=5|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|ascii_f5_explicit|arg=5|in=5:0070 006c 0061 0069 006e|cap=128|buf=1|ret=5|err=0|out=0070 006c 0061 0069 006e
+NormalizeString|ascii_f5_explicit_query|arg=5|in=5:0070 006c 0061 0069 006e|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|ascii_f6|arg=6|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=6|err=0|out=0070 006c 0061 0069 006e 0000
+NormalizeString|ascii_f6_query|arg=6|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|ascii_f6_explicit|arg=6|in=5:0070 006c 0061 0069 006e|cap=128|buf=1|ret=5|err=0|out=0070 006c 0061 0069 006e
+NormalizeString|ascii_f6_explicit_query|arg=6|in=5:0070 006c 0061 0069 006e|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|roman8_f1|arg=1|in=-1:2167 0000|cap=128|buf=1|ret=2|err=0|out=2167 0000
+NormalizeString|roman8_f1_query|arg=1|in=-1:2167 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|roman8_f1_explicit|arg=1|in=1:2167|cap=128|buf=1|ret=1|err=0|out=2167
+NormalizeString|roman8_f1_explicit_query|arg=1|in=1:2167|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|roman8_f2|arg=2|in=-1:2167 0000|cap=128|buf=1|ret=2|err=0|out=2167 0000
+NormalizeString|roman8_f2_query|arg=2|in=-1:2167 0000|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|roman8_f2_explicit|arg=2|in=1:2167|cap=128|buf=1|ret=1|err=0|out=2167
+NormalizeString|roman8_f2_explicit_query|arg=2|in=1:2167|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|roman8_f5|arg=5|in=-1:2167 0000|cap=128|buf=1|ret=5|err=0|out=0056 0049 0049 0049 0000
+NormalizeString|roman8_f5_query|arg=5|in=-1:2167 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|roman8_f5_explicit|arg=5|in=1:2167|cap=128|buf=1|ret=4|err=0|out=0056 0049 0049 0049
+NormalizeString|roman8_f5_explicit_query|arg=5|in=1:2167|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|roman8_f6|arg=6|in=-1:2167 0000|cap=128|buf=1|ret=5|err=0|out=0056 0049 0049 0049 0000
+NormalizeString|roman8_f6_query|arg=6|in=-1:2167 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|roman8_f6_explicit|arg=6|in=1:2167|cap=128|buf=1|ret=4|err=0|out=0056 0049 0049 0049
+NormalizeString|roman8_f6_explicit_query|arg=6|in=1:2167|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|reorder_f1|arg=1|in=-1:0061 0323 0302 0000|cap=128|buf=1|ret=2|err=0|out=1ead 0000
+NormalizeString|reorder_f1_query|arg=1|in=-1:0061 0323 0302 0000|cap=0|buf=0|ret=12|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|reorder_f1_explicit|arg=1|in=3:0061 0323 0302|cap=128|buf=1|ret=1|err=0|out=1ead
+NormalizeString|reorder_f1_explicit_query|arg=1|in=3:0061 0323 0302|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|reorder_f2|arg=2|in=-1:0061 0323 0302 0000|cap=128|buf=1|ret=4|err=0|out=0061 0323 0302 0000
+NormalizeString|reorder_f2_query|arg=2|in=-1:0061 0323 0302 0000|cap=0|buf=0|ret=12|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|reorder_f2_explicit|arg=2|in=3:0061 0323 0302|cap=128|buf=1|ret=3|err=0|out=0061 0323 0302
+NormalizeString|reorder_f2_explicit_query|arg=2|in=3:0061 0323 0302|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|reorder_f5|arg=5|in=-1:0061 0323 0302 0000|cap=128|buf=1|ret=2|err=0|out=1ead 0000
+NormalizeString|reorder_f5_query|arg=5|in=-1:0061 0323 0302 0000|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|reorder_f5_explicit|arg=5|in=3:0061 0323 0302|cap=128|buf=1|ret=1|err=0|out=1ead
+NormalizeString|reorder_f5_explicit_query|arg=5|in=3:0061 0323 0302|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|reorder_f6|arg=6|in=-1:0061 0323 0302 0000|cap=128|buf=1|ret=4|err=0|out=0061 0323 0302 0000
+NormalizeString|reorder_f6_query|arg=6|in=-1:0061 0323 0302 0000|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|reorder_f6_explicit|arg=6|in=3:0061 0323 0302|cap=128|buf=1|ret=3|err=0|out=0061 0323 0302
+NormalizeString|reorder_f6_explicit_query|arg=6|in=3:0061 0323 0302|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|surrogate_pair_f1|arg=1|in=-1:d835 dc00 0000|cap=128|buf=1|ret=3|err=0|out=d835 dc00 0000
+NormalizeString|surrogate_pair_f1_query|arg=1|in=-1:d835 dc00 0000|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|surrogate_pair_f1_explicit|arg=1|in=2:d835 dc00|cap=128|buf=1|ret=2|err=0|out=d835 dc00
+NormalizeString|surrogate_pair_f1_explicit_query|arg=1|in=2:d835 dc00|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|surrogate_pair_f2|arg=2|in=-1:d835 dc00 0000|cap=128|buf=1|ret=3|err=0|out=d835 dc00 0000
+NormalizeString|surrogate_pair_f2_query|arg=2|in=-1:d835 dc00 0000|cap=0|buf=0|ret=9|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|surrogate_pair_f2_explicit|arg=2|in=2:d835 dc00|cap=128|buf=1|ret=2|err=0|out=d835 dc00
+NormalizeString|surrogate_pair_f2_explicit_query|arg=2|in=2:d835 dc00|cap=0|buf=0|ret=6|err=0|out=abcd abcd abcd abcd abcd abcd
+NormalizeString|surrogate_pair_f5|arg=5|in=-1:d835 dc00 0000|cap=128|buf=1|ret=2|err=0|out=0041 0000
+NormalizeString|surrogate_pair_f5_query|arg=5|in=-1:d835 dc00 0000|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|surrogate_pair_f5_explicit|arg=5|in=2:d835 dc00|cap=128|buf=1|ret=1|err=0|out=0041
+NormalizeString|surrogate_pair_f5_explicit_query|arg=5|in=2:d835 dc00|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|surrogate_pair_f6|arg=6|in=-1:d835 dc00 0000|cap=128|buf=1|ret=2|err=0|out=0041 0000
+NormalizeString|surrogate_pair_f6_query|arg=6|in=-1:d835 dc00 0000|cap=0|buf=0|ret=54|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|surrogate_pair_f6_explicit|arg=6|in=2:d835 dc00|cap=128|buf=1|ret=1|err=0|out=0041
+NormalizeString|surrogate_pair_f6_explicit_query|arg=6|in=2:d835 dc00|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f1|arg=1|in=-1:0000|cap=128|buf=1|ret=1|err=0|out=0000
+NormalizeString|empty_f1_query|arg=1|in=-1:0000|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|empty_f1_explicit|arg=1|in=0:|cap=128|buf=1|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f1_explicit_query|arg=1|in=0:|cap=0|buf=0|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f2|arg=2|in=-1:0000|cap=128|buf=1|ret=1|err=0|out=0000
+NormalizeString|empty_f2_query|arg=2|in=-1:0000|cap=0|buf=0|ret=3|err=0|out=abcd abcd abcd
+NormalizeString|empty_f2_explicit|arg=2|in=0:|cap=128|buf=1|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f2_explicit_query|arg=2|in=0:|cap=0|buf=0|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f5|arg=5|in=-1:0000|cap=128|buf=1|ret=1|err=0|out=0000
+NormalizeString|empty_f5_query|arg=5|in=-1:0000|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f5_explicit|arg=5|in=0:|cap=128|buf=1|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f5_explicit_query|arg=5|in=0:|cap=0|buf=0|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f6|arg=6|in=-1:0000|cap=128|buf=1|ret=1|err=0|out=0000
+NormalizeString|empty_f6_query|arg=6|in=-1:0000|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f6_explicit|arg=6|in=0:|cap=128|buf=1|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|empty_f6_explicit_query|arg=6|in=0:|cap=0|buf=0|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|long_ascii_query|arg=1|in=-1:0061 0062 0063 0064 0065 0066 0067 0068 0069 006a 006b 006c 006d 006e 006f 0070 0071 0072 0073 0074 0075 0076 0077 0078 0079 007a 0030 0031 0032 0033 0034 0035 0036 0037 0038 0039 0000|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|long_ascii_query_kd|arg=6|in=-1:0061 0062 0063 0064 0065 0066 0067 0068 0069 006a 006b 006c 006d 006e 006f 0070 0071 0072 0073 0074 0075 0076 0077 0078 0079 007a 0030 0031 0032 0033 0034 0035 0036 0037 0038 0039 0000|cap=0|buf=0|ret=64|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|decomp_heavy_query_d|arg=2|in=-1:ac01 ac01 ac01 ac01 ac01 ac01 ac01 ac01 0000|cap=0|buf=0|ret=27|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|decomp_heavy_d|arg=2|in=-1:ac01 ac01 ac01 ac01 ac01 ac01 ac01 ac01 0000|cap=128|buf=1|ret=25|err=0|out=1100 1161 11a8 1100 1161 11a8 1100 1161 11a8 1100 1161 11a8 1100 1161 11a8 1100 1161 11a8 1100 1161 11a8 1100 1161 11a8 0000
+NormalizeString|decomp_heavy_small_d|arg=2|in=-1:ac01 ac01 ac01 ac01 ac01 ac01 ac01 ac01 0000|cap=9|buf=1|ret=-29|err=122|out=1100 1161 11a8 1100 1161 11a8 1100 1161
+NormalizeString|kd_ligature_small|arg=6|in=-1:fdfa 0000|cap=4|buf=1|ret=-44|err=122|out=0635 0644 0649 0020 abcd abcd abcd abcd
+NormalizeString|kd_ligature_query|arg=6|in=-1:fdfa 0000|cap=0|buf=0|ret=36|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|kd_ligature|arg=6|in=-1:fdfa 0000|cap=128|buf=1|ret=19|err=0|out=0635 0644 0649 0020 0627 0644 0644 0647 0020 0639 0644 064a 0647 0020 0648 0633 0644 0645 0000
+NormalizeString|small_exact_minus1|arg=1|in=-1:0070 006c 0061 0069 006e 0000|cap=5|buf=1|ret=-8|err=122|out=0070 006c 0061 0069 006e abcd abcd abcd
+NormalizeString|small_exact|arg=1|in=-1:0070 006c 0061 0069 006e 0000|cap=6|buf=1|ret=6|err=0|out=0070 006c 0061 0069 006e 0000
+NormalizeString|small_one|arg=1|in=-1:0070 006c 0061 0069 006e 0000|cap=1|buf=1|ret=-17|err=122|out=0070 abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|form_0|arg=0|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|form_3|arg=3|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|form_4|arg=4|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|form_7|arg=7|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|form_13|arg=13|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=6|err=0|out=0070 006c 0061 0069 006e 0000
+NormalizeString|form_neg|arg=-1|in=-1:0070 006c 0061 0069 006e 0000|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|null_src|arg=1|in=null:-1|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|null_src_zero|arg=1|in=null:0|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|src_zero|arg=1|in=0:|cap=128|buf=1|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|src_zero_query|arg=1|in=0:|cap=0|buf=0|ret=0|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|src_minus2|arg=1|in=-2:|cap=128|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|dst_null_nonzero|arg=1|in=-1:0070 006c 0061 0069 006e 0000|cap=10|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|dst_negative|arg=1|in=-1:0070 006c 0061 0069 006e 0000|cap=-1|buf=1|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|lone_high|arg=1|in=-1:0061 0062 d800 0063 0064 0000|cap=128|buf=1|ret=-3|err=1113|out=0061 0062 abcd abcd abcd abcd abcd abcd
+NormalizeString|lone_high_query|arg=1|in=-1:0061 0062 d800 0063 0064 0000|cap=0|buf=0|ret=18|err=0|out=abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|lone_low|arg=1|in=-1:0061 0062 0063 dc00 0000|cap=128|buf=1|ret=-3|err=1113|out=0061 0062 0063 abcd abcd abcd abcd abcd
+NormalizeString|lone_high_end_explicit|arg=1|in=3:0061 0062 d800|cap=128|buf=1|ret=-2|err=1113|out=0061 0062 abcd abcd abcd abcd abcd abcd
+NormalizeString|lone_high_first|arg=1|in=-1:d800 0078 0000|cap=128|buf=1|ret=-1|err=1113|out=abcd abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|noncharacter|arg=1|in=-1:0061 fffe 0000|cap=128|buf=1|ret=-1|err=1113|out=0061 abcd abcd abcd abcd abcd abcd abcd
+NormalizeString|unassigned|arg=1|in=-1:0061 0378 0000|cap=128|buf=1|ret=3|err=0|out=0061 0378 0000
+NormalizeString|private_use|arg=1|in=-1:0061 e000 0000|cap=128|buf=1|ret=3|err=0|out=0061 e000 0000
+NormalizeString|embedded_nul|arg=1|in=3:0061 0000 0062|cap=128|buf=1|ret=3|err=0|out=0061 0000 0062
+NormalizeString|embedded_nul_d|arg=2|in=3:00e9 0000 00e9|cap=128|buf=1|ret=5|err=0|out=0065 0301 0000 0065 0301
+NormalizeString|explicit_with_nul|arg=1|in=3:0061 0062 0000|cap=128|buf=1|ret=3|err=0|out=0061 0062 0000
+IsNormalizedString|e_acute_f1|arg=1|in=-1:00e9 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|e_acute_f1_explicit|arg=1|in=1:00e9|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|e_acute_f2|arg=2|in=-1:00e9 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|e_acute_f2_explicit|arg=2|in=1:00e9|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|e_acute_f5|arg=5|in=-1:00e9 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|e_acute_f5_explicit|arg=5|in=1:00e9|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|e_acute_f6|arg=6|in=-1:00e9 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|e_acute_f6_explicit|arg=6|in=1:00e9|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|e_combining_f1|arg=1|in=-1:0065 0301 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|e_combining_f1_explicit|arg=1|in=2:0065 0301|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|e_combining_f2|arg=2|in=-1:0065 0301 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|e_combining_f2_explicit|arg=2|in=2:0065 0301|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|e_combining_f5|arg=5|in=-1:0065 0301 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|e_combining_f5_explicit|arg=5|in=2:0065 0301|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|e_combining_f6|arg=6|in=-1:0065 0301 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|e_combining_f6_explicit|arg=6|in=2:0065 0301|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|fi_ligature_f1|arg=1|in=-1:fb01 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|fi_ligature_f1_explicit|arg=1|in=1:fb01|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|fi_ligature_f2|arg=2|in=-1:fb01 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|fi_ligature_f2_explicit|arg=2|in=1:fb01|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|fi_ligature_f5|arg=5|in=-1:fb01 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|fi_ligature_f5_explicit|arg=5|in=1:fb01|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|fi_ligature_f6|arg=6|in=-1:fb01 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|fi_ligature_f6_explicit|arg=6|in=1:fb01|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|long_s_dot_f1|arg=1|in=-1:1e9b 0323 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|long_s_dot_f1_explicit|arg=1|in=2:1e9b 0323|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|long_s_dot_f2|arg=2|in=-1:1e9b 0323 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|long_s_dot_f2_explicit|arg=2|in=2:1e9b 0323|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|long_s_dot_f5|arg=5|in=-1:1e9b 0323 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|long_s_dot_f5_explicit|arg=5|in=2:1e9b 0323|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|long_s_dot_f6|arg=6|in=-1:1e9b 0323 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|long_s_dot_f6_explicit|arg=6|in=2:1e9b 0323|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|hangul_jamo_f1|arg=1|in=-1:1100 1161 11a8 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|hangul_jamo_f1_explicit|arg=1|in=3:1100 1161 11a8|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|hangul_jamo_f2|arg=2|in=-1:1100 1161 11a8 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|hangul_jamo_f2_explicit|arg=2|in=3:1100 1161 11a8|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|hangul_jamo_f5|arg=5|in=-1:1100 1161 11a8 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|hangul_jamo_f5_explicit|arg=5|in=3:1100 1161 11a8|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|hangul_jamo_f6|arg=6|in=-1:1100 1161 11a8 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|hangul_jamo_f6_explicit|arg=6|in=3:1100 1161 11a8|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|hangul_syllable_f1|arg=1|in=-1:ac01 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|hangul_syllable_f1_explicit|arg=1|in=1:ac01|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|hangul_syllable_f2|arg=2|in=-1:ac01 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|hangul_syllable_f2_explicit|arg=2|in=1:ac01|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|hangul_syllable_f5|arg=5|in=-1:ac01 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|hangul_syllable_f5_explicit|arg=5|in=1:ac01|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|hangul_syllable_f6|arg=6|in=-1:ac01 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|hangul_syllable_f6_explicit|arg=6|in=1:ac01|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|angstrom_f1|arg=1|in=-1:212b 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|angstrom_f1_explicit|arg=1|in=1:212b|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|angstrom_f2|arg=2|in=-1:212b 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|angstrom_f2_explicit|arg=2|in=1:212b|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|angstrom_f5|arg=5|in=-1:212b 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|angstrom_f5_explicit|arg=5|in=1:212b|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|angstrom_f6|arg=6|in=-1:212b 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|angstrom_f6_explicit|arg=6|in=1:212b|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|ascii_f1|arg=1|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|ascii_f1_explicit|arg=1|in=5:0070 006c 0061 0069 006e|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|ascii_f2|arg=2|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|ascii_f2_explicit|arg=2|in=5:0070 006c 0061 0069 006e|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|ascii_f5|arg=5|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|ascii_f5_explicit|arg=5|in=5:0070 006c 0061 0069 006e|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|ascii_f6|arg=6|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|ascii_f6_explicit|arg=6|in=5:0070 006c 0061 0069 006e|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|roman8_f1|arg=1|in=-1:2167 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|roman8_f1_explicit|arg=1|in=1:2167|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|roman8_f2|arg=2|in=-1:2167 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|roman8_f2_explicit|arg=2|in=1:2167|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|roman8_f5|arg=5|in=-1:2167 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|roman8_f5_explicit|arg=5|in=1:2167|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|roman8_f6|arg=6|in=-1:2167 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|roman8_f6_explicit|arg=6|in=1:2167|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|reorder_f1|arg=1|in=-1:0061 0323 0302 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|reorder_f1_explicit|arg=1|in=3:0061 0323 0302|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|reorder_f2|arg=2|in=-1:0061 0323 0302 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|reorder_f2_explicit|arg=2|in=3:0061 0323 0302|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|reorder_f5|arg=5|in=-1:0061 0323 0302 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|reorder_f5_explicit|arg=5|in=3:0061 0323 0302|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|reorder_f6|arg=6|in=-1:0061 0323 0302 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|reorder_f6_explicit|arg=6|in=3:0061 0323 0302|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|surrogate_pair_f1|arg=1|in=-1:d835 dc00 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|surrogate_pair_f1_explicit|arg=1|in=2:d835 dc00|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|surrogate_pair_f2|arg=2|in=-1:d835 dc00 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|surrogate_pair_f2_explicit|arg=2|in=2:d835 dc00|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|surrogate_pair_f5|arg=5|in=-1:d835 dc00 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|surrogate_pair_f5_explicit|arg=5|in=2:d835 dc00|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|surrogate_pair_f6|arg=6|in=-1:d835 dc00 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|surrogate_pair_f6_explicit|arg=6|in=2:d835 dc00|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|empty_f1|arg=1|in=-1:0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|empty_f1_explicit|arg=1|in=0:|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|empty_f2|arg=2|in=-1:0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|empty_f2_explicit|arg=2|in=0:|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|empty_f5|arg=5|in=-1:0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|empty_f5_explicit|arg=5|in=0:|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|empty_f6|arg=6|in=-1:0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|empty_f6_explicit|arg=6|in=0:|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|form_0|arg=0|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|form_3|arg=3|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|form_13|arg=13|in=-1:0070 006c 0061 0069 006e 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|null|arg=1|in=null:-1|cap=0|buf=0|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|null_zero|arg=1|in=null:0|cap=0|buf=0|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|zero|arg=1|in=0:|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|minus2|arg=1|in=-2:|cap=0|buf=0|ret=0|err=87|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|lone_high|arg=1|in=-1:0061 0062 d800 0063 0064 0000|cap=0|buf=0|ret=0|err=1113|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|lone_high_unnormalized_before|arg=1|in=-1:0065 0301 d800 0000|cap=0|buf=0|ret=0|err=305419896|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|unassigned|arg=1|in=-1:0061 0378 0000|cap=0|buf=0|ret=1|err=305419896|out=abcd
+IsNormalizedString|noncharacter|arg=1|in=-1:0061 fffe 0000|cap=0|buf=0|ret=0|err=1113|out=abcd abcd abcd abcd abcd abcd abcd abcd
+IsNormalizedString|embedded_nul|arg=1|in=3:0061 0000 0062|cap=0|buf=0|ret=1|err=305419896|out=abcd

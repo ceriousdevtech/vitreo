@@ -1,0 +1,50 @@
+CreateEnhMetaFileW(NULL...)=hdc err=57005
+  GetObjectType=12
+  GdiComment=1 err=57005
+  CloseEnhMetaFile=handle
+  header=108 type=1 nRecords=4 nBytes=168 sig=464d4520 bounds=1,1,9,9
+  bits size=168
+  SetEnhMetaFileBits=handle
+  record type=1 size=108 nobj=1
+  record type=43 size=24 nobj=1
+  record type=70 size=16 nobj=1
+  record type=14 size=20 nobj=1
+  EnumEnhMetaFile=1
+  PlayEnhMetaFile=1
+  DeleteEnhMetaFile=1 1
+SetEnhMetaFileBits(junk)=NULL err=57005
+DeleteEnhMetaFile(NULL)=0 err=57005
+GetEnhMetaFileHeader(NULL)=0 err=57005
+GdiComment(mem)=1 err=57005
+SetAbortProc(mem)=-1 err=57005
+StartDocW(mem)=-1 err=57005
+StartPage(mem)=-1 err=57005
+EndPage(mem)=-1 err=57005
+EndDoc(mem)=-1 err=57005
+StartDocW(screen)=-1 err=57005
+CancelDC(mem)=1 err=57005
+CancelDC(NULL)=0 err=57005
+ExtEscape(QUERYESCSUPPORT, CHECKJPEGFORMAT)=0 err=57005
+ExtEscape(QUERYESCSUPPORT, QUERYESCSUPPORT)=0 err=57005
+ExtEscape(mem, 9999)=0 err=57005
+ExtEscape(NULL)=0 err=57005
+GetICMProfileW(screen)=1 len=69 err=2012 path=C:\WINDOWS\system32\spool\drivers\color\sRGB Color Space Profile.icm
+GetICMProfileW(size)=0 len=69 err=122
+GetICMProfileW(mem)=1 len=69 err=0
+GetICMProfileW(NULL)=0 err=57005
+GetDeviceGammaRamp(screen)=0 err=126 r[1]=0 r[255]=0
+GetDeviceGammaRamp(mem)=0 err=57005
+SetDeviceGammaRamp(mem)=0 err=57005
+ChoosePixelFormat(mem)=2 err=87
+DescribePixelFormat(mem, 0)=36 err=57005
+GetPixelFormat(mem)=0 err=57005
+GetPixelFormat(screen)=0 err=57005
+CreateDCW(DISPLAY)=hdc type=3 caps=1 err=57005
+CreateDCW(NoSuchPrinter)=NULL err=1801
+CreateICW(DISPLAY)=hdc type=3 err=57005
+CreateDCA(DISPLAY)=hdc err=57005
+CreateDCW(NULL)=NULL err=57005
+CreateICA(NULL)=NULL err=57005
+CreateDCW(NULL, \\.\DISPLAY1)=NULL err=57005
+CreateDCW(display)=hdc err=57005
+GetObjectType(mem)=10 screen=3

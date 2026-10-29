@@ -1,0 +1,290 @@
+=== A: game filters + renderer in the graph (renderer misc=1)
+load webmsplit64.dll hr=00000000
+load vp8decoder64.dll hr=00000000
+load webmVorbisDecoder64.dll hr=00000000
+add split hr=00000000
+add vp8 hr=00000000
+add vorbis hr=00000000
+add renderer hr=00000000
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Stream sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Stream sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0
+  R.EnumMediaTypes (empty)
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={30385056-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=0 temporal=1 sample=0 cb=88
+      vih 1920x1080 bits=0 comp=30385056 image=0 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={3231564E-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=3231564e image=3111360 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={3231564E-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=12 comp=3231564e image=3111360 avgtime=416666
+  R.ReceiveConnection -> S_OK
+    mt major=MEDIATYPE_Video sub=MEDIASUBTYPE_YV12 format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=32315659 image=3111360 avgtime=416666
+  R.GetAllocator
+  R.GetAllocatorRequirements -> E_NOTIMPL
+  R.NotifyAllocator own=1 readonly=0 buffers=1 size=4147200 align=1 prefix=0
+  R.Disconnect
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={3231564E-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=3231564e image=3111360 avgtime=416666
+  R.ReceiveConnection -> VFW_E_TYPE_NOT_ACCEPTED
+    mt major=MEDIATYPE_Video sub={3231564E-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=1 temporal=0 sample=0 cb=88
+      vih 1920x1080 bits=12 comp=3231564e image=3111360 avgtime=416666
+  R.ReceiveConnection -> S_OK
+    mt major=MEDIATYPE_Video sub=MEDIASUBTYPE_YV12 format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=32315659 image=3111360 avgtime=416666
+  R.GetAllocator
+  R.GetAllocatorRequirements -> E_NOTIMPL
+  R.NotifyAllocator own=1 readonly=0 buffers=1 size=4147200 align=1 prefix=0
+RenderFile hr=00040258
+  R.GetMiscFlags
+filter 'Frontier Texture Renderer' clsid={00000000-0000-0000-0000-000000000000} miscflags=1 refclock=0
+  pin 'In' in -> 'VP8 Decoder'.'YV12'
+    mt major=MEDIATYPE_Video sub=MEDIASUBTYPE_YV12 format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=32315659 image=3111360 avgtime=416666
+filter 'Vorbis Decoder' clsid=CLSID_VorbisDec miscflags=0 refclock=0
+  pin 'Vorbis' in (unconnected)
+  pin 'PCM (IEEE Float)' out (unconnected)
+filter 'VP8 Decoder' clsid=CLSID_VP8Dec miscflags=0 refclock=0
+  pin 'VP80' in -> 'WebM Splitter'.'Track1'
+    mt major=MEDIATYPE_Video sub={30385056-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=0 temporal=1 sample=0 cb=88
+      vih 1920x1080 bits=0 comp=30385056 image=0 avgtime=416666
+  pin 'YV12' out -> 'Frontier Texture Renderer'.'In'
+    mt major=MEDIATYPE_Video sub=MEDIASUBTYPE_YV12 format=FORMAT_VideoInfo2 fixed=1 temporal=0 sample=0 cb=112
+      vih2 1920x1080 bits=12 comp=32315659 image=3111360 avgtime=416666
+filter 'WebM Splitter' clsid=CLSID_WebmSplit miscflags=0 refclock=0
+  pin 'WebM' in -> 'movies\frontierlogo.webm'.'Output'
+    mt major=MEDIATYPE_Stream sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0
+  pin 'Track1' out -> 'VP8 Decoder'.'VP80'
+    mt major=MEDIATYPE_Video sub={30385056-0000-0010-8000-00AA00389B71} format=FORMAT_VideoInfo fixed=0 temporal=1 sample=0 cb=88
+      vih 1920x1080 bits=0 comp=30385056 image=0 avgtime=416666
+  pin 'Track2' out (unconnected)
+filter 'movies\frontierlogo.webm' clsid=CLSID_AsyncReader miscflags=0 refclock=0
+  pin 'Output' out -> 'WebM Splitter'.'WebM'
+    mt major=MEDIATYPE_Stream sub={00000000-0000-0000-0000-000000000000} format={00000000-0000-0000-0000-000000000000} fixed=1 temporal=0 sample=1 cb=0
+graph sync source: none
+-- seeking stopped, after RenderFile
+  R.Seek.IsFormatSupported -> 00000000
+  R.GetMiscFlags
+  R.Seek.GetCapabilities -> 00000000
+FGM GetCapabilities hr=00000000 caps=3f
+FGM CheckCapabilities(all) hr=00000001 caps=3f
+FGM CheckCapabilities(abs|dur) hr=00000000 caps=21
+  R.Seek.IsFormatSupported -> 00000000
+FGM IsFormatSupported(MEDIA_TIME) hr=00000000
+  R.Seek.IsFormatSupported -> 00000001
+FGM IsFormatSupported(FRAME) hr=00000001
+FGM QueryPreferredFormat hr=00000000 media_time=1
+FGM GetTimeFormat hr=00000000 media_time=1
+FGM IsUsingTimeFormat(MEDIA_TIME) hr=00000000
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM GetDuration hr=00000000 v=125416669
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM GetStopPosition hr=00000000 v=125416669
+FGM GetCurrentPosition hr=00000000 v_ms_bucket=0
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM GetPositions hr=00000000 cur_ms_bucket=0 stop=125416669
+  R.Seek.GetTimeFormat -> 00000000
+  R.Seek.GetAvailable -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM GetAvailable hr=00000000 earliest=0 latest=125416669
+  R.Seek.GetRate -> 00000000
+FGM GetRate hr=00000000 rate=1.00
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetPreroll -> 00000000
+FGM GetPreroll hr=00000000 v=0
+FGM ConvertTimeFormat(NULL,NULL) hr=00000000 t=12345
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM IMediaPosition get_Duration hr=00000000 d=12.542
+FGM IMediaPosition get_CurrentPosition hr=00000000 c_bucket=0.00
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM IMediaPosition get_StopTime hr=00000000 s=12.542
+FGM CanSeekForward hr=00000000 v=-1
+FGM CanSeekBackward hr=00000000 v=-1
+  R.GetMiscFlags
+  R.SetSyncSource clock
+  R.Pause
+Pause hr=00000000
+GetState(5000) hr=00000000 fs=1 received=0
+  states after pause:  R.Receive#1 state=1 time_hr=00000000 start=0 end=420000 sync=0 disc=0 preroll=1 len=3110400 size=4147200
+ 'Frontier Texture Renderer'=1(00000000) 'Vorbis Decoder'=1(00000000) 'VP8 Decoder'=1(00000000) 'WebM Splitter'=1(00000000) 'movies\frontierlogo.webm'=1(00000000)
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetPreroll -> 00000000
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+  R.Run tStart_nonzero=1 tStart_minus_clock_ms_bucket=-1
+Run hr=00000000
+  states after run: 'Frontier Texture Renderer'=2(00000000) 'Vorbis Decoder'=2(00000000) 'VP8 Decoder'=2(00000000) 'WebM Splitter'=2(00000000) 'movies\frontierlogo.webm'=2(00000000)
+  R.EndOfStream state=2 received=300
+  R.Notify(EC_COMPLETE) hr=00000000
+-- seeking running ~2 s
+FGM GetCapabilities hr=00000000 caps=3f
+FGM CheckCapabilities(all) hr=00000001 caps=3f
+FGM CheckCapabilities(abs|dur) hr=00000000 caps=21
+  R.Seek.IsFormatSupported -> 00000000
+FGM IsFormatSupported(MEDIA_TIME) hr=00000000
+  R.Seek.IsFormatSupported -> 00000001
+FGM IsFormatSupported(FRAME) hr=00000001
+FGM QueryPreferredFormat hr=00000000 media_time=1
+FGM GetTimeFormat hr=00000000 media_time=1
+FGM IsUsingTimeFormat(MEDIA_TIME) hr=00000000
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM GetDuration hr=00000000 v=125416669
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM GetStopPosition hr=00000000 v=125416669
+FGM GetCurrentPosition hr=00000000 v_ms_bucket=12500
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM GetPositions hr=00000000 cur_ms_bucket=12500 stop=125416669
+  R.Seek.GetTimeFormat -> 00000000
+  R.Seek.GetAvailable -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM GetAvailable hr=00000000 earliest=0 latest=125416669
+  R.Seek.GetRate -> 00000000
+FGM GetRate hr=00000000 rate=1.00
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetPreroll -> 00000000
+FGM GetPreroll hr=00000000 v=0
+FGM ConvertTimeFormat(NULL,NULL) hr=00000000 t=12345
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM IMediaPosition get_Duration hr=00000000 d=12.542
+FGM IMediaPosition get_CurrentPosition hr=00000000 c_bucket=12.50
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM IMediaPosition get_StopTime hr=00000000 s=12.542
+FGM CanSeekForward hr=00000000 v=-1
+FGM CanSeekBackward hr=00000000 v=-1
+event code=d p1=0 p2=0
+event code=e p1=0 p2=0
+event code=1 p1=0 p2=0
+complete=1 received=300 eos=1 first_time_hr=00000000 first_start=0 last_start_gt0=1
+-- seeking running, after EC_COMPLETE
+FGM GetCapabilities hr=00000000 caps=3f
+FGM CheckCapabilities(all) hr=00000001 caps=3f
+FGM CheckCapabilities(abs|dur) hr=00000000 caps=21
+  R.Seek.IsFormatSupported -> 00000000
+FGM IsFormatSupported(MEDIA_TIME) hr=00000000
+  R.Seek.IsFormatSupported -> 00000001
+FGM IsFormatSupported(FRAME) hr=00000001
+FGM QueryPreferredFormat hr=00000000 media_time=1
+FGM GetTimeFormat hr=00000000 media_time=1
+FGM IsUsingTimeFormat(MEDIA_TIME) hr=00000000
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM GetDuration hr=00000000 v=125416669
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM GetStopPosition hr=00000000 v=125416669
+FGM GetCurrentPosition hr=00000000 v_ms_bucket=12500
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM GetPositions hr=00000000 cur_ms_bucket=12500 stop=125416669
+  R.Seek.GetTimeFormat -> 00000000
+  R.Seek.GetAvailable -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM GetAvailable hr=00000000 earliest=0 latest=125416669
+  R.Seek.GetRate -> 00000000
+FGM GetRate hr=00000000 rate=1.00
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetPreroll -> 00000000
+FGM GetPreroll hr=00000000 v=0
+FGM ConvertTimeFormat(NULL,NULL) hr=00000000 t=12345
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM IMediaPosition get_Duration hr=00000000 d=12.542
+FGM IMediaPosition get_CurrentPosition hr=00000000 c_bucket=12.50
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM IMediaPosition get_StopTime hr=00000000 s=12.542
+FGM CanSeekForward hr=00000000 v=-1
+FGM CanSeekBackward hr=00000000 v=-1
+  R.Pause
+  R.Stop
+  R.BeginFlush
+  R.EndFlush
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.SetPositions(cur=125416669 flags=9, stop=0 flags=0)
+  R.Seek.SetPositions -> 00000000
+Stop hr=00000000
+-- seeking stopped after playback
+FGM GetCapabilities hr=00000000 caps=3f
+FGM CheckCapabilities(all) hr=00000001 caps=3f
+FGM CheckCapabilities(abs|dur) hr=00000000 caps=21
+  R.Seek.IsFormatSupported -> 00000000
+FGM IsFormatSupported(MEDIA_TIME) hr=00000000
+  R.Seek.IsFormatSupported -> 00000001
+FGM IsFormatSupported(FRAME) hr=00000001
+FGM QueryPreferredFormat hr=00000000 media_time=1
+FGM GetTimeFormat hr=00000000 media_time=1
+FGM IsUsingTimeFormat(MEDIA_TIME) hr=00000000
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM GetDuration hr=00000000 v=125416669
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM GetStopPosition hr=00000000 v=125416669
+FGM GetCurrentPosition hr=00000000 v_ms_bucket=8250
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM GetPositions hr=00000000 cur_ms_bucket=8250 stop=125416669
+  R.Seek.GetTimeFormat -> 00000000
+  R.Seek.GetAvailable -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM GetAvailable hr=00000000 earliest=0 latest=125416669
+  R.Seek.GetRate -> 00000000
+FGM GetRate hr=00000000 rate=1.00
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetPreroll -> 00000000
+FGM GetPreroll hr=00000000 v=0
+FGM ConvertTimeFormat(NULL,NULL) hr=00000000 t=12345
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetDuration -> 00000000
+FGM IMediaPosition get_Duration hr=00000000 d=12.542
+FGM IMediaPosition get_CurrentPosition hr=00000000 c_bucket=8.25
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+FGM IMediaPosition get_StopTime hr=00000000 s=12.542
+FGM CanSeekForward hr=00000000 v=-1
+FGM CanSeekBackward hr=00000000 v=-1
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.SetPositions(cur=0 flags=9, stop=0 flags=0)
+  R.Seek.SetPositions -> 00000000
+FGM SetPositions(0 abs, stop none) hr=00000000
+after rewind GetCurrentPosition=0
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.SetPositions(cur=50000000 flags=9, stop=0 flags=0)
+  R.Seek.SetPositions -> 00000000
+FGM SetPositions(5 s abs|ReturnTime) hr=00000000 returned=35830000
+  R.Pause
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetPreroll -> 00000000
+  R.Seek.IsUsingTimeFormat -> 00000000
+  R.Seek.GetStopPosition -> 00000000
+  R.Run tStart_nonzero=1 tStart_minus_clock_ms_bucket=-1
+Run again hr=00000000
+  R.Disconnect
+IFilterGraph::Disconnect(renderer pin) while running hr=00000000
+  R.EndOfStream state=2 received=514
+  R.Notify(EC_COMPLETE) hr=00000000
+received while running again: yes
+first restart start=88750000 (expected near 0 or 5 s)
+  R.Pause
+  R.Stop
+  R.BeginFlush
+  R.EndFlush
+  R.Seek.IsUsingTimeFormat -> 80004001
+  R.Seek.IsUsingTimeFormat -> 80004001
+Stop hr=00000000
+  states after stop: 'Frontier Texture Renderer'=0(00000000) 'Vorbis Decoder'=0(00000000) 'VP8 Decoder'=0(00000000) 'WebM Splitter'=0(00000000) 'movies\frontierlogo.webm'=0(00000000)
+graph release=1

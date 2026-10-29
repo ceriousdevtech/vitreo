@@ -1,0 +1,811 @@
+x86
+vsprintf o=0 n=00 ret=-1 errno=0 ip=0 buf="ZZZZZZZZ"
+vsprintf o=0 n=01 ret=-2 errno=0 ip=0 buf="\x00ZZZZZZZ"
+vsprintf o=0 n=04 ret=-2 errno=0 ip=0 buf="hel\x00ZZZZ"
+vsprintf o=0 n=05 ret=-2 errno=0 ip=0 buf="hell\x00ZZZ"
+vsprintf o=0 n=06 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf o=0 n=12 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf null/0 ret=5 errno=0 ip=0 
+vsprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vswprintf o=0 n=00 ret=-1 errno=0 ip=0 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=0 n=01 ret=-2 errno=0 ip=0 wbuf=\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=0 n=04 ret=-2 errno=0 ip=0 wbuf=hel\u0000\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=0 n=05 ret=-2 errno=0 ip=0 wbuf=hell\u0000\u5a5a\u5a5a\u5a5a
+vswprintf o=0 n=06 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf o=0 n=12 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf null/0 ret=5 errno=0 ip=0 
+vswprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf o=1 n=00 ret=-1 errno=0 ip=0 buf="ZZZZZZZZ"
+vsprintf o=1 n=01 ret=-1 errno=0 ip=0 buf="hZZZZZZZ"
+vsprintf o=1 n=04 ret=-1 errno=0 ip=0 buf="hellZZZZ"
+vsprintf o=1 n=05 ret=5 errno=0 ip=0 buf="helloZZZ"
+vsprintf o=1 n=06 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf o=1 n=12 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf null/0 ret=5 errno=0 ip=0 
+vsprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vswprintf o=1 n=00 ret=-1 errno=0 ip=0 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=1 n=01 ret=-1 errno=0 ip=0 wbuf=h\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=1 n=04 ret=-1 errno=0 ip=0 wbuf=hell\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=1 n=05 ret=5 errno=0 ip=0 wbuf=hello\u5a5a\u5a5a\u5a5a
+vswprintf o=1 n=06 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf o=1 n=12 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf null/0 ret=5 errno=0 ip=0 
+vswprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf o=2 n=00 ret=5 errno=0 ip=0 buf="ZZZZZZZZ"
+vsprintf o=2 n=01 ret=5 errno=0 ip=0 buf="\x00ZZZZZZZ"
+vsprintf o=2 n=04 ret=5 errno=0 ip=0 buf="hel\x00ZZZZ"
+vsprintf o=2 n=05 ret=5 errno=0 ip=0 buf="hell\x00ZZZ"
+vsprintf o=2 n=06 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf o=2 n=12 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf null/0 ret=5 errno=0 ip=0 
+vsprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vswprintf o=2 n=00 ret=5 errno=0 ip=0 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=2 n=01 ret=5 errno=0 ip=0 wbuf=\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=2 n=04 ret=5 errno=0 ip=0 wbuf=hel\u0000\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=2 n=05 ret=5 errno=0 ip=0 wbuf=hell\u0000\u5a5a\u5a5a\u5a5a
+vswprintf o=2 n=06 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf o=2 n=12 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf null/0 ret=5 errno=0 ip=0 
+vswprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf o=3 n=00 ret=-1 errno=0 ip=0 buf="ZZZZZZZZ"
+vsprintf o=3 n=01 ret=-1 errno=0 ip=0 buf="hZZZZZZZ"
+vsprintf o=3 n=04 ret=-1 errno=0 ip=0 buf="hellZZZZ"
+vsprintf o=3 n=05 ret=5 errno=0 ip=0 buf="helloZZZ"
+vsprintf o=3 n=06 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf o=3 n=12 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf null/0 ret=5 errno=0 ip=0 
+vsprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vswprintf o=3 n=00 ret=-1 errno=0 ip=0 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=3 n=01 ret=-1 errno=0 ip=0 wbuf=h\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=3 n=04 ret=-1 errno=0 ip=0 wbuf=hell\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=3 n=05 ret=5 errno=0 ip=0 wbuf=hello\u5a5a\u5a5a\u5a5a
+vswprintf o=3 n=06 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf o=3 n=12 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf null/0 ret=5 errno=0 ip=0 
+vswprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf_s fit ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf_s small ret=-1 errno=34 ip=1 buf="\x00ell\x00ZZZ"
+vsprintf_s null/0 ret=-1 errno=22 ip=1 
+vsprintf_s null/5 ret=-1 errno=22 ip=1 
+vsprintf_s buf/0 ret=-1 errno=22 ip=1 buf="ZZZZ"
+vsprintf_s fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vsprintf_s o=2 small ret=5 errno=0 ip=0 buf="hell\x00ZZZ"
+vswprintf_s fit ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf_s small ret=-1 errno=34 ip=1 wbuf=\u0000ell\u0000\u5a5a\u5a5a\u5a5a
+vswprintf_s null/0 ret=-1 errno=22 ip=1 
+vswprintf_s fmt=null ret=-1 errno=22 ip=1 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=4 max=3 ret=-1 errno=0 ip=0 buf="hel\x00ZZZZZ"
+wsnprintf_s n=4 max=3 ret=-1 errno=0 ip=0 wbuf=hel\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=4 max=5 ret=-1 errno=34 ip=1 buf="\x00el\x00ZZZZZ"
+wsnprintf_s n=4 max=5 ret=-1 errno=34 ip=1 wbuf=\u0000el\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=4 max=6 ret=-1 errno=34 ip=1 buf="\x00el\x00ZZZZZ"
+wsnprintf_s n=4 max=6 ret=-1 errno=34 ip=1 wbuf=\u0000el\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=4 max=T ret=-1 errno=0 ip=0 buf="hel\x00ZZZZZ"
+wsnprintf_s n=4 max=T ret=-1 errno=0 ip=0 wbuf=hel\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=6 max=3 ret=-1 errno=0 ip=0 buf="hel\x00ZZZZZ"
+wsnprintf_s n=6 max=3 ret=-1 errno=0 ip=0 wbuf=hel\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=6 max=5 ret=5 errno=0 ip=0 buf="hello\x00ZZZ"
+wsnprintf_s n=6 max=5 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=6 max=6 ret=5 errno=0 ip=0 buf="hello\x00ZZZ"
+wsnprintf_s n=6 max=6 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=6 max=T ret=5 errno=0 ip=0 buf="hello\x00ZZZ"
+wsnprintf_s n=6 max=T ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=8 max=3 ret=-1 errno=0 ip=0 buf="hel\x00ZZZZZ"
+wsnprintf_s n=8 max=3 ret=-1 errno=0 ip=0 wbuf=hel\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=8 max=5 ret=5 errno=0 ip=0 buf="hello\x00ZZZ"
+wsnprintf_s n=8 max=5 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=8 max=6 ret=5 errno=0 ip=0 buf="hello\x00ZZZ"
+wsnprintf_s n=8 max=6 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a\u5a5a
+vsnprintf_s n=8 max=T ret=5 errno=0 ip=0 buf="hello\x00Z\x00Z"
+wsnprintf_s n=8 max=T ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u0000\u5a5a
+vsnprintf_s null/0 ret=-1 errno=22 ip=1 
+vsnprintf_s buf/0 ret=-1 errno=22 ip=1 buf="ZZZZ"
+vsnprintf_s null/0/0 ret=0 errno=0 ip=0 
+vsnprintf_s max=0 ret=-1 errno=0 ip=0 buf="\x00ZZZZ"
+vsprintf_p pos ret=7 errno=0 ip=0 buf="ab-7-ab\x00"
+vsprintf_p pos* ret=12 errno=0 ip=0 buf="   42|42   |\x00"
+vsprintf_p pos.* ret=4 errno=0 ip=0 buf="3.14\x00"
+vsprintf_p plain ret=4 errno=0 ip=0 buf="7 ab\x00"
+vsprintf_p mixed ret=-1 errno=22 ip=1 buf="\x00ZZZZZZZ"
+vsprintf_p gap ret=-1 errno=22 ip=1 buf="\x00ZZZZZZZ"
+vsprintf_p typeclash ret=-1 errno=22 ip=1 buf="\x00ZZZZZZZ"
+vsprintf_p mixedsizes ret=11 errno=0 ip=0 buf="-5 1.500000\x00"
+vsprintf_p null/0 ret=4 errno=0 ip=0 
+vsprintf_p o=1 trunc ret=-1 errno=0 ip=0 buf="helZZZ"
+vsprintf_p o=0 trunc ret=-2 errno=0 ip=0 buf="he\x00ZZZ"
+vsprintf pos-in-nonp ret=2 errno=0 ip=0 buf="$d\x00ZZZZZ"
+vswprintf_p pos ret=4 errno=0 ip=0 wbuf=ab-7\u0000
+int basic ret=30 errno=0 ip=0 buf="-42 17 3000000000 beef BEEF 10\x00"
+int flags ret=62 errno=0 ip=0 buf="   42|42   |00042|+42| 42|007|0xff|010|0XFF|+3    |-0003| 0003\x00"
+int zero ret=20 errno=0 ip=0 buf="[][0][0][0][][     ]\x00"
+int prec+zero ret=40 errno=0 ip=0 buf="[     042][42      ][0x0000ff][0xff    ]\x00"
+h/hh ret=23 errno=0 ip=0 buf="4464 4464 44 44 2345 ff\x00"
+l ret=26 errno=0 ip=0 buf="-42 4294967254 deadbeef -1\x00"
+ll/I64 ret=73 errno=0 ip=0 buf="-5000000000 18446744073709551615 123456789abc -1 10000000000 ABCDEF012345\x00"
+I32 ret=18 errno=0 ip=0 buf="-7 4000000000 cafe\x00"
+size ret=54 errno=0 ip=0 buf="-3 4294967295 abc -4 4294967294 77 -5 -6 1099511627775\x00"
+size-trail ret=5 errno=0 ip=0 buf="12|99\x00"
+star ret=37 errno=0 ip=0 buf="[    1][2    ][003][  0005][6    ][7]\x00"
+pct ret=7 errno=0 ip=0 buf="%|%|%|x\x00"
+ptr ret=68 errno=0 ip=0 buf="00001234|00000000|            00000ABC|00000ABC            |00000ABC\x00"
+wI ret=-1 errno=22 ip=1 buf="\x00ZZZZZZZ"
+f basic ret=51 errno=0 ip=0 buf="1.500000 1.500000 1.500000e+00 1.500000E+00 1.5 1.5\x00"
+f vals ret=59 errno=0 ip=0 buf="0.100000 1.234568e+08 100000 1e+06 0.0001 1e-05 1.23457e+08\x00"
+f prec ret=75 errno=0 ip=0 buf="3 0.1000000000      3.142|3.142     |+1.23e+04 3. 1.00000 1.00 5e+00 5.e+00\x00"
+f exact ret=79 errno=0 ip=0 buf="0.10000000000000000555 1.000000000000000055511151231258e-01 0.10000000000000001\x00"
+f big ret=308 errno=0 ip=0 buf="1000000000000000052504760255204420248704468581108159154915854115511802457988908195786371375080447864043704443832883878176942523235360430575644792184786706982848387200926575803737830233794788090059368953234970799945081119038967640880074652742780142494579258788820056842838115669472196386865459400540160.000000\x00"
+f tiny ret=342 errno=0 ip=0 buf="0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000049406564584124654\x00"
+f tiny e ret=54 errno=0 ip=0 buf="4.940656e-324 2.22507e-308 2.22507385850720138309e-308\x00"
+f zero ret=68 errno=0 ip=0 buf="0.000000 0.000000e+00 0 0x0.0000000000000p+0 -0.000000 -0.000000e+00\x00"
+f pad ret=80 errno=0 ip=0 buf="[-000003.50][3.50      ][+000003.50][ 3.500000][1.000e+00][0x1.0000000000000p+0]\x00"
+L ret=26 errno=0 ip=0 buf="1.250000 1.250000e+00 1.25\x00"
+a ret=167 errno=0 ip=0 buf="0x1.0000000000000p+0 0X1.0000000000000P+0 -0x1.999999999999ap-4 0x1.8000000000000p+1 0x1.000p+0 0x2p+0 0x0.0000000000001p-1022 0x1.fffffffffffffp+1023 0x1.p+1 0x2.0p+0\x00"
+a sub ret=43 errno=0 ip=0 buf="0x0.fffffffffffffp-1022 0x1.00p-1022 0x2p+0\x00"
+a round ret=31 errno=0 ip=0 buf="0x1p+1 0x2p+1 0x1.1p+0 0x1.2p+0\x00"
+g trim ret=49 errno=0 ip=0 buf="1 1.5e-10 1.23457e+07 1.23e+03 0.3333333333 1E-20\x00"
+special o=0x00 ret=45 errno=0 ip=0 buf="inf|INF|-inf|-INF|nan|NAN|-nan(ind)|-NAN(IND)\x00"
+special o=0x00 ret=79 errno=0 ip=0 buf="nan|nan|nan(snan)|-nan(snan)|nan|-nan|       inf|inf       |       inf|nan|+nan\x00"
+special o=0x00 ret=94 errno=0 ip=0 buf="1.000000e+05 1.000000E-05 1e+100 1.000000e-300 1.000000e+00 5e+00 1E-10 0x1.249ad2594c37dp+332\x00"
+special o=0x08 ret=95 errno=0 ip=0 buf="1.#INF00||1.#INF00e+00|-1.#INF00E+00|-1.#INF|1.#QNAN|0x1.#QNAN00000000p+0|-0X1.#IND000000000P+0\x00"
+special o=0x08 ret=121 errno=0 ip=0 buf="1.#QNAN0|1.#QNAN0e+00|1.#SNAN|-0x1.#SNAN00000000p+0|1.#QNAN0|-1.#QNAN0e+00|  1.#INF00|1.#INF00  |001.#INF00|1.$|+1.#QNAN0\x00"
+special o=0x08 ret=94 errno=0 ip=0 buf="1.000000e+05 1.000000E-05 1e+100 1.000000e-300 1.000000e+00 5e+00 1E-10 0x1.249ad2594c37dp+332\x00"
+special o=0x10 ret=45 errno=0 ip=0 buf="inf|INF|-inf|-INF|nan|NAN|-nan(ind)|-NAN(IND)\x00"
+special o=0x10 ret=79 errno=0 ip=0 buf="nan|nan|nan(snan)|-nan(snan)|nan|-nan|       inf|inf       |       inf|nan|+nan\x00"
+special o=0x10 ret=99 errno=0 ip=0 buf="1.000000e+005 1.000000E-005 1e+100 1.000000e-300 1.000000e+000 5e+000 1E-010 0x1.249ad2594c37dp+332\x00"
+special o=0x18 ret=97 errno=0 ip=0 buf="1.#INF00||1.#INF00e+000|-1.#INF00E+000|-1.#INF|1.#QNAN|0x1.#QNAN00000000p+0|-0X1.#IND000000000P+0\x00"
+special o=0x18 ret=123 errno=0 ip=0 buf="1.#QNAN0|1.#QNAN0e+000|1.#SNAN|-0x1.#SNAN00000000p+0|1.#QNAN0|-1.#QNAN0e+000|  1.#INF00|1.#INF00  |001.#INF00|1.$|+1.#QNAN0\x00"
+special o=0x18 ret=99 errno=0 ip=0 buf="1.000000e+005 1.000000E-005 1e+100 1.000000e-300 1.000000e+000 5e+000 1E-010 0x1.249ad2594c37dp+332\x00"
+round legacy ret=46 errno=0 ip=0 buf="1 2 3 -1 0.13 2.67 0.3 0.3 3e+00 1.3e+00 1 0 1\x00"
+round legacy a ret=22 errno=0 ip=0 buf="0x2p+0 0x1p+1 0x1.1p+0\x00"
+round std ret=46 errno=0 ip=0 buf="0 2 2 -0 0.12 2.67 0.2 0.3 2e+00 1.2e+00 1 0 1\x00"
+round std a ret=22 errno=0 ip=0 buf="0x2p+0 0x1p+1 0x1.0p+0\x00"
+s basic ret=62 errno=0 ip=0 buf="[hello][        hi][hi        ][hel][        he][h     ][][he]\x00"
+s null ret=46 errno=0 ip=0 buf="[(null)][(null)][(n][  (null)][(null)][(null)]\x00"
+s unterminated ret=10 errno=0 ip=0 buf="[abcd][ab]\x00"
+s wide ret=30 errno=0 ip=0 buf="[wide][cap][ws][hs][wi][   ab]\x00"
+s latin1 ret=8 errno=0 ip=0 buf="[\xe9t\xe9][\xe9]\x00"
+s nonlatin ret=-1 errno=42 ip=0 buf="\x00aZZZZZZ"
+c nonlatin ret=2 errno=42 ip=0 buf="[]\x00"
+s nonlatin prec ret=3 errno=0 ip=0 buf="[a]\x00"
+c basic ret=32 errno=0 ip=0 buf="[x][    y][z    ][w][h][C][W][A]\x00"
+c nul ret=3 errno=0 ip=0 buf="[\x00]\x00"
+Z ret=-1 errno=42 ip=0 buf="\x00ZZZZZZZ"
+s page edge ret=11 errno=0 ip=0 buf="[EDGE][DGE]\x00"
+ls page edge ret=4 errno=0 ip=0 buf="[WP]\x00"
+n ret=-1 errno=22 ip=1 buf="\x00bZZZZZZ"
+n=0
+n o=8 ret=-1 errno=22 ip=1 buf="\x00bZZZZZZ"
+n=0
+bad conv y ret=3 errno=0 ip=0 buf="ayb\x00"
+bad conv k ret=3 errno=0 ip=0 buf="akb\x00"
+bad conv trail ret=3 errno=0 ip=0 buf="abc\x00"
+bad conv trail l ret=3 errno=0 ip=0 buf="abc\x00"
+bad conv lls ret=3 errno=0 ip=0 buf="[x]\x00"
+bad conv hhs ret=3 errno=0 ip=0 buf="[x]\x00"
+bad conv I ret=2 errno=0 ip=0 buf="[]\x00"
+bad conv Iq ret=3 errno=0 ip=0 buf="[q]\x00"
+bad conv I6 ret=4 errno=0 ip=0 buf="[6d]\x00"
+bad conv T ret=2 errno=0 ip=0 buf="[]\x00"
+bad w ret=-1 errno=22 ip=1 buf="\x00ZZZZZZZ"
+bad Lc ret=3 errno=0 ip=0 buf="[x]\x00"
+bad flags ret=15 errno=0 ip=0 buf="[a][b][c][d][e]\x00"
+width big ret=302 errno=0 ip=0 buf="[                                                                                                                                                                                                                                                                                                           1]\x00"
+Ls xy ret=18 errno=0 ip=0 buf="[xy][xy][xy][B][B]\x00"
+Z forms ret=13 errno=0 ip=0 buf="[abc][(null)]\x00"
+Z forms ret=15 errno=0 ip=0 buf="[wx][w][(null)]\x00"
+Z forms ret=5 errno=0 ip=0 buf="[wxy]\x00"
+Z forms ret=17 errno=0 ip=0 buf="[     abc][abc  ]\x00"
+wZ forms ret=-1 errno=0 ip=0 wbuf=\u0000w\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+wZ forms ret=13 errno=0 ip=0 wbuf=[wx][abc][wx]\u0000
+chr   ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr   ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr ! ret=6 errno=0 ip=0 buf="[!][7]\x00"
+whr ! ret=6 errno=0 ip=0 wbuf=[!][7]\u0000
+chr " ret=6 errno=0 ip=0 buf="[\x22][7]\x00"
+whr " ret=6 errno=0 ip=0 wbuf=["][7]\u0000
+chr # ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr # ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr $ ret=6 errno=0 ip=0 buf="[$][7]\x00"
+whr $ ret=6 errno=0 ip=0 wbuf=[$][7]\u0000
+chr % ret=6 errno=0 ip=0 buf="[%][7]\x00"
+whr % ret=6 errno=0 ip=0 wbuf=[%][7]\u0000
+chr & ret=6 errno=0 ip=0 buf="[&][7]\x00"
+whr & ret=6 errno=0 ip=0 wbuf=[&][7]\u0000
+chr ' ret=6 errno=0 ip=0 buf="['][7]\x00"
+whr ' ret=6 errno=0 ip=0 wbuf=['][7]\u0000
+chr ( ret=6 errno=0 ip=0 buf="[(][7]\x00"
+whr ( ret=6 errno=0 ip=0 wbuf=[(][7]\u0000
+chr ) ret=6 errno=0 ip=0 buf="[)][7]\x00"
+whr ) ret=6 errno=0 ip=0 wbuf=[)][7]\u0000
+chr * ret=5 errno=0 ip=0 buf="[][8]\x00"
+whr * ret=5 errno=0 ip=0 wbuf=[][8]\u0000
+chr + ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr + ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr , ret=6 errno=0 ip=0 buf="[,][7]\x00"
+whr , ret=6 errno=0 ip=0 wbuf=[,][7]\u0000
+chr - ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr - ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr . ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr . ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr / ret=6 errno=0 ip=0 buf="[/][7]\x00"
+whr / ret=6 errno=0 ip=0 wbuf=[/][7]\u0000
+chr 0 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 0 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 1 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 1 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 2 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 2 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 3 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 3 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 4 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 4 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 5 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 5 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 6 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 6 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 7 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 7 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 8 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 8 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr 9 ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr 9 ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr : ret=6 errno=0 ip=0 buf="[:][7]\x00"
+whr : ret=6 errno=0 ip=0 wbuf=[:][7]\u0000
+chr ; ret=6 errno=0 ip=0 buf="[;][7]\x00"
+whr ; ret=6 errno=0 ip=0 wbuf=[;][7]\u0000
+chr < ret=6 errno=0 ip=0 buf="[<][7]\x00"
+whr < ret=6 errno=0 ip=0 wbuf=[<][7]\u0000
+chr = ret=6 errno=0 ip=0 buf="[=][7]\x00"
+whr = ret=6 errno=0 ip=0 wbuf=[=][7]\u0000
+chr > ret=6 errno=0 ip=0 buf="[>][7]\x00"
+whr > ret=6 errno=0 ip=0 wbuf=[>][7]\u0000
+chr ? ret=6 errno=0 ip=0 buf="[?][7]\x00"
+whr ? ret=6 errno=0 ip=0 wbuf=[?][7]\u0000
+chr @ ret=6 errno=0 ip=0 buf="[@][7]\x00"
+whr @ ret=6 errno=0 ip=0 wbuf=[@][7]\u0000
+chr B ret=6 errno=0 ip=0 buf="[B][7]\x00"
+whr B ret=6 errno=0 ip=0 wbuf=[B][7]\u0000
+chr C ret=6 errno=0 ip=0 buf="[\x07][8]\x00"
+whr C ret=6 errno=0 ip=0 wbuf=[\u0007][8]\u0000
+chr D ret=6 errno=0 ip=0 buf="[D][7]\x00"
+whr D ret=6 errno=0 ip=0 wbuf=[D][7]\u0000
+chr H ret=6 errno=0 ip=0 buf="[H][7]\x00"
+whr H ret=6 errno=0 ip=0 wbuf=[H][7]\u0000
+chr I ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr I ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr J ret=6 errno=0 ip=0 buf="[J][7]\x00"
+whr J ret=6 errno=0 ip=0 wbuf=[J][7]\u0000
+chr K ret=6 errno=0 ip=0 buf="[K][7]\x00"
+whr K ret=6 errno=0 ip=0 wbuf=[K][7]\u0000
+chr L ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr L ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr M ret=6 errno=0 ip=0 buf="[M][7]\x00"
+whr M ret=6 errno=0 ip=0 wbuf=[M][7]\u0000
+chr N ret=-1 errno=22 ip=1 buf="\x00ZZZZZZZ"
+whr N ret=-1 errno=22 ip=1 wbuf=\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+chr O ret=6 errno=0 ip=0 buf="[O][7]\x00"
+whr O ret=6 errno=0 ip=0 wbuf=[O][7]\u0000
+chr P ret=6 errno=0 ip=0 buf="[P][7]\x00"
+whr P ret=6 errno=0 ip=0 wbuf=[P][7]\u0000
+chr Q ret=6 errno=0 ip=0 buf="[Q][7]\x00"
+whr Q ret=6 errno=0 ip=0 wbuf=[Q][7]\u0000
+chr R ret=6 errno=0 ip=0 buf="[R][7]\x00"
+whr R ret=6 errno=0 ip=0 wbuf=[R][7]\u0000
+chr T ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr T ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr U ret=6 errno=0 ip=0 buf="[U][7]\x00"
+whr U ret=6 errno=0 ip=0 wbuf=[U][7]\u0000
+chr V ret=6 errno=0 ip=0 buf="[V][7]\x00"
+whr V ret=6 errno=0 ip=0 wbuf=[V][7]\u0000
+chr W ret=6 errno=0 ip=0 buf="[W][7]\x00"
+whr W ret=6 errno=0 ip=0 wbuf=[W][7]\u0000
+chr X ret=6 errno=0 ip=0 buf="[7][8]\x00"
+whr X ret=6 errno=0 ip=0 wbuf=[7][8]\u0000
+chr Y ret=6 errno=0 ip=0 buf="[Y][7]\x00"
+whr Y ret=6 errno=0 ip=0 wbuf=[Y][7]\u0000
+chr [ ret=6 errno=0 ip=0 buf="[[][7]\x00"
+whr [ ret=6 errno=0 ip=0 wbuf=[[][7]\u0000
+chr \ ret=6 errno=0 ip=0 buf="[\x5c][7]\x00"
+whr \ ret=6 errno=0 ip=0 wbuf=[\u005c][7]\u0000
+chr ] ret=6 errno=0 ip=0 buf="[]][7]\x00"
+whr ] ret=6 errno=0 ip=0 wbuf=[]][7]\u0000
+chr ^ ret=6 errno=0 ip=0 buf="[^][7]\x00"
+whr ^ ret=6 errno=0 ip=0 wbuf=[^][7]\u0000
+chr _ ret=6 errno=0 ip=0 buf="[_][7]\x00"
+whr _ ret=6 errno=0 ip=0 wbuf=[_][7]\u0000
+chr ` ret=6 errno=0 ip=0 buf="[`][7]\x00"
+whr ` ret=6 errno=0 ip=0 wbuf=[`][7]\u0000
+chr b ret=6 errno=0 ip=0 buf="[b][7]\x00"
+whr b ret=6 errno=0 ip=0 wbuf=[b][7]\u0000
+chr c ret=6 errno=0 ip=0 buf="[\x07][8]\x00"
+whr c ret=6 errno=0 ip=0 wbuf=[\u0007][8]\u0000
+chr d ret=6 errno=0 ip=0 buf="[7][8]\x00"
+whr d ret=6 errno=0 ip=0 wbuf=[7][8]\u0000
+chr h ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr h ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr i ret=6 errno=0 ip=0 buf="[7][8]\x00"
+whr i ret=6 errno=0 ip=0 wbuf=[7][8]\u0000
+chr j ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr j ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr k ret=6 errno=0 ip=0 buf="[k][7]\x00"
+whr k ret=6 errno=0 ip=0 wbuf=[k][7]\u0000
+chr l ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr l ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr m ret=6 errno=0 ip=0 buf="[m][7]\x00"
+whr m ret=6 errno=0 ip=0 wbuf=[m][7]\u0000
+chr o ret=6 errno=0 ip=0 buf="[7][8]\x00"
+whr o ret=6 errno=0 ip=0 wbuf=[7][8]\u0000
+chr q ret=6 errno=0 ip=0 buf="[q][7]\x00"
+whr q ret=6 errno=0 ip=0 wbuf=[q][7]\u0000
+chr r ret=6 errno=0 ip=0 buf="[r][7]\x00"
+whr r ret=6 errno=0 ip=0 wbuf=[r][7]\u0000
+chr t ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr t ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr u ret=6 errno=0 ip=0 buf="[7][8]\x00"
+whr u ret=6 errno=0 ip=0 wbuf=[7][8]\u0000
+chr v ret=6 errno=0 ip=0 buf="[v][7]\x00"
+whr v ret=6 errno=0 ip=0 wbuf=[v][7]\u0000
+chr w ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr w ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr x ret=6 errno=0 ip=0 buf="[7][8]\x00"
+whr x ret=6 errno=0 ip=0 wbuf=[7][8]\u0000
+chr y ret=6 errno=0 ip=0 buf="[y][7]\x00"
+whr y ret=6 errno=0 ip=0 wbuf=[y][7]\u0000
+chr z ret=5 errno=0 ip=0 buf="[][7]\x00"
+whr z ret=5 errno=0 ip=0 wbuf=[][7]\u0000
+chr { ret=6 errno=0 ip=0 buf="[{][7]\x00"
+whr { ret=6 errno=0 ip=0 wbuf=[{][7]\u0000
+chr | ret=6 errno=0 ip=0 buf="[|][7]\x00"
+whr | ret=6 errno=0 ip=0 wbuf=[|][7]\u0000
+chr } ret=6 errno=0 ip=0 buf="[}][7]\x00"
+whr } ret=6 errno=0 ip=0 wbuf=[}][7]\u0000
+chr ~ ret=6 errno=0 ip=0 buf="[~][7]\x00"
+whr ~ ret=6 errno=0 ip=0 wbuf=[~][7]\u0000
+chr5   ret=6 errno=0 ip=0 buf="[ ][7]\x00"
+chr5 ! ret=6 errno=0 ip=0 buf="[!][7]\x00"
+chr5 " ret=6 errno=0 ip=0 buf="[\x22][7]\x00"
+chr5 # ret=6 errno=0 ip=0 buf="[#][7]\x00"
+chr5 $ ret=6 errno=0 ip=0 buf="[$][7]\x00"
+chr5 % ret=6 errno=0 ip=0 buf="[%][7]\x00"
+chr5 & ret=6 errno=0 ip=0 buf="[&][7]\x00"
+chr5 ' ret=6 errno=0 ip=0 buf="['][7]\x00"
+chr5 ( ret=6 errno=0 ip=0 buf="[(][7]\x00"
+chr5 ) ret=6 errno=0 ip=0 buf="[)][7]\x00"
+chr5 * ret=6 errno=0 ip=0 buf="[*][7]\x00"
+chr5 + ret=6 errno=0 ip=0 buf="[+][7]\x00"
+chr5 , ret=6 errno=0 ip=0 buf="[,][7]\x00"
+chr5 - ret=6 errno=0 ip=0 buf="[-][7]\x00"
+chr5 . ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 / ret=6 errno=0 ip=0 buf="[/][7]\x00"
+chr5 0 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 1 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 2 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 3 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 4 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 5 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 6 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 7 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 8 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 9 ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 : ret=6 errno=0 ip=0 buf="[:][7]\x00"
+chr5 ; ret=6 errno=0 ip=0 buf="[;][7]\x00"
+chr5 < ret=6 errno=0 ip=0 buf="[<][7]\x00"
+chr5 = ret=6 errno=0 ip=0 buf="[=][7]\x00"
+chr5 > ret=6 errno=0 ip=0 buf="[>][7]\x00"
+chr5 ? ret=6 errno=0 ip=0 buf="[?][7]\x00"
+chr5 @ ret=6 errno=0 ip=0 buf="[@][7]\x00"
+chr5 B ret=6 errno=0 ip=0 buf="[B][7]\x00"
+chr5 C ret=10 errno=0 ip=0 buf="[    \x07][8]\x00"
+chr5 D ret=6 errno=0 ip=0 buf="[D][7]\x00"
+chr5 H ret=6 errno=0 ip=0 buf="[H][7]\x00"
+chr5 I ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 J ret=6 errno=0 ip=0 buf="[J][7]\x00"
+chr5 K ret=6 errno=0 ip=0 buf="[K][7]\x00"
+chr5 L ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 M ret=6 errno=0 ip=0 buf="[M][7]\x00"
+chr5 N ret=-1 errno=22 ip=1 buf="\x00ZZZZZZZ"
+chr5 O ret=6 errno=0 ip=0 buf="[O][7]\x00"
+chr5 P ret=6 errno=0 ip=0 buf="[P][7]\x00"
+chr5 Q ret=6 errno=0 ip=0 buf="[Q][7]\x00"
+chr5 R ret=6 errno=0 ip=0 buf="[R][7]\x00"
+chr5 T ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 U ret=6 errno=0 ip=0 buf="[U][7]\x00"
+chr5 V ret=6 errno=0 ip=0 buf="[V][7]\x00"
+chr5 W ret=6 errno=0 ip=0 buf="[W][7]\x00"
+chr5 X ret=10 errno=0 ip=0 buf="[    7][8]\x00"
+chr5 Y ret=6 errno=0 ip=0 buf="[Y][7]\x00"
+chr5 [ ret=6 errno=0 ip=0 buf="[[][7]\x00"
+chr5 \ ret=6 errno=0 ip=0 buf="[\x5c][7]\x00"
+chr5 ] ret=6 errno=0 ip=0 buf="[]][7]\x00"
+chr5 ^ ret=6 errno=0 ip=0 buf="[^][7]\x00"
+chr5 _ ret=6 errno=0 ip=0 buf="[_][7]\x00"
+chr5 ` ret=6 errno=0 ip=0 buf="[`][7]\x00"
+chr5 b ret=6 errno=0 ip=0 buf="[b][7]\x00"
+chr5 c ret=10 errno=0 ip=0 buf="[    \x07][8]\x00"
+chr5 d ret=10 errno=0 ip=0 buf="[    7][8]\x00"
+chr5 h ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 i ret=10 errno=0 ip=0 buf="[    7][8]\x00"
+chr5 j ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 k ret=6 errno=0 ip=0 buf="[k][7]\x00"
+chr5 l ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 m ret=6 errno=0 ip=0 buf="[m][7]\x00"
+chr5 o ret=10 errno=0 ip=0 buf="[    7][8]\x00"
+chr5 q ret=6 errno=0 ip=0 buf="[q][7]\x00"
+chr5 r ret=6 errno=0 ip=0 buf="[r][7]\x00"
+chr5 t ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 u ret=10 errno=0 ip=0 buf="[    7][8]\x00"
+chr5 v ret=6 errno=0 ip=0 buf="[v][7]\x00"
+chr5 w ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 x ret=10 errno=0 ip=0 buf="[    7][8]\x00"
+chr5 y ret=6 errno=0 ip=0 buf="[y][7]\x00"
+chr5 z ret=5 errno=0 ip=0 buf="[][7]\x00"
+chr5 { ret=6 errno=0 ip=0 buf="[{][7]\x00"
+chr5 | ret=6 errno=0 ip=0 buf="[|][7]\x00"
+chr5 } ret=6 errno=0 ip=0 buf="[}][7]\x00"
+chr5 ~ ret=6 errno=0 ip=0 buf="[~][7]\x00"
+[%d] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%i] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%o] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%u] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%x] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%X] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%c] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%C] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%s] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%S] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%Z] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%f] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%e] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%E] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%g] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%G] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%a] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%A] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%p] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%hd] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%hi] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%ho] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%hu] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%hx] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%hX] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%hc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%hC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%hs] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%hS] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%hZ] ret=6 errno=0 ip=0 buf="[A\x00B\x00]\x00"
+[%hf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%he] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%hE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%hg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%hG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%ha] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%hA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%hp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%hhd] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%hhi] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%hho] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%hhu] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%hhx] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%hhX] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%hhc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%hhC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%hhs] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%hhS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%hhZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%hhf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%hhe] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%hhE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%hhg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%hhG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%hha] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%hhA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%hhp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%ld] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%li] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%lo] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%lu] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%lx] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%lX] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%lc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%lC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%ls] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%lS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%lZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%lf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%le] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%lE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%lg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%lG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%la] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%lA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%lp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%lld] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%lli] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%llo] ret=15 errno=0 ip=0 buf="[4040000000101]\x00"
+[%llu] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%llx] ret=12 errno=0 ip=0 buf="[4100000041]\x00"
+[%llX] ret=12 errno=0 ip=0 buf="[4100000041]\x00"
+[%llc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%llC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%lls] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%llS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%llZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%llf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%lle] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%llE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%llg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%llG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%lla] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%llA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%llp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%Ld] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%Li] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%Lo] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%Lu] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%Lx] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%LX] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%Lc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%LC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%Ls] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%LS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%LZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%Lf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%Le] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%LE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%Lg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%LG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%La] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%LA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%Lp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%wd] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%wi] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%wo] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%wu] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%wx] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%wX] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%wc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%wC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%ws] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%wS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%wZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%wf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%we] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%wE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%wg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%wG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%wa] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%wA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%wp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%Id] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%Ii] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%Io] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%Iu] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%Ix] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%IX] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%Ic] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%IC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%Is] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%IS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%IZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%If] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%Ie] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%IE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%Ig] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%IG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%Ia] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%IA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%Ip] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%I32d] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%I32i] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%I32o] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%I32u] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%I32x] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%I32X] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%I32c] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%I32C] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%I32s] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%I32S] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%I32Z] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%I32f] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%I32e] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%I32E] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%I32g] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%I32G] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%I32a] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%I32A] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%I32p] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%I64d] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%I64i] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%I64o] ret=15 errno=0 ip=0 buf="[4040000000101]\x00"
+[%I64u] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%I64x] ret=12 errno=0 ip=0 buf="[4100000041]\x00"
+[%I64X] ret=12 errno=0 ip=0 buf="[4100000041]\x00"
+[%I64c] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%I64C] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%I64s] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%I64S] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%I64Z] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%I64f] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%I64e] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%I64E] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%I64g] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%I64G] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%I64a] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%I64A] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%I64p] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%jd] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%ji] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%jo] ret=15 errno=0 ip=0 buf="[4040000000101]\x00"
+[%ju] ret=14 errno=0 ip=0 buf="[279172874305]\x00"
+[%jx] ret=12 errno=0 ip=0 buf="[4100000041]\x00"
+[%jX] ret=12 errno=0 ip=0 buf="[4100000041]\x00"
+[%jc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%jC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%js] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%jS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%jZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%jf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%je] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%jE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%jg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%jG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%ja] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%jA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%jp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%zd] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%zi] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%zo] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%zu] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%zx] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%zX] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%zc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%zC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%zs] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%zS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%zZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%zf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%ze] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%zE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%zg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%zG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%za] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%zA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%zp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%td] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%ti] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%to] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%tu] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%tx] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%tX] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%tc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%tC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%ts] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%tS] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%tZ] ret=4 errno=0 ip=0 buf="[AB]\x00"
+[%tf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%te] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%tE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%tg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%tG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%ta] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%tA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%tp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%lhd] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhi] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lho] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhu] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhx] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhX] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhc] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhC] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhs] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhS] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhZ] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhf] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhe] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhE] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhg] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhG] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lha] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhA] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%lhp] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hld] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hli] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlo] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlu] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlx] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlX] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlc] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlC] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hls] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlS] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlZ] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlf] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hle] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlE] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlg] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlG] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hla] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlA] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%hlp] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%Ihd] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%Ihi] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%Iho] ret=5 errno=0 ip=0 buf="[101]\x00"
+[%Ihu] ret=4 errno=0 ip=0 buf="[65]\x00"
+[%Ihx] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%IhX] ret=4 errno=0 ip=0 buf="[41]\x00"
+[%Ihc] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%IhC] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%Ihs] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%IhS] ret=3 errno=0 ip=0 buf="[A]\x00"
+[%IhZ] ret=6 errno=0 ip=0 buf="[A\x00B\x00]\x00"
+[%Ihf] ret=10 errno=0 ip=0 buf="[1.500000]\x00"
+[%Ihe] ret=14 errno=0 ip=0 buf="[1.500000e+00]\x00"
+[%IhE] ret=14 errno=0 ip=0 buf="[1.500000E+00]\x00"
+[%Ihg] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%IhG] ret=5 errno=0 ip=0 buf="[1.5]\x00"
+[%Iha] ret=22 errno=0 ip=0 buf="[0x1.8000000000000p+0]\x00"
+[%IhA] ret=22 errno=0 ip=0 buf="[0X1.8000000000000P+0]\x00"
+[%Ihp] ret=10 errno=0 ip=0 buf="[00000041]\x00"
+[%I64ld] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64li] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lo] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lu] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lx] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lX] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lc] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lC] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64ls] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lS] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lZ] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lf] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64le] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lE] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lg] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lG] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64la] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lA] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%I64lp] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zld] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zli] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlo] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlu] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlx] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlX] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlc] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlC] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zls] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlS] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlZ] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlf] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zle] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlE] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlg] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlG] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zla] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlA] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+[%zlp] ret=-1 errno=22 ip=1 buf="\x00ZZZZZ"
+w legacy ret=32 errno=0 ip=0 wbuf=[ws][ns][w][n][h][l][H][L][W][X]\u0000
+w iso ret=32 errno=0 ip=0 wbuf=[ns][ws][n][w][h][l][H][L][W][X]\u0000
+w nonascii ret=9 errno=0 ip=0 wbuf=[\u00e9\u6f22\ud83d\ude00][5]\u0000
+w latin1 narrow ret=6 errno=0 ip=0 wbuf=[\u00e9][\u00e9]\u0000
+w width ret=24 errno=0 ip=0 wbuf=[    \u6f22][\u6f22    ][\u6f22][    \u6f22]\u0000
+w nums ret=63 errno=0 ip=0 wbuf=-1 ff 1.500000 1.500000e+00 1.5 0x1.0000000000000p+0 00000010 9\u0000
+w special ret=17 errno=0 ip=0 wbuf=inf -nan(ind) nan\u0000
+w special o8 ret=30 errno=0 ip=0 wbuf=1.#INF00 -1.#IND00e+00 1.#QNAN\u0000
+w null ret=16 errno=0 ip=0 wbuf=[(null)][(null)]\u0000
+w bad ret=3 errno=0 ip=0 wbuf=ayb\u0000
+w n ret=-1 errno=22 ip=1 wbuf=\u0000b\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+w trunc o=0 ret=-2 errno=0 ip=0 wbuf=\u6f22\u6f22\u0000\u5a5a\u5a5a
+w trunc o=0 ret=3 errno=0 ip=0 wbuf=\u6f22\u6f22\u6f22\u0000\u5a5a
+w trunc o=1 ret=3 errno=0 ip=0 wbuf=\u6f22\u6f22\u6f22\u5a5a\u5a5a
+w trunc o=1 ret=3 errno=0 ip=0 wbuf=\u6f22\u6f22\u6f22\u0000\u5a5a
+w trunc o=2 ret=3 errno=0 ip=0 wbuf=\u6f22\u6f22\u0000\u5a5a\u5a5a
+w trunc o=2 ret=3 errno=0 ip=0 wbuf=\u6f22\u6f22\u6f22\u0000\u5a5a
+w count nonascii ret=3 errno=0 ip=0 
+vswprintf_s nonascii fit ret=3 errno=0 ip=0 wbuf=\u6f22\u6f22\u6f22\u0000\u5a5a
+done

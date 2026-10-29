@@ -1,0 +1,19 @@
+SDECIMAL r=2 e=0 .\x0
+SDECIMAL_NUO r=2 e=dead .\x0
+SGROUPING r=4 e=dead 3;0\x0
+SSHORTDATE r=9 e=dead M/d/yyyy\x0
+SLONGDATE r=13 e=dead dddd, MMMM d, yyyy\x0
+STIMEFORMAT r=b e=dead h:mm:ss tt\x0
+S1159 r=3 e=dead AM\x0
+S2359 r=3 e=dead PM\x0
+SNEGATIVESIGN r=2 e=dead -\x0
+SCURRENCY r=2 e=dead $\x0
+IFIRSTDAYOFWEEK r=2 e=dead 6\x0
+SNATIVELANGNAME r=8 e=dead English\x0
+SENGCOUNTRY r=e e=dead United States\x0
+IDEFAULTMACCODEPAGE r=6 e=dead 10000\x0
+SPARENT r=3 e=dead en\x0
+SDAYNAME1 r=7 e=dead Monday\x0
+SMONTHNAME1 r=8 e=dead January\x0
+bad_type r=0 e=3ec 
+SLANGUAGE r=18 e=0 English (United States)\x0

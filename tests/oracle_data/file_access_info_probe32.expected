@@ -1,0 +1,16 @@
+CreatePipe read                    status=0x00000000 access=0x00120189
+CreatePipe write                   status=0x00000000 access=0x00120196
+dup read same-access               status=0x00000000 access=0x00120189
+dup read GENERIC_READ              status=0x00000000 access=0x00120089
+CreateNamedPipe duplex             status=0x00000000 access=0x0012019f
+client GENERIC_READ|WRITE          status=0x00000000 access=0x0012019f
+CreateNamedPipe inbound            status=0x00000000 access=0x00120089
+client GENERIC_WRITE               status=0x00000000 access=0x00120196
+CreateNamedPipe outbound           status=0x00000000 access=0x00120116
+file GENERIC_READ                  status=0x00000000 access=0x00130089
+file GENERIC_READ|WRITE            status=0x00000000 access=0x0013019f
+file GENERIC_ALL                   status=0x00000000 access=0x001f01ff
+file FILE_READ_DATA|SYNCHRONIZE    status=0x00000000 access=0x00110081
+file GENERIC_EXECUTE               status=0x00000000 access=0x001300a0
+stdin                              status=0x00000000 access=0x00120089
+done

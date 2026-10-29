@@ -1,0 +1,18 @@
+unclosed_tag	-1072896659	0xC00CE56D	line=1	pos=9	filepos=8	End tag 'a' does not match the start tag 'b'. 
+no_root	-1072896680	0xC00CE558	line=0	pos=0	filepos=0	XML document must have a top level element. 
+junk_at_root	-1072896682	0xC00CE556	line=1	pos=1	filepos=0	Invalid at the top level of the document. 
+two_roots	-1072896683	0xC00CE555	line=1	pos=6	filepos=5	Only one top level element is allowed in an XML document. 
+missing_quote	-1072896766	0xC00CE502	line=1	pos=6	filepos=5	A string literal was expected, but no opening quote character was found. 
+missing_equals	-1072896763	0xC00CE505	line=1	pos=5	filepos=4	A name contained an invalid character. 
+bad_start_name	-1072896764	0xC00CE504	line=1	pos=2	filepos=1	A name was started with an invalid character. 
+unterminated_tag	-1072896674	0xC00CE55E	line=1	pos=2	filepos=1	Element was not closed. 
+undefined_entity	-1072898046	0xC00CE002	line=1	pos=5	filepos=4	Reference to undefined entity 'nope'. 
+missing_semicolon	-1072896755	0xC00CE50D	line=1	pos=8	filepos=7	A semi colon character was expected. 
+comment_syntax	-1072896765	0xC00CE503	line=1	pos=13	filepos=12	Incorrect syntax was used in a comment. 
+bad_char_in_string	-1072896762	0xC00CE506	line=1	pos=8	filepos=7	The character '<' cannot be used in an attribute value. 
+mismatched_close	-1072896659	0xC00CE56D	line=1	pos=6	filepos=5	End tag 'b' does not match the start tag 'a'. 
+expecting_tag_end	-1072896763	0xC00CE505	line=1	pos=11	filepos=10	A name contained an invalid character. 
+cdata_unterminated	-1072896668	0xC00CE564	line=1	pos=13	filepos=12	A CDATA section was not closed. 
+xmldecl_syntax	-1072896766	0xC00CE502	line=1	pos=15	filepos=14	A string literal was expected, but no opening quote character was found. 
+invalid_hex	-1072896754	0xC00CE50E	line=1	pos=7	filepos=6	An invalid character was found inside an entity reference. 
+multiple_colons	-1072896740	0xC00CE51C	line=1	pos=5	filepos=4	Multiple colons are not allowed in a name. 

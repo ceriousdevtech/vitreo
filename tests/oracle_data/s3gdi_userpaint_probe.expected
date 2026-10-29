@@ -1,0 +1,119 @@
+FillRect=1
+fillrect box=4,4,20,14 00ff0000*160 other=0
+FillRect(sys+1)=1
+fillrect syscolor box=4,4,20,14 000078d7*160 other=0
+FrameRect=1
+framerect box=4,4,20,14 00ff0000*48 other=0
+FrameRect(empty)=1
+framerect empty box=9,11,11,19 00ff0000*16 other=0
+InvertRect=1
+invertrect box=4,4,20,14 ffedcba9*160 other=0
+DrawFocusRect=1
+drawfocusrect box=4,4,20,14 00edcba9*24 other=0
+drawfocusrect grid: .a.a.a.a.a.a.a.a a............... ...............a a............... ...............a a............... ...............a a............... ...............a a.a.a.a.a.a.a.a. legend: a=edcba9
+drawfocusrect odd grid: .a.a.a. a.....a ....... a.....a .a.a.a. legend: a=edcba9
+drawedge raised ret=1 adj=6,6,18,12 box=4,4,20,14 00e3e3e3*23 00696969*25 00ffffff*19 00a0a0a0*21 other=0
+drawedge sunken ret=1 adj=6,6,18,12 box=4,4,20,14 00a0a0a0*23 00ffffff*25 00696969*19 00e3e3e3*21 other=0
+drawedge etched ret=1 adj=6,6,18,12 box=4,4,20,14 00a0a0a0*44 00ffffff*44 other=0
+drawedge bump ret=1 adj=6,6,18,12 box=4,4,20,14 00e3e3e3*44 00696969*44 other=0
+drawedge raisedinner ret=1 adj=5,5,19,13 box=4,4,20,14 00ffffff*23 00a0a0a0*25 other=0
+drawedge raised middle box=4,4,20,14 00e3e3e3*23 00696969*25 00ffffff*19 00a0a0a0*21 other=72
+drawedge sunken bottomright box=4,4,20,14 00e3e3e3*23 00ffffff*25 other=0
+drawedge raised flat box=4,4,20,14 00a0a0a0*48 00f0f0f0*40 other=0
+dfc push ret=1 box=4,4,17,17 00ffffff*23 00696969*25 00e3e3e3*19 00a0a0a0*21 other=81
+dfc push ret=1 grid: aaaaaaaaaaaab accccccccccdb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb adddddddddddb bbbbbbbbbbbbb legend: a=ffffff b=696969 c=e3e3e3 d=a0a0a0 e=f0f0f0
+dfc check ret=1 box=4,4,17,17 00a0a0a0*23 00ffffff*106 00696969*19 00e3e3e3*21 other=0
+dfc check ret=1 grid: aaaaaaaaaaaab accccccccccdb acbbbbbbbbbdb acbbbbbbbbbdb acbbbbbbbbbdb acbbbbbbbbbdb acbbbbbbbbbdb acbbbbbbbbbdb acbbbbbbbbbdb acbbbbbbbbbdb acbbbbbbbbbdb adddddddddddb bbbbbbbbbbbbb legend: a=a0a0a0 b=ffffff c=696969 d=e3e3e3
+dfc checked ret=1 box=4,4,17,17 00a0a0a0*23 00ffffff*85 00696969*19 00e3e3e3*21 other=21
+dfc checked ret=1 grid: aaaaaaaaaaaab accccccccccdb acbbbbbbbbbdb acbbbbbbbebdb acbbbbbbeebdb acbebbbeeebdb acbeebeeebbdb acbeeeeebbbdb acbbeeebbbbdb acbbbebbbbbdb acbbbbbbbbbdb adddddddddddb bbbbbbbbbbbbb legend: a=a0a0a0 b=ffffff c=696969 d=e3e3e3 e=000000
+dfc radio ret=1 box=5,4,17,16 00a0a0a0*16 00696969*14 00ffffff*68 00e3e3e3*14 other=0
+dfc radio ret=1 grid: .....aaaa.... ...aabbbbaa.. ..abbccccbbc. ..abccccccdc. .abccccccccdc .abccccccccdc .abccccccccdc .abccccccccdc ..abccccccdc. ..addccccddc. ...ccddddcc.. .....cccc.... ............. legend: a=a0a0a0 b=696969 c=ffffff d=e3e3e3
+dfc close ret=1 box=4,4,17,17 00ffffff*23 00696969*25 00e3e3e3*19 00a0a0a0*21 other=81
+dfc close ret=1 grid: aaaaaaaaaaaab accccccccccdb aceeffffeefdb acfeeffeeffdb acffeeeefffdb acfffeeffffdb acffeeeefffdb acfeeffeeffdb aceeffffeefdb acfffffffffdb acfffffffffdb adddddddddddb bbbbbbbbbbbbb legend: a=ffffff b=696969 c=e3e3e3 d=a0a0a0 e=000000 f=f0f0f0
+dfc scrollup ret=1 box=4,4,17,17 00e3e3e3*23 00696969*25 00ffffff*19 00a0a0a0*21 other=81
+dfc scrollup ret=1 grid: aaaaaaaaaaaab accccccccccdb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb aceeeefeeeedb aceeefffeeedb aceefffffeedb aceeeeeeeeedb aceeeeeeeeedb aceeeeeeeeedb adddddddddddb bbbbbbbbbbbbb legend: a=e3e3e3 b=696969 c=ffffff d=a0a0a0 e=f0f0f0 f=000000
+dfc menucheck ret=1 box=4,4,17,17 00ffffff*148 00000000*21 other=0
+dfc menucheck ret=1 grid: aaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaabaaaa aaaaaaabbaaaa aabaaabbbaaaa aabbabbbaaaaa aabbbbbaaaaaa aaabbbaaaaaaa aaaabaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaa legend: a=ffffff b=000000
+FillRect(NULL dc)=0 err=57005
+FillRect(NULL brush)=1 err=57005
+FrameRect(NULL dc)=0 err=57005
+InvertRect(NULL dc)=0 err=57005
+DrawFocusRect(NULL dc)=0 err=57005
+DrawEdge(NULL dc)=0 err=57005
+syscolor 0=c8c8c8 brush=ok lb=c8c8c8
+syscolor 1=000000 brush=ok lb=000000
+syscolor 2=d1b499 brush=ok lb=d1b499
+syscolor 3=dbcdbf brush=ok lb=dbcdbf
+syscolor 4=f0f0f0 brush=ok lb=f0f0f0
+syscolor 5=ffffff brush=ok lb=ffffff
+syscolor 6=646464 brush=ok lb=646464
+syscolor 7=000000 brush=ok lb=000000
+syscolor 8=000000 brush=ok lb=000000
+syscolor 9=000000 brush=ok lb=000000
+syscolor 10=b4b4b4 brush=ok lb=b4b4b4
+syscolor 11=fcf7f4 brush=ok lb=fcf7f4
+syscolor 12=ababab brush=ok lb=ababab
+syscolor 13=d77800 brush=ok lb=d77800
+syscolor 14=ffffff brush=ok lb=ffffff
+syscolor 15=f0f0f0 brush=ok lb=f0f0f0
+syscolor 16=a0a0a0 brush=ok lb=a0a0a0
+syscolor 17=6d6d6d brush=ok lb=6d6d6d
+syscolor 18=000000 brush=ok lb=000000
+syscolor 19=000000 brush=ok lb=000000
+syscolor 20=ffffff brush=ok lb=ffffff
+syscolor 21=696969 brush=ok lb=696969
+syscolor 22=e3e3e3 brush=ok lb=e3e3e3
+syscolor 23=000000 brush=ok lb=000000
+syscolor 24=e1ffff brush=ok lb=e1ffff
+syscolor 25=000000 brush=ok lb=000000
+syscolor 26=cc6600 brush=ok lb=cc6600
+syscolor 27=ead1b9 brush=ok lb=ead1b9
+syscolor 28=f2e4d7 brush=ok lb=f2e4d7
+syscolor 29=ff9933 brush=ok lb=ff9933
+syscolor 30=f0f0f0 brush=ok lb=f0f0f0
+syscolor 31=000000 brush=NULL lb=000000
+GetSysColor(99)=0 err=57005 brush=NULL
+DeleteObject(sysbrush)=1 type=2
+client=184,111 hidden
+hidden: invalidate pending=0
+  WM_PAINT dc=ok erase=0 rc=0,0,184,111
+shown visible=1
+GetUpdateRect initial=0 rc=0,0,0,0
+InvalidateRect=1
+GetUpdateRect=1 rc=10,10,30,20
+union rc=10,5,60,20
+GetUpdateRgn=3
+  WM_PAINT dc=ok erase=0 rc=10,5,60,20
+UpdateWindow=1 paints=1 erases=1
+GetUpdateRect after=0
+UpdateWindow clean=1 paints=0
+invalidate all rc=0,0,184,111
+ValidateRect=1 then=0
+  WM_PAINT dc=ok erase=0 rc=1,2,3,4
+RedrawWindow(INVALIDATE|UPDATENOW|ERASE)=1 paints=1 erases=1 last=1,2,3,4
+RedrawWindow(INVALIDATE)=1 paints=0 pending=1
+RedrawWindow(VALIDATE)=1 pending=0
+InvalidateRect(NULL hwnd)=1 err=57005
+InvalidateRect(bad hwnd)=1 err=57005
+ValidateRect(bad hwnd)=0 err=57005
+GetUpdateRect(bad hwnd)=0 err=57005
+UpdateWindow(bad hwnd)=0 err=57005
+RedrawWindow(bad hwnd)=0 err=57005
+GetDC=ok WindowFromDC ok=1 type=3
+GetDC clipbox=2 0,0,184,111
+ReleaseDC=1 again=0
+GetWindowDC clipbox=2 0,0,200,150
+GetDCEx(WINDOW) clipbox=2 0,0,200,150
+GetDC(NULL) ok=1 WindowFromDC=desktop type=3
+ReleaseDC(NULL, screen)=1
+GetDC(bad)=NULL err=57005
+ReleaseDC(bad dc)=0 err=57005
+WindowFromDC(mem)=NULL err=57005
+WindowFromDC(NULL)=NULL err=57005
+BeginPaint after erase-invalidate erase=0 erases=2
+BeginPaint direct=ok erase=0 rc=10,10,30,20 pending=0
+BeginPaint clipbox=2 10,10,30,20
+EndPaint=1
+BeginPaint clean rc=0,0,0,0 erase=0
+BeginPaint(bad)=NULL err=57005
+IsIconic=0

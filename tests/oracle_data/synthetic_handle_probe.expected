@@ -1,0 +1,13 @@
+close_never_face_ok 0x00000000
+close_never_face_err 0x00000006
+close_never_ce_ok 0x00000000
+close_never_ce_err 0x00000006
+close_never_cc_ok 0x00000000
+close_never_cc_err 0x00000006
+snap_nz 0x00000001
+shi_snap_ok 0x00000001
+shi_snap_err 0x0000dead
+close_snap_ok 0x00000001
+close_snap_err 0x0000dead
+shi_never_face_ok 0x00000000
+shi_never_face_err 0x00000006

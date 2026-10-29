@@ -1,0 +1,18 @@
+fxc 10.0.26100.0 (winoracle), 2026-10-27
+
+sv_plus_user, vs_5_0 -- output signature:
+  SV_Position 0  xyzw  reg 0  POS
+  POSITION    1  xyzw  reg 1  NONE
+  POSITION    2  xyzw  reg 2  NONE
+  dcl_output_siv o0.xyzw, position
+
+sm4_plain_position, vs_4_0 -- output signature:
+  POSITION 0  xyzw  reg 0  NONE
+  TEXCOORD 0  xyzw  reg 1  NONE
+
+level9_position, vs_4_0_level_9_1:
+  error X4541: vertex shader must minimally write all four components of SV_Position
+  (a POSITION output does not stand in for SV_Position even at level 9)
+
+Conclusion: the rasterizer position is the output whose SysValue is POS
+(D3D_NAME_POSITION); a semantic spelled POSITION<n> is an ordinary output.

@@ -1,0 +1,237 @@
+# d3d11_classlink_probe: winoracle (WARP, 10.0.26100) x64 output, every case
+# in its own process (d3d11_classlink_run.cmd). Identical over five x64 runs
+# but one, in which WARP removed the device (0x887a0020 DXGI_ERROR_DRIVER_
+# INTERNAL_ERROR) at multi_b's CSSetShader; some cs_multi sets not used here
+# do so every time. The x86 build matches except where SampOp samples through
+# this[].z/.w (multi_b, dyn_2_sel0, draw_vs_ps_res): x86 WARP reads 0 from
+# that texture on some runs; x64 returns the texel, as the spec says.
+create vs_iface NULL-linkage: hr=0x80070057 out=null
+create vs_iface linkage: hr=0x00000000 out=obj
+create vs_iface linkage,NULL-out: hr=0x00000001 out=null
+create gs_iface NULL-linkage: hr=0x80070057 out=null
+create gs_iface linkage: hr=0x00000000 out=obj
+create gs_iface linkage,NULL-out: hr=0x00000001 out=null
+create hs_iface NULL-linkage: hr=0x80070057 out=null
+create hs_iface linkage: hr=0x00000000 out=obj
+create hs_iface linkage,NULL-out: hr=0x00000001 out=null
+create ds_iface NULL-linkage: hr=0x80070057 out=null
+create ds_iface linkage: hr=0x00000000 out=obj
+create ds_iface linkage,NULL-out: hr=0x00000001 out=null
+create ps_iface NULL-linkage: hr=0x80070057 out=null
+create ps_iface linkage: hr=0x00000000 out=obj
+create ps_iface linkage,NULL-out: hr=0x00000001 out=null
+create cs_multi NULL-linkage: hr=0x80070057 out=null
+create cs_multi linkage: hr=0x00000000 out=obj
+create cs_multi linkage,NULL-out: hr=0x00000001 out=null
+desc g_add0: id=3 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_add0"/7 type=""/1
+desc g_mul: id=4 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_mul"/6 type=""/1
+desc g_buf: id=0 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_buf"/6 type=""/1
+desc g_samp: id=1 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_samp"/7 type=""/1
+desc g_shl: id=6 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_shl"/6 type=""/1
+desc g_xor: id=8 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_xor"/6 type=""/1
+desc g_not: id=9 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_not"/6 type=""/1
+desc g_inc: id=7 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_inc"/6 type=""/1
+desc nope: id=10 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="nope"/5 type=""/1
+desc g_adds[2]: id=2 index=2 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_adds"/7 type=""/1
+desc g_add0[1]: id=3 index=1 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_add0"/7 type=""/1
+desc AddK(4,1,0,0): id=0 index=0 type=3 cb=4 off=1 tex=0 samp=0 created=1 name=""/1 type="AddK"/5
+desc BufOp(4,2,5,3): id=0 index=0 type=1 cb=4 off=2 tex=5 samp=3 created=1 name=""/1 type="BufOp"/6
+desc ModStep: id=0 index=0 type=7 cb=0 off=0 tex=0 samp=0 created=1 name=""/1 type="ModStep"/8
+desc NoSuchClass: id=0 index=0 type=9 cb=0 off=0 tex=0 samp=0 created=1 name=""/1 type="NoSuchClass"/12
+desc fresh g_mul before shader: id=0 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_mul"/6 type=""/1
+desc fresh MulK before shader: id=0 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=1 name=""/1 type="MulK"/5
+desc fresh Zzz before shader: id=0 index=0 type=1 cb=0 off=0 tex=0 samp=0 created=1 name=""/1 type="Zzz"/4
+desc fresh g_mul after shader (old object): id=0 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_mul"/6 type=""/1
+desc fresh MulK after shader (old object): id=0 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=1 name=""/1 type="MulK"/5
+desc fresh g_mul after shader: id=0 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_mul"/6 type=""/1
+desc fresh g_buf after shader: id=1 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=0 name="g_buf"/6 type=""/1
+desc fresh MulK after shader: id=0 index=0 type=0 cb=0 off=0 tex=0 samp=0 created=1 name=""/1 type="MulK"/5
+desc fresh XorOp after shader: id=0 index=0 type=5 cb=0 off=0 tex=0 samp=0 created=1 name=""/1 type="XorOp"/6
+desc fresh Zzz after shader: id=0 index=0 type=1 cb=0 off=0 tex=0 samp=0 created=1 name=""/1 type="Zzz"/4
+multi_a fnv=053f731e removed=0x00000000
+multi_a 000: daa66d0b 4d481f35 dca86d2d aa66d0b0 e6ea9f5d 3ef3f1a1 191360bf 6ea9f5d0
+multi_a 008: 2b7b932f 26b5be25 538453f1 b7b932f0 6feab71d 187b8b91 8ff54743 feab71d0
+multi_a 016: 2b59b50b 0a315655 cc623af5 b59b50b0 e6aead95 f5e32401 06cf2e47 6aead950
+multi_a 024: 3abf9d67 e7a4f175 434021a9 abf9d670 7dae9355 e36ac171 81b114cb dae93550
+multi_a 032: 3dd9f70b d5209125 be1e08ad dd9f70b0 e56af35d c6d25d31 fa8afbbf 56af35d0
+multi_a 040: 26fbed2f be942415 38fbee71 6fbed2f0 6b6a9d1d a659f5a1 736ce2c3 b6a9d1d0
+multi_a 048: 2fd9950b 980fc045 afd9d575 fd9950b0 eba6b605 89c18a91 ec46c747 ba6b6050
+multi_a 056: 26a7b397 75835f05 26b7bc49 6a7b3970 5aa6afc5 67492fe1 6328b02b aa6afc50
+multi_b fnv=401fea2e removed=0x00000000
+multi_b 000: 00000016 dca86d1c dca86d1c 00000160 000000eb 191360ae 191360ae 00000eb0
+multi_b 008: 0000007c 538453e0 538453e0 000007c0 00000031 8ff54732 8ff54732 00000310
+multi_b 016: 000000f6 cc623ae4 cc623ae4 00000f60 000000cb 06cf2e36 06cf2e36 00000cb0
+multi_b 024: 0000009c 43402198 43402198 000009c0 000000d1 81b114ba 81b114ba 00000d10
+multi_b 032: 000000d6 be1e089c be1e089c 00000d60 0000002b fa8afbae fa8afbae 000002b0
+multi_b 040: 000000bc 38fbee60 38fbee60 00000bc0 000000f1 736ce2b2 736ce2b2 00000f10
+multi_b 048: 00000036 afd9d564 afd9d564 00000360 0000009b ec46c736 ec46c736 000009b0
+multi_b 056: 0000006c 26b7bc38 26b7bc38 000006c0 00000101 6328b01a 6328b01a 00001010
+multi_c fnv=e327b82b removed=0x00000000
+multi_c 000: daa66d0b dca86d82 dca86d1c aa66d0b0 e6ea9f5d 19136114 191360ae 6ea9f5d0
+multi_c 008: 2b7b932f 53845446 538453e0 b7b932f0 6feab71d 8ff54798 8ff54732 feab71d0
+multi_c 016: 2b59b50b cc623b4a cc623ae4 b59b50b0 e6aead95 06cf2e9c 06cf2e36 6aead950
+multi_c 024: 3abf9d67 434021fe 43402198 abf9d670 7dae9355 81b11520 81b114ba dae93550
+multi_c 032: 3dd9f70b be1e0902 be1e089c dd9f70b0 e56af35d fa8afc14 fa8afbae 56af35d0
+multi_c 040: 26fbed2f 38fbeec6 38fbee60 6fbed2f0 6b6a9d1d 736ce318 736ce2b2 b6a9d1d0
+multi_c 048: 2fd9950b afd9d5ca afd9d564 fd9950b0 eba6b605 ec46c79c ec46c736 ba6b6050
+multi_c 056: 26a7b397 26b7bc9e 26b7bc38 6a7b3970 5aa6afc5 6328b080 6328b01a aa6afc50
+multi_d fnv=7e949d52 removed=0x00000000
+multi_d 000: dca86d2d 00001028 dca86d2d 235792d2 191360bf 0000103c 191360bf e6ec9f40
+multi_d 008: 538453f1 00001050 538453f1 ac7bac0e 8ff54743 0000103c 8ff54743 700ab8bc
+multi_d 016: cc623af5 00001028 cc623af5 339dc50a 06cf2e47 0000103c 06cf2e47 f930d1b8
+multi_d 024: 434021a9 00001050 434021a9 bcbfde56 81b114cb 0000103c 81b114cb 7e4eeb34
+multi_d 032: be1e08ad 00001028 be1e08ad 41e1f752 fa8afbbf 0000103c fa8afbbf 05750440
+multi_d 040: 38fbee71 00001050 38fbee71 c704118e 736ce2c3 0000103c 736ce2c3 8c931d3c
+multi_d 048: afd9d575 00001028 afd9d575 50262a8a ec46c747 0000103c ec46c747 13b938b8
+multi_d 056: 26b7bc49 00001050 26b7bc49 d94843b6 6328b02b 0000103c 6328b02b 9cd74fd4
+multi_e fnv=b094f1c5 removed=0x00000000
+multi_e 000: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+multi_e 008: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+multi_e 016: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+multi_e 024: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+multi_e 032: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+multi_e 040: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+multi_e 048: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+multi_e 056: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+dyn_1_sel0 fnv=a8ccca5a removed=0x00000000
+dyn_1_sel0 000: dca86d1c 191360ae 538453e0 8ff54732 cc623ae4 06cf2e36 43402198 81b114ba
+dyn_1_sel0 008: be1e089c fa8afbae 38fbee60 736ce2b2 afd9d564 ec46c736 26b7bc38 6328b01a
+dyn_1_sel1 fnv=63ed54e9 removed=0x00000000
+dyn_1_sel1 000: 4d481f35 3ef3f1a1 26b5be25 187b8b91 0a315655 f5e32401 e7a4f175 e36ac171
+dyn_1_sel1 008: d5209125 c6d25d31 be942415 a659f5a1 980fc045 89c18a91 75835f05 67492fe1
+dyn_1_sel2 fnv=d5ab597e removed=0x00000000
+dyn_1_sel2 000: dca86d2d 191360bf 538453f1 8ff54743 cc623af5 06cf2e47 434021a9 81b114cb
+dyn_1_sel2 008: be1e08ad fa8afbbf 38fbee71 736ce2c3 afd9d575 ec46c747 26b7bc49 6328b02b
+dyn_1_sel3 fnv=05d329c5 removed=0x00000000
+dyn_1_sel3 000: 00001028 0000103c 00001050 0000103c 00001028 0000103c 00001050 0000103c
+dyn_1_sel3 008: 00001028 0000103c 00001050 0000103c 00001028 0000103c 00001050 0000103c
+dyn_2_sel0 fnv=bbd92ef6 removed=0x00000000
+dyn_2_sel0 000: 00000016 000000eb 0000007c 00000031 000000f6 000000cb 0000009c 000000d1
+dyn_2_sel0 008: 000000d6 0000002b 000000bc 000000f1 00000036 0000009b 0000006c 00000101
+dyn_2_sel1 fnv=978fefc5 removed=0x00000000
+dyn_2_sel1 000: 00005fa0 00006770 00006f40 00006770 00005fa0 00006770 00006f40 00006770
+dyn_2_sel1 008: 00005fa0 00006770 00006f40 00006770 00005fa0 00006770 00006f40 00006770
+dyn_3_sel1 fnv=31f7a2ef removed=0x00000000
+dyn_3_sel1 000: dca86e0b 1913619d 538454cf 8ff54821 cc623bd3 06cf2f25 43402287 81b115a9
+dyn_3_sel1 008: be1e098b fa8afc9d 38fbef4f 736ce3a1 afd9d653 ec46c825 26b7bd27 6328b109
+dyn_3_sel2 fnv=2930c3ff removed=0x00000000
+dyn_3_sel2 000: dca8700b 1913639d 538456cf 8ff54a21 cc623dd3 06cf3125 43402487 81b117a9
+dyn_3_sel2 008: be1e0b8b fa8afe9d 38fbf14f 736ce5a1 afd9d853 ec46ca25 26b7bf27 6328b309
+dyn_3_sel3 fnv=7c26213c removed=0x00000000
+dyn_3_sel3 000: dca86d82 19136114 53845446 8ff54798 cc623b4a 06cf2e9c 434021fe 81b11520
+dyn_3_sel3 008: be1e0902 fa8afc14 38fbeec6 736ce318 afd9d5ca ec46c79c 26b7bc9e 6328b080
+nested_inc_shl_sel2 fnv=645d0a89 removed=0x00000000
+nested_inc_shl_sel2 000: 030303c6 10101010 dda36aeb f3678b80 b84fd81c d6ff2730 92f644e1 ba76c0a0
+nested_inc_shl_sel2 008: 6d96b872 9dce7e50 423d24d7 614615c0 1ce99208 44ddb170 f78ff98d 28552ee0
+nested_inc_shl_sel2 016: d230671e 0baccc90 acd6d413 ef246700 8d8345f4 f2bc1bb0 6829b409 d633bc20
+nested_inc_shl_sel2 024: 42ca204a b98b52d0 1d70867f 9d02c940 f21cf560 609a6df0 ccc36135 44120260
+nested_mod_not_sel1 fnv=009d87da removed=0x00000000
+nested_mod_not_sel1 000: fdfdfd53 fefefefe c1930e25 60c98747 85201bb7 c2900d8c 48b12741 245893f5
+nested_mod_not_sel1 008: 0c46309b 8623181a d3d73ded e9eb9ea3 9764496f 4bb224e8 5af55a89 ad7aad11
+nested_mod_not_sel1 016: 1e8a66c3 0f453336 e21b73b5 710db98f a1a87c27 d0d43e44 653988d1 329cc43d
+nested_mod_not_sel1 024: 28ce950b 94674ad2 ec5fa67d f62fd36b b3ecb2bf 59f65920 777dbf19 bbbedfd9
+nested_mod_shl_sel0 fnv=89577a05 removed=0x00000000
+nested_mod_shl_sel0 000: 10101045 10101010 f3678bd5 f3678b80 d6ff2765 d6ff2730 ba76c0f5 ba76c0a0
+nested_mod_shl_sel0 008: 9dce7e05 9dce7e50 61461595 614615c0 44ddb125 44ddb170 28552eb5 28552ee0
+nested_mod_shl_sel0 016: 0bacccc5 0baccc90 ef246755 ef246700 f2bc1be5 f2bc1bb0 d633bc75 d633bc20
+nested_mod_shl_sel0 024: b98b5285 b98b52d0 9d02c915 9d02c940 609a6da5 609a6df0 44120235 44120260
+nested_swapped fnv=17f0c7c5 removed=0x00000000
+nested_swapped 000: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+nested_swapped 008: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+nested_swapped 016: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+nested_swapped 024: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+get refs before: xor=1 add0=1 shader=1
+get refs bound: xor=1 add0=1 shader=1
+get cap8: shader=multi n=6 [0]=set0 [1]=set1 [2]=set2 [3]=set3 [4]=set4 [5]=set5 [6]=untouched [7]=untouched
+get cap6: shader=multi n=6 [0]=set0 [1]=set1 [2]=set2 [3]=set3 [4]=set4 [5]=set5 [6]=untouched [7]=untouched
+get cap2: shader=multi n=2 [0]=set0 [1]=set1 [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+get cap0: shader=multi n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+get noarray: shader=multi n=6
+get refs after get: xor=2 add0=2 shader=2
+get nocount: shader=multi
+get refs dup bound: add0=1
+get dup: shader=multi n=6 [0]=set4 [1]=set4 [2]=set4 [3]=set4 [4]=set4 [5]=set5 [6]=untouched [7]=untouched
+get refs unbound: xor=1 add0=1 shader=1
+get unbound: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+get plain: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+get cleared: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+get refs cleared: xor=1 add0=1 shader=1
+get bad_none: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+bad_none fnv=b094f1c5 removed=0x00000000
+bad_none 000: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_none 008: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_none 016: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_none 024: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_none 032: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_none 040: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_none 048: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_none 056: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+get bad_three: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+bad_three fnv=b094f1c5 removed=0x00000000
+bad_three 000: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_three 008: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_three 016: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_three 024: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_three 032: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_three 040: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_three 048: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_three 056: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+get bad_wrong_iface: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+bad_wrong_iface fnv=b094f1c5 removed=0x00000000
+bad_wrong_iface 000: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_wrong_iface 008: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_wrong_iface 016: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_wrong_iface 024: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_wrong_iface 032: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_wrong_iface 040: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_wrong_iface 048: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_wrong_iface 056: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+get bad_null_entry: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+bad_null_entry fnv=b094f1c5 removed=0x00000000
+bad_null_entry 000: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_null_entry 008: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_null_entry 016: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_null_entry 024: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_null_entry 032: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_null_entry 040: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_null_entry 048: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_null_entry 056: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+get bad_unknown_class: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+bad_unknown_class fnv=b094f1c5 removed=0x00000000
+bad_unknown_class 000: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_unknown_class 008: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_unknown_class 016: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_unknown_class 024: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_unknown_class 032: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_unknown_class 040: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_unknown_class 048: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_unknown_class 056: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+get bad_seven: shader=null n=0 [0]=untouched [1]=untouched [2]=untouched [3]=untouched [4]=untouched [5]=untouched [6]=untouched [7]=untouched
+bad_seven fnv=b094f1c5 removed=0x00000000
+bad_seven 000: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_seven 008: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_seven 016: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_seven 024: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_seven 032: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_seven 040: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_seven 048: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+bad_seven 056: cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd cdcdcdcd
+get good_again: shader=multi n=6 [0]=set0 [1]=set1 [2]=set2 [3]=set3 [4]=set4 [5]=set5 [6]=untouched [7]=untouched
+good_again fnv=053f731e removed=0x00000000
+good_again 000: daa66d0b 4d481f35 dca86d2d aa66d0b0 e6ea9f5d 3ef3f1a1 191360bf 6ea9f5d0
+good_again 008: 2b7b932f 26b5be25 538453f1 b7b932f0 6feab71d 187b8b91 8ff54743 feab71d0
+good_again 016: 2b59b50b 0a315655 cc623af5 b59b50b0 e6aead95 f5e32401 06cf2e47 6aead950
+good_again 024: 3abf9d67 e7a4f175 434021a9 abf9d670 7dae9355 e36ac171 81b114cb dae93550
+good_again 032: 3dd9f70b d5209125 be1e08ad dd9f70b0 e56af35d c6d25d31 fa8afbbf 56af35d0
+good_again 040: 26fbed2f be942415 38fbee71 6fbed2f0 6b6a9d1d a659f5a1 736ce2c3 b6a9d1d0
+good_again 048: 2fd9950b 980fc045 afd9d575 fd9950b0 eba6b605 89c18a91 ec46c747 ba6b6050
+good_again 056: 26a7b397 75835f05 26b7bc49 6a7b3970 5aa6afc5 67492fe1 6328b02b aa6afc50
+draw_vs_ps removed=0x00000000: 0000007d 00000080 00000083 00000086 000000ad 000000b0 000000b3 000000b6 000000dd 000000e0 000000e3 000000e6 0000010d 00000110 00000113 00000116
+draw_vs_ps_res removed=0x00000000: 0000004b 00000056 00000061 0000006c 0000004b 00000056 00000061 0000006c 0000004b 00000056 00000061 0000006c 0000004b 00000056 00000061 0000006c
+draw_vs_gs_ps removed=0x00000000: 00000139 0000013a 0000013b 0000013c 00000149 0000014a 0000014b 0000014c 00000159 0000015a 0000015b 0000015c 00000169 0000016a 0000016b 0000016c
+draw_tess_plain removed=0x00000000: 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001 00110001
+draw_tess removed=0x00000000: 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036 00530036
+draw_tess2 removed=0x00000000: 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201 00110201
+draw_ps_noinst removed=0x00000000: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+draw_ps_noinst get: shader=null n=0
+draw_vs_noinst removed=0x00000000: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000

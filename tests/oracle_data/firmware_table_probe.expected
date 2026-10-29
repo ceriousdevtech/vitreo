@@ -1,0 +1,13 @@
+enum RSMB null size 4 err 122
+enum RSMB short size 4 err 122
+enum RSMB full size 4 err 0 ids 00000000
+enum ACPI null size 20 err 122
+enum ACPI short size 20 err 122
+enum ACPI full size 20 err 0 ids 50434146 43495041 54454157 324d5054 54524742
+enum FIRM null size 0 err 1
+enum XXXX null size 0 err 1
+get RSMB null size 468 err 122
+get RSMB short size 468 err 122
+get RSMB full size 468 err 0 header 0 2 8 0 length 460
+get RSMB id1 size 468 err 122
+get XXXX size 0 err 1

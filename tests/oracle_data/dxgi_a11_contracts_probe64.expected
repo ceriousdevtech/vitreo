@@ -1,0 +1,1166 @@
+adapter "Microsoft Basic Render Driver" feature_level=0xb000 ptr=64-bit
+window client 200x150
+
+[factory.create]
+  GetModuleHandleW(dxgi.dll) / A(DXGI.DLL) / LoadLibraryW    set set set
+  GetProcAddress CreateDXGIFactory / 1 / 2 / DXGIGetDebugInterface1 / DeclareAdapterRemovalSupport 1 1 1 1 1
+  CreateDXGIFactory(IDXGIFactory)                            hr=0x00000000 out=set
+  CreateDXGIFactory1(IDXGIFactory)                           hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIFactory1)                           hr=0x80004002 out=null
+  CreateDXGIFactory1(IDXGIFactory1)                          hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIFactory2)                           hr=0x00000000 out=set
+  CreateDXGIFactory1(IDXGIFactory2)                          hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIFactory3)                           hr=0x00000000 out=set
+  CreateDXGIFactory1(IDXGIFactory3)                          hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIFactory4)                           hr=0x00000000 out=set
+  CreateDXGIFactory1(IDXGIFactory4)                          hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIFactory5)                           hr=0x00000000 out=set
+  CreateDXGIFactory1(IDXGIFactory5)                          hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIFactory6)                           hr=0x00000000 out=set
+  CreateDXGIFactory1(IDXGIFactory6)                          hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIFactory7)                           hr=0x00000000 out=set
+  CreateDXGIFactory1(IDXGIFactory7)                          hr=0x00000000 out=set
+  CreateDXGIFactory(IUnknown)                                hr=0x00000000 out=set
+  CreateDXGIFactory1(IUnknown)                               hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIObject)                             hr=0x00000000 out=set
+  CreateDXGIFactory1(IDXGIObject)                            hr=0x00000000 out=set
+  CreateDXGIFactory(IDXGIAdapter)                            hr=0x80004002 out=null
+  CreateDXGIFactory1(IDXGIAdapter)                           hr=0x80004002 out=null
+  CreateDXGIFactory2(flags=0x0)                              hr=0x00000000 GetCreationFlags&0x7fffffff=0x0
+  CreateDXGIFactory2(flags=0x1)                              hr=0x887a0001 out=null
+  CreateDXGIFactory2(flags=0x2)                              hr=0x00000000 GetCreationFlags&0x7fffffff=0x2
+  CreateDXGIFactory2(flags=0x4)                              hr=0x00000000 GetCreationFlags&0x7fffffff=0x4
+  CreateDXGIFactory2(flags=0x80000000)                       hr=0x00000000 GetCreationFlags&0x7fffffff=0x0
+  CreateDXGIFactory2(flags=0x3)                              hr=0x887a0001 out=null
+  CreateDXGIFactory(IDXGIFactory) then QI IDXGIFactory7      hr=0x00000000
+
+[factory.methods]
+  EnumAdapters count>=1                                      1
+  EnumAdapters count (machine-dependent)                     2
+  EnumAdapters(99)                                           hr=0x887a0002 out=null
+  EnumAdapters1(99)                                          hr=0x887a0002 out=null
+  EnumAdapters1(0)                                           hr=0x00000000
+  adapter GetParent(IDXGIFactory1) is enumerating factory    hr=0x00000000 same=1
+  IsCurrent                                                  1
+  MakeWindowAssociation(hwnd, 0x0)                           hr=0x00000000 Get=0x00000000 got=null
+  MakeWindowAssociation(hwnd, 0x1)                           hr=0x00000000 Get=0x00000000 got=null
+  MakeWindowAssociation(hwnd, 0x2)                           hr=0x00000000 Get=0x00000000 got=null
+  MakeWindowAssociation(hwnd, 0x4)                           hr=0x00000000 Get=0x00000000 got=null
+  MakeWindowAssociation(hwnd, 0x7)                           hr=0x00000000 Get=0x00000000 got=null
+  MakeWindowAssociation(hwnd, 0x8)                           hr=0x887a0001 Get=0x00000000 got=null
+  MakeWindowAssociation(hwnd, 0x100)                         hr=0x887a0001 Get=0x00000000 got=null
+  MakeWindowAssociation(NULL, 0)                             hr=0x00000000 Get=0x00000000 got=null
+  MakeWindowAssociation(NULL, NO_ALT_ENTER)                  hr=0x00000000
+  MakeWindowAssociation(bogus hwnd, NO_ALT_ENTER)            hr=0x00000000
+  CreateSoftwareAdapter(exe module)                          hr=0x00000000 out=set
+  IsWindowedStereoEnabled                                    0
+  RegisterStereoStatusWindow(hwnd, WM_USER+1)                hr=0x00000000 cookie_changed=1
+  RegisterStereoStatusEvent(event)                           hr=0x00000000 cookie_changed=1
+  RegisterOcclusionStatusWindow(hwnd, WM_USER+2)             hr=0x00000000 cookie_changed=1
+  RegisterOcclusionStatusWindow(NULL hwnd)                   hr=0x887a0001 cookie_changed=0
+  RegisterOcclusionStatusWindow(hwnd, msg 0)                 hr=0x887a0001 cookie_changed=0
+  RegisterOcclusionStatusEvent(event)                        hr=0x00000000 cookie_changed=1
+  RegisterOcclusionStatusEvent(NULL)                         hr=0x887a0001 cookie_changed=0
+  GetSharedResourceAdapterLuid(NULL handle)                  hr=0x887a0001
+  GetSharedResourceAdapterLuid(shared texture handle)        hr=0x00000000 luid_matches_adapter=1
+  CreateSwapChainForCoreWindow(window=device object)         hr=0x887a0001 out=untouched
+  device factory QI IDXGIFactory7                            hr=0x00000000
+  EnumAdapterByLuid(device LUID, IDXGIAdapter)               hr=0x00000000 out=set
+  EnumAdapterByLuid(device LUID, IDXGIAdapter4)              hr=0x00000000 out=set
+  EnumAdapterByLuid(device LUID, IUnknown)                   hr=0x00000000 out=set
+  EnumAdapterByLuid(device LUID, IDXGIObject)                hr=0x00000000 out=set
+  EnumAdapterByLuid(device LUID, IDXGIOutput)                hr=0x80004002 out=null
+  EnumAdapterByLuid(device LUID, ID3D11Device)               hr=0x80004002 out=null
+  EnumWarpAdapter(IDXGIAdapter1)                             hr=0x00000000 out=set flags=0x2
+  CheckFeatureSupport(ALLOW_TEARING, 4)                      hr=0x00000000 value_is_bool=1
+  CheckFeatureSupport(ALLOW_TEARING, size 8)                 hr=0x887a0001
+  CheckFeatureSupport(ALLOW_TEARING, size 0)                 hr=0x887a0001
+  CheckFeatureSupport(ALLOW_TEARING, NULL data)              CRASH 0xc0000005
+  CheckFeatureSupport(feature 1)                             hr=0x887a0001
+  EnumAdapterByGpuPreference(0, pref=0)                      hr=0x00000000 out=set
+  EnumAdapterByGpuPreference(0, pref=1)                      hr=0x00000000 out=set
+  EnumAdapterByGpuPreference(0, pref=2)                      hr=0x00000000 out=set
+  EnumAdapterByGpuPreference(0, pref=3)                      hr=0x00000000 out=set
+  EnumAdapterByGpuPreference(0, pref=-1)                     hr=0x00000000 out=set
+  EnumAdapterByGpuPreference(99, 0)                          hr=0x887a0002 out=null
+  EnumAdapterByGpuPreference(0, 0, IDXGIOutput)              hr=0x80004002 out=null
+  RegisterAdaptersChangedEvent(NULL)                         hr=0x887a0001 cookie_changed=0
+  RegisterAdaptersChangedEvent(event)                        hr=0x00000000 cookie_changed=1
+  UnregisterAdaptersChangedEvent(cookie)                     hr=0x00000000
+  UnregisterAdaptersChangedEvent(cookie) again               hr=0x887a0002
+  UnregisterAdaptersChangedEvent(0x7777)                     hr=0x887a0002
+
+[adapter]
+  QI IUnknown                                                hr=0x00000000
+  QI IDXGIObject                                             hr=0x00000000
+  QI IDXGIAdapter                                            hr=0x00000000
+  QI IDXGIAdapter1                                           hr=0x00000000
+  QI IDXGIAdapter2                                           hr=0x00000000
+  QI IDXGIAdapter3                                           hr=0x00000000
+  QI IDXGIAdapter4                                           hr=0x00000000
+  QI IDXGIFactory                                            hr=0x80004002
+  QI IDXGIDevice                                             hr=0x80004002
+  GetDesc                                                    hr=0x00000000
+  GetDesc1                                                   hr=0x00000000
+  desc description nonempty / desc==desc1                    1 1
+  desc1 vendor!=0 device!=0 subsys!=0 rev!=0                 1 1 0 0
+  desc1 dedicatedVid>0 dedicatedSys>0 shared>0               0 0 1
+  desc1 Flags                                                0x0
+  GetDesc2                                                   hr=0x00000000
+  GetDesc3                                                   hr=0x00000000
+  desc2 prefix==desc1 / desc3 prefix==desc1                  1 1
+  desc2 Flags GfxPreempt CompPreempt                         0x0 0 0
+  desc3 Flags GfxPreempt CompPreempt                         0x2c 0 0
+  CheckInterfaceSupport(ID3D10Device)                        hr=0x00000000 umd=nonzero
+  CheckInterfaceSupport(ID3D10Device1)                       hr=0x00000000 umd=nonzero
+  CheckInterfaceSupport(ID3D11Device)                        hr=0x887a0004 umd=untouched
+  CheckInterfaceSupport(IDXGIDevice)                         hr=0x00000000 umd=nonzero
+  CheckInterfaceSupport(IUnknown)                            hr=0x887a0004 umd=untouched
+  CheckInterfaceSupport(ID3D10Device, NULL umd)              hr=0x00000000
+  GetParent(IDXGIFactory) == device factory                  hr=0x00000000 same=1
+  GetParent(IDXGIAdapter)                                    hr=0x80004002 out=null
+  EnumOutputs count>=1                                       0
+  EnumOutputs(99)                                            hr=0x887a0002 out=null
+
+[output]
+  EnumOutputs(0)                                             hr=0x887a0002
+
+[dxgidevice]
+  device QI IDXGIObject                                      hr=0x00000000
+  device QI IDXGIDevice                                      hr=0x00000000
+  device QI IDXGIDevice1                                     hr=0x00000000
+  device QI IDXGIDevice2                                     hr=0x00000000
+  device QI IDXGIDevice3                                     hr=0x00000000
+  device QI IDXGIDevice4                                     hr=0x00000000
+  GetAdapter == factory-enumerated adapter object            hr=0x00000000 same=1
+  GetParent(IDXGIAdapter)                                    hr=0x00000000 same=1
+  GetParent(IDXGIFactory)                                    hr=0x80004002 out=null
+  GetGPUThreadPriority initial                               hr=0x00000000 value=0
+  SetGPUThreadPriority(-8)                                   hr=0x80070057 get=0
+  SetGPUThreadPriority(-7)                                   hr=0x00000000 get=-7
+  SetGPUThreadPriority(0)                                    hr=0x00000000 get=0
+  SetGPUThreadPriority(7)                                    hr=0x00000000 get=7
+  SetGPUThreadPriority(8)                                    hr=0x80070057 get=7
+  GetMaximumFrameLatency initial                             hr=0x00000000 value=3
+  SetMaximumFrameLatency(1)                                  hr=0x00000000 get=1
+  SetMaximumFrameLatency(16)                                 hr=0x00000000 get=16
+  SetMaximumFrameLatency(17)                                 hr=0x887a0001 get=16
+  SetMaximumFrameLatency(0)                                  hr=0x00000000 get=0
+  SetMaximumFrameLatency(5)                                  hr=0x00000000 get=5
+  QueryResourceResidency(1)                                  hr=0x00000000 status=2
+  OfferResources(1, NORMAL)                                  hr=0x00000000
+  ReclaimResources(1)                                        hr=0x00000000 discarded=0
+  ReclaimResources(1) not offered                            hr=0x80070057
+  OfferResources(1, priority 0)                              hr=0x80070057
+  OfferResources1(1, LOW, ALLOW_DECOMMIT)                    hr=0x00000000
+  ReclaimResources1(1)                                       hr=0x00000000 result=0
+  EnqueueSetEvent(event) + wait                              hr=0x00000000 wait=0x0
+  EnqueueSetEvent(NULL)                                      hr=0x80070057
+  CreateSurface(1, RTO)                                      hr=0x00000000 desc=64x64 fmt=87
+  CreateSurface(2, RTO)                                      hr=0x00000000 s0=1 s1=1
+  IDXGIDevice3::Trim                                         returned
+
+[resource]
+  tex2d(1 mip) QI IDXGIObject                                hr=0x00000000
+  tex2d(1 mip) QI IDXGIDeviceSubObject                       hr=0x00000000
+  tex2d(1 mip) QI IDXGIResource                              hr=0x00000000
+  tex2d(1 mip) QI IDXGIResource1                             hr=0x00000000
+  tex2d(1 mip) QI IDXGISurface                               hr=0x00000000
+  tex2d(1 mip) QI IDXGISurface1                              hr=0x00000000
+  tex2d(1 mip) QI IDXGISurface2                              hr=0x00000000
+  tex2d(1 mip) QI IDXGIKeyedMutex                            hr=0x80004002
+  tex2d(2 mips) QI IDXGISurface                              hr=0x80004002
+  CreateSubresourceSurface(1) on 2-mip 64x64                 hr=0x00000000 desc=32x32 GetResource sub=1 same=1
+  CreateSubresourceSurface(5) out of range                   hr=0x80070057
+  GetUsage(DEFAULT RT|SRV tex)                               hr=0x00000000 usage=0x30
+  GetUsage(DEFAULT UAV|SRV tex)                              hr=0x00000000 usage=0x410
+  GetUsage(DEFAULT no-bind tex)                              hr=0x00000000 usage=0x0
+  GetUsage(STAGING READ tex)                                 hr=0x00000000 usage=0x3
+  GetUsage(STAGING RW tex)                                   hr=0x00000000 usage=0x3
+  GetUsage(DYNAMIC SRV tex)                                  hr=0x00000000 usage=0x11
+  (IMMUTABLE without data)                                   hr=0x80070057
+  buffer QI IDXGIResource                                    hr=0x00000000
+  GetUsage(DEFAULT VB buffer)                                hr=0x00000000 usage=0x0
+  buffer QI IDXGISurface                                     hr=0x00000000
+  CreateSharedHandle(non-shared)                             hr=0x80070057 handle=null
+  GetEvictionPriority default                                hr=0x00000000 value=0x78000000
+  SetEvictionPriority(0xa0000000)                            hr=0x00000000 get=0xa0000000
+  SetEvictionPriority(0x5)                                   hr=0x00000000 get=0x5
+  SetEvictionPriority(0xc8000000)                            hr=0x00000000 get=0xc8000000
+  ID3D11Resource::GetEvictionPriority after DXGI set         0xc8000000
+  GetSharedHandle(non-shared)                                hr=0x00000000 handle=null
+  resource GetParent(IDXGIDevice)                            hr=0x00000000
+  resource GetParent(ID3D11Device)                           hr=0x00000000 same=1
+  resource GetParent(IDXGIAdapter)                           hr=0x80004002
+  resource GetDevice(ID3D11Device)                           hr=0x00000000 same=1
+  resource GetDevice(IDXGIDevice)                            hr=0x00000000
+  GetSharedHandle(MISC_SHARED)                               hr=0x00000000 handle=set
+  CreateSharedHandle(MISC_SHARED, not NTHANDLE)              hr=0x80070057 handle=null
+  GetSharedHandle(SHARED|NTHANDLE)                           hr=0x80070057 handle=untouched
+  CreateSharedHandle(SHARED|NTHANDLE, RW)                    hr=0x00000000 handle=set
+  CreateSharedHandle second call                             hr=0x00000000 handle=set
+  CreateSharedHandle(GENERIC_ALL)                            hr=0x00000000
+  CreateSharedHandle(named)                                  hr=0x00000000 handle=set
+  surface GetDesc                                            hr=0x00000000 64x64 fmt=87 samp=1.0
+  surface Map(READ) on DEFAULT                               hr=0x80070057
+  surface Unmap not mapped                                   hr=0x00000000
+  surface GetDC on non-GDI                                   hr=0x887a0001 dc=untouched
+  surface ReleaseDC on non-GDI                               hr=0x887a0001
+  surface GetResource(ID3D11Texture2D)                       hr=0x00000000 same=1 sub=0
+  surface GetParent(IDXGIDevice)                             hr=0x00000000
+  staging(READ) surface Map(READ)                            hr=0x00000000 pitch>=256=1 bits=set
+  staging(READ) surface Map(WRITE)                           hr=0x80070057
+  staging(READ) surface Map(DISCARD)                         hr=0x80070057
+  staging(READ) surface Map(0)                               hr=0x80070057
+  CreateTexture2D(GDI_COMPATIBLE BGRA RT)                    hr=0x00000000
+  GDI surface GetDC(FALSE)                                   hr=0x00000000 dc=set
+  FillRect on surface DC                                     1
+  GDI surface GetDC again (outstanding)                      hr=0x887a0001 dc=untouched
+  GDI surface ReleaseDC(NULL)                                hr=0x00000000
+  GDI FillRect red pixel BGRA                                00 00 ff | outside 00 00 00
+  GDI surface ReleaseDC without GetDC                        hr=0x887a0001
+  CreateTexture2D(GDI_COMPATIBLE RGBA RT)                    hr=0x80070057
+
+[keyedmutex]
+  CreateTexture2D(SHARED_KEYEDMUTEX)                         hr=0x00000000
+  QI IDXGIKeyedMutex                                         hr=0x00000000
+  AcquireSync(1, 0) initial                                  hr=0x00000102
+  ReleaseSync(0) unowned                                     hr=0x887a0001
+  AcquireSync(0, 0) initial                                  hr=0x00000000
+  AcquireSync(0, 0) recursive                                hr=0x887a0001
+  ReleaseSync(0x100000005)                                   hr=0x00000000
+  ReleaseSync(5) again                                       hr=0x887a0001
+  AcquireSync(5, 0) after release 0x100000005                hr=0x00000102
+  AcquireSync(0x100000005, 0)                                hr=0x00000000
+  ReleaseSync(7)                                             hr=0x00000000
+  AcquireSync(8, 200ms) wrong key                            hr=0x00000102 waited>=150ms=1
+  OpenSharedResource(keyed-mutex handle)                     hr=0x00000000
+  opened: AcquireSync(0, 0) (key is 7)                       hr=0x00000102
+  opened: AcquireSync(7, 0)                                  hr=0x00000000
+  original: AcquireSync(7, 0) while opened owns              hr=0x00000102
+  opened: ReleaseSync(9)                                     hr=0x00000000
+  original: AcquireSync(9, 0)                                hr=0x00000000
+  original: ReleaseSync(0)                                   hr=0x00000000
+  keyedmutex GetDevice(ID3D11Device)                         hr=0x00000000 same=1
+
+[swapchain.create]
+  CreateSwapChain DISCARD cnt=0                              hr=0x887a0001 out=null
+  CreateSwapChain DISCARD cnt=1                              hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD cnt=2                              hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD cnt=16                             hr=0x00000000 -> 64x48 fmt=87 cnt=16 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD cnt=17                             hr=0x887a0001 out=null
+  CreateSwapChain SEQUENTIAL cnt=0                           hr=0x887a0001 out=null
+  CreateSwapChain SEQUENTIAL cnt=1                           hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=1 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain SEQUENTIAL cnt=2                           hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=1 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain SEQUENTIAL cnt=16                          hr=0x00000000 -> 64x48 fmt=87 cnt=16 eff=1 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain SEQUENTIAL cnt=17                          hr=0x887a0001 out=null
+  CreateSwapChain FLIP_SEQUENTIAL cnt=0                      hr=0x887a0001 out=null
+  CreateSwapChain FLIP_SEQUENTIAL cnt=1                      hr=0x887a0001 out=null
+  CreateSwapChain FLIP_SEQUENTIAL cnt=2                      hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=3 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_SEQUENTIAL cnt=16                     hr=0x00000000 -> 64x48 fmt=87 cnt=16 eff=3 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_SEQUENTIAL cnt=17                     hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD cnt=0                         hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD cnt=1                         hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD cnt=2                         hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD cnt=16                        hr=0x00000000 -> 64x48 fmt=87 cnt=16 eff=4 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD cnt=17                        hr=0x887a0001 out=null
+  CreateSwapChain effect2 cnt=0                              hr=0x887a0001 out=null
+  CreateSwapChain effect2 cnt=1                              hr=0x887a0001 out=null
+  CreateSwapChain effect2 cnt=2                              hr=0x887a0001 out=null
+  CreateSwapChain effect2 cnt=16                             hr=0x887a0001 out=null
+  CreateSwapChain effect2 cnt=17                             hr=0x887a0001 out=null
+  CreateSwapChain effect5 cnt=0                              hr=0x887a0001 out=null
+  CreateSwapChain effect5 cnt=1                              hr=0x887a0001 out=null
+  CreateSwapChain effect5 cnt=2                              hr=0x887a0001 out=null
+  CreateSwapChain effect5 cnt=16                             hr=0x887a0001 out=null
+  CreateSwapChain effect5 cnt=17                             hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=28                             hr=0x00000000 -> 64x48 fmt=28 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD fmt=28                        hr=0x00000000 -> 64x48 fmt=28 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD fmt=29                             hr=0x00000000 -> 64x48 fmt=29 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD fmt=29                        hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=91                             hr=0x00000000 -> 64x48 fmt=91 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD fmt=91                        hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=24                             hr=0x00000000 -> 64x48 fmt=24 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD fmt=24                        hr=0x00000000 -> 64x48 fmt=24 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD fmt=10                             hr=0x00000000 -> 64x48 fmt=10 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD fmt=10                        hr=0x00000000 -> 64x48 fmt=10 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD fmt=85                             hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD fmt=85                        hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=88                             hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD fmt=88                        hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=89                             hr=0x00000000 -> 64x48 fmt=89 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD fmt=89                        hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=2                              hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD fmt=2                         hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=27                             hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD fmt=27                        hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=0                              hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD fmt=0                         hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=45                             hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD fmt=45                        hr=0x887a0001 out=null
+  CreateSwapChain DISCARD fmt=103                            hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD fmt=103                       hr=0x887a0001 out=null
+  CreateSwapChain DISCARD samples=0.0                        hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD samples=0.0                   hr=0x887a0001 out=null
+  CreateSwapChain DISCARD samples=1.1                        hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD samples=1.1                   hr=0x887a0001 out=null
+  CreateSwapChain DISCARD samples=2.0                        hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=2.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD samples=2.0                   hr=0x887a0001 out=null
+  CreateSwapChain DISCARD samples=4.0                        hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=4.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD samples=4.0                   hr=0x887a0001 out=null
+  CreateSwapChain DISCARD samples=8.0                        hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=8.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD samples=8.0                   hr=0x887a0001 out=null
+  CreateSwapChain DISCARD samples=4.1                        hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD samples=4.1                   hr=0x887a0001 out=null
+  CreateSwapChain DISCARD 0x0 (client 200x150)               hr=0x00000000 -> 200x150 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD 0xH (client 200x150)               hr=0x00000000 -> 200x150 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD 0x0 (client 200x150)          hr=0x00000000 -> 200x150 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD 20000x20000                        hr=0x00000000 -> 20000x20000 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD usage=0x0                          hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x0 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD usage=0x0                     hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x0 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD usage=0x10                         hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x10 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD usage=0x10                    hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x10 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD usage=0x30                         hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x30 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD usage=0x30                    hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x30 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD usage=0x420                        hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x420 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD usage=0x420                   hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x420 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD usage=0x60                         hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x60 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD usage=0x60                    hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x60 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD usage=0x120                        hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x120 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD usage=0x120                   hr=0x887a0001 out=null
+  CreateSwapChain DISCARD usage=0x220                        hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x220 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD usage=0x220                   hr=0x887a0001 out=null
+  CreateSwapChain DISCARD usage=0xa0                         hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0xa0 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD usage=0xa0                    hr=0x887a0001 out=null
+  CreateSwapChain DISCARD usage=0x21                         hr=0x80070057 out=null
+  CreateSwapChain FLIP_DISCARD usage=0x21                    hr=0x887a0001 out=null
+  CreateSwapChain DISCARD flags=0x1                          hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD flags=0x1                     hr=0x887a0001 out=null
+  CreateSwapChain DISCARD flags=0x2                          hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x2 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD flags=0x2                     hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x2 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD flags=0x4                          hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x4 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD flags=0x4                     hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x4 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD flags=0x8                          hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x8 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain FLIP_DISCARD flags=0x8                     hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x8 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD flags=0x20                         hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD flags=0x20                    hr=0x887a0001 out=null
+  CreateSwapChain DISCARD flags=0x40                         hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD flags=0x40                    hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x40 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD flags=0x80                         hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD flags=0x80                    hr=0x887a0001 out=null
+  CreateSwapChain DISCARD flags=0x800                        hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD flags=0x800                   hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x800 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD flags=0x80000000                   hr=0x887a0001 out=null
+  CreateSwapChain FLIP_DISCARD flags=0x80000000              hr=0x887a0001 out=null
+  CreateSwapChain DISCARD RGBA GDI_COMPATIBLE                hr=0x80070057 out=null
+  CreateSwapChain DISCARD scaling=STRETCHED progressive 60/1 hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=2
+  CreateSwapChain DISCARD refresh 60/0                       hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=2
+  CreateSwapChain DISCARD scaling=7                          hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=7
+  CreateSwapChain DISCARD Windowed=FALSE                     hr=0x087a0001 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain DISCARD OutputWindow=NULL                  hr=0x887a0001 out=untouched
+  CreateSwapChain DISCARD OutputWindow=bogus                 hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1.0 win=1 scal=0
+  CreateSwapChain NULL device                                hr=0x887a0001 out=untouched
+  CreateSwapChain NULL desc                                  hr=0x887a0001 out=untouched
+  CreateSwapChain device passed as IDXGIDevice               hr=0x00000000
+  CreateSwapChain device=immediate context                   hr=0x887a0001 out=untouched
+  first DISCARD chain on hwnd                                hr=0x00000000
+  second DISCARD chain on same hwnd                          hr=0x00000000
+  first FLIP_DISCARD chain on hwnd                           hr=0x00000000
+  second FLIP_DISCARD chain on same hwnd                     hr=0x80070005
+  DISCARD chain on hwnd after a released FLIP chain          hr=0x00000000
+  CreateSwapChain via a different factory                    hr=0x00000000
+
+[swapchain.create.hwnd]
+  ForHwnd FLIP_DISCARD cnt=2                                 hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=0
+  ForHwnd DISCARD cnt=1                                      hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=0
+  ForHwnd FLIP_SEQUENTIAL cnt=1                              hr=0x887a0001 out=null
+  ForHwnd FLIP_DISCARD 0x0 (client 200x150)                  hr=0x00000000 -> 200x150 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=0
+  ForHwnd DISCARD 0x0 (client 200x150)                       hr=0x00000000 -> 200x150 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=0
+  ForHwnd DISCARD scaling=0                                  hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=0
+  ForHwnd FLIP_DISCARD scaling=0                             hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=0
+  ForHwnd DISCARD scaling=1                                  hr=0x887a0001 out=null
+  ForHwnd FLIP_DISCARD scaling=1                             hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1 scal=1 alpha=0 stereo=0
+  ForHwnd DISCARD scaling=2                                  hr=0x887a0001 out=null
+  ForHwnd FLIP_DISCARD scaling=2                             hr=0x887a0001 out=null
+  ForHwnd DISCARD scaling=3                                  hr=0x887a0001 out=null
+  ForHwnd FLIP_DISCARD scaling=3                             hr=0x887a0001 out=null
+  ForHwnd FLIP_DISCARD alpha=0                               hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=0
+  ForHwnd DISCARD alpha=0                                    hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=0
+  ForHwnd FLIP_DISCARD alpha=1                               hr=0x887a0001 out=null
+  ForHwnd DISCARD alpha=1                                    hr=0x887a0001 out=null
+  ForHwnd FLIP_DISCARD alpha=2                               hr=0x887a0001 out=null
+  ForHwnd DISCARD alpha=2                                    hr=0x887a0001 out=null
+  ForHwnd FLIP_DISCARD alpha=3                               hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1 scal=0 alpha=3 stereo=0
+  ForHwnd DISCARD alpha=3                                    hr=0x00000000 -> 64x48 fmt=87 cnt=1 eff=0 flags=0x0 usage=0x20 samp=1 scal=0 alpha=3 stereo=0
+  ForHwnd FLIP_DISCARD alpha=4                               hr=0x887a0001 out=null
+  ForHwnd DISCARD alpha=4                                    hr=0x887a0001 out=null
+  ForHwnd FLIP_DISCARD Stereo=TRUE                           hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 flags=0x0 usage=0x20 samp=1 scal=0 alpha=0 stereo=1
+  ForHwnd with fullscreen desc (windowed, CENTERED, 60/1)    hr=0x00000000
+    GetDesc1 scaling/alpha                                   1 3
+    GetFullscreenDesc                                        hr=0x00000000 60/1 scan=0 scal=1 win=1
+    GetDesc (legacy) refresh/scan/scal/win                   60/1 0 1 1
+  ForHwnd NULL hwnd                                          hr=0x887a0001 out=untouched
+  ForHwnd NULL desc                                          hr=0x887a0001 out=untouched
+  ForHwnd NULL device                                        hr=0x887a0001 out=untouched
+
+[swapchain.create.composition]
+  ForComposition FLIP_SEQUENTIAL cnt=2 STRETCH               hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=3 scal=0 alpha=0 GetHwnd=0x887a0001 hwnd=null
+  ForComposition FLIP_DISCARD cnt=2 STRETCH                  hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=4 scal=0 alpha=0 GetHwnd=0x887a0001 hwnd=null
+  ForComposition DISCARD cnt=1                               hr=0x887a0001 out=null
+  ForComposition FLIP_SEQUENTIAL cnt=1                       hr=0x887a0001 out=null
+  ForComposition FLIP_SEQUENTIAL scaling=NONE                hr=0x887a0001 out=null
+  ForComposition FLIP_SEQUENTIAL alpha=PREMULTIPLIED         hr=0x00000000 -> 64x48 fmt=87 cnt=2 eff=3 scal=0 alpha=1 GetHwnd=0x887a0001 hwnd=null
+  ForComposition FLIP_SEQUENTIAL alpha=STRAIGHT              hr=0x887a0001 out=null
+  ForComposition FLIP_SEQUENTIAL width 0                     hr=0x887a0001 out=untouched
+  ForComposition FLIP_SEQUENTIAL fmt=sRGB                    hr=0x887a0001 out=null
+
+[swapchain.methods DISCARD cnt=1]
+  create                                                     hr=0x00000000
+  QI IDXGIObject                                             hr=0x00000000
+  QI IDXGIDeviceSubObject                                    hr=0x00000000
+  QI IDXGISwapChain1                                         hr=0x00000000
+  QI IDXGISwapChain2                                         hr=0x00000000
+  QI IDXGISwapChain3                                         hr=0x00000000
+  QI IDXGISwapChain4                                         hr=0x00000000
+  QI ID3D11Device                                            hr=0x80004002
+  QI IDXGISwapChainMedia                                     hr=0x00000000
+  GetParent(IDXGIFactory) == creating factory                hr=0x00000000 same=1
+  GetParent(IDXGIFactory2)                                   hr=0x00000000
+  GetParent(IDXGIAdapter)                                    hr=0x80004002
+  GetDevice(ID3D11Device)                                    hr=0x00000000 same=1
+  GetDevice(IDXGIDevice)                                     hr=0x00000000
+  SetPrivateDataInterface(device)                            hr=0x00000000
+    GetPrivateData back                                      hr=0x00000000 same=1
+   GetBuffer(0, ID3D11Texture2D)                             hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Texture2D1)                            hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Resource)                              hr=0x00000000 out=set
+   GetBuffer(0, IUnknown)                                    hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface)                                hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface1)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource1)                              hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Buffer)                                hr=0x80004002 out=null
+   GetBuffer(0, ID3D11Device)                                hr=0x80004002 out=null
+   GetBuffer(1, ID3D11Texture2D) [cnt=1]                     hr=0x887a0001 out=null
+   back buffer desc                                          64x48 mips=1 arr=1 fmt=87 samp=1 usage=0 bind=0x20 cpu=0x0 misc=0x0
+   GetBuffer(0) twice same object                            1
+   back buffer GetUsage                                      hr=0x00000000 usage=0x260
+   back buffer surface GetParent(IDXGISwapChain)             hr=0x00000000 same=1
+  RTV of buffer 0 still bound after Present(0,0)             present=0x087a0001 bound=1
+  GetDesc                                                    hr=0x00000000 64x48 fmt=87 refresh=0/0 scan=0 scal=0 cnt=1 hwnd=same win=1 eff=0 flags=0x0
+  GetDesc1                                                   hr=0x00000000 64x48 fmt=87 stereo=0 samp=1 usage=0x20 cnt=1 scal=0 eff=0 alpha=3 flags=0x0
+  GetFullscreenDesc                                          hr=0x00000000 0/0 scan=0 scal=0 win=1
+  GetHwnd                                                    hr=0x00000000 hwnd=same
+  GetCoreWindow                                              hr=0x887a0001 out=null
+  IsTemporaryMonoSupported                                   0
+  GetRestrictToOutput                                        hr=0x00000000 out=null
+  SetBackgroundColor(0.25,0.5,0.75,1)                        hr=0x00000000
+  GetBackgroundColor                                         hr=0x00000000 0.25 0.50 0.75 1.00
+  SetRotation(IDENTITY)                                      hr=0x887a0001
+  SetRotation(ROTATE90)                                      hr=0x887a0001
+  GetRotation                                                hr=0x887a0001 value=99
+  GetFullscreenState                                         hr=0x00000000 fs=0 out=null
+  GetFullscreenState(NULL, NULL)                             hr=0x00000000
+  SetFullscreenState(FALSE, NULL)                            hr=0x00000000
+  SetFullscreenState(TRUE, NULL)                             hr=0x887a0022 now_fs=0
+  GetContainingOutput                                        hr=0x887a0004 out=null
+   Present(0, 0x0)                                           hr=0x087a0001 count+0
+   Present(1, 0x0)                                           hr=0x087a0001 count+0
+   Present(2, 0x0)                                           hr=0x087a0001 count+0
+   Present(3, 0x0)                                           hr=0x087a0001 count+0
+   Present(4, 0x0)                                           hr=0x087a0001 count+0
+   Present(5, 0x0)                                           hr=0x887a0001 count+0
+   Present(0, 0x1)                                           hr=0x087a0001 count+0
+   Present(1, 0x1)                                           hr=0x087a0001 count+0
+   Present(0, 0x2)                                           hr=0x087a0001 count+0
+   Present(0, 0x4)                                           hr=0x087a0001 count+0
+   Present(1, 0x8)                                           hr=0x087a0001 count+0
+   Present(0, 0x10)                                          hr=0x887a0001 count+0
+   Present(0, 0x20)                                          hr=0x887a0001 count+0
+   Present(0, 0x40)                                          hr=0x887a0001 count+0
+   Present(0, 0x100)                                         hr=0x087a0001 count+0
+   Present(0, 0x200)                                         hr=0x887a0001 count+0
+   Present(1, 0x200)                                         hr=0x887a0001 count+0
+   Present(0, 0x80)                                          hr=0x087a0001 count+0
+   Present(0, 0x80000000)                                    hr=0x087a0001 count+0
+   Present(0, 0x9)                                           hr=0x087a0001 count+0
+  GetLastPresentCount                                        hr=0x00000000 value=0
+  GetFrameStatistics                                         hr=0x887a0004 presentcount_written=1
+  Present1(0, 0, empty params)                               hr=0x087a0001
+  Present1(0, 0, NULL params)                                CRASH 0xc0000005
+  Present1(dirty rect 8x8)                                   hr=0x887a0001
+  Present1(dirty rect beyond buffer)                         hr=0x887a0001
+  Present1(DirtyRectsCount=1, NULL rects)                    hr=0x887a0001
+  Present1(scroll rect)                                      hr=0x887a0001
+  Present1(5, 0)                                             hr=0x887a0001
+  Present1(0, TEST)                                          hr=0x087a0001
+  GetSourceSize                                              hr=0x00000000 64x48
+  SetSourceSize(32,24)                                       hr=0x887a0001 get=64x48
+  SetSourceSize(65,48) beyond buffer                         hr=0x887a0001
+  SetSourceSize(0,48)                                        hr=0x887a0001
+  GetMaximumFrameLatency                                     hr=0x887a0001 value=52428
+  SetMaximumFrameLatency(2)                                  hr=0x887a0001 get=52428
+  SetMaximumFrameLatency(0)                                  hr=0x887a0001
+  SetMaximumFrameLatency(17)                                 hr=0x887a0001
+  GetFrameLatencyWaitableObject                              handle=null wait=0xffff
+  SetMatrixTransform(identity)                               hr=0x887a0001
+  GetMatrixTransform                                         hr=0x887a0001
+  GetCurrentBackBufferIndex over two Presents                0 0 0
+  CheckColorSpaceSupport/SetColorSpace1(0)                   hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(1)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(12)                  hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(2)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(7)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(100)                 hr=0x00000000 support=0x0 set=0x80070057
+  ResizeBuffers1(0,0,0,UNKNOWN, nodes, queues=device)        hr=0x887a0001
+  ResizeBuffers1(0,0,0,UNKNOWN, NULL, NULL)                  hr=0x887a0001
+  SetHDRMetaData(NONE, 0, NULL)                              hr=0x00000000
+  SetHDRMetaData(HDR10, sizeof, &md)                         hr=0x00000000
+  SetHDRMetaData(HDR10, 0, NULL)                             hr=0x80070057
+  SetHDRMetaData(HDR10, 4, &md)                              hr=0x80070057
+  SetHDRMetaData(type 7)                                     hr=0x80070057
+  ResizeTarget(320x240)                                      hr=0x00000000 client=320x240
+  ResizeTarget(NULL)                                         hr=0x887a0001
+  ResizeTarget(0x0)                                          hr=0x00000000 client=120x0
+  client size before ResizeBuffers                           176x132
+  ResizeBuffers with outstanding GetBuffer ref               hr=0x887a0001
+  ResizeBuffers with outstanding RTV (texture released)      hr=0x887a0001
+  ResizeBuffers with RTV bound to context only               hr=0x00000000
+  ResizeBuffers(0, 100, 80, UNKNOWN)                         hr=0x00000000 -> 100x80 cnt=1 fmt=87
+    back buffer desc after                                   100x80 fmt=87
+  ResizeBuffers(0, 0, 0, UNKNOWN) (client 176x132)           hr=0x00000000 -> 176x132
+  ResizeBuffers(0, 0, 50, UNKNOWN)                           hr=0x00000000 -> 176x132
+  ResizeBuffers(cnt=1)                                       hr=0x00000000 -> cnt=1
+  ResizeBuffers(cnt=3)                                       hr=0x00000000 -> cnt=3
+  ResizeBuffers(cnt=16)                                      hr=0x00000000 -> cnt=16
+  ResizeBuffers(cnt=17)                                      hr=0x80070057 -> cnt=16
+  ResizeBuffers(fmt=28)                                      hr=0x00000000 -> fmt=28
+  ResizeBuffers(fmt=29)                                      hr=0x00000000 -> fmt=29
+  ResizeBuffers(fmt=24)                                      hr=0x00000000 -> fmt=24
+  ResizeBuffers(fmt=10)                                      hr=0x00000000 -> fmt=10
+  ResizeBuffers(fmt=41)                                      hr=0x80070057 -> fmt=41
+  ResizeBuffers(fmt=87)                                      hr=0x00000000 -> fmt=87
+  ResizeBuffers(flags=0x2)                                   hr=0x00000000 -> flags=0x2
+  ResizeBuffers(flags=0x800)                                 hr=0x80070057 -> flags=0x2
+  ResizeBuffers(flags=0x40)                                  hr=0x80070057 -> flags=0x2
+  ResizeBuffers(flags=0x4)                                   hr=0x00000000 -> flags=0x4
+  ResizeBuffers(flags=0x80000000)                            hr=0x887a0001 -> flags=0x4
+  ResizeBuffers(flags=0x0)                                   hr=0x00000000 -> flags=0x0
+  after resize Present(0, 0x0)                               hr=0x087a0001 count+0
+
+[swapchain.methods SEQUENTIAL cnt=2]
+  create                                                     hr=0x00000000
+  QI IDXGIObject                                             hr=0x00000000
+  QI IDXGIDeviceSubObject                                    hr=0x00000000
+  QI IDXGISwapChain1                                         hr=0x00000000
+  QI IDXGISwapChain2                                         hr=0x00000000
+  QI IDXGISwapChain3                                         hr=0x00000000
+  QI IDXGISwapChain4                                         hr=0x00000000
+  QI ID3D11Device                                            hr=0x80004002
+  QI IDXGISwapChainMedia                                     hr=0x00000000
+  GetParent(IDXGIFactory) == creating factory                hr=0x00000000 same=1
+  GetParent(IDXGIFactory2)                                   hr=0x00000000
+  GetParent(IDXGIAdapter)                                    hr=0x80004002
+  GetDevice(ID3D11Device)                                    hr=0x00000000 same=1
+  GetDevice(IDXGIDevice)                                     hr=0x00000000
+  SetPrivateDataInterface(device)                            hr=0x00000000
+    GetPrivateData back                                      hr=0x00000000 same=1
+   GetBuffer(0, ID3D11Texture2D)                             hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Texture2D1)                            hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Resource)                              hr=0x00000000 out=set
+   GetBuffer(0, IUnknown)                                    hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface)                                hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface1)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource1)                              hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Buffer)                                hr=0x80004002 out=null
+   GetBuffer(0, ID3D11Device)                                hr=0x80004002 out=null
+   GetBuffer(1, ID3D11Texture2D) [cnt=2]                     hr=0x00000000 out=set
+   GetBuffer(2, ID3D11Texture2D) [cnt=2]                     hr=0x887a0001 out=null
+   back buffer desc                                          64x48 mips=1 arr=1 fmt=87 samp=1 usage=0 bind=0x20 cpu=0x0 misc=0x0
+   GetBuffer(0) twice same object                            1
+   back buffer GetUsage                                      hr=0x00000000 usage=0x60
+   back buffer surface GetParent(IDXGISwapChain)             hr=0x00000000 same=1
+  RTV of buffer 0 still bound after Present(0,0)             present=0x087a0001 bound=1
+  GetDesc                                                    hr=0x00000000 64x48 fmt=87 refresh=0/0 scan=0 scal=0 cnt=2 hwnd=same win=1 eff=1 flags=0x0
+  GetDesc1                                                   hr=0x00000000 64x48 fmt=87 stereo=0 samp=1 usage=0x20 cnt=2 scal=0 eff=1 alpha=3 flags=0x0
+  GetFullscreenDesc                                          hr=0x00000000 0/0 scan=0 scal=0 win=1
+  GetHwnd                                                    hr=0x00000000 hwnd=same
+  GetCoreWindow                                              hr=0x887a0001 out=null
+  IsTemporaryMonoSupported                                   0
+  GetRestrictToOutput                                        hr=0x00000000 out=null
+  SetBackgroundColor(0.25,0.5,0.75,1)                        hr=0x00000000
+  GetBackgroundColor                                         hr=0x00000000 0.25 0.50 0.75 1.00
+  SetRotation(IDENTITY)                                      hr=0x887a0001
+  SetRotation(ROTATE90)                                      hr=0x887a0001
+  GetRotation                                                hr=0x887a0001 value=99
+  GetFullscreenState                                         hr=0x00000000 fs=0 out=null
+  GetFullscreenState(NULL, NULL)                             hr=0x00000000
+  SetFullscreenState(FALSE, NULL)                            hr=0x00000000
+  SetFullscreenState(TRUE, NULL)                             hr=0x887a0022 now_fs=0
+  GetContainingOutput                                        hr=0x887a0004 out=null
+   Present(0, 0x0)                                           hr=0x087a0001 count+0
+   Present(1, 0x0)                                           hr=0x087a0001 count+0
+   Present(2, 0x0)                                           hr=0x087a0001 count+0
+   Present(3, 0x0)                                           hr=0x087a0001 count+0
+   Present(4, 0x0)                                           hr=0x087a0001 count+0
+   Present(5, 0x0)                                           hr=0x887a0001 count+0
+   Present(0, 0x1)                                           hr=0x087a0001 count+0
+   Present(1, 0x1)                                           hr=0x087a0001 count+0
+   Present(0, 0x2)                                           hr=0x087a0001 count+0
+   Present(0, 0x4)                                           hr=0x087a0001 count+0
+   Present(1, 0x8)                                           hr=0x087a0001 count+0
+   Present(0, 0x10)                                          hr=0x887a0001 count+0
+   Present(0, 0x20)                                          hr=0x887a0001 count+0
+   Present(0, 0x40)                                          hr=0x887a0001 count+0
+   Present(0, 0x100)                                         hr=0x087a0001 count+0
+   Present(0, 0x200)                                         hr=0x887a0001 count+0
+   Present(1, 0x200)                                         hr=0x887a0001 count+0
+   Present(0, 0x80)                                          hr=0x087a0001 count+0
+   Present(0, 0x80000000)                                    hr=0x087a0001 count+0
+   Present(0, 0x9)                                           hr=0x087a0001 count+0
+  GetLastPresentCount                                        hr=0x00000000 value=0
+  GetFrameStatistics                                         hr=0x887a0004 presentcount_written=1
+  Present1(0, 0, empty params)                               hr=0x087a0001
+  Present1(0, 0, NULL params)                                CRASH 0xc0000005
+  Present1(dirty rect 8x8)                                   hr=0x087a0001
+  Present1(dirty rect beyond buffer)                         hr=0x887a0001
+  Present1(DirtyRectsCount=1, NULL rects)                    CRASH 0xc0000005
+  Present1(scroll rect)                                      hr=0x887a0001
+  Present1(5, 0)                                             hr=0x887a0001
+  Present1(0, TEST)                                          hr=0x087a0001
+  GetSourceSize                                              hr=0x00000000 64x48
+  SetSourceSize(32,24)                                       hr=0x887a0001 get=64x48
+  SetSourceSize(65,48) beyond buffer                         hr=0x887a0001
+  SetSourceSize(0,48)                                        hr=0x887a0001
+  GetMaximumFrameLatency                                     hr=0x887a0001 value=52428
+  SetMaximumFrameLatency(2)                                  hr=0x887a0001 get=52428
+  SetMaximumFrameLatency(0)                                  hr=0x887a0001
+  SetMaximumFrameLatency(17)                                 hr=0x887a0001
+  GetFrameLatencyWaitableObject                              handle=null wait=0xffff
+  SetMatrixTransform(identity)                               hr=0x887a0001
+  GetMatrixTransform                                         hr=0x887a0001
+  GetCurrentBackBufferIndex over two Presents                0 0 0
+  CheckColorSpaceSupport/SetColorSpace1(0)                   hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(1)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(12)                  hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(2)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(7)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(100)                 hr=0x00000000 support=0x0 set=0x80070057
+  ResizeBuffers1(0,0,0,UNKNOWN, nodes, queues=device)        hr=0x887a0001
+  ResizeBuffers1(0,0,0,UNKNOWN, NULL, NULL)                  hr=0x887a0001
+  SetHDRMetaData(NONE, 0, NULL)                              hr=0x00000000
+  SetHDRMetaData(HDR10, sizeof, &md)                         hr=0x00000000
+  SetHDRMetaData(HDR10, 0, NULL)                             hr=0x80070057
+  SetHDRMetaData(HDR10, 4, &md)                              hr=0x80070057
+  SetHDRMetaData(type 7)                                     hr=0x80070057
+  ResizeTarget(320x240)                                      hr=0x00000000 client=320x240
+  ResizeTarget(NULL)                                         hr=0x887a0001
+  ResizeTarget(0x0)                                          hr=0x00000000 client=120x0
+  client size before ResizeBuffers                           176x132
+  ResizeBuffers with outstanding GetBuffer ref               hr=0x887a0001
+  ResizeBuffers with outstanding RTV (texture released)      hr=0x887a0001
+  ResizeBuffers with RTV bound to context only               hr=0x00000000
+  ResizeBuffers(0, 100, 80, UNKNOWN)                         hr=0x00000000 -> 100x80 cnt=2 fmt=87
+    back buffer desc after                                   100x80 fmt=87
+  ResizeBuffers(0, 0, 0, UNKNOWN) (client 176x132)           hr=0x00000000 -> 176x132
+  ResizeBuffers(0, 0, 50, UNKNOWN)                           hr=0x00000000 -> 176x132
+  ResizeBuffers(cnt=1)                                       hr=0x00000000 -> cnt=1
+  ResizeBuffers(cnt=3)                                       hr=0x00000000 -> cnt=3
+  ResizeBuffers(cnt=16)                                      hr=0x00000000 -> cnt=16
+  ResizeBuffers(cnt=17)                                      hr=0x80070057 -> cnt=16
+  ResizeBuffers(fmt=28)                                      hr=0x00000000 -> fmt=28
+  ResizeBuffers(fmt=29)                                      hr=0x00000000 -> fmt=29
+  ResizeBuffers(fmt=24)                                      hr=0x00000000 -> fmt=24
+  ResizeBuffers(fmt=10)                                      hr=0x00000000 -> fmt=10
+  ResizeBuffers(fmt=41)                                      hr=0x80070057 -> fmt=41
+  ResizeBuffers(fmt=87)                                      hr=0x00000000 -> fmt=87
+  ResizeBuffers(flags=0x2)                                   hr=0x00000000 -> flags=0x2
+  ResizeBuffers(flags=0x800)                                 hr=0x80070057 -> flags=0x2
+  ResizeBuffers(flags=0x40)                                  hr=0x80070057 -> flags=0x2
+  ResizeBuffers(flags=0x4)                                   hr=0x00000000 -> flags=0x4
+  ResizeBuffers(flags=0x80000000)                            hr=0x887a0001 -> flags=0x4
+  ResizeBuffers(flags=0x0)                                   hr=0x00000000 -> flags=0x0
+  after resize Present(0, 0x0)                               hr=0x087a0001 count+0
+
+[swapchain.methods FLIP_SEQUENTIAL cnt=2]
+  create                                                     hr=0x00000000
+  QI IDXGIObject                                             hr=0x00000000
+  QI IDXGIDeviceSubObject                                    hr=0x00000000
+  QI IDXGISwapChain1                                         hr=0x00000000
+  QI IDXGISwapChain2                                         hr=0x00000000
+  QI IDXGISwapChain3                                         hr=0x00000000
+  QI IDXGISwapChain4                                         hr=0x00000000
+  QI ID3D11Device                                            hr=0x80004002
+  QI IDXGISwapChainMedia                                     hr=0x00000000
+  GetParent(IDXGIFactory) == creating factory                hr=0x00000000 same=1
+  GetParent(IDXGIFactory2)                                   hr=0x00000000
+  GetParent(IDXGIAdapter)                                    hr=0x80004002
+  GetDevice(ID3D11Device)                                    hr=0x00000000 same=1
+  GetDevice(IDXGIDevice)                                     hr=0x00000000
+  SetPrivateDataInterface(device)                            hr=0x00000000
+    GetPrivateData back                                      hr=0x00000000 same=1
+   GetBuffer(0, ID3D11Texture2D)                             hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Texture2D1)                            hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Resource)                              hr=0x00000000 out=set
+   GetBuffer(0, IUnknown)                                    hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface)                                hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface1)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource1)                              hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Buffer)                                hr=0x80004002 out=null
+   GetBuffer(0, ID3D11Device)                                hr=0x80004002 out=null
+   GetBuffer(1, ID3D11Texture2D) [cnt=2]                     hr=0x00000000 out=set
+   GetBuffer(2, ID3D11Texture2D) [cnt=2]                     hr=0x887a0001 out=null
+   back buffer desc                                          64x48 mips=1 arr=1 fmt=87 samp=1 usage=0 bind=0x20 cpu=0x0 misc=0x0
+   GetBuffer(0) twice same object                            1
+   back buffer GetUsage                                      hr=0x00000000 usage=0x60
+   back buffer surface GetParent(IDXGISwapChain)             hr=0x00000000 same=1
+  RTV of buffer 0 still bound after Present(0,0)             present=0x087a0001 bound=0
+  GetDesc                                                    hr=0x00000000 64x48 fmt=87 refresh=0/0 scan=0 scal=0 cnt=2 hwnd=same win=1 eff=3 flags=0x0
+  GetDesc1                                                   hr=0x00000000 64x48 fmt=87 stereo=0 samp=1 usage=0x20 cnt=2 scal=0 eff=3 alpha=3 flags=0x0
+  GetFullscreenDesc                                          hr=0x00000000 0/0 scan=0 scal=0 win=1
+  GetHwnd                                                    hr=0x00000000 hwnd=same
+  GetCoreWindow                                              hr=0x887a0001 out=null
+  IsTemporaryMonoSupported                                   0
+  GetRestrictToOutput                                        hr=0x00000000 out=null
+  SetBackgroundColor(0.25,0.5,0.75,1)                        hr=0x00000000
+  GetBackgroundColor                                         hr=0x00000000 0.25 0.50 0.75 1.00
+  SetRotation(IDENTITY)                                      hr=0x00000000
+  SetRotation(ROTATE90)                                      hr=0x00000000
+  GetRotation                                                hr=0x00000000 value=2
+  GetFullscreenState                                         hr=0x00000000 fs=0 out=null
+  GetFullscreenState(NULL, NULL)                             hr=0x00000000
+  SetFullscreenState(FALSE, NULL)                            hr=0x00000000
+  SetFullscreenState(TRUE, NULL)                             hr=0x887a0022 now_fs=0
+  GetContainingOutput                                        hr=0x887a0004 out=null
+   Present(0, 0x0)                                           hr=0x087a0001 count+1
+   Present(1, 0x0)                                           hr=0x087a0001 count+1
+   Present(2, 0x0)                                           hr=0x087a0001 count+1
+   Present(3, 0x0)                                           hr=0x087a0001 count+1
+   Present(4, 0x0)                                           hr=0x087a0001 count+1
+   Present(5, 0x0)                                           hr=0x887a0001 count+0
+   Present(0, 0x1)                                           hr=0x087a0001 count+0
+   Present(1, 0x1)                                           hr=0x087a0001 count+0
+   Present(0, 0x2)                                           hr=0x087a0001 count+1
+   Present(0, 0x4)                                           hr=0x087a0001 count+1
+   Present(1, 0x8)                                           hr=0x087a0001 count+1
+   Present(0, 0x10)                                          hr=0x887a0001 count+0
+   Present(0, 0x20)                                          hr=0x887a0001 count+0
+   Present(0, 0x40)                                          hr=0x887a0001 count+0
+   Present(0, 0x100)                                         hr=0x087a0001 count+1
+   Present(0, 0x200)                                         hr=0x887a0001 count+0
+   Present(1, 0x200)                                         hr=0x887a0001 count+0
+   Present(0, 0x80)                                          hr=0x887a0001 count+0
+   Present(0, 0x80000000)                                    hr=0x887a0001 count+0
+   Present(0, 0x9)                                           hr=0x887a0001 count+0
+  GetLastPresentCount                                        hr=0x00000000 value=10
+  GetFrameStatistics                                         hr=0x887a000b presentcount_written=1
+  Present1(0, 0, empty params)                               hr=0x087a0001
+  Present1(0, 0, NULL params)                                CRASH 0xc0000005
+  Present1(dirty rect 8x8)                                   hr=0x087a0001
+  Present1(dirty rect beyond buffer)                         hr=0x887a0001
+  Present1(DirtyRectsCount=1, NULL rects)                    CRASH 0xc0000005
+  Present1(scroll rect)                                      hr=0x887a0001
+  Present1(5, 0)                                             hr=0x887a0001
+  Present1(0, TEST)                                          hr=0x087a0001
+  GetSourceSize                                              hr=0x00000000 64x48
+  SetSourceSize(32,24)                                       hr=0x00000000 get=32x24
+  SetSourceSize(65,48) beyond buffer                         hr=0x887a0001
+  SetSourceSize(0,48)                                        hr=0x00000000
+  GetMaximumFrameLatency                                     hr=0x887a0001 value=52428
+  SetMaximumFrameLatency(2)                                  hr=0x887a0001 get=52428
+  SetMaximumFrameLatency(0)                                  hr=0x887a0001
+  SetMaximumFrameLatency(17)                                 hr=0x887a0001
+  GetFrameLatencyWaitableObject                              handle=null wait=0xffff
+  SetMatrixTransform(identity)                               hr=0x887a0001
+  GetMatrixTransform                                         hr=0x887a0001
+  GetCurrentBackBufferIndex over two Presents                0 0 0
+  CheckColorSpaceSupport/SetColorSpace1(0)                   hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(1)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(12)                  hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(2)                   hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(7)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(100)                 hr=0x00000000 support=0x0 set=0x80070057
+  ResizeBuffers1(0,0,0,UNKNOWN, nodes, queues=device)        hr=0x887a0001
+  ResizeBuffers1(0,0,0,UNKNOWN, NULL, NULL)                  hr=0x887a0001
+  SetHDRMetaData(NONE, 0, NULL)                              hr=0x00000000
+  SetHDRMetaData(HDR10, sizeof, &md)                         hr=0x00000000
+  SetHDRMetaData(HDR10, 0, NULL)                             hr=0x80070057
+  SetHDRMetaData(HDR10, 4, &md)                              hr=0x80070057
+  SetHDRMetaData(type 7)                                     hr=0x80070057
+  ResizeTarget(320x240)                                      hr=0x00000000 client=320x240
+  ResizeTarget(NULL)                                         hr=0x887a0001
+  ResizeTarget(0x0)                                          hr=0x00000000 client=120x0
+  client size before ResizeBuffers                           176x132
+  ResizeBuffers with outstanding GetBuffer ref               hr=0x887a0001
+  ResizeBuffers with outstanding RTV (texture released)      hr=0x887a0001
+  ResizeBuffers with RTV bound to context only               hr=0x00000000
+  ResizeBuffers(0, 100, 80, UNKNOWN)                         hr=0x00000000 -> 100x80 cnt=2 fmt=87
+    back buffer desc after                                   100x80 fmt=87
+  ResizeBuffers(0, 0, 0, UNKNOWN) (client 176x132)           hr=0x00000000 -> 176x132
+  ResizeBuffers(0, 0, 50, UNKNOWN)                           hr=0x00000000 -> 176x132
+  ResizeBuffers(cnt=1)                                       hr=0x80070057 -> cnt=2
+  ResizeBuffers(cnt=3)                                       hr=0x00000000 -> cnt=3
+  ResizeBuffers(cnt=16)                                      hr=0x00000000 -> cnt=16
+  ResizeBuffers(cnt=17)                                      hr=0x80070057 -> cnt=16
+  ResizeBuffers(fmt=28)                                      hr=0x00000000 -> fmt=28
+  ResizeBuffers(fmt=29)                                      hr=0x80070057 -> fmt=28
+  ResizeBuffers(fmt=24)                                      hr=0x00000000 -> fmt=24
+  ResizeBuffers(fmt=10)                                      hr=0x00000000 -> fmt=10
+  ResizeBuffers(fmt=41)                                      hr=0x80070057 -> fmt=10
+  ResizeBuffers(fmt=87)                                      hr=0x00000000 -> fmt=87
+  ResizeBuffers(flags=0x2)                                   hr=0x00000000 -> flags=0x2
+  ResizeBuffers(flags=0x800)                                 hr=0x80070057 -> flags=0x2
+  ResizeBuffers(flags=0x40)                                  hr=0x80070057 -> flags=0x2
+  ResizeBuffers(flags=0x4)                                   hr=0x00000000 -> flags=0x4
+  ResizeBuffers(flags=0x80000000)                            hr=0x887a0001 -> flags=0x4
+  ResizeBuffers(flags=0x0)                                   hr=0x00000000 -> flags=0x0
+  after resize Present(0, 0x0)                               hr=0x087a0001 count+1
+
+[swapchain.methods FLIP_DISCARD cnt=3 WAITABLE]
+  create                                                     hr=0x00000000
+  QI IDXGIObject                                             hr=0x00000000
+  QI IDXGIDeviceSubObject                                    hr=0x00000000
+  QI IDXGISwapChain1                                         hr=0x00000000
+  QI IDXGISwapChain2                                         hr=0x00000000
+  QI IDXGISwapChain3                                         hr=0x00000000
+  QI IDXGISwapChain4                                         hr=0x00000000
+  QI ID3D11Device                                            hr=0x80004002
+  QI IDXGISwapChainMedia                                     hr=0x00000000
+  GetParent(IDXGIFactory) == creating factory                hr=0x00000000 same=1
+  GetParent(IDXGIFactory2)                                   hr=0x00000000
+  GetParent(IDXGIAdapter)                                    hr=0x80004002
+  GetDevice(ID3D11Device)                                    hr=0x00000000 same=1
+  GetDevice(IDXGIDevice)                                     hr=0x00000000
+  SetPrivateDataInterface(device)                            hr=0x00000000
+    GetPrivateData back                                      hr=0x00000000 same=1
+   GetBuffer(0, ID3D11Texture2D)                             hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Texture2D1)                            hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Resource)                              hr=0x00000000 out=set
+   GetBuffer(0, IUnknown)                                    hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface)                                hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface1)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource1)                              hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Buffer)                                hr=0x80004002 out=null
+   GetBuffer(0, ID3D11Device)                                hr=0x80004002 out=null
+   GetBuffer(1, ID3D11Texture2D) [cnt=3]                     hr=0x887a0001 out=null
+   GetBuffer(2, ID3D11Texture2D) [cnt=3]                     hr=0x887a0001 out=null
+   GetBuffer(3, ID3D11Texture2D) [cnt=3]                     hr=0x887a0001 out=null
+   back buffer desc                                          64x48 mips=1 arr=1 fmt=87 samp=1 usage=0 bind=0x20 cpu=0x0 misc=0x0
+   GetBuffer(0) twice same object                            1
+   back buffer GetUsage                                      hr=0x00000000 usage=0x60
+   back buffer surface GetParent(IDXGISwapChain)             hr=0x00000000 same=1
+  RTV of buffer 0 still bound after Present(0,0)             present=0x087a0001 bound=0
+  GetDesc                                                    hr=0x00000000 64x48 fmt=87 refresh=0/0 scan=0 scal=0 cnt=3 hwnd=same win=1 eff=4 flags=0x40
+  GetDesc1                                                   hr=0x00000000 64x48 fmt=87 stereo=0 samp=1 usage=0x20 cnt=3 scal=0 eff=4 alpha=3 flags=0x40
+  GetFullscreenDesc                                          hr=0x00000000 0/0 scan=0 scal=0 win=1
+  GetHwnd                                                    hr=0x00000000 hwnd=same
+  GetCoreWindow                                              hr=0x887a0001 out=null
+  IsTemporaryMonoSupported                                   0
+  GetRestrictToOutput                                        hr=0x00000000 out=null
+  SetBackgroundColor(0.25,0.5,0.75,1)                        hr=0x00000000
+  GetBackgroundColor                                         hr=0x00000000 0.25 0.50 0.75 1.00
+  SetRotation(IDENTITY)                                      hr=0x00000000
+  SetRotation(ROTATE90)                                      hr=0x00000000
+  GetRotation                                                hr=0x00000000 value=2
+  GetFullscreenState                                         hr=0x00000000 fs=0 out=null
+  GetFullscreenState(NULL, NULL)                             hr=0x00000000
+  SetFullscreenState(FALSE, NULL)                            hr=0x887a0001
+  SetFullscreenState(TRUE, NULL)                             hr=0x887a0001 now_fs=0
+  GetContainingOutput                                        hr=0x887a0004 out=null
+   Present(0, 0x0)                                           hr=0x087a0001 count+1
+   Present(1, 0x0)                                           hr=0x087a0001 count+1
+   Present(2, 0x0)                                           hr=0x087a0001 count+1
+   Present(3, 0x0)                                           hr=0x087a0001 count+1
+   Present(4, 0x0)                                           hr=0x087a0001 count+1
+   Present(5, 0x0)                                           hr=0x887a0001 count+0
+   Present(0, 0x1)                                           hr=0x087a0001 count+0
+   Present(1, 0x1)                                           hr=0x087a0001 count+0
+   Present(0, 0x2)                                           hr=0x087a0001 count+1
+   Present(0, 0x4)                                           hr=0x087a0001 count+1
+   Present(1, 0x8)                                           hr=0x087a0001 count+1
+   Present(0, 0x10)                                          hr=0x887a0001 count+0
+   Present(0, 0x20)                                          hr=0x887a0001 count+0
+   Present(0, 0x40)                                          hr=0x887a0001 count+0
+   Present(0, 0x100)                                         hr=0x087a0001 count+1
+   Present(0, 0x200)                                         hr=0x887a0001 count+0
+   Present(1, 0x200)                                         hr=0x887a0001 count+0
+   Present(0, 0x80)                                          hr=0x887a0001 count+0
+   Present(0, 0x80000000)                                    hr=0x887a0001 count+0
+   Present(0, 0x9)                                           hr=0x887a0001 count+0
+  GetLastPresentCount                                        hr=0x00000000 value=10
+  GetFrameStatistics                                         hr=0x887a000b presentcount_written=1
+  Present1(0, 0, empty params)                               hr=0x087a0001
+  Present1(0, 0, NULL params)                                CRASH 0xc0000005
+  Present1(dirty rect 8x8)                                   hr=0x887a0001
+  Present1(dirty rect beyond buffer)                         hr=0x887a0001
+  Present1(DirtyRectsCount=1, NULL rects)                    hr=0x887a0001
+  Present1(scroll rect)                                      hr=0x887a0001
+  Present1(5, 0)                                             hr=0x887a0001
+  Present1(0, TEST)                                          hr=0x087a0001
+  GetSourceSize                                              hr=0x00000000 64x48
+  SetSourceSize(32,24)                                       hr=0x00000000 get=32x24
+  SetSourceSize(65,48) beyond buffer                         hr=0x887a0001
+  SetSourceSize(0,48)                                        hr=0x00000000
+  GetMaximumFrameLatency                                     hr=0x00000000 value=1
+  SetMaximumFrameLatency(2)                                  hr=0x00000000 get=2
+  SetMaximumFrameLatency(0)                                  hr=0x887a0001
+  SetMaximumFrameLatency(17)                                 hr=0x00000000
+  GetFrameLatencyWaitableObject                              handle=set wait=0x0
+  SetMatrixTransform(identity)                               hr=0x887a0001
+  GetMatrixTransform                                         hr=0x887a0001
+  GetCurrentBackBufferIndex over two Presents                0 0 0
+  CheckColorSpaceSupport/SetColorSpace1(0)                   hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(1)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(12)                  hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(2)                   hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(7)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(100)                 hr=0x00000000 support=0x0 set=0x80070057
+  ResizeBuffers1(0,0,0,UNKNOWN, nodes, queues=device)        hr=0x887a0001
+  ResizeBuffers1(0,0,0,UNKNOWN, NULL, NULL)                  hr=0x887a0001
+  SetHDRMetaData(NONE, 0, NULL)                              hr=0x00000000
+  SetHDRMetaData(HDR10, sizeof, &md)                         hr=0x00000000
+  SetHDRMetaData(HDR10, 0, NULL)                             hr=0x80070057
+  SetHDRMetaData(HDR10, 4, &md)                              hr=0x80070057
+  SetHDRMetaData(type 7)                                     hr=0x80070057
+  ResizeTarget(320x240)                                      hr=0x00000000 client=320x240
+  ResizeTarget(NULL)                                         hr=0x887a0001
+  ResizeTarget(0x0)                                          hr=0x00000000 client=120x0
+  client size before ResizeBuffers                           176x132
+  ResizeBuffers with outstanding GetBuffer ref               hr=0x887a0001
+  ResizeBuffers with outstanding RTV (texture released)      hr=0x887a0001
+  ResizeBuffers with RTV bound to context only               hr=0x00000000
+  ResizeBuffers(0, 100, 80, UNKNOWN)                         hr=0x00000000 -> 100x80 cnt=3 fmt=87
+    back buffer desc after                                   100x80 fmt=87
+  ResizeBuffers(0, 0, 0, UNKNOWN) (client 176x132)           hr=0x00000000 -> 176x132
+  ResizeBuffers(0, 0, 50, UNKNOWN)                           hr=0x00000000 -> 176x132
+  ResizeBuffers(cnt=1)                                       hr=0x80070057 -> cnt=3
+  ResizeBuffers(cnt=3)                                       hr=0x00000000 -> cnt=3
+  ResizeBuffers(cnt=16)                                      hr=0x00000000 -> cnt=16
+  ResizeBuffers(cnt=17)                                      hr=0x80070057 -> cnt=16
+  ResizeBuffers(fmt=28)                                      hr=0x00000000 -> fmt=28
+  ResizeBuffers(fmt=29)                                      hr=0x80070057 -> fmt=28
+  ResizeBuffers(fmt=24)                                      hr=0x00000000 -> fmt=24
+  ResizeBuffers(fmt=10)                                      hr=0x00000000 -> fmt=10
+  ResizeBuffers(fmt=41)                                      hr=0x80070057 -> fmt=10
+  ResizeBuffers(fmt=87)                                      hr=0x00000000 -> fmt=87
+  ResizeBuffers(flags=0x42)                                  hr=0x00000000 -> flags=0x42
+  ResizeBuffers(flags=0x840)                                 hr=0x80070057 -> flags=0x42
+  ResizeBuffers(flags=0x0)                                   hr=0x80070057 -> flags=0x42
+  ResizeBuffers(flags=0x44)                                  hr=0x00000000 -> flags=0x44
+  ResizeBuffers(flags=0x80000040)                            hr=0x887a0001 -> flags=0x44
+  ResizeBuffers(flags=0x40)                                  hr=0x00000000 -> flags=0x40
+  after resize Present(0, 0x0)                               hr=0x087a0001 count+1
+
+[swapchain.methods FLIP_DISCARD cnt=2 ALLOW_TEARING]
+  create                                                     hr=0x00000000
+  QI IDXGIObject                                             hr=0x00000000
+  QI IDXGIDeviceSubObject                                    hr=0x00000000
+  QI IDXGISwapChain1                                         hr=0x00000000
+  QI IDXGISwapChain2                                         hr=0x00000000
+  QI IDXGISwapChain3                                         hr=0x00000000
+  QI IDXGISwapChain4                                         hr=0x00000000
+  QI ID3D11Device                                            hr=0x80004002
+  QI IDXGISwapChainMedia                                     hr=0x00000000
+  GetParent(IDXGIFactory) == creating factory                hr=0x00000000 same=1
+  GetParent(IDXGIFactory2)                                   hr=0x00000000
+  GetParent(IDXGIAdapter)                                    hr=0x80004002
+  GetDevice(ID3D11Device)                                    hr=0x00000000 same=1
+  GetDevice(IDXGIDevice)                                     hr=0x00000000
+  SetPrivateDataInterface(device)                            hr=0x00000000
+    GetPrivateData back                                      hr=0x00000000 same=1
+   GetBuffer(0, ID3D11Texture2D)                             hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Texture2D1)                            hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Resource)                              hr=0x00000000 out=set
+   GetBuffer(0, IUnknown)                                    hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface)                                hr=0x00000000 out=set
+   GetBuffer(0, IDXGISurface1)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource)                               hr=0x00000000 out=set
+   GetBuffer(0, IDXGIResource1)                              hr=0x00000000 out=set
+   GetBuffer(0, ID3D11Buffer)                                hr=0x80004002 out=null
+   GetBuffer(0, ID3D11Device)                                hr=0x80004002 out=null
+   GetBuffer(1, ID3D11Texture2D) [cnt=2]                     hr=0x887a0001 out=null
+   GetBuffer(2, ID3D11Texture2D) [cnt=2]                     hr=0x887a0001 out=null
+   back buffer desc                                          64x48 mips=1 arr=1 fmt=87 samp=1 usage=0 bind=0x20 cpu=0x0 misc=0x0
+   GetBuffer(0) twice same object                            1
+   back buffer GetUsage                                      hr=0x00000000 usage=0x60
+   back buffer surface GetParent(IDXGISwapChain)             hr=0x00000000 same=1
+  RTV of buffer 0 still bound after Present(0,0)             present=0x087a0001 bound=0
+  GetDesc                                                    hr=0x00000000 64x48 fmt=87 refresh=0/0 scan=0 scal=0 cnt=2 hwnd=same win=1 eff=4 flags=0x800
+  GetDesc1                                                   hr=0x00000000 64x48 fmt=87 stereo=0 samp=1 usage=0x20 cnt=2 scal=0 eff=4 alpha=3 flags=0x800
+  GetFullscreenDesc                                          hr=0x00000000 0/0 scan=0 scal=0 win=1
+  GetHwnd                                                    hr=0x00000000 hwnd=same
+  GetCoreWindow                                              hr=0x887a0001 out=null
+  IsTemporaryMonoSupported                                   0
+  GetRestrictToOutput                                        hr=0x00000000 out=null
+  SetBackgroundColor(0.25,0.5,0.75,1)                        hr=0x00000000
+  GetBackgroundColor                                         hr=0x00000000 0.25 0.50 0.75 1.00
+  SetRotation(IDENTITY)                                      hr=0x00000000
+  SetRotation(ROTATE90)                                      hr=0x00000000
+  GetRotation                                                hr=0x00000000 value=2
+  GetFullscreenState                                         hr=0x00000000 fs=0 out=null
+  GetFullscreenState(NULL, NULL)                             hr=0x00000000
+  SetFullscreenState(FALSE, NULL)                            hr=0x00000000
+  SetFullscreenState(TRUE, NULL)                             hr=0x887a0022 now_fs=0
+  GetContainingOutput                                        hr=0x887a0004 out=null
+   Present(0, 0x0)                                           hr=0x087a0001 count+1
+   Present(1, 0x0)                                           hr=0x087a0001 count+1
+   Present(2, 0x0)                                           hr=0x087a0001 count+1
+   Present(3, 0x0)                                           hr=0x087a0001 count+1
+   Present(4, 0x0)                                           hr=0x087a0001 count+1
+   Present(5, 0x0)                                           hr=0x887a0001 count+0
+   Present(0, 0x1)                                           hr=0x087a0001 count+0
+   Present(1, 0x1)                                           hr=0x087a0001 count+0
+   Present(0, 0x2)                                           hr=0x087a0001 count+1
+   Present(0, 0x4)                                           hr=0x087a0001 count+1
+   Present(1, 0x8)                                           hr=0x087a0001 count+1
+   Present(0, 0x10)                                          hr=0x887a0001 count+0
+   Present(0, 0x20)                                          hr=0x887a0001 count+0
+   Present(0, 0x40)                                          hr=0x887a0001 count+0
+   Present(0, 0x100)                                         hr=0x087a0001 count+1
+   Present(0, 0x200)                                         hr=0x087a0001 count+1
+   Present(1, 0x200)                                         hr=0x887a0001 count+0
+   Present(0, 0x80)                                          hr=0x887a0001 count+0
+   Present(0, 0x80000000)                                    hr=0x887a0001 count+0
+   Present(0, 0x9)                                           hr=0x887a0001 count+0
+  GetLastPresentCount                                        hr=0x00000000 value=11
+  GetFrameStatistics                                         hr=0x887a000b presentcount_written=1
+  Present1(0, 0, empty params)                               hr=0x087a0001
+  Present1(0, 0, NULL params)                                CRASH 0xc0000005
+  Present1(dirty rect 8x8)                                   hr=0x887a0001
+  Present1(dirty rect beyond buffer)                         hr=0x887a0001
+  Present1(DirtyRectsCount=1, NULL rects)                    hr=0x887a0001
+  Present1(scroll rect)                                      hr=0x887a0001
+  Present1(5, 0)                                             hr=0x887a0001
+  Present1(0, TEST)                                          hr=0x087a0001
+  GetSourceSize                                              hr=0x00000000 64x48
+  SetSourceSize(32,24)                                       hr=0x00000000 get=32x24
+  SetSourceSize(65,48) beyond buffer                         hr=0x887a0001
+  SetSourceSize(0,48)                                        hr=0x00000000
+  GetMaximumFrameLatency                                     hr=0x887a0001 value=52428
+  SetMaximumFrameLatency(2)                                  hr=0x887a0001 get=52428
+  SetMaximumFrameLatency(0)                                  hr=0x887a0001
+  SetMaximumFrameLatency(17)                                 hr=0x887a0001
+  GetFrameLatencyWaitableObject                              handle=null wait=0xffff
+  SetMatrixTransform(identity)                               hr=0x887a0001
+  GetMatrixTransform                                         hr=0x887a0001
+  GetCurrentBackBufferIndex over two Presents                0 0 0
+  CheckColorSpaceSupport/SetColorSpace1(0)                   hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(1)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(12)                  hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(2)                   hr=0x00000000 support=0x1 set=0x00000000
+  CheckColorSpaceSupport/SetColorSpace1(7)                   hr=0x00000000 support=0x0 set=0x80070057
+  CheckColorSpaceSupport/SetColorSpace1(100)                 hr=0x00000000 support=0x0 set=0x80070057
+  ResizeBuffers1(0,0,0,UNKNOWN, nodes, queues=device)        hr=0x887a0001
+  ResizeBuffers1(0,0,0,UNKNOWN, NULL, NULL)                  hr=0x887a0001
+  SetHDRMetaData(NONE, 0, NULL)                              hr=0x00000000
+  SetHDRMetaData(HDR10, sizeof, &md)                         hr=0x00000000
+  SetHDRMetaData(HDR10, 0, NULL)                             hr=0x80070057
+  SetHDRMetaData(HDR10, 4, &md)                              hr=0x80070057
+  SetHDRMetaData(type 7)                                     hr=0x80070057
+  ResizeTarget(320x240)                                      hr=0x00000000 client=320x240
+  ResizeTarget(NULL)                                         hr=0x887a0001
+  ResizeTarget(0x0)                                          hr=0x00000000 client=120x0
+  client size before ResizeBuffers                           176x132
+  ResizeBuffers with outstanding GetBuffer ref               hr=0x887a0001
+  ResizeBuffers with outstanding RTV (texture released)      hr=0x887a0001
+  ResizeBuffers with RTV bound to context only               hr=0x00000000
+  ResizeBuffers(0, 100, 80, UNKNOWN)                         hr=0x00000000 -> 100x80 cnt=2 fmt=87
+    back buffer desc after                                   100x80 fmt=87
+  ResizeBuffers(0, 0, 0, UNKNOWN) (client 176x132)           hr=0x00000000 -> 176x132
+  ResizeBuffers(0, 0, 50, UNKNOWN)                           hr=0x00000000 -> 176x132
+  ResizeBuffers(cnt=1)                                       hr=0x80070057 -> cnt=2
+  ResizeBuffers(cnt=3)                                       hr=0x00000000 -> cnt=3
+  ResizeBuffers(cnt=16)                                      hr=0x00000000 -> cnt=16
+  ResizeBuffers(cnt=17)                                      hr=0x80070057 -> cnt=16
+  ResizeBuffers(fmt=28)                                      hr=0x00000000 -> fmt=28
+  ResizeBuffers(fmt=29)                                      hr=0x80070057 -> fmt=28
+  ResizeBuffers(fmt=24)                                      hr=0x00000000 -> fmt=24
+  ResizeBuffers(fmt=10)                                      hr=0x00000000 -> fmt=10
+  ResizeBuffers(fmt=41)                                      hr=0x80070057 -> fmt=10
+  ResizeBuffers(fmt=87)                                      hr=0x00000000 -> fmt=87
+  ResizeBuffers(flags=0x802)                                 hr=0x00000000 -> flags=0x802
+  ResizeBuffers(flags=0x0)                                   hr=0x80070057 -> flags=0x802
+  ResizeBuffers(flags=0x840)                                 hr=0x80070057 -> flags=0x802
+  ResizeBuffers(flags=0x804)                                 hr=0x00000000 -> flags=0x804
+  ResizeBuffers(flags=0x80000800)                            hr=0x887a0001 -> flags=0x804
+  ResizeBuffers(flags=0x800)                                 hr=0x00000000 -> flags=0x800
+  after resize Present(0, 0x0)                               hr=0x087a0001 count+1
+
+[nullargs (guarded)]
+  CreateDXGIFactory1(IID, NULL)                              hr=0x80004003
+  CreateDXGIFactory1(NULL IID, &f)                           CRASH 0xc0000005
+  EnumAdapters(0, NULL)                                      hr=0x887a0001
+  EnumAdapters1(0, NULL)                                     hr=0x887a0001
+  GetWindowAssociation(NULL)                                 hr=0x887a0001
+  adapter GetDesc(NULL)                                      hr=0x80070057
+  adapter GetDesc1(NULL)                                     hr=0x80070057
+  EnumOutputs(0, NULL)                                       hr=0x80070057
+  GetAdapter(NULL)                                           hr=0x80070057
+  GetMaximumFrameLatency(NULL)                               hr=0x887a0001
+  GetGPUThreadPriority(NULL)                                 CRASH 0xe06d7363
+  CreateSwapChain(dev, &desc, NULL)                          CRASH 0xe06d7363
+  swapchain GetDesc(NULL)                                    hr=0x80070057
+  swapchain GetBuffer(0, IID, NULL)                          hr=0x887a0001
+  swapchain GetLastPresentCount(NULL)                        hr=0x887a0001
+  swapchain GetContainingOutput(NULL)                        hr=0x887a0001
+  swapchain GetFrameStatistics(NULL)                         hr=0x887a0001
+
+done
+
+# ---------------------------------------------------------------------------
+# Measured on winoracle 2026-09-28 (Windows 11 10.0.26200, WARP "Microsoft
+# Basic Render Driver"), run from an INTERACTIVE scheduled task
+# (schtasks /it) -- from a plain ssh session (session 0) every window-bound
+# DXGI call (MakeWindowAssociation, CreateSwapChain*) is
+# DXGI_ERROR_NOT_CURRENTLY_AVAILABLE and nothing below is measurable:
+#   schtasks /create /tn a11dxgi /tr "cmd /c C:\Users\owner\dxgi_a11_64.exe >
+#     C:\Users\owner\a11dxgi64.txt 2>&1" /sc once /st 00:00 /f /it
+#   schtasks /run /tn a11dxgi
+# The logged-on session is DISCONNECTED, so every Present returns
+# DXGI_STATUS_OCCLUDED (0x087a0001) and SetFullscreenState(TRUE) is
+# DXGI_ERROR_NOT_CURRENTLY_AVAILABLE: only Present VALIDATION (which codes are
+# INVALID_CALL) is measured here, not on-screen behaviour. The Basic Render
+# Driver has NO outputs, so the [output] section is empty here and
+# GetContainingOutput / GetFrameStatistics answer DXGI_ERROR_UNSUPPORTED;
+# Vitreo's output rows are judged against Learn only.
+# x86 differs from x64 only in CreateDXGIFactory2(DEBUG): SysWOW64 has
+# DXGIDebug.dll, System32 does not -> x64 answers DXGI_ERROR_INVALID_CALL.
+#
+# 2026-09-28 fix pass: every WRONG/MISSING row below except those listed
+# under "Remaining" is fixed, and the probe no longer takes a "vitreo-safe"
+# argument (run: vitreo run dxgi_a11_64.exe). Remaining differences: outputs
+# (BRD has none), adapter identity, occluded-session Present/statistics,
+# rows Windows crashes on, SetPrivateDataInterface (area 12), GDI surfaces
+# (area 02), D3D10 CheckInterfaceSupport (frontend default-off), GetModule-
+# Handle(dxgi.dll) (loader), DISCARD fmt=89 / samples=8 / 20000x20000 /
+# stereo / studio colour space (Metal limits, UNIMPLEMENTED lines), buffer
+# QI IDXGISurface, CreateSoftwareAdapter.
+#
+# Verdicts for Vitreo before the fix pass (then run with "vitreo-safe"). Full
+# inventory: .docs/audits/2026-09-28-d3d11-contract-audit/area-11-dxgi.md.
+#  HOST CRASHES (why "vitreo-safe" existed): CreateSwapChain with
+#    R32G32B32A32_FLOAT or D24_UNORM_S8_UINT -> uncaught NSException
+#    'CAMetalLayerInvalid' (Windows: E_INVALIDARG / DXGI_ERROR_INVALID_CALL);
+#    20000x20000 swap chain -> Metal texture-descriptor assertion (SIGABRT);
+#    IDXGIOutput6::CheckHardwareCompositionSupport (vtable slot 28) is past the
+#    end of the 28-entry output vtable -> guest jumps to 0 (0xC000001D).
+#  WRONG: IID_IDXGIResource1 constant is wrong, so no object answers
+#    IDXGIResource1 (CreateSharedHandle / CreateSubresourceSurface unreachable);
+#    Present rejects SyncInterval 2..4 and every flag (TEST, DO_NOT_WAIT,
+#    DO_NOT_SEQUENCE, RESTART, USE_DURATION, unknown bits) with INVALID_CALL;
+#    CreateSwapChain* reject Width/Height 0 (Windows: window client size),
+#    Windowed=FALSE (Windows: windowed chain + DXGI_STATUS_OCCLUDED) and MSAA
+#    bitblt chains; ResizeBuffers(…0,0…) keeps the old size (Windows: client
+#    size) and fails while the back buffer is only bound to the context;
+#    no flip-model validation (count 1/17, sRGB, flags, usage, scaling, alpha);
+#    GetBuffer refuses IDXGISurface/IDXGIResource/Texture2D1 and index>0 on
+#    SEQUENTIAL; keyed-mutex state not shared across openings, no timeout
+#    wait, E_FAIL instead of DXGI_ERROR_INVALID_CALL, x86 truncates the key;
+#    CreateDXGIFactory2 rejects flags 2/4/bit31; SetMaximumFrameLatency(0).
+#  MISSING: IDXGISwapChain2/3/4, IDXGIDevice3/4, GetParent/ResizeTarget/
+#    GetContainingOutput/GetFrameStatistics/background colour/rotation on the
+#    swap chain, Register{Occlusion,Stereo}Status*, GetSharedResourceAdapter-
+#    Luid, Offer/ReclaimResources, EnqueueSetEvent, GDI-compatible surfaces.

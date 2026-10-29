@@ -1,0 +1,34 @@
+mode 1: result=1 calls=1 code=c000001d flags=0
+  ctx_arg_is_dctx_ctx=0
+  ctx_arg.Rip=site+0 Rsp_delta=-8
+  dctx_ctx.Rip=site+763 Rsp_delta=48
+  ControlPc=ret+0 ImageBase_ok=1 FunctionEntry_begin=leaf+0
+  EstablisherFrame_eq_frame=1 TargetIp=0 HistoryTable_nonnull=1 ScopeIndex=0 Fill0=0
+  handler_ok=1 handler_data_nonnull=1
+  ctx.ContextFlags=10005f MxCsr=1f80 EFlags=10246
+  ctx.Seg cs=33 ds=2b es=2b fs=53 gs=2b ss=2b
+  ctx.Dr0=0 Dr1=0 Dr2=0 Dr3=0 Dr6=0 Dr7=0
+  ctx.P1..P6Home_nonzero=001000 VectorControl=0 DebugControl=0
+  ctx.LastBranchToRip=0 LastBranchFromRip=0 LastExceptionToRip=0 LastExceptionFromRip=0
+  ctx.FltSave ControlWord=37f StatusWord=0 TagWord=0 MxCsr=1f80 MxCsr_Mask=ffff
+  ctx.Rbx_eq_dctx=1 Rsi_eq_dctx=1 Rdi_eq_dctx=1 R12_eq_dctx=1 Rbp_eq_dctx=1
+  dctx_ctx.ContextFlags=10000f
+  rec.addr=site+0 nparams=0 chained=0
+mode 2: result=1 calls=3 code=c000001d flags=0
+  ctx_arg_is_dctx_ctx=0
+  ctx_arg.Rip=site+0 Rsp_delta=-8
+  dctx_ctx.Rip=site+763 Rsp_delta=48
+  ControlPc=ret+0 ImageBase_ok=1 FunctionEntry_begin=leaf+0
+  EstablisherFrame_eq_frame=1 TargetIp=0 HistoryTable_nonnull=1 ScopeIndex=0 Fill0=0
+  handler_ok=1 handler_data_nonnull=1
+kind int3: result=1 calls=1 code=80000003 flags=0 nparams=1
+  rec.addr=site+0 ctx.Rip=site+0
+  ctx.ContextFlags=10005f EFlags_RF=0 Seg ds=2b es=2b fs=53 gs=2b
+  dctx_ctx.ContextFlags=10000f
+kind av: result=1 calls=1 code=c0000005 flags=0 nparams=2
+  rec.addr=site+0 ctx.Rip=site+0
+  ctx.ContextFlags=10005f EFlags_RF=1 Seg ds=2b es=2b fs=53 gs=2b
+  dctx_ctx.ContextFlags=10000f
+kind raise: result=1 calls=1 code=e0000001 flags=80 nparams=0
+  ctx.ContextFlags=10004f EFlags_RF=0 Seg ds=2b es=2b fs=53 gs=2b
+  dctx_ctx.ContextFlags=10000f

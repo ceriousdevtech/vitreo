@@ -1,0 +1,42 @@
+crt_fs_env_probe x64
+== env
+getenv(VPROBE_PRE) before-init -> NULL
+   ret=0 errno=85 dos=85 iph=0
+_initialize_narrow_environment ret=0 errno=85 dos=85 iph=0
+getenv(VPROBE_PRE) -> NULL
+   ret=0 errno=85 dos=85 iph=0
+getenv(vprobe_pre) -> NULL
+getenv(VPROBE_U) -> NULL
+getenv stable pointer: yes
+getenv(VPROBE_POST) after SetEnvironmentVariable -> NULL
+getenv(VPROBE_PRE) after SetEnvironmentVariable -> NULL
+_putenv(VPROBE_PUT=put) ret=0 errno=85 dos=85 iph=0
+getenv(VPROBE_PUT) -> [put]
+GetEnvironmentVariableA(VPROBE_PUT) n=3
+GetEnvironmentVariableA(VPROBE_PRE) n=7
+_putenv("VPROBE_A=\xe9") ret=0 errno=85 dos=85 iph=0
+getenv(VPROBE_A) -> [\xe9]
+GetEnvironmentVariableW(VPROBE_A) n=1 w0=0xe9
+_wgetenv(VPROBE_U) -> [\u0xe9\u0x4e2d!]
+_wgetenv(VPROBE_POST) -> [post]
+_wgetenv(VPROBE_PRE) -> [changed]
+_wgetenv(VPROBE_PUT) -> [put]
+_wgetenv(VPROBE_A) -> [\u0xe9]
+_wgetenv(VPROBE_POST2) after SetEnvironmentVariable -> NULL
+_wgetenv(VPROBE_P2) after _putenv -> [two]
+getenv(VPROBE_PUT) after removal -> NULL
+_wgetenv(VPROBE_PUT) after removal -> NULL
+getenv(NULL) -> NULL
+   ret=0 errno=22 dos=85 iph=1
+_wgetenv(NULL) -> NULL
+   ret=0 errno=22 dos=85 iph=1
+getenv("") -> NULL
+   ret=0 errno=85 dos=85 iph=0
+getenv("VPROBE_PRE=") -> NULL
+   ret=0 errno=85 dos=85 iph=0
+getenv(missing) -> NULL
+   ret=0 errno=85 dos=85 iph=0
+getenv(32767 chars) -> NULL
+   ret=0 errno=22 dos=85 iph=1
+getenv(32766 chars) -> NULL
+   ret=0 errno=85 dos=85 iph=0

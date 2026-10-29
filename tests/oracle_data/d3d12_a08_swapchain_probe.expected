@@ -1,0 +1,118 @@
+create ForHwnd(queue, FLIP_DISCARD x2 RGBA8): 0x00000000 S_OK out=obj
+create ForHwnd(device, ...): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(command list, ...): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, FLIP_SEQUENTIAL): 0x00000000 S_OK out=obj
+create ForHwnd(queue, DISCARD): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, SEQUENTIAL): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, BufferCount 0): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, BufferCount 1): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, BufferCount 3): 0x00000000 S_OK out=obj
+create ForHwnd(queue, BufferCount 16): 0x00000000 S_OK out=obj
+create ForHwnd(queue, BufferCount 17): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, B8G8R8A8_UNORM): 0x00000000 S_OK out=obj
+create ForHwnd(queue, R16G16B16A16_FLOAT): 0x00000000 S_OK out=obj
+create ForHwnd(queue, R10G10B10A2_UNORM): 0x00000000 S_OK out=obj
+create ForHwnd(queue, R8G8B8A8_UNORM_SRGB): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, B8G8R8A8_UNORM_SRGB): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, R32G32B32A32_FLOAT): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, B5G6R5_UNORM): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, UNKNOWN): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, SampleDesc 4): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, usage RT|SHADER_INPUT): 0x00000000 S_OK out=obj
+create ForHwnd(queue, usage UNORDERED_ACCESS only): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, usage 0): 0x00000000 S_OK out=obj
+create ForHwnd(queue, flags ALLOW_TEARING): 0x00000000 S_OK out=obj
+create ForHwnd(queue, flags FRAME_LATENCY_WAITABLE_OBJECT): 0x00000000 S_OK out=obj
+create ForHwnd(queue, flags GDI_COMPATIBLE): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, flags ALLOW_MODE_SWITCH): 0x00000000 S_OK out=obj
+create ForHwnd(queue, flags 0x10000000): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, SCALING_NONE): 0x00000000 S_OK out=obj
+create ForHwnd(queue, SCALING_ASPECT_RATIO_STRETCH): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, ALPHA_MODE_PREMULTIPLIED): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create ForHwnd(queue, Stereo): 0x00000000 S_OK out=obj
+create ForHwnd(queue, 0x0): GetDesc1: 0x00000000 S_OK size==client=1 fmt=28 count=2 effect=4 scaling=0 usage=0x20 flags=0x0
+# create ForHwnd(queue, 0x0): size: 120x48
+create second ForHwnd on the same HWND: 0x80070005 E_ACCESSDENIED out=NULL
+create swap chain answers: IDXGISwapChain IDXGISwapChain1 IDXGISwapChain2 IDXGISwapChain3 IDXGISwapChain4 IDXGIDeviceSubObject
+create GetDevice(ID3D12CommandQueue): 0x80004002 E_NOINTERFACE same-queue=0
+create GetDevice(ID3D12Device): 0x00000000 S_OK out=obj
+create GetDevice(IDXGIDevice): 0x80004002 E_NOINTERFACE out=NULL
+create GetHwnd: 0x00000000 S_OK same=1
+create CreateSwapChain(queue, FLIP_DISCARD): 0x00000000 S_OK out=obj
+create CreateSwapChain(queue, DISCARD): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create CreateSwapChainForComposition(queue, FLIP_SEQUENTIAL B8G8R8A8): 0x00000000 S_OK out=obj
+create CreateSwapChainForComposition(SCALING_NONE): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+create swap chain holds the queue: 1
+# create queue refs held by a swap chain: +5
+create end: GetDeviceRemovedReason 0x00000000 S_OK
+buffers ForHwnd(queue, FLIP_DISCARD x3 BGRA8, RT|SHADER_INPUT): 0x00000000 S_OK
+buffers GetBuffer(0, ID3D12Resource): 0x00000000 S_OK out=obj
+buffers GetBuffer(1, ID3D12Resource): 0x00000000 S_OK out=obj
+buffers GetBuffer(2, ID3D12Resource): 0x00000000 S_OK out=obj
+buffers GetBuffer(3, ID3D12Resource): 0x887a0001 DXGI_ERROR_INVALID_CALL out=NULL
+buffers buffers distinct: 1
+buffers GetBuffer(0) twice: same object: 1
+# buffers buffer 0 refcount (one GetBuffer reference held): 3
+buffers buffer desc: dim=3 align=65536 64x48 da=1 mips=1 fmt=87 ms=1/0 layout=0 flags=0x1
+buffers buffer GetHeapProperties: 0x00000000 S_OK type=1 cpu=0 pool=0 flags=0x8d
+buffers buffer GetDevice is the queue's device: 1
+buffers buffer debug name: 0x887a0002 DXGI_ERROR_NOT_FOUND
+buffers GetBuffer(0, ID3D12Resource1): 0x00000000 S_OK out=obj
+buffers GetBuffer(0, IUnknown): 0x00000000 S_OK out=obj
+buffers GetBuffer(0, IDXGISurface): 0x80004002 E_NOINTERFACE out=NULL
+buffers GetBuffer(0, IDXGIResource): 0x80004002 E_NOINTERFACE out=NULL
+buffers GetBuffer(0, ID3D12Heap): 0x80004002 E_NOINTERFACE out=NULL
+buffers GetBuffer(0, ID3D12Resource, NULL): 0x887a0001 DXGI_ERROR_INVALID_CALL
+buffers final swap chain Release: 0
+buffers end: GetDeviceRemovedReason 0x00000000 S_OK
+present 2 buffers: create: 0x00000000 S_OK
+present 2 buffers: GetCurrentBackBufferIndex before 5 Present(0,0): 0,1,0,1,0 non-S_OK: none
+present 2 buffers: Present(0, TEST): 0x00000000 S_OK index 1 -> 1
+present 2 buffers: Present(0, ALLOW_TEARING) without the flag: 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 2 buffers: Present(1, ALLOW_TEARING): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 2 buffers: Present(SyncInterval 5): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 2 buffers: Present(1, 0): 0x00000000 S_OK index 1 -> 0
+present 2 buffers: Present(0, DO_NOT_WAIT): 0x00000000 S_OK
+present 2 buffers: Present(0, RESTART): 0x00000000 S_OK
+present 2 buffers: Present(0, 0x80000000): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 2 buffers: Present1(1 dirty rect): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 2 buffers: Present1(dirty rect past the buffer): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 2 buffers: GetLastPresentCount: 0x00000000 S_OK nonzero=1
+# present 2 buffers: GetLastPresentCount: 8
+present 3 buffers: create: 0x00000000 S_OK
+present 3 buffers: GetCurrentBackBufferIndex before 5 Present(0,0): 0,1,2,0,1 non-S_OK: none
+present 3 buffers: Present(0, TEST): 0x00000000 S_OK index 2 -> 2
+present 3 buffers: Present(0, ALLOW_TEARING) without the flag: 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 3 buffers: Present(1, ALLOW_TEARING): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 3 buffers: Present(SyncInterval 5): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 3 buffers: Present(1, 0): 0x00000000 S_OK index 2 -> 0
+present 3 buffers: Present(0, DO_NOT_WAIT): 0x00000000 S_OK
+present 3 buffers: Present(0, RESTART): 0x00000000 S_OK
+present 3 buffers: Present(0, 0x80000000): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 3 buffers: Present1(1 dirty rect): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 3 buffers: Present1(dirty rect past the buffer): 0x887a0001 DXGI_ERROR_INVALID_CALL
+present 3 buffers: GetLastPresentCount: 0x00000000 S_OK nonzero=1
+# present 3 buffers: GetLastPresentCount: 8
+present end: GetDeviceRemovedReason 0x00000000 S_OK
+resize create: 0x00000000 S_OK
+resize index after 1 Present: 1
+resize ResizeBuffers while a buffer reference is held: 0x887a0001 DXGI_ERROR_INVALID_CALL
+resize ResizeBuffers(0, 32, 16, UNKNOWN, 0): 0x00000000 S_OK -> 32x16 fmt=28 count=2 index=0
+resize ResizeBuffers(0, 0, 0) takes the client area: 0x00000000 S_OK size==client=1
+resize ResizeBuffers(3, 40, 40, BGRA8): 0x00000000 S_OK -> 40x40 fmt=87 count=3
+resize GetBuffer(2) after resize: 0x00000000 S_OK 40x40 fmt=87
+resize ResizeBuffers(BufferCount 1): 0x80070057 E_INVALIDARG
+resize ResizeBuffers(RGBA8_SRGB): 0x80070057 E_INVALIDARG
+resize ResizeBuffers(add ALLOW_TEARING): 0x80070057 E_INVALIDARG
+resize ResizeBuffers(add FRAME_LATENCY_WAITABLE_OBJECT): 0x80070057 E_INVALIDARG
+resize ResizeBuffers1(3, 48x32, masks {1,1,1}, queues): 0x00000000 S_OK -> 48x32 count=3
+resize ResizeBuffers1(NULL masks, NULL queues): 0x887a0001 DXGI_ERROR_INVALID_CALL
+resize ResizeBuffers1(node masks 2): 0x887a0001 DXGI_ERROR_INVALID_CALL
+resize ResizeBuffers1(devices instead of queues): 0x887a0001 DXGI_ERROR_INVALID_CALL
+resize Present after the resizes: 0x00000000 S_OK
+resize end: GetDeviceRemovedReason 0x00000000 S_OK
+readback create: 0x00000000 S_OK
+readback present #0 (r=1.00 g=0.00 b=0.00): PrintWindow centre BGR: 0x00000000 S_OK ok=1 px=ff0000
+readback present #1 (r=0.00 g=0.50 b=1.00): PrintWindow centre BGR: 0x00000000 S_OK ok=1 px=0080ff
+readback present #2 (r=0.25 g=0.75 b=0.00): PrintWindow centre BGR: 0x00000000 S_OK ok=1 px=40bf00
+readback end: GetDeviceRemovedReason 0x00000000 S_OK

@@ -1,0 +1,21 @@
+device ok, feature level 0xb000
+
+UE5 case: DYNAMIC|WRITE|RAW, SRV|VB            -> 0x00000000 OK
+same but no misc flag                          -> 0x00000000 OK
+same but DEFAULT, no cpu access                -> 0x00000000 OK
+DYNAMIC|WRITE|STRUCTURED, SRV  stride=16       -> 0x00000000 OK
+DYNAMIC|WRITE|DRAWINDIRECT, VB                 -> 0x00000000 OK
+DYNAMIC|WRITE|SHARED, SRV                      -> 0x80070057 FAIL
+STAGING|READ|WRITE|RAW, no binds               -> 0x80070057 FAIL
+DEFAULT, no binds, no misc                     -> 0x00000000 OK
+DEFAULT|DRAWINDIRECT, no binds                 -> 0x00000000 OK
+IMMUTABLE|DRAWINDIRECT, no binds               -> 0x80070057 FAIL
+DYNAMIC|WRITE|DRAWINDIRECT, no binds           -> 0x80070057 FAIL
+DYNAMIC|WRITE, no binds, no misc               -> 0x80070057 FAIL
+DEFAULT|RAW, no binds                          -> 0x80070057 FAIL
+DEFAULT|STRUCTURED, no binds stride=16         -> 0x00000000 OK
+DEFAULT|DRAWINDIRECT|RAW, no binds             -> 0x80070057 FAIL
+DEFAULT|DRAWINDIRECT, UAV|SRV                  -> 0x00000000 OK
+DEFAULT|DRAWINDIRECT|RAW, UAV|SRV              -> 0x00000000 OK
+IMMUTABLE|DRAWINDIRECT, no binds, data         -> 0x80070057 FAIL
+IMMUTABLE, no binds, no misc, data             -> 0x80070057 FAIL

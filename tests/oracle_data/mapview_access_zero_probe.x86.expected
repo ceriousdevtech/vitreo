@@ -1,0 +1,72 @@
+bits=32
+image section=ok err=0
+image access=0x0 view=ok err=0 prot=0x2 alloc_prot=0x80 type=0x1000000
+image access=0x4 view=ok err=0 prot=0x2 alloc_prot=0x80 type=0x1000000
+image access=0x2 view=NULL err=5
+image access=0x1 view=ok err=0 prot=0x2 alloc_prot=0x80 type=0x1000000
+image access=0x20 view=ok err=0 prot=0x2 alloc_prot=0x80 type=0x1000000
+image access=0x24 view=NULL err=5
+image access=0xf001f view=NULL err=5
+image access=0x10 view=ok err=0 prot=0x2 alloc_prot=0x80 type=0x1000000
+image access=0x20 view=ok err=0 prot=0x2 alloc_prot=0x80 type=0x1000000
+image access=0x80000000 view=NULL err=87
+data_ro access=0x0 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_ro access=0x4 view=ok err=0 prot=0x2 alloc_prot=0x2 type=0x40000
+data_ro access=0x2 view=NULL err=5
+data_ro access=0x1 view=ok err=0 prot=0x8 alloc_prot=0x8 type=0x40000
+data_ro access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_ro access=0x24 view=NULL err=5
+data_ro access=0xf001f view=NULL err=5
+data_ro access=0x10 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_ro access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_ro access=0x80000000 view=NULL err=87
+data_rw access=0x0 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rw access=0x4 view=ok err=0 prot=0x2 alloc_prot=0x2 type=0x40000
+data_rw access=0x2 view=ok err=0 prot=0x4 alloc_prot=0x4 type=0x40000
+data_rw access=0x1 view=ok err=0 prot=0x8 alloc_prot=0x8 type=0x40000
+data_rw access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rw access=0x24 view=NULL err=5
+data_rw access=0xf001f view=ok err=0 prot=0x4 alloc_prot=0x4 type=0x40000
+data_rw access=0x10 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rw access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rw access=0x80000000 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_wc access=0x0 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_wc access=0x4 view=ok err=0 prot=0x2 alloc_prot=0x2 type=0x40000
+data_wc access=0x2 view=NULL err=5
+data_wc access=0x1 view=ok err=0 prot=0x8 alloc_prot=0x8 type=0x40000
+data_wc access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_wc access=0x24 view=NULL err=5
+data_wc access=0xf001f view=NULL err=5
+data_wc access=0x10 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_wc access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_wc access=0x80000000 view=NULL err=87
+data_rx access=0x0 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rx access=0x4 view=ok err=0 prot=0x2 alloc_prot=0x2 type=0x40000
+data_rx access=0x2 view=NULL err=5
+data_rx access=0x1 view=ok err=0 prot=0x8 alloc_prot=0x8 type=0x40000
+data_rx access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rx access=0x24 view=ok err=0 prot=0x20 alloc_prot=0x20 type=0x40000
+data_rx access=0xf001f view=NULL err=5
+data_rx access=0x10 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rx access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rx access=0x80000000 view=NULL err=87
+data_rwx access=0x0 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rwx access=0x4 view=ok err=0 prot=0x2 alloc_prot=0x2 type=0x40000
+data_rwx access=0x2 view=ok err=0 prot=0x4 alloc_prot=0x4 type=0x40000
+data_rwx access=0x1 view=ok err=0 prot=0x8 alloc_prot=0x8 type=0x40000
+data_rwx access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rwx access=0x24 view=ok err=0 prot=0x20 alloc_prot=0x20 type=0x40000
+data_rwx access=0xf001f view=ok err=0 prot=0x4 alloc_prot=0x4 type=0x40000
+data_rwx access=0x10 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rwx access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+data_rwx access=0x80000000 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+pagefile_rw access=0x0 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+pagefile_rw access=0x4 view=ok err=0 prot=0x2 alloc_prot=0x2 type=0x40000
+pagefile_rw access=0x2 view=ok err=0 prot=0x4 alloc_prot=0x4 type=0x40000
+pagefile_rw access=0x1 view=ok err=0 prot=0x8 alloc_prot=0x8 type=0x40000
+pagefile_rw access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+pagefile_rw access=0x24 view=NULL err=5
+pagefile_rw access=0xf001f view=ok err=0 prot=0x4 alloc_prot=0x4 type=0x40000
+pagefile_rw access=0x10 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+pagefile_rw access=0x20 view=ok err=0 prot=0x1 alloc_prot=0x1 type=0x40000
+pagefile_rw access=0x80000000 view=NULL err=87

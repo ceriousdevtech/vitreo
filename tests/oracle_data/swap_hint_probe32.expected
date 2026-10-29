@@ -1,0 +1,64 @@
+# swap_hint_probe32.expected - i686 build of swap_hint_probe.c; identical to swap_hint_probe64.expected except
+#   pointer-size (notes there).
+# Task 13 fix round 2: lines added after hint-across-makecurrent-*; identical to the x64 file except pointer-size.
+setup pixelformat=4 flags=0x00008465 swap-copy=1 swap-exchange=0 hint-proc=1 pointer-size=4
+hint-baseline-red front-gl=ff0000/ff0000 front-gdi=ff0000/ff0000 back=ff0000/ff0000 err=0x0000
+hint-one-rect-green front-gl=00ff00/ff0000 front-gdi=00ff00/ff0000 back=00ff00/00ff00 err=0x0000
+hint-next-swap-blue front-gl=0000ff/0000ff front-gdi=0000ff/0000ff back=0000ff/0000ff err=0x0000
+hint-two-rects-yellow-over-black front-gl=ffff00/ffff00 front-gdi=ffff00/ffff00 back=ffff00/ffff00 err=0x0000
+hint-out-rect-magenta-over-black front-gl=000000/ff00ff front-gdi=000000/ff00ff back=ff00ff/ff00ff err=0x0000
+hint-finish-cyan-over-black front-gl=00ffff/000000 front-gdi=00ffff/000000 back=00ffff/00ffff err=0x0000
+hint-flush-white-over-black front-gl=ffffff/000000 front-gdi=ffffff/000000 back=ffffff/ffffff err=0x0000
+hint-zero-size-add err=0x0000
+hint-zero-size-red-over-black front-gl=ff0000/ff0000 front-gdi=ff0000/ff0000 back=ff0000/ff0000 err=0x0000
+hint-negative-width-add err=0x0000
+hint-negative-width-green-over-black front-gl=00ff00/00ff00 front-gdi=00ff00/00ff00 back=00ff00/00ff00 err=0x0000
+hint-huge-rect-blue-over-black front-gl=0000ff/0000ff front-gdi=0000ff/0000ff back=0000ff/0000ff err=0x0000
+hint-zero-plus-rect-yellow-over-black front-gl=ffff00/000000 front-gdi=ffff00/000000 back=ffff00/ffff00 err=0x0000
+hint-inside-begin err=0x0502
+hint-in-list err=0x0000
+hint-after-list-compile-magenta front-gl=ff00ff/ff00ff front-gdi=ff00ff/ff00ff back=ff00ff/ff00ff err=0x0000
+hint-swap-right-after-compiling-green-over-black front-gl=00ff00/00ff00 front-gdi=00ff00/00ff00 back=00ff00/00ff00 err=0x0000
+hint-swap-after-compile-and-execute-blue-over-black front-gl=0000ff/000000 front-gdi=0000ff/000000 back=0000ff/0000ff err=0x0000
+hint-after-list-call-cyan-over-black front-gl=00ffff/00ffff front-gdi=00ffff/00ffff back=00ffff/00ffff err=0x0000
+hint-refused-hint-white-over-black front-gl=ffffff/ffffff front-gdi=ffffff/ffffff back=ffffff/ffffff err=0x0000
+hint-across-makecurrent-red-over-black front-gl=ff0000/000000 front-gdi=ff0000/000000 back=ff0000/ff0000 err=0x0000
+hint-disjoint-rects-yellow-over-black front-gl=ffff00/000000/ffff00 front-gdi=ffff00/000000/ffff00 back=ffff00/ffff00/ffff00 err=0x0000
+hint-l-shape-green-over-black front-gl=000000/000000/000000 front-gdi=000000/000000/000000 back=00ff00/00ff00/00ff00 err=0x0000
+hint-second-window set=1 makecurrent=1
+hint-second-window-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-hint-on-dc2-swap-dc1-blue-over-black front-gl=0000ff/0000ff/0000ff front-gdi=0000ff/0000ff/0000ff back=0000ff/0000ff/0000ff err=0x0000
+hint-dc2-after-black-swap note=the-black-swap-above-consumed-or-ignored-the-hint
+hint-dc2-next-swap-cyan front-gl=00ffff/00ffff/00ffff front-gdi=00ffff/00ffff/00ffff back=00ffff/00ffff/00ffff err=0x0000
+hint-swap-dc2-with-hint-on-dc1-white-over-black front-gl=ffffff/ffffff/ffffff front-gdi=ffffff/ffffff/ffffff back=ffffff/ffffff/ffffff err=0x0000
+hint-then-swap-dc1-magenta-over-black front-gl=ff00ff/ff00ff/ff00ff front-gdi=ff00ff/ff00ff/ff00ff back=ff00ff/ff00ff/ff00ff err=0x0000
+hint-single setup pixelformat=2 set=1 flags=0x0000807c doublebuffer=0 makecurrent=1 hint-proc=1 same-proc=1
+hint-single-baseline-black gdi=000000/000000/000000 front-gl=000000/000000/000000 err=0x0000
+hint-single-add err=0x0000
+hint-single-hint-green-finish gdi=00ff00/00ff00/00ff00 front-gl=00ff00/00ff00/00ff00 err=0x0000
+hint-single-no-new-hint-blue-finish gdi=0000ff/0000ff/0000ff front-gl=0000ff/0000ff/0000ff err=0x0000
+hint-single-hint-red-flush gdi=ff0000/ff0000/ff0000 front-gl=ff0000/ff0000/ff0000 err=0x0000
+hint-single-no-new-hint-white-flush gdi=ffffff/ffffff/ffffff front-gl=ffffff/ffffff/ffffff err=0x0000
+hint-single-swapbuffers ret=1 lasterr=0 glerr=0x0000
+hint-single-after-swap-magenta-finish gdi=ff00ff/ff00ff/ff00ff front-gl=ff00ff/ff00ff/ff00ff err=0x0000
+hint-single-100000-adds err=0x0000
+hint-single-after-many-cyan-finish gdi=00ffff/00ffff/00ffff front-gl=00ffff/00ffff/00ffff err=0x0000
+hint-final-whole-yellow front-gl=ffff00/ffff00/ffff00 front-gdi=ffff00/ffff00/ffff00 back=ffff00/ffff00/ffff00 err=0x0000
+hint-e1-swap-other-window ret=1
+hint-e1-hint-swap-other-then-own-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-e2-hint-visit-other-window-green-over-black front-gl=00ff00/000000/000000 front-gdi=00ff00/000000/000000 back=00ff00/00ff00/00ff00 err=0x0000
+hint-e3-hint-rc-swap-under-rcB-blue-over-black front-gl=0000ff/000000/000000 front-gdi=0000ff/000000/000000 back=0000ff/0000ff/0000ff err=0x0000
+hint-e3 makecurrent-rcB=1
+hint-e4-hint-rc-visit-rcB-back-white-over-black front-gl=ffffff/ffffff/ffffff front-gdi=ffffff/ffffff/ffffff back=ffffff/ffffff/ffffff err=0x0000
+hint-e5-hint-swap-without-context-magenta-over-black front-gl=ff00ff/000000/000000 front-gdi=ff00ff/000000/000000 back=ff00ff/ff00ff/ff00ff err=0x0000
+hint-e6-hint-rcB-swap-under-rc-cyan-over-black front-gl=00ffff/000000/000000 front-gdi=00ffff/000000/000000 back=00ffff/00ffff/00ffff err=0x0000
+hint-drop-f1-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-drop-f2-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-drop-f3-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-drop-f4-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-drop-f5-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-drop-f6-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-drop-f7-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-drop-f8-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+hint-drop-f9-red-over-black front-gl=ff0000/000000/000000 front-gdi=ff0000/000000/000000 back=ff0000/ff0000/ff0000 err=0x0000
+done

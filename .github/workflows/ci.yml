@@ -1,0 +1,62 @@
+# Builds the engine, the full test suite and the manager app on Apple Silicon,
+# then runs every CTest test except the Windows-oracle comparisons (they need
+# an SSH-reachable Windows host) and the tests in .github/ci-quarantine.txt.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build and test (arm64)
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Ninja
+        run: brew install ninja
+
+      - name: Cache FetchContent sources
+        uses: actions/cache@v4
+        with:
+          path: build/_deps/*-src
+          key: deps-${{ runner.os }}-${{ hashFiles('CMakeLists.txt') }}
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_OSX_ARCHITECTURES=arm64
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Check engine architecture
+        run: test "$(lipo -archs build/src/vitreo)" = "arm64"
+
+      - name: Test
+        run: |
+          set -euo pipefail
+          # Anchored, escaped alternation of the quarantined test names.
+          quarantine=$(grep -v '^[[:space:]]*\(#\|$\)' .github/ci-quarantine.txt \
+            | sed 's/[][\.*^$+?(){}|]/\\&/g' | paste -sd'|' -)
+          exclude='[Oo]racle'
+          if [ -n "${quarantine}" ]; then
+            exclude="${exclude}|^(${quarantine})\$"
+          fi
+          ctest --test-dir build --output-on-failure \
+            -j "$(sysctl -n hw.ncpu)" --timeout 120 -E "${exclude}"
+
+      - name: Build manager app
+        run: VITREO_ENGINE="$PWD/build/src/vitreo" manager/build.sh release

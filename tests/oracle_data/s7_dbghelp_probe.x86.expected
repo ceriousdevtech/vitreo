@@ -1,0 +1,33 @@
+== options
+SymGetOptions (initial) -> 2 err=0
+SymSetOptions(0x12) -> 12 err=0
+SymGetOptions -> 12 err=0
+SymSetOptions(0x40000|0x2) -> 40002 err=0
+SymSetOptions(0) -> 40000 err=0
+== no session
+SymGetSymFromAddr64 -> 0 err=6
+SymGetModuleBase64 -> 0 err=6
+SymFunctionTableAccess64!=0 -> 0 err=6
+SymGetLineFromAddr64 -> 0 err=6
+SymLoadModule64(exe) -> 0 err=6
+== SymInitialize(TRUE)
+SymInitialize(p,NULL,TRUE) -> 1 err=0
+SymGetModuleBase64(pc)==exe -> 1 err=0
+SymFunctionTableAccess64!=0 -> 0 err=1e7
+SymLoadModule64(exe) (already) -> 0 err=0
+SymGetModuleBase64(kernel32 fn)==k32 -> 1 err=0
+SymCleanup -> 1 err=0
+SymCleanup again -> 0 err=6
+== SymInitialize(FALSE)
+SymInitialize(p,NULL,FALSE) -> 1 err=cb
+SymGetModuleBase64(pc) -> 0 err=0
+SymGetSymFromAddr64(pc) -> 0 err=7e
+SymLoadModule64(exe base)==exe -> 0 err=0
+SymLoadModule64(exe base) again -> 0 err=0
+SymGetModuleBase64(pc)==exe -> 0 err=0
+SymFunctionTableAccess64!=0 -> 0 err=1e7
+SymGetModuleBase64(0x10) -> 0 err=0
+SymInitialize again -> 1 err=6
+SymCleanup -> 1 err=0
+== MiniDumpWriteDump
+MiniDumpWriteDump(bad file) -> 0 err=80070006

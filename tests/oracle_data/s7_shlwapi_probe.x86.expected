@@ -1,0 +1,114 @@
+== PathCanonicalize
+W "C:\a\b\..\c" -> 1 err=dead "C:\a\c"
+W "C:\a\.\b" -> 1 err=dead "C:\a\b"
+W "C:\.." -> 1 err=dead "C:\"
+W "C:\a\..\..\b" -> 1 err=dead "C:\b"
+W "a\..\..\b" -> 1 err=dead "\b"
+W "..\x" -> 1 err=dead "x"
+W ".\x" -> 1 err=dead "x"
+W "" -> 1 err=dead "\"
+W "\" -> 1 err=dead "\"
+W "C:" -> 1 err=dead "C:\"
+W "C:\" -> 1 err=dead "C:\"
+W "C:\a\" -> 1 err=dead "C:\a\"
+W "C:\a\." -> 1 err=dead "C:\a"
+W "C:\a\.." -> 1 err=dead "C:\"
+W "C:/a/../b" -> 1 err=dead "C:/a/../b"
+W "C:\a\\b" -> 1 err=dead "C:\a\\b"
+W "\\srv\sh\.." -> 1 err=dead "\\srv"
+W "\\srv\sh\a\..\b" -> 1 err=dead "\\srv\sh\b"
+W "C:\a...\b" -> 1 err=dead "C:\a...\b"
+W "C:\a\...\b" -> 1 err=dead "C:\a\...\b"
+W "x:\y\z." -> 1 err=dead "x:\y\z"
+W "C:\a\b.\c" -> 1 err=dead "C:\a\b.\c"
+W "." -> 1 err=dead "\"
+W ".." -> 1 err=dead "\"
+W "a\b\." -> 1 err=dead "a\b"
+W "\..\a" -> 1 err=dead "\a"
+W "C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -> 0 err=ce ""
+W "C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -> 1 err=dead "C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+W "C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -> 0 err=ce ""
+W NULL src -> 0 err=57
+A "C:\a\b\..\c" -> 1 err=36b7 "C:\a\c"
+A "C:\.." -> 1 err=dead "C:\"
+A "a\..\..\b" -> 1 err=dead "\b"
+A "" -> 1 err=dead "\"
+A "C:/a/../b" -> 1 err=dead "C:/a/../b"
+A "\\srv\sh\.." -> 1 err=dead "\\srv"
+A "C:\café\..\x" -> 1 err=dead "C:\x"
+A NULL src -> 0 err=57
+A "C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" -> 0 err=ce ""
+== PathAppend
+Append "C:\a" + "b" -> 1 err=dead "C:\a\b"
+Append "C:\a\" + "b" -> 1 err=dead "C:\a\b"
+Append "C:\a" + "\b" -> 1 err=dead "C:\a\b"
+Append "..\p1\p2" + "p3" -> 1 err=dead "p1\p2\p3"
+Append "C:\a" + "..\b" -> 1 err=dead "C:\b"
+Append "C:\a" + "\\srv\sh" -> 1 err=dead "\\srv\sh"
+Append "C:\a" + "" -> 1 err=dead "C:\a"
+Append "" + "b" -> 1 err=dead "b"
+Append "C:\a" + "C:\z" -> 1 err=dead "C:\z"
+Append "C:\a" + "b/c" -> 1 err=dead "C:\a\b/c"
+Append overflow -> 0 err=dead len=0
+AppendA C:\a + ..\b -> 1 "C:\b"
+== PathMatchSpec
+Match "a.txt" "*.txt" -> 1
+Match "a.txt" "*.doc;*.txt" -> 1
+Match "a.txt" " *.txt" -> 1
+Match "a.txt" "*.doc; *.txt" -> 1
+Match "abc" "*.*" -> 1
+Match "abc" "*" -> 1
+Match "a.TXT" "*.txt" -> 1
+Match "C:\d\a.txt" "*.txt" -> 1
+Match "a.txt" "a?txt" -> 1
+Match "a.txt" "?.txt" -> 1
+Match "" "*" -> 1
+Match "a.txt" "" -> 1
+Match "a.b.c" "*.c" -> 1
+Match "a" "a;" -> 1
+Match "a.txt" ";*.txt" -> 1
+== PathFindExtension / FileName / RemoveExtension
+Ext "C:\d\a.txt" -> off 6
+FileName "C:\d\a.txt" -> off 5
+RemoveExt "C:\d\a.txt" -> "C:\d\a"
+Ext "C:\d.x\a" -> off 8
+FileName "C:\d.x\a" -> off 7
+RemoveExt "C:\d.x\a" -> "C:\d.x\a"
+Ext "a b.t xt" -> off 8
+FileName "a b.t xt" -> off 0
+RemoveExt "a b.t xt" -> "a b.t xt"
+Ext "a.b c" -> off 5
+FileName "a.b c" -> off 0
+RemoveExt "a.b c" -> "a.b c"
+Ext "C:\dir\" -> off 7
+FileName "C:\dir\" -> off 3
+RemoveExt "C:\dir\" -> "C:\dir\"
+Ext "C:foo.bar" -> off 5
+FileName "C:foo.bar" -> off 2
+RemoveExt "C:foo.bar" -> "C:foo"
+Ext "a/b.c" -> off 3
+FileName "a/b.c" -> off 2
+RemoveExt "a/b.c" -> "a/b"
+Ext "a.b/c" -> off 1
+FileName "a.b/c" -> off 4
+RemoveExt "a.b/c" -> "a"
+Ext ".hidden" -> off 0
+FileName ".hidden" -> off 0
+RemoveExt ".hidden" -> ""
+Ext "a." -> off 1
+FileName "a." -> off 0
+RemoveExt "a." -> "a"
+Ext "" -> off 0
+FileName "" -> off 0
+RemoveExt "" -> ""
+Ext "C:\" -> off 3
+FileName "C:\" -> off 0
+RemoveExt "C:\" -> "C:\"
+== PathFileExists / IsOS
+PathFileExistsW(missing dir) -> 0 err=3
+PathFileExistsW(missing file) -> 0 err=2
+PathFileExistsW(C:\Windows) -> 1 err=dead
+IsOS(OS_WOW6432) -> 1
+IsOS(OS_NT) -> 1
+IsOS(OS_WIN2000ORGREATER) -> 1
+IsOS(OS_ANYSERVER) -> 0

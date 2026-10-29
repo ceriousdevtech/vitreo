@@ -1,0 +1,11 @@
+buffer hr=0x00000000
+first= 0 num= 7: uav hr=0x00000000 srv hr=0x00000000
+first= 0 num= 8: uav hr=0x00000000 srv hr=0x00000000
+first= 3 num= 8: uav hr=0x80070057 srv hr=0x80070057
+first= 4 num= 7: uav hr=0x00000000 srv hr=0x00000000
+first= 4 num= 8: uav hr=0x00000000 srv hr=0x00000000
+first= 1 num= 4: uav hr=0x80070057 srv hr=0x80070057
+first= 2 num= 4: uav hr=0x80070057 srv hr=0x80070057
+first= 0 num=64: uav hr=0x00000000 srv hr=0x00000000
+first=60 num= 4: uav hr=0x00000000 srv hr=0x00000000
+first=61 num= 3: uav hr=0x80070057 srv hr=0x80070057

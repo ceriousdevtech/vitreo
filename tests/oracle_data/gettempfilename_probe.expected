@@ -1,0 +1,127 @@
+ptr=64 acp=1252
+dircollision skips_dirs=1
+W wrap_free0and1       ret=TIME le=0 out=<D>\zz\zz<u>.tmp file=1
+genfail wrap_free0only     ret=0x0 le=80 buffer_is_tick_plus_n-1=1
+zz0_exists=0
+counter first              n=4 tick_plus_n=1
+counter after5nonzero      n=5 tick_plus_n=1
+counter after5missingdir   n=6 tick_plus_n=1
+counter after5overflow     n=7 tick_plus_n=1
+counter after5u10000       n=13 tick_plus_n=1
+counter after5A            n=19 tick_plus_n=1
+deny_dir_created=1
+counter after3denied       n=23 tick_plus_n=1
+collision skip200 lands_after_run=1
+counter after_collision    n=26 tick_plus_n=1
+genfail deny_u0            ret=0x0 le=5 buffer_is_tick_plus_n+0=1
+A deny_u0              ret=0x0 le=5 out=untouched
+W deny_u12             ret=0x12 le=57005 out=<D>\deny\abc12.tmp file=0
+W u=1                  ret=0x1 le=57005 out=<D>\abc1.tmp file=0
+A u=1                  ret=0x1 le=57005 out=<D>\abc1.tmp file=0
+W u=A                  ret=0xA le=57005 out=<D>\abcA.tmp file=0
+A u=A                  ret=0xA le=57005 out=<D>\abcA.tmp file=0
+W u=AB                 ret=0xAB le=57005 out=<D>\abcAB.tmp file=0
+A u=AB                 ret=0xAB le=57005 out=<D>\abcAB.tmp file=0
+W u=1A2B               ret=0x1A2B le=57005 out=<D>\abc1A2B.tmp file=0
+A u=1A2B               ret=0x1A2B le=57005 out=<D>\abc1A2B.tmp file=0
+W u=FFFF               ret=0xFFFF le=57005 out=<D>\abcFFFF.tmp file=0
+A u=FFFF               ret=0xFFFF le=57005 out=<D>\abcFFFF.tmp file=0
+W u=10000              ret=TIME le=0 out=<D>\abc<u>.tmp file=1
+A u=10000              ret=TIME le=0 out=<D>\abc<u>.tmp file=1
+W u=10001              ret=0x1 le=57005 out=<D>\abc1.tmp file=0
+A u=10001              ret=0x1 le=57005 out=<D>\abc1.tmp file=0
+W u=12345              ret=0x2345 le=57005 out=<D>\abc2345.tmp file=0
+A u=12345              ret=0x2345 le=57005 out=<D>\abc2345.tmp file=0
+W u=ABCDE              ret=0xBCDE le=57005 out=<D>\abcBCDE.tmp file=0
+A u=ABCDE              ret=0xBCDE le=57005 out=<D>\abcBCDE.tmp file=0
+W u=FFFFFFFF           ret=0xFFFF le=57005 out=<D>\abcFFFF.tmp file=0
+A u=FFFFFFFF           ret=0xFFFF le=57005 out=<D>\abcFFFF.tmp file=0
+W pre=abcdef           ret=0x12 le=57005 out=<D>\abc12.tmp file=0
+A pre=abcdef           ret=0x12 le=57005 out=<D>\abc12.tmp file=0
+W pre=empty            ret=0x12 le=57005 out=<D>\12.tmp file=0
+A pre=empty            ret=0x12 le=57005 out=<D>\12.tmp file=0
+W pre=NULL             ret=0x12 le=57005 out=<D>\12.tmp file=0
+A pre=NULL             ret=0x12 le=57005 out=<D>\12.tmp file=0
+W pre=ab               ret=0x12 le=57005 out=<D>\ab12.tmp file=0
+W pre=ABC              ret=0x12 le=57005 out=<D>\ABC12.tmp file=0
+W pre=nonascii         ret=0x12 le=57005 out=<D>\\u00E9\u4E2D\u010112.tmp file=0
+A pre=nonascii         ret=0x12 le=57005 out=<D>\\xE9\xE8z12.tmp file=0
+W pre=nonascii_u0      ret=TIME le=0 out=<D>\\u00E9\u4E2D<u>.tmp file=1
+A pre=nonascii_u0      ret=TIME le=0 out=<D>\\xE9<u>.tmp file=1
+W pre=a\b              ret=0x12 le=57005 out=<D>\a\b12.tmp file=0
+W pre=a\b_u0           ret=0x0 le=3 out=<D>\a\b<h>.tmp
+W pre=u0               ret=TIME le=0 out=<D>\abc<u>.tmp file=1
+A pre=u0               ret=TIME le=0 out=<D>\abc<u>.tmp file=1
+W path=noslash         ret=0x12 le=57005 out=<D>\abc12.tmp file=0
+A path=noslash         ret=0x12 le=57005 out=<D>\abc12.tmp file=0
+W path=fwdslash        ret=0x12 le=57005 out=<CWD>/\abc12.tmp file=0
+W path=dblslash        ret=0x12 le=57005 out=<D>\\abc12.tmp file=0
+W path=dot             ret=0x12 le=57005 out=.\abc12.tmp file=0
+A path=dot             ret=0x12 le=57005 out=.\abc12.tmp file=0
+W path=dotslash        ret=0x12 le=57005 out=.\abc12.tmp file=0
+W path=dot_u0          ret=TIME le=0 out=.\abc<u>.tmp file=1
+A path=dot_u0          ret=TIME le=0 out=.\abc<u>.tmp file=1
+W path=dotdot          ret=0x12 le=57005 out=..\abc12.tmp file=0
+W path=sub             ret=0x12 le=57005 out=sub\abc12.tmp file=0
+W path=sub_u0          ret=TIME le=0 out=sub\abc<u>.tmp file=1
+W path=empty           ret=0x12 le=3 out=\abc12.tmp file=0
+A path=empty           ret=0x12 le=3 out=\abc12.tmp file=0
+W path=empty_u0        ret=TIME le=0 out=\abc<u>.tmp file=1
+A path=empty_u0        ret=TIME le=0 out=\abc<u>.tmp file=1
+W path=NULL            ret=0x12 le=3 out=\abc12.tmp file=0
+A path=NULL            ret=0x12 le=3 out=\abc12.tmp file=0
+W path=NULL_u0         ret=TIME le=0 out=\abc<u>.tmp file=1
+W path=bs              ret=0x12 le=3 out=\abc12.tmp file=0
+W path=bsbs            ret=0x12 le=57005 out=\\abc12.tmp file=0
+W path=C:              ret=0x12 le=57005 out=C:\abc12.tmp file=0
+W path=C:\             ret=0x12 le=57005 out=C:\abc12.tmp file=0
+W path=C:\Windows\.    ret=0x12 le=57005 out=C:\Windows\.\abc12.tmp file=0
+W path=C:\Win\..\Win   ret=0x12 le=57005 out=C:\Windows\..\Windows\abc12.tmp file=0
+W path=NUL             ret=0x0 le=267 out=NUL
+W path=missing         ret=0x0 le=267 out=<D>\missing
+W path=missing_u0      ret=0x0 le=267 out=<D>\missing
+A path=missing_u0      ret=0x0 le=267 out=untouched
+W path=missing\        ret=0x0 le=267 out=<D>\missing
+W path=missing/        ret=0x0 le=267 out=<D>\missing/
+W path=missing2_u0     ret=0x0 le=267 out=<D>\missing\deeper
+W path=isfile          ret=0x0 le=267 out=<D>\afile
+W path=isfile_u0       ret=0x0 le=267 out=<D>\afile
+W path=C:\a<b          ret=0x0 le=267 out=C:\a<b
+W len=246 pre=0        ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+W len=247 pre=0        ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+W len=248 pre=0        ret=0x0 le=111 out=untouched
+W len=249 pre=0        ret=0x0 le=111 out=untouched
+W len=246 pre=3        ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+W len=247 pre=3        ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+W len=248 pre=3        ret=0x0 le=111 out=untouched
+W len=249 pre=3        ret=0x0 le=111 out=untouched
+W len=246 pre=6        ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+W len=247 pre=6        ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+W len=248 pre=6        ret=0x0 le=111 out=untouched
+W len=249 pre=6        ret=0x0 le=111 out=untouched
+A len=246              ret=0x0 le=267 out=untouched
+W len=246+bs           ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+A len=246+bs           ret=0x0 le=267 out=untouched
+W len=246+bsbs         ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\
+W len=246_u0           ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+A len=247              ret=0x0 le=267 out=untouched
+W len=247+bs           ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+A len=247+bs           ret=0x0 le=267 out=untouched
+W len=247+bsbs         ret=0x0 le=111 out=untouched
+W len=247_u0           ret=0x0 le=267 out=C:\xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+A len=248              ret=0x0 le=111 out=untouched
+W len=248+bs           ret=0x0 le=111 out=untouched
+A len=248+bs           ret=0x0 le=111 out=untouched
+W len=248+bsbs         ret=0x0 le=111 out=untouched
+W len=248_u0           ret=0x0 le=111 out=untouched
+A len=249              ret=0x0 le=111 out=untouched
+W len=249+bs           ret=0x0 le=111 out=untouched
+A len=249+bs           ret=0x0 le=111 out=untouched
+W len=249+bsbs         ret=0x0 le=111 out=untouched
+W len=249_u0           ret=0x0 le=111 out=untouched
+W len=300              ret=0x0 le=111 out=untouched
+dir247_created=1
+W dir247_u0 ok=1 le=0 outlen_minus_hexdigits=255
+W dir247_u1A2B ret=0x1A2B le=57005 outlen=259
+W exists_u12           ret=0x12 le=57005 out=<D>\exi12.tmp file=1
+  size_after=5

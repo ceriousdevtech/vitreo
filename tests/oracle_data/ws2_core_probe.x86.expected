@@ -1,0 +1,216 @@
+pre_socket: INVALID raw=0xffffffff err=10093
+pre_gethostname: rc=-1 err=10093
+pre_getaddrinfo: rc=10093 wsaerr=10093
+pre_WSACleanup: rc=-1 err=10093
+pre_select: rc=-1 err=10093
+pre_closesocket: rc=-1 err=10093
+pre_inet_pton: rc=1 addr=0x4030201
+pre_inet_addr: v=0x4030201 err=57005
+pre_getprotobyname: null=1 err=10093
+pre_gethostbyname: null=1 err=10093
+pre_WSACreateEvent: null=0 err=0
+pre_getnameinfo: rc=10093 wsaerr=10093
+pre_FDIsSet: v=1
+pre_WSAGetLastError: v=57005
+WSAStartup: req=0x0 rc=10092 wVersion=0x202 wHighVersion=0x202 iMaxSockets=0 iMaxUdpDg=0 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x1 rc=0 wVersion=0x1 wHighVersion=0x202 iMaxSockets=32767 iMaxUdpDg=65467 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x100 rc=10092 wVersion=0x202 wHighVersion=0x202 iMaxSockets=0 iMaxUdpDg=0 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x101 rc=0 wVersion=0x101 wHighVersion=0x202 iMaxSockets=32767 iMaxUdpDg=65467 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x102 rc=0 wVersion=0x102 wHighVersion=0x202 iMaxSockets=0 iMaxUdpDg=0 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x201 rc=0 wVersion=0x101 wHighVersion=0x202 iMaxSockets=32767 iMaxUdpDg=65467 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x202 rc=0 wVersion=0x202 wHighVersion=0x202 iMaxSockets=0 iMaxUdpDg=0 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x203 rc=0 wVersion=0x202 wHighVersion=0x202 iMaxSockets=0 iMaxUdpDg=0 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x302 rc=0 wVersion=0x202 wHighVersion=0x202 iMaxSockets=0 iMaxUdpDg=0 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0x303 rc=0 wVersion=0x202 wHighVersion=0x202 iMaxSockets=0 iMaxUdpDg=0 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup: req=0xffff rc=0 wVersion=0x202 wHighVersion=0x202 iMaxSockets=0 iMaxUdpDg=0 vendor_null=0 desc="WinSock 2.0" status="Running" desc_tail=204
+WSAStartup_null_data: rc=10014
+cleanup_after_null: rc=-1 err=10093
+rc_start1: rc=0
+rc_start2: rc=0
+rc_clean1: rc=0
+rc_socket_after_clean1: valid
+rc_clean2: rc=0
+rc_socket_after_clean2: INVALID raw=0xffffffff err=10093
+rc_clean3: rc=-1 err=10093
+stale_send: rc=-1 err=10093
+stale_closesocket: rc=-1 err=10093
+stale_closesocket_after_restart: rc=-1 err=10038
+SetLastError_then_WSAGetLastError: v=1234
+WSASetLastError_then_GetLastError: v=4321
+socket_af999: INVALID raw=0xffffffff err=10047
+socket_type99: INVALID raw=0xffffffff err=10044
+socket_stream_udp: INVALID raw=0xffffffff err=10043
+socket_dgram_tcp: INVALID raw=0xffffffff err=10043
+socket_af_ipx: INVALID raw=0xffffffff err=10047
+socket_af_unspec_stream: INVALID raw=0xffffffff err=10022
+socket_af_unspec_stream_tcp: valid
+socket_af_unix: valid
+socket_af_unix_dgram: INVALID raw=0xffffffff err=10047
+socket_inet6_stream: valid
+inet6_v6only_default: rc=0 v=1 len=4
+inet6_udp_v6only_default: rc=0 v=56833 len=1
+WSASocketW_all_minus1: INVALID raw=0xffffffff err=10044
+WSASocketW_bad_flags: INVALID raw=0xffffffff err=10041
+WSASocketW_no_inherit: valid
+WSASocketW_group1: valid
+WSASocketW_multipoint_tcp: INVALID raw=0xffffffff err=10041
+WSASocketW_access_sys_sec: valid
+SO_PROTOCOL_INFOW: rc=0 len=628 sf1=0x20066 sf2=0x0 sf3=0x0 sf4=0x0 pflags=0x8 chainlen=1 ver=2 af=2 maxsa=16 minsa=16 type=1 proto=6 maxoff=0 nbo=0 sec=0 msg=0x0 resv=0x0 name="MSAFD Tcpip [TCP/IP]"
+WSASocketW_from_info: valid
+WSASocketW_from_info_type: v=1
+WSASocketW_mixed_info: valid
+SO_PROTOCOL_INFOA: rc=0 len=372 af=2 name="MSAFD Tcpip [TCP/IP]"
+SO_PROTOCOL_INFOW_short: rc=-1 err=10014
+SO_PROTOCOL_INFOW_short_len: len=10
+SO_PROTOCOL_INFOW_udp: rc=0 sf1=0x20609 pflags=0x8 type=2 proto=17 msg=0xfff7 name="MSAFD Tcpip [UDP/IP]"
+SO_PROTOCOL_INFOW_tcp6: rc=0 af=23 maxsa=28 minsa=28 name="MSAFD Tcpip [TCP/IPv6]"
+WSADuplicateSocketW_self: rc=0
+WSASocketW_dup: valid
+dup_send_recv: sent=3 got=3 data="dup"
+WSADuplicateSocketW_badpid: rc=-1 err=10022
+WSADuplicateSocketW_null: rc=-1 err=10014
+accept_wouldblock: INVALID raw=0xffffffff err=10035
+accept_short_addrlen: INVALID raw=0xffffffff err=10014
+accept_short_addrlen_out: len=4 fam=0xffffffffffffcccc
+accept_after_short: valid
+accept_after_short_out: len=16 fam=2
+accept_null_addr: valid
+accept_null_addr_len: len=16
+accept_null_len: valid
+accept_zero_len: INVALID raw=0xffffffff err=10014
+listener_event: wait=0
+listener_enum: ev=0x8
+accept_assoc: valid
+accepted_fionbio0: rc=-1 err=10022
+accepted_recv_nb: rc=-1 err=10035
+accepted_event: wait=0
+accepted_enum: ev=0x1 read_err=0
+accepted_sndbuf_from_zero_listener: v=0
+accept_not_listening: INVALID raw=0xffffffff err=10022
+accept_udp: INVALID raw=0xffffffff err=10045
+connect_blocking_ok: rc=0
+connect_again_isconn: rc=-1 err=10056
+connect_nb_ok: rc=-1 err=10035
+connect_nb_again: rc=-1 err=10056
+connect_nb_ok_select: rc=1 w=1 x=0
+connect_nb_after_complete: rc=-1 err=10056
+connect_nb_refused: rc=-1 err=10035
+connect_nb_refused_select: rc=1 w=0 x=1
+refused_SO_ERROR: rc=0 v=10061 len=4 wsaerr_after=0
+refused_SO_ERROR_again: rc=0 v=10061
+connect_nb_refused_select_again: rc=1 w=0 x=1
+connect_nb_refused_send: rc=-1 err=10057
+connect_blocking_refused: rc=-1 err=10061
+connect_tcp_any_addr: rc=-1 err=10049
+connect_short_namelen: rc=-1 err=10014
+connect_bad_family: rc=-1 err=10047
+connect_port_zero: rc=-1 err=10049
+connect_on_listener: rc=-1 err=10022
+udp_connect: rc=0
+udp_getpeername: rc=0
+udp_connect_zero: rc=0
+udp_getpeername_after_zero: rc=-1 err=10057
+udp_send_after_zero: rc=-1 err=10057
+udp_connect_any_port: rc=-1 err=10049
+udp_peer_after_any_port: rc=-1 err=10057
+udp_connect_unspec: rc=-1 err=10047
+udp_recv_trunc: rc=-1 err=10040
+udp_recv_trunc_buf: b="ABCDEFGHIJ" b10=0
+udp_recv_next: rc=6
+udp_recv_next_buf: b="second"
+recvfrom_short_fromlen: rc=-1 err=10014
+recvfrom_short_fromlen_out: fl=8 fam=0xffffffffffffcccc b=""
+recvfrom_after_short: rc=7
+recvfrom_after_short_out: b="fromlen" fl=16
+recvfrom_trunc: rc=-1 err=10040
+recvfrom_trunc_out: fl=16 fam=2 b="ABCDEFGHIJ"
+recvfrom_null_from: rc=-1 err=10014
+recvfrom_null_from_fl: fl=16
+udp_recv_len0: rc=-1 err=10040
+udp_recv_after_len0: rc=4
+udp_recv_waitall_nb: rc=-1 err=10045
+udp_shutdown_rd: rc=0
+udp_recv_after_shutdown: rc=-1 err=10058
+tcp_shutdown_rd: rc=0
+tcp_recv_after_shutdown_nodata: rc=-1 err=10058
+tcp_recv_after_shutdown_data: rc=-1 err=10053
+tcp_peer_send_after_reset: rc=-1 err=10054
+tcp_peer_recv_after_reset: rc=-1 err=10054
+tcp_recv_waitall_nb: rc=-1 err=10045
+tcp_recv_flag_0x100: rc=-1 err=10045
+tcp_recv_flag_partial: rc=-1 err=10035
+tcp_recv_flag_0x10000: rc=-1 err=10045
+tcp_recv_len_neg: rc=-1 err=10014
+tcp_recv_null_buf: rc=-1 err=10053
+tcp_recv_after_null_buf: rc=-1 err=10053
+tcp_recv_after_null_buf_data: b=""
+tcp_recv_bad_ptr: rc=-1 err=10053
+tcp_recv_unconnected: rc=-1 err=10057
+send_len0: rc=0
+send_flag_0x100: rc=-1 err=10045
+send_flag_partial: rc=1
+send_flag_dontroute: rc=1
+send_flag_waitall: rc=-1 err=10045
+shutdown_send: rc=0
+send_after_shutdown_send: rc=-1 err=10058
+sendto_after_shutdown_send: rc=-1 err=10058
+shutdown_send_again: rc=0
+shutdown_bad_how: rc=-1 err=10022
+send_unconnected: rc=-1 err=10057
+shutdown_unconnected: rc=-1 err=10057
+udp_send_unconnected: rc=-1 err=10057
+udp_shutdown_unconnected: rc=0
+tcp_sendto_other_addr: rc=5
+tcp_sendto_peer_recv: rc=5
+tcp_sendto_peer_data: b="tcpto"
+tcp_sendto_short_tolen: rc=1
+udp_connected_sendto_other: rc=3
+udp_connected_sendto_other_d: rc=3
+udp_connected_sendto_other_d_data: b="tod"
+udp_connected_sendto_other_b: rc=-1 err=10035
+udp_sendto_short_tolen: rc=-1 err=10014
+udp_sendto_bad_family: rc=-1 err=10047
+udp_sendto_any_addr: rc=-1 err=10049
+udp_sendto_port0: rc=1
+udp_sendto_null: rc=-1 err=10057
+udp_sendto_null_len16: rc=-1 err=10057
+udp4_sendto_v6_addr: rc=-1 err=10047
+udp_sendto_oversize: rc=-1 err=10040
+udp_sendto_bad_ptr: rc=-1 err=10014
+select_all_null: rc=-1 err=10022
+select_all_null_notv: rc=-1 err=10022
+select_all_empty: rc=-1 err=10022
+select_closed_socket: rc=-1 err=10038
+select_bogus_handle: rc=-1 err=10038
+select_mixed_bogus: rc=-1 err=10038
+select_mixed_bogus_count: n=2
+select_usec_2e6: rc=0
+select_negative_sec: rc=0
+select_negative_usec: rc=0
+select_listener_pending: rc=1
+select_index100: rc=1
+select_index100_isset: v=1 count=1
+getsockname_unbound: rc=-1 err=10022
+getsockname_unbound_len: len=16
+getsockname_bound_any: rc=0
+getsockname_bound_any_out: len=16 addr=0x0 port_nonzero=1
+listen_bound_any: rc=0
+listen_unbound: rc=-1 err=10022
+listen_udp: rc=-1 err=10045
+listen_connected: rc=-1 err=10056
+getsockname_short: rc=-1 err=10014
+getsockname_short_len: len=4
+getsockname_null_name: rc=-1 err=10014
+getsockname_null_len: rc=-1 err=10014
+getpeername_short: rc=-1 err=10014
+getpeername_short_len: len=4
+getpeername_null_name: rc=-1 err=10014
+getpeername_big_len: rc=0
+getpeername_big_len_out: len=16
+getpeername_unconnected: rc=-1 err=10057
+listen_somaxconn_hint: rc=0
+listen_twice: rc=0
+getsockname6_short16: rc=-1 err=10014
+getsockname6_short16_len: len=16
+closesocket_twice_first: rc=-1 err=10038
+done

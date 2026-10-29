@@ -1,0 +1,195 @@
+bits: ptr=32 cmsghdr=12 cmsg_space_int=16 cmsg_len_int=16 wsamsg=28
+ext_sendmsg: rc=0 bytes=4 nonnull=1
+ext_recvmsg: rc=0 bytes=4 nonnull=1
+export_WSASendMsg: present=1
+export_WSARecvMsg: present=0
+ext_recvmsg_tcp: rc=0 nonnull=1
+v4_send_plain: sent=10
+v4_recv_plain_noctl: rc=0 got=10 flags=0x0 namelen=16 fam=2 ctl_len=0
+v4_send_plain2: sent=10
+v4_recv_plain_ctl: rc=0 got=10 flags=0x0 namelen=16 fam=2 cmsgs=[] ctl_len=0
+v4_set_IP_RECVTOS: rc=0
+v4_send_ecn1: sent=10
+v4_recv_tos_ecn1: rc=0 got=10 flags=0x0 namelen=16 fam=2 cmsgs=[{off=0,len=16,lvl=0,type=3,dataoff=12,data=01000000}] ctl_len=16
+v4_send_ecn2: sent=10
+v4_recv_tos_ecn2: rc=0 got=10 flags=0x0 namelen=16 fam=2 cmsgs=[{off=0,len=16,lvl=0,type=3,dataoff=12,data=02000000}] ctl_len=16
+v4_send_ecn0: sent=10
+v4_recv_tos_ecn0: rc=0 got=10 flags=0x0 namelen=16 fam=2 cmsgs=[{off=0,len=16,lvl=0,type=3,dataoff=12,data=00000000}] ctl_len=16
+v4_send_ecn1b: sent=10
+v4_recv_ctl_small: rc=-1 err=10040 got=10 flags=0x200 namelen=16 fam=2 ctl_len=16 ctl_bytes=abababababababababababab
+v4_send_trunc: sent=10
+v4_recv_trunc: rc=-1 err=10040 got=4 flags=0x100 namelen=16 fam=2 cmsgs=[{off=0,len=16,lvl=0,type=3,dataoff=12,data=01000000}] ctl_len=16
+v4_recv_empty: rc=-1 err=10035 got=65535 flags=0x0 namelen=128 fam=0 ctl_len=128
+v4_set_IP_RECVECN: rc=0
+v4_send_ecn1c: sent=10
+v4_recv_tos_recvecn: rc=0 got=10 flags=0x0 namelen=16 fam=2 cmsgs=[{off=0,len=16,lvl=0,type=50,dataoff=12,data=01000000}{off=16,len=16,lvl=0,type=3,dataoff=12,data=01000000}] ctl_len=32
+v4_clr_IP_RECVTOS: rc=0
+v4_clr_IP_RECVECN: rc=0
+v4_set_IP_PKTINFO: rc=0
+v4_send_pk: sent=10
+v4_recv_pktinfo: rc=0 got=10 ctl_len=20 lvl=0 type=19 len=20 addr=0x7f000001 ifindex_nonzero=1
+v4_clr_IP_PKTINFO: rc=0
+v4_send_tos_cmsg: sent=10
+v4_send_ecn_bad: err=10022
+v4_send_ipv6ecn_on_v4: err=10022
+v4_send_unknown_cmsg: err=10022
+v4_send_flag_oob: sent=10
+v4_send_flag_dontroute: sent=10
+v4_send_flag_partial: sent=10
+v4_send_flag_bogus: err=10045
+v4_send_noname_unconnected: err=10022
+v4_send_shortname: err=10014
+v4_drained: count=4
+v4_send_null_msg: rc=-1 err=10014
+v4_send_null_count: rc=-1 err=10014
+v4_send_null_count_arrived: n=4
+v4_recv_null_msg: rc=-1 err=10014
+v4_send_connected_noname: sent=10
+v4_recv_connected: rc=0 got=10 flags=0x0 namelen=16 fam=2 ctl_len=0
+send_bad_socket: err=10038
+send_tcp: err=10022
+recv_tcp: rc=-1 err=10022
+v6_bind_dual: rc=0
+v6_set_IPV6_RECVTCLASS: rc=0
+v6_set_IP_RECVTOS: rc=0
+v6_send_ecn1: sent=10
+v6_recv_tclass_ecn1: rc=0 got=10 flags=0x0 namelen=28 fam=23 cmsgs=[{off=0,len=16,lvl=41,type=39,dataoff=12,data=01000000}] ctl_len=16
+v6_send_ecn2: sent=10
+v6_recv_tclass_ecn2: rc=0 got=10 flags=0x0 namelen=28 fam=23 cmsgs=[{off=0,len=16,lvl=41,type=39,dataoff=12,data=02000000}] ctl_len=16
+v6_send_ipecn_on_v6: err=10022
+v6_recv_after_ipecn: rc=-1 err=10035 got=65535 flags=0x0 namelen=128 fam=0 ctl_len=128
+v4to6_send_ecn1: sent=10
+v4to6_recv: rc=0 got=10 flags=0x0 namelen=28 fam=23 cmsgs=[{off=0,len=16,lvl=0,type=3,dataoff=12,data=01000000}] ctl_len=16
+v6mapped_send_ipv6ecn: err=10022
+v6mapped_recv_v4: rc=-1 err=10035 got=65535 flags=0x0 namelen=128 fam=0 ctl_len=128
+v6mapped_send_ipecn: sent=10
+v6mapped_recv_v4_b: rc=0 got=10 flags=0x0 namelen=16 fam=2 cmsgs=[{off=0,len=16,lvl=0,type=3,dataoff=12,data=01000000}] ctl_len=16
+peek_send: sent=10
+peek_recv: rc=0 got=10 flags=0x0 ctl_len=16
+peek_then_recv: rc=0 got=10 flags=0x0 namelen=16 fam=2 cmsgs=[{off=0,len=16,lvl=0,type=3,dataoff=12,data=01000000}] ctl_len=16
+ov_recv_post: rc=-1 err=997 got=65535
+ov_send: sent=10
+ov_recv_done: wait=0 ok=1 xfer=10 flags=0x0 internal=0x0 internalhigh=10 namelen=16 fam=2 msgflags=0x0 cmsgs=[{off=0,len=16,lvl=0,type=3,dataoff=12,data=02000000}] ctl_len=16
+ro4_set_IP_HOPLIMIT: rc=0
+ro4_recv_IP_HOPLIMIT: rc=0 fam=2 ctl_len=16 [{0/4 len=16 d=80000000}]
+ro4_set_IP_RECVIF: rc=0
+ro4_recv_IP_RECVIF: rc=0 fam=2 ctl_len=16 [{0/24 len=16 d=01000000}]
+ro4_set_IP_RECVDSTADDR: rc=0
+ro4_recv_IP_RECVDSTADDR: rc=0 fam=2 ctl_len=16 [{0/25 len=16 d=7f000001}]
+ro4_set_IP_ORIGINAL_ARRIVAL_IF: rc=0
+ro4_recv_IP_ORIGINAL_ARRIVAL_IF: rc=0 fam=2 ctl_len=16 [{0/47 len=16 d=01000000}]
+ro4_set_IP_PKTINFO_EX: rc=0
+ro4_recv_IP_PKTINFO_EX: rc=0 fam=2 ctl_len=24 [{0/51 len=24 d=7f0000010100000000000000}]
+ro4_set_IP_RECVTCLASS: rc=0
+ro4_recv_IP_RECVTCLASS: rc=0 fam=2 ctl_len=16 [{0/3 len=16 d=00000000 v=0}]
+so_set_IP_RECVTOS: rc=0
+so_send_tos_cmsg_4: sent=10
+so_recv_after_tos_cmsg: rc=0 fam=2 ctl_len=16 [{0/3 len=16 d=04000000 v=4}]
+so_set_IP_TOS_8: rc=0
+so_send_after_IP_TOS: sent=10
+so_recv_after_IP_TOS: rc=0 fam=2 ctl_len=16 [{0/3 len=16 d=08000000 v=8}]
+so_send_ecn1_after_IP_TOS: sent=10
+so_recv_ecn1_after_IP_TOS: rc=0 fam=2 ctl_len=16 [{0/3 len=16 d=09000000 v=9}]
+so_send_pktinfo: rc=0
+so_recv_after_pktinfo: rc=0 fam=2 ctl_len=16 [{0/3 len=16 d=08000000 v=8}]
+ro6_set_IPV6_RECVTCLASS: rc=0
+ro6_IPV6_RECVTCLASS_from6: rc=0 fam=23 ctl_len=16 [{41/39 len=16 d=01000000 v=1}]
+ro6_IPV6_RECVTCLASS_from4: rc=0 fam=23 ctl_len=0 []
+ro6_set_IPV6_RECVECN: rc=0
+ro6_set_IPV6_RECVTCLASS: rc=0
+ro6_IPV6_RECVECN_IPV6_RECVTCLASS_from6: rc=0 fam=23 ctl_len=32 [{41/50 len=16 d=01000000 v=1}{41/39 len=16 d=01000000 v=1}]
+ro6_IPV6_RECVECN_IPV6_RECVTCLASS_from4: rc=0 fam=23 ctl_len=0 []
+ro6_set_IP_RECVTOS: rc=0
+ro6_IP_RECVTOS_from6: rc=0 fam=23 ctl_len=0 []
+ro6_IP_RECVTOS_from4: rc=0 fam=23 ctl_len=16 [{0/3 len=16 d=02000000 v=2}]
+ro6_set_IP_RECVECN: rc=0
+ro6_set_IPV6_RECVECN: rc=0
+ro6_IP_RECVECN_IPV6_RECVECN_from6: rc=0 fam=23 ctl_len=16 [{41/50 len=16 d=01000000 v=1}]
+ro6_IP_RECVECN_IPV6_RECVECN_from4: rc=0 fam=23 ctl_len=16 [{0/50 len=16 d=02000000 v=2}]
+ro6_set_IPV6_PKTINFO: rc=0
+ro6_IPV6_PKTINFO_from6: rc=0 fam=23 ctl_len=32 [{41/19 len=32 d=0000000000000000000000000000000101000000 a15=1 a11=0}]
+ro6_IPV6_PKTINFO_from4: rc=0 fam=23 ctl_len=0 []
+ro6_set_IP_PKTINFO: rc=0
+ro6_IP_PKTINFO_from6: rc=0 fam=23 ctl_len=0 []
+ro6_IP_PKTINFO_from4: rc=0 fam=23 ctl_len=20 [{0/19 len=20 d=7f00000101000000 addr=0x7f000001}]
+ro6_set_IPV6_HOPLIMIT: rc=0
+ro6_IPV6_HOPLIMIT_from6: rc=0 fam=23 ctl_len=16 [{41/21 len=16 d=80000000 v=128}]
+ro6_IPV6_HOPLIMIT_from4: rc=0 fam=23 ctl_len=0 []
+all4_recv: rc=0 fam=2 ctl_len=116 [{0/19 len=20 d=7f00000101000000 addr=0x7f000001}{0/25 len=16 d=7f000001}{0/47 len=16 d=01000000}{0/24 len=16 d=01000000}{0/50 len=16 d=01000000 v=1}{0/4 len=16 d=80000000}{0/3 len=16 d=01000000 v=1}]
+ctl2_cap_16: rc=-1 err=10040 got=10 flags=0x200 ctl_len=32 bytes=10000000000000003200000002000000abababababababababababababababababababababababababababababababab
+ctl2_cap_24: rc=-1 err=10040 got=10 flags=0x200 ctl_len=32 bytes=10000000000000003200000002000000abababababababababababababababababababababababababababababababab
+ctl2_cap_30: rc=-1 err=10040 got=10 flags=0x200 ctl_len=32 bytes=10000000000000003200000002000000100000000000000003000000abababababababababababababababababababab
+ctl2_cap_40: rc=0 got=10 flags=0x0 ctl_len=32 bytes=1000000000000000320000000200000010000000000000000300000002000000abababababababababababababababab
+ctl2_cap_47: rc=0 got=10 flags=0x0 ctl_len=32 bytes=1000000000000000320000000200000010000000000000000300000002000000abababababababababababababababab
+snd4_IP_TTL: err=10022
+snd4_IP_HOPLIMIT: sent=10
+snd4_UDP_SEND_MSG_SIZE: sent=10
+snd4_IP_TOS_300: err=10022
+snd4_IP_ECN_neg: err=10022
+snd4_IP_ECN_3: err=10022
+snd4_drained: count=2
+snd4_ctl_trailing_zeros: rc=-1 err=10022
+snd4_cmsg_len_short: rc=-1 err=10022
+snd4_cmsg_len_long: rc=-1 err=10022
+snd4_cmsg_data_1: rc=-1 err=10022
+snd4_ctl_null_buf: rc=-1 err=10014
+snd4_ctl_len_4: rc=-1 err=10022
+snd4_two_ecn: rc=0
+snd4_two_ecn_recv: rc=0 fam=2 ctl_len=16 [{0/50 len=16 d=02000000 v=2}]
+snd4_tos_then_ecn: rc=0
+snd4_tos_then_ecn_recv: rc=0 fam=2 ctl_len=32 [{0/50 len=16 d=02000000 v=2}{0/3 len=16 d=22000000 v=34}]
+all6_set_IP_HOPLIMIT: rc=0
+all6_set_IP_RECVIF: rc=0
+all6_set_IP_RECVDSTADDR: rc=0
+all6_set_IPV6_RECVIF: rc=0
+all6_set_IPV6_RECVDSTADDR: rc=0
+all6_recv_from6: rc=0 fam=23 ctl_len=124 [{41/19 len=32 d=0000000000000000000000000000000101000000 a15=1 a11=0}{41/25 len=28 d=00000000000000000000000000000001}{41/24 len=16 d=01000000}{41/50 len=16 d=01000000 v=1}{41/21 len=16 d=80000000 v=128}{41/39 len=16 d=01000000 v=1}]
+all6_recv_from4_v6opts: rc=0 fam=23 ctl_len=48 [{0/25 len=16 d=7f000001}{0/24 len=16 d=01000000}{0/4 len=16 d=80000000}]
+all6_recv_from4_all: rc=0 fam=23 ctl_len=116 [{0/19 len=20 d=7f00000101000000 addr=0x7f000001}{0/25 len=16 d=7f000001}{0/47 len=16 d=01000000}{0/24 len=16 d=01000000}{0/50 len=16 d=02000000 v=2}{0/4 len=16 d=80000000}{0/3 len=16 d=02000000 v=2}]
+snd6_IPV6_TCLASS: sent=10
+snd6_IPV6_HOPLIMIT: sent=10
+snd6_IP_TOS: err=10022
+snd6_IPV6_ECN_4: err=10022
+default_IP_TTL: rc=0 v=128
+hop4_send_cmsg_9: sent=10
+hop4_recv: rc=0 fam=2 ctl_len=16 [{0/4 len=16 d=09000000}]
+hop4_send_after_IP_TTL_33: sent=10
+hop4_recv_ttl33: rc=0 fam=2 ctl_len=16 [{0/4 len=16 d=21000000}]
+uso_send_10_by_4: sent=10
+uso_send_10_by_0: sent=10
+uso_send_10_by_10: sent=10
+uso_recv: 4 4 2 10 10
+default_IPV6_UNICAST_HOPS: rc=0 v=128
+ro6o_set_IPV6_PKTINFO_EX: rc=0
+ro6o_recv_IPV6_PKTINFO_EX: rc=0 fam=23 ctl_len=36 [{41/51 len=36 d=000000000000000000000000000000010100000000000000}]
+ro6o_set_IPV6_RECVIF: rc=0
+ro6o_recv_IPV6_RECVIF: rc=0 fam=23 ctl_len=16 [{41/24 len=16 d=01000000}]
+ro6o_set_IPV6_RECVDSTADDR: rc=0
+ro6o_recv_IPV6_RECVDSTADDR: rc=0 fam=23 ctl_len=28 [{41/25 len=28 d=00000000000000000000000000000001}]
+ovi_sendmsg_event: rc=0 sent=0x8 internal=0x0 internalhigh=8 sig=1
+ovi_sendmsg_nullcount: rc=0 sig=1
+ovi_sendmsg_routine: rc=-1 err=997
+ovi_sendmsg_routine_sleepex:msg_routine: err=0 bytes=8 flags=0x0
+ rc=192
+ovi_recvmsg_event: rc=0 got=0x8 internal=0x0 internalhigh=8 sig=1 namelen=16 ctl=0
+ovi_recvmsg_routine: rc=0
+ovi_recvmsg_routine_sleepex:msg_routine: err=0 bytes=8 flags=0x0
+ rc=192
+ovp_recvmsg_trunc_post: rc=-1 err=997
+ovp_recvmsg_trunc_done: ok=0 err=10040 xfer=0x4 fl=0xbbbb internal=0x80000005 msgflags=0x100
+x_v4sock_set_IPV6_PKTINFO: rc=0
+x_v4sock_set_IPV6_RECVTCLASS: rc=0
+x_v4sock_set_IP_PKTINFO: rc=0
+x_v4sock_get_IP_PKTINFO: rc=0 v=1 len=4
+x_v4sock_set_IP_RECVTOS_5: rc=0
+x_v4sock_get_IP_RECVTOS: rc=0 v=1 len=4
+x_v4sock_get_IP_RECVECN: rc=0 v=0 len=4
+x_v4sock_get_IP_HOPLIMIT: rc=0 v=0 len=4
+x_v4sock_set_IP_PKTINFO_len1: rc=-1 err=10014
+x_tcp_set_IP_PKTINFO: rc=-1 err=10022
+x_tcp_set_IP_RECVTOS: rc=-1 err=10022
+x_v6only_set_IP_PKTINFO: rc=-1 err=10022
+x_v6only_set_IPV6_RECVECN: rc=0
+x_v6only_get_IPV6_RECVECN: rc=0 v=1 len=4
+x_v6only_get_IP_PKTINFO: rc=0 v=0 len=4
+done

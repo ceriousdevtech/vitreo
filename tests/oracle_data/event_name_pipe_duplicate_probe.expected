@@ -1,0 +1,8 @@
+event null opened=0 error=87
+eventA null opened=0 error=87
+event empty opened=0 error=6
+eventA empty opened=0 error=6
+event missing opened=0 error=2
+eventA missing opened=0 error=2
+pipe expanded_access duplicated=0 error=5
+pipe alias_survives=1

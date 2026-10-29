@@ -1,0 +1,213 @@
+[CurrentUser/64] Software\Microsoft\Installer\Products\891448AE8C6B83E4A9ABB67A2E623E83
+  AdvertiseFlags = DWord:388
+  Assignment = DWord:0
+  AuthorizedLUAApp = DWord:0
+  Clients = MultiString:<:>
+  DeploymentFlags = DWord:3
+  InstanceType = DWord:0
+  Language = DWord:1033
+  PackageCode = String:DA18962611BD1254EA76519B8B2C6A39
+  ProductName = String:Vitreo Registration Probe
+  Version = DWord:16908291
+[CurrentUser/64] Software\Microsoft\Installer\Products\891448AE8C6B83E4A9ABB67A2E623E83\SourceList
+  LastUsedSource = ExpandString:n;1;C:\Users\Owner\msireg\x86v1\
+  PackageName = String:rp.msi
+[CurrentUser/64] Software\Microsoft\Installer\Products\891448AE8C6B83E4A9ABB67A2E623E83\SourceList\Media
+  1 = String:PROBE1;Probe Disk
+[CurrentUser/64] Software\Microsoft\Installer\Products\891448AE8C6B83E4A9ABB67A2E623E83\SourceList\Net
+  1 = ExpandString:C:\Users\Owner\msireg\x86v1\
+[CurrentUser/64] Software\Microsoft\Installer\Features\891448AE8C6B83E4A9ABB67A2E623E83
+  FeatAbsent = String:
+  FeatAbsentChild = String:FeatMain
+  FeatData = String:
+  FeatMain = String:
+  FeatSub = String:FeatMain
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-21-1828410828-4144948699-2202159460-1001\Products\891448AE8C6B83E4A9ABB67A2E623E83
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-21-1828410828-4144948699-2202159460-1001\Products\891448AE8C6B83E4A9ABB67A2E623E83\Features
+  FeatAbsent = String:xSWdlVXWl@Ap{)`7c%D%
+  FeatAbsentChild = String:FeatMain
+  FeatData = String:ZNXheT?T=@dZ-&VqOCBU
+  FeatMain = String:p-varD-mD9CvrD'4jpt`
+  FeatSub = String:Tw9E]J?6+AJ6sK2JaAeNFeatMain
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-21-1828410828-4144948699-2202159460-1001\Products\891448AE8C6B83E4A9ABB67A2E623E83\InstallProperties
+  AuthorizedCDFPrefix = String:
+  Comments = String:probe comments
+  Contact = String:probe contact
+  DisplayName = String:Vitreo Registration Probe
+  DisplayVersion = String:1.2.3
+  EstimatedSize = DWord:35
+  HelpLink = ExpandString:https://example.invalid/help
+  HelpTelephone = String:555-0100
+  InstallDate = String:20261027
+  InstallLocation = String:
+  InstallSource = String:C:\Users\Owner\msireg\x86v1\
+  Language = DWord:1033
+  LocalPackage = String:C:\WINDOWS\Installer\17b3eb95.msi
+  ModifyPath = ExpandString:MsiExec.exe /I{EA844198-B6C8-4E38-9ABA-6BA7E226E338}
+  NoRepair = DWord:1
+  Publisher = String:Vitreo Probe Authors
+  Readme = ExpandString:readme.txt
+  Size = DWord:7
+  UninstallString = ExpandString:MsiExec.exe /I{EA844198-B6C8-4E38-9ABA-6BA7E226E338}
+  URLInfoAbout = String:https://example.invalid/about
+  URLUpdateInfo = String:https://example.invalid/update
+  Version = DWord:16908291
+  VersionMajor = DWord:1
+  VersionMinor = DWord:2
+  WindowsInstaller = DWord:1
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-21-1828410828-4144948699-2202159460-1001\Products\891448AE8C6B83E4A9ABB67A2E623E83\Patches
+  AllPatches = String:
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-21-1828410828-4144948699-2202159460-1001\Products\891448AE8C6B83E4A9ABB67A2E623E83\Usage
+[CurrentUser/64] Software\Microsoft\Installer\UpgradeCodes\B8F9B566DF590EE45981A788BA56F9F5
+  891448AE8C6B83E4A9ABB67A2E623E83 = String:
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UpgradeCodes\B8F9B566DF590EE45981A788BA56F9F5
+  891448AE8C6B83E4A9ABB67A2E623E83 = String:
+[CurrentUser/64] Software\Microsoft\Installer\Components\A86B813C7357E47408A0A97709181610
+  probe-qualifier = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMain<probe appdata>
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-21-1828410828-4144948699-2202159460-1001\Components\F0B1735E307C4624D9A908D0AEA37EDA
+  891448AE8C6B83E4A9ABB67A2E623E83 = String:C:\Program Files (x86)\VitreoRP\main.dll
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-21-1828410828-4144948699-2202159460-1001\Components\C8F1DD2A870F51E4BAA6FDC2D16C0787
+  891448AE8C6B83E4A9ABB67A2E623E83 = String:01:\Software\VitreoRegProbe\Installed
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-21-1828410828-4144948699-2202159460-1001\Components\F4DC20DB19A7F7B44AF1D3F8D6EF9FC8
+  891448AE8C6B83E4A9ABB67A2E623E83 = String:C:\Program Files (x86)\VitreoRP\data\
+[CurrentUser/64] Software\Classes\WOW6432Node\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}
+  @ = String:Vitreo Probe Class
+[CurrentUser/64] Software\Classes\WOW6432Node\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\InprocServer32
+  @ = String:C:\Program Files (x86)\VitreoRP\main.dll
+  InprocServer32 = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMain<>
+[CurrentUser/64] Software\Classes\WOW6432Node\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\ProgID
+  @ = String:Vitreo.Probe.1
+[CurrentUser/64] Software\Classes\WOW6432Node\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\VersionIndependentProgID
+  @ = String:Vitreo.Probe
+[CurrentUser/64] Software\Classes\Vitreo.Probe.1
+  @ = String:Vitreo Probe Object
+[CurrentUser/64] Software\Classes\Vitreo.Probe.1\CLSID
+  @ = String:{499C6982-7157-444B-B54D-23419DCF7EAB}
+[CurrentUser/64] Software\Classes\Vitreo.Probe.1\shell
+  @ = String:open
+[CurrentUser/64] Software\Classes\Vitreo.Probe.1\shell\open
+  @ = String:&Open
+[CurrentUser/64] Software\Classes\Vitreo.Probe.1\shell\open\command
+  @ = String:"C:\Program Files (x86)\VitreoRP\main.dll" "%1"
+  command = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMain< "%1">
+[CurrentUser/64] Software\Classes\Vitreo.Probe
+  @ = String:Vitreo Probe Object (VI)
+[CurrentUser/64] Software\Classes\Vitreo.Probe\CLSID
+  @ = String:{499C6982-7157-444B-B54D-23419DCF7EAB}
+[CurrentUser/64] Software\Classes\Vitreo.Probe\CurVer
+  @ = String:Vitreo.Probe.1
+[CurrentUser/64] Software\Classes\.vrp
+  @ = String:Vitreo.Probe.1
+  Content Type = String:application/x-vitreo-probe
+[CurrentUser/64] Software\Classes\.vrp\Vitreo.Probe.1
+[CurrentUser/64] Software\Classes\.vrp\Vitreo.Probe.1\ShellNew
+[CurrentUser/64] Software\Classes\MIME\Database\Content Type\application/x-vitreo-probe
+  CLSID = String:{499C6982-7157-444B-B54D-23419DCF7EAB}
+  Extension = String:.vrp
+[CurrentUser/64] Software\VitreoRegProbe
+  Installed = DWord:1
+[Folders/64] C:\Program Files (x86)\VitreoRP\ = String:1
+[Folders/64] C:\Program Files (x86)\VitreoRP\data\ = String:1
+[Folders/64] C:\Users\Owner\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\VitreoRP\ = String:
+[CurrentUser/32] Software\Microsoft\Installer\Products\891448AE8C6B83E4A9ABB67A2E623E83
+  AdvertiseFlags = DWord:388
+  Assignment = DWord:0
+  AuthorizedLUAApp = DWord:0
+  Clients = MultiString:<:>
+  DeploymentFlags = DWord:3
+  InstanceType = DWord:0
+  Language = DWord:1033
+  PackageCode = String:DA18962611BD1254EA76519B8B2C6A39
+  ProductName = String:Vitreo Registration Probe
+  Version = DWord:16908291
+[CurrentUser/32] Software\Microsoft\Installer\Products\891448AE8C6B83E4A9ABB67A2E623E83\SourceList
+  LastUsedSource = ExpandString:n;1;C:\Users\Owner\msireg\x86v1\
+  PackageName = String:rp.msi
+[CurrentUser/32] Software\Microsoft\Installer\Products\891448AE8C6B83E4A9ABB67A2E623E83\SourceList\Media
+  1 = String:PROBE1;Probe Disk
+[CurrentUser/32] Software\Microsoft\Installer\Products\891448AE8C6B83E4A9ABB67A2E623E83\SourceList\Net
+  1 = ExpandString:C:\Users\Owner\msireg\x86v1\
+[CurrentUser/32] Software\Microsoft\Installer\Features\891448AE8C6B83E4A9ABB67A2E623E83
+  FeatAbsent = String:
+  FeatAbsentChild = String:FeatMain
+  FeatData = String:
+  FeatMain = String:
+  FeatSub = String:FeatMain
+[LocalMachine/32] SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{EA844198-B6C8-4E38-9ABA-6BA7E226E338}
+  AuthorizedCDFPrefix = String:
+  Comments = String:probe comments
+  Contact = String:probe contact
+  DisplayName = String:Vitreo Registration Probe
+  DisplayVersion = String:1.2.3
+  EstimatedSize = DWord:35
+  HelpLink = ExpandString:https://example.invalid/help
+  HelpTelephone = String:555-0100
+  InstallDate = String:20261027
+  InstallLocation = String:
+  InstallSource = String:C:\Users\Owner\msireg\x86v1\
+  Language = DWord:1033
+  ModifyPath = ExpandString:MsiExec.exe /I{EA844198-B6C8-4E38-9ABA-6BA7E226E338}
+  NoRepair = DWord:1
+  Publisher = String:Vitreo Probe Authors
+  Readme = ExpandString:readme.txt
+  Size = DWord:7
+  UninstallString = ExpandString:MsiExec.exe /I{EA844198-B6C8-4E38-9ABA-6BA7E226E338}
+  URLInfoAbout = String:https://example.invalid/about
+  URLUpdateInfo = String:https://example.invalid/update
+  Version = DWord:16908291
+  VersionMajor = DWord:1
+  VersionMinor = DWord:2
+  WindowsInstaller = DWord:1
+[CurrentUser/32] Software\Microsoft\Installer\UpgradeCodes\B8F9B566DF590EE45981A788BA56F9F5
+  891448AE8C6B83E4A9ABB67A2E623E83 = String:
+[CurrentUser/32] Software\Microsoft\Installer\Components\A86B813C7357E47408A0A97709181610
+  probe-qualifier = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMain<probe appdata>
+[CurrentUser/32] Software\Classes\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}
+  @ = String:Vitreo Probe Class
+[CurrentUser/32] Software\Classes\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\InprocServer32
+  @ = String:C:\Program Files (x86)\VitreoRP\main.dll
+  InprocServer32 = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMain<>
+[CurrentUser/32] Software\Classes\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\ProgID
+  @ = String:Vitreo.Probe.1
+[CurrentUser/32] Software\Classes\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\VersionIndependentProgID
+  @ = String:Vitreo.Probe
+[CurrentUser/32] Software\Classes\WOW6432Node\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}
+  @ = String:Vitreo Probe Class
+[CurrentUser/32] Software\Classes\WOW6432Node\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\InprocServer32
+  @ = String:C:\Program Files (x86)\VitreoRP\main.dll
+  InprocServer32 = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMain<>
+[CurrentUser/32] Software\Classes\WOW6432Node\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\ProgID
+  @ = String:Vitreo.Probe.1
+[CurrentUser/32] Software\Classes\WOW6432Node\CLSID\{499C6982-7157-444B-B54D-23419DCF7EAB}\VersionIndependentProgID
+  @ = String:Vitreo.Probe
+[CurrentUser/32] Software\Classes\Vitreo.Probe.1
+  @ = String:Vitreo Probe Object
+[CurrentUser/32] Software\Classes\Vitreo.Probe.1\CLSID
+  @ = String:{499C6982-7157-444B-B54D-23419DCF7EAB}
+[CurrentUser/32] Software\Classes\Vitreo.Probe.1\shell
+  @ = String:open
+[CurrentUser/32] Software\Classes\Vitreo.Probe.1\shell\open
+  @ = String:&Open
+[CurrentUser/32] Software\Classes\Vitreo.Probe.1\shell\open\command
+  @ = String:"C:\Program Files (x86)\VitreoRP\main.dll" "%1"
+  command = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMain< "%1">
+[CurrentUser/32] Software\Classes\Vitreo.Probe
+  @ = String:Vitreo Probe Object (VI)
+[CurrentUser/32] Software\Classes\Vitreo.Probe\CLSID
+  @ = String:{499C6982-7157-444B-B54D-23419DCF7EAB}
+[CurrentUser/32] Software\Classes\Vitreo.Probe\CurVer
+  @ = String:Vitreo.Probe.1
+[CurrentUser/32] Software\Classes\.vrp
+  @ = String:Vitreo.Probe.1
+  Content Type = String:application/x-vitreo-probe
+[CurrentUser/32] Software\Classes\.vrp\Vitreo.Probe.1
+[CurrentUser/32] Software\Classes\.vrp\Vitreo.Probe.1\ShellNew
+[CurrentUser/32] Software\Classes\MIME\Database\Content Type\application/x-vitreo-probe
+  CLSID = String:{499C6982-7157-444B-B54D-23419DCF7EAB}
+  Extension = String:.vrp
+[CurrentUser/32] Software\VitreoRegProbe
+  Installed = DWord:1
+== files
+  C:\Program Files (x86)\VitreoRP\data\
+  C:\Program Files (x86)\VitreoRP\main.dll 35
+  C:\Users\Owner\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\VitreoRP\Vitreo Probe.lnk 1172

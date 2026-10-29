@@ -1,0 +1,1163 @@
+# winoracle (Windows 11 26200, Microsoft Basic Render Driver / WARP), 2026-09-28.
+# x64 and x86 builds print identical lines; the '# d3d11_nv12_probe (N-bit)' banner is a comment.
+# Summary: even W/H, 1 mip, ArraySize <= 2, no MSAA/cube/DSV; views R8(_UINT)/R16 = plane 0,
+# R8G8/R16G16 (+ R32_UINT UAV for P01x) = plane 1, NULL desc refused; one subresource per slice holding
+# both planes (Map RowPitch = W*elem, DepthPitch = RowPitch*H); boxes are luma texels, odd ones dropped.
+# d3d11_nv12_probe (64-bit)
+device hr=0x00000000 fl=0xb100
+ID3D11Device3 hr=0x00000000
+[NV12] CheckFormatSupport hr=0x00000000 0xc282c320
+[create NV12]
+  size 16x8 hr=0x00000000
+  size 15x8 hr=0x80070057
+  size 16x7 hr=0x80070057
+  size 2x2 hr=0x00000000
+  size 1x1 hr=0x80070057
+  size 1x2 hr=0x80070057
+  size 2x1 hr=0x80070057
+  size 4096x2 hr=0x00000000
+  mips 1 hr=0x00000000 got=1
+  mips 2 hr=0x80070057 got=0
+  mips 0 hr=0x80070057 got=0
+  array 2 hr=0x00000000
+  array 3 hr=0x80070057
+  array 6 hr=0x80070057
+  array 2048 hr=0x80070057
+  bind 0            hr=0x00000000
+  bind SRV          hr=0x00000000
+  bind RTV          hr=0x00000000
+  bind UAV          hr=0x00000000
+  bind SRV|RTV|UAV  hr=0x00000000
+  bind DSV          hr=0x80070057
+  bind DECODER      hr=0x80070057
+  bind ENCODER      hr=0x00000000
+  bind SRV|DECODER  hr=0x80070057
+  bind VB           hr=0x80070057
+  usage DEFAULT init     hr=0x00000000
+  usage IMMUTABLE init   hr=0x00000000
+  usage IMMUTABLE noinit hr=0x80070057
+  usage DYNAMIC W        hr=0x00000000
+  usage STAGING R        hr=0x00000000
+  usage STAGING W        hr=0x00000000
+  usage STAGING RW init  hr=0x00000000
+  misc GENERATE_MIPS  hr=0x00000000
+  misc TEXTURECUBE    hr=0x80070057
+  misc RESOURCE_CLAMP hr=0x00000000
+  misc GDI_COMPATIBLE hr=0x80070057
+  msaa4 hr=0x80070057
+[views NV12]
+  texture array2 SRV|RTV|UAV hr=0x00000000
+  NULL desc srv=0x80070057 rtv=0x80070057 uav=0x80070057
+  srv UNKNOWN        2D  hr=0x80070057
+  rtv UNKNOWN        2D  hr=0x80070057
+  uav UNKNOWN        2D  hr=0x80070057
+  srv UNKNOWN        2DA hr=0x80070057
+  rtv UNKNOWN        2DA hr=0x80070057
+  uav UNKNOWN        2DA hr=0x80070057
+  srv NV12           2D  hr=0x80070057
+  rtv NV12           2D  hr=0x80070057
+  uav NV12           2D  hr=0x80070057
+  srv NV12           2DA hr=0x80070057
+  rtv NV12           2DA hr=0x80070057
+  uav NV12           2DA hr=0x80070057
+  srv P010           2D  hr=0x80070057
+  rtv P010           2D  hr=0x80070057
+  uav P010           2D  hr=0x80070057
+  srv P010           2DA hr=0x80070057
+  rtv P010           2DA hr=0x80070057
+  uav P010           2DA hr=0x80070057
+  srv R8_UNORM       2D  hr=0x00000000 fmt=61 dim=4 plane=0
+  rtv R8_UNORM       2D  hr=0x00000000 fmt=61 dim=4 plane=0
+  uav R8_UNORM       2D  hr=0x00000000 fmt=61 dim=4 plane=0
+  srv R8_UNORM       2DA hr=0x00000000 fmt=61 dim=5 plane=0
+  rtv R8_UNORM       2DA hr=0x00000000 fmt=61 dim=5 plane=0
+  uav R8_UNORM       2DA hr=0x00000000 fmt=61 dim=5 plane=0
+  srv R8_UINT        2D  hr=0x00000000 fmt=62 dim=4 plane=0
+  rtv R8_UINT        2D  hr=0x00000000 fmt=62 dim=4 plane=0
+  uav R8_UINT        2D  hr=0x00000000 fmt=62 dim=4 plane=0
+  srv R8_UINT        2DA hr=0x00000000 fmt=62 dim=5 plane=0
+  rtv R8_UINT        2DA hr=0x00000000 fmt=62 dim=5 plane=0
+  uav R8_UINT        2DA hr=0x00000000 fmt=62 dim=5 plane=0
+  srv R8_SNORM       2D  hr=0x80070057
+  rtv R8_SNORM       2D  hr=0x80070057
+  uav R8_SNORM       2D  hr=0x80070057
+  srv R8_SNORM       2DA hr=0x80070057
+  rtv R8_SNORM       2DA hr=0x80070057
+  uav R8_SNORM       2DA hr=0x80070057
+  srv R8_TYPELESS    2D  hr=0x80070057
+  rtv R8_TYPELESS    2D  hr=0x80070057
+  uav R8_TYPELESS    2D  hr=0x80070057
+  srv R8_TYPELESS    2DA hr=0x80070057
+  rtv R8_TYPELESS    2DA hr=0x80070057
+  uav R8_TYPELESS    2DA hr=0x80070057
+  srv R8G8_UNORM     2D  hr=0x00000000 fmt=49 dim=4 plane=1
+  rtv R8G8_UNORM     2D  hr=0x00000000 fmt=49 dim=4 plane=1
+  uav R8G8_UNORM     2D  hr=0x00000000 fmt=49 dim=4 plane=1
+  srv R8G8_UNORM     2DA hr=0x00000000 fmt=49 dim=5 plane=1
+  rtv R8G8_UNORM     2DA hr=0x00000000 fmt=49 dim=5 plane=1
+  uav R8G8_UNORM     2DA hr=0x00000000 fmt=49 dim=5 plane=1
+  srv R8G8_UINT      2D  hr=0x00000000 fmt=50 dim=4 plane=1
+  rtv R8G8_UINT      2D  hr=0x00000000 fmt=50 dim=4 plane=1
+  uav R8G8_UINT      2D  hr=0x00000000 fmt=50 dim=4 plane=1
+  srv R8G8_UINT      2DA hr=0x00000000 fmt=50 dim=5 plane=1
+  rtv R8G8_UINT      2DA hr=0x00000000 fmt=50 dim=5 plane=1
+  uav R8G8_UINT      2DA hr=0x00000000 fmt=50 dim=5 plane=1
+  srv R8G8_SNORM     2D  hr=0x80070057
+  rtv R8G8_SNORM     2D  hr=0x80070057
+  uav R8G8_SNORM     2D  hr=0x80070057
+  srv R8G8_SNORM     2DA hr=0x80070057
+  rtv R8G8_SNORM     2DA hr=0x80070057
+  uav R8G8_SNORM     2DA hr=0x80070057
+  srv R16_UNORM      2D  hr=0x80070057
+  rtv R16_UNORM      2D  hr=0x80070057
+  uav R16_UNORM      2D  hr=0x80070057
+  srv R16_UNORM      2DA hr=0x80070057
+  rtv R16_UNORM      2DA hr=0x80070057
+  uav R16_UNORM      2DA hr=0x80070057
+  srv R16_UINT       2D  hr=0x80070057
+  rtv R16_UINT       2D  hr=0x80070057
+  uav R16_UINT       2D  hr=0x80070057
+  srv R16_UINT       2DA hr=0x80070057
+  rtv R16_UINT       2DA hr=0x80070057
+  uav R16_UINT       2DA hr=0x80070057
+  srv R16_FLOAT      2D  hr=0x80070057
+  rtv R16_FLOAT      2D  hr=0x80070057
+  uav R16_FLOAT      2D  hr=0x80070057
+  srv R16_FLOAT      2DA hr=0x80070057
+  rtv R16_FLOAT      2DA hr=0x80070057
+  uav R16_FLOAT      2DA hr=0x80070057
+  srv R16G16_UNORM   2D  hr=0x80070057
+  rtv R16G16_UNORM   2D  hr=0x80070057
+  uav R16G16_UNORM   2D  hr=0x80070057
+  srv R16G16_UNORM   2DA hr=0x80070057
+  rtv R16G16_UNORM   2DA hr=0x80070057
+  uav R16G16_UNORM   2DA hr=0x80070057
+  srv R16G16_UINT    2D  hr=0x80070057
+  rtv R16G16_UINT    2D  hr=0x80070057
+  uav R16G16_UINT    2D  hr=0x80070057
+  srv R16G16_UINT    2DA hr=0x80070057
+  rtv R16G16_UINT    2DA hr=0x80070057
+  uav R16G16_UINT    2DA hr=0x80070057
+  srv R32_UINT       2D  hr=0x80070057
+  rtv R32_UINT       2D  hr=0x80070057
+  uav R32_UINT       2D  hr=0x80070057
+  srv R32_UINT       2DA hr=0x80070057
+  rtv R32_UINT       2DA hr=0x80070057
+  uav R32_UINT       2DA hr=0x80070057
+  srv R8G8B8A8_UNORM 2D  hr=0x80070057
+  rtv R8G8B8A8_UNORM 2D  hr=0x80070057
+  uav R8G8B8A8_UNORM 2D  hr=0x80070057
+  srv R8G8B8A8_UNORM 2DA hr=0x80070057
+  rtv R8G8B8A8_UNORM 2DA hr=0x80070057
+  uav R8G8B8A8_UNORM 2DA hr=0x80070057
+  srv1 UNKNOWN        plane0 hr=0x80070057
+  rtv1 UNKNOWN        plane0 hr=0x80070057
+  uav1 UNKNOWN        plane0 hr=0x80070057
+  srv1 UNKNOWN        plane1 hr=0x80070057
+  rtv1 UNKNOWN        plane1 hr=0x80070057
+  uav1 UNKNOWN        plane1 hr=0x80070057
+  srv1 UNKNOWN        plane2 hr=0x80070057
+  rtv1 UNKNOWN        plane2 hr=0x80070057
+  uav1 UNKNOWN        plane2 hr=0x80070057
+  srv1 NV12           plane0 hr=0x80070057
+  rtv1 NV12           plane0 hr=0x80070057
+  uav1 NV12           plane0 hr=0x80070057
+  srv1 NV12           plane1 hr=0x80070057
+  rtv1 NV12           plane1 hr=0x80070057
+  uav1 NV12           plane1 hr=0x80070057
+  srv1 NV12           plane2 hr=0x80070057
+  rtv1 NV12           plane2 hr=0x80070057
+  uav1 NV12           plane2 hr=0x80070057
+  srv1 P010           plane0 hr=0x80070057
+  rtv1 P010           plane0 hr=0x80070057
+  uav1 P010           plane0 hr=0x80070057
+  srv1 P010           plane1 hr=0x80070057
+  rtv1 P010           plane1 hr=0x80070057
+  uav1 P010           plane1 hr=0x80070057
+  srv1 P010           plane2 hr=0x80070057
+  rtv1 P010           plane2 hr=0x80070057
+  uav1 P010           plane2 hr=0x80070057
+  srv1 R8_UNORM       plane0 hr=0x00000000 fmt=61 dim=4 plane=0
+  rtv1 R8_UNORM       plane0 hr=0x00000000 fmt=61 dim=5 plane=0
+  uav1 R8_UNORM       plane0 hr=0x00000000 fmt=61 dim=4 plane=0
+  srv1 R8_UNORM       plane1 hr=0x80070057
+  rtv1 R8_UNORM       plane1 hr=0x80070057
+  uav1 R8_UNORM       plane1 hr=0x80070057
+  srv1 R8_UNORM       plane2 hr=0x80070057
+  rtv1 R8_UNORM       plane2 hr=0x80070057
+  uav1 R8_UNORM       plane2 hr=0x80070057
+  srv1 R8_UINT        plane0 hr=0x00000000 fmt=62 dim=4 plane=0
+  rtv1 R8_UINT        plane0 hr=0x00000000 fmt=62 dim=5 plane=0
+  uav1 R8_UINT        plane0 hr=0x00000000 fmt=62 dim=4 plane=0
+  srv1 R8_UINT        plane1 hr=0x80070057
+  rtv1 R8_UINT        plane1 hr=0x80070057
+  uav1 R8_UINT        plane1 hr=0x80070057
+  srv1 R8_UINT        plane2 hr=0x80070057
+  rtv1 R8_UINT        plane2 hr=0x80070057
+  uav1 R8_UINT        plane2 hr=0x80070057
+  srv1 R8_SNORM       plane0 hr=0x80070057
+  rtv1 R8_SNORM       plane0 hr=0x80070057
+  uav1 R8_SNORM       plane0 hr=0x80070057
+  srv1 R8_SNORM       plane1 hr=0x80070057
+  rtv1 R8_SNORM       plane1 hr=0x80070057
+  uav1 R8_SNORM       plane1 hr=0x80070057
+  srv1 R8_SNORM       plane2 hr=0x80070057
+  rtv1 R8_SNORM       plane2 hr=0x80070057
+  uav1 R8_SNORM       plane2 hr=0x80070057
+  srv1 R8_TYPELESS    plane0 hr=0x80070057
+  rtv1 R8_TYPELESS    plane0 hr=0x80070057
+  uav1 R8_TYPELESS    plane0 hr=0x80070057
+  srv1 R8_TYPELESS    plane1 hr=0x80070057
+  rtv1 R8_TYPELESS    plane1 hr=0x80070057
+  uav1 R8_TYPELESS    plane1 hr=0x80070057
+  srv1 R8_TYPELESS    plane2 hr=0x80070057
+  rtv1 R8_TYPELESS    plane2 hr=0x80070057
+  uav1 R8_TYPELESS    plane2 hr=0x80070057
+  srv1 R8G8_UNORM     plane0 hr=0x80070057
+  rtv1 R8G8_UNORM     plane0 hr=0x80070057
+  uav1 R8G8_UNORM     plane0 hr=0x80070057
+  srv1 R8G8_UNORM     plane1 hr=0x00000000 fmt=49 dim=4 plane=1
+  rtv1 R8G8_UNORM     plane1 hr=0x00000000 fmt=49 dim=5 plane=1
+  uav1 R8G8_UNORM     plane1 hr=0x00000000 fmt=49 dim=4 plane=1
+  srv1 R8G8_UNORM     plane2 hr=0x80070057
+  rtv1 R8G8_UNORM     plane2 hr=0x80070057
+  uav1 R8G8_UNORM     plane2 hr=0x80070057
+  srv1 R8G8_UINT      plane0 hr=0x80070057
+  rtv1 R8G8_UINT      plane0 hr=0x80070057
+  uav1 R8G8_UINT      plane0 hr=0x80070057
+  srv1 R8G8_UINT      plane1 hr=0x00000000 fmt=50 dim=4 plane=1
+  rtv1 R8G8_UINT      plane1 hr=0x00000000 fmt=50 dim=5 plane=1
+  uav1 R8G8_UINT      plane1 hr=0x00000000 fmt=50 dim=4 plane=1
+  srv1 R8G8_UINT      plane2 hr=0x80070057
+  rtv1 R8G8_UINT      plane2 hr=0x80070057
+  uav1 R8G8_UINT      plane2 hr=0x80070057
+  srv1 R8G8_SNORM     plane0 hr=0x80070057
+  rtv1 R8G8_SNORM     plane0 hr=0x80070057
+  uav1 R8G8_SNORM     plane0 hr=0x80070057
+  srv1 R8G8_SNORM     plane1 hr=0x80070057
+  rtv1 R8G8_SNORM     plane1 hr=0x80070057
+  uav1 R8G8_SNORM     plane1 hr=0x80070057
+  srv1 R8G8_SNORM     plane2 hr=0x80070057
+  rtv1 R8G8_SNORM     plane2 hr=0x80070057
+  uav1 R8G8_SNORM     plane2 hr=0x80070057
+  srv1 R16_UNORM      plane0 hr=0x80070057
+  rtv1 R16_UNORM      plane0 hr=0x80070057
+  uav1 R16_UNORM      plane0 hr=0x80070057
+  srv1 R16_UNORM      plane1 hr=0x80070057
+  rtv1 R16_UNORM      plane1 hr=0x80070057
+  uav1 R16_UNORM      plane1 hr=0x80070057
+  srv1 R16_UNORM      plane2 hr=0x80070057
+  rtv1 R16_UNORM      plane2 hr=0x80070057
+  uav1 R16_UNORM      plane2 hr=0x80070057
+  srv1 R16_UINT       plane0 hr=0x80070057
+  rtv1 R16_UINT       plane0 hr=0x80070057
+  uav1 R16_UINT       plane0 hr=0x80070057
+  srv1 R16_UINT       plane1 hr=0x80070057
+  rtv1 R16_UINT       plane1 hr=0x80070057
+  uav1 R16_UINT       plane1 hr=0x80070057
+  srv1 R16_UINT       plane2 hr=0x80070057
+  rtv1 R16_UINT       plane2 hr=0x80070057
+  uav1 R16_UINT       plane2 hr=0x80070057
+  srv1 R16_FLOAT      plane0 hr=0x80070057
+  rtv1 R16_FLOAT      plane0 hr=0x80070057
+  uav1 R16_FLOAT      plane0 hr=0x80070057
+  srv1 R16_FLOAT      plane1 hr=0x80070057
+  rtv1 R16_FLOAT      plane1 hr=0x80070057
+  uav1 R16_FLOAT      plane1 hr=0x80070057
+  srv1 R16_FLOAT      plane2 hr=0x80070057
+  rtv1 R16_FLOAT      plane2 hr=0x80070057
+  uav1 R16_FLOAT      plane2 hr=0x80070057
+  srv1 R16G16_UNORM   plane0 hr=0x80070057
+  rtv1 R16G16_UNORM   plane0 hr=0x80070057
+  uav1 R16G16_UNORM   plane0 hr=0x80070057
+  srv1 R16G16_UNORM   plane1 hr=0x80070057
+  rtv1 R16G16_UNORM   plane1 hr=0x80070057
+  uav1 R16G16_UNORM   plane1 hr=0x80070057
+  srv1 R16G16_UNORM   plane2 hr=0x80070057
+  rtv1 R16G16_UNORM   plane2 hr=0x80070057
+  uav1 R16G16_UNORM   plane2 hr=0x80070057
+  srv1 R16G16_UINT    plane0 hr=0x80070057
+  rtv1 R16G16_UINT    plane0 hr=0x80070057
+  uav1 R16G16_UINT    plane0 hr=0x80070057
+  srv1 R16G16_UINT    plane1 hr=0x80070057
+  rtv1 R16G16_UINT    plane1 hr=0x80070057
+  uav1 R16G16_UINT    plane1 hr=0x80070057
+  srv1 R16G16_UINT    plane2 hr=0x80070057
+  rtv1 R16G16_UINT    plane2 hr=0x80070057
+  uav1 R16G16_UINT    plane2 hr=0x80070057
+  srv1 R32_UINT       plane0 hr=0x80070057
+  rtv1 R32_UINT       plane0 hr=0x80070057
+  uav1 R32_UINT       plane0 hr=0x80070057
+  srv1 R32_UINT       plane1 hr=0x80070057
+  rtv1 R32_UINT       plane1 hr=0x80070057
+  uav1 R32_UINT       plane1 hr=0x80070057
+  srv1 R32_UINT       plane2 hr=0x80070057
+  rtv1 R32_UINT       plane2 hr=0x80070057
+  uav1 R32_UINT       plane2 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane2 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane2 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane2 hr=0x80070057
+[layout NV12]
+  staging 16x8 array2 hr=0x00000000 map0=0x00000000 row=16 depth=128 map1=0x00000000 row=16 depth=128 map2=0x80070057
+  dynamic 16x8 hr=0x00000000 map=0x00000000 row=16 depth=128
+  init pitch 12 hr=0x00000000
+  readback pitch=8 depth=32
+  init  0:01060b10151a1f24
+  init  1:3d42474c51565b60
+  init  2:797e83888d92979c
+  init  3:b5babfc4c9ced3d8
+  init  4:f1f6fb00050a0f14
+  init  5:2d32373c41464b50
+  upd  0:8081828384858687
+  upd  1:8a8b8c8d8e8f9091
+  upd  2:9495969798999a9b
+  upd  3:9e9fa0a1a2a3a4a5
+  upd  4:a8a9aaabacadaeaf
+  upd  5:b2b3b4b5b6b7b8b9
+  box2,2-6,4  0:0000000000000000
+  box2,2-6,4  1:0000000000000000
+  box2,2-6,4  2:0000101112130000
+  box2,2-6,4  3:0000202122230000
+  box2,2-6,4  4:0000000000000000
+  box2,2-6,4  5:0000303132330000
+  box1,1-5,3  0:0000000000000000
+  box1,1-5,3  1:0000000000000000
+  box1,1-5,3  2:0000000000000000
+  box1,1-5,3  3:0000000000000000
+  box1,1-5,3  4:0000000000000000
+  box1,1-5,3  5:0000000000000000
+  box0,0-8,2  0:1011121314151617
+  box0,0-8,2  1:2021222324252627
+  box0,0-8,2  2:0000000000000000
+  box0,0-8,2  3:0000000000000000
+  box0,0-8,2  4:3031323334353637
+  box0,0-8,2  5:0000000000000000
+  box6,2-8,4  0:0000000000000000
+  box6,2-8,4  1:0000000000000000
+  box6,2-8,4  2:0000000000001011
+  box6,2-8,4  3:0000000000002021
+  box6,2-8,4  4:0000000000000000
+  box6,2-8,4  5:0000000000003031
+  copy@2,2<-0,0-4,2  0:0000000000000000
+  copy@2,2<-0,0-4,2  1:0000000000000000
+  copy@2,2<-0,0-4,2  2:0000a0a1a2a30000
+  copy@2,2<-0,0-4,2  3:0000a8a9aaab0000
+  copy@2,2<-0,0-4,2  4:0000000000000000
+  copy@2,2<-0,0-4,2  5:0000c0c1c2c30000
+  copy@1,1<-0,0-4,2  0:0000000000000000
+  copy@1,1<-0,0-4,2  1:0000000000000000
+  copy@1,1<-0,0-4,2  2:0000000000000000
+  copy@1,1<-0,0-4,2  3:0000000000000000
+  copy@1,1<-0,0-4,2  4:0000000000000000
+  copy@1,1<-0,0-4,2  5:0000000000000000
+  copy@0,0<-1,1-5,3  0:0000000000000000
+  copy@0,0<-1,1-5,3  1:0000000000000000
+  copy@0,0<-1,1-5,3  2:0000000000000000
+  copy@0,0<-1,1-5,3  3:0000000000000000
+  copy@0,0<-1,1-5,3  4:0000000000000000
+  copy@0,0<-1,1-5,3  5:0000000000000000
+  copy@0,0<-0,0-8,4  0:a0a1a2a3a4a5a6a7
+  copy@0,0<-0,0-8,4  1:a8a9aaabacadaeaf
+  copy@0,0<-0,0-8,4  2:b0b1b2b3b4b5b6b7
+  copy@0,0<-0,0-8,4  3:b8b9babbbcbdbebf
+  copy@0,0<-0,0-8,4  4:c0c1c2c3c4c5c6c7
+  copy@0,0<-0,0-8,4  5:c8c9cacbcccdcecf
+  clear luma rtv hr=0x00000000
+  clear chroma rtv hr=0x00000000
+  rtvclear  0:8080808080808080
+  rtvclear  1:8080808080808080
+  rtvclear  2:8080808080808080
+  rtvclear  3:8080808080808080
+  rtvclear  4:40bf40bf40bf40bf
+  rtvclear  5:40bf40bf40bf40bf
+  clear luma uav hr=0x00000000
+  clear chroma uav hr=0x00000000
+  uavclear  0:0707070707070707
+  uavclear  1:0707070707070707
+  uavclear  2:0707070707070707
+  uavclear  3:0707070707070707
+  uavclear  4:0b0c0b0c0b0c0b0c
+  uavclear  5:0b0c0b0c0b0c0b0c
+  staging 8x4 row=8 depth=32
+  fromstg  0:0001020304050607
+  fromstg  1:1011121314151617
+  fromstg  2:2021222324252627
+  fromstg  3:3031323334353637
+  fromstg  4:4041424344454647
+  fromstg  5:5051525354555657
+[P010] CheckFormatSupport hr=0x00000000 0x0282c320
+[create P010]
+  size 16x8 hr=0x00000000
+  size 15x8 hr=0x80070057
+  size 16x7 hr=0x80070057
+  size 2x2 hr=0x00000000
+  size 1x1 hr=0x80070057
+  size 1x2 hr=0x80070057
+  size 2x1 hr=0x80070057
+  size 4096x2 hr=0x00000000
+  mips 1 hr=0x00000000 got=1
+  mips 2 hr=0x80070057 got=0
+  mips 0 hr=0x80070057 got=0
+  array 2 hr=0x00000000
+  array 3 hr=0x80070057
+  array 6 hr=0x80070057
+  array 2048 hr=0x80070057
+  bind 0            hr=0x00000000
+  bind SRV          hr=0x00000000
+  bind RTV          hr=0x00000000
+  bind UAV          hr=0x00000000
+  bind SRV|RTV|UAV  hr=0x00000000
+  bind DSV          hr=0x80070057
+  bind DECODER      hr=0x80070057
+  bind ENCODER      hr=0x80070057
+  bind SRV|DECODER  hr=0x80070057
+  bind VB           hr=0x80070057
+  usage DEFAULT init     hr=0x00000000
+  usage IMMUTABLE init   hr=0x00000000
+  usage IMMUTABLE noinit hr=0x80070057
+  usage DYNAMIC W        hr=0x00000000
+  usage STAGING R        hr=0x00000000
+  usage STAGING W        hr=0x00000000
+  usage STAGING RW init  hr=0x00000000
+  misc GENERATE_MIPS  hr=0x00000000
+  misc TEXTURECUBE    hr=0x80070057
+  misc RESOURCE_CLAMP hr=0x00000000
+  misc GDI_COMPATIBLE hr=0x80070057
+  msaa4 hr=0x80070057
+[views P010]
+  texture array2 SRV|RTV|UAV hr=0x00000000
+  NULL desc srv=0x80070057 rtv=0x80070057 uav=0x80070057
+  srv UNKNOWN        2D  hr=0x80070057
+  rtv UNKNOWN        2D  hr=0x80070057
+  uav UNKNOWN        2D  hr=0x80070057
+  srv UNKNOWN        2DA hr=0x80070057
+  rtv UNKNOWN        2DA hr=0x80070057
+  uav UNKNOWN        2DA hr=0x80070057
+  srv NV12           2D  hr=0x80070057
+  rtv NV12           2D  hr=0x80070057
+  uav NV12           2D  hr=0x80070057
+  srv NV12           2DA hr=0x80070057
+  rtv NV12           2DA hr=0x80070057
+  uav NV12           2DA hr=0x80070057
+  srv P010           2D  hr=0x80070057
+  rtv P010           2D  hr=0x80070057
+  uav P010           2D  hr=0x80070057
+  srv P010           2DA hr=0x80070057
+  rtv P010           2DA hr=0x80070057
+  uav P010           2DA hr=0x80070057
+  srv R8_UNORM       2D  hr=0x80070057
+  rtv R8_UNORM       2D  hr=0x80070057
+  uav R8_UNORM       2D  hr=0x80070057
+  srv R8_UNORM       2DA hr=0x80070057
+  rtv R8_UNORM       2DA hr=0x80070057
+  uav R8_UNORM       2DA hr=0x80070057
+  srv R8_UINT        2D  hr=0x80070057
+  rtv R8_UINT        2D  hr=0x80070057
+  uav R8_UINT        2D  hr=0x80070057
+  srv R8_UINT        2DA hr=0x80070057
+  rtv R8_UINT        2DA hr=0x80070057
+  uav R8_UINT        2DA hr=0x80070057
+  srv R8_SNORM       2D  hr=0x80070057
+  rtv R8_SNORM       2D  hr=0x80070057
+  uav R8_SNORM       2D  hr=0x80070057
+  srv R8_SNORM       2DA hr=0x80070057
+  rtv R8_SNORM       2DA hr=0x80070057
+  uav R8_SNORM       2DA hr=0x80070057
+  srv R8_TYPELESS    2D  hr=0x80070057
+  rtv R8_TYPELESS    2D  hr=0x80070057
+  uav R8_TYPELESS    2D  hr=0x80070057
+  srv R8_TYPELESS    2DA hr=0x80070057
+  rtv R8_TYPELESS    2DA hr=0x80070057
+  uav R8_TYPELESS    2DA hr=0x80070057
+  srv R8G8_UNORM     2D  hr=0x80070057
+  rtv R8G8_UNORM     2D  hr=0x80070057
+  uav R8G8_UNORM     2D  hr=0x80070057
+  srv R8G8_UNORM     2DA hr=0x80070057
+  rtv R8G8_UNORM     2DA hr=0x80070057
+  uav R8G8_UNORM     2DA hr=0x80070057
+  srv R8G8_UINT      2D  hr=0x80070057
+  rtv R8G8_UINT      2D  hr=0x80070057
+  uav R8G8_UINT      2D  hr=0x80070057
+  srv R8G8_UINT      2DA hr=0x80070057
+  rtv R8G8_UINT      2DA hr=0x80070057
+  uav R8G8_UINT      2DA hr=0x80070057
+  srv R8G8_SNORM     2D  hr=0x80070057
+  rtv R8G8_SNORM     2D  hr=0x80070057
+  uav R8G8_SNORM     2D  hr=0x80070057
+  srv R8G8_SNORM     2DA hr=0x80070057
+  rtv R8G8_SNORM     2DA hr=0x80070057
+  uav R8G8_SNORM     2DA hr=0x80070057
+  srv R16_UNORM      2D  hr=0x00000000 fmt=56 dim=4 plane=0
+  rtv R16_UNORM      2D  hr=0x00000000 fmt=56 dim=4 plane=0
+  uav R16_UNORM      2D  hr=0x00000000 fmt=56 dim=4 plane=0
+  srv R16_UNORM      2DA hr=0x00000000 fmt=56 dim=5 plane=0
+  rtv R16_UNORM      2DA hr=0x00000000 fmt=56 dim=5 plane=0
+  uav R16_UNORM      2DA hr=0x00000000 fmt=56 dim=5 plane=0
+  srv R16_UINT       2D  hr=0x00000000 fmt=57 dim=4 plane=0
+  rtv R16_UINT       2D  hr=0x00000000 fmt=57 dim=4 plane=0
+  uav R16_UINT       2D  hr=0x00000000 fmt=57 dim=4 plane=0
+  srv R16_UINT       2DA hr=0x00000000 fmt=57 dim=5 plane=0
+  rtv R16_UINT       2DA hr=0x00000000 fmt=57 dim=5 plane=0
+  uav R16_UINT       2DA hr=0x00000000 fmt=57 dim=5 plane=0
+  srv R16_FLOAT      2D  hr=0x80070057
+  rtv R16_FLOAT      2D  hr=0x80070057
+  uav R16_FLOAT      2D  hr=0x80070057
+  srv R16_FLOAT      2DA hr=0x80070057
+  rtv R16_FLOAT      2DA hr=0x80070057
+  uav R16_FLOAT      2DA hr=0x80070057
+  srv R16G16_UNORM   2D  hr=0x00000000 fmt=35 dim=4 plane=1
+  rtv R16G16_UNORM   2D  hr=0x00000000 fmt=35 dim=4 plane=1
+  uav R16G16_UNORM   2D  hr=0x00000000 fmt=35 dim=4 plane=1
+  srv R16G16_UNORM   2DA hr=0x00000000 fmt=35 dim=5 plane=1
+  rtv R16G16_UNORM   2DA hr=0x00000000 fmt=35 dim=5 plane=1
+  uav R16G16_UNORM   2DA hr=0x00000000 fmt=35 dim=5 plane=1
+  srv R16G16_UINT    2D  hr=0x00000000 fmt=36 dim=4 plane=1
+  rtv R16G16_UINT    2D  hr=0x00000000 fmt=36 dim=4 plane=1
+  uav R16G16_UINT    2D  hr=0x00000000 fmt=36 dim=4 plane=1
+  srv R16G16_UINT    2DA hr=0x00000000 fmt=36 dim=5 plane=1
+  rtv R16G16_UINT    2DA hr=0x00000000 fmt=36 dim=5 plane=1
+  uav R16G16_UINT    2DA hr=0x00000000 fmt=36 dim=5 plane=1
+  srv R32_UINT       2D  hr=0x80070057
+  rtv R32_UINT       2D  hr=0x80070057
+  uav R32_UINT       2D  hr=0x00000000 fmt=42 dim=4 plane=1
+  srv R32_UINT       2DA hr=0x80070057
+  rtv R32_UINT       2DA hr=0x80070057
+  uav R32_UINT       2DA hr=0x00000000 fmt=42 dim=5 plane=1
+  srv R8G8B8A8_UNORM 2D  hr=0x80070057
+  rtv R8G8B8A8_UNORM 2D  hr=0x80070057
+  uav R8G8B8A8_UNORM 2D  hr=0x80070057
+  srv R8G8B8A8_UNORM 2DA hr=0x80070057
+  rtv R8G8B8A8_UNORM 2DA hr=0x80070057
+  uav R8G8B8A8_UNORM 2DA hr=0x80070057
+  srv1 UNKNOWN        plane0 hr=0x80070057
+  rtv1 UNKNOWN        plane0 hr=0x80070057
+  uav1 UNKNOWN        plane0 hr=0x80070057
+  srv1 UNKNOWN        plane1 hr=0x80070057
+  rtv1 UNKNOWN        plane1 hr=0x80070057
+  uav1 UNKNOWN        plane1 hr=0x80070057
+  srv1 UNKNOWN        plane2 hr=0x80070057
+  rtv1 UNKNOWN        plane2 hr=0x80070057
+  uav1 UNKNOWN        plane2 hr=0x80070057
+  srv1 NV12           plane0 hr=0x80070057
+  rtv1 NV12           plane0 hr=0x80070057
+  uav1 NV12           plane0 hr=0x80070057
+  srv1 NV12           plane1 hr=0x80070057
+  rtv1 NV12           plane1 hr=0x80070057
+  uav1 NV12           plane1 hr=0x80070057
+  srv1 NV12           plane2 hr=0x80070057
+  rtv1 NV12           plane2 hr=0x80070057
+  uav1 NV12           plane2 hr=0x80070057
+  srv1 P010           plane0 hr=0x80070057
+  rtv1 P010           plane0 hr=0x80070057
+  uav1 P010           plane0 hr=0x80070057
+  srv1 P010           plane1 hr=0x80070057
+  rtv1 P010           plane1 hr=0x80070057
+  uav1 P010           plane1 hr=0x80070057
+  srv1 P010           plane2 hr=0x80070057
+  rtv1 P010           plane2 hr=0x80070057
+  uav1 P010           plane2 hr=0x80070057
+  srv1 R8_UNORM       plane0 hr=0x80070057
+  rtv1 R8_UNORM       plane0 hr=0x80070057
+  uav1 R8_UNORM       plane0 hr=0x80070057
+  srv1 R8_UNORM       plane1 hr=0x80070057
+  rtv1 R8_UNORM       plane1 hr=0x80070057
+  uav1 R8_UNORM       plane1 hr=0x80070057
+  srv1 R8_UNORM       plane2 hr=0x80070057
+  rtv1 R8_UNORM       plane2 hr=0x80070057
+  uav1 R8_UNORM       plane2 hr=0x80070057
+  srv1 R8_UINT        plane0 hr=0x80070057
+  rtv1 R8_UINT        plane0 hr=0x80070057
+  uav1 R8_UINT        plane0 hr=0x80070057
+  srv1 R8_UINT        plane1 hr=0x80070057
+  rtv1 R8_UINT        plane1 hr=0x80070057
+  uav1 R8_UINT        plane1 hr=0x80070057
+  srv1 R8_UINT        plane2 hr=0x80070057
+  rtv1 R8_UINT        plane2 hr=0x80070057
+  uav1 R8_UINT        plane2 hr=0x80070057
+  srv1 R8_SNORM       plane0 hr=0x80070057
+  rtv1 R8_SNORM       plane0 hr=0x80070057
+  uav1 R8_SNORM       plane0 hr=0x80070057
+  srv1 R8_SNORM       plane1 hr=0x80070057
+  rtv1 R8_SNORM       plane1 hr=0x80070057
+  uav1 R8_SNORM       plane1 hr=0x80070057
+  srv1 R8_SNORM       plane2 hr=0x80070057
+  rtv1 R8_SNORM       plane2 hr=0x80070057
+  uav1 R8_SNORM       plane2 hr=0x80070057
+  srv1 R8_TYPELESS    plane0 hr=0x80070057
+  rtv1 R8_TYPELESS    plane0 hr=0x80070057
+  uav1 R8_TYPELESS    plane0 hr=0x80070057
+  srv1 R8_TYPELESS    plane1 hr=0x80070057
+  rtv1 R8_TYPELESS    plane1 hr=0x80070057
+  uav1 R8_TYPELESS    plane1 hr=0x80070057
+  srv1 R8_TYPELESS    plane2 hr=0x80070057
+  rtv1 R8_TYPELESS    plane2 hr=0x80070057
+  uav1 R8_TYPELESS    plane2 hr=0x80070057
+  srv1 R8G8_UNORM     plane0 hr=0x80070057
+  rtv1 R8G8_UNORM     plane0 hr=0x80070057
+  uav1 R8G8_UNORM     plane0 hr=0x80070057
+  srv1 R8G8_UNORM     plane1 hr=0x80070057
+  rtv1 R8G8_UNORM     plane1 hr=0x80070057
+  uav1 R8G8_UNORM     plane1 hr=0x80070057
+  srv1 R8G8_UNORM     plane2 hr=0x80070057
+  rtv1 R8G8_UNORM     plane2 hr=0x80070057
+  uav1 R8G8_UNORM     plane2 hr=0x80070057
+  srv1 R8G8_UINT      plane0 hr=0x80070057
+  rtv1 R8G8_UINT      plane0 hr=0x80070057
+  uav1 R8G8_UINT      plane0 hr=0x80070057
+  srv1 R8G8_UINT      plane1 hr=0x80070057
+  rtv1 R8G8_UINT      plane1 hr=0x80070057
+  uav1 R8G8_UINT      plane1 hr=0x80070057
+  srv1 R8G8_UINT      plane2 hr=0x80070057
+  rtv1 R8G8_UINT      plane2 hr=0x80070057
+  uav1 R8G8_UINT      plane2 hr=0x80070057
+  srv1 R8G8_SNORM     plane0 hr=0x80070057
+  rtv1 R8G8_SNORM     plane0 hr=0x80070057
+  uav1 R8G8_SNORM     plane0 hr=0x80070057
+  srv1 R8G8_SNORM     plane1 hr=0x80070057
+  rtv1 R8G8_SNORM     plane1 hr=0x80070057
+  uav1 R8G8_SNORM     plane1 hr=0x80070057
+  srv1 R8G8_SNORM     plane2 hr=0x80070057
+  rtv1 R8G8_SNORM     plane2 hr=0x80070057
+  uav1 R8G8_SNORM     plane2 hr=0x80070057
+  srv1 R16_UNORM      plane0 hr=0x00000000 fmt=56 dim=4 plane=0
+  rtv1 R16_UNORM      plane0 hr=0x00000000 fmt=56 dim=5 plane=0
+  uav1 R16_UNORM      plane0 hr=0x00000000 fmt=56 dim=4 plane=0
+  srv1 R16_UNORM      plane1 hr=0x80070057
+  rtv1 R16_UNORM      plane1 hr=0x80070057
+  uav1 R16_UNORM      plane1 hr=0x80070057
+  srv1 R16_UNORM      plane2 hr=0x80070057
+  rtv1 R16_UNORM      plane2 hr=0x80070057
+  uav1 R16_UNORM      plane2 hr=0x80070057
+  srv1 R16_UINT       plane0 hr=0x00000000 fmt=57 dim=4 plane=0
+  rtv1 R16_UINT       plane0 hr=0x00000000 fmt=57 dim=5 plane=0
+  uav1 R16_UINT       plane0 hr=0x00000000 fmt=57 dim=4 plane=0
+  srv1 R16_UINT       plane1 hr=0x80070057
+  rtv1 R16_UINT       plane1 hr=0x80070057
+  uav1 R16_UINT       plane1 hr=0x80070057
+  srv1 R16_UINT       plane2 hr=0x80070057
+  rtv1 R16_UINT       plane2 hr=0x80070057
+  uav1 R16_UINT       plane2 hr=0x80070057
+  srv1 R16_FLOAT      plane0 hr=0x80070057
+  rtv1 R16_FLOAT      plane0 hr=0x80070057
+  uav1 R16_FLOAT      plane0 hr=0x80070057
+  srv1 R16_FLOAT      plane1 hr=0x80070057
+  rtv1 R16_FLOAT      plane1 hr=0x80070057
+  uav1 R16_FLOAT      plane1 hr=0x80070057
+  srv1 R16_FLOAT      plane2 hr=0x80070057
+  rtv1 R16_FLOAT      plane2 hr=0x80070057
+  uav1 R16_FLOAT      plane2 hr=0x80070057
+  srv1 R16G16_UNORM   plane0 hr=0x80070057
+  rtv1 R16G16_UNORM   plane0 hr=0x80070057
+  uav1 R16G16_UNORM   plane0 hr=0x80070057
+  srv1 R16G16_UNORM   plane1 hr=0x00000000 fmt=35 dim=4 plane=1
+  rtv1 R16G16_UNORM   plane1 hr=0x00000000 fmt=35 dim=5 plane=1
+  uav1 R16G16_UNORM   plane1 hr=0x00000000 fmt=35 dim=4 plane=1
+  srv1 R16G16_UNORM   plane2 hr=0x80070057
+  rtv1 R16G16_UNORM   plane2 hr=0x80070057
+  uav1 R16G16_UNORM   plane2 hr=0x80070057
+  srv1 R16G16_UINT    plane0 hr=0x80070057
+  rtv1 R16G16_UINT    plane0 hr=0x80070057
+  uav1 R16G16_UINT    plane0 hr=0x80070057
+  srv1 R16G16_UINT    plane1 hr=0x00000000 fmt=36 dim=4 plane=1
+  rtv1 R16G16_UINT    plane1 hr=0x00000000 fmt=36 dim=5 plane=1
+  uav1 R16G16_UINT    plane1 hr=0x00000000 fmt=36 dim=4 plane=1
+  srv1 R16G16_UINT    plane2 hr=0x80070057
+  rtv1 R16G16_UINT    plane2 hr=0x80070057
+  uav1 R16G16_UINT    plane2 hr=0x80070057
+  srv1 R32_UINT       plane0 hr=0x80070057
+  rtv1 R32_UINT       plane0 hr=0x80070057
+  uav1 R32_UINT       plane0 hr=0x80070057
+  srv1 R32_UINT       plane1 hr=0x80070057
+  rtv1 R32_UINT       plane1 hr=0x80070057
+  uav1 R32_UINT       plane1 hr=0x00000000 fmt=42 dim=4 plane=1
+  srv1 R32_UINT       plane2 hr=0x80070057
+  rtv1 R32_UINT       plane2 hr=0x80070057
+  uav1 R32_UINT       plane2 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane2 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane2 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane2 hr=0x80070057
+[layout P010]
+  staging 16x8 array2 hr=0x00000000 map0=0x00000000 row=32 depth=256 map1=0x00000000 row=32 depth=256 map2=0x80070057
+  dynamic 16x8 hr=0x00000000 map=0x00000000 row=32 depth=256
+  init pitch 20 hr=0x00000000
+  readback pitch=16 depth=64
+  init  0:01060b10151a1f24292e33383d42474c
+  init  1:656a6f74797e83888d92979ca1a6abb0
+  init  2:c9ced3d8dde2e7ecf1f6fb00050a0f14
+  init  3:2d32373c41464b50555a5f64696e7378
+  init  4:91969ba0a5aaafb4b9bec3c8cdd2d7dc
+  init  5:f5faff04090e13181d22272c31363b40
+  upd  0:808182838485868788898a8b8c8d8e8f
+  upd  1:92939495969798999a9b9c9d9e9fa0a1
+  upd  2:a4a5a6a7a8a9aaabacadaeafb0b1b2b3
+  upd  3:b6b7b8b9babbbcbdbebfc0c1c2c3c4c5
+  upd  4:c8c9cacbcccdcecfd0d1d2d3d4d5d6d7
+  upd  5:dadbdcdddedfe0e1e2e3e4e5e6e7e8e9
+  box2,2-6,4  0:00000000000000000000000000000000
+  box2,2-6,4  1:00000000000000000000000000000000
+  box2,2-6,4  2:00000000101112131415161700000000
+  box2,2-6,4  3:00000000202122232425262700000000
+  box2,2-6,4  4:00000000000000000000000000000000
+  box2,2-6,4  5:00000000303132333435363700000000
+  box1,1-5,3  0:00000000000000000000000000000000
+  box1,1-5,3  1:00000000000000000000000000000000
+  box1,1-5,3  2:00000000000000000000000000000000
+  box1,1-5,3  3:00000000000000000000000000000000
+  box1,1-5,3  4:00000000000000000000000000000000
+  box1,1-5,3  5:00000000000000000000000000000000
+  box0,0-8,2  0:101112131415161718191a1b1c1d1e1f
+  box0,0-8,2  1:202122232425262728292a2b2c2d2e2f
+  box0,0-8,2  2:00000000000000000000000000000000
+  box0,0-8,2  3:00000000000000000000000000000000
+  box0,0-8,2  4:303132333435363738393a3b3c3d3e3f
+  box0,0-8,2  5:00000000000000000000000000000000
+  box6,2-8,4  0:00000000000000000000000000000000
+  box6,2-8,4  1:00000000000000000000000000000000
+  box6,2-8,4  2:00000000000000000000000010111213
+  box6,2-8,4  3:00000000000000000000000020212223
+  box6,2-8,4  4:00000000000000000000000000000000
+  box6,2-8,4  5:00000000000000000000000030313233
+  copy@2,2<-0,0-4,2  0:00000000000000000000000000000000
+  copy@2,2<-0,0-4,2  1:00000000000000000000000000000000
+  copy@2,2<-0,0-4,2  2:00000000a0a1a2a3a4a5a6a700000000
+  copy@2,2<-0,0-4,2  3:00000000b0b1b2b3b4b5b6b700000000
+  copy@2,2<-0,0-4,2  4:00000000000000000000000000000000
+  copy@2,2<-0,0-4,2  5:00000000e0e1e2e3e4e5e6e700000000
+  copy@1,1<-0,0-4,2  0:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  1:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  2:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  3:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  4:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  5:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  0:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  1:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  2:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  3:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  4:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  5:00000000000000000000000000000000
+  copy@0,0<-0,0-8,4  0:a0a1a2a3a4a5a6a7a8a9aaabacadaeaf
+  copy@0,0<-0,0-8,4  1:b0b1b2b3b4b5b6b7b8b9babbbcbdbebf
+  copy@0,0<-0,0-8,4  2:c0c1c2c3c4c5c6c7c8c9cacbcccdcecf
+  copy@0,0<-0,0-8,4  3:d0d1d2d3d4d5d6d7d8d9dadbdcdddedf
+  copy@0,0<-0,0-8,4  4:e0e1e2e3e4e5e6e7e8e9eaebecedeeef
+  copy@0,0<-0,0-8,4  5:f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff
+  clear luma rtv hr=0x00000000
+  clear chroma rtv hr=0x00000000
+  rtvclear  0:00800080008000800080008000800080
+  rtvclear  1:00800080008000800080008000800080
+  rtvclear  2:00800080008000800080008000800080
+  rtvclear  3:00800080008000800080008000800080
+  rtvclear  4:0040ffbf0040ffbf0040ffbf0040ffbf
+  rtvclear  5:0040ffbf0040ffbf0040ffbf0040ffbf
+  clear luma uav hr=0x00000000
+  clear chroma uav hr=0x00000000
+  uavclear  0:07000700070007000700070007000700
+  uavclear  1:07000700070007000700070007000700
+  uavclear  2:07000700070007000700070007000700
+  uavclear  3:07000700070007000700070007000700
+  uavclear  4:0b000c000b000c000b000c000b000c00
+  uavclear  5:0b000c000b000c000b000c000b000c00
+  staging 8x4 row=16 depth=64
+  fromstg  0:000102030405060708090a0b0c0d0e0f
+  fromstg  1:101112131415161718191a1b1c1d1e1f
+  fromstg  2:202122232425262728292a2b2c2d2e2f
+  fromstg  3:303132333435363738393a3b3c3d3e3f
+  fromstg  4:404142434445464748494a4b4c4d4e4f
+  fromstg  5:505152535455565758595a5b5c5d5e5f
+[P016] CheckFormatSupport hr=0x00000000 0x0282c320
+[create P016]
+  size 16x8 hr=0x00000000
+  size 15x8 hr=0x80070057
+  size 16x7 hr=0x80070057
+  size 2x2 hr=0x00000000
+  size 1x1 hr=0x80070057
+  size 1x2 hr=0x80070057
+  size 2x1 hr=0x80070057
+  size 4096x2 hr=0x00000000
+  mips 1 hr=0x00000000 got=1
+  mips 2 hr=0x80070057 got=0
+  mips 0 hr=0x80070057 got=0
+  array 2 hr=0x00000000
+  array 3 hr=0x80070057
+  array 6 hr=0x80070057
+  array 2048 hr=0x80070057
+  bind 0            hr=0x00000000
+  bind SRV          hr=0x00000000
+  bind RTV          hr=0x00000000
+  bind UAV          hr=0x00000000
+  bind SRV|RTV|UAV  hr=0x00000000
+  bind DSV          hr=0x80070057
+  bind DECODER      hr=0x80070057
+  bind ENCODER      hr=0x80070057
+  bind SRV|DECODER  hr=0x80070057
+  bind VB           hr=0x80070057
+  usage DEFAULT init     hr=0x00000000
+  usage IMMUTABLE init   hr=0x00000000
+  usage IMMUTABLE noinit hr=0x80070057
+  usage DYNAMIC W        hr=0x00000000
+  usage STAGING R        hr=0x00000000
+  usage STAGING W        hr=0x00000000
+  usage STAGING RW init  hr=0x00000000
+  misc GENERATE_MIPS  hr=0x00000000
+  misc TEXTURECUBE    hr=0x80070057
+  misc RESOURCE_CLAMP hr=0x00000000
+  misc GDI_COMPATIBLE hr=0x80070057
+  msaa4 hr=0x80070057
+[views P016]
+  texture array2 SRV|RTV|UAV hr=0x00000000
+  NULL desc srv=0x80070057 rtv=0x80070057 uav=0x80070057
+  srv UNKNOWN        2D  hr=0x80070057
+  rtv UNKNOWN        2D  hr=0x80070057
+  uav UNKNOWN        2D  hr=0x80070057
+  srv UNKNOWN        2DA hr=0x80070057
+  rtv UNKNOWN        2DA hr=0x80070057
+  uav UNKNOWN        2DA hr=0x80070057
+  srv NV12           2D  hr=0x80070057
+  rtv NV12           2D  hr=0x80070057
+  uav NV12           2D  hr=0x80070057
+  srv NV12           2DA hr=0x80070057
+  rtv NV12           2DA hr=0x80070057
+  uav NV12           2DA hr=0x80070057
+  srv P010           2D  hr=0x80070057
+  rtv P010           2D  hr=0x80070057
+  uav P010           2D  hr=0x80070057
+  srv P010           2DA hr=0x80070057
+  rtv P010           2DA hr=0x80070057
+  uav P010           2DA hr=0x80070057
+  srv R8_UNORM       2D  hr=0x80070057
+  rtv R8_UNORM       2D  hr=0x80070057
+  uav R8_UNORM       2D  hr=0x80070057
+  srv R8_UNORM       2DA hr=0x80070057
+  rtv R8_UNORM       2DA hr=0x80070057
+  uav R8_UNORM       2DA hr=0x80070057
+  srv R8_UINT        2D  hr=0x80070057
+  rtv R8_UINT        2D  hr=0x80070057
+  uav R8_UINT        2D  hr=0x80070057
+  srv R8_UINT        2DA hr=0x80070057
+  rtv R8_UINT        2DA hr=0x80070057
+  uav R8_UINT        2DA hr=0x80070057
+  srv R8_SNORM       2D  hr=0x80070057
+  rtv R8_SNORM       2D  hr=0x80070057
+  uav R8_SNORM       2D  hr=0x80070057
+  srv R8_SNORM       2DA hr=0x80070057
+  rtv R8_SNORM       2DA hr=0x80070057
+  uav R8_SNORM       2DA hr=0x80070057
+  srv R8_TYPELESS    2D  hr=0x80070057
+  rtv R8_TYPELESS    2D  hr=0x80070057
+  uav R8_TYPELESS    2D  hr=0x80070057
+  srv R8_TYPELESS    2DA hr=0x80070057
+  rtv R8_TYPELESS    2DA hr=0x80070057
+  uav R8_TYPELESS    2DA hr=0x80070057
+  srv R8G8_UNORM     2D  hr=0x80070057
+  rtv R8G8_UNORM     2D  hr=0x80070057
+  uav R8G8_UNORM     2D  hr=0x80070057
+  srv R8G8_UNORM     2DA hr=0x80070057
+  rtv R8G8_UNORM     2DA hr=0x80070057
+  uav R8G8_UNORM     2DA hr=0x80070057
+  srv R8G8_UINT      2D  hr=0x80070057
+  rtv R8G8_UINT      2D  hr=0x80070057
+  uav R8G8_UINT      2D  hr=0x80070057
+  srv R8G8_UINT      2DA hr=0x80070057
+  rtv R8G8_UINT      2DA hr=0x80070057
+  uav R8G8_UINT      2DA hr=0x80070057
+  srv R8G8_SNORM     2D  hr=0x80070057
+  rtv R8G8_SNORM     2D  hr=0x80070057
+  uav R8G8_SNORM     2D  hr=0x80070057
+  srv R8G8_SNORM     2DA hr=0x80070057
+  rtv R8G8_SNORM     2DA hr=0x80070057
+  uav R8G8_SNORM     2DA hr=0x80070057
+  srv R16_UNORM      2D  hr=0x00000000 fmt=56 dim=4 plane=0
+  rtv R16_UNORM      2D  hr=0x00000000 fmt=56 dim=4 plane=0
+  uav R16_UNORM      2D  hr=0x00000000 fmt=56 dim=4 plane=0
+  srv R16_UNORM      2DA hr=0x00000000 fmt=56 dim=5 plane=0
+  rtv R16_UNORM      2DA hr=0x00000000 fmt=56 dim=5 plane=0
+  uav R16_UNORM      2DA hr=0x00000000 fmt=56 dim=5 plane=0
+  srv R16_UINT       2D  hr=0x00000000 fmt=57 dim=4 plane=0
+  rtv R16_UINT       2D  hr=0x00000000 fmt=57 dim=4 plane=0
+  uav R16_UINT       2D  hr=0x00000000 fmt=57 dim=4 plane=0
+  srv R16_UINT       2DA hr=0x00000000 fmt=57 dim=5 plane=0
+  rtv R16_UINT       2DA hr=0x00000000 fmt=57 dim=5 plane=0
+  uav R16_UINT       2DA hr=0x00000000 fmt=57 dim=5 plane=0
+  srv R16_FLOAT      2D  hr=0x80070057
+  rtv R16_FLOAT      2D  hr=0x80070057
+  uav R16_FLOAT      2D  hr=0x80070057
+  srv R16_FLOAT      2DA hr=0x80070057
+  rtv R16_FLOAT      2DA hr=0x80070057
+  uav R16_FLOAT      2DA hr=0x80070057
+  srv R16G16_UNORM   2D  hr=0x00000000 fmt=35 dim=4 plane=1
+  rtv R16G16_UNORM   2D  hr=0x00000000 fmt=35 dim=4 plane=1
+  uav R16G16_UNORM   2D  hr=0x00000000 fmt=35 dim=4 plane=1
+  srv R16G16_UNORM   2DA hr=0x00000000 fmt=35 dim=5 plane=1
+  rtv R16G16_UNORM   2DA hr=0x00000000 fmt=35 dim=5 plane=1
+  uav R16G16_UNORM   2DA hr=0x00000000 fmt=35 dim=5 plane=1
+  srv R16G16_UINT    2D  hr=0x00000000 fmt=36 dim=4 plane=1
+  rtv R16G16_UINT    2D  hr=0x00000000 fmt=36 dim=4 plane=1
+  uav R16G16_UINT    2D  hr=0x00000000 fmt=36 dim=4 plane=1
+  srv R16G16_UINT    2DA hr=0x00000000 fmt=36 dim=5 plane=1
+  rtv R16G16_UINT    2DA hr=0x00000000 fmt=36 dim=5 plane=1
+  uav R16G16_UINT    2DA hr=0x00000000 fmt=36 dim=5 plane=1
+  srv R32_UINT       2D  hr=0x80070057
+  rtv R32_UINT       2D  hr=0x80070057
+  uav R32_UINT       2D  hr=0x00000000 fmt=42 dim=4 plane=1
+  srv R32_UINT       2DA hr=0x80070057
+  rtv R32_UINT       2DA hr=0x80070057
+  uav R32_UINT       2DA hr=0x00000000 fmt=42 dim=5 plane=1
+  srv R8G8B8A8_UNORM 2D  hr=0x80070057
+  rtv R8G8B8A8_UNORM 2D  hr=0x80070057
+  uav R8G8B8A8_UNORM 2D  hr=0x80070057
+  srv R8G8B8A8_UNORM 2DA hr=0x80070057
+  rtv R8G8B8A8_UNORM 2DA hr=0x80070057
+  uav R8G8B8A8_UNORM 2DA hr=0x80070057
+  srv1 UNKNOWN        plane0 hr=0x80070057
+  rtv1 UNKNOWN        plane0 hr=0x80070057
+  uav1 UNKNOWN        plane0 hr=0x80070057
+  srv1 UNKNOWN        plane1 hr=0x80070057
+  rtv1 UNKNOWN        plane1 hr=0x80070057
+  uav1 UNKNOWN        plane1 hr=0x80070057
+  srv1 UNKNOWN        plane2 hr=0x80070057
+  rtv1 UNKNOWN        plane2 hr=0x80070057
+  uav1 UNKNOWN        plane2 hr=0x80070057
+  srv1 NV12           plane0 hr=0x80070057
+  rtv1 NV12           plane0 hr=0x80070057
+  uav1 NV12           plane0 hr=0x80070057
+  srv1 NV12           plane1 hr=0x80070057
+  rtv1 NV12           plane1 hr=0x80070057
+  uav1 NV12           plane1 hr=0x80070057
+  srv1 NV12           plane2 hr=0x80070057
+  rtv1 NV12           plane2 hr=0x80070057
+  uav1 NV12           plane2 hr=0x80070057
+  srv1 P010           plane0 hr=0x80070057
+  rtv1 P010           plane0 hr=0x80070057
+  uav1 P010           plane0 hr=0x80070057
+  srv1 P010           plane1 hr=0x80070057
+  rtv1 P010           plane1 hr=0x80070057
+  uav1 P010           plane1 hr=0x80070057
+  srv1 P010           plane2 hr=0x80070057
+  rtv1 P010           plane2 hr=0x80070057
+  uav1 P010           plane2 hr=0x80070057
+  srv1 R8_UNORM       plane0 hr=0x80070057
+  rtv1 R8_UNORM       plane0 hr=0x80070057
+  uav1 R8_UNORM       plane0 hr=0x80070057
+  srv1 R8_UNORM       plane1 hr=0x80070057
+  rtv1 R8_UNORM       plane1 hr=0x80070057
+  uav1 R8_UNORM       plane1 hr=0x80070057
+  srv1 R8_UNORM       plane2 hr=0x80070057
+  rtv1 R8_UNORM       plane2 hr=0x80070057
+  uav1 R8_UNORM       plane2 hr=0x80070057
+  srv1 R8_UINT        plane0 hr=0x80070057
+  rtv1 R8_UINT        plane0 hr=0x80070057
+  uav1 R8_UINT        plane0 hr=0x80070057
+  srv1 R8_UINT        plane1 hr=0x80070057
+  rtv1 R8_UINT        plane1 hr=0x80070057
+  uav1 R8_UINT        plane1 hr=0x80070057
+  srv1 R8_UINT        plane2 hr=0x80070057
+  rtv1 R8_UINT        plane2 hr=0x80070057
+  uav1 R8_UINT        plane2 hr=0x80070057
+  srv1 R8_SNORM       plane0 hr=0x80070057
+  rtv1 R8_SNORM       plane0 hr=0x80070057
+  uav1 R8_SNORM       plane0 hr=0x80070057
+  srv1 R8_SNORM       plane1 hr=0x80070057
+  rtv1 R8_SNORM       plane1 hr=0x80070057
+  uav1 R8_SNORM       plane1 hr=0x80070057
+  srv1 R8_SNORM       plane2 hr=0x80070057
+  rtv1 R8_SNORM       plane2 hr=0x80070057
+  uav1 R8_SNORM       plane2 hr=0x80070057
+  srv1 R8_TYPELESS    plane0 hr=0x80070057
+  rtv1 R8_TYPELESS    plane0 hr=0x80070057
+  uav1 R8_TYPELESS    plane0 hr=0x80070057
+  srv1 R8_TYPELESS    plane1 hr=0x80070057
+  rtv1 R8_TYPELESS    plane1 hr=0x80070057
+  uav1 R8_TYPELESS    plane1 hr=0x80070057
+  srv1 R8_TYPELESS    plane2 hr=0x80070057
+  rtv1 R8_TYPELESS    plane2 hr=0x80070057
+  uav1 R8_TYPELESS    plane2 hr=0x80070057
+  srv1 R8G8_UNORM     plane0 hr=0x80070057
+  rtv1 R8G8_UNORM     plane0 hr=0x80070057
+  uav1 R8G8_UNORM     plane0 hr=0x80070057
+  srv1 R8G8_UNORM     plane1 hr=0x80070057
+  rtv1 R8G8_UNORM     plane1 hr=0x80070057
+  uav1 R8G8_UNORM     plane1 hr=0x80070057
+  srv1 R8G8_UNORM     plane2 hr=0x80070057
+  rtv1 R8G8_UNORM     plane2 hr=0x80070057
+  uav1 R8G8_UNORM     plane2 hr=0x80070057
+  srv1 R8G8_UINT      plane0 hr=0x80070057
+  rtv1 R8G8_UINT      plane0 hr=0x80070057
+  uav1 R8G8_UINT      plane0 hr=0x80070057
+  srv1 R8G8_UINT      plane1 hr=0x80070057
+  rtv1 R8G8_UINT      plane1 hr=0x80070057
+  uav1 R8G8_UINT      plane1 hr=0x80070057
+  srv1 R8G8_UINT      plane2 hr=0x80070057
+  rtv1 R8G8_UINT      plane2 hr=0x80070057
+  uav1 R8G8_UINT      plane2 hr=0x80070057
+  srv1 R8G8_SNORM     plane0 hr=0x80070057
+  rtv1 R8G8_SNORM     plane0 hr=0x80070057
+  uav1 R8G8_SNORM     plane0 hr=0x80070057
+  srv1 R8G8_SNORM     plane1 hr=0x80070057
+  rtv1 R8G8_SNORM     plane1 hr=0x80070057
+  uav1 R8G8_SNORM     plane1 hr=0x80070057
+  srv1 R8G8_SNORM     plane2 hr=0x80070057
+  rtv1 R8G8_SNORM     plane2 hr=0x80070057
+  uav1 R8G8_SNORM     plane2 hr=0x80070057
+  srv1 R16_UNORM      plane0 hr=0x00000000 fmt=56 dim=4 plane=0
+  rtv1 R16_UNORM      plane0 hr=0x00000000 fmt=56 dim=5 plane=0
+  uav1 R16_UNORM      plane0 hr=0x00000000 fmt=56 dim=4 plane=0
+  srv1 R16_UNORM      plane1 hr=0x80070057
+  rtv1 R16_UNORM      plane1 hr=0x80070057
+  uav1 R16_UNORM      plane1 hr=0x80070057
+  srv1 R16_UNORM      plane2 hr=0x80070057
+  rtv1 R16_UNORM      plane2 hr=0x80070057
+  uav1 R16_UNORM      plane2 hr=0x80070057
+  srv1 R16_UINT       plane0 hr=0x00000000 fmt=57 dim=4 plane=0
+  rtv1 R16_UINT       plane0 hr=0x00000000 fmt=57 dim=5 plane=0
+  uav1 R16_UINT       plane0 hr=0x00000000 fmt=57 dim=4 plane=0
+  srv1 R16_UINT       plane1 hr=0x80070057
+  rtv1 R16_UINT       plane1 hr=0x80070057
+  uav1 R16_UINT       plane1 hr=0x80070057
+  srv1 R16_UINT       plane2 hr=0x80070057
+  rtv1 R16_UINT       plane2 hr=0x80070057
+  uav1 R16_UINT       plane2 hr=0x80070057
+  srv1 R16_FLOAT      plane0 hr=0x80070057
+  rtv1 R16_FLOAT      plane0 hr=0x80070057
+  uav1 R16_FLOAT      plane0 hr=0x80070057
+  srv1 R16_FLOAT      plane1 hr=0x80070057
+  rtv1 R16_FLOAT      plane1 hr=0x80070057
+  uav1 R16_FLOAT      plane1 hr=0x80070057
+  srv1 R16_FLOAT      plane2 hr=0x80070057
+  rtv1 R16_FLOAT      plane2 hr=0x80070057
+  uav1 R16_FLOAT      plane2 hr=0x80070057
+  srv1 R16G16_UNORM   plane0 hr=0x80070057
+  rtv1 R16G16_UNORM   plane0 hr=0x80070057
+  uav1 R16G16_UNORM   plane0 hr=0x80070057
+  srv1 R16G16_UNORM   plane1 hr=0x00000000 fmt=35 dim=4 plane=1
+  rtv1 R16G16_UNORM   plane1 hr=0x00000000 fmt=35 dim=5 plane=1
+  uav1 R16G16_UNORM   plane1 hr=0x00000000 fmt=35 dim=4 plane=1
+  srv1 R16G16_UNORM   plane2 hr=0x80070057
+  rtv1 R16G16_UNORM   plane2 hr=0x80070057
+  uav1 R16G16_UNORM   plane2 hr=0x80070057
+  srv1 R16G16_UINT    plane0 hr=0x80070057
+  rtv1 R16G16_UINT    plane0 hr=0x80070057
+  uav1 R16G16_UINT    plane0 hr=0x80070057
+  srv1 R16G16_UINT    plane1 hr=0x00000000 fmt=36 dim=4 plane=1
+  rtv1 R16G16_UINT    plane1 hr=0x00000000 fmt=36 dim=5 plane=1
+  uav1 R16G16_UINT    plane1 hr=0x00000000 fmt=36 dim=4 plane=1
+  srv1 R16G16_UINT    plane2 hr=0x80070057
+  rtv1 R16G16_UINT    plane2 hr=0x80070057
+  uav1 R16G16_UINT    plane2 hr=0x80070057
+  srv1 R32_UINT       plane0 hr=0x80070057
+  rtv1 R32_UINT       plane0 hr=0x80070057
+  uav1 R32_UINT       plane0 hr=0x80070057
+  srv1 R32_UINT       plane1 hr=0x80070057
+  rtv1 R32_UINT       plane1 hr=0x80070057
+  uav1 R32_UINT       plane1 hr=0x00000000 fmt=42 dim=4 plane=1
+  srv1 R32_UINT       plane2 hr=0x80070057
+  rtv1 R32_UINT       plane2 hr=0x80070057
+  uav1 R32_UINT       plane2 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane0 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane1 hr=0x80070057
+  srv1 R8G8B8A8_UNORM plane2 hr=0x80070057
+  rtv1 R8G8B8A8_UNORM plane2 hr=0x80070057
+  uav1 R8G8B8A8_UNORM plane2 hr=0x80070057
+[layout P016]
+  staging 16x8 array2 hr=0x00000000 map0=0x00000000 row=32 depth=256 map1=0x00000000 row=32 depth=256 map2=0x80070057
+  dynamic 16x8 hr=0x00000000 map=0x00000000 row=32 depth=256
+  init pitch 20 hr=0x00000000
+  readback pitch=16 depth=64
+  init  0:01060b10151a1f24292e33383d42474c
+  init  1:656a6f74797e83888d92979ca1a6abb0
+  init  2:c9ced3d8dde2e7ecf1f6fb00050a0f14
+  init  3:2d32373c41464b50555a5f64696e7378
+  init  4:91969ba0a5aaafb4b9bec3c8cdd2d7dc
+  init  5:f5faff04090e13181d22272c31363b40
+  upd  0:808182838485868788898a8b8c8d8e8f
+  upd  1:92939495969798999a9b9c9d9e9fa0a1
+  upd  2:a4a5a6a7a8a9aaabacadaeafb0b1b2b3
+  upd  3:b6b7b8b9babbbcbdbebfc0c1c2c3c4c5
+  upd  4:c8c9cacbcccdcecfd0d1d2d3d4d5d6d7
+  upd  5:dadbdcdddedfe0e1e2e3e4e5e6e7e8e9
+  box2,2-6,4  0:00000000000000000000000000000000
+  box2,2-6,4  1:00000000000000000000000000000000
+  box2,2-6,4  2:00000000101112131415161700000000
+  box2,2-6,4  3:00000000202122232425262700000000
+  box2,2-6,4  4:00000000000000000000000000000000
+  box2,2-6,4  5:00000000303132333435363700000000
+  box1,1-5,3  0:00000000000000000000000000000000
+  box1,1-5,3  1:00000000000000000000000000000000
+  box1,1-5,3  2:00000000000000000000000000000000
+  box1,1-5,3  3:00000000000000000000000000000000
+  box1,1-5,3  4:00000000000000000000000000000000
+  box1,1-5,3  5:00000000000000000000000000000000
+  box0,0-8,2  0:101112131415161718191a1b1c1d1e1f
+  box0,0-8,2  1:202122232425262728292a2b2c2d2e2f
+  box0,0-8,2  2:00000000000000000000000000000000
+  box0,0-8,2  3:00000000000000000000000000000000
+  box0,0-8,2  4:303132333435363738393a3b3c3d3e3f
+  box0,0-8,2  5:00000000000000000000000000000000
+  box6,2-8,4  0:00000000000000000000000000000000
+  box6,2-8,4  1:00000000000000000000000000000000
+  box6,2-8,4  2:00000000000000000000000010111213
+  box6,2-8,4  3:00000000000000000000000020212223
+  box6,2-8,4  4:00000000000000000000000000000000
+  box6,2-8,4  5:00000000000000000000000030313233
+  copy@2,2<-0,0-4,2  0:00000000000000000000000000000000
+  copy@2,2<-0,0-4,2  1:00000000000000000000000000000000
+  copy@2,2<-0,0-4,2  2:00000000a0a1a2a3a4a5a6a700000000
+  copy@2,2<-0,0-4,2  3:00000000b0b1b2b3b4b5b6b700000000
+  copy@2,2<-0,0-4,2  4:00000000000000000000000000000000
+  copy@2,2<-0,0-4,2  5:00000000e0e1e2e3e4e5e6e700000000
+  copy@1,1<-0,0-4,2  0:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  1:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  2:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  3:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  4:00000000000000000000000000000000
+  copy@1,1<-0,0-4,2  5:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  0:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  1:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  2:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  3:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  4:00000000000000000000000000000000
+  copy@0,0<-1,1-5,3  5:00000000000000000000000000000000
+  copy@0,0<-0,0-8,4  0:a0a1a2a3a4a5a6a7a8a9aaabacadaeaf
+  copy@0,0<-0,0-8,4  1:b0b1b2b3b4b5b6b7b8b9babbbcbdbebf
+  copy@0,0<-0,0-8,4  2:c0c1c2c3c4c5c6c7c8c9cacbcccdcecf
+  copy@0,0<-0,0-8,4  3:d0d1d2d3d4d5d6d7d8d9dadbdcdddedf
+  copy@0,0<-0,0-8,4  4:e0e1e2e3e4e5e6e7e8e9eaebecedeeef
+  copy@0,0<-0,0-8,4  5:f0f1f2f3f4f5f6f7f8f9fafbfcfdfeff
+  clear luma rtv hr=0x00000000
+  clear chroma rtv hr=0x00000000
+  rtvclear  0:00800080008000800080008000800080
+  rtvclear  1:00800080008000800080008000800080
+  rtvclear  2:00800080008000800080008000800080
+  rtvclear  3:00800080008000800080008000800080
+  rtvclear  4:0040ffbf0040ffbf0040ffbf0040ffbf
+  rtvclear  5:0040ffbf0040ffbf0040ffbf0040ffbf
+  clear luma uav hr=0x00000000
+  clear chroma uav hr=0x00000000
+  uavclear  0:07000700070007000700070007000700
+  uavclear  1:07000700070007000700070007000700
+  uavclear  2:07000700070007000700070007000700
+  uavclear  3:07000700070007000700070007000700
+  uavclear  4:0b000c000b000c000b000c000b000c00
+  uavclear  5:0b000c000b000c000b000c000b000c00
+  staging 8x4 row=16 depth=64
+  fromstg  0:000102030405060708090a0b0c0d0e0f
+  fromstg  1:101112131415161718191a1b1c1d1e1f
+  fromstg  2:202122232425262728292a2b2c2d2e2f
+  fromstg  3:303132333435363738393a3b3c3d3e3f
+  fromstg  4:404142434445464748494a4b4c4d4e4f
+  fromstg  5:505152535455565758595a5b5c5d5e5f

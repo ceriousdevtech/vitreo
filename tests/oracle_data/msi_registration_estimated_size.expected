@@ -1,0 +1,14 @@
+# EstimatedSize (InstallProperties, REG_DWORD) of the -Bare package for a
+# single uncompressed file of N bytes (per-machine, x86, NTFS 4 KB clusters).
+# payload_bytes estimated_size
+35 35
+4096 35
+4097 39
+5000 39
+10000 43
+30000 19
+50000 39
+70000 59
+100000 87
+300000 283
+1000000 967

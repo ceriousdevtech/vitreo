@@ -1,0 +1,7 @@
+created A,B(transparent,hidden),C: A B C
+SetParent(visible child): moved A B C
+moved child created=1
+SetParent(hidden popup): popup moved A B C
+SetWindowPos(B, HWND_TOP, SWP_NOREDRAW): B popup moved A C
+SetWindowPos(B, NOZORDER): B popup moved A C
+ShowWindow(B, SW_SHOWNOACTIVATE): B popup moved A C

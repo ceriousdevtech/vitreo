@@ -1,0 +1,69 @@
+x64
+vsprintf o=0 n=00 ret=-1 errno=0 ip=0 buf="ZZZZZZZZ"
+vsprintf o=0 n=01 ret=-2 errno=0 ip=0 buf="\x00ZZZZZZZ"
+vsprintf o=0 n=04 ret=-2 errno=0 ip=0 buf="hel\x00ZZZZ"
+vsprintf o=0 n=05 ret=-2 errno=0 ip=0 buf="hell\x00ZZZ"
+vsprintf o=0 n=06 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf o=0 n=12 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf null/0 ret=5 errno=0 ip=0 
+vsprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vswprintf o=0 n=00 ret=-1 errno=0 ip=0 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=0 n=01 ret=-2 errno=0 ip=0 wbuf=\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=0 n=04 ret=-2 errno=0 ip=0 wbuf=hel\u0000\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=0 n=05 ret=-2 errno=0 ip=0 wbuf=hell\u0000\u5a5a\u5a5a\u5a5a
+vswprintf o=0 n=06 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf o=0 n=12 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf null/0 ret=5 errno=0 ip=0 
+vswprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf o=1 n=00 ret=-1 errno=0 ip=0 buf="ZZZZZZZZ"
+vsprintf o=1 n=01 ret=-1 errno=0 ip=0 buf="hZZZZZZZ"
+vsprintf o=1 n=04 ret=-1 errno=0 ip=0 buf="hellZZZZ"
+vsprintf o=1 n=05 ret=5 errno=0 ip=0 buf="helloZZZ"
+vsprintf o=1 n=06 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf o=1 n=12 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf null/0 ret=5 errno=0 ip=0 
+vsprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vswprintf o=1 n=00 ret=-1 errno=0 ip=0 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=1 n=01 ret=-1 errno=0 ip=0 wbuf=h\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=1 n=04 ret=-1 errno=0 ip=0 wbuf=hell\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=1 n=05 ret=5 errno=0 ip=0 wbuf=hello\u5a5a\u5a5a\u5a5a
+vswprintf o=1 n=06 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf o=1 n=12 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf null/0 ret=5 errno=0 ip=0 
+vswprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf o=2 n=00 ret=5 errno=0 ip=0 buf="ZZZZZZZZ"
+vsprintf o=2 n=01 ret=5 errno=0 ip=0 buf="\x00ZZZZZZZ"
+vsprintf o=2 n=04 ret=5 errno=0 ip=0 buf="hel\x00ZZZZ"
+vsprintf o=2 n=05 ret=5 errno=0 ip=0 buf="hell\x00ZZZ"
+vsprintf o=2 n=06 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf o=2 n=12 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf null/0 ret=5 errno=0 ip=0 
+vsprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vswprintf o=2 n=00 ret=5 errno=0 ip=0 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=2 n=01 ret=5 errno=0 ip=0 wbuf=\u0000\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=2 n=04 ret=5 errno=0 ip=0 wbuf=hel\u0000\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=2 n=05 ret=5 errno=0 ip=0 wbuf=hell\u0000\u5a5a\u5a5a\u5a5a
+vswprintf o=2 n=06 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf o=2 n=12 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf null/0 ret=5 errno=0 ip=0 
+vswprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf o=3 n=00 ret=-1 errno=0 ip=0 buf="ZZZZZZZZ"
+vsprintf o=3 n=01 ret=-1 errno=0 ip=0 buf="hZZZZZZZ"
+vsprintf o=3 n=04 ret=-1 errno=0 ip=0 buf="hellZZZZ"
+vsprintf o=3 n=05 ret=5 errno=0 ip=0 buf="helloZZZ"
+vsprintf o=3 n=06 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf o=3 n=12 ret=5 errno=0 ip=0 buf="hello\x00ZZ"
+vsprintf null/0 ret=5 errno=0 ip=0 
+vsprintf null/5 ret=-1 errno=22 ip=1 
+vsprintf fmt=null ret=-1 errno=22 ip=1 buf="ZZZZ"
+vswprintf o=3 n=00 ret=-1 errno=0 ip=0 wbuf=\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=3 n=01 ret=-1 errno=0 ip=0 wbuf=h\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=3 n=04 ret=-1 errno=0 ip=0 wbuf=hell\u5a5a\u5a5a\u5a5a\u5a5a
+vswprintf o=3 n=05 ret=5 errno=0 ip=0 wbuf=hello\u5a5a\u5a5a\u5a5a
+vswprintf o=3 n=06 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf o=3 n=12 ret=5 errno=0 ip=0 wbuf=hello\u0000\u5a5a\u5a5a
+vswprintf null/0 ret=5 errno=0 ip=0 
+vswprintf null/5 ret=-1 errno=22 ip=1 

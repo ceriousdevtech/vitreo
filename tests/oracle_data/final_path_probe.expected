@@ -1,0 +1,130 @@
+volume_guid ret=00000001 err=000000ea
+dos_device ret_nonzero=1 err=0000dead
+# file, canonical open
+file flags=00000000 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+file flags=00000001 ret=00000051 err=00000000 nul=1 path=<GUID>\oracle\fpn\Sub Dir\MixedCase.txt
+file flags=00000002 ret=00000038 err=0000dead nul=1 path=<NTDEV>\oracle\fpn\Sub Dir\MixedCase.txt
+file flags=00000004 ret=00000021 err=0000dead nul=1 path=\oracle\fpn\Sub Dir\MixedCase.txt
+file flags=00000008 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+file flags=00000009 ret=00000051 err=00000000 nul=1 path=<GUID>\oracle\fpn\Sub Dir\MixedCase.txt
+file flags=0000000a ret=00000038 err=0000dead nul=1 path=<NTDEV>\oracle\fpn\Sub Dir\MixedCase.txt
+file flags=0000000c ret=00000021 err=0000dead nul=1 path=\oracle\fpn\Sub Dir\MixedCase.txt
+# file, lower-case open with forward slashes and dot segments
+file_lc flags=00000000 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+file_lc flags=00000001 ret=00000051 err=00000000 nul=1 path=<GUID>\oracle\fpn\Sub Dir\MixedCase.txt
+file_lc flags=00000002 ret=00000038 err=0000dead nul=1 path=<NTDEV>\oracle\fpn\Sub Dir\MixedCase.txt
+file_lc flags=00000004 ret=00000021 err=0000dead nul=1 path=\oracle\fpn\Sub Dir\MixedCase.txt
+file_lc flags=00000008 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+file_lc flags=00000009 ret=00000051 err=00000000 nul=1 path=<GUID>\oracle\fpn\Sub Dir\MixedCase.txt
+file_lc flags=0000000a ret=00000038 err=0000dead nul=1 path=<NTDEV>\oracle\fpn\Sub Dir\MixedCase.txt
+file_lc flags=0000000c ret=00000021 err=0000dead nul=1 path=\oracle\fpn\Sub Dir\MixedCase.txt
+# file, extended-length open
+file_ext flags=00000000 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+file_ext flags=00000008 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+# file, relative open
+file_rel flags=00000000 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+file_rel flags=00000008 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+# zero-access open
+file_noaccess flags=00000000 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+# unicode names
+file_latin1 flags=00000000 ret=00000022 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\caf\u00e9.txt
+file_cjk flags=00000000 ret=0000001f err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\\u4e2d.txt
+# directories
+dir flags=00000000 ret=00000019 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir
+dir flags=00000001 ret=00000043 err=00000000 nul=1 path=<GUID>\oracle\fpn\Sub Dir
+dir flags=00000002 ret=0000002a err=0000dead nul=1 path=<NTDEV>\oracle\fpn\Sub Dir
+dir flags=00000004 ret=00000013 err=0000dead nul=1 path=\oracle\fpn\Sub Dir
+dir flags=00000008 ret=00000019 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir
+dir flags=00000009 ret=00000043 err=00000000 nul=1 path=<GUID>\oracle\fpn\Sub Dir
+dir flags=0000000a ret=0000002a err=0000dead nul=1 path=<NTDEV>\oracle\fpn\Sub Dir
+dir flags=0000000c ret=00000013 err=0000dead nul=1 path=\oracle\fpn\Sub Dir
+dir_slash flags=00000000 ret=00000019 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir
+dir_slash flags=00000008 ret=00000019 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir
+root flags=00000000 ret=00000007 err=00000000 nul=1 path=\\?\C:\
+root flags=00000001 ret=00000031 err=00000000 nul=1 path=<GUID>\
+root flags=00000002 ret=00000018 err=0000dead nul=1 path=<NTDEV>\
+root flags=00000004 ret=00000001 err=0000dead nul=1 path=\
+root flags=00000008 ret=00000007 err=00000000 nul=1 path=\\?\C:\
+root flags=00000009 ret=00000031 err=00000000 nul=1 path=<GUID>\
+root flags=0000000a ret=00000018 err=0000dead nul=1 path=<NTDEV>\
+root flags=0000000c ret=00000001 err=0000dead nul=1 path=\
+# buffer sizes
+sizes_dos full=00000027
+  cch=0000 ret=00000028 err=00000008 touched=0000
+  cch=0001 ret=00000028 err=00000008 touched=0000
+  cch=0026 ret=00000028 err=00000008 touched=0000
+  cch=0027 ret=00000028 err=00000008 touched=0000
+  cch=0028 ret=00000027 err=00000000 touched=0028 b0=005c blast=0000
+  cch=0029 ret=00000027 err=00000000 touched=0028 b0=005c blast=0000
+  null_buf_cch0 ret=00000028 err=00000008
+sizes_none full=00000021
+  cch=0000 ret=00000022 err=00000008 touched=0000
+  cch=0001 ret=00000022 err=00000008 touched=0000
+  cch=0020 ret=00000022 err=00000008 touched=0000
+  cch=0021 ret=00000022 err=00000008 touched=0000
+  cch=0022 ret=00000021 err=0000dead touched=0022 b0=005c blast=0000
+  cch=0023 ret=00000021 err=0000dead touched=0022 b0=005c blast=0000
+  null_buf_cch0 ret=00000022 err=00000008
+# invalid flags
+badflags flags=00000003 ret=00000000 err=00000057 buf0=cccc
+badflags flags=00000005 ret=00000000 err=00000057 buf0=cccc
+badflags flags=00000006 ret=00000000 err=00000057 buf0=cccc
+badflags flags=00000007 ret=00000000 err=00000057 buf0=cccc
+badflags flags=00000009 ret=00000051 err=00000000 nul=1 path=<GUID>\oracle\fpn\Sub Dir\MixedCase.txt
+badflags flags=00000010 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+badflags flags=00000100 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+badflags flags=80000000 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+badflags flags=ffffffff ret=00000000 err=00000057 buf0=cccc
+# non-file handles
+null_handle flags=00000000 ret=00000000 err=00000006 buf0=cccc
+invalid_handle_value flags=00000000 ret=00000000 err=00000006 buf0=cccc
+bogus_handle flags=00000000 ret=00000000 err=00000006 buf0=cccc
+event flags=00000000 ret=00000000 err=00000006 buf0=cccc
+anon_pipe flags=00000000 ret=00000000 err=000000a1 buf0=cccc
+anon_pipe flags=00000004 ret=00000000 err=000000a1 buf0=cccc
+anon_pipe flags=00000002 ret=00000000 err=000000a1 buf0=cccc
+named_pipe_server flags=00000000 ret=00000000 err=00000001 buf0=cccc
+named_pipe_server flags=00000004 ret=00000000 err=00000001 buf0=cccc
+named_pipe_server flags=00000002 ret=00000000 err=00000001 buf0=cccc
+nul_device flags=00000000 ret=00000000 err=00000057 buf0=cccc
+nul_device flags=00000002 ret=00000000 err=00000057 buf0=cccc
+named_pipe_client_open=ok
+named_pipe_client flags=00000000 ret=00000000 err=00000001 buf0=cccc
+named_pipe_client flags=00000004 ret=00000000 err=00000001 buf0=cccc
+conout_open=ok
+conout flags=00000000 ret=00000000 err=00000001 buf0=cccc
+conout flags=00000002 ret=00000000 err=00000001 buf0=cccc
+volume_open=ok
+volume flags=00000000 ret=00000000 err=00000001 buf0=cccc
+volume flags=00000004 ret=00000000 err=00000001 buf0=cccc
+volume flags=00000002 ret=00000000 err=00000001 buf0=cccc
+mailslot_open=ok
+mailslot flags=00000000 ret=00000000 err=00000001 buf0=cccc
+mailslot flags=00000004 ret=00000000 err=00000001 buf0=cccc
+# error precedence
+bogus_badflags flags=00000003 ret=00000000 err=00000057 buf0=cccc
+event_badflags flags=00000003 ret=00000000 err=00000057 buf0=cccc
+anon_pipe_badflags flags=00000003 ret=00000000 err=00000057 buf0=cccc
+nul_badflags flags=00000003 ret=00000000 err=00000057 buf0=cccc
+closed_handle flags=00000000 ret=00000000 err=00000006 buf0=cccc
+closed_handle_after flags=00000000 ret=00000000 err=00000006 buf0=cccc
+# duplicated handle
+dup flags=00000000 ret=00000027 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+# rename while open
+before_rename flags=00000000 ret=00000024 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\before.txt
+MoveFileExW ret=00000001 err=0000dead
+after_rename flags=00000000 ret=00000025 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\renamed.txt
+after_rename flags=00000008 ret=00000025 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\renamed.txt
+# delete pending
+delete_on_close flags=00000000 ret=00000024 err=00000000 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\doomed.txt
+# ANSI variant
+A_file cch=0400 ret=00000027 err=00000000 touched=0028 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\MixedCase.txt
+A_file_null_cch0 ret=00000027
+A_file_exact cch=0027 ret=00000027 err=00000000 touched=0000
+A_file_short cch=0026 ret=00000027 err=00000000 touched=0000
+A_file_none cch=0400 ret=00000021 err=0000dead touched=0022 nul=1 path=\oracle\fpn\Sub Dir\MixedCase.txt
+A_latin1 cch=0400 ret=00000022 err=00000000 touched=0023 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\caf\xe9.txt
+A_cjk cch=0400 ret=0000001f err=00000000 touched=0020 nul=1 path=\\?\C:\oracle\fpn\Sub Dir\?.txt
+A_cjk_null_cch0 ret=0000001f
+A_badflags cch=0400 ret=00000000 err=00000057 touched=0000
+A_event cch=0400 ret=00000000 err=00000006 touched=0000

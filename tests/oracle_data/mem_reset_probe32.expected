@@ -1,0 +1,60 @@
+bits=32 va2=1 dvm=1 pool=0x10000000
+placeholder pool
+  reserve placeholder -> base+0
+  replace placeholder -> base+0
+  reserved query state=0x2000 protect=0x0 alloc_protect=0x1 type=0x20000 base_off=0x100000 region=0xff00000
+  commit 64K at +0 -> base+0
+  commit 4K at +0x11000 (not 64K aligned) -> base+69632
+  commit 4K at +0x13000 readonly -> base+77824
+discard
+  reserved range discard -> 87 lasterr=57005
+  committed rw 64K discard -> 0 lasterr=158
+  committed readonly 4K discard -> 87 lasterr=57005
+  rw+reserved mix discard -> 87 lasterr=57005
+  unaligned addr discard -> 87 lasterr=57005
+  unaligned size discard -> 87 lasterr=57005
+  size 0 discard -> 87 lasterr=57005
+  NULL discard -> 87 lasterr=57005
+reset via VirtualAlloc2
+  reserved range rw -> base+1048576
+  after reset query state=0x2000 protect=0x0 alloc_protect=0x1 type=0x20000 base_off=0x100000 region=0xff00000
+  reserved range noaccess -> base+1048576
+  committed 64K -> base+0
+  committed after reset query state=0x1000 protect=0x4 alloc_protect=0x1 type=0x20000 base_off=0x0 region=0x10000
+  undo committed 64K -> base+0
+  unaligned base+0x10 size 0x10 -> NULL err=487
+  base+0x1000 size 0x1000 -> base+4096
+  whole pool -> base+0
+  past pool end -> NULL err=487
+  protect 0 -> NULL err=87
+  protect 0x1234 -> NULL err=50
+  reset|commit -> NULL err=87
+  reset|undo -> NULL err=87
+  reset NULL base -> NULL err=487
+  reset size 0 -> NULL err=87
+reset via VirtualAlloc
+  reserved range rw -> base+1048576
+  committed 64K -> base+0
+  unaligned base+0x10 size 0x10 -> NULL err=487
+  past pool end -> NULL err=487
+  reset NULL base -> NULL err=487
+VirtualAlloc2 types
+  reserve|top_down -> ok err=0
+  reserve|commit|top_down -> ok err=0
+  reserve|commit|write_watch -> ok err=0
+  reserve|write_watch -> ok err=0
+  commit|write_watch -> ok err=0
+  reserve|placeholder rw -> NULL err=87
+  reserve|placeholder|top_down -> ok err=0
+  commit|placeholder -> NULL err=87
+  low bits 0x3f -> NULL err=87
+  0x10 unknown high -> NULL err=87
+  none -> NULL err=87
+  reserve|physical rw -> ok err=0
+  reserve|commit|large -> NULL err=87
+  reserve size 0x1001 -> ok err=57005
+after release
+  reset freed -> NULL err=487
+  reset freed (v1) -> NULL err=487
+  freed discard -> 87 lasterr=57005
+done

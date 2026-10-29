@@ -1,0 +1,132 @@
+gsi min=0x10000 max=0x7ffeffff gran=0x10000
+gnsi min=0x10000 max=0xfffeffff
+apis va2=0x1 mvf3=0x1
+sbi len in=0x0 st=0xc0000004 rl=0x2c
+sbi len in=0x2b st=0xc0000004 rl=0x2c
+sbi len in=0x2c st=0x0 rl=0x2c byte_at_rl=0xcc
+sbi len in=0x2d st=0xc0000004 rl=0x2c
+sbi len in=0x3f st=0xc0000004 rl=0x2c
+sbi len in=0x40 st=0xc0000004 rl=0x2c
+sbi len in=0x41 st=0xc0000004 rl=0x2c
+sbi len in=0x80 st=0xc0000004 rl=0x2c
+sbi null_retlen st=0xc0000004
+sbi full st=0x0 rl=0x2c
+sbi dword +0x00 v=0x0
+sbi dword +0x08 pagesize v=0x1000
+sbi dword +0x18 granularity v=0x10000
+sbi dword +0x04 timer_in_[10000,200000] v=0x1
+sbi dword +0x0c physpages_within_2pct_of_totalphys v=0x1
+sbi dword +0x10 lowest_phys_lt_0x1000 v=0x1
+sbi dword +0x14 highest_phys_ge_physpages v=0x1
+sbi u32 +0x1c min v=0x10000
+sbi u32 +0x20 max v=0x7ffeffff
+sbi u32 +0x24 affinity==sysmask v=0x1
+sbi byte +0x28 nproc==si v=0x1
+sbi tail +0x29..0x2b b=0xcc b=0xcc b=0xcc
+sbi past +0x2c v=0xcc
+va res_inside_top64k a=C-0x10000 size=0x10000 type=0x2000 FAIL err=0x1e7
+vaex res_inside_top64k FAIL err=0x1e7
+ntava res_inside_top64k st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_at_ceil a=C+0x0 size=0x10000 type=0x2000 FAIL err=0x1e7
+vaex res_at_ceil FAIL err=0x1e7
+ntava res_at_ceil st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_at_ceil_plus_64k a=C+0x10000 size=0x10000 type=0x2000 FAIL err=0x1e7
+vaex res_at_ceil_plus_64k FAIL err=0x1e7
+ntava res_at_ceil_plus_64k st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_straddle_128k a=C-0x10000 size=0x20000 type=0x2000 FAIL err=0x1e7
+vaex res_straddle_128k FAIL err=0x1e7
+ntava res_straddle_128k st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_straddle_1page a=C-0x1000 size=0x2000 type=0x2000 FAIL err=0x1e7
+vaex res_straddle_1page FAIL err=0x1e7
+ntava res_straddle_1page st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_unaligned_last_byte a=C-0x1 size=0x1 type=0x2000 FAIL err=0x1e7
+vaex res_unaligned_last_byte FAIL err=0x1e7
+ntava res_unaligned_last_byte st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va rescommit_at_ceil a=C+0x0 size=0x10000 type=0x3000 FAIL err=0x1e7
+vaex rescommit_at_ceil FAIL err=0x1e7
+ntava rescommit_at_ceil st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va commit_at_ceil a=C+0x0 size=0x1000 type=0x1000 FAIL err=0x1e7
+vaex commit_at_ceil FAIL err=0x1e7
+ntava commit_at_ceil st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va commit_straddle a=C-0x1000 size=0x2000 type=0x1000 FAIL err=0x1e7
+vaex commit_straddle FAIL err=0x1e7
+ntava commit_straddle st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va commit_inside_free a=C-0x1000 size=0x1000 type=0x1000 FAIL err=0x1e7
+vaex commit_inside_free FAIL err=0x1e7
+ntava commit_inside_free st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va reset_at_ceil a=C+0x0 size=0x1000 type=0x80000 FAIL err=0x1e7
+vaex reset_at_ceil FAIL err=0x1e7
+ntava reset_at_ceil st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_below_min a=C-0x7ffe8000 size=0x1000 type=0x2000 FAIL err=0x57
+vaex res_below_min FAIL err=0x57
+ntava res_below_min st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_min_straddle a=C-0x7ffe1000 size=0x2000 type=0x2000 FAIL err=0x57
+vaex res_min_straddle FAIL err=0x57
+ntava res_min_straddle st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_huge_wrap a=C-0x10000 size=0xfffe0000 type=0x2000 FAIL err=0x1e7
+vaex res_huge_wrap FAIL err=0x1e7
+ntava res_huge_wrap st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_null_huge a=C-0x7fff0000 size=0x7fff0000 type=0x2000 FAIL err=0x1e7
+vaex res_null_huge FAIL err=0x1e7
+ntava res_null_huge st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_null_bigger_than_space a=C-0x7fff0000 size=0x80000000 type=0x2000 FAIL err=0x57
+vaex res_null_bigger_than_space FAIL err=0x57
+ntava res_null_bigger_than_space st=0xc000000d base_unchanged=0x1 size_unchanged=0x1
+va res_null_ceil_plus1 a=C-0x7fff0000 size=0x7fff0001 type=0x2000 FAIL err=0x57
+vaex res_null_ceil_plus1 FAIL err=0x57
+ntava res_null_ceil_plus1 st=0xc000000d base_unchanged=0x1 size_unchanged=0x1
+va res_null_ceil_minus_64k_plus1 a=C-0x7fff0000 size=0x7ffe0001 type=0x2000 FAIL err=0x8
+vaex res_null_ceil_minus_64k_plus1 FAIL err=0x8
+ntava res_null_ceil_minus_64k_plus1 st=0xc0000017 base_unchanged=0x1 size_unchanged=0x1
+va res_null_ceil_minus_64k a=C-0x7fff0000 size=0x7ffe0000 type=0x2000 FAIL err=0x8
+vaex res_null_ceil_minus_64k FAIL err=0x8
+ntava res_null_ceil_minus_64k st=0xc0000017 base_unchanged=0x1 size_unchanged=0x1
+va rescommit_null_huge a=C-0x7fff0000 size=0x7fff0000 type=0x3000 FAIL err=0x1e7
+vaex rescommit_null_huge FAIL err=0x1e7
+ntava rescommit_null_huge st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_occupied size=0x10000 type=0x2000 FAIL err=0x1e7
+vaex res_occupied FAIL err=0x1e7
+ntava res_occupied st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va rescommit_occupied size=0x10000 type=0x3000 FAIL err=0x1e7
+vaex rescommit_occupied FAIL err=0x1e7
+ntava rescommit_occupied st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va res_overlap_tail size=0x20000 type=0x2000 FAIL err=0x1e7
+vaex res_overlap_tail FAIL err=0x1e7
+ntava res_overlap_tail st=0xc0000018 base_unchanged=0x1 size_unchanged=0x1
+va topdown ok end_le_ceil=0x1
+vq max a=C-0x1 ret=0x1c err=0xdead base=C-0x1000 end=C+0x0 state=0x10000 prot=0x1 type=0x0 abase_null=0x1
+vqex max ret=0x1c err=0xdead end=C+0x0 state=0x10000
+ntqvm max st=0x0 rl=0x1c
+vq ceil a=C+0x0 ret=0x0 err=0x57
+vqex ceil ret=0x0 err=0x57
+ntqvm ceil st=0xc000000d rl=0xaaaa
+vq ceil_plus_64k a=C+0x10000 ret=0x1c err=0xdead base=C+0x10000 end=C+0x80000000 state=0x2000 prot=0x0 type=0x20000 abase_null=0x0
+vqex ceil_plus_64k ret=0x1c err=0xdead end=C+0x80000000 state=0x2000
+ntqvm ceil_plus_64k st=0x0 rl=0x1c
+vq 2gb a=C+0x10000 ret=0x1c err=0xdead base=C+0x10000 end=C+0x80000000 state=0x2000 prot=0x0 type=0x20000 abase_null=0x0
+vqex 2gb ret=0x1c err=0xdead end=C+0x80000000 state=0x2000
+ntqvm 2gb st=0x0 rl=0x1c
+vq all_ones a=C+0x8000ffff ret=0x0 err=0x57
+vqex all_ones ret=0x0 err=0x57
+ntqvm all_ones st=0xc000000d rl=0xaaaa
+va2 base_at_ceil FAIL err=0x1e7
+va2 base_straddle FAIL err=0x1e7
+va2 high_eq_max ok err=0xdead end_le_high_plus1=0x1
+va2 high_ceil_plus_64k_minus1 FAIL err=0x57
+va2 low_at_ceil FAIL err=0x57
+va2 low_ceil_minus_64k FAIL err=0x1e7
+va2 high_unaligned FAIL err=0x57
+section ok=0x1
+mvex inside_top64k a=C-0x10000 size=0x10000 FAIL err=0x1e7
+mvf3 inside_top64k FAIL err=0x1e7
+ntmvs inside_top64k st=0xc0000018
+mvex at_ceil a=C+0x0 size=0x10000 FAIL err=0x57
+mvf3 at_ceil FAIL err=0x57
+ntmvs at_ceil st=0xc000000d
+mvex straddle a=C-0x10000 size=0x20000 FAIL err=0x1e7
+mvf3 straddle FAIL err=0x1e7
+ntmvs straddle st=0xc0000018
+mvf3req high_eq_max ok err=0xdead end_le_high_plus1=0x1
+mvf3req high_ceil_plus_64k_minus1 FAIL err=0x57
+mvf3req low_at_ceil FAIL err=0x57
+done

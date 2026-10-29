@@ -1,0 +1,13 @@
+nt-without-zw NtGetTickCount stub=no
+nt-without-zw NtdllDefWindowProc_A stub=no
+nt-without-zw NtdllDefWindowProc_W stub=no
+nt-without-zw NtdllDialogWndProc_A stub=no
+nt-without-zw NtdllDialogWndProc_W stub=no
+interleaved RtlGetNativeSystemInformation
+names=2522 zw=490 nt=495
+zw: nt twin same rva=490, twin missing=0
+zw: stub shape=489, number==rank=489, low word==rank=489 of 490
+zw: distinct steps=489 stride min=0x10 max=0x20
+nt without zw=5, non-service exports inside stub range=1
+first stub ZwAccessCheck number=0, last stub ZwWaitLowEventPair number=489
+service 0xfff -> 0xc000001c

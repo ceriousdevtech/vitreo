@@ -1,0 +1,82 @@
+hook=1
+-- create owner (hidden)
+  event OBJECT_CREATE hwnd=owner obj=0 child=0
+z-order: owner(hidden)
+-- show owner SW_SHOWNORMAL
+  event OBJECT_SHOW hwnd=owner obj=0 child=0
+  event OBJECT_REORDER hwnd=desktop obj=-4 child=0
+  event SYSTEM_FOREGROUND hwnd=owner obj=0 child=0
+  event OBJECT_FOCUS hwnd=owner obj=-4 child=0
+z-order: owner
+-- create owned popup (hidden, 2x1, NOACTIVATE|TOOLWINDOW)
+  event OBJECT_CREATE hwnd=popup obj=0 child=0
+z-order: popup(hidden) owner
+-- create visible child of popup
+  event OBJECT_CREATE hwnd=child obj=0 child=0
+z-order: popup(hidden) owner
+-- SetWindowPos(popup, size 200x100, NOACTIVATE|NOZORDER) while hidden
+  event OBJECT_LOCATIONCHANGE hwnd=popup obj=0 child=0
+z-order: popup(hidden) owner
+-- ShowWindow(popup, SW_SHOWNOACTIVATE)
+  event OBJECT_SHOW hwnd=popup obj=0 child=0
+z-order: popup owner
+-- SetWindowPos(popup, move 160,160, NOACTIVATE|NOZORDER)
+  event OBJECT_LOCATIONCHANGE hwnd=popup obj=0 child=0
+z-order: popup owner
+-- SetWindowPos(owner, HWND_TOP, NOMOVE|NOSIZE)
+z-order: popup owner
+-- create unowned top-level 'other' and show it
+  event OBJECT_CREATE hwnd=other obj=0 child=0
+  event OBJECT_SHOW hwnd=other obj=0 child=0
+z-order: other popup owner
+-- SetWindowPos(owner, HWND_TOP, NOMOVE|NOSIZE|NOACTIVATE) above other
+  event OBJECT_REORDER hwnd=desktop obj=-4 child=0
+z-order: popup owner other
+-- SetWindowPos(other, HWND_TOP, NOMOVE|NOSIZE|NOACTIVATE)
+  event OBJECT_REORDER hwnd=desktop obj=-4 child=0
+z-order: other popup owner
+-- SetWindowTextW(owner)
+  event OBJECT_NAMECHANGE hwnd=owner obj=0 child=0
+z-order: other popup owner
+-- ShowWindow(popup, SW_HIDE)
+  event OBJECT_HIDE hwnd=popup obj=0 child=0
+z-order: other popup(hidden) owner
+-- ShowWindow(popup, SW_SHOWNOACTIVATE) again
+  event OBJECT_SHOW hwnd=popup obj=0 child=0
+z-order: other popup owner
+-- ShowWindow(owner, SW_MINIMIZE)
+  event OBJECT_HIDE hwnd=popup obj=0 child=0
+  event OBJECT_FOCUS hwnd=null obj=-4 child=0
+  event OBJECT_REORDER hwnd=owner obj=0 child=0
+  event OBJECT_REORDER hwnd=desktop obj=-4 child=0
+  event OBJECT_LOCATIONCHANGE hwnd=owner obj=0 child=0
+  event SYSTEM_MINIMIZESTART hwnd=owner obj=0 child=0
+  event SYSTEM_FOREGROUND hwnd=other obj=0 child=0
+  event OBJECT_FOCUS hwnd=other obj=-4 child=0
+z-order: other popup(hidden) owner
+-- ShowWindow(owner, SW_RESTORE)
+  event OBJECT_REORDER hwnd=owner obj=0 child=0
+  event OBJECT_REORDER hwnd=desktop obj=-4 child=0
+  event SYSTEM_FOREGROUND hwnd=owner obj=0 child=0
+  event OBJECT_FOCUS hwnd=owner obj=-4 child=0
+  event OBJECT_LOCATIONCHANGE hwnd=owner obj=0 child=0
+  event SYSTEM_MINIMIZEEND hwnd=owner obj=0 child=0
+  event OBJECT_SHOW hwnd=popup obj=0 child=0
+z-order: popup owner other
+-- DestroyWindow(child)
+  event OBJECT_HIDE hwnd=child obj=0 child=0
+  event OBJECT_DESTROY hwnd=child obj=0 child=0
+z-order: popup owner other
+-- DestroyWindow(popup) while visible
+  event OBJECT_HIDE hwnd=popup obj=0 child=0
+  event OBJECT_DESTROY hwnd=popup obj=0 child=0
+z-order: owner other
+-- DestroyWindow(other)
+  event OBJECT_HIDE hwnd=other obj=0 child=0
+  event OBJECT_DESTROY hwnd=other obj=0 child=0
+z-order: owner
+-- DestroyWindow(owner)
+  event OBJECT_HIDE hwnd=owner obj=0 child=0
+  event OBJECT_DESTROY hwnd=owner obj=0 child=0
+z-order:
+-- end

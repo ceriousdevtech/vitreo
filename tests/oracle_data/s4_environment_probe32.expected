@@ -1,0 +1,34 @@
+ProgramData present = C:\ProgramData
+ALLUSERSPROFILE present = C:\ProgramData
+PUBLIC present = C:\Users\Public
+APPDATA present
+LOCALAPPDATA present
+ProgramFiles present = C:\Program Files (x86)
+ProgramFiles(x86) present = C:\Program Files (x86)
+ProgramW6432 present = C:\Program Files
+CommonProgramFiles present = C:\Program Files (x86)\Common Files
+CommonProgramFiles(x86) present = C:\Program Files (x86)\Common Files
+CommonProgramW6432 present = C:\Program Files\Common Files
+HOMEDRIVE present = C:
+HOMEPATH present
+USERPROFILE present
+USERNAME present
+USERDOMAIN present
+COMPUTERNAME present
+SystemRoot present
+windir present
+SystemDrive present
+ComSpec present
+PATHEXT present = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+Path present
+TEMP present
+TMP present
+OS present = Windows_NT
+PROCESSOR_ARCHITECTURE present = x86
+PROCESSOR_ARCHITEW6432 present = AMD64
+NUMBER_OF_PROCESSORS present
+PROCESSOR_IDENTIFIER present
+PROCESSOR_LEVEL present
+PROCESSOR_REVISION present
+DriverData present = C:\Windows\System32\Drivers\DriverData
+PSModulePath present

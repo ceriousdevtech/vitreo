@@ -1,0 +1,48 @@
+load: ncrypt=1
+open_ksp: rc=0x0 handle_nonzero=1
+open_null_name: rc=0x0
+open_bogus_name: rc=0xc0000225
+open_silent_flag: rc=0x0
+open_null_out: rc=0x80090027
+is_alg: alg="RSA" rc=0x0
+is_alg: alg="AES" rc=0x0
+is_alg: alg="SHA1" rc=0x80090029
+is_alg: alg="SHA256" rc=0x80090029
+is_alg: alg="SHA384" rc=0x80090029
+is_alg: alg="SHA512" rc=0x80090029
+is_alg: alg="MD5" rc=0x80090029
+is_alg: alg="ECDSA_P256" rc=0x0
+is_alg: alg="ECDH_P256" rc=0x0
+is_alg: alg="ECDSA" rc=0x0
+is_alg: alg="ECDH" rc=0x0
+is_alg: alg="DSA" rc=0x0
+is_alg: alg="DH" rc=0x0
+is_alg: alg="3DES" rc=0x0
+is_alg: alg="Bogus" rc=0x80090029
+is_alg_zero_handle: rc=0x80090026
+is_alg_bad_flags: rc=0x80090009
+is_alg_null_alg: rc=0x800706f4
+open_key_missing: rc=0x80090016 out_untouched=1 out_zero=0
+open_key_null_prov: rc=0x80090026 out_untouched=1 out_zero=0
+open_key_bad_flags: rc=0x80090009 out_untouched=1
+create_key_null_prov: rc=0x80090026 out_untouched=1
+create_key_ephemeral_rsa: rc=0x0 out_written=1
+finalize_ephemeral: rc=0x0
+free_ephemeral: rc=0x0
+create_key_bogus_alg: rc=0x80090029 out_untouched=1
+import_null_prov: rc=0x80090026 out_untouched=1
+export_null_key: rc=0x80090026 cb_untouched=1
+finalize_null: rc=0x80090026
+delete_null: rc=0x80090026
+sign_null: rc=0x80090026 cb_untouched=1
+setprop_prov_bogus: rc=0x80090029
+setprop_null_handle: rc=0x80090026
+getprop_name: rc=0x0 cb=80 val="Microsoft Software Key Storage Provider"
+getprop_name_size: rc=0x0 cb=80
+getprop_name_small: rc=0x80090028 cb=80
+getprop_impl: rc=0x0 cb=4 val=0x22
+getprop_bogus: rc=0x80090029 cb=0
+getprop_null_handle: rc=0x80090026
+free_prov: rc=0x0
+free_zero: rc=0x80090026
+done:

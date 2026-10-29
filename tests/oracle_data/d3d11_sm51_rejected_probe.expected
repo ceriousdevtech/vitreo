@@ -1,0 +1,7 @@
+d3d11_sm51_rejected_probe
+FL 11_1: D3D11CreateDevice 0x00000000
+FL 11_1: CreateComputeShader(cs_5_1) 0x80070057 shader NULL
+FL 11_1: CreateComputeShader(cs_5_0) 0x00000000 shader set
+FL 11_0: D3D11CreateDevice 0x00000000
+FL 11_0: CreateComputeShader(cs_5_1) 0x80070057 shader NULL
+FL 11_0: CreateComputeShader(cs_5_0) 0x00000000 shader set

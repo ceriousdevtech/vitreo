@@ -1,0 +1,1238 @@
+adapter: Microsoft Basic Render Driver
+pointer size 8, feature level 0xb000
+have Device1=1 Device2=1 Device3=1 Device5=1 Context1=1 Context4=1
+[create] buffer                 hr=0x00000000 out=obj device-refs+1
+[create] dyn_buffer             hr=0x00000000 out=obj device-refs+1
+[create] staging_buffer         hr=0x00000000 out=obj device-refs+1
+[create] tex1d                  hr=0x00000000 out=obj device-refs+1
+[create] tex2d                  hr=0x00000000 out=obj device-refs+1
+[create] tex2d_mips2            hr=0x00000000 out=obj device-refs+1
+[create] tex2d_array2           hr=0x00000000 out=obj device-refs+1
+[create] tex2d_depth            hr=0x00000000 out=obj device-refs+1
+[create] tex2d_keyedmutex       hr=0x00000000 out=obj device-refs+1
+[create] tex2d_shared           hr=0x00000000 out=obj device-refs+1
+[create] tex2d_staging          hr=0x00000000 out=obj device-refs+1
+[create] tex3d                  hr=0x00000000 out=obj device-refs+1
+[create] srv                    hr=0x00000000 out=obj device-refs+1
+[create] rtv                    hr=0x00000000 out=obj device-refs+1
+[create] uav                    hr=0x00000000 out=obj device-refs+1
+[create] dsv                    hr=0x00000000 out=obj device-refs+1
+[create] blend                  hr=0x00000000 out=obj device-refs+1
+[create] blend1                 hr=0x00000000 out=obj device-refs+1
+[create] depth_stencil_state    hr=0x00000000 out=obj device-refs+1
+[create] rasterizer             hr=0x00000000 out=obj device-refs+1
+[create] rasterizer1            hr=0x00000000 out=obj device-refs+1
+[create] rasterizer2            hr=0x00000000 out=obj device-refs+1
+[create] sampler                hr=0x00000000 out=obj device-refs+1
+[create] input_layout           hr=0x00000000 out=obj device-refs+1
+[create] vs                     hr=0x00000000 out=obj device-refs+1
+[create] ps                     hr=0x00000000 out=obj device-refs+1
+[create] gs                     hr=0x00000000 out=obj device-refs+1
+[create] hs                     hr=0x00000000 out=obj device-refs+1
+[create] ds                     hr=0x00000000 out=obj device-refs+1
+[create] cs                     hr=0x00000000 out=obj device-refs+1
+[create] query_event            hr=0x00000000 out=obj device-refs+1
+[create] predicate              hr=0x00000000 out=obj device-refs+1
+[create] query1                 hr=0x00000000 out=obj device-refs+1
+[create] class_linkage          hr=0x00000000 out=obj device-refs+1
+[create] class_instance         hr=0x00000000 out=obj device-refs+1
+[create] deferred_context       hr=0x00000000 out=obj device-refs+1
+[create] command_list           hr=0x00000000 out=obj device-refs+1
+[create] device_context_state   hr=0x00000000 out=obj device-refs+1
+[create] fence                  hr=0x00000000 out=obj device-refs+1
+[create] swap_chain             hr=0x887a0022 out=NULL device-refs+1
+
+== qi ==
+[qi] device: answers: IUnknown DXGIObject Device Device1 Device2 Device3 Device4 Device5 DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4 D3D11Multithread D3D10Multithread D3D10Device D3D10Device1
+[qi] device: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] device: identity-mismatch: none
+[qi] device: not-transitive: none
+[qi] device: null-vtable-slots: none
+[qi] device: QI(IUnknown, NULL) hr=0x80004003
+[qi] device.as_IDXGIDevice: answers: IUnknown DXGIObject Device Device1 Device2 Device3 Device4 Device5 DXGIDevice DXGIDevice1 DXGIDevice2 DXGIDevice3 DXGIDevice4 D3D11Multithread D3D10Multithread D3D10Device D3D10Device1
+[qi] device.as_IDXGIDevice: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] device.as_IDXGIDevice: identity-mismatch: none
+[qi] device.as_IDXGIDevice: not-transitive: none
+[qi] device.as_IDXGIDevice: null-vtable-slots: none
+[qi] device.as_IDXGIDevice: QI(IUnknown, NULL) hr=0x80004003
+[qi] immediate_context: answers: IUnknown DeviceChild Context Context1 Context2 Context3 Context4 D3D11Multithread D3D10Multithread UserDefinedAnnotation VideoContext VideoContext1 VideoContext2 VideoContext3
+[qi] immediate_context: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] immediate_context: identity-mismatch: none
+[qi] immediate_context: not-transitive: none
+[qi] immediate_context: null-vtable-slots: none
+[qi] immediate_context: QI(IUnknown, NULL) hr=0x80004003
+[qi] immediate.as_Annotation: answers: IUnknown DeviceChild Context Context1 Context2 Context3 Context4 D3D11Multithread D3D10Multithread UserDefinedAnnotation VideoContext VideoContext1 VideoContext2 VideoContext3
+[qi] immediate.as_Annotation: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] immediate.as_Annotation: identity-mismatch: none
+[qi] immediate.as_Annotation: not-transitive: none
+[qi] immediate.as_Annotation: null-vtable-slots: none
+[qi] immediate.as_Annotation: QI(IUnknown, NULL) hr=0x80004003
+[qi] immediate.as_Multithread: answers: IUnknown DeviceChild Context Context1 Context2 Context3 Context4 D3D11Multithread D3D10Multithread UserDefinedAnnotation VideoContext VideoContext1 VideoContext2 VideoContext3
+[qi] immediate.as_Multithread: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] immediate.as_Multithread: identity-mismatch: none
+[qi] immediate.as_Multithread: not-transitive: none
+[qi] immediate.as_Multithread: null-vtable-slots: none
+[qi] immediate.as_Multithread: QI(IUnknown, NULL) hr=0x80004003
+[qi] device.as_VideoDevice: not created
+[qi] buffer: answers: IUnknown DeviceChild Resource Buffer DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 D3D10Resource
+[qi] buffer: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] buffer: identity-mismatch: none
+[qi] buffer: not-transitive: none
+[qi] buffer: null-vtable-slots: none
+[qi] buffer: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex1d: answers: IUnknown DeviceChild Resource Texture1D DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 D3D10Resource
+[qi] tex1d: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex1d: identity-mismatch: none
+[qi] tex1d: not-transitive: none
+[qi] tex1d: null-vtable-slots: none
+[qi] tex1d: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 D3D10Resource D3D10Texture2D
+[qi] tex2d: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d: identity-mismatch: none
+[qi] tex2d: not-transitive: none
+[qi] tex2d: null-vtable-slots: none
+[qi] tex2d: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d_mips2: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 D3D10Resource D3D10Texture2D
+[qi] tex2d_mips2: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d_mips2: identity-mismatch: none
+[qi] tex2d_mips2: not-transitive: none
+[qi] tex2d_mips2: null-vtable-slots: none
+[qi] tex2d_mips2: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d_array2: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 D3D10Resource D3D10Texture2D
+[qi] tex2d_array2: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d_array2: identity-mismatch: none
+[qi] tex2d_array2: not-transitive: none
+[qi] tex2d_array2: null-vtable-slots: none
+[qi] tex2d_array2: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d_depth: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 D3D10Resource D3D10Texture2D
+[qi] tex2d_depth: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d_depth: identity-mismatch: none
+[qi] tex2d_depth: not-transitive: none
+[qi] tex2d_depth: null-vtable-slots: none
+[qi] tex2d_depth: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d_keyedmutex: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 DXGIKeyedMutex D3D10Resource D3D10Texture2D
+[qi] tex2d_keyedmutex: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d_keyedmutex: identity-mismatch: none
+[qi] tex2d_keyedmutex: not-transitive: none
+[qi] tex2d_keyedmutex: null-vtable-slots: none
+[qi] tex2d_keyedmutex: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d_shared: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 D3D10Resource D3D10Texture2D
+[qi] tex2d_shared: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d_shared: identity-mismatch: none
+[qi] tex2d_shared: not-transitive: none
+[qi] tex2d_shared: null-vtable-slots: none
+[qi] tex2d_shared: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d_staging: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 D3D10Resource D3D10Texture2D
+[qi] tex2d_staging: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d_staging: identity-mismatch: none
+[qi] tex2d_staging: not-transitive: none
+[qi] tex2d_staging: null-vtable-slots: none
+[qi] tex2d_staging: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex3d: answers: IUnknown DeviceChild Resource Texture3D Texture3D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 D3D10Resource
+[qi] tex3d: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex3d: identity-mismatch: none
+[qi] tex3d: not-transitive: none
+[qi] tex3d: null-vtable-slots: none
+[qi] tex3d: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d.as_IDXGIResource: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 D3D10Resource D3D10Texture2D
+[qi] tex2d.as_IDXGIResource: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d.as_IDXGIResource: identity-mismatch: none
+[qi] tex2d.as_IDXGIResource: not-transitive: none
+[qi] tex2d.as_IDXGIResource: null-vtable-slots: none
+[qi] tex2d.as_IDXGIResource: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d.as_IDXGISurface: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 D3D10Resource D3D10Texture2D
+[qi] tex2d.as_IDXGISurface: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d.as_IDXGISurface: identity-mismatch: none
+[qi] tex2d.as_IDXGISurface: not-transitive: none
+[qi] tex2d.as_IDXGISurface: null-vtable-slots: none
+[qi] tex2d.as_IDXGISurface: QI(IUnknown, NULL) hr=0x80004003
+[qi] tex2d_keyedmutex.as_IDXGIKeyedMutex: answers: IUnknown DeviceChild Resource Texture2D Texture2D1 DXGIObject DXGIDeviceSubObject DXGIResource DXGIResource1 DXGISurface DXGISurface1 DXGISurface2 DXGIKeyedMutex D3D10Resource D3D10Texture2D
+[qi] tex2d_keyedmutex.as_IDXGIKeyedMutex: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] tex2d_keyedmutex.as_IDXGIKeyedMutex: identity-mismatch: none
+[qi] tex2d_keyedmutex.as_IDXGIKeyedMutex: not-transitive: none
+[qi] tex2d_keyedmutex.as_IDXGIKeyedMutex: null-vtable-slots: none
+[qi] tex2d_keyedmutex.as_IDXGIKeyedMutex: QI(IUnknown, NULL) hr=0x80004003
+[qi] srv: answers: IUnknown DeviceChild DXGIObject DXGIDeviceSubObject DXGISurface View SRV SRV1
+[qi] srv: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] srv: identity-mismatch: none
+[qi] srv: not-transitive: none
+[qi] srv: null-vtable-slots: none
+[qi] srv: QI(IUnknown, NULL) hr=0x80004003
+[qi] rtv: answers: IUnknown DeviceChild View RTV RTV1
+[qi] rtv: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] rtv: identity-mismatch: none
+[qi] rtv: not-transitive: none
+[qi] rtv: null-vtable-slots: none
+[qi] rtv: QI(IUnknown, NULL) hr=0x80004003
+[qi] dsv: answers: IUnknown DeviceChild View DSV
+[qi] dsv: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] dsv: identity-mismatch: none
+[qi] dsv: not-transitive: none
+[qi] dsv: null-vtable-slots: none
+[qi] dsv: QI(IUnknown, NULL) hr=0x80004003
+[qi] uav: answers: IUnknown DeviceChild View UAV UAV1
+[qi] uav: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] uav: identity-mismatch: none
+[qi] uav: not-transitive: none
+[qi] uav: null-vtable-slots: none
+[qi] uav: QI(IUnknown, NULL) hr=0x80004003
+[qi] blend: answers: IUnknown DeviceChild BlendState BlendState1
+[qi] blend: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] blend: identity-mismatch: none
+[qi] blend: not-transitive: none
+[qi] blend: null-vtable-slots: none
+[qi] blend: QI(IUnknown, NULL) hr=0x80004003
+[qi] blend1: answers: IUnknown DeviceChild BlendState BlendState1
+[qi] blend1: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] blend1: identity-mismatch: none
+[qi] blend1: not-transitive: none
+[qi] blend1: null-vtable-slots: none
+[qi] blend1: QI(IUnknown, NULL) hr=0x80004003
+[qi] depth_stencil_state: answers: IUnknown DeviceChild DepthStencilState
+[qi] depth_stencil_state: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] depth_stencil_state: identity-mismatch: none
+[qi] depth_stencil_state: not-transitive: none
+[qi] depth_stencil_state: null-vtable-slots: none
+[qi] depth_stencil_state: QI(IUnknown, NULL) hr=0x80004003
+[qi] rasterizer: answers: IUnknown DeviceChild RasterizerState RasterizerState1 RasterizerState2
+[qi] rasterizer: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] rasterizer: identity-mismatch: none
+[qi] rasterizer: not-transitive: none
+[qi] rasterizer: null-vtable-slots: none
+[qi] rasterizer: QI(IUnknown, NULL) hr=0x80004003
+[qi] rasterizer1: answers: IUnknown DeviceChild RasterizerState RasterizerState1 RasterizerState2
+[qi] rasterizer1: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] rasterizer1: identity-mismatch: none
+[qi] rasterizer1: not-transitive: none
+[qi] rasterizer1: null-vtable-slots: none
+[qi] rasterizer1: QI(IUnknown, NULL) hr=0x80004003
+[qi] rasterizer2: answers: IUnknown DeviceChild RasterizerState RasterizerState1 RasterizerState2
+[qi] rasterizer2: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] rasterizer2: identity-mismatch: none
+[qi] rasterizer2: not-transitive: none
+[qi] rasterizer2: null-vtable-slots: none
+[qi] rasterizer2: QI(IUnknown, NULL) hr=0x80004003
+[qi] sampler: answers: IUnknown DeviceChild SamplerState
+[qi] sampler: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] sampler: identity-mismatch: none
+[qi] sampler: not-transitive: none
+[qi] sampler: null-vtable-slots: none
+[qi] sampler: QI(IUnknown, NULL) hr=0x80004003
+[qi] input_layout: answers: IUnknown DeviceChild InputLayout
+[qi] input_layout: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] input_layout: identity-mismatch: none
+[qi] input_layout: not-transitive: none
+[qi] input_layout: null-vtable-slots: none
+[qi] input_layout: QI(IUnknown, NULL) hr=0x80004003
+[qi] vs: answers: IUnknown DeviceChild VertexShader
+[qi] vs: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] vs: identity-mismatch: none
+[qi] vs: not-transitive: none
+[qi] vs: null-vtable-slots: none
+[qi] vs: QI(IUnknown, NULL) hr=0x80004003
+[qi] ps: answers: IUnknown DeviceChild PixelShader
+[qi] ps: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] ps: identity-mismatch: none
+[qi] ps: not-transitive: none
+[qi] ps: null-vtable-slots: none
+[qi] ps: QI(IUnknown, NULL) hr=0x80004003
+[qi] gs: answers: IUnknown DeviceChild GeometryShader
+[qi] gs: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] gs: identity-mismatch: none
+[qi] gs: not-transitive: none
+[qi] gs: null-vtable-slots: none
+[qi] gs: QI(IUnknown, NULL) hr=0x80004003
+[qi] hs: answers: IUnknown DeviceChild HullShader
+[qi] hs: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] hs: identity-mismatch: none
+[qi] hs: not-transitive: none
+[qi] hs: null-vtable-slots: none
+[qi] hs: QI(IUnknown, NULL) hr=0x80004003
+[qi] ds: answers: IUnknown DeviceChild DomainShader
+[qi] ds: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] ds: identity-mismatch: none
+[qi] ds: not-transitive: none
+[qi] ds: null-vtable-slots: none
+[qi] ds: QI(IUnknown, NULL) hr=0x80004003
+[qi] cs: answers: IUnknown DeviceChild ComputeShader
+[qi] cs: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] cs: identity-mismatch: none
+[qi] cs: not-transitive: none
+[qi] cs: null-vtable-slots: none
+[qi] cs: QI(IUnknown, NULL) hr=0x80004003
+[qi] query_event: answers: IUnknown DeviceChild Asynchronous Query Query1
+[qi] query_event: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] query_event: identity-mismatch: none
+[qi] query_event: not-transitive: none
+[qi] query_event: null-vtable-slots: none
+[qi] query_event: QI(IUnknown, NULL) hr=0x80004003
+[qi] query1: answers: IUnknown DeviceChild Asynchronous Query Query1
+[qi] query1: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] query1: identity-mismatch: none
+[qi] query1: not-transitive: none
+[qi] query1: null-vtable-slots: none
+[qi] query1: QI(IUnknown, NULL) hr=0x80004003
+[qi] predicate: answers: IUnknown DeviceChild Asynchronous Query Query1 Predicate
+[qi] predicate: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] predicate: identity-mismatch: none
+[qi] predicate: not-transitive: none
+[qi] predicate: null-vtable-slots: none
+[qi] predicate: QI(IUnknown, NULL) hr=0x80004003
+[qi] class_linkage: answers: IUnknown DeviceChild ClassLinkage
+[qi] class_linkage: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] class_linkage: identity-mismatch: none
+[qi] class_linkage: not-transitive: none
+[qi] class_linkage: null-vtable-slots: none
+[qi] class_linkage: QI(IUnknown, NULL) hr=0x80004003
+[qi] class_instance: answers: IUnknown DeviceChild ClassInstance
+[qi] class_instance: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] class_instance: identity-mismatch: none
+[qi] class_instance: not-transitive: none
+[qi] class_instance: null-vtable-slots: none
+[qi] class_instance: QI(IUnknown, NULL) hr=0x80004003
+[qi] deferred_context: answers: IUnknown DeviceChild Context Context1 Context2 Context3 Context4 UserDefinedAnnotation
+[qi] deferred_context: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] deferred_context: identity-mismatch: none
+[qi] deferred_context: not-transitive: none
+[qi] deferred_context: null-vtable-slots: none
+[qi] deferred_context: QI(IUnknown, NULL) hr=0x80004003
+[qi] command_list: answers: IUnknown DeviceChild CommandList
+[qi] command_list: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] command_list: identity-mismatch: none
+[qi] command_list: not-transitive: none
+[qi] command_list: null-vtable-slots: none
+[qi] command_list: QI(IUnknown, NULL) hr=0x80004003
+[qi] device_context_state: answers: IUnknown DeviceChild DeviceContextState
+[qi] device_context_state: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] device_context_state: identity-mismatch: none
+[qi] device_context_state: not-transitive: none
+[qi] device_context_state: null-vtable-slots: none
+[qi] device_context_state: QI(IUnknown, NULL) hr=0x80004003
+[qi] fence: answers: IUnknown DeviceChild Fence
+[qi] fence: refused-but-not-E_NOINTERFACE/NULL: none
+[qi] fence: identity-mismatch: none
+[qi] fence: not-transitive: none
+[qi] fence: null-vtable-slots: none
+[qi] fence: QI(IUnknown, NULL) hr=0x80004003
+[qi] swap_chain: not created
+[qi] swap_buffer: not created
+[qi] IDXGIDevice->QI(ID3D11Device) == device: 1
+[qi] device QI(Device1) == device pointer: 1
+[qi] context QI(Context1) == context pointer: 1
+[qi] device IUnknown == context IUnknown: 0
+[qi] deferred IUnknown == immediate IUnknown: 0
+[qi] deferred QI(Context1) == immediate: 0 == deferred: 1
+
+== rc ==
+[rc] device: AddRef=46 Release=45
+[rc] immediate_context: AddRef=4 Release=3
+[rc] buffer: AddRef=2 Release=1
+[rc] tex1d: AddRef=2 Release=1
+[rc] tex2d(+srv,rtv,uav): AddRef=2 Release=1
+[rc] tex2d_mips2: AddRef=2 Release=1
+[rc] tex3d: AddRef=2 Release=1
+[rc] srv: AddRef=2 Release=1
+[rc] rtv: AddRef=2 Release=1
+[rc] dsv: AddRef=2 Release=1
+[rc] uav: AddRef=2 Release=1
+[rc] blend: AddRef=2 Release=1
+[rc] blend1: AddRef=2 Release=1
+[rc] depth_stencil_state: AddRef=2 Release=1
+[rc] rasterizer: AddRef=2 Release=1
+[rc] rasterizer1: AddRef=2 Release=1
+[rc] rasterizer2: AddRef=2 Release=1
+[rc] sampler: AddRef=2 Release=1
+[rc] input_layout: AddRef=2 Release=1
+[rc] vs: AddRef=2 Release=1
+[rc] ps: AddRef=2 Release=1
+[rc] gs: AddRef=2 Release=1
+[rc] hs: AddRef=2 Release=1
+[rc] ds: AddRef=2 Release=1
+[rc] cs: AddRef=2 Release=1
+[rc] query_event: AddRef=2 Release=1
+[rc] query1: AddRef=2 Release=1
+[rc] predicate: AddRef=2 Release=1
+[rc] class_linkage(+instance): AddRef=2 Release=1
+[rc] class_instance: AddRef=2 Release=1
+[rc] deferred_context: AddRef=2 Release=1
+[rc] command_list: AddRef=2 Release=1
+[rc] device_context_state: AddRef=2 Release=1
+[rc] fence: AddRef=2 Release=1
+[rc] swap_chain: not created
+[rc] swap_buffer: not created
+[rc] tex2d with an IDXGIResource ref held: tex2d=2 IDXGIResource=2
+[rc] device before QI(IDXGIDevice)=45 after: device=46 IDXGIDevice=46
+[rc] GetImmediateContext: same=1 ctx 3->4 device 45->45
+[rc] context AddRef -> device count 45
+[rc] GetImmediateContext1 IUnknown==immediate: 1
+[rc] GetImmediateContext3 IUnknown==immediate: 1
+[rc] device count: before child=45 with child=46 after GetDevice=47 same=1
+[rc] child last Release=0 device count after=45
+[rc] GetDevice per child: context:dev+1 buffer:dev+1 tex2d:dev+1 srv:dev+1 rtv:dev+1 dsv:dev+1 uav:dev+1 blend:dev+1 dss:dev+1 rs:dev+1 sampler:dev+1 il:dev+1 vs:dev+1 ps:dev+1 gs:dev+1 hs:dev+1 ds:dev+1 cs:dev+1 query:dev+1 predicate:dev+1 linkage:dev+1 instance:dev+1 deferred:dev+1 command_list:dev+1 dcs:dev+1 fence:dev+1
+[rc] texture count: alone=1 with view=1 after GetResource=2 same=1
+[rc] texture last external Release=0; view->GetResource afterwards=obj width=8 count=1
+[rc] view last Release=0
+[rc] bound VB: count while bound=1 last external Release=0 IAGet=obj same=1 bytes=64 count=1
+[rc] bound VB: Release of IAGet ref after unbind=0
+[rc] bound SRV: count while bound=1 tex Release=0 srv Release=0 PSGet=obj same=1 resource=obj
+[rc] bound SRV: Release of PSGet ref after unbind=0
+[rc] bound blend: count while bound=1 last Release=0 OMGet=obj same=1
+[rc] bound blend: Release of OMGet ref after unbind=0
+[rc] IDXGIResource::GetParent(IDXGIDevice) hr=0x00000000 identity=device:1
+[rc] IDXGIResource::GetParent(IDXGIAdapter) hr=0x80004002 out=NULL
+[rc] IDXGIResource::GetDevice(ID3D11Device) hr=0x00000000 same=1
+[rc] IDXGIResource::GetDevice(IDXGIDevice) hr=0x00000000 identity=device:1
+[rc] IDXGIResource::GetDevice(ID3D11Buffer) hr=0x80004002 out=NULL
+[rc] IDXGIDevice GetAdapter hr=0x00000000 GetParent(IDXGIAdapter) hr=0x00000000 same=1
+
+== pd ==
+[pd] device: get missing hr=0x887a0002 size=0 data=untouched
+[pd] device: set 4 bytes hr=0x00000000
+[pd] device: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] device: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] device: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] device: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] device: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] device: get NULL size ptr hr=0x80070057
+[pd] device: set (size 4, NULL data) hr=0x00000000
+[pd] device:   then get hr=0x887a0002 size=0
+[pd] device: set (size 0, non-NULL data) hr=0x00000000
+[pd] device:   then get hr=0x00000000 size=0
+[pd] device: set (size 0, NULL) = delete hr=0x00000000
+[pd] device:   then get hr=0x887a0002 size=0
+[pd] device: delete again (absent) hr=0x00000001
+[pd] device: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] device:   get iface size-query hr=0x00000000 size=8
+[pd] device:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] device:   set same iface again hr=0x00000000 fake rc=2
+[pd] device:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] device:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] device:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] device:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] device:   then get hr=0x00000000 size=8
+[pd] device: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] device: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] immediate_context: get missing hr=0x887a0002 size=0 data=untouched
+[pd] immediate_context: set 4 bytes hr=0x00000000
+[pd] immediate_context: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] immediate_context: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] immediate_context: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] immediate_context: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] immediate_context: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] immediate_context: get NULL size ptr hr=0x80070057
+[pd] immediate_context: set (size 4, NULL data) hr=0x00000000
+[pd] immediate_context:   then get hr=0x887a0002 size=0
+[pd] immediate_context: set (size 0, non-NULL data) hr=0x00000000
+[pd] immediate_context:   then get hr=0x00000000 size=0
+[pd] immediate_context: set (size 0, NULL) = delete hr=0x00000000
+[pd] immediate_context:   then get hr=0x887a0002 size=0
+[pd] immediate_context: delete again (absent) hr=0x00000001
+[pd] immediate_context: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] immediate_context:   get iface size-query hr=0x00000000 size=8
+[pd] immediate_context:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] immediate_context:   set same iface again hr=0x00000000 fake rc=2
+[pd] immediate_context:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] immediate_context:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] immediate_context:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] immediate_context:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] immediate_context:   then get hr=0x00000000 size=8
+[pd] immediate_context: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] immediate_context: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] buffer: get missing hr=0x887a0002 size=0 data=untouched
+[pd] buffer: set 4 bytes hr=0x00000000
+[pd] buffer: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] buffer: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] buffer: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] buffer: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] buffer: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] buffer: get NULL size ptr hr=0x80070057
+[pd] buffer: set (size 4, NULL data) hr=0x00000000
+[pd] buffer:   then get hr=0x887a0002 size=0
+[pd] buffer: set (size 0, non-NULL data) hr=0x00000000
+[pd] buffer:   then get hr=0x00000000 size=0
+[pd] buffer: set (size 0, NULL) = delete hr=0x00000000
+[pd] buffer:   then get hr=0x887a0002 size=0
+[pd] buffer: delete again (absent) hr=0x00000001
+[pd] buffer: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] buffer:   get iface size-query hr=0x00000000 size=8
+[pd] buffer:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] buffer:   set same iface again hr=0x00000000 fake rc=2
+[pd] buffer:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] buffer:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] buffer:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] buffer:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] buffer:   then get hr=0x00000000 size=8
+[pd] buffer: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] buffer: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] tex2d: get missing hr=0x887a0002 size=0 data=untouched
+[pd] tex2d: set 4 bytes hr=0x00000000
+[pd] tex2d: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] tex2d: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] tex2d: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] tex2d: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] tex2d: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] tex2d: get NULL size ptr hr=0x80070057
+[pd] tex2d: set (size 4, NULL data) hr=0x00000000
+[pd] tex2d:   then get hr=0x887a0002 size=0
+[pd] tex2d: set (size 0, non-NULL data) hr=0x00000000
+[pd] tex2d:   then get hr=0x00000000 size=0
+[pd] tex2d: set (size 0, NULL) = delete hr=0x00000000
+[pd] tex2d:   then get hr=0x887a0002 size=0
+[pd] tex2d: delete again (absent) hr=0x00000001
+[pd] tex2d: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] tex2d:   get iface size-query hr=0x00000000 size=8
+[pd] tex2d:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] tex2d:   set same iface again hr=0x00000000 fake rc=2
+[pd] tex2d:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] tex2d:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] tex2d:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] tex2d:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] tex2d:   then get hr=0x00000000 size=8
+[pd] tex2d: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] tex2d: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] tex1d: get missing hr=0x887a0002 size=0 data=untouched
+[pd] tex1d: set 4 bytes hr=0x00000000
+[pd] tex1d: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] tex1d: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] tex1d: set (size 0, NULL) = delete hr=0x00000000
+[pd] tex1d:   then get hr=0x887a0002 size=0
+[pd] tex1d: delete again (absent) hr=0x00000001
+[pd] tex1d: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] tex1d:   get iface size-query hr=0x00000000 size=8
+[pd] tex1d:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] tex1d:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] tex1d:   then get hr=0x00000000 size=8
+[pd] tex3d: get missing hr=0x887a0002 size=0 data=untouched
+[pd] tex3d: set 4 bytes hr=0x00000000
+[pd] tex3d: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] tex3d: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] tex3d: set (size 0, NULL) = delete hr=0x00000000
+[pd] tex3d:   then get hr=0x887a0002 size=0
+[pd] tex3d: delete again (absent) hr=0x00000001
+[pd] tex3d: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] tex3d:   get iface size-query hr=0x00000000 size=8
+[pd] tex3d:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] tex3d:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] tex3d:   then get hr=0x00000000 size=8
+[pd] srv: get missing hr=0x887a0002 size=0 data=untouched
+[pd] srv: set 4 bytes hr=0x00000000
+[pd] srv: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] srv: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] srv: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] srv: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] srv: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] srv: get NULL size ptr hr=0x80070057
+[pd] srv: set (size 4, NULL data) hr=0x00000000
+[pd] srv:   then get hr=0x887a0002 size=0
+[pd] srv: set (size 0, non-NULL data) hr=0x00000000
+[pd] srv:   then get hr=0x00000000 size=0
+[pd] srv: set (size 0, NULL) = delete hr=0x00000000
+[pd] srv:   then get hr=0x887a0002 size=0
+[pd] srv: delete again (absent) hr=0x00000001
+[pd] srv: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] srv:   get iface size-query hr=0x00000000 size=8
+[pd] srv:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] srv:   set same iface again hr=0x00000000 fake rc=2
+[pd] srv:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] srv:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] srv:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] srv:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] srv:   then get hr=0x00000000 size=8
+[pd] srv: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] srv: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] rtv: get missing hr=0x887a0002 size=0 data=untouched
+[pd] rtv: set 4 bytes hr=0x00000000
+[pd] rtv: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] rtv: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] rtv: set (size 0, NULL) = delete hr=0x00000000
+[pd] rtv:   then get hr=0x887a0002 size=0
+[pd] rtv: delete again (absent) hr=0x00000001
+[pd] rtv: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] rtv:   get iface size-query hr=0x00000000 size=8
+[pd] rtv:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] rtv:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] rtv:   then get hr=0x00000000 size=8
+[pd] dsv: get missing hr=0x887a0002 size=0 data=untouched
+[pd] dsv: set 4 bytes hr=0x00000000
+[pd] dsv: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] dsv: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] dsv: set (size 0, NULL) = delete hr=0x00000000
+[pd] dsv:   then get hr=0x887a0002 size=0
+[pd] dsv: delete again (absent) hr=0x00000001
+[pd] dsv: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] dsv:   get iface size-query hr=0x00000000 size=8
+[pd] dsv:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] dsv:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] dsv:   then get hr=0x00000000 size=8
+[pd] uav: get missing hr=0x887a0002 size=0 data=untouched
+[pd] uav: set 4 bytes hr=0x00000000
+[pd] uav: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] uav: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] uav: set (size 0, NULL) = delete hr=0x00000000
+[pd] uav:   then get hr=0x887a0002 size=0
+[pd] uav: delete again (absent) hr=0x00000001
+[pd] uav: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] uav:   get iface size-query hr=0x00000000 size=8
+[pd] uav:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] uav:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] uav:   then get hr=0x00000000 size=8
+[pd] blend: get missing hr=0x887a0002 size=0 data=untouched
+[pd] blend: set 4 bytes hr=0x00000000
+[pd] blend: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] blend: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] blend: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] blend: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] blend: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] blend: get NULL size ptr hr=0x80070057
+[pd] blend: set (size 4, NULL data) hr=0x00000000
+[pd] blend:   then get hr=0x887a0002 size=0
+[pd] blend: set (size 0, non-NULL data) hr=0x00000000
+[pd] blend:   then get hr=0x00000000 size=0
+[pd] blend: set (size 0, NULL) = delete hr=0x00000000
+[pd] blend:   then get hr=0x887a0002 size=0
+[pd] blend: delete again (absent) hr=0x00000001
+[pd] blend: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] blend:   get iface size-query hr=0x00000000 size=8
+[pd] blend:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] blend:   set same iface again hr=0x00000000 fake rc=2
+[pd] blend:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] blend:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] blend:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] blend:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] blend:   then get hr=0x00000000 size=8
+[pd] blend: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] blend: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] depth_stencil_state: get missing hr=0x887a0002 size=0 data=untouched
+[pd] depth_stencil_state: set 4 bytes hr=0x00000000
+[pd] depth_stencil_state: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] depth_stencil_state: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] depth_stencil_state: set (size 0, NULL) = delete hr=0x00000000
+[pd] depth_stencil_state:   then get hr=0x887a0002 size=0
+[pd] depth_stencil_state: delete again (absent) hr=0x00000001
+[pd] depth_stencil_state: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] depth_stencil_state:   get iface size-query hr=0x00000000 size=8
+[pd] depth_stencil_state:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] depth_stencil_state:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] depth_stencil_state:   then get hr=0x00000000 size=8
+[pd] rasterizer: get missing hr=0x887a0002 size=0 data=untouched
+[pd] rasterizer: set 4 bytes hr=0x00000000
+[pd] rasterizer: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] rasterizer: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] rasterizer: set (size 0, NULL) = delete hr=0x00000000
+[pd] rasterizer:   then get hr=0x887a0002 size=0
+[pd] rasterizer: delete again (absent) hr=0x00000001
+[pd] rasterizer: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] rasterizer:   get iface size-query hr=0x00000000 size=8
+[pd] rasterizer:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] rasterizer:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] rasterizer:   then get hr=0x00000000 size=8
+[pd] sampler: get missing hr=0x887a0002 size=0 data=untouched
+[pd] sampler: set 4 bytes hr=0x00000000
+[pd] sampler: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] sampler: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] sampler: set (size 0, NULL) = delete hr=0x00000000
+[pd] sampler:   then get hr=0x887a0002 size=0
+[pd] sampler: delete again (absent) hr=0x00000001
+[pd] sampler: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] sampler:   get iface size-query hr=0x00000000 size=8
+[pd] sampler:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] sampler:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] sampler:   then get hr=0x00000000 size=8
+[pd] input_layout: get missing hr=0x887a0002 size=0 data=untouched
+[pd] input_layout: set 4 bytes hr=0x00000000
+[pd] input_layout: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] input_layout: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] input_layout: set (size 0, NULL) = delete hr=0x00000000
+[pd] input_layout:   then get hr=0x887a0002 size=0
+[pd] input_layout: delete again (absent) hr=0x00000001
+[pd] input_layout: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] input_layout:   get iface size-query hr=0x00000000 size=8
+[pd] input_layout:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] input_layout:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] input_layout:   then get hr=0x00000000 size=8
+[pd] vs: get missing hr=0x887a0002 size=0 data=untouched
+[pd] vs: set 4 bytes hr=0x00000000
+[pd] vs: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] vs: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] vs: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] vs: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] vs: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] vs: get NULL size ptr hr=0x80070057
+[pd] vs: set (size 4, NULL data) hr=0x00000000
+[pd] vs:   then get hr=0x887a0002 size=0
+[pd] vs: set (size 0, non-NULL data) hr=0x00000000
+[pd] vs:   then get hr=0x00000000 size=0
+[pd] vs: set (size 0, NULL) = delete hr=0x00000000
+[pd] vs:   then get hr=0x887a0002 size=0
+[pd] vs: delete again (absent) hr=0x00000001
+[pd] vs: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] vs:   get iface size-query hr=0x00000000 size=8
+[pd] vs:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] vs:   set same iface again hr=0x00000000 fake rc=2
+[pd] vs:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] vs:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] vs:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] vs:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] vs:   then get hr=0x00000000 size=8
+[pd] vs: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] vs: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] ps: get missing hr=0x887a0002 size=0 data=untouched
+[pd] ps: set 4 bytes hr=0x00000000
+[pd] ps: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] ps: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] ps: set (size 0, NULL) = delete hr=0x00000000
+[pd] ps:   then get hr=0x887a0002 size=0
+[pd] ps: delete again (absent) hr=0x00000001
+[pd] ps: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] ps:   get iface size-query hr=0x00000000 size=8
+[pd] ps:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] ps:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] ps:   then get hr=0x00000000 size=8
+[pd] gs: get missing hr=0x887a0002 size=0 data=untouched
+[pd] gs: set 4 bytes hr=0x00000000
+[pd] gs: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] gs: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] gs: set (size 0, NULL) = delete hr=0x00000000
+[pd] gs:   then get hr=0x887a0002 size=0
+[pd] gs: delete again (absent) hr=0x00000001
+[pd] gs: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] gs:   get iface size-query hr=0x00000000 size=8
+[pd] gs:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] gs:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] gs:   then get hr=0x00000000 size=8
+[pd] hs: get missing hr=0x887a0002 size=0 data=untouched
+[pd] hs: set 4 bytes hr=0x00000000
+[pd] hs: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] hs: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] hs: set (size 0, NULL) = delete hr=0x00000000
+[pd] hs:   then get hr=0x887a0002 size=0
+[pd] hs: delete again (absent) hr=0x00000001
+[pd] hs: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] hs:   get iface size-query hr=0x00000000 size=8
+[pd] hs:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] hs:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] hs:   then get hr=0x00000000 size=8
+[pd] ds: get missing hr=0x887a0002 size=0 data=untouched
+[pd] ds: set 4 bytes hr=0x00000000
+[pd] ds: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] ds: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] ds: set (size 0, NULL) = delete hr=0x00000000
+[pd] ds:   then get hr=0x887a0002 size=0
+[pd] ds: delete again (absent) hr=0x00000001
+[pd] ds: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] ds:   get iface size-query hr=0x00000000 size=8
+[pd] ds:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] ds:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] ds:   then get hr=0x00000000 size=8
+[pd] cs: get missing hr=0x887a0002 size=0 data=untouched
+[pd] cs: set 4 bytes hr=0x00000000
+[pd] cs: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] cs: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] cs: set (size 0, NULL) = delete hr=0x00000000
+[pd] cs:   then get hr=0x887a0002 size=0
+[pd] cs: delete again (absent) hr=0x00000001
+[pd] cs: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] cs:   get iface size-query hr=0x00000000 size=8
+[pd] cs:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] cs:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] cs:   then get hr=0x00000000 size=8
+[pd] query_event: get missing hr=0x887a0002 size=0 data=untouched
+[pd] query_event: set 4 bytes hr=0x00000000
+[pd] query_event: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] query_event: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] query_event: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] query_event: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] query_event: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] query_event: get NULL size ptr hr=0x80070057
+[pd] query_event: set (size 4, NULL data) hr=0x00000000
+[pd] query_event:   then get hr=0x887a0002 size=0
+[pd] query_event: set (size 0, non-NULL data) hr=0x00000000
+[pd] query_event:   then get hr=0x00000000 size=0
+[pd] query_event: set (size 0, NULL) = delete hr=0x00000000
+[pd] query_event:   then get hr=0x887a0002 size=0
+[pd] query_event: delete again (absent) hr=0x00000001
+[pd] query_event: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] query_event:   get iface size-query hr=0x00000000 size=8
+[pd] query_event:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] query_event:   set same iface again hr=0x00000000 fake rc=2
+[pd] query_event:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] query_event:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] query_event:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] query_event:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] query_event:   then get hr=0x00000000 size=8
+[pd] query_event: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] query_event: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] predicate: get missing hr=0x887a0002 size=0 data=untouched
+[pd] predicate: set 4 bytes hr=0x00000000
+[pd] predicate: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] predicate: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] predicate: set (size 0, NULL) = delete hr=0x00000000
+[pd] predicate:   then get hr=0x887a0002 size=0
+[pd] predicate: delete again (absent) hr=0x00000001
+[pd] predicate: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] predicate:   get iface size-query hr=0x00000000 size=8
+[pd] predicate:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] predicate:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] predicate:   then get hr=0x00000000 size=8
+[pd] class_linkage: get missing hr=0x887a0002 size=0 data=untouched
+[pd] class_linkage: set 4 bytes hr=0x00000000
+[pd] class_linkage: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] class_linkage: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] class_linkage: set (size 0, NULL) = delete hr=0x00000000
+[pd] class_linkage:   then get hr=0x887a0002 size=0
+[pd] class_linkage: delete again (absent) hr=0x00000001
+[pd] class_linkage: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] class_linkage:   get iface size-query hr=0x00000000 size=8
+[pd] class_linkage:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] class_linkage:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] class_linkage:   then get hr=0x00000000 size=8
+[pd] class_instance: get missing hr=0x887a0002 size=0 data=untouched
+[pd] class_instance: set 4 bytes hr=0x00000000
+[pd] class_instance: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] class_instance: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] class_instance: set (size 0, NULL) = delete hr=0x00000000
+[pd] class_instance:   then get hr=0x887a0002 size=0
+[pd] class_instance: delete again (absent) hr=0x00000001
+[pd] class_instance: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] class_instance:   get iface size-query hr=0x00000000 size=8
+[pd] class_instance:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] class_instance:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] class_instance:   then get hr=0x00000000 size=8
+[pd] deferred_context: get missing hr=0x887a0002 size=0 data=untouched
+[pd] deferred_context: set 4 bytes hr=0x00000000
+[pd] deferred_context: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] deferred_context: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] deferred_context: set (size 0, NULL) = delete hr=0x00000000
+[pd] deferred_context:   then get hr=0x887a0002 size=0
+[pd] deferred_context: delete again (absent) hr=0x00000001
+[pd] deferred_context: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] deferred_context:   get iface size-query hr=0x00000000 size=8
+[pd] deferred_context:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] deferred_context:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] deferred_context:   then get hr=0x00000000 size=8
+[pd] command_list: get missing hr=0x887a0002 size=0 data=untouched
+[pd] command_list: set 4 bytes hr=0x00000000
+[pd] command_list: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] command_list: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] command_list: set (size 0, NULL) = delete hr=0x00000000
+[pd] command_list:   then get hr=0x887a0002 size=0
+[pd] command_list: delete again (absent) hr=0x00000001
+[pd] command_list: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] command_list:   get iface size-query hr=0x00000000 size=8
+[pd] command_list:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] command_list:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] command_list:   then get hr=0x00000000 size=8
+[pd] device_context_state: get missing hr=0x887a0002 size=0 data=untouched
+[pd] device_context_state: set 4 bytes hr=0x00000000
+[pd] device_context_state: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] device_context_state: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] device_context_state: set (size 0, NULL) = delete hr=0x00000000
+[pd] device_context_state:   then get hr=0x887a0002 size=0
+[pd] device_context_state: delete again (absent) hr=0x00000001
+[pd] device_context_state: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] device_context_state:   get iface size-query hr=0x00000000 size=8
+[pd] device_context_state:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] device_context_state:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] device_context_state:   then get hr=0x00000000 size=8
+[pd] fence: get missing hr=0x887a0002 size=0 data=untouched
+[pd] fence: set 4 bytes hr=0x00000000
+[pd] fence: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] fence: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] fence: set (size 0, NULL) = delete hr=0x00000000
+[pd] fence:   then get hr=0x887a0002 size=0
+[pd] fence: delete again (absent) hr=0x00000001
+[pd] fence: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] fence:   get iface size-query hr=0x00000000 size=8
+[pd] fence:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] fence:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] fence:   then get hr=0x00000000 size=8
+[pd] IDXGIDevice: get missing hr=0x887a0002 size=0 data=untouched
+[pd] IDXGIDevice: set 4 bytes hr=0x00000000
+[pd] IDXGIDevice: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] IDXGIDevice: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] IDXGIDevice: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] IDXGIDevice: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] IDXGIDevice: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] IDXGIDevice: get NULL size ptr hr=0x80070057
+[pd] IDXGIDevice: set (size 4, NULL data) hr=0x00000000
+[pd] IDXGIDevice:   then get hr=0x887a0002 size=0
+[pd] IDXGIDevice: set (size 0, non-NULL data) hr=0x00000000
+[pd] IDXGIDevice:   then get hr=0x00000000 size=0
+[pd] IDXGIDevice: set (size 0, NULL) = delete hr=0x00000000
+[pd] IDXGIDevice:   then get hr=0x887a0002 size=0
+[pd] IDXGIDevice: delete again (absent) hr=0x00000001
+[pd] IDXGIDevice: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] IDXGIDevice:   get iface size-query hr=0x00000000 size=8
+[pd] IDXGIDevice:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] IDXGIDevice:   set same iface again hr=0x00000000 fake rc=2
+[pd] IDXGIDevice:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] IDXGIDevice:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] IDXGIDevice:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] IDXGIDevice:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] IDXGIDevice:   then get hr=0x00000000 size=8
+[pd] IDXGIDevice: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] IDXGIDevice: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] tex2d.IDXGIResource: get missing hr=0x887a0002 size=0 data=untouched
+[pd] tex2d.IDXGIResource: set 4 bytes hr=0x00000000
+[pd] tex2d.IDXGIResource: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] tex2d.IDXGIResource: get size-query (NULL data, size 100) hr=0x00000000 size=4
+[pd] tex2d.IDXGIResource: get too-small (size 2) hr=0x887a0003 size=4 data=0xcdcdcdcd
+[pd] tex2d.IDXGIResource: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] tex2d.IDXGIResource: get larger buffer (16) hr=0x00000000 size=4 data=0x11223344 next=0xcdcdcdcd
+[pd] tex2d.IDXGIResource: get NULL size ptr hr=0x80070057
+[pd] tex2d.IDXGIResource: set (size 4, NULL data) hr=0x00000000
+[pd] tex2d.IDXGIResource:   then get hr=0x887a0002 size=0
+[pd] tex2d.IDXGIResource: set (size 0, non-NULL data) hr=0x00000000
+[pd] tex2d.IDXGIResource:   then get hr=0x00000000 size=0
+[pd] tex2d.IDXGIResource: set (size 0, NULL) = delete hr=0x00000000
+[pd] tex2d.IDXGIResource:   then get hr=0x887a0002 size=0
+[pd] tex2d.IDXGIResource: delete again (absent) hr=0x00000001
+[pd] tex2d.IDXGIResource: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] tex2d.IDXGIResource:   get iface size-query hr=0x00000000 size=8
+[pd] tex2d.IDXGIResource:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] tex2d.IDXGIResource:   set same iface again hr=0x00000000 fake rc=2
+[pd] tex2d.IDXGIResource:   overwrite iface GUID with bytes hr=0x00000000 fake rc=1
+[pd] tex2d.IDXGIResource:   then get hr=0x00000000 size=4 data=0x11223344
+[pd] tex2d.IDXGIResource:   set iface over bytes hr=0x00000000 fake rc=2
+[pd] tex2d.IDXGIResource:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] tex2d.IDXGIResource:   then get hr=0x00000000 size=8
+[pd] tex2d.IDXGIResource: D3DDebugObjectName set hr=0x00000000 get hr=0x00000000 size=7 text=a12name
+[pd] tex2d.IDXGIResource: D3DDebugObjectNameW set hr=0x00000000 get hr=0x00000000 size=8 first=a
+[pd] tex2d.IDXGISurface: get missing hr=0x887a0002 size=0 data=untouched
+[pd] tex2d.IDXGISurface: set 4 bytes hr=0x00000000
+[pd] tex2d.IDXGISurface: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] tex2d.IDXGISurface: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] tex2d.IDXGISurface: set (size 0, NULL) = delete hr=0x00000000
+[pd] tex2d.IDXGISurface:   then get hr=0x887a0002 size=0
+[pd] tex2d.IDXGISurface: delete again (absent) hr=0x00000001
+[pd] tex2d.IDXGISurface: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] tex2d.IDXGISurface:   get iface size-query hr=0x00000000 size=8
+[pd] tex2d.IDXGISurface:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] tex2d.IDXGISurface:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] tex2d.IDXGISurface:   then get hr=0x00000000 size=8
+[pd] buffer.IDXGIResource: get missing hr=0x887a0002 size=0 data=untouched
+[pd] buffer.IDXGIResource: set 4 bytes hr=0x00000000
+[pd] buffer.IDXGIResource: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] buffer.IDXGIResource: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] buffer.IDXGIResource: set (size 0, NULL) = delete hr=0x00000000
+[pd] buffer.IDXGIResource:   then get hr=0x887a0002 size=0
+[pd] buffer.IDXGIResource: delete again (absent) hr=0x00000001
+[pd] buffer.IDXGIResource: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] buffer.IDXGIResource:   get iface size-query hr=0x00000000 size=8
+[pd] buffer.IDXGIResource:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] buffer.IDXGIResource:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] buffer.IDXGIResource:   then get hr=0x00000000 size=8
+[pd] swap_chain: not created
+[pd] IDXGIAdapter: get missing hr=0x887a0002 size=0 data=untouched
+[pd] IDXGIAdapter: set 4 bytes hr=0x00000000
+[pd] IDXGIAdapter: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] IDXGIAdapter: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] IDXGIAdapter: set (size 0, NULL) = delete hr=0x00000000
+[pd] IDXGIAdapter:   then get hr=0x887a0002 size=0
+[pd] IDXGIAdapter: delete again (absent) hr=0x00000001
+[pd] IDXGIAdapter: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] IDXGIAdapter:   get iface size-query hr=0x00000000 size=8
+[pd] IDXGIAdapter:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] IDXGIAdapter:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] IDXGIAdapter:   then get hr=0x00000000 size=8
+[pd] IDXGIFactory: get missing hr=0x887a0002 size=0 data=untouched
+[pd] IDXGIFactory: set 4 bytes hr=0x00000000
+[pd] IDXGIFactory: get size-query (NULL data, size 0) hr=0x00000000 size=4
+[pd] IDXGIFactory: get exact hr=0x00000000 size=4 data=0x11223344
+[pd] IDXGIFactory: set (size 0, NULL) = delete hr=0x00000000
+[pd] IDXGIFactory:   then get hr=0x887a0002 size=0
+[pd] IDXGIFactory: delete again (absent) hr=0x00000001
+[pd] IDXGIFactory: SetPrivateDataInterface hr=0x00000000 fake rc=2
+[pd] IDXGIFactory:   get iface size-query hr=0x00000000 size=8
+[pd] IDXGIFactory:   get iface hr=0x00000000 size=8 same=1 fake rc=3
+[pd] IDXGIFactory:   SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] IDXGIFactory:   then get hr=0x00000000 size=8
+[pd] share: set on ID3D11Device, get on IDXGIDevice hr=0x00000000 data=0xabcd1234
+[pd] share: set on ID3D11Device, get on immediate context hr=0x887a0002
+[pd] share: set on immediate context, get on device hr=0x887a0002
+[pd] share: set on deferred context, get on immediate hr=0x887a0002
+[pd] share: set on ID3D11Texture2D, get on IDXGIResource hr=0x00000000 data=0xabcd1234
+[pd] share: set on ID3D11Texture2D, get on IDXGISurface hr=0x00000000 data=0xabcd1234
+[pd] share: iface set on ID3D11Texture2D, get on IDXGIResource hr=0x00000000 same=1
+[pd] share: IDXGIResource::SetPrivateDataInterface(NULL) hr=0x00000000 fake rc=1
+[pd] share: ID3D11Texture2D::SetPrivateDataInterface(NULL) fake rc=1
+[pd] destroy: fake rc while held=2, after last Release(0)=1
+[pd] SetPrivateData(0, NULL) on an interface GUID hr=0x00000000 fake rc=1
+
+== def ==
+[def] FEATURE_THREADING hr=0x00000000 DriverConcurrentCreates=1 DriverCommandLists=0
+[def] FEATURE_THREADING size-1 hr=0x80070057
+[def] CreateDeferredContext(flags=1) hr=0x80070057 out=untouched
+[def] CreateDeferredContext(NULL out) hr=0x00000001
+[def] CreateDeferredContext(0) hr=0x00000000 out=obj
+[def] CreateDeferredContext1(0) hr=0x00000000 type=1
+[def] CreateDeferredContext2(0) hr=0x00000000 type=1
+[def] CreateDeferredContext2(1) hr=0x80070057
+[def] CreateDeferredContext3(0) hr=0x00000000 type=1
+[def] immediate GetType=0 GetContextFlags=0
+[def] FinishCommandList on immediate hr=0x887a0001 out=NULL
+[def] deferred GetType=1 GetContextFlags=0
+[def] deferred AddRef=2 Release=1; immediate count 3 device count 46
+[def] deferred GetDevice same=1
+[def] Map dynamic NO_OVERWRITE before any DISCARD hr=0x887c0004
+[def] Map dynamic WRITE_DISCARD hr=0x00000000 data=obj
+[def] Map dynamic NO_OVERWRITE after DISCARD hr=0x00000000
+[def] Map staging READ hr=0x80070057
+[def] Map staging WRITE hr=0x80070057
+[def] Map dynamic WRITE_DISCARD DO_NOT_WAIT hr=0x80070057
+[def] GetData on deferred hr=0x887a0001 data=7
+[def] Flush on deferred returned
+[def] after deferred Clear, before Execute: pixel=0000ffff
+[def] after deferred UpdateSubresource, before Execute: buffer=0x00000000
+[def] FinishCommandList(TRUE) hr=0x00000000; deferred keeps viewports=1 w=30 rtv=obj
+[def] command list GetContextFlags=0
+[def] command list AddRef=2 Release=1
+[def] after Execute: pixel=00ff00ff buffer=0x0a0b0c0d
+[def] Execute(Restore=TRUE): immediate viewports=1 w=70
+[def] Execute(Restore=FALSE): immediate viewports=0 rtv=NULL
+[def] FinishCommandList(FALSE) hr=0x00000000; deferred viewports=0 rtv=NULL
+[def] empty command list executed; last Release=0
+[def] FinishCommandList(NULL out) hr=0x80004003
+[def] deferred Map+Copy: before Execute buffer=0x11111111 after=0x22222222
+[def] nested ExecuteCommandList on deferred then Finish hr=0x00000000
+[def] deferred QI(Annotation) hr=0x00000000
+[def] SwapDeviceContextState on deferred: previous=NULL
+[def] deferred last Release=0
+[def] command list last Release=0
+[def] SINGLETHREADED device hr=0x00000000
+[def] SINGLETHREADED GetCreationFlags=0x1
+[def] SINGLETHREADED CreateDeferredContext hr=0x887a0001 out=untouched
+[def] SINGLETHREADED FEATURE_THREADING hr=0x00000000 concurrent=1 lists=0
+[def] SINGLETHREADED QI(ID3D11Multithread) hr=0x80004002
+
+== mt ==
+[mt] device QI(ID3D11Multithread) hr=0x00000000
+[mt] context QI(ID3D11Multithread) hr=0x00000000
+[mt] device and context Multithread same pointer=0
+[mt] GetMultithreadProtected initial=0
+[mt] SetMultithreadProtected(TRUE) returned=0 now=1
+[mt] Enter/Enter/Leave/Leave returned
+[mt] SetMultithreadProtected(FALSE) returned=1 now=0
+[mt] SetMultithreadProtected(5) returned=0 now=1
+[mt] set TRUE via device facet, context facet reads=1
+[mt] device QI(ID3D10Multithread) hr=0x00000000
+[mt] ID3D10Multithread GetMultithreadProtected=0
+[mt] context QI(ID3DUserDefinedAnnotation) hr=0x00000000
+[mt] BeginEvent=-1 BeginEvent=-1 EndEvent=-1 EndEvent=-1 EndEvent(unbalanced)=-1
+[mt] SetMarker / BeginEvent(NULL) returned; GetStatus=0
+[mt] Context2 IsAnnotationEnabled=0
+[mt] Context2 BeginEventInt/SetMarkerInt/EndEvent returned
+[mt] annotation AddRef=5 shares context count: ctx 4 -> 5
+
+== dcs ==
+[dcs] CreateDeviceContextState(11_0 Device1) hr=0x00000000 chosen=0xb000 out=obj
+[dcs] CreateDeviceContextState(11_0 Device (base)) hr=0x00000000 chosen=0xb000 out=obj
+[dcs] CreateDeviceContextState(11_0 Device5) hr=0x00000000 chosen=0xb000 out=obj
+[dcs] CreateDeviceContextState(11_1,11_0 Device1) hr=0x00000000 chosen=0xb100 out=obj
+[dcs] CreateDeviceContextState(10_1 D3D10Device1) hr=0x00000000 chosen=0xa100 out=obj
+[dcs] CreateDeviceContextState(10_1 D3D10Device) hr=0x00000000 chosen=0xa100 out=obj
+[dcs] CreateDeviceContextState(11_0 D3D10Device1) hr=0x80070057 chosen=0x0 out=NULL
+[dcs] CreateDeviceContextState(11_0 IDXGIDevice) hr=0x80070057 chosen=0x0 out=NULL
+[dcs] CreateDeviceContextState(flags=1 SINGLETHREADED) hr=0x80070057 chosen=0x0 out=NULL
+[dcs] CreateDeviceContextState(flags=2) hr=0x00000000 chosen=0xb000 out=obj
+[dcs] CreateDeviceContextState(levels=NULL) hr=0x80070057 chosen=0x0 out=NULL
+[dcs] CreateDeviceContextState(levels count 0) hr=0x80070057 chosen=0x0 out=NULL
+[dcs] CreateDeviceContextState(bad level) hr=0x80070057 chosen=0x0 out=NULL
+[dcs] CreateDeviceContextState(sdk 0) hr=0x80070057 chosen=0x0 out=NULL
+[dcs] CreateDeviceContextState(NULL out) hr=0x00000001 chosen=0xb000 out=-
+[dcs] state AddRef=2 Release=1
+[dcs] state GetDevice same=1
+[dcs] swap in: previous=obj state count 1->1 new viewports=0 ps=NULL
+[dcs] previous (the device's original state) count=1
+[dcs] swap back: again==state 1 viewports=1 w=30 ps restored=1 state count=2
+[dcs] swap(NULL state): previous=NULL
+[dcs] swap with NULL ppPreviousState returned; state count=1
+
+== cl ==
+[cl] CreateClassLinkage hr=0x00000000
+[cl] GetClassInstance(g_red) before any shader hr=0x00000000 out=obj
+[cl] CreateClassInstance(CGreen) before any shader hr=0x00000000 out=obj
+[cl] CreatePixelShader(interface shader, linkage) hr=0x00000000
+[cl] CreatePixelShader(interface shader, NULL linkage) hr=0x80070057
+[cl] CreatePixelShader(plain shader, linkage) hr=0x00000000
+[cl] CreateVertexShader(plain, linkage) hr=0x00000000
+[cl] CreateGeometryShader(plain, linkage) hr=0x00000000
+[cl] CreateHullShader(plain, linkage) hr=0x00000000
+[cl] CreateDomainShader(plain, linkage) hr=0x00000000
+[cl] CreateComputeShader(plain, linkage) hr=0x00000000
+[cl] GetClassInstance(g_red, 0) hr=0x00000000 out=obj
+[cl]   desc InstanceId=0 InstanceIndex=0 TypeId=0 CB=0 CBOffset=0 Tex=0 Sampler=0 Created=0
+[cl]   name size-query=6 name=g_red len=6 type= len=1
+[cl]   GetClassLinkage same=1
+[cl]   GetClassInstance twice same object=0
+[cl] GetClassInstance(g_green, 0) hr=0x00000000 out=obj
+[cl]   desc InstanceId=1 InstanceIndex=0 TypeId=0 CB=0 CBOffset=0 Tex=0 Sampler=0 Created=0
+[cl]   name size-query=8 name=g_green len=8 type= len=1
+[cl]   GetClassLinkage same=1
+[cl]   GetClassInstance twice same object=0
+[cl] GetClassInstance(g_abstract, 0) hr=0x00000000 out=obj
+[cl]   desc InstanceId=2 InstanceIndex=0 TypeId=0 CB=0 CBOffset=0 Tex=0 Sampler=0 Created=0
+[cl]   name size-query=11 name=g_abstract len=11 type= len=1
+[cl]   GetClassLinkage same=1
+[cl]   GetClassInstance twice same object=0
+[cl] GetClassInstance(nope, 0) hr=0x00000000 out=obj
+[cl]   desc InstanceId=3 InstanceIndex=0 TypeId=0 CB=0 CBOffset=0 Tex=0 Sampler=0 Created=0
+[cl]   name size-query=5 name=nope len=5 type= len=1
+[cl]   GetClassLinkage same=1
+[cl]   GetClassInstance twice same object=0
+[cl] GetClassInstance(g_red, 1) hr=0x00000000 out=obj
+[cl] CreateClassInstance(CGreen,1,2,3,4) hr=0x00000000
+[cl]   desc InstanceId=0 InstanceIndex=0 TypeId=0 CB=1 CBOffset=2 Tex=3 Sampler=4 Created=1
+[cl]   PSGetShader instances=1 same=1
+[cl] CreateClassInstance(NoSuchClass) hr=0x00000000 out=obj
+[cl] linkage last Release=0
+
+== fence ==
+[fence] CreateFence(initial 3, flags 0x0) hr=0x00000000 out=obj completed=3
+[fence] CreateFence(initial 3, flags 0x1) hr=0x00000000 out=obj completed=3
+[fence] CreateFence(initial 3, flags 0x2) hr=0x00000000 out=obj completed=3
+[fence] CreateFence(initial 3, flags 0x4) hr=0x80070057 out=NULL completed=0
+[fence] CreateFence(initial 3, flags 0x6) hr=0x00000000 out=obj completed=3
+[fence] CreateFence(initial 3, flags 0x8) hr=0x80070057 out=NULL completed=0
+[fence] CreateFence(initial 3, flags 0x10) hr=0x80070057 out=NULL completed=0
+[fence] CreateFence(riid=ID3D11Buffer) hr=0x80004002 out=NULL
+[fence] CreateFence(riid=IUnknown) hr=0x00000000 out=obj
+[fence] CreateFence(NULL out) hr=0x00000001
+[fence] SetEventOnCompletion(0 = already reached) hr=0x00000000 signalled=0
+[fence] SetEventOnCompletion(10) hr=0x00000000 signalled-before-Signal=258
+[fence] Signal(10) hr=0x00000000
+[fence] after Flush: event wait=0 completed=10
+[fence] Wait(10) hr=0x00000000
+[fence] Signal(5) after 10 hr=0x80070057 completed=10
+[fence] SetEventOnCompletion(reached, NULL event) hr=0x00000000
+[fence] CreateSharedHandle on non-shared fence hr=0x80070057 out=untouched
+[fence] CreateSharedHandle on SHARED fence hr=0x00000000 handle=nonNULL
+[fence] OpenSharedFence hr=0x00000000 completed=42 same object=0
+[fence] OpenSharedFence(NULL) hr=0x80070057 out=NULL
+[fence] GetDevice same=1
+[fence] last Release=0
+
+== share ==
+[share] OpenSharedResource(NULL) hr=0x80070057 out=NULL
+[share] OpenSharedResource(bogus) hr=0x80070057 out=NULL
+[share] OpenSharedResource1(NULL) hr=0x80070057 out=NULL
+[share] OpenSharedResourceByName(NULL) hr=0x80070057 out=untouched
+[share] MISC_SHARED GetSharedHandle hr=0x00000000 handle=nonNULL
+[share] OpenSharedResource(handle, Texture2D) hr=0x00000000 same=0 width=16 misc=0x2 count=1
+[share] OpenSharedResource(handle, IDXGIResource) hr=0x00000000
+[share] OpenSharedResource(handle, Buffer) hr=0x80004002 out=NULL
+[share] non-shared GetSharedHandle hr=0x00000000 handle=NULL
+[share] IDXGIResource::GetUsage hr=0x00000000 usage=0x430
+[share] IDXGIResource eviction after Set(HIGH) hr=0x00000000 prio=0xa0000000 d3d11 reads=0xa0000000
+[share] KEYEDMUTEX QI(IDXGIKeyedMutex) hr=0x00000000
+[share] AcquireSync(0,0) hr=0x00000000
+[share] AcquireSync(0,0) again while held hr=0x887a0001
+[share] ReleaseSync(1) hr=0x00000000
+[share] ReleaseSync(1) not held hr=0x887a0001
+[share] AcquireSync(2,0) key is 1 hr=0x00000102
+[share] AcquireSync(1,0) hr=0x00000000
+[share] ReleaseSync(0) hr=0x00000000
+[share] KEYEDMUTEX GetSharedHandle hr=0x00000000 handle=nonNULL
+[share] non-keyed QI(IDXGIKeyedMutex) hr=0x80004002 out=NULL
+[share] create SHARED|SHARED_NTHANDLE hr=0x00000000
+[share] NTHANDLE texture QI(IDXGIResource1) hr=0x00000000
+[share] CreateSharedHandle hr=0x00000000 handle=nonNULL
+[share] NTHANDLE GetSharedHandle hr=0x80070057 out=untouched
+[share] OpenSharedResource1(nt) hr=0x00000000 out=obj
+[share] OpenSharedResource(nt handle via legacy) hr=0x80070057 out=NULL
+[share] CreateSharedHandle(named) hr=0x00000000
+[share] OpenSharedResourceByName(existing) hr=0x00000000 out=obj
+[share] tex2d QI(IDXGIResource1) hr=0x00000000
+[share] CreateSharedHandle on non-shared hr=0x80070057 out=NULL
+[share] CreateSubresourceSurface(0) hr=0x00000000 out=obj
+[share] mips2 QI(IDXGIResource1) hr=0x00000000
+[share] mips2 CreateSubresourceSurface(1) hr=0x00000000
+[share]   desc 8x8 GetResource hr=0x00000000 same=1 sub=1
+
+== tile ==
+[tile] GetResourceTiling(non-tiled buffer) total=0 packed=0/0/0/0 shape=0,0,0 nsub=0
+[tile] GetResourceTiling(non-tiled 2-mip texture) total=0 packed=0/0/0/0 shape=0,0,0 nsub=0 sub0=untouched
+[tile] UpdateTileMappings(non-tiled) hr=0x80070057
+[tile] TiledResourceBarrier(non-tiled) returned
+[tile] ResizeTilePool(non-pool buffer) hr=0x80070057
+[tile] done
+
+done
+#
+# ---------------------------------------------------------------------------
+# Verdicts: Vitreo build 2026-09-27 23:22 (build/src/vitreo), each section run
+# alone (`vitreo run a12_om64.exe <section>`), compared with the lines above.
+# Full inventory: .docs/audits/2026-09-28-d3d11-contract-audit/area-12-object-model.md
+#
+# winoracle runs over ssh (session 0): every swap chain, including a
+# composition one, is DXGI_ERROR_NOT_CURRENTLY_AVAILABLE (0x887a0022), so the
+# swap_chain / swap_buffer rows have no Windows answer. Judge Vitreo's
+# swap_buffer against the tex2d graph.
+#
+# [create] device-refs: Windows +1 for EVERY child. Vitreo +1 only for
+#   buffers/textures; +0 for views, states, shaders, IL, queries, deferred
+#   context, command list, context state, fence.                       WRONG
+# [create] class_linkage: Vitreo 0x80004001 (E_NOTIMPL).               MISSING
+# [qi] device: Vitreo lacks DXGIObject, DXGIDevice3, DXGIDevice4,
+#   D3D11Multithread, D3D10Multithread, D3D10Device, D3D10Device1; adds
+#   VideoDevice (WARP: no) while the context refuses VideoContext.     MISSING/WRONG
+# [qi] immediate_context: lacks D3D11Multithread, D3D10Multithread.    MISSING
+# [qi] buffer: Vitreo answers only IUnknown/DeviceChild/Resource/Buffer. MISSING
+# [qi] tex1d: Vitreo answers Texture2D, not Texture1D.                 WRONG
+# [qi] every texture: DXGIResource1 refused -- IID_IDXGIRESOURCE1 in
+#   d3d11_internal.hpp is {30961379-4609-4a41-BFAD-0D243C75B987}; the SDK
+#   value is {30961379-4609-4a41-998e-54fe567ee0c1}.                   WRONG
+# [qi] tex3d: DXGIObject/DXGIDeviceSubObject/DXGIResource/1 missing.   MISSING
+# [qi] tex2d*: null-vtable-slots Texture2D1@11 (and Texture3D1@11, SRV1@9,
+#   RTV1@9, UAV1@9, BlendState1@8, Query1@9): GetDesc1 branches to 0.  WRONG
+# [qi] tex2d_keyedmutex.as_IDXGIKeyedMutex: identity-mismatch.          WRONG
+# [qi] rasterizer / rasterizer1: RasterizerState1/2 not answered.      MISSING
+# [qi] cs (x64): every QI -> 0x80070057 with *ppv untouched, AddRef/Release
+#   return 0x80070057: the video-device vtable (0x1680, 20 slots) overwrote
+#   the compute-shader vtable (0x1700) slots 0-3.                       WRONG
+# [qi] cs (x86): answers Resource, refuses ComputeShader:
+#   IID_ID3D11COMPUTESHADER in d3d11_pipeline.cpp is IID_ID3D11Resource. WRONG
+# [qi] deferred IUnknown == immediate IUnknown: Vitreo 1; deferred
+#   QI(Context1) returns the IMMEDIATE context.                         WRONG
+# [rc] texture count with view: Vitreo 2 (internal refs are external);
+#   last external Release returns 1, bound VB/SRV/blend Release returns 1. WRONG
+# [rc] cs (x64) AddRef/Release garbage; GetDevice untouched.            WRONG
+# [pd] size query with pData NULL: Vitreo 0x887a0003, Windows S_OK.     WRONG
+# [pd] set (size 4, NULL): Vitreo E_INVALIDARG and keeps; Windows deletes. WRONG
+# [pd] set (size 0, non-NULL): Windows keeps a 0-byte entry.            WRONG
+# [pd] delete of an absent GUID: Windows S_FALSE.                       WRONG
+# [pd] SetPrivateDataInterface(NULL): Windows keeps a NULL-pointer entry. WRONG
+# [pd] SetPrivateDataInterface E_NOTIMPL on IDXGIDevice, IDXGIResource,
+#   IDXGIKeyedMutex, swap chain, rasterizer, compute shader.           MISSING
+# [pd] share: device/immediate/deferred contexts share one store.       WRONG
+# [pd] share: interface set on ID3D11Texture2D invisible via IDXGIResource. WRONG
+# [pd] command_list (x64): vtable slots 4-7 are swap-chain thunks.      WRONG
+# [def] deferred GetType: Vitreo 0.                                     WRONG
+# [def] deferred AddRef/Release: shares (and decrements) the IMMEDIATE
+#   context's count; the deferred context is never freed.               WRONG
+# [def] NO_OVERWRITE before DISCARD, staging READ/WRITE Map: Vitreo S_OK. WRONG
+# [def] GetData on deferred: Vitreo S_FALSE.                            WRONG
+# [def] Clear / UpdateSubresource / Map+CopyResource on a deferred context
+#   execute at record time (pixel/buffer already changed before Execute). WRONG
+# [def] command list GetContextFlags (x64): 0x80070057.                 WRONG
+# [def] FinishCommandList(NULL out): Vitreo S_OK, Windows E_POINTER.    WRONG
+# [def] SwapDeviceContextState on deferred: swapped the immediate context
+#   (consequence of the deferred QI identity defect).                   WRONG
+# [def] SINGLETHREADED CreateDeferredContext: Vitreo S_OK.              WRONG
+# [mt] ID3D11Multithread / ID3D10Multithread: E_NOINTERFACE.            MISSING
+# [dcs] 11_1 first: Vitreo chose 0xb000; D3D10 emulation E_NOTIMPL;
+#   flags 1 accepted / 2 refused (Windows: reverse); bad level 0x1234
+#   accepted; chosen level not zeroed on failure; activation AddRefs.   WRONG/MISSING
+# [cl] entire section: CreateClassLinkage E_NOTIMPL.                    MISSING
+# [fence] any non-zero flag -> E_NOTIMPL (SHARED missing, invalid flags
+#   wrong code); NULL ppFence E_INVALIDARG (Windows S_FALSE); Signal of a
+#   lower value S_OK (WARP E_INVALIDARG); CreateSharedHandle E_NOTIMPL. WRONG/MISSING
+# [share] OpenSharedResource(IDXGIResource) E_INVALIDARG; (Buffer)
+#   E_INVALIDARG not E_NOINTERFACE; non-shared GetSharedHandle
+#   DXGI_ERROR_INVALID_CALL not S_OK+NULL; GetUsage drops UNORDERED_ACCESS;
+#   KeyedMutex misuse E_FAIL not DXGI_ERROR_INVALID_CALL; everything behind
+#   IDXGIResource1 unreachable (wrong IID).                             WRONG
+# Matching: annotation (-1/-1/0), FEATURE_THREADING 1/0, CreateDeferredContext*
+#   hr, Finish/Execute state restore/reset, GetImmediateContext*, GetDevice
+#   AddRef, private data NOT_FOUND/MORE_DATA/exact/debug names, fence
+#   Signal/Wait/SetEventOnCompletion, tiled calls on non-tiled resources.

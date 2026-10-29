@@ -1,0 +1,24 @@
+# winoracle (12th Gen Intel Core i9-12900KF, Windows 10.0.26200.9457), WOW64,
+# i686-w64-mingw32-gcc -O1 -msse2 -Wl,--large-address-aware, 2026-10-11
+# 0xFFFF0000 and up is never mapped: VirtualAlloc there fails with ERROR_INVALID_ADDRESS (487). Every access that starts there -- including one whose last byte lies
+# past 0xFFFFFFFF -- is STATUS_ACCESS_VIOLATION, [0]=direction, [1]=the access's own effective address; it
+# never wraps to address 0. An effective-address SUM past 2^32 does wrap (modulo 2^32) before the access.
+wow64=1 query(0xFFFF0000)=0 state=0
+lpMaximumApplicationAddress=FFFEFFFF
+VirtualAlloc(ffff0000) -> NULL err=487
+VirtualAlloc(fffff000) -> NULL err=487
+VirtualAlloc(fffe0000) -> mapped err=0
+load1 FFFFFFFF         ea=ffffffff code=c0000005 np=2 i0=0 i1=ffffffff
+load2 FFFFFFFE         ea=fffffffe code=c0000005 np=2 i0=0 i1=fffffffe
+load2 FFFFFFFF strad   ea=ffffffff code=c0000005 np=2 i0=0 i1=ffffffff
+load4 FFFFFFFC         ea=fffffffc code=c0000005 np=2 i0=0 i1=fffffffc
+load4 FFFFFFFE strad   ea=fffffffe code=c0000005 np=2 i0=0 i1=fffffffe
+load4 FFFFFFFF strad   ea=ffffffff code=c0000005 np=2 i0=0 i1=ffffffff
+store1 FFFFFFFF        ea=ffffffff code=c0000005 np=2 i0=1 i1=ffffffff
+store4 FFFFFFFE strad  ea=fffffffe code=c0000005 np=2 i0=1 i1=fffffffe
+movq FFFFFFFC strad    ea=fffffffc code=c0000005 np=2 i0=0 i1=fffffffc
+movdqu FFFFFFF8 strad  ea=fffffff8 code=c0000005 np=2 i0=0 i1=fffffff8
+load4 wrap -> 00000010 ea=00000010 code=c0000005 np=2 i0=0 i1=00000010
+load4 wrap -> 0000FFFC ea=0000fffc code=c0000005 np=2 i0=0 i1=0000fffc
+load4 FFFF0000         ea=ffff0000 code=c0000005 np=2 i0=0 i1=ffff0000
+load4 7FFEFFFC         ea=7ffefffc code=c0000005 np=2 i0=0 i1=7ffefffc

@@ -1,0 +1,234 @@
+process 64-bit, template x64
+machine: kernel32 6.2.26100.9711 lang 1033
+machine: component {E5371B0F-C703-4264-9D9A-800DEA3AE7AD} path C:\Program Files (x86)\VitreoRP\main.dll
+open 0
+AppSearch 0
+PRESET=original (len 8)
+PRESETFOUND=C:\\VitreoMsiProbe\\a\\ (len 20)
+R64_VIEW=view64 (len 6)
+R32_VIEW=view32 (len 6)
+R64_SZ=plain text (len 10)
+R32_SZ=<unset>
+R64_SZHASH=##hash (len 6)
+R32_SZHASH=<unset>
+R64_SZHASH2=###two (len 6)
+R32_SZHASH2=<unset>
+R64_SZEMPTY=<unset>
+R32_SZEMPTY=<unset>
+R64_SZTILDE=a[~]b (len 5)
+R32_SZTILDE=<unset>
+R64_DWORD=#42 (len 3)
+R32_DWORD=<unset>
+R64_DWORDNEG=#-2 (len 3)
+R32_DWORDNEG=<unset>
+R64_DWORDMIN=#-2147483648 (len 12)
+R32_DWORDMIN=<unset>
+R64_DWORDZERO=#0 (len 2)
+R32_DWORDZERO=<unset>
+R64_DWORDBE=\x5678\x1234 (len 2)
+R32_DWORDBE=<unset>
+R64_EXPAND=C:\\WINDOWS\\probe (len 16)
+R32_EXPAND=<unset>
+R64_MULTI=\0a\0b\0c\0 (len 7)
+R32_MULTI=<unset>
+R64_MULTIONE=\0solo\0 (len 6)
+R32_MULTIONE=<unset>
+R64_MULTIEMPTY=\0 (len 1)
+R32_MULTIEMPTY=<unset>
+R64_BINARY=#x01ABFF (len 8)
+R32_BINARY=<unset>
+R64_BINEMPTY=<unset>
+R32_BINEMPTY=<unset>
+R64_QWORD=\x7788\x5566\x3344\x1122 (len 4)
+R32_QWORD=<unset>
+R64_NONE=\xab01 (len 1)
+R32_NONE=<unset>
+R64_ONLY32=<unset>
+R32_ONLY32=x (len 1)
+R64_MISSINGVALUE=<unset>
+R32_MISSINGVALUE=<unset>
+R_DEFAULT=defval (len 6)
+R_HKCU=user (len 4)
+R_HKCU64=user (len 4)
+R_MISSINGKEY=<unset>
+R_FMTKEY=plain text (len 10)
+R_FMTNAME=<unset>
+R_NT64=#10 (len 3)
+R_NT32=#10 (len 3)
+R_HKCR=txtfilelegacy (len 13)
+D_DIRVAL=C:\\VitreoMsiProbe\\a\\ (len 20)
+FN_DIRVAL=C:\\VitreoMsiProbe\\ (len 18)
+FS_DIRVAL=<unset>
+DS_DIRVAL=<unset>
+D_DIRSLASH=C:\\VitreoMsiProbe\\a\\ (len 20)
+FN_DIRSLASH=C:\\VitreoMsiProbe\\ (len 18)
+FS_DIRSLASH=<unset>
+DS_DIRSLASH=<unset>
+D_DIRC=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+FN_DIRC=C:\\VitreoMsiProbe\\a\\b\\ (len 22)
+FS_DIRC=<unset>
+DS_DIRC=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+D_FILEVAL=<unset>
+FN_FILEVAL=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+FS_FILEVAL=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+DS_FILEVAL=<unset>
+D_FILEQUOTED=<unset>
+FN_FILEQUOTED=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+FS_FILEQUOTED=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+DS_FILEQUOTED=<unset>
+D_DIRQUOTED=C:\\VitreoMsiProbe\\a\\ (len 20)
+FN_DIRQUOTED=C:\\VitreoMsiProbe\\ (len 18)
+FS_DIRQUOTED=<unset>
+DS_DIRQUOTED=<unset>
+D_DIRMISSING=<unset>
+FN_DIRMISSING=C:\\VitreoMsiProbe\\ (len 18)
+FS_DIRMISSING=<unset>
+DS_DIRMISSING=<unset>
+D_EXPANDDIR=C:\\VitreoMsiProbe\\a\\ (len 20)
+FN_EXPANDDIR=C:\\VitreoMsiProbe\\ (len 18)
+FS_EXPANDDIR=<unset>
+DS_EXPANDDIR=<unset>
+D_DIRDWORD=<unset>
+FN_DIRDWORD=<unset>
+FS_DIRDWORD=<unset>
+DS_DIRDWORD=<unset>
+D_MISSINGVALUE=<unset>
+FN_MISSINGVALUE=<unset>
+FS_MISSINGVALUE=<unset>
+DS_MISSINGVALUE=<unset>
+D_PARENTMISSING=<unset>
+FN_PARENTMISSING=<unset>
+FS_PARENTMISSING=<unset>
+DS_PARENTMISSING=<unset>
+D_DRIVEROOT=C:\\ (len 3)
+FN_DRIVEROOT=C:\\ (len 3)
+FS_DRIVEROOT=<unset>
+DS_DRIVEROOT=<unset>
+T_NULL=<unset>
+T_NULL_NOSIG=<unset>
+T_RAW_SIG=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_SIZE_EQ_MIN=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_SIZE_EQ_MAX=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_SIZE_GT=<unset>
+S_SIZE_LT=<unset>
+S_SIZE_99_101=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_DATE_EQ_MIN=<unset>
+S_DATE_EQ_MAX=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_DATE_GT=<unset>
+S_DATE_LT=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_DATE_LOCAL_MIN=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_DATE_LOCAL_MAX=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_VER_UNVERSIONED=<unset>
+S_MAXVER_UNVERSIONED=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_SHORTLONG=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+S_CASE=C:\\VitreoMsiProbe\\a\\b\\c\\TARGET.TXT (len 34)
+S_K_MINEXACT_NOLANG=<unset>
+S_K_MINEXACT_LANG=<set, C:\WINDOWS\system32\kernel32.dll>
+S_K_MINEXACT_LANG0=<unset>
+S_K_MINEXACT_OTHERLANG=<unset>
+S_K_MINMINUS_NOLANG=<set, C:\WINDOWS\system32\kernel32.dll>
+S_K_MINMINUS_OTHERLANG=<set, C:\WINDOWS\system32\kernel32.dll>
+S_K_MAXEXACT=<set, C:\WINDOWS\system32\kernel32.dll>
+S_K_MAXEXACT_LANG=<set, C:\WINDOWS\system32\kernel32.dll>
+S_K_MAXMINUS=<unset>
+S_K_MINHIGH=<unset>
+S_K_MIN2PART=<set, C:\WINDOWS\system32\kernel32.dll>
+S_K_LANG_ONLY=<set, C:\WINDOWS\system32\kernel32.dll>
+S_K_PLAIN=<set, C:\WINDOWS\system32\kernel32.dll>
+DR_DIR=C:\\VitreoMsiProbe\\a\\ (len 20)
+DR_DIRSLASH=C:\\VitreoMsiProbe\\a\\ (len 20)
+DR_DIRMISSING=<unset>
+DR_DIR_ISFILE=<unset>
+DR_DIRDEPTH=C:\\VitreoMsiProbe\\ (len 18)
+DR_DEPTH0=<unset>
+DR_DEPTH1=<unset>
+DR_DEPTH2=<unset>
+DR_DEPTH3=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+DR_DEPTH4=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+DR_FILE_AT_PATH=<unset>
+DR_CHILD=C:\\VitreoMsiProbe\\a\\b\\ (len 22)
+DR_CHILD2=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+DR_CHILDNULL=C:\\VitreoMsiProbe\\a\\ (len 20)
+DR_CHILDABS=<unset>
+DR_REGPARENT=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+DR_REGPARENT_FILE=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+DR_PARENTMISSING=<unset>
+DR_PARENT_ISFILE=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+DR_RELATIVE=C:\\VitreoMsiProbe\\a\\ (len 20)
+DR_RELATIVE_FILE=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+DR_FMT=<set, C:\WINDOWS\>
+DR_ENVFMT=C:\\VitreoMsiProbe\\ (len 18)
+DR_DRIVE=C:\\ (len 3)
+DR_NOPATH=C:\\ (len 3)
+DR_FWDSLASH=<unset>
+MULTI_LOC=C:\\VitreoMsiProbe\\a\\ (len 20)
+MULTI_LOC2=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+I_RAW_F0=one, two ,three (len 15)
+I_RAW_FNULL=one, two ,three (len 15)
+I_RAW_F1=one (len 3)
+I_RAW_F2= two  (len 5)
+I_RAW_F3=three (len 5)
+I_RAW_F4=<unset>
+I_RAW_MISSING=<unset>
+I_RAW_EMPTY=<unset>
+I_RAW_QUOTED=q v (len 3)
+I_RAW_SPACED=padded value (len 12)
+I_RAW_CASE=one, two ,three (len 15)
+I_DIR=C:\\VitreoMsiProbe\\a\\ (len 20)
+I_DIRSLASH=C:\\VitreoMsiProbe\\a\\ (len 20)
+I_DIR_ISFILE=<unset>
+I_DIR_SIG=<unset>
+I_FILE_SIG=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+I_FILE_NOSIG=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+I_FILE_FIELD2=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+I_TYPE_NULL=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+I_TYPE_NULL_NOSIG=C:\\VitreoMsiProbe\\a\\b\\c\\ (len 24)
+I_RAW_SIG=C:\\VitreoMsiProbe\\a\\b\\c\\target.txt (len 34)
+I_BADSECTION=<unset>
+I_BADFILE=<unset>
+C_FILE=<set, C:\Program Files (x86)\VitreoRP\>
+C_DIR=<unset>
+C_NULL=<set, C:\Program Files (x86)\VitreoRP\>
+C_FILE_SIG=<set, C:\Program Files (x86)\VitreoRP\main.dll>
+C_FILE_BADSIG=<set, C:\Program Files (x86)\VitreoRP\main.dll>
+C_DIR_SIG=<unset>
+C_UNKNOWN=<unset>
+C_UNKNOWN_DIR=<unset>
+TWOSIG=C:\\VitreoMsiProbe\\a\\b\\ (len 22)
+TWOSIGMISS=C:\\VitreoMsiProbe\\a\\ (len 20)
+AppSearch again 0
+CCPSearch missing-only 0
+CCP_Success=<unset>
+insert temp 0
+CCPSearch with-found 0
+CCP_Success=1 (len 1)
+RMCCPSearch no-drive 1603
+CCP_Success=<unset>
+RMCCPSearch drive 0
+CCP_Success=1 (len 1)
+rm-relative (delete 0 insert 0) RMCCPSearch 1603
+CCP_Success=<unset>
+rm-relative-wrongdrive (delete 0 insert 0) RMCCPSearch 1603
+CCP_Success=<unset>
+rm-absolute-otherdrive (delete 0 insert 0) RMCCPSearch 0
+CCP_Success=1 (len 1)
+rm-absolute-baddrive (delete 0 insert 0) RMCCPSearch 0
+CCP_Success=1 (len 1)
+rm-reglocator (delete 0 insert 0) RMCCPSearch 0
+CCP_Success=1 (len 1)
+rm-file (delete 0 insert 0) RMCCPSearch 1603
+CCP_Success=<unset>
+rm-missing (delete 0 insert 0) RMCCPSearch 1603
+CCP_Success=<unset>
+rm-rootrel (delete 0 insert 0) RMCCPSearch 1603
+CCP_Success=<unset>
+rm-rootrel-cdrive (delete 0 insert 0) RMCCPSearch 1603
+CCP_Success=<unset>
+rm-rel-nodrive (delete 0 insert 0) RMCCPSearch 1603
+CCP_Success=<unset>
+ccp-rel (delete 0 insert 0) CCPSearch 0
+CCP_Success=<unset>
+ccp-reglocator (delete 0 insert 0) CCPSearch 0
+CCP_Success=1 (len 1)
+ccp-file (delete 0 insert 0) CCPSearch 0
+CCP_Success=1 (len 1)

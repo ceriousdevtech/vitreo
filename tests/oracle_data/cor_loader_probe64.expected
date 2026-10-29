@@ -1,0 +1,171 @@
+probe bits=64
+== start
+  loaded: mscoree.dll=0 mscoreei.dll=0 clr.dll=0 clrjit.dll=0
+== exe x86
+  stdout: managed hello ptr=4
+  child_wow64=1
+  (other bitness: loader state not read)
+  exit=7
+== exe x64
+  stdout: managed hello ptr=8
+  child_wow64=0
+  image: file_magic=0x20b mem_magic=0x20b file_ep_zero=1 mem_ep_equals_file=1
+  hdr: e_lfanew file=0x80 mem=0x80
+  hdr: Machine file=0x8664 mem=0x8664
+  hdr: NumberOfSections file=2 mem=2
+  hdr: SizeOfOptionalHeader file=0xf0 mem=0xf0
+  hdr: Characteristics file=0x22 mem=0x22
+  hdr: ImageBase file=0x140000000 mem=0x140000000 (not the mapped base)
+  hdr: MajorLinkerVersion file=0xb mem=0xb
+  hdr: SizeOfCode file=0x600 mem=0x600
+  hdr: AddressOfEntryPoint file=0x0 mem=0x0
+  hdr: BaseOfCode file=0x2000 mem=0x2000
+  hdr: SectionAlignment file=0x2000 mem=0x2000
+  hdr: FileAlignment file=0x200 mem=0x200
+  hdr: MajorOSVersion file=0x4 mem=0x4
+  hdr: MajorSubsystemVersion file=0x4 mem=0x4
+  hdr: SizeOfImage file=0x6000 mem=0x6000
+  hdr: SizeOfHeaders file=0x200 mem=0x200
+  hdr: CheckSum file=0x0 mem=0x0
+  hdr: Subsystem file=0x3 mem=0x3
+  hdr: DllCharacteristics file=0x8540 mem=0x8540
+  hdr: StackReserve file=0x400000 mem=0x400000 StackCommit file=0x0 mem=0x4000
+  hdr: HeapReserve file=0x4000 mem=0x100000 HeapCommit file=0x0 mem=0x2000
+  hdr: NumberOfRvaAndSizes file=0 mem=16
+  hdr: dir[0] file=0x2000/0x0 mem=0x0/0x0
+  hdr: dir[1] file=0x0/0x10 mem=0x0/0x0
+  hdr: dir[2] file=0x0/0x0 mem=0x4000/0x4f0
+  hdr: dir[4] file=0x4000/0x4f0 mem=0x0/0x0
+  hdr: dir[14] file=0x0/0x0 mem=0x2000/0x48
+  hdr: section[0] name=.text same_as_file=1
+  hdr: section[1] name=.rsrc same_as_file=1
+  hdr: old_section_table_bytes_unchanged=1
+  ldr_entry: owner=(null) is_image_ep=0
+  loaded: mscoree.dll=1 mscoreei.dll=1 clr.dll=1 clrjit.dll=1
+  exit=7
+== exe anycpu
+  stdout: managed hello ptr=8
+  child_wow64=0
+  image: file_magic=0x10b mem_magic=0x20b file_ep_zero=0 mem_ep_equals_file=1
+  hdr: e_lfanew file=0x80 mem=0x80
+  hdr: Machine file=0x14c mem=0x14c
+  hdr: NumberOfSections file=3 mem=3
+  hdr: SizeOfOptionalHeader file=0xe0 mem=0xf0
+  hdr: Characteristics file=0x102 mem=0x102
+  hdr: ImageBase file=0x400000 mem=0x400000 (not the mapped base)
+  hdr: MajorLinkerVersion file=0xb mem=0xb
+  hdr: SizeOfCode file=0x600 mem=0x600
+  hdr: AddressOfEntryPoint file=0x245e mem=0x245e
+  hdr: BaseOfCode file=0x2000 mem=0x2000
+  hdr: SectionAlignment file=0x2000 mem=0x2000
+  hdr: FileAlignment file=0x200 mem=0x200
+  hdr: MajorOSVersion file=0x4 mem=0x4
+  hdr: MajorSubsystemVersion file=0x4 mem=0x4
+  hdr: SizeOfImage file=0x8000 mem=0x8000
+  hdr: SizeOfHeaders file=0x200 mem=0x200
+  hdr: CheckSum file=0x0 mem=0x0
+  hdr: Subsystem file=0x3 mem=0x3
+  hdr: DllCharacteristics file=0x8540 mem=0x8540
+  hdr: StackReserve file=0x100000 mem=0x100000 StackCommit file=0x1000 mem=0x1000
+  hdr: HeapReserve file=0x100000 mem=0x100000 HeapCommit file=0x1000 mem=0x1000
+  hdr: NumberOfRvaAndSizes file=16 mem=16
+  hdr: dir[1] file=0x2404/0x57 mem=0x2404/0x57
+  hdr: dir[2] file=0x4000/0x4f0 mem=0x4000/0x4f0
+  hdr: dir[5] file=0x6000/0xc mem=0x6000/0xc
+  hdr: dir[12] file=0x2000/0x8 mem=0x2000/0x8
+  hdr: dir[14] file=0x2008/0x48 mem=0x2008/0x48
+  hdr: section[0] name=.text same_as_file=1
+  hdr: section[1] name=.rsrc same_as_file=1
+  hdr: section[2] name=.reloc same_as_file=1
+  hdr: old_section_table_bytes_unchanged=0
+  ldr_entry: owner=(null) is_image_ep=0
+  loaded: mscoree.dll=1 mscoreei.dll=1 clr.dll=1 clrjit.dll=1
+  exit=7
+== exe anycpu32bitpreferred
+  stdout: managed hello ptr=4
+  child_wow64=1
+  (other bitness: loader state not read)
+  exit=7
+== dll il-only anycpu library
+  LoadLibrary=ok err=0
+  image: file_magic=0x10b mem_magic=0x20b file_ep_zero=0 mem_ep_equals_file=1
+  hdr: e_lfanew file=0x80 mem=0x80
+  hdr: Machine file=0x14c mem=0x14c
+  hdr: NumberOfSections file=3 mem=3
+  hdr: SizeOfOptionalHeader file=0xe0 mem=0xf0
+  hdr: Characteristics file=0x2102 mem=0x2102
+  hdr: ImageBase file=0x10000000 mem=0x10000000 (not the mapped base)
+  hdr: MajorLinkerVersion file=0xb mem=0xb
+  hdr: SizeOfCode file=0x600 mem=0x600
+  hdr: AddressOfEntryPoint file=0x244e mem=0x244e
+  hdr: BaseOfCode file=0x2000 mem=0x2000
+  hdr: SectionAlignment file=0x2000 mem=0x2000
+  hdr: FileAlignment file=0x200 mem=0x200
+  hdr: MajorOSVersion file=0x4 mem=0x4
+  hdr: MajorSubsystemVersion file=0x4 mem=0x4
+  hdr: SizeOfImage file=0x8000 mem=0x8000
+  hdr: SizeOfHeaders file=0x200 mem=0x200
+  hdr: CheckSum file=0x0 mem=0x0
+  hdr: Subsystem file=0x3 mem=0x3
+  hdr: DllCharacteristics file=0x8540 mem=0x8540
+  hdr: StackReserve file=0x100000 mem=0x100000 StackCommit file=0x1000 mem=0x1000
+  hdr: HeapReserve file=0x100000 mem=0x100000 HeapCommit file=0x1000 mem=0x1000
+  hdr: NumberOfRvaAndSizes file=16 mem=16
+  hdr: dir[1] file=0x2400/0x4b mem=0x2400/0x4b
+  hdr: dir[2] file=0x4000/0x2b0 mem=0x4000/0x2b0
+  hdr: dir[5] file=0x6000/0xc mem=0x6000/0xc
+  hdr: dir[12] file=0x2000/0x8 mem=0x2000/0x8
+  hdr: dir[14] file=0x2008/0x48 mem=0x2008/0x48
+  hdr: section[0] name=.text same_as_file=1
+  hdr: section[1] name=.rsrc same_as_file=1
+  hdr: section[2] name=.reloc same_as_file=1
+  hdr: old_section_table_bytes_unchanged=0
+  ldr_entry: owner=(null) is_image_ep=0
+  loaded: mscoree.dll=0 mscoreei.dll=0 clr.dll=0 clrjit.dll=0
+== dll mixed-mode (ISymWrapper)
+  LoadLibrary=ok err=0
+  image: file_magic=0x20b mem_magic=0x20b file_ep_zero=0 mem_ep_equals_file=1
+  hdr: e_lfanew file=0x100 mem=0x100
+  hdr: Machine file=0x8664 mem=0x8664
+  hdr: NumberOfSections file=7 mem=7
+  hdr: SizeOfOptionalHeader file=0xf0 mem=0xf0
+  hdr: Characteristics file=0x2022 mem=0x2022
+  hdr: ImageBase file=0x180000000 mem=<mapped base>
+  hdr: MajorLinkerVersion file=0xe mem=0xe
+  hdr: SizeOfCode file=0x4c00 mem=0x4c00
+  hdr: AddressOfEntryPoint file=0x5791 mem=0x5791
+  hdr: BaseOfCode file=0x1000 mem=0x1000
+  hdr: SectionAlignment file=0x1000 mem=0x1000
+  hdr: FileAlignment file=0x200 mem=0x200
+  hdr: MajorOSVersion file=0x6 mem=0x6
+  hdr: MajorSubsystemVersion file=0x6 mem=0x6
+  hdr: SizeOfImage file=0x15000 mem=0x15000
+  hdr: SizeOfHeaders file=0x400 mem=0x400
+  hdr: CheckSum file=0x17e3c mem=0x17e3c
+  hdr: Subsystem file=0x2 mem=0x2
+  hdr: DllCharacteristics file=0x4160 mem=0x4160
+  hdr: StackReserve file=0x100000 mem=0x100000 StackCommit file=0x0 mem=0x1000
+  hdr: HeapReserve file=0x1000 mem=0x100000 HeapCommit file=0x0 mem=0x1000
+  hdr: NumberOfRvaAndSizes file=0 mem=16
+  hdr: dir[0] file=0x1000/0x0 mem=0x0/0x0
+  hdr: dir[1] file=0x0/0x10 mem=0xfb74/0x78
+  hdr: dir[2] file=0x0/0x0 mem=0x13000/0x488
+  hdr: dir[3] file=0xfb74/0x78 mem=0x12000/0x1e0
+  hdr: dir[4] file=0x13000/0x488 mem=0xee00/0x2838
+  hdr: dir[5] file=0x12000/0x1e0 mem=0x14000/0x4c
+  hdr: dir[6] file=0xee00/0x2838 mem=0x73a0/0x54
+  hdr: dir[7] file=0x14000/0x4c mem=0x0/0x0
+  hdr: dir[8] file=0x73a0/0x54 mem=0x0/0x0
+  hdr: dir[10] file=0x0/0x0 mem=0x7400/0x138
+  hdr: dir[12] file=0x7400/0x138 mem=0x7000/0x140
+  hdr: dir[14] file=0x7000/0x140 mem=0x7358/0x48
+  hdr: section[0] name=.text same_as_file=1
+  hdr: section[1] name=.nep same_as_file=1
+  hdr: section[2] name=.rdata same_as_file=1
+  hdr: section[3] name=.data same_as_file=1
+  hdr: section[4] name=.pdata same_as_file=1
+  hdr: section[5] name=.rsrc same_as_file=1
+  hdr: section[6] name=.reloc same_as_file=1
+  hdr: old_section_table_bytes_unchanged=1
+  ldr_entry: owner=ISymWrapper.dll is_image_ep=1
+  loaded: mscoree.dll=1 mscoreei.dll=1 clr.dll=0 clrjit.dll=0

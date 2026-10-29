@@ -1,0 +1,227 @@
+csidl id=0 hr=0 %P%\Desktop
+csidl id=1 hr=80004005
+csidl id=2 hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
+csidl id=3 hr=80004005
+csidl id=4 hr=80004005
+csidl id=5 hr=0 %P%\Documents
+csidl id=6 hr=0 %P%\Favorites
+csidl id=7 hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+csidl id=8 hr=0 %P%\AppData\Roaming\Microsoft\Windows\Recent
+csidl id=9 hr=0 %P%\AppData\Roaming\Microsoft\Windows\SendTo
+csidl id=a hr=80004005
+csidl id=b hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu
+csidl id=c hr=80070057
+csidl id=d hr=0 %P%\Music
+csidl id=e hr=0 %P%\Videos
+csidl id=f hr=80070057
+csidl id=10 hr=0 %P%\Desktop
+csidl id=11 hr=80004005
+csidl id=12 hr=80004005
+csidl id=13 hr=0 %P%\AppData\Roaming\Microsoft\Windows\Network Shortcuts
+csidl id=14 hr=0 %W%\Fonts
+csidl id=15 hr=0 %P%\AppData\Roaming\Microsoft\Windows\Templates
+csidl id=16 hr=0 %D%\Microsoft\Windows\Start Menu
+csidl id=17 hr=0 %D%\Microsoft\Windows\Start Menu\Programs
+csidl id=18 hr=0 %D%\Microsoft\Windows\Start Menu\Programs\Startup
+csidl id=19 hr=0 C:\Users\Public\Desktop
+csidl id=1a hr=0 %P%\AppData\Roaming
+csidl id=1b hr=0 %P%\AppData\Roaming\Microsoft\Windows\Printer Shortcuts
+csidl id=1c hr=0 %P%\AppData\Local
+csidl id=1d hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+csidl id=1e hr=0 %D%\Microsoft\Windows\Start Menu\Programs\Startup
+csidl id=1f hr=0 %P%\Favorites
+csidl id=20 hr=0 %P%\AppData\Local\Microsoft\Windows\INetCache
+csidl id=21 hr=0 %P%\AppData\Local\Microsoft\Windows\INetCookies
+csidl id=22 hr=0 %P%\AppData\Local\Microsoft\Windows\History
+csidl id=23 hr=0 %D%
+csidl id=24 hr=0 %W%
+csidl id=25 hr=0 %W%\system32
+csidl id=26 hr=0 C:\Program Files
+csidl id=27 hr=0 %P%\Pictures
+csidl id=28 hr=0 %P%
+csidl id=29 hr=0 %W%\SysWOW64
+csidl id=2a hr=0 C:\Program Files (x86)
+csidl id=2b hr=0 C:\Program Files\Common Files
+csidl id=2c hr=0 C:\Program Files (x86)\Common Files
+csidl id=2d hr=0 %D%\Microsoft\Windows\Templates
+csidl id=2e hr=0 C:\Users\Public\Documents
+csidl id=2f hr=0 %D%\Microsoft\Windows\Start Menu\Programs\Administrative Tools
+csidl id=30 hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Administrative Tools
+csidl id=31 hr=80004005
+csidl id=32 hr=80070057
+csidl id=33 hr=80070057
+csidl id=34 hr=80070057
+csidl id=35 hr=0 C:\Users\Public\Music
+csidl id=36 hr=0 C:\Users\Public\Pictures
+csidl id=37 hr=0 C:\Users\Public\Videos
+csidl id=38 hr=0 %W%\resources
+csidl id=39 hr=80070002
+csidl id=3a hr=80070002
+csidl id=3b hr=0 %P%\AppData\Local\Microsoft\Windows\Burn\Burn
+csidl id=3c hr=80070057
+csidl id=3d hr=80004005
+csidl id=3e hr=80070057
+csidl id=3f hr=80070057
+kf NetworkFolder hr=80004005 outNull=1
+kf ComputerFolder hr=80004005 outNull=1
+kf InternetFolder hr=80004005 outNull=1
+kf ControlPanelFolder hr=80004005 outNull=1
+kf PrintersFolder hr=80004005 outNull=1
+kf SyncManagerFolder hr=80004005 outNull=1
+kf SyncSetupFolder hr=80004005 outNull=1
+kf ConflictFolder hr=80004005 outNull=1
+kf SyncResultsFolder hr=80004005 outNull=1
+kf RecycleBinFolder hr=80004005 outNull=1
+kf ConnectionsFolder hr=80004005 outNull=1
+kf Fonts hr=0 %W%\Fonts
+kf Desktop hr=0 %P%\Desktop
+kf Startup hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+kf Programs hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
+kf StartMenu hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu
+kf Recent hr=0 %P%\AppData\Roaming\Microsoft\Windows\Recent
+kf SendTo hr=0 %P%\AppData\Roaming\Microsoft\Windows\SendTo
+kf Documents hr=0 %P%\Documents
+kf Favorites hr=0 %P%\Favorites
+kf NetHood hr=0 %P%\AppData\Roaming\Microsoft\Windows\Network Shortcuts
+kf PrintHood hr=0 %P%\AppData\Roaming\Microsoft\Windows\Printer Shortcuts
+kf Templates hr=0 %P%\AppData\Roaming\Microsoft\Windows\Templates
+kf CommonStartup hr=0 %D%\Microsoft\Windows\Start Menu\Programs\Startup
+kf CommonPrograms hr=0 %D%\Microsoft\Windows\Start Menu\Programs
+kf CommonStartMenu hr=0 %D%\Microsoft\Windows\Start Menu
+kf PublicDesktop hr=0 C:\Users\Public\Desktop
+kf ProgramData hr=0 %D%
+kf CommonTemplates hr=0 %D%\Microsoft\Windows\Templates
+kf PublicDocuments hr=0 C:\Users\Public\Documents
+kf RoamingAppData hr=0 %P%\AppData\Roaming
+kf LocalAppData hr=0 %P%\AppData\Local
+kf LocalAppDataLow hr=0 %P%\AppData\LocalLow
+kf InternetCache hr=0 %P%\AppData\Local\Microsoft\Windows\INetCache
+kf Cookies hr=0 %P%\AppData\Local\Microsoft\Windows\INetCookies
+kf History hr=0 %P%\AppData\Local\Microsoft\Windows\History
+kf System hr=0 %W%\system32
+kf SystemX86 hr=0 %W%\SysWOW64
+kf Windows hr=0 %W%
+kf Profile hr=0 %P%
+kf Pictures hr=0 %P%\Pictures
+kf ProgramFilesX86 hr=0 C:\Program Files (x86)
+kf ProgramFilesCommonX86 hr=0 C:\Program Files (x86)\Common Files
+kf ProgramFilesX64 hr=0 C:\Program Files
+kf ProgramFilesCommonX64 hr=0 C:\Program Files\Common Files
+kf ProgramFiles hr=0 C:\Program Files
+kf ProgramFilesCommon hr=0 C:\Program Files\Common Files
+kf UserProgramFiles hr=0 %P%\AppData\Local\Programs
+kf UserProgramFilesCommon hr=0 %P%\AppData\Local\Programs\Common
+kf AdminTools hr=0 %P%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Administrative Tools
+kf CommonAdminTools hr=0 %D%\Microsoft\Windows\Start Menu\Programs\Administrative Tools
+kf Music hr=0 %P%\Music
+kf Videos hr=0 %P%\Videos
+kf Ringtones hr=0 %P%\AppData\Local\Microsoft\Windows\Ringtones
+kf PublicPictures hr=0 C:\Users\Public\Pictures
+kf PublicMusic hr=0 C:\Users\Public\Music
+kf PublicVideos hr=0 C:\Users\Public\Videos
+kf PublicRingtones hr=0 %D%\Microsoft\Windows\Ringtones
+kf ResourceDir hr=0 %W%\resources
+kf LocalizedResourcesDir hr=0 %W%\resources\0409
+kf CommonOEMLinks hr=0 %D%\OEM Links
+kf CDBurning hr=0 %P%\AppData\Local\Microsoft\Windows\Burn\Burn
+kf UserProfiles hr=0 C:\Users
+kf Playlists hr=0 %P%\Music\Playlists
+kf SamplePlaylists hr=80070002 outNull=1
+kf SampleMusic hr=0 C:\Users\Public\Music\Sample Music
+kf SamplePictures hr=0 C:\Users\Public\Pictures\Sample Pictures
+kf SampleVideos hr=0 C:\Users\Public\Videos\Sample Videos
+kf PhotoAlbums hr=0 %P%\Pictures\Slide Shows
+kf Public hr=0 C:\Users\Public
+kf ChangeRemovePrograms hr=80004005 outNull=1
+kf AppUpdates hr=80004005 outNull=1
+kf AddNewPrograms hr=80004005 outNull=1
+kf Downloads hr=0 %P%\Downloads
+kf PublicDownloads hr=0 C:\Users\Public\Downloads
+kf SavedSearches hr=0 %P%\Searches
+kf QuickLaunch hr=0 %P%\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch
+kf Contacts hr=0 %P%\Contacts
+kf SidebarParts hr=80070002 outNull=1
+kf SidebarDefaultParts hr=80070002 outNull=1
+kf PublicGameTasks hr=0 %D%\Microsoft\Windows\GameExplorer
+kf GameTasks hr=0 %P%\AppData\Local\Microsoft\Windows\GameExplorer
+kf SavedGames hr=0 %P%\Saved Games
+kf Games hr=80070002 outNull=1
+kf SEARCH_MAPI hr=80004005 outNull=1
+kf SEARCH_CSC hr=80004005 outNull=1
+kf Links hr=0 %P%\Links
+kf UsersFiles hr=80004005 outNull=1
+kf UsersLibraries hr=80004005 outNull=1
+kf SearchHome hr=80004005 outNull=1
+kf OriginalImages hr=0 %P%\AppData\Local\Microsoft\Windows Photo Gallery\Original Images
+kf DocumentsLibrary hr=0 %P%\AppData\Roaming\Microsoft\Windows\Libraries\Documents.library-ms
+kf MusicLibrary hr=0 %P%\AppData\Roaming\Microsoft\Windows\Libraries\Music.library-ms
+kf PicturesLibrary hr=0 %P%\AppData\Roaming\Microsoft\Windows\Libraries\Pictures.library-ms
+kf VideosLibrary hr=0 %P%\AppData\Roaming\Microsoft\Windows\Libraries\Videos.library-ms
+kf RecordedTVLibrary hr=0 C:\Users\Public\Libraries\RecordedTV.library-ms
+kf HomeGroup hr=80070002 outNull=1
+kf HomeGroupCurrentUser hr=80070002 outNull=1
+kf DeviceMetadataStore hr=0 %D%\Microsoft\Windows\DeviceMetadataStore
+kf Libraries hr=0 %P%\AppData\Roaming\Microsoft\Windows\Libraries
+kf PublicLibraries hr=0 C:\Users\Public\Libraries
+kf UserPinned hr=0 %P%\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned
+kf ImplicitAppShortcuts hr=0 %P%\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\ImplicitAppShortcuts
+kf AccountPictures hr=0 %P%\AppData\Roaming\Microsoft\Windows\AccountPictures
+kf PublicUserTiles hr=0 C:\Users\Public\AccountPictures
+kf AppsFolder hr=80004005 outNull=1
+kf StartMenuAllPrograms hr=80070002 outNull=1
+kf CommonStartMenuPlaces hr=0 %D%\Microsoft\Windows\Start Menu Places
+kf ApplicationShortcuts hr=0 %P%\AppData\Local\Microsoft\Windows\Application Shortcuts
+kf RoamingTiles hr=0 %P%\AppData\Local\Microsoft\Windows\RoamingTiles
+kf RoamedTileImages hr=0 %P%\AppData\Local\Microsoft\Windows\RoamedTileImages
+kf Screenshots hr=0 %P%\Pictures\Screenshots
+kf CameraRoll hr=0 %P%\Pictures\Camera Roll
+kf SkyDrive hr=0 %P%\OneDrive
+kf OneDrive hr=0 %P%\OneDrive
+kf SkyDriveDocuments hr=0 %P%\OneDrive\Documents
+kf SkyDrivePictures hr=0 %P%\OneDrive\Pictures
+kf SkyDriveMusic hr=0 %P%\OneDrive\Music
+kf SkyDriveCameraRoll hr=0 %P%\OneDrive\Pictures\Camera Roll
+kf SearchHistory hr=0 %P%\AppData\Local\Microsoft\Windows\ConnectedSearch\History
+kf SearchTemplates hr=0 %P%\AppData\Local\Microsoft\Windows\ConnectedSearch\Templates
+kf CameraRollLibrary hr=0 %P%\AppData\Roaming\Microsoft\Windows\Libraries\CameraRoll.library-ms
+kf SavedPictures hr=0 %P%\Pictures\Saved Pictures
+kf SavedPicturesLibrary hr=0 %P%\AppData\Roaming\Microsoft\Windows\Libraries\SavedPictures.library-ms
+kf RetailDemo hr=0 %D%\Microsoft\Windows\RetailDemo
+kf Device hr=80004005 outNull=1
+kf DevelopmentFiles hr=0 %P%\AppData\Local\DevelopmentFiles
+kf Objects3D hr=0 %P%\3D Objects
+kf AppCaptures hr=0 %P%\Videos\Captures
+kf LocalDocuments hr=0 %P%\Documents
+kf LocalPictures hr=0 %P%\Pictures
+kf LocalVideos hr=0 %P%\Videos
+kf LocalMusic hr=0 %P%\Music
+kf LocalDownloads hr=0 %P%\Downloads
+kf RecordedCalls hr=0 %P%\Recorded Calls
+kf AllAppMods hr=0 %P%\AppMods
+kf CurrentAppMods hr=80070002 outNull=1
+kf AppDataDesktop hr=0 %P%\AppData\Local\Desktop
+kf AppDataDocuments hr=0 %P%\AppData\Local\Documents
+kf AppDataFavorites hr=0 %P%\AppData\Local\Favorites
+kf AppDataProgramData hr=0 %P%\AppData\Local\ProgramData
+kf LocalStorage hr=80070002 outNull=1
+kf_bogus hr=80070002 outNull=1
+kf_verify_searches hr=0
+kf_verify_screenshots exists=0 hr=80070002 outNull=1
+csidl_oem_dontverify hr=0 %D%\OEM Links
+argv case=0 argc=3 [prog.exe] [a] [b] localFreeOk=1
+argv case=1 argc=2 [C:\dir\\] [x] localFreeOk=1
+argv case=2 argc=2 [a\\\"b] [c] localFreeOk=1
+argv case=3 argc=2 [a\\"b] [c d] localFreeOk=1
+argv case=4 argc=3 [] [lead] [x] localFreeOk=1
+argv case=5 argc=3 [prog] [] [y] localFreeOk=1
+argv case=6 argc=3 [prog] [z] [w] localFreeOk=1
+argv case=7 argc=2 [C:\a b\p.exe] [q"r] localFreeOk=1
+argv case=8 argc=2 [C:\x\"y"] [z] localFreeOk=1
+argv case=9 argc=2 [p] [a\\b] localFreeOk=1
+argv case=a argc=2 [p] [a"b] localFreeOk=1
+argv case=b argc=2 [p] [été] localFreeOk=1
+argv case=c argc=1 [exe-path] localFreeOk=1
+argv_nullcount null=1 gle=57
+see_missing ok=0 gle=2 inst=2 hProcNull=1
+see_missing_dir ok=0 gle=2 inst=2
+see_noassoc ok=0 gle=80004021 inst=5

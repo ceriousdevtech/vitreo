@@ -1,0 +1,72 @@
+image=rgb cache=0 action=0 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=96.0000,96.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=0 action=1 factory=88982f61 cursor=764 refs=1 changed=0 finalrefs=1
+image=rgb cache=0 action=2 factory=88982f50 cursor=7 refs=1 changed=0 finalrefs=1
+image=rgb cache=0 action=3 factory=88982f61 cursor=0 refs=1 changed=0 finalrefs=1
+image=rgb cache=0 action=4 factory=00000000 cursor=762 refs=2 changed=1 frame=00000000 cursor=762 dpi=96.0000,96.0000 copy=00000000 cursor=762 hash=e0ab722c finalrefs=1
+image=rgb cache=0 action=5 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=96.0000,96.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=0 action=6 factory=00000000 cursor=197375 refs=2 changed=1 frame=00000000 cursor=197375 dpi=96.0000,96.0000 copy=00000000 cursor=197375 hash=e0ab722c finalrefs=1
+image=rgb cache=0 action=7 factory=00000000 cursor=197375 refs=2 changed=1 frame=00000000 cursor=197375 dpi=96.0000,96.0000 copy=00000000 cursor=197375 hash=e0ab722c finalrefs=1
+image=rgb cache=0 action=8 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=72.0000,144.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=0 action=9 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=182.8800,365.7600 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=0 action=10 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=96.0000,96.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=0 action=11 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=0.0000,144.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=0 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=96.0000,96.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=1 factory=88982f61 cursor=764 refs=1 changed=0 finalrefs=1
+image=rgb cache=1 action=2 factory=88982f50 cursor=7 refs=1 changed=0 finalrefs=1
+image=rgb cache=1 action=3 factory=88982f61 cursor=0 refs=1 changed=0 finalrefs=1
+image=rgb cache=1 action=4 factory=00000000 cursor=762 refs=2 changed=1 frame=00000000 cursor=762 dpi=96.0000,96.0000 copy=00000000 cursor=762 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=5 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=96.0000,96.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=6 factory=00000000 cursor=197375 refs=2 changed=1 frame=00000000 cursor=197375 dpi=96.0000,96.0000 copy=00000000 cursor=197375 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=7 factory=00000000 cursor=197375 refs=2 changed=1 frame=00000000 cursor=197375 dpi=96.0000,96.0000 copy=00000000 cursor=197375 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=8 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=72.0000,144.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=9 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=182.8800,365.7600 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=10 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=96.0000,96.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=rgb cache=1 action=11 factory=00000000 cursor=764 refs=2 changed=1 frame=00000000 cursor=764 dpi=0.0000,144.0000 copy=00000000 cursor=764 hash=e0ab722c finalrefs=1
+image=gray cache=0 action=0 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=96.0000,96.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=0 action=1 factory=88982f61 cursor=398 refs=1 changed=0 finalrefs=1
+image=gray cache=0 action=2 factory=88982f50 cursor=7 refs=1 changed=0 finalrefs=1
+image=gray cache=0 action=3 factory=88982f61 cursor=0 refs=1 changed=0 finalrefs=1
+image=gray cache=0 action=4 factory=00000000 cursor=396 refs=2 changed=1 frame=00000000 cursor=396 dpi=96.0000,96.0000 copy=00000000 cursor=396 hash=014ea962 finalrefs=1
+image=gray cache=0 action=5 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=96.0000,96.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=0 action=6 factory=00000000 cursor=197009 refs=2 changed=1 frame=00000000 cursor=197009 dpi=96.0000,96.0000 copy=00000000 cursor=197009 hash=014ea962 finalrefs=1
+image=gray cache=0 action=7 factory=00000000 cursor=197009 refs=2 changed=1 frame=00000000 cursor=197009 dpi=96.0000,96.0000 copy=00000000 cursor=197009 hash=014ea962 finalrefs=1
+image=gray cache=0 action=8 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=72.0000,144.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=0 action=9 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=182.8800,365.7600 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=0 action=10 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=96.0000,96.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=0 action=11 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=0.0000,144.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=1 action=0 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=96.0000,96.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=1 action=1 factory=88982f61 cursor=398 refs=1 changed=0 finalrefs=1
+image=gray cache=1 action=2 factory=88982f50 cursor=7 refs=1 changed=0 finalrefs=1
+image=gray cache=1 action=3 factory=88982f61 cursor=0 refs=1 changed=0 finalrefs=1
+image=gray cache=1 action=4 factory=00000000 cursor=396 refs=2 changed=1 frame=00000000 cursor=396 dpi=96.0000,96.0000 copy=00000000 cursor=396 hash=014ea962 finalrefs=1
+image=gray cache=1 action=5 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=96.0000,96.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=1 action=6 factory=00000000 cursor=197009 refs=2 changed=1 frame=00000000 cursor=197009 dpi=96.0000,96.0000 copy=00000000 cursor=197009 hash=014ea962 finalrefs=1
+image=gray cache=1 action=7 factory=00000000 cursor=197009 refs=2 changed=1 frame=00000000 cursor=197009 dpi=96.0000,96.0000 copy=00000000 cursor=197009 hash=014ea962 finalrefs=1
+image=gray cache=1 action=8 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=72.0000,144.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=1 action=9 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=182.8800,365.7600 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=1 action=10 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=96.0000,96.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=gray cache=1 action=11 factory=00000000 cursor=398 refs=2 changed=1 frame=00000000 cursor=398 dpi=0.0000,144.0000 copy=00000000 cursor=398 hash=014ea962 finalrefs=1
+image=exif cache=0 action=0 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=0 action=1 factory=88982f61 cursor=893 refs=1 changed=0 finalrefs=1
+image=exif cache=0 action=2 factory=88982f50 cursor=7 refs=1 changed=0 finalrefs=1
+image=exif cache=0 action=3 factory=88982f61 cursor=0 refs=1 changed=0 finalrefs=1
+image=exif cache=0 action=4 factory=00000000 cursor=891 refs=2 changed=1 frame=00000000 cursor=891 dpi=72.0000,72.0000 copy=00000000 cursor=891 hash=b72fc491 finalrefs=1
+image=exif cache=0 action=5 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=0 action=6 factory=00000000 cursor=197504 refs=2 changed=1 frame=00000000 cursor=197504 dpi=72.0000,72.0000 copy=00000000 cursor=197504 hash=b72fc491 finalrefs=1
+image=exif cache=0 action=7 factory=00000000 cursor=197504 refs=2 changed=1 frame=00000000 cursor=197504 dpi=72.0000,72.0000 copy=00000000 cursor=197504 hash=b72fc491 finalrefs=1
+image=exif cache=0 action=8 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=0 action=9 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=0 action=10 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=0 action=11 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=0 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=1 factory=88982f61 cursor=893 refs=1 changed=0 finalrefs=1
+image=exif cache=1 action=2 factory=88982f50 cursor=7 refs=1 changed=0 finalrefs=1
+image=exif cache=1 action=3 factory=88982f61 cursor=0 refs=1 changed=0 finalrefs=1
+image=exif cache=1 action=4 factory=00000000 cursor=891 refs=2 changed=1 frame=00000000 cursor=891 dpi=72.0000,72.0000 copy=00000000 cursor=891 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=5 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=6 factory=00000000 cursor=197504 refs=2 changed=1 frame=00000000 cursor=197504 dpi=72.0000,72.0000 copy=00000000 cursor=197504 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=7 factory=00000000 cursor=197504 refs=2 changed=1 frame=00000000 cursor=197504 dpi=72.0000,72.0000 copy=00000000 cursor=197504 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=8 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=9 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=10 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1
+image=exif cache=1 action=11 factory=00000000 cursor=893 refs=2 changed=1 frame=00000000 cursor=893 dpi=72.0000,72.0000 copy=00000000 cursor=893 hash=b72fc491 finalrefs=1

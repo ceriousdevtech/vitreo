@@ -1,0 +1,32 @@
+GetProperties fresh hr=00000000 (7,7,7,7)
+Commit before SetProperties hr=80040212
+ SetProperties(2,1000,1,0) hr=00000000 actual=(2,1000,1,0)
+ SetProperties(2,1000,16,0) hr=00000000 actual=(2,1008,16,0)
+ SetProperties(2,1000,16,8) hr=00000000 actual=(2,1000,16,8)
+ SetProperties(2,1000,3,0) hr=00000000 actual=(2,1002,3,0)
+ SetProperties(2,1000,0,0) hr=8004020e actual=(0,0,0,0)
+ SetProperties(0,1000,1,0) hr=00000000 actual=(0,1000,1,0)
+ SetProperties(2,0,1,0) hr=00000000 actual=(2,0,1,0)
+ SetProperties(-1,1000,1,0) hr=00000000 actual=(-1,1000,1,0)
+ SetProperties(2,1000,65536,0) hr=00000000 actual=(2,65536,65536,0)
+ SetProperties(2,1000,131072,0) hr=8004020e actual=(0,0,0,0)
+ SetProperties(2,1000,16,8) hr=00000000 actual=(2,1000,16,8)
+Commit hr=00000000 again=00000000
+committed SetProperties(3,1000,1,0) hr=8004020f actual=(0,0,0,0)
+GetBuffer a hr=00000000
+GetBuffer b hr=00000000
+prefix8 align16: (ptr-8)%16 a=0 b=0 size=1000 distance=1008 actual=1000
+GetBuffer NOWAIT empty hr=8004022e c_null=1
+GetBuffer blocking hr=00000000 waited=1 same_as_a=1
+Decommit with outstanding hr=00000000
+outstanding sample still usable GetPointer=00000000 size=1000
+GetBuffer after decommit hr=80040211 null=1
+decommitted+outstanding SetProperties(2,1000,1,0) hr=80040210 actual=(0,0,0,0)
+all returned SetProperties(2,1000,1,0) hr=00000000 actual=(2,1000,1,0)
+  (decommit from thread hr=00000000)
+GetBuffer blocked then decommitted hr=80040211 null=1 waited=1
+sample AddRef=2 Release=1
+ReleaseBuffer(direct) hr=00000000
+sample QI IMediaSample2=00000000
+last sample Release=0
+allocator Release=0

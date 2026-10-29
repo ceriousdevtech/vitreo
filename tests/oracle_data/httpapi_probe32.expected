@@ -1,0 +1,263 @@
+sizes: HTTPAPI_VERSION=4 HTTP_VERSION=4 HTTP_KNOWN_HEADER=8 HTTP_UNKNOWN_HEADER=12 HTTP_DATA_CHUNK=32 HTTP_COOKED_URL=24 HTTP_TRANSPORT_ADDRESS=8 HTTP_REQUEST_HEADERS=344 HTTP_RESPONSE_HEADERS=256 HTTP_REQUEST_V1=464 HTTP_REQUEST_V2=472 HTTP_RESPONSE_V1=280 HTTP_RESPONSE_V2=288 HTTP_REQUEST_INFO=12 HTTP_RESPONSE_INFO=12 HTTP_MULTIPLE_KNOWN_HEADERS=16 HTTP_BINDING_INFO=8 HTTP_STATE_INFO=8 HTTP_TIMEOUT_LIMIT_INFO=20 HTTP_QOS_SETTING_INFO=8 HTTP_SERVER_AUTHENTICATION_INFO=36 HTTP_LOGGING_INFO=48 HTTP_CHANNEL_BIND_INFO=16 HTTP_PROTECTION_LEVEL_INFO=8 HTTP_LISTEN_ENDPOINT_INFO=8 HTTP_CACHE_POLICY=8 HTTP_LOG_FIELDS_DATA=92 HTTP_BYTE_RANGE=16 HTTP_REQUEST_AUTH_INFO=52
+HTTP_REQUEST_V2: Flags=0 ConnectionId=8 RequestId=16 UrlContext=24 Version=32 Verb=36 UnknownVerbLength=40 RawUrlLength=42 pUnknownVerb=44 pRawUrl=48 CookedUrl=52 Address=76 Headers=84 BytesReceived=432 EntityChunkCount=440 pEntityChunks=444 RawConnectionId=448 pSslInfo=456 RequestInfoCount=464 pRequestInfo=468
+HTTP_COOKED_URL: FullUrlLength=0 HostLength=2 AbsPathLength=4 QueryStringLength=6 pFullUrl=8 pHost=12 pAbsPath=16 pQueryString=20
+HTTP_REQUEST_HEADERS: UnknownHeaderCount=0 pUnknownHeaders=4 TrailerCount=8 pTrailers=12 KnownHeaders=16
+HTTP_RESPONSE_V2: Flags=0 Version=4 StatusCode=8 ReasonLength=10 pReason=12 Headers=16 EntityChunkCount=272 pEntityChunks=276 ResponseInfoCount=280 pResponseInfo=284
+HTTP_DATA_CHUNK: DataChunkType=0 FromMemory.pBuffer=8 FromMemory.BufferLength=12 FromFileHandle.ByteRange=8 FromFileHandle.FileHandle=24 Trailers.TrailerCount=8 Trailers.pTrailers=12
+HTTP_UNKNOWN_HEADER: NameLength=0 RawValueLength=2 pName=4 pRawValue=8
+HTTP_KNOWN_HEADER: RawValueLength=0 pRawValue=4
+HTTP_TIMEOUT_LIMIT_INFO: EntityBody=4 DrainEntityBody=6 RequestQueue=8 IdleConnection=10 HeaderWait=12 MinSendRate=16
+HTTP_BINDING_INFO: RequestQueueHandle=4
+HTTP_STATE_INFO: State=4
+HTTP_LOG_FIELDS_DATA: UserNameLength=4 ProtocolStatus=78
+pre-init session: rc=6 sid_nonzero=0
+pre-init queue: rc=1114 handle=null
+pre-init terminate: rc=0
+init v1 server: rc=0
+init v2 server: rc=0
+init v2 config: rc=0
+init v2 both: rc=0
+init v3: rc=1154
+init v2.1: rc=1154
+init v1.1: rc=1154
+init v0: rc=1154
+init flags0: rc=0
+init flags8: rc=87
+init flags-cbt: rc=0
+init reserved: rc=87
+terminate flags0: rc=0
+terminate flags8: rc=87
+terminate reserved: rc=87
+session v1: rc=0 sid_untouched=0
+session v3: rc=1306 sid=zero
+session null-id: rc=87
+session reserved: rc=87 sid=untouched
+close-session 0: rc=87
+close-session bogus: rc=87
+session ok: rc=0 sid_nonzero=1
+group bogus-session: rc=87 gid=untouched
+group zero-session: rc=87
+group null-out: rc=87
+group reserved: rc=87 gid=untouched
+group ok: rc=0 gid_nonzero=1 gid_ne_sid=1
+close-group bogus: rc=87
+close-group 0: rc=87
+close-group as-session: rc=87
+close-session as-group: rc=87
+close-group ok: rc=0 again=87
+close-session with-group: rc=0 then-group-close=87
+close-session again: rc=87
+queue v1: rc=0 handle_valid=1
+queue null-out: rc=87
+queue flags0x10: rc=87 handle=null
+queue open-existing unnamed: rc=87
+queue open-existing missing: rc=2 handle=null
+queue controller unnamed: rc=87
+queue named: rc=0
+queue named dup: rc=183
+queue ok: rc=0 handle_valid=1
+queue handle-info: ok=1 flags=0x0
+close-queue ok: rc=0 again=6
+close-queue null: rc=6
+close-queue invalid: rc=0
+close-queue event: rc=0
+shutdown-queue event: rc=6
+shutdown-queue null: rc=6
+queue closehandle: rc=0 close=1
+bind ok: rc=0
+bind short: rc=122
+bind long: rc=0
+bind null: rc=87
+bind bogus-group: rc=87
+bind on-session: rc=87
+session bind: rc=87
+bind bogus-handle: rc=6
+bind null-handle: rc=6
+bind event-handle: rc=6
+unbind: rc=0
+query bind: rc=87 ret=0
+state inactive: rc=0
+state 2: rc=87
+state not-present: rc=0
+state active: rc=0
+query state: rc=0 ret=8 present=0 state=0
+timeouts: rc=0
+timeouts minsend10: rc=0
+timeouts requestqueue-on-group: rc=0
+query timeouts: rc=0 ret=20 idle=30 header=20
+queuelength on-group: rc=87
+queuelength on-queue: rc=0
+property 6: rc=87
+property 99: rc=87
+qos zero: rc=998
+auth not-present: rc=0
+auth present-none: rc=0
+logging not-present: rc=0
+addurl ok: rc=0
+addurl dup: rc=183
+addurl dup-case: rc=183
+addurl nested: rc=0
+addurl no-slash: rc=0
+addurl no-port: rc=87
+addurl port0: rc=87
+addurl port70000: rc=87
+addurl ftp: rc=87
+addurl garbage: rc=87
+addurl empty: rc=87
+addurl null: rc=87
+addurl reserved: rc=87
+addurl bogus-group: rc=87
+addurl query: rc=87
+addurl strong: rc=0
+addurl weak: rc=0
+addurl ip: rc=0
+addurl other-group same: rc=183
+addurl other-group child: rc=0
+removeurl missing: rc=2
+removeurl no-slash: rc=0
+removeurl flags2: rc=87
+removeurl null-noflag: rc=87
+removeurl all-with-url: rc=87
+removeurl bogus-group: rc=87
+removeurl ok: rc=0 again=2
+removeurl case: rc=0
+removeurl all: re-add=0 rc=0 again=0
+recv get: rc=0
+recv get: flags=0x0 conn_nonzero=1 req_nonzero=1 ctx=7 ver=1.1 verb=4 unknown_verb=(null) raw="/vprobe/a%20b/c?x=1&y=%41" raw_nul=1 full="http://localhost:48213/vprobe/a b/c?x=1&y=%41" host="localhost:48213" abs="/vprobe/a b/c" query="?x=1&y=%41" full_nul=1 host_in_full=1 abs_in_full=1 remote_family=2 remote_ip=0x7f000001 local_family=2 local_port=48213 local_ip=0x7f000001 known=[20:"*/*"(nul=1),25:"a=1, b=2"(nul=1),28:"localhost:48213"(nul=1),40:"vprobe"(nul=1),] unknown=["X-Custom":"padded value","x-lower":"v",] trailers=0 bytes_received=164 chunks=0 raw_conn_nonzero=1 ssl=0 info_count=5 info0(type=5 len=248) info1(type=7 len=56) info2(type=11 len=152) info3(type=9 len=136) info4(type=6 len=88) raw_off_ok=1 returned=1264 in_buffer=1
+send basic: rc=0 sent=111
+send again: rc=1229
+send basic: len=111 closed=0 err=10060 wire="HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 5\r\n\r\nhello"
+recv deep: rc=0 ctx=8
+send 204: len=95 closed=0 err=10060 wire="HTTP/1.1 204 No Content\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\n\r\n"
+recv small: rc=234 got=1164 needed_gt_fixed=1 id_nonzero=1 flags=0x0 verb=0 raw_ptr_null=1
+recv retry-short: rc=234 got=1164 same=1
+recv retry: rc=0 got=1164 same=1 raw_ok=1
+recv retry-after-success: rc=1229 send=1229
+send empty-body: len=0 closed=0 err=10054 wire=""
+recv v1-size: rc=122 got_gt=0
+recv 16-bytes: rc=122
+recv null-buffer: rc=87
+recv flags4: rc=87
+recv bogus-id: rc=1229
+recv after-small: rc=0 raw_ok=1
+send disconnect: len=126 closed=1 err=0 wire="HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nConnection: close\r\nContent-Length: 1\r\n\r\nt"
+recv post: flags=0x1 conn_nonzero=1 req_nonzero=1 ctx=7 ver=1.1 verb=6 unknown_verb=(null) raw="/vprobe/post" raw_nul=1 full="http://localhost:48213/vprobe/post" host="localhost:48213" abs="/vprobe/post" query=(null) full_nul=1 host_in_full=1 abs_in_full=1 remote_family=2 remote_ip=0x7f000001 local_family=2 local_port=48213 local_ip=0x7f000001 known=[11:"11"(nul=1),12:"text/plain"(nul=1),28:"localhost:48213"(nul=1),] unknown=[] trailers=0 bytes_received=110 chunks=0 raw_conn_nonzero=1 ssl=0 info_count=5 info0(type=5 len=248) info1(type=7 len=56) info2(type=11 len=152) info3(type=9 len=136) info4(type=6 len=88) raw_off_ok=1 returned=1168 in_buffer=1
+entity first5: rc=0 n=5 "hello"
+entity rest: rc=0 n=6 " world"
+entity eof: rc=38 n=0
+send 201: len=113 closed=0 err=10060 wire="HTTP/1.1 201 Created\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 2\r\n\r\nok"
+recv post copy: flags=0x0 conn_nonzero=1 req_nonzero=1 ctx=7 ver=1.1 verb=6 unknown_verb=(null) raw="/vprobe/post" raw_nul=1 full="http://localhost:48213/vprobe/post" host="localhost:48213" abs="/vprobe/post" query=(null) full_nul=1 host_in_full=1 abs_in_full=1 remote_family=2 remote_ip=0x7f000001 local_family=2 local_port=48213 local_ip=0x7f000001 known=[11:"11"(nul=1),28:"localhost:48213"(nul=1),] unknown=[] trailers=0 bytes_received=84 chunks=1 chunk0(type=0 len=11 "hello world") raw_conn_nonzero=1 ssl=0 info_count=5 info0(type=5 len=248) info1(type=7 len=56) info2(type=11 len=152) info3(type=9 len=136) info4(type=6 len=88) raw_off_ok=1 returned=1199 in_buffer=1
+entity after-copy: rc=38 n=0
+send no-body: len=106 closed=0 err=10060 wire="HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 0\r\n\r\n"
+recv chunked: flags=0x0 conn_nonzero=1 req_nonzero=1 ctx=7 ver=1.1 verb=6 unknown_verb=(null) raw="/vprobe/chunked" raw_nul=1 full="http://localhost:48213/vprobe/chunked" host="localhost:48213" abs="/vprobe/chunked" query=(null) full_nul=1 host_in_full=1 abs_in_full=1 remote_family=2 remote_ip=0x7f000001 local_family=2 local_port=48213 local_ip=0x7f000001 known=[6:"chunked"(nul=1),28:"localhost:48213"(nul=1),] unknown=[] trailers=0 bytes_received=110 chunks=1 chunk0(type=0 len=11 "hello world") raw_conn_nonzero=1 ssl=0 info_count=5 info0(type=5 len=248) info1(type=7 len=56) info2(type=11 len=152) info3(type=9 len=136) info4(type=6 len=88) raw_off_ok=1 returned=1211 in_buffer=1
+entity chunked-rest: rc=38 n=0 ""
+send after-chunked: len=107 closed=0 err=10060 wire="HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 1\r\n\r\nc"
+recv http10: rc=1460
+send http10: len=513 closed=1 err=0 wire="HTTP/1.1 400 Bad Request\r\nContent-Type: text/html; charset=us-ascii\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nConnection: close\r\nContent-Length: 334\r\n\r\n<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"\"http://www.w3.org/TR/html4/strict.dtd\">\r\n<HTML><HEAD><TITLE>Bad Request</TITLE>\r\n<META HTTP-EQUIV=\"Content-Type\" Content=\"text/html; charset=us-ascii\"></HEAD>\r\n<BODY><h2>Bad Request - Invalid Hostname</h2>\r\n<hr><p>HTTP Error 400. The request hostname is invalid.</p>\r\n</BODY></HTML>\r\n"
+recv http10 host: flags=0x0 conn_nonzero=1 req_nonzero=1 ctx=7 ver=1.0 verb=4 unknown_verb=(null) raw="/vprobe/old" raw_nul=1 full="http://localhost:48213/vprobe/old" host="localhost:48213" abs="/vprobe/old" query=(null) full_nul=1 host_in_full=1 abs_in_full=1 remote_family=2 remote_ip=0x7f000001 local_family=2 local_port=48213 local_ip=0x7f000001 known=[28:"localhost:48213"(nul=1),] unknown=[] trailers=0 bytes_received=51 chunks=0 raw_conn_nonzero=1 ssl=0 info_count=5 info0(type=5 len=248) info1(type=7 len=56) info2(type=11 len=152) info3(type=9 len=136) info4(type=6 len=88) raw_off_ok=1 returned=1148 in_buffer=1
+send http10 host: len=128 closed=1 err=0 wire="HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nConnection: close\r\nContent-Length: 3\r\n\r\nold"
+recv head: flags=0x0 conn_nonzero=1 req_nonzero=1 ctx=7 ver=1.1 verb=5 unknown_verb=(null) raw="/vprobe/head" raw_nul=1 full="http://localhost:48213/vprobe/head" host="localhost:48213" abs="/vprobe/head" query=(null) full_nul=1 host_in_full=1 abs_in_full=1 remote_family=2 remote_ip=0x7f000001 local_family=2 local_port=48213 local_ip=0x7f000001 known=[28:"localhost:48213"(nul=1),] unknown=[] trailers=0 bytes_received=53 chunks=0 raw_conn_nonzero=1 ssl=0 info_count=5 info0(type=5 len=248) info1(type=7 len=56) info2(type=11 len=152) info3(type=9 len=136) info4(type=6 len=88) raw_off_ok=1 returned=1152 in_buffer=1
+send head: len=95 closed=0 err=10060 wire="HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\n\r\nheadbody"
+recv brew: flags=0x0 conn_nonzero=1 req_nonzero=1 ctx=7 ver=1.1 verb=1 unknown_verb="BREW" raw="/vprobe/pot" raw_nul=1 full="http://localhost:48213/vprobe/pot" host="localhost:48213" abs="/vprobe/pot" query=(null) full_nul=1 host_in_full=1 abs_in_full=1 remote_family=2 remote_ip=0x7f000001 local_family=2 local_port=48213 local_ip=0x7f000001 known=[28:"localhost:48213"(nul=1),] unknown=[] trailers=0 bytes_received=52 chunks=0 raw_conn_nonzero=1 ssl=0 info_count=5 info0(type=5 len=248) info1(type=7 len=56) info2(type=11 len=152) info3(type=9 len=136) info4(type=6 len=88) raw_off_ok=1 returned=1156 in_buffer=1
+send 418: len=110 closed=0 err=10060 wire="HTTP/1.1 418 Teapot\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 0\r\n\r\n"
+recv absolute: flags=0x0 conn_nonzero=1 req_nonzero=1 ctx=7 ver=1.1 verb=4 unknown_verb=(null) raw="http://localhost:48213/vprobe/abs?q" raw_nul=1 full="http://localhost:48213/vprobe/abs?q" host="localhost:48213" abs="/vprobe/abs" query="?q" full_nul=1 host_in_full=1 abs_in_full=1 remote_family=2 remote_ip=0x7f000001 local_family=2 local_port=48213 local_ip=0x7f000001 known=[28:"localhost:48213"(nul=1),] unknown=[] trailers=0 bytes_received=75 chunks=0 raw_conn_nonzero=1 ssl=0 info_count=5 info0(type=5 len=248) info1(type=7 len=56) info2(type=11 len=152) info3(type=9 len=136) info4(type=6 len=88) raw_off_ok=1 returned=1176 in_buffer=1
+nohost: HTTP/1.1 400 Bad Request headers=Content-Type=text/html; charset=us-ascii,Server=Microsoft-HTTPAPI/2.0,Date,Connection=close,Content-Length=334, body_len=334
+unregistered: HTTP/1.1 404 Not Found headers=Content-Type=text/html; charset=us-ascii,Server=Microsoft-HTTPAPI/2.0,Date,Connection=close,Content-Length=315, body_len=315
+garbage: HTTP/1.1 400 Bad Request headers=Content-Type=text/html; charset=us-ascii,Server=Microsoft-HTTPAPI/2.0,Date,Connection=close,Content-Length=326, body_len=326
+keepalive first: rc=0 raw="/vprobe/k1"
+keepalive second: rc=0 raw="/vprobe/k2" same_conn=1
+keepalive: len=214 closed=0 err=10060 wire="HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 1\r\n\r\n1HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 1\r\n\r\n2"
+inactive: len=0 closed=0 err=10054
+unbound: HTTP/1.1 503 Service Unavailable headers=Content-Type=text/html; charset=us-ascii,Server=Microsoft-HTTPAPI/2.0,Date,Connection=close,Content-Length=326, body_len=326
+send headers: rc=0 sent=204
+send headers: len=204 closed=0 err=10060 wire="HTTP/1.1 200 Fine\r\nCache-Control: no-cache\r\nContent-Length: 8\r\nContent-Type: text/html\r\nLocation: /x\r\nServer: Microsoft-HTTPAPI/2.0\r\nX-Probe: one\r\nX-Two: 2\r\nDate: <date>\r\n\r\nabcdefgh"
+send caller-server: rc=0
+send caller-server: len=111 closed=0 err=10060 wire="HTTP/1.1 200 \r\nServer: Mine/1 Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 0\r\n\r\n"
+send v10-noreason: rc=0
+send v10-noreason: len=104 closed=0 err=10060 wire="HTTP/1.1 404 \r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 0\r\n\r\n"
+send v00: rc=0
+send v00: len=107 closed=0 err=10060 wire="HTTP/1.1 500 Bad\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 0\r\n\r\n"
+send more-data: rc=0 sent=92
+entity-send more: rc=0 sent=5
+entity-send final-empty: rc=0 sent=0
+entity-send after-final: rc=1229
+send streamed: len=97 closed=0 err=10060 wire="HTTP/1.1 200 OK\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\n\r\npart1part2"
+send cl-more: rc=0 entity=0
+send cl-streamed: len=110 closed=0 err=10060 wire="HTTP/1.1 200 \r\nContent-Length: 6\r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\n\r\nabcdef"
+send status1000: rc=87
+send bad-flags: rc=1229
+send reserved2: rc=87
+send bogus-id: rc=1229
+send null-id: rc=1229
+send null-chunks: rc=998
+send bad-chunk-type: rc=87
+send null-header-name: rc=1229
+send after-errors: rc=1229
+send after-errors: len=0 closed=0 err=10054 wire=""
+send status99: rc=0 then-200=1229
+send status99: len=104 closed=0 err=10060 wire="HTTP/1.1 099 \r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 0\r\n\r\n"
+send status100: rc=0 then-999=1229
+send status100: len=85 closed=0 err=10060 wire="HTTP/1.1 100 \r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\n\r\n"
+send client-gone: recv=0 rc=0
+ovl pending: rc=997 got=0x0 internal=0x103 event_reset=1
+ovl complete: ok=1 n_eq_used=1 internal=0x0 raw="/vprobe/o"
+ovl immediate: rc=0 got_set=1 internal=0x0 event=1
+ovl immediate result: ok=1 n_eq_got=1
+ovl small: rc=234 got=0x478 internal=0x80000005 result_ok=0 le=234 n_gt_fixed=1 id_nonzero=1
+ovl small retry: rc=0
+iocp associate: ok=1
+iocp pending: rc=997 gqcs=1 key=0x77 ov_match=1 n_gt_fixed=1
+iocp sync-send: rc=0
+iocp after-sync-send: packet=0
+iocp ovl-send: rc=0 sent=0x6e gqcs=1 n=110 ov_match=1
+iocp ovl-send: len=110 closed=0 err=10060 wire="HTTP/1.1 200 \r\nServer: Microsoft-HTTPAPI/2.0\r\nDate: <date>\r\nContent-Length: 6\r\n\r\novsend"
+iocp immediate: rc=0 packet=1
+cancel pending: rc=997 cancel=1 gqcs=0 le=995 n=0 internal=0xc0000120
+cancel nothing: ok=0 le=995
+shutdown: pending=997 rc=0 gqcs=0 le=995 internal=0xc0000120
+shutdown again: rc=0
+after-shutdown sync-recv: rc=6
+after-shutdown ovl-recv: rc=6
+after-shutdown addurl: rc=0
+after-shutdown request: len=0 closed=0 err=10060
+recv closed-handle: rc=6
+send closed-handle: rc=6
+recv null-handle: rc=6
+sync-recv released by shutdown: rc=995
+sync-recv released by close: rc=995
+refcount init2-term1 session: rc=0
+refcount init2-term2 session: rc=0
+config-only session: rc=0
+session survives terminate: close=0
+queue survives terminate: shutdown=0
+status1000 then-200: rc=87 then=22
+status1000 then-200: len=0 closed=0 err=10054 wire=""
+bad-flags then-200: rc=87 then=0
+bad-flags then-200: len=0 closed=0 err=10054 wire=""
+flags0x10 then-200: rc=87 then=0
+flags0x10 then-200: len=0 closed=0 err=10054 wire=""
+null-header-name then-200: rc=87 then=1229
+null-header-name then-200: len=0 closed=0 err=10054 wire=""
+space-header-name: rc=0
+space-header-name: len=117 closed=0 err=10060 wire="HTTP/1.1 200 \r\nServer: Microsoft-HTTPAPI/2.0\r\nBad Name: v\r\nDate: <date>\r\nContent-Length: 0\r\n\r\n"
+re-receive delivered: rc=1229
+re-receive delivered: len=0 closed=0 err=10054 wire=""
+cancel-request: rc=0 then-send=0
+cancel-request: len=0 closed=0 err=10054 wire=""
+iocp small: rc=997 packet=1 le=234 n_eq_got=0
+iocp skip-on-success immediate: rc=0 packet=0
+inactive long: len=0 closed=0 err=10054
+other-group before close: rc=183
+other-group after close: rc=0
+routed to other: rc=0 ctx=2
+queue closed: HTTP/1.1 400 Bad Request headers=Content-Type=text/html; charset=us-ascii,Server=Microsoft-HTTPAPI/2.0,Date,Connection=close,Content-Length=311, body_len=311
+shutdown long: len=0 closed=0 err=10060
+fresh init2-term1 session: rc=0
+fresh init2-term2 session: rc=6
+fresh init2-term2 queue: rc=1114
+fresh terminate-extra: rc=0
+fresh config-only session: rc=6
+fresh config-only queue: rc=1114
+fresh both-then-term-config session: rc=0
+fresh flags0 session: rc=6
+fresh session-after-terminate: create=0 close=6

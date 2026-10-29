@@ -1,0 +1,19 @@
+insert 0
+insert-dup 1627
+assign 0
+insert-nodata 0
+list row [2]#|MyStream|<s2>
+list row [2]#|NoData|~
+list end=259 rows=2
+fetch 0
+update 0
+after-update row [2]#|MyStream|<s4>
+after-update row [2]#|NoData|~
+after-update end=259 rows=2
+delete 0
+after-delete row [1]#|NoData
+after-delete end=259 rows=1
+sql-insert 0
+sql-delete open=0 exec=0
+after-sql row [1]#|NoData
+after-sql end=259 rows=1

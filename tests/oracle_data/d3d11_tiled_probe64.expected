@@ -1,0 +1,588 @@
+pointer size 8, feature level 0xb000
+have Device2=1 Context2=1
+tier 1
+
+== caps ==
+device fl want=0xb000 hr=0x00000000 got=0xb000
+  OPTIONS1 hr=0x00000000 TiledResourcesTier=1 MinMaxFiltering=1 ClearViewDepthOnly=1 MapOnDefaultBuffers=1
+  OPTIONS2 hr=0x00000000 TiledResourcesTier=1 StandardSwizzle=1
+  FORMAT_SUPPORT2_TILED: 1 2 3 4 9 10 11 12 13 14 15 16 17 18 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 67 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 115 (count 85)
+  msaa1 f61: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f49: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f85: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f28: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f87: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f24: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f26: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f10: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f16: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f2: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f41: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f56: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f55: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f45: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f40: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f20: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f71: x1=1/1 x2=0/0 x4=0/0 x8=0/0 x16=0/0
+  msaa1 f27: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+device fl want=0xb100 hr=0x00000000 got=0xb100
+  OPTIONS1 hr=0x00000000 TiledResourcesTier=2 MinMaxFiltering=1 ClearViewDepthOnly=1 MapOnDefaultBuffers=1
+  OPTIONS2 hr=0x00000000 TiledResourcesTier=3 StandardSwizzle=1
+  FORMAT_SUPPORT2_TILED: 1 2 3 4 9 10 11 12 13 14 15 16 17 18 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 67 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 115 (count 85)
+  msaa1 f61: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f49: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f85: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f28: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f87: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f24: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f26: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f10: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f16: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f2: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f41: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f56: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f55: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f45: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f40: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+  msaa1 f20: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f71: x1=1/1 x2=0/0 x4=0/0 x8=0/0 x16=0/0
+  msaa1 f27: x1=1/1 x2=0/1 x4=1/1 x8=0/1 x16=0/1
+device fl want=0xa100 hr=0x00000000 got=0xa100
+  OPTIONS1 hr=0x00000000 TiledResourcesTier=0 MinMaxFiltering=1 ClearViewDepthOnly=1 MapOnDefaultBuffers=0
+  OPTIONS2 hr=0x00000000 TiledResourcesTier=0 StandardSwizzle=1
+  FORMAT_SUPPORT2_TILED: (count 0)
+  msaa1 f61: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f49: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f85: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f28: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f87: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f24: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f26: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f10: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f16: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f2: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f41: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f56: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f55: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f45: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f40: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f20: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+  msaa1 f71: x1=0/1 x2=0/0 x4=0/0 x8=0/0 x16=0/0
+  msaa1 f27: x1=0/1 x2=0/1 x4=0/1 x8=0/1 x16=0/1
+
+done
+pointer size 8, feature level 0xb000
+have Device2=1 Context2=1
+tier 1
+
+== create ==
+buf pool 64K                           validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x0 cpu=0x0 misc=0x20000 stride=0
+buf pool 128K                          validate=0x00000001 create=0x00000000 desc bw=131072 usage=0 bind=0x0 cpu=0x0 misc=0x20000 stride=0
+buf pool 100000 (not 64K multiple)     validate=0x80070057 create=0x80070057
+buf pool 65537                         validate=0x80070057 create=0x80070057
+buf pool 4096                          validate=0x80070057 create=0x80070057
+buf pool 0                             validate=0x00000001 create=0x00000000 desc bw=0 usage=0 bind=0x0 cpu=0x0 misc=0x20000 stride=0
+buf pool 256MB                         validate=0x00000001 create=0x00000000 desc bw=268435456 usage=0 bind=0x0 cpu=0x0 misc=0x20000 stride=0
+buf pool 2GB                           validate=0x00000001 create=0x00000000 desc bw=2147483648 usage=0 bind=0x0 cpu=0x0 misc=0x20000 stride=0
+buf pool 0xFFFF0000                    validate=0x00000001 create=0x00000000 desc bw=4294901760 usage=0 bind=0x0 cpu=0x0 misc=0x20000 stride=0
+buf pool GUARDED                       validate=0x80070057 create=0x80070057
+buf tiled GUARDED                      validate=0x80070057 create=0x80070057
+buf tiled 0 bytes                      validate=0x80070057 create=0x80070057
+buf pool bind SRV                      validate=0x80070057 create=0x80070057
+buf pool bind VB                       validate=0x80070057 create=0x80070057
+buf pool bind UAV                      validate=0x80070057 create=0x80070057
+buf pool DYNAMIC                       validate=0x80070057 create=0x80070057
+buf pool STAGING                       validate=0x80070057 create=0x80070057
+buf pool IMMUTABLE+init                validate=0x80070057 create=0x80070057
+buf pool DEFAULT cpu read              validate=0x80070057 create=0x80070057
+buf pool init data                     validate=0x80070057 create=0x80070057
+buf pool|TILED                         validate=0x80070057 create=0x80070057
+buf pool|STRUCTURED                    validate=0x80070057 create=0x80070057
+buf pool|SHARED                        validate=0x80070057 create=0x80070057
+buf pool|RESOURCE_CLAMP                validate=0x80070057 create=0x80070057
+buf tiled 64K SRV                      validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x8 cpu=0x0 misc=0x40000 stride=0
+buf tiled 100 SRV                      validate=0x00000001 create=0x00000000 desc bw=100 usage=0 bind=0x8 cpu=0x0 misc=0x40000 stride=0
+buf tiled 65540 SRV                    validate=0x00000001 create=0x00000000 desc bw=65540 usage=0 bind=0x8 cpu=0x0 misc=0x40000 stride=0
+buf tiled bind 0                       validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x0 cpu=0x0 misc=0x40000 stride=0
+buf tiled UAV                          validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x80 cpu=0x0 misc=0x40000 stride=0
+buf tiled SRV|UAV                      validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x88 cpu=0x0 misc=0x40000 stride=0
+buf tiled RTV                          validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x20 cpu=0x0 misc=0x40000 stride=0
+buf tiled VB                           validate=0x80070057 create=0x80070057
+buf tiled IB                           validate=0x80070057 create=0x80070057
+buf tiled CB                           validate=0x80070057 create=0x80070057
+buf tiled SO                           validate=0x80070057 create=0x80070057
+buf tiled DYNAMIC                      validate=0x80070057 create=0x80070057
+buf tiled STAGING                      validate=0x80070057 create=0x80070057
+buf tiled DEFAULT cpu read             validate=0x80070057 create=0x80070057
+buf tiled init data                    validate=0x80070057 create=0x80070057
+buf tiled STRUCTURED                   validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x8 cpu=0x0 misc=0x40040 stride=16
+buf tiled RAW                          validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x8 cpu=0x0 misc=0x40020 stride=0
+buf tiled DRAWINDIRECT                 validate=0x00000001 create=0x00000000 desc bw=65536 usage=0 bind=0x8 cpu=0x0 misc=0x40010 stride=0
+buf tiled RESOURCE_CLAMP               validate=0x80070057 create=0x80070057
+buf tiled SHARED                       validate=0x80070057 create=0x80070057
+buf tiled 1GB                          validate=0x00000001 create=0x00000000 desc bw=1073741824 usage=0 bind=0x8 cpu=0x0 misc=0x40000 stride=0
+buf tiled 2GB-64K                      validate=0x00000001 create=0x00000000 desc bw=2147418112 usage=0 bind=0x8 cpu=0x0 misc=0x40000 stride=0
+buf tiled 0xFFFF0000                   validate=0x00000001 create=0x00000000 desc bw=4294901760 usage=0 bind=0x8 cpu=0x0 misc=0x40000 stride=0
+t2d rgba8 256 m1 SRV                   validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d rgba8 256 full-mips SRV|RTV        validate=0x00000001 create=0x00000000 desc m9 a1 misc=0x40000
+t2d rgba8 256 UAV                      validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d rgba8 bind 0                       validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d rgba8 200x200 m8                   validate=0x00000001 create=0x00000000 desc m8 a1 misc=0x40000
+t2d rgba8 1x1                          validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d rgba8 16384x16384 full             validate=0x00000001 create=0x00000000 desc m15 a1 misc=0x40000
+t2d rgba8 256 a2 m2 (multiples)        validate=0x00000001 create=0x00000000 desc m2 a2 misc=0x40000
+t2d rgba8 256 a2 m3 (64x64 packed)     validate=0x80070057 create=0x80070057
+t2d rgba8 256 a2 full                  validate=0x80070057 create=0x80070057
+t2d rgba8 200 a2 m1                    validate=0x80070057 create=0x80070057
+t2d rgba8 cube 256 m1                  validate=0x00000001 create=0x00000000 desc m1 a6 misc=0x40004
+t2d rgba8 cube 256 full                validate=0x80070057 create=0x80070057
+t2d rgba8 GENERATE_MIPS                validate=0x00000001 create=0x00000000 desc m9 a1 misc=0x40001
+t2d rgba8 GUARDED                      validate=0x80070057 create=0x80070057
+t2d rgba8 RESOURCE_CLAMP               validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40080
+t2d rgba8 SHARED                       validate=0x80070057 create=0x80070057
+t2d rgba8 GDI_COMPATIBLE               validate=0x80070057 create=0x80070057
+t2d rgba8 TILED|TILE_POOL              validate=0x80070057 create=0x80070057
+t2d rgba8 TILE_POOL                    validate=0x80070057 create=0x80070057
+t2d rgba8 DYNAMIC                      validate=0x80070057 create=0x80070057
+t2d rgba8 STAGING                      validate=0x80070057 create=0x80070057
+t2d rgba8 IMMUTABLE+init               validate=0x80070057 create=0x80070057
+t2d rgba8 DEFAULT cpu read             validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d rgba8 init data                    validate=0x80070057 create=0x80070057
+t2d rgba8 msaa2                        validate=0x80070057 create=0x80070057
+t2d rgba8 msaa4                        validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d rgba8 msaa8                        validate=0x80070057 create=0x80070057
+t2d rgba32f msaa4                      validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d r8 msaa4                           validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d d24s8 DS                           validate=0x80070057 create=0x80070057
+t2d d32f DS                            validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d d16 DS                             validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d d32s8x24 DS                        validate=0x80070057 create=0x80070057
+t2d r24g8 typeless DS|SRV              validate=0x80070057 create=0x80070057
+t2d d32f msaa4 DS                      validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d bc1 1024 full                      validate=0x00000001 create=0x00000000 desc m11 a1 misc=0x40000
+t2d bc3 1024 full                      validate=0x00000001 create=0x00000000 desc m11 a1 misc=0x40000
+t2d bc7 256 m1                         validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d r32g32b32 float                    validate=0x80070057 create=0x80070057
+t2d r8g8_b8g8                          validate=0x80070057 create=0x80070057
+t2d r9g9b9e5                           validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d b5g6r5                             validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d b4g4r4a4                           validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d nv12                               validate=0x80070057 create=0x80070057
+t2d a8                                 validate=0x00000001 create=0x00000000 desc m1 a1 misc=0x40000
+t2d r1                                 validate=0x80070057 create=0x80070057
+t1d tiled create=0x80070057
+t3d tiled create=0x80070057
+view tex SRV=0x00000000 RTV=0x00000000 UAV=0x00000000
+view buf SRV raw=0x00000000
+view pool SRV=0x80070057
+copy pool->plain returned
+
+done
+pointer size 8, feature level 0xb000
+have Device2=1 Context2=1
+tier 1
+
+== tiling ==
+tiling buffer 64K: total=1 packed std=1 packed=0 tiles=0 start=0 shape=65536x1x1 nsub=1
+  sub0: 1x1x1 start=0
+tiling buffer 100: total=1 packed std=1 packed=0 tiles=0 start=0 shape=65536x1x1 nsub=1
+  sub0: 1x1x1 start=0
+tiling buffer 65540: total=2 packed std=1 packed=0 tiles=0 start=0 shape=65536x1x1 nsub=1
+  sub0: 2x1x1 start=0
+tiling buffer 16MB: total=256 packed std=1 packed=0 tiles=0 start=0 shape=65536x1x1 nsub=1
+  sub0: 256x1x1 start=0
+tiling pool (not tiled): total=0 packed std=0 packed=0 tiles=0 start=0 shape=0x0x0 nsub=0
+tiling rgba8 256 m1: total=4 packed std=1 packed=0 tiles=0 start=0 shape=128x128x1 nsub=1
+  sub0: 2x2x1 start=0
+tiling rgba8 256 full: total=12 packed std=9 packed=0 tiles=0 start=0 shape=128x128x1 nsub=9
+  sub0: 2x2x1 start=0
+  sub1: 1x1x1 start=4
+  sub2: 1x1x1 start=5
+  sub3: 1x1x1 start=6
+  sub4: 1x1x1 start=7
+  sub5: 1x1x1 start=8
+  sub6: 1x1x1 start=9
+  sub7: 1x1x1 start=10
+  sub8: 1x1x1 start=11
+tiling rgba8 256 full SRV|RTV: total=12 packed std=9 packed=0 tiles=0 start=0 shape=128x128x1 nsub=9
+  sub0: 2x2x1 start=0
+  sub1: 1x1x1 start=4
+  sub2: 1x1x1 start=5
+  sub3: 1x1x1 start=6
+  sub4: 1x1x1 start=7
+  sub5: 1x1x1 start=8
+  sub6: 1x1x1 start=9
+  sub7: 1x1x1 start=10
+  sub8: 1x1x1 start=11
+tiling rgba8 512 full: total=28 packed std=10 packed=0 tiles=0 start=0 shape=128x128x1 nsub=10
+  sub0: 4x4x1 start=0
+  sub1: 2x2x1 start=16
+  sub2: 1x1x1 start=20
+  sub3: 1x1x1 start=21
+  sub4: 1x1x1 start=22
+  sub5: 1x1x1 start=23
+  sub6: 1x1x1 start=24
+  sub7: 1x1x1 start=25
+  sub8: 1x1x1 start=26
+  sub9: 1x1x1 start=27
+tiling rgba8 128 full: total=8 packed std=8 packed=0 tiles=0 start=0 shape=128x128x1 nsub=8
+  sub0: 1x1x1 start=0
+  sub1: 1x1x1 start=1
+  sub2: 1x1x1 start=2
+  sub3: 1x1x1 start=3
+  sub4: 1x1x1 start=4
+  sub5: 1x1x1 start=5
+  sub6: 1x1x1 start=6
+  sub7: 1x1x1 start=7
+tiling rgba8 200 full: total=11 packed std=8 packed=0 tiles=0 start=0 shape=128x128x1 nsub=8
+  sub0: 2x2x1 start=0
+  sub1: 1x1x1 start=4
+  sub2: 1x1x1 start=5
+  sub3: 1x1x1 start=6
+  sub4: 1x1x1 start=7
+  sub5: 1x1x1 start=8
+  sub6: 1x1x1 start=9
+  sub7: 1x1x1 start=10
+tiling rgba8 300 m1: total=9 packed std=1 packed=0 tiles=0 start=0 shape=128x128x1 nsub=1
+  sub0: 3x3x1 start=0
+tiling rgba8 64 full: total=7 packed std=7 packed=0 tiles=0 start=0 shape=128x128x1 nsub=7
+  sub0: 1x1x1 start=0
+  sub1: 1x1x1 start=1
+  sub2: 1x1x1 start=2
+  sub3: 1x1x1 start=3
+  sub4: 1x1x1 start=4
+  sub5: 1x1x1 start=5
+  sub6: 1x1x1 start=6
+tiling rgba8 1x1: total=1 packed std=1 packed=0 tiles=0 start=0 shape=128x128x1 nsub=1
+  sub0: 1x1x1 start=0
+tiling rgba8 1024x256 full: total=30 packed std=11 packed=0 tiles=0 start=0 shape=128x128x1 nsub=11
+  sub0: 8x2x1 start=0
+  sub1: 4x1x1 start=16
+  sub2: 2x1x1 start=20
+  sub3: 1x1x1 start=22
+  sub4: 1x1x1 start=23
+  sub5: 1x1x1 start=24
+  sub6: 1x1x1 start=25
+  sub7: 1x1x1 start=26
+  sub8: 1x1x1 start=27
+  sub9: 1x1x1 start=28
+  sub10: 1x1x1 start=29
+tiling rgba8 1000x700 m1: total=48 packed std=1 packed=0 tiles=0 start=0 shape=128x128x1 nsub=1
+  sub0: 8x6x1 start=0
+tiling rgba8 256 a3 m2: total=15 packed std=2 packed=0 tiles=0 start=0 shape=128x128x1 nsub=6
+  sub0: 2x2x1 start=0
+  sub1: 1x1x1 start=4
+  sub2: 2x2x1 start=5
+  sub3: 1x1x1 start=9
+  sub4: 2x2x1 start=10
+  sub5: 1x1x1 start=14
+tiling rgba8 cube 256 m2: total=30 packed std=2 packed=0 tiles=0 start=0 shape=128x128x1 nsub=12
+  sub0: 2x2x1 start=0
+  sub1: 1x1x1 start=4
+  sub2: 2x2x1 start=5
+  sub3: 1x1x1 start=9
+  sub4: 2x2x1 start=10
+  sub5: 1x1x1 start=14
+  sub6: 2x2x1 start=15
+  sub7: 1x1x1 start=19
+  sub8: 2x2x1 start=20
+  sub9: 1x1x1 start=24
+  sub10: 2x2x1 start=25
+  sub11: 1x1x1 start=29
+tiling r8 512 full: total=13 packed std=10 packed=0 tiles=0 start=0 shape=256x256x1 nsub=10
+  sub0: 2x2x1 start=0
+  sub1: 1x1x1 start=4
+  sub2: 1x1x1 start=5
+  sub3: 1x1x1 start=6
+  sub4: 1x1x1 start=7
+  sub5: 1x1x1 start=8
+  sub6: 1x1x1 start=9
+  sub7: 1x1x1 start=10
+  sub8: 1x1x1 start=11
+  sub9: 1x1x1 start=12
+tiling r16 512 m1: total=8 packed std=1 packed=0 tiles=0 start=0 shape=256x128x1 nsub=1
+  sub0: 2x4x1 start=0
+tiling rg32f 256 m1: total=8 packed std=1 packed=0 tiles=0 start=0 shape=128x64x1 nsub=1
+  sub0: 2x4x1 start=0
+tiling rgba16f 256 full: total=17 packed std=9 packed=0 tiles=0 start=0 shape=128x64x1 nsub=9
+  sub0: 2x4x1 start=0
+  sub1: 1x2x1 start=8
+  sub2: 1x1x1 start=10
+  sub3: 1x1x1 start=11
+  sub4: 1x1x1 start=12
+  sub5: 1x1x1 start=13
+  sub6: 1x1x1 start=14
+  sub7: 1x1x1 start=15
+  sub8: 1x1x1 start=16
+tiling rgba32f 256 full: total=27 packed std=9 packed=0 tiles=0 start=0 shape=64x64x1 nsub=9
+  sub0: 4x4x1 start=0
+  sub1: 2x2x1 start=16
+  sub2: 1x1x1 start=20
+  sub3: 1x1x1 start=21
+  sub4: 1x1x1 start=22
+  sub5: 1x1x1 start=23
+  sub6: 1x1x1 start=24
+  sub7: 1x1x1 start=25
+  sub8: 1x1x1 start=26
+tiling bc1 1024 full: total=19 packed std=11 packed=0 tiles=0 start=0 shape=512x256x1 nsub=11
+  sub0: 2x4x1 start=0
+  sub1: 1x2x1 start=8
+  sub2: 1x1x1 start=10
+  sub3: 1x1x1 start=11
+  sub4: 1x1x1 start=12
+  sub5: 1x1x1 start=13
+  sub6: 1x1x1 start=14
+  sub7: 1x1x1 start=15
+  sub8: 1x1x1 start=16
+  sub9: 1x1x1 start=17
+  sub10: 1x1x1 start=18
+tiling bc3 1024 full: total=29 packed std=11 packed=0 tiles=0 start=0 shape=256x256x1 nsub=11
+  sub0: 4x4x1 start=0
+  sub1: 2x2x1 start=16
+  sub2: 1x1x1 start=20
+  sub3: 1x1x1 start=21
+  sub4: 1x1x1 start=22
+  sub5: 1x1x1 start=23
+  sub6: 1x1x1 start=24
+  sub7: 1x1x1 start=25
+  sub8: 1x1x1 start=26
+  sub9: 1x1x1 start=27
+  sub10: 1x1x1 start=28
+tiling bc4 512 m1: total=2 packed std=1 packed=0 tiles=0 start=0 shape=512x256x1 nsub=1
+  sub0: 1x2x1 start=0
+tiling bc7 256 m1: total=1 packed std=1 packed=0 tiles=0 start=0 shape=256x256x1 nsub=1
+  sub0: 1x1x1 start=0
+  !! CreateTexture2D(256x256 m1 a1 f45 bind=0x40 misc=0x40000 s1) hr=0x80070057
+tiling d24s8 256 DS: (not created)
+tiling d32f 256 DS: total=4 packed std=1 packed=0 tiles=0 start=0 shape=128x128x1 nsub=1
+  sub0: 2x2x1 start=0
+tiling d16 256 DS: total=2 packed std=1 packed=0 tiles=0 start=0 shape=256x128x1 nsub=1
+  sub0: 1x2x1 start=0
+tiling rgba8 msaa4 256: total=16 packed std=1 packed=0 tiles=0 start=0 shape=64x64x1 nsub=1
+  sub0: 4x4x1 start=0
+tiling r8 msaa4 256: total=4 packed std=1 packed=0 tiles=0 start=0 shape=128x128x1 nsub=1
+  sub0: 2x2x1 start=0
+tiling rgba16f msaa4 256: total=32 packed std=1 packed=0 tiles=0 start=0 shape=64x32x1 nsub=1
+  sub0: 4x8x1 start=0
+tiling d32f msaa4 256: total=16 packed std=1 packed=0 tiles=0 start=0 shape=64x64x1 nsub=1
+  sub0: 4x4x1 start=0
+param first=5 n=100 -> n=4 s0=1,1 start=8
+param first=20 n=3 -> n=3 s0=0x1,0x1,0x1,0x1d s1=0x1,0x1,0x1,0x1e s2=0x1,0x1,0x1,0x1f
+param n=0 -> n=0 s0=0xcdcdcdcd
+param first=8 n=1 -> n=1 s0=1,1,1 start=0xb
+param pNum NULL -> total=12 s0=0xcdcdcdcd
+
+done
+pointer size 8, feature level 0xb000
+have Device2=1 Context2=1
+tier 1
+
+== val ==
+val fresh res, pool NULL, seq mapping                hr=0x80070057
+val fresh res, pool NULL, NULL mapping               hr=0x00000000
+val fresh res, pool NULL, SKIP mapping               hr=0x80070057
+val fresh res, pool NULL, REUSE mapping              hr=0x80070057
+val plain buffer as pool                             hr=0x80070057
+val tiled buffer as pool                             hr=0x80070057
+val valid 1 tile                                     hr=0x00000000
+val after mapping, pool NULL + seq                   hr=0x00000000
+val range count 2 vs region 1                        hr=0x80070057
+val range count 1 vs region 2                        hr=0x80070057
+val buffer coord X=4 of 4 (past end)                 hr=0x887a0005 device-removed=0x887a0020
+val buffer region 5 tiles of 4                       hr=0x887a0005 device-removed=0x887a0020
+val buffer coord Y=1                                 hr=0x00000000
+val buffer coord Z=1                                 hr=0x00000000
+val buffer coord Subresource=1                       hr=0x80070057
+val buffer box 2x1x1                                 hr=0x00000000
+val buffer box 2x2x1                                 hr=0x00000000
+val pool offset 8 of 8                               hr=0x80070057
+val pool offset 7 count 2 of 8                       hr=0x80070057
+val REUSE tile 8 of 8                                hr=0x80070057
+val REUSE tile 7 of 8, 2 tiles                       hr=0x00000000
+val NULL range offset 0xFFFFFFFF                     hr=0x00000000
+val SKIP range offset 0xFFFFFFFF                     hr=0x00000000
+val range flag 3 (NULL|SKIP)                         hr=0x80070057
+val range flag 5 (NULL|REUSE)                        hr=0x80070057
+val range flag 6 (SKIP|REUSE)                        hr=0x80070057
+val range flag 8                                     hr=0x80070057
+val range flag 0x80000000                            hr=0x80070057
+val Flags=NO_OVERWRITE                               hr=0x00000000
+val Flags=2                                          hr=0x80070057
+val Flags=0x80000000                                 hr=0x80070057
+val NumTiledResourceRegions 0                        hr=0x80070057
+val NumTiledResourceRegions 0 NumRanges 0            hr=0x80070057
+val NumRanges 0 for 1 tile                           hr=0x80070057
+val offsets NULL, flags NULL                         hr=0x80070057
+val offsets NULL, flags {0}                          hr=0x80070057
+val offsets NULL, REUSE                              hr=0x80070057
+val counts NULL, 2 ranges, 2 tiles                   hr=0x00000000
+val counts NULL, 2 ranges, 4 tiles                   hr=0x80070057
+val counts {1,1}                                     hr=0x00000000
+val counts {0,2} (empty range)                       hr=0x00000000
+val region NumTiles 0, counts NULL                   hr=0x80070057
+val region NumTiles 0, counts {0}                    hr=0x80070057
+val 2 coords, sizes NULL, 2 ranges counts NULL       skipped (faults in the Windows runtime)
+val 2 regions, coords NULL                           hr=0x80070057
+val 2 coords, sizes NULL, 1 range counts NULL        skipped (faults in the Windows runtime)
+val 2 sizes, coords NULL                             hr=0x80070057
+val coords NULL, size 3                              hr=0x00000000
+val coord X=1, sizes NULL (1 tile)                   hr=0x00000000
+val whole buffer (coords+sizes NULL)                 hr=0x00000000
+val whole buffer from pool 5 (overflows)             hr=0x80070057
+val tex box 2x2 mip0                                 hr=0x00000000
+val tex box 2x2 NumTiles 3                           hr=0x80070057
+val tex box 2x2 NumTiles 0                           hr=0x80070057
+val tex box 3x2 (past width)                         hr=0x00000000
+val tex box depth 2 (no array)                       hr=0x00000000
+val tex box depth 0                                  hr=0x80070057
+val tex box width 0                                  hr=0x80070057
+val tex coord X=2 mip0 (past end)                    hr=0x00000000
+val tex coord Z=1                                    hr=0x00000000
+val tex coord Subresource=9 (of 9)                   hr=0x80070057
+val tex linear 5 tiles from mip0 (spill)             hr=0x00000000
+val tex linear 12 tiles (whole resource)             hr=0x00000000
+val tex linear 13 tiles (one past)                   hr=0x887a0005 device-removed=0x887a0020
+val tex box 1x1 at (1,1)                             hr=0x00000000
+val tex last mip (1x1) tile                          hr=0x00000000
+val CopyTileMappings b->b2 2 tiles                   hr=0x00000000
+val CopyTileMappings NO_OVERWRITE                    hr=0x00000000
+val CopyTileMappings Flags=2                         hr=0x80070057
+val CopyTileMappings src past end                    hr=0x887a0005 device-removed=0x887a0020
+val CopyTileMappings dst past end                    hr=0x887a0005 device-removed=0x887a0020
+val CopyTileMappings 0 tiles                         hr=0x80070057
+val CopyTileMappings overlap self                    hr=0x00000000
+val CopyTileMappings dst on other pool               hr=0x00000000
+val CopyTileMappings buffer->texture                 hr=0x00000000
+val CopyTileMappings box 2x1x1                       hr=0x00000000
+val Resize 9 tiles                                   hr=0x00000000 bw=589824
+val Resize 100000                                    hr=0x80070057 bw=524288
+val Resize same size                                 hr=0x00000000 bw=524288
+val Resize 0                                         hr=0x00000000 bw=0
+val Resize 4GB                                       hr=0x80070057 bw=524288
+val Resize 1TB                                       hr=0x80070057 bw=524288
+val Resize tiled buffer                              hr=0x80070057 bw=262144
+val Resize plain buffer                              hr=0x80070057 bw=65536
+val Resize 65537                                     hr=0x80070057 bw=524288
+val Resize 2^32 tiles                                hr=0x80070057 bw=524288
+val TiledResourceBarrier forms                       hr=0x00000000
+val Resize 2GB                                       hr=0x00000000 bw=2147483648
+val Resize 0xFFFF0000                                hr=0x00000000 bw=4294901760
+
+done
+pointer size 8, feature level 0xb000
+have Device2=1 Context2=1
+tier 1
+
+== data ==
+data T1 map b1 -> pool[4..7] hr=0x00000000
+data T1 map b2 -> pool[6,7,0,1] (counts NULL, 2 ranges) hr=0x80070057
+data T1 map b2 -> pool[6,7,0,1] (counts 2,2) hr=0x00000000
+data T1 b1 readback match=65536/65536
+data T1 b2[0..1] == b1[2..3] match=32768/32768
+data T1 partial write via b2 seen by b1 match=256/256
+data T2 b3 all -> pool[2] REUSE hr=0x00000000
+data T2 b3 tile0 == written tile3 match=16384/16384
+data T2 b3 tiles1..2 == tile3 match=32768/32768
+data T3 b1 = [skip, pool2, pool3, pool4] hr=0x00000000
+data T3 b1 tile3 aliases tile0 (pool4) match=16384/16384
+data T3 b1 tile1 == pool2 (T2 data) match=16384/16384
+data T4 CopyTileMappings b1->b4 hr=0x00000000
+data T4 b4 == b1 match=65536/65536
+data T4 overlap shift hr=0x00000000
+data T4 shifted: t0==old0 16384 t1==old0 16384 t2==old1 16384 t3==old2 16384 (of 16384)
+data T5 b4 tile1 -> NULL (pool NULL) hr=0x00000000
+data T5 b4 tile2 still pool2 match=16384/16384
+data T5 tier1-undefined NULL tile reads zero=16384/16384
+data T6 b4 tile3 -> other pool hr=0x00000000
+data T6 tier1-undefined b4 tile0 (cleared) zero=16384/16384
+data T6 b4 tile3 on new pool match=16384/16384
+data T6 b4 tile0 -> (pool NULL) tile 1 hr=0x00000000
+data T7 map to pool tile 1 of 1 hr=0x80070057
+data T7 grow to 3 hr=0x00000000
+data T7 map b5 -> pool[1,2] hr=0x00000000
+data T7 b5 match=32768/32768
+data T7 shrink to 1 hr=0x00000000
+data T7 b5 after shrink (mappings past end intact) match=32768/32768
+data T7 new mapping past shrunk end hr=0x80070057
+data T7 new mapping inside shrunk pool hr=0x00000000
+data T7 regrow to 3 hr=0x00000000
+data T7 map b6 -> regrown pool[1,2] hr=0x00000000
+data T7 b6 sees kept memory match=32768/32768
+data T8 UpdateTiles buffer match=49152/49152
+data T8 CopyTiles tiled->linear @64K match=32768/32768
+data T8 CopyTiles linear->tiled match=32768/32768
+data T8 CopyTiles flags 0: tiled unchanged=16384 linear-applied=0
+data T8 CopyTiles flags 6: tiled unchanged=16384 linear-applied=0
+data T8 CopyTiles linear->tiled buffer offset 4: unchanged=0 from@0=0 from@4=16384 from@196608=0
+data T8 CopyTiles linear->tiled buffer offset 196612: unchanged=16384
+data T8 CopyTiles linear->tiled buffer offset 196608: unchanged=0 from@0=0 from@4=0 from@196608=16384
+data T8 CopyTiles tiled->linear buffer offset 4: lin@4==tile 16384, lin@0==old 1
+data T8 CopyTiles tiled->linear overrun: lin unchanged=65536/65536
+data T8 UpdateTiles flags 2: tiled unchanged=0 applied=16384
+data T8 UpdateTiles flags 0x4: tiled unchanged=16384 applied=0
+data T8 UpdateTiles flags 0x80000000: tiled unchanged=16384 applied=0
+data T8 CopyTiles flags 0x80000002: tiled unchanged=16384
+data T8 UpdateTiles NO_OVERWRITE applied=16384/16384
+data T8 CopyTiles -> staging match=16384/16384
+data T9 buffer box 2x2 at (1,1) seq from pool4 hr=0x00000000 tiles: 0 4 5 3
+data T10 CopyTileMappings onto other-pool dest hr=0x00000000 dst tile0=3 (pa tile 3 = 3) tier1-undefined tile1=-1 (0 words=16384)
+data T10 then pool NULL map tile1 -> 0 hr=0x00000000 tile1=0 (pool A tile 0 = 0, pool B tile 0 = 10)
+data P control: CopyResource under the predicate copied=0 (0 = skipped)
+data P CopyTiles under the predicate applied=16384
+data P predicate data=0: UpdateTileMappings hr=0x00000000 CopyTileMappings hr=0x00000000 -> b tile0=-2 (0 = skipped); UpdateTiles applied=16384; ResizeTilePool hr=0x00000000 bw=393216
+data C ClearView D32_FLOAT rects: slice0 aaaaaaaa aaBBBaaa aaBBBaaa aaBBBaaa aaaaaaaa aaaaaaaa aaaaaaBB aaaaaaBB slice1 aaaaaaaa aaBBBaaa aaBBBaaa aaBBBaaa aaaaaaaa aaaaaaaa aaaaaaBB aaaaaaBB
+data C ClearView D32_FLOAT depth 1.5 on a rect: texel (2,1)=0x3fc00000
+data C ClearView D32_FLOAT depth -0.5 whole view: texel (0,0)=0xbf000000
+data C ClearView D16_UNORM rects: slice0 aaaaaaaa aaBBBaaa aaBBBaaa aaBBBaaa aaaaaaaa aaaaaaaa aaaaaaBB aaaaaaBB
+data C ClearView D16_UNORM depth 1.5 on a rect: texel (2,1)=0xffff
+data C ClearView D16_UNORM depth -0.5 whole view: texel (0,0)=0x0
+data X9 linear 10 from sub0        hr=0x00000000 map: s0[0,1,2,3] s1[4] s2[5,6,7,8] s3[9]
+data X9 linear 4 from sub0 (1,1)   hr=0x00000000 map: s0[0,1,2,10] s1[11] s2[12,13,7,8] s3[9]
+data X9 box 2x1 at (0,1) sub2      hr=0x00000000 map: s0[0,1,2,10] s1[11] s2[12,13,12,13] s3[9]
+data X9 box 1x2 at (1,0) sub0      hr=0x00000000 map: s0[0,14,2,15] s1[11] s2[12,13,12,13] s3[9]
+data X9 linear 2 from sub3         hr=0x00000000 map: s0[0,14,2,15] s1[11] s2[12,13,12,13] s3[15]
+data X1 map 256x256 -> pool[0..3] hr=0x00000000
+data X1 clear red=65536/65536
+data X1 UpdateTiles tile(1,0) linear rows match=16384/16384 others red=49152/49152
+data X1 CopyTiles box 2x1 at (0,1) -> linear match=32768/32768
+data X1 CopyTiles linear -> box 1x2 at (0,0) match=32768/32768
+data X1 alias 128x128 rgba8 on tile(1,0) (dims differ: undefined per spec) match=16384/16384
+data X1 alias 128x128 r32_uint on tile(1,0) (format differs: undefined per spec) match=16384/16384
+data X1 clear via alias seen by t (dims differ) green=16384/16384
+data X2 map 200x200 hr=0x00000000
+data X2 CopyTiles edge tile (1,1) valid 72x72 match=5184/5184
+data X2 UpdateTiles edge tile (1,0) valid 72x128 match=9216/9216
+data X3 map 256 full chain (12 tiles, 0 packed mips) hr=0x00000000
+data X3 mips: m0=65536/65536 m1=16384/16384 m2=4096/4096 m3=1024/1024 m4=256/256 m5=64/64 m6=16/16 m7=4/4 m8=1/1
+data X4 boxes 2x2x1 on subresources 0 and 2 -> pool[32..39] hr=0x00000000
+data X4 mip1 slice0 -> pool[40] hr=0x00000000
+data X4 mip1 slice1 -> pool[41] hr=0x00000000
+data X4 (UpdateSubresource slice1 mip0 returned)
+data X4 slice1 mip0 roundtrip match=65536/65536
+data X4 256x256 alias on pool[36..39] == slice1 mip0 match=65536/65536
+data X4 CopyTiles 5 linear tiles: 5th is slice0 mip1 match=16384/16384
+data X5 non-tiled -> tiled -> tiled CopyResource match=65536/65536
+data X6 msaa4 map 16 tiles hr=0x00000000
+data X6 msaa4 clear+resolve blue=65536/65536
+data X6 msaa4 CopyTiles tile0 blue samples=16384/16384
+data X6 msaa4 UpdateTiles+CopyTiles sample-order roundtrip match=16384/16384
+data X7 d32f map hr=0x00000000 clear 0.5=65536/65536
+data X7 d32f CopyTiles tile(1,1) 0.5=16384/16384
+data X10 cube 24 tiles map hr=0x00000000
+data X10 cube face 3 roundtrip match=65536/65536
+data X10 256x256 on pool 12..15 == cube face 3 match=65536/65536
+data X8 bc1 512x256 tiles=1 map hr=0x00000000 UpdateTiles block rows match=16384/16384
+data D deferred UpdateTileMappings, resource never mapped hr=0x80070057
+data D deferred NULL mapping, resource never mapped, pool NULL hr=0x80070057
+data D deferred UpdateTileMappings same pool hr=0x80070057
+data D deferred UpdateTileMappings pool NULL hr=0x80070057
+data D deferred CopyTileMappings hr=0x80070057
+data D deferred ResizeTilePool hr=0x00000000 bw before execute=262144
+data D before execute: b tile0 (pool0) match=16384/16384
+data D FinishCommandList hr=0x00000000
+data D executed: b match=32768/32768
+data D executed: b2 tile0 == b tile1 match=0/16384
+data D executed: pool bw=524288
+data D executed: pool0 kept pre-execute data match=0/16384
+
+done

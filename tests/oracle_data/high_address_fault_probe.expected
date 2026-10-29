@@ -1,0 +1,23 @@
+# winoracle (Intel Alder Lake, Windows 10.0.26200), x86_64-w64-mingw32-gcc -O1, 2026-10-07
+load  00007fffffff0000 -> code=c0000005 nparams=2 info0=0 info1=00007fffffff0000
+store 00007fffffff0000 -> code=c0000005 nparams=2 info0=1 info1=00007fffffff0000
+load  00007ffffffffff8 -> code=c0000005 nparams=2 info0=0 info1=00007ffffffffff8
+store 00007ffffffffff8 -> code=c0000005 nparams=2 info0=1 info1=00007ffffffffff8
+load  0000800000000000 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+store 0000800000000000 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+load  1234567812345678 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+store 1234567812345678 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+load  7ffffffffffffff8 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+store 7ffffffffffffff8 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+load  8000000000000000 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+store 8000000000000000 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+load  ffff7ffffffffff8 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+store ffff7ffffffffff8 -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+load  ffff800000000000 -> code=c0000005 nparams=2 info0=0 info1=ffff800000000000
+store ffff800000000000 -> code=c0000005 nparams=2 info0=1 info1=ffff800000000000
+load  fffff78000000000 -> code=c0000005 nparams=2 info0=0 info1=fffff78000000000
+store fffff78000000000 -> code=c0000005 nparams=2 info0=1 info1=fffff78000000000
+load  fffffffffffffff8 -> code=c0000005 nparams=2 info0=0 info1=fffffffffffffff8
+store fffffffffffffff8 -> code=c0000005 nparams=2 info0=1 info1=fffffffffffffff8
+load  00007ffffffffffc -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff
+store 00007ffffffffffc -> code=c0000005 nparams=2 info0=0 info1=ffffffffffffffff

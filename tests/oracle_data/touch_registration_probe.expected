@@ -1,0 +1,22 @@
+query initial ok=0 flags=57005 error=48879
+query desktop ok=0 flags=57005 error=48879
+register desktop ok=0 error=5
+unregister desktop ok=0 error=5
+register flags=0 ok=1 error=48879
+query registered ok=1 flags=0 error=48879
+register flags=1 ok=1 error=48879
+query registered ok=1 flags=1 error=48879
+register flags=2 ok=1 error=48879
+query registered ok=1 flags=2 error=48879
+register flags=3 ok=1 error=48879
+query registered ok=1 flags=3 error=48879
+register flags=4 ok=0 error=1004
+query registered ok=1 flags=3 error=48879
+query foreign-thread ok=1 flags=3 error=48879
+register foreign-thread ok=0 error=5
+unregister foreign-thread ok=0 error=5
+unregister iteration=0 ok=1 error=48879
+query unregistered ok=0 flags=57005 error=48879
+unregister iteration=1 ok=1 error=48879
+query unregistered ok=0 flags=57005 error=48879
+query invalid ok=0 flags=57005 error=1400

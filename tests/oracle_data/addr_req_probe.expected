@@ -1,0 +1,71 @@
+va2 window_bottomup ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3aff0000 aligned=0x1
+va2 window_topdown ok err=0xdead in_window=0x1 p-lo=0x3fff0000 hi+1-end=0x0 aligned=0x1
+va2 window_commit_only ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3aff0000 aligned=0x1
+va2 window_rescommit ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3aff0000 aligned=0x1
+va2 align_1m ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x3fff0000 aligned=0x1
+va2 align_1m_topdown ok err=0xdead in_window=0x1 p-lo=0x3ff00000 hi+1-end=0xf0000 aligned=0x1
+va2 align_not_pow2 FAIL err=0x57
+va2 align_below_gran FAIL err=0x57
+va2 low_unaligned FAIL err=0x57
+va2 high_unaligned ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3afef000 aligned=0x1
+va2 low_only ok err=0xdead in_window=0x1 p-lo=0x4d80000 aligned=0x1
+va2 high_only ok err=0xdead in_window=0x1 hi+1-end=0x40090000 aligned=0x1
+va2 low_gt_high FAIL err=0x57
+va2 window_too_small FAIL err=0x57
+va2 window_exact ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x0 aligned=0x1
+va2 all_zero ok err=0xdead in_window=0x1 aligned=0x1
+va2 base_plus_zero_req ok err=0xdead in_window=0x1 aligned=0x1
+va2 base_plus_req FAIL err=0x57
+va2 base_plus_align_only FAIL err=0x57
+va2 two_req_params FAIL err=0x57
+va2 type_invalid0 FAIL err=0x57
+va2 type_unknown99 FAIL err=0x57
+va2 size_unaligned_page ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3affe800 aligned=0x1
+va2 size_4k ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3afff000 aligned=0x1
+va2 high_lt_min FAIL err=0x1e7
+va2 x_high_unaligned_lo0 ok err=0xdead in_window=0x1 hi+1-end=0x4008f000 aligned=0x1
+va2 x_high_ceil_unaligned_loL FAIL err=0x57
+va2 x_high_ceil_unaligned_lo0 FAIL err=0x57
+va2 x_high_ceil_minus_64k_unaligned_lo0 FAIL err=0x57
+va2 x_high_unaligned_odd FAIL err=0x57
+va2 x_high_even FAIL err=0x57
+va2 x_align_64k ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3aff0000 aligned=0x1
+va2 x_align_128k ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x3fff0000 aligned=0x1
+va2 x_align_1m_nowindow ok err=0xdead in_window=0x1 aligned=0x1
+va2 x_align_1m_size1m ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x3ff00000 aligned=0x1
+va2 x_align_1m_rescommit ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x3fff0000 aligned=0x1
+va2 x_align_1m_low_only ok err=0xdead in_window=0x1 p-lo=0x0 aligned=0x1
+va2 x_align_1m_high_only ok err=0xdead in_window=0x1 hi+1-end=0x3fff0000 aligned=0x1
+va2 x_align_64k_nowindow ok err=0xdead in_window=0x1 aligned=0x1
+va2 x_low_below_min ok err=0xdead in_window=0x1 hi+1-end=0x40090000 aligned=0x1
+va2 x_window_full_low_gran ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x0 aligned=0x1
+va2 x_low_ceil_minus_64k_hi_max ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x0 aligned=0x1
+x_L_mod 1m=0x0 128k=0x0
+va2 x_align_1m_low_1m_aligned ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x3fff0000 aligned=0x1
+va2 x_align_1m_low_1m_aligned_hi_unaligned_1m ok err=0xdead in_window=0x1 p-lo=0x0 hi+1-end=0x170000 aligned=0x1
+va2 x_window_occupied FAIL err=0x8
+va2 x_window_occupied_topdown FAIL err=0x8
+va2 x_window_occupied_commit FAIL err=0x8
+mv3 x_window_occupied FAIL err=0x8
+va2 x_placeholder_window ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3aff0000 aligned=0x1
+va2 x_type_reserved_bits FAIL err=0x57
+va2 x_numa0_plus_req ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3aff0000 aligned=0x1
+va2 x_numa63 FAIL err=0x57
+va2 x_params_count0_nonnull FAIL err=0x57
+va2 x_params_null_count1 FAIL err=0x57
+va2 x_req_null_pointer FAIL err=0x3e6
+mv3 window_bottomup ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3aff0000 aligned=0x1
+mv3 align_1m FAIL err=0x57
+mv3 align_not_pow2 FAIL err=0x57
+mv3 low_unaligned FAIL err=0x57
+mv3 high_unaligned ok err=0xdead in_window=0x1 p-lo=0x5000000 hi+1-end=0x3afef000 aligned=0x1
+mv3 window_too_small FAIL err=0x57
+mv3 base_plus_req FAIL err=0x57
+mv3 all_zero ok err=0xdead in_window=0x1 aligned=0x1
+mv3 x_align_64k FAIL err=0x57
+mv3 x_align_128k FAIL err=0x57
+mv3 x_align_1m_nowindow FAIL err=0x57
+mv3 x_align_1m_high_only FAIL err=0x57
+mv3 x_low_only ok err=0xdead in_window=0x1 p-lo=0x4f60000 aligned=0x1
+mv3 x_high_only ok err=0xdead in_window=0x1 hi+1-end=0x40090000 aligned=0x1
+done

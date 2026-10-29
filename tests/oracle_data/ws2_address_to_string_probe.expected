@@ -1,0 +1,131 @@
+v4 no-startup A ret=-1 err=10093 len=64 buf0=5a
+v4 no-startup W ret=-1 err=10093 len=64 buf0=5a5a
+v4 port0 A ret=0 err=0 len=10 "192.0.2.1"
+v4 port0 W ret=0 err=0 len=10 "192.0.2.1"
+v4 port80 A ret=0 err=0 len=13 "192.0.2.1:80"
+v4 port80 W ret=0 err=0 len=13 "192.0.2.1:80"
+v4 port65535 A ret=0 err=0 len=15 "10.0.0.1:65535"
+v4 port65535 W ret=0 err=0 len=15 "10.0.0.1:65535"
+v4 any A ret=0 err=0 len=8 "0.0.0.0"
+v4 any W ret=0 err=0 len=8 "0.0.0.0"
+v4 nonzero-pad A ret=0 err=0 len=13 "192.0.2.1:80"
+v4 nonzero-pad W ret=0 err=0 len=13 "192.0.2.1:80"
+v4 len15 A ret=-1 err=10014 len=64 buf0=5a
+v4 len15 W ret=-1 err=10014 len=64 buf0=5a5a
+v4 len17 A ret=0 err=0 len=13 "192.0.2.1:80"
+v4 len17 W ret=0 err=0 len=13 "192.0.2.1:80"
+v4 len28 A ret=0 err=0 len=13 "192.0.2.1:80"
+v4 len28 W ret=0 err=0 len=13 "192.0.2.1:80"
+v4 len0 A ret=-1 err=10022 len=64 buf0=5a
+v4 len0 W ret=-1 err=10022 len=64 buf0=5a5a
+v4 buf13 A ret=0 err=0 len=13 "192.0.2.1:80"
+v4 buf13 W ret=0 err=0 len=13 "192.0.2.1:80"
+v4 buf12 A ret=-1 err=10014 len=13 buf0=5a
+v4 buf12 W ret=-1 err=10014 len=13 buf0=5a5a
+v4 buf0 A ret=-1 err=10014 len=13 buf0=5a
+v4 buf0 W ret=-1 err=10014 len=13 buf0=5a5a
+v4 nullbuf0 A ret=-1 err=10014 len=13
+v4 nullbuf0 W ret=-1 err=10014 len=13
+v4 nullbuf64 A ret=-1 err=10014 len=64
+v4 nullbuf64 W ret=-1 err=10014 len=64
+v6 loopback A ret=0 err=0 len=4 "::1"
+v6 loopback W ret=0 err=0 len=4 "::1"
+v6 any A ret=0 err=0 len=3 "::"
+v6 any W ret=0 err=0 len=3 "::"
+v6 any port A ret=0 err=0 len=9 "[::]:443"
+v6 any port W ret=0 err=0 len=9 "[::]:443"
+v6 link A ret=0 err=0 len=8 "fe80::1"
+v6 link W ret=0 err=0 len=8 "fe80::1"
+v6 link scope A ret=0 err=0 len=10 "fe80::1%7"
+v6 link scope W ret=0 err=0 len=10 "fe80::1%7"
+v6 link scope port A ret=0 err=0 len=16 "[fe80::1%7]:443"
+v6 link scope port W ret=0 err=0 len=16 "[fe80::1%7]:443"
+v6 doc port A ret=0 err=0 len=19 "[2001:db8::1]:8080"
+v6 doc port W ret=0 err=0 len=19 "[2001:db8::1]:8080"
+v6 tworuns A ret=0 err=0 len=18 "2001:db8::1:0:0:1"
+v6 tworuns W ret=0 err=0 len=18 "2001:db8::1:0:0:1"
+v6 longer2nd A ret=0 err=0 len=14 "2001:0:0:1::1"
+v6 longer2nd W ret=0 err=0 len=14 "2001:0:0:1::1"
+v6 single0 A ret=0 err=0 len=21 "2001:db8:0:1:1:1:1:1"
+v6 single0 W ret=0 err=0 len=21 "2001:db8:0:1:1:1:1:1"
+v6 trailing A ret=0 err=0 len=19 "2001:db8:abcd:12::"
+v6 trailing W ret=0 err=0 len=19 "2001:db8:abcd:12::"
+v6 leading A ret=0 err=0 len=15 "::18.52.86.120"
+v6 leading W ret=0 err=0 len=15 "::18.52.86.120"
+v6 mapped A ret=0 err=0 len=17 "::ffff:192.0.2.1"
+v6 mapped W ret=0 err=0 len=17 "::ffff:192.0.2.1"
+v6 mapped port A ret=0 err=0 len=22 "[::ffff:192.0.2.1]:80"
+v6 mapped port W ret=0 err=0 len=22 "[::ffff:192.0.2.1]:80"
+v6 compat A ret=0 err=0 len=12 "::192.0.2.1"
+v6 compat W ret=0 err=0 len=12 "::192.0.2.1"
+v6 translated A ret=0 err=0 len=19 "::ffff:0:192.0.2.1"
+v6 translated W ret=0 err=0 len=19 "::ffff:0:192.0.2.1"
+v6 isatap A ret=0 err=0 len=23 "fe80::5efe:192.0.2.1%3"
+v6 isatap W ret=0 err=0 len=23 "fe80::5efe:192.0.2.1%3"
+v6 isatap200 A ret=0 err=0 len=25 "fe80::200:5efe:192.0.2.1"
+v6 isatap200 W ret=0 err=0 len=25 "fe80::200:5efe:192.0.2.1"
+v6 nat64 A ret=0 err=0 len=18 "64:ff9b::c000:201"
+v6 nat64 W ret=0 err=0 len=18 "64:ff9b::c000:201"
+v6 full A ret=0 err=0 len=37 "2001:db8:85a3:8d3:1319:8a2e:370:7348"
+v6 full W ret=0 err=0 len=37 "2001:db8:85a3:8d3:1319:8a2e:370:7348"
+v6 teredo A ret=0 err=0 len=37 "2001:0:4136:e378:8000:63bf:3fff:fdd2"
+v6 teredo W ret=0 err=0 len=37 "2001:0:4136:e378:8000:63bf:3fff:fdd2"
+v6 last2 A ret=0 err=0 len=4 "::2"
+v6 last2 W ret=0 err=0 len=4 "::2"
+v6 lastffff A ret=0 err=0 len=7 "::ffff"
+v6 lastffff W ret=0 err=0 len=7 "::ffff"
+v6 w6only A ret=0 err=0 len=10 "::0.1.0.0"
+v6 w6only W ret=0 err=0 len=10 "::0.1.0.0"
+v6 mapped0 A ret=0 err=0 len=11 "::ffff:0:0"
+v6 mapped0 W ret=0 err=0 len=11 "::ffff:0:0"
+v6 translated0 A ret=0 err=0 len=13 "::ffff:0:0:0"
+v6 translated0 W ret=0 err=0 len=13 "::ffff:0:0:0"
+v6 isatapglobal A ret=0 err=0 len=25 "2001:db8::5efe:192.0.2.1"
+v6 isatapglobal W ret=0 err=0 len=25 "2001:db8::5efe:192.0.2.1"
+v6 isatap100 A ret=0 err=0 len=24 "fe80::100:5efe:c000:201"
+v6 isatap100 W ret=0 err=0 len=24 "fe80::100:5efe:c000:201"
+v6 isatap300 A ret=0 err=0 len=24 "fe80::300:5efe:c000:201"
+v6 isatap300 W ret=0 err=0 len=24 "fe80::300:5efe:c000:201"
+v6 first1 A ret=0 err=0 len=4 "1::"
+v6 first1 W ret=0 err=0 len=4 "1::"
+v6 notmapped A ret=0 err=0 len=18 "::1:ffff:c000:201"
+v6 notmapped W ret=0 err=0 len=18 "::1:ffff:c000:201"
+v6 allf A ret=0 err=0 len=40 "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
+v6 allf W ret=0 err=0 len=40 "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"
+v6 mappedlow A ret=0 err=0 len=11 "::ffff:0:5"
+v6 mappedlow W ret=0 err=0 len=11 "::ffff:0:5"
+v6 translatedlow A ret=0 err=0 len=13 "::ffff:0:0:5"
+v6 translatedlow W ret=0 err=0 len=13 "::ffff:0:0:5"
+v6 isataplow A ret=0 err=0 len=19 "fe80::5efe:0.0.0.5"
+v6 isataplow W ret=0 err=0 len=19 "fe80::5efe:0.0.0.5"
+v6 isatapzero A ret=0 err=0 len=19 "fe80::5efe:0.0.0.0"
+v6 isatapzero W ret=0 err=0 len=19 "fe80::5efe:0.0.0.0"
+v6 flow A ret=0 err=0 len=17 "[2001:db8::1]:80"
+v6 flow W ret=0 err=0 len=17 "[2001:db8::1]:80"
+v6 bigscope A ret=0 err=0 len=27 "[fe80::1%4294967295]:65535"
+v6 bigscope W ret=0 err=0 len=27 "[fe80::1%4294967295]:65535"
+v6 len24 scope A ret=-1 err=10014 len=64 buf0=5a
+v6 len24 scope W ret=-1 err=10014 len=64 buf0=5a5a
+v6 len27 A ret=-1 err=10014 len=64 buf0=5a
+v6 len27 W ret=-1 err=10014 len=64 buf0=5a5a
+v6 len23 A ret=-1 err=10014 len=64 buf0=5a
+v6 len23 W ret=-1 err=10014 len=64 buf0=5a5a
+v6 len29 A ret=0 err=0 len=10 "fe80::1%7"
+v6 len29 W ret=0 err=0 len=10 "fe80::1%7"
+v6 len16 A ret=-1 err=10014 len=64 buf0=5a
+v6 len16 W ret=-1 err=10014 len=64 buf0=5a5a
+v6 buf16 A ret=0 err=0 len=16 "[fe80::1%7]:443"
+v6 buf16 W ret=0 err=0 len=16 "[fe80::1%7]:443"
+v6 buf15 A ret=-1 err=10014 len=16 buf0=5a
+v6 buf15 W ret=-1 err=10014 len=16 buf0=5a5a
+af0 len16 A ret=-1 err=10022 len=64 buf0=5a
+af0 len16 W ret=-1 err=10022 len=64 buf0=5a5a
+af99 len16 A ret=-1 err=10022 len=64 buf0=5a
+af99 len16 W ret=-1 err=10022 len=64 buf0=5a5a
+af23 len16 A ret=-1 err=10014 len=64 buf0=5a
+af23 len16 W ret=-1 err=10014 len=64 buf0=5a5a
+af2 len28 A ret=0 err=0 len=8 "0.0.0.0"
+af2 len28 W ret=0 err=0 len=8 "0.0.0.0"
+null-addr A ret=-1 err=10022 len=64
+null-len A ret=-1 err=10022
+null-len W ret=-1 err=10022

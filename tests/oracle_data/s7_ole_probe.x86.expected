@@ -1,0 +1,127 @@
+== CoCreateInstance before CoInitialize
+unregistered, uninitialized -> 800401f0
+  ppv=0
+== CoCreateInstance
+unregistered -> 80040154
+  ppv=0
+unregistered CLSCTX_ALL -> 80040154
+unregistered NULL ppv -> 80070057
+unregistered, outer + non-IUnknown iid -> 80040154
+  ppv=0
+== StringFromIID / StringFromGUID2 / CLSIDFromString
+StringFromIID(IID_IDropTarget) -> 0
+  text={00000122-0000-0000-C000-000000000046}
+  task memory size=1
+StringFromGUID2(cch 39) -> 27
+StringFromGUID2(cch 38) -> 0
+  b[0] after short=cccc
+StringFromGUID2(cch -1) -> 0
+CLSIDFromString(NULL) -> 0
+  zeroed=1
+CLSIDFromString(braced) -> 0
+  Data1=122
+CLSIDFromString(unbraced) -> 800401f3
+  untouched=0
+  zeroed=1
+CLSIDFromString(leading space) -> 800401f3
+CLSIDFromString(trailing x) -> 800401f3
+CLSIDFromString(bad hex) -> 800401f3
+  Data1=12
+  bad#0 -> 800401f3 bytes=12 0 0 0 cc cc cc cc cc cc cc cc cc cc cc cc 
+  bad#1 -> 800401f3 bytes=22 1 0 0 cc cc cc cc cc cc cc cc cc cc cc cc 
+  bad#2 -> 800401f3 bytes=22 1 0 0 0 0 0 0 c0 cc cc cc cc cc cc cc 
+  bad#3 -> 800401f3 bytes=22 1 0 0 0 0 0 0 c0 0 0 0 0 0 0 cc 
+  bad#4 -> 800401f3 bytes=22 1 0 0 0 0 0 0 c0 0 0 0 0 0 0 46 
+  bad#5 -> 800401f3 bytes=22 1 0 0 0 0 0 0 c0 0 0 0 0 0 0 46 
+  bad#6 -> 800401f3 bytes=22 1 0 0 cc cc cc cc cc cc cc cc cc cc cc cc 
+  bad#7 -> 800401f3 bytes=0 0 0 0 cc cc cc cc cc cc cc cc cc cc cc cc 
+CLSIDFromString(unknown progid) -> 800401f3
+  zeroed=1
+  untouched=0
+IIDFromString(bad hex) -> 800401f4
+== PropVariantClear
+BSTR -> 0
+  struct zeroed=1
+  byte after struct untouched=1
+LPWSTR -> 0
+  struct zeroed=1
+I4|BYREF -> 0
+  struct zeroed=1
+VECTOR|LPWSTR -> 0
+  struct zeroed=1
+invalid vt 0x7f -> 80030057
+  vt=0
+  struct zeroed=1
+ARRAY locked -> 8002000d
+  vt=0
+PropVariantClear(NULL) -> 0
+EMPTY -> 0
+  struct zeroed=1
+CLSID -> 0
+== PropVariantCopy
+LPWSTR -> 0
+  deep=1
+BSTR -> 0
+  deep=1
+UNKNOWN -> 0
+  refs after copy=2
+  same pointer=1
+  refs after clear=1
+I4|BYREF -> 0
+  shallow=1
+invalid vt -> 80020008
+  dst untouched=1
+  dst zeroed=0
+CLSID -> 0
+  deep=1
+== CreateStreamOnHGlobal / GetHGlobalFromStream
+create(hglobal, FALSE) -> 0
+Read 16 of 5 -> 0
+  got=5
+  data==hello=1
+  Stat size=5
+GetHGlobalFromStream -> 0
+  same handle=1
+Write 6 at end -> 0
+  GlobalSize>=11=1
+  pos=b
+Seek before start -> 80030019
+Seek bad origin -> 80030019
+Revert -> 0
+  hglobal alive after release (FALSE)=1
+create(NULL, TRUE) -> 0
+GetHGlobalFromStream(new) -> 0
+  handle!=0=1
+  content abc=1
+GetHGlobalFromStream(NULL stream) -> 80070057
+CreateStreamOnHGlobal(NULL out) -> 80070057
+== ReleaseStgMedium
+GlobalFlags(freed hglobal) -> 8000 err=6
+  tymed after=0
+  pUnkForRelease released (refs)=0
+GlobalFlags(hglobal kept with pUnk) -> 0 err=dead
+== RegisterDragDrop / RevokeDragDrop
+Register (CoInitialize only) -> 8007000e
+  refs=1
+OleInitialize -> 0
+Register -> 0
+  refs=2
+Register again -> 80040101
+Register NULL hwnd -> 80040102
+Register bad hwnd -> 80040102
+Register NULL target -> 80070057
+  prop OleDropTargetInterface=1
+Revoke -> 0
+  refs=1
+Revoke again -> 80040100
+Revoke NULL -> 80040102
+== VariantTimeToSystemTime
+date#0 -> 1 7e7-3-f dow=3 c:0:0.0
+date#1 -> 1 7e7-3-f dow=3 0:0:1.0
+date#2 -> 1 7e7-3-f dow=3 17:3b:3b.0
+date#3 -> 1 76b-c-1d dow=5 6:0:0.0
+date#4 -> 1 270f-c-1f dow=5 17:3b:3b.0
+date#5 -> 0 cccc-cccc-cccc dow=cccc cccc:cccc:cccc.cccc
+date#6 -> 1 64-1-1 dow=5 0:0:0.0
+date#7 -> 0 cccc-cccc-cccc dow=cccc cccc:cccc:cccc.cccc
+date#8 -> 1 76b-c-1e dow=6 0:0:0.0

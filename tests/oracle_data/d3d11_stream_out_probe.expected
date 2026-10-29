@@ -1,0 +1,174 @@
+feature level 0xb000
+
+[validation]
+  a4+b2 stride24                     hr=0x00000000 out=object
+                                     hr=0x00000001 (NULL out)
+  a4+b2 stride24 no-raster           hr=0x00000000 out=object
+                                     hr=0x00000001 (NULL out)
+  a4+b2 stride24 raster=1            hr=0x00000000 out=object
+                                     hr=0x00000001 (NULL out)
+  a4+b2 stride16 (too small)         hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  a4+b2 stride18 (not x4)            hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  a4+b2 no strides                   hr=0x00000000 out=object
+                                     hr=0x00000001 (NULL out)
+  unknown semantic                   hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  TEXCOORD1 count4 (mask xy)         hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  start2 count3 (>4)                 hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  output slot 4                      hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  stream 1 from a VS                 hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  gap2 + b2 stride16                 hr=0x00000000 out=object
+                                     hr=0x00000001 (NULL out)
+  SV_POSITION                        hr=0x00000000 out=object
+                                     hr=0x00000001 (NULL out)
+  lowercase semantic                 hr=0x00000000 out=object
+                                     hr=0x00000001 (NULL out)
+  zero entries                       hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  count 0                            hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  same element twice stride32        hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+  two slots                          hr=0x00000000 out=object
+                                     hr=0x00000001 (NULL out)
+  two slots, one stride              hr=0x80070057 out=NULL
+                                     hr=0x80070057 (NULL out)
+
+[strip order]
+  trianglestrip 5 verts: NumPrimitivesWritten=3 PrimitivesStorageNeeded=3
+  records (vid, vid*10+1, 2, 3):
+        0     1     2     3 
+        1    11     2     3 
+        2    21     2     3 
+        1    11     2     3 
+        3    31     2     3 
+        2    21     2     3 
+        2    21     2     3 
+        3    31     2     3 
+        4    41     2     3 
+       .     .     .     .  
+  linestrip 4 verts: NumPrimitivesWritten=3 PrimitivesStorageNeeded=3
+  records:
+        0     1     2     3 
+        1    11     2     3 
+        1    11     2     3 
+        2    21     2     3 
+        2    21     2     3 
+        3    31     2     3 
+       .     .     .     .  
+  trianglelist 5 verts from 2 (1 whole tri): NumPrimitivesWritten=1 PrimitivesStorageNeeded=1
+  records:
+        0     1     2     3 
+        1    11     2     3 
+        2    21     2     3 
+       .     .     .     .  
+
+[indexed]
+  points idx[1..5]={0,2,9,1,3} base=10:
+        0     1     2     3 
+        2    21     2     3 
+        9    91     2     3 
+        1    11     2     3 
+        3    31     2     3 
+       .     .     .     .  
+
+[instanced]
+  points 3 verts x 2 instances: NumPrimitivesWritten=6 PrimitivesStorageNeeded=6
+  records:
+        0     1     2     3 
+        1    11     2     3 
+        2    21     2     3 
+        0     1     2     3 
+        1    11     2     3 
+        2    21     2     3 
+       .     .     .     .  
+
+[append]
+  -1 fresh, 2pts; -1 rebind, 2pts + 1pt:
+        0     1     2     3 
+        1    11     2     3 
+        0     1     2     3 
+        1    11     2     3 
+        0     1     2     3 
+       .     .     .     .  
+       .     .     .     .  
+  then offset 32 1pt; -1 1pt:
+        0     1     2     3 
+        1    11     2     3 
+        0     1     2     3 
+        0     1     2     3 
+        0     1     2     3 
+       .     .     .     .  
+       .     .     .     .  
+
+[overflow]
+  3 tris into room for 1.33: NumPrimitivesWritten=1 PrimitivesStorageNeeded=3
+  records:
+        0     1     2     3 
+        1    11     2     3 
+        2    21     2     3 
+       .     .     .     .  
+  5 pts, slot1 holds 2: NumPrimitivesWritten=2 PrimitivesStorageNeeded=5
+  slot0 (stride16):
+        0     1     2     3 
+        1    11     2     3 
+       .     .     .     .  
+       .     .     .     .  
+       .     .     .     .  
+       .     .     .     .  
+  slot1 (stride8):
+      100     5 
+      101     5 
+        0     0 
+  2-slot decl, only slot0 bound, 3 pts: NumPrimitivesWritten=0 PrimitivesStorageNeeded=3
+  slot0:
+       .     .     .     .  
+       .     .     .     .  
+       .     .     .     .  
+       .     .     .     .  
+  gap2 + TEXCOORD1.xy, stride 16:
+       .     .    100     5 
+       .     .    101     5 
+       .     .     .     .  
+
+[DrawAuto]
+  filled=80 vb offset=0 stride=16: NumPrimitivesWritten=5 PrimitivesStorageNeeded=5
+  vids drawn:
+        0     1     2     3 
+        1    11     2     3 
+        2    21     2     3 
+        3    31     2     3 
+        4    41     2     3 
+       .     .     .     .  
+  filled=80 vb offset=16 stride=16: NumPrimitivesWritten=4 PrimitivesStorageNeeded=4
+  vids drawn:
+        0     1     2     3 
+        1    11     2     3 
+        2    21     2     3 
+        3    31     2     3 
+       .     .     .     .  
+       .     .     .     .  
+  filled=80 vb offset=20 stride=32: NumPrimitivesWritten=1 PrimitivesStorageNeeded=1
+  vids drawn:
+        0     1     2     3 
+       .     .     .     .  
+       .     .     .     .  
+       .     .     .     .  
+       .     .     .     .  
+       .     .     .     .  
+  never-streamed vb: NumPrimitivesWritten=0 PrimitivesStorageNeeded=0
+  after SOSetTargets(a, 32) with no draw: NumPrimitivesWritten=2 PrimitivesStorageNeeded=2
+
+[SOGetTargets]
+  set 2 then set 1 -> [0]=x [1]=NULL [2]=NULL [3]=NULL
+  x refcount after get+release: 1 (1 app + 1 bound = 2)
+  non-SO buffer bound -> bound
+  after ClearState -> NULL
+
+done

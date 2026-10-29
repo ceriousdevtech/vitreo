@@ -1,0 +1,104 @@
+recv_post: rc=-1 err=997 got=0xcccc internal=0x103 sig=0
+gor_pending_nowait: ok=0 err=996 xfer=0xaaaa flags=0xbbbb internal=0x103 internalhigh=0
+gor_done: ok=1 le=0 xfer=0x5 flags=0x0 internal=0x0 internalhigh=5
+gor_done_again: ok=1 le=0 xfer=0x5 flags=0x0 internal=0x0 internalhigh=5
+gor_other_socket: ok=1 le=0 xfer=0x5 flags=0x0 internal=0x0 internalhigh=5
+gor_bad_socket: ok=0 err=10038 xfer=0xaaaa flags=0xbbbb internal=0x0 internalhigh=5
+recv_post2: rc=-1 err=997
+gor_wait_true: ok=1 le=0 xfer=0x5 flags=0x0 internal=0x0 internalhigh=5
+cancel: rc=-1 cancel_ok=1
+gor_cancelled: ok=0 err=995 xfer=0x0 flags=0xbbbb internal=0xc0000120 internalhigh=0
+recv_immediate: rc=0 got=0x3 flags=0x0 internal=0x0 internalhigh=3 sig=1
+gor_immediate: ok=1 le=0 xfer=0x3 flags=0x0 internal=0x0 internalhigh=3
+send_immediate: rc=0 sent=0x8 internal=0x0 internalhigh=8 sig=1
+gor_send: ok=1 le=0 xfer=0x8 flags=0x0 internal=0x0 internalhigh=8
+gor_reset: ok=0 err=10054 xfer=0x0 flags=0xbbbb internal=0xc000020d internalhigh=0
+gor_graceful: ok=1 le=0 xfer=0x0 flags=0x0 internal=0x0 internalhigh=0
+closed_under_recv: wait=0 internal=0xc0000241 internalhigh=0
+gor_after_close: ok=0 err=10038 xfer=0xaaaa flags=0xbbbb internal=0xc0000241 internalhigh=0
+sendto_ov: rc=0 sent=0xa internal=0x0 internalhigh=10 sig=1
+gor_sendto: ok=1 le=0 xfer=0xa flags=0x0 internal=0x0 internalhigh=10
+sendto_ov_nullcount: rc=0 sig=1 internalhigh=10
+sendto_nullcount_sync: rc=-1 err=10014
+sendto_routine: rc=-1 err=997
+routine: err=0 bytes=10 flags=0x0
+sendto_routine_sleepex: rc=192
+sendto_flag_oob: rc=-1 err=10045
+sendto_flag_bogus: rc=-1 err=10045
+sendto_noname: rc=-1 err=10057
+sendto_shortname: rc=-1 err=10014
+udp_drained: count=4
+recvfrom_post: rc=-1 err=997
+gor_trunc: ok=0 err=10040 xfer=0x4 flags=0xbbbb internal=0x80000005 internalhigh=4
+recvfrom_trunc_outputs: fl=0x0 fromlen=16
+recvfrom_trunc_immediate: rc=-1 err=997 got=0xcccc fl=0x0 internal=0x80000005 internalhigh=4 sig=1
+recvfrom_trunc_sync: rc=-1 err=10040 got=0x4 fl=0x0
+recvfrom_short_fromlen: rc=-1 err=10014 fromlen=8
+recvfrom_short_fromlen_left: bytes=10
+connectex_refused_post: ok=0 err=997
+gor_refused: ok=0 err=10061 xfer=0x0 flags=0xbbbb internal=0xc0000236 internalhigh=0
+map: status=0x0 ok=1 err=0 xfer=0x7 flags=0x0
+map: status=0x102 ok=1 err=1460 xfer=0x7 flags=0x0
+map: status=0x80000005 ok=0 err=10040 xfer=0x7 flags=0xbbbb
+map: status=0xc0000001 ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc0000002 ok=0 err=10045 xfer=0x7 flags=0xbbbb
+map: status=0xc0000005 ok=0 err=10014 xfer=0x7 flags=0xbbbb
+map: status=0xc0000008 ok=0 err=10038 xfer=0x7 flags=0xbbbb
+map: status=0xc000000d ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc000000e ok=0 err=10050 xfer=0x7 flags=0xbbbb
+map: status=0xc0000010 ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc0000017 ok=0 err=10055 xfer=0x7 flags=0xbbbb
+map: status=0xc0000022 ok=0 err=10013 xfer=0x7 flags=0xbbbb
+map: status=0xc0000023 ok=0 err=10014 xfer=0x7 flags=0xbbbb
+map: status=0xc000009a ok=0 err=10055 xfer=0x7 flags=0xbbbb
+map: status=0xc00000b0 ok=0 err=10058 xfer=0x7 flags=0xbbbb
+map: status=0xc00000b5 ok=0 err=10060 xfer=0x7 flags=0xbbbb
+map: status=0xc00000bb ok=0 err=10045 xfer=0x7 flags=0xbbbb
+map: status=0xc00000bf ok=0 err=10050 xfer=0x7 flags=0xbbbb
+map: status=0xc00000c4 ok=0 err=10050 xfer=0x7 flags=0xbbbb
+map: status=0xc00000c9 ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc0000120 ok=0 err=995 xfer=0x7 flags=0xbbbb
+map: status=0xc000013b ok=0 err=10053 xfer=0x7 flags=0xbbbb
+map: status=0xc000013c ok=0 err=10054 xfer=0x7 flags=0xbbbb
+map: status=0xc0000140 ok=0 err=10057 xfer=0x7 flags=0xbbbb
+map: status=0xc0000184 ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc0000206 ok=0 err=10040 xfer=0x7 flags=0xbbbb
+map: status=0xc0000207 ok=0 err=10049 xfer=0x7 flags=0xbbbb
+map: status=0xc0000209 ok=0 err=10055 xfer=0x7 flags=0xbbbb
+map: status=0xc000020a ok=0 err=10048 xfer=0x7 flags=0xbbbb
+map: status=0xc000020b ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc000020c ok=0 err=10054 xfer=0x7 flags=0xbbbb
+map: status=0xc000020d ok=0 err=10054 xfer=0x7 flags=0xbbbb
+map: status=0xc0000225 ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc0000236 ok=0 err=10061 xfer=0x7 flags=0xbbbb
+map: status=0xc0000237 ok=0 err=10101 xfer=0x7 flags=0xbbbb
+map: status=0xc0000239 ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc000023a ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc000023b ok=0 err=10056 xfer=0x7 flags=0xbbbb
+map: status=0xc000023c ok=0 err=10051 xfer=0x7 flags=0xbbbb
+map: status=0xc000023d ok=0 err=10065 xfer=0x7 flags=0xbbbb
+map: status=0xc000023e ok=0 err=10051 xfer=0x7 flags=0xbbbb
+map: status=0xc000023f ok=0 err=10054 xfer=0x7 flags=0xbbbb
+map: status=0xc0000241 ok=0 err=10053 xfer=0x7 flags=0xbbbb
+map: status=0xc0000246 ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0xc000a012 ok=0 err=10052 xfer=0x7 flags=0xbbbb
+map: status=0x80000011 ok=0 err=10022 xfer=0x7 flags=0xbbbb
+map: status=0x40000000 ok=1 err=698 xfer=0x7 flags=0x0
+rt_recv_immediate: rc=0 got=0x3 internal=0x0 internalhigh=3
+rt_recv_sleepex:routine: err=0 bytes=3 flags=0x0
+ rc=192
+rt_send_immediate: rc=0 sent=0x5 internal=0x0 internalhigh=5
+rt_send_sleepex:routine: err=0 bytes=5 flags=0x0
+ rc=192
+rt_recvfrom_immediate: rc=0 got=0xa internal=0x0 internalhigh=10
+rt_recvfrom_sleepex:routine: err=0 bytes=10 flags=0x0
+ rc=192
+ev_sendto: rc=0 sig=1
+ev_sendto_after_reset: sig=0
+close_udp_recv: rc=-1 wait=0 internal=0xc0000120 internalhigh=0
+close_tcp_recv_routine: rc=-1
+close_tcp_recv_routine_sleepex:routine: err=10053 bytes=0 flags=0x0
+ rc=192
+close_tcp_recv_routine_ov: internal=0xc0000241
+shutdown_rd_under_recv: wait=258 internal=0x103
+done

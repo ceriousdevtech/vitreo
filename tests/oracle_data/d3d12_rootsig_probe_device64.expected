@@ -1,0 +1,3634 @@
+== device D3D12CreateDevice hr=0x00000000
+== ser
+case empty api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case empty api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case empty api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case empty api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_ia api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flags_ia api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_ia api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_ia api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit0 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit1 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit1 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit1 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit1 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit2 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit2 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit2 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit2 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit3 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit3 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit3 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit3 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit4 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit4 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit5 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit5 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit5 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit5 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit6 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit6 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit6 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit6 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit7 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit7 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit7 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit7 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit8 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit8 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit8 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit8 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit9 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit9 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit9 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit9 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit10 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit10 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit10 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit10 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit11 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flag_bit11 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit11 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit11 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flag_bit12 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flag_bit12 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case flag_bit12 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case flag_bit12 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case flags_ia_deny_all_classic api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flags_ia_deny_all_classic api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_ia_deny_all_classic api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_ia_deny_all_classic api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_local_plus_ia api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_ia api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_ia api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_ia api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_all_defined api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_all_defined api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_all_defined api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_all_defined api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_bit31 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flags_bit31 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_bit31 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_bit31 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case each_type_vis0 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis1 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case each_type_vis1 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis1 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis1 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis2 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case each_type_vis2 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis2 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis2 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis3 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case each_type_vis3 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis3 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis3 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis4 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case each_type_vis4 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis5 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case each_type_vis5 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis5 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis5 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis6 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case each_type_vis6 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis6 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis6 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis7 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case each_type_vis7 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis7 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis7 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case each_type_vis8 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case each_type_vis8 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case each_type_vis8 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case each_type_vis8 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case tables_mixed api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case tables_mixed api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case tables_mixed api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case tables_mixed api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplers_fields api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case samplers_fields api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplers_fields api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplers_fields api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bad_param_type api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=null
+case bad_param_type api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case bad_param_type api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case bad_param_type api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80070057 out=null
+case bad_visibility_table api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case bad_visibility_table api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bad_visibility_table api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bad_visibility_table api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bad_visibility_consts api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case bad_visibility_consts api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bad_visibility_consts api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bad_visibility_consts api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bad_range_type api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case bad_range_type api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bad_range_type api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bad_range_type api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case range_zero_descriptors api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case range_zero_descriptors api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case range_zero_descriptors api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case range_zero_descriptors api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case table_zero_ranges api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case table_zero_ranges api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case table_zero_ranges api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case table_zero_ranges api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case consts_zero_values api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=set
+case consts_zero_values api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=set
+ create-raw hr=0x00000000 out=other
+case consts_zero_values api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=set
+ create-raw hr=0x00000000 out=other
+case consts_zero_values api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=set
+ create-raw hr=0x00000000 out=other
+case table_mixes_sampler api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case table_mixes_sampler api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case table_mixes_sampler api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case table_mixes_sampler api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_same_table api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_same_table api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_same_table api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_same_table api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_across_tables api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_across_tables api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_across_tables api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_across_tables api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_all_vs_pixel api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_all_vs_pixel api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_all_vs_pixel api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_all_vs_pixel api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_vertex_vs_pixel_ok api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case overlap_vertex_vs_pixel_ok api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case overlap_vertex_vs_pixel_ok api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case overlap_vertex_vs_pixel_ok api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case overlap_consts_vs_cbv api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_consts_vs_cbv api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_consts_vs_cbv api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_consts_vs_cbv api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootsrv_vs_table api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_rootsrv_vs_table api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootsrv_vs_table api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootsrv_vs_table api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case same_reg_other_space_ok api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case same_reg_other_space_ok api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case same_reg_other_space_ok api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case same_reg_other_space_ok api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case append_after_unbounded api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case append_after_unbounded api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case append_after_unbounded api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case append_after_unbounded api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case explicit_after_unbounded api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case explicit_after_unbounded api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case explicit_after_unbounded api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case explicit_after_unbounded api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case unbounded_from_4 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case unbounded_from_4 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case unbounded_from_4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case unbounded_from_4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case two_unbounded_append api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case two_unbounded_append api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case two_unbounded_append api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case two_unbounded_append api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case offset_overflow api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case offset_overflow api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case offset_overflow api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case offset_overflow api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case register_overflow api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case register_overflow api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case register_overflow api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case register_overflow api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case space_reserved_table api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case space_reserved_table api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_table api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_table api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_last_legal_table api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case space_last_legal_table api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case space_last_legal_table api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case space_last_legal_table api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case space_reserved_rootcbv api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case space_reserved_rootcbv api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_rootcbv api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_rootcbv api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_consts api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case space_reserved_consts api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_consts api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_consts api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_sampler api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case space_reserved_sampler api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_sampler api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case space_reserved_sampler api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80004005 out=null
+case cost_64_consts api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case cost_64_consts api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_64_consts api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_64_consts api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_65_consts api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case cost_65_consts api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_65_consts api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_65_consts api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_32_rootcbv api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case cost_32_rootcbv api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_32_rootcbv api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_32_rootcbv api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_33_rootcbv api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case cost_33_rootcbv api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_33_rootcbv api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_33_rootcbv api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_64_tables api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case cost_64_tables api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_64_tables api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_64_tables api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_65_tables api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case cost_65_tables api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_65_tables api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_65_tables api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_63_plus_rootcbv api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case cost_63_plus_rootcbv api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_63_plus_rootcbv api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_63_plus_rootcbv api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x80070057 out=null
+case cost_64_with_heap_indexed api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case cost_64_with_heap_indexed api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_64_with_heap_indexed api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case cost_64_with_heap_indexed api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_bit12 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_bit12 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case flags_bit12 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case flags_bit12 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case flags_all_bits api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_all_bits api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_all_bits api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_all_bits api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_duplicate_reg api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_duplicate_reg api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_duplicate_reg api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_duplicate_reg api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_same_reg_other_vis_ok api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_same_reg_other_vis_ok api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_same_reg_other_vis_ok api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_same_reg_other_vis_ok api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_overlaps_table api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_overlaps_table api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_overlaps_table api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_overlaps_table api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_aniso17 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_aniso17 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_aniso17 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_aniso17 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_aniso17_linear api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_aniso17_linear api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_aniso17_linear api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_aniso17_linear api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_aniso0_aniso api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_aniso0_aniso api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_aniso0_aniso api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_aniso0_aniso api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_bias16 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_bias16 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_bias16 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_bias16 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_bias_m16 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_bias_m16 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_bias_m16 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_bias_m16 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_bias15_99 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_bias15_99 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_bias15_99 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_bias15_99 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_bias_m16_01 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_bias_m16_01 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_bias_m16_01 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_bias_m16_01 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_minlod_nan api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_minlod_nan api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_minlod_nan api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_minlod_nan api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_bias_nan api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_bias_nan api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_bias_nan api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_bias_nan api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_min_gt_max api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_min_gt_max api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_min_gt_max api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_min_gt_max api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_filter_3 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_filter_3 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_filter_3 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_filter_3 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_filter_0x56 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_filter_0x56 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_filter_0x56 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_filter_0x56 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_filter_max_aniso api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_filter_max_aniso api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_filter_max_aniso api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_filter_max_aniso api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_filter_0x200 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_filter_0x200 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_filter_0x200 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_filter_0x200 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_u0 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_addr_u0 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_u0 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_u0 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_v6 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_addr_v6 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_v6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_v6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_w7 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_addr_w7 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_w7 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_addr_w7 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_cmp9_noncmp api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_cmp9_noncmp api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_cmp9_noncmp api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_cmp9_noncmp api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_cmp9_cmpfilter api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_cmp9_cmpfilter api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_cmp9_cmpfilter api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_cmp9_cmpfilter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_cmp0_cmpfilter api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_cmp0_cmpfilter api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_cmp0_cmpfilter api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_cmp0_cmpfilter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_border5 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_border5 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_border5 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_border5 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_border_uint api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_border_uint api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_border_uint api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_border_uint api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_vis8 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case sampler_vis8 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_vis8 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_vis8 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sampler_reg_max api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case sampler_reg_max api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_reg_max api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case sampler_reg_max api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x1 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x1 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x2 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x2 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x8 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x8 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x3 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x3 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x5 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x5 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x9 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x9 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0xA api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0xA api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0xC api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0xC api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0xE api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0xE api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x10000 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10000 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10001 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x10001 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x10002 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10002 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10004 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10004 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10008 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10008 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x10 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rangeflags_t0_0x20000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x20000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x80000000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t0_0x80000000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x1 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x1 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x2 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x2 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x8 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x8 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x3 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x3 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x5 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x5 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x9 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x9 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0xA api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0xA api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0xC api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0xC api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0xE api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0xE api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x10000 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10000 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10001 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x10001 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x10002 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10002 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10004 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10004 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10008 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10008 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x10 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rangeflags_t1_0x20000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x20000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x80000000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t1_0x80000000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x1 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x1 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x2 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x2 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x8 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x8 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x3 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x3 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x5 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x5 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x9 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x9 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0xA api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0xA api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0xC api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0xC api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0xE api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0xE api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x10000 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10000 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10001 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x10001 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x10002 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10002 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10004 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10004 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10008 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10008 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x10 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rangeflags_t2_0x20000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x20000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x80000000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t2_0x80000000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t3_0x0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t3_0x1 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t3_0x1 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rangeflags_t3_0x2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x4 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x4 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x8 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x8 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x3 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x3 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x5 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x5 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x9 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x9 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0xA api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0xA api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0xC api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0xC api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0xE api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0xE api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10001 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10001 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10002 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10002 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10004 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10004 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10008 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10008 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x10 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rangeflags_t3_0x10 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rangeflags_t3_0x20000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x20000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x80000000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_t3_0x80000000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t2_0x0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x2 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x2 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x8 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x8 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t2_0x6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t2_0xA api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t2_0xA api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t2_0xC api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t2_0xC api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t2_0x10 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x10 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t2_0x10000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t2_0x10000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t3_0x0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x2 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x2 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x8 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x8 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t3_0x6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t3_0xA api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t3_0xA api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t3_0xC api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t3_0xC api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t3_0x10 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x10 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t3_0x10000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t3_0x10000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t4_0x0 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x2 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x2 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x4 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x4 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x8 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x8 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t4_0x6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t4_0xA api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t4_0xA api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t4_0xC api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t4_0xC api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t4_0x10 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x10 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_t4_0x10000 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_t4_0x10000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x0 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplerflags_0x0_border_uint api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplerflags_0x0_point_clamp api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplerflags_0x1 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplerflags_0x1_border_uint api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplerflags_0x1_point_clamp api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplerflags_0x2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x2_border_uint api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x2_point_clamp api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplerflags_0x3 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x3_border_uint api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x3_point_clamp api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case samplerflags_0x4 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x4_border_uint api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x4_point_clamp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x80000000 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x80000000_border_uint api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case samplerflags_0x80000000_point_clamp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_flags_vs_vis api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_flags_vs_vis api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_flags_vs_vis api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_flags_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_localflags_vs_vis api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_localflags_vs_vis api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_localflags_vs_vis api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_localflags_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_p0_vs_rangetype_p1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_vis_p0_vs_rangetype_p1 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_p0_vs_rangetype_p1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_p0_vs_rangetype_p1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangetype_p0_vs_vis_p1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_rangetype_p0_vs_vis_p1 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangetype_p0_vs_vis_p1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangetype_p0_vs_vis_p1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_rangetype_same_param api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_vis_vs_rangetype_same_param api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_rangetype_same_param api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_rangetype_same_param api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_zero_same_param api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_vis_vs_zero_same_param api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_zero_same_param api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_zero_same_param api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zero_r0_vs_rangetype_r1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_zero_r0_vs_rangetype_r1 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zero_r0_vs_rangetype_r1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zero_r0_vs_rangetype_r1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangetype_r0_vs_zero_r1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_rangetype_r0_vs_zero_r1 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangetype_r0_vs_zero_r1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangetype_r0_vs_zero_r1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_mix_vs_zero api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_mix_vs_zero api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_mix_vs_zero api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_mix_vs_zero api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_mix_vs_append_after_unbounded api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_mix_vs_append_after_unbounded api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_mix_vs_append_after_unbounded api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_mix_vs_append_after_unbounded api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_vs_register_overflow api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_offset_vs_register_overflow api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_vs_register_overflow api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_vs_register_overflow api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_r1_vs_offset_r2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_overlap_r1_vs_offset_r2 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_r1_vs_offset_r2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_r1_vs_offset_r2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_vis_p2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_overlap_p1_vs_vis_p2 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_vis_p2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_vis_p2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_rangetype_p2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_overlap_p1_vs_rangetype_p2 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_rangetype_p2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_rangetype_p2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_paramtype_p2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=null
+case order_overlap_p1_vs_paramtype_p2 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_overlap_p1_vs_paramtype_p2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_overlap_p1_vs_paramtype_p2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80070057 out=null
+case order_paramtype_p0_vs_vis_p1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=null
+case order_paramtype_p0_vs_vis_p1 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_paramtype_p0_vs_vis_p1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_paramtype_p0_vs_vis_p1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80070057 out=null
+case order_vis_p0_vs_paramtype_p1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=null
+case order_vis_p0_vs_paramtype_p1 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_vis_p0_vs_paramtype_p1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_vis_p0_vs_paramtype_p1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80070057 out=null
+case order_flags_vs_paramtype api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=null
+case order_flags_vs_paramtype api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_flags_vs_paramtype api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_flags_vs_paramtype api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80070057 out=null
+case order_paramtype_vs_vis_same api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=null
+case order_paramtype_vs_vis_same api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_paramtype_vs_vis_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=null
+ create-raw hr=0x80070057 out=null
+case order_paramtype_vs_vis_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80070057 out=null
+case order_overlap_vs_sampler_filter api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_overlap_vs_sampler_filter api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_vs_sampler_filter api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_vs_sampler_filter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_sampler_filter api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_vis_vs_sampler_filter api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_sampler_filter api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_vis_vs_sampler_filter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zeroconsts_warning_then_vis api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_zeroconsts_warning_then_vis api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zeroconsts_warning_then_vis api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zeroconsts_warning_then_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case zeroconsts_twice api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=set
+case zeroconsts_twice api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=set
+ create-raw hr=0x00000000 out=other
+case zeroconsts_twice api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=set
+ create-raw hr=0x00000000 out=other
+case zeroconsts_twice api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=set
+ create-raw hr=0x00000000 out=other
+case zeroconsts_overlaps_cbv api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case zeroconsts_overlaps_cbv api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case zeroconsts_overlaps_cbv api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case zeroconsts_overlaps_cbv api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case zeroconsts_then_sampler_error api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case zeroconsts_then_sampler_error api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case zeroconsts_then_sampler_error api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case zeroconsts_then_sampler_error api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_r0_vs_rangetype_r1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_r0_vs_rangetype_r1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_rangetype_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_rangetype_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_zero_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_zero_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_vis_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_vis_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_overlap_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_overlap_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rootflags_vs_vis api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rootflags_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rootflags_vs_overlap api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rootflags_vs_overlap api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_srv_0xB api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_srv_0xB api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_srv_0x10009 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_srv_0x10009 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_smp_0x10010 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_smp_0x10010 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_smp_0x10009 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rangeflags_smp_0x10009 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_0x13 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_0x13 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x00000000 out=other
+case rootflags_0xE api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case rootflags_0xE api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_addru api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_addrv api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_addrw api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_bias api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_aniso api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_cmp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_filter_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_addrv api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_addrw api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_bias api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_aniso api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_cmp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addru_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrv_vs_addrw api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrv_vs_bias api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrv_vs_aniso api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrv_vs_cmp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrv_vs_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrv_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrv_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrv_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrw_vs_bias api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrw_vs_aniso api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrw_vs_cmp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrw_vs_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrw_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrw_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_addrw_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_bias_vs_aniso api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_bias_vs_cmp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_bias_vs_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_bias_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_bias_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_bias_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_aniso_vs_cmp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_aniso_vs_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_aniso_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_aniso_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_aniso_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_cmp_vs_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_cmp_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_cmp_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_cmp_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_minlod_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_minlod_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_minlod_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_maxlod_vs_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_maxlod_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler_vis_vs_border api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_filter_vs_sampler1_vis api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_sampler0_filter_vs_sampler1_vis api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_filter_vs_sampler1_vis api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_filter_vs_sampler1_vis api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_vis_vs_sampler1_filter api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_sampler0_vis_vs_sampler1_filter api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_vis_vs_sampler1_filter api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_vis_vs_sampler1_filter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler1_overlap_vs_filter api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_sampler1_overlap_vs_filter api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler1_overlap_vs_filter api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler1_overlap_vs_filter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_filter_vs_sampler1_overlap api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_sampler0_filter_vs_sampler1_overlap api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_filter_vs_sampler1_overlap api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler0_filter_vs_sampler1_overlap api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_samplerflags_vs_filter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_nonnormalized_vs_addr api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_names_vis1_uav api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_vis2_uav api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_vis3_uav api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_vis4_uav api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_vis5_uav api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_vis6_uav api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_vis7_uav api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_other_vertex_then_pixel api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_other_vertex_then_pixel api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_vertex_then_pixel api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_vertex_then_pixel api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_pixel_then_vertex api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_other_pixel_then_vertex api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_pixel_then_vertex api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_pixel_then_vertex api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_high_then_low api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_other_high_then_low api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_high_then_low api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_high_then_low api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_low_then_high api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_other_low_then_high api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_low_then_high api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_other_low_then_high api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_hits_second_inserted api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_hits_second_inserted api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_hits_second_inserted api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_hits_second_inserted api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_all_after_vertex api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_all_after_vertex api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_all_after_vertex api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_all_after_vertex api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootsrv_after_table api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_rootsrv_after_table api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootsrv_after_table api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootsrv_after_table api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootuav_twice api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_rootuav_twice api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootuav_twice api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootuav_twice api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_consts_in_unbounded api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_consts_in_unbounded api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_consts_in_unbounded api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_consts_in_unbounded api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_static_sampler_in_unbounded api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_static_sampler_in_unbounded api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_static_sampler_in_unbounded api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_static_sampler_in_unbounded api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_static_sampler_hull_vs_all_table api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_static_sampler_hull_vs_all_table api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_static_sampler_hull_vs_all_table api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_static_sampler_hull_vs_all_table api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_at_register_max api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_at_register_max api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_at_register_max api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_at_register_max api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bounds_offFFFFFFFD_num2_base0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_offFFFFFFFE_num1_base0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_offFFFFFFFE_num2_base0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_offFFFFFFFA_num5_base0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_offFFFFFFFA_num6_base0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off0_numFFFFFFFE_base0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off5_numFFFFFFFE_base0 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case bounds_off5_numFFFFFFFF_base0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_offFFFFFFF0_numFFFFFFFF_base0 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off0_num1_baseFFFFFFFE api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off0_num2_baseFFFFFFFE api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off0_num1_baseFFFFFFFF api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off0_numFFFFFFFF_baseFFFFFFFF api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off0_num80000000_base80000000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off0_num80000001_base7FFFFFFF api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_off0_num80000001_base80000000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case bounds_append_to_0xFFFFFFFE api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_append_to_0xFFFFFFFE api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_append_to_0xFFFFFFFE api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_append_to_0xFFFFFFFE api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_append_past_end api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_append_past_end api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_append_past_end api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_append_past_end api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_append_after_high_offset api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_append_after_high_offset api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_append_after_high_offset api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_append_after_high_offset api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_two_unbounded_explicit api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case bounds_two_unbounded_explicit api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_two_unbounded_explicit api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case bounds_two_unbounded_explicit api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_local_plus_bit0 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit0 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit3 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit3 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit4 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit4 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit5 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit5 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit6 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit6 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit8 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit8 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit9 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit9 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit10 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit10 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit11 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit11 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case float_bias_41800000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_41800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_41800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_42C90000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_42C90000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_42C90000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_7149F2CA api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_7149F2CA api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_7149F2CA api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_7F7FFFFF api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_7F7FFFFF api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_7F7FFFFF api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_7F800000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_7F800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_7F800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_FF800000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_FF800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_FF800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_7FC00000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_7FC00000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_maxlod_7FC00000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_bias_FFC00000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_FFC00000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_maxlod_FFC00000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_bias_7F800001 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_7F800001 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_maxlod_7F800001 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_bias_FF800001 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_FF800001 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_maxlod_FF800001 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_bias_FFFFFFFF api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_FFFFFFFF api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_maxlod_FFFFFFFF api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_bias_417FD70B api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_417FD70B api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_417FD70B api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_C1800001 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_C1800001 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_C1800001 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_4B189680 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_4B189680 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_4B189680 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_3F800001 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_minlod_3F800001 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_3F800001 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_C47A0000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_C47A0000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_C47A0000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_4E6E6B28 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_4E6E6B28 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_4E6E6B28 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_5A0E1BCA api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_5A0E1BCA api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_5A0E1BCA api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_417FFFFF api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_minlod_417FFFFF api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_417FFFFF api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_C1800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_minlod_C1800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_C1800000 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_bias_80000001 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_minlod_80000001 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case float_maxlod_80000001 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case nn_point_clamp api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case nn_minmag_linear api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case nn_min_linear_only api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_mip_linear api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_wrap api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_mirror_v api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_border api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case nn_mirror_once_w api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case nn_bias api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_default_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_aniso1 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case nn_min_filter api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case nn_max_minmag_linear api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case nn_cmp_point api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zero_r0_vs_mix_r1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_zero_r0_vs_mix_r1 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zero_r0_vs_mix_r1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_zero_r0_vs_mix_r1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_r0_vs_overlap_r1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_offset_r0_vs_overlap_r1 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_r0_vs_overlap_r1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_r0_vs_overlap_r1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_r1_vs_overlap_r2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_offset_r1_vs_overlap_r2 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_r1_vs_overlap_r2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_offset_r1_vs_overlap_r2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_regoverflow_r1_vs_overlap_r2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_regoverflow_r1_vs_overlap_r2 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_regoverflow_r1_vs_overlap_r2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_regoverflow_r1_vs_overlap_r2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_r1_vs_zero_r2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_append_r1_vs_zero_r2 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_r1_vs_zero_r2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_r1_vs_zero_r2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_vs_overlap_same api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_append_vs_overlap_same api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_vs_overlap_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_vs_overlap_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bounds_append_after_end_of_space api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case bounds_append_after_end_of_space api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bounds_append_after_end_of_space api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bounds_append_after_end_of_space api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bounds_append_twice_after_high api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case bounds_append_twice_after_high api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bounds_append_twice_after_high api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case bounds_append_twice_after_high api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_stage_order_vs_register_order api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_stage_order_vs_register_order api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_stage_order_vs_register_order api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_stage_order_vs_register_order api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_vertex_new_all_other api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_vertex_new_all_other api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_vertex_new_all_other api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_vertex_new_all_other api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_mesh_then_amp api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_mesh_then_amp api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_mesh_then_amp api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_mesh_then_amp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootcbv_all_vs_stages api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_rootcbv_all_vs_stages api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootcbv_all_vs_stages api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_rootcbv_all_vs_stages api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_two_in_bucket_lowest_base api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_two_in_bucket_lowest_base api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_two_in_bucket_lowest_base api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_two_in_bucket_lowest_base api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sflags_bad_vs_bias api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sflags_bad_vs_aniso api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sflags_bad_vs_minlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sflags_bad_vs_maxlod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sflags_bad_vs_cmp api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case sflags_0x6 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_filter_vs_addr api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_filter_vs_lod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_addr_vs_lod api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_vs_maxlod_nan api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_vs_bias_range api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_vs_aniso17 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_vs_cmp_bad api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_negzero_lods api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case nn_aniso_filter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_max_aniso_filter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case nn_uint_border api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case float_bias_41801000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_bias_C1801000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_bias_41803000 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case float_bias_42000400 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_append_vs_zero_same api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_append_vs_zero_same api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_vs_zero_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_vs_zero_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_vs_regoverflow_same api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_append_vs_regoverflow_same api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_vs_regoverflow_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_append_vs_regoverflow_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_r0_vs_offset_r1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_r0_vs_offset_r1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_r0_vs_regoverflow_r1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_r0_vs_regoverflow_r1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_append_same api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_vs_append_same api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_rangeflags_p2 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_overlap_p1_vs_rangeflags_p2 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_p0_vs_vis_p1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rangeflags_p0_vs_vis_p1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rootflags_p0_vs_vis_p1 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_rootflags_p0_vs_vis_p1 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler1_overlap_vs_sampler2_filter api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case order_sampler1_overlap_vs_sampler2_filter api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler1_overlap_vs_sampler2_filter api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case order_sampler1_overlap_vs_sampler2_filter api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case overlap_names_same_vis1 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_same_vis2 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_same_vis3 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_same_vis4 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_same_vis5 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_same_vis6 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case overlap_names_same_vis7 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case s10_version2_vs_paramtype api=S10 version=2 layout=10
+ hr=0x80070057 blob=untouched err=set
+case s10_nullblob_vs_version api=S10 version=2 layout=10 ppBlob=null
+ hr=0x80070057 blob=- err=untouched
+case sv_nullblob_vs_version api=SV version=7 layout=11 ppBlob=null
+ hr=0x80070057 blob=- err=untouched
+case flags_local_plus_bit31 api=S10 version=1 layout=10
+ hr=0x80070057 blob=untouched err=set
+case flags_local_plus_bit31 api=SV version=1 layout=10
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit31 api=SV version=2 layout=11
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_local_plus_bit31 api=SV version=3 layout=12
+ hr=0x80070057 blob=null err=set
+ create-raw hr=0x80004005 out=null
+case flags_ia_plus_bit31 api=S10 version=1 layout=10
+ hr=0x00000000 blob=set err=null
+case flags_ia_plus_bit31 api=SV version=1 layout=10
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_ia_plus_bit31 api=SV version=2 layout=11
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case flags_ia_plus_bit31 api=SV version=3 layout=12
+ hr=0x00000000 blob=set err=null
+ create-raw hr=0x00000000 out=other
+case version_0_s10 api=S10 version=0 layout=10
+ hr=0x80070057 blob=untouched err=set
+case version_2_s10 api=S10 version=2 layout=10
+ hr=0x80070057 blob=untouched err=set
+case version_3_s10 api=S10 version=3 layout=10
+ hr=0x80070057 blob=untouched err=set
+case version_4_s10 api=S10 version=4 layout=10
+ hr=0x80070057 blob=untouched err=set
+case version_m1_s10 api=S10 version=4294967295 layout=10
+ hr=0x80070057 blob=untouched err=set
+case version_0_sv api=SV version=0 layout=11
+ hr=0x80070057 blob=null err=null
+case version_4_sv api=SV version=4 layout=11
+ hr=0x80070057 blob=null err=null
+case version_ff_sv api=SV version=255 layout=11
+ hr=0x80070057 blob=null err=null
+case ok_null_error_out api=S10 version=1 layout=10 ppErrorBlob=null
+ hr=0x00000000 blob=set err=-
+case ok_null_error_out_v api=SV version=2 layout=11 ppErrorBlob=null
+ hr=0x00000000 blob=set err=-
+ create-raw hr=0x00000000 out=other
+case ok_null_blob_out api=S10 version=1 layout=10 ppBlob=null
+ hr=0x80070057 blob=- err=untouched
+case ok_null_blob_out_v api=SV version=2 layout=11 ppBlob=null
+ hr=0x80070057 blob=- err=untouched
+ create-raw hr=0x00000000 out=other
+case ok_null_both_out api=SV version=2 layout=11 ppBlob=null ppErrorBlob=null
+ hr=0x80070057 blob=- err=-
+ create-raw hr=0x00000000 out=other
+case bad_null_error_out api=S10 version=1 layout=10 ppErrorBlob=null
+ hr=0x80070057 blob=untouched err=-
+case bad_null_blob_out api=SV version=2 layout=11 ppBlob=null
+ hr=0x80070057 blob=- err=untouched
+ create-raw hr=0x80070057 out=null
+case bad_null_both_out api=SV version=2 layout=11 ppBlob=null ppErrorBlob=null
+ hr=0x80070057 blob=- err=-
+ create-raw hr=0x80070057 out=null
+== deser
+create empty/S10v1 size=68 hr=0x00000000 out=other
+create empty/SVv2 size=68 hr=0x00000000 out=other
+create empty/SVv3 size=68 hr=0x00000000 out=other
+create flags_ia/S10v1 size=68 hr=0x00000000 out=other
+create flags_ia/SVv2 size=68 hr=0x00000000 out=other
+create flags_ia/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit1/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit1/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit1/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit2/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit2/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit2/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit3/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit3/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit3/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit4/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit4/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit4/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit5/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit5/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit5/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit6/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit6/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit6/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit7/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit7/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit7/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit8/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit8/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit8/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit9/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit9/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit9/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit10/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit10/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit10/SVv3 size=68 hr=0x00000000 out=other
+create flag_bit11/S10v1 size=68 hr=0x00000000 out=other
+create flag_bit11/SVv2 size=68 hr=0x00000000 out=other
+create flag_bit11/SVv3 size=68 hr=0x00000000 out=other
+create flags_ia_deny_all_classic/S10v1 size=68 hr=0x00000000 out=other
+create flags_ia_deny_all_classic/SVv2 size=68 hr=0x00000000 out=other
+create flags_ia_deny_all_classic/SVv3 size=68 hr=0x00000000 out=other
+create flags_bit31/S10v1 size=68 hr=0x00000000 out=other
+create flags_bit31/SVv2 size=68 hr=0x00000000 out=other
+create flags_bit31/SVv3 size=68 hr=0x00000000 out=other
+create each_type_vis0/S10v1 size=192 hr=0x00000000 out=other
+create each_type_vis0/SVv2 size=208 hr=0x00000000 out=other
+create each_type_vis0/SVv3 size=208 hr=0x00000000 out=other
+create each_type_vis1/S10v1 size=192 hr=0x00000000 out=other
+create each_type_vis1/SVv2 size=208 hr=0x00000000 out=other
+create each_type_vis1/SVv3 size=208 hr=0x00000000 out=other
+create each_type_vis2/S10v1 size=192 hr=0x00000000 out=other
+create each_type_vis2/SVv2 size=208 hr=0x00000000 out=other
+create each_type_vis2/SVv3 size=208 hr=0x00000000 out=other
+create each_type_vis3/S10v1 size=192 hr=0x00000000 out=other
+create each_type_vis3/SVv2 size=208 hr=0x00000000 out=other
+create each_type_vis3/SVv3 size=208 hr=0x00000000 out=other
+create each_type_vis4/S10v1 size=192 hr=0x00000000 out=other
+create each_type_vis4/SVv2 size=208 hr=0x00000000 out=other
+create each_type_vis4/SVv3 size=208 hr=0x00000000 out=other
+create each_type_vis5/S10v1 size=192 hr=0x00000000 out=other
+create each_type_vis5/SVv2 size=208 hr=0x00000000 out=other
+create each_type_vis5/SVv3 size=208 hr=0x00000000 out=other
+create each_type_vis6/S10v1 size=192 hr=0x00000000 out=other
+create each_type_vis6/SVv2 size=208 hr=0x00000000 out=other
+create each_type_vis6/SVv3 size=208 hr=0x00000000 out=other
+create each_type_vis7/S10v1 size=192 hr=0x00000000 out=other
+create each_type_vis7/SVv2 size=208 hr=0x00000000 out=other
+create each_type_vis7/SVv3 size=208 hr=0x00000000 out=other
+create tables_mixed/S10v1 size=300 hr=0x00000000 out=other
+create tables_mixed/SVv2 size=328 hr=0x00000000 out=other
+create tables_mixed/SVv3 size=332 hr=0x00000000 out=other
+create samplers_fields/S10v1 size=224 hr=0x00000000 out=other
+create samplers_fields/SVv2 size=224 hr=0x00000000 out=other
+create samplers_fields/SVv3 size=236 hr=0x00000000 out=other
+create table_zero_ranges/S10v1 size=88 hr=0x00000000 out=other
+create table_zero_ranges/SVv2 size=88 hr=0x00000000 out=other
+create table_zero_ranges/SVv3 size=88 hr=0x00000000 out=other
+create consts_zero_values/S10v1 size=92 hr=0x00000000 out=other
+create consts_zero_values/SVv2 size=92 hr=0x00000000 out=other
+create consts_zero_values/SVv3 size=92 hr=0x00000000 out=other
+create overlap_vertex_vs_pixel_ok/S10v1 size=148 hr=0x00000000 out=other
+create overlap_vertex_vs_pixel_ok/SVv2 size=156 hr=0x00000000 out=other
+create overlap_vertex_vs_pixel_ok/SVv3 size=156 hr=0x00000000 out=other
+create same_reg_other_space_ok/S10v1 size=148 hr=0x00000000 out=other
+create same_reg_other_space_ok/SVv2 size=156 hr=0x00000000 out=other
+create same_reg_other_space_ok/SVv3 size=156 hr=0x00000000 out=other
+create explicit_after_unbounded/S10v1 size=128 hr=0x00000000 out=other
+create explicit_after_unbounded/SVv2 size=136 hr=0x00000000 out=other
+create explicit_after_unbounded/SVv3 size=136 hr=0x00000000 out=other
+create unbounded_from_4/S10v1 size=108 hr=0x00000000 out=other
+create unbounded_from_4/SVv2 size=112 hr=0x00000000 out=other
+create unbounded_from_4/SVv3 size=112 hr=0x00000000 out=other
+create space_reserved_table/S10v1 size=108 hr=0x80004005 out=null
+create space_reserved_table/SVv2 size=112 hr=0x80004005 out=null
+create space_reserved_table/SVv3 size=112 hr=0x80004005 out=null
+create space_last_legal_table/S10v1 size=108 hr=0x00000000 out=other
+create space_last_legal_table/SVv2 size=112 hr=0x00000000 out=other
+create space_last_legal_table/SVv3 size=112 hr=0x00000000 out=other
+create space_reserved_rootcbv/S10v1 size=88 hr=0x80004005 out=null
+create space_reserved_rootcbv/SVv2 size=92 hr=0x80004005 out=null
+create space_reserved_rootcbv/SVv3 size=92 hr=0x80004005 out=null
+create space_reserved_consts/S10v1 size=92 hr=0x80004005 out=null
+create space_reserved_consts/SVv2 size=92 hr=0x80004005 out=null
+create space_reserved_consts/SVv3 size=92 hr=0x80004005 out=null
+create space_reserved_sampler/S10v1 size=120 hr=0x80004005 out=null
+create space_reserved_sampler/SVv2 size=120 hr=0x80004005 out=null
+create space_reserved_sampler/SVv3 size=124 hr=0x80004005 out=null
+create cost_64_consts/S10v1 size=92 hr=0x00000000 out=other
+create cost_64_consts/SVv2 size=92 hr=0x00000000 out=other
+create cost_64_consts/SVv3 size=92 hr=0x00000000 out=other
+create cost_65_consts/S10v1 size=92 hr=0x80070057 out=null
+create cost_65_consts/SVv2 size=92 hr=0x80070057 out=null
+create cost_65_consts/SVv3 size=92 hr=0x80070057 out=null
+create cost_32_rootcbv/S10v1 size=708 hr=0x00000000 out=other
+create cost_32_rootcbv/SVv2 size=836 hr=0x00000000 out=other
+create cost_32_rootcbv/SVv3 size=836 hr=0x00000000 out=other
+create cost_33_rootcbv/S10v1 size=728 hr=0x80070057 out=null
+create cost_33_rootcbv/SVv2 size=860 hr=0x80070057 out=null
+create cost_33_rootcbv/SVv3 size=860 hr=0x80070057 out=null
+create cost_64_tables/S10v1 size=2628 hr=0x00000000 out=other
+create cost_64_tables/SVv2 size=2884 hr=0x00000000 out=other
+create cost_64_tables/SVv3 size=2884 hr=0x00000000 out=other
+create cost_65_tables/S10v1 size=2668 hr=0x80070057 out=null
+create cost_65_tables/SVv2 size=2928 hr=0x80070057 out=null
+create cost_65_tables/SVv3 size=2928 hr=0x80070057 out=null
+create cost_63_plus_rootcbv/S10v1 size=112 hr=0x80070057 out=null
+create cost_63_plus_rootcbv/SVv2 size=116 hr=0x80070057 out=null
+create cost_63_plus_rootcbv/SVv3 size=116 hr=0x80070057 out=null
+create cost_64_with_heap_indexed/S10v1 size=92 hr=0x00000000 out=other
+create cost_64_with_heap_indexed/SVv2 size=92 hr=0x00000000 out=other
+create cost_64_with_heap_indexed/SVv3 size=92 hr=0x00000000 out=other
+create sampler_same_reg_other_vis_ok/S10v1 size=172 hr=0x00000000 out=other
+create sampler_same_reg_other_vis_ok/SVv2 size=172 hr=0x00000000 out=other
+create sampler_same_reg_other_vis_ok/SVv3 size=180 hr=0x00000000 out=other
+create sampler_aniso0_aniso/S10v1 size=120 hr=0x00000000 out=other
+create sampler_aniso0_aniso/SVv2 size=120 hr=0x00000000 out=other
+create sampler_aniso0_aniso/SVv3 size=124 hr=0x00000000 out=other
+create sampler_bias_m16/S10v1 size=120 hr=0x00000000 out=other
+create sampler_bias_m16/SVv2 size=120 hr=0x00000000 out=other
+create sampler_bias_m16/SVv3 size=124 hr=0x00000000 out=other
+create sampler_bias15_99/S10v1 size=120 hr=0x00000000 out=other
+create sampler_bias15_99/SVv2 size=120 hr=0x00000000 out=other
+create sampler_bias15_99/SVv3 size=124 hr=0x00000000 out=other
+create sampler_min_gt_max/S10v1 size=120 hr=0x00000000 out=other
+create sampler_min_gt_max/SVv2 size=120 hr=0x00000000 out=other
+create sampler_min_gt_max/SVv3 size=124 hr=0x00000000 out=other
+create sampler_filter_max_aniso/S10v1 size=120 hr=0x00000000 out=other
+create sampler_filter_max_aniso/SVv2 size=120 hr=0x00000000 out=other
+create sampler_filter_max_aniso/SVv3 size=124 hr=0x00000000 out=other
+create sampler_cmp9_noncmp/S10v1 size=120 hr=0x00000000 out=other
+create sampler_cmp9_noncmp/SVv2 size=120 hr=0x00000000 out=other
+create sampler_cmp9_noncmp/SVv3 size=124 hr=0x00000000 out=other
+create sampler_border5/S10v1 size=120 hr=0x00000000 out=other
+create sampler_border5/SVv2 size=120 hr=0x00000000 out=other
+create sampler_border5/SVv3 size=124 hr=0x00000000 out=other
+create sampler_border_uint/S10v1 size=120 hr=0x00000000 out=other
+create sampler_border_uint/SVv2 size=120 hr=0x00000000 out=other
+create sampler_border_uint/SVv3 size=124 hr=0x00000000 out=other
+create sampler_reg_max/S10v1 size=120 hr=0x00000000 out=other
+create sampler_reg_max/SVv2 size=120 hr=0x00000000 out=other
+create sampler_reg_max/SVv3 size=124 hr=0x00000000 out=other
+create rangeflags_t0_0x0/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x0/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x1/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x1/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x2/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x2/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x4/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x4/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x8/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x8/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x3/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x3/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x5/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x5/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x10000/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x10000/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x10002/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x10002/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x10004/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x10004/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x10008/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t0_0x10008/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x0/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x0/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x1/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x1/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x2/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x2/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x4/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x4/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x8/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x8/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x3/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x3/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x5/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x5/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x10000/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x10000/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x10002/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x10002/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x10004/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x10004/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x10008/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t1_0x10008/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x0/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x0/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x1/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x1/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x2/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x2/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x4/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x4/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x8/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x8/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x3/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x3/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x5/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x5/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x10000/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x10000/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x10002/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x10002/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x10004/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x10004/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x10008/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t2_0x10008/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t3_0x0/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t3_0x0/SVv3 size=112 hr=0x00000000 out=other
+create rangeflags_t3_0x1/SVv2 size=112 hr=0x00000000 out=other
+create rangeflags_t3_0x1/SVv3 size=112 hr=0x00000000 out=other
+create rootflags_t2_0x0/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t2_0x0/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t2_0x2/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t2_0x2/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t2_0x4/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t2_0x4/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t2_0x8/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t2_0x8/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t3_0x0/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t3_0x0/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t3_0x2/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t3_0x2/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t3_0x4/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t3_0x4/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t3_0x8/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t3_0x8/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t4_0x0/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t4_0x0/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t4_0x2/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t4_0x2/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t4_0x4/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t4_0x4/SVv3 size=92 hr=0x00000000 out=other
+create rootflags_t4_0x8/SVv2 size=92 hr=0x00000000 out=other
+create rootflags_t4_0x8/SVv3 size=92 hr=0x00000000 out=other
+create samplerflags_0x0/SVv3 size=124 hr=0x00000000 out=other
+create samplerflags_0x0_point_clamp/SVv3 size=124 hr=0x00000000 out=other
+create samplerflags_0x1/SVv3 size=124 hr=0x00000000 out=other
+create samplerflags_0x1_border_uint/SVv3 size=124 hr=0x00000000 out=other
+create samplerflags_0x1_point_clamp/SVv3 size=124 hr=0x00000000 out=other
+create samplerflags_0x2_point_clamp/SVv3 size=124 hr=0x00000000 out=other
+create samplerflags_0x3_point_clamp/SVv3 size=124 hr=0x00000000 out=other
+create zeroconsts_twice/S10v1 size=116 hr=0x00000000 out=other
+create zeroconsts_twice/SVv2 size=116 hr=0x00000000 out=other
+create zeroconsts_twice/SVv3 size=116 hr=0x00000000 out=other
+create bounds_offFFFFFFFD_num2_base0/S10v1 size=108 hr=0x00000000 out=other
+create bounds_offFFFFFFFE_num1_base0/S10v1 size=108 hr=0x00000000 out=other
+create bounds_offFFFFFFFE_num2_base0/S10v1 size=108 hr=0x00000000 out=other
+create bounds_offFFFFFFFA_num5_base0/S10v1 size=108 hr=0x00000000 out=other
+create bounds_offFFFFFFFA_num6_base0/S10v1 size=108 hr=0x00000000 out=other
+create bounds_off0_numFFFFFFFE_base0/S10v1 size=108 hr=0x00000000 out=other
+create bounds_off5_numFFFFFFFF_base0/S10v1 size=108 hr=0x00000000 out=other
+create bounds_offFFFFFFF0_numFFFFFFFF_base0/S10v1 size=108 hr=0x00000000 out=other
+create bounds_off0_num1_baseFFFFFFFE/S10v1 size=108 hr=0x00000000 out=other
+create bounds_off0_num2_baseFFFFFFFE/S10v1 size=108 hr=0x00000000 out=other
+create bounds_off0_num1_baseFFFFFFFF/S10v1 size=108 hr=0x00000000 out=other
+create bounds_off0_numFFFFFFFF_baseFFFFFFFF/S10v1 size=108 hr=0x00000000 out=other
+create bounds_off0_num80000000_base80000000/S10v1 size=108 hr=0x00000000 out=other
+create bounds_off0_num80000001_base7FFFFFFF/S10v1 size=108 hr=0x00000000 out=other
+create bounds_append_to_0xFFFFFFFE/S10v1 size=128 hr=0x00000000 out=other
+create bounds_append_to_0xFFFFFFFE/SVv2 size=136 hr=0x00000000 out=other
+create bounds_append_to_0xFFFFFFFE/SVv3 size=136 hr=0x00000000 out=other
+create bounds_append_past_end/S10v1 size=128 hr=0x00000000 out=other
+create bounds_append_past_end/SVv2 size=136 hr=0x00000000 out=other
+create bounds_append_past_end/SVv3 size=136 hr=0x00000000 out=other
+create bounds_append_after_high_offset/S10v1 size=128 hr=0x00000000 out=other
+create bounds_append_after_high_offset/SVv2 size=136 hr=0x00000000 out=other
+create bounds_append_after_high_offset/SVv3 size=136 hr=0x00000000 out=other
+create bounds_two_unbounded_explicit/S10v1 size=128 hr=0x00000000 out=other
+create bounds_two_unbounded_explicit/SVv2 size=136 hr=0x00000000 out=other
+create bounds_two_unbounded_explicit/SVv3 size=136 hr=0x00000000 out=other
+create float_minlod_41800000/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_41800000/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_42C90000/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_42C90000/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_7149F2CA/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_7149F2CA/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_7F7FFFFF/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_7F7FFFFF/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_7F800000/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_7F800000/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_FF800000/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_FF800000/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_417FD70B/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_417FD70B/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_C1800001/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_C1800001/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_4B189680/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_4B189680/S10v1 size=120 hr=0x00000000 out=other
+create float_bias_3F800001/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_3F800001/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_3F800001/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_C47A0000/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_C47A0000/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_4E6E6B28/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_4E6E6B28/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_5A0E1BCA/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_5A0E1BCA/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_417FFFFF/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_417FFFFF/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_C1800000/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_C1800000/S10v1 size=120 hr=0x00000000 out=other
+create float_bias_80000001/S10v1 size=120 hr=0x00000000 out=other
+create float_minlod_80000001/S10v1 size=120 hr=0x00000000 out=other
+create float_maxlod_80000001/S10v1 size=120 hr=0x00000000 out=other
+create nn_minmag_linear/SVv3 size=124 hr=0x00000000 out=other
+create nn_border/SVv3 size=124 hr=0x00000000 out=other
+create nn_mirror_once_w/SVv3 size=124 hr=0x00000000 out=other
+create nn_aniso1/SVv3 size=124 hr=0x00000000 out=other
+create nn_min_filter/SVv3 size=124 hr=0x00000000 out=other
+create nn_max_minmag_linear/SVv3 size=124 hr=0x00000000 out=other
+create nn_negzero_lods/SVv3 size=124 hr=0x00000000 out=other
+create nn_uint_border/SVv3 size=124 hr=0x00000000 out=other
+create flags_ia_plus_bit31/S10v1 size=68 hr=0x00000000 out=other
+create flags_ia_plus_bit31/SVv2 size=68 hr=0x00000000 out=other
+create flags_ia_plus_bit31/SVv3 size=68 hr=0x00000000 out=other
+create ok_null_error_out/S10v1 size=108 hr=0x00000000 out=other
+== parse
+mutation exact of tables_mixed/SVv2 off=-1 value=0x0 rehash=0
+create exact size=328 hr=0x00000000 out=other
+mutation size_minus_1 of tables_mixed/SVv2 off=-1 value=0x0 rehash=0
+create size_minus_1 size=327 hr=0x80070057 out=null
+mutation size_minus_4 of tables_mixed/SVv2 off=-1 value=0x0 rehash=0
+create size_minus_4 size=324 hr=0x80070057 out=null
+mutation size_plus_16 of tables_mixed/SVv2 off=-1 value=0x0 rehash=0
+create size_plus_16 size=344 hr=0x80070057 out=null
+mutation size_32 of tables_mixed/SVv2 off=-1 value=0x0 rehash=0
+create size_32 size=32 hr=0x80070057 out=null
+mutation size_36 of tables_mixed/SVv2 off=-1 value=0x0 rehash=0
+create size_36 size=36 hr=0x80070057 out=null
+mutation size_44 of tables_mixed/SVv2 off=-1 value=0x0 rehash=0
+create size_44 size=44 hr=0x80070057 out=null
+mutation size_0 of tables_mixed/SVv2 off=-1 value=0x0 rehash=0
+create size_0 size=0 hr=0x80070057 out=null
+mutation hash_flip of tables_mixed/SVv2 off=4 value=0xE8E6CA8B rehash=0
+create hash_flip size=328 hr=0x00000000 out=other
+mutation magic of tables_mixed/SVv2 off=0 value=0x43425944 rehash=0
+create magic size=328 hr=0x80004005 out=null
+mutation container_version_2 of tables_mixed/SVv2 off=20 value=0x2 rehash=1
+create container_version_2 size=328 hr=0x80004005 out=null
+mutation container_version_0x10001 of tables_mixed/SVv2 off=20 value=0x10001 rehash=1
+create container_version_0x10001 size=328 hr=0x80004005 out=null
+mutation total_size_plus_4 of tables_mixed/SVv2 off=24 value=0x14C rehash=0
+create total_size_plus_4 size=328 hr=0x80070057 out=null
+mutation total_size_plus_4_rehash_bigger_buffer of tables_mixed/SVv2 off=24 value=0x14C rehash=1
+create total_size_plus_4_rehash_bigger_buffer size=332 hr=0x00000000 out=other
+mutation total_size_minus_4 of tables_mixed/SVv2 off=24 value=0x144 rehash=1
+create total_size_minus_4 size=328 hr=0x80070057 out=null
+mutation total_size_small of tables_mixed/SVv2 off=24 value=0x10 rehash=0
+create total_size_small size=328 hr=0x80070057 out=null
+mutation part_count_0 of tables_mixed/SVv2 off=28 value=0x0 rehash=1
+create part_count_0 size=328 hr=0x80004005 out=null
+mutation part_count_2 of tables_mixed/SVv2 off=28 value=0x2 rehash=1
+create part_count_2 size=328 hr=0x80004005 out=null
+mutation part_offset_big of tables_mixed/SVv2 off=32 value=0x10000 rehash=1
+create part_offset_big size=328 hr=0x80004005 out=null
+mutation part_offset_40 of tables_mixed/SVv2 off=32 value=0x28 rehash=1
+create part_offset_40 size=328 hr=0x80004005 out=null
+mutation fourcc_RTS1 of tables_mixed/SVv2 off=36 value=0x31535452 rehash=1
+create fourcc_RTS1 size=328 hr=0x80004005 out=null
+mutation fourcc_RTS1_norehash of tables_mixed/SVv2 off=36 value=0x31535452 rehash=0
+create fourcc_RTS1_norehash size=328 hr=0x80004005 out=null
+mutation part_size_big of tables_mixed/SVv2 off=40 value=0x10000 rehash=1
+create part_size_big size=328 hr=0x80004005 out=null
+mutation part_size_minus_4 of tables_mixed/SVv2 off=40 value=0x118 rehash=1
+create part_size_minus_4 size=328 hr=0x80070057 out=null
+mutation part_size_plus_4 of tables_mixed/SVv2 off=40 value=0x120 rehash=1
+create part_size_plus_4 size=328 hr=0x80004005 out=null
+mutation part_size_0 of tables_mixed/SVv2 off=40 value=0x0 rehash=1
+create part_size_0 size=328 hr=0x80070057 out=null
+mutation rts_version_0 of tables_mixed/SVv2 off=44 value=0x0 rehash=1
+create rts_version_0 size=328 hr=0x80070057 out=null
+mutation rts_version_4 of tables_mixed/SVv2 off=44 value=0x4 rehash=1
+create rts_version_4 size=328 hr=0x80070057 out=null
+mutation rts_version_1_of_11_data of tables_mixed/SVv2 off=44 value=0x1 rehash=1
+create rts_version_1_of_11_data size=328 hr=0x80004005 out=null
+mutation rts_version_3_of_11_data of tables_mixed/SVv2 off=44 value=0x3 rehash=1
+create rts_version_3_of_11_data size=328 hr=0x80070057 out=null
+mutation rts_version_4_norehash of tables_mixed/SVv2 off=44 value=0x4 rehash=0
+create rts_version_4_norehash size=328 hr=0x80070057 out=null
+mutation rts_nparams_0 of tables_mixed/SVv2 off=48 value=0x0 rehash=1
+create rts_nparams_0 size=328 hr=0x00000000 out=other
+mutation rts_params_offset_0 of tables_mixed/SVv2 off=52 value=0x0 rehash=1
+create rts_params_offset_0 size=328 hr=0x80004005 out=null
+mutation rts_params_offset_4 of tables_mixed/SVv2 off=52 value=0x4 rehash=1
+create rts_params_offset_4 size=328 hr=0x80070057 out=null
+mutation rts_samplers_offset_end of tables_mixed/SVv2 off=60 value=0x11C rehash=1
+create rts_samplers_offset_end size=328 hr=0x80070057 out=null
+mutation rts_nsamplers_big of tables_mixed/SVv2 off=56 value=0x3E8 rehash=1
+create rts_nsamplers_big size=328 hr=0x80070057 out=null
+mutation rts_samplers_offset_big of tables_mixed/SVv2 off=60 value=0x10000 rehash=1
+create rts_samplers_offset_big size=328 hr=0x80070057 out=null
+mutation rts_param0_payload_big of tables_mixed/SVv2 off=76 value=0x10000 rehash=1
+create rts_param0_payload_big size=328 hr=0x80070057 out=null
+mutation rts_table0_nranges_big of tables_mixed/SVv2 off=92 value=0x3E8 rehash=1
+create rts_table0_nranges_big size=328 hr=0x80070057 out=null
+mutation rts_table0_ranges_offset_big of tables_mixed/SVv2 off=96 value=0x10000 rehash=1
+create rts_table0_ranges_offset_big size=328 hr=0x80070057 out=null
+mutation rts_flags_0x1000 of tables_mixed/SVv2 off=64 value=0x1000 rehash=1
+create rts_flags_0x1000 size=328 hr=0x00000000 out=other
+mutation rts_flags_0x81 of tables_mixed/SVv2 off=64 value=0x81 rehash=1
+create rts_flags_0x81 size=328 hr=0x80004005 out=null
+mutation rts_flags_0x80000000 of tables_mixed/SVv2 off=64 value=0x80000000 rehash=1
+create rts_flags_0x80000000 size=328 hr=0x00000000 out=other
+mutation rts_flags_0x40000000 of tables_mixed/SVv2 off=64 value=0x40000000 rehash=1
+create rts_flags_0x40000000 size=328 hr=0x80004005 out=null
+mutation rts_flags_0xFFFFFFFF of tables_mixed/SVv2 off=64 value=0xFFFFFFFF rehash=1
+create rts_flags_0xFFFFFFFF size=328 hr=0x80004005 out=null
+mutation rts_param0_type_5 of tables_mixed/SVv2 off=68 value=0x5 rehash=1
+create rts_param0_type_5 size=328 hr=0x80070057 out=null
+mutation rts_param0_vis_8 of tables_mixed/SVv2 off=72 value=0x8 rehash=1
+create rts_param0_vis_8 size=328 hr=0x80004005 out=null
+mutation rts_param0_payload_0 of tables_mixed/SVv2 off=76 value=0x0 rehash=1
+create rts_param0_payload_0 size=328 hr=0x80004005 out=null
+mutation rts_table0_nranges_0 of tables_mixed/SVv2 off=92 value=0x0 rehash=1
+create rts_table0_nranges_0 size=328 hr=0x00000000 out=other
+mutation rts_range0_type_4 of tables_mixed/SVv2 off=100 value=0x4 rehash=1
+create rts_range0_type_4 size=328 hr=0x80004005 out=null
+mutation rts_range0_num_0 of tables_mixed/SVv2 off=104 value=0x0 rehash=1
+create rts_range0_num_0 size=328 hr=0x80004005 out=null
+mutation rts_range0_flags_0x10 of tables_mixed/SVv2 off=116 value=0x10 rehash=1
+create rts_range0_flags_0x10 size=328 hr=0x00000000 out=other
+mutation rts_range0_flags_0x9 of tables_mixed/SVv2 off=116 value=0x9 rehash=1
+create rts_range0_flags_0x9 size=328 hr=0x80004005 out=null
+mutation rts_range0_type_sampler of tables_mixed/SVv2 off=100 value=0x3 rehash=1
+create rts_range0_type_sampler size=328 hr=0x80004005 out=null
+mutation each_exact of each_type_vis0/S10v1 off=-1 value=0x0 rehash=0
+create each_exact size=192 hr=0x00000000 out=other
+mutation each_consts_num_0 of each_type_vis0/S10v1 off=164 value=0x0 rehash=1
+create each_consts_num_0 size=192 hr=0x00000000 out=other
+mutation each_rootcbv_to_type_5 of each_type_vis0/S10v1 off=92 value=0x5 rehash=1
+create each_rootcbv_to_type_5 size=192 hr=0x80070057 out=null
+mutation overlap_made_by_patch of overlap_vertex_vs_pixel_ok/S10v1 off=84 value=0x1 rehash=1
+create overlap_made_by_patch size=148 hr=0x80004005 out=null
+mutation v12_exact of samplers_fields/SVv3 off=-1 value=0x0 rehash=0
+create v12_exact size=236 hr=0x00000000 out=other
+mutation v12_sampler0_flags_0x4 of samplers_fields/SVv3 off=120 value=0x4 rehash=1
+create v12_sampler0_flags_0x4 size=236 hr=0x80004005 out=null
+mutation v12_sampler0_filter_3 of samplers_fields/SVv3 off=68 value=0x3 rehash=1
+create v12_sampler0_filter_3 size=236 hr=0x80004005 out=null
+mutation v12_sampler0_vis_9 of samplers_fields/SVv3 off=116 value=0x9 rehash=1
+create v12_sampler0_vis_9 size=236 hr=0x80004005 out=null
+mutation bare_rts0_part of tables_mixed/SVv2
+create bare_rts0_part size=284 hr=0x80070057 out=null
+mutation bare_rts0_with_header of tables_mixed/SVv2
+create bare_rts0_with_header size=292 hr=0x80070057 out=null
+mutation two_parts_rts0_second of tables_mixed/SVv2
+create two_parts_rts0_second size=344 hr=0x00000000 out=other
+mutation two_rts0_parts of tables_mixed/SVv2 + each_type_vis0/S10v1
+create two_rts0_parts size=488 hr=0x00000000 out=other
+create fxc_rootsig_1_0 size=304 hr=0x00000000 out=other
+create fxc_rootsig_1_1 size=328 hr=0x00000000 out=other
+create fxc_vs_5_1_with_rootsig size=788 hr=0x00000000 out=other
+create fxc_vs_5_0_without_rootsig size=492 hr=0x80004005 out=null
+== devscan
+devscan rootsig_flags ok: 1 2 4 8 10 20 40 80 100 200 400 800 1000 2000 4000 8000 80000000
+devscan range_flags_srv ok: 1 2 4 8 10 20 40 80 100 200 400 800 1000 2000 4000 8000 10000
+devscan range_flags_sampler ok: 1 10 20 40 80 100 200 400 800 1000 2000 4000 8000
+devscan root_descriptor_flags ok: 1 2 4 8 10 20 40 80 100 200 400 800 1000 2000 4000 8000
+devscan sampler_flags ok: 1
+devscan range_flags_srv 0x3 hr=0x00000000
+devscan range_flags_sampler 0x3 hr=0x80004005
+devscan range_flags_srv 0x5 hr=0x00000000
+devscan range_flags_sampler 0x5 hr=0x80004005
+devscan range_flags_srv 0x9 hr=0x80004005
+devscan range_flags_sampler 0x9 hr=0x80004005
+devscan range_flags_srv 0x11 hr=0x00000000
+devscan range_flags_sampler 0x11 hr=0x00000000
+devscan range_flags_srv 0x12 hr=0x00000000
+devscan range_flags_sampler 0x12 hr=0x80004005
+devscan range_flags_srv 0x18 hr=0x00000000
+devscan range_flags_sampler 0x18 hr=0x80004005
+devscan range_flags_srv 0x10010 hr=0x00000000
+devscan range_flags_sampler 0x10010 hr=0x80004005
+devscan range_flags_srv 0x10009 hr=0x80004005
+devscan range_flags_sampler 0x10009 hr=0x80004005
+devscan root_descriptor_flags 0x3 hr=0x00000000
+devscan root_descriptor_flags 0x11 hr=0x00000000
+devscan root_descriptor_flags 0x12 hr=0x00000000
+devscan root_descriptor_flags 0x16 hr=0x80004005
+devscan root_descriptor_flags 0x1A hr=0x80004005
+devscan cost65_vs_vis hr=0x80004005
+devscan vis_vs_cost65 hr=0x80004005
+devscan cost65_vs_reserved_space hr=0x80004005
+devscan cost65_vs_sampler_filter hr=0x80004005
+devscan cost65_local hr=0x00000000
+devscan rootsig_flags 0x1080 hr=0x00000000
+devscan rootsig_flags 0x8080 hr=0x00000000
+devscan rootsig_flags 0x80000080 hr=0x80004005
+devscan rootsig_flags 0x10080 hr=0x80004005
+devscan cost64_plus_zero_consts hr=0x00000000
+devscan consts_ffffffff hr=0x80070057
+devscan cost64_empty_tables hr=0x00000000
+devscan cost65_empty_tables hr=0x80070057
+devscan rootsrv_space_FFFFFFEF hr=0x00000000
+devscan sampler_table_space_FFFFFFEF hr=0x00000000
+devscan rootsrv_space_FFFFFFF0 hr=0x80004005
+devscan sampler_table_space_FFFFFFF0 hr=0x80004005
+devscan rootsrv_space_FFFFFFF8 hr=0x80004005
+devscan sampler_table_space_FFFFFFF8 hr=0x80004005
+devscan rootsrv_space_FFFFFFFF hr=0x80004005
+devscan sampler_table_space_FFFFFFFF hr=0x80004005
+devscan reserved_space_vs_vis_p1 hr=0x80004005
+== end

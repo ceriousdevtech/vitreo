@@ -1,0 +1,14 @@
+delivery=middle msg=vertical delta=-120 keys=127 point=-300,-40
+delivery=root msg=vertical delta=-120 keys=127 point=-300,-40
+stop=0 result=0 deliveries=2
+delivery=middle msg=vertical delta=-120 keys=127 point=-300,-40
+stop=1 result=0 deliveries=1
+top result=0 deliveries=0
+owned result=0 deliveries=0
+delivery=middle msg=horizontal delta=-120 keys=127 point=-300,-40
+delivery=root msg=horizontal delta=-120 keys=127 point=-300,-40
+stop=0 result=0 deliveries=2
+delivery=middle msg=horizontal delta=-120 keys=127 point=-300,-40
+stop=1 result=0 deliveries=1
+top result=0 deliveries=0
+owned result=0 deliveries=0

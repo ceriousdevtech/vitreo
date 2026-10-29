@@ -1,0 +1,4 @@
+unlink_dir r=-1 errno=13 
+unlink_file r=0 errno=0 
+rmdir_file r=-1 errno=22 
+rmdir_dir r=0 errno=0 

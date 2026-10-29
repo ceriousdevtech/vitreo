@@ -1,0 +1,178 @@
+layout	48	28	38	20	28	58	18
+chain leaf_alone	1	80092004	48	10000	0	1	0	0	0
+  simple 0	28	10000	0	1	0	0
+    elem 0	38	leaf	1	0	2	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+  base:1:800b010a:0:ffffffff	ssl:1:800b0109:0:ffffffff	auth:1:800b010a:0:ffffffff
+  dup	1
+chain leaf_inter	1	80092004	48	10000	0	1	0	0	0
+  simple 0	28	10000	0	2	0	0
+    elem 0	38	leaf	1	0	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	2	rev:-	iss:0	app:-	ext:-
+  base:1:800b010a:0:ffffffff	ssl:1:800b0109:0:ffffffff	auth:1:800b010a:0:ffffffff
+  dup	1
+chain leaf_full	1	80092004	48	20	100	1	0	0	0
+  simple 0	28	20	100	3	0	0
+    elem 0	38	leaf	1	0	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain leaf_full_nulltime	1	80092004	48	20	100	1	0	0	0
+  simple 0	28	20	100	3	0	0
+    elem 0	38	leaf	1	0	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain badsig_full	1	80092004	48	28	0	1	0	0	0
+  simple 0	28	28	0	3	0	0
+    elem 0	38	badsig	1	8	2	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:80096004:0:0	ssl:1:80096004:0:0	auth:1:80096004:0:0
+  dup	1
+chain expired_full	1	80092004	48	21	100	1	0	0	0
+  simple 0	28	21	100	3	0	0
+    elem 0	38	expired	1	1	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain leaf_full_2020	1	80092004	48	21	100	1	0	0	0
+  simple 0	28	21	100	3	0	0
+    elem 0	38	leaf	1	1	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain usage_server	1	80092004	48	20	100	1	0	0	0
+  simple 0	28	20	100	3	0	0
+    elem 0	38	leaf	1	0	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain usage_client	1	80092004	48	30	100	1	0	0	0
+  simple 0	28	30	100	3	0	0
+    elem 0	38	leaf	1	10	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain usage_client_or	1	80092004	48	30	100	1	0	0	0
+  simple 0	28	30	100	3	0	0
+    elem 0	38	leaf	1	10	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain codesign_server	1	80092004	48	30	100	1	0	0	0
+  simple 0	28	30	100	3	0	0
+    elem 0	38	codesign	1	10	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.3	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain self_alone	1	80092004	48	20	100	1	0	0	0
+  simple 0	28	20	100	1	0	0
+    elem 0	38	self	1	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:0	ssl:1:800b0109:0:0	auth:1:800b0109:0:0
+  dup	1
+chain root_alone	1	80092004	48	20	100	1	0	0	0
+  simple 0	28	20	100	1	0	0
+    elem 0	38	root	1	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:0	ssl:1:800b0109:0:0	auth:1:800b0109:0:0
+  dup	1
+chain rev_chain	1	80092004	48	1000060	100	1	0	0	20000000
+  simple 0	28	1000060	100	3	0	0
+    elem 0	38	leaf	1	1000040	102	rev:28:80092013:0:0	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	1000040	102	rev:28:80092013:0:0	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:28:0:0:0	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain rev_exclude_root	1	80092004	48	1000060	100	1	0	0	40000000
+  simple 0	28	1000060	100	3	0	0
+    elem 0	38	leaf	1	1000040	102	rev:28:80092013:0:0	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	1000040	102	rev:28:80092013:0:0	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain rev_end_cert	1	80092004	48	1000060	100	1	0	0	10000000
+  simple 0	28	1000060	100	3	0	0
+    elem 0	38	leaf	1	1000040	102	rev:28:80092013:0:0	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain rev_cache_only	1	80092004	48	1000060	100	1	0	0	c0000000
+  simple 0	28	1000060	100	3	0	0
+    elem 0	38	leaf	1	1000040	102	rev:28:80092013:0:0	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	1000040	102	rev:28:80092013:0:0	iss:0	app:-	ext:-
+    elem 2	38	root	0	20	10c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0109:0:2	ssl:1:800b0109:0:2	auth:1:800b0109:0:2
+  dup	1
+chain store_leaf	1	80092004	48	10000	0	1	0	0	0
+  simple 0	28	10000	0	1	0	0
+    elem 0	38	leaf	1	0	2	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+  base:1:800b010a:0:ffffffff	ssl:1:800b0109:0:ffffffff	auth:1:800b010a:0:ffffffff
+  dup	1
+chain store_badsig	1	80092004	48	10000	0	1	0	0	0
+  simple 0	28	10000	0	1	0	0
+    elem 0	38	badsig	1	0	2	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+  base:1:800b010a:0:ffffffff	ssl:1:800b0109:0:ffffffff	auth:1:800b010a:0:ffffffff
+  dup	1
+engine	1	0	1
+chain excl_leaf_inter	1	80092004	48	0	2100	1	0	0	0
+  simple 0	28	0	2100	3	0	0
+    elem 0	38	leaf	1	0	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	0	210c	rev:-	iss:-	app:-	ext:-
+  base:1:0:ffffffff:ffffffff	ssl:1:0:ffffffff:ffffffff	auth:1:0:ffffffff:ffffffff
+  dup	1
+chain excl_leaf_alone	1	80092004	48	10000	0	1	0	0	0
+  simple 0	28	10000	0	1	0	0
+    elem 0	38	leaf	1	0	2	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+  base:1:800b010a:0:ffffffff	ssl:1:800b0109:0:ffffffff	auth:1:800b010a:0:ffffffff
+  dup	1
+chain excl_expired	1	80092004	48	1	2100	1	0	0	0
+  simple 0	28	1	2100	3	0	0
+    elem 0	38	expired	1	1	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	0	210c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0101:0:0	ssl:1:800b0101:0:0	auth:1:800b0101:0:0
+  dup	1
+chain excl_rev	1	0	48	40	2100	1	0	0	40000000
+  simple 0	28	40	2100	3	0	0
+    elem 0	38	leaf	1	40	102	rev:28:80092012:0:0	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	40	102	rev:28:80092012:0:0	iss:0	app:-	ext:-
+    elem 2	38	root	0	0	210c	rev:-	iss:-	app:-	ext:-
+  base:1:80092012:0:0	ssl:1:80092012:0:0	auth:1:800b010e:0:0
+  dup	1
+chain excl_usage_client	1	80092004	48	10	2100	1	0	0	0
+  simple 0	28	10	2100	3	0	0
+    elem 0	38	leaf	1	10	102	rev:-	iss:0	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	inter	0	0	102	rev:-	iss:0	app:-	ext:-
+    elem 2	38	root	0	0	210c	rev:-	iss:-	app:-	ext:-
+  base:1:800b0110:0:0	ssl:1:800b0110:0:0	auth:1:800b0110:0:0
+  dup	1
+sslname	0	1	0	ffffffff	ffffffff
+sslname	1	1	0	ffffffff	ffffffff
+sslname	2	1	800b010f	0	0
+sslname	3	1	800b010f	0	0
+sslname	4	1	800b010f	0	0
+engine_cb	0	0	80070057
+engine_cb	1	1	0
+engine_cb	2	1	0
+engine_cb	3	1	0
+engine_cb	4	0	80070057
+nullpara	0	80070057	1
+cbsize0	1	80092004	0
+chain bnet	1	80092004	48	0	100	1	0	0	4
+  simple 0	28	0	100	3	0	0
+    elem 0	38	bnet_leaf	1	0	102	rev:-	iss:1,2.23.140.1.2.1	app:1,1.3.6.1.5.5.7.3.1	ext:-
+    elem 1	38	bnet_inter	0	0	102	rev:-	iss:1,2.23.140.1.2.1	app:2,1.3.6.1.5.5.7.3.2,1.3.6.1.5.5.7.3.1	ext:-
+    elem 2	38	other:Amazon Root CA 1	0	0	10c	rev:-	iss:-	app:6,1.3.6.1.5.5.7.3.2,1.3.6.1.4.1.311.10.3.12,1.3.6.1.4.1.311.10.3.4,1.3.6.1.5.5.7.3.4,1.3.6.1.5.5.7.3.1,1.3.6.1.5.5.7.3.8	ext:-
+  base:1:0:ffffffff:ffffffff	ssl:1:0:ffffffff:ffffffff	auth:1:0:ffffffff:ffffffff
+  dup	1
+after	1
+exception	c0000005

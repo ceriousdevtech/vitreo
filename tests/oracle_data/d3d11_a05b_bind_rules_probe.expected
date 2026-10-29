@@ -1,0 +1,124 @@
+feature level 0xb000, 64-bit
+CreateBuffer bSU -> 0x80070057
+create bSU: FAILED
+## ClearState vertex-buffer strides/offsets
+set {-,vbA,-}: vb - vbA - strides 5 7 9 offsets 1 3 5
+  after ClearState: vb - - - strides 0 0 9 offsets 0 0 5
+set {vbA,-,vbB}: vb vbA - vbB strides 5 7 9 offsets 1 3 5
+  after ClearState: vb - - - strides 0 0 0 offsets 0 0 0
+set {vbA,-,-} then slot0 NULL: vb - - - strides 5 7 9 offsets 1 3 5
+  after ClearState: vb - - - strides 5 7 9 offsets 1 3 5
+## stream output vs UAVs and index buffers
+so bSI after ib bSI: so bSI - - -
+  : ib - fmt 0 off 0
+ib bSI set while so bSI: ib - fmt 42 off 8
+  : so bSI - - -
+## OMSetRenderTargets validation
+32x32 tex mip1 (16x16) + 16x16 dsv: rt rtv32m1 - ds dsv16
+16x16 + 32 mip1: rt rtv16 rtv32m1 ds -
+mip0 + mip1 of one texture: rt rtv16b - ds -
+two views of one subresource: rt rtv16b - ds -
+slice0 + slice1 of one array: rt rtvA0 rtvA1 ds -
+slice0 + both slices: rt rtv16b - ds -
+2D + 2-slice array: rt rtv16b - ds -
+2D + 1-slice array view: rt rtv16 rtvA1 ds -
+2-slice array rtv + 2D dsv: rt rtv16b ds -
+2D rtv + 2-slice dsv: rt rtv16b ds -
+2-slice rtv + 2-slice dsv: rt rtvAboth ds dsvA2
+4x MS rtv + 1x dsv: rt rtv16b ds -
+1x rtv + 4x MS rtv: rt rtv16b - ds -
+{-,rtv16,-} + dsv: rt - rtv16 - ds dsv16
+dropped OMSetRenderTargets after (rtv16b, u1=uavA0): rt rtv16b - ds - uav - uavA0
+## OMSetRenderTargetsAndUnorderedAccessViews
+two UAV views of one subresource: rt rtv16b ds - uav - uavA0
+uav slice0 + slice1: rt - ds - uav uavA0 uavA1
+rtv slice0 + uav slice1: rt rtvA0 ds - uav - uavA1
+KEEP_RTV, uav16 vs bound rtv16: rt - ds - uav - uav16
+KEEP_RTV start1+num8: rt rtv16 ds - uav - uavA0
+KEEP_UAV duplicate rtvs: rt rtv16 - ds - uav - uavA1
+(2,{rtv16b,-},start 1,{uavA0}): rt rtv16b - ds - uav - uavA0
+(2,{rtv16b,rtvA0},start 1,{uavA0}): rt rtv16b - ds - uav - uavA0
+## CS UAVs naming one view twice
+cs set {uav16,uav16}: cs uav - -
+cs slot0 uav16 then slot1 uav16dup: cs uav - uav16dup
+cs slot1 uavA1 while om uavA0: cs uav uav16 uavA1
+  : rt ds - uav uavA0
+## SetConstantBuffers1 validation
+set1(NULL, first 8): cb cbA - first 16 0 num 16 4096
+set1(NULL, first 16 num 16): cb - - first 0 0 num 4096 4096
+set1(2 entries, 2nd first 8): cb cbA - first 16 0 num 16 4096
+set1(2 entries, 2nd num 4112): cb cbA - first 16 0 num 16 4096
+set1(cbB,0,0) then plain slot1: cb cbB cbA first 0 0 num 0 4096
+## CreateInputLayout vs ISGN/ISG1
+il vs_unused: POSITION only (TEXCOORD0 declared, unread) -> 0x80070057
+il vs_unused: POSITION+TEXCOORD0 -> 0x00000000
+il vs_min16 (ISG1): POSITION -> 0x00000000
+il vs_min16 (ISG1): TEXCOORD0 only -> 0x80070057
+il vs_min16 (ISG1): 0 elements, non-NULL -> 0x80070057
+il vs_inst: POSITION (SV_InstanceID not in layout) -> 0x00000000
+il vs_inst: POSITION + SV_InstanceID element -> 0x00000000
+il vs_inst: duplicate unused COLOR0 -> 0x80070057
+il vs_inst: POSITION + position (case-duplicate) -> 0x80070057
+il vs_inst: InputSlotClass 2 -> 0x80070057
+il vs_inst: extra COLOR R16G16_FLOAT @2 -> 0x80070057
+il vs_inst: extra COLOR R16G16_FLOAT @1 -> 0x80070057
+il vs_inst: extra COLOR R16_FLOAT @1 -> 0x80070057
+il vs_inst: extra COLOR R8G8B8A8_UNORM @1 -> 0x80070057
+il vs_inst: extra COLOR R8_UINT @3 -> 0x00000000
+il vs_inst: extra COLOR R32_FLOAT @2 -> 0x80070057
+il vs_inst: extra COLOR R32G32B32A32_FLOAT @4 -> 0x00000000
+il vs_inst: extra COLOR R32G32_FLOAT @4 -> 0x00000000
+il vs_inst: extra COLOR R10G10B10A2_UNORM @2 -> 0x80070057
+il vs_inst: extra COLOR R11G11B10_FLOAT @2 -> 0x80070057
+il vs_inst: extra COLOR R16G16B16A16_FLOAT @2 -> 0x80070057
+il vs_inst: extra COLOR R16G16B16A16_FLOAT @6 -> 0x80070057
+## UAV range and truncation rules
+(1,{rtv16},start 1,num 8,{uavA0,-..}) no conflict: rt rtv16 ds - uav - uavA0 - - - - - -
+(0,-,-,start 7,num 2,{uavA0,uavA1}): rt ds - uav - - - - - - - uavA0
+(0,-,-,start 8,num 1,{uavA0}): rt ds - uav - - - - - - - -
+(1,{rtv16b},start 0,num 0): rt rtv16b ds - uav - -
+(1,{rtv16b},start 0,num 1,{uavA0}): rt - ds - uav uavA0 -
+KEEP_RTV duplicate uavs: rt rtv16b ds - uav - uavA1 -
+## CS UAV duplicates within one call
+pre {uavA0,uavA1}, set(0,2,{uav16,uav16}): cs uav uavA0 uavA1
+pre {uavA0,uavA1}, set(1,2,{uav16,uav16}): cs uav uavA0 uavA1 -
+pre {uavA0,uavA1}, set(0,2,{uav16,uav16dup}): cs uav uavA0 uavA1
+pre {uavA0,uavA1}, set(0,3,{uav16,uavA0,uav16}): cs uav uavA0 uavA1 -
+## ClearState index buffer with a NULL buffer
+ib (NULL,R32,8) then ClearState: ib - fmt 0 off 0
+get uav slot 8 after (start 7,num 2): -
+## CreateInputLayout: signature-only blobs, SV_Position, program type
+il ISGN-only blob: POSITION+TEXCOORD0 -> 0x00000000
+il ISGN-only blob: POSITION -> 0x80070057
+il ISG1-only blob: POSITION -> 0x00000000
+il ISG1-only blob: TEXCOORD0 -> 0x80070057
+il vs_svpos: SV_Position+TEXCOORD0 -> 0x00000000
+il vs_svpos: TEXCOORD0 only -> 0x80070057
+il ps_svpos: SV_Position element -> 0x00000000
+il ps_svpos: POSITION element -> 0x80070057
+il vs_unused with a corrupted checksum: POSITION+TEXCOORD0 -> 0x80070057
+il vs_unused, BytecodeLength 40: POSITION+TEXCOORD0 -> 0x80070057
+## done
+#
+# ---- verdicts: winoracle (Windows 11, WARP, FL 11_0) x64; x86 identical ----
+# (write-up: .docs/audits/2026-09-28-d3d11-contract-audit/area-05-context-state.md)
+# Vitreo after the area-05 fix pass matches every line except the two
+# CreateBuffer lines: Windows refuses STREAM_OUTPUT|UNORDERED_ACCESS on a
+# buffer (E_INVALIDARG), Vitreo creates it, so Vitreo prints eight extra
+# SO-vs-UAV lines that Windows cannot reach. That is CreateBuffer validation
+# (area 02), not a binding rule.
+# Findings used by the fix:
+#   ClearState resets IA strides/offsets only through the highest slot that
+#   holds a buffer; an SO target unbinds/refuses the IB like a VB; RTV/DSV
+#   validation compares VIEW extent (mip-adjusted), array size and sample
+#   count, and dropped calls leave OM UAVs bound; start+num past u7 is NOT
+#   dropped (the slots are ignored) -- the a05 "start1+num8" drop was the
+#   rtv0/uav0 conflict; RTVs at slots >= UAVStartSlot are discarded only when
+#   NumUAVs > 0, before the conflict check; CS UAV calls naming a subresource
+#   twice are dropped, and a new CS UAV unbinds another CS slot of the same
+#   subresource; *SetConstantBuffers1 validates every entry (NULL buffers
+#   too) before touching any slot; CreateInputLayout requires every ISGN/ISG1
+#   element except SV_VertexID/InstanceID -- read or not, pixel-shader
+#   SV_Position included -- accepts signature-only blobs, checks the DXBC
+#   hash and TotalSize, rejects InputSlotClass > 1 and explicit offsets not
+#   aligned to min(4, format size).

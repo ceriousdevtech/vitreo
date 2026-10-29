@@ -1,0 +1,208 @@
+bitness=64
+create_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+  disp=1
+create_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+  disp=1
+create_hklm_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R\Def view=def
+  disp=1
+create_both_flags ret=87
+open_both_flags ret=87
+open_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+open_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+open_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+open_lower_case ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+explicit_wow_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+explicit_wow_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+explicit_wow_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+explicit_wow_lower_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+explicit_wow_root_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node view=-
+explicit_wow_root_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node view=-
+explicit_wow_root_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node view=-
+explicit_wow_wow_32key ret=2
+explicit_wow_wow_64key ret=2
+explicit_wow_classes_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes view=-
+explicit_wow_classes_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node view=-
+explicit_wow_classes_clsid_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID view=-
+explicit_wow_policies_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Policies view=-
+explicit_wow_clients_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Clients view=-
+explicit_wow_regapps_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\RegisteredApplications view=-
+explicit_wow_ole_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Ole view=-
+explicit_wow_ole_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Ole view=-
+explicit_wow_ole_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Ole view=-
+explicit_wow_classes_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node view=-
+hkcr_wow_clsid_default ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node\CLSID view=-
+hkcr_wow_clsid_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node\CLSID view=-
+explicit_classes_wow_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node view=-
+explicit_classes_wow_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node view=-
+create_explicit_wow_child_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R\ExplicitChild view=-
+  disp=1
+  seen_from_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R\ExplicitChild view=-
+  seen_from_64key ret=2
+software_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node view=-
+software_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE view=-
+software_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE view=-
+from_s32_child_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+from_s32_child_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+from_s32_child_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+from_s64_child_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+from_s64_child_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+from_s64_child_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+from_sdef_child_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+from_sdef_child_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+from_sdef_child_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+from_s64_empty_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node view=-
+from_s32_empty_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node view=-
+hklm_null_32key ret=0
+from_hklm32_software_child_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+hklm_null_64key ret=0
+from_hklm64_software_child_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+from_s32_microsoft_ole_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Ole view=-
+from_s32_classes_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes view=-
+from_s32_classes_clsid_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID view=-
+from_s32_classes_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node view=-
+from_s32_microsoft_ole_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Ole view=-
+from_s64_microsoft_ole_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Ole view=-
+enum_software_default ret=0 Wow6432Node=1 Classes=1 Clients=1 Policies=1 RegisteredApplications=1 VitreoProbe-W64R=1 Microsoft=1
+enum_software_32key ret=0 Wow6432Node=0 Classes=1 Clients=1 Policies=1 RegisteredApplications=1 VitreoProbe-W64R=1 Microsoft=1
+enum_software_64key ret=0 Wow6432Node=1 Classes=1 Clients=1 Policies=1 RegisteredApplications=1 VitreoProbe-W64R=1 Microsoft=1
+enum_wow_64key ret=0 Wow6432Node=0 Classes=1 Clients=1 Policies=1 RegisteredApplications=1 VitreoProbe-W64R=1 Microsoft=1
+enum_classes_default ret=0 Wow6432Node=1 CLSID=1 Interface=1 TypeLib=1 AppID=1 .txt=1
+enum_classes_32key ret=0 Wow6432Node=1 CLSID=1 Interface=1 TypeLib=1 AppID=1 .txt=1
+enum_classes_64key ret=0 Wow6432Node=1 CLSID=1 Interface=1 TypeLib=1 AppID=1 .txt=1
+enum_classes_wow_64key ret=0 Wow6432Node=0 CLSID=1 Interface=1 TypeLib=1 AppID=1 .txt=0
+enum_hkcr_default ret=0 Wow6432Node=1 CLSID=1 Interface=1 TypeLib=1 AppID=1 .txt=1
+enum_hkcr_32key ret=0 Wow6432Node=1 CLSID=1 Interface=1 TypeLib=1 AppID=1 .txt=1
+enum_hkcr_64key ret=0 Wow6432Node=1 CLSID=1 Interface=1 TypeLib=1 AppID=1 .txt=1
+enum_microsoft_32key ret=0 Ole=1 COM3=1 Cryptography=1 Windows=1 Windows NT=1 DirectX=1 Rpc=1
+enum_wow_microsoft_64key ret=0 Ole=1 COM3=1 Cryptography=1 Windows=1 Windows NT=1 DirectX=1 Rpc=1
+enum_probe_default ret=0 Def=1 ExplicitChild=0
+enum_probe_32key ret=0 Def=0 ExplicitChild=1
+enum_probe_64key ret=0 Def=1 ExplicitChild=0
+c32_basic_name=VitreoProbe-W64R
+c32_info ret=0 subkeys=1 maxsub=13 values=1
+c64_info ret=0 subkeys=1 maxsub=3 values=1
+getvalue_default ret=0 view=64
+getvalue_6464 ret=0 view=64
+getvalue_6432 ret=0 view=32
+getvalue_both ret=87 view=-
+delex_32key ret=0 left32=0 left64=1
+delex_64key ret=0 left32=1 left64=0
+delex_zero ret=0 left32=1 left64=0
+delkey_default ret=0 left32=1 left64=0
+deltree_default ret=0 left32=1 left64=0
+delex_read_32key ret=0 left32=0 left64=1
+delex_both ret=87 left32=1 left64=1
+delex_read_only ret=0 left32=1 left64=0
+deltree_handle32_empty ret=0 leaf_left32=0 leaf_left64=1
+delex_explicit_wow_64key ret=0
+refl_exports dis=1 ena=1 qry=1
+refl_c32 query ret=0 disabled=1
+refl_c32 disable ret=0 query ret=0 disabled=1
+refl_c32 enable ret=0 query ret=0 disabled=1
+refl_c64 query ret=0 disabled=1
+refl_c64 disable ret=0 query ret=0 disabled=1
+refl_c64 enable ret=0 query ret=0 disabled=1
+refl_hklm query ret=0 disabled=1
+refl_hklm disable ret=0 query ret=0 disabled=1
+refl_hklm enable ret=0 query ret=0 disabled=1
+refl_bad_handle dis=0 ena=0 qry=0 disabled=1
+refl_null dis=0 ena=0 qry=0 disabled=1
+create_hkcu_default ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001\Software\VitreoProbe-W64R view=def
+  disp=1
+open_hkcu_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001\Software\VitreoProbe-W64R view=def
+open_hkcu_64key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001\Software\VitreoProbe-W64R view=def
+open_hkcu_explicit_wow ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001\Software\Wow6432Node view=-
+open_hkcu_classes_wow_64key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node view=-
+create_hkcr_clsid_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A01} view=def
+  disp=1
+  g1_hkcr_32key ret=2
+  g1_hkcr_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A01} view=def
+  g1_hkcr_explicit_wow_64key ret=2
+  g1_hklm_classes_32key ret=2
+  g1_hkcu_classes_32key ret=2
+create_hkcr_clsid_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A02}\InprocServer32 view=32
+  disp=1
+create_hkcr_clsid_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A02}\InprocServer32 view=64
+  disp=1
+  g2_hkcr_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A02}\InprocServer32 view=64
+create_hkcu_classes_clsid_default ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A03} view=def
+  disp=1
+  g3_hkcr_default ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A03} view=def
+  g3_hkcr_32key ret=2
+  g3_hkcr_64key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A03} view=def
+hkcr_clsid_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node\CLSID view=-
+hkcr_clsid_64key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\CLSID view=-
+  from_cl32_g2_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A02}\InprocServer32 view=32
+  from_cl64_g2_default ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A02}\InprocServer32 view=64
+  from_cl64_g2_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A02}\InprocServer32 view=32
+class_CLSID_hkcr_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node\CLSID view=-
+class_CLSID_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID view=-
+class_CLSID_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID view=-
+class_Interface_hkcr_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node\Interface view=-
+class_Interface_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\Interface view=-
+class_Interface_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Interface view=-
+class_TypeLib_hkcr_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\TypeLib view=-
+class_TypeLib_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\TypeLib view=-
+class_TypeLib_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\TypeLib view=-
+class_AppID_hkcr_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\AppID view=-
+class_AppID_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\AppID view=-
+class_AppID_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\AppID view=-
+class_DirectShow_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\DirectShow view=-
+class_DirectShow_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\DirectShow view=-
+class_DirectShow_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\DirectShow view=-
+class_Media Type_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\Media Type view=-
+class_Media Type_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\Media Type view=-
+class_Media Type_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Media Type view=-
+class_MediaFoundation_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\MediaFoundation view=-
+class_MediaFoundation_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\MediaFoundation view=-
+class_MediaFoundation_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\MediaFoundation view=-
+class_.txt_hkcr_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\.txt view=-
+class_.txt_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\.txt view=-
+class_.txt_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\.txt view=-
+class_txtfile_hkcr_32key ret=2
+class_txtfile_hklm_32key ret=2
+class_txtfile_hklm_64key ret=2
+class_Wow6432Node_hkcr_32key ret=0 name=\REGISTRY\USER\S-1-5-21-1828410828-4144948699-2202159460-1001_Classes\WOW6432Node view=-
+class_Wow6432Node_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node view=-
+class_Wow6432Node_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node view=-
+class_Installer_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Installer view=-
+class_Installer_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Installer view=-
+class_Installer_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Installer view=-
+class_Record_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Record view=-
+class_Record_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Record view=-
+class_Record_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Record view=-
+class_Component Categories_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Component Categories view=-
+class_Component Categories_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Component Categories view=-
+class_Component Categories_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Component Categories view=-
+class_FileType_hkcr_32key ret=2
+class_FileType_hklm_32key ret=2
+class_FileType_hklm_64key ret=2
+class_Protocols_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\PROTOCOLS view=-
+class_Protocols_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\PROTOCOLS view=-
+class_Protocols_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\PROTOCOLS view=-
+class_MIME_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\MIME view=-
+class_MIME_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\MIME view=-
+class_MIME_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\MIME view=-
+class_Drive_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Drive view=-
+class_Drive_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Drive view=-
+class_Drive_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Drive view=-
+class_Folder_hkcr_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Folder view=-
+class_Folder_hklm_32key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Folder view=-
+class_Folder_hklm_64key ret=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Folder view=-
+nt_open_default status=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+nt_open_32key status=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+nt_open_64key status=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+nt_open_wow_default status=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+nt_open_wow_64key status=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+nt_open_both status=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+nt_open_lower status=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+nt_open_clsid_32key status=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A02} view=-
+nt_open_clsid_default status=0 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{7E1C3B5A-0D42-4F7B-9A61-5C2E8B3D4A02} view=-
+nt_create_default status=0 disp=1 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R\NtDef
+nt_create_32key status=0 disp=1 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R\Nt32
+nt_create_64key status=0 disp=1 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R\Nt64
+nt_rel_s64_default status=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+nt_rel_s64_32key status=0 name=\REGISTRY\MACHINE\SOFTWARE\VitreoProbe-W64R view=64
+nt_rel_s32_default status=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+nt_rel_s32_64key status=0 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\VitreoProbe-W64R view=32
+cleanup_left hklm32=0 hklm64=0 hkcu=0 clsid=0

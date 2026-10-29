@@ -1,0 +1,10 @@
+msvcrt.dll capacity limit=2048
+msvcrt.dll capacity dup=-1 errno=24 invalid=0
+msvcrt.dll capacity open=-1 errno=24 invalid=0 created=0
+msvcrt.dll capacity fopen=0 errno=24 invalid=0 created=0
+msvcrt.dll capacity open-handle=-1 errno=24 invalid=0 retained=1
+ucrtbase.dll capacity limit=8192
+ucrtbase.dll capacity dup=-1 errno=24 invalid=0
+ucrtbase.dll capacity open=-1 errno=24 invalid=0 created=0
+ucrtbase.dll capacity fopen=0 errno=24 invalid=0 created=0
+ucrtbase.dll capacity open-handle=-1 errno=24 invalid=0 retained=1

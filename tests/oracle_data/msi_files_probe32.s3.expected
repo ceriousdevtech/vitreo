@@ -1,0 +1,188 @@
+bitness 32 scenario 3
+== install
+  ActionStart fields=3 [1]=INSTALL [3]=""
+  ActionStart fields=3 [1]=CostInitialize [3]=""
+  ActionStart fields=3 [1]=ResolveSource [3]=""
+  ActionStart fields=3 [1]=FileCost [3]=""
+  ActionStart fields=3 [1]=CostFinalize [3]=""
+  ActionStart fields=3 [1]=InstallValidate [3]=""
+  ActionStart fields=3 [1]=InstallInitialize [3]=""
+  ActionStart fields=3 [1]=ProcessComponents [3]=""
+  ActionStart fields=3 [1]=GenerateScript [3]=""
+  ActionStart fields=3 [1]=RemoveDuplicateFiles [3]=""
+  ActionStart fields=3 [1]=RemoveFiles [3]=""
+  ActionData fields=1 [0]={{RemoveFiles: }} [1]=Removing files File: [1], Directory: [9]
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  ActionStart fields=3 [1]=RemoveFolders [3]=""
+  ActionStart fields=3 [1]=CreateFolders [3]=""
+  ActionData fields=1 [0]={{CreateFolders: }} [1]=Creating folders Folder: [1]
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  ActionStart fields=3 [1]=MoveFiles [3]=""
+  ActionData fields=1 [0]={{MoveFiles: }} [1]=Moving files File: [1],  Directory: [9],  Size: [6]
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  ActionStart fields=3 [1]=InstallFiles [3]=""
+  ActionData fields=1 [0]={{InstallFiles: }} [1]=Copying new files File: [1],  Directory: [9],  Size: [6]
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  ActionStart fields=3 [1]=DuplicateFiles [3]=""
+  ActionData fields=1 [0]={{DuplicateFiles: }} [1]=Creating duplicate files File: [1],  Directory: [9],  Size: [6]
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  ActionStart fields=3 [1]=BindImage [3]=""
+  ActionData fields=1 [0]={{BindImage: }} [1]=Binding executables File: [1]
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  Progress fields=4 [0]=null [1]=2 [2]=1 [3]=0 [4]=1
+  ActionStart fields=3 [1]=RegisterUser [3]=""
+  ActionStart fields=3 [1]=RegisterProduct [3]=""
+  ActionStart fields=3 [1]=PublishFeatures [3]=""
+  ActionStart fields=3 [1]=PublishProduct [3]=""
+  ActionStart fields=3 [1]=InstallFinalize [3]=""
+  Progress fields=4 [0]=null [1]=0 [2]=2972184 [3]=0 [4]=0
+  ActionStart fields=2 [1]=ProcessComponents [3]=""
+  ActionStart fields=2 [1]=RemoveFiles [3]=""
+  Progress fields=4 [0]=null [1]=1 [2]=175000 [3]=1 [4]=0
+  Progress fields=2 [0]=null [1]=2 [2]=0
+  ActionData fields=9 [0]=null [1]=a.tmp [2]=null [3]=null [4]=null [5]=null [6]=null [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=2 [0]=null [1]=2 [2]=0
+  ActionData fields=9 [0]=null [1]=b.tmp [2]=null [3]=null [4]=null [5]=null [6]=null [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=2 [0]=null [1]=2 [2]=0
+  ActionData fields=9 [0]=null [1]=1.log [2]=null [3]=null [4]=null [5]=null [6]=null [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=2 [0]=null [1]=2 [2]=0
+  ActionData fields=9 [0]=null [1]=longname.dat [2]=null [3]=null [4]=null [5]=null [6]=null [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=1 [2]=175000 [3]=1 [4]=0
+  Progress fields=2 [0]=null [1]=2 [2]=0
+  ActionData fields=1 [0]=null [1]=<work>\t\AppDir\emptyd\
+  ActionStart fields=2 [1]=CreateFolders [3]=""
+  ActionData fields=1 [0]=null [1]=<work>\t\AppDir\made\
+  ActionStart fields=2 [1]=MoveFiles [3]=""
+  Progress fields=4 [0]=null [1]=1 [2]=1 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=renamed.xls [2]=null [3]=null [4]=null [5]=null [6]=5 [7]=null [8]=null [9]=<work>\t\mvdst\
+  Progress fields=4 [0]=null [1]=2 [2]=5 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=b.xls [2]=null [3]=null [4]=null [5]=null [6]=5 [7]=null [8]=null [9]=<work>\t\mvdst\
+  Progress fields=4 [0]=null [1]=2 [2]=5 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=c2.txt [2]=null [3]=null [4]=null [5]=null [6]=5 [7]=null [8]=null [9]=<work>\t\mvdst\
+  Progress fields=4 [0]=null [1]=2 [2]=5 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=single.dat [2]=null [3]=null [4]=null [5]=null [6]=10 [7]=null [8]=null [9]=<work>\t\mvdst\
+  Progress fields=4 [0]=null [1]=2 [2]=10 [3]=0 [4]=0
+  ActionStart fields=2 [1]=InstallFiles [3]=""
+  Progress fields=4 [0]=null [1]=1 [2]=1 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=new.txt [2]=null [3]=null [4]=null [5]=null [6]=13 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=13 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=vup.dll [2]=null [3]=null [4]=null [5]=null [6]=6731 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=6731 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=compup.txt [2]=null [3]=null [4]=null [5]=null [6]=16 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=16 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=lkeep.dll [2]=null [3]=null [4]=null [5]=null [6]=6731 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=6731 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=lrepl.dll [2]=null [3]=null [4]=null [5]=null [6]=6731 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=6731 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=usame.txt [2]=null [3]=null [4]=null [5]=null [6]=15 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=15 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=uold.txt [2]=null [3]=null [4]=null [5]=null [6]=14 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=14 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=hsame.txt [2]=null [3]=null [4]=null [5]=null [6]=15 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=15 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=vu.dll [2]=null [3]=null [4]=null [5]=null [6]=6731 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=6731 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=attr.txt [2]=null [3]=null [4]=null [5]=null [6]=14 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=14 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=loose.txt [2]=null [3]=null [4]=null [5]=null [6]=15 [7]=null [8]=null [9]=<work>\t\AppDir\
+  Progress fields=4 [0]=null [1]=2 [2]=15 [3]=0 [4]=0
+  ActionData fields=9 [0]=null [1]=lvital.txt [2]=null [3]=null [4]=null [5]=null [6]=16 [7]=null [8]=null [9]=<work>\t\AppDir\
+  ActionStart fields=2 [1]=Rollback [3]=""
+install -> 1603
+== tree after install
+  D AppDir
+  F AppDir\1.log attrs=0x0 mark=x
+  F AppDir\12.log attrs=0x0 mark=x
+  F AppDir\a.tmp attrs=0x0 mark=x
+  F AppDir\b.tmp attrs=0x0 mark=x
+  F AppDir\compup.txt attrs=0x0 mark=compup_old
+  D AppDir\emptyd
+  F AppDir\gone.dat attrs=0x0 mark=x
+  F AppDir\heq.txt attrs=0x0 mark=heq_old
+  F AppDir\hne.txt attrs=0x0 mark=hne_old
+  F AppDir\hsame.txt attrs=0x0 mark=hsame_old
+  F AppDir\keep.dat attrs=0x0 mark=x
+  F AppDir\lkeep.dll attrs=0x0 mark=lkeep_old
+  F AppDir\longname.dat attrs=0x0 mark=x
+  F AppDir\lrepl.dll attrs=0x0 mark=lrepl_old
+  F AppDir\short~1.dat attrs=0x0 mark=x
+  F AppDir\umod.txt attrs=0x0 mark=umod_old
+  F AppDir\uold.txt attrs=0x0 mark=uold_old
+  F AppDir\usame.txt attrs=0x0 mark=usame_old
+  F AppDir\uv.txt attrs=0x0 mark=uv_old
+  F AppDir\vdown.dll attrs=0x0 mark=vdown_old
+  F AppDir\veq.dll attrs=0x0 mark=veq_old
+  F AppDir\vu.dll attrs=0x0 mark=vu_old
+  F AppDir\vup.dll attrs=0x0 mark=vup_old
+  D mvsrc
+  F mvsrc\a.xls attrs=0x0 mark=a.xls
+  F mvsrc\b.xls attrs=0x0 mark=b.xls
+  F mvsrc\c.txt attrs=0x0 mark=c.txt
+  F mvsrc\d.txt attrs=0x0 mark=d.txt
+  F mvsrc\single.dat attrs=0x0 mark=single.dat

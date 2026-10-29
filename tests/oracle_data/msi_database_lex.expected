@@ -1,0 +1,59 @@
+mk open=0 exec=0
+i1 open=0 exec=0
+i2 open=0 exec=0
+tab open=1615
+tab lasterr [4]~|2237|lex.msi|SELECT\x0009`B` FROM `U`|
+cr open=1615
+cr lasterr [4]~|2237|lex.msi|SELECT\x000d`B` FROM `U`|
+lf open=1615
+lf lasterr [4]~|2237|lex.msi|SELECT\x000a`B` FROM `U`|
+crlf open=1615
+crlf lasterr [4]~|2238|lex.msi|SELECT `B`\x000d\x000aFROM `U`|
+nospace row [1]#|a
+nospace end=259 rows=1
+op-nospace row [1]#|b b
+op-nospace end=259 rows=1
+op-space row [1]#|b b
+op-space end=259 rows=1
+ne-bang open=1615
+ne-bang lasterr [4]~|2236|lex.msi|!|SELECT `B` FROM `U` WHERE `A` != 2
+neg row [1]#|a
+neg row [1]#|b b
+neg end=259 rows=2
+neg-space open=1615
+neg-space lasterr [4]~|2237|lex.msi|SELECT `B` FROM `U` WHERE `A` > - 1|
+str-space row [1]#|2
+str-space end=259 rows=1
+str-unterminated open=1615
+str-unterminated lasterr [4]~|2232|lex.msi||SELECT `A` FROM `U` WHERE `B` = 'b
+ident-unterminated open=1615
+ident-unterminated lasterr [4]~|2238|lex.msi|SELECT `A FROM `U`|
+ident-space open=1615
+ident-space lasterr [4]~|2235|lex.msi| A|SELECT ` A` FROM `U`
+bare-under open=1615
+bare-under lasterr [4]~|2235|lex.msi|_A|SELECT A FROM U WHERE _A = 1
+semicolon-mid open=1615
+semicolon-mid lasterr [4]~|2237|lex.msi|SELECT `A`; FROM `U`|
+kw-table-bare row [1]#|1
+kw-table-bare row [1]#|2
+kw-table-bare end=259 rows=2
+null-literal end=259 rows=0
+is-null-lower row [1]#|1
+is-null-lower row [1]#|2
+is-null-lower end=259 rows=2
+leading-zero row [1]#|a
+leading-zero end=259 rows=1
+big row [1]#|a
+big end=259 rows=1
+qual-bad-table open=1615
+qual-bad-table lasterr [4]~|2228|lex.msi|X|SELECT `X`.`A` FROM `U`
+colinfo-const exec=1627
+colinfo-const lasterr [4]~|2208|lex.msi||
+ci-const names rc=0 [3]~|~|~|A
+ci-const types rc=0 [3]~|f1|h4|i2
+fetch0 0 handle=set
+fetch1 0 handle=set
+fetch2 259 handle=0
+fetch3 0 handle=set
+fetch4 0 handle=set
+fetch5 259 handle=0

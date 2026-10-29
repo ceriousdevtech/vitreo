@@ -1,0 +1,120 @@
+=== mip32def
+mode=def ptrsize=4
+sizeof_POINTER_INFO=88 off_sourceDevice=16 off_hwndTarget=20 off_ptPixelLocation=24 off_dwTime=56 off_PerformanceCount=72 off_ButtonChangeType=80
+== state
+IsMouseInPointerEnabled_before=0
+GetPointerInfo(1)_before_messages ok=0 err=87
+GetPointerType(1)_before_messages ok=1 type=4 err=0
+EnableMouseInPointer(TRUE) ret=1 err=0
+IsMouseInPointerEnabled_after=1
+EnableMouseInPointer(TRUE)_again ret=1 err=0
+EnableMouseInPointer(FALSE)_after ret=0 err=5
+EnableMouseInPointer(5)_after ret=0 err=87
+IsMouseInPointerEnabled_final=1
+WM_MOUSEMOVE w=0x0 x=390 y=290 extra=0x0
+== move_into_window
+WM_MOUSEMOVE w=0x0 x=100 y=100 extra=0x0
+== move_relative
+WM_POINTERUPDATE w=0x20020001 x_client=109 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x22002 srcdev=nonzero target=self px=109 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8176 hy=8070 sx=309 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x0 perf=nonzero change=0 frame_delta=196
+WM_MOUSEMOVE w=0x0 x=109 y=105 extra=0x0
+== left_down
+WM_POINTERDOWN w=0x20160001 x_client=109 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x12016 srcdev=nonzero target=self px=109 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8176 hy=8070 sx=309 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x1 perf=nonzero change=1 frame_delta=1
+WM_LBUTTONDOWN w=0x1 x=109 y=105 extra=0x0
+== move_while_down
+WM_POINTERUPDATE w=0x160001 x_client=112 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x20016 srcdev=nonzero target=self px=112 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8255 hy=8070 sx=312 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x1 perf=nonzero change=0 frame_delta=1
+WM_MOUSEMOVE w=0x1 x=112 y=105 extra=0x0
+== left_up
+WM_POINTERUP w=0x20001 x_client=112 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x40002 srcdev=nonzero target=self px=112 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8255 hy=8070 sx=312 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x0 perf=nonzero change=2 frame_delta=1
+WM_LBUTTONUP w=0x0 x=112 y=105 extra=0x0
+== right_down
+WM_POINTERDOWN w=0x20260001 x_client=112 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x12026 srcdev=nonzero target=self px=112 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8255 hy=8070 sx=312 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x2 perf=nonzero change=3 frame_delta=1
+WM_RBUTTONDOWN w=0x2 x=112 y=105 extra=0x0
+== right_up
+WM_POINTERUP w=0x20001 x_client=112 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x40002 srcdev=nonzero target=self px=112 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8255 hy=8070 sx=312 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x0 perf=nonzero change=4 frame_delta=1
+WM_RBUTTONUP w=0x0 x=112 y=105 extra=0x0
+WM_CONTEXTMENU w=0xa001c x_client=112 y_client=105 extra=0x0
+== wheel_plus_120
+WM_POINTERWHEEL w=0x780001 x_client=112 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x82002 srcdev=nonzero target=self px=112 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8255 hy=8070 sx=312 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=120 keys=0x0 perf=nonzero change=0 frame_delta=1
+WM_MOUSEWHEEL w=0x780000 x_client=112 y_client=105 extra=0x0
+== hwheel_minus_120
+WM_POINTERHWHEEL w=0xff880001 x_client=112 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x102002 srcdev=nonzero target=self px=112 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8255 hy=8070 sx=312 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=-120 keys=0x0 perf=nonzero change=0 frame_delta=1
+WM_MOUSEHWHEEL w=0xff880000 x_client=112 y_client=105 extra=0x0
+== after_messages
+GetPointerInfo(last)_outside_message ok=1 err=0
+GetPointerInfo(0x7777) ok=0 err=87
+GetPointerType(0x7777) ok=0 type=0 err=87
+GetPointerType(last,NULL) ok=0 err=87
+== move_out_of_window
+== done
+=== mip32eat
+mode=eat ptrsize=4
+sizeof_POINTER_INFO=88 off_sourceDevice=16 off_hwndTarget=20 off_ptPixelLocation=24 off_dwTime=56 off_PerformanceCount=72 off_ButtonChangeType=80
+== state
+IsMouseInPointerEnabled_before=0
+GetPointerInfo(1)_before_messages ok=0 err=87
+GetPointerType(1)_before_messages ok=1 type=4 err=0
+EnableMouseInPointer(TRUE) ret=1 err=0
+IsMouseInPointerEnabled_after=1
+EnableMouseInPointer(TRUE)_again ret=1 err=0
+EnableMouseInPointer(FALSE)_after ret=0 err=5
+EnableMouseInPointer(5)_after ret=0 err=87
+IsMouseInPointerEnabled_final=1
+WM_MOUSEMOVE w=0x0 x=390 y=290 extra=0x0
+WM_MOUSEMOVE w=0x0 x=390 y=290 extra=0x0
+== move_into_window
+WM_MOUSEMOVE w=0x0 x=100 y=100 extra=0x0
+== move_relative
+WM_POINTERUPDATE w=0x20020001 x_client=110 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x22002 srcdev=nonzero target=self px=110 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8202 hy=8070 sx=310 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x0 perf=nonzero change=0 frame_delta=204
+== left_down
+WM_POINTERDOWN w=0x20160001 x_client=110 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x12016 srcdev=nonzero target=self px=110 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8202 hy=8070 sx=310 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x1 perf=nonzero change=1 frame_delta=1
+== move_while_down
+WM_POINTERUPDATE w=0x20160001 x_client=113 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x22016 srcdev=nonzero target=self px=113 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8281 hy=8070 sx=313 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x1 perf=nonzero change=0 frame_delta=1
+== left_up
+WM_POINTERUP w=0x20020001 x_client=113 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x42002 srcdev=nonzero target=self px=113 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8281 hy=8070 sx=313 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x0 perf=nonzero change=2 frame_delta=1
+== right_down
+WM_POINTERDOWN w=0x20260001 x_client=113 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x12026 srcdev=nonzero target=self px=113 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8281 hy=8070 sx=313 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x2 perf=nonzero change=3 frame_delta=1
+== right_up
+WM_POINTERUP w=0x20020001 x_client=113 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x42002 srcdev=nonzero target=self px=113 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8281 hy=8070 sx=313 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=0 keys=0x0 perf=nonzero change=4 frame_delta=1
+== wheel_plus_120
+WM_POINTERWHEEL w=0x780001 x_client=113 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x82002 srcdev=nonzero target=self px=113 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8281 hy=8070 sx=313 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=120 keys=0x0 perf=nonzero change=0 frame_delta=1
+== hwheel_minus_120
+WM_POINTERHWHEEL w=0xff880001 x_client=113 y_client=105 extra=0x0
+    GetPointerType ok=1 type=4 err=0
+    GetPointerInfo ok=1 type=4 id=1 flags=0x102002 srcdev=nonzero target=self px=113 py=105 raw_eq_pred=1 himetric_eq_raw=1 hx=8281 hy=8070 sx=313 sy=305 srcdev_rawtype=-1 time_eq_msgtime=1 history=1 input=-120 keys=0x0 perf=nonzero change=0 frame_delta=1
+== after_messages
+GetPointerInfo(last)_outside_message ok=1 err=0
+GetPointerInfo(0x7777) ok=0 err=87
+GetPointerType(0x7777) ok=0 type=0 err=87
+GetPointerType(last,NULL) ok=0 err=87
+== move_out_of_window
+== done

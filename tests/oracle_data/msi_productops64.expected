@@ -1,0 +1,315 @@
+bitness 64
+make_msi 0
+version k32-both ret=0 vc=14 lc=4 v="6.2.26100.9711" l="1033"
+version k32-vonly ret=0 vc=14 lc=0 v="6.2.26100.9711" l="####################"
+version k32-lonly ret=0 vc=0 lc=4 v="####################" l="1033"
+version k32-vsize-query ret=0 vc=14 lc=0 v="####################" l="####################"
+version k32-lsize-query ret=0 vc=0 lc=4 v="####################" l="####################"
+version k32-vcap1 ret=234 vc=14 lc=0 v="" l="####################"
+version k32-vcap0 ret=234 vc=14 lc=0 v="####################" l="####################"
+version k32-vcap5 ret=234 vc=14 lc=0 v="6.2." l="####################"
+version k32-lcap2 ret=234 vc=0 lc=4 v="####################" l="1"
+version k32-buf-nopcch ret=87 vc=64 lc=0 v="####################" l="####################"
+version k32-none ret=0 vc=0 lc=0 v="####################" l="####################"
+version text ret=1006 vc=64 lc=64 v="####################" l="####################"
+version text-lonly ret=1006 vc=0 lc=64 v="####################" l="####################"
+version empty ret=1006 vc=64 lc=64 v="####################" l="####################"
+version missing ret=2 vc=64 lc=64 v="####################" l="####################"
+version missing-dir ret=2 vc=64 lc=64 v="####################" l="####################"
+version directory ret=2 vc=64 lc=64 v="####################" l="####################"
+version null ret=87 vc=64 lc=64 v="####################" l="####################"
+version emptypath ret=2 vc=64 lc=64 v="####################" l="####################"
+version font ret=0 vc=7 lc=0 v="7.6.0.0" l=""
+version font-lonly ret=0 vc=0 lc=0 v="####################" l=""
+version msiexec ret=0 vc=14 lc=4 v="5.0.26100.9711" l="1033"
+version shell32 ret=0 vc=14 lc=4 v="6.2.26100.9711" l="1033"
+version ntdll ret=0 vc=14 lc=4 v="6.2.26100.9711" l="1033"
+versionA k32 ret=0 vc=14 lc=4 v="6.2.26100.9711" l="1033"
+versionA k32-cap3 ret=234 vc=14 lc=4 v="6." l="1033"
+hash abc ret=0 size=20 parts=98500190 b04fd23c 7d3f96d6 727fe128
+hash empty ret=0 size=20 parts=00000000 00000000 00000000 00000000
+hash text ret=0 size=20 parts=a81d8a17 2c37084f a58a7684 7808cb87
+hash k32 ret=0 size=20 parts=38a5c1f5 316a9220 a0e8dd7a ca31cfec
+hash abc-opt1 ret=87 size=20 parts=cccccccc cccccccc cccccccc cccccccc
+hash abc-size0 ret=87 size=0 parts=cccccccc cccccccc cccccccc cccccccc
+hash abc-size24 ret=87 size=24 parts=cccccccc cccccccc cccccccc cccccccc
+hash abc-size16 ret=87 size=16 parts=cccccccc cccccccc cccccccc cccccccc
+hash abc-nullinfo ret=87 size=20 parts=cccccccc cccccccc cccccccc cccccccc
+hash missing ret=2 size=20 parts=cccccccc cccccccc cccccccc cccccccc
+hash missing-dir ret=3 size=20 parts=cccccccc cccccccc cccccccc cccccccc
+hash directory ret=5 size=20 parts=cccccccc cccccccc cccccccc cccccccc
+hash null ret=87 size=20 parts=cccccccc cccccccc cccccccc cccccccc
+hash emptypath ret=3 size=20 parts=cccccccc cccccccc cccccccc cccccccc
+hashA k32 ret=0 parts=38a5c1f5 316a9220 a0e8dd7a ca31cfec
+compressed product="bt06'-WRe8C$@HcTN9Cy" component="LxuJ+gtix?%rM},3Dl}E"
+decompose full ret=0 off=51 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose full-nobufs ret=0 off=51 p="########################################" f="############################################################" c="########################################"
+decompose full-nooffset ret=0 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose full-args ret=0 off=51 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose nocomp-lt ret=0 off=31 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c=""
+decompose nocomp-lt-args ret=0 off=31 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c=""
+decompose nofeature-gt ret=87 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="############################################################" c="########################################"
+decompose nofeature-lt ret=87 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="############################################################" c="########################################"
+decompose unterminated ret=87 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne##################################################" c="########################################"
+decompose feature1 ret=0 off=42 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="F" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose feature-guidlike ret=87 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}######################" c="########################################"
+decompose shortcomp ret=87 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c="########################################"
+decompose short ret=87 off=3735928559 p="########################################" f="############################################################" c="########################################"
+decompose empty ret=87 off=3735928559 p="########################################" f="############################################################" c="########################################"
+decompose null ret=87 off=3735928559 p="########################################" f="############################################################" c="########################################"
+alphabet pos0 ok=85
+alphabet pos1 ok=85
+alphabet pos2 ok=85
+alphabet pos3 ok=85
+decompose allones ret=0 off=42 p="{FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF}" f="X" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose allzero ret=0 off=42 p="{00000000-0000-0000-0000-000000000000}" f="X" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose overflow ret=0 off=42 p="{08780EC4-4E5F-4071-8293-A4B5C6D7E8F9}" f="X" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose badchar ret=87 off=3735928559 p="########################################" f="############################################################" c="########################################"
+decompose trail ret=0 off=45 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="Feat" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose lt-in-feature ret=0 off=23 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="Fe" c=""
+decompose two-gt ret=87 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="Fe" c="########################################"
+decompose feature38 ret=0 off=79 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose feature39 ret=87 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF######################" c="########################################"
+decompose feature38-lt ret=0 off=59 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" c=""
+decompose feature-nonascii ret=0 off=43 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="F\u00e9" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+decompose product-nonascii ret=87 off=3735928559 p="#0D1C2B3A###############################" f="############################################################" c="########################################"
+decomposeA ret=0 off=51 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+lnk adddatablock 00000000 size=788
+lnk save 00000000
+lnk save 00000000
+shortcut darwin ret=0 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c="{1A2B3C4D-5E6F-4A7B-8C9D-0E1F2A3B4C5D}"
+shortcut darwin-nobufs ret=0 p="########################################" f="############################################################" c="########################################"
+shortcut darwin-prodonly ret=0 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="############################################################" c="########################################"
+shortcut plain ret=1627 p="########################################" f="############################################################" c="########################################"
+shortcut text ret=1627 p="########################################" f="############################################################" c="########################################"
+shortcut missing ret=1627 p="########################################" f="############################################################" c="########################################"
+shortcut null ret=1627 p="########################################" f="############################################################" c="########################################"
+lnk adddatablock 00000000 size=788
+lnk save 00000000
+shortcut darwin-nocomp ret=0 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="FeatureOne" c=""
+darwin-lnk size=1618
+loadstring id1-neutral ret=1252 err=0 b="English one"
+loadstring id1-enus ret=1252 err=57005 b="English one"
+loadstring id1-de ret=1252 err=122 b="English one"
+loadstring id2-enus ret=1252 err=57005 b="English two"
+loadstring id2-de ret=1252 err=0 b="Deutsch zwei"
+loadstring id2-fr ret=1252 err=0 b="English two"
+loadstring id1-cap4 ret=1252 err=122 b="Eng"
+loadstring id1-cap1 ret=1252 err=122 b=""
+loadstring id1-cap0 ret=0 err=57005 b="##############################"
+loadstring id3-empty ret=0 err=122 b="##############################"
+loadstring id99-missing ret=0 err=122 b="##############################"
+loadstring id17-otherblock ret=1252 err=122 b="Seventeen"
+loadstringA id1 ret=1252 a="English one"
+loadstringA id1-cap4 ret=1252 a=""
+verify null 87
+verify emptypath 1619
+verify missing 1619
+verify text 1619
+verify msi 0
+verify directory 1619
+verifyA msi 0
+install null 87
+install emptypath 3
+install missing 2
+install text 1620
+install msi 1620
+install msi-cmd 1620
+configure null 87
+configure badguid 87
+configure badguid-braces 87
+configure lowercase 1605
+configure unknown-local 1605
+configure unknown-absent 1605
+configure unknown-default 1605
+configure unknown-advertised 1605
+configure unknown-source 1605
+configure unknown-unknown 87
+configure unknown-state99 87
+configure unknown-broken 87
+configure unknown-level-1 87
+configure unknown-level65536 87
+configure unknown-level100 1605
+configureA unknown-local 1605
+configureex null 87
+configureex badguid 87
+configureex unknown 1605
+configureex unknown-state99 87
+configureex unknown-local-cmd 1605
+configfeature null 87
+configfeature nullfeature 87
+configfeature badguid 87
+configfeature unknown 1605
+configfeature unknown-state99 87
+configfeature unknown-unknownstate 87
+configfeature unknown-advertised 1605
+configfeature unknown-longfeature 87
+reinstall null 87
+reinstall badguid 87
+reinstall unknown 1605
+reinstall unknown-mode0 87
+reinstall unknown-repaironly 1605
+reinstall unknown-badbits 87
+reinstall unknown-twofile 1605
+reinstfeature null 87
+reinstfeature nullfeature 87
+reinstfeature unknown 1605
+reinstfeature unknown-mode0 87
+missingcomp null 87
+missingcomp nullcomp 87
+missingcomp badcomp 87
+missingcomp unknown 1605
+missingcomp unknown-absent 87
+missingcomp unknown-default 1605
+missingcomp unknown-source 1605
+missingcomp unknown-state99 87
+missingfile null 87
+missingfile nullfile 87
+missingfile unknown 1605
+missingfile badguid 87
+collect null 87
+collect badguid 87
+collect unknown 1605
+cffd null 87
+cffd bad 87
+cffd unknown 1605
+cffd unknown-state99 87
+rffd null 87
+rffd bad 87
+rffd unknown 1605
+rffd unknown-mode0 87
+advertise null 87
+advertise missing 2
+advertise text 1620
+advertise msi-machine 1620
+advertise msi-user 1620
+advertise msi-script 1620
+advertise missing-script 2
+advertiseex null 87
+advertiseex missing-script 2
+advertiseex missing-script-badplatform 87
+advertiseex missing-script-twoplatform 87
+advertiseex missing-script-badoption 87
+advertiseex missing-script-instance 87
+advertiseex missing-local-platform 87
+advertiseex missing-local-instance 87
+advertiseex missing-machine 2
+advscript null 5
+advscript missing 5
+advscript text 5
+advscript text-badflags 5
+procadv null 87
+procadv missing 5
+procadv text 5
+applypatch null 87
+applypatch missing 1636
+applypatch text 1636
+applypatch msi 1636
+applypatch missing-type5 87
+applypatch missing-netimage-nopkg 87
+applypatch missing-single-nopkg 87
+applypatch missing-single-unknown 1636
+applymulti null 87
+applymulti empty 87
+applymulti missing 2
+applymulti missing-unknown 1605
+applymulti missing-badguid 87
+applymulti text 1636
+removepatches null 87
+removepatches nullproduct 87
+removepatches default 87
+removepatches unknown 1605
+removepatches badguid 87
+removepatches empty 87
+xml null 87
+xml missing 2 cch=256
+xml text 1636 cch=256
+xml msi 1636 cch=256
+xml msi-reserved 87 cch=256
+xml msi-buf-nopcch 87
+xml msi-nobuf 1636 cch=256
+applicable nullpkg 87
+applicable zero 87
+applicable nullinfo 87
+applicable missingpkg 110 o0=-1 s0=0 o1=-1 s1=0
+applicable textpkg 110 o0=-1 s0=0 o1=-1 s1=0
+applicable msipkg 1620 o0=-1 s0=0 o1=-1 s1=0
+applicable badtype 1620 o0=-1 s0=0 o1=-1 s1=0
+applicable badxml 1620 o0=-1 s0=0 o1=-1 s1=0
+sequence unknown-machine 1605 o0=-1 s0=0
+sequence unknown-user 1605
+sequence unknown-machine-sid 87
+sequence unknown-all 87
+sequence unknown-ctx8 87
+sequence null 87
+sequence badguid 87
+sequence zero 87
+filelist null 0
+filelist nullpatch 0
+filelist nullcount 0
+filelist nullrecs 0
+filelist unknown 0 n=0 ph=null
+filelist badguid 0 n=0
+filelist text 0 n=0 ph=null
+signature text hr=8007065b cert=null cb=128
+signature missing hr=80092003 cert=null cb=128
+signature k32 hr=800700ea cert=null cb=256
+signature defender hr=800700ea cert=null cb=256
+signature defender-nohash hr=80070057 cert=untouched cb=0
+signature defender-sizequery hr=00000000 cert=set cb=0 subject="Microsoft Windows Publisher" enc=1
+signature defender-cap4 hr=800700ea cert=null cb=256
+signature defender-fatal hr=800700ea cert=null cb=256
+signature defender-flag2 hr=80070057 cert=untouched cb=128
+signature null hr=80070057 cert=untouched cb=128
+signature unsigned-pe hr=800b0100 cert=null cb=128
+version self-multilang ret=0 vc=7 lc=11 v="1.2.3.4" l="0,1031,1033"
+version self-lcap3 ret=234 vc=7 lc=11 v="1.2.3.4" l="0,"
+signature nullcert hr=80070057
+begin null 87
+begin nullhandle 87
+begin nullevent 87
+begin badattr 87
+end none-rollback 5
+end none-commit 5
+end none-bad 87
+begin ok 0 handle=set event=set
+event signaled-now 258
+begin second 1618
+join own 0
+join bad 6
+join zero 6
+join nullevent 87
+join badattr 87
+end bad 87
+end rollback 0
+end again 5
+closehandle 6
+begin chain-ui 0
+end commit 0
+beginA ok 0
+invalidatefeaturecache returned
+createinstallerdir 0 0
+createinstallerdir 1 87
+notifysid null 87
+notifysid nullnew 87
+migrate null 0
+migrate badguid 0
+migrate unknown 0
+migrate unknown-everyone 0
+dllgetversion v1 hr=00000000 5.0.10011 platform=2
+dllgetversion v2 hr=00000000 5.0.10011 platform=2 flags=cccccccc qfe=cccccccccccccccc
+dllgetversion size0 hr=80004005 major=cccccccc
+dllgetversion size24 hr=00000000
+dllgetversion size16 hr=80004005 major=cccccccc
+dllgetversion size17 hr=80004005 major=cccccccc
+dllgetversion size18 hr=80004005 major=cccccccc
+dllgetversion size19 hr=80004005 major=cccccccc
+dllgetversion size20 hr=00000000 major=00000005
+dllgetversion size21 hr=00000000 major=00000005
+msi.dll file version 5.0.26100.9711
+dllcanunloadnow hr=00000001
+dllgetclassobject installer hr=00000000 obj=set
+dllgetclassobject bogus hr=80040111 obj=null
+dllcanunloadnow after hr=00000001
+decompose longfeature ret=87 off=3735928559 p="{0D1C2B3A-4E5F-4071-8293-A4B5C6D7E8F9}" f="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA######################" c="########################################"
+done

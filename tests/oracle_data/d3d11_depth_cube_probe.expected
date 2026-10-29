@@ -1,0 +1,8 @@
+D32 cube DS                              hr=0x00000000
+R32_TYPELESS cube DS|SRV                 hr=0x00000000
+R24G8_TYPELESS cube DS|SRV               hr=0x00000000
+R32_TYPELESS cube array (12) DS|SRV      hr=0x00000000
+DSV face 2                               hr=0x00000000
+DSV all faces                            hr=0x00000000
+DSV NULL desc                            hr=0x80070057
+SRV TEXTURECUBE R32_FLOAT                hr=0x00000000

@@ -1,0 +1,30 @@
+bitness=32
+== flags
+zero SetSearchPathMode(0x0) -> 0 err=87
+permanent-alone SetSearchPathMode(0x8000) -> 0 err=87
+enable-disable SetSearchPathMode(0x10001) -> 0 err=87
+disable-permanent SetSearchPathMode(0x18000) -> 0 err=87
+unknown-bit SetSearchPathMode(0x3) -> 0 err=87
+high-bit SetSearchPathMode(0x80000001) -> 0 err=87
+enable SetSearchPathMode(0x1) -> 1 err=0
+enable-again SetSearchPathMode(0x1) -> 1 err=0
+disable SetSearchPathMode(0x10000) -> 1 err=0
+disable-again SetSearchPathMode(0x10000) -> 1 err=0
+== order
+default SearchPath -> cwd
+default SearchPath(xcopy.exe) -> cwd
+enable SetSearchPathMode(0x1) -> 1 err=0
+safe SearchPath -> cwd
+safe SearchPath(xcopy.exe) -> system
+disable SetSearchPathMode(0x10000) -> 1 err=0
+unsafe SearchPath -> cwd
+unsafe SearchPath(xcopy.exe) -> cwd
+== permanent
+enable-permanent SetSearchPathMode(0x8001) -> 1 err=0
+after-permanent SearchPath -> cwd
+after-permanent SearchPath(xcopy.exe) -> system
+enable SetSearchPathMode(0x1) -> 0 err=5
+enable-permanent-again SetSearchPathMode(0x8001) -> 1 err=0
+disable SetSearchPathMode(0x10000) -> 0 err=5
+zero SetSearchPathMode(0x0) -> 0 err=87
+still SearchPath -> cwd

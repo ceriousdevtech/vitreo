@@ -1,0 +1,152 @@
+query_heap CreateQueryHeap(OCCLUSION, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(OCCLUSION, 1): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(OCCLUSION, 65536): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(TIMESTAMP, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(TIMESTAMP, 1): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(TIMESTAMP, 65536): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(PIPELINE_STATISTICS, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(PIPELINE_STATISTICS, 1): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(PIPELINE_STATISTICS, 65536): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(SO_STATISTICS, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(SO_STATISTICS, 1): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(SO_STATISTICS, 65536): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(VIDEO_DECODE_STATISTICS, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(VIDEO_DECODE_STATISTICS, 1): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(VIDEO_DECODE_STATISTICS, 65536): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(COPY_QUEUE_TIMESTAMP, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(COPY_QUEUE_TIMESTAMP, 1): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(COPY_QUEUE_TIMESTAMP, 65536): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(type6, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(type6, 1): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(type6, 65536): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(PIPELINE_STATISTICS1, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(PIPELINE_STATISTICS1, 1): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(PIPELINE_STATISTICS1, 65536): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(type8, 0): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(type8, 1): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(type8, 65536): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(NodeMask 1): 0x00000000 S_OK out=obj
+query_heap CreateQueryHeap(NodeMask 2): 0x80070057 E_INVALIDARG out=NULL
+query_heap CreateQueryHeap(ppv NULL): 0x8000ffff E_UNEXPECTED
+query_heap CreateQueryHeap(riid Resource): 0x80004002 E_NOINTERFACE out=NULL
+query_heap end: GetDeviceRemovedReason 0x00000000 S_OK
+occlusion record+execute: 0x00000000 S_OK
+occlusion dword 0-1 before the resolve offset (untouched): 0
+occlusion [0] OCCLUSION 4x4 quad: 16
+occlusion [1] BINARY_OCCLUSION 4x4 quad: 16
+occlusion [2] OCCLUSION full quad, empty scissor: 0
+occlusion [3] OCCLUSION nothing drawn: 0
+occlusion [4] BINARY_OCCLUSION nothing drawn: 0
+occlusion [5] OCCLUSION 4x4 + 2x2: 20
+occlusion [0] resolved as BINARY_OCCLUSION at 200: 1
+occlusion second list: 0x00000000 S_OK
+occlusion [0] reused for the full quad: 4
+occlusion [1] resolved again from the first list's data: 16
+occlusion end: GetDeviceRemovedReason 0x00000000 S_OK
+timestamp record+execute: 0x00000000 S_OK
+timestamp t0 nonzero, t1 >= t0: 1 1
+timestamp t0 within the calibration bracket [gpu before, gpu after]: 1
+# timestamp frequency / t0 / t1: 10000000 7269218974110 7269218974125
+timestamp CreateQueryHeap(COPY_QUEUE_TIMESTAMP): 0x00000000 S_OK
+timestamp OPTIONS3.CopyQueueTimestampQueriesSupported: 0x00000000 S_OK 1
+timestamp COPY list with a TIMESTAMP EndQuery: Close: 0x00000000 S_OK
+timestamp COPY queue drained: 1
+timestamp COPY queue timestamp nonzero: 1
+timestamp COPY queue GetTimestampFrequency == DIRECT's: 0x00000000 S_OK 1
+timestamp EndQuery(TIMESTAMP, index 4 of 4): Close: 0x80070057 E_INVALIDARG
+timestamp end: GetDeviceRemovedReason 0x00000000 S_OK
+pipestats record+execute: 0x00000000 S_OK
+pipestats draws (6 verts x1 + 6 verts x2) IAVertices IAPrimitives CInvocations CPrimitives: 18 6 6 6
+pipestats draws (6 verts x1 + 6 verts x2) PSInvocations >= covered pixels (24): 1
+# pipestats draws (6 verts x1 + 6 verts x2) PSInvocations: 40
+pipestats draws (6 verts x1 + 6 verts x2) GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 0
+pipestats draws (6 verts x1 + 6 verts x2) VSInvocations: nonzero=1
+# pipestats draws (6 verts x1 + 6 verts x2) VSInvocations: 18 (vertex-cache dependent)
+pipestats dispatch (3,2,1) x 2 threads IAVertices IAPrimitives CInvocations CPrimitives: 0 0 0 0
+pipestats dispatch (3,2,1) x 2 threads PSInvocations >= covered pixels (0): 1
+# pipestats dispatch (3,2,1) x 2 threads PSInvocations: 0
+pipestats dispatch (3,2,1) x 2 threads GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 12
+pipestats dispatch (3,2,1) x 2 threads VSInvocations: nonzero=0
+# pipestats dispatch (3,2,1) x 2 threads VSInvocations: 0 (vertex-cache dependent)
+pipestats threads counted by the shader: 12
+pipestats end: GetDeviceRemovedReason 0x00000000 S_OK
+predication DrawInstanced: none / EQ0(v=0) / EQ0(v=1) / NE0(v=0) / NE0(v=1) / EQ0(v=1<<32): performed / skipped / performed / performed / skipped / performed
+predication DrawIndexedInstanced: none / EQ0(v=0) / EQ0(v=1) / NE0(v=0) / NE0(v=1) / EQ0(v=1<<32): performed / skipped / performed / performed / skipped / performed
+predication Dispatch: none / EQ0(v=0) / EQ0(v=1) / NE0(v=0) / NE0(v=1) / EQ0(v=1<<32): performed / skipped / performed / performed / skipped / performed
+predication ClearRenderTargetView: none / EQ0(v=0) / EQ0(v=1) / NE0(v=0) / NE0(v=1) / EQ0(v=1<<32): performed / skipped / performed / performed / skipped / performed
+predication ClearUnorderedAccessViewUint: none / EQ0(v=0) / EQ0(v=1) / NE0(v=0) / NE0(v=1) / EQ0(v=1<<32): performed / skipped / performed / performed / skipped / performed
+predication CopyBufferRegion: none / EQ0(v=0) / EQ0(v=1) / NE0(v=0) / NE0(v=1) / EQ0(v=1<<32): performed / skipped / performed / performed / skipped / performed
+predication CopyResource: none / EQ0(v=0) / EQ0(v=1) / NE0(v=0) / NE0(v=1) / EQ0(v=1<<32): performed / skipped / performed / performed / skipped / performed
+predication ExecuteIndirect(dispatch): none / EQ0(v=0) / EQ0(v=1) / NE0(v=0) / NE0(v=1) / EQ0(v=1<<32): performed / skipped / performed / performed / skipped / performed
+predication SetPredication(offset 4): Close: 0x80070057 E_INVALIDARG
+predication SetPredication(op 2): Close: 0x80070057 E_INVALIDARG
+predication SetPredication(UPLOAD buffer): Close: 0x00000000 S_OK
+predication end: GetDeviceRemovedReason 0x00000000 S_OK
+indirect_sig DISPATCH stride 12: 0x00000000 S_OK out=obj
+indirect_sig DISPATCH stride 8: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig DISPATCH stride 14: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig DISPATCH stride 16: 0x00000000 S_OK out=obj
+indirect_sig DISPATCH stride 12 with a root signature: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig DISPATCH NodeMask 2: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig 0 arguments: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig DRAW stride 16: 0x00000000 S_OK out=obj
+indirect_sig DRAW stride 12: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig DRAW_INDEXED stride 20: 0x00000000 S_OK out=obj
+indirect_sig DRAW_INDEXED stride 24: 0x00000000 S_OK out=obj
+indirect_sig DRAW + DRAW: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig DRAW + DISPATCH: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig DISPATCH then CONSTANT (dispatch not last): 0x80070057 E_INVALIDARG out=NULL
+indirect_sig CONSTANT + DISPATCH stride 16: 0x00000000 S_OK out=obj
+indirect_sig CONSTANT + DISPATCH without a root signature: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig CONSTANT + DISPATCH stride 12 (too small): 0x80070057 E_INVALIDARG out=NULL
+indirect_sig CONSTANT past the parameter's 4 values: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig CONSTANT into a root-UAV parameter: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig UNORDERED_ACCESS_VIEW + DISPATCH stride 20: 0x00000000 S_OK out=obj
+indirect_sig UNORDERED_ACCESS_VIEW into a constants parameter: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig VERTEX_BUFFER_VIEW + DRAW stride 32: 0x00000000 S_OK out=obj
+indirect_sig VERTEX_BUFFER_VIEW + DRAW with a root signature: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig VERTEX_BUFFER_VIEW slot 32 + DRAW: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig INDEX_BUFFER_VIEW + DRAW_INDEXED stride 36: 0x00000000 S_OK out=obj
+indirect_sig argument type 100: 0x80070057 E_INVALIDARG out=NULL
+indirect_sig ppv NULL: 0x8000ffff E_UNEXPECTED
+indirect_sig end: GetDeviceRemovedReason 0x00000000 S_OK
+indirect 3 dispatches (1,1,1)(2,1,1)(0,1,1), constant 0 set before: execute: 0x00000000 S_OK
+indirect 3 dispatches (1,1,1)(2,1,1)(0,1,1), constant 0 set before: threads, per-constant buckets 0..7: 6 | 6 0 0 0 0 0 0 0
+indirect 3 const+dispatch commands (3;1,1,1)(5;2,1,1)(7;1,2,1): execute: 0x00000000 S_OK
+indirect 3 const+dispatch commands (3;1,1,1)(5;2,1,1)(7;1,2,1): threads, per-constant buckets 0..7: 10 | 0 0 0 2 0 4 0 4
+indirect const+dispatch, max 3, count buffer 2: execute: 0x00000000 S_OK
+indirect const+dispatch, max 3, count buffer 2: threads, per-constant buckets 0..7: 6 | 0 0 0 2 0 4 0 0
+indirect const+dispatch, max 3, count buffer 9: execute: 0x00000000 S_OK
+indirect const+dispatch, max 3, count buffer 9: threads, per-constant buckets 0..7: 10 | 0 0 0 2 0 4 0 4
+indirect 1 dispatch at argument offset 192: execute: 0x00000000 S_OK
+indirect 1 dispatch at argument offset 192: threads, per-constant buckets 0..7: 2 | 2 0 0 0 0 0 0 0
+indirect max 0: execute: 0x00000000 S_OK
+indirect max 0: threads, per-constant buckets 0..7: 0 | 0 0 0 0 0 0 0 0
+indirect indirect draws: 0x00000000 S_OK
+indirect row 0: -
+indirect row 1: x3=v0/i0 x4=v1/i0
+indirect row 2: -
+indirect row 3: -
+indirect row 4: x10=v0/i0
+indirect row 5: x10=v0/i1
+indirect row 6: x7=v1/i0 x10=v4/i0
+indirect row 7: x12=v0/i0 x13=v2/i0 x14=v1/i0 x15=v0/i0
+indirect end: GetDeviceRemovedReason 0x00000000 S_OK
+bundles bundle 1 (full state + draw) Close: 0x00000000 S_OK
+bundles bundle 2 (inherits root signature/arguments) Close: 0x00000000 S_OK
+bundles bundle 3 (compute) Close: 0x00000000 S_OK
+bundles direct list with bundles 1+2: 0x00000000 S_OK
+bundles after bundles 1 and 2 row 0: ff00ff00 ff00ff00 ff00ff00 ff00ff00 00000000 00000000 00000000 00000000
+bundles after bundles 1 and 2 row 1: ff00ff00 ff00ff00 ff00ff00 ff00ff00 00000000 00000000 00000000 00000000
+bundles after bundles 1 and 2 row 2: ff00ff00 ff00ff00 ff00ff00 ff00ff00 00000000 00000000 00000000 00000000
+bundles after bundles 1 and 2 row 3: ff00ff00 ff00ff00 ff00ff00 ff00ff00 00000000 00000000 00000000 00000000
+bundles after bundles 1 and 2 row 4: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+bundles after bundles 1 and 2 row 5: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+bundles after bundles 1 and 2 row 6: 00000000 00000000 00000000 00000000 00000000 00000000 ff0000ff ff0000ff
+bundles after bundles 1 and 2 row 7: 00000000 00000000 00000000 00000000 00000000 00000000 ff0000ff ff0000ff
+bundles compute bundle twice: 0x00000000 S_OK
+bundles compute bundle from a second recording: 0x00000000 S_OK
+bundles v = ((v*2+1)*2+1)*2+1: v[0..3], v[63]: 00000007 0000000f 00000017 0000001f 000001ff
+bundles ExecuteBundle with different caller descriptor heaps: Close: 0x80070057 E_INVALIDARG
+bundles ExecuteBundle(open bundle): Close: 0x80070057 E_INVALIDARG
+bundles end: GetDeviceRemovedReason 0x00000000 S_OK

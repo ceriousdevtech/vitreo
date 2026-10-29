@@ -1,0 +1,274 @@
+[HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+  "SystemRoot" type=1 "C:\WINDOWS"
+  "BaseBuildRevisionNumber" type=4 1
+  "BuildBranch" type=1 "ge_release"
+  "BuildGUID" type=1 "ffffffff-ffff-ffff-ffff-ffffffffffff"
+  "BuildLab" type=1 "26100.ge_release.240331-1435"
+  "BuildLabEx" type=1 "26100.1.amd64fre.ge_release.240331-1435"
+  "CompositionEditionID" type=1 "Enterprise"
+  "CurrentBuild" type=1 "26200"
+  "CurrentBuildNumber" type=1 "26200"
+  "CurrentMajorVersionNumber" type=4 10
+  "CurrentMinorVersionNumber" type=4 0
+  "CurrentType" type=1 "Multiprocessor Free"
+  "CurrentVersion" type=1 "6.3"
+  "DisplayVersion" type=1 "25H2"
+  "EditionID" type=1 "Professional"
+  "EditionSubManufacturer" type=1 ""
+  "EditionSubstring" type=1 ""
+  "EditionSubVersion" type=1 ""
+  "InstallationType" type=1 "Client"
+  "LCUVer" type=1 "10.0.26100.9711"
+  "ProductName" type=1 "Windows 10 Pro"
+  "ReleaseId" type=1 "2009"
+  "SoftwareType" type=1 "System"
+  "UBR" type=4 9711
+  "PathName" type=1 "C:\Windows"
+  "PendingInstall" type=4 0
+  "RegisteredOrganization" type=1 ""
+  "RegisteredOwner" type=1 "Jared"
+[HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion] view=32 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows NT\CurrentVersion
+  "BaseBuildRevisionNumber" type=4 1
+  "BuildBranch" type=1 "ge_release"
+  "BuildGUID" type=1 "ffffffff-ffff-ffff-ffff-ffffffffffff"
+  "BuildLab" type=1 "26100.ge_release.240331-1435"
+  "BuildLabEx" type=1 "26100.1.amd64fre.ge_release.240331-1435"
+  "CompositionEditionID" type=1 "Enterprise"
+  "CurrentBuild" type=1 "26200"
+  "CurrentBuildNumber" type=1 "26200"
+  "CurrentMajorVersionNumber" type=4 10
+  "CurrentMinorVersionNumber" type=4 0
+  "CurrentType" type=1 "Multiprocessor Free"
+  "CurrentVersion" type=1 "6.3"
+  "DisplayVersion" type=1 "25H2"
+  "EditionID" type=1 "Enterprise"
+  "EditionSubManufacturer" type=1 ""
+  "EditionSubstring" type=1 ""
+  "EditionSubVersion" type=1 ""
+  "InstallationType" type=1 "Client"
+  "ProductName" type=1 "Windows 10 Enterprise"
+  "ReleaseId" type=1 "2009"
+  "SoftwareType" type=1 "System"
+  "SystemRoot" type=1 "C:\WINDOWS"
+  "UBR" type=4 9711
+  "RegisteredOwner" type=1 "Jared"
+  "RegisteredOrganization" type=1 ""
+[HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes
+  "Arabic Transparent" type=1 "Arial"
+  "Arabic Transparent Bold" type=1 "Arial Bold"
+  "Arabic Transparent Bold,0" type=1 "Arial Bold,178"
+  "Arabic Transparent,0" type=1 "Arial,178"
+  "Arial Baltic,186" type=1 "Arial,186"
+  "Arial CE,238" type=1 "Arial,238"
+  "Arial CYR,204" type=1 "Arial,204"
+  "Arial Greek,161" type=1 "Arial,161"
+  "Arial TUR,162" type=1 "Arial,162"
+  "Courier New Baltic,186" type=1 "Courier New,186"
+  "Courier New CE,238" type=1 "Courier New,238"
+  "Courier New CYR,204" type=1 "Courier New,204"
+  "Courier New Greek,161" type=1 "Courier New,161"
+  "Courier New TUR,162" type=1 "Courier New,162"
+  "Helv" type=1 "MS Sans Serif"
+  "Helvetica" type=1 "Arial"
+  "MS Shell Dlg 2" type=1 "Tahoma"
+  "Tahoma Armenian" type=1 "Tahoma"
+  "Times" type=1 "Times New Roman"
+  "Times New Roman Baltic,186" type=1 "Times New Roman,186"
+  "Times New Roman CE,238" type=1 "Times New Roman,238"
+  "Times New Roman CYR,204" type=1 "Times New Roman,204"
+  "Times New Roman Greek,161" type=1 "Times New Roman,161"
+  "Times New Roman TUR,162" type=1 "Times New Roman,162"
+  "Tms Rmn" type=1 "MS Serif"
+  "MS Shell Dlg" type=1 "Microsoft Sans Serif"
+[HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontSubstitutes
+  "Arabic Transparent" type=1 "Arial"
+  "Arabic Transparent Bold" type=1 "Arial Bold"
+  "Arabic Transparent Bold,0" type=1 "Arial Bold,178"
+  "Arabic Transparent,0" type=1 "Arial,178"
+  "Arial Baltic,186" type=1 "Arial,186"
+  "Arial CE,238" type=1 "Arial,238"
+  "Arial CYR,204" type=1 "Arial,204"
+  "Arial Greek,161" type=1 "Arial,161"
+  "Arial TUR,162" type=1 "Arial,162"
+  "Courier New Baltic,186" type=1 "Courier New,186"
+  "Courier New CE,238" type=1 "Courier New,238"
+  "Courier New CYR,204" type=1 "Courier New,204"
+  "Courier New Greek,161" type=1 "Courier New,161"
+  "Courier New TUR,162" type=1 "Courier New,162"
+  "Helv" type=1 "MS Sans Serif"
+  "Helvetica" type=1 "Arial"
+  "MS Shell Dlg 2" type=1 "Tahoma"
+  "Tahoma Armenian" type=1 "Tahoma"
+  "Times" type=1 "Times New Roman"
+  "Times New Roman Baltic,186" type=1 "Times New Roman,186"
+  "Times New Roman CE,238" type=1 "Times New Roman,238"
+  "Times New Roman CYR,204" type=1 "Times New Roman,204"
+  "Times New Roman Greek,161" type=1 "Times New Roman,161"
+  "Times New Roman TUR,162" type=1 "Times New Roman,162"
+  "Tms Rmn" type=1 "MS Serif"
+  "MS Shell Dlg" type=1 "Microsoft Sans Serif"
+[HKLM\SOFTWARE\Microsoft\DirectX] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\DirectX
+  "InstalledVersion" type=3 hex=0000000900000000
+  "Version" type=1 "4.09.00.0904"
+  "" type=4 1
+  "DxDbVersion" type=1 "1.9.0"
+  "MinFeatureLevel" type=4 49408
+  "MaxFeatureLevel" type=4 49408
+  "D3D12MinFeatureLevel" type=4 49408
+  "D3D12MaxFeatureLevel" type=4 49408
+  "MaxDedicatedVideoMemory" type=11 hex=0000000000000000
+  "LastUpdaterStartTimestamp" type=1 "UTC.2026-10-18.00:37:32"
+  "LastUpdaterStartHresult" type=4 0
+  "DxDbUninstallFodTimestamp" type=1 "UTC.2023-12-03.06:19:57"
+  "DxDbUninstallFodReason" type=4 1
+  "LastUpdaterCallbackTimestamp" type=1 "UTC.2026-10-18.00:37:44"
+  "LastUpdaterCallbackHresult" type=4 0
+  "LastOOBESkipTimestamp" type=1 "UTC.2025-02-20.08:49:59"
+  "DxDbOOBESkipHresult" type=4 0
+[HKLM\SOFTWARE\Microsoft\DirectX] view=32 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\Microsoft\DirectX
+  "InstalledVersion" type=3 hex=0000000900000000
+  "Version" type=1 "4.09.00.0904"
+[HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion
+  "ProgramFilesDir" type=1 "C:\Program Files"
+  "CommonFilesDir" type=1 "C:\Program Files\Common Files"
+  "ProgramFilesDir (x86)" type=1 "C:\Program Files (x86)"
+  "CommonFilesDir (x86)" type=1 "C:\Program Files (x86)\Common Files"
+  "CommonW6432Dir" type=1 "C:\Program Files\Common Files"
+  "DevicePath" type=2 "%SystemRoot%\inf"
+  "MediaPathUnexpanded" type=2 "%SystemRoot%\Media"
+  "ProgramFilesPath" type=2 "%ProgramFiles%"
+  "ProgramW6432Dir" type=1 "C:\Program Files"
+  "SM_ConfigureProgramsName" type=1 "Set Program Access and Defaults"
+  "SM_GamesName" type=1 "Games"
+[HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion] view=32 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion
+  "CommonFilesDir" type=1 "C:\Program Files (x86)\Common Files"
+  "CommonFilesDir (x86)" type=1 "C:\Program Files (x86)\Common Files"
+  "CommonW6432Dir" type=1 "C:\Program Files\Common Files"
+  "DevicePath" type=2 "%SystemRoot%\inf"
+  "MediaPathUnexpanded" type=2 "%SystemRoot%\Media"
+  "ProgramFilesDir" type=1 "C:\Program Files (x86)"
+  "ProgramFilesDir (x86)" type=1 "C:\Program Files (x86)"
+  "ProgramFilesPath" type=2 "%ProgramFiles%"
+  "ProgramW6432Dir" type=1 "C:\Program Files"
+  "SM_ConfigureProgramsName" type=1 "Set Program Access and Defaults"
+  "SM_GamesName" type=1 "Games"
+[HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
+[HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce] view=32 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\RunOnce
+[HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  "Common Administrative Tools" type=1 "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools"
+  "Common AppData" type=1 "C:\ProgramData"
+  "Common Desktop" type=1 "C:\Users\Public\Desktop"
+  "Common Documents" type=1 "C:\Users\Public\Documents"
+  "Common Programs" type=1 "C:\ProgramData\Microsoft\Windows\Start Menu\Programs"
+  "Common Start Menu" type=1 "C:\ProgramData\Microsoft\Windows\Start Menu"
+  "Common Startup" type=1 "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+  "Common Templates" type=1 "C:\ProgramData\Microsoft\Windows\Templates"
+  "CommonMusic" type=1 "C:\Users\Public\Music"
+  "CommonPictures" type=1 "C:\Users\Public\Pictures"
+  "CommonVideo" type=1 "C:\Users\Public\Videos"
+  "OEM Links" type=1 "C:\ProgramData\OEM\Links"
+[HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders] view=32 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  "Common Administrative Tools" type=1 "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools"
+  "Common AppData" type=1 "C:\ProgramData"
+  "Common Desktop" type=1 "C:\Users\Public\Desktop"
+  "Common Documents" type=1 "C:\Users\Public\Documents"
+  "Common Programs" type=1 "C:\ProgramData\Microsoft\Windows\Start Menu\Programs"
+  "Common Start Menu" type=1 "C:\ProgramData\Microsoft\Windows\Start Menu"
+  "Common Startup" type=1 "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+  "Common Templates" type=1 "C:\ProgramData\Microsoft\Windows\Templates"
+  "CommonMusic" type=1 "C:\Users\Public\Music"
+  "CommonPictures" type=1 "C:\Users\Public\Pictures"
+  "CommonVideo" type=1 "C:\Users\Public\Videos"
+  "OEM Links" type=1 "C:\ProgramData\OEM\Links"
+[HKLM\SOFTWARE\Classes\Msxml2.DOMDocument] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Msxml2.DOMDocument
+  "" type=1 "XML DOM Document"
+[HKLM\SOFTWARE\Classes\Msxml2.DOMDocument] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Msxml2.DOMDocument
+  "" type=1 "XML DOM Document"
+[HKLM\SOFTWARE\Classes\Msxml2.DOMDocument\CLSID] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Msxml2.DOMDocument\CLSID
+  "" type=1 "{F6D90F11-9C73-11D3-B32E-00C04F990BB4}"
+[HKLM\SOFTWARE\Classes\Msxml2.DOMDocument\CLSID] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Classes\Msxml2.DOMDocument\CLSID
+  "" type=1 "{F6D90F11-9C73-11D3-B32E-00C04F990BB4}"
+[HKLM\SOFTWARE\Classes\CLSID\{F6D90F11-9C73-11D3-B32E-00C04F990BB4}] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{F6D90F11-9C73-11D3-B32E-00C04F990BB4}
+  "" type=1 "XML DOM Document"
+[HKLM\SOFTWARE\Classes\CLSID\{F6D90F11-9C73-11D3-B32E-00C04F990BB4}] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{F6D90F11-9C73-11D3-B32E-00C04F990BB4}
+  "" type=1 "XML DOM Document"
+[HKLM\SOFTWARE\Classes\CLSID\{F6D90F11-9C73-11D3-B32E-00C04F990BB4}\InprocServer32] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{F6D90F11-9C73-11D3-B32E-00C04F990BB4}\InProcServer32
+  "" type=2 "%SystemRoot%\System32\msxml3.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{F6D90F11-9C73-11D3-B32E-00C04F990BB4}\InprocServer32] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{F6D90F11-9C73-11D3-B32E-00C04F990BB4}\InProcServer32
+  "" type=2 "%SystemRoot%\System32\msxml3.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{88D96A05-F192-11D4-A65F-0040963251E5}\InprocServer32] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{88d96a05-f192-11d4-a65f-0040963251e5}\InProcServer32
+  "" type=1 "C:\Windows\System32\msxml6.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{88D96A05-F192-11D4-A65F-0040963251E5}\InprocServer32] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{88d96a05-f192-11d4-a65f-0040963251e5}\InProcServer32
+  "" type=1 "C:\Windows\SysWOW64\msxml6.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{B0210780-89CD-11D0-AF08-00A0C925CD16}\InprocServer32] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{B0210780-89CD-11d0-AF08-00A0C925CD16}\InprocServer32
+  "" type=2 "%SystemRoot%\System32\dsound.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{B0210780-89CD-11D0-AF08-00A0C925CD16}\InprocServer32] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{B0210780-89CD-11d0-AF08-00A0C925CD16}\InprocServer32
+  "" type=2 "%SystemRoot%\System32\dsound.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{CACAF262-9370-4615-A13B-9F5539DA4C0A}\InprocServer32] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{CACAF262-9370-4615-A13B-9F5539DA4C0A}\InProcServer32
+  "" type=1 "C:\Windows\System32\windowscodecs.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{CACAF262-9370-4615-A13B-9F5539DA4C0A}\InprocServer32] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{CACAF262-9370-4615-A13B-9F5539DA4C0A}\InProcServer32
+  "" type=1 "C:\Windows\SysWOW64\windowscodecs.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{317D06E8-5F24-433D-BDF7-79CE68D8ABC2}\InprocServer32] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Classes\CLSID\{317D06E8-5F24-433D-BDF7-79CE68D8ABC2}\InProcServer32
+  "" type=1 "C:\Windows\System32\windowscodecs.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Classes\CLSID\{317D06E8-5F24-433D-BDF7-79CE68D8ABC2}\InprocServer32] view=32 name=\REGISTRY\MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{317D06E8-5F24-433D-BDF7-79CE68D8ABC2}\InProcServer32
+  "" type=1 "C:\Windows\SysWOW64\windowscodecs.dll"
+  "ThreadingModel" type=1 "Both"
+[HKLM\SOFTWARE\Microsoft\.NETFramework] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\.NETFramework
+  "Enable64Bit" type=4 1
+  "InstallRoot" type=1 "C:\Windows\Microsoft.NET\Framework64\"
+  "UseRyuJIT" type=4 1
+[HKLM\SOFTWARE\Microsoft\.NETFramework] view=32 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\Microsoft\.NETFramework
+  "InstallRoot" type=1 "C:\Windows\Microsoft.NET\Framework\"
+[HKLM\SOFTWARE\Microsoft\.NETFramework\Policy\v4.0] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\.NETFramework\policy\v4.0
+  "30319" type=1 "30319-30319"
+[HKLM\SOFTWARE\Microsoft\.NETFramework\Policy\v4.0] view=32 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\policy\v4.0
+  "30319" type=1 "30319-30319"
+[HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full] view=64 name=\REGISTRY\MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full
+  "CBS" type=4 1
+  "Install" type=4 1
+  "InstallPath" type=1 "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\"
+  "Release" type=4 533509
+  "Servicing" type=4 0
+  "TargetVersion" type=1 "4.0.0"
+  "Version" type=1 "4.8.09221"
+[HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full] view=32 name=\REGISTRY\MACHINE\SOFTWARE\WOW6432Node\Microsoft\NET Framework Setup\NDP\v4\Full
+  "CBS" type=4 1
+  "Install" type=4 1
+  "InstallPath" type=1 "C:\Windows\Microsoft.NET\Framework\v4.0.30319\"
+  "Release" type=4 533509
+  "Servicing" type=4 0
+  "TargetVersion" type=1 "4.0.0"
+  "Version" type=1 "4.8.09221"
+[HKLM\SYSTEM\CurrentControlSet\Services\msiserver] view=64 name=\REGISTRY\MACHINE\SYSTEM\ControlSet001\Services\msiserver
+  "DependOnService" type=7 hex=7200700063007300730000000000
+  "Description" type=1 "@%SystemRoot%\system32\msimsg.dll,-32"
+  "DisplayName" type=1 "@%SystemRoot%\system32\msimsg.dll,-27"
+  "ErrorControl" type=4 1
+  "FailureActions" type=3 hex=840300000000000000000000030000001400000001000000c0d4010001000000
+  "ImagePath" type=2 "%systemroot%\system32\msiexec.exe /V"
+  "ObjectName" type=1 "LocalSystem"
+  "RequiredPrivileges" type=7 hex=53006500540063006200500072006900760069006c0065006700650000005300
+  "ServiceSidType" type=4 1
+  "Start" type=4 3
+  "Type" type=4 16
+[HKLM\SYSTEM\CurrentControlSet\Services\msiserver] view=32 name=\REGISTRY\MACHINE\SYSTEM\ControlSet001\Services\msiserver
+  "DependOnService" type=7 hex=7200700063007300730000000000
+  "Description" type=1 "@%SystemRoot%\system32\msimsg.dll,-32"
+  "DisplayName" type=1 "@%SystemRoot%\system32\msimsg.dll,-27"
+  "ErrorControl" type=4 1
+  "FailureActions" type=3 hex=840300000000000000000000030000001400000001000000c0d4010001000000
+  "ImagePath" type=2 "%systemroot%\system32\msiexec.exe /V"
+  "ObjectName" type=1 "LocalSystem"
+  "RequiredPrivileges" type=7 hex=53006500540063006200500072006900760069006c0065006700650000005300
+  "ServiceSidType" type=4 1
+  "Start" type=4 3
+  "Type" type=4 16

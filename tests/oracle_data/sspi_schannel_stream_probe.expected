@@ -1,0 +1,53 @@
+cert: ok=1
+server_cred: rc=0x0
+client_cred: rc=0x0
+hs_client: rc=0x90312 attr=0x8811c exp_zero=1 in1_type=0 out_cb_nonzero=1
+hs_client: rc=0x90312 attr=0x8811c exp_is_notafter_utc=1 exp_is_notafter_local=0 in1_type=0 out_cb_nonzero=1
+hs_client: rc=0x0 attr=0x8811c exp_is_notafter_utc=1 exp_is_notafter_local=0 in1_type=0 out_cb_nonzero=0
+handshake: ok
+conn: proto=0x800 cipher=0x6610 cipher_bits=256
+stream_sizes: rc=0x0 header=13 trailer=16 max=16384 cbuffers=4 block=16
+encrypt:contiguous16 rc=0x0 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16 off=13 } b2{ type=6 cb=16 off=29 } b3{ type=0 cb=0 pv="null" }
+verify:contiguous16 rc=0x0 plaintext_match=1
+encrypt:separate16 rc=0x0 b0{ type=7 cb=13 off=1000 } b1{ type=1 cb=16 off=5000 } b2{ type=6 cb=16 off=9000 } b3{ type=0 cb=0 pv="null" }
+verify:separate16 rc=0x0 plaintext_match=1
+encrypt:trailer_oversized rc=0x0 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16 off=13 } b2{ type=6 cb=16 off=29 } b3{ type=0 cb=0 pv="null" }
+verify:trailer_oversized rc=0x0 plaintext_match=1
+encrypt:header_oversized rc=0x80090329 b0{ type=7 cb=77 off=0 } b1{ type=1 cb=16 off=77 } b2{ type=6 cb=16 off=93 } b3{ type=0 cb=0 pv="null" }
+encrypt:data0 rc=0x0 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=0 off=13 } b2{ type=6 cb=16 off=13 } b3{ type=0 cb=0 pv="null" }
+verify:data0 rc=0x0 plaintext_match=1
+encrypt:data_max rc=0x0 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16384 off=13 } b2{ type=6 cb=16 off=16397 } b3{ type=0 cb=0 pv="null" }
+verify:data_max rc=0x0 plaintext_match=1
+encrypt:data_max_plus1 rc=0x80090329 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16385 off=13 } b2{ type=6 cb=16 off=16398 } b3{ type=0 cb=0 pv="null" }
+encrypt:header_plus1 rc=0x80090329 b0{ type=7 cb=14 off=0 } b1{ type=1 cb=16 off=14 } b2{ type=6 cb=16 off=30 } b3{ type=0 cb=0 pv="null" }
+encrypt:header_short rc=0x80090329 b0{ type=7 cb=12 off=0 } b1{ type=1 cb=16 off=13 } b2{ type=6 cb=16 off=29 } b3{ type=0 cb=0 pv="null" }
+encrypt:trailer_short rc=0x80090329 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16 off=13 } b2{ type=6 cb=15 off=29 } b3{ type=0 cb=0 pv="null" }
+encrypt:trailer_zero rc=0x80090329 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16 off=13 } b2{ type=6 cb=0 off=29 } b3{ type=0 cb=0 pv="null" }
+encrypt:three_buffers rc=0x0 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16 off=13 } b2{ type=6 cb=16 off=29 }
+verify:three_buffers rc=0x0 plaintext_match=1
+encrypt:no_header rc=0x80090329 b0{ type=1 cb=16 off=13 } b1{ type=6 cb=16 off=29 } b2{ type=0 cb=0 pv="null" }
+encrypt:no_trailer rc=0x80090329 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16 off=13 } b2{ type=0 cb=0 pv="null" }
+encrypt:no_data rc=0x80090308 b0{ type=7 cb=13 off=0 } b1{ type=6 cb=16 off=29 } b2{ type=0 cb=0 pv="null" }
+encrypt:data_first rc=0x0 b0{ type=1 cb=16 off=13 } b1{ type=7 cb=13 off=0 } b2{ type=6 cb=16 off=29 } b3{ type=0 cb=0 pv="null" }
+verify:data_first rc=0x80090318 plaintext_match=0
+encrypt:after_failures rc=0x0 b0{ type=7 cb=13 off=0 } b1{ type=1 cb=16 off=13 } b2{ type=6 cb=16 off=29 } b3{ type=0 cb=0 pv="null" }
+verify:after_failures rc=0x80090330 plaintext_match=0
+server_records: n1_minus_32=29 n2_minus_20=29
+decrypt:partial3 rc=0x80090318 qop="untouched" b0{ type=4 cb=10 off=0 } b1{ type=4 cb=10 pv="null" } b2{ type=0 cb=0 pv="null" } b3{ type=0 cb=0 pv="null" }
+decrypt:partial5 rc=0x80090318 qop="untouched" b0{ type=4 cb=8 off=0 } b1{ type=4 cb=8 pv="null" } b2{ type=0 cb=0 pv="null" } b3{ type=0 cb=0 pv="null" }
+decrypt:partial_half rc=0x80090318 qop="untouched" b0{ type=4 cb=31 off=0 } b1{ type=4 cb=31 pv="null" } b2{ type=0 cb=0 pv="null" } b3{ type=0 cb=0 pv="null" }
+decrypt:partial3_1buf rc=0x80090308 qop="untouched" b0{ type=1 cb=3 off=0 }
+decrypt:full rc=0x0 qop="untouched" b0{ type=7 cb=13 off=0 } b1{ type=1 cb=32 off=13 } b2{ type=6 cb=16 off=45 } b3{ type=0 cb=0 pv="null" }
+decrypt:two_records rc=0x0 qop="untouched" b0{ type=7 cb=13 off=0 } b1{ type=1 cb=20 off=13 } b2{ type=6 cb=55 off=33 } b3{ type=5 cb=39 off=49 }
+decrypt:two_records_extra rc=0x0 qop="untouched" b0{ type=7 cb=13 off=0 } b1{ type=1 cb=10 off=13 } b2{ type=6 cb=16 off=23 } b3{ type=0 cb=0 pv="null" }
+decrypt:record_plus_partial rc=0x0 qop="untouched" b0{ type=7 cb=13 off=0 } b1{ type=1 cb=10 off=13 } b2{ type=6 cb=23 off=23 } b3{ type=5 cb=7 off=39 }
+decrypt:partial_rest rc=0x0 qop="untouched" b0{ type=7 cb=13 off=0 } b1{ type=1 cb=30 off=13 } b2{ type=6 cb=16 off=43 } b3{ type=0 cb=0 pv="null" }
+decrypt:full_2buf rc=0x80090308 qop="untouched" b0{ type=1 cb=41 off=0 } b1{ type=0 cb=0 pv="null" }
+decrypt:full_3buf rc=0x80090308 qop="untouched" b0{ type=1 cb=41 off=0 } b1{ type=0 cb=0 pv="null" } b2{ type=0 cb=0 pv="null" }
+decrypt:full_5buf rc=0x0 qop="untouched" b0{ type=7 cb=13 off=0 } b1{ type=1 cb=12 off=13 } b2{ type=6 cb=16 off=25 } b3{ type=0 cb=0 pv="null" } b4{ type=0 cb=0 pv="null" }
+decrypt:corrupted rc=0x80090330 qop="untouched" b0{ type=1 cb=39 off=0 } b1{ type=0 cb=0 pv="null" } b2{ type=0 cb=0 pv="null" } b3{ type=0 cb=0 pv="null" }
+decrypt:after_corrupted rc=0x0 qop="untouched" b0{ type=7 cb=13 off=0 } b1{ type=1 cb=10 off=13 } b2{ type=6 cb=16 off=23 } b3{ type=0 cb=0 pv="null" }
+server_shutdown_token: rc=0x0
+server_close_notify: rc=0x0 cb=31
+decrypt:close_notify rc=0x90317 qop="untouched" b0{ type=1 cb=31 off=0 } b1{ type=0 cb=0 pv="null" } b2{ type=0 cb=0 pv="null" } b3{ type=0 cb=0 pv="null" }
+done:

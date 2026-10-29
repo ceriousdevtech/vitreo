@@ -1,0 +1,73 @@
+constant THREAD_QUERY_INFORMATION 00000040
+constant THREAD_QUERY_LIMITED_INFORMATION 00000800
+constant THREAD_SET_INFORMATION 00000020
+constant THREAD_SET_LIMITED_INFORMATION 00000400
+constant NT_SUCCESS_HR 10000000
+constant NT_INVALID_HANDLE_HR d0000008
+constant NT_ACCESS_DENIED_HR d0000022
+constant NT_TYPE_MISMATCH_HR d0000024
+constant NT_NAME_TOO_LONG_HR d0000106
+constant NT_NOT_IMPLEMENTED_HR d0000002
+constant NT_NO_MEMORY_HR d0000017
+constant ACCESS_VIOLATION c0000005
+constant MAX_DESCRIPTION_CHARS 32766
+constant E_INVALIDARG 80070057
+constant E_OUTOFMEMORY 8007000e
+get initial hr=10000000 exception=00000000 error=dead out=buffer len=0 text= free=1
+set unicode hr=10000000 exception=00000000 error=dead
+get unicode hr=10000000 exception=00000000 error=dead out=buffer len=5 text=006d00610069006e03c0 free=1
+get rights-0 hr=d0000022 exception=00000000 error=dead out=null
+set rights-0 hr=d0000022 exception=00000000 error=dead
+get rights-40 hr=10000000 exception=00000000 error=dead out=buffer len=5 text=006d00610069006e03c0 free=1
+set rights-40 hr=d0000022 exception=00000000 error=dead
+get rights-800 hr=10000000 exception=00000000 error=dead out=buffer len=5 text=006d00610069006e03c0 free=1
+set rights-800 hr=d0000022 exception=00000000 error=dead
+get rights-20 hr=d0000022 exception=00000000 error=dead out=null
+set rights-20 hr=10000000 exception=00000000 error=dead
+get rights-400 hr=d0000022 exception=00000000 error=dead out=null
+set rights-400 hr=10000000 exception=00000000 error=dead
+get rights-100000 hr=d0000022 exception=00000000 error=dead out=null
+set rights-100000 hr=d0000022 exception=00000000 error=dead
+get rights-c00 hr=10000000 exception=00000000 error=dead out=buffer len=6 text=007200690067006800740073 free=1
+set rights-c00 hr=10000000 exception=00000000 error=dead
+get invalid-0 hr=d0000008 exception=00000000 error=dead out=null
+set invalid-0 hr=d0000008 exception=00000000 error=dead
+get invalid-1 hr=d0000024 exception=00000000 error=dead out=null
+set invalid-1 hr=d0000024 exception=00000000 error=dead
+get invalid-2 hr=d0000008 exception=00000000 error=dead out=null
+set invalid-2 hr=d0000008 exception=00000000 error=dead
+get invalid-3 hr=d0000024 exception=00000000 error=dead out=null
+set invalid-3 hr=d0000024 exception=00000000 error=dead
+get upper-width hr=d0000008 exception=00000000 error=dead out=null
+set upper-width hr=d0000008 exception=00000000 error=dead
+get zero-extended-pseudo hr=d0000008 exception=00000000 error=dead out=null
+set zero-extended-pseudo hr=d0000008 exception=00000000 error=dead
+get zero-extended-process hr=d0000008 exception=00000000 error=dead out=null
+set zero-extended-process hr=d0000008 exception=00000000 error=dead
+set null hr=10000000 exception=00000000 error=dead
+get after-null hr=10000000 exception=00000000 error=dead out=buffer len=0 text= free=1
+set wild hr=00000000 exception=c0000005 error=dead
+set invalid-handle-wild hr=00000000 exception=c0000005 error=dead
+set invalid-handle-null hr=d0000008 exception=00000000 error=dead
+output null hr=00000000 exception=c0000005 error=dead
+output wild hr=00000000 exception=c0000005 error=dead
+output invalid-handle-null hr=00000000 exception=c0000005 error=dead
+output boundary hr=00000000 exception=c0000005 error=dead
+boundary-low-unchanged=1
+set unterminated-boundary hr=00000000 exception=c0000005 error=dead
+get unaligned hr=10000000 exception=00000000 error=dead out=buffer len=0 text= free=1
+output readonly hr=00000000 exception=c0000005 error=dead
+set length-32766 hr=10000000 exception=00000000 error=dead
+get length-32766 hr=10000000 exception=00000000 error=dead out=buffer len=32766 free=1
+set length-32767 hr=d0000106 exception=00000000 error=dead
+get length-32767 hr=10000000 exception=00000000 error=dead out=buffer len=32766 free=1
+set length-32768 hr=d0000106 exception=00000000 error=dead
+get length-32768 hr=10000000 exception=00000000 error=dead out=buffer len=32766 free=1
+set oversized-unterminated hr=00000000 exception=c0000005 error=dead
+set suspended hr=10000000 exception=00000000 error=dead
+get suspended hr=10000000 exception=00000000 error=dead out=buffer len=8 text=00720065007400610069006e00650064 free=1
+get exited hr=10000000 exception=00000000 error=dead out=buffer len=8 text=00720065007400610069006e00650064 free=1
+set exited hr=10000000 exception=00000000 error=dead
+get exited-new hr=10000000 exception=00000000 error=dead out=buffer len=10 text=00610066007400650072002d0065007800690074 free=1
+get closed hr=d0000008 exception=00000000 error=dead out=null
+set closed hr=d0000008 exception=00000000 error=dead

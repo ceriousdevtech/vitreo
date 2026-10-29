@@ -1,0 +1,316 @@
+sock: af=2 type=0 proto=0 ok so_type=1 iaf=2 iproto=6
+sock: af=2 type=0 proto=6 ok so_type=1 iaf=2 iproto=6
+sock: af=2 type=0 proto=17 ok so_type=2 iaf=2 iproto=17
+sock: af=2 type=0 proto=1 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=0 proto=99 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=0 proto=255 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=0 proto=256 err=10043
+sock: af=2 type=0 proto=-1 err=10043
+sock: af=2 type=1 proto=0 ok so_type=1 iaf=2 iproto=6
+sock: af=2 type=1 proto=6 ok so_type=1 iaf=2 iproto=6
+sock: af=2 type=1 proto=17 err=10043
+sock: af=2 type=1 proto=1 err=10043
+sock: af=2 type=1 proto=99 err=10043
+sock: af=2 type=1 proto=255 err=10043
+sock: af=2 type=1 proto=256 err=10043
+sock: af=2 type=1 proto=-1 err=10043
+sock: af=2 type=2 proto=0 ok so_type=2 iaf=2 iproto=17
+sock: af=2 type=2 proto=6 err=10043
+sock: af=2 type=2 proto=17 ok so_type=2 iaf=2 iproto=17
+sock: af=2 type=2 proto=1 err=10043
+sock: af=2 type=2 proto=99 err=10043
+sock: af=2 type=2 proto=255 err=10043
+sock: af=2 type=2 proto=256 err=10043
+sock: af=2 type=2 proto=-1 err=10043
+sock: af=2 type=3 proto=0 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=3 proto=6 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=3 proto=17 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=3 proto=1 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=3 proto=99 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=3 proto=255 ok so_type=3 iaf=2 iproto=0
+sock: af=2 type=3 proto=256 err=10043
+sock: af=2 type=3 proto=-1 err=10043
+sock: af=2 type=4 proto=0 err=10044
+sock: af=2 type=4 proto=6 err=10044
+sock: af=2 type=4 proto=17 err=10044
+sock: af=2 type=4 proto=1 err=10044
+sock: af=2 type=4 proto=99 err=10044
+sock: af=2 type=4 proto=255 err=10044
+sock: af=2 type=4 proto=256 err=10044
+sock: af=2 type=4 proto=-1 err=10044
+sock: af=2 type=5 proto=0 err=10044
+sock: af=2 type=5 proto=6 err=10044
+sock: af=2 type=5 proto=17 err=10044
+sock: af=2 type=5 proto=1 err=10044
+sock: af=2 type=5 proto=99 err=10044
+sock: af=2 type=5 proto=255 err=10044
+sock: af=2 type=5 proto=256 err=10044
+sock: af=2 type=5 proto=-1 err=10044
+sock: af=2 type=99 proto=0 err=10044
+sock: af=2 type=99 proto=6 err=10044
+sock: af=2 type=99 proto=17 err=10044
+sock: af=2 type=99 proto=1 err=10044
+sock: af=2 type=99 proto=99 err=10044
+sock: af=2 type=99 proto=255 err=10044
+sock: af=2 type=99 proto=256 err=10044
+sock: af=2 type=99 proto=-1 err=10044
+sock: af=23 type=0 proto=0 ok so_type=1 iaf=23 iproto=6
+sock: af=23 type=0 proto=6 ok so_type=1 iaf=23 iproto=6
+sock: af=23 type=0 proto=17 ok so_type=2 iaf=23 iproto=17
+sock: af=23 type=0 proto=1 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=0 proto=99 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=0 proto=255 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=0 proto=256 err=10043
+sock: af=23 type=0 proto=-1 err=10043
+sock: af=23 type=1 proto=0 ok so_type=1 iaf=23 iproto=6
+sock: af=23 type=1 proto=6 ok so_type=1 iaf=23 iproto=6
+sock: af=23 type=1 proto=17 err=10043
+sock: af=23 type=1 proto=1 err=10043
+sock: af=23 type=1 proto=99 err=10043
+sock: af=23 type=1 proto=255 err=10043
+sock: af=23 type=1 proto=256 err=10043
+sock: af=23 type=1 proto=-1 err=10043
+sock: af=23 type=2 proto=0 ok so_type=2 iaf=23 iproto=17
+sock: af=23 type=2 proto=6 err=10043
+sock: af=23 type=2 proto=17 ok so_type=2 iaf=23 iproto=17
+sock: af=23 type=2 proto=1 err=10043
+sock: af=23 type=2 proto=99 err=10043
+sock: af=23 type=2 proto=255 err=10043
+sock: af=23 type=2 proto=256 err=10043
+sock: af=23 type=2 proto=-1 err=10043
+sock: af=23 type=3 proto=0 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=3 proto=6 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=3 proto=17 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=3 proto=1 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=3 proto=99 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=3 proto=255 ok so_type=3 iaf=23 iproto=0
+sock: af=23 type=3 proto=256 err=10043
+sock: af=23 type=3 proto=-1 err=10043
+sock: af=23 type=4 proto=0 err=10044
+sock: af=23 type=4 proto=6 err=10044
+sock: af=23 type=4 proto=17 err=10044
+sock: af=23 type=4 proto=1 err=10044
+sock: af=23 type=4 proto=99 err=10044
+sock: af=23 type=4 proto=255 err=10044
+sock: af=23 type=4 proto=256 err=10044
+sock: af=23 type=4 proto=-1 err=10044
+sock: af=23 type=5 proto=0 err=10044
+sock: af=23 type=5 proto=6 err=10044
+sock: af=23 type=5 proto=17 err=10044
+sock: af=23 type=5 proto=1 err=10044
+sock: af=23 type=5 proto=99 err=10044
+sock: af=23 type=5 proto=255 err=10044
+sock: af=23 type=5 proto=256 err=10044
+sock: af=23 type=5 proto=-1 err=10044
+sock: af=23 type=99 proto=0 err=10044
+sock: af=23 type=99 proto=6 err=10044
+sock: af=23 type=99 proto=17 err=10044
+sock: af=23 type=99 proto=1 err=10044
+sock: af=23 type=99 proto=99 err=10044
+sock: af=23 type=99 proto=255 err=10044
+sock: af=23 type=99 proto=256 err=10044
+sock: af=23 type=99 proto=-1 err=10044
+sock: af=0 type=0 proto=0 err=10022
+sock: af=0 type=0 proto=6 ok so_type=1 iaf=23 iproto=6
+sock: af=0 type=0 proto=17 ok so_type=2 iaf=23 iproto=17
+sock: af=0 type=0 proto=1 err=10050
+sock: af=0 type=0 proto=99 ok so_type=3 iaf=23 iproto=0
+sock: af=0 type=0 proto=255 ok so_type=3 iaf=23 iproto=0
+sock: af=0 type=0 proto=256 ok so_type=1 iaf=32 iproto=256
+sock: af=0 type=0 proto=-1 err=10043
+sock: af=0 type=1 proto=0 err=10022
+sock: af=0 type=1 proto=6 ok so_type=1 iaf=23 iproto=6
+sock: af=0 type=1 proto=17 err=10043
+sock: af=0 type=1 proto=1 err=10050
+sock: af=0 type=1 proto=99 err=10043
+sock: af=0 type=1 proto=255 err=10043
+sock: af=0 type=1 proto=256 ok so_type=1 iaf=32 iproto=256
+sock: af=0 type=1 proto=-1 err=10043
+sock: af=0 type=2 proto=0 err=10022
+sock: af=0 type=2 proto=6 err=10043
+sock: af=0 type=2 proto=17 ok so_type=2 iaf=23 iproto=17
+sock: af=0 type=2 proto=1 err=10043
+sock: af=0 type=2 proto=99 err=10043
+sock: af=0 type=2 proto=255 err=10043
+sock: af=0 type=2 proto=256 err=10043
+sock: af=0 type=2 proto=-1 err=10043
+sock: af=0 type=3 proto=0 err=10022
+sock: af=0 type=3 proto=6 ok so_type=3 iaf=23 iproto=0
+sock: af=0 type=3 proto=17 ok so_type=3 iaf=23 iproto=0
+sock: af=0 type=3 proto=1 ok so_type=3 iaf=23 iproto=0
+sock: af=0 type=3 proto=99 ok so_type=3 iaf=23 iproto=0
+sock: af=0 type=3 proto=255 ok so_type=3 iaf=23 iproto=0
+sock: af=0 type=3 proto=256 err=10043
+sock: af=0 type=3 proto=-1 err=10043
+sock: af=0 type=4 proto=0 err=10022
+sock: af=0 type=4 proto=6 err=10044
+sock: af=0 type=4 proto=17 err=10044
+sock: af=0 type=4 proto=1 err=10044
+sock: af=0 type=4 proto=99 err=10044
+sock: af=0 type=4 proto=255 err=10044
+sock: af=0 type=4 proto=256 err=10044
+sock: af=0 type=4 proto=-1 err=10044
+sock: af=0 type=5 proto=0 err=10022
+sock: af=0 type=5 proto=6 err=10044
+sock: af=0 type=5 proto=17 err=10044
+sock: af=0 type=5 proto=1 err=10044
+sock: af=0 type=5 proto=99 err=10044
+sock: af=0 type=5 proto=255 err=10044
+sock: af=0 type=5 proto=256 err=10044
+sock: af=0 type=5 proto=-1 err=10044
+sock: af=0 type=99 proto=0 err=10022
+sock: af=0 type=99 proto=6 err=10044
+sock: af=0 type=99 proto=17 err=10044
+sock: af=0 type=99 proto=1 err=10044
+sock: af=0 type=99 proto=99 err=10044
+sock: af=0 type=99 proto=255 err=10044
+sock: af=0 type=99 proto=256 err=10044
+sock: af=0 type=99 proto=-1 err=10044
+nodata_null_buf: rc=-1 err=10035
+nodata_bad_ptr: rc=-1 err=10035
+nodata_len_neg: rc=-1 err=10014
+nodata_len_neg2: rc=-1 err=10014
+nodata_len0: rc=-1 err=10035
+nodata_after: rc=4
+nodata_after_data: b="live"
+data_null_64k: rc=-1 err=10053
+data_after_null_64k: rc=-1 err=10053
+data_peer_send_after_abort: rc=-1 err=10054
+data_peer_recv_after_abort: rc=-1 err=10054
+data_send_after_abort: rc=-1 err=10053
+data_shutdown_after_abort: rc=0
+data_getpeername_after_abort: rc=0
+data_SO_ERROR_after_abort: rc=0 v=0
+data_null_1m: rc=-1 err=10053
+data_after_null_1m: rc=-1 err=10053
+data_len_neg: rc=-1 err=10014
+data_after_len_neg: rc=4
+data_after_len_neg_data: b="keep"
+data_peek_null: rc=-1 err=10014
+data_after_peek_null: rc=4
+udp_null_buf: rc=-1 err=10014
+udp_after_null_buf: rc=3
+udp_after_null_buf_data: b="one"
+udp_len_neg: rc=-1 err=10014
+udp_recvfrom_null_fromlen: rc=-1 err=10014
+send_null_buf: rc=-1 err=10014
+send_bad_ptr: rc=-1 err=10014
+send_len_neg: rc=-1 err=10014
+send_null_len0: rc=0
+send_after_faults: rc=2
+send_peer_recv: rc=2
+udp_sendto_null_buf: rc=-1 err=10014
+udp_sendto_len_neg: rc=-1 err=10014
+udp_sendto_len0: rc=0
+udp_len0_arrives: rc=0
+udp_sendto_port0: rc=1
+udp_recv_after_port0: rc=-1 err=10054
+udp_recv_after_port0_again: rc=-1 err=10035
+tcp4_connect_v6addr: rc=-1 err=10047
+tcp4_connect_unspec: rc=-1 err=10047
+tcp4_connect_unspec_len8: rc=-1 err=10014
+tcp4_connect_bad_family_len8: rc=-1 err=10014
+tcp4_connect_null: rc=-1 err=10014
+tcp6_connect_v4addr: rc=-1 err=10014
+udp4_connect_v6addr: rc=-1 err=10047
+udp4_connect_unspec_zero_unconnected: rc=-1 err=10047
+udp4_connect_zero_unconnected: rc=-1 err=10049
+udp4_getsockname_after_zero: rc=0
+udp4_connect_zero_connected: rc=0
+udp4_local_after_dissolve: rc=0 addr=0x0 port_nonzero=1
+tcp_shut_both: rc=0
+tcp_shut_both_again: rc=0
+tcp_shut_rd_after_both: rc=0
+tcp_peer_recv_after_both: rc=0
+tcp_shut_after_peer_closed: rc=0
+tcp_shut_after_peer_closed_again: rc=0
+listener_shutdown: rc=-1 err=10057
+udp_bound_shut_send: rc=0
+udp_sendto_after_shut_send: rc=-1 err=10058
+udp_bound_shut_both: rc=0
+dup_self: rc=0
+dup_info: af=2 type=1 proto=6 sf1=0x20066 pflags=0x8 resv_nonzero=1 name="MSAFD Tcpip [TCP/IP]"
+dup_first_use: valid
+dup_second_use: valid
+dup_send_after_orig_closed: rc=1
+dup_peer_recv: rc=1
+dup_getpeername: rc=0
+dupA_udp: rc=0
+dupA_info: af=2 type=2 proto=17 name="MSAFD Tcpip [UDP/IP]"
+dupA_use: valid
+dupA_port_same: rc=1
+dup_bogus_socket: rc=-1 err=10038
+from_info_forged_reserved: INVALID err=10022
+gx_localhost_unspec: rc=0 {0,23,0,0,28,-,v6:0x0.0x0.0x1%0:0} {0,2,0,0,16,-,0x7f000001:0} n=2
+gx_localhost_v6: rc=0 {0,23,0,0,28,-,v6:0x0.0x0.0x1%0:0} n=1
+gx_null_passive_unspec: rc=0 {0,23,0,0,28,-,v6:0x0.0x0.0x0%0:80} {0,2,0,0,16,-,0x0:80} n=2
+gx_null_active_unspec: rc=0 {0,23,0,0,28,-,v6:0x0.0x0.0x1%0:80} {0,2,0,0,16,-,0x7f000001:80} n=2
+gx_null_active_v6: rc=0 {0,23,2,0,28,-,v6:0x0.0x0.0x1%0:80} n=1
+gx_v4_with_v6_hint: rc=11001 wsaerr=11001
+gx_v4_with_v6_hint_mapped: rc=0 {0,23,0,0,28,-,v6:0x0.0xff.0x1%0:0} n=1
+gx_v6_with_v4_hint: rc=11001 wsaerr=11001
+gx_v4_short_form: rc=11001 wsaerr=11001
+gx_v4_one_number: rc=11001 wsaerr=11001
+gx_v4_hex: rc=11001 wsaerr=11001
+gx_v4_trailing_dot: rc=11001 wsaerr=11001
+gx_v6_scope: rc=0 {4,23,0,0,28,-,v6:0xfe.0x0.0x1%3:0} n=1
+gx_v6_brackets: rc=0 {4,23,0,0,28,-,v6:0x0.0x0.0x1%0:0} n=1
+gx_socktype4: rc=10044 wsaerr=10044
+gx_socktype5: rc=10044 wsaerr=10044
+gx_socktype_neg: rc=10044 wsaerr=10044
+gx_proto_only_tcp: rc=0 {4,2,0,6,16,-,0x7f000001:0} n=1
+gx_proto_only_99: rc=0 {4,2,0,99,16,-,0x7f000001:0} n=1
+gx_stream_proto_99: rc=0 {4,2,1,99,16,-,0x7f000001:0} n=1
+gx_serv_http_socktype0: rc=0 {4,2,1,0,16,-,0x7f000001:80} n=1
+gx_serv_domain_socktype0: rc=0 {4,2,0,0,16,-,0x7f000001:53} n=1
+gx_serv_http_raw: rc=0 {4,2,3,0,16,-,0x7f000001:80} n=1
+gx_serv_65535: rc=0 {4,2,1,0,16,-,0x7f000001:65535} n=1
+gx_serv_neg: rc=0 {4,2,1,0,16,-,0x7f000001:65535} n=1
+gx_serv_space: rc=0 {4,2,1,0,16,-,0x7f000001:80} n=1
+gx_serv_trailing: rc=10109 wsaerr=10109
+gx_serv_empty: rc=0 {4,2,1,0,16,-,0x7f000001:0} n=1
+gx_serv_hex: rc=10109 wsaerr=10109
+gx_serv_huge: rc=0 {4,2,1,0,16,-,0x7f000001:65535} n=1
+gx_numericserv_numeric: rc=0 {4,2,1,0,16,-,0x7f000001:80} n=1
+gx_canon_localhost: rc=0 {0,2,0,0,16,C,0x7f000001:0} n=1
+gx_canon_v6_numeric: rc=0 {4,23,1,0,28,C,v6:0x0.0x0.0x1%0:0} n=1
+gx_passive_numeric: rc=0 {4,2,1,0,16,-,0x7f000001:80} n=1
+gx_numerichost_v6: rc=0 {4,23,0,0,28,-,v6:0x0.0x0.0x1%0:0} n=1
+gx_empty_numerichost: rc=11001 wsaerr=11001
+gx_addrconfig_loop: rc=0 {4,2,0,0,16,-,0x7f000001:0} n=1
+gx_upper_localhost: rc=0 {0,2,0,0,16,-,0x7f000001:0} n=1
+gx_family_1: rc=10047 wsaerr=10047
+gx_GetAddrInfoW: rc=0 wsaerr=0 flags=4 socktype=1 proto=0 port=80
+bsp_tcp_unbound: rc=0 len=256 csaddr=40 l_off=-1 l_len=0 r_off=-1 r_len=0 type=1 proto=6
+bsp_tcp_bound: rc=0 len=256 csaddr=40 l_off=40 l_len=16 r_off=-1 r_len=0 type=1 proto=6 l_fam=2 l_addr=0x7f000001 l_port_nz=1
+bsp_tcp_connected: rc=0 len=256 csaddr=40 l_off=40 l_len=16 r_off=56 r_len=16 type=1 proto=6 l_fam=2 l_addr=0x0 l_port_nz=1 r_fam=2 r_addr=0x7f000001 r_port_nz=1
+bsp_tcp_accepted: rc=0 len=256 csaddr=40 l_off=40 l_len=16 r_off=56 r_len=16 type=1 proto=6 l_fam=2 l_addr=0x7f000001 l_port_nz=1 r_fam=2 r_addr=0x7f000001 r_port_nz=1
+bsp_exact_struct: rc=-1 err=10014 len=40
+bsp_udp_bound: rc=0 len=256 csaddr=40 l_off=40 l_len=16 r_off=-1 r_len=0 type=2 proto=17 l_fam=2 l_addr=0x7f000001 l_port_nz=1
+bsp_udp6_unbound: rc=0 len=256 csaddr=40 l_off=-1 l_len=0 r_off=-1 r_len=0 type=2 proto=17
+only6:_get_IP_TTL rc=0 v=128
+only6:_set_IP_TTL rc=-1 err=10022
+only6:_get_IP_TTL_after rc=0 v=128
+only6:_get_IP_TOS rc=0 v=0
+only6:_get_IP_MULTICAST_TTL rc=-1 err=10022
+dual6:_get_IP_TTL rc=0 v=128
+dual6:_set_IP_TTL rc=0
+dual6:_get_IP_TTL_after rc=0 v=17
+dual6:_get_IP_TOS rc=0 v=0
+dual6:_get_IP_MULTICAST_TTL rc=0 v=1
+conn6: rc=0
+conn6_IPV6_MTU: rc=0 v=0xffff
+conn6_TCP_MAXSEG: rc=0 v=0xffc3
+acc6_TCP_MAXSEG: rc=0 v=0xffc3
+acc4_TCP_MAXSEG: rc=0 v=0xffd7
+acc4_IP_MTU: rc=0 v=0xffff
+udpconn_IP_MTU: rc=0 v=0xffff
+tfo_set_dword: rc=0
+tfo_get_len1: rc=0 len=1 v=0x1
+tfo_set_listener: rc=0
+cleanup_pending_recv: rc=-1 err=997
+cleanup_with_pending: rc=0
+cleanup_pending_event: wait=0
+cleanup_pending_internal: status=0xc000020d
+cleanup_after_restart_send: rc=-1 err=10038
+done

@@ -1,0 +1,1 @@
+x64: table-based exception dispatch; no x86 registration protector

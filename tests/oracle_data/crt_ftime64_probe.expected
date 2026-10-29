@@ -1,0 +1,5 @@
+off millitm=8 timezone=10 dstflag=12 sizeof=16 
+est5 daylight=0 timezone=18000 tb_timezone=300 dstflag=1 local_isdst=0 
+pst8pdt daylight=1 timezone=28800 tb_timezone=480 dstflag=1 local_isdst=1 
+jan2024 isdst=0 
+jul2024 isdst=1 

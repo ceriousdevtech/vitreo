@@ -1,0 +1,1316 @@
+ptr=4
+family 'Arial' st=0 out=obj name=Arial
+  style0 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'arial' st=0 out=obj name=Arial
+  style0 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'ARIAL' st=0 out=obj name=Arial
+  style0 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'Times New Roman' st=0 out=obj name=Times New Roman
+  style0 st=0,0,0,0,0 em=2048 asc=1825 desc=443 ls=2355 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1825 desc=443 ls=2355 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1825 desc=443 ls=2355 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1825 desc=443 ls=2355 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'Courier New' st=0 out=obj name=Courier New
+  style0 st=0,0,0,0,0 em=2048 asc=1705 desc=615 ls=2320 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1705 desc=615 ls=2320 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1705 desc=615 ls=2320 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1705 desc=615 ls=2320 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'MS Shell Dlg' st=0 out=obj name=Microsoft Sans Serif
+  style0 st=0,0,0,0,0 em=2048 asc=1888 desc=430 ls=2318 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1888 desc=430 ls=2318 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1888 desc=430 ls=2318 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1888 desc=430 ls=2318 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'MS Shell Dlg 2' st=0 out=obj name=Tahoma
+  style0 st=0,0,0,0,0 em=2048 asc=2049 desc=423 ls=2472 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=2049 desc=423 ls=2472 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=2049 desc=423 ls=2472 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=2049 desc=423 ls=2472 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'Helvetica' st=0 out=obj name=Arial
+  style0 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1854 desc=434 ls=2355 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'MS Sans Serif' st=14 out=null name=-
+family 'System' st=14 out=null name=-
+family 'Arial Bold' st=14 out=null name=-
+family 'NoSuchFontXYZ' st=14 out=null name=-
+family '' st=14 out=null name=-
+family 'Segoe UI' st=0 out=obj name=Segoe UI
+  style0 st=0,0,0,0,0 em=2048 asc=2210 desc=514 ls=2724 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=2210 desc=514 ls=2724 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=2210 desc=514 ls=2724 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=2210 desc=514 ls=2724 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'Microsoft Sans Serif' st=0 out=obj name=Microsoft Sans Serif
+  style0 st=0,0,0,0,0 em=2048 asc=1888 desc=430 ls=2318 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1888 desc=430 ls=2318 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1888 desc=430 ls=2318 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1888 desc=430 ls=2318 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'Tahoma' st=0 out=obj name=Tahoma
+  style0 st=0,0,0,0,0 em=2048 asc=2049 desc=423 ls=2472 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=2049 desc=423 ls=2472 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=2049 desc=423 ls=2472 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=2049 desc=423 ls=2472 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'Courier' st=14 out=null name=-
+family 'Symbol' st=0 out=obj name=Symbol
+  style0 st=0,0,0,0,0 em=2048 asc=2059 desc=450 ls=2509 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=2059 desc=450 ls=2509 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=2059 desc=450 ls=2509 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=2059 desc=450 ls=2509 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family 'Wingdings' st=0 out=obj name=Wingdings
+  style0 st=0,0,0,0,0 em=2048 asc=1841 desc=432 ls=2273 avail=1
+  style1 st=0,0,0,0,0 em=2048 asc=1841 desc=432 ls=2273 avail=1
+  style2 st=0,0,0,0,0 em=2048 asc=1841 desc=432 ls=2273 avail=1
+  style3 st=0,0,0,0,0 em=2048 asc=1841 desc=432 ls=2273 avail=1
+  avail underline st=0 1 strike st=0 1 15 st=0 1 16 st=0 1 -1 st=0 1
+  em style4 st=0 em=2048
+  em style8 st=0 em=2048
+  em style12 st=0 em=2048
+  em style15 st=0 em=2048
+  em style16 st=0 em=2048
+  em style17 st=0 em=2048
+  em style19 st=0 em=2048
+  em style32 st=0 em=2048
+  em style256 st=0 em=2048
+  em style-1 st=0 em=2048
+  em style-2 st=0 em=2048
+  em style-4 st=0 em=2048
+  em style2147483632 st=0 em=2048
+family null-name st=2
+family null-out st=2
+family two-creates same clone st=0 same
+family name 409=Arial 407=Arial 411=Arial
+family delete st=0 0 0 dbl? (not called)
+family delete null st=2 clone null st=2,2 getname null st=2,0
+family getname null-buf st=0
+family metrics null-out st=2,2,2,2,2 null-fam st=2,2
+generic sans st=0 name=Microsoft Sans Serif same delete st=0 after-delete same name=Microsoft Sans Serif clone same
+generic serif st=0 name=Times New Roman
+generic mono st=0 name=Courier New
+generic null st=2,2,2
+bitmap graphics dpi=96.00
+create unit=-1 st=2 out=kept
+create unit=0 st=0 out=set
+  font unit0 st=0,0,0,0,0,0,0 style=0 size=12.0000 unit=0 h(null)=13.7988 h(g)=13.7988 h96=13.7988 h72=13.7988 fam=Arial
+  logfontW st=0 h=-12 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+create unit=1 st=2 out=kept
+create unit=2 st=0 out=set
+  font unit2 st=0,0,0,0,0,0,0 style=0 size=12.0000 unit=2 h(null)=13.7988 h(g)=13.7988 h96=13.7988 h72=13.7988 fam=Arial
+  logfontW st=0 h=-12 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+create unit=3 st=0 out=set
+  font unit3 st=0,0,0,-1,0,0,0 style=0 size=12.0000 unit=3 h(null)=-9.0000 h(g)=18.3984 h96=18.3984 h72=13.7988 fam=Arial
+  logfontW st=0 h=-16 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+create unit=4 st=0 out=set
+  font unit4 st=0,0,0,-1,0,0,0 style=0 size=12.0000 unit=4 h(null)=-9.0000 h(g)=1324.6875 h96=1324.6875 h72=993.5156 fam=Arial
+  logfontW st=0 h=-1152 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+create unit=5 st=0 out=set
+  font unit5 st=0,0,0,-1,0,0,0 style=0 size=12.0000 unit=5 h(null)=-9.0000 h(g)=4.4156 h96=4.4156 h72=3.3117 fam=Arial
+  logfontW st=0 h=-4 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+create unit=6 st=0 out=set
+  font unit6 st=0,0,0,-1,0,0,0 style=0 size=12.0000 unit=6 h(null)=-9.0000 h(g)=52.1531 h96=52.1531 h72=39.1148 fam=Arial
+  logfontW st=0 h=-45 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+create unit=7 st=2 out=kept
+create size=0 st=2 out=kept
+create size=-1 st=2 out=kept
+create size=0.001 st=0 out=set
+create size=1e+09 st=0 out=set
+create style=-1 st=0 out=set got=-1 lf wt=700 it=1 ul=1 so=1
+create style=0 st=0 out=set got=0 lf wt=400 it=0 ul=0 so=0
+create style=1 st=0 out=set got=1 lf wt=700 it=0 ul=0 so=0
+create style=2 st=0 out=set got=2 lf wt=400 it=1 ul=0 so=0
+create style=3 st=0 out=set got=3 lf wt=700 it=1 ul=0 so=0
+create style=4 st=0 out=set got=4 lf wt=400 it=0 ul=1 so=0
+create style=5 st=0 out=set got=5 lf wt=700 it=0 ul=1 so=0
+create style=6 st=0 out=set got=6 lf wt=400 it=1 ul=1 so=0
+create style=7 st=0 out=set got=7 lf wt=700 it=1 ul=1 so=0
+create style=8 st=0 out=set got=8 lf wt=400 it=0 ul=0 so=1
+create style=9 st=0 out=set got=9 lf wt=700 it=0 ul=0 so=1
+create style=10 st=0 out=set got=10 lf wt=400 it=1 ul=0 so=1
+create style=11 st=0 out=set got=11 lf wt=700 it=1 ul=0 so=1
+create style=12 st=0 out=set got=12 lf wt=400 it=0 ul=1 so=1
+create style=13 st=0 out=set got=13 lf wt=700 it=0 ul=1 so=1
+create style=14 st=0 out=set got=14 lf wt=400 it=1 ul=1 so=1
+create style=15 st=0 out=set got=15 lf wt=700 it=1 ul=1 so=1
+create style=16 st=0 out=set got=16 lf wt=400 it=0 ul=0 so=0
+create style=32 st=0 out=set got=32 lf wt=400 it=0 ul=0 so=0
+create null fam st=2 null out st=2
+font 0 unit0 em10 st=0,0,0,0,0,0,0 style=0 size=10.0000 unit=0 h(null)=11.4990 h(g)=11.4990 h96=11.4990 h72=11.4990 fam=Arial
+  logfontW st=0 h=-10 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font 0 unit2 em10 st=0,0,0,0,0,0,0 style=0 size=10.0000 unit=2 h(null)=11.4990 h(g)=11.4990 h96=11.4990 h72=11.4990 fam=Arial
+  logfontW st=0 h=-10 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font 0 unit3 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=3 h(null)=-9.0000 h(g)=15.3320 h96=15.3320 h72=11.4990 fam=Arial
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font 0 unit4 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=4 h(null)=-9.0000 h(g)=1103.9062 h96=1103.9062 h72=827.9297 fam=Arial
+  logfontW st=0 h=-960 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font 0 unit5 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=5 h(null)=-9.0000 h(g)=3.6797 h96=3.6797 h72=2.7598 fam=Arial
+  logfontW st=0 h=-3 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font 0 unit6 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=6 h(null)=-9.0000 h(g)=43.4609 h96=43.4609 h72=32.5957 fam=Arial
+  logfontW st=0 h=-38 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font 1 unit0 em10 st=0,0,0,0,0,0,0 style=0 size=10.0000 unit=0 h(null)=11.4990 h(g)=11.4990 h96=11.4990 h72=11.4990 fam=Times New Roman
+  logfontW st=0 h=-10 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Times New Roman
+font 1 unit2 em10 st=0,0,0,0,0,0,0 style=0 size=10.0000 unit=2 h(null)=11.4990 h(g)=11.4990 h96=11.4990 h72=11.4990 fam=Times New Roman
+  logfontW st=0 h=-10 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Times New Roman
+font 1 unit3 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=3 h(null)=-9.0000 h(g)=15.3320 h96=15.3320 h72=11.4990 fam=Times New Roman
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Times New Roman
+font 1 unit4 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=4 h(null)=-9.0000 h(g)=1103.9062 h96=1103.9062 h72=827.9297 fam=Times New Roman
+  logfontW st=0 h=-960 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Times New Roman
+font 1 unit5 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=5 h(null)=-9.0000 h(g)=3.6797 h96=3.6797 h72=2.7598 fam=Times New Roman
+  logfontW st=0 h=-3 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Times New Roman
+font 1 unit6 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=6 h(null)=-9.0000 h(g)=43.4609 h96=43.4609 h72=32.5957 fam=Times New Roman
+  logfontW st=0 h=-38 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Times New Roman
+font 2 unit0 em10 st=0,0,0,0,0,0,0 style=0 size=10.0000 unit=0 h(null)=11.3281 h(g)=11.3281 h96=11.3281 h72=11.3281 fam=Courier New
+  logfontW st=0 h=-10 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Courier New
+font 2 unit2 em10 st=0,0,0,0,0,0,0 style=0 size=10.0000 unit=2 h(null)=11.3281 h(g)=11.3281 h96=11.3281 h72=11.3281 fam=Courier New
+  logfontW st=0 h=-10 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Courier New
+font 2 unit3 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=3 h(null)=-9.0000 h(g)=15.1042 h96=15.1042 h72=11.3281 fam=Courier New
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Courier New
+font 2 unit4 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=4 h(null)=-9.0000 h(g)=1087.5000 h96=1087.5000 h72=815.6250 fam=Courier New
+  logfontW st=0 h=-960 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Courier New
+font 2 unit5 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=5 h(null)=-9.0000 h(g)=3.6250 h96=3.6250 h72=2.7188 fam=Courier New
+  logfontW st=0 h=-3 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Courier New
+font 2 unit6 em10 st=0,0,0,-1,0,0,0 style=0 size=10.0000 unit=6 h(null)=-9.0000 h(g)=42.8150 h96=42.8150 h72=32.1112 fam=Courier New
+  logfontW st=0 h=-38 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Courier New
+font pt10 pageunit=pt st=0,0,0,-1,0,0,0 style=1 size=10.0000 unit=3 h(null)=-9.0000 h(g)=11.4990 h96=15.3320 h72=11.4990 fam=Arial
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font pt10 pageunit=mm st=0,0,0,-1,0,0,0 style=1 size=10.0000 unit=3 h(null)=-9.0000 h(g)=4.0566 h96=15.3320 h72=11.4990 fam=Arial
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font pt10 pageunit=px scale2 st=0,0,0,-1,0,0,0 style=1 size=10.0000 unit=3 h(null)=-9.0000 h(g)=7.6660 h96=15.3320 h72=11.4990 fam=Arial
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+font world10 pageunit=pt st=0,0,0,0,0,0,0 style=1 size=10.0000 unit=0 h(null)=11.4990 h(g)=11.4990 h96=11.4990 h72=11.4990 fam=Arial
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+getlogfont null graphics st=2 null lf st=2 null font st=2
+logfontA st=0 h=-13 wt=700 it=0 cs=0 q=0 pf=0 face=Arial
+clonefont st=0 new family same repeat-same(arial-obj same)
+font null st: clone=2,2 del=2 fam=2,2 style=2 size=2 unit=2 h=2 hdpi=2,2
+deletefamily of getfamily st=0
+fromlogfontW h=-13 st=0
+fromlogfontW h=-13 st=0,0,0,0,0,0,0 style=0 size=13.0000 unit=0 h(null)=14.9487 h(g)=14.9487 h96=14.9487 h72=14.9487 fam=Arial
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+fromlogfontW h=13 st=0
+fromlogfontW h=13 st=0,0,0,0,0,0,0 style=1 size=10.0000 unit=0 h(null)=11.4990 h(g)=11.4990 h96=11.4990 h72=11.4990 fam=Arial
+  logfontW st=0 h=-10 w=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+fromlogfontW h=0 st=0
+fromlogfontW h=0 st=0,0,0,0,0,0,0 style=0 size=16.0000 unit=0 h(null)=18.3984 h(g)=18.3984 h96=18.3984 h72=18.3984 fam=Arial
+  logfontW st=0 h=-16 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+fromlogfontW h=-20 st=0
+fromlogfontW h=-20 st=0,0,0,0,0,0,0 style=2 size=20.0000 unit=0 h(null)=22.9980 h(g)=22.9980 h96=22.9980 h72=22.9980 fam=Arial
+  logfontW st=0 h=-20 w=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+fromlogfontW h=20 st=0
+fromlogfontW h=20 st=0,0,0,0,0,0,0 style=12 size=17.0000 unit=0 h(null)=19.5483 h(g)=19.5483 h96=19.5483 h72=19.5483 fam=Arial
+  logfontW st=0 h=-17 w=0 esc=0 or=0 wt=400 it=0 ul=1 so=1 cs=0 op=0 cp=0 q=0 pf=0 face=Arial
+fromlogfontW h=-100 st=0
+fromlogfontW h=-100 st=0,0,0,0,0,0,0 style=0 size=100.0000 unit=0 h(null)=114.9902 h(g)=114.9902 h96=114.9902 h72=114.9902 fam=Times New Roman
+  logfontW st=0 h=-100 w=0 esc=0 or=0 wt=400 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Times New Roman
+fromlogfontW unknown-face st=16
+fromlogfontW msshelldlg wt600 st=0
+fromlogfontW msshelldlg st=0,0,0,0,0,0,0 style=1 size=13.0000 unit=0 h(null)=14.7139 h(g)=14.7139 h96=14.7139 h72=14.7139 fam=Microsoft Sans Serif
+  logfontW st=0 h=-13 w=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Microsoft Sans Serif
+fromlogfontW system st=16
+fromlogfontW empty-face st=16
+fromlogfontA st=0
+fromlogfontA courier -16 it st=0,0,0,0,0,0,0 style=2 size=16.0000 unit=0 h(null)=18.1250 h(g)=18.1250 h96=18.1250 h72=18.1250 fam=Courier New
+  logfontW st=0 h=-16 w=0 esc=0 or=0 wt=400 it=1 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Courier New
+fromdc times -15 bold st=0
+fromdc st=0,0,0,0,0,0,0 style=1 size=15.0000 unit=0 h(null)=17.2485 h(g)=17.2485 h96=17.2485 h72=17.2485 fam=Times New Roman
+  logfontW st=0 h=-15 w=0 esc=0 or=0 wt=700 it=0 ul=0 so=0 cs=0 op=0 cp=0 q=0 pf=0 face=Times New Roman
+fromdc stock st=16
+installed st=0 same count st=0 n>100=1
+installed list4 st=0 found=4 [Arial] [Arial Black] [Bahnschrift] [Bahnschrift Condensed]
+installed listall st=0 found==n 1 sorted=0 contains-createfromname-ptr=1
+installed delete family from list st=0
+installed list count0 st=0 found=0 neg st=0 found=0
+count null st=2,2 installed-null-out st=2
+private st=0 count st=0 n=0 list st=0 found=0
+private addfile missing st=10
+private addfile notfont st=0 count=0
+private addfile null st=2,2
+private addmem junk st=0 count=0 null st=2 len0 st=2 neg st=2
+private addfile cour st=0 count=1 +courbd st=0 count=1 +cour again st=0 count=1
+private family courier st=0 name=Courier New avail=1111 font-italic st=0 font-bold st=0 arial-in-private st=14
+private addmem times st=0 count=2 [Courier New] [Times New Roman]
+private times family st=0 em=2048 (after zeroing source)
+private delete st=0 out=null null st=2 ptr-to-null st=0 installed st=0 out=null
+create st=0
+fresh(0,0) st=00000000 flags=0x0 align=0 line=0 trim=1 hotkey=0 tabs=0 ranges=0 digit=0000/0
+fresh(0x7fffffff,409) st=00000000 flags=0x7fffffff align=0 line=0 trim=1 hotkey=0 tabs=0 ranges=0 digit=0000/0
+fresh(-1,ffff) st=00000000 flags=0xffffffff align=0 line=0 trim=1 hotkey=0 tabs=0 ranges=0 digit=0000/0
+create null out st=2
+generic default st=0 same
+genericdefault st=00000000 flags=0x0 align=0 line=0 trim=1 hotkey=0 tabs=0 ranges=0 digit=0000/0
+generic typo st=0 same
+generictypographic st=00000000 flags=0x6004 align=0 line=0 trim=0 hotkey=0 tabs=0 ranges=0 digit=0000/0
+clone typo st=0 new
+clonetypo st=00000000 flags=0x6004 align=0 line=0 trim=0 hotkey=0 tabs=0 ranges=0 digit=0000/0
+clonetypo flags0 st=00000000 flags=0x0 align=0 line=0 trim=0 hotkey=0 tabs=0 ranges=0 digit=0000/0
+generictypographic after clone change st=00000000 flags=0x6004 align=0 line=0 trim=0 hotkey=0 tabs=0 ranges=0 digit=0000/0
+generic null st=2,2
+set align -1 st=2 line st=2 -> 0 0
+set align 0 st=0 line st=0 -> 0 0
+set align 1 st=0 line st=0 -> 1 1
+set align 2 st=0 line st=0 -> 2 2
+set align 3 st=2 line st=2 -> 2 2
+set trim -1 st=2 -> 1
+set trim 0 st=0 -> 0
+set trim 1 st=0 -> 1
+set trim 2 st=0 -> 2
+set trim 3 st=0 -> 3
+set trim 4 st=0 -> 4
+set trim 5 st=0 -> 5
+set trim 6 st=2 -> 5
+set hotkey -1 st=2 -> 0
+set hotkey 0 st=0 -> 0
+set hotkey 1 st=0 -> 1
+set hotkey 2 st=0 -> 2
+set hotkey 3 st=2 -> 2
+set digit -1 st=0 -> 0401/-1
+set digit 0 st=0 -> 0401/0
+set digit 1 st=0 -> 0401/1
+set digit 2 st=0 -> 0401/2
+set digit 3 st=0 -> 0401/3
+set digit 4 st=0 -> 0401/4
+digit null lang st=0 null sub st=0
+set flags 0x1234 st=0 -> 0x1234
+tabs set(5,3) st=0 count=3 get3 st=0 first=5.00 10.00,20.00,30.00,-9.00
+tabs get2 st=0 first=5.00 10.00,20.00,-9.00
+tabs get5 st=0 first=5.00 10.00,20.00,30.00,-9.00,-9.00
+tabs set count0 st=0 count=3 first=5.00
+ranges set3 st=0 count=3 set32 st=0 count=32 set33 st=11 count=32 set0 st=0 count=0
+clone of modified st=00000000 flags=0x1234 align=2 line=2 trim=5 hotkey=2 tabs=3 ranges=3 digit=0401/4
+generic default set align st=0 -> 1 delete st=0 after-delete same  st=00000000 flags=0x0 align=0 line=0 trim=1 hotkey=0 tabs=0 ranges=0 digit=0000/0
+measure hint0 f0 em10.0 t0 def st=0 bb=0.0000,0.0000,56.5609,12.4219 cp=11 lines=1
+measure hint0 f0 em10.0 t0 gdef st=0 bb=0.0000,0.0000,56.5609,12.4219 cp=11 lines=1
+measure hint0 f0 em10.0 t0 typo st=0 bb=0.0000,0.0000,51.6797,11.1719 cp=11 lines=1
+measure hint0 f0 em10.0 t1 def st=0 bb=0.0000,0.0000,8.4847,12.4219 cp=1 lines=1
+measure hint0 f0 em10.0 t1 gdef st=0 bb=0.0000,0.0000,8.4847,12.4219 cp=1 lines=1
+measure hint0 f0 em10.0 t1 typo st=0 bb=0.0000,0.0000,5.0000,11.1719 cp=1 lines=1
+measure hint0 f0 em10.0 t2 def st=0 bb=0.0000,0.0000,13.0550,12.4219 cp=1 lines=1
+measure hint0 f0 em10.0 t2 typo st=0 bb=0.0000,0.0000,9.4385,11.1719 cp=1 lines=1
+measure hint0 f0 em10.0 t3 def st=0 bb=0.0000,0.0000,12.4935,12.4219 cp=4 lines=1
+measure hint0 f0 em10.0 t3 typo st=0 bb=0.0000,0.0000,8.8867,11.1719 cp=4 lines=1
+measure hint0 f0 em10.0 t4 def st=0 bb=0.0000,0.0000,3.3333,12.4219 cp=1 lines=1
+measure hint0 f0 em10.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,11.1719 cp=1 lines=1
+measure hint0 f0 em10.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f0 em10.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f0 em10.0 t6 def st=0 bb=0.0000,0.0000,17.6497,12.4219 cp=4 lines=1
+measure hint0 f0 em10.0 t6 typo st=0 bb=0.0000,0.0000,13.9014,11.1719 cp=4 lines=1
+measure hint0 f0 em10.0 t7 def st=0 bb=0.0000,0.0000,15.9277,24.2480 cp=5 lines=2
+measure hint0 f0 em10.0 t7 typo st=0 bb=0.0000,0.0000,12.2314,22.9980 cp=5 lines=2
+measure hint0 f0 em10.0 t8 def st=0 bb=0.0000,0.0000,49.0576,12.7490 cp=3 lines=1
+measure hint0 f0 em10.0 t8 typo st=0 bb=0.0000,0.0000,11.1279,11.4990 cp=3 lines=1
+measure hint0 f0 em10.0 t9 def st=0 bb=0.0000,0.0000,10.2002,24.2480 cp=5 lines=2
+measure hint0 f0 em10.0 t9 typo st=0 bb=0.0000,0.0000,6.6699,22.9980 cp=5 lines=2
+measure hint0 f0 em20.0 t0 def st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure hint0 f0 em20.0 t0 gdef st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure hint0 f0 em20.0 t0 typo st=0 bb=0.0000,0.0000,103.3594,22.3438 cp=11 lines=1
+measure hint0 f0 em20.0 t1 def st=0 bb=0.0000,0.0000,16.9694,24.8438 cp=1 lines=1
+measure hint0 f0 em20.0 t1 gdef st=0 bb=0.0000,0.0000,16.9694,24.8438 cp=1 lines=1
+measure hint0 f0 em20.0 t1 typo st=0 bb=0.0000,0.0000,10.0000,22.3438 cp=1 lines=1
+measure hint0 f0 em20.0 t2 def st=0 bb=0.0000,0.0000,26.1100,24.8438 cp=1 lines=1
+measure hint0 f0 em20.0 t2 typo st=0 bb=0.0000,0.0000,18.8770,22.3438 cp=1 lines=1
+measure hint0 f0 em20.0 t3 def st=0 bb=0.0000,0.0000,24.9870,24.8438 cp=4 lines=1
+measure hint0 f0 em20.0 t3 typo st=0 bb=0.0000,0.0000,17.7734,22.3438 cp=4 lines=1
+measure hint0 f0 em20.0 t4 def st=0 bb=0.0000,0.0000,6.6667,24.8438 cp=1 lines=1
+measure hint0 f0 em20.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,22.3438 cp=1 lines=1
+measure hint0 f0 em20.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f0 em20.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f0 em20.0 t6 def st=0 bb=0.0000,0.0000,35.2995,24.8438 cp=4 lines=1
+measure hint0 f0 em20.0 t6 typo st=0 bb=0.0000,0.0000,27.8027,22.3438 cp=4 lines=1
+measure hint0 f0 em20.0 t7 def st=0 bb=0.0000,0.0000,31.8555,48.4961 cp=5 lines=2
+measure hint0 f0 em20.0 t7 typo st=0 bb=0.0000,0.0000,24.4629,45.9961 cp=5 lines=2
+measure hint0 f0 em20.0 t8 def st=0 bb=0.0000,0.0000,98.1152,25.4980 cp=3 lines=1
+measure hint0 f0 em20.0 t8 typo st=0 bb=0.0000,0.0000,22.2559,22.9980 cp=3 lines=1
+measure hint0 f0 em20.0 t9 def st=0 bb=0.0000,0.0000,20.4004,48.4961 cp=5 lines=2
+measure hint0 f0 em20.0 t9 typo st=0 bb=0.0000,0.0000,13.3398,45.9961 cp=5 lines=2
+measure hint0 f0 em33.3 t0 def st=0 bb=0.0000,0.0000,188.3477,41.3648 cp=11 lines=1
+measure hint0 f0 em33.3 t0 gdef st=0 bb=0.0000,0.0000,188.3477,41.3648 cp=11 lines=1
+measure hint0 f0 em33.3 t0 typo st=0 bb=0.0000,0.0000,172.0934,37.2023 cp=11 lines=1
+measure hint0 f0 em33.3 t1 def st=0 bb=0.0000,0.0000,28.2541,41.3648 cp=1 lines=1
+measure hint0 f0 em33.3 t1 gdef st=0 bb=0.0000,0.0000,28.2541,41.3648 cp=1 lines=1
+measure hint0 f0 em33.3 t1 typo st=0 bb=0.0000,0.0000,16.6500,37.2023 cp=1 lines=1
+measure hint0 f0 em33.3 t2 def st=0 bb=0.0000,0.0000,43.4732,41.3648 cp=1 lines=1
+measure hint0 f0 em33.3 t2 typo st=0 bb=0.0000,0.0000,31.4301,37.2023 cp=1 lines=1
+measure hint0 f0 em33.3 t3 def st=0 bb=0.0000,0.0000,41.6033,41.3648 cp=4 lines=1
+measure hint0 f0 em33.3 t3 typo st=0 bb=0.0000,0.0000,29.5928,37.2023 cp=4 lines=1
+measure hint0 f0 em33.3 t4 def st=0 bb=0.0000,0.0000,11.1000,41.3648 cp=1 lines=1
+measure hint0 f0 em33.3 t4 typo st=0 bb=0.0000,0.0000,0.0000,37.2023 cp=1 lines=1
+measure hint0 f0 em33.3 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f0 em33.3 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f0 em33.3 t6 def st=0 bb=0.0000,0.0000,58.7736,41.3648 cp=4 lines=1
+measure hint0 f0 em33.3 t6 typo st=0 bb=0.0000,0.0000,46.2915,37.2023 cp=4 lines=1
+measure hint0 f0 em33.3 t7 def st=0 bb=0.0000,0.0000,53.0394,80.7460 cp=5 lines=2
+measure hint0 f0 em33.3 t7 typo st=0 bb=0.0000,0.0000,40.7307,76.5835 cp=5 lines=2
+measure hint0 f0 em33.3 t8 def st=0 bb=0.0000,0.0000,163.3619,42.4542 cp=3 lines=1
+measure hint0 f0 em33.3 t8 typo st=0 bb=0.0000,0.0000,37.0560,38.2917 cp=3 lines=1
+measure hint0 f0 em33.3 t9 def st=0 bb=0.0000,0.0000,33.9666,80.7460 cp=5 lines=2
+measure hint0 f0 em33.3 t9 typo st=0 bb=0.0000,0.0000,22.2108,76.5835 cp=5 lines=2
+measure hint0 f1 em10.0 t0 def st=0 bb=0.0000,0.0000,55.1009,12.3242 cp=11 lines=1
+measure hint0 f1 em10.0 t0 gdef st=0 bb=0.0000,0.0000,55.1009,12.3242 cp=11 lines=1
+measure hint0 f1 em10.0 t0 typo st=0 bb=0.0000,0.0000,50.2637,11.0742 cp=11 lines=1
+measure hint0 f1 em10.0 t1 def st=0 bb=0.0000,0.0000,8.4847,12.3242 cp=1 lines=1
+measure hint0 f1 em10.0 t1 gdef st=0 bb=0.0000,0.0000,8.4847,12.3242 cp=1 lines=1
+measure hint0 f1 em10.0 t1 typo st=0 bb=0.0000,0.0000,5.0000,11.0742 cp=1 lines=1
+measure hint0 f1 em10.0 t2 def st=0 bb=0.0000,0.0000,13.0550,12.3242 cp=1 lines=1
+measure hint0 f1 em10.0 t2 typo st=0 bb=0.0000,0.0000,9.4385,11.0742 cp=1 lines=1
+measure hint0 f1 em10.0 t3 def st=0 bb=0.0000,0.0000,14.7786,12.3242 cp=4 lines=1
+measure hint0 f1 em10.0 t3 typo st=0 bb=0.0000,0.0000,11.1133,11.0742 cp=4 lines=1
+measure hint0 f1 em10.0 t4 def st=0 bb=0.0000,0.0000,3.3333,12.3242 cp=1 lines=1
+measure hint0 f1 em10.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,11.0742 cp=1 lines=1
+measure hint0 f1 em10.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f1 em10.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f1 em10.0 t6 def st=0 bb=0.0000,0.0000,15.6283,12.3242 cp=4 lines=1
+measure hint0 f1 em10.0 t6 typo st=0 bb=0.0000,0.0000,11.9385,11.0742 cp=4 lines=1
+measure hint0 f1 em10.0 t7 def st=0 bb=0.0000,0.0000,15.9180,24.2480 cp=5 lines=2
+measure hint0 f1 em10.0 t7 typo st=0 bb=0.0000,0.0000,12.2217,22.9980 cp=5 lines=2
+measure hint0 f1 em10.0 t8 def st=0 bb=0.0000,0.0000,48.4814,12.7490 cp=3 lines=1
+measure hint0 f1 em10.0 t8 typo st=0 bb=0.0000,0.0000,9.4434,11.4990 cp=3 lines=1
+measure hint0 f1 em10.0 t9 def st=0 bb=0.0000,0.0000,10.7666,24.2480 cp=5 lines=2
+measure hint0 f1 em10.0 t9 typo st=0 bb=0.0000,0.0000,7.2217,22.9980 cp=5 lines=2
+measure hint0 f1 em20.0 t0 def st=0 bb=0.0000,0.0000,110.2018,24.6484 cp=11 lines=1
+measure hint0 f1 em20.0 t0 gdef st=0 bb=0.0000,0.0000,110.2018,24.6484 cp=11 lines=1
+measure hint0 f1 em20.0 t0 typo st=0 bb=0.0000,0.0000,100.5273,22.1484 cp=11 lines=1
+measure hint0 f1 em20.0 t1 def st=0 bb=0.0000,0.0000,16.9694,24.6484 cp=1 lines=1
+measure hint0 f1 em20.0 t1 gdef st=0 bb=0.0000,0.0000,16.9694,24.6484 cp=1 lines=1
+measure hint0 f1 em20.0 t1 typo st=0 bb=0.0000,0.0000,10.0000,22.1484 cp=1 lines=1
+measure hint0 f1 em20.0 t2 def st=0 bb=0.0000,0.0000,26.1100,24.6484 cp=1 lines=1
+measure hint0 f1 em20.0 t2 typo st=0 bb=0.0000,0.0000,18.8770,22.1484 cp=1 lines=1
+measure hint0 f1 em20.0 t3 def st=0 bb=0.0000,0.0000,29.5573,24.6484 cp=4 lines=1
+measure hint0 f1 em20.0 t3 typo st=0 bb=0.0000,0.0000,22.2266,22.1484 cp=4 lines=1
+measure hint0 f1 em20.0 t4 def st=0 bb=0.0000,0.0000,6.6667,24.6484 cp=1 lines=1
+measure hint0 f1 em20.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,22.1484 cp=1 lines=1
+measure hint0 f1 em20.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f1 em20.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f1 em20.0 t6 def st=0 bb=0.0000,0.0000,31.2565,24.6484 cp=4 lines=1
+measure hint0 f1 em20.0 t6 typo st=0 bb=0.0000,0.0000,23.8770,22.1484 cp=4 lines=1
+measure hint0 f1 em20.0 t7 def st=0 bb=0.0000,0.0000,31.8359,48.4961 cp=5 lines=2
+measure hint0 f1 em20.0 t7 typo st=0 bb=0.0000,0.0000,24.4434,45.9961 cp=5 lines=2
+measure hint0 f1 em20.0 t8 def st=0 bb=0.0000,0.0000,96.9629,25.4980 cp=3 lines=1
+measure hint0 f1 em20.0 t8 typo st=0 bb=0.0000,0.0000,18.8867,22.9980 cp=3 lines=1
+measure hint0 f1 em20.0 t9 def st=0 bb=0.0000,0.0000,21.5332,48.4961 cp=5 lines=2
+measure hint0 f1 em20.0 t9 typo st=0 bb=0.0000,0.0000,14.4434,45.9961 cp=5 lines=2
+measure hint0 f1 em33.3 t0 def st=0 bb=0.0000,0.0000,183.4860,41.0396 cp=11 lines=1
+measure hint0 f1 em33.3 t0 gdef st=0 bb=0.0000,0.0000,183.4860,41.0396 cp=11 lines=1
+measure hint0 f1 em33.3 t0 typo st=0 bb=0.0000,0.0000,167.3780,36.8771 cp=11 lines=1
+measure hint0 f1 em33.3 t1 def st=0 bb=0.0000,0.0000,28.2541,41.0396 cp=1 lines=1
+measure hint0 f1 em33.3 t1 gdef st=0 bb=0.0000,0.0000,28.2541,41.0396 cp=1 lines=1
+measure hint0 f1 em33.3 t1 typo st=0 bb=0.0000,0.0000,16.6500,36.8771 cp=1 lines=1
+measure hint0 f1 em33.3 t2 def st=0 bb=0.0000,0.0000,43.4732,41.0396 cp=1 lines=1
+measure hint0 f1 em33.3 t2 typo st=0 bb=0.0000,0.0000,31.4301,36.8771 cp=1 lines=1
+measure hint0 f1 em33.3 t3 def st=0 bb=0.0000,0.0000,49.2129,41.0396 cp=4 lines=1
+measure hint0 f1 em33.3 t3 typo st=0 bb=0.0000,0.0000,37.0072,36.8771 cp=4 lines=1
+measure hint0 f1 em33.3 t4 def st=0 bb=0.0000,0.0000,11.1000,41.0396 cp=1 lines=1
+measure hint0 f1 em33.3 t4 typo st=0 bb=0.0000,0.0000,0.0000,36.8771 cp=1 lines=1
+measure hint0 f1 em33.3 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f1 em33.3 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f1 em33.3 t6 def st=0 bb=0.0000,0.0000,52.0421,41.0396 cp=4 lines=1
+measure hint0 f1 em33.3 t6 typo st=0 bb=0.0000,0.0000,39.7551,36.8771 cp=4 lines=1
+measure hint0 f1 em33.3 t7 def st=0 bb=0.0000,0.0000,53.0068,80.7460 cp=5 lines=2
+measure hint0 f1 em33.3 t7 typo st=0 bb=0.0000,0.0000,40.6982,76.5835 cp=5 lines=2
+measure hint0 f1 em33.3 t8 def st=0 bb=0.0000,0.0000,161.4432,42.4542 cp=3 lines=1
+measure hint0 f1 em33.3 t8 typo st=0 bb=0.0000,0.0000,31.4464,38.2917 cp=3 lines=1
+measure hint0 f1 em33.3 t9 def st=0 bb=0.0000,0.0000,35.8528,80.7460 cp=5 lines=2
+measure hint0 f1 em33.3 t9 typo st=0 bb=0.0000,0.0000,24.0482,76.5835 cp=5 lines=2
+measure hint0 f2 em10.0 t0 def st=0 bb=0.0000,0.0000,71.3314,12.5781 cp=11 lines=1
+measure hint0 f2 em10.0 t0 gdef st=0 bb=0.0000,0.0000,71.3314,12.5781 cp=11 lines=1
+measure hint0 f2 em10.0 t0 typo st=0 bb=0.0000,0.0000,66.0107,11.3281 cp=11 lines=1
+measure hint0 f2 em10.0 t1 def st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint0 f2 em10.0 t1 gdef st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint0 f2 em10.0 t1 typo st=0 bb=0.0000,0.0000,6.0010,11.3281 cp=1 lines=1
+measure hint0 f2 em10.0 t2 def st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint0 f2 em10.0 t2 typo st=0 bb=0.0000,0.0000,6.0010,11.3281 cp=1 lines=1
+measure hint0 f2 em10.0 t3 def st=0 bb=0.0000,0.0000,28.0599,12.5781 cp=4 lines=1
+measure hint0 f2 em10.0 t3 typo st=0 bb=0.0000,0.0000,24.0039,11.3281 cp=4 lines=1
+measure hint0 f2 em10.0 t4 def st=0 bb=0.0000,0.0000,3.3333,12.5781 cp=1 lines=1
+measure hint0 f2 em10.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,11.3281 cp=1 lines=1
+measure hint0 f2 em10.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f2 em10.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f2 em10.0 t6 def st=0 bb=0.0000,0.0000,21.8783,12.5781 cp=4 lines=1
+measure hint0 f2 em10.0 t6 typo st=0 bb=0.0000,0.0000,18.0029,11.3281 cp=4 lines=1
+measure hint0 f2 em10.0 t7 def st=0 bb=0.0000,0.0000,15.6934,23.9062 cp=5 lines=2
+measure hint0 f2 em10.0 t7 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=5 lines=2
+measure hint0 f2 em10.0 t8 def st=0 bb=0.0000,0.0000,49.5117,12.5781 cp=3 lines=1
+measure hint0 f2 em10.0 t8 typo st=0 bb=0.0000,0.0000,12.0068,11.3281 cp=3 lines=1
+measure hint0 f2 em10.0 t9 def st=0 bb=0.0000,0.0000,9.5117,23.9062 cp=5 lines=2
+measure hint0 f2 em10.0 t9 typo st=0 bb=0.0000,0.0000,6.0010,22.6562 cp=5 lines=2
+measure hint0 f2 em20.0 t0 def st=0 bb=0.0000,0.0000,142.6628,25.1562 cp=11 lines=1
+measure hint0 f2 em20.0 t0 gdef st=0 bb=0.0000,0.0000,142.6628,25.1562 cp=11 lines=1
+measure hint0 f2 em20.0 t0 typo st=0 bb=0.0000,0.0000,132.0215,22.6562 cp=11 lines=1
+measure hint0 f2 em20.0 t1 def st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint0 f2 em20.0 t1 gdef st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint0 f2 em20.0 t1 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=1 lines=1
+measure hint0 f2 em20.0 t2 def st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint0 f2 em20.0 t2 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=1 lines=1
+measure hint0 f2 em20.0 t3 def st=0 bb=0.0000,0.0000,56.1198,25.1562 cp=4 lines=1
+measure hint0 f2 em20.0 t3 typo st=0 bb=0.0000,0.0000,48.0078,22.6562 cp=4 lines=1
+measure hint0 f2 em20.0 t4 def st=0 bb=0.0000,0.0000,6.6667,25.1562 cp=1 lines=1
+measure hint0 f2 em20.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,22.6562 cp=1 lines=1
+measure hint0 f2 em20.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f2 em20.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f2 em20.0 t6 def st=0 bb=0.0000,0.0000,43.7565,25.1562 cp=4 lines=1
+measure hint0 f2 em20.0 t6 typo st=0 bb=0.0000,0.0000,36.0059,22.6562 cp=4 lines=1
+measure hint0 f2 em20.0 t7 def st=0 bb=0.0000,0.0000,31.3867,47.8125 cp=5 lines=2
+measure hint0 f2 em20.0 t7 typo st=0 bb=0.0000,0.0000,24.0039,45.3125 cp=5 lines=2
+measure hint0 f2 em20.0 t8 def st=0 bb=0.0000,0.0000,99.0234,25.1562 cp=3 lines=1
+measure hint0 f2 em20.0 t8 typo st=0 bb=0.0000,0.0000,24.0137,22.6562 cp=3 lines=1
+measure hint0 f2 em20.0 t9 def st=0 bb=0.0000,0.0000,19.0234,47.8125 cp=5 lines=2
+measure hint0 f2 em20.0 t9 typo st=0 bb=0.0000,0.0000,12.0020,45.3125 cp=5 lines=2
+measure hint0 f2 em33.3 t0 def st=0 bb=0.0000,0.0000,237.5335,41.8852 cp=11 lines=1
+measure hint0 f2 em33.3 t0 gdef st=0 bb=0.0000,0.0000,237.5335,41.8852 cp=11 lines=1
+measure hint0 f2 em33.3 t0 typo st=0 bb=0.0000,0.0000,219.8158,37.7227 cp=11 lines=1
+measure hint0 f2 em33.3 t1 def st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint0 f2 em33.3 t1 gdef st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint0 f2 em33.3 t1 typo st=0 bb=0.0000,0.0000,19.9833,37.7227 cp=1 lines=1
+measure hint0 f2 em33.3 t2 def st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint0 f2 em33.3 t2 typo st=0 bb=0.0000,0.0000,19.9833,37.7227 cp=1 lines=1
+measure hint0 f2 em33.3 t3 def st=0 bb=0.0000,0.0000,93.4395,41.8852 cp=4 lines=1
+measure hint0 f2 em33.3 t3 typo st=0 bb=0.0000,0.0000,79.9330,37.7227 cp=4 lines=1
+measure hint0 f2 em33.3 t4 def st=0 bb=0.0000,0.0000,11.1000,41.8852 cp=1 lines=1
+measure hint0 f2 em33.3 t4 typo st=0 bb=0.0000,0.0000,0.0000,37.7227 cp=1 lines=1
+measure hint0 f2 em33.3 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f2 em33.3 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint0 f2 em33.3 t6 def st=0 bb=0.0000,0.0000,72.8546,41.8852 cp=4 lines=1
+measure hint0 f2 em33.3 t6 typo st=0 bb=0.0000,0.0000,59.9498,37.7227 cp=4 lines=1
+measure hint0 f2 em33.3 t7 def st=0 bb=0.0000,0.0000,52.2589,79.6078 cp=5 lines=2
+measure hint0 f2 em33.3 t7 typo st=0 bb=0.0000,0.0000,39.9665,75.4453 cp=5 lines=2
+measure hint0 f2 em33.3 t8 def st=0 bb=0.0000,0.0000,164.8740,41.8852 cp=3 lines=1
+measure hint0 f2 em33.3 t8 typo st=0 bb=0.0000,0.0000,39.9828,37.7227 cp=3 lines=1
+measure hint0 f2 em33.3 t9 def st=0 bb=0.0000,0.0000,31.6740,79.6078 cp=5 lines=2
+measure hint0 f2 em33.3 t9 typo st=0 bb=0.0000,0.0000,19.9833,75.4453 cp=5 lines=2
+measure hint1 f0 em10.0 t0 def st=0 bb=0.0000,0.0000,56.5609,12.4219 cp=11 lines=1
+measure hint1 f0 em10.0 t0 gdef st=0 bb=0.0000,0.0000,56.5609,12.4219 cp=11 lines=1
+measure hint1 f0 em10.0 t0 typo st=0 bb=0.0000,0.0000,51.6797,11.1719 cp=11 lines=1
+measure hint1 f0 em10.0 t1 def st=0 bb=0.0000,0.0000,8.4847,12.4219 cp=1 lines=1
+measure hint1 f0 em10.0 t1 gdef st=0 bb=0.0000,0.0000,8.4847,12.4219 cp=1 lines=1
+measure hint1 f0 em10.0 t1 typo st=0 bb=0.0000,0.0000,5.0000,11.1719 cp=1 lines=1
+measure hint1 f0 em10.0 t2 def st=0 bb=0.0000,0.0000,13.0550,12.4219 cp=1 lines=1
+measure hint1 f0 em10.0 t2 typo st=0 bb=0.0000,0.0000,9.4385,11.1719 cp=1 lines=1
+measure hint1 f0 em10.0 t3 def st=0 bb=0.0000,0.0000,12.4935,12.4219 cp=4 lines=1
+measure hint1 f0 em10.0 t3 typo st=0 bb=0.0000,0.0000,8.8867,11.1719 cp=4 lines=1
+measure hint1 f0 em20.0 t0 def st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure hint1 f0 em20.0 t0 gdef st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure hint1 f0 em20.0 t0 typo st=0 bb=0.0000,0.0000,103.3594,22.3438 cp=11 lines=1
+measure hint1 f0 em20.0 t1 def st=0 bb=0.0000,0.0000,16.9694,24.8438 cp=1 lines=1
+measure hint1 f0 em20.0 t1 gdef st=0 bb=0.0000,0.0000,16.9694,24.8438 cp=1 lines=1
+measure hint1 f0 em20.0 t1 typo st=0 bb=0.0000,0.0000,10.0000,22.3438 cp=1 lines=1
+measure hint1 f0 em20.0 t2 def st=0 bb=0.0000,0.0000,26.1100,24.8438 cp=1 lines=1
+measure hint1 f0 em20.0 t2 typo st=0 bb=0.0000,0.0000,18.8770,22.3438 cp=1 lines=1
+measure hint1 f0 em20.0 t3 def st=0 bb=0.0000,0.0000,24.9870,24.8438 cp=4 lines=1
+measure hint1 f0 em20.0 t3 typo st=0 bb=0.0000,0.0000,17.7734,22.3438 cp=4 lines=1
+measure hint1 f0 em33.3 t0 def st=0 bb=0.0000,0.0000,188.3477,41.3648 cp=11 lines=1
+measure hint1 f0 em33.3 t0 gdef st=0 bb=0.0000,0.0000,188.3477,41.3648 cp=11 lines=1
+measure hint1 f0 em33.3 t0 typo st=0 bb=0.0000,0.0000,172.0934,37.2023 cp=11 lines=1
+measure hint1 f0 em33.3 t1 def st=0 bb=0.0000,0.0000,28.2541,41.3648 cp=1 lines=1
+measure hint1 f0 em33.3 t1 gdef st=0 bb=0.0000,0.0000,28.2541,41.3648 cp=1 lines=1
+measure hint1 f0 em33.3 t1 typo st=0 bb=0.0000,0.0000,16.6500,37.2023 cp=1 lines=1
+measure hint1 f0 em33.3 t2 def st=0 bb=0.0000,0.0000,43.4732,41.3648 cp=1 lines=1
+measure hint1 f0 em33.3 t2 typo st=0 bb=0.0000,0.0000,31.4301,37.2023 cp=1 lines=1
+measure hint1 f0 em33.3 t3 def st=0 bb=0.0000,0.0000,41.6033,41.3648 cp=4 lines=1
+measure hint1 f0 em33.3 t3 typo st=0 bb=0.0000,0.0000,29.5928,37.2023 cp=4 lines=1
+measure hint1 f1 em10.0 t0 def st=0 bb=0.0000,0.0000,55.1009,12.3242 cp=11 lines=1
+measure hint1 f1 em10.0 t0 gdef st=0 bb=0.0000,0.0000,55.1009,12.3242 cp=11 lines=1
+measure hint1 f1 em10.0 t0 typo st=0 bb=0.0000,0.0000,50.2637,11.0742 cp=11 lines=1
+measure hint1 f1 em10.0 t1 def st=0 bb=0.0000,0.0000,8.4847,12.3242 cp=1 lines=1
+measure hint1 f1 em10.0 t1 gdef st=0 bb=0.0000,0.0000,8.4847,12.3242 cp=1 lines=1
+measure hint1 f1 em10.0 t1 typo st=0 bb=0.0000,0.0000,5.0000,11.0742 cp=1 lines=1
+measure hint1 f1 em10.0 t2 def st=0 bb=0.0000,0.0000,13.0550,12.3242 cp=1 lines=1
+measure hint1 f1 em10.0 t2 typo st=0 bb=0.0000,0.0000,9.4385,11.0742 cp=1 lines=1
+measure hint1 f1 em10.0 t3 def st=0 bb=0.0000,0.0000,14.7786,12.3242 cp=4 lines=1
+measure hint1 f1 em10.0 t3 typo st=0 bb=0.0000,0.0000,11.1133,11.0742 cp=4 lines=1
+measure hint1 f1 em20.0 t0 def st=0 bb=0.0000,0.0000,110.2018,24.6484 cp=11 lines=1
+measure hint1 f1 em20.0 t0 gdef st=0 bb=0.0000,0.0000,110.2018,24.6484 cp=11 lines=1
+measure hint1 f1 em20.0 t0 typo st=0 bb=0.0000,0.0000,100.5273,22.1484 cp=11 lines=1
+measure hint1 f1 em20.0 t1 def st=0 bb=0.0000,0.0000,16.9694,24.6484 cp=1 lines=1
+measure hint1 f1 em20.0 t1 gdef st=0 bb=0.0000,0.0000,16.9694,24.6484 cp=1 lines=1
+measure hint1 f1 em20.0 t1 typo st=0 bb=0.0000,0.0000,10.0000,22.1484 cp=1 lines=1
+measure hint1 f1 em20.0 t2 def st=0 bb=0.0000,0.0000,26.1100,24.6484 cp=1 lines=1
+measure hint1 f1 em20.0 t2 typo st=0 bb=0.0000,0.0000,18.8770,22.1484 cp=1 lines=1
+measure hint1 f1 em20.0 t3 def st=0 bb=0.0000,0.0000,29.5573,24.6484 cp=4 lines=1
+measure hint1 f1 em20.0 t3 typo st=0 bb=0.0000,0.0000,22.2266,22.1484 cp=4 lines=1
+measure hint1 f1 em33.3 t0 def st=0 bb=0.0000,0.0000,183.4860,41.0396 cp=11 lines=1
+measure hint1 f1 em33.3 t0 gdef st=0 bb=0.0000,0.0000,183.4860,41.0396 cp=11 lines=1
+measure hint1 f1 em33.3 t0 typo st=0 bb=0.0000,0.0000,167.3780,36.8771 cp=11 lines=1
+measure hint1 f1 em33.3 t1 def st=0 bb=0.0000,0.0000,28.2541,41.0396 cp=1 lines=1
+measure hint1 f1 em33.3 t1 gdef st=0 bb=0.0000,0.0000,28.2541,41.0396 cp=1 lines=1
+measure hint1 f1 em33.3 t1 typo st=0 bb=0.0000,0.0000,16.6500,36.8771 cp=1 lines=1
+measure hint1 f1 em33.3 t2 def st=0 bb=0.0000,0.0000,43.4732,41.0396 cp=1 lines=1
+measure hint1 f1 em33.3 t2 typo st=0 bb=0.0000,0.0000,31.4301,36.8771 cp=1 lines=1
+measure hint1 f1 em33.3 t3 def st=0 bb=0.0000,0.0000,49.2129,41.0396 cp=4 lines=1
+measure hint1 f1 em33.3 t3 typo st=0 bb=0.0000,0.0000,37.0072,36.8771 cp=4 lines=1
+measure hint1 f2 em10.0 t0 def st=0 bb=0.0000,0.0000,71.3314,12.5781 cp=11 lines=1
+measure hint1 f2 em10.0 t0 gdef st=0 bb=0.0000,0.0000,71.3314,12.5781 cp=11 lines=1
+measure hint1 f2 em10.0 t0 typo st=0 bb=0.0000,0.0000,66.0107,11.3281 cp=11 lines=1
+measure hint1 f2 em10.0 t1 def st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint1 f2 em10.0 t1 gdef st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint1 f2 em10.0 t1 typo st=0 bb=0.0000,0.0000,6.0010,11.3281 cp=1 lines=1
+measure hint1 f2 em10.0 t2 def st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint1 f2 em10.0 t2 typo st=0 bb=0.0000,0.0000,6.0010,11.3281 cp=1 lines=1
+measure hint1 f2 em10.0 t3 def st=0 bb=0.0000,0.0000,28.0599,12.5781 cp=4 lines=1
+measure hint1 f2 em10.0 t3 typo st=0 bb=0.0000,0.0000,24.0039,11.3281 cp=4 lines=1
+measure hint1 f2 em20.0 t0 def st=0 bb=0.0000,0.0000,142.6628,25.1562 cp=11 lines=1
+measure hint1 f2 em20.0 t0 gdef st=0 bb=0.0000,0.0000,142.6628,25.1562 cp=11 lines=1
+measure hint1 f2 em20.0 t0 typo st=0 bb=0.0000,0.0000,132.0215,22.6562 cp=11 lines=1
+measure hint1 f2 em20.0 t1 def st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint1 f2 em20.0 t1 gdef st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint1 f2 em20.0 t1 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=1 lines=1
+measure hint1 f2 em20.0 t2 def st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint1 f2 em20.0 t2 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=1 lines=1
+measure hint1 f2 em20.0 t3 def st=0 bb=0.0000,0.0000,56.1198,25.1562 cp=4 lines=1
+measure hint1 f2 em20.0 t3 typo st=0 bb=0.0000,0.0000,48.0078,22.6562 cp=4 lines=1
+measure hint1 f2 em33.3 t0 def st=0 bb=0.0000,0.0000,237.5335,41.8852 cp=11 lines=1
+measure hint1 f2 em33.3 t0 gdef st=0 bb=0.0000,0.0000,237.5335,41.8852 cp=11 lines=1
+measure hint1 f2 em33.3 t0 typo st=0 bb=0.0000,0.0000,219.8158,37.7227 cp=11 lines=1
+measure hint1 f2 em33.3 t1 def st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint1 f2 em33.3 t1 gdef st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint1 f2 em33.3 t1 typo st=0 bb=0.0000,0.0000,19.9833,37.7227 cp=1 lines=1
+measure hint1 f2 em33.3 t2 def st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint1 f2 em33.3 t2 typo st=0 bb=0.0000,0.0000,19.9833,37.7227 cp=1 lines=1
+measure hint1 f2 em33.3 t3 def st=0 bb=0.0000,0.0000,93.4395,41.8852 cp=4 lines=1
+measure hint1 f2 em33.3 t3 typo st=0 bb=0.0000,0.0000,79.9330,37.7227 cp=4 lines=1
+measure hint4 f0 em10.0 t0 def st=0 bb=0.0000,0.0000,56.5609,12.4219 cp=11 lines=1
+measure hint4 f0 em10.0 t0 gdef st=0 bb=0.0000,0.0000,56.5609,12.4219 cp=11 lines=1
+measure hint4 f0 em10.0 t0 typo st=0 bb=0.0000,0.0000,51.6797,11.1719 cp=11 lines=1
+measure hint4 f0 em10.0 t1 def st=0 bb=0.0000,0.0000,8.4847,12.4219 cp=1 lines=1
+measure hint4 f0 em10.0 t1 gdef st=0 bb=0.0000,0.0000,8.4847,12.4219 cp=1 lines=1
+measure hint4 f0 em10.0 t1 typo st=0 bb=0.0000,0.0000,5.0000,11.1719 cp=1 lines=1
+measure hint4 f0 em10.0 t2 def st=0 bb=0.0000,0.0000,13.0550,12.4219 cp=1 lines=1
+measure hint4 f0 em10.0 t2 typo st=0 bb=0.0000,0.0000,9.4385,11.1719 cp=1 lines=1
+measure hint4 f0 em10.0 t3 def st=0 bb=0.0000,0.0000,12.4935,12.4219 cp=4 lines=1
+measure hint4 f0 em10.0 t3 typo st=0 bb=0.0000,0.0000,8.8867,11.1719 cp=4 lines=1
+measure hint4 f0 em10.0 t4 def st=0 bb=0.0000,0.0000,3.3333,12.4219 cp=1 lines=1
+measure hint4 f0 em10.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,11.1719 cp=1 lines=1
+measure hint4 f0 em10.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f0 em10.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f0 em10.0 t6 def st=0 bb=0.0000,0.0000,17.6497,12.4219 cp=4 lines=1
+measure hint4 f0 em10.0 t6 typo st=0 bb=0.0000,0.0000,13.9014,11.1719 cp=4 lines=1
+measure hint4 f0 em10.0 t7 def st=0 bb=0.0000,0.0000,15.9277,24.2480 cp=5 lines=2
+measure hint4 f0 em10.0 t7 typo st=0 bb=0.0000,0.0000,12.2314,22.9980 cp=5 lines=2
+measure hint4 f0 em10.0 t8 def st=0 bb=0.0000,0.0000,49.0576,12.7490 cp=3 lines=1
+measure hint4 f0 em10.0 t8 typo st=0 bb=0.0000,0.0000,11.1279,11.4990 cp=3 lines=1
+measure hint4 f0 em10.0 t9 def st=0 bb=0.0000,0.0000,10.2002,24.2480 cp=5 lines=2
+measure hint4 f0 em10.0 t9 typo st=0 bb=0.0000,0.0000,6.6699,22.9980 cp=5 lines=2
+measure hint4 f0 em20.0 t0 def st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure hint4 f0 em20.0 t0 gdef st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure hint4 f0 em20.0 t0 typo st=0 bb=0.0000,0.0000,103.3594,22.3438 cp=11 lines=1
+measure hint4 f0 em20.0 t1 def st=0 bb=0.0000,0.0000,16.9694,24.8438 cp=1 lines=1
+measure hint4 f0 em20.0 t1 gdef st=0 bb=0.0000,0.0000,16.9694,24.8438 cp=1 lines=1
+measure hint4 f0 em20.0 t1 typo st=0 bb=0.0000,0.0000,10.0000,22.3438 cp=1 lines=1
+measure hint4 f0 em20.0 t2 def st=0 bb=0.0000,0.0000,26.1100,24.8438 cp=1 lines=1
+measure hint4 f0 em20.0 t2 typo st=0 bb=0.0000,0.0000,18.8770,22.3438 cp=1 lines=1
+measure hint4 f0 em20.0 t3 def st=0 bb=0.0000,0.0000,24.9870,24.8438 cp=4 lines=1
+measure hint4 f0 em20.0 t3 typo st=0 bb=0.0000,0.0000,17.7734,22.3438 cp=4 lines=1
+measure hint4 f0 em20.0 t4 def st=0 bb=0.0000,0.0000,6.6667,24.8438 cp=1 lines=1
+measure hint4 f0 em20.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,22.3438 cp=1 lines=1
+measure hint4 f0 em20.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f0 em20.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f0 em20.0 t6 def st=0 bb=0.0000,0.0000,35.2995,24.8438 cp=4 lines=1
+measure hint4 f0 em20.0 t6 typo st=0 bb=0.0000,0.0000,27.8027,22.3438 cp=4 lines=1
+measure hint4 f0 em20.0 t7 def st=0 bb=0.0000,0.0000,31.8555,48.4961 cp=5 lines=2
+measure hint4 f0 em20.0 t7 typo st=0 bb=0.0000,0.0000,24.4629,45.9961 cp=5 lines=2
+measure hint4 f0 em20.0 t8 def st=0 bb=0.0000,0.0000,98.1152,25.4980 cp=3 lines=1
+measure hint4 f0 em20.0 t8 typo st=0 bb=0.0000,0.0000,22.2559,22.9980 cp=3 lines=1
+measure hint4 f0 em20.0 t9 def st=0 bb=0.0000,0.0000,20.4004,48.4961 cp=5 lines=2
+measure hint4 f0 em20.0 t9 typo st=0 bb=0.0000,0.0000,13.3398,45.9961 cp=5 lines=2
+measure hint4 f0 em33.3 t0 def st=0 bb=0.0000,0.0000,188.3477,41.3648 cp=11 lines=1
+measure hint4 f0 em33.3 t0 gdef st=0 bb=0.0000,0.0000,188.3477,41.3648 cp=11 lines=1
+measure hint4 f0 em33.3 t0 typo st=0 bb=0.0000,0.0000,172.0934,37.2023 cp=11 lines=1
+measure hint4 f0 em33.3 t1 def st=0 bb=0.0000,0.0000,28.2541,41.3648 cp=1 lines=1
+measure hint4 f0 em33.3 t1 gdef st=0 bb=0.0000,0.0000,28.2541,41.3648 cp=1 lines=1
+measure hint4 f0 em33.3 t1 typo st=0 bb=0.0000,0.0000,16.6500,37.2023 cp=1 lines=1
+measure hint4 f0 em33.3 t2 def st=0 bb=0.0000,0.0000,43.4732,41.3648 cp=1 lines=1
+measure hint4 f0 em33.3 t2 typo st=0 bb=0.0000,0.0000,31.4301,37.2023 cp=1 lines=1
+measure hint4 f0 em33.3 t3 def st=0 bb=0.0000,0.0000,41.6033,41.3648 cp=4 lines=1
+measure hint4 f0 em33.3 t3 typo st=0 bb=0.0000,0.0000,29.5928,37.2023 cp=4 lines=1
+measure hint4 f0 em33.3 t4 def st=0 bb=0.0000,0.0000,11.1000,41.3648 cp=1 lines=1
+measure hint4 f0 em33.3 t4 typo st=0 bb=0.0000,0.0000,0.0000,37.2023 cp=1 lines=1
+measure hint4 f0 em33.3 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f0 em33.3 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f0 em33.3 t6 def st=0 bb=0.0000,0.0000,58.7736,41.3648 cp=4 lines=1
+measure hint4 f0 em33.3 t6 typo st=0 bb=0.0000,0.0000,46.2915,37.2023 cp=4 lines=1
+measure hint4 f0 em33.3 t7 def st=0 bb=0.0000,0.0000,53.0394,80.7460 cp=5 lines=2
+measure hint4 f0 em33.3 t7 typo st=0 bb=0.0000,0.0000,40.7307,76.5835 cp=5 lines=2
+measure hint4 f0 em33.3 t8 def st=0 bb=0.0000,0.0000,163.3619,42.4542 cp=3 lines=1
+measure hint4 f0 em33.3 t8 typo st=0 bb=0.0000,0.0000,37.0560,38.2917 cp=3 lines=1
+measure hint4 f0 em33.3 t9 def st=0 bb=0.0000,0.0000,33.9666,80.7460 cp=5 lines=2
+measure hint4 f0 em33.3 t9 typo st=0 bb=0.0000,0.0000,22.2108,76.5835 cp=5 lines=2
+measure hint4 f1 em10.0 t0 def st=0 bb=0.0000,0.0000,55.1009,12.3242 cp=11 lines=1
+measure hint4 f1 em10.0 t0 gdef st=0 bb=0.0000,0.0000,55.1009,12.3242 cp=11 lines=1
+measure hint4 f1 em10.0 t0 typo st=0 bb=0.0000,0.0000,50.2637,11.0742 cp=11 lines=1
+measure hint4 f1 em10.0 t1 def st=0 bb=0.0000,0.0000,8.4847,12.3242 cp=1 lines=1
+measure hint4 f1 em10.0 t1 gdef st=0 bb=0.0000,0.0000,8.4847,12.3242 cp=1 lines=1
+measure hint4 f1 em10.0 t1 typo st=0 bb=0.0000,0.0000,5.0000,11.0742 cp=1 lines=1
+measure hint4 f1 em10.0 t2 def st=0 bb=0.0000,0.0000,13.0550,12.3242 cp=1 lines=1
+measure hint4 f1 em10.0 t2 typo st=0 bb=0.0000,0.0000,9.4385,11.0742 cp=1 lines=1
+measure hint4 f1 em10.0 t3 def st=0 bb=0.0000,0.0000,14.7786,12.3242 cp=4 lines=1
+measure hint4 f1 em10.0 t3 typo st=0 bb=0.0000,0.0000,11.1133,11.0742 cp=4 lines=1
+measure hint4 f1 em10.0 t4 def st=0 bb=0.0000,0.0000,3.3333,12.3242 cp=1 lines=1
+measure hint4 f1 em10.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,11.0742 cp=1 lines=1
+measure hint4 f1 em10.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f1 em10.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f1 em10.0 t6 def st=0 bb=0.0000,0.0000,15.6283,12.3242 cp=4 lines=1
+measure hint4 f1 em10.0 t6 typo st=0 bb=0.0000,0.0000,11.9385,11.0742 cp=4 lines=1
+measure hint4 f1 em10.0 t7 def st=0 bb=0.0000,0.0000,15.9180,24.2480 cp=5 lines=2
+measure hint4 f1 em10.0 t7 typo st=0 bb=0.0000,0.0000,12.2217,22.9980 cp=5 lines=2
+measure hint4 f1 em10.0 t8 def st=0 bb=0.0000,0.0000,48.4814,12.7490 cp=3 lines=1
+measure hint4 f1 em10.0 t8 typo st=0 bb=0.0000,0.0000,9.4434,11.4990 cp=3 lines=1
+measure hint4 f1 em10.0 t9 def st=0 bb=0.0000,0.0000,10.7666,24.2480 cp=5 lines=2
+measure hint4 f1 em10.0 t9 typo st=0 bb=0.0000,0.0000,7.2217,22.9980 cp=5 lines=2
+measure hint4 f1 em20.0 t0 def st=0 bb=0.0000,0.0000,110.2018,24.6484 cp=11 lines=1
+measure hint4 f1 em20.0 t0 gdef st=0 bb=0.0000,0.0000,110.2018,24.6484 cp=11 lines=1
+measure hint4 f1 em20.0 t0 typo st=0 bb=0.0000,0.0000,100.5273,22.1484 cp=11 lines=1
+measure hint4 f1 em20.0 t1 def st=0 bb=0.0000,0.0000,16.9694,24.6484 cp=1 lines=1
+measure hint4 f1 em20.0 t1 gdef st=0 bb=0.0000,0.0000,16.9694,24.6484 cp=1 lines=1
+measure hint4 f1 em20.0 t1 typo st=0 bb=0.0000,0.0000,10.0000,22.1484 cp=1 lines=1
+measure hint4 f1 em20.0 t2 def st=0 bb=0.0000,0.0000,26.1100,24.6484 cp=1 lines=1
+measure hint4 f1 em20.0 t2 typo st=0 bb=0.0000,0.0000,18.8770,22.1484 cp=1 lines=1
+measure hint4 f1 em20.0 t3 def st=0 bb=0.0000,0.0000,29.5573,24.6484 cp=4 lines=1
+measure hint4 f1 em20.0 t3 typo st=0 bb=0.0000,0.0000,22.2266,22.1484 cp=4 lines=1
+measure hint4 f1 em20.0 t4 def st=0 bb=0.0000,0.0000,6.6667,24.6484 cp=1 lines=1
+measure hint4 f1 em20.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,22.1484 cp=1 lines=1
+measure hint4 f1 em20.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f1 em20.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f1 em20.0 t6 def st=0 bb=0.0000,0.0000,31.2565,24.6484 cp=4 lines=1
+measure hint4 f1 em20.0 t6 typo st=0 bb=0.0000,0.0000,23.8770,22.1484 cp=4 lines=1
+measure hint4 f1 em20.0 t7 def st=0 bb=0.0000,0.0000,31.8359,48.4961 cp=5 lines=2
+measure hint4 f1 em20.0 t7 typo st=0 bb=0.0000,0.0000,24.4434,45.9961 cp=5 lines=2
+measure hint4 f1 em20.0 t8 def st=0 bb=0.0000,0.0000,96.9629,25.4980 cp=3 lines=1
+measure hint4 f1 em20.0 t8 typo st=0 bb=0.0000,0.0000,18.8867,22.9980 cp=3 lines=1
+measure hint4 f1 em20.0 t9 def st=0 bb=0.0000,0.0000,21.5332,48.4961 cp=5 lines=2
+measure hint4 f1 em20.0 t9 typo st=0 bb=0.0000,0.0000,14.4434,45.9961 cp=5 lines=2
+measure hint4 f1 em33.3 t0 def st=0 bb=0.0000,0.0000,183.4860,41.0396 cp=11 lines=1
+measure hint4 f1 em33.3 t0 gdef st=0 bb=0.0000,0.0000,183.4860,41.0396 cp=11 lines=1
+measure hint4 f1 em33.3 t0 typo st=0 bb=0.0000,0.0000,167.3780,36.8771 cp=11 lines=1
+measure hint4 f1 em33.3 t1 def st=0 bb=0.0000,0.0000,28.2541,41.0396 cp=1 lines=1
+measure hint4 f1 em33.3 t1 gdef st=0 bb=0.0000,0.0000,28.2541,41.0396 cp=1 lines=1
+measure hint4 f1 em33.3 t1 typo st=0 bb=0.0000,0.0000,16.6500,36.8771 cp=1 lines=1
+measure hint4 f1 em33.3 t2 def st=0 bb=0.0000,0.0000,43.4732,41.0396 cp=1 lines=1
+measure hint4 f1 em33.3 t2 typo st=0 bb=0.0000,0.0000,31.4301,36.8771 cp=1 lines=1
+measure hint4 f1 em33.3 t3 def st=0 bb=0.0000,0.0000,49.2129,41.0396 cp=4 lines=1
+measure hint4 f1 em33.3 t3 typo st=0 bb=0.0000,0.0000,37.0072,36.8771 cp=4 lines=1
+measure hint4 f1 em33.3 t4 def st=0 bb=0.0000,0.0000,11.1000,41.0396 cp=1 lines=1
+measure hint4 f1 em33.3 t4 typo st=0 bb=0.0000,0.0000,0.0000,36.8771 cp=1 lines=1
+measure hint4 f1 em33.3 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f1 em33.3 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f1 em33.3 t6 def st=0 bb=0.0000,0.0000,52.0421,41.0396 cp=4 lines=1
+measure hint4 f1 em33.3 t6 typo st=0 bb=0.0000,0.0000,39.7551,36.8771 cp=4 lines=1
+measure hint4 f1 em33.3 t7 def st=0 bb=0.0000,0.0000,53.0068,80.7460 cp=5 lines=2
+measure hint4 f1 em33.3 t7 typo st=0 bb=0.0000,0.0000,40.6982,76.5835 cp=5 lines=2
+measure hint4 f1 em33.3 t8 def st=0 bb=0.0000,0.0000,161.4432,42.4542 cp=3 lines=1
+measure hint4 f1 em33.3 t8 typo st=0 bb=0.0000,0.0000,31.4464,38.2917 cp=3 lines=1
+measure hint4 f1 em33.3 t9 def st=0 bb=0.0000,0.0000,35.8528,80.7460 cp=5 lines=2
+measure hint4 f1 em33.3 t9 typo st=0 bb=0.0000,0.0000,24.0482,76.5835 cp=5 lines=2
+measure hint4 f2 em10.0 t0 def st=0 bb=0.0000,0.0000,71.3314,12.5781 cp=11 lines=1
+measure hint4 f2 em10.0 t0 gdef st=0 bb=0.0000,0.0000,71.3314,12.5781 cp=11 lines=1
+measure hint4 f2 em10.0 t0 typo st=0 bb=0.0000,0.0000,66.0107,11.3281 cp=11 lines=1
+measure hint4 f2 em10.0 t1 def st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint4 f2 em10.0 t1 gdef st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint4 f2 em10.0 t1 typo st=0 bb=0.0000,0.0000,6.0010,11.3281 cp=1 lines=1
+measure hint4 f2 em10.0 t2 def st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint4 f2 em10.0 t2 typo st=0 bb=0.0000,0.0000,6.0010,11.3281 cp=1 lines=1
+measure hint4 f2 em10.0 t3 def st=0 bb=0.0000,0.0000,28.0599,12.5781 cp=4 lines=1
+measure hint4 f2 em10.0 t3 typo st=0 bb=0.0000,0.0000,24.0039,11.3281 cp=4 lines=1
+measure hint4 f2 em10.0 t4 def st=0 bb=0.0000,0.0000,3.3333,12.5781 cp=1 lines=1
+measure hint4 f2 em10.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,11.3281 cp=1 lines=1
+measure hint4 f2 em10.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f2 em10.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f2 em10.0 t6 def st=0 bb=0.0000,0.0000,21.8783,12.5781 cp=4 lines=1
+measure hint4 f2 em10.0 t6 typo st=0 bb=0.0000,0.0000,18.0029,11.3281 cp=4 lines=1
+measure hint4 f2 em10.0 t7 def st=0 bb=0.0000,0.0000,15.6934,23.9062 cp=5 lines=2
+measure hint4 f2 em10.0 t7 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=5 lines=2
+measure hint4 f2 em10.0 t8 def st=0 bb=0.0000,0.0000,49.5117,12.5781 cp=3 lines=1
+measure hint4 f2 em10.0 t8 typo st=0 bb=0.0000,0.0000,12.0068,11.3281 cp=3 lines=1
+measure hint4 f2 em10.0 t9 def st=0 bb=0.0000,0.0000,9.5117,23.9062 cp=5 lines=2
+measure hint4 f2 em10.0 t9 typo st=0 bb=0.0000,0.0000,6.0010,22.6562 cp=5 lines=2
+measure hint4 f2 em20.0 t0 def st=0 bb=0.0000,0.0000,142.6628,25.1562 cp=11 lines=1
+measure hint4 f2 em20.0 t0 gdef st=0 bb=0.0000,0.0000,142.6628,25.1562 cp=11 lines=1
+measure hint4 f2 em20.0 t0 typo st=0 bb=0.0000,0.0000,132.0215,22.6562 cp=11 lines=1
+measure hint4 f2 em20.0 t1 def st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint4 f2 em20.0 t1 gdef st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint4 f2 em20.0 t1 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=1 lines=1
+measure hint4 f2 em20.0 t2 def st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint4 f2 em20.0 t2 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=1 lines=1
+measure hint4 f2 em20.0 t3 def st=0 bb=0.0000,0.0000,56.1198,25.1562 cp=4 lines=1
+measure hint4 f2 em20.0 t3 typo st=0 bb=0.0000,0.0000,48.0078,22.6562 cp=4 lines=1
+measure hint4 f2 em20.0 t4 def st=0 bb=0.0000,0.0000,6.6667,25.1562 cp=1 lines=1
+measure hint4 f2 em20.0 t4 typo st=0 bb=0.0000,0.0000,0.0000,22.6562 cp=1 lines=1
+measure hint4 f2 em20.0 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f2 em20.0 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f2 em20.0 t6 def st=0 bb=0.0000,0.0000,43.7565,25.1562 cp=4 lines=1
+measure hint4 f2 em20.0 t6 typo st=0 bb=0.0000,0.0000,36.0059,22.6562 cp=4 lines=1
+measure hint4 f2 em20.0 t7 def st=0 bb=0.0000,0.0000,31.3867,47.8125 cp=5 lines=2
+measure hint4 f2 em20.0 t7 typo st=0 bb=0.0000,0.0000,24.0039,45.3125 cp=5 lines=2
+measure hint4 f2 em20.0 t8 def st=0 bb=0.0000,0.0000,99.0234,25.1562 cp=3 lines=1
+measure hint4 f2 em20.0 t8 typo st=0 bb=0.0000,0.0000,24.0137,22.6562 cp=3 lines=1
+measure hint4 f2 em20.0 t9 def st=0 bb=0.0000,0.0000,19.0234,47.8125 cp=5 lines=2
+measure hint4 f2 em20.0 t9 typo st=0 bb=0.0000,0.0000,12.0020,45.3125 cp=5 lines=2
+measure hint4 f2 em33.3 t0 def st=0 bb=0.0000,0.0000,237.5335,41.8852 cp=11 lines=1
+measure hint4 f2 em33.3 t0 gdef st=0 bb=0.0000,0.0000,237.5335,41.8852 cp=11 lines=1
+measure hint4 f2 em33.3 t0 typo st=0 bb=0.0000,0.0000,219.8158,37.7227 cp=11 lines=1
+measure hint4 f2 em33.3 t1 def st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint4 f2 em33.3 t1 gdef st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint4 f2 em33.3 t1 typo st=0 bb=0.0000,0.0000,19.9833,37.7227 cp=1 lines=1
+measure hint4 f2 em33.3 t2 def st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint4 f2 em33.3 t2 typo st=0 bb=0.0000,0.0000,19.9833,37.7227 cp=1 lines=1
+measure hint4 f2 em33.3 t3 def st=0 bb=0.0000,0.0000,93.4395,41.8852 cp=4 lines=1
+measure hint4 f2 em33.3 t3 typo st=0 bb=0.0000,0.0000,79.9330,37.7227 cp=4 lines=1
+measure hint4 f2 em33.3 t4 def st=0 bb=0.0000,0.0000,11.1000,41.8852 cp=1 lines=1
+measure hint4 f2 em33.3 t4 typo st=0 bb=0.0000,0.0000,0.0000,37.7227 cp=1 lines=1
+measure hint4 f2 em33.3 t5 def st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f2 em33.3 t5 typo st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 lines=0
+measure hint4 f2 em33.3 t6 def st=0 bb=0.0000,0.0000,72.8546,41.8852 cp=4 lines=1
+measure hint4 f2 em33.3 t6 typo st=0 bb=0.0000,0.0000,59.9498,37.7227 cp=4 lines=1
+measure hint4 f2 em33.3 t7 def st=0 bb=0.0000,0.0000,52.2589,79.6078 cp=5 lines=2
+measure hint4 f2 em33.3 t7 typo st=0 bb=0.0000,0.0000,39.9665,75.4453 cp=5 lines=2
+measure hint4 f2 em33.3 t8 def st=0 bb=0.0000,0.0000,164.8740,41.8852 cp=3 lines=1
+measure hint4 f2 em33.3 t8 typo st=0 bb=0.0000,0.0000,39.9828,37.7227 cp=3 lines=1
+measure hint4 f2 em33.3 t9 def st=0 bb=0.0000,0.0000,31.6740,79.6078 cp=5 lines=2
+measure hint4 f2 em33.3 t9 typo st=0 bb=0.0000,0.0000,19.9833,75.4453 cp=5 lines=2
+measure hint5 f0 em10.0 t0 def st=0 bb=0.0000,0.0000,56.5609,12.4219 cp=11 lines=1
+measure hint5 f0 em10.0 t0 gdef st=0 bb=0.0000,0.0000,56.5609,12.4219 cp=11 lines=1
+measure hint5 f0 em10.0 t0 typo st=0 bb=0.0000,0.0000,51.6797,11.1719 cp=11 lines=1
+measure hint5 f0 em10.0 t1 def st=0 bb=0.0000,0.0000,8.4847,12.4219 cp=1 lines=1
+measure hint5 f0 em10.0 t1 gdef st=0 bb=0.0000,0.0000,8.4847,12.4219 cp=1 lines=1
+measure hint5 f0 em10.0 t1 typo st=0 bb=0.0000,0.0000,5.0000,11.1719 cp=1 lines=1
+measure hint5 f0 em10.0 t2 def st=0 bb=0.0000,0.0000,13.0550,12.4219 cp=1 lines=1
+measure hint5 f0 em10.0 t2 typo st=0 bb=0.0000,0.0000,9.4385,11.1719 cp=1 lines=1
+measure hint5 f0 em10.0 t3 def st=0 bb=0.0000,0.0000,12.4935,12.4219 cp=4 lines=1
+measure hint5 f0 em10.0 t3 typo st=0 bb=0.0000,0.0000,8.8867,11.1719 cp=4 lines=1
+measure hint5 f0 em20.0 t0 def st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure hint5 f0 em20.0 t0 gdef st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure hint5 f0 em20.0 t0 typo st=0 bb=0.0000,0.0000,103.3594,22.3438 cp=11 lines=1
+measure hint5 f0 em20.0 t1 def st=0 bb=0.0000,0.0000,16.9694,24.8438 cp=1 lines=1
+measure hint5 f0 em20.0 t1 gdef st=0 bb=0.0000,0.0000,16.9694,24.8438 cp=1 lines=1
+measure hint5 f0 em20.0 t1 typo st=0 bb=0.0000,0.0000,10.0000,22.3438 cp=1 lines=1
+measure hint5 f0 em20.0 t2 def st=0 bb=0.0000,0.0000,26.1100,24.8438 cp=1 lines=1
+measure hint5 f0 em20.0 t2 typo st=0 bb=0.0000,0.0000,18.8770,22.3438 cp=1 lines=1
+measure hint5 f0 em20.0 t3 def st=0 bb=0.0000,0.0000,24.9870,24.8438 cp=4 lines=1
+measure hint5 f0 em20.0 t3 typo st=0 bb=0.0000,0.0000,17.7734,22.3438 cp=4 lines=1
+measure hint5 f0 em33.3 t0 def st=0 bb=0.0000,0.0000,188.3477,41.3648 cp=11 lines=1
+measure hint5 f0 em33.3 t0 gdef st=0 bb=0.0000,0.0000,188.3477,41.3648 cp=11 lines=1
+measure hint5 f0 em33.3 t0 typo st=0 bb=0.0000,0.0000,172.0934,37.2023 cp=11 lines=1
+measure hint5 f0 em33.3 t1 def st=0 bb=0.0000,0.0000,28.2541,41.3648 cp=1 lines=1
+measure hint5 f0 em33.3 t1 gdef st=0 bb=0.0000,0.0000,28.2541,41.3648 cp=1 lines=1
+measure hint5 f0 em33.3 t1 typo st=0 bb=0.0000,0.0000,16.6500,37.2023 cp=1 lines=1
+measure hint5 f0 em33.3 t2 def st=0 bb=0.0000,0.0000,43.4732,41.3648 cp=1 lines=1
+measure hint5 f0 em33.3 t2 typo st=0 bb=0.0000,0.0000,31.4301,37.2023 cp=1 lines=1
+measure hint5 f0 em33.3 t3 def st=0 bb=0.0000,0.0000,41.6033,41.3648 cp=4 lines=1
+measure hint5 f0 em33.3 t3 typo st=0 bb=0.0000,0.0000,29.5928,37.2023 cp=4 lines=1
+measure hint5 f1 em10.0 t0 def st=0 bb=0.0000,0.0000,55.1009,12.3242 cp=11 lines=1
+measure hint5 f1 em10.0 t0 gdef st=0 bb=0.0000,0.0000,55.1009,12.3242 cp=11 lines=1
+measure hint5 f1 em10.0 t0 typo st=0 bb=0.0000,0.0000,50.2637,11.0742 cp=11 lines=1
+measure hint5 f1 em10.0 t1 def st=0 bb=0.0000,0.0000,8.4847,12.3242 cp=1 lines=1
+measure hint5 f1 em10.0 t1 gdef st=0 bb=0.0000,0.0000,8.4847,12.3242 cp=1 lines=1
+measure hint5 f1 em10.0 t1 typo st=0 bb=0.0000,0.0000,5.0000,11.0742 cp=1 lines=1
+measure hint5 f1 em10.0 t2 def st=0 bb=0.0000,0.0000,13.0550,12.3242 cp=1 lines=1
+measure hint5 f1 em10.0 t2 typo st=0 bb=0.0000,0.0000,9.4385,11.0742 cp=1 lines=1
+measure hint5 f1 em10.0 t3 def st=0 bb=0.0000,0.0000,14.7786,12.3242 cp=4 lines=1
+measure hint5 f1 em10.0 t3 typo st=0 bb=0.0000,0.0000,11.1133,11.0742 cp=4 lines=1
+measure hint5 f1 em20.0 t0 def st=0 bb=0.0000,0.0000,110.2018,24.6484 cp=11 lines=1
+measure hint5 f1 em20.0 t0 gdef st=0 bb=0.0000,0.0000,110.2018,24.6484 cp=11 lines=1
+measure hint5 f1 em20.0 t0 typo st=0 bb=0.0000,0.0000,100.5273,22.1484 cp=11 lines=1
+measure hint5 f1 em20.0 t1 def st=0 bb=0.0000,0.0000,16.9694,24.6484 cp=1 lines=1
+measure hint5 f1 em20.0 t1 gdef st=0 bb=0.0000,0.0000,16.9694,24.6484 cp=1 lines=1
+measure hint5 f1 em20.0 t1 typo st=0 bb=0.0000,0.0000,10.0000,22.1484 cp=1 lines=1
+measure hint5 f1 em20.0 t2 def st=0 bb=0.0000,0.0000,26.1100,24.6484 cp=1 lines=1
+measure hint5 f1 em20.0 t2 typo st=0 bb=0.0000,0.0000,18.8770,22.1484 cp=1 lines=1
+measure hint5 f1 em20.0 t3 def st=0 bb=0.0000,0.0000,29.5573,24.6484 cp=4 lines=1
+measure hint5 f1 em20.0 t3 typo st=0 bb=0.0000,0.0000,22.2266,22.1484 cp=4 lines=1
+measure hint5 f1 em33.3 t0 def st=0 bb=0.0000,0.0000,183.4860,41.0396 cp=11 lines=1
+measure hint5 f1 em33.3 t0 gdef st=0 bb=0.0000,0.0000,183.4860,41.0396 cp=11 lines=1
+measure hint5 f1 em33.3 t0 typo st=0 bb=0.0000,0.0000,167.3780,36.8771 cp=11 lines=1
+measure hint5 f1 em33.3 t1 def st=0 bb=0.0000,0.0000,28.2541,41.0396 cp=1 lines=1
+measure hint5 f1 em33.3 t1 gdef st=0 bb=0.0000,0.0000,28.2541,41.0396 cp=1 lines=1
+measure hint5 f1 em33.3 t1 typo st=0 bb=0.0000,0.0000,16.6500,36.8771 cp=1 lines=1
+measure hint5 f1 em33.3 t2 def st=0 bb=0.0000,0.0000,43.4732,41.0396 cp=1 lines=1
+measure hint5 f1 em33.3 t2 typo st=0 bb=0.0000,0.0000,31.4301,36.8771 cp=1 lines=1
+measure hint5 f1 em33.3 t3 def st=0 bb=0.0000,0.0000,49.2129,41.0396 cp=4 lines=1
+measure hint5 f1 em33.3 t3 typo st=0 bb=0.0000,0.0000,37.0072,36.8771 cp=4 lines=1
+measure hint5 f2 em10.0 t0 def st=0 bb=0.0000,0.0000,71.3314,12.5781 cp=11 lines=1
+measure hint5 f2 em10.0 t0 gdef st=0 bb=0.0000,0.0000,71.3314,12.5781 cp=11 lines=1
+measure hint5 f2 em10.0 t0 typo st=0 bb=0.0000,0.0000,66.0107,11.3281 cp=11 lines=1
+measure hint5 f2 em10.0 t1 def st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint5 f2 em10.0 t1 gdef st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint5 f2 em10.0 t1 typo st=0 bb=0.0000,0.0000,6.0010,11.3281 cp=1 lines=1
+measure hint5 f2 em10.0 t2 def st=0 bb=0.0000,0.0000,9.5150,12.5781 cp=1 lines=1
+measure hint5 f2 em10.0 t2 typo st=0 bb=0.0000,0.0000,6.0010,11.3281 cp=1 lines=1
+measure hint5 f2 em10.0 t3 def st=0 bb=0.0000,0.0000,28.0599,12.5781 cp=4 lines=1
+measure hint5 f2 em10.0 t3 typo st=0 bb=0.0000,0.0000,24.0039,11.3281 cp=4 lines=1
+measure hint5 f2 em20.0 t0 def st=0 bb=0.0000,0.0000,142.6628,25.1562 cp=11 lines=1
+measure hint5 f2 em20.0 t0 gdef st=0 bb=0.0000,0.0000,142.6628,25.1562 cp=11 lines=1
+measure hint5 f2 em20.0 t0 typo st=0 bb=0.0000,0.0000,132.0215,22.6562 cp=11 lines=1
+measure hint5 f2 em20.0 t1 def st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint5 f2 em20.0 t1 gdef st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint5 f2 em20.0 t1 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=1 lines=1
+measure hint5 f2 em20.0 t2 def st=0 bb=0.0000,0.0000,19.0299,25.1562 cp=1 lines=1
+measure hint5 f2 em20.0 t2 typo st=0 bb=0.0000,0.0000,12.0020,22.6562 cp=1 lines=1
+measure hint5 f2 em20.0 t3 def st=0 bb=0.0000,0.0000,56.1198,25.1562 cp=4 lines=1
+measure hint5 f2 em20.0 t3 typo st=0 bb=0.0000,0.0000,48.0078,22.6562 cp=4 lines=1
+measure hint5 f2 em33.3 t0 def st=0 bb=0.0000,0.0000,237.5335,41.8852 cp=11 lines=1
+measure hint5 f2 em33.3 t0 gdef st=0 bb=0.0000,0.0000,237.5335,41.8852 cp=11 lines=1
+measure hint5 f2 em33.3 t0 typo st=0 bb=0.0000,0.0000,219.8158,37.7227 cp=11 lines=1
+measure hint5 f2 em33.3 t1 def st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint5 f2 em33.3 t1 gdef st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint5 f2 em33.3 t1 typo st=0 bb=0.0000,0.0000,19.9833,37.7227 cp=1 lines=1
+measure hint5 f2 em33.3 t2 def st=0 bb=0.0000,0.0000,31.6849,41.8852 cp=1 lines=1
+measure hint5 f2 em33.3 t2 typo st=0 bb=0.0000,0.0000,19.9833,37.7227 cp=1 lines=1
+measure hint5 f2 em33.3 t3 def st=0 bb=0.0000,0.0000,93.4395,41.8852 cp=4 lines=1
+measure hint5 f2 em33.3 t3 typo st=0 bb=0.0000,0.0000,79.9330,37.7227 cp=4 lines=1
+measure wrap w=40 st=0 bb=10.0000,5.0000,39.8730,370.4688 cp=43 lines=16
+measure wrap w=40 h=50 st=0 bb=10.0000,5.0000,35.2930,48.4961 cp=5 lines=2
+measure wrap w=80 st=0 bb=10.0000,5.0000,77.6562,186.4844 cp=43 lines=8
+measure wrap w=80 h=50 st=0 bb=10.0000,5.0000,78.7891,48.4961 cp=12 lines=2
+measure wrap w=120 st=0 bb=10.0000,5.0000,117.7441,94.4922 cp=43 lines=4
+measure wrap w=120 h=50 st=0 bb=10.0000,5.0000,117.7148,48.4961 cp=22 lines=2
+measure wrap w=160 st=0 bb=10.0000,5.0000,157.7930,71.4941 cp=43 lines=3
+measure wrap w=160 h=50 st=0 bb=10.0000,5.0000,157.7930,48.4961 cp=32 lines=2
+measure wrap w=200 st=0 bb=10.0000,5.0000,190.9961,71.4941 cp=43 lines=3
+measure wrap w=200 h=50 st=0 bb=10.0000,5.0000,190.9961,48.4961 cp=40 lines=2
+measure flags=0x1000 w100h50 st=0 bb=10.0000,5.0000,95.9766,25.4980 cp=10 lines=1
+measure flags=0x1000 trailing st=0 bb=0.0000,0.0000,29.5768,24.8438 cp=4 lines=1
+measure flags=0x2000 w100h50 st=0 bb=10.0000,5.0000,95.9766,48.4961 cp=20 lines=2
+measure flags=0x2000 trailing st=0 bb=0.0000,0.0000,29.5768,24.8438 cp=4 lines=1
+measure flags=0x4000 w100h50 st=0 bb=10.0000,5.0000,95.9766,48.4961 cp=20 lines=2
+measure flags=0x4000 trailing st=0 bb=0.0000,0.0000,29.5768,24.8438 cp=4 lines=1
+measure flags=0x4 w100h50 st=0 bb=10.0000,5.0000,95.9766,48.4961 cp=20 lines=2
+measure flags=0x4 trailing st=0 bb=0.0000,0.0000,29.5768,24.8438 cp=4 lines=1
+measure flags=0x800 w100h50 st=0 bb=10.0000,5.0000,100.0000,48.4961 cp=20 lines=2
+measure flags=0x800 trailing st=0 bb=0.0000,0.0000,41.0221,24.8438 cp=4 lines=1
+measure flags=0x1 w100h50 st=0 bb=14.0234,5.0000,95.9766,48.4961 cp=20 lines=2
+measure flags=0x1 trailing st=0 bb=-29.5703,0.0000,29.5703,25.4980 cp=4 lines=1
+measure flags=0x2 w100h50 st=0 bb=10.0000,5.0000,100.0000,44.4531 cp=17 lines=5
+measure flags=0x2 trailing st=0 bb=0.0000,0.0000,25.4980,29.5703 cp=4 lines=1
+measure flags=0x6004 w100h50 st=0 bb=10.0000,5.0000,95.9766,48.4961 cp=20 lines=2
+measure flags=0x6004 trailing st=0 bb=0.0000,0.0000,29.5768,24.8438 cp=4 lines=1
+measure flags=0x3000 w100h50 st=0 bb=10.0000,5.0000,95.9766,25.4980 cp=10 lines=1
+measure flags=0x3000 trailing st=0 bb=0.0000,0.0000,29.5768,24.8438 cp=4 lines=1
+measure align=0 line=0 st=0 bb=10.0000,5.0000,53.6100,24.8438 cp=5 lines=1
+measure align=0 line=0 zero-rect st=0 bb=50.0000,50.0000,53.6100,24.8438 cp=5 lines=1
+measure align=0 line=1 st=0 bb=10.0000,42.5781,53.6100,24.8438 cp=5 lines=1
+measure align=0 line=1 zero-rect st=0 bb=50.0000,37.5781,53.6100,24.8438 cp=5 lines=1
+measure align=0 line=2 st=0 bb=10.0000,80.1562,53.6100,24.8438 cp=5 lines=1
+measure align=0 line=2 zero-rect st=0 bb=50.0000,25.1562,53.6100,24.8438 cp=5 lines=1
+measure align=1 line=0 st=0 bb=83.1950,5.0000,53.6100,24.8438 cp=5 lines=1
+measure align=1 line=0 zero-rect st=0 bb=23.1950,50.0000,53.6100,24.8438 cp=5 lines=1
+measure align=1 line=1 st=0 bb=83.1950,42.5781,53.6100,24.8438 cp=5 lines=1
+measure align=1 line=1 zero-rect st=0 bb=23.1950,37.5781,53.6100,24.8438 cp=5 lines=1
+measure align=1 line=2 st=0 bb=83.1950,80.1562,53.6100,24.8438 cp=5 lines=1
+measure align=1 line=2 zero-rect st=0 bb=23.1950,25.1562,53.6100,24.8438 cp=5 lines=1
+measure align=2 line=0 st=0 bb=156.3900,5.0000,53.6100,24.8438 cp=5 lines=1
+measure align=2 line=0 zero-rect st=0 bb=-3.6100,50.0000,53.6100,24.8438 cp=5 lines=1
+measure align=2 line=1 st=0 bb=156.3900,42.5781,53.6100,24.8438 cp=5 lines=1
+measure align=2 line=1 zero-rect st=0 bb=-3.6100,37.5781,53.6100,24.8438 cp=5 lines=1
+measure align=2 line=2 st=0 bb=156.3900,80.1562,53.6100,24.8438 cp=5 lines=1
+measure align=2 line=2 zero-rect st=0 bb=-3.6100,25.1562,53.6100,24.8438 cp=5 lines=1
+measure trim=0 w100h24 st=0 bb=0.0000,0.0000,95.9766,24.0000 cp=43 lines=5
+measure trim=0 nowrap w100h24 st=0 bb=0.0000,0.0000,100.0000,24.0000 cp=43 lines=1
+measure trim=1 w100h24 st=0 bb=0.0000,0.0000,95.9766,24.0000 cp=10 lines=1
+measure trim=1 nowrap w100h24 st=0 bb=0.0000,0.0000,95.9766,24.0000 cp=10 lines=1
+measure trim=2 w100h24 st=0 bb=0.0000,0.0000,95.9766,24.0000 cp=10 lines=1
+measure trim=2 nowrap w100h24 st=0 bb=0.0000,0.0000,95.9766,24.0000 cp=10 lines=1
+measure trim=3 w100h24 st=0 bb=0.0000,0.0000,95.9766,24.0000 cp=7 lines=1
+measure trim=3 nowrap w100h24 st=0 bb=0.0000,0.0000,95.3711,24.0000 cp=7 lines=1
+measure trim=4 w100h24 st=0 bb=0.0000,0.0000,95.9766,24.0000 cp=4 lines=1
+measure trim=4 nowrap w100h24 st=0 bb=0.0000,0.0000,62.1582,24.0000 cp=4 lines=1
+measure trim=5 w100h24 st=0 bb=0.0000,0.0000,97.1191,24.0000 cp=43 lines=1
+measure trim=5 nowrap w100h24 st=0 bb=0.0000,0.0000,97.1191,24.0000 cp=43 lines=1
+measure hotkey=0 st=0 bb=0.0000,0.0000,97.1159,24.8438 cp=9 lines=1
+measure hotkey=1 st=0 bb=0.0000,0.0000,69.6289,25.4980 cp=9 lines=1
+measure hotkey=2 st=0 bb=0.0000,0.0000,69.6289,25.4980 cp=9 lines=1
+measure tabs 50,30 st=0 bb=0.0000,0.0000,138.1152,25.4980 cp=7 lines=1
+measure tabs first20 50,30 st=0 bb=0.0000,0.0000,138.1152,25.4980 cp=7 lines=1
+measure tabs none st=0 bb=0.0000,0.0000,138.1152,25.4980 cp=7 lines=1
+measure len0 st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 ln=0
+measure len3 st=0 bb=0.0000,0.0000,39.8796,24.8438 cp=3 ln=1
+measure negrect st=0 bb=5.0000,5.0000,39.8796,24.8438 cp=3 ln=1
+measure pt12 pageDisplay st=0 bb=0.0000,0.0000,36.4609,17.8750 cp=5 lines=1
+measure pt12 pagePoint st=0 bb=0.0000,0.0000,27.3457,13.4062 cp=5 lines=1
+measure pt12 pageMM st=0 bb=0.0000,0.0000,9.6470,4.7294 cp=5 lines=1
+measure pt12 pagePx scale2 st=0 bb=0.0000,0.0000,18.2305,8.9375 cp=5 lines=1
+measure world20 pagePx scale2 st=0 bb=0.0000,0.0000,45.5762,22.3438 cp=5 lines=1
+measure arial20 bolditalic st=0 bb=0.0000,0.0000,111.1035,22.3438 cp=11 lines=1
+measure arial20 underline strike st=0 bb=0.0000,0.0000,103.3594,22.3438 cp=11 lines=1
+ranges st=0 [14.0000,20.0000,15.0000,23.0000] [40.0000,20.0000,21.0000,23.0000] [66.0000,20.0000,54.0000,23.0000] [0.0000,0.0000,0.0000,0.0000]
+ranges wrapped st=0 [4.0000,0.0000,15.0000,23.0000] [30.0000,0.0000,21.0000,23.0000] [4.0000,23.0000,42.0000,46.0000] [0.0000,0.0000,0.0000,0.0000]
+ranges typo(no ranges) st=0 count-mismatch st=2 count5 st=0 range-beyond-text st=2
+ranges multiline zero-rect st=0 [0.0000,0.0000,0.0000,0.0000] [0.0000,0.0000,0.0000,0.0000]
+driver measure flags=0 st=0 bb=10.0000,11.8945,41.6797,27.3438
+driver measure flags=1 st=0 bb=10.0000,11.8945,35.5566,27.3438
+driver measure flags=2 st=0 bb=10.0000,30.0000,0.0000,0.0000
+driver measure flags=3 st=0 bb=-1.1719,30.0000,52.3438,14.4434
+driver measure flags=4 st=0 bb=10.0000,11.8945,33.9258,22.3438
+driver measure flags=5 st=0 bb=10.0000,11.8945,24.4434,22.3438
+driver measure flags=6 st=0 bb=10.0000,30.0000,0.0000,0.0000
+driver measure flags=7 st=0 bb=-1.1719,30.0000,22.3438,24.4434
+driver measure flags=8 st=0 bb=10.0000,11.8945,41.6797,27.3438
+driver measure flags=9 st=0 bb=10.0000,11.8945,35.5566,27.3438
+driver measure flags=10 st=0 bb=10.0000,30.0000,0.0000,0.0000
+driver measure flags=11 st=0 bb=-1.1719,30.0000,52.3438,14.4434
+driver measure flags=12 st=0 bb=10.0000,11.8945,33.9258,22.3438
+driver measure flags=13 st=0 bb=10.0000,11.8945,24.4434,22.3438
+driver measure flags=14 st=0 bb=10.0000,30.0000,0.0000,0.0000
+driver measure flags=15 st=0 bb=-1.1719,30.0000,22.3438,24.4434
+driver measure glyphs st=0 bb=10.0000,11.8945,35.5566,27.3438
+pathstring '0' st=0 n=4 fill=0 bounds=35.977,38.945,9.473,71.582 00:35.977,110.527 01:35.977,38.945 01:45.449,38.945 a1:45.449,110.527
+pathstring '1' st=0 n=17 fill=0 bounds=26.504,38.945,66.992,71.582
+pathstring '2' st=0 n=53 fill=0 bounds=29.971,57.500,48.584,54.199
+pathstring '3' st=0 n=20 fill=0 bounds=34.658,38.945,81.787,71.582 00:34.658,110.527 01:34.658,38.945 01:44.131,38.945 01:44.131,68.340 01:81.338,68.340 01:81.338,38.945 01:90.811,38.945 01:90.811,110.527 01:81.338,110.527 01:81.338,76.787 01:44.131,76.787 a1:44.131,110.527 00:107.656,49.053 01:107.656,38.945 01:116.445,38.945 81:116.445,49.053 00:107.656,110.527 01:107.656,58.672 01:116.445,58.672 a1:116.445,110.527
+pathstring '4' st=0 n=0 fill=0 bounds=0.000,0.000,0.000,0.000
+pathstring '5' st=0 n=0 fill=0 bounds=0.000,0.000,0.000,0.000
+pathstring typo I n=4 fill(winding path)=1 bounds=9.326,18.945,9.473,71.582
+pathstringI bold50 st=0 bounds=13.418,29.473,7.227,35.791
+tabpos set0 st=0 3..15 15..27 27..37 37..48 49..60 width=62.8223
+tabpos set1 st=0 0..11 12..23 23..33 33..44 44..55 width=54.5312
+tabpos set2 st=0 3..15 54..65 84..94 124..135 154..165 width=168.1152
+tabpos set3 st=0 3..15 74..85 104..114 124..135 154..165 width=168.1152
+tabpos set4 st=0 3..15 29..40 54..64 79..90 104..115 width=118.1152
+tabpos set5 st=0 0..11 50..62 80..90 120..132 150..162 width=161.1230
+tabpos set6 st=0 0..11 55..67 80..90 120..132 160..172 width=171.1230
+tabpos set7 st=0 3..15 44..55 64..74 94..105 124..135 width=138.1152
+measure simple two words w300 st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure simple two words typo w300 st=0 bb=0.0000,0.0000,103.3594,22.3438 cp=11 lines=1
+measure complex nbsp st=0 bb=0.0000,0.0000,113.1217,24.8438 cp=11 lines=1
+measure complex hyphen-wrap st=0 bb=0.0000,0.0000,108.5514,24.8438 cp=10 lines=1
+measure hyphen narrow st=0 bb=0.0000,0.0000,66.2012,71.4941 cp=16 lines=3
+measure accented st=0 bb=0.0000,0.0000,35.2995,24.8438 cp=3 lines=1
+measure cjk fallback st=0 bb=0.0000,0.0000,51.9727,25.4980 cp=2 lines=1
+measure partial trim=0 limit=0 h=10 st=0 bb=0.0000,0.0000,95.9766,10.0000 cp=43 lines=5
+measure partial trim=0 limit=0 h=22 st=0 bb=0.0000,0.0000,95.9766,22.0000 cp=43 lines=5
+measure partial trim=0 limit=0 h=23 st=0 bb=0.0000,0.0000,95.9766,23.0000 cp=43 lines=5
+measure partial trim=0 limit=0 h=30 st=0 bb=0.0000,0.0000,95.9766,30.0000 cp=43 lines=5
+measure partial trim=0 limit=0 h=46 st=0 bb=0.0000,0.0000,95.9766,46.0000 cp=43 lines=5
+measure partial trim=0 limit=0 h=47 st=0 bb=0.0000,0.0000,95.9766,47.0000 cp=43 lines=5
+measure partial trim=0 limit=1 h=10 st=0 bb=0.0000,0.0000,0.0000,2.5000 cp=0 lines=0
+measure partial trim=0 limit=1 h=22 st=0 bb=0.0000,0.0000,0.0000,2.5000 cp=0 lines=0
+measure partial trim=0 limit=1 h=23 st=0 bb=0.0000,0.0000,95.9766,23.0000 cp=10 lines=1
+measure partial trim=0 limit=1 h=30 st=0 bb=0.0000,0.0000,95.9766,25.4980 cp=10 lines=1
+measure partial trim=0 limit=1 h=46 st=0 bb=0.0000,0.0000,95.9766,46.0000 cp=20 lines=2
+measure partial trim=0 limit=1 h=47 st=0 bb=0.0000,0.0000,95.9766,47.0000 cp=20 lines=2
+measure partial trim=1 limit=0 h=10 st=0 bb=0.0000,0.0000,95.9766,10.0000 cp=10 lines=1
+measure partial trim=1 limit=0 h=22 st=0 bb=0.0000,0.0000,95.9766,22.0000 cp=10 lines=1
+measure partial trim=1 limit=0 h=23 st=0 bb=0.0000,0.0000,95.9766,23.0000 cp=10 lines=1
+measure partial trim=1 limit=0 h=30 st=0 bb=0.0000,0.0000,95.9766,30.0000 cp=20 lines=2
+measure partial trim=1 limit=0 h=46 st=0 bb=0.0000,0.0000,95.9766,46.0000 cp=20 lines=2
+measure partial trim=1 limit=0 h=47 st=0 bb=0.0000,0.0000,95.9766,47.0000 cp=20 lines=2
+measure partial trim=1 limit=1 h=10 st=0 bb=0.0000,0.0000,0.0000,2.5000 cp=0 lines=0
+measure partial trim=1 limit=1 h=22 st=0 bb=0.0000,0.0000,0.0000,2.5000 cp=0 lines=0
+measure partial trim=1 limit=1 h=23 st=0 bb=0.0000,0.0000,95.9766,23.0000 cp=10 lines=1
+measure partial trim=1 limit=1 h=30 st=0 bb=0.0000,0.0000,95.9766,25.4980 cp=10 lines=1
+measure partial trim=1 limit=1 h=46 st=0 bb=0.0000,0.0000,95.9766,46.0000 cp=20 lines=2
+measure partial trim=1 limit=1 h=47 st=0 bb=0.0000,0.0000,95.9766,47.0000 cp=20 lines=2
+partial-scan h=24 lines=1 cp=10
+partial-scan h=25 lines=1 cp=10
+partial-scan h=26 lines=1 cp=10
+partial-scan h=27 lines=1 cp=10
+partial-scan h=28 lines=1 cp=10
+partial-scan h=29 lines=2 cp=20
+partial-scan h=30 lines=2 cp=20
+partial-scan h=31 lines=2 cp=20
+partial-scan h=32 lines=2 cp=20
+partial-scan h=33 lines=2 cp=20
+partial-scan h=34 lines=2 cp=20
+partial-scan h=35 lines=2 cp=20
+partial-scan h=36 lines=2 cp=20
+partial-scan h=37 lines=2 cp=20
+partial-scan h=38 lines=2 cp=20
+partial-scan h=39 lines=2 cp=20
+partial-scan h=40 lines=2 cp=20
+partial-scan h=41 lines=2 cp=20
+partial-scan h=42 lines=2 cp=20
+partial-scan h=43 lines=2 cp=20
+partial-scan h=44 lines=2 cp=20
+partial-scan h=45 lines=2 cp=20
+partial-scan h=46 lines=2 cp=20
+partial-scan h=47 lines=2 cp=20
+partial-scan h=48 lines=2 cp=20
+partial-scan h=49 lines=2 cp=20
+partial-scan h=50 lines=2 cp=20
+partial-scan h=51 lines=2 cp=20
+partial-scan h=52 lines=3 cp=28
+measure multiline align=1 st=0 bb=37.0117,0.0000,95.9766,71.4941 cp=25 lines=3
+measure multiline align=1 zero st=0 bb=45.9180,0.0000,108.1641,48.4961 cp=16 lines=2
+measure multiline align=2 st=0 bb=64.0234,0.0000,95.9766,71.4941 cp=25 lines=3
+measure multiline align=2 zero st=0 bb=-8.1641,0.0000,108.1641,48.4961 cp=16 lines=2
+measure ellipsis trim=3 nowrap w=60 st=0 bb=0.0000,0.0000,50.7031,25.4980 cp=2 lines=1
+measure ellipsis trim=3 nowrap w=120 st=0 bb=0.0000,0.0000,115.9766,25.4980 cp=10 lines=1
+measure ellipsis trim=3 nowrap w=200 st=0 bb=0.0000,0.0000,189.2383,25.4980 cp=17 lines=1
+measure ellipsis trim=4 nowrap w=60 st=0 bb=0.0000,0.0000,50.7031,25.4980 cp=2 lines=1
+measure ellipsis trim=4 nowrap w=120 st=0 bb=0.0000,0.0000,115.9766,25.4980 cp=10 lines=1
+measure ellipsis trim=4 nowrap w=200 st=0 bb=0.0000,0.0000,177.7930,25.4980 cp=16 lines=1
+measure ellipsis trim=5 nowrap w=60 st=0 bb=0.0000,0.0000,51.2988,25.4980 cp=43 lines=1
+measure ellipsis trim=5 nowrap w=120 st=0 bb=0.0000,0.0000,108.5645,25.4980 cp=43 lines=1
+measure ellipsis trim=5 nowrap w=200 st=0 bb=0.0000,0.0000,188.7207,25.4980 cp=43 lines=1
+draw I hint0 st=0 ink=116 box=20,12..23,40
+draw I hint1 st=0 ink=116 box=20,12..23,40
+draw I hint2 st=0 ink=116 box=21,12..24,40
+draw I hint3 st=0 ink=87 box=21,12..23,40
+draw I hint4 st=0 ink=116 box=20,12..23,40
+draw I hint5 st=0 ink=116 box=20,12..23,40
+draw I typo ink=87 box=14,12..16,40
+draw IIII clipped 30x20 ink=51 box=20,12..23,24
+draw IIII noclip 30x20 ink=115 box=20,12..23,40
+draw I underline typo ink=121 box=10,12..21,46
+draw driver II st=0 ink=174 box=24,16..66,44
+# single-call cases (runerr.ps1: one process each, FAULT = access violation on Windows)
+err 0 tabs get0 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=5.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 1 FAULT (exit -1073741819)
+err 2 tabs get null first st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 3 tabs get null tabs st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 4 tabs set count-1 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 5 tabs set null tabs st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 6 tabs set negative tab st=6 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 7 tabs set negative first st=6 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 8 ranges set -1 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 9 ranges set null st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 10 ranges first-1 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 11 ranges len-1 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 12 format delete null st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 13 format clone null st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 14 format clone null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 15 format getflags null st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 16 format getflags null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 17 format setalign null st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 18 format getalign null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 19 format tabcount null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 20 format rangecount null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 21 format trimming null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 22 format hotkey null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 23 format digit both null st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 24 measure null g st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 25 measure null str st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 26 measure null font st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 27 measure null rect st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 28 measure null bb st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 29 measure len-2 st=3 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 30 measure null cp/lines st=0 bb=0.0000,0.0000,18.1217,24.8438 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 31 FAULT (exit -1073741819)
+err 32 ranges null regions st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 33 ranges null rect st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 34 ranges null g st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 35 ranges null str st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 36 ranges null font st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 37 ranges len0 st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 38 driver flags16 st=0 bb=10.0000,11.8945,31.1230,22.3438 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 39 driver len-1 st=0 bb=10.0000,11.8945,24.4434,22.3438 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 40 driver len0 st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 41 driver null pos st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 42 driver null bb st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 43 driver null text st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 44 driver null font st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 45 driver null g st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 46 drawdriver null brush st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 47 drawdriver flags16 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 48 drawdriver len0 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 49 drawdriver len-1 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 50 pathstring null path st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 51 pathstring null str st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 52 pathstring null fam st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 53 pathstring null rect st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 54 pathstring em0 st=1 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 55 pathstring em-5 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 56 pathstring style16 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 57 pathstring len0 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 58 pathstring len-2 st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 59 draw null g st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 60 draw null str st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 61 draw null font st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 62 draw null rect st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 63 draw null brush st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 64 draw len0 st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 65 draw len-2 st=3 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 66 font fam null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 67 font height null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 68 font height null font st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 69 font hdpi null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 70 font size null out st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 71 collection list null list st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 72 family getname null fam st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 73 measure empty str len-1 st=0 bb=0.0000,0.0000,0.0000,0.0000 cp=0 ln=0 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 74 createfont unit-display st=2 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+err 75 pathstring unknown fmt flags st=0 bb=-9.0000,-9.0000,-9.0000,-9.0000 cp=-9 ln=-9 first=-9.00 got=-9.00,-9.00,-9.00,-9.00 fl=-9
+end
+single logfont-nulldc st=2 out=kept
+single logfont-baddc st=16 out=null
+single logfont-nulllf st=2 out=kept
+single logfont-nullout FAULT
+single fromdc-null st=2 out=kept
+single fromdc-nullout FAULT
+nullheight unit=0 st=0 h=13.7988
+nullheight unit=2 st=0 h=13.7988
+nullheight unit=3 FAULT
+nullheight unit=4 FAULT
+nullheight unit=5 FAULT
+nullheight unit=6 FAULT

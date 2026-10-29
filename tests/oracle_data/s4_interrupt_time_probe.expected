@@ -1,0 +1,10 @@
+QueryInterruptTime kernelbase=1
+QueryInterruptTimePrecise kernelbase=1
+QueryUnbiasedInterruptTime kernelbase=1
+QueryUnbiasedInterruptTimePrecise kernelbase=1
+precise_minus_coarse_under_20ms=1
+coarse_matches_kuser_interrupt_time=1
+coarse_div_10000_near_tickcount64=1
+interrupt_ge_unbiased=1
+precise_advances_over_sleep30=1
+coarse_back_to_back_equal_or_tick=1

@@ -1,0 +1,92 @@
+
+== ctx ==
+[ctx] created without ppImmediateContext: device count 1
+[ctx] after GetImmediateContext: device count 2 context count 1
+[ctx] context Release ret 0: device count 1
+[ctx] device final Release ret 0
+[ctx] created with ppImmediateContext: device count 2 context count 1
+[ctx] device Release first ret 1; context GetDevice works: 1 count 2
+[ctx] context final Release ret 0
+pointer size 4, device count 2
+
+== dev ==
+[dev] bound VB: device before=+0 created=+1 bound=+1 released(ret 0)=+0 IAGet=+1 release-of-get(ret 0)=+0 unbound=+0
+[dev] tex+srv: created=+2 tex released(ret 0)=+1 GetResource=+2 release-of-get(ret 0)=+1 view released(ret 0)=+0
+[dev] bound SRV over released tex: tex ret 0 srv ret 0 device=+0 after unbind=+0
+[dedup] blend: same=1 first=+1 second=+1 count=2
+[dedup] blend: release ret 1 device=+1, release ret 0 device=+0
+[dev] tex QI(IDXGIResource)=+0 AddRef=+0 final release ret 0 device=-1
+
+== mt ==
+[mt] device facet: IUnknown==device 1, device count +1, facet AddRef=4
+[mt] device D3D10Multithread same pointer as D3D11Multithread: 1
+[mt] D3D10Multithread->QI(D3D11Multithread) same=1
+[mt] context facet: IUnknown==context 1, context count +1, device count +1
+[mt] context D3D10Multithread same pointer as its D3D11Multithread: 1
+[mt] set TRUE via D3D10 facet: D3D11 device facet reads 1, context facet reads 1
+[mt] protected=0, other thread while Enter held: CreateBuffer waited, ClearState ran, IAGet waited
+[mt] protected=1, other thread while Enter held: CreateBuffer waited, ClearState waited, IAGet waited
+[mt] Enter via context facet, protected: other thread ClearState waited, CreateBuffer waited
+
+== facet ==
+[facet] buffer QI(IDXGISurface) hr=0x00000000
+[facet] buffer surface GetDesc hr=0x00000000 w=64 h=1 fmt=0 samples=1 q=0
+[facet] buffer surface Map(READ) hr=0x80070057
+[facet] buffer surface GetParent(IDXGIDevice) hr=0x00000000 device=1
+[facet] buffer QI(IDXGIResource) hr=0x00000000 same-as-surface=0
+[facet] buffer GetUsage hr=0x00000000 usage=0x0
+[facet] buffer surface1 GetDC hr=0x887a0001 dc=untouched
+[facet] staging_buffer QI(IDXGISurface) hr=0x00000000
+[facet] staging_buffer surface GetDesc hr=0x00000000 w=64 h=1 fmt=0 samples=1 q=0
+[facet] staging_buffer surface Map(READ) hr=0x00000000
+[facet] staging_buffer surface GetParent(IDXGIDevice) hr=0x00000000 device=1
+[facet] staging_buffer QI(IDXGIResource) hr=0x00000000 same-as-surface=0
+[facet] staging_buffer GetUsage hr=0x00000000 usage=0x3
+[facet] staging_buffer surface1 GetDC hr=0x887a0001 dc=untouched
+[facet] tex1d QI(IDXGISurface) hr=0x00000000
+[facet] tex1d surface GetDesc hr=0x00000000 w=16 h=1 fmt=28 samples=1 q=0
+[facet] tex1d surface Map(READ) hr=0x80070057
+[facet] tex1d surface GetParent(IDXGIDevice) hr=0x00000000 device=1
+[facet] tex1d QI(IDXGIResource) hr=0x00000000 same-as-surface=0
+[facet] tex1d GetUsage hr=0x00000000 usage=0x10
+[facet] tex1d surface1 GetDC hr=0x887a0001 dc=untouched
+[facet] tex3d QI(IDXGISurface) hr=0x80004002
+[facet] srv QI(IDXGISurface) hr=0x00000000
+[facet] srv surface GetDesc hr=0x00000000 w=8 h=8 fmt=28 samples=1 q=0
+[facet] srv surface Map(READ) hr=0x80070057
+[facet] srv surface GetParent(IDXGIDevice) hr=0x80004002 device=0
+[facet] srv QI(IDXGIResource) hr=0x80004002 same-as-surface=0
+[facet] srv subobject GetDevice hr=0x00000000 same=1; count shared: srv=2 subobject=2
+
+== swap ==
+[swap] CreateSwapChainForHwnd hr=0x00000000 device +1 chain count 1
+[swap] GetBuffer(0): count 1 device +1 chain count 2
+[swap] GetBuffer(0) again: same=1 count 2
+[swap] GetBuffer(1): count 0
+[swap] buffer GetDevice same=1
+[swap] buffer surface GetParent(IDXGISwapChain) hr=0x00000000 same=1
+[swap] releases: second b0 ret 1, b1 ret 99; device +1
+[swap] chain Release while holding b0: ret 1 device +1
+[swap] b0 still valid width=64; last Release ret 0 device +0
+
+== cl ==
+[cl] CreateClassLinkage hr=0x00000000 device +1
+[cl] GetClassInstance(nope, 0) hr=0x00000000: id=0 index=0 type=0 cb=0 cbo=0 tex=0 smp=0 created=0 name="nope"/5 type=""/1
+[cl] GetClassInstance(g_green, 1) hr=0x00000000: id=1 index=1 type=0 cb=0 cbo=0 tex=0 smp=0 created=0 name="g_green"/8 type=""/1
+[cl] GetClassInstance(g_red, 2) hr=0x00000000: id=2 index=2 type=0 cb=0 cbo=0 tex=0 smp=0 created=0 name="g_red"/6 type=""/1
+[cl] GetClassInstance(nope, 3) hr=0x00000000: id=0 index=3 type=0 cb=0 cbo=0 tex=0 smp=0 created=0 name="nope"/5 type=""/1
+[cl] GetClassInstance(g_abstract, 4) hr=0x00000000: id=3 index=4 type=0 cb=0 cbo=0 tex=0 smp=0 created=0 name="g_abstract"/11 type=""/1
+[cl] CreateClassInstance(CRed,5,6,7,8) hr=0x00000000: id=0 index=0 type=0 cb=5 cbo=6 tex=7 smp=8 created=1 name=""/1 type="CRed"/5
+[cl] GetTypeName(CRed) into 3 bytes: len=5 bytes=43 52 00 5a
+[cl] GetTypeName(NULL) len=5
+[cl] linkage count with instance 1; linkage Release ret 0; GetClassLinkage after=obj count=1
+[cl] instance Release ret 0
+[cl] GetClassInstance(NULL name) hr=0x80070057 out=untouched
+[cl] GetClassInstance(NULL out) hr=0x80070057
+[cl] CreateClassInstance(NULL out) hr=0x80070057
+[cl] CreateClassInstance(NULL type) hr=0x80070057 out=untouched
+[cl] plain PS + 1 instance: count 1->1, PSGetShader n=0 same=0
+[cl] PSGetShader(NULL instances) n=0
+[cl] linkage last Release=0
+
+done

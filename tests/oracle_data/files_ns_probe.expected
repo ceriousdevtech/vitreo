@@ -1,0 +1,222 @@
+# DeleteFile / CreateDirectory / RemoveDirectory
+DeleteFileW_readonly ret=00000000 err=00000005
+  still_there ret=00000001 err=0000dead
+DeleteFileW_missing_file ret=00000000 err=00000002
+DeleteFileW_missing_dir ret=00000000 err=00000003
+DeleteFileW_directory ret=00000000 err=00000005
+DeleteFileW_empty ret=00000000 err=00000003
+CreateDirectoryW_missing_parent ret=00000000 err=00000003
+  p1_not_created ret=ffffffff err=00000002
+CreateDirectoryW_ok ret=00000001 err=0000dead
+CreateDirectoryW_existing ret=00000000 err=000000b7
+CreateDirectoryW_existing_file ret=00000000 err=000000b7
+CreateDirectoryW_trailing_backslash ret=00000001 err=0000dead
+CreateDirectoryW_invalid_name ret=00000000 err=0000007b
+CreateDirectoryW_under_file ret=00000000 err=00000003
+RemoveDirectoryW_file ret=00000000 err=0000010b
+  file_survives ret=00000080 err=0000dead
+RemoveDirectoryW_nonempty ret=00000000 err=00000091
+RemoveDirectoryW_missing ret=00000000 err=00000002
+RemoveDirectoryW_missing_parent ret=00000000 err=00000003
+RemoveDirectoryW_readonly_dir ret=00000000 err=00000005
+RemoveDirectoryW_ok ret=00000001 err=0000dead
+RemoveDirectoryW_current_dir ret=00000000 err=00000020
+# CopyFileW
+CopyFileW_attrs ret=00000001 err=00000000
+  dst_attrs ret=00000023 err=0000dead
+CopyFileW_fail_if_exists ret=00000000 err=00000050
+CopyFileW_over_readonly_dst ret=00000000 err=00000005
+CopyFileW_directory_source ret=00000000 err=00000005
+  dst_not_created ret=ffffffff err=00000002
+CopyFileW_missing_dest_dir ret=00000000 err=00000003
+CopyFileW_missing_source ret=00000000 err=00000002
+CopyFileW_missing_source_dir ret=00000000 err=00000003
+CopyFileW_self ret=00000000 err=00000020
+  self_content 'source'
+CopyFileW_dest_is_dir ret=00000000 err=00000005
+CopyFileW_source_locked_share0 ret=00000000 err=00000020
+CopyFileW_dest_open_no_share ret=00000000 err=00000020
+CopyFileW_write_time_exact=00000001
+# MoveFileW
+MoveFileW_existing_dest ret=00000000 err=000000b7
+  m2 'two'
+MoveFileW_relative ret=00000001 err=0000dead
+  m3 'one'
+MoveFileW_drive_relative ret=00000001 err=0000dead
+  m1 'one'
+MoveFileW_dir_onto_empty_dir ret=00000000 err=000000b7
+MoveFileW_dir ret=00000001 err=0000dead
+MoveFileW_missing_source ret=00000000 err=00000002
+MoveFileW_missing_source_dir ret=00000000 err=00000003
+MoveFileW_missing_dest_dir ret=00000000 err=00000003
+MoveFileW_case_only ret=00000001 err=0000dead
+  case_only_name=M1.TXT
+MoveFileW_open_without_share_delete ret=00000000 err=00000020
+# MoveFileExW
+MoveFileExW_no_replace ret=00000000 err=000000b7
+MoveFileExW_null_dest_no_flag ret=00000000 err=00000003
+  e1_survives ret=00000020 err=0000dead
+MoveFileExW_null_dest_replace ret=00000000 err=00000003
+  e1_survives ret=00000020 err=0000dead
+MoveFileExW_copy_and_delay ret=00000000 err=00000057
+MoveFileExW_missing_source_replace ret=00000000 err=00000002
+  e2_intact 'e2'
+MoveFileExW_replace_onto_dir ret=00000000 err=00000005
+  edir_attrs ret=00000010 err=0000dead
+MoveFileExW_replace_readonly_dest ret=00000000 err=00000005
+MoveFileExW_replace ret=00000001 err=0000dead
+  e2 'e1'
+MoveFileExW_copy_allowed_same_volume ret=00000001 err=0000dead
+MoveFileExW_bad_flags ret=00000001 err=0000dead
+MoveFileExW_null_source ret=00000000 err=00000003
+MoveFileExW_dir_replace_existing_dir ret=00000000 err=00000005
+# ReplaceFileW
+ReplaceFileW_ok ret=00000001 err=000000cb
+  replaced 'new'
+  backup 'old'
+  replacement_gone ret=ffffffff err=00000002
+  replaced_attrs ret=00000022 err=0000dead
+  creation_preserved=00000001
+ReplaceFileW_missing_replacement ret=00000000 err=00000002
+  replaced_intact 'new'
+ReplaceFileW_missing_replaced ret=00000000 err=00000002
+  replacement_intact 'new2'
+ReplaceFileW_missing_replaced_dir ret=00000000 err=00000003
+ReplaceFileW_bad_flags ret=00000000 err=00000057
+ReplaceFileW_reserved ret=00000000 err=00000057
+ReplaceFileW_backup_missing_dir ret=00000000 err=00000497
+  replaced_after_bad_backup 'new'
+  replacement_after_bad_backup 'new2'
+ReplaceFileW_no_backup ret=00000001 err=00000000
+  replaced 'new2'
+ReplaceFileW_replaced_open_no_share ret=00000000 err=00000020
+ReplaceFileW_readonly_replaced ret=00000000 err=00000005
+# GetFullPathNameW
+gfp_file ret=0000000a err=0000dead out=C:\a\b.txt part=0005
+gfp_dir_trailing ret=00000009 err=0000dead out=C:\a\dir\ part=NULL
+gfp_dotdot ret=0000000a err=0000dead out=C:\a\b.txt part=0005
+gfp_root_dotdot ret=00000004 err=0000dead out=C:\x part=0003
+gfp_dot ret=00000006 err=0000dead out=C:\a\b part=0005
+gfp_relative ret=00000013 err=0000dead out=C:\oracle\fil\x.txt part=000e
+gfp_relative_dotdot ret=0000000f err=0000dead out=C:\oracle\x.txt part=000a
+gfp_root_relative ret=00000006 err=0000dead out=C:\foo part=0003
+gfp_drive_relative_other ret=00000006 err=0000dead out=D:\foo part=0003
+gfp_drive_relative_current ret=00000011 err=0000dead out=C:\oracle\fil\foo part=000e
+gfp_drive_only_other ret=00000003 err=0000dead out=U:\ part=NULL
+gfp_drive_only_current ret=0000000d err=0000dead out=C:\oracle\fil part=000a
+gfp_unc ret=00000010 err=0000dead out=\\server\share\x part=000f
+gfp_unc_dotdot ret=00000010 err=0000dead out=\\server\share\x part=000f
+gfp_long_prefix ret=00000008 err=0000dead out=\\?\C:\y part=0007
+gfp_long_unc ret=00000014 err=0000dead out=\\?\UNC\test-2\q$\lh part=0012
+gfp_device ret=0000000a err=0000dead out=\\.\pipe\x part=0009
+gfp_device_dotdot ret=00000008 err=0000dead out=\\.\C:\b part=0007
+gfp_trailing_dots_spaces ret=00000008 err=0000dead out=C:\a\foo part=0005
+gfp_trailing_dots_dir ret=00000008 err=0000dead out=C:\a..\b part=0007
+gfp_forward_slashes ret=00000008 err=0000dead out=C:\a\b\c part=0007
+gfp_empty ret=00000000 err=0000007b
+gfp_unicode ret=00000016 err=0000dead out=C:\Users\\u0141ukasz\\ud83d\ude00.txt part=0010
+gfp_small_buffer ret=0000000b err=0000dead part=NULL
+gfp_exact_buffer ret=0000000b err=0000dead part=NULL
+gfp_exact_plus1 ret=0000000a err=0000dead out=C:\a\b.txt part=0005
+gfp_con ret=00000007 err=0000dead out=\\.\CON part=NULL
+gfp_nul_ext ret=0000000c err=0000dead out=C:\a\nul.txt part=0005
+gfp_root ret=00000003 err=0000dead out=C:\ part=NULL
+gfp_dot_only ret=0000000d err=0000dead out=C:\oracle\fil part=000a
+# current directory
+SetCurrentDirectoryW_missing ret=00000000 err=00000002
+SetCurrentDirectoryW_missing_parent ret=00000000 err=00000003
+SetCurrentDirectoryW_file ret=00000000 err=0000010b
+SetCurrentDirectoryW_empty ret=00000000 err=0000007b
+SetCurrentDirectoryW_unicode ret=00000001 err=0000dead
+GetCurrentDirectoryW_len=00000019
+  cwd=C:\oracle\fil\n\\u0141ukasz\u65e5\ud83d\ude00
+  rel_via_abs 'rel'
+GetCurrentDirectoryW_trailing_len=0000000f
+  cwd=C:\oracle\fil\n
+GetFileAttributesW_unicode_dir ret=00000010 err=0000dead
+DeleteFileW_unicode ret=00000001 err=0000dead
+RemoveDirectoryW_unicode ret=00000001 err=0000dead
+# lexical open
+CreateFileW_lexical_dotdot ret=00000001 err=0000dead
+  content=lex
+CreateFileW_trailing_dots_spaces ret=00000001 err=0000dead
+GetFileAttributesW_lexical_dotdot ret=00000020 err=0000dead
+GetFileAttributesW_trailing_dots ret=00000020 err=0000dead
+CreateFileW_root_dotdot ret=00000001 err=0000dead
+# volumes
+GetDiskFreeSpaceExW_root ret=00000001 err=0000dead
+  total_nonzero=00000001
+  avail_le_free=00000001
+GetDiskFreeSpaceExW_dir ret=00000001 err=0000dead
+GetDiskFreeSpaceExW_dir_no_slash ret=00000001 err=0000dead
+GetDiskFreeSpaceExW_missing_dir ret=00000000 err=00000003
+GetDiskFreeSpaceExW_file ret=00000000 err=0000010b
+GetDiskFreeSpaceExW_unmounted ret=00000000 err=00000003
+GetDiskFreeSpaceExW_null ret=00000001 err=0000dead
+GetDiskFreeSpaceExW_all_null_out ret=00000001 err=0000dead
+GetDriveTypeW_C ret=00000003 err=0000dead
+GetDriveTypeW_C_noslash ret=00000003 err=0000dead
+GetDriveTypeW_null ret=00000003 err=0000dead
+GetDriveTypeW_Q ret=00000001 err=0000dead
+GetDriveTypeW_subdir ret=00000003 err=00001126
+GetDriveTypeW_subdir_noslash ret=00000001 err=0000dead
+GetDriveTypeW_bad ret=00000001 err=0000dead
+GetDriveTypeW_empty ret=00000001 err=0000dead
+GetDriveTypeW_lower ret=00000003 err=0000dead
+GetVolumeInformationW_C ret=00000001 err=0000dead
+  fs=NTFS
+  maxc=000000ff
+  case_preserved=00000001
+  unicode=00000001
+  case_sensitive_search=00000001
+  serial_matches_file=00000001
+GetVolumeInformationW_noslash ret=00000000 err=0000007b
+GetVolumeInformationW_subdir ret=00000000 err=00000090
+GetVolumeInformationW_Q ret=00000000 err=00000003
+GetVolumeInformationW_null_root ret=00000001 err=0000dead
+GetVolumeInformationW_fs_small ret=00000000 err=00000018
+  fs0=00000077
+GetVolumeInformationW_fs_exact ret=00000000 err=00000018
+GetVolumeInformationW_fs_exact_plus1 ret=00000001 err=0000dead
+GetVolumeInformationW_label_zero ret=00000000 err=00000018
+GetVolumeInformationW_label_one ret=00000001 err=0000dead
+  label0=00000000
+# GetFileInformationByName
+kernelbase_has_export=00000001
+kernel32_has_export=00000001
+GFIBN_class_0 ret=00000001 err=0000dead
+  eof=0000000a
+  attrs=00000020
+  reparse=00000000
+  links=00000001
+  times_nonzero=00000001
+  effective_access=001f01ff
+GFIBN_class_1 ret=00000001 err=0000dead
+  eof=0000000a
+  attrs=00000020
+  reparse=00000000
+  links=00000001
+  times_nonzero=00000001
+  effective_access=001f01ff
+  lxflags=00000000
+GFIBN_class_2 ret=00000001 err=0000dead
+  cs_flags=00000000
+GFIBN_class_3 ret=00000001 err=0000dead
+  eof=0000000a
+  attrs=00000020
+  reparse=00000000
+  links=00000001
+  times_nonzero=00000001
+  device_type=00000007
+  device_chars=00000100
+  reserved=00000000
+  serial_low_matches=00000001
+  fileid_matches_id128=00000001
+GFIBN_class_4 ret=00000000 err=00000057
+GFIBN_small_basic ret=00000000 err=00000018
+GFIBN_small_stat ret=00000000 err=00000018
+GFIBN_missing ret=00000000 err=00000002
+GFIBN_missing_dir ret=00000000 err=00000003
+GFIBN_dir ret=00000001 err=0000dead
+  attrs=00000010
+done

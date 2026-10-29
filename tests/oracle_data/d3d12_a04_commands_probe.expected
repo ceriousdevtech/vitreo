@@ -1,0 +1,272 @@
+queue CreateCommandQueue(DIRECT): 0x00000000 S_OK desc=0/0/0x0/1 GetTimestampFrequency 0x00000000 S_OK nonzero=1
+# queue CreateCommandQueue(DIRECT): frequency=10000000
+queue GetClockCalibration(DIRECT): 0x00000000 S_OK gpu-nonzero=1 cpu-within-QPC-bracket=1
+queue CreateCommandQueue(BUNDLE): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(COMPUTE): 0x00000000 S_OK desc=2/0/0x0/1 GetTimestampFrequency 0x00000000 S_OK nonzero=1
+# queue CreateCommandQueue(COMPUTE): frequency=10000000
+queue GetClockCalibration(COMPUTE): 0x00000000 S_OK gpu-nonzero=1 cpu-within-QPC-bracket=1
+queue CreateCommandQueue(COPY): 0x00000000 S_OK desc=3/0/0x0/1 GetTimestampFrequency 0x00000000 S_OK nonzero=1
+# queue CreateCommandQueue(COPY): frequency=10000000
+queue GetClockCalibration(COPY): 0x00000000 S_OK gpu-nonzero=1 cpu-within-QPC-bracket=1
+queue CreateCommandQueue(VIDEO_DECODE): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(VIDEO_PROCESS): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(VIDEO_ENCODE): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(type7): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(DIRECT, priority HIGH): 0x00000000 S_OK out=obj
+queue CreateCommandQueue(DIRECT, priority GLOBAL_REALTIME): 0x887a0004 DXGI_ERROR_UNSUPPORTED out=NULL
+queue CreateCommandQueue(DIRECT, priority 1): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(DIRECT, priority 50): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(DIRECT, priority -1): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(DIRECT, priority 101): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(DIRECT, flags=DISABLE_GPU_TIMEOUT): 0x00000000 S_OK desc=0/0/0x1/1
+queue CreateCommandQueue(DIRECT, flags=0x2): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(DIRECT, NodeMask=1): 0x00000000 S_OK desc=0/0/0x0/1
+queue CreateCommandQueue(DIRECT, NodeMask=2): 0x80070057 E_INVALIDARG out=NULL
+queue CreateCommandQueue(ppQueue=NULL): 0x8000ffff E_UNEXPECTED
+queue CreateCommandQueue(riid=Fence): 0x80004002 E_NOINTERFACE out=NULL
+queue timestamp frequency DIRECT == COMPUTE == COPY: 1
+queue end: GetDeviceRemovedReason 0x00000000 S_OK
+allocator CreateCommandAllocator(DIRECT): 0x00000000 S_OK out=obj
+allocator Reset fresh DIRECT allocator: 0x00000000 S_OK
+allocator CreateCommandAllocator(BUNDLE): 0x00000000 S_OK out=obj
+allocator Reset fresh BUNDLE allocator: 0x00000000 S_OK
+allocator CreateCommandAllocator(COMPUTE): 0x00000000 S_OK out=obj
+allocator Reset fresh COMPUTE allocator: 0x00000000 S_OK
+allocator CreateCommandAllocator(COPY): 0x00000000 S_OK out=obj
+allocator Reset fresh COPY allocator: 0x00000000 S_OK
+allocator CreateCommandAllocator(VIDEO_DECODE): 0x80070057 E_INVALIDARG out=NULL
+allocator CreateCommandAllocator(VIDEO_PROCESS): 0x80070057 E_INVALIDARG out=NULL
+allocator CreateCommandAllocator(VIDEO_ENCODE): 0x80070057 E_INVALIDARG out=NULL
+allocator CreateCommandAllocator(type7): 0x80070057 E_INVALIDARG out=NULL
+allocator CreateCommandAllocator(ppv=NULL): 0x8000ffff E_UNEXPECTED
+allocator allocator Reset while its list is open: 0x80004005 E_FAIL
+allocator list Close: 0x00000000 S_OK
+allocator allocator Reset after Close: 0x00000000 S_OK
+allocator list Reset: 0x00000000 S_OK
+allocator list Close: 0x00000000 S_OK
+allocator allocator Reset while its list is queued behind a GPU wait: 0x00000000 S_OK
+allocator list Reset while queued (list reset is allowed): 0x00000000 S_OK
+allocator list Close: 0x00000000 S_OK
+allocator queue drained after CPU Signal: 1
+allocator allocator Reset after completion: 0x00000000 S_OK
+allocator GetDeviceRemovedReason: 0x00000000 S_OK
+allocator end: GetDeviceRemovedReason 0x00000000 S_OK
+list_create CreateCommandList(DIRECT list, DIRECT allocator): 0x00000000 S_OK GetType=DIRECT Close=0x00000000 S_OK
+list_create CreateCommandList(DIRECT list, BUNDLE allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(DIRECT list, COMPUTE allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(DIRECT list, COPY allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(BUNDLE list, DIRECT allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(BUNDLE list, BUNDLE allocator): 0x00000000 S_OK GetType=BUNDLE Close=0x00000000 S_OK
+list_create CreateCommandList(BUNDLE list, COMPUTE allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(BUNDLE list, COPY allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(COMPUTE list, DIRECT allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(COMPUTE list, BUNDLE allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(COMPUTE list, COMPUTE allocator): 0x00000000 S_OK GetType=COMPUTE Close=0x00000000 S_OK
+list_create CreateCommandList(COMPUTE list, COPY allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(COPY list, DIRECT allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(COPY list, BUNDLE allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(COPY list, COMPUTE allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(COPY list, COPY allocator): 0x00000000 S_OK GetType=COPY Close=0x00000000 S_OK
+list_create CreateCommandList(VIDEO_DECODE, DIRECT allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(VIDEO_PROCESS, DIRECT allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(VIDEO_ENCODE, DIRECT allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(type7, DIRECT allocator): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(DIRECT, initial compute PSO): 0x00000000 S_OK out=obj Close=0x00000000 S_OK
+list_create CreateCommandList(BUNDLE, initial compute PSO): 0x00000000 S_OK out=obj Close=0x00000000 S_OK
+list_create CreateCommandList(COMPUTE, initial compute PSO): 0x00000000 S_OK out=obj Close=0x00000000 S_OK
+list_create CreateCommandList(COPY, initial compute PSO): 0x00000000 S_OK out=obj Close=0x00000000 S_OK
+list_create CreateCommandList(NodeMask=1): 0x00000000 S_OK out=obj
+list_create CreateCommandList(NodeMask=2): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList(riid=CommandList): 0x00000000 S_OK out=obj
+list_create CreateCommandList(riid=GraphicsCommandList1): 0x00000000 S_OK out=obj
+list_create CreateCommandList(riid=GraphicsCommandList4): 0x00000000 S_OK out=obj
+list_create CreateCommandList(riid=GraphicsCommandList7): 0x00000000 S_OK out=obj
+list_create CreateCommandList(riid=Fence): 0x80004002 E_NOINTERFACE out=NULL
+list_create CreateCommandList(ppv=NULL): 0x8000ffff E_UNEXPECTED
+list_create CreateCommandList1(DIRECT): 0x00000000 S_OK Close(new)=0x80004005 E_FAIL Reset=0x00000000 S_OK Close=0x00000000 S_OK
+list_create CreateCommandList1(BUNDLE): 0x00000000 S_OK Close(new)=0x80004005 E_FAIL Reset=0x00000000 S_OK Close=0x00000000 S_OK
+list_create CreateCommandList1(COMPUTE): 0x00000000 S_OK Close(new)=0x80004005 E_FAIL Reset=0x00000000 S_OK Close=0x00000000 S_OK
+list_create CreateCommandList1(COPY): 0x00000000 S_OK Close(new)=0x80004005 E_FAIL Reset=0x00000000 S_OK Close=0x00000000 S_OK
+list_create CreateCommandList1(VIDEO_DECODE): 0x80070057 E_INVALIDARG out=NULL
+list_create CreateCommandList1(flags=1): 0x00000000 S_OK out=obj
+list_create end: GetDeviceRemovedReason 0x00000000 S_OK
+list_state new list Reset while open: 0x80004005 E_FAIL
+list_state second CreateCommandList on an allocator with an open list: 0x80070057 E_INVALIDARG out=NULL
+list_state Close: 0x00000000 S_OK
+list_state Close again: 0x80004005 E_FAIL
+list_state Reset(closed, allocator a): 0x00000000 S_OK
+list_state Close l2: 0x00000000 S_OK
+list_state Reset l2 onto allocator a while l1 records on a: 0x80070057 E_INVALIDARG
+list_state Close l1: 0x00000000 S_OK
+list_state Reset l2 onto allocator a after l1 closed: 0x00000000 S_OK
+list_state Close l2: 0x00000000 S_OK
+list_state Reset l1 onto a COMPUTE allocator: 0x80070057 E_INVALIDARG
+list_state Close l1 after failed Reset: 0x80004005 E_FAIL
+list_state Reset l1 (DIRECT allocator b): 0x00000000 S_OK
+list_state Close l1: 0x00000000 S_OK
+list_state execute empty closed list, wait: 1
+list_state Reset l1: 0x00000000 S_OK
+list_state Close after ClearState(NULL): 0x00000000 S_OK
+list_state end: GetDeviceRemovedReason 0x00000000 S_OK
+close_rules DIRECT list: ClearRenderTargetView -> Close: 0x00000000 S_OK
+close_rules DIRECT list: DrawInstanced (no PSO) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: Dispatch (no PSO) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: SetPipelineState(compute)+SetComputeRootSignature+Dispatch -> Close: 0x00000000 S_OK
+close_rules DIRECT list: CopyBufferRegion -> Close: 0x00000000 S_OK
+close_rules DIRECT list: SetDescriptorHeaps(1 visible) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: Begin/EndQuery(OCCLUSION) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: ClearUnorderedAccessViewUint -> Close: 0x00000000 S_OK
+close_rules DIRECT list: ExecuteBundle(closed empty bundle) -> Close: 0x00000000 S_OK
+close_rules COMPUTE list: ClearRenderTargetView -> Close: 0x80004005 E_FAIL
+close_rules COMPUTE list: DrawInstanced (no PSO) -> Close: 0x80004005 E_FAIL
+close_rules COMPUTE list: Dispatch (no PSO) -> Close: 0x00000000 S_OK
+close_rules COMPUTE list: SetPipelineState(compute)+SetComputeRootSignature+Dispatch -> Close: 0x00000000 S_OK
+close_rules COMPUTE list: CopyBufferRegion -> Close: 0x00000000 S_OK
+close_rules COMPUTE list: SetDescriptorHeaps(1 visible) -> Close: 0x00000000 S_OK
+close_rules COMPUTE list: Begin/EndQuery(OCCLUSION) -> Close: 0x80004005 E_FAIL
+close_rules COMPUTE list: ClearUnorderedAccessViewUint -> Close: 0x00000000 S_OK
+close_rules COMPUTE list: ExecuteBundle(closed empty bundle) -> Close: 0x80004005 E_FAIL
+close_rules COPY list: ClearRenderTargetView -> Close: 0x80004005 E_FAIL
+close_rules COPY list: DrawInstanced (no PSO) -> Close: 0x80004005 E_FAIL
+close_rules COPY list: Dispatch (no PSO) -> Close: 0x80004005 E_FAIL
+close_rules COPY list: SetPipelineState(compute)+SetComputeRootSignature+Dispatch -> Close: 0x80004005 E_FAIL
+close_rules COPY list: CopyBufferRegion -> Close: 0x00000000 S_OK
+close_rules COPY list: SetDescriptorHeaps(1 visible) -> Close: 0x80004005 E_FAIL
+close_rules COPY list: Begin/EndQuery(OCCLUSION) -> Close: 0x80004005 E_FAIL
+close_rules COPY list: ClearUnorderedAccessViewUint -> Close: 0x80004005 E_FAIL
+close_rules COPY list: ExecuteBundle(closed empty bundle) -> Close: 0x80004005 E_FAIL
+close_rules DIRECT list: transition COMMON->COMMON -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: transition subresource 5 of a buffer -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: transition UPLOAD buffer GENERIC_READ->COPY_DEST -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: transition to state 0x80000000 -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: transition buffer to RENDER_TARGET -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: transition to COPY_DEST|UNORDERED_ACCESS (write|write) -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: split transition BEGIN_ONLY then END_ONLY -> Close: 0x00000000 S_OK
+close_rules DIRECT list: transition flags BEGIN_ONLY|END_ONLY -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: UAV barrier, NULL resource -> Close: 0x00000000 S_OK
+close_rules DIRECT list: UAV barrier on UPLOAD buffer (no UAV flag) -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: aliasing barrier NULL/NULL -> Close: 0x00000000 S_OK
+close_rules DIRECT list: aliasing barrier committed/NULL -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: barrier type 7 -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: barrier flags 0x10 -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: ResourceBarrier(0, NULL) -> Close: 0x00000000 S_OK
+close_rules COMPUTE list: transition to VERTEX_AND_CONSTANT_BUFFER -> Close: 0x00000000 S_OK
+close_rules COMPUTE list: transition to PIXEL_SHADER_RESOURCE -> Close: 0x80070057 E_INVALIDARG
+close_rules COPY list: transition to UNORDERED_ACCESS -> Close: 0x80070057 E_INVALIDARG
+close_rules COPY list: transition to COPY_DEST -> Close: 0x00000000 S_OK
+close_rules COPY list: UAV barrier -> Close: 0x00000000 S_OK
+close_rules DIRECT list: SetDescriptorHeaps(2 CBV_SRV_UAV heaps) -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: SetDescriptorHeaps(non-shader-visible heap) -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: SetDescriptorHeaps(CBV_SRV_UAV + SAMPLER) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: SetDescriptorHeaps(3 heaps) -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: SetDescriptorHeaps(0, NULL) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: SetGraphicsRoot32BitConstant without a root signature -> Close: 0x00000000 S_OK
+close_rules DIRECT list: SetComputeRoot32BitConstants past the parameter's count -> Close: 0x00000000 S_OK
+close_rules DIRECT list: SetComputeRoot32BitConstant(parameter index 5 of 2) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: SetComputeRootDescriptorTable on a constants parameter -> Close: 0x00000000 S_OK
+close_rules DIRECT list: OMSetRenderTargets(8 RTVs, same view) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: OMSetRenderTargets(2, single-handle range) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: RSSetViewports(16)+RSSetScissorRects(16) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: RSSetViewports(negative width) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: IASetVertexBuffers(0, 32 null views) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: IASetPrimitiveTopology(200) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: OMSetStencilRef(0x1FF) -> Close: 0x00000000 S_OK
+close_rules DIRECT list: BeginQuery without EndQuery -> Close: 0x80004005 E_FAIL
+close_rules DIRECT list: EndQuery(OCCLUSION) without BeginQuery -> Close: 0x80004005 E_FAIL
+close_rules DIRECT list: Begin/EndQuery index 4 of 4 -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: BeginQuery(TIMESTAMP) on an occlusion heap -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: ResolveQueryData to offset 4 (not 8-aligned) -> Close: 0x80070057 E_INVALIDARG
+close_rules DIRECT list: ResolveQueryData range past the heap -> Close: 0x80070057 E_INVALIDARG
+close_rules BUNDLE list: ClearRenderTargetView -> Close: 0x80004005 E_FAIL
+close_rules BUNDLE list: ResourceBarrier -> Close: 0x80004005 E_FAIL
+close_rules BUNDLE list: CopyBufferRegion -> Close: 0x80004005 E_FAIL
+close_rules BUNDLE list: SetDescriptorHeaps -> Close: 0x00000000 S_OK
+close_rules BUNDLE list: OMSetRenderTargets -> Close: 0x80004005 E_FAIL
+close_rules BUNDLE list: RSSetViewports -> Close: 0x80004005 E_FAIL
+close_rules BUNDLE list: SetPipelineState+SetComputeRootSignature+constants+Dispatch -> Close: 0x00000000 S_OK
+close_rules BUNDLE list: Begin/EndQuery -> Close: 0x80004005 E_FAIL
+close_rules BUNDLE list: ExecuteBundle (nested) -> Close: 0x80004005 E_FAIL
+close_rules BUNDLE list: ClearState -> Close: 0x80004005 E_FAIL
+close_rules BUNDLE list: ResolveQueryData -> Close: 0x80004005 E_FAIL
+close_rules failed Close; Close; allocator Reset; list Reset; Close; list Reset; Close: 0x80070057 E_INVALIDARG 0x80004005 E_FAIL 0x00000000 S_OK 0x80070057 E_INVALIDARG 0x80004005 E_FAIL 0x80070057 E_INVALIDARG 0x80004005 E_FAIL
+close_rules failed-Close list: Reset onto a fresh allocator; Close: 0x80070057 E_INVALIDARG 0x80004005 E_FAIL
+close_rules GetDeviceRemovedReason: 0x00000000 S_OK
+close_rules end: GetDeviceRemovedReason 0x00000000 S_OK
+close_limits DIRECT list: OMSetRenderTargets(9 RTVs) -> Close: 0x80004005 E_FAIL
+close_limits DIRECT list: RSSetViewports(17) -> Close: 0x00000000 S_OK
+close_limits DIRECT list: RSSetScissorRects(17) -> Close: 0x00000000 S_OK
+close_limits DIRECT list: IASetVertexBuffers(0, 33) -> Close: 0x00000000 S_OK
+close_limits DIRECT list: IASetVertexBuffers(31, 2) -> Close: 0x00000000 S_OK
+close_limits end: GetDeviceRemovedReason 0x00000000 S_OK
+execute_open execute an open (not closed) list: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_open end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_failed_close Close (after a recording error): 0x80070057 E_INVALIDARG
+execute_failed_close execute a list whose Close failed: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_failed_close end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_bundle Close: 0x00000000 S_OK
+execute_bundle execute a BUNDLE on a DIRECT queue: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_bundle end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_copy_on_direct Close: 0x00000000 S_OK
+execute_copy_on_direct execute a COPY list on a DIRECT queue: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_copy_on_direct end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_direct_on_compute Close: 0x00000000 S_OK
+execute_direct_on_compute execute a DIRECT list on a COMPUTE queue: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_direct_on_compute end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_compute_on_direct Close: 0x00000000 S_OK
+execute_compute_on_direct execute a COMPUTE list on a DIRECT queue: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_compute_on_direct end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+execute_zero ExecuteCommandLists(0, NULL): GetDeviceRemovedReason 0x00000000 S_OK
+execute_zero wait: 1
+execute_zero end: GetDeviceRemovedReason 0x00000000 S_OK
+ordering 3 lists in one call (x2+1, x3+2, x5+3): v[0..3]=0000001c 0000003a 00000058 00000076 v[63]=0000077e
+ordering same lists reversed: v[0..3]=0000035f 000006e3 00000a67 00000deb v[63]=0000e0db
+ordering list 0 twice in one call: v[0..3]=00000d7f 00001b8f 0000299f 000037af v[63]=0003836f
+ordering list 0 in two calls: v[0..3]=000035ff 00006e3f 0000a67f 0000debf v[63]=000e0dbf
+ordering Reset/record/Close right after submit: 0x00000000 S_OK 0x00000000 S_OK
+ordering old recording (x3+2) then new (+1000): v[0..3]=0000a5e7 00014ea7 0001f767 0002a027 v[63]=002a2d27
+ordering before the gate opens: f1 f2 f3: 0 0 0
+ordering after the gate: f3 reached: 1
+ordering DIRECT x2+1 -> COMPUTE x7 -> COPY: v[0..3]=00000007 00000015 00000023 00000031 v[63]=00000379
+ordering end: GetDeviceRemovedReason 0x00000000 S_OK
+fence CreateFence(initial 0): 0x00000000 S_OK completed=0
+fence CreateFence(initial 5): 0x00000000 S_OK completed=5
+fence CreateFence(initial UINT64_MAX): 0x00000000 S_OK completed=UINT64_MAX
+fence CreateFence(flags SHARED): 0x00000000 S_OK GetCreationFlags=0x1
+fence CreateFence(flags SHARED_CROSS_ADAPTER): 0x80070057 E_INVALIDARG out=NULL
+fence CreateFence(flags SHARED|SHARED_CROSS_ADAPTER): 0x00000000 S_OK GetCreationFlags=0x3
+fence CreateFence(flags NON_MONITORED): 0x80070057 E_INVALIDARG out=NULL
+fence CreateFence(flags 0x8): 0x80070057 E_INVALIDARG out=NULL
+fence CreateFence(riid=Fence1): obj
+fence CPU Signal(10): 0x00000000 S_OK completed=10
+fence CPU Signal(3) (lower): 0x00000000 S_OK completed=3
+fence CPU Signal(3) (same): 0x00000000 S_OK completed=3
+fence SetEventOnCompletion(2, reached): 0x00000000 S_OK signalled=1
+fence SetEventOnCompletion(3, reached exactly): 0x00000000 S_OK signalled=1
+fence SetEventOnCompletion(20, future): 0x00000000 S_OK signalled=0
+fence SetEventOnCompletion(30, future): 0x00000000 S_OK signalled=0
+fence SetEventOnCompletion(UINT64_MAX): 0x00000000 S_OK signalled=0
+fence after Signal(25): e20 e30 eMAX: 1 0 0
+fence after Signal(30): e30: 1
+fence after Signal(5) (down from 30), SetEventOnCompletion(20): 0x00000000 S_OK signalled=0
+fence after Signal(20): 1
+fence SetEventOnCompletion(10, NULL) reached: 0x00000000 S_OK
+fence SetEventOnCompletion(40, NULL) with a thread signalling after 150 ms: 0x00000000 S_OK blocked>=100ms=1 completed=40
+fence queue Signal(50): 0x00000000 S_OK completed=50
+fence queue Signal(45) (lower): 0x00000000 S_OK completed=45
+fence queue Wait(f, 60) then Signal(f2, 1): f2 after 150 ms: 0x00000000 S_OK 0x00000000 S_OK 0
+fence after CPU Signal(f, 60): f2: reached=1 value=1
+fence queue Wait(f, 10) already reached: 0x00000000 S_OK
+fence wait: 1
+fence Multiple(ANY, {100 reached, 2 not}): 0x00000000 S_OK signalled-now=1
+fence Multiple(ALL, {100 reached, 2 not}): 0x00000000 S_OK signalled-now=0
+fence after Signal(f2, 2): ALL event: 1
+fence Multiple(flags 2): 0x80070057 E_INVALIDARG
+fence Multiple(0 fences): 0x80070057 E_INVALIDARG signalled=0
+fence Multiple(ALL, reached, NULL event): 0x00000000 S_OK
+fence Multiple(ALL, NULL event, thread signals after 150 ms): 0x00000000 S_OK blocked>=100ms=1
+fence CreateSharedHandle(SHARED fence): 0x00000000 S_OK handle=set
+fence OpenSharedHandle(fence): 0x00000000 S_OK same-object=0 value=7
+fence signal original 9, opened sees: 9
+fence signal opened 11, original sees: 11
+fence CreateSharedHandle(non-shared fence): 0x80070057 E_INVALIDARG handle=NULL
+fence end: GetDeviceRemovedReason 0x00000000 S_OK

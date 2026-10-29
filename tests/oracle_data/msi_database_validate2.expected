@@ -1,0 +1,67 @@
+val open=0 exec=0
+dir open=0 exec=0
+x open=0 exec=0
+d1 open=0 exec=0
+vk open=0 exec=0
+vp open=0 exec=0
+vc open=0 exec=0
+vk open=0 exec=0
+vp open=0 exec=0
+vc open=0 exec=0
+guid-ok rc=0 0:
+guid-lower rc=13 9:C 0:
+guid-nobrace rc=13 9:C 0:
+guid-short rc=13 9:C 0:
+guid-nohyphen rc=13 9:C 0:
+guid-G rc=13 9:C 0:
+dd-root-sourcedir rc=0 0:
+dd-root-dot rc=13 18:C 0:
+dd-root-name rc=0 0:
+dd-root-colon rc=13 18:C 0:
+dd-child-name rc=0 0:
+dd-child-dot rc=13 18:C 0:
+dd-child-long rc=13 18:C 0:
+dd-child-src rc=13 18:C 0:
+dd-child-dotsrc rc=13 18:C 0:
+dd-child-star rc=13 18:C 0:
+dd-child-self rc=0 0:
+dd-x-name rc=0 0:
+set-nocat-ok rc=0 0:
+set-nocat-bad rc=13 6:C 0:
+set-text-bad rc=0 0:
+set-ident-bad rc=0 0:
+int-cat rc=13 23:C 0:
+dblint-cat rc=13 23:C 0:
+timedate-cat rc=13 23:C 0:
+case-cat rc=13 23:C 0:
+version-dot rc=13 7:C 0:
+version-empty-part rc=13 7:C 0:
+version-65535 rc=0 0:
+lang-space rc=0 0:
+lang-neg rc=13 12:C 0:
+prop-dot rc=0 0:
+ident-dot-first rc=13 11:C 0:
+upper-digits rc=0 0:
+fmt-nested rc=0 0:
+fmt-brace rc=0 0:
+fmt-escape-only rc=0 0:
+tmpl-empty rc=13 17:C 0:
+tmpl-close rc=13 17:C 0:
+reg-double rc=13 19:C 0:
+path-drive-only rc=0 0:
+path-drive-rel rc=13 14:C 0:
+anypath-star rc=13 14:C 0:
+anypath-pipe2 rc=13 14:C 0:
+shortcut-dot rc=0 0:
+cab-space rc=0 0:
+file-8.3-max rc=0 0:
+file-noext rc=0 0:
+file-dotend rc=0 0:
+file-long-star rc=13 13:C 0:
+file-plus rc=13 13:C 0:
+file-tilde rc=0 0:
+file-dot rc=13 13:C 0:
+wild-long rc=0 0:
+cond-empty-paren rc=0 0:
+cond-prop rc=0 0:
+cond-feature rc=0 0:

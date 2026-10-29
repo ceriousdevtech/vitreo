@@ -1,0 +1,48 @@
+get_fresh ret=0 o=2 g=2 d=2 s=1 control=8004 sdOwnerOff=1 sdGroupOff=1
+  dacl count=3 [0,10,1f01ff] [0,10,1f01ff] [0,10,1f01ff]
+get_dacl_only ret=0 o=1 g=1 d=2 s=1 control=8004 sdOwnerOff=1 sdGroupOff=1
+  dacl count=3 [0,10,1f01ff] [0,10,1f01ff] [0,10,1f01ff]
+get_sacl ret=0 o=1 g=1 d=1 s=0 control=8000 sdOwnerOff=0 sdGroupOff=0
+set_empty_protected ret=0
+after_empty ret=0 o=1 g=1 d=2 s=1 control=9404 sdOwnerOff=0 sdGroupOff=0
+  dacl count=0
+set_owner_self ret=0
+after_owner ret=0 o=1 g=1 d=2 s=1 control=9404 sdOwnerOff=0 sdGroupOff=0
+  dacl count=0
+set_owner_system ret=0
+set_sacl_nopriv ret=0
+set_empty_unprotected ret=0
+after_unprotected ret=0 o=1 g=1 d=2 s=1 control=8404 sdOwnerOff=0 sdGroupOff=0
+  dacl count=3 [0,10,1f01ff] [0,10,1f01ff] [0,10,1f01ff]
+set_label ret=0
+get_label ret=0 sacl=1 count=1
+get_kernel_obj ret=0
+get_service ret=0
+sea_revoke ret=0
+  acl count=3 [1,0,2] [1,10,20] [0,10,8]
+sea_grant_new ret=0
+  acl count=5 [1,0,2] [0,0,10] [0,0,1] [1,10,20] [0,10,8]
+sea_grant_merge ret=0
+  acl count=4 [1,0,2] [0,0,11] [1,10,20] [0,10,8]
+sea_deny_merge ret=0
+  acl count=4 [1,0,6] [0,0,1] [1,10,20] [0,10,8]
+sea_set ret=0
+  acl count=3 [0,0,10] [1,10,20] [0,10,8]
+sea_name CREATOR GROUP ret=0 sid=S-1-3-1 mask=80000000
+sea_name Guests ret=0 sid=S-1-5-32-546 mask=80000000
+sea_name LOCAL SERVICE ret=0 sid=S-1-5-19 mask=80000000
+sea_name NT AUTHORITY\NETWORK SERVICE ret=0 sid=S-1-5-20 mask=80000000
+sea_name OTHERDOM\Users ret=534
+sea_name BA ret=534
+sea_name SY ret=534
+sea_name CURRENT_USER ret=0 sid=S-1-5-21-1828410828-4144948699-2202159460-1001 mask=80000000
+sea_name BUILTIN\Users ret=0 sid=S-1-5-32-545 mask=80000000
+sea_name Everyone ret=0 sid=S-1-1-0 mask=80000000
+sea_objects_and_sid ret=0
+  acl count=1 [5,0,1]
+ger_null_acl ret=0 mask=3ffffff
+ger_groups ret=0 mask=0
+ger_admins_everyone_interactive ret=0 mask=3
+ger_group_trustee ret=0 mask=3
+ger_name_everyone ret=0 mask=0
+ger_inherited_deny ret=0 mask=1f01fe

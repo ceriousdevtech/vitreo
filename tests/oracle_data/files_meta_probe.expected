@@ -1,0 +1,287 @@
+# attributes
+GetFileAttributesW_new_file ret=00000020 err=0000dead
+GetFileAttributesW_dir ret=00000010 err=0000dead
+SetFileAttributesW_readonly ret=00000001 err=0000dead
+  attrs ret=00000001 err=0000dead
+  open_write ret=00000000 err=00000005
+  DeleteFileW ret=00000000 err=00000005
+  open_read ret=00000001 err=00000000
+SetFileAttributesW_normal ret=00000001 err=0000dead
+  attrs ret=00000080 err=0000dead
+SetFileAttributesW_hidden_system ret=00000001 err=0000dead
+  attrs ret=00000006 err=0000dead
+SetFileAttributesW_archive_notindexed ret=00000001 err=0000dead
+  attrs ret=00002020 err=0000dead
+SetFileAttributesW_directory_bit ret=00000001 err=0000dead
+  attrs ret=00000080 err=0000dead
+SetFileAttributesW_normal_plus_hidden ret=00000001 err=0000dead
+  attrs ret=00000002 err=0000dead
+SetFileAttributesW_temporary ret=00000001 err=0000dead
+  attrs ret=00000100 err=0000dead
+SetFileAttributesW_compressed ret=00000001 err=0000dead
+  attrs ret=00000080 err=0000dead
+SetFileAttributesW_zero ret=00000001 err=0000dead
+  attrs ret=00000080 err=0000dead
+SetFileAttributesW_dir_readonly ret=00000001 err=0000dead
+  dir_attrs ret=00000011 err=0000dead
+  create_in_readonly_dir ret=00000020 err=0000dead
+SetFileAttributesW_dir_normal ret=00000001 err=0000dead
+  dir_attrs ret=00000010 err=0000dead
+SetFileAttributesW_missing_file ret=00000000 err=00000002
+SetFileAttributesW_missing_dir ret=00000000 err=00000003
+GetFileAttributesW_missing_file ret=ffffffff err=00000002
+GetFileAttributesW_missing_dir ret=ffffffff err=00000003
+GetFileAttributesW_file_as_dir ret=ffffffff err=00000003
+GetFileAttributesW_bad_drive ret=ffffffff err=00000003
+GetFileAttributesW_wildcard ret=ffffffff err=0000007b
+GetFileAttributesW_invalid_char ret=ffffffff err=0000007b
+GetFileAttributesW_dotdot ret=00000080 err=0000dead
+GetFileAttributesW_trailing_dot ret=00000080 err=0000dead
+GetFileAttributesW_trailing_space ret=00000080 err=0000dead
+GetFileAttributesW_trailing_backslash_file ret=ffffffff err=0000010b
+GetFileAttributesW_trailing_backslash_dir ret=00000010 err=0000dead
+GetFileAttributesW_root_dotdot ret=00000010 err=0000dead
+GetFileAttributesW_empty ret=ffffffff err=00000003
+GetFileAttributesExW ret=00000001 err=0000dead
+  attrs=00000080
+  size=0000000a
+GetFileAttributesExW_level1 ret=00000000 err=00000057
+GetFileAttributesExW_missing_dir ret=00000000 err=00000003
+GetFileAttributesExW_missing_file ret=00000000 err=00000002
+# times
+SetFileTime_all ret=00000001 err=0000dead
+GetFileTime ret=00000001 err=0000dead
+  creation=01b0000012345678
+  access=01d0000000bc614e
+  write=01d800000012d687
+GetFileInformationByHandle ret=00000001 err=0000dead
+  creation=01b0000012345678
+  write=01d800000012d687
+  attrs=00000020
+  links=00000001
+  size=0000000a
+  ex_write=01d800000012d687
+SetFileTime_suspend_write ret=00000001 err=0000dead
+  write_after_suspend=01d800000012d687
+  write_after_write=01d800000012d687
+SetFileTime_zero_nochange ret=00000001 err=0000dead
+  creation_after_zero=01b0000012345678
+SetFileTime_read_only_handle ret=00000000 err=00000005
+SetFileTime_invalid ret=00000000 err=00000006
+SetFileTime_write_attributes_only ret=00000001 err=0000dead
+# by handle
+FileNameInfo ret=00000001 err=0000dead
+  len=00000026
+  name=\oracle\fil\m\h.txt
+FileNameInfo_small ret=00000000 err=000000ea
+  len=00000026
+FileNameInfo_tiny ret=00000000 err=00000018
+FileStandardInfo ret=00000001 err=0000dead
+  links=00000001
+  delete_pending=00000000
+  dir=00000000
+  eof=0000000a
+CreateHardLinkW ret=00000001 err=0000dead
+  links_after_hardlink=00000002
+  bhfi_links=00000002
+SetFileInformationByHandle_disposition ret=00000001 err=0000dead
+  delete_pending=00000001
+FileIdInfo ret=00000001 err=0000dead
+  serial_low_matches_volume=00000001
+  bhfi_serial_matches_volume=00000001
+  id_low_matches_bhfi=00000001
+FileStorageInfo ret=00000001 err=0000dead
+  logical_nonzero=00000001
+FileAlignmentInfo ret=00000001 err=0000dead
+  alignment_le_512=00000001
+FileCompressionInfo ret=00000001 err=0000dead
+  format=00000000
+  size=0000000a
+FileStreamInfo ret=00000001 err=0000dead
+  next=00000000
+  size=0000000a
+  name=::$DATA
+FileRemoteProtocolInfo ret=00000000 err=00000057
+FileAttributeTagInfo ret=00000001 err=0000dead
+  attrs=00000020
+class_invalid_3 ret=00000000 err=00000057
+class_invalid_99 ret=00000000 err=00000057
+FileNameInfo_dir ret=00000001 err=0000dead
+  name=\oracle\fil\m
+FileFullDirectoryRestartInfo ret=00000001 err=0000dead
+  entry=.
+  entry=..
+  entry=a.txt
+  entry=h.txt
+  entry=h2.txt
+  entry=t.txt
+FileNameInfo_root ret=00000001 err=0000dead
+  name=\
+# find
+star_dot_star first=ok err=0000dead
+  end_err=00000012
+  . attrs=00000010
+  .. attrs=00000010
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+  h.txt attrs=00000020 size=000a
+  long_name_file.text attrs=00000020 size=0001 alt=LONG_N~1.TEX
+  noext attrs=00000020 size=0001
+  sub attrs=00000010
+  sub.dir attrs=00000010
+  t.txt attrs=00000020 size=000e
+  trail attrs=00000020 size=0001
+  two.dots.txt attrs=00000020 size=0001 alt=TWODOT~1.TXT
+  x.tx attrs=00000020 size=0001
+  \ud83d\ude00.txt attrs=00000020 size=0001 alt=6A68~1.TXT
+  \u65e5\u672c.txt attrs=00000020 size=0001 alt=B109~1.TXT
+star first=ok err=0000dead
+  end_err=00000012
+  . attrs=00000010
+  .. attrs=00000010
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+  h.txt attrs=00000020 size=000a
+  long_name_file.text attrs=00000020 size=0001 alt=LONG_N~1.TEX
+  noext attrs=00000020 size=0001
+  sub attrs=00000010
+  sub.dir attrs=00000010
+  t.txt attrs=00000020 size=000e
+  trail attrs=00000020 size=0001
+  two.dots.txt attrs=00000020 size=0001 alt=TWODOT~1.TXT
+  x.tx attrs=00000020 size=0001
+  \ud83d\ude00.txt attrs=00000020 size=0001 alt=6A68~1.TXT
+  \u65e5\u672c.txt attrs=00000020 size=0001 alt=B109~1.TXT
+star_dot first=ok err=0000dead
+  end_err=00000012
+  . attrs=00000010
+  .. attrs=00000010
+  noext attrs=00000020 size=0001
+  sub attrs=00000010
+  trail attrs=00000020 size=0001
+a_dot_star first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+noext_dot_star first=ok err=0000dead
+  end_err=00000012
+  noext attrs=00000020 size=0001
+q_dot_txt first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  h.txt attrs=00000020 size=000a
+  t.txt attrs=00000020 size=000e
+star_dot_tx_q first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+  h.txt attrs=00000020 size=000a
+  t.txt attrs=00000020 size=000e
+  two.dots.txt attrs=00000020 size=0001 alt=TWODOT~1.TXT
+  x.tx attrs=00000020 size=0001
+  \ud83d\ude00.txt attrs=00000020 size=0001 alt=6A68~1.TXT
+  \u65e5\u672c.txt attrs=00000020 size=0001 alt=B109~1.TXT
+star_dot_txt first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+  h.txt attrs=00000020 size=000a
+  t.txt attrs=00000020 size=000e
+  two.dots.txt attrs=00000020 size=0001 alt=TWODOT~1.TXT
+  \ud83d\ude00.txt attrs=00000020 size=0001 alt=6A68~1.TXT
+  \u65e5\u672c.txt attrs=00000020 size=0001 alt=B109~1.TXT
+star_dot_TXT_upper first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+  h.txt attrs=00000020 size=000a
+  t.txt attrs=00000020 size=000e
+  two.dots.txt attrs=00000020 size=0001 alt=TWODOT~1.TXT
+  \ud83d\ude00.txt attrs=00000020 size=0001 alt=6A68~1.TXT
+  \u65e5\u672c.txt attrs=00000020 size=0001 alt=B109~1.TXT
+qqqqq first=ok err=0000dead
+  end_err=00000012
+  . attrs=00000010
+  .. attrs=00000010
+  noext attrs=00000020 size=0001
+  sub attrs=00000010
+  trail attrs=00000020 size=0001
+exact_upper first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+exact_unicode first=ok err=0000dead
+  end_err=00000012
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+no_match first=INVALID err=00000002
+missing_dir first=INVALID err=00000003
+dir_itself first=ok err=0000dead
+  end_err=00000012
+  m attrs=00000010
+dir_trailing_backslash first=INVALID err=00000002
+root_star_dot_entries=00000000
+root_star_nonempty=00000001
+ex_basic first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+ex_limit_dirs first=ok err=0000dead
+  end_err=00000012
+  . attrs=00000010
+  .. attrs=00000010
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+  h.txt attrs=00000020 size=000a
+  long_name_file.text attrs=00000020 size=0001 alt=LONG_N~1.TEX
+  noext attrs=00000020 size=0001
+  sub attrs=00000010
+  sub.dir attrs=00000010
+  t.txt attrs=00000020 size=000e
+  trail attrs=00000020 size=0001
+  two.dots.txt attrs=00000020 size=0001 alt=TWODOT~1.TXT
+  x.tx attrs=00000020 size=0001
+  \ud83d\ude00.txt attrs=00000020 size=0001 alt=6A68~1.TXT
+  \u65e5\u672c.txt attrs=00000020 size=0001 alt=B109~1.TXT
+ex_limit_devices first=INVALID err=00000032
+ex_op_3 first=INVALID err=00000057
+ex_level_2 first=INVALID err=00000057
+ex_case_sensitive_upper first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+ex_case_sensitive_star_upper first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+  h.txt attrs=00000020 size=000a
+  t.txt attrs=00000020 size=000e
+  two.dots.txt attrs=00000020 size=0001 alt=TWODOT~1.TXT
+  \ud83d\ude00.txt attrs=00000020 size=0001 alt=6A68~1.TXT
+  \u65e5\u672c.txt attrs=00000020 size=0001 alt=B109~1.TXT
+ex_large_fetch first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+ex_bad_flag first=INVALID err=00000057
+ex_flag_8 first=INVALID err=00000057
+ex_flag_4 first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+ex_search_filter_nonnull ret=00000001 err=0000dead
+drive_relative first=ok err=0000dead
+  end_err=00000012
+  a.txt attrs=00000020 size=000a
+  B.TXT attrs=00000020 size=0002
+  caf\u00e9.txt attrs=00000020 size=0001 alt=CAF~1.TXT
+  h.txt attrs=00000020 size=000a
+  t.txt attrs=00000020 size=000e
+  two.dots.txt attrs=00000020 size=0001 alt=TWODOT~1.TXT
+  \ud83d\ude00.txt attrs=00000020 size=0001 alt=6A68~1.TXT
+  \u65e5\u672c.txt attrs=00000020 size=0001 alt=B109~1.TXT
+relative first=ok err=0000dead
+  end_err=00000012
+  sub attrs=00000010
+  sub.dir attrs=00000010

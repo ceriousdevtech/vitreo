@@ -1,0 +1,1509 @@
+sizeof(void*)=4
+DOMDocument(msxml.h 2933BF90) create(Doc2) hr=0x00000000
+DOMDocument(msxml.h 2933BF90) create(Doc3) hr=0x80004002
+  QI Doc->Doc2 hr=0x00000000 same=1; Doc2->Doc3 hr=0x80004002 same=0; Doc3->Doc hr=0x0000dead same=0
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL 0
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  get(NewParser) hr=0x80004005 vt=0x7777
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 0
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  get(ForcedResync) hr=0x00000000 vt=BOOL -1
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(Bogus) hr=0x80004005 vt=0x7777
+  get(selectionlanguage) hr=0x80004005 vt=0x7777
+  get(SELECTIONLANGUAGE) hr=0x80004005 vt=0x7777
+  get() hr=0x80004005 vt=0x7777
+  get(<NULL>) hr=0x80004005 vt=0x7777
+  get(SelectionLanguage, NULL out) hr=0x80070057
+  get_validateOnParse=-1
+  get_resolveExternals=-1
+  get_preserveWhiteSpace=0
+  get_async=-1
+  set(Bogus, BSTR "x") hr=0x80004005
+  set(selectionlanguage, BSTR "XPath") hr=0x80004005
+  set(SelectionLanguage, BSTR "xpath") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, BSTR "Bogus") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, vt=3 1) hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionNamespaces, BSTR "garbage") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "garbage"
+  set(SelectionNamespaces, BSTR "xmlns:a="urn:a"") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a="urn:a""
+  set(SelectionNamespaces, BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' ") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' "
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns='urn:d'"
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' foo='x'") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a='urn:a' foo='x'"
+  set(SelectionNamespaces, BSTR "xmlns:a=urn:a") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a=urn:a"
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  set(SelectionNamespaces, vt=3 1) hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "1"
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=3 0) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  set(ProhibitDTD, BSTR "true") hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, BSTR "garbage") hr=0x80020005
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(ValidateOnParse, vt=11 0) hr=0x80004005
+  after set(ValidateOnParse,false) get_validateOnParse=-1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  set(ResolveExternals, vt=11 1) hr=0x80004005
+  after set(ResolveExternals,true) get_resolveExternals=-1
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  set(MaxElementDepth, vt=3 5) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxElementDepth, vt=3 -1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxXMLSize, vt=3 10) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 10
+  set(NewParser, vt=11 1) hr=0x80004005
+  get(NewParser) hr=0x80004005 vt=0x7777
+  set(ServerHTTPRequest, vt=11 1) hr=0x00000000
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL -1
+  set(AllowDocumentFunction, vt=11 1) hr=0x00000000
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  set(AllowXsltScript, vt=11 1) hr=0x00000000
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  set(UseInlineSchema, vt=11 1) hr=0x80004005
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  set(MultipleErrorMessages, vt=11 1) hr=0x80004005
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  set(NormalizeAttributeValues, vt=11 1) hr=0x80004005
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  set(PopulateElementDefaultValues, vt=11 1) hr=0x80004005
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  set(ForcedResync, vt=11 0) hr=0x00000000
+  get(ForcedResync) hr=0x00000000 vt=BOOL 0
+  set(SchemaLocations, BSTR "urn:a a.xsd") hr=0x80004005
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  set(SelectionLanguage, BSTR NULL) hr=0x80004005
+  set(<NULL>, BSTR NULL) hr=0x80070057
+ dtd default:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  loadXML hr=0x00000001 ok=0 code=0xc00ce556
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+ selection:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  nsuri(/*) name=r hr=0x00000000 uri=urn:d
+  nsuri(/*/@*) name=xmlns hr=0x00000000 uri=
+  nsuri(/*/@xmlns:a) name=xmlns:a hr=0x00000000 uri=
+  nsuri(//*[@id='1']) name=a:x hr=0x00000000 uri=urn:a
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  select(/r) hr=0x00000000 len=1 single hr=0x00000000 r
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(/d:r/a:x[@id='2']) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//nope:x) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//d:*) hr=0x00000000 len=2 single hr=0x00000000 r
+  select(//a:*) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//*[local-name()='x']) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+ members:
+  get_namespaces hr=0x00000000 nonnull
+  namespaces length=2
+  namespaces[0]=urn:d
+  namespaces[1]=urn:a
+  get_namespaces(NULL) hr=0x80004003
+  get_schemas hr=0x00000001 vt=NULL
+  get_schemas(NULL) hr=0x80004003
+  putref_schemas(VT_NULL) hr=0x00000000
+  putref_schemas(VT_EMPTY) hr=0x00000000
+  putref_schemas(VT_I4) hr=0x80004005
+  validate hr=0x00000001 err=nonnull code=0xc00ce224
+  validate(NULL) hr=0x00000001
+  validate(empty doc) hr=0x00000001 err=nonnull code=0xc00ce223
+FreeThreadedDOMDocument(msxml.h 2933BF91) create(Doc2) hr=0x00000000
+FreeThreadedDOMDocument(msxml.h 2933BF91) create(Doc3) hr=0x80004002
+  QI Doc->Doc2 hr=0x00000000 same=1; Doc2->Doc3 hr=0x80004002 same=0; Doc3->Doc hr=0x0000dead same=0
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL 0
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  get(NewParser) hr=0x80004005 vt=0x7777
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 0
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  get(ForcedResync) hr=0x00000000 vt=BOOL -1
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(Bogus) hr=0x80004005 vt=0x7777
+  get(selectionlanguage) hr=0x80004005 vt=0x7777
+  get(SELECTIONLANGUAGE) hr=0x80004005 vt=0x7777
+  get() hr=0x80004005 vt=0x7777
+  get(<NULL>) hr=0x80004005 vt=0x7777
+  get(SelectionLanguage, NULL out) hr=0x80070057
+  get_validateOnParse=-1
+  get_resolveExternals=-1
+  get_preserveWhiteSpace=0
+  get_async=-1
+  set(Bogus, BSTR "x") hr=0x80004005
+  set(selectionlanguage, BSTR "XPath") hr=0x80004005
+  set(SelectionLanguage, BSTR "xpath") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, BSTR "Bogus") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, vt=3 1) hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionNamespaces, BSTR "garbage") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "garbage"
+  set(SelectionNamespaces, BSTR "xmlns:a="urn:a"") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a="urn:a""
+  set(SelectionNamespaces, BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' ") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' "
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns='urn:d'"
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' foo='x'") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a='urn:a' foo='x'"
+  set(SelectionNamespaces, BSTR "xmlns:a=urn:a") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a=urn:a"
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  set(SelectionNamespaces, vt=3 1) hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "1"
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=3 0) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  set(ProhibitDTD, BSTR "true") hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, BSTR "garbage") hr=0x80020005
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(ValidateOnParse, vt=11 0) hr=0x80004005
+  after set(ValidateOnParse,false) get_validateOnParse=-1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  set(ResolveExternals, vt=11 1) hr=0x80004005
+  after set(ResolveExternals,true) get_resolveExternals=-1
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  set(MaxElementDepth, vt=3 5) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxElementDepth, vt=3 -1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxXMLSize, vt=3 10) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 10
+  set(NewParser, vt=11 1) hr=0x80004005
+  get(NewParser) hr=0x80004005 vt=0x7777
+  set(ServerHTTPRequest, vt=11 1) hr=0x00000000
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL -1
+  set(AllowDocumentFunction, vt=11 1) hr=0x00000000
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  set(AllowXsltScript, vt=11 1) hr=0x00000000
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  set(UseInlineSchema, vt=11 1) hr=0x80004005
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  set(MultipleErrorMessages, vt=11 1) hr=0x80004005
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  set(NormalizeAttributeValues, vt=11 1) hr=0x80004005
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  set(PopulateElementDefaultValues, vt=11 1) hr=0x80004005
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  set(ForcedResync, vt=11 0) hr=0x00000000
+  get(ForcedResync) hr=0x00000000 vt=BOOL 0
+  set(SchemaLocations, BSTR "urn:a a.xsd") hr=0x80004005
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  set(SelectionLanguage, BSTR NULL) hr=0x80004005
+  set(<NULL>, BSTR NULL) hr=0x80070057
+ dtd default:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  loadXML hr=0x00000001 ok=0 code=0xc00ce556
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+ selection:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  nsuri(/*) name=r hr=0x00000000 uri=urn:d
+  nsuri(/*/@*) name=xmlns hr=0x00000000 uri=
+  nsuri(/*/@xmlns:a) name=xmlns:a hr=0x00000000 uri=
+  nsuri(//*[@id='1']) name=a:x hr=0x00000000 uri=urn:a
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  select(/r) hr=0x00000000 len=1 single hr=0x00000000 r
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(/d:r/a:x[@id='2']) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//nope:x) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//d:*) hr=0x00000000 len=2 single hr=0x00000000 r
+  select(//a:*) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//*[local-name()='x']) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+ members:
+  get_namespaces hr=0x00000000 nonnull
+  namespaces length=2
+  namespaces[0]=urn:d
+  namespaces[1]=urn:a
+  get_namespaces(NULL) hr=0x80004003
+  get_schemas hr=0x00000001 vt=NULL
+  get_schemas(NULL) hr=0x80004003
+  putref_schemas(VT_NULL) hr=0x00000000
+  putref_schemas(VT_EMPTY) hr=0x00000000
+  putref_schemas(VT_I4) hr=0x80004005
+  validate hr=0x00000001 err=nonnull code=0xc00ce224
+  validate(NULL) hr=0x00000001
+  validate(empty doc) hr=0x00000001 err=nonnull code=0xc00ce223
+DOMDocument(msxml2.h F6D90F11) create(Doc2) hr=0x00000000
+DOMDocument(msxml2.h F6D90F11) create(Doc3) hr=0x80004002
+  QI Doc->Doc2 hr=0x00000000 same=1; Doc2->Doc3 hr=0x80004002 same=0; Doc3->Doc hr=0x0000dead same=0
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL 0
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  get(NewParser) hr=0x80004005 vt=0x7777
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 0
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  get(ForcedResync) hr=0x00000000 vt=BOOL -1
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(Bogus) hr=0x80004005 vt=0x7777
+  get(selectionlanguage) hr=0x80004005 vt=0x7777
+  get(SELECTIONLANGUAGE) hr=0x80004005 vt=0x7777
+  get() hr=0x80004005 vt=0x7777
+  get(<NULL>) hr=0x80004005 vt=0x7777
+  get(SelectionLanguage, NULL out) hr=0x80070057
+  get_validateOnParse=-1
+  get_resolveExternals=-1
+  get_preserveWhiteSpace=0
+  get_async=-1
+  set(Bogus, BSTR "x") hr=0x80004005
+  set(selectionlanguage, BSTR "XPath") hr=0x80004005
+  set(SelectionLanguage, BSTR "xpath") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, BSTR "Bogus") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, vt=3 1) hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionNamespaces, BSTR "garbage") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "garbage"
+  set(SelectionNamespaces, BSTR "xmlns:a="urn:a"") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a="urn:a""
+  set(SelectionNamespaces, BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' ") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' "
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns='urn:d'"
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' foo='x'") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a='urn:a' foo='x'"
+  set(SelectionNamespaces, BSTR "xmlns:a=urn:a") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a=urn:a"
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  set(SelectionNamespaces, vt=3 1) hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "1"
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=3 0) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  set(ProhibitDTD, BSTR "true") hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, BSTR "garbage") hr=0x80020005
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(ValidateOnParse, vt=11 0) hr=0x80004005
+  after set(ValidateOnParse,false) get_validateOnParse=-1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  set(ResolveExternals, vt=11 1) hr=0x80004005
+  after set(ResolveExternals,true) get_resolveExternals=-1
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  set(MaxElementDepth, vt=3 5) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxElementDepth, vt=3 -1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxXMLSize, vt=3 10) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 10
+  set(NewParser, vt=11 1) hr=0x80004005
+  get(NewParser) hr=0x80004005 vt=0x7777
+  set(ServerHTTPRequest, vt=11 1) hr=0x00000000
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL -1
+  set(AllowDocumentFunction, vt=11 1) hr=0x00000000
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  set(AllowXsltScript, vt=11 1) hr=0x00000000
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  set(UseInlineSchema, vt=11 1) hr=0x80004005
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  set(MultipleErrorMessages, vt=11 1) hr=0x80004005
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  set(NormalizeAttributeValues, vt=11 1) hr=0x80004005
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  set(PopulateElementDefaultValues, vt=11 1) hr=0x80004005
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  set(ForcedResync, vt=11 0) hr=0x00000000
+  get(ForcedResync) hr=0x00000000 vt=BOOL 0
+  set(SchemaLocations, BSTR "urn:a a.xsd") hr=0x80004005
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  set(SelectionLanguage, BSTR NULL) hr=0x80004005
+  set(<NULL>, BSTR NULL) hr=0x80070057
+ dtd default:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  loadXML hr=0x00000001 ok=0 code=0xc00ce556
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+ selection:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  nsuri(/*) name=r hr=0x00000000 uri=urn:d
+  nsuri(/*/@*) name=xmlns hr=0x00000000 uri=
+  nsuri(/*/@xmlns:a) name=xmlns:a hr=0x00000000 uri=
+  nsuri(//*[@id='1']) name=a:x hr=0x00000000 uri=urn:a
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  select(/r) hr=0x00000000 len=1 single hr=0x00000000 r
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(/d:r/a:x[@id='2']) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//nope:x) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//d:*) hr=0x00000000 len=2 single hr=0x00000000 r
+  select(//a:*) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//*[local-name()='x']) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+ members:
+  get_namespaces hr=0x00000000 nonnull
+  namespaces length=2
+  namespaces[0]=urn:d
+  namespaces[1]=urn:a
+  get_namespaces(NULL) hr=0x80004003
+  get_schemas hr=0x00000001 vt=NULL
+  get_schemas(NULL) hr=0x80004003
+  putref_schemas(VT_NULL) hr=0x00000000
+  putref_schemas(VT_EMPTY) hr=0x00000000
+  putref_schemas(VT_I4) hr=0x80004005
+  validate hr=0x00000001 err=nonnull code=0xc00ce224
+  validate(NULL) hr=0x00000001
+  validate(empty doc) hr=0x00000001 err=nonnull code=0xc00ce223
+FreeThreadedDOMDocument(msxml2.h F6D90F12) create(Doc2) hr=0x00000000
+FreeThreadedDOMDocument(msxml2.h F6D90F12) create(Doc3) hr=0x80004002
+  QI Doc->Doc2 hr=0x00000000 same=1; Doc2->Doc3 hr=0x80004002 same=0; Doc3->Doc hr=0x0000dead same=0
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL 0
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  get(NewParser) hr=0x80004005 vt=0x7777
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 0
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  get(ForcedResync) hr=0x00000000 vt=BOOL -1
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(Bogus) hr=0x80004005 vt=0x7777
+  get(selectionlanguage) hr=0x80004005 vt=0x7777
+  get(SELECTIONLANGUAGE) hr=0x80004005 vt=0x7777
+  get() hr=0x80004005 vt=0x7777
+  get(<NULL>) hr=0x80004005 vt=0x7777
+  get(SelectionLanguage, NULL out) hr=0x80070057
+  get_validateOnParse=-1
+  get_resolveExternals=-1
+  get_preserveWhiteSpace=0
+  get_async=-1
+  set(Bogus, BSTR "x") hr=0x80004005
+  set(selectionlanguage, BSTR "XPath") hr=0x80004005
+  set(SelectionLanguage, BSTR "xpath") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, BSTR "Bogus") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, vt=3 1) hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionNamespaces, BSTR "garbage") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "garbage"
+  set(SelectionNamespaces, BSTR "xmlns:a="urn:a"") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a="urn:a""
+  set(SelectionNamespaces, BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' ") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' "
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns='urn:d'"
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' foo='x'") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a='urn:a' foo='x'"
+  set(SelectionNamespaces, BSTR "xmlns:a=urn:a") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a=urn:a"
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  set(SelectionNamespaces, vt=3 1) hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "1"
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=3 0) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  set(ProhibitDTD, BSTR "true") hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, BSTR "garbage") hr=0x80020005
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(ValidateOnParse, vt=11 0) hr=0x80004005
+  after set(ValidateOnParse,false) get_validateOnParse=-1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  set(ResolveExternals, vt=11 1) hr=0x80004005
+  after set(ResolveExternals,true) get_resolveExternals=-1
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  set(MaxElementDepth, vt=3 5) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxElementDepth, vt=3 -1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxXMLSize, vt=3 10) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 10
+  set(NewParser, vt=11 1) hr=0x80004005
+  get(NewParser) hr=0x80004005 vt=0x7777
+  set(ServerHTTPRequest, vt=11 1) hr=0x00000000
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL -1
+  set(AllowDocumentFunction, vt=11 1) hr=0x00000000
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  set(AllowXsltScript, vt=11 1) hr=0x00000000
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  set(UseInlineSchema, vt=11 1) hr=0x80004005
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  set(MultipleErrorMessages, vt=11 1) hr=0x80004005
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  set(NormalizeAttributeValues, vt=11 1) hr=0x80004005
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  set(PopulateElementDefaultValues, vt=11 1) hr=0x80004005
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  set(ForcedResync, vt=11 0) hr=0x00000000
+  get(ForcedResync) hr=0x00000000 vt=BOOL 0
+  set(SchemaLocations, BSTR "urn:a a.xsd") hr=0x80004005
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  set(SelectionLanguage, BSTR NULL) hr=0x80004005
+  set(<NULL>, BSTR NULL) hr=0x80070057
+ dtd default:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  loadXML hr=0x00000001 ok=0 code=0xc00ce556
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+ selection:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  nsuri(/*) name=r hr=0x00000000 uri=urn:d
+  nsuri(/*/@*) name=xmlns hr=0x00000000 uri=
+  nsuri(/*/@xmlns:a) name=xmlns:a hr=0x00000000 uri=
+  nsuri(//*[@id='1']) name=a:x hr=0x00000000 uri=urn:a
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  select(/r) hr=0x00000000 len=1 single hr=0x00000000 r
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(/d:r/a:x[@id='2']) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//nope:x) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//d:*) hr=0x00000000 len=2 single hr=0x00000000 r
+  select(//a:*) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//*[local-name()='x']) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+ members:
+  get_namespaces hr=0x00000000 nonnull
+  namespaces length=2
+  namespaces[0]=urn:d
+  namespaces[1]=urn:a
+  get_namespaces(NULL) hr=0x80004003
+  get_schemas hr=0x00000001 vt=NULL
+  get_schemas(NULL) hr=0x80004003
+  putref_schemas(VT_NULL) hr=0x00000000
+  putref_schemas(VT_EMPTY) hr=0x00000000
+  putref_schemas(VT_I4) hr=0x80004005
+  validate hr=0x00000001 err=nonnull code=0xc00ce224
+  validate(NULL) hr=0x00000001
+  validate(empty doc) hr=0x00000001 err=nonnull code=0xc00ce223
+DOMDocument26 create(Doc2) hr=0x80040154
+DOMDocument26 create(Doc3) hr=0x80040154
+FreeThreadedDOMDocument26 create(Doc2) hr=0x80040154
+FreeThreadedDOMDocument26 create(Doc3) hr=0x80040154
+DOMDocument30 create(Doc2) hr=0x00000000
+DOMDocument30 create(Doc3) hr=0x80004002
+  QI Doc->Doc2 hr=0x00000000 same=1; Doc2->Doc3 hr=0x80004002 same=0; Doc3->Doc hr=0x0000dead same=0
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL 0
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  get(NewParser) hr=0x80004005 vt=0x7777
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 0
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  get(ForcedResync) hr=0x00000000 vt=BOOL -1
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(Bogus) hr=0x80004005 vt=0x7777
+  get(selectionlanguage) hr=0x80004005 vt=0x7777
+  get(SELECTIONLANGUAGE) hr=0x80004005 vt=0x7777
+  get() hr=0x80004005 vt=0x7777
+  get(<NULL>) hr=0x80004005 vt=0x7777
+  get(SelectionLanguage, NULL out) hr=0x80070057
+  get_validateOnParse=-1
+  get_resolveExternals=-1
+  get_preserveWhiteSpace=0
+  get_async=-1
+  set(Bogus, BSTR "x") hr=0x80004005
+  set(selectionlanguage, BSTR "XPath") hr=0x80004005
+  set(SelectionLanguage, BSTR "xpath") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, BSTR "Bogus") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, vt=3 1) hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionNamespaces, BSTR "garbage") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "garbage"
+  set(SelectionNamespaces, BSTR "xmlns:a="urn:a"") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a="urn:a""
+  set(SelectionNamespaces, BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' ") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' "
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns='urn:d'"
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' foo='x'") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a='urn:a' foo='x'"
+  set(SelectionNamespaces, BSTR "xmlns:a=urn:a") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a=urn:a"
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  set(SelectionNamespaces, vt=3 1) hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "1"
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=3 0) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  set(ProhibitDTD, BSTR "true") hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, BSTR "garbage") hr=0x80020005
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(ValidateOnParse, vt=11 0) hr=0x80004005
+  after set(ValidateOnParse,false) get_validateOnParse=-1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  set(ResolveExternals, vt=11 1) hr=0x80004005
+  after set(ResolveExternals,true) get_resolveExternals=-1
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  set(MaxElementDepth, vt=3 5) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxElementDepth, vt=3 -1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxXMLSize, vt=3 10) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 10
+  set(NewParser, vt=11 1) hr=0x80004005
+  get(NewParser) hr=0x80004005 vt=0x7777
+  set(ServerHTTPRequest, vt=11 1) hr=0x00000000
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL -1
+  set(AllowDocumentFunction, vt=11 1) hr=0x00000000
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  set(AllowXsltScript, vt=11 1) hr=0x00000000
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  set(UseInlineSchema, vt=11 1) hr=0x80004005
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  set(MultipleErrorMessages, vt=11 1) hr=0x80004005
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  set(NormalizeAttributeValues, vt=11 1) hr=0x80004005
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  set(PopulateElementDefaultValues, vt=11 1) hr=0x80004005
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  set(ForcedResync, vt=11 0) hr=0x00000000
+  get(ForcedResync) hr=0x00000000 vt=BOOL 0
+  set(SchemaLocations, BSTR "urn:a a.xsd") hr=0x80004005
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  set(SelectionLanguage, BSTR NULL) hr=0x80004005
+  set(<NULL>, BSTR NULL) hr=0x80070057
+ dtd default:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  loadXML hr=0x00000001 ok=0 code=0xc00ce556
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+ selection:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  nsuri(/*) name=r hr=0x00000000 uri=urn:d
+  nsuri(/*/@*) name=xmlns hr=0x00000000 uri=
+  nsuri(/*/@xmlns:a) name=xmlns:a hr=0x00000000 uri=
+  nsuri(//*[@id='1']) name=a:x hr=0x00000000 uri=urn:a
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  select(/r) hr=0x00000000 len=1 single hr=0x00000000 r
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(/d:r/a:x[@id='2']) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//nope:x) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//d:*) hr=0x00000000 len=2 single hr=0x00000000 r
+  select(//a:*) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//*[local-name()='x']) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+ members:
+  get_namespaces hr=0x00000000 nonnull
+  namespaces length=2
+  namespaces[0]=urn:d
+  namespaces[1]=urn:a
+  get_namespaces(NULL) hr=0x80004003
+  get_schemas hr=0x00000001 vt=NULL
+  get_schemas(NULL) hr=0x80004003
+  putref_schemas(VT_NULL) hr=0x00000000
+  putref_schemas(VT_EMPTY) hr=0x00000000
+  putref_schemas(VT_I4) hr=0x80004005
+  validate hr=0x00000001 err=nonnull code=0xc00ce224
+  validate(NULL) hr=0x00000001
+  validate(empty doc) hr=0x00000001 err=nonnull code=0xc00ce223
+FreeThreadedDOMDocument30 create(Doc2) hr=0x00000000
+FreeThreadedDOMDocument30 create(Doc3) hr=0x80004002
+  QI Doc->Doc2 hr=0x00000000 same=1; Doc2->Doc3 hr=0x80004002 same=0; Doc3->Doc hr=0x0000dead same=0
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL 0
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  get(NewParser) hr=0x80004005 vt=0x7777
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 0
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  get(ForcedResync) hr=0x00000000 vt=BOOL -1
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(Bogus) hr=0x80004005 vt=0x7777
+  get(selectionlanguage) hr=0x80004005 vt=0x7777
+  get(SELECTIONLANGUAGE) hr=0x80004005 vt=0x7777
+  get() hr=0x80004005 vt=0x7777
+  get(<NULL>) hr=0x80004005 vt=0x7777
+  get(SelectionLanguage, NULL out) hr=0x80070057
+  get_validateOnParse=-1
+  get_resolveExternals=-1
+  get_preserveWhiteSpace=0
+  get_async=-1
+  set(Bogus, BSTR "x") hr=0x80004005
+  set(selectionlanguage, BSTR "XPath") hr=0x80004005
+  set(SelectionLanguage, BSTR "xpath") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, BSTR "Bogus") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionLanguage, vt=3 1) hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XSLPattern"
+  set(SelectionNamespaces, BSTR "garbage") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "garbage"
+  set(SelectionNamespaces, BSTR "xmlns:a="urn:a"") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a="urn:a""
+  set(SelectionNamespaces, BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' ") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' "
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns='urn:d'"
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' foo='x'") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a='urn:a' foo='x'"
+  set(SelectionNamespaces, BSTR "xmlns:a=urn:a") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a=urn:a"
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  set(SelectionNamespaces, vt=3 1) hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "1"
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=3 0) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  set(ProhibitDTD, BSTR "true") hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, BSTR "garbage") hr=0x80020005
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(ValidateOnParse, vt=11 0) hr=0x80004005
+  after set(ValidateOnParse,false) get_validateOnParse=-1
+  get(ValidateOnParse) hr=0x80004005 vt=0x7777
+  set(ResolveExternals, vt=11 1) hr=0x80004005
+  after set(ResolveExternals,true) get_resolveExternals=-1
+  get(ResolveExternals) hr=0x80004005 vt=0x7777
+  set(MaxElementDepth, vt=3 5) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxElementDepth, vt=3 -1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxXMLSize, vt=3 10) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 10
+  set(NewParser, vt=11 1) hr=0x80004005
+  get(NewParser) hr=0x80004005 vt=0x7777
+  set(ServerHTTPRequest, vt=11 1) hr=0x00000000
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL -1
+  set(AllowDocumentFunction, vt=11 1) hr=0x00000000
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  set(AllowXsltScript, vt=11 1) hr=0x00000000
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  set(UseInlineSchema, vt=11 1) hr=0x80004005
+  get(UseInlineSchema) hr=0x80004005 vt=0x7777
+  set(MultipleErrorMessages, vt=11 1) hr=0x80004005
+  get(MultipleErrorMessages) hr=0x80004005 vt=0x7777
+  set(NormalizeAttributeValues, vt=11 1) hr=0x80004005
+  get(NormalizeAttributeValues) hr=0x80004005 vt=0x7777
+  set(PopulateElementDefaultValues, vt=11 1) hr=0x80004005
+  get(PopulateElementDefaultValues) hr=0x80004005 vt=0x7777
+  set(ForcedResync, vt=11 0) hr=0x00000000
+  get(ForcedResync) hr=0x00000000 vt=BOOL 0
+  set(SchemaLocations, BSTR "urn:a a.xsd") hr=0x80004005
+  get(SchemaLocations) hr=0x80004005 vt=0x7777
+  set(SelectionLanguage, BSTR NULL) hr=0x80004005
+  set(<NULL>, BSTR NULL) hr=0x80070057
+ dtd default:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  loadXML hr=0x00000001 ok=0 code=0xc00ce556
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+ selection:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  nsuri(/*) name=r hr=0x00000000 uri=urn:d
+  nsuri(/*/@*) name=xmlns hr=0x00000000 uri=
+  nsuri(/*/@xmlns:a) name=xmlns:a hr=0x00000000 uri=
+  nsuri(//*[@id='1']) name=a:x hr=0x00000000 uri=urn:a
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  select(/r) hr=0x00000000 len=1 single hr=0x00000000 r
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//q:x) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(/d:r/a:x[@id='2']) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//nope:x) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//d:*) hr=0x00000000 len=2 single hr=0x00000000 r
+  select(//a:*) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//*[local-name()='x']) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//a:x) hr=0x00000000 len=1 single hr=0x00000000 a:x
+ members:
+  get_namespaces hr=0x00000000 nonnull
+  namespaces length=2
+  namespaces[0]=urn:d
+  namespaces[1]=urn:a
+  get_namespaces(NULL) hr=0x80004003
+  get_schemas hr=0x00000001 vt=NULL
+  get_schemas(NULL) hr=0x80004003
+  putref_schemas(VT_NULL) hr=0x00000000
+  putref_schemas(VT_EMPTY) hr=0x00000000
+  putref_schemas(VT_I4) hr=0x80004005
+  validate hr=0x00000001 err=nonnull code=0xc00ce224
+  validate(NULL) hr=0x00000001
+  validate(empty doc) hr=0x00000001 err=nonnull code=0xc00ce223
+DOMDocument40 create(Doc2) hr=0x80040154
+DOMDocument40 create(Doc3) hr=0x80040154
+FreeThreadedDOMDocument40 create(Doc2) hr=0x80040154
+FreeThreadedDOMDocument40 create(Doc3) hr=0x80040154
+DOMDocument60 create(Doc2) hr=0x00000000
+DOMDocument60 create(Doc3) hr=0x00000000
+  QI Doc->Doc2 hr=0x00000000 same=1; Doc2->Doc3 hr=0x00000000 same=1; Doc3->Doc hr=0x00000000 same=1
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XPath"
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL 0
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  get(NewParser) hr=0x00000000 vt=BOOL 0
+  get(ResolveExternals) hr=0x00000000 vt=BOOL 0
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL 0
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL 0
+  get(ValidateOnParse) hr=0x00000000 vt=BOOL -1
+  get(MaxElementDepth) hr=0x00000000 vt=I4 256
+  get(MaxXMLSize) hr=0x00000000 vt=I4 0
+  get(UseInlineSchema) hr=0x00000000 vt=BOOL 0
+  get(ForcedResync) hr=0x00000000 vt=BOOL -1
+  get(MultipleErrorMessages) hr=0x00000000 vt=BOOL 0
+  get(NormalizeAttributeValues) hr=0x00000000 vt=BOOL 0
+  get(PopulateElementDefaultValues) hr=0x00000000 vt=BOOL 0
+  get(SchemaLocations) hr=0x80004005 vt=EMPTY
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(Bogus) hr=0x80004005 vt=EMPTY
+  get(selectionlanguage) hr=0x80004005 vt=EMPTY
+  get(SELECTIONLANGUAGE) hr=0x80004005 vt=EMPTY
+  get() hr=0x80004005 vt=EMPTY
+  get(<NULL>) hr=0x80004005 vt=EMPTY
+  get(SelectionLanguage, NULL out) hr=0x80070057
+  get_validateOnParse=-1
+  get_resolveExternals=0
+  get_preserveWhiteSpace=0
+  get_async=-1
+  set(Bogus, BSTR "x") hr=0x80004005
+  set(selectionlanguage, BSTR "XPath") hr=0x80004005
+  set(SelectionLanguage, BSTR "xpath") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XPath"
+  set(SelectionLanguage, BSTR "Bogus") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XPath"
+  set(SelectionLanguage, vt=3 1) hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XPath"
+  set(SelectionNamespaces, BSTR "garbage") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "garbage"
+  set(SelectionNamespaces, BSTR "xmlns:a="urn:a"") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a="urn:a""
+  set(SelectionNamespaces, BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' ") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' "
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns='urn:d'"
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' foo='x'") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a='urn:a' foo='x'"
+  set(SelectionNamespaces, BSTR "xmlns:a=urn:a") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a=urn:a"
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  set(SelectionNamespaces, vt=3 1) hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "1"
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=3 0) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  set(ProhibitDTD, BSTR "true") hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, BSTR "garbage") hr=0x80020005
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(ValidateOnParse, vt=11 0) hr=0x00000000
+  after set(ValidateOnParse,false) get_validateOnParse=0
+  get(ValidateOnParse) hr=0x00000000 vt=BOOL -1
+  set(ResolveExternals, vt=11 1) hr=0x00000000
+  after set(ResolveExternals,true) get_resolveExternals=-1
+  get(ResolveExternals) hr=0x00000000 vt=BOOL 0
+  set(MaxElementDepth, vt=3 5) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxElementDepth, vt=3 -1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxXMLSize, vt=3 10) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 10
+  set(NewParser, vt=11 1) hr=0x00000000
+  get(NewParser) hr=0x00000000 vt=BOOL -1
+  set(ServerHTTPRequest, vt=11 1) hr=0x00000000
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL -1
+  set(AllowDocumentFunction, vt=11 1) hr=0x00000000
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  set(AllowXsltScript, vt=11 1) hr=0x00000000
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  set(UseInlineSchema, vt=11 1) hr=0x00000000
+  get(UseInlineSchema) hr=0x00000000 vt=BOOL -1
+  set(MultipleErrorMessages, vt=11 1) hr=0x00000000
+  get(MultipleErrorMessages) hr=0x00000000 vt=BOOL -1
+  set(NormalizeAttributeValues, vt=11 1) hr=0x00000000
+  get(NormalizeAttributeValues) hr=0x00000000 vt=BOOL -1
+  set(PopulateElementDefaultValues, vt=11 1) hr=0x00000000
+  get(PopulateElementDefaultValues) hr=0x00000000 vt=BOOL -1
+  set(ForcedResync, vt=11 0) hr=0x00000000
+  get(ForcedResync) hr=0x00000000 vt=BOOL 0
+  set(SchemaLocations, BSTR "urn:a a.xsd") hr=0x80004005
+  get(SchemaLocations) hr=0x80004005 vt=EMPTY
+  set(SelectionLanguage, BSTR NULL) hr=0x80004005
+  set(<NULL>, BSTR NULL) hr=0x80070057
+ dtd default:
+  loadXML hr=0x00000001 ok=0 code=0xc00ce584
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  loadXML hr=0x00000001 ok=0 code=0xc00ce584
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+ selection:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  nsuri(/*) name=r hr=0x00000000 uri=urn:d
+  nsuri(/*/@*) no node
+  nsuri(/*/@xmlns:a) no node
+  nsuri(//*[@id='1']) name=a:x hr=0x00000000 uri=urn:a
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//q:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  select(/r) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//q:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(/d:r/a:x[@id='2']) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//nope:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//d:*) hr=0x00000000 len=2 single hr=0x00000000 r
+  select(//a:*) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//*[local-name()='x']) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x80004005
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+ members:
+  get_namespaces hr=0x00000000 nonnull
+  namespaces length=3
+  namespaces[0]=urn:d
+  namespaces[1]=urn:a
+  namespaces[2]=
+  get_namespaces(NULL) hr=0x80004003
+  get_schemas hr=0x00000001 vt=NULL
+  get_schemas(NULL) hr=0x80004003
+  putref_schemas(VT_NULL) hr=0x00000000
+  putref_schemas(VT_EMPTY) hr=0x00000000
+  putref_schemas(VT_I4) hr=0x80004005
+  validate hr=0x00000001 err=nonnull code=0xc00ce224
+  validate(NULL) hr=0x80004005
+  validate(empty doc) hr=0x00000001 err=nonnull code=0xc00ce223
+  validateNode(root) hr=0x00000001 err=nonnull code=0xc00ce00d
+  validateNode(NULL) hr=0x80070057
+  validateNode(root, NULL) hr=0x80004005
+  importNode(deep) hr=0x00000000 nonnull
+  imported xml=<r xmlns="urn:d" xmlns:a="urn:a" xmlns:q="urn:a"><a:x id="1"/><y/><q:x id="2"/><z xmlns=""><w/></z></r>
+  imported parent hr=0x00000001 null
+  imported owner is other=0
+  importNode(shallow) hr=0x00000000 xml=<r xmlns="urn:d" xmlns:a="urn:a" xmlns:q="urn:a"/>
+  importNode(NULL node) hr=0x80070057 out=untouched
+  importNode(NULL out) hr=0x80070057
+  importNode(document) hr=0x80070057 null
+  importNode(same doc) hr=0x00000000 nonnull same=0
+FreeThreadedDOMDocument60 create(Doc2) hr=0x00000000
+FreeThreadedDOMDocument60 create(Doc3) hr=0x00000000
+  QI Doc->Doc2 hr=0x00000000 same=1; Doc2->Doc3 hr=0x00000000 same=1; Doc3->Doc hr=0x00000000 same=1
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XPath"
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL 0
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  get(NewParser) hr=0x00000000 vt=BOOL 0
+  get(ResolveExternals) hr=0x00000000 vt=BOOL 0
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL 0
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL 0
+  get(ValidateOnParse) hr=0x00000000 vt=BOOL -1
+  get(MaxElementDepth) hr=0x00000000 vt=I4 256
+  get(MaxXMLSize) hr=0x00000000 vt=I4 0
+  get(UseInlineSchema) hr=0x00000000 vt=BOOL 0
+  get(ForcedResync) hr=0x00000000 vt=BOOL -1
+  get(MultipleErrorMessages) hr=0x00000000 vt=BOOL 0
+  get(NormalizeAttributeValues) hr=0x00000000 vt=BOOL 0
+  get(PopulateElementDefaultValues) hr=0x00000000 vt=BOOL 0
+  get(SchemaLocations) hr=0x80004005 vt=EMPTY
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  get(Bogus) hr=0x80004005 vt=EMPTY
+  get(selectionlanguage) hr=0x80004005 vt=EMPTY
+  get(SELECTIONLANGUAGE) hr=0x80004005 vt=EMPTY
+  get() hr=0x80004005 vt=EMPTY
+  get(<NULL>) hr=0x80004005 vt=EMPTY
+  get(SelectionLanguage, NULL out) hr=0x80070057
+  get_validateOnParse=-1
+  get_resolveExternals=0
+  get_preserveWhiteSpace=0
+  get_async=-1
+  set(Bogus, BSTR "x") hr=0x80004005
+  set(selectionlanguage, BSTR "XPath") hr=0x80004005
+  set(SelectionLanguage, BSTR "xpath") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XPath"
+  set(SelectionLanguage, BSTR "Bogus") hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XPath"
+  set(SelectionLanguage, vt=3 1) hr=0x80004005
+  get(SelectionLanguage) hr=0x00000000 vt=BSTR "XPath"
+  set(SelectionNamespaces, BSTR "garbage") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "garbage"
+  set(SelectionNamespaces, BSTR "xmlns:a="urn:a"") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a="urn:a""
+  set(SelectionNamespaces, BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' ") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "  xmlns:a='urn:a'   xmlns:b='urn:b' "
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns='urn:d'"
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' foo='x'") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a='urn:a' foo='x'"
+  set(SelectionNamespaces, BSTR "xmlns:a=urn:a") hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "xmlns:a=urn:a"
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR ""
+  set(SelectionNamespaces, vt=3 1) hr=0x80004005
+  get(SelectionNamespaces) hr=0x00000000 vt=BSTR "1"
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=3 0) hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL 0
+  set(ProhibitDTD, BSTR "true") hr=0x00000000
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, BSTR "garbage") hr=0x80020005
+  get(ProhibitDTD) hr=0x00000000 vt=BOOL -1
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(ValidateOnParse, vt=11 0) hr=0x00000000
+  after set(ValidateOnParse,false) get_validateOnParse=0
+  get(ValidateOnParse) hr=0x00000000 vt=BOOL -1
+  set(ResolveExternals, vt=11 1) hr=0x00000000
+  after set(ResolveExternals,true) get_resolveExternals=-1
+  get(ResolveExternals) hr=0x00000000 vt=BOOL 0
+  set(MaxElementDepth, vt=3 5) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxElementDepth, vt=3 -1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 5
+  set(MaxXMLSize, vt=3 10) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 10
+  set(NewParser, vt=11 1) hr=0x00000000
+  get(NewParser) hr=0x00000000 vt=BOOL -1
+  set(ServerHTTPRequest, vt=11 1) hr=0x00000000
+  get(ServerHTTPRequest) hr=0x00000000 vt=BOOL -1
+  set(AllowDocumentFunction, vt=11 1) hr=0x00000000
+  get(AllowDocumentFunction) hr=0x00000000 vt=BOOL -1
+  set(AllowXsltScript, vt=11 1) hr=0x00000000
+  get(AllowXsltScript) hr=0x00000000 vt=BOOL -1
+  set(UseInlineSchema, vt=11 1) hr=0x00000000
+  get(UseInlineSchema) hr=0x00000000 vt=BOOL -1
+  set(MultipleErrorMessages, vt=11 1) hr=0x00000000
+  get(MultipleErrorMessages) hr=0x00000000 vt=BOOL -1
+  set(NormalizeAttributeValues, vt=11 1) hr=0x00000000
+  get(NormalizeAttributeValues) hr=0x00000000 vt=BOOL -1
+  set(PopulateElementDefaultValues, vt=11 1) hr=0x00000000
+  get(PopulateElementDefaultValues) hr=0x00000000 vt=BOOL -1
+  set(ForcedResync, vt=11 0) hr=0x00000000
+  get(ForcedResync) hr=0x00000000 vt=BOOL 0
+  set(SchemaLocations, BSTR "urn:a a.xsd") hr=0x80004005
+  get(SchemaLocations) hr=0x80004005 vt=EMPTY
+  set(SelectionLanguage, BSTR NULL) hr=0x80004005
+  set(<NULL>, BSTR NULL) hr=0x80070057
+ dtd default:
+  loadXML hr=0x00000001 ok=0 code=0xc00ce584
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  loadXML hr=0x00000001 ok=0 code=0xc00ce584
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+ selection:
+  loadXML hr=0x00000000 ok=-1 code=0x00000000
+  nsuri(/*) name=r hr=0x00000000 uri=urn:d
+  nsuri(/*/@*) no node
+  nsuri(/*/@xmlns:a) no node
+  nsuri(//*[@id='1']) name=a:x hr=0x00000000 uri=urn:a
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//q:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  select(/r) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//q:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(/d:r/a:x[@id='2']) hr=0x00000000 len=1 single hr=0x00000000 q:x
+  select(//nope:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+  select(//w) hr=0x00000000 len=1 single hr=0x00000000 w
+  set(SelectionNamespaces, BSTR "xmlns:a='urn:a' xmlns:d='urn:d'") hr=0x00000000
+  select(//a:x) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//d:y) hr=0x00000000 len=1 single hr=0x00000000 y
+  select(//d:*) hr=0x00000000 len=2 single hr=0x00000000 r
+  select(//a:*) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  select(//*[local-name()='x']) hr=0x00000000 len=2 single hr=0x00000000 a:x
+  set(SelectionNamespaces, BSTR "xmlns='urn:d'") hr=0x00000000
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x80004005
+  set(SelectionNamespaces, BSTR "") hr=0x00000000
+  select(//x) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//y) hr=0x00000000 len=0 single hr=0x00000001 -
+  select(//a:x) hr=0x80004005 len=-1 single hr=0x80004005 -
+ members:
+  get_namespaces hr=0x00000000 nonnull
+  namespaces length=3
+  namespaces[0]=urn:d
+  namespaces[1]=urn:a
+  namespaces[2]=
+  get_namespaces(NULL) hr=0x80004003
+  get_schemas hr=0x00000001 vt=NULL
+  get_schemas(NULL) hr=0x80004003
+  putref_schemas(VT_NULL) hr=0x00000000
+  putref_schemas(VT_EMPTY) hr=0x00000000
+  putref_schemas(VT_I4) hr=0x80004005
+  validate hr=0x00000001 err=nonnull code=0xc00ce224
+  validate(NULL) hr=0x80004005
+  validate(empty doc) hr=0x00000001 err=nonnull code=0xc00ce223
+  validateNode(root) hr=0x00000001 err=nonnull code=0xc00ce00d
+  validateNode(NULL) hr=0x80070057
+  validateNode(root, NULL) hr=0x80004005
+  importNode(deep) hr=0x00000000 nonnull
+  imported xml=<r xmlns="urn:d" xmlns:a="urn:a" xmlns:q="urn:a"><a:x id="1"/><y/><q:x id="2"/><z xmlns=""><w/></z></r>
+  imported parent hr=0x00000001 null
+  imported owner is other=0
+  importNode(shallow) hr=0x00000000 xml=<r xmlns="urn:d" xmlns:a="urn:a" xmlns:q="urn:a"/>
+  importNode(NULL node) hr=0x80070057 out=untouched
+  importNode(NULL out) hr=0x80070057
+  importNode(document) hr=0x80070057 null
+  importNode(same doc) hr=0x00000000 nonnull same=0
+DOMDocument30 details
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  prohibitdtd loadXML hr=0x00000001 ok=0
+  prohibitdtd: code=0xc00ce556 line=2 pos=11 fpos=32 reason=[Invalid at the top level of the document.
+] src=[<!DOCTYPE r [<!ELEMENT r ANY>]><r/>] url=[(null)]
+  prohibitdtd-nosubset loadXML hr=0x00000001 ok=0
+  prohibitdtd-nosubset: code=0xc00ce556 line=1 pos=11 fpos=10 reason=[Invalid at the top level of the document.
+] src=[<!DOCTYPE r><r/>] url=[(null)]
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(MaxElementDepth, vt=3 2) hr=0x00000000
+  depth2-ok loadXML hr=0x00000000 ok=-1
+  depth2-ok: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  depth2-over loadXML hr=0x00000001 ok=0
+  depth2-over: code=0x80004004 line=2 pos=6 fpos=9 reason=[System error: MaxElementDepth.
+] src=[ <b><c/></b></a>] url=[(null)]
+  set(MaxElementDepth, vt=3 0) hr=0x00000000
+  depth0 loadXML hr=0x00000000 ok=-1
+  depth0: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  set(MaxElementDepth, BSTR "7") hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 7
+  set(MaxElementDepth, BSTR "x") hr=0x80020005
+  get(MaxElementDepth) hr=0x00000000 vt=I4 7
+  set(MaxElementDepth, vt=11 1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 7
+  set(MaxElementDepth, vt=3 2147483647) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 2147483647
+  set(MaxElementDepth, vt=3 0) hr=0x00000000
+  set(MaxXMLSize, vt=3 4194303) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 4194303
+  set(MaxXMLSize, vt=3 4194304) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 4194304
+  set(MaxXMLSize, vt=3 -1) hr=0x80070057
+  get(MaxXMLSize) hr=0x00000000 vt=I4 4194304
+  set(MaxXMLSize, vt=3 1) hr=0x00000000
+  size1-2000 loadXML hr=0x00000001 ok=0
+  size1-2000: code=0x80004004 line=1 pos=1 fpos=0 reason=[System error: MaxXMLSize.
+] src=[<r>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</r>] url=[(null)]
+  size1-1017 loadXML hr=0x00000000 ok=-1
+  size1-1017: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  size1-1037 loadXML hr=0x00000001 ok=0
+  size1-1037: code=0x80004004 line=1 pos=1 fpos=0 reason=[System error: MaxXMLSize.
+] src=[<r>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</r>] url=[(null)]
+  set(MaxXMLSize, vt=3 0) hr=0x00000000
+  attrs loadXML hr=0x00000000 ok=-1
+  attrs: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  attrs length=4
+  attr[0] name=xmlns:p uri=[] prefix=[xmlns] base=[p] value=[urn:p]
+  attr[1] name=p:at uri=[urn:p] prefix=[p] base=[at] value=[1]
+  attr[2] name=plain uri=[(null)] prefix=[(null)] base=[plain] value=[a\x09b\x0ac\x0ad\x09e  f]
+  attr[3] name=xmlns uri=[] prefix=[xmlns] base=[] value=[urn:d]
+  root xml=[<r xmlns:p="urn:p" p:at="1" plain="a\x09b\x0d\x0ac\x0d\x0ad\x09e  f" xmlns="urn:d"/>]
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  nsdecl loadXML hr=0x00000000 ok=-1
+  nsdecl: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  select(/*/@*) hr=0x00000000 len=2 single hr=0x00000000 p:at
+  select(//@*) hr=0x00000000 len=2 single hr=0x00000000 p:at
+  set(SelectionNamespaces, BSTR "xmlns:p='urn:p'") hr=0x00000000
+  select(/*/@p:at) hr=0x00000000 len=1 single hr=0x00000000 p:at
+  select(/*/@at) hr=0x00000000 len=0 single hr=0x00000001 -
+  set(SelectionLanguage, BSTR "XSLPattern") hr=0x00000000
+  select(/*/@*) hr=0x00000000 len=3 single hr=0x00000000 xmlns:p
+  select(/*/@p:at) hr=0x00000000 len=1 single hr=0x00000000 p:at
+  for-validate loadXML hr=0x00000000 ok=-1
+  for-validate: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  validate hr=0x00000001
+  validate: code=0xc00ce224 line=0 pos=0 fpos=0 reason=[Validate failed because the root element had no associated DTD/schema.
+] src=[(null)] url=[(null)]
+  doc parseError after validate: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  with-dtd loadXML hr=0x00000000 ok=-1
+  with-dtd: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  validate(dtd valid) hr=0x00000000
+  validate(dtd valid): code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  validate(empty) hr=0x00000001
+  validate(empty): code=0xc00ce223 line=0 pos=0 fpos=0 reason=[Validate failed because the document does not contain exactly one root node.
+] src=[(null)] url=[(null)]
+  ns-collection loadXML hr=0x00000000 ok=-1
+  ns-collection: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  get_namespaces hr=0x00000000
+  length=3
+  [0]=urn:unused
+  [1]=urn:p
+  [2]=urn:c
+  get_namespaceURI(len) hr=0x80004005 out=untouched
+  get_namespaceURI(-1) hr=0x80004005
+  get_namespaceURI(0, NULL) hr=0x80004003
+  get_length(NULL) hr=0x80004003
+  get(urn:p) hr=0x00000000 out=null
+  remove(urn:p) hr=0x80004005
+  add(urn:p, NULL) hr=0x80004005
+  addCollection(NULL) hr=0x80004005
+  get__newEnum hr=0x00000000 nonnull
+  length after=3
+  QI(SchemaCollection) hr=0x00000000
+  namespaces same object=1
+  reload loadXML hr=0x00000000 ok=-1
+  reload: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  old collection length after reload=0
+DOMDocument60 details
+  set(ProhibitDTD, vt=11 1) hr=0x00000000
+  prohibitdtd loadXML hr=0x00000001 ok=0
+  prohibitdtd: code=0xc00ce584 line=2 pos=11 fpos=32 reason=[DTD is prohibited.
+] src=[<!DOCTYPE r [<!ELEMENT r ANY>]><r/>] url=[(null)]
+  prohibitdtd-nosubset loadXML hr=0x00000001 ok=0
+  prohibitdtd-nosubset: code=0xc00ce584 line=1 pos=11 fpos=10 reason=[DTD is prohibited.
+] src=[<!DOCTYPE r><r/>] url=[(null)]
+  set(ProhibitDTD, vt=11 0) hr=0x00000000
+  set(MaxElementDepth, vt=3 2) hr=0x00000000
+  depth2-ok loadXML hr=0x00000000 ok=-1
+  depth2-ok: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  depth2-over loadXML hr=0x00000001 ok=0
+  depth2-over: code=0xc00ce586 line=2 pos=6 fpos=9 reason=[Operation aborted: MaxElementDepth constraint violated.
+] src=[ <b><c/></b></a>] url=[(null)]
+  set(MaxElementDepth, vt=3 0) hr=0x00000000
+  depth0 loadXML hr=0x00000000 ok=-1
+  depth0: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  set(MaxElementDepth, BSTR "7") hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 7
+  set(MaxElementDepth, BSTR "x") hr=0x80020005
+  get(MaxElementDepth) hr=0x00000000 vt=I4 7
+  set(MaxElementDepth, vt=11 1) hr=0x80070057
+  get(MaxElementDepth) hr=0x00000000 vt=I4 7
+  set(MaxElementDepth, vt=3 2147483647) hr=0x00000000
+  get(MaxElementDepth) hr=0x00000000 vt=I4 2147483647
+  set(MaxElementDepth, vt=3 0) hr=0x00000000
+  set(MaxXMLSize, vt=3 4194303) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 4194303
+  set(MaxXMLSize, vt=3 4194304) hr=0x00000000
+  get(MaxXMLSize) hr=0x00000000 vt=I4 4194304
+  set(MaxXMLSize, vt=3 -1) hr=0x80070057
+  get(MaxXMLSize) hr=0x00000000 vt=I4 4194304
+  set(MaxXMLSize, vt=3 1) hr=0x00000000
+  size1-2000 loadXML hr=0x00000001 ok=0
+  size1-2000: code=0xc00ce585 line=1 pos=1 fpos=0 reason=[Operation aborted: MaxXMLSize constraint violated.
+] src=[<r>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</r>] url=[(null)]
+  size1-1017 loadXML hr=0x00000000 ok=-1
+  size1-1017: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  size1-1037 loadXML hr=0x00000001 ok=0
+  size1-1037: code=0xc00ce585 line=1 pos=1 fpos=0 reason=[Operation aborted: MaxXMLSize constraint violated.
+] src=[<r>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</r>] url=[(null)]
+  set(MaxXMLSize, vt=3 0) hr=0x00000000
+  attrs loadXML hr=0x00000000 ok=-1
+  attrs: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  attrs length=4
+  attr[0] name=xmlns:p uri=[http://www.w3.org/2000/xmlns/] prefix=[xmlns] base=[p] value=[urn:p]
+  attr[1] name=p:at uri=[urn:p] prefix=[p] base=[at] value=[1]
+  attr[2] name=plain uri=[(null)] prefix=[(null)] base=[plain] value=[a\x09b\x0ac\x0ad\x09e  f]
+  attr[3] name=xmlns uri=[http://www.w3.org/2000/xmlns/] prefix=[(null)] base=[xmlns] value=[urn:d]
+  root xml=[<r xmlns:p="urn:p" p:at="1" plain="a\x09b&#xA;c&#xA;d\x09e  f" xmlns="urn:d"/>]
+  set(NormalizeAttributeValues, vt=11 1) hr=0x00000000
+  attrs-normalized loadXML hr=0x00000000 ok=-1
+  attrs-normalized: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  attrs length=1
+  attr[0] name=plain uri=[(null)] prefix=[(null)] base=[plain] value=[a b c\x0ad\x09e  f]
+  root xml=[<r plain="a\x09b\x0d\x0ac&#xA;d&#x9;e  f"/>]
+  set(NormalizeAttributeValues, vt=11 0) hr=0x00000000
+  set(SelectionLanguage, BSTR "XPath") hr=0x00000000
+  nsdecl loadXML hr=0x00000000 ok=-1
+  nsdecl: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  select(/*/@*) hr=0x00000000 len=2 single hr=0x00000000 p:at
+  select(//@*) hr=0x00000000 len=2 single hr=0x00000000 p:at
+  set(SelectionNamespaces, BSTR "xmlns:p='urn:p'") hr=0x00000000
+  select(/*/@p:at) hr=0x00000000 len=1 single hr=0x00000000 p:at
+  select(/*/@at) hr=0x00000000 len=0 single hr=0x00000001 -
+  for-validate loadXML hr=0x00000000 ok=-1
+  for-validate: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  validate hr=0x00000001
+  validate: code=0xc00ce224 line=0 pos=0 fpos=0 reason=[The node is neither valid nor invalid because no DTD/Schema declaration was found.
+] src=[(null)] url=[(null)]
+  doc parseError after validate: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  with-dtd loadXML hr=0x00000000 ok=-1
+  with-dtd: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  validate(dtd valid) hr=0x00000000
+  validate(dtd valid): code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  validate(empty) hr=0x00000001
+  validate(empty): code=0xc00ce223 line=0 pos=0 fpos=0 reason=[Validate failed because the document does not contain exactly one root node.
+] src=[(null)] url=[(null)]
+  ns-collection loadXML hr=0x00000000 ok=-1
+  ns-collection: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  get_namespaces hr=0x00000000
+  length=3
+  [0]=urn:unused
+  [1]=urn:p
+  [2]=urn:c
+  get_namespaceURI(len) hr=0x80004005 out=null
+  get_namespaceURI(-1) hr=0x80004005
+  get_namespaceURI(0, NULL) hr=0x80004003
+  get_length(NULL) hr=0x80004003
+  get(urn:p) hr=0x80004001 out=null
+  remove(urn:p) hr=0x80004005
+  add(urn:p, NULL) hr=0x80004005
+  addCollection(NULL) hr=0x80004005
+  get__newEnum hr=0x00000000 nonnull
+  length after=3
+  QI(SchemaCollection) hr=0x00000000
+  namespaces same object=1
+  reload loadXML hr=0x00000000 ok=-1
+  reload: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  old collection length after reload=0
+  for-import loadXML hr=0x00000000 ok=-1
+  for-import: code=0x00000000 line=0 pos=0 fpos=0 reason=[(null)] src=[(null)] url=[(null)]
+  validateNode(child) hr=0x00000001
+  validateNode(child): code=0xc00ce00d line=0 pos=0 fpos=0 reason=[The element 'c' is used but not declared in the DTD/Schema.
+] src=[(null)] url=[(null)]
+  validateNode(foreign node) hr=0x00000001
+  validateNode(foreign): code=0xc00ce23e line=0 pos=0 fpos=0 reason=[Validate failed because the node provided does not belong to this document.
+] src=[(null)] url=[(null)]
+  importNode hr=0x00000000 owner==other=0 owner==source=0
+  append imported hr=0x00000000
+  importNode(attribute) hr=0x00000000 nonnull
+  importNode(fragment) hr=0x00000000 nonnull

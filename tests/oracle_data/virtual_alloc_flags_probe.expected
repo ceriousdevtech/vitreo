@@ -1,0 +1,10 @@
+top_down hi_gt_lo=1
+large r=0 e=57
+phys_ok r=1 e=dead
+phys_commit r=0 e=57
+phys_ro r=0 e=5aa
+phys_x r=0 e=57
+ww_ok r=1 e=dead
+ww_commit r=0 e=57
+unknown_40 r=0 e=57
+rotate r=1 e=dead

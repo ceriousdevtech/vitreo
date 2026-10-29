@@ -1,0 +1,212 @@
+fl {11_1}: hr=0x00000000 fl=0xb100 GetFeatureLevel=0xb100
+fl {11_1,11_0}: hr=0x00000000 fl=0xb100 GetFeatureLevel=0xb100
+fl {12_0,11_1,11_0}: hr=0x00000000 fl=0xc000 GetFeatureLevel=0xc000
+fl {11_0,11_1}: hr=0x00000000 fl=0xb000 GetFeatureLevel=0xb000
+fl {10_1,11_1}: hr=0x00000000 fl=0xa100 GetFeatureLevel=0xa100
+fl NULL: hr=0x00000000 fl=0xb000 GetFeatureLevel=0xb000
+caps request 11_1: hr=0x00000000 fl=0xb100
+caps request 11_1: OutputMergerLogicOp=1 UAVOnlyRenderingForcedSampleCount=1 DiscardAPIsSeenByDriver=1 FlagsForUpdateAndCopySeenByDriver=1 ClearView=1 CopyWithOverlap=1
+caps request 11_1: ConstantBufferPartialUpdate=1 ConstantBufferOffsetting=1 MapNoOverwriteOnDynamicConstantBuffer=1 MapNoOverwriteOnDynamicBufferSRV=1 MultisampleRTVWithForcedSampleCountOne=1
+caps request 11_1: SAD4ShaderInstructions=1 ExtendedDoublesShaderInstructions=1 ExtendedResourceSharing=1
+caps request 11_1: FORMAT_SUPPORT2 logic-op bit: 3=1 12=1 17=1 25=1 30=1 36=1 42=1 50=1 57=1 62=1 43=0 28=0 41=0
+caps 11_0: hr=0x00000000 fl=0xb000
+caps 11_0: OutputMergerLogicOp=1 UAVOnlyRenderingForcedSampleCount=1 DiscardAPIsSeenByDriver=1 FlagsForUpdateAndCopySeenByDriver=1 ClearView=1 CopyWithOverlap=1
+caps 11_0: ConstantBufferPartialUpdate=1 ConstantBufferOffsetting=1 MapNoOverwriteOnDynamicConstantBuffer=1 MapNoOverwriteOnDynamicBufferSRV=1 MultisampleRTVWithForcedSampleCountOne=1
+caps 11_0: SAD4ShaderInstructions=1 ExtendedDoublesShaderInstructions=1 ExtendedResourceSharing=1
+caps 11_0: FORMAT_SUPPORT2 logic-op bit: 3=1 12=1 17=1 25=1 30=1 36=1 42=1 50=1 57=1 62=1 43=0 28=0 41=0
+cbwin cs plain 128: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
+cbwin cs set1 16+16: 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs set1 0+32: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs set1 32+48: 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 - - - - - - - - - - - - - - - -
+cbwin cs set1 112+32 (past end): 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs set1 128+16 (at end): - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs set1 4096+16: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs set1 16+0: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs set1 0+4096: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
+cbwin cs plain small16: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs set1 small16 0+4096: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs NULL: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin cs plain after set1: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
+cbwin cs literal set1 16+16: 16 31 - - - -
+cbwin cs literal set1 0+16: 0 15 - - - -
+cbwin cs literal set1 96+48: 96 111 112 127 - -
+cbwin cs literal plain small16: 0 15 - - - -
+cbwin ps set1 16+16: 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 - - - - - - - - - - - - - - - -
+cbwin ps set1 112+32 (past end): 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 - - - - - - - - - - - - - - - -
+cbwin ps set1 0+0: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cbwin vs set1 32+16: 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 - - - - - - - - - - - - - - - -
+nooverwrite cb: first NO_OVERWRITE hr=0x00000000 DISCARD hr=0x00000000 NO_OVERWRITE hr=0x00000000
+nooverwrite cb second dispatch: 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 - - - - - - - - - - - - - - - -
+nooverwrite cb first dispatch: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 - - - - - - - - - - - - - - - -
+nooverwrite srv after discard: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+nooverwrite srv: first NO_OVERWRITE hr=0x00000000 DISCARD hr=0x00000000 NO_OVERWRITE hr=0x00000000
+nooverwrite srv after no_overwrite: elem7=4001c elem8=50000 elem15=5001c
+nooverwrite typed-srv: hr=0x00000000
+nooverwrite raw-srv: hr=0x00000000
+nooverwrite vb+srv: hr=0x00000000
+nooverwrite vb: hr=0x00000000
+nooverwrite ib: hr=0x00000000
+partial update1 NO_OVERWRITE [64,128): 60000 60004 60008 6000c 70000 70004 70008 7000c 60020 60024
+partial update1 DISCARD [64,128): 60000 60004 60008 6000c 70000 70004 70008 7000c 60020 60024
+partial update1 flags0 [64,128): 60000 60004 60008 6000c 60010 60014 60018 6001c 60020 60024
+partial update1 NO_OVERWRITE [72,128): 60000 60004 60008 6000c 60010 60014 60018 6001c 60020 60024
+partial update [64,128): 60000 60004 60008 6000c 60010 60014 60018 6001c 60020 60024
+copyflags update1/copy1: 0=++ 1=++ 2=++ 3=.. 4=.+ 5=.+ 6=.+ 7=.. 8=.. 10=.. 20=.. 40=.. 80=.. 100=.. 200=.. 400=.. 800=.. 1000=.. 10000=.. 80000000=..
+partial update1 plain buffer flags 0: [15]=15 [16]=a5 [31]=a5 [32]=32
+partial update1 plain buffer flags 1: [15]=15 [16]=a5 [31]=a5 [32]=32
+partial update1 plain buffer flags 2: [15]=15 [16]=a5 [31]=a5 [32]=32
+partial update1 plain buffer flags 3: [15]=15 [16]=10 [31]=1f [32]=32
+partial update1 plain buffer flags 4: [15]=15 [16]=10 [31]=1f [32]=32
+partial update1 plain buffer flags 80000000: [15]=15 [16]=10 [31]=1f [32]=32
+copy1 buffer [0,64)->16 flags0: [0]=0 [15]=15 [16]=0 [17]=1 [79]=63 [80]=80 [128]=128 [191]=191
+copy1 buffer [16,80)->0 flags0: [0]=16 [15]=31 [16]=32 [17]=33 [79]=79 [80]=80 [128]=128 [191]=191
+copy1 buffer [0,64)->16 NO_OVERWRITE: [0]=0 [15]=15 [16]=0 [17]=1 [79]=63 [80]=80 [128]=128 [191]=191
+copy1 buffer [0,64)->16 DISCARD: [0]=0 [15]=15 [16]=0 [17]=1 [79]=63 [80]=80 [128]=128 [191]=191
+copy1 buffer [0,64)->16 flags3: [0]=0 [15]=15 [16]=16 [17]=17 [79]=79 [80]=80 [128]=128 [191]=191
+copy1 buffer [0,64)->16 flags4: [0]=0 [15]=15 [16]=0 [17]=1 [79]=63 [80]=80 [128]=128 [191]=191
+copy1 buffer [0,64)->128 flags0 (no overlap): [0]=0 [15]=15 [16]=16 [17]=17 [79]=79 [80]=80 [128]=0 [191]=63
+copy buffer [0,64)->16: [0]=0 [15]=15 [16]=0 [17]=1 [79]=63 [80]=80 [128]=128 [191]=191
+copy buffer [0,64)->128 (no overlap): [0]=0 [15]=15 [16]=16 [17]=17 [79]=79 [80]=80 [128]=0 [191]=63
+copy1 buffer [0,64)->128 flags3 (no overlap): [0]=0 [15]=15 [16]=16 [17]=17 [79]=79 [80]=80 [128]=128 [191]=191
+copy1 buffer [0,64)->128 flags80000000: [0]=0 [15]=15 [16]=16 [17]=17 [79]=79 [80]=80 [128]=128 [191]=191
+copy1 texture (0,0)-(16,2)->(4,1): row1 x3..6=35 0 1 2 x19=15 x20=52 row2 x4=32 x19=47 row3 x4=100
+copy texture (0,0)-(16,2)->(4,1): row1 x3..6=35 0 1 2 x19=15 x20=52 row2 x4=32 x19=47 row3 x4=100
+msad create: hr=0x00000000
+msad ref=04030201 src=08070605,0c0b0a09 accum=0: 10 15 1a 11c
+msad ref=00ff00ff src=12345678,9abcdef0 accum=64: 1b6 1fb 140 272
+msad ref=00000000 src=ffffffff,12345678 accum=7: 7 8 9 107
+msad ref=ffffffff src=00000000,00000000 accum=0: 3fc 3fd 3fe 4fc
+msad ref=80008000 src=7f7f7f7f,01010101 accum=fffffff0: fffffff2 71 72 1ee
+msad ref=01020304 src=01020304,01020304 accum=10: 10 17 1a 116
+msad ref=deadbeef src=cafebabe,0badf00d accum=55: ef 1b9 124 29f
+msad ref=00010000 src=ff00ff00,00ff00ff accum=1: 2 100 101 102
+logic create: 0=0x00000000 1=0x00000000 2=0x00000000 3=0x00000000 4=0x00000000 5=0x00000000 6=0x00000000 7=0x00000000 8=0x00000000 9=0x00000000 10=0x00000000 11=0x00000000 12=0x00000000 13=0x00000000 14=0x00000000 15=0x00000000 16=0x80070057
+logic create +BlendEnable: 0x80070057
+logic create +IndependentBlendEnable: 0x80070057
+logic rgba8 dst=cc550fcc src=aa,aa,f0,0: 0=00000000 1=ffffffff 2=aaaaf000 3=55550fff 4=cc550fcc 5=33aaf033 6=88000000 7=77ffffff 8=eeffffcc 9=11000033 10=66ffffcc 11=99000033 12=22aaf000 13=44550fcc 14=bbaaf033 15=dd550fff
+logic rg16 dst=ccccff00 src=aaaa,f0f0,0,0: 0=00000000 1=ffffffff 2=aaaaf0f0 3=55550f0f 4=ccccff00 5=333300ff 6=8888f000 7=77770fff 8=eeeefff0 9=1111000f 10=66660ff0 11=9999f00f 12=222200f0 13=44440f00 14=bbbbf0ff 15=ddddff0f
+logic r32 dst=cccccccc src=aaaaaaaa,0,0,0: 0=00000000 1=ffffffff 2=aaaaaaaa 3=55555555 4=cccccccc 5=33333333 6=88888888 7=77777777 8=eeeeeeee 9=11111111 10=66666666 11=99999999 12=22222222 13=44444444 14=bbbbbbbb 15=dddddddd
+logic rgba32 dst=ccccccccffff0000ffffffff78563412 src=aaaaaaaa,aaaaaaaa,0,f0f0f0f: 0=00000000000000000000000000000000 1=ffffffffffffffffffffffffffffffff 2=aaaaaaaaaaaaaaaa000000000f0f0f0f 3=5555555555555555fffffffff0f0f0f0 4=ccccccccffff0000ffffffff78563412 5=333333330000ffff0000000087a9cbed 6=88888888aaaa00000000000008060402 7=777777775555fffffffffffff7f9fbfd 8=eeeeeeeeffffaaaaffffffff7f5f3f1f 9=11111111000055550000000080a0c0e0 10=666666665555aaaaffffffff77593b1d 11=99999999aaaa55550000000088a6c4e2 12=222222220000aaaa0000000007090b0d 13=4444444455550000ffffffff70503010 14=bbbbbbbbaaaaffff000000008fafcfef 15=ddddddddffff5555fffffffff8f6f4f2
+logic r8 dst=cc src=aa,0,0,0: 0=00 1=ff 2=aa 3=55 4=cc 5=33 6=88 7=77 8=ee 9=11 10=66 11=99 12=22 13=44 14=bb 15=dd
+logic rgba8 COPY src 1aa,100,ffffffff,7f: aa00ff7f
+nologic rgba8 src 1aa,100,ffffffff,7f: ffffff7f
+logic rgba8 XOR mask 0x5: f00ff00f
+logic rgba8 SET mask 0x8: 0f0f0fff
+logic two targets XOR: rt0=1234a987 rt1=f00ff00f
+logic msaa4 XOR samples (row: 8 pixels x 4 samples, f=0x0f untouched, ff=xored):
+logic msaa4 y0: f.ff.f.ff f.f.ff.ff f.f.ff.ff f.f.f.f f.f.f.f f.f.f.f f.f.f.f f.f.f.f
+logic msaa4 y1: f.ff.f.f ff.ff.ff.ff ff.ff.ff.ff ff.ff.ff.ff f.ff.ff.ff f.f.ff.ff f.f.ff.ff f.f.f.f
+logic msaa4 y2: f.ff.f.f ff.ff.ff.ff ff.ff.ff.ff ff.ff.ff.ff ff.ff.ff.ff ff.ff.ff.ff ff.ff.ff.ff ff.f.f.f
+logic msaa4 y3: f.f.f.f ff.ff.f.ff ff.ff.ff.ff ff.ff.ff.ff ff.ff.ff.ff ff.ff.ff.ff ff.f.f.f f.f.f.f
+logic msaa4 y4: f.f.f.f ff.ff.f.ff ff.ff.ff.ff ff.ff.ff.ff ff.ff.ff.ff ff.f.f.f f.f.f.f f.f.f.f
+logic msaa4 y5: f.f.f.f f.ff.f.f ff.ff.ff.ff ff.ff.ff.ff ff.f.f.f f.f.f.f f.f.f.f f.f.f.f
+logic msaa4 y6: f.f.f.f f.ff.f.f ff.ff.ff.ff ff.f.f.f f.f.f.f f.f.f.f f.f.f.f f.f.f.f
+logic msaa4 y7: f.f.f.f f.f.f.f ff.f.f.f f.f.f.f f.f.f.f f.f.f.f f.f.f.f f.f.f.f
+forced rs create: 0=0x00000000 0+ms=0x00000000 1=0x00000000 1+ms=0x80070057 2=0x80070057 2+ms=0x80070057 4=0x00000000 4+ms=0x00000000 8=0x00000000 8+ms=0x00000000 16=0x80070057 16+ms=0x80070057 32=0x80070057 32+ms=0x80070057
+forced uavonly forced=0: rs hr=0x00000000
+forced uavonly forced=0 y0: 1/1 1/1 0/0 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=0 y1: 0/0 1/1 1/1 1/1 1/1 1/1 0/0 0/0
+forced uavonly forced=0 y2: 0/0 1/1 1/1 1/1 1/1 1/1 1/1 0/0
+forced uavonly forced=0 y3: 0/0 1/1 1/1 1/1 1/1 1/1 0/0 0/0
+forced uavonly forced=0 y4: 0/0 1/1 1/1 1/1 1/1 0/0 0/0 0/0
+forced uavonly forced=0 y5: 0/0 0/0 1/1 1/1 0/0 0/0 0/0 0/0
+forced uavonly forced=0 y6: 0/0 0/0 1/1 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=0 y7: 0/0 0/0 0/0 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=1: rs hr=0x00000000
+forced uavonly forced=1 y0: 1/1 1/1 0/0 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=1 y1: 0/0 1/1 1/1 1/1 1/1 1/1 0/0 0/0
+forced uavonly forced=1 y2: 0/0 1/1 1/1 1/1 1/1 1/1 1/1 0/0
+forced uavonly forced=1 y3: 0/0 1/1 1/1 1/1 1/1 1/1 0/0 0/0
+forced uavonly forced=1 y4: 0/0 1/1 1/1 1/1 1/1 0/0 0/0 0/0
+forced uavonly forced=1 y5: 0/0 0/0 1/1 1/1 0/0 0/0 0/0 0/0
+forced uavonly forced=1 y6: 0/0 0/0 1/1 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=1 y7: 0/0 0/0 0/0 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=4: rs hr=0x00000000
+forced uavonly forced=4 y0: a/1 c/1 c/1 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=4 y1: 2/1 f/1 f/1 f/1 e/1 c/1 c/1 0/0
+forced uavonly forced=4 y2: 2/1 f/1 f/1 f/1 f/1 f/1 f/1 1/1
+forced uavonly forced=4 y3: 0/0 b/1 f/1 f/1 f/1 f/1 1/1 0/0
+forced uavonly forced=4 y4: 0/0 b/1 f/1 f/1 f/1 1/1 0/0 0/0
+forced uavonly forced=4 y5: 0/0 2/1 f/1 f/1 1/1 0/0 0/0 0/0
+forced uavonly forced=4 y6: 0/0 2/1 f/1 1/1 0/0 0/0 0/0 0/0
+forced uavonly forced=4 y7: 0/0 0/0 1/1 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=8: rs hr=0x00000000
+forced uavonly forced=8 y0: 47/1 76/1 50/1 0/0 0/0 0/0 0/0 0/0
+forced uavonly forced=8 y1: 84/1 ff/1 ff/1 ff/1 7f/1 76/1 52/1 10/1
+forced uavonly forced=8 y2: 80/1 ff/1 ff/1 ff/1 ff/1 ff/1 bf/1 28/1
+forced uavonly forced=8 y3: 0/0 df/1 ff/1 ff/1 ff/1 ff/1 28/1 0/0
+forced uavonly forced=8 y4: 0/0 cf/1 ff/1 ff/1 ff/1 28/1 0/0 0/0
+forced uavonly forced=8 y5: 0/0 85/1 ff/1 ff/1 28/1 0/0 0/0 0/0
+forced uavonly forced=8 y6: 0/0 80/1 ff/1 28/1 0/0 0/0 0/0 0/0
+forced uavonly forced=8 y7: 0/0 0/0 28/1 0/0 0/0 0/0 0/0 0/0
+forced rt forced=0 samples=4: rs hr=0x00000000
+forced rt forced=0 samples=4 y0: 0.10a.0.10a 0.0.10c.10c 0.0.10c.10c 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=0 samples=4 y1: 0.102.0.0 10f.10f.10f.10f 10f.10f.10f.10f 10f.10f.10f.10f 0.10e.10e.10e 0.0.10c.10c 0.0.10c.10c 0.0.0.0
+forced rt forced=0 samples=4 y2: 0.102.0.0 10f.10f.10f.10f 10f.10f.10f.10f 10f.10f.10f.10f 10f.10f.10f.10f 10f.10f.10f.10f 10f.10f.10f.10f 101.0.0.0
+forced rt forced=0 samples=4 y3: 0.0.0.0 10b.10b.0.10b 10f.10f.10f.10f 10f.10f.10f.10f 10f.10f.10f.10f 10f.10f.10f.10f 101.0.0.0 0.0.0.0
+forced rt forced=0 samples=4 y4: 0.0.0.0 10b.10b.0.10b 10f.10f.10f.10f 10f.10f.10f.10f 10f.10f.10f.10f 101.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=0 samples=4 y5: 0.0.0.0 0.102.0.0 10f.10f.10f.10f 10f.10f.10f.10f 101.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=0 samples=4 y6: 0.0.0.0 0.102.0.0 10f.10f.10f.10f 101.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=0 samples=4 y7: 0.0.0.0 0.0.0.0 101.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=1 samples=4: rs hr=0x00000000
+forced rt forced=1 samples=4 y0: 101.101.101.101 101.101.101.101 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=1 samples=4 y1: 0.0.0.0 101.101.101.101 101.101.101.101 101.101.101.101 101.101.101.101 101.101.101.101 0.0.0.0 0.0.0.0
+forced rt forced=1 samples=4 y2: 0.0.0.0 101.101.101.101 101.101.101.101 101.101.101.101 101.101.101.101 101.101.101.101 101.101.101.101 0.0.0.0
+forced rt forced=1 samples=4 y3: 0.0.0.0 101.101.101.101 101.101.101.101 101.101.101.101 101.101.101.101 101.101.101.101 0.0.0.0 0.0.0.0
+forced rt forced=1 samples=4 y4: 0.0.0.0 101.101.101.101 101.101.101.101 101.101.101.101 101.101.101.101 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=1 samples=4 y5: 0.0.0.0 0.0.0.0 101.101.101.101 101.101.101.101 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=1 samples=4 y6: 0.0.0.0 0.0.0.0 101.101.101.101 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=1 samples=4 y7: 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0 0.0.0.0
+forced rt forced=0 samples=1: rs hr=0x00000000
+forced rt forced=0 samples=1 y0: 101 101 0 0 0 0 0 0
+forced rt forced=0 samples=1 y1: 0 101 101 101 101 101 0 0
+forced rt forced=0 samples=1 y2: 0 101 101 101 101 101 101 0
+forced rt forced=0 samples=1 y3: 0 101 101 101 101 101 0 0
+forced rt forced=0 samples=1 y4: 0 101 101 101 101 0 0 0
+forced rt forced=0 samples=1 y5: 0 0 101 101 0 0 0 0
+forced rt forced=0 samples=1 y6: 0 0 101 0 0 0 0 0
+forced rt forced=0 samples=1 y7: 0 0 0 0 0 0 0 0
+fl111 at 11_0: vs_uav hr=0x80070057 cs_u63 hr=0x80070057 ps_u60 hr=0x80070057
+fl111 vs uav: hr=0x00000000 count=3 stores=1 4 7 0
+fl111 cs u63: hr=0x00000000 value=6363 get=same
+fl111 ps u60: hr=0x00000000 count=4
+fl111 uavonly forced=16: rs hr=0x00000000
+fl111 uavonly forced=16 y0: 406b/1 5965/1 4920/1 0/0 0/0 0/0 0/0 0/0
+fl111 uavonly forced=16 y1: 60c8/1 ffff/1 ffff/1 ffff/1 5d7f/1 5975/1 4924/1 100/1
+fl111 uavonly forced=16 y2: 2000/1 ffff/1 ffff/1 ffff/1 ffff/1 ffff/1 bfff/1 9610/1
+fl111 uavonly forced=16 y3: 0/0 e7ff/1 ffff/1 ffff/1 ffff/1 bfff/1 9610/1 0/0
+fl111 uavonly forced=16 y4: 0/0 62eb/1 ffff/1 ffff/1 bfff/1 9610/1 0/0 0/0
+fl111 uavonly forced=16 y5: 0/0 62c8/1 ffff/1 bfff/1 9610/1 0/0 0/0 0/0
+fl111 uavonly forced=16 y6: 0/0 2000/1 bfff/1 9610/1 0/0 0/0 0/0 0/0
+fl111 uavonly forced=16 y7: 0/0 0/0 8610/1 0/0 0/0 0/0 0/0 0/0
+fl111 rt forced=4 samples=1: rs hr=0x00000000
+fl111 rt forced=4 samples=1 y0: 10a 10c 10c 0 0 0 0 0
+fl111 rt forced=4 samples=1 y1: 102 10f 10f 10f 10e 10c 10c 0
+fl111 rt forced=4 samples=1 y2: 102 10f 10f 10f 10f 10f 10f 101
+fl111 rt forced=4 samples=1 y3: 0 10b 10f 10f 10f 10f 101 0
+fl111 rt forced=4 samples=1 y4: 0 10b 10f 10f 10f 101 0 0
+fl111 rt forced=4 samples=1 y5: 0 102 10f 10f 101 0 0 0
+fl111 rt forced=4 samples=1 y6: 0 102 10f 101 0 0 0 0
+fl111 rt forced=4 samples=1 y7: 0 0 101 0 0 0 0 0
+fl111 rt forced=16 samples=1: rs hr=0x00000000
+fl111 rt forced=16 samples=1 y0: 416b 5965 4920 0 0 0 0 0
+fl111 rt forced=16 samples=1 y1: 61c8 ffff ffff ffff 5d7f 5975 4924 100
+fl111 rt forced=16 samples=1 y2: 2100 ffff ffff ffff ffff ffff bfff 9710
+fl111 rt forced=16 samples=1 y3: 0 e7ff ffff ffff ffff bfff 9710 0
+fl111 rt forced=16 samples=1 y4: 0 63eb ffff ffff bfff 9710 0 0
+fl111 rt forced=16 samples=1 y5: 0 63c8 ffff bfff 9710 0 0 0
+fl111 rt forced=16 samples=1 y6: 0 2100 bfff 9710 0 0 0 0
+fl111 rt forced=16 samples=1 y7: 0 0 8710 0 0 0 0 0
+fl111 rs forced=1 MultisampleEnable: hr=0x00000000
+done
+# winoracle (Windows 11, WARP), x64; the x86 build prints the same lines.
+# Remaining Vitreo lines (Apple M4 Pro), all documented in .docs/contracts/d3d11.md
+# "Feature level 11_1 and D3D11_FEATURE_DATA_D3D11_OPTIONS":
+#   fl / caps request 11_1: FL 11_1 is not offered -- target-independent
+#     rasterization and UAV-only ForcedSampleCount 16 cannot be rasterized
+#     (Metal rasterSampleCount 8/16 refused); a request containing 11_1 makes 11_0.
+#   caps: UAVOnlyRenderingForcedSampleCount=0 (needs 8x), ExtendedDoubles=0 (no fp64).
+#   forced uavonly forced=4: coverage matches, the count is per covered sample
+#     (Apple GPUs run a UAV-writing fragment function per sample on MSAA).
+#   forced uavonly forced=8: not drawn (UNIMPLEMENTED; undefined while the cap is 0).
+#   fl111 (11_1-only section): skipped on the 11_0 device.

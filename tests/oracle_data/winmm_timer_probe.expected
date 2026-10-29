@@ -1,0 +1,9 @@
+devcaps_8 r=0
+devcaps_16 r=0
+devcaps_4 r=61
+devcaps_0 r=61
+devcaps_null r=61
+user_roundtrip eq=1
+pulse_manual_after signaled=0
+set_manual_after signaled=1
+kill_bad r=61

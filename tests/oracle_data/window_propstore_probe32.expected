@@ -1,0 +1,202 @@
+ptr=4 propvariant=16
+null-hwnd hr=0x80070057 ppv=untouched
+bogus-hwnd hr=0x00000000 ppv=set
+bogus SetValue hr=0x80070578 GetCount hr=0x80004005 n=0 GetValue hr=0x00000000 vt=0 Commit=0x00000000
+desktop-hwnd hr=0x00000000 ppv=set
+shell-hwnd present=0 hr=0x80070057 ppv=untouched
+child-hwnd hr=0x00000000 ppv=set
+random-iid hr=0x80004002 ppv=NULL
+iunknown-iid hr=0x00000000 ppv=set
+capabilities-iid hr=0x80004002 ppv=NULL
+store hr=0x00000000
+QI(IUnknown) hr=0x00000000 same=0
+QI(Capabilities) hr=0x80004002
+AddRef=2
+Release=1
+fresh GetCount hr=0x80004005 n=0
+fresh GetAt(0) hr=0x80004005 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+fresh GetValue(AUMID) hr=0x00000000 vt=0
+SetValue(AUMID,str) hr=0x00000000
+after-set GetCount hr=0x00000000 n=1
+after-set GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-set GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-set GetValue(AUMID) hr=0x00000000 vt=31 str="Vitreo.Probe.Window"
+store2 hr=0x00000000 same-object=0
+store2 GetCount hr=0x00000000 n=1
+store2 GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+store2 GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+store2 GetValue(AUMID) hr=0x00000000 vt=31 str="Vitreo.Probe.Window"
+other-store hr=0x00000000
+other GetCount hr=0x80004005 n=0
+other GetAt(0) hr=0x80004005 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+other GetValue(AUMID) hr=0x00000000 vt=0
+SetValue(AUMID,ui4) hr=0x00000000
+after-ui4 GetCount hr=0x00000000 n=1
+after-ui4 GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-ui4 GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-ui4 GetValue(AUMID) hr=0x00000000 vt=31 str="7"
+SetValue(AUMID,bstr) hr=0x00000000
+after-bstr GetCount hr=0x00000000 n=1
+after-bstr GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-bstr GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-bstr GetValue(AUMID) hr=0x00000000 vt=31 str="Vitreo.Probe.Bstr"
+SetValue(AUMID,spaces) hr=0x00000000
+after-spaces GetCount hr=0x00000000 n=1
+after-spaces GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-spaces GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-spaces GetValue(AUMID) hr=0x00000000 vt=31 str="Has Spaces In It"
+SetValue(AUMID,199chars) hr=0x00000000
+SetValue(AUMID,128chars) hr=0x00000000
+SetValue(AUMID,127chars) hr=0x00000000
+SetValue(AUMID,empty) hr=0x8007007b
+after-empty GetCount hr=0x80004005 n=0
+after-empty GetAt(0) hr=0x80004005 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-empty GetValue(AUMID) hr=0x00000000 vt=0
+SetValue(AUMID,again) hr=0x00000000
+SetValue(AUMID,bool) hr=0x00000000
+after-bool GetCount hr=0x00000000 n=1
+after-bool GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-bool GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-bool GetValue(AUMID) hr=0x00000000 vt=31 str="-1"
+SetValue(AUMID,i4) hr=0x00000000
+after-i4 GetCount hr=0x00000000 n=1
+after-i4 GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-i4 GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-i4 GetValue(AUMID) hr=0x00000000 vt=31 str="-5"
+SetValue(AUMID,r8) hr=0x00000000
+after-r8 GetCount hr=0x00000000 n=1
+after-r8 GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-r8 GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-r8 GetValue(AUMID) hr=0x00000000 vt=31 str="1.5"
+SetValue(AUMID,lpstr) hr=0x00000000
+after-lpstr GetCount hr=0x00000000 n=1
+after-lpstr GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-lpstr GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-lpstr GetValue(AUMID) hr=0x00000000 vt=31 str="ansi.id"
+SetValue(AUMID,clsid) hr=0x00000000
+after-clsid GetCount hr=0x00000000 n=1
+after-clsid GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-clsid GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-clsid GetValue(AUMID) hr=0x00000000 vt=31 str="{0BADF00D-1111-2222-0303-040405050606}"
+SetValue(AUMID,padded) hr=0x00000000
+after-padded GetCount hr=0x00000000 n=1
+after-padded GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-padded GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-padded GetValue(AUMID) hr=0x000401a0 vt=31 str="Vitreo.Padded"
+SetValue(AUMID,blank) hr=0x00000000
+after-blank GetCount hr=0x00000000 n=1
+after-blank GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-blank GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-blank GetValue(AUMID) hr=0x000401a0 vt=0
+SetValue(PreventPinning,str1) hr=0x00000000
+GetValue(PreventPinning,str1) hr=0x00000000 vt=11 bool=-1
+SetValue(PreventPinning,strnope) hr=0x00000000
+GetValue(PreventPinning,strnope) hr=0x80028ca0 vt=0
+bool-text "0" set=0x00000000 get hr=0x00000000 vt=11 bool=0
+bool-text "true" set=0x00000000 get hr=0x00000000 vt=11 bool=-1
+bool-text "false" set=0x00000000 get hr=0x00000000 vt=11 bool=0
+bool-text "-1" set=0x00000000 get hr=0x00000000 vt=11 bool=-1
+bool-text "2" set=0x00000000 get hr=0x00000000 vt=11 bool=-1
+bool-text " 1 " set=0x00000000 get hr=0x00000000 vt=11 bool=-1
+GetValue(PreventPinning,ui4 0) hr=0x00000000 vt=11 bool=0
+SetValue(AUMID,tabs) hr=0x00000000
+after-tabs GetCount hr=0x00000000 n=2
+after-tabs GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},9
+after-tabs GetAt(1) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-tabs GetAt(2) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-tabs GetValue(AUMID) hr=0x000401a0 vt=31 str="Tab.Id"
+after-inner-space GetCount hr=0x00000000 n=2
+after-inner-space GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},9
+after-inner-space GetAt(1) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-inner-space GetAt(2) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-inner-space GetValue(AUMID) hr=0x00000000 vt=31 str="Inner Space.Id"
+GetValue(Other,lead) hr=0x00000001 vt=31 str=" lead"
+GetValue(Title,lead) hr=0x000401a0 vt=31 str="lead"
+SetValue(Other,ui4) hr=0x00000000
+GetValue(Other,ui4) hr=0x00000001 vt=31 str="9"
+before-others GetCount hr=0x00000000 n=1
+before-others GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+before-others GetAt(1) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+before-others GetValue(AUMID) hr=0x00000000 vt=31 str="Vitreo.Probe.Window"
+SetValue(Title,unset,empty-vt) hr=0x00000000
+SetValue(NULL key) hr=0x8007007a
+SetValue(PreventPinning,bool) hr=0x00000000
+SetValue(RelaunchCommand,str) hr=0x00000000
+SetValue(Title,str) hr=0x00000000
+SetValue(Other,str) hr=0x00000000
+after-others GetCount hr=0x00000000 n=5
+after-others GetAt(0) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-others GetAt(1) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},9
+after-others GetAt(2) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},2
+after-others GetAt(3) hr=0x00000000 {F29F85E0-4FF9-1068-AB91-08002B27B3D9},2
+after-others GetAt(4) hr=0x00000000 {12345678-1234-5678-0102-030405060708},2
+after-others GetAt(5) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-others GetValue(AUMID) hr=0x00000000 vt=31 str="Vitreo.Probe.Window"
+GetValue(PreventPinning) hr=0x00000000 vt=11 bool=-1
+GetValue(Title) hr=0x00000000 vt=31 str="t"
+Commit hr=0x00000000
+SetValue(AUMID,empty-vt) hr=0x00000000
+after-vt-empty GetCount hr=0x00000000 n=4
+after-vt-empty GetAt(0) hr=0x00000000 {12345678-1234-5678-0102-030405060708},2
+after-vt-empty GetAt(1) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},9
+after-vt-empty GetAt(2) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},2
+after-vt-empty GetAt(3) hr=0x00000000 {F29F85E0-4FF9-1068-AB91-08002B27B3D9},2
+after-vt-empty GetAt(4) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-vt-empty GetValue(AUMID) hr=0x00000000 vt=0
+SetValue(PreventPinning,empty-vt) hr=0x00000000
+SetValue(RelaunchCommand,empty-vt) hr=0x00000000
+after-all-empty GetCount hr=0x00000000 n=2
+after-all-empty GetAt(0) hr=0x00000000 {12345678-1234-5678-0102-030405060708},2
+after-all-empty GetAt(1) hr=0x00000000 {F29F85E0-4FF9-1068-AB91-08002B27B3D9},2
+after-all-empty GetAt(2) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-all-empty GetValue(AUMID) hr=0x00000000 vt=0
+peer-store hr=0x00000000
+peer GetCount hr=0x00000000 n=3
+peer GetAt(0) hr=0x00000000 {12345678-1234-5678-0102-030405060708},2
+peer GetAt(1) hr=0x00000000 {F29F85E0-4FF9-1068-AB91-08002B27B3D9},2
+peer GetAt(2) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+peer GetAt(3) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+peer GetValue(AUMID) hr=0x00000000 vt=31 str="Vitreo.Probe.Window"
+peer SetValue(RelaunchCommand) hr=0x00000000
+after-peer GetCount hr=0x00000000 n=4
+after-peer GetAt(0) hr=0x00000000 {12345678-1234-5678-0102-030405060708},2
+after-peer GetAt(1) hr=0x00000000 {F29F85E0-4FF9-1068-AB91-08002B27B3D9},2
+after-peer GetAt(2) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},5
+after-peer GetAt(3) hr=0x00000000 {9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3},2
+after-peer GetAt(4) hr=0x80070057 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-peer GetValue(AUMID) hr=0x00000000 vt=31 str="Vitreo.Probe.Window"
+GetValue(RelaunchCommand,after-peer) hr=0x00000000 vt=31 str="Vitreo.Probe.FromPeer"
+SetValue(AUMID,before-destroy) hr=0x00000000
+SetValue(AUMID,after-destroy) hr=0x80070578
+after-destroy GetCount hr=0x80004005 n=0
+after-destroy GetAt(0) hr=0x80004005 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+after-destroy GetValue(AUMID) hr=0x00000000 vt=0
+Release=0
+Release2=0
+SetCurrentProcessExplicitAppUserModelID hr=0x00000000
+store3 hr=0x00000000
+process-id-set GetCount hr=0x80004005 n=0
+process-id-set GetAt(0) hr=0x80004005 {ABABABAB-ABAB-ABAB-ABAB-ABABABABABAB},2880154539
+process-id-set GetValue(AUMID) hr=0x00000000 vt=0
+spawn flags=0x0 title=NULL ok=1 err=0
+child cb=68 dwFlags=0x0 lpTitle=set "C:\Users\Owner\wps32.exe"
+child GetCurrentProcessExplicitAppUserModelID hr=0x80004005 id=NULL
+spawn flags=0x1000 title=set ok=1 err=0
+child cb=68 dwFlags=0x1000 lpTitle=set "Vitreo.Probe.Child"
+child GetCurrentProcessExplicitAppUserModelID hr=0x00000000 id=set "Vitreo.Probe.Child"
+spawn flags=0x3000 title=set ok=1 err=0
+child cb=68 dwFlags=0x3000 lpTitle=set "Vitreo.Probe.Child"
+child GetCurrentProcessExplicitAppUserModelID hr=0x00000000 id=set "Vitreo.Probe.Child"
+spawn flags=0x2000 title=set ok=1 err=0
+child cb=68 dwFlags=0x2000 lpTitle=set "Vitreo.Probe.Child"
+child GetCurrentProcessExplicitAppUserModelID hr=0x80004005 id=NULL
+spawn flags=0x800 title=set ok=1 err=0
+child cb=68 dwFlags=0x800 lpTitle=set "C:\nonexistent\x.lnk"
+child GetCurrentProcessExplicitAppUserModelID hr=0x80004005 id=NULL
+spawn flags=0x1800 title=set ok=1 err=0
+child cb=68 dwFlags=0x1800 lpTitle=set "Vitreo.Probe.Both"
+child GetCurrentProcessExplicitAppUserModelID hr=0x00000000 id=set "Vitreo.Probe.Both"
+spawn flags=0x0 title=set ok=1 err=0
+child cb=68 dwFlags=0x0 lpTitle=set "plain-title"
+child GetCurrentProcessExplicitAppUserModelID hr=0x80004005 id=NULL
+null-ppv hr=0x80004003

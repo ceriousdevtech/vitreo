@@ -1,0 +1,10 @@
+rosetta/native x86_64 lock cmpxchg probe
+acc=01 mem=02 -> mem=02 acc=02 flags=0000 | acc-mem=0095 mem-acc=0000
+acc=02 mem=01 -> mem=01 acc=01 flags=0095 | acc-mem=0000 mem-acc=0095
+acc=80 mem=01 -> mem=01 acc=01 flags=0885 | acc-mem=0810 mem-acc=0885
+acc=01 mem=80 -> mem=80 acc=80 flags=0810 | acc-mem=0885 mem-acc=0810
+acc=00 mem=ff -> mem=ff acc=ff flags=0084 | acc-mem=0011 mem-acc=0084
+acc=ff mem=00 -> mem=00 acc=00 flags=0011 | acc-mem=0084 mem-acc=0011
+acc=08 mem=09 -> mem=09 acc=09 flags=0000 | acc-mem=0095 mem-acc=0000
+acc=7f mem=80 -> mem=80 acc=80 flags=0810 | acc-mem=0885 mem-acc=0810
+acc=42 mem=42 -> mem=55 acc=42 flags=0044 | acc-mem=0044 mem-acc=0044

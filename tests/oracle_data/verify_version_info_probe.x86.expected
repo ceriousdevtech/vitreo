@@ -1,0 +1,425 @@
+lie_is_real=0 real_sp=0.0 real_suite=0x100 real_product=1 lie_suite=0x100 lie_product=1
+lie maj EQ-1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie maj EQ+0                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj EQ+1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie maj G-1                        W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj G+0                        W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj G+1                        W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie maj GE-1                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj GE+0                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj GE+1                       W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie maj L-1                        W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie maj L+0                        W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj L+1                        W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj LE-1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie maj LE+0                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj LE+1                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie min EQ-1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie min EQ+0                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie min EQ+1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie min G-1                        W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie min G+0                        W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie min G+1                        W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie min GE-1                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie min GE+0                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie min GE+1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie min L-1                        W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie min L+0                        W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie min L+1                        W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie min LE-1                       W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie min LE+0                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie min LE+1                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie bld EQ-1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie bld EQ+0                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie bld EQ+1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie bld G-1                        W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie bld G+0                        W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie bld G+1                        W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie bld GE-1                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie bld GE+0                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie bld GE+1                       W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie bld L-1                        W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie bld L+0                        W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie bld L+1                        W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie bld LE-1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie bld LE+0                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie bld LE+1                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie spmaj EQ-1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmaj EQ+0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj EQ+1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmaj G-1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmaj G+0                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj G+1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmaj GE-1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmaj GE+0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj GE+1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmaj L-1                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj L+0                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj L+1                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj LE-1                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj LE+0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj LE+1                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmin EQ-1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmin EQ+0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmin EQ+1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmin G-1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmin G+0                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmin G+1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmin GE-1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmin GE+0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmin GE+1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmin L-1                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmin L+0                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie spmin L+1                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmin LE-1                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmin LE+0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmin LE+1                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj GE-1 min GE+5              W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj LE0 min GE+1               W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj EQ0 min G0                 W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj EQ0 min GE0                W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj EQ-1 min GE0               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie maj L+1 min GE+5               W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj G-1 min L-1                W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj GE0 min LE-1               W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj GE0 min L0                 W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj GE0 min EQ+1               W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie maj G0 min GE0                 W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj LE0 min G0                 W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj GE0 spmaj GE+1             W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie maj GE-1 spmaj GE+1            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj GE0 min GE0 spmaj GE0 spmin GE+1 W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie maj GE0 min GE0 spmaj G-1 spmin GE+1 W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie min GE+1 spmaj GE0             W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+lie min LE0 spmaj GE+1             W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie min L+1 spmaj GE+1             W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj GE0 spmin G0             W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie spmaj LE0 spmin GE+1           W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj EQ0 min EQ0 spmaj EQ0 spmin EQ0 W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj GE0 min EQ-1               W=1/57005 A=1/57005 Rtl=0x00000000/57005
+lie maj EQ0 min L0                 W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+lie maj GE-1 bld GE+1              W=0/1150 A=0/1150 Rtl=0x00000000/57005
+lie maj GE+1 bld GE-1              W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj EQ-1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj EQ+0                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj EQ+1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj G-1                       W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj G+0                       W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj G+1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj GE-1                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj GE+0                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj GE+1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj L-1                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+real maj L+0                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real maj L+1                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real maj LE-1                      W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+real maj LE+0                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real maj LE+1                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real min EQ-1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real min EQ+0                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real min EQ+1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real min G-1                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real min G+0                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real min G+1                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+real min GE-1                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real min GE+0                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real min GE+1                      W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+real min L-1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real min L+0                       W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real min L+1                       W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real min LE-1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real min LE+0                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real min LE+1                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real bld EQ-1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real bld EQ+0                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real bld EQ+1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real bld G-1                       W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real bld G+0                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real bld G+1                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real bld GE-1                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real bld GE+0                      W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real bld GE+1                      W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real bld L-1                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+real bld L+0                       W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+real bld L+1                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real bld LE-1                      W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+real bld LE+0                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real bld LE+1                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj EQ-1                    W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmaj EQ+0                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj EQ+1                    W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmaj G-1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmaj G+0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj G+1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmaj GE-1                    W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmaj GE+0                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj GE+1                    W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmaj L-1                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj L+0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj L+1                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj LE-1                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj LE+0                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj LE+1                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmin EQ-1                    W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmin EQ+0                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmin EQ+1                    W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmin G-1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmin G+0                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmin G+1                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmin GE-1                    W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmin GE+0                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmin GE+1                    W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmin L-1                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmin L+0                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real spmin L+1                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmin LE-1                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmin LE+0                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmin LE+1                    W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real maj GE-1 min GE+5             W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj LE0 min GE+1              W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real maj EQ0 min G0                W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj EQ0 min GE0               W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj EQ-1 min GE0              W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj L+1 min GE+5              W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real maj G-1 min L-1               W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj GE0 min LE-1              W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj GE0 min L0                W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj GE0 min EQ+1              W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj G0 min GE0                W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj LE0 min G0                W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real maj GE0 spmaj GE+1            W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj GE-1 spmaj GE+1           W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj GE0 min GE0 spmaj GE0 spmin GE+1 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj GE0 min GE0 spmaj G-1 spmin GE+1 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real min GE+1 spmaj GE0            W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+real min LE0 spmaj GE+1            W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real min L+1 spmaj GE+1            W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real spmaj GE0 spmin G0            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real spmaj LE0 spmin GE+1          W=1/57005 A=1/57005 Rtl=0x00000000/57005
+real maj EQ0 min EQ0 spmaj EQ0 spmin EQ0 W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj GE0 min EQ-1              W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj EQ0 min L0                W=0/1150 A=0/1150 Rtl=0x00000000/57005
+real maj GE-1 bld GE+1             W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+real maj GE+1 bld GE-1             W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat EQ 0                          W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat G 0                           W=1/57005 A=1/57005 Rtl=0x00000000/57005
+plat GE 0                          W=1/57005 A=1/57005 Rtl=0x00000000/57005
+plat L 0                           W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat LE 0                          W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat EQ 1                          W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat G 1                           W=1/57005 A=1/57005 Rtl=0x00000000/57005
+plat GE 1                          W=1/57005 A=1/57005 Rtl=0x00000000/57005
+plat L 1                           W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat LE 1                          W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat EQ 2                          W=1/57005 A=1/57005 Rtl=0x00000000/57005
+plat G 2                           W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat GE 2                          W=1/57005 A=1/57005 Rtl=0x00000000/57005
+plat L 2                           W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat LE 2                          W=1/57005 A=1/57005 Rtl=0x00000000/57005
+plat EQ 3                          W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat G 3                           W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat GE 3                          W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+plat L 3                           W=1/57005 A=1/57005 Rtl=0x00000000/57005
+plat LE 3                          W=1/57005 A=1/57005 Rtl=0x00000000/57005
+suite AND cur                      W=1/57005 A=1/57005 Rtl=0x00000000/57005
+suite AND cur|0x200                W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+suite OR cur|0x200                 W=1/57005 A=1/57005 Rtl=0x00000000/57005
+suite OR 0x200                     W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+suite AND 0                        W=1/57005 A=1/57005 Rtl=0x00000000/57005
+suite OR 0                         W=1/57005 A=1/57005 Rtl=0x00000000/57005
+suite EQ cur                       W=0/160 A=0/160 Rtl=0xc000000d/57005
+suite GE cur                       W=0/160 A=0/160 Rtl=0xc000000d/57005
+suite AND 0x4000                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+suite OR 0x4000|cur                W=1/57005 A=1/57005 Rtl=0x00000000/57005
+product EQ 1(cur)                  W=1/57005 A=1/57005 Rtl=0x00000000/57005
+product G 1(cur)                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+product GE 1(cur)                  W=1/57005 A=1/57005 Rtl=0x00000000/57005
+product L 1(cur)                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+product LE 1(cur)                  W=1/57005 A=1/57005 Rtl=0x00000000/57005
+product EQ 2                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+product G 2                        W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+product GE 2                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+product L 2                        W=1/57005 A=1/57005 Rtl=0x00000000/57005
+product LE 2                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+product EQ 3                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+product G 3                        W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+product GE 3                       W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+product L 3                        W=1/57005 A=1/57005 Rtl=0x00000000/57005
+product LE 3                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+err type_mask 0                    W=0/160 A=0/160 Rtl=0xc000000d/57005
+err cond_mask 0                    W=0/1150 A=0/1150 Rtl=0x00000000/57005
+err maj+min only maj cond          W=0/1150 A=0/1150 Rtl=0x00000000/57005
+err maj cond 6                     W=0/1150 A=0/1150 Rtl=0x00000000/57005
+err maj cond 7                     W=0/1150 A=0/1150 Rtl=0x00000000/57005
+err suite cond EQ+bad              W=0/160 A=0/160 Rtl=0xc000000d/57005
+err unknown type 0x100             W=1/57005 A=1/57005 Rtl=0x00000000/57005
+err maj + unknown 0x100            W=0/1150 A=0/1150 Rtl=0x00000000/57005
+err maj cond in high bits only     W=0/1150 A=0/1150 Rtl=0x00000000/57005
+size 0                             W=0/1150 A=0/1150 Rtl=0x00000000/57005
+size short                         W=0/1150 A=0/1150 Rtl=0x00000000/57005
+size 0 maj LE0                     W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range maj GE 0x80000000            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range maj L 0x80000000             W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+range maj GE 0x7fffffff            W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+range maj GE 0x8000000a            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range maj GE 0xffffffff            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range min GE 0x80000000            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range min LE 0x7fffffff            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range bld GE 0xffffffff            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range bld GE 0x80000000            W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range bld L 0x80000000             W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+range plat GE 0xffffffff           W=1/57005 A=1/57005 Rtl=0x00000000/57005
+range plat L 0x80000000            W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond maj 0 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond maj 0 +0                   W=0/1150 A=0/1150 Rtl=0x00000000/57005
+badcond maj 0 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond maj 6 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond maj 6 +0                   W=0/1150 A=0/1150 Rtl=0x00000000/57005
+badcond maj 6 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond maj 7 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond maj 7 +0                   W=0/1150 A=0/1150 Rtl=0x00000000/57005
+badcond maj 7 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond min 0 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond min 0 +0                   W=0/1150 A=0/1150 Rtl=0x00000000/57005
+badcond min 0 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond min 6 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond min 6 +0                   W=0/1150 A=0/1150 Rtl=0x00000000/57005
+badcond min 6 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond min 7 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond min 7 +0                   W=0/1150 A=0/1150 Rtl=0x00000000/57005
+badcond min 7 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 0 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 0 +0                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 0 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 6 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 6 +0                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 6 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 7 -1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 7 +0                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond bld 7 +1                   W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 0 -1                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 0 +0                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 0 +1                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 6 -1                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 6 +0                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 6 +1                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 7 -1                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 7 +0                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond plat 7 +1                  W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmaj 0 -1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmaj 0 +0                 W=1/57005 A=1/57005 Rtl=0x00000000/57005
+badcond spmaj 0 +1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmaj 6 -1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmaj 6 +0                 W=1/57005 A=1/57005 Rtl=0x00000000/57005
+badcond spmaj 6 +1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmaj 7 -1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmaj 7 +0                 W=1/57005 A=1/57005 Rtl=0x00000000/57005
+badcond spmaj 7 +1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 0 -1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 0 +0                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 0 +1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 6 -1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 6 +0                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 6 +1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 7 -1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 7 +0                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond spmin 7 +1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 0 -1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 0 +0               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 0 +1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 6 -1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 6 +0               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 6 +1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 7 -1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 7 +0               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond product 7 +1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+badcond suite 0 req=0              W=1/57005 A=1/57005 Rtl=0x00000000/57005
+badcond suite 0 req=cur|0x200      W=0/160 A=0/160 Rtl=0xc000000d/57005
+badcond suite 1 req=0              W=1/57005 A=1/57005 Rtl=0x00000000/57005
+badcond suite 1 req=cur|0x200      W=0/160 A=0/160 Rtl=0xc000000d/57005
+badcond suite 3 req=0              W=1/57005 A=1/57005 Rtl=0x00000000/57005
+badcond suite 3 req=cur|0x200      W=0/160 A=0/160 Rtl=0xc000000d/57005
+badcond suite 5 req=0              W=1/57005 A=1/57005 Rtl=0x00000000/57005
+badcond suite 5 req=cur|0x200      W=0/160 A=0/160 Rtl=0xc000000d/57005
+grp maj G0 min L+1                 W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp maj EQ0 min GE-1               W=0/1150 A=0/1150 Rtl=0x00000000/57005
+grp maj 0eq min GE-1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp maj 0eq min GE+1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp maj 6eq min GE-1               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp maj GE0 min 0+1                W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp maj GE0 min 0-1                W=0/1150 A=0/1150 Rtl=0x00000000/57005
+grp maj L0 spmin G0                W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+grp maj G0 spmin L0                W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp maj G0 spmin EQ0               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp maj EQ0 spmin G0               W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp spmaj G0                       W=1/57005 A=1/57005 Rtl=0x00000000/57005
+grp spmaj G0 spmin GE0             W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp spmaj GE0 spmin L0             W=1/57005 A=1/57005 Rtl=0x00000000/57005
+grp spmaj GE0 spmin LE-1           W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp min G0 spmin LE+1              W=1/57005 A=1/57005 Rtl=0xc0000059/57005
+grp maj 0+1 min GE0                W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+grp maj 0-1 min GE0                W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+order maj EQ+1 suite EQ            W=0/160 A=0/160 Rtl=0xc000000d/57005
+order plat EQ1 suite EQ            W=0/160 A=0/160 Rtl=0xc000000d/57005
+order bld EQ+1 suite EQ            W=0/160 A=0/160 Rtl=0xc000000d/57005
+order product EQ3 suite EQ         W=0/160 A=0/160 Rtl=0xc000000d/57005
+cond bit63 clear maj EQ            W=0/1150 A=0/1150 Rtl=0x00000000/57005
+cond bit63 clear maj EQ+1          W=0/1150 A=0/1150 Rtl=0xc0000059/57005
+VSCM type 0x3 GE = 0x8000000000000018
+VSCM type 0x6 GE = 0x80000000000000c0
+VSCM type 0xc GE = 0x8000000000000600
+VSCM type 0x18 GE = 0x8000000000003000
+VSCM type 0x30 GE = 0x8000000000018000
+VSCM type 0x60 GE = 0x80000000000c0000
+VSCM type 0xc0 GE = 0x8000000000600000
+VSCM type 0x81 GE = 0x8000000000600000
+VSCM type 0x180 GE = 0x8000000003000000
+VSCM type 0x3 GE = 0x8000000000000018
+VSCM type 0xff GE = 0x8000000000600000
+VSCM bit 0 EQ = 0x8000000000000001
+VSCM bit 1 EQ = 0x8000000000000008
+VSCM bit 2 EQ = 0x8000000000000040
+VSCM bit 3 EQ = 0x8000000000000200
+VSCM bit 4 EQ = 0x8000000000001000
+VSCM bit 5 EQ = 0x8000000000008000
+VSCM bit 6 EQ = 0x8000000000040000
+VSCM bit 7 EQ = 0x8000000000200000
+VSCM bit 8 EQ = 0x8000000001000000
+VSCM bit 9 EQ = 0x8000000008000000
+VSCM bit 10 EQ = 0x8000000040000000
+VSCM bit 11 EQ = 0x8000000200000000
+VSCM bit 12 EQ = 0x8000001000000000
+VSCM bit 13 EQ = 0x8000008000000000
+VSCM bit 14 EQ = 0x8000040000000000
+VSCM bit 15 EQ = 0x8000200000000000
+VSCM bit 16 EQ = 0x8001000000000000
+VSCM bit 17 EQ = 0x8008000000000000
+VSCM bit 18 EQ = 0x8040000000000000
+VSCM bit 19 EQ = 0x8200000000000000
+VSCM bit 20 EQ = 0x9000000000000000
+VSCM bit 21 EQ = 0x8000000000000000
+VSCM bit 22 EQ = 0x8000000000000000
+VSCM bit 23 EQ = 0x8000000000000000
+VSCM bit 24 EQ = 0x8000000000000000
+VSCM bit 25 EQ = 0x8000000000000000
+VSCM bit 26 EQ = 0x8000000000000000
+VSCM bit 27 EQ = 0x8000000000000000
+VSCM bit 28 EQ = 0x8000000000000000
+VSCM bit 29 EQ = 0x8000000000000000
+VSCM bit 30 EQ = 0x8000000000000000
+VSCM bit 31 EQ = 0x8000000000000000
+VSCM chain maj EQ then maj GE = 0x8000000000000018
+VSCM keep 0x1234 maj EQ = 0x800000000000123c
+VSCM keep 0x1234 type0 cond0 = 0x0
+VSCM keep 0x1234 maj cond0 = 0x8000000000001234
+VSCM keep 0x1234 type0 EQ = 0x0
+VSCM keep 0x0 maj cond0 = 0x8000000000000000
+VSCM maj cond 0xff = 0x8000000000000038
+VSCM maj cond 0x0e = 0x8000000000000030
+VerSetConditionMask maj EQ = 0x8000000000000008
+VerSetConditionMask maj|min GE = 0x8000000000000018
+VerSetConditionMask suite AND, product LE = 0x8000000000b80000
+VerSetConditionMask 0x100 EQ = 0x8000000001000000
+VerSetConditionMask maj cond 9 = 0x8000000000000008
+VerSetConditionMask type 0 = 0x0
+VerSetConditionMask cond 0 = 0x8000000000000008

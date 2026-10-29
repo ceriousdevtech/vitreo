@@ -1,0 +1,41 @@
+== x86 acp=1252
+iswindowunicode w=1 a=0
+postw_geta_char_euro post=1 got=1 msg=102 w=80 l=11
+postw_geta_char_e_acute post=1 got=1 msg=102 w=e9 l=11
+postw_geta_char_alpha post=1 got=1 msg=102 w=61 l=11
+postw_geta_char_surrogate post=1 got=1 msg=102 w=3f l=11
+postw_geta_char_high_bits post=1 got=1 msg=102 w=80 l=11
+postw_geta_syschar_euro post=1 got=1 msg=106 w=80 l=11
+postw_geta_deadchar_euro post=1 got=1 msg=103 w=80 l=11
+postw_geta_sysdeadchar_euro post=1 got=1 msg=107 w=80 l=11
+postw_geta_imechar_euro post=1 got=1 msg=286 w=80 l=11
+postw_geta_keydown post=1 got=1 msg=100 w=20ac l=11
+postw_geta_app post=1 got=1 msg=8000 w=20ac l=11
+posta_getw_char_80 post=1 got=1 msg=102 w=20ac l=11
+posta_getw_char_e9 post=1 got=1 msg=102 w=e9 l=11
+posta_getw_char_81 post=1 got=1 msg=102 w=81 l=11
+posta_getw_char_high_bits post=1 got=1 msg=102 w=20ac l=11
+posta_getw_syschar_80 post=1 got=1 msg=106 w=20ac l=11
+posta_getw_app post=1 got=1 msg=8000 w=80 l=11
+posta_geta_char_80 post=1 got=1 msg=102 w=80 l=11
+postw_getw_char_euro post=1 got=1 msg=102 w=20ac l=11
+postw_peeka_char_euro post=1 got=1 msg=102 w=80 l=11
+posta_peekw_char_80 post=1 got=1 msg=102 w=20ac l=11
+postw_peek_noremove_a noremove_a msg=102 w=80
+postw_peek_noremove_a post=1 got=1 msg=102 w=20ac l=11
+postthreada_getw_char_80 msg=102 w=20ac
+postthreadw_geta_char_euro msg=102 w=80
+postthreada_getw_app msg=8000 w=80
+disp_postw_getw_dispw_to_a retrieved_w=20ac proc_msg=102 proc_w=80
+disp_postw_geta_dispa_to_w retrieved_w=80 proc_msg=102 proc_w=20ac
+disp_postw_geta_dispa_to_a retrieved_w=80 proc_msg=102 proc_w=80
+disp_postw_getw_dispa_to_w retrieved_w=20ac proc_msg=102 proc_w=2000ac
+disp_posta_geta_dispw_to_w retrieved_w=80 proc_msg=102 proc_w=80
+disp_postw_getw_dispw_to_a_app retrieved_w=20ac proc_msg=8000 proc_w=20ac
+sendw_to_a_char_euro proc_msg=102 proc_w=80
+senda_to_w_char_80 proc_msg=102 proc_w=20ac
+senda_to_a_char_80 proc_msg=102 proc_w=80
+sendw_to_w_char_euro proc_msg=102 proc_w=20ac
+sendw_to_a_char_alpha proc_msg=102 proc_w=61
+sendw_to_a_app proc_msg=8000 proc_w=20ac
+done

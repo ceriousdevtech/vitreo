@@ -1,0 +1,17 @@
+device ok, feature level 0xb000
+DrawInstanced start=0 count=2            SV_InstanceID+1000: [0]=1000 [5]=1001
+DrawInstanced start=0 count=2            attr: [0]=100 [5]=101
+DrawInstanced start=5 count=2            SV_InstanceID+1000: [5]=1000 [10]=1001
+DrawInstanced start=5 count=2            attr: [5]=105 [10]=106
+DrawIndexedInstanced start=3 count=2     SV_InstanceID+1000: [3]=1000 [8]=1001
+DrawIndexedInstanced start=3 count=2     attr: [3]=103 [8]=104
+DrawInstancedIndirect start=6 count=2    SV_InstanceID+1000: [6]=1000 [11]=1001
+DrawInstancedIndirect start=6 count=2    attr: [6]=106 [11]=107
+DrawIndexedInstancedIndirect start=9 count=2 SV_InstanceID+1000: [9]=1000 [14]=1001
+DrawIndexedInstancedIndirect start=9 count=2 attr: [9]=109 [14]=110
+stride0 off8 DrawInstanced start=0       SV_InstanceID+1000: [2]=1000 [6]=1001
+stride0 off8 DrawInstanced start=0       attr: [2]=102 [6]=102
+stride0 off8 DrawInstanced start=5       SV_InstanceID+1000: [2]=1000 [6]=1001
+stride0 off8 DrawInstanced start=5       attr: [2]=102 [6]=102
+stride0 off8 DrawIndexedIndirect start=9 SV_InstanceID+1000: [2]=1000 [6]=1001
+stride0 off8 DrawIndexedIndirect start=9 attr: [2]=102 [6]=102

@@ -1,0 +1,16 @@
+level b000 (got b000)
+  CreatePixelShader ps_typed_texture.cso hr=00000000 obj=set
+  CreatePixelShader ps_typed_buffer.cso hr=00000000 obj=set
+  CreatePixelShader ps_raw_structured.cso hr=00000000 obj=set
+  CreatePixelShader ps_early_coherent.cso hr=00000000 obj=set
+  CreatePixelShader ps_sync.cso hr=00000000 obj=set
+  CreateVertexShader vs_uav.cso hr=80070057 obj=null
+  CreateVertexShader vs_uav.cso (NULL out) hr=80070057
+level b100 (got b100)
+  CreatePixelShader ps_typed_texture.cso hr=00000000 obj=set
+  CreatePixelShader ps_typed_buffer.cso hr=00000000 obj=set
+  CreatePixelShader ps_raw_structured.cso hr=00000000 obj=set
+  CreatePixelShader ps_early_coherent.cso hr=00000000 obj=set
+  CreatePixelShader ps_sync.cso hr=00000000 obj=set
+  CreateVertexShader vs_uav.cso hr=00000000 obj=set
+  CreateVertexShader vs_uav.cso (NULL out) hr=00000001

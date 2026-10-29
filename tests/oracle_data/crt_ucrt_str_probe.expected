@@ -1,0 +1,75 @@
+strlen_big n=100000
+wcslen_big n=100000
+strdup_big n=100000 last=120
+strcspn_big n=99990
+strspn_big n=99990
+strpbrk_big off=99990
+strtol v=123 end_off=3 errno=0 ip=0
+strtoul v=31 end_ok=1 errno=0 ip=0
+strtol_ovf v=2147483647 errno=34 ip=0
+strtol_none v=0 end_is_s=1 errno=0 ip=0
+strtol_base1 v=0 end_written=1 errno=22 ip=1
+strtol_null v=0 end_written=1 errno=22 ip=1
+strtoul_neg v=4294967295 errno=0 ip=0
+strtoul_ovf v=4294967295 errno=34 ip=0
+wcstoul_ovf v=4294967295 end_off=10 errno=34 ip=0
+wcstoul_u0131 v=0 end_off=0 errno=0 ip=0
+wcstoul_u2030 v=1 end_off=1 errno=0 ip=0
+wcstoul_fullwidth v=12 end_off=2 errno=0 ip=0
+wcstoul_neg v=4294967295 errno=0 ip=0
+wcstoul_long v=7 end_off=301 errno=0 ip=0
+wcstod_ovf bits=0x7ff0000000000000 errno=34 ip=0
+wcstod_unf bits=0x0 errno=34 ip=0
+wcstod_u012e bits=0x3ff0000000000000 end_off=1 errno=0 ip=0
+wcstod_long bits=0x4014000000000000 end_off=301 errno=0 ip=0
+strtof_ovf bits=0x7f800000 errno=34 ip=0
+strtof_unf bits=0x0 errno=34 ip=0
+strtof_half bits=0x3f800001 errno=0 ip=0
+strtof_halfeven bits=0x3f800000 errno=0 ip=0
+strtof_dbl_round bits=0x15ae43fd errno=0 ip=0
+wtoi_ovf v=2147483647 errno=34 ip=0
+wtoi_unf v=-2147483648 errno=34 ip=0
+wtoi_null v=0 errno=22 ip=1
+atoi_ovf v=2147483647 errno=34 ip=0
+atoi_null v=0 errno=22 ip=1
+wtoi64_ovf v=9223372036854775807 errno=34 ip=0
+wtoi64_null v=0 errno=22 ip=1
+wtoi64 v=-1234567890123 errno=0 ip=0
+atoi64 v=-1234567890123 errno=0 ip=0
+atoll_ovf v=-9223372036854775808 errno=34 ip=0
+atoll v=123456789012 errno=0 ip=0
+atoll_null v=0 errno=22 ip=1
+wtof_null bits=0x0 errno=22 ip=1
+wtof_ovf bits=0x7ff0000000000000 errno=0 ip=0
+wtof_nonascii bits=0x4004000000000000 errno=0 ip=0
+wtof_fullwidth bits=0x3ff0000000000000 errno=0 ip=0
+wcstombs_bad r=0xffffffffffffffff errno=42 ip=0
+wcstombs_latin1 r=0x2 "a\xe9" errno=0 ip=0
+wcstombs_count r=0x2 errno=0 ip=0
+stricmp_null r=0x7fffffff errno=22 ip=1
+stricmp r=-1 errno=0 ip=0
+strnicmp_null r=0x7fffffff errno=22 ip=1
+strnicmp_null_zero r=0x7fffffff errno=22 ip=1
+tolower_eof r=-1 errno=0 ip=0
+tolower_141 r=321 errno=0 ip=0
+tolower_neg2 r=-2 errno=0 ip=0
+tolower_A r=97 errno=0 ip=0
+tolower_C0 r=192 errno=0 ip=0
+toupper_161 r=353 errno=0 ip=0
+toupper_eof r=-1 errno=0 ip=0
+toupper_e0 r=224 errno=0 ip=0
+isw_hibits alpha=1 digit=1 space=1 xdigit=1 alnum=1
+iswdigit_ff11 r=1 r660=1 r966=1
+iswalpha_mask r=0x101 r_e9=0x102
+setmbcp932 rc=0 errno=0 ip=0
+mbspbrk_dbcs off=2
+mbschr_dbcs off=2
+mbschr_dbcs_char off=0
+mbschr_nul off=3
+mbsnbcmp_lead n2=0 n3=-1
+mbsnbcpy_split "x\x00ZZZZZZ"
+mbsnbcpy_pad "ab\x00\x00\x00ZZZ"
+mbsnbcpy_null p=0 errno=22 ip=1
+mbschr_null p=0 errno=22 ip=1
+mbspbrk_sbcs off=1
+exit=0

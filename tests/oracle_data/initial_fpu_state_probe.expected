@@ -1,0 +1,2 @@
+64: main fcw=027f mxcsr=00001f80 thread fcw=027f mxcsr=00001f80
+32: main fcw=027f mxcsr=00001f80 thread fcw=027f mxcsr=00001f80

@@ -1,0 +1,16 @@
+control_query_missing r=1069
+control_stop_missing r=1069
+control_flush_missing r=1069
+control_null_props r=57
+control_null_name_null_handle r=57
+control_bad_code r=57
+control_bad_handle r=6
+control_small_props r=18
+open_realtime_missing valid=1 gle=0
+process_realtime_missing returned=1 r=1069
+close_realtime_missing r=0 gle=dead
+close_again r=6
+open_file_missing lo=ffffffff hi=ffffffff gle=2
+open_null lo=ffffffff hi=ffffffff gle=57
+tracemessage_bad_handle r=6 gle=dead
+tracemessage_zero_handle r=6 gle=dead

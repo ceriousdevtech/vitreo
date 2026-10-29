@@ -1,0 +1,7 @@
+# winoracle (Windows 11, WARP-free hardware adapter), 2026-09-27:
+#   drawreplay.exe vs_buffer_bounds.cfg w.bin
+# Pixels 0..15 hold Far[id] (t9, 16 elements) + Near*1e-3; pixels 16..29
+# hold only Near*1e-3 (t9 read past the view = 0). Vitreo matches every
+# pixel bit-for-bit except 4 and 12, which differ by 1 ULP in the PS `mad`
+# (fused vs unfused: D3D11.3 3.1.3.2 permits either).
+rt0 words=256 zero=136 nan=0 sum=-0.564096

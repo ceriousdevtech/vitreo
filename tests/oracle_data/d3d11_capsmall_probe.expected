@@ -1,0 +1,303 @@
+# winoracle (Windows 11, Microsoft Basic Render Driver / WARP, SDK 10.0.26100), 2026-09-28.
+# x64 output; the x86 build prints the same lines but for the pointer-size comment. Deterministic
+# (two runs identical).
+# Remaining differences under Vitreo (Apple M4 Pro), each owned or explained:
+# - FL* feature 10 members 0-1 (TiledResourcesTier, MinMaxFiltering) and feature 14 members 4-6
+#   (TiledResourcesTier, MapOnDefaultTextures, StandardSwizzle), also in "f14 size 36 accepted":
+#   the tiled-resource and texture-map passes own them.
+# - FL* feature 19 / feature 20 SharedResourceTier 3 vs 1: TIER_2 and TIER_3 are defined by sharing
+#   across Direct3D 11 and Direct3D 12 (Learn D3D11_SHARED_RESOURCE_TIER), and the D3D12 frontend
+#   opens no shared handle. TIER_3's Direct3D 11 half (R11G11B10_FLOAT NT handles, "share") matches.
+# - "MSAA x4 rect": ClearView rectangles on a multisampled view (depth or colour) fail loudly
+#   (UNIMPLEMENTED d3d11!ClearView); a whole multisampled depth view clears.
+# d3d11_capsmall_probe, pointer size 8
+== sizes: CheckFeatureSupport(f, buf, size) for size 0..96 ==
+f0 (sizeof 8): ok sizes: 8(hr=S_OK,wrote<=8); refused sizes leave the buffer untouched
+f1 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f2 (sizeof 8): ok sizes: 8(hr=S_OK,wrote<=8); refused sizes leave the buffer untouched
+f3 (sizeof 8): ok sizes: 8(hr=S_OK,wrote<=8); refused sizes leave the buffer untouched
+f4 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f5 (sizeof 56): ok sizes: 56(hr=S_OK,wrote<=56); refused sizes leave the buffer untouched
+f6 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f7 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f8 (sizeof 8): ok sizes: 8(hr=S_OK,wrote<=8); refused sizes leave the buffer untouched
+f9 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f10 (sizeof 16): ok sizes: 16(hr=S_OK,wrote<=16); refused sizes leave the buffer untouched
+f11 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f12 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f13 (sizeof 16): ok sizes: 16(hr=S_OK,wrote<=16); refused sizes leave the buffer untouched
+f14 size 36 accepted: bytes 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00 cd cd cd cd cd cd cd cd
+f14 (sizeof 32): ok sizes: 32(hr=S_OK,wrote<=32) 36(hr=S_OK,wrote<=36); refused sizes leave the buffer untouched
+f15 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f16 (sizeof 8): ok sizes: 8(hr=S_OK,wrote<=8); refused sizes leave the buffer untouched
+f17 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f18 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f19 (sizeof 4): ok sizes: 4(hr=S_OK,wrote<=4); refused sizes leave the buffer untouched
+f20 (sizeof 8): ok sizes: 8(hr=S_OK,wrote<=8); refused sizes leave the buffer untouched
+f21 (sizeof 0): ok sizes: none; refused sizes leave the buffer untouched
+f22 (sizeof 0): ok sizes: none; refused sizes leave the buffer untouched
+f64 (sizeof 0): ok sizes: none; refused sizes leave the buffer untouched
+== values ==
+FL11_0 feature 8: hr=S_OK data=3,3
+FL11_0 feature 10: hr=S_OK data=1,1,1,1
+FL11_0 feature 12: hr=S_OK data=1
+FL11_0 feature 14: hr=S_OK data=0,1,0,0,1,1,1,1
+FL11_0 feature 17: hr=S_OK data=1
+FL11_0 feature 19: hr=S_OK data=3
+FL11_0 feature 20: hr=S_OK data=0,3
+FL11_0 FORMAT_SUPPORT2(R11G11B10_FLOAT): hr=S_OK shareable=1
+FL10_1 feature 8: hr=S_OK data=3,3
+FL10_1 feature 10: hr=S_OK data=0,1,1,0
+FL10_1 feature 12: hr=S_OK data=1
+FL10_1 feature 14: hr=S_OK data=0,0,0,0,0,1,1,1
+FL10_1 feature 17: hr=S_OK data=1
+FL10_1 feature 19: hr=S_OK data=3
+FL10_1 feature 20: hr=S_OK data=0,3
+FL10_1 FORMAT_SUPPORT2(R11G11B10_FLOAT): hr=S_OK shareable=1
+FL10_0 feature 8: hr=S_OK data=3,3
+FL10_0 feature 10: hr=S_OK data=0,1,1,0
+FL10_0 feature 12: hr=S_OK data=1
+FL10_0 feature 14: hr=S_OK data=0,0,0,0,0,1,1,1
+FL10_0 feature 17: hr=S_OK data=1
+FL10_0 feature 19: hr=S_OK data=3
+FL10_0 feature 20: hr=S_OK data=0,3
+FL10_0 FORMAT_SUPPORT2(R11G11B10_FLOAT): hr=S_OK shareable=1
+FL9_3 feature 8: hr=S_OK data=3,3
+FL9_3 feature 10: hr=S_OK data=0,1,1,0
+FL9_3 feature 12: hr=S_OK data=1
+FL9_3 feature 14: hr=S_OK data=0,0,0,0,0,1,1,1
+FL9_3 feature 17: hr=S_OK data=1
+FL9_3 feature 19: hr=S_OK data=3
+FL9_3 feature 20: hr=S_OK data=0,3
+FL9_3 FORMAT_SUPPORT2(R11G11B10_FLOAT): hr=E_FAIL shareable=0
+FL9_1 feature 8: hr=S_OK data=3,3
+FL9_1 feature 10: hr=S_OK data=0,1,1,0
+FL9_1 feature 12: hr=S_OK data=1
+FL9_1 feature 14: hr=S_OK data=0,0,0,0,0,1,1,1
+FL9_1 feature 17: hr=S_OK data=1
+FL9_1 feature 19: hr=S_OK data=3
+FL9_1 feature 20: hr=S_OK data=0,3
+FL9_1 FORMAT_SUPPORT2(R11G11B10_FLOAT): hr=E_FAIL shareable=0
+== marker ==
+immediate QI(ID3DUserDefinedAnnotation): S_OK
+immediate GetStatus: 0
+immediate BeginEvent -1 -1, EndEvent -1 -1 -1 (one unbalanced), NULL name -1/-1
+immediate QI(ID3D11DeviceContext2): S_OK
+immediate IsAnnotationEnabled: 0
+immediate Int markers returned
+immediate mixed: BeginEvent -1, EndEvent after Int EndEvent -1
+CreateDeferredContext: S_OK
+deferred QI(ID3DUserDefinedAnnotation): S_OK
+deferred GetStatus: 0
+deferred BeginEvent -1 -1, EndEvent -1 -1 -1 (one unbalanced), NULL name -1/-1
+deferred QI(ID3D11DeviceContext2): S_OK
+deferred IsAnnotationEnabled: 0
+deferred Int markers returned
+deferred mixed: BeginEvent -1, EndEvent after Int EndEvent -1
+deferred FinishCommandList: S_OK
+deferred list executed
+== clearview (4x2 depth, cleared to 0.25 / stencil 0x5a first) ==
+D32 whole 0.75: 3f400000 3f400000 3f400000 3f400000 / 3f400000 3f400000 3f400000 3f400000
+D16 whole 0.75: bfff bfff bfff bfff / bfff bfff bfff bfff
+D32 whole 0: 00000000 00000000 00000000 00000000 / 00000000 00000000 00000000 00000000
+D16 whole 0: 0000 0000 0000 0000 / 0000 0000 0000 0000
+D32 whole 1: 3f800000 3f800000 3f800000 3f800000 / 3f800000 3f800000 3f800000 3f800000
+D16 whole 1: ffff ffff ffff ffff / ffff ffff ffff ffff
+D32 whole -0.5: bf000000 bf000000 bf000000 bf000000 / bf000000 bf000000 bf000000 bf000000
+D16 whole -0.5: 0000 0000 0000 0000 / 0000 0000 0000 0000
+D32 whole 1.5: 3fc00000 3fc00000 3fc00000 3fc00000 / 3fc00000 3fc00000 3fc00000 3fc00000
+D16 whole 1.5: ffff ffff ffff ffff / ffff ffff ffff ffff
+D32 whole 0.3: 3e99999a 3e99999a 3e99999a 3e99999a / 3e99999a 3e99999a 3e99999a 3e99999a
+D16 whole 0.3: 4ccc 4ccc 4ccc 4ccc / 4ccc 4ccc 4ccc 4ccc
+D32 whole 0.333333: 3eaaaaab 3eaaaaab 3eaaaaab 3eaaaaab / 3eaaaaab 3eaaaaab 3eaaaaab 3eaaaaab
+D16 whole 0.333333: 5555 5555 5555 5555 / 5555 5555 5555 5555
+D32 whole NaN: 7fc00000 7fc00000 7fc00000 7fc00000 / 7fc00000 7fc00000 7fc00000 7fc00000
+D32 whole +Inf: 7f800000 7f800000 7f800000 7f800000 / 7f800000 7f800000 7f800000 7f800000
+D32 whole -Inf: ff800000 ff800000 ff800000 ff800000 / ff800000 ff800000 ff800000 ff800000
+D32 whole -0: 80000000 80000000 80000000 80000000 / 80000000 80000000 80000000 80000000
+D16 whole NaN: 0000 0000 0000 0000 / 0000 0000 0000 0000
+D32 whole 1e-40 (denormal): 00000000 00000000 00000000 00000000 / 00000000 00000000 00000000 00000000
+D32 whole -1e-40 (denormal): 80000000 80000000 80000000 80000000 / 80000000 80000000 80000000 80000000
+D32S8 whole 1.5: s00 3fc00000 s00 3fc00000 s00 3fc00000 s00 3fc00000 / s00 3fc00000 s00 3fc00000 s00 3fc00000 s00 3fc00000
+D24S8 whole 1.5: s00 ffffff s00 ffffff s00 ffffff s00 ffffff / s00 ffffff s00 ffffff s00 ffffff s00 ffffff
+D24S8 whole 0.3: s00 4ccccc s00 4ccccc s00 4ccccc s00 4ccccc / s00 4ccccc s00 4ccccc s00 4ccccc s00 4ccccc
+R24G8_TYPELESS as D24S8 whole 0.75: s00 bfffff s00 bfffff s00 bfffff s00 bfffff / s00 bfffff s00 bfffff s00 bfffff s00 bfffff
+D24S8 whole 0.75 green 7: s07 bfffff s07 bfffff s07 bfffff s07 bfffff / s07 bfffff s07 bfffff s07 bfffff s07 bfffff
+D32S8 whole 0.75 green 7: s07 3f400000 s07 3f400000 s07 3f400000 s07 3f400000 / s07 3f400000 s07 3f400000 s07 3f400000 s07 3f400000
+D24S8 whole 0.75 green 7.9: s08 bfffff s08 bfffff s08 bfffff s08 bfffff / s08 bfffff s08 bfffff s08 bfffff s08 bfffff
+D32S8 whole 0.75 green 7.9: s08 3f400000 s08 3f400000 s08 3f400000 s08 3f400000 / s08 3f400000 s08 3f400000 s08 3f400000 s08 3f400000
+D24S8 whole 0.75 green 300: sff bfffff sff bfffff sff bfffff sff bfffff / sff bfffff sff bfffff sff bfffff sff bfffff
+D32S8 whole 0.75 green 300: sff 3f400000 sff 3f400000 sff 3f400000 sff 3f400000 / sff 3f400000 sff 3f400000 sff 3f400000 sff 3f400000
+D24S8 whole 0.75 green -3: s00 bfffff s00 bfffff s00 bfffff s00 bfffff / s00 bfffff s00 bfffff s00 bfffff s00 bfffff
+D32S8 whole 0.75 green -3: s00 3f400000 s00 3f400000 s00 3f400000 s00 3f400000 / s00 3f400000 s00 3f400000 s00 3f400000 s00 3f400000
+D24S8 whole 0.75 green nan: s00 bfffff s00 bfffff s00 bfffff s00 bfffff / s00 bfffff s00 bfffff s00 bfffff s00 bfffff
+D32S8 whole 0.75 green nan: s00 3f400000 s00 3f400000 s00 3f400000 s00 3f400000 / s00 3f400000 s00 3f400000 s00 3f400000 s00 3f400000
+D24S8 whole 0.75 green 8.5: s08 bfffff s08 bfffff s08 bfffff s08 bfffff / s08 bfffff s08 bfffff s08 bfffff s08 bfffff
+D32S8 whole 0.75 green 8.5: s08 3f400000 s08 3f400000 s08 3f400000 s08 3f400000 / s08 3f400000 s08 3f400000 s08 3f400000 s08 3f400000
+R32_TYPELESS as D32 whole 0.75: 3f400000 3f400000 3f400000 3f400000 / 3f400000 3f400000 3f400000 3f400000
+R16_TYPELESS as D16 whole 0.75: bfff bfff bfff bfff / bfff bfff bfff bfff
+D24S8 whole 0.75 (has stencil): s00 bfffff s00 bfffff s00 bfffff s00 bfffff / s00 bfffff s00 bfffff s00 bfffff s00 bfffff
+D32S8 whole 0.75 (has stencil): s00 3f400000 s00 3f400000 s00 3f400000 s00 3f400000 / s00 3f400000 s00 3f400000 s00 3f400000 s00 3f400000
+D32 rect (1,0)-(3,1) 0.75: 3e800000 3f400000 3f400000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+D16 rect (1,0)-(3,1) 0.75: 4000 bfff bfff 4000 / 4000 4000 4000 4000
+D32 two rects 0.75: 3e800000 3e800000 3e800000 3f400000 / 3f400000 3e800000 3e800000 3f400000
+D32 rect (-5,-5)-(2,1) 0.75: 3f400000 3f400000 3e800000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+D32 rect (0,0)-(100,100) 0.75: 3f400000 3f400000 3f400000 3f400000 / 3f400000 3f400000 3f400000 3f400000
+D32 empty rect 0.75: 3e800000 3e800000 3e800000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+D32 inverted rect 0.75: 3e800000 3e800000 3e800000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+D32 rect outside 0.75: 3e800000 3e800000 3e800000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+D32 NULL rects count 2 0.75: 3e800000 3e800000 3e800000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+D32 rect 1.5: 3e800000 3fc00000 3fc00000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+D24S8 rect 0.75 (has stencil): s5a 400000 s00 bfffff s00 bfffff s5a 400000 / s5a 400000 s5a 400000 s5a 400000 s5a 400000
+array slices 1-2 whole 0.5 (mip0): 3e800000 3e800000 3e800000 3e800000 / 3e800000 3e800000 3e800000 3e800000 | 3f000000 3f000000 3f000000 3f000000 / 3f000000 3f000000 3f000000 3f000000 | 3f000000 3f000000 3f000000 3f000000 / 3f000000 3f000000 3f000000 3f000000
+array slices 1-2 rect (0,0)-(2,1) 0.75 (mip0): 3e800000 3e800000 3e800000 3e800000 / 3e800000 3e800000 3e800000 3e800000 | 3f400000 3f400000 3f000000 3f000000 / 3f000000 3f000000 3f000000 3f000000 | 3f400000 3f400000 3f000000 3f000000 / 3f000000 3f000000 3f000000 3f000000
+mip1 slice2 whole 1.0 (mip1): 3e800000 3e800000 | 3e800000 3e800000 | 3f800000 3f800000
+RTV NULL rects count 2: 00000000 00000000 00000000 00000000
+UAV NULL rects count 2: 00000000 00000000 00000000 00000000
+read-only-depth DSV whole 0.75: 3f400000 3f400000 3f400000 3f400000 / 3f400000 3f400000 3f400000 3f400000
+bound DSV whole 0.75: 3f400000 3f400000 3f400000 3f400000 / 3f400000 3f400000 3f400000 3f400000
+MSAA x4 whole 0.75 (x,y,sample): 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000
+MSAA x4 rect (1,0)-(3,1) 0.75: 3e800000 3e800000 3e800000 3e800000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3f400000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000 3e800000
+deferred rect before execute: 3e800000 3e800000 3e800000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+deferred rect after execute: 3e800000 3f400000 3f400000 3e800000 / 3e800000 3e800000 3e800000 3e800000
+== mapdef ==
+FL11_0 creation columns: m0 RAW ST4 DI DI|RAW SH KM CL GU GDI
+FL11_0 DEF b=0        c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=0        c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=0        c=RW: IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV      c=W : OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV      c=R : OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV      c=RW: OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=UAV      c=W : OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=UAV      c=R : OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=UAV      c=RW: OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|UAV  c=W : OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|UAV  c=R : OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|UAV  c=RW: OK OK OK IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|b8   c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|b8   c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|b8   c=RW: IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|DEC  c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|DEC  c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|DEC  c=RW: IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|ENC  c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|ENC  c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|ENC  c=RW: IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|VB   c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|VB   c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SRV|VB   c=RW: IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=UAV|IB   c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=UAV|IB   c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=UAV|IB   c=RW: IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=CB       c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=CB       c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=CB       c=RW: IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SO       c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SO       c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=SO       c=RW: IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=RT       c=W : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=RT       c=R : IA IA IA IA IA IA IA IA IA IA
+FL11_0 DEF b=RT       c=RW: IA IA IA IA IA IA IA IA IA IA
+GetDesc: usage 0 bind 0x8 cpu 0x30000 misc 0x0
+IDXGIResource::GetUsage: S_OK 0x10
+c=W  Map(READ, flags 0x0): E_INVALIDARG pData NULL
+c=W  Map(READ, flags 0x100000): E_INVALIDARG pData NULL
+c=W  Map(WRITE, flags 0x0): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=W  Map(WRITE, flags 0x100000): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=W  Map(READ_WRITE, flags 0x0): E_INVALIDARG pData NULL
+c=W  Map(READ_WRITE, flags 0x100000): E_INVALIDARG pData NULL
+c=W  Map(WRITE_DISCARD, flags 0x0): E_INVALIDARG pData NULL
+c=W  Map(WRITE_DISCARD, flags 0x100000): E_INVALIDARG pData NULL
+c=W  Map(WRITE_NO_OVERWRITE, flags 0x0): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=W  Map(WRITE_NO_OVERWRITE, flags 0x100000): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=W  Map(type0, flags 0x0): E_INVALIDARG pData NULL
+c=W  Map(type0, flags 0x100000): E_INVALIDARG pData NULL
+c=W  Map(type6, flags 0x0): E_INVALIDARG pData NULL
+c=W  Map(type6, flags 0x100000): E_INVALIDARG pData NULL
+c=W  Map(subresource 1): E_INVALIDARG
+c=W  Map(pMapped NULL): E_INVALIDARG
+c=R  Map(READ, flags 0x0): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=R  Map(READ, flags 0x100000): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=R  Map(WRITE, flags 0x0): E_INVALIDARG pData NULL
+c=R  Map(WRITE, flags 0x100000): E_INVALIDARG pData NULL
+c=R  Map(READ_WRITE, flags 0x0): E_INVALIDARG pData NULL
+c=R  Map(READ_WRITE, flags 0x100000): E_INVALIDARG pData NULL
+c=R  Map(WRITE_DISCARD, flags 0x0): E_INVALIDARG pData NULL
+c=R  Map(WRITE_DISCARD, flags 0x100000): E_INVALIDARG pData NULL
+c=R  Map(WRITE_NO_OVERWRITE, flags 0x0): E_INVALIDARG pData NULL
+c=R  Map(WRITE_NO_OVERWRITE, flags 0x100000): E_INVALIDARG pData NULL
+c=R  Map(type0, flags 0x0): E_INVALIDARG pData NULL
+c=R  Map(type0, flags 0x100000): E_INVALIDARG pData NULL
+c=R  Map(type6, flags 0x0): E_INVALIDARG pData NULL
+c=R  Map(type6, flags 0x100000): E_INVALIDARG pData NULL
+c=R  Map(subresource 1): E_INVALIDARG
+c=R  Map(pMapped NULL): E_INVALIDARG
+c=RW Map(READ, flags 0x0): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=RW Map(READ, flags 0x100000): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=RW Map(WRITE, flags 0x0): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=RW Map(WRITE, flags 0x100000): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=RW Map(READ_WRITE, flags 0x0): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=RW Map(READ_WRITE, flags 0x100000): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=RW Map(WRITE_DISCARD, flags 0x0): E_INVALIDARG pData NULL
+c=RW Map(WRITE_DISCARD, flags 0x100000): E_INVALIDARG pData NULL
+c=RW Map(WRITE_NO_OVERWRITE, flags 0x0): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=RW Map(WRITE_NO_OVERWRITE, flags 0x100000): S_OK RowPitch 64 DepthPitch 64 first 11110000
+c=RW Map(type0, flags 0x0): E_INVALIDARG pData NULL
+c=RW Map(type0, flags 0x100000): E_INVALIDARG pData NULL
+c=RW Map(type6, flags 0x0): E_INVALIDARG pData NULL
+c=RW Map(type6, flags 0x100000): E_INVALIDARG pData NULL
+c=RW Map(subresource 1): E_INVALIDARG
+c=RW Map(pMapped NULL): E_INVALIDARG
+W-only Map(WRITE) exposes: 22220000 22220001 22220002 22220003 22220004 22220005 22220006 22220007 22220008 22220009 2222000a 2222000b 2222000c 2222000d 2222000e 2222000f
+after partial WRITE: 22220000 22220001 22220002 aaaa0003 22220004 22220005 22220006 22220007 22220008 aaaa0009 2222000a 2222000b 2222000c 2222000d 2222000e 2222000f
+Map twice: S_OK S_OK same=1
+Unmap of an unmapped buffer returned
+RW SRV|UAV RAW create: S_OK
+Map(READ, DO_NOT_WAIT) right after the dispatch: S_OK or WAS_STILL_DRAWING
+Map(READ) after the dispatch: S_OK
+CS-written words 0..7: 44440000 44440003 44440006 44440009 4444000c 4444000f 44440012 44440015
+CS-written words 60..63: 444400b4 444400b7 444400ba 444400bd
+Map(WRITE) after a second dispatch: S_OK
+exposed words 0..7: 55550000 55550001 55550002 55550003 55550004 55550005 55550006 55550007
+after WRITE of words 5, 6 (0..7): 55550000 55550001 55550002 55550003 55550004 33330005 66660006 55550007
+CS copy of READ_WRITE-stored words 0..3: 77770000 77770001 77770002 77770003
+CS copy of READ_WRITE-stored words 62..63: 7777003e 7777003f
+after UpdateSubresource box [8,16) words 0..5: 77770000 77770001 88880000 88880001 77770004 77770005
+after ClearUnorderedAccessViewUint words 0..3: 99999999 99999999 99999999 99999999
+after CopyResource words 0..3: bbbb0000 bbbb0001 bbbb0002 bbbb0003
+Map(READ) while bound as a CS UAV: S_OK
+Map(WRITE) while bound as a CS SRV: S_OK
+deferred Map(type 1): E_INVALIDARG
+deferred Map(type 2): E_INVALIDARG
+deferred Map(type 3): E_INVALIDARG
+deferred Map(type 4): E_INVALIDARG
+deferred Map(type 5): E_INVALIDARG
+structured mappable via SRV words 0..3: cccc0000 dddd0001 cccc0002 cccc0003
+== mapdef at lower feature levels ==
+FL10_1 DEF SRV c=W: E_INVALIDARG
+FL10_1 DEF SRV c=R: E_INVALIDARG
+FL10_1 DEF SRV c=RW: E_INVALIDARG
+FL10_0 DEF SRV c=W: E_INVALIDARG
+FL10_0 DEF SRV c=R: E_INVALIDARG
+FL10_0 DEF SRV c=RW: E_INVALIDARG
+== minprec ==
+min16float 1 + 2^-12 = 1.00024414 (3f800800; fp16 would give 1)
+min16float (1/3) * 3 = 1 (3f800000)
+min10float 1/3 = 0.333333343 (3eaaaaab)
+min16int 40000 * 3 = 120000
+min16uint 40000 + 40000 = 80000
+min16int -40000 - 7 = -40007
+min16float 1/3 = 0.333333343 (3eaaaaab)
+== share (R11G11B10_FLOAT, NT handle) ==
+SHNT create: S_OK
+SHNT CreateSharedHandle: S_OK handle set
+SHNT open on a second device: S_OK
+SHNT opened desc: 8x4 format 26 misc 0x802
+KMNT create: S_OK
+KMNT CreateSharedHandle: S_OK handle set
+KMNT open on a second device: S_OK
+KMNT opened desc: 8x4 format 26 misc 0x900
+SH create: S_OK
+SH GetSharedHandle: S_OK handle set
+SH open on a second device: S_OK
+SH opened desc: 8x4 format 26 misc 0x2

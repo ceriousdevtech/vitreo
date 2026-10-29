@@ -1,0 +1,260 @@
+bitness=32
+default-render hr=80070490
+default-capture hr=00000000
+endpoint=capture
+activate hr=00000000
+uninitialized getservice-clock hr=88890001 out=null
+uninitialized getservice-bogus hr=80004002 out=null
+uninitialized getservice(NULL ppv) hr=80004003
+mix rate=48000 channels=2 bits=32 tag=fffe buffer=9600
+getservice IUnknown hr=80004002 out=null
+getservice IAudioClient hr=80004002 out=null
+getservice IAudioRenderClient hr=88890003 out=null
+getservice IAudioCaptureClient hr=00000000 out=object
+getservice IAudioCaptureClient client-refs-delta=1
+getservice IAudioClock hr=00000000 out=object
+getservice IAudioClock client-refs-delta=1
+getservice IAudioClock2 hr=80004002 out=null
+getservice IAudioClockAdjustment hr=80070057 out=null
+getservice IAudioSessionControl hr=00000000 out=object
+getservice IAudioSessionControl client-refs-delta=1
+getservice IAudioSessionControl2 hr=80004002 out=null
+getservice IAudioStreamVolume hr=00000000 out=object
+getservice IAudioStreamVolume client-refs-delta=2
+getservice IChannelAudioVolume hr=00000000 out=object
+getservice IChannelAudioVolume client-refs-delta=1
+getservice ISimpleAudioVolume hr=00000000 out=object
+getservice ISimpleAudioVolume client-refs-delta=1
+getservice IAudioSessionManager hr=80004002 out=null
+getservice IAudioSessionManager2 hr=80004002 out=null
+getservice IAudioClient2 hr=80004002 out=null
+getservice(NULL ppv) hr=80004003
+client unk-is-client=0
+getservice-clock hr=00000000 out=object
+clock GetFrequency hr=00000000 freq=384000 rate=48000 avgbytes=384000 block=8 eq-rate=0 eq-avgbytes=1 eq-10mhz=0
+clock GetFrequency(NULL) hr=80004003
+clock GetCharacteristics hr=00000000 value=00000001
+clock GetCharacteristics(NULL) hr=80004003
+clock GetPosition(NULL,&qpc) hr=80004003 qpc-untouched=1
+clock GetPosition(stopped,new) hr=00000000 pos=0 qpc-near-now=0 qpc-zero=1 qpc-untouched=0
+clock GetPosition(&pos,NULL) hr=00000000 pos=0
+clock QI IAudioClock2 hr=00000000
+clock2 GetDevicePosition skipped: capture stream
+primed frames=0 buffer=9600
+start hr=00000000
+clock GetPosition(running) hr=00000000 advanced=1 pos-mod-block=0 units-per-consumed-frame~n/a
+clock seconds-ok=1
+clock running qpc-near-now=1 qpc-not-after-now=1
+clock second-getservice same-pointer=1
+stop hr=00000000 frozen=1 stopped-qpc-zero=0 stopped-qpc-advances=0
+reset hr=00000000 pos-after-reset=0 qpc-after-reset-zero=0 qpc-after-reset-is-stop-qpc=1
+restart advanced=1
+qi IAudioClock#0: IUnknown=00000000#1 IAudioClient=80004002/null IAudioRenderClient=80004002/null IAudioCaptureClient=80004002/null IAudioClock=00000000#0 IAudioClock2=00000000#2 IAudioClockAdjustment=80004002/null IAudioSessionControl=80004002/null IAudioSessionControl2=80004002/null IAudioStreamVolume=80004002/null IChannelAudioVolume=80004002/null ISimpleAudioVolume=80004002/null IAudioSessionManager=80004002/null IAudioSessionManager2=80004002/null IAudioClient2=80004002/null
+identity IAudioClock unk-is-client-unk=0
+getservice-clockadjustment(no RATEADJUST) hr=80070057 out=null
+getservice-clockadjustment(RATEADJUST) hr=88890003 out=null
+getservice-sessioncontrol hr=00000000 out=object
+session GetState(initial) hr=00000000 state=0
+session GetDisplayName(initial) hr=00000000 len=0 text=
+session GetIconPath(initial) hr=00000000 len=0 text=
+session GetGroupingParam(initial) hr=00000000 is-null=0
+session Register hr=00000000 sink-refs-delta=1
+session Register(again) hr=00000000 sink-refs-delta=2
+session Register(NULL) hr=80004003
+session Unregister(NULL) hr=80004003
+session SetDisplayName hr=00000000
+session SetDisplayName(A) event[0] OnDisplayNameChanged name=Probe Name ctx=A thread=other (batch=2)
+session SetDisplayName(same) hr=00000000
+session SetDisplayName(same) event none
+session GetDisplayName hr=00000000 len=10 text=Probe Name
+session SetDisplayName(empty) hr=00000000
+session SetDisplayName(empty) event[0] OnDisplayNameChanged name= ctx=GUID_NULL thread=other (batch=2)
+session SetDisplayName(NULL) hr=800706f4
+session SetDisplayName(NULL) event none
+session GetDisplayName(NULL) hr=80004003
+session SetIconPath hr=00000000
+session SetIconPath(B) event[0] OnIconPathChanged path=C:\probe.dll,-1 ctx=B thread=other (batch=2)
+session GetIconPath hr=00000000 len=15 text=C:\probe.dll,-1
+session SetIconPath(NULL) hr=800706f4
+session SetIconPath(NULL) event none
+session SetGroupingParam(B,A) hr=00000000
+session SetGroupingParam(B,A) event[0] OnGroupingParamChanged param=B ctx=A thread=other (batch=2)
+session GetGroupingParam hr=00000000 param=B
+session SetGroupingParam(NULL) hr=800706f4
+session GetGroupingParam(NULL) hr=800706f4
+session GetState(NULL) hr=800706f4
+session start hr=00000000
+session Start event[0] OnStateChanged state=1 thread=other (batch=2)
+session GetState(running) state=1
+session Stop event[0] OnStateChanged state=0 thread=other (batch=2)
+session GetState(stopped) state=0
+getservice-sessioncontrol2 hr=80004002 out=null
+session QI IAudioSessionControl2 hr=00000000
+session2 GetSessionIdentifier hr=00000000 len=161 text={0.0.1.00000000}.{aa16bd6d-e605-4117-9400-919e72675ad1}|\Device\HarddiskVolume3\oracle\wasapi\wasapi_services_probe32.exe%b{00000000-0000-0000-0000-000000000000}
+session2 GetSessionInstanceIdentifier hr=00000000 len=170 text={0.0.1.00000000}.{aa16bd6d-e605-4117-9400-919e72675ad1}|\Device\HarddiskVolume3\oracle\wasapi\wasapi_services_probe32.exe%b{00000000-0000-0000-0000-000000000000}|0%b13540
+session2 GetSessionIdentifier(NULL) hr=80004003
+session2 GetSessionInstanceIdentifier(NULL) hr=80004003
+session2 GetProcessId hr=00000000 is-self=1
+session2 GetProcessId(NULL) hr=80004003
+session2 IsSystemSoundsSession hr=00000001
+session2 SetDuckingPreference(TRUE) hr=88890003
+session2 SetDuckingPreference(FALSE) hr=88890003
+session2 SetDuckingPreference(7) hr=88890003
+session second-getservice same-pointer=1
+qi IAudioSessionControl#3: IUnknown=00000000#4 IAudioClient=80004002/null IAudioRenderClient=80004002/null IAudioCaptureClient=80004002/null IAudioClock=80004002/null IAudioClock2=80004002/null IAudioClockAdjustment=80004002/null IAudioSessionControl=00000000#3 IAudioSessionControl2=00000000#3 IAudioStreamVolume=80004002/null IChannelAudioVolume=00000000#5 ISimpleAudioVolume=00000000#6 IAudioSessionManager=80004002/null IAudioSessionManager2=80004002/null IAudioClient2=80004002/null
+identity IAudioSessionControl unk-is-client-unk=0
+getservice-simplevolume hr=00000000 out=object
+simple GetMasterVolume(initial) hr=00000000 volume=1000000
+simple GetMute(initial) hr=00000000 mute=0
+simple GetMasterVolume(NULL) hr=800706f4
+simple GetMute(NULL) hr=800706f4
+simple SetMasterVolume(0.5,A) hr=00000000
+simple SetMasterVolume(0.5,A) event[0] OnSimpleVolumeChanged volume=500000 mute=0 ctx=A thread=other (batch=2)
+simple GetMasterVolume hr=00000000 volume=500000
+simple SetMasterVolume(same 0.5,B) hr=00000000
+simple SetMasterVolume(same 0.5,B) event[0] OnSimpleVolumeChanged volume=500000 mute=0 ctx=B thread=other (batch=2)
+simple SetMasterVolume(0.25,NULL) hr=00000000
+simple SetMasterVolume(0.25,NULL) event[0] OnSimpleVolumeChanged volume=250000 mute=0 ctx=GUID_NULL thread=other (batch=2)
+simple SetMasterVolume(1.1) hr=80070057
+simple SetMasterVolume(-0.1) hr=80070057
+simple SetMasterVolume(1.0) hr=00000000
+simple SetMasterVolume(1.0) event[0] OnSimpleVolumeChanged volume=1000000 mute=0 ctx=GUID_NULL thread=other (batch=2)
+simple SetMasterVolume(0.0) hr=00000000
+simple SetMasterVolume(0.0) event[0] OnSimpleVolumeChanged volume=0 mute=0 ctx=GUID_NULL thread=other (batch=2)
+simple after-bad volume=0
+simple SetMute(TRUE,A) hr=00000000
+simple SetMute(TRUE,A) event[0] OnSimpleVolumeChanged volume=0 mute=1 ctx=A thread=other (batch=2)
+simple SetMute(TRUE again) hr=00000000
+simple SetMute(TRUE again) event none
+simple SetMute(5) hr=00000000
+simple SetMute(5) event[0] OnSimpleVolumeChanged volume=0 mute=1 ctx=B thread=other (batch=2)
+simple GetMute after SetMute(5) mute=5
+simple SetMute(FALSE,B) hr=00000000
+simple SetMute(FALSE,B) event[0] OnSimpleVolumeChanged volume=0 mute=0 ctx=B thread=other (batch=1)
+simple SetMute(FALSE,B) event[1] OnSimpleVolumeChanged volume=0 mute=0 ctx=B thread=other (batch=1)
+simple restore event[0] OnSimpleVolumeChanged volume=1000000 mute=0 ctx=GUID_NULL thread=other (batch=2)
+simple second-getservice same-pointer=1
+qi ISimpleAudioVolume#6: IUnknown=00000000#4 IAudioClient=80004002/null IAudioRenderClient=80004002/null IAudioCaptureClient=80004002/null IAudioClock=80004002/null IAudioClock2=80004002/null IAudioClockAdjustment=80004002/null IAudioSessionControl=00000000#3 IAudioSessionControl2=00000000#3 IAudioStreamVolume=80004002/null IChannelAudioVolume=00000000#5 ISimpleAudioVolume=00000000#6 IAudioSessionManager=80004002/null IAudioSessionManager2=80004002/null IAudioClient2=80004002/null
+identity ISimpleAudioVolume unk-is-client-unk=0
+getservice-streamvolume hr=00000000 out=object
+stream GetChannelCount hr=00000000 count=2 mix-channels=2
+stream GetChannelCount(NULL) hr=80004003
+stream GetChannelVolume(0,initial) hr=00000000 volume=1000000
+stream GetChannelVolume(count) hr=80070057 out-untouched=0 out=0
+stream GetChannelVolume(0,NULL) hr=80004003
+stream SetChannelVolume(0,0.25) hr=00000000
+stream SetChannelVolume(0,0.25) event none
+stream GetChannelVolume(0) hr=00000000 volume=250000
+stream SetChannelVolume(0,same) hr=00000000
+stream SetChannelVolume(0,same) event none
+stream SetChannelVolume(count,0.5) hr=80070057
+stream SetChannelVolume(0,1.1) hr=80070057
+stream SetChannelVolume(0,-0.1) hr=80070057
+stream SetAllVolumes(count) hr=00000000
+stream SetAllVolumes event none
+stream GetAllVolumes(count) hr=00000000 v0=100000 v1=200000
+stream SetAllVolumes(count+1) hr=80070057
+stream SetAllVolumes(count-1) hr=80070057
+stream SetAllVolumes(0) hr=80070057
+stream SetAllVolumes(count,NULL) hr=80004003
+stream SetAllVolumes(one out of range) hr=80070057
+stream after-bad-SetAllVolumes v0=100000 v1=200000
+stream GetAllVolumes(count+1) hr=80070057 out-untouched=0 out0=0 out1=0 out2=0
+stream GetAllVolumes(count-1) hr=80070057 out-untouched=0 out0=0 out1=-7000000
+stream GetAllVolumes(count,NULL) hr=80004003
+stream restore event none
+stream second-getservice same-pointer=1
+qi IAudioStreamVolume#7: IUnknown=00000000#8 IAudioClient=80004002/null IAudioRenderClient=80004002/null IAudioCaptureClient=80004002/null IAudioClock=80004002/null IAudioClock2=80004002/null IAudioClockAdjustment=80004002/null IAudioSessionControl=80004002/null IAudioSessionControl2=80004002/null IAudioStreamVolume=00000000#7 IChannelAudioVolume=80004002/null ISimpleAudioVolume=80004002/null IAudioSessionManager=80004002/null IAudioSessionManager2=80004002/null IAudioClient2=80004002/null
+identity IAudioStreamVolume unk-is-client-unk=0
+getservice-channelvolume hr=00000000 out=object
+channel GetChannelCount hr=00000000 count=2 mix-channels=2
+channel GetChannelCount(NULL) hr=800706f4
+channel GetChannelVolume(0,initial) hr=00000000 volume=1000000
+channel GetChannelVolume(count) hr=80070057 out-untouched=0 out=0
+channel GetChannelVolume(0,NULL) hr=800706f4
+channel SetChannelVolume(0,0.25) hr=00000000
+channel SetChannelVolume(0,0.25,A) event[0] OnChannelVolumeChanged count=2 changed=0 ctx=A thread=other volumes=250000,1000000, (batch=2)
+channel GetChannelVolume(0) hr=00000000 volume=250000
+channel SetChannelVolume(0,same) hr=00000000
+channel SetChannelVolume(0,same,B) event[0] OnChannelVolumeChanged count=2 changed=0 ctx=B thread=other volumes=250000,1000000, (batch=2)
+channel SetChannelVolume(count,0.5) hr=80070057
+channel SetChannelVolume(0,1.1) hr=80070057
+channel SetChannelVolume(0,-0.1) hr=80070057
+channel SetAllVolumes(count) hr=00000000
+channel SetAllVolumes(B) event[0] OnChannelVolumeChanged count=2 changed=-1 ctx=B thread=other volumes=100000,200000, (batch=2)
+channel GetAllVolumes(count) hr=00000000 v0=100000 v1=200000
+channel SetAllVolumes(count+1) hr=80070057
+channel SetAllVolumes(count-1) hr=80070057
+channel SetAllVolumes(0) hr=80070057
+channel SetAllVolumes(count,NULL) hr=800706f4
+channel SetAllVolumes(one out of range) hr=80070057
+channel after-bad-SetAllVolumes v0=100000 v1=200000
+channel GetAllVolumes(count+1) hr=80070057 out-untouched=0 out0=0 out1=0 out2=0
+channel GetAllVolumes(count-1) hr=80070057 out-untouched=0 out0=0 out1=-7000000
+channel GetAllVolumes(count,NULL) hr=800706f4
+channel restore event[0] OnChannelVolumeChanged count=2 changed=-1 ctx=GUID_NULL thread=other volumes=1000000,1000000, (batch=2)
+channel second-getservice same-pointer=1
+qi IChannelAudioVolume#5: IUnknown=00000000#4 IAudioClient=80004002/null IAudioRenderClient=80004002/null IAudioCaptureClient=80004002/null IAudioClock=80004002/null IAudioClock2=80004002/null IAudioClockAdjustment=80004002/null IAudioSessionControl=00000000#3 IAudioSessionControl2=00000000#3 IAudioStreamVolume=80004002/null IChannelAudioVolume=00000000#5 ISimpleAudioVolume=00000000#6 IAudioSessionManager=80004002/null IAudioSessionManager2=80004002/null IAudioClient2=80004002/null
+identity IChannelAudioVolume unk-is-client-unk=0
+session Unregister hr=00000000 sink-refs-delta=-1
+session Unregister(again) hr=00000000 sink-refs-delta=-2
+session Unregister(third) hr=80070490 sink-refs-delta=-2
+session after-unregister SetDisplayName event none
+sink final refs=1
+share simple private-session initial volume=1000000
+share simple default-session after-private-set volume=300000
+share simple change-via-other-stream event[0] OnChannelVolumeChanged count=2 changed=1 ctx=other thread=other volumes=1000000,1000000, (batch=5)
+share simple change-via-other-stream event[1] OnSimpleVolumeChanged volume=750000 mute=0 ctx=B thread=other (batch=2)
+share simple change-in-private-session event[0] OnSimpleVolumeChanged volume=600000 mute=0 ctx=other thread=other (batch=6)
+share simple restore event[0] OnSimpleVolumeChanged volume=1000000 mute=0 ctx=GUID_NULL thread=other (batch=2)
+share simple NULL-session-vs-GUID_NULL-session volume=500000 private-session volume=500000 same-pointer=0
+share channel other-stream volume=500000 stream other-stream volume=1000000 stream own=750000
+share stream-volume-independent-of-channel-volume own=1000000
+share session other-stream display hr=00000000 len=6 text=Shared
+share session private display hr=00000000 len=0 text=
+share session same-pointer=0
+share session one-of-two-stopped state=1
+share session both-stopped state=0
+share session private-never-started state=0
+grouping initial a={bed698be-0438-46e4-98ec-846b71734510} b={0f40e039-1eb0-461d-9baa-9b747278355c} crossprocess={468dd9ef-228b-4db6-946b-6d86f71eaa5b} a-eq-b=0 a-eq-x=0
+grouping same-group other-session volume=400000
+grouping same-group crossprocess-session volume=400000
+grouping different-group other-session volume=200000
+grouping different-group own volume=200000
+grouping different-group other-session mute=1
+grouping crossprocess instance-id hr=00000000 len=102 text={0.0.1.00000000}.{aa16bd6d-e605-4117-9400-919e72675ad1}|#%b{5E551012-1234-4ABC-8001-020304050608}|0%b#
+grouping crossprocess session-id hr=00000000 len=97 text={0.0.1.00000000}.{aa16bd6d-e605-4117-9400-919e72675ad1}|#%b{5E551012-1234-4ABC-8001-020304050608}
+grouping private2 instance-id hr=00000000 len=170 text={0.0.1.00000000}.{aa16bd6d-e605-4117-9400-919e72675ad1}|\Device\HarddiskVolume3\oracle\wasapi\wasapi_services_probe32.exe%b{5E551013-1234-4ABC-8001-020304050609}|0%b13540
+lifetime client-release-with-services refs=2
+lifetime clock-after-client-release hr=00000000
+lifetime simple-after-client-release hr=00000000
+supp uninitialized getservice IAudioClock2 hr=80004002 out=null
+supp uninitialized getservice IAudioSessionControl2 hr=80004002 out=null
+supp uninitialized getservice IUnknown hr=80004002 out=null
+supp uninitialized getservice ISimpleAudioVolume hr=88890001 out=null
+supp uninitialized getservice IAudioRenderClient hr=88890001 out=null
+supp uninitialized getservice IAudioClockAdjustment hr=88890001 out=null
+supp SetIconPath(first) event[0] OnIconPathChanged path=C:\supp.dll,-2 ctx=A thread=other (batch=1)
+supp SetIconPath(same) event none
+supp SetGroupingParam(first) event[0] OnGroupingParamChanged param=other ctx=A thread=other (batch=1)
+supp SetGroupingParam(same) event none
+supp SetIconPath(restore) event[0] OnIconPathChanged path= ctx=GUID_NULL thread=other (batch=1)
+supp other-session SetMute(TRUE,B) event none
+supp other-session mute-seen=1
+supp other-session SetMute(FALSE,B) event none
+supp other-session SetMasterVolume(same 1.0,B) event none
+supp own-session SetMasterVolume(same 1.0,A) event[0] OnSimpleVolumeChanged volume=1000000 mute=0 ctx=A thread=other (batch=1)
+supp other-session SetChannelVolume(0,0.5,B) event[0] OnChannelVolumeChanged count=2 changed=0 ctx=other thread=other volumes=500000,1000000, (batch=1)
+supp other-session channel0-seen=500000
+supp other-session channel restore event[0] OnChannelVolumeChanged count=2 changed=0 ctx=other thread=other volumes=1000000,1000000, (batch=1)
+supp crossprocess GetProcessId hr=0889000d is-self=1
+supp io-client second-getservice same-pointer=1
+supp private Start event[0] OnStateChanged state=1 thread=other (batch=1)
+supp private released-while-running event none
+supp private sink refs=1
+supp pcm16 initialize hr=00000000
+supp pcm16 clock freq=192000 eq-stream-avgbytes=1 eq-mix-avgbytes=0
+supp pcm16 stream-volume channels=2
+supp pcm16 clock running pos-mod-4=0 seconds-ok=1
+done
+exit=0

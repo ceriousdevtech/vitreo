@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assemblyIdentity type="win32" name="Vitreo.Probe.W32" version="1.0.0.0" processorArchitecture="amd64" publicKeyToken="ef51ea1264a47dc2"></assemblyIdentity>
+<file name="VitreoW32.dll" hashalg="SHA1" hash="a5127622a7ce9bd5341792be87cae0767305ceb7"><asmv2:hash xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"><dsig:Transforms><dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity"></dsig:Transform></dsig:Transforms><dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></dsig:DigestMethod><dsig:DigestValue>pYLrAm+hURStXnHJ+KK6GQwgaMc=</dsig:DigestValue></asmv2:hash></file>
+</assembly>

@@ -1,0 +1,36 @@
+hash-mode st=c00000bb last=12345678
+hash-readonly st=c00000bb last=12345678
+default st=00000000 cb=00000020 value=ChainingModeCBC
+query st=00000000 cb=00000020 first=0000005a
+small st=c0000023 cb=00000020 first=0000005a
+get-flags st=c000000d cb=55555555 first=0000005a
+get-null-result st=c000000d cb=55555555 first=0000005a
+cbc-zero st=00000000 last=12345678
+cbc-flags st=c000000d last=12345678
+cbc-allflags st=c000000d last=12345678
+null-property st=c000000d last=12345678
+null-input st=c000000d last=12345678
+unknown-mode st=c000000d last=12345678
+unknown-property st=c00000bb last=12345678
+readonly st=c00000bb last=12345678
+sha-mode st=c0000008 last=12345678
+invalid st=c0000008 last=12345678
+invalid-null st=c000000d last=12345678
+pseudo st=c0000022 last=12345678
+ecb st=00000000 last=12345678
+key-inherited st=00000000 cb=00000020 value=ChainingModeECB
+ecb-zero st=00000000 bytes=66e94bd4ef8a2c3b884cfa59ca342b2e66e94bd4ef8a2c3b884cfa59ca342b2e
+ecb-iv16 st=c000000d cb=00000020 iv=00000000
+ecb-iv16-decrypt st=c000000d cb=00000020
+ecb-iv0 st=c0000206 cb=00000020 iv=00000000
+ecb-iv0-decrypt st=c0000206 cb=00000020
+ecb-null-iv16 st=00000000 cb=00000020 iv=00000000
+ecb-null-iv16-decrypt st=00000000 cb=00000020
+cbc-after-key st=00000000 last=12345678
+key-unchanged st=00000000 cb=00000020 value=ChainingModeECB
+key-cbc st=00000000 last=12345678
+key-updated st=00000000 cb=00000020 value=ChainingModeCBC
+cbc-zero st=00000000 bytes=66e94bd4ef8a2c3b884cfa59ca342b2ef795bd4a52e29ed713d313fa20e98dbc
+key-length st=c00000bb last=12345678
+alg-key-length st=c00000bb last=12345678
+key-iv st=00000000 last=12345678

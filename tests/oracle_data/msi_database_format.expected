@@ -1,0 +1,154 @@
+create 0
+state 1
+empty-tables end=259 rows=0
+empty-columns end=259 rows=0
+empty-streams end=259 rows=0
+empty-storages end=259 rows=0
+ci-tables names rc=0 [2]~|Name|~
+ci-tables types rc=0 [2]~|s64|O0
+ci-columns names rc=0 [4]~|Table|Number|Name|Type
+ci-columns types rc=0 [4]~|s64|i2|S64|i2
+ci-streams names rc=0 [2]~|Name|Data
+ci-streams types rc=0 [2]~|s62|V0
+ci-storages names rc=0 [2]~|Name|Data
+ci-storages types rc=0 [2]~|s62|V0
+z open=0 exec=0
+z1 open=0 exec=0
+z2 open=0 exec=0
+z3 open=0 exec=0
+t open=0 exec=0
+t1 open=0 exec=0
+t2 open=0 exec=0
+t3 open=0 exec=0
+insert-stream d view=0 setstream=0 modify=0 size=5
+insert-stream e view=0 setstream=0 modify=0 size=0
+u open=0 exec=0
+u1 open=0 exec=0
+u2 open=0 exec=0
+u3 open=0 exec=0
+u4 open=0 exec=0
+w open=0 exec=0
+w1 open=0 exec=0
+w2 open=0 exec=0
+w3 open=0 exec=0
+pre-w row [1]#|c
+pre-w row [1]#|m
+pre-w row [1]#|k
+pre-w end=259 rows=3
+tt open=0 exec=0
+tt1 open=1615 exec=65535
+tt1 lasterr [4]~|2228|fmt.msi|TT|INSERT INTO `TT` (`X`,`Y`) VALUES (1,'y') TEMPORARY
+alter open=0 exec=0
+alter2 open=0 exec=0
+trow open=0 exec=0
+ci-t names rc=0 [7]~|K|S|L|I2|I4|B|P
+ci-t types rc=0 [7]~|s72|S0|L0|I2|i4|V0|S20
+ci-u names rc=0 [3]~|A|B|C
+ci-u types rc=0 [3]~|i2|s10|I4
+ci-tt open=1615
+ci-expr names rc=0 [3]~|K|I4|S
+ci-expr types rc=0 [3]~|s72|i4|S0
+pre-t row [7]#|a|sa|~|-32767|2147483647|~|~
+pre-t row [7]#|b|~|~|~|0|~|~
+pre-t row [7]#|c|sc|lc|3|-3|~|~
+pre-t row [7]#|d|~|~|~|9|<s5>|~
+pre-t row [7]#|e|~|~|~|9|<s0>|~
+pre-t row [7]#|tmp|~|~|~|7|~|~
+pre-t end=259 rows=6
+pre-u row [3]#|-5|a|4
+pre-u row [3]#|1|a|3
+pre-u row [3]#|1|c|2
+pre-u row [3]#|2|b|1
+pre-u end=259 rows=4
+pre-tables row [2]#|Z|~
+pre-tables row [2]#|T|T
+pre-tables row [2]#|U|~
+pre-tables row [2]#|W|~
+pre-tables end=259 rows=4
+pre-columns row [4]#|Z|1|N|11530
+pre-columns row [4]#|T|1|K|11592
+pre-columns row [4]#|T|2|S|7424
+pre-columns row [4]#|T|3|L|7936
+pre-columns row [4]#|T|4|I2|5378
+pre-columns row [4]#|T|5|I4|260
+pre-columns row [4]#|T|6|B|6400
+pre-columns row [4]#|T|7|P|7444
+pre-columns row [4]#|U|1|A|9474
+pre-columns row [4]#|U|2|B|11530
+pre-columns row [4]#|U|3|C|4356
+pre-columns row [4]#|W|1|N|11530
+pre-columns end=259 rows=12
+pre-streams row [1]#|T.d
+pre-streams row [1]#|T.e
+pre-streams end=259 rows=2
+persist-T 1
+persist-TT 2
+persist-none 2
+persist-_Tables 2
+persist-_Streams 2
+persist-badhandle 3
+si 0
+si-set2 0
+si-set14 0
+si-persist 0
+commit 0
+post-t row [7]#|a|sa|~|-32767|2147483647|~|~
+post-t row [7]#|b|~|~|~|0|~|~
+post-t row [7]#|c|sc|lc|3|-3|~|~
+post-t row [7]#|d|~|~|~|9|<s5>|~
+post-t row [7]#|e|~|~|~|9|<s0>|~
+post-t row [7]#|tmp|~|~|~|7|~|~
+post-t end=259 rows=6
+reopen 0
+state 0
+re-t row [7]#|a|sa|~|-32767|2147483647|~|~
+re-t row [7]#|b|~|~|~|0|~|~
+re-t row [7]#|c|sc|lc|3|-3|~|~
+re-t row [7]#|d|~|~|~|9|<s5>|~
+re-t row [7]#|e|~|~|~|9|<s0>|~
+re-t end=259 rows=5
+re-u row [3]#|-5|a|4
+re-u row [3]#|1|a|3
+re-u row [3]#|1|c|2
+re-u row [3]#|2|b|1
+re-u end=259 rows=4
+re-w row [1]#|c
+re-w row [1]#|m
+re-w row [1]#|k
+re-w end=259 rows=3
+re-tt open=1615
+re-tt lasterr [4]~|2228|fmt.msi|TT|SELECT * FROM `TT`
+re-tables row [2]#|Z|~
+re-tables row [2]#|T|~
+re-tables row [2]#|U|~
+re-tables row [2]#|W|~
+re-tables end=259 rows=4
+re-columns row [4]#|Z|1|N|11530
+re-columns row [4]#|T|1|K|11592
+re-columns row [4]#|T|2|S|7424
+re-columns row [4]#|T|3|L|7936
+re-columns row [4]#|T|4|I2|5378
+re-columns row [4]#|T|5|I4|260
+re-columns row [4]#|T|6|B|6400
+re-columns row [4]#|T|7|P|7444
+re-columns row [4]#|U|1|A|9474
+re-columns row [4]#|U|2|B|11530
+re-columns row [4]#|U|3|C|4356
+re-columns row [4]#|W|1|N|11530
+re-columns end=259 rows=12
+re-streams row [1]#|T.d
+re-streams row [1]#|T.e
+re-streams row [1]#|\x0005SummaryInformation
+re-streams end=259 rows=3
+re-ci-t names rc=0 [7]~|K|S|L|I2|I4|B|P
+re-ci-t types rc=0 [7]~|s72|S0|L0|I2|i4|V0|S20
+ro-commit 0
+ro-insert open=0 exec=1627
+ro-insert lasterr [4]~|2259|fmt.msi||
+ro-insert-temp open=0 exec=0
+ro-z row [1]#|q
+ro-z row [1]#|a
+ro-z row [1]#|b
+ro-z row [1]#|c
+ro-z end=259 rows=4
+ro-create open=0 exec=0

@@ -1,0 +1,633 @@
+adapter: Microsoft Basic Render Driver
+feature level 0xb100, pointer size 8
+
+[create] CreateQuery | CreateQuery(NULL out) | CreatePredicate
+  q=0   EVENT                          misc=0 CreateQuery=0x00000000 size=4 desc={0,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=0   EVENT                          misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=0   EVENT                          misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=1   OCCLUSION                      misc=0 CreateQuery=0x00000000 size=8 desc={1,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=1   OCCLUSION                      misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=1   OCCLUSION                      misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=2   TIMESTAMP                      misc=0 CreateQuery=0x00000000 size=8 desc={2,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=2   TIMESTAMP                      misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=2   TIMESTAMP                      misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=3   TIMESTAMP_DISJOINT             misc=0 CreateQuery=0x00000000 size=16 desc={3,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=3   TIMESTAMP_DISJOINT             misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=3   TIMESTAMP_DISJOINT             misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=4   PIPELINE_STATISTICS            misc=0 CreateQuery=0x00000000 size=88 desc={4,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=4   PIPELINE_STATISTICS            misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=4   PIPELINE_STATISTICS            misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=5   OCCLUSION_PREDICATE            misc=0 CreateQuery=0x00000000 size=4 desc={5,0} QI(Predicate)=0x00000000 null=0x00000001 | CreatePredicate=0x00000000 size=4 null=0x00000001
+  q=5   OCCLUSION_PREDICATE            misc=1 CreateQuery=0x00000000 size=4 desc={5,1} QI(Predicate)=0x00000000 null=0x00000001 | CreatePredicate=0x00000000 size=4 null=0x00000001
+  q=5   OCCLUSION_PREDICATE            misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=NULL null=0x80070057
+  q=6   SO_STATISTICS                  misc=0 CreateQuery=0x00000000 size=16 desc={6,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=6   SO_STATISTICS                  misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=6   SO_STATISTICS                  misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=7   SO_OVERFLOW_PREDICATE          misc=0 CreateQuery=0x00000000 size=4 desc={7,0} QI(Predicate)=0x00000000 null=0x00000001 | CreatePredicate=0x00000000 size=4 null=0x00000001
+  q=7   SO_OVERFLOW_PREDICATE          misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=NULL null=0x80070057
+  q=7   SO_OVERFLOW_PREDICATE          misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=NULL null=0x80070057
+  q=8   SO_STATISTICS_STREAM0          misc=0 CreateQuery=0x00000000 size=16 desc={8,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=8   SO_STATISTICS_STREAM0          misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=8   SO_STATISTICS_STREAM0          misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=9   SO_OVERFLOW_PREDICATE_STREAM0  misc=0 CreateQuery=0x00000000 size=4 desc={9,0} QI(Predicate)=0x00000000 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=9   SO_OVERFLOW_PREDICATE_STREAM0  misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=9   SO_OVERFLOW_PREDICATE_STREAM0  misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=10  SO_STATISTICS_STREAM1          misc=0 CreateQuery=0x00000000 size=16 desc={10,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=10  SO_STATISTICS_STREAM1          misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=10  SO_STATISTICS_STREAM1          misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=11  SO_OVERFLOW_PREDICATE_STREAM1  misc=0 CreateQuery=0x00000000 size=4 desc={11,0} QI(Predicate)=0x00000000 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=11  SO_OVERFLOW_PREDICATE_STREAM1  misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=11  SO_OVERFLOW_PREDICATE_STREAM1  misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=12  SO_STATISTICS_STREAM2          misc=0 CreateQuery=0x00000000 size=16 desc={12,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=12  SO_STATISTICS_STREAM2          misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=12  SO_STATISTICS_STREAM2          misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=13  SO_OVERFLOW_PREDICATE_STREAM2  misc=0 CreateQuery=0x00000000 size=4 desc={13,0} QI(Predicate)=0x00000000 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=13  SO_OVERFLOW_PREDICATE_STREAM2  misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=13  SO_OVERFLOW_PREDICATE_STREAM2  misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=14  SO_STATISTICS_STREAM3          misc=0 CreateQuery=0x00000000 size=16 desc={14,0} QI(Predicate)=0x80004002 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=14  SO_STATISTICS_STREAM3          misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=14  SO_STATISTICS_STREAM3          misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=15  SO_OVERFLOW_PREDICATE_STREAM3  misc=0 CreateQuery=0x00000000 size=4 desc={15,0} QI(Predicate)=0x00000000 null=0x00000001 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=15  SO_OVERFLOW_PREDICATE_STREAM3  misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=15  SO_OVERFLOW_PREDICATE_STREAM3  misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=16  (out of range)                 misc=0 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=16  (out of range)                 misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=16  (out of range)                 misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=-1  (out of range)                 misc=0 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=-1  (out of range)                 misc=1 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+  q=-1  (out of range)                 misc=2 CreateQuery=0x80070057 out=NULL null=0x80070057 | CreatePredicate=0x80070057 out=untouched null=0x80070057
+
+[create1] ID3D11Device3::CreateQuery1
+  QI(ID3D11Device3) -> 0x00000000
+  q=0 EVENT                ctx=0 -> 0x00000000 desc1={0,0,0} size=4 null=0x00000001
+  q=0 EVENT                ctx=1 -> 0x00000000 desc1={0,0,1} size=4 null=0x00000001
+  q=0 EVENT                ctx=2 -> 0x00000000 desc1={0,0,2} size=4 null=0x00000001
+  q=0 EVENT                ctx=3 -> 0x00000000 desc1={0,0,3} size=4 null=0x00000001
+  q=0 EVENT                ctx=4 -> 0x00000000 desc1={0,0,4} size=4 null=0x00000001
+  q=0 EVENT                ctx=5 -> 0x80070057 null=0x80070057
+  q=1 OCCLUSION            ctx=0 -> 0x00000000 desc1={1,0,0} size=8 null=0x00000001
+  q=1 OCCLUSION            ctx=1 -> 0x00000000 desc1={1,0,1} size=8 null=0x00000001
+  q=1 OCCLUSION            ctx=2 -> 0x00000000 desc1={1,0,2} size=8 null=0x00000001
+  q=1 OCCLUSION            ctx=3 -> 0x00000000 desc1={1,0,3} size=8 null=0x00000001
+  q=1 OCCLUSION            ctx=4 -> 0x00000000 desc1={1,0,4} size=8 null=0x00000001
+  q=1 OCCLUSION            ctx=5 -> 0x80070057 null=0x80070057
+  q=2 TIMESTAMP            ctx=0 -> 0x00000000 desc1={2,0,0} size=8 null=0x00000001
+  q=2 TIMESTAMP            ctx=1 -> 0x00000000 desc1={2,0,1} size=8 null=0x00000001
+  q=2 TIMESTAMP            ctx=2 -> 0x00000000 desc1={2,0,2} size=8 null=0x00000001
+  q=2 TIMESTAMP            ctx=3 -> 0x00000000 desc1={2,0,3} size=8 null=0x00000001
+  q=2 TIMESTAMP            ctx=4 -> 0x00000000 desc1={2,0,4} size=8 null=0x00000001
+  q=2 TIMESTAMP            ctx=5 -> 0x80070057 null=0x80070057
+  q=4 PIPELINE_STATISTICS  ctx=0 -> 0x00000000 desc1={4,0,0} size=88 null=0x00000001
+  q=4 PIPELINE_STATISTICS  ctx=1 -> 0x00000000 desc1={4,0,1} size=88 null=0x00000001
+  q=4 PIPELINE_STATISTICS  ctx=2 -> 0x80070057 null=0x80070057
+  q=4 PIPELINE_STATISTICS  ctx=3 -> 0x80070057 null=0x80070057
+  q=4 PIPELINE_STATISTICS  ctx=4 -> 0x80070057 null=0x80070057
+  q=4 PIPELINE_STATISTICS  ctx=5 -> 0x80070057 null=0x80070057
+  q=5 OCCLUSION_PREDICATE  ctx=0 -> 0x00000000 desc1={5,0,0} size=4 null=0x00000001
+  q=5 OCCLUSION_PREDICATE  ctx=1 -> 0x00000000 desc1={5,0,1} size=4 null=0x00000001
+  q=5 OCCLUSION_PREDICATE  ctx=2 -> 0x80070057 null=0x80070057
+  q=5 OCCLUSION_PREDICATE  ctx=3 -> 0x80070057 null=0x80070057
+  q=5 OCCLUSION_PREDICATE  ctx=4 -> 0x80070057 null=0x80070057
+  q=5 OCCLUSION_PREDICATE  ctx=5 -> 0x80070057 null=0x80070057
+  CreateQuery(EVENT) QI(ID3D11Query1) -> 0x00000000
+    GetDesc1 -> {0,0,0}
+
+[getdata] state machine per D3D11_QUERY (no draws anywhere)
+  -- EVENT (DataSize 4)
+     fresh GetData(buf,4)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,4)    -> 0x887a0001 written=0
+     after End spin(buf,4)         -> 0x00000000 BOOL=1
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x00000000 written=1
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,4)       -> 0x00000000 written=1
+     End-only spin(buf,4)          -> 0x00000000 BOOL=1
+     Begin,Begin,End spin(buf,4)   -> 0x00000000 BOOL=1
+     ...then End again spin         -> 0x00000000 BOOL=1
+  -- OCCLUSION (DataSize 8)
+     fresh GetData(buf,8)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,8)    -> 0x887a0001 written=0
+     after End spin(buf,8)         -> 0x00000000 UINT64=0
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x00000000 written=1
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,8)       -> 0x887a0001 written=0
+     End-only spin(buf,8)          -> 0x00000000 UINT64=0
+     Begin,Begin,End spin(buf,8)   -> 0x00000000 UINT64=0
+     ...then End again spin         -> 0x00000000 UINT64=0
+  -- TIMESTAMP (DataSize 8)
+     fresh GetData(buf,8)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,8)    -> 0x887a0001 written=0
+     after End spin(buf,8)         -> 0x00000000 UINT64 nonzero
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x00000000 written=1
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,8)       -> 0x00000000 written=1
+     End-only spin(buf,8)          -> 0x00000000 UINT64 nonzero
+     Begin,Begin,End spin(buf,8)   -> 0x00000000 UINT64 nonzero
+     ...then End again spin         -> 0x00000000 UINT64 nonzero
+  -- TIMESTAMP_DISJOINT (DataSize 16)
+     fresh GetData(buf,16)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,16)    -> 0x887a0001 written=0
+     after End spin(buf,16)         -> 0x00000000 Frequency nonzero Disjoint=0
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,16)       -> 0x887a0001 written=0
+     End-only spin(buf,16)          -> 0x00000000 Frequency nonzero Disjoint=0
+     Begin,Begin,End spin(buf,16)   -> 0x00000000 Frequency nonzero Disjoint=0
+     ...then End again spin         -> 0x00000000 Frequency nonzero Disjoint=0
+  -- PIPELINE_STATISTICS (DataSize 88)
+     fresh GetData(buf,88)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,88)    -> 0x887a0001 written=0
+     after End spin(buf,88)         -> 0x00000000 stats={0,0,0,0,0,0,0,0,0,0,0}
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,88)       -> 0x887a0001 written=0
+     End-only spin(buf,88)          -> 0x00000000 stats={0,0,0,0,0,0,0,0,0,0,0}
+     Begin,Begin,End spin(buf,88)   -> 0x00000000 stats={0,0,0,0,0,0,0,0,0,0,0}
+     ...then End again spin         -> 0x00000000 stats={0,0,0,0,0,0,0,0,0,0,0}
+  -- OCCLUSION_PREDICATE (DataSize 4)
+     fresh GetData(buf,4)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,4)    -> 0x887a0001 written=0
+     after End spin(buf,4)         -> 0x00000000 BOOL=0
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x00000000 written=1
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,4)       -> 0x887a0001 written=0
+     End-only spin(buf,4)          -> 0x00000000 BOOL=0
+     Begin,Begin,End spin(buf,4)   -> 0x00000000 BOOL=0
+     ...then End again spin         -> 0x00000000 BOOL=0
+  -- SO_STATISTICS (DataSize 16)
+     fresh GetData(buf,16)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,16)    -> 0x887a0001 written=0
+     after End spin(buf,16)         -> 0x00000000 {written=0 needed=0}
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,16)       -> 0x887a0001 written=0
+     End-only spin(buf,16)          -> 0x00000000 {written=0 needed=0}
+     Begin,Begin,End spin(buf,16)   -> 0x00000000 {written=0 needed=0}
+     ...then End again spin         -> 0x00000000 {written=0 needed=0}
+  -- SO_OVERFLOW_PREDICATE (DataSize 4)
+     fresh GetData(buf,4)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,4)    -> 0x887a0001 written=0
+     after End spin(buf,4)         -> 0x00000000 BOOL=0
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x00000000 written=1
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,4)       -> 0x887a0001 written=0
+     End-only spin(buf,4)          -> 0x00000000 BOOL=0
+     Begin,Begin,End spin(buf,4)   -> 0x00000000 BOOL=0
+     ...then End again spin         -> 0x00000000 BOOL=0
+  -- SO_STATISTICS_STREAM0 (DataSize 16)
+     fresh GetData(buf,16)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,16)    -> 0x887a0001 written=0
+     after End spin(buf,16)         -> 0x00000000 {written=0 needed=0}
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,16)       -> 0x887a0001 written=0
+     End-only spin(buf,16)          -> 0x00000000 {written=0 needed=0}
+     Begin,Begin,End spin(buf,16)   -> 0x00000000 {written=0 needed=0}
+     ...then End again spin         -> 0x00000000 {written=0 needed=0}
+  -- SO_OVERFLOW_PREDICATE_STREAM0 (DataSize 4)
+     fresh GetData(buf,4)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,4)    -> 0x887a0001 written=0
+     after End spin(buf,4)         -> 0x00000000 BOOL=0
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x00000000 written=1
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,4)       -> 0x887a0001 written=0
+     End-only spin(buf,4)          -> 0x00000000 BOOL=0
+     Begin,Begin,End spin(buf,4)   -> 0x00000000 BOOL=0
+     ...then End again spin         -> 0x00000000 BOOL=0
+  -- SO_STATISTICS_STREAM1 (DataSize 16)
+     fresh GetData(buf,16)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,16)    -> 0x887a0001 written=0
+     after End spin(buf,16)         -> 0x00000000 {written=0 needed=0}
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,16)       -> 0x887a0001 written=0
+     End-only spin(buf,16)          -> 0x00000000 {written=0 needed=0}
+     Begin,Begin,End spin(buf,16)   -> 0x00000000 {written=0 needed=0}
+     ...then End again spin         -> 0x00000000 {written=0 needed=0}
+  -- SO_OVERFLOW_PREDICATE_STREAM1 (DataSize 4)
+     fresh GetData(buf,4)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,4)    -> 0x887a0001 written=0
+     after End spin(buf,4)         -> 0x00000000 BOOL=0
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x00000000 written=1
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,4)       -> 0x887a0001 written=0
+     End-only spin(buf,4)          -> 0x00000000 BOOL=0
+     Begin,Begin,End spin(buf,4)   -> 0x00000000 BOOL=0
+     ...then End again spin         -> 0x00000000 BOOL=0
+  -- SO_STATISTICS_STREAM2 (DataSize 16)
+     fresh GetData(buf,16)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,16)    -> 0x887a0001 written=0
+     after End spin(buf,16)         -> 0x00000000 {written=0 needed=0}
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,16)       -> 0x887a0001 written=0
+     End-only spin(buf,16)          -> 0x00000000 {written=0 needed=0}
+     Begin,Begin,End spin(buf,16)   -> 0x00000000 {written=0 needed=0}
+     ...then End again spin         -> 0x00000000 {written=0 needed=0}
+  -- SO_OVERFLOW_PREDICATE_STREAM2 (DataSize 4)
+     fresh GetData(buf,4)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,4)    -> 0x887a0001 written=0
+     after End spin(buf,4)         -> 0x00000000 BOOL=0
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x00000000 written=1
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,4)       -> 0x887a0001 written=0
+     End-only spin(buf,4)          -> 0x00000000 BOOL=0
+     Begin,Begin,End spin(buf,4)   -> 0x00000000 BOOL=0
+     ...then End again spin         -> 0x00000000 BOOL=0
+  -- SO_STATISTICS_STREAM3 (DataSize 16)
+     fresh GetData(buf,16)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,16)    -> 0x887a0001 written=0
+     after End spin(buf,16)         -> 0x00000000 {written=0 needed=0}
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x80070057 written=0
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,16)       -> 0x887a0001 written=0
+     End-only spin(buf,16)          -> 0x00000000 {written=0 needed=0}
+     Begin,Begin,End spin(buf,16)   -> 0x00000000 {written=0 needed=0}
+     ...then End again spin         -> 0x00000000 {written=0 needed=0}
+  -- SO_OVERFLOW_PREDICATE_STREAM3 (DataSize 4)
+     fresh GetData(buf,4)          -> 0x887a0001 written=0
+     fresh GetData(NULL,0)          -> 0x887a0001
+     after Begin GetData(NULL,0)    -> 0x887a0001
+     after Begin GetData(buf,4)    -> 0x887a0001 written=0
+     after End spin(buf,4)         -> 0x00000000 BOOL=0
+     signalled GetData(NULL,0)                 -> 0x00000000 written=0
+     signalled GetData(buf,0)                  -> 0x00000000 written=0
+     signalled GetData(buf,size-1)             -> 0x80070057 written=0
+     signalled GetData(buf,size+1)             -> 0x80070057 written=0
+     signalled GetData(buf,size*2)             -> 0x80070057 written=0
+     signalled GetData(buf,4)                  -> 0x00000000 written=1
+     signalled GetData(buf,8)                  -> 0x80070057 written=0
+     signalled GetData(NULL,size)              -> 0x80070057 written=0
+     signalled GetData(buf,size) DONOTFLUSH    -> 0x00000000 written=1
+     signalled GetData(buf,size) flags=0x2     -> 0x80070057 written=0
+     signalled GetData(buf,size) again         -> 0x00000000 written=1
+     re-Begin GetData(buf,4)       -> 0x887a0001 written=0
+     End-only spin(buf,4)          -> 0x00000000 BOOL=0
+     Begin,Begin,End spin(buf,4)   -> 0x00000000 BOOL=0
+     ...then End again spin         -> 0x00000000 BOOL=0
+
+[occlusion] 64x64 target; full quad = 4096 px, half = 2048, quarter = 1024
+  empty bracket                                        OCCLUSION 0x00000000 samples=0 | PREDICATE 0x00000000 value=0
+  full z=.5 LESS, depth 1.0                            OCCLUSION 0x00000000 samples=4096 | PREDICATE 0x00000000 value=1
+  full z=.7 LESS over depth .5 (all fail)              OCCLUSION 0x00000000 samples=0 | PREDICATE 0x00000000 value=0
+  full z=.3 LESS over depth .5 (all pass)              OCCLUSION 0x00000000 samples=4096 | PREDICATE 0x00000000 value=1
+  left half, fresh depth                               OCCLUSION 0x00000000 samples=2048 | PREDICATE 0x00000000 value=1
+  full z=.6 over half .5 / half 1.0                    OCCLUSION 0x00000000 samples=2048 | PREDICATE 0x00000000 value=1
+  full, depth test disabled                            OCCLUSION 0x00000000 samples=4096 | PREDICATE 0x00000000 value=1
+  full, RT only (no DSV)                               OCCLUSION 0x00000000 samples=4096 | PREDICATE 0x00000000 value=1
+  full, no RTV and no DSV                              OCCLUSION 0x00000000 samples=4096 | PREDICATE 0x00000000 value=1
+  full, PS discards x<32                               OCCLUSION 0x00000000 samples=2048 | PREDICATE 0x00000000 value=1
+  full, NULL PS, depth LESS                            OCCLUSION 0x00000000 samples=4096 | PREDICATE 0x00000000 value=1
+  full, stencil func NEVER                             OCCLUSION 0x00000000 samples=0 | PREDICATE 0x00000000 value=0
+  full + half in one bracket (depth off)               OCCLUSION 0x00000000 samples=6144 | PREDICATE 0x00000000 value=1
+  DrawInstanced(6, 3 instances) full (depth off)       OCCLUSION 0x00000000 samples=12288 | PREDICATE 0x00000000 value=1
+  Begin; full; Begin; half; End                        OCCLUSION 0x00000000 samples=2048 | PREDICATE 0x00000000 value=1
+  overlap q1{full,half} q2{half,quarter}               q1 0x00000000 samples=6144 | q2 0x00000000 samples=3072
+  ClearRTV + ClearDSV only                             OCCLUSION 0x00000000 samples=0 | PREDICATE 0x00000000 value=0
+  one triangle, diagonal edge (1x)                     OCCLUSION 0x00000000 samples=2016 | PREDICATE 0x00000000 value=1
+  full quad in a 10x7 viewport                         OCCLUSION 0x00000000 samples=70 | PREDICATE 0x00000000 value=1
+  MSAA x4: full quad                                   OCCLUSION 0x00000000 samples=16384 | PREDICATE 0x00000000 value=1
+  MSAA x4: left half                                   OCCLUSION 0x00000000 samples=8192 | PREDICATE 0x00000000 value=1
+  MSAA x4: one triangle, diagonal edge                 OCCLUSION 0x00000000 samples=8192 | PREDICATE 0x00000000 value=1
+  MSAA x4: full, SampleMask 0x1                        OCCLUSION 0x00000000 samples=4096 | PREDICATE 0x00000000 value=1
+  MSAA x4: full, SampleMask 0x0                        OCCLUSION 0x00000000 samples=0 | PREDICATE 0x00000000 value=0
+  MSAA x4: full, depth off                             OCCLUSION 0x00000000 samples=16384 | PREDICATE 0x00000000 value=1
+
+[pipeline] PIPELINE_STATISTICS; 64x64 target, depth off
+  sizeof(D3D11_QUERY_DATA_PIPELINE_STATISTICS)=88
+  empty bracket                                0x00000000 IAV=0 IAP=0 VS=0 HS=0 DS=0 GS=0 GSP=0 C=0 CP=0 PS=0 CS=0
+  Draw(6) full quad                            0x00000000 IAV=6 IAP=2 VS=6 HS=0 DS=0 GS=0 GSP=0 C=2 CP=2 PS=4224 CS=0
+  Draw(6) quarter quad                         0x00000000 IAV=6 IAP=2 VS=6 HS=0 DS=0 GS=0 GSP=0 C=2 CP=2 PS=1088 CS=0
+  DrawIndexed(6) {0,1,2,2,1,5} full            0x00000000 IAV=6 IAP=2 VS=4 HS=0 DS=0 GS=0 GSP=0 C=2 CP=2 PS=4224 CS=0
+  DrawInstanced(6, 2) full                     0x00000000 IAV=12 IAP=4 VS=12 HS=0 DS=0 GS=0 GSP=0 C=4 CP=4 PS=8448 CS=0
+  Draw(3) diagonal triangle                    0x00000000 IAV=3 IAP=1 VS=3 HS=0 DS=0 GS=0 GSP=0 C=1 CP=1 PS=2112 CS=0
+  Draw(6) quad half off-screen (0,0)-(2,2)     0x00000000 IAV=6 IAP=2 VS=6 HS=0 DS=0 GS=0 GSP=0 C=2 CP=4 PS=1088 CS=0
+  Draw(6) quad fully off-screen                0x00000000 IAV=6 IAP=2 VS=6 HS=0 DS=0 GS=0 GSP=0 C=2 CP=0 PS=0 CS=0
+  Draw(6) full, NULL PS                        0x00000000 IAV=6 IAP=2 VS=6 HS=0 DS=0 GS=0 GSP=0 C=0 CP=0 PS=0 CS=0
+  Draw(6) full, PS discards x<32               0x00000000 IAV=6 IAP=2 VS=6 HS=0 DS=0 GS=0 GSP=0 C=2 CP=2 PS=4224 CS=0
+  Draw(6) full, pass-through GS                0x00000000 IAV=6 IAP=2 VS=6 HS=0 DS=0 GS=2 GSP=2 C=2 CP=2 PS=4224 CS=0
+  Draw(6) 3-cp patches, tess factor 1          0x00000000 IAV=6 IAP=2 VS=6 HS=2 DS=6 GS=0 GSP=0 C=2 CP=2 PS=4224 CS=0
+  Dispatch(2,1,1) numthreads(3,4,5)            0x00000000 IAV=0 IAP=0 VS=0 HS=0 DS=0 GS=0 GSP=0 C=0 CP=0 PS=0 CS=120
+  DispatchIndirect(1,2,1) numthreads(3,4,5)    0x00000000 IAV=0 IAP=0 VS=0 HS=0 DS=0 GS=0 GSP=0 C=0 CP=0 PS=0 CS=120
+  overlap a{full,quarter} b{quarter,quarter}: a 0x00000000 IAV=12 PS=5312 | b 0x00000000 IAV=12 PS=2176
+
+[timestamp]
+  sizeof(D3D11_QUERY_DATA_TIMESTAMP_DISJOINT)=16
+  DISJOINT -> 0x00000000 Frequency=10000000 (adapter-dependent) Disjoint=0
+  Frequency > 10 MHz (D3D11.3 20.4.3): no
+  TIMESTAMP t1 -> 0x00000000, t2 -> 0x00000000, t2 >= t1: yes, t1 nonzero: yes
+
+[so] stream-output statistics and overflow predicates
+  VS SO, Draw(6) = 2 tris into room for 1 (48 bytes)
+    SO_STATISTICS                  0x00000000 {written=1 needed=2}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=1
+    SO_STATISTICS_STREAM0          0x00000000 {written=1 needed=2}
+    SO_OVERFLOW_PREDICATE_STREAM0  0x00000000 BOOL=1
+    SO_STATISTICS_STREAM1          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM1  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM2          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM2  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM3          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM3  0x00000000 BOOL=0
+  VS SO, Draw(6) = 2 tris into room for 2 (96 bytes)
+    SO_STATISTICS                  0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+    SO_STATISTICS_STREAM0          0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE_STREAM0  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM1          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM1  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM2          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM2  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM3          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM3  0x00000000 BOOL=0
+  VS SO, Begin; Draw(6); Begin; Draw(3); End (256 bytes)
+    SO_STATISTICS                  0x00000000 {written=1 needed=1}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+    SO_STATISTICS_STREAM0          0x00000000 {written=1 needed=1}
+    SO_OVERFLOW_PREDICATE_STREAM0  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM1          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM1  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM2          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM2  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM3          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM3  0x00000000 BOOL=0
+  CreateGeometryShaderWithStreamOutput(2 streams) -> 0x00000000
+  2-stream GS, Draw(6): s0 2 pts (room 4), s1 4 pts (room 3)
+    SO_STATISTICS                  0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=1
+    SO_STATISTICS_STREAM0          0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE_STREAM0  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM1          0x00000000 {written=3 needed=4}
+    SO_OVERFLOW_PREDICATE_STREAM1  0x00000000 BOOL=1
+    SO_STATISTICS_STREAM2          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM2  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM3          0x00000000 {written=0 needed=0}
+    SO_OVERFLOW_PREDICATE_STREAM3  0x00000000 BOOL=0
+
+[predication] Learn SetPredication: skipped when predicate data == PredicateValue
+  CreatePredicate(OCCLUSION_PREDICATE) -> 0x00000000
+  CreatePredicate(SO_OVERFLOW_PREDICATE) -> 0x00000000
+  CreatePredicate(OCCLUSION_PREDICATE, PREDICATEHINT) -> 0x00000000
+  CreateQuery(OCCLUSION_PREDICATE) -> 0x00000000
+  predicate occl empty       GetData -> 0x00000000 value=0
+  predicate occl visible     GetData -> 0x00000000 value=1
+  predicate SO overflowed    GetData -> 0x00000000 value=1
+  predicate SO no overflow   GetData -> 0x00000000 value=0
+  predicate occl empty HINT  GetData -> 0x80070057 value=205
+  predicate CreateQuery occl visible GetData -> 0x00000000 value=1
+  op                                   pF,FALSE  pF,TRUE   pT,TRUE   pT,FALSE  SOy,TRUE  SOn,FALSE SOn,TRUE  hint,FALSE pQ,TRUE
+  Draw                                 SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  DrawIndexed                          SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  DrawInstanced                        SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  DrawIndexedInstanced                 SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  DrawInstancedIndirect                SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  DrawIndexedInstancedIndirect         SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  DrawAuto                             SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  Dispatch                             SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  DispatchIndirect                     SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  ClearRenderTargetView                SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  ClearDepthStencilView                SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  ClearUnorderedAccessViewUint         SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  ClearUnorderedAccessViewFloat        SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  ClearView (ctx1)                     SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  CopyResource                         SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  CopySubresourceRegion                SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  CopySubresourceRegion1 (ctx1)        SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  CopyStructureCount                   SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  UpdateSubresource                    SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  UpdateSubresource1 (ctx1)            SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  GenerateMips                         SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  ResolveSubresource                   SKIPPED   ran       SKIPPED   ran       SKIPPED   SKIPPED   ran       SKIPPED   SKIPPED  
+  Map WRITE_DISCARD (not predicated)   ran       ran       ran       ran       ran       ran       ran       ran       ran      
+  OCCLUSION bracket around a predicated-off Draw -> 0x00000000 samples=0
+  GetPredication after SetPredication(pT, TRUE) -> same object value=1
+  refcount: before Set 1, while set 1, after Get 2
+  GetPredication(NULL, &v) -> value=1
+  GetPredication after SetPredication(NULL, TRUE) -> NULL value=1
+  refcount after SetPredication(NULL): 1
+  GetPredication after ClearState -> NULL value=0
+
+[counters]
+  CheckCounterInfo -> {LastDeviceDependentCounter=0x0, NumSimultaneousCounters=0, NumDetectableParallelUnits=1}
+  counter 0x00000000: CheckCounter -> 0x80070057 type=205 active=205 lens=0/0/0 | CreateCounter -> 0x80070057 out=untouched
+    CreateCounter(NULL out) -> 0x80070057
+  counter 0x00000001: CheckCounter -> 0x80070057 type=205 active=205 lens=0/0/0 | CreateCounter -> 0x80070057 out=untouched
+    CreateCounter(NULL out) -> 0x80070057
+  counter 0x40000000: CheckCounter -> 0x80070057 type=205 active=205 lens=0/0/0 | CreateCounter -> 0x80070057 out=untouched
+    CreateCounter(NULL out) -> 0x80070057
+  counter 0x40000001: CheckCounter -> 0x80070057 type=205 active=205 lens=0/0/0 | CreateCounter -> 0x80070057 out=untouched
+    CreateCounter(NULL out) -> 0x80070057
+
+[null]
+  CreateQuery(NULL desc) -> 0x80070057 out=NULL
+  CreatePredicate(NULL desc) -> 0x80070057 out=untouched
+
+done
+#
+# ---------------------------------------------------------------------------
+# winoracle 2026-09-28, WARP ("Microsoft Basic Render Driver"), x64 above.
+# The i686 build prints the same bytes except "pointer size 4".
+# Nondeterminism seen on WARP (3 x64 runs): "End-only spin" on the SO_* types
+# once returned needed=<garbage> (SO_STATISTICS_STREAM1) and once BOOL=1
+# (SO_OVERFLOW_PREDICATE_STREAM3). The HRESULT (S_OK) was stable; the value of
+# an End-without-Begin SO query is not reliable on WARP. The spec (D3D11.3
+# 20.3.4) makes End alone equal to Begin+End, i.e. an empty range = zeros.
+#
+# Verdicts for Vitreo (build of 2026-09-27 23:22), full detail in
+# .docs/audits/2026-09-28-d3d11-contract-audit/area-10-queries.md:
+# [create]   WRONG: invalid Query / MiscFlags -> E_NOTIMPL (Windows E_INVALIDARG);
+#            CreateQuery(OCCLUSION_PREDICATE / SO_OVERFLOW_PREDICATE / any
+#            per-stream predicate) and PREDICATEHINT -> E_NOTIMPL (Windows S_OK,
+#            object answers QI(ID3D11Predicate)); PIPELINE_STATISTICS E_NOTIMPL;
+#            GetDataSize 0 for OCCLUSION/SO/predicates; per-stream SO enum
+#            values misnumbered (9/11 treated as SO_STATISTICS_STREAM1/3,
+#            12..15 as overflow predicates); CreatePredicate writes NULL into
+#            ppPredicate where Windows leaves it untouched.
+# [create1]  MISSING: ID3D11Query1 vtable has no slot 9 (GetDesc1 -> branch
+#            to NULL); ContextType rule for PIPELINE_STATISTICS /
+#            OCCLUSION_PREDICATE (only ALL/3D) absent.
+# [getdata]  WRONG: never-issued / building -> S_FALSE (Windows
+#            DXGI_ERROR_INVALID_CALL); End without Begin -> S_FALSE forever
+#            (Windows S_OK, empty range); (buf,0) -> E_INVALIDARG (Windows
+#            S_OK); TIMESTAMP(_DISJOINT) (NULL,0) -> E_INVALIDARG (Windows S_OK);
+#            larger DataSize accepted (Windows E_INVALIDARG); undefined
+#            GetDataFlags accepted (Windows E_INVALIDARG).
+# [occlusion] FABRICATED: every count is 1 and every predicate TRUE.
+# [pipeline] MISSING (CreateQuery E_NOTIMPL).
+#            pstats pass (2026-09-28): every counter counted; the one line
+#            left, "quad half off-screen" PSInvocations 1068 vs 1088, differs
+#            in helper pixels only (equal occlusion, d3d11_pstats_probe).
+# [timestamp] correct (Frequency 1e9 > 10 MHz; WARP itself reports 10 MHz).
+# [so]       single-stream counts correct; Begin twice not a restart (3/3 vs
+#            1/1); streams 2/3 and per-stream predicates unreachable; the
+#            two-stream GS is E_NOTIMPL.
+# [predication] FABRICATED: nothing is ever skipped (all 22 operations run
+#            where Windows skips); SetPredication raises the public refcount.
+#            (Vitreo's Dispatch / DispatchIndirect cells read back 0 at
+#            random -- a separate readback-ordering defect, see
+#            d3d11_a10_dispatch_readback_probe.)
+# [counters] correct.  [null] CreatePredicate(NULL) writes NULL out (minor).

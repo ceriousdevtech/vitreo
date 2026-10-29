@@ -1,0 +1,54 @@
+static lenW=5 err=57005 lenA=5 getW=5 'Title' getA=5 'Title'
+SetWindowTextW=1
+after W lenW=3 err=57005 lenA=3 getW=3 'Wét' getA=3 'Wét'
+SetWindowTextA=1
+after A lenW=3 err=57005 lenA=3 getW=3 'Aéz' getA=3 'Aéz'
+SetWindowTextW(NULL)=1
+after NULL lenW=0 err=57005 lenA=0 getW=0 '' getA=0 ''
+GetWindowTextW(cch4)=3 0061006200630000
+GetWindowTextA(cch4)=3 61626300
+GetWindowTextW(cch0)=0 err=57005
+GetWindowTextW(bad)=0 err=1400
+GetWindowTextLengthW(bad)=0 err=1400
+SetWindowTextW(bad)=1 err=57005
+SetDlgItemTextW=1
+GetDlgItemTextW=4 'item'
+SetDlgItemTextA=1
+GetDlgItemTextW(cch3)=2 0061006e0000
+GetDlgItemTextW(missing)=0 err=1421 it0=0000
+SetDlgItemTextW(missing)=0 err=57005
+LoadStringW(100)=5 first=0048 term=0000
+LoadStringW(101, cch5)=4 term4=0000
+LoadStringW(101, cch0)=23 ptr=ok first=0041
+LoadStringW(102 empty)=0 err=57005 buf0=0000
+LoadStringW(999)=0 err=1814 buf0=0000
+IsIconic=0 bad=0
+GetWindowRgn(none)=0 err=57005
+SetWindowRgn=1
+GetWindowRgn=3 box=0,0,39,29
+DeleteObject(owned rgn)=0 err=57005
+SetWindowRgn(NULL)=1 then=3
+SetWindowRgn(bad)=0 err=57005
+GetWindowRgn(bad)=0 err=57005
+LoadCursorW(IDC_ARROW) ok=1 same=1 ibeam ok=1 differs=1
+LoadCursorW(12345)=NULL err=1814
+LoadCursorW(inst, NOSUCH)=NULL err=1813
+LoadIconW(IDI_APPLICATION) ok=1 same=1
+LoadIconW(12345)=NULL err=1813
+LoadImageW(IDC_ARROW, shared)=handle same=1
+LoadImageW(missing file)=NULL err=2
+LoadImageA(missing bmp)=NULL err=2
+LoadImageW(OBM 32754)=handle err=57005
+LoadBitmapW(OBM_CLOSE)=handle 42x23 bpp=32 err=57005
+LoadBitmapW(NOSUCH)=NULL err=1813
+DestroyCursor(shared)=1 err=57005
+DestroyIcon(shared)=1 err=57005
+DestroyCursor(NULL)=0 err=57005
+SetCursor prev=handle GetCursor==ibeam 1
+SetCursor back returns ibeam=1
+ShowCursor(FALSE)=-1 ShowCursor(TRUE)=0
+GetCursorInfo=1 flags=1 hcursor ok=1
+GetCursorInfo(bad size)=0 err=57005
+GetClipCursor=1 rect=0,0,1920,1080 screen=1920,1080
+ClipCursor(NULL)=1
+GetClipCursor(NULL)=0 err=57005

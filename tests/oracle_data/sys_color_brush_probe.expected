@@ -1,0 +1,5 @@
+idx=30 color=f0f0f0 color_err=57005 brush_null=0 brush_err=57005 logbrush=16 style=0 color=f0f0f0 delete=1
+idx=31 color=000000 color_err=87 brush_null=1 brush_err=57005 logbrush=0 style=0 color=000000 delete=-1
+idx=32 color=000000 color_err=87 brush_null=1 brush_err=57005 logbrush=0 style=0 color=000000 delete=-1
+idx=100 color=000000 color_err=87 brush_null=1 brush_err=57005 logbrush=0 style=0 color=000000 delete=-1
+idx=-1 color=000000 color_err=87 brush_null=1 brush_err=57005 logbrush=0 style=0 color=000000 delete=-1

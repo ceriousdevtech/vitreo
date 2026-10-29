@@ -1,0 +1,68 @@
+# winoracle (Intel Alder Lake), x86_64-w64-mingw32-gcc -O1 -mfma, 2026-10-07
+132 qnan nan={op1 } ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+132 qnan nan={op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+132 qnan nan={op1 op2 } ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+132 qnan nan={op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+132 qnan nan={op1 op3} ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+132 qnan nan={op2 op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+132 qnan nan={op1 op2 op3} ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+132 snan nan={op1 } ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+132 snan nan={op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+132 snan nan={op1 op2 } ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+132 snan nan={op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+132 snan nan={op1 op3} ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+132 snan nan={op2 op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+132 snan nan={op1 op2 op3} ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+213 qnan nan={op1 } ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+213 qnan nan={op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+213 qnan nan={op1 op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+213 qnan nan={op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+213 qnan nan={op1 op3} ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+213 qnan nan={op2 op3} ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+213 qnan nan={op1 op2 op3} ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+213 snan nan={op1 } ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+213 snan nan={op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+213 snan nan={op1 op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+213 snan nan={op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+213 snan nan={op1 op3} ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+213 snan nan={op2 op3} ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+213 snan nan={op1 op2 op3} ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+231 qnan nan={op1 } ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+231 qnan nan={op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+231 qnan nan={op1 op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+231 qnan nan={op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+231 qnan nan={op1 op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+231 qnan nan={op2 op3} ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+231 qnan nan={op1 op2 op3} ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+231 snan nan={op1 } ps=op1(7fc000a1) pd=op1(7ff80000000000a1)
+231 snan nan={op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+231 snan nan={op1 op2 } ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+231 snan nan={op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+231 snan nan={op1 op3} ps=op3(7fc000c3) pd=op3(7ff80000000000c3)
+231 snan nan={op2 op3} ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+231 snan nan={op1 op2 op3} ps=op2(7fc000b2) pd=op2(7ff80000000000b2)
+vfmadd231 nan=op1 sign=0 -> 7fc000a1
+vfmadd231 nan=op1 sign=1 -> ffc000a1
+vfmadd231 nan=op2 sign=0 -> 7fc000b2
+vfmadd231 nan=op2 sign=1 -> ffc000b2
+vfmadd231 nan=op3 sign=0 -> 7fc000c3
+vfmadd231 nan=op3 sign=1 -> ffc000c3
+vfmsub231 nan=op1 sign=0 -> 7fc000a1
+vfmsub231 nan=op1 sign=1 -> ffc000a1
+vfmsub231 nan=op2 sign=0 -> 7fc000b2
+vfmsub231 nan=op2 sign=1 -> ffc000b2
+vfmsub231 nan=op3 sign=0 -> 7fc000c3
+vfmsub231 nan=op3 sign=1 -> ffc000c3
+vfnmadd231 nan=op1 sign=0 -> 7fc000a1
+vfnmadd231 nan=op1 sign=1 -> ffc000a1
+vfnmadd231 nan=op2 sign=0 -> 7fc000b2
+vfnmadd231 nan=op2 sign=1 -> ffc000b2
+vfnmadd231 nan=op3 sign=0 -> 7fc000c3
+vfnmadd231 nan=op3 sign=1 -> ffc000c3
+vfnmsub231 nan=op1 sign=0 -> 7fc000a1
+vfnmsub231 nan=op1 sign=1 -> ffc000a1
+vfnmsub231 nan=op2 sign=0 -> 7fc000b2
+vfnmsub231 nan=op2 sign=1 -> ffc000b2
+vfnmsub231 nan=op3 sign=0 -> 7fc000c3
+vfnmsub231 nan=op3 sign=1 -> ffc000c3
+default inf*0+1.5 ps=ffc00000  inf*1-inf ps=ffc00000  inf*0+1.5 pd=fff8000000000000

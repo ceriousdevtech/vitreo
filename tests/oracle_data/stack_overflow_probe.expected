@@ -1,0 +1,26 @@
+# What Windows delivers when a thread runs off the end of its stack.
+# Measured 2026-09-22 on winoracle (x64 Windows), two runs, identical fields;
+# the rsp-relative lines vary by a few hundred bytes run to run.
+#
+# Build and run (CRT-free, so the same .exe runs under Vitreo unchanged):
+#   x86_64-w64-mingw32-gcc -O0 -nostdlib -e probe_main \
+#       -o stack_overflow_probe.exe tools/oracle_probe/stack_overflow_probe.c -lkernel32
+#   scp stack_overflow_probe.exe winoracle: && ssh winoracle .\stack_overflow_probe.exe
+#
+code        0x00000000c00000fd      STATUS_STACK_OVERFLOW, not an access violation
+flags       0x0000000000000000
+nparams     0x0000000000000002      two parameters, shaped like an access violation's
+info0       0x0000000000000001      [0] = 1, a write
+info1-rsp   0x0000000000000020      [1] = the faulting address (here a frame store)
+limit-deall 0x0000000000001000      afterwards StackLimit = DeallocationStack + 4 KiB
+rsp-limit   0x0000000000002d40      ~0x2d40..0x2f80: the fault arrives ~16 KiB above the base
+rsp-deall   0x0000000000003d40
+hndlr-deall 0x00000000000032f0      the handler RUNS, on ~12 KiB of recovery stack
+base-deall  0x0000000000040000      the 256 KiB reservation CreateThread asked for
+#
+# Vitreo before the fix (2026-09-22): code 0xc0000005 at 0x1f0 BELOW the stack
+# allocation, "callback stack not writable" -- the handler could not run at
+# all, the thread died silently, and main printed "no exception observed".
+# After: every field above matches except base-deall = 0x400000, because
+# Vitreo gives every x64 thread a 4 MiB stack and ignores CreateThread's
+# dwStackSize (a separate, still-open gap).

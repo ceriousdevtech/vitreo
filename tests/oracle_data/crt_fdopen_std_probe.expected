@@ -1,0 +1,2 @@
+fdopen_std s0=0x187b5bee6f0 iob0=0x7ffa6f7b8c40 same0=0 s1=0x187b5bee750 iob1=0x7ffa6f7b8c98 same1=0 s2=0x187b5bee3b0 same2=0 errno=0 
+fputc_fd1 r=33 

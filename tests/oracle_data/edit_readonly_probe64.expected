@@ -1,0 +1,35 @@
+class0 created=1
+case0 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+case1 value=1 result=1 readonly=1 same_text=1 last=6abedef1
+case2 value=2 result=1 readonly=1 same_text=1 last=6abedef1
+case3 value=ffffffff result=1 readonly=1 same_text=1 last=6abedef1
+case4 value=100000000 result=1 readonly=1 same_text=1 last=6abedef1
+case5 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+class1 created=1
+case0 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+case1 value=1 result=1 readonly=1 same_text=1 last=00000000
+case2 value=2 result=1 readonly=1 same_text=1 last=6abedef1
+case3 value=ffffffff result=1 readonly=1 same_text=1 last=6abedef1
+case4 value=100000000 result=1 readonly=0 same_text=1 last=00000000
+case5 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+class2 created=1
+case0 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+case1 value=1 result=1 readonly=1 same_text=1 last=00000000
+case2 value=2 result=1 readonly=1 same_text=1 last=6abedef1
+case3 value=ffffffff result=1 readonly=1 same_text=1 last=6abedef1
+case4 value=100000000 result=1 readonly=0 same_text=1 last=00000000
+case5 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+class3 created=1
+case0 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+case1 value=1 result=1 readonly=1 same_text=1 last=00000000
+case2 value=2 result=1 readonly=1 same_text=1 last=6abedef1
+case3 value=ffffffff result=1 readonly=1 same_text=1 last=6abedef1
+case4 value=100000000 result=1 readonly=0 same_text=1 last=00000000
+case5 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+class4 created=1
+case0 value=0 result=1 readonly=0 same_text=1 last=6abedef1
+case1 value=1 result=1 readonly=1 same_text=1 last=00000000
+case2 value=2 result=1 readonly=1 same_text=1 last=6abedef1
+case3 value=ffffffff result=1 readonly=1 same_text=1 last=6abedef1
+case4 value=100000000 result=1 readonly=0 same_text=1 last=00000000
+case5 value=0 result=1 readonly=0 same_text=1 last=6abedef1

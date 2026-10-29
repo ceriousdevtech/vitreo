@@ -1,0 +1,295 @@
+== x64
+setfocus_invalid_null ok=1 err=578
+  err=578
+getfocus_is_own ok=1 err=dead
+setfocus_other_thread_null ok=1 err=5
+  err=5 focus_unchanged=1
+setfocus_null_prev_second ok=1 err=0
+getfocus_null ok=1 err=dead
+setactive_invalid ret=00000000 err=578
+setactive_own ok=1 err=0
+getactive_is_own ok=1 err=dead
+setactive_child_null ok=0 err=dead
+  err=dead active_unchanged=1
+setactive_other_thread_null ok=1 err=dead
+  err=dead
+setforeground_null ret=00000000 err=578
+setforeground_invalid ret=00000000 err=578
+allowsetfg_any ret=00000001 err=dead
+allowsetfg_zero ret=00000000 err=57
+allowsetfg_bogus_pid ret=00000000 err=57
+getcapture_none ret=00000000 err=dead
+setcapture_prev_none ret=00000000 err=0
+getcapture_own ok=1 err=dead
+setcapture_second_prev_first ok=1 err=0
+  capturechanged=1 lparam_is_second=1
+releasecapture ret=00000001 err=0
+  capturechanged=1 lparam_null=1 getcapture_null=1
+releasecapture_none ret=00000001 err=dead
+setcapture_invalid ret=00000000 err=578
+setcapture_null ret=00000000 err=dead
+lastactivepopup_self ok=1 err=dead
+lastactivepopup_invalid ret=00000000 err=578
+lastactivepopup_null ret=00000000 err=578
+attach_self_self ret=00000000 err=57
+attach_bogus ret=00000000 err=57
+attach_zero ret=00000000 err=57
+detach_not_attached ret=00000000 err=57
+attach_other ret=00000001 err=dead
+  attached_focus_other_thread_ok ok=1 err=0
+  attached_getfocus_other ok=1 err=dead
+detach_other ret=00000001 err=dead
+detach_again ret=00000000 err=57
+keyboard_layout_is_us=1
+getkeyboardstate ok=1 err=dead
+getkeyboardstate_null ok=0 err=3e6
+setkeyboardstate ok=1 err=dead
+getkeystate_A_down ret=0000ff80 err=dead
+getkeystate_capital_toggled ret=00000001 err=dead
+getkeystate_B_up ret=00000000 err=dead
+getkeystate_lshift ret=00000000 err=dead
+getasync_A_not_set_by_setkeyboardstate ret=00000000 err=dead
+setkeyboardstate_null ok=0 err=3e6
+mapvk: 41:1e/41/1e/1e 5a:2c/5a/2c/2c 30:b/30/b/b d:1c/d/1c/1c 20:39/20/39/39 10:2a/0/2a/2a a0:2a/0/2a/2a a1:36/0/36/36 11:1d/0/1d/1d a3:1d/0/e01d/1d 12:38/0/38/38 a5:38/0/e038/38 25:4b/0/4b/4b 2e:53/0/53/53 60:52/30/52/52 6f:35/2f/e035/35 ba:27/3b/27/27 bf:35/2f/35/35 bb:d/3d/d/d 70:3b/0/3b/3b 7b:58/0/58/58 5b:5b/0/e05b/5b 5d:5d/0/e05d/5d 2c:54/0/54/54 13:0/0/e11d/0 90:45/0/45/45 ff:0/0/0/0
+mapvsc: 1e:41/41 2a:10/a0 36:10/a1 1d:11/a2 38:12/a4 1c:d/d 39:20/20 3b:70/70 45:90/90 46:91/91 53:2e/2e 5b:f1/f1 7f:0/0 100:0/0
+mapvk_ex_e01d ret=000000a3 err=dead
+mapvk_ex_e038 ret=000000a5 err=dead
+mapvk_type5 ret=00000000 err=57
+mapvk_type7 ret=00000000 err=57
+mapvkexa_A ret=00000041 err=dead
+mapvkexa_null_hkl ret=0000001e err=dead
+vkkeyscanexa_a ret=00000041 err=dead
+vkkeyscanexa_A ret=00000141 err=dead
+vkkeyscanexa_bang ret=00000131 err=dead
+vkkeyscanexa_tab ret=00000009 err=dead
+vkkeyscanexa_ctrl_a ret=00000241 err=dead
+vkkeyscanexa_e9 ret=0000ffff err=dead
+vkkeyscanexw_a ret=00000041 err=dead
+vkkeyscanexw_euro ret=0000ffff err=dead
+tounicode_a ret=00000001 err=dead
+  char=61
+tounicode_A_shift ret=00000001 err=dead
+  char=41
+tounicode_ctrl_a ret=00000001 err=dead
+  char=1
+tounicode_caps_a ret=00000001 err=dead
+  char=41
+tounicode_return ret=00000001 err=dead
+  char=d
+tounicode_f1 ret=00000000 err=dead
+tounicode_keyup_bit ret=00000000 err=dead
+tounicodeex_nostate ret=00000001 err=dead
+  char=61
+tounicode_zero_buffer ret=00000000 err=57
+tounicode_ctrl_alt_a ret=00000000 err=dead
+layoutlist_count_positive=1
+layoutlist_filled_matches=1 contains_current=1
+activatelayout_current_prev ok=1 err=dead
+activatelayout_bogus ret=00000000 err=dead
+doubleclicktime ret=000001f4 err=dead
+caretblinktime ret=00000212 err=dead
+lastinputinfo_bad_size ok=0 err=57
+lastinputinfo ok=1 err=dead
+getcursorpos ok=1 err=dead
+getcursorpos_null ok=0 err=3e6
+sendinput_zero ret=00000000 err=57
+sendinput_bad_size ret=00000000 err=57
+sendinput_null ret=00000000 err=3e6
+sendinput_bad_type ret=00000001 err=dead
+messagebeep_ffffffff ret=1
+messagebeep_bogus ret=1
+registerhotkey ret=00000001 err=dead
+registerhotkey_same_id ret=00000001 err=dead
+registerhotkey_invalid_hwnd ret=00000000 err=578
+registerhotkey_bad_mods ret=00000000 err=3ec
+unregisterhotkey ret=00000001 err=dead
+unregisterhotkey_again ret=00000000 err=58b
+unregisterhotkey_invalid_hwnd ret=00000000 err=578
+trackmouse_bad_size ret=00000000 err=57
+trackmouse_invalid_hwnd ret=00000000 err=578
+trackmouse_query ret=00000001 err=dead
+translate_keydown_a ret=1 err=dead posted: 102/61/1e0001
+translate_keydown_a_shift ret=1 err=dead posted: 102/41/1e0001
+translate_keyup_a ret=1 err=dead posted:
+translate_keydown_f1 ret=1 err=dead posted:
+translate_syskeydown_a_alt ret=1 err=dead posted: 106/61/201e0001
+translate_syskeyup ret=1 err=dead posted:
+translate_ctrl_a ret=1 err=dead posted: 102/1/1e0001
+translate_ctrl_2 ret=1 err=dead posted:
+translate_ctrl_shift_2 ret=1 err=dead posted: 102/0/30001
+translate_ctrl_alt_a ret=1 err=dead posted:
+translate_packet ret=1 err=dead posted:
+translate_char_msg ret=0 err=dead posted:
+translate_lbuttondown ret=0 err=dead posted:
+translate_keydown_return ret=1 err=dead posted: 102/d/1c0001
+translate_keydown_escape ret=1 err=dead posted: 102/1b/10001
+closeclipboard_not_open ret=00000000 err=58a
+emptyclipboard_not_open ret=00000000 err=58a
+getclipboarddata_not_open ret=00000000 err=58a
+setclipboarddata_not_open ret=00000000 err=58a
+openclipboard ret=00000001 err=dead
+openclipboard_again_same_thread ret=00000001 err=dead
+emptyclipboard ret=00000001 err=dead
+  seq_advanced=1
+setclipboarddata_unicode ok=1 err=0
+isformat_unicode ret=00000001 err=dead
+isformat_text_synth ret=00000000 err=dead
+isformat_oemtext_synth ret=00000000 err=dead
+isformat_locale_synth ret=00000000 err=dead
+isformat_bitmap ret=00000000 err=dead
+enumformats: d end_err=0
+getclipboarddata_text_synth ok=0 err=dead
+getclipboarddata_absent ret=00000000 err=490
+getformatname_registered ret=0000000d err=dead
+  name=S2ProbeFormat
+getformatname_truncated ret=00000004 err=dead
+  name=S2Pr
+getformatname_cf_text ret=00000000 err=57
+getformatname_zero_len ret=00000000 err=7a
+closeclipboard ret=00000001 err=dead
+closeclipboard_again ret=00000000 err=58a
+isformat_text_after_close ret=00000001 err=dead
+isformat_locale_after_close ret=00000001 err=dead
+openclipboard_null_owner ret=00000001 err=dead
+enumformats_after_close: d 10 1 7 end_err=0
+getclipboarddata_text_after_close ok=1 err=dead
+  text=hi
+closeclipboard_second_session ret=00000001 err=dead
+enumformats_closed ret=00000000 err=58a
+registerformat_empty ret=00000000 err=dead
+openclipboard_null ret=00000001 err=dead
+emptyclipboard_null_owner ret=00000001 err=dead
+setclipboarddata_null_owner ok=1 err=0
+setclipboarddata_second_format ok=1 err=dead
+  err=dead
+closeclipboard_null_owner ret=00000001 err=dead
+seq_empty_advanced=1 seq_set_advanced=1 seq_close_advanced=1
+openclipboard_main ret=00000001 err=dead
+openclipboard_other_thread ret=0 err=5
+closeclipboard_main ret=00000001 err=dead
+hidecaret_no_caret ret=00000000 err=5
+showcaret_no_caret ret=00000000 err=5
+setcaretpos_no_caret ret=00000000 err=5
+destroycaret_no_caret ret=00000000 err=5
+createcaret_invalid ret=00000000 err=578
+createcaret_other_thread ret=00000000 err=dead
+createcaret ret=00000001 err=dead
+setcaretpos ret=00000001 err=dead
+getcaretpos ret=00000001 err=dead
+  pt=5,6
+showcaret ret=00000001 err=dead
+showcaret_again ret=00000001 err=dead
+hidecaret ret=00000001 err=dead
+hidecaret_other_window ret=00000000 err=dead
+hidecaret_null_window ret=00000001 err=dead
+destroycaret ret=00000001 err=dead
+destroycaret_again ret=00000000 err=5
+rid_register_bad_size ret=00000000 err=57
+rid_register_zero ret=00000000 err=57
+rid_register_null ret=00000000 err=57
+rid_register_mouse ret=00000001 err=dead
+rid_inputsink_no_hwnd ret=00000000 err=57
+rid_inputsink_hwnd ret=00000001 err=dead
+rid_remove_with_hwnd ret=00000000 err=57
+rid_remove ret=00000001 err=dead
+rid_bad_flags ret=00000000 err=3ec
+getregistered_count ret=00000000 err=dead
+  n=0 err_is_insufficient=0
+devicelist_count ret=00000000 err=dead
+  count_positive=1
+devicelist_bad_size ret=ffffffff err=57
+devicelist_null_count ret=ffffffff err=3e6
+devicelist_too_small ret=ffffffff err=7a
+  one_is_count=1
+deviceinfo_bogus_handle ret=ffffffff err=6
+deviceinfo_bad_command ret=ffffffff err=6
+rawinputdata_bogus ret=ffffffff err=6
+rawinputdata_bad_header ret=ffffffff err=57
+rawinputbuffer_query ret=00000000 err=dead
+  size=0
+rawinputbuffer_bad_header ret=ffffffff err=57
+defrawinputproc ret=00000000 err=dead
+defrawinputproc_bad_size ret=ffffffff err=dead
+getpointertype_1 ret=00000001 err=dead
+  type=4
+getpointertype_bogus ret=00000000 err=57
+getpointerinfo_1 ret=00000000 err=57
+getpointerpeninfo_1 ret=00000000 err=57
+getpointerdevices_count ok=1 err=dead
+getpointerdevice_bogus ret=00000000 err=6
+registerpointerdevicenotif ret=00000001 err=dead
+registerpointerdevicenotif_invalid ret=00000000 err=578
+registertouchwindow ret=00000001 err=dead
+registertouchwindow_invalid ret=00000000 err=578
+registertouchwindow_bad_flags ret=00000000 err=3ec
+closetouchinputhandle_bogus ret=00000000 err=6
+charnextw_combining=2
+charnextw_surrogate=4
+charnextw_at_end=6
+charprevw_start=0
+charprevw_after_combining=0
+charprevw_after_surrogate=4
+charnexta=1 charnexta_end=2
+charupperw_char=41
+charupperw_char_e_acute=c9
+charupperw_str=41 c9 391 5a
+charlowerbuffw_ret=5
+charlowerbuffw=61 e9 3b1 130 7a
+charlowerbuffw_zero=0
+chartooembuffw ret=00000001 err=dead
+  oem=82 41 5f b0
+oemtochara ret=00000001 err=dead
+  ansi=e9 41 a6 a3
+oemtocharbuffa ret=00000001 err=dead
+  ansi=e9 41 0
+oemtochara_same_buffer ret=00000001 err=dead
+chartooem_vs_wctomb default_underscore=1 other=0
+immgetcontext_nonzero=1
+immgetopenstatus ret=00000000 err=0
+immgetconversionstatus ret=00000001 err=0
+  conv=1 sent=8
+immsetopenstatus ret=00000001 err=0
+immgetopenstatus_after ret=00000001 err=0
+immsetconversionstatus ret=00000001 err=0
+immgetconversionstatus_after ret=00000001 err=0
+  conv=1 sent=0
+immgetcompositionstringw_len ret=00000000 err=0
+immgetcompositionstringw_bad_index ret=fffffffe err=0
+immgetcandidatelistcountw ret=00000090 err=0
+  lists=0
+immgetcandidatelistw ret=00000000 err=0
+immgetcompositionfontw ret=00000001 err=0
+  font h=16 w=7 weight=700 charset=0 pitch=34 face=System
+immsetcompositionwindow ret=00000001 err=0
+immsetcandidatewindow ret=00000001 err=0
+immsetcandidatewindow_bad_index ret=00000000 err=dead
+immsetcompositionstringw ret=00000001 err=0
+immgetcompositionstringw_after_set ret=00000000 err=0
+immgetcompositionwindow ret=00000001 err=0
+  style=2 pos=10,20
+immgetcandidatewindow ret=00000001 err=0
+  style=40 pos=10,20
+immgetcandidatewindow_unset ret=00000000 err=0
+immnotifyime_cancel ret=00000001 err=0
+immnotifyime_bad_action ret=00000000 err=0
+immreleasecontext ret=00000001 err=dead
+immcreatecontext_nonzero=1
+immassociatecontext_prev_was_default=1
+immgetcontext_is_new=1
+immassociatecontext_returns_new=1
+immassociatecontext_invalid_hwnd ret=00000000 err=578
+immdestroycontext ret=00000001 err=0
+immdestroycontext_again ret=00000000 err=6
+immgetimefilenamew ret=00000000 err=dead
+immgetimefilenamea ret=00000000 err=dead
+immgetproperty_property ret=00090000 err=dead
+immgetproperty_getimeversion ret=00040000 err=dead
+immgetproperty_bad ret=00000000 err=dead
+immgetproperty_conversion ret=00000000 err=dead
+immgetproperty_sentence ret=00000000 err=dead
+immgetproperty_ui ret=00000000 err=dead
+immgetproperty_setcompstr ret=00000000 err=dead
+immgetproperty_select ret=00000000 err=dead
+immgetproperty_zero ret=00000000 err=dead
+immgetcontext_invalid_hwnd ret=00000000 err=578
+done

@@ -1,0 +1,41 @@
+[LocalMachine/64] SOFTWARE\Classes\WOW6432Node\CLSID\{6E1D2C3B-4A59-4687-9B0A-1C2D3E4F5A6B}
+  @ = String:Vitreo Server Class
+  AppID = String:{3D2F4C61-8A0B-4E7C-9F12-6B5A4C3D2E10}
+[LocalMachine/64] SOFTWARE\Classes\WOW6432Node\CLSID\{6E1D2C3B-4A59-4687-9B0A-1C2D3E4F5A6B}\DefaultIcon
+  @ = String:C:\WINDOWS\Installer\{EA844198-B6C8-4E38-9ABA-6BA7E226E338}\probe.ico,1
+[LocalMachine/64] SOFTWARE\Classes\WOW6432Node\CLSID\{6E1D2C3B-4A59-4687-9B0A-1C2D3E4F5A6B}\InprocHandler32
+  @ = String:ole32.dll
+[LocalMachine/64] SOFTWARE\Classes\WOW6432Node\CLSID\{6E1D2C3B-4A59-4687-9B0A-1C2D3E4F5A6B}\LocalServer32
+  @ = String:C:\PROGRA~2\VitreoRP\m1.exe /automation
+  LocalServer32 = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMulti>-(oj(=Zj~='O-B6y[ukY /automation>
+[LocalMachine/64] SOFTWARE\Classes\WOW6432Node\CLSID\{6E1D2C3B-4A59-4687-9B0A-1C2D3E4F5A6B}\ProgID
+  @ = String:Vitreo.Server.1
+[LocalMachine/64] SOFTWARE\Classes\FileType\{6E1D2C3B-4A59-4687-9B0A-1C2D3E4F5A6B}
+[LocalMachine/64] SOFTWARE\Classes\FileType\{6E1D2C3B-4A59-4687-9B0A-1C2D3E4F5A6B}\0
+  @ = String:0,2,FFFF,1234
+[LocalMachine/64] SOFTWARE\Classes\WOW6432Node\CLSID\{7F2E3D4C-5B6A-4798-8C1B-2D3E4F5A6B7C}
+  @ = String:Vitreo Inproc Class
+[LocalMachine/64] SOFTWARE\Classes\WOW6432Node\CLSID\{7F2E3D4C-5B6A-4798-8C1B-2D3E4F5A6B7C}\InprocServer32
+  @ = String:C:\Program Files (x86)\VitreoRP\m2.dll
+  InprocServer32 = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMulti>F77p1Cp(1A=S[cKp5)a(>
+[LocalMachine/64] SOFTWARE\Classes\AppID\{3D2F4C61-8A0B-4E7C-9F12-6B5A4C3D2E10}
+  ActivateAtStorage = String:Y
+  RunAs = String:Interactive User
+[LocalMachine/64] SOFTWARE\Classes\WOW6432Node\AppID\{3D2F4C61-8A0B-4E7C-9F12-6B5A4C3D2E10}
+  ActivateAtStorage = String:Y
+  RunAs = String:Interactive User
+[LocalMachine/64] SOFTWARE\Classes\Vitreo.Server.1
+  @ = String:Vitreo Server Object
+[LocalMachine/64] SOFTWARE\Classes\Vitreo.Server.1\CLSID
+  @ = String:{6E1D2C3B-4A59-4687-9B0A-1C2D3E4F5A6B}
+[LocalMachine/64] SOFTWARE\Classes\Vitreo.Server.1\DefaultIcon
+  @ = String:C:\WINDOWS\Installer\{EA844198-B6C8-4E38-9ABA-6BA7E226E338}\probe.ico,0
+[LocalMachine/64] SOFTWARE\Classes\Installer\Components\A86B813C7357E47408A0A97709181610
+  multi-qualifier = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMulti>F77p1Cp(1A=S[cKp5)a(m2 appdata>
+  probe-qualifier = MultiString:<rOgGt)ew.A7thm^MG+@6FeatMain<probe appdata>
+[Fonts] Arial (TrueType) = vprobe1.ttf
+[Fonts] Vitreo Probe Font (TrueType) = vprobe2.ttf
+[lnk] Vitreo Advertised.lnk 2553
+[lnk] Vitreo Probe.lnk 1078
+[icon] probe.ico 1150
+[fontsdir] vprobe1.ttf,vprobe2.ttf

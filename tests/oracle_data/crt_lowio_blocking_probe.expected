@@ -1,0 +1,8 @@
+msvcrt.dll std=0 mutation=close writer_ready=1 mutation_waits=1 query_ready=1 zero_ready=0 null_ready=0 read=3 write=1 mutation_result=0 zero=4294967295 null_result=4294967295 invalid=0
+msvcrt.dll std=0 mutation=dup2 writer_ready=1 mutation_waits=1 query_ready=1 zero_ready=0 null_ready=0 read=3 write=1 mutation_result=0 zero=0 null_result=4294967295 invalid=0
+msvcrt.dll std=1 mutation=close writer_ready=1 mutation_waits=1 query_ready=1 zero_ready=0 null_ready=0 read=3 write=1 mutation_result=0 zero=4294967295 null_result=4294967295 invalid=0
+msvcrt.dll std=1 mutation=dup2 writer_ready=1 mutation_waits=1 query_ready=1 zero_ready=0 null_ready=0 read=3 write=1 mutation_result=0 zero=0 null_result=4294967295 invalid=0
+ucrtbase.dll std=0 mutation=close writer_ready=1 mutation_waits=1 query_ready=1 zero_ready=0 null_ready=0 read=3 write=1 mutation_result=0 zero=4294967295 null_result=4294967295 invalid=0
+ucrtbase.dll std=0 mutation=dup2 writer_ready=1 mutation_waits=1 query_ready=1 zero_ready=0 null_ready=0 read=3 write=1 mutation_result=0 zero=0 null_result=4294967295 invalid=1
+ucrtbase.dll std=1 mutation=close writer_ready=1 mutation_waits=1 query_ready=1 zero_ready=0 null_ready=0 read=3 write=1 mutation_result=0 zero=4294967295 null_result=4294967295 invalid=0
+ucrtbase.dll std=1 mutation=dup2 writer_ready=1 mutation_waits=1 query_ready=1 zero_ready=0 null_ready=0 read=3 write=1 mutation_result=0 zero=0 null_result=4294967295 invalid=1

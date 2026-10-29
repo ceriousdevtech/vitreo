@@ -1,0 +1,252 @@
+have_CopyFile2=1
+cf2_null_params hr=0 gle=0 dst=a cbs=0
+cf2_null_params_attrs a=20
+cf2_overwrite_null_params hr=0 gle=0 dst=a cbs=0
+cf2_fail_if_exists hr=80070050 gle=50 dst=a cbs=0
+cf2_dwsize_0 hr=80070057 gle=dead dst=ffffffff cbs=0
+cf2_dwsize_small hr=80070057 gle=dead dst=ffffffff cbs=0
+cf2_dwsize_big hr=80070057 gle=dead dst=ffffffff cbs=0
+cf2_v2_zeroed hr=0 gle=0 dst=a cbs=0
+cf2_bad_flag hr=0 gle=0 dst=a cbs=0
+cf2_missing_src hr=80070002 gle=2 dst=ffffffff cbs=0
+cf2_missing_dst_dir hr=80070003 gle=3 dst=ffffffff cbs=0
+cf2_src_is_dir hr=80070005 gle=5 dst=ffffffff cbs=0
+cf2_dst_is_dir hr=80070005 gle=5 dst=ffffffff cbs=0
+cf2_self hr=80070020 gle=20 dst=ffffffff cbs=0
+cf2_null_src hr=80070003 gle=3 dst=ffffffff cbs=0
+cf2_dst_hidden hr=80070005 gle=5 dst=3 cbs=0
+cf2_dst_readonly hr=80070005 gle=5 dst=3 cbs=0
+cf2_pfcancel_true hr=800704d3 gle=4d3 dst=ffffffff cbs=0
+cf2_pfcancel_false hr=0 gle=0 dst=a cbs=0
+cf2_seq_small:
+  msg type=3 ctx=5678 stream=1 hs=1 hd=1 ssize=10 total=10
+  msg type=1 ctx=5678 stream=1 chunk=0 csize=10 ssize=10 total=10
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=0 csize=10 ssize=10 sdone=10 total=10 tdone=10
+  msg type=4 ctx=5678 stream=1 ssize=10 sdone=10 total=10 tdone=10
+cf2_seq_small hr=0 gle=0 dst=a cbs=4 seq=3124
+cf2_seq_empty:
+  msg type=3 ctx=5678 stream=1 hs=1 hd=1 ssize=0 total=0
+  msg type=4 ctx=5678 stream=1 ssize=0 sdone=0 total=0 tdone=0
+cf2_seq_empty hr=0 gle=0 dst=0 cbs=2 seq=34
+cf2_seq_big:
+  msg type=3 ctx=5678 stream=1 hs=1 hd=1 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=0 csize=1048576 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=1 csize=1048576 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=2 csize=1048576 ssize=3145733 total=3145733
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=0 csize=1048576 ssize=3145733 sdone=1048576 total=3145733 tdone=1048576
+  msg type=1 ctx=5678 stream=1 chunk=3 csize=1048576 ssize=3145733 total=3145733
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=1 csize=1048576 ssize=3145733 sdone=2097152 total=3145733 tdone=2097152
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=2 csize=1048576 ssize=3145733 sdone=3145728 total=3145733 tdone=3145728
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=3 csize=5 ssize=3145733 sdone=3145733 total=3145733 tdone=3145733
+  msg type=4 ctx=5678 stream=1 ssize=3145733 sdone=3145733 total=3145733 tdone=3145733
+cf2_seq_big hr=0 gle=0 dst=300005 cbs=10 seq=3111212224
+cf2_seq_huge:
+  msg type=3 ctx=5678 stream=1 hs=1 hd=1 ssize=20971523 total=20971523
+  msg type=1 ctx=5678 stream=1 chunk=0 csize=1048576 ssize=20971523 total=20971523
+  msg type=1 ctx=5678 stream=1 chunk=1 csize=1048576 ssize=20971523 total=20971523
+  msg type=1 ctx=5678 stream=1 chunk=2 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=0 csize=1048576 ssize=20971523 sdone=1048576 total=20971523 tdone=1048576
+  msg type=1 ctx=5678 stream=1 chunk=3 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=1 csize=1048576 ssize=20971523 sdone=2097152 total=20971523 tdone=2097152
+  msg type=1 ctx=5678 stream=1 chunk=4 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=2 csize=1048576 ssize=20971523 sdone=3145728 total=20971523 tdone=3145728
+  msg type=1 ctx=5678 stream=1 chunk=5 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=3 csize=1048576 ssize=20971523 sdone=4194304 total=20971523 tdone=4194304
+  msg type=1 ctx=5678 stream=1 chunk=6 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=4 csize=1048576 ssize=20971523 sdone=5242880 total=20971523 tdone=5242880
+  msg type=1 ctx=5678 stream=1 chunk=7 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=5 csize=1048576 ssize=20971523 sdone=6291456 total=20971523 tdone=6291456
+  msg type=1 ctx=5678 stream=1 chunk=8 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=6 csize=1048576 ssize=20971523 sdone=7340032 total=20971523 tdone=7340032
+  msg type=1 ctx=5678 stream=1 chunk=9 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=7 csize=1048576 ssize=20971523 sdone=8388608 total=20971523 tdone=8388608
+  msg type=1 ctx=5678 stream=1 chunk=10 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=8 csize=1048576 ssize=20971523 sdone=9437184 total=20971523 tdone=9437184
+  msg type=1 ctx=5678 stream=1 chunk=11 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=9 csize=1048576 ssize=20971523 sdone=10485760 total=20971523 tdone=10485760
+  msg type=1 ctx=5678 stream=1 chunk=12 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=10 csize=1048576 ssize=20971523 sdone=11534336 total=20971523 tdone=11534336
+  msg type=1 ctx=5678 stream=1 chunk=13 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=11 csize=1048576 ssize=20971523 sdone=12582912 total=20971523 tdone=12582912
+  msg type=1 ctx=5678 stream=1 chunk=14 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=12 csize=1048576 ssize=20971523 sdone=13631488 total=20971523 tdone=13631488
+  msg type=1 ctx=5678 stream=1 chunk=15 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=13 csize=1048576 ssize=20971523 sdone=14680064 total=20971523 tdone=14680064
+  msg type=1 ctx=5678 stream=1 chunk=16 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=14 csize=1048576 ssize=20971523 sdone=15728640 total=20971523 tdone=15728640
+  msg type=1 ctx=5678 stream=1 chunk=17 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=15 csize=1048576 ssize=20971523 sdone=16777216 total=20971523 tdone=16777216
+  msg type=1 ctx=5678 stream=1 chunk=18 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=16 csize=1048576 ssize=20971523 sdone=17825792 total=20971523 tdone=17825792
+  msg type=1 ctx=5678 stream=1 chunk=19 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=17 csize=1048576 ssize=20971523 sdone=18874368 total=20971523 tdone=18874368
+  msg type=1 ctx=5678 stream=1 chunk=20 csize=1048576 ssize=20971523 total=20971523
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=18 csize=1048576 ssize=20971523 sdone=19922944 total=20971523 tdone=19922944
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=19 csize=1048576 ssize=20971523 sdone=20971520 total=20971523 tdone=20971520
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=20 csize=3 ssize=20971523 sdone=20971523 total=20971523 tdone=20971523
+  msg type=4 ctx=5678 stream=1 ssize=20971523 sdone=20971523 total=20971523 tdone=20971523
+cf2_seq_huge hr=0 gle=0 dst=1400003 cbs=44 seq=31112121212121212121212121212121212121212224
+cf2_seq_missing_src:
+  msg type=6 ctx=5678 phase=1 stream=0 hr=80070002 chunk=0 ssize=0 sdone=0 total=0 tdone=0
+cf2_seq_missing_src hr=80070002 gle=2 dst=ffffffff cbs=1 seq=6
+cf2_seq_fail_if_exists:
+  msg type=6 ctx=5678 phase=2 stream=1 hr=80070050 chunk=0 ssize=10 sdone=0 total=10 tdone=0
+cf2_seq_fail_if_exists hr=80070050 gle=50 dst=3 cbs=1 seq=6
+cf2_cancel_at_stream_started hr=800704d3 gle=4d3 dst=ffffffff cbs=2 seq=34
+cf2_cancel_at_chunk_started hr=800704d3 gle=4d3 dst=ffffffff cbs=3 seq=314
+  msg type=3 ctx=5678 stream=1 hs=1 hd=1 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=0 csize=1048576 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=1 csize=1048576 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=2 csize=1048576 ssize=3145733 total=3145733
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=0 csize=1048576 ssize=3145733 sdone=1048576 total=3145733 tdone=1048576
+  msg type=4 ctx=5678 stream=1 ssize=3145733 sdone=1048576 total=3145733 tdone=1048576
+cf2_cancel_at_chunk_finished hr=800704d3 gle=4d3 dst=ffffffff cbs=6 seq=311124
+cf2_cancel_at_stream_finished hr=800704d3 gle=4d3 dst=ffffffff cbs=10 seq=3111212224
+  msg type=3 ctx=5678 stream=1 hs=1 hd=1 ssize=3145733 total=3145733
+  msg type=4 ctx=5678 stream=1 ssize=3145733 sdone=0 total=3145733 tdone=0
+cf2_stop_at_stream_started hr=800704d3 gle=4d3 dst=300005 cbs=2 seq=34
+cf2_stop_at_chunk_started hr=800704d3 gle=4d3 dst=ffffffff cbs=3 seq=314
+cf2_stop_at_chunk_finished hr=800704d3 gle=4d3 dst=ffffffff cbs=6 seq=311124
+cf2_stop_at_stream_finished hr=800704d3 gle=4d3 dst=300005 cbs=10 seq=3111212224
+cf2_quiet_at_stream_started hr=0 gle=0 dst=300005 cbs=1 seq=3
+cf2_quiet_at_chunk_started hr=0 gle=0 dst=300005 cbs=2 seq=31
+cf2_quiet_at_chunk_finished hr=0 gle=0 dst=300005 cbs=5 seq=31112
+cf2_quiet_at_stream_finished hr=0 gle=0 dst=300005 cbs=10 seq=3111212224
+cf2_pause_at_stream_started hr=80070bea gle=bea dst=38 cbs=2 seq=34
+cf2_pause_at_chunk_started hr=80070bea gle=bea dst=38 cbs=3 seq=314
+  msg type=3 ctx=5678 stream=1 hs=1 hd=1 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=0 csize=1048576 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=1 csize=1048576 ssize=3145733 total=3145733
+  msg type=1 ctx=5678 stream=1 chunk=2 csize=1048576 ssize=3145733 total=3145733
+  msg type=2 ctx=5678 stream=1 flags=0 chunk=0 csize=1048576 ssize=3145733 sdone=1048576 total=3145733 tdone=1048576
+  msg type=4 ctx=5678 stream=1 ssize=3145733 sdone=3145728 total=3145733 tdone=3145728
+cf2_pause_at_chunk_finished hr=80070bea gle=bea dst=300000 cbs=6 seq=311124
+cf2_pause_at_stream_finished hr=0 gle=0 dst=300005 cbs=10 seq=3111212224
+cf2_cancel_over_existing hr=800704d3 gle=4d3 dst=ffffffff cbs=2 seq=34
+cf2_src_hidden_ro hr=0 gle=0 dst=a cbs=0
+cf2_src_hidden_ro_attrs a=23
+cfx_plain ret=1 gle=0 dst=a cbs=0
+cfx_fail_if_exists ret=0 gle=50 dst=a cbs=0
+cfx_bad_flag ret=0 gle=57 dst=ffffffff cbs=0
+cfx_pbcancel_true ret=0 gle=4d3 dst=ffffffff cbs=0
+cfx_pbcancel_false ret=1 gle=0 dst=a cbs=0
+cfx_missing_src ret=0 gle=2 dst=ffffffff cbs=0
+cfx_dst_hidden ret=0 gle=5 dst=3 cbs=0
+cfx_seq_small:
+  prog reason=1 stream=1 total=10 done=0 ssize=10 sdone=0 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=10 done=10 ssize=10 sdone=10 hs=1 hd=1 data=1234
+cfx_seq_small ret=1 gle=0 dst=a cbs=2 seq=10
+cfx_seq_empty:
+  prog reason=1 stream=1 total=0 done=0 ssize=0 sdone=0 hs=1 hd=1 data=1234
+cfx_seq_empty ret=1 gle=0 dst=0 cbs=1 seq=1
+cfx_seq_big:
+  prog reason=1 stream=1 total=3145733 done=0 ssize=3145733 sdone=0 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=3145733 done=1048576 ssize=3145733 sdone=1048576 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=3145733 done=2097152 ssize=3145733 sdone=2097152 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=3145733 done=3145728 ssize=3145733 sdone=3145728 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=3145733 done=3145733 ssize=3145733 sdone=3145733 hs=1 hd=1 data=1234
+cfx_seq_big ret=1 gle=0 dst=300005 cbs=5 seq=10000
+cfx_seq_huge:
+  prog reason=1 stream=1 total=20971523 done=0 ssize=20971523 sdone=0 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=1048576 ssize=20971523 sdone=1048576 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=2097152 ssize=20971523 sdone=2097152 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=3145728 ssize=20971523 sdone=3145728 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=4194304 ssize=20971523 sdone=4194304 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=5242880 ssize=20971523 sdone=5242880 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=6291456 ssize=20971523 sdone=6291456 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=7340032 ssize=20971523 sdone=7340032 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=8388608 ssize=20971523 sdone=8388608 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=9437184 ssize=20971523 sdone=9437184 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=10485760 ssize=20971523 sdone=10485760 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=11534336 ssize=20971523 sdone=11534336 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=12582912 ssize=20971523 sdone=12582912 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=13631488 ssize=20971523 sdone=13631488 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=14680064 ssize=20971523 sdone=14680064 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=15728640 ssize=20971523 sdone=15728640 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=16777216 ssize=20971523 sdone=16777216 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=17825792 ssize=20971523 sdone=17825792 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=18874368 ssize=20971523 sdone=18874368 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=19922944 ssize=20971523 sdone=19922944 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=20971520 ssize=20971523 sdone=20971520 hs=1 hd=1 data=1234
+  prog reason=0 stream=1 total=20971523 done=20971523 ssize=20971523 sdone=20971523 hs=1 hd=1 data=1234
+cfx_seq_huge ret=1 gle=0 dst=1400003 cbs=22 seq=1000000000000000000000
+cfx_cancel_at_stream ret=0 gle=4d3 dst=ffffffff cbs=1 seq=1
+cfx_cancel_at_chunk ret=0 gle=4d3 dst=ffffffff cbs=2 seq=10
+cfx_stop_at_stream ret=0 gle=4d3 dst=300005 cbs=1 seq=1
+cfx_stop_at_chunk ret=0 gle=4d3 dst=ffffffff cbs=2 seq=10
+cfx_quiet_at_stream ret=1 gle=0 dst=300005 cbs=1 seq=1
+cfx_quiet_at_chunk ret=1 gle=0 dst=300005 cbs=2 seq=10
+cfw_dst_hidden ret=0 gle=5 dst=3
+cfw_dst_hidden_system ret=0 gle=5 dst=3
+cfw_dst_system ret=0 gle=5 dst=3 a=24
+cfw_hidden_over_hidden ret=1 gle=0 dst=a a=22
+cfw_hidden_over_system ret=0 gle=5 dst=3 a=24
+cfw_ro_over_ro ret=0 gle=5 dst=3 a=21
+cfx_directory_flag_dir_src ret=1 gle=0 a=10
+cfx_directory_flag_existing_dst ret=1 gle=0 inner=ffffffff
+cfx_directory_flag_nonempty_src ret=1 gle=0 inner=ffffffff
+cf2_directory_flag_dir_src hr=0 gle=0 a=10
+cfx_flag bit=1 ret=1 gle=0 dst=a
+cf2_flag bit=1 hr=0 gle=0 dst=a
+cfx_flag bit=2 ret=1 gle=0 dst=a
+cf2_flag bit=2 hr=0 gle=0 dst=a
+cfx_flag bit=4 ret=1 gle=0 dst=a
+cf2_flag bit=4 hr=0 gle=0 dst=a
+cfx_flag bit=8 ret=1 gle=0 dst=a
+cf2_flag bit=8 hr=0 gle=0 dst=a
+cfx_flag bit=10 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=10 hr=0 gle=0 dst=a
+cfx_flag bit=20 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=20 hr=0 gle=0 dst=a
+cfx_flag bit=40 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=40 hr=0 gle=0 dst=a
+cfx_flag bit=80 ret=1 gle=0 dst=a
+cf2_flag bit=80 hr=0 gle=0 dst=a
+cfx_flag bit=100 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=100 hr=0 gle=0 dst=a
+cfx_flag bit=200 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=200 hr=0 gle=0 dst=a
+cfx_flag bit=400 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=400 hr=0 gle=0 dst=a
+cfx_flag bit=800 ret=1 gle=0 dst=a
+cf2_flag bit=800 hr=0 gle=0 dst=a
+cfx_flag bit=1000 ret=1 gle=0 dst=a
+cf2_flag bit=1000 hr=0 gle=0 dst=a
+cfx_flag bit=2000 ret=1 gle=0 dst=a
+cf2_flag bit=2000 hr=0 gle=0 dst=a
+cfx_flag bit=4000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=4000 hr=0 gle=0 dst=a
+cfx_flag bit=8000 ret=1 gle=0 dst=a
+cf2_flag bit=8000 hr=0 gle=0 dst=a
+cfx_flag bit=10000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=10000 hr=0 gle=0 dst=a
+cfx_flag bit=20000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=20000 hr=0 gle=0 dst=a
+cfx_flag bit=40000 ret=1 gle=0 dst=a
+cf2_flag bit=40000 hr=0 gle=0 dst=a
+cfx_flag bit=80000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=80000 hr=0 gle=0 dst=a
+cfx_flag bit=100000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=100000 hr=0 gle=0 dst=0
+cfx_flag bit=200000 ret=1 gle=0 dst=a
+cf2_flag bit=200000 hr=0 gle=0 dst=a
+cfx_flag bit=400000 ret=1 gle=0 dst=a
+cf2_flag bit=400000 hr=0 gle=0 dst=a
+cfx_flag bit=800000 ret=1 gle=0 dst=a
+cf2_flag bit=800000 hr=0 gle=0 dst=a
+cfx_flag bit=1000000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=1000000 hr=0 gle=0 dst=a
+cfx_flag bit=2000000 ret=1 gle=0 dst=a
+cf2_flag bit=2000000 hr=0 gle=0 dst=a
+cfx_flag bit=4000000 ret=1 gle=0 dst=a
+cf2_flag bit=4000000 hr=0 gle=0 dst=a
+cfx_flag bit=8000000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=8000000 hr=0 gle=0 dst=a
+cfx_flag bit=10000000 ret=1 gle=0 dst=a
+cf2_flag bit=10000000 hr=0 gle=0 dst=a
+cfx_flag bit=20000000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=20000000 hr=0 gle=0 dst=a
+cfx_flag bit=40000000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=40000000 hr=80070057 gle=dead dst=ffffffff
+cfx_flag bit=80000000 ret=0 gle=57 dst=ffffffff
+cf2_flag bit=80000000 hr=0 gle=0 dst=a

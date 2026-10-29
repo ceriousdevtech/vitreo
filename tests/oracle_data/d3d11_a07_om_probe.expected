@@ -1,0 +1,217 @@
+# adapter: Microsoft Basic Render Driver
+# feature level 0xb100
+O1 f32 colour src=ZERO: 0 0 0 0.3
+O1 f32 colour dst=ZERO: 0 0 0 0.3
+O1 f32 colour src=ONE: 0.8 0.6 0.4 0.3
+O1 f32 colour dst=ONE: 0.25 0.5 0.75 0.3
+O1 f32 colour src=SRC_COLOR: 0.64 0.36 0.16 0.3
+O1 f32 colour dst=SRC_COLOR: 0.2 0.3 0.3 0.3
+O1 f32 colour src=INV_SRC_COLOR: 0.16 0.24 0.24 0.3
+O1 f32 colour dst=INV_SRC_COLOR: 0.05 0.2 0.45 0.3
+O1 f32 colour src=SRC_ALPHA: 0.24 0.18 0.12 0.3
+O1 f32 colour dst=SRC_ALPHA: 0.075 0.15 0.225 0.3
+O1 f32 colour src=INV_SRC_ALPHA: 0.56 0.42 0.28 0.3
+O1 f32 colour dst=INV_SRC_ALPHA: 0.175 0.35 0.525 0.3
+O1 f32 colour src=DEST_ALPHA: 0.48 0.36 0.24 0.3
+O1 f32 colour dst=DEST_ALPHA: 0.15 0.3 0.45 0.3
+O1 f32 colour src=INV_DEST_ALPHA: 0.32 0.24 0.16 0.3
+O1 f32 colour dst=INV_DEST_ALPHA: 0.1 0.2 0.3 0.3
+O1 f32 colour src=DEST_COLOR: 0.2 0.3 0.3 0.3
+O1 f32 colour dst=DEST_COLOR: 0.0625 0.25 0.5625 0.3
+O1 f32 colour src=INV_DEST_COLOR: 0.6 0.3 0.1 0.3
+O1 f32 colour dst=INV_DEST_COLOR: 0.1875 0.25 0.1875 0.3
+O1 f32 colour src=SRC_ALPHA_SAT: 0.24 0.18 0.12 0.3
+O1 f32 colour dst=SRC_ALPHA_SAT: 0.075 0.15 0.225 0.3
+O1 f32 colour src=BLEND_FACTOR: 0.24 0.42 0.08 0.3
+O1 f32 colour dst=BLEND_FACTOR: 0.075 0.35 0.15 0.3
+O1 f32 colour src=INV_BLEND_FACTOR: 0.56 0.18 0.32 0.3
+O1 f32 colour dst=INV_BLEND_FACTOR: 0.175 0.15 0.6 0.3
+O1 f32 colour src=SRC1_COLOR: 0.08 0.12 0.36 0.3
+O1 f32 colour dst=SRC1_COLOR: 0.025 0.1 0.675 0.3
+O1 f32 colour src=INV_SRC1_COLOR: 0.72 0.48 0.04 0.3
+O1 f32 colour dst=INV_SRC1_COLOR: 0.225 0.4 0.075 0.3
+O1 f32 colour src=SRC1_ALPHA: 0.56 0.42 0.28 0.3
+O1 f32 colour dst=SRC1_ALPHA: 0.175 0.35 0.525 0.3
+O1 f32 colour src=INV_SRC1_ALPHA: 0.24 0.18 0.12 0.3
+O1 f32 colour dst=INV_SRC1_ALPHA: 0.075 0.15 0.225 0.3
+O1 f32 alpha src=ZERO: 0.8 0.6 0.4 0
+O1 f32 alpha dst=ZERO: 0.8 0.6 0.4 0
+O1 f32 alpha src=ONE: 0.8 0.6 0.4 0.3
+O1 f32 alpha dst=ONE: 0.8 0.6 0.4 0.6
+O1 f32 alpha src=SRC_ALPHA: 0.8 0.6 0.4 0.09
+O1 f32 alpha dst=SRC_ALPHA: 0.8 0.6 0.4 0.18
+O1 f32 alpha src=INV_SRC_ALPHA: 0.8 0.6 0.4 0.21
+O1 f32 alpha dst=INV_SRC_ALPHA: 0.8 0.6 0.4 0.42
+O1 f32 alpha src=DEST_ALPHA: 0.8 0.6 0.4 0.18
+O1 f32 alpha dst=DEST_ALPHA: 0.8 0.6 0.4 0.36
+O1 f32 alpha src=INV_DEST_ALPHA: 0.8 0.6 0.4 0.12
+O1 f32 alpha dst=INV_DEST_ALPHA: 0.8 0.6 0.4 0.24
+O1 f32 alpha src=SRC_ALPHA_SAT: 0.8 0.6 0.4 0.3
+O1 f32 alpha dst=SRC_ALPHA_SAT: 0.8 0.6 0.4 0.6
+O1 f32 alpha src=BLEND_FACTOR: 0.8 0.6 0.4 0.27
+O1 f32 alpha dst=BLEND_FACTOR: 0.8 0.6 0.4 0.54
+O1 f32 alpha src=INV_BLEND_FACTOR: 0.8 0.6 0.4 0.03
+O1 f32 alpha dst=INV_BLEND_FACTOR: 0.8 0.6 0.4 0.06
+O1 f32 alpha src=SRC1_ALPHA: 0.8 0.6 0.4 0.21
+O1 f32 alpha dst=SRC1_ALPHA: 0.8 0.6 0.4 0.42
+O1 f32 alpha src=INV_SRC1_ALPHA: 0.8 0.6 0.4 0.09
+O1 f32 alpha dst=INV_SRC1_ALPHA: 0.8 0.6 0.4 0.18
+O1 f32 alpha src=SRC_COLOR: create 0x80070057
+O1 f32 alpha dst=SRC_COLOR: create 0x80070057
+O2 f32 op=ADD src=SRC_ALPHA dst=INV_SRC_ALPHA: 0.415 0.53 0.645 0.51
+O2 f32 op=ADD src=ONE dst=ONE: 1.05 1.1 1.15 0.9
+O2 f32 op=SUBTRACT src=SRC_ALPHA dst=INV_SRC_ALPHA: 0.065 -0.17 -0.405 -0.33
+O2 f32 op=SUBTRACT src=ONE dst=ONE: 0.55 0.1 -0.35 -0.3
+O2 f32 op=REV_SUBTRACT src=SRC_ALPHA dst=INV_SRC_ALPHA: -0.065 0.17 0.405 0.33
+O2 f32 op=REV_SUBTRACT src=ONE dst=ONE: -0.55 -0.1 0.35 0.3
+O2 f32 op=MIN src=SRC_ALPHA dst=INV_SRC_ALPHA: 0.25 0.5 0.4 0.3
+O2 f32 op=MIN src=ONE dst=ONE: 0.25 0.5 0.4 0.3
+O2 f32 op=MAX src=SRC_ALPHA dst=INV_SRC_ALPHA: 0.8 0.6 0.75 0.6
+O2 f32 op=MAX src=ONE dst=ONE: 0.8 0.6 0.75 0.6
+O3 f32 src=BLEND_FACTOR(2,-1,.5,1.5) dst=ZERO: 1.6 -0.6 0.2 0.45
+O3 f32 src=INV_BLEND_FACTOR(2,-1,.5,1.5) dst=ZERO: -0.8 1.2 0.2 -0.15
+O3 f32 src(1.5,-.5,.25,2) ONE/ONE ADD: 1.75 0 1 2.6
+O3 f32 src(1.5,-.5,.25,2) SRC_ALPHA/INV_SRC_ALPHA: 2.75 -1.5 -0.25 2
+O3 f32 src(1.5,-.5,.25,2) SRC_ALPHA_SAT/ONE: 0.85 0.3 0.85 2
+O3 f32 src(1.5,-.5,.25,2) blend off: 1.5 -0.5 0.25 2
+O1 u8 colour src=ZERO: 00 00 00 4c
+O1 u8 colour dst=ZERO: 00 00 00 4c
+O1 u8 colour src=ONE: cc 99 66 4c
+O1 u8 colour dst=ONE: 40 80 bf 4c
+O1 u8 colour src=SRC_COLOR: a3 5c 29 4c
+O1 u8 colour dst=SRC_COLOR: 33 4d 4c 4c
+O1 u8 colour src=INV_SRC_COLOR: 29 3d 3d 4c
+O1 u8 colour dst=INV_SRC_COLOR: 0d 33 73 4c
+O1 u8 colour src=SRC_ALPHA: 3d 2e 1f 4c
+O1 u8 colour dst=SRC_ALPHA: 13 26 39 4c
+O1 u8 colour src=INV_SRC_ALPHA: 8f 6b 47 4c
+O1 u8 colour dst=INV_SRC_ALPHA: 2d 5a 86 4c
+O1 u8 colour src=DEST_ALPHA: 7a 5c 3d 4c
+O1 u8 colour dst=DEST_ALPHA: 26 4d 73 4c
+O1 u8 colour src=INV_DEST_ALPHA: 52 3d 29 4c
+O1 u8 colour dst=INV_DEST_ALPHA: 1a 33 4c 4c
+O1 u8 colour src=DEST_COLOR: 33 4d 4c 4c
+O1 u8 colour dst=DEST_COLOR: 10 40 8f 4c
+O1 u8 colour src=INV_DEST_COLOR: 99 4c 1a 4c
+O1 u8 colour dst=INV_DEST_COLOR: 30 40 30 4c
+O1 u8 colour src=SRC_ALPHA_SAT: 3d 2e 1f 4c
+O1 u8 colour dst=SRC_ALPHA_SAT: 13 26 39 4c
+O1 u8 colour src=BLEND_FACTOR: 3d 6b 14 4c
+O1 u8 colour dst=BLEND_FACTOR: 13 5a 26 4c
+O1 u8 colour src=INV_BLEND_FACTOR: 8f 2e 52 4c
+O1 u8 colour dst=INV_BLEND_FACTOR: 2d 26 99 4c
+O1 u8 colour src=SRC1_COLOR: 14 1f 5c 4c
+O1 u8 colour dst=SRC1_COLOR: 06 1a ac 4c
+O1 u8 colour src=INV_SRC1_COLOR: b8 7a 0a 4c
+O1 u8 colour dst=INV_SRC1_COLOR: 3a 66 13 4c
+O1 u8 colour src=SRC1_ALPHA: 8f 6b 47 4c
+O1 u8 colour dst=SRC1_ALPHA: 2d 5a 86 4c
+O1 u8 colour src=INV_SRC1_ALPHA: 3d 2e 1f 4c
+O1 u8 colour dst=INV_SRC1_ALPHA: 13 26 39 4c
+O1 u8 alpha src=ZERO: cc 99 66 00
+O1 u8 alpha dst=ZERO: cc 99 66 00
+O1 u8 alpha src=ONE: cc 99 66 4c
+O1 u8 alpha dst=ONE: cc 99 66 99
+O1 u8 alpha src=SRC_ALPHA: cc 99 66 17
+O1 u8 alpha dst=SRC_ALPHA: cc 99 66 2e
+O1 u8 alpha src=INV_SRC_ALPHA: cc 99 66 36
+O1 u8 alpha dst=INV_SRC_ALPHA: cc 99 66 6b
+O1 u8 alpha src=DEST_ALPHA: cc 99 66 2e
+O1 u8 alpha dst=DEST_ALPHA: cc 99 66 5c
+O1 u8 alpha src=INV_DEST_ALPHA: cc 99 66 1f
+O1 u8 alpha dst=INV_DEST_ALPHA: cc 99 66 3d
+O1 u8 alpha src=SRC_ALPHA_SAT: cc 99 66 4c
+O1 u8 alpha dst=SRC_ALPHA_SAT: cc 99 66 99
+O1 u8 alpha src=BLEND_FACTOR: cc 99 66 45
+O1 u8 alpha dst=BLEND_FACTOR: cc 99 66 8a
+O1 u8 alpha src=INV_BLEND_FACTOR: cc 99 66 08
+O1 u8 alpha dst=INV_BLEND_FACTOR: cc 99 66 0f
+O1 u8 alpha src=SRC1_ALPHA: cc 99 66 36
+O1 u8 alpha dst=SRC1_ALPHA: cc 99 66 6b
+O1 u8 alpha src=INV_SRC1_ALPHA: cc 99 66 17
+O1 u8 alpha dst=INV_SRC1_ALPHA: cc 99 66 2e
+O1 u8 alpha src=SRC_COLOR: create 0x80070057
+O1 u8 alpha dst=SRC_COLOR: create 0x80070057
+O2 u8 op=ADD src=SRC_ALPHA dst=INV_SRC_ALPHA: 6a 87 a4 82
+O2 u8 op=ADD src=ONE dst=ONE: ff ff ff e5
+O2 u8 op=SUBTRACT src=SRC_ALPHA dst=INV_SRC_ALPHA: 10 00 00 00
+O2 u8 op=SUBTRACT src=ONE dst=ONE: 8c 19 00 00
+O2 u8 op=REV_SUBTRACT src=SRC_ALPHA dst=INV_SRC_ALPHA: 00 2c 68 55
+O2 u8 op=REV_SUBTRACT src=ONE dst=ONE: 00 00 59 4d
+O2 u8 op=MIN src=SRC_ALPHA dst=INV_SRC_ALPHA: 40 80 66 4c
+O2 u8 op=MIN src=ONE dst=ONE: 40 80 66 4c
+O2 u8 op=MAX src=SRC_ALPHA dst=INV_SRC_ALPHA: cc 99 bf 99
+O2 u8 op=MAX src=ONE dst=ONE: cc 99 bf 99
+O3 u8 src=BLEND_FACTOR(2,-1,.5,1.5) dst=ZERO: cc 00 33 4c
+O3 u8 src=INV_BLEND_FACTOR(2,-1,.5,1.5) dst=ZERO: 00 99 33 00
+O3 u8 src(1.5,-.5,.25,2) ONE/ONE ADD: ff 80 ff ff
+O3 u8 src(1.5,-.5,.25,2) SRC_ALPHA/INV_SRC_ALPHA: ff 00 40 ff
+O3 u8 src(1.5,-.5,.25,2) SRC_ALPHA_SAT/ONE: a6 80 d9 ff
+O3 u8 src(1.5,-.5,.25,2) blend off: ff 00 40 ff
+O4 IndependentBlendEnable=0 (rt0 ADD ONE/ONE mask F; rt1 REV_SUB mask 3) hr=0x00000000 rt0: 1.05 1.1 1.15 0.9 rt1: 0.35 0.7 1.65 1.3
+O4 IndependentBlendEnable=1 (rt0 ADD ONE/ONE mask F; rt1 REV_SUB mask 3) hr=0x00000000 rt0: 1.05 1.1 1.15 0.9 rt1: 0.15 0.3 0.75 0.6
+O5 write mask 0x0: 0.25 0.5 0.75 0.6
+O5 write mask 0x1: 0.8 0.5 0.75 0.6
+O5 write mask 0x2: 0.25 0.6 0.75 0.6
+O5 write mask 0x4: 0.25 0.5 0.4 0.6
+O5 write mask 0x8: 0.25 0.5 0.75 0.3
+O5 write mask 0x5: 0.8 0.5 0.4 0.6
+O5 write mask 0xa: 0.25 0.6 0.75 0.3
+O5 write mask 0xf: 0.8 0.6 0.4 0.3
+O6 D3D11_OPTIONS hr=0x00000000 OutputMergerLogicOp=1
+O6 logic CLEAR         src=00ff00ff dst=00f0f0f0 hr=0x00000000 00000000
+O6 logic SET           src=00ff00ff dst=00f0f0f0 hr=0x00000000 ffffffff
+O6 logic COPY          src=00ff00ff dst=00f0f0f0 hr=0x00000000 00ff00ff
+O6 logic COPY_INVERTED src=00ff00ff dst=00f0f0f0 hr=0x00000000 ff00ff00
+O6 logic NOOP          src=00ff00ff dst=00f0f0f0 hr=0x00000000 00f0f0f0
+O6 logic INVERT        src=00ff00ff dst=00f0f0f0 hr=0x00000000 ff0f0f0f
+O6 logic AND           src=00ff00ff dst=00f0f0f0 hr=0x00000000 00f000f0
+O6 logic NAND          src=00ff00ff dst=00f0f0f0 hr=0x00000000 ff0fff0f
+O6 logic OR            src=00ff00ff dst=00f0f0f0 hr=0x00000000 00fff0ff
+O6 logic NOR           src=00ff00ff dst=00f0f0f0 hr=0x00000000 ff000f00
+O6 logic XOR           src=00ff00ff dst=00f0f0f0 hr=0x00000000 000ff00f
+O6 logic EQUIV         src=00ff00ff dst=00f0f0f0 hr=0x00000000 fff00ff0
+O6 logic AND_REVERSE   src=00ff00ff dst=00f0f0f0 hr=0x00000000 000f000f
+O6 logic AND_INVERTED  src=00ff00ff dst=00f0f0f0 hr=0x00000000 0000f000
+O6 logic OR_REVERSE    src=00ff00ff dst=00f0f0f0 hr=0x00000000 ffff0fff
+O6 logic OR_INVERTED   src=00ff00ff dst=00f0f0f0 hr=0x00000000 fff0fff0
+O7 4x SampleMask=0xffffffff samples(r): 1 1 1 1
+O7 4x SampleMask=0x00000001 samples(r): 1 0 0 0
+O7 4x SampleMask=0x00000005 samples(r): 1 0 1 0
+O7 4x SampleMask=0x0000000a samples(r): 0 1 0 1
+O7 4x SampleMask=0x00000000 samples(r): 0 0 0 0
+O7 4x SampleMask=0xfffffff0 samples(r): 0 0 0 0
+O7 4x SampleMask=0x00000008 samples(r): 0 0 0 1
+O7 1x SampleMask=0xfffffffe: 00 00 00 00
+O7 1x SampleMask=0x00000001: ff ff ff ff
+O7 1x SampleMask=0x00000000: 00 00 00 00
+O8 4x A2C alpha=0.0 covered samples per pixel: (0,0)=0 (1,0)=0 (0,1)=0 (1,1)=0
+O8 1x A2C alpha=0.0 pixels written: 0/16
+O8 4x A2C alpha=0.1 covered samples per pixel: (0,0)=1 (1,0)=0 (0,1)=0 (1,1)=1
+O8 1x A2C alpha=0.1 pixels written: 0/16
+O8 4x A2C alpha=0.3 covered samples per pixel: (0,0)=2 (1,0)=1 (0,1)=1 (1,1)=1
+O8 1x A2C alpha=0.3 pixels written: 4/16
+O8 4x A2C alpha=0.5 covered samples per pixel: (0,0)=2 (1,0)=2 (0,1)=2 (1,1)=2
+O8 1x A2C alpha=0.5 pixels written: 8/16
+O8 4x A2C alpha=0.7 covered samples per pixel: (0,0)=3 (1,0)=3 (0,1)=3 (1,1)=3
+O8 1x A2C alpha=0.7 pixels written: 13/16
+O8 4x A2C alpha=0.9 covered samples per pixel: (0,0)=4 (1,0)=4 (0,1)=3 (1,1)=4
+O8 1x A2C alpha=0.9 pixels written: 16/16
+O8 4x A2C alpha=1.0 covered samples per pixel: (0,0)=4 (1,0)=4 (0,1)=4 (1,1)=4
+O8 1x A2C alpha=1.0 pixels written: 16/16
+O9 sRGB rt dst=0.5 src=0.25 a=0.5 SRC_ALPHA/INV (bytes): a5 a5 a5 80
+O9 R32_UINT blend ONE/ONE ADD src=5 dst=7: 00000005
+# winoracle 2026-09-28, WARP, FL 11_1, x64 (x86 identical). Vitreo verdicts:
+#  O1 every blend factor (colour + alpha), dual source SRC1_*, BlendFactor,
+#     RGBA32F exact and RGBA8 within 1 LSB: CORRECT
+#  O1 SRC_COLOR as an alpha factor: Windows E_INVALIDARG, Vitreo accepts (area 04)
+#  O2 all five blend ops, MIN/MAX ignore factors, UNORM clamps: CORRECT (<=1 LSB)
+#  O3 out-of-range blend factor / source clamping per format: CORRECT
+#  O4 IndependentBlendEnable, per-target masks: CORRECT; O5 write masks: CORRECT
+#  O6 logic ops: Vitreo FL 11_0, OutputMergerLogicOp=0, CreateBlendState1
+#     refuses -> consistent (optional below 11_1)
+#  O7 SampleMask: WRONG (ignored on 4x and 1x targets)
+#  O8 AlphaToCoverageEnable: WRONG (ignored, 4x and 1x)
+#  O9 sRGB blending: CORRECT. Blending enabled on R32_UINT: WRONG -- the
+#     host process aborts (Metal validation: R32Uint not blendable);
+#     Windows ignores BlendEnable on integer targets. Printed last.

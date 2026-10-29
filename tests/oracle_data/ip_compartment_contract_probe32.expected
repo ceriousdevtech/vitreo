@@ -1,0 +1,9 @@
+get=1 error=0
+set=0 result=0 error=0 current=1
+set=1 result=0 error=0 current=1
+set=2 result=490 error=0 current=1
+set=ffffffff result=490 error=0 current=1
+set=fffffffe result=490 error=0 current=1
+worker get=1 error=0
+set=0 result=0 error=0 current=1
+parent get=1 error=0

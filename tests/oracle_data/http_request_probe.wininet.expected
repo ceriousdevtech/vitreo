@@ -1,0 +1,75 @@
+add-c: rc=1 err=0
+add-d1: rc=1 err=0
+add-d2: rc=1 err=0
+add-e1: rc=1 err=0
+add-e2-ifnew: rc=0 err=12155
+add-f1: rc=1 err=0
+add-f2-comma: rc=1 err=0
+add-g1: rc=1 err=0
+add-g2-semi: rc=1 err=0
+add-h1: rc=1 err=0
+add-h2-replace: rc=1 err=0
+add-i1: rc=1 err=0
+add-i-remove: rc=1 err=0
+add-j-replace-missing: rc=1 err=0
+add-k-replace-add: rc=1 err=0
+add-l-coalesce-new: rc=1 err=0
+add-l2-coalesce: rc=1 err=0
+add-m-nomods: rc=1 err=0
+add-m2-nomods: rc=1 err=0
+add-nocolon: rc=0 err=87
+add-multi: rc=1 err=0
+add-explicit-len: rc=1 err=0
+add-spaces: rc=1 err=0
+add-null: rc=0 err=87
+add-empty: rc=0 err=87
+add-badflag: rc=1 err=0
+sendw-headers: rc=1 err=0
+status: rc=1 err=0 len=3 value="200" nul=1
+status-number: rc=1 err=0 len=4 number=200
+status-number-small: rc=0 err=122 len=4 buf0=0x23
+status-size: rc=0 err=122 len=4
+status-exact: rc=1 err=0 len=3 value="200" nul=1
+status-short: rc=0 err=122 len=4 buf0=0x23
+content-type: rc=1 err=0 len=25 value="text/plain; charset=utf-8" nul=1
+content-length: rc=1 err=0 len=3 value="173" nul=1
+content-length-number: rc=1 err=0 len=4 number=173
+last-modified-time: rc=1 err=0 len=16 y=1994 mo=11 dow=2 d=15 h=8 mi=12 s=31
+multi-0: rc=1 err=0 len=3 index=1 value="one" nul=1
+multi-1: rc=1 err=0 len=3 index=2 value="two" nul=1
+multi-2: rc=0 err=12150 len=256 index=2 buf0=0x78
+number-custom: rc=1 err=0 len=4 number=12345
+bad-number: rc=1 err=0 len=4 number=12
+empty-header: rc=1 err=0 len=0 value="" nul=1
+missing: rc=0 err=12150 len=256 buf0=0x58
+missing-level: rc=0 err=12150 len=256 buf0=0x23
+bad-level: rc=0 err=87 len=256 buf0=0x23
+request-header: rc=1 err=0 len=1 value="1" nul=1
+request-header-d1: rc=1 err=0 len=1 index=2 value="2" nul=1
+status-text: rc=1 err=0 len=15 value="Everything Fine" nul=1
+version: rc=1 err=0 len=8 value="HTTP/1.1" nul=1
+raw-crlf-size: rc=0 err=122 len=235
+w-status: rc=1 err=0 len=6 value="200" nul=1
+w-status-size: rc=0 err=87 len=65535
+w-status-short: rc=0 err=122 len=8
+w-content-type: rc=1 err=0 len=50 value="text/plain; charset=utf-8" nul=1
+w-content-length-number: rc=1 err=0 len=4 number=173
+w-multi-1: rc=1 err=0 len=6 index=2 value="two" nul=1
+w-missing: rc=0 err=12150 len=256
+echo: body="GET /echo HTTP/1.1\nX-A: 1\nX-B: 2\nX-C: 3\nX-D: 1\nX-D: 2\nX-E: 1\nX-F: 1, 2\nX-G: 1; 2\nX-H: 2\nX-J: 2\nX-K: 2\nX-L: 1, 2\nX-M: 1\nX-M: 2\nX-N: 1\nX-O: 2\nX-P: 12\nX-Q: spaced\nX-R: 1\nBODY:\n"
+available-at-eof: rc=1 err=57005 n=0
+senda-explicit-len: rc=1 err=0
+senda-echo: body="POST /echo HTTP/1.1\nContent-Length: 5\nX-A: 12\nBODY:body!\n"
+sendw-dead-port: rc=0 err=12029
+sendw-bad-header: rc=0 err=12150
+slow-available: rc=1 err=997 nonzero=1
+slow-available: rc=1 err=997 nonzero=1
+slow-available: rc=1 err=57005 nonzero=0
+slow-total: n=10
+reset: read-error err=12031 got=0
+url-port0: rc=1 err=0 url="http://127.0.0.1/p"
+url-port0-secure: rc=1 err=0 url="https://127.0.0.1:80/p"
+url-port443-plain: rc=1 err=0 url="http://127.0.0.1:443/p"
+url-port80-secure: rc=1 err=0 url="https://127.0.0.1:80/p"
+open-request-context: rc=1 ctx=0x5678 len=8
+open-request-flags: rc=1 flags=0x8

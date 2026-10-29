@@ -1,0 +1,7 @@
+rename_to_existing r=-1 errno=17 
+rename_ok r=0 errno=0 
+rename_file_to_subdir r=0 errno=0 
+rename_dir_same_parent r=0 errno=0 
+rename_dir_to_subdir r=0 errno=0 
+rename_self r=0 errno=0 
+rename_case r=0 errno=0 

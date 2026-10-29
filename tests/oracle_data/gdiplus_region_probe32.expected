@@ -1,0 +1,1003 @@
+ptr=4
+err create(NULL) st=2
+err createrect(NULL rect) st=2
+err createrect(NULL out) st=2
+err createpath(NULL) st=2
+err delete(NULL) st=2
+err clone(NULL) st=2
+err setempty(NULL) st=2 setinf(NULL) st=2
+err clone(NULL out) st=2
+err combinerect mode=-1 st=2
+err combinerect mode=0 st=0
+err combinerect mode=1 st=0
+err combinerect mode=2 st=0
+err combinerect mode=3 st=0
+err combinerect mode=4 st=0
+err combinerect mode=5 st=0
+err combinerect mode=6 st=2
+err combinerect mode=7 st=2
+err combinerect(NULL rect) st=2
+err combinepath(NULL) st=2
+err combineregion(NULL) st=2
+err combineregion(self) st=4
+err after-self-union size st=0 n=156 data st=0 filled=156 : 00000094 1757bc5e dbc01002 0000000a 00000005 00000004 00000003 00000002 00000001 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000
+err combineregion mode 8 st=4
+err bounds(NULL g) st=2
+err bounds(NULL out) st=2
+err isempty(NULL g) st=2
+err isinf(NULL g) st=2
+err isequal(NULL g) st=2
+err isvis(NULL g) st=0 b=1
+err isvis(NULL out) st=2
+err isvisrect(NULL g) st=0 b=1
+err scanscount(NULL m) st=2
+err scanscount(NULL out) st=2
+err scans(NULL rects) st=0
+err scans(NULL count) st=2
+err scanscount(ident) st=0
+err datasize(NULL) st=2
+err data small st=5 filled=155
+err data NULL filled st=0
+err data NULL buf st=2
+err data big st=0 filled=156
+err rgndata(size-1) st=1
+err rgndata(size+4) st=0
+err rgndata(size+4) region size st=0 n=156 data st=0 filled=156 : 00000094 1757bc5e dbc01002 0000000a 00000005 00000004 00000003 00000002 00000001 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 41200000
+err rgndata(NULL) st=2
+err rgndata(NULL out) st=2
+err rgndata(0) st=1
+err rgndata(bad crc) st=1
+err rgndata(bad magic) st=1
+err rgndata(bad size) st=1
+err rgndata(bad count) st=1
+err rgndata(bad node) st=1
+err hrgn(NULL g) st=0 h=1
+err hrgn(NULL out) st=2
+err createhrgn(NULL) st=2
+err createhrgn(bogus) st=2
+err transform(NULL) st=2
+err fill(NULL brush) st=2
+err setcliprect mode=6 st=2
+err setcliprect mode=-1 st=2
+err setclipregion(NULL) st=2
+err setclippath(NULL) st=2
+err setclipgraphics(NULL) st=2
+err setcliphrgn(NULL) st=2
+err setcliphrgn(bogus) st=2
+err getclip(NULL) st=2
+err getclipbounds(NULL) st=2
+err isclipempty(NULL) st=2
+err visclip(NULL) st=2
+err isvispoint(NULL) st=2
+err isvispath(NULL path) st=2
+err g NULL resetclip st=2 translateclip st=2
+infinite size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+infinite bounds st=0 -4194304,-4194304,8388608,8388608
+infinite boundsI st=0 -4194304,-4194304,8388608,8388608
+infinite empty st=0 0 infinite st=0 1
+infinite scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+infinite scale scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+empty size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+empty bounds st=0 0,0,0,0
+empty boundsI st=0 0,0,0,0
+empty empty st=0 1 infinite st=0 0
+empty scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+setinfinite size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+rect size st=0 n=36 data st=0 filled=36 : 0000001c 35485608 dbc01002 00000000 10000000 3fc00000 40200000 41200000 41a00000
+rect bounds st=0 1.5,2.5,10,20
+rect boundsI st=0 2,3,10,20
+rect empty st=0 0 infinite st=0 0
+rect scans count st=0 n=1 f st=0 n=1: [2,3,10,20] i st=0 n=1: [2,3,10,20]
+rect scale scans count st=0 n=1 f st=0 n=1: [4,8,20,60] i st=0 n=1: [4,8,20,60]
+rect rot45 scans count st=0 n=20 f st=0 n=20: [-1,4,2,1] [-2,5,4,1] [-3,6,6,1] [-4,7,8,1] [-5,8,10,1] [-6,9,12,1] [-7,10,14,1] [-8,11,14,1] [-9,12,14,1] [-10,13,14,1] [-11,14,14,1] [-12,15,14,1] [-13,16,14,1] [-14,17,14,1] [-13,18,12,1] [-12,19,10,1] [-11,20,8,1] [-10,21,6,1] [-9,22,4,1] [-8,23,2,1] i st=0 n=20: [-1,4,2,1] [-2,5,4,1] [-3,6,6,1] [-4,7,8,1] [-5,8,10,1] [-6,9,12,1] [-7,10,14,1] [-8,11,14,1] [-9,12,14,1] [-10,13,14,1] [-11,14,14,1] [-12,15,14,1] [-13,16,14,1] [-14,17,14,1] [-13,18,12,1] [-12,19,10,1] [-11,20,8,1] [-10,21,6,1] [-9,22,4,1] [-8,23,2,1]
+rect ident scans count st=0 n=1 f st=0 n=1: [2,3,10,20] i st=0 n=1: [2,3,10,20]
+tinyrect size st=0 n=36 data st=0 filled=36 : 0000001c 35eeaa8d dbc01002 00000000 10000000 3e4ccccd 3e4ccccd 3f000000 3f000000
+tinyrect bounds st=0 0.200000003,0.200000003,0.5,0.5
+tinyrect boundsI st=0 0,0,1,1
+tinyrect empty st=0 1 infinite st=0 0
+tinyrect scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+halfrect size st=0 n=36 data st=0 filled=36 : 0000001c ea027616 dbc01002 00000000 10000000 3f000000 3f000000 3f800000 3f800000
+halfrect bounds st=0 0.5,0.5,1,1
+halfrect boundsI st=0 1,1,1,1
+halfrect empty st=0 0 infinite st=0 0
+halfrect scans count st=0 n=1 f st=0 n=1: [1,1,1,1] i st=0 n=1: [1,1,1,1]
+halfrect2 size st=0 n=36 data st=0 filled=36 : 0000001c bd0d2843 dbc01002 00000000 10000000 3efae148 3f028f5c 3f800000 3f800000
+halfrect2 bounds st=0 0.49000001,0.50999999,1,1
+halfrect2 boundsI st=0 0,1,1,1
+halfrect2 empty st=0 0 infinite st=0 0
+halfrect2 scans count st=0 n=1 f st=0 n=1: [1,1,1,1] i st=0 n=1: [1,1,1,1]
+negrect size st=0 n=36 data st=0 filled=36 : 0000001c 65066cf8 dbc01002 00000000 10000000 41200000 41200000 c0a00000 c0a00000
+negrect bounds st=0 10,10,-5,-5
+negrect boundsI st=0 10,10,-5,-5
+negrect empty st=0 1 infinite st=0 0
+negrect scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+zerorect size st=0 n=36 data st=0 filled=36 : 0000001c 78b716ed dbc01002 00000000 10000000 41200000 41200000 00000000 40a00000
+zerorect bounds st=0 10,10,0,5
+zerorect boundsI st=0 10,10,0,5
+zerorect empty st=0 1 infinite st=0 0
+zerorect scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+recti size st=0 n=36 data st=0 filled=36 : 0000001c ecbb90f7 dbc01002 00000000 10000000 3f800000 40000000 40400000 40800000
+recti bounds st=0 1,2,3,4
+recti boundsI st=0 1,2,3,4
+recti empty st=0 0 infinite st=0 0
+recti scans count st=0 n=1 f st=0 n=1: [1,2,3,4] i st=0 n=1: [1,2,3,4]
+pathrect size st=0 n=56 data st=0 filled=56 : 00000030 366e7052 dbc01002 00000000 10000001 00000020 dbc01002 00000004 00004000 00020001 00020004 00060004 00060001 81010100
+pathrect bounds st=0 1,2,3,4
+pathrect boundsI st=0 1,2,3,4
+pathrect empty st=0 0 infinite st=0 0
+pathrect scans count st=0 n=1 f st=0 n=1: [1,2,3,4] i st=0 n=1: [1,2,3,4]
+equal pathrect==rect st=0 1
+pathrectwinding size st=0 n=72 data st=0 filled=72 : 00000040 8310dd97 dbc01002 00000000 10000001 00000030 dbc01002 00000004 00002000 3fa00000 40000000 40880000 40000000 40880000 40d00000 3fa00000 40d00000 81010100
+pathrectwinding bounds st=0 1.25,2,3,4.5
+pathrectwinding boundsI st=0 1,2,3,5
+pathrectwinding empty st=0 0 infinite st=0 0
+pathrectwinding scans count st=0 n=1 f st=0 n=1: [2,2,3,5] i st=0 n=1: [2,2,3,5]
+pathempty size st=0 n=36 data st=0 filled=36 : 0000001c e5c2ac69 dbc01002 00000000 10000001 0000000c dbc01002 00000000 00000000
+pathempty bounds st=0 0,0,0,0
+pathempty boundsI st=0 0,0,0,0
+pathempty empty st=0 1 infinite st=0 0
+pathempty scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+pathopen size st=0 n=52 data st=0 filled=52 : 0000002c aca5cfe4 dbc01002 00000000 10000001 0000001c dbc01002 00000003 00004000 00000000 0000000a 000a0000 00010100
+pathopen bounds st=0 0,0,10,10
+pathopen boundsI st=0 0,0,10,10
+pathopen empty st=0 0 infinite st=0 0
+pathopen scans count st=0 n=10 f st=0 n=10: [0,0,10,1] [0,1,9,1] [0,2,8,1] [0,3,7,1] [0,4,6,1] [0,5,5,1] [0,6,4,1] [0,7,3,1] [0,8,2,1] [0,9,1,1] i st=0 n=10: [0,0,10,1] [0,1,9,1] [0,2,8,1] [0,3,7,1] [0,4,6,1] [0,5,5,1] [0,6,4,1] [0,7,3,1] [0,8,2,1] [0,9,1,1]
+pathbig size st=0 n=72 data st=0 filled=72 : 00000040 11779814 dbc01002 00000000 10000001 00000030 dbc01002 00000004 00000000 471c4000 00000000 471c4300 00000000 471c4300 40800000 471c4000 40800000 81010100
+pathshortlimit size st=0 n=56 data st=0 filled=56 : 00000030 3e27795c dbc01002 00000000 10000001 00000020 dbc01002 00000004 00004000 80008000 80007fff 80047fff 80048000 81010100
+pathbezier size st=0 n=56 data st=0 filled=56 : 00000030 00e83624 dbc01002 00000000 10000001 00000020 dbc01002 00000004 00004000 00000000 0000000a 000a000a 000a0000 83030300
+pathbezier bounds st=0 0,0,10,10
+pathbezier boundsI st=0 0,0,10,10
+pathbezier empty st=0 0 infinite st=0 0
+pathbezier scans count st=0 n=5 f st=0 n=5: [0,1,5,1] [0,2,7,2] [0,4,8,3] [0,7,7,2] [0,9,5,1] i st=0 n=5: [0,1,5,1] [0,2,7,2] [0,4,8,3] [0,7,7,2] [0,9,5,1]
+ellipse size st=0 n=156 data st=0 filled=156 : 00000094 9a210026 dbc01002 00000000 10000001 00000084 dbc01002 0000000d 00000000 41200000 40a00000 41200000 40f85d95 40f85d95 41200000 40a00000 41200000 400f44d6 41200000 00000000 40f85d95 00000000 40a00000 00000000 400f44d6 400f44d6 00000000 40a00000 00000000 40f85d95 00000000 41200000 400f44d6 41200000 40a00000 03030300 03030303 03030303 00000083
+ellipse bounds st=0 0,0,10,10
+ellipse boundsI st=0 0,0,10,10
+ellipse empty st=0 0 infinite st=0 0
+ellipse scans count st=0 n=7 f st=0 n=7: [3,1,5,1] [2,2,7,1] [1,3,9,2] [0,5,10,1] [1,6,9,2] [2,8,7,1] [3,9,5,1] i st=0 n=7: [3,1,5,1] [2,2,7,1] [1,3,9,2] [0,5,10,1] [1,6,9,2] [2,8,7,1] [3,9,5,1]
+ellipse scale scans count st=0 n=15 f st=0 n=15: [8,1,7,1] [7,2,9,1] [6,3,11,1] [5,4,13,1] [4,5,15,2] [3,7,17,2] [2,9,19,6] [1,15,20,1] [2,16,19,6] [3,22,17,2] [4,24,15,2] [5,26,13,1] [6,27,11,1] [7,28,9,1] [8,29,7,1] i st=0 n=15: [8,1,7,1] [7,2,9,1] [6,3,11,1] [5,4,13,1] [4,5,15,2] [3,7,17,2] [2,9,19,6] [1,15,20,1] [2,16,19,6] [3,22,17,2] [4,24,15,2] [5,26,13,1] [6,27,11,1] [7,28,9,1] [8,29,7,1]
+ellipse vis(5,5) st=0 1
+ellipse vis(0.5,0.5) st=0 0
+ellipse vis(0,5) st=0 1
+ellipse vis(0.400000006,5) st=0 1
+ellipse vis(0.600000024,5) st=0 1
+ellipse vis(9.60000038,5) st=0 0
+ellipsefrac size st=0 n=156 data st=0 filled=156 : 00000094 a466ff86 dbc01002 00000000 10000001 00000084 dbc01002 0000000d 00000000 41000000 40980000 41000000 40e7876c 40ca4630 41140000 40880000 41140000 400b73a0 41140000 3f000000 40e7876c 3f000000 40980000 3f000000 4010f127 400b73a0 3e800000 40880000 3e800000 40ca4630 3e800000 41000000 4010f127 41000000 40980000 03030300 03030303 03030303 00000083
+ellipsefrac bounds st=0 0.5,0.25,7.5,9
+ellipsefrac boundsI st=0 1,0,8,9
+ellipsefrac empty st=0 0 infinite st=0 0
+ellipsefrac scans count st=0 n=6 f st=0 n=6: [3,1,4,1] [2,2,6,1] [1,3,7,4] [2,7,6,1] [2,8,5,1] [4,9,2,1] i st=0 n=6: [3,1,4,1] [2,2,6,1] [1,3,7,4] [2,7,6,1] [2,8,5,1] [4,9,2,1]
+rr.replace size st=0 n=36 data st=0 filled=36 : 0000001c f997e1da dbc01002 00000000 10000000 40a00000 40a00000 41200000 41200000
+rr.replace bounds st=0 5,5,10,10
+rr.replace boundsI st=0 5,5,10,10
+rr.replace empty st=0 0 infinite st=0 0
+rr.replace scans count st=0 n=1 f st=0 n=1: [5,5,10,10] i st=0 n=1: [5,5,10,10]
+inf.replace size st=0 n=36 data st=0 filled=36 : 0000001c f997e1da dbc01002 00000000 10000000 40a00000 40a00000 41200000 41200000
+inf.replace bounds st=0 5,5,10,10
+inf.replace boundsI st=0 5,5,10,10
+inf.replace empty st=0 0 infinite st=0 0
+inf.replace scans count st=0 n=1 f st=0 n=1: [5,5,10,10] i st=0 n=1: [5,5,10,10]
+empty.replace size st=0 n=36 data st=0 filled=36 : 0000001c f997e1da dbc01002 00000000 10000000 40a00000 40a00000 41200000 41200000
+empty.replace bounds st=0 5,5,10,10
+empty.replace boundsI st=0 5,5,10,10
+empty.replace empty st=0 0 infinite st=0 0
+empty.replace scans count st=0 n=1 f st=0 n=1: [5,5,10,10] i st=0 n=1: [5,5,10,10]
+rect.replace.inf size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+rect.replace.inf bounds st=0 -4194304,-4194304,8388608,8388608
+rect.replace.inf boundsI st=0 -4194304,-4194304,8388608,8388608
+rect.replace.inf empty st=0 0 infinite st=0 1
+rect.replace.inf scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+rect.replace.empty size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+rect.replace.empty bounds st=0 0,0,0,0
+rect.replace.empty boundsI st=0 0,0,0,0
+rect.replace.empty empty st=0 1 infinite st=0 0
+rect.replace.empty scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rp.replace size st=0 n=156 data st=0 filled=156 : 00000094 538d2d04 dbc01002 00000000 10000001 00000084 dbc01002 0000000d 00000000 41700000 41200000 41700000 414c2eca 414c2eca 41700000 41200000 41700000 40e7a26b 41700000 40a00000 414c2eca 40a00000 41200000 40a00000 40e7a26b 40e7a26b 40a00000 41200000 40a00000 414c2eca 40a00000 41700000 40e7a26b 41700000 41200000 03030300 03030303 03030303 00000083
+rp.replace bounds st=0 5,5,10,10
+rp.replace boundsI st=0 5,5,10,10
+rp.replace empty st=0 0 infinite st=0 0
+disjoint.replace size st=0 n=36 data st=0 filled=36 : 0000001c 53cb3189 dbc01002 00000000 10000000 41a00000 00000000 41200000 41200000
+disjoint.replace bounds st=0 20,0,10,10
+disjoint.replace boundsI st=0 20,0,10,10
+disjoint.replace empty st=0 0 infinite st=0 0
+disjoint.replace scans count st=0 n=1 f st=0 n=1: [20,0,10,10] i st=0 n=1: [20,0,10,10]
+rr.intersect size st=0 n=60 data st=0 filled=60 : 00000034 927f02ae dbc01002 00000002 00000001 10000000 00000000 00000000 41200000 41200000 10000000 40a00000 40a00000 41200000 41200000
+rr.intersect bounds st=0 5,5,5,5
+rr.intersect boundsI st=0 5,5,5,5
+rr.intersect empty st=0 0 infinite st=0 0
+rr.intersect scans count st=0 n=1 f st=0 n=1: [5,5,5,5] i st=0 n=1: [5,5,5,5]
+inf.intersect size st=0 n=36 data st=0 filled=36 : 0000001c f997e1da dbc01002 00000000 10000000 40a00000 40a00000 41200000 41200000
+inf.intersect bounds st=0 5,5,10,10
+inf.intersect boundsI st=0 5,5,10,10
+inf.intersect empty st=0 0 infinite st=0 0
+inf.intersect scans count st=0 n=1 f st=0 n=1: [5,5,10,10] i st=0 n=1: [5,5,10,10]
+empty.intersect size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+empty.intersect bounds st=0 0,0,0,0
+empty.intersect boundsI st=0 0,0,0,0
+empty.intersect empty st=0 1 infinite st=0 0
+empty.intersect scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rect.intersect.inf size st=0 n=36 data st=0 filled=36 : 0000001c 7dc7ee9d dbc01002 00000000 10000000 00000000 00000000 41200000 41200000
+rect.intersect.inf bounds st=0 0,0,10,10
+rect.intersect.inf boundsI st=0 0,0,10,10
+rect.intersect.inf empty st=0 0 infinite st=0 0
+rect.intersect.inf scans count st=0 n=1 f st=0 n=1: [0,0,10,10] i st=0 n=1: [0,0,10,10]
+rect.intersect.empty size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+rect.intersect.empty bounds st=0 0,0,0,0
+rect.intersect.empty boundsI st=0 0,0,0,0
+rect.intersect.empty empty st=0 1 infinite st=0 0
+rect.intersect.empty scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rp.intersect size st=0 n=180 data st=0 filled=180 : 000000ac 233042f5 dbc01002 00000002 00000001 10000000 00000000 00000000 41200000 41200000 10000001 00000084 dbc01002 0000000d 00000000 41700000 41200000 41700000 414c2eca 414c2eca 41700000 41200000 41700000 40e7a26b 41700000 40a00000 414c2eca 40a00000 41200000 40a00000 40e7a26b 40e7a26b 40a00000 41200000 40a00000 414c2eca 40a00000 41700000 40e7a26b 41700000 41200000 03030300 03030303 03030303 00000083
+rp.intersect bounds st=0 6,6,4,4
+rp.intersect boundsI st=0 6,6,4,4
+rp.intersect empty st=0 0 infinite st=0 0
+disjoint.intersect size st=0 n=60 data st=0 filled=60 : 00000034 3823d2fd dbc01002 00000002 00000001 10000000 00000000 00000000 41200000 41200000 10000000 41a00000 00000000 41200000 41200000
+disjoint.intersect bounds st=0 0,0,0,0
+disjoint.intersect boundsI st=0 0,0,0,0
+disjoint.intersect empty st=0 1 infinite st=0 0
+disjoint.intersect scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rr.union size st=0 n=60 data st=0 filled=60 : 00000034 ec074a08 dbc01002 00000002 00000002 10000000 00000000 00000000 41200000 41200000 10000000 40a00000 40a00000 41200000 41200000
+rr.union bounds st=0 0,0,15,15
+rr.union boundsI st=0 0,0,15,15
+rr.union empty st=0 0 infinite st=0 0
+rr.union scans count st=0 n=3 f st=0 n=3: [0,0,10,5] [0,5,15,5] [5,10,10,5] i st=0 n=3: [0,0,10,5] [0,5,15,5] [5,10,10,5]
+inf.union size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+inf.union bounds st=0 -4194304,-4194304,8388608,8388608
+inf.union boundsI st=0 -4194304,-4194304,8388608,8388608
+inf.union empty st=0 0 infinite st=0 1
+inf.union scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+empty.union size st=0 n=36 data st=0 filled=36 : 0000001c f997e1da dbc01002 00000000 10000000 40a00000 40a00000 41200000 41200000
+empty.union bounds st=0 5,5,10,10
+empty.union boundsI st=0 5,5,10,10
+empty.union empty st=0 0 infinite st=0 0
+empty.union scans count st=0 n=1 f st=0 n=1: [5,5,10,10] i st=0 n=1: [5,5,10,10]
+rect.union.inf size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+rect.union.inf bounds st=0 -4194304,-4194304,8388608,8388608
+rect.union.inf boundsI st=0 -4194304,-4194304,8388608,8388608
+rect.union.inf empty st=0 0 infinite st=0 1
+rect.union.inf scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+rect.union.empty size st=0 n=36 data st=0 filled=36 : 0000001c 7dc7ee9d dbc01002 00000000 10000000 00000000 00000000 41200000 41200000
+rect.union.empty bounds st=0 0,0,10,10
+rect.union.empty boundsI st=0 0,0,10,10
+rect.union.empty empty st=0 0 infinite st=0 0
+rect.union.empty scans count st=0 n=1 f st=0 n=1: [0,0,10,10] i st=0 n=1: [0,0,10,10]
+rp.union size st=0 n=180 data st=0 filled=180 : 000000ac 098fe398 dbc01002 00000002 00000002 10000000 00000000 00000000 41200000 41200000 10000001 00000084 dbc01002 0000000d 00000000 41700000 41200000 41700000 414c2eca 414c2eca 41700000 41200000 41700000 40e7a26b 41700000 40a00000 414c2eca 40a00000 41200000 40a00000 40e7a26b 40e7a26b 40a00000 41200000 40a00000 414c2eca 40a00000 41700000 40e7a26b 41700000 41200000 03030300 03030303 03030303 00000083
+rp.union bounds st=0 0,0,15,15
+rp.union boundsI st=0 0,0,15,15
+rp.union empty st=0 0 infinite st=0 0
+disjoint.union size st=0 n=60 data st=0 filled=60 : 00000034 465b9a5b dbc01002 00000002 00000002 10000000 00000000 00000000 41200000 41200000 10000000 41a00000 00000000 41200000 41200000
+disjoint.union bounds st=0 0,0,30,10
+disjoint.union boundsI st=0 0,0,30,10
+disjoint.union empty st=0 0 infinite st=0 0
+disjoint.union scans count st=0 n=2 f st=0 n=2: [0,0,10,10] [20,0,10,10] i st=0 n=2: [0,0,10,10] [20,0,10,10]
+rr.xor size st=0 n=60 data st=0 filled=60 : 00000034 c62f726a dbc01002 00000002 00000003 10000000 00000000 00000000 41200000 41200000 10000000 40a00000 40a00000 41200000 41200000
+rr.xor bounds st=0 0,0,15,15
+rr.xor boundsI st=0 0,0,15,15
+rr.xor empty st=0 0 infinite st=0 0
+rr.xor scans count st=0 n=4 f st=0 n=4: [0,0,10,5] [0,5,5,5] [10,5,5,5] [5,10,10,5] i st=0 n=4: [0,0,10,5] [0,5,5,5] [10,5,5,5] [5,10,10,5]
+inf.xor size st=0 n=44 data st=0 filled=44 : 00000024 d5e973b3 dbc01002 00000002 00000003 10000003 10000000 40a00000 40a00000 41200000 41200000
+inf.xor bounds st=0 -4194304,-4194304,8388608,8388608
+inf.xor boundsI st=0 -4194304,-4194304,8388608,8388608
+inf.xor empty st=0 0 infinite st=0 0
+inf.xor scans count st=0 n=4 f st=0 n=4: [-4194304,-4194304,8388608,4194309] [-4194304,5,4194309,10] [15,5,4194289,10] [-4194304,15,8388608,4194289] i st=0 n=4: [-4194304,-4194304,8388608,4194309] [-4194304,5,4194309,10] [15,5,4194289,10] [-4194304,15,8388608,4194289]
+empty.xor size st=0 n=36 data st=0 filled=36 : 0000001c f997e1da dbc01002 00000000 10000000 40a00000 40a00000 41200000 41200000
+empty.xor bounds st=0 5,5,10,10
+empty.xor boundsI st=0 5,5,10,10
+empty.xor empty st=0 0 infinite st=0 0
+empty.xor scans count st=0 n=1 f st=0 n=1: [5,5,10,10] i st=0 n=1: [5,5,10,10]
+rect.xor.inf size st=0 n=44 data st=0 filled=44 : 00000024 031fb21b dbc01002 00000002 00000003 10000000 00000000 00000000 41200000 41200000 10000003
+rect.xor.inf bounds st=0 -4194304,-4194304,8388608,8388608
+rect.xor.inf boundsI st=0 -4194304,-4194304,8388608,8388608
+rect.xor.inf empty st=0 0 infinite st=0 0
+rect.xor.inf scans count st=0 n=4 f st=0 n=4: [-4194304,-4194304,8388608,4194304] [-4194304,0,4194304,10] [10,0,4194294,10] [-4194304,10,8388608,4194294] i st=0 n=4: [-4194304,-4194304,8388608,4194304] [-4194304,0,4194304,10] [10,0,4194294,10] [-4194304,10,8388608,4194294]
+rect.xor.empty size st=0 n=36 data st=0 filled=36 : 0000001c 7dc7ee9d dbc01002 00000000 10000000 00000000 00000000 41200000 41200000
+rect.xor.empty bounds st=0 0,0,10,10
+rect.xor.empty boundsI st=0 0,0,10,10
+rect.xor.empty empty st=0 0 infinite st=0 0
+rect.xor.empty scans count st=0 n=1 f st=0 n=1: [0,0,10,10] i st=0 n=1: [0,0,10,10]
+rp.xor size st=0 n=180 data st=0 filled=180 : 000000ac 101a8343 dbc01002 00000002 00000003 10000000 00000000 00000000 41200000 41200000 10000001 00000084 dbc01002 0000000d 00000000 41700000 41200000 41700000 414c2eca 414c2eca 41700000 41200000 41700000 40e7a26b 41700000 40a00000 414c2eca 40a00000 41200000 40a00000 40e7a26b 40e7a26b 40a00000 41200000 40a00000 414c2eca 40a00000 41700000 40e7a26b 41700000 41200000 03030300 03030303 03030303 00000083
+rp.xor bounds st=0 0,0,15,15
+rp.xor boundsI st=0 0,0,15,15
+rp.xor empty st=0 0 infinite st=0 0
+disjoint.xor size st=0 n=60 data st=0 filled=60 : 00000034 6c73a239 dbc01002 00000002 00000003 10000000 00000000 00000000 41200000 41200000 10000000 41a00000 00000000 41200000 41200000
+disjoint.xor bounds st=0 0,0,30,10
+disjoint.xor boundsI st=0 0,0,30,10
+disjoint.xor empty st=0 0 infinite st=0 0
+disjoint.xor scans count st=0 n=2 f st=0 n=2: [0,0,10,10] [20,0,10,10] i st=0 n=2: [0,0,10,10] [20,0,10,10]
+rr.exclude size st=0 n=60 data st=0 filled=60 : 00000034 10f7db44 dbc01002 00000002 00000004 10000000 00000000 00000000 41200000 41200000 10000000 40a00000 40a00000 41200000 41200000
+rr.exclude bounds st=0 0,0,10,10
+rr.exclude boundsI st=0 0,0,10,10
+rr.exclude empty st=0 0 infinite st=0 0
+rr.exclude scans count st=0 n=2 f st=0 n=2: [0,0,10,5] [0,5,5,5] i st=0 n=2: [0,0,10,5] [0,5,5,5]
+inf.exclude size st=0 n=44 data st=0 filled=44 : 00000024 d1e080e0 dbc01002 00000002 00000004 10000003 10000000 40a00000 40a00000 41200000 41200000
+inf.exclude bounds st=0 -4194304,-4194304,8388608,8388608
+inf.exclude boundsI st=0 -4194304,-4194304,8388608,8388608
+inf.exclude empty st=0 0 infinite st=0 0
+inf.exclude scans count st=0 n=4 f st=0 n=4: [-4194304,-4194304,8388608,4194309] [-4194304,5,4194309,10] [15,5,4194289,10] [-4194304,15,8388608,4194289] i st=0 n=4: [-4194304,-4194304,8388608,4194309] [-4194304,5,4194309,10] [15,5,4194289,10] [-4194304,15,8388608,4194289]
+empty.exclude size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+empty.exclude bounds st=0 0,0,0,0
+empty.exclude boundsI st=0 0,0,0,0
+empty.exclude empty st=0 1 infinite st=0 0
+empty.exclude scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rect.exclude.inf size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+rect.exclude.inf bounds st=0 0,0,0,0
+rect.exclude.inf boundsI st=0 0,0,0,0
+rect.exclude.inf empty st=0 1 infinite st=0 0
+rect.exclude.inf scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rect.exclude.empty size st=0 n=36 data st=0 filled=36 : 0000001c 7dc7ee9d dbc01002 00000000 10000000 00000000 00000000 41200000 41200000
+rect.exclude.empty bounds st=0 0,0,10,10
+rect.exclude.empty boundsI st=0 0,0,10,10
+rect.exclude.empty empty st=0 0 infinite st=0 0
+rect.exclude.empty scans count st=0 n=1 f st=0 n=1: [0,0,10,10] i st=0 n=1: [0,0,10,10]
+rp.exclude size st=0 n=180 data st=0 filled=180 : 000000ac 5cf0a142 dbc01002 00000002 00000004 10000000 00000000 00000000 41200000 41200000 10000001 00000084 dbc01002 0000000d 00000000 41700000 41200000 41700000 414c2eca 414c2eca 41700000 41200000 41700000 40e7a26b 41700000 40a00000 414c2eca 40a00000 41200000 40a00000 40e7a26b 40e7a26b 40a00000 41200000 40a00000 414c2eca 40a00000 41700000 40e7a26b 41700000 41200000 03030300 03030303 03030303 00000083
+rp.exclude bounds st=0 0,0,10,10
+rp.exclude boundsI st=0 0,0,10,10
+rp.exclude empty st=0 0 infinite st=0 0
+disjoint.exclude size st=0 n=60 data st=0 filled=60 : 00000034 baab0b17 dbc01002 00000002 00000004 10000000 00000000 00000000 41200000 41200000 10000000 41a00000 00000000 41200000 41200000
+disjoint.exclude bounds st=0 0,0,10,10
+disjoint.exclude boundsI st=0 0,0,10,10
+disjoint.exclude empty st=0 0 infinite st=0 0
+disjoint.exclude scans count st=0 n=1 f st=0 n=1: [0,0,10,10] i st=0 n=1: [0,0,10,10]
+rr.complement size st=0 n=60 data st=0 filled=60 : 00000034 3adfe326 dbc01002 00000002 00000005 10000000 00000000 00000000 41200000 41200000 10000000 40a00000 40a00000 41200000 41200000
+rr.complement bounds st=0 5,5,10,10
+rr.complement boundsI st=0 5,5,10,10
+rr.complement empty st=0 0 infinite st=0 0
+rr.complement scans count st=0 n=2 f st=0 n=2: [10,5,5,5] [5,10,10,5] i st=0 n=2: [10,5,5,5] [5,10,10,5]
+inf.complement size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+inf.complement bounds st=0 0,0,0,0
+inf.complement boundsI st=0 0,0,0,0
+inf.complement empty st=0 1 infinite st=0 0
+inf.complement scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+empty.complement size st=0 n=36 data st=0 filled=36 : 0000001c f997e1da dbc01002 00000000 10000000 40a00000 40a00000 41200000 41200000
+empty.complement bounds st=0 5,5,10,10
+empty.complement boundsI st=0 5,5,10,10
+empty.complement empty st=0 0 infinite st=0 0
+empty.complement scans count st=0 n=1 f st=0 n=1: [5,5,10,10] i st=0 n=1: [5,5,10,10]
+rect.complement.inf size st=0 n=44 data st=0 filled=44 : 00000024 06a3bc55 dbc01002 00000002 00000005 10000000 00000000 00000000 41200000 41200000 10000003
+rect.complement.inf bounds st=0 -4194304,-4194304,8388608,8388608
+rect.complement.inf boundsI st=0 -4194304,-4194304,8388608,8388608
+rect.complement.inf empty st=0 0 infinite st=0 0
+rect.complement.inf scans count st=0 n=4 f st=0 n=4: [-4194304,-4194304,8388608,4194304] [-4194304,0,4194304,10] [10,0,4194294,10] [-4194304,10,8388608,4194294] i st=0 n=4: [-4194304,-4194304,8388608,4194304] [-4194304,0,4194304,10] [10,0,4194294,10] [-4194304,10,8388608,4194294]
+rect.complement.empty size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+rect.complement.empty bounds st=0 0,0,0,0
+rect.complement.empty boundsI st=0 0,0,0,0
+rect.complement.empty empty st=0 1 infinite st=0 0
+rect.complement.empty scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rp.complement size st=0 n=180 data st=0 filled=180 : 000000ac 4565c199 dbc01002 00000002 00000005 10000000 00000000 00000000 41200000 41200000 10000001 00000084 dbc01002 0000000d 00000000 41700000 41200000 41700000 414c2eca 414c2eca 41700000 41200000 41700000 40e7a26b 41700000 40a00000 414c2eca 40a00000 41200000 40a00000 40e7a26b 40e7a26b 40a00000 41200000 40a00000 414c2eca 40a00000 41700000 40e7a26b 41700000 41200000 03030300 03030303 03030303 00000083
+rp.complement bounds st=0 5,6,10,9
+rp.complement boundsI st=0 5,6,10,9
+rp.complement empty st=0 0 infinite st=0 0
+disjoint.complement size st=0 n=60 data st=0 filled=60 : 00000034 90833375 dbc01002 00000002 00000005 10000000 00000000 00000000 41200000 41200000 10000000 41a00000 00000000 41200000 41200000
+disjoint.complement bounds st=0 20,0,10,10
+disjoint.complement boundsI st=0 20,0,10,10
+disjoint.complement empty st=0 0 infinite st=0 0
+disjoint.complement scans count st=0 n=1 f st=0 n=1: [20,0,10,10] i st=0 n=1: [20,0,10,10]
+tree(a|b)&c size st=0 n=84 data st=0 filled=84 : 0000004c 19238617 dbc01002 00000004 00000001 00000002 10000000 00000000 00000000 41200000 41200000 10000000 40a00000 40a00000 41200000 41200000 10000000 40000000 40000000 40800000 41a00000
+tree(a|b)&c bounds st=0 2,2,4,13
+tree(a|b)&c boundsI st=0 2,2,4,13
+tree(a|b)&c empty st=0 0 infinite st=0 0
+tree(a|b)&c scans count st=0 n=2 f st=0 n=2: [2,2,4,8] [5,10,1,5] i st=0 n=2: [2,2,4,8] [5,10,1,5]
+tree a|(b&c) size st=0 n=84 data st=0 filled=84 : 0000004c 1b39354f dbc01002 00000004 00000002 10000000 00000000 00000000 41200000 41200000 00000001 10000000 40a00000 40a00000 41200000 41200000 10000000 40000000 40000000 40800000 41a00000
+tree a|(b&c) bounds st=0 0,0,10,15
+tree a|(b&c) boundsI st=0 0,0,10,15
+tree a|(b&c) empty st=0 0 infinite st=0 0
+tree a|(b&c) scans count st=0 n=2 f st=0 n=2: [0,0,10,10] [5,10,1,5] i st=0 n=2: [0,0,10,10] [5,10,1,5]
+tree clone size st=0 n=84 data st=0 filled=84 : 0000004c 1b39354f dbc01002 00000004 00000002 10000000 00000000 00000000 41200000 41200000 00000001 10000000 40a00000 40a00000 41200000 41200000 10000000 40000000 40000000 40800000 41a00000
+tree xor size st=0 n=156 data st=0 filled=156 : 00000094 5a0d7178 dbc01002 0000000a 00000003 00000001 00000002 10000000 00000000 00000000 41200000 41200000 10000000 40a00000 40a00000 41200000 41200000 10000000 40000000 40000000 40800000 41a00000 00000002 10000000 00000000 00000000 41200000 41200000 00000001 10000000 40a00000 40a00000 41200000 41200000 10000000 40000000 40000000 40800000 41a00000
+tree xor bounds st=0 0,0,10,10
+tree xor boundsI st=0 0,0,10,10
+tree xor empty st=0 0 infinite st=0 0
+tree xor scans count st=0 n=3 f st=0 n=3: [0,0,10,2] [0,2,2,8] [6,2,4,8] i st=0 n=3: [0,0,10,2] [0,2,2,8] [6,2,4,8]
+tree replace size st=0 n=36 data st=0 filled=36 : 0000001c 7dc7ee9d dbc01002 00000000 10000000 00000000 00000000 41200000 41200000
+equal rect==rect 1
+equal rect==halves 1
+equal rect==rect+0.3 0
+equal rect==rect+0.6 0
+equal inf==inf 1
+equal inf==rect 0
+equal empty==empty 1
+equal empty==zerorect 1
+equal(world2) rect==rect+0.3 0
+translate rect size st=0 n=36 data st=0 filled=36 : 0000001c 641d6203 dbc01002 00000000 10000000 3fc00000 3f800000 40400000 40800000
+translateI rect size st=0 n=36 data st=0 filled=36 : 0000001c 9894508c dbc01002 00000000 10000000 40600000 40800000 40400000 40800000
+scale rect size st=0 n=36 data st=0 filled=36 : 0000001c 0456efc2 dbc01002 00000000 10000000 41000000 41400000 40c00000 41400000
+scale rect bounds st=0 8,12,6,12
+scale rect boundsI st=0 8,12,6,12
+scale rect empty st=0 0 infinite st=0 0
+scale rect scans count st=0 n=1 f st=0 n=1: [8,12,6,12] i st=0 n=1: [8,12,6,12]
+rot rect size st=0 n=72 data st=0 filled=72 : 00000040 8c238bc2 dbc01002 00000000 10000001 00000030 dbc01002 00000004 00000000 c03504f2 41624630 3fb504f8 41931406 c0e2462e 41d6f5e0 c13504f2 41b504f3 01010100
+rot rect bounds st=0 -11.3137074,14.1421356,12.7279215,12.7279205
+rot rect boundsI st=0 -11,14,13,13
+rot rect empty st=0 0 infinite st=0 0
+rot rect scans count st=0 n=12 f st=0 n=12: [-3,15,2,1] [-4,16,4,1] [-5,17,6,1] [-6,18,8,1] [-7,19,8,1] [-8,20,8,1] [-9,21,8,1] [-10,22,8,1] [-10,23,7,1] [-9,24,5,1] [-8,25,3,1] [-7,26,1,1] i st=0 n=12: [-3,15,2,1] [-4,16,4,1] [-5,17,6,1] [-6,18,8,1] [-7,19,8,1] [-8,20,8,1] [-9,21,8,1] [-10,22,8,1] [-10,23,7,1] [-9,24,5,1] [-8,25,3,1] [-7,26,1,1]
+ident rect size st=0 n=36 data st=0 filled=36 : 0000001c ecbb90f7 dbc01002 00000000 10000000 3f800000 40000000 40400000 40800000
+flip rect size st=0 n=36 data st=0 filled=36 : 0000001c d1551c51 dbc01002 00000000 10000000 c0800000 40000000 40400000 40800000
+flip rect bounds st=0 -4,2,3,4
+flip rect boundsI st=0 -4,2,3,4
+shear rect size st=0 n=56 data st=0 filled=56 : 00000030 e569f3bd dbc01002 00000000 10000001 00000020 dbc01002 00000004 00004000 00020002 00020005 00060007 00060004 01010100
+shear rect bounds st=0 2,2,5,4
+shear rect boundsI st=0 2,2,5,4
+scale infinite size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+translate infinite size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+translate infinite empty st=0 0 infinite st=0 1
+rot empty size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+translate union size st=0 n=60 data st=0 filled=60 : 00000034 27f9ca5c dbc01002 00000002 00000002 10000000 3f800000 3f800000 41200000 41200000 10000000 40c00000 40c00000 41200000 41200000
+scale union size st=0 n=60 data st=0 filled=60 : 00000034 ef7ac480 dbc01002 00000002 00000002 10000000 40400000 40400000 41a00000 41f00000 10000000 41500000 41900000 41a00000 41f00000
+translate ellipse size st=0 n=156 data st=0 filled=156 : 00000094 22bb211f dbc01002 00000000 10000001 00000084 dbc01002 0000000d 00000000 41300000 40c00000 41300000 410c2eca 410c2eca 41300000 40c00000 41300000 404f44d6 41300000 3f800000 410c2eca 3f800000 40c00000 3f800000 404f44d6 404f44d6 3f800000 40c00000 3f800000 410c2eca 3f800000 41300000 404f44d6 41300000 40c00000 03030300 03030303 03030303 00000083
+translate inf-exclude size st=0 n=44 data st=0 filled=44 : 00000024 8cda0bb9 dbc01002 00000002 00000004 10000003 10000000 40c00000 40c00000 41200000 41200000
+translate inf-exclude bounds st=0 -4194304,-4194304,8388608,8388608
+translate inf-exclude boundsI st=0 -4194304,-4194304,8388608,8388608
+world2 rect bounds st=0 10,20,30,40
+world2 rect boundsI st=0 10,20,30,40
+world2 rect vis(11,21) st=0 1
+world2 rect vis(39.9000015,59.9000015) st=0 0
+world2 rect vis(40,60) st=0 0
+world2 rect vis(9.89999962,21) st=0 1
+world2 rect vis(9.80000019,21) st=0 1
+world2 rect empty st=0 0 infinite st=0 0
+world2 infinite isinf 1
+world2 infinite bounds st=0 -4194304,-4194304,8388608,8388608
+world2 infinite boundsI st=0 -4194304,-4194304,8388608,8388608
+mm rect bounds st=0 10,20,30,40
+mm rect boundsI st=0 10,20,30,40
+mm rect vis(11,21) st=0 1
+rect vis(0,0) st=0 1
+rect vis(9.98999977,9.98999977) st=0 0
+rect vis(10,5) st=0 0
+rect vis(-0.00999999978,5) st=0 1
+rect vis(-0.5,5) st=0 1
+rect vis(-0.50999999,5) st=0 0
+rect vis(10.4899998,5) st=0 0
+rect vis(9.5,5) st=0 0
+rect g vis(10,5) st=0 0
+rect g vis(-0.5,5) st=0 1
+rect visI(10,5) st=0 0
+rect visI(9,9) st=0 1
+rect.5 vis(0.5,5) st=0 1
+rect.5 vis(0.400000006,5) st=0 0
+rect.5 vis(0.99000001,5) st=0 1
+rect.5 vis(1,5) st=0 1
+rect.5 vis(10.3999996,5) st=0 1
+rect.5 vis(10.5,5) st=0 0
+rect.5 vis(0,5) st=0 0
+rect.5 vis(10,5) st=0 1
+rect visrect(2,2,3,3) st=0 1
+rect visrect(9,9,5,5) st=0 1
+rect visrect(10,10,5,5) st=0 0
+rect visrect(-5,-5,5,5) st=0 0
+rect visrect(-5,-5,5.5,5.5) st=0 1
+rect visrect(9.6,0,1,1) st=0 0
+rect visrect(9.4,0,1,1) st=0 0
+rect visrect(3,3,0,0) st=0 0
+rect visrect(3,3,-1,-1) st=0 0
+rect visrect(12,3,-4,2) st=0 0
+rect visrectI st=0 1
+infinite vis(1e+09,-1e+09) st=0 0
+infinite vis(5000000,0) st=0 0
+empty vis(0,0) st=0 0
+hrgn rect st=0 type=2 box=2,3,12,23
+hrgn rect2 st=0 type=2 box=2,3,12,23
+hrgn world2 rect2 st=0 type=2 box=3,6,24,46
+hrgn infinite st=0 h=00000000
+hrgn empty st=0 type=1
+hrgn ellipse st=0 type=3 box=0,1,10,10 datasize=144
+hrgn ellipse rects n=7: [3,1,8,2] [2,2,9,3] [1,3,10,5] [0,5,10,6] [1,6,10,8] [2,8,9,9] [3,9,8,10]
+fromhrgn two st=0
+fromhrgn two size st=0 n=116 data st=0 filled=116 : 0000006c f735398c dbc01002 00000000 10000001 0000005c dbc01002 00000010 00006000 00000000 0000000a 0005000a 00050000 00050000 0005000a 000a000a 000a0000 00050014 0005001e 000a001e 000a0014 000a0014 000a001e 000f001e 000f0014 81010100 81010100 81010100 81010100
+fromhrgn two bounds st=0 0,0,30,15
+fromhrgn two boundsI st=0 0,0,30,15
+fromhrgn two empty st=0 0 infinite st=0 0
+fromhrgn two scans count st=0 n=4 f st=0 n=4: [0,0,10,5] [0,5,10,5] [20,5,10,5] [20,10,10,5] i st=0 n=4: [0,0,10,5] [0,5,10,5] [20,5,10,5] [20,10,10,5]
+fromhrgn one st=0
+fromhrgn one size st=0 n=56 data st=0 filled=56 : 00000030 35d46c12 dbc01002 00000000 10000001 00000020 dbc01002 00000004 00006000 00040003 0004000a 000c000a 000c0003 81010100
+fromhrgn one bounds st=0 3,4,7,8
+fromhrgn one boundsI st=0 3,4,7,8
+fromhrgn one empty st=0 0 infinite st=0 0
+fromhrgn one scans count st=0 n=1 f st=0 n=1: [3,4,7,8] i st=0 n=1: [3,4,7,8]
+fromhrgn empty st=0
+fromhrgn empty size st=0 n=36 data st=0 filled=36 : 0000001c dd8fea89 dbc01002 00000000 10000001 0000000c dbc01002 00000000 00002000
+fromhrgn empty bounds st=0 0,0,0,0
+fromhrgn empty boundsI st=0 0,0,0,0
+fromhrgn empty empty st=0 1 infinite st=0 0
+fromhrgn empty scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+xor scans count st=0 n=4 f st=0 n=4: [0,0,10,5] [0,5,5,5] [10,5,5,5] [5,10,10,5] i st=0 n=4: [0,0,10,5] [0,5,5,5] [10,5,5,5] [5,10,10,5]
+rect.3 scans count st=0 n=1 f st=0 n=1: [1,1,10,10] i st=0 n=1: [1,1,10,10]
+rect.6 scans count st=0 n=1 f st=0 n=1: [1,1,10,10] i st=0 n=1: [1,1,10,10]
+rect.5 scans count st=0 n=1 f st=0 n=1: [1,1,10,10] i st=0 n=1: [1,1,10,10]
+rect-.5 scans count st=0 n=1 f st=0 n=1: [0,0,10,10] i st=0 n=1: [0,0,10,10]
+rect sliver scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+inf-exclude scans count st=0 n=4 f st=0 n=4: [-4194304,-4194304,8388608,4194304] [-4194304,0,4194304,10] [10,0,4194294,10] [-4194304,10,8388608,4194294] i st=0 n=4: [-4194304,-4194304,8388608,4194304] [-4194304,0,4194304,10] [10,0,4194294,10] [-4194304,10,8388608,4194294]
+default clipbounds st=0 -4194304,-4194304,8388608,8388608
+default clipboundsI st=0 -4194304,-4194304,8388608,8388608
+default visclip st=0 0,0,100,100
+default visclipI st=0 0,0,100,100
+default clipempty st=0 0 visclipempty st=0 0
+default getclip st=0
+default clip size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+default gvis(0,0) st=0 1
+default gvis(99.9000015,99.9000015) st=0 0
+default gvis(100,50) st=0 0
+default gvis(-0.100000001,50) st=0 1
+default gvis(99.5,50) st=0 0
+default gvis(-0.5,50) st=0 1
+default gvisrect(90,90,20,20) st=0 1
+default gvisrect(100,100,5,5) st=0 0
+default gvisrect(-5,-5,5,5) st=0 0
+default gvisrect(-5,-5,5.5,5.5) st=0 1
+default gvisI(100,5) st=0 0
+default gvisrectI st=0 1
+rect clipbounds st=0 10,10,50,50
+rect clipboundsI st=0 10,10,50,50
+rect visclip st=0 10,10,50,50
+rect visclipI st=0 10,10,50,50
+rect clipempty st=0 0 visclipempty st=0 0
+rect getclip st=0
+rect clip size st=0 n=36 data st=0 filled=36 : 0000001c c1268d0d dbc01002 00000000 10000000 41200000 41200000 42480000 42480000
+rect gvis(10,10) st=0 1
+rect gvis(59.9000015,30) st=0 0
+rect gvis(60,30) st=0 0
+rect gvis(9.5,30) st=0 1
+rect gvisrect(0,0,10,10) st=0 0
+rect gvisrect(0,0,10.5,10.5) st=0 1
+rect gvisrect(59,59,2,2) st=0 1
+rect then world2 clipbounds st=0 5,5,25,25
+rect then world2 clipboundsI st=0 5,5,25,25
+rect then world2 visclip st=0 5,5,25,25
+rect then world2 visclipI st=0 5,5,25,25
+rect then world2 clipempty st=0 0 visclipempty st=0 0
+rect then world2 getclip st=0
+rect then world2 clip size st=0 n=36 data st=0 filled=36 : 0000001c 952701d1 dbc01002 00000000 10000000 40a00000 40a00000 41c80000 41c80000
+rect then world2 gvis(5,5) st=0 1
+rect then world2 gvis(4.9000001,5) st=0 1
+rect then world2 gvis(29.8999996,5) st=0 0
+translate(5,5) world2 clipbounds st=0 10,10,25,25
+translate(5,5) world2 clipboundsI st=0 10,10,25,25
+translate(5,5) world2 visclip st=0 10,10,25,25
+translate(5,5) world2 visclipI st=0 10,10,25,25
+translate(5,5) world2 clipempty st=0 0 visclipempty st=0 0
+translate(5,5) world2 getclip st=0
+translate(5,5) world2 clip size st=0 n=36 data st=0 filled=36 : 0000001c 3abc2af4 dbc01002 00000000 10000000 41200000 41200000 41c80000 41c80000
+translateI(-5,-5) world2 clipbounds st=0 5,5,25,25
+translateI(-5,-5) world2 clipboundsI st=0 5,5,25,25
+translateI(-5,-5) world2 visclip st=0 5,5,25,25
+translateI(-5,-5) world2 visclipI st=0 5,5,25,25
+translateI(-5,-5) world2 clipempty st=0 0 visclipempty st=0 0
+translateI(-5,-5) world2 getclip st=0
+translateI(-5,-5) world2 clip size st=0 n=36 data st=0 filled=36 : 0000001c 952701d1 dbc01002 00000000 10000000 40a00000 40a00000 41c80000 41c80000
+intersect world2 clipbounds st=0 10,10,10,10
+intersect world2 clipboundsI st=0 10,10,10,10
+intersect world2 visclip st=0 10,10,10,10
+intersect world2 visclipI st=0 10,10,10,10
+intersect world2 clipempty st=0 0 visclipempty st=0 0
+intersect world2 getclip st=0
+intersect world2 clip size st=0 n=60 data st=0 filled=60 : 00000034 0ff19d7d dbc01002 00000002 00000001 10000000 40a00000 40a00000 41c80000 41c80000 10000000 41200000 41200000 41200000 41200000
+replace world2 clipbounds st=0 0,0,10,10
+replace world2 clipboundsI st=0 0,0,10,10
+replace world2 visclip st=0 0,0,10,10
+replace world2 visclipI st=0 0,0,10,10
+replace world2 clipempty st=0 0 visclipempty st=0 0
+replace world2 getclip st=0
+replace world2 clip size st=0 n=36 data st=0 filled=36 : 0000001c 7dc7ee9d dbc01002 00000000 10000000 00000000 00000000 41200000 41200000
+replace world2 then reset clipbounds st=0 0,0,20,20
+replace world2 then reset clipboundsI st=0 0,0,20,20
+replace world2 then reset visclip st=0 0,0,20,20
+replace world2 then reset visclipI st=0 0,0,20,20
+replace world2 then reset clipempty st=0 0 visclipempty st=0 0
+replace world2 then reset getclip st=0
+replace world2 then reset clip size st=0 n=36 data st=0 filled=36 : 0000001c 58f4620e dbc01002 00000000 10000000 00000000 00000000 41a00000 41a00000
+exclude clipbounds st=0 0,0,20,20
+exclude clipboundsI st=0 0,0,20,20
+exclude visclip st=0 0,0,20,20
+exclude visclipI st=0 0,0,20,20
+exclude clipempty st=0 0 visclipempty st=0 0
+exclude getclip st=0
+exclude clip size st=0 n=60 data st=0 filled=60 : 00000034 0ddf528c dbc01002 00000002 00000004 10000000 00000000 00000000 41a00000 41a00000 10000000 40a00000 40a00000 41200000 41200000
+complement clipbounds st=0 0,0,30,30
+complement clipboundsI st=0 0,0,30,30
+complement visclip st=0 0,0,30,30
+complement visclipI st=0 0,0,30,30
+complement clipempty st=0 0 visclipempty st=0 0
+complement getclip st=0
+complement clip size st=0 n=84 data st=0 filled=84 : 0000004c e566b5fd dbc01002 00000004 00000005 00000004 10000000 00000000 00000000 41a00000 41a00000 10000000 40a00000 40a00000 41200000 41200000 10000000 00000000 00000000 41f00000 41f00000
+xor clipbounds st=0 0,0,40,40
+xor clipboundsI st=0 0,0,40,40
+xor visclip st=0 0,0,40,40
+xor visclipI st=0 0,0,40,40
+xor clipempty st=0 0 visclipempty st=0 0
+xor getclip st=0
+xor clip size st=0 n=108 data st=0 filled=108 : 00000064 38d4280c dbc01002 00000006 00000003 00000005 00000004 10000000 00000000 00000000 41a00000 41a00000 10000000 40a00000 40a00000 41200000 41200000 10000000 00000000 00000000 41f00000 41f00000 10000000 00000000 00000000 42200000 42200000
+union clipbounds st=0 0,0,60,60
+union clipboundsI st=0 0,0,60,60
+union visclip st=0 0,0,60,60
+union visclipI st=0 0,0,60,60
+union clipempty st=0 0 visclipempty st=0 0
+union getclip st=0
+union clip size st=0 n=132 data st=0 filled=132 : 0000007c 57fbf789 dbc01002 00000008 00000002 00000003 00000005 00000004 10000000 00000000 00000000 41a00000 41a00000 10000000 40a00000 40a00000 41200000 41200000 10000000 00000000 00000000 41f00000 41f00000 10000000 00000000 00000000 42200000 42200000 10000000 42480000 42480000 41200000 41200000
+reset clipbounds st=0 -4194304,-4194304,8388608,8388608
+reset clipboundsI st=0 -4194304,-4194304,8388608,8388608
+reset visclip st=0 0,0,100,100
+reset visclipI st=0 0,0,100,100
+reset clipempty st=0 0 visclipempty st=0 0
+reset getclip st=0
+reset clip size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+zero clipbounds st=0 0,0,0,0
+zero clipboundsI st=0 0,0,0,0
+zero visclip st=0 0,0,0,0
+zero visclipI st=0 0,0,0,0
+zero clipempty st=0 1 visclipempty st=0 1
+zero getclip st=0
+zero clip size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+offbitmap clipbounds st=0 200,200,10,10
+offbitmap clipboundsI st=0 200,200,10,10
+offbitmap visclip st=0 0,0,0,0
+offbitmap visclipI st=0 0,0,0,0
+offbitmap clipempty st=0 0 visclipempty st=0 1
+offbitmap getclip st=0
+offbitmap clip size st=0 n=36 data st=0 filled=36 : 0000001c 651282a9 dbc01002 00000000 10000000 43480000 43480000 41200000 41200000
+partial clipbounds st=0 -50,-50,100,100
+partial clipboundsI st=0 -50,-50,100,100
+partial visclip st=0 0,0,50,50
+partial visclipI st=0 0,0,50,50
+partial clipempty st=0 0 visclipempty st=0 0
+partial getclip st=0
+partial clip size st=0 n=36 data st=0 filled=36 : 0000001c dbd9a156 dbc01002 00000000 10000000 c2480000 c2480000 42c80000 42c80000
+frac clipbounds st=0 11,11,20,20
+frac clipboundsI st=0 11,11,20,20
+frac visclip st=0 11,11,20,20
+frac visclipI st=0 11,11,20,20
+frac clipempty st=0 0 visclipempty st=0 0
+frac getclip st=0
+frac clip size st=0 n=36 data st=0 filled=36 : 0000001c 3e1cc7e9 dbc01002 00000000 10000000 4124cccd 4129999a 41a1999a 41a1999a
+rectI clipbounds st=0 10,20,30,40
+rectI clipboundsI st=0 10,20,30,40
+rectI visclip st=0 10,20,30,40
+rectI visclipI st=0 10,20,30,40
+rectI clipempty st=0 0 visclipempty st=0 0
+rectI getclip st=0
+rectI clip size st=0 n=36 data st=0 filled=36 : 0000001c 3b3e8e6b dbc01002 00000000 10000000 41200000 41a00000 41f00000 42200000
+rot default clipbounds st=0 -5931677.5,-5931606.5,11863284,11863284
+rot default clipboundsI st=0 -5931677,-5931606,11863284,11863284
+rot default visclip st=0 -35.3553429,-35.3553429,141.421371,141.421371
+rot default visclipI st=0 -35,-35,141,141
+rot default clipempty st=0 0 visclipempty st=0 0
+rot default getclip st=0
+rot default clip size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+rot rect clipbounds st=0 -9.19239044,-9.19238663,39.5979805,39.5979843
+rot rect clipboundsI st=0 -9,-9,40,40
+rot rect visclip st=0 -9.19239044,-9.19238663,39.5979805,39.5979843
+rot rect visclipI st=0 -9,-9,40,40
+rot rect clipempty st=0 0 visclipempty st=0 0
+rot rect getclip st=0
+rot rect clip size st=0 n=72 data st=0 filled=72 : 00000040 a602814a dbc01002 00000000 10000001 00000030 dbc01002 00000004 00000000 00000000 00000000 41a00000 00000000 41a00002 41a00001 00000000 41a00002 01010100
+rot rect then reset clipbounds st=0 36,1,28,28
+rot rect then reset clipboundsI st=0 36,1,28,28
+rot rect then reset visclip st=0 36,1,28,28
+rot rect then reset visclipI st=0 36,1,28,28
+rot rect then reset clipempty st=0 0 visclipempty st=0 0
+rot rect then reset getclip st=0
+rot rect then reset clip size st=0 n=72 data st=0 filled=72 : 00000040 3d2092bf dbc01002 00000000 10000001 00000030 dbc01002 00000004 00000000 42480000 00000000 428048c6 41624630 42480000 41e24630 420f6e74 41624630 01010100
+mm default clipbounds st=0 -1109742.88,-1109742.88,2219485.75,2219485.75
+mm default clipboundsI st=0 -1109743,-1109743,2219486,2219486
+mm default visclip st=0 0,0,26.4583321,26.4583321
+mm default visclipI st=0 0,0,26,26
+mm default clipempty st=0 0 visclipempty st=0 0
+mm default getclip st=0
+mm default clip size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+mm rect clipbounds st=0 1.05833328,1.05833328,10.0541658,10.0541658
+mm rect clipboundsI st=0 1,1,10,10
+mm rect visclip st=0 1.05833328,1.05833328,10.0541658,10.0541658
+mm rect visclipI st=0 1,1,10,10
+mm rect clipempty st=0 0 visclipempty st=0 0
+mm rect getclip st=0
+mm rect clip size st=0 n=36 data st=0 filled=36 : 0000001c c9303f67 dbc01002 00000000 10000000 3f800000 3f800000 41200000 41200000
+mm rect then pixel clipbounds st=0 4,4,38,38
+mm rect then pixel clipboundsI st=0 4,4,38,38
+mm rect then pixel visclip st=0 4,4,38,38
+mm rect then pixel visclipI st=0 4,4,38,38
+mm rect then pixel clipempty st=0 0 visclipempty st=0 0
+mm rect then pixel getclip st=0
+mm rect then pixel clip size st=0 n=36 data st=0 filled=36 : 0000001c 15e6fc89 dbc01002 00000000 10000000 4071e3c8 4071e3c8 42172e5e 42172e5e
+world unit scale2 clipbounds st=0 2,2,19,19
+world unit scale2 clipboundsI st=0 2,2,19,19
+world unit scale2 visclip st=0 2,2,19,19
+world unit scale2 visclipI st=0 2,2,19,19
+world unit scale2 clipempty st=0 0 visclipempty st=0 0
+world unit scale2 getclip st=0
+world unit scale2 clip size st=0 n=36 data st=0 filled=36 : 0000001c 39941826 dbc01002 00000000 10000000 3ff1e3c8 3ff1e3c8 41972e5e 41972e5e
+pixeloffset half clipbounds st=0 -4194303.5,-4194303.5,8388608,8388608
+pixeloffset half clipboundsI st=0 -4194303,-4194303,8388608,8388608
+pixeloffset half visclip st=0 0.5,0.5,100,100
+pixeloffset half visclipI st=0 1,1,100,100
+pixeloffset half clipempty st=0 0 visclipempty st=0 0
+pixeloffset half getclip st=0
+pixeloffset half clip size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+pixeloffset half rect clipbounds st=0 10.5,10.5,10,10
+pixeloffset half rect clipboundsI st=0 11,11,10,10
+pixeloffset half rect visclip st=0 10.5,10.5,10,10
+pixeloffset half rect visclipI st=0 11,11,10,10
+pixeloffset half rect clipempty st=0 0 visclipempty st=0 0
+pixeloffset half rect getclip st=0
+pixeloffset half rect clip size st=0 n=36 data st=0 filled=36 : 0000001c 560ccaff dbc01002 00000000 10000000 41200000 41200000 41200000 41200000
+pixeloffset gvis(10,10) st=0 1
+pixeloffset gvis(9.60000038,10) st=0 0
+pixeloffset gvis(9.39999962,10) st=0 0
+pixeloffset back clipbounds st=0 10,10,10,10
+pixeloffset back clipboundsI st=0 10,10,10,10
+pixeloffset back visclip st=0 10,10,10,10
+pixeloffset back visclipI st=0 10,10,10,10
+pixeloffset back clipempty st=0 0 visclipempty st=0 0
+pixeloffset back getclip st=0
+pixeloffset back clip size st=0 n=36 data st=0 filled=36 : 0000001c b5a752b1 dbc01002 00000000 10000000 41180000 41180000 41200000 41200000
+path clipbounds st=0 10,11,20,19
+path clipboundsI st=0 10,11,20,19
+path visclip st=0 10,11,20,19
+path visclipI st=0 10,11,20,19
+path clipempty st=0 0 visclipempty st=0 0
+path getclip st=0
+path clip size st=0 n=156 data st=0 filled=156 : 00000094 9c832e85 dbc01002 00000000 10000001 00000084 dbc01002 0000000d 00000000 41f00000 41a00000 41f00000 41cc2eca 41cc2eca 41f00000 41a00000 41f00000 4167a26b 41f00000 41200000 41cc2eca 41200000 41a00000 41200000 4167a26b 4167a26b 41200000 41a00000 41200000 41cc2eca 41200000 41f00000 4167a26b 41f00000 41a00000 03030300 03030303 03030303 00000083
+path gvis(20,20) st=0 1
+path gvis(11,11) st=0 0
+region translated world clipbounds st=0 5,6,7,8
+region translated world clipboundsI st=0 5,6,7,8
+region translated world visclip st=0 5,6,7,8
+region translated world visclipI st=0 5,6,7,8
+region translated world clipempty st=0 0 visclipempty st=0 0
+region translated world getclip st=0
+region translated world clip size st=0 n=36 data st=0 filled=36 : 0000001c 917cf60c dbc01002 00000000 10000000 40a00000 40c00000 40e00000 41000000
+region after setclip (unchanged) size st=0 n=36 data st=0 filled=36 : 0000001c 917cf60c dbc01002 00000000 10000000 40a00000 40c00000 40e00000 41000000
+getclip into region size st=0 n=36 data st=0 filled=36 : 0000001c 917cf60c dbc01002 00000000 10000000 40a00000 40c00000 40e00000 41000000
+setcliphrgn st=0
+hrgn world2 clipbounds st=0 5,5,10,10
+hrgn world2 clipboundsI st=0 5,5,10,10
+hrgn world2 visclip st=0 5,5,10,10
+hrgn world2 visclipI st=0 5,5,10,10
+hrgn world2 clipempty st=0 0 visclipempty st=0 0
+hrgn world2 getclip st=0
+hrgn world2 clip size st=0 n=56 data st=0 filled=56 : 00000030 8a9ccc7c dbc01002 00000000 10000001 00000020 dbc01002 00000004 00006000 00050005 0005000f 000f000f 000f0005 81010100
+setclipgraphics st=0
+from g2 world2 clipbounds st=0 0.5,1,1.5,2
+from g2 world2 clipboundsI st=0 1,1,2,2
+from g2 world2 visclip st=0 0.5,1,1.5,2
+from g2 world2 visclipI st=0 1,1,2,2
+from g2 world2 clipempty st=0 0 visclipempty st=0 0
+from g2 world2 getclip st=0
+from g2 world2 clip size st=0 n=36 data st=0 filled=36 : 0000001c f866819d dbc01002 00000000 10000000 3f000000 3f800000 3fc00000 40000000
+setclipgraphics inf st=0
+from g2 infinite clipbounds st=0 -2097152,-2097152,4194304,4194304
+from g2 infinite clipboundsI st=0 -2097152,-2097152,4194304,4194304
+from g2 infinite visclip st=0 0,0,50,50
+from g2 infinite visclipI st=0 0,0,50,50
+from g2 infinite clipempty st=0 0 visclipempty st=0 0
+from g2 infinite getclip st=0
+from g2 infinite clip size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+translate infinite clipbounds st=0 -4194304,-4194304,8388608,8388608
+translate infinite clipboundsI st=0 -4194304,-4194304,8388608,8388608
+translate infinite visclip st=0 0,0,100,100
+translate infinite visclipI st=0 0,0,100,100
+translate infinite clipempty st=0 0 visclipempty st=0 0
+translate infinite getclip st=0
+translate infinite clip size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+hdc visclip st=0 0,0,40,30
+hdc dcclip visclip st=0 5,5,10,10
+hdc dcclip clipbounds st=0 -4194304,-4194304,8388608,8388608
+hdc dcclip clipempty 0
+fill rect.5 st=0: 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 00000000 00000000
+fill rect.5 aa st=0: 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 00000000 00000000
+fill rect.3 st=0: 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 00000000 00000000
+fill infinite st=0: ffff0000 ffff0000
+fill world+5 st=0: 00000000 00000000 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 00000000 00000000
+pathvis rect (0,0) st=0 1
+pathvis rect (5,5) st=0 1
+pathvis rect (9.99,9.99) st=0 0
+pathvis rect (10,10) st=0 0
+pathvis rect (10,5) st=0 0
+pathvis rect (-0.01,5) st=0 1
+pathvis rect (9.5,5) st=0 0
+pathvis rect (9.51,5) st=0 0
+pathvis rect (-0.5,5) st=0 1
+pathvis rect world2 (0,0) st=0 1
+pathvis rect world2 (5,5) st=0 1
+pathvis rect world2 (9.99,9.99) st=0 0
+pathvis rect world2 (10,10) st=0 0
+pathvis rect world2 (10,5) st=0 0
+pathvis rect world2 (-0.01,5) st=0 1
+pathvis rect world2 (9.5,5) st=0 1
+pathvis rect world2 (9.51,5) st=0 1
+pathvis rect world2 (-0.5,5) st=0 0
+pathvis clipped (5,5) st=0 1
+pathvisI (10,5) st=0 0
+pathvis NULL out st=2 7
+pathvis alternate overlap 0
+pathvis winding overlap 1
+pathvis ellipse corner 0
+pathvis ellipse edge 1
+pathvis empty st=0 0
+fracunion size st=0 n=60 data st=0 filled=60 : 00000034 1fc32ee9 dbc01002 00000002 00000002 10000000 3e99999a 3e99999a 40a00000 40a00000 10000000 400ccccd 400ccccd 40a00000 40a00000
+fracunion bounds st=0 1,1,7,7
+fracunion boundsI st=0 1,1,7,7
+fracunion empty st=0 0 infinite st=0 0
+fracunion scans count st=0 n=3 f st=0 n=3: [1,1,5,2] [1,3,7,3] [3,6,5,2] i st=0 n=3: [1,1,5,2] [1,3,7,3] [3,6,5,2]
+fracunion world2 bounds st=0 0.5,0.5,7,7
+fracunion world2 boundsI st=0 1,1,7,7
+fracunion world2 empty st=0 0 infinite st=0 0
+excludehalf size st=0 n=60 data st=0 filled=60 : 00000034 d8237cde dbc01002 00000002 00000004 10000000 00000000 00000000 41200000 41200000 10000000 00000000 00000000 41200000 40a00000
+excludehalf bounds st=0 0,5,10,5
+excludehalf boundsI st=0 0,5,10,5
+excludehalf empty st=0 0 infinite st=0 0
+excludehalf scans count st=0 n=1 f st=0 n=1: [0,5,10,5] i st=0 n=1: [0,5,10,5]
+excludehalf world.5 bounds st=0 0,6,10,4
+excludehalf world.5 boundsI st=0 0,6,10,4
+excludehalf world+.5 bounds st=0 0.5,5.5,10,5
+excludehalf world+.5 boundsI st=0 1,6,10,5
+hrgn excludehalf st=0 type=2 box=0,5,10,10
+inf-exclude world2 bounds st=0 -2097152,-2097152,4194304,4194304
+inf-exclude world2 boundsI st=0 -2097152,-2097152,4194304,4194304
+hrgn inf-exclude st=0 type=3 box=-4194304,-4194304,4194304,4194304
+inf-exclude vis(5,5) st=0 0
+inf-exclude vis(50,5) st=0 1
+inf-exclude vis(4194303,5) st=0 1
+inf-exclude vis(4194304,5) st=0 0
+inf-exclude vis(-4194304,5) st=0 1
+inf-exclude vis(-4194305,5) st=0 0
+inf-exclude empty st=0 0 infinite st=0 0
+infrect empty st=0 0 infinite st=0 1
+infrect bounds st=0 -4194304,-4194304,8388608,8388608
+infrect boundsI st=0 -4194304,-4194304,8388608,8388608
+tinyrect world2 empty st=0 0 infinite st=0 0
+hrgn tinyrect world2 type=2 box=1,1,2,2
+equal world.5 rect==rect+.2 0
+equal rect==rect+.2 0
+rot90 union size st=0 n=100 data st=0 filled=100 : 0000005c 347a9bf9 dbc01002 00000002 00000002 10000001 00000020 dbc01002 00000004 00004000 00000000 000a0000 000afff6 0000fff6 01010100 10000001 00000020 dbc01002 00000004 00004000 0005fffb 000ffffb 000ffff1 0005fff1 01010100
+rot90 rect size st=0 n=56 data st=0 filled=56 : 00000030 4545e079 dbc01002 00000000 10000001 00000020 dbc01002 00000004 00004000 0001fffe 0004fffe 0004fffa 0001fffa 01010100
+rot90 rect bounds st=0 -6,1,4,3
+rot90 rect boundsI st=0 -6,1,4,3
+zero transform st=0
+zero rect size st=0 n=56 data st=0 filled=56 : 00000030 9ad18326 dbc01002 00000000 10000001 00000020 dbc01002 00000004 00004000 00000000 00000000 00000000 00000000 01010100
+zero rect empty st=0 1 infinite st=0 0
+roundtrip st=0
+roundtrip size st=0 n=180 data st=0 filled=180 : 000000ac c8905afc dbc01002 00000002 00000003 10000001 00000084 dbc01002 0000000d 00000000 41200000 40a00000 41200000 40f85d95 40f85d95 41200000 40a00000 41200000 400f44d6 41200000 00000000 40f85d95 00000000 40a00000 00000000 400f44d6 400f44d6 00000000 40a00000 00000000 40f85d95 00000000 41200000 400f44d6 41200000 40a00000 03030300 03030303 03030303 00000083 10000000 40a00000 40a00000 41200000 41200000
+roundtrip equal 1
+data big2 st=0 filled=180
+data 4 st=5 filled=4
+data 0 st=2 filled=57005
+handbuilt crc0 st=1
+handbuilt v1 st=1
+rgndata no header st=1
+negclip clipbounds st=0 15,15,5,5
+negclip clipboundsI st=0 15,15,5,5
+negclip visclip st=0 0,0,0,0
+negclip visclipI st=0 0,0,0,0
+negclip clipempty st=0 0 visclipempty st=0 1
+negclip getclip st=0
+negclip clip size st=0 n=36 data st=0 filled=36 : 0000001c a747129f dbc01002 00000000 10000000 41700000 41700000 40a00000 40a00000
+tinyclip clipbounds st=0 0,0,0,0
+tinyclip clipboundsI st=0 0,0,0,0
+tinyclip visclip st=0 0,0,0,0
+tinyclip visclipI st=0 0,0,0,0
+tinyclip clipempty st=0 1 visclipempty st=0 1
+tinyclip getclip st=0
+tinyclip clip size st=0 n=36 data st=0 filled=36 : 0000001c 35eeaa8d dbc01002 00000000 10000000 3e4ccccd 3e4ccccd 3f000000 3f000000
+intersect zero clipbounds st=0 0,0,0,0
+intersect zero clipboundsI st=0 0,0,0,0
+intersect zero visclip st=0 0,0,0,0
+intersect zero visclipI st=0 0,0,0,0
+intersect zero clipempty st=0 1 visclipempty st=0 1
+intersect zero getclip st=0
+intersect zero clip size st=0 n=20 data st=0 filled=20 : 0000000c 1b9e53fe dbc01002 00000000 10000002
+union zero clipbounds st=0 0,0,50,50
+union zero clipboundsI st=0 0,0,50,50
+union zero visclip st=0 0,0,50,50
+union zero visclipI st=0 0,0,50,50
+union zero clipempty st=0 0 visclipempty st=0 0
+union zero getclip st=0
+union zero clip size st=0 n=36 data st=0 filled=36 : 0000001c eaeda96f dbc01002 00000000 10000000 00000000 00000000 42480000 42480000
+intersect on infinite clipbounds st=0 0,0,50,50
+intersect on infinite clipboundsI st=0 0,0,50,50
+intersect on infinite visclip st=0 0,0,50,50
+intersect on infinite visclipI st=0 0,0,50,50
+intersect on infinite clipempty st=0 0 visclipempty st=0 0
+intersect on infinite getclip st=0
+intersect on infinite clip size st=0 n=36 data st=0 filled=36 : 0000001c eaeda96f dbc01002 00000000 10000000 00000000 00000000 42480000 42480000
+exclude on infinite clipbounds st=0 -4194304,-4194304,8388608,8388608
+exclude on infinite clipboundsI st=0 -4194304,-4194304,8388608,8388608
+exclude on infinite visclip st=0 0,0,100,100
+exclude on infinite visclipI st=0 0,0,100,100
+exclude on infinite clipempty st=0 0 visclipempty st=0 0
+exclude on infinite getclip st=0
+exclude on infinite clip size st=0 n=44 data st=0 filled=44 : 00000024 c29ac855 dbc01002 00000002 00000004 10000003 10000000 00000000 00000000 42480000 42480000
+exclude on infinite gvis(60,60) st=0 1
+exclude on infinite gvis(10,10) st=0 0
+union on infinite clipbounds st=0 -4194304,-4194304,8388608,8388608
+union on infinite clipboundsI st=0 -4194304,-4194304,8388608,8388608
+union on infinite visclip st=0 0,0,100,100
+union on infinite visclipI st=0 0,0,100,100
+union on infinite clipempty st=0 0 visclipempty st=0 0
+union on infinite getclip st=0
+union on infinite clip size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+rot translate clipbounds st=0 6.36395645,-4.24264145,19.0918884,19.0918884
+rot translate clipboundsI st=0 6,-4,19,19
+rot translate visclip st=0 6.36395645,-4.24264145,19.0918884,19.0918884
+rot translate visclipI st=0 6,-4,19,19
+rot translate clipempty st=0 0 visclipempty st=0 0
+rot translate getclip st=0
+rot translate clip size st=0 n=56 data st=0 filled=56 : 00000030 d7b528e5 dbc01002 00000000 10000001 00000020 dbc01002 00000004 00004000 0000000a 00000014 000a0014 000a000a 01010100
+union rot90 view clipbounds st=0 0,-15,15,15
+union rot90 view clipboundsI st=0 0,-15,15,15
+union rot90 view visclip st=0 0,-15,15,15
+union rot90 view visclipI st=0 0,-15,15,15
+union rot90 view clipempty st=0 0 visclipempty st=0 0
+union rot90 view getclip st=0
+union rot90 view clip size st=0 n=100 data st=0 filled=100 : 0000005c 804fad15 dbc01002 00000002 00000002 10000001 00000020 dbc01002 00000004 00004000 00000000 fff60000 fff6000a 0000000a 01010100 10000001 00000020 dbc01002 00000004 00004000 fffb0005 fff10005 fff1000f fffb000f 01010100
+cliphrgn intersect st=0
+cliphrgn intersect clipbounds st=0 10,10,20,20
+cliphrgn intersect clipboundsI st=0 10,10,20,20
+cliphrgn intersect visclip st=0 10,10,20,20
+cliphrgn intersect visclipI st=0 10,10,20,20
+cliphrgn intersect clipempty st=0 0 visclipempty st=0 0
+cliphrgn intersect getclip st=0
+cliphrgn intersect clip size st=0 n=80 data st=0 filled=80 : 00000048 3bec9e2f dbc01002 00000002 00000001 10000000 41200000 41200000 42200000 42200000 10000001 00000020 dbc01002 00000004 00006000 00000000 0000001e 001e001e 001e0000 81010100
+clippath winding clipbounds st=0 0,0,10,10
+clippath winding clipboundsI st=0 0,0,10,10
+clippath winding visclip st=0 0,0,10,10
+clippath winding visclipI st=0 0,0,10,10
+clippath winding clipempty st=0 0 visclipempty st=0 0
+clippath winding getclip st=0
+clippath winding clip size st=0 n=56 data st=0 filled=56 : 00000030 ddb1ed7c dbc01002 00000000 10000001 00000020 dbc01002 00000004 00006000 00000000 0000000a 000a000a 000a0000 81010100
+edge gvisrect(95,95,10,10) st=0 1
+edge gvisrect(100,100,10,10) st=0 0
+edge gvisrect(99.5999985,99.5999985,10,10) st=0 0
+fill clipped st=0: 00000000 00000000 00000000 00000000 ffff0000 ffff0000 ffff0000 00000000 00000000 00000000
+fill pixeloffset st=0: 00000000 00000000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 ffff0000 00000000 00000000
+fill empty st=0
+fill ellipse rows: 0:[-1,-1] 1:[3,7] 2:[2,8] 3:[1,9] 4:[1,9] 5:[0,9] 6:[1,9] 7:[1,9] 8:[2,8] 9:[3,7] 10:[-1,-1]
+ellipse scans: [3,1,5,1] [2,2,7,1] [1,3,9,2] [0,5,10,1] [1,6,9,2] [2,8,7,1] [3,9,5,1]
+partial cap=4 st=5 filled=4 : cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+partial cap=12 st=5 filled=12 : 00000004 00000000 dbc01002 cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+partial cap=20 st=5 filled=20 : 0000000c 00000000 dbc01002 00000000 10000000 cccccccc cccccccc cccccccc cccccccc cccccccc
+partial cap=28 st=5 filled=28 : 00000014 00000000 dbc01002 00000000 10000000 3f800000 40000000 cccccccc cccccccc cccccccc
+partial cap=36 st=0 filled=36 : 0000001c ecbb90f7 dbc01002 00000000 10000000 3f800000 40000000 40400000 40800000 cccccccc
+rgndata rect v2 st=0
+rgndata rect v2 size st=0 n=36 data st=0 filled=36 : 0000001c ecbb90f7 dbc01002 00000000 10000000 3f800000 40000000 40400000 40800000
+rgndata rect v2 scans count st=0 n=1 f st=0 n=1: [1,2,3,4] i st=0 n=1: [1,2,3,4]
+rgndata rect v1 st=0
+rgndata rect v1 size st=0 n=36 data st=0 filled=36 : 0000001c ecbb90f7 dbc01002 00000000 10000000 3f800000 40000000 40400000 40800000
+rgndata rect v1 scans count st=0 n=1 f st=0 n=1: [1,2,3,4] i st=0 n=1: [1,2,3,4]
+rgndata rect v0 st=0
+rgndata rect v0 size st=0 n=36 data st=0 filled=36 : 0000001c ecbb90f7 dbc01002 00000000 10000000 3f800000 40000000 40400000 40800000
+rgndata rect v0 scans count st=0 n=1 f st=0 n=1: [1,2,3,4] i st=0 n=1: [1,2,3,4]
+rgndata rect magicX st=1
+rgndata count wrong st=1
+rgndata node bad st=0
+rgndata node bad size st=0 n=20 data st=0 filled=20 : 0000000c 86496b47 dbc01002 00000000 10000005
+rgndata node bad scans count st=1 n=0
+rgndata node mode6 st=0
+rgndata node mode6 size st=0 n=28 data st=0 filled=28 : 00000014 b9373011 dbc01002 00000002 00000006 10000003 10000002
+rgndata node mode6 scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+rgndata node mode0 st=0
+rgndata node mode0 size st=0 n=28 data st=0 filled=28 : 00000014 560a95f1 dbc01002 00000002 00000000 10000003 10000002
+rgndata node mode0 scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+rgndata xor inf empty st=0
+rgndata xor inf empty size st=0 n=28 data st=0 filled=28 : 00000014 21944701 dbc01002 00000002 00000003 10000003 10000002
+rgndata xor inf empty scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+rgndata trailing st=0
+rgndata trailing size st=0 n=20 data st=0 filled=20 : 0000000c a322349b dbc01002 00000000 10000003
+rgndata trailing scans count st=0 n=1 f st=0 n=1: [-4194304,-4194304,8388608,8388608] i st=0 n=1: [-4194304,-4194304,8388608,8388608]
+rgndata truncated st=1
+rgndata path int st=0
+rgndata path int size st=0 n=48 data st=0 filled=48 : 00000028 d446ffeb dbc01002 00000000 10000001 00000018 dbc01002 00000002 00004000 00020001 00040003 00000100
+rgndata path int scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rgndata path short size st=1
+rgndata path badmagic st=1
+rgndata path badtype st=1
+rgndata path flags1000 st=0
+rgndata path flags1000 size st=0 n=48 data st=0 filled=48 : 00000028 d446ffeb dbc01002 00000000 10000001 00000018 dbc01002 00000002 00004000 00020001 00040003 00000100
+rgndata path flags1000 scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rgndata path rle st=0
+rgndata path rle size st=0 n=48 data st=0 filled=48 : 00000028 ca7f00b9 dbc01002 00000000 10000001 00000018 dbc01002 00000002 00004000 02000100 06000400 00000100
+rgndata path rle scans count st=0 n=0 f st=0 n=0: i st=0 n=0:
+rgndata path float st=1
+rgndata path 3pt close st=0
+rgndata path 3pt close size st=0 n=52 data st=0 filled=52 : 0000002c 972657af dbc01002 00000000 10000001 0000001c dbc01002 00000003 00004000 00000000 0000000a 000a0000 00810100
+rgndata path 3pt close scans count st=0 n=10 f st=0 n=10: [0,0,10,1] [0,1,9,1] [0,2,8,1] [0,3,7,1] [0,4,6,1] [0,5,5,1] [0,6,4,1] [0,7,3,1] [0,8,2,1] [0,9,1,1] i st=0 n=10: [0,0,10,1] [0,1,9,1] [0,2,8,1] [0,3,7,1] [0,4,6,1] [0,5,5,1] [0,6,4,1] [0,7,3,1] [0,8,2,1] [0,9,1,1]
+rgndata path long size st=1
+rgndata path ver1 st=0
+rgndata path ver1 size st=0 n=48 data st=0 filled=48 : 00000028 d446ffeb dbc01002 00000000 10000001 00000018 dbc01002 00000002 00004000 00020001 00040003 00000100
+rgndata path ver1 scans count st=0 n=0 f st=0 n=0: i st=0 n=0:

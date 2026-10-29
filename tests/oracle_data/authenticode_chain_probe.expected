@@ -1,0 +1,31 @@
+winverifytrust 0x00000000
+store cert 0 "Spotify AB"
+store cert 1 "DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1"
+chain error 0x00000000 info 0x00000100 simple 1
+  element 0 error 0x00000000 info 0x00000102 "Spotify AB"
+  element 1 error 0x00000000 info 0x00000102 "DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1"
+  element 2 error 0x00000000 info 0x0000010c "DigiCert Trusted Root G4"
+msg cert 0 "DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1"
+msg cert 1 "Spotify AB"
+memory cert 0 "Spotify AB"
+memory cert 1 "DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1"
+add root 1 error 0x80092004
+store after add 0 "DigiCert Trusted Root G4"
+store after add 1 "Spotify AB"
+store after add 2 "DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1"
+disposition 1 present ok 0 error 0x80092005 count 1
+disposition 1 absent ok 1 error 0x80092004 count 2
+disposition 2 present ok 1 error 0x00000000 count 1
+disposition 2 absent ok 1 error 0x80092004 count 2
+disposition 3 present ok 1 error 0x80092004 count 1
+disposition 3 absent ok 1 error 0x80092004 count 2
+disposition 4 present ok 1 error 0x00000000 count 2
+disposition 4 absent ok 1 error 0x00000000 count 2
+disposition 5 present ok 1 error 0x00000000 count 1
+disposition 5 absent ok 1 error 0x80092004 count 2
+disposition 6 present ok 0 error 0x80092005 count 1
+disposition 6 absent ok 1 error 0x80092004 count 2
+disposition 7 present ok 0 error 0x80092005 count 1
+disposition 7 absent ok 1 error 0x80092004 count 2
+store closed 1, message signer count 1 error 0x00000000 count 1
+message closed 1

@@ -1,0 +1,99 @@
+[LocalMachine/64] SOFTWARE\Classes\Installer\Assemblies
+[LocalMachine/64] SOFTWARE\Classes\Installer\Assemblies\C:|Program Files|VitreoAsm1|VitreoApp.exe
+  Vitreo.Probe.Priv,version="1.0.0.0",culture="neutral" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!*h79%>
+[LocalMachine/64] SOFTWARE\Classes\Installer\Assemblies\Global
+  policy.1.0.Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!(UZ[$>
+  policy.1.2.Vitreo.Probe.Msil,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!&Czz!>
+  stdole,fileVersion="7.0.9466.1",version="7.0.3300.0",culture="neutral",publicKeyToken="B03F5F7F11D50A3A" = MultiString:<X5tJLhPrc8)(f%Wz0*[A>+Ox0Iul3g(W'z?VXB]2d>
+  Vitreo.Probe.Clr2,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatClr2<>
+  Vitreo.Probe.Culture,version="1.0.0.0",culture="de",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!)_vw$>
+  Vitreo.Probe.Msil,version="1.2.3.4",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!%6__!>
+  Vitreo.Probe.X64,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="AMD64" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!-(46&>
+  Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!'L?@$>
+[LocalMachine/64] SOFTWARE\Classes\Installer\Win32Assemblies
+[LocalMachine/64] SOFTWARE\Classes\Installer\Win32Assemblies\C:|Program Files|VitreoAsm1|VitreoApp.exe
+  Vitreo.Probe.W32P,version="1.0.0.0",processorArchitecture="amd64",type="win32" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!0?oq&>
+[LocalMachine/64] SOFTWARE\Classes\Installer\Win32Assemblies\Global
+  Vitreo.Probe.W32,version="1.0.0.0",publicKeyToken="ef51ea1264a47dc2",processorArchitecture="amd64",type="win32" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatW32<>
+[LocalMachine/64] SOFTWARE\Classes\Installer\Features\25C0F1A6E7B392D4E814092C5B7D3A1E
+  FeatAbsent = String:
+  FeatClr2 = String:
+  FeatMain = String:
+  FeatW32 = String:
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products\25C0F1A6E7B392D4E814092C5B7D3A1E\Features
+  FeatAbsent = String:v9c@P8`i.@p$!!!+qVX%
+  FeatClr2 = String:v9c@P8`i.@p$!!!,zrt%
+  FeatMain = String:v9c@P8`i.@p$!!!$,CC!v9c@P8`i.@p$!!!%6__!v9c@P8`i.@p$!!!&Czz!v9c@P8`i.@p$!!!'L?@$v9c@P8`i.@p$!!!(UZ[$v9c@P8`i.@p$!!!)_vw$v9c@P8`i.@p$!!!*h79%v9c@P8`i.@p$!!!-(46&v9c@P8`i.@p$!!!0?oq&
+  FeatW32 = String:v9c@P8`i.@p$!!!.2SU&
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000010
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:C:\Program Files\VitreoAsm1\VitreoApp.exe
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000020
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:<\Vitreo.Probe.Msil,version="1.2.3.4",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000030
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:<\policy.1.2.Vitreo.Probe.Msil,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000040
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:<\Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000050
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:<Vitreo.Probe.X86.config\policy.1.0.Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000060
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:<\Vitreo.Probe.Culture,version="1.0.0.0",culture="de",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000070
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:C:\Program Files\VitreoAsm1\Vitreo.Probe.Priv.dll
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C900000000000090
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:<\Vitreo.Probe.Clr2,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C9000000000000A0
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:<\Vitreo.Probe.X64,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="AMD64"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C9000000000000B0
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:>VitreoW32.dll\Vitreo.Probe.W32,version="1.0.0.0",publicKeyToken="ef51ea1264a47dc2",processorArchitecture="amd64",type="win32"
+[LocalMachine/64] SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\01E0C5D7E55AA1B4C9000000000000C0
+  25C0F1A6E7B392D4E814092C5B7D3A1E = String:C:\Program Files\VitreoAsm1\VitreoW32P.dll
+[LocalMachine/32] SOFTWARE\Classes\Installer\Assemblies
+[LocalMachine/32] SOFTWARE\Classes\Installer\Assemblies\C:|Program Files|VitreoAsm1|VitreoApp.exe
+  Vitreo.Probe.Priv,version="1.0.0.0",culture="neutral" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!*h79%>
+[LocalMachine/32] SOFTWARE\Classes\Installer\Assemblies\Global
+  policy.1.0.Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!(UZ[$>
+  policy.1.2.Vitreo.Probe.Msil,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!&Czz!>
+  stdole,fileVersion="7.0.9466.1",version="7.0.3300.0",culture="neutral",publicKeyToken="B03F5F7F11D50A3A" = MultiString:<X5tJLhPrc8)(f%Wz0*[A>+Ox0Iul3g(W'z?VXB]2d>
+  Vitreo.Probe.Clr2,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatClr2<>
+  Vitreo.Probe.Culture,version="1.0.0.0",culture="de",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!)_vw$>
+  Vitreo.Probe.Msil,version="1.2.3.4",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="MSIL" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!%6__!>
+  Vitreo.Probe.X64,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="AMD64" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!-(46&>
+  Vitreo.Probe.X86,version="1.0.0.0",culture="neutral",publicKeyToken="809ea388321253ab",processorArchitecture="x86" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!'L?@$>
+[LocalMachine/32] SOFTWARE\Classes\Installer\Win32Assemblies
+[LocalMachine/32] SOFTWARE\Classes\Installer\Win32Assemblies\C:|Program Files|VitreoAsm1|VitreoApp.exe
+  Vitreo.Probe.W32P,version="1.0.0.0",processorArchitecture="amd64",type="win32" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatMain>v9c@P8`i.@p$!!!0?oq&>
+[LocalMachine/32] SOFTWARE\Classes\Installer\Win32Assemblies\Global
+  Vitreo.Probe.W32,version="1.0.0.0",publicKeyToken="ef51ea1264a47dc2",processorArchitecture="amd64",type="win32" = MultiString:<fr,,JX2zl@K)=Ug7%8TqFeatW32<>
+[LocalMachine/32] SOFTWARE\Classes\Installer\Features\25C0F1A6E7B392D4E814092C5B7D3A1E
+  FeatAbsent = String:
+  FeatClr2 = String:
+  FeatMain = String:
+  FeatW32 = String:
+[files]
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_32\policy.1.0.Vitreo.Probe.X86 <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_32\policy.1.0.Vitreo.Probe.X86\v4.0_1.0.0.0__809ea388321253ab <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_32\policy.1.0.Vitreo.Probe.X86\v4.0_1.0.0.0__809ea388321253ab\policy.1.0.Vitreo.Probe.X86.dll 3584
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_32\policy.1.0.Vitreo.Probe.X86\v4.0_1.0.0.0__809ea388321253ab\Vitreo.Probe.X86.config 330
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_32\Vitreo.Probe.X86 <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_32\Vitreo.Probe.X86\v4.0_1.0.0.0__809ea388321253ab <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_32\Vitreo.Probe.X86\v4.0_1.0.0.0__809ea388321253ab\Vitreo.Probe.X86.dll 3584
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_64\Vitreo.Probe.X64 <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_64\Vitreo.Probe.X64\v4.0_1.0.0.0__809ea388321253ab <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_64\Vitreo.Probe.X64\v4.0_1.0.0.0__809ea388321253ab\Vitreo.Probe.X64.dll 3072
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\policy.1.2.Vitreo.Probe.Msil <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\policy.1.2.Vitreo.Probe.Msil\v4.0_1.0.0.0__809ea388321253ab <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\policy.1.2.Vitreo.Probe.Msil\v4.0_1.0.0.0__809ea388321253ab\policy.1.2.Vitreo.Probe.Msil.dll 3584
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\policy.1.2.Vitreo.Probe.Msil\v4.0_1.0.0.0__809ea388321253ab\Vitreo.Probe.Msil.config 331
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Culture <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Culture\v4.0_1.0.0.0_de_809ea388321253ab <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Culture\v4.0_1.0.0.0_de_809ea388321253ab\Vitreo.Probe.Culture.dll 3584
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab <dir>
+  C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Vitreo.Probe.Msil\v4.0_1.2.3.4__809ea388321253ab\Vitreo.Probe.Msil.dll 3584
+  C:\WINDOWS\assembly\GAC_MSIL\Vitreo.Probe.Clr2 <dir>
+  C:\WINDOWS\assembly\GAC_MSIL\Vitreo.Probe.Clr2\1.0.0.0__809ea388321253ab <dir>
+  C:\WINDOWS\assembly\GAC_MSIL\Vitreo.Probe.Clr2\1.0.0.0__809ea388321253ab\Vitreo.Probe.Clr2.dll 2048
+  C:\Program Files\VitreoAsm1\Vitreo.Probe.Priv.dll 3072
+  C:\Program Files\VitreoAsm1\Vitreo.Probe.W32P.manifest 282
+  C:\Program Files\VitreoAsm1\VitreoApp.exe 3584
+  C:\Program Files\VitreoAsm1\VitreoW32P.dll 6217

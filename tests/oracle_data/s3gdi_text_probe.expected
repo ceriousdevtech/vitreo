@@ -1,0 +1,100 @@
+Arial -11 tm=1 h=14 a=11 d=3 il=3 el=0 ave=5 max=29 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=59x14 w=6,6,6,6,6 abc(1)=0,7,1 face(6)=Arial
+Arial -12 tm=1 h=15 a=12 d=3 il=3 el=0 ave=5 max=32 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=70x15 w=7,7,6,7,7 abc(1)=0,7,0 face(6)=Arial
+Arial -13 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=35 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=74x16 w=7,7,7,7,7 abc(1)=0,9,0 face(6)=Arial
+Arial -16 tm=1 h=18 a=15 d=3 il=2 el=1 ave=7 max=43 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=89x18 w=9,9,8,9,9 abc(1)=1,9,1 face(6)=Arial
+Arial -24 tm=1 h=27 a=21 d=6 il=3 el=1 ave=11 max=64 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=141x27 w=13,14,12,14,13 abc(1)=0,15,0 face(6)=Arial
+Arial 11 tm=1 h=10 a=8 d=2 il=2 el=0 ave=4 max=21 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=45x10 w=4,4,4,4,4 abc(1)=0,5,0 face(6)=Arial
+Arial 16 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=35 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=74x16 w=7,7,7,7,7 abc(1)=0,9,0 face(6)=Arial
+Arial 20 tm=1 h=19 a=15 d=4 il=2 el=1 ave=8 max=45 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=94x19 w=9,9,9,9,9 abc(1)=0,11,0 face(6)=Arial
+Arial 0 tm=1 h=18 a=15 d=3 il=2 el=1 ave=7 max=43 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=89x18 w=9,9,8,9,9 abc(1)=1,9,1 face(6)=Arial
+Courier New -11 tm=1 h=14 a=11 d=3 il=3 el=0 ave=7 max=8 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=91x14 w=7,7,7,7,7 abc(1)=0,7,0 face(12)=Courier New
+Courier New -12 tm=1 h=15 a=12 d=3 il=3 el=0 ave=7 max=9 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=91x15 w=7,7,7,7,7 abc(1)=0,7,0 face(12)=Courier New
+Courier New -13 tm=1 h=16 a=12 d=4 il=3 el=0 ave=8 max=10 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=104x16 w=8,8,8,8,8 abc(1)=1,7,0 face(12)=Courier New
+Courier New -16 tm=1 h=18 a=14 d=4 il=2 el=0 ave=10 max=12 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=130x18 w=10,10,10,10,10 abc(1)=0,10,0 face(12)=Courier New
+Courier New -24 tm=1 h=27 a=20 d=7 il=3 el=0 ave=14 max=18 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=182x27 w=14,14,14,14,14 abc(1)=0,14,0 face(12)=Courier New
+Courier New 11 tm=1 h=8 a=6 d=2 il=0 el=0 ave=5 max=6 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=65x8 w=5,5,5,5,5 abc(1)=0,5,0 face(12)=Courier New
+Courier New 16 tm=1 h=16 a=12 d=4 il=3 el=0 ave=8 max=10 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=104x16 w=8,8,8,8,8 abc(1)=1,7,0 face(12)=Courier New
+Courier New 20 tm=1 h=20 a=15 d=5 il=3 el=0 ave=10 max=13 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=130x20 w=10,10,10,10,10 abc(1)=0,10,0 face(12)=Courier New
+Courier New 0 tm=1 h=18 a=14 d=4 il=2 el=0 ave=10 max=12 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=36 cs=0 | ext=130x18 w=10,10,10,10,10 abc(1)=0,10,0 face(12)=Courier New
+Tahoma -11 tm=1 h=13 a=11 d=2 il=2 el=0 ave=5 max=27 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=62x13 w=6,6,5,6,6 abc(1)=0,6,1 face(7)=Tahoma
+Tahoma -12 tm=1 h=14 a=12 d=2 il=2 el=0 ave=5 max=29 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=70x14 w=6,7,6,7,7 abc(1)=0,7,1 face(7)=Tahoma
+Tahoma -13 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=32 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=74x16 w=7,7,6,7,7 abc(1)=0,7,1 face(7)=Tahoma
+Tahoma -16 tm=1 h=19 a=16 d=3 il=3 el=0 ave=7 max=39 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=92x19 w=8,9,7,9,8 abc(1)=0,10,1 face(7)=Tahoma
+Tahoma -24 tm=1 h=29 a=24 d=5 il=5 el=0 ave=11 max=59 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=137x29 w=13,13,11,13,13 abc(1)=0,14,0 face(7)=Tahoma
+Tahoma 11 tm=1 h=11 a=9 d=2 il=2 el=0 ave=4 max=22 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=52x11 w=5,5,4,5,5 abc(1)=0,6,1 face(7)=Tahoma
+Tahoma 16 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=32 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=74x16 w=7,7,6,7,7 abc(1)=0,7,1 face(7)=Tahoma
+Tahoma 20 tm=1 h=20 a=17 d=3 il=4 el=0 ave=7 max=39 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=92x20 w=8,9,7,9,8 abc(1)=0,10,1 face(7)=Tahoma
+Tahoma 0 tm=1 h=19 a=16 d=3 il=3 el=0 ave=7 max=39 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=92x19 w=8,9,7,9,8 abc(1)=0,10,1 face(7)=Tahoma
+Verdana -11 tm=1 h=13 a=11 d=2 il=2 el=0 ave=6 max=23 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=73x13 w=7,7,6,7,7 abc(1)=0,8,0 face(8)=Verdana
+Verdana -12 tm=1 h=14 a=12 d=2 il=2 el=0 ave=6 max=25 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=81x14 w=8,8,6,8,8 abc(1)=0,8,0 face(8)=Verdana
+Verdana -13 tm=1 h=16 a=13 d=3 il=3 el=0 ave=7 max=27 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=83x16 w=8,8,8,8,8 abc(1)=1,7,1 face(8)=Verdana
+Verdana -16 tm=1 h=18 a=15 d=3 il=2 el=0 ave=8 max=33 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=108x18 w=10,10,8,10,10 abc(1)=0,11,0 face(8)=Verdana
+Verdana -24 tm=1 h=29 a=24 d=5 il=5 el=0 ave=12 max=50 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=155x29 w=14,15,13,15,14 abc(1)=0,16,0 face(8)=Verdana
+Verdana 11 tm=1 h=10 a=8 d=2 il=2 el=0 ave=4 max=17 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=52x10 w=5,5,4,5,5 abc(1)=0,5,0 face(8)=Verdana
+Verdana 16 tm=1 h=16 a=13 d=3 il=3 el=0 ave=7 max=27 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=83x16 w=8,8,8,8,8 abc(1)=1,7,1 face(8)=Verdana
+Verdana 20 tm=1 h=20 a=17 d=3 il=3 el=0 ave=9 max=35 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=112x20 w=10,11,9,11,10 abc(1)=0,12,0 face(8)=Verdana
+Verdana 0 tm=1 h=18 a=15 d=3 il=2 el=0 ave=8 max=33 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=108x18 w=10,10,8,10,10 abc(1)=0,11,0 face(8)=Verdana
+Georgia -11 tm=1 h=14 a=11 d=3 il=3 el=0 ave=5 max=15 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=76x14 w=7,7,6,7,6 abc(1)=0,8,1 face(8)=Georgia
+Georgia -12 tm=1 h=15 a=12 d=3 il=3 el=0 ave=5 max=16 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=76x15 w=7,7,6,7,6 abc(1)=0,8,1 face(8)=Georgia
+Georgia -13 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=17 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=82x16 w=7,8,7,8,7 abc(1)=0,9,1 face(8)=Georgia
+Georgia -16 tm=1 h=18 a=15 d=3 il=2 el=0 ave=7 max=21 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=92x18 w=8,9,7,9,8 abc(1)=0,11,0 face(8)=Georgia
+Georgia -24 tm=1 h=29 a=23 d=6 il=5 el=0 ave=11 max=32 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=146x29 w=12,13,11,14,12 abc(1)=0,17,-1 face(8)=Georgia
+Georgia 11 tm=1 h=9 a=7 d=2 il=1 el=0 ave=4 max=11 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=48x9 w=4,4,4,5,4 abc(1)=0,6,-1 face(8)=Georgia
+Georgia 16 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=17 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=82x16 w=7,8,7,8,7 abc(1)=0,9,1 face(8)=Georgia
+Georgia 20 tm=1 h=20 a=16 d=4 il=3 el=0 ave=7 max=23 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=104x20 w=9,10,8,10,8 abc(1)=0,11,0 face(8)=Georgia
+Georgia 0 tm=1 h=18 a=15 d=3 il=2 el=0 ave=7 max=21 wt=400 oh=0 asp=96,96 ch=32,64260,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=92x18 w=8,9,7,9,8 abc(1)=0,11,0 face(8)=Georgia
+Times New Roman -11 tm=1 h=14 a=11 d=3 il=3 el=0 ave=4 max=29 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=64x14 w=5,5,5,5,5 abc(1)=0,7,1 face(16)=Times New Roman
+Times New Roman -12 tm=1 h=15 a=12 d=3 il=3 el=1 ave=5 max=31 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=66x15 w=5,6,5,6,5 abc(1)=0,8,1 face(16)=Times New Roman
+Times New Roman -13 tm=1 h=15 a=12 d=3 il=2 el=1 ave=5 max=34 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=72x15 w=6,7,6,7,6 abc(1)=0,9,1 face(16)=Times New Roman
+Times New Roman -16 tm=1 h=19 a=15 d=4 il=3 el=1 ave=6 max=42 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=84x19 w=7,8,7,8,7 abc(1)=0,11,0 face(16)=Times New Roman
+Times New Roman -24 tm=1 h=27 a=21 d=6 il=3 el=1 ave=10 max=63 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=133x27 w=11,12,11,12,11 abc(1)=0,17,0 face(16)=Times New Roman
+Times New Roman 11 tm=1 h=10 a=8 d=2 il=2 el=0 ave=3 max=21 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=46x10 w=4,4,4,4,4 abc(1)=0,6,0 face(16)=Times New Roman
+Times New Roman 16 tm=1 h=16 a=13 d=3 il=2 el=1 ave=6 max=37 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=76x16 w=6,7,7,7,6 abc(1)=0,10,-1 face(16)=Times New Roman
+Times New Roman 20 tm=1 h=20 a=16 d=4 il=2 el=1 ave=7 max=47 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=99x20 w=8,9,8,9,8 abc(1)=0,12,0 face(16)=Times New Roman
+Times New Roman 0 tm=1 h=19 a=15 d=4 il=3 el=1 ave=6 max=42 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=17 cs=0 | ext=84x19 w=7,8,7,8,7 abc(1)=0,11,0 face(16)=Times New Roman
+Segoe UI -11 tm=1 h=13 a=11 d=2 il=2 el=0 ave=6 max=28 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=68x13 w=6,7,5,7,6 abc(1)=0,7,0 face(9)=Segoe UI
+Segoe UI -12 tm=1 h=15 a=12 d=3 il=3 el=0 ave=6 max=31 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=69x15 w=6,7,6,7,6 abc(1)=0,8,0 face(9)=Segoe UI
+Segoe UI -13 tm=1 h=17 a=14 d=3 il=4 el=0 ave=7 max=33 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=77x17 w=7,8,6,8,7 abc(1)=0,8,0 face(9)=Segoe UI
+Segoe UI -16 tm=1 h=21 a=17 d=4 il=5 el=0 ave=9 max=41 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=91x21 w=8,9,7,9,8 abc(1)=0,10,0 face(9)=Segoe UI
+Segoe UI -24 tm=1 h=32 a=26 d=6 il=8 el=0 ave=13 max=62 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=139x32 w=12,14,11,14,13 abc(1)=0,15,0 face(9)=Segoe UI
+Segoe UI 11 tm=1 h=11 a=9 d=2 il=3 el=0 ave=4 max=21 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=47x11 w=4,5,4,5,4 abc(1)=0,5,0 face(9)=Segoe UI
+Segoe UI 16 tm=1 h=15 a=12 d=3 il=3 el=0 ave=6 max=31 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=69x15 w=6,7,6,7,6 abc(1)=0,8,0 face(9)=Segoe UI
+Segoe UI 20 tm=1 h=20 a=16 d=4 il=5 el=0 ave=8 max=39 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=88x20 w=8,9,7,9,8 abc(1)=0,10,0 face(9)=Segoe UI
+Segoe UI 0 tm=1 h=21 a=17 d=4 il=5 el=0 ave=9 max=41 wt=400 oh=0 asp=96,96 ch=13,65533,12,13 it=0 ul=0 so=0 pf=27 cs=0 | ext=91x21 w=8,9,7,9,8 abc(1)=0,10,0 face(9)=Segoe UI
+MS Shell Dlg -11 tm=1 h=13 a=11 d=2 il=2 el=0 ave=5 max=23 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=61x13 w=6,6,6,6,6 abc(1)=0,7,0 face(13)=MS Shell Dlg
+MS Shell Dlg -12 tm=1 h=13 a=11 d=2 il=2 el=0 ave=5 max=23 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=61x13 w=6,6,6,6,6 abc(1)=0,7,0 face(13)=MS Shell Dlg
+MS Shell Dlg -13 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=27 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=77x16 w=8,8,7,8,8 abc(1)=0,9,0 face(13)=MS Shell Dlg
+MS Shell Dlg -16 tm=1 h=20 a=16 d=4 il=4 el=0 ave=7 max=33 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=89x20 w=9,9,8,9,9 abc(1)=0,11,0 face(13)=MS Shell Dlg
+MS Shell Dlg -24 tm=1 h=29 a=23 d=6 il=5 el=0 ave=11 max=49 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=139x29 w=13,14,12,14,14 abc(1)=0,15,0 face(13)=MS Shell Dlg
+MS Shell Dlg 11 tm=1 h=9 a=7 d=2 il=1 el=0 ave=4 max=16 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=45x9 w=4,4,4,4,4 abc(1)=0,5,0 face(13)=MS Shell Dlg
+MS Shell Dlg 16 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=27 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=77x16 w=8,8,7,8,8 abc(1)=0,9,0 face(13)=MS Shell Dlg
+MS Shell Dlg 20 tm=1 h=20 a=16 d=4 il=4 el=0 ave=7 max=33 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=89x20 w=9,9,8,9,9 abc(1)=0,11,0 face(13)=MS Shell Dlg
+MS Shell Dlg 0 tm=1 h=20 a=16 d=4 il=4 el=0 ave=7 max=33 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=89x20 w=9,9,8,9,9 abc(1)=0,11,0 face(13)=MS Shell Dlg
+NoSuchFontXYZ -11 tm=1 h=13 a=11 d=2 il=2 el=0 ave=5 max=11 wt=400 oh=0 asp=96,96 ch=32,8482,129,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=61x13 w=6,6,6,6,6 abc(1)=0,7,0 face(14)=MS Sans Serif
+NoSuchFontXYZ -12 tm=1 h=15 a=12 d=3 il=3 el=0 ave=5 max=32 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=70x15 w=7,7,6,7,7 abc(1)=0,7,0 face(6)=Arial
+NoSuchFontXYZ -13 tm=1 h=16 a=13 d=3 il=3 el=0 ave=7 max=14 wt=400 oh=0 asp=96,96 ch=32,8482,129,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=77x16 w=8,8,7,8,8 abc(1)=0,9,0 face(14)=MS Sans Serif
+NoSuchFontXYZ -16 tm=1 h=20 a=16 d=4 il=4 el=0 ave=8 max=16 wt=400 oh=0 asp=96,96 ch=32,8482,129,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=89x20 w=9,9,8,9,9 abc(1)=0,11,0 face(14)=MS Sans Serif
+NoSuchFontXYZ -24 tm=1 h=29 a=23 d=6 il=5 el=0 ave=12 max=24 wt=400 oh=0 asp=96,96 ch=32,8482,129,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=139x29 w=13,14,12,14,14 abc(1)=0,15,0 face(14)=MS Sans Serif
+NoSuchFontXYZ 11 tm=1 h=11 a=9 d=2 il=2 el=0 ave=5 max=9 wt=400 oh=0 asp=96,96 ch=32,8482,8364,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=52x11 w=5,5,5,5,5 abc(1)=0,7,0 face(12)=Small Fonts
+NoSuchFontXYZ 16 tm=1 h=16 a=13 d=3 il=3 el=0 ave=7 max=14 wt=400 oh=0 asp=96,96 ch=32,8482,129,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=77x16 w=8,8,7,8,8 abc(1)=0,9,0 face(14)=MS Sans Serif
+NoSuchFontXYZ 20 tm=1 h=20 a=16 d=4 il=4 el=0 ave=8 max=16 wt=400 oh=0 asp=96,96 ch=32,8482,129,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=89x20 w=9,9,8,9,9 abc(1)=0,11,0 face(14)=MS Sans Serif
+NoSuchFontXYZ 0 tm=1 h=16 a=13 d=3 il=3 el=0 ave=7 max=14 wt=400 oh=0 asp=96,96 ch=32,8482,129,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=77x16 w=8,8,7,8,8 abc(1)=0,9,0 face(14)=MS Sans Serif
+Arial -13 weight 700 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=34 wt=700 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=83x16 w=8,8,7,8,8 abc(1)=0,9,0 face(6)=Arial
+Arial -13 weight 100 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=35 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=74x16 w=7,7,7,7,7 abc(1)=0,9,0 face(6)=Arial
+Arial -13 weight 900 tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=34 wt=700 oh=0 asp=96,96 ch=32,65532,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=83x16 w=8,8,7,8,8 abc(1)=0,9,0 face(6)=Arial
+Arial -13 italic+underline+strike tm=1 h=16 a=13 d=3 il=3 el=0 ave=6 max=24 wt=400 oh=0 asp=96,96 ch=32,65532,31,32 it=255 ul=255 so=255 pf=27 cs=0 | ext=75x16 w=7,8,7,7,7 abc(1)=0,8,1 face(6)=Arial
+stock 13 tm=1 h=16 a=13 d=3 il=3 el=0 ave=7 max=14 wt=700 oh=0 asp=96,96 ch=32,8482,8364,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=85x16 w=8,8,7,8,8 abc(1)=0,8,0 face(7)=System
+stock 17 tm=1 h=13 a=11 d=2 il=2 el=0 ave=5 max=23 wt=400 oh=0 asp=96,96 ch=32,65533,31,32 it=0 ul=0 so=0 pf=27 cs=0 | ext=61x13 w=6,6,6,6,6 abc(1)=0,7,0 face(13)=MS Shell Dlg
+stock 12 tm=1 h=13 a=11 d=2 il=2 el=0 ave=5 max=11 wt=400 oh=0 asp=96,96 ch=32,8482,129,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=61x13 w=6,6,6,6,6 abc(1)=0,7,0 face(14)=MS Sans Serif
+stock 10 tm=1 h=12 a=10 d=2 il=0 el=0 ave=8 max=8 wt=400 oh=0 asp=96,96 ch=1,8482,32,32 it=0 ul=0 so=0 pf=30 cs=255 | ext=104x12 w=8,8,8,8,8 abc(1)=0,8,0 face(9)=Terminal
+fresh-dc default tm=1 h=16 a=13 d=3 il=3 el=0 ave=7 max=14 wt=700 oh=0 asp=96,96 ch=32,8482,8364,32 it=0 ul=0 so=0 pf=21 cs=0 | ext=85x16 w=8,8,7,8,8 abc(1)=0,8,0 face(7)=System
+GetTextMetricsW(NULL)=0 err=57005
+GetTextExtentPoint32W(empty)=1 0x0 err=57005
+GetTextExtentPoint32W(NULL dc)=0 err=87
+GetTextExtentPoint32W(c=-1)=0 err=87
+GetTextExtentExPointW(max20)=1 fit=3 dx=9,16,19,0,0 size=29x16
+GetTextExtentExPointW(nofit)=1 dx=9,16,19,22,29
+char extra 2: extent=39x16
+GetTextFaceW(cch4)=4 0041007200690000
+GetTextFaceW(NULL buffer)=6
+GetTextFaceA(cch4)=3 41726900

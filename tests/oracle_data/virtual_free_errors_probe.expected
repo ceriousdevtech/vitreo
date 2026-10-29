@@ -1,0 +1,6 @@
+bad_addr ok=0 e=1e7
+not_base ok=0 e=1e7
+rel_nonzero ok=0 e=57
+bad_flags ok=0 e=57
+decommit_ok ok=1 e=dead
+release_ok ok=1 e=dead

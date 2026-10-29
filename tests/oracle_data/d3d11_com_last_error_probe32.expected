@@ -1,0 +1,160 @@
+pointer size 4
+Device::CreateBuffer(default)                hr=0x00000000 le=kept
+Device::CreateBuffer(dynamic cb)             hr=0x00000000 le=kept
+Device::CreateBuffer(staging)                hr=0x00000000 le=kept
+Device::CreateBuffer(ByteWidth=0)            hr=0x80070057 le=kept
+Device::CreateTexture2D                      hr=0x00000000 le=kept
+Device::CreateTexture2D(Width=0)             hr=0x80070057 le=kept
+Device::CreateShaderResourceView             hr=0x00000000 le=kept
+Device::CreateShaderResourceView(no bind)    hr=0x80070057 le=kept
+Device::CreateRenderTargetView               hr=0x00000000 le=kept
+Device::CreateSamplerState                   hr=0x00000000 le=kept
+Device::CreateBlendState                     hr=0x00000000 le=kept
+Device::CreateRasterizerState                hr=0x00000000 le=kept
+Device::CreateDepthStencilState              hr=0x00000000 le=kept
+Device::CreateQuery(event)                   hr=0x00000000 le=kept
+Device::CreateVertexShader(garbage)          hr=0x80070057 le=kept
+Device::CheckFormatSupport(RGBA8)            hr=0x00000000 le=kept
+Device::CheckFormatSupport(0xFFFF)           hr=0x80004005 le=kept
+Device::CheckFeatureSupport(threading)       hr=0x00000000 le=kept
+Device::CheckFeatureSupport(bad size)        hr=0x80070057 le=kept
+Device::GetDeviceRemovedReason               hr=0x00000000 le=kept
+Device::GetFeatureLevel                      hr=void       le=kept
+Device::GetCreationFlags                     hr=void       le=kept
+Device::OpenSharedResource(bad handle)       hr=0x80070057 le=kept
+Device::QueryInterface(IDXGIDevice)          hr=0x00000000 le=kept
+Device::QueryInterface(bogus)                hr=0x80004002 le=kept
+Device::GetPrivateData(missing)              hr=0x887a0002 le=kept
+Device::SetPrivateData                       hr=0x00000000 le=kept
+Device::AddRef                               hr=0x0000000f le=kept
+Device::Release                              hr=0x0000000e le=kept
+Device::CreateDeferredContext                hr=0x00000000 le=kept
+Context::IASetInputLayout(NULL)              hr=void       le=kept
+Context::IASetPrimitiveTopology              hr=void       le=kept
+Context::IASetVertexBuffers                  hr=void       le=kept
+Context::IASetIndexBuffer                    hr=void       le=kept
+Context::VSSetShader(NULL)                   hr=void       le=kept
+Context::PSSetShader(NULL)                   hr=void       le=kept
+Context::VSSetConstantBuffers                hr=void       le=kept
+Context::PSSetShaderResources                hr=void       le=kept
+Context::PSSetSamplers                       hr=void       le=kept
+Context::OMSetRenderTargets                  hr=void       le=kept
+Context::OMSetBlendState                     hr=void       le=kept
+Context::OMSetDepthStencilState              hr=void       le=kept
+Context::RSSetState                          hr=void       le=kept
+Context::RSSetViewports                      hr=void       le=kept
+Context::RSSetScissorRects                   hr=void       le=kept
+Context::ClearRenderTargetView               hr=void       le=kept
+Context::Draw                                hr=void       le=kept
+Context::DrawIndexed                         hr=void       le=kept
+Context::DrawInstanced                       hr=void       le=kept
+Context::DrawIndexedInstanced                hr=void       le=kept
+Context::Map(dynamic, WRITE_DISCARD)         hr=0x00000000 le=kept
+Context::Unmap(dynamic)                      hr=void       le=kept
+Context::Map(default, WRITE)                 hr=0x80070057 le=kept
+Context::Unmap(not mapped)                   hr=void       le=kept
+Context::UpdateSubresource                   hr=void       le=kept
+Context::CopyResource                        hr=void       le=kept
+Context::Begin(event)                        hr=void       le=kept
+Context::End(event)                          hr=void       le=kept
+Context::Flush                               hr=void       le=0x00000000
+Context::GetData(event)                      hr=0x00000000 le=kept
+Context::GetData(DataSize=1)                 hr=0x80070057 le=kept
+Context::Map(staging, READ)                  hr=0x00000000 le=kept
+Context::Unmap(staging)                      hr=void       le=kept
+Context::IAGetVertexBuffers                  hr=void       le=kept
+Context::PSGetShaderResources                hr=void       le=kept
+Context::GetType                             hr=void       le=kept
+Context::GetContextFlags                     hr=void       le=kept
+Context::QueryInterface(Context1)            hr=0x00000000 le=kept
+Context::QueryInterface(bogus)               hr=0x80004002 le=kept
+Context1::Release                            hr=0x00000001 le=kept
+Context::ClearState                          hr=void       le=kept
+Deferred::IASetVertexBuffers                 hr=void       le=kept
+Deferred::Draw                               hr=void       le=kept
+Deferred::Map(dynamic, WRITE_DISCARD)        hr=0x00000000 le=kept
+Deferred::Unmap                              hr=void       le=kept
+Deferred::FinishCommandList                  hr=0x00000000 le=kept
+Context::ExecuteCommandList                  hr=void       le=kept
+CommandList::GetContextFlags                 hr=void       le=kept
+CommandList::Release(last)                   hr=0x00000000 le=kept
+Deferred::Release(last)                      hr=0x00000000 le=kept
+Buffer::AddRef                               hr=0x00000002 le=kept
+Buffer::Release                              hr=0x00000001 le=kept
+Buffer::GetDesc                              hr=void       le=kept
+Buffer::GetDevice                            hr=void       le=kept
+SRV::AddRef                                  hr=0x00000002 le=kept
+SRV::Release                                 hr=0x00000001 le=kept
+SRV::GetResource                             hr=void       le=kept
+SRV::GetDesc                                 hr=void       le=kept
+SRV::QueryInterface(bogus)                   hr=0x80004002 le=kept
+SRV::Release(last)                           hr=0x00000000 le=kept
+Buffer::Release(staging, last)               hr=0x00000000 le=kept
+Query::Release(last)                         hr=0x00000000 le=kept
+DXGIDevice::GetAdapter                       hr=0x00000000 le=kept
+DXGIDevice::GetGPUThreadPriority             hr=0x00000000 le=kept
+DXGIAdapter::GetDesc                         hr=0x00000000 le=kept
+DXGIAdapter::EnumOutputs(99)                 hr=0x887a0002 le=kept
+DXGIAdapter::GetParent(Factory1)             hr=0x00000000 le=kept
+DXGIFactory1::EnumAdapters1(99)              hr=0x887a0002 le=kept
+DXGIFactory1::IsCurrent                      hr=void       le=kept
+DXGIFactory::CreateSwapChain                 hr=0x00000000 le=0x00000000
+SwapChain::GetBuffer(0)                      hr=0x00000000 le=kept
+SwapChain::Present(0,0)                      hr=0x087a0001 le=kept
+SwapChain::Present(1,0)                      hr=0x087a0001 le=kept
+SwapChain::Present(0,TEST)                   hr=0x087a0001 le=kept
+SwapChain::GetDesc                           hr=0x00000000 le=kept
+SwapChain::ResizeBuffers                     hr=0x00000000 le=kept
+SwapChain::ResizeBuffers(bad count)          hr=0x80070057 le=kept
+SwapChain::Release(last)                     hr=0x00000000 le=0x00000002
+[more] CreateSwapChain(DISCARD)              hr=0x00000000 le=kept
+[more] SwapChain(DISCARD)::AddRef            hr=0x00000002 le=kept
+[more] SwapChain(DISCARD)::Release           hr=0x00000001 le=kept
+[more] SwapChain(DISCARD)::Present           hr=0x087a0001 le=kept
+[more] SwapChain(DISCARD)::Release(last)     hr=0x00000000 le=0x00000002
+[more] CreateSwapChain(SEQUENTIAL)           hr=0x00000000 le=kept
+[more] SwapChain(SEQUENTIAL)::AddRef         hr=0x00000002 le=kept
+[more] SwapChain(SEQUENTIAL)::Release        hr=0x00000001 le=kept
+[more] SwapChain(SEQUENTIAL)::Present        hr=0x087a0001 le=kept
+[more] SwapChain(SEQUENTIAL)::Release(last)  hr=0x00000000 le=0x00000002
+[more] CreateSwapChain(FLIP_SEQUENTIAL)      hr=0x00000000 le=kept
+[more] SwapChain(FLIP_SEQUENTIAL)::AddRef    hr=0x00000002 le=kept
+[more] SwapChain(FLIP_SEQUENTIAL)::Release   hr=0x00000001 le=kept
+[more] SwapChain(FLIP_SEQUENTIAL)::Present   hr=0x087a0001 le=kept
+[more] SwapChain(FLIP_SEQUENTIAL)::Release(last) hr=0x00000000 le=0x00000002
+[more] CreateSwapChain(FLIP_DISCARD)         hr=0x00000000 le=kept
+[more] SwapChain(FLIP_DISCARD)::AddRef       hr=0x00000002 le=kept
+[more] SwapChain(FLIP_DISCARD)::Release      hr=0x00000001 le=kept
+[more] SwapChain(FLIP_DISCARD)::Present      hr=0x087a0001 le=kept
+[more] SwapChain(FLIP_DISCARD)::Release(last) hr=0x00000000 le=0x00000002
+[more] CreateSwapChain(FLIP_DISCARD, 1 buffer) hr=0x887a0001 le=kept
+[more] CreateSwapChainForHwnd                hr=0x00000000 le=kept
+[more] SwapChain1::Release(last)             hr=0x00000000 le=0x00000002
+[more] CreateSwapChainForComposition         hr=0x00000000 le=kept
+[more] CompositionSwapChain::Release(last)   hr=0x00000000 le=0x00000002
+DXGIFactory1::Release                        hr=0x00000001 le=kept
+[more] Context::Flush(nothing pending)       hr=void       le=kept
+[more] Context::Draw                         hr=void       le=kept
+[more] Context::Flush(after draw)            hr=void       le=kept
+[more] Context3::Flush1(D3D11_CONTEXT_TYPE_ALL) hr=void       le=kept
+[more] Deferred::Flush                       hr=void       le=kept
+[more] Context::Map(staging READ, implicit flush) hr=0x00000000 le=0x00000000
+[more] Context::GetData(implicit flush)      hr=0x00000000 le=0x00000000
+[more2] Device::CreateUnorderedAccessView    hr=0x00000000 le=kept
+[more2] Context::CSSetShader(NULL)           hr=void       le=kept
+[more2] Context::CSSetConstantBuffers        hr=void       le=kept
+[more2] Context::CSSetShaderResources        hr=void       le=kept
+[more2] Context::CSSetSamplers               hr=void       le=kept
+[more2] Context::CSSetUnorderedAccessViews   hr=void       le=kept
+[more2] Context::Dispatch(no CS)             hr=void       le=kept
+[more2] Context::CSSetUnorderedAccessViews(NULL) hr=void       le=kept
+[more2] Context::OMSetRenderTargetsAndUAVs   hr=void       le=kept
+[more2] Context::Draw(UAV bound)             hr=void       le=kept
+[more2] Context::OMSetRenderTargets(clear)   hr=void       le=kept
+[more2] Context::GetData(DONOTFLUSH, pending) hr=S_FALSE    le=kept
+[more2] Context::GetData(DONOTFLUSH, poll)   hr=S_OK       le=kept
+[more2] Context::Map(staging READ, DO_NOT_WAIT) hr=S_OK       le=kept
+DXGIAdapter::Release                         hr=0x00000001 le=kept
+DXGIDevice::Release                          hr=0x0000000a le=kept
+Buffer::Release(vb)                          hr=0x00000000 le=kept
+done

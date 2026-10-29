@@ -1,0 +1,6 @@
+GetMonitorInfoW_null r=0 gle=1461
+GetMonitorInfoA_null r=0 gle=1461
+cmp_diff_events r=0 gle=1656
+cmp_event_mutex r=0 gle=1656
+cmp_curthread_event r=0 gle=1656
+cmp_dup r=1 gle=57005

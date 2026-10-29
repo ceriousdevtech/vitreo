@@ -1,0 +1,1025 @@
+adapter: Microsoft Basic Render Driver
+feature level 0xb100 ptr=8
+ID3D11DeviceContext1 yes
+D3D11_OPTIONS -> 0x00000000 CopyWithOverlap=1 ClearView=1 MapNoOverwriteCB=1 MapNoOverwriteSRV=1 ConstantBufferPartialUpdate=1 ConstantBufferOffsetting=1
+MAP buffer DEFAULT VB READ                               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB READ DO_NOT_WAIT                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB WRITE                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB WRITE DO_NOT_WAIT                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB READ_WRITE                         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB READ_WRITE DO_NOT_WAIT             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB WRITE_DISCARD                      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB WRITE_DISCARD DO_NOT_WAIT          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB WRITE_NO_OVERWRITE                 -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB WRITE_NO_OVERWRITE DO_NOT_WAIT     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB type 0                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB type 6                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB sub 1                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB flags 0x1                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DEFAULT VB NULL out                           -> 0x80070057 (NULL out)
+MAP buffer IMMUTABLE VB READ                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB READ DO_NOT_WAIT                 -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB WRITE                            -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB WRITE DO_NOT_WAIT                -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB READ_WRITE                       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB READ_WRITE DO_NOT_WAIT           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB WRITE_DISCARD                    -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB WRITE_DISCARD DO_NOT_WAIT        -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB WRITE_NO_OVERWRITE               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB WRITE_NO_OVERWRITE DO_NOT_WAIT   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB type 0                           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB type 6                           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB sub 1                            -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB flags 0x1                        -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer IMMUTABLE VB NULL out                         -> 0x80070057 (NULL out)
+MAP buffer DYNAMIC VB READ                               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB READ DO_NOT_WAIT                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB WRITE                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB WRITE DO_NOT_WAIT                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB READ_WRITE                         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB READ_WRITE DO_NOT_WAIT             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB WRITE_DISCARD                      -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC VB WRITE_DISCARD DO_NOT_WAIT          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB WRITE_NO_OVERWRITE                 -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC VB WRITE_NO_OVERWRITE DO_NOT_WAIT     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB type 0                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB type 6                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB sub 1                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB flags 0x1                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC VB NULL out                           -> 0x80070057 (NULL out)
+MAP buffer DYNAMIC IB READ                               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB READ DO_NOT_WAIT                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB WRITE                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB WRITE DO_NOT_WAIT                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB READ_WRITE                         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB READ_WRITE DO_NOT_WAIT             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB WRITE_DISCARD                      -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC IB WRITE_DISCARD DO_NOT_WAIT          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB WRITE_NO_OVERWRITE                 -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC IB WRITE_NO_OVERWRITE DO_NOT_WAIT     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB type 0                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB type 6                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB sub 1                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB flags 0x1                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC IB NULL out                           -> 0x80070057 (NULL out)
+MAP buffer DYNAMIC CB READ                               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB READ DO_NOT_WAIT                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB WRITE                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB WRITE DO_NOT_WAIT                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB READ_WRITE                         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB READ_WRITE DO_NOT_WAIT             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB WRITE_DISCARD                      -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC CB WRITE_DISCARD DO_NOT_WAIT          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB WRITE_NO_OVERWRITE                 -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC CB WRITE_NO_OVERWRITE DO_NOT_WAIT     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB type 0                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB type 6                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB sub 1                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB flags 0x1                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC CB NULL out                           -> 0x80070057 (NULL out)
+MAP buffer DYNAMIC SRV READ                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV READ DO_NOT_WAIT                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV WRITE                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV WRITE DO_NOT_WAIT                 -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV READ_WRITE                        -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV READ_WRITE DO_NOT_WAIT            -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV WRITE_DISCARD                     -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC SRV WRITE_DISCARD DO_NOT_WAIT         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV WRITE_NO_OVERWRITE                -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC SRV WRITE_NO_OVERWRITE DO_NOT_WAIT    -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV type 0                            -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV type 6                            -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV sub 1                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV flags 0x1                         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV NULL out                          -> 0x80070057 (NULL out)
+MAP buffer DYNAMIC SRV|VB READ                           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB READ DO_NOT_WAIT               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB WRITE                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB WRITE DO_NOT_WAIT              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB READ_WRITE                     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB READ_WRITE DO_NOT_WAIT         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB WRITE_DISCARD                  -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC SRV|VB WRITE_DISCARD DO_NOT_WAIT      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB WRITE_NO_OVERWRITE             -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer DYNAMIC SRV|VB WRITE_NO_OVERWRITE DO_NOT_WAIT -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB type 0                         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB type 6                         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB sub 1                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB flags 0x1                      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer DYNAMIC SRV|VB NULL out                       -> 0x80070057 (NULL out)
+MAP buffer STAGING R READ                                -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING R READ DO_NOT_WAIT                    -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING R WRITE                               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R WRITE DO_NOT_WAIT                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R READ_WRITE                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R READ_WRITE DO_NOT_WAIT              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R WRITE_DISCARD                       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R WRITE_DISCARD DO_NOT_WAIT           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R WRITE_NO_OVERWRITE                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R WRITE_NO_OVERWRITE DO_NOT_WAIT      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R type 0                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R type 6                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R sub 1                               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R flags 0x1                           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING R NULL out                            -> 0x80070057 (NULL out)
+MAP buffer STAGING W READ                                -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W READ DO_NOT_WAIT                    -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W WRITE                               -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING W WRITE DO_NOT_WAIT                   -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING W READ_WRITE                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W READ_WRITE DO_NOT_WAIT              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W WRITE_DISCARD                       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W WRITE_DISCARD DO_NOT_WAIT           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W WRITE_NO_OVERWRITE                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W WRITE_NO_OVERWRITE DO_NOT_WAIT      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W type 0                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W type 6                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W sub 1                               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W flags 0x1                           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING W NULL out                            -> 0x80070057 (NULL out)
+MAP buffer STAGING RW READ                               -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING RW READ DO_NOT_WAIT                   -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING RW WRITE                              -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING RW WRITE DO_NOT_WAIT                  -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING RW READ_WRITE                         -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING RW READ_WRITE DO_NOT_WAIT             -> 0x00000000 pData=ptr Row=256 Depth=256
+MAP buffer STAGING RW WRITE_DISCARD                      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING RW WRITE_DISCARD DO_NOT_WAIT          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING RW WRITE_NO_OVERWRITE                 -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING RW WRITE_NO_OVERWRITE DO_NOT_WAIT     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING RW type 0                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING RW type 6                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING RW sub 1                              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING RW flags 0x1                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP buffer STAGING RW NULL out                           -> 0x80070057 (NULL out)
+MAP tex2d DEFAULT READ                                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT READ DO_NOT_WAIT                       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT WRITE                                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT WRITE DO_NOT_WAIT                      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT READ_WRITE                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT READ_WRITE DO_NOT_WAIT                 -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT WRITE_DISCARD                          -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT WRITE_DISCARD DO_NOT_WAIT              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT WRITE_NO_OVERWRITE                     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT WRITE_NO_OVERWRITE DO_NOT_WAIT         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DEFAULT NULL out                               -> 0x80070057 (NULL out)
+MAP tex2d IMMUTABLE READ                                 -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE READ DO_NOT_WAIT                     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE WRITE                                -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE WRITE DO_NOT_WAIT                    -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE READ_WRITE                           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE READ_WRITE DO_NOT_WAIT               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE WRITE_DISCARD                        -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE WRITE_DISCARD DO_NOT_WAIT            -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE WRITE_NO_OVERWRITE                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE WRITE_NO_OVERWRITE DO_NOT_WAIT       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d IMMUTABLE NULL out                             -> 0x80070057 (NULL out)
+MAP tex2d DYNAMIC READ                                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC READ DO_NOT_WAIT                       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC WRITE                                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC WRITE DO_NOT_WAIT                      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC READ_WRITE                             -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC READ_WRITE DO_NOT_WAIT                 -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC WRITE_DISCARD                          -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d DYNAMIC WRITE_DISCARD DO_NOT_WAIT              -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC WRITE_NO_OVERWRITE                     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC WRITE_NO_OVERWRITE DO_NOT_WAIT         -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d DYNAMIC NULL out                               -> 0x80070057 (NULL out)
+MAP tex2d STAGING R READ                                 -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING R READ DO_NOT_WAIT                     -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING R WRITE                                -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING R WRITE DO_NOT_WAIT                    -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING R READ_WRITE                           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING R READ_WRITE DO_NOT_WAIT               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING R WRITE_DISCARD                        -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING R WRITE_DISCARD DO_NOT_WAIT            -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING R WRITE_NO_OVERWRITE                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING R WRITE_NO_OVERWRITE DO_NOT_WAIT       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING R NULL out                             -> 0x80070057 (NULL out)
+MAP tex2d STAGING W READ                                 -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING W READ DO_NOT_WAIT                     -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING W WRITE                                -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING W WRITE DO_NOT_WAIT                    -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING W READ_WRITE                           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING W READ_WRITE DO_NOT_WAIT               -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING W WRITE_DISCARD                        -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING W WRITE_DISCARD DO_NOT_WAIT            -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING W WRITE_NO_OVERWRITE                   -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING W WRITE_NO_OVERWRITE DO_NOT_WAIT       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING W NULL out                             -> 0x80070057 (NULL out)
+MAP tex2d STAGING RW READ                                -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING RW READ DO_NOT_WAIT                    -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING RW WRITE                               -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING RW WRITE DO_NOT_WAIT                   -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING RW READ_WRITE                          -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING RW READ_WRITE DO_NOT_WAIT              -> 0x00000000 pData=ptr Row=32 Depth=256
+MAP tex2d STAGING RW WRITE_DISCARD                       -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING RW WRITE_DISCARD DO_NOT_WAIT           -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING RW WRITE_NO_OVERWRITE                  -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING RW WRITE_NO_OVERWRITE DO_NOT_WAIT      -> 0x80070057 pData=NULL Row=2863311530 Depth=2863311530
+MAP tex2d STAGING RW NULL out                            -> 0x80070057 (NULL out)
+MAP staging tex remap sub0 while mapped -> first 0x00000000 second 0x00000000 pData=ptr other-sub 0x00000000
+MAP unmap-not-mapped removed-reason 0x00000000
+MAP dynamic buffer remap while mapped -> first 0x00000000 second 0x00000000
+MAP create DYNAMIC tex2d full mip chain -> 0x80070057
+MAP create DYNAMIC tex2d array 3 -> 0x80070057
+MAP create DYNAMIC tex3d 4x4x4 -> 0x00000000
+MAP tex3d DYNAMIC sub 0 WRITE_DISCARD                    -> 0x00000000 pData=ptr Row=16 Depth=64
+MAP create DYNAMIC tex1d 16 -> 0x00000000
+MAP tex1d DYNAMIC sub 0 WRITE_DISCARD                    -> 0x00000000 pData=ptr Row=64 Depth=64
+MAP pitch R8G8B8A8 13x7 mips=4 arr=1 sub 0 -> 0x00000000 Row=52 Depth=364
+MAP pitch R8G8B8A8 13x7 mips=4 arr=1 sub 1 -> 0x00000000 Row=24 Depth=72
+MAP pitch R8G8B8A8 13x7 mips=4 arr=1 sub 2 -> 0x00000000 Row=12 Depth=12
+MAP pitch R8G8B8A8 13x7 mips=4 arr=1 sub 3 -> 0x00000000 Row=4 Depth=4
+MAP pitch R8 13x7 mips=2 arr=1 sub 0 -> 0x00000000 Row=16 Depth=112
+MAP pitch R8 13x7 mips=2 arr=1 sub 1 -> 0x00000000 Row=8 Depth=24
+MAP pitch R16 7x3 mips=1 arr=1 sub 0 -> 0x00000000 Row=16 Depth=48
+MAP pitch R32G32B32A32 5x3 mips=1 arr=1 sub 0 -> 0x00000000 Row=80 Depth=240
+MAP pitch R32G32B32 5x3 mips=1 arr=1 sub 0 -> 0x00000000 Row=60 Depth=180
+MAP pitch BC1 16x12 mips=5 arr=1 sub 0 -> 0x00000000 Row=32 Depth=96
+MAP pitch BC1 16x12 mips=5 arr=1 sub 1 -> 0x00000000 Row=16 Depth=32
+MAP pitch BC1 16x12 mips=5 arr=1 sub 2 -> 0x00000000 Row=8 Depth=8
+MAP pitch BC1 16x12 mips=5 arr=1 sub 3 -> 0x00000000 Row=8 Depth=8
+MAP pitch BC1 16x12 mips=5 arr=1 sub 4 -> 0x00000000 Row=8 Depth=8
+MAP pitch BC3 20x8 mips=5 arr=1 sub 0 -> 0x00000000 Row=80 Depth=160
+MAP pitch BC3 20x8 mips=5 arr=1 sub 1 -> 0x00000000 Row=48 Depth=48
+MAP pitch BC3 20x8 mips=5 arr=1 sub 2 -> 0x00000000 Row=32 Depth=32
+MAP pitch BC3 20x8 mips=5 arr=1 sub 3 -> 0x00000000 Row=16 Depth=16
+MAP pitch BC3 20x8 mips=5 arr=1 sub 4 -> 0x00000000 Row=16 Depth=16
+MAP pitch BC7 8x8 mips=4 arr=1 sub 0 -> 0x00000000 Row=32 Depth=64
+MAP pitch BC7 8x8 mips=4 arr=1 sub 1 -> 0x00000000 Row=16 Depth=16
+MAP pitch BC7 8x8 mips=4 arr=1 sub 2 -> 0x00000000 Row=16 Depth=16
+MAP pitch BC7 8x8 mips=4 arr=1 sub 3 -> 0x00000000 Row=16 Depth=16
+MAP pitch BC4 12x4 mips=2 arr=1 sub 0 -> 0x00000000 Row=24 Depth=24
+MAP pitch BC4 12x4 mips=2 arr=1 sub 1 -> 0x00000000 Row=16 Depth=16
+MAP pitch D24S8 5x3 mips=1 arr=1 sub 0 -> 0x00000000 Row=20 Depth=60
+MAP pitch D16 5x3 mips=1 arr=1 sub 0 -> 0x00000000 Row=12 Depth=36
+MAP pitch R8G8B8A8 arr 4x4 mips=2 arr=3 sub 0 -> 0x00000000 Row=16 Depth=64
+MAP pitch R8G8B8A8 arr 4x4 mips=2 arr=3 sub 1 -> 0x00000000 Row=8 Depth=16
+MAP pitch R8G8B8A8 arr 4x4 mips=2 arr=3 sub 2 -> 0x00000000 Row=16 Depth=64
+MAP pitch R8G8B8A8 arr 4x4 mips=2 arr=3 sub 3 -> 0x00000000 Row=8 Depth=16
+MAP pitch R8G8B8A8 arr 4x4 mips=2 arr=3 sub 4 -> 0x00000000 Row=16 Depth=64
+MAP pitch R8G8B8A8 arr 4x4 mips=2 arr=3 sub 5 -> 0x00000000 Row=8 Depth=16
+MAP pitch R9G9B9E5 3x3 mips=1 arr=1 sub 0 -> 0x00000000 Row=12 Depth=36
+MAP pitch R8G8_B8G8 6x2 mips=1 arr=1 sub 0 -> 0x00000000 Row=12 Depth=24
+MAP pitch 3D R8G8B8A8 5x3x4 sub 0 -> 0x00000000 Row=20 Depth=60
+MAP pitch 3D R8G8B8A8 5x3x4 sub 1 -> 0x00000000 Row=8 Depth=8
+MAP pitch 3D R8G8B8A8 5x3x4 sub 2 -> 0x00000000 Row=4 Depth=4
+MAP pitch 3D BC1 8x8x4 sub 0 -> 0x00000000 Row=16 Depth=32
+MAP pitch 3D BC1 8x8x4 sub 1 -> 0x00000000 Row=8 Depth=8
+MAP pitch 3D BC1 8x8x4 sub 2 -> 0x00000000 Row=8 Depth=8
+MAP pitch 3D BC1 8x8x4 sub 3 -> 0x00000000 Row=8 Depth=8
+MAP pitch 1D R32 7 mips=3 arr=2 sub 0 -> 0x00000000 Row=28 Depth=32
+MAP pitch 1D R32 7 mips=3 arr=2 sub 1 -> 0x00000000 Row=12 Depth=16
+MAP pitch 1D R32 7 mips=3 arr=2 sub 2 -> 0x00000000 Row=4 Depth=16
+MAP pitch 1D R32 7 mips=3 arr=2 sub 3 -> 0x00000000 Row=28 Depth=32
+MAP pitch 1D R32 7 mips=3 arr=2 sub 4 -> 0x00000000 Row=12 Depth=16
+MAP pitch 1D R32 7 mips=3 arr=2 sub 5 -> 0x00000000 Row=4 Depth=16
+MAP staging init data sub 0 -> 0x00000000 first=10101010
+MAP staging init data sub 1 -> 0x00000000 first=21212121
+MAP staging init data sub 2 -> 0x00000000 first=32323232
+MAP staging init data sub 3 -> 0x00000000 first=10101010
+MAP staging init data sub 4 -> 0x00000000 first=21212121
+MAP staging init data sub 5 -> 0x00000000 first=32323232
+MAP staging write-then-read -> 0x00000000 rows=40414243
+UPD buffer whole NULL box: 00010203 04050607 08090a0b 0c0d0e0f 10111213 14151617 18191a1b 1c1d1e1f
+UPD buffer box [8,20): 00010203 04050607 64656667 68696a6b 6c6d6e6f 14151617 18191a1b 1c1d1e1f
+UPD buffer empty box: 00010203 04050607 64656667 68696a6b 6c6d6e6f 14151617 18191a1b 1c1d1e1f
+UPD buffer box past end [24,40): readback hr=0x887a0005
+UPD buffer box past end [24,40): removed-reason 0x887a0005
+UPD buffer box bottom=2: readback hr=0x887a0005
+UPD buffer box bottom=2: removed-reason 0x887a0005
+UPD CB box [16,32) plain: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD1 CB box [16,32) flags 0: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD1 CB box [16,32) NO_OVERWRITE: cccccccc cccccccc cccccccc cccccccc 20212223 24252627 28292a2b 2c2d2e2f cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD1 CB box [32,48) DISCARD: cccccccc cccccccc cccccccc cccccccc 20212223 24252627 28292a2b 2c2d2e2f 30313233 34353637 38393a3b 3c3d3e3f cccccccc cccccccc cccccccc cccccccc
+UPD CB NULL box: 80818283 84858687 88898a8b 8c8d8e8f 90919293 94959697 98999a9b 9c9d9e9f a0a1a2a3 a4a5a6a7 a8a9aaab acadaeaf b0b1b2b3 b4b5b6b7 b8b9babb bcbdbebf
+UPD1 CB box [4,12) unaligned NO_OVERWRITE: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD1 CB box [4,12) unaligned NO_OVERWRITE: removed-reason 0x00000000
+UPD structured16 box [8,24) partial structs: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD structured16 box [16,32) whole struct: cccccccc cccccccc cccccccc cccccccc 20212223 24252627 28292a2b 2c2d2e2f cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD DYNAMIC buffer (not a legal destination): cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD IMMUTABLE buffer: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD STAGING buffer: map 0x00000000 cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD STAGING tex2d: map 0x00000000 cccccccc cccccccc cccccccc cccccccc
+UPD DYNAMIC tex2d (not a legal destination): cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UPD tex2d sub0 NULL box pitch 20: 00010203 04050607 08090a0b 0c0d0e0f 14151617 18191a1b 1c1d1e1f 20212223 28292a2b 2c2d2e2f 30313233 34353637 3c3d3e3f 40414243 44454647 48494a4b
+UPD tex2d sub4 (slice1 mip1 2x2) box (0,0)-(2,1): 80818283 84858687 cccccccc cccccccc
+UPD tex2d sub4 box (1,0)-(2,2) pitch 4: 80818283 a0a1a2a3 cccccccc a4a5a6a7
+UPD tex2d sub0 box (2,2)-(6,6) outside: readback hr=0x887a0005
+UPD tex2d sub0 box (2,2)-(6,6) outside: removed-reason 0x887a0005
+UPD tex2d sub0 box front=1 back=2: readback hr=0x887a0005
+UPD tex2d sub0 box front=1 back=2: removed-reason 0x887a0005
+UPD tex2d sub 6 (out of range): sub0: cccccccc cccccccc cccccccc cccccccc
+UPD tex2d sub 6 (out of range): removed-reason 0x00000000
+UPD BC1 create -> 0x00000000
+UPD BC1 mip0 whole: 00010203 04050607 08090a0b 0c0d0e0f 10111213 14151617 18191a1b 1c1d1e1f 20212223 24252627 28292a2b 2c2d2e2f 30313233 34353637 38393a3b 3c3d3e3f 40414243 44454647 48494a4b 4c4d4e4f 50515253 54555657 58595a5b 5c5d5e5f 60616263 64656667 68696a6b 6c6d6e6f 70717273 74757677 78797a7b 7c7d7e7f
+UPD BC1 mip0 box (4,4)-(12,8) pitch 40: 00010203 04050607 08090a0b 0c0d0e0f 10111213 14151617 18191a1b 1c1d1e1f 20212223 24252627 00010203 04050607 08090a0b 0c0d0e0f 38393a3b 3c3d3e3f 40414243 44454647 48494a4b 4c4d4e4f 50515253 54555657 58595a5b 5c5d5e5f 60616263 64656667 68696a6b 6c6d6e6f 70717273 74757677 78797a7b 7c7d7e7f
+UPD BC1 mip3 (2x2) box (0,0)-(4,4): bcbdbebf c0c1c2c3
+UPD BC1 mip2 (4x4) NULL box: 20212223 24252627
+UPD BC7 box (4,0)-(8,8): 00000000 00000000 00000000 00000000 00010203 04050607 08090a0b 0c0d0e0f 00000000 00000000 00000000 00000000 10111213 14151617 18191a1b 1c1d1e1f
+UPD 3D create -> 0x00000000
+UPD 3D mip0 box (1,1,1)-(3,2,3) row12 depth40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 04050607 08090a0b 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 2c2d2e2f 30313233 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+UPD 3D mip1 NULL box: c8c9cacb cccdcecf d0d1d2d3 d4d5d6d7 d8d9dadb dcdddedf e0e1e2e3 e4e5e6e7
+UPD 3D BC1 8x8x2 NULL box: 00010203 04050607 08090a0b 0c0d0e0f 10111213 14151617 18191a1b 1c1d1e1f 20212223 24252627 28292a2b 2c2d2e2f 30313233 34353637 38393a3b 3c3d3e3f
+UPD 1D slice1 box [2,5): 00000000 00000000 10111213 14151617 18191a1b 00000000 00000000 00000000
+UPD D32 depth-stencil destination: 0000803f 0000803f 0000803f 0000803f 0000803f 0000803f 0000803f 0000803f
+CPY buffer region [4,12)->16: cccccccc cccccccc cccccccc cccccccc 1d242b32 3940474e cccccccc cccccccc
+CPY buffer same resource [4,12)->24 non-overlap: 01080f16 1d242b32 3940474e 555c636a 71787f86 8d949ba2 1d242b32 3940474e
+CPY buffer same resource [0,16)->4 overlap: 01080f16 01080f16 1d242b32 3940474e 555c636a 8d949ba2 1d242b32 3940474e
+CPY1 buffer same resource [0,16)->4 overlap flags0: 01080f16 01080f16 1d242b32 3940474e 555c636a 8d949ba2 a9b0b7be c5ccd3da
+CPY1 buffer [4,12)->0 DISCARD: 01080f16 1d242b32 cccccccc cccccccc 1d242b32 3940474e cccccccc cccccccc
+CPY1 buffer [4,12)->8 NO_OVERWRITE: 01080f16 1d242b32 01080f16 1d242b32 1d242b32 3940474e cccccccc cccccccc
+CPY CopyResource buffers of different size: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+CPY CopyResource into IMMUTABLE buffer: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+CPY region into IMMUTABLE buffer: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+CPY structured stride16 -> stride8 CopyResource: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+CPY structured16 partial-struct region: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+CPY CopyResource from a mapped staging buffer: 01080f16 1d242b32 3940474e 555c636a 71787f86 8d949ba2 a9b0b7be c5ccd3da
+CPY buffer src box past end: readback hr=0x887a0005
+CPY buffer src box past end: removed-reason 0x887a0005
+CPY buffer dst x 28 + 8 past end: readback hr=0x887a0005
+CPY buffer dst x 28 + 8 past end: removed-reason 0x887a0005
+CPY tex same resource mip0 -> mip1 (1,1): cccccccc cccccccc cccccccc cccccccc cccccccc 01020304 05060708 cccccccc cccccccc 21222324 25262728 cccccccc cccccccc cccccccc cccccccc cccccccc
+CPY tex same resource slice0 -> slice1 (4,4) row4: 01020304 05060708 090a0b0c 0d0e0f10 11121314 15161718 191a1b1c 1d1e1f20
+CPY tex same resource slice0 -> slice1 (4,4): row4 texel4=01020304 05060708
+CPY tex same subresource overlapping (0..4)->1: 01020304 01020304 05060708 090a0b0c 0d0e0f10 15161718 191a1b1c 1d1e1f20
+CPY1 tex same subresource overlapping (0..4)->1: 01020304 01020304 01020304 05060708 090a0b0c 15161718 191a1b1c 1d1e1f20
+CPY RGBA8_UNORM -> RGBA8_UINT (same family): 05121f2c 39465360 6d7a8794 a1aebbc8
+CPY RGBA8_UNORM -> BGRA8_UNORM (different family): cccccccc cccccccc cccccccc cccccccc
+CPY RGBA8_UNORM -> R32_UINT (different family, same size): cccccccc cccccccc cccccccc cccccccc
+CPY family CopyResource RGBA8_SRGB -> RGBA8_UNORM: 05121f2c 39465360
+CPY family region RGBA8_SRGB -> RGBA8_UNORM: 05121f2c 39465360
+CPY family CopyResource RGBA8_UNORM -> RGBA8_SRGB: 05121f2c 39465360
+CPY family region RGBA8_UNORM -> RGBA8_SRGB: 05121f2c 39465360
+CPY family CopyResource BGRA8_UNORM -> BGRA8_SRGB: 05121f2c 39465360
+CPY family region BGRA8_UNORM -> BGRA8_SRGB: 05121f2c 39465360
+CPY family CopyResource R32_FLOAT -> R32_UINT: 05121f2c 39465360
+CPY family region R32_FLOAT -> R32_UINT: 05121f2c 39465360
+CPY family CopyResource RGBA8_TYPELESS -> RGBA8_UNORM: 05121f2c 39465360
+CPY family region RGBA8_TYPELESS -> RGBA8_UNORM: 05121f2c 39465360
+CPY family CopyResource RGBA8_UNORM -> RGBA8_TYPELESS: 05121f2c 39465360
+CPY family region RGBA8_UNORM -> RGBA8_TYPELESS: 05121f2c 39465360
+CPY family CopyResource RGBA16_FLOAT -> RGBA16_UINT: 05121f2c 39465360
+CPY family region RGBA16_FLOAT -> RGBA16_UINT: 05121f2c 39465360
+CPY family CopyResource BC1_UNORM -> BC1_SRGB: 05121f2c 39465360
+CPY family region BC1_UNORM -> BC1_SRGB: 05121f2c 39465360
+CPY region BC1 16x16 -> R32G32_UINT 4x4: 05121f2c 39465360 6d7a8794 a1aebbc8 d5e2effc 09162330 3d4a5764 717e8b98
+CPY region R32G32_UINT 4x4 -> BC1 at (4,8): cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc 45525f6c 798693a0 adbac7d4 e1eefb08 15222f3c 49566370 7d8a97a4 b1becbd8 e5f2ff0c 19263340 4d5a6774 818e9ba8 b5c2cfdc e9f60310
+CPY CopyResource R32G32_UINT 4x4 -> BC1 16x16: 45525f6c 798693a0 adbac7d4 e1eefb08 15222f3c 49566370 7d8a97a4 b1becbd8
+CPY CopyResource BC1 16x16 -> R32G32_UINT 16x16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+CPY region BC3 16x16 -> R32G32B32A32_UINT 4x4: 05121f2c 39465360 6d7a8794 a1aebbc8 d5e2effc 09162330 3d4a5764 717e8b98
+CPY region R32G32B32A32_UINT 4x4 -> BC7 16x16: 85929fac b9c6d3e0 edfa0714 212e3b48 55626f7c 8996a3b0 bdcad7e4 f1fe0b18
+CPY CopyResource R32_UINT -> R9G9B9E5: 05121f2c 39465360 6d7a8794 a1aebbc8
+CPY 3D region (1,1,1)-(3,2,3) -> (0,2,1): cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc 5758595a 5b5c5d5e cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc 9798999a 9b9c9d9e cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+CPY 3D CopyResource z=3 row 0: 03040506 0708090a 0b0c0d0e 0f101112
+CPY 1D region [1,4)->5: cccccccc cccccccc cccccccc cccccccc cccccccc 0708090a 0b0c0d0e 0f101112
+CPY CopyResource into IMMUTABLE tex: cccccccc cccccccc cccccccc cccccccc
+CPY region into IMMUTABLE tex: cccccccc cccccccc cccccccc cccccccc
+CPY region from a mapped staging tex: 090a0b0c 0d0e0f10 11121314 15161718
+CPY staging (1,1)-(3,2) -> DEFAULT array slice1 (0,3): cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc 1d1e1f20 21222324 cccccccc cccccccc
+CPY staging -> staging region: 0x00000000 row0=cccccccc cccccccc 1d1e1f20 21222324
+CPY src box past extent: readback hr=0x887a0005
+CPY src box past extent: removed-reason 0x887a0005
+CPY dst (3,3) + 2x2 past extent: readback hr=0x887a0005
+CPY dst (3,3) + 2x2 past extent: removed-reason 0x887a0005
+CPY D32 region with a box (whole-subresource rule): 0000403f 0000403f 0000403f 0000403f 0000403f 0000403f 0000403f 0000403f
+CPY D32 region NULL box: 0000803e 0000803e 0000803e 0000803e 0000803e 0000803e 0000803e 0000803e
+CPY D32 CopyResource: 0000803e 0000803e 0000803e 0000803e 0000803e 0000803e 0000803e 0000803e
+CPY staging D32 -> DEFAULT D32: cdcccc3d cdcc4c3e 9a99993e cdcccc3e 0000003f 9a99193f 3333333f cdcc4c3f
+CPY staging D24S8 -> DEFAULT D24S8 (upload): 01000011 02000022 00008033 ffffff44 05000055 06000066 07000077 08000088
+CPY MS4 CopyResource then resolve: ff0000ff
+CPY MS4 region with box then resolve: 0000ffff
+CPY MS4 -> MS1 CopyResource: 00000000
+CPY Texture2D 8x1 -> Texture1D 8 (type mismatch): cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+CPY removed-reason 0x00000000
+CSC append@4=7 counter@12=1234 plain@20 unaligned@26: cccccccc 07000000 cccccccc d2040000 cccccccc cccccccc cccccccc cccccccc
+CSC after rebind with -1 (keep) @0: 07000000 07000000 cccccccc d2040000 cccccccc cccccccc cccccccc cccccccc
+RES typeless src -> UNORM dst, fmt UNORM: 4080bfff 4080bfff
+RES typeless -> typeless, fmt UNORM: 4080bfff 4080bfff
+RES typeless -> typeless, fmt SRGB: 4080bfff 4080bfff
+RES typeless -> UNORM dst, fmt SRGB (mismatch): 4080bfff 4080bfff
+RES typeless -> typeless, fmt UINT (not resolvable): cccccccc cccccccc
+RES different family dst: cccccccc cccccccc
+RES into array slice 1: slice0: cccccccc cccccccc
+RES into array slice 1: slice1: 4080bfff 4080bfff
+RES SRGB MS4 cleared 0.5: bcbcbc80 bcbcbc80
+GEN full view slice0 mip0=c86432ff mip1=c86432ff mip2=c86432ff
+GEN view mips 1..2 slice0 mip0=c86432ff mip1=11111111 mip2=22222222
+GEN view mips 0..1 slice0 mip0=c86432ff mip1=c86432ff mip2=22222222
+GEN no GENERATE_MIPS flag slice0 mip0=c86432ff mip1=11111111 mip2=22222222
+GEN array view slice 1 only slice0 mip0=c86432ff mip1=11111111 mip2=22222222
+GEN array view slice 1 only slice1 mip0=c86432ff mip1=11111111 mip2=22222222
+GEN array view both slices slice0 mip0=c86432ff mip1=c86432ff mip2=c86432ff
+GEN array view both slices slice1 mip0=c86432ff mip1=c86432ff mip2=c86432ff
+GEN array view slice 0 only slice0 mip0=c86432ff mip1=c86432ff mip2=c86432ff
+GEN array view slice 0 only slice1 mip0=c86432ff mip1=11111111 mip2=22222222
+GEN filter RGBA8_UNORM 0/255 mip1: 80808080
+GEN filter RGBA8_UNORM_SRGB 0/255 mip1: bcbcbc80
+GEN filter BGRA8_UNORM_SRGB 0/255 mip1: bcbcbc80
+GEN filter R32_FLOAT 1,2,4,8 mip1: 00007040
+GEN filter RGBA16_FLOAT mip1: 003e0042 0046003c
+GEN 3D mip1: 80808080
+GEN 3D mip2: 80808080
+LOD create RESOURCE_CLAMP -> 0x00000000
+LOD clamp tex Set(0) -> Get 0
+LOD plain tex Set(0) -> Get 0
+LOD clamp tex Set(1.5) -> Get 1.5
+LOD plain tex Set(1.5) -> Get 0
+LOD clamp tex Set(3) -> Get 3
+LOD plain tex Set(3) -> Get 0
+LOD clamp tex Set(4) -> Get 4
+LOD plain tex Set(4) -> Get 0
+LOD clamp tex Set(10) -> Get 10
+LOD plain tex Set(10) -> Get 0
+LOD clamp tex Set(-1) -> Get -1
+LOD plain tex Set(-1) -> Get 0
+LOD buffer Set(2) -> Get 0
+RTV R32G32B32A32_FLOAT           c0 -> 0000003f 000080be 9a99d93f 4ca6aa3e
+RTV R32G32B32A32_FLOAT           c1 -> cdcc4c3e 3333333f 6c09f93a a4707d3f
+RTV R32G32B32A32_FLOAT           c2 -> 8180003b c1c0c03b a1a0203c 0000003f
+RTV R32G32B32A32_FLOAT           c3 -> 9a599643 0000b0c0 00b88847 5ed0324f
+RTV R32G32B32A32_FLOAT           c4 -> ffff7f4f 000000cf ec78ad60 ec78ade0
+RTV R32G32B32A32_FLOAT           c5 -> 0000c07f 0000807f 000080ff 00000080
+RTV R32G32B32A32_FLOAT           c6 -> 000080bf 77be7fbf 80008037 00e07f47
+RTV R32G32B32A32_UINT            c0 -> 00000000 00000000 01000000 00000000
+RTV R32G32B32A32_UINT            c1 -> 00000000 00000000 00000000 00000000
+RTV R32G32B32A32_UINT            c2 -> 00000000 00000000 00000000 00000000
+RTV R32G32B32A32_UINT            c3 -> 2c010000 00000000 70110100 005ed0b2
+RTV R32G32B32A32_UINT            c4 -> 00ffffff 00000000 ffffffff 00000000
+RTV R32G32B32A32_UINT            c5 -> 00000000 ffffffff 00000000 00000000
+RTV R32G32B32A32_UINT            c6 -> 00000000 00000000 00000000 e0ff0000
+RTV R32G32B32A32_SINT            c0 -> 00000000 00000000 01000000 00000000
+RTV R32G32B32A32_SINT            c1 -> 00000000 00000000 00000000 00000000
+RTV R32G32B32A32_SINT            c2 -> 00000000 00000000 00000000 00000000
+RTV R32G32B32A32_SINT            c3 -> 2c010000 fbffffff 70110100 ffffff7f
+RTV R32G32B32A32_SINT            c4 -> ffffff7f 00000080 ffffff7f 00000080
+RTV R32G32B32A32_SINT            c5 -> 00000000 ffffff7f 00000080 00000000
+RTV R32G32B32A32_SINT            c6 -> ffffffff 00000000 00000000 e0ff0000
+RTV R32G32B32_FLOAT              c0 -> 0000003f 000080be 9a99d93f
+RTV R32G32B32_FLOAT              c1 -> cdcc4c3e 3333333f 6c09f93a
+RTV R32G32B32_FLOAT              c2 -> 8180003b c1c0c03b a1a0203c
+RTV R32G32B32_FLOAT              c3 -> 9a599643 0000b0c0 00b88847
+RTV R32G32B32_FLOAT              c4 -> ffff7f4f 000000cf ec78ad60
+RTV R32G32B32_FLOAT              c5 -> 0000c07f 0000807f 000080ff
+RTV R32G32B32_FLOAT              c6 -> 000080bf 77be7fbf 80008037
+RTV R16G16B16A16_FLOAT           c0 -> 003800b4 cc3e5535
+RTV R16G16B16A16_FLOAT           c1 -> 66329939 c817eb3b
+RTV R16G16B16A16_FLOAT           c2 -> 0418061e 05210038
+RTV R16G16B16A16_FLOAT           c3 -> b25c80c5 ff7bff7b
+RTV R16G16B16A16_FLOAT           c4 -> ff7bfffb ff7bfffb
+RTV R16G16B16A16_FLOAT           c5 -> 007e007c 00fc0080
+RTV R16G16B16A16_FLOAT           c6 -> 00bcfdbb 0001ff7b
+RTV R16G16B16A16_UNORM           c0 -> 00800000 ffff5355
+RTV R16G16B16A16_UNORM           c1 -> 333332b3 7d0070fd
+RTV R16G16B16A16_UNORM           c2 -> 80008201 82020080
+RTV R16G16B16A16_UNORM           c3 -> ffff0000 ffffffff
+RTV R16G16B16A16_UNORM           c4 -> ffff0000 ffff0000
+RTV R16G16B16A16_UNORM           c5 -> 0000ffff 00000000
+RTV R16G16B16A16_UNORM           c6 -> 00000000 0100ffff
+RTV R16G16B16A16_UINT            c0 -> 00000000 01000000
+RTV R16G16B16A16_UINT            c1 -> 00000000 00000000
+RTV R16G16B16A16_UINT            c2 -> 00000000 00000000
+RTV R16G16B16A16_UINT            c3 -> 2c010000 ffffffff
+RTV R16G16B16A16_UINT            c4 -> ffff0000 ffff0000
+RTV R16G16B16A16_UINT            c5 -> 0000ffff 00000000
+RTV R16G16B16A16_UINT            c6 -> 00000000 0000e0ff
+RTV R16G16B16A16_SNORM           c0 -> 004000e0 ff7fa92a
+RTV R16G16B16A16_SNORM           c1 -> 99199959 3e00b77e
+RTV R16G16B16A16_SNORM           c2 -> 4000c100 41010040
+RTV R16G16B16A16_SNORM           c3 -> ff7f0180 ff7fff7f
+RTV R16G16B16A16_SNORM           c4 -> ff7f0180 ff7f0180
+RTV R16G16B16A16_SNORM           c5 -> 0000ff7f 01800000
+RTV R16G16B16A16_SNORM           c6 -> 01802280 0000ff7f
+RTV R16G16B16A16_SINT            c0 -> 00000000 01000000
+RTV R16G16B16A16_SINT            c1 -> 00000000 00000000
+RTV R16G16B16A16_SINT            c2 -> 00000000 00000000
+RTV R16G16B16A16_SINT            c3 -> 2c01fbff ff7fff7f
+RTV R16G16B16A16_SINT            c4 -> ff7f0080 ff7f0080
+RTV R16G16B16A16_SINT            c5 -> 0000ff7f 00800000
+RTV R16G16B16A16_SINT            c6 -> ffff0000 0000ff7f
+RTV R32G32_FLOAT                 c0 -> 0000003f 000080be
+RTV R32G32_FLOAT                 c1 -> cdcc4c3e 3333333f
+RTV R32G32_FLOAT                 c2 -> 8180003b c1c0c03b
+RTV R32G32_FLOAT                 c3 -> 9a599643 0000b0c0
+RTV R32G32_FLOAT                 c4 -> ffff7f4f 000000cf
+RTV R32G32_FLOAT                 c5 -> 0000c07f 0000807f
+RTV R32G32_FLOAT                 c6 -> 000080bf 77be7fbf
+RTV R32G32_UINT                  c0 -> 00000000 00000000
+RTV R32G32_UINT                  c1 -> 00000000 00000000
+RTV R32G32_UINT                  c2 -> 00000000 00000000
+RTV R32G32_UINT                  c3 -> 2c010000 00000000
+RTV R32G32_UINT                  c4 -> 00ffffff 00000000
+RTV R32G32_UINT                  c5 -> 00000000 ffffffff
+RTV R32G32_UINT                  c6 -> 00000000 00000000
+RTV R32G32_SINT                  c0 -> 00000000 00000000
+RTV R32G32_SINT                  c1 -> 00000000 00000000
+RTV R32G32_SINT                  c2 -> 00000000 00000000
+RTV R32G32_SINT                  c3 -> 2c010000 fbffffff
+RTV R32G32_SINT                  c4 -> ffffff7f 00000080
+RTV R32G32_SINT                  c5 -> 00000000 ffffff7f
+RTV R32G32_SINT                  c6 -> ffffffff 00000000
+RTV R10G10B10A2_UNORM            c0 -> 0002f07f
+RTV R10G10B10A2_UNORM            c1 -> cd302bc0
+RTV R10G10B10A2_UNORM            c2 -> 0218a080
+RTV R10G10B10A2_UNORM            c3 -> ff03f0ff
+RTV R10G10B10A2_UNORM            c4 -> ff03f03f
+RTV R10G10B10A2_UNORM            c5 -> 00fc0f00
+RTV R10G10B10A2_UNORM            c6 -> 000000c0
+RTV R10G10B10A2_UINT             c0 -> 00001000
+RTV R10G10B10A2_UINT             c1 -> 00000000
+RTV R10G10B10A2_UINT             c2 -> 00000000
+RTV R10G10B10A2_UINT             c3 -> 2c01f0ff
+RTV R10G10B10A2_UINT             c4 -> ff03f03f
+RTV R10G10B10A2_UINT             c5 -> 00fc0f00
+RTV R10G10B10A2_UINT             c6 -> 000000c0
+RTV R11G11B10_FLOAT              c0 -> 8003807d
+RTV R11G11B10_FLOAT              c1 -> 26cb9c2f
+RTV R11G11B10_FLOAT              c2 -> 80010f42
+RTV R11G11B10_FLOAT              c3 -> cb05c0f7
+RTV R11G11B10_FLOAT              c4 -> bf07c0f7
+RTV R11G11B10_FLOAT              c5 -> ff073e00
+RTV R11G11B10_FLOAT              c6 -> 00000002
+RTV R8G8B8A8_UNORM               c0 -> 8000ff55
+RTV R8G8B8A8_UNORM               c1 -> 33b200fc
+RTV R8G8B8A8_UNORM               c2 -> 00020280
+RTV R8G8B8A8_UNORM               c3 -> ff00ffff
+RTV R8G8B8A8_UNORM               c4 -> ff00ff00
+RTV R8G8B8A8_UNORM               c5 -> 00ff0000
+RTV R8G8B8A8_UNORM               c6 -> 000000ff
+RTV R8G8B8A8_UNORM_SRGB          c0 -> bc00ff55
+RTV R8G8B8A8_UNORM_SRGB          c1 -> 7cda06fc
+RTV R8G8B8A8_UNORM_SRGB          c2 -> 06121980
+RTV R8G8B8A8_UNORM_SRGB          c3 -> ff00ffff
+RTV R8G8B8A8_UNORM_SRGB          c4 -> ff00ff00
+RTV R8G8B8A8_UNORM_SRGB          c5 -> 00ff0000
+RTV R8G8B8A8_UNORM_SRGB          c6 -> 000000ff
+RTV R8G8B8A8_UINT                c0 -> 00000100
+RTV R8G8B8A8_UINT                c1 -> 00000000
+RTV R8G8B8A8_UINT                c2 -> 00000000
+RTV R8G8B8A8_UINT                c3 -> ff00ffff
+RTV R8G8B8A8_UINT                c4 -> ff00ff00
+RTV R8G8B8A8_UINT                c5 -> 00ff0000
+RTV R8G8B8A8_UINT                c6 -> 000000ff
+RTV R8G8B8A8_SNORM               c0 -> 40e07f2a
+RTV R8G8B8A8_SNORM               c1 -> 1959007e
+RTV R8G8B8A8_SNORM               c2 -> 00010140
+RTV R8G8B8A8_SNORM               c3 -> 7f817f7f
+RTV R8G8B8A8_SNORM               c4 -> 7f817f81
+RTV R8G8B8A8_SNORM               c5 -> 007f8100
+RTV R8G8B8A8_SNORM               c6 -> 8181007f
+RTV R8G8B8A8_SINT                c0 -> 00000100
+RTV R8G8B8A8_SINT                c1 -> 00000000
+RTV R8G8B8A8_SINT                c2 -> 00000000
+RTV R8G8B8A8_SINT                c3 -> 7ffb7f7f
+RTV R8G8B8A8_SINT                c4 -> 7f807f80
+RTV R8G8B8A8_SINT                c5 -> 007f8000
+RTV R8G8B8A8_SINT                c6 -> ff00007f
+RTV R16G16_FLOAT                 c0 -> 003800b4
+RTV R16G16_FLOAT                 c1 -> 66329939
+RTV R16G16_FLOAT                 c2 -> 0418061e
+RTV R16G16_FLOAT                 c3 -> b25c80c5
+RTV R16G16_FLOAT                 c4 -> ff7bfffb
+RTV R16G16_FLOAT                 c5 -> 007e007c
+RTV R16G16_FLOAT                 c6 -> 00bcfdbb
+RTV R16G16_UNORM                 c0 -> 00800000
+RTV R16G16_UNORM                 c1 -> 333332b3
+RTV R16G16_UNORM                 c2 -> 80008201
+RTV R16G16_UNORM                 c3 -> ffff0000
+RTV R16G16_UNORM                 c4 -> ffff0000
+RTV R16G16_UNORM                 c5 -> 0000ffff
+RTV R16G16_UNORM                 c6 -> 00000000
+RTV R16G16_UINT                  c0 -> 00000000
+RTV R16G16_UINT                  c1 -> 00000000
+RTV R16G16_UINT                  c2 -> 00000000
+RTV R16G16_UINT                  c3 -> 2c010000
+RTV R16G16_UINT                  c4 -> ffff0000
+RTV R16G16_UINT                  c5 -> 0000ffff
+RTV R16G16_UINT                  c6 -> 00000000
+RTV R16G16_SNORM                 c0 -> 004000e0
+RTV R16G16_SNORM                 c1 -> 99199959
+RTV R16G16_SNORM                 c2 -> 4000c100
+RTV R16G16_SNORM                 c3 -> ff7f0180
+RTV R16G16_SNORM                 c4 -> ff7f0180
+RTV R16G16_SNORM                 c5 -> 0000ff7f
+RTV R16G16_SNORM                 c6 -> 01802280
+RTV R16G16_SINT                  c0 -> 00000000
+RTV R16G16_SINT                  c1 -> 00000000
+RTV R16G16_SINT                  c2 -> 00000000
+RTV R16G16_SINT                  c3 -> 2c01fbff
+RTV R16G16_SINT                  c4 -> ff7f0080
+RTV R16G16_SINT                  c5 -> 0000ff7f
+RTV R16G16_SINT                  c6 -> ffff0000
+RTV R32_FLOAT                    c0 -> 0000003f
+RTV R32_FLOAT                    c1 -> cdcc4c3e
+RTV R32_FLOAT                    c2 -> 8180003b
+RTV R32_FLOAT                    c3 -> 9a599643
+RTV R32_FLOAT                    c4 -> ffff7f4f
+RTV R32_FLOAT                    c5 -> 0000c07f
+RTV R32_FLOAT                    c6 -> 000080bf
+RTV R32_UINT                     c0 -> 00000000
+RTV R32_UINT                     c1 -> 00000000
+RTV R32_UINT                     c2 -> 00000000
+RTV R32_UINT                     c3 -> 2c010000
+RTV R32_UINT                     c4 -> 00ffffff
+RTV R32_UINT                     c5 -> 00000000
+RTV R32_UINT                     c6 -> 00000000
+RTV R32_SINT                     c0 -> 00000000
+RTV R32_SINT                     c1 -> 00000000
+RTV R32_SINT                     c2 -> 00000000
+RTV R32_SINT                     c3 -> 2c010000
+RTV R32_SINT                     c4 -> ffffff7f
+RTV R32_SINT                     c5 -> 00000000
+RTV R32_SINT                     c6 -> ffffffff
+RTV R8G8_UNORM                   c0 -> 8000
+RTV R8G8_UNORM                   c1 -> 33b2
+RTV R8G8_UNORM                   c2 -> 0002
+RTV R8G8_UNORM                   c3 -> ff00
+RTV R8G8_UNORM                   c4 -> ff00
+RTV R8G8_UNORM                   c5 -> 00ff
+RTV R8G8_UNORM                   c6 -> 0000
+RTV R8G8_UINT                    c0 -> 0000
+RTV R8G8_UINT                    c1 -> 0000
+RTV R8G8_UINT                    c2 -> 0000
+RTV R8G8_UINT                    c3 -> ff00
+RTV R8G8_UINT                    c4 -> ff00
+RTV R8G8_UINT                    c5 -> 00ff
+RTV R8G8_UINT                    c6 -> 0000
+RTV R8G8_SNORM                   c0 -> 40e0
+RTV R8G8_SNORM                   c1 -> 1959
+RTV R8G8_SNORM                   c2 -> 0001
+RTV R8G8_SNORM                   c3 -> 7f81
+RTV R8G8_SNORM                   c4 -> 7f81
+RTV R8G8_SNORM                   c5 -> 007f
+RTV R8G8_SNORM                   c6 -> 8181
+RTV R8G8_SINT                    c0 -> 0000
+RTV R8G8_SINT                    c1 -> 0000
+RTV R8G8_SINT                    c2 -> 0000
+RTV R8G8_SINT                    c3 -> 7ffb
+RTV R8G8_SINT                    c4 -> 7f80
+RTV R8G8_SINT                    c5 -> 007f
+RTV R8G8_SINT                    c6 -> ff00
+RTV R16_FLOAT                    c0 -> 0038
+RTV R16_FLOAT                    c1 -> 6632
+RTV R16_FLOAT                    c2 -> 0418
+RTV R16_FLOAT                    c3 -> b25c
+RTV R16_FLOAT                    c4 -> ff7b
+RTV R16_FLOAT                    c5 -> 007e
+RTV R16_FLOAT                    c6 -> 00bc
+RTV R16_UNORM                    c0 -> 0080
+RTV R16_UNORM                    c1 -> 3333
+RTV R16_UNORM                    c2 -> 8000
+RTV R16_UNORM                    c3 -> ffff
+RTV R16_UNORM                    c4 -> ffff
+RTV R16_UNORM                    c5 -> 0000
+RTV R16_UNORM                    c6 -> 0000
+RTV R16_UINT                     c0 -> 0000
+RTV R16_UINT                     c1 -> 0000
+RTV R16_UINT                     c2 -> 0000
+RTV R16_UINT                     c3 -> 2c01
+RTV R16_UINT                     c4 -> ffff
+RTV R16_UINT                     c5 -> 0000
+RTV R16_UINT                     c6 -> 0000
+RTV R16_SNORM                    c0 -> 0040
+RTV R16_SNORM                    c1 -> 9919
+RTV R16_SNORM                    c2 -> 4000
+RTV R16_SNORM                    c3 -> ff7f
+RTV R16_SNORM                    c4 -> ff7f
+RTV R16_SNORM                    c5 -> 0000
+RTV R16_SNORM                    c6 -> 0180
+RTV R16_SINT                     c0 -> 0000
+RTV R16_SINT                     c1 -> 0000
+RTV R16_SINT                     c2 -> 0000
+RTV R16_SINT                     c3 -> 2c01
+RTV R16_SINT                     c4 -> ff7f
+RTV R16_SINT                     c5 -> 0000
+RTV R16_SINT                     c6 -> ffff
+RTV R8_UNORM                     c0 -> 80
+RTV R8_UNORM                     c1 -> 33
+RTV R8_UNORM                     c2 -> 00
+RTV R8_UNORM                     c3 -> ff
+RTV R8_UNORM                     c4 -> ff
+RTV R8_UNORM                     c5 -> 00
+RTV R8_UNORM                     c6 -> 00
+RTV R8_UINT                      c0 -> 00
+RTV R8_UINT                      c1 -> 00
+RTV R8_UINT                      c2 -> 00
+RTV R8_UINT                      c3 -> ff
+RTV R8_UINT                      c4 -> ff
+RTV R8_UINT                      c5 -> 00
+RTV R8_UINT                      c6 -> 00
+RTV R8_SNORM                     c0 -> 40
+RTV R8_SNORM                     c1 -> 19
+RTV R8_SNORM                     c2 -> 00
+RTV R8_SNORM                     c3 -> 7f
+RTV R8_SNORM                     c4 -> 7f
+RTV R8_SNORM                     c5 -> 00
+RTV R8_SNORM                     c6 -> 81
+RTV R8_SINT                      c0 -> 00
+RTV R8_SINT                      c1 -> 00
+RTV R8_SINT                      c2 -> 00
+RTV R8_SINT                      c3 -> 7f
+RTV R8_SINT                      c4 -> 7f
+RTV R8_SINT                      c5 -> 00
+RTV R8_SINT                      c6 -> ff
+RTV A8_UNORM                     c0 -> 55
+RTV A8_UNORM                     c1 -> fc
+RTV A8_UNORM                     c2 -> 80
+RTV A8_UNORM                     c3 -> ff
+RTV A8_UNORM                     c4 -> 00
+RTV A8_UNORM                     c5 -> 00
+RTV A8_UNORM                     c6 -> ff
+RTV B5G6R5_UNORM                 c0 -> 1f80
+RTV B5G6R5_UNORM                 c1 -> 8035
+RTV B5G6R5_UNORM                 c2 -> 0000
+RTV B5G6R5_UNORM                 c3 -> 1ff8
+RTV B5G6R5_UNORM                 c4 -> 1ff8
+RTV B5G6R5_UNORM                 c5 -> e007
+RTV B5G6R5_UNORM                 c6 -> 0000
+RTV B5G5R5A1_UNORM               c0 -> 1f40
+RTV B5G5R5A1_UNORM               c1 -> c09a
+RTV B5G5R5A1_UNORM               c2 -> 0000
+RTV B5G5R5A1_UNORM               c3 -> 1ffc
+RTV B5G5R5A1_UNORM               c4 -> 1f7c
+RTV B5G5R5A1_UNORM               c5 -> e003
+RTV B5G5R5A1_UNORM               c6 -> 0080
+RTV B8G8R8A8_UNORM               c0 -> ff008055
+RTV B8G8R8A8_UNORM               c1 -> 00b233fc
+RTV B8G8R8A8_UNORM               c2 -> 02020080
+RTV B8G8R8A8_UNORM               c3 -> ff00ffff
+RTV B8G8R8A8_UNORM               c4 -> ff00ff00
+RTV B8G8R8A8_UNORM               c5 -> 00ff0000
+RTV B8G8R8A8_UNORM               c6 -> 000000ff
+RTV B8G8R8X8_UNORM               c0 -> ff008055
+RTV B8G8R8X8_UNORM               c1 -> 00b233fc
+RTV B8G8R8X8_UNORM               c2 -> 02020080
+RTV B8G8R8X8_UNORM               c3 -> ff00ffff
+RTV B8G8R8X8_UNORM               c4 -> ff00ff00
+RTV B8G8R8X8_UNORM               c5 -> 00ff0000
+RTV B8G8R8X8_UNORM               c6 -> 000000ff
+RTV B8G8R8A8_UNORM_SRGB          c0 -> ff00bc55
+RTV B8G8R8A8_UNORM_SRGB          c1 -> 06da7cfc
+RTV B8G8R8A8_UNORM_SRGB          c2 -> 19120680
+RTV B8G8R8A8_UNORM_SRGB          c3 -> ff00ffff
+RTV B8G8R8A8_UNORM_SRGB          c4 -> ff00ff00
+RTV B8G8R8A8_UNORM_SRGB          c5 -> 00ff0000
+RTV B8G8R8A8_UNORM_SRGB          c6 -> 000000ff
+RTV B8G8R8X8_UNORM_SRGB          c0 -> ff00bc00
+RTV B8G8R8X8_UNORM_SRGB          c1 -> 06da7c00
+RTV B8G8R8X8_UNORM_SRGB          c2 -> 19120600
+RTV B8G8R8X8_UNORM_SRGB          c3 -> ff00ff00
+RTV B8G8R8X8_UNORM_SRGB          c4 -> ff00ff00
+RTV B8G8R8X8_UNORM_SRGB          c5 -> 00ff0000
+RTV B8G8R8X8_UNORM_SRGB          c6 -> 00000000
+RTV B4G4R4A4_UNORM               c0 -> 0f58
+RTV B4G4R4A4_UNORM               c1 -> a0f3
+RTV B4G4R4A4_UNORM               c2 -> 0080
+RTV B4G4R4A4_UNORM               c3 -> 0fff
+RTV B4G4R4A4_UNORM               c4 -> 0f0f
+RTV B4G4R4A4_UNORM               c5 -> f000
+RTV B4G4R4A4_UNORM               c6 -> 00f0
+RTV R10G10B10_XR_BIAS_A2_UNORM   view -> 0x80070057
+RTV typeless RGBA8_TYPELESS as SRGB {0.5,-0.25,7,0.3333}: bc00ff55
+RTV typeless RGBA8_TYPELESS as UNORM {0.5,-0.25,7,0.3333}: 8000ff55
+RTV typeless RGBA8_TYPELESS as UINT {0.5,-0.25,7,0.3333}: 00000700
+RTV typeless RGBA8_TYPELESS as SNORM {0.5,-0.25,7,0.3333}: 40e07f2a
+RTV typeless BGRA8_TYPELESS as SRGB {0.5,-0.25,7,0.3333}: ff00bc55
+RTV typeless R32_TYPELESS as UINT {0.5,-0.25,7,0.3333}: 00000000
+RTV typeless R32_TYPELESS as FLOAT {0.5,-0.25,7,0.3333}: 0000003f
+RTV typeless RGBA16_TYPELESS as SNORM {0.5,-0.25,7,0.3333}: 004000e0 ff7fa92a
+RTV array view mip1 slices1-2: sub0: cccccccc
+RTV array view mip1 slices1-2: sub1: cccccccc
+RTV array view mip1 slices1-2: sub2: cccccccc
+RTV array view mip1 slices1-2: sub3: ff0000ff
+RTV array view mip1 slices1-2: sub4: cccccccc
+RTV array view mip1 slices1-2: sub5: ff0000ff
+RTV 3D view W 1..2 (4 slices, first texel each): cccccccc ff0000ff ff0000ff cccccccc
+DSV D16   both 0.75/0x11     -> ffbf
+DSV D16   depth-only 0.25    -> 0040
+DSV D16   stencil-only 0xA5  -> 0040
+DSV D16   flags 0            -> 0040
+DSV D16   depth 1.5          -> 0040
+DSV D16   depth -0.5         -> 0040
+DSV D16   depth NaN          -> 0040
+DSV D16   depth 0.1          -> 9a19
+DSV D24S8 both 0.75/0x11     -> ffffbf11
+DSV D24S8 depth-only 0.25    -> 00004011
+DSV D24S8 stencil-only 0xA5  -> 000040a5
+DSV D24S8 flags 0            -> 000040a5
+DSV D24S8 depth 1.5          -> 000040a5
+DSV D24S8 depth -0.5         -> 000040a5
+DSV D24S8 depth NaN          -> 000040a5
+DSV D24S8 depth 0.1          -> 9a9919a5
+DSV D32   both 0.75/0x11     -> 0000403f
+DSV D32   depth-only 0.25    -> 0000803e
+DSV D32   stencil-only 0xA5  -> 0000803e
+DSV D32   flags 0            -> 0000803e
+DSV D32   depth 1.5          -> 0000803e
+DSV D32   depth -0.5         -> 0000803e
+DSV D32   depth NaN          -> 0000803e
+DSV D32   depth 0.1          -> cdcccc3d
+DSV D32S8 both 0.75/0x11     -> 0000403f 11000000
+DSV D32S8 depth-only 0.25    -> 0000803e 11000000
+DSV D32S8 stencil-only 0xA5  -> 0000803e a5000000
+DSV D32S8 flags 0            -> 0000803e a5000000
+DSV D32S8 depth 1.5          -> 0000803e a5000000
+DSV D32S8 depth -0.5         -> 0000803e a5000000
+DSV D32S8 depth NaN          -> 0000803e a5000000
+DSV D32S8 depth 0.1          -> cdcccc3d a5000000
+DSV array view slice1: slice0: 00000000
+DSV array view slice1: slice1: 0000803f
+DSV array view slice1: slice2: 00000000
+UAV UAV    R32_UINT             Uint u0 -> 78563412
+UAV UAV    R32_UINT             Uint u1 -> 01000000
+UAV UAV    R32_UINT             Float f0 -> a5a5a5a5
+UAV UAV    R32_UINT             Float f1 -> a5a5a5a5
+UAV UAV    R32_SINT             Uint u0 -> 78563412
+UAV UAV    R32_SINT             Uint u1 -> 01000000
+UAV UAV    R32_SINT             Float f0 -> a5a5a5a5
+UAV UAV    R32_SINT             Float f1 -> a5a5a5a5
+UAV UAV    R32_FLOAT            Uint u0 -> 78563412
+UAV UAV    R32_FLOAT            Uint u1 -> 01000000
+UAV UAV    R32_FLOAT            Float f0 -> 0000003f
+UAV UAV    R32_FLOAT            Float f1 -> 9a599643
+UAV UAV    R32G32B32A32_FLOAT   Uint u0 -> 78563412 f0debc9a 0000803f ffffffff
+UAV UAV    R32G32B32A32_FLOAT   Uint u1 -> 01000000 02000000 03000000 04000000
+UAV UAV    R32G32B32A32_FLOAT   Float f0 -> 0000003f 000080be 9a99d93f 4ca6aa3e
+UAV UAV    R32G32B32A32_FLOAT   Float f1 -> 9a599643 0000b0c0 0000c07f 0000807f
+UAV UAV    R32G32B32A32_UINT    Uint u0 -> 78563412 f0debc9a 0000803f ffffffff
+UAV UAV    R32G32B32A32_UINT    Uint u1 -> 01000000 02000000 03000000 04000000
+UAV UAV    R32G32B32A32_UINT    Float f0 -> a5a5a5a5 a5a5a5a5 a5a5a5a5 a5a5a5a5
+UAV UAV    R32G32B32A32_UINT    Float f1 -> a5a5a5a5 a5a5a5a5 a5a5a5a5 a5a5a5a5
+UAV UAV    R16G16B16A16_FLOAT   Uint u0 -> 7856f0de 0000ffff
+UAV UAV    R16G16B16A16_FLOAT   Uint u1 -> 01000200 03000400
+UAV UAV    R16G16B16A16_FLOAT   Float f0 -> 003800b4 cc3e5535
+UAV UAV    R16G16B16A16_FLOAT   Float f1 -> b25c80c5 007e007c
+UAV UAV    R16G16B16A16_UNORM   Uint u0 -> 7856f0de 0000ffff
+UAV UAV    R16G16B16A16_UNORM   Uint u1 -> 01000200 03000400
+UAV UAV    R16G16B16A16_UNORM   Float f0 -> 00800000 ffff5355
+UAV UAV    R16G16B16A16_UNORM   Float f1 -> ffff0000 0000ffff
+UAV UAV    R16G16B16A16_SNORM   Uint u0 -> 7856f0de 0000ffff
+UAV UAV    R16G16B16A16_SNORM   Uint u1 -> 01000200 03000400
+UAV UAV    R16G16B16A16_SNORM   Float f0 -> 004000e0 ff7fa92a
+UAV UAV    R16G16B16A16_SNORM   Float f1 -> ff7f0180 0000ff7f
+UAV UAV    R16G16B16A16_UINT    Uint u0 -> 7856f0de 0000ffff
+UAV UAV    R16G16B16A16_UINT    Uint u1 -> 01000200 03000400
+UAV UAV    R16G16B16A16_UINT    Float f0 -> a5a5a5a5 a5a5a5a5
+UAV UAV    R16G16B16A16_UINT    Float f1 -> a5a5a5a5 a5a5a5a5
+UAV UAV    R8G8B8A8_UNORM       Uint u0 -> 78f000ff
+UAV UAV    R8G8B8A8_UNORM       Uint u1 -> 01020304
+UAV UAV    R8G8B8A8_UNORM       Float f0 -> 8000ff55
+UAV UAV    R8G8B8A8_UNORM       Float f1 -> ff0000ff
+UAV UAV    R8G8B8A8_UINT        Uint u0 -> 78f000ff
+UAV UAV    R8G8B8A8_UINT        Uint u1 -> 01020304
+UAV UAV    R8G8B8A8_UINT        Float f0 -> a5a5a5a5
+UAV UAV    R8G8B8A8_UINT        Float f1 -> a5a5a5a5
+UAV UAV    R8G8B8A8_SNORM       Uint u0 -> 78f000ff
+UAV UAV    R8G8B8A8_SNORM       Uint u1 -> 01020304
+UAV UAV    R8G8B8A8_SNORM       Float f0 -> 40e07f2a
+UAV UAV    R8G8B8A8_SNORM       Float f1 -> 7f81007f
+UAV UAV    R8G8B8A8_SINT        Uint u0 -> 78f000ff
+UAV UAV    R8G8B8A8_SINT        Uint u1 -> 01020304
+UAV UAV    R8G8B8A8_SINT        Float f0 -> a5a5a5a5
+UAV UAV    R8G8B8A8_SINT        Float f1 -> a5a5a5a5
+UAV UAV    R10G10B10A2_UNORM    Uint u0 -> 78c20bc0
+UAV UAV    R10G10B10A2_UNORM    Uint u1 -> 01083000
+UAV UAV    R10G10B10A2_UNORM    Float f0 -> 0002f07f
+UAV UAV    R10G10B10A2_UNORM    Float f1 -> ff0300c0
+UAV UAV    R10G10B10A2_UINT     Uint u0 -> 78c20bc0
+UAV UAV    R10G10B10A2_UINT     Uint u1 -> 01083000
+UAV UAV    R10G10B10A2_UINT     Float f0 -> a595565a
+UAV UAV    R10G10B10A2_UINT     Float f1 -> a595565a
+UAV UAV    R11G11B10_FLOAT      Uint u0 -> 78863700
+UAV UAV    R11G11B10_FLOAT      Uint u1 -> 0110c000
+UAV UAV    R11G11B10_FLOAT      Float f0 -> 8003807d
+UAV UAV    R11G11B10_FLOAT      Float f1 -> cb05c0ff
+UAV UAV    R16G16_FLOAT         Uint u0 -> 7856f0de
+UAV UAV    R16G16_FLOAT         Uint u1 -> 01000200
+UAV UAV    R16G16_FLOAT         Float f0 -> 003800b4
+UAV UAV    R16G16_FLOAT         Float f1 -> b25c80c5
+UAV UAV    R16_FLOAT            Uint u0 -> 7856
+UAV UAV    R16_FLOAT            Uint u1 -> 0100
+UAV UAV    R16_FLOAT            Float f0 -> 0038
+UAV UAV    R16_FLOAT            Float f1 -> b25c
+UAV UAV    R16_UNORM            Uint u0 -> 7856
+UAV UAV    R16_UNORM            Uint u1 -> 0100
+UAV UAV    R16_UNORM            Float f0 -> 0080
+UAV UAV    R16_UNORM            Float f1 -> ffff
+UAV UAV    R16_SNORM            Uint u0 -> 7856
+UAV UAV    R16_SNORM            Uint u1 -> 0100
+UAV UAV    R16_SNORM            Float f0 -> 0040
+UAV UAV    R16_SNORM            Float f1 -> ff7f
+UAV UAV    R16_UINT             Uint u0 -> 7856
+UAV UAV    R16_UINT             Uint u1 -> 0100
+UAV UAV    R16_UINT             Float f0 -> a5a5
+UAV UAV    R16_UINT             Float f1 -> a5a5
+UAV UAV    R8_UNORM             Uint u0 -> 78
+UAV UAV    R8_UNORM             Uint u1 -> 01
+UAV UAV    R8_UNORM             Float f0 -> 80
+UAV UAV    R8_UNORM             Float f1 -> ff
+UAV UAV    R8_UINT              Uint u0 -> 78
+UAV UAV    R8_UINT              Uint u1 -> 01
+UAV UAV    R8_UINT              Float f0 -> a5
+UAV UAV    R8_UINT              Float f1 -> a5
+UAV UAV    R8_SNORM             Uint u0 -> 78
+UAV UAV    R8_SNORM             Uint u1 -> 01
+UAV UAV    R8_SNORM             Float f0 -> 40
+UAV UAV    R8_SNORM             Float f1 -> 7f
+UAV UAV    B8G8R8A8_UNORM       Uint u0 -> 00f078ff
+UAV UAV    B8G8R8A8_UNORM       Uint u1 -> 03020104
+UAV UAV    B8G8R8A8_UNORM       Float f0 -> ff008055
+UAV UAV    B8G8R8A8_UNORM       Float f1 -> 0000ffff
+UAV UAV|RT R32_UINT             Uint u0 -> 78563412
+UAV UAV|RT R32_UINT             Uint u1 -> 01000000
+UAV UAV|RT R32_UINT             Float f0 -> a5a5a5a5
+UAV UAV|RT R32_UINT             Float f1 -> a5a5a5a5
+UAV UAV|RT R8G8B8A8_UNORM       Uint u0 -> 78f000ff
+UAV UAV|RT R8G8B8A8_UNORM       Uint u1 -> 01020304
+UAV UAV|RT R8G8B8A8_UNORM       Float f0 -> 8000ff55
+UAV UAV|RT R8G8B8A8_UNORM       Float f1 -> ff0000ff
+UAV UAV|RT R32_FLOAT            Uint u0 -> 78563412
+UAV UAV|RT R32_FLOAT            Uint u1 -> 01000000
+UAV UAV|RT R32_FLOAT            Float f0 -> 0000003f
+UAV UAV|RT R32_FLOAT            Float f1 -> 9a599643
+UAV buffer raw R32_TYPELESS [4,6) of 8 words Uint: cccccccc cccccccc cccccccc cccccccc 44332211 44332211 cccccccc cccccccc
+UAV buffer raw R32_TYPELESS [4,6) of 8 words Float: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UAV buffer structured8 [1,2) of 3 Uint: cccccccc cccccccc 44332211 44332211 cccccccc cccccccc
+UAV buffer structured8 [1,2) of 3 Float: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UAV buffer structured12 [0,2) of 2 Uint: 44332211 44332211 44332211 44332211 44332211 44332211
+UAV buffer structured12 [0,2) of 2 Float: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UAV buffer typed R32G32B32A32_UINT [0,2) Uint: 44332211 88776655 0000803f 80010000 44332211 88776655 0000803f 80010000
+UAV buffer typed R32G32B32A32_UINT [0,2) Float: cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc cccccccc
+UAV buffer typed R16_UINT [1,5) of 8 Uint: cccc4433 44334433 4433cccc cccccccc
+UAV buffer typed R16_UINT [1,5) of 8 Float: cccccccc cccccccc cccccccc cccccccc
+UAV buffer typed R8G8B8A8_UNORM [0,2) Uint: 44880080 44880080
+UAV buffer typed R8G8B8A8_UNORM [0,2) Float: 8000ffff 8000ffff
+UAV buffer typed R32_FLOAT [0,4) Uint: 44332211 44332211 44332211 44332211
+UAV buffer typed R32_FLOAT [0,4) Float: 0000003f 0000003f 0000003f 0000003f
+UAV buffer typed R32_UINT [2,4) of 4 Uint: cccccccc cccccccc 44332211 44332211
+UAV buffer typed R32_UINT [2,4) of 4 Float: cccccccc cccccccc cccccccc cccccccc
+UAV buffer typed R16G16_FLOAT [0,2) Uint: 44338877 44338877
+UAV buffer typed R16G16_FLOAT [0,2) Float: 003800b4 003800b4
+UAV array view slice1 only: slice0: cccccccc cccccccc
+UAV array view slice1 only: slice1: 07000000 07000000
+UAV array view slice1 only: slice2: cccccccc cccccccc
+UAV 3D view W 1..2 (4 slices): cccccccc cccccccc 07000000 07000000 07000000 07000000 cccccccc cccccccc
+UAV 3D view all W: 09000000 09000000 09000000 09000000 09000000 09000000 09000000 09000000
+UAV mip1 view: mip0: cccccccc cccccccc cccccccc cccccccc
+UAV mip1 view: mip1: 07000000 07000000
+UAV R32_TYPELESS res, R32_FLOAT view, Float 2.5: 00002040 00002040
+CLV RTV rect (1,1)-(3,2): 00000000 00000000 00000000 00000000 00000000 ff8040ff ff8040ff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+CLV RTV rect (-5,-5)-(100,100): ff8040ff ff8040ff ff8040ff ff8040ff
+CLV RTV two rects: ff8040ff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 ff8040ff
+CLV RTV NULL rects: ff8040ff ff8040ff ff8040ff ff8040ff
+CLV RGBA8_UINT {235.7,-3,300,1.9} whole: eb00ff01
+CLV RGBA8_UINT {17.9,18.2,19.5,20.5} rect: 11121314 eb00ff01
+CLV array RTV slices1-2 rect x1: slice0: 00000000 00000000
+CLV array RTV slices1-2 rect x1: slice1: 00000000 ff8040ff
+CLV array RTV slices1-2 rect x1: slice2: 00000000 ff8040ff
+CLV UAV R32_FLOAT rect x1..3 2.5: 00000000 00002040 00002040 00000000
+CLV UAV R32_UINT rect x1..3 7.9: 00000000 07000000 07000000 00000000
+CLV UAV R32_UINT whole 7.9: 07000000 07000000 07000000 07000000
+CLV buffer UAV R32_UINT rect 1..3: cccccccc 07000000 07000000 cccccccc
+CLV buffer UAV R32_UINT whole: 07000000 07000000 07000000 07000000
+CLV DSV (not a target): 0000803f 0000803f
+CLV 3D RTV (Texture2D-only): ff8040ff ff8040ff
+CLV removed-reason 0x00000000
+DIS then clear: 00ff00ff
+DIS removed-reason 0x00000000
+GEN filter R32_UINT (not mip-generatable) mip1: readback hr=0x887a0005
+GEN R32_UINT: removed-reason 0x887a0020
+END removed-reason 0x00000000
+#
+# winoracle (WARP, FL 11_1) output above, x64; the x86 build is identical
+# except "ptr=4". Vitreo 2026-09-28 build (FL 11_0, Apple M4 Pro) differs on
+# ~320 of these lines; run it with section args "0 1 2 3 4 5 6 7 8 9 10 11 12"
+# because section 13 (GenerateMips on R32_UINT) aborts the Vitreo host.
+# Verdicts (full table: .docs/audits/2026-09-28-d3d11-contract-audit/area-06-resource-ops.md):
+# - MAP legality matrix: matches except NO_OVERWRITE on dynamic CB/SRV (Vitreo
+#   refuses, consistent with its D3D11_OPTIONS=0) and re-Map of a mapped
+#   subresource (WARP S_OK, Vitreo E_INVALIDARG). Staging RowPitch: WARP rounds
+#   to 4 bytes (13-wide R8 -> 16), Vitreo packs (13): implementation-defined.
+# - UPD: buffer UpdateSubresource with ANY box is dropped by Vitreo; BC (2D and
+#   3D) UpdateSubresource is dropped; 3D box ignored (whole level written from
+#   the box data, reading past pSrcData); DYNAMIC/IMMUTABLE/STAGING buffers and
+#   DYNAMIC textures are updated where Windows drops the call.
+# - CPY: same-resource copies dropped; same-family copies between different
+#   typed formats (SRGB<->UNORM, FLOAT<->UINT, BC1<->BC1_SRGB) dropped; the
+#   D3D10.1 BC<->R32G32/R32G32B32A32 reinterpretation dropped; Texture3D
+#   CopySubresourceRegion dropped; IMMUTABLE destination / partial DS or MS
+#   region / 2D->1D / structured stride mismatch copied where Windows drops.
+# - CSC matches. RES matches except UINT resolve (Windows drops, Vitreo writes
+#   garbage) and an SRGB-format mismatch Windows tolerates.
+# - GEN: view mip window, array window and the GENERATE_MIPS flag ignored;
+#   integer format aborts the host process (Windows: DRIVER_INTERNAL_ERROR).
+# - LOD: RESOURCE_CLAMP textures cannot be created on Vitreo; Get returns 0.
+# - RTV: view format ignored for typeless resources (SRGB/UINT/SNORM views);
+#   float16/R11G11B10 use round-to-nearest and overflow to INF (spec 3.2.2:
+#   round-to-zero, max finite); several RT formats not creatable (area 02/08).
+# - DSV: out-of-range / NaN depth is clamped (NaN stored) where Windows drops
+#   the clear; D16 0.25 stores 0x3fff (0.75 ULP, outside the 0.6 ULP rule).
+# - UAV: every clear on a UAV-only texture is a no-op; Uint values converted
+#   through float; Float on integer/raw/structured not dropped; typed buffers
+#   replicate Values[0]; array/3D/mip windows ignored.
+# - CLV: array slices beyond the first skipped; buffer UAV gets raw float
+#   bits; NumRects=0 on a UINT UAV goes through the Float clear.

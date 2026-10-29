@@ -1,0 +1,32 @@
+layout pointer=4 flags=40 force=44 peb_process_heap=18,
+process present=1 mapped=1 flags=00000002 force=00000000
+rtl0 present=1 mapped=1 flags=00000002 force=00000000
+rtl1 present=1 mapped=1 flags=00000003 force=00000001
+rtl2 present=1 mapped=1 flags=00000006 force=00000004
+rtl3 present=1 mapped=1 flags=00040002 force=00000000
+rtl4 present=1 mapped=1 flags=00040007 force=00000005
+rtl5 present=1 mapped=1 flags=00000007 force=00000005
+rtl6 present=1 mapped=1 flags=00040003 force=00000001
+rtl7 present=1 mapped=1 flags=00040006 force=00000004
+created0 present=1 mapped=1 flags=00001002 force=00000000
+created1 present=1 mapped=1 flags=00001003 force=00000001
+created2 present=1 mapped=1 flags=00001006 force=00000004
+created3 present=1 mapped=1 flags=00041002 force=00000000
+created4 present=1 mapped=1 flags=00041007 force=00000005
+created5 present=1 mapped=1 flags=00001007 force=00000005
+created6 present=1 mapped=1 flags=00041003 force=00000001
+created7 present=1 mapped=1 flags=00041006 force=00000004
+created8 present=1 mapped=1 flags=00001000 force=00000000
+created9 present=1 mapped=1 flags=00001004 force=00000004
+close_heap result=0 last=00000006 fault=0 stillvalid=1
+after_close alloc=1 listed=1
+destroy0 result=1 no_commit=1
+destroy1 result=1 no_commit=1
+destroy2 result=1 no_commit=1
+destroy3 result=1 no_commit=1
+destroy4 result=1 no_commit=1
+destroy5 result=1 no_commit=1
+destroy6 result=1 no_commit=1
+destroy7 result=1 no_commit=1
+destroy8 result=1 no_commit=1
+destroy9 result=1 no_commit=1

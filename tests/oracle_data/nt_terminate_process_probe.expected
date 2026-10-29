@@ -1,0 +1,11 @@
+suspended child                          0x00000000
+  child exit code                        0x00000bad
+terminated child again                   0xc000010a
+own process, query access only           0xc0000022
+event handle                             0xc0000024
+invalid handle 0x1234                    0xc0000008
+  null handle returned                   0x00000000
+  other thread wait                      0x00000000
+  other thread exit code                 0x00004321
+child NtTerminateProcess(-1) exit code   0x00001234
+child NtTerminateProcess(NULL) exit code 0x00004321

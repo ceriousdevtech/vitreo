@@ -1,0 +1,334 @@
+== x64
+-- layered
+glwa_before_set ret=00000000 err=0000dead
+slwa_not_layered ret=00000000 err=00000057
+slwa_invalid_hwnd ret=00000000 err=00000578
+slwa_alpha ret=00000001 err=0000dead
+glwa_after_alpha ret=00000001 err=0000dead
+  key=00000000 alpha=128 flags=2
+slwa_colorkey ret=00000001 err=0000dead
+glwa_after_colorkey ret=00000001 err=0000dead
+  key=0000ff00 alpha=128 flags=1
+slwa_flags_0 ret=00000001 err=0000dead
+slwa_bad_flags ret=00000000 err=00000057
+glwa_not_layered ret=00000000 err=00000057
+glwa_null_outputs ret=00000001 err=0000dead
+ulw_ok ret=00000001 err=0000dead
+glwa_after_ulw ret=00000000 err=0000dead
+slwa_after_ulw ret=00000001 err=0000dead
+ulw_after_slwa ret=00000000 err=00000057
+ulw_not_layered ret=00000000 err=00000057
+ulw_bad_flags ret=00000000 err=00000057
+ulw_invalid_hwnd ret=00000000 err=00000578
+ulw_move_only ret=00000000 err=00000057
+slwa_after_setwindowlong_layered ret=00000001 err=0000dead
+glwa_after_layered_removed ret=00000000 err=00000057
+-- dwm
+dwm_is_composition_enabled ret=00000000 err=0000dead
+  on=1
+dwmgwa_extended_frame_bounds ret=00000000 err=0000dead
+  frame rect=57,60,343,253
+  window rect=50,60,350,260
+  efb_popup ret=00000000 err=0000dead
+    frame rect=40,30,240,180
+    window rect=40,30,240,180
+  efb_fixed_caption ret=00000000 err=0000dead
+    frame rect=42,30,238,178
+    window rect=40,30,240,180
+  efb_popup_thickframe ret=00000000 err=0000dead
+    frame rect=46,30,234,174
+    window rect=40,30,240,180
+  efb_popup_border ret=00000000 err=0000dead
+    frame rect=40,30,240,180
+    window rect=40,30,240,180
+  efb_toolwindow ret=00000000 err=0000dead
+    frame rect=47,30,233,173
+    window rect=40,30,240,180
+  efb_maximized ret=00000000 err=0000dead
+    frame rect=0,0,1920,1032
+    window rect=-8,-8,1928,1040
+  efb_minimized ret=00000000 err=0000dead
+    frame rect=-31993,-32000,-31847,-31972
+    window rect=-32000,-32000,-31840,-31972
+  efb_large_buffer ret=00000000 err=0000dead
+  dwmswa_policy_large ret=00000000 err=0000dead
+  dwmgwa_cloaked_large ret=00000000 err=0000dead
+    v=0
+  dwmgwa_cloaked_small ret=80070057 err=00000000
+  dwmgwa_caption_button_bounds ret=00000000 err=0000dead
+    r rect=147,0,293,30
+  dwmgwa_visible_frame_border ret=00000000 err=0000dead
+    v=1
+  dwmswa_corner ret=00000000 err=0000dead
+  dwmswa_border_color ret=00000000 err=0000dead
+  dwmswa_backdrop ret=00000000 err=0000dead
+  dwmswa_transitions ret=00000000 err=0000dead
+  dwmswa_attr_0 ret=80070057 err=0000dead
+  dwmswa_attr_39 ret=00000000 err=0000dead
+  dwmswa_null_value ret=80070057 err=0000dead
+  dwmgwa_ncrendering_after_disable ret=00000000 err=0000dead
+    v=0
+  dwmgwa_ncrendering_popup ret=00000000 err=0000dead
+    v=0
+  dwmgwa_null_hwnd ret=80070006 err=00000006
+  dwmswa_null_hwnd ret=80070006 err=00000006
+  dwm_extend_frame_null_hwnd ret=80070057 err=00000578
+dwmgwa_efb_small ret=8007007a err=0000007a
+dwmgwa_cloaked ret=00000000 err=0000dead
+  v=0
+dwmgwa_ncrendering_enabled ret=00000000 err=0000dead
+  v=1
+dwmgwa_child ret=80070006 err=00000006
+dwmgwa_invalid_hwnd ret=80070006 err=00000006
+dwmgwa_bad_attr ret=80070057 err=0000dead
+dwmgwa_set_only_attr ret=80070057 err=00000057
+dwmgwa_null_out ret=80070057 err=0000dead
+dwmswa_ncrendering_policy ret=00000000 err=0000dead
+dwmswa_dark_mode_20 ret=00000000 err=0000dead
+dwmswa_small ret=80070057 err=0000dead
+dwmswa_get_only_attr ret=80070057 err=00000057
+dwmswa_bad_attr ret=80070057 err=0000dead
+dwmswa_invalid_hwnd ret=80070006 err=00000006
+dwmswa_child ret=80070006 err=00000006
+dwmswa_cloak ret=00000000 err=0000dead
+dwmgwa_cloaked_after ret=00000000 err=0000dead
+  v=1
+dwm_extend_frame ret=00000000 err=00000000
+dwm_extend_frame_invalid ret=80070057 err=00000578
+dwm_extend_frame_child ret=80070057 err=0000dead
+dwm_def_window_proc ret=00000000 err=0000dead
+  lr=5
+dwm_timing_null_hwnd ret=00000000 err=00000000
+  cb=292
+  rate_num_nonzero ret=00000001 err=00000000
+dwm_timing_hwnd ret=80070057 err=00000000
+dwm_timing_bad_cb ret=88980090 err=0000dead
+dwm_flush ret=00000000 err=0000dead
+-- uxtheme
+openthemedata_button_nonnull ret=00000001 err=00000000
+openthemedata_bogus null=1 err=80070490
+getthemepartsize ret=00000000 err=0000dead
+  cx=13
+  cy=11
+getthemepartsize_checkbox ret=00000000 err=0000dead
+  cx=13
+  cy=13
+getthemepartsize_bad_type ret=80070057 err=0000dead
+getthemebackgroundcontentrect ret=00000000 err=0000dead
+  content rect=3,3,97,27
+drawthemebackground ret=00000000 err=0000dead
+drawthemebackground_null_dc ret=80070006 err=0000dead
+drawthemebackground_null_theme ret=80070006 err=0000dead
+getthemepartsize_null_theme ret=80070006 err=0000dead
+closethemedata ret=00000000 err=0000dead
+closethemedata_null ret=80070006 err=0000dead
+closethemedata_bogus ret=80070006 err=0000dead
+uxtheme_ordinal_47_present ret=00000001 err=00000000
+-- oleacc
+aofw_client ret=00000000 err=00000002
+  acc_nonnull ret=00000001 err=00000000
+windowfromaccessibleobject ret=00000000 err=0000dead
+  back_is_plain ret=00000001 err=00000000
+  accchildcount ret=00000000 err=0000dead
+  n=1
+accessiblechildren ret=00000001 err=00000002
+  got=1
+accessiblechildren_bad_start ret=00000001 err=0000dead
+  got=0
+aofw_invalid_hwnd ret=80004005 err=0000dead
+  bad_null ret=00000001 err=00000000
+createstdaccessibleobject ret=00000000 err=00000002
+createstdaccessibleobject_invalid ret=80004005 err=0000dead
+lresultfromobject positive=1
+lresultfromobject_null ret=80070057 err=00000000
+windowfromaccessibleobject_null ret=80070057 err=0000dead
+-- uia
+uia_host_provider ret=00000000 err=0000dead
+  p_nonnull ret=00000001 err=00000000
+uia_host_provider_invalid ret=80040201 err=00000000
+  p_null ret=00000001 err=00000000
+uia_host_provider_null_out ret=80070057 err=00000000
+uia_return_raw_null_provider ret=00000000 err=00000000
+uia_raise_null_provider ret=80070057 err=0000dead
+uia_reserved_not_supported ret=00000000 err=0000dead
+  nsv_nonnull ret=00000001 err=00000000
+uia_reserved_null_out ret=80070057 err=0000dead
+-- regions
+getwindowrgn_none ret=00000000 err=0000dead
+getwindowrgn_invalid ret=00000000 err=00000578
+setwindowrgn ret=00000001 err=0000dead
+getwindowrgn_after ret=00000002 err=0000dead
+  box rect=0,0,50,40
+getwindowrgnbox ret=00000002 err=0000dead
+  box rect=0,0,50,40
+setwindowrgn_null ret=00000001 err=0000dead
+getwindowrgn_cleared ret=00000000 err=0000dead
+setwindowrgn_invalid ret=00000000 err=00000578
+done
+== x86
+-- layered
+glwa_before_set ret=00000000 err=0000dead
+slwa_not_layered ret=00000000 err=00000057
+slwa_invalid_hwnd ret=00000000 err=00000578
+slwa_alpha ret=00000001 err=0000dead
+glwa_after_alpha ret=00000001 err=0000dead
+  key=00000000 alpha=128 flags=2
+slwa_colorkey ret=00000001 err=0000dead
+glwa_after_colorkey ret=00000001 err=0000dead
+  key=0000ff00 alpha=128 flags=1
+slwa_flags_0 ret=00000001 err=0000dead
+slwa_bad_flags ret=00000000 err=00000057
+glwa_not_layered ret=00000000 err=00000057
+glwa_null_outputs ret=00000001 err=0000dead
+ulw_ok ret=00000001 err=0000dead
+glwa_after_ulw ret=00000000 err=0000dead
+slwa_after_ulw ret=00000001 err=0000dead
+ulw_after_slwa ret=00000000 err=00000057
+ulw_not_layered ret=00000000 err=00000057
+ulw_bad_flags ret=00000000 err=00000057
+ulw_invalid_hwnd ret=00000000 err=00000578
+ulw_move_only ret=00000000 err=00000057
+slwa_after_setwindowlong_layered ret=00000001 err=0000dead
+glwa_after_layered_removed ret=00000000 err=00000057
+-- dwm
+dwm_is_composition_enabled ret=00000000 err=0000dead
+  on=1
+dwmgwa_extended_frame_bounds ret=00000000 err=0000dead
+  frame rect=57,60,343,253
+  window rect=50,60,350,260
+  efb_popup ret=00000000 err=0000dead
+    frame rect=40,30,240,180
+    window rect=40,30,240,180
+  efb_fixed_caption ret=00000000 err=0000dead
+    frame rect=42,30,238,178
+    window rect=40,30,240,180
+  efb_popup_thickframe ret=00000000 err=0000dead
+    frame rect=46,30,234,174
+    window rect=40,30,240,180
+  efb_popup_border ret=00000000 err=0000dead
+    frame rect=40,30,240,180
+    window rect=40,30,240,180
+  efb_toolwindow ret=00000000 err=0000dead
+    frame rect=47,30,233,173
+    window rect=40,30,240,180
+  efb_maximized ret=00000000 err=0000dead
+    frame rect=0,0,1920,1032
+    window rect=-8,-8,1928,1040
+  efb_minimized ret=00000000 err=0000dead
+    frame rect=-31993,-32000,-31847,-31972
+    window rect=-32000,-32000,-31840,-31972
+  efb_large_buffer ret=00000000 err=0000dead
+  dwmswa_policy_large ret=00000000 err=0000dead
+  dwmgwa_cloaked_large ret=00000000 err=0000dead
+    v=0
+  dwmgwa_cloaked_small ret=80070057 err=00000000
+  dwmgwa_caption_button_bounds ret=00000000 err=0000dead
+    r rect=147,0,293,30
+  dwmgwa_visible_frame_border ret=00000000 err=0000dead
+    v=1
+  dwmswa_corner ret=00000000 err=0000dead
+  dwmswa_border_color ret=00000000 err=0000dead
+  dwmswa_backdrop ret=00000000 err=0000dead
+  dwmswa_transitions ret=00000000 err=0000dead
+  dwmswa_attr_0 ret=80070057 err=0000dead
+  dwmswa_attr_39 ret=00000000 err=0000dead
+  dwmswa_null_value ret=80070057 err=0000dead
+  dwmgwa_ncrendering_after_disable ret=00000000 err=0000dead
+    v=0
+  dwmgwa_ncrendering_popup ret=00000000 err=0000dead
+    v=0
+  dwmgwa_null_hwnd ret=80070006 err=00000006
+  dwmswa_null_hwnd ret=80070006 err=00000006
+  dwm_extend_frame_null_hwnd ret=80070057 err=00000578
+dwmgwa_efb_small ret=8007007a err=0000007a
+dwmgwa_cloaked ret=00000000 err=0000dead
+  v=0
+dwmgwa_ncrendering_enabled ret=00000000 err=0000dead
+  v=1
+dwmgwa_child ret=80070006 err=00000006
+dwmgwa_invalid_hwnd ret=80070006 err=00000006
+dwmgwa_bad_attr ret=80070057 err=0000dead
+dwmgwa_set_only_attr ret=80070057 err=00000057
+dwmgwa_null_out ret=80070057 err=0000dead
+dwmswa_ncrendering_policy ret=00000000 err=0000dead
+dwmswa_dark_mode_20 ret=00000000 err=0000dead
+dwmswa_small ret=80070057 err=0000dead
+dwmswa_get_only_attr ret=80070057 err=00000057
+dwmswa_bad_attr ret=80070057 err=0000dead
+dwmswa_invalid_hwnd ret=80070006 err=00000006
+dwmswa_child ret=80070006 err=00000006
+dwmswa_cloak ret=00000000 err=0000dead
+dwmgwa_cloaked_after ret=00000000 err=0000dead
+  v=1
+dwm_extend_frame ret=00000000 err=00000000
+dwm_extend_frame_invalid ret=80070057 err=00000578
+dwm_extend_frame_child ret=80070057 err=0000dead
+dwm_def_window_proc ret=00000000 err=0000dead
+  lr=5
+dwm_timing_null_hwnd ret=00000000 err=00000000
+  cb=292
+  rate_num_nonzero ret=00000001 err=00000000
+dwm_timing_hwnd ret=80070057 err=00000000
+dwm_timing_bad_cb ret=88980090 err=0000dead
+dwm_flush ret=00000000 err=0000dead
+-- uxtheme
+openthemedata_button_nonnull ret=00000001 err=00000000
+openthemedata_bogus null=1 err=80070490
+getthemepartsize ret=00000000 err=0000dead
+  cx=13
+  cy=11
+getthemepartsize_checkbox ret=00000000 err=0000dead
+  cx=13
+  cy=13
+getthemepartsize_bad_type ret=80070057 err=0000dead
+getthemebackgroundcontentrect ret=00000000 err=0000dead
+  content rect=3,3,97,27
+drawthemebackground ret=00000000 err=0000dead
+drawthemebackground_null_dc ret=80070006 err=0000dead
+drawthemebackground_null_theme ret=80070006 err=0000dead
+getthemepartsize_null_theme ret=80070006 err=0000dead
+closethemedata ret=00000000 err=0000dead
+closethemedata_null ret=80070006 err=0000dead
+closethemedata_bogus ret=80070006 err=0000dead
+uxtheme_ordinal_47_present ret=00000001 err=00000000
+-- oleacc
+aofw_client ret=00000000 err=00000002
+  acc_nonnull ret=00000001 err=00000000
+windowfromaccessibleobject ret=00000000 err=0000dead
+  back_is_plain ret=00000001 err=00000000
+  accchildcount ret=00000000 err=0000dead
+  n=1
+accessiblechildren ret=00000001 err=00000002
+  got=1
+accessiblechildren_bad_start ret=00000001 err=0000dead
+  got=0
+aofw_invalid_hwnd ret=80004005 err=0000dead
+  bad_null ret=00000001 err=00000000
+createstdaccessibleobject ret=00000000 err=00000002
+createstdaccessibleobject_invalid ret=80004005 err=0000dead
+lresultfromobject positive=1
+lresultfromobject_null ret=80070057 err=00000000
+windowfromaccessibleobject_null ret=80070057 err=0000dead
+-- uia
+uia_host_provider ret=00000000 err=0000dead
+  p_nonnull ret=00000001 err=00000000
+uia_host_provider_invalid ret=80040201 err=00000000
+  p_null ret=00000001 err=00000000
+uia_host_provider_null_out ret=80070057 err=00000000
+uia_return_raw_null_provider ret=00000000 err=00000000
+uia_raise_null_provider ret=80070057 err=0000dead
+uia_reserved_not_supported ret=00000000 err=0000dead
+  nsv_nonnull ret=00000001 err=00000000
+uia_reserved_null_out ret=80070057 err=0000dead
+-- regions
+getwindowrgn_none ret=00000000 err=0000dead
+getwindowrgn_invalid ret=00000000 err=00000578
+setwindowrgn ret=00000001 err=0000dead
+getwindowrgn_after ret=00000002 err=0000dead
+  box rect=0,0,50,40
+getwindowrgnbox ret=00000002 err=0000dead
+  box rect=0,0,50,40
+setwindowrgn_null ret=00000001 err=0000dead
+getwindowrgn_cleared ret=00000000 err=0000dead
+setwindowrgn_invalid ret=00000000 err=00000578
+done

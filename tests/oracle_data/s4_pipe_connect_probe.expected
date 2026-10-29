@@ -1,0 +1,14 @@
+connect_pending r=0 gle=3e5
+cancelioex r=1 gle=dead
+cancelioex_packet r=0 gle=3e3 bytes=0 key=51 ov_match=1
+cancelioex_result r=0 gle=3e3 internal=c0000120
+cancelioex_nothing_pending r=0 gle=490
+connect_pending2 r=0 gle=3e5
+cancelio r=1 gle=dead
+cancelio_event wait=0
+cancelio_packet r=0 gle=3e3 bytes=0 key=51 ov_match=1
+client_open ok=1
+connected_packet r=1 gle=dead bytes=0 key=51 ov_match=1
+connect_pending3 r=0 gle=3e5
+closehandle_packet r=0 gle=6d bytes=0 key=51 ov_match=1
+client_after_close ok=0 gle=2

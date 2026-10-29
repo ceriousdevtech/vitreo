@@ -1,0 +1,191 @@
+ptr=4
+set_sz=0
+set_sz_noterm=0
+set_expand=0
+set_expand_noenv=0
+set_dword=0
+set_null_data=0
+set_null_data_cb=998
+set_default=0
+set_badtype=0
+set_a=0
+set_badhkey=6
+set_readonly_handle=5
+set_readonly_handle_sub=0
+get_sz ret=0 type=1 cb=8 data=6100620063000000
+  lasterr=dead
+get_sz_noterm ret=0 type=1 cb=8 data=6100620063000000
+  lasterr=dead
+get_sz_noterm_exact ret=234 type=1 cb=10 data=cccccccccccccccc
+  lasterr=dead
+get_sz_small ret=234 type=1 cb=10 data=cccccccccccc
+  lasterr=dead
+get_sz_sizeonly ret=0 type=1 cb=10 data=cccccccccccccccccccc
+  lasterr=dead
+get_sz_nocb ret=0 type=1 cb=0 data=
+  lasterr=dead
+get_expand ret=0 type=1 cb=32 data=43003a005c007800000065006d004400720069007600650025005c0078000000
+  lasterr=dead
+get_expand_sizeonly ret=0 type=1 cb=32 data=cccc
+  lasterr=dead
+get_expand_small ret=234 type=1 cb=32 data=cccccccccccccccccccc
+  lasterr=dead
+get_expand_unexpanded_fit ret=0 type=1 cb=32 data=43003a005c007800000065006d004400720069007600650025005c0078000000
+  lasterr=dead
+get_expand_noenv ret=0 type=1 cb=12 data=70006c00610069006e000000
+  lasterr=dead
+get_dword ret=0 type=4 cb=4 data=78563412
+  lasterr=dead
+get_dword_small ret=234 type=4 cb=4 data=cccccccc
+  lasterr=dead
+get_nul ret=0 type=3 cb=0 data=
+  lasterr=dead
+get_default ret=0 type=1 cb=4 data=64000000
+  lasterr=dead
+get_default_empty ret=0 type=1 cb=4 data=64000000
+  lasterr=dead
+get_missing_value ret=2 type=0 cb=64 data=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  lasterr=dead
+get_missing_key ret=2 type=57005 cb=64 data=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  lasterr=dead
+get_null_subkey_missing_val ret=2 type=0 cb=64 data=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  lasterr=dead
+get_notype ret=0 type=57005 cb=8 data=6100620063000000
+  lasterr=dead
+geta_sz ret=0 type=1 cb=4 data=61626300
+geta_asz ret=0 type=1 cb=3 data=686900
+geta_expand ret=0 type=1 cb=16 data=433a5c7800656d4472697665255c7800
+geta_expand_small ret=234 type=1 cb=16 data=cccccccccccc
+geta_sz_small ret=234 type=1 cb=5 data=cccccccc
+geta_dword ret=0 type=4 cb=4 data=78563412
+get_badhkey ret=6 cb=8
+raw_szn type=1 cb=8
+get_raw_noterm ret=0 type=1 cb=10 data=7700780079007a000000
+  lasterr=dead
+get_raw_noterm_sizeonly ret=0 type=1 cb=12 data=cccc
+  lasterr=dead
+get_raw_noterm_cap8 ret=234 type=1 cb=12 data=cccccccccccccccccccc
+  lasterr=dead
+get_raw_noterm_cap10 ret=0 type=1 cb=10 data=7700780079007a000000
+  lasterr=dead
+get_raw_odd ret=0 type=1 cb=8 data=7700780079000000
+  lasterr=dead
+get_raw_odd_sizeonly ret=0 type=1 cb=9 data=cccc
+  lasterr=dead
+get_raw_empty ret=0 type=1 cb=2 data=0000
+  lasterr=dead
+get_raw_empty_sizeonly ret=0 type=1 cb=2 data=cccc
+  lasterr=dead
+get_sz_cap8 ret=0 type=1 cb=8 data=6100620063000000
+  lasterr=dead
+get_sz_cap10 ret=0 type=1 cb=8 data=6100620063000000
+  lasterr=dead
+get_grow ret=0 type=1 cb=26 data=43003a005c00570049004e0044004f00570053005c0078000000
+  lasterr=dead
+get_grow_sizeonly ret=0 type=1 cb=26 data=cccc
+  lasterr=dead
+get_grow_cap22 ret=234 type=1 cb=26 data=43003a005c00570049004e0044004f00570053000000cccc
+  lasterr=dead
+get_grow_cap24 ret=234 type=1 cb=26 data=43003a005c00570049004e0044004f00570053005c00cccccccc
+  lasterr=dead
+get_grow_noterm ret=0 type=1 cb=22 data=43003a005c00570049004e0044004f00570053000000
+  lasterr=dead
+get_grow_noterm_sizeonly ret=0 type=1 cb=22 data=cccc
+  lasterr=dead
+get_grow_notype ret=0 type=57005 cb=26 data=43003a005c00570049004e0044004f00570053005c0078000000
+  lasterr=dead
+get_grow_notype_sizeonly ret=0 type=57005 cb=26 data=cccc
+  lasterr=dead
+get_multi ret=0 type=7 cb=10 data=61000000620000000000
+  lasterr=dead
+get_multi_sizeonly ret=0 type=7 cb=14 data=cccc
+  lasterr=dead
+get_multi_small ret=234 type=7 cb=14 data=cccccccccccc
+  lasterr=dead
+get_multi3_sizeonly ret=0 type=7 cb=28 data=cccc
+  lasterr=dead
+get_multi0 ret=0 type=7 cb=4 data=00000000
+  lasterr=dead
+get_multi0_sizeonly ret=0 type=7 cb=8 data=cccc
+  lasterr=dead
+get_sz_cap9 ret=0 type=1 cb=8 data=6100620063000000
+  lasterr=dead
+get_sz_cap7 ret=234 type=1 cb=10 data=cccccccccccccccccc
+  lasterr=dead
+get_bin_sizeonly ret=0 type=3 cb=3 data=cccc
+  lasterr=dead
+get_bin_small ret=234 type=3 cb=3 data=cccccc
+  lasterr=dead
+get_dword_sizeonly ret=0 type=4 cb=4 data=cccc
+  lasterr=dead
+get_expand_cap10 ret=234 type=1 cb=32 data=cccccccccccccccccccccccc
+  lasterr=dead
+geta_raw_noterm ret=0 type=1 cb=5 data=7778797a00
+geta_araw_noterm ret=0 type=1 cb=5 data=7778797a00
+geta_araw_noterm_cap4 ret=234 type=1 cb=6 data=cccccccccccc
+geta_araw_noterm_cap5 ret=0 type=1 cb=5 data=7778797a00
+geta_grow ret=0 type=1 cb=13 data=433a5c57494e444f57535c7800
+geta_grow_cap11 ret=234 type=1 cb=14 data=0077696e646972255c7800cccc
+geta_multi ret=0 type=7 cb=5 data=6100620000
+geta_sz_sizeonly ret=0 cb=5
+geta_grow_sizeonly ret=0 cb=14
+geta_multi_sizeonly ret=0 cb=7
+geta_expand_sizeonly ret=0 cb=16
+geta_bin_sizeonly ret=0 cb=3
+get_data_nocb ret=87
+delval=0
+delval_again=2
+delval_missing_key=2
+delval_a=0
+delval_default=0
+delval_readonly=0
+delempty_empty=0
+delempty_gone=2
+delempty_subkey=145
+delempty_value=145
+delempty_default_value=145
+delempty_a=0
+delempty_after_child=0
+delempty_null_sub=87
+delempty_empty_sub=0
+e5_still_exists=2
+delempty_badhkey=6
+getsec_null ret=122 cb_nonzero=1 lasterr=dead
+getsec_small ret=122 grew=1
+getsec ret=0 self_relative=1 dacl_present=1 valid=1
+getsec_zero_info ret=0
+getsec_sacl ret=5
+getsec_badkey ret=6
+getsec_hkcu ret=0
+getsec_nullcb ret=87
+setsec_abs ret=0
+readback ret=0 present=1 aces=1
+  ace0 type=0 flags=0 mask=f003f sid_world=1
+setsec_rel ret=0
+setsec_null_sd ret=87
+setsec_invalid_sd ret=87
+setsec_zero_info ret=0
+setsec_badkey ret=6
+setsec_hkcu_predef ret=0
+setsec_no_writedac ret=5
+getsec_readonly_handle ret=0
+getsec_readonly_owner ret=0
+setsec_foreign_owner ret=1307
+setsec_no_dacl_in_sd ret=0
+after_no_dacl present=1 nulldacl=1
+abortdoc_screen ret=-1 lasterr=6
+abortdoc_memdc ret=-1 lasterr=6
+abortdoc_null ret=-1 lasterr=6
+abortdoc_bogus ret=-1 lasterr=6
+recent_in_temp link=0
+recent_pathw link=1
+recent_patha link=1
+recent_pidl link=1
+recent_exe link=0
+recent_missing_file link=1
+recent_relative link=1
+recent_badflag survived=1
+link_header_size=76 flags=0020009b attrs=00000020
+recent_dir_link=1
+recent_duplicate_count=1
+recent_clear link_w_after=0

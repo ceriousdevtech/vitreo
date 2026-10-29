@@ -1,0 +1,67 @@
+# adapter: Microsoft Basic Render Driver
+# feature level 0xb100
+S1 depth NEVER         write=1: z0.25:fail d=0.5 z0.50:fail d=0.5 z0.75:fail d=0.5
+S1 depth LESS          write=1: z0.25:pass d=0.25 z0.50:fail d=0.5 z0.75:fail d=0.5
+S1 depth EQUAL         write=1: z0.25:fail d=0.5 z0.50:pass d=0.5 z0.75:fail d=0.5
+S1 depth LESS_EQUAL    write=1: z0.25:pass d=0.25 z0.50:pass d=0.5 z0.75:fail d=0.5
+S1 depth GREATER       write=1: z0.25:fail d=0.5 z0.50:fail d=0.5 z0.75:pass d=0.75
+S1 depth NOT_EQUAL     write=1: z0.25:pass d=0.25 z0.50:fail d=0.5 z0.75:pass d=0.75
+S1 depth GREATER_EQUAL write=1: z0.25:fail d=0.5 z0.50:pass d=0.5 z0.75:pass d=0.75
+S1 depth ALWAYS        write=1: z0.25:pass d=0.25 z0.50:pass d=0.5 z0.75:pass d=0.75
+S1 depth NEVER         write=0: z0.25:fail d=0.5 z0.50:fail d=0.5 z0.75:fail d=0.5
+S1 depth LESS          write=0: z0.25:pass d=0.5 z0.50:fail d=0.5 z0.75:fail d=0.5
+S1 depth EQUAL         write=0: z0.25:fail d=0.5 z0.50:pass d=0.5 z0.75:fail d=0.5
+S1 depth LESS_EQUAL    write=0: z0.25:pass d=0.5 z0.50:pass d=0.5 z0.75:fail d=0.5
+S1 depth GREATER       write=0: z0.25:fail d=0.5 z0.50:fail d=0.5 z0.75:pass d=0.5
+S1 depth NOT_EQUAL     write=0: z0.25:pass d=0.5 z0.50:fail d=0.5 z0.75:pass d=0.5
+S1 depth GREATER_EQUAL write=0: z0.25:fail d=0.5 z0.50:pass d=0.5 z0.75:pass d=0.5
+S1 depth ALWAYS        write=0: z0.25:pass d=0.5 z0.50:pass d=0.5 z0.75:pass d=0.5
+S1 DepthEnable=FALSE func=NEVER write=ALL z0.25: pass d=0.5
+S1 NULL state (LESS, write) z0.5 vs 0.5: fail | z0.25: pass d=0.25
+S2 fail=KEEP     : 00->00 80->80 ff->ff
+S2 fail=ZERO     : 00->00 80->00 ff->00
+S2 fail=REPLACE  : 00->5a 80->5a ff->5a
+S2 fail=INCR_SAT : 00->01 80->81 ff->ff
+S2 fail=DECR_SAT : 00->00 80->7f ff->fe
+S2 fail=INVERT   : 00->ff 80->7f ff->00
+S2 fail=INCR     : 00->01 80->81 ff->00
+S2 fail=DECR     : 00->ff 80->7f ff->fe
+S2 dfail=KEEP     : 00->00 80->80 ff->ff
+S2 dfail=ZERO     : 00->00 80->00 ff->00
+S2 dfail=REPLACE  : 00->5a 80->5a ff->5a
+S2 dfail=INCR_SAT : 00->01 80->81 ff->ff
+S2 dfail=DECR_SAT : 00->00 80->7f ff->fe
+S2 dfail=INVERT   : 00->ff 80->7f ff->00
+S2 dfail=INCR     : 00->01 80->81 ff->00
+S2 dfail=DECR     : 00->ff 80->7f ff->fe
+S2 pass=KEEP     : 00->00 80->80 ff->ff
+S2 pass=ZERO     : 00->00 80->00 ff->00
+S2 pass=REPLACE  : 00->5a 80->5a ff->5a
+S2 pass=INCR_SAT : 00->01 80->81 ff->ff
+S2 pass=DECR_SAT : 00->00 80->7f ff->fe
+S2 pass=INVERT   : 00->ff 80->7f ff->00
+S2 pass=INCR     : 00->01 80->81 ff->00
+S2 pass=DECR     : 00->ff 80->7f ff->fe
+S3 pass=REPLACE  writemask=0f ref=a5 3c->35
+S3 pass=INVERT   writemask=f0 ref=a5 3c->cc
+S3 pass=INCR     writemask=0f ref=a5 3f->30
+S3 pass=DECR     writemask=f0 ref=a5 30->20
+S3 pass=ZERO     writemask=81 ref=a5 ff->7e
+S3 pass=REPLACE  writemask=00 ref=a5 3c->3c
+S4 func NEVER         readmask=0f ref=5a: 3a:fail 35:fail 3f:fail
+S4 func LESS          readmask=0f ref=5a: 3a:fail 35:fail 3f:pass
+S4 func EQUAL         readmask=0f ref=5a: 3a:pass 35:fail 3f:fail
+S4 func LESS_EQUAL    readmask=0f ref=5a: 3a:pass 35:fail 3f:pass
+S4 func GREATER       readmask=0f ref=5a: 3a:fail 35:pass 3f:fail
+S4 func NOT_EQUAL     readmask=0f ref=5a: 3a:fail 35:pass 3f:pass
+S4 func GREATER_EQUAL readmask=0f ref=5a: 3a:pass 35:pass 3f:fail
+S4 func ALWAYS        readmask=0f ref=5a: 3a:pass 35:pass 3f:pass
+S5 ccw=0 front{INCR,ALWAYS} back{fail REPLACE,pass DECR,EQUAL} ref=10: from10 left(CW)=11 right(CCW)=0f | from20 left=21 right=10
+S5 ccw=1 front{INCR,ALWAYS} back{fail REPLACE,pass DECR,EQUAL} ref=10: from10 left(CW)=0f right(CCW)=11 | from20 left=10 right=21
+S6 StencilRef=0x15a REPLACE: 5a
+S6 DepthEnable=FALSE StencilEnable=TRUE pass=INCR: colour=written stencil 07->08 depth=800000
+# winoracle 2026-09-28, WARP, FL 11_1, x64 (x86 identical).
+# Vitreo: byte-identical except the adapter header -- every depth func,
+# write mask, DepthEnable FALSE, NULL state, every stencil op in every slot
+# (sat vs wrap, INVERT), write masks, read masks x funcs, front/back and
+# FrontCounterClockwise, StencilRef > 0xFF, stencil without depth: CORRECT.

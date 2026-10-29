@@ -1,0 +1,35 @@
+device ok ptr=8
+CreateComputeShader a06_cs_read.dxbc -> 0x00000000
+CreateComputeShader a06_cs_spin.dxbc -> 0x00000000
+CreateComputeShader a06_cs_spin_tex.dxbc -> 0x00000000
+WDS dynamic CB: dispatch 1 (cb 111, src[0]): cb=111 src=10 tex=5
+WDS dynamic CB: dispatch 2 (cb 222, src[1]): cb=222 src=20 tex=5
+WDS dynamic CB: dispatch 3 (cb 333, src[2]): cb=333 src=30 tex=5
+NOW dynamic SRV: before NO_OVERWRITE src[0] (10): cb=1 src=10 tex=5
+NOW dynamic SRV: after NO_OVERWRITE src[1] (99): cb=2 src=99 tex=5
+NOW dynamic SRV: after NO_OVERWRITE src[0] (10): cb=1 src=10 tex=5
+WDS dynamic SRV: after DISCARD src[0] (50): cb=1 src=50 tex=5
+WDS dynamic tex: dispatch 1 (tex 5): cb=1 src=10 tex=5
+WDS dynamic tex: dispatch 2 (tex 6): cb=1 src=10 tex=6
+UPD default CB+SRV: dispatch 1 (111, src[0]=1): cb=111 src=1 tex=5
+UPD default CB+SRV: after UpdateSubresource (444, src[0]=7): cb=444 src=7 tex=5
+UPD default CB+SRV: after CB update (555, src[2]=9): cb=555 src=9 tex=5
+UPD default SRV: after box update [8,12)=77 (555, src[2]=77): cb=555 src=77 tex=5
+UPD default SRV: after CopySubresourceRegion ->[8,12)=1003: cb=555 src=1003 tex=5
+DNW buffer: CopyResource blocked <50ms; first Map(DO_NOT_WAIT) 0x887a000a; polled to 0x00000000; blocking Map 0x00000000 bad=0
+DNW texture: CopyResource blocked <50ms; first Map(DO_NOT_WAIT) 0x887a000a; polled to 0x00000000; blocking Map 0x00000000 bad=0
+END removed-reason 0x00000000
+#
+# winoracle (WARP) output above, x64; x86 identical except "ptr=4".
+# Vitreo 2026-09-28 build differs on three lines:
+#   WDS dynamic tex: dispatch 1 (tex 5): ... tex=6   <- WRONG: Unmap of a
+#       WRITE_DISCARD dynamic texture overwrites the texture a dispatch
+#       recorded earlier still reads (no rename).
+#   UPD default SRV: after box update [8,12)=77 ... src=9  <- WRONG: buffer
+#       UpdateSubresource with a box is dropped.
+#   DNW texture: first Map(DO_NOT_WAIT) 0x00000000 <- the GPU->staging texture
+#       copy is a synchronous readback inside CopyResource, so DO_NOT_WAIT can
+#       never report WAS_STILL_DRAWING (correct data; the CPU stalls in the copy).
+# Everything else matches: dynamic CB / buffer-SRV DISCARD rename, VB|SRV
+# NO_OVERWRITE, UpdateSubresource/CopySubresourceRegion ordering on buffers,
+# buffer Map(DO_NOT_WAIT) -> DXGI_ERROR_WAS_STILL_DRAWING.

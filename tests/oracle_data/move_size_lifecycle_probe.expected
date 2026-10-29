@@ -1,0 +1,12 @@
+mode=move
+enter wp=0 lp=0
+exit wp=0 lp=0
+event=10 object=0 child=0
+event=11 object=0 child=0
+entered=1 exited=1 events=2
+mode=size
+enter wp=0 lp=0
+exit wp=0 lp=0
+event=10 object=0 child=0
+event=11 object=0 child=0
+entered=1 exited=1 events=2

@@ -1,0 +1,9 @@
+texture1d array: hr=0x00000000
+first=0 size=4: hr=0x00000000 desc first=0 size=4
+first=1 size=2: hr=0x00000000 desc first=1 size=2
+first=3 size=1: hr=0x00000000 desc first=3 size=1
+first=3 size=2: hr=0x80070057
+first=4 size=1: hr=0x80070057
+first=0 size=0: hr=0x80070057
+first=0 size=-1: hr=0x00000000 desc first=0 size=4
+first=2 size=-1: hr=0x00000000 desc first=2 size=2

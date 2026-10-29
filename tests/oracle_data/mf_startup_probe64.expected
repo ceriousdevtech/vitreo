@@ -1,0 +1,243 @@
+== MFStartup
+MF_VERSION=00020070
+MFStartup(MF_VERSION,FULL) -> 00000000
+MFStartup(MF_VERSION,LITE) -> 00000000
+MFStartup(MF_VERSION,NOSOCKET) -> 00000000
+MFStartup(0x00010070,LITE) -> 00000000
+MFStartup(0x00030070,LITE) -> c00d36e3
+MFStartup(0x00020000,LITE) -> 00000000
+MFStartup(0x000200ff,LITE) -> 00000000
+MFStartup(0x00020071,LITE) -> 00000000
+MFStartup(0,0) -> 00000000
+MFStartup(0xffffffff,0) -> c00d36e3
+MFStartup(MF_VERSION,0x12345678) -> 00000000
+MFLockPlatform -> 00000000
+MFUnlockPlatform -> 00000000
+MFUnlockPlatform(unbalanced) -> 00000000
+== IMFAttributes
+MFCreateAttributes(&a,4) -> 00000000 1
+GetCount(empty) -> 00000000 0
+GetUINT32(missing) -> c00d36e6 3435973836
+GetItemType(missing) -> c00d36e6 52428
+GetItem(missing,NULL) -> c00d36e6
+GetItem(missing,&pv) -> c00d36e6 52428
+DeleteItem(missing) -> 00000000
+GetStringLength(missing) -> c00d36e6 52428
+GetBlobSize(missing) -> c00d36e6 52428
+GetUnknown(missing) -> c00d36e6 1
+CompareItem(missing) -> 00000000 0
+SetUINT32 -> 00000000
+SetUINT64 -> 00000000
+SetDouble -> 00000000
+SetGUID -> 00000000
+SetString -> 00000000
+SetBlob(5) -> 00000000
+SetUnknown -> 00000000
+refs after SetUnknown -> 00000000 2
+GetCount(7) -> 00000000 7
+GetUINT32(u32) -> 00000000 42
+GetUINT64(u64) -> 00000000 81985529216486895
+GetDouble(dbl)x4 -> 00000000 10
+GetGUID(guid) -> 00000000
+  guid=5e5e5e5e-2222-4b4b-8c8caabbccddeeff
+GetStringLength(str) -> 00000000 5
+GetString(cch=5) -> 8007007a 5
+  buf[0] untouched -> 00000000 1
+GetString(cch=6) -> 00000000 5
+  equal -> 00000000 1
+GetString(cch=6,pcch=NULL) -> 00000000
+GetString(cch=0) -> 8007007a 5
+GetAllocatedString -> 00000000 5
+  equal -> 00000000 1
+GetBlobSize(blob) -> 00000000 5
+GetBlob(cb=4) -> 8007007a 5
+  bb[0] untouched -> 00000000 1
+GetBlob(cb=5) -> 00000000 5
+  bytes -> 00000000 1
+GetBlob(cb=8) -> 00000000 5
+GetBlob(cb=5,pcb=NULL) -> 00000000
+GetAllocatedBlob -> 00000000 5
+  bytes -> 00000000 1
+GetUnknown(IUnknown) -> 00000000 1
+  refs -> 00000000 3
+GetUnknown(unsupported iid) -> 80004002 1
+  refs -> 00000000 2
+GetUINT64(u32 key) -> c00d36bd 0
+GetUINT32(str key) -> c00d36bd
+GetDouble(u32 key) -> c00d36bd
+GetGUID(u32 key) -> c00d36bd
+GetStringLength(u32 key) -> c00d36bd
+GetString(u32 key) -> c00d36bd
+GetAllocatedString(u32 key) -> c00d36bd
+GetBlobSize(u32 key) -> c00d36bd
+GetBlob(u32 key) -> c00d36bd
+GetAllocatedBlob(u32 key) -> c00d36bd
+GetUnknown(u32 key) -> c00d36bd
+GetBlob(str key) -> c00d36bd
+GetItemType(u32) -> 00000000 19
+GetItem(u32) -> 00000000 vt=19 val=42
+GetItemType(u64) -> 00000000 21
+GetItem(u64) -> 00000000 vt=21 val=123456789abcdef
+GetItemType(dbl) -> 00000000 5
+GetItem(dbl) -> 00000000 vt=5
+GetItemType(guid) -> 00000000 72
+GetItem(guid) -> 00000000 vt=72 val=5e5e5e5e-2222-4b4b-8c8caabbccddeeff
+GetItemType(str) -> 00000000 31
+GetItem(str) -> 00000000 vt=31 equal=1
+GetItemType(blob) -> 00000000 4113
+GetItem(blob) -> 00000000 vt=4113 n=5 b4=5
+GetItemType(unk) -> 00000000 13
+GetItem(unk) -> 00000000 vt=13 same=1 refs=3
+refs after PropVariantClear -> 00000000 2
+GetItem(u32,NULL) -> 00000000
+CompareItem(u32,42) -> 00000000 1
+CompareItem(u32,43) -> 00000000 0
+CompareItem(u32,VT_UI8 42) -> 00000000 0
+CompareItem(str,hello) -> 00000000 1
+CompareItem(str,Hello) -> 00000000 0
+CompareItem(blob,same) -> 00000000 1
+CompareItem(blob,4 bytes) -> 00000000 0
+CompareItem(guid,same) -> 00000000 1
+CompareItem(unk,same) -> 00000000 1
+  refs -> 00000000 2
+CompareItem(dbl,2.5) -> 00000000 1
+SetItem(VT_I4) -> c00d36bd
+  GetCount after rejected SetItem -> 00000000 8
+  GetItemType(K_NONE) -> 00000000 0
+  GetItem(K_NONE) -> 00000000 0
+  DeleteItem(K_NONE) -> 00000000
+  GetCount after DeleteItem -> 00000000 7
+SetItem(VT_EMPTY) -> c00d36bd
+SetItem(VT_BOOL) -> c00d36bd
+SetItem(VT_LPSTR) -> c00d36bd
+SetItem(VT_UI1) -> c00d36bd
+SetItem(VT_I8) -> c00d36bd
+SetItem(VT_R4) -> c00d36bd
+GetCount(after rejects) -> 00000000 8
+DeleteItem(K_NONE) -> 00000000
+GetCount(7) -> 00000000 7
+SetItem(VT_UI4 over u32) -> 00000000
+GetUINT32(u32)=7 -> 00000000 7
+SetItem(VT_LPWSTR over u32) -> 00000000
+GetItemType(u32 now str) -> 00000000 31
+SetUINT32(u32 back) -> 00000000
+GetCount(7) -> 00000000 7
+GetItemByIndex(0) -> 00000000 key=7a1c0001-1111-4a4a-9b9b010203040501 vt=19
+GetItemByIndex(1) -> 00000000 key=7a1c0002-1111-4a4a-9b9b010203040502 vt=21
+GetItemByIndex(2) -> 00000000 key=7a1c0003-1111-4a4a-9b9b010203040503 vt=5
+GetItemByIndex(3) -> 00000000 key=7a1c0004-1111-4a4a-9b9b010203040504 vt=72
+GetItemByIndex(4) -> 00000000 key=7a1c0005-1111-4a4a-9b9b010203040505 vt=31
+GetItemByIndex(5) -> 00000000 key=7a1c0006-1111-4a4a-9b9b010203040506 vt=4113
+GetItemByIndex(6) -> 00000000 key=7a1c0007-1111-4a4a-9b9b010203040507 vt=13
+GetItemByIndex(7) -> 80070057 key=cccccccc-1111-4a4a-9b9b010203040507 vt=52428
+GetItemByIndex(0,key,NULL) -> 00000000
+MFCreateAttributes(&c,0) -> 00000000
+c.SetUINT32(u32,42) -> 00000000
+c.SetString(str,hello) -> 00000000
+a.Compare(c,OUR_ITEMS) -> 00000000 0
+c.Compare(a,OUR_ITEMS) -> 00000000 1
+a.Compare(c,THEIR_ITEMS) -> 00000000 1
+c.Compare(a,THEIR_ITEMS) -> 00000000 0
+a.Compare(c,ALL_ITEMS) -> 00000000 0
+c.Compare(a,ALL_ITEMS) -> 00000000 0
+a.Compare(c,INTERSECTION) -> 00000000 1
+c.Compare(a,INTERSECTION) -> 00000000 1
+a.Compare(c,SMALLER) -> 00000000 1
+c.Compare(a,SMALLER) -> 00000000 1
+c.SetUINT32(u32,43) -> 00000000
+c.Compare(a,SMALLER) differing -> 00000000 0
+a.Compare(a,ALL_ITEMS) -> 00000000 1
+a.CopyAllItems(c) -> 00000000
+c.GetCount -> 00000000 7
+c.GetUINT32(u32) -> 00000000 42
+refs after CopyAllItems -> 00000000 3
+a.Compare(c,ALL_ITEMS) after copy -> 00000000 1
+c.DeleteAllItems -> 00000000
+c.GetCount(0) -> 00000000 0
+refs after c.DeleteAllItems -> 00000000 2
+c.Release -> 00000000 0
+LockStore -> 00000000
+GetCount(locked) -> 00000000 7
+UnlockStore -> 00000000
+DeleteItem(unk) -> 00000000
+refs after DeleteItem -> 00000000 1
+GetCount(6) -> 00000000 6
+DeleteItem(unk again) -> 00000000
+QI(IUnknown) -> 00000000 1
+QI(IMFAttributes) -> 00000000 1
+QI(IMFMediaType) -> 80004002 1
+AddRef -> 00000000 2
+Release -> 00000000 1
+Release(final) -> 00000000 0
+== IMFMediaType
+MFCreateMediaType(&t) -> 00000000 1
+MFCreateMediaType(&u) -> 00000000 1
+t.GetCount(empty) -> 00000000 0
+t.GetMajorType(empty) -> c00d36e6 1
+t.IsCompressedFormat(empty) -> 00000000 1
+t.IsEqual(u) both empty -> 80070057 0
+t.SetGUID(MF_MT_MAJOR_TYPE,Video) -> 00000000
+t.IsEqual(u) u empty -> 80070057 0
+u.SetGUID(MF_MT_MAJOR_TYPE,Video) -> 00000000
+t.IsEqual(u) major only -> 00000000 15
+t.GetMajorType -> 00000000 1
+t.SetGUID(MF_MT_SUBTYPE,H264) -> 00000000
+t.IsEqual(u) t has subtype -> 00000001 13
+u.SetGUID(MF_MT_SUBTYPE,NV12) -> 00000000
+t.IsEqual(u) subtypes differ -> 00000001 9
+u.SetGUID(MF_MT_SUBTYPE,H264) -> 00000000
+t.SetUINT32(MF_MT_INTERLACE_MODE,2) -> 00000000
+t.IsEqual(u) t superset -> 00000000 15
+u.SetUINT32(MF_MT_INTERLACE_MODE,3) -> 00000000
+t.IsEqual(u) value differs -> 00000001 11
+u.SetUINT32(MF_MT_INTERLACE_MODE,2) -> 00000000
+t.SetBlob(MF_MT_USER_DATA) -> 00000000
+t.IsEqual(u) user data only on t -> 00000001 7
+u.SetBlob(MF_MT_USER_DATA) -> 00000000
+t.IsEqual(u) identical -> 00000000 15
+t.SetUINT32(MF_MT_ALL_SAMPLES_INDEPENDENT,1) -> 00000000
+t.IsCompressedFormat(independent=1) -> 00000000 0
+t.SetUINT32(MF_MT_ALL_SAMPLES_INDEPENDENT,0) -> 00000000
+t.IsCompressedFormat(independent=0) -> 00000000 1
+t.SetUINT64(MF_MT_FRAME_RATE_RANGE_MIN) -> 00000000
+t.IsEqual(u) range-min ignored -> 00000000 15
+t.GetRepresentation(unknown guid) -> c00d36b7 0
+t.QI(IMFAttributes) -> 00000000 1
+t.QI(IMFMediaType) -> 00000000 1
+t.QI(IMFSample) -> 80004002 1
+t.Release -> 00000000 0
+u.Release -> 00000000 0
+== MFTEnum
+MFTEnumEx(nobody,SYNCMFT) -> 00000000 n=0 arr_null=1
+MFTEnumEx(nobody,0) -> 00000000 n=0 arr_null=1
+MFTEnumEx(nobody,ALL,h264 in) -> 00000000 n=0 arr_null=1
+MFTEnum(nobody) -> 00000000 n=0 arr_null=1
+MFTEnumEx(VIDEO_DECODER) hr -> 00000000
+== Media Feature Pack DLLs
+mfplat.dll loaded=1
+mf.dll loaded=1
+mfreadwrite.dll loaded=1
+evr.dll loaded=1
+msmpeg2vdec.dll loaded=1
+dxva2.dll loaded=1
+evr!MFCreateVideoPresenter=1
+msmpeg2vdec!DllGetClassObject=1
+mfplat!MFTRegisterLocal=1
+mfplat!MFLockPlatform=1
+== MFShutdown
+MFShutdown#0 -> 00000000
+MFShutdown#1 -> 00000000
+MFShutdown#2 -> 00000000
+MFShutdown#3 -> 00000000
+MFShutdown#4 -> 00000000
+MFShutdown#5 -> 00000000
+MFShutdown#6 -> 00000000
+MFShutdown#7 -> 00000000
+MFShutdown#8 -> 00000000
+MFShutdown#9 -> 00000000
+MFShutdown#10 -> 00000000
+MFShutdown#11 -> 00000000
+MFStartup(MF_VERSION,LITE) again -> 00000000
+MFCreateAttributes after restart -> 00000000 1
+MFShutdown -> 00000000
+MFCreateAttributes after shutdown -> 00000000 1

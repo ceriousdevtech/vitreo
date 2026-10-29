@@ -1,0 +1,37 @@
+free-null: rc=0 le=0xdead
+alloc: rc=0 nonnull=1
+size: rc=0 ge64=1
+free-allocated: rc=0
+join: rc=0 status=2 name_nonnull=1 name="WORKGROUP" le=0x3e5
+join-name-buffer: size_holds_name=1 free_rc=0
+join-null-name: rc=87
+join-null-status: rc=87
+dsrole: level=0 rc=87 le=0x3e5 buffer_is_null=1 buffer_untouched=0
+dsrole: level=1 rc=0 le=0x3e5 buffer_is_null=0 buffer_untouched=0 role=0 flags=0x0 flat="WORKGROUP" dns=(null) forest=(null) guid_zero=1
+dsrole: level=2 rc=0 le=0x3e5 buffer_is_null=0 buffer_untouched=0 operation_state=0 previous_state=0
+dsrole: level=3 rc=0 le=0x3e5 buffer_is_null=0 buffer_untouched=0 operation_state=0
+dsrole: level=4 rc=87 le=0x3e5 buffer_is_null=1 buffer_untouched=0
+dsrole-null-buffer: rc=87
+sizes: DSROLE_PRIMARY_DOMAIN_INFO_BASIC=36 DSROLE_UPGRADE_STATUS_INFO=8 DSROLE_OPERATION_STATE_INFO=4 USER_INFO_0=4 USER_INFO_1=32 USER_INFO_2=96 USER_INFO_3=116 USER_INFO_4=116 USER_INFO_10=16 USER_INFO_11=80 USER_INFO_20=20 USER_INFO_23=20 USER_INFO_24=20
+user: level=0 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1
+user: level=1 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1 priv=2 flags=0x10221 password_null=1
+user: level=2 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1
+user: level=3 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1
+user: level=4 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1
+user: level=10 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1 comment="" usr_comment=""
+user: level=11 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1
+user: level=20 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1 flags=0x10221 rid_ge_1000=1
+user: level=23 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 name_eq_user=1
+user: level=24 rc=0 le=0x0 buffer_is_null=0 buffer_untouched=0 internet_identity=0
+user: level=5 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=6 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=7 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=8 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=9 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=12 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=21 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=22 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=1003 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user: level=1005 rc=124 le=0x0 buffer_is_null=1 buffer_untouched=0
+user-missing: rc=2221 buffer_is_null=1 buffer_untouched=0
+user-null-name: rc=2202 buffer_is_null=1 buffer_untouched=0

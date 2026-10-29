@@ -1,0 +1,90 @@
+layout	28	d0	30
+create valid	1	0
+create valid_both	1	0
+create enc0	0	80070057
+create enc_pkcs7	0	80070057
+create enc2	0	2
+create truncated	0	80093102
+create trailing	1	0
+create minimal	0	8009310b
+create junk	0	8009310b
+create len0	0	80093102
+create null	0	80093102
+create badsig	1	0
+create outer_set	0	8009310b
+create no_signature	0	8009310b
+create tbs_only	0	8009310b
+create tbs_set	0	8009310b
+create serial_octets	0	8009310b
+create empty_tbs_alg	0	80093102
+create bad_month	0	80092002
+create one_time	0	80093103
+create indefinite	1	0
+create long_len	1	0
+create sig_unused9	1	0
+create outer_extra	1	0
+create empty_subject	1	0
+create version5	1	0
+create no_version	1	0
+create spki_nokey	0	80093102
+create ext_set	0	8009310b
+create ext_empty	1	0
+create no_ext	1	0
+create tbs_extra	0	80093103
+create outer_alg_noparams	1	0
+create tbs_overrun	0	8009310b
+create serial_overrun	0	8009310b
+ctx	1	385	1	1
+info	2	2	0330	1.2.840.113549.1.1.11	2	3e	36	1d6dfd1	c358000	1eb0db0	33d60000	1.2.840.113549.1.1.1	10e	0	0	0	6	2.5.29.19:1:2	2.5.29.15:1:4	2.5.29.37:0:c	2.5.29.17:0:15	2.5.29.14:0:16	2.5.29.35:0:18
+prop	3	1	dead	14	1	dead	14	02316dcf7b5b310f9f43ed675de7b1c1e60817a1
+prop	4	1	dead	10	1	dead	10	52d37b36822f185de0546353c71c0e41
+prop	e	1	dead	4	1	dead	4	00000000
+prop	f	1	0	20	1	dead	20	dc5dd7f88121abff0648aae4ac36d46f130236babc52bfcfeed16923df141639
+prop	14	1	dead	14	1	dead	14	9c513495af6ac560ca0f3775c188cc1836eb369d
+prop	19	1	dead	10	1	dead	10	740f6c05773277d6b58701d22306fbec
+prop	1c	1	dead	10	1	dead	10	3309f5b4a4975531878a969395df527a
+prop	1d	1	dead	10	1	dead	10	2660ce1042358cb8d12e87c2b05784a7
+prop	59	1	0	16	1	dead	16	5200530041002f005300480041003200350036000000
+prop	5c	1	0	4	1	dead	4	00080000
+prop	5d	1	0	12	1	dead	12	5200530041002f0032003000340038000000
+prop	6b	1	dead	20	1	dead	20	9e3e323e8310dc35330a0cb53a38e937704d66cdac3687ac7dadc8be0e9b7fc1
+prop	79	1	dead	1	1	dead	1	00
+prop	7c	1	dead	20	1	dead	20	b6247d1a3306b7001e7d78894cfe1cf4883a14aec0c567d829a6c21c7ba47ef2
+prop	81	1	dead	34	1	dead	34	02316dcf7b5b310f9f43ed675de7b1c1e60817a19e3e323e8310dc35330a0cb53a38e937704d66cdac3687ac7dadc8be0e9b7fc1
+prop_user	0	80092004	0
+prop_zero	0	80092004	0
+sha1cap	0	0	ea	14	cc	cc
+sha1cap	1	0	ea	14	cc	cc
+sha1cap	13	0	ea	14	cc	cc
+sha1cap	14	1	dead	14	2	cc
+sha1cap	15	1	dead	14	2	cc
+sha1cap	64	1	dead	14	2	cc
+set11	1	dead
+get11	1	dead	16	500072006f006200650020004e0061006d0065000000
+dup11	1	1	16
+set3	1	1	14	1111111111111111111111111111111111111111
+del11	1	dead	0	80092004
+del13	1	dead
+empty	1	1	dead	0
+del3	1	1	14	02316dcf7b5b310f9f43ed675de7b1c1e60817a1
+setbad	0	0	80070057
+setbad	e	1	dead
+setbad	5	0	80070057
+setbad	6b	1	dead
+setbad	10000	0	80070057
+set2	1	dead
+get2size	1	44
+get2	1	44	30	cont	3a	prov	1	0	0	0	2
+get6	1	80092004	4	2
+get2p	0	0	1	1	72	72	ffffffff	68	2	30	7:3:9:60:a1a2a3	8:0:0:ffffffff
+get2p	0	1	1	1	72	72	ffffffff	68	2	30	7:3:9:60:a1a2a3	8:0:0:ffffffff
+get2p	1	0	1	1	7c	7c	68	72	2	30	7:3:9:60:a1a2a3	8:0:0:ffffffff
+get2p	1	1	1	1	7c	7c	68	72	2	30	7:3:9:60:a1a2a3	8:0:0:ffffffff
+set6	1	1	dead	4	1
+set27	1	1	8	443322110000d001
+get14	1	4	0
+set19	1	1	dead	0
+set9	1	1	c	300a06082b06010505070302
+legacy	1	0	05ff00	f:1:b503f8590d8165f9447e105eeef3911420be5730	14:1:99b2f5d141ca02ed7b5bfa76bfddd42f9fdf79a5	19:1:54bf9202bf57ecbbecbad7060586754e	1c:1:0e83bc8498dad1153138be9ce5cd7642	59:1:5200530041002f0053004800410031000000	5c:1:00080000	5d:1:5200530041002f0032003000340038000000	7c:1:22962e9c4703b7e5927d3ecf77869a8a81cfa8a2ebe8f2c5dba4235948f9c545
+ec	1	5	0550	f:1:6db2403b479be8caaf2966559642decd701e42931a7205a4dbde9dd968cddfa7	14:1:6d8f9f464e30a8e1e84a2d3db0a3adb9f0459685	19:1:24e385eb4fb0fe9b491bd643f4ab783d	1c:1:1bf59a5651ae4e2cc48e0d0b66f3e5f5	59:1:450043004400530041002f005300480041003200350036000000	5c:1:00010000	5d:1:450043004400530041002f003200350036000000	7c:1:e67644e1cb252ed5b15149736b9b2489aab34177c7f710eee89e6fbeb4c51972
+cmp	1	0	0	1	1	1	0	dead

@@ -1,0 +1,47 @@
+tpt_create nonnull=1
+tpt_isset_initial r=0
+tpt_isset_armed r=1
+tpt_oneshot count=1 ctx=1 obj=1 inst=1 isset_after=1
+tpt_zero_due count=1
+tpt_periodic ge5=1 isset_after_cancel=0
+tpt_after_cancel no_more=1
+tpt_far_isset r=1
+tpt_far_cancel_isset r=0 count=0
+tpt_absolute early=0 count=1
+tpt_running_isset r=1
+tpt_close_while_running count=1
+tpw_create nonnull=1
+tpw_unsignaled count=0
+tpw_signaled count=1 result=0 ctx=1 obj=1 inst=1
+tpw_not_rearmed count=1 ev_still_set=1
+tpw_timeout count=1 result=102
+tpw_zero_timeout_unsignaled count=1 result=102
+tpw_zero_timeout_signaled count=1 result=0
+tpw_cancel_null count=0 ev_consumed=0
+tpw_autoreset_consumed count=1 ev_signaled=0
+tpw_thread_handle count=1 result=0
+callbackmayrunlong count=1 r=1
+seteventwhencallbackreturns wait=0 count_at_signal=1
+ctq nonnull=1
+ctqt_oneshot ok=1 count=1 ctx=1 fired=1
+ctqt_change_expired_oneshot ok=1 gle=dead count=1
+dtqt_expired ok=1 gle=dead
+ctqt_change_far_to_near ok=1 count=1
+ctqt_change_periodic ge5=1
+ctqt_after_delete no_more=1
+dtqt_null_while_running ok=0 gle=3e5
+dtqt_event_while_running ok=0 gle=3e5 early=102 late=0
+dtqex ok=1 gle=dead count=0
+dtqex_null_while_running ok=0 gle=3e5
+ctqt_default_queue ok=1 count=1
+rw_unregister_idle ok=1 u=1 gle=dead
+rw_timeout count=1 fired=1
+rw_unregister_after_fired_once u=1 gle=dead
+rw_repeat count=3 fired=0 ctx=1
+rw_unregisterex_blocking u=1
+rw_unregister_while_running u=0 gle=3e5
+rw_unregisterex_null_while_running u=0 gle=3e5
+rw_unregisterex_event_while_running u=0 gle=3e5 early=102 late=0
+rw_unregisterex_event_idle u=1 gle=dead signaled=0
+rw_inwaitthread_serialised during=1 after=2
+rw_null_handle ok=0 gle=57

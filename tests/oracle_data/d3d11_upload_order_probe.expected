@@ -1,0 +1,5 @@
+D3D11CreateDevice -> 0x00000000
+CreateComputeShader -> 0x00000000
+dispatch-update-dispatch: first sees old=yes (mismatch 0 of 1024), second sees new (mismatch 0 of 1024)
+dispatch-copy-dispatch: first sees old=yes (mismatch 0 of 1024), second sees new (mismatch 0 of 1024)
+dispatch-region-dispatch: first sees old=yes (mismatch 0 of 1024), second half-new (mismatch 0 of 1024)

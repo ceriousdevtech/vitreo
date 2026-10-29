@@ -1,0 +1,26 @@
+second page NOACCESS
+load2  offset=-1: write=0 reported=+0
+load4  offset=-1: write=0 reported=+0
+load8  offset=-1: write=0 reported=+0
+store2 offset=-1: write=1 reported=+0
+store4 offset=-1: write=1 reported=+0
+store8 offset=-1: write=1 reported=+0
+load4  offset=-2: write=0 reported=+0
+load8  offset=-2: write=0 reported=+0
+store4 offset=-2: write=1 reported=+0
+store8 offset=-2: write=1 reported=+0
+load4  offset=-3: write=0 reported=+0
+load8  offset=-3: write=0 reported=+0
+store4 offset=-3: write=1 reported=+0
+store8 offset=-3: write=1 reported=+0
+load8  offset=-4: write=0 reported=+0
+store8 offset=-4: write=1 reported=+0
+load8  offset=-5: write=0 reported=+0
+store8 offset=-5: write=1 reported=+0
+load8  offset=-6: write=0 reported=+0
+store8 offset=-6: write=1 reported=+0
+load8  offset=-7: write=0 reported=+0
+store8 offset=-7: write=1 reported=+0
+first page NOACCESS
+load8  offset=-4: write=0 reported=-4
+store8 offset=-4: write=1 reported=-4

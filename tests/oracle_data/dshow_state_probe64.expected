@@ -1,0 +1,48 @@
+ <add>
+[A.SetSync][A.Pause][GetState ms=0 tid_main=1]pause(filter S_FALSE) hr=00000001 getstate_calls=1
+ <1>
+[GetState ms=0 tid_main=1]intermediate GetState(0) hr=00040237 fs=1 calls=1 elapsed_bucket=0
+ <2>
+[GetState ms=0 tid_main=1][GetState ms=10 tid_main=1][GetState ms=0 tid_main=0][GetState ms=0 tid_main=1]intermediate GetState(300) hr=00040237 fs=1 calls=75 elapsed_bucket=300
+ <3>
+[GetState ms=0 tid_main=1][GetState ms=10 tid_main=1][GetState ms=0 tid_main=0][GetState ms=0 tid_main=1]ready on 3rd GetState(1000) hr=00000000 fs=1 calls=4 elapsed_bucket=0
+ <3b>
+[GetState ms=0 tid_main=1][GetState ms=10 tid_main=1][GetState ms=0 tid_main=1][GetState ms=10 tid_main=1]instant-intermediate GetState(300) hr=00040237 fs=1 calls=1912221 elapsed_bucket=600
+ <4>
+[GetState ms=0 tid_main=1]cant_cue GetState(0) hr=00040268 fs=1 calls=1 elapsed_bucket=0
+ <5>
+[GetState ms=0 tid_main=1]ok GetState(0) hr=00000000 fs=1 calls=1 elapsed_bucket=0
+ <6>
+[GetState ms=0 tid_main=1]pause again (filter S_FALSE, getstate S_OK) hr=00000000
+ <7>
+[A.Stop]stop hr=00000000
+ <8>
+[A.Pause]pause (filter S_OK, getstate intermediate) hr=00000000 calls=0
+ <9>
+[GetState ms=0 tid_main=1][A.Run]run from paused hr=00000000 run_t=124068970000
+ <10>
+[GetState ms=0 tid_main=1]running GetState(0) hr=00000000 fs=2 calls=1 elapsed_bucket=0
+ <11>
+[A.Pause][A.Stop]stop hr=00000000
+ <12>
+[A.Pause][GetState ms=0 tid_main=1]run from stopped (pause S_FALSE) hr=00000001 calls=1
+ <13>
+[GetState ms=0 tid_main=1]after run GetState(0) hr=00040237 fs=2 calls=1 elapsed_bucket=0
+ <14>
+[GetState ms=0 tid_main=0][A.Run@bg][GetState ms=0 tid_main=1]after run later GetState(0) hr=00000000 fs=2 calls=1 elapsed_bucket=0
+run_t=124069180000
+ <15>
+[A.Pause][A.Stop]stop hr=00000000
+ <16>
+[A.Pause][A.Stop]pause(filter E_FAIL) hr=80004005
+ <17>
+[GetState ms=0 tid_main=1]after failed pause GetState(0) hr=00000000 fs=0 calls=1 elapsed_bucket=0
+ <18>
+stop hr=00000000
+ <19>
+[A.Pause] <20>
+[A.Stop]stop(filter S_FALSE) hr=00000001
+ <21>
+[A.Pause] <22>
+[A.Stop][A.SetSyncNull][GetState ms=0 tid_main=1]release=0
+ <calls>

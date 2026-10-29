@@ -1,0 +1,1579 @@
+== case base exit=0
+  observed:
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep exit=4 code=4
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended InstallValidate 1
+    ended CaExe2NoWait 0
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferOther 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended InstallFinalize 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoEnd 1
+    ended CaAsync 0
+    ended INSTALL 1
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case ret0 exit=0
+  observed:
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret0
+    ended CaRet0 1
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended CaExe2NoWait 0
+    ended InstallValidate 1
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferOther 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended InstallFinalize 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoEnd 1
+    ended CaAsync 0
+    ended INSTALL 1
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case ret1 exit=1603
+  observed:
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    SleepFail begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1
+    CaRet1 returned 1603
+    ended CaRet1 3
+    ended CaExe2NoWait 0
+    ended CaAsync 0
+    ended INSTALL 3
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case ret259 exit=0
+  observed:
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret259
+    CaRet259 returned 259
+    ended CaRet259 5
+    ended CaExe2NoWait 0
+    ended CaAsync 0
+    ended INSTALL 1
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case ret1602 exit=1602
+  observed:
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepRet begin
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+    SleepRet ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1602
+    CaRet1602 returned 1602
+    ended CaRet1602 2
+    ended CaExe2NoWait 0
+    ended CaAsync 0
+    ended INSTALL 2
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case ret1603 exit=1603
+  observed:
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRet1603 returned 1603
+    ended CaRet1603 3
+    ended CaExe2NoWait 0
+    ended CaAsync 0
+    ended INSTALL 3
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case ret1604 exit=1604
+  observed:
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Ret1603 ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=1 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[rollback-data](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1604
+    CaRet1604 returned 1604
+    ended CaRet1604 4
+    ended CaExe2NoWait 0
+    ended CaAsync 0
+    ended INSTALL 4
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case ret1626 exit=0
+  observed:
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1626
+    CaRet1626 returned 1626
+    ended CaRet1626 0
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended CaExe2NoWait 0
+    ended InstallValidate 1
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferOther 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended InstallFinalize 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoEnd 1
+    ended CaAsync 0
+    ended INSTALL 1
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case ret1234 exit=1603
+  observed:
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepRet ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{3C0F4F43-2B7C-4C55-9F0B-6E2D86E1A164}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1234
+    CaRet1234 returned 1603
+    ended CaRet1234 3
+    ended CaExe2NoWait 0
+    ended CaAsync 0
+    ended INSTALL 3
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case miss1 exit=1603
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: DoesNotExist
+    CaNoEntry returned 1154
+    error 1723
+    ended CaNoEntry 3
+    ended INSTALL 3
+== case miss2 exit=0
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepRet ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: DoesNotExist
+    CaNoEntryCont returned 1154 (continue)
+    ended CaNoEntryCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended InstallValidate 1
+    ended CaExe2NoWait 0
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferOther 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended InstallFinalize 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoEnd 1
+    ended CaAsync 0
+    ended INSTALL 1
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case err1 exit=1603
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Ret0 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    ended CaErr19Index 3
+    ended INSTALL 3
+== case err2 exit=1603
+  observed:
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    ended CaErr19Text 3
+    ended INSTALL 3
+== case exe1 exit=1603
+  observed:
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    CaExe50 returned 5
+    error 1722
+    ended CaExe50 3
+    ended INSTALL 3
+== case exe2 exit=1603
+  observed:
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    CaExe2Fail returned 7
+    error 1722
+    ended CaExe2Fail 3
+    ended INSTALL 3
+== case exe3 exit=0
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepRet ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended InstallValidate 1
+    ended CaExe2NoWait 0
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferOther 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended InstallFinalize 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoEnd 1
+    ended CaAsync 0
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+    CaExe2Async returned 4
+    ended CaExe2Async 1603
+    ended INSTALL 1
+== case bad4 exit=1603
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Ret1604 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1604 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    ended CaBadType4 7
+    error 2717
+    ended INSTALL 3
+    ended CaExe2NoWait 0
+== case bad8 exit=1603
+  observed:
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    ended CaBadType8 7
+    error 2717
+    ended INSTALL 3
+    ended CaExe2NoWait 0
+== case async1 exit=0
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Ret1234 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1234 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepRet ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended CaExe2NoWait 0
+    ended InstallValidate 1
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferOther 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended InstallFinalize 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoEnd 1
+    ended CaAsync 0
+    CaAsyncFail returned 1603
+    ended CaAsyncFail 1603
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+    ended INSTALL 1
+== case early1 exit=1603
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    error 2762
+    ended CaDeferEarly 3
+    ended INSTALL 3
+== case dasync1 exit=0
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepRet ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    SleepFail ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" sleep nowait exit=9 code=9
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended CaAsyncCont 1
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended InstallValidate 1
+    ended CaExe2NoWait 0
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    ended CaDeferAsync 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferOther 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferAsync 1153
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    ended CaAsync 0
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended InstallFinalize 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoEnd 1
+    ended INSTALL 1
+== case rasync1 exit=1603
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended InstallValidate 1
+    ended CaExe2NoWait 0
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    error 2723
+    ended CaRollbackAsync 3
+    ended CaAsync 0
+    ended INSTALL 3
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case roll1 exit=1603
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended InstallValidate 1
+    ended CaExe2NoWait 0
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    ended CaDeferFail 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferOther 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferFail 1025
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaDeferFail returned 1603
+    ended InstallFinalize 3
+    op CustomActionRollback CaRollback 1281 data=rollback-data
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAsync 0
+    ended INSTALL 3
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case t1075 exit=1603
+  observed:
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoOther 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended InstallValidate 1
+    ended CaExe2NoWait 0
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferOther 1
+    ended CaDeferExe 1
+    error 2723
+    ended Set1075 3
+    ended CaAsync 0
+    ended INSTALL 3
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603
+== case skipother exit=0
+  observed:
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SetProperty1 MsiSetProperty=0
+    SetProperty1 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Message MsiProcessMessage=0
+    Ret1603 ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=1603 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\WINDOWS\system32 cmd="C:\vcaprobe\caexe.exe" type50 exit=3 code=3
+    Exe image=C:\vcaprobe\caexe.exe cwd=C:\ cmd="C:\vcaprobe\caexe.exe" type34 exit=0 code=0
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" probe-arg exit=0 code=0
+    SleepRet begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    SleepFail begin
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[defer-data Vitreo CA Probe](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=8 wow64=0 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\System32\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Exe image=C:\WINDOWS\Installer\MSI####.tmp cwd=C:\WINDOWS\system32 cmd="C:\WINDOWS\Installer\MSI####.tmp" deferred exit=0 code=0
+    Info ptr=4 wow64=1 sched=1 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[secret-data](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=1 lang=0 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[commit-data](0) ProductCode=[](0) UserSID=[<SID>](0) PROBEPROP=[](0) SETBYCA=[](0) PROBEDIR=[](0) CNT_DEF=[](0) CNT_FIRST=[](0) CNT_ONCE=[](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[](0)
+    Info ptr=4 wow64=1 sched=0 rollback=0 commit=0 lang=1033 user=<USER> image=C:\Windows\syswow64\MsiExec.exe self=C:\WINDOWS\Installer\MSI####.tmp ret=0 CustomActionData=[](0) ProductCode=[{0B3E3A35-5C25-4C8B-8E8A-5F1F64A3B286}](0) UserSID=[<SID>](0) PROBEPROP=[probe-value](0) SETBYCA=[set-by-dll](0) PROBEDIR=[C:\Users\<USER>\AppData\Local\Temp\vcadir\](0) CNT_DEF=[x](0) CNT_FIRST=[x](0) CNT_ONCE=[x](0) CNT_CLIENT=[](0) PROP1075=[](0) AFTERRET=[ran](0)
+  engine:
+    ended SetCntDef 1
+    ended SetCntFirst 1
+    ended SetCntOnce 1
+    skipped (msidbCustomActionTypeClientRepeat)
+    ended SetCntClient 0
+    ended SetExePath 1
+    ended CostInitialize 1
+    ended FileCost 1
+    ended CostFinalize 1
+    ended SetProbeDir 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfo 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SetProperty1
+    ended CaSet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Message
+    ended CaMsg 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Ret1603
+    CaRetCont returned 1603 (continue)
+    ended CaRetCont 1
+    CaExe50Cont returned 3 (continue)
+    ended CaExe50Cont 1
+    ended CaExe34 1
+    ended CaExe2 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepRet
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaAfterAsync 1
+    ended CaAsyncCont 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: SleepFail
+    ended SetAfterRet 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoAfter 1
+    ended InstallValidate 1
+    ended CaExe2NoWait 0
+    ended InstallInitialize 1
+    ended SetCaDefer 1
+    ended CaDefer 1
+    ended SetCaRollback 1
+    ended CaRollback 1
+    ended SetCaCommit 1
+    ended CaCommit 1
+    ended CaNoImp 1
+    ended CaDeferExe 1
+    ended SetCaHide 1
+    ended CaHide 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoInScript 1
+    op CustomActionSchedule CaDefer 1025 data=defer-data Vitreo CA Probe
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaRollback 1281 data=rollback-data
+    op CustomActionSchedule CaCommit 1537 data=commit-data
+    op CustomActionSchedule CaNoImp 3073
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    op CustomActionSchedule CaDeferExe 1026
+    op CustomActionSchedule CaHide 9217 data=**********
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended InstallFinalize 1
+    remote DLL: C:\WINDOWS\Installer\MSI####.tmp, Entrypoint: Info
+    ended CaInfoEnd 1
+    ended CaAsync 0
+    ended INSTALL 1
+    CaAsyncCont returned 1603 (continue)
+    ended CaAsyncCont 1603

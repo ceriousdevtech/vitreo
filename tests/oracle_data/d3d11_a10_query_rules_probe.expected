@@ -1,0 +1,56 @@
+pointer size 8
+
+[create1] CreateQuery1 HRESULT per ContextType 0..4
+  q=0  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x00000000 ctx3=0x00000000 ctx4=0x00000000
+  q=1  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x00000000 ctx3=0x00000000 ctx4=0x00000000
+  q=2  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x00000000 ctx3=0x00000000 ctx4=0x00000000
+  q=3  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x00000000 ctx3=0x00000000 ctx4=0x00000000
+  q=4  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=5  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=6  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=7  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=8  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=9  ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=10 ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=11 ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=12 ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=13 ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=14 ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+  q=15 ctx0=0x00000000 ctx1=0x00000000 ctx2=0x80070057 ctx3=0x80070057 ctx4=0x80070057
+
+[order] GetData on a never-issued OCCLUSION query
+  fresh (buf,8) flags=0x2   -> 0x80070057
+  fresh (buf,4) flags=0     -> 0x80070057
+  fresh (NULL,8) flags=0    -> 0x80070057
+  fresh (buf,0) flags=0x2   -> 0x80070057
+  building (buf,4) flags=0  -> 0x80070057
+  building (buf,8) flags=0x2 -> 0x80070057
+  issued spin(buf,8)        -> 0x00000000
+
+[hint] OCCLUSION_PREDICATE with PREDICATEHINT
+  fresh (NULL,0)   -> 0x80070057
+  fresh (buf,4)    -> 0x80070057
+  issued spin(NULL,0) -> 0x80070057
+  issued (buf,0)   -> 0x80070057
+  issued (buf,4)   -> 0x80070057
+  issued (buf,8)   -> 0x80070057
+  issued (buf,4) flags=0x2 -> 0x80070057
+
+[predicate] UpdateSubresource under a predicate with no data
+  OCCLUSION_PREDICATE    never issued: FALSE SKIPPED TRUE ran
+  OCCLUSION_PREDICATE    building:     FALSE ran     TRUE SKIPPED
+  OCCLUSION_PREDICATE    End only:     GetData 0x00000000 value=0; FALSE SKIPPED TRUE ran
+  SO_OVERFLOW_PREDICATE  never issued: FALSE SKIPPED TRUE ran
+  SO_OVERFLOW_PREDICATE  building:     FALSE SKIPPED TRUE ran
+  SO_OVERFLOW_PREDICATE  End only:     GetData 0x00000000 value=0; FALSE SKIPPED TRUE ran
+
+done
+#
+# ---------------------------------------------------------------------------
+# winoracle 2026-09-28, WARP ("Microsoft Basic Render Driver"), x64 above; the
+# i686 build prints the same bytes except "pointer size 4".
+# Nondeterminism on WARP (8 runs, x64 and x86): "OCCLUSION_PREDICATE
+# building" read "FALSE ran TRUE SKIPPED" in 4 and "FALSE SKIPPED TRUE ran" in
+# 4 -- predicating on a predicate that is still building is undefined there.
+# Every other line was stable. Vitreo reads a predicate with no data (never
+# issued or building) as FALSE, the stable answer of the other rows.

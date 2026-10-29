@@ -1,0 +1,4 @@
+child_exit=0
+pipe_data=1
+event_signal=1
+mapping_shared=1

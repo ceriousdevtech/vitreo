@@ -1,0 +1,11 @@
+lrint_2_5 r=2 
+lrint_m1_5 r=-2 
+nan_bits b=0x7ff8000000000000 
+mbschr off=3 
+mbschr_miss null=1 
+mbsnbcpy "hi\x00\x00\x00\xcc\xcc\xcc"
+isatty_stdout r=0 
+isatty_file r=0 
+stat32i64 r=0 errno=0 
+atoll r=1234567890123 
+dpcomp r=1 

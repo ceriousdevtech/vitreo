@@ -1,0 +1,9 @@
+caught pass=0 sum=8128 finalizers=1
+after pass=0 sum=8128
+caught pass=1 sum=8256 finalizers=2
+after pass=1 sum=8256
+caught pass=2 sum=8384 finalizers=3
+after pass=2 sum=8384
+caught pass=3 sum=8512 finalizers=4
+after pass=3 sum=8512
+continue-execution=1 finalizers=4

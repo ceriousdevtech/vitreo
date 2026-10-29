@@ -1,0 +1,5 @@
+load ok=00000001 error=00000000
+export named=00000001 ordinal_match=00000001
+factory type=00000000 hr=00000000 output=00000001 dpi_nonzero=00000001 query_hr=00000000 identity=00000001 geometry_hr=00000000 geometry=00000001 rect_roundtrip=00000001 release=00000000
+factory type=00000001 hr=00000000 output=00000001 dpi_nonzero=00000001 query_hr=00000000 identity=00000001 geometry_hr=00000000 geometry=00000001 rect_roundtrip=00000001 release=00000000
+free ok=00000001

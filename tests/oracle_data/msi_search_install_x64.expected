@@ -1,0 +1,302 @@
+package x64 (64-bit component)
+== risky hashonly install exit 1603
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+   uninstall exit 1605
+== risky dwordbad install exit 1603
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+   uninstall exit 1605
+== risky dwordhex install exit 1603
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+   uninstall exit 1605
+== risky dwordover install exit 0
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+    'keypath' type 1 len 6 = kp\0
+    'dwordover' type 4 len 4 = 00000000
+   uninstall exit 0
+== risky dwordspace install exit 1603
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+   uninstall exit 1605
+== risky dwordplus install exit 0
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+    'keypath' type 1 len 6 = kp\0
+    'dwordplus' type 4 len 4 = 07000000
+   uninstall exit 0
+== risky binodd install exit 0
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+    'keypath' type 1 len 6 = kp\0
+    'binodd' type 3 len 2 = 0123
+   uninstall exit 0
+== risky binbad install exit 1603
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+   uninstall exit 1605
+== risky binempty install exit 0
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+    'keypath' type 1 len 6 = kp\0
+    'binempty' type 3 len 0 = 
+   uninstall exit 0
+== risky binX install exit 0
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+    'keypath' type 1 len 6 = kp\0
+    'binX' type 3 len 1 = 0a
+   uninstall exit 0
+== risky dwordmax install exit 0
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+    'keypath' type 1 len 6 = kp\0
+    'dwordmax' type 4 len 4 = ffffffff
+   uninstall exit 0
+== risky expandnopct install exit 0
+  HKLM\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+    'keypath' type 1 len 6 = kp\0
+    'expandnopct' type 2 len 12 = plain\0
+   uninstall exit 0
+== seeded
+  HKLM64\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 10 = x\0b\0\0
+    'multiprepend' type 7 len 10 = q\0z\0\0
+    'multireplace' type 7 len 10 = old\0\0
+    'multiappendsz' type 1 len 14 = single\0
+    'multiremove' type 7 len 22 = keep\0gone\0\0
+    'overwrite' type 4 len 4 = 05000000
+    'toremove' type 1 len 8 = bye\0
+    'toremovemissingok' type 1 len 8 = bye\0
+  HKLM64\Software\VitreoMsiRegProbe\minus:
+  HKLM64\Software\VitreoMsiRegProbe\minus\sub:
+    'v' type 1 len 10 = deep\0
+  HKLM64\Software\VitreoMsiRegProbe\rmkey:
+    'v' type 1 len 8 = top\0
+  HKLM64\Software\VitreoMsiRegProbe\rmkey\sub:
+    'v' type 1 len 10 = deep\0
+  HKLM64\Software\VitreoMsiRegProbe\uninst:
+    'preexisting' type 1 len 10 = stay\0
+  HKLM32\Software\VitreoMsiRegProbe: <absent 2>
+  HKLM\Deep: <absent 2>
+  HKLM64\RootM1: <absent 2>
+  HKLM32\RootM1: <absent 2>
+  HKCU\RootM1: <absent 2>
+  HKLM64\Classes: <absent 2>
+  HKLM32\Classes: <absent 2>
+  HKCU\Classes: <absent 2>
+  HKCU\Software\VitreoMsiRegProbe: <absent 2>
+  user VITREOPROBE_PLUS type 1 = keep\0
+  user VITREOPROBE_APP type 1 = base\0
+  user VITREOPROBE_PRE type 1 = base\0
+  user VITREOPROBE_DEL type 1 = dv\0
+  user VITREOPROBE_DELANY type 1 = zz\0
+  user VITREOPROBE_DELMISMATCH type 1 = other\0
+  user VITREOPROBE_APPU type 1 = base\0
+  user VITREOPROBE_NULLSET type 1 = was\0
+  system VITREOPROBE_SYSAPP type 1 = sysbase\0
+  probe.ini:
+    |[Sec]|
+    |k_create=keep|
+    |k_tag=a,b|
+    |k_tag2=a,b|
+    |k_add=old|
+    |r_line=x|
+    |r_tag=x,y,z|
+    |r_tagonly=y|
+    |r_tagmissing=x,z|
+    |[Other]|
+    |only=1|
+install exit 0
+== installed
+  HKLM64\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 14 = x\0b\0c\0\0
+    'multiprepend' type 7 len 14 = p\0q\0z\0\0
+    'multireplace' type 7 len 10 = r\0s\0\0
+    'multiappendsz' type 7 len 6 = t\0\0
+    'multiremove' type 7 len 30 = keep\0gone\0new\0\0
+    'overwrite' type 1 len 10 = text\0
+    'toremovemissingok' type 1 len 8 = bye\0
+    'keypath' type 1 len 6 = kp\0
+    'sz' type 1 len 12 = plain\0
+    'hash2' type 1 len 10 = #lit\0
+    'hash3' type 1 len 12 = ##lit\0
+    'dword' type 4 len 4 = 2a000000
+    'dwordneg' type 4 len 4 = fbffffff
+    'bin' type 3 len 3 = 01abff
+    'expand' type 2 len 30 = %SystemRoot%\x\0
+    'multi' type 7 len 14 = a\0b\0c\0\0
+    'multiempty' type 7 len 2 = \0
+    'multimiddleempty' type 7 len 12 = a\0\0b\0\0
+    'nullv' type 1 len 2 = \0
+    '' type 1 len 10 = dflt\0
+    'Vitreo registry probe' type 1 len 12 = 1.0.0\0
+  HKLM64\Software\VitreoMsiRegProbe\minus:
+  HKLM64\Software\VitreoMsiRegProbe\minus\sub:
+    'v' type 1 len 10 = deep\0
+  HKLM64\Software\VitreoMsiRegProbe\plus:
+  HKLM64\Software\VitreoMsiRegProbe\plusval:
+    '+' type 1 len 4 = x\0
+  HKLM64\Software\VitreoMsiRegProbe\star:
+  HKLM64\Software\VitreoMsiRegProbe\uninst:
+    'preexisting' type 1 len 10 = stay\0
+    'mine' type 1 len 4 = v\0
+  HKLM32\Software\VitreoMsiRegProbe: <absent 2>
+  HKLM\Deep:
+  HKLM\Deep\a:
+  HKLM\Deep\a\b:
+    'v' type 1 len 4 = x\0
+  HKLM64\RootM1:
+    'v' type 1 len 6 = m1\0
+  HKLM32\RootM1: <absent 2>
+  HKCU\RootM1: <absent 2>
+  HKLM64\Classes:
+    'v' type 1 len 8 = cls\0
+  HKLM32\Classes:
+    'v' type 1 len 8 = cls\0
+  HKCU\Classes: <absent 2>
+  HKCU\Software\VitreoMsiRegProbe:
+    'hkcu' type 1 len 4 = u\0
+  user VITREOPROBE_SET type 1 = v1\0
+  user VITREOPROBE_PLUS type 1 = keep\0
+  user VITREOPROBE_PLUSNEW type 1 = fresh\0
+  user VITREOPROBE_APP type 1 = base;tail\0
+  user VITREOPROBE_PRE type 1 = head;base\0
+  user VITREOPROBE_DELMISMATCH type 1 = other\0
+  user VITREOPROBE_EXP type 2 = %SystemRoot%\x\0
+  user VITREOPROBE_APPU type 1 = base;u\0
+  system VITREOPROBE_SYS type 1 = sysv\0
+  system VITREOPROBE_SYSAPP type 1 = sysbase;more\0
+  probe.ini:
+    |[Sec]|
+    |k_create=keep|
+    |k_tag=a,b,c|
+    |k_tag2=a,b,b|
+    |k_add=v1|
+    |r_tag=x,z|
+    |r_tagmissing=x,z|
+    |k_addnew=n1|
+    |k_createnew=fresh|
+    |k_tagnew=t|
+    |k_fmt=1.0.0|
+    |[NewSec]|
+    |k=v|
+uninstall exit 0
+== uninstalled
+  HKLM64\Software\VitreoMsiRegProbe:
+    'multiappend' type 7 len 6 = x\0\0
+    'multiprepend' type 7 len 6 = z\0\0
+    'multiremove' type 7 len 12 = keep\0\0
+    'toremovemissingok' type 1 len 8 = bye\0
+  HKLM64\Software\VitreoMsiRegProbe\plus:
+  HKLM64\Software\VitreoMsiRegProbe\uninst:
+    'preexisting' type 1 len 10 = stay\0
+  HKLM32\Software\VitreoMsiRegProbe: <absent 2>
+  HKLM\Deep: <absent 2>
+  HKLM64\RootM1: <absent 2>
+  HKLM32\RootM1: <absent 2>
+  HKCU\RootM1: <absent 2>
+  HKLM64\Classes: <absent 2>
+  HKLM32\Classes: <absent 2>
+  HKCU\Classes: <absent 2>
+  HKCU\Software\VitreoMsiRegProbe: <absent 2>
+  user VITREOPROBE_PLUS type 1 = keep\0
+  user VITREOPROBE_PLUSNEW type 1 = fresh\0
+  user VITREOPROBE_APP type 1 = base\0
+  user VITREOPROBE_PRE type 1 = base\0
+  user VITREOPROBE_DELMISMATCH type 1 = other\0
+  user VITREOPROBE_APPU type 1 = base\0
+  system VITREOPROBE_SYSAPP type 1 = sysbase\0
+  probe.ini:
+    |[Sec]|
+    |k_tag=a,b|
+    |k_tag2=a|
+    |r_tag=x,z|
+    |r_tagmissing=x,z|

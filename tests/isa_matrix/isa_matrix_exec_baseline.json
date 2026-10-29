@@ -1,0 +1,6 @@
+{
+  "parity_failures": 155,
+  "fault_failures": 0,
+  "hardware_failures": 0,
+  "note": "hardware column not run; set VITREO_ISA_MATRIX_HARDWARE=1. fault_failures is now 0 with the misalignment probe keyed on the OPERAND (any Mem128), not on a hardcoded list of 11 opcodes. Under the old blind probe this also read 0, which meant nothing; under the real probe it started at 890. Do not let it rise. The dangerous direction is 'JIT faulted, interpreter did not' -- a fabricated fault kills a process, and one on VPXOR killed Steam at startup; the permissive direction only means a guest runs where hardware would have faulted. parity_failures 155: seed 3 on an m128 form now faults instead of producing a comparable result, so this is not comparable to the pre-2026-09-21 value of 147."
+}

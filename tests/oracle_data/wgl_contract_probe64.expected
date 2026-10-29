@@ -1,0 +1,758 @@
+# wgl_contract_probe64.expected - output of wgl_contract_probe.c (x86_64 build) run on winoracle.
+# Oracle: Windows 11 10.0.26200, Microsoft "GDI Generic" OpenGL 1.1.0 (see gl-vendor / gl-renderer / gl-version).
+# The i686 build gives identical output except env pointer-size (diff wgl_contract_probe32.expected).
+# Line shape: <tag> ret=<value> gle=<GetLastError, "untouched" = the call left the seeded sentinel alone> [detail].
+# gle values: 6 ERROR_INVALID_HANDLE, 87 ERROR_INVALID_PARAMETER, 127 ERROR_PROC_NOT_FOUND, 170 ERROR_BUSY,
+# 2000 ERROR_INVALID_PIXEL_FORMAT. A positive ret with a stray gle (e.g. swap-buffers gle=6) is a leftover,
+# not an error: only a failing ret makes gle meaningful.
+# 
+# ================================================================================
+# ChoosePixelFormat selection rule (measured; pf-list shows the 36 formats it chooses among)
+# ================================================================================
+# Reproduced by tools/oracle_probe/wgl_choosepf_model_check.py: the rule below picks the identical index
+# for all 152 machine-readable (reqraw=) requests in the choose-* lines.
+# 
+# Candidates are all pf-list indices 1..36 (36 = pf-list count). Memory DCs see the same list
+# (choose-mem-dc-baseline, choose-mem-dc-bmp). The returned index is the candidate with the smallest
+# key below, compared in order; ties go to the LOWEST index. It never fails on a valid DC (ret >= 1 for
+# every case); there is no "no match" result.
+#   1. Number of {PFD_DRAW_TO_BITMAP, PFD_SUPPORT_GDI} requested but absent from the format.
+#      (choose-draw-to-bitmap-db ret=1, choose-support-gdi ret=1, choose-prio-bmp-db-color24 ret=13,
+#       choose-prio-gdi-db-color16 ret=19: a bitmap/GDI request beats a double-buffer request.)
+#   2. Double-buffer mismatch: (request has PFD_DOUBLEBUFFER) != (format has it). Skipped entirely when
+#      PFD_DOUBLEBUFFER_DONTCARE is set. Asking for NO double buffer prefers single-buffered formats.
+#      (choose-baseline ret=3, choose-single-buffer ret=1, choose-doublebuffer-dontcare ret=1,
+#       choose-doublebuffer-dontcare-with-db ret=1, choose-prio-db-dontcare-depth16 ret=2,
+#       choose-prio-db-vs-color24 ret=3, choose-prio-db-color16 ret=3.)
+#   3. PFD_DRAW_TO_WINDOW requested but absent from the format.
+#      (choose-prio-window-vs-color16 ret=1, choose-prio-window-vs-color24 ret=1,
+#       choose-prio-window-vs-accum32 ret=2, choose-prio-colorindex-window-color16 ret=9,
+#       choose-prio-win-bmp-color24 ret=1.)
+#   4. Sum of four 0/1 mismatches, all equal weight:
+#        colour:  format.cColorBits != requested, where a requested cColorBits that is not one of
+#                 4, 8, 16, 24, 32 (including 0, 48) counts as 32
+#                 (choose-sweep-color-bmp: 0,1,3,5,9,12,15,17,20,25,31,33,40 all -> a 32-bit format;
+#                  4, 8, 16, 24 -> the exact-depth BMP formats 32, 26, 20, 14; choose-color-0 ret=3).
+#        accum:   only if requested cAccumBits != 0: format.cAccumBits != requested (EXACT equality;
+#                 33, 65, 128 match nothing; 0 means "don't care", it does not prefer accum-0 formats)
+#                 (choose-sweep-accum-db, choose-sweep-accum-bmp16, choose-prio-color16-vs-accum64 ret=2,
+#                  choose-prio-color24-vs-accum32 ret=14).
+#        pixtype: format.iPixelType != requested
+#                 (choose-colorindex-8 ret=11, choose-prio-colorindex-bmp-color8 ret=29).
+#        alpha:   only if requested cAlphaBits != 0: mismatch when the format has 0 alpha bits; any
+#                 requested value 1..16 behaves like "want alpha" (choose-sweep-alpha-db: 1, 8, 16 -> 7;
+#                 choose-alpha-8 ret=7).
+#      Because the four terms are summed and ties go to the lowest index, a pixel-type request loses to an
+#      alpha or accum request that only an RGBA format can meet (choose-prio-colorindex-vs-alpha8 ret=7,
+#      choose-prio-colorindex-vs-accum64 ret=3), and colour 16 loses to accum 64
+#      (choose-prio-color16-vs-accum64 ret=2) but wins against accum 32 or 33 or 65.
+#   5. Depth: formats whose cDepthBits >= requested come first, smallest depth first; if none reaches the
+#      request, the largest depth. PFD_DEPTH_DONTCARE makes the requested depth 0.
+#      (choose-sweep-depth-db: 0..16 -> depth 16 (ret=4), 17..64 -> depth 32 (ret=3);
+#       choose-depth-more ret=3; choose-depth-dontcare / -24 / -64 ret=4;
+#       choose-prio-single-depth-dontcare ret=2.)
+#   6. Lowest index.
+# Request fields with NO observable effect (every candidate ties on them): cStencilBits
+# (choose-sweep-stencil-db, all stencil 8), cAuxBuffers (choose-aux-1), iLayerType (choose-layer-overlay,
+# choose-layer-underlay), PFD_STEREO / PFD_STEREO_DONTCARE (choose-stereo, choose-stereo-dontcare),
+# PFD_GENERIC_FORMAT / PFD_GENERIC_ACCELERATED / PFD_SWAP_* / PFD_NEED_PALETTE / PFD_SUPPORT_DIRECTDRAW /
+# composition bit 0x8000 (choose-generic-*, choose-swap-*, choose-need-palette, choose-support-directdraw,
+# choose-support-composition), per-channel accum/colour bit fields (choose-accum-64-per-channel), nSize and
+# nVersion (choose-nsize-0 / -10 / -39 / -100, choose-nversion-0 / -2, choose-all-zero ret=2,
+# choose-zero-but-nsize ret=2: no validation). PFD_SUPPORT_OPENGL is carried by every format.
+# Argument errors: ppfd == NULL faults (choose-null-ppfd EXC=0xc0000005, ret 0); hdc == NULL returns 0 with
+# gle=6 (choose-null-hdc). Round trip: choose-exact requests each pf-list entry verbatim and gets the same
+# index back for all 36.
+# The rule is a fit that reproduces every probed request; combinations that the 36 formats cannot
+# distinguish (e.g. stencil, aux, layer) are not claimed.
+# 
+# ================================================================================
+# Other contracts measured in this file
+# ================================================================================
+# pf-list / describe-*: 36 formats. 1,2,5,6,9,10 = WIN|BMP|GDI|GL|GENERIC|COMPOSITION (0x807c), single buffer,
+#  32-bit; 3,4,7,8,11,12 = DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION (0x8465), the only double-buffered formats;
+#  13..36 = BMP|GDI|GL|GENERIC (0x78) only, 24/16/8/4-bit colour. describe-index0 / describe-index-count+1:
+#  ret 0 gle 87; describe-nbytes-39: ret 0 gle 87 and the struct is untouched; describe-nbytes-0 and
+#  describe-null-ppfd return the count (36) without writing; describe-null-hdc: ret 0 gle 6.
+# setpf-*: SetPixelFormat succeeds once per DC (setpf-A-db); a second call fails even for the same index
+#  (setpf-second-same ret 0 gle 2000) and GetPixelFormat keeps the first; index 0, count+1, negative:
+#  ret 0 gle 87; ppfd NULL is accepted (setpf-null-ppfd ret 1); NULL hdc: gle 6. getpf-unset ret 0.
+# create-*: no pixel format on the DC -> NULL gle 2000 (create-no-pixel-format, create-memdc-no-format);
+#  NULL hdc -> NULL gle 6 (create-null-hdc); a memory DC holding the default 1x1 monochrome bitmap cannot
+#  take a pixel format (create-memdc-default-bitmap-setpf ret 0 gle 1); a memory DC with a 32-bit DIB
+#  takes format 1 and renders (create-memdc-dib, make-memdc-dib, memdc-render readback 255,0,0,255);
+#  a window-format context cannot be made current on that bitmap DC (make-window-format-ctx-onto-bitmap-dc
+#  ret 0 gle 2000).
+# make-*: wglMakeCurrent(NULL,NULL) with NOTHING current returns 0 with gle 6 (make-null-null-nothing-current);
+#  with a context current it returns 1 and releases it (make-null-null-releases). (hdc, NULL) releases and
+#  returns 1 (make-dc-null-ctx-releases, also with nothing current: make-dc-null-ctx-nothing-current ret 1).
+#  (NULL, ctx) returns 0 gle 6 and leaves the current context alone (make-null-dc-ctx-while-current).
+#  A DC with no pixel format: ret 0 gle 2000 (make-dc-without-pixel-format). Mismatched pixel format
+#  (double-buffered context onto a single-buffered DC, or the reverse): ret 0 gle 2000
+#  (make-mismatched-format, make-mismatched-format-rev), and when another context was current the failed call
+#  RELEASES it (make-mismatched-while-current-after cur-ctx=NULL). A different window with the SAME format
+#  is accepted (make-same-format-other-window ret 1). Making the already-current pair current again returns 1.
+#  Second thread: the same context cannot be made current while current on another thread
+#  (make-second-thread-same-ctx-same-dc, ...-other-dc: ret 0 gle 170 ERROR_BUSY), a different context can
+#  (make-second-thread-other-ctx ret 1), and the same context can be taken once released
+#  (make-second-thread-after-release ret 1). Deleted or garbage HGLRC: ret 0 gle 6 (make-deleted-hglrc,
+#  make-garbage-hglrc). A thread with nothing current calling (NULL,NULL) gets ret 0 gle 6
+#  (make-second-thread-null-null-nothing-current).
+# delete-*: wglDeleteContext on the calling thread's current context returns 1 and leaves the thread with no
+#  current context (delete-current: cur-ctx-after=NULL); delete of another thread's current context: ret 0 gle
+#  170 (delete-second-thread-current-ctx); twice / NULL / garbage: ret 0 gle 6.
+# share-*: wglShareLists(a,b) succeeds on fresh contexts (share-before) and then both see each other's lists
+#  and textures (share-before-visibility); it also succeeds when only the first argument already owns
+#  objects, which become visible in the second (share-after-gentextures, share-after-gentextures-visibility);
+#  it FAILS with ret 0 gle 87 when the second (destination) context already generated objects
+#  (share-after-gentextures-dst, share-after-gentextures-both), when already shared (share-already-shared),
+#  and with itself (share-self); NULL arguments / deleted context: gle 6. Different pixel formats may share
+#  (share-different-format ret 1). Objects survive deletion of the context that created them
+#  (share-source-deleted-visibility). wglShareLists(c,c) on a context that is current on ANOTHER thread:
+#  ret 0 gle 170 ERROR_BUSY (share-second-thread-current-ctx; the same self-share on the owning thread is gle 87).
+# gpa-*: with NO current context every name, including "" and NULL, returns NULL with gle 6 and never faults
+#  (gpa-noctx). With a context current only genuinely extension names the implementation exports return
+#  non-NULL (glColorTableEXT, glAddSwapHintRectWIN); core 1.1 names (glVertex3f, glGenTextures), unknown
+#  names and "" return NULL with gle 127; a NULL name faults (gpa-ctx name=(NULL) EXC=0xc0000005).
+# swap-*: SwapBuffers works on a double-buffered DC with no context current (swap-buffers-no-ctx-double ret 1)
+#  and on a memory DC (swap-buffers-memdc ret 1); single-buffered DC: ret 0 (swap-buffers-no-ctx-single,
+#  swap-buffers-single-while-other-current); no format / NULL: ret 0 gle 6. wglSwapLayerBuffers(MAIN_PLANE)
+#  and (OVERLAY1), (UNDERLAY1) and 0 all return 1 on the double-buffered DC (swap-layer-*), 0 with gle 2000
+#  on a DC with no format or NULL, 0 on the single-buffered DC.
+# viewport-*: the first make-current of a context sets viewport and scissor to the whole client area
+#  (viewport-initial 0,0,320,200); resizing the window to 400x300 does NOT change them, nor does making
+#  current again, release-and-make, or SwapBuffers after another resize (viewport-after-resize-*); an
+#  explicit glViewport survives (viewport-explicit-then-resize-remake); a NEW context first made current
+#  after a resize gets the new size (viewport-second-context-first-make 0,0,500,400).
+# noctx-*: with no current context (fresh thread, after release, or on a thread other than the one that holds a
+#  context) nothing faults: glGetError returns 1282 (GL_INVALID_OPERATION) on every call (it is not
+#  cleared), glGetString returns NULL, glIsEnabled / glIsTexture / glGenLists return 0, and glGetIntegerv /
+#  glGetFloatv / glGetBooleanv / glGenTextures leave the output untouched (untouched=1); GL calls are no-ops.
+#  wglGetCurrentContext / wglGetCurrentDC return NULL.
+#
+# opengl32's own pixel-format / layer / default-proc exports (tags wglpf-*, wgllayer-*, wgldefproc-*):
+#  wglChoosePixelFormat, wglDescribePixelFormat, wglGetPixelFormat and wglSetPixelFormat give the same
+#  return, last error and output as the gdi32 call on the same input in the same order (every wglpf-X line
+#  equals its wglpf-X-gdi line), and a format set through one is seen by the other (wglpf-cross-*).
+#  No pixel format has a layer plane: wglDescribeLayerPlane(plane 1) and wglSet/GetLayerPaletteEntries,
+#  wglRealizeLayerPalette(plane 1) fail with ERROR_INVALID_PARAMETER 87 and write nothing; plane 0 fails
+#  with the last error untouched; on the palette calls a NULL hdc or a DC without a format is 2000
+#  (describe: 6 for a NULL hdc, 87 without a format). wglGetDefaultProcAddress: NULL / 127 for core and
+#  unknown names, with or without a context (it returns non-NULL for two extension names, which Vitreo
+#  does not expose).
+# swapmulti-*: DWORD wglSwapMultipleBuffers(UINT n, const WGLSWAP*) returns a bit mask, bit i set when entry i
+#  succeeded (swapmulti-two-main 0x3, bad-then-good 0x2, good-then-bad 0x1, max16 0xffff). n = 0 is 0 with the
+#  last error untouched (zero-null, zero-nonnull); n > 16 (WGL_SWAPMULTIPLE_MAX) is 0 with gle 1
+#  ERROR_INVALID_FUNCTION and nothing is swapped (over-max17, over-max20); n = 1 with a NULL array faults
+#  (null-array EXC=0xc0000005). Per entry, as wglSwapLayerBuffers: a double-buffered DC succeeds for any
+#  uiFlags (overlay1, flags0, all-bits; only a MAIN_PLANE entry leaves the stray gle 6 SwapBuffers leaves),
+#  with or without a current context (one-main-noctx); a single-buffered DC or a DC without a format fails
+#  with the last error untouched (single, no-format); a NULL hdc fails with 6 (null-hdc). The same DC twice
+#  succeeds twice (same-dc-twice 0x3).
+env pointer-size=8
+env windows=10.0.26200
+env window-client=320x200 visible=0
+pf-list count=36
+pf-list idx=1 ret=36 nSize=40 nVersion=1 flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=2 ret=36 nSize=40 nVersion=1 flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=3 ret=36 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=4 ret=36 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=5 ret=36 nSize=40 nVersion=1 flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=6 ret=36 nSize=40 nVersion=1 flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=7 ret=36 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=8 ret=36 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=9 ret=36 nSize=40 nVersion=1 flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=1 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=10 ret=36 nSize=40 nVersion=1 flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=1 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=11 ret=36 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=1 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=12 ret=36 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=1 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=13 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=14 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=15 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=16 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=17 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=18 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=19 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=20 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=21 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/8 shift=10/5/0/0 accum=32[8/8/8/8] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=22 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/8 shift=10/5/0/0 accum=32[8/8/8/8] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=23 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=24 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=0[0/0/0/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=25 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=8 rgba=3/3/2/0 shift=0/3/6/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=26 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=8 rgba=3/3/2/0 shift=0/3/6/0 accum=32[11/11/10/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=27 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=8 rgba=3/3/2/8 shift=0/3/6/0 accum=32[8/8/8/8] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=28 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=8 rgba=3/3/2/8 shift=0/3/6/0 accum=32[8/8/8/8] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=29 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=8 rgba=3/3/2/0 shift=0/3/6/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=30 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=8 rgba=3/3/2/0 shift=0/3/6/0 accum=0[0/0/0/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=31 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=4 rgba=1/1/1/0 shift=0/1/2/0 accum=16[5/6/5/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=32 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=4 rgba=1/1/1/0 shift=0/1/2/0 accum=16[5/6/5/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=33 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=4 rgba=1/1/1/8 shift=0/1/2/0 accum=16[4/4/4/4] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=34 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=4 rgba=1/1/1/8 shift=0/1/2/0 accum=16[4/4/4/4] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=35 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=4 rgba=1/1/1/0 shift=0/1/2/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+pf-list idx=36 ret=36 nSize=40 nVersion=1 flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=4 rgba=1/1/1/0 shift=0/1/2/0 accum=0[0/0/0/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+describe-index0 ret=0 gle=87(0x57)
+describe-index-count+1 ret=0 gle=87(0x57)
+describe-nbytes-39 ret=0 gle=87(0x57) nSize-field=52685
+describe-nbytes-0 ret=36 gle=untouched nSize-field=52685
+describe-nbytes-48 ret=36 gle=untouched nSize-field=40
+describe-null-hdc ret=0 gle=6(0x6)
+describe-null-ppfd ret=36 gle=untouched
+choose-exact ret=1 gle=untouched requested-idx=1 roundtrip=1
+choose-exact ret=2 gle=untouched requested-idx=2 roundtrip=1
+choose-exact ret=3 gle=untouched requested-idx=3 roundtrip=1
+choose-exact ret=4 gle=untouched requested-idx=4 roundtrip=1
+choose-exact ret=5 gle=untouched requested-idx=5 roundtrip=1
+choose-exact ret=6 gle=untouched requested-idx=6 roundtrip=1
+choose-exact ret=7 gle=untouched requested-idx=7 roundtrip=1
+choose-exact ret=8 gle=untouched requested-idx=8 roundtrip=1
+choose-exact ret=9 gle=untouched requested-idx=9 roundtrip=1
+choose-exact ret=10 gle=untouched requested-idx=10 roundtrip=1
+choose-exact ret=11 gle=untouched requested-idx=11 roundtrip=1
+choose-exact ret=12 gle=untouched requested-idx=12 roundtrip=1
+choose-exact ret=13 gle=untouched requested-idx=13 roundtrip=1
+choose-exact ret=14 gle=untouched requested-idx=14 roundtrip=1
+choose-exact ret=15 gle=untouched requested-idx=15 roundtrip=1
+choose-exact ret=16 gle=untouched requested-idx=16 roundtrip=1
+choose-exact ret=17 gle=untouched requested-idx=17 roundtrip=1
+choose-exact ret=18 gle=untouched requested-idx=18 roundtrip=1
+choose-exact ret=19 gle=untouched requested-idx=19 roundtrip=1
+choose-exact ret=20 gle=untouched requested-idx=20 roundtrip=1
+choose-exact ret=21 gle=untouched requested-idx=21 roundtrip=1
+choose-exact ret=22 gle=untouched requested-idx=22 roundtrip=1
+choose-exact ret=23 gle=untouched requested-idx=23 roundtrip=1
+choose-exact ret=24 gle=untouched requested-idx=24 roundtrip=1
+choose-exact ret=25 gle=untouched requested-idx=25 roundtrip=1
+choose-exact ret=26 gle=untouched requested-idx=26 roundtrip=1
+choose-exact ret=27 gle=untouched requested-idx=27 roundtrip=1
+choose-exact ret=28 gle=untouched requested-idx=28 roundtrip=1
+choose-exact ret=29 gle=untouched requested-idx=29 roundtrip=1
+choose-exact ret=30 gle=untouched requested-idx=30 roundtrip=1
+choose-exact ret=31 gle=untouched requested-idx=31 roundtrip=1
+choose-exact ret=32 gle=untouched requested-idx=32 roundtrip=1
+choose-exact ret=33 gle=untouched requested-idx=33 roundtrip=1
+choose-exact ret=34 gle=untouched requested-idx=34 roundtrip=1
+choose-exact ret=35 gle=untouched requested-idx=35 roundtrip=1
+choose-exact ret=36 gle=untouched requested-idx=36 roundtrip=1
+choose-baseline ret=3 gle=untouched req{WIN|GL|DB rgba32 depth24} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-depth-16 ret=4 gle=untouched req{depth16} reqraw=0x25/0/32/0/0/16/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-depth-32 ret=3 gle=untouched req{depth32} reqraw=0x25/0/32/0/0/32/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-depth-more ret=3 gle=untouched req{depth64 (more than offered)} reqraw=0x25/0/32/0/0/64/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-depth-0 ret=4 gle=untouched req{depth0} reqraw=0x25/0/32/0/0/0/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-depth-dontcare ret=4 gle=untouched req{depth0+DEPTH_DONTCARE} reqraw=0x20000025/0/32/0/0/0/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-depth-dontcare-24 ret=4 gle=untouched req{depth24+DEPTH_DONTCARE} reqraw=0x20000025/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-depth-dontcare-64 ret=4 gle=untouched req{depth64+DEPTH_DONTCARE} reqraw=0x20000025/0/32/0/0/64/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-single-buffer ret=1 gle=untouched req{WIN|GL no DB} reqraw=0x24/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-doublebuffer-dontcare ret=1 gle=untouched req{WIN|GL no DB + DB_DONTCARE} reqraw=0x40000024/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-doublebuffer-dontcare-with-db ret=1 gle=untouched req{WIN|GL|DB + DB_DONTCARE} reqraw=0x40000025/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-draw-to-bitmap ret=1 gle=untouched req{BMP|GL} reqraw=0x28/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-draw-to-bitmap-db ret=1 gle=untouched req{BMP|GL|DB} reqraw=0x29/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-draw-to-bitmap-and-window ret=1 gle=untouched req{WIN|BMP|GL|DB} reqraw=0x2d/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-support-gdi ret=1 gle=untouched req{WIN|GL|DB|GDI} reqraw=0x35/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-support-gdi-single ret=1 gle=untouched req{WIN|GL|GDI no DB} reqraw=0x34/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-support-gdi-no-gl ret=1 gle=untouched req{WIN|GDI} reqraw=0x14/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-single-no-db ret=1 gle=untouched req{WIN|GL} reqraw=0x24/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-window-only ret=1 gle=untouched req{WIN} reqraw=0x4/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-no-flags ret=1 gle=untouched req{none} reqraw=0x0/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-color-8 ret=3 gle=untouched req{color8} reqraw=0x25/0/8/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-color-16 ret=3 gle=untouched req{color16} reqraw=0x25/0/16/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-color-24 ret=3 gle=untouched req{color24} reqraw=0x25/0/24/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-color-32 ret=3 gle=untouched req{color32} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-color-0 ret=3 gle=untouched req{color0} reqraw=0x25/0/0/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-color-48 ret=3 gle=untouched req{color48} reqraw=0x25/0/48/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-color-16-depth-16 ret=4 gle=untouched req{color16 depth16} reqraw=0x25/0/16/0/0/16/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-accum-64 ret=3 gle=untouched req{accum64} reqraw=0x25/0/32/0/64/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-accum-32 ret=3 gle=untouched req{accum32} reqraw=0x25/0/32/0/32/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-accum-128 ret=3 gle=untouched req{accum128} reqraw=0x25/0/32/0/128/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-accum-64-per-channel ret=3 gle=untouched req{accum64 16/16/16/16} reqraw=0x25/0/32/0/64/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-stencil-8 ret=3 gle=untouched req{stencil8} reqraw=0x25/0/32/0/0/24/8/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-stencil-16 ret=3 gle=untouched req{stencil16} reqraw=0x25/0/32/0/0/24/16/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-alpha-8 ret=7 gle=untouched req{alpha8} reqraw=0x25/0/32/8/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-aux-1 ret=3 gle=untouched req{aux1} reqraw=0x25/0/32/0/0/24/0/1/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-stereo ret=3 gle=untouched req{STEREO} reqraw=0x27/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-stereo-dontcare ret=3 gle=untouched req{STEREO_DONTCARE} reqraw=0x80000025/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-colorindex-8 ret=11 gle=untouched req{COLORINDEX color8} reqraw=0x25/1/8/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=1 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-colorindex-32 ret=11 gle=untouched req{COLORINDEX color32} reqraw=0x25/1/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=1 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-layer-overlay ret=3 gle=untouched req{layer=OVERLAY} reqraw=0x25/0/32/0/0/24/0/0/1 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-layer-underlay ret=3 gle=untouched req{layer=UNDERLAY} reqraw=0x25/0/32/0/0/24/0/0/255 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-generic-accelerated ret=3 gle=untouched req{+ACCEL} reqraw=0x1025/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-generic-format ret=3 gle=untouched req{+GENERIC} reqraw=0x65/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-swap-copy ret=3 gle=untouched req{+SWAPCOPY} reqraw=0x425/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-swap-exchange ret=3 gle=untouched req{+SWAPEXCH} reqraw=0x225/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-need-palette ret=3 gle=untouched req{+PAL} reqraw=0xa5/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-support-directdraw ret=3 gle=untouched req{+DDRAW} reqraw=0x2025/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-support-composition ret=3 gle=untouched req{+COMPOSITION} reqraw=0x8025/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-nsize-0 ret=3 gle=untouched req{nSize=0} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-nsize-10 ret=3 gle=untouched req{nSize=10} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-nsize-39 ret=3 gle=untouched req{nSize=39} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-nsize-100 ret=3 gle=untouched req{nSize=100} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-nversion-0 ret=3 gle=untouched req{nVersion=0} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-nversion-2 ret=3 gle=untouched req{nVersion=2} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-all-zero ret=2 gle=untouched req{all zero incl. nSize} reqraw=0x0/0/0/0/0/0/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-zero-but-nsize ret=2 gle=untouched req{only nSize/nVersion} reqraw=0x0/0/0/0/0/0/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-null-ppfd ret=0 gle=untouched EXC=0xc0000005 req{ppfd=NULL} 
+choose-null-hdc ret=0 gle=6(0x6) req{hdc=NULL} 
+choose-mem-dc-baseline ret=3 gle=untouched req{memDC WIN|GL|DB baseline} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-mem-dc-bmp ret=1 gle=untouched req{memDC BMP|GL} reqraw=0x28/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color0 depth16} reqraw=0x28/0/0/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color1 depth16} reqraw=0x28/0/1/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color3 depth16} reqraw=0x28/0/3/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=32 gle=untouched req{BMP|GL color4 depth16} reqraw=0x28/0/4/0/0/16/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=4 rgba=1/1/1/0 shift=0/1/2/0 accum=16[5/6/5/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color5 depth16} reqraw=0x28/0/5/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=26 gle=untouched req{BMP|GL color8 depth16} reqraw=0x28/0/8/0/0/16/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=8 rgba=3/3/2/0 shift=0/3/6/0 accum=32[11/11/10/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color9 depth16} reqraw=0x28/0/9/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color12 depth16} reqraw=0x28/0/12/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color15 depth16} reqraw=0x28/0/15/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=20 gle=untouched req{BMP|GL color16 depth16} reqraw=0x28/0/16/0/0/16/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color17 depth16} reqraw=0x28/0/17/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color20 depth16} reqraw=0x28/0/20/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=14 gle=untouched req{BMP|GL color24 depth16} reqraw=0x28/0/24/0/0/16/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color25 depth16} reqraw=0x28/0/25/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color31 depth16} reqraw=0x28/0/31/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color32 depth16} reqraw=0x28/0/32/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color33 depth16} reqraw=0x28/0/33/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-color-bmp ret=2 gle=untouched req{BMP|GL color40 depth16} reqraw=0x28/0/40/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=4 gle=untouched req{WIN|GL|DB depth0} reqraw=0x25/0/32/0/0/0/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=2 gle=untouched req{WIN|GL depth0} reqraw=0x24/0/32/0/0/0/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=4 gle=untouched req{WIN|GL|DB depth1} reqraw=0x25/0/32/0/0/1/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=2 gle=untouched req{WIN|GL depth1} reqraw=0x24/0/32/0/0/1/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=4 gle=untouched req{WIN|GL|DB depth15} reqraw=0x25/0/32/0/0/15/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=2 gle=untouched req{WIN|GL depth15} reqraw=0x24/0/32/0/0/15/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=4 gle=untouched req{WIN|GL|DB depth16} reqraw=0x25/0/32/0/0/16/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=2 gle=untouched req{WIN|GL depth16} reqraw=0x24/0/32/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=3 gle=untouched req{WIN|GL|DB depth17} reqraw=0x25/0/32/0/0/17/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=1 gle=untouched req{WIN|GL depth17} reqraw=0x24/0/32/0/0/17/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=3 gle=untouched req{WIN|GL|DB depth24} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=1 gle=untouched req{WIN|GL depth24} reqraw=0x24/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=3 gle=untouched req{WIN|GL|DB depth31} reqraw=0x25/0/32/0/0/31/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=1 gle=untouched req{WIN|GL depth31} reqraw=0x24/0/32/0/0/31/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=3 gle=untouched req{WIN|GL|DB depth32} reqraw=0x25/0/32/0/0/32/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=1 gle=untouched req{WIN|GL depth32} reqraw=0x24/0/32/0/0/32/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=3 gle=untouched req{WIN|GL|DB depth33} reqraw=0x25/0/32/0/0/33/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=1 gle=untouched req{WIN|GL depth33} reqraw=0x24/0/32/0/0/33/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-db ret=3 gle=untouched req{WIN|GL|DB depth64} reqraw=0x25/0/32/0/0/64/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-depth-single ret=1 gle=untouched req{WIN|GL depth64} reqraw=0x24/0/32/0/0/64/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-alpha-db ret=3 gle=untouched req{WIN|GL|DB alpha0} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-alpha-bmp24 ret=13 gle=untouched req{BMP|GL color24 alpha0} reqraw=0x28/0/24/0/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-alpha-db ret=7 gle=untouched req{WIN|GL|DB alpha1} reqraw=0x25/0/32/1/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-alpha-bmp24 ret=15 gle=untouched req{BMP|GL color24 alpha1} reqraw=0x28/0/24/1/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-alpha-db ret=7 gle=untouched req{WIN|GL|DB alpha8} reqraw=0x25/0/32/8/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-alpha-bmp24 ret=15 gle=untouched req{BMP|GL color24 alpha8} reqraw=0x28/0/24/8/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-alpha-db ret=7 gle=untouched req{WIN|GL|DB alpha16} reqraw=0x25/0/32/16/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-alpha-bmp24 ret=15 gle=untouched req{BMP|GL color24 alpha16} reqraw=0x28/0/24/16/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-db ret=3 gle=untouched req{WIN|GL|DB accum0} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-bmp16 ret=19 gle=untouched req{BMP|GL color16 accum0} reqraw=0x28/0/16/0/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-db ret=3 gle=untouched req{WIN|GL|DB accum1} reqraw=0x25/0/32/0/1/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-bmp16 ret=19 gle=untouched req{BMP|GL color16 accum1} reqraw=0x28/0/16/0/1/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-db ret=3 gle=untouched req{WIN|GL|DB accum16} reqraw=0x25/0/32/0/16/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-bmp16 ret=19 gle=untouched req{BMP|GL color16 accum16} reqraw=0x28/0/16/0/16/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-db ret=3 gle=untouched req{WIN|GL|DB accum32} reqraw=0x25/0/32/0/32/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-bmp16 ret=19 gle=untouched req{BMP|GL color16 accum32} reqraw=0x28/0/16/0/32/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-db ret=3 gle=untouched req{WIN|GL|DB accum33} reqraw=0x25/0/32/0/33/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-bmp16 ret=19 gle=untouched req{BMP|GL color16 accum33} reqraw=0x28/0/16/0/33/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-db ret=3 gle=untouched req{WIN|GL|DB accum64} reqraw=0x25/0/32/0/64/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-bmp16 ret=1 gle=untouched req{BMP|GL color16 accum64} reqraw=0x28/0/16/0/64/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-db ret=3 gle=untouched req{WIN|GL|DB accum65} reqraw=0x25/0/32/0/65/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-bmp16 ret=19 gle=untouched req{BMP|GL color16 accum65} reqraw=0x28/0/16/0/65/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-db ret=3 gle=untouched req{WIN|GL|DB accum128} reqraw=0x25/0/32/0/128/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-accum-bmp16 ret=19 gle=untouched req{BMP|GL color16 accum128} reqraw=0x28/0/16/0/128/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-stencil-db ret=3 gle=untouched req{WIN|GL|DB stencil0} reqraw=0x25/0/32/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-stencil-db ret=3 gle=untouched req{WIN|GL|DB stencil1} reqraw=0x25/0/32/0/0/24/1/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-stencil-db ret=3 gle=untouched req{WIN|GL|DB stencil8} reqraw=0x25/0/32/0/0/24/8/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-stencil-db ret=3 gle=untouched req{WIN|GL|DB stencil9} reqraw=0x25/0/32/0/0/24/9/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-sweep-stencil-db ret=3 gle=untouched req{WIN|GL|DB stencil16} reqraw=0x25/0/32/0/0/24/16/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-window-vs-color16 ret=1 gle=untouched req{WIN|GL (no DB) color16: only BMP-only formats have 16} reqraw=0x24/0/16/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-window-vs-color24 ret=1 gle=untouched req{WIN|GL (no DB) color24} reqraw=0x24/0/24/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-db-vs-color24 ret=3 gle=untouched req{WIN|GL|DB color24} reqraw=0x25/0/24/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-color16-vs-accum64 ret=2 gle=untouched req{BMP|GL|DB color16 accum64 depth16} reqraw=0x29/0/16/0/64/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-color16-vs-accum64-nodb ret=2 gle=untouched req{BMP|GL color16 accum64 depth16} reqraw=0x28/0/16/0/64/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-color32-vs-accum0 ret=2 gle=untouched req{BMP|GL color32 accum0 depth16} reqraw=0x28/0/32/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-colorindex-vs-alpha8 ret=7 gle=untouched req{COLORINDEX|DB alpha8} reqraw=0x25/1/32/8/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-colorindex-vs-accum64 ret=3 gle=untouched req{COLORINDEX|DB accum64} reqraw=0x25/1/32/0/64/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-colorindex-bmp-color8 ret=29 gle=untouched req{COLORINDEX BMP|GL color8} reqraw=0x28/1/8/0/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=1 color=8 rgba=3/3/2/0 shift=0/3/6/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-colorindex-bmp-db ret=9 gle=untouched req{COLORINDEX BMP|GL|DB} reqraw=0x29/1/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=1 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-depth16-alpha8-accum64 ret=8 gle=untouched req{WIN|GL|DB depth16 alpha8 accum64} reqraw=0x25/0/32/8/64/16/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-db-dontcare-depth16 ret=2 gle=untouched req{WIN|GL|DB+DB_DONTCARE depth16} reqraw=0x40000025/0/32/0/0/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-single-depth-dontcare ret=2 gle=untouched req{WIN|GL+DEPTH_DONTCARE depth24} reqraw=0x20000024/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-both-dontcare-alpha8 ret=6 gle=untouched req{WIN|GL|DB+DB_DC+DEPTH_DC alpha8} reqraw=0x60000025/0/32/8/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-bmp-db-dontcare-color24 ret=13 gle=untouched req{BMP|GL+DB_DC color24} reqraw=0x40000028/0/24/0/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-bmp-color24-depth16-alpha8 ret=16 gle=untouched req{BMP|GL color24 depth16 alpha8} reqraw=0x28/0/24/8/0/16/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-gl-only ret=1 gle=untouched req{GL only (no WIN/BMP)} reqraw=0x20/0/32/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-db-color16 ret=3 gle=untouched req{WIN|GL|DB color16} reqraw=0x25/0/16/0/0/24/0/0/0 -> flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-window-vs-accum32 ret=2 gle=untouched req{WIN|GL accum32 depth16: accum-32 formats lack WIN} reqraw=0x24/0/32/0/32/16/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-color24-vs-accum32 ret=14 gle=untouched req{BMP|GL color24 accum32 depth16} reqraw=0x28/0/24/0/32/16/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-bmp-db-color24 ret=13 gle=untouched req{BMP|GL|DB color24} reqraw=0x29/0/24/0/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=24 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-win-bmp-color24 ret=1 gle=untouched req{WIN|BMP|GL color24} reqraw=0x2c/0/24/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-gdi-color16 ret=19 gle=untouched req{GL|GDI color16} reqraw=0x30/0/16/0/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-gdi-db-color16 ret=19 gle=untouched req{GL|GDI|DB color16} reqraw=0x31/0/16/0/0/24/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/0 shift=10/5/0/0 accum=32[11/11/10/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-window-alpha8-color24 ret=5 gle=untouched req{WIN|GL color24 alpha8} reqraw=0x24/0/24/8/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/8 shift=16/8/0/0 accum=64[16/16/16/16] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-bmp-color16-alpha8-depth16 ret=22 gle=untouched req{BMP|GL color16 alpha8 depth16} reqraw=0x28/0/16/8/0/16/0/0/0 -> flags=0x00000078[BMP|GDI|GL|GENERIC] pixtype=0 color=16 rgba=5/5/5/8 shift=10/5/0/0 accum=32[8/8/8/8] depth=16 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+choose-prio-colorindex-window-color16 ret=9 gle=untouched req{COLORINDEX WIN|GL color16} reqraw=0x24/1/16/0/0/24/0/0/0 -> flags=0x0000807c[WIN|BMP|GDI|GL|GENERIC|COMPOSITION] pixtype=1 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=0[0/0/0/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+setup fmtDB=3 fmtSB=1
+getpf-unset ret=0 gle=untouched
+setpf-index0 ret=0 gle=87(0x57)
+setpf-index-count+1 ret=0 gle=87(0x57)
+setpf-index-neg ret=0 gle=87(0x57)
+setpf-null-ppfd ret=1 gle=untouched
+setpf-null-ppfd-getpf now=3
+setpf-second-different ret=0 gle=2000(0x7d0)
+setpf-second-different-getpf now=3
+setpf-second-same ret=0 gle=2000(0x7d0)
+setpf-null-hdc ret=0 gle=6(0x6)
+setpf-A-db ret=1 gle=untouched
+setpf-B-db ret=1 gle=untouched
+setpf-S-single ret=1 gle=untouched
+setpf-V-db ret=1 gle=untouched
+getpf-after A=3 B=3 S=1 N=0 C=3
+create-no-pixel-format ret=NULL gle=2000(0x7d0)
+create-null-hdc ret=NULL gle=6(0x6)
+create-memdc-no-format ret=NULL gle=2000(0x7d0)
+create-memdc-default-bitmap-setpf ret=0 gle=1(0x1) idx=1
+create-memdc-default-bitmap ret=NULL gle=2000(0x7d0)
+create-memdc-dib-setpf ret=1 gle=untouched idx=1
+create-memdc-dib ret=other gle=untouched
+make-memdc-dib ret=1 gle=untouched
+memdc-render readback-rgba=255,0,0,255 dib-first-dword=0x00ff0000
+memdc-gl vendor="Microsoft Corporation" renderer="GDI Generic" version="1.1.0"
+make-window-format-ctx-onto-bitmap-dc ret=0 gle=2000(0x7d0)
+create-ok A=yes B=yes S=yes V=yes
+gpa-start cur-ctx=NULL cur-dc=NULL
+gpa-noctx ret=NULL gle=6(0x6) name="glVertex3f"
+gpa-noctx ret=NULL gle=6(0x6) name="glActiveTextureARB"
+gpa-noctx ret=NULL gle=6(0x6) name=""
+gpa-noctx ret=NULL gle=6(0x6) name="glBogus"
+gpa-noctx ret=NULL gle=6(0x6) name="glGenTextures"
+gpa-noctx ret=NULL gle=6(0x6) name="glDrawArrays"
+gpa-noctx ret=NULL gle=6(0x6) name="glDrawArraysEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="glBindTextureEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="glMultiTexCoord2fARB"
+gpa-noctx ret=NULL gle=6(0x6) name="glGetStringi"
+gpa-noctx ret=NULL gle=6(0x6) name="glGenBuffersARB"
+gpa-noctx ret=NULL gle=6(0x6) name="glCreateShader"
+gpa-noctx ret=NULL gle=6(0x6) name="wglSwapIntervalEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="wglGetExtensionsStringARB"
+gpa-noctx ret=NULL gle=6(0x6) name="wglGetExtensionsStringEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="wglChoosePixelFormatARB"
+gpa-noctx ret=NULL gle=6(0x6) name="wglCreateContextAttribsARB"
+gpa-noctx ret=NULL gle=6(0x6) name="wglCreateContext"
+gpa-noctx ret=NULL gle=6(0x6) name="wglGetProcAddress"
+gpa-noctx ret=NULL gle=6(0x6) name="glGetString"
+gpa-noctx ret=NULL gle=6(0x6) name="glArrayElementEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="glLockArraysEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="glBlendColorEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="glPolygonOffsetEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="glColorTableEXT"
+gpa-noctx ret=NULL gle=6(0x6) name="glAddSwapHintRectWIN"
+gpa-noctx ret=NULL gle=6(0x6) name="glTexImage3D"
+gpa-noctx ret=NULL gle=6(0x6) name="glTexImage3DEXT"
+gpa-noctx ret=NULL gle=6(0x6) name=(NULL)
+make-null-null-nothing-current ret=0 gle=6(0x6)
+make-null-null-nothing-current-after cur-ctx=NULL cur-dc=NULL
+make-dc-null-ctx-nothing-current ret=1 gle=untouched
+make-null-dc-ctx-nothing-current ret=0 gle=6(0x6)
+make-null-dc-after cur-ctx=NULL cur-dc=NULL
+make-dc-without-pixel-format ret=0 gle=2000(0x7d0)
+make-dc-without-pixel-format-after cur-ctx=NULL cur-dc=NULL
+make-mismatched-format ret=0 gle=2000(0x7d0) ctxA(double) onto single-buffered dc
+make-mismatched-format-after cur-ctx=NULL cur-dc=NULL
+make-mismatched-format-rev ret=0 gle=2000(0x7d0) ctxS(single) onto double-buffered dc
+make-mismatched-format-rev-after cur-ctx=NULL cur-dc=NULL
+make-same-format-other-window ret=1 gle=untouched ctxA onto window B (same format)
+make-same-format-other-window-after cur-ctx=ctxA cur-dc=non-null
+make-ok ret=1 gle=untouched
+make-ok-after cur-ctx=ctxA cur-dc=non-null
+gl-vendor "Microsoft Corporation"
+gl-renderer "GDI Generic"
+gl-version "1.1.0"
+make-same-again ret=1 gle=untouched
+make-same-again-after cur-ctx=ctxA cur-dc=non-null
+make-mismatched-while-current ret=0 gle=2000(0x7d0) ctxA current, then onto dc S
+make-mismatched-while-current-after cur-ctx=NULL cur-dc=NULL
+make-dc-null-ctx-releases ret=1 gle=untouched ctxA current then (dA,NULL)
+make-dc-null-ctx-releases-after cur-ctx=NULL cur-dc=NULL
+make-ok-2 ret=1 gle=untouched
+make-null-dc-ctx-while-current ret=0 gle=6(0x6)
+make-null-dc-ctx-while-current-after cur-ctx=ctxA cur-dc=non-null
+make-ok-3 ret=1 gle=untouched
+make-switch-to-ctxB ret=1 gle=untouched ctxA current -> ctxB
+make-switch-to-ctxB-after cur-ctx=ctxB cur-dc=non-null
+make-null-null-releases ret=1 gle=untouched
+make-null-null-releases-after cur-ctx=NULL cur-dc=NULL
+make-ok-4 ret=1 gle=untouched
+make-second-thread-same-ctx-same-dc ret=0 gle=170(0xaa) thread-current-after=NULL
+make-second-thread-same-ctx-other-dc ret=0 gle=170(0xaa) thread-current-after=NULL
+make-second-thread-other-ctx ret=1 gle=untouched thread-current-after=ctxB
+delete-second-thread-current-ctx ret=0 gle=170(0xaa)
+make-second-thread-null-null-nothing-current ret=0 gle=6(0x6)
+share-second-thread-current-ctx ret=0 gle=170(0xaa)
+make-second-thread-after-main cur-ctx=ctxA cur-dc=non-null
+make-second-thread-main-glGetError ret=0 gle=untouched
+noctx-glGetError ret=1282 gle=untouched phase=other-thread-ctx-current
+noctx-glGetString ret=NULL gle=untouched phase=other-thread-ctx-current
+noctx-glIsEnabled ret=0 gle=untouched phase=other-thread-ctx-current
+noctx-glGetIntegerv ret=0 gle=untouched phase=other-thread-ctx-current out=1588444897,1588444898,1588444899,1588444900 untouched=1
+noctx-glGetFloatv ret=0 gle=untouched phase=other-thread-ctx-current out=-7,-7,-7,-7 untouched=1
+noctx-glGetBooleanv ret=0 gle=untouched phase=other-thread-ctx-current out=0x77 untouched=1
+noctx-glGenTextures ret=0 gle=untouched phase=other-thread-ctx-current out=0x5eadbeef untouched=1
+noctx-glIsTexture ret=0 gle=untouched phase=other-thread-ctx-current
+noctx-glGenLists ret=0 gle=untouched phase=other-thread-ctx-current
+noctx-glClear ret=0 gle=untouched phase=other-thread-ctx-current
+noctx-glBegin-glVertex3f-glEnd ret=0 gle=untouched phase=other-thread-ctx-current
+noctx-glGetError-after ret=1282 gle=untouched phase=other-thread-ctx-current
+noctx-wglGetCurrentContext ret=NULL gle=untouched phase=other-thread-ctx-current
+noctx-wglGetCurrentDC ret=NULL gle=untouched phase=other-thread-ctx-current
+make-release-for-thread ret=1 gle=untouched
+make-second-thread-after-release ret=1 gle=untouched thread-current-after=ctxA
+make-second-thread-after-release-main cur-ctx=NULL cur-dc=NULL
+make-ok-5 ret=1 gle=untouched main retakes ctxA after the thread released it
+delete-ok ret=1 gle=untouched
+make-deleted-hglrc ret=0 gle=6(0x6)
+make-deleted-hglrc-after cur-ctx=NULL cur-dc=NULL
+delete-twice ret=0 gle=6(0x6)
+delete-null ret=0 gle=6(0x6)
+delete-garbage ret=0 gle=6(0x6)
+make-garbage-hglrc ret=0 gle=6(0x6)
+make-garbage-hglrc-after cur-ctx=NULL cur-dc=NULL
+delete-current-setup ret=1 gle=untouched
+delete-current ret=1 gle=untouched cur-ctx-after=NULL cur-dc-after=NULL
+delete-current-glGetError ret=1282 gle=untouched
+delete-current-glIsEnabled ret=0 gle=untouched
+delete-current-then-make-deleted ret=0 gle=6(0x6)
+delete-current-then-make-other ret=1 gle=untouched
+delete-current-after-remake cur-ctx=ctxA cur-dc=non-null
+gpa-ctx-start cur-ctx=ctxA cur-dc=non-null
+gpa-ctx ret=NULL gle=127(0x7f) name="glVertex3f"
+gpa-ctx ret=NULL gle=127(0x7f) name="glActiveTextureARB"
+gpa-ctx ret=NULL gle=127(0x7f) name=""
+gpa-ctx ret=NULL gle=127(0x7f) name="glBogus"
+gpa-ctx ret=NULL gle=127(0x7f) name="glGenTextures"
+gpa-ctx ret=NULL gle=127(0x7f) name="glDrawArrays"
+gpa-ctx ret=NULL gle=127(0x7f) name="glDrawArraysEXT"
+gpa-ctx ret=NULL gle=127(0x7f) name="glBindTextureEXT"
+gpa-ctx ret=NULL gle=127(0x7f) name="glMultiTexCoord2fARB"
+gpa-ctx ret=NULL gle=127(0x7f) name="glGetStringi"
+gpa-ctx ret=NULL gle=127(0x7f) name="glGenBuffersARB"
+gpa-ctx ret=NULL gle=127(0x7f) name="glCreateShader"
+gpa-ctx ret=NULL gle=127(0x7f) name="wglSwapIntervalEXT"
+gpa-ctx ret=NULL gle=127(0x7f) name="wglGetExtensionsStringARB"
+gpa-ctx ret=NULL gle=127(0x7f) name="wglGetExtensionsStringEXT"
+gpa-ctx ret=NULL gle=127(0x7f) name="wglChoosePixelFormatARB"
+gpa-ctx ret=NULL gle=127(0x7f) name="wglCreateContextAttribsARB"
+gpa-ctx ret=NULL gle=127(0x7f) name="wglCreateContext"
+gpa-ctx ret=NULL gle=127(0x7f) name="wglGetProcAddress"
+gpa-ctx ret=NULL gle=127(0x7f) name="glGetString"
+gpa-ctx ret=NULL gle=127(0x7f) name="glArrayElementEXT"
+gpa-ctx ret=NULL gle=127(0x7f) name="glLockArraysEXT"
+gpa-ctx ret=NULL gle=127(0x7f) name="glBlendColorEXT"
+gpa-ctx ret=NULL gle=127(0x7f) name="glPolygonOffsetEXT"
+gpa-ctx ret=non-null gle=untouched name="glColorTableEXT"
+gpa-ctx ret=non-null gle=untouched name="glAddSwapHintRectWIN"
+gpa-ctx ret=NULL gle=127(0x7f) name="glTexImage3D"
+gpa-ctx ret=NULL gle=127(0x7f) name="glTexImage3DEXT"
+gpa-ctx ret=NULL gle=untouched EXC=0xc0000005 name=(NULL)
+gpa-ctx-stable glVertex3f twice-same=1
+share-before ret=1 gle=untouched fresh contexts, nothing created in either
+share-before-visibility list-visible-in-s2=1 texture-visible-in-s2=1
+share-after-gentextures ret=1 gle=untouched src (arg1) already generated a list and texture; dst empty
+share-after-gentextures-visibility list-visible-in-s4=1 texture-visible-in-s4=1
+share-after-gentextures-dst ret=0 gle=87(0x57) dst (arg2) already generated a list and texture; src empty
+share-after-gentextures-dst-visibility dst-list-visible-in-src=0 dst-texture-visible-in-src=0
+share-after-gentextures-both ret=0 gle=87(0x57) both already generated a texture
+share-src-current ret=1 gle=untouched src current on this thread, nothing generated
+share-self ret=0 gle=87(0x57)
+share-null-src ret=0 gle=6(0x6)
+share-null-dst ret=0 gle=6(0x6)
+share-already-shared ret=0 gle=87(0x57)
+share-different-format ret=1 gle=untouched double-buffered with single-buffered
+share-deleted-dst ret=0 gle=6(0x6)
+share-source-deleted-visibility list-still-visible=1
+swap-buffers-no-ctx-double ret=1 gle=6(0x6) no ctx current, dc has double-buffered format
+swap-buffers-no-ctx-single ret=0 gle=untouched no ctx current, dc has single-buffered format
+swap-buffers-no-format ret=0 gle=6(0x6) dc has no pixel format
+swap-buffers-null-hdc ret=0 gle=6(0x6)
+swap-buffers ret=1 gle=6(0x6) ctxA current on dA
+swap-buffers-other-window ret=1 gle=6(0x6) ctxA current on dA, swap dB
+swap-buffers-single-while-other-current ret=0 gle=untouched swap dS (single) while ctxA current
+swap-layer-main-plane ret=1 gle=6(0x6)
+swap-layer-overlay1 ret=1 gle=untouched
+swap-layer-underlay1 ret=1 gle=untouched
+swap-layer-main+overlay1 ret=1 gle=6(0x6)
+swap-layer-zero ret=1 gle=untouched
+swap-layer-all-bits ret=1 gle=6(0x6)
+swap-layer-main-plane-single ret=0 gle=untouched
+swap-layer-main-plane-no-format ret=0 gle=2000(0x7d0)
+swap-layer-main-plane-null-hdc ret=0 gle=2000(0x7d0)
+swap-layer-main-plane-no-ctx ret=1 gle=6(0x6)
+swapmulti-zero-null ret=0 gle=untouched hex=0x0
+swapmulti-zero-nonnull ret=0 gle=untouched hex=0x0
+swapmulti-null-array ret=0 gle=untouched EXC=0xc0000005 hex=0x0
+swapmulti-one-main-noctx ret=1 gle=6(0x6) hex=0x1
+swapmulti-one-main ret=1 gle=6(0x6) hex=0x1
+swapmulti-two-main ret=3 gle=6(0x6) hex=0x3
+swapmulti-one-overlay1 ret=1 gle=untouched hex=0x1
+swapmulti-one-flags0 ret=1 gle=untouched hex=0x1
+swapmulti-one-all-bits ret=1 gle=6(0x6) hex=0x1
+swapmulti-single ret=0 gle=untouched hex=0x0
+swapmulti-no-format ret=0 gle=untouched hex=0x0
+swapmulti-null-hdc ret=0 gle=6(0x6) hex=0x0
+swapmulti-bad-then-good ret=2 gle=6(0x6) hex=0x2
+swapmulti-good-then-bad ret=1 gle=6(0x6) hex=0x1
+swapmulti-double-then-single ret=1 gle=6(0x6) hex=0x1
+swapmulti-null-then-good ret=2 gle=6(0x6) hex=0x2
+swapmulti-same-dc-twice ret=3 gle=6(0x6) hex=0x3
+swapmulti-max16 ret=65535 gle=6(0x6) hex=0xffff
+swapmulti-over-max17 ret=0 gle=1(0x1) hex=0x0
+swapmulti-over-max20 ret=0 gle=1(0x1) hex=0x0
+swap-buffers-memdc ret=1 gle=untouched
+viewport-make ret=1 gle=untouched first make-current of ctxV
+viewport-initial client=320x200 viewport=0,0,320,200 scissor=0,0,320,200
+viewport-after-resize-no-remake client=400x300 viewport=0,0,320,200 scissor=0,0,320,200
+viewport-remake-same ret=1 gle=untouched make-current again while already current
+viewport-after-resize-remake client=400x300 viewport=0,0,320,200 scissor=0,0,320,200
+viewport-after-resize-release-and-make client=400x300 viewport=0,0,320,200 scissor=0,0,320,200
+viewport-after-resize-swap client=200x150 viewport=0,0,320,200 scissor=0,0,320,200
+viewport-explicit-set client=200x150 viewport=10,20,30,40 scissor=0,0,320,200
+viewport-explicit-then-resize-remake client=500x400 viewport=10,20,30,40 scissor=0,0,320,200
+viewport-second-context-first-make client=500x400 viewport=0,0,500,400 scissor=0,0,500,400
+wglpf-exports choose=1 describe=1 get=1 set=1 defproc=1
+wglpf-choose-base ret=3 gle=untouched
+wglpf-choose-null-hdc ret=0 gle=6(0x6)
+wglpf-choose-null-ppfd ret=0 gle=untouched EXC=0xc0000005
+wglpf-choose-nsize0 ret=3 gle=untouched
+wglpf-choose-single-depth16 ret=2 gle=untouched
+wglpf-choose-base-gdi ret=3 gle=untouched
+wglpf-choose-null-hdc-gdi ret=0 gle=6(0x6)
+wglpf-choose-null-ppfd-gdi ret=0 gle=untouched EXC=0xc0000005
+wglpf-choose-nsize0-gdi ret=3 gle=untouched
+wglpf-choose-single-depth16-gdi ret=2 gle=untouched
+wglpf-describe-idx3-40 ret=36 gle=untouched written=1 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+wglpf-describe-idx3-nbytes0-buf ret=36 gle=untouched written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-nbytes0-null ret=36 gle=untouched written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx0-count ret=36 gle=untouched written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx0-40 ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx-count+1-40 ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx-neg-40 ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-nbytes39 ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-nbytes1 ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-nbytes100 ret=36 gle=untouched written=1 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+wglpf-describe-idx3-null-buf-40 ret=36 gle=untouched written=0 nSize=43947 nVersion=43947 
+wglpf-describe-null-hdc ret=0 gle=6(0x6) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-null-hdc-count ret=0 gle=6(0x6) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-40-gdi ret=36 gle=untouched written=1 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+wglpf-describe-idx3-nbytes0-buf-gdi ret=36 gle=untouched written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-nbytes0-null-gdi ret=36 gle=untouched written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx0-count-gdi ret=36 gle=untouched written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx0-40-gdi ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx-count+1-40-gdi ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx-neg-40-gdi ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-nbytes39-gdi ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-nbytes1-gdi ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-idx3-nbytes100-gdi ret=36 gle=untouched written=1 nSize=40 nVersion=1 flags=0x00008465[DB|WIN|GL|GENERIC|SWAPCOPY|COMPOSITION] pixtype=0 color=32 rgba=8/8/8/0 shift=16/8/0/0 accum=64[16/16/16/0] depth=32 stencil=8 aux=0 layer=0 masks=0x0/0x0/0x0
+wglpf-describe-idx3-null-buf-40-gdi ret=36 gle=untouched written=0 nSize=43947 nVersion=43947 
+wglpf-describe-null-hdc-gdi ret=0 gle=6(0x6) written=0 nSize=43947 nVersion=43947 
+wglpf-describe-null-hdc-count-gdi ret=0 gle=6(0x6) written=0 nSize=43947 nVersion=43947 
+wglpf-getpf-unset ret=0 gle=2000(0x7d0)
+wglpf-getpf-null-hdc ret=0 gle=2000(0x7d0)
+wglpf-setpf-index0 ret=0 gle=87(0x57)
+wglpf-setpf-index-count+1 ret=0 gle=87(0x57)
+wglpf-setpf-index-neg ret=0 gle=87(0x57)
+wglpf-setpf-null-hdc ret=0 gle=6(0x6)
+wglpf-setpf-null-ppfd ret=1 gle=untouched
+wglpf-getpf-after-null-ppfd ret=3 gle=untouched
+wglpf-setpf-second-different ret=0 gle=2000(0x7d0)
+wglpf-getpf-after-second-different ret=3 gle=untouched
+wglpf-setpf-second-same ret=1 gle=untouched
+wglpf-getpf-unset-gdi ret=0 gle=2000(0x7d0)
+wglpf-getpf-null-hdc-gdi ret=0 gle=2000(0x7d0)
+wglpf-setpf-index0-gdi ret=0 gle=87(0x57)
+wglpf-setpf-index-count+1-gdi ret=0 gle=87(0x57)
+wglpf-setpf-index-neg-gdi ret=0 gle=87(0x57)
+wglpf-setpf-null-hdc-gdi ret=0 gle=6(0x6)
+wglpf-setpf-null-ppfd-gdi ret=1 gle=untouched
+wglpf-getpf-after-null-ppfd-gdi ret=3 gle=untouched
+wglpf-setpf-second-different-gdi ret=0 gle=2000(0x7d0)
+wglpf-getpf-after-second-different-gdi ret=3 gle=untouched
+wglpf-setpf-second-same-gdi ret=1 gle=untouched
+wglpf-cross-wglset ret=1 gle=untouched
+wglpf-cross-wglset-gdi-getpf ret=5 gle=untouched
+wglpf-cross-gdiset ret=1 gle=untouched
+wglpf-cross-gdiset-wgl-getpf ret=6 gle=untouched
+wglpf-cross-wglset-after-gdiset-different ret=0 gle=2000(0x7d0)
+wglpf-cross-wglset-after-gdiset-same ret=1 gle=untouched
+wgllayer-sizeof LAYERPLANEDESCRIPTOR=32
+wgllayer-describe-plane1-size ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane1-nbytes0-buf ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane1-nbytes0-null ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane0-size ret=0 gle=untouched written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane-1-size ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane-max-size ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane1-pf0 ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane1-pf-count+1 ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane1-pf-other ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane1-null-buf ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane1-null-hdc ret=0 gle=6(0x6) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-describe-plane1-dc-no-format ret=0 gle=87(0x57) written=0 nSize=43947 nVersion=43947 flags=0xabababab
+wgllayer-setpal-plane1 ret=0 gle=87(0x57)
+wgllayer-setpal-plane0 ret=0 gle=untouched
+wgllayer-setpal-plane-1 ret=0 gle=87(0x57)
+wgllayer-setpal-count0 ret=0 gle=87(0x57)
+wgllayer-setpal-null ret=0 gle=87(0x57)
+wgllayer-setpal-null-hdc ret=0 gle=2000(0x7d0)
+wgllayer-setpal-no-format ret=0 gle=2000(0x7d0)
+wgllayer-getpal-plane1 ret=0 gle=87(0x57) out=77777777,77777777 untouched=1
+wgllayer-getpal-plane0 ret=0 gle=untouched untouched=1
+wgllayer-getpal-count0 ret=0 gle=87(0x57)
+wgllayer-getpal-null ret=0 gle=87(0x57)
+wgllayer-getpal-null-hdc ret=0 gle=2000(0x7d0)
+wgllayer-getpal-no-format ret=0 gle=2000(0x7d0)
+wgllayer-realize-plane1-true ret=0 gle=87(0x57)
+wgllayer-realize-plane1-false ret=0 gle=87(0x57)
+wgllayer-realize-plane0 ret=0 gle=untouched
+wgllayer-realize-plane-1 ret=0 gle=87(0x57)
+wgllayer-realize-null-hdc ret=0 gle=2000(0x7d0)
+wgllayer-realize-no-format ret=0 gle=2000(0x7d0)
+wgldefproc-noctx-start cur-ctx=NULL cur-dc=NULL
+wgldefproc-noctx ret=NULL gle=127(0x7f) name="glVertex3f"
+wgldefproc-noctx ret=NULL gle=127(0x7f) name="wglSwapIntervalEXT"
+wgldefproc-noctx ret=NULL gle=127(0x7f) name=""
+wgldefproc-noctx ret=non-null gle=untouched name="glColorTableEXT"
+wgldefproc-noctx ret=non-null gle=untouched name="glAddSwapHintRectWIN"
+wgldefproc-noctx ret=NULL gle=127(0x7f) name="glTexImage3D"
+wgldefproc-noctx ret=NULL gle=127(0x7f) name="glBogus"
+wgldefproc-noctx ret=NULL gle=untouched EXC=0xc0000005 name=(NULL)
+wgldefproc-ctx-start cur-ctx=other cur-dc=non-null
+wgldefproc-ctx ret=NULL gle=127(0x7f) name="glVertex3f"
+wgldefproc-ctx ret=NULL gle=127(0x7f) name="wglSwapIntervalEXT"
+wgldefproc-ctx ret=NULL gle=127(0x7f) name=""
+wgldefproc-ctx ret=non-null gle=untouched name="glColorTableEXT"
+wgldefproc-ctx ret=non-null gle=untouched name="glAddSwapHintRectWIN"
+wgldefproc-ctx ret=NULL gle=127(0x7f) name="glTexImage3D"
+wgldefproc-ctx ret=NULL gle=127(0x7f) name="glBogus"
+wgldefproc-ctx ret=NULL gle=untouched EXC=0xc0000005 name=(NULL)
+noctx-glGetError ret=1282 gle=untouched phase=released-main-thread
+noctx-glGetString ret=NULL gle=untouched phase=released-main-thread
+noctx-glIsEnabled ret=0 gle=untouched phase=released-main-thread
+noctx-glGetIntegerv ret=0 gle=untouched phase=released-main-thread out=1588444897,1588444898,1588444899,1588444900 untouched=1
+noctx-glGetFloatv ret=0 gle=untouched phase=released-main-thread out=-7,-7,-7,-7 untouched=1
+noctx-glGetBooleanv ret=0 gle=untouched phase=released-main-thread out=0x77 untouched=1
+noctx-glGenTextures ret=0 gle=untouched phase=released-main-thread out=0x5eadbeef untouched=1
+noctx-glIsTexture ret=0 gle=untouched phase=released-main-thread
+noctx-glGenLists ret=0 gle=untouched phase=released-main-thread
+noctx-glClear ret=0 gle=untouched phase=released-main-thread
+noctx-glBegin-glVertex3f-glEnd ret=0 gle=untouched phase=released-main-thread
+noctx-glGetError-after ret=1282 gle=untouched phase=released-main-thread
+noctx-wglGetCurrentContext ret=NULL gle=untouched phase=released-main-thread
+noctx-wglGetCurrentDC ret=NULL gle=untouched phase=released-main-thread
+noctx-glGetError ret=1282 gle=untouched phase=fresh-thread
+noctx-glGetString ret=NULL gle=untouched phase=fresh-thread
+noctx-glIsEnabled ret=0 gle=untouched phase=fresh-thread
+noctx-glGetIntegerv ret=0 gle=untouched phase=fresh-thread out=1588444897,1588444898,1588444899,1588444900 untouched=1
+noctx-glGetFloatv ret=0 gle=untouched phase=fresh-thread out=-7,-7,-7,-7 untouched=1
+noctx-glGetBooleanv ret=0 gle=untouched phase=fresh-thread out=0x77 untouched=1
+noctx-glGenTextures ret=0 gle=untouched phase=fresh-thread out=0x5eadbeef untouched=1
+noctx-glIsTexture ret=0 gle=untouched phase=fresh-thread
+noctx-glGenLists ret=0 gle=untouched phase=fresh-thread
+noctx-glClear ret=0 gle=untouched phase=fresh-thread
+noctx-glBegin-glVertex3f-glEnd ret=0 gle=untouched phase=fresh-thread
+noctx-glGetError-after ret=1282 gle=untouched phase=fresh-thread
+noctx-wglGetCurrentContext ret=NULL gle=untouched phase=fresh-thread
+noctx-wglGetCurrentDC ret=NULL gle=untouched phase=fresh-thread
+done

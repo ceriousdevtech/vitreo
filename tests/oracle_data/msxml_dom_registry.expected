@@ -1,0 +1,24 @@
+# HKEY_CLASSES_ROOT MSXML DOMDocument registrations on winoracle (Windows 11),
+# read with Get-ItemProperty on 2026-10-28. ProgID -> CLSID [CurVer]:
+Microsoft.XMLDOM -> {2933BF90-7B36-11D2-B20E-00C04F983E60} curver=Microsoft.XMLDOM.1.0
+Microsoft.XMLDOM.1.0 -> {2933BF90-7B36-11D2-B20E-00C04F983E60}
+Microsoft.FreeThreadedXMLDOM -> {2933BF91-7B36-11D2-B20E-00C04F983E60}
+Microsoft.FreeThreadedXMLDOM.1.0 -> {2933BF91-7B36-11D2-B20E-00C04F983E60}
+MSXML.DOMDocument -> {2933BF90-7B36-11D2-B20E-00C04F983E60} curver=Microsoft.XMLDOM.1.0
+Msxml2.DOMDocument -> {F6D90F11-9C73-11D3-B32E-00C04F990BB4} curver=Msxml2.DOMDocument.3.0
+Msxml2.FreeThreadedDOMDocument -> {F6D90F12-9C73-11D3-B32E-00C04F990BB4}
+Msxml2.DOMDocument.2.6 -> (absent)
+Msxml2.DOMDocument.3.0 -> {F5078F32-C551-11D3-89B9-0000F81FE221}
+Msxml2.FreeThreadedDOMDocument.3.0 -> {F5078F33-C551-11D3-89B9-0000F81FE221}
+Msxml2.DOMDocument.4.0 -> (absent)
+Msxml2.DOMDocument.6.0 -> {88d96a05-f192-11d4-a65f-0040963251e5}
+Msxml2.FreeThreadedDOMDocument.6.0 -> {88d96a06-f192-11d4-a65f-0040963251e5}
+# CLSID -> ProgID / VersionIndependentProgID / InProcServer32 / ThreadingModel / name
+{2933BF90-7B36-11D2-B20E-00C04F983E60} progid=Microsoft.XMLDOM.1.0 vip=Microsoft.XMLDOM dll=C:\WINDOWS\System32\msxml3.dll tm=Both name=XML DOM Document
+{2933BF91-7B36-11D2-B20E-00C04F983E60} progid=Microsoft.FreeThreadedXMLDOM.1.0 vip=Microsoft.FreeThreadedXMLDOM dll=C:\WINDOWS\System32\msxml3.dll tm=Both name=Free Threaded XML DOM Document
+{F6D90F11-9C73-11D3-B32E-00C04F990BB4} progid=Msxml2.DOMDocument vip=Msxml2.DOMDocument dll=C:\WINDOWS\System32\msxml3.dll tm=Both name=XML DOM Document
+{F6D90F12-9C73-11D3-B32E-00C04F990BB4} progid=Msxml2.FreeThreadedDOMDocument vip=Msxml2.FreeThreadedDOMDocument dll=C:\WINDOWS\System32\msxml3.dll tm=Both name=Free Threaded XML DOM Document
+{F5078F32-C551-11D3-89B9-0000F81FE221} progid=Msxml2.DOMDocument.3.0 vip=Msxml2.DOMDocument dll=C:\WINDOWS\System32\msxml3.dll tm=Both name=XML DOM Document 3.0
+{F5078F33-C551-11D3-89B9-0000F81FE221} progid=Msxml2.FreeThreadedDOMDocument.3.0 vip=Msxml2.FreeThreadedDOMDocument dll=C:\WINDOWS\System32\msxml3.dll tm=Both name=Free Threaded XML DOM Document 3.0
+{88D96A05-F192-11D4-A65F-0040963251E5} progid=Msxml2.DOMDocument.6.0 vip= dll=C:\Windows\System32\msxml6.dll tm=Both name=XML DOM Document 6.0
+{88D96A06-F192-11D4-A65F-0040963251E5} progid=Msxml2.FreeThreadedDOMDocument.6.0 vip= dll=C:\Windows\System32\msxml6.dll tm=Both name=Free Threaded XML DOM Document 6.0

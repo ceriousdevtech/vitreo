@@ -1,0 +1,272 @@
+# CreateBitmap formats
+CreateBitmap(5,3,1,0,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=2,pl=1,bpp=1,bits=null null_size=24
+CreateBitmap(5,3,1,1,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=2,pl=1,bpp=1,bits=null null_size=24
+CreateBitmap(5,3,1,2,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=4,pl=1,bpp=4,bits=null null_size=24
+CreateBitmap(5,3,1,3,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=4,pl=1,bpp=4,bits=null null_size=24
+CreateBitmap(5,3,1,4,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=4,pl=1,bpp=4,bits=null null_size=24
+CreateBitmap(5,3,1,5,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=6,pl=1,bpp=8,bits=null null_size=24
+CreateBitmap(5,3,1,6,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=6,pl=1,bpp=8,bits=null null_size=24
+CreateBitmap(5,3,1,7,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=6,pl=1,bpp=8,bits=null null_size=24
+CreateBitmap(5,3,1,8,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=6,pl=1,bpp=8,bits=null null_size=24
+CreateBitmap(5,3,1,15,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=10,pl=1,bpp=16,bits=null null_size=24
+CreateBitmap(5,3,1,16,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=10,pl=1,bpp=16,bits=null null_size=24
+CreateBitmap(5,3,1,17,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=16,pl=1,bpp=24,bits=null null_size=24
+CreateBitmap(5,3,1,24,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=16,pl=1,bpp=24,bits=null null_size=24
+CreateBitmap(5,3,1,25,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=20,pl=1,bpp=32,bits=null null_size=24
+CreateBitmap(5,3,1,32,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=20,pl=1,bpp=32,bits=null null_size=24
+CreateBitmap(5,3,1,33,null) h=NULL err=87
+CreateBitmap(5,3,2,1,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=4,pl=1,bpp=4,bits=null null_size=24
+CreateBitmap(5,3,0,1,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=2,pl=1,bpp=1,bits=null null_size=24
+CreateBitmap(5,3,2,4,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=6,pl=1,bpp=8,bits=null null_size=24
+CreateBitmap(5,3,3,8,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=16,pl=1,bpp=24,bits=null null_size=24
+CreateBitmap(5,3,32,1,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,5,3,wb=20,pl=1,bpp=32,bits=null null_size=24
+CreateBitmap(5,3,33,1,null) h=NULL err=87
+CreateBitmap(0,0,1,1,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,1,1,wb=2,pl=1,bpp=1,bits=null null_size=24
+CreateBitmap(0,3,1,32,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,1,1,wb=2,pl=1,bpp=1,bits=null null_size=24
+CreateBitmap(5,0,1,32,null) h=ok err=57005 getobj=24 err=57005 type=7 bm=0,1,1,wb=2,pl=1,bpp=1,bits=null null_size=24
+CreateBitmap(-1,3,1,1,null) h=NULL err=87
+CreateBitmap(5,-3,1,1,null) h=NULL err=87
+CreateBitmap(134217728,134217728,1,32,null) h=NULL err=87
+zero-size same=1,1 stock_same=1 del=1
+# CreateBitmap with bits
+mono8x2 gbb=4 err=57005 bytes=a55a3cc3eeeeeeee
+mono8x2 gbb3=3 bytes=a55a3ceeeeeeeeee
+mono8x2 gdib32 ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=ffffff0000000000ffffff000000000000000000ffffff00
+mono8x2 gdib1 ret=2 err=57005 hdr=3,-2,1,1,0,img=8,clr=0,0
+  bits=a000000020000000
+  extra=00000000ffffff00
+mono8x2 sbb=4 err=57005
+mono8x2 after sbb gbb=4 bytes=ffff0000eeeeeeee
+mono8x2 getobj=24 err=57005 type=7 bm=0,8,2,wb=2,pl=1,bpp=1,bits=null null_size=24
+rgb32 3x2 gbb=24 bytes=0102030405060708090a0b0c0d0e0f101112131415161718eeeeeeee
+rgb32 gdib32 ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=0102030405060708090a0b0c0d0e0f101112131415161718
+rgb32 gdib24 ret=2 err=57005 hdr=3,2,1,24,0,img=24,clr=0,0
+  bits=0d0e0f111213151617000000010203050607090a0b000000
+rgb24 3x2 gbb=20 bytes=010203040506070809aabb0a0b0c0d0e0f101112eeeeeeee
+rgb24 gdib32 ret=0 err=57005 hdr=3,-2,1,32,0,img=0,clr=0,0
+  bits=eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+rgb16 gdib32 ret=0 err=57005 hdr=3,-2,1,32,0,img=0,clr=0,0
+  bits=eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+pal8 gdib32 ret=0 err=57005 hdr=3,-2,1,32,0,img=0,clr=0,0
+  bits=eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+pal8 gdib8 ret=0 err=57005 hdr=3,-2,1,8,0,img=0,clr=0,0
+  bits=eeeeeeeeeeeeeeee
+  extra=abababababababababababababababab
+# CreateCompatibleBitmap
+ccb screen 4x2 getobj=24 err=57005 type=7 bm=0,4,2,wb=16,pl=1,bpp=32,bits=null null_size=24
+ccb fresh-memdc 4x2 getobj=24 err=57005 type=7 bm=0,4,2,wb=2,pl=1,bpp=1,bits=null null_size=24
+ccb NULL dc h=NULL err=57005
+ccb screen 0x0 getobj=24 err=57005 type=7 bm=0,1,1,wb=2,pl=1,bpp=1,bits=null null_size=24
+ccb dib-selected getobj(ds)=84 bpp=32 biH=5 comp=0 bits=set
+ccb dib8-selected getobj(ds)=84 bpp=8 biH=5 clrused=256
+ccb mono-selected getobj=24 err=57005 type=7 bm=0,3,5,wb=2,pl=1,bpp=1,bits=null null_size=24
+# GetObject on DIB sections
+dib32 td getobj=24 err=57005 type=7 bm=0,3,2,wb=12,pl=1,bpp=32,bits=set null_size=24
+dib32 cb=0 ret=24 err=57005
+dib32 cb=4 ret=0 err=57005
+dib32 cb=20 ret=0 err=57005
+dib32 cb=24 ret=24 err=57005
+dib32 cb=28 ret=24 err=57005
+dib32 cb=80 ret=24 err=57005
+dib32 cb=84 ret=84 err=57005
+dib32 cb=88 ret=84 err=57005
+dib32 ds bm=0,3,2,wb=12 bits_eq=1 bmih=40,3,2,1,32,0,24,0,0,0,0 bf=0,0,0 sect=00000000 off=0
+dib16bf ret=84 wb=8 bmih=2,16,3,img=16 bf=f800,7e0,1f
+dib16rgb ret=84 bmih=16,3,img=16 bf=7c00,3e0,1f
+dib32bu ret=84 bmih=2,img=24 bf=0,0,0
+dib8 ret=84 wb=4 bmih=8,clrused=256,img=8
+dib24 getobj=24 err=57005 type=7 bm=0,3,2,wb=12,pl=1,bpp=24,bits=set null_size=24
+dib1 getobj=24 err=57005 type=7 bm=0,3,2,wb=4,pl=1,bpp=1,bits=set null_size=24
+dib4 getobj=24 err=57005 type=7 bm=0,3,2,wb=4,pl=1,bpp=4,bits=set null_size=24
+# CreateDIBSection failures
+cds bpp=0 h=NULL err=57005 bits=null
+cds bpp=2 h=NULL err=57005 bits=null
+cds bpp=3 h=NULL err=57005 bits=null
+cds bpp=7 h=NULL err=57005 bits=null
+cds bpp=12 h=NULL err=57005 bits=null
+cds bpp=48 h=NULL err=57005 bits=null
+cds bpp=64 h=NULL err=57005 bits=null
+cds w=0 h=NULL err=57005 bits=null
+cds h=0 h=NULL err=57005 bits=null
+cds 32 BITFIELDS zero-masks h=NULL err=87
+cds 24 BITFIELDS h=NULL err=57005
+cds w=-3 h=NULL err=57005
+cds ppv=NULL h=ok err=57005
+cds bmi=NULL h=NULL err=57005
+# GetObject other types
+pen null=16 ret=16 style=1 w=3,0 c=30201 type=1
+pen cb8 ret=0 raw=cccccccccccccccccccccccccccccccc
+pen dash0 style=1 w=0
+pen dash2 style=1 w=2
+pen solid-4 style=0 w=4
+pen style9 h=ok err=57005
+extpen h=ok null=24 type=11 ret=24 raw=000201000400000000000000090807000000000000000000
+extpen cb=LOGPEN ret=0
+solid null=12 ret=12 style=0 c=60504 hatch=0
+hatch ret=12 style=2 c=90807 hatch=4
+pattern ret=12 style=3 c=0 hatch_is_bmp=1
+indirect-hollow same_as_stock=1 ret=12 style=1 c=0
+indirect-hatch99 h=NULL err=57005
+indirect-style77 h=NULL err=57005
+stock 0 type=2 nullW=12 nullA=12 ret=12 raw=00000000ffffff0000000000
+stock 1 type=2 nullW=12 nullA=12 ret=12 raw=00000000c0c0c00000000000
+stock 2 type=2 nullW=12 nullA=12 ret=12 raw=000000008080800000000000
+stock 3 type=2 nullW=12 nullA=12 ret=12 raw=000000004040400000000000
+stock 4 type=2 nullW=12 nullA=12 ret=12 raw=000000000000000000000000
+stock 5 type=2 nullW=12 nullA=12 ret=12 raw=010000000000000000000000
+stock 6 type=1 nullW=16 nullA=16 ret=16 raw=000000000000000000000000ffffff00
+stock 7 type=1 nullW=16 nullA=16 ret=16 raw=00000000000000000000000000000000
+stock 8 type=1 nullW=16 nullA=16 ret=16 raw=05000000010000000000000000000000
+stock 10 type=6 nullW=92 nullA=60 ret=128 raw=
+stock 11 type=6 nullW=92 nullA=60 ret=128 raw=
+stock 12 type=6 nullW=92 nullA=60 ret=128 raw=
+stock 13 type=6 nullW=92 nullA=60 ret=128 raw=
+stock 14 type=6 nullW=92 nullA=60 ret=128 raw=
+stock 15 type=5 nullW=2 nullA=2 ret=2 raw=1400
+stock 16 type=6 nullW=92 nullA=60 ret=128 raw=
+stock 17 type=6 nullW=92 nullA=60 ret=128 raw=
+stock 18 type=2 nullW=12 nullA=12 ret=12 raw=00000000ffffff0000000000
+stock 19 type=1 nullW=16 nullA=16 ret=16 raw=00000000000000000000000000000000
+GetStockObject(99)=NULL err=57005 del_stock=1
+font nullW=92 nullA=60 ret=92 h=-13 wt=600 i=1 cs=1 q=5 pf=34 face=Segoe UI
+font cb30 ret=30 raw=f3ffffff0000000000000000000000005802000001000001000005225300cccccccccccccccccccc
+font cb+16 ret=108
+fontA ret=60 face=Segoe UI h=-13
+fontW cb60 ret=60
+font longface ret=92 last=0066
+CreateFontIndirectW(NULL)=NULL err=57005
+palette null=2 ret=2 count=7 type=5
+palette cb4 ret=2 val=cccc0007
+region ret=0 err=6 type=8 null=0
+dc ret=0 err=6 type=10 screen_type=3
+bogus ret=0 err=57005 type=0
+null ret=0 err=6 type=0
+# GetDIBits
+query0 ret=1 err=57005 hdr=3,2,1,32,3,img=24,xp=0,yp=0,clr=0,0 masks=000000000000000000000000
+query32 ret=1 img=24
+query8 ret=1 img=8 clr=0 pal0-3=00000000000080000080000000808000
+pal8/9/246/255=00c0dcc0 00a6caf0 00fffbf0 00ffffff
+query16bf ret=1 img=16 masks=007c0000e00300001f000000
+gdib32 bu ret=2 err=57005 hdr=3,2,1,32,0,img=24,clr=0,0
+  bits=ff000000ffffff0080808000302010000000ff0000ff0000
+gdib32 td ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=302010000000ff0000ff0000ff000000ffffff0080808000
+gdib32 bu start1 ret=1 err=57005 hdr=3,2,1,32,0,img=24,clr=0,0
+  bits=302010000000ff0000ff0000eeeeeeeeeeeeeeeeeeeeeeee
+gdib32 td start1 ret=1 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=302010000000ff0000ff0000eeeeeeeeeeeeeeeeeeeeeeee
+gdib32 bu lines5 ret=2 err=57005 hdr=3,2,1,32,0,img=24,clr=0,0
+  bits=ff000000ffffff0080808000302010000000ff0000ff0000
+gdib32 bu start3 ret=1 err=57005 hdr=3,2,1,32,0,img=24,clr=0,0
+  bits=eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+gdib32 h4 ret=2 err=57005 hdr=3,4,1,32,0,img=48,clr=0,0
+  bits=000000000000000000000000000000000000000000000000ff000000ffffff0080808000302010000000ff0000ff0000
+gdib24 bu ret=2 err=57005 hdr=3,2,1,24,0,img=24,clr=0,0
+  bits=ff0000ffffff8080800000003020100000ff00ff00000000
+gdib16 bu ret=2 err=57005 hdr=3,2,1,16,0,img=16,clr=0,0
+  bits=1f00ff7f104200008608007ce0030000
+gdib16bf bu ret=2 err=57005 hdr=3,2,1,16,3,img=16,clr=0,0
+  bits=1f00ff7f104200008608007ce0030000
+  extra=007c0000e00300001f000000
+gdib8 bu ret=2 err=57005 hdr=3,2,1,8,0,img=8,clr=0,0
+  bits=fcffa40050f9fa00
+  extra=00000000000080000080000000808000
+gdib4 bu ret=2 err=57005 hdr=3,2,1,4,0,img=8,clr=0,0
+  bits=cf70000009a00000
+  extra=00000000000080000080000000808000
+gdib1 bu ret=2 err=57005 hdr=3,2,1,1,0,img=8,clr=0,0
+  bits=6000000000000000
+  extra=00000000ffffff00
+gdib32bf bu ret=2 err=57005 hdr=3,2,1,32,3,img=24,clr=0,0
+  bits=ff000000ffffff0080808000302010000000ff0000ff0000
+  extra=0000ff0000ff0000ff000000
+gdib0 bu ret=0 err=57005 hdr=3,2,1,0,0,img=0,clr=0,0
+  bits=
+  extra=abababab
+gdib7 bu ret=0 err=57005 hdr=3,2,1,7,0,img=0,clr=0,0
+  bits=eeeeeeeeeeeeeeee
+  extra=abababababababababababababababab
+gdib16bf565-in ret=2 masks=007c0000e00300001f000000
+  bits=8608007ce00300001f00ff7f10420000
+gdib32 wide ret=2 bits=302010000000ff0000ff00000000000000000000ff000000ffffff00808080000000000000000000
+gdib32 narrow ret=2 bits=302010000000ff00ff000000ffffff00eeeeeeeeeeeeeeee
+gdib32 while-selected ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=302010000000ff0000ff0000ff000000ffffff0080808000
+gdib biSize12 ret=1 err=57005 bc=24
+gdib biSize0 ret=0 err=57005
+gdib not-bitmap ret=0 err=57005
+gdib null-dc ret=0 err=87
+gdib usage7 ret=0 err=57005
+mono query0 ret=1 hdr=3,2,1,1,img=8,clr=2 pal=0000000000000000
+mono gdib32 dc-colors ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=ffffff0000000000ffffff0000000000ffffff0000000000
+mono gdib1 ret=2 err=57005 hdr=3,-2,1,1,0,img=8,clr=0,0
+  bits=a000000040000000
+  extra=00000000ffffff00
+dib8 gdib8 ret=2 err=57005 hdr=3,-2,1,8,0,img=8,clr=0,0
+  bits=010203000405ff00
+  extra=0000f0001020ef002040ee003060ed00
+dib8 gdib32 ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=1020ef002040ee003060ed004080ec0050a0eb00f0efff00
+dib8 query0 ret=1 hdr=3,2,1,8,0,img=8,clr=256,256
+dib32 gdib32 ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=302010803121118132221282332313833424148435251585
+dib32 gdib24 ret=2 err=57005 hdr=3,-2,1,24,0,img=24,clr=0,0
+  bits=302010312111322212000000332313342414352515000000
+dib32 query0 ret=1 hdr=3,2,1,32,3,img=24
+# SetDIBits
+sdib24 ret=2 err=57005
+sdib24 readback ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=0a0b0c000d0e0f0010111200010203000405060007080900
+sdib24 start1 ret=1
+sdib24 start1 readback ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=010203000405060007080900010203000405060007080900
+sdib24 td ret=2
+sdib24 td readback ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=0102030004050600070809000a0b0c000d0e0f0010111200
+sdib24 lines5 ret=2
+sdib32 ret=2
+sdib32 readback ret=2 err=57005 hdr=3,-2,1,32,0,img=24,clr=0,0
+  bits=0c0b0a800f0e0d01121110fe030201ff060504000908077f
+sdib32 while-selected ret=2
+sdib not-bitmap ret=0 err=57005
+sdib null-bits ret=0 err=57005
+sdib32->mono ret=2 bits=40000000
+# GetBitmapBits / SetBitmapBits
+sbb32 ret=24 err=57005
+gbb32 ret=24 bits=030201ff060504000908077f0c0b0a800f0e0d01121110feeeeeeeeeeeeeeeee
+gbb32 cb5 ret=5 bits=030201ff06eeeeee
+gbb32 cb0 ret=0
+gbb32 null ret=24
+sbb32 cb4 ret=4
+sbb32 cb100 ret=24
+gbb not-bitmap ret=0 err=57005
+gbb dib24 bu ret=20 bits=0d0e0f101112131415160102030405060708090aeeeeeeeeeeee
+# SelectObject bitmap rules
+default-bitmap 1x1 bpp=1 type=7 stock21_same=1
+select-into-second-dc ret=NULL err=57005
+delete-selected=1 err=57005 type_after=7
+deselect ret_is_b=0 type_after=7
+delete-after-deselect=0
+select-bitmap-into-screen-dc ret=NULL err=57005
+select-region ret=00000002
+select-brush old_is_white=1
+delete-selected-brush=1 err=57005 type_after=2
+select-bogus ret=00000000 err=57005
+select-null-dc ret=00000000 err=6
+select-palette ret=00000000 err=1
+deletedc=1; again=0 err=57005
+DeleteObject(NULL)=0 err=57005
+DeleteObject(bogus)=0 err=57005
+# initial contents
+ccb screen 2x1=0000000000000000
+CreateBitmap 32 2x1=0000000000000000
+CreateBitmap 1 16x1=0000
+deferred: delete-while-selected=1 err=57005 type=7
+deferred: deselect returned other type_after=7
+deferred: second delete=0 err=57005
+deferred: bitmap after its dc is deleted type=7 delete=1
+deferred brush: delete=1 getobj=0 color=0
+deferred brush: deselect br type_after=0

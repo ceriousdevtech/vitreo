@@ -1,0 +1,42 @@
+layout	10	8	10
+mem same16	1	dead	1	1	1	dead	1
+mem same32	1	dead	1	1	1	dead	1
+mem cross	1	dead	1	1	1	dead	1
+mem logon	1	dead	1	1	1	dead	1
+mem mixed	1	dead	1	1	1	dead	0
+mem size15	0	57	0	1	0	57	1
+mem size17	0	57	0	1	0	57	1
+mem size0	0	57	0	1	0	57	1
+mem flag3	0	57	0	1	0	57	1
+mem flag4	1	dead	1	1	0	5	0
+mem flag80	0	57	0	1	0	57	1
+mem_det	1	0
+mem_scope	0
+protect	1	0	1	0	1
+unprotect	1	0	20	1	1	1	Probe description	1
+unprotect_nodescr	1	0	20
+nodescr	1	0	0	0
+entropy	1	1	0	0	d	1	0	d
+entropy_extra	0	d
+tamper	0	0	d
+tamper	1	0	d
+tamper	2	0	d
+tamper	3	0	d
+garbage	0	57
+garbage_empty	0	57
+empty	1	0	1	0	0	0
+flags	1	1	0	1	0
+flags	4	1	0	1	0
+flags	10	1	0	1	0
+flags	40	1	0	1	0
+flags	80000000	1	0	1	0
+flags	8	1	0	0	57
+flags	20	1	0	1	0
+machine_to_user	1	0
+prompt0	1	0
+prompt_forbidden	0	52d
+null_in	0	57
+null_out	0	57
+unull_in	0	57
+unull_out	0	57
+reserved	1	0

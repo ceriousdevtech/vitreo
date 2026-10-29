@@ -1,0 +1,37 @@
+bits=64
+layout SOCKADDR_INET=28 IP_ADDRESS_PREFIX=32 MIB_IPFORWARD_ROW2=104 MIB_IPINTERFACE_ROW=168
+row2 luid=0 index=8 prefix=12 nexthop=44 site=72 valid=76 preferred=80 metric=84 protocol=88 loopback=92 autoconf=93 publish=94 immortal=95 age=96 origin=100
+prefix len_off=28 ipif family=0 luid=8 index=16
+NotifyIpInterfaceChange
+  (callback ran during the registering call)
+  (callback ran during the registering call)
+  unspec initial -> 0 calls_at_return=2 handle=set calls_after=2 type=3 row_null=1 other_thread=0 ctx_ok=1
+  (callback ran during the registering call)
+  inet initial -> 0 calls_at_return=1 handle=set calls_after=1 type=3 row_null=1 other_thread=0 ctx_ok=1
+  (callback ran during the registering call)
+  inet6 initial -> 0 calls_at_return=1 handle=set calls_after=1 type=3 row_null=1 other_thread=0 ctx_ok=1
+  unspec no-initial -> 0 calls_at_return=0 handle=set calls_after=0 type=-1 row_null=-1 other_thread=0 ctx_ok=0
+  family 99 -> 87 calls_at_return=0 handle_out=NULL calls_after=0 type=-1 row_null=-1 other_thread=0 ctx_ok=0
+  family 1 -> 87 calls_at_return=0 handle_out=NULL calls_after=0 type=-1 row_null=-1 other_thread=0 ctx_ok=0
+  null callback -> 0 calls_at_return=0 handle_out=set calls_after=0 type=-1 row_null=-1 other_thread=0 ctx_ok=0
+CancelMibChangeNotify2
+  for cancel -> 0 calls_at_return=0 handle=set calls_after=0 type=-1 row_null=-1 other_thread=0 ctx_ok=0
+  valid -> 0
+  NULL -> 6
+GetBestRoute2
+  v4 8.8.8.8 luid NULL idx 0 -> 0
+    if_index_set=1 luid_set=1 prefix_family=2 prefix_len=0 nexthop_family=2 site_prefix_len=0 valid=86400 preferred=86400 metric_set=0 protocol=3 loopback=0 autoconf=1 publish=0 immortal=1 age_set=1 origin=0 src_family=2
+  v4 8.8.8.8 luid 0 idx 0 -> 0
+    if_index_set=1 luid_set=1 prefix_family=2 prefix_len=0 nexthop_family=2 site_prefix_len=0 valid=86400 preferred=86400 metric_set=0 protocol=3 loopback=0 autoconf=1 publish=0 immortal=1 age_set=1 origin=0 src_family=2
+  v4 127.0.0.1 -> 0
+    if_index_set=1 luid_set=1 prefix_family=2 prefix_len=32 nexthop_family=2 site_prefix_len=0 valid=4294967295 preferred=4294967295 metric_set=1 protocol=2 loopback=1 autoconf=1 publish=0 immortal=0 age_set=1 origin=0 src_family=2
+  v4 idx 9999 -> 2 route_untouched=0 src_untouched=0
+  v6 ::1 -> 0
+    if_index_set=1 luid_set=1 prefix_family=23 prefix_len=128 nexthop_family=23 site_prefix_len=0 valid=4294967295 preferred=4294967295 metric_set=1 protocol=2 loopback=1 autoconf=1 publish=0 immortal=0 age_set=1 origin=0 src_family=23
+  v6 2001:4860:4860::8888 -> 1231 route_untouched=0 src_untouched=0
+  family 99 -> 87 route_untouched=1 src_untouched=1
+  family 0 -> 87 route_untouched=1 src_untouched=1
+  NULL dest -> 87 route_untouched=1 src_untouched=1
+  NULL route -> 87 route_untouched=1 src_untouched=1
+  NULL src -> 87 route_untouched=1 src_untouched=1
+done

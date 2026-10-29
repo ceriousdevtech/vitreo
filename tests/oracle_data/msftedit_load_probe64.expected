@@ -1,0 +1,39 @@
+msftedit_probe pointer_bytes=00000008
+class_before found=00000000 error=00000583
+load ok=00000001 error=00000000
+class_after_global found=00000001 error=00000000 wndproc=00000001 module_owner=00000000 class_style=00004088
+class_after_module found=00000001 error=00000000 wndproc=00000001 module_owner=00000001 class_style=00004088
+export CreateTextServices named=00000001 ordinal_same=00000001
+export DisableOleinitCheck named=00000001 ordinal_same=00000001
+export DllGetActivationFactory named=00000001 ordinal_same=00000001
+export DllGetVersion named=00000001 ordinal_same=00000001
+export GetMathAlphanumeric named=00000001 ordinal_same=00000001
+export GetMathAlphanumericCode named=00000001 ordinal_same=00000001
+export IID_IRichEditOle named=00000001 ordinal_same=00000001
+export IID_IRichEditOleCallback named=00000001 ordinal_same=00000001
+export IID_IRicheditUiaNotificationOverrides named=00000001 ordinal_same=00000001
+export IID_IRicheditUiaOverrides named=00000001 ordinal_same=00000001
+export IID_IRicheditWindowlessAccessibility named=00000001 ordinal_same=00000001
+export IID_ITextDocument2 named=00000001 ordinal_same=00000001
+export IID_ITextHost named=00000001 ordinal_same=00000001
+export IID_ITextHost2 named=00000001 ordinal_same=00000001
+export IID_ITextServices named=00000001 ordinal_same=00000001
+export IID_ITextServices2 named=00000001 ordinal_same=00000001
+export MathBuildDown named=00000001 ordinal_same=00000001
+export MathBuildUp named=00000001 ordinal_same=00000001
+export MathTranslate named=00000001 ordinal_same=00000001
+export RichEdit10ANSIWndProc named=00000001 ordinal_same=00000001
+export RichEditANSIWndProc named=00000001 ordinal_same=00000001
+export RichEditWndProc named=00000001 ordinal_same=00000001
+export SetCustomTextOutHandlerEx named=00000001 ordinal_same=00000001
+export SetTextServicesDpiCalculationOverride named=00000001 ordinal_same=00000001
+export ShutdownTextServices named=00000001 ordinal_same=00000001
+parent ok=00000001 error=00000000
+control ok=00000001 error=00000000
+text set=00000001 length=0000000d got=0000000d match=00000001 unicode=00000001
+text_utf16 00000056 00000069 00000074 00000072 00000065 0000006f 00000020 000003a9 00000020 00004e2d 00000020 0000d83d 0000de42
+destroy_control ok=00000001
+destroy_parent ok=00000001
+free ok=00000001
+class_after_free found=00000000 error=00000583
+done missing_exports=00000000 text_match=00000001

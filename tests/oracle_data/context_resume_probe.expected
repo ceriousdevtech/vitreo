@@ -1,0 +1,6 @@
+# EXCEPTION_CONTINUE_EXECUTION resumes at EXACTLY the Rsp the handler wrote.
+# Measured 2026-09-22 on winoracle and under Vitreo: diff 0 for a 16-aligned
+# Rsp and for one that is 8 mod 16. A third "case" line on Windows is an
+# artefact of ExitProcess running on the probe's borrowed stack.
+case 0 ... diff 0x0000000000000000
+case 1 ... diff 0x0000000000000000

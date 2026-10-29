@@ -1,0 +1,2 @@
+case_null exit=0x0  null r=0 errno=0 
+case_unknown exit=0xc0000005  

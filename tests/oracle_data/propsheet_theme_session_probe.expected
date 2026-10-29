@@ -1,0 +1,21 @@
+getthemefont_null hr=80070006 err=dead lf0=cccccccc facename0=cccc
+getthemefont_bogus hr=80070006 err=dead lf0=cccccccc
+getthemefont_null_out hr=80004003 err=dead
+transition_null hr=80070006 err=dead d=deadbeef
+transition_bogus hr=80070006 err=dead d=deadbeef
+transition_null_out hr=80070006 err=dead
+session_mode1 hr=00000000 out=set err=dead
+session_reserved1 hr=00000000 out=set
+session_ok hr=00000000 out=set
+session_second hr=00000000 same=1
+session_getoption hr=80004001
+session_setoption hr=80004001
+sizes page_a_v1=72 page_w_v1=72 header_a_v1=72 header_w_v1=72
+createpage_size0 ret=null err=dead
+createpage_v1_minus1 ret=null err=dead
+createpagea_v1_minus1 ret=null err=dead
+createpage_v1 ret=handle err=dead
+destroypage_live ret=1 err=dead
+propertysheet_size0 begin
+propertysheet_size0 ret=-1 err=dead
+done

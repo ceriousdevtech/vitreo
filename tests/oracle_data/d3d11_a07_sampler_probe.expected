@@ -1,0 +1,445 @@
+# adapter: Microsoft Basic Render Driver
+# feature level 0xb100
+# structured-buffer SRV with NULL desc: 0x00000000
+M1 WRAP point #0 (level uv=-1.3000,0.0156 lod=0.00 ref=0.000): 176.00 0.00 0.00 255.00
+M1 WRAP point #1 (level uv=-0.3000,0.0156 lod=0.00 ref=0.000): 176.00 0.00 0.00 255.00
+M1 WRAP point #2 (level uv=0.3000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 WRAP point #3 (level uv=1.3000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 WRAP point #4 (level uv=2.7000,0.0156 lod=0.00 ref=0.000): 176.00 0.00 0.00 255.00
+M1 WRAP point #5 (level uv=-2.7000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 WRAP point #6 (level uv=0.9700,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 WRAP linear #0 (level uv=0.0063,0.0156 lod=0.00 ref=0.000): 74.59 0.00 0.00 255.00
+M1 WRAP linear #1 (level uv=0.9937,0.0156 lod=0.00 ref=0.000): 174.38 0.00 0.00 255.00
+M1 WRAP linear #2 (level uv=-0.0063,0.0156 lod=0.00 ref=0.000): 174.38 0.00 0.00 255.00
+M1 MIRROR point #0 (level uv=-1.3000,0.0156 lod=0.00 ref=0.000): 176.00 0.00 0.00 255.00
+M1 MIRROR point #1 (level uv=-0.3000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 MIRROR point #2 (level uv=0.3000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 MIRROR point #3 (level uv=1.3000,0.0156 lod=0.00 ref=0.000): 176.00 0.00 0.00 255.00
+M1 MIRROR point #4 (level uv=2.7000,0.0156 lod=0.00 ref=0.000): 176.00 0.00 0.00 255.00
+M1 MIRROR point #5 (level uv=-2.7000,0.0156 lod=0.00 ref=0.000): 176.00 0.00 0.00 255.00
+M1 MIRROR point #6 (level uv=0.9700,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 MIRROR linear #0 (level uv=0.0063,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M1 MIRROR linear #1 (level uv=0.9937,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 MIRROR linear #2 (level uv=-0.0063,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M1 CLAMP point #0 (level uv=-1.3000,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M1 CLAMP point #1 (level uv=-0.3000,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M1 CLAMP point #2 (level uv=0.3000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 CLAMP point #3 (level uv=1.3000,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 CLAMP point #4 (level uv=2.7000,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 CLAMP point #5 (level uv=-2.7000,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M1 CLAMP point #6 (level uv=0.9700,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 CLAMP linear #0 (level uv=0.0063,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M1 CLAMP linear #1 (level uv=0.9937,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 CLAMP linear #2 (level uv=-0.0063,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M1 BORDER point #0 (level uv=-1.3000,0.0156 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M1 BORDER point #1 (level uv=-0.3000,0.0156 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M1 BORDER point #2 (level uv=0.3000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 BORDER point #3 (level uv=1.3000,0.0156 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M1 BORDER point #4 (level uv=2.7000,0.0156 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M1 BORDER point #5 (level uv=-2.7000,0.0156 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M1 BORDER point #6 (level uv=0.9700,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 BORDER linear #0 (level uv=0.0063,0.0156 lod=0.00 ref=0.000): 19.25 38.50 57.45 187.92
+M1 BORDER linear #1 (level uv=0.9937,0.0156 lod=0.00 ref=0.000): 193.38 38.00 56.70 188.80
+M1 BORDER linear #2 (level uv=-0.0063,0.0156 lod=0.00 ref=0.000): 45.00 90.00 134.30 98.20
+M1 MIRROR_ONCE point #0 (level uv=-1.3000,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 MIRROR_ONCE point #1 (level uv=-0.3000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 MIRROR_ONCE point #2 (level uv=0.3000,0.0156 lod=0.00 ref=0.000): 72.00 0.00 0.00 255.00
+M1 MIRROR_ONCE point #3 (level uv=1.3000,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 MIRROR_ONCE point #4 (level uv=2.7000,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 MIRROR_ONCE point #5 (level uv=-2.7000,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 MIRROR_ONCE point #6 (level uv=0.9700,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 MIRROR_ONCE linear #0 (level uv=0.0063,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M1 MIRROR_ONCE linear #1 (level uv=0.9937,0.0156 lod=0.00 ref=0.000): 248.00 0.00 0.00 255.00
+M1 MIRROR_ONCE linear #2 (level uv=-0.0063,0.0156 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M2 MIN_MAG_MIP_POINT #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 8.00 16.00 0.00 255.00
+M2 MIN_MAG_MIP_POINT #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 0.00 8.00 40.00 255.00
+M2 MIN_MAG_MIP_POINT #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 0.00 8.00 40.00 255.00
+M2 MIN_MAG_MIP_POINT #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 0.00 80.00 255.00
+M2 MIN_MAG_POINT_MIP_LINEAR #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 8.00 16.00 0.00 255.00
+M2 MIN_MAG_POINT_MIP_LINEAR #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 4.00 12.00 20.00 255.00
+M2 MIN_MAG_POINT_MIP_LINEAR #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 0.00 8.00 40.00 255.00
+M2 MIN_MAG_POINT_MIP_LINEAR #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 0.00 92.03 255.00
+M2 MIN_POINT_MAG_LINEAR_MIP_POINT #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 6.00 18.00 0.00 255.00
+M2 MIN_POINT_MAG_LINEAR_MIP_POINT #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 0.00 8.00 40.00 255.00
+M2 MIN_POINT_MAG_LINEAR_MIP_POINT #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 0.00 8.00 40.00 255.00
+M2 MIN_POINT_MAG_LINEAR_MIP_POINT #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 0.00 80.00 255.00
+M2 MIN_POINT_MAG_MIP_LINEAR #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 6.00 18.00 0.00 255.00
+M2 MIN_POINT_MAG_MIP_LINEAR #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 4.00 12.00 20.00 255.00
+M2 MIN_POINT_MAG_MIP_LINEAR #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 0.00 8.00 40.00 255.00
+M2 MIN_POINT_MAG_MIP_LINEAR #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 0.00 92.03 255.00
+M2 MIN_LINEAR_MAG_MIP_POINT #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 8.00 16.00 0.00 255.00
+M2 MIN_LINEAR_MAG_MIP_POINT #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 1.00 7.00 40.00 255.00
+M2 MIN_LINEAR_MAG_MIP_POINT #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 1.00 7.00 40.00 255.00
+M2 MIN_LINEAR_MAG_MIP_POINT #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 1.50 80.00 255.00
+M2 MIN_LINEAR_MAG_POINT_MIP_LINEAR #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 8.00 16.00 0.00 255.00
+M2 MIN_LINEAR_MAG_POINT_MIP_LINEAR #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 3.50 12.50 20.00 255.00
+M2 MIN_LINEAR_MAG_POINT_MIP_LINEAR #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 1.00 7.00 40.00 255.00
+M2 MIN_LINEAR_MAG_POINT_MIP_LINEAR #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 1.05 92.03 255.00
+M2 MIN_MAG_LINEAR_MIP_POINT #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 6.00 18.00 0.00 255.00
+M2 MIN_MAG_LINEAR_MIP_POINT #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 1.00 7.00 40.00 255.00
+M2 MIN_MAG_LINEAR_MIP_POINT #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 1.00 7.00 40.00 255.00
+M2 MIN_MAG_LINEAR_MIP_POINT #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 1.50 80.00 255.00
+M2 MIN_MAG_MIP_LINEAR #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 6.00 18.00 0.00 255.00
+M2 MIN_MAG_MIP_LINEAR #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 3.50 12.50 20.00 255.00
+M2 MIN_MAG_MIP_LINEAR #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 1.00 7.00 40.00 255.00
+M2 MIN_MAG_MIP_LINEAR #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 1.05 92.03 255.00
+M2 ANISOTROPIC #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 6.00 18.00 0.00 255.00
+M2 ANISOTROPIC #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 3.50 12.50 20.00 255.00
+M2 ANISOTROPIC #2 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 1.00 7.00 40.00 255.00
+M2 ANISOTROPIC #3 (level uv=0.0391,0.0859 lod=2.30 ref=0.000): 0.00 1.05 92.03 255.00
+M3 D3D11_OPTIONS1 hr=0x00000000 MinMaxFiltering=1 TiledResourcesTier=2
+M3 MINIMUM_MIN_MAG_MIP_LINEAR #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 0.00 16.00 0.00 255.00
+M3 MINIMUM_MIN_MAG_MIP_LINEAR #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 0.00 0.00 0.00 255.00
+M3 MINIMUM_MIN_MAG_MIP_LINEAR #2 (level uv=0.0312,0.0312 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M3 MAXIMUM_MIN_MAG_MIP_LINEAR #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 8.00 24.00 0.00 255.00
+M3 MAXIMUM_MIN_MAG_MIP_LINEAR #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 8.00 24.00 40.00 255.00
+M3 MAXIMUM_MIN_MAG_MIP_LINEAR #2 (level uv=0.0312,0.0312 lod=0.00 ref=0.000): 8.00 8.00 0.00 255.00
+M3 MINIMUM_MIN_MAG_LINEAR_MIP_POINT #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 0.00 16.00 0.00 255.00
+M3 MINIMUM_MIN_MAG_LINEAR_MIP_POINT #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 0.00 0.00 40.00 255.00
+M3 MINIMUM_MIN_MAG_LINEAR_MIP_POINT #2 (level uv=0.0312,0.0312 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M3 MAXIMUM_MIN_MAG_LINEAR_MIP_POINT #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 8.00 24.00 0.00 255.00
+M3 MAXIMUM_MIN_MAG_LINEAR_MIP_POINT #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 8.00 8.00 40.00 255.00
+M3 MAXIMUM_MIN_MAG_LINEAR_MIP_POINT #2 (level uv=0.0312,0.0312 lod=0.00 ref=0.000): 8.00 8.00 0.00 255.00
+M3 MINIMUM_MIN_MAG_MIP_POINT #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 8.00 16.00 0.00 255.00
+M3 MINIMUM_MIN_MAG_MIP_POINT #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 0.00 8.00 40.00 255.00
+M3 MINIMUM_MIN_MAG_MIP_POINT #2 (level uv=0.0312,0.0312 lod=0.00 ref=0.000): 8.00 8.00 0.00 255.00
+M3 MINIMUM_ANISOTROPIC #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 0.00 16.00 0.00 255.00
+M3 MINIMUM_ANISOTROPIC #1 (level uv=0.0391,0.0859 lod=0.50 ref=0.000): 0.00 0.00 0.00 255.00
+M3 MINIMUM_ANISOTROPIC #2 (level uv=0.0312,0.0312 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M4 cmp NEVER point #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp NEVER point #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 0.00 0.00 0.00 0.00
+M4 cmp NEVER point #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp NEVER linear #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp NEVER linear #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 0.00 0.00 0.00 0.00
+M4 cmp NEVER linear #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp LESS point #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp LESS point #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 0.00 0.00 0.00 0.00
+M4 cmp LESS point #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp LESS linear #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 127.50 127.50 127.50 127.50
+M4 cmp LESS linear #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 0.00 0.00 0.00 0.00
+M4 cmp LESS linear #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 178.30 178.30 178.30 178.30
+M4 cmp EQUAL point #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp EQUAL point #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 255.00 255.00 255.00 255.00
+M4 cmp EQUAL point #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp EQUAL linear #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp EQUAL linear #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 255.00 255.00 255.00 255.00
+M4 cmp EQUAL linear #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp LESS_EQUAL point #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp LESS_EQUAL point #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 255.00 255.00 255.00 255.00
+M4 cmp LESS_EQUAL point #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp LESS_EQUAL linear #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 127.50 127.50 127.50 127.50
+M4 cmp LESS_EQUAL linear #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 255.00 255.00 255.00 255.00
+M4 cmp LESS_EQUAL linear #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 178.30 178.30 178.30 178.30
+M4 cmp GREATER point #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp GREATER point #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 0.00 0.00 0.00 0.00
+M4 cmp GREATER point #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp GREATER linear #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 127.50 127.50 127.50 127.50
+M4 cmp GREATER linear #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 0.00 0.00 0.00 0.00
+M4 cmp GREATER linear #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 76.70 76.70 76.70 76.70
+M4 cmp NOT_EQUAL point #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp NOT_EQUAL point #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 0.00 0.00 0.00 0.00
+M4 cmp NOT_EQUAL point #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp NOT_EQUAL linear #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp NOT_EQUAL linear #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 0.00 0.00 0.00 0.00
+M4 cmp NOT_EQUAL linear #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp GREATER_EQUAL point #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp GREATER_EQUAL point #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 255.00 255.00 255.00 255.00
+M4 cmp GREATER_EQUAL point #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 0.00 0.00 0.00 0.00
+M4 cmp GREATER_EQUAL linear #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 127.50 127.50 127.50 127.50
+M4 cmp GREATER_EQUAL linear #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 255.00 255.00 255.00 255.00
+M4 cmp GREATER_EQUAL linear #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 76.70 76.70 76.70 76.70
+M4 cmp ALWAYS point #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp ALWAYS point #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 255.00 255.00 255.00 255.00
+M4 cmp ALWAYS point #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp ALWAYS linear #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp ALWAYS linear #1 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.031): 255.00 255.00 255.00 255.00
+M4 cmp ALWAYS linear #2 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp LESS point depth-texture #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp LESS point depth-texture #1 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 255.00 255.00 255.00 255.00
+M4 cmp LESS point depth-texture #2 (lvl_t1 uv=0.1250,0.1250 lod=0.00 ref=0.000): 7.97 7.97 7.97 7.97
+M4 cmp LESS linear depth-texture #0 (cmp_lz uv=0.2500,0.2500 lod=0.00 ref=0.200): 127.50 127.50 127.50 127.50
+M4 cmp LESS linear depth-texture #1 (cmp_lz uv=0.2000,0.3000 lod=0.00 ref=0.200): 178.30 178.30 178.30 178.30
+M4 cmp LESS linear depth-texture #2 (lvl_t1 uv=0.1250,0.1250 lod=0.00 ref=0.000): 7.97 7.97 7.97 7.97
+M4 cmp LESS BORDER red=0.5 #0 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=0.400): 255.00 255.00 255.00 255.00
+M4 cmp LESS BORDER red=0.5 #1 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=0.600): 0.00 0.00 0.00 0.00
+M4 cmp LESS BORDER red=0.5 #2 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=1.000): 0.00 0.00 0.00 0.00
+M4 cmp LESS BORDER red=1.0 #0 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=0.400): 255.00 255.00 255.00 255.00
+M4 cmp LESS BORDER red=1.0 #1 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=0.600): 255.00 255.00 255.00 255.00
+M4 cmp LESS BORDER red=1.0 #2 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=1.000): 0.00 0.00 0.00 0.00
+M4 cmp LESS BORDER red=0.0 #0 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=0.400): 0.00 0.00 0.00 0.00
+M4 cmp LESS BORDER red=0.0 #1 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=0.600): 0.00 0.00 0.00 0.00
+M4 cmp LESS BORDER red=0.0 #2 (cmp_lz uv=-0.5000,0.5000 lod=0.00 ref=1.000): 0.00 0.00 0.00 0.00
+M4 t1 plain read #0 (lvl_t1 uv=0.2500,0.2500 lod=0.00 ref=0.000): 87.66 87.66 87.66 87.66
+M5 R8G8B8A8_UNORM border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M5 R8G8B8A8_UNORM border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 R8G8B8A8_UNORM border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 147.00 179.00 210.50 131.00
+M5 R8G8B8A8_UNORM border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M5 R8G8B8A8_UNORM border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 R8G8B8A8_UNORM border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 0.00
+M5 R8G8B8A8_UNORM border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 R8G8B8A8_UNORM border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 115.00 115.00 115.00
+M5 R8G8B8A8_UNORM border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 0.00
+M5 R8G8B8A8_UNORM border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 R8G8B8A8_UNORM border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8G8B8A8_UNORM border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 R8G8B8A8_UNORM border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 115.00 115.00 242.50
+M5 R8G8B8A8_UNORM border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8G8B8A8_UNORM border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 R8G8B8A8_UNORM border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 R8G8B8A8_UNORM border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 R8G8B8A8_UNORM border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 242.50 242.50 242.50 242.50
+M5 R8G8B8A8_UNORM border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 R8G8B8A8_UNORM border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 B8G8R8A8_UNORM border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M5 B8G8R8A8_UNORM border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 B8G8R8A8_UNORM border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 147.00 179.00 210.50 131.00
+M5 B8G8R8A8_UNORM border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M5 B8G8R8A8_UNORM border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 B8G8R8A8_UNORM border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 0.00
+M5 B8G8R8A8_UNORM border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 B8G8R8A8_UNORM border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 115.00 115.00 115.00
+M5 B8G8R8A8_UNORM border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 0.00
+M5 B8G8R8A8_UNORM border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 B8G8R8A8_UNORM border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 B8G8R8A8_UNORM border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 B8G8R8A8_UNORM border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 115.00 115.00 242.50
+M5 B8G8R8A8_UNORM border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 B8G8R8A8_UNORM border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 B8G8R8A8_UNORM border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B8G8R8A8_UNORM border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 B8G8R8A8_UNORM border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 242.50 242.50 242.50 242.50
+M5 B8G8R8A8_UNORM border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B8G8R8A8_UNORM border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 230.00 230.00
+M5 R8_UNORM border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 0.00 0.00 255.00
+M5 R8_UNORM border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 0.00 0.00 255.00
+M5 R8_UNORM border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 147.00 0.00 0.00 255.00
+M5 R8_UNORM border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 0.00 0.00 255.00
+M5 R8_UNORM border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8_UNORM border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 0.00 0.00 255.00
+M5 R8_UNORM border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 0.00 0.00 255.00
+M5 R8_UNORM border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 0.00 0.00 255.00
+M5 R8_UNORM border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 242.50 0.00 0.00 255.00
+M5 R8_UNORM border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 0.00 0.00 255.00
+M5 R8_UNORM border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 0.00 0.00 255.00
+M5 R8G8_UNORM border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 127.50 0.00 255.00
+M5 R8G8_UNORM border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R8G8_UNORM border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 147.00 179.00 0.00 255.00
+M5 R8G8_UNORM border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 127.50 0.00 255.00
+M5 R8G8_UNORM border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 115.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 115.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R8G8_UNORM border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R8G8_UNORM border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 0.00 255.00
+M5 R8G8_UNORM border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R8G8_UNORM border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 242.50 242.50 0.00 255.00
+M5 R8G8_UNORM border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 0.00 255.00
+M5 R8G8_UNORM border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 A8_UNORM border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 31.88
+M5 A8_UNORM border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 230.00
+M5 A8_UNORM border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 131.00
+M5 A8_UNORM border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 31.88
+M5 A8_UNORM border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 230.00
+M5 A8_UNORM border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 0.00
+M5 A8_UNORM border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 230.00
+M5 A8_UNORM border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 115.00
+M5 A8_UNORM border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 0.00
+M5 A8_UNORM border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 230.00
+M5 A8_UNORM border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 A8_UNORM border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 230.00
+M5 A8_UNORM border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 242.50
+M5 A8_UNORM border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 A8_UNORM border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 230.00
+M5 A8_UNORM border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 A8_UNORM border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 230.00
+M5 A8_UNORM border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 242.50
+M5 A8_UNORM border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 A8_UNORM border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 230.00
+M5 R16_FLOAT border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 0.00 0.00 255.00
+M5 R16_FLOAT border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.48 0.00 0.00 255.00
+M5 R16_FLOAT border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 146.61 0.00 0.00 255.00
+M5 R16_FLOAT border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 0.00 0.00 255.00
+M5 R16_FLOAT border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.48 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.48 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 114.74 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.48 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.48 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 114.74 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R16_FLOAT border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.48 0.00 0.00 255.00
+M5 R16_FLOAT border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 0.00 0.00 255.00
+M5 R16_FLOAT border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.48 0.00 0.00 255.00
+M5 R16_FLOAT border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 242.24 0.00 0.00 255.00
+M5 R16_FLOAT border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 0.00 0.00 255.00
+M5 R16_FLOAT border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.48 0.00 0.00 255.00
+M5 R32_FLOAT border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 0.00 0.00 255.00
+M5 R32_FLOAT border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.50 0.00 0.00 255.00
+M5 R32_FLOAT border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 146.62 0.00 0.00 255.00
+M5 R32_FLOAT border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 0.00 0.00 255.00
+M5 R32_FLOAT border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.50 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.50 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 114.75 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.50 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.50 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 114.75 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R32_FLOAT border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.50 0.00 0.00 255.00
+M5 R32_FLOAT border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 0.00 0.00 255.00
+M5 R32_FLOAT border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.50 0.00 0.00 255.00
+M5 R32_FLOAT border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 242.25 0.00 0.00 255.00
+M5 R32_FLOAT border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 0.00 0.00 255.00
+M5 R32_FLOAT border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 229.50 0.00 0.00 255.00
+M5 R16G16_UNORM border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 127.50 0.00 255.00
+M5 R16G16_UNORM border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R16G16_UNORM border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 146.88 178.75 0.00 255.00
+M5 R16G16_UNORM border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 127.50 0.00 255.00
+M5 R16G16_UNORM border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 115.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 115.00 115.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R16G16_UNORM border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R16G16_UNORM border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 0.00 255.00
+M5 R16G16_UNORM border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 R16G16_UNORM border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 242.50 242.50 0.00 255.00
+M5 R16G16_UNORM border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 0.00 255.00
+M5 R16G16_UNORM border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 230.00 230.00 0.00 255.00
+M5 B5G6R5_UNORM border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 127.50 191.25 255.00
+M5 B5G6R5_UNORM border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 159.38 191.25 223.12 255.00
+M5 B5G6R5_UNORM border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 127.50 191.25 255.00
+M5 B5G6R5_UNORM border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 B5G6R5_UNORM border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 127.50 127.50 127.50 255.00
+M5 B5G6R5_UNORM border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 B5G6R5_UNORM border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 B5G6R5_UNORM border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 127.50 127.50 127.50 255.00
+M5 B5G6R5_UNORM border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 B5G6R5_UNORM border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 B5G6R5_UNORM border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 R11G11B10_FLOAT border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 127.50 191.25 255.00
+M5 R11G11B10_FLOAT border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 31.88 63.75 95.62 255.00
+M5 R11G11B10_FLOAT border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 63.75 127.50 191.25 255.00
+M5 R11G11B10_FLOAT border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 R11G11B10_FLOAT border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 R11G11B10_FLOAT border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 127.50 127.50 127.50 255.00
+M5 R11G11B10_FLOAT border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 R11G11B10_FLOAT border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 BC1_UNORM border(0.25,0.5,0.75,0.125) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M5 BC1_UNORM border(0.25,0.5,0.75,0.125) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(0.25,0.5,0.75,0.125) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 159.50 191.50 223.00 143.50
+M5 BC1_UNORM border(0.25,0.5,0.75,0.125) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 64.00 128.00 191.00 32.00
+M5 BC1_UNORM border(0.25,0.5,0.75,0.125) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(0,0,0,0) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 0.00
+M5 BC1_UNORM border(0,0,0,0) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(0,0,0,0) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 127.50 127.50 127.50 127.50
+M5 BC1_UNORM border(0,0,0,0) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 0.00
+M5 BC1_UNORM border(0,0,0,0) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(0,0,0,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 BC1_UNORM border(0,0,0,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(0,0,0,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 127.50 127.50 127.50 255.00
+M5 BC1_UNORM border(0,0,0,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 0.00 0.00 0.00 255.00
+M5 BC1_UNORM border(0,0,0,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(1,1,1,1) s0 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(1,1,1,1) s0 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(1,1,1,1) s0 linear-edge #0 (level uv=0.0000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(1,1,1,1) s9 #0 (level uv=-0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M5 BC1_UNORM border(1,1,1,1) s9 #1 (level uv=0.5000,0.5000 lod=0.00 ref=0.000): 255.00 255.00 255.00 255.00
+M6 bias+1 SampleLevel(0) #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 0.00 8.00 40.00 255.00
+M6 bias+1 SampleGrad(lod 1) #0 (grad uv=0.0391,0.0859 lod=0.00 ref=0.000): 0.00 0.00 80.00 255.00
+M6 bias-0.5 SampleLevel(1) mip point #0 (level uv=0.0391,0.0859 lod=1.00 ref=0.000): 0.00 8.00 40.00 255.00
+M6 bias+0.25 SampleLevel(0.3) mip point #0 (level uv=0.0391,0.0859 lod=0.30 ref=0.000): 0.00 8.00 40.00 255.00
+M6 MinLOD=2 SampleLevel(0) #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 0.00 0.00 80.00 255.00
+M6 MaxLOD=1 SampleLevel(4) #0 (level uv=0.0391,0.0859 lod=4.00 ref=0.000): 0.00 8.00 40.00 255.00
+M6 MinLOD=3 > MaxLOD=1 SampleLevel(0) #0 (level uv=0.0391,0.0859 lod=0.00 ref=0.000): 0.00 0.00 120.00 255.00
+M6 MaxLOD=0.5 trilinear SampleLevel(4) #0 (level uv=0.0391,0.0859 lod=4.00 ref=0.000): 3.50 12.50 20.00 255.00
+M6 MinLOD=1 MIN_LINEAR_MAG_MIP_POINT SampleLevel(-1) #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 1.00 7.00 40.00 255.00
+M6 MIN_LINEAR_MAG_MIP_POINT SampleLevel(-1) (mag) #0 (level uv=0.0391,0.0859 lod=-1.00 ref=0.000): 8.00 16.00 0.00 255.00
+M6 bias+1 MaxLOD=1 SampleLevel(3) #0 (level uv=0.0391,0.0859 lod=3.00 ref=0.000): 0.00 8.00 40.00 255.00
+M6 bias+1 SampleCmpLevelZero LESS ref .5 #0 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.500): 255.00 255.00 255.00 255.00
+M6 MinLOD=1 SampleCmpLevelZero LESS ref .5 #0 (cmp_lz uv=0.1250,0.1250 lod=0.00 ref=0.500): 255.00 255.00 255.00 255.00
+M6 bias-16 MinLOD=-5 SampleLevel(2) #0 (level uv=0.0391,0.0859 lod=2.00 ref=0.000): 8.00 16.00 0.00 255.00
+M7 ANISOTROPIC max=1 #0 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 12.00 12.00 120.00 255.00
+M7 ANISOTROPIC max=1 #1 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 28.00 28.00 80.00 255.00
+M7 ANISOTROPIC max=2 #0 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 28.00 28.00 80.00 255.00
+M7 ANISOTROPIC max=2 #1 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 60.00 60.00 40.00 255.00
+M7 ANISOTROPIC max=4 #0 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 59.98 60.00 40.00 255.00
+M7 ANISOTROPIC max=4 #1 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 123.98 124.00 0.00 255.00
+M7 ANISOTROPIC max=16 #0 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 123.98 124.00 0.00 255.00
+M7 ANISOTROPIC max=16 #1 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 123.98 124.00 0.00 255.00
+M7 MIN_MAG_MIP_LINEAR same grads #0 (grad uv=0.5000,0.5000 lod=0.00 ref=0.000): 12.00 12.00 120.00 255.00
+M8 implicit Sample (8x8 target over 32x32, lod 2): px(2,2) 16.00 16.00 80.00 255.00 px(5,1) 40.00 8.00 80.00 255.00
+M8 implicit Sample MipLODBias+1 (8x8 target over 32x32, lod 2): px(2,2) 8.00 8.00 120.00 255.00 px(5,1) 16.00 0.00 120.00 255.00
+M8 implicit SampleBias(-1) MipLODBias+1 (8x8 target over 32x32, lod 2): px(2,2) 16.00 16.00 80.00 255.00 px(5,1) 40.00 8.00 80.00 255.00
+M8 implicit SampleBias(+1.5) (8x8 target over 32x32, lod 2): px(2,2) 0.00 0.00 160.00 255.00 px(5,1) 8.00 0.00 160.00 255.00
+M8 implicit Sample MinLOD=3 (8x8 target over 32x32, lod 2): px(2,2) 8.00 8.00 120.00 255.00 px(5,1) 16.00 0.00 120.00 255.00
+M8 implicit Sample trilinear MipLODBias+0.5 (8x8 target over 32x32, lod 2): px(2,2) 11.00 11.00 100.00 255.00 px(5,1) 29.00 5.00 100.00 255.00
+M8 implicit SampleCmp LESS ref .5 (8x8 target over 32x32, lod 2): px(2,2) 0.00 0.00 0.00 0.00 px(5,1) 0.00 0.00 0.00 0.00
+M8 implicit SampleCmp LESS ref .5 MipLODBias+2 (8x8 target over 32x32, lod 2): px(2,2) 255.00 255.00 255.00 255.00 px(5,1) 255.00 255.00 255.00 255.00
+# winoracle 2026-09-28, WARP, FL 11_1, x64 (x86 identical up to printf rounding).
+# Vitreo verdicts (compare with a 1.0/255 tolerance for filtering):
+#  M1 WRAP/MIRROR/CLAMP/BORDER/MIRROR_ONCE, point + linear: CORRECT
+#  M2 all 9 filters x LOD: CORRECT except point-mip selection at an exact
+#     .5 LOD (spec 7.18.10: floor(LOD+0.5) -> LOD 0.5 = mip 1; Metal mip 0)
+#  M3 MinMaxFiltering: Vitreo reports 0 (WARP 1), refuses the mixed
+#     MINIMUM_/MAXIMUM_ filters (E_NOTIMPL) but ACCEPTS MINIMUM_/MAXIMUM_
+#     MIN_MAG_MIP_LINEAR and _ANISOTROPIC and returns a plain average: FABRICATED
+#  M4 comparison, every func, point + PCF on R32_FLOAT: CORRECT; border
+#     red 0/1: CORRECT; border red 0.5: E_NOTIMPL (MISSING)
+#     (depth-texture rows: the CopyResource into the depth texture reads 0 -- area 06)
+#  M5 custom border colours on s0..s7 (PS and CS), fewer-channel formats: CORRECT;
+#     on s8..s15: WRONG (transparent black / format default);
+#     A8_UNORM with (0,0,0,1): WRONG (alpha 0); B5G6R5 textures: unsupported (area 08)
+#  M6 MipLODBias on SampleLevel / SampleGrad / SampleCmpLevelZero: WRONG
+#     (not applied; spec 7.18.11, 22.4.18, 22.4.20); MinLOD/MaxLOD clamps,
+#     mag/min after clamp: CORRECT; MinLOD > MaxLOD: E_INVALIDARG (Windows
+#     accepts, MinLOD wins -> mip 3)
+#  M7 anisotropy: CORRECT within tolerance
+#  M8 implicit Sample / MipLODBias / SampleBias / MinLOD / SampleCmp: CORRECT
+#     except the .5 point-mip tie (SampleBias(+1.5) at LOD 2)
+#  Structured-buffer SRV with NULL desc: Vitreo E_INVALIDARG (area 03)

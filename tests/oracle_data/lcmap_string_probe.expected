@@ -1,0 +1,15 @@
+arch x64
+cyr_up r=3 410 411 0 
+cyr_lo r=3 430 431 0 
+y_up r=2 178 0 
+gr_up r=2 391 0 
+title r=c 48 65 6c 6c 6f 20 57 6f 72 6c 64 0 
+byterev r=3 5034 2248 0 
+sk_apple r=f e 2 e 7e e 7e e 48 e 21 1 1 1 1 0 
+sk_Banana r=12 e 9 e 2 e 70 e 2 e 70 e 2 1 1 12 1 1 0 
+sk_apple_lt_Banana r=1
+sk_E_ic r=8 e 21 1 e 1 1 1 0 
+sk_e_ic r=8 e 21 1 e 1 1 1 0 
+sk_E_e_ic_eq r=1
+sk_query_a r=7
+up_query_abc r=4

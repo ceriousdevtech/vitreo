@@ -1,0 +1,228 @@
+== x64
+reg_clsextra_100 ret=00000001 err=0000dead
+  gwl_extra96 ret=00000000 err=0000dead
+  gwl_extra96_get ret=00000077 err=0000dead
+  gcl_extra96 ret=00000000 err=0000dead
+  gcl_extra96_get ret=00000088 err=0000dead
+reg_clsextra_40000 ret=00000001 err=0000dead
+reg_wndextra_40000 ret=00000001 err=0000dead
+reg_same_name_other_instance ret=00000001 err=00000000
+  same_atom ret=00000001 err=00000000
+  create_hi_proc ret=00000001 err=0000dead
+  create_other_proc ret=00000002 err=0000dead
+  create_null_instance_proc ret=00000002 err=0000dead
+  getclassinfo_other_proc2 ret=00000001 err=0000dead
+  unregister_other ret=00000001 err=0000dead
+  getclassinfo_hi_still ret=00000001 err=0000dead
+create_local_other_instance ret=00000000 err=0000dead
+create_local_null_instance ret=00000001 err=0000dead
+  hinstance_is_null ret=00000001 err=0000dead
+getclassinfo_local_other_instance ret=00000000 err=00000583
+unregister_local_other_instance ret=00000000 err=00000583
+unregister_local_null_instance ret=00000001 err=0000dead
+reg_null_instance ret=00000001 err=0000dead
+  getclassinfo_hi ret=00000001 err=0000dead
+  hinstance_reported_is_exe ret=00000001 err=0000dead
+  getclassinfo_null ret=00000000 err=00000583
+global_getclassinfo_hi ret=00000001 err=0000dead
+global_getclassinfo_null ret=00000001 err=0000dead
+global_create_hi ret=00000001 err=0000dead
+global_reg_same_name_local ret=00000001 err=0000dead
+  create_prefers_local ret=00000001 err=0000dead
+global_unregister_hi ret=00000001 err=0000dead
+global_unregister_hi_again ret=00000001 err=0000dead
+global_unregister_null ret=00000000 err=00000583
+global_unregister_other ret=00000000 err=00000583
+sys_button_atom_is_string_atom ret=00000001 err=00000000
+  button_proc_nonzero ret=00000001 err=00000000
+  button_cursor_nonzero ret=00000001 err=00000000
+  button_classname_is_input ret=00000001 err=00000000
+  button_window_atom_matches ret=00000001 err=0000dead
+  button_window_hmodule_nonzero ret=00000001 err=0000dead
+  button_window_hmodule_is_user32 ret=00000001 err=0000dead
+  button_window_hinstance_is_caller ret=00000001 err=0000dead
+  button_window_cbwndextra ret=00000008 err=0000dead
+  button_isunicode ret=00000001 err=0000dead
+  buttona_isunicode ret=00000000 err=0000dead
+create_dialog_class_by_atom ret=00000001 err=0000dead
+  name=#32770
+  dialog_cbwndextra ret=0000001e err=0000dead
+  dialog_atom ret=00008002 err=0000dead
+  dialog_dwlp_user_initial ret=00000000 err=0000dead
+  dialog_set_dwlp_user ret=00000000 err=0000dead
+  dialog_userdata_distinct ret=00000000 err=0000dead
+  dialog_dwlp_msgresult ret=00000000 err=0000dead
+  dialog_dwlp_dlgproc_zero ret=00000001 err=0000dead
+getclassinfo_desktop_atom ret=00008001 err=0000dead
+getclassinfo_menu_atom ret=00008000 err=0000dead
+getclassinfo_message_class ret=00000001 err=0000dead
+getclassinfo_mdiclient ret=00000001 err=0000dead
+  mdiclient_style ret=00000000 err=00000000
+  mdiclient_wndextra ret=00000010 err=00000000
+  mdiclient_hbr ret=0000000d err=00000000
+getclassinfo_combolbox ret=00000001 err=0000dead
+getclassinfo_scrollbar_extra ret=00000050 err=0000dead
+getclassinfo_listview_before_comctl ret=00000001 err=00000000
+getclassinfo_ime ret=00000001 err=0000dead
+sysclass #32768 atom_is_int=1 ok=1 err=0000dead style=00020808 cls=0 wnd=24 hbr=00000005 cursor=0 icon=0 proc=1
+sysclass #32769 atom_is_int=1 ok=1 err=0000dead style=00000008 cls=0 wnd=0 hbr=00000002 cursor=1 icon=0 proc=1
+sysclass #32770 atom_is_int=1 ok=1 err=0000dead style=00000808 cls=0 wnd=30 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass #32771 atom_is_int=0 ok=0 err=00000583 style=00000000 cls=0 wnd=0 hbr=00000000 cursor=0 icon=0 proc=0
+sysclass #32772 atom_is_int=1 ok=1 err=0000dead style=00000000 cls=0 wnd=0 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass Message atom_is_int=0 ok=1 err=0000dead style=00000000 cls=0 wnd=4 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass IME atom_is_int=0 ok=1 err=0000dead style=00000000 cls=0 wnd=8 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass MDIClient atom_is_int=0 ok=1 err=0000dead style=00000000 cls=0 wnd=16 hbr=0000000d cursor=1 icon=0 proc=1
+sysclass ComboLBox atom_is_int=0 ok=1 err=0000dead style=00000808 cls=0 wnd=8 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass DDEMLEvent atom_is_int=0 ok=1 err=0000dead style=00000000 cls=0 wnd=8 hbr=00000000 cursor=0 icon=0 proc=0
+sysclass Button atom_is_int=0 ok=1 err=0000dead style=0000008b cls=0 wnd=8 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass ScrollBar atom_is_int=0 ok=1 err=0000dead style=00000088 cls=0 wnd=80 hbr=00000000 cursor=1 icon=0 proc=1
+unregister_system_button_null ret=00000001 err=0000dead
+  getclassinfo_button_after ret=00000000 err=00000583
+  create_button_after ret=00000000 err=0000dead
+unregister_system_edit_hi ret=00000000 err=00000583
+unregister_system_static_user32 ret=00000000 err=00000583
+iconsm_derived_nonzero ret=00000001 err=0000dead
+iconsm_differs_from_icon ret=00000001 err=0000dead
+hicon_is_input ret=00000001 err=0000dead
+menuname_is_input_ptr ret=00000000 err=0000dead
+getclassinfo_menuname_is_input_ptr ret=00000000 err=0000dead
+getclassinfo_iconsm_nonzero ret=00000001 err=0000dead
+setclasslongptr_wndproc_returns_old ret=00000001 err=0000dead
+  existing_window_keeps_proc ret=00000001 err=0000dead
+  new_window_uses_new_proc ret=00000002 err=0000dead
+setclasslong_cbwndextra ret=00000000 err=0000dead
+  cbwndextra_after ret=00000008 err=0000dead
+setclasslong_atom ret=00000000 err=00000057
+setclassword_atom ret=00000000 err=00000585
+unregister_icon_class ret=00000001 err=0000dead
+reg_int_atom_name ret=00001234 err=0000dead
+  create_by_int_atom ret=00000001 err=0000dead
+  getclassname ret=00000005 err=0000dead
+  name=#4660
+  unregister_int_atom ret=00000001 err=0000dead
+reg_hash_decimal_name ret=00001234 err=0000dead
+reg_ansi ret=00000001 err=0000dead
+  ansi_class_createw_isunicode ret=00000000 err=0000dead
+  ansi_class_createa_isunicode ret=00000000 err=0000dead
+  unicode_class_createa_isunicode ret=00000001 err=0000dead
+  getclassinfoexw_on_ansi_class_proc_is_procA ret=00000000 err=0000dead
+  getclasslongptrw_wndproc_is_procA ret=00000000 err=0000dead
+  getclasslongptra_wndproc_is_procA ret=00000001 err=0000dead
+  getclassinfoexa_classname_is_input ret=00000001 err=0000dead
+  getclassnamea ret=00000006 err=0000dead
+unregister_ansi_w ret=00000001 err=0000dead
+done
+== x86
+reg_clsextra_100 ret=00000001 err=0000dead
+  gwl_extra96 ret=00000000 err=0000dead
+  gwl_extra96_get ret=00000077 err=0000dead
+  gcl_extra96 ret=00000000 err=0000dead
+  gcl_extra96_get ret=00000088 err=0000dead
+reg_clsextra_40000 ret=00000001 err=0000dead
+reg_wndextra_40000 ret=00000001 err=0000dead
+reg_same_name_other_instance ret=00000001 err=00000000
+  same_atom ret=00000001 err=00000000
+  create_hi_proc ret=00000001 err=0000dead
+  create_other_proc ret=00000002 err=0000dead
+  create_null_instance_proc ret=00000002 err=0000dead
+  getclassinfo_other_proc2 ret=00000001 err=0000dead
+  unregister_other ret=00000001 err=0000dead
+  getclassinfo_hi_still ret=00000001 err=0000dead
+create_local_other_instance ret=00000000 err=0000dead
+create_local_null_instance ret=00000001 err=0000dead
+  hinstance_is_null ret=00000001 err=0000dead
+getclassinfo_local_other_instance ret=00000000 err=00000583
+unregister_local_other_instance ret=00000000 err=00000583
+unregister_local_null_instance ret=00000001 err=0000dead
+reg_null_instance ret=00000001 err=0000dead
+  getclassinfo_hi ret=00000001 err=0000dead
+  hinstance_reported_is_exe ret=00000001 err=0000dead
+  getclassinfo_null ret=00000000 err=00000583
+global_getclassinfo_hi ret=00000001 err=0000dead
+global_getclassinfo_null ret=00000001 err=0000dead
+global_create_hi ret=00000001 err=0000dead
+global_reg_same_name_local ret=00000001 err=0000dead
+  create_prefers_local ret=00000001 err=0000dead
+global_unregister_hi ret=00000001 err=0000dead
+global_unregister_hi_again ret=00000001 err=0000dead
+global_unregister_null ret=00000000 err=00000583
+global_unregister_other ret=00000000 err=00000583
+sys_button_atom_is_string_atom ret=00000001 err=00000000
+  button_proc_nonzero ret=00000001 err=00000000
+  button_cursor_nonzero ret=00000001 err=00000000
+  button_classname_is_input ret=00000001 err=00000000
+  button_window_atom_matches ret=00000001 err=0000dead
+  button_window_hmodule_nonzero ret=00000001 err=0000dead
+  button_window_hmodule_is_user32 ret=00000001 err=0000dead
+  button_window_hinstance_is_caller ret=00000001 err=0000dead
+  button_window_cbwndextra ret=00000008 err=0000dead
+  button_isunicode ret=00000001 err=0000dead
+  buttona_isunicode ret=00000000 err=0000dead
+create_dialog_class_by_atom ret=00000001 err=0000dead
+  name=#32770
+  dialog_cbwndextra ret=0000001e err=0000dead
+  dialog_atom ret=00008002 err=0000dead
+  dialog_dwlp_user_initial ret=00000000 err=0000dead
+  dialog_set_dwlp_user ret=00000000 err=0000dead
+  dialog_userdata_distinct ret=00000000 err=0000dead
+  dialog_dwlp_msgresult ret=00000000 err=0000dead
+  dialog_dwlp_dlgproc_zero ret=00000001 err=0000dead
+getclassinfo_desktop_atom ret=00008001 err=0000dead
+getclassinfo_menu_atom ret=00008000 err=0000dead
+getclassinfo_message_class ret=00000001 err=0000dead
+getclassinfo_mdiclient ret=00000001 err=0000dead
+  mdiclient_style ret=00000000 err=00000000
+  mdiclient_wndextra ret=00000010 err=00000000
+  mdiclient_hbr ret=0000000d err=00000000
+getclassinfo_combolbox ret=00000001 err=0000dead
+getclassinfo_scrollbar_extra ret=00000050 err=0000dead
+getclassinfo_listview_before_comctl ret=00000001 err=00000000
+getclassinfo_ime ret=00000001 err=0000dead
+sysclass #32768 atom_is_int=1 ok=1 err=0000dead style=00020808 cls=0 wnd=24 hbr=00000005 cursor=0 icon=0 proc=1
+sysclass #32769 atom_is_int=1 ok=1 err=0000dead style=00000008 cls=0 wnd=0 hbr=00000002 cursor=1 icon=0 proc=1
+sysclass #32770 atom_is_int=1 ok=1 err=0000dead style=00000808 cls=0 wnd=30 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass #32771 atom_is_int=0 ok=0 err=00000583 style=00000000 cls=0 wnd=0 hbr=00000000 cursor=0 icon=0 proc=0
+sysclass #32772 atom_is_int=1 ok=1 err=0000dead style=00000000 cls=0 wnd=0 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass Message atom_is_int=0 ok=1 err=0000dead style=00000000 cls=0 wnd=4 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass IME atom_is_int=0 ok=1 err=0000dead style=00000000 cls=0 wnd=8 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass MDIClient atom_is_int=0 ok=1 err=0000dead style=00000000 cls=0 wnd=16 hbr=0000000d cursor=1 icon=0 proc=1
+sysclass ComboLBox atom_is_int=0 ok=1 err=0000dead style=00000808 cls=0 wnd=8 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass DDEMLEvent atom_is_int=0 ok=1 err=0000dead style=00000000 cls=0 wnd=8 hbr=00000000 cursor=0 icon=0 proc=0
+sysclass Button atom_is_int=0 ok=1 err=0000dead style=0000008b cls=0 wnd=8 hbr=00000000 cursor=1 icon=0 proc=1
+sysclass ScrollBar atom_is_int=0 ok=1 err=0000dead style=00000088 cls=0 wnd=80 hbr=00000000 cursor=1 icon=0 proc=1
+unregister_system_button_null ret=00000001 err=0000dead
+  getclassinfo_button_after ret=00000000 err=00000583
+  create_button_after ret=00000000 err=0000dead
+unregister_system_edit_hi ret=00000000 err=00000583
+unregister_system_static_user32 ret=00000000 err=00000583
+iconsm_derived_nonzero ret=00000001 err=0000dead
+iconsm_differs_from_icon ret=00000001 err=0000dead
+hicon_is_input ret=00000001 err=0000dead
+menuname_is_input_ptr ret=00000000 err=0000dead
+getclassinfo_menuname_is_input_ptr ret=00000000 err=0000dead
+getclassinfo_iconsm_nonzero ret=00000001 err=0000dead
+setclasslongptr_wndproc_returns_old ret=00000001 err=0000dead
+  existing_window_keeps_proc ret=00000001 err=0000dead
+  new_window_uses_new_proc ret=00000002 err=0000dead
+setclasslong_cbwndextra ret=00000000 err=0000dead
+  cbwndextra_after ret=00000008 err=0000dead
+setclasslong_atom ret=00000000 err=00000057
+setclassword_atom ret=00000000 err=00000585
+unregister_icon_class ret=00000001 err=0000dead
+reg_int_atom_name ret=00001234 err=0000dead
+  create_by_int_atom ret=00000001 err=0000dead
+  getclassname ret=00000005 err=0000dead
+  name=#4660
+  unregister_int_atom ret=00000001 err=0000dead
+reg_hash_decimal_name ret=00001234 err=0000dead
+reg_ansi ret=00000001 err=0000dead
+  ansi_class_createw_isunicode ret=00000000 err=0000dead
+  ansi_class_createa_isunicode ret=00000000 err=0000dead
+  unicode_class_createa_isunicode ret=00000001 err=0000dead
+  getclassinfoexw_on_ansi_class_proc_is_procA ret=00000000 err=0000dead
+  getclasslongptrw_wndproc_is_procA ret=00000000 err=0000dead
+  getclasslongptra_wndproc_is_procA ret=00000001 err=0000dead
+  getclassinfoexa_classname_is_input ret=00000001 err=0000dead
+  getclassnamea ret=00000006 err=0000dead
+unregister_ansi_w ret=00000001 err=0000dead
+done

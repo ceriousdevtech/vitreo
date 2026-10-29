@@ -1,0 +1,199 @@
+# d3d11_gsso_probe on winoracle (Windows 11, WARP), x64; x86 prints the same.
+# Build: x86_64-w64-mingw32-gcc -O0 -static -I tools/oracle_probe
+#        -o gsso.exe tools/oracle_probe/d3d11_gsso_probe.c -ld3d11 -ldxgi -luuid
+# Lines starting with # are not probe output.
+#
+# Two WARP behaviours Vitreo deliberately does not reproduce (the D3D11.3
+# functional spec says otherwise; 12 diff lines on Vitreo):
+#  - [streams] "CreateGeometryShader (no SO): stream 0 rasterized", row 1:
+#    WARP rasterizes stream 1 too. A multi-stream GS made without a
+#    stream-output declaration rasterizes stream 0 (13.5.2).
+#  - the five "GS after the DS" sorted-hash lines ([indirect] x2, [tess] x3):
+#    the GS writes its SV_PrimitiveID; WARP hands it a running number per
+#    tessellated primitive, Vitreo the patch's id (11.7.9.1: every primitive
+#    a patch makes carries that patch's SV_PrimitiveID). The primitive
+#    counts match.
+feature level 0xb000
+
+[create] CreateGeometryShaderWithStreamOutput with streams
+  4 streams -> 4 slots, raster NONE              hr=0x00000000 out=object
+  4 streams -> 4 slots, validate only            hr=0x00000001 out=-
+  4 streams, raster 0                            hr=0x00000000 out=object
+  4 streams, raster 1                            hr=0x00000000 out=object
+  4 streams, raster 2 (no position)              hr=0x00000000 out=object
+  4 streams, raster 3 (no position)              hr=0x00000000 out=object
+  4 streams, raster 4                            hr=0x80070057 out=NULL
+  streams 0 and 1 into slot 0                    hr=0x80070057 out=NULL
+  stream 1 names stream 0's TEXCOORD0            hr=0x80070057 out=NULL
+  stream 2 names SV_Position (not in stream 2)   hr=0x80070057 out=NULL
+  stream 1 SV_Position -> slot 1                 hr=0x00000000 out=object
+  Stream = 4                                     hr=0x80070057 out=NULL
+  only stream 1 streamed, raster 0               hr=0x00000000 out=object
+  stream 2 split over slots 2 and 3              hr=0x00000000 out=object
+  stream 1 gap then TEXCOORD1 -> slot 1          hr=0x80070057 out=NULL
+  single-stream GS, Stream = 1 entry             hr=0x80070057 out=NULL
+  single-stream GS, raster 1                     hr=0x00000000 out=object
+  vertex shader, raster 1                        hr=0x00000000 out=object
+  vertex shader, raster NONE                     hr=0x00000000 out=object
+  vertex shader, Stream = 1 entry                hr=0x80070057 out=NULL
+
+[streams] four streams, statistics, unbound slot, instancing, limit, rasterized stream
+  gs_streams4 Draw(2), slot 2 room for 4
+    SO_STATISTICS                  0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=1
+    SO_STATISTICS_STREAM0          0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE_STREAM0  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM1          0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE_STREAM1  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM2          0x00000000 {written=4 needed=6}
+    SO_OVERFLOW_PREDICATE_STREAM2  0x00000000 BOOL=1
+    SO_STATISTICS_STREAM3          0x00000000 {written=8 needed=8}
+    SO_OVERFLOW_PREDICATE_STREAM3  0x00000000 BOOL=0
+  stream0/slot0: (0 0 0 8000) (1 0 0 8000)  [2 records]
+  stream1/slot1: (0 1 0 8001) (0 1 1 8001) (1 1 0 8001) (1 1 1 8001)  [4 records]
+  stream2/slot2: (0 2 0 8002) (0 2 1 8002) (0 2 2 8002) (1 2 0 8002)  [4 records]
+  stream3/slot3: (0 3 0 8003) (0 3 1 8003) (0 3 2 8003) (0 3 3 8003) (1 3 0 8003) (1 3 1 8003) (1 3 2 8003) (1 3 3 8003)  [8 records]
+  gs_streams4 Draw(2), slot 2 unbound
+    SO_STATISTICS                  0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=1
+    SO_STATISTICS_STREAM0          0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE_STREAM0  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM1          0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE_STREAM1  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM2          0x00000000 {written=0 needed=6}
+    SO_OVERFLOW_PREDICATE_STREAM2  0x00000000 BOOL=1
+    SO_STATISTICS_STREAM3          0x00000000 {written=8 needed=8}
+    SO_OVERFLOW_PREDICATE_STREAM3  0x00000000 BOOL=0
+  stream0/slot0: (0 0 0 8000) (1 0 0 8000)  [2 records]
+  stream1/slot1: (0 1 0 8001) (0 1 1 8001) (1 1 0 8001) (1 1 1 8001)  [4 records]
+  stream2/slot2:  [0 records]
+  stream3/slot3: (0 3 0 8003) (0 3 1 8003) (0 3 2 8003) (0 3 3 8003) (1 3 0 8003) (1 3 1 8003) (1 3 2 8003) (1 3 3 8003)  [8 records]
+  gs_ptmax (maxvertexcount 3, 5 emits alternating s0/s1) Draw(2)
+    SO_STATISTICS                  0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+    SO_STATISTICS_STREAM0          0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE_STREAM0  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM1          0x00000000 {written=2 needed=2}
+    SO_OVERFLOW_PREDICATE_STREAM1  0x00000000 BOOL=0
+  stream0/slot0: (0 0 0 8100) (0 0 2 8100) (1 0 0 8100) (1 0 2 8100)  [4 records]
+  stream1/slot1: (0 1 1 8101) (1 1 1 8101)  [2 records]
+  gs_streams_inst ([instance(2)]) Draw(2)
+    SO_STATISTICS                  0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+    SO_STATISTICS_STREAM0          0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE_STREAM0  0x00000000 BOOL=0
+    SO_STATISTICS_STREAM1          0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE_STREAM1  0x00000000 BOOL=0
+  stream0/slot0: (0 0 0 8200) (0 1 0 8200) (1 0 1 8200) (1 1 1 8200)  [4 records]
+  stream1/slot1: (0 0 0 8201) (0 1 0 8201) (1 0 1 8201) (1 1 1 8201)  [4 records]
+  CreateGeometryShader (no SO): stream 0 rasterized
+    row 0: (0 0 9000) (1 0 9000) (2 0 9000) (3 0 9000) (0 0 0) (0 0 0) (0 0 0) (0 0 0)
+    row 1: (0 1 9001) (1 1 9001) (2 1 9001) (3 1 9001) (0 0 0) (0 0 0) (0 0 0) (0 0 0)
+  SO(stream 0 -> slot 0), RasterizedStream 1
+    row 0: (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0)
+    row 1: (0 1 9001) (1 1 9001) (2 1 9001) (3 1 9001) (0 0 0) (0 0 0) (0 0 0) (0 0 0)
+  slot0: (0 0 0 9000) (1 0 0 9000) (2 0 0 9000) (3 0 0 9000)  [4 records]
+  SO(stream 1 -> slot 0), RasterizedStream 0
+    row 0: (0 0 9000) (1 0 9000) (2 0 9000) (3 0 9000) (0 0 0) (0 0 0) (0 0 0) (0 0 0)
+    row 1: (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0)
+  slot0: (0 1 0 9001) (1 1 0 9001) (2 1 0 9001) (3 1 0 9001)  [4 records]
+  SO(stream 0 -> slot 0), RasterizedStream NONE
+    row 0: (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0)
+    row 1: (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0) (0 0 0)
+  slot0: (0 0 0 9000) (1 0 0 9000) (2 0 0 9000) (3 0 0 9000)  [4 records]
+
+[maxvertexcount] three 3-vertex strips (9 emits) under maxvertexcount(7)
+    SO_STATISTICS                  0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  gs_cutmax Draw(2): (0 0 0 7700) (0 0 1 7700) (0 0 2 7700) (0 1 0 7700) (0 1 1 7700) (0 1 2 7700) (1 0 0 7700) (1 0 1 7700) (1 0 2 7700) (1 1 0 7700) (1 1 1 7700) (1 1 2 7700)  [12 records]
+
+[indirect] Draw*Indirect through the geometry program, stream output and tessellation
+  gs_quad DrawInstancedIndirect {3, 2, 5, 7}
+    SO_STATISTICS                  0x00000000 {written=12 needed=12}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  slot0: (0 0 0 0) (0 0 0 1) (0 0 0 2) (0 0 0 1) (0 0 0 3) (0 0 0 2) (1 0 1 0) (1 0 1 1) (1 0 1 2) (1 0 1 1) (1 0 1 3) (1 0 1 2) (2 0 2 0) (2 0 2 1) (2 0 2 2) (2 0 2 1) (2 0 2 3) (2 0 2 2) (0 1 0 0) (0 1 0 1) (0 1 0 2) (0 1 0 1) (0 1 0 3) (0 1 0 2) (1 1 1 0) (1 1 1 1) (1 1 1 2) (1 1 1 1) (1 1 1 3) (1 1 1 2) (2 1 2 0) (2 1 2 1) (2 1 2 2) (2 1 2 1) (2 1 2 3) (2 1 2 2)  [36 records]
+  gs_quad DrawInstancedIndirect {4 (CopyStructureCount), 2, 5, 7}
+    SO_STATISTICS                  0x00000000 {written=16 needed=16}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  slot0: (0 0 0 0) (0 0 0 1) (0 0 0 2) (0 0 0 1) (0 0 0 3) (0 0 0 2) (1 0 1 0) (1 0 1 1) (1 0 1 2) (1 0 1 1) (1 0 1 3) (1 0 1 2) (2 0 2 0) (2 0 2 1) (2 0 2 2) (2 0 2 1) (2 0 2 3) (2 0 2 2) (3 0 3 0) (3 0 3 1) (3 0 3 2) (3 0 3 1) (3 0 3 3) (3 0 3 2) (0 1 0 0) (0 1 0 1) (0 1 0 2) (0 1 0 1) (0 1 0 3) (0 1 0 2) (1 1 1 0) (1 1 1 1) (1 1 1 2) (1 1 1 1) (1 1 1 3) (1 1 1 2) (2 1 2 0) (2 1 2 1) (2 1 2 2) (2 1 2 1) (2 1 2 3) (2 1 2 2) (3 1 3 0) (3 1 3 1) (3 1 3 2) (3 1 3 1) (3 1 3 3) (3 1 3 2)  [48 records]
+  gs_tri3 TRIANGLESTRIP R16 {0,1,2,3,FFFF,4,5,6,7} DrawIndexedInstancedIndirect {9, 2, 0, 10, 3}
+    SO_STATISTICS                  0x00000000 {written=24 needed=24}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  slot0: (0 0 0 0) (1 0 0 1) (2 0 0 2) (1 0 1 0) (3 0 1 1) (2 0 1 2) (4 0 2 0) (5 0 2 1) (6 0 2 2) (5 0 3 0) (7 0 3 1) (6 0 3 2) (0 1 0 0) (1 1 0 1) (2 1 0 2) (1 1 1 0) (3 1 1 1) (2 1 1 2) (4 1 2 0) (5 1 2 1) (6 1 2 2) (5 1 3 0) (7 1 3 1) (6 1 3 2)  [24 records]
+  SO of the VS, LINESTRIP DrawInstancedIndirect {3 (CopyStructureCount), 2, 4, 0}
+    SO_STATISTICS                  0x00000000 {written=4 needed=4}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  slot0: (0 0 0 1000) (1 0 0 1000) (1 0 0 1000) (2 0 0 1000) (0 1 0 1000) (1 1 0 1000) (1 1 0 1000) (2 1 0 1000)  [8 records]
+  SO of the VS, TRIANGLELIST R32 IB offset 4 DrawIndexedInstancedIndirect {4 (GPU), 1, 1, 3, 9}
+    SO_STATISTICS                  0x00000000 {written=1 needed=1}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  slot0: (4 0 0 1000) (3 0 0 1000) (2 0 0 1000)  [3 records]
+    SO_STATISTICS                  0x00000000 {written=24 needed=24}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  tessellation DrawInstancedIndirect {6, 2, 0, 0}, SO from the DS: primitives=24 sorted-hash=38c1d305
+    SO_STATISTICS                  0x00000000 {written=72 needed=72}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  tessellation DrawInstancedIndirect {6, 2, 0, 0}, GS after the DS: primitives=72 sorted-hash=e7cb9465
+    SO_STATISTICS                  0x00000000 {written=72 needed=72}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  tessellation DrawInstanced(6, 2) direct, GS after the DS: primitives=72 sorted-hash=e7cb9465
+
+[drawauto] DrawAuto through a geometry program and after a geometry-shader stream output
+  DrawAuto of 3 VS-streamed points through gs_quad
+    SO_STATISTICS                  0x00000000 {written=6 needed=6}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  A: (0 0 0 1000) (1 0 0 1000) (2 0 0 1000)  [3 records]
+  B: (0 0 0 0) (0 0 0 1) (0 0 0 2) (0 0 0 1) (0 0 0 3) (0 0 0 2) (1 1 1 0) (1 1 1 1) (1 1 1 2) (1 1 1 1) (1 1 1 3) (1 1 1 2) (2 2 2 0) (2 2 2 1) (2 2 2 2) (2 2 2 1) (2 2 2 3) (2 2 2 2)  [18 records]
+  DrawAuto of 2 GS-streamed quads (12 vertices) through SO of the VS
+    SO_STATISTICS                  0x00000000 {written=12 needed=12}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  A: (0 0 0 0) (0 0 0 1) (0 0 0 2) (0 0 0 1) (0 0 0 3) (0 0 0 2) (1 0 1 0) (1 0 1 1) (1 0 1 2) (1 0 1 1) (1 0 1 3) (1 0 1 2)  [12 records]
+  B: (0 0 0 0) (0 1 0 1) (0 2 0 2) (0 3 0 1) (0 4 0 3) (0 5 0 2) (1 6 0 0) (1 7 0 1) (1 8 0 2) (1 9 0 1) (1 a 0 3) (1 b 0 2)  [12 records]
+
+[tess] tessellator outputs
+    SO_STATISTICS                  0x00000000 {written=14 needed=14}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  hs_tri_odd_pt tf=(2.5,3.3,1.2) inside=2.7, SO from the DS: primitives=14 sorted-hash=b84e1d1b
+    (0 0 1 p0 | 0 0 2 2.5) 
+    (0 0.75 0.25 p0 | 0 0 2 2.5) 
+    (0 0.25 0.75 p0 | 0 0 2 2.5) 
+    (0 1 0 p0 | 0 0 2 2.5) 
+    (1 0 0 p0 | 0 0 2 2.5) 
+    (0.96666 0.03334 0 p0 | 0 0 2 2.5) 
+    (0.62224 0.18889 0.18887 p0 | 0 0 2 2.5) 
+    (0.18887 0.62224 0.18889 p0 | 0 0 2 2.5) 
+    (0.65668 0 0.34332 p0 | 0 0 2 2.5) 
+    (0.68668 0 0.31332 p0 | 0 0 2 2.5) 
+    (0.18889 0.18887 0.62224 p0 | 0 0 2 2.5) 
+    (0.31332 0 0.68668 p0 | 0 0 2 2.5) 
+    (0.03334 0.96666 0 p0 | 0 0 2 2.5) 
+    (0.34332 0 0.65668 p0 | 0 0 2 2.5) 
+    SO_STATISTICS                  0x00000000 {written=14 needed=14}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  hs_tri_odd_pt tf=(2.5,3.3,1.2) inside=2.7, GS after the DS: primitives=14 sorted-hash=1f0ce9a2
+    SO_STATISTICS                  0x00000000 {written=12 needed=12}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  hs_iso_even density=3 detail=2.5, SO from the DS: primitives=12 sorted-hash=73cd5810
+    (0 0 0 p0 | 0 0 1 2.5) (0.4375 0 0 p0 | 0 0 1 2.5) 
+    (0 0.33333 0 p0 | 0 0 1 2.5) (0.4375 0.33333 0 p0 | 0 0 1 2.5) 
+    (0 0.66667 0 p0 | 0 0 1 2.5) (0.4375 0.66667 0 p0 | 0 0 1 2.5) 
+    (0.5 0 0 p0 | 0 0 1 2.5) (0.5625 0 0 p0 | 0 0 1 2.5) 
+    (0.5 0 0 p0 | 0 0 1 2.5) (0.4375 0 0 p0 | 0 0 1 2.5) 
+    (0.5 0.33333 0 p0 | 0 0 1 2.5) (0.5625 0.33333 0 p0 | 0 0 1 2.5) 
+    (0.5 0.33333 0 p0 | 0 0 1 2.5) (0.4375 0.33333 0 p0 | 0 0 1 2.5) 
+    (0.5 0.66667 0 p0 | 0 0 1 2.5) (0.5625 0.66667 0 p0 | 0 0 1 2.5) 
+    (0.5 0.66667 0 p0 | 0 0 1 2.5) (0.4375 0.66667 0 p0 | 0 0 1 2.5) 
+    (0.5625 0 0 p0 | 0 0 1 2.5) (1 0 0 p0 | 0 0 1 2.5) 
+    (0.5625 0.33333 0 p0 | 0 0 1 2.5) (1 0.33333 0 p0 | 0 0 1 2.5) 
+    (0.5625 0.66667 0 p0 | 0 0 1 2.5) (1 0.66667 0 p0 | 0 0 1 2.5) 
+    SO_STATISTICS                  0x00000000 {written=24 needed=24}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  hs_iso_even density=3 detail=2.5, GS after the DS: primitives=24 sorted-hash=794ba158
+    SO_STATISTICS                  0x00000000 {written=256 needed=256}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  hs_iso_even density=1.5 detail=64, SO from the DS: primitives=256 sorted-hash=317325dd
+    SO_STATISTICS                  0x00000000 {written=156 needed=156}
+    SO_OVERFLOW_PREDICATE          0x00000000 BOOL=0
+  hs_tri int tf=(2,3,4) inside=3, 2 patches x 2 instances, GS after the DS (SV_PrimitiveID): primitives=156 sorted-hash=c41e4145
+
+done

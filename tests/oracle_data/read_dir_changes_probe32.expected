@@ -1,0 +1,49 @@
+parameters
+  filter 0 -> 0 err=87
+  NULL buffer len 0 -> 1 err=57005
+  NULL buffer len 64 -> 0 err=998
+  no FILE_LIST_DIRECTORY -> 0 err=5
+  file handle -> 0 err=87
+  NULL handle -> 0 err=6
+records subtree=FALSE
+  overlapped issue -> 1 err=57005 internal=0x103
+  after CancelIoEx: result=0 err=995 internal=0xc0000120 bytes=0
+  create bytes=22: [1 a.txt next=0]
+  write bytes=22: [3 a.txt next=0]
+  rename bytes=46: [4 a.txt next=24] [5 b.txt next=0]
+  delete bytes=22: [2 b.txt next=0]
+  mkdir bytes=18: [1 sub next=0]
+  subfile timeout
+  subdel timeout
+  rmdir bytes=18: [2 sub next=0]
+  attrfile bytes=22: [1 c.txt next=0]
+  setattr bytes=22: [3 c.txt next=0]
+records subtree=TRUE
+  mkdir bytes=18: [1 sub next=0]
+  subfile bytes=30: [1 sub\x.txt next=0]
+  subdel bytes=30: [2 sub\x.txt next=0]
+  rmdir bytes=18: [2 sub next=0]
+buffered between calls
+  first bytes=22: [1 a.txt next=0]
+  reissue -> 1 err=57005 signaled_immediately=1
+  buffered bytes=94: [3 a.txt next=24] [4 a.txt next=24] [5 b.txt next=24] [3 b.txt next=0]
+overflow (first buffer 64 bytes)
+  first -> result=1 err=0 bytes=22 internal=0x0
+  after 40 creates -> result=1 err=0 bytes=0 internal=0x10c
+last error after informational status
+  enum_dir -> result=1 lasterr=1022
+  cleanup (closed handle, INVALID_HANDLE_VALUE) -> result=1 lasterr=1022 bytes=0
+tiny buffer (8 bytes)
+  -> result=1 err=0 bytes=0 internal=0x10c
+close while pending
+  signaled=1 internal=0x10b internal_high=0
+iocp
+  packet ok=1 key=0x77 bytes_nonzero=1 same_ov=1
+  cancel packet ok=0 err=995 bytes=0
+completion routine
+  issue -> 1
+  SleepEx -> 192 calls=1 err=0 bytes_nonzero=1
+synchronous (non-overlapped handle)
+  -> 1 bytes_nonzero=1
+  sync bytes=22: [1 a.txt next=0]
+done

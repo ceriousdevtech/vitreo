@@ -1,0 +1,26 @@
+constant THREAD_QUERY_INFORMATION 40
+constant THREAD_QUERY_LIMITED_INFORMATION 800
+created ok=1 same=1 error=dead
+pseudo ok=1 same=1 error=dead
+null ok=0 same=0 error=6
+process-pseudo ok=0 same=0 error=6
+bogus ok=0 same=0 error=6
+process-real ok=0 same=0 error=6
+zero ok=0 same=0 error=5
+query ok=1 same=1 error=dead
+limited ok=1 same=1 error=dead
+synchronize ok=0 same=0 error=5
+query-sync ok=1 same=1 error=dead
+all ok=1 same=1 error=dead
+event ok=0 same=0 error=6
+upper32 ok=0 same=0 error=6
+zeroextended-pseudo ok=0 same=0 error=6
+exited ok=1 same=1 error=dead
+closed ok=0 same=0 error=6
+primary ok=1 same=1 error=dead
+primary-zero ok=0 same=0 error=5
+primary-query ok=1 same=1 error=dead
+primary-limited ok=1 same=1 error=dead
+primary-exited ok=1 same=1 error=dead
+primary-without-process-handle ok=1 same=1 error=dead
+primary-closed ok=0 same=0 error=6

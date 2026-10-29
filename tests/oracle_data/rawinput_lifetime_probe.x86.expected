@@ -1,0 +1,32 @@
+register=1
+inject=1
+input foreground=1 header=16
+size1 ret=0 size=40 error=57005
+header1 ret=16 size=16 error=57005
+full1 ret=40 size=512 error=57005
+full2 ret=40 size=512 error=57005
+buffer_current_count=0
+after_buffer ret=40 size=512 error=57005
+inject_buffer=1
+buffer_next_count=1
+after_buffer_next ret=40 size=512 error=57005
+after_defrawproc ret=40 size=512 error=57005
+header2 ret=16 size=16 error=57005
+size2 ret=0 size=40 error=57005
+after_defproc ret=40 size=512 error=57005
+after_dispatch ret=40 size=512 error=57005
+empty_peek=0
+after_empty_peek ret=40 size=512 error=57005
+peek_no_remove=1
+after_peek_no_remove ret=40 size=512 error=57005
+peek_remove=1
+after_peek_remove ret=4294967295 size=520 error=6
+getmessage=1
+after_getmessage ret=4294967295 size=520 error=6
+invalid_input_0 ret=4294967295 size=8 error=6
+invalid_header_0 ret=4294967295 size=24 error=6
+invalid_input_1 ret=4294967295 size=48 error=6
+invalid_header_1 ret=4294967295 size=24 error=6
+invalid_input_2 ret=4294967295 size=520 error=6
+invalid_header_2 ret=4294967295 size=24 error=6
+after_destroy ret=4294967295 size=520 error=6

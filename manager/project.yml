@@ -1,0 +1,209 @@
+name: VitreoManager
+options:
+  minimumXcodeGenVersion: "2.38"
+  bundleIdPrefix: dev.vitreo
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    CODE_SIGN_IDENTITY: "-"
+    PRODUCT_BUNDLE_IDENTIFIER: dev.vitreo.manager
+    MARKETING_VERSION: "1.0 Beta"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  VitreoManager:
+    type: application
+    platform: macOS
+    productName: Vitreo
+    sources:
+      - path: VitreoManager
+        type: group
+    postBuildScripts:
+      - name: Embed Vitreo Engine
+        inputFiles:
+          - $(SRCROOT)/../build/src/vitreo
+          - $(SRCROOT)/LauncherHelper/main.swift
+        outputFiles:
+          - $(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Helpers/vitreo
+          - $(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/VitreoLauncher
+        script: |
+          ENGINE="${SRCROOT}/../build/src/vitreo"
+          HELPERS="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Helpers"
+          RESOURCES="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+          SWIFTC="${SWIFT_EXEC:-${TOOLCHAIN_DIR}/usr/bin/swiftc}"
+          mkdir -p "${HELPERS}"
+          if [ -x "${ENGINE}" ]; then
+            cp "${ENGINE}" "${HELPERS}/vitreo"
+            chmod 755 "${HELPERS}/vitreo"
+          else
+            echo "warning: Vitreo engine not found at ${ENGINE}; select one in Manager Settings"
+          fi
+          rm -f "${RESOURCES}/vitreo"
+          "${SWIFTC}" \
+            -O \
+            -target "arm64-apple-macos${MACOSX_DEPLOYMENT_TARGET}" \
+            -sdk "${SDKROOT}" \
+            -o "${RESOURCES}/VitreoLauncher" \
+            "${SRCROOT}/LauncherHelper/main.swift"
+          chmod 755 "${RESOURCES}/VitreoLauncher"
+    settings:
+      base:
+        INFOPLIST_GENERATION_MODE: GeneratedFile
+        INFOPLIST_KEY_NSMainStoryboardFile: ""
+        INFOPLIST_KEY_NSHighResolutionCapable: true
+        PRODUCT_NAME: Vitreo
+        PRODUCT_MODULE_NAME: VitreoManager
+        INFOPLIST_KEY_CFBundleName: Vitreo
+        INFOPLIST_KEY_CFBundleDisplayName: Vitreo
+        INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
+        CODE_SIGN_ENTITLEMENTS: VitreoManager/VitreoManager.entitlements
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_PREVIEWS: "YES"
+    info:
+      path: VitreoManager/Info.plist
+      properties:
+        CFBundleName: Vitreo
+        CFBundleDisplayName: Vitreo
+        CFBundleShortVersionString: "1.0 Beta"
+        NSHighResolutionCapable: true
+        LSMinimumSystemVersion: "14.0"
+        # TCC attributes a guest's microphone request to the launching app.
+        NSMicrophoneUsageDescription: "Windows applications run by Vitreo record from the microphone when they ask for audio input."
+        # File association metadata. XcodeGen regenerates Info.plist from this
+        # block, so it must stay equivalent to the fallback bundle produced by
+        # build.sh — both build paths register the same Finder behavior.
+        # macOS invents a dyn.* identifier for .exe when no installed app
+        # declares one, hence the imported declaration.
+        UTImportedTypeDeclarations:
+          - UTTypeIdentifier: com.microsoft.windows-executable
+            UTTypeDescription: Windows executable
+            UTTypeConformsTo:
+              - public.data
+              - public.executable
+            UTTypeTagSpecification:
+              public.filename-extension:
+                - exe
+              public.mime-type:
+                - application/x-msdownload
+          - UTTypeIdentifier: com.microsoft.windows-installer-package
+            UTTypeDescription: Windows Installer package
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [msi]
+              public.mime-type: [application/x-msi]
+          - UTTypeIdentifier: com.microsoft.windows-installer-patch
+            UTTypeDescription: Windows Installer patch
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [msp]
+          - UTTypeIdentifier: com.microsoft.windows-installer-transform
+            UTTypeDescription: Windows Installer transform
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [mst]
+          - UTTypeIdentifier: com.microsoft.windows-installer-merge-module
+            UTTypeDescription: Windows Installer merge module
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [msm]
+          - UTTypeIdentifier: com.microsoft.msix-package
+            UTTypeDescription: MSIX package
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [msix]
+          - UTTypeIdentifier: com.microsoft.msix-bundle
+            UTTypeDescription: MSIX bundle
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [msixbundle]
+          - UTTypeIdentifier: com.microsoft.appx-package
+            UTTypeDescription: AppX package
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [appx]
+          - UTTypeIdentifier: com.microsoft.appx-bundle
+            UTTypeDescription: AppX bundle
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [appxbundle]
+          - UTTypeIdentifier: com.microsoft.appinstaller
+            UTTypeDescription: App Installer file
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [appinstaller]
+          - UTTypeIdentifier: com.microsoft.windows-update-package
+            UTTypeDescription: Windows Update package
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [msu]
+        # Alternate rank: Vitreo joins the Open With menu without displacing a
+        # handler the user already chose.
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Windows executable
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.windows-executable]
+          - CFBundleTypeName: Windows Installer package
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.windows-installer-package]
+          - CFBundleTypeName: Windows Installer patch
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.windows-installer-patch]
+          - CFBundleTypeName: Windows Installer transform
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.windows-installer-transform]
+          - CFBundleTypeName: Windows Installer merge module
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.windows-installer-merge-module]
+          - CFBundleTypeName: MSIX package
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.msix-package]
+          - CFBundleTypeName: MSIX bundle
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.msix-bundle]
+          - CFBundleTypeName: AppX package
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.appx-package]
+          - CFBundleTypeName: AppX bundle
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.appx-bundle]
+          - CFBundleTypeName: App Installer file
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.appinstaller]
+          - CFBundleTypeName: Windows Update package
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.microsoft.windows-update-package]
+        LSSupportsOpeningDocumentsInPlace: true
+
+  VitreoManagerTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: VitreoManagerTests
+        type: group
+    dependencies:
+      - target: VitreoManager
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Vitreo.app/Contents/MacOS/Vitreo"
+        BUNDLE_LOADER: "$(TEST_HOST)"

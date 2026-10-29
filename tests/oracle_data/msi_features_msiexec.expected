@@ -1,0 +1,602 @@
+== plain exit=0
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Local; Action: Local
+ Feature: High; Installed: Absent; Request: Null; Action: Null
+ Feature: Cond; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow; Installed: Absent; Request: Null; Action: Null
+ Feature: Follow2; Installed: Absent; Request: Local; Action: Local
+ Feature: Src; Installed: Absent; Request: Source; Action: Source
+ Feature: Adv; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: NoAdv; Installed: Absent; Request: Local; Action: Local
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Local; Action: Local
+ Feature: Empty; Installed: Absent; Request: Local; Action: Local
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Local; Action: Local
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Source; Action: Source
+ Component: cSrcOnly; Installed: Absent; Request: Source; Action: Source
+ Component: cCond; Installed: Absent; Request: Local; Action: Null
+ Component: cCondT; Installed: Absent; Request: Local; Action: Null
+ Component: c64; Installed: Absent; Request: Local; Action: Local
+ Component: cNever; Installed: Absent; Request: Local; Action: Local
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Local; Action: Local
+ Component: cAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cNoAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cFollow; Installed: Absent; Request: Null; Action: Null
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Local; Action: Local
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Source; Action: Source
+ Component: cReg; Installed: Absent; Request: Local; Action: Local
+ Component: cRegA; Installed: Absent; Request: Local; Action: Local
+ Component: cRegB; Installed: Absent; Request: Local; Action: Local
+ Component: cRegC; Installed: Absent; Request: Local; Action: Local
+ Component: cNoKey; Installed: Absent; Request: Local; Action: Local
+ Component: __cReg65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegA65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegB65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegC65; Installed: Null; Request: Local; Action: Local
+  Property(S): TARGETDIR = C:\
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== addlocal_all exit=0
+  PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\Owner\msifeat\msiexec_addlocal_all.log'.
+  PROPERTY CHANGE: Adding ADDLOCAL property. Its value is 'ALL'.
+  PROPERTY CHANGE: Adding Preselected property. Its value is '1'.
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Local; Action: Local
+ Feature: High; Installed: Absent; Request: Local; Action: Local
+ Feature: Cond; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow2; Installed: Absent; Request: Local; Action: Local
+ Feature: Src; Installed: Absent; Request: Local; Action: Local
+ Feature: Adv; Installed: Absent; Request: Local; Action: Local
+ Feature: NoAdv; Installed: Absent; Request: Local; Action: Local
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Local; Action: Local
+ Feature: Empty; Installed: Absent; Request: Local; Action: Local
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Local; Action: Local
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcOnly; Installed: Absent; Request: Source; Action: Source
+ Component: cCond; Installed: Absent; Request: Local; Action: Null
+ Component: cCondT; Installed: Absent; Request: Local; Action: Null
+ Component: c64; Installed: Absent; Request: Local; Action: Local
+ Component: cNever; Installed: Absent; Request: Local; Action: Local
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Local; Action: Local
+ Component: cAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cNoAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cFollow; Installed: Absent; Request: Local; Action: Local
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Local; Action: Local
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Local; Action: Local
+ Component: cReg; Installed: Absent; Request: Local; Action: Local
+ Component: cRegA; Installed: Absent; Request: Local; Action: Local
+ Component: cRegB; Installed: Absent; Request: Local; Action: Local
+ Component: cRegC; Installed: Absent; Request: Local; Action: Local
+ Component: cNoKey; Installed: Absent; Request: Local; Action: Local
+ Component: __cReg65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegA65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegB65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegC65; Installed: Null; Request: Local; Action: Local
+  Property(S): TARGETDIR = C:\
+  Property(S): Preselected = 1
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== addlocal_high exit=0
+  PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\Owner\msifeat\msiexec_addlocal_high.log'.
+  PROPERTY CHANGE: Adding ADDLOCAL property. Its value is 'High'.
+  PROPERTY CHANGE: Adding Preselected property. Its value is '1'.
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Null; Action: Null
+ Feature: High; Installed: Absent; Request: Local; Action: Local
+ Feature: Cond; Installed: Absent; Request: Null; Action: Null
+ Feature: Follow; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow2; Installed: Absent; Request: Null; Action: Null
+ Feature: Src; Installed: Absent; Request: Null; Action: Null
+ Feature: Adv; Installed: Absent; Request: Null; Action: Null
+ Feature: NoAdv; Installed: Absent; Request: Null; Action: Null
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Null; Action: Null
+ Feature: Empty; Installed: Absent; Request: Null; Action: Null
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Null; Action: Null
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Null; Action: Null
+ Component: cSrcOnly; Installed: Absent; Request: Null; Action: Null
+ Component: cCond; Installed: Absent; Request: Null; Action: Null
+ Component: cCondT; Installed: Absent; Request: Null; Action: Null
+ Component: c64; Installed: Absent; Request: Null; Action: Null
+ Component: cNever; Installed: Absent; Request: Null; Action: Null
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Null; Action: Null
+ Component: cAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cNoAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cFollow; Installed: Absent; Request: Local; Action: Local
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Null; Action: Null
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Null; Action: Null
+ Component: cReg; Installed: Absent; Request: Null; Action: Null
+ Component: cRegA; Installed: Absent; Request: Null; Action: Null
+ Component: cRegB; Installed: Absent; Request: Null; Action: Null
+ Component: cRegC; Installed: Absent; Request: Null; Action: Null
+ Component: cNoKey; Installed: Absent; Request: Null; Action: Null
+ Component: __cReg65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegA65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegB65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegC65; Installed: Null; Request: Null; Action: Null
+  Property(S): TARGETDIR = C:\
+  Property(S): Preselected = 1
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== remove_all exit=1605
+  PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\Owner\msifeat\msiexec_remove_all.log'.
+== addsource_all_addlocal_child exit=0
+  PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\Owner\msifeat\msiexec_addsource_all_addlocal_child.log'.
+  PROPERTY CHANGE: Adding ADDSOURCE property. Its value is 'ALL'.
+  PROPERTY CHANGE: Adding ADDLOCAL property. Its value is 'Child'.
+  PROPERTY CHANGE: Adding Preselected property. Its value is '1'.
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Source; Action: Source
+ Feature: High; Installed: Absent; Request: Local; Action: Local
+ Feature: Cond; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow2; Installed: Absent; Request: Local; Action: Local
+ Feature: Src; Installed: Absent; Request: Source; Action: Source
+ Feature: Adv; Installed: Absent; Request: Local; Action: Local
+ Feature: NoAdv; Installed: Absent; Request: Local; Action: Local
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Local; Action: Local
+ Feature: Empty; Installed: Absent; Request: Source; Action: Source
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Local; Action: Local
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Source; Action: Source
+ Component: cSrcOnly; Installed: Absent; Request: Source; Action: Source
+ Component: cCond; Installed: Absent; Request: Local; Action: Null
+ Component: cCondT; Installed: Absent; Request: Local; Action: Null
+ Component: c64; Installed: Absent; Request: Local; Action: Local
+ Component: cNever; Installed: Absent; Request: Local; Action: Local
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Local; Action: Local
+ Component: cAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cNoAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cFollow; Installed: Absent; Request: Local; Action: Local
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Local; Action: Local
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Source; Action: Source
+ Component: cReg; Installed: Absent; Request: Local; Action: Local
+ Component: cRegA; Installed: Absent; Request: Local; Action: Local
+ Component: cRegB; Installed: Absent; Request: Local; Action: Local
+ Component: cRegC; Installed: Absent; Request: Local; Action: Local
+ Component: cNoKey; Installed: Absent; Request: Local; Action: Local
+ Component: __cReg65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegA65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegB65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegC65; Installed: Null; Request: Local; Action: Local
+  Property(S): TARGETDIR = C:\
+  Property(S): Preselected = 1
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== advertise_all exit=0
+  PROPERTY CHANGE: Adding Preselected property. Its value is '1'.
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: Child; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: High; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: Cond; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: Follow; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: Follow2; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: Src; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: Adv; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: NoAdv; Installed: Absent; Request: Absent; Action: Absent
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: Other; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: Empty; Installed: Absent; Request: Advertise; Action: Advertise
+ Component: cRoot; Installed: Absent; Request: Null; Action: Null
+ Component: cChild; Installed: Absent; Request: Null; Action: Null
+ Component: cShared; Installed: Absent; Request: Null; Action: Null
+ Component: cOpt; Installed: Absent; Request: Null; Action: Null
+ Component: cSrcOnly; Installed: Absent; Request: Null; Action: Null
+ Component: cCond; Installed: Absent; Request: Null; Action: Null
+ Component: cCondT; Installed: Absent; Request: Null; Action: Null
+ Component: c64; Installed: Absent; Request: Null; Action: Null
+ Component: cNever; Installed: Absent; Request: Null; Action: Null
+ Component: cNoGuid; Installed: Null; Request: Null; Action: Null
+ Component: cPerm; Installed: Absent; Request: Null; Action: Null
+ Component: cAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cNoAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cFollow; Installed: Absent; Request: Null; Action: Null
+ Component: cMust; Installed: Absent; Request: Null; Action: Null
+ Component: cCondF; Installed: Absent; Request: Null; Action: Null
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoShared; Installed: Absent; Request: Null; Action: Null
+ Component: cSrcDot; Installed: Absent; Request: Null; Action: Null
+ Component: cReg; Installed: Absent; Request: Null; Action: Null
+ Component: cRegA; Installed: Absent; Request: Null; Action: Null
+ Component: cRegB; Installed: Absent; Request: Null; Action: Null
+ Component: cRegC; Installed: Absent; Request: Null; Action: Null
+ Component: cNoKey; Installed: Absent; Request: Null; Action: Null
+ Component: __cReg65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegA65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegB65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegC65; Installed: Null; Request: Null; Action: Null
+  Property(S): TARGETDIR = C:\
+  Property(S): Preselected = 1
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== adddefault_all exit=0
+  PROPERTY CHANGE: Adding Preselected property. Its value is '1'.
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Local; Action: Local
+ Feature: High; Installed: Absent; Request: Local; Action: Local
+ Feature: Cond; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow2; Installed: Absent; Request: Local; Action: Local
+ Feature: Src; Installed: Absent; Request: Source; Action: Source
+ Feature: Adv; Installed: Absent; Request: Local; Action: Local
+ Feature: NoAdv; Installed: Absent; Request: Local; Action: Local
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Local; Action: Local
+ Feature: Empty; Installed: Absent; Request: Local; Action: Local
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Local; Action: Local
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Source; Action: Source
+ Component: cSrcOnly; Installed: Absent; Request: Source; Action: Source
+ Component: cCond; Installed: Absent; Request: Local; Action: Null
+ Component: cCondT; Installed: Absent; Request: Local; Action: Null
+ Component: c64; Installed: Absent; Request: Local; Action: Local
+ Component: cNever; Installed: Absent; Request: Local; Action: Local
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Local; Action: Local
+ Component: cAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cNoAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cFollow; Installed: Absent; Request: Local; Action: Local
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Local; Action: Local
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Source; Action: Source
+ Component: cReg; Installed: Absent; Request: Local; Action: Local
+ Component: cRegA; Installed: Absent; Request: Local; Action: Local
+ Component: cRegB; Installed: Absent; Request: Local; Action: Local
+ Component: cRegC; Installed: Absent; Request: Local; Action: Local
+ Component: cNoKey; Installed: Absent; Request: Local; Action: Local
+ Component: __cReg65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegA65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegB65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegC65; Installed: Null; Request: Local; Action: Local
+  Property(S): TARGETDIR = C:\
+  Property(S): Preselected = 1
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== condition_disable_addlocal exit=0
+  PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\Owner\msifeat\msiexec_condition_disable_addlocal.log'.
+  PROPERTY CHANGE: Adding ADDLOCAL property. Its value is 'Cond'.
+  PROPERTY CHANGE: Adding Preselected property. Its value is '1'.
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Null; Action: Null
+ Feature: Child; Installed: Absent; Request: Null; Action: Null
+ Feature: High; Installed: Absent; Request: Null; Action: Null
+ Feature: Cond; Installed: Absent; Request: Null; Action: Null
+ Feature: Follow; Installed: Absent; Request: Null; Action: Null
+ Feature: Follow2; Installed: Absent; Request: Null; Action: Null
+ Feature: Src; Installed: Absent; Request: Null; Action: Null
+ Feature: Adv; Installed: Absent; Request: Null; Action: Null
+ Feature: NoAdv; Installed: Absent; Request: Null; Action: Null
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Null; Action: Null
+ Feature: Other; Installed: Absent; Request: Null; Action: Null
+ Feature: Empty; Installed: Absent; Request: Null; Action: Null
+ Component: cRoot; Installed: Absent; Request: Null; Action: Null
+ Component: cChild; Installed: Absent; Request: Null; Action: Null
+ Component: cShared; Installed: Absent; Request: Null; Action: Null
+ Component: cOpt; Installed: Absent; Request: Null; Action: Null
+ Component: cSrcOnly; Installed: Absent; Request: Null; Action: Null
+ Component: cCond; Installed: Absent; Request: Null; Action: Null
+ Component: cCondT; Installed: Absent; Request: Null; Action: Null
+ Component: c64; Installed: Absent; Request: Null; Action: Null
+ Component: cNever; Installed: Absent; Request: Null; Action: Null
+ Component: cNoGuid; Installed: Null; Request: Null; Action: Null
+ Component: cPerm; Installed: Absent; Request: Null; Action: Null
+ Component: cAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cNoAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cFollow; Installed: Absent; Request: Null; Action: Null
+ Component: cMust; Installed: Absent; Request: Null; Action: Null
+ Component: cCondF; Installed: Absent; Request: Null; Action: Null
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoShared; Installed: Absent; Request: Null; Action: Null
+ Component: cSrcDot; Installed: Absent; Request: Null; Action: Null
+ Component: cReg; Installed: Absent; Request: Null; Action: Null
+ Component: cRegA; Installed: Absent; Request: Null; Action: Null
+ Component: cRegB; Installed: Absent; Request: Null; Action: Null
+ Component: cRegC; Installed: Absent; Request: Null; Action: Null
+ Component: cNoKey; Installed: Absent; Request: Null; Action: Null
+ Component: __cReg65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegA65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegB65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegC65; Installed: Null; Request: Null; Action: Null
+  PROPERTY CHANGE: Adding REMOVE property. Its value is 'ALL'.
+  Property(S): TARGETDIR = C:\
+  Property(S): Preselected = 1
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== condition_disable exit=0
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Local; Action: Local
+ Feature: High; Installed: Absent; Request: Null; Action: Null
+ Feature: Cond; Installed: Absent; Request: Null; Action: Null
+ Feature: Follow; Installed: Absent; Request: Null; Action: Null
+ Feature: Follow2; Installed: Absent; Request: Local; Action: Local
+ Feature: Src; Installed: Absent; Request: Source; Action: Source
+ Feature: Adv; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: NoAdv; Installed: Absent; Request: Local; Action: Local
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Local; Action: Local
+ Feature: Empty; Installed: Absent; Request: Local; Action: Local
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Local; Action: Local
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Source; Action: Source
+ Component: cSrcOnly; Installed: Absent; Request: Source; Action: Source
+ Component: cCond; Installed: Absent; Request: Local; Action: Null
+ Component: cCondT; Installed: Absent; Request: Local; Action: Null
+ Component: c64; Installed: Absent; Request: Local; Action: Local
+ Component: cNever; Installed: Absent; Request: Local; Action: Local
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Local; Action: Local
+ Component: cAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cNoAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cFollow; Installed: Absent; Request: Null; Action: Null
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Null; Action: Null
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Source; Action: Source
+ Component: cReg; Installed: Absent; Request: Local; Action: Local
+ Component: cRegA; Installed: Absent; Request: Local; Action: Local
+ Component: cRegB; Installed: Absent; Request: Local; Action: Local
+ Component: cRegC; Installed: Absent; Request: Local; Action: Local
+ Component: cNoKey; Installed: Absent; Request: Local; Action: Local
+ Component: __cReg65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegA65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegB65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegC65; Installed: Null; Request: Local; Action: Local
+  Property(S): TARGETDIR = C:\
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== installlevel exit=0
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Local; Action: Local
+ Feature: High; Installed: Absent; Request: Local; Action: Local
+ Feature: Cond; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow2; Installed: Absent; Request: Local; Action: Local
+ Feature: Src; Installed: Absent; Request: Source; Action: Source
+ Feature: Adv; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: NoAdv; Installed: Absent; Request: Local; Action: Local
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Local; Action: Local
+ Feature: Empty; Installed: Absent; Request: Local; Action: Local
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Local; Action: Local
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Source; Action: Source
+ Component: cSrcOnly; Installed: Absent; Request: Source; Action: Source
+ Component: cCond; Installed: Absent; Request: Local; Action: Null
+ Component: cCondT; Installed: Absent; Request: Local; Action: Null
+ Component: c64; Installed: Absent; Request: Local; Action: Local
+ Component: cNever; Installed: Absent; Request: Local; Action: Local
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Local; Action: Local
+ Component: cAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cNoAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cFollow; Installed: Absent; Request: Local; Action: Local
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Local; Action: Local
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Source; Action: Source
+ Component: cReg; Installed: Absent; Request: Local; Action: Local
+ Component: cRegA; Installed: Absent; Request: Local; Action: Local
+ Component: cRegB; Installed: Absent; Request: Local; Action: Local
+ Component: cRegC; Installed: Absent; Request: Local; Action: Local
+ Component: cNoKey; Installed: Absent; Request: Local; Action: Local
+ Component: __cReg65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegA65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegB65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegC65; Installed: Null; Request: Local; Action: Local
+  Property(S): TARGETDIR = C:\
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== compaddlocal exit=0
+  PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\Owner\msifeat\msiexec_compaddlocal.log'.
+  PROPERTY CHANGE: Adding COMPADDLOCAL property. Its value is '{0A000001-0000-4000-8000-000000000003}'.
+  PROPERTY CHANGE: Adding Preselected property. Its value is '1'.
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\Vitreo Features Test\Data Files\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Null; Action: Null
+ Feature: High; Installed: Absent; Request: Local; Action: Local
+ Feature: Cond; Installed: Absent; Request: Null; Action: Null
+ Feature: Follow; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow2; Installed: Absent; Request: Null; Action: Null
+ Feature: Src; Installed: Absent; Request: Null; Action: Null
+ Feature: Adv; Installed: Absent; Request: Null; Action: Null
+ Feature: NoAdv; Installed: Absent; Request: Null; Action: Null
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Null; Action: Null
+ Feature: Empty; Installed: Absent; Request: Null; Action: Null
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Null; Action: Null
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Null; Action: Null
+ Component: cSrcOnly; Installed: Absent; Request: Null; Action: Null
+ Component: cCond; Installed: Absent; Request: Null; Action: Null
+ Component: cCondT; Installed: Absent; Request: Null; Action: Null
+ Component: c64; Installed: Absent; Request: Null; Action: Null
+ Component: cNever; Installed: Absent; Request: Null; Action: Null
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Null; Action: Null
+ Component: cAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cNoAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cFollow; Installed: Absent; Request: Local; Action: Local
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Null; Action: Null
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Null; Action: Null
+ Component: cReg; Installed: Absent; Request: Null; Action: Null
+ Component: cRegA; Installed: Absent; Request: Null; Action: Null
+ Component: cRegB; Installed: Absent; Request: Null; Action: Null
+ Component: cRegC; Installed: Absent; Request: Null; Action: Null
+ Component: cNoKey; Installed: Absent; Request: Null; Action: Null
+ Component: __cReg65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegA65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegB65; Installed: Null; Request: Null; Action: Null
+ Component: __cRegC65; Installed: Null; Request: Null; Action: Null
+  Property(S): TARGETDIR = C:\
+  Property(S): Preselected = 1
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0
+== shortfilenames exit=0
+  PROPERTY CHANGE: Adding MsiLogFileLocation property. Its value is 'C:\Users\Owner\msifeat\msiexec_shortfilenames.log'.
+  PROPERTY CHANGE: Adding SHORTFILENAMES property. Its value is '1'.
+  PROPERTY CHANGE: Adding APPDIR property. Its value is 'C:\Program Files (x86)\VFT\'.
+  PROPERTY CHANGE: Adding DATADIR property. Its value is 'C:\Program Files (x86)\VFT\DATAFI~1\'.
+ Feature: Root; Installed: Absent; Request: Local; Action: Local
+ Feature: Child; Installed: Absent; Request: Local; Action: Local
+ Feature: High; Installed: Absent; Request: Null; Action: Null
+ Feature: Cond; Installed: Absent; Request: Local; Action: Local
+ Feature: Follow; Installed: Absent; Request: Null; Action: Null
+ Feature: Follow2; Installed: Absent; Request: Local; Action: Local
+ Feature: Src; Installed: Absent; Request: Source; Action: Source
+ Feature: Adv; Installed: Absent; Request: Advertise; Action: Advertise
+ Feature: NoAdv; Installed: Absent; Request: Local; Action: Local
+ Feature: Zero; Installed: Absent; Request: Null; Action: Null
+ Feature: Must; Installed: Absent; Request: Local; Action: Local
+ Feature: Other; Installed: Absent; Request: Local; Action: Local
+ Feature: Empty; Installed: Absent; Request: Local; Action: Local
+ Component: cRoot; Installed: Absent; Request: Local; Action: Local
+ Component: cChild; Installed: Absent; Request: Local; Action: Local
+ Component: cShared; Installed: Absent; Request: Local; Action: Local
+ Component: cOpt; Installed: Absent; Request: Source; Action: Source
+ Component: cSrcOnly; Installed: Absent; Request: Source; Action: Source
+ Component: cCond; Installed: Absent; Request: Local; Action: Null
+ Component: cCondT; Installed: Absent; Request: Local; Action: Null
+ Component: c64; Installed: Absent; Request: Local; Action: Local
+ Component: cNever; Installed: Absent; Request: Local; Action: Local
+ Component: cNoGuid; Installed: Null; Request: Local; Action: Local
+ Component: cPerm; Installed: Absent; Request: Local; Action: Local
+ Component: cAdv; Installed: Absent; Request: Null; Action: Null
+ Component: cNoAdv; Installed: Absent; Request: Local; Action: Local
+ Component: cFollow; Installed: Absent; Request: Null; Action: Null
+ Component: cMust; Installed: Absent; Request: Local; Action: Local
+ Component: cCondF; Installed: Absent; Request: Local; Action: Local
+ Component: cUnlinked; Installed: Absent; Request: Null; Action: Null
+ Component: cIsoApp; Installed: Absent; Request: Local; Action: Local
+ Component: cIsoShared; Installed: Absent; Request: Local; Action: Local
+ Component: cSrcDot; Installed: Absent; Request: Source; Action: Source
+ Component: cReg; Installed: Absent; Request: Local; Action: Local
+ Component: cRegA; Installed: Absent; Request: Local; Action: Local
+ Component: cRegB; Installed: Absent; Request: Local; Action: Local
+ Component: cRegC; Installed: Absent; Request: Local; Action: Local
+ Component: cNoKey; Installed: Absent; Request: Local; Action: Local
+ Component: __cReg65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegA65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegB65; Installed: Null; Request: Local; Action: Local
+ Component: __cRegC65; Installed: Null; Request: Local; Action: Local
+  Property(S): TARGETDIR = C:\
+  Property(S): ROOTDRIVE = C:\
+  Property(S): CostingComplete = 1
+  Property(S): OutOfDiskSpace = 0
+  Property(S): PrimaryVolumeSpaceAvailable = 0
+  Property(S): PrimaryVolumeSpaceRequired = 0
+  Property(S): PrimaryVolumeSpaceRemaining = 0

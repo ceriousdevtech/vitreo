@@ -1,0 +1,787 @@
+mode nov6 dpi=96 SM_CXEDGE=2 SM_CYEDGE=2 SM_CXMENUCHECK=15 SM_CYMENUCHECK=15
+ideal push/sysfont/install style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defpush/sysfont/install style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal check/sysfont/install style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autocheck/sysfont/install style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal radio/sysfont/install style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autoradio/sysfont/install style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal 3state/sysfont/install style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal group/sysfont/install style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal split/sysfont/install style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal cmdlink/sysfont/install style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushmulti/sysfont/install style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal owner/sysfont/install style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal flat/sysfont/install style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal push/sysfont/ok style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defpush/sysfont/ok style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal check/sysfont/ok style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autocheck/sysfont/ok style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal radio/sysfont/ok style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autoradio/sysfont/ok style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal 3state/sysfont/ok style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal group/sysfont/ok style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal split/sysfont/ok style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal cmdlink/sysfont/ok style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushmulti/sysfont/ok style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal owner/sysfont/ok style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal flat/sysfont/ok style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal push/sysfont/empty style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defpush/sysfont/empty style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal check/sysfont/empty style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autocheck/sysfont/empty style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal radio/sysfont/empty style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autoradio/sysfont/empty style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal 3state/sysfont/empty style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal group/sysfont/empty style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal split/sysfont/empty style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal cmdlink/sysfont/empty style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushmulti/sysfont/empty style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal owner/sysfont/empty style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal flat/sysfont/empty style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal push/sysfont/amp style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defpush/sysfont/amp style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal check/sysfont/amp style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autocheck/sysfont/amp style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal radio/sysfont/amp style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autoradio/sysfont/amp style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal 3state/sysfont/amp style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal group/sysfont/amp style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal split/sysfont/amp style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal cmdlink/sysfont/amp style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushmulti/sysfont/amp style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal owner/sysfont/amp style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal flat/sysfont/amp style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=59 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal push/sysfont/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defpush/sysfont/W style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal check/sysfont/W style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autocheck/sysfont/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal radio/sysfont/W style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autoradio/sysfont/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal 3state/sysfont/W style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal group/sysfont/W style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal split/sysfont/W style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal cmdlink/sysfont/W style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushmulti/sysfont/W style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal owner/sysfont/W style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal flat/sysfont/W style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal push/sysfont/twolines style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defpush/sysfont/twolines style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal check/sysfont/twolines style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autocheck/sysfont/twolines style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal radio/sysfont/twolines style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal autoradio/sysfont/twolines style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal 3state/sysfont/twolines style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal group/sysfont/twolines style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal split/sysfont/twolines style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal cmdlink/sysfont/twolines style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushmulti/sysfont/twolines style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal owner/sysfont/twolines style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal flat/sysfont/twolines style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal push/segoe9/install style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defpush/segoe9/install style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal check/segoe9/install style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autocheck/segoe9/install style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal radio/segoe9/install style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autoradio/segoe9/install style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal 3state/segoe9/install style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal group/segoe9/install style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal split/segoe9/install style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal owner/segoe9/install style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal flat/segoe9/install style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/ok style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defpush/segoe9/ok style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal check/segoe9/ok style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autocheck/segoe9/ok style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal radio/segoe9/ok style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autoradio/segoe9/ok style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal 3state/segoe9/ok style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal group/segoe9/ok style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal split/segoe9/ok style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/ok style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/ok style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal owner/segoe9/ok style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal flat/segoe9/ok style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/empty style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defpush/segoe9/empty style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal check/segoe9/empty style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autocheck/segoe9/empty style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal radio/segoe9/empty style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autoradio/segoe9/empty style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal 3state/segoe9/empty style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal group/segoe9/empty style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal split/segoe9/empty style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/empty style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/empty style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal owner/segoe9/empty style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal flat/segoe9/empty style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/amp style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defpush/segoe9/amp style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal check/segoe9/amp style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autocheck/segoe9/amp style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal radio/segoe9/amp style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autoradio/segoe9/amp style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal 3state/segoe9/amp style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal group/segoe9/amp style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal split/segoe9/amp style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/amp style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/amp style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal owner/segoe9/amp style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal flat/segoe9/amp style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=52 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defpush/segoe9/W style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal check/segoe9/W style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autocheck/segoe9/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal radio/segoe9/W style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autoradio/segoe9/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal 3state/segoe9/W style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal group/segoe9/W style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal split/segoe9/W style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/W style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/W style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal owner/segoe9/W style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal flat/segoe9/W style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/twolines style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defpush/segoe9/twolines style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal check/segoe9/twolines style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autocheck/segoe9/twolines style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal radio/segoe9/twolines style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal autoradio/segoe9/twolines style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal 3state/segoe9/twolines style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal group/segoe9/twolines style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal split/segoe9/twolines style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/twolines style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/twolines style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal owner/segoe9/twolines style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal flat/segoe9/twolines style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe12/install style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defpush/segoe12/install style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal check/segoe12/install style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autocheck/segoe12/install style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal radio/segoe12/install style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autoradio/segoe12/install style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal 3state/segoe12/install style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal group/segoe12/install style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal split/segoe12/install style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal cmdlink/segoe12/install style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushmulti/segoe12/install style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal owner/segoe12/install style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal flat/segoe12/install style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal push/segoe12/ok style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defpush/segoe12/ok style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal check/segoe12/ok style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autocheck/segoe12/ok style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal radio/segoe12/ok style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autoradio/segoe12/ok style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal 3state/segoe12/ok style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal group/segoe12/ok style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal split/segoe12/ok style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal cmdlink/segoe12/ok style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushmulti/segoe12/ok style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal owner/segoe12/ok style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal flat/segoe12/ok style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=21 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal push/segoe12/empty style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defpush/segoe12/empty style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal check/segoe12/empty style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autocheck/segoe12/empty style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal radio/segoe12/empty style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autoradio/segoe12/empty style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal 3state/segoe12/empty style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal group/segoe12/empty style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal split/segoe12/empty style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal cmdlink/segoe12/empty style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushmulti/segoe12/empty style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal owner/segoe12/empty style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal flat/segoe12/empty style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal push/segoe12/amp style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defpush/segoe12/amp style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal check/segoe12/amp style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autocheck/segoe12/amp style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal radio/segoe12/amp style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autoradio/segoe12/amp style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal 3state/segoe12/amp style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal group/segoe12/amp style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal split/segoe12/amp style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal cmdlink/segoe12/amp style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushmulti/segoe12/amp style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal owner/segoe12/amp style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal flat/segoe12/amp style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=68 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal push/segoe12/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defpush/segoe12/W style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal check/segoe12/W style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autocheck/segoe12/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal radio/segoe12/W style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autoradio/segoe12/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal 3state/segoe12/W style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal group/segoe12/W style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal split/segoe12/W style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal cmdlink/segoe12/W style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushmulti/segoe12/W style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal owner/segoe12/W style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal flat/segoe12/W style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal push/segoe12/twolines style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defpush/segoe12/twolines style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal check/segoe12/twolines style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autocheck/segoe12/twolines style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal radio/segoe12/twolines style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal autoradio/segoe12/twolines style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal 3state/segoe12/twolines style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal group/segoe12/twolines style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal split/segoe12/twolines style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal cmdlink/segoe12/twolines style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushmulti/segoe12/twolines style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal owner/segoe12/twolines style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal flat/segoe12/twolines style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal push/tahoma8/install style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defpush/tahoma8/install style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal check/tahoma8/install style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autocheck/tahoma8/install style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal radio/tahoma8/install style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autoradio/tahoma8/install style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal 3state/tahoma8/install style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal group/tahoma8/install style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal split/tahoma8/install style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal cmdlink/tahoma8/install style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushmulti/tahoma8/install style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal owner/tahoma8/install style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal flat/tahoma8/install style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal push/tahoma8/ok style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defpush/tahoma8/ok style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal check/tahoma8/ok style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autocheck/tahoma8/ok style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal radio/tahoma8/ok style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autoradio/tahoma8/ok style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal 3state/tahoma8/ok style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal group/tahoma8/ok style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal split/tahoma8/ok style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal cmdlink/tahoma8/ok style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushmulti/tahoma8/ok style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal owner/tahoma8/ok style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal flat/tahoma8/ok style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal push/tahoma8/empty style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defpush/tahoma8/empty style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal check/tahoma8/empty style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autocheck/tahoma8/empty style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal radio/tahoma8/empty style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autoradio/tahoma8/empty style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal 3state/tahoma8/empty style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal group/tahoma8/empty style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal split/tahoma8/empty style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal cmdlink/tahoma8/empty style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushmulti/tahoma8/empty style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal owner/tahoma8/empty style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal flat/tahoma8/empty style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal push/tahoma8/amp style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defpush/tahoma8/amp style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal check/tahoma8/amp style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autocheck/tahoma8/amp style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal radio/tahoma8/amp style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autoradio/tahoma8/amp style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal 3state/tahoma8/amp style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal group/tahoma8/amp style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal split/tahoma8/amp style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal cmdlink/tahoma8/amp style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushmulti/tahoma8/amp style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal owner/tahoma8/amp style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal flat/tahoma8/amp style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=44 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal push/tahoma8/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defpush/tahoma8/W style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal check/tahoma8/W style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autocheck/tahoma8/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal radio/tahoma8/W style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autoradio/tahoma8/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal 3state/tahoma8/W style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal group/tahoma8/W style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal split/tahoma8/W style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal cmdlink/tahoma8/W style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushmulti/tahoma8/W style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal owner/tahoma8/W style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal flat/tahoma8/W style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal push/tahoma8/twolines style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defpush/tahoma8/twolines style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal check/tahoma8/twolines style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autocheck/tahoma8/twolines style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal radio/tahoma8/twolines style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal autoradio/tahoma8/twolines style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal 3state/tahoma8/twolines style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal group/tahoma8/twolines style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal split/tahoma8/twolines style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal cmdlink/tahoma8/twolines style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushmulti/tahoma8/twolines style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal owner/tahoma8/twolines style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal flat/tahoma8/twolines style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal push/arial15b/install style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defpush/arial15b/install style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal check/arial15b/install style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autocheck/arial15b/install style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal radio/arial15b/install style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autoradio/arial15b/install style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal 3state/arial15b/install style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal group/arial15b/install style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal split/arial15b/install style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal cmdlink/arial15b/install style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushmulti/arial15b/install style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal owner/arial15b/install style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal flat/arial15b/install style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal push/arial15b/ok style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defpush/arial15b/ok style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal check/arial15b/ok style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autocheck/arial15b/ok style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal radio/arial15b/ok style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autoradio/arial15b/ok style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal 3state/arial15b/ok style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal group/arial15b/ok style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal split/arial15b/ok style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal cmdlink/arial15b/ok style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushmulti/arial15b/ok style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal owner/arial15b/ok style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal flat/arial15b/ok style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal push/arial15b/empty style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defpush/arial15b/empty style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal check/arial15b/empty style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autocheck/arial15b/empty style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal radio/arial15b/empty style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autoradio/arial15b/empty style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal 3state/arial15b/empty style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal group/arial15b/empty style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal split/arial15b/empty style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal cmdlink/arial15b/empty style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushmulti/arial15b/empty style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal owner/arial15b/empty style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal flat/arial15b/empty style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=0 cy=0 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal push/arial15b/amp style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defpush/arial15b/amp style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal check/arial15b/amp style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autocheck/arial15b/amp style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal radio/arial15b/amp style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autoradio/arial15b/amp style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal 3state/arial15b/amp style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal group/arial15b/amp style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal split/arial15b/amp style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal cmdlink/arial15b/amp style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushmulti/arial15b/amp style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal owner/arial15b/amp style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal flat/arial15b/amp style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=89 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal push/arial15b/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defpush/arial15b/W style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal check/arial15b/W style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autocheck/arial15b/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal radio/arial15b/W style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autoradio/arial15b/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal 3state/arial15b/W style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal group/arial15b/W style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal split/arial15b/W style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal cmdlink/arial15b/W style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushmulti/arial15b/W style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal owner/arial15b/W style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal flat/arial15b/W style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal push/arial15b/twolines style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defpush/arial15b/twolines style=0x1 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal check/arial15b/twolines style=0x2 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autocheck/arial15b/twolines style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal radio/arial15b/twolines style=0x4 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal autoradio/arial15b/twolines style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal 3state/arial15b/twolines style=0x5 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal group/arial15b/twolines style=0x7 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal split/arial15b/twolines style=0xc w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal cmdlink/arial15b/twolines style=0xe w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushmulti/arial15b/twolines style=0x2000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal owner/arial15b/twolines style=0xb w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal flat/arial15b/twolines style=0x8000 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal auto3state/sysfont/install style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal auto3state/sysfont/twolines style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal user/sysfont/install style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal user/sysfont/twolines style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushbox/sysfont/install style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushbox/sysfont/twolines style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defsplit/sysfont/install style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defsplit/sysfont/twolines style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defcmdlink/sysfont/install style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal defcmdlink/sysfont/twolines style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal checkleft/sysfont/install style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal checkleft/sysfont/twolines style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal checkpushlike/sysfont/install style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal checkpushlike/sysfont/twolines style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal checkmulti/sysfont/install style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal checkmulti/sysfont/twolines style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushbitmap/sysfont/install style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushbitmap/sysfont/twolines style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushicon/sysfont/install style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushicon/sysfont/twolines style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushleft/sysfont/install style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushleft/sysfont/twolines style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushtop/sysfont/install style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=125 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal pushtop/sysfont/twolines style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=62 cy=16 tm h=16 ave=7 max=14 ext=0 alpha=429 space=4 chars=8,8,8,8,8,12,14,10,4,8,12,8,4
+ideal auto3state/segoe9/install style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal auto3state/segoe9/twolines style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal user/segoe9/install style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal user/segoe9/twolines style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushbox/segoe9/install style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushbox/segoe9/twolines style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defsplit/segoe9/install style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defsplit/segoe9/twolines style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defcmdlink/segoe9/install style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal defcmdlink/segoe9/twolines style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkleft/segoe9/install style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkleft/segoe9/twolines style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkpushlike/segoe9/install style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkpushlike/segoe9/twolines style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/twolines style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushbitmap/segoe9/install style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushbitmap/segoe9/twolines style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushicon/segoe9/install style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushicon/segoe9/twolines style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushleft/segoe9/install style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushleft/segoe9/twolines style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushtop/segoe9/install style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushtop/segoe9/twolines style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=58 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal auto3state/segoe12/install style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal auto3state/segoe12/twolines style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal user/segoe12/install style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal user/segoe12/twolines style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushbox/segoe12/install style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushbox/segoe12/twolines style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defsplit/segoe12/install style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defsplit/segoe12/twolines style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defcmdlink/segoe12/install style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal defcmdlink/segoe12/twolines style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal checkleft/segoe12/install style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal checkleft/segoe12/twolines style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal checkpushlike/segoe12/install style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal checkpushlike/segoe12/twolines style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal checkmulti/segoe12/install style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal checkmulti/segoe12/twolines style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushbitmap/segoe12/install style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushbitmap/segoe12/twolines style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushicon/segoe12/install style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushicon/segoe12/twolines style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushleft/segoe12/install style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushleft/segoe12/twolines style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushtop/segoe12/install style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=132 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushtop/segoe12/twolines style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=75 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal auto3state/tahoma8/install style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal auto3state/tahoma8/twolines style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal user/tahoma8/install style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal user/tahoma8/twolines style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushbox/tahoma8/install style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushbox/tahoma8/twolines style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defsplit/tahoma8/install style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defsplit/tahoma8/twolines style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defcmdlink/tahoma8/install style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal defcmdlink/tahoma8/twolines style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal checkleft/tahoma8/install style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal checkleft/tahoma8/twolines style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal checkpushlike/tahoma8/install style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal checkpushlike/tahoma8/twolines style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal checkmulti/tahoma8/install style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal checkmulti/tahoma8/twolines style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushbitmap/tahoma8/install style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushbitmap/tahoma8/twolines style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushicon/tahoma8/install style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushicon/tahoma8/twolines style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushleft/tahoma8/install style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushleft/tahoma8/twolines style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushtop/tahoma8/install style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=91 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushtop/tahoma8/twolines style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=55 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal auto3state/arial15b/install style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal auto3state/arial15b/twolines style=0x6 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal user/arial15b/install style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal user/arial15b/twolines style=0x8 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushbox/arial15b/install style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushbox/arial15b/twolines style=0xa w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defsplit/arial15b/install style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defsplit/arial15b/twolines style=0xd w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defcmdlink/arial15b/install style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal defcmdlink/arial15b/twolines style=0xf w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal checkleft/arial15b/install style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal checkleft/arial15b/twolines style=0x23 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal checkpushlike/arial15b/install style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal checkpushlike/arial15b/twolines style=0x1003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal checkmulti/arial15b/install style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal checkmulti/arial15b/twolines style=0x2003 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushbitmap/arial15b/install style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushbitmap/arial15b/twolines style=0x80 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushicon/arial15b/install style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushicon/arial15b/twolines style=0x40 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushleft/arial15b/install style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushleft/arial15b/twolines style=0x100 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushtop/arial15b/install style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=180 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal pushtop/arial15b/twolines style=0x400 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=106 cy=24 tm h=24 ave=10 max=53 ext=1 alpha=626 space=6 chars=11,11,12,11,11,17,19,14,5,12,17,11,5
+ideal checkgap/Segoe UI8/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=11 tm h=11 ave=4 max=21 ext=0 alpha=236 space=2 chars=4,4,5,4,4,7,7,6,2,5,7,3,2
+ideal radiogap/Segoe UI8/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=11 tm h=11 ave=4 max=21 ext=0 alpha=236 space=2 chars=4,4,5,4,4,7,7,6,2,5,7,3,2
+ideal pushgap/Segoe UI8/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=11 tm h=11 ave=4 max=21 ext=0 alpha=236 space=2 chars=4,4,5,4,4,7,7,6,2,5,7,3,2
+ideal checkgap/Segoe UI10/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=9 cy=12 tm h=12 ave=5 max=26 ext=0 alpha=290 space=3 chars=5,5,6,5,5,9,9,7,2,6,9,4,3
+ideal radiogap/Segoe UI10/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=9 cy=12 tm h=12 ave=5 max=26 ext=0 alpha=290 space=3 chars=5,5,6,5,5,9,9,7,2,6,9,4,3
+ideal pushgap/Segoe UI10/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=9 cy=12 tm h=12 ave=5 max=26 ext=0 alpha=290 space=3 chars=5,5,6,5,5,9,9,7,2,6,9,4,3
+ideal checkgap/Segoe UI11/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=13 tm h=13 ave=6 max=28 ext=0 alpha=327 space=3 chars=6,5,7,6,6,10,11,8,3,7,9,5,3
+ideal radiogap/Segoe UI11/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=13 tm h=13 ave=6 max=28 ext=0 alpha=327 space=3 chars=6,5,7,6,6,10,11,8,3,7,9,5,3
+ideal pushgap/Segoe UI11/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=13 tm h=13 ave=6 max=28 ext=0 alpha=327 space=3 chars=6,5,7,6,6,10,11,8,3,7,9,5,3
+ideal checkgap/Segoe UI12/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal radiogap/Segoe UI12/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushgap/Segoe UI12/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkgap/Segoe UI13/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=17 tm h=17 ave=7 max=33 ext=0 alpha=374 space=4 chars=7,6,7,7,7,12,12,9,3,8,11,6,3
+ideal radiogap/Segoe UI13/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=17 tm h=17 ave=7 max=33 ext=0 alpha=374 space=4 chars=7,6,7,7,7,12,12,9,3,8,11,6,3
+ideal pushgap/Segoe UI13/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=17 tm h=17 ave=7 max=33 ext=0 alpha=374 space=4 chars=7,6,7,7,7,12,12,9,3,8,11,6,3
+ideal checkgap/Segoe UI14/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=19 tm h=19 ave=8 max=36 ext=0 alpha=401 space=4 chars=8,6,8,7,7,13,13,10,3,8,12,6,4
+ideal radiogap/Segoe UI14/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=19 tm h=19 ave=8 max=36 ext=0 alpha=401 space=4 chars=8,6,8,7,7,13,13,10,3,8,12,6,4
+ideal pushgap/Segoe UI14/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=19 tm h=19 ave=8 max=36 ext=0 alpha=401 space=4 chars=8,6,8,7,7,13,13,10,3,8,12,6,4
+ideal checkgap/Segoe UI16/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal radiogap/Segoe UI16/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal pushgap/Segoe UI16/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=21 tm h=21 ave=9 max=41 ext=0 alpha=457 space=4 chars=9,7,9,8,8,14,15,11,4,9,14,7,4
+ideal checkgap/Segoe UI18/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=25 tm h=25 ave=10 max=46 ext=0 alpha=518 space=5 chars=10,8,10,9,9,16,17,13,4,11,16,8,5
+ideal radiogap/Segoe UI18/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=25 tm h=25 ave=10 max=46 ext=0 alpha=518 space=5 chars=10,8,10,9,9,16,17,13,4,11,16,8,5
+ideal pushgap/Segoe UI18/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=25 tm h=25 ave=10 max=46 ext=0 alpha=518 space=5 chars=10,8,10,9,9,16,17,13,4,11,16,8,5
+ideal checkgap/Segoe UI20/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=28 tm h=28 ave=11 max=51 ext=0 alpha=573 space=5 chars=11,9,11,10,10,18,19,14,5,12,17,8,5
+ideal radiogap/Segoe UI20/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=28 tm h=28 ave=11 max=51 ext=0 alpha=573 space=5 chars=11,9,11,10,10,18,19,14,5,12,17,8,5
+ideal pushgap/Segoe UI20/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=28 tm h=28 ave=11 max=51 ext=0 alpha=573 space=5 chars=11,9,11,10,10,18,19,14,5,12,17,8,5
+ideal checkgap/Segoe UI24/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=22 cy=32 tm h=32 ave=13 max=62 ext=0 alpha=691 space=7 chars=13,11,14,12,13,22,22,17,6,14,21,10,6
+ideal radiogap/Segoe UI24/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=22 cy=32 tm h=32 ave=13 max=62 ext=0 alpha=691 space=7 chars=13,11,14,12,13,22,22,17,6,14,21,10,6
+ideal pushgap/Segoe UI24/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=22 cy=32 tm h=32 ave=13 max=62 ext=0 alpha=691 space=7 chars=13,11,14,12,13,22,22,17,6,14,21,10,6
+ideal checkgap/Segoe UI28/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=26 cy=38 tm h=38 ave=15 max=72 ext=0 alpha=803 space=8 chars=15,13,16,14,15,25,26,20,7,16,24,12,7
+ideal radiogap/Segoe UI28/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=26 cy=38 tm h=38 ave=15 max=72 ext=0 alpha=803 space=8 chars=15,13,16,14,15,25,26,20,7,16,24,12,7
+ideal pushgap/Segoe UI28/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=26 cy=38 tm h=38 ave=15 max=72 ext=0 alpha=803 space=8 chars=15,13,16,14,15,25,26,20,7,16,24,12,7
+ideal checkgap/Segoe UI32/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=45 tm h=45 ave=17 max=82 ext=0 alpha=923 space=9 chars=17,15,18,16,17,29,30,23,8,19,28,14,9
+ideal radiogap/Segoe UI32/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=45 tm h=45 ave=17 max=82 ext=0 alpha=923 space=9 chars=17,15,18,16,17,29,30,23,8,19,28,14,9
+ideal pushgap/Segoe UI32/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=30 cy=45 tm h=45 ave=17 max=82 ext=0 alpha=923 space=9 chars=17,15,18,16,17,29,30,23,8,19,28,14,9
+ideal checkgap/Tahoma8/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=10 tm h=10 ave=4 max=20 ext=0 alpha=225 space=3 chars=4,4,4,4,4,6,7,5,2,4,7,4,3
+ideal radiogap/Tahoma8/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=10 tm h=10 ave=4 max=20 ext=0 alpha=225 space=3 chars=4,4,4,4,4,6,7,5,2,4,7,4,3
+ideal pushgap/Tahoma8/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=10 tm h=10 ave=4 max=20 ext=0 alpha=225 space=3 chars=4,4,4,4,4,6,7,5,2,4,7,4,3
+ideal checkgap/Tahoma10/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=12 tm h=12 ave=4 max=25 ext=0 alpha=301 space=3 chars=5,5,6,5,5,8,10,7,2,6,8,4,4
+ideal radiogap/Tahoma10/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=12 tm h=12 ave=4 max=25 ext=0 alpha=301 space=3 chars=5,5,6,5,5,8,10,7,2,6,8,4,4
+ideal pushgap/Tahoma10/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=12 tm h=12 ave=4 max=25 ext=0 alpha=301 space=3 chars=5,5,6,5,5,8,10,7,2,6,8,4,4
+ideal checkgap/Tahoma11/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal radiogap/Tahoma11/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal pushgap/Tahoma11/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=13 tm h=13 ave=5 max=27 ext=0 alpha=309 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,5,4
+ideal checkgap/Tahoma12/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=14 tm h=14 ave=5 max=29 ext=0 alpha=351 space=4 chars=7,6,7,6,7,9,12,8,2,7,10,5,4
+ideal radiogap/Tahoma12/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=14 tm h=14 ave=5 max=29 ext=0 alpha=351 space=4 chars=7,6,7,6,7,9,12,8,2,7,10,5,4
+ideal pushgap/Tahoma12/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=14 tm h=14 ave=5 max=29 ext=0 alpha=351 space=4 chars=7,6,7,6,7,9,12,8,2,7,10,5,4
+ideal checkgap/Tahoma13/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=16 tm h=16 ave=6 max=32 ext=0 alpha=363 space=4 chars=7,6,7,7,7,10,12,8,3,7,11,6,4
+ideal radiogap/Tahoma13/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=16 tm h=16 ave=6 max=32 ext=0 alpha=363 space=4 chars=7,6,7,7,7,10,12,8,3,7,11,6,4
+ideal pushgap/Tahoma13/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=16 tm h=16 ave=6 max=32 ext=0 alpha=363 space=4 chars=7,6,7,7,7,10,12,8,3,7,11,6,4
+ideal checkgap/Tahoma14/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=17 tm h=17 ave=6 max=34 ext=0 alpha=400 space=4 chars=8,8,8,7,7,10,14,9,2,8,12,6,4
+ideal radiogap/Tahoma14/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=17 tm h=17 ave=6 max=34 ext=0 alpha=400 space=4 chars=8,8,8,7,7,10,14,9,2,8,12,6,4
+ideal pushgap/Tahoma14/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=17 tm h=17 ave=6 max=34 ext=0 alpha=400 space=4 chars=8,8,8,7,7,10,14,9,2,8,12,6,4
+ideal checkgap/Tahoma16/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=19 tm h=19 ave=7 max=39 ext=0 alpha=463 space=5 chars=9,8,9,8,8,12,14,11,4,9,14,7,6
+ideal radiogap/Tahoma16/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=19 tm h=19 ave=7 max=39 ext=0 alpha=463 space=5 chars=9,8,9,8,8,12,14,11,4,9,14,7,6
+ideal pushgap/Tahoma16/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=19 tm h=19 ave=7 max=39 ext=0 alpha=463 space=5 chars=9,8,9,8,8,12,14,11,4,9,14,7,6
+ideal checkgap/Tahoma18/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=22 tm h=22 ave=8 max=44 ext=0 alpha=513 space=6 chars=10,9,10,9,9,14,16,12,4,10,15,8,7
+ideal radiogap/Tahoma18/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=22 tm h=22 ave=8 max=44 ext=0 alpha=513 space=6 chars=10,9,10,9,9,14,16,12,4,10,15,8,7
+ideal pushgap/Tahoma18/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=16 cy=22 tm h=22 ave=8 max=44 ext=0 alpha=513 space=6 chars=10,9,10,9,9,14,16,12,4,10,15,8,7
+ideal checkgap/Tahoma20/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=18 cy=24 tm h=24 ave=9 max=49 ext=0 alpha=571 space=6 chars=11,10,11,11,11,15,18,14,5,11,17,9,7
+ideal radiogap/Tahoma20/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=18 cy=24 tm h=24 ave=9 max=49 ext=0 alpha=571 space=6 chars=11,10,11,11,11,15,18,14,5,11,17,9,7
+ideal pushgap/Tahoma20/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=18 cy=24 tm h=24 ave=9 max=49 ext=0 alpha=571 space=6 chars=11,10,11,11,11,15,18,14,5,11,17,9,7
+ideal checkgap/Tahoma24/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=22 cy=29 tm h=29 ave=11 max=59 ext=0 alpha=682 space=8 chars=13,12,13,13,13,19,22,16,5,13,20,11,9
+ideal radiogap/Tahoma24/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=22 cy=29 tm h=29 ave=11 max=59 ext=0 alpha=682 space=8 chars=13,12,13,13,13,19,22,16,5,13,20,11,9
+ideal pushgap/Tahoma24/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=22 cy=29 tm h=29 ave=11 max=59 ext=0 alpha=682 space=8 chars=13,12,13,13,13,19,22,16,5,13,20,11,9
+ideal checkgap/Tahoma28/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=25 cy=34 tm h=34 ave=12 max=69 ext=0 alpha=799 space=9 chars=15,14,16,15,15,22,25,19,6,15,24,13,10
+ideal radiogap/Tahoma28/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=25 cy=34 tm h=34 ave=12 max=69 ext=0 alpha=799 space=9 chars=15,14,16,15,15,22,25,19,6,15,24,13,10
+ideal pushgap/Tahoma28/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=25 cy=34 tm h=34 ave=12 max=69 ext=0 alpha=799 space=9 chars=15,14,16,15,15,22,25,19,6,15,24,13,10
+ideal checkgap/Tahoma32/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=29 cy=39 tm h=39 ave=14 max=78 ext=0 alpha=917 space=10 chars=17,16,18,17,17,25,29,22,7,17,27,14,12
+ideal radiogap/Tahoma32/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=29 cy=39 tm h=39 ave=14 max=78 ext=0 alpha=917 space=10 chars=17,16,18,17,17,25,29,22,7,17,27,14,12
+ideal pushgap/Tahoma32/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=29 cy=39 tm h=39 ave=14 max=78 ext=0 alpha=917 space=10 chars=17,16,18,17,17,25,29,22,7,17,27,14,12
+ideal checkgap/Arial8/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=10 tm h=10 ave=4 max=21 ext=0 alpha=237 space=2 chars=4,4,4,4,4,7,8,6,2,4,7,4,2
+ideal radiogap/Arial8/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=10 tm h=10 ave=4 max=21 ext=0 alpha=237 space=2 chars=4,4,4,4,4,7,8,6,2,4,7,4,2
+ideal pushgap/Arial8/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=10 tm h=10 ave=4 max=21 ext=0 alpha=237 space=2 chars=4,4,4,4,4,7,8,6,2,4,7,4,2
+ideal checkgap/Arial10/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=9 cy=13 tm h=13 ave=4 max=27 ext=0 alpha=313 space=3 chars=6,5,6,6,6,9,9,7,3,6,9,4,3
+ideal radiogap/Arial10/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=9 cy=13 tm h=13 ave=4 max=27 ext=0 alpha=313 space=3 chars=6,5,6,6,6,9,9,7,3,6,9,4,3
+ideal pushgap/Arial10/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=9 cy=13 tm h=13 ave=4 max=27 ext=0 alpha=313 space=3 chars=6,5,6,6,6,9,9,7,3,6,9,4,3
+ideal checkgap/Arial11/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=14 tm h=14 ave=5 max=29 ext=0 alpha=322 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,6,2
+ideal radiogap/Arial11/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=14 tm h=14 ave=5 max=29 ext=0 alpha=322 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,6,2
+ideal pushgap/Arial11/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=14 tm h=14 ave=5 max=29 ext=0 alpha=322 space=3 chars=6,6,6,6,6,8,10,7,2,6,8,6,2
+ideal checkgap/Arial12/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=5 max=32 ext=0 alpha=361 space=3 chars=7,5,7,7,7,9,11,9,3,7,11,7,3
+ideal radiogap/Arial12/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=5 max=32 ext=0 alpha=361 space=3 chars=7,5,7,7,7,9,11,9,3,7,11,7,3
+ideal pushgap/Arial12/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=5 max=32 ext=0 alpha=361 space=3 chars=7,5,7,7,7,9,11,9,3,7,11,7,3
+ideal checkgap/Arial13/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=35 ext=0 alpha=389 space=4 chars=7,7,7,7,7,11,13,9,3,7,11,7,3
+ideal radiogap/Arial13/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=35 ext=0 alpha=389 space=4 chars=7,7,7,7,7,11,13,9,3,7,11,7,3
+ideal pushgap/Arial13/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=35 ext=0 alpha=389 space=4 chars=7,7,7,7,7,11,13,9,3,7,11,7,3
+ideal checkgap/Arial14/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=37 ext=0 alpha=414 space=4 chars=8,6,8,8,8,11,13,9,3,8,11,7,3
+ideal radiogap/Arial14/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=37 ext=0 alpha=414 space=4 chars=8,6,8,8,8,11,13,9,3,8,11,7,3
+ideal pushgap/Arial14/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=37 ext=0 alpha=414 space=4 chars=8,6,8,8,8,11,13,9,3,8,11,7,3
+ideal checkgap/Arial16/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=18 tm h=18 ave=7 max=43 ext=1 alpha=472 space=4 chars=9,7,8,9,9,13,15,11,4,9,13,8,3
+ideal radiogap/Arial16/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=18 tm h=18 ave=7 max=43 ext=1 alpha=472 space=4 chars=9,7,8,9,9,13,15,11,4,9,13,8,3
+ideal pushgap/Arial16/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=18 tm h=18 ave=7 max=43 ext=1 alpha=472 space=4 chars=9,7,8,9,9,13,15,11,4,9,13,8,3
+ideal checkgap/Arial18/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=21 tm h=21 ave=8 max=48 ext=1 alpha=540 space=5 chars=10,8,10,10,10,15,17,13,4,10,14,9,4
+ideal radiogap/Arial18/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=21 tm h=21 ave=8 max=48 ext=1 alpha=540 space=5 chars=10,8,10,10,10,15,17,13,4,10,14,9,4
+ideal pushgap/Arial18/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=21 tm h=21 ave=8 max=48 ext=1 alpha=540 space=5 chars=10,8,10,10,10,15,17,13,4,10,14,9,4
+ideal checkgap/Arial20/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=23 tm h=23 ave=9 max=53 ext=1 alpha=593 space=6 chars=11,9,10,11,11,17,19,13,4,11,16,10,6
+ideal radiogap/Arial20/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=23 tm h=23 ave=9 max=53 ext=1 alpha=593 space=6 chars=11,9,10,11,11,17,19,13,4,11,16,10,6
+ideal pushgap/Arial20/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=23 tm h=23 ave=9 max=53 ext=1 alpha=593 space=6 chars=11,9,10,11,11,17,19,13,4,11,16,10,6
+ideal checkgap/Arial24/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=23 cy=27 tm h=27 ave=11 max=64 ext=1 alpha=726 space=7 chars=13,11,14,13,13,19,23,17,5,13,20,12,6
+ideal radiogap/Arial24/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=23 cy=27 tm h=27 ave=11 max=64 ext=1 alpha=726 space=7 chars=13,11,14,13,13,19,23,17,5,13,20,12,6
+ideal pushgap/Arial24/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=23 cy=27 tm h=27 ave=11 max=64 ext=1 alpha=726 space=7 chars=13,11,14,13,13,19,23,17,5,13,20,12,6
+ideal checkgap/Arial28/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=28 cy=32 tm h=32 ave=12 max=75 ext=1 alpha=848 space=8 chars=16,13,16,15,15,23,28,20,6,15,24,14,8
+ideal radiogap/Arial28/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=28 cy=32 tm h=32 ave=12 max=75 ext=1 alpha=848 space=8 chars=16,13,16,15,15,23,28,20,6,15,24,14,8
+ideal pushgap/Arial28/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=28 cy=32 tm h=32 ave=12 max=75 ext=1 alpha=848 space=8 chars=16,13,16,15,15,23,28,20,6,15,24,14,8
+ideal checkgap/Arial32/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=32 cy=36 tm h=36 ave=14 max=85 ext=1 alpha=961 space=9 chars=18,14,18,17,17,27,32,23,7,17,27,16,9
+ideal radiogap/Arial32/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=32 cy=36 tm h=36 ave=14 max=85 ext=1 alpha=961 space=9 chars=18,14,18,17,17,27,32,23,7,17,27,16,9
+ideal pushgap/Arial32/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=32 cy=36 tm h=36 ave=14 max=85 ext=1 alpha=961 space=9 chars=18,14,18,17,17,27,32,23,7,17,27,16,9
+ideal checkgap/Courier New8/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=5 cy=8 tm h=8 ave=5 max=6 ext=0 alpha=260 space=5 chars=5,5,5,5,5,5,5,5,5,5,5,5,5
+ideal radiogap/Courier New8/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=5 cy=8 tm h=8 ave=5 max=6 ext=0 alpha=260 space=5 chars=5,5,5,5,5,5,5,5,5,5,5,5,5
+ideal pushgap/Courier New8/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=5 cy=8 tm h=8 ave=5 max=6 ext=0 alpha=260 space=5 chars=5,5,5,5,5,5,5,5,5,5,5,5,5
+ideal checkgap/Courier New10/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=6 cy=12 tm h=12 ave=6 max=7 ext=0 alpha=312 space=6 chars=6,6,6,6,6,6,6,6,6,6,6,6,6
+ideal radiogap/Courier New10/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=6 cy=12 tm h=12 ave=6 max=7 ext=0 alpha=312 space=6 chars=6,6,6,6,6,6,6,6,6,6,6,6,6
+ideal pushgap/Courier New10/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=6 cy=12 tm h=12 ave=6 max=7 ext=0 alpha=312 space=6 chars=6,6,6,6,6,6,6,6,6,6,6,6,6
+ideal checkgap/Courier New11/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=14 tm h=14 ave=7 max=8 ext=0 alpha=364 space=7 chars=7,7,7,7,7,7,7,7,7,7,7,7,7
+ideal radiogap/Courier New11/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=14 tm h=14 ave=7 max=8 ext=0 alpha=364 space=7 chars=7,7,7,7,7,7,7,7,7,7,7,7,7
+ideal pushgap/Courier New11/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=14 tm h=14 ave=7 max=8 ext=0 alpha=364 space=7 chars=7,7,7,7,7,7,7,7,7,7,7,7,7
+ideal checkgap/Courier New12/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=15 tm h=15 ave=7 max=9 ext=0 alpha=364 space=7 chars=7,7,7,7,7,7,7,7,7,7,7,7,7
+ideal radiogap/Courier New12/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=15 tm h=15 ave=7 max=9 ext=0 alpha=364 space=7 chars=7,7,7,7,7,7,7,7,7,7,7,7,7
+ideal pushgap/Courier New12/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=7 cy=15 tm h=15 ave=7 max=9 ext=0 alpha=364 space=7 chars=7,7,7,7,7,7,7,7,7,7,7,7,7
+ideal checkgap/Courier New13/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=16 tm h=16 ave=8 max=10 ext=0 alpha=416 space=8 chars=8,8,8,8,8,8,8,8,8,8,8,8,8
+ideal radiogap/Courier New13/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=16 tm h=16 ave=8 max=10 ext=0 alpha=416 space=8 chars=8,8,8,8,8,8,8,8,8,8,8,8,8
+ideal pushgap/Courier New13/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=16 tm h=16 ave=8 max=10 ext=0 alpha=416 space=8 chars=8,8,8,8,8,8,8,8,8,8,8,8,8
+ideal checkgap/Courier New14/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=17 tm h=17 ave=8 max=10 ext=0 alpha=416 space=8 chars=8,8,8,8,8,8,8,8,8,8,8,8,8
+ideal radiogap/Courier New14/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=17 tm h=17 ave=8 max=10 ext=0 alpha=416 space=8 chars=8,8,8,8,8,8,8,8,8,8,8,8,8
+ideal pushgap/Courier New14/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=17 tm h=17 ave=8 max=10 ext=0 alpha=416 space=8 chars=8,8,8,8,8,8,8,8,8,8,8,8,8
+ideal checkgap/Courier New16/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=18 tm h=18 ave=10 max=12 ext=0 alpha=520 space=10 chars=10,10,10,10,10,10,10,10,10,10,10,10,10
+ideal radiogap/Courier New16/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=18 tm h=18 ave=10 max=12 ext=0 alpha=520 space=10 chars=10,10,10,10,10,10,10,10,10,10,10,10,10
+ideal pushgap/Courier New16/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=18 tm h=18 ave=10 max=12 ext=0 alpha=520 space=10 chars=10,10,10,10,10,10,10,10,10,10,10,10,10
+ideal checkgap/Courier New18/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=20 tm h=20 ave=11 max=13 ext=0 alpha=572 space=11 chars=11,11,11,11,11,11,11,11,11,11,11,11,11
+ideal radiogap/Courier New18/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=20 tm h=20 ave=11 max=13 ext=0 alpha=572 space=11 chars=11,11,11,11,11,11,11,11,11,11,11,11,11
+ideal pushgap/Courier New18/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=20 tm h=20 ave=11 max=13 ext=0 alpha=572 space=11 chars=11,11,11,11,11,11,11,11,11,11,11,11,11
+ideal checkgap/Courier New20/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=22 tm h=22 ave=12 max=15 ext=0 alpha=624 space=12 chars=12,12,12,12,12,12,12,12,12,12,12,12,12
+ideal radiogap/Courier New20/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=22 tm h=22 ave=12 max=15 ext=0 alpha=624 space=12 chars=12,12,12,12,12,12,12,12,12,12,12,12,12
+ideal pushgap/Courier New20/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=12 cy=22 tm h=22 ave=12 max=15 ext=0 alpha=624 space=12 chars=12,12,12,12,12,12,12,12,12,12,12,12,12
+ideal checkgap/Courier New24/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=27 tm h=27 ave=14 max=18 ext=0 alpha=728 space=14 chars=14,14,14,14,14,14,14,14,14,14,14,14,14
+ideal radiogap/Courier New24/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=27 tm h=27 ave=14 max=18 ext=0 alpha=728 space=14 chars=14,14,14,14,14,14,14,14,14,14,14,14,14
+ideal pushgap/Courier New24/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=14 cy=27 tm h=27 ave=14 max=18 ext=0 alpha=728 space=14 chars=14,14,14,14,14,14,14,14,14,14,14,14,14
+ideal checkgap/Courier New28/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=31 tm h=31 ave=17 max=21 ext=0 alpha=884 space=17 chars=17,17,17,17,17,17,17,17,17,17,17,17,17
+ideal radiogap/Courier New28/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=31 tm h=31 ave=17 max=21 ext=0 alpha=884 space=17 chars=17,17,17,17,17,17,17,17,17,17,17,17,17
+ideal pushgap/Courier New28/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=31 tm h=31 ave=17 max=21 ext=0 alpha=884 space=17 chars=17,17,17,17,17,17,17,17,17,17,17,17,17
+ideal checkgap/Courier New32/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=36 tm h=36 ave=19 max=24 ext=0 alpha=988 space=19 chars=19,19,19,19,19,19,19,19,19,19,19,19,19
+ideal radiogap/Courier New32/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=36 tm h=36 ave=19 max=24 ext=0 alpha=988 space=19 chars=19,19,19,19,19,19,19,19,19,19,19,19,19
+ideal pushgap/Courier New32/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=19 cy=36 tm h=36 ave=19 max=24 ext=0 alpha=988 space=19 chars=19,19,19,19,19,19,19,19,19,19,19,19,19
+ideal checkgap/Times New Roman8/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=10 tm h=10 ave=3 max=21 ext=0 alpha=237 space=2 chars=4,4,4,4,4,7,8,6,2,4,6,3,3
+ideal radiogap/Times New Roman8/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=10 tm h=10 ave=3 max=21 ext=0 alpha=237 space=2 chars=4,4,4,4,4,7,8,6,2,4,6,3,3
+ideal pushgap/Times New Roman8/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=8 cy=10 tm h=10 ave=3 max=21 ext=0 alpha=237 space=2 chars=4,4,4,4,4,7,8,6,2,4,6,3,3
+ideal checkgap/Times New Roman10/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=12 tm h=12 ave=4 max=26 ext=0 alpha=291 space=3 chars=5,5,5,4,4,9,10,7,3,5,8,4,3
+ideal radiogap/Times New Roman10/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=12 tm h=12 ave=4 max=26 ext=0 alpha=291 space=3 chars=5,5,5,4,4,9,10,7,3,5,8,4,3
+ideal pushgap/Times New Roman10/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=10 cy=12 tm h=12 ave=4 max=26 ext=0 alpha=291 space=3 chars=5,5,5,4,4,9,10,7,3,5,8,4,3
+ideal checkgap/Times New Roman11/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=14 tm h=14 ave=4 max=29 ext=0 alpha=325 space=3 chars=6,6,6,5,5,10,11,8,3,6,9,4,4
+ideal radiogap/Times New Roman11/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=14 tm h=14 ave=4 max=29 ext=0 alpha=325 space=3 chars=6,6,6,5,5,10,11,8,3,6,9,4,4
+ideal pushgap/Times New Roman11/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=14 tm h=14 ave=4 max=29 ext=0 alpha=325 space=3 chars=6,6,6,5,5,10,11,8,3,6,9,4,4
+ideal checkgap/Times New Roman12/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=5 max=31 ext=1 alpha=355 space=3 chars=6,5,6,5,5,12,11,9,3,6,9,5,4
+ideal radiogap/Times New Roman12/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=5 max=31 ext=1 alpha=355 space=3 chars=6,5,6,5,5,12,11,9,3,6,9,5,4
+ideal pushgap/Times New Roman12/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=11 cy=15 tm h=15 ave=5 max=31 ext=1 alpha=355 space=3 chars=6,5,6,5,5,12,11,9,3,6,9,5,4
+ideal checkgap/Times New Roman13/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=15 tm h=15 ave=5 max=34 ext=1 alpha=371 space=3 chars=6,5,7,6,6,12,13,9,3,7,9,6,4
+ideal radiogap/Times New Roman13/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=15 tm h=15 ave=5 max=34 ext=1 alpha=371 space=3 chars=6,5,7,6,6,12,13,9,3,7,9,6,4
+ideal pushgap/Times New Roman13/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=15 tm h=15 ave=5 max=34 ext=1 alpha=371 space=3 chars=6,5,7,6,6,12,13,9,3,7,9,6,4
+ideal checkgap/Times New Roman14/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=37 ext=1 alpha=400 space=4 chars=7,7,7,6,6,12,13,9,3,7,11,6,5
+ideal radiogap/Times New Roman14/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=37 ext=1 alpha=400 space=4 chars=7,7,7,6,6,12,13,9,3,7,11,6,5
+ideal pushgap/Times New Roman14/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=13 cy=16 tm h=16 ave=6 max=37 ext=1 alpha=400 space=4 chars=7,7,7,6,6,12,13,9,3,7,11,6,5
+ideal checkgap/Times New Roman16/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=19 tm h=19 ave=6 max=42 ext=1 alpha=445 space=4 chars=8,7,7,7,7,14,15,11,3,8,11,6,5
+ideal radiogap/Times New Roman16/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=19 tm h=19 ave=6 max=42 ext=1 alpha=445 space=4 chars=8,7,7,7,7,14,15,11,3,8,11,6,5
+ideal pushgap/Times New Roman16/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=15 cy=19 tm h=19 ave=6 max=42 ext=1 alpha=445 space=4 chars=8,7,7,7,7,14,15,11,3,8,11,6,5
+ideal checkgap/Times New Roman18/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=20 tm h=20 ave=7 max=47 ext=1 alpha=523 space=5 chars=9,8,9,8,8,16,17,13,4,9,14,7,6
+ideal radiogap/Times New Roman18/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=20 tm h=20 ave=7 max=47 ext=1 alpha=523 space=5 chars=9,8,9,8,8,16,17,13,4,9,14,7,6
+ideal pushgap/Times New Roman18/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=17 cy=20 tm h=20 ave=7 max=47 ext=1 alpha=523 space=5 chars=9,8,9,8,8,16,17,13,4,9,14,7,6
+ideal checkgap/Times New Roman20/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=18 cy=22 tm h=22 ave=8 max=52 ext=1 alpha=564 space=5 chars=10,9,9,9,9,17,18,14,6,10,14,8,6
+ideal radiogap/Times New Roman20/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=18 cy=22 tm h=22 ave=8 max=52 ext=1 alpha=564 space=5 chars=10,9,9,9,9,17,18,14,6,10,14,8,6
+ideal pushgap/Times New Roman20/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=18 cy=22 tm h=22 ave=8 max=52 ext=1 alpha=564 space=5 chars=10,9,9,9,9,17,18,14,6,10,14,8,6
+ideal checkgap/Times New Roman24/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=23 cy=27 tm h=27 ave=10 max=63 ext=1 alpha=691 space=6 chars=12,12,12,11,11,21,23,17,6,12,18,9,8
+ideal radiogap/Times New Roman24/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=23 cy=27 tm h=27 ave=10 max=63 ext=1 alpha=691 space=6 chars=12,12,12,11,11,21,23,17,6,12,18,9,8
+ideal pushgap/Times New Roman24/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=23 cy=27 tm h=27 ave=10 max=63 ext=1 alpha=691 space=6 chars=12,12,12,11,11,21,23,17,6,12,18,9,8
+ideal checkgap/Times New Roman28/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=26 cy=33 tm h=33 ave=11 max=73 ext=1 alpha=802 space=7 chars=14,14,14,12,12,25,26,19,8,14,20,11,8
+ideal radiogap/Times New Roman28/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=26 cy=33 tm h=33 ave=11 max=73 ext=1 alpha=802 space=7 chars=14,14,14,12,12,25,26,19,8,14,20,11,8
+ideal pushgap/Times New Roman28/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=26 cy=33 tm h=33 ave=11 max=73 ext=1 alpha=802 space=7 chars=14,14,14,12,12,25,26,19,8,14,20,11,8
+ideal checkgap/Times New Roman32/W style=0x3 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=29 cy=36 tm h=36 ave=13 max=84 ext=1 alpha=919 space=8 chars=16,15,15,14,14,28,29,23,9,16,23,11,11
+ideal radiogap/Times New Roman32/W style=0x9 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=29 cy=36 tm h=36 ave=13 max=84 ext=1 alpha=919 space=8 chars=16,15,15,14,14,28,29,23,9,16,23,11,11
+ideal pushgap/Times New Roman32/W style=0x0 w=77 h=23 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=29 cy=36 tm h=36 ave=13 max=84 ext=1 alpha=919 space=8 chars=16,15,15,14,14,28,29,23,9,16,23,11,11
+ideal pushmulti/segoe9/install/incx1 style=0x2000 w=77 h=23 in_cx=1 -> r=0 cx=1 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx1 style=0x0 w=77 h=23 in_cx=1 -> r=0 cx=1 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx1 style=0x2003 w=77 h=23 in_cx=1 -> r=0 cx=1 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx1 style=0xe w=77 h=23 in_cx=1 -> r=0 cx=1 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx10 style=0x2000 w=77 h=23 in_cx=10 -> r=0 cx=10 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx10 style=0x0 w=77 h=23 in_cx=10 -> r=0 cx=10 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx10 style=0x2003 w=77 h=23 in_cx=10 -> r=0 cx=10 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx10 style=0xe w=77 h=23 in_cx=10 -> r=0 cx=10 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx30 style=0x2000 w=77 h=23 in_cx=30 -> r=0 cx=30 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx30 style=0x0 w=77 h=23 in_cx=30 -> r=0 cx=30 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx30 style=0x2003 w=77 h=23 in_cx=30 -> r=0 cx=30 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx30 style=0xe w=77 h=23 in_cx=30 -> r=0 cx=30 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx40 style=0x2000 w=77 h=23 in_cx=40 -> r=0 cx=40 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx40 style=0x0 w=77 h=23 in_cx=40 -> r=0 cx=40 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx40 style=0x2003 w=77 h=23 in_cx=40 -> r=0 cx=40 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx40 style=0xe w=77 h=23 in_cx=40 -> r=0 cx=40 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx60 style=0x2000 w=77 h=23 in_cx=60 -> r=0 cx=60 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx60 style=0x0 w=77 h=23 in_cx=60 -> r=0 cx=60 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx60 style=0x2003 w=77 h=23 in_cx=60 -> r=0 cx=60 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx60 style=0xe w=77 h=23 in_cx=60 -> r=0 cx=60 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx80 style=0x2000 w=77 h=23 in_cx=80 -> r=0 cx=80 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx80 style=0x0 w=77 h=23 in_cx=80 -> r=0 cx=80 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx80 style=0x2003 w=77 h=23 in_cx=80 -> r=0 cx=80 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx80 style=0xe w=77 h=23 in_cx=80 -> r=0 cx=80 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx100 style=0x2000 w=77 h=23 in_cx=100 -> r=0 cx=100 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx100 style=0x0 w=77 h=23 in_cx=100 -> r=0 cx=100 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx100 style=0x2003 w=77 h=23 in_cx=100 -> r=0 cx=100 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx100 style=0xe w=77 h=23 in_cx=100 -> r=0 cx=100 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx120 style=0x2000 w=77 h=23 in_cx=120 -> r=0 cx=120 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx120 style=0x0 w=77 h=23 in_cx=120 -> r=0 cx=120 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx120 style=0x2003 w=77 h=23 in_cx=120 -> r=0 cx=120 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx120 style=0xe w=77 h=23 in_cx=120 -> r=0 cx=120 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx200 style=0x2000 w=77 h=23 in_cx=200 -> r=0 cx=200 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx200 style=0x0 w=77 h=23 in_cx=200 -> r=0 cx=200 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal checkmulti/segoe9/install/incx200 style=0x2003 w=77 h=23 in_cx=200 -> r=0 cx=200 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx200 style=0xe w=77 h=23 in_cx=200 -> r=0 cx=200 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/size200x50 style=0x0 w=200 h=50 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/size0x0 style=0x0 w=0 h=0 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal check/segoe9/install/size200x50 style=0x2 w=200 h=50 in_cx=0 -> r=0 cx=0 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal push/segoe9/install/incx40 style=0x0 w=77 h=23 in_cx=40 -> r=0 cx=40 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal pushmulti/segoe9/install/incx40 style=0x2000 w=77 h=23 in_cx=40 -> r=0 cx=40 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+ideal cmdlink/segoe9/install/incx200 style=0xe w=77 h=23 in_cx=200 -> r=0 cx=200 cy=0 | extent cx=99 cy=15 tm h=15 ave=6 max=31 ext=0 alpha=347 space=3 chars=6,5,7,6,6,11,11,9,3,7,11,5,3
+margin default r=0 -7,-7,-7,-7
+margin set r=0 get r=0 0,0,0,0 ideal=0,0
+margin neg r=0 get 0,0,0,0 ideal=0,0
+null-lparam getmargin r=0 setmargin r=0 ideal r=0
+imagelist default r=0 himl_null=0 margin=1515870810,1515870810,1515870810,1515870810 align=1515870810 size=32
+imagelist align=0 set r=0 got same=0 margin=0,0,0,0 align=0 ideal=0,0
+imagelist default r=0 himl_null=0 margin=1515870810,1515870810,1515870810,1515870810 align=1515870810 size=32
+imagelist align=1 set r=0 got same=0 margin=0,0,0,0 align=0 ideal=0,0
+imagelist default r=0 himl_null=0 margin=1515870810,1515870810,1515870810,1515870810 align=1515870810 size=32
+imagelist align=2 set r=0 got same=0 margin=0,0,0,0 align=0 ideal=0,0
+imagelist default r=0 himl_null=0 margin=1515870810,1515870810,1515870810,1515870810 align=1515870810 size=32
+imagelist align=3 set r=0 got same=0 margin=0,0,0,0 align=0 ideal=0,0
+imagelist default r=0 himl_null=0 margin=1515870810,1515870810,1515870810,1515870810 align=1515870810 size=32
+imagelist align=4 set r=0 got same=0 margin=0,0,0,0 align=0 ideal=0,0
+imagelist badalign r=0 null r=0
+splitinfo size=32 imagelist size=32
+splitinfo split get r=0 glyph_null=0 style=0x5a5a5a5a size=1515870810,1515870810
+splitinfo split set r=0 -> style=0x0 size=0,0
+dropdown split set1 r=0 state=0x0 set0 r=0 state=0x0
+note split set r=0 err=6 len=0 get r=0 cch=64 text=- err=6
+note split small r=0 cch=3 err=0 buf0=0023 buf2=0023
+shield split set1 r=0 set0 r=0
+splitinfo push get r=0 glyph_null=0 style=0x5a5a5a5a size=1515870810,1515870810
+splitinfo push set r=0 -> style=0x0 size=0,0
+dropdown push set1 r=0 state=0x0 set0 r=0 state=0x0
+note push set r=0 err=0 len=0 get r=0 cch=64 text=- err=0
+note push small r=0 cch=3 err=0 buf0=0023 buf2=0023
+shield push set1 r=0 set0 r=0
+splitinfo cmdlink get r=0 glyph_null=0 style=0x5a5a5a5a size=1515870810,1515870810
+splitinfo cmdlink set r=0 -> style=0x0 size=0,0
+dropdown cmdlink set1 r=0 state=0x0 set0 r=0 state=0x0
+note cmdlink set r=0 err=0 len=0 get r=0 cch=64 text=- err=0
+note cmdlink small r=0 cch=3 err=0 buf0=0023 buf2=0023
+shield cmdlink set1 r=0 set0 r=0
+cmdlink with note ideal=0,0
+typemargin autocheck ideal=0,0
+typeimagelist autocheck ideal=0,0
+typeimagelist autocheck incx60 ideal=60,0
+typemargin autoradio ideal=0,0
+typeimagelist autoradio ideal=0,0
+typeimagelist autoradio incx60 ideal=60,0
+typemargin split ideal=0,0
+typeimagelist split ideal=0,0
+typeimagelist split incx60 ideal=60,0
+typemargin defpush ideal=0,0
+typeimagelist defpush ideal=0,0
+typeimagelist defpush incx60 ideal=60,0
+typemargin pushmulti ideal=0,0
+typeimagelist pushmulti ideal=0,0
+typeimagelist pushmulti incx60 ideal=60,0
+bmsetimage pushbitmap prev=0 r=0 ideal=0,0
+bmsetimage pushtextbitmap prev=0 r=0 ideal=0,0
+bmsetimage checkbitmap prev=0 r=0 ideal=0,0
+bcm_first r=0 bcm_0x160d r=0

@@ -1,0 +1,28 @@
+about: CheckFormatSupport(28, NULL)
+about: CheckFormatSupport(0, NULL)
+about: CheckMultisampleQualityLevels(28, 4, NULL)
+CheckMultisampleQualityLevels(28, 4, NULL) hr=0x80070057
+about: CheckCounter(NULL desc)
+CheckCounter(NULL desc) hr=0x80070057
+about: CreateCounter(NULL desc)
+CreateCounter(NULL desc) hr=0x80070057 out=sentinel
+about: CheckFeatureSupport(0, NULL, size)
+about: CheckFeatureSupport(2, NULL, size)
+about: CheckFeatureSupport(5, NULL, size)
+about: CheckFeatureSupport(14, NULL, size)
+about: CheckCounterInfo(NULL)
+about: GetImmediateContext(NULL)
+about: CheckMultisampleQualityLevels(28, 0, &q)
+CheckMultisampleQualityLevels(28, 0, &q) hr=0x80004005 q=0
+# ---------------------------------------------------------------------------
+# winoracle "null N" mode, N = 0..11, one process each (x64 == x86). A line
+# "about: X" with no result line means the call faulted (access violation)
+# on Windows. Verdicts vs Vitreo:
+#  CheckFormatSupport(*, NULL), CheckFeatureSupport(*, NULL, size),
+#  CheckCounterInfo(NULL), GetImmediateContext(NULL): fault on Windows;
+#    Vitreo returns E_INVALIDARG / returns. Not a defect (no caller can
+#    depend on the fault).
+#  CheckMultisampleQualityLevels(.., NULL), CheckCounter(NULL desc),
+#  CreateCounter(NULL desc): E_INVALIDARG on both.                correct
+#  CheckMultisampleQualityLevels(28, 0, &q): WIN E_FAIL q=0;
+#    VIT E_INVALIDARG, q untouched.                               WRONG

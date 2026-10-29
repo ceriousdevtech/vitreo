@@ -1,0 +1,69 @@
+fopen_a "abcde"
+fopen_aplus_read "ab"
+fopen_aplus "abcde"
+fopen_wx_exists null=1 errno=17 ip=0
+after_wx "abcde"
+fopen_rx null=1 errno=22 ip=1
+fopen_q null=1 errno=22 ip=1
+fopen_rw null=1 errno=22 ip=1
+fopen_bt null=1 errno=22 ip=1
+fopen_space_r null=0 errno=0 ip=0
+fopen_flags null=0 errno=0 ip=0
+fopen_share_writer ok=1
+fopen_second_reader ok=1
+fopen_ccs_utf8 ok=1
+ccs_utf8 "\xef\xbb\xbfA\xc3\xa9\x0d\x0a"
+fopen_ccs_utf16 ok=1
+ccs_utf16 "\xff\xfeA\x00\x0d\x00\x0a\x00"
+fopen_ccs_unicode ok=1
+ccs_unicode "\xff\xfeA\x00\x0d\x00\x0a\x00"
+fopen_ccs_bogus null=1 errno=22 ip=1
+fopen_ccs_read ok=1
+text_writes "a\x0d\x0ab\x0d\x0ac1\x0d\x0ad\x0d\x0a"
+binary_writes "a\x0ab\x0ac1\x0a"
+vfwprintf_text r=-1
+vfwprintf_text_bytes "x\xe9"
+fclose_null r=-1 errno=22 ip=1
+fwrite_readonly n=0 ferror=1 errno=9 ip=0
+clearerr ferror=0
+fread_eof n=3 feof=1
+fseeki64_clears_eof feof=0 c=120
+fseek_bad_origin r=-1 errno=22 ip=1
+fseeki64_bad_origin r=-1 errno=22 ip=1
+fseek_negative r=-1 errno=22 ip=0
+fgetc_writeonly c=-1 ferror=1 errno=0 ip=0
+ftell_text t1=1 t2=3 i64=3
+fflush_null r=0 errno=0 ip=0
+open_append fd=3 errno=0 ip=0
+write_text w=3
+open_append_bytes "a\x0d\x0abc"
+fd_reuse first=3 again=3 other=4
+open_dir_write fd=-1 errno=13 ip=0
+open_missing fd=-1 errno=2 ip=0
+open_excl_exists fd=-1 errno=17 ip=0
+open_pmode_readonly ro=1
+open_readonly_for_write fd=-1 errno=13 ip=0
+open_temporary_deleted gone=1
+read_text1 "a" read_text2 "\x0ab" n=2 n3=0
+lseek_bad_origin r=-1 errno=22 ip=0
+setmode_u16 prev=0x4000 errno=0 ip=0
+setmode_binary prev=0x10000 errno=0 ip=0
+setmode_bad prev=0xffffffff errno=22 ip=1
+setmode_badfd prev=0xffffffff errno=9 ip=1
+setmode_stdout prev=0x4000 errno=0 ip=0
+setmode_stdout_back prev=0x8000 errno=0 ip=0
+fstat_stdout r=0 mode=0x8000 errno=0 ip=0
+fstat_null r=-1 errno=22 ip=1
+fstat_badfd r=-1 errno=9 ip=1
+isatty_stdout r=0 errno=0 ip=0
+isatty_bad r=0 errno=9 ip=1
+fileno_null r=-1 errno=22 ip=1
+fileno_stdout r=1
+fdopen_a "dbc"
+fdopen_badfd null=1 errno=9 ip=1
+heap_handle heapsize=100 validate=1 is_process_heap=1
+heapchk r=-2
+calloc_overflow null=1 errno=12 ip=0
+malloc_max null=1 errno=12 ip=0
+malloc_5g ok=1 errno=0 ip=0
+exit=0

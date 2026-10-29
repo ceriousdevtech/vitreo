@@ -1,0 +1,247 @@
+sizes radioinfo=208 addr=8 name=10 cod=200 lmp=204 mfr=206 elem=18 data=8 devinfo=230 search=20
+ffr_nullparams f=0 gle=57 hr=5555
+ffr_size0 f=0 gle=51a hr=5555
+ffr_valid_checks bad=0
+fnr_null ok=0 gle=6 hr=5555
+frc_null ok=0 gle=6
+gri_null_null r=57
+gri_nullradio r=57 touched=0
+gri_nullradio_badsize r=57
+gri_event r=6
+gri_event_badsize r=51a
+gri_event_null r=57
+isconn_event ok=0 gle=6
+ffd_nullparams f=0 gle=57
+ffd_nullinfo f=0 gle=57
+ffd_badsearchsize f=0 gle=51a
+ffd_badinfosize f=0 gle=51a
+fnd_null ok=0 gle=6
+fdc_null ok=0 gle=6
+attr id=0 r=0 type=1 st=210 lo=10000 hi=0
+attr id=1 r=0 type=6 st=0 off=d len=5
+attr id=6 r=0 type=6 st=0 off=15 len=b
+attr id=100 r=0 type=4 st=0 off=25 len=3
+attr id=101 r=0 type=1 st=10 lo=5 hi=0
+attr id=200 r=0 type=2 st=20 lo=fb hi=0
+attr id=201 r=0 type=5 st=0 lo=1 hi=0
+attr id=202 r=0 type=8 st=0 off=3c len=3
+attr id=203 r=0 type=3 st=220 u32=12345678
+attr id=204 r=0 type=3 st=430 d1=1101 d2=0 d3=1000 d4=80000000000000fb
+attr id=205 r=0 type=1 st=310 lo=102030405060708 hi=0
+attr id=206 r=0 type=1 st=410 lo=90a0b0c0d0e0f10 hi=102030405060708
+attr id=207 r=0 type=0 st=0 lo=0 hi=0
+attr id=208 r=0 type=7 st=0 off=82 len=6
+attr id=209 r=0 type=6 st=0 off=8b len=5
+attr id=20a r=0 type=4 st=0 off=96 len=2
+attr id=20b r=0 type=2 st=120 lo=8000 hi=0
+attr id=20c r=0 type=2 st=220 lo=12345678 hi=0
+attr id=20d r=0 type=2 st=320 lo=8102030405060708 hi=0
+attr id=20e r=0 type=2 st=120 lo=abcd hi=0
+attr id=20f r=0 type=1 st=110 lo=beef hi=0
+attr id=210 r=0 type=2 st=120 lo=1234 hi=0
+attr id=300 r=2
+attr_nullrec r=57
+attr_nullout r=57
+attr_len0 r=57
+attr_short r=0
+attr_long r=0
+attr_notseq r=57
+attr_id32 r=57
+attr_unsorted_1 r=0 type=1 st=10 lo=1 hi=0
+attr_dup r=0 type=1 st=10 lo=1 hi=0
+attr_novalue r=57
+attr_emptyrec r=2
+attr_trailing r=0
+attr_seq32 r=0 type=1 st=10 lo=9 hi=0
+attr_altrec r=57
+attr_badvalue r=57
+elem desc=0 len=1 r=0 type=0 st=0 lo=0 hi=0
+elem desc=8 len=2 r=0 type=1 st=10 lo=7f hi=0
+elem desc=9 len=3 r=0 type=1 st=110 lo=1234 hi=0
+elem desc=a len=5 r=0 type=1 st=210 lo=1020304 hi=0
+elem desc=10 len=2 r=0 type=2 st=20 lo=80 hi=0
+elem desc=19 len=3 r=0 type=3 st=130 u16=abcd
+elem desc=1a len=5 r=0 type=3 st=220 u32=1020304
+elem desc=28 len=2 r=0 type=5 st=0 lo=2 hi=0
+elem desc=1 len=1 r=57
+elem desc=18 len=2 r=57
+elem desc=29 len=3 r=57
+elem desc=25 len=3 r=0 type=4 st=0 off=2 len=1
+elem desc=48 len=1 r=57
+elem desc=50 len=1 r=57
+elem desc=9 len=3 r=0 type=1 st=110 lo=1200 hi=0
+elem desc=d len=1 r=57
+elem desc=26 len=4 r=0 type=4 st=0 off=3 len=1
+elem desc=27 len=6 r=0 type=4 st=0 off=5 len=1
+elem desc=35 len=2 r=0 type=6 st=0 off=0 len=2
+elem desc=3d len=3 r=0 type=7 st=0 off=0 len=3
+elem desc=45 len=2 r=0 type=8 st=0 off=2 len=0
+elem desc=1d len=1 r=57
+elem desc=11 len=2 r=57
+elem desc=3c len=2 r=57
+elem desc=c len=2 r=57
+elem desc=9 len=1 r=57
+elem desc=2c len=2 r=57
+elem_null r=57
+elem_nullout r=57
+elem_len0 r=57
+cont n=0 it=2 r=0 type=3 st=130 u16=1101
+cont n=1 it=5 r=0 type=1 st=10 lo=5 hi=0
+cont n=2 it=7 r=0 type=4 st=0 off=9 len=1
+cont n=3 it=0 r=103
+cont_nullstream r=57
+cont_nullit r=57
+cont_nullout r=57
+cont_notcontainer r=57
+cont_empty r=103 it=0
+cont_alt r=0 type=1 st=10 lo=3 hi=0
+cont_badinner r=57
+cont_truncated r=0
+cont_resume it_null=1 r=103
+  cb id=0 off=5 size=5 param=4
+  cb id=1 off=d size=5 param=4
+  cb id=6 off=15 size=b param=4
+  cb id=100 off=23 size=5 param=4
+enum_stop4 ok=1 gle=d n=4
+enum_nullstream ok=0 gle=57
+enum_nullcb ok=0 gle=57
+enum_corrupt ok=0 gle=d n=0
+enum_notseq ok=0 gle=d n=0
+enum_len0 ok=0 gle=57
+enum_prefix k=1 ok=1 gle=d n=1
+enum_prefix k=2 ok=1 gle=d n=2
+enum_prefix k=3 ok=1 gle=d n=3
+enum_prefix k=4 ok=1 gle=d n=4
+enum_prefix k=5 ok=1 gle=d n=5
+enum_prefix k=6 ok=1 gle=d n=6
+enum_prefix k=7 ok=1 gle=d n=7
+enum_prefix k=8 ok=1 gle=d n=8
+enum_prefix k=9 ok=1 gle=d n=9
+enum_prefix k=a ok=1 gle=d n=a
+enum_prefix k=b ok=1 gle=d n=b
+enum_prefix k=c ok=1 gle=d n=c
+enum_prefix k=d ok=1 gle=d n=d
+enum_prefix k=e ok=1 gle=d n=e
+enum_prefix k=f ok=1 gle=d n=f
+enum_prefix k=10 ok=1 gle=d n=10
+enum_prefix k=11 ok=1 gle=d n=11
+enum_prefix k=12 ok=1 gle=d n=12
+enum_prefix k=13 ok=1 gle=d n=13
+enum_prefix k=14 ok=1 gle=d n=14
+enum_prefix k=15 ok=1 gle=d n=15
+enum_prefix k=16 ok=1 gle=d n=16
+enum_one ok=1 gle=d n=1
+enum_two ok=1 gle=d n=2
+enum_two_stop1 ok=1 gle=d n=1
+enum_empty ok=1 gle=d n=0
+cw1 r=0 it=2
+cw2 r=0 it=4
+cw3 r=103 it=ee
+cw4 r=0 it=2
+ctr i=0 it=2 r=0 type=1 st=10 lo=1 hi=0
+ctr i=1 it=ee r=103
+cbig i=0 r=0 it=2
+cbig i=1 r=0 it=4
+cbig i=2 r=103 it=ee
+c_buflen3 r=103
+c_nested_bad_after r=0
+c_nested_bad_inside r=0
+attr_bad_later r=0
+attr_bad_earlier r=57
+attr_nested_bad r=0
+str_explicit r=0 cch=4 s0=43 s2=4d s3=0 s4=5a5a
+str_query r=ea cch=4
+str_small r=ea cch=4 s0=5a5a
+str_exact r=0 cch=4 s3=0
+str_notstring r=57 cch=10
+str_missing r=2 cch=10
+str_locale r=0 cch=4 s0=43
+str_ascii r=0 cch=4 s0=43
+str_badmib r=d cch=10
+str_int8attr r=57 cch=10
+str_nullrec r=57
+str_nullcch r=57
+str_nolang_locale r=0 cch=4 s0=61
+str_nolang_explicit r=0 cch=4 s0=61
+str_otherlang r=0 cch=4
+str_badutf8 r=0 cch=3 s1=e9
+str_embedded_nul r=0 cch=5 s2=0 s3=63
+str_bytes p=0 mib=6a r=0 cch=2 c=61 c=0
+str_bytes p=1 mib=6a r=0 cch=4 c=fffd c=fffd c=78 c=0
+str_bytes p=2 mib=6a r=0 cch=3 c=fffd c=79 c=0
+str_bytes p=3 mib=6a r=0 cch=3 c=d83d c=de00 c=0
+str_bytes p=4 mib=6a r=0 cch=3 c=fffd c=fffd c=0
+str_bytes p=5 mib=6a r=0 cch=2 c=fffd c=0
+str_bytes p=5 mib=3 r=0 cch=2 c=69 c=0
+str_bytes p=5 mib=4 r=0 cch=2 c=e9 c=0
+str_bytes p=5 mib=3e8 r=0 cch=1 c=0
+str_bytes p=5 mib=3f5 r=0 cch=1 c=0
+str_bytes p=5 mib=3f6 r=0 cch=1 c=0
+str_bytes p=5 mib=3f7 r=0 cch=1 c=0
+str_bytes p=5 mib=8cc r=0 cch=2 c=e9 c=0
+str_bytes p=5 mib=11 r=0 cch=1 c=0
+str_bytes p=5 mib=0 r=d cch=10
+str_bytes p=6 mib=6a r=0 cch=2 c=61 c=0
+str_bytes p=7 mib=6a r=0 cch=7 c=61 c=62 c=63 c=64 c=65 c=66 c=0
+str_locale_nomatch r=0 cch=3 s0=65
+str_locale_second r=0 cch=3 s0=65
+str_lang_notseq r=57 cch=10 s0=5a5a
+mib n=3 h=58d6a5c5 pair=2 pcch=3
+mib n=4 h=6a769600 pair=201a pcch=3
+mib n=5 h=6d3af9f2 pair=82 pcch=3
+mib n=6 h=9af052aa pair=82 pcch=3
+mib n=7 h=30e1538c pair=82 pcch=3
+mib n=8 h=3524756a pair=82 pcch=3
+mib n=9 h=e34f1211 pair=82 pcch=3
+mib n=a h=6b51b8e9 pair=82 pcch=3
+mib n=b h=6c186b0 pair=82 pcch=3
+mib n=c h=91e7609e pair=201a pcch=3
+mib n=11 h=a9c59340 pair=3042 pcch=2
+mib n=12 h=d66c078e pair=3042 pcch=2
+mib n=13 h=d66c078e pair=3042 pcch=2
+mib n=19 h=a2883003 pair=2 pcch=3
+mib n=24 h=f0f0deb2 pair=ad87 pcch=2
+mib n=25 h=d97ec0da pair=ad87 pcch=2
+mib n=26 h=f0f0deb2 pair=ad87 pcch=2
+mib n=27 h=5244263c pair=3042 pcch=2
+mib n=28 h=5244263c pair=3042 pcch=2
+mib n=2d h=6b51b8e9 pair=82 pcch=3
+mib n=39 h=6b31d14c pair=5041 pcch=2
+mib n=55 h=e6a1d1c5 pair=0 pcch=10
+mib n=67 h=7646b9c5 pair=82 pcch=3
+mib n=6a h=716a15c5 pair=fffd pcch=3
+mib n=6d h=8355b7d2 pair=82 pcch=3
+mib n=6f h=30a72b80 pair=82 pcch=3
+mib n=72 h=6eefc3c5 pair=5041 pcch=2
+mib n=3e8 h=e6a1d1c5 pair=a082 pcch=2
+mib n=3f2 h=e6a1d1c5 pair=0 pcch=10
+mib n=3f4 h=7646b9c5 pair=82 pcch=3
+mib n=3f5 h=e6a1d1c5 pair=82a0 pcch=2
+mib n=3f6 h=e6a1d1c5 pair=a082 pcch=2
+mib n=3f7 h=e6a1d1c5 pair=a082 pcch=2
+mib n=7d9 h=34cedb1d pair=e9 pcch=3
+mib n=7da h=ad2b14ca pair=e9 pcch=3
+mib n=7db h=11561f91 pair=e9 pcch=3
+mib n=7e8 h=a9c59340 pair=3042 pcch=2
+mib n=7e9 h=6b31d14c pair=5041 pcch=2
+mib n=7ea h=f2e415e5 pair=3f pcch=2
+mib n=7eb h=a28eb7ec pair=c7 pcch=3
+mib n=7ec h=eaf9cd58 pair=62 pcch=3
+mib n=7ff h=c5a1a76e pair=e9 pcch=3
+mib n=801 h=3e886cda pair=e9 pcch=3
+mib n=806 h=5afba311 pair=82 pcch=3
+mib n=824 h=b0c7c54e pair=250c pcch=3
+mib n=825 h=bcff39d4 pair=5041 pcch=2
+mib n=826 h=60296085 pair=412 pcch=3
+mib n=827 h=14accbc1 pair=e9 pcch=3
+mib n=828 h=8f80f626 pair=250c pcch=3
+mib n=8ca h=e2092860 pair=201a pcch=3
+mib n=8cb h=2943839f pair=201a pcch=3
+mib n=8cc h=6a769600 pair=201a pcch=3
+mib n=8cd h=7539b375 pair=201a pcch=3
+mib n=8ce h=91e7609e pair=201a pcch=3
+mib n=8cf h=a04ecda8 pair=201a pcch=3
+mib n=8d0 h=2f110d68 pair=201a pcch=3
+mib n=8d1 h=ba178bbc pair=201a pcch=3
+mib n=8d2 h=320f953a pair=201a pcch=3
+mib n=8d3 h=7135d785 pair=82 pcch=3

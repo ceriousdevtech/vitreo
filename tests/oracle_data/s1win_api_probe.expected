@@ -1,0 +1,1146 @@
+== x64
+-- rect helpers
+setrect ret=00000001 err=0000dead
+  r rect=1,2,3,4
+setrect_null ret=00000000 err=0000dead
+setrectempty ret=00000001 err=0000dead
+  r rect=0,0,0,0
+setrectempty_null ret=00000000 err=0000dead
+isrectempty_zero_width ret=00000001 err=0000dead
+isrectempty_inverted ret=00000001 err=0000dead
+isrectempty_unit ret=00000000 err=0000dead
+isrectempty_null ret=00000001 err=0000dead
+equalrect_same ret=00000001 err=0000dead
+equalrect_two_empty ret=00000000 err=0000dead
+equalrect_null ret=00000000 err=0000dead
+inflaterect ret=00000001 err=0000dead
+  r rect=8,13,22,17
+inflaterect_null ret=00000000 err=0000dead
+offsetrect ret=00000001 err=0000dead
+  r rect=3,20,17,24
+offsetrect_null ret=00000000 err=0000dead
+ptinrect_right_edge ret=00000000 err=0000dead
+ptinrect_origin ret=00000001 err=0000dead
+ptinrect_inner ret=00000001 err=0000dead
+ptinrect_null ret=00000000 err=0000dead
+intersect_overlap ret=00000001 err=0000dead
+  r rect=5,5,10,10
+intersect_disjoint ret=00000000 err=0000dead
+  r rect=0,0,0,0
+intersect_touching ret=00000000 err=0000dead
+  r rect=0,0,0,0
+intersect_null_src ret=00000000 err=0000dead
+  r rect=2004318071,2004318071,2004318071,2004318071
+intersect_null_dst ret=00000000 err=0000dead
+union ret=00000001 err=0000dead
+  r rect=0,0,25,35
+union_one_empty ret=00000001 err=0000dead
+  r rect=0,0,10,10
+union_both_empty ret=00000000 err=0000dead
+  r rect=0,0,0,0
+union_null_src ret=00000000 err=0000dead
+  r rect=2004318071,2004318071,2004318071,2004318071
+-- adjustwindowrect
+awrex_overlappedwindow ret=00000001 err=00000000
+  r rect=92,69,408,308
+awrex_overlappedwindow_menu ret=00000001 err=0000dead
+  r rect=92,49,408,308
+awrex_overlappedwindow_clientedge ret=00000001 err=0000dead
+  r rect=90,67,410,310
+awrex_overlapped ret=00000001 err=0000dead
+  r rect=100,100,400,300
+awrex_popup ret=00000001 err=0000dead
+  r rect=100,100,400,300
+awrex_popup_menu ret=00000001 err=0000dead
+  r rect=100,80,400,300
+awrex_popup_border ret=00000001 err=0000dead
+  r rect=99,99,401,301
+awrex_popup_caption ret=00000001 err=0000dead
+  r rect=97,74,403,303
+awrex_popup_thickframe ret=00000001 err=0000dead
+  r rect=93,93,407,307
+awrex_popup_dlgframe ret=00000001 err=0000dead
+  r rect=97,97,403,303
+awrex_dialog_modalframe ret=00000001 err=0000dead
+  r rect=97,74,403,303
+awrex_toolwindow_caption ret=00000001 err=0000dead
+  r rect=97,74,403,303
+awrex_toolwindow_popup ret=00000001 err=0000dead
+  r rect=100,100,400,300
+awrex_popup_windowedge ret=00000001 err=0000dead
+  r rect=100,100,400,300
+awrex_popup_staticedge ret=00000001 err=0000dead
+  r rect=99,99,401,301
+awrex_child_border ret=00000001 err=0000dead
+  r rect=99,99,401,301
+awrex_child_clientedge_menu ret=00000001 err=0000dead
+  r rect=98,78,402,302
+awrex_caption_thick_both_edges ret=00000001 err=0000dead
+  r rect=90,67,410,310
+awr_overlapped ret=00000001 err=0000dead
+  r rect=-8,-31,108,108
+awr_ex_bit_in_style ret=00000001 err=0000dead
+  r rect=0,0,100,100
+awrexfordpi_present ret=00000001 err=00000000
+awrexfordpi_ovl_menu_96 ret=00000001 err=0000dead
+  r rect=-10,-53,110,110
+awrexfordpi_ovl_menu_120 ret=00000001 err=0000dead
+  r rect=-11,-65,111,111
+awrexfordpi_ovl_menu_144 ret=00000001 err=0000dead
+  r rect=-13,-77,113,113
+awrexfordpi_ovl_menu_192 ret=00000001 err=0000dead
+  r rect=-15,-99,115,115
+awrexfordpi_ovl_menu_0 ret=00000000 err=00000057
+  r rect=0,0,100,100
+awrexfordpi_popup_144 ret=00000001 err=0000dead
+  r rect=-1,-1,101,101
+awrexfordpi_toolcaption_192 ret=00000001 err=0000dead
+  r rect=-3,-48,103,103
+-- creation errors
+create_unregistered_class ret=00000000 err=0000057f
+create_child_no_parent ret=00000000 err=0000057e
+create_invalid_parent ret=00000000 err=00000578
+create_popup_invalid_owner ret=00000000 err=00000578
+create_nccreate_false ret=00000000 err=0000dead
+create_create_minus1 ret=00000000 err=00000000
+create_null_class ret=00000000 err=00000057
+create_bad_atom ret=00000000 err=0000057f
+cw_usedefault_toplevel_nonempty ret=00000001 err=00000000
+cw_usedefault_child_in_parent_client rect=0,0,0,0
+cw_usedefault_popup rect=0,0,0,0
+cw_usedefault_width_only_x_kept ret=00000001 err=00000000
+cw_usedefault_width_only_y_kept ret=00000001 err=00000000
+cw_usedefault_width_only_nonempty ret=00000001 err=00000000
+cw_usedefault_x_only_size_kept ret=00000001 err=00000000
+create_popup_zero_size rect=5,5,5,5
+create_popup_negative_size rect=5,5,5,5
+create_overlapped_tiny_mintrack rect=5,5,141,44
+create_overlapped_zero_mintrack rect=5,5,141,44
+create_popup_thickframe_tiny rect=5,5,19,19
+create_popup_caption_thickframe_tiny rect=5,5,141,44
+create_overlapped_toolwindow_tiny rect=5,5,21,21
+create_exstyle_kept ret=002c0008 err=00000000
+create_dlgmodalframe_exstyle ret=00000101 err=00000000
+create_popup_caption_style ret=84c00000 err=00000000
+create_overlapped_style ret=04c00000 err=00000000
+create_overlapped_exstyle ret=00000100 err=00000000
+create_child_all_ex_bits ret=00000000 err=00000000
+-- window longs
+gwl_style ret=84000000 err=0000dead
+gwl_exstyle ret=00000080 err=0000dead
+gwl_id_child ret=00001234 err=0000dead
+gwl_id_popup ret=00000000 err=0000dead
+gwl_userdata_initial ret=00000000 err=0000dead
+gwl_extra0 ret=00000000 err=0000dead
+gwl_extra4 ret=00000000 err=0000dead
+gwl_extra12 ret=00000000 err=0000dead
+gwl_extra13_past_end ret=00000000 err=00000585
+gwl_extra16_past_end ret=00000000 err=00000585
+gwl_extra2_unaligned ret=00000000 err=0000dead
+gwl_minus2 ret=00000000 err=00000585
+gwl_minus100 ret=00000000 err=00000585
+gwl_wndproc_minus4_nonzero ret=00000000 err=00000585
+gwl_hinstance_minus6_nonzero ret=00000000 err=00000585
+gwl_hwndparent_minus8_nonzero ret=00000000 err=00000585
+gwl_invalid_hwnd ret=00000000 err=00000578
+gwl_null_hwnd ret=00000000 err=00000578
+gwla_style ret=84000000 err=0000dead
+swl_userdata_from_zero ret=00000000 err=0000dead
+swl_userdata_again ret=11223344 err=0000dead
+gwl_userdata ret=55667788 err=0000dead
+swl_extra0 ret=00000000 err=0000dead
+swl_extra4 ret=00000000 err=0000dead
+gwl_extra0_after ret=0000cafe err=0000dead
+gwl_extra2_after ret=beef0000 err=0000dead
+swl_extra13_past_end ret=00000000 err=00000585
+swl_minus100 ret=00000000 err=00000585
+swl_id_child ret=00001234 err=0000dead
+gwl_id_child_after ret=00000055 err=0000dead
+swl_id_popup ret=00000000 err=00000579
+gwl_id_popup_after ret=00000000 err=0000dead
+swl_invalid_hwnd ret=00000000 err=00000578
+swl_style_same ret=84000000 err=0000dead
+swla_userdata ret=55667788 err=0000dead
+gwlp_wndproc_matches ret=00000001 err=0000dead
+gwlpa_wndproc_matches ret=00000000 err=0000dead
+gwlp_hinstance_matches ret=00000001 err=0000dead
+gwlp_hwndparent_is_owner ret=00000001 err=0000dead
+gwlp_hwndparent_child_is_parent ret=00000001 err=0000dead
+gwlp_userdata ret=00000007 err=0000dead
+gwlp_extra0_64 ret=0000cafe err=0000dead
+gwlp_extra8 ret=00000000 err=0000dead
+gwlp_extra9_past_end ret=00000000 err=00000585
+gwlp_extra4_unaligned ret=0000beef err=0000dead
+swlp_userdata_high ret=00000007 err=0000dead
+gwlp_userdata_high ret=55667788 err=0000dead
+gwl_userdata_truncated ret=55667788 err=0000dead
+swlp_hwndparent_owner_change_returns_old ret=00000001 err=0000dead
+  getwindow_owner_after -> B err=0000dead
+swlp_wndproc_returns_old ret=00000001 err=0000dead
+  sendmessage_uses_new_proc ret=0000000f err=0000dead
+  callwindowprocw_old ret=00000007 err=0000dead
+swlpa_wndproc_to_ansi_proc_nonzero ret=00000001 err=0000dead
+  iswindowunicode_after_a_subclass ret=00000000 err=0000dead
+  sendmessage_ansi_proc ret=0000000b err=0000dead
+  gwlpa_wndproc_is_ansi_proc ret=00000001 err=0000dead
+  gwlpw_wndproc_is_ansi_proc ret=00000000 err=0000dead
+  iswindowunicode_after_w_subclass ret=00000001 err=0000dead
+swlp_wndproc_null_returns_previous ret=00000001 err=0000dead
+swlp_hinstance_returns_old ret=00000001 err=0000dead
+gwlp_hinstance_after ret=00005000 err=0000dead
+gwlp_invalid_hwnd ret=00000000 err=00000578
+gwlpa_userdata ret=55667788 err=0000dead
+swlpa_minus100 ret=00000000 err=00000585
+callwindowprocw_null_proc ret=00000000 err=0000dead
+callwindowproca_null_proc ret=00000000 err=0000dead
+callwindowproca_wproc ret=00000007 err=0000dead
+iswindowunicode_invalid ret=00000000 err=00000578
+-- classes
+registerclassexw_atom_range ret=00000001 err=00000000
+registerclassexw_duplicate ret=00000000 err=00000582
+registerclassexw_bad_cbsize ret=00000000 err=00000057
+registerclassexw_negative_extra ret=00000000 err=00000057
+registerclassexw_null_wndproc ret=00000001 err=0000dead
+registerclassexw_null_name ret=00000000 err=00000057
+registerclassexw_empty_name ret=00000000 err=0000007b
+registerclassexw_case_insensitive_duplicate ret=00000000 err=00000582
+registerclassexw_local_shadows_system ret=00000001 err=0000dead
+registerclassexw_global ret=00000001 err=0000dead
+registerclassexw_global_dup_other_instance ret=00000000 err=00000582
+registerclassa ret=00000001 err=0000dead
+registerclassexa ret=00000001 err=0000dead
+registerclassw ret=00000001 err=0000dead
+getclassinfoexw_returns_atom ret=00000001 err=0000dead
+  style ret=0000000a err=00000000
+  cbClsExtra ret=00000008 err=00000000
+  cbWndExtra ret=00000004 err=00000000
+  proc_matches ret=00000001 err=00000000
+  hinstance_matches ret=00000001 err=00000000
+  hbr ret=00000006 err=00000000
+  classname_is_input ret=00000001 err=00000000
+  menuname_is_ptr_nonzero ret=00000001 err=00000000
+  hicon ret=00000000 err=00000000
+  hiconsm ret=00000000 err=00000000
+  cbsize_untouched ret=00000050 err=00000000
+getclassinfoexw_zero_cbsize_ok ret=00000001 err=0000dead
+  cbsize_after ret=00000000 err=00000000
+getclassinfoexw_missing ret=00000000 err=00000583
+  out_untouched_style ret=abababab err=00000000
+getclassinfoexw_by_atom ret=00000001 err=0000dead
+getclassinfoexw_wrong_instance ret=00000000 err=00000583
+getclassinfoexw_null_instance_local_class ret=00000000 err=00000583
+getclassinfoexw_system_button_nonzero ret=00000001 err=0000dead
+  button_style ret=0000008b err=00000000
+  button_cbwndextra ret=00000008 err=00000000
+  button_hinstance_zero ret=00000001 err=00000000
+  button_hbr ret=00000000 err=00000000
+getclassinfoexw_system_static_nonzero ret=00000001 err=0000dead
+  static_style ret=00000088 err=00000000
+  static_cbwndextra ret=00000008 err=00000000
+getclassinfoexw_system_edit_nonzero ret=00000001 err=0000dead
+  edit_style ret=00000088 err=00000000
+  edit_cbwndextra ret=00000008 err=00000000
+getclassinfoexw_dialog_class ret=00008002 err=0000dead
+  dialog_cbwndextra ret=0000001e err=00000000
+  dialog_style ret=00000808 err=00000000
+getclassinfoexw_system_with_hinstance ret=00000001 err=0000dead
+getclassinfow_returns_nonzero ret=00000001 err=0000dead
+getclassinfow_returns_atom ret=00000001 err=0000dead
+  style ret=0000000a err=00000000
+  cbClsExtra ret=00000008 err=00000000
+getclassinfow_missing ret=00000000 err=00000583
+gcl_style ret=0000000a err=0000dead
+gcl_cbwndextra ret=00000004 err=0000dead
+gcl_cbclsextra ret=00000008 err=0000dead
+gcw_atom_matches ret=00000001 err=0000dead
+gcl_extra0 ret=00000000 err=0000dead
+gcl_extra4 ret=00000000 err=0000dead
+gcl_extra5_past_end ret=00000000 err=00000585
+gcl_minus100 ret=00000000 err=00000585
+gcl_invalid_hwnd ret=00000000 err=00000578
+scl_extra0 ret=00000000 err=0000dead
+scl_extra0_again ret=00001234 err=0000dead
+scl_style ret=0000000a err=0000dead
+gcl_style_after ret=00000001 err=0000dead
+scl_minus100 ret=00000000 err=00000585
+scl_extra8_past_end ret=00000000 err=00000585
+gcw_atom_word ret=00000001 err=0000dead
+gcw_extra0 ret=00005678 err=0000dead
+gcw_extra7_past_end ret=00000000 err=00000585
+gcw_minus100 ret=00000000 err=00000585
+gclp_wndproc_matches ret=00000001 err=0000dead
+gclp_hmodule_matches ret=00000001 err=0000dead
+gclp_hbr ret=00000006 err=0000dead
+gclp_menuname_nonzero ret=00000001 err=0000dead
+gclp_hcursor ret=00000000 err=0000dead
+gclpa_style ret=00000001 err=0000dead
+gclp_extra0 ret=00005678 err=0000dead
+gclp_extra1_past_end ret=00000000 err=00000585
+gcl_wndproc_on_x64 ret=00000000 err=00000585
+sclp_hbr ret=00000006 err=0000dead
+gclp_hbr_after ret=00000005 err=0000dead
+sclp_extra0 ret=00005678 err=0000dead
+gclp_extra0_after ret=11223344 err=0000dead
+sclp_minus100 ret=00000000 err=00000585
+getclassnamew ret=00000005 err=0000dead
+  name=S1Cls
+getclassnamew_trunc3 ret=00000002 err=0000dead
+  nb2_is_nul ret=00000001 err=00000000
+  nb0 ret=00000053 err=00000000
+getclassnamew_len1 ret=00000000 err=0000007a
+  nb0 ret=00005555 err=00000000
+getclassnamew_len0 ret=00000000 err=0000007a
+  nb0_untouched ret=00000001 err=00000000
+getclassnamew_invalid ret=00000000 err=00000578
+getclassnamea ret=00000005 err=0000dead
+  name=S1Cls
+getclassnamea_trunc3 ret=00000002 err=0000dead
+  na2_is_nul ret=00000001 err=00000000
+getclassnamew_button ret=00000006 err=0000dead
+  name=Button
+getclassnamew_desktop ret=00000006 err=0000dead
+  name=#32769
+unregisterclassw_has_windows ret=00000000 err=00000584
+unregisterclassw_missing ret=00000000 err=00000583
+unregisterclassw_wrong_instance ret=00000000 err=00000583
+unregisterclassw_by_atom ret=00000001 err=0000dead
+unregisterclassw_again ret=00000000 err=00000583
+unregisterclassw_system_button ret=00000001 err=0000dead
+unregisterclassa ret=00000001 err=0000dead
+unregisterclassa_missing ret=00000000 err=00000583
+unregisterclassw_null_instance ret=00000001 err=0000dead
+unregisterclassw_global_null_instance ret=00000001 err=0000dead
+-- props
+setpropw ret=00000001 err=0000dead
+getpropw ret=00001234 err=0000dead
+getpropw_case ret=00001234 err=0000dead
+  globalatom_exists ret=00000001 err=00000000
+getpropw_by_atom ret=00001234 err=0000dead
+setpropw_replace ret=00000001 err=0000dead
+getpropw_replaced ret=00005678 err=0000dead
+getpropw_missing ret=00000000 err=00000002
+getpropw_other_window ret=00000000 err=0000dead
+setpropw_null_data ret=00000001 err=0000dead
+getpropw_null_data ret=00000000 err=0000dead
+removepropw ret=00005678 err=0000dead
+removepropw_again ret=00000000 err=0000dead
+getpropw_after_remove ret=00000000 err=0000dead
+setpropw_invalid_hwnd ret=00000000 err=00000578
+getpropw_invalid_hwnd ret=00000000 err=00000578
+removepropw_invalid_hwnd ret=00000000 err=00000578
+setpropw_int_atom ret=00000001 err=0000dead
+getpropw_int_atom ret=00000009 err=0000dead
+removepropw_int_atom ret=00000009 err=0000dead
+setpropw_null_name ret=00000000 err=00000057
+getpropw_null_name ret=00000000 err=0000dead
+-- tree
+getparent_c1 -> A err=0000dead
+getparent_g -> C1 err=0000dead
+getparent_b_owned_popup -> A err=0000dead
+getparent_a_toplevel -> null err=0000dead
+getparent_owned_overlapped -> null err=0000dead
+getwindow_owner_owned_overlapped -> A err=0000dead
+getparent_msgonly -> null err=0000dead
+getparent_desktop -> null err=0000dead
+getparent_invalid -> null err=00000578
+getancestor_g_parent -> C1 err=0000dead
+getancestor_g_root -> A err=0000dead
+getancestor_g_rootowner -> A err=0000dead
+getancestor_b_parent -> desktop err=0000dead
+getancestor_b_root -> B err=0000dead
+getancestor_b_rootowner -> A err=0000dead
+getancestor_a_parent -> desktop err=0000dead
+getancestor_desktop_parent -> null err=0000dead
+getancestor_desktop_root -> null err=0000dead
+getancestor_flag0 -> null err=00000057
+getancestor_flag4 -> null err=00000057
+getancestor_invalid -> null err=00000578
+getancestor_msgonly_parent -> msgroot err=0000dead
+getancestor_msgonly_root -> MSG err=0000dead
+gw_child_a -> C1 err=0000dead
+gw_hwndfirst_c1 -> C1 err=0000dead
+gw_hwndlast_c1 -> C2 err=0000dead
+gw_hwndnext_c1 -> C2 err=0000dead
+gw_hwndprev_c1 -> null err=0000dead
+gw_hwndnext_c2 -> null err=0000dead
+gw_hwndprev_c2 -> C1 err=0000dead
+gw_owner_b -> A err=0000dead
+gw_owner_c1 -> null err=0000dead
+gw_child_g -> null err=0000dead
+gw_cmd7 -> null err=000005a3
+gw_cmd100 -> null err=000005a3
+gw_invalid_hwnd -> null err=00000578
+gettopwindow_a -> C1 err=0000dead
+gettopwindow_g -> null err=0000dead
+gettopwindow_null_is_desktop_first_child ret=00000001 err=00000000
+gettopwindow_invalid -> null err=00000578
+bringwindowtotop_c2 ret=00000001 err=0000dead
+  gw_child_a_after -> C2 err=0000dead
+bringwindowtotop_c1 ret=00000001 err=0000dead
+  gw_child_a_after -> C1 err=0000dead
+swp_c1_bottom ret=00000001 err=0000dead
+  gw_child_a_after -> C2 err=0000dead
+swp_c1_after_c2 ret=00000001 err=0000dead
+  gw_child_a_after -> C2 err=0000dead
+swp_c2_top ret=00000001 err=0000dead
+  gw_child_a_after -> C2 err=0000dead
+swp_c1_topmost_child ret=00000001 err=0000dead
+  c1_exstyle_topmost_bit ret=00000000 err=00000000
+  gw_child_a_after -> C2 err=0000dead
+swp_insert_after_non_sibling ret=00000001 err=0000dead
+swp_insert_after_invalid ret=00000000 err=00000578
+swp_insert_after_self ret=00000001 err=0000dead
+swp_toplevel_topmost ret=00000001 err=00000000
+  b_exstyle_topmost ret=00000001 err=00000000
+  a_exstyle_topmost_owner_not_changed ret=00000000 err=00000000
+swp_owner_topmost_moves_owned ret=00000001 err=00000000
+  a_topmost ret=00000001 err=00000000
+  b_topmost_with_owner ret=00000001 err=00000000
+  b_topmost_after_owner_notopmost ret=00000000 err=00000000
+ischild_a_g ret=00000001 err=0000dead
+ischild_a_c1 ret=00000001 err=0000dead
+ischild_a_b_owned ret=00000000 err=0000dead
+ischild_c1_a ret=00000000 err=0000dead
+ischild_a_a ret=00000000 err=0000dead
+ischild_invalid ret=00000000 err=00000578
+ischild_desktop_a ret=00000000 err=0000dead
+enumchildwindows_a ret=00000001 err=0000dead seq=C2 C1 G 
+enumchildwindows_leaf ret=00000000 err=0000dead seq=
+enumchildwindows_stop ret=00000000 err=0000dead seq=
+enumchildwindows_invalid ret=00000000 err=00000578 seq=
+enumchildwindows_null_ours ret=00000001 err=0000dead seq=B A 
+enumthreadwindows ret=00000001 err=0000dead seq=B A 
+enumthreadwindows_stop ret=00000000 err=0000dead seq=
+enumthreadwindows_bad_tid ret=00000001 err=00000057 seq=
+enumwindows_ours ret=00000001 err=0000dead seq=B A 
+enumdesktopwindows_null_ours ret=00000001 err=0000dead seq=B A 
+enumdesktopwindows_thread_desktop_ours ret=00000001 err=0000dead seq=B A 
+findwindoww_class -> A err=0000dead
+findwindoww_title_only -> B err=0000dead
+findwindoww_missing -> null err=0000dead
+findwindoww_class_exists_title_missing -> null err=0000dead
+findwindoww_child_not_found -> null err=0000dead
+findwindowa_class -> A err=0000dead
+findwindowa_case -> A err=0000dead
+findwindowexw_child -> C2 err=0000dead
+findwindowexw_first_child -> C2 err=0000dead
+findwindowexw_after -> C1 err=0000dead
+findwindowexw_grandchild_not_direct -> null err=0000dead
+findwindowexw_msgonly -> MSG err=0000dead
+findwindowexw_msgonly_via_null -> MSG err=0000dead
+findwindowexw_missing -> null err=0000dead
+findwindowexw_invalid_parent -> null err=00000578
+findwindowexw_after_not_child -> null err=0000dead
+findwindowexw_by_atom -> C2 err=00000002
+findwindowexw_desktop_parent_toplevel -> B err=0000dead
+windowfrompoint_client_empty_area -> A err=0000dead
+windowfrompoint_c1_area -> C1 err=0000dead
+windowfrompoint_c2_area -> C2 err=0000dead
+windowfrompoint_caption -> A err=0000dead
+windowfrompoint_hidden_c2_area -> A err=0000dead
+windowfrompoint_disabled_c1 -> A err=0000dead
+childwindowfrompoint_empty -> A err=0000dead
+-- mapping
+getwindowrect_a rect=200,200,500,400
+getclientrect_a rect=0,0,284,161
+getclientrect_invalid ret=00000000 err=00000578
+getwindowrect_invalid ret=00000000 err=00000578
+  out rect=2004318071,2004318071,2004318071,2004318071
+getwindowrect_desktop_is_screen ret=00000001 err=0000dead
+  desktop_matches_metrics ret=00000001 err=00000000
+c1_in_a_client rect=10,10,90,70
+g_in_c1_client rect=20,20,40,40
+c1_client_border rect=0,0,78,58
+mapwindowpoints_a_to_screen_dx ret=00000001 err=00000000
+mapwindowpoints_a_to_screen_dy ret=00000001 err=00000000
+  err ret=0000dead err=00000000
+  pt0_ok ret=00000001 err=00000000
+mapwindowpoints_same_window ret=00000000 err=0000dead
+mapwindowpoints_null_null ret=00000000 err=0000dead
+mapwindowpoints_g_to_c1 ret=00140014 err=0000dead
+  x ret=00000015 err=00000000
+  y ret=00000016 err=00000000
+mapwindowpoints_invalid_from ret=00000000 err=00000578
+mapwindowpoints_zero_count ret=00140014 err=0000dead
+mapwindowpoints_desktop_to_a ret=00000001 err=0000dead
+clienttoscreen_c1 ret=00000001 err=0000dead
+  matches_c1_client_origin ret=00000001 err=00000000
+clienttoscreen_invalid ret=00000000 err=00000578
+screentoclient_invalid ret=00000000 err=00000578
+screentoclient_c1_roundtrip ret=00000001 err=0000dead
+  x ret=00000005 err=00000000
+  y ret=00000006 err=00000000
+clienttoscreen_desktop ret=00000001 err=0000dead
+  x ret=00000005 err=00000000
+-- state
+iswindow_null ret=00000000 err=0000dead
+iswindow_invalid ret=00000000 err=0000dead
+iswindow_desktop ret=00000001 err=0000dead
+iswindow_a ret=00000001 err=0000dead
+iswindow_low16_handle ret=00000000 err=0000dead
+iswindow_sign_extended_handle ret=00000001 err=0000dead
+iswindowvisible_a ret=00000001 err=0000dead
+iswindowvisible_child_of_hidden ret=00000000 err=0000dead
+  c1_style_visible_bit ret=00000001 err=00000000
+iswindowvisible_invalid ret=00000000 err=00000578
+iswindowvisible_desktop ret=00000001 err=0000dead
+enablewindow_disable ret=00000000 err=0000dead
+  isenabled ret=00000000 err=0000dead
+enablewindow_disable_again ret=00000001 err=0000dead
+enablewindow_enable ret=00000001 err=0000dead
+enablewindow_enable_again ret=00000000 err=0000dead
+  wm_enable_count ret=00000002 err=00000000
+enablewindow_invalid ret=00000000 err=00000578
+iswindowenabled_invalid ret=00000000 err=00000578
+iswindowenabled_child_of_disabled ret=00000001 err=0000dead
+iszoomed_invalid ret=00000000 err=00000578
+iszoomed_a ret=00000000 err=0000dead
+getdlgctrlid_c1 ret=00000065 err=0000dead
+getdlgctrlid_toplevel ret=00000000 err=0000dead
+getdlgctrlid_owned_popup ret=00000000 err=0000dead
+getdlgctrlid_invalid ret=00000000 err=00000578
+getdlgitem_c2 -> C2 err=0000dead
+getdlgitem_grandchild -> null err=0000058d
+getdlgitem_missing -> null err=0000058d
+getdlgitem_invalid -> null err=00000578
+getdlgitem_null_parent -> null err=00000578
+getwindowplacement ret=00000001 err=0000dead
+  length ret=0000002c err=00000000
+  flags ret=00000000 err=00000000
+  showcmd ret=00000001 err=00000000
+  minpos_x ret=ffffffff err=00000000
+  maxpos_x ret=ffffffff err=00000000
+  normal rect=200,200,500,400
+getwindowplacement_length0 ret=00000001 err=0000dead
+  length_after ret=0000002c err=00000000
+getwindowplacement_invalid ret=00000000 err=00000578
+getwindowplacement_child_normal rect=10,10,90,70
+  child_showcmd ret=00000001 err=00000000
+setwindowplacement ret=00000001 err=0000dead
+  rect_after rect=210,220,510,420
+  visible_after ret=00000001 err=00000000
+setwindowplacement_length0 ret=00000000 err=00000057
+setwindowplacement_minimized ret=00000001 err=0000dead
+  iconic ret=00000001 err=00000000
+  get_showcmd ret=00000002 err=00000000
+  get_flags ret=00000000 err=00000000
+  get_normal rect=210,220,510,420
+setwindowplacement_invalid ret=00000000 err=00000578
+getwindowinfo ret=00000001 err=0000dead
+  rcwindow_matches ret=00000001 err=00000000
+  rcclient_is_screen ret=00000001 err=00000000
+  style ret=04cf0000 err=00000000
+  exstyle ret=00000108 err=00000000
+  status ret=00000000 err=00000000
+  cxborders ret=00000008 err=00000000
+  cyborders ret=00000008 err=00000000
+  atom_matches ret=00000000 err=00000000
+  creator_version ret=00000500 err=00000000
+  cbsize ret=0000003c err=00000000
+getwindowinfo_cbsize0 ret=00000001 err=00000057
+  cbsize_after ret=00000000 err=00000000
+getwindowinfo_invalid ret=00000000 err=00000578
+getwindowinfo_child_borders ret=00000001 err=00000000
+  child_style ret=50800000 err=00000000
+  child_exstyle ret=00000800 err=00000000
+getwindowinfo_b_borders ret=00000000 err=00000000
+lockwindowupdate_a ret=00000001 err=0000dead
+lockwindowupdate_b_while_locked ret=00000000 err=00000057
+lockwindowupdate_null ret=00000001 err=0000dead
+lockwindowupdate_null_again ret=00000000 err=00000057
+lockwindowupdate_invalid ret=00000000 err=00000578
+flashwindow_a ret=00008000 err=0000dead
+flashwindow_a_off ret=00000000 err=0000dead
+flashwindow_invalid ret=00000000 err=00000057
+flashwindowex ret=00000000 err=0000dead
+flashwindowex_stop ret=00000000 err=0000dead
+flashwindowex_bad_cbsize ret=00000000 err=00000057
+flashwindowex_invalid_hwnd ret=00000000 err=00000057
+flashwindowex_null ret=00000000 err=000003e6
+printwindow_a ret=00000001 err=0000dead
+printwindow_clientonly ret=00000001 err=0000dead
+printwindow_invalid ret=00000000 err=00000578
+printwindow_null_dc ret=00000001 err=00000006
+printwindow_bad_flags ret=00000000 err=00000057
+setlasterrorex_sets ret=00001234 err=00000000
+setlasterrorex_type0 ret=00000055 err=00000000
+setlasterrorex_bad_type ret=00000066 err=00000000
+getguiresources_gdi_nonzero ret=00000001 err=0000dead
+getguiresources_user_nonzero ret=00000001 err=0000dead
+getguiresources_bad_flags ret=00000000 err=00000057
+getguiresources_invalid_handle ret=00000000 err=00000057
+getguiresources_gdi_peak_nonzero ret=00000001 err=0000dead
+getguiresources_global ret=00000001 err=0000dead
+gwtpid_a_is_self ret=00000001 err=0000dead
+  pid_is_self ret=00000001 err=00000000
+gwtpid_invalid ret=00000000 err=00000578
+  pid_after ret=00001234 err=00000000
+gwtpid_null_pid_out ret=00000001 err=0000dead
+getdesktopwindow ret=00000001 err=0000dead
+getshellwindow ret=00000001 err=0000dead
+  shell_is_other_process ret=00000001 err=00000000
+closewindow_minimizes ret=00000001 err=00000057
+  iconic ret=00000001 err=00000000
+  still_window ret=00000001 err=00000000
+closewindow_invalid ret=00000000 err=00000578
+done
+== x86
+-- rect helpers
+setrect ret=00000001 err=0000dead
+  r rect=1,2,3,4
+setrect_null ret=00000000 err=0000dead
+setrectempty ret=00000001 err=0000dead
+  r rect=0,0,0,0
+setrectempty_null ret=00000000 err=0000dead
+isrectempty_zero_width ret=00000001 err=0000dead
+isrectempty_inverted ret=00000001 err=0000dead
+isrectempty_unit ret=00000000 err=0000dead
+isrectempty_null ret=00000001 err=0000dead
+equalrect_same ret=00000001 err=0000dead
+equalrect_two_empty ret=00000000 err=0000dead
+equalrect_null ret=00000000 err=0000dead
+inflaterect ret=00000001 err=0000dead
+  r rect=8,13,22,17
+inflaterect_null ret=00000000 err=0000dead
+offsetrect ret=00000001 err=0000dead
+  r rect=3,20,17,24
+offsetrect_null ret=00000000 err=0000dead
+ptinrect_right_edge ret=00000000 err=0000dead
+ptinrect_origin ret=00000001 err=0000dead
+ptinrect_inner ret=00000001 err=0000dead
+ptinrect_null ret=00000000 err=0000dead
+intersect_overlap ret=00000001 err=0000dead
+  r rect=5,5,10,10
+intersect_disjoint ret=00000000 err=0000dead
+  r rect=0,0,0,0
+intersect_touching ret=00000000 err=0000dead
+  r rect=0,0,0,0
+intersect_null_src ret=00000000 err=0000dead
+  r rect=2004318071,2004318071,2004318071,2004318071
+intersect_null_dst ret=00000000 err=0000dead
+union ret=00000001 err=0000dead
+  r rect=0,0,25,35
+union_one_empty ret=00000001 err=0000dead
+  r rect=0,0,10,10
+union_both_empty ret=00000000 err=0000dead
+  r rect=0,0,0,0
+union_null_src ret=00000000 err=0000dead
+  r rect=2004318071,2004318071,2004318071,2004318071
+-- adjustwindowrect
+awrex_overlappedwindow ret=00000001 err=00000000
+  r rect=92,69,408,308
+awrex_overlappedwindow_menu ret=00000001 err=0000dead
+  r rect=92,49,408,308
+awrex_overlappedwindow_clientedge ret=00000001 err=0000dead
+  r rect=90,67,410,310
+awrex_overlapped ret=00000001 err=0000dead
+  r rect=100,100,400,300
+awrex_popup ret=00000001 err=0000dead
+  r rect=100,100,400,300
+awrex_popup_menu ret=00000001 err=0000dead
+  r rect=100,80,400,300
+awrex_popup_border ret=00000001 err=0000dead
+  r rect=99,99,401,301
+awrex_popup_caption ret=00000001 err=0000dead
+  r rect=97,74,403,303
+awrex_popup_thickframe ret=00000001 err=0000dead
+  r rect=93,93,407,307
+awrex_popup_dlgframe ret=00000001 err=0000dead
+  r rect=97,97,403,303
+awrex_dialog_modalframe ret=00000001 err=0000dead
+  r rect=97,74,403,303
+awrex_toolwindow_caption ret=00000001 err=0000dead
+  r rect=97,74,403,303
+awrex_toolwindow_popup ret=00000001 err=0000dead
+  r rect=100,100,400,300
+awrex_popup_windowedge ret=00000001 err=0000dead
+  r rect=100,100,400,300
+awrex_popup_staticedge ret=00000001 err=0000dead
+  r rect=99,99,401,301
+awrex_child_border ret=00000001 err=0000dead
+  r rect=99,99,401,301
+awrex_child_clientedge_menu ret=00000001 err=0000dead
+  r rect=98,78,402,302
+awrex_caption_thick_both_edges ret=00000001 err=0000dead
+  r rect=90,67,410,310
+awr_overlapped ret=00000001 err=0000dead
+  r rect=-8,-31,108,108
+awr_ex_bit_in_style ret=00000001 err=0000dead
+  r rect=0,0,100,100
+awrexfordpi_present ret=00000001 err=00000000
+awrexfordpi_ovl_menu_96 ret=00000001 err=0000dead
+  r rect=-10,-53,110,110
+awrexfordpi_ovl_menu_120 ret=00000001 err=0000dead
+  r rect=-11,-65,111,111
+awrexfordpi_ovl_menu_144 ret=00000001 err=0000dead
+  r rect=-13,-77,113,113
+awrexfordpi_ovl_menu_192 ret=00000001 err=0000dead
+  r rect=-15,-99,115,115
+awrexfordpi_ovl_menu_0 ret=00000000 err=00000057
+  r rect=0,0,100,100
+awrexfordpi_popup_144 ret=00000001 err=0000dead
+  r rect=-1,-1,101,101
+awrexfordpi_toolcaption_192 ret=00000001 err=0000dead
+  r rect=-3,-48,103,103
+-- creation errors
+create_unregistered_class ret=00000000 err=0000057f
+create_child_no_parent ret=00000000 err=0000057e
+create_invalid_parent ret=00000000 err=00000578
+create_popup_invalid_owner ret=00000000 err=00000578
+create_nccreate_false ret=00000000 err=0000dead
+create_create_minus1 ret=00000000 err=00000000
+create_null_class ret=00000000 err=00000057
+create_bad_atom ret=00000000 err=0000057f
+cw_usedefault_toplevel_nonempty ret=00000001 err=00000000
+cw_usedefault_child_in_parent_client rect=0,0,0,0
+cw_usedefault_popup rect=0,0,0,0
+cw_usedefault_width_only_x_kept ret=00000001 err=00000000
+cw_usedefault_width_only_y_kept ret=00000001 err=00000000
+cw_usedefault_width_only_nonempty ret=00000001 err=00000000
+cw_usedefault_x_only_size_kept ret=00000001 err=00000000
+create_popup_zero_size rect=5,5,5,5
+create_popup_negative_size rect=5,5,5,5
+create_overlapped_tiny_mintrack rect=5,5,141,44
+create_overlapped_zero_mintrack rect=5,5,141,44
+create_popup_thickframe_tiny rect=5,5,19,19
+create_popup_caption_thickframe_tiny rect=5,5,141,44
+create_overlapped_toolwindow_tiny rect=5,5,21,21
+create_exstyle_kept ret=002c0008 err=00000000
+create_dlgmodalframe_exstyle ret=00000101 err=00000000
+create_popup_caption_style ret=84c00000 err=00000000
+create_overlapped_style ret=04c00000 err=00000000
+create_overlapped_exstyle ret=00000100 err=00000000
+create_child_all_ex_bits ret=00000000 err=00000000
+-- window longs
+gwl_style ret=84000000 err=0000dead
+gwl_exstyle ret=00000080 err=0000dead
+gwl_id_child ret=00001234 err=0000dead
+gwl_id_popup ret=00000000 err=0000dead
+gwl_userdata_initial ret=00000000 err=0000dead
+gwl_extra0 ret=00000000 err=0000dead
+gwl_extra4 ret=00000000 err=0000dead
+gwl_extra12 ret=00000000 err=0000dead
+gwl_extra13_past_end ret=00000000 err=00000585
+gwl_extra16_past_end ret=00000000 err=00000585
+gwl_extra2_unaligned ret=00000000 err=0000dead
+gwl_minus2 ret=ffffffff err=0000dead
+gwl_minus100 ret=00000000 err=00000585
+gwl_wndproc_minus4_nonzero ret=00000001 err=0000dead
+gwl_hinstance_minus6_nonzero ret=00000001 err=0000dead
+gwl_hwndparent_minus8_nonzero ret=00000001 err=0000dead
+gwl_invalid_hwnd ret=00000000 err=00000578
+gwl_null_hwnd ret=00000000 err=00000578
+gwla_style ret=84000000 err=0000dead
+swl_userdata_from_zero ret=00000000 err=0000dead
+swl_userdata_again ret=11223344 err=0000dead
+gwl_userdata ret=55667788 err=0000dead
+swl_extra0 ret=00000000 err=0000dead
+swl_extra4 ret=00000000 err=0000dead
+gwl_extra0_after ret=0000cafe err=0000dead
+gwl_extra2_after ret=beef0000 err=0000dead
+swl_extra13_past_end ret=00000000 err=00000585
+swl_minus100 ret=00000000 err=00000585
+swl_id_child ret=00001234 err=0000dead
+gwl_id_child_after ret=00000055 err=0000dead
+swl_id_popup ret=00000000 err=00000579
+gwl_id_popup_after ret=00000000 err=0000dead
+swl_invalid_hwnd ret=00000000 err=00000578
+swl_style_same ret=84000000 err=0000dead
+swla_userdata ret=55667788 err=0000dead
+gwl_wndproc_matches ret=00000001 err=0000dead
+gwla_wndproc_matches ret=00000000 err=0000dead
+gwl_hinstance_matches ret=00000001 err=0000dead
+gwl_hwndparent_is_owner ret=00000001 err=0000dead
+swl_wndproc_returns_old ret=00000001 err=0000dead
+  sendmessage_uses_new_proc ret=0000000f err=0000dead
+  callwindowprocw_old ret=00000007 err=0000dead
+swla_wndproc_to_ansi_proc_nonzero ret=00000001 err=0000dead
+  iswindowunicode_after_a_subclass ret=00000000 err=0000dead
+  sendmessage_ansi_proc ret=0000000b err=0000dead
+  gwla_wndproc_is_ansi_proc ret=00000001 err=0000dead
+  gwlw_wndproc_is_ansi_proc ret=00000000 err=0000dead
+  iswindowunicode_after_w_subclass ret=00000001 err=0000dead
+swl_wndproc_null ret=00aa1056 err=0000dead
+swl_hwndparent_owner_change_returns_old ret=00000001 err=0000dead
+  getwindow_owner_after -> B err=0000dead
+callwindowprocw_null_proc ret=00000000 err=0000dead
+callwindowproca_null_proc ret=00000000 err=0000dead
+callwindowproca_wproc ret=00000007 err=0000dead
+iswindowunicode_invalid ret=00000000 err=00000578
+-- classes
+registerclassexw_atom_range ret=00000001 err=00000000
+registerclassexw_duplicate ret=00000000 err=00000582
+registerclassexw_bad_cbsize ret=00000000 err=00000057
+registerclassexw_negative_extra ret=00000000 err=00000057
+registerclassexw_null_wndproc ret=00000001 err=0000dead
+registerclassexw_null_name ret=00000000 err=00000057
+registerclassexw_empty_name ret=00000000 err=0000007b
+registerclassexw_case_insensitive_duplicate ret=00000000 err=00000582
+registerclassexw_local_shadows_system ret=00000001 err=0000dead
+registerclassexw_global ret=00000001 err=0000dead
+registerclassexw_global_dup_other_instance ret=00000000 err=00000582
+registerclassa ret=00000001 err=0000dead
+registerclassexa ret=00000001 err=0000dead
+registerclassw ret=00000001 err=0000dead
+getclassinfoexw_returns_atom ret=00000001 err=0000dead
+  style ret=0000000a err=00000000
+  cbClsExtra ret=00000008 err=00000000
+  cbWndExtra ret=00000004 err=00000000
+  proc_matches ret=00000001 err=00000000
+  hinstance_matches ret=00000001 err=00000000
+  hbr ret=00000006 err=00000000
+  classname_is_input ret=00000001 err=00000000
+  menuname_is_ptr_nonzero ret=00000001 err=00000000
+  hicon ret=00000000 err=00000000
+  hiconsm ret=00000000 err=00000000
+  cbsize_untouched ret=00000030 err=00000000
+getclassinfoexw_zero_cbsize_ok ret=00000001 err=0000dead
+  cbsize_after ret=00000000 err=00000000
+getclassinfoexw_missing ret=00000000 err=00000583
+  out_untouched_style ret=abababab err=00000000
+getclassinfoexw_by_atom ret=00000001 err=0000dead
+getclassinfoexw_wrong_instance ret=00000000 err=00000583
+getclassinfoexw_null_instance_local_class ret=00000000 err=00000583
+getclassinfoexw_system_button_nonzero ret=00000001 err=0000dead
+  button_style ret=0000008b err=00000000
+  button_cbwndextra ret=00000008 err=00000000
+  button_hinstance_zero ret=00000001 err=00000000
+  button_hbr ret=00000000 err=00000000
+getclassinfoexw_system_static_nonzero ret=00000001 err=0000dead
+  static_style ret=00000088 err=00000000
+  static_cbwndextra ret=00000008 err=00000000
+getclassinfoexw_system_edit_nonzero ret=00000001 err=0000dead
+  edit_style ret=00000088 err=00000000
+  edit_cbwndextra ret=00000008 err=00000000
+getclassinfoexw_dialog_class ret=00008002 err=0000dead
+  dialog_cbwndextra ret=0000001e err=00000000
+  dialog_style ret=00000808 err=00000000
+getclassinfoexw_system_with_hinstance ret=00000001 err=0000dead
+getclassinfow_returns_nonzero ret=00000001 err=0000dead
+getclassinfow_returns_atom ret=00000001 err=0000dead
+  style ret=0000000a err=00000000
+  cbClsExtra ret=00000008 err=00000000
+getclassinfow_missing ret=00000000 err=00000583
+gcl_style ret=0000000a err=0000dead
+gcl_cbwndextra ret=00000004 err=0000dead
+gcl_cbclsextra ret=00000008 err=0000dead
+gcw_atom_matches ret=00000001 err=0000dead
+gcl_extra0 ret=00000000 err=0000dead
+gcl_extra4 ret=00000000 err=0000dead
+gcl_extra5_past_end ret=00000000 err=00000585
+gcl_minus100 ret=00000000 err=00000585
+gcl_invalid_hwnd ret=00000000 err=00000578
+scl_extra0 ret=00000000 err=0000dead
+scl_extra0_again ret=00001234 err=0000dead
+scl_style ret=0000000a err=0000dead
+gcl_style_after ret=00000001 err=0000dead
+scl_minus100 ret=00000000 err=00000585
+scl_extra8_past_end ret=00000000 err=00000585
+gcw_atom_word ret=00000001 err=0000dead
+gcw_extra0 ret=00005678 err=0000dead
+gcw_extra7_past_end ret=00000000 err=00000585
+gcw_minus100 ret=00000000 err=00000585
+gcl_wndproc_matches ret=00000001 err=0000dead
+gcl_hmodule_matches ret=00000001 err=0000dead
+gcl_hbr ret=00000006 err=0000dead
+getclassnamew ret=00000005 err=0000dead
+  name=S1Cls
+getclassnamew_trunc3 ret=00000002 err=0000dead
+  nb2_is_nul ret=00000001 err=00000000
+  nb0 ret=00000053 err=00000000
+getclassnamew_len1 ret=00000000 err=0000007a
+  nb0 ret=00005555 err=00000000
+getclassnamew_len0 ret=00000000 err=0000007a
+  nb0_untouched ret=00000001 err=00000000
+getclassnamew_invalid ret=00000000 err=00000578
+getclassnamea ret=00000005 err=0000dead
+  name=S1Cls
+getclassnamea_trunc3 ret=00000002 err=0000dead
+  na2_is_nul ret=00000001 err=00000000
+getclassnamew_button ret=00000006 err=0000dead
+  name=Button
+getclassnamew_desktop ret=00000006 err=0000dead
+  name=#32769
+unregisterclassw_has_windows ret=00000000 err=00000584
+unregisterclassw_missing ret=00000000 err=00000583
+unregisterclassw_wrong_instance ret=00000000 err=00000583
+unregisterclassw_by_atom ret=00000001 err=0000dead
+unregisterclassw_again ret=00000000 err=00000583
+unregisterclassw_system_button ret=00000001 err=0000dead
+unregisterclassa ret=00000001 err=0000dead
+unregisterclassa_missing ret=00000000 err=00000583
+unregisterclassw_null_instance ret=00000001 err=0000dead
+unregisterclassw_global_null_instance ret=00000001 err=0000dead
+-- props
+setpropw ret=00000001 err=0000dead
+getpropw ret=00001234 err=0000dead
+getpropw_case ret=00001234 err=0000dead
+  globalatom_exists ret=00000001 err=00000000
+getpropw_by_atom ret=00001234 err=0000dead
+setpropw_replace ret=00000001 err=0000dead
+getpropw_replaced ret=00005678 err=0000dead
+getpropw_missing ret=00000000 err=00000002
+getpropw_other_window ret=00000000 err=0000dead
+setpropw_null_data ret=00000001 err=0000dead
+getpropw_null_data ret=00000000 err=0000dead
+removepropw ret=00005678 err=0000dead
+removepropw_again ret=00000000 err=0000dead
+getpropw_after_remove ret=00000000 err=0000dead
+setpropw_invalid_hwnd ret=00000000 err=00000578
+getpropw_invalid_hwnd ret=00000000 err=00000578
+removepropw_invalid_hwnd ret=00000000 err=00000578
+setpropw_int_atom ret=00000001 err=0000dead
+getpropw_int_atom ret=00000009 err=0000dead
+removepropw_int_atom ret=00000009 err=0000dead
+setpropw_null_name ret=00000000 err=00000057
+getpropw_null_name ret=00000000 err=0000dead
+-- tree
+getparent_c1 -> A err=0000dead
+getparent_g -> C1 err=0000dead
+getparent_b_owned_popup -> A err=0000dead
+getparent_a_toplevel -> null err=0000dead
+getparent_owned_overlapped -> null err=0000dead
+getwindow_owner_owned_overlapped -> A err=0000dead
+getparent_msgonly -> null err=0000dead
+getparent_desktop -> null err=0000dead
+getparent_invalid -> null err=00000578
+getancestor_g_parent -> C1 err=0000dead
+getancestor_g_root -> A err=0000dead
+getancestor_g_rootowner -> A err=0000dead
+getancestor_b_parent -> desktop err=0000dead
+getancestor_b_root -> B err=0000dead
+getancestor_b_rootowner -> A err=0000dead
+getancestor_a_parent -> desktop err=0000dead
+getancestor_desktop_parent -> null err=0000dead
+getancestor_desktop_root -> null err=0000dead
+getancestor_flag0 -> null err=00000057
+getancestor_flag4 -> null err=00000057
+getancestor_invalid -> null err=00000578
+getancestor_msgonly_parent -> msgroot err=0000dead
+getancestor_msgonly_root -> MSG err=0000dead
+gw_child_a -> C1 err=0000dead
+gw_hwndfirst_c1 -> C1 err=0000dead
+gw_hwndlast_c1 -> C2 err=0000dead
+gw_hwndnext_c1 -> C2 err=0000dead
+gw_hwndprev_c1 -> null err=0000dead
+gw_hwndnext_c2 -> null err=0000dead
+gw_hwndprev_c2 -> C1 err=0000dead
+gw_owner_b -> A err=0000dead
+gw_owner_c1 -> null err=0000dead
+gw_child_g -> null err=0000dead
+gw_cmd7 -> null err=000005a3
+gw_cmd100 -> null err=000005a3
+gw_invalid_hwnd -> null err=00000578
+gettopwindow_a -> C1 err=0000dead
+gettopwindow_g -> null err=0000dead
+gettopwindow_null_is_desktop_first_child ret=00000001 err=00000000
+gettopwindow_invalid -> null err=00000578
+bringwindowtotop_c2 ret=00000001 err=0000dead
+  gw_child_a_after -> C2 err=0000dead
+bringwindowtotop_c1 ret=00000001 err=0000dead
+  gw_child_a_after -> C1 err=0000dead
+swp_c1_bottom ret=00000001 err=0000dead
+  gw_child_a_after -> C2 err=0000dead
+swp_c1_after_c2 ret=00000001 err=0000dead
+  gw_child_a_after -> C2 err=0000dead
+swp_c2_top ret=00000001 err=0000dead
+  gw_child_a_after -> C2 err=0000dead
+swp_c1_topmost_child ret=00000001 err=0000dead
+  c1_exstyle_topmost_bit ret=00000000 err=00000000
+  gw_child_a_after -> C2 err=0000dead
+swp_insert_after_non_sibling ret=00000001 err=0000dead
+swp_insert_after_invalid ret=00000000 err=00000578
+swp_insert_after_self ret=00000001 err=0000dead
+swp_toplevel_topmost ret=00000001 err=00000000
+  b_exstyle_topmost ret=00000001 err=00000000
+  a_exstyle_topmost_owner_not_changed ret=00000000 err=00000000
+swp_owner_topmost_moves_owned ret=00000001 err=00000000
+  a_topmost ret=00000001 err=00000000
+  b_topmost_with_owner ret=00000001 err=00000000
+  b_topmost_after_owner_notopmost ret=00000000 err=00000000
+ischild_a_g ret=00000001 err=0000dead
+ischild_a_c1 ret=00000001 err=0000dead
+ischild_a_b_owned ret=00000000 err=0000dead
+ischild_c1_a ret=00000000 err=0000dead
+ischild_a_a ret=00000000 err=0000dead
+ischild_invalid ret=00000000 err=00000578
+ischild_desktop_a ret=00000000 err=0000dead
+enumchildwindows_a ret=00000001 err=0000dead seq=C2 C1 G 
+enumchildwindows_leaf ret=00000000 err=0000dead seq=
+enumchildwindows_stop ret=00000000 err=0000dead seq=
+enumchildwindows_invalid ret=00000000 err=00000578 seq=
+enumchildwindows_null_ours ret=00000001 err=0000dead seq=B A 
+enumthreadwindows ret=00000001 err=0000dead seq=B A 
+enumthreadwindows_stop ret=00000000 err=0000dead seq=
+enumthreadwindows_bad_tid ret=00000001 err=00000057 seq=
+enumwindows_ours ret=00000001 err=0000dead seq=B A 
+enumdesktopwindows_null_ours ret=00000001 err=0000dead seq=B A 
+enumdesktopwindows_thread_desktop_ours ret=00000001 err=0000dead seq=B A 
+findwindoww_class -> A err=0000dead
+findwindoww_title_only -> B err=0000dead
+findwindoww_missing -> null err=0000dead
+findwindoww_class_exists_title_missing -> null err=0000dead
+findwindoww_child_not_found -> null err=0000dead
+findwindowa_class -> A err=0000dead
+findwindowa_case -> A err=0000dead
+findwindowexw_child -> C2 err=0000dead
+findwindowexw_first_child -> C2 err=0000dead
+findwindowexw_after -> C1 err=0000dead
+findwindowexw_grandchild_not_direct -> null err=0000dead
+findwindowexw_msgonly -> MSG err=0000dead
+findwindowexw_msgonly_via_null -> MSG err=0000dead
+findwindowexw_missing -> null err=0000dead
+findwindowexw_invalid_parent -> null err=00000578
+findwindowexw_after_not_child -> null err=0000dead
+findwindowexw_by_atom -> C2 err=00000002
+findwindowexw_desktop_parent_toplevel -> B err=0000dead
+windowfrompoint_client_empty_area -> A err=0000dead
+windowfrompoint_c1_area -> C1 err=0000dead
+windowfrompoint_c2_area -> C2 err=0000dead
+windowfrompoint_caption -> A err=0000dead
+windowfrompoint_hidden_c2_area -> A err=0000dead
+windowfrompoint_disabled_c1 -> A err=0000dead
+childwindowfrompoint_empty -> A err=0000dead
+-- mapping
+getwindowrect_a rect=200,200,500,400
+getclientrect_a rect=0,0,284,161
+getclientrect_invalid ret=00000000 err=00000578
+getwindowrect_invalid ret=00000000 err=00000578
+  out rect=2004318071,2004318071,2004318071,2004318071
+getwindowrect_desktop_is_screen ret=00000001 err=0000dead
+  desktop_matches_metrics ret=00000001 err=00000000
+c1_in_a_client rect=10,10,90,70
+g_in_c1_client rect=20,20,40,40
+c1_client_border rect=0,0,78,58
+mapwindowpoints_a_to_screen_dx ret=00000001 err=00000000
+mapwindowpoints_a_to_screen_dy ret=00000001 err=00000000
+  err ret=0000dead err=00000000
+  pt0_ok ret=00000001 err=00000000
+mapwindowpoints_same_window ret=00000000 err=0000dead
+mapwindowpoints_null_null ret=00000000 err=0000dead
+mapwindowpoints_g_to_c1 ret=00140014 err=0000dead
+  x ret=00000015 err=00000000
+  y ret=00000016 err=00000000
+mapwindowpoints_invalid_from ret=00000000 err=00000578
+mapwindowpoints_zero_count ret=00140014 err=0000dead
+mapwindowpoints_desktop_to_a ret=00000001 err=0000dead
+clienttoscreen_c1 ret=00000001 err=0000dead
+  matches_c1_client_origin ret=00000001 err=00000000
+clienttoscreen_invalid ret=00000000 err=00000578
+screentoclient_invalid ret=00000000 err=00000578
+screentoclient_c1_roundtrip ret=00000001 err=0000dead
+  x ret=00000005 err=00000000
+  y ret=00000006 err=00000000
+clienttoscreen_desktop ret=00000001 err=0000dead
+  x ret=00000005 err=00000000
+-- state
+iswindow_null ret=00000000 err=0000dead
+iswindow_invalid ret=00000000 err=0000dead
+iswindow_desktop ret=00000001 err=0000dead
+iswindow_a ret=00000001 err=0000dead
+iswindow_low16_handle ret=00000001 err=0000dead
+iswindowvisible_a ret=00000001 err=0000dead
+iswindowvisible_child_of_hidden ret=00000000 err=0000dead
+  c1_style_visible_bit ret=00000001 err=00000000
+iswindowvisible_invalid ret=00000000 err=00000578
+iswindowvisible_desktop ret=00000001 err=0000dead
+enablewindow_disable ret=00000000 err=0000dead
+  isenabled ret=00000000 err=0000dead
+enablewindow_disable_again ret=00000001 err=0000dead
+enablewindow_enable ret=00000001 err=0000dead
+enablewindow_enable_again ret=00000000 err=0000dead
+  wm_enable_count ret=00000002 err=00000000
+enablewindow_invalid ret=00000000 err=00000578
+iswindowenabled_invalid ret=00000000 err=00000578
+iswindowenabled_child_of_disabled ret=00000001 err=0000dead
+iszoomed_invalid ret=00000000 err=00000578
+iszoomed_a ret=00000000 err=0000dead
+getdlgctrlid_c1 ret=00000065 err=0000dead
+getdlgctrlid_toplevel ret=00000000 err=0000dead
+getdlgctrlid_owned_popup ret=00000000 err=0000dead
+getdlgctrlid_invalid ret=00000000 err=00000578
+getdlgitem_c2 -> C2 err=0000dead
+getdlgitem_grandchild -> null err=0000058d
+getdlgitem_missing -> null err=0000058d
+getdlgitem_invalid -> null err=00000578
+getdlgitem_null_parent -> null err=00000578
+getwindowplacement ret=00000001 err=0000dead
+  length ret=0000002c err=00000000
+  flags ret=00000000 err=00000000
+  showcmd ret=00000001 err=00000000
+  minpos_x ret=ffffffff err=00000000
+  maxpos_x ret=ffffffff err=00000000
+  normal rect=200,200,500,400
+getwindowplacement_length0 ret=00000001 err=0000dead
+  length_after ret=0000002c err=00000000
+getwindowplacement_invalid ret=00000000 err=00000578
+getwindowplacement_child_normal rect=10,10,90,70
+  child_showcmd ret=00000001 err=00000000
+setwindowplacement ret=00000001 err=0000dead
+  rect_after rect=210,220,510,420
+  visible_after ret=00000001 err=00000000
+setwindowplacement_length0 ret=00000000 err=00000057
+setwindowplacement_minimized ret=00000001 err=0000dead
+  iconic ret=00000001 err=00000000
+  get_showcmd ret=00000002 err=00000000
+  get_flags ret=00000000 err=00000000
+  get_normal rect=210,220,510,420
+setwindowplacement_invalid ret=00000000 err=00000578
+getwindowinfo ret=00000001 err=0000dead
+  rcwindow_matches ret=00000001 err=00000000
+  rcclient_is_screen ret=00000001 err=00000000
+  style ret=04cf0000 err=00000000
+  exstyle ret=00000108 err=00000000
+  status ret=00000000 err=00000000
+  cxborders ret=00000008 err=00000000
+  cyborders ret=00000008 err=00000000
+  atom_matches ret=00000000 err=00000000
+  creator_version ret=00000500 err=00000000
+  cbsize ret=0000003c err=00000000
+getwindowinfo_cbsize0 ret=00000001 err=00000057
+  cbsize_after ret=00000000 err=00000000
+getwindowinfo_invalid ret=00000000 err=00000578
+getwindowinfo_child_borders ret=00000001 err=00000000
+  child_style ret=50800000 err=00000000
+  child_exstyle ret=00000800 err=00000000
+getwindowinfo_b_borders ret=00000000 err=00000000
+lockwindowupdate_a ret=00000001 err=0000dead
+lockwindowupdate_b_while_locked ret=00000000 err=00000057
+lockwindowupdate_null ret=00000001 err=0000dead
+lockwindowupdate_null_again ret=00000000 err=00000057
+lockwindowupdate_invalid ret=00000000 err=00000578
+flashwindow_a ret=00008000 err=0000dead
+flashwindow_a_off ret=00000000 err=0000dead
+flashwindow_invalid ret=00000000 err=00000057
+flashwindowex ret=00000000 err=0000dead
+flashwindowex_stop ret=00000000 err=0000dead
+flashwindowex_bad_cbsize ret=00000000 err=00000057
+flashwindowex_invalid_hwnd ret=00000000 err=00000057
+flashwindowex_null ret=00000000 err=000003e6
+printwindow_a ret=00000001 err=0000dead
+printwindow_clientonly ret=00000001 err=0000dead
+printwindow_invalid ret=00000000 err=00000578
+printwindow_null_dc ret=00000001 err=0000dead
+printwindow_bad_flags ret=00000000 err=00000057
+setlasterrorex_sets ret=00001234 err=00000000
+setlasterrorex_type0 ret=00000055 err=00000000
+setlasterrorex_bad_type ret=00000066 err=00000000
+getguiresources_gdi_nonzero ret=00000001 err=0000dead
+getguiresources_user_nonzero ret=00000001 err=0000dead
+getguiresources_bad_flags ret=00000000 err=00000057
+getguiresources_invalid_handle ret=00000000 err=00000057
+getguiresources_gdi_peak_nonzero ret=00000001 err=0000dead
+getguiresources_global ret=00000001 err=0000dead
+gwtpid_a_is_self ret=00000001 err=0000dead
+  pid_is_self ret=00000001 err=00000000
+gwtpid_invalid ret=00000000 err=00000578
+  pid_after ret=00001234 err=00000000
+gwtpid_null_pid_out ret=00000001 err=0000dead
+getdesktopwindow ret=00000001 err=0000dead
+getshellwindow ret=00000001 err=0000dead
+  shell_is_other_process ret=00000001 err=00000000
+closewindow_minimizes ret=00000001 err=00000057
+  iconic ret=00000001 err=00000000
+  still_window ret=00000001 err=00000000
+closewindow_invalid ret=00000000 err=00000578
+done

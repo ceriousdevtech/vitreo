@@ -1,0 +1,38 @@
+device ok, feature level 0xb100
+D3D11_OPTIONS -> 0x00000000 MapNoOverwriteOnDynamicConstantBuffer=1 MapNoOverwriteOnDynamicBufferSRV=1
+
+DYNAMIC CB 16                                map4 -> 0x00000000 pData=ptr RowPitch=16 DepthPitch=16
+DYNAMIC CB 256                               map4 -> 0x00000000 pData=ptr RowPitch=256 DepthPitch=256
+DYNAMIC CB 272                               map4 -> 0x00000000 pData=ptr RowPitch=272 DepthPitch=272
+DYNAMIC CB 4096                              map4 -> 0x00000000 pData=ptr RowPitch=4096 DepthPitch=4096
+DYNAMIC CB 65536                             map4 -> 0x00000000 pData=ptr RowPitch=65536 DepthPitch=65536
+DYNAMIC CB 256 NO_OVERWRITE                  map5 -> 0x00000000 pData=ptr RowPitch=256 DepthPitch=256
+DYNAMIC VB 1000                              map4 -> 0x00000000 pData=ptr RowPitch=1000 DepthPitch=1000
+DYNAMIC VB 1000 NO_OVERWRITE                 map5 -> 0x00000000 pData=ptr RowPitch=1000 DepthPitch=1000
+DYNAMIC IB 6                                 map4 -> 0x00000000 pData=ptr RowPitch=8 DepthPitch=8
+DYNAMIC SRV 1024                             map4 -> 0x00000000 pData=ptr RowPitch=1024 DepthPitch=1024
+DYNAMIC SRV 1024 NO_OVERWRITE                map5 -> 0x00000000 pData=ptr RowPitch=1024 DepthPitch=1024
+DYNAMIC SRV STRUCTURED 16x64                 map4 -> 0x00000000 pData=ptr RowPitch=1024 DepthPitch=1024
+DYNAMIC SRV RAW 1024                         map4 -> 0x00000000 pData=ptr RowPitch=1024 DepthPitch=1024
+STAGING RW 1000 READ                         map1 -> 0x00000000 pData=ptr RowPitch=1000 DepthPitch=1000
+STAGING RW 1000 WRITE                        map2 -> 0x00000000 pData=ptr RowPitch=1000 DepthPitch=1000
+STAGING RW 1000 READ_WRITE                   map3 -> 0x00000000 pData=ptr RowPitch=1000 DepthPitch=1000
+STAGING W 12 WRITE                           map2 -> 0x00000000 pData=ptr RowPitch=12 DepthPitch=12
+STAGING R 12 READ                            map1 -> 0x00000000 pData=ptr RowPitch=12 DepthPitch=12
+DYNAMIC IB 2                                 map4 -> 0x00000000 pData=ptr RowPitch=4 DepthPitch=4
+DYNAMIC IB 10                                map4 -> 0x00000000 pData=ptr RowPitch=12 DepthPitch=12
+DYNAMIC IB 1001                              map4 -> 0x00000000 pData=ptr RowPitch=1004 DepthPitch=1004
+DYNAMIC VB 6                                 map4 -> 0x00000000 pData=ptr RowPitch=8 DepthPitch=8
+DYNAMIC VB 1001                              map4 -> 0x00000000 pData=ptr RowPitch=1004 DepthPitch=1004
+DYNAMIC VB|IB 6                              map4 -> 0x00000000 pData=ptr RowPitch=8 DepthPitch=8
+DYNAMIC SRV 6                                map4 -> 0x00000000 pData=ptr RowPitch=8 DepthPitch=8
+DYNAMIC SRV 1001                             map4 -> 0x00000000 pData=ptr RowPitch=1004 DepthPitch=1004
+STAGING RW 1 READ                            map1 -> 0x00000000 pData=ptr RowPitch=4 DepthPitch=4
+STAGING RW 6 READ                            map1 -> 0x00000000 pData=ptr RowPitch=8 DepthPitch=8
+STAGING RW 1001 READ                         map1 -> 0x00000000 pData=ptr RowPitch=1004 DepthPitch=1004
+STAGING R 12 WRITE (illegal)                 map2 -> 0x80070057 pData=NULL RowPitch=2863311530 DepthPitch=3149642683
+DYNAMIC CB 256 WRITE (illegal)               map2 -> 0x80070057 pData=NULL RowPitch=2863311530 DepthPitch=3149642683
+DEFAULT VB 64 WRITE_DISCARD (illegal)        map4 -> 0x80070057 pData=NULL RowPitch=2863311530 DepthPitch=3149642683
+TEX2D STAGING R, WRITE (illegal)             map2 -> 0x80070057 pData=NULL RowPitch=2863311530 DepthPitch=3149642683
+TEX2D STAGING RW, subresource 5 (illegal)    map1 -> 0x80070057 pData=NULL RowPitch=2863311530 DepthPitch=3149642683
+TEX2D DEFAULT, READ (illegal)                map1 -> 0x80070057 pData=NULL RowPitch=2863311530 DepthPitch=3149642683

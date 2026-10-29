@@ -1,0 +1,23 @@
+adapter: Microsoft Basic Render Driver
+  UpdateSubresource(0)   + Dispatch(1,1,1)           : 20/20 read the expected value
+  UpdateSubresource(0)   + DispatchIndirect({1,1,1}) : 20/20 read the expected value
+  ClearUAVUint(0)        + Dispatch(1,1,1)           : 20/20 read the expected value
+  ClearUAVUint(0)        + DispatchIndirect({1,1,1}) : 20/20 read the expected value
+  no reset               + Dispatch(1,1,1)           : 20/20 read the expected value
+  no reset               + DispatchIndirect({1,1,1}) : 20/20 read the expected value
+done
+#
+# winoracle 2026-09-28 (WARP), x64. Every row 20/20.
+# Vitreo (build of 2026-09-27 23:22), two runs:
+#   UpdateSubresource(0) + Dispatch          15/20, 17/20
+#   UpdateSubresource(0) + DispatchIndirect   3/20,  5/20
+#   ClearUAVUint(0)      + Dispatch(Indirect) 20/20
+#   no reset             + Dispatch          19/20 (iteration 7 read 420 = one
+#                                            dispatch missing), 18/20
+#   no reset             + DispatchIndirect   6/20,  3/20
+# Each miss observed was a whole dispatch (0, or 420 where 480 was due), and in
+# the no-reset rows the following iterations read the correct running total
+# again -- the dispatch was not lost, it landed after the readback. So the
+# CopyResource(staging) + Map(READ) is not ordered after the preceding compute
+# work. A ClearUnorderedAccessViewUint in the loop hides it. Owner: area 06
+# (Map / CopyResource ordering against queued compute).

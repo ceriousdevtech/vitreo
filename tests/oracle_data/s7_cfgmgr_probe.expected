@@ -1,0 +1,117 @@
+locate_null cr=0 dn=1
+locate_empty cr=0 same=1
+locate_root cr=0 same=1
+locate_root_lower cr=0 same=1
+locate_missing cr=d dn=0
+locate_missing_phantom cr=d dn=0
+locate_missing_noval cr=0 dn=2
+locate_onepart cr=1e dn=0
+locate_twopart cr=1e dn=0
+locate_fourpart cr=1e dn=0
+locate_path cr=1e dn=0
+locate_trailing cr=1e dn=0
+locate_badflag cr=4 dn=5555
+locate_nullout cr=3
+locatea_root cr=0 same=1
+locatea_null cr=0 same=1
+locatea_missing cr=d dn=0
+getid_root cr=0 id=HTREE\ROOT\0
+getid_root_exact cr=0 id11=30 id12=5a5a
+getid_root_small cr=1a id0=48 id10=5c
+getid_nullbuf cr=3
+getid_len0 cr=3
+getid_badflag cr=4
+getid_dn0 cr=5
+getid_dnjunk cr=5
+getida_root cr=0 id=HTREE\ROOT\0
+getidsize_root cr=0 len=c
+getidsize_junk cr=5 len=0
+getidsize_null cr=3
+getidsize_badflag cr=4 len=0
+parent_root cr=d dn=0
+sibling_root cr=d dn=0
+child_root cr=0 parent_is_root=1
+child_nullout cr=3
+child_badflag cr=4 dn=5555
+child_junk cr=5 dn=0
+child_zero cr=5 dn=5555
+root_children n>0=1 bad=0 last_sibling_cr=d dn=0
+status_root cr=0 st=4180000a pb=0
+status_junk cr=5 st=5555 pb=5555
+status_nullst cr=3
+status_nullpb cr=3
+status_badflag cr=4
+drp_root_class cr=25 ty=5555 bl=0
+drp_root_desc cr=25 ty=5555 bl=0
+drp_root_hwid cr=25 ty=5555 bl=0
+drp_zero cr=35 ty=5555 bl=200
+drp_big cr=35 ty=5555 bl=200
+drp_badflag cr=4
+drp_nulllen cr=3
+drp_junk cr=5
+dnp_instid cr=0 ty=12 bl=1a v=HTREE\ROOT\0
+dnp_instid_query cr=1a ty=12 bl=1a
+dnp_instid_small cr=1a ty=12 bl=1a
+dnp_parent cr=25 ty=5555 bl=0
+dnp_bogus cr=25 ty=5555 bl=0
+dnp_badflag cr=4
+dnp_nullkey cr=13
+dnp_nulltype cr=3
+dnp_nulllen cr=3
+dnp_nullbuf_len8 cr=3
+dnp_junk cr=5
+dnp_child_parent cr=0 ty=12 bl=1a v=HTREE\ROOT\0
+odk_root_hw cr=2e k_changed=1
+odk_root_sw cr=2e k=0
+odk_badflag cr=4
+odk_baddisp cr=1f
+odk_nullout cr=3
+odk_junk cr=5
+odk_child_hw cr=0
+odk_root_hw_all cr=2e
+odk_child_hw_all cr=33 k=0
+odk_root_sw_always cr=33 k=0
+odk_root_hw_k cr=2e k=0
+idl_size_htree cr=0 n=e
+idl_htree cr=0 first=HTREE\ROOT\0 after=0
+idl_htree_small cr=1a
+idl_size_nope cr=0 n=1
+idl_nope cr=0 l0=0 l1=5a5a
+idl_size_instid cr=25 n=0
+idl_size_nullenum cr=3 n=0
+idl_size_all cr=0 n>1=1
+idl_all cr=0 cnt>1=1 unlocatable=0 used+1==n=1 has_root=0 root_listed=1
+idl_size_badflag cr=4 n=5555
+idl_size_nullout cr=3
+idl_nullbuf cr=3
+idl_len0 cr=3
+idl_size_class cr=0 n>1=1
+idl_size_bogusclass cr=0 n=1
+idl_size_badclass cr=1f n=0
+idl_size_nullclass cr=3 n=0
+idl_size_bus_root cr=0 n>1=1
+idl_size_bus_missing cr=25 n=0
+idl_size_removal_root cr=25 n=0
+idl_size_service_missing cr=0 n=1
+idl_size_present_only cr=0 n>1=1
+idl_size_htree_present cr=0 n=e
+idla_htree cr=0 n=e cr2=0 first=HTREE\ROOT\0
+ifl_size_bogus cr=0 n=1
+ifl_bogus cr=0 l0=0 l1=5a5a
+ifl_size_badflag cr=4
+ifl_size_nullout cr=3
+ifl_size_nullguid cr=13
+ifl_size_baddev cr=0 n=1
+ifl_len0 cr=3
+ifl_nullbuf cr=3
+disable_root cr=13
+disable_junk cr=5
+enable_badflag cr=4
+enable_root cr=5
+disable_badflag cr=4
+ifl_disp cr=0 cr2=0 n>0=1 prefix=1 lower=0 tail={5b45201d-f2f2-4f3b-85bb-30ff1f953599}
+ifl_disp_small cr=1a l0=0
+idl_size_enum_devid cr=0 n=e
+idl_size_enum_lower cr=0 n=e
+idl_size_enum_class cr=1f n=0
+idl_htree_small_written cr=1a l0=0

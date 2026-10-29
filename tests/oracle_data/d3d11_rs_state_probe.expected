@@ -1,0 +1,10 @@
+vp fresh: bound=0 ask=2 got=0 [0]w=00000000 [1]w=00000000
+vp set3: bound=3 ask=5 got=3 [0]w=41f00000 [1]w=42480000 [2]w=428c0000 [3]w=00000000 [4]w=00000000
+vp set3 ask1: bound=3 ask=1 got=1 [0]w=41f00000
+vp set1 after3: bound=1 ask=3 got=1 [0]w=42480000 [1]w=00000000 [2]w=00000000
+vp set0: bound=0 ask=2 got=0 [0]w=00000000 [1]w=00000000
+vp clearstate: bound=0 ask=2 got=0 [0]w=00000000 [1]w=00000000
+sc fresh: bound=0 ask=2 got=0 [0]r=00000000 [1]r=00000000
+sc set3: bound=3 ask=5 got=3 [0]r=0000000a [1]r=00000014 [2]r=0000001e [3]r=00000000 [4]r=00000000
+sc set1 after3: bound=1 ask=3 got=1 [0]r=0000001e [1]r=00000000 [2]r=00000000
+sc set0: bound=0 ask=2 got=0 [0]r=00000000 [1]r=00000000

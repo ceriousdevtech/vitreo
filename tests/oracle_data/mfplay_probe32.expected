@@ -1,0 +1,356 @@
+== CoInitialize
+CoInitializeEx(STA) -> 00000000
+== exports
+MFPCreateMediaPlayer 1
+MFPCreateMediaPlayerEx 1
+DllCanUnloadNow 1
+DllGetClassObject 1
+DllRegisterServer 1
+DllUnregisterServer 1
+DllGetClassObject(unknown clsid) -> 80040111 0
+== MFPCreateMediaPlayer
+create(all NULL, pp NULL) -> 80004003
+create(NULL URL) -> 00000000 1
+  thread windows added -> 00000000 1
+  AddRef -> 00000000 3
+  Release -> 00000000 2
+  QI(IUnknown) -> 00000000 1
+  QI(IMFPMediaItem) -> 80004002 1
+  QI(IMFPMediaPlayerCallback) -> 80004002 1
+  final Release -> 00000000 0
+  thread windows after release -> 00000000 0
+create(options=00000001) -> 00000000 1
+create(options=00000002) -> 00000000 1
+create(options=00000004) -> 00000000 1
+create(options=00000007) -> 00000000 1
+create(options=00000008) -> 00000000 1
+create(options=80000000) -> 00000000 1
+create(NULL URL, start TRUE) -> 80070057 0
+create(bogus hWnd) -> 00000000 1
+  GetVideoWindow -> 00000000 1
+create(missing file) -> 80070002 0
+create(junk file) -> c00d36c4 0
+create(unknown scheme) -> c00d36c3 0
+create(wav, start FALSE) -> 00000000 1
+  GetState immediately -> 00000000 0
+  GetMediaItem immediately -> c00d36d5 0
+  GetState after pump -> 00000000 0
+  GetMediaItem after pump -> c00d36d5 0
+create(wav, start TRUE) -> 00000000 1
+  GetState after 300ms pump -> 00000000 0
+== empty player
+Play -> 00000000
+Pause -> 00000000
+Stop -> 00000000
+FrameStep -> 00000000
+SetPosition(100NS,0) -> 00000000
+SetPosition(100NS,NULL) -> 80004003
+GetPosition(100NS) -> c00d36b2 0
+GetPosition(100NS,NULL) -> 80004003
+GetPosition(bad guid) -> 80070057 0
+GetDuration(100NS) -> c00d36b2 52428
+SetRate(1) -> 00000000
+SetRate(0) -> c00d3702
+SetRate(2) -> 00000000
+GetRate -> 00000000 3f800000
+GetRate(NULL) -> 80004003
+GetSupportedRates(fwd) -> c00d36d0 c0e00000 c0e00000
+GetSupportedRates(rev) -> c00d36d0 c0e00000 c0e00000
+GetState -> 00000000 0
+GetState(NULL) -> 80004003
+GetMediaItem -> c00d36d5 0
+GetMediaItem(NULL) -> 80004003
+ClearMediaItem -> 00000000
+SetMediaItem(NULL) -> 80004003
+GetVolume -> 00000000 3f800000
+GetVolume(NULL) -> 80004003
+SetVolume(bdcccccd) -> c00d3702 get 00000000 3f800000
+SetVolume(00000000) -> 00000000 get 00000000 00000000
+SetVolume(3f000000) -> 00000000 get 00000000 3f000000
+SetVolume(3f800000) -> 00000000 get 00000000 3f800000
+SetVolume(3fc00000) -> c00d3702 get 00000000 3f800000
+GetBalance -> 00000000 00000000
+SetBalance(bfc00000) -> c00d3702 get 00000000 00000000
+SetBalance(bf800000) -> 00000000 get 00000000 bf800000
+SetBalance(3e800000) -> 00000000 get 00000000 3e800000
+SetBalance(3f800000) -> 00000000 get 00000000 3f800000
+SetBalance(40000000) -> c00d3702 get 00000000 3f800000
+GetMute -> 00000000 0
+SetMute(TRUE) -> 00000000
+GetMute after TRUE -> 00000000 1
+SetMute(2) -> 00000000
+GetMute after 2 -> 00000000 2
+SetMute(FALSE) -> 00000000
+GetNativeVideoSize -> c00d36b2 7x7 7x7
+GetNativeVideoSize(NULL,NULL) -> c00d36b2
+GetIdealVideoSize -> c00d36b2 7x7 7x7
+SetVideoSourceRect(0,0,1,1) -> 80070578
+SetVideoSourceRect(inverted) -> 80070578
+SetVideoSourceRect(NULL) -> 80070578
+GetVideoSourceRect -> c00d36b2 c0e00000 c0e00000 c0e00000 c0e00000
+GetAspectRatioMode -> c00d36b2 0000cccc
+SetAspectRatioMode(0) -> c00d36b2
+SetAspectRatioMode(1) -> c00d36b2
+SetAspectRatioMode(2) -> c00d36b2
+SetAspectRatioMode(4) -> c00d36b2
+SetAspectRatioMode(7) -> c00d36b2
+SetAspectRatioMode(8) -> c00d36b2
+GetVideoWindow -> 00000000 0
+UpdateVideo -> c00d36b2
+SetBorderColor(0x123456) -> c00d36b2
+GetBorderColor -> c00d36b2 cccccccc
+InsertEffect(non-MFT IUnknown) -> 00000000
+InsertEffect(non-MFT IUnknown, optional) -> c00d36bf
+RemoveEffect(not inserted) -> 00000000
+RemoveAllEffects -> 00000000
+CreateMediaItemFromObject(NULL,sync) -> 80004003 1
+CreateMediaItemFromURL(NULL,sync) -> 80004003 0
+CreateMediaItemFromURL(wav,sync,NULL out) -> 80004003
+CreateMediaItemFromURL(missing,sync) -> 80070002 0
+CreateMediaItemFromURL(junk,sync) -> c00d36c4 0
+CreateMediaItemFromURL(scheme,sync) -> c00d36c3 0
+CreateMediaItemFromURL(wav,async,&out) no callback -> c00d36b2 1
+CreateMediaItemFromURL(wav,async,NULL) no callback -> c00d36b2
+-- after Shutdown
+Shutdown -> 00000000
+Shutdown again -> 00000000
+GetState -> 00000000 4
+Play -> c00d3e85
+Pause -> c00d3e85
+Stop -> c00d3e85
+FrameStep -> c00d3e85
+GetPosition -> c00d3e85 0
+SetRate(1) -> c00d3e85
+GetRate -> c00d3e85 c0e00000
+GetSupportedRates(fwd) -> c00d3e85 c0e00000 c0e00000
+GetMediaItem -> c00d3e85 0
+ClearMediaItem -> c00d3e85
+CreateMediaItemFromURL(wav,sync) -> c00d3e85 0
+GetVolume -> 00000000 3f800000
+SetVolume(0.5) -> 00000000
+GetBalance -> 00000000 3f800000
+GetMute -> 00000000 0
+SetMute(TRUE) -> 00000000
+GetNativeVideoSize -> c00d3e85
+GetVideoWindow -> 00000000 0
+UpdateVideo -> c00d3e85
+GetAspectRatioMode -> c00d3e85 0000cccc
+GetBorderColor -> c00d3e85 cccccccc
+RemoveAllEffects -> 00000000
+final Release -> 00000000 3
+== media item (wav, sync)
+CreateMediaItemFromURL(wav,sync) -> 00000000 1
+item AddRef -> 00000000 2
+item Release -> 00000000 1
+QI(IUnknown) -> 00000000 1
+QI(IMFPMediaPlayer) -> 80004002 1
+GetMediaPlayer -> 00000000 1
+GetMediaPlayer(NULL) -> 80004003
+GetURL equals -> 00000000 1
+GetURL(NULL) -> 80004003
+GetObject -> c00d36d5 0
+GetUserData -> 00000000 4660
+SetUserData(77) -> 00000000
+GetUserData after -> 00000000 77
+GetUserData(NULL) -> 80004003
+GetStartStopPosition -> 00000000 g1null=1 vt1=0 g2null=1 vt2=0
+GetStartStopPosition(all NULL) -> 80004003
+SetStartStopPosition(0.1s,0.2s) -> 00000000
+GetStartStopPosition after -> 00000000 g1100ns=1 vt1=20 v1=1000000 g2100ns=1 vt2=20 v2=2000000
+SetStartStopPosition(stop<start) -> c00d3702
+SetStartStopPosition(VT_UI4 start) -> 80070057
+SetStartStopPosition(bad guid) -> 80070057
+SetStartStopPosition(guid, NULL value) -> 80004003
+SetStartStopPosition(VT_EMPTY both) -> 00000000
+SetStartStopPosition(all NULL) -> 80004003
+GetStartStopPosition after clear -> 00000000 g1null=1 vt1=0 g2null=1 vt2=0
+HasVideo -> 00000000 0 0
+HasVideo(NULL,NULL) -> 00000000
+HasAudio -> 00000000 1 1
+IsProtected -> 00000001 0
+GetDuration(100NS) -> 00000000 vt=21 v=2500000
+GetDuration(bad guid) -> 80070057 0
+GetNumberOfStreams -> 00000000 1
+GetStreamSelection(0) -> 00000000 1
+GetStreamSelection(5) -> 80070057 0
+SetStreamSelection(0,FALSE) -> 00000000
+GetStreamSelection(0) after -> 00000000 0
+HasAudio after deselect -> 00000000 1 0
+SetStreamSelection(0,TRUE) -> 00000000
+SetStreamSelection(5,TRUE) -> 80070057
+GetStreamAttribute(0,MF_SD_LANGUAGE) -> c00d36e6 0
+GetStreamAttribute(5,MF_SD_LANGUAGE) -> 80070057 0
+GetPresentationAttribute(MF_PD_DURATION) -> 00000000 vt=21 v=2500000
+GetPresentationAttribute(unknown key) -> c00d36e6 0
+GetCharacteristics -> 00000000 00000006
+SetStreamSink(0,NULL) -> 00000000
+SetStreamSink(5,NULL) -> 00000000
+GetMetadata -> 00000000 2
+other player SetMediaItem(item) -> 80070057
+SetMediaItem(item) no callback -> 00000000
+GetMediaItem immediately -> c00d36d5 0
+GetMediaItem after pump -> c00d36d5 0
+GetState after set -> 00000000 0
+GetNativeVideoSize(audio item) -> c00d36b2 7x7
+player GetDuration -> c00d36b2 vt=52428 v=-1
+GetSupportedRates(fwd,item) -> c00d36d0 c0e00000 c0e00000
+GetSupportedRates(rev,item) -> c00d36d0 c0e00000 c0e00000
+ClearMediaItem -> 00000000
+GetMediaItem after clear -> c00d36d5 0
+-- item after player Shutdown
+player Shutdown -> 00000000
+GetMediaPlayer -> c00d3e85 0
+GetURL -> c00d3e85 0
+GetUserData -> 00000000 77
+HasAudio -> c00d3e85 0 0
+GetNumberOfStreams -> c00d3e85 0
+GetDuration -> c00d3e85 0
+item final Release -> 00000000 0
+player final Release -> 00000000 0
+== events (default: creator thread, message loop)
+create(callback) -> 00000000 1
+  callback refs after create -> 00000000 2
+CreateMediaItemFromURL(wav,async,NULL out,user 0x55) -> 00000000
+  events before pumping -> 00000000 0
+  ev[async create] MEDIAITEM_CREATED hr=00000000 state=0 player=1 item=1 store=0 creator=1 incall=0 user=85
+CreateMediaItemFromURL(missing,async) -> 00000000
+  ev[async missing] MEDIAITEM_CREATED hr=80070002 state=0 player=1 item=0 store=0 creator=1 incall=0 user=9
+CreateMediaItemFromURL(wav,sync) -> 00000000
+  events from sync create -> 00000000 0
+SetMediaItem -> 00000000
+  ev[set] MEDIAITEM_SET hr=c00d36fa state=0 player=1 item=1 store=1 creator=1 incall=0
+  GetState -> 00000000 0
+SetRate(2) -> 00000000
+  ev[rate 2] RATE_SET hr=c00d36d0 state=0 player=1 item=0 store=0 creator=1 incall=0 rate=00000000
+SetRate(1) -> 00000000
+  ev[rate 1] RATE_SET hr=00000000 state=0 player=1 item=0 store=0 creator=1 incall=0 rate=3f800000
+  GetRate -> 00000000 3f800000
+SetPosition(0.05s) stopped -> 00000000
+  ev[pos stopped] POSITION_SET hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetPosition -> c00d36b2 vt=0 v=-1
+SetPosition(VT_UI4) -> 80070057
+SetPosition(-5) -> c00d36e5
+SetPosition(bad guid) -> 80070057
+SetPosition(10s > duration) -> 00000000
+  ev[pos beyond] POSITION_SET hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+Pause from stopped -> 00000000
+  ev[pause] PAUSE hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState -> 00000000 0
+FrameStep (audio only) -> 00000000
+  ev[framestep] FRAME_STEP hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+Stop -> 00000000
+  ev[stop] STOP hr=00000000 state=0 player=1 item=0 store=0 creator=1 incall=0
+Stop again -> 00000000
+  ev[stop again] STOP hr=00000000 state=0 player=1 item=0 store=0 creator=1 incall=0
+Play -> 00000000
+  ev[play] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState -> 00000000 0
+  GetState after end -> 00000000 0
+  GetPosition after end -> c00d36b2 vt=0
+Play again -> 00000000
+  ev[play2] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+Pause while playing -> 00000000
+  ev[pause2] PAUSE hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+Play while paused -> 00000000
+  ev[play3] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+ClearMediaItem -> 00000000
+  ev[clear] MEDIAITEM_CLEARED hr=00000000 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState after clear -> 00000000 0
+Shutdown -> 00000000
+  callback refs after Shutdown -> 00000000 1
+  item final Release -> 00000000 0
+  player final Release -> 00000000 0
+  callback refs after Release -> 00000000 1
+-- create(wav, start TRUE, callback)
+create -> 00000000 1
+  ev[autoplay] MEDIAITEM_SET hr=c00d36fa state=0 player=1 item=1 store=1 creator=1 incall=0
+  ev[autoplay] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+-- create(wav, start FALSE, callback)
+create -> 00000000 1
+-- create(missing, start TRUE, callback)
+create -> 80070002 0
+== events (MFP_OPTION_FREE_THREADED_CALLBACK)
+create -> 00000000 1
+  thread windows added -> 00000000 0
+CreateMediaItemFromURL(wav,async) -> 00000000
+  ev[ft create] MEDIAITEM_CREATED hr=00000000 state=0 player=1 item=1 store=0 creator=0 incall=0 user=119
+SetMediaItem -> 00000000
+  ev[ft set] MEDIAITEM_SET hr=c00d36fa state=0 player=1 item=1 store=1 creator=0 incall=0
+Play -> 00000000
+  ev[ft play+end] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=0 incall=0
+Shutdown -> 00000000
+== events (audio stream deselected)
+create -> 00000000 1
+CreateMediaItemFromURL(sync) -> 00000000 1
+SetStreamSelection(0,FALSE) -> 00000000
+item refs before set (AddRef-1) -> 00000000 1
+SetMediaItem -> c00d5214
+  GetMediaItem while pending -> c00d36d5 0
+  item refs after set (AddRef-1) -> 00000000 1
+  GetMediaItem -> c00d36d5 0
+  GetState -> 00000000 0
+  GetDuration -> c00d36b2 vt=52428 v=-1
+  GetPosition -> c00d36b2 vt=0 v=-1
+  GetSupportedRates(fwd) -> c00d36d0 c0e00000 c0e00000
+  GetSupportedRates(rev) -> c00d36d0 c0e00000 c0e00000
+  GetNativeVideoSize -> c00d36b2
+  UpdateVideo -> c00d36b2
+  FrameStep -> 00000000
+  ev[framestep] FRAME_STEP hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+SetRate(2) -> 00000000
+  ev[rate 2] RATE_SET hr=c00d36d0 state=0 player=1 item=0 store=0 creator=1 incall=0 rate=00000000
+SetRate(100) -> 00000000
+  ev[rate 100] RATE_SET hr=c00d36d0 state=0 player=1 item=0 store=0 creator=1 incall=0 rate=00000000
+  GetRate -> 00000000 3f800000
+SetRate(-1) -> 00000000
+  ev[rate -1] RATE_SET hr=c00d36d0 state=0 player=1 item=0 store=0 creator=1 incall=0 rate=00000000
+SetRate(1) -> 00000000
+  ev[rate 1] RATE_SET hr=00000000 state=0 player=1 item=0 store=0 creator=1 incall=0 rate=3f800000
+SetPosition(0.05s) stopped -> 00000000
+  ev[pos] POSITION_SET hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetPosition -> c00d36b2 vt=0 v=-1
+SetPosition(10s > duration) -> 00000000
+  ev[pos beyond] POSITION_SET hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+SetPosition(0) -> 00000000
+  ev[pos 0] POSITION_SET hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+Pause from stopped -> 00000000
+  ev[pause] PAUSE hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState -> 00000000 0
+Play -> 00000000
+  GetState right after Play -> 00000000 0
+  ev[play] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState -> 00000000 0
+Play while playing -> 00000000
+  ev[end] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState after end -> 00000000 0
+  GetPosition after end -> c00d36b2 vt=0 v=-1
+Play after end -> 00000000
+  ev[replay] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+Pause while playing -> 00000000
+  ev[pause2] PAUSE hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState -> 00000000 0
+Stop -> 00000000
+  ev[stop] STOP hr=00000000 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState -> 00000000 0
+  GetPosition after stop -> c00d36b2 vt=0 v=-1
+SetMediaItem(same) again -> c00d5214
+SetStartStopPosition(0.05,0.15) -> 00000000
+  player GetDuration before re-set -> c00d36b2 v=-1
+SetMediaItem(clip) -> c00d5214
+  player GetDuration clip -> c00d36b2 vt=52428 v=-1
+  item GetDuration clip -> 00000000 v=2500000
+  GetPosition clip -> c00d36b2 v=-1
+Play clip -> 00000000
+  ev[clip] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+ClearMediaItem -> 00000000
+  ev[clear] MEDIAITEM_CLEARED hr=00000000 state=0 player=1 item=0 store=0 creator=1 incall=0
+  GetState after clear -> 00000000 0
+  GetMediaItem after clear -> c00d36d5 0
+  item refs after clear (AddRef-1) -> 00000000 1
+SetMediaItem before release -> c00d5214
+Play before release -> 00000000
+  ev[play before release] PLAY hr=c00d36b2 state=0 player=1 item=0 store=0 creator=1 incall=0
+  player Release (no Shutdown) -> 00000000 2
+  item final Release -> 00000000 0
+-- create(wav, start TRUE, callback), no device: stream left selected
+== done

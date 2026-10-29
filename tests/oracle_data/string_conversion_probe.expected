@@ -1,0 +1,52 @@
+M utf8-query-ntz ret=6 err=0 out=eeee 
+M utf8-conv-ntz ret=6 err=0 out=0068 00e9 006c 006c 006f 0000 eeee 
+M utf8-conv-len ret=5 err=0 out=0068 00e9 006c 006c 006f eeee 
+M utf8-emoji-query ret=4 err=0 out=eeee 
+M utf8-emoji ret=4 err=0 out=0061 d83d de00 007a eeee 
+M utf8-emoji-short2 ret=0 err=122 out=0061 
+M utf8-emoji-short3 ret=0 err=122 out=0061 
+M utf8-small-ntz ret=0 err=122 out=0068 
+M utf8-lone-ff ret=3 err=0 out=0061 fffd 0062 eeee 
+M utf8-trunc-c3 ret=2 err=0 out=0061 fffd eeee 
+M utf8-c3-then-A ret=2 err=0 out=fffd 0041 eeee 
+M utf8-overlong ret=2 err=0 out=fffd fffd eeee 
+M utf8-overlong3 ret=2 err=0 out=fffd fffd eeee 
+M utf8-surrogate ret=2 err=0 out=fffd fffd eeee 
+M utf8-above-10ffff ret=3 err=0 out=fffd fffd fffd eeee 
+M utf8-f5 ret=4 err=0 out=fffd fffd fffd fffd eeee 
+M utf8-trunc4 ret=2 err=0 out=fffd 0041 eeee 
+M utf8-err-valid ret=6 err=0 out=0068 00e9 006c 006c 006f 0000 eeee 
+M utf8-err-invalid ret=0 err=1113 out=0061 
+M utf8-err-query-inv ret=0 err=1113 out=eeee 
+M utf8-flag-precomp ret=6 err=0 out=0068 00e9 006c 006c 006f 0000 eeee 
+M utf8-cb0 ret=0 err=87 out=eeee 
+M utf8-embedded-nul ret=3 err=0 out=0061 0000 0062 eeee 
+M cp1252-all-hi ret=8 err=0 out=20ac 0081 008d 008f 0090 009d 00a0 00ff eeee 
+M cp1252-precomp ret=1 err=0 out=00e9 eeee 
+M cp1252-err ret=1 err=0 out=0081 eeee 
+M cp437-hi ret=4 err=0 out=00c7 2591 00df 25a0 eeee 
+M cp-invalid ret=0 err=87 out=eeee 
+M cp-acp ret=1 err=0 out=00e9 eeee 
+M cp-oemcp ret=1 err=0 out=00e9 eeee 
+M cp-thread ret=1 err=0 out=00e9 eeee 
+M cp-symbol ret=1 err=0 out=f041 eeee 
+W utf8-query ret=7 err=0 used=-1 out=ee 
+W utf8-conv ret=7 err=0 used=-1 out=68 c3 a9 6c 6c 6f 00 ee 
+W utf8-small ret=0 err=122 used=-1 out=68 
+W utf8-emoji ret=7 err=0 used=-1 out=61 f0 9f 98 80 7a 00 ee 
+W utf8-lonehi ret=6 err=0 used=-1 out=61 ef bf bd 7a 00 ee 
+W utf8-lonelo ret=6 err=0 used=-1 out=61 ef bf bd 7a 00 ee 
+W utf8-lonehi-err ret=0 err=1113 used=-1 out=61 
+W utf8-used-flag ret=7 err=0 used=0 out=68 c3 a9 6c 6c 6f 00 ee 
+W utf8-defchar ret=7 err=0 used=-1 out=68 c3 a9 6c 6c 6f 00 ee 
+W utf8-flag-nbf ret=7 err=0 used=-1 out=68 c3 a9 6c 6c 6f 00 ee 
+W utf8-cch0 ret=0 err=87 used=-1 out=ee 
+W cp1252-latin ret=5 err=0 used=1 out=41 95 3f 78 00 ee 
+W cp1252-latin-nbf ret=5 err=0 used=1 out=3f 95 3f 78 00 ee 
+W cp1252-latin-def ret=5 err=0 used=1 out=23 95 23 78 00 ee 
+W cp1252-hello-used ret=6 err=0 used=0 out=68 e9 6c 6c 6f 00 ee 
+W cp1252-emoji ret=5 err=0 used=1 out=61 3f 3f 7a 00 ee 
+W cp1252-query-latin ret=5 err=0 used=1 out=ee 
+W cp1252-small ret=0 err=122 used=0 out=68 
+W cp437-latin ret=5 err=0 used=1 out=41 07 3f 78 00 ee 
+W cp-invalid ret=0 err=87 used=-1 out=ee 

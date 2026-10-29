@@ -1,0 +1,33 @@
+write_ok ok=1 gle=0
+read_caseins ok=1 gle=0 type=1 persist=2 blob=5 b4=4 lw=1 attrs=0 aliasNull=1 flags=0 targetExact=1
+read_wrongtype ok=0 gle=57
+read_badflags ok=1 gle=0
+read_nulltarget ok=0 gle=57
+write_preserve ok=1 gle=0
+read_after_preserve blob=5
+write_preserve_missing ok=0 gle=490
+write_bigblob ok=0 gle=6f7
+write_persist0 ok=0 gle=57
+write_persist4 ok=0 gle=57
+write_type0 ok=0 gle=57
+write_type7 ok=0 gle=57
+write_flags2 ok=0 gle=57
+write_credflags ok=0 gle=57
+write_nulltarget ok=0 gle=57
+write_null ok=0 gle=57
+write_2560 ok=1 gle=0
+delete_2560 ok=1 gle=0
+write_domain ok=1 gle=0
+read_domain ok=1 blob=0 blobNull=1
+write_domain_nouser ok=0 gle=89a
+delete_domain ok=1 gle=0
+delete ok=1 gle=0
+delete_again ok=0 gle=490
+delete_badflags ok=0 gle=490
+credfree_null ok
+pc_primary ok=1 gle=0 res=1 attr=80000000
+pc_imp_enabled ok=1 gle=1 res=1 attr=80000000
+pc_imp_disabled ok=1 res=1 attr=80000000
+pc_any ok=1 res=1 a0=80000000 a1=80000000
+pc_all ok=1 res=1 a0=80000000
+pc_noquery ok=0 gle=5

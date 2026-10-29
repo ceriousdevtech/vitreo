@@ -1,0 +1,31 @@
+query initial status=00000000 bytes=00,a5 returned=00000001 gle=1234
+query zero status=c0000004 bytes=a5,a5 returned=cccccccc gle=1234
+query large status=c0000004 bytes=a5,a5 returned=cccccccc gle=1234
+set bad-length status=c0000004 gle=1234
+set bad-handle status=c0000008 gle=1234
+set bad-both status=c0000004 gle=1234
+set wrong-type status=c0000024 gle=1234
+query no-access status=c0000022 bytes=a5,a5 returned=cccccccc gle=1234
+set no-access status=c0000022 gle=1234
+query set status=c0000022 bytes=a5,a5 returned=cccccccc gle=1234
+set set status=00000000 gle=1234
+query set-limited status=c0000022 bytes=a5,a5 returned=cccccccc gle=1234
+set set-limited status=c0000022 gle=1234
+query query status=00000000 bytes=01,a5 returned=00000001 gle=1234
+set query status=c0000022 gle=1234
+query query-limited status=c0000022 bytes=a5,a5 returned=cccccccc gle=1234
+set query-limited status=c0000022 gle=1234
+query other status=00000000 bytes=01,a5 returned=00000001 gle=1234
+query self-unchanged status=00000000 bytes=00,a5 returned=00000001 gle=1234
+set nonnull-zero status=00000000 gle=1234
+query hidden status=00000000 bytes=01,a5 returned=00000001 gle=1234
+set repeat status=00000000 gle=1234
+query bad-handle status=c0000008 bytes=a5,a5 returned=cccccccc gle=1234
+query bad-both status=c0000004 bytes=a5,a5 returned=cccccccc gle=1234
+query wrong-type status=c0000024 bytes=a5,a5 returned=cccccccc gle=1234
+query null status=c0000005 returned=cccccccc
+query no-return-length status=00000000 byte=01
+query bad-return-length status=c0000005 byte=a5
+query null-invalid-handle status=c0000008 returned=cccccccc
+query terminated status=00000000 bytes=01,a5 returned=00000001 gle=1234
+set terminated status=00000000 gle=1234

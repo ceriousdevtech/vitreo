@@ -1,0 +1,104 @@
+layout props=28 type=0 format=4 dpiX=12 dpiY=16 usage=20 level=24 brush=28 color=16
+create type=0 format=0 alpha=0 hr=88982f80 output=0
+create type=0 format=0 alpha=1 hr=88982f80 output=0
+create type=0 format=0 alpha=2 hr=88982f80 output=0
+create type=0 format=0 alpha=3 hr=88982f80 output=0
+create type=0 format=0 alpha=4 hr=80070057 output=0
+create type=0 format=87 alpha=0 hr=88982f80 output=0
+create type=0 format=87 alpha=1 hr=00000000 output=1
+create type=0 format=87 alpha=2 hr=88982f80 output=0
+create type=0 format=87 alpha=3 hr=00000000 output=1
+create type=0 format=87 alpha=4 hr=80070057 output=0
+create type=0 format=28 alpha=0 hr=88982f80 output=0
+create type=0 format=28 alpha=1 hr=88982f80 output=0
+create type=0 format=28 alpha=2 hr=88982f80 output=0
+create type=0 format=28 alpha=3 hr=88982f80 output=0
+create type=0 format=28 alpha=4 hr=80070057 output=0
+create type=1 format=0 alpha=0 hr=88982f80 output=0
+create type=1 format=0 alpha=1 hr=88982f80 output=0
+create type=1 format=0 alpha=2 hr=88982f80 output=0
+create type=1 format=0 alpha=3 hr=88982f80 output=0
+create type=1 format=0 alpha=4 hr=80070057 output=0
+create type=1 format=87 alpha=0 hr=88982f80 output=0
+create type=1 format=87 alpha=1 hr=00000000 output=1
+create type=1 format=87 alpha=2 hr=88982f80 output=0
+create type=1 format=87 alpha=3 hr=00000000 output=1
+create type=1 format=87 alpha=4 hr=80070057 output=0
+create type=1 format=28 alpha=0 hr=88982f80 output=0
+create type=1 format=28 alpha=1 hr=88982f80 output=0
+create type=1 format=28 alpha=2 hr=88982f80 output=0
+create type=1 format=28 alpha=3 hr=88982f80 output=0
+create type=1 format=28 alpha=4 hr=80070057 output=0
+create type=2 format=0 alpha=0 hr=88982f80 output=0
+create type=2 format=0 alpha=1 hr=88982f80 output=0
+create type=2 format=0 alpha=2 hr=88982f80 output=0
+create type=2 format=0 alpha=3 hr=88982f80 output=0
+create type=2 format=0 alpha=4 hr=80070057 output=0
+create type=2 format=87 alpha=0 hr=88982f80 output=0
+create type=2 format=87 alpha=1 hr=00000000 output=1
+create type=2 format=87 alpha=2 hr=88982f80 output=0
+create type=2 format=87 alpha=3 hr=00000000 output=1
+create type=2 format=87 alpha=4 hr=80070057 output=0
+create type=2 format=28 alpha=0 hr=88982f80 output=0
+create type=2 format=28 alpha=1 hr=88982f80 output=0
+create type=2 format=28 alpha=2 hr=88982f80 output=0
+create type=2 format=28 alpha=3 hr=88982f80 output=0
+create type=2 format=28 alpha=4 hr=80070057 output=0
+create type=3 format=0 alpha=0 hr=80070057 output=0
+create type=3 format=0 alpha=1 hr=80070057 output=0
+create type=3 format=0 alpha=2 hr=80070057 output=0
+create type=3 format=0 alpha=3 hr=80070057 output=0
+create type=3 format=0 alpha=4 hr=80070057 output=0
+create type=3 format=87 alpha=0 hr=80070057 output=0
+create type=3 format=87 alpha=1 hr=80070057 output=0
+create type=3 format=87 alpha=2 hr=80070057 output=0
+create type=3 format=87 alpha=3 hr=80070057 output=0
+create type=3 format=87 alpha=4 hr=80070057 output=0
+create type=3 format=28 alpha=0 hr=80070057 output=0
+create type=3 format=28 alpha=1 hr=80070057 output=0
+create type=3 format=28 alpha=2 hr=80070057 output=0
+create type=3 format=28 alpha=3 hr=80070057 output=0
+create type=3 format=28 alpha=4 hr=80070057 output=0
+target hr=00000000
+property variant=0 hr=80070057 output=0
+property variant=1 hr=80070057 output=0
+property variant=2 hr=80070057 output=0
+property variant=3 hr=00000000 output=1 dpi=120,144
+property variant=4 hr=00000000 output=1 dpi=96,96
+property variant=5 hr=00000000 output=1 dpi=96,96
+property variant=6 hr=00000000 output=1 dpi=96,96
+property variant=7 hr=80070057 output=0
+property variant=8 hr=00000000 output=1 dpi=96,96
+property variant=9 hr=00000000 output=1 dpi=96,96
+property variant=10 hr=80070057 output=0
+property variant=11 hr=80070057 output=0
+end_without_begin hr=88990001 tags=0,0
+unbound_clear hr=88990001 tags=0,0
+bind_null_dc hr=80070057
+bind_zero hr=00000000
+bind_reverse hr=00000000
+bind hr=00000000
+brush hr=00000000
+draw hr=00000000 tags=0,0 corners=ffff0000 center=ff0000ff
+double_begin hr=88990001 tags=31,32
+recovery hr=00000000 tags=0,0
+pixels alpha=1 aa=0 variant=0 hr=00000000 data=801a334c801a334c801a334c801a334c801a334cb05c3339b05c3339801a334c801a334cb05c3339b05c3339801a334c801a334c801a334c801a334c801a334c
+pixels alpha=1 aa=0 variant=1 hr=00000000 data=9b3f3342a44c333e9b3f3342801a334ca44c333eb05c3339a44c333e801a334c9b3f3342a44c333e9b3f3342801a334c801a334c801a334c801a334c801a334c
+pixels alpha=1 aa=0 variant=2 hr=00000000 data=801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c8420334aa44c333ea44c333e801a334c86233349b05c3339b05c3339
+pixels alpha=1 aa=0 variant=3 hr=00000000 data=801a334c801a334c801a334c801a334c801a334cb05c3339801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c
+pixels alpha=1 aa=1 variant=0 hr=00000000 data=801a334c801a334c801a334c801a334c801a334cb05c3339b05c3339801a334c801a334cb05c3339b05c3339801a334c801a334c801a334c801a334c801a334c
+pixels alpha=1 aa=1 variant=1 hr=00000000 data=b05c3339b05c3339b05c3339801a334cb05c3339b05c3339b05c3339801a334cb05c3339b05c3339b05c3339801a334c801a334c801a334c801a334c801a334c
+pixels alpha=1 aa=1 variant=2 hr=00000000 data=801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334cb05c3339b05c3339801a334c801a334cb05c3339b05c3339
+pixels alpha=1 aa=1 variant=3 hr=00000000 data=801a334c801a334c801a334c801a334c801a334cb05c3339801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c801a334c
+pixels alpha=3 aa=0 variant=0 hr=00000000 data=ff336699ff336699ff336699ff336699ff336699ff6c5369ff6c5369ff336699ff336699ff6c5369ff6c5369ff336699ff336699ff336699ff336699ff336699
+pixels alpha=3 aa=0 variant=1 hr=00000000 data=ff535b7fff5e5775ff535b7fff336699ff5e5775ff6c5369ff5e5775ff336699ff535b7fff5e5775ff535b7fff336699ff336699ff336699ff336699ff336699
+pixels alpha=3 aa=0 variant=2 hr=00000000 data=ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff386495ff5e5775ff5e5775ff336699ff3b6393ff6c5369ff6c5369
+pixels alpha=3 aa=0 variant=3 hr=00000000 data=ff336699ff336699ff336699ff336699ff336699ff6c5369ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699
+pixels alpha=3 aa=1 variant=0 hr=00000000 data=ff336699ff336699ff336699ff336699ff336699ff6c5369ff6c5369ff336699ff336699ff6c5369ff6c5369ff336699ff336699ff336699ff336699ff336699
+pixels alpha=3 aa=1 variant=1 hr=00000000 data=ff6c5369ff6c5369ff6c5369ff336699ff6c5369ff6c5369ff6c5369ff336699ff6c5369ff6c5369ff6c5369ff336699ff336699ff336699ff336699ff336699
+pixels alpha=3 aa=1 variant=2 hr=00000000 data=ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff6c5369ff6c5369ff336699ff336699ff6c5369ff6c5369
+pixels alpha=3 aa=1 variant=3 hr=00000000 data=ff336699ff336699ff336699ff336699ff336699ff6c5369ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699ff336699
+domain=0 hr=88990015 tags=41,42 center=ff6c5369
+domain=1 hr=88990015 tags=41,42 center=ff6c5369
+domain=2 hr=88990012 tags=41,42 center=ff6c5369
+get_factory identity=1 release=4

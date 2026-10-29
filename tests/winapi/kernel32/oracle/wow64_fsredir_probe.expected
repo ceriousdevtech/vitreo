@@ -1,0 +1,87 @@
+bits=32 wow64=1
+system32                     C:\Windows\System32\vprobe_fsr.txt -> wow
+catroot                      C:\Windows\System32\catroot\vprobe_fsr.txt -> native
+catroot2                     C:\Windows\System32\catroot2\vprobe_fsr.txt -> native
+drivers\etc                  C:\Windows\System32\drivers\etc\vprobe_fsr.txt -> native
+driverstore                  C:\Windows\System32\driverstore\vprobe_fsr.txt -> err2
+logfiles                     C:\Windows\System32\logfiles\vprobe_fsr.txt -> native
+spool                        C:\Windows\System32\spool\vprobe_fsr.txt -> native
+drivers                      C:\Windows\System32\drivers\vprobe_fsr.txt -> wow
+config                       C:\Windows\System32\config\vprobe_fsr.txt -> wow
+wbem                         C:\Windows\System32\wbem\vprobe_fsr.txt -> wow
+sysnative                    C:\Windows\Sysnative\vprobe_fsr.txt -> native
+sysnative-etc                C:\Windows\Sysnative\drivers\etc\vprobe_fsr.txt -> native
+syswow64                     C:\Windows\SysWOW64\vprobe_fsr.txt -> wow
+upper                        C:\WINDOWS\SYSTEM32\VPROBE_FSR.TXT -> wow
+slash                        C:/Windows/System32/vprobe_fsr.txt -> wow
+dotdot                       C:\Windows\Temp\..\System32\vprobe_fsr.txt -> wow
+long-prefix                  \\?\C:\Windows\System32\vprobe_fsr.txt -> wow
+nt-global                    \\.\C:\Windows\System32\vprobe_fsr.txt -> wow
+sysnative-dir                attrs(Sysnative) -> 0x10 err=0
+cwd                          cwd=C:\Windows\System32
+relative                     vprobe_fsr.txt -> wow
+relative-etc                 drivers\etc\vprobe_fsr.txt -> wow
+find                         find -> vprobe_fsr.txt size=3
+mkdir                        create=1 wow-exists=1 native-exists=0
+fullpath                     C:\Windows\System32\x.dll
+sysdir                       C:\WINDOWS\system32
+syswow64dir                  ret=19 C:\WINDOWS\SysWOW64 err=0
+disable                      ret=1 err=0xdead old=00000000
+disabled-system32            C:\Windows\System32\vprobe_fsr.txt -> native
+disabled-sysnative           C:\Windows\Sysnative\vprobe_fsr.txt -> native
+disable-again                ret=1 err=0xdead old=00000001
+revert-inner                 ret=1 err=0xdead
+after-inner                  C:\Windows\System32\vprobe_fsr.txt -> native
+revert                       ret=1 err=0xdead
+reverted                     C:\Windows\System32\vprobe_fsr.txt -> wow
+enable(FALSE)                ret=1 err=0xdead
+enable-false                 C:\Windows\System32\vprobe_fsr.txt -> native
+enable(TRUE)                 ret=1 err=0xdead
+enable-true                  C:\Windows\System32\vprobe_fsr.txt -> wow
+disable(NULL)                ret=0 err=0x3e6
+per-thread other             C:\Windows\System32\vprobe_fsr.txt -> wow
+per-thread                   main-thread -> native
+======
+bits=64 wow64=0
+system32                     C:\Windows\System32\vprobe_fsr.txt -> native
+catroot                      C:\Windows\System32\catroot\vprobe_fsr.txt -> native
+catroot2                     C:\Windows\System32\catroot2\vprobe_fsr.txt -> native
+drivers\etc                  C:\Windows\System32\drivers\etc\vprobe_fsr.txt -> native
+driverstore                  C:\Windows\System32\driverstore\vprobe_fsr.txt -> err2
+logfiles                     C:\Windows\System32\logfiles\vprobe_fsr.txt -> native
+spool                        C:\Windows\System32\spool\vprobe_fsr.txt -> native
+drivers                      C:\Windows\System32\drivers\vprobe_fsr.txt -> native
+config                       C:\Windows\System32\config\vprobe_fsr.txt -> native
+wbem                         C:\Windows\System32\wbem\vprobe_fsr.txt -> native
+sysnative                    C:\Windows\Sysnative\vprobe_fsr.txt -> err3
+sysnative-etc                C:\Windows\Sysnative\drivers\etc\vprobe_fsr.txt -> err3
+syswow64                     C:\Windows\SysWOW64\vprobe_fsr.txt -> wow
+upper                        C:\WINDOWS\SYSTEM32\VPROBE_FSR.TXT -> native
+slash                        C:/Windows/System32/vprobe_fsr.txt -> native
+dotdot                       C:\Windows\Temp\..\System32\vprobe_fsr.txt -> native
+long-prefix                  \\?\C:\Windows\System32\vprobe_fsr.txt -> native
+nt-global                    \\.\C:\Windows\System32\vprobe_fsr.txt -> native
+sysnative-dir                attrs(Sysnative) -> 0xffffffff err=2
+cwd                          cwd=C:\Windows\System32
+relative                     vprobe_fsr.txt -> native
+relative-etc                 drivers\etc\vprobe_fsr.txt -> native
+find                         find -> vprobe_fsr.txt size=6
+mkdir                        create=1 wow-exists=0 native-exists=1
+fullpath                     C:\Windows\System32\x.dll
+sysdir                       C:\WINDOWS\system32
+syswow64dir                  ret=19 C:\WINDOWS\SysWOW64 err=0
+disable                      ret=0 err=0x1 old=0000000000001234
+disabled-system32            C:\Windows\System32\vprobe_fsr.txt -> native
+disabled-sysnative           C:\Windows\Sysnative\vprobe_fsr.txt -> err3
+disable-again                ret=0 err=0x1 old=0000000000005678
+revert-inner                 ret=0 err=0x1
+after-inner                  C:\Windows\System32\vprobe_fsr.txt -> native
+revert                       ret=0 err=0x1
+reverted                     C:\Windows\System32\vprobe_fsr.txt -> native
+enable(FALSE)                ret=0 err=0x1
+enable-false                 C:\Windows\System32\vprobe_fsr.txt -> native
+enable(TRUE)                 ret=0 err=0x1
+enable-true                  C:\Windows\System32\vprobe_fsr.txt -> native
+disable(NULL)                ret=0 err=0x1
+per-thread other             C:\Windows\System32\vprobe_fsr.txt -> native
+per-thread                   main-thread -> native

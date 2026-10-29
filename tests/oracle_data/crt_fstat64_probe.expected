@@ -1,0 +1,3 @@
+stdout r=0 errno=0 mode=0x1000 ifchr=0 ififo=1 ifreg=0 dev=1 rdev=1 nlink=1 size=0 
+stdin r=0 errno=0 mode=0x1000 ifchr=0 ififo=1 ifreg=0 dev=0 rdev=0 nlink=1 size=0 
+stderr r=0 errno=0 mode=0x1000 ifchr=0 ififo=1 ifreg=0 dev=2 rdev=2 nlink=1 size=0 

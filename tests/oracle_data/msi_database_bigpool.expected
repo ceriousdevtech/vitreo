@@ -1,0 +1,62 @@
+mk open=0 exec=0
+mkb open=0 exec=0
+bin 0
+mkl open=0 exec=0
+long 0
+commit 0
+bin row [3]#|zz_bin|<s6>|7
+bin end=259 rows=1
+long-size 70000
+mkw open=0 exec=0
+w1 open=0 exec=0
+w2 open=0 exec=0
+w3 open=0 exec=0
+mkw open=0 exec=0
+w1 open=0 exec=0
+w2 open=0 exec=0
+w3 open=0 exec=0
+wu open=0 exec=0
+wd open=0 exec=0
+wi open=0 exec=0
+gen 0
+clean rc=0
+clean lasterr none
+clean row [5]#|1|1|7|~|9
+clean row [5]#|3|3|~|~|3
+clean row [5]#|4|~|~|8|~
+clean end=259 rows=3
+prep open=0 exec=0
+addexisting rc=0
+addexisting lasterr none
+addexisting open=1615
+addexisting lasterr [4]~|2229|t20.msi|W|SELECT `K`,`C1`,`C17`,`C18`,`C19` FROM `W`
+prep open=0 exec=0
+addexisting-ok rc=0
+addexisting-ok lasterr none
+addexisting-ok row [5]#|1|1|7|~|9
+addexisting-ok row [5]#|3|3|~|~|3
+addexisting-ok row [5]#|4|~|~|~|~
+addexisting-ok end=259 rows=3
+prep open=0 exec=0
+delmissing rc=0
+delmissing lasterr none
+delmissing open=1615
+delmissing lasterr [4]~|2229|t20.msi|W|SELECT `K`,`C1`,`C17`,`C18`,`C19` FROM `W`
+prep open=0 exec=0
+delmissing-ok rc=0
+delmissing-ok lasterr none
+delmissing-ok row [5]#|1|1|7|~|9
+delmissing-ok row [5]#|3|3|~|~|3
+delmissing-ok row [5]#|4|~|~|8|~
+delmissing-ok end=259 rows=3
+prep open=0 exec=0
+updmissing rc=0
+updmissing lasterr none
+updmissing open=1615
+updmissing lasterr [4]~|2229|t20.msi|W|SELECT `K`,`C1`,`C17`,`C18`,`C19` FROM `W`
+prep open=0 exec=0
+updmissing-ok rc=0
+updmissing-ok lasterr none
+updmissing-ok row [5]#|3|3|~|~|3
+updmissing-ok row [5]#|4|~|~|8|~
+updmissing-ok end=259 rows=2

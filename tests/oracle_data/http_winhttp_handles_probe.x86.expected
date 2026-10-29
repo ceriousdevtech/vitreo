@@ -1,0 +1,308 @@
+setcb-null: ret=0xffffffff is-invalid=1 err=12018
+setcb-bogus: is-invalid=1 err=6
+setcb-first: prev-null=1 err=0
+setcb-flags0: prev-is-cb=0 invalid=1 err=87
+setcb-again: prev-is-cb=1 err=0
+setcb-null-cb: prev-is-cb=1 err=0
+setcb-unknown-flag: prev-null=1 invalid=0 err=0
+setcb-reserved: prev-is-cb=0 invalid=1 err=87
+setcb-clear: prev-is-cb=1 err=0
+close-null: rc=0 err=6
+close-bogus: rc=0 err=6
+close-session: rc=1 err=0
+close-twice: rc=0 err=6
+closing-sync-noctx-during: count=1
+  cb status=0x800 handle=0 ctx=0x0 len=4 info-is-handle=1 caller-thread=1
+closing-sync-noctx-after: count=1
+  cb status=0x800 handle=0 ctx=0x0 len=4 info-is-handle=1 caller-thread=1
+set-context: rc=1 err=0
+closing-sync-ctx-during: count=1
+  cb status=0x800 handle=0 ctx=0x1234 len=4 info-is-handle=1 caller-thread=1
+closing-sync-ctx-after: count=1
+  cb status=0x800 handle=0 ctx=0x1234 len=4 info-is-handle=1 caller-thread=1
+created-connect: count=1
+  cb status=0x400 handle=0 ctx=0x0 len=4 info-is-handle=1 caller-thread=1
+created-request: count=1
+  cb status=0x400 handle=0 ctx=0x0 len=4 info-is-handle=1 caller-thread=1
+closing-request: count=1
+  cb status=0x800 handle=0 ctx=0x5678 len=4 info-is-handle=1 caller-thread=1
+closing-parent-first: count=0
+set-context-orphan: rc=1 err=0
+close-child-after-parent: rc=1 err=0
+closing-child-after-parent: count=2
+  cb status=0x800 handle=1 ctx=0x2468 len=4 info-is-handle=1 caller-thread=1
+  cb status=0x800 handle=0 ctx=0x0 len=4 info-is-handle=1 caller-thread=1
+created-connect-ctx: count=1
+  cb status=0x400 handle=0 ctx=0x1111 len=4 info-is-handle=1 caller-thread=1
+child-context: rc=1 value=0x1111 len=4 err=0
+closing-connect-ctx: count=1
+  cb status=0x800 handle=0 ctx=0x1111 len=4 info-is-handle=1 caller-thread=1
+closing-session-ctx: count=1
+  cb status=0x800 handle=0 ctx=0x1111 len=4 info-is-handle=1 caller-thread=1
+closing-async-during: count=1
+  cb status=0x800 handle=0 ctx=0x9abc len=4 info-is-handle=1 caller-thread=1
+closing-async-after: count=1
+  cb status=0x800 handle=0 ctx=0x9abc len=4 info-is-handle=1 caller-thread=1
+connect-null: null=1 err=6
+open-request-null: null=1 err=6
+send-null: rc=0 err=6
+receive-null: rc=0 err=6
+query-headers-null: rc=0 err=6
+read-null: rc=0 err=6
+  read-count: n=77
+write-null: rc=0 err=6
+  write-count: n=77
+available-null: rc=0 err=6
+  available-count: n=77
+add-headers-null: rc=0 err=6
+credentials-null: rc=0 err=6
+set-option-null: rc=0 err=12018
+query-option-null: rc=0 err=12018
+timeouts-null: rc=0 err=12018
+connect-bogus: null=1 err=6
+open-request-bogus: null=1 err=6
+send-bogus: rc=0 err=6
+receive-bogus: rc=0 err=6
+query-headers-bogus: rc=0 err=6
+read-bogus: rc=0 err=6
+  read-count: n=77
+write-bogus: rc=0 err=6
+  write-count: n=77
+available-bogus: rc=0 err=6
+  available-count: n=77
+add-headers-bogus: rc=0 err=6
+credentials-bogus: rc=0 err=6
+set-option-bogus: rc=0 err=6
+query-option-bogus: rc=0 err=6
+timeouts-bogus: rc=0 err=6
+open-request-session: null=1 err=12018
+send-session: rc=0 err=12018
+receive-session: rc=0 err=12018
+query-headers-session: rc=0 err=12018
+read-session: rc=0 err=12018
+  read-count: n=77
+write-session: rc=0 err=12018
+  write-count: n=77
+available-session: rc=0 err=12018
+  available-count: n=77
+add-headers-session: rc=0 err=12018
+credentials-session: rc=0 err=6
+set-option-session: rc=1 err=0
+query-option-session: rc=1 err=0
+timeouts-session: rc=1 err=0
+read-unsent: rc=0 err=12019
+  read-count: n=77
+available-unsent: rc=0 err=12019
+  available-count: n=77
+receive-unsent: rc=0 err=12019
+layout: result=8 pentries=4 entry=20 fbypass=4 scheme=8 proxy=12 port=16 async-result=8 async-error=4 proxy-info=12 autoproxy-options=24 ie-config=16
+create-null: rc=6 lasterr=57005
+  out-untouched: v=1
+create-sync: rc=12018 lasterr=57005
+create-connection: rc=12018 lasterr=57005
+create-bogus: rc=6 lasterr=57005
+create-async: rc=0 lasterr=0
+  resolver-nonnull: v=1
+result-before: rc=12019 lasterr=57005
+result-session: rc=12018 lasterr=57005
+ex-session-handle: rc=12018 lasterr=57005
+ex-null-url: rc=87 lasterr=57005
+ex-null-options: rc=87 lasterr=57005
+ex-no-flags: rc=87 lasterr=57005
+ex-config-no-url: rc=87 lasterr=57005
+ex-bad-target: rc=12006 lasterr=12006
+ex-proxy: rc=997 lasterr=1008
+ex-proxy: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=3
+  entry i=0 proxy=1 bypass=0 scheme=1 host="p1.example" port=8080
+  entry i=1 proxy=1 bypass=0 scheme=4 host="s1.example" port=1080
+  entry i=2 proxy=0 bypass=1 scheme=0 host="(null)" port=0
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-direct: rc=997 lasterr=1008
+ex-direct: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=0 bypass=1 scheme=0 host="(null)" port=0
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-https: rc=997 lasterr=1008
+ex-https: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=2
+  entry i=0 proxy=1 bypass=0 scheme=2 host="h.example" port=8443
+  entry i=1 proxy=1 bypass=0 scheme=1 host="p2.example" port=80
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-host-a: rc=997 lasterr=1008
+ex-host-a: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=1 bypass=0 scheme=1 host="pa.example" port=81
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-host-b: rc=997 lasterr=1008
+ex-host-b: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=1 bypass=0 scheme=1 host="pb.example" port=82
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-mixed: rc=997 lasterr=1008
+ex-mixed: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=2
+  entry i=0 proxy=1 bypass=0 scheme=1 host="a.example" port=1
+  entry i=1 proxy=0 bypass=1 scheme=0 host="(null)" port=0
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-socks: rc=997 lasterr=1008
+ex-socks: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=2
+  entry i=0 proxy=1 bypass=0 scheme=4 host="s.example" port=1
+  entry i=1 proxy=1 bypass=0 scheme=1 host="p.example" port=2
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-socksonly: rc=997 lasterr=1008
+ex-socksonly: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=0
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-lower: rc=997 lasterr=1008
+ex-lower: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=0
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-helpers: rc=997 lasterr=1008
+ex-helpers: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=1 bypass=0 scheme=1 host="rtfttffttffttftfftfttttfttttttttttttttft.example" port=1
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-url: rc=997 lasterr=1008
+ex-url: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=1 bypass=0 scheme=1 host="uftfftf.example" port=1
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-url2: rc=997 lasterr=1008
+ex-url2: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=1 bypass=0 scheme=1 host="vfffftf.example" port=1
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-urlhex-http: rc=997 lasterr=1008
+ex-urlhex-http: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=1 bypass=0 scheme=1 host="x687474703a2f2f412e4578616d706c653a38312f783f79237a.example" port=1
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-urlhex-https: rc=997 lasterr=1008
+ex-urlhex-https: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=1 bypass=0 scheme=1 host="x68747470733a2f2f412e4578616d706c653a3434342f.example" port=1
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-urlhex-plain: rc=997 lasterr=1008
+ex-urlhex-plain: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=1 bypass=0 scheme=1 host="x687474703a2f2f4578616d706c652e434f4d2f.example" port=1
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-null: rc=997 lasterr=1008
+ex-null: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=0
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-empty: rc=997 lasterr=1008
+ex-empty: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=1
+  entry i=0 proxy=0 bypass=1 scheme=0 host="(null)" port=0
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-spaces: rc=997 lasterr=1008
+ex-spaces: count=1
+  cb status=0x1000000 handle=0 ctx=0x4242 len=0 info-is-handle=0 caller-thread=0
+  get-result: rc=0 lasterr=57005
+  result: entries=2
+  entry i=0 proxy=1 bypass=0 scheme=1 host="w.example" port=5
+  entry i=1 proxy=0 bypass=1 scheme=0 host="(null)" port=0
+  after-free: entries=0 pentries-null=1
+  second-call: rc=12019 lasterr=0
+ex-nofunc: rc=997 lasterr=1008
+ex-nofunc: count=1
+  cb status=0x200000 handle=0 ctx=0x4242 len=8 info-is-handle=0 caller-thread=0 api=6 error=12177
+  get-result: rc=12019 lasterr=57005
+  second-call: rc=12019 lasterr=0
+ex-bad-script: rc=997 lasterr=1008
+ex-bad-script: count=1
+  cb status=0x200000 handle=0 ctx=0x4242 len=8 info-is-handle=0 caller-thread=0 api=6 error=12177
+  get-result: rc=12019 lasterr=57005
+  second-call: rc=12019 lasterr=0
+ex-404: rc=997 lasterr=1008
+ex-404: count=1
+  cb status=0x200000 handle=0 ctx=0x4242 len=8 info-is-handle=0 caller-thread=0 api=6 error=12167
+  get-result: rc=12019 lasterr=57005
+  second-call: rc=12019 lasterr=0
+ex-dead-port: rc=997 lasterr=1008
+ex-dead-port: count=1
+  cb status=0x200000 handle=0 ctx=0x7 len=8 info-is-handle=0 caller-thread=0 api=6 error=12167
+  result-after-error: rc=12019 lasterr=57005
+  close-resolver: rc=1 err=0
+first-resolver-result-again: rc=12019 lasterr=57005
+close-resolver: rc=1 err=0
+result-closed-resolver: rc=6 lasterr=57005
+get-proxy: /proxy.pac?s rc=1 err=0 access=3 proxy="p1.example:8080" bypass="(null)" global-ok=1
+get-proxy: /direct.pac?s rc=1 err=0 access=1 proxy="(null)" bypass="(null)" global-ok=1
+get-proxy: /https.pac?s rc=1 err=0 access=3 proxy="https://h.example:8443;p2.example" bypass="(null)" global-ok=1
+get-proxy: /mixed.pac?s rc=1 err=0 access=3 proxy="a.example:1" bypass="(null)" global-ok=1
+get-proxy: /socks.pac?s rc=1 err=0 access=1 proxy="(null)" bypass="(null)" global-ok=1
+get-proxy: /socksonly.pac?s rc=1 err=0 access=1 proxy="(null)" bypass="(null)" global-ok=1
+get-proxy: /lower.pac?s rc=1 err=0 access=1 proxy="(null)" bypass="(null)" global-ok=1
+get-proxy: /null.pac?s rc=1 err=0 access=1 proxy="(null)" bypass="(null)" global-ok=1
+get-proxy: /empty.pac?s rc=1 err=0 access=1 proxy="(null)" bypass="(null)" global-ok=1
+get-proxy: /spaces.pac?s rc=1 err=0 access=3 proxy="w.example:5" bypass="(null)" global-ok=1
+get-proxy: /nofunc.pac?s rc=0 err=12166 access=0x0 proxy-null=1 bypass-null=1
+get-proxy: /bad.pac?s rc=0 err=12166 access=0x0 proxy-null=1 bypass-null=1
+get-proxy: /missing.pac?s rc=0 err=12167 access=0x0 proxy-null=1 bypass-null=1
+get-proxy-null-session: rc=0 err=6
+get-proxy-null-url: rc=0 err=87
+get-proxy-null-options: rc=0 err=87
+get-proxy-null-info: rc=0 err=87
+get-proxy-no-flags: rc=0 err=87
+get-proxy-connection: rc=0 err=12018
+get-proxy-bad-target: rc=0 err=12006
+get-proxy-async-session: rc=1 err=0
+ie-config: rc=1 err-poison-kept=1 autodetect-bool=1 strings-global=1
+ie-config-null: rc=0 err=87
+create-null-out: calling
+create-null-out: rc=87 lasterr=57005

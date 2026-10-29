@@ -1,0 +1,7 @@
+split_crlf n0=1 b0=0x61 n1=1 b1=0xa n2=1 b2=0x62 n3=0 b3=0xcc errno=0 
+ctrl_z n=2 data="xy" errno=0 
+ctrl_z_again n=0 errno=0 
+bin_ctrl_z n=3 data="x\x1az" errno=0 
+same_read_crlf n=3 data="a\x0ab" errno=0 
+null_buf n=-1 errno=22 
+count_huge n=-1 errno=22 

@@ -1,0 +1,3 @@
+minus1 low=0xffffffff status=0x00000000 info=2 pos_after=12 content="0123456789AB"
+minus2 low=0xfffffffe status=0x00000000 info=2 pos_after=5 content="012AB56789"
+null status=0x00000000 pos_after=5 content="012AB56789"

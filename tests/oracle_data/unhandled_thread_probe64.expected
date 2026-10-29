@@ -1,0 +1,33 @@
+before mode=none kind=ud2
+worker raising ud2
+exit=c000001d
+before mode=none kind=av
+worker raising av
+exit=c0000005
+before mode=none kind=raise
+worker raising raise
+exit=e1234567
+before mode=execute kind=ud2
+worker raising ud2
+filter code=c000001d thread=worker
+exit=c000001d
+before mode=execute kind=av
+worker raising av
+filter code=c0000005 thread=worker
+exit=c0000005
+before mode=execute kind=raise
+worker raising raise
+filter code=e1234567 thread=worker
+exit=e1234567
+before mode=search kind=ud2
+worker raising ud2
+filter code=c000001d thread=worker
+exit=c000001d
+before mode=search kind=av
+worker raising av
+filter code=c0000005 thread=worker
+exit=c0000005
+before mode=search kind=raise
+worker raising raise
+filter code=e1234567 thread=worker
+exit=e1234567

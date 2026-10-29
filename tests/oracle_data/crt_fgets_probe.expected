@@ -1,0 +1,5 @@
+fgets_file ok=1 s=ab
+
+fgets_file2 ok=1 s=cd
+fgets_eof null=1 
+fgets_stdin ran=1 null=1 

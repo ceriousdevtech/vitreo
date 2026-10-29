@@ -1,0 +1,11 @@
+len=17
+W nSize=len-17 ret=len-17 err=0000007a tail=eeee eeee 
+A nSize=len-17 ret=len-17 err=0000007a tail=ee ee 
+W nSize=len-16 ret=len-16 err=0000007a tail=0000 eeee eeee 
+A nSize=len-16 ret=len-16 err=0000007a tail=00 ee ee 
+W nSize=len-1 ret=len-1 err=0000007a tail=1111 0000 eeee eeee 
+A nSize=len-1 ret=len-1 err=0000007a tail=11 00 ee ee 
+W nSize=len+0 ret=len+0 err=0000007a tail=1111 0000 eeee eeee 
+A nSize=len+0 ret=len+0 err=0000007a tail=11 00 ee ee 
+W nSize=len+1 ret=len+0 err=00000000 tail=1111 0000 eeee eeee 
+A nSize=len+1 ret=len+0 err=00000000 tail=11 00 ee ee 

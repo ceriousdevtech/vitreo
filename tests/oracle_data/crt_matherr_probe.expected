@@ -1,0 +1,79 @@
+== default (no user matherr)
+sqrt(-1) r=0xfff8000000000000 errno=33 mh=0 
+sqrt(-0) r=0x8000000000000000 errno=0 mh=0 
+log(0) r=0xfff0000000000000 errno=34 mh=0 
+log(-0) r=0xfff0000000000000 errno=34 mh=0 
+log(-1) r=0xfff8000000000000 errno=33 mh=0 
+log10(0) r=0xfff0000000000000 errno=34 mh=0 
+log10(-1) r=0xfff8000000000000 errno=33 mh=0 
+log2(0) r=0xfff0000000000000 errno=34 mh=0 
+log2(-1) r=0xfff8000000000000 errno=33 mh=0 
+asin(2) r=0xfff8000000000000 errno=33 mh=0 
+acos(-2) r=0xfff8000000000000 errno=33 mh=0 
+exp(1000) r=0x7ff0000000000000 errno=34 mh=0 
+exp(-1000) r=0x0 errno=0 mh=0 
+exp2(1024) r=0x7ff0000000000000 errno=34 mh=0 
+expm1(1000) r=0x7ff0000000000000 errno=34 mh=0 
+pow(-1,0.5) r=0xfff8000000000000 errno=33 mh=0 
+pow(0,-1) r=0x7ff0000000000000 errno=34 mh=0 
+sqrtf(-1) r=0xffc00000 errno=33 mh=0 
+logf(0) r=0xff800000 errno=34 mh=0 
+asinf(2) r=0xffc00000 errno=33 mh=0 
+expf(100) r=0x7f800000 errno=34 mh=0 
+expm1f(100) r=0x7f800000 errno=34 mh=0 
+sqrt(4) r=0x4000000000000000 errno=0 mh=0 
+log(1) r=0x0 errno=0 mh=0 
+== __setusermatherr mode0 (return 0)
+sqrt(-1) r=0xfff8000000000000 errno=33 mh{n=1 type=1 name=sqrt a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+sqrt(-0) r=0x8000000000000000 errno=0 mh=0 
+log(0) r=0xfff0000000000000 errno=34 mh{n=1 type=2 name=log a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+log(-0) r=0xfff0000000000000 errno=34 mh{n=1 type=2 name=log a1=0x8000000000000000 a2=0x0 rv=0xfff0000000000000 } 
+log(-1) r=0xfff8000000000000 errno=33 mh{n=1 type=1 name=log a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+log10(0) r=0xfff0000000000000 errno=34 mh{n=1 type=2 name=log10 a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+log10(-1) r=0xfff8000000000000 errno=33 mh{n=1 type=1 name=log10 a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+log2(0) r=0xfff0000000000000 errno=34 mh{n=1 type=2 name=log2 a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+log2(-1) r=0xfff8000000000000 errno=33 mh{n=1 type=1 name=log2 a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+asin(2) r=0xfff8000000000000 errno=33 mh{n=1 type=1 name=asin a1=0x4000000000000000 a2=0x0 rv=0xfff8000000000000 } 
+acos(-2) r=0xfff8000000000000 errno=33 mh{n=1 type=1 name=acos a1=0xc000000000000000 a2=0x0 rv=0xfff8000000000000 } 
+exp(1000) r=0x7ff0000000000000 errno=34 mh{n=1 type=3 name=exp a1=0x408f400000000000 a2=0x0 rv=0x7ff0000000000000 } 
+exp(-1000) r=0x0 errno=0 mh{n=1 type=4 name=exp a1=0xc08f400000000000 a2=0x0 rv=0x0 } 
+exp2(1024) r=0x7ff0000000000000 errno=34 mh=0 
+expm1(1000) r=0x7ff0000000000000 errno=34 mh{n=1 type=3 name=exp a1=0x408f400000000000 a2=0x0 rv=0x7ff0000000000000 } 
+pow(-1,0.5) r=0xfff8000000000000 errno=33 mh=0 
+pow(0,-1) r=0x7ff0000000000000 errno=34 mh=0 
+sqrtf(-1) r=0xffc00000 errno=33 mh{n=1 type=1 name=sqrtf a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+logf(0) r=0xff800000 errno=34 mh{n=1 type=2 name=logf a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+asinf(2) r=0xffc00000 errno=33 mh{n=1 type=1 name=asinf a1=0x4000000000000000 a2=0x0 rv=0xfff8000000000000 } 
+expf(100) r=0x7f800000 errno=34 mh{n=1 type=3 name=expf a1=0x4059000000000000 a2=0x0 rv=0x7ff0000000000000 } 
+expm1f(100) r=0x7f800000 errno=34 mh{n=1 type=3 name=expf a1=0x4059000000000000 a2=0x0 rv=0x7ff0000000000000 } 
+sqrt(4) r=0x4000000000000000 errno=0 mh=0 
+log(1) r=0x0 errno=0 mh=0 
+== __setusermatherr mode1 (return 1)
+sqrt(-1) r=0xfff8000000000000 errno=0 mh{n=1 type=1 name=sqrt a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+sqrt(-0) r=0x8000000000000000 errno=0 mh=0 
+log(0) r=0xfff0000000000000 errno=0 mh{n=1 type=2 name=log a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+log(-0) r=0xfff0000000000000 errno=0 mh{n=1 type=2 name=log a1=0x8000000000000000 a2=0x0 rv=0xfff0000000000000 } 
+log(-1) r=0xfff8000000000000 errno=0 mh{n=1 type=1 name=log a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+log10(0) r=0xfff0000000000000 errno=0 mh{n=1 type=2 name=log10 a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+log10(-1) r=0xfff8000000000000 errno=0 mh{n=1 type=1 name=log10 a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+log2(0) r=0xfff0000000000000 errno=0 mh{n=1 type=2 name=log2 a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+log2(-1) r=0xfff8000000000000 errno=0 mh{n=1 type=1 name=log2 a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+asin(2) r=0xfff8000000000000 errno=0 mh{n=1 type=1 name=asin a1=0x4000000000000000 a2=0x0 rv=0xfff8000000000000 } 
+acos(-2) r=0xfff8000000000000 errno=0 mh{n=1 type=1 name=acos a1=0xc000000000000000 a2=0x0 rv=0xfff8000000000000 } 
+exp(1000) r=0x7ff0000000000000 errno=0 mh{n=1 type=3 name=exp a1=0x408f400000000000 a2=0x0 rv=0x7ff0000000000000 } 
+exp(-1000) r=0x0 errno=0 mh{n=1 type=4 name=exp a1=0xc08f400000000000 a2=0x0 rv=0x0 } 
+exp2(1024) r=0x7ff0000000000000 errno=34 mh=0 
+expm1(1000) r=0x7ff0000000000000 errno=0 mh{n=1 type=3 name=exp a1=0x408f400000000000 a2=0x0 rv=0x7ff0000000000000 } 
+pow(-1,0.5) r=0xfff8000000000000 errno=33 mh=0 
+pow(0,-1) r=0x7ff0000000000000 errno=34 mh=0 
+sqrtf(-1) r=0xffc00000 errno=0 mh{n=1 type=1 name=sqrtf a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+logf(0) r=0xff800000 errno=0 mh{n=1 type=2 name=logf a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+asinf(2) r=0xffc00000 errno=0 mh{n=1 type=1 name=asinf a1=0x4000000000000000 a2=0x0 rv=0xfff8000000000000 } 
+expf(100) r=0x7f800000 errno=0 mh{n=1 type=3 name=expf a1=0x4059000000000000 a2=0x0 rv=0x7ff0000000000000 } 
+expm1f(100) r=0x7f800000 errno=0 mh{n=1 type=3 name=expf a1=0x4059000000000000 a2=0x0 rv=0x7ff0000000000000 } 
+sqrt(4) r=0x4000000000000000 errno=0 mh=0 
+log(1) r=0x0 errno=0 mh=0 
+== __setusermatherr mode2 (retval=42)
+sqrt(-1) r=0x4045000000000000 errno=0 mh{n=1 type=1 name=sqrt a1=0xbff0000000000000 a2=0x0 rv=0xfff8000000000000 } 
+log(0) r=0xfff0000000000000 errno=0 mh{n=1 type=2 name=log a1=0x0 a2=0x0 rv=0xfff0000000000000 } 
+exp(1000) r=0x7ff0000000000000 errno=0 mh{n=1 type=3 name=exp a1=0x408f400000000000 a2=0x0 rv=0x7ff0000000000000 } 

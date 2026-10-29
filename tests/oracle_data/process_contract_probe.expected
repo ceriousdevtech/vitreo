@@ -1,0 +1,186 @@
+== std handles
+GetStdHandle(-13) -> ffffffffffffffff err=6
+GetStdHandle(0) -> ffffffffffffffff err=6
+SetStdHandle(ERROR, 0x1234) -> 1 err=dead
+GetStdHandle(ERROR) after set -> 1234 err=dead
+SetStdHandle(ERROR, NULL) -> 1 err=dead
+GetStdHandle(ERROR) after NULL -> 0 err=dead
+SetStdHandle(ERROR, INVALID) -> 1 err=dead
+GetStdHandle(ERROR) after INVALID -> ffffffffffffffff err=6
+SetStdHandle(-13, x) -> 0 err=6
+SetStdHandle(0, x) -> 0 err=6
+== console calls on a pipe handle
+ReadConsoleW(pipe) -> 0 err=1
+  count after=77
+ReadConsoleInputW(pipe) -> 0 err=1
+  count after=0
+PeekConsoleInputA(pipe) -> 0 err=6
+GetNumberOfConsoleInputEvents(pipe) -> 0 err=6
+WriteConsoleW(pipe) -> 0 err=1
+GetConsoleMode(pipe) -> 0 err=6
+ReadConsoleW(0x1234) -> 0 err=6
+== SetConsoleCtrlHandler
+remove never-added -> 0 err=57
+add -> 1 err=dead
+remove -> 1 err=dead
+remove again -> 0 err=57
+NULL,TRUE -> 1 err=dead
+NULL,FALSE -> 1 err=dead
+add ctrl_handler -> 1 err=dead
+GenerateConsoleCtrlEvent(CTRL_C,0) -> 1 err=dead
+  ctrl_seen=1
+GenerateConsoleCtrlEvent(CTRL_BREAK,0) -> 1 err=dead
+  ctrl_seen=2
+GenerateConsoleCtrlEvent(CTRL_C) ignore -> 1 err=dead
+  ctrl_seen_ignored=0
+GenerateConsoleCtrlEvent(2) -> 0 err=57
+== PeekNamedPipe
+PeekNamedPipe(buf 4) -> 1 err=dead
+  read=4 avail=6 left=fffffffc data=abcd
+PeekNamedPipe after writer closed (data pending) -> 1 err=dead
+  avail=6
+PeekNamedPipe drained+closed -> 0 err=6d
+  avail=77 read=77
+== exit codes
+GetExitCodeProcess(GetCurrentProcess) -> 1 err=dead
+  code=103
+GetExitCodeProcess(0x1234) -> 0 err=6
+  code=77
+GetExitCodeProcess(event) -> 1 err=6
+  code=0
+GetExitCodeProcess(GetCurrentThread) -> 0 err=6
+  code=77
+GetExitCodeProcess(event) again -> 1 err=6
+  code=0
+GetExitCodeProcess(real thread handle) -> 0 err=6
+  code=77
+GetExitCodeProcess(file handle) -> 0 err=6
+  code=77
+GetExitCodeProcess(mutex) -> 0 err=6
+  code=77
+== redirected child
+child exit=3
+  [out] child: si.cb=68 dwFlags=101 wShowWindow=7 hStdOutput==GetStdHandle yes hStdInput==GetStdHandle yes
+child: stdin read ok=1 n=5 data=hello
+  [err] to-stderr
+dwThreadId != dwProcessId yes
+GetThreadId(hThread)==dwThreadId yes
+GetProcessId(hProcess)==dwProcessId yes
+OpenThread(dwThreadId) after exit nonnull yes
+GetProcessTimes(exited child) -> 1 err=dead
+  exit>=creation yes
+OpenProcess(SYNCHRONIZE, exited child) nonnull yes
+GetExitCodeProcess(SYNCHRONIZE-only) -> 0 err=5
+GetProcessId(SYNCHRONIZE-only) -> 0 err=5
+GetPriorityClass(SYNCHRONIZE-only) -> 0 err=5
+== unicode command line / cwd
+child exit=4
+  [out] child: cmdline tail utf8=78 c3 a9 e2 82 ac f0 9f 98 80  cwd-leaf utf8=64 c3 a9 e2 82 ac 
+== module name without extension
+child exit=2a
+  [out]   [dll loader_contract_dll.dll] reason=1 reserved=nonnull -> TRUE
+EXE ENTRY RAN
+  [dll loader_contract_dll.dll] reason=0 reserved=nonnull -> TRUE
+== console state (child, stdout=pipe)
+child exit=5
+  [out] child: conout valid yes
+child: GetConsoleMode(conin) ok -> 1 err=dead
+child: default input mode=1f7
+child: SetConsoleMode(conin, 0xffffffff) -> 0 err=57
+child: SetConsoleMode(conin, ECHO only) -> 0 err=57
+child: SetConsoleMode(conin, 0x200 VT input) -> 1 err=dead
+child: SetConsoleMode(conout, 0x100) -> 0 err=57
+child: SetConsoleMode(conout, 0x1f) -> 1 err=dead
+child: SetConsoleMode(conin, restore) -> 1 err=dead
+child: WriteConsoleW(conout, reserved=1) -> 1 err=dead
+child: GetConsoleCP -> 1b5 err=dead
+child: GetConsoleOutputCP -> 1b5 err=dead
+child: FreeConsole -> 1 err=6
+child: GetConsoleCP after free -> 0 err=6
+child: GetConsoleOutputCP after free -> 0 err=6
+child: GetConsoleMode(conout) after free -> 0 err=6
+child: WriteConsoleW(conout) after free -> 0 err=6
+child: FreeConsole again -> 1 err=dead
+child: GetStdHandle(OUTPUT) is pipe still -> 3 err=dead
+child exit=c0000005
+== shared stdout/stderr screen buffer mode
+child: GetConsoleMode(stdout/conout) -> 1 err=dead
+child: GetConsoleMode(stderr/conout) -> 1 err=dead
+child: out_handle==err_handle no
+child: initial modes equal yes
+child: initial out mode=1f
+child: SetConsoleMode(out, +VT) -> 1 err=dead
+child: GetConsoleMode(err) after Set(out,+VT) -> 1 err=dead
+child: err mode=1f
+child: err has VT yes
+child: SetConsoleMode(err, clear VT) -> 1 err=dead
+child: GetConsoleMode(out) after Set(err,clear VT) -> 1 err=dead
+child: out mode after clear=1b
+child: out VT cleared yes
+child exit=7
+== priority
+GetPriorityClass(self) -> 20 err=dead
+SetPriorityClass(self, ABOVE_NORMAL) -> 1 err=dead
+GetPriorityClass(self) -> 8000 err=dead
+SetPriorityClass(self, IDLE) -> 1 err=dead
+GetPriorityClass(self) -> 40 err=dead
+SetPriorityClass(self, 0x1234) -> 1 err=dead
+GetPriorityClass(self) -> 20 err=dead
+SetPriorityClass(self, IDLE|NORMAL) -> 1 err=dead
+GetPriorityClass(self) -> 40 err=dead
+SetPriorityClass(self, HIGH) -> 1 err=dead
+GetPriorityClass(self) -> 80 err=dead
+SetPriorityClass(self, REALTIME) -> 1 err=dead
+GetPriorityClass(self) -> 100 err=dead
+SetPriorityClass(self, BELOW_NORMAL) -> 1 err=dead
+GetPriorityClass(self) -> 4000 err=dead
+SetPriorityClass(self, 0x8) -> 0 err=57
+GetPriorityClass(self) -> 4000 err=dead
+SetPriorityClass(self, 0x10000000) -> 0 err=57
+GetPriorityClass(self) -> 4000 err=dead
+combo a0 set=1 err=dead get=20
+combo 180 set=1 err=dead get=80
+combo c000 set=1 err=dead get=4000
+combo 4020 set=1 err=dead get=4000
+combo 8080 set=1 err=dead get=8000
+combo 4040 set=1 err=dead get=40
+combo 8020 set=1 err=dead get=20
+combo 140 set=1 err=dead get=40
+combo 200020 set=1 err=dead get=20
+combo 8100 set=1 err=dead get=8000
+SetPriorityClass(self, 0) -> 0 err=57
+SetPriorityClass(NULL, NORMAL) -> 0 err=6
+SetPriorityClass(0x1234, NORMAL) -> 0 err=6
+GetPriorityClass(NULL) -> 0 err=6
+GetPriorityClass(0x1234) -> 0 err=6
+BACKGROUND_END without begin -> 0 err=193
+BACKGROUND_BEGIN -> 1 err=dead
+GetPriorityClass in background -> 20 err=dead
+BACKGROUND_BEGIN again -> 0 err=192
+BACKGROUND_END -> 1 err=dead
+SetPriorityClass(self, NORMAL) -> 1 err=dead
+== OpenProcess / psapi
+OpenProcess(PID 4) -> 170 err=dead
+K32EnumProcesses(cb=8) -> 1 err=dead
+  needed=8
+K32EnumProcesses(NULL, cb=0) -> 1 err=dead
+  needed=0
+K32EnumProcessModules(0x1234) -> 0 err=6
+K32EnumProcessModules(event) -> 0 err=6
+K32EnumProcessModules(self) -> 1 err=dead
+  first==exe yes
+K32GetModuleFileNameExW(self,NULL) nonzero -> 1 err=dead
+K32GetModuleFileNameExW(0x1234,NULL) -> 0 err=6
+K32GetModuleFileNameExW(event,NULL) -> 0 err=6
+K32GetModuleFileNameExW(self,bogus module) -> 0 err=6
+K32GetModuleBaseNameW(self,NULL) -> 1a err=dead
+  name utf8=70 72 6f 63 65 73 73 5f 63 6f 6e 74 72 61 63 74 5f 70 72 6f 62 65 2e 65 78 65 
+K32GetModuleBaseNameW(self,kernel32,4) -> 4 err=dead
+  name utf8=4b 45 52 
+K32GetModuleBaseNameW(0x1234) -> 0 err=6
+== CancelSynchronousIo
+CancelSynchronousIo(self, idle) -> 0 err=490
+CancelSynchronousIo(0x1234) -> 0 err=6
+CancelSynchronousIo(SYNCHRONIZE-only) -> 0 err=5
+CancelSynchronousIo(blocked reader) -> 1 err=dead
+  reader_state=1 reader_err=3e3

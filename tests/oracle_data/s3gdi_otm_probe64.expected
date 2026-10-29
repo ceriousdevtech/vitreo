@@ -1,0 +1,80 @@
+Arial -13 need=342 r=342 size=342 tmh=16 fs=64 pf=020b0604020202020204 ff=8 slope=1,0 ia=0 em=2048 asc=9 desc=-3 gap=2 cap=7 x=3 box=-9,14,26,-4 macasc=12 macdesc=-3 macgap=0 minppem=9 sub=9,8,0,2 sup=9,8,0,6 strike=1,3 us=1,-1 offs=232,244,256,272 family=Arial face=Arial style=Regular full=Monotype:Arial Regular (Microsoft)
+  small(100) r=100 err=57005 size=342 byte100=cc
+Arial -24 bold need=340 r=340 size=340 tmh=29 fs=32 pf=020b0704020202020204 ff=8 slope=1,0 ia=0 em=2048 asc=17 desc=-5 gap=4 cap=12 x=6 box=-15,25,48,-9 macasc=22 macdesc=-5 macgap=1 minppem=9 sub=17,16,0,3 sup=17,16,0,11 strike=1,6 us=3,-3 offs=232,244,266,276 family=Arial face=Arial Bold style=Bold full=Monotype:Arial Bold (Microsoft)
+  small(100) r=100 err=57005 size=340 byte100=cc
+Courier New 16 need=362 r=362 size=362 tmh=16 fs=64 pf=02070309020205020404 ff=8 slope=1,0 ia=0 em=2048 asc=8 desc=-2 gap=0 cap=7 x=3 box=-2,13,8,-9 macasc=11 macdesc=-4 macgap=0 minppem=9 sub=9,8,0,2 sup=9,8,0,5 strike=1,3 us=1,-3 offs=232,256,280,296 family=Courier New face=Courier New style=Regular full=Monotype:Courier New (Microsoft)
+  small(100) r=100 err=57005 size=362 byte100=cc
+Tahoma -11 need=326 r=326 size=326 tmh=13 fs=64 pf=020b0604030504040204 ff=8 slope=1,0 ia=0 em=2048 asc=8 desc=-2 gap=0 cap=6 x=3 box=-7,11,20,-5 macasc=11 macdesc=-2 macgap=0 minppem=9 sub=8,7,0,2 sup=8,7,0,5 strike=1,4 us=1,-1 offs=232,246,260,276 family=Tahoma face=Tahoma style=Regular full=Microsoft Tahoma Regular
+  small(100) r=100 err=57005 size=326 byte100=cc
+Times New Roman -16 need=402 r=402 size=402 tmh=19 fs=64 pf=02020603050405020304 ff=8 slope=1,0 ia=0 em=2048 asc=11 desc=-3 gap=2 cap=8 x=4 box=-9,17,33,-5 macasc=14 macdesc=-3 macgap=1 minppem=9 sub=11,10,0,2 sup=11,10,0,7 strike=1,4 us=1,-2 offs=232,264,296,312 family=Times New Roman face=Times New Roman style=Regular full=Monotype:Times New Roman Regular (Microsoft)
+  small(100) r=100 err=57005 size=402 byte100=cc
+otm(NULL dc)=0 err=57005
+otm(System raster)=264 err=57005
+TEXTMETRICA sizeof=56 bytes44..55=1eff1f200000002700cccccccccccccc
+TEXTMETRICW sizeof=60 bytes44..63=2000fcff1f0020000000002700000000cccccccc
+GetCharWidth32W(last<first)=0 err=87 w=-1
+GetCharWidth32W(NULL buf)=0 err=87
+GetCharWidthW(a..c)=1 w=7,7,7 err=57005
+GetCharWidth32W(NULL dc)=0 err=87
+GetCharABCWidthsW(NULL dc)=0 err=6
+GetCharABCWidthsW(last<first)=0 err=87
+GetCharABCWidthsW(W)=1 0,13,0
+GetCharABCWidthsA(j)=1 -1,3,1
+glyphs=5 43,72,79,79,82 extentI=1 29x16
+GetCharWidthI=1 9,7,3,3,7
+GetTextExtentPointI(0)=1 0x0 err=57005
+GetTextExtentPointW(cjk)=1 30x16 err=0
+GetTextFaceA(cch0)=0 err=87
+GetTextFaceA(NULL)=6
+GetTextFaceW(NULL dc)=0 err=57005
+SetTextCharacterExtra(5)=0 then=0
+SetTextCharacterExtra(-3)=5 then=5
+SetTextCharacterExtra(NULL)=-2147483648 err=57005
+GetTextExtentPointI(NULL dc)=0 err=57005
+GetTextExtentExPointW(NULL dc)=0 err=57005
+GetTextExtentExPointW(c=-1)=0 err=0
+GetTextExtentExPointW(c=0)=1 fit=0 size=0x0 err=57005
+GetTextFaceA(64)=5
+GetTextFaceW(cch0)=0 err=57005
+GetCharABCWidthsFloatW(A)=1 0.000,9.000,0.000
+GetCharABCWidthsFloatW(j)=1 -1.000,3.000,1.000
+GetCharABCWidthsFloatW(NULL dc)=0 err=6
+GetCharWidthA(e9)=1 w=7 W=7 euroA=7 euroW=7
+ExtTextOutW(glyph index)=1 err=57005
+GetTextMetricsW ok=1 err=57005
+GetTextExtentPoint32W ok=1 err=57005
+TextOutW ok=1 err=0
+ExtTextOutW ok=1 err=0
+ExtTextOutA ok=1 err=0
+TextOutA ok=1 err=0
+GetTextExtentPoint32A ok=1 err=57005
+GetTextExtentExPointW ok=1 err=0
+GetTextMetricsA ok=1 err=57005
+SetTextAlign(TA_RIGHT)=0 GetTextAlign=0
+GetTextAlign(NULL)=4294967295 err=57005
+face empty -> 14 'MS Sans Serif' h=16 a=13 d=3 ave=7 pf=21 cs=0
+face arial -> 6 'Arial' h=16 a=13 d=3 ave=6 pf=27 cs=0
+face ARIAL -> 6 'Arial' h=16 a=13 d=3 ave=6 pf=27 cs=0
+face MS Shell Dlg 2 -> 15 'MS Shell Dlg 2' h=16 a=13 d=3 ave=6 pf=27 cs=0
+face Helvetica -> 10 'Helvetica' h=16 a=13 d=3 ave=6 pf=27 cs=0
+face Times -> 6 'Times' h=15 a=12 d=3 ave=5 pf=17 cs=0
+face Courier -> 8 'Courier' h=13 a=11 d=2 ave=8 pf=30 cs=0
+face System -> 7 'System' h=16 a=13 d=3 ave=7 pf=21 cs=0
+face Arial Black -> 12 'Arial Black' h=18 a=14 d=4 ave=7 pf=27 cs=0
+tmchars Arial W=32,65532,31,32 A=30,255,31,32
+tmchars Segoe UI W=13,65533,12,13 A=11,255,12,13
+tmchars Courier New W=32,65532,31,32 A=30,255,31,32
+tmchars Tahoma W=32,65533,31,32 A=30,255,31,32
+tmchars Terminal W=32,8482,129,32 A=32,255,129,32
+tmchars Microsoft Sans Serif W=32,65533,31,32 A=30,255,31,32
+tmchars Symbol W=0,61695,31,32 A=30,254,31,32
+AddFontMemResourceEx(junk)=NULL nf=77 err=57005
+AddFontMemResourceEx(NULL pcFonts)=NULL err=87
+AddFontMemResourceEx(NULL)=NULL err=87
+RemoveFontMemResourceEx(bogus)=0 err=57005
+RemoveFontMemResourceEx(NULL)=0 err=87
+AddFontResourceExW(missing)=0 err=2
+AddFontResourceExW(bad flags)=0 err=87
+RemoveFontResourceW(missing)=0 err=2
+RemoveFontResourceExW(missing)=0 err=2
+AddFontResourceA(missing)=0 err=2

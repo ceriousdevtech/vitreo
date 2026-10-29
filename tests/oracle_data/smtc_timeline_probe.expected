@@ -1,0 +1,28 @@
+RoInitialize 00000000
+factory hr=00000000
+ActivateInstance hr=00000000
+QI timeline hr=00000000 same=1
+GetRuntimeClassName hr=00000000 name=Windows.Media.SystemMediaTransportControlsTimelineProperties
+GetTrustLevel hr=00000000 level=0
+GetIids hr=00000000 count=2 {5125316a-c3a2-475b} {00000038-0000-0000}
+second instance distinct=1
+defaults start=0/00000000 end=0/00000000 min=0/00000000 max=0/00000000 pos=0/00000000
+set start=10000000/00000000 end=2400000000/00000000 min=0/00000000 max=2300000000/00000000 pos=650000000/00000000
+put negative position hr=00000000
+put position past end hr=00000000
+after odd puts start=10000000/00000000 end=2400000000/00000000 min=0/00000000 max=2300000000/00000000 pos=2400000050/00000000
+interop hr=00000000
+GetForWindow hr=00000000
+QI smtc2 hr=00000000 same_pointer=0
+IUnknown identity equal=1
+GetForWindow smtc2 hr=00000000 same_as_qi=1
+PlaybackRate hr=00000000 rate=0
+flag defaults play=0 stop=0 pause=0 record=0 ff=0 rewind=0 prev=0 next=0 chup=0 chdown=0 enabled=1
+defaults repeat=0 shuffle=0 status=0 enabled=1
+put_AutoRepeatMode List hr=00000000
+put_ShuffleEnabled hr=00000000
+put_PlaybackRate hr=00000000
+after puts repeat=2 shuffle=1 rate=1.5 status=0 enabled=1
+put_AutoRepeatMode 7 hr=00000000 now=0
+QI back to v1 same=1 status=3
+UpdateTimelineProperties hr=00000000

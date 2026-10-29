@@ -1,0 +1,37 @@
+bitness=64
+init -> 0x0
+== cmp
+same-handle-for-case=1
+svc,svc_lower DdeCmpStringHandles -> 0
+aaa,bbb DdeCmpStringHandles -> -1
+bbb,aaa DdeCmpStringHandles -> 1
+aaa,zzz DdeCmpStringHandles -> -1
+zzz,bbb DdeCmpStringHandles -> 1
+aaa,0 DdeCmpStringHandles -> 1
+0,aaa DdeCmpStringHandles -> -1
+0,0 DdeCmpStringHandles -> 0
+aaa,bogus DdeCmpStringHandles -> 1
+handle-order aaa<bbb=1 bbb<zzz=1
+== nameservice
+register DdeNameService(cmd=0x1) -> nonzero(0x1) err=0x0
+register-again DdeNameService(cmd=0x1) -> nonzero(0x1) err=0x0
+register-other DdeNameService(cmd=0x1) -> nonzero(0x1) err=0x0
+unregister DdeNameService(cmd=0x2) -> nonzero(0x1) err=0x0
+unregister-again DdeNameService(cmd=0x2) -> nonzero(0x1) err=0x0
+unregister-all DdeNameService(cmd=0x2) -> nonzero(0x1) err=0x0
+unregister-all-again DdeNameService(cmd=0x2) -> nonzero(0x1) err=0x0
+register-null DdeNameService(cmd=0x1) -> 0(0x0) err=0x4006
+filteron DdeNameService(cmd=0x4) -> nonzero(0x1) err=0x0
+filteroff DdeNameService(cmd=0x8) -> nonzero(0x1) err=0x0
+filteron-with-hsz DdeNameService(cmd=0x4) -> nonzero(0x1) err=0x0
+register-filteron DdeNameService(cmd=0x5) -> nonzero(0x1) err=0x0
+register-unregister DdeNameService(cmd=0x3) -> nonzero(0x1) err=0x0
+filteron-filteroff DdeNameService(cmd=0xc) -> nonzero(0x1) err=0x0
+zero-cmd DdeNameService(cmd=0x0) -> nonzero(0x1) err=0x0
+unknown-bit DdeNameService(cmd=0x10) -> nonzero(0x1) err=0x0
+hsz2-nonzero DdeNameService(cmd=0x1) -> 0(0x0) err=0x4006
+bogus-hsz DdeNameService(cmd=0x1) -> 0(0x0) err=0x4006
+unregister-all-end DdeNameService(cmd=0x2) -> nonzero(0x1) err=0x0
+unknown-instance DdeNameService -> 0 err=0x4006
+clientonly DdeNameService -> 0 err=0x4004
+clientonly filteron -> nonzero err=0x0

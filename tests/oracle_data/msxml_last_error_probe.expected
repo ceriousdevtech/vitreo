@@ -1,0 +1,45 @@
+DOMDocument create hr=0x00000000 last_error=0
+  put_async(false)             hr=0x00000000 last_error=0
+  put_validateOnParse(false)   hr=0x00000000 last_error=0
+  load(file)                   hr=0x00000000 last_error=0
+  load success=1
+  get_documentElement          hr=0x00000000 last_error=0
+  get_attributes               hr=0x00000000 last_error=0
+  getNamedItem(Culture)        hr=0x00000000 last_error=0
+  getNamedItem(missing)        hr=0x00000001 last_error=0
+  selectNodes(String)          hr=0x00000000 last_error=0
+  get_length                   hr=0x00000000 last_error=0
+  length=1
+  nextNode                     hr=0x00000000 last_error=0
+  selectSingleNode(missing)    hr=0x00000001 last_error=0
+  load(missing file)           hr=0x00000001 last_error=0
+DOMDocument30 create hr=0x00000000 last_error=0
+  put_async(false)             hr=0x00000000 last_error=0
+  put_validateOnParse(false)   hr=0x00000000 last_error=0
+  load(file)                   hr=0x00000000 last_error=0
+  load success=1
+  get_documentElement          hr=0x00000000 last_error=0
+  get_attributes               hr=0x00000000 last_error=0
+  getNamedItem(Culture)        hr=0x00000000 last_error=0
+  getNamedItem(missing)        hr=0x00000001 last_error=0
+  selectNodes(String)          hr=0x00000000 last_error=0
+  get_length                   hr=0x00000000 last_error=0
+  length=1
+  nextNode                     hr=0x00000000 last_error=0
+  selectSingleNode(missing)    hr=0x00000001 last_error=0
+  load(missing file)           hr=0x00000001 last_error=0
+DOMDocument60 create hr=0x00000000 last_error=0
+  put_async(false)             hr=0x00000000 last_error=0
+  put_validateOnParse(false)   hr=0x00000000 last_error=0
+  load(file)                   hr=0x00000000 last_error=0
+  load success=1
+  get_documentElement          hr=0x00000000 last_error=0
+  get_attributes               hr=0x00000000 last_error=0
+  getNamedItem(Culture)        hr=0x00000000 last_error=0
+  getNamedItem(missing)        hr=0x00000001 last_error=0
+  selectNodes(String)          hr=0x00000000 last_error=0
+  get_length                   hr=0x00000000 last_error=0
+  length=0
+  nextNode                     hr=0x00000001 last_error=0
+  selectSingleNode(missing)    hr=0x00000001 last_error=0
+  load(missing file)           hr=0x00000001 last_error=0

@@ -1,0 +1,417 @@
+== scenario user-x86 (32-bit)
+info PackageName ret=0 cch=6 [rp.msi]
+infoex4 PackageName ret=1605 cch=1024 []
+infoex2 PackageName ret=87 cch=1024 []
+infoex1 PackageName ret=87 cch=1024 []
+info Transforms ret=0 cch=0 []
+infoex4 Transforms ret=1605 cch=1024 []
+infoex2 Transforms ret=87 cch=1024 []
+infoex1 Transforms ret=87 cch=1024 []
+info Language ret=0 cch=4 [1033]
+infoex4 Language ret=1605 cch=1024 []
+infoex2 Language ret=87 cch=1024 []
+infoex1 Language ret=87 cch=1024 []
+info ProductName ret=0 cch=25 [Vitreo Registration Probe]
+infoex4 ProductName ret=1605 cch=1024 []
+infoex2 ProductName ret=87 cch=1024 []
+infoex1 ProductName ret=87 cch=1024 []
+info AssignmentType ret=0 cch=1 [0]
+infoex4 AssignmentType ret=1605 cch=1024 []
+infoex2 AssignmentType ret=87 cch=1024 []
+infoex1 AssignmentType ret=87 cch=1024 []
+info InstanceType ret=0 cch=1 [0]
+infoex4 InstanceType ret=1605 cch=1024 []
+infoex2 InstanceType ret=87 cch=1024 []
+infoex1 InstanceType ret=87 cch=1024 []
+info AuthorizedLUAApp ret=0 cch=1 [0]
+infoex4 AuthorizedLUAApp ret=1605 cch=1024 []
+infoex2 AuthorizedLUAApp ret=87 cch=1024 []
+infoex1 AuthorizedLUAApp ret=87 cch=1024 []
+info PackageCode ret=0 cch=38 [{626981AD-DB11-4521-AE67-15B9B8C2A693}]
+infoex4 PackageCode ret=1605 cch=1024 []
+infoex2 PackageCode ret=87 cch=1024 []
+infoex1 PackageCode ret=87 cch=1024 []
+info Version ret=0 cch=8 [16908291]
+infoex4 Version ret=1605 cch=1024 []
+infoex2 Version ret=87 cch=1024 []
+infoex1 Version ret=87 cch=1024 []
+info ProductIcon ret=0 cch=0 []
+infoex4 ProductIcon ret=1605 cch=1024 []
+infoex2 ProductIcon ret=87 cch=1024 []
+infoex1 ProductIcon ret=87 cch=1024 []
+info InstalledProductName ret=0 cch=25 [Vitreo Registration Probe]
+infoex4 InstalledProductName ret=1605 cch=1024 []
+infoex2 InstalledProductName ret=87 cch=1024 []
+infoex1 InstalledProductName ret=87 cch=1024 []
+info VersionString ret=0 cch=5 [1.2.3]
+infoex4 VersionString ret=1605 cch=1024 []
+infoex2 VersionString ret=87 cch=1024 []
+infoex1 VersionString ret=87 cch=1024 []
+info HelpLink ret=0 cch=28 [https://example.invalid/help]
+infoex4 HelpLink ret=1605 cch=1024 []
+infoex2 HelpLink ret=87 cch=1024 []
+infoex1 HelpLink ret=87 cch=1024 []
+info HelpTelephone ret=0 cch=8 [555-0100]
+infoex4 HelpTelephone ret=1605 cch=1024 []
+infoex2 HelpTelephone ret=87 cch=1024 []
+infoex1 HelpTelephone ret=87 cch=1024 []
+info InstallLocation ret=0 cch=0 []
+infoex4 InstallLocation ret=1605 cch=1024 []
+infoex2 InstallLocation ret=87 cch=1024 []
+infoex1 InstallLocation ret=87 cch=1024 []
+info InstallSource ret=0 cch=28 [C:\Users\Owner\msireg\x86v1\]
+infoex4 InstallSource ret=1605 cch=1024 []
+infoex2 InstallSource ret=87 cch=1024 []
+infoex1 InstallSource ret=87 cch=1024 []
+info InstallDate ret=0 cch=8 [20261027]
+infoex4 InstallDate ret=1605 cch=1024 []
+infoex2 InstallDate ret=87 cch=1024 []
+infoex1 InstallDate ret=87 cch=1024 []
+info Publisher ret=0 cch=20 [Vitreo Probe Authors]
+infoex4 Publisher ret=1605 cch=1024 []
+infoex2 Publisher ret=87 cch=1024 []
+infoex1 Publisher ret=87 cch=1024 []
+info LocalPackage ret=0 cch=33 [C:\WINDOWS\Installer\17b3eb95.msi]
+infoex4 LocalPackage ret=1605 cch=1024 []
+infoex2 LocalPackage ret=87 cch=1024 []
+infoex1 LocalPackage ret=87 cch=1024 []
+info URLInfoAbout ret=0 cch=29 [https://example.invalid/about]
+infoex4 URLInfoAbout ret=1605 cch=1024 []
+infoex2 URLInfoAbout ret=87 cch=1024 []
+infoex1 URLInfoAbout ret=87 cch=1024 []
+info URLUpdateInfo ret=0 cch=30 [https://example.invalid/update]
+infoex4 URLUpdateInfo ret=1605 cch=1024 []
+infoex2 URLUpdateInfo ret=87 cch=1024 []
+infoex1 URLUpdateInfo ret=87 cch=1024 []
+info VersionMinor ret=0 cch=1 [2]
+infoex4 VersionMinor ret=1605 cch=1024 []
+infoex2 VersionMinor ret=87 cch=1024 []
+infoex1 VersionMinor ret=87 cch=1024 []
+info VersionMajor ret=0 cch=1 [1]
+infoex4 VersionMajor ret=1605 cch=1024 []
+infoex2 VersionMajor ret=87 cch=1024 []
+infoex1 VersionMajor ret=87 cch=1024 []
+info ProductID ret=0 cch=0 []
+infoex4 ProductID ret=1605 cch=1024 []
+infoex2 ProductID ret=87 cch=1024 []
+infoex1 ProductID ret=87 cch=1024 []
+info RegCompany ret=0 cch=0 []
+infoex4 RegCompany ret=1605 cch=1024 []
+infoex2 RegCompany ret=87 cch=1024 []
+infoex1 RegCompany ret=87 cch=1024 []
+info RegOwner ret=0 cch=0 []
+infoex4 RegOwner ret=1605 cch=1024 []
+infoex2 RegOwner ret=87 cch=1024 []
+infoex1 RegOwner ret=87 cch=1024 []
+info InstalledLanguage ret=0 cch=4 [1033]
+infoex4 InstalledLanguage ret=1605 cch=1024 []
+infoex2 InstalledLanguage ret=87 cch=1024 []
+infoex1 InstalledLanguage ret=87 cch=1024 []
+info Uninstallable ret=1608 cch=1024 []
+infoex4 Uninstallable ret=1605 cch=1024 []
+infoex2 Uninstallable ret=87 cch=1024 []
+infoex1 Uninstallable ret=87 cch=1024 []
+info State ret=1608 cch=1024 []
+infoex4 State ret=1605 cch=1024 []
+infoex2 State ret=87 cch=1024 []
+infoex1 State ret=87 cch=1024 []
+info PatchType ret=1608 cch=1024 []
+infoex4 PatchType ret=1605 cch=1024 []
+infoex2 PatchType ret=87 cch=1024 []
+infoex1 PatchType ret=87 cch=1024 []
+info LUAEnabled ret=1608 cch=1024 []
+infoex4 LUAEnabled ret=1605 cch=1024 []
+infoex2 LUAEnabled ret=87 cch=1024 []
+infoex1 LUAEnabled ret=87 cch=1024 []
+info DisplayName ret=1608 cch=1024 []
+infoex4 DisplayName ret=1605 cch=1024 []
+infoex2 DisplayName ret=87 cch=1024 []
+infoex1 DisplayName ret=87 cch=1024 []
+info MoreInfoURL ret=1608 cch=1024 []
+infoex4 MoreInfoURL ret=1605 cch=1024 []
+infoex2 MoreInfoURL ret=87 cch=1024 []
+infoex1 MoreInfoURL ret=87 cch=1024 []
+info LastUsedSource ret=0 cch=32 [n;1;C:\Users\Owner\msireg\x86v1\]
+infoex4 LastUsedSource ret=1605 cch=1024 []
+infoex2 LastUsedSource ret=87 cch=1024 []
+infoex1 LastUsedSource ret=87 cch=1024 []
+info LastUsedType ret=0 cch=32 [n;1;C:\Users\Owner\msireg\x86v1\]
+infoex4 LastUsedType ret=1605 cch=1024 []
+infoex2 LastUsedType ret=87 cch=1024 []
+infoex1 LastUsedType ret=87 cch=1024 []
+info MediaPackagePath ret=0 cch=0 []
+infoex4 MediaPackagePath ret=1605 cch=1024 []
+infoex2 MediaPackagePath ret=87 cch=1024 []
+infoex1 MediaPackagePath ret=87 cch=1024 []
+info DiskPrompt ret=0 cch=0 []
+infoex4 DiskPrompt ret=1605 cch=1024 []
+infoex2 DiskPrompt ret=87 cch=1024 []
+infoex1 DiskPrompt ret=87 cch=1024 []
+info Comments ret=1608 cch=1024 []
+infoex4 Comments ret=1605 cch=1024 []
+infoex2 Comments ret=87 cch=1024 []
+infoex1 Comments ret=87 cch=1024 []
+info Contact ret=1608 cch=1024 []
+infoex4 Contact ret=1605 cch=1024 []
+infoex2 Contact ret=87 cch=1024 []
+infoex1 Contact ret=87 cch=1024 []
+info Readme ret=1608 cch=1024 []
+infoex4 Readme ret=1605 cch=1024 []
+infoex2 Readme ret=87 cch=1024 []
+infoex1 Readme ret=87 cch=1024 []
+info Size ret=1608 cch=1024 []
+infoex4 Size ret=1605 cch=1024 []
+infoex2 Size ret=87 cch=1024 []
+infoex1 Size ret=87 cch=1024 []
+info EstimatedSize ret=1608 cch=1024 []
+infoex4 EstimatedSize ret=1605 cch=1024 []
+infoex2 EstimatedSize ret=87 cch=1024 []
+infoex1 EstimatedSize ret=87 cch=1024 []
+info NoRepair ret=1608 cch=1024 []
+infoex4 NoRepair ret=1605 cch=1024 []
+infoex2 NoRepair ret=87 cch=1024 []
+infoex1 NoRepair ret=87 cch=1024 []
+info ModifyPath ret=1608 cch=1024 []
+infoex4 ModifyPath ret=1605 cch=1024 []
+infoex2 ModifyPath ret=87 cch=1024 []
+infoex1 ModifyPath ret=87 cch=1024 []
+info UninstallString ret=1608 cch=1024 []
+infoex4 UninstallString ret=1605 cch=1024 []
+infoex2 UninstallString ret=87 cch=1024 []
+infoex1 UninstallString ret=87 cch=1024 []
+info WindowsInstaller ret=0 cch=1 [1]
+infoex4 WindowsInstaller ret=1605 cch=1024 []
+infoex2 WindowsInstaller ret=87 cch=1024 []
+infoex1 WindowsInstaller ret=87 cch=1024 []
+info Clients ret=0 cch=2 [:]
+infoex4 Clients ret=1605 cch=1024 []
+infoex2 Clients ret=87 cch=1024 []
+infoex1 Clients ret=87 cch=1024 []
+info AdvertiseFlags ret=0 cch=3 [388]
+infoex4 AdvertiseFlags ret=1605 cch=1024 []
+infoex2 AdvertiseFlags ret=87 cch=1024 []
+infoex1 AdvertiseFlags ret=87 cch=1024 []
+info DeploymentFlags ret=0 cch=1 [3]
+infoex4 DeploymentFlags ret=1605 cch=1024 []
+infoex2 DeploymentFlags ret=87 cch=1024 []
+infoex1 DeploymentFlags ret=87 cch=1024 []
+info Assignment ret=1608 cch=1024 []
+infoex4 Assignment ret=1605 cch=1024 []
+infoex2 Assignment ret=87 cch=1024 []
+infoex1 Assignment ret=87 cch=1024 []
+info productname ret=1608 cch=1024 []
+infoex4 productname ret=1605 cch=1024 []
+infoex2 productname ret=87 cch=1024 []
+infoex1 productname ret=87 cch=1024 []
+info BogusProperty ret=1608 cch=1024 []
+infoex4 BogusProperty ret=1605 cch=1024 []
+infoex2 BogusProperty ret=87 cch=1024 []
+infoex1 BogusProperty ret=87 cch=1024 []
+info-size null-buf ret=0 cch=5 []
+info-size cch3 ret=234 cch=5 [zzzzzz]
+info-size cch5 ret=234 cch=5 [zzzzzz]
+info-size cch6 ret=0 cch=5 [1.2.3]
+info-size cch0 ret=234 cch=5 [zz]
+info null-both ret=0 cch=0 []
+info buf-no-cch ret=87 cch=0 []
+info unknown-product ret=1605 cch=16 []
+info bad-guid ret=87 cch=16 []
+info lowercase-guid ret=0 cch=5 [1.2.3]
+info null-product ret=87 cch=16 []
+info null-prop ret=87 cch=16 []
+infoA Publisher ret=0 cch=20 [Vitreo Probe Authors]
+infoA Publisher cch4 ret=234 cch=20 [zzzzzzz]
+infoex machine-with-sid ret=87 cch=16 []
+infoex user-null-sid ret=0 cch=5 [1.2.3]
+infoex user-everyone ret=87 cch=16 []
+infoex ctx7 ret=87 cch=16 []
+infoex ctx0 ret=87 cch=16 []
+enum found-at-index>=0
+enum found=1 end=259
+enum null-buf ret=87
+enumex sid=(null) ctx=4 ret=259 inst=[] got=0 cch=128 sid=[]
+enumex1 sid=(null) ctx=4 ret=87
+enumex sid=(null) ctx=2 ret=0 inst=[{EA844198-B6C8-4E38-9ABA-6BA7E226E338}] got=2 cch=46 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+enumex1 sid=(null) ctx=2 ret=259
+enumex sid=(null) ctx=7 ret=0 inst=[{EA844198-B6C8-4E38-9ABA-6BA7E226E338}] got=2 cch=46 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+enumex1 sid=(null) ctx=7 ret=259
+enumex sid=S-1-1-0 ctx=7 ret=0 inst=[{EA844198-B6C8-4E38-9ABA-6BA7E226E338}] got=2 cch=46 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+enumex1 sid=S-1-1-0 ctx=7 ret=259
+enumex sid=S-1-1-0 ctx=2 ret=0 inst=[{EA844198-B6C8-4E38-9ABA-6BA7E226E338}] got=2 cch=46 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+enumex1 sid=S-1-1-0 ctx=2 ret=259
+enumex sid=S-1-5-18 ctx=4 ret=87 inst=[] got=0 cch=128 sid=[]
+enumex1 sid=S-1-5-18 ctx=4 ret=87
+enumex sid=(null) ctx=0 ret=87 inst=[] got=0 cch=128 sid=[]
+enumex1 sid=(null) ctx=0 ret=87
+enumex sid=(null) ctx=8 ret=87 inst=[] got=0 cch=128 sid=[]
+enumex1 sid=(null) ctx=8 ret=87
+enumex small-sid ret=234 cch=46 got=2
+enumex null-sid-buf ret=0 cch=46 got=2
+state 5
+state unknown -1
+state bad -2
+related 0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}]
+related end=259
+related reserved=87
+related bad=87
+elevated ret=0 val=0
+elevated unknown ret=1605 val=0
+from-package ret=0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}]
+from-package unknown ret=1605
+userinfo state=0 user=[] 63 org=[] 64 serial=[] 64
+userinfo small state=0 cu=1
+userinfo unknown state=-1
+feature 0 [FeatMain] parent []
+feature 1 [FeatSub] parent [FeatMain]
+feature 2 [FeatData] parent []
+feature 3 [FeatAbsent] parent []
+feature 4 [FeatAbsentChild] parent [FeatMain]
+feature end=259
+feature null-parent ret=0
+feature unknown ret=1605
+fstate FeatMain 3
+fstateex4 FeatMain ret=1605 st=99
+fstateex2 FeatMain ret=0 st=3
+openproduct ret=0
+finfo FeatMain ret=0 attrs=1 title=[Main] 4 help=[Main feature] 12
+prodprop ProductVersion ret=0 cch=5 [1.2.3]
+prodprop missing ret=0 cch=0 []
+prodprop small ret=234 cch=5 [1]
+fusage FeatMain ret=0 uses=0 date=0
+fstate FeatSub 3
+fstateex4 FeatSub ret=1605 st=99
+fstateex2 FeatSub ret=0 st=3
+finfo FeatSub ret=0 attrs=1 title=[Sub] 3 help=[Child feature] 13
+fusage FeatSub ret=0 uses=0 date=0
+fstate FeatData 3
+fstateex4 FeatData ret=1605 st=99
+fstateex2 FeatData ret=0 st=3
+finfo FeatData ret=0 attrs=1 title=[Data] 4 help=[Data feature] 12
+fusage FeatData ret=0 uses=0 date=0
+fstate FeatAbsent 2
+fstateex4 FeatAbsent ret=1605 st=99
+fstateex2 FeatAbsent ret=0 st=2
+finfo FeatAbsent ret=0 attrs=1 title=[Absent] 6 help=[Not installed by default] 24
+fusage FeatAbsent ret=0 uses=0 date=0
+fstate NoSuchFeature -1
+fstateex4 NoSuchFeature ret=1605 st=99
+fstateex2 NoSuchFeature ret=1606 st=-1
+finfo NoSuchFeature ret=1606 attrs=57005 title=[] 64 help=[] 64
+fusage NoSuchFeature ret=0 uses=0 date=0
+fstate featmain 3
+fstateex4 featmain ret=1605 st=99
+fstateex2 featmain ret=0 st=3
+finfo featmain ret=1606 attrs=57005 title=[] 64 help=[] 64
+fusage featmain ret=0 uses=0 date=0
+usefeature FeatMain 3
+usefeatureex FeatSub 3
+usefeatureex FeatAbsent 2
+usefeatureex bad-mode -2
+usefeatureex reserved -2
+fusage-after FeatMain ret=0 uses=1 date=nonzero
+fusage-after FeatSub ret=0 uses=1
+enumcomp found reg
+enumcomp found main
+enumcomp found dir
+enumcomp end=259 found=3
+comppath main st=3 cch=40 [C:\Program Files (x86)\VitreoRP\main.dll]
+locate main st=3 cch=40 [C:\Program Files (x86)\VitreoRP\main.dll]
+prodcode main ret=0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}]
+clients main 0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}]
+clients main end=259
+cstate4 main ret=1605 st=99
+cstate2 main ret=0 st=3
+comppathex4 main st=-1 cch=512 []
+comppathex2 main st=3 cch=40 [C:\Program Files (x86)\VitreoRP\main.dll]
+clientsex main 0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}] ctx=2 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+clientsex main end=259
+comppath reg st=3 cch=37 [01:\Software\VitreoRegProbe\Installed]
+locate reg st=3 cch=37 [01:\Software\VitreoRegProbe\Installed]
+prodcode reg ret=0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}]
+clients reg 0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}]
+clients reg end=259
+cstate4 reg ret=1605 st=99
+cstate2 reg ret=0 st=3
+comppathex4 reg st=-1 cch=512 []
+comppathex2 reg st=3 cch=37 [01:\Software\VitreoRegProbe\Installed]
+clientsex reg 0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}] ctx=2 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+clientsex reg end=259
+comppath dir st=3 cch=37 [C:\Program Files (x86)\VitreoRP\data\]
+locate dir st=3 cch=37 [C:\Program Files (x86)\VitreoRP\data\]
+prodcode dir ret=0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}]
+clients dir 0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}]
+clients dir end=259
+cstate4 dir ret=1605 st=99
+cstate2 dir ret=0 st=3
+comppathex4 dir st=-1 cch=512 []
+comppathex2 dir st=3 cch=37 [C:\Program Files (x86)\VitreoRP\data\]
+clientsex dir 0 [{EA844198-B6C8-4E38-9ABA-6BA7E226E338}] ctx=2 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+clientsex dir end=259
+comppath absent st=-1 cch=512 []
+locate absent st=-1 cch=512 []
+prodcode absent ret=1607 []
+clients absent end=1607
+cstate4 absent ret=1605 st=99
+cstate2 absent ret=1607 st=-1
+comppathex4 absent st=-1 cch=512 []
+comppathex2 absent st=-1 cch=512 []
+clientsex absent end=259
+comppath unknown st=-1 cch=512 []
+locate unknown st=-1 cch=512 []
+prodcode unknown ret=1607 []
+clients unknown end=1607
+cstate4 unknown ret=1605 st=99
+cstate2 unknown ret=1607 st=-1
+comppathex4 unknown st=-1 cch=512 []
+comppathex2 unknown st=-1 cch=512 []
+clientsex unknown end=259
+enumcompex reg ctx=2 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+enumcompex main ctx=2 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+enumcompex dir ctx=2 sid=[S-1-5-21-1828410828-4144948699-2202159460-1001]
+enumcompex end=259
+comppath small st=-3 cch=40
+comppath null-buf st=3 cch=40
+comppath null-both st=3
+comppath bad st=-2
+qualifier 0 [probe-qualifier] 128 [probe appdata] 13
+qualifier end=259
+qualifier small ret=234 cq=15
+provideq existing ret=0 cch=40 [C:\Program Files (x86)\VitreoRP\main.dll]
+provideq nodetection ret=0 cch=40 [C:\Program Files (x86)\VitreoRP\main.dll]
+provideq missing-qualifier ret=1611 cch=512 []
+provideq unknown-category ret=1607 cch=512 []
+provide existing ret=0 cch=40 [C:\Program Files (x86)\VitreoRP\main.dll]
+provide nodetection ret=0 cch=40 [C:\Program Files (x86)\VitreoRP\main.dll]
+provide absent ret=2 cch=512 []
+provide reg ret=0 cch=37 [01:\Software\VitreoRegProbe\Installed]
+from-descriptor ret=0 cch=55 ["C:\Program Files (x86)\VitreoRP\main.dll"probe appdata]
+from-descriptor args=0
+fstate-descriptor 3
+src4 type0 end=1605
+src4 type1 end=1605
+srcinfo4 MediaPackagePath ret=1605 cch=512 []
+srcinfo4 DiskPrompt ret=1605 cch=512 []
+srcinfo4 LastUsedSource ret=1605 cch=512 []
+srcinfo4 LastUsedType ret=1605 cch=512 []
+srcinfo4 PackageName ret=1605 cch=512 []
+srcinfo4 BogusProperty ret=1605 cch=512 []
+disk4 end=1605
+src2 type0 0 [C:\Users\Owner\msireg\x86v1\] 28
+src2 type0 end=259
+src2 type1 end=259
+srcinfo2 MediaPackagePath ret=0 cch=0 []
+srcinfo2 DiskPrompt ret=0 cch=0 []
+srcinfo2 LastUsedSource ret=0 cch=28 [C:\Users\Owner\msireg\x86v1\]
+srcinfo2 LastUsedType ret=0 cch=1 [n]
+srcinfo2 PackageName ret=0 cch=6 [rp.msi]
+srcinfo2 BogusProperty ret=1608 cch=512 []
+disk2 0 id=1 [PROBE1] 6 [Probe Disk] 10
+disk2 end=259
+srcinfo machine-with-sid ret=87 cch=512 []
+srcinfo unknown ret=1605 cch=512 []
+srcinfo patch-code ret=1647 cch=512 []
+srcinfo small ret=1605 cch=2 []
+patches ret=259
+patchesex ret=259
+patchinfo ret=1605
+patchinfoex ret=1605

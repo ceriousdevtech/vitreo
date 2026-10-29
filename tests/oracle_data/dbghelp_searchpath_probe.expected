@@ -1,0 +1,11 @@
+get_uninit ok=0 gle=6
+init_null ok=1
+get_default ok=1 gle=0 [.]
+set ok=1
+get_after_set ok=1 [C:\sym;srv*C:\cache]
+getw_after_set ok=1 len=13 [C:\sym;srv*C:\cache]
+get_short5 ok=1 gle=0 b0=0 b3=5a b4=5a b5=5a
+get_after_setnull ok=1 [.]
+get_env ok=1 [.;C:\ntsym]
+get_user ok=1 [C:\user;D:\x]
+get_after_cleanup ok=0 gle=6

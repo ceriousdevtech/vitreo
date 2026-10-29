@@ -1,0 +1,5 @@
+stdout_before_input=1
+same_descriptor_close_waits=1
+handle_query_before_input=1
+zero_fread_before_input=1
+read=1 write=1 close=0 line=ok

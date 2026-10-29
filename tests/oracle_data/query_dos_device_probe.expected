@@ -1,0 +1,19 @@
+C: device is \Device\HarddiskVolume<n>: yes
+C:                 ret=25 err=57005 list=[<DEV>] terminators_at=24,24
+c:                 ret=25 err=57005 list=[<DEV>] terminators_at=24,24
+C:\                ret=0 err=6 buf0=cccc
+C                  ret=0 err=2 buf0=cccc
+unmapped Q:        ret=0 err=2 buf0=cccc
+unmapped Q:\       ret=0 err=3 buf0=cccc
+C:\Windows         ret=0 err=6 buf0=cccc
+NUL\               ret=0 err=6 buf0=cccc
+empty              ret=0 err=6 buf0=cccc
+NUL                ret=14 err=57005 list=[\Device\Null] terminators_at=13,13
+C: exact fit       ret=25 err=57005 list=[<DEV>] terminators_at=24,24
+C: one short       ret=0 err=122 buf0=005c
+C: no room         ret=0 err=122 buf0=cccc
+C: zero            ret=0 err=122 buf0=cccc
+NULL list ret>0=1 err=57005 has C:=1
+NULL list cch 4 ret=0 err=122
+A C: ret=25 err=57005 same_as_W=1
+final path NT starts with C: device: 1 (ret>0=1, then '\': 1)

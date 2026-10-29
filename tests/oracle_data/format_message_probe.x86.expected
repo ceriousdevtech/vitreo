@@ -1,0 +1,1170 @@
+bits=32 acp=1252
+W va_seq ret=11 err=57005 out='101 102 103' nul=1 touched=12 span=12
+W va_rev ret=7 err=57005 out='102 101' nul=1 touched=8 span=8
+W va_skip ret=3 err=57005 out='103' nul=1 touched=4 span=4
+W va_skip_then_back ret=11 err=57005 out='103 101 102' nul=1 touched=12 span=12
+W va_repeat ret=11 err=57005 out='101 101 102' nul=1 touched=12 span=12
+W va_star1_n2 ret=13 err=57005 out='  101|102|103' nul=1 touched=14 span=14
+W va_star1_n3 ret=9 err=57005 out='  101|103' nul=1 touched=10 span=10
+W va_star2_n2 ret=18 err=57005 out='  0101|101|102|103' nul=1 touched=19 span=19
+W va_star2_n3 ret=14 err=57005 out='  0101|102|103' nul=1 touched=15 span=15
+W va_star_second ret=17 err=57005 out='101|  102|103|104' nul=1 touched=18 span=18
+W va_star_rev ret=9 err=57005 out='  102|101' nul=1 touched=10 span=10
+W va_learn ret=15 err=57005 out='  Bi Bob   Bill' nul=1 touched=16 span=16
+W va_i64_n2 ret=19 err=57005 out='21474836487|103|104' nul=1 touched=20 span=20
+W va_i64_second ret=19 err=57005 out='101|21474836487|104' nul=1 touched=20 span=20
+W va_i64_rev ret=3 err=57005 out='5|7' nul=1 touched=4 span=4
+W va_ll ret=3 err=57005 out='7|5' nul=1 touched=4 span=4
+W va_I64x_hex ret=20 err=57005 out='1122334455667788|103' nul=1 touched=21 span=21
+W arr_seq ret=11 err=57005 out='101 102 103' nul=1 touched=12 span=12
+W arr_rev ret=7 err=57005 out='102 101' nul=1 touched=8 span=8
+W arr_skip ret=3 err=57005 out='103' nul=1 touched=4 span=4
+W arr_star1_n2 ret=13 err=57005 out='  101|101|102' nul=1 touched=14 span=14
+W arr_star1_n3 ret=9 err=57005 out='  101|102' nul=1 touched=10 span=10
+W arr_star2_n2 ret=16 err=57005 out='  0101|4|101|102' nul=1 touched=17 span=17
+W arr_star2_n4 ret=14 err=57005 out='  0101|102|103' nul=1 touched=15 span=15
+W arr_star_second ret=17 err=57005 out='101|  102|102|103' nul=1 touched=18 span=18
+W arr_learn ret=15 err=57005 out='  Bi Bob   Bill' nul=1 touched=16 span=16
+W arr_i64 ret=7 err=57005 out='7|5|103' nul=1 touched=8 span=8
+W arr_i64_second ret=5 err=57005 out='5|103' nul=1 touched=6 span=6
+W arr_ll ret=3 err=57005 out='7|5' nul=1 touched=4 span=4
+A va_seq ret=11 err=57005 out='101 102 103' nul=1 touched=12 span=12
+A va_star2_n3 ret=14 err=57005 out='  0101|102|103' nul=1 touched=15 span=15
+A va_i64_n2 ret=19 err=57005 out='21474836487|103|104' nul=1 touched=20 span=20
+A arr_star1_n3 ret=9 err=57005 out='  101|102' nul=1 touched=10 span=10
+A arr_i64 ret=7 err=57005 out='7|5|103' nul=1 touched=8 span=8
+W s_default ret=5 err=57005 out='[abc]' nul=1 touched=6 span=6
+W s_s ret=5 err=57005 out='[abc]' nul=1 touched=6 span=6
+W s_5s ret=7 err=57005 out='[  abc]' nul=1 touched=8 span=8
+W s_m5s ret=7 err=57005 out='[abc  ]' nul=1 touched=8 span=8
+W s_p2s ret=4 err=57005 out='[ab]' nul=1 touched=5 span=5
+W s_05s ret=7 err=57005 out='[00abc]' nul=1 touched=8 span=8
+W s_S ret=6 err=57005 out='[nar\u00E9]' nul=1 touched=7 span=7
+W s_hs ret=6 err=57005 out='[nar\u00E9]' nul=1 touched=7 span=7
+W s_ls ret=6 err=57005 out='[wid\u0416]' nul=1 touched=7 span=7
+W s_ws ret=6 err=57005 out='[wid\u0416]' nul=1 touched=7 span=7
+W s_wide ret=6 err=57005 out='[wid\u0416]' nul=1 touched=7 span=7
+W s_Z_unicode ret=6 err=57005 out='[cntd]' nul=1 touched=7 span=7
+W s_Z ret=6 err=57005 out='[cnta]' nul=1 touched=7 span=7
+W c_c ret=3 err=57005 out='[\u0416]' nul=1 touched=4 span=4
+W c_C ret=3 err=57005 out='[q]' nul=1 touched=4 span=4
+W c_hc ret=3 err=57005 out='[r]' nul=1 touched=4 span=4
+W c_lc ret=3 err=57005 out='[\u0416]' nul=1 touched=4 span=4
+W c_3c ret=5 err=57005 out='[  x]' nul=1 touched=6 span=6
+W d_neg ret=4 err=57005 out='[-5]' nul=1 touched=5 span=5
+W i_neg ret=4 err=57005 out='[-5]' nul=1 touched=5 span=5
+W u_max ret=12 err=57005 out='[4294967295]' nul=1 touched=13 span=13
+W d_max ret=4 err=57005 out='[-1]' nul=1 touched=5 span=5
+W x ret=6 err=57005 out='[beef]' nul=1 touched=7 span=7
+W X ret=6 err=57005 out='[BEEF]' nul=1 touched=7 span=7
+W o ret=4 err=57005 out='[10]' nul=1 touched=5 span=5
+W hash_x ret=8 err=57005 out='[0xbeef]' nul=1 touched=9 span=9
+W hash_o ret=5 err=57005 out='[010]' nul=1 touched=6 span=6
+W 08x ret=10 err=57005 out='[0000beef]' nul=1 touched=11 span=11
+W m8d ret=10 err=57005 out='[42      ]' nul=1 touched=11 span=11
+W plus_d ret=5 err=57005 out='[+42]' nul=1 touched=6 span=6
+W space_d ret=5 err=57005 out='[ 42]' nul=1 touched=6 span=6
+W p5d ret=7 err=57005 out='[00042]' nul=1 touched=8 span=8
+W lu ret=12 err=57005 out='[4294967295]' nul=1 touched=13 span=13
+W lx ret=6 err=57005 out='[beef]' nul=1 touched=7 span=7
+W hu ret=6 err=57005 out='[9029]' nul=1 touched=7 span=7
+W hd ret=8 err=57005 out='[-32768]' nul=1 touched=9 span=9
+W hx ret=6 err=57005 out='[2345]' nul=1 touched=7 span=7
+W Ix ret=10 err=57005 out='[12345678]' nul=1 touched=11 span=11
+W I32x ret=6 err=57005 out='[beef]' nul=1 touched=7 span=7
+W zu ret=4 err=57005 out='[77]' nul=1 touched=5 span=5
+W p ret=10 err=57005 out='[00001234]' nul=1 touched=11 span=11
+W e ret=3 err=57005 out='[e]' nul=1 touched=4 span=4
+W f ret=3 err=57005 out='[f]' nul=1 touched=4 span=4
+W g ret=3 err=57005 out='[g]' nul=1 touched=4 span=4
+W E ret=3 err=57005 out='[E]' nul=1 touched=4 span=4
+W a ret=3 err=57005 out='[a]' nul=1 touched=4 span=4
+W unknown_q ret=3 err=57005 out='[q]' nul=1 touched=4 span=4
+W unknown_y ret=3 err=57005 out='[y]' nul=1 touched=4 span=4
+W no_type ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W empty_spec ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pct_spec ret=3 err=57005 out='[%]' nul=1 touched=4 span=4
+W unterminated ret=0 err=87 touched=1 span=1 buf='['
+W unterminated_end ret=0 err=87 touched=1 span=1 buf='['
+W bang_after ret=6 err=57005 out='[abc!]' nul=1 touched=7 span=7
+W two_digit ret=8 err=57005 out='[(null)]' nul=1 touched=9 span=9
+A s_default ret=5 err=57005 out='[abc]' nul=1 touched=6 span=6
+A s_S ret=6 err=57005 out='[wid?]' nul=1 touched=7 span=7
+A s_ls ret=6 err=57005 out='[wid?]' nul=1 touched=7 span=7
+A s_hs ret=6 err=57005 out='[nar\xE9]' nul=1 touched=7 span=7
+A s_ansi ret=6 err=57005 out='[nar\xE9]' nul=1 touched=7 span=7
+A c_c ret=3 err=57005 out='[x]' nul=1 touched=4 span=4
+A c_C ret=3 err=57005 out='[?]' nul=1 touched=4 span=4
+A d_neg ret=4 err=57005 out='[-5]' nul=1 touched=5 span=5
+A 08x ret=10 err=57005 out='[0000beef]' nul=1 touched=11 span=11
+A e ret=3 err=57005 out='[e]' nul=1 touched=4 span=4
+A unknown_q ret=3 err=57005 out='[q]' nul=1 touched=4 span=4
+A no_type ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W n10 ret=4 err=57005 out='[10]' nul=1 touched=5 span=5
+W n09 ret=1 err=57005 out='[' nul=1 touched=2 span=2
+W n99 ret=4 err=57005 out='[99]' nul=1 touched=5 span=5
+W n_digit_then_alpha ret=6 err=57005 out='[1x2y]' nul=1 touched=7 span=7
+W width300 ret=302 err=57005 out='[                                                                                                                                                                                                                                                                                                           z]' nul=1 touched=303 span=303
+W insert_crlf ret=10 err=57005 out='[x\r\ny|p\nq]' nul=1 touched=11 span=11
+W insert_crlf_ff ret=10 err=57005 out='[x\r\ny|p\nq]' nul=1 touched=11 span=11
+W insert_crlf_w4 ret=14 err=57005 out='[x\r\ny\r\n|p\nq\r\n]' nul=1 touched=15 span=15
+W insert_not_rescanned ret=7 err=57005 out='[%2 %%]' nul=1 touched=8 span=8
+W esc_pct ret=3 err=57005 out='a%b' nul=1 touched=4 span=4
+W esc_pct_ign ret=4 err=57005 out='a%%b' nul=1 touched=5 span=5
+W esc_pct_ff ret=3 err=57005 out='a%b' nul=1 touched=4 span=4
+W esc_pct_ign_ff ret=4 err=57005 out='a%%b' nul=1 touched=5 span=5
+W esc_space ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W esc_space_ign ret=4 err=57005 out='a% b' nul=1 touched=5 span=5
+W esc_space_ff ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W esc_space_ign_ff ret=4 err=57005 out='a% b' nul=1 touched=5 span=5
+W esc_dot ret=3 err=57005 out='a.b' nul=1 touched=4 span=4
+W esc_dot_ign ret=4 err=57005 out='a%.b' nul=1 touched=5 span=5
+W esc_dot_ff ret=3 err=57005 out='a.b' nul=1 touched=4 span=4
+W esc_dot_ign_ff ret=4 err=57005 out='a%.b' nul=1 touched=5 span=5
+W esc_bang ret=3 err=57005 out='a!b' nul=1 touched=4 span=4
+W esc_bang_ign ret=4 err=57005 out='a%!b' nul=1 touched=5 span=5
+W esc_bang_ff ret=3 err=57005 out='a!b' nul=1 touched=4 span=4
+W esc_bang_ign_ff ret=4 err=57005 out='a%!b' nul=1 touched=5 span=5
+W esc_n ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W esc_n_ign ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W esc_n_ff ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W esc_n_ign_ff ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W esc_r ret=3 err=57005 out='a\rb' nul=1 touched=4 span=4
+W esc_r_ign ret=3 err=57005 out='a\rb' nul=1 touched=4 span=4
+W esc_r_ff ret=3 err=57005 out='a\rb' nul=1 touched=4 span=4
+W esc_r_ign_ff ret=3 err=57005 out='a\rb' nul=1 touched=4 span=4
+W esc_t ret=3 err=57005 out='a\tb' nul=1 touched=4 span=4
+W esc_t_ign ret=3 err=57005 out='a\tb' nul=1 touched=4 span=4
+W esc_t_ff ret=3 err=57005 out='a\tb' nul=1 touched=4 span=4
+W esc_t_ign_ff ret=3 err=57005 out='a\tb' nul=1 touched=4 span=4
+W esc_zero_mid ret=1 err=57005 out='a' nul=1 touched=2 span=2
+W esc_zero_mid_ign ret=1 err=57005 out='a' nul=1 touched=2 span=2
+W esc_zero_mid_ff ret=1 err=57005 out='a' nul=1 touched=2 span=2
+W esc_zero_mid_ign_ff ret=1 err=57005 out='a' nul=1 touched=2 span=2
+W esc_other_x ret=3 err=57005 out='axb' nul=1 touched=4 span=4
+W esc_other_x_ign ret=4 err=57005 out='a%xb' nul=1 touched=5 span=5
+W esc_other_x_ff ret=3 err=57005 out='axb' nul=1 touched=4 span=4
+W esc_other_x_ign_ff ret=4 err=57005 out='a%xb' nul=1 touched=5 span=5
+W esc_trailing_pct ret=0 err=87 touched=1 span=1 buf='a'
+W esc_trailing_pct_ign ret=0 err=87 touched=1 span=1 buf='a'
+W esc_trailing_pct_ff ret=0 err=87 touched=1 span=1 buf='a'
+W esc_trailing_pct_ign_ff ret=0 err=87 touched=1 span=1 buf='a'
+W esc_pctpct_end ret=2 err=57005 out='a%' nul=1 touched=3 span=3
+W esc_pctpct_end_ign ret=3 err=57005 out='a%%' nul=1 touched=4 span=4
+W esc_pctpct_end_ff ret=2 err=57005 out='a%' nul=1 touched=3 span=3
+W esc_pctpct_end_ign_ff ret=3 err=57005 out='a%%' nul=1 touched=4 span=4
+W esc_zero_only ret=0 err=235 touched=1 span=1 buf='\u0000'
+W esc_zero_only_ign ret=0 err=235 touched=1 span=1 buf='\u0000'
+W esc_zero_only_ff ret=0 err=235 touched=1 span=1 buf='\u0000'
+W esc_zero_only_ign_ff ret=0 err=235 touched=1 span=1 buf='\u0000'
+W esc_zero_end ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W esc_zero_end_ign ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W esc_zero_end_ff ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W esc_zero_end_ign_ff ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W esc_n_zero ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W esc_n_zero_ign ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W esc_n_zero_ff ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W esc_n_zero_ign_ff ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W esc_R ret=3 err=57005 out='aRb' nul=1 touched=4 span=4
+W esc_R_ign ret=4 err=57005 out='a%Rb' nul=1 touched=5 span=5
+W esc_R_ff ret=3 err=57005 out='aRb' nul=1 touched=4 span=4
+W esc_R_ign_ff ret=4 err=57005 out='a%Rb' nul=1 touched=5 span=5
+W esc_N ret=3 err=57005 out='aNb' nul=1 touched=4 span=4
+W esc_N_ign ret=4 err=57005 out='a%Nb' nul=1 touched=5 span=5
+W esc_N_ff ret=3 err=57005 out='aNb' nul=1 touched=4 span=4
+W esc_N_ign_ff ret=4 err=57005 out='a%Nb' nul=1 touched=5 span=5
+W esc_T ret=3 err=57005 out='aTb' nul=1 touched=4 span=4
+W esc_T_ign ret=4 err=57005 out='a%Tb' nul=1 touched=5 span=5
+W esc_T_ff ret=3 err=57005 out='aTb' nul=1 touched=4 span=4
+W esc_T_ign_ff ret=4 err=57005 out='a%Tb' nul=1 touched=5 span=5
+W esc_backslash ret=3 err=57005 out='a\\b' nul=1 touched=4 span=4
+W esc_backslash_ign ret=4 err=57005 out='a%\\b' nul=1 touched=5 span=5
+W esc_backslash_ff ret=3 err=57005 out='a\\b' nul=1 touched=4 span=4
+W esc_backslash_ign_ff ret=4 err=57005 out='a%\\b' nul=1 touched=5 span=5
+W esc_pct_crlf ret=5 err=57005 out='a\r\r\nb' nul=1 touched=6 span=6
+W esc_pct_crlf_ign ret=6 err=57005 out='a%\r\r\nb' nul=1 touched=7 span=7
+W esc_pct_crlf_ff ret=4 err=57005 out='a\r b' nul=1 touched=5 span=5
+W esc_pct_crlf_ign_ff ret=5 err=57005 out='a%\r b' nul=1 touched=6 span=6
+W esc_pct_lf ret=3 err=57005 out='a\nb' nul=1 touched=4 span=4
+W esc_pct_lf_ign ret=4 err=57005 out='a%\nb' nul=1 touched=5 span=5
+W esc_pct_lf_ff ret=3 err=57005 out='a\nb' nul=1 touched=4 span=4
+W esc_pct_lf_ign_ff ret=4 err=57005 out='a%\nb' nul=1 touched=5 span=5
+W esc_letters ret=5 err=57005 out=' cdef' nul=1 touched=6 span=6
+W esc_letters_ign ret=9 err=57005 out=' %c%d%e%f' nul=1 touched=10 span=10
+W esc_letters_ff ret=5 err=57005 out=' cdef' nul=1 touched=6 span=6
+W esc_letters_ign_ff ret=9 err=57005 out=' %c%d%e%f' nul=1 touched=10 span=10
+W esc_nonascii ret=3 err=57005 out='a\u00E9\u0416' nul=1 touched=4 span=4
+W esc_nonascii_ign ret=4 err=57005 out='a\u00E9%\u0416' nul=1 touched=5 span=5
+W esc_nonascii_ff ret=3 err=57005 out='a\u00E9\u0416' nul=1 touched=4 span=4
+W esc_nonascii_ign_ff ret=4 err=57005 out='a\u00E9%\u0416' nul=1 touched=5 span=5
+W esc_empty ret=0 err=235 touched=1 span=1 buf='\u0000'
+W esc_empty_ign ret=0 err=235 touched=1 span=1 buf='\u0000'
+W esc_empty_ff ret=0 err=235 touched=1 span=1 buf='\u0000'
+W esc_empty_ign_ff ret=0 err=235 touched=1 span=1 buf='\u0000'
+W esc_dot_only ret=1 err=57005 out='.' nul=1 touched=2 span=2
+W esc_dot_only_ign ret=2 err=57005 out='%.' nul=1 touched=3 span=3
+W esc_dot_only_ff ret=1 err=57005 out='.' nul=1 touched=2 span=2
+W esc_dot_only_ign_ff ret=2 err=57005 out='%.' nul=1 touched=3 span=3
+W esc_dot_lines ret=6 err=57005 out='x.\r\n.y' nul=1 touched=7 span=7
+W esc_dot_lines_ign ret=8 err=57005 out='x%.\r\n%.y' nul=1 touched=9 span=9
+W esc_dot_lines_ff ret=5 err=57005 out='x. .y' nul=1 touched=6 span=6
+W esc_dot_lines_ign_ff ret=7 err=57005 out='x%. %.y' nul=1 touched=8 span=8
+W ign_inserts ret=20 err=57005 out='a%1b%2!d!c%3!*s!d%99' nul=1 touched=21 span=21
+W ign_inserts_w5 ret=20 err=57005 out='a%1b\r\nc%2!d!\r\ndd\r\nee' nul=1 touched=21 span=21
+A ign_inserts ret=15 err=57005 out='a%1b%2!d!c\r\n%%d' nul=1 touched=16 span=16
+A esc_pct ret=16 err=57005 out='a%b\r\nc\rd\te f.g!h' nul=1 touched=17 span=17
+W lb_crlf_w0 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_crlf_w255 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W lb_crlf_w1 ret=8 err=57005 out='a\r\n\r\nb\r\n' nul=1 touched=9 span=9
+W lb_crlf_w3 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_crlf_w10 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W lb_lf_w0 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_lf_w255 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W lb_lf_w1 ret=8 err=57005 out='a\r\n\r\nb\r\n' nul=1 touched=9 span=9
+W lb_lf_w3 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_lf_w10 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W lb_cr_w0 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_cr_w255 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W lb_cr_w1 ret=8 err=57005 out='a\r\n\r\nb\r\n' nul=1 touched=9 span=9
+W lb_cr_w3 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_cr_w10 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W lb_lfcr_w0 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_lfcr_w255 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W lb_lfcr_w1 ret=8 err=57005 out='a\r\n\r\nb\r\n' nul=1 touched=9 span=9
+W lb_lfcr_w3 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_lfcr_w10 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W lb_crlfcrlf_w0 ret=6 err=57005 out='a\r\n\r\nb' nul=1 touched=7 span=7
+W lb_crlfcrlf_w255 ret=4 err=57005 out='a  b' nul=1 touched=5 span=5
+W lb_crlfcrlf_w1 ret=10 err=57005 out='a\r\n\r\n\r\nb\r\n' nul=1 touched=11 span=11
+W lb_crlfcrlf_w3 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_crlfcrlf_w10 ret=4 err=57005 out='a  b' nul=1 touched=5 span=5
+W lb_trail_crlf_w0 ret=5 err=57005 out='abc\r\n' nul=1 touched=6 span=6
+W lb_trail_crlf_w255 ret=4 err=57005 out='abc ' nul=1 touched=5 span=5
+W lb_trail_crlf_w1 ret=11 err=57005 out='a\r\nb\r\nc\r\n\r\n' nul=1 touched=12 span=12
+W lb_trail_crlf_w3 ret=6 err=57005 out='abc\r\n ' nul=1 touched=7 span=7
+W lb_trail_crlf_w10 ret=4 err=57005 out='abc ' nul=1 touched=5 span=5
+W lb_trail_lf_w0 ret=5 err=57005 out='abc\r\n' nul=1 touched=6 span=6
+W lb_trail_lf_w255 ret=4 err=57005 out='abc ' nul=1 touched=5 span=5
+W lb_trail_lf_w1 ret=11 err=57005 out='a\r\nb\r\nc\r\n\r\n' nul=1 touched=12 span=12
+W lb_trail_lf_w3 ret=6 err=57005 out='abc\r\n ' nul=1 touched=7 span=7
+W lb_trail_lf_w10 ret=4 err=57005 out='abc ' nul=1 touched=5 span=5
+W lb_crcrlf_w0 ret=6 err=57005 out='a\r\n\r\nb' nul=1 touched=7 span=7
+W lb_crcrlf_w255 ret=4 err=57005 out='a  b' nul=1 touched=5 span=5
+W lb_crcrlf_w1 ret=10 err=57005 out='a\r\n\r\n\r\nb\r\n' nul=1 touched=11 span=11
+W lb_crcrlf_w3 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W lb_crcrlf_w10 ret=4 err=57005 out='a  b' nul=1 touched=5 span=5
+W lb_spaces_around_w0 ret=8 err=57005 out='a  \r\n  b' nul=1 touched=9 span=9
+W lb_spaces_around_w255 ret=7 err=57005 out='a     b' nul=1 touched=8 span=8
+W lb_spaces_around_w1 ret=16 err=57005 out='a\r\n\r\n\r\n\r\n\r\n\r\nb\r\n' nul=1 touched=17 span=17
+W lb_spaces_around_w3 ret=6 err=57005 out='a\r\n\r\nb' nul=1 touched=7 span=7
+W lb_spaces_around_w10 ret=7 err=57005 out='a     b' nul=1 touched=8 span=8
+W lb_lead_crlf_w0 ret=5 err=57005 out='\r\nabc' nul=1 touched=6 span=6
+W lb_lead_crlf_w255 ret=4 err=57005 out=' abc' nul=1 touched=5 span=5
+W lb_lead_crlf_w1 ret=11 err=57005 out='\r\na\r\nb\r\nc\r\n' nul=1 touched=12 span=12
+W lb_lead_crlf_w3 ret=7 err=57005 out='\r\nabc\r\n' nul=1 touched=8 span=8
+W lb_lead_crlf_w10 ret=4 err=57005 out=' abc' nul=1 touched=5 span=5
+W lb_multi_space_w0 ret=10 err=57005 out='a b  c   d' nul=1 touched=11 span=11
+W lb_multi_space_w255 ret=10 err=57005 out='a b  c   d' nul=1 touched=11 span=11
+W lb_multi_space_w1 ret=24 err=57005 out='a\r\n\r\nb\r\n\r\n\r\nc\r\n\r\n\r\n\r\nd\r\n' nul=1 touched=25 span=25
+W lb_multi_space_w3 ret=11 err=57005 out='a\r\nb\r\nc\r\n d' nul=1 touched=12 span=12
+W lb_multi_space_w10 ret=9 err=57005 out='a b  c\r\nd' nul=1 touched=10 span=10
+W wrap_fox_w1 ret=121 err=57005 out='T\r\nh\r\ne\r\n\r\nq\r\nu\r\ni\r\nc\r\nk\r\n\r\nb\r\nr\r\no\r\nw\r\nn\r\n\r\nf\r\no\r\nx\r\n\r\nj\r\nu\r\nm\r\np\r\ns\r\n\r\no\r\nv\r\ne\r\nr\r\n\r\nt\r\nh\r\ne\r\n\r\nl\r\na\r\nz\r\ny\r\n\r\nd\r\no\r\ng\r\n' nul=1 touched=122 span=122
+W wrap_fox_w4 ret=61 err=57005 out='The\r\nquic\r\nk\r\nbrow\r\nn\r\nfox\r\njump\r\ns\r\nover\r\n\r\nthe\r\nlazy\r\n\r\ndog' nul=1 touched=62 span=62
+W wrap_fox_w5 ret=56 err=57005 out='The\r\nquick\r\n\r\nbrown\r\n fox\r\njumps\r\n\r\nover\r\nthe\r\nlazy\r\ndog' nul=1 touched=57 span=57
+W wrap_fox_w10 ret=47 err=57005 out='The quick\r\nbrown fox\r\njumps\r\nover the\r\nlazy dog' nul=1 touched=48 span=48
+W wrap_fox_w254 ret=43 err=57005 out='The quick brown fox jumps over the lazy dog' nul=1 touched=44 span=44
+W wrap_longword_w1 ret=56 err=57005 out='a\r\nb\r\nc\r\nd\r\ne\r\nf\r\ng\r\nh\r\ni\r\nj\r\nk\r\nl\r\nm\r\nn\r\no\r\np\r\n\r\nq\r\nr\r\n' nul=1 touched=57 span=57
+W wrap_longword_w4 ret=27 err=57005 out='abcd\r\nefgh\r\nijkl\r\nmnop\r\n qr' nul=1 touched=28 span=28
+W wrap_longword_w5 ret=25 err=57005 out='abcde\r\nfghij\r\nklmno\r\np qr' nul=1 touched=26 span=26
+W wrap_longword_w10 ret=21 err=57005 out='abcdefghij\r\nklmnop qr' nul=1 touched=22 span=22
+W wrap_longword_w254 ret=19 err=57005 out='abcdefghijklmnop qr' nul=1 touched=20 span=20
+W wrap_lead_trail_w1 ret=48 err=57005 out='\r\n\r\nl\r\ne\r\na\r\nd\r\n\r\na\r\nn\r\nd\r\n\r\nt\r\nr\r\na\r\ni\r\nl\r\n\r\n\r\n' nul=1 touched=49 span=49
+W wrap_lead_trail_w4 ret=24 err=57005 out='\r\nlead\r\n\r\nand\r\ntrai\r\nl  ' nul=1 touched=25 span=25
+W wrap_lead_trail_w5 ret=22 err=57005 out='\r\nlead\r\nand\r\ntrail\r\n  ' nul=1 touched=23 span=23
+W wrap_lead_trail_w10 ret=20 err=57005 out='  lead\r\nand trail\r\n ' nul=1 touched=21 span=21
+W wrap_lead_trail_w254 ret=18 err=57005 out='  lead and trail  ' nul=1 touched=19 span=19
+W wrap_hard_n_w1 ret=28 err=57005 out='a\r\n\r\nb\r\n\r\nc\r\n\r\nd\r\n\r\ne\r\n\r\nf\r\n' nul=1 touched=29 span=29
+W wrap_hard_n_w4 ret=14 err=57005 out='a\r\nb c\r\nd e\r\nf' nul=1 touched=15 span=15
+W wrap_hard_n_w5 ret=14 err=57005 out='a\r\nb c\r\nd e\r\nf' nul=1 touched=15 span=15
+W wrap_hard_n_w10 ret=13 err=57005 out='a\r\nb c d e\r\nf' nul=1 touched=14 span=14
+W wrap_hard_n_w254 ret=13 err=57005 out='a\r\nb c d e\r\nf' nul=1 touched=14 span=14
+W wrap_tabs_w1 ret=50 err=57005 out='t\r\na\r\nb\r\n\t\r\ns\r\ne\r\np\r\n\t\r\nw\r\no\r\nr\r\nd\r\n\r\nh\r\ne\r\nr\r\ne\r\n' nul=1 touched=51 span=51
+W wrap_tabs_w4 ret=26 err=57005 out='tab\t\r\nsep\t\r\nword\r\n\r\nhere\r\n' nul=1 touched=27 span=27
+W wrap_tabs_w5 ret=22 err=57005 out='tab\ts\r\nep\two\r\nrd\r\nhere' nul=1 touched=23 span=23
+W wrap_tabs_w10 ret=19 err=57005 out='tab\tsep\two\r\nrd here' nul=1 touched=20 span=20
+W wrap_tabs_w254 ret=17 err=57005 out='tab\tsep\tword here' nul=1 touched=18 span=18
+W wrap_insert_w1 ret=19 err=57005 out='x\r\n\r\nin sert\r\n\r\ny\r\n' nul=1 touched=20 span=20
+W wrap_insert_w4 ret=13 err=57005 out='x\r\nin sert\r\ny' nul=1 touched=14 span=14
+W wrap_insert_w5 ret=13 err=57005 out='x\r\nin sert\r\ny' nul=1 touched=14 span=14
+W wrap_insert_w10 ret=12 err=57005 out='x in sert\r\ny' nul=1 touched=13 span=13
+W wrap_insert_w254 ret=11 err=57005 out='x in sert y' nul=1 touched=12 span=12
+W wrap_zero_w1 ret=20 err=57005 out='o\r\nn\r\ne\r\n\r\nt\r\nw\r\no\r\n' nul=1 touched=21 span=21
+W wrap_zero_w4 ret=8 err=57005 out='one\r\ntwo' nul=1 touched=9 span=9
+W wrap_zero_w5 ret=8 err=57005 out='one\r\ntwo' nul=1 touched=9 span=9
+W wrap_zero_w10 ret=7 err=57005 out='one two' nul=1 touched=8 span=8
+W wrap_zero_w254 ret=7 err=57005 out='one two' nul=1 touched=8 span=8
+W wrap_r_w1 ret=29 err=57005 out='a\r\na\r\n\r\nb\r\nb\r\n\rc\r\nc\r\n\r\nd\r\nd\r\n' nul=1 touched=30 span=30
+W wrap_r_w4 ret=13 err=57005 out='aa\r\nbb\rcc\r\ndd' nul=1 touched=14 span=14
+W wrap_r_w5 ret=13 err=57005 out='aa\r\nbb\rcc\r\ndd' nul=1 touched=14 span=14
+W wrap_r_w10 ret=11 err=57005 out='aa bb\rcc dd' nul=1 touched=12 span=12
+W wrap_r_w254 ret=11 err=57005 out='aa bb\rcc dd' nul=1 touched=12 span=12
+W wrap_trail_n_w1 ret=28 err=57005 out='a\r\na\r\na\r\na\r\n\r\nb\r\nb\r\nb\r\nb\r\n\r\n' nul=1 touched=29 span=29
+W wrap_trail_n_w4 ret=16 err=57005 out='aaaa\r\n\r\nbbbb\r\n\r\n' nul=1 touched=17 span=17
+W wrap_trail_n_w5 ret=12 err=57005 out='aaaa\r\nbbbb\r\n' nul=1 touched=13 span=13
+W wrap_trail_n_w10 ret=11 err=57005 out='aaaa bbbb\r\n' nul=1 touched=12 span=12
+W wrap_trail_n_w254 ret=11 err=57005 out='aaaa bbbb\r\n' nul=1 touched=12 span=12
+W wrap_trail_space_w1 ret=28 err=57005 out='a\r\na\r\na\r\na\r\n\r\nb\r\nb\r\nb\r\nb\r\n\r\n' nul=1 touched=29 span=29
+W wrap_trail_space_w4 ret=15 err=57005 out='aaaa\r\n\r\nbbbb\r\n ' nul=1 touched=16 span=16
+W wrap_trail_space_w5 ret=12 err=57005 out='aaaa\r\nbbbb\r\n' nul=1 touched=13 span=13
+W wrap_trail_space_w10 ret=11 err=57005 out='aaaa bbbb\r\n' nul=1 touched=12 span=12
+W wrap_trail_space_w254 ret=10 err=57005 out='aaaa bbbb ' nul=1 touched=11 span=11
+W wrap_fit_exact_w1 ret=20 err=57005 out='a\r\na\r\na\r\n\r\nb\r\nb\r\nb\r\n' nul=1 touched=21 span=21
+W wrap_fit_exact_w4 ret=8 err=57005 out='aaa\r\nbbb' nul=1 touched=9 span=9
+W wrap_fit_exact_w5 ret=8 err=57005 out='aaa\r\nbbb' nul=1 touched=9 span=9
+W wrap_fit_exact_w10 ret=7 err=57005 out='aaa bbb' nul=1 touched=8 span=8
+W wrap_fit_exact_w254 ret=7 err=57005 out='aaa bbb' nul=1 touched=8 span=8
+W wrap_fit_over_w1 ret=23 err=57005 out='a\r\na\r\na\r\na\r\n\r\nb\r\nb\r\nb\r\n' nul=1 touched=24 span=24
+W wrap_fit_over_w4 ret=11 err=57005 out='aaaa\r\n\r\nbbb' nul=1 touched=12 span=12
+W wrap_fit_over_w5 ret=9 err=57005 out='aaaa\r\nbbb' nul=1 touched=10 span=10
+W wrap_fit_over_w10 ret=8 err=57005 out='aaaa bbb' nul=1 touched=9 span=9
+W wrap_fit_over_w254 ret=8 err=57005 out='aaaa bbb' nul=1 touched=9 span=9
+W wrap_word_eq_width_w1 ret=15 err=57005 out='a\r\na\r\na\r\na\r\na\r\n' nul=1 touched=16 span=16
+W wrap_word_eq_width_w4 ret=7 err=57005 out='aaaa\r\na' nul=1 touched=8 span=8
+W wrap_word_eq_width_w5 ret=7 err=57005 out='aaaaa\r\n' nul=1 touched=8 span=8
+W wrap_word_eq_width_w10 ret=5 err=57005 out='aaaaa' nul=1 touched=6 span=6
+W wrap_word_eq_width_w254 ret=5 err=57005 out='aaaaa' nul=1 touched=6 span=6
+W wrap_pcts_w1 ret=20 err=57005 out='a\r\n%\r\n%\r\n%\r\n%\r\n\r\nb\r\n' nul=1 touched=21 span=21
+W wrap_pcts_w4 ret=9 err=57005 out='a%%%\r\n% b' nul=1 touched=10 span=10
+W wrap_pcts_w5 ret=9 err=57005 out='a%%%%\r\n b' nul=1 touched=10 span=10
+W wrap_pcts_w10 ret=7 err=57005 out='a%%%% b' nul=1 touched=8 span=8
+W wrap_pcts_w254 ret=7 err=57005 out='a%%%% b' nul=1 touched=8 span=8
+W wrap_tabsesc_w1 ret=18 err=57005 out='a\r\n\r\nb\r\n\r\nc\r\n\r\nd\r\n' nul=1 touched=19 span=19
+W wrap_tabsesc_w4 ret=10 err=57005 out='a\r\nb\r\nc\r\nd' nul=1 touched=11 span=11
+W wrap_tabsesc_w5 ret=10 err=57005 out='a\r\nb\r\nc\r\nd' nul=1 touched=11 span=11
+W wrap_tabsesc_w10 ret=10 err=57005 out='a\r\nb\r\nc\r\nd' nul=1 touched=11 span=11
+W wrap_tabsesc_w254 ret=7 err=57005 out='a\tb\tc\td' nul=1 touched=8 span=8
+W wrap_pctspaces_w1 ret=18 err=57005 out='a\r\n \r\n \r\n \r\n \r\nb\r\n' nul=1 touched=19 span=19
+W wrap_pctspaces_w4 ret=8 err=57005 out='a   \r\n b' nul=1 touched=9 span=9
+W wrap_pctspaces_w5 ret=8 err=57005 out='a    \r\nb' nul=1 touched=9 span=9
+W wrap_pctspaces_w10 ret=6 err=57005 out='a    b' nul=1 touched=7 span=7
+W wrap_pctspaces_w254 ret=6 err=57005 out='a    b' nul=1 touched=7 span=7
+A wrap_fox_w10 ret=47 err=57005 out='The quick\r\nbrown fox\r\njumps\r\nover the\r\nlazy dog' nul=1 touched=48 span=48
+A lb_lf_w0 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+A lb_cr_wff ret=4 err=57005 out='a b ' nul=1 touched=5 span=5
+W buf_hello_n0 ret=0 err=122 touched=0 span=0
+A buf_hello_n0 ret=0 err=122 touched=0 span=0
+W buf_hello_n1 ret=0 err=122 touched=1 span=1 buf='\u0000'
+A buf_hello_n1 ret=0 err=122 touched=0 span=0
+W buf_hello_n2 ret=0 err=122 touched=2 span=2 buf='h\u0000'
+A buf_hello_n2 ret=0 err=122 touched=0 span=0
+W buf_hello_n5 ret=0 err=122 touched=5 span=5 buf='hell\u0000'
+A buf_hello_n5 ret=0 err=122 touched=0 span=0
+W buf_hello_n6 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A buf_hello_n6 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+W buf_hello_n7 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A buf_hello_n7 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+W buf_insert_n3 ret=0 err=122 touched=3 span=3 buf='ab\u0000'
+A buf_insert_n3 ret=0 err=122 touched=0 span=0
+W buf_insert_n6 ret=0 err=122 touched=6 span=6 buf='abcWO\u0000'
+A buf_insert_n6 ret=0 err=122 touched=0 span=0
+W buf_insert_n8 ret=0 err=122 touched=8 span=8 buf='abcWORL\u0000'
+A buf_insert_n8 ret=0 err=122 touched=0 span=0
+W buf_insert_n9 ret=0 err=122 touched=9 span=9 buf='abcWORLD\u0000'
+A buf_insert_n9 ret=0 err=122 touched=0 span=0
+W buf_insert_n10 ret=0 err=122 touched=10 span=10 buf='abcWORLDx\u0000'
+A buf_insert_n10 ret=0 err=122 touched=0 span=0
+A buf_highbytes_n3 ret=0 err=122 touched=0 span=0
+W buf_wrap_n4 ret=0 err=122 touched=4 span=4 buf='ab\r\u0000'
+W buf_crlf_n3 ret=0 err=122 touched=3 span=3 buf='a\r\u0000'
+W buf_crlf_n4 ret=0 err=122 touched=4 span=4 buf='a\r\n\u0000'
+W buf_lf_n3 ret=0 err=122 touched=3 span=3 buf='a\r\u0000'
+W alloc hello_n0 ret=5 err=57005 ptr=set localsize=12 out='hello' nul=1
+W alloc hello_n1 ret=5 err=57005 ptr=set localsize=12 out='hello' nul=1
+W alloc hello_n100 ret=5 err=57005 ptr=set localsize=202 out='hello' nul=1
+W alloc hello_n40000 ret=5 err=57005 ptr=set localsize=80002 out='hello' nul=1
+W alloc empty_n0 ret=0 err=235 ptr=null
+W alloc missing_sys ret=0 err=317 ptr=null
+A alloc hello_n0 ret=5 err=57005 ptr=set localsize=6 out='hello' nul=1
+A alloc hello_n100 ret=5 err=57005 ptr=set localsize=6 out='hello' nul=1
+A alloc empty_n0 ret=0 err=235 ptr=null
+A alloc missing_sys ret=0 err=317 ptr=null
+W alloc insert ret=11 err=57005 ptr=set localsize=24 out='abcWORLDxyz' nul=1
+W alloc big_insert_32766 ret=32766 err=57005 ptr=set localsize=65534 spaces=32766 nul=1
+A alloc big_insert_32766 ret=32766 err=57005 ptr=set localsize=32767 spaces=32766 nul=1
+W alloc big_literal_32766 ret=32766 err=57005 ptr=set localsize=65534 spaces=0 nul=1
+A alloc big_literal_32766 ret=32766 err=57005 ptr=set localsize=32767 spaces=0 nul=1
+W fixed big_literal_32766 ret=32766 err=57005
+A fixed big_literal_32766 ret=0 err=122
+W fixed big_insert_32766 ret=32766 err=57005
+A fixed big_insert_32766 ret=0 err=122
+W alloc big_insert_32767 ret=32767 err=57005 ptr=set localsize=65536 spaces=32767 nul=1
+A alloc big_insert_32767 ret=0 err=87 ptr=null
+W alloc big_literal_32767 ret=32767 err=57005 ptr=set localsize=65536 spaces=0 nul=1
+A alloc big_literal_32767 ret=0 err=87 ptr=unchanged
+W fixed big_literal_32767 ret=32767 err=57005
+A fixed big_literal_32767 ret=0 err=87
+W fixed big_insert_32767 ret=32767 err=57005
+A fixed big_insert_32767 ret=0 err=87
+W alloc big_insert_32768 ret=32768 err=57005 ptr=set localsize=65538 spaces=32768 nul=1
+A alloc big_insert_32768 ret=0 err=87 ptr=null
+W alloc big_literal_32768 ret=32768 err=57005 ptr=set localsize=65538 spaces=0 nul=1
+A alloc big_literal_32768 ret=0 err=87 ptr=unchanged
+W fixed big_literal_32768 ret=32768 err=57005
+A fixed big_literal_32768 ret=0 err=87
+W fixed big_insert_32768 ret=32768 err=57005
+A fixed big_insert_32768 ret=0 err=87
+W alloc big_insert_65534 ret=65534 err=57005 ptr=set localsize=131072 spaces=65534 nul=1
+A alloc big_insert_65534 ret=0 err=87 ptr=null
+W alloc big_literal_65534 ret=65534 err=57005 ptr=set localsize=131070 spaces=0 nul=1
+A alloc big_literal_65534 ret=0 err=87 ptr=unchanged
+W fixed big_literal_65534 ret=65534 err=57005
+A fixed big_literal_65534 ret=0 err=87
+W fixed big_insert_65534 ret=65534 err=57005
+A fixed big_insert_65534 ret=0 err=87
+W alloc big_insert_65535 ret=65535 err=57005 ptr=set localsize=131072 spaces=65535 nul=1
+A alloc big_insert_65535 ret=0 err=87 ptr=null
+W alloc big_literal_65535 ret=65535 err=57005 ptr=set localsize=131072 spaces=0 nul=1
+A alloc big_literal_65535 ret=0 err=87 ptr=unchanged
+W fixed big_literal_65535 ret=65535 err=57005
+A fixed big_literal_65535 ret=0 err=87
+W fixed big_insert_65535 ret=65535 err=57005
+A fixed big_insert_65535 ret=0 err=87
+W alloc big_insert_65536 ret=0 err=234 ptr=null
+A alloc big_insert_65536 ret=0 err=234 ptr=null
+W alloc big_literal_65536 ret=65536 err=57005 ptr=set localsize=131074 spaces=0 nul=1
+A alloc big_literal_65536 ret=0 err=87 ptr=unchanged
+W fixed big_literal_65536 ret=65536 err=57005
+A fixed big_literal_65536 ret=0 err=87
+W fixed big_insert_65536 ret=65536 err=57005
+A fixed big_insert_65536 ret=0 err=87
+W alloc big_insert_65537 ret=0 err=234 ptr=null
+A alloc big_insert_65537 ret=0 err=234 ptr=null
+W alloc big_literal_65537 ret=65537 err=57005 ptr=set localsize=131076 spaces=0 nul=1
+A alloc big_literal_65537 ret=0 err=87 ptr=unchanged
+W fixed big_literal_65537 ret=65537 err=57005
+A fixed big_literal_65537 ret=0 err=87
+W fixed big_insert_65537 ret=65537 err=57005
+A fixed big_insert_65537 ret=0 err=87
+W alloc big_insert_131071 ret=0 err=234 ptr=null
+A alloc big_insert_131071 ret=0 err=234 ptr=null
+W alloc big_literal_131071 ret=131071 err=57005 ptr=set localsize=262144 spaces=0 nul=1
+A alloc big_literal_131071 ret=0 err=87 ptr=unchanged
+W fixed big_literal_131071 ret=131071 err=57005
+A fixed big_literal_131071 ret=0 err=87
+W fixed big_insert_131071 ret=131071 err=57005
+A fixed big_insert_131071 ret=0 err=87
+W alloc big_insert_131072 ret=0 err=234 ptr=null
+A alloc big_insert_131072 ret=0 err=234 ptr=null
+W alloc big_literal_131072 ret=131072 err=57005 ptr=set localsize=262146 spaces=0 nul=1
+A alloc big_literal_131072 ret=0 err=87 ptr=unchanged
+W fixed big_literal_131072 ret=131072 err=57005
+A fixed big_literal_131072 ret=0 err=87
+W fixed big_insert_131072 ret=131072 err=57005
+A fixed big_insert_131072 ret=0 err=87
+W alloc big_insert_131073 ret=0 err=234 ptr=null
+A alloc big_insert_131073 ret=0 err=234 ptr=null
+W alloc big_literal_131073 ret=131073 err=57005 ptr=set localsize=262148 spaces=0 nul=1
+A alloc big_literal_131073 ret=0 err=87 ptr=unchanged
+W fixed big_literal_131073 ret=131073 err=57005
+A fixed big_literal_131073 ret=0 err=87
+W fixed big_insert_131073 ret=131073 err=57005
+A fixed big_insert_131073 ret=0 err=87
+W alloc big_insert_140000 ret=0 err=234 ptr=null
+A alloc big_insert_140000 ret=0 err=234 ptr=null
+W alloc big_literal_140000 ret=140000 err=57005 ptr=set localsize=280002 spaces=0 nul=1
+A alloc big_literal_140000 ret=0 err=87 ptr=unchanged
+W fixed big_literal_140000 ret=140000 err=57005
+A fixed big_literal_140000 ret=0 err=87
+W fixed big_insert_140000 ret=140000 err=57005
+A fixed big_insert_140000 ret=0 err=87
+W fixed huge_nsize ret=3 err=57005
+W alloc two_inserts_80000 ret=0 err=234 ptr=null
+W flags_none ret=0 err=87 touched=0 span=0
+W flags_ign_only ret=0 err=87 touched=0 span=0
+W flags_str_sys ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W flags_str_mod ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W flags_str_highbit ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W flags_str_highbit2 ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W flags_str_lang ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W flags_arr_ign ret=2 err=57005 out='%1' nul=1 touched=3 span=3
+A flags_none ret=0 err=87 touched=0 span=0
+A flags_str_sys ret=3 err=57005 out='abc' nul=1 touched=4 span=4
+W sys_2 ret=44 err=57005 out='The system cannot find the file specified.\r\n' nul=1 touched=45 span=45
+W sys_2_ins ret=44 err=57005 out='The system cannot find the file specified.\r\n' nul=1 touched=45 span=45
+W sys_2_ff ret=43 err=57005 out='The system cannot find the file specified. ' nul=1 touched=44 span=44
+W sys_2_w20 ret=45 err=57005 out='The system cannot\r\nfind the file\r\nspecified. ' nul=1 touched=46 span=46
+W sys_2_409 ret=44 err=57005 out='The system cannot find the file specified.\r\n' nul=1 touched=45 span=45
+W sys_2_400 ret=44 err=57005 out='The system cannot find the file specified.\r\n' nul=1 touched=45 span=45
+W sys_2_800 ret=44 err=57005 out='The system cannot find the file specified.\r\n' nul=1 touched=45 span=45
+W sys_2_009 ret=0 err=15100 touched=0 span=0
+W sys_2_809 ret=0 err=15105 touched=0 span=0
+W sys_2_407 ret=0 err=15100 touched=0 span=0
+W sys_2_411 ret=0 err=15100 touched=0 span=0
+W sys_2_badlang ret=0 err=87 touched=0 span=0
+W sys_0 ret=39 err=57005 out='The operation completed successfully.\r\n' nul=1 touched=40 span=40
+W sys_missing ret=0 err=317 touched=0 span=0
+W sys_hresult_2 ret=44 err=57005 out='The system cannot find the file specified.\r\n' nul=1 touched=45 span=45
+W sys_193_ign ret=38 err=57005 out='%1 is not a valid Win32 application.\r\n' nul=1 touched=39 span=39
+W sys_193_arr ret=41 err=57005 out='x.exe is not a valid Win32 application.\r\n' nul=1 touched=42 span=42
+W sys_2_src_ignored ret=44 err=57005 out='The system cannot find the file specified.\r\n' nul=1 touched=45 span=45
+A sys_2 ret=44 err=57005 out='The system cannot find the file specified.\r\n' nul=1 touched=45 span=45
+A sys_2_ff ret=43 err=57005 out='The system cannot find the file specified. ' nul=1 touched=44 span=44
+A sys_missing ret=0 err=317 touched=0 span=0
+A sys_2_407 ret=0 err=15105 touched=0 span=0
+W mod_1_l000 ret=7 err=57005 out='One X\r\n' nul=1 touched=8 span=8
+W mod_1_l409 ret=7 err=57005 out='One X\r\n' nul=1 touched=8 span=8
+W mod_1_l407 ret=8 err=57005 out='Eins X\r\n' nul=1 touched=9 span=9
+W mod_1_l40c ret=0 err=317 touched=0 span=0
+W mod_1_l411 ret=0 err=1815 touched=0 span=0
+W mod_1_l009 ret=0 err=1815 touched=0 span=0
+W mod_1_l809 ret=0 err=1815 touched=0 span=0
+W mod_1_l007 ret=0 err=1815 touched=0 span=0
+W mod_1_l400 ret=7 err=57005 out='One X\r\n' nul=1 touched=8 span=8
+W mod_1_l800 ret=7 err=57005 out='One X\r\n' nul=1 touched=8 span=8
+W mod_1_lc07 ret=0 err=1815 touched=0 span=0
+W mod_2_l000 ret=5 err=57005 out='Two\r\n' nul=1 touched=6 span=6
+W mod_2_l409 ret=5 err=57005 out='Two\r\n' nul=1 touched=6 span=6
+W mod_2_l407 ret=0 err=317 touched=0 span=0
+W mod_2_l40c ret=0 err=317 touched=0 span=0
+W mod_2_l411 ret=0 err=1815 touched=0 span=0
+W mod_2_l009 ret=0 err=1815 touched=0 span=0
+W mod_2_l809 ret=0 err=1815 touched=0 span=0
+W mod_2_l007 ret=0 err=1815 touched=0 span=0
+W mod_2_l400 ret=5 err=57005 out='Two\r\n' nul=1 touched=6 span=6
+W mod_2_l800 ret=5 err=57005 out='Two\r\n' nul=1 touched=6 span=6
+W mod_2_lc07 ret=0 err=1815 touched=0 span=0
+W mod_3_l000 ret=15 err=57005 out='\u0416 wide-only \u00E9\r\n' nul=1 touched=16 span=16
+W mod_3_l409 ret=15 err=57005 out='\u0416 wide-only \u00E9\r\n' nul=1 touched=16 span=16
+W mod_3_l407 ret=0 err=317 touched=0 span=0
+W mod_3_l40c ret=0 err=317 touched=0 span=0
+W mod_3_l411 ret=0 err=1815 touched=0 span=0
+W mod_3_l009 ret=0 err=1815 touched=0 span=0
+W mod_3_l809 ret=0 err=1815 touched=0 span=0
+W mod_3_l007 ret=0 err=1815 touched=0 span=0
+W mod_3_l400 ret=15 err=57005 out='\u0416 wide-only \u00E9\r\n' nul=1 touched=16 span=16
+W mod_3_l800 ret=15 err=57005 out='\u0416 wide-only \u00E9\r\n' nul=1 touched=16 span=16
+W mod_3_lc07 ret=0 err=1815 touched=0 span=0
+W mod_4_l000 ret=0 err=317 touched=0 span=0
+W mod_4_l409 ret=0 err=317 touched=0 span=0
+W mod_4_l407 ret=6 err=57005 out='Vier\r\n' nul=1 touched=7 span=7
+W mod_4_l40c ret=0 err=317 touched=0 span=0
+W mod_4_l411 ret=0 err=1815 touched=0 span=0
+W mod_4_l009 ret=0 err=1815 touched=0 span=0
+W mod_4_l809 ret=0 err=1815 touched=0 span=0
+W mod_4_l007 ret=0 err=1815 touched=0 span=0
+W mod_4_l400 ret=0 err=317 touched=0 span=0
+W mod_4_l800 ret=0 err=317 touched=0 span=0
+W mod_4_lc07 ret=0 err=1815 touched=0 span=0
+W mod_5_l000 ret=0 err=317 touched=0 span=0
+W mod_5_l409 ret=0 err=317 touched=0 span=0
+W mod_5_l407 ret=0 err=317 touched=0 span=0
+W mod_5_l40c ret=6 err=57005 out='Cinq\r\n' nul=1 touched=7 span=7
+W mod_5_l411 ret=0 err=1815 touched=0 span=0
+W mod_5_l009 ret=0 err=1815 touched=0 span=0
+W mod_5_l809 ret=0 err=1815 touched=0 span=0
+W mod_5_l007 ret=0 err=1815 touched=0 span=0
+W mod_5_l400 ret=0 err=317 touched=0 span=0
+W mod_5_l800 ret=0 err=317 touched=0 span=0
+W mod_5_lc07 ret=0 err=1815 touched=0 span=0
+W mod_6_l000 ret=9 err=57005 out='NoNewline' nul=1 touched=10 span=10
+W mod_6_l409 ret=9 err=57005 out='NoNewline' nul=1 touched=10 span=10
+W mod_6_l407 ret=0 err=317 touched=0 span=0
+W mod_6_l40c ret=0 err=317 touched=0 span=0
+W mod_6_l411 ret=0 err=1815 touched=0 span=0
+W mod_6_l009 ret=0 err=1815 touched=0 span=0
+W mod_6_l809 ret=0 err=1815 touched=0 span=0
+W mod_6_l007 ret=0 err=1815 touched=0 span=0
+W mod_6_l400 ret=9 err=57005 out='NoNewline' nul=1 touched=10 span=10
+W mod_6_l800 ret=9 err=57005 out='NoNewline' nul=1 touched=10 span=10
+W mod_6_lc07 ret=0 err=1815 touched=0 span=0
+W mod_7_l000 ret=24 err=57005 out='Line1\r\nLine2 is longer\r\n' nul=1 touched=25 span=25
+W mod_7_l409 ret=24 err=57005 out='Line1\r\nLine2 is longer\r\n' nul=1 touched=25 span=25
+W mod_7_l407 ret=0 err=317 touched=0 span=0
+W mod_7_l40c ret=0 err=317 touched=0 span=0
+W mod_7_l411 ret=0 err=1815 touched=0 span=0
+W mod_7_l009 ret=0 err=1815 touched=0 span=0
+W mod_7_l809 ret=0 err=1815 touched=0 span=0
+W mod_7_l007 ret=0 err=1815 touched=0 span=0
+W mod_7_l400 ret=24 err=57005 out='Line1\r\nLine2 is longer\r\n' nul=1 touched=25 span=25
+W mod_7_l800 ret=24 err=57005 out='Line1\r\nLine2 is longer\r\n' nul=1 touched=25 span=25
+W mod_7_lc07 ret=0 err=1815 touched=0 span=0
+W mod_8_l000 ret=0 err=317 touched=0 span=0
+W mod_8_l409 ret=0 err=317 touched=0 span=0
+W mod_8_l407 ret=0 err=317 touched=0 span=0
+W mod_8_l40c ret=0 err=317 touched=0 span=0
+W mod_8_l411 ret=0 err=1815 touched=0 span=0
+W mod_8_l009 ret=0 err=1815 touched=0 span=0
+W mod_8_l809 ret=0 err=1815 touched=0 span=0
+W mod_8_l007 ret=0 err=1815 touched=0 span=0
+W mod_8_l400 ret=0 err=317 touched=0 span=0
+W mod_8_l800 ret=0 err=317 touched=0 span=0
+W mod_8_lc07 ret=0 err=1815 touched=0 span=0
+W mod_9_l000 ret=10 err=57005 out='Utf8 \u00E9 \u0416\r\n' nul=1 touched=11 span=11
+W mod_9_l409 ret=10 err=57005 out='Utf8 \u00E9 \u0416\r\n' nul=1 touched=11 span=11
+W mod_9_l407 ret=0 err=317 touched=0 span=0
+W mod_9_l40c ret=0 err=317 touched=0 span=0
+W mod_9_l411 ret=0 err=1815 touched=0 span=0
+W mod_9_l009 ret=0 err=1815 touched=0 span=0
+W mod_9_l809 ret=0 err=1815 touched=0 span=0
+W mod_9_l007 ret=0 err=1815 touched=0 span=0
+W mod_9_l400 ret=10 err=57005 out='Utf8 \u00E9 \u0416\r\n' nul=1 touched=11 span=11
+W mod_9_l800 ret=10 err=57005 out='Utf8 \u00E9 \u0416\r\n' nul=1 touched=11 span=11
+W mod_9_lc07 ret=0 err=1815 touched=0 span=0
+W mod_10_l000 ret=8 err=57005 out='Ansi \u00E9\r\n' nul=1 touched=9 span=9
+W mod_10_l409 ret=8 err=57005 out='Ansi \u00E9\r\n' nul=1 touched=9 span=9
+W mod_10_l407 ret=0 err=317 touched=0 span=0
+W mod_10_l40c ret=0 err=317 touched=0 span=0
+W mod_10_l411 ret=0 err=1815 touched=0 span=0
+W mod_10_l009 ret=0 err=1815 touched=0 span=0
+W mod_10_l809 ret=0 err=1815 touched=0 span=0
+W mod_10_l007 ret=0 err=1815 touched=0 span=0
+W mod_10_l400 ret=8 err=57005 out='Ansi \u00E9\r\n' nul=1 touched=9 span=9
+W mod_10_l800 ret=8 err=57005 out='Ansi \u00E9\r\n' nul=1 touched=9 span=9
+W mod_10_lc07 ret=0 err=1815 touched=0 span=0
+W mod_11_l000 ret=10 err=57005 out='ansi X 9\r\n' nul=1 touched=11 span=11
+W mod_11_l409 ret=10 err=57005 out='ansi X 9\r\n' nul=1 touched=11 span=11
+W mod_11_l407 ret=0 err=317 touched=0 span=0
+W mod_11_l40c ret=0 err=317 touched=0 span=0
+W mod_11_l411 ret=0 err=1815 touched=0 span=0
+W mod_11_l009 ret=0 err=1815 touched=0 span=0
+W mod_11_l809 ret=0 err=1815 touched=0 span=0
+W mod_11_l007 ret=0 err=1815 touched=0 span=0
+W mod_11_l400 ret=10 err=57005 out='ansi X 9\r\n' nul=1 touched=11 span=11
+W mod_11_l800 ret=10 err=57005 out='ansi X 9\r\n' nul=1 touched=11 span=11
+W mod_11_lc07 ret=0 err=1815 touched=0 span=0
+W mod_20000001_l000 ret=9 err=57005 out='High id\r\n' nul=1 touched=10 span=10
+W mod_20000001_l409 ret=9 err=57005 out='High id\r\n' nul=1 touched=10 span=10
+W mod_20000001_l407 ret=0 err=317 touched=0 span=0
+W mod_20000001_l40c ret=0 err=317 touched=0 span=0
+W mod_20000001_l411 ret=0 err=1815 touched=0 span=0
+W mod_20000001_l009 ret=0 err=1815 touched=0 span=0
+W mod_20000001_l809 ret=0 err=1815 touched=0 span=0
+W mod_20000001_l007 ret=0 err=1815 touched=0 span=0
+W mod_20000001_l400 ret=9 err=57005 out='High id\r\n' nul=1 touched=10 span=10
+W mod_20000001_l800 ret=9 err=57005 out='High id\r\n' nul=1 touched=10 span=10
+W mod_20000001_lc07 ret=0 err=1815 touched=0 span=0
+W mod_20000002_l000 ret=0 err=317 touched=0 span=0
+W mod_20000002_l409 ret=0 err=317 touched=0 span=0
+W mod_20000002_l407 ret=0 err=317 touched=0 span=0
+W mod_20000002_l40c ret=0 err=317 touched=0 span=0
+W mod_20000002_l411 ret=0 err=1815 touched=0 span=0
+W mod_20000002_l009 ret=0 err=1815 touched=0 span=0
+W mod_20000002_l809 ret=0 err=1815 touched=0 span=0
+W mod_20000002_l007 ret=0 err=1815 touched=0 span=0
+W mod_20000002_l400 ret=0 err=317 touched=0 span=0
+W mod_20000002_l800 ret=0 err=317 touched=0 span=0
+W mod_20000002_lc07 ret=0 err=1815 touched=0 span=0
+W mod_1_self ret=7 err=57005 out='One X\r\n' nul=1 touched=8 span=8
+W mod_1_ign ret=8 err=57005 out='One %1\r\n' nul=1 touched=9 span=9
+W mod_7_ff ret=22 err=57005 out='Line1 Line2 is longer ' nul=1 touched=23 span=23
+W mod_7_w5 ret=30 err=57005 out='Line1\r\n\r\nLine2\r\n is\r\nlonge\r\nr ' nul=1 touched=31 span=31
+W mod_6_ff ret=9 err=57005 out='NoNewline' nul=1 touched=10 span=10
+W modsys_1 ret=7 err=57005 out='One X\r\n' nul=1 touched=8 span=8
+W modsys_2 ret=5 err=57005 out='Two\r\n' nul=1 touched=6 span=6
+W modsys_5 ret=19 err=57005 out='Access is denied.\r\n' nul=1 touched=20 span=20
+W modsys_missing ret=0 err=317 touched=0 span=0
+W modsys_2_407 ret=0 err=15105 touched=0 span=0
+W modsys_4_409 ret=34 err=57005 out='The system cannot open the file.\r\n' nul=1 touched=35 span=35
+W modsys_2_411 ret=0 err=1815 touched=0 span=0
+W modsys_2_009 ret=0 err=1815 touched=0 span=0
+W modsys_2_400 ret=34 err=57005 out='The system cannot open the file.\r\n' nul=1 touched=35 span=35
+W mod_badlang ret=0 err=1815 touched=0 span=0
+A mod_1 ret=7 err=57005 out='One X\r\n' nul=1 touched=8 span=8
+A mod_3 ret=15 err=57005 out='? wide-only \xE9\r\n' nul=1 touched=16 span=16
+A mod_10 ret=8 err=57005 out='Ansi \xE9\r\n' nul=1 touched=9 span=9
+A mod_11 ret=10 err=57005 out='ansi X 9\r\n' nul=1 touched=11 span=11
+A mod_4_l407 ret=6 err=57005 out='Vier\r\n' nul=1 touched=7 span=7
+A mod_8 ret=0 err=317 touched=0 span=0
+A mod_1_l411 ret=0 err=1815 touched=0 span=0
+A mod_3_n3 ret=0 err=122 touched=0 span=0
+A mod_9 ret=10 err=57005 out='Utf8 \xE9 ?\r\n' nul=1 touched=11 span=11
+W mod_10 ret=8 err=57005 out='Ansi \u00E9\r\n' nul=1 touched=9 span=9
+W mod_10_n3 ret=0 err=122 touched=3 span=3 buf='An\u0000'
+W alloc mod_2 ret=5 err=57005 ptr=set localsize=12 out='Two\r\n' nul=1
+A alloc mod_3 ret=15 err=57005 ptr=set localsize=16 out='? wide-only \xE9\r\n' nul=1
+nomsg loaded=1
+W nomsg_1 ret=0 err=1812 touched=0 span=0
+W nomsg_1_l409 ret=0 err=1812 touched=0 span=0
+W nomsg_sys_2 ret=0 err=1812 touched=0 span=0
+W nomsg_sys_missing ret=0 err=1812 touched=0 span=0
+A nomsg_1 ret=0 err=1812 touched=0 span=0
+thread ui=0409 locale=0409 user=0409 system=0409
+W lang_ui407_1 ret=8 err=57005 out='Eins X\r\n' nul=1 touched=9 span=9
+W lang_ui407_4 ret=6 err=57005 out='Vier\r\n' nul=1 touched=7 span=7
+W lang_lc407_1 ret=7 err=57005 out='One X\r\n' nul=1 touched=8 span=8
+W lang_lc407_4 ret=0 err=317 touched=0 span=0
+W lang_ui40c_1 ret=0 err=317 touched=0 span=0
+W lang_ui40c_5 ret=6 err=57005 out='Cinq\r\n' nul=1 touched=7 span=7
+W chr_21 ret=3 err=57005 out='a!b' nul=1 touched=4 span=4
+W chr_21_ign ret=4 err=57005 out='a%!b' nul=1 touched=5 span=5
+W chr_22 ret=3 err=57005 out='a"b' nul=1 touched=4 span=4
+W chr_22_ign ret=4 err=57005 out='a%"b' nul=1 touched=5 span=5
+W chr_23 ret=3 err=57005 out='a#b' nul=1 touched=4 span=4
+W chr_23_ign ret=4 err=57005 out='a%#b' nul=1 touched=5 span=5
+W chr_24 ret=3 err=57005 out='a$b' nul=1 touched=4 span=4
+W chr_24_ign ret=4 err=57005 out='a%$b' nul=1 touched=5 span=5
+W chr_25 ret=3 err=57005 out='a%b' nul=1 touched=4 span=4
+W chr_25_ign ret=4 err=57005 out='a%%b' nul=1 touched=5 span=5
+W chr_26 ret=3 err=57005 out='a&b' nul=1 touched=4 span=4
+W chr_26_ign ret=4 err=57005 out='a%&b' nul=1 touched=5 span=5
+W chr_27 ret=3 err=57005 out='a\'b' nul=1 touched=4 span=4
+W chr_27_ign ret=4 err=57005 out='a%\'b' nul=1 touched=5 span=5
+W chr_28 ret=3 err=57005 out='a(b' nul=1 touched=4 span=4
+W chr_28_ign ret=4 err=57005 out='a%(b' nul=1 touched=5 span=5
+W chr_29 ret=3 err=57005 out='a)b' nul=1 touched=4 span=4
+W chr_29_ign ret=4 err=57005 out='a%)b' nul=1 touched=5 span=5
+W chr_2a ret=3 err=57005 out='a*b' nul=1 touched=4 span=4
+W chr_2a_ign ret=4 err=57005 out='a%*b' nul=1 touched=5 span=5
+W chr_2b ret=3 err=57005 out='a+b' nul=1 touched=4 span=4
+W chr_2b_ign ret=4 err=57005 out='a%+b' nul=1 touched=5 span=5
+W chr_2c ret=3 err=57005 out='a,b' nul=1 touched=4 span=4
+W chr_2c_ign ret=4 err=57005 out='a%,b' nul=1 touched=5 span=5
+W chr_2d ret=3 err=57005 out='a-b' nul=1 touched=4 span=4
+W chr_2d_ign ret=4 err=57005 out='a%-b' nul=1 touched=5 span=5
+W chr_2e ret=3 err=57005 out='a.b' nul=1 touched=4 span=4
+W chr_2e_ign ret=4 err=57005 out='a%.b' nul=1 touched=5 span=5
+W chr_2f ret=3 err=57005 out='a/b' nul=1 touched=4 span=4
+W chr_2f_ign ret=4 err=57005 out='a%/b' nul=1 touched=5 span=5
+W chr_3a ret=3 err=57005 out='a:b' nul=1 touched=4 span=4
+W chr_3a_ign ret=4 err=57005 out='a%:b' nul=1 touched=5 span=5
+W chr_3b ret=3 err=57005 out='a;b' nul=1 touched=4 span=4
+W chr_3b_ign ret=4 err=57005 out='a%;b' nul=1 touched=5 span=5
+W chr_3c ret=3 err=57005 out='a<b' nul=1 touched=4 span=4
+W chr_3c_ign ret=4 err=57005 out='a%<b' nul=1 touched=5 span=5
+W chr_3d ret=3 err=57005 out='a=b' nul=1 touched=4 span=4
+W chr_3d_ign ret=4 err=57005 out='a%=b' nul=1 touched=5 span=5
+W chr_3e ret=3 err=57005 out='a>b' nul=1 touched=4 span=4
+W chr_3e_ign ret=4 err=57005 out='a%>b' nul=1 touched=5 span=5
+W chr_3f ret=3 err=57005 out='a?b' nul=1 touched=4 span=4
+W chr_3f_ign ret=4 err=57005 out='a%?b' nul=1 touched=5 span=5
+W chr_40 ret=3 err=57005 out='a@b' nul=1 touched=4 span=4
+W chr_40_ign ret=4 err=57005 out='a%@b' nul=1 touched=5 span=5
+W chr_41 ret=3 err=57005 out='aAb' nul=1 touched=4 span=4
+W chr_41_ign ret=4 err=57005 out='a%Ab' nul=1 touched=5 span=5
+W chr_42 ret=3 err=57005 out='aBb' nul=1 touched=4 span=4
+W chr_42_ign ret=4 err=57005 out='a%Bb' nul=1 touched=5 span=5
+W chr_43 ret=3 err=57005 out='aCb' nul=1 touched=4 span=4
+W chr_43_ign ret=4 err=57005 out='a%Cb' nul=1 touched=5 span=5
+W chr_44 ret=3 err=57005 out='aDb' nul=1 touched=4 span=4
+W chr_44_ign ret=4 err=57005 out='a%Db' nul=1 touched=5 span=5
+W chr_45 ret=3 err=57005 out='aEb' nul=1 touched=4 span=4
+W chr_45_ign ret=4 err=57005 out='a%Eb' nul=1 touched=5 span=5
+W chr_46 ret=3 err=57005 out='aFb' nul=1 touched=4 span=4
+W chr_46_ign ret=4 err=57005 out='a%Fb' nul=1 touched=5 span=5
+W chr_47 ret=3 err=57005 out='aGb' nul=1 touched=4 span=4
+W chr_47_ign ret=4 err=57005 out='a%Gb' nul=1 touched=5 span=5
+W chr_48 ret=3 err=57005 out='aHb' nul=1 touched=4 span=4
+W chr_48_ign ret=4 err=57005 out='a%Hb' nul=1 touched=5 span=5
+W chr_49 ret=3 err=57005 out='aIb' nul=1 touched=4 span=4
+W chr_49_ign ret=4 err=57005 out='a%Ib' nul=1 touched=5 span=5
+W chr_4a ret=3 err=57005 out='aJb' nul=1 touched=4 span=4
+W chr_4a_ign ret=4 err=57005 out='a%Jb' nul=1 touched=5 span=5
+W chr_4b ret=3 err=57005 out='aKb' nul=1 touched=4 span=4
+W chr_4b_ign ret=4 err=57005 out='a%Kb' nul=1 touched=5 span=5
+W chr_4c ret=3 err=57005 out='aLb' nul=1 touched=4 span=4
+W chr_4c_ign ret=4 err=57005 out='a%Lb' nul=1 touched=5 span=5
+W chr_4d ret=3 err=57005 out='aMb' nul=1 touched=4 span=4
+W chr_4d_ign ret=4 err=57005 out='a%Mb' nul=1 touched=5 span=5
+W chr_4e ret=3 err=57005 out='aNb' nul=1 touched=4 span=4
+W chr_4e_ign ret=4 err=57005 out='a%Nb' nul=1 touched=5 span=5
+W chr_4f ret=3 err=57005 out='aOb' nul=1 touched=4 span=4
+W chr_4f_ign ret=4 err=57005 out='a%Ob' nul=1 touched=5 span=5
+W chr_50 ret=3 err=57005 out='aPb' nul=1 touched=4 span=4
+W chr_50_ign ret=4 err=57005 out='a%Pb' nul=1 touched=5 span=5
+W chr_51 ret=3 err=57005 out='aQb' nul=1 touched=4 span=4
+W chr_51_ign ret=4 err=57005 out='a%Qb' nul=1 touched=5 span=5
+W chr_52 ret=3 err=57005 out='aRb' nul=1 touched=4 span=4
+W chr_52_ign ret=4 err=57005 out='a%Rb' nul=1 touched=5 span=5
+W chr_53 ret=3 err=57005 out='aSb' nul=1 touched=4 span=4
+W chr_53_ign ret=4 err=57005 out='a%Sb' nul=1 touched=5 span=5
+W chr_54 ret=3 err=57005 out='aTb' nul=1 touched=4 span=4
+W chr_54_ign ret=4 err=57005 out='a%Tb' nul=1 touched=5 span=5
+W chr_55 ret=3 err=57005 out='aUb' nul=1 touched=4 span=4
+W chr_55_ign ret=4 err=57005 out='a%Ub' nul=1 touched=5 span=5
+W chr_56 ret=3 err=57005 out='aVb' nul=1 touched=4 span=4
+W chr_56_ign ret=4 err=57005 out='a%Vb' nul=1 touched=5 span=5
+W chr_57 ret=3 err=57005 out='aWb' nul=1 touched=4 span=4
+W chr_57_ign ret=4 err=57005 out='a%Wb' nul=1 touched=5 span=5
+W chr_58 ret=3 err=57005 out='aXb' nul=1 touched=4 span=4
+W chr_58_ign ret=4 err=57005 out='a%Xb' nul=1 touched=5 span=5
+W chr_59 ret=3 err=57005 out='aYb' nul=1 touched=4 span=4
+W chr_59_ign ret=4 err=57005 out='a%Yb' nul=1 touched=5 span=5
+W chr_5a ret=3 err=57005 out='aZb' nul=1 touched=4 span=4
+W chr_5a_ign ret=4 err=57005 out='a%Zb' nul=1 touched=5 span=5
+W chr_5b ret=3 err=57005 out='a[b' nul=1 touched=4 span=4
+W chr_5b_ign ret=4 err=57005 out='a%[b' nul=1 touched=5 span=5
+W chr_5c ret=3 err=57005 out='a\\b' nul=1 touched=4 span=4
+W chr_5c_ign ret=4 err=57005 out='a%\\b' nul=1 touched=5 span=5
+W chr_5d ret=3 err=57005 out='a]b' nul=1 touched=4 span=4
+W chr_5d_ign ret=4 err=57005 out='a%]b' nul=1 touched=5 span=5
+W chr_5e ret=3 err=57005 out='a^b' nul=1 touched=4 span=4
+W chr_5e_ign ret=4 err=57005 out='a%^b' nul=1 touched=5 span=5
+W chr_5f ret=3 err=57005 out='a_b' nul=1 touched=4 span=4
+W chr_5f_ign ret=4 err=57005 out='a%_b' nul=1 touched=5 span=5
+W chr_60 ret=3 err=57005 out='a`b' nul=1 touched=4 span=4
+W chr_60_ign ret=4 err=57005 out='a%`b' nul=1 touched=5 span=5
+W chr_61 ret=3 err=57005 out='aab' nul=1 touched=4 span=4
+W chr_61_ign ret=4 err=57005 out='a%ab' nul=1 touched=5 span=5
+W chr_62 ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W chr_62_ign ret=3 err=57005 out='a b' nul=1 touched=4 span=4
+W chr_63 ret=3 err=57005 out='acb' nul=1 touched=4 span=4
+W chr_63_ign ret=4 err=57005 out='a%cb' nul=1 touched=5 span=5
+W chr_64 ret=3 err=57005 out='adb' nul=1 touched=4 span=4
+W chr_64_ign ret=4 err=57005 out='a%db' nul=1 touched=5 span=5
+W chr_65 ret=3 err=57005 out='aeb' nul=1 touched=4 span=4
+W chr_65_ign ret=4 err=57005 out='a%eb' nul=1 touched=5 span=5
+W chr_66 ret=3 err=57005 out='afb' nul=1 touched=4 span=4
+W chr_66_ign ret=4 err=57005 out='a%fb' nul=1 touched=5 span=5
+W chr_67 ret=3 err=57005 out='agb' nul=1 touched=4 span=4
+W chr_67_ign ret=4 err=57005 out='a%gb' nul=1 touched=5 span=5
+W chr_68 ret=3 err=57005 out='ahb' nul=1 touched=4 span=4
+W chr_68_ign ret=4 err=57005 out='a%hb' nul=1 touched=5 span=5
+W chr_69 ret=3 err=57005 out='aib' nul=1 touched=4 span=4
+W chr_69_ign ret=4 err=57005 out='a%ib' nul=1 touched=5 span=5
+W chr_6a ret=3 err=57005 out='ajb' nul=1 touched=4 span=4
+W chr_6a_ign ret=4 err=57005 out='a%jb' nul=1 touched=5 span=5
+W chr_6b ret=3 err=57005 out='akb' nul=1 touched=4 span=4
+W chr_6b_ign ret=4 err=57005 out='a%kb' nul=1 touched=5 span=5
+W chr_6c ret=3 err=57005 out='alb' nul=1 touched=4 span=4
+W chr_6c_ign ret=4 err=57005 out='a%lb' nul=1 touched=5 span=5
+W chr_6d ret=3 err=57005 out='amb' nul=1 touched=4 span=4
+W chr_6d_ign ret=4 err=57005 out='a%mb' nul=1 touched=5 span=5
+W chr_6e ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W chr_6e_ign ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W chr_6f ret=3 err=57005 out='aob' nul=1 touched=4 span=4
+W chr_6f_ign ret=4 err=57005 out='a%ob' nul=1 touched=5 span=5
+W chr_70 ret=3 err=57005 out='apb' nul=1 touched=4 span=4
+W chr_70_ign ret=4 err=57005 out='a%pb' nul=1 touched=5 span=5
+W chr_71 ret=3 err=57005 out='aqb' nul=1 touched=4 span=4
+W chr_71_ign ret=4 err=57005 out='a%qb' nul=1 touched=5 span=5
+W chr_72 ret=3 err=57005 out='a\rb' nul=1 touched=4 span=4
+W chr_72_ign ret=3 err=57005 out='a\rb' nul=1 touched=4 span=4
+W chr_73 ret=3 err=57005 out='asb' nul=1 touched=4 span=4
+W chr_73_ign ret=4 err=57005 out='a%sb' nul=1 touched=5 span=5
+W chr_74 ret=3 err=57005 out='a\tb' nul=1 touched=4 span=4
+W chr_74_ign ret=3 err=57005 out='a\tb' nul=1 touched=4 span=4
+W chr_75 ret=3 err=57005 out='aub' nul=1 touched=4 span=4
+W chr_75_ign ret=4 err=57005 out='a%ub' nul=1 touched=5 span=5
+W chr_76 ret=3 err=57005 out='avb' nul=1 touched=4 span=4
+W chr_76_ign ret=4 err=57005 out='a%vb' nul=1 touched=5 span=5
+W chr_77 ret=3 err=57005 out='awb' nul=1 touched=4 span=4
+W chr_77_ign ret=4 err=57005 out='a%wb' nul=1 touched=5 span=5
+W chr_78 ret=3 err=57005 out='axb' nul=1 touched=4 span=4
+W chr_78_ign ret=4 err=57005 out='a%xb' nul=1 touched=5 span=5
+W chr_79 ret=3 err=57005 out='ayb' nul=1 touched=4 span=4
+W chr_79_ign ret=4 err=57005 out='a%yb' nul=1 touched=5 span=5
+W chr_7a ret=3 err=57005 out='azb' nul=1 touched=4 span=4
+W chr_7a_ign ret=4 err=57005 out='a%zb' nul=1 touched=5 span=5
+W chr_7b ret=3 err=57005 out='a{b' nul=1 touched=4 span=4
+W chr_7b_ign ret=4 err=57005 out='a%{b' nul=1 touched=5 span=5
+W chr_7c ret=3 err=57005 out='a|b' nul=1 touched=4 span=4
+W chr_7c_ign ret=4 err=57005 out='a%|b' nul=1 touched=5 span=5
+W chr_7d ret=3 err=57005 out='a}b' nul=1 touched=4 span=4
+W chr_7d_ign ret=4 err=57005 out='a%}b' nul=1 touched=5 span=5
+W chr_7e ret=3 err=57005 out='a~b' nul=1 touched=4 span=4
+W chr_7e_ign ret=4 err=57005 out='a%~b' nul=1 touched=5 span=5
+W n200 ret=5 err=57005 out='[200]' nul=1 touched=6 span=6
+W n201 ret=0 err=87 touched=1 span=1 buf='['
+W n200_ign ret=6 err=57005 out='[%200]' nul=1 touched=7 span=7
+W n201_ign ret=6 err=57005 out='[%201]' nul=1 touched=7 span=7
+W n123 ret=5 err=57005 out='[123]' nul=1 touched=6 span=6
+W n100u ret=5 err=57005 out='[100]' nul=1 touched=6 span=6
+W n999 ret=0 err=87 touched=1 span=1 buf='['
+W n1000 ret=0 err=87 touched=1 span=1 buf='['
+W n_10_u_0 ret=5 err=57005 out='[100]' nul=1 touched=6 span=6
+W n_1_u ret=3 err=57005 out='[1]' nul=1 touched=4 span=4
+W n_99_then_digit ret=5 err=57005 out='[995]' nul=1 touched=6 span=6
+W n100_ign ret=14 err=57005 out='[%100 %123!u!]' nul=1 touched=15 span=15
+W va_rep_star ret=15 err=57005 out='  101|  102|103' nul=1 touched=16 span=16
+W va_two_stars ret=16 err=57005 out='  101|   102|103' nul=1 touched=17 span=17
+W va_i64_rep ret=27 err=57005 out='21474836487|21474836487|103' nul=1 touched=28 span=28
+W va_star_i64 ret=33 err=57005 out='              21474836487|104|105' nul=1 touched=34 span=34
+W va_i64_after_walk ret=20 err=57005 out='446676598789|101|105' nul=1 touched=21 span=21
+W va_star2_rep ret=8 err=57005 out='  0101|6' nul=1 touched=9 span=9
+W va_star_after_walk ret=17 err=57005 out='102|  103|101|104' nul=1 touched=18 span=18
+W va_star_then_skip ret=17 err=57005 out='  101|104|102|103' nul=1 touched=18 span=18
+W va_neg_width ret=7 err=57005 out='[ab   ]' nul=1 touched=8 span=8
+W va_hi_bits ret=3 err=57005 out='5|1' nul=1 touched=4 span=4
+W va_I_hex ret=10 err=57005 out='12345678|6' nul=1 touched=11 span=11
+W va_I64d_neg ret=4 err=57005 out='-2|6' nul=1 touched=5 span=5
+W arr_rep_star ret=15 err=57005 out='  101|  102|101' nul=1 touched=16 span=16
+W arr_neg_width ret=7 err=57005 out='[ab   ]' nul=1 touched=8 span=8
+W arr_hi_bits_u ret=39 err=57005 out='4294967293|4294967293|fffffffd|FFFFFFFD' nul=1 touched=40 span=40
+W alloc lit70000_then_insert ret=70001 err=57005 ptr=set localsize=140004 spaces=0 nul=1
+W alloc lit70000_then_pct ret=70001 err=57005 ptr=set localsize=140004 spaces=0 nul=1
+W alloc lit70000_then_n ret=70002 err=57005 ptr=set localsize=140006 spaces=0 nul=1
+W alloc lit70000_then_insert_ign ret=70002 err=57005 ptr=set localsize=140006 spaces=0 nul=1
+W alloc insert_then_lit70000 ret=70001 err=57005 ptr=set localsize=140004 spaces=0 nul=1
+W alloc lit65535_then_insert1 ret=65536 err=57005 ptr=set localsize=131074 spaces=0 nul=1
+W alloc lit65534_then_insert1 ret=65535 err=57005 ptr=set localsize=131072 spaces=0 nul=1
+W alloc x_then_insert65535 ret=0 err=234 ptr=null
+W alloc x_then_insert65534 ret=65535 err=57005 ptr=set localsize=131072 spaces=65534 nul=1
+W alloc insert65534_then_x ret=65535 err=57005 ptr=set localsize=131072 spaces=65534 nul=1
+W alloc insert65535_n100000 ret=65535 err=57005 ptr=set localsize=200002 spaces=65535 nul=1
+W alloc lit_n70000 ret=3 err=57005 ptr=set localsize=140002 spaces=0 nul=1
+W alloc insert_n70000 ret=1 err=57005 ptr=set localsize=140002 spaces=0 nul=1
+W alloc sys_ff_n0 ret=43 err=57005 ptr=set localsize=90 out='The system cannot find the file specified. ' nul=1
+W alloc wrap_n0 ret=10 err=57005 ptr=set localsize=34 out='aa\r\nbb\r\ncc' nul=1
+A nsize_ffff ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+W nsize_ffff ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A nsize_10000 ret=0 err=122 touched=0 span=0
+W nsize_10000 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A nsize_10001 ret=0 err=122 touched=1 span=1 buf='\x00'
+W nsize_10001 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A nsize_10003 ret=0 err=122 touched=3 span=3 buf='he\x00'
+W nsize_10003 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A nsize_10006 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+W nsize_10006 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A nsize_20006 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+W nsize_20006 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A nsize_8000 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+W nsize_8000 ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A nsize_7fff ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+W nsize_7fff ret=5 err=57005 out='hello' nul=1 touched=6 span=6
+A lit20000_n30000 ret=20000 err=57005 out='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' nul=0 touched=4096 span=4096
+A lit20000_n70000 ret=0 err=122 touched=4096 span=4096 buf='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+A alloc lit20000_n0 ret=20000 err=57005 ptr=set localsize=20001 spaces=0 nul=1
+A alloc insert32766_then_x ret=0 err=87 ptr=null
+A S_unmappable ret=4 err=57005 out='[?\xE9]' nul=1 touched=5 span=5
+A buf_n5_hello ret=0 err=122 touched=0 span=0
+W wrap_zero_mid_w4 ret=8 err=57005 out='aaa\r\nbbb' nul=1 touched=9 span=9
+W wrap_long_trail_w4 ret=13 err=57005 out='aaaa\r\naaaa\r\na' nul=1 touched=14 span=14
+W wrap_long_space_w4 ret=15 err=57005 out='aaaa\r\naaaa\r\na b' nul=1 touched=16 span=16
+W wrap_two_spaces_w4 ret=10 err=57005 out='aa\r\nbb\r\ncc' nul=1 touched=11 span=11
+W wrap_space_run_w4 ret=6 err=57005 out='a\r\n\r\nb' nul=1 touched=7 span=7
+W wrap_lf_inside_w4 ret=14 err=57005 out='aa\r\nbb\r\ncc\r\ndd' nul=1 touched=15 span=15
+W wrap_exact_then_space_w3 ret=12 err=57005 out='abc\r\n\r\ndef\r\n' nul=1 touched=13 span=13
+W wrap_exact_then_2space_w3 ret=12 err=57005 out='abc\r\n\r\ndef\r\n' nul=1 touched=13 span=13
+W wrap_r_mid_w4 ret=14 err=57005 out='aaaa\r\n\rbbbb\r\nb' nul=1 touched=15 span=15
+W wrap_t_w3 ret=10 err=57005 out='ab\r\ncd\r\nef' nul=1 touched=11 span=11
+W wrap_n_at_w_w3 ret=12 err=57005 out='abc\r\n\r\ndef\r\n' nul=1 touched=13 span=13
+W wrap_spc_esc_w3 ret=10 err=57005 out='ab \r\n cd\r\n' nul=1 touched=11 span=11
+W wrap_insert_long_w3 ret=15 err=57005 out='abcdefgh\r\n\r\nx y' nul=1 touched=16 span=16
+W wrap_insert_glued_w5 ret=14 err=57005 out='ababcdefgh\r\ncd' nul=1 touched=15 span=15
+W vs_plain ret=5 err=57005 out='1|2|3' nul=1 touched=6 span=6
+W as_plain ret=5 err=57005 out='1|2|3' nul=1 touched=6 span=6
+W vs_I ret=13 err=57005 out='200000001|3|4' nul=1 touched=14 span=14
+W as_I ret=5 err=57005 out='1|2|3' nul=1 touched=6 span=6
+W vs_I2 ret=13 err=57005 out='1|300000002|4' nul=1 touched=14 span=14
+W as_I2 ret=5 err=57005 out='1|2|3' nul=1 touched=6 span=6
+W vs_Irev ret=5 err=57005 out='2|1|3' nul=1 touched=6 span=6
+W as_Irev ret=5 err=57005 out='2|1|3' nul=1 touched=6 span=6
+W vs_Iwalk ret=13 err=57005 out='400000003|1|5' nul=1 touched=14 span=14
+W as_Iwalk ret=5 err=57005 out='2|1|3' nul=1 touched=6 span=6
+W vs_Iwalk3 ret=15 err=57005 out='600000005|1|3|7' nul=1 touched=16 span=16
+W as_Iwalk3 ret=7 err=57005 out='3|1|2|4' nul=1 touched=8 span=8
+W vs_Irep ret=21 err=57005 out='200000001|200000001|3' nul=1 touched=22 span=22
+W as_Irep ret=5 err=57005 out='1|1|2' nul=1 touched=6 span=6
+W vs_IrepWalk ret=21 err=57005 out='400000003|400000003|5' nul=1 touched=22 span=22
+W as_IrepWalk ret=5 err=57005 out='2|2|3' nul=1 touched=6 span=6
+W vs_I_after_plain ret=5 err=57005 out='1|1|2' nul=1 touched=6 span=6
+W as_I_after_plain ret=5 err=57005 out='1|1|2' nul=1 touched=6 span=6
+W vs_I_I ret=21 err=57005 out='200000001|400000003|5' nul=1 touched=22 span=22
+W as_I_I ret=5 err=57005 out='1|2|3' nul=1 touched=6 span=6
+W vs_s1 ret=5 err=57005 out='2|3|4' nul=1 touched=6 span=6
+W as_s1 ret=5 err=57005 out='2|2|3' nul=1 touched=6 span=6
+W vs_s2 ret=8 err=57005 out='03|3|4|5' nul=1 touched=9 span=9
+W as_s2 ret=8 err=57005 out='03|2|3|4' nul=1 touched=9 span=9
+W vs_s1rep ret=5 err=57005 out='2|3|4' nul=1 touched=6 span=6
+W as_s1rep ret=5 err=57005 out='2|3|2' nul=1 touched=6 span=6
+W vs_s2rep ret=9 err=57005 out='03|0005|3' nul=1 touched=10 span=10
+W as_s2rep ret=9 err=57005 out='03|0005|2' nul=1 touched=10 span=10
+W vs_s1walk ret=6 err=57005 out=' 3|1|4' nul=1 touched=7 span=7
+W as_s1walk ret=6 err=57005 out=' 3|1|3' nul=1 touched=7 span=7
+W vs_s2walk ret=7 err=57005 out='004|1|4' nul=1 touched=8 span=8
+W as_s2walk ret=7 err=57005 out='004|1|3' nul=1 touched=8 span=8
+W vs_s1walk3 ret=9 err=57005 out='  4|1|2|5' nul=1 touched=10 span=10
+W as_s1walk3 ret=9 err=57005 out='  4|1|2|4' nul=1 touched=10 span=10
+W vs_s1cached ret=7 err=57005 out='3|4|2|5' nul=1 touched=8 span=8
+W as_s1cached ret=7 err=57005 out='3|4|2|4' nul=1 touched=8 span=8
+W vs_s2cached ret=10 err=57005 out='3|0005|2|5' nul=1 touched=11 span=11
+W as_s2cached ret=10 err=57005 out='3|0005|2|4' nul=1 touched=11 span=11
+W vs_s1I ret=13 err=57005 out='300000002|4|5' nul=1 touched=14 span=14
+W as_s1I ret=13 err=57005 out='200000000|2|3' nul=1 touched=14 span=14
+W vs_s2I ret=13 err=57005 out='400000003|4|5' nul=1 touched=14 span=14
+W as_s2I ret=13 err=57005 out='300000002|2|3' nul=1 touched=14 span=14
+W vs_s1Iwalk ret=13 err=57005 out='500000004|1|6' nul=1 touched=14 span=14
+W as_s1Iwalk ret=13 err=57005 out='300000000|1|3' nul=1 touched=14 span=14
+W vs_s1Icached ret=13 err=57005 out='2|300000000|4' nul=1 touched=14 span=14
+W as_s1Icached ret=13 err=57005 out='2|300000000|3' nul=1 touched=14 span=14
+W vs_plain_after_s1 ret=5 err=57005 out='2|1|3' nul=1 touched=6 span=6
+W as_plain_after_s1 ret=5 err=57005 out='2|1|2' nul=1 touched=6 span=6
+W vs_plain_after_s2 ret=6 err=57005 out='03|1|3' nul=1 touched=7 span=7
+W as_plain_after_s2 ret=6 err=57005 out='03|1|2' nul=1 touched=7 span=7
+W vs_s1_s1 ret=7 err=57005 out='2|  4|5' nul=1 touched=8 span=8
+W as_s1_s1 ret=6 err=57005 out='2| 3|3' nul=1 touched=7 span=7
+W vs_s2_s2 ret=9 err=57005 out='03|0005|5' nul=1 touched=10 span=10
+W as_s2_s2 ret=9 err=57005 out='03|0005|3' nul=1 touched=10 span=10
+W vs_s2_gap ret=8 err=57005 out='03|5|3|4' nul=1 touched=9 span=9
+W as_s2_gap ret=8 err=57005 out='03|4|2|3' nul=1 touched=9 span=9
+W vs_s1_gap ret=5 err=57005 out='2|4|3' nul=1 touched=6 span=6
+W as_s1_gap ret=5 err=57005 out='2|3|2' nul=1 touched=6 span=6
+W vs_star_after_plain ret=5 err=57005 out='1|2|3' nul=1 touched=6 span=6
+W as_star_after_plain ret=5 err=57005 out='1|2|2' nul=1 touched=6 span=6
+W vs_star2_after_plain ret=6 err=57005 out='1|03|3' nul=1 touched=7 span=7
+W as_star2_after_plain ret=6 err=57005 out='1|03|2' nul=1 touched=7 span=7
+W vs_ll ret=3 err=57005 out='1|2' nul=1 touched=4 span=4
+W as_ll ret=3 err=57005 out='1|2' nul=1 touched=4 span=4
+W vs_I32 ret=3 err=57005 out='1|2' nul=1 touched=4 span=4
+W as_I32 ret=3 err=57005 out='1|2' nul=1 touched=4 span=4
+W vs_Ix ret=3 err=57005 out='1|2' nul=1 touched=4 span=4
+W as_Ix ret=3 err=57005 out='1|2' nul=1 touched=4 span=4
+W vs_skip_far ret=5 err=57005 out='5|1|6' nul=1 touched=6 span=6
+W as_skip_far ret=5 err=57005 out='5|1|6' nul=1 touched=6 span=6
+W vs_prec_only ret=5 err=57005 out='2|3|4' nul=1 touched=6 span=6
+W as_prec_only ret=5 err=57005 out='2|2|3' nul=1 touched=6 span=6
+W vs_prec_only_cached ret=5 err=57005 out='2|3|4' nul=1 touched=6 span=6
+W as_prec_only_cached ret=5 err=57005 out='2|3|3' nul=1 touched=6 span=6
+W pf_jd ret=3 err=57005 out='[5]' nul=1 touched=4 span=4
+W pf_td ret=3 err=57005 out='[5]' nul=1 touched=4 span=4
+W pf_Ld ret=3 err=57005 out='[5]' nul=1 touched=4 span=4
+W pf_hhd ret=5 err=57005 out='[511]' nul=1 touched=6 span=6
+W pf_hhx ret=5 err=57005 out='[1ff]' nul=1 touched=6 span=6
+W pf_wc ret=3 err=57005 out='[\u0416]' nul=1 touched=4 span=4
+W pf_hash_X ret=8 err=57005 out='[0XBEEF]' nul=1 touched=9 span=9
+W pf_hash_p ret=12 err=57005 out='[0X00001234]' nul=1 touched=13 span=13
+W pf_m08d ret=10 err=57005 out='[42      ]' nul=1 touched=11 span=11
+W pf_plus_u ret=4 err=57005 out='[42]' nul=1 touched=5 span=5
+W pf_space_x ret=4 err=57005 out='[2a]' nul=1 touched=5 span=5
+W pf_p0d_0 ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_plus_p0d_0 ret=3 err=57005 out='[+]' nul=1 touched=4 span=4
+W pf_hash_p0o_0 ret=3 err=57005 out='[0]' nul=1 touched=4 span=4
+W pf_hash_x_0 ret=3 err=57005 out='[0]' nul=1 touched=4 span=4
+W pf_G ret=3 err=57005 out='[G]' nul=1 touched=4 span=4
+W pf_A ret=3 err=57005 out='[A]' nul=1 touched=4 span=4
+W pf_F ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_w5e ret=3 err=57005 out='[e]' nul=1 touched=4 span=4
+W pf_m3c ret=5 err=57005 out='[x  ]' nul=1 touched=6 span=6
+W pf_05c ret=7 err=57005 out='[0000x]' nul=1 touched=8 span=8
+W pf_p1c ret=3 err=57005 out='[x]' nul=1 touched=4 span=4
+W pf_05d_neg ret=7 err=57005 out='[-0005]' nul=1 touched=8 span=8
+W pf_plus05d ret=7 err=57005 out='[+0005]' nul=1 touched=8 span=8
+W pf_p3s_null ret=5 err=57005 out='[(nu]' nul=1 touched=6 span=6
+W pf_Z_null ret=8 err=57005 out='[(null)]' nul=1 touched=9 span=9
+W pf_wZ_null ret=8 err=57005 out='[(null)]' nul=1 touched=9 span=9
+W pf_c_nul ret=4 err=57005 out='[\u0000]x' nul=1 touched=5 span=5
+W pf_lld_neg ret=12 err=57005 out='[4294967295]' nul=1 touched=13 span=13
+W pf_I64d_neg ret=12 err=57005 out='[4294967294]' nul=1 touched=13 span=13
+W pf_Id_neg ret=4 err=57005 out='[-2]' nul=1 touched=5 span=5
+W pf_Iu_neg ret=12 err=57005 out='[4294967294]' nul=1 touched=13 span=13
+W pf_u_neg ret=12 err=57005 out='[4294967294]' nul=1 touched=13 span=13
+W pf_p600d ret=42 err=57005 out='[0000000000000000000000000000000000000007]' nul=1 touched=43 span=43
+W pf_w40s ret=42 err=57005 out='[                                       s]' nul=1 touched=43 span=43
+W pf_lS ret=6 err=57005 out='[wide]' nul=1 touched=7 span=7
+W pf_hS ret=5 err=57005 out='[nar]' nul=1 touched=6 span=6
+W pf_hC ret=3 err=57005 out='[n]' nul=1 touched=4 span=4
+W pf_lC ret=3 err=57005 out='[\u0416]' nul=1 touched=4 span=4
+W pf_ws_lower ret=3 err=57005 out='[w]' nul=1 touched=4 span=4
+W pf_I32d_neg ret=4 err=57005 out='[-3]' nul=1 touched=5 span=5
+W pf_I16d ret=6 err=57005 out='[I16d]' nul=1 touched=7 span=7
+W pf_Ilu ret=5 err=57005 out='[Ilu]' nul=1 touched=6 span=6
+W pf_h_only ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_l_only ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_I_only ret=3 err=57005 out='[I]' nul=1 touched=4 span=4
+W pf_I64_only ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_flags_only ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_width_only_star ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_dot_only ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_dot_d ret=2 err=57005 out='[]' nul=1 touched=3 span=3
+W pf_pct_in_spec ret=3 err=57005 out='[%]' nul=1 touched=4 span=4
+W pf_two_types ret=4 err=57005 out='[5x]' nul=1 touched=5 span=5
+W pf_u_then_text ret=8 err=57005 out='[5 text]' nul=1 touched=9 span=9
+W pf_s_then_space ret=4 err=57005 out='[q ]' nul=1 touched=5 span=5
+W pf_upper_D ret=3 err=57005 out='[D]' nul=1 touched=4 span=4
+W pf_upper_U ret=3 err=57005 out='[U]' nul=1 touched=4 span=4
+W pf_upper_O ret=3 err=57005 out='[O]' nul=1 touched=4 span=4
+W pf_i_hex ret=4 err=57005 out='[16]' nul=1 touched=5 span=5
+W pf_big_w ret=302 err=57005 out='[                                                                                                                                                                                                                                                                                                           1]' nul=1 touched=303 span=303
+A pf_a_s_hs_ls ret=26 err=57005 out='[nar\xE9|nar\xE9|w?|w?|w?|q|?|?]' nul=1 touched=27 span=27
+A pf_a_I64d_neg ret=23 err=57005 out='[4294967294|4294967294]' nul=1 touched=24 span=24
+W b_wrap_w4 ret=10 err=57005 out='aa\r\nbb\r\ncc' nul=1 touched=11 span=11
+W b_wrap_w3 ret=6 err=57005 out='ab\r\ncd' nul=1 touched=7 span=7
+W hard_space_w3 ret=7 err=57005 out='ab \r\ncd' nul=1 touched=8 span=8
+W trim_before_n_w10 ret=6 err=57005 out='a  \r\nb' nul=1 touched=7 span=7
+W trim_before_n_w0 ret=6 err=57005 out='a  \r\nb' nul=1 touched=7 span=7
+W trim_before_r_w10 ret=5 err=57005 out='a  \rb' nul=1 touched=6 span=6
+W trim_hard_then_space_w3 ret=7 err=57005 out='a  \r\n b' nul=1 touched=8 span=8
+W trim_space_then_hard_w3 ret=4 err=57005 out='a\r\nb' nul=1 touched=5 span=5
+W tab_then_wrap_w20 ret=20 err=57005 out='abc\tdef ghi\r\njkl mno' nul=1 touched=21 span=21
+W insert_after_tab_w20 ret=14 err=57005 out='abc\t(null) xyz' nul=1 touched=15 span=15
+W pct_cr_wrap_w3 ret=7 err=57005 out='ab\r\r\ncd' nul=1 touched=8 span=8
+W insert_space_only_w3 ret=12 err=57005 out='ab(null)\r\ncd' nul=1 touched=13 span=13
+W ign_unterminated ret=0 err=87 touched=1 span=1 buf='['
+W ign_unterminated_end ret=0 err=87 touched=1 span=1 buf='['
+W ign_n100 ret=0 err=87 touched=1 span=1 buf='['
+W ign_b ret=10 err=57005 out='aa\r\nbb\r\ncc' nul=1 touched=11 span=11
+W ign_spec_s ret=4 err=57005 out='a%1b' nul=1 touched=5 span=5
+W ign_spec_S ret=7 err=57005 out='a%1!S!b' nul=1 touched=8 span=8
+W ign_spec_5s ret=8 err=57005 out='a%1!5s!b' nul=1 touched=9 span=9
+W ign_spec_empty ret=6 err=57005 out='a%1!!b' nul=1 touched=7 span=7
+W ign_spec_s_bang ret=5 err=57005 out='a%1!b' nul=1 touched=6 span=6
+A ign_spec_s ret=4 err=57005 out='a%1b' nul=1 touched=5 span=5
+A empty ret=0 err=235 touched=0 span=0
+A zero_only ret=0 err=235 touched=0 span=0
+W empty_n0 ret=0 err=122 touched=0 span=0
+A trailing_pct ret=0 err=87 touched=0 span=0
+W mod_9 ret=10 err=57005 out='Utf8 \u00E9 \u0416\r\n' nul=1 touched=11 span=11
+W insert_sp_w3 ret=7 err=57005 out='abx y\r\n' nul=1 touched=8 span=8
+W tabs_w10 ret=10 err=57005 out='a\r\nb\r\nc\r\nd' nul=1 touched=11 span=11
+W tab_col11_w10 ret=16 err=57005 out='abcdefghij\r\nk\r\nz' nul=1 touched=17 span=17
+W tab_wrap_w10 ret=26 err=57005 out='abc\r\ndef ghi\r\njkl mno\r\npqr' nul=1 touched=27 span=27
+W tabs_w15 ret=8 err=57005 out='a\tb\r\nc\td' nul=1 touched=9 span=9
+W tab_col11_w15 ret=14 err=57005 out='abcdefghijk\r\nz' nul=1 touched=15 span=15
+W tab_wrap_w15 ret=25 err=57005 out='abc\tdef\r\nghi jkl mno\r\npqr' nul=1 touched=26 span=26
+W tabs_w16 ret=8 err=57005 out='a\tb\r\nc\td' nul=1 touched=9 span=9
+W tab_col11_w16 ret=14 err=57005 out='abcdefghijk\r\nz' nul=1 touched=15 span=15
+W tab_wrap_w16 ret=24 err=57005 out='abc\tdef\r\nghi jkl mno pqr' nul=1 touched=25 span=25
+W tabs_w17 ret=8 err=57005 out='a\tb\r\nc\td' nul=1 touched=9 span=9
+W tab_col11_w17 ret=14 err=57005 out='abcdefghijk\r\nz' nul=1 touched=15 span=15
+W tab_wrap_w17 ret=24 err=57005 out='abc\tdef ghi\r\njkl mno pqr' nul=1 touched=25 span=25
+W tabs_w24 ret=8 err=57005 out='a\tb\tc\r\nd' nul=1 touched=9 span=9
+W tab_col11_w24 ret=13 err=57005 out='abcdefghijk\tz' nul=1 touched=14 span=14
+W tab_wrap_w24 ret=24 err=57005 out='abc\tdef ghi jkl\r\nmno pqr' nul=1 touched=25 span=25
+W tabs_w25 ret=8 err=57005 out='a\tb\tc\r\nd' nul=1 touched=9 span=9
+W tab_col11_w25 ret=13 err=57005 out='abcdefghijk\tz' nul=1 touched=14 span=14
+W tab_wrap_w25 ret=24 err=57005 out='abc\tdef ghi jkl mno\r\npqr' nul=1 touched=25 span=25
+W tabs_w40 ret=7 err=57005 out='a\tb\tc\td' nul=1 touched=8 span=8
+W tab_col11_w40 ret=13 err=57005 out='abcdefghijk\tz' nul=1 touched=14 span=14
+W tab_wrap_w40 ret=23 err=57005 out='abc\tdef ghi jkl mno pqr' nul=1 touched=24 span=24
+W alloc cap_lit16377_ins49158_n0 ret=65535 err=57005 ptr=set localsize=131072 spaces=49158 nul=1
+W alloc cap_lit16377_ins49159_n0 ret=0 err=234 ptr=null
+W alloc cap_lit16378_ins114693_n0 ret=131071 err=57005 ptr=set localsize=262144 spaces=114693 nul=1
+W alloc cap_lit16378_ins114694_n0 ret=0 err=234 ptr=null
+W alloc cap_lit0_ins65535_n0 ret=65535 err=57005 ptr=set localsize=131072 spaces=65535 nul=1
+W alloc cap_lit0_ins65536_n0 ret=0 err=234 ptr=null
+W alloc cap_lit1_ins65535_n0 ret=0 err=234 ptr=null
+W alloc cap_lit0_ins65536_n65535 ret=0 err=234 ptr=null
+W alloc cap_lit0_ins65536_n65536 ret=65536 err=57005 ptr=set localsize=131074 spaces=65536 nul=1
+W alloc cap_lit0_ins131071_n65536 ret=131071 err=57005 ptr=set localsize=262144 spaces=131071 nul=1
+W alloc cap_lit0_ins131072_n65536 ret=0 err=234 ptr=null
+W alloc cap_lit0_ins131072_n131072 ret=131072 err=57005 ptr=set localsize=262146 spaces=131072 nul=1
+W null_args_w ret=0 err=87 touched=1 span=1 buf='a'
+child null_args_w exit=0x00000000
+W null_args_arr_w ret=0 err=87 touched=1 span=1 buf='a'
+child null_args_arr_w exit=0x00000000
+W null_args_noins_w ret=5 err=57005 out='a%b\r\n' nul=1 touched=6 span=6
+child null_args_noins_w exit=0x00000000
+A null_args_a ret=0 err=87 touched=0 span=0
+child null_args_a exit=0x00000000
+W null_buf_w ret=0 err=87
+child null_buf_w exit=0x00000000
+W null_buf_n0_w ret=0 err=87
+child null_buf_n0_w exit=0x00000000
+W null_buf_alloc_w ret=0 err=87
+child null_buf_alloc_w exit=0x00000000
+child null_src_w exit=0xc0000005
+child null_src_a exit=0xc0000005
+W bad_hmodule_w ret=0 err=1812 touched=0 span=0
+child bad_hmodule_w exit=0x00000000
+W bad_hmodule_sys_w ret=0 err=1812 touched=0 span=0
+child bad_hmodule_sys_w exit=0x00000000
+W null_str_arg_w ret=8 err=57005 out='[(null)]' nul=1 touched=9 span=9
+child null_str_arg_w exit=0x00000000
+W null_str_arg_S_w ret=8 err=57005 out='[(null)]' nul=1 touched=9 span=9
+child null_str_arg_S_w exit=0x00000000
+A null_str_arg_a ret=8 err=57005 out='[(null)]' nul=1 touched=9 span=9
+child null_str_arg_a exit=0x00000000
+child bad_str_arg_w exit=0xc0000005
+W printf_n_w ret=5 err=57005 out='[abn]' nul=1 touched=6 span=6
+W printf_n_w v=0x55
+child printf_n_w exit=0x00000000

@@ -1,0 +1,11 @@
+bits=32
+FDICABINETINFO size=24 cbCabinet=0 cFolders=4 cFiles=6 setID=8 iCabinet=10 fReserve=12 hasprev=16 hasnext=20
+FDINOTIFICATION size=40 cb=0 psz1=4 psz2=8 psz3=12 pv=16 hf=20 date=24 time=26 attribs=28 setID=30 iCabinet=32 iFolder=34 fdie=36
+ERF size=12 erfOper=0 erfType=4 fError=8
+HFDI size=4 INT_PTR size=4
+---
+bits=64
+FDICABINETINFO size=24 cbCabinet=0 cFolders=4 cFiles=6 setID=8 iCabinet=10 fReserve=12 hasprev=16 hasnext=20
+FDINOTIFICATION size=64 cb=0 psz1=8 psz2=16 psz3=24 pv=32 hf=40 date=48 time=50 attribs=52 setID=54 iCabinet=56 iFolder=58 fdie=60
+ERF size=12 erfOper=0 erfType=4 fError=8
+HFDI size=8 INT_PTR size=8

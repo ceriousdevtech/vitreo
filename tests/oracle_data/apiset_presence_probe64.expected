@@ -1,0 +1,39 @@
+unicode_layout size=00000010 buffer=00000008
+known return=00000000 present=00000001 guard=0000005a last=12345678
+query return=00000000 present=00000001 guard=0000005a last=12345678
+unknown return=00000000 present=00000000 guard=0000005a last=12345678
+ordinary return=00000000 present=00000000 guard=0000005a last=12345678
+empty return=00000000 present=00000000 guard=0000005a last=12345678
+upper return=00000000 present=00000001 guard=0000005a last=12345678
+dll return=00000000 present=00000001 guard=0000005a last=12345678
+exe return=00000000 present=00000001 guard=0000005a last=12345678
+path return=00000000 present=00000000 guard=0000005a last=12345678
+length-zero return=00000000 present=00000000 guard=0000005a last=12345678
+max-zero return=00000000 present=00000001 guard=0000005a last=12345678
+max-short return=00000000 present=00000001 guard=0000005a last=12345678
+odd-length return=00000000 present=00000000 guard=0000005a last=12345678
+null-buffer-zero return=00000000 present=00000000 guard=0000005a last=12345678
+null-buffer-length return=00000000 present=00000000 guard=0000005a last=12345678
+null-namespace fault=c0000005 access=00000000 address=00000000 present=000000a5 guard=0000005a last=12345678
+null-present fault=c0000005 access=00000001 address=00000000 present=000000a5 guard=0000005a last=12345678
+bad-namespace fault=c0000005 access=00000000 address=00000001 present=000000a5 guard=0000005a last=12345678
+bad-buffer fault=c0000005 access=00000000 address=00000001 present=000000a5 guard=0000005a last=12345678
+bad-present fault=c0000005 access=00000001 address=00000001 present=000000a5 guard=0000005a last=12345678
+counted-prefix return=00000000 present=00000001 guard=0000005a last=12345678
+counted-null return=00000000 present=00000000 guard=0000005a last=12345678
+odd-plus-one return=00000000 present=00000001 guard=0000005a last=12345678
+abc-extension return=00000000 present=00000001 guard=0000005a last=12345678
+upper-extension return=00000000 present=00000001 guard=0000005a last=12345678
+extra-char return=00000000 present=00000000 guard=0000005a last=12345678
+bad-buffer-len6 return=00000000 present=00000000 guard=0000005a last=12345678
+bad-buffer-len8 return=00000000 present=00000000 guard=0000005a last=12345678
+bad-buffer-len10 fault=c0000005 access=00000000 address=00000001 present=000000a5 guard=0000005a last=12345678
+last-version return=00000000 present=00000001 guard=0000005a last=12345678
+middle-version return=00000000 present=00000000 guard=0000005a last=12345678
+major-version return=00000000 present=00000000 guard=0000005a last=12345678
+observed-route return=00000000 present=00000001 guard=0000005a last=12345678
+two-extensions return=00000000 present=00000000 guard=0000005a last=12345678
+short-extension return=00000000 present=00000001 guard=0000005a last=12345678
+unicode-extension return=00000000 present=00000000 guard=0000005a last=12345678
+unicode-long-s return=00000000 present=00000000 guard=0000005a last=12345678
+unicode-dotless-i return=00000000 present=00000000 guard=0000005a last=12345678

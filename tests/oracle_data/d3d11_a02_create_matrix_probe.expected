@@ -1,0 +1,1238 @@
+adapter: Microsoft Basic Render Driver
+feature level 0xb000, pointer size 8
+codes: OK=S_OK IA=E_INVALIDARG OM=E_OUTOFMEMORY NI=E_NOTIMPL EF=E_FAIL SF=S_FALSE
+
+[BUF matrix] columns: m0 GM SH CU b3 DI RAW ST CL KM GDI NT SHNT KMNT GU DI|RAW DI|ST
+BUF u=DEF b=0                 c=-- : OK IA OK IA IA OK IA OK IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB                c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=IB                c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB                c=-- : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SRV               c=-- : OK IA OK IA IA OK OK OK IA OK IA IA IA IA OK OK IA
+BUF u=DEF b=SRV               c=W  : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SRV               c=R  : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SRV               c=RW : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SO                c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=RT                c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=UAV               c=-- : OK IA OK IA IA OK OK OK IA OK IA IA IA IA OK OK IA
+BUF u=DEF b=UAV               c=W  : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=UAV               c=R  : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=UAV               c=RW : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|IB             c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=VB|IB             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|IB             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|IB             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|SRV            c=-- : OK IA OK IA IA OK OK IA IA OK IA IA IA IA OK OK IA
+BUF u=DEF b=VB|SRV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|SRV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|SRV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|SO             c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=VB|SO             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|SO             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|SO             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SRV|UAV           c=-- : OK IA OK IA IA OK OK OK IA OK IA IA IA IA OK OK IA
+BUF u=DEF b=SRV|UAV           c=W  : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SRV|UAV           c=R  : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=SRV|UAV           c=RW : OK IA IA IA IA IA OK OK IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB|SRV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB|SRV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB|SRV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB|SRV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB|VB             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB|VB             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB|VB             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=CB|VB             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|IB|SRV|SO|UAV  c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|IB|SRV|SO|UAV  c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|IB|SRV|SO|UAV  c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=VB|IB|SRV|SO|UAV  c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=b8                c=-- : OK IA OK IA IA OK IA OK IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=DEC               c=-- : OK IA OK IA IA OK IA OK IA OK IA IA IA IA OK IA IA
+BUF u=DEF b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DEF b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB                c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=IMM b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=IB                c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=IMM b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB                c=-- : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+BUF u=IMM b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SRV               c=-- : OK IA OK IA IA OK OK OK IA OK IA IA IA IA OK OK IA
+BUF u=IMM b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|IB             c=-- : OK IA OK IA IA OK IA IA IA OK IA IA IA IA OK IA IA
+BUF u=IMM b=VB|IB             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|IB             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|IB             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|SRV            c=-- : OK IA OK IA IA OK OK IA IA OK IA IA IA IA OK OK IA
+BUF u=IMM b=VB|SRV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|SRV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|SRV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|SO             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|SO             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|SO             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|SO             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB|SRV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB|SRV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB|SRV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB|SRV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB|VB             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB|VB             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB|VB             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=CB|VB             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|IB|SRV|SO|UAV  c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|IB|SRV|SO|UAV  c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|IB|SRV|SO|UAV  c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=VB|IB|SRV|SO|UAV  c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=b8                c=-- : OK IA OK IA IA OK IA OK IA OK IA IA IA IA OK IA IA
+BUF u=IMM b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=DEC               c=-- : OK IA OK IA IA OK IA OK IA OK IA IA IA IA OK IA IA
+BUF u=IMM b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=IMM b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB                c=W  : OK IA IA IA IA OK IA IA IA IA IA IA IA IA OK IA IA
+BUF u=DYN b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=IB                c=W  : OK IA IA IA IA OK IA IA IA IA IA IA IA IA OK IA IA
+BUF u=DYN b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB                c=W  : OK IA IA IA IA IA IA IA IA IA IA IA IA IA OK IA IA
+BUF u=DYN b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SRV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SRV               c=W  : OK IA IA IA IA OK OK OK IA IA IA IA IA IA OK OK IA
+BUF u=DYN b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|IB             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|IB             c=W  : OK IA IA IA IA OK IA IA IA IA IA IA IA IA OK IA IA
+BUF u=DYN b=VB|IB             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|IB             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|SRV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|SRV            c=W  : OK IA IA IA IA OK OK IA IA IA IA IA IA IA OK OK IA
+BUF u=DYN b=VB|SRV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|SRV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|SO             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|SO             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|SO             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|SO             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB|SRV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB|SRV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB|SRV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB|SRV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB|VB             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB|VB             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB|VB             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=CB|VB             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|IB|SRV|SO|UAV  c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|IB|SRV|SO|UAV  c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|IB|SRV|SO|UAV  c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=VB|IB|SRV|SO|UAV  c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=b8                c=W  : OK IA IA IA IA OK IA OK IA IA IA IA IA IA OK IA IA
+BUF u=DYN b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=DEC               c=W  : OK IA IA IA IA OK IA OK IA IA IA IA IA IA OK IA IA
+BUF u=DYN b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=DYN b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=0                 c=W  : OK IA OK IA IA IA IA OK IA OK IA IA IA IA OK IA IA
+BUF u=STG b=0                 c=R  : OK IA OK IA IA IA IA OK IA OK IA IA IA IA OK IA IA
+BUF u=STG b=0                 c=RW : OK IA OK IA IA IA IA OK IA OK IA IA IA IA OK IA IA
+BUF u=STG b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SRV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|IB             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|IB             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|IB             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|IB             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|SRV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|SRV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|SRV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|SRV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|SO             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|SO             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|SO             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|SO             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB|SRV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB|SRV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB|SRV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB|SRV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB|VB             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB|VB             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB|VB             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=CB|VB             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|IB|SRV|SO|UAV  c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|IB|SRV|SO|UAV  c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|IB|SRV|SO|UAV  c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=VB|IB|SRV|SO|UAV  c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+BUF u=STG b=DEC               c=W  : OK IA OK IA IA IA IA OK IA OK IA IA IA IA OK IA IA
+BUF u=STG b=DEC               c=R  : OK IA OK IA IA IA IA OK IA OK IA IA IA IA OK IA IA
+BUF u=STG b=DEC               c=RW : OK IA OK IA IA IA IA OK IA OK IA IA IA IA OK IA IA
+
+[T1D matrix] columns: m0 GM SH CU b3 DI RAW ST CL KM GDI NT SHNT KMNT GU DI|RAW DI|ST
+T1D u=DEF b=0                 c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=0                 c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=0                 c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=0                 c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV               c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV               c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV               c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV               c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=RT                c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=RT                c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=RT                c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=RT                c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=DS                c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=UAV               c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=UAV               c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=UAV               c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=UAV               c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|RT            c=-- : OK OK OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|RT            c=W  : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|RT            c=R  : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|RT            c=RW : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|UAV           c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|UAV           c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|UAV           c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|UAV           c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=RT|UAV            c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=RT|UAV            c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=RT|UAV            c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=RT|UAV            c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|RT|UAV        c=-- : OK OK OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|RT|UAV        c=W  : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|RT|UAV        c=R  : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|RT|UAV        c=RW : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|DS            c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=DEF b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DEF b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV               c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T1D u=IMM b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=IMM b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=DYN b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=0                 c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=STG b=0                 c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=STG b=0                 c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T1D u=STG b=SRV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T1D u=STG b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+
+[T2D matrix] columns: m0 GM SH CU b3 DI RAW ST CL KM GDI NT SHNT KMNT GU DI|RAW DI|ST
+T2D u=DEF b=0                 c=-- : OK IA OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=0                 c=W  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=0                 c=R  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=0                 c=RW : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV               c=-- : OK IA OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV               c=W  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV               c=R  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV               c=RW : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=RT                c=-- : OK IA OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=RT                c=W  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=RT                c=R  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=RT                c=RW : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=DS                c=-- : OK IA OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=UAV               c=-- : OK IA OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=UAV               c=W  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=UAV               c=R  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=UAV               c=RW : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|RT            c=-- : OK OK OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|RT            c=W  : OK OK OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|RT            c=R  : OK OK OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|RT            c=RW : OK OK OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|UAV           c=-- : OK IA OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|UAV           c=W  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|UAV           c=R  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|UAV           c=RW : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=RT|UAV            c=-- : OK IA OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=RT|UAV            c=W  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=RT|UAV            c=R  : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=RT|UAV            c=RW : OK IA OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|RT|UAV        c=-- : OK OK OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|RT|UAV        c=W  : OK OK OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|RT|UAV        c=R  : OK OK OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|RT|UAV        c=RW : OK OK OK OK IA IA IA IA IA OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|DS            c=-- : OK IA OK OK IA IA IA IA OK OK IA IA OK OK OK IA IA
+T2D u=DEF b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DEF b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV               c=-- : OK IA OK OK IA IA IA IA OK OK IA IA IA IA OK IA IA
+T2D u=IMM b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=UAV               c=-- : IA IA IA OK IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|UAV           c=-- : IA IA IA OK IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=IMM b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=DYN b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=0                 c=W  : OK IA OK OK IA IA IA IA IA OK IA IA IA IA OK IA IA
+T2D u=STG b=0                 c=R  : OK IA OK OK IA IA IA IA IA OK IA IA IA IA OK IA IA
+T2D u=STG b=0                 c=RW : OK IA OK OK IA IA IA IA IA OK IA IA IA IA OK IA IA
+T2D u=STG b=SRV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T2D u=STG b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+
+[T3D matrix] columns: m0 GM SH CU b3 DI RAW ST CL KM GDI NT SHNT KMNT GU DI|RAW DI|ST
+T3D u=DEF b=0                 c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=DEF b=0                 c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=0                 c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=0                 c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV               c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV               c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV               c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV               c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=RT                c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=DEF b=RT                c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=RT                c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=RT                c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=UAV               c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=DEF b=UAV               c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=UAV               c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=UAV               c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|RT            c=-- : OK OK OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|RT            c=W  : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|RT            c=R  : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|RT            c=RW : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|UAV           c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|UAV           c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|UAV           c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|UAV           c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=RT|UAV            c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=DEF b=RT|UAV            c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=RT|UAV            c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=RT|UAV            c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|RT|UAV        c=-- : OK OK OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|RT|UAV        c=W  : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|RT|UAV        c=R  : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|RT|UAV        c=RW : OK OK OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=DEF b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DEF b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV               c=-- : OK IA OK IA IA IA IA IA OK OK IA IA IA IA OK IA IA
+T3D u=IMM b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=IMM b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=0                 c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=0                 c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=0                 c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV               c=W  : OK IA IA IA IA IA IA IA IA IA IA IA IA IA OK IA IA
+T3D u=DYN b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=DYN b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=0                 c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=0                 c=W  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=STG b=0                 c=R  : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=STG b=0                 c=RW : OK IA OK IA IA IA IA IA IA OK IA IA IA IA OK IA IA
+T3D u=STG b=SRV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=DS                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=DS                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=DS                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=DS                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=UAV               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=UAV               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=UAV               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=UAV               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|RT            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|RT            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|RT            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|RT            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|UAV           c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|UAV           c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|UAV           c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|UAV           c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT|UAV            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT|UAV            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT|UAV            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT|UAV            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|RT|UAV        c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|RT|UAV        c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|RT|UAV        c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|RT|UAV        c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|DS            c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|DS            c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|DS            c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SRV|DS            c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT|DS             c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT|DS             c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT|DS             c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=RT|DS             c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=VB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=VB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=VB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=VB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=IB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=IB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=IB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=IB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=CB                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=CB                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=CB                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=CB                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SO                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SO                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SO                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=SO                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=b8                c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=b8                c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=b8                c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=b8                c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=DEC               c=-- : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=DEC               c=W  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=DEC               c=R  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+T3D u=STG b=DEC               c=RW : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+
+[format x shape] columns: 2D-0 2D-SRV 2D-RT 2D-DS 2D-DS|SRV 2D-UAV 2D-GM 2D-IMM 2D-DYN 2D-STG 1D-SRV 1D-DS 3D-SRV 3D-RT 3D-UAV
+F   1 R32G32B32A32_TYPELESS        : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F   2 R32G32B32A32_FLOAT           : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F   5 R32G32B32_TYPELESS           : OK OK OK IA IA IA OK OK OK OK OK IA OK OK IA
+F   6 R32G32B32_FLOAT              : OK OK OK IA IA IA OK OK OK OK OK IA OK OK IA
+F   7 R32G32B32_UINT               : OK OK OK IA IA IA OK OK OK OK OK IA OK OK IA
+F   9 R16G16B16A16_TYPELESS        : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  10 R16G16B16A16_FLOAT           : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  15 R32G32_TYPELESS              : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  19 R32G8X24_TYPELESS            : OK OK IA OK OK IA IA OK OK OK OK OK IA IA IA
+F  20 D32_FLOAT_S8X24_UINT         : OK IA IA OK IA IA IA IA IA OK IA OK IA IA IA
+F  21 R32_FLOAT_X8X24_TYPELESS     : OK OK IA IA IA IA IA OK OK OK OK IA IA IA IA
+F  22 X32_TYPELESS_G8X24_UINT      : OK OK IA IA IA IA IA OK OK OK OK IA IA IA IA
+F  23 R10G10B10A2_TYPELESS         : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  26 R11G11B10_FLOAT              : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  27 R8G8B8A8_TYPELESS            : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  28 R8G8B8A8_UNORM               : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  29 R8G8B8A8_UNORM_SRGB          : OK OK OK IA IA OK OK OK OK OK OK IA OK OK IA
+F  30 R8G8B8A8_UINT                : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  33 R16G16_TYPELESS              : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  39 R32_TYPELESS                 : OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK
+F  40 D32_FLOAT                    : OK IA IA OK IA IA IA IA IA OK IA OK IA IA IA
+F  41 R32_FLOAT                    : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  42 R32_UINT                     : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  44 R24G8_TYPELESS               : OK OK IA OK OK IA IA OK OK OK OK OK IA IA IA
+F  45 D24_UNORM_S8_UINT            : OK IA IA OK IA IA IA IA IA OK IA OK IA IA IA
+F  46 R24_UNORM_X8_TYPELESS        : OK OK IA IA IA IA IA OK OK OK OK IA IA IA IA
+F  47 X24_TYPELESS_G8_UINT         : OK OK IA IA IA IA IA OK OK OK OK IA IA IA IA
+F  48 R8G8_TYPELESS                : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  53 R16_TYPELESS                 : OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK
+F  54 R16_FLOAT                    : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  55 D16_UNORM                    : OK IA IA OK IA IA IA IA IA OK IA OK IA IA IA
+F  56 R16_UNORM                    : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  60 R8_TYPELESS                  : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  61 R8_UNORM                     : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  65 A8_UNORM                     : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  66 R1_UNORM                     : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+F  67 R9G9B9E5_SHAREDEXP           : OK OK IA IA IA IA IA OK OK OK OK IA OK IA IA
+F  68 R8G8_B8G8_UNORM              : OK OK IA IA IA IA IA OK OK OK OK IA OK IA IA
+F  69 G8R8_G8B8_UNORM              : OK OK IA IA IA IA IA OK OK OK OK IA OK IA IA
+F  70 BC1_TYPELESS                 : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  71 BC1_UNORM                    : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  74 BC2_UNORM                    : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  77 BC3_UNORM                    : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  80 BC4_UNORM                    : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  81 BC4_SNORM                    : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  83 BC5_UNORM                    : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  85 B5G6R5_UNORM                 : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  86 B5G5R5A1_UNORM               : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  87 B8G8R8A8_UNORM               : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  88 B8G8R8X8_UNORM               : OK OK OK IA IA IA OK OK OK OK OK IA OK OK IA
+F  89 R10G10B10_XR_BIAS_A2_UNORM   : OK OK OK IA IA OK IA OK OK OK IA IA IA IA IA
+F  90 B8G8R8A8_TYPELESS            : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F  91 B8G8R8A8_UNORM_SRGB          : OK OK OK IA IA OK OK OK OK OK OK IA OK OK IA
+F  94 BC6H_TYPELESS                : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  95 BC6H_UF16                    : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  97 BC7_TYPELESS                 : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F  98 BC7_UNORM                    : OK OK IA IA IA IA IA OK OK OK IA IA OK IA IA
+F 103 NV12                         : OK OK OK IA IA OK IA OK OK OK IA IA IA IA IA
+F 107 YUY2                         : OK OK IA IA IA OK IA OK OK OK IA IA IA IA IA
+F 115 B4G4R4A4_UNORM               : OK OK OK IA IA OK OK OK OK OK OK IA OK OK OK
+F   0 UNKNOWN                      : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+F 200 invalid-200                  : IA IA IA IA IA IA IA IA IA IA IA IA IA IA IA
+
+done
+#
+# ---- verdicts (area 02, 2026-09-28; winoracle = WARP, FL 11_0 device) ----
+# Output above is the x64 build; the x86 build prints the identical matrix
+# (only "pointer size 4" differs).
+#
+# Run under Vitreo (build of 2026-09-27 23:22): x86 19698 cells, 5040 differ;
+# x64 5199 differ. Categorised (x86):
+#   4193  T1D rows: CreateTexture1D performs no usage/bind/CPU/misc/format
+#         validation at all (only TEXTURECUBE is refused). WRONG.
+#         On x64 almost every T1D cell is EF (E_FAIL) instead: the matrix
+#         passes 6 subresources of initial data and CreateTexture1D reads
+#         D3D11_SUBRESOURCE_DATA at a 24-byte stride (x64 size is 16). WRONG.
+#         STG rows are EF on both bitnesses (initial data for a staging 1D
+#         texture goes to a NULL backend). WRONG.
+#    303  DEFAULT + CPUAccessFlags accepted by WARP (map-on-default: WARP
+#         reports MapOnDefaultBuffers=1 / MapOnDefaultTextures=1). Vitreo
+#         reports both FALSE, so refusing is capability-consistent: correct.
+#    151  SH / KM / GU columns: WARP accepts SHARED / SHARED_KEYEDMUTEX
+#         without NTHANDLE on buffers, 1D, 3D and staging (Learn: "without
+#         [NTHANDLE] the runtime does not strictly validate shared resource
+#         parameters") and GUARDED everywhere. Not required behaviour except
+#         GUARDED, which the runtime accepts unconditionally: low.
+#     31  BUF DI|ST: DRAWINDIRECT_ARGS + BUFFER_STRUCTURED is E_INVALIDARG;
+#         Vitreo accepts. WRONG.
+#     22  BUF ST with VB/IB/CB/SO bind: a structured buffer cannot be a
+#         vertex/index/constant/stream-output buffer; Vitreo accepts. WRONG.
+#     11  BUF DI with CB / SO / STAGING: E_INVALIDARG; Vitreo accepts. WRONG.
+#  11+9   T2D/T3D CL: RESOURCE_CLAMP is legal on DEFAULT and IMMUTABLE
+#         textures; Vitreo refuses. WRONG.
+#     10  BUF bind RT (buffer render target), 0x100 and DECODER bits: Windows
+#         accepts; Vitreo refuses. RT is WRONG (D3D11_RTV_DIMENSION_BUFFER is
+#         a real view); the 0x100/DECODER acceptance is a runtime quirk: low.
+#      5  BUF SO with IMMUTABLE/DYNAMIC, and SO|UAV: E_INVALIDARG; Vitreo
+#         accepts. WRONG.
+#      5  T2D CU: STAGING cube (TEXTURECUBE on a staging texture) is legal;
+#         Vitreo refuses. WRONG. (IMMUTABLE+UAV+CUBE accepted by WARP is a
+#         runtime anomaly, not required.)
+#      1  T2D DYN arr6: a DYNAMIC texture must be a single subresource;
+#         Vitreo accepts. WRONG.
+#      1  T3D bind 0 on DEFAULT: legal; Vitreo refuses. WRONG.
+#      1  T3D GENERATE_MIPS with SRV|RT|UAV: legal; Vitreo requires exactly
+#         SRV|RT. WRONG.
+#
+# [format x shape] (x86; format rules are area 08's, creation-rule defects
+# listed here):
+#   * 2D-0 / 2D-SRV / 2D-DYN on R24G8_TYPELESS, R32G8X24_TYPELESS, the X8/G8
+#     view formats (21,22,46,47) and typed depth (20,40,45,55 with bind 0):
+#     Windows OK, Vitreo IA. WRONG (depth copy targets).
+#   * 2D-DS / 2D-DS|SRV on the view formats 21,22,46,47: Windows IA, Vitreo
+#     OK. WRONG.
+#   * 2D-RT / 2D-UAV / 2D-GM on every BC format: Windows IA, Vitreo OK.
+#     WRONG. 2D-DYN on every BC format: Windows OK, Vitreo IA. WRONG.
+#   * 1D-SRV / 1D-DS: every BC format and every colour-with-DS is refused by
+#     Windows; Vitreo accepts or returns E_FAIL / E_NOTIMPL. WRONG.
+#   * 5,6,7 R32G32B32_*, 67, 68, 69, 85, 86, 88 (B8G8R8X8), 89, 103, 107,
+#     115: Windows creates them, Vitreo refuses every shape. MISSING
+#     (format coverage, area 08).

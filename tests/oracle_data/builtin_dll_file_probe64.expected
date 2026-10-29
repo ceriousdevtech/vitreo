@@ -1,0 +1,27 @@
+bits=64 elevated=1
+== dsound.dll loaded=1
+  path(lower)=c:\windows\system32\dsound.dll len_ok=1
+  attrs=00000020 attrs_ex=1 attrs_ex_value=00000020 size_nonzero=1 times_nonzero=1
+  find name(lower)=dsound.dll attrs=00000020 size_matches=1
+  read-open ok size_matches_attrs=1
+  map ok mz=1 pe=1 machine=8664 same_machine=1 same_size_of_image=1
+  read ok=1 bytes=2 mz=1
+  version_info_size_nonzero=1
+  open GENERIC_WRITE    fail err=5
+  open read+write       fail err=5
+  open DELETE           fail err=5
+  open WRITE_ATTRIBUTES fail err=5
+  open WRITE_DAC        fail err=5
+== kernel32.dll loaded=1
+  path(lower)=c:\windows\system32\kernel32.dll len_ok=1
+  attrs=00000020 attrs_ex=1 attrs_ex_value=00000020 size_nonzero=1 times_nonzero=1
+  find name(lower)=kernel32.dll attrs=00000020 size_matches=1
+  read-open ok size_matches_attrs=1
+  map ok mz=1 pe=1 machine=8664 same_machine=1 same_size_of_image=1
+  read ok=1 bytes=2 mz=1
+  version_info_size_nonzero=1
+  open GENERIC_WRITE    fail err=5
+  open read+write       fail err=5
+  open DELETE           fail err=5
+  open WRITE_ATTRIBUTES fail err=5
+  open WRITE_DAC        fail err=5

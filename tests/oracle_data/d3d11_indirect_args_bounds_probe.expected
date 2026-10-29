@@ -1,0 +1,34 @@
+adapter: Microsoft Basic Render Driver
+
+[DrawInstancedIndirect: 16-byte block {3,1,0,0}]
+  DrawInstancedIndirect        fits at the start                  ByteWidth=32  offset=0   -> VSInvocations=3 IAPrimitives=1
+  DrawInstancedIndirect        ends exactly at ByteWidth          ByteWidth=32  offset=16  -> VSInvocations=3 IAPrimitives=1
+  DrawInstancedIndirect        last dword (StartInstance) past end ByteWidth=32  offset=20  -> VSInvocations=0 IAPrimitives=0
+  DrawInstancedIndirect        last 3 dwords past end             ByteWidth=32  offset=28  -> VSInvocations=0 IAPrimitives=0
+  DrawInstancedIndirect        offset == ByteWidth                ByteWidth=32  offset=32  -> VSInvocations=0 IAPrimitives=0
+  DrawInstancedIndirect        offset > ByteWidth                 ByteWidth=32  offset=64  -> VSInvocations=0 IAPrimitives=0
+  DrawInstancedIndirect        aligned control, block at 0        ByteWidth=32  offset=0   -> VSInvocations=3 IAPrimitives=1
+  DrawInstancedIndirect        misaligned (valid block at 0)      ByteWidth=32  offset=1   -> VSInvocations=0 IAPrimitives=0
+  DrawInstancedIndirect        misaligned (valid block at 0)      ByteWidth=32  offset=2   -> VSInvocations=0 IAPrimitives=0
+  DrawInstancedIndirect        misaligned (valid block at 0)      ByteWidth=32  offset=3   -> VSInvocations=0 IAPrimitives=0
+
+[DrawIndexedInstancedIndirect: 20-byte block {3,1,0,0,0}]
+  DrawIndexedInstancedIndirect fits at the start                  ByteWidth=40  offset=0   -> VSInvocations=3 IAPrimitives=1
+  DrawIndexedInstancedIndirect ends exactly at ByteWidth          ByteWidth=40  offset=20  -> VSInvocations=3 IAPrimitives=1
+  DrawIndexedInstancedIndirect last dword (StartInstance) past end ByteWidth=40  offset=24  -> VSInvocations=0 IAPrimitives=0
+  DrawIndexedInstancedIndirect last 4 dwords past end             ByteWidth=40  offset=36  -> VSInvocations=0 IAPrimitives=0
+  DrawIndexedInstancedIndirect offset == ByteWidth                ByteWidth=40  offset=40  -> VSInvocations=0 IAPrimitives=0
+  DrawIndexedInstancedIndirect aligned control, block at 0        ByteWidth=40  offset=0   -> VSInvocations=3 IAPrimitives=1
+  DrawIndexedInstancedIndirect misaligned (valid block at 0)      ByteWidth=40  offset=1   -> VSInvocations=0 IAPrimitives=0
+  DrawIndexedInstancedIndirect misaligned (valid block at 0)      ByteWidth=40  offset=2   -> VSInvocations=0 IAPrimitives=0
+  DrawIndexedInstancedIndirect misaligned (valid block at 0)      ByteWidth=40  offset=3   -> VSInvocations=0 IAPrimitives=0
+
+[DispatchIndirect: 12-byte block {2,1,1}]
+  DispatchIndirect             fits at the start                  ByteWidth=16  offset=0   -> CSInvocations=2
+  DispatchIndirect             ends exactly at ByteWidth          ByteWidth=16  offset=4   -> CSInvocations=2
+  DispatchIndirect             last dword (Z) past end            ByteWidth=16  offset=8   -> CSInvocations=0
+  DispatchIndirect             offset == ByteWidth                ByteWidth=16  offset=16  -> CSInvocations=0
+  DispatchIndirect             misaligned (valid block at 0)      ByteWidth=16  offset=1   -> CSInvocations=0
+  DispatchIndirect             misaligned (valid block at 0)      ByteWidth=16  offset=2   -> CSInvocations=0
+  DispatchIndirect             misaligned (valid block at 0)      ByteWidth=16  offset=3   -> CSInvocations=0
+done

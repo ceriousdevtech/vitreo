@@ -1,0 +1,161 @@
+bits	20
+query cab_unsigned	0	80092009	0	0	0	0	0
+query cab_lead	0	80092009	0	0	0	0	0
+query cab_tampered	1	0	10001	a	1	1	1	1	2
+query pe_badsig	1	0	10001	a	1	1	1	1	2
+gav badsig	0	c000a000	0	null
+gav badsig-only	1	0	0	d9e776a227426bb9dbbd5891af8c07e1d5b7fccd	1	0	0
+gav badsig-index0	0	c000a000	0	null
+query pe_badmd	1	0	10001	a	1	1	1	1	2
+gav badmd	0	80091007	0	null
+gav badmd-index0	0	80091007	0	null
+query cab_signed	1	0	10001	a	1	1	1	1	2
+gav plain	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav plain-nulls	1	0	-	-
+gav signer-only	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav index0	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav index1	0	80091008	1	null
+gav index-big	0	80091008	100	null
+gav index1-only	0	80091008	1	null
+gav trusted-none	0	8009202b	0	null
+gav trusted-empty	0	8009202b	0	null
+gav trusted-query	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav trusted-both	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav trusted-only-empty	0	8009202b	0	null
+gav extra-empty	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav extra-query	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav flag8	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav flags-all	0	8009202b	0	null
+gav tampered	1	0	0	a5329933b08eb649a5c93b1cf479945202013aaf	1	0	0
+gav undecoded	0	8009202b	0	null
+dataupdate	1
+gav data-msg	0	8009202b	0	null
+encsigner	1	308201ad02010130263020311e301c06035504030c1556697472656f204361622050726f626520526f6f7402025002300d06096086480165030402010500a05e3010060a2b06010401823702010c31023000301906092a864886f70d010903310c060a2b060104018237020104302f06092a864886f70d0109043122042011a492ccf3acc27acf7eb30696caafc9f87b2e29669b972301d843dae5493adc300d06092a864886f70d01010105000482010009dd3cbbd35e89dbf8576d75ab1e334b5888cff1087177d155bcba44bd567ca8170e3379dab99df4795a3569f75f4deb3744dc9721454f91d73e96915ad2c3315dec7e96d515107c34c52426e00349a4172279265d46457cfe32c124e06b285ea664191bef5bf9140dc45484f4a6291f23abc9191e32f65f292814f113c1dd2340e2304f24c3e1fea82f227dc7c082a837c10f66e06ef76d794d694bd7714f391141fab76aede1884aae1572ede4c2365b5357ea956cee33da7c867fbf8f0c777f993df2202cea2af63be19d509365602038f2ea4421b182efec3d2eb799f1b567d199af4535ec3fb1647d1c5795fa840ef61a7c543883307104cbf0d0066899
+siparam	270
+si 0	1	0	270	1	22	0250	2.16.840.1.101.3.4.2.1	0	1.2.840.113549.1.1.1	0	100	3	1.3.6.1.4.1.311.2.1.12/1/2	1.2.840.113549.1.9.3/1/c	1.2.840.113549.1.9.4/1/22	0
+si 1	1	0	270
+si 2	0	ea	270
+si 3	1	0	270	1	22	0250	2.16.840.1.101.3.4.2.1	0	1.2.840.113549.1.1.1	0	100	3	1.3.6.1.4.1.311.2.1.12/1/2	1.2.840.113549.1.9.3/1/c	1.2.840.113549.1.9.4/1/22	0
+sibad 0	0	8009310b	0
+sibad 1	0	80093102	0
+sibad 2	0	80093103	0
+sibad 3	0	80093102	0
+hpki default	1	0	10	0b5c78ebf77d907029ec32266c79c398
+hpki md5	1	0	10	0b5c78ebf77d907029ec32266c79c398
+hpki sha1	1	0	14	c48e98659d11c22cefbd49a2edba63ac94b7f617
+hpki sha256	1	0	20	b6247d1a3306b7001e7d78894cfe1cf4883a14aec0c567d829a6c21c7ba47ef2
+hpki sha384	1	0	30	7184851ffbafe0cc851eb292489a471ef1a8ccbf580f44822bbf406722407f6249100450546e21ccd46cc3d121108f9e
+hpki sha512	1	0	40	56bc8b5b806a7ad25c12ae9ab52803c04a3feacc49d34d92740cc4bd2fe11d774ae894b255222aa21e21eeac50e0224eeb0fe7669bcc001a4d689ba7beda7dd3
+hpki md2	1	0	10	0a7466091b68256e17a79c6739be12c5
+hpki md4	1	0	10	167c1f0e524e30ab888e32cbe87718ef
+hpki mac	0	80090003	0	touched=0
+hpki hmac	0	80090003	0	touched=0
+hpki ssl3shamd5	0	6	0	touched=0
+hpki rsasign	0	32	0	touched=0
+hpki bogus	0	80090008	0	touched=0
+hpki enc-both	1	0	14	c48e98659d11c22cefbd49a2edba63ac94b7f617
+hpki enc-pkcs7	1	0	14	c48e98659d11c22cefbd49a2edba63ac94b7f617
+hpki enc-zero	0	2	0	touched=0
+hpki enc-2	0	2	0	touched=0
+hpki sizequery	1	0	14	touched=0
+hpki sizequery-big	1	0	14	touched=0
+hpki exact	1	0	14	c48e98659d11c22cefbd49a2edba63ac94b7f617
+hpki small	0	ea	14	touched=0
+hpki zero	0	ea	14	touched=0
+hpki flags1	1	0	14	c48e98659d11c22cefbd49a2edba63ac94b7f617
+hpki flagsff	1	0	14	c48e98659d11c22cefbd49a2edba63ac94b7f617
+hpki unused3	1	0	14	a1080a65db427382938c6610de87f2689cb33bb6
+hpki noparams	1	0	14	c48e98659d11c22cefbd49a2edba63ac94b7f617
+hpki oid1234	1	0	14	362a3faebbbc9770631dd745c7dd0c76a5153e63
+hpki oidbogus	0	80093109	0	touched=0
+hpki oidempty	0	80070057	0	touched=0
+hpki emptykey	1	0	14	961a633d033f1edf33f08ab8cfa7ef046d05f416
+hpki badparams	1	0	14	e0d5274e2426d7ca1af563d6604add6548bfd695
+hpki bigkey	1	0	14	897974e539e92c1fb885907fe2d6804cd75c32df
+dec eku	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+decex eku	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+dec eku2	1	0	40	2	1.3.6.1.5.5.7.3.3	1.3.6.1.5.5.7.3.1
+decex eku2	1	0	40	2	1.3.6.1.5.5.7.3.3	1.3.6.1.5.5.7.3.1
+dec eku-oid	1	0	40	2	1.3.6.1.5.5.7.3.3	1.3.6.1.5.5.7.3.1
+decex eku-oid	1	0	40	2	1.3.6.1.5.5.7.3.3	1.3.6.1.5.5.7.3.1
+dec eku-both	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+decex eku-both	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+dec eku-pkcs7	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+decex eku-pkcs7	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+dec eku-enc0	0	2	0	touched=0
+decex eku-enc0	0	2	0	touched=0
+dec eku-size	1	0	28	touched=0
+decex eku-size	1	0	28	touched=0
+dec eku-small	0	ea	28	touched=0
+decex eku-small	0	ea	28	touched=0
+dec eku-alloc	1	0	28	touched=4
+decex eku-alloc	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+dec eku-nocopy	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+decex eku-nocopy	1	0	28	1	1.3.6.1.4.1.311.10.3.1
+dec badtag	0	8009310b	0	touched=0
+decex badtag	0	8009310b	0	touched=0
+dec trunc	0	80093102	0	touched=0
+decex trunc	0	80093102	0	touched=0
+dec empty	0	80093102	0	touched=0
+decex empty	0	80093102	0	touched=0
+time 0 oid	1	0	8	1cc27d6:34d8a680
+time 0 num	1	0	8	1cc27d6:34d8a680
+time 1 oid	1	0	8	1f7630b:e304e980
+time 1 num	1	0	8	1f7630b:e304e980
+time 2 oid	1	0	8	1874593:91a6c000
+time 2 num	1	0	8	1874593:91a6c000
+time 3 oid	1	0	8	1cc27d6:1a063200
+time 3 num	1	0	8	1cc27d6:1a063200
+time 4 oid	1	0	8	1cc27de:969d0e80
+time 4 num	1	0	8	1cc27de:969d0e80
+time 5 oid	1	0	8	1cc27c7:1e771e80
+time 5 num	1	0	8	1cc27c7:1e771e80
+time 6 oid	0	80093102	0	5a5a5a5a:5a5a5a5a
+time 6 num	0	80093102	0	5a5a5a5a:5a5a5a5a
+time 7 oid	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time 7 num	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time 8 oid	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time 8 num	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time 9 oid	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time 9 num	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time a oid	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time a num	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time b oid	0	80092002	0	5a5a5a5a:5a5a5a5a
+time b num	0	80092002	0	5a5a5a5a:5a5a5a5a
+time c oid	0	80092002	0	5a5a5a5a:5a5a5a5a
+time c num	0	80092002	0	5a5a5a5a:5a5a5a5a
+time d oid	0	80092002	0	5a5a5a5a:5a5a5a5a
+time d num	0	80092002	0	5a5a5a5a:5a5a5a5a
+time e oid	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time e num	0	8009310b	0	5a5a5a5a:5a5a5a5a
+time f oid	0	80093102	0	5a5a5a5a:5a5a5a5a
+time f num	0	80093102	0	5a5a5a5a:5a5a5a5a
+time 10 oid	0	80093102	0	5a5a5a5a:5a5a5a5a
+time 10 num	0	80093102	0	5a5a5a5a:5a5a5a5a
+time 11 oid	1	0	8	1cc27d6:34d8a680
+time 11 num	1	0	8	1cc27d6:34d8a680
+time 12 oid	1	0	8	1cc27d6:34d8a680
+time 12 num	1	0	8	1cc27d6:34d8a680
+time 13 oid	1	0	8	1cc27cd:d3143e80
+time 13 num	1	0	8	1cc27cd:d3143e80
+time 14 oid	1	0	8	1cc27cf:803b8680
+time 14 num	1	0	8	1cc27cf:803b8680
+time 15 oid	1	0	8	1cc27dc:e975c680
+time 15 num	1	0	8	1cc27dc:e975c680
+time 16 oid	1	0	8	1cc27e5:4b3a2e80
+time 16 num	1	0	8	1cc27e5:4b3a2e80
+time 17 oid	1	0	8	1cc27d6:11156080
+time 17 num	1	0	8	1cc27d6:11156080
+time 18 oid	1	0	8	1cc27d6:589bec80
+time 18 num	1	0	8	1cc27d6:589bec80
+time 19 oid	1	0	8	1cc283a:ca0d8680
+time 19 num	1	0	8	1cc283a:ca0d8680
+time 1a oid	1	0	8	1cc28a7:c106ce80
+time 1a num	1	0	8	1cc28a7:c106ce80
+time 1b oid	1	0	8	1cc27e3:9e12e680
+time 1b num	1	0	8	1cc27e3:9e12e680
+time 1c oid	1	0	8	1cc27de:7bca9a00
+time 1c num	1	0	8	1cc27de:7bca9a00
+timesize	1	0	8
+timesmall	0	ea	8
+timealloc	1	0	8	1cc27d6:34d8a680

@@ -1,0 +1,313 @@
+ptr_size=8 sizeof_LITEM=4280 sizeof_NMLINK=4304 sizeof_LHITTESTINFO=4288
+InitCommonControlsEx=1
+GetClassInfoEx(SysLink)_ok=1 style=0x4000 cbWndExtra=8 cbClsExtra=0 hbr=0x6 cursor_is_arrow=1 cursor_null=0
+case0 created=1
+case0 link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=18
+case0 link0 id=""
+case0 link0 url="https://x.example/"
+case0 count=1
+case0 gettextlength=47 gettext_ret=48
+case0 gettext="Visit <a href="https://x.example/">site</a> now"
+case0 A gettextlength=48 gettext_ret=48 A0=0x56 A_text="Visit <a href="https://x.example/">site</a> now"
+case1 created=1
+case1 link0 state=0x2 stateMask=0xffffffff idlen=3 urllen=2
+case1 link0 id="one"
+case1 link0 url="u1"
+case1 link1 state=0x2 stateMask=0xffffffff idlen=3 urllen=2
+case1 link1 id="two"
+case1 link1 url="u2"
+case1 count=2
+case1 gettextlength=59 gettext_ret=60
+case1 gettext="<a id="one" href="u1">A</a> and <A HREF="u2" ID="two">B</A>"
+case1 A gettextlength=60 gettext_ret=60 A0=0x3c A_text="<a id="one" href="u1">A</a> and <A HREF="u2" ID="two">B</A>"
+case2 created=1
+case2 count=0
+case2 gettextlength=18 gettext_ret=19
+case2 gettext="<a href='u3'>C</a>"
+case2 A gettextlength=19 gettext_ret=19 A0=0x3c A_text="<a href='u3'>C</a>"
+case3 created=1
+case3 count=0
+case3 gettextlength=16 gettext_ret=17
+case3 gettext="<a href=u4>D</a>"
+case3 A gettextlength=17 gettext_ret=17 A0=0x3c A_text="<a href=u4>D</a>"
+case4 created=1
+case4 link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=0
+case4 link0 id=""
+case4 link0 url=""
+case4 count=1
+case4 gettextlength=13 gettext_ret=14
+case4 gettext="<a>E</a> tail"
+case4 A gettextlength=14 gettext_ret=14 A0=0x3c A_text="<a>E</a> tail"
+case5 created=1
+case5 count=0
+case5 gettextlength=27 gettext_ret=28
+case5 gettext="<a href="u5">F unterminated"
+case5 A gettextlength=28 gettext_ret=28 A0=0x3c A_text="<a href="u5">F unterminated"
+case6 created=1
+case6 count=0
+case6 gettextlength=25 gettext_ret=26
+case6 gettext="x < y <b>bold</b> &amp; z"
+case6 A gettextlength=26 gettext_ret=26 A0=0x78 A_text="x < y <b>bold</b> &amp; z"
+case7 created=1
+case7 link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=2
+case7 link0 id=""
+case7 link0 url="u6"
+case7 count=1
+case7 gettextlength=29 gettext_ret=30
+case7 gettext="<a href="u6" target="t">G</a>"
+case7 A gettextlength=30 gettext_ret=30 A0=0x3c A_text="<a href="u6" target="t">G</a>"
+case8 created=1
+case8 link0 state=0x2 stateMask=0xffffffff idlen=47 urllen=0
+case8 link0 id="01234567890123456789012345678901234567890123456"
+case8 link0 url=""
+case8 count=1
+case8 gettextlength=75 gettext_ret=76
+case8 gettext="<a id="0123456789012345678901234567890123456789012345678901234567890">H</a>"
+case8 A gettextlength=76 gettext_ret=76 A0=0x3c A_text="<a id="0123456789012345678901234567890123456789012345678901234567890">H</a>"
+case9 created=1
+case9 count=0
+case9 gettextlength=0 gettext_ret=1
+case9 gettext=""
+case9 A gettextlength=0 gettext_ret=1 A0=0x0 A_text=""
+case10 created=1
+case10 link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=2
+case10 link0 id=""
+case10 link0 url="u7"
+case10 count=1
+case10 gettextlength=26 gettext_ret=27
+case10 gettext="&Prefix <a href="u7">I</a>"
+case10 A gettextlength=27 gettext_ret=27 A0=0x26 A_text="&Prefix <a href="u7">I</a>"
+case11 created=1
+case11 link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=2
+case11 link0 id=""
+case11 link0 url="u8"
+case11 count=1
+case11 gettextlength=22 gettext_ret=23
+case11 gettext="<a href="u8"></a>empty"
+case11 A gettextlength=23 gettext_ret=23 A0=0x3c A_text="<a href="u8"></a>empty"
+case12 created=1
+case12 count=0
+case12 gettextlength=22 gettext_ret=23
+case12 gettext="<a  href = "u9" >J</a>"
+case12 A gettextlength=23 gettext_ret=23 A0=0x3c A_text="<a  href = "u9" >J</a>"
+case13 created=1
+case13 link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=7
+case13 link0 id=""
+case13 link0 url="a&amp;b"
+case13 count=1
+case13 gettextlength=23 gettext_ret=24
+case13 gettext="<a href="a&amp;b">K</a>"
+case13 A gettextlength=24 gettext_ret=24 A0=0x3c A_text="<a href="a&amp;b">K</a>"
+case14 created=1
+case14 link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=3
+case14 link0 id=""
+case14 link0 url="u10"
+case14 link1 state=0x2 stateMask=0xffffffff idlen=0 urllen=3
+case14 link1 id=""
+case14 link1 url="u11"
+case14 count=2
+case14 gettextlength=38 gettext_ret=39
+case14 gettext="<a href="u10">L</a><a href="u11">M</a>"
+case14 A gettextlength=39 gettext_ret=39 A0=0x3c A_text="<a href="u10">L</a><a href="u11">M</a>"
+settext_ret=1
+settext link0 state=0x2 stateMask=0xffffffff idlen=1 urllen=2
+settext link0 id="x"
+settext link0 url="h1"
+settext link1 state=0x2 stateMask=0xffffffff idlen=0 urllen=2
+settext link1 id=""
+settext link1 url="h2"
+settext count=2
+settext gettextlength=61 gettext_ret=62
+settext gettext="one <a id="x" href="h1">first</a> two <a href="h2">second</a>"
+settext A gettextlength=62 gettext_ret=62 A0=0x6f A_text="one <a id="x" href="h1">first</a> two <a href="h2">second</a>"
+settext_null_ret=1
+settextnull link0 state=0x2 stateMask=0xffffffff idlen=1 urllen=2
+settextnull link0 id="x"
+settextnull link0 url="h1"
+settextnull link1 state=0x2 stateMask=0xffffffff idlen=0 urllen=2
+settextnull link1 id=""
+settextnull link1 url="h2"
+settextnull count=2
+settextnull gettextlength=0 gettext_ret=1
+settextnull gettext=""
+settextnull A gettextlength=0 gettext_ret=1 A0=0x0 A_text=""
+getitem_badindex=0 err=57005
+getitem_neg=0 err=57005
+getitem_noindexflag=0 err=57005 url=""
+getitem_byid=0 iLink=1 url=""
+getitem_byid_missing=0 iLink=1 url=""
+getitem_indexonly=0 state=0xcccccccc stateMask=0xcccccccc id0=0xcccc url0=0xcccc
+getitem_state_masked=1 state=0x2
+getitem_nullptr=0
+setitem_url_id=1
+setitem_state=1
+afterset link0 state=0x2 stateMask=0xffffffff idlen=1 urllen=2
+afterset link0 id="x"
+afterset link0 url="h1"
+afterset link1 state=0x7 stateMask=0xffffffff idlen=5 urllen=6
+afterset link1 id="newid"
+afterset link1 url="newurl"
+afterset count=2
+setitem_focus0=1
+afterfocus0 link0 state=0x3 stateMask=0xffffffff idlen=1 urllen=2
+afterfocus0 link0 id="x"
+afterfocus0 link0 url="h1"
+afterfocus0 link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=6
+afterfocus0 link1 id="newid"
+afterfocus0 link1 url="newurl"
+afterfocus0 count=2
+setitem_disable0=1
+afterdisable0 link0 state=0x1 stateMask=0xffffffff idlen=1 urllen=2
+afterdisable0 link0 id="x"
+afterdisable0 link0 url="h1"
+afterdisable0 link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=6
+afterdisable0 link1 id="newid"
+afterdisable0 link1 url="newurl"
+afterdisable0 count=2
+setitem_url_again=1
+afterurl2 link0 state=0x1 stateMask=0xffffffff idlen=1 urllen=2
+afterurl2 link0 id="x"
+afterurl2 link0 url="h1"
+afterurl2 link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=7
+afterurl2 link1 id="newid"
+afterurl2 link1 url="another"
+afterurl2 count=2
+setitem_badindex=0 err=57005
+setitem_byid=0
+afterbyid link0 state=0x1 stateMask=0xffffffff idlen=1 urllen=2
+afterbyid link0 id="x"
+afterbyid link0 url="h1"
+afterbyid link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=7
+afterbyid link1 id="newid"
+afterbyid link1 url="another"
+afterbyid count=2
+afterset gettextlength=61 gettext_ret=62
+afterset gettext="one <a id="x" href="h1">first</a> two <a href="h2">second</a>"
+afterset A gettextlength=62 gettext_ret=62 A0=0x6f A_text="one <a id="x" href="h1">first</a> two <a href="h2">second</a>"
+getfont_null=0
+ideal_wide_eq_size=1 size_cy_eq_ret=1 wide_is_one_line=1 cx_le_1000=1 cx_gt_0=1
+narrow_taller=1 narrow_cy_eq_ret=1 narrow_lines=5 narrow_cx_le_40=1
+zero_width ret_is_0=0 ret_eq_wide=1 cx=130 cy_eq_ret=1
+getdlgcode=0x100 getdlgcode_return=0x100
+hit first0_gt_0=1 last0_gt_first0=1 first1_gt_last0=1
+hit_link0=1 iLink=0 mask=0xcccccccc state=0xcccccccc stateMask=0xcccccccc
+hit_link0 id="x"
+hit_link0 url=<untouched>
+hit_plaintext=0 iLink=0xffffffff mask=0xcccccccc
+hit_outside=0 iLink=0xffffffff
+hit_nullptr=0
+after_down notify=0
+notify code=-2 wparam=7 idFrom=7 hwndFrom_is_link=1
+after_up notify=1
+click code=-2 iLink=0 mask=0x0 state=0x0 stateMask=0x0
+click id="x"
+click url="h1"
+afterclick link0 state=0x3 stateMask=0xffffffff idlen=1 urllen=2
+afterclick link0 id="x"
+afterclick link0 url="h1"
+afterclick link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=7
+afterclick link1 id="newid"
+afterclick link1 url="another"
+afterclick count=2
+notify code=-4 wparam=7 idFrom=7 hwndFrom_is_link=1
+enter notify=1 code=-4 iLink=0
+afterenter link0 state=0x3 stateMask=0xffffffff idlen=1 urllen=2
+afterenter link0 id="x"
+afterenter link0 url="h1"
+afterenter link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=7
+afterenter link1 id="newid"
+afterenter link1 url="another"
+afterenter count=2
+aftertab link0 state=0x2 stateMask=0xffffffff idlen=1 urllen=2
+aftertab link0 id="x"
+aftertab link0 url="h1"
+aftertab link1 state=0x7 stateMask=0xffffffff idlen=5 urllen=7
+aftertab link1 id="newid"
+aftertab link1 url="another"
+aftertab count=2
+resettext link0 state=0x2 stateMask=0xffffffff idlen=1 urllen=2
+resettext link0 id="x"
+resettext link0 url="h1"
+resettext link1 state=0x7 stateMask=0xffffffff idlen=5 urllen=7
+resettext link1 id="newid"
+resettext link1 url="another"
+resettext count=2
+tab_last_ret=1
+tablast link0 state=0x2 stateMask=0xffffffff idlen=1 urllen=2
+tablast link0 id="x"
+tablast link0 url="h1"
+tablast link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=7
+tablast link1 id="newid"
+tablast link1 url="another"
+tablast count=2
+shifttab link0 state=0x3 stateMask=0xffffffff idlen=1 urllen=2
+shifttab link0 id="x"
+shifttab link0 url="h1"
+shifttab link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=7
+shifttab link1 id="newid"
+shifttab link1 url="another"
+shifttab count=2
+notify code=-4 wparam=7 idFrom=7 hwndFrom_is_link=1
+enter_keydown_only notify=1
+enter_char_only notify=0
+notify code=-4 wparam=7 idFrom=7 hwndFrom_is_link=1
+space notify=1 code=-4
+trunc W ret=0 w3=0x20 w4=0x0 w5=0x7777
+trunc A ret=0 a3=0x77 a4=0x77 a5=0x77
+trunc0 W ret=0 w0=0x7777
+trunc1 W ret=0 w0=0x0
+getitem_url_only=1 url="another"
+getitem_id_only=1 id="x"
+setitem_allbits=0 readback=0x3
+setitem_indexonly=0
+setitem_unterminated_url=1 len=2083 last=0x75
+afterreset link0 state=0x3 stateMask=0xffffffff idlen=1 urllen=2083
+afterreset link0 id="x"
+afterreset link0 url="uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
+afterreset link1 state=0x6 stateMask=0xffffffff idlen=5 urllen=7
+afterreset link1 id="newid"
+afterreset link1 url="another"
+afterreset count=2
+fewer link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=2
+fewer link0 id=""
+fewer link0 url="R2"
+fewer count=1
+more link0 state=0x2 stateMask=0xffffffff idlen=1 urllen=2
+more link0 id="s"
+more link0 url="S3"
+more link1 state=0x2 stateMask=0xffffffff idlen=1 urllen=2
+more link1 id="t"
+more link1 url="T3"
+more link2 state=0x2 stateMask=0xffffffff idlen=0 urllen=2
+more link2 id=""
+more link2 url="U3"
+more count=3
+none count=0
+againone link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=2
+againone link0 id=""
+againone link0 url="V4"
+againone count=1
+statebit0 set=1 readback=0x3
+statebit1 set=1 readback=0x3
+statebit2 set=1 readback=0x7
+statebit3 set=1 readback=0xf
+statebit4 set=1 readback=0x1f
+statebit5 set=0 readback=0x1f
+statebit6 set=0 readback=0x1f
+statebit7 set=0 readback=0x1f
+statemask_undefined_clear=0
+state_undefined_unmasked=1
+truncA ret=0 a0=0x0 a1=0x77 a2=0x77 a3=0x77
+notify code=-4 wparam=7 idFrom=7 hwndFrom_is_link=1
+space_keydown notify=1
+space_char notify=0
+space_keyup notify=0
+enter_nofocus notify=0
+disabled_link_hittest_found=0
+notify code=-4 wparam=7 idFrom=7 hwndFrom_is_link=1
+ignorereturn notify=1 code=-4
+ignorereturn getdlgcode=0x100
+disabledctl link0 state=0x2 stateMask=0xffffffff idlen=0 urllen=1
+disabledctl link0 id=""
+disabledctl link0 url="d"
+disabledctl count=1

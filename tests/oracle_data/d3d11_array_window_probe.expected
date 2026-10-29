@@ -1,0 +1,152 @@
+# adapter: Microsoft Basic Render Driver
+# feature level 0xb100
+[rtv]
+rtv cleared slice 0 mip 0: ff108040 ff108040 ff108040 ff108040 | ff108040 ff108040 ff108040 ff108040
+rtv cleared slice 0 mip 1: ff10c040 ff10c040 | ff10c040 ff10c040
+rtv cleared slice 1 mip 0: ff408040 ff408040 ff408040 ff408040 | ff408040 ff408040 ff408040 ff408040
+rtv cleared slice 1 mip 1: ff40c040 ff40c040 | ff40c040 ff40c040
+rtv cleared slice 2 mip 0: ff708040 ff708040 ff708040 ff708040 | ff708040 ff708040 ff708040 ff708040
+rtv cleared slice 2 mip 1: ff70c040 ff70c040 | ff70c040 ff70c040
+rtv draw {mip 0, first 1, size 2}                    hr=0x00000000
+rtv draw {mip 0, first 1, size 1}                    hr=0x00000000
+rtv draw {mip 1, first 2, size 1}                    hr=0x00000000
+rtv draw {mip 0, first 0, size 3} left half          hr=0x00000000
+rtv drawn slice 0 mip 0: ff505050 ff505050 ff108040 ff108040 | ff505050 ff505050 ff108040 ff108040
+rtv drawn slice 0 mip 1: ff10c040 ff10c040 | ff10c040 ff10c040
+rtv drawn slice 1 mip 0: ffc03090 ffc03090 ffc03090 ffc03090 | ffc03090 ffc03090 ffc03090 ffc03090
+rtv drawn slice 1 mip 1: ff40c040 ff40c040 | ff40c040 ff40c040
+rtv drawn slice 2 mip 0: ff708040 ff708040 ff708040 ff708040 | ff708040 ff708040 ff708040 ff708040
+rtv drawn slice 2 mip 1: ff20f060 ff20f060 | ff20f060 ff20f060
+rtv {mip 0, first 3, size 1} (past the array)        hr=0x80070057
+[srv]
+srv 2DARRAY {mip 0+2, first 1, size 1}               hr=0x00000000
+srv a cs Texture2D[0] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv a cs Texture2D[1] 3e808081 3f40c0c1 3e808081 3f800000
+srv a cs Texture2D[2] 00000004 00000004 00000002 00000000
+srv a cs Texture2D[3] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv a cs Texture2DArray[0] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv a cs Texture2DArray[1] 00000000 00000000 00000000 00000000
+srv a cs Texture2DArray[2] 00000000 00000000 00000000 00000000
+srv a cs Texture2DArray[3] 00000000 00000000 00000000 00000000
+srv a cs Texture2DArray[4] 3e808081 3f40c0c1 3e808081 3f800000
+srv a cs Texture2DArray[5] 00000004 00000004 00000001 00000002
+srv a cs Texture2DArray[6] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv a cs Texture2DArray[7] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv a ps Texture2D Load (0,0) ff9030c0 (3,3) ff9030c0
+srv a ps Texture2D Sample (0,0) ff9030c0 (3,3) ff9030c0
+srv a ps Texture2DArray [0] (0,0) ff9030c0 (3,3) ff9030c0
+srv a ps Texture2DArray [1] (0,0) 00000000 (3,3) 00000000
+srv 2DARRAY {mip 0+2, first 1, size 2}               hr=0x00000000
+srv b cs Texture2D[0] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv b cs Texture2D[1] 3e808081 3f40c0c1 3e808081 3f800000
+srv b cs Texture2D[2] 00000004 00000004 00000002 00000000
+srv b cs Texture2D[3] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv b cs Texture2DArray[0] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv b cs Texture2DArray[1] 3ee0e0e1 3f008081 3e808081 3f800000
+srv b cs Texture2DArray[2] 00000000 00000000 00000000 00000000
+srv b cs Texture2DArray[3] 00000000 00000000 00000000 00000000
+srv b cs Texture2DArray[4] 3e808081 3f40c0c1 3e808081 3f800000
+srv b cs Texture2DArray[5] 00000004 00000004 00000002 00000002
+srv b cs Texture2DArray[6] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv b cs Texture2DArray[7] 3ee0e0e1 3f008081 3e808081 3f800000
+srv b ps Texture2D Load (0,0) ff9030c0 (3,3) ff9030c0
+srv b ps Texture2D Sample (0,0) ff9030c0 (3,3) ff9030c0
+srv b ps Texture2DArray [0] (0,0) ff9030c0 (3,3) ff9030c0
+srv b ps Texture2DArray [1] (0,0) ff408070 (3,3) ff408070
+srv 2DARRAY {mip 1+1, first 2, size 1}               hr=0x00000000
+srv c cs Texture2D[0] 3e008081 3f70f0f1 3ec0c0c1 3f800000
+srv c cs Texture2D[1] 00000000 00000000 00000000 00000000
+srv c cs Texture2D[2] 00000002 00000002 00000001 00000000
+srv c cs Texture2D[3] 3e008081 3f70f0f1 3ec0c0c1 3f800000
+srv c cs Texture2DArray[0] 3e008081 3f70f0f1 3ec0c0c1 3f800000
+srv c cs Texture2DArray[1] 00000000 00000000 00000000 00000000
+srv c cs Texture2DArray[2] 00000000 00000000 00000000 00000000
+srv c cs Texture2DArray[3] 00000000 00000000 00000000 00000000
+srv c cs Texture2DArray[4] 00000000 00000000 00000000 00000000
+srv c cs Texture2DArray[5] 00000002 00000002 00000001 00000001
+srv c cs Texture2DArray[6] 3e008081 3f70f0f1 3ec0c0c1 3f800000
+srv c cs Texture2DArray[7] 3e008081 3f70f0f1 3ec0c0c1 3f800000
+srv c ps Texture2D Load (0,0) ff60f020 (3,3) 00000000
+srv c ps Texture2D Sample (0,0) ff60f020 (3,3) ff60f020
+srv c ps Texture2DArray [0] (0,0) ff60f020 (3,3) 00000000
+srv c ps Texture2DArray [1] (0,0) 00000000 (3,3) 00000000
+srv 2DARRAY {mip 0+1, first 0, size 3}               hr=0x00000000
+srv d cs Texture2D[0] 3ea0a0a1 3ea0a0a1 3ea0a0a1 3f800000
+srv d cs Texture2D[1] 00000000 00000000 00000000 00000000
+srv d cs Texture2D[2] 00000004 00000004 00000001 00000000
+srv d cs Texture2D[3] 3e40c0c1 3ed0d0d1 3e909091 3f800000
+srv d cs Texture2DArray[0] 3ea0a0a1 3ea0a0a1 3ea0a0a1 3f800000
+srv d cs Texture2DArray[1] 3f40c0c1 3e40c0c1 3f109091 3f800000
+srv d cs Texture2DArray[2] 3ee0e0e1 3f008081 3e808081 3f800000
+srv d cs Texture2DArray[3] 00000000 00000000 00000000 00000000
+srv d cs Texture2DArray[4] 00000000 00000000 00000000 00000000
+srv d cs Texture2DArray[5] 00000004 00000004 00000003 00000001
+srv d cs Texture2DArray[6] 3e40c0c1 3ed0d0d1 3e909091 3f800000
+srv d cs Texture2DArray[7] 3ee0e0e1 3f008081 3e808081 3f800000
+srv d ps Texture2D Load (0,0) ff505050 (3,3) ff408010
+srv d ps Texture2D Sample (0,0) ff505050 (3,3) ff408010
+srv d ps Texture2DArray [0] (0,0) ff505050 (3,3) ff408010
+srv d ps Texture2DArray [1] (0,0) ff9030c0 (3,3) ff9030c0
+srv 2D {mip 0+2} of a one-slice texture              hr=0x00000000
+srv e cs Texture2D[0] 3f60e0e1 3f008081 3e808081 3f800000
+srv e cs Texture2D[1] 3f60e0e1 3f40c0c1 3e808081 3f800000
+srv e cs Texture2D[2] 00000004 00000004 00000002 00000000
+srv e cs Texture2D[3] 3f60e0e1 3f008081 3e808081 3f800000
+srv e cs Texture2DArray[0] 3f60e0e1 3f008081 3e808081 3f800000
+srv e cs Texture2DArray[1] 00000000 00000000 00000000 00000000
+srv e cs Texture2DArray[2] 00000000 00000000 00000000 00000000
+srv e cs Texture2DArray[3] 00000000 00000000 00000000 00000000
+srv e cs Texture2DArray[4] 3f60e0e1 3f40c0c1 3e808081 3f800000
+srv e cs Texture2DArray[5] 00000004 00000004 00000001 00000002
+srv e cs Texture2DArray[6] 3f60e0e1 3f008081 3e808081 3f800000
+srv e cs Texture2DArray[7] 3f60e0e1 3f008081 3e808081 3f800000
+srv e ps Texture2DArray [0] (0,0) ff4080e0 (3,3) ff4080e0
+srv 2DARRAY {mip 0+2, first 0, size 1} of one slice  hr=0x00000000
+srv f cs Texture2D[0] 3f60e0e1 3f008081 3e808081 3f800000
+srv f cs Texture2D[1] 3f60e0e1 3f40c0c1 3e808081 3f800000
+srv f cs Texture2D[2] 00000004 00000004 00000002 00000000
+srv f cs Texture2D[3] 3f60e0e1 3f008081 3e808081 3f800000
+srv 2D of a 3-slice texture                          hr=0x00000000
+srv g cs Texture2D[0] 3ea0a0a1 3ea0a0a1 3ea0a0a1 3f800000
+srv g cs Texture2D[1] 3d808081 3f40c0c1 3e808081 3f800000
+srv g cs Texture2D[2] 00000004 00000004 00000002 00000000
+srv g cs Texture2D[3] 3e40c0c1 3ed0d0d1 3e909091 3f800000
+srv g cs Texture2DArray[0] 3ea0a0a1 3ea0a0a1 3ea0a0a1 3f800000
+srv g cs Texture2DArray[1] 00000000 00000000 00000000 00000000
+srv g cs Texture2DArray[2] 00000000 00000000 00000000 00000000
+srv g cs Texture2DArray[3] 00000000 00000000 00000000 00000000
+srv g cs Texture2DArray[4] 3d808081 3f40c0c1 3e808081 3f800000
+srv g cs Texture2DArray[5] 00000004 00000004 00000001 00000002
+srv g cs Texture2DArray[6] 3e40c0c1 3ed0d0d1 3e909091 3f800000
+srv g cs Texture2DArray[7] 3e40c0c1 3ed0d0d1 3e909091 3f800000
+[dsv]
+dsv 2DARRAY {first 1, size 2}                        hr=0x00000000
+dsv cleared slice 0 mip 0: 3e800000 3e800000 3e800000 3e800000 | 3e800000 3e800000 3e800000 3e800000
+dsv cleared slice 1 mip 0: 3f000000 3f000000 3f000000 3f000000 | 3f000000 3f000000 3f000000 3f000000
+dsv cleared slice 2 mip 0: 3f400000 3f400000 3f400000 3f400000 | 3f400000 3f400000 3f400000 3f400000
+dsv drawn {first 1, size 1} slice 0 mip 0: 3e800000 3e800000 3e800000 3e800000 | 3e800000 3e800000 3e800000 3e800000
+dsv drawn {first 1, size 1} slice 1 mip 0: 3e000000 3e000000 3e000000 3e000000 | 3e000000 3e000000 3e000000 3e000000
+dsv drawn {first 1, size 1} slice 2 mip 0: 3f400000 3f400000 3f400000 3f400000 | 3f400000 3f400000 3f400000 3f400000
+dsv cleared {first 1, size 2} slice 0 mip 0: 3e800000 3e800000 3e800000 3e800000 | 3e800000 3e800000 3e800000 3e800000
+dsv cleared {first 1, size 2} slice 1 mip 0: 3d800000 3d800000 3d800000 3d800000 | 3d800000 3d800000 3d800000 3d800000
+dsv cleared {first 1, size 2} slice 2 mip 0: 3d800000 3d800000 3d800000 3d800000 | 3d800000 3d800000 3d800000 3d800000
+dsv drawn {first 1, size 2} slice 0 mip 0: 3e800000 3e800000 3e800000 3e800000 | 3e800000 3e800000 3e800000 3e800000
+dsv drawn {first 1, size 2} slice 1 mip 0: 3d800000 3d800000 3d800000 3d800000 | 3d800000 3d800000 3d800000 3d800000
+dsv drawn {first 1, size 2} slice 2 mip 0: 3f800000 3f800000 3f800000 3f800000 | 3f800000 3f800000 3f800000 3f800000
+[uav]
+uav 2DARRAY {first 1, size 2} RWTexture2DArray       hr=0x00000000
+uav 2DARRAY {first 1, size 2} RWTexture2DArray dims 4 4 2
+uav 2DARRAY {first 1, size 2} RWTexture2DArray slice 0 mip 0: 11110000 11110001 11110002 11110003 | 11110004 11110005 11110006 11110007
+uav 2DARRAY {first 1, size 2} RWTexture2DArray slice 1 mip 0: a0000000 a0000001 a0000002 a0000003 | a0000100 a0000101 a0000102 a0000103
+uav 2DARRAY {first 1, size 2} RWTexture2DArray slice 2 mip 0: a0010000 a0010001 a0010002 a0010003 | a0010100 a0010101 a0010102 a0010103
+uav 2DARRAY {first 2, size 1} RWTexture2DArray       hr=0x00000000
+uav 2DARRAY {first 2, size 1} RWTexture2DArray dims 4 4 1
+uav 2DARRAY {first 2, size 1} RWTexture2DArray slice 0 mip 0: 11110000 11110001 11110002 11110003 | 11110004 11110005 11110006 11110007
+uav 2DARRAY {first 2, size 1} RWTexture2DArray slice 1 mip 0: 22220000 22220001 22220002 22220003 | 22220004 22220005 22220006 22220007
+uav 2DARRAY {first 2, size 1} RWTexture2DArray slice 2 mip 0: a0000000 a0000001 a0000002 a0000003 | a0000100 a0000101 a0000102 a0000103
+uav 2DARRAY {first 1, size 1} RWTexture2D            hr=0x00000000
+uav 2DARRAY {first 1, size 1} RWTexture2D dims 4 4 0
+uav 2DARRAY {first 1, size 1} RWTexture2D slice 0 mip 0: 11110000 11110001 11110002 11110003 | 11110004 11110005 11110006 11110007
+uav 2DARRAY {first 1, size 1} RWTexture2D slice 1 mip 0: b0000000 b0000001 b0000002 b0000003 | b0000100 b0000101 b0000102 b0000103
+uav 2DARRAY {first 1, size 1} RWTexture2D slice 2 mip 0: 33330000 33330001 33330002 33330003 | 33330004 33330005 33330006 33330007
+done

@@ -1,0 +1,14 @@
+tex hr=0x00000000
+dtex hr=0x00000000
+buf hr=0x00000000
+uav tex NULL desc hr=0x8007000e
+dsv tex NULL desc hr=0x8007000e
+srv buf NULL desc hr=0x8007000e
+uav buf NULL desc hr=0x8007000e
+srv tex NULL desc hr=0x8007000e
+rtv tex NULL desc hr=0x8007000e
+uav tex NULL desc ppView NULL hr=0x00000001
+srv tex NULL desc ppView NULL hr=0x00000001
+done
+#
+# Above: winoracle (WARP, Windows 11) x64 at FEATURE_LEVEL_11_0, verbatim.

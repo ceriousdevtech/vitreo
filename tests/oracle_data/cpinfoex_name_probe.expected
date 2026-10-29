@@ -1,0 +1,6 @@
+cp=0 ok=1 err=0 CodePage=1252 MaxCharSize=1 Name=1252  (ANSI - Latin I)
+cp=1 ok=1 err=57005 CodePage=437 MaxCharSize=1 Name=437   (OEM - United States)
+cp=1252 ok=1 err=57005 CodePage=1252 MaxCharSize=1 Name=1252  (ANSI - Latin I)
+cp=437 ok=1 err=57005 CodePage=437 MaxCharSize=1 Name=437   (OEM - United States)
+cp=65001 ok=1 err=57005 CodePage=65001 MaxCharSize=4 Name=65001 (UTF-8)
+cp=10000 ok=1 err=57005 CodePage=10000 MaxCharSize=1 Name=10000 (MAC - Roman)

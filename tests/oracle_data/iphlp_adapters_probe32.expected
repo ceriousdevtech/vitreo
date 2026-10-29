@@ -1,0 +1,339 @@
+sizeof.IP_ADDR_STRING=40
+offset.IP_ADDR_STRING.IpAddress=4
+offset.IP_ADDR_STRING.IpMask=20
+offset.IP_ADDR_STRING.Context=36
+sizeof.IP_ADAPTER_INFO=640
+offset.IP_ADAPTER_INFO.ComboIndex=4
+offset.IP_ADAPTER_INFO.AdapterName=8
+offset.IP_ADAPTER_INFO.Description=268
+offset.IP_ADAPTER_INFO.AddressLength=400
+offset.IP_ADAPTER_INFO.Address=404
+offset.IP_ADAPTER_INFO.Index=412
+offset.IP_ADAPTER_INFO.Type=416
+offset.IP_ADAPTER_INFO.DhcpEnabled=420
+offset.IP_ADAPTER_INFO.CurrentIpAddress=424
+offset.IP_ADAPTER_INFO.IpAddressList=428
+offset.IP_ADAPTER_INFO.GatewayList=468
+offset.IP_ADAPTER_INFO.DhcpServer=508
+offset.IP_ADAPTER_INFO.HaveWins=548
+offset.IP_ADAPTER_INFO.PrimaryWinsServer=552
+offset.IP_ADAPTER_INFO.SecondaryWinsServer=592
+offset.IP_ADAPTER_INFO.LeaseObtained=632
+offset.IP_ADAPTER_INFO.LeaseExpires=636
+sizeof.IP_ADAPTER_ADDRESSES_LH=376
+offset.IP_ADAPTER_ADDRESSES_LH.IfIndex=4
+offset.IP_ADAPTER_ADDRESSES_LH.Next=8
+offset.IP_ADAPTER_ADDRESSES_LH.AdapterName=12
+offset.IP_ADAPTER_ADDRESSES_LH.FirstUnicastAddress=16
+offset.IP_ADAPTER_ADDRESSES_LH.FirstAnycastAddress=20
+offset.IP_ADAPTER_ADDRESSES_LH.FirstMulticastAddress=24
+offset.IP_ADAPTER_ADDRESSES_LH.FirstDnsServerAddress=28
+offset.IP_ADAPTER_ADDRESSES_LH.DnsSuffix=32
+offset.IP_ADAPTER_ADDRESSES_LH.Description=36
+offset.IP_ADAPTER_ADDRESSES_LH.FriendlyName=40
+offset.IP_ADAPTER_ADDRESSES_LH.PhysicalAddress=44
+offset.IP_ADAPTER_ADDRESSES_LH.PhysicalAddressLength=52
+offset.IP_ADAPTER_ADDRESSES_LH.Flags=56
+offset.IP_ADAPTER_ADDRESSES_LH.Mtu=60
+offset.IP_ADAPTER_ADDRESSES_LH.IfType=64
+offset.IP_ADAPTER_ADDRESSES_LH.OperStatus=68
+offset.IP_ADAPTER_ADDRESSES_LH.Ipv6IfIndex=72
+offset.IP_ADAPTER_ADDRESSES_LH.ZoneIndices=76
+offset.IP_ADAPTER_ADDRESSES_LH.FirstPrefix=140
+offset.IP_ADAPTER_ADDRESSES_LH.TransmitLinkSpeed=144
+offset.IP_ADAPTER_ADDRESSES_LH.ReceiveLinkSpeed=152
+offset.IP_ADAPTER_ADDRESSES_LH.FirstWinsServerAddress=160
+offset.IP_ADAPTER_ADDRESSES_LH.FirstGatewayAddress=164
+offset.IP_ADAPTER_ADDRESSES_LH.Ipv4Metric=168
+offset.IP_ADAPTER_ADDRESSES_LH.Ipv6Metric=172
+offset.IP_ADAPTER_ADDRESSES_LH.Luid=176
+offset.IP_ADAPTER_ADDRESSES_LH.Dhcpv4Server=184
+offset.IP_ADAPTER_ADDRESSES_LH.CompartmentId=192
+offset.IP_ADAPTER_ADDRESSES_LH.NetworkGuid=196
+offset.IP_ADAPTER_ADDRESSES_LH.ConnectionType=212
+offset.IP_ADAPTER_ADDRESSES_LH.TunnelType=216
+offset.IP_ADAPTER_ADDRESSES_LH.Dhcpv6Server=220
+offset.IP_ADAPTER_ADDRESSES_LH.Dhcpv6ClientDuid=228
+offset.IP_ADAPTER_ADDRESSES_LH.Dhcpv6ClientDuidLength=360
+offset.IP_ADAPTER_ADDRESSES_LH.Dhcpv6Iaid=364
+offset.IP_ADAPTER_ADDRESSES_LH.FirstDnsSuffix=368
+sizeof.IP_ADAPTER_UNICAST_ADDRESS_LH=48
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.Flags=4
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.Next=8
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.Address=12
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.PrefixOrigin=20
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.SuffixOrigin=24
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.DadState=28
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.ValidLifetime=32
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.PreferredLifetime=36
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.LeaseLifetime=40
+offset.IP_ADAPTER_UNICAST_ADDRESS_LH.OnLinkPrefixLength=44
+sizeof.IP_ADAPTER_ANYCAST_ADDRESS_XP=24
+offset.IP_ADAPTER_ANYCAST_ADDRESS_XP.Next=8
+offset.IP_ADAPTER_ANYCAST_ADDRESS_XP.Address=12
+sizeof.IP_ADAPTER_MULTICAST_ADDRESS_XP=24
+offset.IP_ADAPTER_MULTICAST_ADDRESS_XP.Address=12
+sizeof.IP_ADAPTER_DNS_SERVER_ADDRESS_XP=24
+offset.IP_ADAPTER_DNS_SERVER_ADDRESS_XP.Address=12
+sizeof.IP_ADAPTER_PREFIX_XP=24
+offset.IP_ADAPTER_PREFIX_XP.Address=12
+offset.IP_ADAPTER_PREFIX_XP.PrefixLength=20
+sizeof.IP_ADAPTER_GATEWAY_ADDRESS_LH=24
+offset.IP_ADAPTER_GATEWAY_ADDRESS_LH.Address=12
+sizeof.IP_ADAPTER_WINS_SERVER_ADDRESS_LH=24
+offset.IP_ADAPTER_WINS_SERVER_ADDRESS_LH.Address=12
+sizeof.IP_ADAPTER_DNS_SUFFIX=516
+offset.IP_ADAPTER_DNS_SUFFIX.String=4
+sizeof.SOCKET_ADDRESS=8
+offset.SOCKET_ADDRESS.iSockaddrLength=4
+sizeof.IP_ADAPTER_INDEX_MAP=260
+offset.IP_ADAPTER_INDEX_MAP.Name=4
+sizeof.IP_INTERFACE_INFO=264
+offset.IP_INTERFACE_INFO.Adapter=4
+sizeof.MIB_IF_TABLE2=1360
+offset.MIB_IF_TABLE2.Table=8
+sizeof.MIB_TCPROW_OWNER_PID=24
+sizeof.MIB_TCPTABLE_OWNER_PID=28
+offset.MIB_TCPTABLE_OWNER_PID.table=4
+sizeof.MIB_TCP6ROW_OWNER_PID=56
+offset.MIB_TCP6ROW_OWNER_PID.dwLocalScopeId=16
+offset.MIB_TCP6ROW_OWNER_PID.dwLocalPort=20
+offset.MIB_TCP6ROW_OWNER_PID.ucRemoteAddr=24
+offset.MIB_TCP6ROW_OWNER_PID.dwRemoteScopeId=40
+offset.MIB_TCP6ROW_OWNER_PID.dwRemotePort=44
+offset.MIB_TCP6ROW_OWNER_PID.dwState=48
+offset.MIB_TCP6ROW_OWNER_PID.dwOwningPid=52
+sizeof.MIB_TCP6TABLE_OWNER_PID=60
+offset.MIB_TCP6TABLE_OWNER_PID.table=4
+sizeof.MIB_TCPROW_OWNER_MODULE=160
+sizeof.MIB_TCPTABLE_OWNER_MODULE=168
+offset.MIB_TCPTABLE_OWNER_MODULE.table=8
+sizeof.MIB_TCP6ROW_OWNER_MODULE=192
+sizeof.MIB_TCP6TABLE_OWNER_MODULE=200
+offset.MIB_TCP6TABLE_OWNER_MODULE.table=8
+sizeof.MIB_TCPROW=20
+sizeof.MIB_TCPTABLE=24
+offset.MIB_TCPTABLE.table=4
+sizeof.FIXED_INFO=584
+offset.FIXED_INFO.DomainName=132
+offset.FIXED_INFO.CurrentDnsServer=264
+offset.FIXED_INFO.DnsServerList=268
+offset.FIXED_INFO.NodeType=308
+offset.FIXED_INFO.ScopeId=312
+offset.FIXED_INFO.EnableRouting=572
+offset.FIXED_INFO.EnableProxy=576
+offset.FIXED_INFO.EnableDns=580
+const.ERROR_BUFFER_OVERFLOW=111
+const.ERROR_INSUFFICIENT_BUFFER=122
+const.ERROR_INVALID_PARAMETER=87
+const.ERROR_NO_DATA=232
+const.ERROR_NOT_SUPPORTED=50
+const.ERROR_FILE_NOT_FOUND=2
+const.ERROR_NOT_FOUND=1168
+const.GAA_FLAG_SKIP_UNICAST=1
+const.GAA_FLAG_SKIP_ANYCAST=2
+const.GAA_FLAG_SKIP_MULTICAST=4
+const.GAA_FLAG_SKIP_DNS_SERVER=8
+const.GAA_FLAG_INCLUDE_PREFIX=16
+const.GAA_FLAG_SKIP_FRIENDLY_NAME=32
+const.GAA_FLAG_INCLUDE_WINS_INFO=64
+const.GAA_FLAG_INCLUDE_GATEWAYS=128
+const.GAA_FLAG_INCLUDE_ALL_INTERFACES=256
+const.GAA_FLAG_INCLUDE_ALL_COMPARTMENTS=512
+const.GAA_FLAG_INCLUDE_TUNNEL_BINDINGORDER=1024
+const.IP_ADAPTER_DDNS_ENABLED=1
+const.IP_ADAPTER_REGISTER_ADAPTER_SUFFIX=2
+const.IP_ADAPTER_DHCP_ENABLED=4
+const.IP_ADAPTER_RECEIVE_ONLY=8
+const.IP_ADAPTER_NO_MULTICAST=16
+const.IP_ADAPTER_IPV6_OTHER_STATEFUL_CONFIG=32
+const.IP_ADAPTER_NETBIOS_OVER_TCPIP_ENABLED=64
+const.IP_ADAPTER_IPV4_ENABLED=128
+const.IP_ADAPTER_IPV6_ENABLED=256
+const.IP_ADAPTER_IPV6_MANAGE_ADDRESS_CONFIG=512
+const.IP_ADAPTER_ADDRESS_DNS_ELIGIBLE=1
+const.IP_ADAPTER_ADDRESS_TRANSIENT=2
+const.IpPrefixOriginOther=0
+const.IpPrefixOriginManual=1
+const.IpPrefixOriginWellKnown=2
+const.IpPrefixOriginDhcp=3
+const.IpPrefixOriginRouterAdvertisement=4
+const.IpSuffixOriginOther=0
+const.IpSuffixOriginManual=1
+const.IpSuffixOriginWellKnown=2
+const.IpSuffixOriginDhcp=3
+const.IpSuffixOriginLinkLayerAddress=4
+const.IpSuffixOriginRandom=5
+const.IpDadStateInvalid=0
+const.IpDadStateTentative=1
+const.IpDadStateDuplicate=2
+const.IpDadStateDeprecated=3
+const.IpDadStatePreferred=4
+const.IfOperStatusUp=1
+const.IfOperStatusDown=2
+const.IfOperStatusLowerLayerDown=7
+const.IF_TYPE_OTHER=1
+const.IF_TYPE_ETHERNET_CSMACD=6
+const.IF_TYPE_PPP=23
+const.IF_TYPE_SOFTWARE_LOOPBACK=24
+const.IF_TYPE_IEEE80211=71
+const.IF_TYPE_TUNNEL=131
+const.IF_TYPE_IEEE1394=144
+const.MIB_IF_TYPE_ETHERNET=6
+const.MIB_IF_TYPE_LOOPBACK=24
+const.NET_IF_ACCESS_LOOPBACK=1
+const.NET_IF_ACCESS_BROADCAST=2
+const.NET_IF_ACCESS_POINT_TO_POINT=3
+const.NET_IF_ACCESS_POINT_TO_MULTI_POINT=4
+const.NET_IF_CONNECTION_DEDICATED=1
+const.NET_IF_ADMIN_STATUS_UP=1
+const.NET_IF_ADMIN_STATUS_DOWN=2
+const.MediaConnectStateUnknown=0
+const.MediaConnectStateConnected=1
+const.MediaConnectStateDisconnected=2
+const.NET_IF_DIRECTION_SENDRECEIVE=0
+const.TUNNEL_TYPE_NONE=0
+const.TUNNEL_TYPE_OTHER=1
+const.TUNNEL_TYPE_DIRECT=2
+const.TUNNEL_TYPE_6TO4=11
+const.NdisMedium802_3=0
+const.NdisMediumWan=3
+const.NdisMediumTunnel=15
+const.NdisMediumNative802_11=16
+const.NdisMediumLoopback=17
+const.NdisMediumIP=19
+const.NdisPhysicalMediumUnspecified=0
+const.NdisPhysicalMediumNative802_11=9
+const.NdisPhysicalMedium802_3=14
+const.MAX_ADAPTER_NAME=128
+const.MAX_ADAPTER_NAME_LENGTH=256
+const.MAX_ADAPTER_DESCRIPTION_LENGTH=128
+const.MAX_ADAPTER_ADDRESS_LENGTH=8
+const.MAX_DHCPV6_DUID_LENGTH=130
+const.MAX_DNS_SUFFIX_STRING_LENGTH=256
+const.IF_MAX_STRING_SIZE=256
+const.IF_MAX_PHYS_ADDRESS_LENGTH=32
+const.ScopeLevelInterface=1
+const.ScopeLevelLink=2
+const.ScopeLevelSubnet=3
+const.ScopeLevelAdmin=4
+const.ScopeLevelSite=5
+const.ScopeLevelOrganization=8
+const.ScopeLevelGlobal=14
+gaa-null-size: rc=87 le=0xdead
+gaa-bad-family: family=1 rc=87 size=0x1234 le=0xdead
+gaa-bad-family: family=3 rc=87 size=0x1234 le=0xdead
+gaa-bad-family: family=17 rc=87 size=0x1234 le=0xdead
+gaa-bad-family: family=24 rc=87 size=0x1234 le=0xdead
+gaa-bad-family: family=65535 rc=87 size=0x1234 le=0xdead
+gaa-size-query: family=0 rc=111 size_nonzero=1 le=0x0 tiny_rc=111 tiny_size_same=1 exact_rc=0 exact_size_same=1 exact_le=0x0 pointers_inside=1 reserved_nonnull_rc=0
+gaa-size-query: family=2 rc=111 size_nonzero=1 le=0x0 tiny_rc=111 tiny_size_same=1 exact_rc=0 exact_size_same=1 exact_le=0x0 pointers_inside=1 reserved_nonnull_rc=0
+gaa-size-query: family=23 rc=111 size_nonzero=1 le=0x0 tiny_rc=111 tiny_size_same=1 exact_rc=0 exact_size_same=1 exact_le=0x0 pointers_inside=1 reserved_nonnull_rc=0
+gaa-full: rc=0
+gaa-order: loopback_present=1 loopback_last=1 primary_present=1 primary_first=1
+gaa-invariants: names_guid=1 luid_iftype_matches=1 length_is_lh=1 ipv6_enabled_has_v6index=1 unicast_length_is_lh=1 dad_known=1 v4_onlink_prefix_valid=1 v4_nonloop_dns_eligible=1 compartment_1=1 zone1_is_index=1
+gaa-identity: guid_to_luid=1 luid_to_guid=1 luid_to_index=1 index_to_luid=1
+gaa-loopback: Length=376 IfIndex=1 Ipv6IfIndex=1 name_is_guid=1 FriendlyName="Loopback Pseudo-Interface 1" Description="Software Loopback Interface 1" DnsSuffix=""
+gaa-loopback: PhysicalAddressLength=0 Flags=0x181 Mtu=0xffffffff IfType=24 OperStatus=1 TransmitLinkSpeed=1073741824 ReceiveLinkSpeed=1073741824
+gaa-loopback: Ipv4Metric=75 Ipv6Metric=75 Luid.IfType=0x18 luid_index_is_nonzero=0 Luid.Reserved=0x0 CompartmentId=1 ConnectionType=1 TunnelType=0 NetworkGuidZero=0
+gaa-loopback: ZoneIndices=1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1 Dhcpv4Server=(null) Dhcpv6Server=(null) Dhcpv6ClientDuidLength=0 Dhcpv6IaidNonzero=0 FirstDnsSuffixNull=1
+gaa-loopback.unicast: i=0 Length=48 Flags=0x0 PrefixOrigin=2 SuffixOrigin=2 DadState=4 ValidLifetime=0xffffffff PreferredLifetime=0xffffffff OnLinkPrefixLength=128 addr=0000:0000:0000:0000:0000:0000:0000:0001%scope0/port0/flow0/len28
+gaa-loopback.unicast: i=1 Length=48 Flags=0x0 PrefixOrigin=2 SuffixOrigin=2 DadState=4 ValidLifetime=0xffffffff PreferredLifetime=0xffffffff OnLinkPrefixLength=8 addr=127.0.0.1/port0/len16
+gaa-loopback.multicast: nonempty=1 node_shape=1
+gaa-loopback.dns: i=0 Length=24 Flags=0x0 addr=fec0:0000:0000:ffff:0000:0000:0000:0001%scope1/port0/flow0/len28
+gaa-loopback.dns: i=1 Length=24 Flags=0x0 addr=fec0:0000:0000:ffff:0000:0000:0000:0002%scope1/port0/flow0/len28
+gaa-loopback.dns: i=2 Length=24 Flags=0x0 addr=fec0:0000:0000:ffff:0000:0000:0000:0003%scope1/port0/flow0/len28
+gaa-loopback.prefix: i=0 Length=24 Flags=0x0 PrefixLength=128 addr=0000:0000:0000:0000:0000:0000:0000:0001%scope0/port0/flow0/len28
+gaa-loopback.prefix: i=1 Length=24 Flags=0x0 PrefixLength=8 addr=ff00:0000:0000:0000:0000:0000:0000:0000%scope1/port0/flow0/len28
+gaa-loopback.prefix: i=2 Length=24 Flags=0x0 PrefixLength=8 addr=127.0.0.0/port0/len16
+gaa-loopback.prefix: i=3 Length=24 Flags=0x0 PrefixLength=32 addr=127.0.0.1/port0/len16
+gaa-loopback.prefix: i=4 Length=24 Flags=0x0 PrefixLength=32 addr=127.255.255.255/port0/len16
+gaa-loopback.prefix: i=5 Length=24 Flags=0x0 PrefixLength=4 addr=224.0.0.0/port0/len16
+gaa-loopback.prefix: i=6 Length=24 Flags=0x0 PrefixLength=32 addr=255.255.255.255/port0/len16
+gaa-loopback-counts: v4=1 v6=1
+gaa-primary: Length=376 name_is_guid=1 friendly_nonempty=1 description_nonempty=1 mac_len=6 oper_up=1 ipv4_enabled=1 has_v4=1 has_dns=1 dhcp_flag_matches_server=1 iftype_in_luid=1 speed_nonzero=1
+gaa-primary-v4: Length=48 Flags=0x1 DadState=4 sockaddr_len=16 origin_matches_dhcp=1 lifetime_matches_dhcp=1 lease_lifetime_nonzero=1 preferred_eq_valid=1 gateway_onlink=1 prefix_subnet=1 prefix_host=1 prefix_broadcast=1
+gaa-family: family=2 rc=0 unicast_other_family=0 prefix_other_family=0 gateway_other_family=0 loopback_present=1 lo_v4=1 lo_v6=0 lo_IfIndex=1 lo_Ipv6IfIndex=1 lo_Flags=0x181 lo_dns=0 lo_prefixes=5
+gaa-v4-loopback.unicast: i=0 Length=48 Flags=0x0 PrefixOrigin=2 SuffixOrigin=2 DadState=4 ValidLifetime=0xffffffff PreferredLifetime=0xffffffff OnLinkPrefixLength=8 addr=127.0.0.1/port0/len16
+gaa-v4-loopback.prefix: i=0 Length=24 Flags=0x0 PrefixLength=8 addr=127.0.0.0/port0/len16
+gaa-v4-loopback.prefix: i=1 Length=24 Flags=0x0 PrefixLength=32 addr=127.0.0.1/port0/len16
+gaa-v4-loopback.prefix: i=2 Length=24 Flags=0x0 PrefixLength=32 addr=127.255.255.255/port0/len16
+gaa-v4-loopback.prefix: i=3 Length=24 Flags=0x0 PrefixLength=4 addr=224.0.0.0/port0/len16
+gaa-v4-loopback.prefix: i=4 Length=24 Flags=0x0 PrefixLength=32 addr=255.255.255.255/port0/len16
+gaa-v4-primary: dns=1
+gaa-family: family=23 rc=0 unicast_other_family=0 prefix_other_family=0 gateway_other_family=0 loopback_present=1 lo_v4=0 lo_v6=1 lo_IfIndex=1 lo_Ipv6IfIndex=1 lo_Flags=0x181 lo_dns=3 lo_prefixes=2
+gaa-v6-loopback.unicast: i=0 Length=48 Flags=0x0 PrefixOrigin=2 SuffixOrigin=2 DadState=4 ValidLifetime=0xffffffff PreferredLifetime=0xffffffff OnLinkPrefixLength=128 addr=0000:0000:0000:0000:0000:0000:0000:0001%scope0/port0/flow0/len28
+gaa-v6-loopback.dns: i=0 Length=24 Flags=0x0 addr=fec0:0000:0000:ffff:0000:0000:0000:0001%scope1/port0/flow0/len28
+gaa-v6-loopback.dns: i=1 Length=24 Flags=0x0 addr=fec0:0000:0000:ffff:0000:0000:0000:0002%scope1/port0/flow0/len28
+gaa-v6-loopback.dns: i=2 Length=24 Flags=0x0 addr=fec0:0000:0000:ffff:0000:0000:0000:0003%scope1/port0/flow0/len28
+gaa-v6-loopback.prefix: i=0 Length=24 Flags=0x0 PrefixLength=128 addr=0000:0000:0000:0000:0000:0000:0000:0001%scope0/port0/flow0/len28
+gaa-v6-loopback.prefix: i=1 Length=24 Flags=0x0 PrefixLength=8 addr=ff00:0000:0000:0000:0000:0000:0000:0000%scope1/port0/flow0/len28
+gaa-v6-primary: dns=0 fec0=0
+gaa-flag: case="none" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="skip_unicast" rc=0 loopback=1 unicast=0 anycast=0 multicast_nonnull=1 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="skip_anycast" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="skip_multicast" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=0 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="skip_dns" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=0 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="skip_friendly" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="include_prefix" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=3 prefix=7 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="include_gateways" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="include_wins" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="all_compartments" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="tunnel_order" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=3 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gaa-flag: case="unknown_bits" rc=0 loopback=1 unicast=2 anycast=0 multicast_nonnull=1 dns=0 prefix=0 gateway=0 wins=0 friendly_null=0 friendly_len=27 dnssuffix_null=0 description_null=0
+gai-null-null: rc=87 le=0xdead
+gai-size-query: rc=111 multiple_of_struct=1 le=0x0
+gai-null-buffer-large-size: rc=111 size_set_to_need=1
+gai-short: rc=111 size_set_to_need=1
+gai-exact: rc=0 size_unchanged=1 le=0x0
+gai-relations: loopback_listed=0 every_entry_in_gaa=1 every_v4_gaa_adapter_listed=1 next_inside=1 name_eq_gaa=1 description_eq_gaa=1 mac_eq_gaa=1 type_eq_gaa_iftype=1 dhcp_eq_gaa_flag=1 combo_eq_index=1 current_ip_null=1
+gai-addresses: ip_list_eq_gaa_v4=1 mask_eq_onlink_prefix=1 ip_chain_len_eq=1 context_nonzero=1 gateway_eq_gaa=1 gateway_mask_all_ones=1 dhcp_server_eq_gaa=1 lease_consistent=1 have_wins_zero=1
+gai-empty-strings: wins_ip="" wins_mask="" wins2_ip="" wins_next_null=1 wins_context=0x0
+gii-null-null: rc=87 le=0xdead
+gii-size-query: rc=122 size_holds_one_map=1
+gii-null-buffer-large-size: rc=122 size_set_to_need=1
+gii-tiny: rc=122 size_set_to_need=1
+gii-exact: rc=0 size_unchanged=1 le=0x0
+gii-relations: size_covers_count=1 loopback_listed=0 name_is_tcpip_guid=1 indices_in_gai=1 count_eq_gai=1
+ift2: rc=0 table_nonnull=1 le=0x0 every_gaa_adapter_has_row=1 guid_eq_adaptername=1 index_and_entry2_agree=1 alias_eq_friendlyname=1 description_eq=1 mac_eq=1 type_eq=1 nonloop_mtu_eq=1 oper_eq=1 loopback_rows=1 loopback_row_mtu=1500
+ift2-primary: guid_ne_network_guid=1 admin_up=1 media_connected=1 hardware=1 connector=1 not_media_connected=0 access_broadcast=1 direction=0 in_octets_nonzero=1 out_octets_nonzero=1 speed_eq_gaa=1 outqlen=0
+name-loopback: rc=0 name="loopback_0" le=0xdead
+name-loopback-short: rc=8
+name-loopback-zero: rc=8
+name-to-luid-loopback: rc=0 eq=1 le=0xdead
+name-to-luid-missing: rc=123 luid=0x0 le=0xdead
+name-to-luid-missing-index: rc=0 luid=0x601869f000000
+if_nametoindex: loopback_0=1 missing=0
+if_indextoname: loopback="loopback_0" missing_null=1
+name-missing-luid: rc=0
+name-type: type=1 rc=0 name="other_5" back_rc=0 back_eq=1
+name-type: type=6 rc=0 name="ethernet_5" back_rc=0 back_eq=1
+name-type: type=23 rc=0 name="ppp_5" back_rc=0 back_eq=1
+name-type: type=24 rc=0 name="loopback_5" back_rc=0 back_eq=1
+name-type: type=53 rc=0 name="iftype53_5" back_rc=0 back_eq=1
+name-type: type=71 rc=0 name="wireless_5" back_rc=0 back_eq=1
+name-type: type=131 rc=0 name="tunnel_5" back_rc=0 back_eq=1
+name-type: type=144 rc=0 name="ieee1394_5" back_rc=0 back_eq=1
+name-type: type=209 rc=0 name="iftype209_5" back_rc=0 back_eq=1
+name-type: type=243 rc=0 name="iftype243_5" back_rc=0 back_eq=1
+name-type: type=255 rc=0 name="iftype255_5" back_rc=0 back_eq=1
+name-type: type=2 rc=0 name="iftype2_5" back_rc=0 back_eq=1
+name-type: type=37 rc=0 name="atm_5" back_rc=0 back_eq=1
+name-type: type=63 rc=0 name="iftype63_5" back_rc=0 back_eq=1
+name-type: type=94 rc=0 name="iftype94_5" back_rc=0 back_eq=1
+name-type: type=237 rc=0 name="iftype237_5" back_rc=0 back_eq=1
+name-type: type=9 rc=0 name="tokenring_5" back_rc=0 back_eq=1
+name-type: type=15 rc=0 name="iftype15_5" back_rc=0 back_eq=1
+name-type: type=28 rc=0 name="iftype28_5" back_rc=0 back_eq=1
+name-type: type=244 rc=0 name="iftype244_5" back_rc=0 back_eq=1
+name-type: type=3 rc=0 name="iftype3_5" back_rc=0 back_eq=1
+name-type: type=7 rc=0 name="iftype7_5" back_rc=0 back_eq=1
+name-type: type=32 rc=0 name="iftype32_5" back_rc=0 back_eq=1
+name-roundtrip: all=1
+gnp-null-null: rc=87 le=0xdead
+gnp-size-query: rc=111 size_ge_struct=1 extra_multiple_of_addr_string=1 le=0x0
+gnp: rc=0 size_unchanged=1 le=0x0 host_eq_dns_hostname=1 current_dns_null=1 NodeType=8 ScopeId="" EnableRouting=0 EnableProxy=0 EnableDns=0 dns_dotted=1 dns_chain_inside=1 dns_mask0="255.255.255.255" dns_context_zero=0 size_matches_chain=1
+gnp-short: rc=111 size_set_to_need=1
+ifrow-loopback: rc=0 bDescr="Software Loopback Interface 1" dwDescrLen=30 dwType=24 dwMtu=1500 dwSpeed=1073741824 dwPhysAddrLen=0 dwAdminStatus=1 dwOperStatus=5 dwLastChange=0
+ifrow-loopback-name: is_tcpip_guid=1
+ifrow-primary: rc=0 name_is_tcpip_guid=1 descr_eq_gaa=1 descr_len_includes_nul=1 type_eq=1 mtu_eq=1 mac_len=6 admin=1 oper=5 speed_eq=1

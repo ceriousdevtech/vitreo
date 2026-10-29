@@ -1,0 +1,1187 @@
+== x64
+apiset_shcore_scaling_loads ret=00000001 err=00000000
+apiset_has_GetDpiForMonitor ret=00000001 err=00000000
+-- monitors
+edm_all ret=00000001 err=0000dead
+  count=1
+  first_dc_null ret=00000001 err=00000000
+  first_is_primary ret=00000001 err=00000000
+  first rect=0,0,1920,1080
+edm_callback_false ret=00000000 err=0000dead
+  count=1
+edm_clip_small ret=00000001 err=0000dead
+  count=1
+  rect rect=10,10,20,20
+edm_clip_empty ret=00000001 err=0000dead
+  count=0
+edm_clip_offscreen ret=00000001 err=0000dead
+  count=0
+edm_screen_dc ret=00000001 err=0000dead
+  count=1
+  dc_passed ret=00000000 err=00000000
+  rect rect=0,0,1920,1080
+edm_screen_dc_clip ret=00000001 err=0000dead
+  count=1
+  rect rect=10,10,20,20
+-- monitorfrom
+mfp_origin_flags_0 is_primary=1 null=0 err=0000dead
+mfp_far_flags_0 is_primary=0 null=1 err=0000dead
+mfp_origin_flags_1 is_primary=1 null=0 err=0000dead
+mfp_far_flags_1 is_primary=1 null=0 err=0000dead
+mfp_origin_flags_2 is_primary=1 null=0 err=0000dead
+mfp_far_flags_2 is_primary=1 null=0 err=0000dead
+mfp_origin_flags_3 is_primary=0 null=1 err=000003ec
+mfp_far_flags_3 is_primary=0 null=1 err=000003ec
+mfp_origin_flags_4 is_primary=0 null=1 err=000003ec
+mfp_far_flags_4 is_primary=0 null=1 err=000003ec
+mfp_origin_flags_5 is_primary=0 null=1 err=000003ec
+mfp_far_flags_5 is_primary=0 null=1 err=000003ec
+mfr_on_null_flag is_primary=1 err=0000dead
+mfr_far_null null=1 err=0000dead
+mfr_far_nearest is_primary=1 err=0000dead
+mfr_empty_on_screen_null_flag null=0 err=0000dead
+mfr_bad_flags null=1 err=000003ec
+mfw_window is_primary=1 err=0000dead
+mfw_far_nullflag null=1 err=0000dead
+mfw_far_nearest is_primary=1 err=0000dead
+mfw_minimized_nullflag is_primary=1 null=0 err=0000dead
+mfw_null_hwnd_nullflag null=1 err=0000dead
+mfw_null_hwnd_primary is_primary=1 err=0000dead
+mfw_invalid_hwnd_primary is_primary=0 null=1 err=00000578
+mfw_desktop_nullflag is_primary=1 err=0000dead
+mfw_bad_flags null=1 err=000003ec
+dpi_for_window ret=00000060 err=0000dead
+dpi_for_window_invalid ret=00000000 err=00000057
+dpi_for_window_null ret=00000000 err=00000057
+-- getmonitorinfo
+gmiw_cb_40 ret=1 err=0000dead cb_after=40 flags=00000001 dev_written=0
+gmiw_cb_104 ret=1 err=0000dead cb_after=104 flags=00000001 dev_written=1
+gmiw_cb_72 ret=0 err=00000057 cb_after=72
+gmiw_cb_0 ret=0 err=00000057 cb_after=0
+gmiw_cb_39 ret=0 err=00000057 cb_after=39
+gmiw_cb_41 ret=0 err=00000057 cb_after=41
+gmiw_cb_200 ret=0 err=00000057 cb_after=200
+  rcMonitor rect=0,0,1920,1080
+  rcWork rect=0,0,1920,1032
+  szDevice="\\.\DISPLAY49"
+gmia_ex ret=00000001 err=0000dead
+  szDeviceA="\\.\DISPLAY49"
+gmia_cb_104 ret=0 err=00000057
+gmiw_null_monitor ret=00000000 err=000005b5
+gmiw_bogus_monitor ret=00000000 err=000005b5
+gmia_bogus_monitor ret=00000000 err=000005b5
+-- displaydevices
+  dev0_name="\\.\DISPLAY49"
+  dev0_string_nonempty ret=00000001 err=00000000
+  dev0_state=04000005
+  dev0_id_prefix="RdpIdd_I"
+  dev0_key_prefix=""
+  adapters=16
+  attached=1
+edd_past_end ret=00000000 err=0000dead
+edd_cb_0 ret=00000001 err=0000dead
+edd_cb_424 ret=00000001 err=0000dead
+  cb424_name="\\.\DISPLAY49"
+edd_cb_100 ret=00000001 err=0000dead
+edd_monitor_of_display1 ret=00000001 err=0000dead
+  mon_name="\\.\DISPLAY49\Monitor0"
+  mon_state=00000003
+  mon_id_prefix="MONITOR\"
+edd_monitor_of_display1_iface ret=00000001 err=0000dead
+  iface_id_prefix ret=00000001 err=00000000
+edd_monitor_index_past_end ret=00000000 err=0000dead
+edd_unknown_device ret=00000000 err=0000dead
+edd_bad_flags ret=00000001 err=0000dead
+edda ret=00000001 err=0000dead
+  a_name="\\.\DISPLAY49"
+  a_cb=424
+-- displaysettings
+eds_current ret=00000001 err=0000dead
+  fields=207c00a0
+  size=188
+  bits=32
+  w=1920
+  h=1080
+  freq_nonzero ret=00000001 err=00000000
+  orientation=0
+  pos_x=0
+  pos_y=0
+  display_flags=00000000
+  fixed_output=0
+  spec=00000401
+  devicename="CDD"
+eds_registry ret=00000001 err=0000dead
+  fields=207c00a0
+  mode0_fields=007c0080
+  mode0_bits=32
+  modes_nonzero=1 end_err=0000dead
+eds_dmsize_0 ret=00000001 err=0000dead
+  size_after=188
+eds_display1 ret=00000001 err=0000dead
+eds_display99 ret=00000000 err=0000dead
+eds_monitor_name ret=00000000 err=0000dead
+edsex_current_raw ret=00000001 err=0000dead
+edsex_bad_flags ret=00000001 err=0000dead
+edsa_current ret=00000001 err=0000dead
+  a_size=124
+  a_devicename="CDD"
+-- changedisplaysettings
+cds_test_current ret=00000000 err=0000dead
+cds_test_bad_mode ret=00000000 err=0000dead
+cds_test_no_fields ret=00000000 err=0000dead
+cds_test_bad_flags ret=fffffffc err=0000dead
+cds_test_unknown_device ret=fffffffb err=0000dead
+cds_test_small_dmsize ret=fffffffe err=0000dead
+cds_restore_registry ret=00000000 err=0000dead
+cds_w_restore_registry ret=00000000 err=0000dead
+cds_a_restore_registry ret=00000000 err=0000dead
+cds_test_null_mode ret=00000000 err=0000dead
+-- ccd
+gdcbs_active ret=00000000 err=0000dead
+  np_nonzero=1 nm_ge_2np=1
+gdcbs_all ret=00000000 err=0000dead
+  all_ge_active=1
+gdcbs_flags_0 ret=00000057 err=0000dead
+gdcbs_flags_bad ret=00000057 err=0000dead
+gdcbs_both ret=00000057 err=0000dead
+gdcbs_null ret=00000057 err=0000dead
+gdcbs_database ret=00000000 err=0000dead
+qdc_active ret=00000000 err=0000dead
+  paths=1
+  modes=2
+  path0_flags=00000001
+  src_status=00000001
+  tgt_status=00000001
+  tgt_available=1
+  tgt_rotation=1
+  tgt_scaling=1
+  tgt_scanline=1
+  tgt_refresh_nonzero ret=00000001 err=00000000
+  src_mode_idx=1
+  tgt_mode_idx=0
+  srcmode_type=1
+  srcmode_w=1920
+  srcmode_fmt=4
+  srcmode_id_matches ret=00000001 err=00000000
+  tgtmode_type=2
+  tgtmode_scanline=1
+  tgtmode_std=000100ff
+qdc_zero_counts ret=00000057 err=0000dead
+qdc_mode_too_small ret=0000007a err=0000dead
+qdc_database_null_topology ret=00000057 err=000003e6
+qdc_active_with_topology ret=00000057 err=0000dead
+qdc_null_paths ret=00000057 err=000003e6
+dcgdi_source_name ret=00000000 err=0000dead
+  gdi_name="\\.\DISPLAY49"
+  size=84
+dcgdi_target_name ret=00000000 err=0000dead
+  flags=00000002
+  tech=-1
+  friendly_nonempty ret=00000000 err=00000000
+  path_display_prefix ret=00000001 err=00000000
+  size=420
+dcgdi_adapter_name ret=00000000 err=0000dead
+  adapter_path_nonempty ret=00000001 err=00000000
+dcgdi_preferred_mode ret=00000000 err=0000dead
+  pref_w_nonzero ret=00000001 err=00000000
+dcgdi_advanced_color ret=00000000 err=0000dead
+  value=00000001
+  bits=8
+dcgdi_sdr_white ret=00000000 err=0000dead
+  level=1000
+dcgdi_bad_size ret=00000057 err=0000dead
+dcgdi_bad_type ret=00000057 err=0000dead
+dcgdi_bad_id ret=0000001f err=0000dead
+dcgdi_bad_adapter ret=0000001f err=0000dead
+dcgdi_null ret=0000001f err=000003e6
+dcsdi_bad_size ret=00000057 err=0000dead
+dcsdi_get_type ret=00000057 err=0000dead
+dcsdi_null ret=0000001f err=000003e6
+-- metrics
+sm_0=1920
+sm_1=1080
+sm_2=17
+sm_3=17
+sm_4=23
+sm_5=1
+sm_6=1
+sm_7=3
+sm_8=3
+sm_9=17
+sm_10=17
+sm_11=32
+sm_12=32
+sm_13=32
+sm_14=32
+sm_15=20
+sm_16=1920
+sm_17=1009
+sm_18=0
+sm_19=1
+sm_20=17
+sm_21=17
+sm_22=0
+sm_23=0
+sm_24=0
+sm_25=0
+sm_26=0
+sm_27=0
+sm_28=136
+sm_29=39
+sm_30=36
+sm_31=22
+sm_32=8
+sm_33=8
+sm_34=136
+sm_35=39
+sm_36=4
+sm_37=4
+sm_38=75
+sm_39=75
+sm_40=0
+sm_41=0
+sm_42=0
+sm_43=2
+sm_44=0
+sm_45=2
+sm_46=2
+sm_47=160
+sm_48=28
+sm_49=16
+sm_50=16
+sm_51=23
+sm_52=22
+sm_53=22
+sm_54=19
+sm_55=19
+sm_56=8
+sm_57=160
+sm_58=28
+sm_59=1940
+sm_60=1100
+sm_61=1936
+sm_62=1048
+sm_63=3
+sm_64=0
+sm_65=0
+sm_66=0
+sm_67=0
+sm_68=4
+sm_69=4
+sm_70=0
+sm_71=15
+sm_72=15
+sm_73=0
+sm_74=0
+sm_75=0
+sm_76=0
+sm_77=0
+sm_78=1920
+sm_79=1080
+sm_80=1
+sm_81=1
+sm_82=1
+sm_83=1
+sm_84=1
+sm_85=0
+sm_86=0
+sm_87=0 err=00000002
+sm_88=0
+sm_89=0
+sm_90=0
+sm_91=0
+sm_92=0
+sm_93=7428
+sm_94=0
+sm_95=0
+sm_96=0
+sm_97=0 err=00000057
+sm_98=0 err=00000057
+sm_99=0 err=00000057
+sm_100=0 err=00000057
+sm_x00001000=1 err=0000dead
+sm_x00001001=0 err=00000057
+sm_x00002000=0 err=0000dead
+sm_x00002001=0 err=0000dead
+sm_x00002002=0 err=0000dead
+sm_x00002003=0 err=0000dead
+sm_x00002004=0 err=0000dead
+sm_xffffffff=0 err=00000057
+sm_x000003e8=0 err=00000057
+smfordpi_96: 23 17 4 4 32 16 20 2 136 1920
+smfordpi_120: 29 21 4 5 40 20 25 2 166 1920
+smfordpi_144: 34 26 5 6 48 24 30 2 198 1920
+smfordpi_192: 45 34 5 8 64 32 39 2 258 1920
+smfordpi_0: 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057
+smfd_0: 1920 1920 1920 1920 1920 1920 1920 1920 1920
+smfd_1: 1080 1080 1080 1080 1080 1080 1080 1080 1080
+smfd_2: 17 19 21 26 30 34 43 51 68
+smfd_3: 17 19 21 26 30 34 43 51 68
+smfd_4: 23 26 29 34 40 45 56 67 89
+smfd_5: 1 1 1 1 1 1 1 1 1
+smfd_6: 1 1 1 1 1 1 1 1 1
+smfd_7: 3 3 3 3 3 3 3 3 3
+smfd_8: 3 3 3 3 3 3 3 3 3
+smfd_9: 17 19 21 26 30 34 43 51 68
+smfd_10: 17 19 21 26 30 34 43 51 68
+smfd_11: 32 36 40 48 56 64 80 96 128
+smfd_12: 32 36 40 48 56 64 80 96 128
+smfd_13: 32 32 32 48 48 64 64 96 128
+smfd_14: 32 32 32 48 48 64 64 96 128
+smfd_15: 20 22 25 30 34 39 49 58 77
+smfd_16: 1920 1920 1920 1920 1920 1920 1920 1920 1920
+smfd_17: 1009 1009 1009 1009 1009 1009 1009 1009 1009
+smfd_18: 0 0 0 0 0 0 0 0 0
+smfd_19: 1 1 1 1 1 1 1 1 1
+smfd_20: 17 19 21 26 30 34 43 51 68
+smfd_21: 17 19 21 26 30 34 43 51 68
+smfd_22: 0 0 0 0 0 0 0 0 0
+smfd_23: 0 0 0 0 0 0 0 0 0
+smfd_24: 0 0 0 0 0 0 0 0 0
+smfd_25: 0 0 0 0 0 0 0 0 0
+smfd_26: 0 0 0 0 0 0 0 0 0
+smfd_27: 0 0 0 0 0 0 0 0 0
+smfd_28: 136 154 166 198 232 258 324 384 510
+smfd_29: 39 44 47 56 64 71 88 103 135
+smfd_30: 36 41 46 54 64 72 91 109 145
+smfd_31: 22 25 28 33 39 44 55 66 88
+smfd_32: 4 4 4 5 5 5 6 6 7
+smfd_33: 4 4 4 5 5 5 6 6 7
+smfd_34: 136 154 166 198 232 258 324 384 510
+smfd_35: 39 44 47 56 64 71 88 103 135
+smfd_36: 4 4 4 4 4 4 4 4 4
+smfd_37: 4 4 4 4 4 4 4 4 4
+smfd_38: 75 84 94 113 131 150 188 225 300
+smfd_39: 75 84 94 113 131 150 188 225 300
+smfd_40: 0 0 0 0 0 0 0 0 0
+smfd_41: 0 0 0 0 0 0 0 0 0
+smfd_42: 0 0 0 0 0 0 0 0 0
+smfd_43: 2 2 2 2 2 2 2 2 2
+smfd_44: 0 0 0 0 0 0 0 0 0
+smfd_45: 2 2 2 2 2 2 2 2 2
+smfd_46: 2 2 2 2 2 2 2 2 2
+smfd_47: 160 160 160 160 160 160 160 160 160
+smfd_48: 28 28 28 28 28 28 28 28 28
+smfd_49: 16 18 20 24 28 32 40 48 64
+smfd_50: 16 18 20 24 28 32 40 48 64
+smfd_51: 23 26 29 34 40 45 56 67 89
+smfd_52: 22 25 28 33 39 44 55 66 88
+smfd_53: 22 25 28 33 39 44 55 66 88
+smfd_54: 19 21 24 29 33 38 48 57 76
+smfd_55: 19 21 24 29 33 38 48 57 76
+smfd_56: 8 8 8 8 8 8 8 8 8
+smfd_57: 160 160 160 160 160 160 160 160 160
+smfd_58: 28 28 28 28 28 28 28 28 28
+smfd_59: 1940 1940 1940 1940 1940 1940 1940 1940 1940
+smfd_60: 1100 1100 1100 1100 1100 1100 1100 1100 1100
+smfd_61: 1936 1936 1936 1936 1936 1936 1936 1936 1936
+smfd_62: 1048 1048 1048 1048 1048 1048 1048 1048 1048
+smfd_63: 3 3 3 3 3 3 3 3 3
+smfd_64: 0 0 0 0 0 0 0 0 0
+smfd_65: 0 0 0 0 0 0 0 0 0
+smfd_66: 0 0 0 0 0 0 0 0 0
+smfd_67: 0 0 0 0 0 0 0 0 0
+smfd_68: 4 4 4 4 4 4 4 4 4
+smfd_69: 4 4 4 4 4 4 4 4 4
+smfd_70: 0 0 0 0 0 0 0 0 0
+smfd_71: 15 19 19 25 29 31 41 47 65
+smfd_72: 15 19 19 25 29 31 41 47 65
+smfd_73: 0 0 0 0 0 0 0 0 0
+smfd_74: 0 0 0 0 0 0 0 0 0
+smfd_75: 0 0 0 0 0 0 0 0 0
+smfd_76: 0 0 0 0 0 0 0 0 0
+smfd_77: 0 0 0 0 0 0 0 0 0
+smfd_78: 1920 1920 1920 1920 1920 1920 1920 1920 1920
+smfd_79: 1080 1080 1080 1080 1080 1080 1080 1080 1080
+smfd_80: 1 1 1 1 1 1 1 1 1
+smfd_81: 1 1 1 1 1 1 1 1 1
+smfd_82: 1 1 1 1 1 1 1 1 1
+smfd_83: 1 1 1 1 1 1 1 1 1
+smfd_84: 1 1 1 1 1 1 1 1 1
+smfd_85: 0 0 0 0 0 0 0 0 0
+smfd_86: 0 0 0 0 0 0 0 0 0
+smfd_87: 0 0 0 0 0 0 0 0 0
+smfd_88: 0 0 0 0 0 0 0 0 0
+smfd_89: 0 0 0 0 0 0 0 0 0
+smfd_90: 0 0 0 0 0 0 0 0 0
+smfd_91: 0 0 0 0 0 0 0 0 0
+smfd_92: 4 5 5 6 7 8 10 12 16
+smfd_93: 7428 7428 7428 7428 7428 7428 7428 7428 7428
+smfd_94: 0 0 0 0 0 0 0 0 0
+smfd_95: 0 0 0 0 0 0 0 0 0
+smfd_96: 0 0 0 0 0 0 0 0 0
+smfd_97: 0 0 0 0 0 0 0 0 0
+smfd_98: 0 0 0 0 0 0 0 0 0
+smfd_99: 0 0 0 0 0 0 0 0 0
+dialog_base_units ret=00100008 err=0000dead
+-- spi
+spi_workarea ret=00000001 err=0000dead
+  work rect=0,0,1920,1032
+spi_workarea_null ret=00000000 err=000003e6
+spi_ncm ret=00000001 err=0000dead
+  cb=504
+  border=5
+  scroll_w=17
+  scroll_h=17
+  caption_w=36
+  caption_h=22
+  caption_font_h=-12
+  caption_font_w=400
+  caption_face="Segoe UI"
+  sm_caption_w=22
+  sm_caption_h=22
+  menu_w=19
+  menu_h=19
+  menu_font_h=-12
+  menu_face="Segoe UI"
+  status_font_h=-12
+  msg_font_h=-12
+  msg_font_quality=0
+  msg_font_charset=1
+  msg_face="Segoe UI"
+  padded=0
+spi_ncm_prevista_size ret=00000001 err=0000dead
+spi_ncm_cb_0 ret=00000000 err=0000dead
+spi_ncm_uiparam_0 ret=00000001 err=0000dead
+spi_ncm_cb_big ret=00000000 err=0000dead
+spia_ncm ret=00000001 err=0000dead
+  a_cb=344
+  a_msg_face="Segoe UI"
+spi_icontitlelogfont ret=00000001 err=0000dead
+  h=-12
+  face="Segoe UI"
+spi_icontitlelogfont_uiparam_0 ret=00000001 err=0000dead
+spi_iconmetrics ret=00000001 err=0000dead
+  horz=75
+  vert=75
+  wrap=1
+spi_highcontrast ret=00000001 err=0000dead
+  flags=0000007e
+  scheme_null ret=00000000 err=00000000
+spi_animation ret=00000001 err=0000dead
+  minanimate=0
+spi_mouse ret=00000001 err=0000dead
+  m0=6
+  m1=10
+  m2=1
+spi_beep ret=1 v=00000001 err=0000dead
+spi_keyboardspeed ret=1 v=0000001f err=0000dead
+spi_screensaveactive ret=1 v=00000000 err=0000dead
+spi_keyboarddelay ret=1 v=00000001 err=0000dead
+spi_menudropalignment ret=1 v=00000000 err=0000dead
+spi_dragfullwindows ret=1 v=00000001 err=0000dead
+spi_screenreader ret=1 v=00000000 err=0000dead
+spi_fontsmoothing ret=1 v=00000001 err=0000dead
+spi_snaptodefbutton ret=1 v=00000000 err=0000dead
+spi_mousehoverwidth ret=1 v=00000004 err=0000dead
+spi_mousehoverheight ret=1 v=00000004 err=0000dead
+spi_mousehovertime ret=1 v=00000190 err=0000dead
+spi_wheelscrolllines ret=1 v=00000003 err=0000dead
+spi_menushowdelay ret=1 v=00000190 err=0000dead
+spi_wheelscrollchars ret=1 v=00000003 err=0000dead
+spi_showimeui ret=1 v=00000001 err=0000dead
+spi_mousespeed ret=1 v=0000000a err=0000dead
+spi_activewindowtracking ret=1 v=00000000 err=0000dead
+spi_menuanimation ret=1 v=00000000 err=0000dead
+spi_comboboxanimation ret=1 v=00000000 err=0000dead
+spi_listboxsmooth ret=1 v=00000000 err=0000dead
+spi_gradientcaptions ret=1 v=00000001 err=0000dead
+spi_keyboardcues ret=1 v=00000000 err=0000dead
+spi_hottracking ret=1 v=00000001 err=0000dead
+spi_menufade ret=1 v=00000000 err=0000dead
+spi_selectionfade ret=1 v=00000001 err=0000dead
+spi_tooltipanimation ret=1 v=00000000 err=0000dead
+spi_tooltipfade ret=1 v=00000000 err=0000dead
+spi_cursorshadow ret=1 v=00000000 err=0000dead
+spi_dropshadow ret=1 v=00000001 err=0000dead
+spi_uieffects ret=1 v=00000000 err=0000dead
+spi_clientareaanimation ret=1 v=00000000 err=0000dead
+spi_foregroundlocktimeout ret=1 v=7fffffff err=0000dead
+spi_caretwidth ret=1 v=00000001 err=0000dead
+spi_fontsmoothingtype ret=1 v=00000002 err=0000dead
+spi_fontsmoothingcontrast ret=1 v=000004b0 err=0000dead
+spi_focusborderwidth ret=1 v=00000001 err=0000dead
+spi_focusborderheight ret=1 v=00000001 err=0000dead
+spi_fontsmoothingorientation ret=1 v=00000001 err=0000dead
+spi_messageduration ret=1 v=00000005 err=0000dead
+spi_caretbrowsing ret=1 v=00000000 err=0000dead
+spi_systemlanguagebar ret=1 v=00000000 err=0000dead
+spi_dockmoving ret=1 v=00000001 err=0000dead
+spi_snaparrange ret=1 v=00000001 err=0000dead
+spi_mousesonar ret=1 v=00000000 err=0000dead
+spi_mousevanish ret=1 v=00000001 err=0000dead
+spi_disableoverlappedcontent ret=1 v=00000000 err=0000dead
+spi_keyboardpref ret=1 v=00000000 err=0000dead
+spi_mousetrails ret=1 v=00000000 err=0000dead
+spi_stickykeys ret=00000001 err=0000dead
+  flags=000001fe
+spi_set_stickykeys_same ret=00000001 err=0000dead
+spi_stickykeys_bad_cb ret=00000000 err=0000dead
+spi_stickykeys_uiparam_0 ret=00000001 err=0000dead
+spi_set_stickykeys_bad_cb ret=00000000 err=0000dead
+spi_togglekeys ret=00000001 err=0000dead
+  flags=0000003e
+spi_set_togglekeys_same ret=00000001 err=0000dead
+spi_filterkeys ret=00000001 err=0000dead
+  flags=0000007e
+  wait=1000
+  delay=1000
+  repeat=500
+  bounce=0
+spi_set_filterkeys_same ret=00000001 err=0000dead
+spi_screensavetimeout ret=00000001 err=0000dead
+  v=0
+spi_screensaverrunning ret=00000001 err=0000dead
+  v=0
+spi_getmousekeys_bad_cb ret=00000000 err=0000dead
+spi_unknown_action ret=00000000 err=00000057
+spi_action_0 ret=00000000 err=0000059f
+spi_deskwallpaper ret=00000001 err=0000dead
+spifordpi_ncm_144 ret=00000001 err=0000dead
+  caption_h=33
+  scroll_w=26
+  border=2
+  padded=6
+  msg_font_h=-18
+  menu_h=29
+spifordpi_ncm_96 ret=00000001 err=0000dead
+  caption_h=22
+  msg_font_h=-12
+spifordpi_icontitle_192 ret=00000001 err=0000dead
+  h=-24
+spifordpi_iconmetrics_120 ret=00000001 err=0000dead
+  horz=94
+spifordpi_workarea ret=00000000 err=00000057
+spifordpi_dpi_0 ret=00000001 err=0000dead
+spifordpi_set_action ret=00000000 err=00000057
+-- dpi
+dpi_for_system ret=00000060 err=0000dead
+thread_awareness ret=00000000 err=0000dead
+is_process_dpi_aware ret=00000000 err=0000dead
+get_process_dpi_awareness ret=00000000 err=0000dead
+  value=0
+get_process_dpi_awareness_bogus_process ret=80070057 err=00000057
+  value=-1
+gdfm_type_0 hr=00000000 x=96 y=96 err=0000dead
+gdfm_type_1 hr=00000000 x=96 y=96 err=0000dead
+gdfm_type_2 hr=00000000 x=80 y=81 err=0000dead
+gdfm_type_3 hr=800700a0 x=7 y=7 err=000000a0
+gdfm_null_monitor ret=80070006 err=00000006
+  x=7
+gdfm_bogus_monitor ret=80070006 err=00000006
+gdfm_null_x ret=800701e7 err=000001e7
+spda_invalid_value ret=80070057 err=00000057
+spda_per_monitor ret=00000000 err=0000dead
+spda_again ret=80070005 err=00000005
+spda_other_value ret=80070005 err=00000005
+set_process_dpi_aware_after ret=00000001 err=0000dead
+set_ctx_after ret=00000000 err=00000005
+set_ctx_invalid ret=00000000 err=00000005
+is_process_dpi_aware_after ret=00000001 err=0000dead
+get_process_dpi_awareness_after ret=00000000 err=0000dead
+  value=2
+thread_awareness_after ret=00000002 err=0000dead
+done
+== x86
+apiset_shcore_scaling_loads ret=00000001 err=00000000
+apiset_has_GetDpiForMonitor ret=00000001 err=00000000
+-- monitors
+edm_all ret=00000001 err=0000dead
+  count=1
+  first_dc_null ret=00000001 err=00000000
+  first_is_primary ret=00000001 err=00000000
+  first rect=0,0,1920,1080
+edm_callback_false ret=00000000 err=0000dead
+  count=1
+edm_clip_small ret=00000001 err=0000dead
+  count=1
+  rect rect=10,10,20,20
+edm_clip_empty ret=00000001 err=0000dead
+  count=0
+edm_clip_offscreen ret=00000001 err=0000dead
+  count=0
+edm_screen_dc ret=00000001 err=0000dead
+  count=1
+  dc_passed ret=00000000 err=00000000
+  rect rect=0,0,1920,1080
+edm_screen_dc_clip ret=00000001 err=0000dead
+  count=1
+  rect rect=10,10,20,20
+-- monitorfrom
+mfp_origin_flags_0 is_primary=1 null=0 err=0000dead
+mfp_far_flags_0 is_primary=0 null=1 err=0000dead
+mfp_origin_flags_1 is_primary=1 null=0 err=0000dead
+mfp_far_flags_1 is_primary=1 null=0 err=0000dead
+mfp_origin_flags_2 is_primary=1 null=0 err=0000dead
+mfp_far_flags_2 is_primary=1 null=0 err=0000dead
+mfp_origin_flags_3 is_primary=0 null=1 err=000003ec
+mfp_far_flags_3 is_primary=0 null=1 err=000003ec
+mfp_origin_flags_4 is_primary=0 null=1 err=000003ec
+mfp_far_flags_4 is_primary=0 null=1 err=000003ec
+mfp_origin_flags_5 is_primary=0 null=1 err=000003ec
+mfp_far_flags_5 is_primary=0 null=1 err=000003ec
+mfr_on_null_flag is_primary=1 err=0000dead
+mfr_far_null null=1 err=0000dead
+mfr_far_nearest is_primary=1 err=0000dead
+mfr_empty_on_screen_null_flag null=0 err=0000dead
+mfr_bad_flags null=1 err=000003ec
+mfw_window is_primary=1 err=0000dead
+mfw_far_nullflag null=1 err=0000dead
+mfw_far_nearest is_primary=1 err=0000dead
+mfw_minimized_nullflag is_primary=1 null=0 err=0000dead
+mfw_null_hwnd_nullflag null=1 err=0000dead
+mfw_null_hwnd_primary is_primary=1 err=0000dead
+mfw_invalid_hwnd_primary is_primary=0 null=1 err=00000578
+mfw_desktop_nullflag is_primary=1 err=0000dead
+mfw_bad_flags null=1 err=000003ec
+dpi_for_window ret=00000060 err=0000dead
+dpi_for_window_invalid ret=00000000 err=00000057
+dpi_for_window_null ret=00000000 err=00000057
+-- getmonitorinfo
+gmiw_cb_40 ret=1 err=0000dead cb_after=40 flags=00000001 dev_written=0
+gmiw_cb_104 ret=1 err=0000dead cb_after=104 flags=00000001 dev_written=1
+gmiw_cb_72 ret=0 err=00000057 cb_after=72
+gmiw_cb_0 ret=0 err=00000057 cb_after=0
+gmiw_cb_39 ret=0 err=00000057 cb_after=39
+gmiw_cb_41 ret=0 err=00000057 cb_after=41
+gmiw_cb_200 ret=0 err=00000057 cb_after=200
+  rcMonitor rect=0,0,1920,1080
+  rcWork rect=0,0,1920,1032
+  szDevice="\\.\DISPLAY49"
+gmia_ex ret=00000001 err=0000dead
+  szDeviceA="\\.\DISPLAY49"
+gmia_cb_104 ret=0 err=00000057
+gmiw_null_monitor ret=00000000 err=000005b5
+gmiw_bogus_monitor ret=00000000 err=000005b5
+gmia_bogus_monitor ret=00000000 err=000005b5
+-- displaydevices
+  dev0_name="\\.\DISPLAY49"
+  dev0_string_nonempty ret=00000001 err=00000000
+  dev0_state=04000005
+  dev0_id_prefix="RdpIdd_I"
+  dev0_key_prefix=""
+  adapters=16
+  attached=1
+edd_past_end ret=00000000 err=0000dead
+edd_cb_0 ret=00000001 err=0000dead
+edd_cb_424 ret=00000001 err=0000dead
+  cb424_name="\\.\DISPLAY49"
+edd_cb_100 ret=00000001 err=0000dead
+edd_monitor_of_display1 ret=00000001 err=0000dead
+  mon_name="\\.\DISPLAY49\Monitor0"
+  mon_state=00000003
+  mon_id_prefix="MONITOR\"
+edd_monitor_of_display1_iface ret=00000001 err=0000dead
+  iface_id_prefix ret=00000001 err=00000000
+edd_monitor_index_past_end ret=00000000 err=0000dead
+edd_unknown_device ret=00000000 err=0000dead
+edd_bad_flags ret=00000001 err=0000dead
+edda ret=00000001 err=0000dead
+  a_name="\\.\DISPLAY49"
+  a_cb=424
+-- displaysettings
+eds_current ret=00000001 err=0000dead
+  fields=207c00a0
+  size=188
+  bits=32
+  w=1920
+  h=1080
+  freq_nonzero ret=00000001 err=00000000
+  orientation=0
+  pos_x=0
+  pos_y=0
+  display_flags=00000000
+  fixed_output=0
+  spec=00000401
+  devicename="CDD"
+eds_registry ret=00000001 err=0000dead
+  fields=207c00a0
+  mode0_fields=007c0080
+  mode0_bits=32
+  modes_nonzero=1 end_err=0000007e
+eds_dmsize_0 ret=00000001 err=0000dead
+  size_after=188
+eds_display1 ret=00000001 err=0000dead
+eds_display99 ret=00000000 err=0000dead
+eds_monitor_name ret=00000000 err=0000007e
+edsex_current_raw ret=00000001 err=0000dead
+edsex_bad_flags ret=00000001 err=0000dead
+edsa_current ret=00000001 err=0000dead
+  a_size=124
+  a_devicename="CDD"
+-- changedisplaysettings
+cds_test_current ret=00000000 err=0000dead
+cds_test_bad_mode ret=00000000 err=0000dead
+cds_test_no_fields ret=00000000 err=0000dead
+cds_test_bad_flags ret=fffffffc err=0000dead
+cds_test_unknown_device ret=fffffffb err=0000dead
+cds_test_small_dmsize ret=fffffffe err=0000dead
+cds_restore_registry ret=00000000 err=0000dead
+cds_w_restore_registry ret=00000000 err=0000dead
+cds_a_restore_registry ret=00000000 err=0000dead
+cds_test_null_mode ret=00000000 err=0000dead
+-- ccd
+gdcbs_active ret=00000000 err=0000dead
+  np_nonzero=1 nm_ge_2np=1
+gdcbs_all ret=00000000 err=0000dead
+  all_ge_active=1
+gdcbs_flags_0 ret=00000057 err=0000dead
+gdcbs_flags_bad ret=00000057 err=0000dead
+gdcbs_both ret=00000057 err=0000dead
+gdcbs_null ret=00000057 err=0000dead
+gdcbs_database ret=00000000 err=0000dead
+qdc_active ret=00000000 err=0000dead
+  paths=1
+  modes=2
+  path0_flags=00000001
+  src_status=00000001
+  tgt_status=00000001
+  tgt_available=1
+  tgt_rotation=1
+  tgt_scaling=1
+  tgt_scanline=1
+  tgt_refresh_nonzero ret=00000001 err=00000000
+  src_mode_idx=1
+  tgt_mode_idx=0
+  srcmode_type=1
+  srcmode_w=1920
+  srcmode_fmt=4
+  srcmode_id_matches ret=00000001 err=00000000
+  tgtmode_type=2
+  tgtmode_scanline=1
+  tgtmode_std=000100ff
+qdc_zero_counts ret=00000057 err=0000dead
+qdc_mode_too_small ret=0000007a err=0000dead
+qdc_database_null_topology ret=00000057 err=000003e6
+qdc_active_with_topology ret=00000057 err=0000dead
+qdc_null_paths ret=00000057 err=000003e6
+dcgdi_source_name ret=00000000 err=0000dead
+  gdi_name="\\.\DISPLAY49"
+  size=84
+dcgdi_target_name ret=00000000 err=0000dead
+  flags=00000002
+  tech=-1
+  friendly_nonempty ret=00000000 err=00000000
+  path_display_prefix ret=00000001 err=00000000
+  size=420
+dcgdi_adapter_name ret=00000000 err=0000dead
+  adapter_path_nonempty ret=00000001 err=00000000
+dcgdi_preferred_mode ret=00000000 err=0000dead
+  pref_w_nonzero ret=00000001 err=00000000
+dcgdi_advanced_color ret=00000000 err=0000dead
+  value=00000001
+  bits=8
+dcgdi_sdr_white ret=00000000 err=0000dead
+  level=1000
+dcgdi_bad_size ret=00000057 err=0000dead
+dcgdi_bad_type ret=00000057 err=0000dead
+dcgdi_bad_id ret=0000001f err=0000dead
+dcgdi_bad_adapter ret=0000001f err=0000dead
+dcgdi_null ret=0000001f err=000003e6
+dcsdi_bad_size ret=00000057 err=0000dead
+dcsdi_get_type ret=00000057 err=0000dead
+dcsdi_null ret=0000001f err=000003e6
+-- metrics
+sm_0=1920
+sm_1=1080
+sm_2=17
+sm_3=17
+sm_4=23
+sm_5=1
+sm_6=1
+sm_7=3
+sm_8=3
+sm_9=17
+sm_10=17
+sm_11=32
+sm_12=32
+sm_13=32
+sm_14=32
+sm_15=20
+sm_16=1920
+sm_17=1009
+sm_18=0
+sm_19=1
+sm_20=17
+sm_21=17
+sm_22=0
+sm_23=0
+sm_24=0
+sm_25=0
+sm_26=0
+sm_27=0
+sm_28=136
+sm_29=39
+sm_30=36
+sm_31=22
+sm_32=8
+sm_33=8
+sm_34=136
+sm_35=39
+sm_36=4
+sm_37=4
+sm_38=75
+sm_39=75
+sm_40=0
+sm_41=0
+sm_42=0
+sm_43=2
+sm_44=0
+sm_45=2
+sm_46=2
+sm_47=160
+sm_48=28
+sm_49=16
+sm_50=16
+sm_51=23
+sm_52=22
+sm_53=22
+sm_54=19
+sm_55=19
+sm_56=8
+sm_57=160
+sm_58=28
+sm_59=1940
+sm_60=1100
+sm_61=1936
+sm_62=1048
+sm_63=3
+sm_64=0
+sm_65=0
+sm_66=0
+sm_67=0
+sm_68=4
+sm_69=4
+sm_70=0
+sm_71=15
+sm_72=15
+sm_73=0
+sm_74=0
+sm_75=0
+sm_76=0
+sm_77=0
+sm_78=1920
+sm_79=1080
+sm_80=1
+sm_81=1
+sm_82=1
+sm_83=1
+sm_84=1
+sm_85=0
+sm_86=0
+sm_87=0 err=00000002
+sm_88=0
+sm_89=0
+sm_90=0
+sm_91=0
+sm_92=0
+sm_93=7428
+sm_94=0
+sm_95=0
+sm_96=0
+sm_97=0 err=00000057
+sm_98=0 err=00000057
+sm_99=0 err=00000057
+sm_100=0 err=00000057
+sm_x00001000=1 err=0000dead
+sm_x00001001=0 err=00000057
+sm_x00002000=0 err=0000dead
+sm_x00002001=0 err=0000dead
+sm_x00002002=0 err=0000dead
+sm_x00002003=0 err=0000dead
+sm_x00002004=0 err=0000dead
+sm_xffffffff=0 err=00000057
+sm_x000003e8=0 err=00000057
+smfordpi_96: 23 17 4 4 32 16 20 2 136 1920
+smfordpi_120: 29 21 4 5 40 20 25 2 166 1920
+smfordpi_144: 34 26 5 6 48 24 30 2 198 1920
+smfordpi_192: 45 34 5 8 64 32 39 2 258 1920
+smfordpi_0: 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057 0/e0057
+smfd_0: 1920 1920 1920 1920 1920 1920 1920 1920 1920
+smfd_1: 1080 1080 1080 1080 1080 1080 1080 1080 1080
+smfd_2: 17 19 21 26 30 34 43 51 68
+smfd_3: 17 19 21 26 30 34 43 51 68
+smfd_4: 23 26 29 34 40 45 56 67 89
+smfd_5: 1 1 1 1 1 1 1 1 1
+smfd_6: 1 1 1 1 1 1 1 1 1
+smfd_7: 3 3 3 3 3 3 3 3 3
+smfd_8: 3 3 3 3 3 3 3 3 3
+smfd_9: 17 19 21 26 30 34 43 51 68
+smfd_10: 17 19 21 26 30 34 43 51 68
+smfd_11: 32 36 40 48 56 64 80 96 128
+smfd_12: 32 36 40 48 56 64 80 96 128
+smfd_13: 32 32 32 48 48 64 64 96 128
+smfd_14: 32 32 32 48 48 64 64 96 128
+smfd_15: 20 22 25 30 34 39 49 58 77
+smfd_16: 1920 1920 1920 1920 1920 1920 1920 1920 1920
+smfd_17: 1009 1009 1009 1009 1009 1009 1009 1009 1009
+smfd_18: 0 0 0 0 0 0 0 0 0
+smfd_19: 1 1 1 1 1 1 1 1 1
+smfd_20: 17 19 21 26 30 34 43 51 68
+smfd_21: 17 19 21 26 30 34 43 51 68
+smfd_22: 0 0 0 0 0 0 0 0 0
+smfd_23: 0 0 0 0 0 0 0 0 0
+smfd_24: 0 0 0 0 0 0 0 0 0
+smfd_25: 0 0 0 0 0 0 0 0 0
+smfd_26: 0 0 0 0 0 0 0 0 0
+smfd_27: 0 0 0 0 0 0 0 0 0
+smfd_28: 136 154 166 198 232 258 324 384 510
+smfd_29: 39 44 47 56 64 71 88 103 135
+smfd_30: 36 41 46 54 64 72 91 109 145
+smfd_31: 22 25 28 33 39 44 55 66 88
+smfd_32: 4 4 4 5 5 5 6 6 7
+smfd_33: 4 4 4 5 5 5 6 6 7
+smfd_34: 136 154 166 198 232 258 324 384 510
+smfd_35: 39 44 47 56 64 71 88 103 135
+smfd_36: 4 4 4 4 4 4 4 4 4
+smfd_37: 4 4 4 4 4 4 4 4 4
+smfd_38: 75 84 94 113 131 150 188 225 300
+smfd_39: 75 84 94 113 131 150 188 225 300
+smfd_40: 0 0 0 0 0 0 0 0 0
+smfd_41: 0 0 0 0 0 0 0 0 0
+smfd_42: 0 0 0 0 0 0 0 0 0
+smfd_43: 2 2 2 2 2 2 2 2 2
+smfd_44: 0 0 0 0 0 0 0 0 0
+smfd_45: 2 2 2 2 2 2 2 2 2
+smfd_46: 2 2 2 2 2 2 2 2 2
+smfd_47: 160 160 160 160 160 160 160 160 160
+smfd_48: 28 28 28 28 28 28 28 28 28
+smfd_49: 16 18 20 24 28 32 40 48 64
+smfd_50: 16 18 20 24 28 32 40 48 64
+smfd_51: 23 26 29 34 40 45 56 67 89
+smfd_52: 22 25 28 33 39 44 55 66 88
+smfd_53: 22 25 28 33 39 44 55 66 88
+smfd_54: 19 21 24 29 33 38 48 57 76
+smfd_55: 19 21 24 29 33 38 48 57 76
+smfd_56: 8 8 8 8 8 8 8 8 8
+smfd_57: 160 160 160 160 160 160 160 160 160
+smfd_58: 28 28 28 28 28 28 28 28 28
+smfd_59: 1940 1940 1940 1940 1940 1940 1940 1940 1940
+smfd_60: 1100 1100 1100 1100 1100 1100 1100 1100 1100
+smfd_61: 1936 1936 1936 1936 1936 1936 1936 1936 1936
+smfd_62: 1048 1048 1048 1048 1048 1048 1048 1048 1048
+smfd_63: 3 3 3 3 3 3 3 3 3
+smfd_64: 0 0 0 0 0 0 0 0 0
+smfd_65: 0 0 0 0 0 0 0 0 0
+smfd_66: 0 0 0 0 0 0 0 0 0
+smfd_67: 0 0 0 0 0 0 0 0 0
+smfd_68: 4 4 4 4 4 4 4 4 4
+smfd_69: 4 4 4 4 4 4 4 4 4
+smfd_70: 0 0 0 0 0 0 0 0 0
+smfd_71: 15 19 19 25 29 31 41 47 65
+smfd_72: 15 19 19 25 29 31 41 47 65
+smfd_73: 0 0 0 0 0 0 0 0 0
+smfd_74: 0 0 0 0 0 0 0 0 0
+smfd_75: 0 0 0 0 0 0 0 0 0
+smfd_76: 0 0 0 0 0 0 0 0 0
+smfd_77: 0 0 0 0 0 0 0 0 0
+smfd_78: 1920 1920 1920 1920 1920 1920 1920 1920 1920
+smfd_79: 1080 1080 1080 1080 1080 1080 1080 1080 1080
+smfd_80: 1 1 1 1 1 1 1 1 1
+smfd_81: 1 1 1 1 1 1 1 1 1
+smfd_82: 1 1 1 1 1 1 1 1 1
+smfd_83: 1 1 1 1 1 1 1 1 1
+smfd_84: 1 1 1 1 1 1 1 1 1
+smfd_85: 0 0 0 0 0 0 0 0 0
+smfd_86: 0 0 0 0 0 0 0 0 0
+smfd_87: 0 0 0 0 0 0 0 0 0
+smfd_88: 0 0 0 0 0 0 0 0 0
+smfd_89: 0 0 0 0 0 0 0 0 0
+smfd_90: 0 0 0 0 0 0 0 0 0
+smfd_91: 0 0 0 0 0 0 0 0 0
+smfd_92: 4 5 5 6 7 8 10 12 16
+smfd_93: 7428 7428 7428 7428 7428 7428 7428 7428 7428
+smfd_94: 0 0 0 0 0 0 0 0 0
+smfd_95: 0 0 0 0 0 0 0 0 0
+smfd_96: 0 0 0 0 0 0 0 0 0
+smfd_97: 0 0 0 0 0 0 0 0 0
+smfd_98: 0 0 0 0 0 0 0 0 0
+smfd_99: 0 0 0 0 0 0 0 0 0
+dialog_base_units ret=00100008 err=0000dead
+-- spi
+spi_workarea ret=00000001 err=0000dead
+  work rect=0,0,1920,1032
+spi_workarea_null ret=00000000 err=000003e6
+spi_ncm ret=00000001 err=0000dead
+  cb=504
+  border=5
+  scroll_w=17
+  scroll_h=17
+  caption_w=36
+  caption_h=22
+  caption_font_h=-12
+  caption_font_w=400
+  caption_face="Segoe UI"
+  sm_caption_w=22
+  sm_caption_h=22
+  menu_w=19
+  menu_h=19
+  menu_font_h=-12
+  menu_face="Segoe UI"
+  status_font_h=-12
+  msg_font_h=-12
+  msg_font_quality=0
+  msg_font_charset=1
+  msg_face="Segoe UI"
+  padded=0
+spi_ncm_prevista_size ret=00000001 err=0000dead
+spi_ncm_cb_0 ret=00000000 err=0000dead
+spi_ncm_uiparam_0 ret=00000001 err=0000dead
+spi_ncm_cb_big ret=00000000 err=0000dead
+spia_ncm ret=00000001 err=0000dead
+  a_cb=344
+  a_msg_face="Segoe UI"
+spi_icontitlelogfont ret=00000001 err=0000dead
+  h=-12
+  face="Segoe UI"
+spi_icontitlelogfont_uiparam_0 ret=00000001 err=0000dead
+spi_iconmetrics ret=00000001 err=0000dead
+  horz=75
+  vert=75
+  wrap=1
+spi_highcontrast ret=00000001 err=0000dead
+  flags=0000007e
+  scheme_null ret=00000000 err=00000000
+spi_animation ret=00000001 err=0000dead
+  minanimate=0
+spi_mouse ret=00000001 err=0000dead
+  m0=6
+  m1=10
+  m2=1
+spi_beep ret=1 v=00000001 err=0000dead
+spi_keyboardspeed ret=1 v=0000001f err=0000dead
+spi_screensaveactive ret=1 v=00000000 err=0000dead
+spi_keyboarddelay ret=1 v=00000001 err=0000dead
+spi_menudropalignment ret=1 v=00000000 err=0000dead
+spi_dragfullwindows ret=1 v=00000001 err=0000dead
+spi_screenreader ret=1 v=00000000 err=0000dead
+spi_fontsmoothing ret=1 v=00000001 err=0000dead
+spi_snaptodefbutton ret=1 v=00000000 err=0000dead
+spi_mousehoverwidth ret=1 v=00000004 err=0000dead
+spi_mousehoverheight ret=1 v=00000004 err=0000dead
+spi_mousehovertime ret=1 v=00000190 err=0000dead
+spi_wheelscrolllines ret=1 v=00000003 err=0000dead
+spi_menushowdelay ret=1 v=00000190 err=0000dead
+spi_wheelscrollchars ret=1 v=00000003 err=0000dead
+spi_showimeui ret=1 v=00000001 err=0000dead
+spi_mousespeed ret=1 v=0000000a err=0000dead
+spi_activewindowtracking ret=1 v=00000000 err=0000dead
+spi_menuanimation ret=1 v=00000000 err=0000dead
+spi_comboboxanimation ret=1 v=00000000 err=0000dead
+spi_listboxsmooth ret=1 v=00000000 err=0000dead
+spi_gradientcaptions ret=1 v=00000001 err=0000dead
+spi_keyboardcues ret=1 v=00000000 err=0000dead
+spi_hottracking ret=1 v=00000001 err=0000dead
+spi_menufade ret=1 v=00000000 err=0000dead
+spi_selectionfade ret=1 v=00000001 err=0000dead
+spi_tooltipanimation ret=1 v=00000000 err=0000dead
+spi_tooltipfade ret=1 v=00000000 err=0000dead
+spi_cursorshadow ret=1 v=00000000 err=0000dead
+spi_dropshadow ret=1 v=00000001 err=0000dead
+spi_uieffects ret=1 v=00000000 err=0000dead
+spi_clientareaanimation ret=1 v=00000000 err=0000dead
+spi_foregroundlocktimeout ret=1 v=7fffffff err=0000dead
+spi_caretwidth ret=1 v=00000001 err=0000dead
+spi_fontsmoothingtype ret=1 v=00000002 err=0000dead
+spi_fontsmoothingcontrast ret=1 v=000004b0 err=0000dead
+spi_focusborderwidth ret=1 v=00000001 err=0000dead
+spi_focusborderheight ret=1 v=00000001 err=0000dead
+spi_fontsmoothingorientation ret=1 v=00000001 err=0000dead
+spi_messageduration ret=1 v=00000005 err=0000dead
+spi_caretbrowsing ret=1 v=00000000 err=0000dead
+spi_systemlanguagebar ret=1 v=00000000 err=0000dead
+spi_dockmoving ret=1 v=00000001 err=0000dead
+spi_snaparrange ret=1 v=00000001 err=0000dead
+spi_mousesonar ret=1 v=00000000 err=0000dead
+spi_mousevanish ret=1 v=00000001 err=0000dead
+spi_disableoverlappedcontent ret=1 v=00000000 err=0000dead
+spi_keyboardpref ret=1 v=00000000 err=0000dead
+spi_mousetrails ret=1 v=00000000 err=0000dead
+spi_stickykeys ret=00000001 err=0000dead
+  flags=000001fe
+spi_set_stickykeys_same ret=00000001 err=0000dead
+spi_stickykeys_bad_cb ret=00000000 err=0000dead
+spi_stickykeys_uiparam_0 ret=00000001 err=0000dead
+spi_set_stickykeys_bad_cb ret=00000000 err=0000dead
+spi_togglekeys ret=00000001 err=0000dead
+  flags=0000003e
+spi_set_togglekeys_same ret=00000001 err=0000dead
+spi_filterkeys ret=00000001 err=0000dead
+  flags=0000007e
+  wait=1000
+  delay=1000
+  repeat=500
+  bounce=0
+spi_set_filterkeys_same ret=00000001 err=0000dead
+spi_screensavetimeout ret=00000001 err=0000dead
+  v=0
+spi_screensaverrunning ret=00000001 err=0000dead
+  v=0
+spi_getmousekeys_bad_cb ret=00000000 err=0000dead
+spi_unknown_action ret=00000000 err=00000078
+spi_action_0 ret=00000000 err=00000078
+spi_deskwallpaper ret=00000001 err=0000dead
+spifordpi_ncm_144 ret=00000001 err=0000dead
+  caption_h=33
+  scroll_w=26
+  border=2
+  padded=6
+  msg_font_h=-18
+  menu_h=29
+spifordpi_ncm_96 ret=00000001 err=0000dead
+  caption_h=22
+  msg_font_h=-12
+spifordpi_icontitle_192 ret=00000001 err=0000dead
+  h=-24
+spifordpi_iconmetrics_120 ret=00000001 err=0000dead
+  horz=94
+spifordpi_workarea ret=00000000 err=00000057
+spifordpi_dpi_0 ret=00000001 err=0000dead
+spifordpi_set_action ret=00000000 err=00000057
+-- dpi
+dpi_for_system ret=00000060 err=0000dead
+thread_awareness ret=00000000 err=0000dead
+is_process_dpi_aware ret=00000000 err=0000dead
+get_process_dpi_awareness ret=00000000 err=0000dead
+  value=0
+get_process_dpi_awareness_bogus_process ret=80070057 err=00000057
+  value=-1
+gdfm_type_0 hr=00000000 x=96 y=96 err=0000dead
+gdfm_type_1 hr=00000000 x=96 y=96 err=0000dead
+gdfm_type_2 hr=00000000 x=80 y=81 err=0000dead
+gdfm_type_3 hr=800700a0 x=7 y=7 err=000000a0
+gdfm_null_monitor ret=80070006 err=00000006
+  x=7
+gdfm_bogus_monitor ret=80070006 err=00000006
+gdfm_null_x ret=800701e7 err=000001e7
+spda_invalid_value ret=80070057 err=00000057
+spda_per_monitor ret=00000000 err=0000dead
+spda_again ret=80070005 err=00000005
+spda_other_value ret=80070005 err=00000005
+set_process_dpi_aware_after ret=00000001 err=0000dead
+set_ctx_after ret=00000000 err=00000005
+set_ctx_invalid ret=00000000 err=00000005
+is_process_dpi_aware_after ret=00000001 err=0000dead
+get_process_dpi_awareness_after ret=00000000 err=0000dead
+  value=2
+thread_awareness_after ret=00000002 err=0000dead
+done
+== x64 built with --major-subsystem-version 6 (differences from the x64 run above only)
+233,234c233,234
+< sm_32=8
+< sm_33=8
+---
+> sm_32=4
+> sm_33=4
+293c293
+< sm_92=0
+---
+> sm_92=4
+423c423
+<   border=5
+---
+>   border=1
+442c442
+<   padded=0
+---
+>   padded=4

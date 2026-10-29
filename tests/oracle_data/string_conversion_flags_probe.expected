@@ -1,0 +1,317 @@
+M cp=65001 f=0000 ret=1 err=0
+M cp=65001 f=0001 ret=1 err=0
+M cp=65001 f=0002 ret=1 err=0
+M cp=65001 f=0004 ret=1 err=0
+M cp=65001 f=0008 ret=1 err=0
+M cp=65001 f=0009 ret=1 err=0
+M cp=65001 f=000a ret=1 err=0
+M cp=65001 f=000c ret=1 err=0
+M cp=65001 f=0003 ret=1 err=0
+M cp=65001 f=0010 ret=0 err=1004
+M cp=65001 f=0100 ret=0 err=1004
+W cp=65001 f=0000 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0010 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0020 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0040 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0080 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0200 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0400 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0240 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0210 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0220 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0480 ret=3 err=0 withdef ret=3 err=0 used=0
+W cp=65001 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=65001 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=65001 valid=1
+M cp=1252 f=0000 ret=1 err=0
+M cp=1252 f=0001 ret=1 err=0
+M cp=1252 f=0002 ret=1 err=0
+M cp=1252 f=0004 ret=1 err=0
+M cp=1252 f=0008 ret=1 err=0
+M cp=1252 f=0009 ret=1 err=0
+M cp=1252 f=000a ret=1 err=0
+M cp=1252 f=000c ret=1 err=0
+M cp=1252 f=0003 ret=0 err=1004
+M cp=1252 f=0010 ret=0 err=1004
+M cp=1252 f=0100 ret=0 err=1004
+W cp=1252 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1252 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1252 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1252 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1252 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1252 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1252 f=0400 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1252 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1252 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1252 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1252 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1252 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1252 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=1252 valid=1
+M cp=437 f=0000 ret=1 err=0
+M cp=437 f=0001 ret=1 err=0
+M cp=437 f=0002 ret=1 err=0
+M cp=437 f=0004 ret=1 err=0
+M cp=437 f=0008 ret=1 err=0
+M cp=437 f=0009 ret=1 err=0
+M cp=437 f=000a ret=1 err=0
+M cp=437 f=000c ret=1 err=0
+M cp=437 f=0003 ret=0 err=1004
+M cp=437 f=0010 ret=0 err=1004
+M cp=437 f=0100 ret=0 err=1004
+W cp=437 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=437 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=437 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=437 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=437 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=437 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=437 f=0400 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=437 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=437 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=437 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=437 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=437 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=437 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=437 valid=1
+M cp=42 f=0000 ret=1 err=0
+M cp=42 f=0001 ret=0 err=1004
+M cp=42 f=0002 ret=0 err=1004
+M cp=42 f=0004 ret=0 err=1004
+M cp=42 f=0008 ret=0 err=1004
+M cp=42 f=0009 ret=0 err=1004
+M cp=42 f=000a ret=0 err=1004
+M cp=42 f=000c ret=0 err=1004
+M cp=42 f=0003 ret=0 err=1004
+M cp=42 f=0010 ret=0 err=1004
+M cp=42 f=0100 ret=0 err=1004
+W cp=42 f=0000 ret=0 err=1113 withdef ret=0 err=87 used=7
+W cp=42 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0200 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0400 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0240 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0210 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0220 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=42 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=42 valid=0
+M cp=2 f=0000 ret=1 err=0
+M cp=2 f=0001 ret=1 err=0
+M cp=2 f=0002 ret=1 err=0
+M cp=2 f=0004 ret=1 err=0
+M cp=2 f=0008 ret=1 err=0
+M cp=2 f=0009 ret=1 err=0
+M cp=2 f=000a ret=1 err=0
+M cp=2 f=000c ret=1 err=0
+M cp=2 f=0003 ret=0 err=1004
+M cp=2 f=0010 ret=0 err=1004
+M cp=2 f=0100 ret=0 err=1004
+W cp=2 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=2 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=2 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=2 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=2 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=2 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=2 f=0400 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=2 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=2 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=2 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=2 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=2 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=2 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=2 valid=0
+M cp=0 f=0000 ret=1 err=0
+M cp=0 f=0001 ret=1 err=0
+M cp=0 f=0002 ret=1 err=0
+M cp=0 f=0004 ret=1 err=0
+M cp=0 f=0008 ret=1 err=0
+M cp=0 f=0009 ret=1 err=0
+M cp=0 f=000a ret=1 err=0
+M cp=0 f=000c ret=1 err=0
+M cp=0 f=0003 ret=0 err=1004
+M cp=0 f=0010 ret=0 err=1004
+M cp=0 f=0100 ret=0 err=1004
+W cp=0 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=0 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=0 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=0 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=0 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=0 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=0 f=0400 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=0 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=0 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=0 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=0 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=0 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=0 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=0 valid=0
+M cp=1 f=0000 ret=1 err=0
+M cp=1 f=0001 ret=1 err=0
+M cp=1 f=0002 ret=1 err=0
+M cp=1 f=0004 ret=1 err=0
+M cp=1 f=0008 ret=1 err=0
+M cp=1 f=0009 ret=1 err=0
+M cp=1 f=000a ret=1 err=0
+M cp=1 f=000c ret=1 err=0
+M cp=1 f=0003 ret=0 err=1004
+M cp=1 f=0010 ret=0 err=1004
+M cp=1 f=0100 ret=0 err=1004
+W cp=1 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1 f=0400 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=1 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=1 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=1 valid=0
+M cp=3 f=0000 ret=1 err=0
+M cp=3 f=0001 ret=1 err=0
+M cp=3 f=0002 ret=1 err=0
+M cp=3 f=0004 ret=1 err=0
+M cp=3 f=0008 ret=1 err=0
+M cp=3 f=0009 ret=1 err=0
+M cp=3 f=000a ret=1 err=0
+M cp=3 f=000c ret=1 err=0
+M cp=3 f=0003 ret=0 err=1004
+M cp=3 f=0010 ret=0 err=1004
+M cp=3 f=0100 ret=0 err=1004
+W cp=3 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=3 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=3 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=3 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=3 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=3 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=3 f=0400 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=3 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=3 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=3 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=3 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=3 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=3 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=3 valid=0
+M cp=65000 f=0000 ret=1 err=0
+M cp=65000 f=0001 ret=0 err=1004
+M cp=65000 f=0002 ret=0 err=1004
+M cp=65000 f=0004 ret=0 err=1004
+M cp=65000 f=0008 ret=0 err=1004
+M cp=65000 f=0009 ret=0 err=1004
+M cp=65000 f=000a ret=0 err=1004
+M cp=65000 f=000c ret=0 err=1004
+M cp=65000 f=0003 ret=0 err=1004
+M cp=65000 f=0010 ret=0 err=1004
+M cp=65000 f=0100 ret=0 err=1004
+W cp=65000 f=0000 ret=6 err=0 withdef ret=0 err=87 used=7
+W cp=65000 f=0010 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0020 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0040 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0080 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0200 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0400 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0240 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0210 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0220 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0480 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=0001 ret=0 err=1004 withdef ret=0 err=87 used=7
+W cp=65000 f=1000 ret=0 err=1004 withdef ret=0 err=87 used=7
+V cp=65000 valid=1
+M cp=932 f=0000 ret=1 err=0
+M cp=932 f=0001 ret=1 err=0
+M cp=932 f=0002 ret=1 err=0
+M cp=932 f=0004 ret=1 err=0
+M cp=932 f=0008 ret=1 err=0
+M cp=932 f=0009 ret=1 err=0
+M cp=932 f=000a ret=1 err=0
+M cp=932 f=000c ret=1 err=0
+M cp=932 f=0003 ret=0 err=1004
+M cp=932 f=0010 ret=0 err=1004
+M cp=932 f=0100 ret=0 err=1004
+W cp=932 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=932 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=932 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=932 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=932 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=932 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=932 f=0400 ret=2 err=0 withdef ret=2 err=0 used=1
+W cp=932 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=932 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=932 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=932 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=932 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=932 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=932 valid=1
+M cp=20127 f=0000 ret=1 err=0
+M cp=20127 f=0001 ret=1 err=0
+M cp=20127 f=0002 ret=1 err=0
+M cp=20127 f=0004 ret=1 err=0
+M cp=20127 f=0008 ret=1 err=0
+M cp=20127 f=0009 ret=1 err=0
+M cp=20127 f=000a ret=1 err=0
+M cp=20127 f=000c ret=1 err=0
+M cp=20127 f=0003 ret=0 err=1004
+M cp=20127 f=0010 ret=0 err=1004
+M cp=20127 f=0100 ret=0 err=1004
+W cp=20127 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=20127 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=20127 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=20127 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=20127 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=20127 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=20127 f=0400 ret=2 err=0 withdef ret=2 err=0 used=1
+W cp=20127 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=20127 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=20127 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=20127 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=20127 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=20127 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=20127 valid=1
+M cp=28591 f=0000 ret=1 err=0
+M cp=28591 f=0001 ret=1 err=0
+M cp=28591 f=0002 ret=1 err=0
+M cp=28591 f=0004 ret=1 err=0
+M cp=28591 f=0008 ret=1 err=0
+M cp=28591 f=0009 ret=1 err=0
+M cp=28591 f=000a ret=1 err=0
+M cp=28591 f=000c ret=1 err=0
+M cp=28591 f=0003 ret=0 err=1004
+M cp=28591 f=0010 ret=0 err=1004
+M cp=28591 f=0100 ret=0 err=1004
+W cp=28591 f=0000 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=28591 f=0010 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=28591 f=0020 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=28591 f=0040 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=28591 f=0080 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=28591 f=0200 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=28591 f=0400 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=28591 f=0240 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=28591 f=0210 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=28591 f=0220 ret=2 err=0 withdef ret=2 err=0 used=0
+W cp=28591 f=0480 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=28591 f=0001 ret=0 err=1004 withdef ret=0 err=1004 used=7
+W cp=28591 f=1000 ret=0 err=1004 withdef ret=0 err=1004 used=7
+V cp=28591 valid=1
+G cp=437 0000 263a 263b 2665 2666 2663 2660 2022 25d8 25cb 25d9 2642 2640 266a 266b 263c 25ba 25c4 2195 203c 00b6 00a7 25ac 21a8 2191 2193 2192 2190 221f 2194 25b2 25bc 2302
+G cp=1252 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000a 000b 000c 000d 000e 000f 0010 0011 0012 0013 0014 0015 0016 0017 0018 0019 001a 001b 001c 001d 001e 001f 007f
+S mb 00 -> 0000 ret=1
+S mb 20 -> f020 ret=1
+S mb 41 -> f041 ret=1
+S mb 7f -> f07f ret=1
+S mb 80 -> f080 ret=1
+S mb e9 -> f0e9 ret=1
+S mb ff -> f0ff ret=1
+S wc 0041 -> 00 ret=0 err=87 used=7
+S wc f041 -> 00 ret=0 err=87 used=7
+S wc f0ff -> 00 ret=0 err=87 used=7
+S wc f100 -> 00 ret=0 err=87 used=7
+S wc 00e9 -> 00 ret=0 err=87 used=7
+S wc efff -> 00 ret=0 err=87 used=7
+S wc 0020 -> 00 ret=0 err=87 used=7
+ACP=1252 OEMCP=437

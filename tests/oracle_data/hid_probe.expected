@@ -1,0 +1,24 @@
+guid d1=4d1e55b2 d2=f16f d3=11cf d4=88cb001111000030
+attrs_file ok=0 gle=57
+preparsed_file ok=0 gle=57 outChanged=0
+free_fake ok=0 gle=dead
+product_file ok=0 gle=57
+feature_file ok=0 gle=57
+numbuf_file ok=0 gle=57 nb=5555
+attrs_null ok=0 gle=6
+attrs_invalid ok=0 gle=6
+attrs_closed ok=0 gle=6
+preparsed_null ok=0 gle=6 outChanged=0
+feature_invalid ok=0 gle=6
+setfeature_null ok=0 gle=6
+serial_null ok=0 gle=6
+mfr_invalid ok=0 gle=6
+caps_fake st=c0110001
+maxdata_fake n=0
+maxusage_fake n=0
+getdata_fake st=c0110001 dl=4
+setusages_fake st=c0110001 ul=2
+setvalue_fake st=c0110001
+getusages_fake st=c0110001 ul=2
+getvalue_fake st=c0110001 v=5555
+maxdata_badtype n=0

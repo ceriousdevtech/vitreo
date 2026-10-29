@@ -1,0 +1,14 @@
+assoc_port ok=1
+assign_a ok=1
+a_in_job r=1
+a_in_any_job r=1
+  exit_normal msg=6 key=77 who=a
+  exit_normal msg=7 key=77 who=a
+  exit_normal msg=4 key=77 who=b
+  after_assign_b msg=6 key=77 who=b
+terminate_job ok=1 gle=dead wait=0 code=55
+  after_terminate msg=4 key=77 who=0
+set_kill_on_close ok=1
+kill_on_close_first_handle wait=102
+kill_on_close_last_handle wait=0 code=0
+grandchild_in_job code=11

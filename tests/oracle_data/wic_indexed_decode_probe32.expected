@@ -1,0 +1,12 @@
+case=packed decoder=00000000
+size=4,4 format=6fddc324-4e03-4bfe-b1853d77768dc902
+native=00000000 bytes=9c5a5a5a5a5a5a5a725a5a5a5a5a5a5ac95a5a5a5a5a5a5a275a5a5a5a5a5a5a
+region=00000000 bytes=c5a5a5a525a5a5a5
+converted=00000000 bytes=0000ffff00ff00ffff0000ffffffffff3c3c3c3c00ff00ffff0000ffffffffff0000ffff3c3c3c3cff0000ffffffffff0000ffff00ff00ff3c3c3c3cffffffff0000ffff00ff00ffff0000ff3c3c3c3c
+palette_count=4 actual=4 type=0 alpha=0 gray=0 bw=0 colors=ffffffffff00ff00ffff0000ff0000ff
+case=alpha decoder=00000000
+size=4,4 format=6fddc324-4e03-4bfe-b1853d77768dc904
+native=00000000 bytes=000102035a5a5a5a010203005a5a5a5a020300015a5a5a5a030001025a5a5a5a
+region=00000000 bytes=0203a5a50300a5a5
+converted=00000000 bytes=0000ffff00800080ff0000ffffffffff3c3c3c3c00800080ff0000ffffffffff0000ffff3c3c3c3cff0000ffffffffff0000ffff008000803c3c3c3cffffffff0000ffff00800080ff0000ff3c3c3c3c
+palette_count=4 actual=4 type=0 alpha=1 gray=0 bw=0 colors=ffff00008000ff00ff0000ffffffffff

@@ -1,0 +1,64 @@
+inet_addr: in="1.2.3.4" v=0x4030201 le=57005
+inet_addr: in="1.2.3" v=0x3000201 le=57005
+inet_addr: in="1.2" v=0x2000001 le=57005
+inet_addr: in="1" v=0x1000000 le=57005
+inet_addr: in="0x7f.1" v=0x100007f le=57005
+inet_addr: in="0177.0.0.1" v=0x100007f le=57005
+inet_addr: in="0x7f000001" v=0x100007f le=57005
+inet_addr: in="017700000001" v=0x100007f le=57005
+inet_addr: in="1.2.3.256" v=0xffffffff le=57005
+inet_addr: in="1.2.65535" v=0xffff0201 le=57005
+inet_addr: in="1.16777215" v=0xffffff01 le=57005
+inet_addr: in="4294967295" v=0xffffffff le=57005
+inet_addr: in="4294967296" v=0xffffffff le=57005
+inet_addr: in="255.255.255.255" v=0xffffffff le=57005
+inet_addr: in="" v=0xffffffff le=57005
+inet_addr: in=" " v=0x0 le=57005
+inet_addr: in="  1.2.3.4" v=0xffffffff le=57005
+inet_addr: in="1.2.3.4 " v=0x4030201 le=57005
+inet_addr: in="1.2.3.4x" v=0xffffffff le=57005
+inet_addr: in="1.2.3.4 x" v=0x4030201 le=57005
+inet_addr: in="1..2.3" v=0xffffffff le=57005
+inet_addr: in="1.2.3.4.5" v=0xffffffff le=57005
+inet_addr: in="0x" v=0xffffffff le=57005
+inet_addr: in="08" v=0xffffffff le=57005
+inet_addr: in="09.1.1.1" v=0xffffffff le=57005
+inet_addr: in="1.2.3.4	" v=0x4030201 le=57005
+inet_addr: in="0xffffffff" v=0xffffffff le=57005
+inet_addr: in="-1" v=0xffffffff le=57005
+inet_addr: in="+1" v=0xffffffff le=57005
+inet_addr: in="1.2.3." v=0xffffffff le=57005
+inet_addr: in=".1.2.3" v=0xffffffff le=57005
+inet_addr: in="(NULL)" v=0xffffffff le=10014
+inet_ntoa: out="1.2.3.4" le=0
+inet_ntoa_same_buffer: same=1 out="255.255.255.255"
+ntop_short: null=1 err=10022
+ntop_nullbuf: null=1 err=10022
+ntop_zero: null=1 err=10022
+ntop_af30: null=1 err=10047
+ntop_exact8: null=0 out="1.2.3.4"
+ntop_7: null=1 err=10022
+ghbn_empty: null=0 addrtype=2 len=4 has_addr=1
+ghbn_v6_literal: null=1 err=11001
+ghbn_v4_literal: null=0 name="1.2.3.4" a0=0x4030201
+ghbn_bad_literal: null=1 err=11001
+ghbn_localhost: null=0 name="Tiny11" a0=0x100007f
+close_bogus: ok=0 err=6
+close_null: ok=0 err=6
+set_bogus: ok=0 err=6
+reset_bogus: ok=0 err=6
+set_ok: ok=1 le=57005
+close_ok: ok=1 le=57005
+close_twice: ok=0 err=6
+enum_bad_socket: rc=-1 err=10038
+enum_null_out: rc=-1 err=10022 event_still_set=1
+enum_ok: rc=0 events=0x0 event_reset=1 err0=0xcccccccc
+enum_bad_event: rc=-1 err=10038
+wsasocket_registered_io: valid=1
+wsasocket_no_handle_inherit: valid=1
+acceptex_v4: ok=0 err=997 local_len=16 remote_len=16 local_fam=2 remote_fam=2
+acceptex_v6: ok=0 err=997 local_len=28 remote_len=28 local_fam=23 remote_fam=23
+acceptex_data_post: ok=0 err=997
+acceptex_data_before_send: wait=258
+acceptex_data_done: wait=0 ok=1 xfer=5 data="hello" local_len=16 remote_fam=2
+done

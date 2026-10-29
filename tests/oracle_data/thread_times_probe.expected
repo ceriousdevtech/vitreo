@@ -1,0 +1,39 @@
+layout FILETIME size=8 low=0 high=4
+constant THREAD_QUERY_INFORMATION 40
+constant THREAD_QUERY_LIMITED_INFORMATION 800
+suspended cpu-zero=1
+created ok=1 error=dead changed=f
+pseudo ok=1 error=dead changed=f
+null ok=0 error=6 changed=0
+process-pseudo ok=0 error=6 changed=0
+bogus ok=0 error=6 changed=0
+zero ok=0 error=5 changed=0
+query ok=1 error=dead changed=f
+limited ok=1 error=dead changed=f
+synchronize ok=0 error=5 changed=0
+query-sync ok=1 error=dead changed=f
+all ok=1 error=dead changed=f
+event ok=0 error=6 changed=0
+upper32 ok=0 error=6 changed=0
+zeroextended-pseudo ok=0 error=6 changed=0
+cpu user-positive=1 monotonic=1 creation-stable=1 exit-valid=1 retained-stable=1
+exited ok=1 error=dead changed=f
+closed ok=0 error=6 changed=0
+primary ok=1 error=dead changed=f
+primary-zero ok=0 error=5 changed=0
+primary-query ok=1 error=dead changed=f
+primary-limited ok=1 error=dead changed=f
+primary-exited ok=1 error=dead changed=f
+primary-without-process-handle ok=1 error=dead changed=f
+primary-cpu user-positive=1 retained-stable=1
+primary-closed ok=0 error=6 changed=0
+pointer-0 fault code=c0000005 changed=0
+pointer-1 fault code=c0000005 changed=1
+pointer-2 fault code=c0000005 changed=3
+pointer-3 fault code=c0000005 changed=7
+pointer-4 returned ok=0 error=6 changed=0
+pointer-5 fault code=c0000005 changed=0 edge-changed=0 edge-fault-offset=0
+pointer-6 fault code=c0000005 changed=0
+pointer-7 fault code=c0000005 changed=0 edge-changed=0 edge-fault-offset=4
+pointer-8 returned ok=1 error=dead changed=1
+pointer-9 returned ok=1 error=dead changed=e

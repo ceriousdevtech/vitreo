@@ -1,0 +1,52 @@
+# winoracle (12th Gen Intel Core i9-12900KF, Windows 10.0.26200.9457), x86_64-w64-mingw32-gcc -O1, 2026-10-11
+# Non-canonical target: #GP(0) AT THE BRANCH (ea/rip = the branch's offset in its stub), nothing committed
+# (RET has not popped: rsp = -8 is the stub's own push; CALL has not pushed), reported as
+# STATUS_ACCESS_VIOLATION, 2 params, [0]=0, [1]=0xFFFFFFFFFFFFFFFF -- the record of a non-canonical data access.
+# A Jcc not taken never looks at its target. Canonical targets (user unmapped, kernel) instead fault on the
+# FETCH of the target: [0]=8 (execute), [1]=target, rip=target, and the branch has committed (RET popped,
+# RET imm16 released 16 more, CALL pushed).
+top page 0x7FFFFFFE0000
+ret            tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+1 rip=+1 rsp=-8
+ret imm16      tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+1 rip=+1 rsp=-8
+jmp r64        tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+0 rip=+0 rsp=+0
+jmp m64        tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+1 rip=+1 rsp=-8
+call r64       tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+0 rip=+0 rsp=+0
+call m64       tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+1 rip=+1 rsp=-8
+rex.w jmp r64  tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+0 rip=+0 rsp=+0
+jmp rel32      tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+0 rip=+0 rsp=+0
+call rel32     tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+0 rip=+0 rsp=+0
+jz rel32 tkn   tgt=0000800000000000 code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+2 rip=+2 rsp=+0
+jnz rel32 not  tgt=0000800000000000 no fault
+ret            tgt=ffff7fffffffffff code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+1 rip=+1 rsp=-8
+ret imm16      tgt=ffff7fffffffffff code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+1 rip=+1 rsp=-8
+jmp r64        tgt=ffff7fffffffffff code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+0 rip=+0 rsp=+0
+jmp m64        tgt=ffff7fffffffffff code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+1 rip=+1 rsp=-8
+call r64       tgt=ffff7fffffffffff code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+0 rip=+0 rsp=+0
+call m64       tgt=ffff7fffffffffff code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+1 rip=+1 rsp=-8
+rex.w jmp r64  tgt=ffff7fffffffffff code=c0000005 np=2 i0=0 i1=ffffffffffffffff ea=+0 rip=+0 rsp=+0
+jmp rel32      tgt=ffff7fffffffffff out of rel32 reach
+call rel32     tgt=ffff7fffffffffff out of rel32 reach
+jz rel32 tkn   tgt=ffff7fffffffffff out of rel32 reach
+jnz rel32 not  tgt=ffff7fffffffffff out of rel32 reach
+ret            tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=+0
+ret imm16      tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=+16
+jmp r64        tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=+0
+jmp m64        tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=-8
+call r64       tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=-8
+call m64       tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=-16
+rex.w jmp r64  tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=+0
+jmp rel32      tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=+0
+call rel32     tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=-8
+jz rel32 tkn   tgt=00007fffffff0000 code=c0000005 np=2 i0=8 i1=00007fffffff0000 ea=tgt rip=tgt rsp=+0
+jnz rel32 not  tgt=00007fffffff0000 no fault
+ret            tgt=ffff800000000000 code=c0000005 np=2 i0=8 i1=ffff800000000000 ea=tgt rip=tgt rsp=+0
+ret imm16      tgt=ffff800000000000 code=c0000005 np=2 i0=8 i1=ffff800000000000 ea=tgt rip=tgt rsp=+16
+jmp r64        tgt=ffff800000000000 code=c0000005 np=2 i0=8 i1=ffff800000000000 ea=tgt rip=tgt rsp=+0
+jmp m64        tgt=ffff800000000000 code=c0000005 np=2 i0=8 i1=ffff800000000000 ea=tgt rip=tgt rsp=-8
+call r64       tgt=ffff800000000000 code=c0000005 np=2 i0=8 i1=ffff800000000000 ea=tgt rip=tgt rsp=-8
+call m64       tgt=ffff800000000000 code=c0000005 np=2 i0=8 i1=ffff800000000000 ea=tgt rip=tgt rsp=-16
+rex.w jmp r64  tgt=ffff800000000000 code=c0000005 np=2 i0=8 i1=ffff800000000000 ea=tgt rip=tgt rsp=+0
+jmp rel32      tgt=ffff800000000000 out of rel32 reach
+call rel32     tgt=ffff800000000000 out of rel32 reach
+jz rel32 tkn   tgt=ffff800000000000 out of rel32 reach
+jnz rel32 not  tgt=ffff800000000000 out of rel32 reach

@@ -1,0 +1,566 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02BAD8F7773352142CA1BE4E /* AddAppSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0857A3A939BA67775C045D /* AddAppSheet.swift */; };
+		068BB4295AD167976308F922 /* CapsuleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9163AC6F5186D4C9DD8F67 /* CapsuleListView.swift */; };
+		071BFF944DED1C3A153F6CE7 /* CapsuleScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09753A509786DECF5E4168BA /* CapsuleScannerTests.swift */; };
+		0C00064800830379B5F6A2A1 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB7D616BAF61248CEFD331C /* ActivityView.swift */; };
+		107969F0B601C698F721EC50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71607018648ACF23C1971206 /* Assets.xcassets */; };
+		143317401D75C33BD0A3F38B /* CapsuleClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1208EC1AB326D85774F68C /* CapsuleClassifier.swift */; };
+		2B1D6B7E1105838CBDE7B4C1 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9584F3DB30F6781DE5BB4C /* AppInfo.swift */; };
+		2D0258CE2DF2B6957304C099 /* CommandLineLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5279F013A24A17C67BA271E2 /* CommandLineLink.swift */; };
+		3601E32A120C87B82B8976FD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F47019F910294B080CA935 /* ContentView.swift */; };
+		374794C55CB3B7EA3398B7E6 /* VitreoCLIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B9B8034CB0EB4A764BF16C /* VitreoCLIClient.swift */; };
+		3C8229D3718F8E04CDC36ADA /* ExternalLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9638EF6BB9E697EB32C4E138 /* ExternalLaunchTests.swift */; };
+		472DF860ED9DE64D9C32DDFF /* ExternalLaunchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1A866071D1190C8CF3C583 /* ExternalLaunchSheet.swift */; };
+		4A9CB407118E4CAF1EF41708 /* CapsuleScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC01821C9E0C8BB9BAA29B4 /* CapsuleScanner.swift */; };
+		56EFD54134E4CB2BD136A498 /* CommandLineLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75871C03CAB5C46C01D1EC9 /* CommandLineLinkTests.swift */; };
+		586B554B2F072E320AC474CC /* MacOpenEventBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFFEBCC3FC599FE60C1B61B /* MacOpenEventBroker.swift */; };
+		5C250191248FD7ECA0E2D33D /* VitreoManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146CFBDA25754C69A1D71325 /* VitreoManagerApp.swift */; };
+		655D96E9E31667C6CDECA75B /* PEInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B2717B4F3F3AEE8B3DAB5F6 /* PEInspector.swift */; };
+		689F78D1ABBB4B12CACDC668 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6B24D937BC31EADCFAFBE5 /* SettingsView.swift */; };
+		A6B97F03B7400E672B699445 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE84E255F1D089B121273D4C /* SidebarView.swift */; };
+		A7D891A5303590E2AF56866E /* PEIconExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A563FAAF9ED8652A1E51340 /* PEIconExtractor.swift */; };
+		BE0F634723A9F21F98A76229 /* CapsuleProbeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63265D22AAC59285AE5C488 /* CapsuleProbeTests.swift */; };
+		C878320A50647752B4597709 /* ExternalLaunchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695DB79A99AD92FB8AAD0A83 /* ExternalLaunchCoordinator.swift */; };
+		CC8901E9B7CF4AD636364272 /* AppListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785C28406D945DECC0C5796 /* AppListView.swift */; };
+		E394BA1EB5A4F2DA29C72FF8 /* VitreoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C038A70045123B772B71CA9 /* VitreoService.swift */; };
+		E966A58B730C6F0BB63D5D7C /* ExternalLaunchRuleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E31DDBA4EA072E0DB8767D6 /* ExternalLaunchRuleStore.swift */; };
+		FE8880F78AF0AF55BBA677CA /* AppRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87755FAED57F980EE39C5F3B /* AppRowView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A2F78CDBD44A3825F6EB5F00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90DB24687E4DAD175DC64729 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E54CCBCE39A1B213FFE8FEF;
+			remoteInfo = VitreoManager;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0785C28406D945DECC0C5796 /* AppListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppListView.swift; sourceTree = "<group>"; };
+		09753A509786DECF5E4168BA /* CapsuleScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleScannerTests.swift; sourceTree = "<group>"; };
+		0A563FAAF9ED8652A1E51340 /* PEIconExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEIconExtractor.swift; sourceTree = "<group>"; };
+		0C038A70045123B772B71CA9 /* VitreoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitreoService.swift; sourceTree = "<group>"; };
+		0CC01821C9E0C8BB9BAA29B4 /* CapsuleScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleScanner.swift; sourceTree = "<group>"; };
+		146CFBDA25754C69A1D71325 /* VitreoManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitreoManagerApp.swift; sourceTree = "<group>"; };
+		1B2717B4F3F3AEE8B3DAB5F6 /* PEInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEInspector.swift; sourceTree = "<group>"; };
+		4769EB535050CFACD95E172F /* VitreoManager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VitreoManager.entitlements; sourceTree = "<group>"; };
+		5279F013A24A17C67BA271E2 /* CommandLineLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLineLink.swift; sourceTree = "<group>"; };
+		5B0857A3A939BA67775C045D /* AddAppSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAppSheet.swift; sourceTree = "<group>"; };
+		695DB79A99AD92FB8AAD0A83 /* ExternalLaunchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLaunchCoordinator.swift; sourceTree = "<group>"; };
+		71607018648ACF23C1971206 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		79F47019F910294B080CA935 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7E31DDBA4EA072E0DB8767D6 /* ExternalLaunchRuleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLaunchRuleStore.swift; sourceTree = "<group>"; };
+		87755FAED57F980EE39C5F3B /* AppRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRowView.swift; sourceTree = "<group>"; };
+		885151AF5795091C595B93AB /* Vitreo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vitreo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9638EF6BB9E697EB32C4E138 /* ExternalLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLaunchTests.swift; sourceTree = "<group>"; };
+		9F1A866071D1190C8CF3C583 /* ExternalLaunchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLaunchSheet.swift; sourceTree = "<group>"; };
+		ACFFEBCC3FC599FE60C1B61B /* MacOpenEventBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacOpenEventBroker.swift; sourceTree = "<group>"; };
+		C6B9B8034CB0EB4A764BF16C /* VitreoCLIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitreoCLIClient.swift; sourceTree = "<group>"; };
+		CE84E255F1D089B121273D4C /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		CF1208EC1AB326D85774F68C /* CapsuleClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleClassifier.swift; sourceTree = "<group>"; };
+		D75871C03CAB5C46C01D1EC9 /* CommandLineLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLineLinkTests.swift; sourceTree = "<group>"; };
+		DF9163AC6F5186D4C9DD8F67 /* CapsuleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleListView.swift; sourceTree = "<group>"; };
+		E25FC67DC8BB40C9137A3B0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E63265D22AAC59285AE5C488 /* CapsuleProbeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleProbeTests.swift; sourceTree = "<group>"; };
+		EA9584F3DB30F6781DE5BB4C /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		EAB7D616BAF61248CEFD331C /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		EEB6585D8CDCF15E1DE7A65F /* VitreoManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitreoManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE6B24D937BC31EADCFAFBE5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		106B5381DFA5764AA3813161 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EAB7D616BAF61248CEFD331C /* ActivityView.swift */,
+				5B0857A3A939BA67775C045D /* AddAppSheet.swift */,
+				0785C28406D945DECC0C5796 /* AppListView.swift */,
+				87755FAED57F980EE39C5F3B /* AppRowView.swift */,
+				DF9163AC6F5186D4C9DD8F67 /* CapsuleListView.swift */,
+				9F1A866071D1190C8CF3C583 /* ExternalLaunchSheet.swift */,
+				FE6B24D937BC31EADCFAFBE5 /* SettingsView.swift */,
+				CE84E255F1D089B121273D4C /* SidebarView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		18DA4889D03C3A54B085021B /* VitreoManager */ = {
+			isa = PBXGroup;
+			children = (
+				7E3D3535AC20C4C36A7F6986 /* Models */,
+				61F77CC6510EA189E2CFC594 /* Services */,
+				106B5381DFA5764AA3813161 /* Views */,
+				71607018648ACF23C1971206 /* Assets.xcassets */,
+				79F47019F910294B080CA935 /* ContentView.swift */,
+				E25FC67DC8BB40C9137A3B0D /* Info.plist */,
+				4769EB535050CFACD95E172F /* VitreoManager.entitlements */,
+				146CFBDA25754C69A1D71325 /* VitreoManagerApp.swift */,
+			);
+			path = VitreoManager;
+			sourceTree = "<group>";
+		};
+		49248C57C5607F8CA16CF5D7 = {
+			isa = PBXGroup;
+			children = (
+				18DA4889D03C3A54B085021B /* VitreoManager */,
+				82C0DAFFDF0C5CD162C9478F /* VitreoManagerTests */,
+				9D3AE62EABA903A9DB07CEBD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		61F77CC6510EA189E2CFC594 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CF1208EC1AB326D85774F68C /* CapsuleClassifier.swift */,
+				0CC01821C9E0C8BB9BAA29B4 /* CapsuleScanner.swift */,
+				5279F013A24A17C67BA271E2 /* CommandLineLink.swift */,
+				695DB79A99AD92FB8AAD0A83 /* ExternalLaunchCoordinator.swift */,
+				7E31DDBA4EA072E0DB8767D6 /* ExternalLaunchRuleStore.swift */,
+				ACFFEBCC3FC599FE60C1B61B /* MacOpenEventBroker.swift */,
+				0A563FAAF9ED8652A1E51340 /* PEIconExtractor.swift */,
+				1B2717B4F3F3AEE8B3DAB5F6 /* PEInspector.swift */,
+				C6B9B8034CB0EB4A764BF16C /* VitreoCLIClient.swift */,
+				0C038A70045123B772B71CA9 /* VitreoService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		7E3D3535AC20C4C36A7F6986 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EA9584F3DB30F6781DE5BB4C /* AppInfo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		82C0DAFFDF0C5CD162C9478F /* VitreoManagerTests */ = {
+			isa = PBXGroup;
+			children = (
+				E63265D22AAC59285AE5C488 /* CapsuleProbeTests.swift */,
+				09753A509786DECF5E4168BA /* CapsuleScannerTests.swift */,
+				D75871C03CAB5C46C01D1EC9 /* CommandLineLinkTests.swift */,
+				9638EF6BB9E697EB32C4E138 /* ExternalLaunchTests.swift */,
+			);
+			path = VitreoManagerTests;
+			sourceTree = "<group>";
+		};
+		9D3AE62EABA903A9DB07CEBD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				885151AF5795091C595B93AB /* Vitreo.app */,
+				EEB6585D8CDCF15E1DE7A65F /* VitreoManagerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0E54CCBCE39A1B213FFE8FEF /* VitreoManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D372E6EEF6BD7F2EBC458A08 /* Build configuration list for PBXNativeTarget "VitreoManager" */;
+			buildPhases = (
+				70CDF52C0838AD0A58F7BF6C /* Sources */,
+				7BD27F85133B1CB61910761B /* Resources */,
+				C8D5D1B1D1D82240D78695C0 /* Embed Vitreo Engine */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VitreoManager;
+			packageProductDependencies = (
+			);
+			productName = VitreoManager;
+			productReference = 885151AF5795091C595B93AB /* Vitreo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DD438315017190EE1774C46F /* VitreoManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 150E5845D16EA0079B3A8EBC /* Build configuration list for PBXNativeTarget "VitreoManagerTests" */;
+			buildPhases = (
+				757CA517638E28FC69DDC340 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4A01B6F6AD34601F2E9DA285 /* PBXTargetDependency */,
+			);
+			name = VitreoManagerTests;
+			packageProductDependencies = (
+			);
+			productName = VitreoManagerTests;
+			productReference = EEB6585D8CDCF15E1DE7A65F /* VitreoManagerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		90DB24687E4DAD175DC64729 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = A97C994084FEBB20CF52B247 /* Build configuration list for PBXProject "VitreoManager" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 49248C57C5607F8CA16CF5D7;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0E54CCBCE39A1B213FFE8FEF /* VitreoManager */,
+				DD438315017190EE1774C46F /* VitreoManagerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7BD27F85133B1CB61910761B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				107969F0B601C698F721EC50 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C8D5D1B1D1D82240D78695C0 /* Embed Vitreo Engine */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../build/src/vitreo",
+				"$(SRCROOT)/LauncherHelper/main.swift",
+			);
+			name = "Embed Vitreo Engine";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Helpers/vitreo",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/VitreoLauncher",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ENGINE=\"${SRCROOT}/../build/src/vitreo\"\nHELPERS=\"${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Helpers\"\nRESOURCES=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nSWIFTC=\"${SWIFT_EXEC:-${TOOLCHAIN_DIR}/usr/bin/swiftc}\"\nmkdir -p \"${HELPERS}\"\nif [ -x \"${ENGINE}\" ]; then\n  cp \"${ENGINE}\" \"${HELPERS}/vitreo\"\n  chmod 755 \"${HELPERS}/vitreo\"\nelse\n  echo \"warning: Vitreo engine not found at ${ENGINE}; select one in Manager Settings\"\nfi\nrm -f \"${RESOURCES}/vitreo\"\n\"${SWIFTC}\" \\\n  -O \\\n  -target \"arm64-apple-macos${MACOSX_DEPLOYMENT_TARGET}\" \\\n  -sdk \"${SDKROOT}\" \\\n  -o \"${RESOURCES}/VitreoLauncher\" \\\n  \"${SRCROOT}/LauncherHelper/main.swift\"\nchmod 755 \"${RESOURCES}/VitreoLauncher\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		70CDF52C0838AD0A58F7BF6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C00064800830379B5F6A2A1 /* ActivityView.swift in Sources */,
+				02BAD8F7773352142CA1BE4E /* AddAppSheet.swift in Sources */,
+				2B1D6B7E1105838CBDE7B4C1 /* AppInfo.swift in Sources */,
+				CC8901E9B7CF4AD636364272 /* AppListView.swift in Sources */,
+				FE8880F78AF0AF55BBA677CA /* AppRowView.swift in Sources */,
+				143317401D75C33BD0A3F38B /* CapsuleClassifier.swift in Sources */,
+				068BB4295AD167976308F922 /* CapsuleListView.swift in Sources */,
+				4A9CB407118E4CAF1EF41708 /* CapsuleScanner.swift in Sources */,
+				2D0258CE2DF2B6957304C099 /* CommandLineLink.swift in Sources */,
+				3601E32A120C87B82B8976FD /* ContentView.swift in Sources */,
+				C878320A50647752B4597709 /* ExternalLaunchCoordinator.swift in Sources */,
+				E966A58B730C6F0BB63D5D7C /* ExternalLaunchRuleStore.swift in Sources */,
+				472DF860ED9DE64D9C32DDFF /* ExternalLaunchSheet.swift in Sources */,
+				586B554B2F072E320AC474CC /* MacOpenEventBroker.swift in Sources */,
+				A7D891A5303590E2AF56866E /* PEIconExtractor.swift in Sources */,
+				655D96E9E31667C6CDECA75B /* PEInspector.swift in Sources */,
+				689F78D1ABBB4B12CACDC668 /* SettingsView.swift in Sources */,
+				A6B97F03B7400E672B699445 /* SidebarView.swift in Sources */,
+				374794C55CB3B7EA3398B7E6 /* VitreoCLIClient.swift in Sources */,
+				5C250191248FD7ECA0E2D33D /* VitreoManagerApp.swift in Sources */,
+				E394BA1EB5A4F2DA29C72FF8 /* VitreoService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		757CA517638E28FC69DDC340 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE0F634723A9F21F98A76229 /* CapsuleProbeTests.swift in Sources */,
+				071BFF944DED1C3A153F6CE7 /* CapsuleScannerTests.swift in Sources */,
+				56EFD54134E4CB2BD136A498 /* CommandLineLinkTests.swift in Sources */,
+				3C8229D3718F8E04CDC36ADA /* ExternalLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4A01B6F6AD34601F2E9DA285 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0E54CCBCE39A1B213FFE8FEF /* VitreoManager */;
+			targetProxy = A2F78CDBD44A3825F6EB5F00 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1275A25DBADF89B21A0C869F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = "1.0 Beta";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.vitreo.manager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		32E2F6BD3639D5DB79C5E5E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = "1.0 Beta";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.vitreo.manager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		475DA930001DF2C81EC7BC9B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vitreo.app/Contents/MacOS/Vitreo";
+			};
+			name = Debug;
+		};
+		71D900353E55BEE8F92ED67A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vitreo.app/Contents/MacOS/Vitreo";
+			};
+			name = Release;
+		};
+		8FABA1503C9C3C65090F44CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VitreoManager/VitreoManager.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = VitreoManager/Info.plist;
+				INFOPLIST_GENERATION_MODE = GeneratedFile;
+				INFOPLIST_KEY_CFBundleDisplayName = Vitreo;
+				INFOPLIST_KEY_CFBundleName = Vitreo;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHighResolutionCapable = YES;
+				INFOPLIST_KEY_NSMainStoryboardFile = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_MODULE_NAME = VitreoManager;
+				PRODUCT_NAME = Vitreo;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		E54C22E87ADEECA29EA7A13A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VitreoManager/VitreoManager.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = VitreoManager/Info.plist;
+				INFOPLIST_GENERATION_MODE = GeneratedFile;
+				INFOPLIST_KEY_CFBundleDisplayName = Vitreo;
+				INFOPLIST_KEY_CFBundleName = Vitreo;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHighResolutionCapable = YES;
+				INFOPLIST_KEY_NSMainStoryboardFile = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_MODULE_NAME = VitreoManager;
+				PRODUCT_NAME = Vitreo;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		150E5845D16EA0079B3A8EBC /* Build configuration list for PBXNativeTarget "VitreoManagerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				475DA930001DF2C81EC7BC9B /* Debug */,
+				71D900353E55BEE8F92ED67A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A97C994084FEBB20CF52B247 /* Build configuration list for PBXProject "VitreoManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				32E2F6BD3639D5DB79C5E5E6 /* Debug */,
+				1275A25DBADF89B21A0C869F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D372E6EEF6BD7F2EBC458A08 /* Build configuration list for PBXNativeTarget "VitreoManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8FABA1503C9C3C65090F44CB /* Debug */,
+				E54C22E87ADEECA29EA7A13A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 90DB24687E4DAD175DC64729 /* Project object */;
+}

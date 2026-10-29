@@ -1,0 +1,76 @@
+== wevtapi
+EvtQuery(unknown channel) -> 0 err=3a9f
+EvtQuery(missing file) -> 0 err=3
+EvtClose(0x1234) -> 0 err=6
+EvtClose(NULL) -> 0 err=6
+EvtNext(NULL) -> 0 err=6
+  returned=77
+EvtRender(NULL,NULL) -> 0 err=6
+  used=77
+  props=77
+== userenv
+CreateEnvironmentBlock(NULL token, FALSE) -> 1 err=cb
+  vars>5=1
+  Path=1
+  USERPROFILE=1
+  SystemRoot=1
+  TEMP=1
+  HeapValidate=1
+DestroyEnvironmentBlock -> 1 err=dead
+DestroyEnvironmentBlock(NULL) -> 0 err=57
+EnterCriticalPolicySection(FALSE)!=0 -> 1 err=0
+LeaveCriticalPolicySection -> 1 err=dead
+LeaveCriticalPolicySection(NULL) -> 0 err=57
+RegisterGPNotification(event,FALSE) -> 1 err=dead
+UnregisterGPNotification(event) -> 1 err=dead
+UnregisterGPNotification(event again) -> 0 err=2
+RegisterGPNotification(NULL) -> 0 err=57
+== power
+PowerDeterminePlatformRoleEx(2) -> 1 err=dead
+PowerDeterminePlatformRoleEx(0) -> 1 err=dead
+PowerDeterminePlatformRoleEx(3) -> 1 err=dead
+PowerGetActiveScheme -> 0 err=dead
+  Data1=381b4222
+  levels: 0:inval 1:inval 2:inval 3:inval 6:inval 7:inval a:inval d:inval 11:inval 17:inval 18:inval 19:inval 1a:inval 1b:inval 1c:inval 1d:inval 1e:inval 1f:inval 20:inval 21:inval 22:inval 23:inval 24:inval 25:inval 26:inval 27:inval 28:inval 29:inval 2a:inval 2b:inval 2c:inval 2d:inval 2e:inval 2f:inval 30:inval 31:inval 32:inval 33:inval 34:inval 35:inval 36:inval 37:inval 38:inval 39:inval 3a:inval 3b:inval 3c:inval 3d:inval 3e:inval 3f:inval 40:inval 42:inval 43:inval 44:inval 45:inval 46:inval 47:inval 48:inval 49:inval 4a:inval 4b:inval 4c:inval 4d:inval 4e:inval 4f:inval 50:inval 51:inval 52:inval 53:inval 54:inval 55:inval 56:inval 57:inval 58:inval 59:inval 5a:inval 5b:inval 5c:inval 5d:inval 5e:inval 5f:inval 60:inval 61:inval 62:inval 63:inval 64:inval 65:inval 66:inval 67:inval 68:inval 69:inval 6a:inval 6b:inval 6c:inval 6d:inval 6e:inval 6f:inval 70:inval 71:inval 72:inval 73:inval 74:inval 75:inval 76:inval 77:inval 78:inval 79:inval 7a:inval 7b:inval 7c:inval 7d:inval 7e:inval 7f:inval 80:inval 81:inval 82:inval 83:inval 84:inval 85:inval 86:inval 87:inval 88:inval 89:inval 8a:inval 8b:inval
+CallNtPowerInformation(SystemBatteryState) -> 0
+  sizeof=20
+  AcOnLine=1
+  BatteryPresent=0
+  Charging=0
+  EstimatedTime=0
+CallNtPowerInformation(SystemBatteryState, short) -> c0000023
+CallNtPowerInformation(SystemPowerCapabilities) -> 0
+  sizeof=4c
+CallNtPowerInformation(LastWakeTime) -> 0
+CallNtPowerInformation(SystemExecutionState) -> 0
+CallNtPowerInformation(level 999) -> c000000d
+== wtsapi32
+WTSQuerySessionInformationW(current, SessionId) -> 1 err=dead
+  bytes=4
+  id==ProcessIdToSessionId=1
+WTSQuerySessionInformationW(sid, ConnectState) -> 1 err=3f0
+  bytes=4
+WTSQuerySessionInformationW(no such session) -> 1 err=dead
+  bytes=4
+  value=3039
+  no-such-session ConnectState -> 0 err=2 bytes=77 buf0=0
+  current ConnectState -> 1 err=3f0 bytes=4
+  no-such-session UserName -> 0 err=2 bytes=77 buf0=0
+  current UserName -> 1 err=3f0 bytes=c
+  no-such-session WinStationName -> 0 err=2 bytes=77 buf0=0
+  current WinStationName -> 1 err=3f0 bytes=14
+  no-such-session ClientProtocolType -> 0 err=2 bytes=77 buf0=0
+  current ClientProtocolType -> 1 err=0 bytes=2
+  no-such-session SessionInfo -> 0 err=2 bytes=77 buf0=0
+  current SessionInfo -> 1 err=3f0 bytes=d8
+  no-such-session IsRemoteSession -> 0 err=2 bytes=77 buf0=0
+  current IsRemoteSession -> 1 err=0 bytes=1
+  no-such-session IdleTime(17) -> 0 err=32 bytes=77 buf0=0
+  current IdleTime(17) -> 0 err=32 bytes=77
+  no-such-session class 200 -> 0 err=57 bytes=77 buf0=0
+  current class 200 -> 0 err=57 bytes=77
+WTSQuerySessionInformationW(NULL buffer) -> 0 err=6f8
+WTSQuerySessionInformationW(bad server) -> 1 err=dead
+  TokenSessionId==ProcessIdToSessionId=1
+  session!=0=1
+  WTSGetActiveConsoleSessionId==sid=0

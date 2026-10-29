@@ -1,0 +1,34 @@
+open ok=1
+q2_null level=0 ok=0 gle=7c need=5555
+q2 level=0 ok=0 gle=7c
+q2_null level=1 ok=0 gle=7a need=13a
+q2 level=1 ok=1 gle=0 descNonNull=1
+q2_null level=2 ok=0 gle=7a need=40
+q2 level=2 ok=1 gle=0 reset=e10
+q2_null level=3 ok=0 gle=7a need=4
+q2 level=3 ok=1 gle=0 dword=0
+q2_null level=4 ok=0 gle=7a need=4
+q2 level=4 ok=1 gle=0 dword=0
+q2_null level=5 ok=0 gle=7a need=4
+q2 level=5 ok=1 gle=0 dword=1
+q2_null level=6 ok=0 gle=7a need=110
+q2 level=6 ok=1 gle=0
+q2_null level=7 ok=0 gle=7a need=4
+q2 level=7 ok=1 gle=0 dword=2710
+q2_null level=8 ok=0 gle=7a need=18
+q2 level=8 ok=1 gle=0 triggers=0
+q2_null level=9 ok=0 gle=57 need=0
+q2 level=9 ok=0 gle=57
+q2_null level=a ok=0 gle=7c need=5555
+q2 level=a ok=0 gle=7c
+q2_null level=b ok=0 gle=7a need=1
+q2 level=b ok=1 gle=0 dword=0
+q2_null level=c ok=0 gle=7a need=4
+q2 level=c ok=1 gle=0 dword=0
+q2_null level=d ok=0 gle=7c need=5555
+q2 level=d ok=0 gle=7c
+q2_null level=e ok=0 gle=7c need=5555
+q2 level=e ok=0 gle=7c
+q2_null level=f ok=0 gle=7c need=5555
+q2 level=f ok=0 gle=7c
+q2_noaccess ok=0 gle=5
