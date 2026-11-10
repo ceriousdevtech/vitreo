@@ -228,7 +228,7 @@ TEST_F(Kernel32CpuzTest, QueryFullProcessImageNameWReturnsRegisteredPeerPath) {
     mgr.set_handle_table(&handles);
     mgr.set_process_snapshot_provider([] {
         return std::vector<ipc::ProcessSnapshotEntry>{
-            {peer_pid, 1, "Battle.net-Setup.exe", expected},
+            {peer_pid, 1, "Battle.net-Setup.exe", expected, 0, peer_pid},  // host_pid keys the lookup
         };
     });
 
@@ -267,7 +267,7 @@ TEST_F(Kernel32CpuzTest, K32GetModuleFileNameExWReturnsPeerMainImagePath) {
     mgr.set_handle_table(&handles);
     mgr.set_process_snapshot_provider([] {
         return std::vector<ipc::ProcessSnapshotEntry>{
-            {peer_pid, 1, "Battle.net.exe", expected},
+            {peer_pid, 1, "Battle.net.exe", expected, 0, peer_pid},  // host_pid keys the lookup
         };
     });
 

@@ -119,11 +119,13 @@ TEST(BackendBindingLayout, CallStructsCoverTheWindowsFrontendsWriteTo) {
 // growth from 3640 to 3656 is the heap-window descriptor set
 // (BACKEND_DESCRIPTOR_SET_HEAP_WINDOW): one pointer per stage. The vertex-
 // pull table and the mesh fields took it to 3792; the mesh dispatch and the
-// object stage's tables moved out of line (BackendDrawCall::mesh), 3608.
+// object stage's tables moved out of line (BackendDrawCall::mesh), 3608. The
+// per-stream strides for dynamic_vertex_strides pipelines
+// (vertex_buffer_strides, 32 x u32) took it to 3736.
 TEST(BackendBindingLayout, CallStructsStayWithinTheirSizeRatchet) {
     EXPECT_EQ(BACKEND_MAX_VERTEX_BUFFERS,
               winapi::d3d12::D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT);
-    EXPECT_LE(sizeof(BackendDrawCall), usize{3608})
+    EXPECT_LE(sizeof(BackendDrawCall), usize{3736})
         << "BackendDrawCall grew to " << sizeof(BackendDrawCall)
         << " bytes; it is built per draw call";
     EXPECT_LE(sizeof(BackendDispatchCall), usize{2048})

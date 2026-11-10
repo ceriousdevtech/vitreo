@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-only
 
 #include "ipc/process_session.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/process_handle.hpp"
 
 #include <gtest/gtest.h>
@@ -122,7 +123,7 @@ TEST_F(ProcessSessionTest, OwnsDirectWorkerAndPropagatesLaunchContext) {
     EXPECT_EQ(lines[18], "--guest-service-arg-utf16");
     EXPECT_EQ(lines[19], spec.guest_service_arguments_utf16[0]);
     EXPECT_EQ(lines[20], "--guest-parent-pid");
-    EXPECT_EQ(lines[21], std::to_string(::getpid()));
+    EXPECT_EQ(lines[21], std::to_string(ipc::guest_process_id()));
     EXPECT_EQ(lines[22], "--parent-death-fd");
     EXPECT_FALSE(lines[23].empty())
         << "worker did not receive a parent-death descriptor";

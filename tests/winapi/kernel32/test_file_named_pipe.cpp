@@ -2,6 +2,7 @@
 /// @brief Unit tests for Windows named-pipe state (Chromium Mojo channel semantics): WaitNamedPipe, pipe modes, peer process ids
 
 #include "kernel32_file_fixture.hpp"
+#include "ipc/hwnd_registry.hpp"
 
 // ---------------------------------------------------------------------------
 // Windows named-pipe state (Chromium Mojo channel semantics)
@@ -379,7 +380,7 @@ TEST_F(FileConsoleBridgeTest, NamedPipePeerProcessIdsAcrossFork) {
     u32 server_self = 0;
     u32 error = error_codes::ERROR_SUCCESS;
     ASSERT_TRUE(parent.named_pipe_server_process_id(server, server_self, error));
-    EXPECT_EQ(server_self, static_cast<u32>(::getpid()));
+    EXPECT_EQ(server_self, ipc::guest_process_id());
     EXPECT_FALSE(parent.named_pipe_client_process_id(server, server_self, error));
     EXPECT_EQ(error, error_codes::ERROR_PIPE_NOT_CONNECTED);
 

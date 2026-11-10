@@ -1646,7 +1646,7 @@ DllExports create_shlwapi_thunks(capsule::Vfs* vfs, ComCoreManager* com,
         if (!registry->is_valid_key(hkey)) return 6u;  // ERROR_INVALID_HANDLE
         if (sub.text.empty()) return 0u;
         u32 err = create ? registry->reg_create_key_ex_w(hkey, sub.text, &key, nullptr)
-                         : registry->reg_open_key_ex_w(hkey, sub.text, 0, 0, &key);
+                         : registry->reg_open_key_ex_w(hkey, sub.text, 0, 0x02000000u /* MAXIMUM_ALLOWED */, &key);
         if (err != 0u) return err;
         opened = true;
         return 0u;
@@ -1917,7 +1917,7 @@ DllExports create_shlwapi_thunks(capsule::Vfs* vfs, ComCoreManager* com,
         u64 key = hkey;
         bool opened = false;
         if (!sub.text.empty()) {
-            const u32 err = registry->reg_open_key_ex_w(hkey, sub.text, 0, 0, &key);
+            const u32 err = registry->reg_open_key_ex_w(hkey, sub.text, 0, 0x02000000u /* MAXIMUM_ALLOWED */, &key);
             if (err != 0u) {
                 m.set_return(err);
                 return;

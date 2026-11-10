@@ -9,6 +9,7 @@
 /// masks, MACs, interface indices) come from getifaddrs in the test itself.
 
 #include <gtest/gtest.h>
+#include "ipc/hwnd_registry.hpp"
 
 #include <core/cpu/state/cpu_state.hpp>
 #include <core/memory/guest_memory.hpp>
@@ -741,7 +742,7 @@ TEST_F(IphlpapiAdaptersTest, GetExtendedTcpTableValidatesAndListsOwnSocketsBothF
     ASSERT_EQ(::listen(v6, 1), 0);
     socklen_t l6 = sizeof(a6);
     ::getsockname(v6, reinterpret_cast<sockaddr*>(&a6), &l6);
-    const u32 pid = static_cast<u32>(::getpid());
+    const u32 pid = ipc::guest_process_id();
 
     for (bool w : {false, true}) {
         SCOPED_TRACE(w ? "x64" : "x86");

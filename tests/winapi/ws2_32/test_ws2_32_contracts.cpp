@@ -6,6 +6,7 @@
 /// in ws2_32_contract_fixture.hpp.
 
 #include "ws2_32_contract_fixture.hpp"
+#include "ipc/hwnd_registry.hpp"
 
 using namespace vitreo;
 using namespace vitreo::winapi;
@@ -263,7 +264,7 @@ TEST_P(Ws2ContractTest, WsaDuplicateSocketWithinProcess) {
     u64 c = 0, a = 0;
     tcp_pair(&c, &a);
     const GuestAddr info = kData + 0x1000;
-    const u64 pid = static_cast<u64>(::getpid());
+    const u64 pid = ipc::guest_process_id();
     ASSERT_EQ(call("WSADuplicateSocketW", {c, pid, info}), 0u);
     EXPECT_EQ(mem_.read_u32(info + 76).value(), 2u);
     EXPECT_EQ(mem_.read_u32(info + 88).value(), 1u);

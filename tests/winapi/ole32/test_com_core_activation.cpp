@@ -90,8 +90,9 @@ TEST_F(MemoryStreamTest, CoCreateInstanceUsesRegisteredClassFactory) {
     create->handler(marshaler);
     EXPECT_EQ(static_cast<u32>(cpu.gpr.rax), com::S_OK);
     EXPECT_EQ(memory.read_u32(output_ptr).value(), object);
-    EXPECT_EQ(calls, (std::vector<GuestAddr>{
-        addref, addref, create_instance, release_method}));
+    // Registration takes the one reference; activation borrows it
+    // (ClassObjectBorrow) instead of an AddRef/Release pair of its own.
+    EXPECT_EQ(calls, (std::vector<GuestAddr>{addref, create_instance}));
 
     set_args({});
     add_server_ref->handler(marshaler);

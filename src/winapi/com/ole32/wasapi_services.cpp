@@ -1224,7 +1224,7 @@ u32 ComCoreManager::audio_session_get_session_instance_identifier(Marshaler& m) 
     std::u16string id = audio_session_identifier(endpoint, image, guid, cross);
     id += u"|0%b";
     if (cross) id += u"#";
-    else append_utf8(id, std::to_string(static_cast<u32>(::getpid())));
+    else append_utf8(id, std::to_string(ipc::guest_process_id()));
     if (m_guest_task_memory == nullptr) return E_OUTOFMEMORY;
     const GuestAddr copy = m_guest_task_memory->allocate((id.size() + 1u) * 2u);
     if (copy == 0) return E_OUTOFMEMORY;

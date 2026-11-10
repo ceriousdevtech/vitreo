@@ -22,6 +22,8 @@ TEST_F(Kernel32CpuzTest,
     const GuestAddr stack = cpu.sp();
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     handles.set_close_callback(
         [&files](Handle h, HandleType type, void* object) {
             return files.on_handle_close(h, type, object);
@@ -83,6 +85,8 @@ TEST_F(Kernel32CpuzTest, CancelIoExAbortsPendingOverlappedConnectNamedPipe) {
     const GuestAddr stack = cpu.sp();
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     handles.set_close_callback(
         [&files](Handle h, HandleType type, void* object) {
             return files.on_handle_close(h, type, object);
@@ -143,6 +147,8 @@ TEST_F(Kernel32CpuzTest, DisconnectNamedPipeCompletesPendingOverlappedConnect) {
     const GuestAddr stack = cpu.sp();
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     handles.set_close_callback(
         [&files](Handle h, HandleType type, void* object) {
             return files.on_handle_close(h, type, object);
@@ -240,6 +246,8 @@ TEST_F(Kernel32CpuzTest,
 
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     handles.set_close_callback(
         [&files](Handle h, HandleType type, void* object) {
             return files.on_handle_close(h, type, object);
@@ -316,6 +324,8 @@ TEST_F(Kernel32CpuzTest,
 
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     handles.set_close_callback(
         [&files](Handle h, HandleType type, void* object) {
             return files.on_handle_close(h, type, object);
@@ -393,6 +403,8 @@ TEST_F(Kernel32CpuzTest, ClosedPipeReadStillQueuesCancellationToOriginalPort) {
     endpoint->conn = ipc::UnixPipe::adopt_connected(sockets[0]);
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     handles.set_close_callback([&](Handle h, HandleType type, void* object) {
         mgr.on_iocp_handle_close(h);
         return files.on_handle_close(h, type, object);
@@ -512,6 +524,8 @@ TEST_F(Kernel32CpuzTest, ShutdownOverlappedPipeIoJoinsWithoutDeadlock) {
 
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     handles.set_close_callback(
         [&files](Handle h, HandleType type, void* object) {
             return files.on_handle_close(h, type, object);
@@ -567,6 +581,8 @@ TEST_F(Kernel32CpuzTest,
 
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     handles.set_close_callback(
         [&files](Handle h, HandleType type, void* object) {
             return files.on_handle_close(h, type, object);

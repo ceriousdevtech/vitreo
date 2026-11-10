@@ -5,6 +5,7 @@
 /// test_com_wasapi_services.cpp).
 
 #include "com_test_common.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "com_test_wasapi_services_fixture.hpp"
 
 TEST_P(WasapiServicesTest, SessionControlStateTextGroupingAndEvents) {
@@ -132,7 +133,7 @@ TEST_P(WasapiServicesTest, SessionControl2IdentifiersAndProcess) {
               com::S_OK);
     EXPECT_EQ(wstr(static_cast<GuestAddr>(ptr(OUT))), id);
     std::u16string pid;
-    for (const char c : std::to_string(static_cast<u32>(::getpid()))) pid.push_back(c);
+    for (const char c : std::to_string(ipc::guest_process_id())) pid.push_back(c);
     EXPECT_EQ(invoke(&ComCoreManager::audio_session_get_session_instance_identifier, {session, 0}),
               kEPointer);
     ASSERT_EQ(invoke(&ComCoreManager::audio_session_get_session_instance_identifier, {session, OUT}),
@@ -140,7 +141,7 @@ TEST_P(WasapiServicesTest, SessionControl2IdentifiersAndProcess) {
     EXPECT_EQ(wstr(static_cast<GuestAddr>(ptr(OUT))), id + u"|0%b" + pid);
     EXPECT_EQ(invoke(&ComCoreManager::audio_session_get_process_id, {session, 0}), kEPointer);
     ASSERT_EQ(invoke(&ComCoreManager::audio_session_get_process_id, {session, OUT}), com::S_OK);
-    EXPECT_EQ(memory_.read_u32(OUT).value(), static_cast<u32>(::getpid()));
+    EXPECT_EQ(memory_.read_u32(OUT).value(), ipc::guest_process_id());
     EXPECT_EQ(invoke(&ComCoreManager::audio_session_is_system_sounds_session, {session}),
               com::S_FALSE);
     EXPECT_EQ(invoke(&ComCoreManager::audio_session_set_ducking_preference, {session, 1}), com::S_OK);
@@ -160,7 +161,7 @@ TEST_P(WasapiServicesTest, SessionControl2IdentifiersAndProcess) {
     EXPECT_EQ(wstr(static_cast<GuestAddr>(ptr(OUT))), cross_id + u"|0%b#");
     EXPECT_EQ(invoke(&ComCoreManager::audio_session_get_process_id, {cross_session, OUT}),
               kAudclntNoSingleProcess);
-    EXPECT_EQ(memory_.read_u32(OUT).value(), static_cast<u32>(::getpid()));
+    EXPECT_EQ(memory_.read_u32(OUT).value(), ipc::guest_process_id());
     // The same GUID without CROSSPROCESS is another session.
     const GuestAddr local = open_stream(0, SESSION_GUID);
     const GuestAddr local_session = must_service(local, kIidAudioSessionControl);

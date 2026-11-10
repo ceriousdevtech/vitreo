@@ -195,6 +195,7 @@ TEST_F(NtdllManagerTest, QueryBasicInfoUsesCreatedProcessPebAndPid) {
 
     ipc::ProcessObject process;
     process.pid = 4242;
+    process.client_id.store(4242);  // the Windows-visible id; pid is host liveness only
     process.publish_guest_metadata(
         ipc::GuestProcessMetadata{true, kPeb, kImageBase});
     HandleTable handles;

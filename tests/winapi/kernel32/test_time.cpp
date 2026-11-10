@@ -2,6 +2,9 @@
 /// @brief Tests for TimeManager (WIN32-080)
 
 #include <gtest/gtest.h>
+#include <cstdlib>
+#include <string>
+#include <CoreFoundation/CoreFoundation.h>
 #include <vitreo/common.hpp>
 #include <winapi/kernel32/system/time.hpp>
 #include <winapi/kernel32/kernel32_ext.hpp>
@@ -348,6 +351,24 @@ TEST_F(TimeTest, SleepEx_ReturnsZero) {
     EXPECT_EQ(ret, 0u);
 }
 
+// Pins the host zone for one test: the conversions below are stated for
+// Mountain time, and a CI runner is in UTC.
+struct ScopedHostTimeZone {
+    explicit ScopedHostTimeZone(const char* zone) {
+        if (const char* old = std::getenv("TZ")) { had_ = true; old_ = old; }
+        ::setenv("TZ", zone, 1);
+        ::tzset();
+        CFTimeZoneResetSystem();  // CoreFoundation caches the system zone
+    }
+    ~ScopedHostTimeZone() {
+        if (had_) ::setenv("TZ", old_.c_str(), 1); else ::unsetenv("TZ");
+        ::tzset();
+        CFTimeZoneResetSystem();
+    }
+    bool had_{false};
+    std::string old_;
+};
+
 // Audit 06 H5. GetTimeZoneInformation must report the host zone (Bias,
 // DaylightBias, current STANDARD/DAYLIGHT id), not an all-zero UTC stub.
 // Measured on Windows America/Denver equivalent: Bias=420, DltBias=-60, id=2
@@ -368,7 +389,13 @@ TEST(TimeZoneInformationTest, ReportsHostBiasAndDaylightId) {
     ext.impl_GetTimeZoneInformation(m);
     EXPECT_EQ(get_last_error(), 0u);
     const u32 id = static_cast<u32>(cpu.gpr.rax);
-    EXPECT_TRUE(id == 1u || id == 2u);  // STANDARD or DAYLIGHT
+    // Learn GetTimeZoneInformation: TIME_ZONE_ID_UNKNOWN (0) when the zone
+    // does not use daylight saving time (StandardDate.wMonth == 0, e.g. a
+    // UTC host), otherwise STANDARD (1) or DAYLIGHT (2).
+    u16 standard_month = 0;
+    ASSERT_TRUE(memory.read_bytes(buf + 70, reinterpret_cast<u8*>(&standard_month), 2).is_ok());
+    if (standard_month == 0) EXPECT_EQ(id, 0u);
+    else EXPECT_TRUE(id == 1u || id == 2u);
     i32 bias = 0, dlt = 0;
     ASSERT_TRUE(memory.read_bytes(buf, reinterpret_cast<u8*>(&bias), 4).is_ok());
     ASSERT_TRUE(memory.read_bytes(buf + 168, reinterpret_cast<u8*>(&dlt), 4).is_ok());
@@ -385,6 +412,7 @@ TEST(TimeZoneInformationTest, ReportsHostBiasAndDaylightId) {
 }
 
 TEST(TimeZoneInformationTest, SystemTimeToTzSpecificLocalTimeAppliesBias) {
+    const ScopedHostTimeZone zone("America/Denver");
     GuestMemory memory;
     ASSERT_TRUE(memory.map_region(0x10000, 0x1000, MemoryProtection::ReadWrite).is_ok());
     capsule::Vfs vfs;
@@ -414,6 +442,7 @@ TEST(TimeZoneInformationTest, SystemTimeToTzSpecificLocalTimeAppliesBias) {
 }
 
 TEST(TimeZoneInformationTest, TzSpecificLocalTimeToSystemTimeRoundTrip) {
+    const ScopedHostTimeZone zone("America/Denver");
     GuestMemory memory;
     ASSERT_TRUE(memory.map_region(0x10000, 0x1000, MemoryProtection::ReadWrite).is_ok());
     capsule::Vfs vfs;

@@ -756,7 +756,7 @@ TEST_P(RegKeySecurityTest, SetAppliesTheNamedPartsOfEitherLayout) {
     // The descriptor belongs to the key: a second handle sees it.
     u64 again = 0;
     ASSERT_EQ(reg.reg_open_key_ex_w(capsule::HKEY_CURRENT_USER, L"Software\\VitreoProbe\\sec",
-                                    0, 0, &again), 0u);
+                                    0, 0xF003Fu /* KEY_ALL_ACCESS */, &again), 0u);
     (void)memory.write_u32(kSize, 4096);
     ASSERT_EQ(call("RegGetKeySecurity", {again, 4, kBuf, kSize}), 0u);
     EXPECT_EQ(memory.read_u16(kBuf + memory.read_u32(kBuf + 16).value_or(0) + 4).value_or(0), 1u);

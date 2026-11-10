@@ -1042,7 +1042,7 @@ protected:
     u32 open_status(const std::wstring& path) {
         u64 key = 0;
         const u32 err =
-            thunks->reg_open_key_ex_w(capsule::HKEY_CURRENT_USER, path, 0, 0, &key);
+            thunks->reg_open_key_ex_w(capsule::HKEY_CURRENT_USER, path, 0, 0xF003Fu /* KEY_ALL_ACCESS */, &key);
         if (err == ERROR_SUCCESS) (void)thunks->reg_close_key(key);
         return err;
     }
@@ -1102,7 +1102,7 @@ TEST_F(ShDeleteKeyTest, NullSubkeyClearsKeyInPlace) {
     // caller holds open survives.
     u64 company = 0;
     ASSERT_EQ(thunks->reg_open_key_ex_w(
-                  capsule::HKEY_CURRENT_USER, L"Software\\Johan Gronvall", 0, 0,
+                  capsule::HKEY_CURRENT_USER, L"Software\\Johan Gronvall", 0, 0xF003Fu /* KEY_ALL_ACCESS */,
                   &company),
               ERROR_SUCCESS);
     EXPECT_EQ(call("SHDeleteKeyW", company, 0), ERROR_SUCCESS);
@@ -1697,7 +1697,7 @@ TEST_P(ShRegValueTest, DeleteValueAndDeleteEmptyKey) {
     EXPECT_EQ(call("SHDeleteEmptyKeyW", {e5, wide(kBuf, L"")}), 0u); // delempty_empty_sub
     (void)thunks->reg_close_key(e5);
     u64 probe = 0;
-    EXPECT_EQ(thunks->reg_open_key_ex_w(capsule::HKEY_CURRENT_USER, base + L"e5", 0, 0, &probe), 2u);
+    EXPECT_EQ(thunks->reg_open_key_ex_w(capsule::HKEY_CURRENT_USER, base + L"e5", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &probe), 2u);
     EXPECT_EQ(call("SHDeleteEmptyKeyW", {0x1234, wide(kBuf, L"x")}), 6u);  // delempty_badhkey
 }
 

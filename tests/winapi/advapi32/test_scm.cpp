@@ -803,6 +803,10 @@ TEST_F(ScmTest, QueryStatusReportsStoppedWhenWorkerIsZombie) {
     if (child == 0) {
         _exit(0);
     }
+    // Wait until the child has exited but leave it unreaped (a zombie);
+    // without this the query can race a child that is still running.
+    siginfo_t exited{};
+    ASSERT_EQ(::waitid(P_PID, static_cast<id_t>(child), &exited, WEXITED | WNOWAIT), 0);
 
     const fs::path status_dir = m_root / "runtime" / "services";
     fs::create_directories(status_dir);

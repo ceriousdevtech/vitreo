@@ -501,20 +501,41 @@ bool registry_rename_security_supported(std::wstring_view path) {
         name.push_back(static_cast<char>(ch));
     }
     name = normalize_registry_object_name(name);
-    for (const auto& pair : {std::pair{"HKEY_CURRENT_USER", "CURRENT_USER"},
-                            std::pair{"HKEY_LOCAL_MACHINE", "MACHINE"},
-                            std::pair{"HKEY_USERS", "USERS"}}) {
-        const std::string root = pair.first;
-        if (name == root || name.starts_with(root + "\\"))
-            name = std::string(pair.second) + name.substr(root.size());
+    // HKEY_CLASSES_ROOT is the merged view of the machine and user class
+    // hives (Learn, "Merged View of HKEY_CLASSES_ROOT"): a descriptor stored
+    // under the view's own name or under either backing key governs it.
+    std::vector<std::string> names;
+    const std::string classes = "HKEY_CLASSES_ROOT";
+    if (name == classes || name.starts_with(classes + "\\")) {
+        const std::string rest = name.substr(classes.size());
+        names = {"CLASSES_ROOT" + rest, "MACHINE\\SOFTWARE\\CLASSES" + rest,
+                 "CURRENT_USER\\SOFTWARE\\CLASSES" + rest};
+    } else {
+        for (const auto& pair : {std::pair{"HKEY_CURRENT_USER", "CURRENT_USER"},
+                                std::pair{"HKEY_LOCAL_MACHINE", "MACHINE"},
+                                std::pair{"HKEY_USERS", "USERS"}}) {
+            const std::string root = pair.first;
+            if (name == root || name.starts_with(root + "\\"))
+                name = std::string(pair.second) + name.substr(root.size());
+        }
+        names = {name};
+        // The reverse direction: a descriptor set through the merged view
+        // also governs the backing key it names.
+        for (const char* hive : {"MACHINE\\SOFTWARE\\CLASSES", "CURRENT_USER\\SOFTWARE\\CLASSES"}) {
+            const std::string prefix = hive;
+            if (name == prefix || name.starts_with(prefix + "\\"))
+                names.push_back("CLASSES_ROOT" + name.substr(prefix.size()));
+        }
     }
-    const auto parent = name.substr(0, name.find_last_of('\\'));
     auto& store = named_registry_sds();
     std::lock_guard lock(store.mutex);
-    for (const auto& [key, descriptor] : store.by_name) {
-        (void)descriptor;
-        if (key == name || key.starts_with(name + "\\") ||
-            parent == key || parent.starts_with(key + "\\")) return false;
+    for (const std::string& candidate : names) {
+        const auto parent = candidate.substr(0, candidate.find_last_of('\\'));
+        for (const auto& [key, descriptor] : store.by_name) {
+            (void)descriptor;
+            if (key == candidate || key.starts_with(candidate + "\\") ||
+                parent == key || parent.starts_with(key + "\\")) return false;
+        }
     }
     return true;
 }

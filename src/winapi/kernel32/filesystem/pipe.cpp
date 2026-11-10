@@ -510,8 +510,9 @@ void Kernel32ExtManager::impl_ConnectNamedPipe(Marshaler& m) {
         if(preparation) {set_last_error(preparation);m.set_return(0);return;}
 
         u64 generation = 0;
+        std::shared_ptr<PipeEndpoint> pinned_endpoint;
         const PipeConnectResult start =
-            m_file_manager->begin_async_named_pipe_connect(h, overlapped, &generation);
+            m_file_manager->begin_async_named_pipe_connect(h, overlapped, &generation, &pinned_endpoint);
         if (start == PipeConnectResult::AlreadyConnected) {
             m_file_manager->abandon_overlapped_io(h,overlapped,is_64bit,error_codes::ERROR_PIPE_CONNECTED);
             ipc::ipc_log(
@@ -551,14 +552,14 @@ void Kernel32ExtManager::impl_ConnectNamedPipe(Marshaler& m) {
             }
             auto done = std::make_shared<std::atomic<bool>>(false);
             m_pipe_connect_workers.push_back(PipeConnectWorker{done, std::jthread(
-                [this, h, overlapped, is_64bit, done, generation](std::stop_token stop_token) {
+                [this, h, overlapped, is_64bit, done, generation, pinned_endpoint](std::stop_token stop_token) {
                     struct Done {
                         std::atomic<bool>& flag;
                         ~Done() { flag.store(true, std::memory_order_release); }
                     } mark{*done};
                     const PipeConnectResult result =
                         m_file_manager->wait_async_named_pipe_connect(
-                            h, generation, stop_token);
+                            pinned_endpoint, generation, stop_token);
                     if (result == PipeConnectResult::Disconnected) {
                         // DisconnectNamedPipe while pending, also when the
                         // handle is closed after it

@@ -90,11 +90,11 @@ public:
     /// RegCreateKeyEx core. `sam_desired` carries the KEY_WOW64_* view.
     u32 reg_create_key_ex_w(u64 hkey, const std::wstring& subkey,
                             u64* result_handle, u32* disposition,
-                            u32 sam_desired = 0);
+                            u32 sam_desired = 0x02000000u /* MAXIMUM_ALLOWED: internal callers get a usable handle */);
 
     u32 reg_create_key_ex_a(u64 hkey, const std::string& subkey,
                             u64* result_handle, u32* disposition,
-                            u32 sam_desired = 0);
+                            u32 sam_desired = 0x02000000u /* MAXIMUM_ALLOWED: internal callers get a usable handle */);
 
     u32 reg_open_key_a(u64 hkey, const std::string& subkey,
                        u64* result_handle);

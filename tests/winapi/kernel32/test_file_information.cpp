@@ -52,6 +52,7 @@ protected:
     }
 
     void TearDown() override {
+        manager.set_file_manager(nullptr);  // the manager must not outlive its FileManager
         files.reset();
         std::filesystem::remove_all(root);
     }

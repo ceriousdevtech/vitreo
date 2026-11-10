@@ -569,7 +569,8 @@ public:
     /// @p generation receives the armed request's number, which
     /// wait_async_named_pipe_connect waits on.
     [[nodiscard]] PipeConnectResult begin_async_named_pipe_connect(
-        Handle h, GuestAddr overlapped = 0, u64* generation = nullptr);
+        Handle h, GuestAddr overlapped = 0, u64* generation = nullptr,
+        std::shared_ptr<PipeEndpoint>* endpoint = nullptr);
 
     /// Wait cooperatively for the client of an armed asynchronous connect.
     /// Cancel @p ep's pending overlapped ConnectNamedPipe (all when
@@ -578,8 +579,11 @@ public:
     usize cancel_named_pipe_connect(const std::shared_ptr<PipeEndpoint>& ep,
                                     Handle issued_on, GuestAddr overlapped,
                                     bool only_calling_thread, bool by_close = false);
+    /// Takes the endpoint begin_async_named_pipe_connect pinned, not the
+    /// handle: a CloseHandle that runs before the worker starts must still
+    /// find the request and complete it.
     [[nodiscard]] PipeConnectResult wait_async_named_pipe_connect(
-        Handle h, u64 generation, std::stop_token stop_token);
+        std::shared_ptr<PipeEndpoint> ep, u64 generation, std::stop_token stop_token);
 
     /// Disconnect the accepted client from a server pipe instance so a
     /// subsequent ConnectNamedPipe can accept the next client.

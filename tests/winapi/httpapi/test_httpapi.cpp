@@ -26,6 +26,9 @@
 #include <chrono>
 #include <cerrno>
 #include <cstring>
+#include <fcntl.h>
+#include <sys/file.h>
+#include <unistd.h>
 #include <fstream>
 #include <map>
 #include <set>
@@ -164,6 +167,11 @@ constexpr const char* kGet = "GET /vprobe/r HTTP/1.1\r\nHost: localhost:48213\r\
 class HttpApiTest : public ::testing::TestWithParam<bool> {
 protected:
     void SetUp() override {
+        // Every case binds the probe's fixed port, and CTest runs each case in
+        // its own process in parallel: hold a host-wide lock for the case.
+        port_lock_ = ::open("/tmp/vitreo-httpapi-test-48213.lock", O_CREAT | O_RDWR | O_CLOEXEC, 0666);
+        ASSERT_GE(port_lock_, 0);
+        ASSERT_EQ(::flock(port_lock_, LOCK_EX), 0);
         ASSERT_TRUE(mem_.map_region(kStackBase, kStackSize, MemoryProtection::ReadWrite).is_ok());
         ASSERT_TRUE(mem_.map_region(kData, kDataSize, MemoryProtection::ReadWrite).is_ok());
         handles_ = std::make_unique<HandleTable>([this](Handle h, HandleType type, void* object) {
@@ -197,7 +205,10 @@ protected:
         mgr_.shutdown_all();
         sync_.reset();
         handles_.reset();
+        if (port_lock_ >= 0) ::close(port_lock_);  // releases the flock
+        port_lock_ = -1;
     }
+    int port_lock_{-1};
 
     [[nodiscard]] bool is64() const { return GetParam(); }
     [[nodiscard]] const httpapi::Layout& L() const { return httpapi::layout_for(is64()); }

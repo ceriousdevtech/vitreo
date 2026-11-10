@@ -270,7 +270,7 @@ TEST_F(Kernel32CpuzTest, RaiseExceptionMsVcSetThreadNameContinues) {
     // Learn: Set a thread name in native code — RaiseException(0x406D1388)
     // with THREADNAME_INFO. Without a debugger Windows still dispatches it to
     // VEH / __except (thread_lifecycle_probe: RAISE ms_vc_exception veh_saw=1).
-    ThreadManager::set_current_thread_id(1);
+    ThreadManager::set_current_thread_id(threads.main_thread_id());
     constexpr GuestAddr name_addr = DATA_BASE + 0x500;
     constexpr GuestAddr args_addr = DATA_BASE + 0x600;
     const char* name = "JobThread0";

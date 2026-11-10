@@ -685,7 +685,8 @@ std::optional<std::string> FileManager::named_pipe_file_name(
 
 
 PipeConnectResult FileManager::begin_async_named_pipe_connect(
-    Handle h, GuestAddr overlapped, u64* generation) {
+    Handle h, GuestAddr overlapped, u64* generation,
+    std::shared_ptr<PipeEndpoint>* endpoint) {
     auto ep = m_handles.get_shared<PipeEndpoint>(h, HandleType::Pipe);
     if (!ep) return PipeConnectResult::InvalidHandle;
     std::lock_guard<std::mutex> lock(ep->mutex);
@@ -717,6 +718,7 @@ PipeConnectResult FileManager::begin_async_named_pipe_connect(
     ep->connect_issuer_tid = ThreadManager::get_current_thread_id_static();
     ++ep->connect_generation;
     if (generation) *generation = ep->connect_generation;
+    if (endpoint) *endpoint = ep;
     return PipeConnectResult::Pending;
 }
 
@@ -755,8 +757,7 @@ usize FileManager::cancel_named_pipe_connect(
 }
 
 PipeConnectResult FileManager::wait_async_named_pipe_connect(
-    Handle h, u64 generation, std::stop_token stop_token) {
-    auto ep = m_handles.get_shared<PipeEndpoint>(h, HandleType::Pipe);
+    std::shared_ptr<PipeEndpoint> ep, u64 generation, std::stop_token stop_token) {
     if (!ep) return PipeConnectResult::InvalidHandle;
 
     std::shared_ptr<ipc::UnixPipe> listener;
@@ -766,6 +767,14 @@ PipeConnectResult FileManager::wait_async_named_pipe_connect(
         // DisconnectNamedPipe may already have ended this request.
         if (ep->connect_disconnected_generation == generation) {
             return PipeConnectResult::Disconnected;
+        }
+        // CloseHandle ran before this worker started: the request still
+        // completes as closed, exactly as when the close arrives mid-wait.
+        if (ep->connect_generation == generation && ep->connect_pending &&
+            (ep->connect_closed || ep->closed)) {
+            ep->connect_pending = false;
+            ep->connect_overlapped = 0;
+            return PipeConnectResult::Closed;
         }
         if (ep->closed || !ep->connect_pending || !ep->sock ||
             !ep->sock->is_server() || ep->connect_generation != generation) {

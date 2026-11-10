@@ -324,14 +324,14 @@ TEST_F(Kernel32CpuzTest, ReleaseSemaphore_ReturnsTRUE) {
 }
 
 TEST_F(Kernel32CpuzTest, QueueUserAPC_QueuesOnCurrentThread) {
-    ThreadManager::set_current_thread_id(1);
+    ThreadManager::set_current_thread_id(threads.main_thread_id());
     (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 4),  0x1000);  // pfnAPC
     (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 8),
                            ThreadManager::get_current_thread());  // hThread
     (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 12), 0x42);     // dwData
     mgr.impl_QueueUserAPC(marshaler);
     EXPECT_EQ(cpu.gpr.rax, 1u);
-    EXPECT_TRUE(threads.has_pending_user_apcs(1));
+    EXPECT_TRUE(threads.has_pending_user_apcs(threads.main_thread_id()));
 }
 
 TEST_F(Kernel32CpuzTest, QueueUserAPC_InvalidHandleFails) {
@@ -365,7 +365,7 @@ TEST_F(Kernel32CpuzTest, WaitForSingleObjectEx_NonsignaledAutoResetTimesOut) {
 }
 
 TEST_F(Kernel32CpuzTest, WaitForSingleObjectEx_AlertableDeliversApc) {
-    ThreadManager::set_current_thread_id(1);
+    ThreadManager::set_current_thread_id(threads.main_thread_id());
     Handle event = sync.create_event(false, false, "");
     ASSERT_NE(event, 0u);
 
@@ -387,11 +387,11 @@ TEST_F(Kernel32CpuzTest, WaitForSingleObjectEx_AlertableDeliversApc) {
     mgr.impl_WaitForSingleObjectEx(marshaler);
     EXPECT_EQ(cpu.gpr.rax, WAIT_IO_COMPLETION);
     EXPECT_EQ(seen_data.load(std::memory_order_relaxed), 0xABCDEF01ull);
-    EXPECT_FALSE(threads.has_pending_user_apcs(1));
+    EXPECT_FALSE(threads.has_pending_user_apcs(threads.main_thread_id()));
 }
 
 TEST_F(Kernel32CpuzTest, WaitForSingleObjectEx_AlertableDeliversIoCompletion) {
-    ThreadManager::set_current_thread_id(1);
+    ThreadManager::set_current_thread_id(threads.main_thread_id());
     Handle event = sync.create_event(false, false, "");
     ASSERT_NE(event, 0u);
 
@@ -424,7 +424,7 @@ TEST_F(Kernel32CpuzTest, WaitForSingleObjectEx_AlertableDeliversIoCompletion) {
 TEST_F(Kernel32CpuzTest, GetQueuedCompletionStatusEx_AlertableDeliversApc) {
     // Learn: fAlertable TRUE + pending QueueUserAPC → FALSE /
     // WAIT_IO_COMPLETION without dequeuing packets.
-    ThreadManager::set_current_thread_id(1);
+    ThreadManager::set_current_thread_id(threads.main_thread_id());
     const GuestAddr stack = cpu.sp();
     constexpr GuestAddr entries = DATA_BASE + 0x300;
     constexpr GuestAddr num_out = DATA_BASE + 0x400;
@@ -460,5 +460,5 @@ TEST_F(Kernel32CpuzTest, GetQueuedCompletionStatusEx_AlertableDeliversApc) {
     EXPECT_EQ(get_last_error(), WAIT_IO_COMPLETION);
     EXPECT_EQ(memory.read_u32(num_out).value_or(1), 0u);
     EXPECT_EQ(seen_data.load(std::memory_order_relaxed), 0xABCDEF02ull);
-    EXPECT_FALSE(threads.has_pending_user_apcs(1));
+    EXPECT_FALSE(threads.has_pending_user_apcs(threads.main_thread_id()));
 }

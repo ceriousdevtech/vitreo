@@ -47,7 +47,7 @@ protected:
         ASSERT_TRUE(memory.map_region(0x10000, 0x5000, MemoryProtection::ReadWrite).is_ok());
         files = std::make_unique<FileManager>(vfs, handles, memory); manager.set_file_manager(files.get());
     }
-    void TearDown() override { files.reset(); std::filesystem::remove_all(root); }
+    void TearDown() override { manager.set_file_manager(nullptr); files.reset(); std::filesystem::remove_all(root); }
     Handle open(u32 access) {
         return files->create_file("C:\\data.bin", access,
             sdk::FILE_SHARE_READ | sdk::FILE_SHARE_WRITE, OPEN_EXISTING, 0);

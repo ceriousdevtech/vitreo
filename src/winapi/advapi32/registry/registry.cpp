@@ -325,7 +325,7 @@ u32 RegistryThunks::reg_delete_tree(u64 hkey, const std::wstring& subkey) {
     bool opened = false;
     if (!subkey.empty()) {
         u64 child = 0;
-        const u32 err = reg_open_key_ex_w(hkey, subkey, 0, 0, &child);
+        const u32 err = reg_open_key_ex_w(hkey, subkey, 0, reg_rename_contract::MAXIMUM_ALLOWED, &child);
         if (err != ERROR_SUCCESS) return err;
         target = child;
         opened = true;
@@ -579,8 +579,8 @@ u32 RegistryThunks::reg_open_key_ex_w(u64 hkey, const std::wstring& subkey,
     const auto path = m_registry.canonical_key_path(rh);
     // The capsule default descriptor has a NULL DACL. Do not silently apply
     // that policy to keys with a stored descriptor (including inherited ones).
-    if (!path || path->starts_with(L"hkey_classes_root") ||
-        !registry_rename_security_supported(*path))
+    // (The predicate covers HKEY_CLASSES_ROOT through both backing hives.)
+    if (!path || !registry_rename_security_supported(*path))
         return fail(open_unsupported());
     // Capsule has no registry-link object metadata. A persisted SymbolicLinkValue
     // needs link-object classification before this route can open it safely.
@@ -643,7 +643,17 @@ u32 RegistryThunks::reg_connect_registry(u64 hkey, u64* result_handle) {
         (low != capsule::HKEY_LOCAL_MACHINE && low != capsule::HKEY_USERS)) {
         return ERROR_INVALID_HANDLE;
     }
-    return reg_open_key_ex_w(hkey, L"", 0, 0, result_handle);
+    // Learn RegConnectRegistry: the result is a new handle the caller closes
+    // with RegCloseKey, not the predefined value RegOpenKeyEx(root, "") echoes.
+    *result_handle = 0;
+    auto res = m_registry.open_key(low, L"", false);
+    if (res.is_err()) return res.error() == Error::InvalidHandle
+        ? ERROR_INVALID_HANDLE : ERROR_FILE_NOT_FOUND;
+    const Handle handle = m_handles.allocate(HandleType::Registry,
+        reinterpret_cast<void*>(static_cast<uintptr_t>(res.value())), 0,
+        reg_open_sdk::KEY_ALL_ACCESS);
+    *result_handle = static_cast<u64>(handle);
+    return ERROR_SUCCESS;
 }
 
 // =============================================================================
@@ -928,7 +938,7 @@ u32 RegistryThunks::reg_delete_key_value_w(u64 hkey,
     }
 
     u64 child_handle = 0;
-    u32 err = reg_open_key_ex_w(hkey, subkey, 0, 0, &child_handle);
+    u32 err = reg_open_key_ex_w(hkey, subkey, 0, reg_rename_contract::MAXIMUM_ALLOWED, &child_handle);
     if (err != ERROR_SUCCESS) {
         return err;
     }
@@ -998,7 +1008,7 @@ u32 RegistryThunks::reg_query_value_w(u64 hkey, const std::wstring& subkey,
                                        u8* data_out, u32* data_size) {
     if (!subkey.empty()) {
         u64 child_handle = 0;
-        u32 err = reg_open_key_ex_w(hkey, subkey, 0, 0, &child_handle);
+        u32 err = reg_open_key_ex_w(hkey, subkey, 0, reg_rename_contract::MAXIMUM_ALLOWED, &child_handle);
         if (err != ERROR_SUCCESS) return err;
         u32 result = reg_query_value_ex_w(child_handle, L"", nullptr,
                                           data_out, data_size);

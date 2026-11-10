@@ -117,6 +117,8 @@ TEST_F(Kernel32CpuzTest, HandleInformationAcceptsWs2SocketHandles) {
     constexpr u32 kFakeSocket = 0x10059;
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
 
     // Without a probe an unknown handle still fails honestly.
     ASSERT_TRUE(memory.write_u32(stack + 4, kFakeSocket).is_ok());

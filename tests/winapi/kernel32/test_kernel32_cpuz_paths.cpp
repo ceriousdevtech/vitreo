@@ -112,6 +112,8 @@ TEST_F(Kernel32CpuzTest, LockFileUnlockFileFollowTheProbedContract) {
                     .is_ok());
     FileManager files{vfs, handles, memory};
     mgr.set_file_manager(&files);
+    // Detach on every exit path: mgr must not keep a dangling FileManager.
+    const std::shared_ptr<void> detach_files(nullptr, [&](void*) { mgr.set_file_manager(nullptr); });
     constexpr u32 kGenericReadWrite = 0xC0000000u;
     constexpr u32 kShareAll = 7;
     constexpr u32 kOpenExisting = 3;

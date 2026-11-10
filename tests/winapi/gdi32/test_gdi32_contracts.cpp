@@ -677,18 +677,9 @@ TEST_F(GdiContractTest, SynthesisedColourTablesFollowTheirDefinitions) {
         EXPECT_EQ(def[10 + k], pal8[246 + k]);
     }
 
-    // GetSystemPaletteEntries: the same 256 entries, peFlags 0 (the static
-    // entries "correspond to the colors in the default palette", Learn,
-    // "System Palette").
-    EXPECT_EQ(mgr_.get_system_palette_entries(dc, 0, 256, 0), 256u);
-    ASSERT_EQ(mgr_.get_system_palette_entries(dc, 0, 256, kMem + 0x8000), 256u);
-    for (u32 k = 0; k < 256; ++k) {
-        const u32 pe = memory_.read_u32(kMem + 0x8000 + k * 4).value();
-        const u32 rgb = ((pe & 0xFF) << 16) | (pe & 0xFF00) | ((pe >> 16) & 0xFF);
-        EXPECT_EQ(rgb, pal8[k]) << k;
-        EXPECT_EQ(pe >> 24, 0u) << k;
-    }
-    EXPECT_EQ(mgr_.get_system_palette_entries(dc, 250, 10, kMem + 0x8000), 6u);
+    // GetSystemPaletteEntries is not this synthesised table: on a truecolor
+    // display it returns 0 and copies the measured Windows system palette.
+    // test_palette_contract.cpp covers it against the palette_edges oracle.
 }
 
 TEST_F(GdiContractTest, CodecPalettesAreTheMeasuredTables) {

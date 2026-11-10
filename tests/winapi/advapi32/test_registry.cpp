@@ -56,7 +56,7 @@ protected:
 TEST_F(Advapi32RegistryTest, OpenKeyExW_OpensExistingKey) {
     u64 out_handle = 0;
     u32 err = m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &out_handle);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &out_handle);
 
     EXPECT_EQ(err, ERROR_SUCCESS);
     EXPECT_NE(out_handle, 0u);
@@ -244,7 +244,7 @@ TEST_F(Advapi32RegistryTest, RegCreateKeyWCreatesSubkeyAndWritesHandle) {
 
     u64 reopened = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-                  HKEY_CURRENT_USER, path, 0, 0, &reopened),
+                  HKEY_CURRENT_USER, path, 0, 0xF003Fu /* KEY_ALL_ACCESS */, &reopened),
               ERROR_SUCCESS);
     u32 type = REG_NONE;
     u32 size = sizeof(u32);
@@ -328,7 +328,7 @@ TEST_F(Advapi32RegistryTest,
 TEST_F(Advapi32RegistryTest, QueryValueExW_ReadsSzValue) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     u32 type = 0;
     u32 size = 256;
@@ -353,7 +353,7 @@ TEST_F(Advapi32RegistryTest, QueryValueExW_ReadsSzValue) {
 TEST_F(Advapi32RegistryTest, QueryValueExW_ReadsDwordValue) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     u32 type = 0;
     u32 size = sizeof(u32);
@@ -377,7 +377,7 @@ TEST_F(Advapi32RegistryTest, QueryValueExW_ReadsDwordValue) {
 TEST_F(Advapi32RegistryTest, QueryValueExW_SizeQuery) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     u32 type = 0;
     u32 size = 0;
@@ -405,7 +405,7 @@ TEST_F(Advapi32RegistryTest,
 
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     // UTF-16LE "Build\0"
     const char16_t build_name[] = u"Build";
@@ -544,7 +544,7 @@ TEST_F(Advapi32RegistryTest, RegGetValueRejectsInvalidFlagCombinations) {
 TEST_F(Advapi32RegistryTest, SetAndQueryValueRoundTrip) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     // Write a DWORD value "TestVal" = 99
     u32 write_val = 99;
@@ -574,7 +574,7 @@ TEST_F(Advapi32RegistryTest, SetAndQueryValueRoundTrip) {
 TEST_F(Advapi32RegistryTest, DeleteValueW_RemovesValue) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     u32 err = m_thunks->reg_delete_value_w(hk, L"Version");
     EXPECT_EQ(err, ERROR_SUCCESS);
@@ -596,7 +596,7 @@ TEST_F(Advapi32RegistryTest, DeleteValueW_RemovesValue) {
 TEST_F(Advapi32RegistryTest, CloseKey_ReturnsSuccess) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     EXPECT_EQ(m_thunks->reg_close_key(hk), ERROR_SUCCESS);
 }
@@ -609,7 +609,7 @@ TEST_F(Advapi32RegistryTest, EnumKeyExW_IteratesSubkeys) {
     // Create a few subkeys under HKLM\SOFTWARE\Vitreo
     u64 parent = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &parent), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &parent), ERROR_SUCCESS);
 
     u64 child1 = 0, child2 = 0;
     u32 disp = 0;
@@ -641,7 +641,7 @@ TEST_F(Advapi32RegistryTest, EnumKeyExW_IteratesSubkeys) {
 TEST_F(Advapi32RegistryTest, EnumValueW_IteratesValues) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     // We have "Version" and "Build" from SetUp.
     std::wstring name;
@@ -693,7 +693,7 @@ TEST_F(Advapi32RegistryTest, CreateKeyExW_CreatesNewKey) {
 TEST_F(Advapi32RegistryTest, OpenKeyExW_NotFoundForMissingKey) {
     u64 hk = 0;
     u32 err = m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\DoesNotExist", 0, 0, &hk);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\DoesNotExist", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk);
 
     EXPECT_EQ(err, ERROR_FILE_NOT_FOUND);
 }
@@ -705,7 +705,7 @@ TEST_F(Advapi32RegistryTest, OpenKeyExW_NotFoundForMissingKey) {
 TEST_F(Advapi32RegistryTest, OpenKeyExA_OpensWithAnsiPath) {
     u64 hk = 0;
     u32 err = m_thunks->reg_open_key_ex_a(
-        HKEY_LOCAL_MACHINE, "SOFTWARE\\Vitreo", 0, 0, &hk);
+        HKEY_LOCAL_MACHINE, "SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk);
 
     EXPECT_EQ(err, ERROR_SUCCESS);
     EXPECT_NE(hk, 0u);
@@ -729,7 +729,7 @@ TEST_F(Advapi32RegistryTest, OpenKeyExA_OpensWithAnsiPath) {
 TEST_F(Advapi32RegistryTest, QueryValueExW_BufferTooSmall) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     u32 type = 0;
     u32 size = 1; // too small for a DWORD
@@ -746,7 +746,7 @@ TEST_F(Advapi32RegistryTest, QueryValueExW_BufferTooSmall) {
 TEST_F(Advapi32RegistryTest, QueryValueExA_ReturnsAnsiStringAndByteCount) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     u32 type = 0;
     u32 size = 0;
@@ -767,7 +767,7 @@ TEST_F(Advapi32RegistryTest, QueryValueExA_ReturnsAnsiStringAndByteCount) {
 TEST_F(Advapi32RegistryTest, QueryValueExA_ReportsAnsiSizeWhenBufferIsSmall) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     u32 size = 3;
     u8 data[3] = {};
@@ -781,7 +781,7 @@ TEST_F(Advapi32RegistryTest, QueryValueExA_ReportsAnsiSizeWhenBufferIsSmall) {
 TEST_F(Advapi32RegistryTest, QueryValueExA_PreservesDwordBytes) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     u32 type = 0;
     u32 size = sizeof(u32);
@@ -798,7 +798,7 @@ TEST_F(Advapi32RegistryTest, QueryValueExA_PreservesDwordBytes) {
 TEST_F(Advapi32RegistryTest, SetAndQueryValueExA_RoundTripsAnsiString) {
     u64 hk = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &hk), ERROR_SUCCESS);
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &hk), ERROR_SUCCESS);
 
     constexpr char path[] = "C:\\Program Files (x86)\\Starcraft";
     ASSERT_EQ(m_thunks->reg_set_value_ex_a(
@@ -876,7 +876,7 @@ TEST_F(Advapi32RegistryTest, NotifyChangeSignalsEventOnValueMutation) {
 
     u64 key = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &key),
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &key),
         ERROR_SUCCESS);
     ASSERT_EQ(m_thunks->reg_notify_change_key_value(
         key, false, 0x00000004, event, true), ERROR_SUCCESS);
@@ -931,7 +931,7 @@ TEST_F(Advapi32RegistryTest, NotifyChangeMatchesSubtreeAndKeyNameChanges) {
 TEST_F(Advapi32RegistryTest, AsyncNotifyRejectsNonEventHandle) {
     u64 key = 0;
     ASSERT_EQ(m_thunks->reg_open_key_ex_w(
-        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0, &key),
+        HKEY_LOCAL_MACHINE, L"SOFTWARE\\Vitreo", 0, 0xF003Fu /* KEY_ALL_ACCESS */, &key),
         ERROR_SUCCESS);
     EXPECT_EQ(m_thunks->reg_notify_change_key_value(
         key, false, 0x00000004, 0x1234, true), ERROR_INVALID_HANDLE);
@@ -953,7 +953,7 @@ TEST_F(Advapi32RegistryTest, DeleteKeyRemovesAnEmptySubkey) {
     // It must really be gone, not merely reported as deleted.
     u64 reopened = 0;
     EXPECT_NE(m_thunks->reg_open_key_ex_a(HKEY_CURRENT_USER, "Software\\VitreoDelTest",
-                                          0, 0, &reopened), ERROR_SUCCESS);
+                                          0, 0xF003Fu /* KEY_ALL_ACCESS */, &reopened), ERROR_SUCCESS);
 }
 
 TEST_F(Advapi32RegistryTest, DeleteKeyReportsMissingKey) {
@@ -991,7 +991,7 @@ TEST_F(Advapi32RegistryTest, DeleteKeyExPerformsDeletionForSupportedViews) {
                   ERROR_SUCCESS);
         u64 reopened = 0;
         EXPECT_EQ(m_thunks->reg_open_key_ex_a(
-                      HKEY_CURRENT_USER, key, 0, 0, &reopened),
+                      HKEY_CURRENT_USER, key, 0, 0xF003Fu /* KEY_ALL_ACCESS */, &reopened),
                   ERROR_FILE_NOT_FOUND);
     }
 }
@@ -1017,7 +1017,7 @@ TEST_F(Advapi32RegistryTest, DeleteKeyExEmptySubkeyDeletesOpenedKey) {
 
     u64 reopened = 0;
     EXPECT_EQ(m_thunks->reg_open_key_ex_a(
-                  HKEY_CURRENT_USER, path, 0, 0, &reopened),
+                  HKEY_CURRENT_USER, path, 0, 0xF003Fu /* KEY_ALL_ACCESS */, &reopened),
               ERROR_FILE_NOT_FOUND);
 }
 
@@ -1032,7 +1032,7 @@ TEST_F(Advapi32RegistryTest,
     ASSERT_EQ(m_thunks->reg_close_key(opened), ERROR_SUCCESS);
     ASSERT_EQ(m_thunks->reg_open_key_ex_a(
                   HKEY_CURRENT_USER, "Software\\VitreoDelOpenedParent",
-                  0, 0, &opened),
+                  0, 0xF003Fu /* KEY_ALL_ACCESS */, &opened),
               ERROR_SUCCESS);
 
     EXPECT_EQ(m_thunks->reg_delete_key_ex(opened, L"", 0, 0),
