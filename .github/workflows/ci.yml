@@ -18,7 +18,9 @@ concurrency:
 jobs:
   build-test:
     name: Build and test (arm64)
-    runs-on: macos-15
+    # The same image as the release build: the code uses std::jthread and
+    # std::stop_token, which the Xcode 16 toolchain on macos-15 does not ship.
+    runs-on: macos-26
     timeout-minutes: 120
     steps:
       - name: Checkout
