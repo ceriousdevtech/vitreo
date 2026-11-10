@@ -1,0 +1,128 @@
+# Original Windows RegOpenKeyEx A/W and RegCloseKey oracle; private HKCU key.
+bits=64
+root-null-zero A status=0 exception=0 error=57005 result=same
+root-null-zero W status=0 exception=0 error=57005 result=same
+root-empty-zero A status=0 exception=0 error=57005 result=same
+root-empty-zero W status=0 exception=0 error=57005 result=same
+real-null-zero A status=5 exception=0 error=57005 result=null
+real-null-zero W status=5 exception=0 error=57005 result=null
+real-empty-zero A status=5 exception=0 error=57005 result=null
+real-empty-zero W status=5 exception=0 error=57005 result=null
+real-child-zero A status=5 exception=0 error=57005 result=null
+real-child-zero W status=5 exception=0 error=57005 result=null
+root-null-query A status=0 exception=0 error=57005 result=same
+root-null-query W status=0 exception=0 error=57005 result=same
+root-empty-query A status=0 exception=0 error=57005 result=same
+root-empty-query W status=0 exception=0 error=57005 result=same
+real-null-query A status=0 exception=0 error=57005 result=new
+real-null-query W status=0 exception=0 error=57005 result=new
+real-empty-query A status=0 exception=0 error=57005 result=new
+real-empty-query W status=0 exception=0 error=57005 result=new
+real-child-query A status=0 exception=0 error=57005 result=new
+real-child-query W status=0 exception=0 error=57005 result=new
+root-null-set A status=0 exception=0 error=57005 result=same
+root-null-set W status=0 exception=0 error=57005 result=same
+root-empty-set A status=0 exception=0 error=57005 result=same
+root-empty-set W status=0 exception=0 error=57005 result=same
+real-null-set A status=0 exception=0 error=57005 result=new
+real-null-set W status=0 exception=0 error=57005 result=new
+real-empty-set A status=0 exception=0 error=57005 result=new
+real-empty-set W status=0 exception=0 error=57005 result=new
+real-child-set A status=0 exception=0 error=57005 result=new
+real-child-set W status=0 exception=0 error=57005 result=new
+root-null-maximum A status=0 exception=0 error=57005 result=same
+root-null-maximum W status=0 exception=0 error=57005 result=same
+root-empty-maximum A status=0 exception=0 error=57005 result=same
+root-empty-maximum W status=0 exception=0 error=57005 result=same
+real-null-maximum A status=0 exception=0 error=57005 result=new
+real-null-maximum W status=0 exception=0 error=57005 result=new
+real-empty-maximum A status=0 exception=0 error=57005 result=new
+real-empty-maximum W status=0 exception=0 error=57005 result=new
+real-child-maximum A status=0 exception=0 error=57005 result=new
+real-child-maximum W status=0 exception=0 error=57005 result=new
+root-null-wow32 A status=0 exception=0 error=57005 result=new
+root-null-wow32 W status=0 exception=0 error=57005 result=new
+root-empty-wow32 A status=0 exception=0 error=57005 result=new
+root-empty-wow32 W status=0 exception=0 error=57005 result=new
+real-null-wow32 A status=0 exception=0 error=57005 result=new
+real-null-wow32 W status=0 exception=0 error=57005 result=new
+real-empty-wow32 A status=0 exception=0 error=57005 result=new
+real-empty-wow32 W status=0 exception=0 error=57005 result=new
+real-child-wow32 A status=0 exception=0 error=57005 result=new
+real-child-wow32 W status=0 exception=0 error=57005 result=new
+root-null-wow64 A status=0 exception=0 error=57005 result=new
+root-null-wow64 W status=0 exception=0 error=57005 result=new
+root-empty-wow64 A status=0 exception=0 error=57005 result=new
+root-empty-wow64 W status=0 exception=0 error=57005 result=new
+real-null-wow64 A status=0 exception=0 error=57005 result=new
+real-null-wow64 W status=0 exception=0 error=57005 result=new
+real-empty-wow64 A status=0 exception=0 error=57005 result=new
+real-empty-wow64 W status=0 exception=0 error=57005 result=new
+real-child-wow64 A status=0 exception=0 error=57005 result=new
+real-child-wow64 W status=0 exception=0 error=57005 result=new
+root-null-wow-both A status=87 exception=0 error=57005 result=null
+root-null-wow-both W status=87 exception=0 error=57005 result=null
+root-empty-wow-both A status=87 exception=0 error=57005 result=null
+root-empty-wow-both W status=87 exception=0 error=57005 result=null
+real-null-wow-both A status=87 exception=0 error=57005 result=null
+real-null-wow-both W status=87 exception=0 error=57005 result=null
+real-empty-wow-both A status=87 exception=0 error=57005 result=null
+real-empty-wow-both W status=87 exception=0 error=57005 result=null
+real-child-wow-both A status=87 exception=0 error=57005 result=null
+real-child-wow-both W status=87 exception=0 error=57005 result=null
+root-null-reserved-access A status=0 exception=0 error=57005 result=same
+root-null-reserved-access W status=0 exception=0 error=57005 result=same
+root-empty-reserved-access A status=0 exception=0 error=57005 result=same
+root-empty-reserved-access W status=0 exception=0 error=57005 result=same
+real-null-reserved-access A status=5 exception=0 error=57005 result=null
+real-null-reserved-access W status=5 exception=0 error=57005 result=null
+real-empty-reserved-access A status=5 exception=0 error=57005 result=null
+real-empty-reserved-access W status=5 exception=0 error=57005 result=null
+real-child-reserved-access A status=5 exception=0 error=57005 result=null
+real-child-reserved-access W status=5 exception=0 error=57005 result=null
+root-path A status=0 exception=0 error=57005 result=new
+root-path W status=0 exception=0 error=57005 result=new
+option-open-link A status=0 exception=0 error=57005 result=new
+option-open-link W status=0 exception=0 error=57005 result=new
+option-invalid-one A status=0 exception=0 error=57005 result=new
+option-invalid-one W status=0 exception=0 error=57005 result=new
+option-invalid-high A status=0 exception=0 error=57005 result=new
+option-invalid-high W status=0 exception=0 error=57005 result=new
+root-null-option-open-link A status=0 exception=0 error=57005 result=same
+root-null-option-open-link W status=0 exception=0 error=57005 result=same
+root-null-option-invalid A status=0 exception=0 error=57005 result=same
+root-null-option-invalid W status=0 exception=0 error=57005 result=same
+real-missing A status=2 exception=0 error=57005 result=null
+real-missing W status=2 exception=0 error=57005 result=null
+invalid-handle A status=6 exception=0 error=57005 result=null
+invalid-handle W status=6 exception=0 error=57005 result=null
+null-handle A status=6 exception=0 error=57005 result=untouched
+null-handle W status=6 exception=0 error=57005 result=null
+missing-parent A status=2 exception=0 error=57005 result=null
+missing-parent W status=2 exception=0 error=57005 result=null
+result-null-child A status=87 exception=0 error=57005 result=untouched
+result-null-child W status=87 exception=0 error=57005 result=untouched
+result-null-root-null A status=87 exception=0 error=57005 result=untouched
+result-null-root-null W status=87 exception=0 error=57005 result=untouched
+result-null-missing A status=87 exception=0 error=57005 result=untouched
+result-null-missing W status=87 exception=0 error=57005 result=untouched
+root-zero-extended A status=0 exception=0 error=57005 result=new
+root-zero-extended W status=0 exception=0 error=57005 result=new
+root-sign-extended A status=0 exception=0 error=57005 result=new
+root-sign-extended W status=0 exception=0 error=57005 result=new
+root-noncanonical A status=0 exception=0 error=57005 result=new
+root-noncanonical W status=0 exception=0 error=57005 result=new
+close-hkcr status=0 error=57005
+close-hkcu status=0 error=57005
+close-hklm status=0 error=57005
+close-hku status=0 error=57005
+close-hkcc status=0 error=57005
+close-performance-data status=0 error=57005
+close-performance-text status=0 error=57005
+close-performance-nlstext status=0 error=57005
+close-null status=6 error=57005
+close-invalid status=6 error=57005
+close-hkcu-zero-extended status=6 error=57005
+close-real status=0
+close-real-again status=6 error=57005
+cleanup-delete=0 cleanup-open=2

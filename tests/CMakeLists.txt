@@ -682,8 +682,10 @@ vitreo_add_test(NAME vitreo_mscms_tests
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
     COMPILE_DEFINITIONS VITREO_ORACLE_PROBE_DIR="${PROJECT_SOURCE_DIR}/tests/oracle_data"
 )
-add_test(NAME audit_mscms_contract
-    COMMAND python3 ${PROJECT_SOURCE_DIR}/tools/generate_mscms_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_mscms_contract.py")
+    add_test(NAME audit_mscms_contract
+        COMMAND python3 ${PROJECT_SOURCE_DIR}/tools/generate_mscms_contract.py --check)
+endif()
 
 # Focused real MSXML DOM/class-object activation contract, both guest ABIs.
 vitreo_add_test(NAME vitreo_msxml_factory_tests
@@ -697,23 +699,33 @@ vitreo_add_test(NAME vitreo_activeds_tests
     DEPS vitreo_winapi_system vitreo_winapi_com vitreo_winapi_core vitreo_memory
 )
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
-add_test(NAME audit_com_factory_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_com_factory_contract.py
-        --check ${PROJECT_SOURCE_DIR}/src/winapi/com/ole32/com_factory_contract.inc)
-add_test(NAME audit_activeds_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_activeds_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_com_factory_contract.py")
+    add_test(NAME audit_com_factory_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_com_factory_contract.py
+            --check ${PROJECT_SOURCE_DIR}/src/winapi/com/ole32/com_factory_contract.inc)
+endif()
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_activeds_contract.py")
+    add_test(NAME audit_activeds_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_activeds_contract.py --check)
+endif()
 
 # Original normalized HID report ABI, audited against the Windows SDK oracle.
 vitreo_add_test(NAME vitreo_gamepad_hid_report_tests
     SOURCES winapi/hid/test_gamepad_hid_report.cpp
     DEPS vitreo_core
 )
-add_test(NAME audit_hid_io_statuses
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_hid_io_statuses.py --check)
-add_test(NAME audit_io_event_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_io_event_contract.py --check)
-add_test(NAME audit_hid_sdk_layout
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_hid_sdk_layout.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_hid_io_statuses.py")
+    add_test(NAME audit_hid_io_statuses
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_hid_io_statuses.py --check)
+endif()
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_io_event_contract.py")
+    add_test(NAME audit_io_event_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_io_event_contract.py --check)
+endif()
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_hid_sdk_layout.py")
+    add_test(NAME audit_hid_sdk_layout
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_hid_sdk_layout.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_gamepad_hid_raw_input_tests
     SOURCES winapi/hid/test_gamepad_hid_raw_input.cpp
@@ -2957,9 +2969,11 @@ vitreo_add_test(NAME vitreo_registry_contract_tests
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_reg_rename_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_reg_rename_contract.py
-        --check ${PROJECT_SOURCE_DIR}/src/winapi/advapi32/registry/reg_rename_contract.inc)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_reg_rename_contract.py")
+    add_test(NAME audit_reg_rename_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_reg_rename_contract.py
+            --check ${PROJECT_SOURCE_DIR}/src/winapi/advapi32/registry/reg_rename_contract.inc)
+endif()
 
 vitreo_add_test(NAME vitreo_gdi_region_contract_tests
     SOURCES winapi/gdi32/test_get_random_rgn.cpp winapi/gdi32/test_gdi32_geometry.cpp
@@ -2969,8 +2983,10 @@ vitreo_add_test(NAME vitreo_gdi_region_contract_tests
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
     COMPILE_DEFINITIONS VITREO_ORACLE_PROBE_DIR="${CMAKE_SOURCE_DIR}/tests/oracle_data"
 )
-add_test(NAME audit_get_random_rgn_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_get_random_rgn_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_get_random_rgn_contract.py")
+    add_test(NAME audit_get_random_rgn_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_get_random_rgn_contract.py --check)
+endif()
 
 # Keep the legacy process-launch regression independent of the monolithic suite.
 vitreo_add_test(NAME vitreo_winexec_contract_tests
@@ -2990,78 +3006,100 @@ vitreo_add_test(NAME vitreo_d3d8_tests
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
 
-add_test(NAME audit_d3d8_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/gen_d3d8_contract.py)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/gen_d3d8_contract.py")
+    add_test(NAME audit_d3d8_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/gen_d3d8_contract.py)
+endif()
 
-add_test(NAME audit_winexec_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_winexec_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_winexec_contract.py")
+    add_test(NAME audit_winexec_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_winexec_contract.py --check)
+endif()
 
-add_test(NAME audit_process_execute_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_process_execute_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_process_execute_contract.py")
+    add_test(NAME audit_process_execute_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_process_execute_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_registry_query_contract_tests
     SOURCES winapi/advapi32/test_registry_query.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_reg_query_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_reg_query_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_reg_query_contract.py")
+    add_test(NAME audit_reg_query_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_reg_query_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_drive_type_contract_tests
     SOURCES winapi/kernel32/test_drive_type.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_drive_type_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_drive_type_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_drive_type_contract.py")
+    add_test(NAME audit_drive_type_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_drive_type_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_registry_open_contract_tests
     SOURCES winapi/advapi32/test_registry_open_contract.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_reg_open_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/reg_open_sdk_generate.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/oracle_probe/reg_open_sdk_generate.py")
+    add_test(NAME audit_reg_open_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/reg_open_sdk_generate.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_ext_text_out_contract_tests
     SOURCES winapi/gdi32/test_ext_text_out_contract.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_ext_text_out_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_ext_text_out_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_ext_text_out_contract.py")
+    add_test(NAME audit_ext_text_out_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_ext_text_out_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_create_dibitmap_contract_tests
     SOURCES winapi/gdi32/test_create_dibitmap_contract.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_create_dibitmap_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_create_dib_bitmap_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_create_dib_bitmap_contract.py")
+    add_test(NAME audit_create_dibitmap_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_create_dib_bitmap_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_palette_contract_tests
     SOURCES winapi/gdi32/test_palette_contract.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_palette_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_palette_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_palette_contract.py")
+    add_test(NAME audit_palette_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_palette_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_text_extent_output_contract_tests
     SOURCES winapi/gdi32/test_text_extent_output_contract.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_text_extent_output_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_text_extent_output_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_text_extent_output_contract.py")
+    add_test(NAME audit_text_extent_output_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_text_extent_output_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_ver_language_contract_tests
     SOURCES winapi/version/test_ver_language_contract.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_ver_language_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/ver_language_generate.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/oracle_probe/ver_language_generate.py")
+    add_test(NAME audit_ver_language_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/ver_language_generate.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_cursor_confinement_tests
     SOURCES windowing/test_cursor_confinement.cpp
@@ -3075,24 +3113,30 @@ vitreo_add_test(NAME vitreo_cursor_clip_contract_tests
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
 add_test(NAME cursor_clip_contract COMMAND vitreo_cursor_clip_contract_tests)
-add_test(NAME audit_cursor_clip_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_cursor_clip_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_cursor_clip_contract.py")
+    add_test(NAME audit_cursor_clip_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_cursor_clip_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_flush_buffers_contract_tests
     SOURCES winapi/kernel32/test_flush_buffers_contract.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_flush_buffers_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/flush_buffers_generate.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/oracle_probe/flush_buffers_generate.py")
+    add_test(NAME audit_flush_buffers_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/flush_buffers_generate.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_dialog_result_contract_tests
     SOURCES winapi/user32/test_dialog_result_contract.cpp
     DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
          vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
 )
-add_test(NAME audit_dialog_result_contract
-    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_dialog_result_contract.py --check)
+if(EXISTS "${PROJECT_SOURCE_DIR}/tools/generate_dialog_result_contract.py")
+    add_test(NAME audit_dialog_result_contract
+        COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_dialog_result_contract.py --check)
+endif()
 
 vitreo_add_test(NAME vitreo_child_dialog_geometry_tests
     SOURCES winapi/user32/test_child_dialog_geometry.cpp

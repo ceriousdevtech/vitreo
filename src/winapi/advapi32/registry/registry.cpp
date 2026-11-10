@@ -8,7 +8,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "winapi/common/object_access.hpp"
 #include "winapi/kernel32/locale/codepage_convert.hpp"
-#include "../../../../tools/oracle_probe/reg_open_sdk.generated.inc"
+#include "winapi/advapi32/registry/reg_open_sdk.generated.inc"
 
 #include <algorithm>
 #include <cstdio>

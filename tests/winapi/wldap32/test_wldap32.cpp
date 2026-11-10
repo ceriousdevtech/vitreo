@@ -48,7 +48,7 @@ constexpr u32 LDAP_LOCAL_ERROR_W = 0x52;
 constexpr u32 LDAP_PARAM_ERROR_W = 0x59;
 
 std::string expected_path(bool x64) {
-    return std::string(VITREO_SOURCE_DIR) + "/tools/oracle_probe/wldap32_contract_probe." +
+    return std::string(VITREO_SOURCE_DIR) + "/tests/oracle_data/wldap32_contract_probe." +
            (x64 ? "x64" : "x86") + ".expected";
 }
 

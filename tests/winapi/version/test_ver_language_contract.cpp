@@ -56,7 +56,7 @@ protected:
         return result;
     }
     std::vector<std::string> lines() {
-        auto path = std::filesystem::path(__FILE__).parent_path() / "../../../tools/oracle_probe" /
+        auto path = std::filesystem::path(__FILE__).parent_path() / "../../oracle_data" /
             (std::string(acp() == 65001 ? "ver_language_utf8" : "ver_language") + (is64() ? "64.expected" : "32.expected"));
         std::ifstream file(path); EXPECT_TRUE(file.is_open()) << path;
         std::vector<std::string> result;

@@ -1,0 +1,418 @@
+BITS 32
+EXPORT_BASE 10 FUNCS 324 NAMES 245
+EXPORT LdapGetLastError 16
+EXPORT LdapMapErrorToWin32 18
+EXPORT LdapUTF8ToUnicode 29
+EXPORT LdapUnicodeToUTF8 53
+EXPORT ber_alloc_t 304
+EXPORT ber_bvdup 303
+EXPORT ber_bvecfree 302
+EXPORT ber_bvfree 54
+EXPORT ber_first_element 307
+EXPORT ber_flatten 309
+EXPORT ber_free 301
+EXPORT ber_init 300
+EXPORT ber_next_element 308
+EXPORT ber_peek_tag 306
+EXPORT ber_printf 310
+EXPORT ber_scanf 311
+EXPORT ber_skip_tag 305
+EXPORT cldap_open 17
+EXPORT cldap_openA 55
+EXPORT cldap_openW 28
+EXPORT ldap_abandon 10
+EXPORT ldap_add 11
+EXPORT ldap_addA 56
+EXPORT ldap_addW 42
+EXPORT ldap_add_ext 57
+EXPORT ldap_add_extA 58
+EXPORT ldap_add_extW 62
+EXPORT ldap_add_ext_s 63
+EXPORT ldap_add_ext_sA 64
+EXPORT ldap_add_ext_sW 65
+EXPORT ldap_add_s 44
+EXPORT ldap_add_sA 66
+EXPORT ldap_add_sW 69
+EXPORT ldap_bind 61
+EXPORT ldap_bindA 70
+EXPORT ldap_bindW 71
+EXPORT ldap_bind_s 45
+EXPORT ldap_bind_sA 72
+EXPORT ldap_bind_sW 73
+EXPORT ldap_check_filterA 230
+EXPORT ldap_check_filterW 231
+EXPORT ldap_cleanup 202
+EXPORT ldap_close_extended_op 74
+EXPORT ldap_compare 19
+EXPORT ldap_compareA 75
+EXPORT ldap_compareW 76
+EXPORT ldap_compare_ext 78
+EXPORT ldap_compare_extA 80
+EXPORT ldap_compare_extW 81
+EXPORT ldap_compare_ext_s 83
+EXPORT ldap_compare_ext_sA 84
+EXPORT ldap_compare_ext_sW 85
+EXPORT ldap_compare_s 52
+EXPORT ldap_compare_sA 86
+EXPORT ldap_compare_sW 87
+EXPORT ldap_conn_from_msg 312
+EXPORT ldap_connect 88
+EXPORT ldap_control_free 89
+EXPORT ldap_control_freeA 90
+EXPORT ldap_control_freeW 91
+EXPORT ldap_controls_free 92
+EXPORT ldap_controls_freeA 93
+EXPORT ldap_controls_freeW 94
+EXPORT ldap_count_entries 36
+EXPORT ldap_count_references 95
+EXPORT ldap_count_values 37
+EXPORT ldap_count_valuesA 96
+EXPORT ldap_count_valuesW 97
+EXPORT ldap_count_values_len 77
+EXPORT ldap_create_page_control 98
+EXPORT ldap_create_page_controlA 99
+EXPORT ldap_create_page_controlW 100
+EXPORT ldap_create_sort_control 101
+EXPORT ldap_create_sort_controlA 102
+EXPORT ldap_create_sort_controlW 103
+EXPORT ldap_create_vlv_controlA 320
+EXPORT ldap_create_vlv_controlW 319
+EXPORT ldap_delete 20
+EXPORT ldap_deleteA 104
+EXPORT ldap_deleteW 105
+EXPORT ldap_delete_ext 106
+EXPORT ldap_delete_extA 107
+EXPORT ldap_delete_extW 108
+EXPORT ldap_delete_ext_s 109
+EXPORT ldap_delete_ext_sA 110
+EXPORT ldap_delete_ext_sW 111
+EXPORT ldap_delete_s 47
+EXPORT ldap_delete_sA 112
+EXPORT ldap_delete_sW 113
+EXPORT ldap_dn2ufn 31
+EXPORT ldap_dn2ufnA 232
+EXPORT ldap_dn2ufnW 114
+EXPORT ldap_encode_sort_controlA 115
+EXPORT ldap_encode_sort_controlW 116
+EXPORT ldap_err2string 22
+EXPORT ldap_err2stringA 117
+EXPORT ldap_err2stringW 118
+EXPORT ldap_escape_filter_element 197
+EXPORT ldap_escape_filter_elementA 119
+EXPORT ldap_escape_filter_elementW 120
+EXPORT ldap_explode_dn 39
+EXPORT ldap_explode_dnA 121
+EXPORT ldap_explode_dnW 122
+EXPORT ldap_extended_operation 123
+EXPORT ldap_extended_operationA 124
+EXPORT ldap_extended_operationW 125
+EXPORT ldap_extended_operation_sA 333
+EXPORT ldap_extended_operation_sW 332
+EXPORT ldap_first_attribute 32
+EXPORT ldap_first_attributeA 126
+EXPORT ldap_first_attributeW 127
+EXPORT ldap_first_entry 26
+EXPORT ldap_first_reference 128
+EXPORT ldap_free_controls 129
+EXPORT ldap_free_controlsA 130
+EXPORT ldap_free_controlsW 131
+EXPORT ldap_get_dn 30
+EXPORT ldap_get_dnA 132
+EXPORT ldap_get_dnW 133
+EXPORT ldap_get_next_page 134
+EXPORT ldap_get_next_page_s 135
+EXPORT ldap_get_option 136
+EXPORT ldap_get_optionA 137
+EXPORT ldap_get_optionW 12
+EXPORT ldap_get_paged_count 138
+EXPORT ldap_get_values 34
+EXPORT ldap_get_valuesA 139
+EXPORT ldap_get_valuesW 140
+EXPORT ldap_get_values_len 35
+EXPORT ldap_get_values_lenA 141
+EXPORT ldap_get_values_lenW 142
+EXPORT ldap_init 143
+EXPORT ldap_initA 144
+EXPORT ldap_initW 145
+EXPORT ldap_memfree 200
+EXPORT ldap_memfreeA 146
+EXPORT ldap_memfreeW 147
+EXPORT ldap_modify 23
+EXPORT ldap_modifyA 148
+EXPORT ldap_modifyW 149
+EXPORT ldap_modify_ext 150
+EXPORT ldap_modify_extA 151
+EXPORT ldap_modify_extW 152
+EXPORT ldap_modify_ext_s 153
+EXPORT ldap_modify_ext_sA 154
+EXPORT ldap_modify_ext_sW 155
+EXPORT ldap_modify_s 48
+EXPORT ldap_modify_sA 156
+EXPORT ldap_modify_sW 157
+EXPORT ldap_modrdn 24
+EXPORT ldap_modrdn2 67
+EXPORT ldap_modrdn2A 158
+EXPORT ldap_modrdn2W 159
+EXPORT ldap_modrdn2_s 68
+EXPORT ldap_modrdn2_sA 160
+EXPORT ldap_modrdn2_sW 161
+EXPORT ldap_modrdnA 162
+EXPORT ldap_modrdnW 163
+EXPORT ldap_modrdn_s 49
+EXPORT ldap_modrdn_sA 164
+EXPORT ldap_modrdn_sW 165
+EXPORT ldap_msgfree 41
+EXPORT ldap_next_attribute 33
+EXPORT ldap_next_attributeA 166
+EXPORT ldap_next_attributeW 167
+EXPORT ldap_next_entry 27
+EXPORT ldap_next_reference 168
+EXPORT ldap_open 25
+EXPORT ldap_openA 169
+EXPORT ldap_openW 170
+EXPORT ldap_parse_extended_resultA 318
+EXPORT ldap_parse_extended_resultW 317
+EXPORT ldap_parse_page_control 171
+EXPORT ldap_parse_page_controlA 172
+EXPORT ldap_parse_page_controlW 173
+EXPORT ldap_parse_reference 174
+EXPORT ldap_parse_referenceA 175
+EXPORT ldap_parse_referenceW 176
+EXPORT ldap_parse_result 177
+EXPORT ldap_parse_resultA 178
+EXPORT ldap_parse_resultW 179
+EXPORT ldap_parse_sort_control 180
+EXPORT ldap_parse_sort_controlA 181
+EXPORT ldap_parse_sort_controlW 182
+EXPORT ldap_parse_vlv_controlA 322
+EXPORT ldap_parse_vlv_controlW 321
+EXPORT ldap_perror 82
+EXPORT ldap_rename_ext 183
+EXPORT ldap_rename_extA 184
+EXPORT ldap_rename_extW 185
+EXPORT ldap_rename_ext_s 186
+EXPORT ldap_rename_ext_sA 187
+EXPORT ldap_rename_ext_sW 188
+EXPORT ldap_result 40
+EXPORT ldap_result2error 21
+EXPORT ldap_sasl_bindA 315
+EXPORT ldap_sasl_bindW 313
+EXPORT ldap_sasl_bind_sA 316
+EXPORT ldap_sasl_bind_sW 314
+EXPORT ldap_search 43
+EXPORT ldap_searchA 189
+EXPORT ldap_searchW 190
+EXPORT ldap_search_abandon_page 191
+EXPORT ldap_search_ext 192
+EXPORT ldap_search_extA 193
+EXPORT ldap_search_extW 194
+EXPORT ldap_search_ext_s 195
+EXPORT ldap_search_ext_sA 196
+EXPORT ldap_search_ext_sW 203
+EXPORT ldap_search_init_page 204
+EXPORT ldap_search_init_pageA 205
+EXPORT ldap_search_init_pageW 206
+EXPORT ldap_search_s 50
+EXPORT ldap_search_sA 207
+EXPORT ldap_search_sW 208
+EXPORT ldap_search_st 51
+EXPORT ldap_search_stA 209
+EXPORT ldap_search_stW 210
+EXPORT ldap_set_dbg_flags 198
+EXPORT ldap_set_dbg_routine 199
+EXPORT ldap_set_option 211
+EXPORT ldap_set_optionA 212
+EXPORT ldap_set_optionW 14
+EXPORT ldap_simple_bind 59
+EXPORT ldap_simple_bindA 213
+EXPORT ldap_simple_bindW 214
+EXPORT ldap_simple_bind_s 60
+EXPORT ldap_simple_bind_sA 215
+EXPORT ldap_simple_bind_sW 216
+EXPORT ldap_sslinit 217
+EXPORT ldap_sslinitA 218
+EXPORT ldap_sslinitW 219
+EXPORT ldap_start_tls_sA 330
+EXPORT ldap_start_tls_sW 329
+EXPORT ldap_startup 201
+EXPORT ldap_stop_tls_s 331
+EXPORT ldap_ufn2dn 220
+EXPORT ldap_ufn2dnA 221
+EXPORT ldap_ufn2dnW 222
+EXPORT ldap_unbind 13
+EXPORT ldap_unbind_s 46
+EXPORT ldap_value_free 38
+EXPORT ldap_value_freeA 223
+EXPORT ldap_value_freeW 224
+EXPORT ldap_value_free_len 79
+INIT ld_nonnull=1 gle=0 ldgle=0x0
+GET_OPT_VERSION r=0x0 v=2
+SET_OPT_VERSION3 r=0x0
+BIND_NOSERVER r=0x51 ldgle=0x51
+SEARCH_NOSERVER r=0x34 res_null=1
+UNBIND r=0x0
+UNBIND_NULL r=0x59
+MSGFREE_NULL r=0x0
+VALUE_FREE_LEN_NULL r=0x0
+FIRST_ENTRY_NULL null=1 ldgle=0x59
+FREE_NULL_OK
+SSLINIT ld_nonnull=1
+ERR2STR 0x00 "Success"
+ERR2STR 0x01 "Operations Error"
+ERR2STR 0x02 "Protocol Error"
+ERR2STR 0x03 "Time Limit Exceeded"
+ERR2STR 0x04 "Size Limit Exceeded"
+ERR2STR 0x05 "Compare False"
+ERR2STR 0x06 "Compare True"
+ERR2STR 0x07 "Authentication Method Not Supported"
+ERR2STR 0x08 "Strong Authentication Required"
+ERR2STR 0x09 "Referral (v2)"
+ERR2STR 0x0a "Referral"
+ERR2STR 0x0b "Administration Limit Exceeded"
+ERR2STR 0x0c "Unavailable Critical Extension"
+ERR2STR 0x0d "Confidentiality Required"
+ERR2STR 0x0e ""
+ERR2STR 0x0f ""
+ERR2STR 0x10 "No Such Attribute"
+ERR2STR 0x11 "Undefined Type"
+ERR2STR 0x12 "Inappropriate Matching"
+ERR2STR 0x13 "Constraint Violation"
+ERR2STR 0x14 "Attribute Or Value Exists"
+ERR2STR 0x15 "Invalid Syntax"
+ERR2STR 0x16 ""
+ERR2STR 0x17 ""
+ERR2STR 0x18 ""
+ERR2STR 0x19 ""
+ERR2STR 0x1a ""
+ERR2STR 0x1b ""
+ERR2STR 0x1c ""
+ERR2STR 0x1d ""
+ERR2STR 0x1e ""
+ERR2STR 0x1f ""
+ERR2STR 0x20 "No Such Object"
+ERR2STR 0x21 "Alias Problem"
+ERR2STR 0x22 "Invalid DN Syntax"
+ERR2STR 0x23 "Is Leaf"
+ERR2STR 0x24 "Alias Dereference Problem"
+ERR2STR 0x25 ""
+ERR2STR 0x26 ""
+ERR2STR 0x27 ""
+ERR2STR 0x28 ""
+ERR2STR 0x29 ""
+ERR2STR 0x2a ""
+ERR2STR 0x2b ""
+ERR2STR 0x2c ""
+ERR2STR 0x2d ""
+ERR2STR 0x2e ""
+ERR2STR 0x2f ""
+ERR2STR 0x30 "Inappropriate Authentication"
+ERR2STR 0x31 "Invalid Credentials"
+ERR2STR 0x32 "Insufficient Rights"
+ERR2STR 0x33 "Busy"
+ERR2STR 0x34 "Unavailable"
+ERR2STR 0x35 "Unwilling To Perform"
+ERR2STR 0x36 "Loop Detected"
+ERR2STR 0x37 ""
+ERR2STR 0x38 ""
+ERR2STR 0x39 ""
+ERR2STR 0x3a ""
+ERR2STR 0x3b ""
+ERR2STR 0x3c "Sort Control Missing"
+ERR2STR 0x3d "Index range error"
+ERR2STR 0x3e ""
+ERR2STR 0x3f ""
+ERR2STR 0x40 "Naming Violation"
+ERR2STR 0x41 "Object Class Violation"
+ERR2STR 0x42 "Not allowed on Non-leaf"
+ERR2STR 0x43 "Not allowed on RDN"
+ERR2STR 0x44 "Already Exists"
+ERR2STR 0x45 "No Object Class Mods"
+ERR2STR 0x46 "Results Too Large"
+ERR2STR 0x47 "Affects Multiple DSAs"
+ERR2STR 0x48 ""
+ERR2STR 0x49 ""
+ERR2STR 0x4a ""
+ERR2STR 0x4b ""
+ERR2STR 0x4c "Control Error"
+ERR2STR 0x4d ""
+ERR2STR 0x4e ""
+ERR2STR 0x4f ""
+ERR2STR 0x50 "Other"
+ERR2STR 0x51 "Server Down"
+ERR2STR 0x52 "Local Error"
+ERR2STR 0x53 "Encoding Error"
+ERR2STR 0x54 "Decoding Error"
+ERR2STR 0x55 "Timeout"
+ERR2STR 0x56 "Auth Unknown"
+ERR2STR 0x57 "Filter Error"
+ERR2STR 0x58 "User Cancelled"
+ERR2STR 0x59 "Parameter Error"
+ERR2STR 0x5a "No Memory"
+ERR2STR 0x5b "Can't connect to the LDAP server"
+ERR2STR 0x5c "Operation not supported by this version of the LDAP protocol"
+ERR2STR 0x5d "Specified control was not found in message"
+ERR2STR 0x5e "No result present in message"
+ERR2STR 0x5f "More results returned"
+ERR2STR 0x60 "Loop while handling referrals"
+ERR2STR 0x61 "Referral hop limit exceeded"
+SIZEOF LDAP 160
+OFFSET LDAP.ld_sb 0
+OFFSET LDAP.ld_host 76
+OFFSET LDAP.ld_version 80
+OFFSET LDAP.ld_lberoptions 84
+OFFSET LDAP.ld_deref 88
+OFFSET LDAP.ld_timelimit 92
+OFFSET LDAP.ld_sizelimit 96
+OFFSET LDAP.ld_errno 100
+OFFSET LDAP.ld_matched 104
+OFFSET LDAP.ld_error 108
+OFFSET LDAP.ld_msgid 112
+OFFSET LDAP.ld_cldaptries 144
+OFFSET LDAP.ld_cldaptimeout 148
+OFFSET LDAP.ld_refhoplimit 152
+OFFSET LDAP.ld_options 156
+SIZEOF LDAPMessage 44
+OFFSET LDAPMessage.lm_msgid 0
+OFFSET LDAPMessage.lm_msgtype 4
+OFFSET LDAPMessage.lm_ber 8
+OFFSET LDAPMessage.lm_chain 12
+OFFSET LDAPMessage.lm_next 16
+OFFSET LDAPMessage.lm_time 20
+OFFSET LDAPMessage.Connection 24
+OFFSET LDAPMessage.Request 28
+OFFSET LDAPMessage.lm_returncode 32
+OFFSET LDAPMessage.lm_referral 36
+OFFSET LDAPMessage.lm_chased 38
+OFFSET LDAPMessage.lm_eom 39
+OFFSET LDAPMessage.ConnectionReferenced 40
+SIZEOF berval 8
+OFFSET struct berval.bv_len 0
+OFFSET struct berval.bv_val 4
+FIELDS_FRESH host="(null)" version=2 deref=0 timelimit=0 sizelimit=0 errno=0x0 refhop=32 options=0x63
+SEARCH_NOBIND r=0x51 res_null=1 gle=0 errno=0x51
+BIND_AFTER_SEARCH r=0x34 gle=0 errno=0x34
+SET_UNKNOWN r=0x59 ldgle=0x34
+GET_UNKNOWN r=0x59
+SET_REFERRALS_ON r=0x0
+GET_REFERRALS v=0x1
+SET_REFERRALS_PTR0 r=0x0
+GET_REFERRALS2 v=0x0
+SET_VERSION7 r=0x52
+SET_SIZELIMIT r=0x0 field=0
+SET_TIMELIMIT r=0x0 field=0
+SET_DEREF r=0x0 field=0
+GET_HOSTNAME r=0x0 v="(null)"
+SET_OPT_NULL_LD r=0x59
+INIT_NULLHOST ld_nonnull=1
+NULLHOST_FIELDS host="(null)"
+NULLHOST_BIND r=0x51
+MULTIHOST_FIELDS host="(null)"
+SSLINIT_FIELDS ssl=0
+SIMPLE_BIND_NULL_LD r=0x59
+SEARCH_NULL_LD r=0x59 res_null=0
+GET_DN_NULL null=1 ldgle=0x59
+FIRST_ATTR_NULL null=1 ldgle=0x59
+GET_VALUES_LEN_NULL null=1 ldgle=0x59
+ERR2STR_BIG ""
+ERR2STR_NEG ""
+ERR2STR_SAME_PTR 1

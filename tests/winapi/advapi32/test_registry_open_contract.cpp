@@ -4,7 +4,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "core/cpu/state/cpu_state.hpp"
 #include "winapi/kernel32/error.hpp"
-#include "../../../tools/oracle_probe/reg_open_sdk.generated.inc"
+#include "../../../src/winapi/advapi32/registry/reg_open_sdk.generated.inc"
 #include <algorithm>
 #include <array>
 #include <filesystem>
@@ -26,7 +26,7 @@ protected:
     u64 root() const { return is64() ? facts::x64::HKEY_CURRENT_USER_NATIVE : facts::x86::HKEY_CURRENT_USER_NATIVE; }
     void SetUp() override {
         ASSERT_TRUE(memory.map_region(0x10000, 0x6000, MemoryProtection::ReadWrite).is_ok());
-        auto file = std::filesystem::path(__FILE__).parent_path() / "../../../tools/oracle_probe" /
+        auto file = std::filesystem::path(__FILE__).parent_path() / "../../oracle_data" /
             (is64() ? "reg_open64.expected" : "reg_open32.expected");
         std::ifstream in(file);
         ASSERT_TRUE(in.is_open()) << file;

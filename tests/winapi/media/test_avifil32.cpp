@@ -32,7 +32,7 @@
 #include "winapi/media/avifil32/avifil32_contract.hpp"
 #include "winapi/media/msvfw32/msvfw32.hpp"
 
-#include "../../../tools/oracle_probe/avifil32_fixtures.h"
+#include "../../oracle_data/avifil32_fixtures.h"
 
 using namespace vitreo;
 using namespace vitreo::winapi;
@@ -59,7 +59,7 @@ std::vector<std::string> read_lines(const std::string& path) {
 }
 
 std::string expected_path(bool x64) {
-    return std::string(VITREO_SOURCE_DIR) + "/tools/oracle_probe/avifil32_probe" +
+    return std::string(VITREO_SOURCE_DIR) + "/tests/oracle_data/avifil32_probe" +
            (x64 ? "64" : "32") + ".expected";
 }
 
@@ -1084,7 +1084,7 @@ TEST_P(Avifil32Oracle, ExportTableMatchesWindows) {
 
     // x86 argument bytes from the import library (CDECL entries carry none).
     const auto lib = read_lines(std::string(VITREO_SOURCE_DIR) +
-                                "/tools/oracle_probe/avifil32_importlib32.txt");
+                                "/tests/oracle_data/avifil32_importlib32.txt");
     usize checked = 0;
     for (const auto& line : lib) {
         if (line.empty() || line[0] == '#') continue;

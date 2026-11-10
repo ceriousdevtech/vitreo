@@ -29,7 +29,7 @@
 #include "winapi/kernel32/synchronization/sync.hpp"
 #include "ipc/process_handle.hpp"
 
-#include "../../../../tools/oracle_probe/flush_buffers.generated.inc"
+#include "winapi/kernel32/filesystem/flush_buffers.generated.inc"
 
 #include <chrono>
 #include <mutex>

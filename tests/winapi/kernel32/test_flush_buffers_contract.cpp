@@ -8,7 +8,7 @@
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/filesystem/file.hpp"
 #include "winapi/kernel32/kernel32_ext.hpp"
-#include "../../../tools/oracle_probe/flush_buffers.generated.inc"
+#include "../../../src/winapi/kernel32/filesystem/flush_buffers.generated.inc"
 #include <filesystem>
 #include <fstream>
 #include <memory>

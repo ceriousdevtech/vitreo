@@ -1,0 +1,3318 @@
+avi fixture rgb24.avi size=1032 hash=a428f3b7
+avi fixture pal8.avi size=500 hash=61eb7508
+avi fixture rle8.avi size=328 hash=d81b1f5a
+avi fixture rgb16.avi size=296 hash=781817ba
+avi fixture odml32.avi size=844 hash=50c9639e
+avi fixture tone.wav size=844 hash=ef9c5b9d
+avi fixture notavi.avi size=33 hash=2510cddf
+avi fixture rle4.avi size=286 hash=fcdc6d35
+avi fixture odmlonly.avi size=804 hash=133ecc4b
+avi fixture multi.avi size=1068 hash=490ea219
+avi layout AVIFILEINFOA size=108 szFileType=44
+avi layout AVIFILEINFOW size=172 szFileType=44
+avi layout AVISTREAMINFOA size=140 dwCaps=12 wPriority=16 dwScale=20 rcFrame=52 dwEditCount=68 szName=76
+avi layout AVISTREAMINFOW size=204 szName=76
+avi layout AVICOMPRESSOPTIONS size=56 lpFormat=24 cbFormat=32 lpParms=40
+avi const AVIERR_UNSUPPORTED=0x80044065 BADFORMAT=0x80044066 MEMORY=0x80044067 INTERNAL=0x80044068 BADFLAGS=0x80044069 BADPARAM=0x8004406a BADSIZE=0x8004406b
+avi const AVIERR_BADHANDLE=0x8004406c FILEREAD=0x8004406d FILEWRITE=0x8004406e FILEOPEN=0x8004406f COMPRESSOR=0x80044070 NOCOMPRESSOR=0x80044071 READONLY=0x80044072
+avi const AVIERR_NODATA=0x80044073 BUFFERTOOSMALL=0x80044074 CANTCOMPRESS=0x80044075 USERABORT=0x800440c6 ERROR=0x800440c7
+avi const FIND_NEXT=0x1 FIND_PREV=0x4 FIND_FROM_START=0x8 FIND_KEY=0x10 FIND_ANY=0x20 FIND_FORMAT=0x40 FIND_LENGTH=0x1000 FIND_OFFSET=0x2000 FIND_SIZE=0x3000 FIND_INDEX=0x4000
+avi const AVISTREAMREAD_CONVENIENT=-1 AVIGETFRAMEF_BESTDISPLAYFMT=1 AVIFILEINFO_HASINDEX=0x10 MUSTUSEINDEX=0x20 ISINTERLEAVED=0x100 TRUSTCKTYPE=0x800 WASCAPTUREFILE=0x10000 COPYRIGHTED=0x20000
+avi const AVIFILECAPS_CANREAD=0x1 CANWRITE=0x2 ALLKEYFRAMES=0x10 NOCOMPRESSION=0x20 AVISTREAMINFO_DISABLED=0x1 FORMATCHANGES=0x10000 AVIIF_LIST=0x1 KEYFRAME=0x10 NOTIME=0x100
+avi const streamtypeVIDEO=0x73646976 AUDIO=0x73647561 MIDI=0x7364696d TEXT=0x73747874
+avi preinit open hr=0x800401f0 pf=NULL
+avi exports base=1 functions=76 names=76
+avi export 1 AVIBuildFilter
+avi export 2 AVIBuildFilterA
+avi export 3 AVIBuildFilterW
+avi export 4 AVIClearClipboard
+avi export 5 AVIFileAddRef
+avi export 6 AVIFileCreateStream
+avi export 7 AVIFileCreateStreamA
+avi export 8 AVIFileCreateStreamW
+avi export 9 AVIFileEndRecord
+avi export 10 AVIFileExit
+avi export 11 AVIFileGetStream
+avi export 12 AVIFileInfo
+avi export 13 AVIFileInfoA
+avi export 14 AVIFileInfoW
+avi export 15 AVIFileInit
+avi export 16 AVIFileOpen
+avi export 17 AVIFileOpenA
+avi export 18 AVIFileOpenW
+avi export 19 AVIFileReadData
+avi export 20 AVIFileRelease
+avi export 21 AVIFileWriteData
+avi export 22 AVIGetFromClipboard
+avi export 23 AVIMakeCompressedStream
+avi export 24 AVIMakeFileFromStreams
+avi export 25 AVIMakeStreamFromClipboard
+avi export 26 AVIPutFileOnClipboard
+avi export 27 AVISave
+avi export 28 AVISaveA
+avi export 29 AVISaveOptions
+avi export 30 AVISaveOptionsFree
+avi export 31 AVISaveV
+avi export 32 AVISaveVA
+avi export 33 AVISaveVW
+avi export 34 AVISaveW
+avi export 35 AVIStreamAddRef
+avi export 36 AVIStreamBeginStreaming
+avi export 37 AVIStreamCreate
+avi export 38 AVIStreamEndStreaming
+avi export 39 AVIStreamFindSample
+avi export 40 AVIStreamGetFrame
+avi export 41 AVIStreamGetFrameClose
+avi export 42 AVIStreamGetFrameOpen
+avi export 43 AVIStreamInfo
+avi export 44 AVIStreamInfoA
+avi export 45 AVIStreamInfoW
+avi export 46 AVIStreamLength
+avi export 47 AVIStreamOpenFromFile
+avi export 48 AVIStreamOpenFromFileA
+avi export 49 AVIStreamOpenFromFileW
+avi export 50 AVIStreamRead
+avi export 51 AVIStreamReadData
+avi export 52 AVIStreamReadFormat
+avi export 53 AVIStreamRelease
+avi export 54 AVIStreamSampleToTime
+avi export 55 AVIStreamSetFormat
+avi export 56 AVIStreamStart
+avi export 57 AVIStreamTimeToSample
+avi export 58 AVIStreamWrite
+avi export 59 AVIStreamWriteData
+avi export 60 CreateEditableStream
+avi export 61 DllCanUnloadNow
+avi export 62 DllGetClassObject
+avi export 63 EditStreamClone
+avi export 64 EditStreamCopy
+avi export 65 EditStreamCut
+avi export 66 EditStreamPaste
+avi export 67 EditStreamSetInfo
+avi export 68 EditStreamSetInfoA
+avi export 69 EditStreamSetInfoW
+avi export 70 EditStreamSetName
+avi export 71 EditStreamSetNameA
+avi export 72 EditStreamSetNameW
+avi export 73 IID_IAVIEditStream
+avi export 74 IID_IAVIFile
+avi export 75 IID_IAVIStream
+avi export 76 IID_IGetFrame
+avi file rgb24.avi open hr=0x00000000 pf=set
+avi rgb24.avi addref=2 release=1
+avi rgb24.avi infoA hr=0x00000000
+avi rgb24.avi maxbps=12000 flags=0x100 caps=0x3 streams=2 sugg=0 w=5 h=3 scale=66666 rate=1000000 len=3 edit=0 type="AVI Default File Handler"
+avi rgb24.avi infoW hr=0x00000000 type="AVI Default File Handler" same=1
+avi rgb24.avi infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi rgb24.avi infoA0 hr=0x8004406b first=cc
+avi rgb24.avi infoA200 hr=0x00000000 tail=cc
+avi rgb24.avi info(plain) hr=0x00000000 same=1
+avi rgb24.avi getstream any -1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream any 0 hr=0x00000000 s=set
+avi rgb24.avi getstream any 1 hr=0x00000000 s=set
+avi rgb24.avi getstream any 2 hr=0x80044073 s=NULL
+avi rgb24.avi getstream vids -1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream vids 0 hr=0x00000000 s=set
+avi rgb24.avi getstream vids 1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream vids 2 hr=0x80044073 s=NULL
+avi rgb24.avi getstream auds -1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream auds 0 hr=0x00000000 s=set
+avi rgb24.avi getstream auds 1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream auds 2 hr=0x80044073 s=NULL
+avi rgb24.avi getstream mids -1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream mids 0 hr=0x80044073 s=NULL
+avi rgb24.avi getstream mids 1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream mids 2 hr=0x80044073 s=NULL
+avi rgb24.avi getstream txts -1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream txts 0 hr=0x80044073 s=NULL
+avi rgb24.avi getstream txts 1 hr=0x80044073 s=NULL
+avi rgb24.avi getstream txts 2 hr=0x80044073 s=NULL
+avi rgb24.avi getstream twice same=1 addref=3
+avi rgb24.avi stream release=2 release=1
+avi rgb24.avi frdata vtst query hr=0x00000000 cb=8
+avi rgb24.avi frdata vtst hr=0x00000000 cb=8 hash=831b16eb
+avi rgb24.avi frdata vtst small hr=0x00000000 cb=8 first=66696ccc
+avi rgb24.avi frdata ISFT query hr=0x80044073 cb=0
+avi rgb24.avi frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi rgb24.avi frdata INFO query hr=0x80044073 cb=0
+avi rgb24.avi frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi rgb24.avi frdata avih query hr=0x80044073 cb=0
+avi rgb24.avi frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi rgb24.avi frdata LIST query hr=0x00000000 cb=20
+avi rgb24.avi frdata LIST hr=0x00000000 cb=20 hash=c4a8a093
+avi rgb24.avi frdata LIST small hr=0x00000000 cb=20 first=494e46cc
+avi rgb24.avi frdata JUNK query hr=0x80044073 cb=0
+avi rgb24.avi frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi rgb24.avi frdata strl query hr=0x80044073 cb=0
+avi rgb24.avi frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi rgb24.avi createstream hr=0x80044065 s=NULL
+avi rgb24.avi writedata hr=0x80044072 endrecord=0x80044072
+avi rgb24.avi vt deletestream hr=0x80044065
+avi rgb24.avi qi IUnknown hr=0x00000000 same=0 off=-24
+avi rgb24.avi qi IAVIFile hr=0x00000000 same=1 off=0
+avi rgb24.avi qi IPersistFile hr=0x00000000 same=0 off=32
+avi rgb24.avi qi IAVIPersistFile hr=0x00000000 same=0 off=32
+avi rgb24.avi qi IAVIStream hr=0x80004002 out=NULL
+avi rgb24.avi qi IMarshal hr=0x80004002 out=NULL
+avi rgb24.avi vt info hr=0x00000000 streams=2
+avi rgb24.avi vt getstream hr=0x00000000 same_as_flat=1
+avi rgb24.avi s0 infoA hr=0x00000000
+avi rgb24.avi s0 type=vids handler=DIB (0x20424944) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=15 start=0 len=3 init=0 sugg=48 quality=0xffffffff ssize=0 rc=0,0,5,3 edit=0 fmtchg=0 name="Video #1"
+avi rgb24.avi s0 infoW hr=0x00000000 name="Video #1" len=3 same=1
+avi rgb24.avi s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi rgb24.avi s0 infoA0 hr=0x8004406b first=cc
+avi rgb24.avi s0 infoA256 hr=0x00000000 tail=cc
+avi rgb24.avi s0 start=0 length=3
+avi rgb24.avi s0 s2t -1=0
+avi rgb24.avi s0 s2t 0=0
+avi rgb24.avi s0 s2t 1=66
+avi rgb24.avi s0 s2t 2=133
+avi rgb24.avi s0 s2t 3=200
+avi rgb24.avi s0 s2t 4=200
+avi rgb24.avi s0 s2t 1000=200
+avi rgb24.avi s0 t2s -1=-1
+avi rgb24.avi s0 t2s 0=0
+avi rgb24.avi s0 t2s 1=0
+avi rgb24.avi s0 t2s 49=0
+avi rgb24.avi s0 t2s 50=0
+avi rgb24.avi s0 t2s 66=0
+avi rgb24.avi s0 t2s 67=1
+avi rgb24.avi s0 t2s 99=1
+avi rgb24.avi s0 t2s 100=1
+avi rgb24.avi s0 t2s 133=1
+avi rgb24.avi s0 t2s 134=2
+avi rgb24.avi s0 t2s 200=3
+avi rgb24.avi s0 t2s 1000=3
+avi rgb24.avi s0 t2s 100000=3
+avi rgb24.avi s0 find flags=0x11: -1 -1 0 1 2 -1 -1
+avi rgb24.avi s0 find flags=0x14: -1 -1 0 1 2 -1 -1
+avi rgb24.avi s0 find flags=0x21: -1 -1 0 1 2 -1 -1
+avi rgb24.avi s0 find flags=0x24: -1 -1 0 1 2 -1 -1
+avi rgb24.avi s0 find flags=0x41: -1 -1 0 -1 -1 -1 -1
+avi rgb24.avi s0 find flags=0x44: -1 -1 0 0 0 -1 -1
+avi rgb24.avi s0 find flags=0x18: -1 -1 0 1 2 -1 -1
+avi rgb24.avi s0 find flags=0x0: -1 -1 0 1 2 -1 -1
+avi rgb24.avi s0 find flags=0x10: -1 -1 0 1 2 -1 -1
+avi rgb24.avi s0 find flags=0x20: -1 -1 0 1 2 -1 -1
+avi rgb24.avi s0 findret 0x1000: -1 48 48 48 -1
+avi rgb24.avi s0 findret 0x2000: -1 444 608 772 -1
+avi rgb24.avi s0 findret 0x3000: -1 1 1 1 -1
+avi rgb24.avi s0 findret 0x4000: -1 0 2 4 -1
+avi rgb24.avi s0 fmt query hr=0x00000000 cb=40
+avi rgb24.avi s0 fmt pos0 hr=0x00000000 cb=40 hash=63888082
+avi rgb24.avi s0 fmt pos2 hr=0x00000000 cb=40 hash=63888082
+avi rgb24.avi s0 fmt pos-1 hr=0x00000000 cb=40 hash=63888082
+avi rgb24.avi s0 fmt pos3 hr=0x00000000 cb=40 hash=63888082
+avi rgb24.avi s0 fmt pos2 hr=0x00000000 cb=40 hash=63888082
+avi rgb24.avi s0 fmt small hr=0x80044074 cb=40
+avi   fmtsmall 2800000005000000cccccccc
+avi rgb24.avi s0 readq start=0 n=1 hr=0x00000000 bytes=48 samples=1
+avi rgb24.avi s0 readq start=0 conv hr=0x00000000 bytes=48 samples=1
+avi rgb24.avi s0 read start=0 conv hr=0x00000000 bytes=48 samples=1 hash=de27cf85
+avi rgb24.avi s0 read start=0 n=3 hr=0x00000000 bytes=48 samples=1 hash=de27cf85
+avi rgb24.avi s0 readq start=1 n=1 hr=0x00000000 bytes=48 samples=1
+avi rgb24.avi s0 readq start=1 conv hr=0x00000000 bytes=48 samples=1
+avi rgb24.avi s0 read start=1 conv hr=0x00000000 bytes=48 samples=1 hash=438d9605
+avi rgb24.avi s0 read start=1 n=3 hr=0x00000000 bytes=48 samples=1 hash=438d9605
+avi rgb24.avi s0 readq start=2 n=1 hr=0x00000000 bytes=48 samples=1
+avi rgb24.avi s0 readq start=2 conv hr=0x00000000 bytes=48 samples=1
+avi rgb24.avi s0 read start=2 conv hr=0x00000000 bytes=48 samples=1 hash=045b3c85
+avi rgb24.avi s0 read start=2 n=3 hr=0x00000000 bytes=48 samples=1 hash=045b3c85
+avi rgb24.avi s0 readq start=3 n=1 hr=0x800440c7 bytes=0 samples=0
+avi rgb24.avi s0 readq start=3 conv hr=0x800440c7 bytes=0 samples=0
+avi rgb24.avi s0 read start=3 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rgb24.avi s0 read start=3 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rgb24.avi s0 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi rgb24.avi s0 read small hr=0x80044074 bytes=48 samples=0 first=cc
+avi rgb24.avi s0 read nullouts hr=0x00000000
+avi rgb24.avi s0 rdata strd query hr=0x80044073 cb=0
+avi rgb24.avi s0 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s0 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s0 rdata strn query hr=0x80044073 cb=0
+avi rgb24.avi s0 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s0 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s0 rdata strh query hr=0x80044073 cb=0
+avi rgb24.avi s0 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s0 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s0 rdata strf query hr=0x80044073 cb=0
+avi rgb24.avi s0 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s0 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s0 rdata vtsd query hr=0x00000000 cb=7
+avi rgb24.avi s0 rdata vtsd hr=0x00000000 cb=7 hash=5968c4a7
+avi rgb24.avi s0 rdata vtsd small hr=0x00000000 cb=7 first=7374cc
+avi rgb24.avi s0 rdata indx query hr=0x80044073 cb=0
+avi rgb24.avi s0 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s0 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s0 begin=0x00000000 end=0x00000000
+avi rgb24.avi s0 qi IUnknown hr=0x00000000 same=0 off=-24
+avi rgb24.avi s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi rgb24.avi s0 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi rgb24.avi s0 qi IGetFrame hr=0x80004002 out=NULL
+avi rgb24.avi s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi rgb24.avi s0 qi IAVIFile hr=0x80004002 out=NULL
+avi rgb24.avi s0 qi IPersistFile hr=0x80004002 out=NULL
+avi rgb24.avi s0 qi IMarshal hr=0x80004002 out=NULL
+avi rgb24.avi s0 vt addref=3 release=2 findsample=0 create=0x80044065 delete=0x80044072
+avi rgb24.avi s0 vt info hr=0x00000000 len=3
+avi rgb24.avi s0 vt setinfo hr=0x80044072
+avi rgb24.avi s0 setformat hr=0x80044072
+avi rgb24.avi s0 write hr=0x80044072 sw=30583 bw=30583
+avi rgb24.avi s0 writedata hr=0x80044072
+avi rgb24.avi s0 gf null open=ok
+avi rgb24.avi s0 gf null pos0 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=de27cf85
+avi rgb24.avi s0 gf null pos0 bits 00070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5fc030a11181f262d343b4249
+avi rgb24.avi s0 gf null pos1 same_ptr=1
+avi rgb24.avi s0 gf null pos1 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=438d9605
+avi rgb24.avi s0 gf null pos1 bits 40474e555c636a71787f868d949ba2a9b0b7bec5ccd3dae1e8eff6fd040b121920272e353c434a51585f666d747b8289
+avi rgb24.avi s0 gf null pos2 same_ptr=1
+avi rgb24.avi s0 gf null pos2 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=045b3c85
+avi rgb24.avi s0 gf null pos2 bits 80878e959ca3aab1b8bfc6cdd4dbe2e9f0f7fe050c131a21282f363d444b525960676e757c838a91989fa6adb4bbc2c9
+avi rgb24.avi s0 gf null pos-1 NULL
+avi rgb24.avi s0 gf null posLen NULL
+avi rgb24.avi s0 gf null posLen+5 NULL
+avi rgb24.avi s0 gf vt addref=1 release=1 begin=0x00000000 getframe=frame end=0x00000000
+avi rgb24.avi s0 qi gf.IUnknown hr=0x00000000 same=1 off=0
+avi rgb24.avi s0 qi gf.IGetFrame hr=0x00000000 same=1 off=0
+avi rgb24.avi s0 qi gf.IAVIStream hr=0x00000000 is_stream=1
+avi rgb24.avi s0 gf null close=0x00000000
+avi rgb24.avi s0 gf best open=ok
+avi rgb24.avi s0 gf best pos0 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=de27cf85
+avi rgb24.avi s0 gf best pos0 bits 00070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5fc030a11181f262d343b4249
+avi rgb24.avi s0 gf best pos1 same_ptr=1
+avi rgb24.avi s0 gf best pos1 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=438d9605
+avi rgb24.avi s0 gf best pos1 bits 40474e555c636a71787f868d949ba2a9b0b7bec5ccd3dae1e8eff6fd040b121920272e353c434a51585f666d747b8289
+avi rgb24.avi s0 gf best pos2 same_ptr=1
+avi rgb24.avi s0 gf best pos2 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=045b3c85
+avi rgb24.avi s0 gf best pos2 bits 80878e959ca3aab1b8bfc6cdd4dbe2e9f0f7fe050c131a21282f363d444b525960676e757c838a91989fa6adb4bbc2c9
+avi rgb24.avi s0 gf best pos-1 NULL
+avi rgb24.avi s0 gf best posLen NULL
+avi rgb24.avi s0 gf best posLen+5 NULL
+avi rgb24.avi s0 gf best close=0x00000000
+avi rgb24.avi s0 gf bpp8 open=NULL
+avi rgb24.avi s0 gf bpp16 open=NULL
+avi rgb24.avi s0 gf bpp24 open=ok
+avi rgb24.avi s0 gf bpp24 pos0 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=de27cf85
+avi rgb24.avi s0 gf bpp24 pos0 bits 00070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5fc030a11181f262d343b4249
+avi rgb24.avi s0 gf bpp24 pos1 same_ptr=1
+avi rgb24.avi s0 gf bpp24 pos1 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=438d9605
+avi rgb24.avi s0 gf bpp24 pos1 bits 40474e555c636a71787f868d949ba2a9b0b7bec5ccd3dae1e8eff6fd040b121920272e353c434a51585f666d747b8289
+avi rgb24.avi s0 gf bpp24 pos2 same_ptr=1
+avi rgb24.avi s0 gf bpp24 pos2 size=40 w=5 h=3 planes=1 bpp=24 comp=0x0 simage=48 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=045b3c85
+avi rgb24.avi s0 gf bpp24 pos2 bits 80878e959ca3aab1b8bfc6cdd4dbe2e9f0f7fe050c131a21282f363d444b525960676e757c838a91989fa6adb4bbc2c9
+avi rgb24.avi s0 gf bpp24 pos-1 NULL
+avi rgb24.avi s0 gf bpp24 posLen NULL
+avi rgb24.avi s0 gf bpp24 posLen+5 NULL
+avi rgb24.avi s0 gf bpp24 close=0x00000000
+avi rgb24.avi s0 gf bpp32 open=NULL
+avi rgb24.avi s0 gf bpp24td open=NULL
+avi rgb24.avi s0 gf bpp24x2 open=NULL
+avi rgb24.avi s0 gf bf565 open=NULL
+avi rgb24.avi s1 infoA hr=0x00000000
+avi rgb24.avi s1 type=auds handler=....(0x0) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=11025 start=0 len=300 init=0 sugg=100 quality=0xffffffff ssize=1 rc=0,0,0,0 edit=0 fmtchg=0 name="rgb24.avi Audio #1"
+avi rgb24.avi s1 infoW hr=0x00000000 name="rgb24.avi Audio #1" len=300 same=1
+avi rgb24.avi s1 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi rgb24.avi s1 infoA0 hr=0x8004406b first=cc
+avi rgb24.avi s1 infoA256 hr=0x00000000 tail=cc
+avi rgb24.avi s1 start=0 length=300
+avi rgb24.avi s1 s2t -1=0
+avi rgb24.avi s1 s2t 0=0
+avi rgb24.avi s1 s2t 1=1
+avi rgb24.avi s1 s2t 2=1
+avi rgb24.avi s1 s2t 3=1
+avi rgb24.avi s1 s2t 4=1
+avi rgb24.avi s1 s2t 5=1
+avi rgb24.avi s1 s2t 6=1
+avi rgb24.avi s1 s2t 7=1
+avi rgb24.avi s1 s2t 8=1
+avi rgb24.avi s1 s2t 9=1
+avi rgb24.avi s1 s2t 10=1
+avi rgb24.avi s1 s2t 11=1
+avi rgb24.avi s1 s2t 12=2
+avi rgb24.avi s1 s2t 13=2
+avi rgb24.avi s1 s2t 14=2
+avi rgb24.avi s1 s2t 15=2
+avi rgb24.avi s1 s2t 16=2
+avi rgb24.avi s1 s2t 17=2
+avi rgb24.avi s1 s2t 18=2
+avi rgb24.avi s1 s2t 19=2
+avi rgb24.avi s1 s2t 20=2
+avi rgb24.avi s1 s2t 21=2
+avi rgb24.avi s1 s2t 22=2
+avi rgb24.avi s1 s2t 23=3
+avi rgb24.avi s1 s2t 24=3
+avi rgb24.avi s1 s2t 25=3
+avi rgb24.avi s1 s2t 26=3
+avi rgb24.avi s1 s2t 27=3
+avi rgb24.avi s1 s2t 28=3
+avi rgb24.avi s1 s2t 29=3
+avi rgb24.avi s1 s2t 30=3
+avi rgb24.avi s1 s2t 31=3
+avi rgb24.avi s1 s2t 32=3
+avi rgb24.avi s1 s2t 33=3
+avi rgb24.avi s1 s2t 34=4
+avi rgb24.avi s1 s2t 35=4
+avi rgb24.avi s1 s2t 36=4
+avi rgb24.avi s1 s2t 37=4
+avi rgb24.avi s1 s2t 38=4
+avi rgb24.avi s1 s2t 39=4
+avi rgb24.avi s1 s2t 40=4
+avi rgb24.avi s1 s2t 41=4
+avi rgb24.avi s1 s2t 42=4
+avi rgb24.avi s1 s2t 43=4
+avi rgb24.avi s1 s2t 44=4
+avi rgb24.avi s1 s2t 45=5
+avi rgb24.avi s1 s2t 46=5
+avi rgb24.avi s1 s2t 47=5
+avi rgb24.avi s1 s2t 48=5
+avi rgb24.avi s1 s2t 49=5
+avi rgb24.avi s1 s2t 50=5
+avi rgb24.avi s1 s2t 51=5
+avi rgb24.avi s1 s2t 52=5
+avi rgb24.avi s1 s2t 53=5
+avi rgb24.avi s1 s2t 54=5
+avi rgb24.avi s1 s2t 55=5
+avi rgb24.avi s1 s2t 56=6
+avi rgb24.avi s1 s2t 57=6
+avi rgb24.avi s1 s2t 58=6
+avi rgb24.avi s1 s2t 59=6
+avi rgb24.avi s1 s2t 60=6
+avi rgb24.avi s1 s2t 61=6
+avi rgb24.avi s1 s2t 62=6
+avi rgb24.avi s1 s2t 63=6
+avi rgb24.avi s1 s2t 64=6
+avi rgb24.avi s1 s2t 65=6
+avi rgb24.avi s1 s2t 66=6
+avi rgb24.avi s1 s2t 67=7
+avi rgb24.avi s1 s2t 68=7
+avi rgb24.avi s1 s2t 69=7
+avi rgb24.avi s1 s2t 70=7
+avi rgb24.avi s1 s2t 71=7
+avi rgb24.avi s1 s2t 72=7
+avi rgb24.avi s1 s2t 73=7
+avi rgb24.avi s1 s2t 74=7
+avi rgb24.avi s1 s2t 75=7
+avi rgb24.avi s1 s2t 76=7
+avi rgb24.avi s1 s2t 77=7
+avi rgb24.avi s1 s2t 78=8
+avi rgb24.avi s1 s2t 79=8
+avi rgb24.avi s1 s2t 80=8
+avi rgb24.avi s1 s2t 81=8
+avi rgb24.avi s1 s2t 82=8
+avi rgb24.avi s1 s2t 83=8
+avi rgb24.avi s1 s2t 84=8
+avi rgb24.avi s1 s2t 85=8
+avi rgb24.avi s1 s2t 86=8
+avi rgb24.avi s1 s2t 87=8
+avi rgb24.avi s1 s2t 88=8
+avi rgb24.avi s1 s2t 89=9
+avi rgb24.avi s1 s2t 90=9
+avi rgb24.avi s1 s2t 91=9
+avi rgb24.avi s1 s2t 92=9
+avi rgb24.avi s1 s2t 93=9
+avi rgb24.avi s1 s2t 94=9
+avi rgb24.avi s1 s2t 95=9
+avi rgb24.avi s1 s2t 96=9
+avi rgb24.avi s1 s2t 97=9
+avi rgb24.avi s1 s2t 98=9
+avi rgb24.avi s1 s2t 99=9
+avi rgb24.avi s1 s2t 100=10
+avi rgb24.avi s1 s2t 101=10
+avi rgb24.avi s1 s2t 102=10
+avi rgb24.avi s1 s2t 103=10
+avi rgb24.avi s1 s2t 104=10
+avi rgb24.avi s1 s2t 105=10
+avi rgb24.avi s1 s2t 106=10
+avi rgb24.avi s1 s2t 107=10
+avi rgb24.avi s1 s2t 108=10
+avi rgb24.avi s1 s2t 109=10
+avi rgb24.avi s1 s2t 110=10
+avi rgb24.avi s1 s2t 111=11
+avi rgb24.avi s1 s2t 112=11
+avi rgb24.avi s1 s2t 113=11
+avi rgb24.avi s1 s2t 114=11
+avi rgb24.avi s1 s2t 115=11
+avi rgb24.avi s1 s2t 116=11
+avi rgb24.avi s1 s2t 117=11
+avi rgb24.avi s1 s2t 118=11
+avi rgb24.avi s1 s2t 119=11
+avi rgb24.avi s1 s2t 120=11
+avi rgb24.avi s1 s2t 121=11
+avi rgb24.avi s1 s2t 122=12
+avi rgb24.avi s1 s2t 123=12
+avi rgb24.avi s1 s2t 124=12
+avi rgb24.avi s1 s2t 125=12
+avi rgb24.avi s1 s2t 126=12
+avi rgb24.avi s1 s2t 127=12
+avi rgb24.avi s1 s2t 128=12
+avi rgb24.avi s1 s2t 129=12
+avi rgb24.avi s1 s2t 130=12
+avi rgb24.avi s1 s2t 131=12
+avi rgb24.avi s1 s2t 132=12
+avi rgb24.avi s1 s2t 133=13
+avi rgb24.avi s1 s2t 134=13
+avi rgb24.avi s1 s2t 135=13
+avi rgb24.avi s1 s2t 136=13
+avi rgb24.avi s1 s2t 137=13
+avi rgb24.avi s1 s2t 138=13
+avi rgb24.avi s1 s2t 139=13
+avi rgb24.avi s1 s2t 140=13
+avi rgb24.avi s1 s2t 141=13
+avi rgb24.avi s1 s2t 142=13
+avi rgb24.avi s1 s2t 143=13
+avi rgb24.avi s1 s2t 144=14
+avi rgb24.avi s1 s2t 145=14
+avi rgb24.avi s1 s2t 146=14
+avi rgb24.avi s1 s2t 147=14
+avi rgb24.avi s1 s2t 148=14
+avi rgb24.avi s1 s2t 149=14
+avi rgb24.avi s1 s2t 150=14
+avi rgb24.avi s1 s2t 151=14
+avi rgb24.avi s1 s2t 152=14
+avi rgb24.avi s1 s2t 153=14
+avi rgb24.avi s1 s2t 154=14
+avi rgb24.avi s1 s2t 155=15
+avi rgb24.avi s1 s2t 156=15
+avi rgb24.avi s1 s2t 157=15
+avi rgb24.avi s1 s2t 158=15
+avi rgb24.avi s1 s2t 159=15
+avi rgb24.avi s1 s2t 160=15
+avi rgb24.avi s1 s2t 161=15
+avi rgb24.avi s1 s2t 162=15
+avi rgb24.avi s1 s2t 163=15
+avi rgb24.avi s1 s2t 164=15
+avi rgb24.avi s1 s2t 165=15
+avi rgb24.avi s1 s2t 166=16
+avi rgb24.avi s1 s2t 167=16
+avi rgb24.avi s1 s2t 168=16
+avi rgb24.avi s1 s2t 169=16
+avi rgb24.avi s1 s2t 170=16
+avi rgb24.avi s1 s2t 171=16
+avi rgb24.avi s1 s2t 172=16
+avi rgb24.avi s1 s2t 173=16
+avi rgb24.avi s1 s2t 174=16
+avi rgb24.avi s1 s2t 175=16
+avi rgb24.avi s1 s2t 176=16
+avi rgb24.avi s1 s2t 177=17
+avi rgb24.avi s1 s2t 178=17
+avi rgb24.avi s1 s2t 179=17
+avi rgb24.avi s1 s2t 180=17
+avi rgb24.avi s1 s2t 181=17
+avi rgb24.avi s1 s2t 182=17
+avi rgb24.avi s1 s2t 183=17
+avi rgb24.avi s1 s2t 184=17
+avi rgb24.avi s1 s2t 185=17
+avi rgb24.avi s1 s2t 186=17
+avi rgb24.avi s1 s2t 187=17
+avi rgb24.avi s1 s2t 188=18
+avi rgb24.avi s1 s2t 189=18
+avi rgb24.avi s1 s2t 190=18
+avi rgb24.avi s1 s2t 191=18
+avi rgb24.avi s1 s2t 192=18
+avi rgb24.avi s1 s2t 193=18
+avi rgb24.avi s1 s2t 194=18
+avi rgb24.avi s1 s2t 195=18
+avi rgb24.avi s1 s2t 196=18
+avi rgb24.avi s1 s2t 197=18
+avi rgb24.avi s1 s2t 198=18
+avi rgb24.avi s1 s2t 199=19
+avi rgb24.avi s1 s2t 200=19
+avi rgb24.avi s1 s2t 201=19
+avi rgb24.avi s1 s2t 202=19
+avi rgb24.avi s1 s2t 203=19
+avi rgb24.avi s1 s2t 204=19
+avi rgb24.avi s1 s2t 205=19
+avi rgb24.avi s1 s2t 206=19
+avi rgb24.avi s1 s2t 207=19
+avi rgb24.avi s1 s2t 208=19
+avi rgb24.avi s1 s2t 209=19
+avi rgb24.avi s1 s2t 210=20
+avi rgb24.avi s1 s2t 211=20
+avi rgb24.avi s1 s2t 212=20
+avi rgb24.avi s1 s2t 213=20
+avi rgb24.avi s1 s2t 214=20
+avi rgb24.avi s1 s2t 215=20
+avi rgb24.avi s1 s2t 216=20
+avi rgb24.avi s1 s2t 217=20
+avi rgb24.avi s1 s2t 218=20
+avi rgb24.avi s1 s2t 219=20
+avi rgb24.avi s1 s2t 220=20
+avi rgb24.avi s1 s2t 221=21
+avi rgb24.avi s1 s2t 222=21
+avi rgb24.avi s1 s2t 223=21
+avi rgb24.avi s1 s2t 224=21
+avi rgb24.avi s1 s2t 225=21
+avi rgb24.avi s1 s2t 226=21
+avi rgb24.avi s1 s2t 227=21
+avi rgb24.avi s1 s2t 228=21
+avi rgb24.avi s1 s2t 229=21
+avi rgb24.avi s1 s2t 230=21
+avi rgb24.avi s1 s2t 231=21
+avi rgb24.avi s1 s2t 232=22
+avi rgb24.avi s1 s2t 233=22
+avi rgb24.avi s1 s2t 234=22
+avi rgb24.avi s1 s2t 235=22
+avi rgb24.avi s1 s2t 236=22
+avi rgb24.avi s1 s2t 237=22
+avi rgb24.avi s1 s2t 238=22
+avi rgb24.avi s1 s2t 239=22
+avi rgb24.avi s1 s2t 240=22
+avi rgb24.avi s1 s2t 241=22
+avi rgb24.avi s1 s2t 242=22
+avi rgb24.avi s1 s2t 243=23
+avi rgb24.avi s1 s2t 244=23
+avi rgb24.avi s1 s2t 245=23
+avi rgb24.avi s1 s2t 246=23
+avi rgb24.avi s1 s2t 247=23
+avi rgb24.avi s1 s2t 248=23
+avi rgb24.avi s1 s2t 249=23
+avi rgb24.avi s1 s2t 250=23
+avi rgb24.avi s1 s2t 251=23
+avi rgb24.avi s1 s2t 252=23
+avi rgb24.avi s1 s2t 253=23
+avi rgb24.avi s1 s2t 254=24
+avi rgb24.avi s1 s2t 255=24
+avi rgb24.avi s1 s2t 256=24
+avi rgb24.avi s1 s2t 257=24
+avi rgb24.avi s1 s2t 258=24
+avi rgb24.avi s1 s2t 259=24
+avi rgb24.avi s1 s2t 260=24
+avi rgb24.avi s1 s2t 261=24
+avi rgb24.avi s1 s2t 262=24
+avi rgb24.avi s1 s2t 263=24
+avi rgb24.avi s1 s2t 264=24
+avi rgb24.avi s1 s2t 265=25
+avi rgb24.avi s1 s2t 266=25
+avi rgb24.avi s1 s2t 267=25
+avi rgb24.avi s1 s2t 268=25
+avi rgb24.avi s1 s2t 269=25
+avi rgb24.avi s1 s2t 270=25
+avi rgb24.avi s1 s2t 271=25
+avi rgb24.avi s1 s2t 272=25
+avi rgb24.avi s1 s2t 273=25
+avi rgb24.avi s1 s2t 274=25
+avi rgb24.avi s1 s2t 275=25
+avi rgb24.avi s1 s2t 276=26
+avi rgb24.avi s1 s2t 277=26
+avi rgb24.avi s1 s2t 278=26
+avi rgb24.avi s1 s2t 279=26
+avi rgb24.avi s1 s2t 280=26
+avi rgb24.avi s1 s2t 281=26
+avi rgb24.avi s1 s2t 282=26
+avi rgb24.avi s1 s2t 283=26
+avi rgb24.avi s1 s2t 284=26
+avi rgb24.avi s1 s2t 285=26
+avi rgb24.avi s1 s2t 286=26
+avi rgb24.avi s1 s2t 287=27
+avi rgb24.avi s1 s2t 288=27
+avi rgb24.avi s1 s2t 289=27
+avi rgb24.avi s1 s2t 290=27
+avi rgb24.avi s1 s2t 291=27
+avi rgb24.avi s1 s2t 292=27
+avi rgb24.avi s1 s2t 293=27
+avi rgb24.avi s1 s2t 294=27
+avi rgb24.avi s1 s2t 295=27
+avi rgb24.avi s1 s2t 296=27
+avi rgb24.avi s1 s2t 297=27
+avi rgb24.avi s1 s2t 298=28
+avi rgb24.avi s1 s2t 299=28
+avi rgb24.avi s1 s2t 300=28
+avi rgb24.avi s1 s2t 301=28
+avi rgb24.avi s1 s2t 1000=28
+avi rgb24.avi s1 t2s -1=-1
+avi rgb24.avi s1 t2s 0=0
+avi rgb24.avi s1 t2s 1=12
+avi rgb24.avi s1 t2s 49=300
+avi rgb24.avi s1 t2s 50=300
+avi rgb24.avi s1 t2s 66=300
+avi rgb24.avi s1 t2s 67=300
+avi rgb24.avi s1 t2s 99=300
+avi rgb24.avi s1 t2s 100=300
+avi rgb24.avi s1 t2s 133=300
+avi rgb24.avi s1 t2s 134=300
+avi rgb24.avi s1 t2s 200=300
+avi rgb24.avi s1 t2s 1000=300
+avi rgb24.avi s1 t2s 100000=300
+avi rgb24.avi s1 find flags=0x11: -1 -1 0 1 2 3 4 5 6 7
+avi rgb24.avi s1 find flags=0x14: -1 -1 0 1 2 3 4 5 6 7
+avi rgb24.avi s1 find flags=0x21: -1 -1 0 1 2 3 4 5 6 7
+avi rgb24.avi s1 find flags=0x24: -1 -1 0 1 2 3 4 5 6 7
+avi rgb24.avi s1 find flags=0x41: -1 -1 0 -1 -1 -1 -1 -1 -1 -1
+avi rgb24.avi s1 find flags=0x44: -1 -1 0 0 0 0 0 0 0 0
+avi rgb24.avi s1 find flags=0x18: -1 -1 0 1 2 3 4 5 6 7
+avi rgb24.avi s1 find flags=0x0: -1 -1 0 1 2 3 4 5 6 7
+avi rgb24.avi s1 find flags=0x10: -1 -1 0 1 2 3 4 5 6 7
+avi rgb24.avi s1 find flags=0x20: -1 -1 0 1 2 3 4 5 6 7
+avi rgb24.avi s1 findret 0x1000: -1 100 100 100 100 100 100 100
+avi rgb24.avi s1 findret 0x2000: -1 500 500 500 500 500 500 500
+avi rgb24.avi s1 findret 0x3000: -1 100 100 100 100 100 100 100
+avi rgb24.avi s1 findret 0x4000: -1 1 1 1 1 1 1 1
+avi rgb24.avi s1 fmt query hr=0x00000000 cb=16
+avi rgb24.avi s1 fmt pos0 hr=0x00000000 cb=16 hash=57811fa4
+avi rgb24.avi s1 fmt pos299 hr=0x00000000 cb=16 hash=57811fa4
+avi rgb24.avi s1 fmt pos-1 hr=0x00000000 cb=16 hash=57811fa4
+avi rgb24.avi s1 fmt pos300 hr=0x00000000 cb=16 hash=57811fa4
+avi rgb24.avi s1 fmt pos2 hr=0x00000000 cb=16 hash=57811fa4
+avi rgb24.avi s1 fmt small hr=0x80044074 cb=16
+avi   fmtsmall 01000100112b0000cccccccc
+avi rgb24.avi s1 readq start=0 n=1 hr=0x00000000 bytes=1 samples=1
+avi rgb24.avi s1 readq start=0 conv hr=0x00000000 bytes=100 samples=100
+avi rgb24.avi s1 read start=0 conv hr=0x00000000 bytes=100 samples=100 hash=de239011
+avi rgb24.avi s1 read start=0 n=3 hr=0x00000000 bytes=3 samples=3 hash=22ae7a28
+avi rgb24.avi s1 readq start=1 n=1 hr=0x00000000 bytes=1 samples=1
+avi rgb24.avi s1 readq start=1 conv hr=0x00000000 bytes=99 samples=99
+avi rgb24.avi s1 read start=1 conv hr=0x00000000 bytes=99 samples=99 hash=0e30096b
+avi rgb24.avi s1 read start=1 n=3 hr=0x00000000 bytes=3 samples=3 hash=56cf37ab
+avi rgb24.avi s1 readq start=299 n=1 hr=0x00000000 bytes=1 samples=1
+avi rgb24.avi s1 readq start=299 conv hr=0x00000000 bytes=1 samples=1
+avi rgb24.avi s1 read start=299 conv hr=0x00000000 bytes=1 samples=1 hash=2e0c9daa
+avi rgb24.avi s1 read start=299 n=3 hr=0x00000000 bytes=1 samples=1 hash=2e0c9daa
+avi rgb24.avi s1 readq start=300 n=1 hr=0x800440c7 bytes=0 samples=0
+avi rgb24.avi s1 readq start=300 conv hr=0x800440c7 bytes=0 samples=0
+avi rgb24.avi s1 read start=300 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rgb24.avi s1 read start=300 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rgb24.avi s1 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi rgb24.avi s1 read small hr=0x00000000 bytes=1 samples=1 first=00
+avi rgb24.avi s1 read nullouts hr=0x00000000
+avi rgb24.avi s1 read 50x150 hr=0x00000000 bytes=150 samples=150 hash=ea82837a
+avi rgb24.avi s1 read 250x150 hr=0x00000000 bytes=50 samples=50 hash=2f364e22
+avi rgb24.avi s1 read 10x150 into7 hr=0x00000000 bytes=7 samples=7
+avi rgb24.avi s1 rdata strd query hr=0x80044073 cb=0
+avi rgb24.avi s1 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s1 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s1 rdata strn query hr=0x80044073 cb=0
+avi rgb24.avi s1 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s1 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s1 rdata strh query hr=0x80044073 cb=0
+avi rgb24.avi s1 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s1 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s1 rdata strf query hr=0x80044073 cb=0
+avi rgb24.avi s1 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s1 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s1 rdata vtsd query hr=0x80044073 cb=0
+avi rgb24.avi s1 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s1 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s1 rdata indx query hr=0x80044073 cb=0
+avi rgb24.avi s1 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb24.avi s1 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi rgb24.avi s1 begin=0x00000000 end=0x00000000
+avi rgb24.avi s1 qi IUnknown hr=0x00000000 same=0 off=-24
+avi rgb24.avi s1 qi IAVIStream hr=0x00000000 same=1 off=0
+avi rgb24.avi s1 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi rgb24.avi s1 qi IGetFrame hr=0x80004002 out=NULL
+avi rgb24.avi s1 qi IAVIEditStream hr=0x80004002 out=NULL
+avi rgb24.avi s1 qi IAVIFile hr=0x80004002 out=NULL
+avi rgb24.avi s1 qi IPersistFile hr=0x80004002 out=NULL
+avi rgb24.avi s1 qi IMarshal hr=0x80004002 out=NULL
+avi rgb24.avi s1 vt addref=2 release=1 findsample=0 create=0x80044065 delete=0x80044072
+avi rgb24.avi s1 vt info hr=0x00000000 len=300
+avi rgb24.avi s1 vt setinfo hr=0x80044072
+avi rgb24.avi s1 setformat hr=0x80044072
+avi rgb24.avi s1 write hr=0x80044072 sw=30583 bw=30583
+avi rgb24.avi s1 writedata hr=0x80044072
+avi rgb24.avi s1 gf audio open=NULL
+avi rgb24.avi refs file+3 file-2 stream+2 stream-1
+avi rgb24.avi refs unk+4 unk-3 unk-2
+avi rgb24.avi persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004001 NULL
+avi rgb24.avi persist release=2
+avi rgb24.avi refs gf+1 gf+2 gf-2 gf-1 stream+3 stream-2
+avi rgb24.avi refs gfclose=0x00000000
+avi rgb24.avi read0 hr=0x80044074 bytes=48 samples=0
+avi rgb24.avi read1into1 hr=0x80044074 bytes=48 samples=0
+avi rgb24.avi refs filerelease=1 streamrelease=0
+avi rgb24.avi lifetime filerelease=1 streamlen=3 streamrelease=1
+avi file pal8.avi open hr=0x00000000 pf=set
+avi pal8.avi addref=2 release=1
+avi pal8.avi infoA hr=0x00000000
+avi pal8.avi maxbps=320 flags=0x0 caps=0x3 streams=1 sugg=32 w=6 h=4 scale=100000 rate=1000000 len=3 edit=0 type="AVI Default File Handler"
+avi pal8.avi infoW hr=0x00000000 type="AVI Default File Handler" same=1
+avi pal8.avi infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi pal8.avi infoA0 hr=0x8004406b first=cc
+avi pal8.avi infoA200 hr=0x00000000 tail=cc
+avi pal8.avi info(plain) hr=0x00000000 same=1
+avi pal8.avi getstream any -1 hr=0x80044073 s=NULL
+avi pal8.avi getstream any 0 hr=0x00000000 s=set
+avi pal8.avi getstream any 1 hr=0x80044073 s=NULL
+avi pal8.avi getstream any 2 hr=0x80044073 s=NULL
+avi pal8.avi getstream vids -1 hr=0x80044073 s=NULL
+avi pal8.avi getstream vids 0 hr=0x00000000 s=set
+avi pal8.avi getstream vids 1 hr=0x80044073 s=NULL
+avi pal8.avi getstream vids 2 hr=0x80044073 s=NULL
+avi pal8.avi getstream auds -1 hr=0x80044073 s=NULL
+avi pal8.avi getstream auds 0 hr=0x80044073 s=NULL
+avi pal8.avi getstream auds 1 hr=0x80044073 s=NULL
+avi pal8.avi getstream auds 2 hr=0x80044073 s=NULL
+avi pal8.avi getstream mids -1 hr=0x80044073 s=NULL
+avi pal8.avi getstream mids 0 hr=0x80044073 s=NULL
+avi pal8.avi getstream mids 1 hr=0x80044073 s=NULL
+avi pal8.avi getstream mids 2 hr=0x80044073 s=NULL
+avi pal8.avi getstream txts -1 hr=0x80044073 s=NULL
+avi pal8.avi getstream txts 0 hr=0x80044073 s=NULL
+avi pal8.avi getstream txts 1 hr=0x80044073 s=NULL
+avi pal8.avi getstream txts 2 hr=0x80044073 s=NULL
+avi pal8.avi getstream twice same=1 addref=3
+avi pal8.avi stream release=2 release=1
+avi pal8.avi frdata vtst query hr=0x80044073 cb=0
+avi pal8.avi frdata vtst hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi frdata vtst small hr=0x80044073 cb=0 first=cccccccc
+avi pal8.avi frdata ISFT query hr=0x80044073 cb=0
+avi pal8.avi frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi pal8.avi frdata INFO query hr=0x80044073 cb=0
+avi pal8.avi frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi pal8.avi frdata avih query hr=0x80044073 cb=0
+avi pal8.avi frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi pal8.avi frdata LIST query hr=0x80044073 cb=0
+avi pal8.avi frdata LIST hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi frdata LIST small hr=0x80044073 cb=0 first=cccccccc
+avi pal8.avi frdata JUNK query hr=0x80044073 cb=0
+avi pal8.avi frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi pal8.avi frdata strl query hr=0x80044073 cb=0
+avi pal8.avi frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi pal8.avi createstream hr=0x80044065 s=NULL
+avi pal8.avi writedata hr=0x80044072 endrecord=0x80044072
+avi pal8.avi vt deletestream hr=0x80044065
+avi pal8.avi qi IUnknown hr=0x00000000 same=0 off=-24
+avi pal8.avi qi IAVIFile hr=0x00000000 same=1 off=0
+avi pal8.avi qi IPersistFile hr=0x00000000 same=0 off=32
+avi pal8.avi qi IAVIPersistFile hr=0x00000000 same=0 off=32
+avi pal8.avi qi IAVIStream hr=0x80004002 out=NULL
+avi pal8.avi qi IMarshal hr=0x80004002 out=NULL
+avi pal8.avi vt info hr=0x00000000 streams=1
+avi pal8.avi vt getstream hr=0x00000000 same_as_flat=1
+avi pal8.avi s0 infoA hr=0x00000000
+avi pal8.avi s0 type=vids handler=DIB (0x20424944) flags=0x10000 caps=0x0 prio=0 lang=0 scale=1 rate=10 start=0 len=3 init=0 sugg=32 quality=0x1d4c ssize=0 rc=0,0,6,4 edit=0 fmtchg=0 name="pal8.avi Video #1"
+avi pal8.avi s0 infoW hr=0x00000000 name="pal8.avi Video #1" len=3 same=1
+avi pal8.avi s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi pal8.avi s0 infoA0 hr=0x8004406b first=cc
+avi pal8.avi s0 infoA256 hr=0x00000000 tail=cc
+avi pal8.avi s0 start=0 length=3
+avi pal8.avi s0 s2t -1=0
+avi pal8.avi s0 s2t 0=0
+avi pal8.avi s0 s2t 1=100
+avi pal8.avi s0 s2t 2=200
+avi pal8.avi s0 s2t 3=300
+avi pal8.avi s0 s2t 4=300
+avi pal8.avi s0 s2t 1000=300
+avi pal8.avi s0 t2s -1=-1
+avi pal8.avi s0 t2s 0=0
+avi pal8.avi s0 t2s 1=0
+avi pal8.avi s0 t2s 49=0
+avi pal8.avi s0 t2s 50=0
+avi pal8.avi s0 t2s 66=0
+avi pal8.avi s0 t2s 67=0
+avi pal8.avi s0 t2s 99=0
+avi pal8.avi s0 t2s 100=1
+avi pal8.avi s0 t2s 133=1
+avi pal8.avi s0 t2s 134=1
+avi pal8.avi s0 t2s 200=2
+avi pal8.avi s0 t2s 1000=3
+avi pal8.avi s0 t2s 100000=3
+avi pal8.avi s0 find flags=0x11: -1 -1 0 1 2 -1 -1
+avi pal8.avi s0 find flags=0x14: -1 -1 0 1 2 -1 -1
+avi pal8.avi s0 find flags=0x21: -1 -1 0 1 2 -1 -1
+avi pal8.avi s0 find flags=0x24: -1 -1 0 1 2 -1 -1
+avi pal8.avi s0 find flags=0x41: -1 -1 2 2 -1 -1 -1
+avi pal8.avi s0 find flags=0x44: -1 -1 -1 -1 2 -1 -1
+avi pal8.avi s0 find flags=0x18: -1 -1 0 1 2 -1 -1
+avi pal8.avi s0 find flags=0x0: -1 -1 0 1 2 -1 -1
+avi pal8.avi s0 find flags=0x10: -1 -1 0 1 2 -1 -1
+avi pal8.avi s0 find flags=0x20: -1 -1 0 1 2 -1 -1
+avi pal8.avi s0 findret 0x1000: -1 32 32 32 -1
+avi pal8.avi s0 findret 0x2000: -1 296 336 396 -1
+avi pal8.avi s0 findret 0x3000: -1 1 1 1 -1
+avi pal8.avi s0 findret 0x4000: -1 0 1 3 -1
+avi pal8.avi s0 fmt query hr=0x00000000 cb=104
+avi pal8.avi s0 fmt pos0 hr=0x00000000 cb=104 hash=031025c6
+avi pal8.avi s0 fmt pos2 hr=0x00000000 cb=104 hash=2bba59f6
+avi pal8.avi s0 fmt pos-1 hr=0x00000000 cb=104 hash=031025c6
+avi pal8.avi s0 fmt pos3 hr=0x00000000 cb=104 hash=031025c6
+avi pal8.avi s0 fmt pos2 hr=0x00000000 cb=104 hash=2bba59f6
+avi pal8.avi s0 fmt small hr=0x80044074 cb=104
+avi   fmtsmall 2800000006000000cccccccc
+avi pal8.avi s0 readq start=0 n=1 hr=0x00000000 bytes=32 samples=1
+avi pal8.avi s0 readq start=0 conv hr=0x00000000 bytes=32 samples=1
+avi pal8.avi s0 read start=0 conv hr=0x00000000 bytes=32 samples=1 hash=897482f9
+avi pal8.avi s0 read start=0 n=3 hr=0x00000000 bytes=32 samples=1 hash=897482f9
+avi pal8.avi s0 readq start=1 n=1 hr=0x00000000 bytes=32 samples=1
+avi pal8.avi s0 readq start=1 conv hr=0x00000000 bytes=32 samples=1
+avi pal8.avi s0 read start=1 conv hr=0x00000000 bytes=32 samples=1 hash=a097cc59
+avi pal8.avi s0 read start=1 n=3 hr=0x00000000 bytes=32 samples=1 hash=a097cc59
+avi pal8.avi s0 readq start=2 n=1 hr=0x00000000 bytes=32 samples=1
+avi pal8.avi s0 readq start=2 conv hr=0x00000000 bytes=32 samples=1
+avi pal8.avi s0 read start=2 conv hr=0x00000000 bytes=32 samples=1 hash=b923ead9
+avi pal8.avi s0 read start=2 n=3 hr=0x00000000 bytes=32 samples=1 hash=b923ead9
+avi pal8.avi s0 readq start=3 n=1 hr=0x800440c7 bytes=0 samples=0
+avi pal8.avi s0 readq start=3 conv hr=0x800440c7 bytes=0 samples=0
+avi pal8.avi s0 read start=3 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi pal8.avi s0 read start=3 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi pal8.avi s0 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi pal8.avi s0 read small hr=0x80044074 bytes=32 samples=0 first=cc
+avi pal8.avi s0 read nullouts hr=0x00000000
+avi pal8.avi s0 rdata strd query hr=0x80044073 cb=0
+avi pal8.avi s0 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi s0 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi pal8.avi s0 rdata strn query hr=0x80044073 cb=0
+avi pal8.avi s0 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi s0 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi pal8.avi s0 rdata strh query hr=0x80044073 cb=0
+avi pal8.avi s0 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi s0 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi pal8.avi s0 rdata strf query hr=0x80044073 cb=0
+avi pal8.avi s0 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi s0 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi pal8.avi s0 rdata vtsd query hr=0x80044073 cb=0
+avi pal8.avi s0 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi s0 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi pal8.avi s0 rdata indx query hr=0x80044073 cb=0
+avi pal8.avi s0 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi pal8.avi s0 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi pal8.avi s0 begin=0x00000000 end=0x00000000
+avi pal8.avi s0 qi IUnknown hr=0x00000000 same=0 off=-24
+avi pal8.avi s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi pal8.avi s0 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi pal8.avi s0 qi IGetFrame hr=0x80004002 out=NULL
+avi pal8.avi s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi pal8.avi s0 qi IAVIFile hr=0x80004002 out=NULL
+avi pal8.avi s0 qi IPersistFile hr=0x80004002 out=NULL
+avi pal8.avi s0 qi IMarshal hr=0x80004002 out=NULL
+avi pal8.avi s0 vt addref=3 release=2 findsample=0 create=0x80044065 delete=0x80044072
+avi pal8.avi s0 vt info hr=0x00000000 len=3
+avi pal8.avi s0 vt setinfo hr=0x80044072
+avi pal8.avi s0 setformat hr=0x80044072
+avi pal8.avi s0 write hr=0x80044072 sw=30583 bw=30583
+avi pal8.avi s0 writedata hr=0x80044072
+avi pal8.avi s0 gf null open=ok
+avi pal8.avi s0 gf null pos0 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=05aacec5 bitshash=897482f9
+avi pal8.avi s0 gf null pos0 bits 0001020304050000010203040506000002030405060700000304050607080000
+avi pal8.avi s0 gf null pos0 ctab 00ff000008ef100010df200018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf null pos1 same_ptr=1
+avi pal8.avi s0 gf null pos1 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=05aacec5 bitshash=a097cc59
+avi pal8.avi s0 gf null pos1 bits 0102030405060000020304050607000003040506070800000405060708090000
+avi pal8.avi s0 gf null pos1 ctab 00ff000008ef100010df200018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf null pos2 same_ptr=1
+avi pal8.avi s0 gf null pos2 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=8fb423a5 bitshash=b923ead9
+avi pal8.avi s0 gf null pos2 bits 02030405060700000304050607080000040506070809000005060708090a0000
+avi pal8.avi s0 gf null pos2 ctab 00ff00000000ff00ff00000018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf null pos-1 NULL
+avi pal8.avi s0 gf null posLen NULL
+avi pal8.avi s0 gf null posLen+5 NULL
+avi pal8.avi s0 gf vt addref=1 release=1 begin=0x00000000 getframe=frame end=0x00000000
+avi pal8.avi s0 qi gf.IUnknown hr=0x00000000 same=1 off=0
+avi pal8.avi s0 qi gf.IGetFrame hr=0x00000000 same=1 off=0
+avi pal8.avi s0 qi gf.IAVIStream hr=0x00000000 is_stream=1
+avi pal8.avi s0 gf null close=0x00000000
+avi pal8.avi s0 gf best open=ok
+avi pal8.avi s0 gf best pos0 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=05aacec5 bitshash=897482f9
+avi pal8.avi s0 gf best pos0 bits 0001020304050000010203040506000002030405060700000304050607080000
+avi pal8.avi s0 gf best pos0 ctab 00ff000008ef100010df200018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf best pos1 same_ptr=1
+avi pal8.avi s0 gf best pos1 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=05aacec5 bitshash=a097cc59
+avi pal8.avi s0 gf best pos1 bits 0102030405060000020304050607000003040506070800000405060708090000
+avi pal8.avi s0 gf best pos1 ctab 00ff000008ef100010df200018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf best pos2 same_ptr=1
+avi pal8.avi s0 gf best pos2 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=8fb423a5 bitshash=b923ead9
+avi pal8.avi s0 gf best pos2 bits 02030405060700000304050607080000040506070809000005060708090a0000
+avi pal8.avi s0 gf best pos2 ctab 00ff00000000ff00ff00000018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf best pos-1 NULL
+avi pal8.avi s0 gf best posLen NULL
+avi pal8.avi s0 gf best posLen+5 NULL
+avi pal8.avi s0 gf best close=0x00000000
+avi pal8.avi s0 gf bpp8 open=ok
+avi pal8.avi s0 gf bpp8 pos0 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=05aacec5 bitshash=897482f9
+avi pal8.avi s0 gf bpp8 pos0 bits 0001020304050000010203040506000002030405060700000304050607080000
+avi pal8.avi s0 gf bpp8 pos0 ctab 00ff000008ef100010df200018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf bpp8 pos1 same_ptr=1
+avi pal8.avi s0 gf bpp8 pos1 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=05aacec5 bitshash=a097cc59
+avi pal8.avi s0 gf bpp8 pos1 bits 0102030405060000020304050607000003040506070800000405060708090000
+avi pal8.avi s0 gf bpp8 pos1 ctab 00ff000008ef100010df200018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf bpp8 pos2 same_ptr=1
+avi pal8.avi s0 gf bpp8 pos2 size=40 w=6 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=16 clrimp=0 ct=16 cthash=8fb423a5 bitshash=b923ead9
+avi pal8.avi s0 gf bpp8 pos2 bits 02030405060700000304050607080000040506070809000005060708090a0000
+avi pal8.avi s0 gf bpp8 pos2 ctab 00ff00000000ff00ff00000018cf300020bf400028af5000309f6000388f7000407f8000486f9000505fa000584fb000603fc000682fd000701fe000780ff000
+avi pal8.avi s0 gf bpp8 pos-1 NULL
+avi pal8.avi s0 gf bpp8 posLen NULL
+avi pal8.avi s0 gf bpp8 posLen+5 NULL
+avi pal8.avi s0 gf bpp8 close=0x00000000
+avi pal8.avi s0 gf bpp16 open=NULL
+avi pal8.avi s0 gf bpp24 open=NULL
+avi pal8.avi s0 gf bpp32 open=NULL
+avi pal8.avi s0 gf bpp24td open=NULL
+avi pal8.avi s0 gf bpp24x2 open=NULL
+avi pal8.avi s0 gf bf565 open=NULL
+avi pal8.avi refs file+3 file-2 stream+2 stream-1
+avi pal8.avi refs unk+4 unk-3 unk-2
+avi pal8.avi persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004001 NULL
+avi pal8.avi persist release=2
+avi pal8.avi refs gf+1 gf+2 gf-2 gf-1 stream+3 stream-2
+avi pal8.avi refs gfclose=0x00000000
+avi pal8.avi read0 hr=0x80044074 bytes=32 samples=0
+avi pal8.avi read1into1 hr=0x80044074 bytes=32 samples=0
+avi pal8.avi refs filerelease=1 streamrelease=0
+avi pal8.avi lifetime filerelease=1 streamlen=3 streamrelease=1
+avi file rle8.avi open hr=0x00000000 pf=set
+avi rle8.avi addref=2 release=1
+avi rle8.avi infoA hr=0x00000000
+avi rle8.avi maxbps=120 flags=0x0 caps=0x3 streams=1 sugg=24 w=8 h=4 scale=200000 rate=1000000 len=2 edit=0 type="AVI Default File Handler"
+avi rle8.avi infoW hr=0x00000000 type="AVI Default File Handler" same=1
+avi rle8.avi infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi rle8.avi infoA0 hr=0x8004406b first=cc
+avi rle8.avi infoA200 hr=0x00000000 tail=cc
+avi rle8.avi info(plain) hr=0x00000000 same=1
+avi rle8.avi getstream any -1 hr=0x80044073 s=NULL
+avi rle8.avi getstream any 0 hr=0x00000000 s=set
+avi rle8.avi getstream any 1 hr=0x80044073 s=NULL
+avi rle8.avi getstream any 2 hr=0x80044073 s=NULL
+avi rle8.avi getstream vids -1 hr=0x80044073 s=NULL
+avi rle8.avi getstream vids 0 hr=0x00000000 s=set
+avi rle8.avi getstream vids 1 hr=0x80044073 s=NULL
+avi rle8.avi getstream vids 2 hr=0x80044073 s=NULL
+avi rle8.avi getstream auds -1 hr=0x80044073 s=NULL
+avi rle8.avi getstream auds 0 hr=0x80044073 s=NULL
+avi rle8.avi getstream auds 1 hr=0x80044073 s=NULL
+avi rle8.avi getstream auds 2 hr=0x80044073 s=NULL
+avi rle8.avi getstream mids -1 hr=0x80044073 s=NULL
+avi rle8.avi getstream mids 0 hr=0x80044073 s=NULL
+avi rle8.avi getstream mids 1 hr=0x80044073 s=NULL
+avi rle8.avi getstream mids 2 hr=0x80044073 s=NULL
+avi rle8.avi getstream txts -1 hr=0x80044073 s=NULL
+avi rle8.avi getstream txts 0 hr=0x80044073 s=NULL
+avi rle8.avi getstream txts 1 hr=0x80044073 s=NULL
+avi rle8.avi getstream txts 2 hr=0x80044073 s=NULL
+avi rle8.avi getstream twice same=1 addref=3
+avi rle8.avi stream release=2 release=1
+avi rle8.avi frdata vtst query hr=0x80044073 cb=0
+avi rle8.avi frdata vtst hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi frdata vtst small hr=0x80044073 cb=0 first=cccccccc
+avi rle8.avi frdata ISFT query hr=0x80044073 cb=0
+avi rle8.avi frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi rle8.avi frdata INFO query hr=0x80044073 cb=0
+avi rle8.avi frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi rle8.avi frdata avih query hr=0x80044073 cb=0
+avi rle8.avi frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi rle8.avi frdata LIST query hr=0x80044073 cb=0
+avi rle8.avi frdata LIST hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi frdata LIST small hr=0x80044073 cb=0 first=cccccccc
+avi rle8.avi frdata JUNK query hr=0x80044073 cb=0
+avi rle8.avi frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi rle8.avi frdata strl query hr=0x80044073 cb=0
+avi rle8.avi frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi rle8.avi createstream hr=0x80044065 s=NULL
+avi rle8.avi writedata hr=0x80044072 endrecord=0x80044072
+avi rle8.avi vt deletestream hr=0x80044065
+avi rle8.avi qi IUnknown hr=0x00000000 same=0 off=-24
+avi rle8.avi qi IAVIFile hr=0x00000000 same=1 off=0
+avi rle8.avi qi IPersistFile hr=0x00000000 same=0 off=32
+avi rle8.avi qi IAVIPersistFile hr=0x00000000 same=0 off=32
+avi rle8.avi qi IAVIStream hr=0x80004002 out=NULL
+avi rle8.avi qi IMarshal hr=0x80004002 out=NULL
+avi rle8.avi vt info hr=0x00000000 streams=1
+avi rle8.avi vt getstream hr=0x00000000 same_as_flat=1
+avi rle8.avi s0 infoA hr=0x00000000
+avi rle8.avi s0 type=vids handler=mrle(0x656c726d) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=5 start=0 len=2 init=0 sugg=24 quality=0xffffffff ssize=0 rc=0,0,8,4 edit=0 fmtchg=0 name="rle8.avi Video #1"
+avi rle8.avi s0 infoW hr=0x00000000 name="rle8.avi Video #1" len=2 same=1
+avi rle8.avi s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi rle8.avi s0 infoA0 hr=0x8004406b first=cc
+avi rle8.avi s0 infoA256 hr=0x00000000 tail=cc
+avi rle8.avi s0 start=0 length=2
+avi rle8.avi s0 s2t -1=0
+avi rle8.avi s0 s2t 0=0
+avi rle8.avi s0 s2t 1=200
+avi rle8.avi s0 s2t 2=400
+avi rle8.avi s0 s2t 3=400
+avi rle8.avi s0 s2t 1000=400
+avi rle8.avi s0 t2s -1=-1
+avi rle8.avi s0 t2s 0=0
+avi rle8.avi s0 t2s 1=0
+avi rle8.avi s0 t2s 49=0
+avi rle8.avi s0 t2s 50=0
+avi rle8.avi s0 t2s 66=0
+avi rle8.avi s0 t2s 67=0
+avi rle8.avi s0 t2s 99=0
+avi rle8.avi s0 t2s 100=0
+avi rle8.avi s0 t2s 133=0
+avi rle8.avi s0 t2s 134=0
+avi rle8.avi s0 t2s 200=1
+avi rle8.avi s0 t2s 1000=2
+avi rle8.avi s0 t2s 100000=2
+avi rle8.avi s0 find flags=0x11: -1 -1 0 -1 -1 -1
+avi rle8.avi s0 find flags=0x14: -1 -1 0 0 -1 -1
+avi rle8.avi s0 find flags=0x21: -1 -1 0 1 -1 -1
+avi rle8.avi s0 find flags=0x24: -1 -1 0 1 -1 -1
+avi rle8.avi s0 find flags=0x41: -1 -1 0 -1 -1 -1
+avi rle8.avi s0 find flags=0x44: -1 -1 0 0 -1 -1
+avi rle8.avi s0 find flags=0x18: -1 -1 0 0 -1 -1
+avi rle8.avi s0 find flags=0x0: -1 -1 0 0 -1 -1
+avi rle8.avi s0 find flags=0x10: -1 -1 0 0 -1 -1
+avi rle8.avi s0 find flags=0x20: -1 -1 0 1 -1 -1
+avi rle8.avi s0 findret 0x1000: -1 24 8 -1
+avi rle8.avi s0 findret 0x2000: -1 248 280 -1
+avi rle8.avi s0 findret 0x3000: -1 1 1 -1
+avi rle8.avi s0 findret 0x4000: -1 0 1 -1
+avi rle8.avi s0 fmt query hr=0x00000000 cb=56
+avi rle8.avi s0 fmt pos0 hr=0x00000000 cb=56 hash=73377904
+avi rle8.avi s0 fmt pos1 hr=0x00000000 cb=56 hash=73377904
+avi rle8.avi s0 fmt pos-1 hr=0x00000000 cb=56 hash=73377904
+avi rle8.avi s0 fmt pos2 hr=0x00000000 cb=56 hash=73377904
+avi rle8.avi s0 fmt pos2 hr=0x00000000 cb=56 hash=73377904
+avi rle8.avi s0 fmt small hr=0x80044074 cb=56
+avi   fmtsmall 2800000008000000cccccccc
+avi rle8.avi s0 readq start=0 n=1 hr=0x00000000 bytes=24 samples=1
+avi rle8.avi s0 readq start=0 conv hr=0x00000000 bytes=24 samples=1
+avi rle8.avi s0 read start=0 conv hr=0x00000000 bytes=24 samples=1 hash=d149a4aa
+avi rle8.avi s0 read start=0 n=3 hr=0x00000000 bytes=24 samples=1 hash=d149a4aa
+avi rle8.avi s0 readq start=1 n=1 hr=0x00000000 bytes=8 samples=1
+avi rle8.avi s0 readq start=1 conv hr=0x00000000 bytes=8 samples=1
+avi rle8.avi s0 read start=1 conv hr=0x00000000 bytes=8 samples=1 hash=a69ce76d
+avi rle8.avi s0 read start=1 n=3 hr=0x00000000 bytes=8 samples=1 hash=a69ce76d
+avi rle8.avi s0 readq start=1 n=1 hr=0x00000000 bytes=8 samples=1
+avi rle8.avi s0 readq start=1 conv hr=0x00000000 bytes=8 samples=1
+avi rle8.avi s0 read start=1 conv hr=0x00000000 bytes=8 samples=1 hash=a69ce76d
+avi rle8.avi s0 read start=1 n=3 hr=0x00000000 bytes=8 samples=1 hash=a69ce76d
+avi rle8.avi s0 readq start=2 n=1 hr=0x800440c7 bytes=0 samples=0
+avi rle8.avi s0 readq start=2 conv hr=0x800440c7 bytes=0 samples=0
+avi rle8.avi s0 read start=2 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rle8.avi s0 read start=2 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rle8.avi s0 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi rle8.avi s0 read small hr=0x80044074 bytes=24 samples=0 first=cc
+avi rle8.avi s0 read nullouts hr=0x00000000
+avi rle8.avi s0 rdata strd query hr=0x80044073 cb=0
+avi rle8.avi s0 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi s0 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi rle8.avi s0 rdata strn query hr=0x80044073 cb=0
+avi rle8.avi s0 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi s0 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi rle8.avi s0 rdata strh query hr=0x80044073 cb=0
+avi rle8.avi s0 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi s0 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi rle8.avi s0 rdata strf query hr=0x80044073 cb=0
+avi rle8.avi s0 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi s0 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi rle8.avi s0 rdata vtsd query hr=0x80044073 cb=0
+avi rle8.avi s0 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi s0 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi rle8.avi s0 rdata indx query hr=0x80044073 cb=0
+avi rle8.avi s0 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi rle8.avi s0 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi rle8.avi s0 begin=0x00000000 end=0x00000000
+avi rle8.avi s0 qi IUnknown hr=0x00000000 same=0 off=-24
+avi rle8.avi s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi rle8.avi s0 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi rle8.avi s0 qi IGetFrame hr=0x80004002 out=NULL
+avi rle8.avi s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi rle8.avi s0 qi IAVIFile hr=0x80004002 out=NULL
+avi rle8.avi s0 qi IPersistFile hr=0x80004002 out=NULL
+avi rle8.avi s0 qi IMarshal hr=0x80004002 out=NULL
+avi rle8.avi s0 vt addref=3 release=2 findsample=0 create=0x80044065 delete=0x80044072
+avi rle8.avi s0 vt info hr=0x00000000 len=2
+avi rle8.avi s0 vt setinfo hr=0x80044072
+avi rle8.avi s0 setformat hr=0x80044072
+avi rle8.avi s0 write hr=0x80044072 sw=30583 bw=30583
+avi rle8.avi s0 writedata hr=0x80044072
+avi rle8.avi s0 gf null open=ok
+avi rle8.avi s0 gf null pos0 size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=4 clrimp=0 ct=4 cthash=93a1a35c bitshash=9f763213
+avi rle8.avi s0 gf null pos0 bits 0101010101010101020302030000000002020303030303030000000000000000
+avi rle8.avi s0 gf null pos0 ctab 000000000000ff0000ff0000ff000000
+avi rle8.avi s0 gf null pos1 same_ptr=1
+avi rle8.avi s0 gf null pos1 size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=4 clrimp=0 ct=4 cthash=93a1a35c bitshash=2e7bcf18
+avi rle8.avi s0 gf null pos1 bits 0101010101010101020302010100000002020303030303030000000000000000
+avi rle8.avi s0 gf null pos1 ctab 000000000000ff0000ff0000ff000000
+avi rle8.avi s0 gf null pos-1 NULL
+avi rle8.avi s0 gf null posLen NULL
+avi rle8.avi s0 gf null posLen+5 NULL
+avi rle8.avi s0 gf vt addref=1 release=1 begin=0x00000000 getframe=frame end=0x00000000
+avi rle8.avi s0 qi gf.IUnknown hr=0x00000000 same=1 off=0
+avi rle8.avi s0 qi gf.IGetFrame hr=0x00000000 same=1 off=0
+avi rle8.avi s0 qi gf.IAVIStream hr=0x00000000 is_stream=1
+avi rle8.avi s0 gf null close=0x00000000
+avi rle8.avi s0 gf best open=ok
+avi rle8.avi s0 gf best pos0 size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=4 clrimp=0 ct=4 cthash=93a1a35c bitshash=9f763213
+avi rle8.avi s0 gf best pos0 bits 0101010101010101020302030000000002020303030303030000000000000000
+avi rle8.avi s0 gf best pos0 ctab 000000000000ff0000ff0000ff000000
+avi rle8.avi s0 gf best pos1 same_ptr=1
+avi rle8.avi s0 gf best pos1 size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=4 clrimp=0 ct=4 cthash=93a1a35c bitshash=2e7bcf18
+avi rle8.avi s0 gf best pos1 bits 0101010101010101020302010100000002020303030303030000000000000000
+avi rle8.avi s0 gf best pos1 ctab 000000000000ff0000ff0000ff000000
+avi rle8.avi s0 gf best pos-1 NULL
+avi rle8.avi s0 gf best posLen NULL
+avi rle8.avi s0 gf best posLen+5 NULL
+avi rle8.avi s0 gf best close=0x00000000
+avi rle8.avi s0 gf bpp8 open=ok
+avi rle8.avi s0 gf bpp8 pos0 size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=256 clrimp=0 ct=256 cthash=1f116dc5 bitshash=9f763213
+avi rle8.avi s0 gf bpp8 pos0 bits 0101010101010101020302030000000002020303030303030000000000000000
+avi rle8.avi s0 gf bpp8 pos0 ctab 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+avi rle8.avi s0 gf bpp8 pos1 same_ptr=1
+avi rle8.avi s0 gf bpp8 pos1 size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=256 clrimp=0 ct=256 cthash=1f116dc5 bitshash=2e7bcf18
+avi rle8.avi s0 gf bpp8 pos1 bits 0101010101010101020302010100000002020303030303030000000000000000
+avi rle8.avi s0 gf bpp8 pos1 ctab 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+avi rle8.avi s0 gf bpp8 pos-1 NULL
+avi rle8.avi s0 gf bpp8 posLen NULL
+avi rle8.avi s0 gf bpp8 posLen+5 NULL
+avi rle8.avi s0 gf bpp8 close=0x00000000
+avi rle8.avi s0 gf bpp16 open=NULL
+avi rle8.avi s0 gf bpp24 open=NULL
+avi rle8.avi s0 gf bpp32 open=NULL
+avi rle8.avi s0 gf bpp24td open=NULL
+avi rle8.avi s0 gf bpp24x2 open=NULL
+avi rle8.avi s0 gf bf565 open=NULL
+avi rle8.avi s0 rleorder pos1 size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=4 clrimp=0 ct=4 cthash=93a1a35c bitshash=2e7bcf18
+avi rle8.avi s0 rleorder pos1 bits 0101010101010101020302010100000002020303030303030000000000000000
+avi rle8.avi s0 rleorder pos1 ctab 000000000000ff0000ff0000ff000000
+avi rle8.avi s0 rleorder pos0 size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=4 clrimp=0 ct=4 cthash=93a1a35c bitshash=9f763213
+avi rle8.avi s0 rleorder pos0 bits 0101010101010101020302030000000002020303030303030000000000000000
+avi rle8.avi s0 rleorder pos0 ctab 000000000000ff0000ff0000ff000000
+avi rle8.avi s0 rleorder pos1b size=40 w=8 h=4 planes=1 bpp=8 comp=0x0 simage=32 xppm=0 yppm=0 clrused=4 clrimp=0 ct=4 cthash=93a1a35c bitshash=2e7bcf18
+avi rle8.avi s0 rleorder pos1b bits 0101010101010101020302010100000002020303030303030000000000000000
+avi rle8.avi s0 rleorder pos1b ctab 000000000000ff0000ff0000ff000000
+avi rle8.avi refs file+3 file-2 stream+2 stream-1
+avi rle8.avi refs unk+4 unk-3 unk-2
+avi rle8.avi persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004001 NULL
+avi rle8.avi persist release=2
+avi rle8.avi refs gf+1 gf+2 gf-2 gf-1 stream+3 stream-2
+avi rle8.avi refs gfclose=0x00000000
+avi rle8.avi read0 hr=0x80044074 bytes=24 samples=0
+avi rle8.avi read1into1 hr=0x80044074 bytes=24 samples=0
+avi rle8.avi refs filerelease=1 streamrelease=0
+avi rle8.avi lifetime filerelease=1 streamlen=2 streamrelease=1
+avi file rgb16.avi open hr=0x00000000 pf=set
+avi rgb16.avi addref=2 release=1
+avi rgb16.avi infoA hr=0x00000000
+avi rgb16.avi maxbps=400 flags=0x0 caps=0x3 streams=1 sugg=16 w=4 h=2 scale=40000 rate=1000000 len=2 edit=0 type="AVI Default File Handler"
+avi rgb16.avi infoW hr=0x00000000 type="AVI Default File Handler" same=1
+avi rgb16.avi infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi rgb16.avi infoA0 hr=0x8004406b first=cc
+avi rgb16.avi infoA200 hr=0x00000000 tail=cc
+avi rgb16.avi info(plain) hr=0x00000000 same=1
+avi rgb16.avi getstream any -1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream any 0 hr=0x00000000 s=set
+avi rgb16.avi getstream any 1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream any 2 hr=0x80044073 s=NULL
+avi rgb16.avi getstream vids -1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream vids 0 hr=0x00000000 s=set
+avi rgb16.avi getstream vids 1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream vids 2 hr=0x80044073 s=NULL
+avi rgb16.avi getstream auds -1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream auds 0 hr=0x80044073 s=NULL
+avi rgb16.avi getstream auds 1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream auds 2 hr=0x80044073 s=NULL
+avi rgb16.avi getstream mids -1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream mids 0 hr=0x80044073 s=NULL
+avi rgb16.avi getstream mids 1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream mids 2 hr=0x80044073 s=NULL
+avi rgb16.avi getstream txts -1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream txts 0 hr=0x80044073 s=NULL
+avi rgb16.avi getstream txts 1 hr=0x80044073 s=NULL
+avi rgb16.avi getstream txts 2 hr=0x80044073 s=NULL
+avi rgb16.avi getstream twice same=1 addref=3
+avi rgb16.avi stream release=2 release=1
+avi rgb16.avi frdata vtst query hr=0x80044073 cb=0
+avi rgb16.avi frdata vtst hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi frdata vtst small hr=0x80044073 cb=0 first=cccccccc
+avi rgb16.avi frdata ISFT query hr=0x80044073 cb=0
+avi rgb16.avi frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi rgb16.avi frdata INFO query hr=0x80044073 cb=0
+avi rgb16.avi frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi rgb16.avi frdata avih query hr=0x80044073 cb=0
+avi rgb16.avi frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi rgb16.avi frdata LIST query hr=0x80044073 cb=0
+avi rgb16.avi frdata LIST hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi frdata LIST small hr=0x80044073 cb=0 first=cccccccc
+avi rgb16.avi frdata JUNK query hr=0x80044073 cb=0
+avi rgb16.avi frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi rgb16.avi frdata strl query hr=0x80044073 cb=0
+avi rgb16.avi frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi rgb16.avi createstream hr=0x80044065 s=NULL
+avi rgb16.avi writedata hr=0x80044072 endrecord=0x80044072
+avi rgb16.avi vt deletestream hr=0x80044065
+avi rgb16.avi qi IUnknown hr=0x00000000 same=0 off=-24
+avi rgb16.avi qi IAVIFile hr=0x00000000 same=1 off=0
+avi rgb16.avi qi IPersistFile hr=0x00000000 same=0 off=32
+avi rgb16.avi qi IAVIPersistFile hr=0x00000000 same=0 off=32
+avi rgb16.avi qi IAVIStream hr=0x80004002 out=NULL
+avi rgb16.avi qi IMarshal hr=0x80004002 out=NULL
+avi rgb16.avi vt info hr=0x00000000 streams=1
+avi rgb16.avi vt getstream hr=0x00000000 same_as_flat=1
+avi rgb16.avi s0 infoA hr=0x00000000
+avi rgb16.avi s0 type=vids handler=DIB (0x20424944) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=25 start=0 len=2 init=0 sugg=16 quality=0xffffffff ssize=0 rc=0,0,4,2 edit=0 fmtchg=0 name="rgb16.avi Video #1"
+avi rgb16.avi s0 infoW hr=0x00000000 name="rgb16.avi Video #1" len=2 same=1
+avi rgb16.avi s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi rgb16.avi s0 infoA0 hr=0x8004406b first=cc
+avi rgb16.avi s0 infoA256 hr=0x00000000 tail=cc
+avi rgb16.avi s0 start=0 length=2
+avi rgb16.avi s0 s2t -1=0
+avi rgb16.avi s0 s2t 0=0
+avi rgb16.avi s0 s2t 1=40
+avi rgb16.avi s0 s2t 2=80
+avi rgb16.avi s0 s2t 3=80
+avi rgb16.avi s0 s2t 1000=80
+avi rgb16.avi s0 t2s -1=-1
+avi rgb16.avi s0 t2s 0=0
+avi rgb16.avi s0 t2s 1=0
+avi rgb16.avi s0 t2s 49=1
+avi rgb16.avi s0 t2s 50=1
+avi rgb16.avi s0 t2s 66=1
+avi rgb16.avi s0 t2s 67=1
+avi rgb16.avi s0 t2s 99=2
+avi rgb16.avi s0 t2s 100=2
+avi rgb16.avi s0 t2s 133=2
+avi rgb16.avi s0 t2s 134=2
+avi rgb16.avi s0 t2s 200=2
+avi rgb16.avi s0 t2s 1000=2
+avi rgb16.avi s0 t2s 100000=2
+avi rgb16.avi s0 find flags=0x11: -1 -1 0 -1 -1 -1
+avi rgb16.avi s0 find flags=0x14: -1 -1 0 0 -1 -1
+avi rgb16.avi s0 find flags=0x21: -1 -1 0 1 -1 -1
+avi rgb16.avi s0 find flags=0x24: -1 -1 0 1 -1 -1
+avi rgb16.avi s0 find flags=0x41: -1 -1 0 -1 -1 -1
+avi rgb16.avi s0 find flags=0x44: -1 -1 0 0 -1 -1
+avi rgb16.avi s0 find flags=0x18: -1 -1 0 0 -1 -1
+avi rgb16.avi s0 find flags=0x0: -1 -1 0 0 -1 -1
+avi rgb16.avi s0 find flags=0x10: -1 -1 0 0 -1 -1
+avi rgb16.avi s0 find flags=0x20: -1 -1 0 1 -1 -1
+avi rgb16.avi s0 findret 0x1000: -1 16 16 -1
+avi rgb16.avi s0 findret 0x2000: -1 244 280 -1
+avi rgb16.avi s0 findret 0x3000: -1 1 1 -1
+avi rgb16.avi s0 findret 0x4000: -1 1 3 -1
+avi rgb16.avi s0 fmt query hr=0x00000000 cb=40
+avi rgb16.avi s0 fmt pos0 hr=0x00000000 cb=40 hash=c75f76fa
+avi rgb16.avi s0 fmt pos1 hr=0x00000000 cb=40 hash=c75f76fa
+avi rgb16.avi s0 fmt pos-1 hr=0x00000000 cb=40 hash=c75f76fa
+avi rgb16.avi s0 fmt pos2 hr=0x00000000 cb=40 hash=c75f76fa
+avi rgb16.avi s0 fmt pos2 hr=0x00000000 cb=40 hash=c75f76fa
+avi rgb16.avi s0 fmt small hr=0x80044074 cb=40
+avi   fmtsmall 2800000004000000cccccccc
+avi rgb16.avi s0 readq start=0 n=1 hr=0x00000000 bytes=16 samples=1
+avi rgb16.avi s0 readq start=0 conv hr=0x00000000 bytes=16 samples=1
+avi rgb16.avi s0 read start=0 conv hr=0x00000000 bytes=16 samples=1 hash=24a5f1c5
+avi rgb16.avi s0 read start=0 n=3 hr=0x00000000 bytes=16 samples=1 hash=24a5f1c5
+avi rgb16.avi s0 readq start=1 n=1 hr=0x00000000 bytes=16 samples=1
+avi rgb16.avi s0 readq start=1 conv hr=0x00000000 bytes=16 samples=1
+avi rgb16.avi s0 read start=1 conv hr=0x00000000 bytes=16 samples=1 hash=e3d48335
+avi rgb16.avi s0 read start=1 n=3 hr=0x00000000 bytes=16 samples=1 hash=e3d48335
+avi rgb16.avi s0 readq start=1 n=1 hr=0x00000000 bytes=16 samples=1
+avi rgb16.avi s0 readq start=1 conv hr=0x00000000 bytes=16 samples=1
+avi rgb16.avi s0 read start=1 conv hr=0x00000000 bytes=16 samples=1 hash=e3d48335
+avi rgb16.avi s0 read start=1 n=3 hr=0x00000000 bytes=16 samples=1 hash=e3d48335
+avi rgb16.avi s0 readq start=2 n=1 hr=0x800440c7 bytes=0 samples=0
+avi rgb16.avi s0 readq start=2 conv hr=0x800440c7 bytes=0 samples=0
+avi rgb16.avi s0 read start=2 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rgb16.avi s0 read start=2 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rgb16.avi s0 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi rgb16.avi s0 read small hr=0x80044074 bytes=16 samples=0 first=cc
+avi rgb16.avi s0 read nullouts hr=0x00000000
+avi rgb16.avi s0 rdata strd query hr=0x80044073 cb=0
+avi rgb16.avi s0 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi s0 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi rgb16.avi s0 rdata strn query hr=0x80044073 cb=0
+avi rgb16.avi s0 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi s0 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi rgb16.avi s0 rdata strh query hr=0x80044073 cb=0
+avi rgb16.avi s0 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi s0 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi rgb16.avi s0 rdata strf query hr=0x80044073 cb=0
+avi rgb16.avi s0 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi s0 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi rgb16.avi s0 rdata vtsd query hr=0x80044073 cb=0
+avi rgb16.avi s0 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi s0 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi rgb16.avi s0 rdata indx query hr=0x80044073 cb=0
+avi rgb16.avi s0 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi rgb16.avi s0 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi rgb16.avi s0 begin=0x00000000 end=0x00000000
+avi rgb16.avi s0 qi IUnknown hr=0x00000000 same=0 off=-24
+avi rgb16.avi s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi rgb16.avi s0 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi rgb16.avi s0 qi IGetFrame hr=0x80004002 out=NULL
+avi rgb16.avi s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi rgb16.avi s0 qi IAVIFile hr=0x80004002 out=NULL
+avi rgb16.avi s0 qi IPersistFile hr=0x80004002 out=NULL
+avi rgb16.avi s0 qi IMarshal hr=0x80004002 out=NULL
+avi rgb16.avi s0 vt addref=3 release=2 findsample=0 create=0x80044065 delete=0x80044072
+avi rgb16.avi s0 vt info hr=0x00000000 len=2
+avi rgb16.avi s0 vt setinfo hr=0x80044072
+avi rgb16.avi s0 setformat hr=0x80044072
+avi rgb16.avi s0 write hr=0x80044072 sw=30583 bw=30583
+avi rgb16.avi s0 writedata hr=0x80044072
+avi rgb16.avi s0 gf null open=ok
+avi rgb16.avi s0 gf null pos0 size=40 w=4 h=2 planes=1 bpp=16 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=24a5f1c5
+avi rgb16.avi s0 gf null pos0 bits 000021044208630c8410a514c618e71c
+avi rgb16.avi s0 gf null pos1 same_ptr=1
+avi rgb16.avi s0 gf null pos1 size=40 w=4 h=2 planes=1 bpp=16 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=e3d48335
+avi rgb16.avi s0 gf null pos1 bits 111132155319741d9521b625d729f82d
+avi rgb16.avi s0 gf null pos-1 NULL
+avi rgb16.avi s0 gf null posLen NULL
+avi rgb16.avi s0 gf null posLen+5 NULL
+avi rgb16.avi s0 gf vt addref=1 release=1 begin=0x00000000 getframe=frame end=0x00000000
+avi rgb16.avi s0 qi gf.IUnknown hr=0x00000000 same=1 off=0
+avi rgb16.avi s0 qi gf.IGetFrame hr=0x00000000 same=1 off=0
+avi rgb16.avi s0 qi gf.IAVIStream hr=0x00000000 is_stream=1
+avi rgb16.avi s0 gf null close=0x00000000
+avi rgb16.avi s0 gf best open=ok
+avi rgb16.avi s0 gf best pos0 size=40 w=4 h=2 planes=1 bpp=16 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=24a5f1c5
+avi rgb16.avi s0 gf best pos0 bits 000021044208630c8410a514c618e71c
+avi rgb16.avi s0 gf best pos1 same_ptr=1
+avi rgb16.avi s0 gf best pos1 size=40 w=4 h=2 planes=1 bpp=16 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=e3d48335
+avi rgb16.avi s0 gf best pos1 bits 111132155319741d9521b625d729f82d
+avi rgb16.avi s0 gf best pos-1 NULL
+avi rgb16.avi s0 gf best posLen NULL
+avi rgb16.avi s0 gf best posLen+5 NULL
+avi rgb16.avi s0 gf best close=0x00000000
+avi rgb16.avi s0 gf bpp8 open=NULL
+avi rgb16.avi s0 gf bpp16 open=ok
+avi rgb16.avi s0 gf bpp16 pos0 size=40 w=4 h=2 planes=1 bpp=16 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=24a5f1c5
+avi rgb16.avi s0 gf bpp16 pos0 bits 000021044208630c8410a514c618e71c
+avi rgb16.avi s0 gf bpp16 pos1 same_ptr=1
+avi rgb16.avi s0 gf bpp16 pos1 size=40 w=4 h=2 planes=1 bpp=16 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=e3d48335
+avi rgb16.avi s0 gf bpp16 pos1 bits 111132155319741d9521b625d729f82d
+avi rgb16.avi s0 gf bpp16 pos-1 NULL
+avi rgb16.avi s0 gf bpp16 posLen NULL
+avi rgb16.avi s0 gf bpp16 posLen+5 NULL
+avi rgb16.avi s0 gf bpp16 close=0x00000000
+avi rgb16.avi s0 gf bpp24 open=NULL
+avi rgb16.avi s0 gf bpp32 open=NULL
+avi rgb16.avi s0 gf bpp24td open=NULL
+avi rgb16.avi s0 gf bpp24x2 open=NULL
+avi rgb16.avi s0 gf bf565 open=NULL
+avi rgb16.avi refs file+3 file-2 stream+2 stream-1
+avi rgb16.avi refs unk+4 unk-3 unk-2
+avi rgb16.avi persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004001 NULL
+avi rgb16.avi persist release=2
+avi rgb16.avi refs gf+1 gf+2 gf-2 gf-1 stream+3 stream-2
+avi rgb16.avi refs gfclose=0x00000000
+avi rgb16.avi read0 hr=0x80044074 bytes=16 samples=0
+avi rgb16.avi read1into1 hr=0x80044074 bytes=16 samples=0
+avi rgb16.avi refs filerelease=1 streamrelease=0
+avi rgb16.avi lifetime filerelease=1 streamlen=2 streamrelease=1
+avi file odml32.avi open hr=0x00000000 pf=set
+avi odml32.avi addref=2 release=1
+avi odml32.avi infoA hr=0x00000000
+avi odml32.avi maxbps=480 flags=0x0 caps=0x3 streams=1 sugg=24 w=3 h=2 scale=50000 rate=1000000 len=2 edit=0 type="AVI Default File Handler"
+avi odml32.avi infoW hr=0x00000000 type="AVI Default File Handler" same=1
+avi odml32.avi infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi odml32.avi infoA0 hr=0x8004406b first=cc
+avi odml32.avi infoA200 hr=0x00000000 tail=cc
+avi odml32.avi info(plain) hr=0x00000000 same=1
+avi odml32.avi getstream any -1 hr=0x80044073 s=NULL
+avi odml32.avi getstream any 0 hr=0x00000000 s=set
+avi odml32.avi getstream any 1 hr=0x80044073 s=NULL
+avi odml32.avi getstream any 2 hr=0x80044073 s=NULL
+avi odml32.avi getstream vids -1 hr=0x80044073 s=NULL
+avi odml32.avi getstream vids 0 hr=0x00000000 s=set
+avi odml32.avi getstream vids 1 hr=0x80044073 s=NULL
+avi odml32.avi getstream vids 2 hr=0x80044073 s=NULL
+avi odml32.avi getstream auds -1 hr=0x80044073 s=NULL
+avi odml32.avi getstream auds 0 hr=0x80044073 s=NULL
+avi odml32.avi getstream auds 1 hr=0x80044073 s=NULL
+avi odml32.avi getstream auds 2 hr=0x80044073 s=NULL
+avi odml32.avi getstream mids -1 hr=0x80044073 s=NULL
+avi odml32.avi getstream mids 0 hr=0x80044073 s=NULL
+avi odml32.avi getstream mids 1 hr=0x80044073 s=NULL
+avi odml32.avi getstream mids 2 hr=0x80044073 s=NULL
+avi odml32.avi getstream txts -1 hr=0x80044073 s=NULL
+avi odml32.avi getstream txts 0 hr=0x80044073 s=NULL
+avi odml32.avi getstream txts 1 hr=0x80044073 s=NULL
+avi odml32.avi getstream txts 2 hr=0x80044073 s=NULL
+avi odml32.avi getstream twice same=1 addref=3
+avi odml32.avi stream release=2 release=1
+avi odml32.avi frdata vtst query hr=0x80044073 cb=0
+avi odml32.avi frdata vtst hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi frdata vtst small hr=0x80044073 cb=0 first=cccccccc
+avi odml32.avi frdata ISFT query hr=0x80044073 cb=0
+avi odml32.avi frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi odml32.avi frdata INFO query hr=0x80044073 cb=0
+avi odml32.avi frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi odml32.avi frdata avih query hr=0x80044073 cb=0
+avi odml32.avi frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi odml32.avi frdata LIST query hr=0x00000000 cb=260
+avi odml32.avi frdata LIST hr=0x00000000 cb=260 hash=01bcee1c
+avi odml32.avi frdata LIST small hr=0x00000000 cb=260 first=6f646dcc
+avi odml32.avi frdata JUNK query hr=0x80044073 cb=0
+avi odml32.avi frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi odml32.avi frdata strl query hr=0x80044073 cb=0
+avi odml32.avi frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi odml32.avi createstream hr=0x80044065 s=NULL
+avi odml32.avi writedata hr=0x80044072 endrecord=0x80044072
+avi odml32.avi vt deletestream hr=0x80044065
+avi odml32.avi qi IUnknown hr=0x00000000 same=0 off=-24
+avi odml32.avi qi IAVIFile hr=0x00000000 same=1 off=0
+avi odml32.avi qi IPersistFile hr=0x00000000 same=0 off=32
+avi odml32.avi qi IAVIPersistFile hr=0x00000000 same=0 off=32
+avi odml32.avi qi IAVIStream hr=0x80004002 out=NULL
+avi odml32.avi qi IMarshal hr=0x80004002 out=NULL
+avi odml32.avi vt info hr=0x00000000 streams=1
+avi odml32.avi vt getstream hr=0x00000000 same_as_flat=1
+avi odml32.avi s0 infoA hr=0x00000000
+avi odml32.avi s0 type=vids handler=DIB (0x20424944) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=20 start=0 len=4 init=0 sugg=24 quality=0xffffffff ssize=0 rc=0,0,3,2 edit=0 fmtchg=0 name="odml32.avi Video #1"
+avi odml32.avi s0 infoW hr=0x00000000 name="odml32.avi Video #1" len=4 same=1
+avi odml32.avi s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi odml32.avi s0 infoA0 hr=0x8004406b first=cc
+avi odml32.avi s0 infoA256 hr=0x00000000 tail=cc
+avi odml32.avi s0 start=0 length=4
+avi odml32.avi s0 s2t -1=0
+avi odml32.avi s0 s2t 0=0
+avi odml32.avi s0 s2t 1=50
+avi odml32.avi s0 s2t 2=100
+avi odml32.avi s0 s2t 3=150
+avi odml32.avi s0 s2t 4=200
+avi odml32.avi s0 s2t 5=200
+avi odml32.avi s0 s2t 1000=200
+avi odml32.avi s0 t2s -1=-1
+avi odml32.avi s0 t2s 0=0
+avi odml32.avi s0 t2s 1=0
+avi odml32.avi s0 t2s 49=0
+avi odml32.avi s0 t2s 50=1
+avi odml32.avi s0 t2s 66=1
+avi odml32.avi s0 t2s 67=1
+avi odml32.avi s0 t2s 99=1
+avi odml32.avi s0 t2s 100=2
+avi odml32.avi s0 t2s 133=2
+avi odml32.avi s0 t2s 134=2
+avi odml32.avi s0 t2s 200=4
+avi odml32.avi s0 t2s 1000=4
+avi odml32.avi s0 t2s 100000=4
+avi odml32.avi s0 find flags=0x11: -1 -1 0 1 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x14: -1 -1 0 1 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x21: -1 -1 0 1 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x24: -1 -1 0 1 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x41: -1 -1 0 -1 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x44: -1 -1 0 0 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x18: -1 -1 0 1 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x0: -1 -1 0 1 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x10: -1 -1 0 1 -1 -1 -1 -1
+avi odml32.avi s0 find flags=0x20: -1 -1 0 1 -1 -1 -1 -1
+avi odml32.avi s0 findret 0x1000: -1 24 24 -1 -1 -1
+avi odml32.avi s0 findret 0x2000: -1 564 596 -1 -1 -1
+avi odml32.avi s0 findret 0x3000: -1 1 1 -1 -1 -1
+avi odml32.avi s0 findret 0x4000: -1 0 1 -1 -1 -1
+avi odml32.avi s0 fmt query hr=0x00000000 cb=40
+avi odml32.avi s0 fmt pos0 hr=0x00000000 cb=40 hash=b0721155
+avi odml32.avi s0 fmt pos3 hr=0x00000000 cb=40 hash=b0721155
+avi odml32.avi s0 fmt pos-1 hr=0x00000000 cb=40 hash=b0721155
+avi odml32.avi s0 fmt pos4 hr=0x00000000 cb=40 hash=b0721155
+avi odml32.avi s0 fmt pos2 hr=0x00000000 cb=40 hash=b0721155
+avi odml32.avi s0 fmt small hr=0x80044074 cb=40
+avi   fmtsmall 2800000003000000cccccccc
+avi odml32.avi s0 readq start=0 n=1 hr=0x00000000 bytes=24 samples=1
+avi odml32.avi s0 readq start=0 conv hr=0x00000000 bytes=24 samples=1
+avi odml32.avi s0 read start=0 conv hr=0x00000000 bytes=24 samples=1 hash=baa31705
+avi odml32.avi s0 read start=0 n=3 hr=0x00000000 bytes=24 samples=1 hash=baa31705
+avi odml32.avi s0 readq start=1 n=1 hr=0x00000000 bytes=24 samples=1
+avi odml32.avi s0 readq start=1 conv hr=0x00000000 bytes=24 samples=1
+avi odml32.avi s0 read start=1 conv hr=0x00000000 bytes=24 samples=1 hash=b56baf85
+avi odml32.avi s0 read start=1 n=3 hr=0x00000000 bytes=24 samples=1 hash=b56baf85
+avi odml32.avi s0 readq start=3 n=1 hr=0x800440c7 bytes=0 samples=0
+avi odml32.avi s0 readq start=3 conv hr=0x800440c7 bytes=0 samples=0
+avi odml32.avi s0 read start=3 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi odml32.avi s0 read start=3 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi odml32.avi s0 readq start=4 n=1 hr=0x800440c7 bytes=0 samples=0
+avi odml32.avi s0 readq start=4 conv hr=0x800440c7 bytes=0 samples=0
+avi odml32.avi s0 read start=4 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi odml32.avi s0 read start=4 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi odml32.avi s0 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi odml32.avi s0 read small hr=0x80044074 bytes=24 samples=0 first=cc
+avi odml32.avi s0 read nullouts hr=0x00000000
+avi odml32.avi s0 rdata strd query hr=0x80044073 cb=0
+avi odml32.avi s0 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi s0 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi odml32.avi s0 rdata strn query hr=0x80044073 cb=0
+avi odml32.avi s0 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi s0 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi odml32.avi s0 rdata strh query hr=0x80044073 cb=0
+avi odml32.avi s0 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi s0 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi odml32.avi s0 rdata strf query hr=0x80044073 cb=0
+avi odml32.avi s0 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi s0 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi odml32.avi s0 rdata vtsd query hr=0x80044073 cb=0
+avi odml32.avi s0 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi odml32.avi s0 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi odml32.avi s0 rdata indx query hr=0x00000000 cb=56
+avi odml32.avi s0 rdata indx hr=0x00000000 cb=56 hash=f4f1d9e6
+avi odml32.avi s0 rdata indx small hr=0x00000000 cb=56 first=0400cc
+avi odml32.avi s0 begin=0x00000000 end=0x00000000
+avi odml32.avi s0 qi IUnknown hr=0x00000000 same=0 off=-24
+avi odml32.avi s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi odml32.avi s0 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi odml32.avi s0 qi IGetFrame hr=0x80004002 out=NULL
+avi odml32.avi s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi odml32.avi s0 qi IAVIFile hr=0x80004002 out=NULL
+avi odml32.avi s0 qi IPersistFile hr=0x80004002 out=NULL
+avi odml32.avi s0 qi IMarshal hr=0x80004002 out=NULL
+avi odml32.avi s0 vt addref=3 release=2 findsample=0 create=0x80044065 delete=0x80044072
+avi odml32.avi s0 vt info hr=0x00000000 len=4
+avi odml32.avi s0 vt setinfo hr=0x80044072
+avi odml32.avi s0 setformat hr=0x80044072
+avi odml32.avi s0 write hr=0x80044072 sw=30583 bw=30583
+avi odml32.avi s0 writedata hr=0x80044072
+avi odml32.avi s0 gf null open=ok
+avi odml32.avi s0 gf null pos0 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=baa31705
+avi odml32.avi s0 gf null pos0 bits 000306090c0f1215181b1e2124272a2d303336393c3f4245
+avi odml32.avi s0 gf null pos1 same_ptr=1
+avi odml32.avi s0 gf null pos1 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=b56baf85
+avi odml32.avi s0 gf null pos1 bits 282b2e3134373a3d404346494c4f5255585b5e6164676a6d
+avi odml32.avi s0 gf null pos2 NULL
+avi odml32.avi s0 gf null pos3 NULL
+avi odml32.avi s0 gf null pos-1 NULL
+avi odml32.avi s0 gf null posLen NULL
+avi odml32.avi s0 gf null posLen+5 NULL
+avi odml32.avi s0 gf vt addref=1 release=1 begin=0x00000000 getframe=frame end=0x00000000
+avi odml32.avi s0 qi gf.IUnknown hr=0x00000000 same=1 off=0
+avi odml32.avi s0 qi gf.IGetFrame hr=0x00000000 same=1 off=0
+avi odml32.avi s0 qi gf.IAVIStream hr=0x00000000 is_stream=1
+avi odml32.avi s0 gf null close=0x00000000
+avi odml32.avi s0 gf best open=ok
+avi odml32.avi s0 gf best pos0 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=baa31705
+avi odml32.avi s0 gf best pos0 bits 000306090c0f1215181b1e2124272a2d303336393c3f4245
+avi odml32.avi s0 gf best pos1 same_ptr=1
+avi odml32.avi s0 gf best pos1 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=b56baf85
+avi odml32.avi s0 gf best pos1 bits 282b2e3134373a3d404346494c4f5255585b5e6164676a6d
+avi odml32.avi s0 gf best pos2 NULL
+avi odml32.avi s0 gf best pos3 NULL
+avi odml32.avi s0 gf best pos-1 NULL
+avi odml32.avi s0 gf best posLen NULL
+avi odml32.avi s0 gf best posLen+5 NULL
+avi odml32.avi s0 gf best close=0x00000000
+avi odml32.avi s0 gf bpp8 open=NULL
+avi odml32.avi s0 gf bpp16 open=NULL
+avi odml32.avi s0 gf bpp24 open=NULL
+avi odml32.avi s0 gf bpp32 open=ok
+avi odml32.avi s0 gf bpp32 pos0 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=baa31705
+avi odml32.avi s0 gf bpp32 pos0 bits 000306090c0f1215181b1e2124272a2d303336393c3f4245
+avi odml32.avi s0 gf bpp32 pos1 same_ptr=1
+avi odml32.avi s0 gf bpp32 pos1 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=b56baf85
+avi odml32.avi s0 gf bpp32 pos1 bits 282b2e3134373a3d404346494c4f5255585b5e6164676a6d
+avi odml32.avi s0 gf bpp32 pos2 NULL
+avi odml32.avi s0 gf bpp32 pos3 NULL
+avi odml32.avi s0 gf bpp32 pos-1 NULL
+avi odml32.avi s0 gf bpp32 posLen NULL
+avi odml32.avi s0 gf bpp32 posLen+5 NULL
+avi odml32.avi s0 gf bpp32 close=0x00000000
+avi odml32.avi s0 gf bpp24td open=NULL
+avi odml32.avi s0 gf bpp24x2 open=NULL
+avi odml32.avi s0 gf bf565 open=NULL
+avi odml32.avi refs file+3 file-2 stream+2 stream-1
+avi odml32.avi refs unk+4 unk-3 unk-2
+avi odml32.avi persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004001 NULL
+avi odml32.avi persist release=2
+avi odml32.avi refs gf+1 gf+2 gf-2 gf-1 stream+3 stream-2
+avi odml32.avi refs gfclose=0x00000000
+avi odml32.avi read0 hr=0x80044074 bytes=24 samples=0
+avi odml32.avi read1into1 hr=0x80044074 bytes=24 samples=0
+avi odml32.avi refs filerelease=1 streamrelease=0
+avi odml32.avi lifetime filerelease=1 streamlen=4 streamrelease=1
+avi file tone.wav open hr=0x00000000 pf=set
+avi tone.wav addref=2 release=1
+avi tone.wav infoA hr=0x00000000
+avi tone.wav maxbps=0 flags=0x0 caps=0x0 streams=1 sugg=0 w=0 h=0 scale=1 rate=8000 len=400 edit=0 type="Microsoft Waveform"
+avi tone.wav infoW hr=0x00000000 type="Microsoft Waveform" same=1
+avi tone.wav infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi tone.wav infoA0 hr=0x8004406b first=cc
+avi tone.wav infoA200 hr=0x00000000 tail=cc
+avi tone.wav info(plain) hr=0x00000000 same=1
+avi tone.wav getstream any -1 hr=0x8004406a s=untouched
+avi tone.wav getstream any 0 hr=0x00000000 s=set
+avi tone.wav getstream any 1 hr=0x8004406a s=untouched
+avi tone.wav getstream any 2 hr=0x8004406a s=untouched
+avi tone.wav getstream vids -1 hr=0x8004406a s=untouched
+avi tone.wav getstream vids 0 hr=0x8004406a s=untouched
+avi tone.wav getstream vids 1 hr=0x8004406a s=untouched
+avi tone.wav getstream vids 2 hr=0x8004406a s=untouched
+avi tone.wav getstream auds -1 hr=0x8004406a s=untouched
+avi tone.wav getstream auds 0 hr=0x00000000 s=set
+avi tone.wav getstream auds 1 hr=0x8004406a s=untouched
+avi tone.wav getstream auds 2 hr=0x8004406a s=untouched
+avi tone.wav getstream mids -1 hr=0x8004406a s=untouched
+avi tone.wav getstream mids 0 hr=0x8004406a s=untouched
+avi tone.wav getstream mids 1 hr=0x8004406a s=untouched
+avi tone.wav getstream mids 2 hr=0x8004406a s=untouched
+avi tone.wav getstream txts -1 hr=0x8004406a s=untouched
+avi tone.wav getstream txts 0 hr=0x8004406a s=untouched
+avi tone.wav getstream txts 1 hr=0x8004406a s=untouched
+avi tone.wav getstream txts 2 hr=0x8004406a s=untouched
+avi tone.wav getstream twice same=1 addref=4
+avi tone.wav stream release=3 release=2
+avi tone.wav frdata vtst query hr=0x80044073 cb=0
+avi tone.wav frdata vtst hr=0x80044073 cb=0 hash=811c9dc5
+avi tone.wav frdata vtst small hr=0x80044073 cb=0 first=cccccccc
+avi tone.wav frdata ISFT query hr=0x80044073 cb=0
+avi tone.wav frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi tone.wav frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi tone.wav frdata INFO query hr=0x80044073 cb=0
+avi tone.wav frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi tone.wav frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi tone.wav frdata avih query hr=0x80044073 cb=0
+avi tone.wav frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi tone.wav frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi tone.wav frdata LIST query hr=0x80044073 cb=0
+avi tone.wav frdata LIST hr=0x80044073 cb=0 hash=811c9dc5
+avi tone.wav frdata LIST small hr=0x80044073 cb=0 first=cccccccc
+avi tone.wav frdata JUNK query hr=0x80044073 cb=0
+avi tone.wav frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi tone.wav frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi tone.wav frdata strl query hr=0x80044073 cb=0
+avi tone.wav frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi tone.wav frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi tone.wav createstream hr=0x80044065 s=NULL
+avi tone.wav writedata hr=0x00000000 endrecord=0x00000000
+avi tone.wav vt deletestream hr=0x8004406a
+avi tone.wav qi IUnknown hr=0x00000000 same=0 off=8
+avi tone.wav qi IAVIFile hr=0x00000000 same=1 off=0
+avi tone.wav qi IPersistFile hr=0x00000000 same=0 off=16
+avi tone.wav qi IAVIPersistFile hr=0x80004002 out=NULL
+avi tone.wav qi IAVIStream hr=0x00000000 same=0 off=-8
+avi tone.wav qi IMarshal hr=0x80004002 out=NULL
+avi tone.wav vt info hr=0x00000000 streams=1
+avi tone.wav vt getstream hr=0x00000000 same_as_flat=1
+avi tone.wav s0 infoA hr=0x00000000
+avi tone.wav s0 type=auds handler=....(0x0) flags=0x0 caps=0x0 prio=0 lang=0 scale=2 rate=16000 start=0 len=400 init=0 sugg=0 quality=0x0 ssize=2 rc=0,0,0,0 edit=0 fmtchg=0 name="Microsoft Waveform: tone.wav"
+avi tone.wav s0 infoW hr=0x00000000 name="Microsoft Waveform: tone.wav" len=400 same=1
+avi tone.wav s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi tone.wav s0 infoA0 hr=0x8004406b first=cc
+avi tone.wav s0 infoA256 hr=0x00000000 tail=cc
+avi tone.wav s0 start=0 length=400
+avi tone.wav s0 s2t -1=0
+avi tone.wav s0 s2t 0=0
+avi tone.wav s0 s2t 1=1
+avi tone.wav s0 s2t 2=1
+avi tone.wav s0 s2t 3=1
+avi tone.wav s0 s2t 4=1
+avi tone.wav s0 s2t 5=1
+avi tone.wav s0 s2t 6=1
+avi tone.wav s0 s2t 7=1
+avi tone.wav s0 s2t 8=1
+avi tone.wav s0 s2t 9=2
+avi tone.wav s0 s2t 10=2
+avi tone.wav s0 s2t 11=2
+avi tone.wav s0 s2t 12=2
+avi tone.wav s0 s2t 13=2
+avi tone.wav s0 s2t 14=2
+avi tone.wav s0 s2t 15=2
+avi tone.wav s0 s2t 16=2
+avi tone.wav s0 s2t 17=3
+avi tone.wav s0 s2t 18=3
+avi tone.wav s0 s2t 19=3
+avi tone.wav s0 s2t 20=3
+avi tone.wav s0 s2t 21=3
+avi tone.wav s0 s2t 22=3
+avi tone.wav s0 s2t 23=3
+avi tone.wav s0 s2t 24=3
+avi tone.wav s0 s2t 25=4
+avi tone.wav s0 s2t 26=4
+avi tone.wav s0 s2t 27=4
+avi tone.wav s0 s2t 28=4
+avi tone.wav s0 s2t 29=4
+avi tone.wav s0 s2t 30=4
+avi tone.wav s0 s2t 31=4
+avi tone.wav s0 s2t 32=4
+avi tone.wav s0 s2t 33=5
+avi tone.wav s0 s2t 34=5
+avi tone.wav s0 s2t 35=5
+avi tone.wav s0 s2t 36=5
+avi tone.wav s0 s2t 37=5
+avi tone.wav s0 s2t 38=5
+avi tone.wav s0 s2t 39=5
+avi tone.wav s0 s2t 40=5
+avi tone.wav s0 s2t 41=6
+avi tone.wav s0 s2t 42=6
+avi tone.wav s0 s2t 43=6
+avi tone.wav s0 s2t 44=6
+avi tone.wav s0 s2t 45=6
+avi tone.wav s0 s2t 46=6
+avi tone.wav s0 s2t 47=6
+avi tone.wav s0 s2t 48=6
+avi tone.wav s0 s2t 49=7
+avi tone.wav s0 s2t 50=7
+avi tone.wav s0 s2t 51=7
+avi tone.wav s0 s2t 52=7
+avi tone.wav s0 s2t 53=7
+avi tone.wav s0 s2t 54=7
+avi tone.wav s0 s2t 55=7
+avi tone.wav s0 s2t 56=7
+avi tone.wav s0 s2t 57=8
+avi tone.wav s0 s2t 58=8
+avi tone.wav s0 s2t 59=8
+avi tone.wav s0 s2t 60=8
+avi tone.wav s0 s2t 61=8
+avi tone.wav s0 s2t 62=8
+avi tone.wav s0 s2t 63=8
+avi tone.wav s0 s2t 64=8
+avi tone.wav s0 s2t 65=9
+avi tone.wav s0 s2t 66=9
+avi tone.wav s0 s2t 67=9
+avi tone.wav s0 s2t 68=9
+avi tone.wav s0 s2t 69=9
+avi tone.wav s0 s2t 70=9
+avi tone.wav s0 s2t 71=9
+avi tone.wav s0 s2t 72=9
+avi tone.wav s0 s2t 73=10
+avi tone.wav s0 s2t 74=10
+avi tone.wav s0 s2t 75=10
+avi tone.wav s0 s2t 76=10
+avi tone.wav s0 s2t 77=10
+avi tone.wav s0 s2t 78=10
+avi tone.wav s0 s2t 79=10
+avi tone.wav s0 s2t 80=10
+avi tone.wav s0 s2t 81=11
+avi tone.wav s0 s2t 82=11
+avi tone.wav s0 s2t 83=11
+avi tone.wav s0 s2t 84=11
+avi tone.wav s0 s2t 85=11
+avi tone.wav s0 s2t 86=11
+avi tone.wav s0 s2t 87=11
+avi tone.wav s0 s2t 88=11
+avi tone.wav s0 s2t 89=12
+avi tone.wav s0 s2t 90=12
+avi tone.wav s0 s2t 91=12
+avi tone.wav s0 s2t 92=12
+avi tone.wav s0 s2t 93=12
+avi tone.wav s0 s2t 94=12
+avi tone.wav s0 s2t 95=12
+avi tone.wav s0 s2t 96=12
+avi tone.wav s0 s2t 97=13
+avi tone.wav s0 s2t 98=13
+avi tone.wav s0 s2t 99=13
+avi tone.wav s0 s2t 100=13
+avi tone.wav s0 s2t 101=13
+avi tone.wav s0 s2t 102=13
+avi tone.wav s0 s2t 103=13
+avi tone.wav s0 s2t 104=13
+avi tone.wav s0 s2t 105=14
+avi tone.wav s0 s2t 106=14
+avi tone.wav s0 s2t 107=14
+avi tone.wav s0 s2t 108=14
+avi tone.wav s0 s2t 109=14
+avi tone.wav s0 s2t 110=14
+avi tone.wav s0 s2t 111=14
+avi tone.wav s0 s2t 112=14
+avi tone.wav s0 s2t 113=15
+avi tone.wav s0 s2t 114=15
+avi tone.wav s0 s2t 115=15
+avi tone.wav s0 s2t 116=15
+avi tone.wav s0 s2t 117=15
+avi tone.wav s0 s2t 118=15
+avi tone.wav s0 s2t 119=15
+avi tone.wav s0 s2t 120=15
+avi tone.wav s0 s2t 121=16
+avi tone.wav s0 s2t 122=16
+avi tone.wav s0 s2t 123=16
+avi tone.wav s0 s2t 124=16
+avi tone.wav s0 s2t 125=16
+avi tone.wav s0 s2t 126=16
+avi tone.wav s0 s2t 127=16
+avi tone.wav s0 s2t 128=16
+avi tone.wav s0 s2t 129=17
+avi tone.wav s0 s2t 130=17
+avi tone.wav s0 s2t 131=17
+avi tone.wav s0 s2t 132=17
+avi tone.wav s0 s2t 133=17
+avi tone.wav s0 s2t 134=17
+avi tone.wav s0 s2t 135=17
+avi tone.wav s0 s2t 136=17
+avi tone.wav s0 s2t 137=18
+avi tone.wav s0 s2t 138=18
+avi tone.wav s0 s2t 139=18
+avi tone.wav s0 s2t 140=18
+avi tone.wav s0 s2t 141=18
+avi tone.wav s0 s2t 142=18
+avi tone.wav s0 s2t 143=18
+avi tone.wav s0 s2t 144=18
+avi tone.wav s0 s2t 145=19
+avi tone.wav s0 s2t 146=19
+avi tone.wav s0 s2t 147=19
+avi tone.wav s0 s2t 148=19
+avi tone.wav s0 s2t 149=19
+avi tone.wav s0 s2t 150=19
+avi tone.wav s0 s2t 151=19
+avi tone.wav s0 s2t 152=19
+avi tone.wav s0 s2t 153=20
+avi tone.wav s0 s2t 154=20
+avi tone.wav s0 s2t 155=20
+avi tone.wav s0 s2t 156=20
+avi tone.wav s0 s2t 157=20
+avi tone.wav s0 s2t 158=20
+avi tone.wav s0 s2t 159=20
+avi tone.wav s0 s2t 160=20
+avi tone.wav s0 s2t 161=21
+avi tone.wav s0 s2t 162=21
+avi tone.wav s0 s2t 163=21
+avi tone.wav s0 s2t 164=21
+avi tone.wav s0 s2t 165=21
+avi tone.wav s0 s2t 166=21
+avi tone.wav s0 s2t 167=21
+avi tone.wav s0 s2t 168=21
+avi tone.wav s0 s2t 169=22
+avi tone.wav s0 s2t 170=22
+avi tone.wav s0 s2t 171=22
+avi tone.wav s0 s2t 172=22
+avi tone.wav s0 s2t 173=22
+avi tone.wav s0 s2t 174=22
+avi tone.wav s0 s2t 175=22
+avi tone.wav s0 s2t 176=22
+avi tone.wav s0 s2t 177=23
+avi tone.wav s0 s2t 178=23
+avi tone.wav s0 s2t 179=23
+avi tone.wav s0 s2t 180=23
+avi tone.wav s0 s2t 181=23
+avi tone.wav s0 s2t 182=23
+avi tone.wav s0 s2t 183=23
+avi tone.wav s0 s2t 184=23
+avi tone.wav s0 s2t 185=24
+avi tone.wav s0 s2t 186=24
+avi tone.wav s0 s2t 187=24
+avi tone.wav s0 s2t 188=24
+avi tone.wav s0 s2t 189=24
+avi tone.wav s0 s2t 190=24
+avi tone.wav s0 s2t 191=24
+avi tone.wav s0 s2t 192=24
+avi tone.wav s0 s2t 193=25
+avi tone.wav s0 s2t 194=25
+avi tone.wav s0 s2t 195=25
+avi tone.wav s0 s2t 196=25
+avi tone.wav s0 s2t 197=25
+avi tone.wav s0 s2t 198=25
+avi tone.wav s0 s2t 199=25
+avi tone.wav s0 s2t 200=25
+avi tone.wav s0 s2t 201=26
+avi tone.wav s0 s2t 202=26
+avi tone.wav s0 s2t 203=26
+avi tone.wav s0 s2t 204=26
+avi tone.wav s0 s2t 205=26
+avi tone.wav s0 s2t 206=26
+avi tone.wav s0 s2t 207=26
+avi tone.wav s0 s2t 208=26
+avi tone.wav s0 s2t 209=27
+avi tone.wav s0 s2t 210=27
+avi tone.wav s0 s2t 211=27
+avi tone.wav s0 s2t 212=27
+avi tone.wav s0 s2t 213=27
+avi tone.wav s0 s2t 214=27
+avi tone.wav s0 s2t 215=27
+avi tone.wav s0 s2t 216=27
+avi tone.wav s0 s2t 217=28
+avi tone.wav s0 s2t 218=28
+avi tone.wav s0 s2t 219=28
+avi tone.wav s0 s2t 220=28
+avi tone.wav s0 s2t 221=28
+avi tone.wav s0 s2t 222=28
+avi tone.wav s0 s2t 223=28
+avi tone.wav s0 s2t 224=28
+avi tone.wav s0 s2t 225=29
+avi tone.wav s0 s2t 226=29
+avi tone.wav s0 s2t 227=29
+avi tone.wav s0 s2t 228=29
+avi tone.wav s0 s2t 229=29
+avi tone.wav s0 s2t 230=29
+avi tone.wav s0 s2t 231=29
+avi tone.wav s0 s2t 232=29
+avi tone.wav s0 s2t 233=30
+avi tone.wav s0 s2t 234=30
+avi tone.wav s0 s2t 235=30
+avi tone.wav s0 s2t 236=30
+avi tone.wav s0 s2t 237=30
+avi tone.wav s0 s2t 238=30
+avi tone.wav s0 s2t 239=30
+avi tone.wav s0 s2t 240=30
+avi tone.wav s0 s2t 241=31
+avi tone.wav s0 s2t 242=31
+avi tone.wav s0 s2t 243=31
+avi tone.wav s0 s2t 244=31
+avi tone.wav s0 s2t 245=31
+avi tone.wav s0 s2t 246=31
+avi tone.wav s0 s2t 247=31
+avi tone.wav s0 s2t 248=31
+avi tone.wav s0 s2t 249=32
+avi tone.wav s0 s2t 250=32
+avi tone.wav s0 s2t 251=32
+avi tone.wav s0 s2t 252=32
+avi tone.wav s0 s2t 253=32
+avi tone.wav s0 s2t 254=32
+avi tone.wav s0 s2t 255=32
+avi tone.wav s0 s2t 256=32
+avi tone.wav s0 s2t 257=33
+avi tone.wav s0 s2t 258=33
+avi tone.wav s0 s2t 259=33
+avi tone.wav s0 s2t 260=33
+avi tone.wav s0 s2t 261=33
+avi tone.wav s0 s2t 262=33
+avi tone.wav s0 s2t 263=33
+avi tone.wav s0 s2t 264=33
+avi tone.wav s0 s2t 265=34
+avi tone.wav s0 s2t 266=34
+avi tone.wav s0 s2t 267=34
+avi tone.wav s0 s2t 268=34
+avi tone.wav s0 s2t 269=34
+avi tone.wav s0 s2t 270=34
+avi tone.wav s0 s2t 271=34
+avi tone.wav s0 s2t 272=34
+avi tone.wav s0 s2t 273=35
+avi tone.wav s0 s2t 274=35
+avi tone.wav s0 s2t 275=35
+avi tone.wav s0 s2t 276=35
+avi tone.wav s0 s2t 277=35
+avi tone.wav s0 s2t 278=35
+avi tone.wav s0 s2t 279=35
+avi tone.wav s0 s2t 280=35
+avi tone.wav s0 s2t 281=36
+avi tone.wav s0 s2t 282=36
+avi tone.wav s0 s2t 283=36
+avi tone.wav s0 s2t 284=36
+avi tone.wav s0 s2t 285=36
+avi tone.wav s0 s2t 286=36
+avi tone.wav s0 s2t 287=36
+avi tone.wav s0 s2t 288=36
+avi tone.wav s0 s2t 289=37
+avi tone.wav s0 s2t 290=37
+avi tone.wav s0 s2t 291=37
+avi tone.wav s0 s2t 292=37
+avi tone.wav s0 s2t 293=37
+avi tone.wav s0 s2t 294=37
+avi tone.wav s0 s2t 295=37
+avi tone.wav s0 s2t 296=37
+avi tone.wav s0 s2t 297=38
+avi tone.wav s0 s2t 298=38
+avi tone.wav s0 s2t 299=38
+avi tone.wav s0 s2t 300=38
+avi tone.wav s0 s2t 301=38
+avi tone.wav s0 s2t 302=38
+avi tone.wav s0 s2t 303=38
+avi tone.wav s0 s2t 304=38
+avi tone.wav s0 s2t 305=39
+avi tone.wav s0 s2t 306=39
+avi tone.wav s0 s2t 307=39
+avi tone.wav s0 s2t 308=39
+avi tone.wav s0 s2t 309=39
+avi tone.wav s0 s2t 310=39
+avi tone.wav s0 s2t 311=39
+avi tone.wav s0 s2t 312=39
+avi tone.wav s0 s2t 313=40
+avi tone.wav s0 s2t 314=40
+avi tone.wav s0 s2t 315=40
+avi tone.wav s0 s2t 316=40
+avi tone.wav s0 s2t 317=40
+avi tone.wav s0 s2t 318=40
+avi tone.wav s0 s2t 319=40
+avi tone.wav s0 s2t 320=40
+avi tone.wav s0 s2t 321=41
+avi tone.wav s0 s2t 322=41
+avi tone.wav s0 s2t 323=41
+avi tone.wav s0 s2t 324=41
+avi tone.wav s0 s2t 325=41
+avi tone.wav s0 s2t 326=41
+avi tone.wav s0 s2t 327=41
+avi tone.wav s0 s2t 328=41
+avi tone.wav s0 s2t 329=42
+avi tone.wav s0 s2t 330=42
+avi tone.wav s0 s2t 331=42
+avi tone.wav s0 s2t 332=42
+avi tone.wav s0 s2t 333=42
+avi tone.wav s0 s2t 334=42
+avi tone.wav s0 s2t 335=42
+avi tone.wav s0 s2t 336=42
+avi tone.wav s0 s2t 337=43
+avi tone.wav s0 s2t 338=43
+avi tone.wav s0 s2t 339=43
+avi tone.wav s0 s2t 340=43
+avi tone.wav s0 s2t 341=43
+avi tone.wav s0 s2t 342=43
+avi tone.wav s0 s2t 343=43
+avi tone.wav s0 s2t 344=43
+avi tone.wav s0 s2t 345=44
+avi tone.wav s0 s2t 346=44
+avi tone.wav s0 s2t 347=44
+avi tone.wav s0 s2t 348=44
+avi tone.wav s0 s2t 349=44
+avi tone.wav s0 s2t 350=44
+avi tone.wav s0 s2t 351=44
+avi tone.wav s0 s2t 352=44
+avi tone.wav s0 s2t 353=45
+avi tone.wav s0 s2t 354=45
+avi tone.wav s0 s2t 355=45
+avi tone.wav s0 s2t 356=45
+avi tone.wav s0 s2t 357=45
+avi tone.wav s0 s2t 358=45
+avi tone.wav s0 s2t 359=45
+avi tone.wav s0 s2t 360=45
+avi tone.wav s0 s2t 361=46
+avi tone.wav s0 s2t 362=46
+avi tone.wav s0 s2t 363=46
+avi tone.wav s0 s2t 364=46
+avi tone.wav s0 s2t 365=46
+avi tone.wav s0 s2t 366=46
+avi tone.wav s0 s2t 367=46
+avi tone.wav s0 s2t 368=46
+avi tone.wav s0 s2t 369=47
+avi tone.wav s0 s2t 370=47
+avi tone.wav s0 s2t 371=47
+avi tone.wav s0 s2t 372=47
+avi tone.wav s0 s2t 373=47
+avi tone.wav s0 s2t 374=47
+avi tone.wav s0 s2t 375=47
+avi tone.wav s0 s2t 376=47
+avi tone.wav s0 s2t 377=48
+avi tone.wav s0 s2t 378=48
+avi tone.wav s0 s2t 379=48
+avi tone.wav s0 s2t 380=48
+avi tone.wav s0 s2t 381=48
+avi tone.wav s0 s2t 382=48
+avi tone.wav s0 s2t 383=48
+avi tone.wav s0 s2t 384=48
+avi tone.wav s0 s2t 385=49
+avi tone.wav s0 s2t 386=49
+avi tone.wav s0 s2t 387=49
+avi tone.wav s0 s2t 388=49
+avi tone.wav s0 s2t 389=49
+avi tone.wav s0 s2t 390=49
+avi tone.wav s0 s2t 391=49
+avi tone.wav s0 s2t 392=49
+avi tone.wav s0 s2t 393=50
+avi tone.wav s0 s2t 394=50
+avi tone.wav s0 s2t 395=50
+avi tone.wav s0 s2t 396=50
+avi tone.wav s0 s2t 397=50
+avi tone.wav s0 s2t 398=50
+avi tone.wav s0 s2t 399=50
+avi tone.wav s0 s2t 400=50
+avi tone.wav s0 s2t 401=50
+avi tone.wav s0 s2t 1000=50
+avi tone.wav s0 t2s -1=-1
+avi tone.wav s0 t2s 0=0
+avi tone.wav s0 t2s 1=8
+avi tone.wav s0 t2s 49=392
+avi tone.wav s0 t2s 50=400
+avi tone.wav s0 t2s 66=400
+avi tone.wav s0 t2s 67=400
+avi tone.wav s0 t2s 99=400
+avi tone.wav s0 t2s 100=400
+avi tone.wav s0 t2s 133=400
+avi tone.wav s0 t2s 134=400
+avi tone.wav s0 t2s 200=400
+avi tone.wav s0 t2s 1000=400
+avi tone.wav s0 t2s 100000=400
+avi tone.wav s0 find flags=0x11: -2 -1 0 1 2 3 4 5 6 7
+avi tone.wav s0 find flags=0x14: -2 -1 0 1 2 3 4 5 6 7
+avi tone.wav s0 find flags=0x21: -2 -1 0 1 2 3 4 5 6 7
+avi tone.wav s0 find flags=0x24: -2 -1 0 1 2 3 4 5 6 7
+avi tone.wav s0 find flags=0x41: 0 0 0 -1 -1 -1 -1 -1 -1 -1
+avi tone.wav s0 find flags=0x44: 0 0 0 0 0 0 0 0 0 0
+avi tone.wav s0 find flags=0x18: -2 -1 0 1 2 3 4 5 6 7
+avi tone.wav s0 find flags=0x0: -2 -1 0 1 2 3 4 5 6 7
+avi tone.wav s0 find flags=0x10: -2 -1 0 1 2 3 4 5 6 7
+avi tone.wav s0 find flags=0x20: -2 -1 0 1 2 3 4 5 6 7
+avi tone.wav s0 findret 0x1000: -1 0 1 2 3 4 5 6
+avi tone.wav s0 findret 0x2000: -1 0 1 2 3 4 5 6
+avi tone.wav s0 findret 0x3000: -1 0 1 2 3 4 5 6
+avi tone.wav s0 findret 0x4000: -1 0 1 2 3 4 5 6
+avi tone.wav s0 fmt query hr=0x00000000 cb=16
+avi tone.wav s0 fmt pos0 hr=0x00000000 cb=16 hash=5c2dbf80
+avi tone.wav s0 fmt pos399 hr=0x00000000 cb=16 hash=5c2dbf80
+avi tone.wav s0 fmt pos-1 hr=0x00000000 cb=16 hash=5c2dbf80
+avi tone.wav s0 fmt pos400 hr=0x00000000 cb=16 hash=5c2dbf80
+avi tone.wav s0 fmt pos2 hr=0x00000000 cb=16 hash=5c2dbf80
+avi tone.wav s0 fmt small hr=0x80044074 cb=8
+avi   fmtsmall 01000100401f0000cccccccc
+avi tone.wav s0 readq start=0 n=1 hr=0x00000000 bytes=2 samples=1
+avi tone.wav s0 readq start=0 conv hr=0x00000000 bytes=0 samples=0
+avi tone.wav s0 read start=0 conv hr=0x00000000 bytes=0 samples=0 hash=811c9dc5
+avi tone.wav s0 read start=0 n=3 hr=0x00000000 bytes=6 samples=3 hash=90b1ea32
+avi tone.wav s0 readq start=1 n=1 hr=0x00000000 bytes=2 samples=1
+avi tone.wav s0 readq start=1 conv hr=0x00000000 bytes=0 samples=0
+avi tone.wav s0 read start=1 conv hr=0x00000000 bytes=0 samples=0 hash=811c9dc5
+avi tone.wav s0 read start=1 n=3 hr=0x00000000 bytes=6 samples=3 hash=35764a5d
+avi tone.wav s0 readq start=399 n=1 hr=0x00000000 bytes=2 samples=1
+avi tone.wav s0 readq start=399 conv hr=0x00000000 bytes=0 samples=0
+avi tone.wav s0 read start=399 conv hr=0x00000000 bytes=0 samples=0 hash=811c9dc5
+avi tone.wav s0 read start=399 n=3 hr=0x00000000 bytes=2 samples=1 hash=0f9ed9e9
+avi tone.wav s0 readq start=400 n=1 hr=0x00000000 bytes=0 samples=0
+avi tone.wav s0 readq start=400 conv hr=0x00000000 bytes=0 samples=0
+avi tone.wav s0 read start=400 conv hr=0x00000000 bytes=0 samples=0 hash=811c9dc5
+avi tone.wav s0 read start=400 n=3 hr=0x00000000 bytes=0 samples=0 hash=811c9dc5
+avi tone.wav s0 read start=-1 hr=0x00000000 bytes=0 samples=0
+avi tone.wav s0 read small hr=0x00000000 bytes=2 samples=1 first=00
+avi tone.wav s0 read nullouts hr=0x00000000
+avi tone.wav s0 read 50x150 hr=0x00000000 bytes=300 samples=150 hash=ec64e828
+avi tone.wav s0 read 250x150 hr=0x00000000 bytes=300 samples=150 hash=354117b4
+avi tone.wav s0 read 10x150 into7 hr=0x00000000 bytes=6 samples=3
+avi tone.wav s0 rdata strd query hr=0x80044065 cb=30583
+avi tone.wav s0 rdata strd hr=0x80044065 cb=256 hash=67f78dc5
+avi tone.wav s0 rdata strd small hr=0x80044065 cb=2 first=cccccc
+avi tone.wav s0 rdata strn query hr=0x80044065 cb=30583
+avi tone.wav s0 rdata strn hr=0x80044065 cb=256 hash=67f78dc5
+avi tone.wav s0 rdata strn small hr=0x80044065 cb=2 first=cccccc
+avi tone.wav s0 rdata strh query hr=0x80044065 cb=30583
+avi tone.wav s0 rdata strh hr=0x80044065 cb=256 hash=67f78dc5
+avi tone.wav s0 rdata strh small hr=0x80044065 cb=2 first=cccccc
+avi tone.wav s0 rdata strf query hr=0x80044065 cb=30583
+avi tone.wav s0 rdata strf hr=0x80044065 cb=256 hash=67f78dc5
+avi tone.wav s0 rdata strf small hr=0x80044065 cb=2 first=cccccc
+avi tone.wav s0 rdata vtsd query hr=0x80044065 cb=30583
+avi tone.wav s0 rdata vtsd hr=0x80044065 cb=256 hash=67f78dc5
+avi tone.wav s0 rdata vtsd small hr=0x80044065 cb=2 first=cccccc
+avi tone.wav s0 rdata indx query hr=0x80044065 cb=30583
+avi tone.wav s0 rdata indx hr=0x80044065 cb=256 hash=67f78dc5
+avi tone.wav s0 rdata indx small hr=0x80044065 cb=2 first=cccccc
+avi tone.wav s0 begin=0x00000000 end=0x00000000
+avi tone.wav s0 qi IUnknown hr=0x00000000 same=0 off=16
+avi tone.wav s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi tone.wav s0 qi IAVIStreaming hr=0x80004002 out=NULL
+avi tone.wav s0 qi IGetFrame hr=0x80004002 out=NULL
+avi tone.wav s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi tone.wav s0 qi IAVIFile hr=0x00000000 same=0 off=8
+avi tone.wav s0 qi IPersistFile hr=0x00000000 same=0 off=24
+avi tone.wav s0 qi IMarshal hr=0x80004002 out=NULL
+avi tone.wav s0 vt addref=4 release=3 findsample=0 create=0x80044065 delete=0x80044065
+avi tone.wav s0 vt info hr=0x00000000 len=400
+avi tone.wav s0 vt setinfo hr=0x80044065
+avi tone.wav s0 setformat hr=0x80044065
+avi tone.wav s0 write hr=0x80044072 sw=30583 bw=30583
+avi tone.wav s0 writedata hr=0x80044065
+avi tone.wav s0 gf audio open=NULL
+avi tone.wav refs file+3 file-2 stream+3 stream-2
+avi tone.wav refs unk+4 unk-3 unk-2
+avi tone.wav persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004005 NULL
+avi tone.wav persist release=2
+avi tone.wav read0 hr=0x00000000 bytes=2 samples=1
+avi tone.wav read1into1 hr=0x00000000 bytes=0 samples=0
+avi tone.wav refs filerelease=1 streamrelease=0
+avi tone.wav lifetime filerelease=2 streamlen=400 streamrelease=1
+avi file notavi.avi open hr=0x80044066 pf=NULL
+avi file rle4.avi open hr=0x00000000 pf=set
+avi rle4.avi addref=2 release=1
+avi rle4.avi infoA hr=0x00000000
+avi rle4.avi maxbps=80 flags=0x0 caps=0x3 streams=1 sugg=16 w=8 h=2 scale=200000 rate=1000000 len=1 edit=0 type="AVI Default File Handler"
+avi rle4.avi infoW hr=0x00000000 type="AVI Default File Handler" same=1
+avi rle4.avi infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi rle4.avi infoA0 hr=0x8004406b first=cc
+avi rle4.avi infoA200 hr=0x00000000 tail=cc
+avi rle4.avi info(plain) hr=0x00000000 same=1
+avi rle4.avi getstream any -1 hr=0x80044073 s=NULL
+avi rle4.avi getstream any 0 hr=0x00000000 s=set
+avi rle4.avi getstream any 1 hr=0x80044073 s=NULL
+avi rle4.avi getstream any 2 hr=0x80044073 s=NULL
+avi rle4.avi getstream vids -1 hr=0x80044073 s=NULL
+avi rle4.avi getstream vids 0 hr=0x00000000 s=set
+avi rle4.avi getstream vids 1 hr=0x80044073 s=NULL
+avi rle4.avi getstream vids 2 hr=0x80044073 s=NULL
+avi rle4.avi getstream auds -1 hr=0x80044073 s=NULL
+avi rle4.avi getstream auds 0 hr=0x80044073 s=NULL
+avi rle4.avi getstream auds 1 hr=0x80044073 s=NULL
+avi rle4.avi getstream auds 2 hr=0x80044073 s=NULL
+avi rle4.avi getstream mids -1 hr=0x80044073 s=NULL
+avi rle4.avi getstream mids 0 hr=0x80044073 s=NULL
+avi rle4.avi getstream mids 1 hr=0x80044073 s=NULL
+avi rle4.avi getstream mids 2 hr=0x80044073 s=NULL
+avi rle4.avi getstream txts -1 hr=0x80044073 s=NULL
+avi rle4.avi getstream txts 0 hr=0x80044073 s=NULL
+avi rle4.avi getstream txts 1 hr=0x80044073 s=NULL
+avi rle4.avi getstream txts 2 hr=0x80044073 s=NULL
+avi rle4.avi getstream twice same=1 addref=3
+avi rle4.avi stream release=2 release=1
+avi rle4.avi frdata vtst query hr=0x80044073 cb=0
+avi rle4.avi frdata vtst hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi frdata vtst small hr=0x80044073 cb=0 first=cccccccc
+avi rle4.avi frdata ISFT query hr=0x80044073 cb=0
+avi rle4.avi frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi rle4.avi frdata INFO query hr=0x80044073 cb=0
+avi rle4.avi frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi rle4.avi frdata avih query hr=0x80044073 cb=0
+avi rle4.avi frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi rle4.avi frdata LIST query hr=0x80044073 cb=0
+avi rle4.avi frdata LIST hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi frdata LIST small hr=0x80044073 cb=0 first=cccccccc
+avi rle4.avi frdata JUNK query hr=0x80044073 cb=0
+avi rle4.avi frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi rle4.avi frdata strl query hr=0x80044073 cb=0
+avi rle4.avi frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi rle4.avi createstream hr=0x80044065 s=NULL
+avi rle4.avi writedata hr=0x80044072 endrecord=0x80044072
+avi rle4.avi vt deletestream hr=0x80044065
+avi rle4.avi qi IUnknown hr=0x00000000 same=0 off=-24
+avi rle4.avi qi IAVIFile hr=0x00000000 same=1 off=0
+avi rle4.avi qi IPersistFile hr=0x00000000 same=0 off=32
+avi rle4.avi qi IAVIPersistFile hr=0x00000000 same=0 off=32
+avi rle4.avi qi IAVIStream hr=0x80004002 out=NULL
+avi rle4.avi qi IMarshal hr=0x80004002 out=NULL
+avi rle4.avi vt info hr=0x00000000 streams=1
+avi rle4.avi vt getstream hr=0x00000000 same_as_flat=1
+avi rle4.avi s0 infoA hr=0x00000000
+avi rle4.avi s0 type=vids handler=mrle(0x656c726d) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=5 start=0 len=1 init=0 sugg=14 quality=0xffffffff ssize=0 rc=0,0,8,2 edit=0 fmtchg=0 name="rle4.avi Video #1"
+avi rle4.avi s0 infoW hr=0x00000000 name="rle4.avi Video #1" len=1 same=1
+avi rle4.avi s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi rle4.avi s0 infoA0 hr=0x8004406b first=cc
+avi rle4.avi s0 infoA256 hr=0x00000000 tail=cc
+avi rle4.avi s0 start=0 length=1
+avi rle4.avi s0 s2t -1=0
+avi rle4.avi s0 s2t 0=0
+avi rle4.avi s0 s2t 1=200
+avi rle4.avi s0 s2t 2=200
+avi rle4.avi s0 s2t 1000=200
+avi rle4.avi s0 t2s -1=-1
+avi rle4.avi s0 t2s 0=0
+avi rle4.avi s0 t2s 1=0
+avi rle4.avi s0 t2s 49=0
+avi rle4.avi s0 t2s 50=0
+avi rle4.avi s0 t2s 66=0
+avi rle4.avi s0 t2s 67=0
+avi rle4.avi s0 t2s 99=0
+avi rle4.avi s0 t2s 100=0
+avi rle4.avi s0 t2s 133=0
+avi rle4.avi s0 t2s 134=0
+avi rle4.avi s0 t2s 200=1
+avi rle4.avi s0 t2s 1000=1
+avi rle4.avi s0 t2s 100000=1
+avi rle4.avi s0 find flags=0x11: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x14: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x21: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x24: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x41: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x44: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x18: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x0: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x10: -1 -1 0 -1 -1
+avi rle4.avi s0 find flags=0x20: -1 -1 0 -1 -1
+avi rle4.avi s0 findret 0x1000: -1 14 -1
+avi rle4.avi s0 findret 0x2000: -1 248 -1
+avi rle4.avi s0 findret 0x3000: -1 1 -1
+avi rle4.avi s0 findret 0x4000: -1 0 -1
+avi rle4.avi s0 fmt query hr=0x00000000 cb=56
+avi rle4.avi s0 fmt pos0 hr=0x00000000 cb=56 hash=de6a7b25
+avi rle4.avi s0 fmt pos0 hr=0x00000000 cb=56 hash=de6a7b25
+avi rle4.avi s0 fmt pos-1 hr=0x00000000 cb=56 hash=de6a7b25
+avi rle4.avi s0 fmt pos1 hr=0x00000000 cb=56 hash=de6a7b25
+avi rle4.avi s0 fmt pos2 hr=0x00000000 cb=56 hash=de6a7b25
+avi rle4.avi s0 fmt small hr=0x80044074 cb=56
+avi   fmtsmall 2800000008000000cccccccc
+avi rle4.avi s0 readq start=0 n=1 hr=0x00000000 bytes=14 samples=1
+avi rle4.avi s0 readq start=0 conv hr=0x00000000 bytes=14 samples=1
+avi rle4.avi s0 read start=0 conv hr=0x00000000 bytes=14 samples=1 hash=a8e5b4c0
+avi rle4.avi s0 read start=0 n=3 hr=0x00000000 bytes=14 samples=1 hash=a8e5b4c0
+avi rle4.avi s0 readq start=1 n=1 hr=0x800440c7 bytes=0 samples=0
+avi rle4.avi s0 readq start=1 conv hr=0x800440c7 bytes=0 samples=0
+avi rle4.avi s0 read start=1 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rle4.avi s0 read start=1 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rle4.avi s0 readq start=0 n=1 hr=0x00000000 bytes=14 samples=1
+avi rle4.avi s0 readq start=0 conv hr=0x00000000 bytes=14 samples=1
+avi rle4.avi s0 read start=0 conv hr=0x00000000 bytes=14 samples=1 hash=a8e5b4c0
+avi rle4.avi s0 read start=0 n=3 hr=0x00000000 bytes=14 samples=1 hash=a8e5b4c0
+avi rle4.avi s0 readq start=1 n=1 hr=0x800440c7 bytes=0 samples=0
+avi rle4.avi s0 readq start=1 conv hr=0x800440c7 bytes=0 samples=0
+avi rle4.avi s0 read start=1 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rle4.avi s0 read start=1 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi rle4.avi s0 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi rle4.avi s0 read small hr=0x80044074 bytes=14 samples=0 first=cc
+avi rle4.avi s0 read nullouts hr=0x00000000
+avi rle4.avi s0 rdata strd query hr=0x80044073 cb=0
+avi rle4.avi s0 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi s0 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi rle4.avi s0 rdata strn query hr=0x80044073 cb=0
+avi rle4.avi s0 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi s0 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi rle4.avi s0 rdata strh query hr=0x80044073 cb=0
+avi rle4.avi s0 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi s0 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi rle4.avi s0 rdata strf query hr=0x80044073 cb=0
+avi rle4.avi s0 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi s0 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi rle4.avi s0 rdata vtsd query hr=0x80044073 cb=0
+avi rle4.avi s0 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi s0 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi rle4.avi s0 rdata indx query hr=0x80044073 cb=0
+avi rle4.avi s0 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi rle4.avi s0 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi rle4.avi s0 begin=0x00000000 end=0x00000000
+avi rle4.avi s0 qi IUnknown hr=0x00000000 same=0 off=-24
+avi rle4.avi s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi rle4.avi s0 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi rle4.avi s0 qi IGetFrame hr=0x80004002 out=NULL
+avi rle4.avi s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi rle4.avi s0 qi IAVIFile hr=0x80004002 out=NULL
+avi rle4.avi s0 qi IPersistFile hr=0x80004002 out=NULL
+avi rle4.avi s0 qi IMarshal hr=0x80004002 out=NULL
+avi rle4.avi s0 vt addref=3 release=2 findsample=0 create=0x80044065 delete=0x80044072
+avi rle4.avi s0 vt info hr=0x00000000 len=1
+avi rle4.avi s0 vt setinfo hr=0x80044072
+avi rle4.avi s0 setformat hr=0x80044072
+avi rle4.avi s0 write hr=0x80044072 sw=30583 bw=30583
+avi rle4.avi s0 writedata hr=0x80044072
+avi rle4.avi s0 gf null open=NULL
+avi rle4.avi s0 gf best open=NULL
+avi rle4.avi s0 gf bpp8 open=NULL
+avi rle4.avi s0 gf bpp16 open=NULL
+avi rle4.avi s0 gf bpp24 open=NULL
+avi rle4.avi s0 gf bpp32 open=NULL
+avi rle4.avi s0 gf bpp24td open=NULL
+avi rle4.avi s0 gf bpp24x2 open=NULL
+avi rle4.avi s0 gf bf565 open=NULL
+avi rle4.avi refs file+3 file-2 stream+2 stream-1
+avi rle4.avi refs unk+4 unk-3 unk-2
+avi rle4.avi persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004001 NULL
+avi rle4.avi persist release=2
+avi rle4.avi read0 hr=0x80044074 bytes=14 samples=0
+avi rle4.avi read1into1 hr=0x80044074 bytes=14 samples=0
+avi rle4.avi refs filerelease=1 streamrelease=0
+avi rle4.avi lifetime filerelease=1 streamlen=1 streamrelease=1
+avi file odmlonly.avi open hr=0x00000000 pf=set
+avi odmlonly.avi addref=2 release=1
+avi odmlonly.avi infoA hr=0x00000000
+avi odmlonly.avi maxbps=480 flags=0x0 caps=0x3 streams=1 sugg=24 w=3 h=2 scale=50000 rate=1000000 len=2 edit=0 type="AVI Default File Handler"
+avi odmlonly.avi infoW hr=0x00000000 type="AVI Default File Handler" same=1
+avi odmlonly.avi infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi odmlonly.avi infoA0 hr=0x8004406b first=cc
+avi odmlonly.avi infoA200 hr=0x00000000 tail=cc
+avi odmlonly.avi info(plain) hr=0x00000000 same=1
+avi odmlonly.avi getstream any -1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream any 0 hr=0x00000000 s=set
+avi odmlonly.avi getstream any 1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream any 2 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream vids -1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream vids 0 hr=0x00000000 s=set
+avi odmlonly.avi getstream vids 1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream vids 2 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream auds -1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream auds 0 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream auds 1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream auds 2 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream mids -1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream mids 0 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream mids 1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream mids 2 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream txts -1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream txts 0 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream txts 1 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream txts 2 hr=0x80044073 s=NULL
+avi odmlonly.avi getstream twice same=1 addref=3
+avi odmlonly.avi stream release=2 release=1
+avi odmlonly.avi frdata vtst query hr=0x80044073 cb=0
+avi odmlonly.avi frdata vtst hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi frdata vtst small hr=0x80044073 cb=0 first=cccccccc
+avi odmlonly.avi frdata ISFT query hr=0x80044073 cb=0
+avi odmlonly.avi frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi odmlonly.avi frdata INFO query hr=0x80044073 cb=0
+avi odmlonly.avi frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi odmlonly.avi frdata avih query hr=0x80044073 cb=0
+avi odmlonly.avi frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi odmlonly.avi frdata LIST query hr=0x00000000 cb=260
+avi odmlonly.avi frdata LIST hr=0x00000000 cb=260 hash=01bcee1c
+avi odmlonly.avi frdata LIST small hr=0x00000000 cb=260 first=6f646dcc
+avi odmlonly.avi frdata JUNK query hr=0x80044073 cb=0
+avi odmlonly.avi frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi odmlonly.avi frdata strl query hr=0x80044073 cb=0
+avi odmlonly.avi frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi odmlonly.avi createstream hr=0x80044065 s=NULL
+avi odmlonly.avi writedata hr=0x80044072 endrecord=0x80044072
+avi odmlonly.avi vt deletestream hr=0x80044065
+avi odmlonly.avi qi IUnknown hr=0x00000000 same=0 off=-24
+avi odmlonly.avi qi IAVIFile hr=0x00000000 same=1 off=0
+avi odmlonly.avi qi IPersistFile hr=0x00000000 same=0 off=32
+avi odmlonly.avi qi IAVIPersistFile hr=0x00000000 same=0 off=32
+avi odmlonly.avi qi IAVIStream hr=0x80004002 out=NULL
+avi odmlonly.avi qi IMarshal hr=0x80004002 out=NULL
+avi odmlonly.avi vt info hr=0x00000000 streams=1
+avi odmlonly.avi vt getstream hr=0x00000000 same_as_flat=1
+avi odmlonly.avi s0 infoA hr=0x00000000
+avi odmlonly.avi s0 type=vids handler=DIB (0x20424944) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=20 start=0 len=4 init=0 sugg=24 quality=0xffffffff ssize=0 rc=0,0,3,2 edit=0 fmtchg=0 name="odmlonly.avi Video #1"
+avi odmlonly.avi s0 infoW hr=0x00000000 name="odmlonly.avi Video #1" len=4 same=1
+avi odmlonly.avi s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi odmlonly.avi s0 infoA0 hr=0x8004406b first=cc
+avi odmlonly.avi s0 infoA256 hr=0x00000000 tail=cc
+avi odmlonly.avi s0 start=0 length=4
+avi odmlonly.avi s0 s2t -1=0
+avi odmlonly.avi s0 s2t 0=0
+avi odmlonly.avi s0 s2t 1=50
+avi odmlonly.avi s0 s2t 2=100
+avi odmlonly.avi s0 s2t 3=150
+avi odmlonly.avi s0 s2t 4=200
+avi odmlonly.avi s0 s2t 5=200
+avi odmlonly.avi s0 s2t 1000=200
+avi odmlonly.avi s0 t2s -1=-1
+avi odmlonly.avi s0 t2s 0=0
+avi odmlonly.avi s0 t2s 1=0
+avi odmlonly.avi s0 t2s 49=0
+avi odmlonly.avi s0 t2s 50=1
+avi odmlonly.avi s0 t2s 66=1
+avi odmlonly.avi s0 t2s 67=1
+avi odmlonly.avi s0 t2s 99=1
+avi odmlonly.avi s0 t2s 100=2
+avi odmlonly.avi s0 t2s 133=2
+avi odmlonly.avi s0 t2s 134=2
+avi odmlonly.avi s0 t2s 200=4
+avi odmlonly.avi s0 t2s 1000=4
+avi odmlonly.avi s0 t2s 100000=4
+avi odmlonly.avi s0 find flags=0x11: -1 -1 0 -1 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x14: -1 -1 0 0 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x21: -1 -1 0 1 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x24: -1 -1 0 1 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x41: -1 -1 0 -1 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x44: -1 -1 0 0 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x18: -1 -1 0 0 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x0: -1 -1 0 0 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x10: -1 -1 0 0 -1 -1 -1 -1
+avi odmlonly.avi s0 find flags=0x20: -1 -1 0 1 -1 -1 -1 -1
+avi odmlonly.avi s0 findret 0x1000: -1 24 24 -1 -1 -1
+avi odmlonly.avi s0 findret 0x2000: -1 564 596 -1 -1 -1
+avi odmlonly.avi s0 findret 0x3000: -1 1 1 -1 -1 -1
+avi odmlonly.avi s0 findret 0x4000: -1 0 1 -1 -1 -1
+avi odmlonly.avi s0 fmt query hr=0x00000000 cb=40
+avi odmlonly.avi s0 fmt pos0 hr=0x00000000 cb=40 hash=b0721155
+avi odmlonly.avi s0 fmt pos3 hr=0x00000000 cb=40 hash=b0721155
+avi odmlonly.avi s0 fmt pos-1 hr=0x00000000 cb=40 hash=b0721155
+avi odmlonly.avi s0 fmt pos4 hr=0x00000000 cb=40 hash=b0721155
+avi odmlonly.avi s0 fmt pos2 hr=0x00000000 cb=40 hash=b0721155
+avi odmlonly.avi s0 fmt small hr=0x80044074 cb=40
+avi   fmtsmall 2800000003000000cccccccc
+avi odmlonly.avi s0 readq start=0 n=1 hr=0x00000000 bytes=24 samples=1
+avi odmlonly.avi s0 readq start=0 conv hr=0x00000000 bytes=24 samples=1
+avi odmlonly.avi s0 read start=0 conv hr=0x00000000 bytes=24 samples=1 hash=baa31705
+avi odmlonly.avi s0 read start=0 n=3 hr=0x00000000 bytes=24 samples=1 hash=baa31705
+avi odmlonly.avi s0 readq start=1 n=1 hr=0x00000000 bytes=24 samples=1
+avi odmlonly.avi s0 readq start=1 conv hr=0x00000000 bytes=24 samples=1
+avi odmlonly.avi s0 read start=1 conv hr=0x00000000 bytes=24 samples=1 hash=b56baf85
+avi odmlonly.avi s0 read start=1 n=3 hr=0x00000000 bytes=24 samples=1 hash=b56baf85
+avi odmlonly.avi s0 readq start=3 n=1 hr=0x800440c7 bytes=0 samples=0
+avi odmlonly.avi s0 readq start=3 conv hr=0x800440c7 bytes=0 samples=0
+avi odmlonly.avi s0 read start=3 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi odmlonly.avi s0 read start=3 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi odmlonly.avi s0 readq start=4 n=1 hr=0x800440c7 bytes=0 samples=0
+avi odmlonly.avi s0 readq start=4 conv hr=0x800440c7 bytes=0 samples=0
+avi odmlonly.avi s0 read start=4 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi odmlonly.avi s0 read start=4 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi odmlonly.avi s0 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi odmlonly.avi s0 read small hr=0x80044074 bytes=24 samples=0 first=cc
+avi odmlonly.avi s0 read nullouts hr=0x00000000
+avi odmlonly.avi s0 rdata strd query hr=0x80044073 cb=0
+avi odmlonly.avi s0 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi s0 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi odmlonly.avi s0 rdata strn query hr=0x80044073 cb=0
+avi odmlonly.avi s0 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi s0 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi odmlonly.avi s0 rdata strh query hr=0x80044073 cb=0
+avi odmlonly.avi s0 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi s0 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi odmlonly.avi s0 rdata strf query hr=0x80044073 cb=0
+avi odmlonly.avi s0 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi s0 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi odmlonly.avi s0 rdata vtsd query hr=0x80044073 cb=0
+avi odmlonly.avi s0 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi odmlonly.avi s0 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi odmlonly.avi s0 rdata indx query hr=0x00000000 cb=56
+avi odmlonly.avi s0 rdata indx hr=0x00000000 cb=56 hash=cce070a5
+avi odmlonly.avi s0 rdata indx small hr=0x00000000 cb=56 first=0400cc
+avi odmlonly.avi s0 begin=0x00000000 end=0x00000000
+avi odmlonly.avi s0 qi IUnknown hr=0x00000000 same=0 off=-24
+avi odmlonly.avi s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi odmlonly.avi s0 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi odmlonly.avi s0 qi IGetFrame hr=0x80004002 out=NULL
+avi odmlonly.avi s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi odmlonly.avi s0 qi IAVIFile hr=0x80004002 out=NULL
+avi odmlonly.avi s0 qi IPersistFile hr=0x80004002 out=NULL
+avi odmlonly.avi s0 qi IMarshal hr=0x80004002 out=NULL
+avi odmlonly.avi s0 vt addref=3 release=2 findsample=0 create=0x80044065 delete=0x80044072
+avi odmlonly.avi s0 vt info hr=0x00000000 len=4
+avi odmlonly.avi s0 vt setinfo hr=0x80044072
+avi odmlonly.avi s0 setformat hr=0x80044072
+avi odmlonly.avi s0 write hr=0x80044072 sw=30583 bw=30583
+avi odmlonly.avi s0 writedata hr=0x80044072
+avi odmlonly.avi s0 gf null open=ok
+avi odmlonly.avi s0 gf null pos0 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=baa31705
+avi odmlonly.avi s0 gf null pos0 bits 000306090c0f1215181b1e2124272a2d303336393c3f4245
+avi odmlonly.avi s0 gf null pos1 same_ptr=1
+avi odmlonly.avi s0 gf null pos1 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=b56baf85
+avi odmlonly.avi s0 gf null pos1 bits 282b2e3134373a3d404346494c4f5255585b5e6164676a6d
+avi odmlonly.avi s0 gf null pos2 NULL
+avi odmlonly.avi s0 gf null pos3 NULL
+avi odmlonly.avi s0 gf null pos-1 NULL
+avi odmlonly.avi s0 gf null posLen NULL
+avi odmlonly.avi s0 gf null posLen+5 NULL
+avi odmlonly.avi s0 gf vt addref=1 release=1 begin=0x00000000 getframe=frame end=0x00000000
+avi odmlonly.avi s0 qi gf.IUnknown hr=0x00000000 same=1 off=0
+avi odmlonly.avi s0 qi gf.IGetFrame hr=0x00000000 same=1 off=0
+avi odmlonly.avi s0 qi gf.IAVIStream hr=0x00000000 is_stream=1
+avi odmlonly.avi s0 gf null close=0x00000000
+avi odmlonly.avi s0 gf best open=ok
+avi odmlonly.avi s0 gf best pos0 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=baa31705
+avi odmlonly.avi s0 gf best pos0 bits 000306090c0f1215181b1e2124272a2d303336393c3f4245
+avi odmlonly.avi s0 gf best pos1 same_ptr=1
+avi odmlonly.avi s0 gf best pos1 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=b56baf85
+avi odmlonly.avi s0 gf best pos1 bits 282b2e3134373a3d404346494c4f5255585b5e6164676a6d
+avi odmlonly.avi s0 gf best pos2 NULL
+avi odmlonly.avi s0 gf best pos3 NULL
+avi odmlonly.avi s0 gf best pos-1 NULL
+avi odmlonly.avi s0 gf best posLen NULL
+avi odmlonly.avi s0 gf best posLen+5 NULL
+avi odmlonly.avi s0 gf best close=0x00000000
+avi odmlonly.avi s0 gf bpp8 open=NULL
+avi odmlonly.avi s0 gf bpp16 open=NULL
+avi odmlonly.avi s0 gf bpp24 open=NULL
+avi odmlonly.avi s0 gf bpp32 open=ok
+avi odmlonly.avi s0 gf bpp32 pos0 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=baa31705
+avi odmlonly.avi s0 gf bpp32 pos0 bits 000306090c0f1215181b1e2124272a2d303336393c3f4245
+avi odmlonly.avi s0 gf bpp32 pos1 same_ptr=1
+avi odmlonly.avi s0 gf bpp32 pos1 size=40 w=3 h=2 planes=1 bpp=32 comp=0x0 simage=24 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=b56baf85
+avi odmlonly.avi s0 gf bpp32 pos1 bits 282b2e3134373a3d404346494c4f5255585b5e6164676a6d
+avi odmlonly.avi s0 gf bpp32 pos2 NULL
+avi odmlonly.avi s0 gf bpp32 pos3 NULL
+avi odmlonly.avi s0 gf bpp32 pos-1 NULL
+avi odmlonly.avi s0 gf bpp32 posLen NULL
+avi odmlonly.avi s0 gf bpp32 posLen+5 NULL
+avi odmlonly.avi s0 gf bpp32 close=0x00000000
+avi odmlonly.avi s0 gf bpp24td open=NULL
+avi odmlonly.avi s0 gf bpp24x2 open=NULL
+avi odmlonly.avi s0 gf bf565 open=NULL
+avi odmlonly.avi refs file+3 file-2 stream+2 stream-1
+avi odmlonly.avi refs unk+4 unk-3 unk-2
+avi odmlonly.avi persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004001 NULL
+avi odmlonly.avi persist release=2
+avi odmlonly.avi refs gf+1 gf+2 gf-2 gf-1 stream+3 stream-2
+avi odmlonly.avi refs gfclose=0x00000000
+avi odmlonly.avi read0 hr=0x80044074 bytes=24 samples=0
+avi odmlonly.avi read1into1 hr=0x80044074 bytes=24 samples=0
+avi odmlonly.avi refs filerelease=1 streamrelease=0
+avi odmlonly.avi lifetime filerelease=1 streamlen=4 streamrelease=1
+avi file multi.avi open hr=0x00000000 pf=set
+avi multi.avi addref=2 release=1
+avi multi.avi infoA hr=0x00000000
+avi multi.avi maxbps=999 flags=0x0 caps=0x3 streams=4 sugg=777 w=2 h=2 scale=125000 rate=1000000 len=3 edit=0 type="AVI Default File Handler"
+avi multi.avi infoW hr=0x00000000 type="AVI Default File Handler" same=1
+avi multi.avi infoA12 hr=0x8004406b
+avi   raw16 cccccccccccccccccccccccccccccccc
+avi multi.avi infoA0 hr=0x8004406b first=cc
+avi multi.avi infoA200 hr=0x00000000 tail=cc
+avi multi.avi info(plain) hr=0x00000000 same=1
+avi multi.avi getstream any -1 hr=0x80044073 s=NULL
+avi multi.avi getstream any 0 hr=0x00000000 s=set
+avi multi.avi getstream any 1 hr=0x00000000 s=set
+avi multi.avi getstream any 2 hr=0x00000000 s=set
+avi multi.avi getstream vids -1 hr=0x80044073 s=NULL
+avi multi.avi getstream vids 0 hr=0x00000000 s=set
+avi multi.avi getstream vids 1 hr=0x80044073 s=NULL
+avi multi.avi getstream vids 2 hr=0x80044073 s=NULL
+avi multi.avi getstream auds -1 hr=0x80044073 s=NULL
+avi multi.avi getstream auds 0 hr=0x00000000 s=set
+avi multi.avi getstream auds 1 hr=0x00000000 s=set
+avi multi.avi getstream auds 2 hr=0x80044073 s=NULL
+avi multi.avi getstream mids -1 hr=0x80044073 s=NULL
+avi multi.avi getstream mids 0 hr=0x80044073 s=NULL
+avi multi.avi getstream mids 1 hr=0x80044073 s=NULL
+avi multi.avi getstream mids 2 hr=0x80044073 s=NULL
+avi multi.avi getstream txts -1 hr=0x80044073 s=NULL
+avi multi.avi getstream txts 0 hr=0x00000000 s=set
+avi multi.avi getstream txts 1 hr=0x80044073 s=NULL
+avi multi.avi getstream txts 2 hr=0x80044073 s=NULL
+avi multi.avi getstream twice same=1 addref=3
+avi multi.avi stream release=2 release=1
+avi multi.avi frdata vtst query hr=0x80044073 cb=0
+avi multi.avi frdata vtst hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi frdata vtst small hr=0x80044073 cb=0 first=cccccccc
+avi multi.avi frdata ISFT query hr=0x80044073 cb=0
+avi multi.avi frdata ISFT hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi frdata ISFT small hr=0x80044073 cb=0 first=cccccccc
+avi multi.avi frdata INFO query hr=0x80044073 cb=0
+avi multi.avi frdata INFO hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi frdata INFO small hr=0x80044073 cb=0 first=cccccccc
+avi multi.avi frdata avih query hr=0x80044073 cb=0
+avi multi.avi frdata avih hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi frdata avih small hr=0x80044073 cb=0 first=cccccccc
+avi multi.avi frdata LIST query hr=0x80044073 cb=0
+avi multi.avi frdata LIST hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi frdata LIST small hr=0x80044073 cb=0 first=cccccccc
+avi multi.avi frdata JUNK query hr=0x80044073 cb=0
+avi multi.avi frdata JUNK hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi frdata JUNK small hr=0x80044073 cb=0 first=cccccccc
+avi multi.avi frdata strl query hr=0x80044073 cb=0
+avi multi.avi frdata strl hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi frdata strl small hr=0x80044073 cb=0 first=cccccccc
+avi multi.avi createstream hr=0x80044065 s=NULL
+avi multi.avi writedata hr=0x80044072 endrecord=0x80044072
+avi multi.avi vt deletestream hr=0x80044065
+avi multi.avi qi IUnknown hr=0x00000000 same=0 off=-24
+avi multi.avi qi IAVIFile hr=0x00000000 same=1 off=0
+avi multi.avi qi IPersistFile hr=0x00000000 same=0 off=32
+avi multi.avi qi IAVIPersistFile hr=0x00000000 same=0 off=32
+avi multi.avi qi IAVIStream hr=0x80004002 out=NULL
+avi multi.avi qi IMarshal hr=0x80004002 out=NULL
+avi multi.avi vt info hr=0x00000000 streams=4
+avi multi.avi vt getstream hr=0x00000000 same_as_flat=1
+avi multi.avi s0 infoA hr=0x00000000
+avi multi.avi s0 type=vids handler=abcd(0x64636261) flags=0x1 caps=0x0 prio=3 lang=9 scale=1 rate=8 start=2 len=3 init=0 sugg=16 quality=0x1388 ssize=0 rc=1,2,3,4 edit=0 fmtchg=0 name="multi.avi Video #1"
+avi multi.avi s0 infoW hr=0x00000000 name="multi.avi Video #1" len=3 same=1
+avi multi.avi s0 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi multi.avi s0 infoA0 hr=0x8004406b first=cc
+avi multi.avi s0 infoA256 hr=0x00000000 tail=cc
+avi multi.avi s0 start=2 length=3
+avi multi.avi s0 s2t -1=250
+avi multi.avi s0 s2t 0=250
+avi multi.avi s0 s2t 1=250
+avi multi.avi s0 s2t 2=250
+avi multi.avi s0 s2t 3=375
+avi multi.avi s0 s2t 4=500
+avi multi.avi s0 s2t 1000=625
+avi multi.avi s0 t2s -1=-1
+avi multi.avi s0 t2s 0=2
+avi multi.avi s0 t2s 1=2
+avi multi.avi s0 t2s 49=2
+avi multi.avi s0 t2s 50=2
+avi multi.avi s0 t2s 66=2
+avi multi.avi s0 t2s 67=2
+avi multi.avi s0 t2s 99=2
+avi multi.avi s0 t2s 100=2
+avi multi.avi s0 t2s 133=2
+avi multi.avi s0 t2s 134=2
+avi multi.avi s0 t2s 200=2
+avi multi.avi s0 t2s 1000=5
+avi multi.avi s0 t2s 100000=5
+avi multi.avi s0 find flags=0x11: -1 -1 -1 -1 2 4 4
+avi multi.avi s0 find flags=0x14: -1 -1 -1 -1 2 2 4
+avi multi.avi s0 find flags=0x21: -1 -1 -1 -1 2 3 4
+avi multi.avi s0 find flags=0x24: -1 -1 -1 -1 2 3 4
+avi multi.avi s0 find flags=0x41: -1 -1 -1 -1 2 -1 -1
+avi multi.avi s0 find flags=0x44: -1 -1 -1 -1 2 2 2
+avi multi.avi s0 find flags=0x18: -1 -1 2 -1 2 2 4
+avi multi.avi s0 find flags=0x0: -1 -1 -1 -1 2 2 4
+avi multi.avi s0 find flags=0x10: -1 -1 -1 -1 2 2 4
+avi multi.avi s0 find flags=0x20: -1 -1 -1 -1 2 3 4
+avi multi.avi s0 findret 0x1000: -1 -1 -1 16 16
+avi multi.avi s0 findret 0x2000: -1 -1 -1 522 640
+avi multi.avi s0 findret 0x3000: -1 -1 -1 1 1
+avi multi.avi s0 findret 0x4000: -1 -1 -1 0 4
+avi multi.avi s0 fmt query hr=0x00000000 cb=40
+avi multi.avi s0 fmt pos0 hr=0x00000000 cb=40 hash=7d4fdaf4
+avi multi.avi s0 fmt pos2 hr=0x00000000 cb=40 hash=7d4fdaf4
+avi multi.avi s0 fmt pos-1 hr=0x00000000 cb=40 hash=7d4fdaf4
+avi multi.avi s0 fmt pos3 hr=0x00000000 cb=40 hash=7d4fdaf4
+avi multi.avi s0 fmt pos2 hr=0x00000000 cb=40 hash=7d4fdaf4
+avi multi.avi s0 fmt small hr=0x80044074 cb=40
+avi   fmtsmall 2800000002000000cccccccc
+avi multi.avi s0 readq start=0 n=1 hr=0x8004406a bytes=30583 samples=30583
+avi multi.avi s0 readq start=0 conv hr=0x8004406a bytes=30583 samples=30583
+avi multi.avi s0 read start=0 conv hr=0x8004406a bytes=30583 samples=30583 hash=811c9dc5
+avi multi.avi s0 read start=0 n=3 hr=0x8004406a bytes=30583 samples=30583 hash=811c9dc5
+avi multi.avi s0 readq start=1 n=1 hr=0x8004406a bytes=30583 samples=30583
+avi multi.avi s0 readq start=1 conv hr=0x8004406a bytes=30583 samples=30583
+avi multi.avi s0 read start=1 conv hr=0x8004406a bytes=30583 samples=30583 hash=811c9dc5
+avi multi.avi s0 read start=1 n=3 hr=0x8004406a bytes=30583 samples=30583 hash=811c9dc5
+avi multi.avi s0 readq start=2 n=1 hr=0x00000000 bytes=16 samples=1
+avi multi.avi s0 readq start=2 conv hr=0x00000000 bytes=16 samples=1
+avi multi.avi s0 read start=2 conv hr=0x00000000 bytes=16 samples=1 hash=12e84b65
+avi multi.avi s0 read start=2 n=3 hr=0x00000000 bytes=16 samples=1 hash=12e84b65
+avi multi.avi s0 readq start=3 n=1 hr=0x00000000 bytes=16 samples=1
+avi multi.avi s0 readq start=3 conv hr=0x00000000 bytes=16 samples=1
+avi multi.avi s0 read start=3 conv hr=0x00000000 bytes=16 samples=1 hash=ded3a6f5
+avi multi.avi s0 read start=3 n=3 hr=0x00000000 bytes=16 samples=1 hash=ded3a6f5
+avi multi.avi s0 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi multi.avi s0 read small hr=0x8004406a bytes=30583 samples=30583 first=cc
+avi multi.avi s0 read nullouts hr=0x8004406a
+avi multi.avi s0 rdata strd query hr=0x80044073 cb=0
+avi multi.avi s0 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s0 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s0 rdata strn query hr=0x80044073 cb=0
+avi multi.avi s0 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s0 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s0 rdata strh query hr=0x80044073 cb=0
+avi multi.avi s0 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s0 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s0 rdata strf query hr=0x80044073 cb=0
+avi multi.avi s0 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s0 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s0 rdata vtsd query hr=0x80044073 cb=0
+avi multi.avi s0 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s0 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s0 rdata indx query hr=0x80044073 cb=0
+avi multi.avi s0 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s0 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s0 begin=0x00000000 end=0x00000000
+avi multi.avi s0 qi IUnknown hr=0x00000000 same=0 off=-24
+avi multi.avi s0 qi IAVIStream hr=0x00000000 same=1 off=0
+avi multi.avi s0 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi multi.avi s0 qi IGetFrame hr=0x80004002 out=NULL
+avi multi.avi s0 qi IAVIEditStream hr=0x80004002 out=NULL
+avi multi.avi s0 qi IAVIFile hr=0x80004002 out=NULL
+avi multi.avi s0 qi IPersistFile hr=0x80004002 out=NULL
+avi multi.avi s0 qi IMarshal hr=0x80004002 out=NULL
+avi multi.avi s0 vt addref=3 release=2 findsample=-1 create=0x80044065 delete=0x80044072
+avi multi.avi s0 vt info hr=0x00000000 len=3
+avi multi.avi s0 vt setinfo hr=0x80044072
+avi multi.avi s0 setformat hr=0x80044072
+avi multi.avi s0 write hr=0x80044072 sw=30583 bw=30583
+avi multi.avi s0 writedata hr=0x80044072
+avi multi.avi s0 gf null open=ok
+avi multi.avi s0 gf null pos0 NULL
+avi multi.avi s0 gf null pos1 NULL
+avi multi.avi s0 gf null pos2 size=40 w=2 h=2 planes=1 bpp=24 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=12e84b65
+avi multi.avi s0 gf null pos2 bits 000b16212c37424d58636e79848f9aa5
+avi multi.avi s0 gf null pos-1 NULL
+avi multi.avi s0 gf null posLen frame
+avi multi.avi s0 gf null posLen+5 NULL
+avi multi.avi s0 gf vt addref=1 release=1 begin=0x00000000 getframe=NULL end=0x00000000
+avi multi.avi s0 qi gf.IUnknown hr=0x00000000 same=1 off=0
+avi multi.avi s0 qi gf.IGetFrame hr=0x00000000 same=1 off=0
+avi multi.avi s0 qi gf.IAVIStream hr=0x00000000 is_stream=1
+avi multi.avi s0 gf null close=0x00000000
+avi multi.avi s0 gf best open=ok
+avi multi.avi s0 gf best pos0 NULL
+avi multi.avi s0 gf best pos1 NULL
+avi multi.avi s0 gf best pos2 size=40 w=2 h=2 planes=1 bpp=24 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=12e84b65
+avi multi.avi s0 gf best pos2 bits 000b16212c37424d58636e79848f9aa5
+avi multi.avi s0 gf best pos-1 NULL
+avi multi.avi s0 gf best posLen frame
+avi multi.avi s0 gf best posLen+5 NULL
+avi multi.avi s0 gf best close=0x00000000
+avi multi.avi s0 gf bpp8 open=NULL
+avi multi.avi s0 gf bpp16 open=NULL
+avi multi.avi s0 gf bpp24 open=ok
+avi multi.avi s0 gf bpp24 pos0 NULL
+avi multi.avi s0 gf bpp24 pos1 NULL
+avi multi.avi s0 gf bpp24 pos2 size=40 w=2 h=2 planes=1 bpp=24 comp=0x0 simage=16 xppm=0 yppm=0 clrused=0 clrimp=0 ct=0 cthash=811c9dc5 bitshash=12e84b65
+avi multi.avi s0 gf bpp24 pos2 bits 000b16212c37424d58636e79848f9aa5
+avi multi.avi s0 gf bpp24 pos-1 NULL
+avi multi.avi s0 gf bpp24 posLen frame
+avi multi.avi s0 gf bpp24 posLen+5 NULL
+avi multi.avi s0 gf bpp24 close=0x00000000
+avi multi.avi s0 gf bpp32 open=NULL
+avi multi.avi s0 gf bpp24td open=NULL
+avi multi.avi s0 gf bpp24x2 open=NULL
+avi multi.avi s0 gf bf565 open=NULL
+avi multi.avi s1 infoA hr=0x00000000
+avi multi.avi s1 type=auds handler=....(0x0) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=8000 start=0 len=96 init=0 sugg=32 quality=0xffffffff ssize=1 rc=0,0,0,0 edit=0 fmtchg=0 name="multi.avi Audio #1"
+avi multi.avi s1 infoW hr=0x00000000 name="multi.avi Audio #1" len=96 same=1
+avi multi.avi s1 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi multi.avi s1 infoA0 hr=0x8004406b first=cc
+avi multi.avi s1 infoA256 hr=0x00000000 tail=cc
+avi multi.avi s1 start=0 length=96
+avi multi.avi s1 s2t -1=0
+avi multi.avi s1 s2t 0=0
+avi multi.avi s1 s2t 1=1
+avi multi.avi s1 s2t 2=1
+avi multi.avi s1 s2t 3=1
+avi multi.avi s1 s2t 4=1
+avi multi.avi s1 s2t 5=1
+avi multi.avi s1 s2t 6=1
+avi multi.avi s1 s2t 7=1
+avi multi.avi s1 s2t 8=1
+avi multi.avi s1 s2t 9=2
+avi multi.avi s1 s2t 10=2
+avi multi.avi s1 s2t 11=2
+avi multi.avi s1 s2t 12=2
+avi multi.avi s1 s2t 13=2
+avi multi.avi s1 s2t 14=2
+avi multi.avi s1 s2t 15=2
+avi multi.avi s1 s2t 16=2
+avi multi.avi s1 s2t 17=3
+avi multi.avi s1 s2t 18=3
+avi multi.avi s1 s2t 19=3
+avi multi.avi s1 s2t 20=3
+avi multi.avi s1 s2t 21=3
+avi multi.avi s1 s2t 22=3
+avi multi.avi s1 s2t 23=3
+avi multi.avi s1 s2t 24=3
+avi multi.avi s1 s2t 25=4
+avi multi.avi s1 s2t 26=4
+avi multi.avi s1 s2t 27=4
+avi multi.avi s1 s2t 28=4
+avi multi.avi s1 s2t 29=4
+avi multi.avi s1 s2t 30=4
+avi multi.avi s1 s2t 31=4
+avi multi.avi s1 s2t 32=4
+avi multi.avi s1 s2t 33=5
+avi multi.avi s1 s2t 34=5
+avi multi.avi s1 s2t 35=5
+avi multi.avi s1 s2t 36=5
+avi multi.avi s1 s2t 37=5
+avi multi.avi s1 s2t 38=5
+avi multi.avi s1 s2t 39=5
+avi multi.avi s1 s2t 40=5
+avi multi.avi s1 s2t 41=6
+avi multi.avi s1 s2t 42=6
+avi multi.avi s1 s2t 43=6
+avi multi.avi s1 s2t 44=6
+avi multi.avi s1 s2t 45=6
+avi multi.avi s1 s2t 46=6
+avi multi.avi s1 s2t 47=6
+avi multi.avi s1 s2t 48=6
+avi multi.avi s1 s2t 49=7
+avi multi.avi s1 s2t 50=7
+avi multi.avi s1 s2t 51=7
+avi multi.avi s1 s2t 52=7
+avi multi.avi s1 s2t 53=7
+avi multi.avi s1 s2t 54=7
+avi multi.avi s1 s2t 55=7
+avi multi.avi s1 s2t 56=7
+avi multi.avi s1 s2t 57=8
+avi multi.avi s1 s2t 58=8
+avi multi.avi s1 s2t 59=8
+avi multi.avi s1 s2t 60=8
+avi multi.avi s1 s2t 61=8
+avi multi.avi s1 s2t 62=8
+avi multi.avi s1 s2t 63=8
+avi multi.avi s1 s2t 64=8
+avi multi.avi s1 s2t 65=9
+avi multi.avi s1 s2t 66=9
+avi multi.avi s1 s2t 67=9
+avi multi.avi s1 s2t 68=9
+avi multi.avi s1 s2t 69=9
+avi multi.avi s1 s2t 70=9
+avi multi.avi s1 s2t 71=9
+avi multi.avi s1 s2t 72=9
+avi multi.avi s1 s2t 73=10
+avi multi.avi s1 s2t 74=10
+avi multi.avi s1 s2t 75=10
+avi multi.avi s1 s2t 76=10
+avi multi.avi s1 s2t 77=10
+avi multi.avi s1 s2t 78=10
+avi multi.avi s1 s2t 79=10
+avi multi.avi s1 s2t 80=10
+avi multi.avi s1 s2t 81=11
+avi multi.avi s1 s2t 82=11
+avi multi.avi s1 s2t 83=11
+avi multi.avi s1 s2t 84=11
+avi multi.avi s1 s2t 85=11
+avi multi.avi s1 s2t 86=11
+avi multi.avi s1 s2t 87=11
+avi multi.avi s1 s2t 88=11
+avi multi.avi s1 s2t 89=12
+avi multi.avi s1 s2t 90=12
+avi multi.avi s1 s2t 91=12
+avi multi.avi s1 s2t 92=12
+avi multi.avi s1 s2t 93=12
+avi multi.avi s1 s2t 94=12
+avi multi.avi s1 s2t 95=12
+avi multi.avi s1 s2t 96=12
+avi multi.avi s1 s2t 97=12
+avi multi.avi s1 s2t 1000=12
+avi multi.avi s1 t2s -1=-1
+avi multi.avi s1 t2s 0=0
+avi multi.avi s1 t2s 1=8
+avi multi.avi s1 t2s 49=96
+avi multi.avi s1 t2s 50=96
+avi multi.avi s1 t2s 66=96
+avi multi.avi s1 t2s 67=96
+avi multi.avi s1 t2s 99=96
+avi multi.avi s1 t2s 100=96
+avi multi.avi s1 t2s 133=96
+avi multi.avi s1 t2s 134=96
+avi multi.avi s1 t2s 200=96
+avi multi.avi s1 t2s 1000=96
+avi multi.avi s1 t2s 100000=96
+avi multi.avi s1 find flags=0x11: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s1 find flags=0x14: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s1 find flags=0x21: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s1 find flags=0x24: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s1 find flags=0x41: -1 -1 0 -1 -1 -1 -1 -1 -1 -1
+avi multi.avi s1 find flags=0x44: -1 -1 0 0 0 0 0 0 0 0
+avi multi.avi s1 find flags=0x18: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s1 find flags=0x0: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s1 find flags=0x10: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s1 find flags=0x20: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s1 findret 0x1000: -1 32 32 32 32 32 32 32
+avi multi.avi s1 findret 0x2000: -1 546 546 546 546 546 546 546
+avi multi.avi s1 findret 0x3000: -1 32 32 32 32 32 32 32
+avi multi.avi s1 findret 0x4000: -1 1 1 1 1 1 1 1
+avi multi.avi s1 fmt query hr=0x00000000 cb=18
+avi multi.avi s1 fmt pos0 hr=0x00000000 cb=18 hash=f6be0554
+avi multi.avi s1 fmt pos95 hr=0x00000000 cb=18 hash=f6be0554
+avi multi.avi s1 fmt pos-1 hr=0x00000000 cb=18 hash=f6be0554
+avi multi.avi s1 fmt pos96 hr=0x00000000 cb=18 hash=f6be0554
+avi multi.avi s1 fmt pos2 hr=0x00000000 cb=18 hash=f6be0554
+avi multi.avi s1 fmt small hr=0x80044074 cb=18
+avi   fmtsmall 01000100401f0000cccccccc
+avi multi.avi s1 readq start=0 n=1 hr=0x00000000 bytes=1 samples=1
+avi multi.avi s1 readq start=0 conv hr=0x00000000 bytes=32 samples=32
+avi multi.avi s1 read start=0 conv hr=0x00000000 bytes=32 samples=32 hash=0913ad65
+avi multi.avi s1 read start=0 n=3 hr=0x00000000 bytes=3 samples=3 hash=22ae7a28
+avi multi.avi s1 readq start=1 n=1 hr=0x00000000 bytes=1 samples=1
+avi multi.avi s1 readq start=1 conv hr=0x00000000 bytes=31 samples=31
+avi multi.avi s1 read start=1 conv hr=0x00000000 bytes=31 samples=31 hash=657ac607
+avi multi.avi s1 read start=1 n=3 hr=0x00000000 bytes=3 samples=3 hash=56cf37ab
+avi multi.avi s1 readq start=95 n=1 hr=0x00000000 bytes=1 samples=1
+avi multi.avi s1 readq start=95 conv hr=0x00000000 bytes=1 samples=1
+avi multi.avi s1 read start=95 conv hr=0x00000000 bytes=1 samples=1 hash=da0c196e
+avi multi.avi s1 read start=95 n=3 hr=0x00000000 bytes=1 samples=1 hash=da0c196e
+avi multi.avi s1 readq start=96 n=1 hr=0x800440c7 bytes=0 samples=0
+avi multi.avi s1 readq start=96 conv hr=0x800440c7 bytes=0 samples=0
+avi multi.avi s1 read start=96 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s1 read start=96 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s1 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi multi.avi s1 read small hr=0x00000000 bytes=1 samples=1 first=00
+avi multi.avi s1 read nullouts hr=0x00000000
+avi multi.avi s1 read 50x150 hr=0x00000000 bytes=46 samples=46 hash=69d6b802
+avi multi.avi s1 read 250x150 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s1 read 10x150 into7 hr=0x00000000 bytes=7 samples=7
+avi multi.avi s1 rdata strd query hr=0x80044073 cb=0
+avi multi.avi s1 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s1 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s1 rdata strn query hr=0x80044073 cb=0
+avi multi.avi s1 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s1 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s1 rdata strh query hr=0x80044073 cb=0
+avi multi.avi s1 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s1 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s1 rdata strf query hr=0x80044073 cb=0
+avi multi.avi s1 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s1 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s1 rdata vtsd query hr=0x80044073 cb=0
+avi multi.avi s1 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s1 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s1 rdata indx query hr=0x80044073 cb=0
+avi multi.avi s1 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s1 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s1 begin=0x00000000 end=0x00000000
+avi multi.avi s1 qi IUnknown hr=0x00000000 same=0 off=-24
+avi multi.avi s1 qi IAVIStream hr=0x00000000 same=1 off=0
+avi multi.avi s1 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi multi.avi s1 qi IGetFrame hr=0x80004002 out=NULL
+avi multi.avi s1 qi IAVIEditStream hr=0x80004002 out=NULL
+avi multi.avi s1 qi IAVIFile hr=0x80004002 out=NULL
+avi multi.avi s1 qi IPersistFile hr=0x80004002 out=NULL
+avi multi.avi s1 qi IMarshal hr=0x80004002 out=NULL
+avi multi.avi s1 vt addref=2 release=1 findsample=0 create=0x80044065 delete=0x80044072
+avi multi.avi s1 vt info hr=0x00000000 len=96
+avi multi.avi s1 vt setinfo hr=0x80044072
+avi multi.avi s1 setformat hr=0x80044072
+avi multi.avi s1 write hr=0x80044072 sw=30583 bw=30583
+avi multi.avi s1 writedata hr=0x80044072
+avi multi.avi s1 gf audio open=NULL
+avi multi.avi s2 infoA hr=0x00000000
+avi multi.avi s2 type=auds handler=....(0x0) flags=0x0 caps=0x0 prio=0 lang=0 scale=4 rate=32000 start=0 len=24 init=0 sugg=32 quality=0xffffffff ssize=4 rc=0,0,0,0 edit=0 fmtchg=0 name="multi.avi Audio #2"
+avi multi.avi s2 infoW hr=0x00000000 name="multi.avi Audio #2" len=24 same=1
+avi multi.avi s2 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi multi.avi s2 infoA0 hr=0x8004406b first=cc
+avi multi.avi s2 infoA256 hr=0x00000000 tail=cc
+avi multi.avi s2 start=0 length=24
+avi multi.avi s2 s2t -1=0
+avi multi.avi s2 s2t 0=0
+avi multi.avi s2 s2t 1=1
+avi multi.avi s2 s2t 2=1
+avi multi.avi s2 s2t 3=1
+avi multi.avi s2 s2t 4=1
+avi multi.avi s2 s2t 5=1
+avi multi.avi s2 s2t 6=1
+avi multi.avi s2 s2t 7=1
+avi multi.avi s2 s2t 8=1
+avi multi.avi s2 s2t 9=2
+avi multi.avi s2 s2t 10=2
+avi multi.avi s2 s2t 11=2
+avi multi.avi s2 s2t 12=2
+avi multi.avi s2 s2t 13=2
+avi multi.avi s2 s2t 14=2
+avi multi.avi s2 s2t 15=2
+avi multi.avi s2 s2t 16=2
+avi multi.avi s2 s2t 17=3
+avi multi.avi s2 s2t 18=3
+avi multi.avi s2 s2t 19=3
+avi multi.avi s2 s2t 20=3
+avi multi.avi s2 s2t 21=3
+avi multi.avi s2 s2t 22=3
+avi multi.avi s2 s2t 23=3
+avi multi.avi s2 s2t 24=3
+avi multi.avi s2 s2t 25=3
+avi multi.avi s2 s2t 1000=3
+avi multi.avi s2 t2s -1=-1
+avi multi.avi s2 t2s 0=0
+avi multi.avi s2 t2s 1=8
+avi multi.avi s2 t2s 49=24
+avi multi.avi s2 t2s 50=24
+avi multi.avi s2 t2s 66=24
+avi multi.avi s2 t2s 67=24
+avi multi.avi s2 t2s 99=24
+avi multi.avi s2 t2s 100=24
+avi multi.avi s2 t2s 133=24
+avi multi.avi s2 t2s 134=24
+avi multi.avi s2 t2s 200=24
+avi multi.avi s2 t2s 1000=24
+avi multi.avi s2 t2s 100000=24
+avi multi.avi s2 find flags=0x11: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s2 find flags=0x14: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s2 find flags=0x21: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s2 find flags=0x24: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s2 find flags=0x41: -1 -1 0 -1 -1 -1 -1 -1 -1 -1
+avi multi.avi s2 find flags=0x44: -1 -1 0 0 0 0 0 0 0 0
+avi multi.avi s2 find flags=0x18: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s2 find flags=0x0: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s2 find flags=0x10: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s2 find flags=0x20: -1 -1 0 1 2 3 4 5 6 7
+avi multi.avi s2 findret 0x1000: -1 32 32 32 32 32 32 32
+avi multi.avi s2 findret 0x2000: -1 586 586 586 586 586 586 586
+avi multi.avi s2 findret 0x3000: -1 8 8 8 8 8 8 8
+avi multi.avi s2 findret 0x4000: -1 2 2 2 2 2 2 2
+avi multi.avi s2 fmt query hr=0x00000000 cb=16
+avi multi.avi s2 fmt pos0 hr=0x00000000 cb=16 hash=750e0e84
+avi multi.avi s2 fmt pos23 hr=0x00000000 cb=16 hash=750e0e84
+avi multi.avi s2 fmt pos-1 hr=0x00000000 cb=16 hash=750e0e84
+avi multi.avi s2 fmt pos24 hr=0x00000000 cb=16 hash=750e0e84
+avi multi.avi s2 fmt pos2 hr=0x00000000 cb=16 hash=750e0e84
+avi multi.avi s2 fmt small hr=0x80044074 cb=16
+avi   fmtsmall 01000200401f0000cccccccc
+avi multi.avi s2 readq start=0 n=1 hr=0x00000000 bytes=4 samples=1
+avi multi.avi s2 readq start=0 conv hr=0x00000000 bytes=32 samples=8
+avi multi.avi s2 read start=0 conv hr=0x00000000 bytes=32 samples=8 hash=0913ad65
+avi multi.avi s2 read start=0 n=3 hr=0x00000000 bytes=12 samples=3 hash=4a509959
+avi multi.avi s2 readq start=1 n=1 hr=0x00000000 bytes=4 samples=1
+avi multi.avi s2 readq start=1 conv hr=0x00000000 bytes=28 samples=7
+avi multi.avi s2 read start=1 conv hr=0x00000000 bytes=28 samples=7 hash=8ea84f39
+avi multi.avi s2 read start=1 n=3 hr=0x00000000 bytes=12 samples=3 hash=e3ea9f49
+avi multi.avi s2 readq start=23 n=1 hr=0x00000000 bytes=4 samples=1
+avi multi.avi s2 readq start=23 conv hr=0x00000000 bytes=4 samples=1
+avi multi.avi s2 read start=23 conv hr=0x00000000 bytes=4 samples=1 hash=13b3dd01
+avi multi.avi s2 read start=23 n=3 hr=0x00000000 bytes=4 samples=1 hash=13b3dd01
+avi multi.avi s2 readq start=24 n=1 hr=0x800440c7 bytes=0 samples=0
+avi multi.avi s2 readq start=24 conv hr=0x800440c7 bytes=0 samples=0
+avi multi.avi s2 read start=24 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s2 read start=24 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s2 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi multi.avi s2 read small hr=0x00000000 bytes=4 samples=1 first=00
+avi multi.avi s2 read nullouts hr=0x00000000
+avi multi.avi s2 read 50x150 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s2 read 250x150 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s2 read 10x150 into7 hr=0x00000000 bytes=4 samples=1
+avi multi.avi s2 rdata strd query hr=0x80044073 cb=0
+avi multi.avi s2 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s2 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s2 rdata strn query hr=0x80044073 cb=0
+avi multi.avi s2 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s2 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s2 rdata strh query hr=0x80044073 cb=0
+avi multi.avi s2 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s2 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s2 rdata strf query hr=0x80044073 cb=0
+avi multi.avi s2 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s2 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s2 rdata vtsd query hr=0x80044073 cb=0
+avi multi.avi s2 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s2 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s2 rdata indx query hr=0x80044073 cb=0
+avi multi.avi s2 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s2 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s2 begin=0x00000000 end=0x00000000
+avi multi.avi s2 qi IUnknown hr=0x00000000 same=0 off=-24
+avi multi.avi s2 qi IAVIStream hr=0x00000000 same=1 off=0
+avi multi.avi s2 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi multi.avi s2 qi IGetFrame hr=0x80004002 out=NULL
+avi multi.avi s2 qi IAVIEditStream hr=0x80004002 out=NULL
+avi multi.avi s2 qi IAVIFile hr=0x80004002 out=NULL
+avi multi.avi s2 qi IPersistFile hr=0x80004002 out=NULL
+avi multi.avi s2 qi IMarshal hr=0x80004002 out=NULL
+avi multi.avi s2 vt addref=2 release=1 findsample=0 create=0x80044065 delete=0x80044072
+avi multi.avi s2 vt info hr=0x00000000 len=24
+avi multi.avi s2 vt setinfo hr=0x80044072
+avi multi.avi s2 setformat hr=0x80044072
+avi multi.avi s2 write hr=0x80044072 sw=30583 bw=30583
+avi multi.avi s2 writedata hr=0x80044072
+avi multi.avi s2 gf audio open=NULL
+avi multi.avi s3 infoA hr=0x00000000
+avi multi.avi s3 type=txts handler=txt (0x20747874) flags=0x0 caps=0x0 prio=0 lang=0 scale=1 rate=8 start=0 len=3 init=0 sugg=6 quality=0xffffffff ssize=0 rc=0,0,0,0 edit=0 fmtchg=0 name="multi.avi 'txts' #1"
+avi multi.avi s3 infoW hr=0x00000000 name="multi.avi 'txts' #1" len=3 same=1
+avi multi.avi s3 infoA20 hr=0x8004406b
+avi   raw24 cccccccccccccccccccccccccccccccccccccccccccccccc
+avi multi.avi s3 infoA0 hr=0x8004406b first=cc
+avi multi.avi s3 infoA256 hr=0x00000000 tail=cc
+avi multi.avi s3 start=0 length=3
+avi multi.avi s3 s2t -1=0
+avi multi.avi s3 s2t 0=0
+avi multi.avi s3 s2t 1=125
+avi multi.avi s3 s2t 2=250
+avi multi.avi s3 s2t 3=375
+avi multi.avi s3 s2t 4=375
+avi multi.avi s3 s2t 1000=375
+avi multi.avi s3 t2s -1=-1
+avi multi.avi s3 t2s 0=0
+avi multi.avi s3 t2s 1=0
+avi multi.avi s3 t2s 49=0
+avi multi.avi s3 t2s 50=0
+avi multi.avi s3 t2s 66=0
+avi multi.avi s3 t2s 67=0
+avi multi.avi s3 t2s 99=0
+avi multi.avi s3 t2s 100=0
+avi multi.avi s3 t2s 133=1
+avi multi.avi s3 t2s 134=1
+avi multi.avi s3 t2s 200=1
+avi multi.avi s3 t2s 1000=3
+avi multi.avi s3 t2s 100000=3
+avi multi.avi s3 find flags=0x11: -1 -1 0 1 2 -1 -1
+avi multi.avi s3 find flags=0x14: -1 -1 0 1 2 -1 -1
+avi multi.avi s3 find flags=0x21: -1 -1 0 1 2 -1 -1
+avi multi.avi s3 find flags=0x24: -1 -1 0 1 2 -1 -1
+avi multi.avi s3 find flags=0x41: -1 -1 0 -1 -1 -1 -1
+avi multi.avi s3 find flags=0x44: -1 -1 0 0 0 -1 -1
+avi multi.avi s3 find flags=0x18: -1 -1 0 1 2 -1 -1
+avi multi.avi s3 find flags=0x0: -1 -1 0 1 2 -1 -1
+avi multi.avi s3 find flags=0x10: -1 -1 0 1 2 -1 -1
+avi multi.avi s3 find flags=0x20: -1 -1 0 1 2 -1 -1
+avi multi.avi s3 findret 0x1000: -1 6 6 6 -1
+avi multi.avi s3 findret 0x2000: -1 626 744 862 -1
+avi multi.avi s3 findret 0x3000: -1 1 1 1 -1
+avi multi.avi s3 findret 0x4000: -1 3 7 11 -1
+avi multi.avi s3 fmt query hr=0x00000000 cb=4
+avi multi.avi s3 fmt pos0 hr=0x00000000 cb=4 hash=80ee447e
+avi multi.avi s3 fmt pos2 hr=0x00000000 cb=4 hash=80ee447e
+avi multi.avi s3 fmt pos-1 hr=0x00000000 cb=4 hash=80ee447e
+avi multi.avi s3 fmt pos3 hr=0x00000000 cb=4 hash=80ee447e
+avi multi.avi s3 fmt pos2 hr=0x00000000 cb=4 hash=80ee447e
+avi multi.avi s3 fmt small hr=0x00000000 cb=4
+avi   fmtsmall 54455854cccccccccccccccc
+avi multi.avi s3 readq start=0 n=1 hr=0x00000000 bytes=6 samples=1
+avi multi.avi s3 readq start=0 conv hr=0x00000000 bytes=6 samples=1
+avi multi.avi s3 read start=0 conv hr=0x00000000 bytes=6 samples=1 hash=ff478a2a
+avi multi.avi s3 read start=0 n=3 hr=0x00000000 bytes=6 samples=1 hash=ff478a2a
+avi multi.avi s3 readq start=1 n=1 hr=0x00000000 bytes=6 samples=1
+avi multi.avi s3 readq start=1 conv hr=0x00000000 bytes=6 samples=1
+avi multi.avi s3 read start=1 conv hr=0x00000000 bytes=6 samples=1 hash=556e73da
+avi multi.avi s3 read start=1 n=3 hr=0x00000000 bytes=6 samples=1 hash=556e73da
+avi multi.avi s3 readq start=2 n=1 hr=0x00000000 bytes=6 samples=1
+avi multi.avi s3 readq start=2 conv hr=0x00000000 bytes=6 samples=1
+avi multi.avi s3 read start=2 conv hr=0x00000000 bytes=6 samples=1 hash=cc5f2e16
+avi multi.avi s3 read start=2 n=3 hr=0x00000000 bytes=6 samples=1 hash=cc5f2e16
+avi multi.avi s3 readq start=3 n=1 hr=0x800440c7 bytes=0 samples=0
+avi multi.avi s3 readq start=3 conv hr=0x800440c7 bytes=0 samples=0
+avi multi.avi s3 read start=3 conv hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s3 read start=3 n=3 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s3 read start=-1 hr=0x8004406a bytes=30583 samples=30583
+avi multi.avi s3 read small hr=0x80044074 bytes=6 samples=0 first=cc
+avi multi.avi s3 read nullouts hr=0x00000000
+avi multi.avi s3 read 50x150 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s3 read 250x150 hr=0x8004406d bytes=0 samples=0 hash=811c9dc5
+avi multi.avi s3 read 10x150 into7 hr=0x8004406d bytes=0 samples=0
+avi multi.avi s3 rdata strd query hr=0x80044073 cb=0
+avi multi.avi s3 rdata strd hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s3 rdata strd small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s3 rdata strn query hr=0x80044073 cb=0
+avi multi.avi s3 rdata strn hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s3 rdata strn small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s3 rdata strh query hr=0x80044073 cb=0
+avi multi.avi s3 rdata strh hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s3 rdata strh small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s3 rdata strf query hr=0x80044073 cb=0
+avi multi.avi s3 rdata strf hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s3 rdata strf small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s3 rdata vtsd query hr=0x80044073 cb=0
+avi multi.avi s3 rdata vtsd hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s3 rdata vtsd small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s3 rdata indx query hr=0x80044073 cb=0
+avi multi.avi s3 rdata indx hr=0x80044073 cb=0 hash=811c9dc5
+avi multi.avi s3 rdata indx small hr=0x80044073 cb=0 first=cccccc
+avi multi.avi s3 begin=0x00000000 end=0x00000000
+avi multi.avi s3 qi IUnknown hr=0x00000000 same=0 off=-24
+avi multi.avi s3 qi IAVIStream hr=0x00000000 same=1 off=0
+avi multi.avi s3 qi IAVIStreaming hr=0x00000000 same=0 off=16
+avi multi.avi s3 qi IGetFrame hr=0x80004002 out=NULL
+avi multi.avi s3 qi IAVIEditStream hr=0x80004002 out=NULL
+avi multi.avi s3 qi IAVIFile hr=0x80004002 out=NULL
+avi multi.avi s3 qi IPersistFile hr=0x80004002 out=NULL
+avi multi.avi s3 qi IMarshal hr=0x80004002 out=NULL
+avi multi.avi s3 vt addref=2 release=1 findsample=0 create=0x80044065 delete=0x80044072
+avi multi.avi s3 vt info hr=0x00000000 len=3
+avi multi.avi s3 vt setinfo hr=0x80044072
+avi multi.avi s3 setformat hr=0x80044072
+avi multi.avi s3 write hr=0x80044072 sw=30583 bw=30583
+avi multi.avi s3 writedata hr=0x80044072
+avi multi.avi s3 gf audio open=NULL
+avi multi.avi refs file+3 file-2 stream+2 stream-1
+avi multi.avi refs unk+4 unk-3 unk-2
+avi multi.avi persist classid hr=0x00000000 clsid=cccccccc isdirty=0x00000001 curfile=0x80004001 NULL
+avi multi.avi persist release=2
+avi multi.avi refs gf+1 gf+2 gf-2 gf-1 stream+3 stream-2
+avi multi.avi refs gfclose=0x00000000
+avi multi.avi read0 hr=0x80044074 bytes=16 samples=0
+avi multi.avi read1into1 hr=0x80044074 bytes=16 samples=0
+avi multi.avi refs filerelease=1 streamrelease=0
+avi multi.avi lifetime filerelease=1 streamlen=3 streamrelease=1
+avi open missing hr=0x8004406f pf=NULL
+avi open missing-share hr=0x8004406f pf=NULL
+avi open rgb24.bin hr=0x00000000 pf=set
+avi open rgb24.bin streams=2 type="AVI Default File Handler" caps=0x3 release=0
+avi open tonewav.avi hr=0x00000000 pf=set
+avi open tonewav.avi streams=1 type="Microsoft Waveform" caps=0x0 release=0
+avi open wav-clsid-avifile hr=0x80044066 pf=NULL
+avi open avi-clsid-bogus hr=0x80040154 pf=NULL
+avi open write-existing hr=0x00000000 pf=set
+avi open write-existing streams=2 type="AVI Default File Handler" caps=0x3 release=0
+avi open readwrite-existing hr=0x00000000 pf=set
+avi open readwrite-existing streams=2 type="AVI Default File Handler" caps=0x3 release=0
+avi open create-new hr=0x00000000 pf=set
+avi open create-new streams=0 type="AVI Default File Handler" caps=0x3 release=0
+avi open create-new exists=1
+avi open dir hr=0x80040154 pf=NULL
+avi share exclusive h1=0x00000000 h2=0x00000000 b=set
+avi share exclusive-then-denynone h2=0x00000000
+avi share denywrite h1=0x00000000 h2=0x00000000 same=0
+avi openW hr=0x00000000
+avi openW release=0
+avi openfromfile 0 hr=0x00000000 s=set type=73646976 len=3 release=0
+avi openfromfile 1 hr=0x00000000 s=set type=73647561 len=300 release=0
+avi openfromfile 2 hr=0x80044073 s=NULL
+avi openfromfile 3 hr=0x00000000 s=set type=73647561 len=300 release=0
+avi openfromfileW hr=0x00000000
+avi openfromfile missing hr=0x8004406f s=untouched
+avi streamcreate null hr=0x80040154 s=untouched
+avi round s0 editable hr=0x00000000
+avi round s0 scale=1 rate=30 set=0x00000000 s2t: 33 66 100 100 100 t2s: 0 0 0 3 3
+avi round s0 scale=1 rate=60 set=0x00000000 s2t: 16 33 50 50 50 t2s: 0 0 1 3 3
+avi round s0 scale=1 rate=999 set=0x00000000 s2t: 1 2 3 3 3 t2s: 0 3 3 3 3
+avi round s0 scale=1 rate=1000 set=0x00000000 s2t: 1 2 3 3 3 t2s: 1 3 3 3 3
+avi round s0 scale=1 rate=1001 set=0x00000000 s2t: 1 2 3 3 3 t2s: 2 3 3 3 3
+avi round s0 scale=1001 rate=30000 set=0x00000000 s2t: 33 66 100 100 100 t2s: 0 0 0 3 3
+avi round s0 scale=1 rate=44100 set=0x00000000 s2t: 1 1 1 1 1 t2s: 3 3 3 3 3
+avi round s0 scale=3 rate=7 set=0x00000000 s2t: 428 857 1285 1285 1285 t2s: 0 0 0 2 2
+avi round s1 editable hr=0x00000000
+avi round s1 scale=1 rate=30 set=0x00000000 s2t: 33 66 100 233 10000 t2s: 0 0 0 29 30
+avi round s1 scale=1 rate=60 set=0x00000000 s2t: 16 33 50 116 5000 t2s: 0 0 1 59 60
+avi round s1 scale=1 rate=999 set=0x00000000 s2t: 1 2 3 7 300 t2s: 0 6 32 300 300
+avi round s1 scale=1 rate=1000 set=0x00000000 s2t: 1 2 3 7 300 t2s: 1 7 33 300 300
+avi round s1 scale=1 rate=1001 set=0x00000000 s2t: 1 2 3 7 300 t2s: 2 8 34 300 300
+avi round s1 scale=1001 rate=30000 set=0x00000000 s2t: 33 66 100 233 10010 t2s: 0 0 0 29 30
+avi round s1 scale=1 rate=44100 set=0x00000000 s2t: 1 1 1 1 7 t2s: 45 300 300 300 300
+avi round s1 scale=3 rate=7 set=0x00000000 s2t: 428 857 1285 3000 128571 t2s: 0 0 0 2 2
+avi exit-live streamlen=3
+avi exit-live streamrelease=0 filerelease=0
+avi after-exit open hr=0x800401f0 pf=NULL
+avi done

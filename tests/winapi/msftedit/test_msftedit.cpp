@@ -43,8 +43,8 @@ std::string read_file(const std::string& path) {
 /// name -> ordinal rows of a generated msftedit_exports*.inc.
 std::map<std::string, u16> read_export_table(bool is64) {
     const std::string text = read_file(std::string(VITREO_SOURCE_DIR) +
-        (is64 ? "/tools/oracle_probe/msftedit_exports64.inc"
-              : "/tools/oracle_probe/msftedit_exports32.inc"));
+        (is64 ? "/tests/oracle_data/msftedit_exports64.inc"
+              : "/tests/oracle_data/msftedit_exports32.inc"));
     std::map<std::string, u16> rows;
     const std::regex row(R"re(\{"([^"]+)",\s*(\d+)\})re");
     for (std::sregex_iterator it(text.begin(), text.end(), row), end; it != end; ++it) {
@@ -80,7 +80,7 @@ TEST(MsfteditExports, NamesAndOrdinalsMatchTheGenuineTablePerBitness) {
     for (bool is64 : {false, true}) {
         SCOPED_TRACE(is64 ? "x64" : "x86");
         const auto expected = read_export_table(is64);
-        ASSERT_EQ(expected.size(), 25u) << "missing tools/oracle_probe export table";
+        ASSERT_EQ(expected.size(), 25u) << "missing tests/oracle_data export table";
         std::map<std::string, u16> actual;
         const auto exports = create_msftedit_thunks(is64, null_services());
         for (const auto& e : exports.entries) actual[e.name] = e.ordinal;

@@ -21,9 +21,9 @@
 #include <vector>
 
 #include <unistd.h>
-#include "../../../tools/oracle_probe/wic_stream_probe_image.inc"
-#include "../../../tools/oracle_probe/wic_indexed_probe_images.inc"
-#include "../../../tools/oracle_probe/wic_indexed_matrix_images.inc"
+#include "../../oracle_data/wic_stream_probe_image.inc"
+#include "../../oracle_data/wic_indexed_probe_images.inc"
+#include "../../oracle_data/wic_indexed_matrix_images.inc"
 
 using namespace vitreo;
 using namespace vitreo::winapi;
@@ -34,7 +34,7 @@ namespace {
 #include "wic_indexed_oracle.inc"
 #include "wic_indexed_matrix_oracle.inc"
 #include "wic_jpeg_transport_oracle.inc"
-#include "../../../tools/oracle_probe/wic_jpeg_probe_images.inc"
+#include "../../oracle_data/wic_jpeg_probe_images.inc"
 
 constexpr Guid kClsidWicImagingFactory{
     0xCACAF262u, 0x9370u, 0x4615u, {0xA1, 0x3B, 0x9F, 0x55, 0x39, 0xDA, 0x4C, 0x0A}};

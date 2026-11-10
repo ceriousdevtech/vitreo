@@ -23,7 +23,7 @@
 
 namespace vitreo::winapi {
 
-#include "../../../../tools/oracle_probe/ver_language.generated.inc"
+#include "winapi/system/version/ver_language.generated.inc"
 namespace {
 void ver_language_name(Marshaler& m, bool wide) {
     const u16 language = static_cast<u16>(m.arg(0));

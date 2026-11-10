@@ -7,7 +7,7 @@
 #include "winapi/kernel32/error.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "core/cpu/state/cpu_state.hpp"
-#include "../../../tools/oracle_probe/compare_locale.generated.inc"
+#include "../../oracle_data/compare_locale.generated.inc"
 #include <algorithm>
 #include <array>
 #include <tuple>

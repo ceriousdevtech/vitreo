@@ -7,7 +7,7 @@
 #include "core/cpu/state/cpu_state.hpp"
 #include "core/memory/guest_memory.hpp"
 #include "windowing/cocoa/cocoa_bridge.hpp"
-#include "../../../tools/oracle_probe/text_extent_output_contract.generated.hpp"
+#include "../../oracle_data/text_extent_output_contract.generated.hpp"
 
 #include <algorithm>
 #include <array>
