@@ -20,6 +20,10 @@ namespace vitreo::cpu::jit {
 
 namespace {
 constexpr GuestAddr kPageMask = ~static_cast<GuestAddr>(0xFFFu);
+const bool g_l1_dispatch_promote = [] {
+    const char* value = std::getenv("VITREO_JIT_L1_DISPATCH_PROMOTE");
+    return !(value != nullptr && value[0] == '0' && value[1] == '\0');
+}();
 
 // ---- Decoded-IR retention policy counters (see block_cache.hpp) ----
 std::atomic<u64> g_ir_releases{0};
@@ -381,10 +385,9 @@ void BlockCache::store_l1(usize idx, BasicBlock* block) noexcept {
         return;
     }
     // Way selection: a block already in the set is refreshed in place;
-    // a NEW block always enters way 0 and the set shifts down, so way 0 is
-    // the most recently installed and way 1 the older one (which is what an
-    // overflow evicts). Filling an empty way 1 first would invert that and
-    // evict the newer block on the next overflow.
+    // a NEW block always enters way 0 and the set shifts down. Dispatcher
+    // hits can promote an existing entry in sync_l1_payload(), while this
+    // metadata-refresh path preserves its position.
     usize slot = static_cast<usize>(-1);
     for (u32 w = 0; w < kL1Ways && slot == static_cast<usize>(-1); ++w) {
         if (m_l1[idx + w].block == block) slot = idx + w;
@@ -423,10 +426,15 @@ void BlockCache::sync_l1_payload(usize idx, BasicBlock* block) noexcept {
     // miss forever — the entire fast path silently dead. Refresh whenever the
     // copies have drifted; the compare keeps a hot dispatcher lookup from
     // dirtying the line on every hit.
-    const usize way = l1_way_of(idx, block);
+    usize way = l1_way_of(idx, block);
     if (way == static_cast<usize>(-1)) {
         store_l1(idx, block);
         return;
+    }
+    if (g_l1_dispatch_promote && way != idx) {
+        // Promote only at dispatcher hits, not on every native linked hop.
+        std::swap(m_l1[idx], m_l1[way]);
+        way = idx;
     }
     L1Entry& e = m_l1[way];
     if (e.link_code != block->compiled_link_code ||
@@ -468,12 +476,12 @@ void BlockCache::install_l1(BasicBlock* block) noexcept {
             if (block->start_addr < cur->start_addr &&
                 cur->start_addr < block_end) {
                 clear_l1(idx + w);
-                store_l1(idx, block);
+                sync_l1_payload(idx, block);
                 return;
             }
         }
     }
-    store_l1(idx, block);
+    sync_l1_payload(idx, block);
 }
 
 void BlockCache::remember_hit(BasicBlock* block) noexcept {
@@ -491,7 +499,7 @@ void BlockCache::clear_hints_for(const BasicBlock* block) noexcept {
 }
 
 BasicBlock* BlockCache::lookup(GuestAddr addr) {
-    // L1 fast path: two-way set, no LRU promotion
+    // L1 fast path: two-way set, without touching the block LRU list.
     usize idx = l1_index(addr);
     if (const usize way = l1_way_for(idx, addr); way != static_cast<usize>(-1)) {
         BasicBlock* fast = m_l1[way].block;

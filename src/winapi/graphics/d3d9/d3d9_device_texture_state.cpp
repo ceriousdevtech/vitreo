@@ -49,7 +49,7 @@ void D3D9Manager::dispatch_device_texture_state(Marshaler& m, usize slot,
                 ? state.textures[stage]
                 : state.vertex_textures[stage - D3D9_VERTEX_TEXTURE_SAMPLER_FIRST];
         if (texture != 0) (void)add_ref(texture);
-        if (m.write_u32(out, texture).is_err()) {
+        if (m.write_ptr(out, texture).is_err()) {
             if (texture != 0) (void)release(texture);
             m.set_return(D3DERR_INVALIDCALL);
             return;

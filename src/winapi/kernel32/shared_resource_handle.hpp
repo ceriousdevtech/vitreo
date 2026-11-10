@@ -42,6 +42,12 @@ struct SharedResourceObject {
     std::shared_ptr<void> name;
     /// The registry key of that name (empty when unnamed).
     std::string name_key;
+    /// A D3D12 fence's handle (ID3D12Device::CreateSharedHandle): unlike a
+    /// resource's, WaitForSingleObject / WaitForMultipleObjects find it
+    /// signaled at once, whatever the fence's value (measured,
+    /// d3d12_a04s_shared_handles_probe "fence WaitForSingleObject": 0 for a
+    /// fence at 7 and one at 0, WARP and NVIDIA).
+    bool always_signaled{false};
 };
 
 /// Keeps a transferred object's storage alive in the importing process: the

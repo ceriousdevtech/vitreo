@@ -131,6 +131,22 @@ private:
     bool compile_vex256_lane_split(const DecodedInstruction& instr,
                                    u64 instr_rip, u64 next_rip, bool is_last);
 
+    /// The generic VEX.128 AVX/SSE bridge (compile_sse, and compile_64bit's
+    /// copy) runs a two-operand legacy lowering after DEST := SRC1. For a
+    /// memory source that merge copy would commit before the read, so the
+    /// bridge first proves operands[mem_index] readable with checked loads
+    /// in ascending order (the first faulting byte is the one the lowering
+    /// would report). False when the operand width has no probe; nothing is
+    /// emitted then. Defined in ops/sse.cpp.
+    bool emit_vex_bridge_source_probe(const DecodedInstruction& instr,
+                                      int mem_index, u64 next_rip);
+    /// Set once this instruction's probe is emitted. A bridge that declines
+    /// after its probe leaves the probe in place (it is a pure checked read,
+    /// and resizing past it would orphan its fault-path bookkeeping); the
+    /// next bridge tried for the SAME instruction then emits no second one.
+    /// Cleared at the start of every compile_instruction.
+    bool m_vex_bridge_source_proven{false};
+
     // Generated code with a pre-decoded delegate embeds a pointer owned by
     // one BasicBlock and therefore cannot be shared through the process memo.
     bool m_has_predecoded_delegate{false};

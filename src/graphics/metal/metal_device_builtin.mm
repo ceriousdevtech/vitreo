@@ -135,7 +135,12 @@ bool MetalDevice::stretch_texture_2d_region(
     const auto& dd = dst->desc();
     const auto& sd = src->desc();
     if (!dd.render_target || !sd.shader_resource) return false;
-    if (dd.pixel_format != sd.pixel_format) return false;
+    // The copy samples the source and writes the destination, so colour
+    // formats convert as Direct3D 9 StretchRect does (Learn: StretchRect,
+    // CheckDeviceFormatConversion). Depth cannot be sampled into colour.
+    if (format_table(dd.pixel_format).is_depth || format_table(sd.pixel_format).is_depth) {
+        return false;
+    }
     if (src_x + src_width > sd.width || src_y + src_height > sd.height ||
         dst_x + dst_width > dd.width || dst_y + dst_height > dd.height) {
         return false;

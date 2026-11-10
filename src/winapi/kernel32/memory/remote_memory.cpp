@@ -18,9 +18,11 @@
 #include <cerrno>
 #include <charconv>
 #include <chrono>
+#include <cstdio>
 #include <cstring>
 #include <vector>
 
+#include <fcntl.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/un.h>
@@ -78,7 +80,31 @@ enum class Operation : u32 {
     // ShowWindow on a window the peer owns: argument1 = hwnd, argument2 =
     // nCmdShow; value = ShowWindow's return.
     ShowWindow = 23,
+    // Get/SetThreadContext on the primary thread while CREATE_SUSPENDED holds
+    // it: argument1 = 1 for set, argument2 = 1 for a 64-bit CONTEXT, address
+    // = the CONTEXT record in this process; value = NTSTATUS.
+    PrimaryThreadContext = 24,
+    // Request size is response capacity (<= kMaxTransfer); all other request
+    // fields are zero. Response transferred is an opaque owned byte count.
+    // Appending an operation leaves the existing version/layout compatible:
+    // older peers return failure for an unknown operation.
+    WindowSceneSnapshot = 25,
+    // JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE across host processes. The job owner
+    // sends this on a connection it then keeps open for as long as the peer
+    // is a member of a kill-on-close job. All of a job's handles live in the
+    // owner's handle table, so the owner process ending -- ExitProcess,
+    // TerminateProcess (SIGKILL) or a crash, none of which can run job
+    // teardown code -- is the job's last handle closing; the host closes the
+    // connection in every case. The peer then ends itself with exit code 0
+    // (Learn: members of a kill-on-close job are terminated when the last
+    // handle closes). A single kKillOnCloseRelease byte before the close
+    // means the job no longer kills on close and the peer keeps running.
+    JobKillOnCloseLink = 26,
 };
+
+/// Sent on a JobKillOnCloseLink connection before the owner closes it when
+/// the job stopped killing on close (the limit was cleared).
+constexpr char kKillOnCloseRelease = 'R';
 
 struct SendHeader {
     u64 wparam;
@@ -108,6 +134,19 @@ struct Response {
     u64 transferred;
     u64 value;
 };
+
+/// Every remote-memory socket is this process's own: worker spawns inherit
+/// all descriptors not marked close-on-exec, and a child holding a copy of
+/// this listener keeps accepting connections after this process exits, so a
+/// peer's request to the dead endpoint waits forever for a reply. Darwin has
+/// no SOCK_CLOEXEC; mark each socket as soon as it exists.
+int own_socket(int fd) {
+    if (fd >= 0) {
+        const int flags = ::fcntl(fd, F_GETFD);
+        if (flags >= 0) (void)::fcntl(fd, F_SETFD, flags | FD_CLOEXEC);
+    }
+    return fd;
+}
 
 std::string socket_path(pid_t pid) {
     const char* temp_dir = ::getenv("TMPDIR");
@@ -200,7 +239,7 @@ bool receive_fd(int sock, int& out_fd) {
 
 int connect_once(pid_t pid) {
     const std::string path = socket_path(pid);
-    const int fd = ::socket(AF_UNIX, SOCK_STREAM, 0);
+    const int fd = own_socket(::socket(AF_UNIX, SOCK_STREAM, 0));
     if (fd < 0) return -1;
     sockaddr_un address{};
     address.sun_family = AF_UNIX;
@@ -223,7 +262,7 @@ int connect_to(pid_t pid) {
     // space before publishing this endpoint. Large vendor DLLs can make that
     // loader phase noticeably slower than native CreateProcess.
     for (u32 attempt = 0; attempt < 3000; ++attempt) {
-        const int fd = ::socket(AF_UNIX, SOCK_STREAM, 0);
+        const int fd = own_socket(::socket(AF_UNIX, SOCK_STREAM, 0));
         if (fd < 0) return -1;
         sockaddr_un address{};
         address.sun_family = AF_UNIX;
@@ -251,7 +290,8 @@ bool transact(pid_t pid, Operation operation, GuestAddr address,
               u32 reserved = 0) {
     const bool returns_bytes =
         operation == Operation::Read || operation == Operation::VirtualQuery ||
-        operation == Operation::ExportHandle;
+        operation == Operation::ExportHandle ||
+        operation == Operation::WindowSceneSnapshot;
     const bool sends_bytes =
         operation == Operation::Write ||
         operation == Operation::ImportHandle ||
@@ -272,6 +312,7 @@ bool transact(pid_t pid, Operation operation, GuestAddr address,
          operation == Operation::ImportHandle ||
          operation == Operation::VirtualQuery ||
          operation == Operation::ExportHandle ||
+         operation == Operation::WindowSceneSnapshot ||
          operation == Operation::PresentWindowPixels ||
          operation == Operation::CallGuest ||
          operation == Operation::MarshalComInterface) &&
@@ -289,7 +330,12 @@ bool transact(pid_t pid, Operation operation, GuestAddr address,
     }
     Response response{};
     if (ok) ok = receive_all(fd, &response, sizeof(response));
-    if (ok && response.magic == kMagic && response.version == kVersion &&
+    const bool snapshot_response_valid =
+        operation != Operation::WindowSceneSnapshot ||
+        (response.success == 1 && response.reserved == 0 &&
+         response.value == 0 && response.transferred <= size &&
+         response.transferred <= kMaxTransfer);
+    if (ok && snapshot_response_valid && response.magic == kMagic && response.version == kVersion &&
         response.success != 0 && returns_bytes && !output.empty() &&
         response.transferred > 0 && response.transferred <= size) {
         ok = receive_all(fd, output.data(),
@@ -304,7 +350,8 @@ bool transact(pid_t pid, Operation operation, GuestAddr address,
           operation != Operation::PresentWindowPixels) ||
          response.transferred == size) &&
         (operation != Operation::ExportHandle ||
-         (response.transferred > 0 && response.transferred <= size));
+         (response.transferred > 0 && response.transferred <= size)) &&
+        snapshot_response_valid;
     if (response_ok && value != nullptr) *value = response.value;
     if (response_ok && transferred != nullptr) {
         *transferred = response.transferred;
@@ -341,7 +388,7 @@ RemoteMemoryServer::~RemoteMemoryServer() {
 bool RemoteMemoryServer::start(bool initially_suspended) {
     m_path = socket_path(::getpid());
     (void)::unlink(m_path.c_str());
-    m_listener = ::socket(AF_UNIX, SOCK_STREAM, 0);
+    m_listener = own_socket(::socket(AF_UNIX, SOCK_STREAM, 0));
     if (m_listener < 0) {
         ipc_log("remote GuestMemory socket failed errno=%d (%s)",
                 errno, std::strerror(errno));
@@ -404,7 +451,7 @@ void RemoteMemoryServer::wait_for_initial_resume() {
 
 void RemoteMemoryServer::serve() {
     for (;;) {
-        const int client = ::accept(m_listener, nullptr, nullptr);
+        const int client = own_socket(::accept(m_listener, nullptr, nullptr));
         if (client < 0) {
             if (errno == EINTR) continue;
             return;
@@ -422,6 +469,7 @@ void RemoteMemoryServer::serve() {
                  operation == Operation::Write ||
                  operation == Operation::ImportHandle ||
                  operation == Operation::ExportHandle ||
+                 operation == Operation::WindowSceneSnapshot ||
                  operation == Operation::VirtualQuery ||
                  operation == Operation::PresentWindowPixels ||
                  operation == Operation::CallGuest ||
@@ -463,6 +511,37 @@ void RemoteMemoryServer::serve() {
                     (void)send_all(client, out.data(), out.size());
                 }
                 ::close(client);
+            }).detach();
+            continue;
+        }
+        if (ok && operation == Operation::JobKillOnCloseLink) {
+            const Response response{kMagic, kVersion, 1u, 0u, 0u, 0u};
+            if (!send_all(client, &response, sizeof(response))) {
+                ::close(client);
+                continue;
+            }
+            suppress_sigpipe(client);
+            std::thread([client] {
+                char byte = 0;
+                ssize_t got = 0;
+                do {
+                    got = ::read(client, &byte, 1);
+                } while (got < 0 && errno == EINTR);
+                ::close(client);
+                if (got == 1 && byte == kKillOnCloseRelease) {
+                    ipc_log("job kill-on-close link released pid=%d",
+                            static_cast<int>(::getpid()));
+                    return;
+                }
+                // The owner is gone, and with it the job's last handle.
+                // TerminateProcess semantics: no guest code runs, no unwind.
+                std::fprintf(stderr,
+                             "[process] job owner closed its last handle to a "
+                             "JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE job; member "
+                             "pid=%d terminates with exit code 0\n",
+                             static_cast<int>(::getpid()));
+                std::fflush(nullptr);
+                ::_exit(0);
             }).detach();
             continue;
         }
@@ -627,6 +706,27 @@ void RemoteMemoryServer::serve() {
             }
             response_value = handle;
             ok = ok && handle != 0;
+        } else if (ok && operation == Operation::WindowSceneSnapshot) {
+            // Validate before fetching local state; do not allocate from an
+            // untrusted request length or invoke the handler on bad frames.
+            ok = request.address == 0 && request.argument1 == 0 &&
+                 request.argument2 == 0 && request.reserved == 0 &&
+                 request.size <= kMaxTransfer;
+            WindowSceneSnapshotHandler handler;
+            if (ok) {
+                std::lock_guard lock(m_window_scene_snapshot_mutex);
+                handler = m_window_scene_snapshot;
+            }
+            ok = ok && static_cast<bool>(handler);
+            if (ok) {
+                auto snapshot = handler(); // no server lock held; no GUI/guest dispatch
+                ok = snapshot.has_value() && snapshot->size() <= request.size &&
+                     snapshot->size() <= kMaxTransfer;
+                if (ok) {
+                    bytes = std::move(*snapshot);
+                    response_transferred = static_cast<u64>(bytes.size());
+                }
+            }
         } else if (ok && operation == Operation::ExportHandle) {
             constexpr u32 DUPLICATE_CLOSE_SOURCE = 0x00000001;
             constexpr u32 DUPLICATE_SAME_ACCESS = 0x00000002;
@@ -773,6 +873,25 @@ void RemoteMemoryServer::serve() {
             if (ok) response_value = *shown;
             VITREO_TRACE("[ipc] ShowWindow hwnd=0x%x cmd=%d -> %s 0x%llx\n", hwnd, cmd,
                          ok ? "ok" : "FAIL", static_cast<unsigned long long>(response_value));
+        } else if (ok && operation == Operation::PrimaryThreadContext) {
+            constexpr u32 STATUS_INVALID_HANDLE = 0xC0000008u;
+            bool resumed = false;
+            {
+                std::lock_guard lock(m_resume_mutex);
+                resumed = m_resumed;
+            }
+            // Only the suspended start state is reachable here; once resumed
+            // the primary thread is this process's own to suspend and query.
+            response_value = (!resumed && m_primary_context)
+                ? m_primary_context(request.argument1 != 0, request.address,
+                                    request.argument2 != 0)
+                : STATUS_INVALID_HANDLE;
+            if (resumed) {
+                std::fprintf(stderr,
+                             "[vitreo] UNIMPLEMENTED kernel32!%sThreadContext: "
+                             "another process's primary thread after ResumeThread\n",
+                             request.argument1 != 0 ? "Set" : "Get");
+            }
         } else if (ok && operation == Operation::SetParent) {
             const u32 child = request.argument1;
             const u32 parent = request.argument2;
@@ -862,7 +981,8 @@ void RemoteMemoryServer::serve() {
         if (ok && response_transferred > 0 &&
             (operation == Operation::Read ||
              operation == Operation::VirtualQuery ||
-             operation == Operation::ExportHandle)) {
+             operation == Operation::ExportHandle ||
+             operation == Operation::WindowSceneSnapshot)) {
             (void)send_all(client, bytes.data(),
                            static_cast<usize>(response_transferred));
         }
@@ -873,6 +993,16 @@ void RemoteMemoryServer::serve() {
         ::close(client);
         if (operation == Operation::Shutdown) return;
     }
+}
+
+std::optional<std::vector<Byte>> remote_window_scene_snapshot(pid_t owner_pid) {
+    if (owner_pid <= 0) return std::nullopt;
+    std::vector<Byte> bytes(static_cast<usize>(kMaxTransfer));
+    u64 transferred = 0;
+    if (!transact(owner_pid, Operation::WindowSceneSnapshot, 0, 0, 0, 0,
+                  {}, bytes, nullptr, &transferred)) return std::nullopt;
+    bytes.resize(static_cast<usize>(transferred));
+    return bytes;
 }
 
 bool remote_read_process_memory(
@@ -928,6 +1058,45 @@ bool remote_virtual_query(
 
 bool remote_resume_primary_thread(pid_t pid) {
     return transact(pid, Operation::Resume, 0, 0, 0, 0, {}, {});
+}
+
+int remote_link_job_kill_on_close(pid_t member_pid,
+                                  const std::function<bool()>& still_wanted) {
+    if (member_pid <= 0 || member_pid == ::getpid()) return -1;
+    // Same patience as connect_to (a CREATE_SUSPENDED member publishes its
+    // endpoint only after loading), but give up as soon as the caller no
+    // longer needs the link: the member exited or the job is gone.
+    int fd = -1;
+    for (u32 attempt = 0; attempt < 3000 && fd < 0; ++attempt) {
+        if (still_wanted && !still_wanted()) return -1;
+        fd = connect_once(member_pid);
+        if (fd >= 0) break;
+        if (errno != ENOENT && errno != ECONNREFUSED) return -1;
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+    if (fd < 0) return -1;
+    // Only this process may hold the link: a launched child inheriting it
+    // would keep the member alive past this process's death.
+    (void)::fcntl(fd, F_SETFD, ::fcntl(fd, F_GETFD) | FD_CLOEXEC);
+    suppress_sigpipe(fd);
+    const Request request{
+        kMagic, kVersion, static_cast<u32>(Operation::JobKillOnCloseLink),
+        0, 0, 0, 0, 0};
+    Response response{};
+    if (!send_all(fd, &request, sizeof(request)) ||
+        !receive_all(fd, &response, sizeof(response)) ||
+        response.magic != kMagic || response.version != kVersion ||
+        response.success == 0) {
+        ::close(fd);
+        return -1;
+    }
+    return fd;
+}
+
+void release_job_kill_on_close_link(int link_fd) {
+    if (link_fd < 0) return;
+    (void)send_all(link_fd, &kKillOnCloseRelease, 1);
+    ::close(link_fd);
 }
 
 bool remote_process_endpoint_available(pid_t pid) {
@@ -1137,6 +1306,17 @@ bool remote_show_window(pid_t owner_host_pid, u32 hwnd, i32 cmd, u64& result) {
     }
     result = value;
     return true;
+}
+
+std::optional<u32> remote_primary_thread_context(
+    pid_t pid, bool set, GuestAddr record, bool is_64bit) {
+    if (pid <= 0 || record == 0) return std::nullopt;
+    u64 value = 0;
+    if (!transact(pid, Operation::PrimaryThreadContext, record, 0,
+                  set ? 1u : 0u, is_64bit ? 1u : 0u, {}, {}, &value)) {
+        return std::nullopt;
+    }
+    return static_cast<u32>(value);
 }
 
 bool remote_set_parent(pid_t owner_host_pid, u32 child, u32 parent) {

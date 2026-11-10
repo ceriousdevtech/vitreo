@@ -39,7 +39,6 @@ namespace {
 // ModuleManager's ABI. This matters for narrow incremental builds and also
 // keeps loader serialization process-wide as Windows specifies.
 std::mutex g_module_load_order_mutex;
-std::recursive_mutex g_thread_notification_mutex;
 std::unordered_map<const ModuleManager*, std::vector<std::string>>
     g_module_load_order;
 
@@ -150,6 +149,10 @@ GuestAddr ModuleManager::get_proc_address_by_ordinal(GuestAddr module_base,
         if (thunk.is_ok()) {
             return registry_.guest_entry(thunk.value());
         }
+        // A data export (a variable, not a thunk) by its ordinal.
+        if (const GuestAddr data = registry_.lookup_data_export(dll_with_ext, ordinal)) {
+            return data;
+        }
 
         set_last_error(error_codes::ERROR_PROC_NOT_FOUND);
         return 0;
@@ -158,6 +161,9 @@ GuestAddr ModuleManager::get_proc_address_by_ordinal(GuestAddr module_base,
     auto result = registry_.get_thunk_address(dll_with_ext, ordinal);
     if (result.is_ok()) {
         return registry_.guest_entry(result.value());
+    }
+    if (const GuestAddr data = registry_.lookup_data_export(dll_with_ext, ordinal)) {
+        return data;
     }
 
     set_last_error(error_codes::ERROR_PROC_NOT_FOUND);
@@ -506,6 +512,7 @@ bool ModuleManager::acquire_module_reference(GuestAddr module_base, bool pin) {
     }
 
     ++it->second.ref_count;
+    sync_loader_entry(it->second);
     if (pin) {
         it->second.pinned = true;
     }
@@ -572,18 +579,51 @@ bool ModuleManager::disable_thread_library_calls(GuestAddr module_base) {
         return false;
     }
     module_it->second.thread_notifications_disabled = true;
+    sync_loader_entry(module_it->second);
     return true;
 }
 
+ModuleManager::ProcessInitializationScope::ProcessInitializationScope(
+    ModuleManager& manager)
+    : manager_(manager), loader_lock_(manager.m_loader_mutex) {
+    std::lock_guard<std::mutex> lock(manager_.m_process_initialization_mutex);
+    ++manager_.m_process_initialization_depth;
+}
+
+ModuleManager::ProcessInitializationScope::~ProcessInitializationScope() {
+    bool complete = false;
+    {
+        std::lock_guard<std::mutex> lock(manager_.m_process_initialization_mutex);
+        complete = --manager_.m_process_initialization_depth == 0;
+    }
+    if (complete) manager_.m_process_initialization_cv.notify_all();
+}
+
+ModuleManager::ProcessInitializationScope
+ModuleManager::begin_process_initialization() {
+    return ProcessInitializationScope(*this);
+}
+
+bool ModuleManager::wait_for_process_initialization(
+    const std::function<bool()>& continue_waiting) {
+    for (;;) {
+        // Suspend/SetThreadContext/TerminateThread must remain serviceable
+        // while a worker is waiting for the loader, before any guest callback.
+        if (!continue_waiting()) return false;
+        std::unique_lock<std::mutex> lock(m_process_initialization_mutex);
+        if (m_process_initialization_depth == 0) return true;
+        m_process_initialization_cv.wait_for(lock, std::chrono::milliseconds(5));
+    }
+}
+
 void ModuleManager::notify_thread_attach() {
+    std::lock_guard<std::recursive_mutex> loader_guard(m_loader_mutex);
     if (!m_guest_call) return;
 
     // Microsoft documents DLL entry-point calls as process-wide serialized
     // and in the context of the newly-created thread. Keep the lock recursive
     // because a legal Kernel32 call made by DllMain can re-enter loader-facing
     // code on this same thread.
-    std::lock_guard<std::recursive_mutex> notification_lock(
-        g_thread_notification_mutex);
 
     // Snapshot keys: guest callbacks may mutate the module table, and holding
     // unordered-map iterators across guest execution would be invalid.
@@ -645,13 +685,12 @@ void ModuleManager::notify_thread_attach() {
 }
 
 void ModuleManager::notify_thread_detach() {
+    std::lock_guard<std::recursive_mutex> loader_guard(m_loader_mutex);
     if (!m_guest_call) return;
 
     // A cleanly exiting Windows thread receives loader notifications while
     // its TEB and TLS storage still exist. Loader notifications are serialized
     // process-wide, just like DLL_THREAD_ATTACH.
-    std::lock_guard<std::recursive_mutex> notification_lock(
-        g_thread_notification_mutex);
 
     std::vector<std::string> load_order;
     {

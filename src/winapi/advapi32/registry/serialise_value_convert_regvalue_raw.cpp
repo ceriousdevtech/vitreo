@@ -16,6 +16,7 @@
 #include <cwctype>
 #include <string>
 #include <variant>
+#include "winapi/kernel32/locale/codepage_convert.hpp"
 
 /// @file serialise_value_convert_regvalue_raw.cpp
 /// @brief serialise_value — convert a RegValue to raw bytes
@@ -114,61 +115,39 @@ u32 RegistryThunks::serialise_value(const capsule::RegValue& val,
 }
 
 u32 RegistryThunks::serialise_value_ansi(
-    const capsule::RegValue& val, u8* out, u32 buf_size) {
-    if (val.type == capsule::RegType::Sz ||
-        val.type == capsule::RegType::ExpandSz) {
-        const auto& text = std::get<std::wstring>(val.data);
-        const u32 required = static_cast<u32>(text.size() + 1);
-        if (out && buf_size >= required) {
-            for (usize i = 0; i < text.size(); ++i) {
-                out[i] = text[i] <= 0xff
-                    ? static_cast<u8>(text[i])
-                    : static_cast<u8>('?');
-            }
-            out[text.size()] = 0;
-        }
-        return required;
+    const capsule::RegValue& val, u8* out, u32 buf_size,
+    u32* conversion_error) {
+    if (conversion_error != nullptr) *conversion_error = ERROR_SUCCESS;
+    const u32 type = reg_type_to_win32(val);
+    if (type != REG_SZ && type != REG_EXPAND_SZ && type != REG_MULTI_SZ)
+        return serialise_value(val, out, buf_size);
+
+    // A registry string is stored as UTF-16, including every embedded NUL.
+    // Convert the entire counted value through the measured process ACP;
+    // a MULTI_SZ is not binary data and CP1252 is not Latin-1.
+    const u32 wide_size = serialise_value(val, nullptr, 0);
+    if (wide_size == 0) return 0;
+    std::vector<u8> wide_bytes(wide_size);
+    (void)serialise_value(val, wide_bytes.data(), wide_size);
+    std::vector<u16> units(wide_size / sizeof(u16));
+    for (usize i = 0; i < units.size(); ++i)
+        units[i] = static_cast<u16>(wide_bytes[i * sizeof(u16)] |
+                    (static_cast<u16>(wide_bytes[i * sizeof(u16) + 1]) << 8));
+    const auto needed = codepage::wide_to_multi_byte(codepage::kCpAcp, 0,
+        units.data(), units.size(), nullptr, 0, nullptr, false);
+    if (!needed.ok()) {
+        if (conversion_error != nullptr) *conversion_error = needed.error;
+        return 0;
     }
-    if (val.type == capsule::RegType::MultiSz) {
-        const auto& strings =
-            std::get<std::vector<std::wstring>>(val.data);
-        usize byte_count = 1;
-        for (const auto& string : strings) {
-            byte_count += string.size() + 1;
+    if (out != nullptr && buf_size >= needed.count) {
+        const auto converted = codepage::wide_to_multi_byte(codepage::kCpAcp, 0,
+            units.data(), units.size(), out, buf_size, nullptr, false);
+        if (!converted.ok()) {
+            if (conversion_error != nullptr) *conversion_error = converted.error;
+            return 0;
         }
-        if (strings.empty()) ++byte_count;
-        const u32 required = static_cast<u32>(byte_count);
-        if (out && buf_size >= required) {
-            u32 offset = 0;
-            for (const auto& string : strings) {
-                for (const wchar_t ch : string) {
-                    out[offset++] = ch <= 0xff
-                        ? static_cast<u8>(ch)
-                        : static_cast<u8>('?');
-                }
-                out[offset++] = 0;
-            }
-            out[offset++] = 0;
-            if (strings.empty()) out[offset] = 0;
-        }
-        return required;
     }
-    if (val.type == capsule::RegType::Raw &&
-        (val.raw_type == 1 || val.raw_type == 2 || val.raw_type == 7)) {
-        // REG_SZ / REG_EXPAND_SZ / REG_MULTI_SZ kept byte-exact: the ANSI
-        // view converts each stored UTF-16 unit, NULs included, and keeps
-        // the stored length (a string stored without its NUL stays so).
-        const auto& bytes = std::get<std::vector<u8>>(val.data);
-        const u32 required = static_cast<u32>(bytes.size() / 2);
-        if (out && buf_size >= required) {
-            for (u32 i = 0; i < required; ++i) {
-                const u16 unit = static_cast<u16>(bytes[i * 2] | (bytes[i * 2 + 1] << 8));
-                out[i] = unit <= 0xff ? static_cast<u8>(unit) : static_cast<u8>('?');
-            }
-        }
-        return required;
-    }
-    return serialise_value(val, out, buf_size);
+    return needed.count;
 }
 
 } // namespace vitreo::winapi

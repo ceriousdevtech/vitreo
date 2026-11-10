@@ -4,12 +4,16 @@
 #include "ipc/hwnd_registry.hpp"
 
 #include <algorithm>
+#include <atomic>
 #include <cerrno>
+#include <charconv>
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <mutex>
+#include <limits>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 
@@ -255,25 +259,31 @@ std::string generation_path(const std::string& dir) {
     return dir + "/generation";
 }
 
-// Called by every writer after its data is on disk. Best-effort: a failure
-// here degrades to the directory-timestamp signal alone.
-void bump_generation() {
-    const std::string dir = registry_directory();
-    if (dir.empty()) return;
-    const int fd = ::open(generation_path(dir).c_str(), O_RDWR | O_CREAT, 0600);
-    if (fd < 0) return;
-    if (::flock(fd, LOCK_EX) == 0) {
-        u64 value = 0;
-        if (::pread(fd, &value, sizeof(value), 0) !=
-            static_cast<ssize_t>(sizeof(value))) {
-            value = 0;
+std::mutex& publication_health_mutex(){static std::mutex lock;return lock;}
+std::unordered_map<std::string,bool>& publication_failures(){static std::unordered_map<std::string,bool> scopes;return scopes;}
+void mark_publication_failed() {
+    const auto scope=capsule_root();if(scope.empty())return;
+    std::lock_guard lock(publication_health_mutex());publication_failures()[scope]=true;
+}
+// A failed epoch update cannot be treated as a stable scene. Keep the existing
+// cache API, but poison scene transport rather than accepting stale ordering.
+bool bump_generation() {
+    const std::string dir=registry_directory();if(dir.empty())return true;
+    const int fd=::open(generation_path(dir).c_str(),O_RDWR|O_CREAT,0600);
+    bool ok=fd>=0;
+    if(ok) {
+        ok=::flock(fd,LOCK_EX)==0;
+        if(ok) {
+            u64 value=0;const auto n=::pread(fd,&value,sizeof(value),0);
+            struct stat st{};
+            ok=(n==sizeof(value) || (n==0 && ::fstat(fd,&st)==0 && st.st_size==0)) &&
+                value!=std::numeric_limits<u64>::max();
+            if(ok){++value;ok=::pwrite(fd,&value,sizeof(value),0)==sizeof(value) && ::ftruncate(fd,sizeof(value))==0;}
+            (void)::flock(fd,LOCK_UN);
         }
-        ++value;
-        (void)(::pwrite(fd, &value, sizeof(value), 0) ==
-               static_cast<ssize_t>(sizeof(value)));
-        (void)::flock(fd, LOCK_UN);
+        ::close(fd);
     }
-    ::close(fd);
+    if(!ok)mark_publication_failed();return ok;
 }
 
 struct Stamp {
@@ -415,6 +425,7 @@ void refresh_sidecars_locked(Cache& c, u32 hwnd, CachedWindow& w) {
 }
 
 void remove_window_files(u32 hwnd) {
+    (void)hwnd_registry_update_child_order(ChildOrderAction::Remove,hwnd,0);
     std::error_code rm_ec;
     fs::remove(record_path(hwnd), rm_ec);
     fs::remove(parent_path(hwnd), rm_ec);
@@ -555,21 +566,44 @@ u32 hwnd_registry_allocate_handle() {
 
 namespace {
 
-std::string tid_allocator_path() {
+// Idle is 0 and System is 4. The first ID a user process or thread can own
+// is 8, and every ID stays 4-byte aligned through 0x7FFFFFFC.
+constexpr u32 kFirstClientId = 8u;
+constexpr u32 kLastClientId = 0x7FFFFFFCu;
+
+std::string cid_allocator_path() {
     const std::string root = capsule_root();
     if (root.empty()) return {};
-    return root + "/runtime/next-tid";
+    return root + "/runtime/next-cid";
+}
+
+/// Round a stored counter up onto the client-ID lattice. 0 means the value
+/// is below the first ID, past the last ID, or overflowed while aligning.
+u32 align_client_id(u32 value) {
+    if (value < kFirstClientId) return 0;
+    if ((value & 3u) != 0) {
+        const u32 aligned = (value + 3u) & ~3u;
+        if (aligned < value) return 0;
+        value = aligned;
+    }
+    return value <= kLastClientId ? value : 0;
+}
+
+u32 allocate_local_client_id() {
+    static std::atomic<u32> next{kFirstClientId};
+    u32 cur = next.load(std::memory_order_relaxed);
+    while (cur >= kFirstClientId && cur <= kLastClientId && (cur & 3u) == 0u) {
+        if (next.compare_exchange_weak(cur, cur + 4u, std::memory_order_relaxed))
+            return cur;
+    }
+    return 0;
 }
 
 } // namespace
 
-u32 allocate_system_thread_id() {
-    // One capsule-wide namespace for primary and worker thread identities.
-    constexpr u32 kFirstTid = 0x01000000u;
-    constexpr u32 kLastTid = 0x7FFFFFFEu;
-
-    const std::string path = tid_allocator_path();
-    if (path.empty()) return 0;
+u32 allocate_client_id() {
+    const std::string path = cid_allocator_path();
+    if (path.empty()) return allocate_local_client_id();
 
     const std::string dir = path.substr(0, path.rfind('/'));
     std::error_code ec;
@@ -583,30 +617,70 @@ u32 allocate_system_thread_id() {
         return 0;
     }
 
-    u32 next = kFirstTid;
+    u32 next = kFirstClientId;
     const ssize_t read_count = ::pread(fd, &next, sizeof(next), 0);
-    if (read_count != 0 &&
-        (read_count != static_cast<ssize_t>(sizeof(next)) ||
-         next < kFirstTid || next > kLastTid)) {
-        // Exhaustion or a damaged counter must fail, never recycle live IDs.
+    if (read_count == 0) {
+        next = kFirstClientId;
+    } else if (read_count != static_cast<ssize_t>(sizeof(next))) {
+        // A short or torn counter is damaged. Do not reset it.
+        (void)::flock(fd, LOCK_UN);
+        ::close(fd);
+        return 0;
+    } else {
+        next = align_client_id(next);
+        if (next == 0) {
+            (void)::flock(fd, LOCK_UN);
+            ::close(fd);
+            return 0;
+        }
+    }
+
+    const u32 allocated = next;
+    const u32 stored_next = static_cast<u64>(allocated) + 4u <= kLastClientId
+                                ? allocated + 4u
+                                : 0x80000000u;
+    if (::pwrite(fd, &stored_next, sizeof(stored_next), 0) !=
+            static_cast<ssize_t>(sizeof(stored_next)) ||
+        ::ftruncate(fd, static_cast<off_t>(sizeof(stored_next))) != 0) {
         (void)::flock(fd, LOCK_UN);
         ::close(fd);
         return 0;
     }
 
-    const u32 allocated = next <= kLastTid ? next : 0;
-    if (allocated != 0) {
-        ++next;
-        if (::pwrite(fd, &next, sizeof(next), 0) !=
-                static_cast<ssize_t>(sizeof(next)) ||
-            ::ftruncate(fd, static_cast<off_t>(sizeof(next))) != 0) {
-            next = 0;
-        }
-    }
-
     (void)::flock(fd, LOCK_UN);
     ::close(fd);
-    return next != 0 ? allocated : 0;
+    return allocated;
+}
+
+u32 allocate_system_thread_id() {
+    return allocate_client_id();
+}
+
+u32 guest_process_id() {
+    static std::atomic<u32> cached{0};
+    const u32 existing = cached.load(std::memory_order_acquire);
+    if (existing != 0) return existing;
+
+    u32 assigned = 0;
+    if (const char* value = std::getenv("VITREO_GUEST_PROCESS_ID")) {
+        u32 parsed = 0;
+        const auto result = std::from_chars(
+            value, value + std::strlen(value), parsed);
+        if (result.ec == std::errc{} && *result.ptr == '\0' &&
+            parsed != 0 && (parsed & 3u) == 0u) {
+            assigned = parsed;
+        }
+    }
+    if (assigned == 0) assigned = allocate_client_id();
+    if (assigned == 0) return 0;
+
+    u32 expected = 0;
+    if (!cached.compare_exchange_strong(expected, assigned,
+                                        std::memory_order_release,
+                                        std::memory_order_acquire)) {
+        return expected;
+    }
+    return assigned;
 }
 
 namespace {
@@ -941,5 +1015,92 @@ std::vector<HwndRegistryEntry> hwnd_registry_enumerate() {
 bool hwnd_registry_is_window(u32 hwnd) {
     return hwnd_registry_lookup(hwnd).has_value();
 }
+
+namespace {
+struct ChildOrderFile {
+    int fd{-1};
+    ~ChildOrderFile(){if(fd>=0){(void)::flock(fd,LOCK_UN);::close(fd);}}
+};
+bool read_child_order(int fd,HwndChildOrder& order) {
+    struct stat st{};
+    if (::fstat(fd,&st)!=0 || st.st_size<0 || st.st_size>1024*1024)return false;
+    if (!st.st_size)return true;
+    std::string bytes(static_cast<usize>(st.st_size),'\0');
+    if (::pread(fd,bytes.data(),bytes.size(),0)!=static_cast<ssize_t>(bytes.size()))return false;
+    std::istringstream input(bytes);std::string magic;usize count=0;
+    if (!(input>>magic>>order.generation>>count) || magic!="vitreo-child-order-v1" || count>65536)return false;
+    std::unordered_map<u32,bool> seen;
+    for(usize i=0;i<count;++i) {
+        u32 parent=0,child=0;
+        if (!(input>>parent>>child) || !child || !seen.emplace(child,true).second)return false;
+        order.parent_child.emplace_back(parent,child);
+    }
+    input>>std::ws;return input.eof();
+}
+}
+
+std::optional<HwndChildOrder> hwnd_registry_child_order() {
+    const auto dir=registry_directory();if(dir.empty())return std::nullopt;
+    ChildOrderFile file;file.fd=::open((dir+"/child-order").c_str(),O_RDONLY|O_CLOEXEC);
+    if(file.fd<0)return errno==ENOENT?std::optional<HwndChildOrder>{HwndChildOrder{}}:std::nullopt;
+    if(::flock(file.fd,LOCK_SH)!=0)return std::nullopt;
+    HwndChildOrder order;if(!read_child_order(file.fd,order))return std::nullopt;return order;
+}
+
+static bool update_child_order(ChildOrderAction action,u32 hwnd,u32 parent,u32 after) {
+    const auto dir=registry_directory();if(dir.empty())return true;
+    if(!hwnd)return false;
+    std::error_code error;fs::create_directories(dir,error);if(error)return false;
+    ChildOrderFile file;file.fd=::open((dir+"/child-order").c_str(),O_RDWR|O_CREAT|O_CLOEXEC,0600);
+    if(file.fd<0 || ::flock(file.fd,LOCK_EX)!=0)return false;
+    HwndChildOrder order;if(!read_child_order(file.fd,order))return false;
+    auto& entries=order.parent_child;
+    if(action==ChildOrderAction::After) {
+        if(after==hwnd)return true;
+        const auto sibling=std::find(entries.begin(),entries.end(),std::pair<u32,u32>{parent,after});
+        if(sibling==entries.end())return true; // Windows: non-sibling is a no-op.
+    }
+    const auto old=std::find_if(entries.begin(),entries.end(),[=](const auto& e){return e.second==hwnd;});
+    if(action==ChildOrderAction::Remove && old==entries.end())return true;
+    if(old!=entries.end())entries.erase(old);
+    if(action!=ChildOrderAction::Remove) {
+        auto at=entries.end();
+        if(action==ChildOrderAction::First)
+            at=std::find_if(entries.begin(),entries.end(),[=](const auto& e){return e.first==parent;});
+        else if(action==ChildOrderAction::After)
+            at=std::next(std::find(entries.begin(),entries.end(),std::pair<u32,u32>{parent,after}));
+        entries.insert(at,{parent,hwnd});
+    }
+    if(order.generation==std::numeric_limits<u64>::max())return false;
+    ++order.generation;
+    std::ostringstream stream;stream<<"vitreo-child-order-v1\n"<<order.generation<<' '<<entries.size()<<'\n';
+    for(const auto& [p,c]:entries)stream<<p<<' '<<c<<'\n';
+    const std::string bytes=stream.str();if(bytes.size()>1024*1024)return false;
+    usize done=0;
+    while(done<bytes.size()) {
+        const auto n=::pwrite(file.fd,bytes.data()+done,bytes.size()-done,static_cast<off_t>(done));
+        if(n<0 && errno==EINTR)continue;
+        if(n<=0)return false;done+=static_cast<usize>(n);
+    }
+    if(::ftruncate(file.fd,static_cast<off_t>(bytes.size()))!=0)return false;
+    return bump_generation();
+}
+bool hwnd_registry_update_child_order(ChildOrderAction action,u32 hwnd,u32 parent,u32 after) {
+    const bool ok=update_child_order(action,hwnd,parent,after);
+    if(!ok)mark_publication_failed();return ok;
+}
+bool hwnd_registry_scene_publication_ok() {
+    const auto scope=capsule_root();std::lock_guard lock(publication_health_mutex());
+    return !publication_failures().contains(scope);
+}
+
+std::optional<u64> hwnd_registry_scene_generation() {
+    const auto dir=registry_directory();if(dir.empty())return std::nullopt;
+    ChildOrderFile file;file.fd=::open(generation_path(dir).c_str(),O_RDONLY|O_CLOEXEC);
+    if(file.fd<0)return errno==ENOENT?std::optional<u64>{0}:std::nullopt;
+    if(::flock(file.fd,LOCK_SH)!=0)return std::nullopt;
+    u64 value=0;if(::pread(file.fd,&value,sizeof(value),0)!=sizeof(value))return std::nullopt;return value;
+}
+void hwnd_registry_scene_changed(){bump_generation();}
 
 } // namespace vitreo::ipc

@@ -7,6 +7,7 @@
 
 #include <gtest/gtest.h>
 
+#include "graphics/shaders/ia_cut_rewrite.hpp"
 #include "graphics/shaders/ia_resolve.hpp"
 #include "graphics/shaders/tessellator.hpp"
 
@@ -240,3 +241,61 @@ TEST(IaResolveModel, NonIndexedLineStripAndOverflow) {
 }
 
 }  // namespace
+
+// D3D12 IBStripCutValue against Metal's restart (ia_cut_rewrite.hpp). The
+// expected primitives are the coverage tools/oracle_probe/d3d12_a61_ia_probe
+// measured on WARP ("strip_cut" section): a cut matches by value whatever
+// the format, DISABLED has none, a list's cut restarts assembly.
+TEST(IaCutRewrite, PlansAndStreamsMatchWindows) {
+    using R = IaCutRewrite;
+    const IndexCut none{};
+    const IndexCut c16{true, 0xFFFFu};
+    const IndexCut c32{true, 0xFFFFFFFFu};
+    const std::vector<u32> strip16{0, 1, 2, 0xFFFF, 4, 5, 6};
+    const std::vector<u32> strip32{0, 1, 2, 0xFFFFFFFFu, 4, 5, 6};
+    const std::vector<u32> list16{10, 11, 12, 0xFFFF, 14, 15, 16, 17, 18};
+    // Metal's own assembly is right: no rewrite, whatever the data.
+    EXPECT_EQ(ia_cut_plan(true, false, c16).rewrite, R::Native);
+    EXPECT_EQ(ia_cut_plan(true, true, c32).rewrite, R::Native);
+    EXPECT_EQ(ia_cut_plan(false, false, none).rewrite, R::Native);
+    EXPECT_EQ(ia_cut_plan(false, true, none).rewrite, R::Native);
+    EXPECT_EQ(ia_cut_plan(false, false, c32).rewrite, R::Native);  // unmatchable
+    // "strip R16 FFFF cut DISABLED" and "cut 0xFFFFFFFF": five triangles.
+    for (const IndexCut cut : {none, c32}) {
+        const IaCutPlan plan = ia_cut_plan(true, false, cut);
+        EXPECT_EQ(plan.rewrite, R::Widen);
+        EXPECT_TRUE(ia_cut_needed(plan, strip16));
+        EXPECT_FALSE(ia_cut_needed(plan, {0, 1, 2, 3}));
+        EXPECT_EQ(ia_cut_rewrite_indices(plan, cut, true, 3, strip16), strip16);
+    }
+    // "strip R32 FFFFFFFF cut DISABLED": five triangles in D3D's order.
+    {
+        const IaCutPlan plan = ia_cut_plan(true, true, none);
+        EXPECT_EQ(plan.rewrite, R::Expand);
+        EXPECT_TRUE(ia_cut_needed(plan, strip32));
+        EXPECT_FALSE(ia_cut_needed(plan, strip16));  // 0xFFFF is ordinary
+        EXPECT_EQ(ia_cut_rewrite_indices(plan, none, true, 3, strip32),
+                  (std::vector<u32>{0, 1, 2, 1, 0xFFFFFFFFu, 2, 2, 0xFFFFFFFFu, 4,
+                                    0xFFFFFFFFu, 5, 4, 4, 5, 6}));
+    }
+    // "strip R32 FFFF cut 0xFFFF": (0,1,2) (4,5,6); "strip R32 FFFFFFFF cut
+    // 0xFFFF": five triangles.
+    {
+        const IaCutPlan plan = ia_cut_plan(true, true, c16);
+        EXPECT_EQ(plan.rewrite, R::Assemble);
+        const std::vector<u32> cut_at_ffff{0, 1, 2, 0xFFFF, 4, 5, 6};
+        EXPECT_TRUE(ia_cut_needed(plan, cut_at_ffff));
+        EXPECT_TRUE(ia_cut_needed(plan, strip32));
+        EXPECT_EQ(ia_cut_rewrite_indices(plan, c16, true, 3, cut_at_ffff),
+                  (std::vector<u32>{0, 1, 2, 4, 5, 6}));
+        EXPECT_EQ(ia_cut_rewrite_indices(plan, c16, true, 3, strip32).size(), 15u);
+    }
+    // "list R16 FFFF cut 0xFFFF": (10,11,12) (14,15,16), 17 and 18 dropped.
+    {
+        const IaCutPlan plan = ia_cut_plan(false, false, c16);
+        EXPECT_EQ(plan.rewrite, R::Assemble);
+        EXPECT_TRUE(ia_cut_needed(plan, list16));
+        EXPECT_EQ(ia_cut_rewrite_indices(plan, c16, false, 3, list16),
+                  (std::vector<u32>{10, 11, 12, 14, 15, 16}));
+    }
+}

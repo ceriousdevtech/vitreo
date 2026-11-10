@@ -258,14 +258,14 @@ void D3D9Manager::dispatch_volume_texture(Marshaler& m, usize slot, u32 self) {
     case 18: { // GetVolumeLevel(Level, ppVolumeLevel)
         const u32 level = static_cast<u32>(m.arg(1));
         const GuestAddr out = m.arg_ptr(2);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         const u32 volume_obj = level_volume(level);
         if (out == 0 || volume_obj == 0) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
         (void)add_ref(volume_obj);
-        if (m.write_u32(out, volume_obj).is_err()) {
+        if (m.write_ptr(out, volume_obj).is_err()) {
             (void)release(volume_obj);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -362,7 +362,7 @@ void D3D9Manager::dispatch_volume(Marshaler& m, usize slot, u32 self) {
             return;
         }
         (void)add_ref(entry->device);
-        if (m.write_u32(out, entry->device).is_err()) {
+        if (m.write_ptr(out, entry->device).is_err()) {
             (void)release(entry->device);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -378,7 +378,7 @@ void D3D9Manager::dispatch_volume(Marshaler& m, usize slot, u32 self) {
         return;
     case 7: { // GetContainer
         const GuestAddr out = m.arg_ptr(2);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         const u32 container =
             volume.container != 0 ? volume.container : entry->device;
         if (out == 0 || container == 0) {
@@ -386,7 +386,7 @@ void D3D9Manager::dispatch_volume(Marshaler& m, usize slot, u32 self) {
             return;
         }
         (void)add_ref(container);
-        if (m.write_u32(out, container).is_err()) {
+        if (m.write_ptr(out, container).is_err()) {
             (void)release(container);
             m.set_return(D3DERR_INVALIDCALL);
             return;

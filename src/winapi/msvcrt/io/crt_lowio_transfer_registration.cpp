@@ -418,6 +418,35 @@ void add_crt_lowio_transfer_exports(DllExports& exports, const StdioContext& ctx
         }
         m.set_return_i64(info.value().size);
     }});
+
+    // long _filelength(int fd): the same length as a long. msvcrt answers
+    // -1/EINVAL for a file longer than LONG_MAX and leaves the position
+    // alone; a bad descriptor is -1/EBADF (crt_legacy_exports_probe:
+    // filelength / filelength_5g / filelength_bad / filelength_closed).
+    exports.entries.push_back({"_filelength", 0, [&vfs, &memory_manager, set_errno](Marshaler& m) {
+        constexpr u32 EINVAL_VALUE = 22;
+        const auto fd = static_cast<i32>(m.arg(0));
+        const auto it = stdio_arena().descriptors.find(fd);
+        if (it == stdio_arena().descriptors.end()) {
+            if (!memory_manager.invalid_parameter()) return;
+            set_errno(m, EBADF_VALUE);
+            memory_manager.set_doserrno(0);
+            m.set_return(0xFFFFFFFFu);
+            return;
+        }
+        const auto info = vfs.stat_handle(it->second.handle);
+        if (info.is_err()) {
+            set_errno(m, EBADF_VALUE);
+            m.set_return(0xFFFFFFFFu);
+            return;
+        }
+        if (info.value().size > 0x7FFFFFFFull) {
+            set_errno(m, EINVAL_VALUE);
+            m.set_return(0xFFFFFFFFu);
+            return;
+        }
+        m.set_return(static_cast<u32>(info.value().size));
+    }});
 }
 
 /// _chsize.

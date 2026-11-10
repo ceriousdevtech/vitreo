@@ -8,6 +8,7 @@
 // native-only IR backend through this translation unit.
 #if defined(__aarch64__)
 #include "ir_x64_memory_fixture.hpp"
+#include "popf_user_cases.hpp"
 
 using namespace vitreo;
 using namespace vitreo::cpu;
@@ -24,6 +25,22 @@ namespace {
 // drifts RSP by six per instruction, which no single-instruction check would
 // notice but every sequence would. The aliased spellings (`push rsp`,
 // `pop rsp`) are the ones that separate the orderings.
+TEST_F(IrEmit64NarrowAlu, PopfUserFlagsMatchNativeWindows) {
+    ASSERT_TRUE(memory.map_region(kStack,0x2000,MemoryProtection::ReadWrite));
+    for(const bool narrow:{false,true}) {
+        auto* block=compile(narrow?std::vector<u8>{0x66,0x9d}:std::vector<u8>{0x9d});
+        ASSERT_NE(block,nullptr);
+        for(const auto& row:vitreo::cpu::popf_test::kPopfUserCases) {
+            auto state=seed();state.flags.rflags=row.seed;state.set_sp(kStack+0x100);
+            ASSERT_TRUE(memory.write_u64(state.sp(),row.value));
+            ASSERT_EQ(jit->execute(*block,state),JitExecResult::Continue);
+            state.materialize_lazy_flags();
+            EXPECT_EQ(state.flags.rflags,narrow?row.narrow_expected:row.wide_expected);
+            EXPECT_EQ(state.sp(),kStack+0x100+(narrow?2:8));
+        }
+    }
+}
+
 TEST_F(IrEmit64NarrowAlu, StackFormsMoveTheRightNumberOfBytes) {
     ASSERT_TRUE(memory.map_region(kStack, 0x2000, MemoryProtection::ReadWrite));
     ASSERT_TRUE(memory.map_region(kData, 0x1000, MemoryProtection::ReadWrite));

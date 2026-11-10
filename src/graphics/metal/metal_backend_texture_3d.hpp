@@ -15,9 +15,11 @@
 #include "graphics/metal/metal_texture.hpp"
 
 #include <array>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <unordered_map>
+#include <utility>
 
 namespace vitreo::graphics {
 
@@ -71,6 +73,8 @@ public:
 
     BackendTexture3D* view(PixelFormat format, unsigned first_mip,
                            unsigned mip_count) override;
+    BackendTexture3D* view(PixelFormat format, unsigned first_mip,
+                           unsigned mip_count, u16 component_mapping) override;
 
     ~MetalBackendTexture3D() override;
 
@@ -137,8 +141,13 @@ private:
     /// Set on a view() object: the Metal texture view it binds.
     void* m_view_handle{nullptr};
     /// view() objects of this volume, by (format, first mip, mip count).
+    /// A non-zero Shader4ComponentMapping is a different view of the same
+    /// window, kept in m_mapped_views so an identity view is never reused
+    /// as a swizzled one.
     std::mutex m_views_mutex;
     std::unordered_map<u64, std::unique_ptr<MetalBackendTexture3D>> m_views;
+    std::map<std::pair<u64, u16>, std::unique_ptr<MetalBackendTexture3D>>
+        m_mapped_views;
 };
 
 } // namespace vitreo::graphics

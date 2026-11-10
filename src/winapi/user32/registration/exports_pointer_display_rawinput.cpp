@@ -289,19 +289,7 @@ void add_user32_ext_exports_pointer_display_rawinput(DllExports& exports, User32
     // UINT GetRegisteredRawInputDevices(PRAWINPUTDEVICE, PUINT, UINT)
     exports.entries.push_back(ExportEntry{
         "GetRegisteredRawInputDevices", 0,
-        [&mgr](Marshaler& m) {
-            (void)mgr;
-            const GuestAddr num_ptr = m.arg_ptr(1);
-            if (num_ptr == 0) {
-                set_last_error(error_codes::ERROR_NOACCESS);
-                m.set_return(0xFFFFFFFFu);
-                return;
-            }
-            // No persisted multi-device table yet: report zero registrations
-            // (matches an empty RegisterRawInputDevices history).
-            (void)m.write_u32(num_ptr, 0);
-            m.set_return(0);
-        },
+        [&mgr](Marshaler& m) {mgr.impl_GetRegisteredRawInputDevices(m);},
         12});
     // BOOL LogicalToPhysicalPoint(HWND, LPPOINT) / PhysicalToLogicalPoint:
     // identity under Vitreo DPI (no process is scaled). Measured

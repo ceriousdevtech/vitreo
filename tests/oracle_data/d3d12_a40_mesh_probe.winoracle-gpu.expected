@@ -1,0 +1,133 @@
+# caps OPTIONS7 0x00000000 S_OK MeshShaderTier=10 SamplerFeedbackTier=90
+# caps OPTIONS9 0x00000000 S_OK MeshShaderPipelineStatsSupported=1 FullRangeRTAI=1 Derivatives=0
+# caps OPTIONS10 0x00000000 S_OK PerPrimitiveShadingRate=1
+# caps OPTIONS12 0x00000000 S_OK MSPrimitivesIncludesCulled=1
+# caps ViewInstancingTier=3 VariableShadingRateTier=2 HighestShaderModel=0x65
+caps end: GetDeviceRemovedReason 0x00000000 S_OK
+pso AS=- MS=ms_quad PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_quad PS=ps_color VS=- rtv=1 topology=3 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=as_rows MS=ms_payload PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_lines PS=- VS=- rtv=1 topology=-1 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_lines PS=- VS=- rtv=1 topology=2 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_big PS=ps_vcolor VS=- rtv=1 topology=-1 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_quad PS=- VS=- rtv=0 topology=-1 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_quad PS=ps_color VS=- rtv=1 topology=2 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_quad PS=ps_color VS=- rtv=1 topology=1 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_quad PS=ps_color VS=- rtv=1 topology=4 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=- MS=ms_lines PS=- VS=- rtv=1 topology=3 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=as_rows MS=- PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=- MS=ms_quad PS=ps_color VS=vs_plain rtv=1 topology=-1 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=as_rows MS=ms_quad PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=- MS=ms_payload PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x00000000 S_OK out=obj
+pso AS=- MS=ms_lines PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=- MS=ms_quad PS=ps_color VS=- rtv=1 topology=-1 il=1 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=- MS=ms_quad PS=ps_color VS=- rtv=1 topology=-1 il=0 so=1: 0x80070057 E_INVALIDARG out=NULL
+pso AS=- MS=cs_plain PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=- MS=vs_plain PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=ms_quad MS=ms_payload PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso AS=as_rows MS=as_rows PS=ps_color VS=- rtv=1 topology=-1 il=0 so=0: 0x80070057 E_INVALIDARG out=NULL
+pso end: GetDeviceRemovedReason 0x00000000 S_OK
+direct submit: 0x00000000 S_OK
+direct direct tile 0: prim0=ff400000 prim1=ffc00000
+direct direct tile 1: prim0=ff400020 prim1=00000000
+direct direct tile 2: prim0=ff400040 prim1=ffc00040
+direct direct tile 3: prim0=ff400060 prim1=00000000
+direct direct tile 4: prim0=ff400080 prim1=ffc00080
+direct direct tile 5: prim0=ff4000a0 prim1=00000000
+direct direct tile 6: prim0=ff4000c0 prim1=ffc000c0
+direct direct tile 7: prim0=ff4000e0 prim1=00000000
+direct direct tile 16: prim0=ff404000 prim1=ffc04000
+direct direct tile 17: prim0=ff404020 prim1=00000000
+direct direct tile 18: prim0=ff404040 prim1=ffc04040
+direct direct tile 19: prim0=ff404060 prim1=00000000
+direct direct tile 20: prim0=ff404080 prim1=ffc04080
+direct direct tile 21: prim0=ff4040a0 prim1=00000000
+direct direct tile 22: prim0=ff4040c0 prim1=ffc040c0
+direct direct tile 23: prim0=ff4040e0 prim1=00000000
+direct direct: MS threads=64 AS threads=0 MS groups=16 AS groups=0
+direct submit: 0x00000000 S_OK
+direct direct base 40 tile 40: prim0=ff40a000 prim1=ffc0a000
+direct direct base 40 tile 41: prim0=ff40a020 prim1=ffc0a020
+direct direct base 40 tile 42: prim0=ff40a040 prim1=ffc0a040
+direct direct base 40: MS threads=12 AS threads=0 MS groups=3 AS groups=0
+direct end: GetDeviceRemovedReason 0x00000000 S_OK
+amplified submit: 0x00000000 S_OK
+amplified amplified tile 1: prim0=ff400020 prim1=00000000
+amplified amplified tile 2: prim0=ff400040 prim1=ffc00040
+amplified amplified tile 4: prim0=ff400080 prim1=ffc00080
+amplified amplified tile 5: prim0=ff4000a0 prim1=00000000
+amplified amplified tile 7: prim0=ff4000e0 prim1=00000000
+amplified amplified tile 8: prim0=ff482000 prim1=ffc82000
+amplified amplified tile 9: prim0=ff482020 prim1=00000000
+amplified amplified tile 11: prim0=ff482060 prim1=00000000
+amplified amplified tile 12: prim0=ff482080 prim1=ffc82080
+amplified amplified tile 14: prim0=ff4820c0 prim1=ffc820c0
+amplified amplified tile 15: prim0=ff4820e0 prim1=00000000
+amplified amplified tile 16: prim0=ff504000 prim1=ffd04000
+amplified amplified tile 18: prim0=ff504040 prim1=ffd04040
+amplified amplified tile 19: prim0=ff504060 prim1=00000000
+amplified amplified tile 21: prim0=ff5040a0 prim1=00000000
+amplified amplified tile 22: prim0=ff5040c0 prim1=ffd040c0
+amplified amplified tile 25: prim0=ff586020 prim1=00000000
+amplified amplified tile 26: prim0=ff586040 prim1=ffd86040
+amplified amplified tile 28: prim0=ff586080 prim1=ffd86080
+amplified amplified tile 29: prim0=ff5860a0 prim1=00000000
+amplified amplified tile 31: prim0=ff5860e0 prim1=00000000
+amplified amplified tile 32: prim0=ff608000 prim1=ffe08000
+amplified amplified tile 33: prim0=ff608020 prim1=00000000
+amplified amplified tile 35: prim0=ff608060 prim1=00000000
+amplified amplified tile 36: prim0=ff608080 prim1=ffe08080
+amplified amplified tile 38: prim0=ff6080c0 prim1=ffe080c0
+amplified amplified tile 39: prim0=ff6080e0 prim1=00000000
+amplified amplified tile 40: prim0=ff68a000 prim1=ffe8a000
+amplified amplified tile 42: prim0=ff68a040 prim1=ffe8a040
+amplified amplified tile 43: prim0=ff68a060 prim1=00000000
+amplified amplified tile 45: prim0=ff68a0a0 prim1=00000000
+amplified amplified tile 46: prim0=ff68a0c0 prim1=ffe8a0c0
+amplified amplified tile 49: prim0=ff70c020 prim1=00000000
+amplified amplified tile 50: prim0=ff70c040 prim1=fff0c040
+amplified amplified tile 52: prim0=ff70c080 prim1=fff0c080
+amplified amplified tile 53: prim0=ff70c0a0 prim1=00000000
+amplified amplified tile 55: prim0=ff70c0e0 prim1=00000000
+amplified amplified tile 56: prim0=ff78e000 prim1=fff8e000
+amplified amplified tile 57: prim0=ff78e020 prim1=00000000
+amplified amplified tile 59: prim0=ff78e060 prim1=00000000
+amplified amplified tile 60: prim0=ff78e080 prim1=fff8e080
+amplified amplified tile 62: prim0=ff78e0c0 prim1=fff8e0c0
+amplified amplified tile 63: prim0=ff78e0e0 prim1=00000000
+amplified amplified: MS threads=172 AS threads=64 MS groups=43 AS groups=8
+amplified end: GetDeviceRemovedReason 0x00000000 S_OK
+indirect signature stride 12: 0x00000000 S_OK
+indirect signature stride 8: 0x80070057 E_INVALIDARG
+indirect signature stride 16: 0x00000000 S_OK
+indirect signature constant+mesh: 0x00000000 S_OK
+indirect submit: 0x00000000 S_OK
+indirect indirect count 1 tile 0: prim0=ff400000 prim1=ffc00000
+indirect indirect count 1 tile 1: prim0=ff400020 prim1=ffc00020
+indirect indirect count 1 tile 2: prim0=ff400040 prim1=ffc00040
+indirect indirect count 1 tile 3: prim0=ff400060 prim1=ffc00060
+indirect indirect count 1: MS threads=16 AS threads=0 MS groups=4 AS groups=0
+indirect submit: 0x00000000 S_OK
+indirect indirect two calls tile 0: prim0=ff400000 prim1=ffc00000
+indirect indirect two calls tile 1: prim0=ff400020 prim1=ffc00020
+indirect indirect two calls tile 2: prim0=ff400040 prim1=ffc00040
+indirect indirect two calls tile 3: prim0=ff400060 prim1=ffc00060
+indirect indirect two calls: MS threads=24 AS threads=0 MS groups=6 AS groups=0
+indirect submit: 0x00000000 S_OK
+indirect indirect constant+mesh tile 0: prim0=ff400000 prim1=ffc00000
+indirect indirect constant+mesh tile 1: prim0=ff400020 prim1=ffc00020
+indirect indirect constant+mesh tile 2: prim0=ff400040 prim1=ffc00040
+indirect indirect constant+mesh tile 3: prim0=ff400060 prim1=ffc00060
+indirect indirect constant+mesh tile 48: prim0=ff40c000 prim1=ffc0c000
+indirect indirect constant+mesh tile 49: prim0=ff40c020 prim1=ffc0c020
+indirect indirect constant+mesh: MS threads=24 AS threads=0 MS groups=6 AS groups=0
+indirect end: GetDeviceRemovedReason 0x00000000 S_OK
+stats query heap PIPELINE_STATISTICS1: 0x00000000 S_OK
+stats submit: 0x00000000 S_OK
+stats quad 4x2x2 cull: IA=0/0 VS=0 GS=0/0 HS=0 DS=0 CS=0 AS=0 MS=64 MSPrimitives=32
+# stats quad 4x2x2 cull C=24/24 PS=408
+stats amplified 8: IA=0/0 VS=0 GS=0/0 HS=0 DS=0 CS=0 AS=64 MS=172 MSPrimitives=86
+# stats amplified 8 C=64/64 PS=1086
+stats lines 1: IA=0/0 VS=0 GS=0/0 HS=0 DS=0 CS=0 AS=0 MS=3 MSPrimitives=3
+# stats lines 1 C=0/0 PS=0
+stats end: GetDeviceRemovedReason 0x00000000 S_OK

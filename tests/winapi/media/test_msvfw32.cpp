@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <cstring>
 #include <memory>
 #include <vector>
@@ -188,4 +189,70 @@ TEST_F(Msvfw32Test, DrawDibOpenFailsHonestly) {
     auto m = make_marshaler();
     mgr_.impl_DrawDibOpen(m);
     EXPECT_EQ(return_value(), 0u);
+}
+
+// Learn, ICLocate: a candidate is kept only when it answers the mode's query
+// message (ICM_DECOMPRESS_QUERY for ICMODE_DECOMPRESS) with ICERR_OK.
+TEST_F(Msvfw32Test, IcLocateKeepsOnlyADriverThatAcceptsTheQuery) {
+    bool accept = false;
+    std::vector<u32> msgs;
+    mgr_.set_guest_call([&](GuestAddr, const u64* args, usize, bool) -> u64 {
+        msgs.push_back(static_cast<u32>(args[2]));
+        if (args[2] == 3) return 0x77; // DRV_OPEN
+        if (args[2] == 0x4000 + 11) {  // ICM_DECOMPRESS_QUERY(lpbiIn, lpbiOut)
+            EXPECT_EQ(args[3], static_cast<u64>(INFO_ADDR));
+            EXPECT_EQ(args[4], 0u);
+            return accept ? 0 : static_cast<u64>(static_cast<i64>(-2)); // ICERR_BADFORMAT
+        }
+        return 1;
+    });
+    set_args({kVidc, kVp60, static_cast<u32>(INFO_ADDR), 0, 2}); // ICMODE_DECOMPRESS
+    {
+        auto m = make_marshaler();
+        mgr_.impl_ICLocate(m);
+    }
+    EXPECT_EQ(return_value(), 0u);
+    EXPECT_NE(std::find(msgs.begin(), msgs.end(), 4u), msgs.end()); // refused: DRV_CLOSE
+    accept = true;
+    set_args({kVidc, kVp60, static_cast<u32>(INFO_ADDR), 0, 2});
+    {
+        auto m = make_marshaler();
+        mgr_.impl_ICLocate(m);
+    }
+    EXPECT_NE(return_value(), 0u);
+}
+
+// ICDecompress (WINAPIV) sends ICM_DECOMPRESS with an ICDECOMPRESS built from
+// its arguments (vfw.h: dwFlags, lpbiInput, lpInput, lpbiOutput, lpOutput,
+// ckid; 24 bytes on x86).
+TEST_F(Msvfw32Test, IcDecompressBuildsTheIcdecompress) {
+    u64 seen_size = 0;
+    std::vector<u32> fields;
+    mgr_.set_guest_call([&](GuestAddr, const u64* args, usize, bool) -> u64 {
+        if (args[2] == 3) return 0x77;
+        if (args[2] == 0x4000 + 13) {
+            seen_size = args[4];
+            for (u32 i = 0; i < 6; ++i) {
+                fields.push_back(memory_.read_u32(static_cast<GuestAddr>(args[3]) + i * 4).value());
+            }
+            return 0;
+        }
+        return 1;
+    });
+    set_args({kVidc, kVp60, 2});
+    {
+        auto m = make_marshaler();
+        mgr_.impl_ICOpen(m);
+    }
+    const u32 hic = return_value();
+    ASSERT_NE(hic, 0u);
+    set_args({hic, 0x08000000u, 0x11110, 0x12220, 0x13330, 0x14440});
+    {
+        auto m = make_marshaler();
+        mgr_.impl_ICDecompress(m);
+    }
+    EXPECT_EQ(return_value(), 0u);
+    EXPECT_EQ(seen_size, 24u);
+    EXPECT_EQ(fields, (std::vector<u32>{0x08000000u, 0x11110, 0x12220, 0x13330, 0x14440, 0}));
+    EXPECT_EQ(cpu_.sp(), STACK_BASE + 0x400u); // the scratch reservation is undone
 }

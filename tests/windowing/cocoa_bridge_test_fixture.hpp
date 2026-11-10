@@ -28,4 +28,16 @@ using namespace vitreo::windowing;
 class CocoaBridgeTest : public ::testing::Test {
 protected:
     CocoaBridge bridge;
+
+    /// Run the main run loop (deferred presentation work) until @p done or
+    /// @p timeout_ms passes; true when @p done became true.
+    template <typename Done>
+    bool pump_until(Done done, u32 timeout_ms = 2000) {
+        const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(timeout_ms);
+        while (std::chrono::steady_clock::now() < deadline) {
+            if (done()) return true;
+            bridge.service_main_runloop(10);
+        }
+        return done();
+    }
 };

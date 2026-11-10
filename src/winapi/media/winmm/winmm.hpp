@@ -1,5 +1,6 @@
 #pragma once
 
+#include "winapi/media/winmm/winmm_mci.hpp"
 #include "winapi/core/thunk_registry.hpp"
 #include "winapi/media/winmm/timer_scheduler.hpp"
 #include <vitreo/common.hpp>
@@ -10,6 +11,7 @@
 #include <functional>
 #include <memory>
 #include <mutex>
+#include <string_view>
 #include <string>
 #include <thread>
 #include <unordered_map>
@@ -64,6 +66,10 @@ public:
     /// Access guest memory for thunks
     GuestMemory& memory() noexcept { return m_memory; }
 
+    /// MCI (mciSendCommand / mciSendString); uses this manager's host
+    /// output factory and window notifier.
+    MciManager& mci() noexcept { return m_mci; }
+
     // Thunk implementations
     void impl_PlaySoundW(Marshaler& m);
     void impl_PlaySoundA(Marshaler& m);
@@ -109,11 +115,61 @@ public:
     /// MMRESULT a mixer API reports for the object named by a HMIXEROBJ /
     /// UINT id plus its MIXER_OBJECTF_* flags. Vitreo has no mixer device.
     [[nodiscard]] u32 mixer_object_status(u64 object, u32 flags);
-    void impl_mmioOpenA(Marshaler& m);
+    // ---- mmio (winmm_mmio.cpp) ----
+    void impl_mmioOpen(Marshaler& m, bool wide);
     void impl_mmioClose(Marshaler& m);
-    void impl_mmioDescend(Marshaler& m);
     void impl_mmioRead(Marshaler& m);
+    void impl_mmioWrite(Marshaler& m);
+    void impl_mmioSeek(Marshaler& m);
+    void impl_mmioGetInfo(Marshaler& m);
+    void impl_mmioSetInfo(Marshaler& m);
+    void impl_mmioSetBuffer(Marshaler& m);
+    void impl_mmioFlush(Marshaler& m);
+    void impl_mmioAdvance(Marshaler& m);
+    void impl_mmioSendMessage(Marshaler& m);
+    void impl_mmioDescend(Marshaler& m);
     void impl_mmioAscend(Marshaler& m);
+    void impl_mmioCreateChunk(Marshaler& m);
+    void impl_mmioStringToFOURCC(Marshaler& m, bool wide);
+    void impl_mmioInstallIOProc(Marshaler& m, bool wide);
+    void impl_mmioRename(Marshaler& m, bool wide);
+    /// The built-in DOS / MEM I/O procedures as guest-callable MMIOPROCs
+    /// (internal exports; mmioInstallIOProc(FOURCC_DOS, NULL, MMIO_FINDPROC)
+    /// and MMIOINFO.pIOProc hand their addresses to the guest).
+    void impl_mmioBuiltinIOProc(Marshaler& m, bool mem);
+
+    /// What the mmio engine needs from the rest of the process: process-heap
+    /// blocks (the internal MMIOINFO an HMMIO points at, MMIO_ALLOCBUF and
+    /// expandable memory-file buffers), kernel32 file HANDLEs (the DOS I/O
+    /// procedure keeps one in MMIOINFO.adwInfo[0], Learn mmioOpen), and calls
+    /// into guest MMIOPROCs.
+    struct MmioServices {
+        /// Zero-filled block; 0 on failure.
+        std::function<GuestAddr(u64 size)> alloc;
+        /// Resize keeping the contents; 0 on failure (the block is kept).
+        std::function<GuestAddr(GuestAddr block, u64 size)> realloc;
+        std::function<void(GuestAddr block)> free;
+        /// A kernel32 HANDLE that owns @p vfs_handle (closing it closes the
+        /// file); 0 on failure.
+        std::function<u32(u32 vfs_handle, std::string_view path,
+                          u32 desired_access)> adopt_file;
+        /// The VFS handle behind a kernel32 file HANDLE; 0 when it is none.
+        std::function<u32(u32 handle)> vfs_handle_for;
+        std::function<void(u32 handle)> close_file;
+        /// Call a guest MMIOPROC (LPSTR lpmmioinfo, UINT, LPARAM, LPARAM).
+        std::function<u64(GuestAddr proc, const u64* args, usize count,
+                          bool is_64bit)> call;
+    };
+    void set_mmio_services(MmioServices services);
+    [[nodiscard]] MmioServices mmio_services() {
+        std::lock_guard<std::recursive_mutex> lock(m_mmio_mutex);
+        return m_mmio_services;
+    }
+    /// Guest addresses of the internal DOS / MEM MMIOPROC exports.
+    void set_mmio_builtin_procs(GuestAddr dos, GuestAddr mem) noexcept {
+        m_mmio_dos_proc = dos;
+        m_mmio_mem_proc = mem;
+    }
 
     /// True while at least one waveform output stream is open.
     [[nodiscard]] bool audio_open() const noexcept;
@@ -277,15 +333,41 @@ private:
     bool m_sound_async_pending = false;
     bool m_sound_async_started = false;
 
-    struct MmioFile {
-        std::vector<u8> bytes;
-        usize cursor{0};
-        std::string path;
+    /// Declared last: its players stop before the hooks it uses go away.
+    MciManager m_mci{m_vfs, m_wave_output_factory, m_wave_window_notifier};
+
+    // ---- mmio: an HMMIO is the guest address of its MMIOINFO, which holds
+    // the buffer state (Windows: the IOProc receives that MMIOINFO, and
+    // winmm_mmio_probe info_is_h=1). Host-only facts live beside it. ----
+    friend struct MmioOps;
+    enum class MmioProcKind : u8 { Dos, Mem, Custom };
+    struct MmioHandle {
+        bool is_64bit{false};
+        MmioProcKind kind{MmioProcKind::Dos};
+        /// The buffer was allocated here (MMIO_ALLOCBUF, mmioSetBuffer with
+        /// NULL, an internal memory-file buffer) and is freed here.
+        bool owns_buffer{false};
+        /// A memory file whose buffer grows by adwInfo[0] (Learn mmioOpen:
+        /// pchBuffer NULL, cchBuffer the initial size).
+        bool expandable{false};
     };
-    u32 m_next_mmio_handle{0xAD00};
-    std::unordered_map<u32, MmioFile> m_mmio_files;
+    struct MmioIoProcEntry {
+        u32 fcc{0};
+        GuestAddr proc{0};
+    };
+    std::recursive_mutex m_mmio_mutex;
+    std::unordered_map<GuestAddr, MmioHandle> m_mmio_handles;
+    /// mmioInstallIOProc table, most recent last.
+    std::vector<MmioIoProcEntry> m_mmio_procs;
+    MmioServices m_mmio_services;
+    GuestAddr m_mmio_dos_proc{0};
+    GuestAddr m_mmio_mem_proc{0};
 
 };
+
+/// Internal export names of the built-in DOS / MEM MMIOPROCs.
+inline constexpr std::string_view kMmioDosIOProcExport = "VitreoMmioDosIOProc";
+inline constexpr std::string_view kMmioMemIOProcExport = "VitreoMmioMemIOProc";
 
 /// Create winmm.dll exports backed by the manager.
 DllExports create_winmm_thunks(WinmmManager& mgr);

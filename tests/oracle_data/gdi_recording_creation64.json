@@ -1,0 +1,38 @@
+{
+  "bits": 64,
+  "source": "tests/oracle_data/gdi_recording_creation_sdk.txt",
+  "exports": {
+    "CreateMetaFileA": {
+      "ordinal": 1087,
+      "stdcall_bytes": 4,
+      "argc": 1,
+      "documented_failure": "NULL",
+      "documented_last_error": null,
+      "docs": "https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createmetafilea"
+    },
+    "CreateMetaFileW": {
+      "ordinal": 1088,
+      "stdcall_bytes": 4,
+      "argc": 1,
+      "documented_failure": "NULL",
+      "documented_last_error": null,
+      "docs": "https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createmetafilew"
+    },
+    "CreateEnhMetaFileA": {
+      "ordinal": 1075,
+      "stdcall_bytes": 16,
+      "argc": 4,
+      "documented_failure": "NULL",
+      "documented_last_error": null,
+      "docs": "https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createenhmetafilea"
+    },
+    "CreateEnhMetaFileW": {
+      "ordinal": 1076,
+      "stdcall_bytes": 16,
+      "argc": 4,
+      "documented_failure": "NULL",
+      "documented_last_error": null,
+      "docs": "https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createenhmetafilew"
+    }
+  }
+}

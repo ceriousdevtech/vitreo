@@ -1,0 +1,553 @@
+;
+; Note: shader requires additional functionality:
+;       Wave level operations
+;       64-Bit integer
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 1f260982ef3940a61ff96ea496711a9a
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; src                               texture    byte         r/o      T0             t0     1
+; dst                                   UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%dx.types.fouri32 = type { i32, i32, i32, i32 }
+%struct.ByteAddressBuffer = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+
+define void @cs_wavex() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %4 = call i32 @dx.op.waveGetLaneCount(i32 112)  ; WaveGetLaneCount()
+  %5 = call i32 @dx.op.waveGetLaneIndex(i32 111)  ; WaveGetLaneIndex()
+  %6 = sub i32 %3, %5
+  %7 = shl i32 %3, 2
+  %8 = and i32 %7, 1020
+  %9 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %8, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %10 = extractvalue %dx.types.ResRet.i32 %9, 0
+  %11 = and i32 %5, 1
+  %12 = icmp ne i32 %11, 0
+  %13 = select i1 %12, i32 -1431655766, i32 1431655765
+  %14 = icmp ugt i32 %4, 31
+  %15 = and i32 %4, 31
+  %16 = shl i32 1, %15
+  %17 = add i32 %16, -1
+  %18 = select i1 %14, i32 -1, i32 %17
+  %19 = and i32 %13, %18
+  %20 = icmp eq i32 %11, 0
+  %21 = lshr i32 %5, 1
+  br i1 %20, label %48, label %22
+
+; <label>:22                                      ; preds = %0
+  %23 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %5, i8 0, i8 1)  ; WaveActiveOp(value,op,sop)
+  %24 = lshr i32 %4, 1
+  %25 = mul i32 %24, %24
+  %26 = icmp eq i32 %23, %25
+  %27 = zext i1 %26 to i32
+  %28 = call i32 @dx.op.waveAllOp(i32 135, i1 true)  ; WaveAllBitCount(value)
+  %29 = icmp eq i32 %28, %24
+  %30 = call i32 @dx.op.wavePrefixOp(i32 136, i1 true)  ; WavePrefixBitCount(value)
+  %31 = icmp eq i32 %30, %21
+  %32 = and i1 %29, %31
+  %33 = call i32 @dx.op.waveReadLaneFirst.i32(i32 118, i32 %5)  ; WaveReadLaneFirst(value)
+  %34 = icmp eq i32 %33, 1
+  %35 = and i1 %32, %34
+  %36 = call %dx.types.fouri32 @dx.op.waveActiveBallot(i32 116, i1 true)  ; WaveActiveBallot(cond)
+  %37 = extractvalue %dx.types.fouri32 %36, 0
+  %38 = and i32 %17, -1431655766
+  %39 = select i1 %14, i32 -1431655766, i32 %38
+  %40 = icmp eq i32 %37, %39
+  %41 = and i1 %35, %40
+  %42 = zext i1 %41 to i32
+  %43 = call i1 @dx.op.waveIsFirstLane(i32 110)  ; WaveIsFirstLane()
+  %44 = icmp eq i32 %5, 1
+  %45 = xor i1 %44, %43
+  %46 = zext i1 %45 to i32
+  %47 = xor i32 %46, 1
+  br label %55
+
+; <label>:48                                      ; preds = %0
+  %49 = call i32 @dx.op.waveReadLaneFirst.i32(i32 118, i32 %5)  ; WaveReadLaneFirst(value)
+  %50 = icmp eq i32 %49, 0
+  %51 = zext i1 %50 to i32
+  %52 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %3, i8 2, i8 1)  ; WaveActiveOp(value,op,sop)
+  %53 = icmp eq i32 %52, %6
+  %54 = zext i1 %53 to i32
+  br label %55
+
+; <label>:55                                      ; preds = %48, %22
+  %56 = phi i32 [ %54, %48 ], [ %47, %22 ]
+  %57 = phi i32 [ 2, %48 ], [ %42, %22 ]
+  %58 = phi i32 [ %51, %48 ], [ %27, %22 ]
+  %59 = icmp ult i32 %5, 2
+  %60 = call %dx.types.fouri32 @dx.op.waveActiveBallot(i32 116, i1 %59)  ; WaveActiveBallot(cond)
+  %61 = extractvalue %dx.types.fouri32 %60, 0
+  %62 = extractvalue %dx.types.fouri32 %60, 1
+  %63 = extractvalue %dx.types.fouri32 %60, 2
+  %64 = extractvalue %dx.types.fouri32 %60, 3
+  %65 = icmp eq i32 %61, 3
+  %66 = or i32 %62, %63
+  %67 = or i32 %66, %64
+  %68 = icmp eq i32 %67, 0
+  %69 = and i1 %65, %68
+  %70 = add i32 %4, -1
+  %71 = icmp eq i32 %5, %70
+  %72 = call i1 @dx.op.waveAnyTrue(i32 113, i1 %71)  ; WaveAnyTrue(cond)
+  %73 = and i1 %72, %69
+  %74 = icmp ne i32 %5, 0
+  %75 = call i1 @dx.op.waveAllTrue(i32 114, i1 %74)  ; WaveAllTrue(cond)
+  %76 = xor i1 %75, true
+  %77 = and i1 %73, %76
+  %78 = zext i1 %77 to i32
+  %79 = call i1 @dx.op.waveActiveAllEqual.i32(i32 115, i32 %6)  ; WaveActiveAllEqual(value)
+  %80 = call i1 @dx.op.waveActiveAllEqual.i32(i32 115, i32 %5)  ; WaveActiveAllEqual(value)
+  %81 = xor i1 %80, true
+  %82 = and i1 %79, %81
+  %83 = uitofp i32 %6 to float
+  %84 = call i1 @dx.op.waveActiveAllEqual.f32(i32 115, float %83)  ; WaveActiveAllEqual(value)
+  %85 = and i1 %82, %84
+  %86 = zext i32 %6 to i64
+  %87 = shl i64 %86, 33
+  %88 = call i1 @dx.op.waveActiveAllEqual.i64(i32 115, i64 %87)  ; WaveActiveAllEqual(value)
+  %89 = and i1 %85, %88
+  %90 = zext i32 %5 to i64
+  %91 = shl i64 %90, 40
+  %92 = call i1 @dx.op.waveActiveAllEqual.i64(i32 115, i64 %91)  ; WaveActiveAllEqual(value)
+  %93 = xor i1 %92, true
+  %94 = and i1 %89, %93
+  %95 = zext i1 %94 to i32
+  %96 = uitofp i32 %5 to float
+  %97 = call float @dx.op.waveActiveOp.f32(i32 119, float %96, i8 0, i8 0)  ; WaveActiveOp(value,op,sop)
+  %98 = mul i32 %70, %4
+  %99 = lshr i32 %98, 1
+  %100 = uitofp i32 %99 to float
+  %101 = fcmp fast oeq float %97, %100
+  %102 = fadd fast float %96, -1.500000e+00
+  %103 = call float @dx.op.waveActiveOp.f32(i32 119, float %102, i8 2, i8 0)  ; WaveActiveOp(value,op,sop)
+  %104 = fcmp fast oeq float %103, -1.500000e+00
+  %105 = and i1 %101, %104
+  %106 = fmul fast float %96, 5.000000e-01
+  %107 = call float @dx.op.waveActiveOp.f32(i32 119, float %106, i8 3, i8 0)  ; WaveActiveOp(value,op,sop)
+  %108 = uitofp i32 %70 to float
+  %109 = fmul fast float %108, 5.000000e-01
+  %110 = fcmp fast oeq float %107, %109
+  %111 = and i1 %105, %110
+  %112 = icmp ult i32 %5, 3
+  %113 = add i32 %5, 2
+  %114 = uitofp i32 %113 to float
+  %115 = select i1 %112, float %114, float 1.000000e+00
+  %116 = call float @dx.op.waveActiveOp.f32(i32 119, float %115, i8 1, i8 0)  ; WaveActiveOp(value,op,sop)
+  %117 = fcmp fast oeq float %116, 2.400000e+01
+  %118 = and i1 %111, %117
+  %119 = zext i1 %118 to i32
+  %120 = add nsw i32 %5, -2
+  %121 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %120, i8 2, i8 0)  ; WaveActiveOp(value,op,sop)
+  %122 = icmp eq i32 %121, -2
+  %123 = add nsw i32 %5, -100
+  %124 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %123, i8 3, i8 0)  ; WaveActiveOp(value,op,sop)
+  %125 = add nsw i32 %4, -101
+  %126 = icmp eq i32 %124, %125
+  %127 = and i1 %122, %126
+  %128 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %5, i8 3, i8 1)  ; WaveActiveOp(value,op,sop)
+  %129 = icmp eq i32 %128, %70
+  %130 = and i1 %127, %129
+  %131 = add i32 %5, 7
+  %132 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %131, i8 2, i8 1)  ; WaveActiveOp(value,op,sop)
+  %133 = icmp eq i32 %132, 7
+  %134 = and i1 %130, %133
+  %135 = select i1 %112, i32 %113, i32 1
+  %136 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %135, i8 1, i8 1)  ; WaveActiveOp(value,op,sop)
+  %137 = icmp eq i32 %136, 24
+  %138 = and i1 %134, %137
+  %139 = zext i1 %138 to i32
+  %140 = call i32 @dx.op.wavePrefixOp.i32(i32 121, i32 2, i8 1, i8 1)  ; WavePrefixOp(value,op,sop)
+  %141 = and i32 %5, 31
+  %142 = shl i32 1, %141
+  %143 = icmp eq i32 %140, %142
+  %144 = call float @dx.op.wavePrefixOp.f32(i32 121, float 1.000000e+00, i8 0, i8 0)  ; WavePrefixOp(value,op,sop)
+  %145 = fcmp fast oeq float %144, %96
+  %146 = and i1 %143, %145
+  %147 = add nsw i32 %5, -3
+  %148 = call i32 @dx.op.wavePrefixOp.i32(i32 121, i32 %147, i8 0, i8 0)  ; WavePrefixOp(value,op,sop)
+  %149 = add i32 %5, -1
+  %150 = mul i32 %149, %5
+  %151 = lshr i32 %150, 1
+  %152 = mul i32 %5, -3
+  %153 = add i32 %151, %152
+  %154 = icmp eq i32 %148, %153
+  %155 = and i1 %146, %154
+  %156 = icmp eq i32 %5, 0
+  %157 = select i1 %156, float 3.000000e+00, float 1.000000e+00
+  %158 = call float @dx.op.wavePrefixOp.f32(i32 121, float %157, i8 1, i8 0)  ; WavePrefixOp(value,op,sop)
+  %159 = select i1 %156, float 1.000000e+00, float 3.000000e+00
+  %160 = fcmp fast oeq float %158, %159
+  %161 = and i1 %155, %160
+  %162 = zext i1 %161 to i32
+  %163 = call i32 @dx.op.waveActiveBit.i32(i32 120, i32 %142, i8 2)  ; WaveActiveBit(value,op)
+  %164 = icmp eq i32 %163, %18
+  %165 = or i32 %5, 256
+  %166 = call i32 @dx.op.waveActiveBit.i32(i32 120, i32 %165, i8 0)  ; WaveActiveBit(value,op)
+  %167 = icmp eq i32 %166, 256
+  %168 = and i1 %164, %167
+  %169 = call i32 @dx.op.waveActiveBit.i32(i32 120, i32 %5, i8 1)  ; WaveActiveBit(value,op)
+  %170 = icmp eq i32 %169, %70
+  %171 = and i1 %168, %170
+  %172 = call i32 @dx.op.waveActiveBit.i32(i32 120, i32 %142, i8 1)  ; WaveActiveBit(value,op)
+  %173 = icmp eq i32 %172, %18
+  %174 = and i1 %171, %173
+  %175 = zext i1 %174 to i32
+  %176 = call i64 @dx.op.waveActiveOp.i64(i32 119, i64 %91, i8 0, i8 1)  ; WaveActiveOp(value,op,sop)
+  %177 = zext i32 %99 to i64
+  %178 = shl i64 %177, 40
+  %179 = icmp eq i64 %176, %178
+  %180 = add nsw i64 %90, -5
+  %181 = call i64 @dx.op.waveActiveOp.i64(i32 119, i64 %180, i8 3, i8 0)  ; WaveActiveOp(value,op,sop)
+  %182 = zext i32 %4 to i64
+  %183 = add nsw i64 %182, -6
+  %184 = icmp eq i64 %181, %183
+  %185 = and i1 %179, %184
+  %186 = shl i64 %90, 33
+  %187 = or i64 %186, 9
+  %188 = call i64 @dx.op.waveActiveOp.i64(i32 119, i64 %187, i8 2, i8 1)  ; WaveActiveOp(value,op,sop)
+  %189 = icmp eq i64 %188, 9
+  %190 = and i1 %185, %189
+  %191 = call i64 @dx.op.wavePrefixOp.i64(i32 121, i64 34359738368, i8 0, i8 1)  ; WavePrefixOp(value,op,sop)
+  %192 = shl i64 %90, 35
+  %193 = icmp eq i64 %191, %192
+  %194 = and i1 %190, %193
+  %195 = add i32 %5, 32
+  %196 = zext i32 %195 to i64
+  %197 = and i64 %196, 63
+  %198 = shl i64 1, %197
+  %199 = call i64 @dx.op.waveActiveBit.i64(i32 120, i64 %198, i8 1)  ; WaveActiveBit(value,op)
+  %200 = zext i32 %17 to i64
+  %201 = shl nuw i64 %200, 32
+  %202 = select i1 %14, i64 -4294967296, i64 %201
+  %203 = icmp eq i64 %199, %202
+  %204 = and i1 %194, %203
+  %205 = xor i32 %5, 1
+  %206 = zext i32 %3 to i64
+  %207 = shl nuw i64 %206, 32
+  %208 = mul i32 %3, 3
+  %209 = zext i32 %208 to i64
+  %210 = or i64 %207, %209
+  %211 = call i64 @dx.op.waveReadLaneAt.i64(i32 117, i64 %210, i32 %205)  ; WaveReadLaneAt(value,lane)
+  %212 = add i32 %6, %205
+  %213 = zext i32 %212 to i64
+  %214 = shl nuw i64 %213, 32
+  %215 = mul i32 %212, 3
+  %216 = zext i32 %215 to i64
+  %217 = or i64 %214, %216
+  %218 = icmp eq i64 %211, %217
+  %219 = and i1 %204, %218
+  %220 = shl nuw nsw i64 %206, 31
+  %221 = call i64 @dx.op.waveReadLaneFirst.i64(i32 118, i64 %220)  ; WaveReadLaneFirst(value)
+  %222 = shl nuw nsw i64 %86, 31
+  %223 = icmp eq i64 %221, %222
+  %224 = and i1 %219, %223
+  %225 = select i1 %59, i64 4294967297, i64 1
+  %226 = call i64 @dx.op.waveActiveOp.i64(i32 119, i64 %225, i8 1, i8 1)  ; WaveActiveOp(value,op,sop)
+  %227 = icmp eq i64 %226, 8589934593
+  %228 = and i1 %224, %227
+  %229 = or i64 %90, -8589934592
+  %230 = call i64 @dx.op.waveActiveOp.i64(i32 119, i64 %229, i8 2, i8 0)  ; WaveActiveOp(value,op,sop)
+  %231 = icmp eq i64 %230, -8589934592
+  %232 = and i1 %228, %231
+  %233 = zext i1 %232 to i32
+  %234 = call %dx.types.fouri32 @dx.op.waveMatch.i32(i32 165, i32 %11)  ; WaveMatch(value)
+  %235 = extractvalue %dx.types.fouri32 %234, 0
+  %236 = icmp eq i32 %235, %19
+  %237 = zext i32 %21 to i64
+  %238 = shl i64 %237, 40
+  %239 = call %dx.types.fouri32 @dx.op.waveMatch.i64(i32 165, i64 %238)  ; WaveMatch(value)
+  %240 = extractvalue %dx.types.fouri32 %239, 0
+  %241 = and i32 %5, 30
+  %242 = shl i32 3, %241
+  %243 = icmp eq i32 %240, %242
+  %244 = and i1 %236, %243
+  %245 = uitofp i32 %11 to float
+  %246 = call %dx.types.fouri32 @dx.op.waveMatch.f32(i32 165, float %245)  ; WaveMatch(value)
+  %247 = extractvalue %dx.types.fouri32 %246, 0
+  %248 = icmp eq i32 %247, %19
+  %249 = and i1 %244, %248
+  %250 = call %dx.types.fouri32 @dx.op.waveMatch.i32(i32 165, i32 %6)  ; WaveMatch(value)
+  %251 = extractvalue %dx.types.fouri32 %250, 0
+  %252 = icmp eq i32 %251, %18
+  %253 = and i1 %249, %252
+  %254 = zext i1 %253 to i32
+  %255 = call i32 @dx.op.waveMultiPrefixOp.i32(i32 166, i32 1, i32 %19, i32 0, i32 0, i32 0, i8 0, i8 1)  ; WaveMultiPrefixOp(value,mask0,mask1,mask2,mask3,op,sop)
+  %256 = icmp eq i32 %255, %21
+  %257 = call i32 @dx.op.waveMultiPrefixBitCount(i32 167, i1 true, i32 %19, i32 0, i32 0, i32 0)  ; WaveMultiPrefixBitCount(value,mask0,mask1,mask2,mask3)
+  %258 = icmp eq i32 %257, %21
+  %259 = and i1 %256, %258
+  %260 = call i32 @dx.op.waveMultiPrefixOp.i32(i32 166, i32 2, i32 %19, i32 0, i32 0, i32 0, i8 4, i8 1)  ; WaveMultiPrefixOp(value,mask0,mask1,mask2,mask3,op,sop)
+  %261 = and i32 %21, 31
+  %262 = shl i32 1, %261
+  %263 = icmp eq i32 %260, %262
+  %264 = and i1 %259, %263
+  %265 = call i32 @dx.op.waveMultiPrefixOp.i32(i32 166, i32 %142, i32 %19, i32 0, i32 0, i32 0, i8 2, i8 0)  ; WaveMultiPrefixOp(value,mask0,mask1,mask2,mask3,op,sop)
+  %266 = add i32 %142, -1
+  %267 = and i32 %19, %266
+  %268 = icmp eq i32 %265, %267
+  %269 = and i1 %264, %268
+  %270 = call i32 @dx.op.waveMultiPrefixOp.i32(i32 166, i32 %142, i32 %19, i32 0, i32 0, i32 0, i8 3, i8 0)  ; WaveMultiPrefixOp(value,mask0,mask1,mask2,mask3,op,sop)
+  %271 = icmp eq i32 %270, %267
+  %272 = and i1 %269, %271
+  %273 = select i1 %59, i32 240, i32 255
+  %274 = call i32 @dx.op.waveMultiPrefixOp.i32(i32 166, i32 %273, i32 %19, i32 0, i32 0, i32 0, i8 1, i8 0)  ; WaveMultiPrefixOp(value,mask0,mask1,mask2,mask3,op,sop)
+  %275 = select i1 %59, i32 -1, i32 240
+  %276 = icmp eq i32 %274, %275
+  %277 = and i1 %272, %276
+  %278 = call i64 @dx.op.waveMultiPrefixOp.i64(i32 166, i64 17179869184, i32 %19, i32 0, i32 0, i32 0, i8 0, i8 1)  ; WaveMultiPrefixOp(value,mask0,mask1,mask2,mask3,op,sop)
+  %279 = shl i64 %237, 34
+  %280 = icmp eq i64 %278, %279
+  %281 = and i1 %277, %280
+  %282 = call float @dx.op.waveMultiPrefixOp.f32(i32 166, float %96, i32 %19, i32 0, i32 0, i32 0, i8 0, i8 0)  ; WaveMultiPrefixOp(value,mask0,mask1,mask2,mask3,op,sop)
+  %283 = add nsw i32 %21, -1
+  %284 = mul i32 %283, %21
+  %285 = sub nsw i32 0, %11
+  %286 = and i32 %21, %285
+  %287 = add i32 %284, %286
+  %288 = uitofp i32 %287 to float
+  %289 = fcmp fast oeq float %282, %288
+  %290 = and i1 %281, %289
+  %291 = zext i1 %290 to i32
+  %292 = call i32 @dx.op.waveReadLaneAt.i32(i32 117, i32 %10, i32 0)  ; WaveReadLaneAt(value,lane)
+  %293 = shl i32 %6, 2
+  %294 = and i32 %293, 1020
+  %295 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %294, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %296 = extractvalue %dx.types.ResRet.i32 %295, 0
+  %297 = icmp eq i32 %292, %296
+  %298 = zext i1 %297 to i32
+  %299 = call i32 @dx.op.quadOp.i32(i32 123, i32 %3, i8 0)  ; QuadOp(value,op)
+  %300 = xor i32 %3, 1
+  %301 = icmp eq i32 %299, %300
+  %302 = call i32 @dx.op.quadOp.i32(i32 123, i32 %3, i8 1)  ; QuadOp(value,op)
+  %303 = xor i32 %3, 2
+  %304 = icmp eq i32 %302, %303
+  %305 = and i1 %301, %304
+  %306 = call i32 @dx.op.quadOp.i32(i32 123, i32 %3, i8 2)  ; QuadOp(value,op)
+  %307 = xor i32 %3, 3
+  %308 = icmp eq i32 %306, %307
+  %309 = and i1 %305, %308
+  %310 = call i32 @dx.op.quadReadLaneAt.i32(i32 122, i32 %3, i32 2)  ; QuadReadLaneAt(value,quadLane)
+  %311 = and i32 %3, -4
+  %312 = or i32 %311, 2
+  %313 = icmp eq i32 %310, %312
+  %314 = and i1 %309, %313
+  %315 = shl i64 %206, 40
+  %316 = call i64 @dx.op.quadOp.i64(i32 123, i64 %315, i8 0)  ; QuadOp(value,op)
+  %317 = zext i32 %300 to i64
+  %318 = shl i64 %317, 40
+  %319 = icmp eq i64 %316, %318
+  %320 = and i1 %314, %319
+  %321 = zext i1 %320 to i32
+  %322 = icmp ugt i32 %5, 1
+  br i1 %322, label %323, label %328
+
+; <label>:323                                     ; preds = %55
+  %324 = call i32 @dx.op.waveReadLaneFirst.i32(i32 118, i32 %3)  ; WaveReadLaneFirst(value)
+  %325 = add i32 %6, 2
+  %326 = icmp eq i32 %324, %325
+  %327 = zext i1 %326 to i32
+  br label %328
+
+; <label>:328                                     ; preds = %323, %55
+  %329 = phi i32 [ %327, %323 ], [ 2, %55 ]
+  %330 = icmp ugt i32 %4, 3
+  %331 = zext i1 %330 to i32
+  %332 = shl i32 %3, 6
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %332, i32 undef, i32 %58, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %333 = or i32 %332, 4
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %333, i32 undef, i32 %57, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %334 = or i32 %332, 8
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %334, i32 undef, i32 %78, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %335 = or i32 %332, 12
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %335, i32 undef, i32 %95, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %336 = or i32 %332, 16
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %336, i32 undef, i32 %119, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %337 = or i32 %332, 20
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %337, i32 undef, i32 %139, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %338 = or i32 %332, 24
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %338, i32 undef, i32 %162, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %339 = or i32 %332, 28
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %339, i32 undef, i32 %175, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %340 = or i32 %332, 32
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %340, i32 undef, i32 %233, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %341 = or i32 %332, 36
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %341, i32 undef, i32 %254, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %342 = or i32 %332, 40
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %342, i32 undef, i32 %291, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %343 = or i32 %332, 44
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %343, i32 undef, i32 %298, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %344 = or i32 %332, 48
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %344, i32 undef, i32 %321, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %345 = or i32 %332, 52
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %345, i32 undef, i32 %329, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %346 = or i32 %332, 56
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %346, i32 undef, i32 %56, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %347 = or i32 %332, 60
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %347, i32 undef, i32 %331, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.waveGetLaneIndex(i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.waveGetLaneCount(i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32, %dx.types.Handle, i32, i32, i8, i32) #1
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveActiveBit.i32(i32, i32, i8) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.wavePrefixOp.i32(i32, i32, i8, i8) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveActiveOp.i32(i32, i32, i8, i8) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveReadLaneFirst.i32(i32, i32) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.wavePrefixOp(i32, i1) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveAllOp(i32, i1) #2
+
+; Function Attrs: nounwind
+declare %dx.types.fouri32 @dx.op.waveActiveBallot(i32, i1) #2
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveIsFirstLane(i32) #2
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveAllTrue(i32, i1) #2
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveAnyTrue(i32, i1) #2
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveActiveAllEqual.i32(i32, i32) #2
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveActiveAllEqual.f32(i32, float) #2
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveActiveAllEqual.i64(i32, i64) #2
+
+; Function Attrs: nounwind
+declare float @dx.op.wavePrefixOp.f32(i32, float, i8, i8) #2
+
+; Function Attrs: nounwind
+declare float @dx.op.waveActiveOp.f32(i32, float, i8, i8) #2
+
+; Function Attrs: nounwind
+declare i64 @dx.op.waveActiveOp.i64(i32, i64, i8, i8) #2
+
+; Function Attrs: nounwind
+declare i64 @dx.op.waveReadLaneFirst.i64(i32, i64) #2
+
+; Function Attrs: nounwind
+declare i64 @dx.op.waveActiveBit.i64(i32, i64, i8) #2
+
+; Function Attrs: nounwind
+declare i64 @dx.op.wavePrefixOp.i64(i32, i64, i8, i8) #2
+
+; Function Attrs: nounwind
+declare i64 @dx.op.waveReadLaneAt.i64(i32, i64, i32) #2
+
+; Function Attrs: nounwind
+declare %dx.types.fouri32 @dx.op.waveMatch.i32(i32, i32) #2
+
+; Function Attrs: nounwind
+declare %dx.types.fouri32 @dx.op.waveMatch.i64(i32, i64) #2
+
+; Function Attrs: nounwind
+declare %dx.types.fouri32 @dx.op.waveMatch.f32(i32, float) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveMultiPrefixOp.i32(i32, i32, i32, i32, i32, i32, i8, i8) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveMultiPrefixBitCount(i32, i1, i32, i32, i32, i32) #2
+
+; Function Attrs: nounwind
+declare i64 @dx.op.waveMultiPrefixOp.i64(i32, i64, i32, i32, i32, i32, i8, i8) #2
+
+; Function Attrs: nounwind
+declare float @dx.op.waveMultiPrefixOp.f32(i32, float, i32, i32, i32, i32, i8, i8) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.quadReadLaneAt.i32(i32, i32, i32) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveReadLaneAt.i32(i32, i32, i32) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.quadOp.i32(i32, i32, i8) #2
+
+; Function Attrs: nounwind
+declare i64 @dx.op.quadOp.i64(i32, i64, i8) #2
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #1
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!9}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 5}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 5}
+!4 = !{!5, !7, null, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i32 0, null}
+!7 = !{!8}
+!8 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!9 = !{void ()* @cs_wavex, !"cs_wavex", null, !4, !10}
+!10 = !{i32 0, i64 1572880, i32 4, !11}
+!11 = !{i32 64, i32 1, i32 1}

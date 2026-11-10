@@ -1,0 +1,38 @@
+{
+  "sdk_sha256": "99635caa4e937340c9f1508b2ca5bfccccdd1e3d416045fac2b6a20c95fdfc53",
+  "sdk_path": "Windows Kits/10/Include/10.0.26100.0/um/icm.h",
+  "exports": {
+    "IsColorProfileValid": {
+      "parameters": "_In_ HPROFILE hProfile, _Out_ PBOOL pbValid",
+      "argument_count": 2
+    },
+    "DeleteColorTransform": {
+      "parameters": "_Inout_ HTRANSFORM hxform",
+      "argument_count": 1
+    },
+    "TranslateColors": {
+      "parameters": "_In_ HTRANSFORM hColorTransform, _In_reads_(nColors) PCOLOR paInputColors, DWORD nColors, COLORTYPE ctInput, _Out_writes_(nColors) PCOLOR paOutputColors, COLORTYPE ctOutput",
+      "argument_count": 6
+    },
+    "CloseColorProfile": {
+      "parameters": "_In_opt_ HPROFILE hProfile",
+      "argument_count": 1
+    },
+    "OpenColorProfileW": {
+      "parameters": "_In_ PPROFILE pProfile, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationMode",
+      "argument_count": 4
+    },
+    "CreateMultiProfileTransform": {
+      "parameters": "_In_reads_(nProfiles) PHPROFILE pahProfiles, DWORD nProfiles, _In_reads_(nIntents) PDWORD padwIntent, DWORD nIntents, DWORD dwFlags, DWORD indexPreferredCMM",
+      "argument_count": 6
+    },
+    "GetColorProfileHeader": {
+      "parameters": "_In_ HPROFILE hProfile, _Out_ PPROFILEHEADER pHeader",
+      "argument_count": 2
+    },
+    "GetColorDirectoryW": {
+      "parameters": " _In_opt_ PCWSTR pMachineName, _Out_writes_bytes_to_opt_(*pdwSize, *pdwSize) PWSTR pBuffer, _Inout_ PDWORD pdwSize ",
+      "argument_count": 3
+    }
+  }
+}

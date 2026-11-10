@@ -140,6 +140,21 @@ public:
         (void)w_size;
         return false;
     }
+
+    /// view() plus a D3D12 Shader4ComponentMapping
+    /// (BackendTextureViewDesc::component_mapping): 3 bits per output
+    /// component, 0-3 a source component, 4 the constant 0, 5 the constant 1.
+    /// 0 is the identity and is view(). Null when a non-zero mapping cannot
+    /// be applied. Force-1 is 1.0 or 0x1 according to that component's
+    /// numeric type, which the texture swizzle supplies. Declared last so
+    /// existing virtual slots stay where already-compiled callers expect them.
+    [[nodiscard]] virtual BackendTexture3D* view(PixelFormat format,
+                                                 unsigned first_mip,
+                                                 unsigned mip_count,
+                                                 u16 component_mapping) {
+        if (component_mapping != 0) return nullptr;
+        return view(format, first_mip, mip_count);
+    }
 };
 
 /// One corner of a texture copy: a 2D (array/cube) or a volume texture, the

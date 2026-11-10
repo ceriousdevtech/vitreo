@@ -7,6 +7,7 @@
 #include <atomic>
 
 #include <codecvt>
+#include <charconv>
 #include <cwctype>
 #include <cstdio>
 #include <fstream>
@@ -180,6 +181,70 @@ Result<RegHandle, Error> Registry::open_key(RegHandle parent,
                                   std::move(path)};
     if (created_out != nullptr) *created_out = created;
     return Result<RegHandle, Error>::ok(h);
+}
+
+static bool rename_path_prefix(const std::vector<std::wstring>& path,
+                               const std::vector<std::wstring>& beginning) {
+        if (path.size() < beginning.size()) return false;
+        RegCaseInsensitive less;
+        for (usize i=0; i<beginning.size(); ++i)
+            if (less(path[i],beginning[i]) || less(beginning[i],path[i])) return false;
+        return true;
+}
+
+// RegRenameKey preserves the node allocation: handles to the renamed key and
+// its descendants continue addressing the same values and children.
+VoidResult Registry::rename_physical(const Path& source, std::wstring_view new_name) {
+    if (source.size() < 2) return VoidResult::err(Error::NotSupported);
+    RegNode* parent = walk_physical(Path(source.begin(),source.end()-1),false);
+    if (!parent) return VoidResult::err(Error::NotFound);
+    auto node = parent->children.find(source.back());
+    if (node == parent->children.end()) return VoidResult::err(Error::NotFound);
+    const std::wstring name(new_name);
+    // Windows rejects collisions, including a case-only or identical name.
+    if (parent->children.find(name) != parent->children.end())
+        return VoidResult::err(Error::AccessDenied);
+    auto subtree = std::move(node->second);
+    parent->children.erase(node);
+    subtree->name = name;
+    parent->children.emplace(name,std::move(subtree));
+    for (auto& [handle,info] : m_handle_info) {
+        (void)handle;
+        if (rename_path_prefix(info.path,source)) info.path[source.size()-1] = name;
+    }
+    for (auto& [handle,binding] : m_merged_handles) {
+        (void)handle;
+        for (auto* path : {&binding.user_path, &binding.machine_path})
+            if (rename_path_prefix(*path,source)) (*path)[source.size()-1] = name;
+    }
+    return VoidResult::ok();
+}
+
+VoidResult Registry::rename_key(RegHandle key, std::wstring_view subkey,
+                                std::wstring_view new_name) {
+    std::lock_guard lock(m_mutex);
+    sync_live_journal();
+    if (!resolve(key)) return VoidResult::err(Error::InvalidHandle);
+    if (new_name.empty() || new_name.find(L'\\') != std::wstring_view::npos)
+        return VoidResult::err(Error::InvalidArgument);
+    if (m_merged_handles.contains(key)) return VoidResult::err(Error::NotSupported);
+    auto info = m_handle_info.find(key);
+    if (info == m_handle_info.end()) return VoidResult::err(Error::InvalidHandle);
+    Path source = info->second.path;
+    const auto parts = split_reg_path(subkey);
+    source.insert(source.end(),parts.begin(),parts.end());
+    if (!parts.empty()) source = redirect_path(std::move(source),handle_is_wow32(key));
+    // Merged Classes aliases can combine two physical nodes. Reject both
+    // backing subtrees and their ancestors consistently in every process until
+    // identity and child-open semantics for those aliases are measured.
+    for (const auto* hive : {L"HKEY_CURRENT_USER",L"HKEY_LOCAL_MACHINE"}) {
+        const Path classes{hive,L"Software",L"Classes"};
+        if (rename_path_prefix(source,classes) || rename_path_prefix(classes,source))
+            return VoidResult::err(Error::NotSupported);
+    }
+    const auto renamed = rename_physical(source,new_name);
+    if (renamed.is_ok()) record_live_key_rename(journal_path(source),new_name);
+    return renamed;
 }
 
 // =============================================================================
@@ -893,10 +958,14 @@ void Registry::apply_live_record(std::string_view record) {
         }
         return;
     }
+    if (fields[0] == "R" && fields.size() == 3) {
+        (void)rename_physical(split_reg_path(path),utf8_to_wstring(live_unhex(fields[2])));
+        return;
+    }
     if (fields[0] == "K") live_delete_node(path);
 }
 
-void Registry::sync_live_journal() {
+void Registry::sync_live_journal(const SnapshotOffsets* snapshot_offsets) {
     if (m_registry_dir.empty()) return;
     const auto path = m_registry_dir / "live.reglog";
     const int fd = ::open(path.c_str(), O_RDONLY | O_CREAT, 0600);
@@ -913,6 +982,20 @@ void Registry::sync_live_journal() {
     }
     const u64 file_size = static_cast<u64>(status.st_size);
     if (m_live_journal_offset > file_size) m_live_journal_offset = 0;
+    if (snapshot_offsets != nullptr && !snapshot_offsets->empty()) {
+        const auto earliest = std::min_element(
+            snapshot_offsets->begin(), snapshot_offsets->end(),
+            [](const auto& a, const auto& b) { return a.second < b.second; });
+        const u64 covered = earliest->second;
+        // Every hive includes this prefix. Validate the record boundary under
+        // the journal lock; malformed metadata must keep the original replay.
+        char boundary = 0;
+        if (covered > m_live_journal_offset && covered <= file_size &&
+            ::pread(fd, &boundary, 1, static_cast<off_t>(covered - 1)) == 1 &&
+            boundary == '\n') {
+            m_live_journal_offset = covered;
+        }
+    }
     const usize pending = static_cast<usize>(
         file_size - m_live_journal_offset);
     std::string content(pending, '\0');
@@ -932,8 +1015,20 @@ void Registry::sync_live_journal() {
     while (consumed < content.size()) {
         const usize newline = content.find('\n', consumed);
         if (newline == std::string::npos) break;
-        apply_live_record(std::string_view(content).substr(
-            consumed, newline - consumed));
+        const auto record = std::string_view(content).substr(consumed,newline-consumed);
+        bool already_snapshotted = false;
+        if (snapshot_offsets) {
+            const auto fields = split_live_record(record);
+            if (fields.size() >= 2) {
+                const auto parts = split_reg_path(utf8_to_wstring(live_unhex(fields[1])));
+                if (!parts.empty()) {
+                    const auto snapshot = snapshot_offsets->find(parts.front());
+                    already_snapshotted = snapshot != snapshot_offsets->end() &&
+                        m_live_journal_offset + newline + 1 <= snapshot->second;
+                }
+            }
+        }
+        if (!already_snapshotted) apply_live_record(record);
         consumed = newline + 1;
     }
     m_live_journal_offset += consumed;
@@ -1014,6 +1109,12 @@ void Registry::record_live_key_delete(std::wstring_view canonical_path) {
         wstring_to_utf8(std::wstring(canonical_path))));
 }
 
+void Registry::record_live_key_rename(std::wstring_view canonical_path,
+                                      std::wstring_view new_name) {
+    append_live_record("R\t" + live_hex(wstring_to_utf8(std::wstring(canonical_path))) +
+                       "\t" + live_hex(wstring_to_utf8(std::wstring(new_name))));
+}
+
 // =============================================================================
 // Registry::save
 // =============================================================================
@@ -1048,7 +1149,8 @@ void Registry::save(const std::filesystem::path& registry_dir) {
                          path.string().c_str());
             continue;
         }
-        out << "# Vitreo Registry Hive: " << hive.filename << "\n\n";
+        out << "# Vitreo Registry Hive: " << hive.filename << "\n"
+            << "# Vitreo Journal Offset: " << m_live_journal_offset << "\n\n";
         write_node(out, hive.root, "");
         out.close();
         std::filesystem::rename(temporary, path, ec);
@@ -1085,17 +1187,35 @@ void Registry::load(const std::filesystem::path& registry_dir) {
         {"HKU.reg",  m_hku.get()},
     };
 
+    SnapshotOffsets snapshot_offsets;
     for (const auto& hive : hives) {
+        // A missing/legacy hive needs the whole journal, not just the prefix
+        // covered by whichever other snapshots happened to load.
+        auto [snapshot, inserted] = snapshot_offsets.emplace(hive.root->name, 0);
         auto path = registry_dir / hive.filename;
         std::ifstream in(path);
         if (!in.is_open()) {
             // Missing file — silently skip (first run or empty hive)
             continue;
         }
+        // Each atomic hive snapshot records which journal prefix it includes.
+        // Offsets are per hive so interrupted multi-hive saves remain valid.
+        std::string header, offset_line;
+        std::getline(in,header);
+        std::getline(in,offset_line);
+        constexpr std::string_view marker = "# Vitreo Journal Offset: ";
+        u64 snapshot_offset = 0;
+        if (offset_line.starts_with(marker)) {
+            const auto number = std::string_view(offset_line).substr(marker.size());
+            const auto parsed = std::from_chars(number.data(),number.data()+number.size(),snapshot_offset);
+            if (parsed.ec != std::errc{} || parsed.ptr != number.data()+number.size()) snapshot_offset = 0;
+        }
+        snapshot->second = snapshot_offset;
+        in.clear();in.seekg(0);
         read_hive(in, hive.root);
         VITREO_TRACE( "[registry] Loaded %s\n", path.string().c_str());
     }
-    sync_live_journal();
+    sync_live_journal(&snapshot_offsets);
 }
 
 } // namespace vitreo::capsule

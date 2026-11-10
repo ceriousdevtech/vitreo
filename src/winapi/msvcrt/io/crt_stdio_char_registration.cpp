@@ -143,6 +143,22 @@ void add_crt_stdio_cputs_exports(DllExports& exports, const StdioContext& /*ctx*
         ::close(tty);
         m.set_return(written < 0 ? 0xFFFFFFFFu : 0u);
     }});
+
+    // int _putch(int c)
+    //
+    // Learn: writes the character to the console without buffering and
+    // returns c, or EOF on failure. msvcrt writes the low byte and returns
+    // it as an unsigned char (crt_legacy_exports_probe: 'A' -> 65, 0x141 ->
+    // 65, -1 -> 255). Same console as _cputs.
+    exports.entries.push_back({"_putch", 0, [](Marshaler& m) {
+        const auto byte = static_cast<unsigned char>(m.arg(0) & 0xFFu);
+        int tty = ::open("/dev/tty", O_WRONLY | O_CLOEXEC);
+        const bool own_tty = tty >= 0;
+        if (!own_tty) tty = STDERR_FILENO;
+        const auto written = ::write(tty, &byte, 1);
+        if (own_tty) ::close(tty);
+        m.set_return(written == 1 ? static_cast<u32>(byte) : 0xFFFFFFFFu);
+    }});
 }
 
 /// _filbuf, _flsbuf and setbuf.

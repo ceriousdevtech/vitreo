@@ -11,6 +11,7 @@
 
 #include "jit_helpers.hpp"
 #include "jit_helpers_lock_internal.hpp"
+#include "jit_helpers_internal.hpp"
 #include "../lock_prefix.hpp"
 #include "core/memory/write_watch_traps.hpp"
 
@@ -58,6 +59,12 @@ extern "C" void jit_lock_cmpxchg32(CpuState* cpu, GuestMemory* mem,
     LockPrefixGuard guard(host, sizeof(u32));
     if (host == nullptr ||
         reinterpret_cast<uintptr_t>(host) % alignof(u32) != 0) {
+        // No writable host pointer, or a split lock: the destination check
+        // first, so a fault is the WRITE access violation Windows reports
+        // with EAX, the flags and memory untouched.
+        if (host == nullptr && jit_cmpxchg_dest_faults(cpu, mem, addr, 4)) {
+            return;
+        }
         auto result = mem->read_u32(addr);
         if (!result.is_ok()) {
             jit_lock_raise_av(cpu, addr, true);
@@ -129,16 +136,8 @@ extern "C" void jit_lock_cmpxchg16b(CpuState* cpu, GuestMemory* mem, u64 addr) {
     // unlocked jit_cmpxchg16b. No host pointer → pending_raise, never a
     // non-atomic store.
     if ((addr & 0xFu) != 0) {
-        if (!cpu->pending_raise.active) {
-            auto& pending = cpu->pending_raise;
-            pending.active = true;
-            pending.from_helper = true;
-            pending.code = 0xC0000005u;
-            pending.flags = 0;
-            pending.num_args = 2;
-            pending.args[0] = 0;
-            pending.args[1] = addr;
-        }
+        // #GP(0): [0] = 0, [1] = all-ones (cmpxchg16b_align_probe.expected).
+        jit_raise_cmpxchg16b_misaligned(cpu);
         return;
     }
 
@@ -146,7 +145,9 @@ extern "C" void jit_lock_cmpxchg16b(CpuState* cpu, GuestMemory* mem, u64 addr) {
     LockPrefixGuard guard(host, 16);
     if (host == nullptr ||
         (reinterpret_cast<uintptr_t>(host) & 0xFu) != 0) {
-        jit_lock_raise_av(cpu, addr, true);
+        if (!jit_cmpxchg_dest_faults(cpu, mem, addr, 16)) {
+            jit_lock_raise_av(cpu, addr, true);
+        }
         return;
     }
 
@@ -187,6 +188,9 @@ extern "C" void jit_lock_cmpxchg8b(CpuState* cpu, GuestMemory* mem, u64 addr) {
     LockPrefixGuard guard(host, sizeof(u64));
     if (host == nullptr ||
         reinterpret_cast<uintptr_t>(host) % alignof(u64) != 0) {
+        if (host == nullptr && jit_cmpxchg_dest_faults(cpu, mem, addr, 8)) {
+            return;
+        }
         const auto low = mem->read_u32(addr);
         const auto high = mem->read_u32(addr + 4);
         if (!low.is_ok() || !high.is_ok()) {
@@ -255,6 +259,9 @@ extern "C" void jit_lock_cmpxchg64(CpuState* cpu, GuestMemory* mem,
     LockPrefixGuard guard(host, sizeof(u64));
     if (host == nullptr ||
         reinterpret_cast<uintptr_t>(host) % alignof(u64) != 0) {
+        if (host == nullptr && jit_cmpxchg_dest_faults(cpu, mem, addr, 8)) {
+            return;
+        }
         auto result = mem->read_u64(addr);
         if (!result.is_ok()) {
             jit_lock_raise_av(cpu, addr, true);

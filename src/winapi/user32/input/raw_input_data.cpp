@@ -59,7 +59,7 @@ void User32ExtManager::impl_GetRawInputData(Marshaler& m) {
     }
 
     const u32 header_size = packet.is_64bit ? 24u : 16u;
-    const u32 body_size = packet.mouse ? 24u : 16u;
+    const u32 body_size = packet.hid ? gamepad_hid::layout(packet.is_64bit).offsetof_RAWHID_bRawData+gamepad_hid::kReportBytes : packet.mouse ? 24u : 16u;
     const u32 packet_size = header_size + body_size;
     const u32 required = command == kRidHeader ? header_size :
                          command == kRidInput ? packet_size : 0u;
@@ -90,9 +90,9 @@ void User32ExtManager::impl_GetRawInputData(Marshaler& m) {
         return;
     }
 
-    bool ok = m.write_u32(data, packet.mouse ? 0u : kRimTypeKeyboard).is_ok() &&
+    bool ok = m.write_u32(data, packet.hid ? hid_sdk::kRIM_TYPEHID : packet.mouse ? 0u : kRimTypeKeyboard).is_ok() &&
               m.write_u32(data + 4, packet_size).is_ok();
-    const u64 device = packet.mouse ? 2u : 1u;
+    const u64 device = packet.hid ? packet.hid_device : packet.mouse ? 2u : 1u;
     if (packet.is_64bit) {
         ok = ok && m.write_u64(data + 8, device).is_ok() &&
              m.write_u64(data + 16, 0u).is_ok();
@@ -102,7 +102,12 @@ void User32ExtManager::impl_GetRawInputData(Marshaler& m) {
     }
     if (command == kRidInput) {
         const GuestAddr body = data + header_size;
-        if (packet.mouse) {
+        if(packet.hid) {
+            const auto& l=gamepad_hid::layout(packet.is_64bit);
+            ok=ok && m.write_u32(body+l.offsetof_RAWHID_dwSizeHid,gamepad_hid::kReportBytes).is_ok() &&
+                m.write_u32(body+l.offsetof_RAWHID_dwCount,1).is_ok() &&
+                m.memory().write_bytes(body+l.offsetof_RAWHID_bRawData,packet.hid_report.data(),packet.hid_report.size()).is_ok();
+        } else if (packet.mouse) {
             ok = ok && m.write_u16(body, 0u).is_ok() &&
                  m.write_u16(body + 2, 0u).is_ok() &&
                  m.write_u16(body + 4, packet.button_flags).is_ok() &&
@@ -164,7 +169,7 @@ void User32ExtManager::impl_GetRawInputBuffer(Marshaler& m) {
     const RawKeyboardPacket& first =
         m_raw_keyboard_packets.at(m_raw_keyboard_order.front());
     const u32 header_size = first.is_64bit ? 24u : 16u;
-    const u32 packet_size = header_size + (first.mouse ? 24u : 16u);
+    const u32 packet_size = header_size + (first.hid ? gamepad_hid::layout(first.is_64bit).offsetof_RAWHID_bRawData+gamepad_hid::kReportBytes : first.mouse ? 24u : 16u);
     if (caller_header_size != header_size) {
         set_last_error(error_codes::ERROR_INVALID_PARAMETER);
         m.set_return(0xFFFFFFFFu);
@@ -195,14 +200,14 @@ void User32ExtManager::impl_GetRawInputBuffer(Marshaler& m) {
         const RawKeyboardPacket& packet = it->second;
         const u32 current_header_size = packet.is_64bit ? 24u : 16u;
         const u32 current_packet_size =
-            current_header_size + (packet.mouse ? 24u : 16u);
+            current_header_size + (packet.hid ? gamepad_hid::layout(packet.is_64bit).offsetof_RAWHID_bRawData+gamepad_hid::kReportBytes : packet.mouse ? 24u : 16u);
         if (current_header_size != header_size ||
             bytes_used + current_packet_size > capacity) {
             break;
         }
         const GuestAddr output = data + bytes_used;
-        const u64 device = packet.mouse ? 2u : 1u;
-        bool ok = m.write_u32(output, packet.mouse ? 0u : 1u).is_ok() &&
+        const u64 device = packet.hid ? packet.hid_device : packet.mouse ? 2u : 1u;
+        bool ok = m.write_u32(output, packet.hid ? hid_sdk::kRIM_TYPEHID : packet.mouse ? 0u : 1u).is_ok() &&
                   m.write_u32(output + 4, current_packet_size).is_ok();
         if (packet.is_64bit) {
             ok = ok && m.write_u64(output + 8, device).is_ok() &&
@@ -212,7 +217,12 @@ void User32ExtManager::impl_GetRawInputBuffer(Marshaler& m) {
                  m.write_u32(output + 12, 0u).is_ok();
         }
         const GuestAddr body = output + current_header_size;
-        if (packet.mouse) {
+        if(packet.hid) {
+            const auto& l=gamepad_hid::layout(packet.is_64bit);
+            ok=ok && m.write_u32(body+l.offsetof_RAWHID_dwSizeHid,gamepad_hid::kReportBytes).is_ok() &&
+                m.write_u32(body+l.offsetof_RAWHID_dwCount,1).is_ok() &&
+                m.memory().write_bytes(body+l.offsetof_RAWHID_bRawData,packet.hid_report.data(),packet.hid_report.size()).is_ok();
+        } else if (packet.mouse) {
             ok = ok && m.write_u16(body, 0u).is_ok() &&
                  m.write_u16(body + 2, 0u).is_ok() &&
                  m.write_u16(body + 4, packet.button_flags).is_ok() &&
@@ -234,8 +244,12 @@ void User32ExtManager::impl_GetRawInputBuffer(Marshaler& m) {
             m.set_return(0xFFFFFFFFu);
             return;
         }
-        const auto& registration = packet.mouse
-            ? m_raw_mouse_registration : m_raw_keyboard_registration;
+        const auto registration = packet.hid
+            ? raw_registration_locked(m_raw_gamepad_registration, 0x0001u,
+                                      hid_sdk::kHID_USAGE_GENERIC_GAMEPAD)
+            : packet.mouse
+                ? raw_registration_locked(m_raw_mouse_registration, 0x0001u, 0x0002u)
+                : raw_registration_locked(m_raw_keyboard_registration, 0x0001u, 0x0006u);
         const windowing::HWND target =
             registration.has_value()
                 ? (registration->target != windowing::NULL_HWND
@@ -244,7 +258,8 @@ void User32ExtManager::impl_GetRawInputBuffer(Marshaler& m) {
         (void)m_queue.remove_exact(target, windowing::WM::INPUT, handle);
         m_raw_keyboard_packets.erase(it);
         m_raw_keyboard_order.pop_front();
-        bytes_used += current_packet_size;
+        const u32 alignment=packet.is_64bit ? 8u:4u;
+        bytes_used += packet.hid ? (current_packet_size+alignment-1u)&~(alignment-1u) : current_packet_size;
         ++count;
     }
     if (count == 0) {

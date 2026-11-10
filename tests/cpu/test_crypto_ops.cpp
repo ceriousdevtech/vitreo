@@ -7,6 +7,7 @@
 
 #include <gtest/gtest.h>
 #include <cstring>
+#include <vector>
 #include "core/cpu/decode/decoder.hpp"
 #include "core/cpu/interpreter/interpreter.hpp"
 
@@ -756,5 +757,43 @@ TEST_F(CryptoOpsTest, AesencSameReg) {
     for (int i = 0; i < 16; ++i) {
         EXPECT_EQ(m_cpu->sse.xmm[0].u8_[i], cpu2.sse.xmm[0].u8_[i])
             << "AESENC xmm0,xmm0 vs AESENC xmm0,xmm1 (xmm1=state) byte[" << i << "]";
+    }
+}
+
+// ============================================================================
+// VEX.vvvv is reserved (1111b) on VAESIMC / VAESKEYGENASSIST (WS3)
+// Intel SDM Vol. 2A §2.3.6; both instructions: "#UD If VEX.vvvv != 1111B".
+// ============================================================================
+
+namespace {
+DecodeError decode_bytes(const std::vector<u8>& code, DecodeMode mode,
+                         DecodedInstruction& out) {
+    MemoryByteReader reader(code.data(), code.size());
+    return decode_instruction(reader, mode, out);
+}
+} // namespace
+
+TEST(CryptoOpsVexDecodeTest, VexReservedVvvvIsUd) {
+    for (DecodeMode mode : {DecodeMode::Mode32, DecodeMode::Mode64}) {
+        DecodedInstruction in;
+        // vvvv = 0001 (VEX byte 2 = 0x71): reserved field used -> #UD.
+        EXPECT_EQ(decode_bytes({0xC4, 0xE2, 0x71, 0xDB, 0xC1}, mode, in),
+                  DecodeError::InvalidOpcode);
+        EXPECT_EQ(decode_bytes({0xC4, 0xE3, 0x71, 0xDF, 0xC1, 0x01}, mode, in),
+                  DecodeError::InvalidOpcode);
+        // vvvv = 1111b: the valid unary encodings.
+        ASSERT_EQ(decode_bytes({0xC4, 0xE2, 0x79, 0xDB, 0xC1}, mode, in),
+                  DecodeError::Success);
+        EXPECT_EQ(in.opcode, Opcode::AESIMC_XMM_XMMM128);
+        ASSERT_EQ(decode_bytes({0xC4, 0xE3, 0x79, 0xDF, 0xC1, 0x01}, mode, in),
+                  DecodeError::Success);
+        EXPECT_EQ(in.opcode, Opcode::AESKEYGENASSIST_XMM_XMMM128_IMM8);
+        // VAESENC is NDS: vvvv names SRC1 and must still decode.
+        ASSERT_EQ(decode_bytes({0xC4, 0xE2, 0x71, 0xDC, 0xC2}, mode, in),
+                  DecodeError::Success);
+        EXPECT_EQ(in.opcode, Opcode::AESENC_XMM_XMMM128);
+        // The legacy forms carry no vvvv at all.
+        ASSERT_EQ(decode_bytes({0x66, 0x0F, 0x38, 0xDB, 0xC1}, mode, in),
+                  DecodeError::Success);
     }
 }

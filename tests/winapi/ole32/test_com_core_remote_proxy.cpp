@@ -94,6 +94,97 @@ TEST_F(MemoryStreamTest, CoCreateInstanceBuildsIUnknownProxyForRemoteFactory) {
     std::filesystem::remove_all(class_table_root, class_table_error);
 }
 
+TEST_F(MemoryStreamTest, ProcessExitReleasesTheReferencesRemoteProxiesStillHold) {
+    constexpr GuestAddr clsid_ptr = DATA_BASE + 0xC00;
+    constexpr GuestAddr iid_ptr = DATA_BASE + 0xC20;
+    constexpr GuestAddr output_ptr = DATA_BASE + 0xC40;
+    constexpr GuestAddr factory = DATA_BASE + 0xD00;
+    constexpr GuestAddr factory_vtable = DATA_BASE + 0xD20;
+    constexpr GuestAddr object = DATA_BASE + 0xD80;
+    constexpr GuestAddr object_vtable = DATA_BASE + 0xDA0;
+    constexpr GuestAddr create_method = 0x00451000;
+    constexpr GuestAddr release_method = 0x00452000;
+    constexpr Guid clsid{0x12345678u, 0xABCDu, 0x4321u,
+        {0x80,0x00,0x11,0x22,0x33,0x44,0x55,0x66}};
+    constexpr Guid iid{0x00000000u, 0x0000u, 0x0000u,
+        {0xC0,0x00,0x00,0x00,0x00,0x00,0x00,0x46}};
+    ASSERT_TRUE(marshaler.write_struct<Guid>(clsid_ptr, clsid).is_ok());
+    ASSERT_TRUE(marshaler.write_struct<Guid>(iid_ptr, iid).is_ok());
+    ASSERT_TRUE(memory.write_u32(factory, factory_vtable).is_ok());
+    ASSERT_TRUE(memory.write_u32(factory_vtable + 12, create_method).is_ok());
+    ASSERT_TRUE(memory.write_u32(object, object_vtable).is_ok());
+    ASSERT_TRUE(memory.write_u32(object_vtable + 8, release_method).is_ok());
+
+    u32 creates = 0;
+    u32 releases = 0;
+    ipc::RemoteMemoryServer server(memory, vmm);
+    server.set_guest_call_handler(
+        [&](GuestAddr function,
+            std::span<const u64> arguments,
+            bool /*caller_elevated*/) -> std::optional<u64> {
+            if (function == create_method && arguments.size() == 4) {
+                ++creates;
+                EXPECT_EQ(arguments[0], factory);
+                EXPECT_EQ(arguments[1], 0u);
+                Guid remote_iid{};
+                EXPECT_TRUE(memory.read_bytes(
+                    arguments[2], reinterpret_cast<Byte*>(&remote_iid),
+                    sizeof(remote_iid)).is_ok());
+                EXPECT_EQ(std::memcmp(&remote_iid, &iid, sizeof(iid)), 0);
+                EXPECT_TRUE(memory.write_u32(arguments[3], object).is_ok());
+                return static_cast<u64>(com::S_OK);
+            }
+            if (function == release_method && arguments.size() == 1) {
+                ++releases;
+                EXPECT_EQ(arguments[0], object);
+                return 0;
+            }
+            return std::nullopt;
+        });
+    ASSERT_TRUE(server.start(false));
+
+    const auto class_table_root = std::filesystem::temp_directory_path() /
+        ("vitreo-com-proxy-exit-" + std::to_string(::getpid()));
+    std::error_code class_table_error;
+    std::filesystem::remove_all(class_table_root, class_table_error);
+    manager.set_capsule_root(class_table_root.string());
+    ipc::ComClassId class_id{};
+    std::memcpy(class_id.data(), &clsid, sizeof(clsid));
+    ipc::ComClassRegistration published(
+        class_table_root.string(), class_id,
+        static_cast<u32>(::getpid()), factory, 4, 1, 4, false);
+    ASSERT_TRUE(published.valid());
+
+    auto exports = create_com_core_thunks(manager);
+    const auto find_export = [&](std::string_view name) {
+        return std::find_if(exports.entries.begin(), exports.entries.end(),
+            [name](const ExportEntry& entry) { return entry.name == name; });
+    };
+    auto create = find_export("CoCreateInstance");
+    auto release = find_export("Vitreo_RemoteProxy_Release");
+    ASSERT_NE(create, exports.entries.end());
+    ASSERT_NE(release, exports.entries.end());
+
+    set_args({static_cast<u32>(clsid_ptr), 0, 4,
+              static_cast<u32>(iid_ptr), static_cast<u32>(output_ptr)});
+    create->handler(marshaler);
+    ASSERT_EQ(static_cast<u32>(cpu.gpr.rax), com::S_OK);
+    const GuestAddr proxy = memory.read_u32(output_ptr).value();
+    ASSERT_NE(proxy, 0u);
+    EXPECT_TRUE(task_memory.owns(proxy));
+    EXPECT_EQ(creates, 1u);
+
+    // The client ends without releasing: like DCOM's rundown of a client
+    // that is gone, the server's reference is released exactly once.
+    EXPECT_EQ(releases, 0u);
+    manager.release_remote_proxies_at_exit();
+    EXPECT_EQ(releases, 1u);
+    set_args({static_cast<u32>(proxy)});
+    release->handler(marshaler);  // no proxy any more: nothing more is released
+    EXPECT_EQ(releases, 1u);
+    std::filesystem::remove_all(class_table_root, class_table_error);
+}
+
 TEST_F(MemoryStreamTest, RemoteProxyQueryInterfaceBuildsTypedProxyAndKeepsIdentity) {
     constexpr GuestAddr clsid_ptr = DATA_BASE + 0xC00;
     constexpr GuestAddr iid_unknown_ptr = DATA_BASE + 0xC20;

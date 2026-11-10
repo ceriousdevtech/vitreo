@@ -146,6 +146,21 @@ bool vex_sse_merges_vvvv(const DecodedInstruction& instr) noexcept {
         case Opcode::PEXTRB_RM8_XMM_IMM8:
         case Opcode::PEXTRD_RM32_XMM_IMM8:
             return false;
+        // Intel SDM Vol. 2 MOVAPS/MOVAPD/MOVUPS/MOVUPD/MOVDQA/MOVDQU/LDDQU:
+        // the VEX forms are unary ("VEX.vvvv is reserved and must be 1111b",
+        // which the decoder enforces), so there is no SRC1 to merge. Treating
+        // them as merging sent every destination other than xmm0 (dst !=
+        // vvvv) down the JIT's lane-split low pass, which leaves the 16-byte
+        // alignment #GP of the aligned spellings to the 256-bit driver and so
+        // never raised it for VEX.128.
+        case Opcode::MOVAPS_XMM_XMMM128:
+        case Opcode::MOVAPD_XMM_XMMM128:
+        case Opcode::MOVUPS_XMM_XMMM128:
+        case Opcode::MOVUPD_XMM_XMMM128:
+        case Opcode::MOVDQA_XMM_XMMM128:
+        case Opcode::MOVDQU_XMM_XMMM128:
+        case Opcode::LDDQU_XMM_M128:
+            return false;
         case Opcode::MOVSS_XMM_XMMM32:
         case Opcode::MOVSD_XMM_XMMM64:
             // Register form merges from vvvv; memory form is handled after SSE.
@@ -229,28 +244,30 @@ ExecResult exec_avx_sse_bridge(ExecContext& ctx, const DecodedInstruction& instr
         src = instr.operands[1].reg & 15;
     }
 
-    // A faulting VEX.256 memory read must not publish either destination
-    // lane, including the source merge performed before legacy execution:
-    // the two passes below read the m256 as two m128 halves, and a fault in
-    // the high half would otherwise leave the low half's result committed.
-    // Hardware never writes DEST on a faulting read. The JIT lane-split
-    // driver probes the whole operand before its first pass for the same
-    // reason (jit/ops/sse.cpp compile_vex256_lane_split).
-    struct Vex256DestinationRestore {
+    // A faulting VEX memory read must not publish either destination lane,
+    // including the DEST := SRC1 merge performed before legacy execution.
+    // VEX.256: the two passes below read the m256 as two m128 halves, and a
+    // fault in the high half would otherwise leave the low half's result
+    // committed. VEX.128: the merge alone is written before the single
+    // legacy read faults (VAESENC, VPCLMULQDQ, VPADDD, ... xmm, xmm, m128).
+    // Hardware never writes DEST on a faulting read (Intel SDM Vol. 3A 6.5);
+    // the JIT leaves DEST and YMM[255:128] unchanged on the same fault (the
+    // lane-split driver probes the whole operand before its first pass,
+    // jit/ops/sse.cpp compile_vex256_lane_split).
+    struct VexDestinationRestore {
         CpuState& cpu;
         u8 reg;
         bool active;
         XmmReg low;
         XmmReg high;
-        ~Vex256DestinationRestore() {
+        ~VexDestinationRestore() {
             if (active) {
                 cpu.sse.xmm[reg] = low;
                 cpu.avx.ymm_high[reg] = high;
             }
         }
     } restore{ctx.cpu, dst,
-              instr.prefixes.vex_l && dst != 255
-                  && instr.operand_count > 1
+              dst != 255 && instr.operand_count > 1
                   && is_memory_operand(instr.operands[1].type),
               dst != 255 ? ctx.cpu.sse.xmm[dst] : XmmReg{},
               dst != 255 ? ctx.cpu.avx.ymm_high[dst] : XmmReg{}};

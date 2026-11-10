@@ -28,6 +28,7 @@
 
 #include "winapi/graphics/gdi32/gdi32.hpp"
 #include "winapi/graphics/gdi32/gdi32_internal.hpp"
+#include "winapi/graphics/gdi32/gdi_vimage.hpp"
 
 #include "core/memory/guest_memory.hpp"
 #include "windowing/cocoa/cocoa_bridge.hpp"
@@ -180,6 +181,117 @@ void stretch_loop(Target& t, i32 mode, u8 index, i32 dxo, i32 dyo, i32 dw, i32 d
     }
 }
 
+/// WS7: the destination pixels an unscaled blit writes, and the source pixel
+/// each reads (sx - dx and sy - dy are constant).
+struct UnscaledRect {
+    i32 dx = 0, dy = 0, sx = 0, sy = 0, w = 0, h = 0;
+};
+
+/// The pixels stretch_loop writes when source and destination extents are
+/// equal and positive (its centre(i, n, n) == i): the destination rectangle
+/// inside the surface and a simple clip rectangle, whose source pixel lies in
+/// [src_x0, src_x1) x [src_y0, src_y1). False for a complex clip region,
+/// which only the per-pixel ClipRect::contains test answers. w/h come out 0
+/// when nothing is written.
+[[nodiscard]] bool unscaled_rect(const ClipRect& clip, i32 dst_w, i32 dst_h, i64 src_x0, i64 src_y0,
+                                 i64 src_x1, i64 src_y1, i64 dxo, i64 dyo, i64 sxo, i64 syo, i64 w,
+                                 i64 h, UnscaledRect& out) {
+    if (clip.valid && !clip.rectangles.empty()) return false;
+    out = {};
+    i64 x0 = std::max<i64>(dxo, 0), y0 = std::max<i64>(dyo, 0);
+    i64 x1 = std::min<i64>(dxo + w, dst_w), y1 = std::min<i64>(dyo + h, dst_h);
+    if (clip.valid) {
+        x0 = std::max<i64>(x0, clip.left);
+        y0 = std::max<i64>(y0, clip.top);
+        x1 = std::min<i64>(x1, clip.right);
+        y1 = std::min<i64>(y1, clip.bottom);
+    }
+    const i64 ox = sxo - dxo, oy = syo - dyo;
+    x0 = std::max(x0, src_x0 - ox);
+    y0 = std::max(y0, src_y0 - oy);
+    x1 = std::min(x1, src_x1 - ox);
+    y1 = std::min(y1, src_y1 - oy);
+    if (x1 <= x0 || y1 <= y0) return true;
+    out.dx = static_cast<i32>(x0);
+    out.dy = static_cast<i32>(y0);
+    out.sx = static_cast<i32>(x0 + ox);
+    out.sy = static_cast<i32>(y0 + oy);
+    out.w = static_cast<i32>(x1 - x0);
+    out.h = static_cast<i32>(y1 - y0);
+    return true;
+}
+
+[[nodiscard]] inline bool complex_clip(const ClipRect& clip) noexcept {
+    return clip.valid && !clip.rectangles.empty();
+}
+
+/// WS7: StretchDIBits / SetDIBitsToDevice as one vImage decode straight onto
+/// the surface, when classify() allows it. blit_dib's rules: DIB source
+/// coordinates start at the lower left, so the source rectangle is rows
+/// [top, top + sh) of a virtual top-down image with top = height - ysrc - sh;
+/// row y holds scan height-1-y, present only inside the band
+/// [first_scan, first_scan + scan_count), which the buffer holds bottom-up
+/// or, for a top-down DIB, top row first.
+struct DibFastPlan {
+    gdi::accel::Kernel kernel = gdi::accel::Kernel::None;
+    UnscaledRect rc;
+    const u8* row0 = nullptr;  ///< buffer row of virtual row rc.sy
+    std::ptrdiff_t step = 0;   ///< bytes to the next virtual row
+};
+
+[[nodiscard]] DibFastPlan plan_dib_fast(const SoftBitmap& surface, const ClipRect& clip,
+                                        const GuestMemory& memory, GuestAddr bits,
+                                        const gdi::DibHeader& hdr, const gdi::PixelFormat& format,
+                                        u32 first_scan, u32 scan_count, u8 index, bool pal_colors,
+                                        i32 dxo, i32 dyo, i32 dw, i32 dh, i32 xsrc, i32 ysrc,
+                                        i32 sw, i32 sh) {
+    DibFastPlan plan;
+    gdi::accel::Request rq;
+    rq.op = gdi::accel::Op::DibToSurface;
+    rq.format = &format;
+    rq.rop_index = index;
+    rq.stretched = std::abs(static_cast<i64>(sw)) != std::abs(static_cast<i64>(dw)) ||
+                   std::abs(static_cast<i64>(sh)) != std::abs(static_cast<i64>(dh));
+    rq.mirrored = dw < 0 || dh < 0 || sw < 0 || sh < 0;
+    rq.complex_clip = complex_clip(clip);
+    rq.dst_mono = surface.bpp == 1;
+    rq.pal_colors = pal_colors;
+    const i64 width = hdr.width;
+    const i64 height = hdr.abs_height();
+    const i64 top = height - ysrc - sh;
+    const i64 band_lo = std::max<i64>(0, height - static_cast<i64>(first_scan) - scan_count);
+    const i64 band_hi = std::min<i64>(height, height - static_cast<i64>(first_scan));
+    if (!rq.stretched && !rq.mirrored && !rq.complex_clip &&
+        unscaled_rect(clip, surface.width, surface.height, 0, band_lo, width, band_hi, dxo, dyo,
+                      xsrc, top, dw, dh, plan.rc)) {
+        rq.first = plan.rc.sx;
+        rq.pixels = static_cast<i64>(plan.rc.w) * plan.rc.h;
+    }
+    const auto kernel = gdi::accel::classify(rq).kernel;
+    if (kernel == gdi::accel::Kernel::None) return plan;
+    const usize stride = hdr.stride();
+    const u8* buffer = memory.host_ptr(bits, stride * scan_count);
+    if (buffer == nullptr) return plan;
+    const u32 scan = static_cast<u32>(height - 1 - plan.rc.sy);
+    const u32 r = hdr.top_down() ? first_scan + scan_count - 1 - scan : scan - first_scan;
+    plan.row0 = buffer + static_cast<usize>(r) * stride;
+    plan.step = hdr.top_down() ? static_cast<std::ptrdiff_t>(stride)
+                               : -static_cast<std::ptrdiff_t>(stride);
+    plan.kernel = kernel;
+    return plan;
+}
+
+/// Run a plan onto @p surface; a window surface keeps its fourth byte opaque
+/// (raster_store).
+[[nodiscard]] bool run_dib_fast(const DibFastPlan& plan, const gdi::PixelFormat& format,
+                                SoftBitmap& surface) {
+    const usize stride = static_cast<usize>(surface.width) * 4u;
+    u8* dst = surface.pixels.data() + static_cast<usize>(plan.rc.dy) * stride +
+              static_cast<usize>(plan.rc.dx) * 4u;
+    return gdi::accel::decode_rows(plan.kernel, format, plan.row0, plan.step, dst, stride,
+                                   plan.rc.w, plan.rc.h, plan.rc.sx, surface.window_surface);
+}
+
 }  // namespace
 
 // =============================================================================
@@ -249,6 +361,51 @@ bool GdiManager::raster_target(Handle hdc, RasterTarget& out) {
                   : Handle{0};
     if (out.dib != 0) sync_dib_from_guest(out.dib);
     return true;
+}
+
+void GdiManager::prepare_destination_read(const RasterTarget& t) {
+    if (t.surface->child_window && !t.surface->backdrop_complete && t.dc->associated_hwnd != 0) {
+        fill_child_backdrop(t.dc->associated_hwnd, *t.surface);
+    }
+}
+
+std::optional<u32> GdiManager::parent_backdrop_pixel(Handle hwnd, i32 x, i32 y, int depth) const {
+    if (m_hwnd_mgr == nullptr || depth > 32) return std::nullopt;
+    const auto* win = m_hwnd_mgr->find(static_cast<windowing::HWND>(hwnd));
+    if (win == nullptr || win->parent == windowing::HWND_DESKTOP || win->parent == windowing::NULL_HWND) {
+        return std::nullopt;
+    }
+    const Handle parent = static_cast<Handle>(win->parent);
+    // The child's rect is in its parent's client coordinates; its client
+    // area starts client_offset inside that rect.
+    const i32 px = win->rect.left + win->client_offset.x + x;
+    const i32 py = win->rect.top + win->client_offset.y + y;
+    const auto fb = m_window_framebuffers.find(parent);
+    if (fb != m_window_framebuffers.end() && fb->second && fb->second->in_bounds(px, py)) {
+        const u8* p = fb->second->pixel_at(px, py);
+        if (p[3] != 0) return load_px(p) | 0xFF000000u;
+        if (!fb->second->child_window) return std::nullopt;
+    }
+    return parent_backdrop_pixel(parent, px, py, depth + 1);
+}
+
+void GdiManager::fill_child_backdrop(Handle hwnd, SoftBitmap& surface) {
+    if (surface.bpp != 32 || surface.pixels.size() < static_cast<usize>(surface.width) * surface.height * 4u) {
+        return;
+    }
+    bool complete = true;
+    for (i32 y = 0; y < surface.height; ++y) {
+        for (i32 x = 0; x < surface.width; ++x) {
+            u8* p = &surface.pixels[static_cast<usize>((y * surface.width + x) * 4)];
+            if (p[3] != 0) continue;
+            if (const auto v = parent_backdrop_pixel(hwnd, x, y, 0)) {
+                store_px(p, *v);
+            } else {
+                complete = false;
+            }
+        }
+    }
+    surface.backdrop_complete = complete;
 }
 
 void GdiManager::finish_raster(const RasterTarget& t) {
@@ -448,6 +605,7 @@ bool GdiManager::pat_blt(Handle hdc, i32 x, i32 y, i32 cx, i32 cy, u32 rop) {
     if (((index >> 2) & 0x33u) != (index & 0x33u)) return false;
     RasterTarget t;
     if (!raster_target(hdc, t)) return m_dc_states.contains(hdc);
+    if (((static_cast<u8>(rop >> 16) >> 1) & 0x55u) != (static_cast<u8>(rop >> 16) & 0x55u)) prepare_destination_read(t);
     i32 l = x, tp = y, r = x + cx, b = y + cy;
     lp_to_dp_rect(*t.dc, l, tp, r, b);
     const Handle brush = t.dc->selected_brush;
@@ -563,6 +721,7 @@ bool GdiManager::stretch_blt(Handle hdcDest, i32 xd, i32 yd, i32 wd, i32 hd, Han
 
     RasterTarget t;
     if (!raster_target(hdcDest, t)) return true;
+    if (((index >> 1) & 0x55u) != (index & 0x55u)) prepare_destination_read(t);
     DcState& sdc = src_it->second;
 
     // Map both rectangles through their DC's transform (MM_TEXT extents).
@@ -587,6 +746,38 @@ bool GdiManager::stretch_blt(Handle hdcDest, i32 xd, i32 yd, i32 wd, i32 hd, Han
     if (!src) return true;
     if (m_dib_sections.contains(sdc.selected_bitmap_handle) && sdc.bitmap == src) {
         sync_dib_from_guest(sdc.selected_bitmap_handle);
+    }
+    // WS7: an unscaled SRCCOPY between colour surfaces copies rows.
+    {
+        gdi::accel::Request rq;
+        rq.op = gdi::accel::Op::Copy;
+        rq.rop_index = index;
+        rq.stretched = std::abs(static_cast<i64>(sw)) != std::abs(static_cast<i64>(dw)) ||
+                       std::abs(static_cast<i64>(sh)) != std::abs(static_cast<i64>(dh));
+        rq.mirrored = dw < 0 || dh < 0 || sw < 0 || sh < 0;
+        rq.complex_clip = complex_clip(t.dc->clip_rect);
+        rq.src_mono = src->bpp == 1;
+        rq.dst_mono = t.mono;
+        rq.stretch_mode = t.dc->stretch_mode;
+        UnscaledRect rc;
+        if (!rq.stretched && !rq.mirrored && !rq.complex_clip &&
+            unscaled_rect(t.dc->clip_rect, t.surface->width, t.surface->height, 0, 0, src->width,
+                          src->height, dxo, dyo, sxo, syo, dw, dh, rc)) {
+            rq.pixels = static_cast<i64>(rc.w) * rc.h;
+        }
+        if (gdi::accel::classify(rq).kernel == gdi::accel::Kernel::CopyRgba) {
+            const usize sstride = static_cast<usize>(src->width) * 4u;
+            const usize dstride = static_cast<usize>(t.surface->width) * 4u;
+            const u8* from = src->pixels.data() + static_cast<usize>(rc.sy) * sstride +
+                             static_cast<usize>(rc.sx) * 4u;
+            u8* to = t.surface->pixels.data() + static_cast<usize>(rc.dy) * dstride +
+                     static_cast<usize>(rc.dx) * 4u;
+            if (gdi::accel::copy_rgba_rect(from, sstride, to, dstride, rc.w, rc.h,
+                                           src.get() == t.surface, t.surface->window_surface)) {
+                finish_raster(t);
+                return true;
+            }
+        }
     }
     // Overlapping self-blits read a snapshot.
     std::vector<u8> snapshot;
@@ -647,6 +838,7 @@ u32 GdiManager::alpha_blend_checked(Handle hdcDest, i32 xDest, i32 yDest, i32 wD
     if (wDest < 0 || hDest < 0 || wSrc < 0 || hSrc < 0) return kInvalidParameter;
     RasterTarget t;
     if (!raster_target(hdcDest, t)) return kFailKeepError;
+    prepare_destination_read(t);
     DcState& sdc = src_it->second;
     std::shared_ptr<SoftBitmap> src = sdc.bitmap;
     if (!src) return kFailKeepError;
@@ -669,6 +861,40 @@ u32 GdiManager::alpha_blend_checked(Handle hdcDest, i32 xDest, i32 yDest, i32 wD
     }
     i32 dxo = xDest, dyo = yDest;
     lp_to_dp_point(*t.dc, dxo, dyo);
+    // WS7: an unscaled blend over distinct colour surfaces runs on vImage
+    // (each kernel proved equal to the loop below for every input byte).
+    {
+        gdi::accel::Request rq;
+        rq.op = gdi::accel::Op::AlphaBlend;
+        rq.blend_op = blend_op;
+        rq.alpha_format = alpha_format;
+        rq.const_alpha = const_alpha;
+        rq.stretched = wSrc != wDest || hSrc != hDest;
+        rq.complex_clip = complex_clip(t.dc->clip_rect);
+        rq.same_surface = src.get() == t.surface;
+        rq.src_mono = src->bpp == 1;
+        rq.dst_mono = t.mono;
+        UnscaledRect rc;
+        if (!rq.stretched && !rq.complex_clip &&
+            unscaled_rect(t.dc->clip_rect, t.surface->width, t.surface->height, 0, 0, src->width,
+                          src->height, dxo, dyo, sx0, sy0, wDest, hDest, rc)) {
+            rq.pixels = static_cast<i64>(rc.w) * rc.h;
+        }
+        if (const auto kernel = gdi::accel::classify(rq).kernel;
+            kernel != gdi::accel::Kernel::None) {
+            const usize sstride = static_cast<usize>(src->width) * 4u;
+            const usize dstride = static_cast<usize>(t.surface->width) * 4u;
+            const u8* from = src->pixels.data() + static_cast<usize>(rc.sy) * sstride +
+                             static_cast<usize>(rc.sx) * 4u;
+            u8* to = t.surface->pixels.data() + static_cast<usize>(rc.dy) * dstride +
+                     static_cast<usize>(rc.dx) * 4u;
+            if (gdi::accel::alpha_blend_rect(kernel, from, sstride, to, dstride, rc.w, rc.h,
+                                             const_alpha)) {
+                finish_raster(t);
+                return 0;
+            }
+        }
+    }
     const bool per_pixel = alpha_format == 1;
     const u32 ca = const_alpha;
     auto round255 = [](u32 v) { return (v + 127u) / 255u; };
@@ -769,6 +995,7 @@ bool GdiManager::transparent_blt(Handle hdcDest, i32 xd, i32 yd, i32 wd, i32 hd,
     if (src_it == m_dc_states.end() || !src_it->second.bitmap) return false;
     RasterTarget t;
     if (!raster_target(hdcDest, t)) return false;
+    prepare_destination_read(t);
     DcState& sdc = src_it->second;
     if (m_dib_sections.contains(sdc.selected_bitmap_handle)) {
         sync_dib_from_guest(sdc.selected_bitmap_handle);
@@ -1031,6 +1258,19 @@ i32 GdiManager::stretch_dib_bits(Marshaler& /*m*/, Handle hdcDest, i32 xDest, i3
         m_window_client_size[dc.associated_hwnd] = {dc.bitmap->width, dc.bitmap->height};
     }
     const u8 index = static_cast<u8>(dwRop >> 16);
+    // WS7: an unscaled SRCCOPY decodes the DIB straight onto the surface.
+    if (const DibFastPlan plan = plan_dib_fast(
+            *dc.bitmap, dc.clip_rect, *m_guest_memory, lpBits, hdr, format, 0,
+            static_cast<u32>(hdr.abs_height()), index, colorUsage == gdi::kDibPalColors, dxo, dyo,
+            dx1 - dxo, dy1 - dyo, xSrc, ySrc, wSrc, hSrc);
+        plan.kernel != gdi::accel::Kernel::None) {
+        RasterTarget t;
+        if (raster_target(hdcDest, t) && run_dib_fast(plan, format, *t.surface)) {
+            finish_raster(t);
+            if (dc.associated_hwnd != 0) flush_window(dc.associated_hwnd);
+            return hdr.abs_height();
+        }
+    }
     if (!blit_dib(hdcDest, dxo, dyo, dx1 - dxo, dy1 - dyo, xSrc, ySrc, wSrc, hSrc, lpBits, hdr,
                   format, 0, static_cast<u32>(hdr.abs_height()), index)) {
         return 0;
@@ -1071,8 +1311,22 @@ i32 GdiManager::set_dib_bits_to_device(Handle hdc, i32 xDest, i32 yDest, u32 w, 
         m_window_client_size[dc.associated_hwnd] = {dc.bitmap->width, dc.bitmap->height};
     }
     if (iw > 0 && ih > 0) {
-        (void)blit_dib(hdc, dxo, dyo, iw, ih, xSrc, ySrc, iw, ih, bits_addr, hdr, format,
-                       startScan, lines, 0xCC);
+        // WS7: the band decodes straight onto the surface when eligible.
+        bool done = false;
+        if (const DibFastPlan plan = plan_dib_fast(
+                *dc.bitmap, dc.clip_rect, *m_guest_memory, bits_addr, hdr, format, startScan,
+                lines, 0xCC, colorUse == gdi::kDibPalColors, dxo, dyo, iw, ih, xSrc, ySrc, iw, ih);
+            plan.kernel != gdi::accel::Kernel::None) {
+            RasterTarget t;
+            if (raster_target(hdc, t) && run_dib_fast(plan, format, *t.surface)) {
+                finish_raster(t);
+                done = true;
+            }
+        }
+        if (!done) {
+            (void)blit_dib(hdc, dxo, dyo, iw, ih, xSrc, ySrc, iw, ih, bits_addr, hdr, format,
+                           startScan, lines, 0xCC);
+        }
     }
     return static_cast<i32>(lines);
 }
@@ -1133,6 +1387,8 @@ bool GdiManager::draw_icon(Handle hdc, i32 x, i32 y, i32 cx, i32 cy, const IconD
         if (error) *error = m_dc_states.contains(hdc) ? 0u : 6u;  // "DrawIconEx NULL dc": 6
         return m_dc_states.contains(hdc);
     }
+    prepare_destination_read(dest);
+
     if ((flags & (DI_MASK | DI_IMAGE)) == 0 || cx <= 0 || cy <= 0 || icon.width == 0 ||
         icon.height == 0) {
         return true;  // "DrawIconEx flags 0": TRUE, nothing drawn

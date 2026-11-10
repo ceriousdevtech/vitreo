@@ -477,15 +477,15 @@ TEST_F(BlockCacheTest, L1AndHashHitsAreSplit) {
     EXPECT_EQ(cache.l1_hits(), 1u);
     EXPECT_EQ(cache.hash_hits(), 0u);
 
-    // Same L1 slot as 0x1000, so inserting it displaces 0x1000 and the next
-    // lookup must fall through to the hash map.
     // The L1 is two-way: one alias shares the set without evicting; the
-    // second alias overflows it and displaces 0x1000 (way 1, the oldest).
+    // second alias overflows it. Touch the first alias before overflowing
+    // so 0x1000 is the older entry under either dispatcher-hit policy.
     const GuestAddr alias = l1_alias_of(0x1000, 0x1000);
     ASSERT_NE(alias, 0u);
     cache.insert(make_block(alias));
     EXPECT_NE(cache.lookup(0x1000), nullptr);
     EXPECT_EQ(cache.hash_hits(), 0u) << "two blocks fit one two-way set";
+    EXPECT_NE(cache.lookup(alias), nullptr);
     const GuestAddr alias2 = l1_alias_of(alias, 0x1000);
     ASSERT_NE(alias2, 0u);
     cache.insert(make_block(alias2));

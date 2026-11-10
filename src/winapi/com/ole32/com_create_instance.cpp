@@ -18,6 +18,7 @@
 #include "winapi/common/elevation.hpp"
 #include "winapi/media/dinput/dinput.hpp"
 #include "com_core_internal.hpp"
+#include "dshow_host.hpp"
 
 #include <array>
 #include <chrono>
@@ -46,6 +47,23 @@ constexpr Guid CLSID_NETWORKLISTMANAGER{
     0xDCB00C01u, 0x570Fu, 0x4A9Bu, {0x8D, 0x69, 0x19, 0x9F, 0xDB, 0xA5, 0x72, 0x3B}};
 
 } // namespace
+
+bool ComCoreManager::has_builtin_class(const Guid& clsid) {
+    bool save = false;
+    return wic_is_imaging_factory_clsid(clsid) ||
+        ShellItemDialogs::is_dialog_class(clsid, save) ||
+        guid_equal(clsid, CLSID_GLOBALOPTIONS) ||
+        guid_equal(clsid, CLSID_FILTERGRAPH) ||
+        guid_equal(clsid, CLSID_FILTERGRAPH_NOTHREAD) ||
+        guid_equal(clsid, CLSID_DIRECTINPUT8) ||
+        guid_equal(clsid, CLSID_MMDEVICEENUMERATOR) ||
+        guid_equal(clsid, CLSID_NETWORKLISTMANAGER) ||
+        guid_equal(clsid, CLSID_SHELLLINK) ||
+        guid_equal(clsid, dshow::CLSID_ASYNC_READER) ||
+        guid_equal(clsid, dshow::CLSID_MEMORY_ALLOCATOR) ||
+        guid_equal(clsid, dshow::CLSID_SYSTEM_CLOCK) ||
+        guid_equal(clsid, dshow::CLSID_DSOUND_RENDER);
+}
 
 u32 ComCoreManager::co_create_instance(Marshaler& m) {
     const GuestAddr rclsid_ptr = m.arg_ptr(0);
@@ -81,6 +99,7 @@ u32 ComCoreManager::co_create_instance(Marshaler& m) {
     // an EXE's class factory to COM; honor a matching process registration
     // before falling back to Vitreo's built-in in-process classes.
     GuestAddr registered_factory = 0;
+    std::shared_ptr<ClassObjectBorrow> borrowed;
     {
         std::lock_guard lock(m_class_objects_mutex);
         for (const auto& [cookie, registration] : m_class_objects) {
@@ -89,25 +108,33 @@ u32 ComCoreManager::co_create_instance(Marshaler& m) {
                 !registration.suspended &&
                 (registration.context & context) != 0) {
                 registered_factory = registration.class_object;
-                // Pin the factory while CreateInstance executes so a
-                // concurrent CoRevokeClassObject cannot release it first.
-                (void)guest_iunknown_addref(m, registered_factory);
+                // Borrow the registration's existing reference. Guest AddRef
+                // may reenter COM; no guest call can run under this mutex.
+                borrowed = registration.borrow;
                 break;
             }
         }
     }
     if (registered_factory != 0) {
+        const auto finish_borrow = [&](u32 hr) {
+            bool release = false;
+            {
+                std::lock_guard lock(m_class_objects_mutex);
+                release = borrowed.use_count() == 1 && borrowed->release_pending;
+                borrowed.reset();
+            }
+            if (release) guest_iunknown_release(m, registered_factory);
+            return hr;
+        };
         auto vtable = m.read_ptr(registered_factory);
         const GuestAddr pointer_size = m.cpu_is_64bit() ? 8u : 4u;
         if (vtable.is_err() || vtable.value() == 0) {
-            guest_iunknown_release(m, registered_factory);
-            return com::CLASS_E_CLASSNOTAVAILABLE;
+            return finish_borrow(com::CLASS_E_CLASSNOTAVAILABLE);
         }
         auto create_instance = m.read_ptr(
             static_cast<GuestAddr>(vtable.value()) + 3u * pointer_size);
         if (create_instance.is_err() || create_instance.value() == 0) {
-            guest_iunknown_release(m, registered_factory);
-            return com::CLASS_E_CLASSNOTAVAILABLE;
+            return finish_borrow(com::CLASS_E_CLASSNOTAVAILABLE);
         }
 
         const u64 args[4] = {
@@ -116,12 +143,11 @@ u32 ComCoreManager::co_create_instance(Marshaler& m) {
         const u32 hr = static_cast<u32>(m_guest_call(
             static_cast<GuestAddr>(create_instance.value()), args, 4,
             m.cpu_is_64bit()));
-        guest_iunknown_release(m, registered_factory);
         VITREO_TRACE(
             "[ole32] CoCreateInstance: registered factory=0x%llx "
             "context=0x%x -> 0x%08x\n",
             static_cast<unsigned long long>(registered_factory), context, hr);
-        return hr;
+        return finish_borrow(hr);
     }
 
     ipc::ComClassId class_id{};

@@ -255,6 +255,34 @@ TEST_F(User32ExtThunkTest, NativeResize64NotifiesWindowPosChangedForGuestFrame) 
     EXPECT_EQ(hwnd_mgr_.find(hwnd)->client_rect.width(),640);
 }
 
+TEST_F(User32ExtThunkTest, ExclusiveModeDiscardsPreviouslyQueuedNativeGeometry) {
+    // Native presentation policy: the Cocoa Space covers the host display;
+    // its physical resize must not undo a guest display-mode transition.
+    for (const bool wide : {false, true}) {
+        SCOPED_TRACE(wide ? "x64" : "x86");
+        mgr_->set_is_64bit(wide);
+        WindowData data{};
+        data.parent = HWND_DESKTOP;
+        data.style = WS::POPUP;
+        data.rect = {0, 0, 320, 240};
+        data.client_rect = data.rect;
+        data.wndproc = 0x401000;
+        const HWND hwnd = hwnd_mgr_.create(data);
+        MessageSendManager send(hwnd_mgr_, queue_, bridge_);
+        send.set_wndproc_callback([](HWND, u32, u64, u64, u64) { return 0u; });
+        mgr_->set_message_send_manager(&send);
+        EXPECT_TRUE(bridge_.on_native_resize(hwnd, 1920, 1080));
+        mgr_->apply_virtual_display_mode(hwnd, 640, 480, 32);
+        mgr_->drain_pending_native_resizes(hwnd_mgr_.find(hwnd)->owner_thread_id);
+        EXPECT_EQ(hwnd_mgr_.find(hwnd)->rect.width(), 640);
+        EXPECT_EQ(hwnd_mgr_.find(hwnd)->rect.height(), 480);
+        EXPECT_EQ(hwnd_mgr_.find(hwnd)->client_rect.width(), 640);
+        EXPECT_EQ(hwnd_mgr_.find(hwnd)->client_rect.height(), 480);
+        mgr_->apply_virtual_display_mode(NULL_HWND, 0, 0, 0);
+        mgr_->set_message_send_manager(nullptr);
+    }
+}
+
 TEST_F(User32ExtThunkTest, NativeGestureBoundariesPreserveGeometryAndOwnerBothBitnesses) {
     // Generated SDK constants; move_size_lifecycle_probe.expected confirms
     // one enter/exit and MOVESIZESTART/END, unused parameters zero, both ABIs.
@@ -381,5 +409,68 @@ TEST_F(User32ExtThunkTest, ResizeHonorsClassRedrawDimensionsBothBitnesses) {
                 }
             }
         }
+    }
+}
+
+TEST_F(User32ExtThunkTest, NativeRestoreCompletesOnOwnerBeforeNonMinimizedActivation) {
+    for (bool is64 : {false, true}) {
+        mgr_->set_is_64bit(is64);
+        const u32 thread = ThreadManager::get_current_thread_id_static();
+        ShowWindowManager show(hwnd_mgr_, bridge_, queue_);
+        show.set_user32_ext_manager(mgr_.get());
+        mgr_->set_show_window_manager(&show);
+        DefWindowProcManager dwp(hwnd_mgr_, queue_, memory_);
+        dwp.set_is_64bit(is64);
+        dwp.set_syscommand_show([&](HWND hwnd, int command) { (void)show.show_window(hwnd, command); });
+        dwp.set_focus_window([&](HWND hwnd) { (void)mgr_->set_keyboard_focus(hwnd, true); });
+        WindowData data{};
+        data.parent = HWND_DESKTOP; data.owner_thread_id = thread;
+        data.visible = true; data.enabled = true;
+        data.style = WS::OVERLAPPEDWINDOW | WS::VISIBLE;
+        data.wndproc = 0x401000;
+        data.rect = {10,20,330,260}; data.client_rect = {0,0,320,240};
+        const HWND hwnd = hwnd_mgr_.create(data);
+        std::vector<u64> activations, commands;
+        MessageSendManager send(hwnd_mgr_, queue_, bridge_);
+        send.set_wndproc_callback([&](HWND target, u32 message, u64 wp, u64 lp, u64) -> u64 {
+            if (message == WM::ACTIVATE) activations.push_back(wp);
+            if (message == WM::SYSCOMMAND) commands.push_back(wp);
+            return dwp.def_window_proc(target, message, wp, lp);
+        });
+        mgr_->set_message_send_manager(&send);
+        struct ResetManagers {
+            User32ExtManager& manager;
+            ~ResetManagers() { manager.set_message_send_manager(nullptr); manager.set_show_window_manager(nullptr); }
+        } reset{*mgr_};
+        mgr_->set_application_active(hwnd, true);
+        (void)mgr_->set_keyboard_focus(hwnd, true);
+        mgr_->set_application_active(hwnd, false);
+        (void)show.show_window(hwnd, SW::MINIMIZE);
+        ASSERT_TRUE(hwnd_mgr_.find(hwnd)->minimized);
+        ASSERT_EQ(mgr_->keyboard_focus_window(), NULL_HWND);
+        activations.clear(); commands.clear();
+        bridge_.on_native_show_state(hwnd, false, false);
+        bridge_.on_native_show_state(hwnd, false, false); // duplicate native observation
+        EXPECT_TRUE(hwnd_mgr_.find(hwnd)->minimized);
+        EXPECT_TRUE(activations.empty());
+        mgr_->drain_pending_native_resizes(thread + 1);
+        EXPECT_TRUE(commands.empty());
+        mgr_->drain_pending_native_resizes(thread);
+        EXPECT_EQ(commands, (std::vector<u64>{0xF120u})); // existing oracle SC_RESTORE
+        EXPECT_FALSE(hwnd_mgr_.find(hwnd)->minimized);
+        EXPECT_EQ(mgr_->keyboard_focus_window(), hwnd);
+        ASSERT_FALSE(activations.empty());
+        for (u64 wp : activations) EXPECT_EQ(wp >> 16, 0u);
+
+        // A later genuine minimize/restore remains deliverable after draining.
+        (void)show.show_window(hwnd, SW::MINIMIZE);
+        ASSERT_TRUE(hwnd_mgr_.find(hwnd)->minimized);
+        activations.clear(); commands.clear();
+        bridge_.on_native_show_state(hwnd, false, false);
+        mgr_->drain_pending_native_resizes(thread);
+        EXPECT_EQ(commands, (std::vector<u64>{0xF120u}));
+        EXPECT_FALSE(hwnd_mgr_.find(hwnd)->minimized);
+        EXPECT_EQ(mgr_->keyboard_focus_window(), hwnd);
+        for (u64 wp : activations) EXPECT_EQ(wp >> 16, 0u);
     }
 }

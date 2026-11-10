@@ -12,6 +12,7 @@
 /// by the two promotions declared in jit_helpers_internal.hpp.
 
 #include "jit_helpers.hpp"
+#include "jit_helpers_internal.hpp"
 #include "core/math/host_fenv.hpp"
 #include "../sse_float_semantics.hpp"
 
@@ -115,7 +116,11 @@ extern "C" void jit_sse_cvt(CpuState* cpu, GuestMemory* mem, u32 kind,
         if (is_mem) {
             const auto lo = mem->read_u64(static_cast<GuestAddr>(src));
             const auto hi = mem->read_u64(static_cast<GuestAddr>(src) + 8);
-            if (!lo.is_ok() || !hi.is_ok()) return false;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                jit_raise_guest_av(cpu, mem, static_cast<GuestAddr>(src), 16,
+                                   /*is_write=*/false);
+                return false;
+            }
             std::memcpy(&lanes[0], &lo.value(), 8);
             std::memcpy(&lanes[2], &hi.value(), 8);
             return true;

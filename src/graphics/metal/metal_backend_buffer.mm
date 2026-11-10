@@ -73,6 +73,36 @@ public:
         buffer_desc.index_buffer = true;
         buffer_desc.constant_buffer = true;
         buffer_desc.cpu_writable = desc.cpu_visible;
+        if (desc.cpu_visible && desc.external_host != nullptr) {
+            // Memory the caller owns: wrapped as it is, no deallocator.
+            // external_release runs from the deallocator, after the GPU.
+            std::function<void()> release = desc.external_release;
+            const u64 page = static_cast<u64>(vm_page_size);
+            if ((reinterpret_cast<uintptr_t>(desc.external_host) % page) != 0 ||
+                (desc.size % page) != 0) {
+                return;
+            }
+            void (^deallocator)(void*, NSUInteger) = nil;
+            if (release) {
+                deallocator = ^(void*, NSUInteger) {
+                    release();
+                };
+            }
+            id<MTLBuffer> buffer = [mtl_device
+                newBufferWithBytesNoCopy:desc.external_host
+                                  length:static_cast<NSUInteger>(desc.size)
+                                 options:MTLResourceStorageModeShared
+                             deallocator:deallocator];
+            if (buffer == nil) return;
+            m_host = desc.external_host;
+            m_buffer = std::make_unique<MetalBackendBuffer>(
+                device, (__bridge void*)buffer, buffer_desc);
+            if (!m_buffer->valid()) {
+                m_buffer.reset();
+                m_host = nullptr;
+            }
+            return;
+        }
         if (desc.cpu_visible) {
             // 64 KiB: a multiple of every host page size, and D3D12's own
             // placement alignment, so every placed window stays page-aligned.
@@ -188,8 +218,69 @@ private:
                : nullptr;
 }
 
+void MetalBackendBuffer::note_gpu_write(usize offset, usize length) {
+    if (m_buffer == nullptr) return;
+    if (m_buffer->window_storage() && m_buffer->has_storage() &&
+        m_buffer->storage_busy()) {
+        void* const old_handle = m_buffer->handle();
+        const usize old_offset = m_buffer->gpu_offset();
+        // Read before the move: the new window starts with no pending write.
+        const bool old_write_pending = m_buffer->gpu_write_pending();
+        const usize width = m_desc.byte_width;
+        const bool whole = offset == 0 && length != kUnknownRange &&
+                           length >= width;
+        BackendBufferWindow fresh{};
+        // A true replace_window has already moved this buffer to `fresh`
+        // (set_window); a false one changed nothing.
+        if (m_source != nullptr && m_source->replace_window(*this, fresh)) {
+            void* const new_handle =
+                static_cast<MetalBackendBuffer*>(fresh.storage)
+                    ->native_handle();
+            if (!whole && old_write_pending) {
+                // The old window's bytes are not final until that write
+                // runs: carry them over on the GPU timeline, after it.
+                MetalSubmitQueue::instance().record_copy_buffer(
+                    old_handle, new_handle, width, old_offset, fresh.offset);
+            } else if (!whole) {
+                id<MTLBuffer> from = (__bridge id<MTLBuffer>)old_handle;
+                id<MTLBuffer> to = (__bridge id<MTLBuffer>)new_handle;
+                if (from != nil && to != nil && [from contents] != nullptr &&
+                    [to contents] != nullptr) {
+                    std::memcpy(static_cast<u8*>([to contents]) + fresh.offset,
+                                static_cast<const u8*>([from contents]) +
+                                    old_offset,
+                                width);
+                }
+            }
+        } else {
+            // No fresh window: order the write after the current one's work.
+            (void)m_buffer->wait_until_storage_idle();
+        }
+    }
+    m_buffer->note_gpu_write();
+}
+
+bool MetalBackendBuffer::set_window(const BackendBufferWindow& window) {
+    if (m_buffer == nullptr || !m_buffer->window_storage() ||
+        window.storage == nullptr) {
+        return false;
+    }
+    void* const handle =
+        static_cast<MetalBackendBuffer*>(window.storage)->native_handle();
+    return handle != nullptr &&
+           m_buffer->retarget_window(handle, window.offset);
+}
+
 std::unique_ptr<BackendBuffer> MetalDevice::create_buffer(
     const BackendBufferDesc& desc, const void* initial_data) {
+    if (desc.window) {
+        // Its bytes are a heap's, counted when the heap was made; it has no
+        // storage (valid() false) until its first set_window.
+        if (!available() || desc.byte_width == 0 || initial_data != nullptr) {
+            return nullptr;
+        }
+        return std::make_unique<MetalBackendBuffer>(m_device, desc, nullptr);
+    }
     // A tiled buffer allocates nothing (its tile pools do).
     if (!desc.tiled &&
         !vitreo::memory::host_can_allocate_gpu(desc.byte_width,
@@ -220,8 +311,8 @@ std::unique_ptr<BackendHeap> MetalDevice::create_heap(
 }
 
 std::unique_ptr<BackendTextureBuffer> MetalDevice::create_texture_buffer(
-    const BackendBuffer& buffer, PixelFormat pixel_format,
-    unsigned first_element, unsigned num_elements, bool shader_write) {
+    const BackendBuffer& buffer, PixelFormat pixel_format, u64 first_element,
+    unsigned num_elements, bool shader_write) {
     // Every BackendBuffer this device hands out is a MetalBackendBuffer; the
     // codebase is built without RTTI, so the relationship is by construction
     // rather than by dynamic_cast, as it is on every other binding path here.
@@ -235,8 +326,8 @@ std::unique_ptr<BackendTextureBuffer> MetalDevice::create_texture_buffer(
 }
 
 std::unique_ptr<BackendTextureBuffer> MetalDevice::create_mapped_texture_buffer(
-    const BackendBuffer& buffer, PixelFormat pixel_format,
-    unsigned first_element, unsigned num_elements, u16 component_mapping) {
+    const BackendBuffer& buffer, PixelFormat pixel_format, u64 first_element,
+    unsigned num_elements, u16 component_mapping) {
     const auto* metal_buffer = static_cast<const MetalBackendBuffer*>(&buffer);
     if (!metal_buffer->valid()) return nullptr;
     auto view = std::make_unique<MetalBackendTextureBuffer>(
@@ -255,7 +346,7 @@ bool MetalDevice::copy_buffer(BackendBuffer* dst, const BackendBuffer* src) {
     }
     auto* metal_dst = static_cast<MetalBackendBuffer*>(dst);
     const auto* metal_src = static_cast<const MetalBackendBuffer*>(src);
-    metal_dst->note_gpu_write();
+    metal_dst->note_gpu_write(0, dst->desc().byte_width);
     void* dst_handle = metal_dst->native_handle();
     void* src_handle = metal_src->native_handle();
     if (dst_handle == nullptr || src_handle == nullptr) return false;
@@ -294,7 +385,8 @@ bool MetalDevice::copy_buffer_region(BackendBuffer* dst, u64 dst_offset,
     // A copy destination is a GPU write: its storage leaves any pool slice
     // first, or the copy would be lost when that slice is rebuilt from the
     // CPU mirror.
-    metal_dst->note_gpu_write();
+    metal_dst->note_gpu_write(static_cast<usize>(dst_offset),
+                              static_cast<usize>(bytes));
     void* dst_handle = metal_dst->native_handle();
     void* src_handle = metal_src->native_handle();
     if (dst_handle == nullptr || src_handle == nullptr) return false;
@@ -322,7 +414,8 @@ bool MetalDevice::fill_buffer_region(BackendBuffer* dst, u64 offset,
     // A GPU write, exactly as a copy destination (copy_buffer_region): the
     // storage leaves any pool slice first, so the handle and slab offset are
     // read after it.
-    metal_dst->note_gpu_write();
+    metal_dst->note_gpu_write(static_cast<usize>(offset),
+                              static_cast<usize>(bytes));
     void* dst_handle = metal_dst->native_handle();
     if (dst_handle == nullptr) return false;
     // The slab offset of a DISCARD-renamed buffer counts toward the

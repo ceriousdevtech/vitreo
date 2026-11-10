@@ -323,6 +323,17 @@ void install_media_callbacks(
                                      proc, args, 5, is_64bit);
         }
     );
+    // mmio: custom MMIOPROCs (mmioInstallIOProc / MMIOINFO.pIOProc) run on
+    // the guest thread that called the mmio function, and return LRESULT.
+    {
+        winapi::WinmmManager::MmioServices mmio = ctx.winmm_mgr.mmio_services();
+        mmio.call = [&cpu, &memory, &ctx](GuestAddr proc, const u64* args, usize count,
+                                          bool is_mod_64bit) -> u64 {
+            return run_guest_callback(active_guest_cpu_or(cpu), memory, ctx.thunk_registry,
+                                      ctx.process_mgr, proc, args, count, is_mod_64bit);
+        };
+        ctx.winmm_mgr.set_mmio_services(std::move(mmio));
+    }
     ctx.winmm_mgr.set_wave_window_notifier(
         [&ctx](u64 hwnd, u32 message, u64 wave_handle, u64 param1) {
             return ctx.msgsend_mgr.post_message(

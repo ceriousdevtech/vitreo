@@ -18,6 +18,15 @@
 /// enumerates its target under the alias ("MS Shell Dlg" -> Microsoft Sans
 /// Serif). The return value is the last callback's; a family nobody has
 /// returns 1 with no calls; a NULL DC fails with ERROR_INVALID_HANDLE.
+///
+/// The legacy EnumFontFamilies shares this walk with one difference measured
+/// by tools/oracle_probe/enumfontfamilies_legacy_probe.c: each style is
+/// enumerated once, under the family name, in the first charset it claims
+/// (Arial: Western). Windows adds one more entry per charset-qualified
+/// FontSubstitutes alias of the family ("Arial CE" at 238); Vitreo's alias
+/// set (capsule/registry/font_substitutes.hpp) has none, and its unqualified
+/// aliases are not enumerated under the target (Tahoma lists no "MS Shell
+/// Dlg 2" entry).
 
 #include "winapi/graphics/gdi32/gdi32.hpp"
 #include "winapi/graphics/gdi32/gdi32_internal.hpp"
@@ -87,7 +96,7 @@ void put32(std::vector<u8>& buf, usize off, u32 v) { std::memcpy(buf.data() + of
 }  // namespace
 
 i32 GdiManager::enum_font_families_ex(Handle hdc, const std::u16string& face, u8 charset, GuestAddr proc,
-                                      u64 lparam, bool wide, bool is_64bit) {
+                                      u64 lparam, bool wide, bool is_64bit, bool one_charset_per_style) {
     ApiLock api_lock(*this);
     if (!m_dc_states.contains(hdc)) {
         set_last_error(error_codes::ERROR_INVALID_HANDLE);  // "NULL dc ret=0 err=6"
@@ -267,6 +276,7 @@ i32 GdiManager::enum_font_families_ex(Handle hdc, const std::u16string& face, u8
                     stop = true;
                     break;
                 }
+                if (one_charset_per_style) break;
             }
             if (stop) break;
         }

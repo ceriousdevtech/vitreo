@@ -206,31 +206,4 @@ TEST_F(Kernel32CpuzTest, SetDllDirectoryA_ReturnsTRUE) {
     EXPECT_EQ(cpu.gpr.rax, 1u);
 }
 
-TEST_F(Kernel32CpuzTest, CreateActCtxActivateDeactivateRelease) {
-    constexpr GuestAddr actctx = DATA_BASE;
-    constexpr GuestAddr cookie = DATA_BASE + 0x40;
-    ASSERT_TRUE(memory.write_u32(actctx, 32).is_ok());
-    ASSERT_TRUE(memory.write_u32(actctx + 4, 0).is_ok());
-    ASSERT_TRUE(memory.write_u32(actctx + 8, 0).is_ok());
-
-    (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 4), actctx);
-    mgr.impl_CreateActCtxA(marshaler);
-    const u32 handle = static_cast<u32>(cpu.gpr.rax);
-    EXPECT_NE(handle, INVALID_HANDLE);
-    EXPECT_NE(handle, 0u);
-
-    (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 4), handle);
-    (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 8), cookie);
-    mgr.impl_ActivateActCtx(marshaler);
-    EXPECT_EQ(cpu.gpr.rax, 1u);
-    const u32 cookie_value = memory.read_u32(cookie).value();
-    EXPECT_NE(cookie_value, 0u);
-
-    (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 4), 0);
-    (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 8), cookie_value);
-    mgr.impl_DeactivateActCtx(marshaler);
-    EXPECT_EQ(cpu.gpr.rax, 1u);
-
-    (void)memory.write_u32(static_cast<u32>(cpu.gpr.rsp + 4), handle);
-    mgr.impl_ReleaseActCtx(marshaler);
-}
+// Activation contexts: test_actctx.cpp (native observations).

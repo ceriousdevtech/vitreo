@@ -1,0 +1,136 @@
+sdk.RECT size=16 left=0 top=4 right=8 bottom=12
+setup.getclip=1 error=57005 rect=0,0,1920,1080
+setup.getpos=1 error=57005 pos=960,540 virtual=0,0,1920,1080
+setup.release=1 error=57005
+clip.case=0 requested=NULL result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=0 result=1 error=57005 get=1 actual=1088,668
+clip.case=1 requested=960,540,961,541 result=1 error=57005 exception=00000000 get=1 effective=960,540,961,541 immediate=960,540
+warp.case=1 result=1 error=57005 get=1 actual=960,540
+lowwarp.case=1 result=1 error=57005 get=1 actual=960,540
+equalwarp.case=1 result=1 error=57005 get=1 actual=960,540
+clip.case=2 requested=960,540,960,540 result=1 error=57005 exception=00000000 get=1 effective=960,540,960,540 immediate=959,539
+warp.case=2 result=1 error=57005 get=1 actual=959,539
+lowwarp.case=2 result=1 error=57005 get=1 actual=960,540
+equalwarp.case=2 result=1 error=57005 get=1 actual=959,539
+clip.case=3 requested=960,540,960,548 result=1 error=57005 exception=00000000 get=1 effective=960,540,960,548 immediate=959,540
+warp.case=3 result=1 error=57005 get=1 actual=959,547
+lowwarp.case=3 result=1 error=57005 get=1 actual=960,540
+equalwarp.case=3 result=1 error=57005 get=1 actual=959,540
+clip.case=4 requested=960,540,968,540 result=1 error=57005 exception=00000000 get=1 effective=960,540,968,540 immediate=960,539
+warp.case=4 result=1 error=57005 get=1 actual=967,539
+lowwarp.case=4 result=1 error=57005 get=1 actual=960,540
+equalwarp.case=4 result=1 error=57005 get=1 actual=960,539
+clip.case=5 requested=962,540,960,548 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=5 result=1 error=57005 get=1 actual=1088,668
+clip.case=6 requested=960,542,968,540 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=6 result=1 error=57005 get=1 actual=1088,668
+clip.case=7 requested=962,542,960,540 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=7 result=1 error=57005 get=1 actual=1088,668
+clip.case=8 requested=-10,-10,10,10 result=1 error=57005 exception=00000000 get=1 effective=0,0,10,10 immediate=9,9
+warp.case=8 result=1 error=57005 get=1 actual=9,9
+clip.case=9 requested=1940,20,1960,40 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=9 result=1 error=57005 get=1 actual=1088,668
+clip.case=10 requested=-2147483648,-2147483648,2147483647,2147483647 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=10 result=1 error=57005 get=1 actual=1088,668
+clip.case=11 requested=-1,-1,1,1 result=1 error=57005 exception=00000000 get=1 effective=0,0,1,1 immediate=0,0
+warp.case=11 result=1 error=57005 get=1 actual=0,0
+clip.case=12 requested=0,0,0,0 result=1 error=57005 exception=00000000 get=1 effective=0,0,0,0 immediate=0,0
+warp.case=12 result=1 error=57005 get=1 actual=0,0
+lowwarp.case=12 result=1 error=57005 get=1 actual=0,0
+equalwarp.case=12 result=1 error=57005 get=1 actual=0,0
+clip.case=13 requested=1940,20,1940,20 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=13 result=1 error=57005 get=1 actual=1088,668
+clip.case=14 requested=0,0,1920,1080 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=14 result=1 error=57005 get=1 actual=1088,668
+clip.case=15 requested=INVALID result=0 error=998 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+warp.case=15 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=0 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+active.warp.case=0 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=1 result=1 error=57005 exception=00000000 get=1 effective=960,540,961,541 immediate=960,540
+active.warp.case=1 result=1 error=57005 get=1 actual=960,540
+active.clip.case=2 result=1 error=57005 exception=00000000 get=1 effective=960,540,960,540 immediate=959,539
+active.warp.case=2 result=1 error=57005 get=1 actual=959,539
+active.clip.case=3 result=1 error=57005 exception=00000000 get=1 effective=960,540,960,548 immediate=959,540
+active.warp.case=3 result=1 error=57005 get=1 actual=959,547
+active.clip.case=4 result=1 error=57005 exception=00000000 get=1 effective=960,540,968,540 immediate=960,539
+active.warp.case=4 result=1 error=57005 get=1 actual=967,539
+active.clip.case=5 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+active.warp.case=5 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=6 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+active.warp.case=6 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=7 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+active.warp.case=7 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=8 result=1 error=57005 exception=00000000 get=1 effective=0,0,10,10 immediate=9,9
+active.warp.case=8 result=1 error=57005 get=1 actual=9,9
+active.clip.case=9 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+active.warp.case=9 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=10 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+active.warp.case=10 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=11 result=1 error=57005 exception=00000000 get=1 effective=0,0,1,1 immediate=0,0
+active.warp.case=11 result=1 error=57005 get=1 actual=0,0
+active.clip.case=12 result=1 error=57005 exception=00000000 get=1 effective=0,0,0,0 immediate=0,0
+active.warp.case=12 result=1 error=57005 get=1 actual=0,0
+active.clip.case=13 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+active.warp.case=13 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=14 result=1 error=57005 exception=00000000 get=1 effective=0,0,1920,1080 immediate=960,540
+active.warp.case=14 result=1 error=57005 get=1 actual=1088,668
+active.clip.case=15 result=0 error=998 exception=00000000 get=1 effective=960,540,961,541 immediate=960,540
+active.warp.case=15 result=1 error=57005 get=1 actual=960,540
+clip.transition.from=1 to=0 result=1 error=57005 get=1 effective=0,0,1920,1080
+clip.transition.from=1 to=1 result=1 error=57005 get=1 effective=960,540,961,541
+clip.transition.from=1 to=2 result=1 error=57005 get=1 effective=960,540,960,540
+clip.transition.from=1 to=3 result=1 error=57005 get=1 effective=960,540,960,548
+clip.transition.from=1 to=4 result=0 error=998 get=1 effective=960,540,961,541
+clip.transition.from=1 to=5 result=1 error=57005 get=1 effective=0,0,1920,1080
+clip.transition.from=1 to=6 result=1 error=57005 get=1 effective=0,0,1920,1080
+clip.transition.from=2 to=0 result=1 error=57005 get=1 effective=0,0,1920,1080
+clip.transition.from=2 to=1 result=0 error=5 get=1 effective=960,540,960,540
+clip.transition.from=2 to=2 result=0 error=5 get=1 effective=960,540,960,540
+clip.transition.from=2 to=3 result=0 error=5 get=1 effective=960,540,960,540
+clip.transition.from=2 to=4 result=0 error=5 get=1 effective=960,540,960,540
+clip.transition.from=2 to=5 result=0 error=5 get=1 effective=960,540,960,540
+clip.transition.from=2 to=6 result=0 error=5 get=1 effective=960,540,960,540
+clip.transition.from=3 to=0 result=1 error=57005 get=1 effective=0,0,1920,1080
+clip.transition.from=3 to=1 result=0 error=5 get=1 effective=960,540,960,548
+clip.transition.from=3 to=2 result=0 error=5 get=1 effective=960,540,960,548
+clip.transition.from=3 to=3 result=0 error=5 get=1 effective=960,540,960,548
+clip.transition.from=3 to=4 result=0 error=5 get=1 effective=960,540,960,548
+clip.transition.from=3 to=5 result=0 error=5 get=1 effective=960,540,960,548
+clip.transition.from=3 to=6 result=0 error=5 get=1 effective=960,540,960,548
+clip.transition.from=4 to=0 result=1 error=57005 get=1 effective=0,0,1920,1080
+clip.transition.from=4 to=1 result=0 error=5 get=1 effective=960,540,968,540
+clip.transition.from=4 to=2 result=0 error=5 get=1 effective=960,540,968,540
+clip.transition.from=4 to=3 result=0 error=5 get=1 effective=960,540,968,540
+clip.transition.from=4 to=4 result=0 error=5 get=1 effective=960,540,968,540
+clip.transition.from=4 to=5 result=0 error=5 get=1 effective=960,540,968,540
+clip.transition.from=4 to=6 result=0 error=5 get=1 effective=960,540,968,540
+clip.boundary.case=0 requested=1920,540,1920,540 result=1 error=57005 get=1 effective=1920,540,1920,540 immediate=1919,539
+clip.boundary.case=1 requested=960,1080,960,1080 result=1 error=57005 get=1 effective=960,1080,960,1080 immediate=959,1079
+clip.boundary.case=2 requested=1920,1080,1920,1080 result=1 error=57005 get=1 effective=1920,1080,1920,1080 immediate=1919,1079
+clip.boundary.case=3 requested=0,540,0,548 result=1 error=57005 get=1 effective=0,540,0,548 immediate=0,540
+clip.boundary.case=4 requested=1920,540,1920,548 result=1 error=57005 get=1 effective=1920,540,1920,548 immediate=1919,540
+clip.boundary.case=5 requested=0,-8,0,8 result=1 error=57005 get=1 effective=0,0,0,8 immediate=0,7
+clip.boundary.case=6 requested=0,-8,0,0 result=1 error=57005 get=1 effective=0,0,0,0 immediate=0,0
+clip.boundary.case=7 requested=-8,0,8,0 result=1 error=57005 get=1 effective=0,0,8,0 immediate=7,0
+clip.boundary.case=8 requested=-8,0,0,0 result=1 error=57005 get=1 effective=0,0,0,0 immediate=0,0
+clip.boundary.case=9 requested=-8,540,0,548 result=1 error=57005 get=1 effective=0,540,0,548 immediate=0,540
+get.edge.bytes=0 result=0 error=998 exception=00000000 prefix=
+clip.edge.bytes=0 result=0 error=998 exception=00000000 get=1 effective=960,540,961,541
+get.edge.bytes=4 result=0 error=998 exception=00000000 prefix=5a5a5a5a
+clip.edge.bytes=4 result=0 error=998 exception=00000000 get=1 effective=960,540,961,541
+get.edge.bytes=8 result=0 error=998 exception=00000000 prefix=5a5a5a5a5a5a5a5a
+clip.edge.bytes=8 result=0 error=998 exception=00000000 get=1 effective=960,540,961,541
+get.edge.bytes=12 result=0 error=998 exception=00000000 prefix=5a5a5a5a5a5a5a5a5a5a5a5a
+clip.edge.bytes=12 result=0 error=998 exception=00000000 get=1 effective=960,540,961,541
+get.edge.bytes=16 result=1 error=57005 exception=00000000 prefix=c00300001c020000c10300001d020000
+clip.edge.bytes=16 result=1 error=57005 exception=00000000 get=1 effective=960,540,960,540
+get.readonly result=0 error=998 unchanged=1
+clip.protect.case=1 phase=before result=1 error=57005
+clip.protect.case=1 phase=readonly result=1 error=57005 get=1 effective=960,540,961,541
+clip.protect.case=1 phase=after result=1 error=57005
+clip.protect.case=2 phase=before result=1 error=57005
+clip.protect.case=2 phase=readonly result=0 error=5 get=1 effective=960,540,960,540
+clip.protect.case=2 phase=after result=0 error=5
+get.badptr=0 result=0 error=998 exception=00000000
+get.badptr=1 result=0 error=998 exception=00000000
+restore.clip=1 position=1

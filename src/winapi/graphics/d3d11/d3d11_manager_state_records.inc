@@ -320,6 +320,34 @@
                               graphics::BACKEND_MAX_DESCRIPTOR_SETS>,
                    static_cast<usize>(d3d11::StageBindings::Count)>
             descriptor_tables{};
+        /// Last sync_descriptor_tables publication for this stage. Texture
+        /// and sampler slots are not rewritten while these stamps hold; a
+        /// buffer slot is, because its GPU address can change without the
+        /// guest binding changing (Map DISCARD / UpdateSubresource).
+        struct DescriptorTableCache {
+            bool valid{false};
+            u64 srv_stamp{0};
+            u64 sampler_stamp{0};
+            u64 srv_generation{0};
+            u64 texture_backend_gen{0};
+            u32 border_twins{0};
+            u32 srv_slots{0};
+            u32 sampler_slots{0};
+            /// Bit i set: t# i is a buffer or typed-buffer view.
+            std::array<u64, (d3d11::SHADER_RESOURCE_SLOTS + 63) / 64>
+                srv_buffers{};
+            /// What the table's t# slots [0, srv_known) hold, valid while
+            /// srv_generation and texture_backend_gen are: the view bound
+            /// there and the shape it was fitted to (bit 0 flat, bit 1
+            /// arrayed declaration). A rebind of one slot rewrites that
+            /// slot, not the whole register space.
+            std::array<GuestAddr, d3d11::SHADER_RESOURCE_SLOTS> srv_bound{};
+            std::array<u8, d3d11::SHADER_RESOURCE_SLOTS> srv_shape{};
+            u32 srv_known{0};
+        };
+        std::array<DescriptorTableCache,
+                   static_cast<usize>(d3d11::StageBindings::Count)>
+            descriptor_table_cache{};
         /// OCCLUSION* and PIPELINE_STATISTICS queries building on this
         /// context: every draw / dispatch is counted into each of them.
         std::vector<GuestAddr> counting_queries;

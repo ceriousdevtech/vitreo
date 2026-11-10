@@ -30,6 +30,9 @@
 #include "winapi/kernel32/thread/thread_suspend.hpp"
 #include "core/sync/ntsync.hpp"
 #include <cstdlib>
+#include <pthread.h>
+#include <cstring>
+#include <functional>
 #include <mutex>
 #include <set>
 #include <filesystem>
@@ -68,6 +71,137 @@ GuestAddr runtime_thunk_base(const GuestMemory& memory,
     // 20 GiB below the top of the available x64 user window.
     constexpr GuestAddr kThunkHeadroom = 0x00000005'00000000ULL;
     return ((ceiling + 1) - kThunkHeadroom) & ~GuestAddr{0xFFFF};
+}
+
+std::u16string shell_utf8_to_utf16(std::string_view in) {
+    std::u16string out;
+    out.reserve(in.size());
+    for (usize i = 0; i < in.size();) {
+        const auto c = static_cast<unsigned char>(in[i]);
+        u32 cp = 0;
+        usize len = 1;
+        if (c < 0x80) {
+            cp = c;
+        } else if ((c & 0xE0) == 0xC0 && i + 1 < in.size()) {
+            cp = ((c & 0x1Fu) << 6) | (static_cast<unsigned char>(in[i + 1]) & 0x3Fu);
+            len = 2;
+        } else if ((c & 0xF0) == 0xE0 && i + 2 < in.size()) {
+            cp = ((c & 0x0Fu) << 12) |
+                 ((static_cast<unsigned char>(in[i + 1]) & 0x3Fu) << 6) |
+                 (static_cast<unsigned char>(in[i + 2]) & 0x3Fu);
+            len = 3;
+        } else if ((c & 0xF8) == 0xF0 && i + 3 < in.size()) {
+            cp = ((c & 0x07u) << 18) |
+                 ((static_cast<unsigned char>(in[i + 1]) & 0x3Fu) << 12) |
+                 ((static_cast<unsigned char>(in[i + 2]) & 0x3Fu) << 6) |
+                 (static_cast<unsigned char>(in[i + 3]) & 0x3Fu);
+            len = 4;
+        } else {
+            cp = 0xFFFD;
+        }
+        if (cp >= 0x10000) {
+            cp -= 0x10000;
+            out.push_back(static_cast<char16_t>(0xD800 + (cp >> 10)));
+            out.push_back(static_cast<char16_t>(0xDC00 + (cp & 0x3FF)));
+        } else {
+            out.push_back(static_cast<char16_t>(cp));
+        }
+        i += len;
+    }
+    return out;
+}
+
+/// ShellExecute(Ex) of a program creates the process with CreateProcessW in
+/// the calling process, so code that hooks the caller's CreateProcessW (a
+/// store overlay chaining itself into child processes) sees the child exactly
+/// as it does on Windows. Calls the guest's own kernel32!CreateProcessW export
+/// (whatever its first bytes now are) with STARTF_USESHOWWINDOW/nShow and the
+/// SHELLEXECUTEINFO directory. Returns false with @p called = false when the
+/// export or scratch memory is unavailable (the caller launches directly);
+/// otherwise @p error is CreateProcessW's last error on failure.
+bool shell_create_process_in_guest(
+    GuestMemory& memory, winapi::VirtualMemoryManager& vmm,
+    winapi::ModuleManager& modules, winapi::HandleTable& handles,
+    const std::function<u64(GuestAddr, const u64*, usize, bool)>& call,
+    const std::string& path, const std::string& parameters,
+    const std::string& directory, i32 show_cmd, u32& process_handle,
+    u32& error, bool& called) {
+    called = false;
+    process_handle = 0;
+    if (!call) return false;
+    const GuestAddr kernel32 = modules.get_module_handle("kernel32.dll");
+    const GuestAddr create_process =
+        kernel32 != 0 ? modules.get_proc_address(kernel32, "CreateProcessW") : 0;
+    if (create_process == 0) return false;
+    const bool is64 = modules.is_64bit_process();
+
+    std::string command_line = "\"" + path + "\"";
+    if (!parameters.empty()) command_line += " " + parameters;
+    const std::u16string app16 = shell_utf8_to_utf16(path);
+    const std::u16string cmd16 = shell_utf8_to_utf16(command_line);
+    const std::u16string dir16 = shell_utf8_to_utf16(directory);
+
+    // STARTUPINFOW and PROCESS_INFORMATION (WinBase.h / processthreadsapi.h).
+    const u32 si_size = is64 ? 104u : 68u;
+    const u32 si_flags_off = is64 ? 60u : 44u;
+    const u32 si_show_off = is64 ? 64u : 48u;
+    constexpr u32 kSiOff = 0;
+    constexpr u32 kPiOff = 128;
+    constexpr u32 kAppOff = 256;
+    const u32 cmd_off = kAppOff + static_cast<u32>((app16.size() + 1) * 2 + 15) / 16 * 16;
+    const u32 dir_off = cmd_off + static_cast<u32>((cmd16.size() + 1) * 2 + 15) / 16 * 16;
+    const u32 total = dir_off + static_cast<u32>((dir16.size() + 1) * 2);
+    const GuestAddr scratch = static_cast<GuestAddr>(
+        vmm.virtual_alloc(0, total, 0x3000 /*MEM_COMMIT|MEM_RESERVE*/, 0x04));
+    if (scratch == 0) return false;
+    if (!is64 && scratch > 0xFFFF'FFFFull) {
+        (void)vmm.virtual_free(scratch, 0, 0x8000);
+        return false;
+    }
+
+    auto put16 = [&](u32 off, const std::u16string& text) {
+        std::vector<Byte> bytes((text.size() + 1) * 2, 0);
+        std::memcpy(bytes.data(), text.data(), text.size() * 2);
+        (void)memory.write_bytes(scratch + off, bytes.data(), bytes.size());
+    };
+    std::vector<Byte> si(si_size, 0);
+    std::memcpy(si.data(), &si_size, 4);
+    const u32 si_flags = 0x00000001u;  // STARTF_USESHOWWINDOW
+    const u16 show = static_cast<u16>(show_cmd);
+    std::memcpy(si.data() + si_flags_off, &si_flags, 4);
+    std::memcpy(si.data() + si_show_off, &show, 2);
+    (void)memory.write_bytes(scratch + kSiOff, si.data(), si.size());
+    put16(kAppOff, app16);
+    put16(cmd_off, cmd16);
+    if (!dir16.empty()) put16(dir_off, dir16);
+
+    const u64 args[10] = {
+        scratch + kAppOff, scratch + cmd_off, 0, 0, 0 /*bInheritHandles*/,
+        0 /*dwCreationFlags*/, 0 /*lpEnvironment: inherit*/,
+        dir16.empty() ? 0 : scratch + dir_off, scratch + kSiOff, scratch + kPiOff};
+    called = true;
+    winapi::set_last_error(winapi::error_codes::ERROR_SUCCESS);
+    const u64 ok = call(create_process, args, 10, is64);
+    bool launched = false;
+    if ((ok & 0xFFFF'FFFFull) != 0) {
+        u64 h_process = 0, h_thread = 0;
+        if (is64) {
+            h_process = memory.read_u64(scratch + kPiOff).value_or(0);
+            h_thread = memory.read_u64(scratch + kPiOff + 8).value_or(0);
+        } else {
+            h_process = memory.read_u32(scratch + kPiOff).value_or(0);
+            h_thread = memory.read_u32(scratch + kPiOff + 4).value_or(0);
+        }
+        // ShellExecuteEx returns only hProcess; the primary thread handle
+        // CreateProcessW opened is closed.
+        if (h_thread != 0) (void)handles.close(static_cast<winapi::Handle>(h_thread));
+        process_handle = static_cast<u32>(h_process);
+        launched = true;
+    } else {
+        error = winapi::get_last_error();
+    }
+    (void)vmm.virtual_free(scratch, 0, 0x8000 /*MEM_RELEASE*/);
+    return launched;
 }
 
 class OpticalHostFileSystem final : public capsule::HostFileSystem {
@@ -203,6 +337,7 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
     , opengl32_mgr{}
     , glu32_mgr{}
     , msvfw32_mgr{}
+    , avifil32_mgr{}
     , oledlg_mgr{}
     , audio_bridge{windowing::create_audio_bridge()}
     , wave_output{windowing::create_wave_output()}
@@ -242,6 +377,19 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
     hwnd_mgr.set_handle_allocator([] {
         return static_cast<windowing::HWND>(
             ipc::hwnd_registry_allocate_handle());
+    });
+    hwnd_mgr.set_child_order_observer([](const windowing::HwndManager::ChildOrderEvent& event) {
+        using Model=windowing::HwndManager::ChildOrderAction;
+        ipc::ChildOrderAction action=ipc::ChildOrderAction::Append;
+        if(event.action==Model::Remove)action=ipc::ChildOrderAction::Remove;
+        if(event.action==Model::Reorder)action=event.after==windowing::HWND_TOP?
+            ipc::ChildOrderAction::First:event.after==windowing::HWND_BOTTOM?
+            ipc::ChildOrderAction::Last:ipc::ChildOrderAction::After;
+        if(!ipc::hwnd_registry_update_child_order(action,static_cast<u32>(event.hwnd),
+            static_cast<u32>(event.parent),static_cast<u32>(event.after))) {
+            static std::atomic_flag reported=ATOMIC_FLAG_INIT;
+            if(!reported.test_and_set())std::fprintf(stderr,"[vitreo] child ordering publication failed\n");
+        }
     });
     // IsWindowUnicode: the window's charset (RegisterClassA/W, or the latest
     // SetWindowLongPtrA/W(GWLP_WNDPROC)) decides DispatchMessageA/W character
@@ -334,9 +482,26 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
     u32_ext_mgr.set_resource_manager(&resource_mgr);
     comctl32_mgr.set_hwnd_manager(&hwnd_mgr);
     shell_mgr.set_executable_launcher(
-        [this](const std::string& path, const std::string& parameters,
+        [this, &memory](const std::string& path, const std::string& parameters,
                const std::string& directory, i32 show_cmd,
                bool request_elevation, u32& process_handle, u32& error) {
+            if (!request_elevation) {
+                bool called = false;
+                u32 guest_error = 0;
+                const bool created = shell_create_process_in_guest(
+                    memory, vmm, module_mgr, handle_table, system_program_call,
+                    path, parameters, directory, show_cmd, process_handle,
+                    guest_error, called);
+                if (created) return true;
+                // A manifest that requires elevation makes CreateProcessW
+                // fail with ERROR_ELEVATION_REQUIRED; ShellExecute then takes
+                // the consent path below. Any other failure is the result.
+                if (called &&
+                    guest_error != winapi::error_codes::ERROR_ELEVATION_REQUIRED) {
+                    error = guest_error;
+                    return false;
+                }
+            }
             winapi::Handle handle = winapi::NULL_HANDLE;
             const bool launched = k32_ext_mgr.launch_shell_executable(
                 path, parameters, directory, show_cmd, request_elevation,
@@ -355,7 +520,8 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
             }
             if (type == winapi::HandleType::File ||
                 type == winapi::HandleType::Pipe ||
-                type == winapi::HandleType::Device) {
+                type == winapi::HandleType::Device ||
+                type == winapi::HandleType::HidDevice) {
                 k32_ext_mgr.on_iocp_handle_close(h);
             }
             if (type == winapi::HandleType::Device) {
@@ -415,6 +581,9 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
         });
 
     // Console bridge: FileManager delegates console-handle writes
+    file_mgr.set_hid_waitable_callbacks(
+        [this](winapi::Handle handle,u64 id){sync_mgr.register_waitable(handle,id);},
+        [this](winapi::Handle handle){sync_mgr.unregister_waitable(handle);});
     file_mgr.set_console_manager(console_mgr);
 
     // Wire FileManager into FileMappingManager for file-backed mappings
@@ -541,6 +710,18 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
         d3d12_presentation.client_size = services.client_size;
         d3d12_presentation.resize_client = services.resize_client;
         d3d12_presentation.window_rect = services.window_rect;
+        // D3D12 chains share D3D11's exclusive full-screen (the display-mode
+        // owner and the host Space).
+        d3d12_presentation.exclusive.client_size = services.client_size;
+        d3d12_presentation.exclusive.window_rect = services.window_rect;
+        d3d12_presentation.exclusive.enter_exclusive = services.enter_exclusive;
+        d3d12_presentation.exclusive.leave_exclusive = services.leave_exclusive;
+        d3d12_presentation.exclusive.host_fullscreen = services.host_fullscreen;
+        d3d12_presentation.exclusive.application_active =
+            services.application_active;
+        d3d12_presentation.exclusive.window_occluded = services.window_occluded;
+        d3d12_presentation.exclusive.has_keyboard_focus =
+            services.has_keyboard_focus;
         d3d11_mgr.set_window_services(std::move(services));
     }
     // The frame-latency waitable object is a guest semaphore.
@@ -577,6 +758,40 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
     d3d12_mgr.set_presentation_services(std::move(d3d12_presentation));
     // IDXGIResource1::CreateSharedHandle makes kernel handles.
     d3d11_mgr.set_handle_table(&handle_table);
+    d3d12_mgr.set_handle_table(&handle_table);
+    d3d12_mgr.set_virtual_memory(&vmm);
+    {
+        winapi::D3D12Manager::SectionServices sections;
+        sections.map_whole_view = [this](u64 handle, u64& size) -> u64 {
+            constexpr u32 kFileMapAllAccess = 0xF001Fu;  // FILE_MAP_ALL_ACCESS
+            const GuestAddr view = fmm_mgr.map_view_of_file(
+                static_cast<winapi::Handle>(handle), kFileMapAllAccess, 0, 0);
+            GuestAddr base = 0;
+            size = 0;
+            if (view != 0 && (!fmm_mgr.query_view(view, base, size) ||
+                              base != view)) {
+                (void)fmm_mgr.unmap_view_of_file(view);
+                size = 0;
+                return 0;
+            }
+            return view;
+        };
+        sections.unmap_view = [this](u64 base) {
+            (void)fmm_mgr.unmap_view_of_file(static_cast<GuestAddr>(base));
+        };
+        d3d12_mgr.set_section_services(std::move(sections));
+        // Disk shader caches: host directories in the capsule.
+        winapi::D3D12Manager::ShaderCacheDirectories dirs;
+        dirs.working_dir = [this]() -> std::string {
+            auto host = vfs.resolve_host_path(k32_ext_mgr.current_directory());
+            return host.is_ok() ? host.value() : std::string{};
+        };
+        dirs.temporary = [this]() -> std::string {
+            auto host = vfs.resolve_host_path(k32_ext_mgr.resolve_temp_path() + "D3DSCache");
+            return host.is_ok() ? host.value() : std::string{};
+        };
+        d3d12_mgr.set_shader_cache_directories(std::move(dirs));
+    }
     const auto foreign_present_target = [](u64 hwnd)
         -> std::optional<ipc::HwndRegistryEntry> {
         const auto window = ipc::hwnd_registry_lookup(static_cast<u32>(hwnd));
@@ -794,6 +1009,9 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
         });
     d3d9_mgr.set_memory(&memory, is_64bit);
     d3d9_mgr.set_backend(&graphics::MetalDevice::instance());
+    // Direct3D 8 fronts the D3D9 frontend (winapi/graphics/d3d8/d3d8.hpp).
+    d3d8_mgr.set_memory(&memory, is_64bit);
+    d3d8_mgr.set_d3d9(&d3d9_mgr);
     if (!d2d1_mgr.set_backend(&graphics::MetalDevice::instance())) {
         std::fprintf(stderr, "[vitreo] Direct2D graphics backend binding failed\n");
     }
@@ -877,6 +1095,9 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
             u32_ext_mgr.apply_virtual_display_mode(
                 static_cast<windowing::HWND>(hwnd), width, height, bits);
         });
+    d3d9_mgr.set_device_window_callback([this](u32 hwnd, bool enter) {
+        u32_ext_mgr.style_d3d9_device_window(static_cast<windowing::HWND>(hwnd), enter);
+    });
     // D3D9 hardware cursor show/position/image share the same host hooks as
     // user32 ShowCursor / SetCursorPos and Cocoa NSCursor.
     d3d9_mgr.set_cursor_visible_callback(
@@ -1023,7 +1244,12 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
     // Learn EnterCriticalSection: ExitProcess must not leave waiters parked in
     // enter_slow. Wake as soon as exit_process latches, not only at late
     // run.cpp teardown.
-    process_mgr.set_exit_wake([this] { cs_mgr.begin_shutdown(); });
+    process_mgr.set_exit_wake([this] {
+        cs_mgr.begin_shutdown();
+        // A process that ends still holding remote COM references releases
+        // them, as DCOM rundown does for a client that is gone.
+        com_mgr.release_remote_proxies_at_exit();
+    });
     reg_thunks.set_sync_manager(&sync_mgr);
     reg_thunks.set_environment_manager(&env_mgr);
 
@@ -1032,6 +1258,12 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
     thread_mgr.set_external_resume_callback(
         [this](winapi::Handle handle) {
             return k32_ext_mgr.resume_external_primary_thread(handle);
+        });
+    thread_mgr.set_external_context_callback(
+        [this](winapi::Handle handle, bool set, bool is_64bit,
+               std::vector<u8>& record) {
+            return k32_ext_mgr.external_primary_context(handle, set, is_64bit,
+                                                        record);
         });
 
     // Alertable waits (SleepEx / WaitForMultipleObjectsEx / SignalObjectAndWait)
@@ -1225,6 +1457,8 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
 
     // Modal DialogBox must synthesize WM_TIMER too (does not go through GetMessage).
     dialog_mgr.set_user32_ext_manager(&u32_ext_mgr);
+    dialog_mgr.set_painting_manager(&paint_mgr);
+    dialog_mgr.set_gdi_manager(&gdi_mgr);
 
     gdi_mgr.set_presentation_scheduler(windowing::CocoaBridge::defer_presentation);
 
@@ -1296,6 +1530,16 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
     // wait. ntsync signals and queue posts CFRunLoopWakeUp it (below), and a
     // worker's main-thread block wakes it itself, so the wait is event-driven
     // instead of re-checking every 16 ms.
+    // The pump and park keep host UI alive while the GUI thread blocks. When
+    // the guest's GUI thread is not the host main thread and the main thread
+    // is running its own service loop (run_guest_primary_thread translates
+    // input and services the run loop itself, and drains queued main work),
+    // there is nothing for the wait to keep alive: it blocks on its object.
+    // Otherwise every park ended at once and cost a main-thread round trip,
+    // ~1,000 times a second in an idle Chromium helper.
+    sync_mgr.set_wait_pump_needed([]() {
+        return pthread_main_np() != 0 || !host_runloop_service_active();
+    });
     sync_mgr.set_wait_park([this](u32 ms) {
         cocoa_bridge.begin_host_input_pump();
         struct HostPumpGuard {
@@ -1623,6 +1867,13 @@ RuntimeContext::RuntimeContext(GuestMemory& memory, std::string_view pe_path,
 }
 
 RuntimeContext::~RuntimeContext() {
+    u32_ext_mgr.set_gamepad_catalog({});
+    file_mgr.shutdown_hid_io();
+    // Drain typed HID holders while close/completion/wait managers are alive.
+    for(auto handle:handle_table.snapshot_handles()) if(handle_table.get_type(handle)==winapi::HandleType::HidDevice) {
+        (void)handle_table.set_flags(handle,winapi::HandleFlags::ProtectFromClose,0);
+        (void)handle_table.close(handle);
+    }
     // Stop the HTTP Server API listeners while the managers their
     // completions reach are still alive.
     httpapi_mgr.shutdown_all();

@@ -175,8 +175,14 @@ static MTLTextureDescriptor* texture_descriptor_for(const TextureDesc& desc) {
     }
 
     // D3D9 L8/A8L8 sample as luminance RGB (Learn: undefined channels → 1).
-    // Metal R8/RG8 otherwise return (R,0,0,1)/(R,G,0,1).
-    if (desc.channel_swizzle == 1u) {
+    // Metal R8/RG8 otherwise return (R,0,0,1)/(R,G,0,1). Metal rejects a
+    // swizzled texture that is also a render target (descriptor validation
+    // aborts the process), so a luminance render target is stored plain and
+    // sampled through swizzled views (MetalBackendTexture2D::
+    // native_shader_handle), which need PixelFormatView.
+    if (desc.channel_swizzle != 0u && desc.render_target) {
+        td.usage = td.usage | MTLTextureUsagePixelFormatView;
+    } else if (desc.channel_swizzle == 1u) {
         td.swizzle = MTLTextureSwizzleChannelsMake(
             MTLTextureSwizzleRed, MTLTextureSwizzleRed, MTLTextureSwizzleRed,
             MTLTextureSwizzleOne);

@@ -95,7 +95,8 @@ CommandResult ProcessCommand::execute(const ParsedArgs& args) {
             return CommandResult::failure(
                 "Process is not registered in capsule '" + capsule + "'");
         }
-        if (::kill(static_cast<pid_t>(*pid), SIGTERM) != 0) {
+        const u32 host_pid = found->host_pid != 0 ? found->host_pid : found->pid;
+        if (::kill(static_cast<pid_t>(host_pid), SIGTERM) != 0) {
             return CommandResult::failure(
                 "Failed to stop process " + std::to_string(*pid) +
                 ": errno=" + std::to_string(errno));
@@ -108,7 +109,8 @@ CommandResult ProcessCommand::execute(const ParsedArgs& args) {
         size_t stopped = 0;
         size_t failed = 0;
         for (auto it = processes.rbegin(); it != processes.rend(); ++it) {
-            if (::kill(static_cast<pid_t>(it->pid), SIGTERM) == 0) {
+            const u32 host_pid = it->host_pid != 0 ? it->host_pid : it->pid;
+            if (::kill(static_cast<pid_t>(host_pid), SIGTERM) == 0) {
                 ++stopped;
             } else {
                 ++failed;

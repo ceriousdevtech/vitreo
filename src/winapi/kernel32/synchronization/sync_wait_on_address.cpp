@@ -5,7 +5,7 @@
 ///
 /// Closed cut from sync.cpp — verified with plan_extraction.py.
 
-#include <os/os_sync_wait_on_address.h>
+#include "platform/host_address_wait.hpp"
 #include <mach/mach.h>
 extern "C" {
 // The SDK header lacks C linkage guards.
@@ -165,7 +165,7 @@ usize wake_address(GuestAddr address, bool all) {
     for (usize i = 0; i < woken; ++i) {
         void* key = i < inline_keys.size() ? inline_keys[i]
                                            : more_keys[i - inline_keys.size()];
-        (void)os_sync_wake_by_address_any(key, sizeof(u32),
+        (void)::vitreo::platform::address_wake_any(key, sizeof(u32),
                                           OS_SYNC_WAKE_BY_ADDRESS_NONE);
     }
     return woken;
@@ -226,7 +226,7 @@ usize cancel_wait_on_address_for_thread(u32 thread_id) {
         }
         // As in wake_address: the words are kernel keys only from here on.
         for (void* key : keys) {
-            (void)os_sync_wake_by_address_any(key, sizeof(u32),
+            (void)::vitreo::platform::address_wake_any(key, sizeof(u32),
                                               OS_SYNC_WAKE_BY_ADDRESS_NONE);
         }
         cancelled += keys.size();
@@ -331,13 +331,13 @@ void impl_WaitOnAddress(Marshaler& m) {
         }
         int rc;
         if (infinite) {
-            rc = os_sync_wait_on_address(&self.signaled, 0, sizeof(u32),
+            rc = ::vitreo::platform::address_wait(&self.signaled, 0, sizeof(u32),
                                          OS_SYNC_WAIT_ON_ADDRESS_NONE);
         } else {
             const auto left = std::chrono::duration_cast<std::chrono::nanoseconds>(
                 deadline - std::chrono::steady_clock::now()).count();
             if (left <= 0) break;
-            rc = os_sync_wait_on_address_with_timeout(
+            rc = ::vitreo::platform::address_wait_with_timeout(
                 &self.signaled, 0, sizeof(u32), OS_SYNC_WAIT_ON_ADDRESS_NONE,
                 OS_CLOCK_MACH_ABSOLUTE_TIME, static_cast<u64>(left));
         }

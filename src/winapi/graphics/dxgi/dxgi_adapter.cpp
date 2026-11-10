@@ -13,6 +13,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "winapi/common/display_device_identity.hpp"
 #include "winapi/common/virtual_display_modes.hpp"
+#include "winapi/graphics/common/adapter_device_presence.hpp"
 #include "winapi/graphics/d3d10/d3d10.hpp"
 #include "winapi/graphics/common/live_diag.hpp"
 
@@ -289,15 +290,18 @@ void DxgiManager::impl_QueryVideoMemoryInfo(Marshaler& m) {
         usage = live.current_usage;
     }
     // AvailableForReservation is not derivable from Windows beyond
-    // <= Budget; it keeps half the budget.
+    // <= Budget; it keeps half the budget (the RTX 4080 SUPER reports about
+    // 51%, dxgi_reservation_probe).
     const u64 available = budget / 2;
     // DXGI_QUERY_VIDEO_MEMORY_INFO is four UINT64s on both bitnesses
-    // (dxgi1_4.h). CurrentReservation stays 0 because
-    // SetVideoMemoryReservation never succeeds (Windows; see below).
+    // (dxgi1_4.h). CurrentReservation is the last accepted
+    // SetVideoMemoryReservation for the segment.
+    const u64 reservation =
+        m_video_memory_reservation[segment].load(std::memory_order_acquire);
     if (m_memory.write_u64(info_out, budget).is_err() ||
         m_memory.write_u64(info_out + 8, usage).is_err() ||
         m_memory.write_u64(info_out + 16, available).is_err() ||
-        m_memory.write_u64(info_out + 24, 0).is_err()) {
+        m_memory.write_u64(info_out + 24, reservation).is_err()) {
         m.set_return(dxgi::E_INVALIDARG);
         return;
     }
@@ -315,19 +319,45 @@ void DxgiManager::impl_SetVideoMemoryReservation(Marshaler& m) {
     if (!m_is_64bit) {
         reservation |= m.arg(4) << 32;
     }
-    (void)reservation;
-    // Windows (a UMA adapter, DedicatedVideoMemory=0): every reservation,
-    // including 0 and 1, returns E_INVALIDARG. That stays the answer under
-    // the discrete-class profile: Learn defines no success or failure rule,
-    // and what a discrete adapter accepts has not been measured
-    // (dxgi_adapter3_probe on a discrete GPU), so nothing is promised.
+    // Measured on an NVIDIA RTX 4080 SUPER, x64 and x86
+    // (tools/oracle_probe/dxgi_reservation_probe.c), both segment groups:
+    //  - until a D3D11 or D3D12 device has been created on the adapter,
+    //    every reservation, 0 included, is E_INVALIDARG (a UMA adapter with
+    //    no device measures the same, dxgi_adapter3_probe);
+    //  - after that, even once the device is released, any amount from 0 to
+    //    QueryVideoMemoryInfo's AvailableForReservation succeeds and becomes
+    //    CurrentReservation exactly; one byte more is E_INVALIDARG and
+    //    leaves the previous reservation in place; 0 clears it.
     if (!adapter_object(self) || node != 0 ||
         (segment != DXGI_MEMORY_SEGMENT_GROUP_LOCAL &&
          segment != DXGI_MEMORY_SEGMENT_GROUP_NON_LOCAL)) {
         m.set_return(dxgi::E_INVALIDARG);
         return;
     }
-    m.set_return(dxgi::E_INVALIDARG);
+    if (!graphics_common::adapter_has_had_device()) {
+        m.set_return(dxgi::E_INVALIDARG);
+        return;
+    }
+    // The same AvailableForReservation QueryVideoMemoryInfo reports.
+    u64 budget = (segment == DXGI_MEMORY_SEGMENT_GROUP_LOCAL)
+                     ? m_adapter_info.dedicated_video_memory
+                     : 0;
+    graphics::BackendVideoMemoryInfo live{};
+    const auto* device = m_adapter_info_is_explicit
+        ? nullptr : graphics::active_backend_device();
+    if (segment == DXGI_MEMORY_SEGMENT_GROUP_LOCAL && device != nullptr &&
+        device->query_video_memory(live)) {
+        budget = live.budget;
+    }
+    if (reservation > budget / 2) {
+        m.set_return(dxgi::E_INVALIDARG);
+        return;
+    }
+    m_video_memory_reservation[segment].store(reservation,
+                                              std::memory_order_release);
+    dxgi_diag("SetVideoMemoryReservation seg=%u bytes=%llu -> S_OK", segment,
+              static_cast<unsigned long long>(reservation));
+    m.set_return(dxgi::S_OK);
 }
 
 void DxgiManager::impl_RegisterVideoMemoryBudgetChangeNotificationEvent(

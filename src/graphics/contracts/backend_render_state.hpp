@@ -178,6 +178,7 @@ enum class BackendFilter { Nearest, Linear };
 enum class BackendAddressMode { Wrap, Mirror, Clamp, Border, MirrorOnce };
 
 struct BackendVertexAttribute {
+    bool operator==(const BackendVertexAttribute&) const = default;
     /// Attribute index the shader declares with `[[attribute(n)]]`.
     unsigned shader_location{0};
     unsigned offset{0};

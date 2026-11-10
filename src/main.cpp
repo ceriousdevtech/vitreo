@@ -649,12 +649,20 @@ static void maybe_reexec_with_guest_app_identity(
     // "Don't Allow" there refuses without asking). POSIX_SPAWN_SETEXEC keeps
     // what execv keeps: pid, process group, parent and descriptors.
     // platform/macos/tcc_responsibility.hpp.
-    const int disclaim_error = vitreo::platform::spawn_disclaiming_responsibility(
-        nullptr, wrapper_text.c_str(), exec_argv.data(), *_NSGetEnviron(), true);
-    std::fprintf(stderr,
-                 "[vitreo] Unable to relaunch '%s' responsible for itself (%s); macOS "
-                 "privacy consent stays with the launching app\n",
-                 app_name.c_str(), std::strerror(disclaim_error));
+    //
+    // Only for code TCC can recognise again: an ad-hoc build's consent is
+    // keyed to its cdhash and lost on every rebuild, so a self-responsible
+    // development build re-asks for each protected folder (Documents behind a
+    // capsule link) after each build, with nobody there to answer. Ad-hoc
+    // builds keep the launching app's recorded consent instead.
+    if (vitreo::platform::running_code_has_stable_identity()) {
+        const int disclaim_error = vitreo::platform::spawn_disclaiming_responsibility(
+            nullptr, wrapper_text.c_str(), exec_argv.data(), *_NSGetEnviron(), true);
+        std::fprintf(stderr,
+                     "[vitreo] Unable to relaunch '%s' responsible for itself (%s); macOS "
+                     "privacy consent stays with the launching app\n",
+                     app_name.c_str(), std::strerror(disclaim_error));
+    }
     ::execv(wrapper_text.c_str(), exec_argv.data());
 
     const int exec_error = errno;

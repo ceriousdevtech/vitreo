@@ -54,8 +54,50 @@ TEST_F(CocoaBridgeTest, CoveringOwnerWithOwnedDialogIsNotPresented) {
     EXPECT_TRUE(bridge.native_window_is_visible(281));
     EXPECT_FALSE(bridge.native_window_is_visible(280));
 
+    // Hiding the owned dialog holds the host back briefly (a wizard's page
+    // change), then the host is the UI again: it presents its own content
+    // (a setup engine's WS_CHILD progress page) once no owned window shows.
     bridge.set_visible(281, false);
     EXPECT_FALSE(bridge.native_window_is_visible(280));
+    EXPECT_TRUE(pump_until([&] { return bridge.native_window_is_visible(280); }));
+
+    // Showing an owned window hands the UI back at once.
+    bridge.set_visible(281, true);
+    EXPECT_FALSE(bridge.native_window_is_visible(280));
+}
+
+TEST_F(CocoaBridgeTest, CoveringOwnerStaysHiddenAcrossAWizardPageChange) {
+    // destroy page N, create page N+1 inside the hold: no host flash.
+    const auto mon = bridge.get_primary_monitor_info();
+    WindowData host;
+    host.handle = 290;
+    host.style = WS::POPUP;
+    host.rect = {mon.left, mon.top, mon.right, mon.bottom};
+    host.client_rect = {0, 0, mon.width, mon.height};
+    host.visible = true;
+    ASSERT_TRUE(bridge.create_window(290, host).is_ok());
+
+    WindowData page;
+    page.handle = 291;
+    page.owner = 290;
+    page.is_dialog = true;
+    page.style = WS::POPUP | WS::CAPTION | WS::SYSMENU;
+    page.rect = {80, 60, 80 + 400, 60 + 300};
+    page.client_rect = {0, 0, 400, 300};
+    page.visible = true;
+    ASSERT_TRUE(bridge.create_window(291, page).is_ok());
+    ASSERT_FALSE(bridge.native_window_is_visible(290));
+
+    bridge.destroy_window(291);
+    EXPECT_FALSE(bridge.native_window_is_visible(290));
+    page.handle = 292;
+    ASSERT_TRUE(bridge.create_window(292, page).is_ok());
+    EXPECT_FALSE(pump_until([&] { return bridge.native_window_is_visible(290); },
+                            CocoaBridge::kOwnedHideHoldMs * 3));
+
+    // A hidden owned window does not keep the host off screen.
+    bridge.set_visible(292, false);
+    EXPECT_TRUE(pump_until([&] { return bridge.native_window_is_visible(290); }));
 }
 
 TEST_F(CocoaBridgeTest, WizardSizedBorderlessOwnerWithOwnedDialogIsNotPresented) {
@@ -82,6 +124,7 @@ TEST_F(CocoaBridgeTest, WizardSizedBorderlessOwnerWithOwnedDialogIsNotPresented)
 
     bridge.set_visible(287, false);
     EXPECT_FALSE(bridge.native_window_is_visible(286));
+    EXPECT_TRUE(pump_until([&] { return bridge.native_window_is_visible(286); }));
 }
 
 TEST_F(CocoaBridgeTest, CaptionedOwnerKeepsOwnedDialogNativeChrome) {

@@ -9,6 +9,7 @@
 #include "ipc/ipc_gate.hpp"
 
 #include "core/pe/parser/pe_parser.hpp"
+#include "core/pe/parser/manifest_info.hpp"
 #include "core/pe/imports/api_set_resolver.hpp"
 #include "capsule/vfs/filesystem.hpp"
 #include <vitreo/result.hpp>
@@ -35,8 +36,33 @@
 
 namespace vitreo::winapi {
 
+std::shared_ptr<const sxs::ContextData> ModuleManager::module_activation_context(
+    const std::string& win_path, std::span<const u8> image, const pe::ParsedPe& parsed, bool& failed) {
+    failed = false;
+    if (m_vfs == nullptr) return nullptr;
+    // Learn "Using Side-by-side Assemblies as a Resource": a DLL's
+    // ISOLATIONAWARE_MANIFEST_RESOURCE_ID (2) manifest is activated while
+    // the loader resolves that DLL's static imports.
+    const auto manifest = pe::pe_manifest_resource(image, parsed, 2);
+    if (manifest.empty()) return nullptr;
+    sxs::ContextRequest request;
+    request.manifest = manifest;
+    request.manifest_path = win_path;
+    request.root_directory = parent_windows_dir(win_path);
+    request.application_dir = request.root_directory;
+    request.architecture = parsed.is_64bit ? "amd64" : "x86";
+    sxs::ContextResult generated = sxs::build_context(*m_vfs, request);
+    if (!generated.data) {
+        fprintf(stderr, "[vitreo] sxs: %s: %s\n", win_path.c_str(), generated.detail.c_str());
+        failed = true;
+        return nullptr;
+    }
+    return std::make_shared<const sxs::ContextData>(std::move(*generated.data));
+}
+
 pe::ImportCallback ModuleManager::make_companion_resolver(std::string companion_dir,
-                                                          bool* dep_failed) {
+                                                          bool* dep_failed,
+                                                          std::shared_ptr<const sxs::ContextData> own_context) {
     // Mirror the resolver used by setup_imports() for the main executable so
     // that any module loaded through PeLoader can locate bundled sibling DLLs
     // (siblings loaded from the same directory)
@@ -68,7 +94,8 @@ pe::ImportCallback ModuleManager::make_companion_resolver(std::string companion_
         main_dir = parent_windows_dir(main_module_path_);
     }
 
-    return [this, companion_dir = std::move(companion_dir), main_dir = std::move(main_dir), dep_failed](
+    return [this, companion_dir = std::move(companion_dir), main_dir = std::move(main_dir), dep_failed,
+            own_context = std::move(own_context)](
         std::string_view dll_name,
         std::string_view func_name,
         u16 ordinal) -> u64 {
@@ -105,14 +132,25 @@ pe::ImportCallback ModuleManager::make_companion_resolver(std::string companion_
             return 0;
         }
 
-        GuestAddr mod_base = get_module_handle(dll_name);
+        // Side-by-side redirection first (Learn DLL search order): the DLL's
+        // own manifest context while its imports bind, otherwise the active
+        // (or process default) context.
+        GuestAddr redirected_base = 0;
+        {
+            std::optional<std::string> redirected;
+            if (own_context) redirected = own_context->redirect_dll(dll_name);
+            else if (m_sxs_redirect_provider) redirected = m_sxs_redirect_provider(dll_name);
+            if (redirected) redirected_base = load_library(*redirected);
+        }
+
+        GuestAddr mod_base = redirected_base;
         if (mod_base == 0) {
-            // Mapped but not yet Loaded: either an import cycle back into a
-            // module whose own imports are still being bound, or a module
-            // whose initializer is running. Bind against its exports; do not
-            // load it a second time (see import_graph.cpp).
+            // Public GetModuleHandle also sees Mapping/Initializing images.
+            // Check this path first so a cycle still records its root before
+            // binding to the already-mapped exports (import_graph.cpp).
             mod_base = in_progress_module_base(dll_name);
         }
+        if (mod_base == 0) mod_base = get_module_handle(dll_name);
         bool from_cache = (mod_base != 0);
         if (mod_base == 0) {
             mod_base = try_dir(companion_dir);

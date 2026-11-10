@@ -560,7 +560,7 @@ u32 D3D11Manager::constant_buffer_bind_offset(GuestAddr buffer,
 // window becomes a byte offset from the buffer base.
 void D3D11Manager::resolve_buffer_resource(
     GuestAddr srv_address, const graphics::BackendBuffer*& out_buffer,
-    unsigned& out_offset,
+    u64& out_offset,
     const graphics::BackendTextureBuffer*& out_texture_buffer) {
         const ShaderResourceView* srv = find_shader_resource_view(srv_address);
         if (srv == nullptr || srv->buffer == 0) return;

@@ -151,7 +151,14 @@ private:
         bool offered{false};
         BufferDesc desc{};
         std::unique_ptr<graphics::BackendBuffer> backend;
-        std::vector<u8> shadow;
+        /// WS6: the zero-copy storage of a DYNAMIC or STAGING buffer (its
+        /// `backend` is a window onto the lease's current slice and `shadow`
+        /// a view of it); null on the shadow path. `mapped_address` stays 0
+        /// for it (release_buffer unmaps that). Declared after `backend`, so
+        /// it is destroyed first: the slice retires while the window still
+        /// names it.
+        std::shared_ptr<D3D11RingLease> ring;
+        BufferShadow shadow;
         /// The GPU wrote this buffer (a copy into it) after `shadow` was last
         /// true to it. A CPU read -- Map with READ access -- must first pull
         /// the GPU's contents back; nothing else reads a staging buffer.
@@ -196,7 +203,12 @@ private:
             u32 max_index{0};
             bool has_cut{false};
         };
-        std::vector<IndexScan> index_scans;
+        /// Keyed by (first, count, wide), all of one shadow_version. A title
+        /// that keeps every mesh in one index buffer draws thousands of
+        /// ranges from it a frame: a 16-entry list rescanned every range on
+        /// every draw.
+        std::unordered_map<u64, IndexScan> index_scans;
+        u64 index_scans_version{0};
         PrivateDataStore private_data;
         /// IDXGIKeyedMutex facet (object + 0x28) of a KEYEDMUTEX buffer, and
         /// its shared state (as Texture2D's).

@@ -199,6 +199,7 @@ void append_key_object_exports(NtdllExtManager& mgr,
                     case HandleType::Timer:            return u"Timer";
                     case HandleType::Token:            return u"Token";
                     case HandleType::Job:              return u"Job";
+                    case HandleType::HidDevice:        return u"File";
                     case HandleType::Device:           return u"Device";
                     case HandleType::IoCompletionPort: return u"IoCompletion";
                     case HandleType::Heap:             return u"Heap";

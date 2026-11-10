@@ -182,6 +182,10 @@ void ModuleManager::unload_failed_module(const std::string& cache_key,
                         DLL_PROCESS_DETACH, 0};
         (void)m_guest_call(failed.entry_point, dargs, 3, failed.bitness == 64);
     }
+    // This image already emitted LOADED when it was mapped. Preserve its
+    // identity/exports through the paired notification, including failed init.
+    notify_dll(2, failed.path, failed.name, failed.base_address,
+               static_cast<usize>(failed.image_end - failed.base_address));
     unpublish_loader_entry(failed);
     if (m_pe_loader) {
         pe::LoadedImage unload_img{};
@@ -246,6 +250,7 @@ bool ModuleManager::run_deferred_cycle_inits(const std::string& root_key) {
         auto again = modules_by_name_.find(item.key);
         if (again == modules_by_name_.end()) continue;
         again->second.dllmain_called = true;
+        sync_loader_entry(again->second);
         if (ret == 0) {
             std::fprintf(stderr,
                          "[loader] DllMain returned FALSE for \"%s\" inside an "

@@ -6,6 +6,9 @@
 // matchers live in jit_linear_fixture.hpp.
 
 #include "jit_linear_fixture.hpp"
+#include "core/cpu/state/context64_record.hpp"
+#include <unordered_map>
+#include "core/cpu/interpreter/ops/helpers.hpp"
 
 using namespace vitreo;
 using namespace vitreo::cpu;
@@ -342,4 +345,263 @@ TEST_F(JitLinear64Test, ScalarStoreOperandsSurviveColdRipPublication) {
             EXPECT_EQ(cpu.flags.rflags, 0xad7u);
         }
     }
+}
+
+// Opt-in diagnostic: replay a local debugger capture at original guest
+// addresses. Captures are private input artifacts, never test expectations.
+TEST_F(JitLinear64Test, DISABLED_CapturedLiveStateReplay) {
+    const char* path = std::getenv("VITREO_LIVE_REPLAY");
+    ASSERT_NE(path, nullptr);
+    const std::string root(path);
+    CpuState current;
+    std::ifstream cpu_file(root + "/cpu.bin", std::ios::binary);
+    ASSERT_TRUE(cpu_file.read(reinterpret_cast<char*>(&current), sizeof(current)));
+    // report_watched_block receives the authoritative block entry separately
+    // from CpuState.rip, which may still name the preceding linked block.
+    if (const char* rip = std::getenv("VITREO_LIVE_REPLAY_RIP"))
+        current.rip = std::strtoull(rip, nullptr, 0);
+    struct Region { GuestAddr addr; std::vector<u8> before, expected; bool written = false; };
+    std::vector<Region> regions;
+    std::ifstream index(root + "/regions.txt");
+    u64 address = 0; usize size = 0;
+    while (index >> std::hex >> address >> std::dec >> size) {
+        ASSERT_GT(size, 0u);
+        ASSERT_LE(size, 0x4000u);
+        ASSERT_EQ(size % 0x1000, 0u);
+        if (address == kCode64 || address == kData64)
+            ASSERT_TRUE(m_memory->unmap_region(address, 0x4000));
+        ASSERT_TRUE(m_memory->map_region(address, size, MemoryProtection::ReadWrite));
+        std::ostringstream filename; filename << root << '/' << std::hex << address << ".bin";
+        Region region{address, std::vector<u8>(size), std::vector<u8>(size)};
+        std::ifstream data(filename.str(), std::ios::binary);
+        ASSERT_TRUE(data.read(reinterpret_cast<char*>(region.before.data()), size));
+        ASSERT_TRUE(m_memory->write_bytes(address, region.before.data(), size));
+        regions.push_back(std::move(region));
+    }
+    ASSERT_FALSE(regions.empty());
+    if (std::getenv("VITREO_LIVE_EXPORT_CONTEXT")) {
+        constexpr GuestAddr exported_context = 0x1f1000000;
+        ASSERT_TRUE(m_memory->map_region(exported_context, 0x4000, MemoryProtection::ReadWrite));
+        current.materialize_lazy_flags();
+        ASSERT_EQ(store_context64(*m_memory, exported_context, current,
+            kContext64Full | kContext64Segments), Context64Status::Ok);
+        std::array<u8, kContext64Size> context{};
+        ASSERT_TRUE(m_memory->read_bytes(exported_context, context.data(), context.size()));
+        std::ofstream output(root + "/native-context.bin", std::ios::binary);
+        ASSERT_TRUE(output.write(reinterpret_cast<const char*>(context.data()), context.size()));
+        return;
+    }
+    if (const char* native_path = std::getenv("VITREO_LIVE_NATIVE_STEPS")) {
+        std::ifstream native(native_path, std::ios::binary);
+        constexpr GuestAddr record = 0x1f1000000;
+        ASSERT_TRUE(m_memory->map_region(record, 0x4000, MemoryProtection::ReadWrite));
+        ASSERT_TRUE(m_memory->write_u64(current.gpr.get64(ESP), 0x1f0000000));
+        std::array<u8, kContext64Size> bytes{};
+        if (const char* shared_path = std::getenv("VITREO_LIVE_NATIVE_SHARED")) {
+            std::array<u8,4096> shared{};
+            std::ifstream shared_file(shared_path,std::ios::binary);
+            ASSERT_TRUE(shared_file.read(reinterpret_cast<char*>(shared.data()),shared.size()));
+            ASSERT_TRUE(m_memory->write_bytes(0x7ffe0000,shared.data(),shared.size()));
+        }
+        unsigned steps = 0;
+        while (native.read(reinterpret_cast<char*>(bytes.data()), bytes.size())) {
+            const auto start = current.rip;
+            ASSERT_TRUE(m_memory->write_bytes(record, bytes.data(), bytes.size()));
+            auto expected = current;
+            ASSERT_EQ(load_context64(*m_memory, record, expected, false), Context64Status::Ok);
+            std::array<u8,15> code{};
+            ASSERT_TRUE(m_memory->read_bytes(start, code.data(), code.size()));
+            MemoryByteReader reader(code.data(), code.size());
+            DecodedInstruction decoded;
+            ASSERT_EQ(decode_instruction(reader,DecodeMode::Mode64,decoded),DecodeError::Success);
+            Interpreter interpreter(current,*m_memory);
+            if (const char* watch = std::getenv("VITREO_LIVE_NATIVE_WATCH_CONTEXT")) {
+                const auto base=std::strtoull(watch,nullptr,0);
+                auto& context=interpreter.context();
+                context.instr_length=decoded.length;
+                context.address_size_override=decoded.prefixes.address_size;
+                for (const auto& operand: decoded.operands) {
+                    if(!is_memory_operand(operand.type)) continue;
+                    const auto accessed=ops::calc_effective_address(context,operand.mem);
+                    if(accessed && accessed.value()>=base && accessed.value()<base+0x700)
+                        std::printf("CONTEXT_ACCESS rip=%llx offset=%llx size=%u\n",start,accessed.value()-base,unsigned(operand_size(operand.type)));
+                }
+            }
+            // Native KUSER data is live. Import only the value read by a
+            // decoded MOV from that explicit OS-input page, before executing.
+            if ((decoded.opcode == Opcode::MOV_R32_RM32 || decoded.opcode == Opcode::MOV_R64_RM64) && is_memory_operand(decoded.operands[1].type) &&
+                !is_memory_operand(decoded.operands[0].type)) {
+                auto& context=interpreter.context();
+                context.instr_length=decoded.length;
+                context.address_size_override=decoded.prefixes.address_size;
+                const auto address=ops::calc_effective_address(context,decoded.operands[1].mem);
+                const auto size=operand_size(decoded.operands[1].type);
+                if(address && address.value()>=0x7ffe0000 && address.value()+size<=0x7ffe1000 && size<=8) {
+                    const auto value=expected.gpr.get64(decoded.operands[0].reg);
+                    ASSERT_TRUE(m_memory->write_bytes(address.value(),reinterpret_cast<const u8*>(&value),size));
+                }
+            }
+            const auto result = interpreter.step();
+            current.materialize_lazy_flags();
+            if (decoded.opcode == Opcode::RDTSC || decoded.opcode == Opcode::RDTSCP) {
+                current.gpr.set64(0,expected.gpr.get64(0));
+                current.gpr.set64(2,expected.gpr.get64(2));
+                if (decoded.opcode == Opcode::RDTSCP) current.gpr.set64(1,expected.gpr.get64(1));
+            }
+            SCOPED_TRACE(::testing::Message() << "native_step=" << steps << " rip=" << std::hex << start);
+            if (current.rip != expected.rip) std::printf("NATIVE_STEP divergence start=%llx flags=%llx/%llx result=%u\n",start,current.flags.rflags,expected.flags.rflags,unsigned(result));
+            ASSERT_EQ(current.rip,expected.rip);
+            for (u8 r=0;r<16;++r) {
+                if (current.gpr.get64(r) != expected.gpr.get64(r)) std::printf("NATIVE_STEP divergence start=%llx register=%u flags=%llx/%llx bytes=%02x%02x%02x%02x\n",start,unsigned(r),current.flags.rflags,expected.flags.rflags,code[0],code[1],code[2],code[3]);
+                ASSERT_EQ(current.gpr.get64(r),expected.gpr.get64(r)) << "register=" << unsigned(r);
+            }
+            ASSERT_EQ(std::memcmp(&current.sse.xmm,&expected.sse.xmm,sizeof(current.sse.xmm)),0);
+            ++steps;
+        }
+        std::printf("NATIVE_STEP matched=%u final=%llx\n",steps,current.rip);
+        ASSERT_GT(steps,0u);
+        return;
+    }
+    // Track both interpreter writes and native stores. This preserves complete
+    // memory comparisons without copying the entire captured image per block.
+    struct Watch {
+        static constexpr u64 base() { return 0x10000; }
+        std::vector<u8> dirty = std::vector<u8>((kReservation64 / 4096 + 7) / 8);
+        std::vector<u8> armed = std::vector<u8>(dirty.size());
+        Watch() { write_watch::register_region(base(), kReservation64 - base(),
+            dirty.data(), armed.data(), false); }
+        ~Watch() { write_watch::unregister_region(base()); }
+        bool changed(GuestAddr a) const {
+            for (unsigned p = 0; p < 4; ++p) {
+                const auto page = a + p * 4096;
+                if (write_watch::test_bit(dirty.data(), (page - base()) / 4096) ||
+                    write_watch::test_linear_page(page)) return true;
+            }
+            return false;
+        }
+        void clear(const std::vector<Region>& mapped) {
+            std::fill(dirty.begin(), dirty.end(), 0);
+            for (const auto& r : mapped) write_watch::clear_linear_pages(r.addr, r.addr + r.before.size());
+        }
+    } watch;
+    struct RestoreLinks {
+        bool enabled = JitCompiler::jit_link_enabled();
+        ~RestoreLinks() { if (enabled) JitCompiler::enable_jit_link(); }
+    } restore_links;
+    JitCompiler::disable_jit_link();
+    std::unordered_map<GuestAddr, std::pair<std::vector<u8>, CompiledBlock*>> compiled_blocks;
+    unsigned completed = 0;
+    const unsigned budget = std::getenv("VITREO_LIVE_REPLAY_BLOCKS")
+        ? std::min(65536ul, std::strtoul(std::getenv("VITREO_LIVE_REPLAY_BLOCKS"), nullptr, 0)) : 256;
+    for (; completed < budget; ++completed) {
+        const GuestAddr start = current.rip;
+        SCOPED_TRACE(::testing::Message() << "block=" << completed << " rip=" << std::hex << start);
+        watch.clear(regions);
+        BasicBlock block; block.start_addr = start; block.is_64bit = true;
+        auto reference = current;
+        Interpreter interp(reference, *m_memory);
+        ExecResult result = ExecResult::Continue;
+        for (unsigned i = 0; i < 32; ++i) {
+            std::array<u8, 15> bytes{};
+            usize available = 0;
+            for (; available < bytes.size(); ++available) {
+                auto byte = m_memory->read_u8(reference.rip + available);
+                if (!byte) break;
+                bytes[available] = byte.value();
+            }
+            if (!available) break;
+            MemoryByteReader reader(bytes.data(), available);
+            DecodedInstruction decoded;
+            if (decode_instruction(reader, DecodeMode::Mode64, decoded) != DecodeError::Success) break;
+            // Read the hardware clock once and share it as an input boundary.
+            // Comparing two independent RDTSC executions cannot prove parity.
+            if (decoded.opcode == Opcode::RDTSC || decoded.opcode == Opcode::RDTSCP) {
+                if (block.instruction_count == 0) {
+                    result = interp.step();
+                    current = reference;
+                }
+                break;
+            }
+            block.instructions.push_back(decoded);
+            block.byte_length += decoded.length;
+            ++block.instruction_count;
+            result = interp.step();
+            if (result != ExecResult::Continue) break;
+        }
+        if (!block.instruction_count && reference.rip != start) {
+            std::printf("LIVE_REPLAY shared clock input rip=%llx\n", start);
+            continue;
+        }
+        if (!block.instruction_count) {
+            std::printf("LIVE_REPLAY stop unmapped/undecodable rip=%llx blocks=%u\n", start, completed);
+            break;
+        }
+        block.ends_with_branch = result == ExecResult::Branch;
+        reference.materialize_lazy_flags();
+        for (auto& r : regions) {
+            r.written = watch.changed(r.addr);
+            if (!r.written) continue;
+            ASSERT_TRUE(m_memory->read_bytes(r.addr, r.expected.data(), r.expected.size()));
+            ASSERT_TRUE(m_memory->write_bytes(r.addr, r.before.data(), r.before.size()));
+        }
+        watch.clear(regions);
+        std::vector<u8> code_bytes(block.byte_length);
+        ASSERT_TRUE(m_memory->read_bytes(start, code_bytes.data(), code_bytes.size()));
+        auto& cached = compiled_blocks[start];
+        auto* compiled = cached.first == code_bytes ? cached.second : nullptr;
+        if (compiled == nullptr) {
+            compiled = m_jit->compile(block);
+            if (compiled != nullptr) cached = {std::move(code_bytes), compiled};
+        }
+        if (compiled == nullptr) {
+            std::printf("LIVE_REPLAY shared interpreter fallback rip=%llx instructions=%u result=%u next=%llx\n",
+                start, block.instruction_count, unsigned(result), reference.rip);
+            for (auto& r : regions) {
+                if (!r.written) continue;
+                ASSERT_TRUE(m_memory->write_bytes(r.addr, r.expected.data(), r.expected.size()));
+                r.before = r.expected;
+            }
+            current = reference;
+            if (result != ExecResult::Continue && result != ExecResult::Branch) break;
+            continue;
+        }
+        auto actual = current;
+        const auto jr = test::execute_like_dispatcher(*m_jit, *compiled, actual);
+        actual.materialize_lazy_flags();
+        if (completed < 256 || completed % 256 == 0) std::printf("LIVE_REPLAY block=%u rip=%llx instructions=%u result=%u jit=%u next=%llx flags=%llx/%llx\n",
+            completed, start, block.instruction_count, unsigned(result), unsigned(jr), actual.rip,
+            reference.flags.rflags, actual.flags.rflags);
+        if (result == ExecResult::Exception || actual.pending_raise.active) {
+            std::printf("LIVE_REPLAY exception reference=%u address=%llx error=%x jit_pending=%u code=%x address=%llx\n",
+                unsigned(interp.context().exception), interp.context().exception_addr,
+                interp.context().exception_error, unsigned(actual.pending_raise.active),
+                actual.pending_raise.code, actual.pending_raise.args[1]);
+        }
+        ASSERT_EQ(actual.rip, reference.rip);
+        for (u8 r = 0; r < 16; ++r) ASSERT_EQ(actual.gpr.get64(r), reference.gpr.get64(r)) << "register=" << unsigned(r);
+        // Diagnostic only: undefined ISA flags can legitimately differ. Stop
+        // at the first difference so the exact instruction can be checked
+        // against the SDM rather than silently overlooking a defined flag.
+        if (std::getenv("VITREO_LIVE_REPLAY_CHECK_FLAGS") &&
+            actual.flags.rflags != reference.flags.rflags) {
+            std::printf("LIVE_REPLAY flag difference block=%u rip=%llx next=%llx reference=%llx actual=%llx bytes=",
+                completed, start, actual.rip, reference.flags.rflags, actual.flags.rflags);
+            for (const auto byte : cached.first) std::printf("%02x", unsigned(byte));
+            std::printf("\n");
+            break;
+        }
+        ASSERT_EQ(std::memcmp(&actual.sse, &reference.sse, sizeof(actual.sse)), 0);
+        for (auto& r : regions) {
+            if (!r.written && !watch.changed(r.addr)) continue;
+            std::vector<u8> got(r.before.size());
+            ASSERT_TRUE(m_memory->read_bytes(r.addr, got.data(), got.size()));
+            ASSERT_EQ(got, r.written ? r.expected : r.before) << "memory region=" << std::hex << r.addr;
+            r.before = std::move(got);
+        }
+        current = actual;
+        if (result != ExecResult::Continue && result != ExecResult::Branch) break;
+        if (current.rip == 0) break;
+    }
+    std::printf("LIVE_REPLAY completed=%u budget=%u final_rip=%llx\n", completed, budget, current.rip);
+    EXPECT_GT(completed, 0u);
 }

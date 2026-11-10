@@ -9,6 +9,8 @@
 
 #include "jit_linear_fixture.hpp"
 
+#include <chrono>
+#include <cstdio>
 #include <cstdlib>
 
 using namespace vitreo;
@@ -375,6 +377,59 @@ TEST_F(JitIrTierTest, CarryCrossesTheTierSiteOnEveryLoopBack) {
     }
 }
 
+TEST_F(JitIrTierTest, DISABLED_TierEntryBenchmark) {
+    if (!gate_open(true)) GTEST_SKIP() << "VITREO_JIT_IR excludes 64-bit blocks";
+    TierThreshold tier(JitCompiler::kMaxIrTierThreshold);
+    constexpr u32 iterations = 2048;
+    constexpr u32 warmup = 128;
+    constexpr u32 executions = 4096;
+    constexpr u32 batches = 64;
+    constexpr u64 entries = u64{executions} * iterations * batches;
+    static_assert(u64{warmup + executions} * iterations <
+                  JitCompiler::kMaxIrTierThreshold);
+    const std::vector<u8> loop = {0x48, 0xFF, 0xC9, 0x75, 0xFB};
+    const GuestAddr stop = kCode64 + loop.size();
+    CompiledBlock first{};
+    ASSERT_NE(publish(loop, first), nullptr);
+    ASSERT_TRUE(m_jit->last_compile_was_tier0());
+    const auto sites = tier_sites(first);
+    ASSERT_EQ(sites.size(), 1u);
+
+    CpuState cpu = seeded(1);
+    cpu.gpr.set64(1, iterations);
+    CpuState ref = cpu;
+    Interpreter interp(ref, *m_memory);
+    for (u32 n = 0; ref.rip != stop && n < 2 * iterations; ++n) {
+        const auto result = interp.step();
+        ASSERT_TRUE(result == ExecResult::Continue || result == ExecResult::Branch);
+    }
+    ASSERT_EQ(ref.rip, stop);
+    bool valid = true;
+    const auto execute = [&] {
+        cpu.rip = kCode64;
+        cpu.gpr.set64(1, iterations);
+        valid &= m_jit->execute(first, cpu) == JitExecResult::Continue;
+        valid &= cpu.rip == stop && cpu.gpr.get64(1) == 0;
+    };
+    for (u32 n = 0; n < warmup; ++n) execute();
+    u32* const counter = JitCompiler::tier_counter_base() + sites[0];
+    const auto start = std::chrono::steady_clock::now();
+    for (u32 batch = 0; batch < batches; ++batch) {
+        __atomic_store_n(counter, JitCompiler::kMaxIrTierThreshold - 1,
+                         __ATOMIC_RELAXED);
+        for (u32 n = 0; n < executions; ++n) execute();
+    }
+    const double seconds = std::chrono::duration<double>(
+        std::chrono::steady_clock::now() - start).count();
+    EXPECT_TRUE(valid);
+    expect_same_state(cpu, ref, "tier entry benchmark");
+    EXPECT_EQ(JitCompiler::tier_counter_value_for_test(sites[0]),
+              u64{executions} * iterations);
+    std::printf("TIER_ENTRY_BENCH seconds=%.9f entries=%llu ns_per_entry=%.3f\n",
+                seconds, static_cast<unsigned long long>(entries),
+                seconds * 1e9 / entries);
+}
+
 // Blocks that cross the threshold between two dispatcher entries (one linked
 // chain) are all serviced by the next one, not only the last to ask.
 TEST_F(JitIrTierTest, OneDispatcherEntryServicesEveryBlockThatCrossed) {
@@ -644,6 +699,19 @@ TEST_F(JitIrTier32Test, MidBlockLoopBackCountsEveryIteration) {
     const std::vector<u32> sites = tier_sites(first);
     ASSERT_EQ(sites.size(), 2u) << "body start and the mid-block loop-back";
     ASSERT_EQ(sites[0], sites[1]) << "one slot per translation";
+    u32 preserved_sites = 0;
+    for (const WordRange& range : block_word_ranges(first)) {
+        for (const u32* site = range.begin;
+             site + JitCompiler::kTierSiteWords <= range.end; ++site) {
+            if (site[8] == JitCompiler::tier_counter_site_word() &&
+                site[9] == kBlrX30 &&
+                site[0] == arm64::str_x_uoff(
+                    16, REG_JIT_CTX, JIT_CTX_OFF_COLD_COUNTER_SAVE >> 3)) {
+                ++preserved_sites;
+            }
+        }
+    }
+    EXPECT_GE(preserved_sites, 1u) << "mid-block sites must still preserve X16";
 
     CpuState ref;
     init_cpu(ref);

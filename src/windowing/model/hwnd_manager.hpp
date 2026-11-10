@@ -19,6 +19,13 @@ public:
     /// handle that is unique across all guest processes on the desktop.
     void set_handle_allocator(std::function<HWND()> allocator);
 
+    enum class ChildOrderAction { Append, Remove, Reorder };
+    struct ChildOrderEvent { ChildOrderAction action; HWND hwnd, parent, after; };
+    /// Desktop ordering transport. Called under the model lock; must not
+    /// reenter any window manager. No guest or GUI callbacks are permitted.
+    void set_child_order_observer(std::function<void(const ChildOrderEvent&)> observer);
+    void child_style_changed(HWND hwnd,u32 previous_style);
+
     /// Create a window from data. Assigns a new HWND and stores it.
     HWND create(const WindowData& data);
 
@@ -78,6 +85,23 @@ public:
     /// Get count of windows (excluding desktop)
     usize count() const;
 
+    /// Geometry-only immutable snapshot under the owning lock. Consumers may
+    /// calculate visibility without retaining WindowData pointers across calls.
+    struct Geometry {
+        HWND hwnd, parent;
+        u32 style, ex_style, class_style;
+        Rect rect, client_rect;
+        Point client_offset;
+        bool visible, minimized, hidden_by_owner;
+        usize z_order;
+    };
+    [[nodiscard]] std::vector<Geometry> geometry_snapshot() const;
+    /// Commit geometry/style/visibility as one short owner-locked operation.
+    /// The callback must only edit state; no callbacks, IPC, GDI or host calls.
+    /// Returns the committed values, not a pointer that outlives the lock.
+    [[nodiscard]] std::optional<Geometry> update_geometry(HWND hwnd,
+        const std::function<void(WindowData&)>& update);
+
     /// Invoke @p fn for every tracked HWND (excluding the desktop).
     /// Used by GDI screen-DC BitBlt to locate windows covering a screen point.
     template <typename Fn>
@@ -126,6 +150,7 @@ private:
     std::unordered_map<HWND, WindowData> m_windows;
     HWND m_next_handle;
     std::function<HWND()> m_handle_allocator;
+    std::function<void(const ChildOrderEvent&)> m_child_order_observer;
     std::atomic<HWND> m_capture_hwnd{NULL_HWND};  // Mouse capture window
 
     static constexpr HWND FIRST_HWND = 0x00010000;

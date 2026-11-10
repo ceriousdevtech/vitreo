@@ -151,6 +151,7 @@ bool Kernel32ExtManager::add_job_member(const std::shared_ptr<JobState>& job,
     if (process == nullptr || already_exited) {
         return true;
     }
+    sync_job_kill_on_close_links(job);
     // Watch the member so the job's completion port hears about its exit
     // (JOB_OBJECT_MSG_EXIT_PROCESS / ACTIVE_PROCESS_ZERO, s4_job_probe).
     std::weak_ptr<JobState> weak = job;
@@ -206,6 +207,11 @@ void Kernel32ExtManager::on_job_member_exit(const std::shared_ptr<JobState>& job
         }
         if (member == nullptr || member->exited) return;
         member->exited = true;
+        if (member->kill_link_fd >= 0) {
+            // The member is gone; nothing is listening on the link.
+            (void)::close(member->kill_link_fd);
+            member->kill_link_fd = -1;
+        }
         // A member ended by TerminateJobObject or job close gets no exit
         // message of its own (s4_job_probe after_terminate: only msg 4).
         post_exit = !member->killed;
@@ -411,6 +417,11 @@ void Kernel32ExtManager::impl_SetInformationJobObject(Marshaler& m) {
             std::memcpy(&job->ui_restrictions, value.data(), sizeof(u32));
         }
     }
+    if (info_class == 9) {
+        // JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE may have been set or cleared
+        // for processes already in the job.
+        sync_job_kill_on_close_links(job);
+    }
     for (const pid_t pid : existing_processes) {
         notify_job_new_process(job, pid);
     }
@@ -525,9 +536,123 @@ bool Kernel32ExtManager::on_job_handle_close(Handle handle) {
     if (job_kills_on_close(*job)) {
         terminate_job_members(job, 0, /*include_self=*/false);
     }
+    close_job_kill_on_close_links(*job);
     job->watch_cancel->store(true, std::memory_order_release);
     ntsync::global().notify_waiters();
     return true;
+}
+
+void Kernel32ExtManager::sync_job_kill_on_close_links(
+    const std::shared_ptr<JobState>& job) {
+    // Learn (JOBOBJECT_BASIC_LIMIT_INFORMATION): KILL_ON_JOB_CLOSE terminates
+    // every process in the job when the last job handle is closed. Closing
+    // that handle in this process is on_job_handle_close/begin_shutdown; the
+    // link covers this process ending without running either (SIGKILL from a
+    // peer's TerminateProcess, a crash).
+    if (!job) return;
+    struct Pending {
+        pid_t pid;
+        ipc::ProcessObject* process;
+    };
+    std::vector<Pending> to_link;
+    std::vector<int> to_release;
+    {
+        std::lock_guard lock(m_job_mutex);
+        const bool kills = job_kills_on_close(*job);
+        for (auto& member : job->members) {
+            if (member.process == nullptr) continue;
+            if (kills && !member.exited && member.kill_link_fd < 0 &&
+                !member.linking) {
+                member.linking = true;
+                to_link.push_back({member.pid, member.process});
+            } else if (!kills && member.kill_link_fd >= 0) {
+                to_release.push_back(member.kill_link_fd);
+                member.kill_link_fd = -1;
+            }
+        }
+    }
+    for (const int fd : to_release) ipc::release_job_kill_on_close_link(fd);
+
+    // A member CreateProcess just started (suspended) publishes its endpoint
+    // only once loaded, so the link is made off the caller's thread:
+    // AssignProcessToJobObject and SetInformationJobObject do not wait.
+    std::weak_ptr<JobState> weak = job;
+    for (const Pending& pending : to_link) {
+        const auto cancel = job->watch_cancel;
+        auto done = std::make_shared<std::atomic<bool>>(false);
+        std::thread linker([this, weak, pending, cancel, done] {
+            const auto wanted = [&] {
+                return !cancel->load(std::memory_order_acquire) &&
+                       !pending.process->exited.load(
+                           std::memory_order_acquire);
+            };
+            const int fd =
+                ipc::remote_link_job_kill_on_close(pending.pid, wanted);
+            bool stored = false;
+            if (auto state = weak.lock()) {
+                std::lock_guard lock(m_job_mutex);
+                for (auto& member : state->members) {
+                    if (member.pid != pending.pid) continue;
+                    member.linking = false;
+                    if (fd >= 0 && wanted() && !member.exited &&
+                        member.kill_link_fd < 0 &&
+                        job_kills_on_close(*state)) {
+                        member.kill_link_fd = fd;
+                        stored = true;
+                    }
+                    break;
+                }
+            }
+            if (fd < 0) {
+                ipc::ipc_log("job kill-on-close link to pid=%d not made",
+                             static_cast<int>(pending.pid));
+            } else if (!stored) {
+                // Not needed any more (the member exited, the limit was
+                // cleared, or the job closed): a plain close would kill the
+                // member, so release it.
+                ipc::release_job_kill_on_close_link(fd);
+            }
+            done->store(true, std::memory_order_release);
+        });
+        std::vector<std::thread> finished;
+        {
+            std::lock_guard lock(m_job_watchers_mutex);
+            for (auto it = m_job_watchers.begin(); it != m_job_watchers.end();) {
+                if (it->done->load(std::memory_order_acquire)) {
+                    finished.push_back(std::move(it->thread));
+                    it = m_job_watchers.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+            m_job_watchers.push_back(JobWatcher{std::move(linker), done});
+        }
+        for (auto& t : finished) {
+            if (t.joinable()) t.join();
+        }
+    }
+}
+
+void Kernel32ExtManager::close_job_kill_on_close_links(JobState& job) {
+    std::vector<int> links;
+    bool kills = false;
+    {
+        std::lock_guard lock(m_job_mutex);
+        kills = job_kills_on_close(job);
+        for (auto& member : job.members) {
+            if (member.kill_link_fd >= 0) {
+                links.push_back(member.kill_link_fd);
+                member.kill_link_fd = -1;
+            }
+        }
+    }
+    for (const int fd : links) {
+        if (kills) {
+            (void)::close(fd);
+        } else {
+            ipc::release_job_kill_on_close_link(fd);
+        }
+    }
 }
 
 } // namespace vitreo::winapi

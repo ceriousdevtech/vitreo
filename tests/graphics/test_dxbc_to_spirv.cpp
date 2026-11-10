@@ -11,6 +11,7 @@
 
 #include "dxbc_to_spirv_test_shaders.h"
 #include "dxbc_to_spirv_test_spirv.h"
+#include "fixtures/dxbc_indexable_temp_generated.hpp"
 
 #include <array>
 #include <cstdio>
@@ -106,6 +107,41 @@ TEST(DxbcToSpirvTest, LoadsAndStoresIndexableTemporaryRegisters) {
     const auto compiled = compile_spirv_to_msl(
         result.spirv.data(), result.spirv.size(), ShaderStage::Fragment);
     EXPECT_TRUE(compiled.valid());
+}
+
+// Microsoft Learn dcl_indexableTemp defines ComponentCount as the number of
+// 32-bit components of each array element (the examples include width 2).
+// Exercise every declared width with dynamic addressing and a masked update.
+TEST(DxbcToSpirvTest, IndexableTemporariesKeepDeclaredComponentWidth) {
+    for (u32 width = 1; width <= 4; ++width) {
+        SCOPED_TRACE(width);
+        DxbcContainer container{};
+        container.shader_model_major = 5;
+        container.stage = ShaderStage::Fragment;
+        container.input_signature.push_back({"TEXCOORD", 0, 0, 0xFu, 3u});
+        container.output_signature.push_back({"SV_TARGET", 0, 0, 0xFu, 3u, 64u});
+        const auto& words = kIndexableTempPrograms[width - 1];
+        const auto* bytes = reinterpret_cast<const u8*>(words);
+        container.bytecode.assign(bytes, bytes + sizeof(words));
+        const auto result = translate_dxbc_to_spirv(container);
+        ASSERT_TRUE(result.valid()) << result.failure;
+        if (const char* dump = std::getenv("VITREO_INDEXABLE_TEMP_DUMP")) {
+            const std::string base = std::string(dump) + "/width-" + std::to_string(width);
+            std::ofstream out(base + ".spv", std::ios::binary);
+            out.write(reinterpret_cast<const char*>(result.spirv.data()),
+                      result.spirv.size() * sizeof(u32));
+        }
+        const auto compiled = compile_spirv_to_msl(
+            result.spirv.data(), result.spirv.size(), ShaderStage::Fragment);
+        ASSERT_TRUE(compiled.valid()) << compiled.failure;
+        if (const char* dump = std::getenv("VITREO_INDEXABLE_TEMP_DUMP")) {
+            std::ofstream out(std::string(dump) + "/width-" + std::to_string(width) + ".metal");
+            out << compiled.msl_text();
+        }
+        const std::string type = width == 1 ? "float" : "float" + std::to_string(width);
+        EXPECT_NE(std::string(compiled.msl_text()).find(type + " x0[2]"), std::string::npos)
+            << compiled.msl_text();
+    }
 }
 
 TEST(DxbcToSpirvTest, ValidateSpirvHeader) {

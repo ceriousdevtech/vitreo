@@ -4,6 +4,8 @@
 
 #include "jit_exec_test_fixture.hpp"
 #include <deque>
+#include <numeric>
+#include <random>
 
 class JitL1WayTest : public JitExecTest {
 protected:
@@ -13,8 +15,10 @@ protected:
         JitCompiler::set_shared_exit_stubs_for_test(-1);
     }
 
-    CompiledBlock* install(GuestAddr address, const std::vector<u8>& code, bool x64) {
-        EXPECT_TRUE(m_memory->write_bytes(address, code.data(), code.size()));
+    CompiledBlock* install(GuestAddr address, const std::vector<u8>& code, bool x64,
+                           bool write_code = true) {
+        if (write_code)
+            EXPECT_TRUE(m_memory->write_bytes(address, code.data(), code.size()));
         BasicBlock block;
         block.start_addr = address;
         block.is_64bit = x64;
@@ -62,7 +66,7 @@ protected:
         EXPECT_TRUE(found) << "requested probe configuration was not emitted";
     }
 
-    CompiledBlock* prepare(bool x64, bool shared, bool way1) {
+    CompiledBlock* prepare(bool x64, bool shared, bool way1, bool colliding = false) {
         m_jit->set_block_cache(nullptr);
         cache.clear();
         records.clear();
@@ -72,10 +76,12 @@ protected:
         JitCompiler::set_shared_exit_stubs_for_test(shared ? 1 : 0);
         if (x64) m_cpu->init_long_mode();
         else m_cpu->init_protected_mode();
-        m_cpu->gpr.r[EBX] = 0x2000;
+        const GuestAddr target_address = colliding
+            ? BlockCache::l1_alias_after(0x1000, 0x2000) : 0x2000;
+        m_cpu->gpr.r[EBX] = target_address;
         m_cpu->gpr.r[EDX] = 0x1000;
         // JMP r/m32 and JMP r/m64 change no flags (Intel SDM JMP).
-        auto* target = install(0x2000, {0xFF, 0xE2}, x64); // jmp edx/rdx
+        auto* target = install(target_address, {0xFF, 0xE2}, x64); // jmp edx/rdx
         auto* entry = install(0x1000, {0xFF, 0xE3}, x64);  // jmp ebx/rbx
         EXPECT_NE(target, nullptr);
         if (entry) check_probe(*entry, shared, 1);
@@ -114,6 +120,39 @@ TEST_F(JitL1WayTest, ConstantCallAndReturnReachWay1) {
             const u64 width = x64 ? 8 : 4;
             EXPECT_EQ(m_cpu->gpr.r[ESP], is_ret ? 0x10000 + width : 0x10000 - width);
         }
+    }
+}
+
+TEST_F(JitL1WayTest, DispatcherHitPromotesWholeEntry) {
+    const char* value = std::getenv("VITREO_JIT_L1_DISPATCH_PROMOTE");
+    if (value != nullptr && value[0] == '0' && value[1] == '\0')
+        GTEST_SKIP() << "dispatcher promotion disabled";
+    for (bool x64 : {false, true}) for (u32 kind : {0u, 1u, 2u}) {
+        ASSERT_NE(prepare(x64, false, true), nullptr);
+        if (kind == 2) {
+            ASSERT_NE(cache.lookup(0x1000), nullptr);
+            displace_to_way1(0x1000);
+        } else {
+            ASSERT_NE(cache.lookup(0x2000), nullptr);
+        }
+        const usize set = BlockCache::l1_index(0x1000);
+        const auto older = cache.l1_base()[set + 1];
+        const auto newer = cache.l1_base()[set];
+        ASSERT_EQ(older.tag, 0x1000u);
+        BasicBlock* block = kind != 0 ? cache.lookup_fast(0x1000) : cache.lookup(0x1000);
+        ASSERT_EQ(block, older.block);
+        const auto check = [](const BlockCache::L1Entry& actual,
+                              const BlockCache::L1Entry& expected) {
+            EXPECT_EQ(actual.tag, expected.tag);
+            EXPECT_EQ(actual.link_code, expected.link_code);
+            EXPECT_EQ(actual.pin_layout, expected.pin_layout);
+            EXPECT_EQ(actual.block, expected.block);
+        };
+        check(cache.l1_base()[set], older);
+        check(cache.l1_base()[set + 1], newer);
+        cache.invalidate(0x1000);
+        EXPECT_EQ(cache.l1_base()[set].link_code, nullptr);
+        EXPECT_EQ(cache.l1_base()[set + 1].tag, newer.tag);
     }
 }
 
@@ -172,19 +211,118 @@ TEST_F(JitL1WayTest, HitsMissesNullAndInvalidationBothModes) {
     }
 }
 
+TEST_F(JitL1WayTest, Way1ProbePreservesPayloadFlagsAndVectors) {
+    for (bool x64 : {false, true}) for (bool shared : {false, true}) {
+        SCOPED_TRACE(::testing::Message() << "x64=" << x64 << " shared=" << shared);
+        auto* entry = prepare(x64, shared, true);
+        ASSERT_NE(entry, nullptr);
+        const auto first = cache.l1_base()[BlockCache::l1_index(0x1000)];
+        const auto second = cache.l1_base()[BlockCache::l1_index(0x2000)];
+        const auto target1 = cache.l1_base()[BlockCache::l1_index(0x1000) + 1];
+        const auto target2 = cache.l1_base()[BlockCache::l1_index(0x2000) + 1];
+        for (u32 reg = 0; reg < 16; ++reg)
+            for (u32 lane = 0; lane < 4; ++lane)
+                m_cpu->sse.xmm[reg].u32_[lane] = 0x10203040u + reg * 16 + lane;
+        m_cpu->flags.rflags |= STATUS_FLAGS_MASK;
+        const u64 flags = m_cpu->flags.rflags;
+        m_cpu->rip = 0x1000;
+        ASSERT_EQ(test::execute_like_dispatcher(*m_jit, *entry, *m_cpu),
+                  JitExecResult::Continue);
+        EXPECT_EQ(m_cpu->jit_iters, 4096u);
+        EXPECT_EQ(m_cpu->flags.rflags, flags);
+        for (u32 reg = 0; reg < 16; ++reg)
+            for (u32 lane = 0; lane < 4; ++lane)
+                EXPECT_EQ(m_cpu->sse.xmm[reg].u32_[lane],
+                          0x10203040u + reg * 16 + lane);
+        const auto check = [](const BlockCache::L1Entry& actual,
+                              const BlockCache::L1Entry& expected) {
+            EXPECT_EQ(actual.tag, expected.tag);
+            EXPECT_EQ(actual.link_code, expected.link_code);
+            EXPECT_EQ(actual.pin_layout, expected.pin_layout);
+            EXPECT_EQ(actual.block, expected.block);
+        };
+        check(cache.l1_base()[BlockCache::l1_index(0x1000)], first);
+        check(cache.l1_base()[BlockCache::l1_index(0x1000) + 1], target1);
+        check(cache.l1_base()[BlockCache::l1_index(0x2000)], second);
+        check(cache.l1_base()[BlockCache::l1_index(0x2000) + 1], target2);
+    }
+}
+
+TEST_F(JitL1WayTest, DISABLED_WideLinkProbeBenchmark) {
+    const char* shared_env = std::getenv("VITREO_BENCH_SHARED_PROBE");
+    const bool shared = shared_env && shared_env[0] == '1';
+    ASSERT_NE(prepare(true, shared, false), nullptr);
+    m_jit->set_block_cache(nullptr);
+    cache.clear();
+    records.clear();
+    m_jit->set_block_cache(&cache);
+    constexpr u32 nodes = 4096;
+    constexpr GuestAddr base = 0x100000;
+    constexpr u32 stride = 32;
+    ASSERT_TRUE(m_memory->map_region(base, nodes * stride, MemoryProtection::ReadWrite));
+    const std::vector<u8> code{0x48, 0x8B, 0x40, 8, 0xFF, 0xE0};
+    std::vector<u32> order(nodes);
+    std::iota(order.begin(), order.end(), 0);
+    std::mt19937 random(0x5137);
+    std::shuffle(order.begin() + 1, order.end(), random);
+    for (u32 i = 0; i < nodes; ++i) {
+        const GuestAddr address = base + order[i] * stride;
+        ASSERT_TRUE(m_memory->write_bytes(address, code.data(), code.size()));
+        ASSERT_TRUE(m_memory->write_u64(address + 8,
+                                       base + order[(i + 1) % nodes] * stride));
+    }
+    CompiledBlock* entry = nullptr;
+    u64 native_bytes = 0;
+    for (u32 i = 0; i < nodes; ++i) {
+        auto* compiled = install(base + i * stride, code, true, false);
+        ASSERT_NE(compiled, nullptr);
+        native_bytes += compiled->code_size + compiled->cold_size;
+        if (i == 0) entry = compiled;
+    }
+    const GuestAddr expected = base + order[4095 % nodes] * stride;
+    const u64 flags = m_cpu->flags.rflags;
+    bool valid = true;
+    const auto execute = [&] {
+        m_cpu->rip = base;
+        m_cpu->gpr.r[EAX] = base;
+        valid &= m_jit->execute(*entry, *m_cpu) == JitExecResult::Continue;
+        valid &= m_cpu->jit_iters == 4096;
+        valid &= m_cpu->rip == expected && m_cpu->gpr.r[EAX] == expected;
+        valid &= m_cpu->flags.rflags == flags;
+    };
+    for (u32 i = 0; i < 1024; ++i) execute();
+    constexpr u32 executions = 10000;
+    const auto start = std::chrono::steady_clock::now();
+    for (u32 i = 0; i < executions; ++i) execute();
+    const double seconds = std::chrono::duration<double>(
+        std::chrono::steady_clock::now() - start).count();
+    EXPECT_TRUE(valid);
+    constexpr u64 probes = u64{executions} * 4095;
+    std::printf("WIDE_LINK_BENCH seconds=%.9f probes=%llu ns_per_probe=%.3f "
+                "nodes=%u native_bytes=%llu\n", seconds,
+                static_cast<unsigned long long>(probes), seconds * 1e9 / probes,
+                nodes, static_cast<unsigned long long>(native_bytes));
+}
+
 TEST_F(JitL1WayTest, DISABLED_Way1ProbeBenchmark) {
     const char* shared_env = std::getenv("VITREO_BENCH_SHARED_PROBE");
     const bool shared = shared_env && shared_env[0] == '1';
     const char* way_env = std::getenv("VITREO_BENCH_WAY");
     const bool way1 = !way_env || way_env[0] != '0';
     const bool null_code = way_env && way_env[0] == 'n';
-    auto* entry = prepare(true, shared, way1);
+    const bool colliding = way_env && way_env[0] == 'c';
+    auto* entry = prepare(true, shared, way1 && !colliding, colliding);
     ASSERT_NE(entry, nullptr);
+    const GuestAddr target_address = m_cpu->gpr.r[EBX];
     if (null_code) {
         BasicBlock* target = cache.lookup(0x2000);
         ASSERT_NE(target, nullptr);
         target->compiled_link_code = nullptr;
         cache.refresh_l1(target);
+    }
+    if (std::getenv("VITREO_BENCH_DISPATCH_LOOKUP") != nullptr) {
+        ASSERT_NE(cache.lookup(0x1000), nullptr);
+        ASSERT_NE(cache.lookup(target_address), nullptr);
     }
     const u32 executions = null_code ? 5000000 : 100000;
     bool valid = true;
@@ -197,11 +335,14 @@ TEST_F(JitL1WayTest, DISABLED_Way1ProbeBenchmark) {
     const double seconds = std::chrono::duration<double>(
         std::chrono::steady_clock::now() - start).count();
     EXPECT_TRUE(valid);
-    EXPECT_EQ(m_cpu->rip, 0x2000u);
-    EXPECT_EQ(m_cpu->gpr.r[EBX], 0x2000u);
+    EXPECT_EQ(m_cpu->rip, target_address);
+    EXPECT_EQ(m_cpu->gpr.r[EBX], target_address);
     EXPECT_EQ(m_cpu->gpr.r[EDX], 0x1000u);
-    for (GuestAddr address : {0x1000u, 0x2000u})
-        EXPECT_EQ(cache.l1_base()[BlockCache::l1_index(address) + (way1 ? 1 : 0)].tag, address);
+    for (GuestAddr address : {GuestAddr{0x1000}, target_address}) {
+        const usize set = BlockCache::l1_index(address);
+        EXPECT_TRUE(cache.l1_base()[set].tag == address ||
+                    cache.l1_base()[set + 1].tag == address);
+    }
     const u64 probes = u64{executions} * (null_code ? 1 : 4096 - 1);
     std::printf("WAY1_BENCH seconds=%.9f probes=%llu ns_per_probe=%.3f entry_bytes=%u\n",
                 seconds, static_cast<unsigned long long>(probes), seconds * 1e9 / probes,

@@ -1,0 +1,242 @@
+;
+; Note: shader requires additional functionality:
+;       Double-precision floating point
+;       Double-precision extensions for 11.1
+;       Wave level operations
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 1d89ffbff081e92872bac906e87f2fae
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; dst                                   UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.fouri32 = type { i32, i32, i32, i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+
+define void @cs_wavedbl() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %3 = call i32 @dx.op.waveGetLaneCount(i32 112)  ; WaveGetLaneCount()
+  %4 = call i32 @dx.op.waveGetLaneIndex(i32 111)  ; WaveGetLaneIndex()
+  %5 = sub i32 %2, %4
+  %6 = uitofp i32 %4 to double
+  %7 = call double @dx.op.waveActiveOp.f64(i32 119, double %6, i8 0, i8 0)  ; WaveActiveOp(value,op,sop)
+  %8 = add i32 %3, -1
+  %9 = mul i32 %8, %3
+  %10 = lshr i32 %9, 1
+  %11 = uitofp i32 %10 to double
+  %12 = fcmp fast oeq double %7, %11
+  %13 = zext i1 %12 to i32
+  %14 = icmp ult i32 %4, 3
+  %15 = fadd fast double %6, 2.000000e+00
+  %16 = select i1 %14, double %15, double 1.000000e+00
+  %17 = call double @dx.op.waveActiveOp.f64(i32 119, double %16, i8 1, i8 0)  ; WaveActiveOp(value,op,sop)
+  %18 = fcmp fast oeq double %17, 2.400000e+01
+  %19 = zext i1 %18 to i32
+  %20 = fadd fast double %6, -1.500000e+00
+  %21 = call double @dx.op.waveActiveOp.f64(i32 119, double %20, i8 2, i8 0)  ; WaveActiveOp(value,op,sop)
+  %22 = fcmp fast oeq double %21, -1.500000e+00
+  %23 = fmul fast double %6, 5.000000e-01
+  %24 = call double @dx.op.waveActiveOp.f64(i32 119, double %23, i8 3, i8 0)  ; WaveActiveOp(value,op,sop)
+  %25 = uitofp i32 %8 to double
+  %26 = fmul fast double %25, 5.000000e-01
+  %27 = fcmp fast oeq double %24, %26
+  %28 = and i1 %22, %27
+  %29 = zext i1 %28 to i32
+  %30 = call double @dx.op.wavePrefixOp.f64(i32 121, double 1.000000e+00, i8 0, i8 0)  ; WavePrefixOp(value,op,sop)
+  %31 = fcmp fast oeq double %30, %6
+  %32 = icmp eq i32 %4, 0
+  %33 = select i1 %32, double 3.000000e+00, double 1.000000e+00
+  %34 = call double @dx.op.wavePrefixOp.f64(i32 121, double %33, i8 1, i8 0)  ; WavePrefixOp(value,op,sop)
+  %35 = select i1 %32, double 1.000000e+00, double 3.000000e+00
+  %36 = fcmp fast oeq double %34, %35
+  %37 = and i1 %31, %36
+  %38 = call double @dx.op.wavePrefixOp.f64(i32 121, double %6, i8 0, i8 0)  ; WavePrefixOp(value,op,sop)
+  %39 = add i32 %4, -1
+  %40 = mul i32 %39, %4
+  %41 = lshr i32 %40, 1
+  %42 = uitofp i32 %41 to double
+  %43 = fcmp fast oeq double %38, %42
+  %44 = and i1 %37, %43
+  %45 = zext i1 %44 to i32
+  %46 = xor i32 %4, 1
+  %47 = uitofp i32 %2 to double
+  %48 = fmul fast double %47, 2.500000e-01
+  %49 = call double @dx.op.waveReadLaneAt.f64(i32 117, double %48, i32 %46)  ; WaveReadLaneAt(value,lane)
+  %50 = add i32 %5, %46
+  %51 = uitofp i32 %50 to double
+  %52 = fmul fast double %51, 2.500000e-01
+  %53 = fcmp fast oeq double %49, %52
+  %54 = fadd fast double %47, 5.000000e-01
+  %55 = call double @dx.op.waveReadLaneFirst.f64(i32 118, double %54)  ; WaveReadLaneFirst(value)
+  %56 = uitofp i32 %5 to double
+  %57 = fadd fast double %56, 5.000000e-01
+  %58 = fcmp fast oeq double %55, %57
+  %59 = and i1 %53, %58
+  %60 = zext i1 %59 to i32
+  %61 = call i1 @dx.op.waveActiveAllEqual.f64(i32 115, double %56)  ; WaveActiveAllEqual(value)
+  %62 = call i1 @dx.op.waveActiveAllEqual.f64(i32 115, double %6)  ; WaveActiveAllEqual(value)
+  %63 = xor i1 %62, true
+  %64 = and i1 %61, %63
+  %65 = select i1 %32, float -0.000000e+00, float 0.000000e+00
+  %66 = call i1 @dx.op.waveActiveAllEqual.f32(i32 115, float %65)  ; WaveActiveAllEqual(value)
+  %67 = and i1 %64, %66
+  %68 = zext i1 %67 to i32
+  %69 = and i32 %4, 1
+  %70 = icmp eq i32 %69, 0
+  br i1 %70, label %83, label %71
+
+; <label>:71                                      ; preds = %0
+  %72 = call double @dx.op.waveActiveOp.f64(i32 119, double %6, i8 0, i8 0)  ; WaveActiveOp(value,op,sop)
+  %73 = lshr i32 %3, 1
+  %74 = mul i32 %73, %73
+  %75 = uitofp i32 %74 to double
+  %76 = fcmp fast oeq double %72, %75
+  %77 = zext i1 %76 to i32
+  %78 = call double @dx.op.wavePrefixOp.f64(i32 121, double 1.000000e+00, i8 0, i8 0)  ; WavePrefixOp(value,op,sop)
+  %79 = lshr i32 %4, 1
+  %80 = uitofp i32 %79 to double
+  %81 = fcmp fast oeq double %78, %80
+  %82 = zext i1 %81 to i32
+  br label %83
+
+; <label>:83                                      ; preds = %71, %0
+  %84 = phi i32 [ 2, %0 ], [ %82, %71 ]
+  %85 = phi i32 [ 2, %0 ], [ %77, %71 ]
+  %86 = uitofp i32 %69 to double
+  %87 = call %dx.types.fouri32 @dx.op.waveMatch.f64(i32 165, double %86)  ; WaveMatch(value)
+  %88 = extractvalue %dx.types.fouri32 %87, 0
+  %89 = icmp ne i32 %69, 0
+  %90 = select i1 %89, i32 -1431655766, i32 1431655765
+  %91 = icmp ugt i32 %3, 31
+  %92 = and i32 %3, 31
+  %93 = shl i32 1, %92
+  %94 = add i32 %93, -1
+  %95 = select i1 %91, i32 -1, i32 %94
+  %96 = and i32 %90, %95
+  %97 = icmp eq i32 %88, %96
+  %98 = zext i1 %97 to i32
+  %99 = call double @dx.op.quadOp.f64(i32 123, double %6, i8 0)  ; QuadOp(value,op)
+  %100 = uitofp i32 %46 to double
+  %101 = fcmp fast oeq double %99, %100
+  %102 = zext i1 %101 to i32
+  %103 = shl i32 %2, 6
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %103, i32 undef, i32 %13, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %104 = or i32 %103, 4
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %104, i32 undef, i32 %19, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %105 = or i32 %103, 8
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %105, i32 undef, i32 %29, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %106 = or i32 %103, 12
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %106, i32 undef, i32 %45, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %107 = or i32 %103, 16
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %107, i32 undef, i32 %60, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %108 = or i32 %103, 20
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %108, i32 undef, i32 %68, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %109 = or i32 %103, 24
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %109, i32 undef, i32 %85, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %110 = or i32 %103, 28
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %110, i32 undef, i32 %84, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %111 = or i32 %103, 32
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %111, i32 undef, i32 %98, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %112 = or i32 %103, 36
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %112, i32 undef, i32 %102, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %113 = or i32 %103, 40
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %113, i32 undef, i32 2, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %114 = or i32 %103, 44
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %114, i32 undef, i32 2, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %115 = or i32 %103, 48
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %115, i32 undef, i32 2, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %116 = or i32 %103, 52
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %116, i32 undef, i32 2, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %117 = or i32 %103, 56
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %117, i32 undef, i32 2, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %118 = or i32 %103, 60
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %118, i32 undef, i32 2, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.waveGetLaneIndex(i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.waveGetLaneCount(i32) #0
+
+; Function Attrs: nounwind
+declare double @dx.op.waveReadLaneFirst.f64(i32, double) #1
+
+; Function Attrs: nounwind
+declare double @dx.op.wavePrefixOp.f64(i32, double, i8, i8) #1
+
+; Function Attrs: nounwind
+declare double @dx.op.waveActiveOp.f64(i32, double, i8, i8) #1
+
+; Function Attrs: nounwind
+declare double @dx.op.waveReadLaneAt.f64(i32, double, i32) #1
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveActiveAllEqual.f64(i32, double) #1
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveActiveAllEqual.f32(i32, float) #1
+
+; Function Attrs: nounwind
+declare %dx.types.fouri32 @dx.op.waveMatch.f64(i32, double) #1
+
+; Function Attrs: nounwind
+declare double @dx.op.quadOp.f64(i32, double, i8) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #2
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind }
+attributes #2 = { nounwind readonly }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!7}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 5}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 5}
+!4 = !{null, !5, null, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!7 = !{void ()* @cs_wavedbl, !"cs_wavedbl", null, !4, !8}
+!8 = !{i32 0, i64 524372, i32 4, !9}
+!9 = !{i32 64, i32 1, i32 1}

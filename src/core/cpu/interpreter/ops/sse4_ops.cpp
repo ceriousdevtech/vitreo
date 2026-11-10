@@ -4,6 +4,7 @@
 
 #include "exec_ops.hpp"
 #include "helpers.hpp"
+#include "core/math/host_fenv.hpp"
 #include <cstring>
 #include <cmath>
 
@@ -36,7 +37,7 @@ static Result<XmmReg, Error> read_pack(ExecContext& ctx,
     // they have no such requirement and must not start faulting.
     if (aligned_form && op.type == OperandType::Mem128 &&
         (addr.value() & 0xF) != 0) {
-        ctx.exception = CpuException::GeneralProtection;
+        record_misaligned_operand_gp(ctx);
         return Result<XmmReg, Error>::err(Error::InvalidArgument);
     }
     // Read exactly the operand's memory width, not a blanket 16 bytes. The
@@ -49,7 +50,12 @@ static Result<XmmReg, Error> read_pack(ExecContext& ctx,
     XmmReg tmp{};
     auto r = ctx.mem.read_bytes(addr.value(),
                                 reinterpret_cast<Byte*>(&tmp), n);
-    if (!r) return Result<XmmReg, Error>::err(r.error());
+    if (!r) {
+        // STATUS_ACCESS_VIOLATION, [0] = 0 (read), [1] = the first
+        // inaccessible byte -- read_operand's rule for every memory read.
+        record_read_access_violation(ctx, addr.value(), static_cast<u8>(n));
+        return Result<XmmReg, Error>::err(r.error());
+    }
     return Result<XmmReg, Error>::ok(tmp);
 }
 
@@ -61,7 +67,10 @@ static Result<u32, Error> read_rm32(ExecContext& ctx,
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u32, Error>::err(addr.error());
     auto r = ctx.mem.read_u32(addr.value());
-    if (!r) return Result<u32, Error>::err(r.error());
+    if (!r) {
+        record_read_access_violation(ctx, addr.value(), 4);
+        return Result<u32, Error>::err(r.error());
+    }
     return Result<u32, Error>::ok(r.value());
 }
 
@@ -73,7 +82,10 @@ static Result<u64, Error> read_rm64(ExecContext& ctx,
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u64, Error>::err(addr.error());
     auto r = ctx.mem.read_u64(addr.value());
-    if (!r) return Result<u64, Error>::err(r.error());
+    if (!r) {
+        record_read_access_violation(ctx, addr.value(), 8);
+        return Result<u64, Error>::err(r.error());
+    }
     return Result<u64, Error>::ok(r.value());
 }
 
@@ -89,7 +101,10 @@ static Result<u8, Error> read_rm8(ExecContext& ctx, const Operand& op,
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u8, Error>::err(addr.error());
     auto r = ctx.mem.read_u8(addr.value());
-    if (!r) return Result<u8, Error>::err(r.error());
+    if (!r) {
+        record_read_access_violation(ctx, addr.value(), 1);
+        return Result<u8, Error>::err(r.error());
+    }
     return Result<u8, Error>::ok(r.value());
 }
 
@@ -102,7 +117,10 @@ static Result<u16, Error> read_rm16(ExecContext& ctx,
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u16, Error>::err(addr.error());
     auto r = ctx.mem.read_u16(addr.value());
-    if (!r) return Result<u16, Error>::err(r.error());
+    if (!r) {
+        record_read_access_violation(ctx, addr.value(), 2);
+        return Result<u16, Error>::err(r.error());
+    }
     return Result<u16, Error>::ok(r.value());
 }
 
@@ -741,6 +759,7 @@ ExecResult exec_sse4_ops(ExecContext& ctx,
     case Opcode::ROUNDSD_XMM_XMMM64_IMM8: {
         auto src_r = read_pack(ctx, op1, aligned_form);
         if (!src_r) GP_FAULT;
+        math::apply_sse_rounding(ctx.cpu.sse.mxcsr);
         auto& dst = xmm_ref(ctx, op0.reg);
         XmmReg src = src_r.value();
         const u8 imm = static_cast<u8>(instr.operands[2].imm);
@@ -910,6 +929,7 @@ ExecResult exec_sse4_ops(ExecContext& ctx,
     case Opcode::DPPS_XMM_XMMM128_IMM8: {
         auto src_r = read_pack(ctx, op1, aligned_form);
         if (!src_r) GP_FAULT;
+        math::apply_sse_rounding(ctx.cpu.sse.mxcsr);
         auto& dst = xmm_ref(ctx, op0.reg);
         XmmReg src = src_r.value();
         u8 imm = static_cast<u8>(instr.operands[2].imm);
@@ -942,6 +962,7 @@ ExecResult exec_sse4_ops(ExecContext& ctx,
     case Opcode::DPPD_XMM_XMMM128_IMM8: {
         auto src_r = read_pack(ctx, op1, aligned_form);
         if (!src_r) GP_FAULT;
+        math::apply_sse_rounding(ctx.cpu.sse.mxcsr);
         auto& dst = xmm_ref(ctx, op0.reg);
         XmmReg src = src_r.value();
         u8 imm = static_cast<u8>(instr.operands[2].imm);

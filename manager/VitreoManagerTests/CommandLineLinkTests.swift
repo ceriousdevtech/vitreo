@@ -61,6 +61,62 @@ final class CommandLineLinkTests: XCTestCase {
             .skip)
     }
 
+    func testFirstLaunchAsksBeforeWritingAnything() {
+        XCTAssertEqual(
+            CommandLineLink.launchStep(
+                plan: .create, consent: .undecided, needsAdministrator: true),
+            .ask(retarget: false))
+        XCTAssertEqual(
+            CommandLineLink.launchStep(
+                plan: .create, consent: .undecided, needsAdministrator: false),
+            .ask(retarget: false))
+    }
+
+    func testADeclinedCommandStaysQuiet() {
+        XCTAssertEqual(
+            CommandLineLink.launchStep(
+                plan: .create, consent: .declined, needsAdministrator: true),
+            .none)
+        XCTAssertEqual(
+            CommandLineLink.launchStep(
+                plan: .replaceSymlink, consent: .declined, needsAdministrator: false),
+            .none)
+    }
+
+    func testAnAgreedRetargetNeedingAPasswordIsExplainedAgain() {
+        XCTAssertEqual(
+            CommandLineLink.launchStep(
+                plan: .replaceSymlink, consent: .granted, needsAdministrator: true),
+            .ask(retarget: true))
+        XCTAssertEqual(
+            CommandLineLink.launchStep(
+                plan: .replaceSymlink, consent: .granted, needsAdministrator: false),
+            .install)
+    }
+
+    func testNoLinkNeededMeansNoQuestion() {
+        for consent in [CommandLineLink.Consent.undecided, .granted, .declined] {
+            XCTAssertEqual(
+                CommandLineLink.launchStep(
+                    plan: .alreadyLinked, consent: consent, needsAdministrator: true),
+                .none)
+            XCTAssertEqual(
+                CommandLineLink.launchStep(
+                    plan: .skip, consent: consent, needsAdministrator: true),
+                .none)
+        }
+    }
+
+    func testAnEarlierCancelledPasswordDialogCountsAsNo() {
+        let defaults = UserDefaults(suiteName: "CommandLineLinkTests-\(UUID())")!
+        XCTAssertEqual(CommandLineLink.consent(in: defaults), .undecided)
+        defaults.set(true, forKey: CommandLineLink.legacyDeclinedDefaultsKey)
+        XCTAssertEqual(CommandLineLink.consent(in: defaults), .declined)
+        CommandLineLink.record(.granted, in: defaults)
+        XCTAssertEqual(CommandLineLink.consent(in: defaults), .granted)
+        XCTAssertNil(defaults.object(forKey: CommandLineLink.legacyDeclinedDefaultsKey))
+    }
+
     private func plan(
         bundle: String,
         linkExists: Bool,

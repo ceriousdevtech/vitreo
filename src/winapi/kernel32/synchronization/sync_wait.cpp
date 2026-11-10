@@ -393,7 +393,8 @@ u32 SyncManager::wait_for_single_object_impl(
             // work can complete (otherwise UIManagerStarted deadlocks).
             constexpr u32 kPumpSliceMs = 16;
             const bool pump =
-                (tid == (m_thread_manager ? m_thread_manager->main_thread_id() : 1u) && m_wait_pump && milliseconds != 0);
+                (tid == (m_thread_manager ? m_thread_manager->main_thread_id() : 1u) && m_wait_pump && milliseconds != 0 &&
+                 (!m_wait_pump_needed || m_wait_pump_needed()));
             // Peer signals cannot wake this process's run loop yet, so the
             // shared-object path still polls; the park only drains AppKit.
             auto gui_pump = [&]() {
@@ -510,7 +511,8 @@ u32 SyncManager::wait_for_single_object_impl(
     // signal, a queue post, or a worker's main-thread block wakes the run
     // loop. kParkCapMs only bounds a wake the run loop could miss.
     constexpr u32 kParkCapMs = 100;
-    const bool pump = (tid == (m_thread_manager ? m_thread_manager->main_thread_id() : 1u) && m_wait_pump && milliseconds != 0);
+    const bool pump = (tid == (m_thread_manager ? m_thread_manager->main_thread_id() : 1u) && m_wait_pump && milliseconds != 0 &&
+                 (!m_wait_pump_needed || m_wait_pump_needed()));
     static const bool s_park_off = sync_mechanism_off("guipark");
     const bool use_park = m_wait_park && !s_park_off;
     const u32 probe_ms = use_park ? 0u : kPumpSliceMs;
@@ -593,6 +595,38 @@ u32 SyncManager::wait_for_single_object_impl(
     if (pump && use_park) {
         ntsync::global().disarm_host_wake(tid);
         if (m_wait_park_arm) m_wait_park_arm(false);
+    }
+    // A DuplicateHandle into another process moves a local event, mutex or
+    // semaphore onto a SharedSyncObject and destroys its ntsync id, which
+    // wakes this waiter with a failure. The HANDLE is still the same valid
+    // object (Learn WaitForSingleObject: the wait ends only when it is
+    // signaled or the interval elapses), so keep waiting on its new backing
+    // for the time that is left.
+    if (r == WAIT_FAILED && ipc_active &&
+        m_handles.get_type(h) != HandleType::Thread &&
+        m_handles.get_type(h) != HandleType::Process) {
+        bool moved_to_shared = false;
+        {
+            std::shared_lock<HostRwLock> lock(m_mutex);
+            if (auto it = m_events.find(h); it != m_events.end()) {
+                moved_to_shared = it->second->shared != nullptr;
+            } else if (auto mi = m_mutexes.find(h); mi != m_mutexes.end()) {
+                moved_to_shared = mi->second->shared != nullptr;
+            } else if (auto si = m_semaphores.find(h); si != m_semaphores.end()) {
+                moved_to_shared = si->second->shared != nullptr;
+            }
+        }
+        if (moved_to_shared) {
+            u32 remaining = INFINITE_WAIT;
+            if (milliseconds != INFINITE_WAIT) {
+                const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::steady_clock::now() - wait_start).count();
+                remaining = elapsed >= static_cast<long long>(milliseconds)
+                    ? 0u : milliseconds - static_cast<u32>(elapsed);
+            }
+            return wait_for_single_object_impl(h, remaining, trace,
+                                               cancel_requested, blocked_ns);
+        }
     }
     // Translate ntsync codes to Win32.  Same values, but normalize WAIT_ABANDONED_0.
     if (r == ntsync::WAIT_ABANDONED_0) return WAIT_ABANDONED;

@@ -25,6 +25,8 @@
 
 namespace vitreo::winapi {
 
+class Marshaler;
+
 // =============================================================================
 // Structure sizes and offsets (32-bit guest layout)
 // =============================================================================
@@ -46,6 +48,19 @@ constexpr usize PP_FLAGS = 44;
 constexpr usize PP_FULLSCREEN_REFRESH_RATE = 48;
 constexpr usize PP_PRESENTATION_INTERVAL = 52;
 
+/// D3DPRESENT_PARAMETERS is held internally in the 56-byte x86 layout
+/// above. On x64 the HWND is eight bytes at offset 32 (alignment padding at
+/// 28) and every later field moves by eight: 64 bytes in all (offsetof from
+/// the SDK d3d9types.h layout, i686 vs x86_64). These convert at the guest
+/// boundary; the guest's HWND is a 32-bit handle value either way.
+constexpr usize D3DPRESENT_PARAMETERS_SIZE_X64 = 64;
+[[nodiscard]] bool read_guest_present_parameters(
+    Marshaler& m, GuestAddr address,
+    std::array<u8, D3DPRESENT_PARAMETERS_SIZE>& out);
+[[nodiscard]] bool write_guest_present_parameters(
+    Marshaler& m, GuestAddr address,
+    const std::array<u8, D3DPRESENT_PARAMETERS_SIZE>& in);
+
 /// D3DSURFACE_DESC: Format, Type, Usage, Pool, MultiSampleType,
 /// MultiSampleQuality, Width, Height.
 constexpr usize D3DSURFACE_DESC_SIZE = 32;
@@ -63,8 +78,10 @@ constexpr usize D3DVERTEXBUFFER_DESC_SIZE = 24;
 constexpr usize D3DINDEXBUFFER_DESC_SIZE = 20;
 
 /// D3DDEVICE_CREATION_PARAMETERS: AdapterOrdinal, DeviceType, hFocusWindow,
-/// BehaviorFlags.
+/// BehaviorFlags. 16 bytes on x86; on x64 the HWND is eight bytes at 8 and
+/// BehaviorFlags sits at 16, 24 bytes in all.
 constexpr usize D3DDEVICE_CREATION_PARAMETERS_SIZE = 16;
+constexpr usize D3DDEVICE_CREATION_PARAMETERS_SIZE_X64 = 24;
 
 /// D3DDISPLAYMODE: Width, Height, RefreshRate, Format.
 constexpr usize D3DDISPLAYMODE_SIZE = 16;
@@ -229,9 +246,23 @@ constexpr usize D3D9_MAX_SHADER_CONST_B = 16;
 
 /// Shared-core pixel format for a D3DFORMAT, or PixelFormat::Unknown.
 [[nodiscard]] graphics::PixelFormat d3d9_backend_format(u32 format) noexcept;
+/// The texel a Clear stores into a render target of D3DFORMAT @p d3d9_format
+/// held as @p storage: @p d3dcolor (0xAARRGGBB) for 8-bit BGRA/RGBA layouts,
+/// @p rgba (the same colour as floats) otherwise. False for a storage format
+/// without a defined clear texel.
+[[nodiscard]] bool d3d9_encode_clear_texel(u32 d3d9_format, graphics::PixelFormat storage,
+                                           const std::array<float, 4>& rgba, u32 d3dcolor,
+                                           std::array<u8, 16>& texel, unsigned& bytes) noexcept;
 
 /// True when CheckDevice* / Create* may accept @p format as guest-visible.
 [[nodiscard]] bool d3d9_format_supported(u32 format) noexcept;
+
+/// D3D_OK, D3DOK_NOAUTOGEN or D3DERR_NOTAVAILABLE for a resource of
+/// D3DRESOURCETYPE @p resource_type with @p usage (RENDERTARGET,
+/// DEPTHSTENCIL, AUTOGENMIPMAP) in @p format: the answer CheckDeviceFormat
+/// gives and every Create* enforces (d3d9_format_caps.cpp).
+[[nodiscard]] u32 d3d9_check_format_usage(u32 format, u32 resource_type,
+                                          u32 usage);
 
 /// Expand a guest D3DFORMAT lock buffer into tightly packed BGRA8 for upload
 /// into a `PixelFormat::BGRA8Unorm` backend texture. Returns false when the
@@ -301,6 +332,15 @@ struct D3D9Manager::SurfaceState {
     u32 pitch{0};
     bool locked{false};
     u32 lock_flags{0};
+    /// CreateRenderTarget's Lockable argument, or D3DPRESENTFLAG_
+    /// LOCKABLE_BACKBUFFER for a back buffer. Unused for other kinds.
+    bool lockable_target{false};
+    /// IDirect3DSurface9::GetDC: the DC lent to GDI and the DIB section
+    /// selected into it (0 when none is outstanding). The surface counts as
+    /// locked while a DC is out.
+    u32 dc{0};
+    u32 dc_bitmap{0};
+    GuestAddr dc_bits{0};
 
     /// Shared-core texture for depth-stencil surfaces (and later for
     /// CreateRenderTarget). Texture-level colour RTs use the parent
@@ -451,8 +491,24 @@ struct D3D9Manager::VertexDeclarationState {
 };
 
 struct D3D9Manager::QueryState {
-    u32 type{0};          // D3DQUERYTYPE
-    bool issued{false};   // Issue(END) seen since last GetData completion
+    /// IDirect3DQuery9 states (Microsoft Learn, "Queries (Direct3D 9)"): a
+    /// new query is signaled; Issue(BEGIN) makes it building; Issue(END)
+    /// makes it issued until its result is ready, when it is signaled again.
+    enum class Phase : u8 { Signaled, Building, Issued };
+
+    u32 type{0};  // D3DQUERYTYPE
+    Phase phase{Phase::Signaled};
+    /// OCCLUSION: every counter interval the bracket spans (a new one starts
+    /// at each Begin/End of any occlusion query on the device); the result
+    /// is their sum.
+    std::vector<std::shared_ptr<graphics::GpuOcclusionCounter>> intervals;
+    /// EVENT, TIMESTAMP, TIMESTAMPDISJOINT: the command-stream point recorded
+    /// at Issue(END). Ready once the GPU has finished every command before it.
+    std::shared_ptr<graphics::GpuTimestamp> end_point;
+    /// The command stream was already submitted for this Issue(END).
+    bool flushed{false};
+    /// The last completed result, returned again by later GetData calls.
+    u64 value{0};
 };
 
 /// Per-chain state for IDirect3DSwapChain9 from CreateAdditionalSwapChain.
@@ -648,6 +704,10 @@ struct D3D9Manager::DeviceState {
     } draw_reuse;
 
     std::shared_ptr<const D3d9FrozenDrawTables> frozen_draw_tables;
+    /// The last tables frozen, kept across invalidation: most invalidations
+    /// come from state outside these maps (shaders, constants, textures,
+    /// streams), so the next freeze usually finds them unchanged.
+    std::shared_ptr<const D3d9FrozenDrawTables> last_frozen_draw_tables;
 
     void invalidate_draw_pipeline_reuse() noexcept {
         ++draw_pipeline_epoch;
@@ -660,6 +720,18 @@ struct D3D9Manager::DeviceState {
         if (frozen_draw_tables) {
             return frozen_draw_tables;
         }
+        // Comparing the maps allocates nothing; copying them allocates a
+        // node per entry on every draw that follows any state change.
+        if (const auto& last = last_frozen_draw_tables;
+            last && last->render_states == render_states &&
+            last->sampler_states == sampler_states &&
+            last->stage_states == stage_states &&
+            last->transforms == transforms &&
+            last->vertex_sampler_states == vertex_sampler_states &&
+            last->light_enabled == light_enabled && last->lights == lights) {
+            frozen_draw_tables = last;
+            return last;
+        }
         auto tables = std::make_shared<D3d9FrozenDrawTables>();
         tables->render_states = render_states;
         tables->transforms = transforms;
@@ -669,12 +741,19 @@ struct D3D9Manager::DeviceState {
         tables->lights = lights;
         tables->light_enabled = light_enabled;
         frozen_draw_tables = tables;
+        last_frozen_draw_tables = tables;
         return tables;
     }
 
     /// The scene's recording scope. Draws share one pass so that a frame is
     /// one command buffer; EndScene and Present submit it.
     std::unique_ptr<graphics::BackendRenderPass> render_pass;
+    /// Occlusion queries between Issue(BEGIN) and Issue(END), and the
+    /// counter every render pass opened meanwhile counts into. Any Begin or
+    /// End ends the open pass and starts a new interval, so each query sums
+    /// exactly the intervals it brackets.
+    std::vector<u32> counting_queries;
+    std::shared_ptr<graphics::GpuOcclusionCounter> occlusion_interval;
     /// Non-null when `render_pass` targets a texture render target rather than
     /// the swap-chain back buffer. Cleared by `flush_render_pass`.
     graphics::BackendTexture2D* render_pass_color{nullptr};
@@ -693,6 +772,12 @@ struct D3D9Manager::DeviceState {
     /// Keyed by `(width << 32) | height`.
     std::unordered_map<u64, std::unique_ptr<graphics::BackendTexture2D>>
         rt_depth_scratch;
+    /// Single-sample copies of multisampled StretchRect sources, by
+    /// (width, height, format). Kept for the device's life: the backend
+    /// records copies now and encodes them later, so a per-call temporary
+    /// could be freed before the GPU reads it.
+    std::map<u64, std::unique_ptr<graphics::BackendTexture2D>>
+        stretch_resolve_scratch;
 
     u32 software_vertex_processing{0};
     u32 npatch_mode{0}; // float bits

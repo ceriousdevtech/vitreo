@@ -72,11 +72,14 @@ TEST_F(D3D9ManagerTest, CreateCubeTextureRenderTargetEdge64) {
 TEST_F(D3D9ManagerTest, CreateCubeTextureL6V5U5IsNotAvailable) {
     // D3DFMT_L6V5U5 is the D3D9 enum 61. That is not an engine-internal
     // format-table slot; those slots store a D3DFORMAT, often A8R8G8B8.
+    // Windows answers an unsupported Create* with D3DERR_INVALIDCALL
+    // (d3d9_format_probe: L6V5U5 cube create=0x8876086c); NOTAVAILABLE is
+    // CheckDeviceFormat's answer.
     const auto [factory, device] = create_device();
     EXPECT_EQ(invoke(D3D9InterfaceId::Device, 25,
                      {device, 64, 1, 0, 61, 1,
                       static_cast<u32>(SCRATCH_ADDR), 0}),
-              D3DERR_NOTAVAILABLE);
+              D3DERR_INVALIDCALL);
 }
 
 TEST_F(D3D9ManagerTest, CreateVolumeTextureSystemMemLockBoxAndGetVolumeLevel) {

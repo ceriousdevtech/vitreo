@@ -55,7 +55,7 @@ std::optional<bool> JitCompiler::compile_sse_mmx_forms(
             emit(arm64::movz_w(2, base_id + 1));
             emit(arm64::movz_w(3, mm_dst));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         // These are MM-form opcodes, so they enter MMX state too. The host
         // helper only touches the register file, not the x87 tag word.

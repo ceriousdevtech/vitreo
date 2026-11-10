@@ -1268,3 +1268,357 @@ TEST(MetalSwapchainFormats, UnsupportedFormatOrSizeIsRefusedNotThrown) {
     auto chain = device.create_swap_chain(backend_desc);
     EXPECT_TRUE(chain == nullptr || !chain->valid());
 }
+
+#include "dxbc_icb_test_fixture.hpp"
+using namespace vitreo;
+using namespace vitreo::graphics::dxbc_spirv_test;
+
+namespace {
+void expect_icb_draw(MetalDevice& device, BackendTexture2D& target,
+                     BackendPipeline& pipeline, const IcbRow& expected,
+                     BackendBuffer* vertices = nullptr, const void* vertex_constants = nullptr,
+                     usize vertex_constants_size = 0) {
+    BackendRenderPassDesc pass_desc{};
+    pass_desc.color_targets[0] = &target;
+    auto pass = device.create_render_pass_standalone(pass_desc);
+    ASSERT_NE(pass, nullptr);
+    BackendDrawCall call{};
+    call.pipeline = &pipeline;
+    call.topology = BackendPrimitiveTopology::TriangleList;
+    call.vertex_count = 3;
+    call.vertex_buffer = vertices;
+    call.vertex_buffers[0] = vertices;
+    call.vertex_constants = vertex_constants;
+    call.vertex_constants_size = vertex_constants_size;
+    call.viewport = {0, 0, 1, 1, 0, 1};
+    ASSERT_TRUE(pass->draw(call));
+    ASSERT_TRUE(pass->end());
+    IcbRow seen{};
+    ASSERT_TRUE(target.readback(0, seen.data(), sizeof(seen)));
+    EXPECT_EQ(seen, expected);
+}
+}
+
+TEST(MetalReadback, ImmediateConstantBufferGpuPreservesBitsAndBounds) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal device";
+    // D3D11.3 7.5/7.5.1: literal and dynamic OOB are zero; 7.8.1:
+    // MOV is untyped, including integer, signaling/quiet NaN and signed-zero bits.
+    const std::vector<IcbRow> rows{{0x7fa12345u, 0x80000000u, 0xffffffffu, 0x7f800000u},
+                                  {0x7fc54321u, 0xff800000u, 0x12345678u, 0u},
+                                  {0x3f800000u, 0xdeadbeefu, 0x80000001u, 42u}};
+    BackendTexture2DDesc td{};
+    td.width = td.height = 1;
+    td.pixel_format = PixelFormat::RGBA32Uint;
+    td.render_target = true;
+    auto target = device.create_texture_2d(td, nullptr, 0);
+    ASSERT_NE(target, nullptr);
+    for (u32 mode : {0u, 1u, 2u}) {
+        const bool dynamic = mode != 0;
+        for (u32 index : {0u, 1u, 2u, 3u, 0xffffffffu}) {
+            for (u32 base : {0u, 1u}) {
+                const auto c = make_icb_fixture(rows, dynamic, dynamic ? base : index + base, 2, 0x1B, 1, mode == 2);
+                const auto result = translate_dxbc_to_spirv(c);
+                ASSERT_TRUE(result.valid()) << result.failure;
+                const auto msl = compile_spirv_to_msl(result.spirv.data(), result.spirv.size(), ShaderStage::Fragment);
+                ASSERT_TRUE(msl.valid());
+                BackendPipelineDesc pd{};
+                pd.vertex_shader_msl = "#include <metal_stdlib>\nusing namespace metal;\n"
+                    "struct V { float4 p [[position]]; uint4 index [[user(locn0)]]; };\n"
+                    "vertex V vertex_main(uint id [[vertex_id]]) { V o; "
+                    "float2 p[3]={float2(-1,-1),float2(3,-1),float2(-1,3)}; "
+                    "o.p=float4(p[id],0,1); o.index=uint4(0,0," + std::to_string(index) + "u,0); return o; }";
+                pd.fragment_shader_msl = msl.msl_text();
+                pd.fragment_entry_point = "main0";
+                pd.color_format = PixelFormat::RGBA32Uint;
+                auto pipeline = device.create_pipeline(pd);
+                ASSERT_NE(pipeline, nullptr);
+                ASSERT_TRUE(pipeline->valid()) << msl.msl_text();
+                const u32 effective = index + base;
+                IcbRow expected{};
+                if (effective < rows.size()) {
+                    for (u32 lane = 0; lane < 4; ++lane) expected[lane] = rows[effective][3 - lane];
+                }
+                SCOPED_TRACE(::testing::Message() << "mode=" << mode << " index=" << index << " base=" << base);
+                expect_icb_draw(device, *target, *pipeline, expected);
+            }
+        }
+    }
+}
+
+
+TEST(MetalReadback, ImmediateConstantBufferGpuMinimumAndMaximumSize) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal device";
+    BackendTexture2DDesc td{};
+    td.width = td.height = 1;
+    td.pixel_format = PixelFormat::RGBA32Uint;
+    td.render_target = true;
+    auto target = device.create_texture_2d(td, nullptr, 0);
+    ASSERT_NE(target, nullptr);
+    for (u32 count : {1u, 4096u}) {
+        std::vector<IcbRow> rows(count);
+        for (u32 i = 0; i < count; ++i) {
+            rows[i] = {0x7fa12345u ^ i, 0x80000000u, 0xdeadbeefu ^ i, 0xff800000u};
+        }
+        const auto c = make_icb_fixture(rows, true);
+        const auto result = translate_dxbc_to_spirv(c);
+        ASSERT_TRUE(result.valid()) << result.failure;
+        const auto msl = compile_spirv_to_msl(result.spirv.data(), result.spirv.size(), ShaderStage::Fragment);
+        ASSERT_TRUE(msl.valid());
+        BackendPipelineDesc pd{};
+        pd.vertex_shader_msl = R"(
+            #include <metal_stdlib>
+            using namespace metal;
+            struct Input { float2 p [[attribute(0)]]; uint4 index [[attribute(1)]]; };
+            struct Output { float4 p [[position]]; uint4 index [[user(locn0)]]; };
+            vertex Output vertex_main(Input in [[stage_in]]) {
+                return {float4(in.p, 0, 1), in.index};
+            }
+        )";
+        pd.fragment_shader_msl = msl.msl_text();
+        pd.fragment_entry_point = "main0";
+        pd.color_format = PixelFormat::RGBA32Uint;
+        struct Vertex { float x, y; IcbRow index; };
+        pd.vertex_attributes = {{0, 0, BackendVertexFormat::Float2, 0},
+                                {1, offsetof(Vertex, index), BackendVertexFormat::UInt4, 0,
+                                 BackendVertexComponentType::UInt, BackendVertexComponentType::UInt}};
+        pd.vertex_stride = pd.vertex_buffer_strides[0] = sizeof(Vertex);
+        auto pipeline = device.create_pipeline(pd);
+        ASSERT_NE(pipeline, nullptr);
+        ASSERT_TRUE(pipeline->valid()) << "count=" << count;
+        std::array<Vertex, 3> data{{{-1, -1, {}}, {3, -1, {}}, {-1, 3, {}}}};
+        BackendBufferDesc bd{};
+        bd.byte_width = sizeof(data);
+        bd.vertex_buffer = true;
+        auto vertices = device.create_buffer(bd, data.data());
+        ASSERT_NE(vertices, nullptr);
+        // Four draws per table; the expensive 4096-entry native Metal pipeline
+        // is compiled once, not once for each boundary index.
+        for (u32 index : {0u, count - 1, count, 0xffffffffu}) {
+            SCOPED_TRACE(::testing::Message() << "count=" << count << " index=" << index);
+            for (auto& v : data) v.index = {index, 0, 0, 0};
+            ASSERT_TRUE(vertices->update(0, data.data(), sizeof(data)));
+            const IcbRow expected = index < count ? rows[index] : IcbRow{};
+            expect_icb_draw(device, *target, *pipeline, expected, vertices.get());
+        }
+    }
+}
+
+#include "graphics/shaders/dxil_to_dxbc.hpp"
+#include "../oracle_data/dxil_readonly/dxil_readonly_shaders.h"
+
+TEST(MetalReadback, DxcReadonlyGlobalsPreserveTypedValuesAndMutableLocalArrays) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal device";
+    BackendTexture2DDesc td{};
+    td.width = td.height = 1;
+    td.pixel_format = PixelFormat::RGBA32Uint;
+    td.render_target = true;
+    auto target = device.create_texture_2d(td, nullptr, 0);
+    ASSERT_NE(target, nullptr);
+    const std::array<IcbRow, 4> inputs{{{0, 1, 0xdeadbeefu, 0}, {1, 1, 0x80000000u, 0},
+                                      {2, 3, 0x12345678u, 0}, {3, 0, 0xffffffffu, 0}}};
+    // Exact expectations from the original HLSL and IEEE binary encodings,
+    // independent of Vitreo's lowerer. In particular, half -0 stays -0 and
+    // 64-bit values occupy low/high word pairs without numeric conversion.
+    constexpr u32 a[]{0x7fa12345u, 0x80000000u, 0xffffffffu, 0x12345678u};
+    constexpr u32 b[]{0xdeadbeefu, 0x7fc54321u, 0x80000001u, 42u};
+    constexpr u32 local[]{11, 22, 33, 44};
+    constexpr u32 u16[]{0, 65535, 32768, 4660};
+    constexpr u32 f16[]{0, 0x80000000u, 0x3fc00000u, 0xc0000000u};
+    constexpr u64 u64s[]{0x0123456789abcdefull, 0xffffffffffffffffull, 0x8000000000000000ull, 42ull};
+    constexpr u64 f64s[]{0ull, 0x8000000000000000ull, 0x3ff8000000000000ull, 0xc002000000000000ull};
+    for (const auto& fixture : dxil_readonly_fixture::blobs) {
+        const std::string name = fixture.name;
+        if (name == "hs") continue;
+        const auto lower = dxil_to_dxbc(fixture.data, fixture.size);
+        ASSERT_TRUE(lower.ok) << lower.failure;
+        const auto c = parse_dxbc(lower.container.data(), lower.container.size());
+        ASSERT_TRUE(c.valid());
+        const auto spirv = translate_dxbc_to_spirv(c);
+        ASSERT_TRUE(spirv.valid()) << spirv.failure;
+        const auto msl = compile_spirv_to_msl(spirv.spirv.data(), spirv.spirv.size(), ShaderStage::Fragment);
+        ASSERT_TRUE(msl.valid());
+        BackendPipelineDesc pd{};
+        pd.vertex_shader_msl = R"(
+            #include <metal_stdlib>
+            using namespace metal;
+            struct Input { uint4 index [[attribute(0)]]; };
+            struct Output { float4 p [[position]]; uint4 index [[user(locn0)]]; };
+            vertex Output vertex_main(Input in [[stage_in]], uint id [[vertex_id]]) {
+                float2 p[3]={float2(-1,-1),float2(3,-1),float2(-1,3)};
+                return {float4(p[id],0,1),in.index};
+            }
+        )";
+        pd.fragment_shader_msl = msl.msl_text();
+        pd.fragment_entry_point = "main0";
+        pd.color_format = PixelFormat::RGBA32Uint;
+        pd.vertex_attributes = {{0, 0, BackendVertexFormat::UInt4, 0,
+                                BackendVertexComponentType::UInt, BackendVertexComponentType::UInt}};
+        pd.vertex_stride = pd.vertex_buffer_strides[0] = sizeof(IcbRow);
+        auto pipeline = device.create_pipeline(pd);
+        ASSERT_NE(pipeline, nullptr);
+        ASSERT_TRUE(pipeline->valid()) << name;
+        std::array<IcbRow, 3> data{};
+        BackendBufferDesc bd{};
+        bd.byte_width = sizeof(data);
+        bd.vertex_buffer = true;
+        auto vertices = device.create_buffer(bd, data.data());
+        ASSERT_NE(vertices, nullptr);
+        for (const auto& input : inputs) {
+            SCOPED_TRACE(::testing::Message() << name << " i=" << input[0] << " j=" << input[1]);
+            data.fill(input);
+            ASSERT_TRUE(vertices->update(0, data.data(), sizeof(data)));
+            const u32 i = input[0] & 3u, j = input[1] & 3u;
+            IcbRow expected{};
+            if (name == "ps32") expected = {a[i], b[j], input[2], i == j ? input[2] : local[j]};
+            if (name == "ps16") expected = {u16[i], f16[j], u16[j], f16[i]};
+            if (name == "ps64") expected = {static_cast<u32>(u64s[i]), static_cast<u32>(u64s[i] >> 32),
+                                           static_cast<u32>(f64s[j]), static_cast<u32>(f64s[j] >> 32)};
+            if (name == "psnested") {
+                const u32 first = (input[0] & 1u) * 3u + input[1] % 3u + 1u;
+                const u32 second = input[2] % 3u + 4u;
+                expected = {first, first * 11u, second, second * 11u};
+            }
+            expect_icb_draw(device, *target, *pipeline, expected, vertices.get());
+        }
+    }
+}
+
+#include "dxil_constant_test_fixture.hpp"
+
+TEST(MetalReadback, DxilReadonlyNestedTablesPreserveLeafBoundaryWords) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal device";
+    BackendTexture2DDesc td{};
+    td.width = td.height = 1;
+    td.pixel_format = PixelFormat::RGBA32Uint;
+    td.render_target = true;
+    auto target = device.create_texture_2d(td, nullptr, 0);
+    ASSERT_NE(target, nullptr);
+    for (u32 count : {4097u, 65533u}) {
+        std::vector<u32> words(count);
+        for (u32 i = 0; i < count; ++i) words[i] = 0x7fa12345u ^ (i * 0x10204081u);
+        const auto c = dxil_constant_test::readonly_words_fixture(words);
+        const auto spirv = translate_dxbc_to_spirv(c);
+        ASSERT_TRUE(spirv.valid()) << spirv.failure;
+        const auto msl = compile_spirv_to_msl(spirv.spirv.data(), spirv.spirv.size(), ShaderStage::Fragment);
+        ASSERT_TRUE(msl.valid());
+        BackendPipelineDesc pd{};
+        pd.vertex_shader_msl = R"(
+            #include <metal_stdlib>
+            using namespace metal;
+            struct Input { uint4 index [[attribute(0)]]; };
+            struct Output { float4 p [[position]]; uint4 index [[user(locn0)]]; };
+            vertex Output vertex_main(Input in [[stage_in]], uint id [[vertex_id]]) {
+                float2 p[3]={float2(-1,-1),float2(3,-1),float2(-1,3)};
+                return {float4(p[id],0,1),in.index};
+            }
+        )";
+        pd.fragment_shader_msl = msl.msl_text();
+        pd.fragment_entry_point = "main0";
+        pd.color_format = PixelFormat::RGBA32Uint;
+        pd.vertex_attributes = {{0, 0, BackendVertexFormat::UInt4, 0,
+                                BackendVertexComponentType::UInt, BackendVertexComponentType::UInt}};
+        pd.vertex_stride = pd.vertex_buffer_strides[0] = sizeof(IcbRow);
+        auto pipeline = device.create_pipeline(pd);
+        ASSERT_NE(pipeline, nullptr);
+        ASSERT_TRUE(pipeline->valid()) << "count=" << count;
+        std::array<IcbRow, 3> data{};
+        BackendBufferDesc bd{};
+        bd.byte_width = sizeof(data);
+        bd.vertex_buffer = true;
+        auto vertices = device.create_buffer(bd, data.data());
+        ASSERT_NE(vertices, nullptr);
+        for (u32 index : {0u, 1022u, count - 4u}) {
+            SCOPED_TRACE(::testing::Message() << "count=" << count << " index=" << index);
+            data.fill(IcbRow{index, 0, 0, 0});
+            ASSERT_TRUE(vertices->update(0, data.data(), sizeof(data)));
+            const IcbRow expected{words[index], words[index + 1], words[index + 2], words[index + 3]};
+            expect_icb_draw(device, *target, *pipeline, expected, vertices.get());
+        }
+    }
+}
+
+#include "sm3_def_test_fixture.hpp"
+
+TEST(MetalReadback, Sm3VertexDefLutPreservesSparseOverridesAndApiFallback) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal device";
+    using namespace sm3_def_test;
+    BackendTexture2DDesc td{};
+    td.width = td.height = 1;
+    td.pixel_format = PixelFormat::RGBA32Uint;
+    td.render_target = true;
+    auto target = device.create_texture_2d(td, nullptr, 0);
+    ASSERT_NE(target, nullptr);
+    std::array<Bits, 256> constants{};
+    for (u32 i = 0; i < constants.size(); ++i) constants[i] = api_bits(i);
+    struct Vertex { std::array<float, 4> position, offset; };
+    std::array<Vertex, 3> data{{{{-1, -1, 0.5f, 1}, {}},
+                               {{3, -1, 0.5f, 1}, {}}, {{-1, 3, 0.5f, 1}, {}}}};
+    BackendBufferDesc bd{};
+    bd.byte_width = sizeof(data);
+    bd.vertex_buffer = true;
+    auto vertices = device.create_buffer(bd, data.data());
+    ASSERT_NE(vertices, nullptr);
+    for (u32 model : {1u, 2u, 3u}) {
+        // The base-255 case proves signed addition is guarded, including
+        // representable int32 extremes arriving through MOV/MOVA.
+        for (u32 scenario : {0u, 1u, 2u, 3u, 4u}) {
+            if (scenario == 4 && model == 1) continue; // aL starts at VS2.
+            const u32 count = scenario == 1 ? 96u : scenario == 2 ? 256u : 16u;
+            const bool sparse = scenario != 2;
+            const u32 base = scenario == 3 ? 255u : scenario == 4 ? 7u : 0u;
+            const u32 component = scenario == 3 && model != 1 ? 3u : 0u;
+            const u32 swizzle = scenario == 3 ? 0x1bu : 0xe4u;
+            const u32 modifier = scenario == 3 ? 1u : 0u;
+            const auto tokens = vertex(model, count, sparse, base, component, swizzle, modifier, scenario == 4);
+            const auto shader = translate_sm3_to_msl(tokens.data(), tokens.size());
+            ASSERT_TRUE(shader.ok) << shader.failure;
+            ASSERT_EQ(shader.float_constant_count, 256u);
+            BackendPipelineDesc pd{};
+            pd.vertex_shader_msl = shader.msl;
+            pd.vertex_entry_point = shader.entry_point;
+            // Flat interpolation is deliberate: observe the VS MOV's raw
+            // output bits without interpolation arithmetic canonicalizing them.
+            pd.fragment_shader_msl = R"(
+                #include <metal_stdlib>
+                using namespace metal;
+                struct Input { float4 value [[user(texcoord0), flat]]; };
+                fragment uint4 fragment_main(Input in [[stage_in]]) { return as_type<uint4>(in.value); }
+            )";
+            pd.color_format = PixelFormat::RGBA32Uint;
+            pd.vertex_attributes = {{0, 0, BackendVertexFormat::Float4, 0},
+                                    {1, offsetof(Vertex, offset), BackendVertexFormat::Float4, 0}};
+            pd.vertex_stride = pd.vertex_buffer_strides[0] = sizeof(Vertex);
+            auto pipeline = device.create_pipeline(pd);
+            ASSERT_NE(pipeline, nullptr);
+            ASSERT_TRUE(pipeline->valid()) << shader.msl;
+            const std::vector<i32> offsets = scenario == 4 ? std::vector<i32>{0}
+                : scenario == 3 ? std::vector<i32>{(-2147483647 - 1), 2147483520, -256, -255, -254, 0, 1}
+                : std::vector<i32>{-1, 0, 7, 31, 32, 63, 64, 95, 96, 127, 128, 255, 256};
+            for (i32 offset : offsets) {
+                SCOPED_TRACE(::testing::Message() << "model=" << model << " count=" << count
+                             << " base=" << base << " offset=" << offset);
+                for (auto& v : data) v.offset.fill(static_cast<float>(offset));
+                ASSERT_TRUE(vertices->update(0, data.data(), sizeof(data)));
+                const i64 effective = static_cast<i64>(scenario == 4 ? 0 : offset) + base;
+                Bits selected{};
+                if (effective >= 0 && effective < 256) {
+                    selected = constants[static_cast<usize>(effective)];
+                    for (u32 i = 0; i < count; ++i) {
+                        if (def_slot(i, sparse) == effective) { selected = defined_bits(i, count >= 96u); break; }
+                    }
+                }
+                Bits expected{};
+                for (u32 lane = 0; lane < 4; ++lane) {
+                    expected[lane] = selected[(swizzle >> (lane * 2)) & 3u];
+                    if (modifier == 1) expected[lane] ^= 0x80000000u;
+                }
+                expect_icb_draw(device, *target, *pipeline, expected, vertices.get(), constants.data(), sizeof(constants));
+            }
+        }
+    }
+}

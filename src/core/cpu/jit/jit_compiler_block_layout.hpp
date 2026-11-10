@@ -248,9 +248,10 @@
     /// this block to Tier 1. Says nothing about whether the IR accepts it.
     [[nodiscard]] bool ir_gate_open(const BasicBlock& block) const;
 
-    /// Count how many live-out flag definitions a one-instruction look into
-    /// the successor would prove dead. Measurement only, gated on
-    /// `VITREO_JIT_IR_STATS`; emits nothing and changes no code.
+    /// When every successor redefines the flags before reading them or
+    /// touching memory, publish the live-out record on the dispatcher
+    /// exit only. A patched hop into that successor skips the store.
+    /// Also counts the verdict when IR stats are on.
     void ir_measure_cross_block_flags() noexcept;
 
     /// Lower `m_ir_block` into `m_code_buf`, replacing the stencil compiler's

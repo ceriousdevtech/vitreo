@@ -528,6 +528,8 @@ void impl_WaitForSingleObject(Marshaler& m, SyncManager& mgr) {
     u32 ret = mgr.wait_for_single_object(
         handle, milliseconds, trace, &blocked_ns);
     diagnostics::phase_add_wfso_wall(blocked_ns);
+    log_long_wait("WaitForSingleObject", handle, milliseconds, blocked_ns,
+                  trace.caller);
     u64 ns = blocked_ns;
     if (profile_wait) {
         const auto t1 = std::chrono::steady_clock::now();
@@ -623,15 +625,16 @@ void impl_WaitForMultipleObjects(Marshaler& m, SyncManager& mgr) {
     }
 
     const bool time_wait = diagnostics::perf_window_active();
-    const auto t0 = time_wait ? std::chrono::steady_clock::now()
-                              : std::chrono::steady_clock::time_point{};
+    const auto t0 = std::chrono::steady_clock::now();
     const u32 ret = mgr.wait_for_multiple_objects(
         count, handles_vec.data(), wait_all, milliseconds);
+    const u64 ns = static_cast<u64>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now() - t0)
+            .count());
+    log_long_wait("WaitForMultipleObjects", handles_vec.empty() ? 0 : handles_vec[0],
+                  milliseconds, ns, make_sync_trace_context(m, "WFMO", false).caller);
     if (time_wait) {
-        const u64 ns = static_cast<u64>(
-            std::chrono::duration_cast<std::chrono::nanoseconds>(
-                std::chrono::steady_clock::now() - t0)
-                .count());
         diagnostics::perf_add_wait(
             diagnostics::PerfWaitKind::WaitForMultipleObjects, ns);
     }
@@ -870,6 +873,8 @@ void impl_Sleep(Marshaler& m, SyncManager& mgr) {
     const u64 ns = static_cast<u64>(
         std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count());
     diagnostics::phase_add_sleep_wall(ns);
+    log_long_wait("Sleep", 0, milliseconds, ns,
+                  make_sync_trace_context(m, "Sleep", false).caller);
     if (g_wait_profile.enabled || diagnostics::perf_window_active()) {
         if (g_wait_profile.enabled) {
             g_wait_profile.sleep_count.fetch_add(1, std::memory_order_relaxed);
@@ -1107,7 +1112,7 @@ void impl_CreateWaitableTimerExW(Marshaler& m, SyncManager& mgr) {
     m.set_return(static_cast<u64>(h));
 }
 
-SyncManager::~SyncManager() { stop_waitable_timer_service(); }
+SyncManager::~SyncManager() { stop_waitable_timer_service();release_event_handles(); }
 
 void SyncManager::arm_waitable_timer(Handle h, u64 gen,
                                      std::chrono::milliseconds delay,

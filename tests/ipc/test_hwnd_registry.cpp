@@ -97,9 +97,10 @@ TEST(HwndRegistryTest, PreservesPrimaryGuestThreadIdentityWithoutPidRemap) {
 
     const u32 a = allocate_system_thread_id();
     const u32 b = allocate_system_thread_id();
-    EXPECT_GE(a, 0x01000000u);
-    EXPECT_GE(b, 0x01000000u);
-    EXPECT_NE(a, b);
+    EXPECT_EQ(a, 8u);
+    EXPECT_EQ(b, 12u);
+    EXPECT_EQ(a % 4u, 0u);
+    EXPECT_EQ(b % 4u, 0u);
 
     hwnd_registry_unpublish(hwnd);
     (void)::unsetenv("VITREO_IPC_SCOPE");
@@ -120,10 +121,10 @@ TEST(HwndRegistryTest, ExhaustedOrDamagedThreadCounterNeverRecyclesIdentities) {
             fs::remove_all(path, ec);
         }
     } cleanup{root};
-    const auto path = root / "runtime/next-tid";
-    // Persistent sentinel after the last allocated ID in this internal
-    // namespace. A subsequent allocation must not reset the counter.
-    const u32 exhausted = 0x7FFFFFFFu;
+    const auto path = root / "runtime/next-cid";
+    // Persistent sentinel past the last client ID. A subsequent allocation
+    // must not reset the counter.
+    const u32 exhausted = 0x80000000u;
     {
         std::ofstream out(path, std::ios::binary | std::ios::trunc);
         out.write(reinterpret_cast<const char*>(&exhausted), sizeof(exhausted));

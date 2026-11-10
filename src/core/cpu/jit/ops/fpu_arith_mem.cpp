@@ -109,6 +109,7 @@ std::optional<bool> JitCompiler::compile_fpu_arith_mem(
 
         // binary64 -> canonical Float80. Float80(double) flushes binary64
         // subnormals to signed zero; infinities/NaNs use the helper fallback.
+        emit_x87_pc24_narrow_d0();
         emit(arm64::fmov_x_from_d(REG_SCRATCH0, 0));
         emit(arm64::lsr_x_imm(REG_SCRATCH2, REG_SCRATCH0, 52));
         emit(arm64::movz_w(REG_SCRATCH4, 0x7FF));
@@ -318,6 +319,7 @@ std::optional<bool> JitCompiler::compile_fpu_arith_mem(
             emit(arm64::fsub_s_scalar(0, 0, 1, arm64::FS_D));
         }
 
+        emit_x87_pc24_narrow_d0();
         emit(arm64::fmov_x_from_d(REG_SCRATCH0, 0));
         emit(arm64::lsr_x_imm(REG_SCRATCH2, REG_SCRATCH0, 52));
         emit(arm64::movz_w(REG_SCRATCH4, 0x7FF));

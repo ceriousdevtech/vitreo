@@ -14,6 +14,7 @@
 /// by the two promotions declared in jit_helpers_internal.hpp.
 
 #include "jit_helpers.hpp"
+#include "jit_helpers_internal.hpp"
 #include "../sse_float_semantics.hpp"
 #include "jit_helpers_sse_crypto.hpp"
 #include "jit_helpers_sse_histogram.hpp"
@@ -29,6 +30,24 @@
 #include <mutex>
 
 namespace vitreo::cpu::jit {
+
+// Every memory-operand form of jit_sse_op reads or writes guest memory with
+// a checked GuestMemory access. A failed one is an access violation the guest
+// must see (Intel SDM Vol. 3A 6.5: the faulting instruction commits nothing),
+// never a silent return that lets the block carry on: [0] = direction, [1] =
+// the first inaccessible byte of the @p width-byte operand. The JIT call site
+// (EMIT_SSE_OP_MEM_CALL) publishes RIP before the call and leaves the block
+// on the raise.
+static void raise_read_av(CpuState* cpu, GuestMemory* mem, u64 addr,
+                          usize width) noexcept {
+    jit_raise_guest_av(cpu, mem, static_cast<GuestAddr>(addr), width,
+                       /*is_write=*/false);
+}
+static void raise_write_av(CpuState* cpu, GuestMemory* mem, u64 addr,
+                           usize width) noexcept {
+    jit_raise_guest_av(cpu, mem, static_cast<GuestAddr>(addr), width,
+                       /*is_write=*/true);
+}
 
 static inline bool diag_logs_enabled() noexcept {
     static const bool enabled = (std::getenv("VITREO_ENABLE_DIAG_LOGS") != nullptr);
@@ -64,17 +83,21 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
     case 1: {
         auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
         auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-        if (lo.is_ok() && hi.is_ok()) {
-            sse.xmm[xmm_dst & 15].u64_[0] = lo.value();
-            sse.xmm[xmm_dst & 15].u64_[1] = hi.value();
+        if (!lo.is_ok() || !hi.is_ok()) {
+            raise_read_av(cpu, mem, addr_or_src, 16);
+            return;
         }
+        sse.xmm[xmm_dst & 15].u64_[0] = lo.value();
+        sse.xmm[xmm_dst & 15].u64_[1] = hi.value();
         return;
     }
     case 2: {
         auto v = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
-        if (v.is_ok()) {
-            sse.xmm[xmm_dst & 15].u64_[0] = v.value();
+        if (!v.is_ok()) {
+            raise_read_av(cpu, mem, addr_or_src, 8);
+            return;
         }
+        sse.xmm[xmm_dst & 15].u64_[0] = v.value();
         return;
     }
     case 3: {
@@ -89,7 +112,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
     }
     case 4: {
         auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
-        if (!lo.is_ok()) return;
+        if (!lo.is_ok()) {
+            raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 8);
+            return;
+        }
         u64 bits = lo.value();
         float v0, v1;
         u32 lo32 = static_cast<u32>(bits);
@@ -110,7 +136,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
     }
     case 6: {
         auto r = mem->read_u32(static_cast<GuestAddr>(addr_or_src));
-        if (!r.is_ok()) return;
+        if (!r.is_ok()) {
+            raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 4);
+            return;
+        }
         auto& dst = sse.xmm[xmm_dst & 15];
         dst.clear();
         dst.u32_[0] = r.value();
@@ -122,8 +151,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         return;
     }
     case 8: {
-        (void)mem->write_u32(static_cast<GuestAddr>(addr_or_src),
-                              sse.xmm[xmm_dst & 15].u32_[0]);
+        if (!mem->write_u32(static_cast<GuestAddr>(addr_or_src),
+                            sse.xmm[xmm_dst & 15].u32_[0]).is_ok()) {
+            raise_write_av(cpu, mem, addr_or_src, 4);
+        }
         return;
     }
     case 9: {
@@ -135,15 +166,20 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
     }
     case 10: {
         auto r = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
-        if (!r.is_ok()) return;
+        if (!r.is_ok()) {
+            raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 8);
+            return;
+        }
         auto& dst = sse.xmm[xmm_dst & 15];
         dst.clear();
         dst.u64_[0] = r.value();
         return;
     }
     case 11: {
-        (void)mem->write_u64(static_cast<GuestAddr>(addr_or_src),
-                              sse.xmm[xmm_dst & 15].u64_[0]);
+        if (!mem->write_u64(static_cast<GuestAddr>(addr_or_src),
+                            sse.xmm[xmm_dst & 15].u64_[0]).is_ok()) {
+            raise_write_av(cpu, mem, addr_or_src, 8);
+        }
         return;
     }
     case 12: {
@@ -164,10 +200,16 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         return;
     }
     case 15: {
-        auto& dst = sse.xmm[xmm_dst & 15];
+        // Into a temporary: a read that fails part-way must not leave DEST
+        // holding the bytes it did read.
+        XmmReg loaded{};
         auto r = mem->read_bytes(static_cast<GuestAddr>(addr_or_src),
-                                 reinterpret_cast<Byte*>(dst.u8_), 16);
-        if (!r.is_ok()) return;
+                                 reinterpret_cast<Byte*>(loaded.u8_), 16);
+        if (!r.is_ok()) {
+            raise_read_av(cpu, mem, addr_or_src, 16);
+            return;
+        }
+        sse.xmm[xmm_dst & 15] = loaded;
         return;
     }
     case 16: {
@@ -182,15 +224,8 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (!stored.is_ok()) {
             // A discarded failure here is silent data loss: the guest's store
             // executed, nothing landed, and the next read of that memory sees
-            // whatever was there before. Real hardware faults instead, so the
-            // guest never gets a half-written buffer it believes is complete.
-            static std::atomic<u32> reported{0};
-            if (reported.fetch_add(1, std::memory_order_relaxed) < 32) {
-                std::fprintf(stderr,
-                    "[jit-sse] 128-bit store DROPPED addr=0x%llx (write_bytes "
-                    "rejected) — guest sees a silent no-op\n",
-                    static_cast<unsigned long long>(addr_or_src));
-            }
+            // whatever was there before. Real hardware faults instead.
+            raise_write_av(cpu, mem, addr_or_src, 16);
         }
         return;
     }
@@ -204,7 +239,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
     }
     case 200: {
         auto r = mem->read_u32(static_cast<GuestAddr>(addr_or_src));
-        if (!r.is_ok()) return;
+        if (!r.is_ok()) {
+            raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 4);
+            return;
+        }
         auto& dst = sse.xmm[xmm_dst & 15];
         dst.clear();
         dst.u32_[0] = r.value();
@@ -227,7 +265,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             std::memcpy(&a, &dst.u64_[0], sizeof(f64));
             if (is_mem) {
                 auto r = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
-                if (!r.is_ok()) return;
+                if (!r.is_ok()) {
+                    raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 8);
+                    return;
+                }
                 u64 bits = r.value();
                 std::memcpy(&b, &bits, sizeof(f64));
             } else {
@@ -242,7 +283,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             std::memcpy(&a, &dst.u32_[0], sizeof(f32));
             if (is_mem) {
                 auto r = mem->read_u32(static_cast<GuestAddr>(addr_or_src));
-                if (!r.is_ok()) return;
+                if (!r.is_ok()) {
+                    raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 4);
+                    return;
+                }
                 u32 bits = r.value();
                 std::memcpy(&b, &bits, sizeof(f32));
             } else {
@@ -287,7 +331,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (is_mem) {
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         } else {
@@ -320,7 +367,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         u64 src;
         if (is_mem) {
             auto r = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
-            if (!r.is_ok()) return;
+            if (!r.is_ok()) {
+                raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 8);
+                return;
+            }
             src = r.value();
         } else {
             src = cpu->fpu.st[addr_or_src & 7].mantissa;
@@ -360,7 +410,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (is_mem) {
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         } else {
@@ -524,7 +577,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (is_mem) {
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         } else {
@@ -576,7 +632,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (is_mem) {
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         } else {
@@ -661,17 +720,26 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             auto a = static_cast<GuestAddr>(addr_or_src);
             if (wb == 8) {
                 auto r = mem->read_u64(a);
-                if (!r.is_ok()) return;
+                if (!r.is_ok()) {
+                    raise_read_av(cpu, mem, a, 8);
+                    return;
+                }
                 const u64 v = r.value();
                 std::memcpy(raw, &v, 8);
             } else if (wb == 4) {
                 auto r = mem->read_u32(a);
-                if (!r.is_ok()) return;
+                if (!r.is_ok()) {
+                    raise_read_av(cpu, mem, a, 4);
+                    return;
+                }
                 const u32 v = r.value();
                 std::memcpy(raw, &v, 4);
             } else {
                 auto r = mem->read_u16(a);
-                if (!r.is_ok()) return;
+                if (!r.is_ok()) {
+                    raise_read_av(cpu, mem, a, 2);
+                    return;
+                }
                 const u16 v = r.value();
                 std::memcpy(raw, &v, 2);
             }
@@ -744,12 +812,18 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             auto a = static_cast<GuestAddr>(addr_or_src);
             if (is_double) {
                 auto r = mem->read_u64(a);
-                if (!r.is_ok()) return;
+                if (!r.is_ok()) {
+                    raise_read_av(cpu, mem, a, 8);
+                    return;
+                }
                 const u64 v = r.value();
                 std::memcpy(&s1d, &v, 8);
             } else {
                 auto r = mem->read_u32(a);
-                if (!r.is_ok()) return;
+                if (!r.is_ok()) {
+                    raise_read_av(cpu, mem, a, 4);
+                    return;
+                }
                 const u32 v = r.value();
                 std::memcpy(&s1f, &v, 4);
             }
@@ -853,7 +927,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         u64 count;
         if (is_mem) {
             auto r = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
-            if (!r.is_ok()) return;
+            if (!r.is_ok()) {
+                raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 8);
+                return;
+            }
             count = r.value();
         } else {
             count = sse.xmm[addr_or_src & 15].u64_[0];
@@ -906,7 +983,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             imm = static_cast<u8>((xmm_dst >> 8) & 0xFF);
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value(); src.u64_[1] = hi.value();
         } else {
             dst_idx = xmm_dst & 15;
@@ -968,7 +1048,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (is_mem) {
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value(); src.u64_[1] = hi.value();
         } else {
             src = sse.xmm[addr_or_src & 15];
@@ -1028,7 +1111,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             u8 dst_idx = static_cast<u8>(xmm_dst & 0xFF) & 15;
             u8 sel = static_cast<u8>((xmm_dst >> 8) & 7);
             auto r = mem->read_u16(static_cast<GuestAddr>(addr_or_src));
-            if (!r.is_ok()) return;
+            if (!r.is_ok()) {
+                raise_read_av(cpu, mem, static_cast<GuestAddr>(addr_or_src), 2);
+                return;
+            }
             sse.xmm[dst_idx].u16_[sel] = static_cast<u16>(r.value());
             break;
         }
@@ -1060,7 +1146,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (is_mem) {
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         } else {
@@ -1117,7 +1206,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             xmm_dst &= 0xFF;
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         }
@@ -1148,7 +1240,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             dst_idx = static_cast<u8>(xmm_dst & 0xFF) & 15;
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         }
@@ -1195,7 +1290,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (is_mem) {
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         } else {
@@ -1241,7 +1339,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
         if (is_mem) {
             auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
             auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-            if (!lo.is_ok() || !hi.is_ok()) return;
+            if (!lo.is_ok() || !hi.is_ok()) {
+                raise_read_av(cpu, mem, addr_or_src, 16);
+                return;
+            }
             src.u64_[0] = lo.value();
             src.u64_[1] = hi.value();
         } else {
@@ -1321,7 +1422,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
                 dst_idx = static_cast<u8>(xmm_dst & 0xFF) & 15;
                 auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
                 auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-                if (!lo.is_ok() || !hi.is_ok()) return;
+                if (!lo.is_ok() || !hi.is_ok()) {
+                    raise_read_av(cpu, mem, addr_or_src, 16);
+                    return;
+                }
                 src.u64_[0] = lo.value();
                 src.u64_[1] = hi.value();
             } else {
@@ -1334,7 +1438,10 @@ extern "C" void jit_sse_op(CpuState* cpu, GuestMemory* mem,
             if (is_mem) {
                 auto lo = mem->read_u64(static_cast<GuestAddr>(addr_or_src));
                 auto hi = mem->read_u64(static_cast<GuestAddr>(addr_or_src + 8));
-                if (!lo.is_ok() || !hi.is_ok()) return;
+                if (!lo.is_ok() || !hi.is_ok()) {
+                    raise_read_av(cpu, mem, addr_or_src, 16);
+                    return;
+                }
                 src.u64_[0] = lo.value();
                 src.u64_[1] = hi.value();
             } else {

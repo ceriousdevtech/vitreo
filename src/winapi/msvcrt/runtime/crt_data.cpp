@@ -3,6 +3,8 @@
 
 #include "crt_data.hpp"
 #include "core/memory/guest_memory.hpp"
+#include "winapi/kernel32/locale/codepage_convert.hpp"
+#include "winapi/kernel32/locale/string_conv.hpp"
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -25,8 +27,48 @@ u16 CrtDataBlock::ctype_bits(u8 ch) noexcept {
     return 0;
 }
 
+u8 CrtDataBlock::mbctype_bits(u8 ch) noexcept {
+    u16 wide = 0;
+    const auto decoded = codepage::multi_byte_to_wide(
+        codepage::kCpAcp, 0, &ch, 1, &wide, 1);
+    if (!decoded.ok() || decoded.count != 1) return 0;
+    const u16 flags = codepage::ctype1_flags(wide);
+    constexpr u16 C1_UPPER = 0x0001;
+    constexpr u16 C1_LOWER = 0x0002;
+    if ((flags & C1_UPPER) != 0) return MB_SBUP;
+    if ((flags & C1_LOWER) != 0) return MB_SBLOW;
+    return 0;
+}
+
 bool CrtDataBlock::initialize(GuestMemory& memory, u64 base, std::string_view cmdline) {
-    auto result = memory.map_region(base, REGION_SIZE,
+    // The process environment owns the original Unicode command line. A/W
+    // CRT cells are separate writable variables; ACP conversion must not
+    // destroy characters that the wide form can represent.
+    const std::string_view original = cmdline.empty() ? "program.exe" : cmdline;
+    m_command_line = utf8_to_acp(original);
+    const auto wide = utf8_to_utf16(original);
+    m_wide_command_line.assign(wide.begin(), wide.end());
+    const usize cmd_len = m_command_line.size() + 1;
+    const usize wide_bytes = (wide.size() + 1) * sizeof(u16);
+
+    // Preserve the inline slots for ordinary command lines. Longer strings
+    // use appended process-lifetime backing instead of truncating at argv or
+    // the fixed wide-string slot. Neither string may overlap CRT variables.
+    usize extent = REGION_SIZE;
+    u64 narrow_offset = CMDLINE_STR_OFFSET;
+    if (cmd_len > ARGV_TABLE_OFFSET - CMDLINE_STR_OFFSET) {
+        narrow_offset = extent;
+        extent += cmd_len;
+    }
+    u64 wide_offset = WCMDLINE_STR_OFFSET;
+    if (wide_bytes > REGION_SIZE - WCMDLINE_STR_OFFSET) {
+        extent = (extent + sizeof(u16) - 1) & ~(sizeof(u16) - 1);
+        wide_offset = extent;
+        extent += wide_bytes;
+    }
+    const usize mapped_bytes =
+        (extent + GUEST_PAGE_SIZE - 1) & ~(GUEST_PAGE_SIZE - 1);
+    auto result = memory.map_region(base, mapped_bytes,
                                      MemoryProtection::ReadWrite);
     if (result.is_err()) {
         return false;
@@ -41,21 +83,17 @@ bool CrtDataBlock::initialize(GuestMemory& memory, u64 base, std::string_view cm
 
     // Initialize _acmdln — write command line string at CMDLINE_STR_OFFSET,
     // then store its guest address at ACMDLN_OFFSET.
-    const char default_cmdline[] = "program.exe";
-    const char* cmd_src = cmdline.empty() ? default_cmdline : cmdline.data();
-    m_command_line.assign(cmdline.empty() ? std::string_view(default_cmdline)
-                                          : cmdline);
-    usize cmd_len = cmdline.empty() ? sizeof(default_cmdline) : cmdline.size() + 1;
-    // Strings share the region below the argv pointer table.
-    constexpr usize max_string_bytes =
-        static_cast<usize>(ARGV_TABLE_OFFSET - CMDLINE_STR_OFFSET);
-    if (cmd_len > max_string_bytes) cmd_len = max_string_bytes;
+    const char* cmd_src = m_command_line.data();
     for (usize i = 0; i < cmd_len; ++i) {
-        (void)memory.write_u8(base + CMDLINE_STR_OFFSET + i,
+        (void)memory.write_u8(base + narrow_offset + i,
                               static_cast<u8>(i < cmd_len - 1 ? cmd_src[i] : '\0'));
     }
-    (void)memory.write_u32(base + ACMDLN_OFFSET,
-                           static_cast<u32>(base + CMDLINE_STR_OFFSET));
+    if (m_guest_64bit) {
+        (void)memory.write_u64(base + ACMDLN64_OFFSET, base + narrow_offset);
+    } else {
+        (void)memory.write_u32(base + ACMDLN_OFFSET,
+                              static_cast<u32>(base + narrow_offset));
+    }
 
     // Build __argv / __argc from the same command line. Tokenize a working
     // copy so _acmdln keeps the original unbroken string. Supports basic
@@ -111,7 +149,7 @@ bool CrtDataBlock::initialize(GuestMemory& memory, u64 base, std::string_view cm
     }
     if (arg_addrs.empty()) {
         // Fall back to pointing argv[0] at the _acmdln string.
-        arg_addrs.push_back(static_cast<u32>(base + CMDLINE_STR_OFFSET));
+        arg_addrs.push_back(static_cast<u32>(base + narrow_offset));
     }
 
     for (usize i = 0; i < arg_addrs.size(); ++i) {
@@ -174,23 +212,36 @@ bool CrtDataBlock::initialize(GuestMemory& memory, u64 base, std::string_view cm
     // Single-byte "C" locale.
     (void)memory.write_u32(base + MB_CUR_MAX_OFFSET, 1);
 
+    // _mbctype from the ANSI code page, and the "C" locale's VC6 globals.
+    (void)memory.write_u8(base + MBCTYPE_OFFSET, 0);
+    for (u32 ch = 0; ch < 256; ++ch) {
+        (void)memory.write_u8(base + MBCTYPE_OFFSET + 1 + ch,
+                              mbctype_bits(static_cast<u8>(ch)));
+    }
+    (void)memory.write_u32(base + LC_CODEPAGE_OFFSET, 0);
+    (void)memory.write_u32(base + LC_COLLATE_CP_OFFSET, 0);
+    for (u64 i = 0; i < LC_HANDLE_COUNT; ++i) {
+        (void)memory.write_u32(base + LC_HANDLE_OFFSET + i * 4, 0);
+    }
+    (void)memory.write_u32(base + SETLC_ACTIVE_OFFSET, 0);
+    (void)memory.write_u32(base + UNGUARDED_READLC_ACTIVE_OFFSET, 0);
+
     // _HUGE / HUGE_VAL — IEEE-754 positive infinity (MSVC exports the double).
     constexpr u64 huge_bits = 0x7FF0000000000000ull;
     (void)memory.write_u64(base + HUGE_OFFSET, huge_bits);
 
-    // _wcmdln — UTF-16LE copy of the same command line as _acmdln.
-    // ASCII code points are stored as zero-extended wchar_t (sufficient for the
-    // capsule paths Vitreo passes through at process start).
-    constexpr usize max_wchars =
-        static_cast<usize>((REGION_SIZE - WCMDLINE_STR_OFFSET) / 2) - 1;
-    const usize wlen = std::min(cmd_len > 0 ? cmd_len - 1 : 0, max_wchars);
-    for (usize i = 0; i < wlen; ++i) {
-        const u16 ch = static_cast<u8>(cmd_src[i]);
-        (void)memory.write_u16(base + WCMDLINE_STR_OFFSET + i * 2, ch);
+    // _wcmdln uses the original UTF-16, including surrogate pairs, rather
+    // than widening an already lossy narrow command line.
+    for (usize i = 0; i < wide.size(); ++i) {
+        (void)memory.write_u16(base + wide_offset + i * sizeof(u16), wide[i]);
     }
-    (void)memory.write_u16(base + WCMDLINE_STR_OFFSET + wlen * 2, 0);
-    (void)memory.write_u32(base + WCMDLN_OFFSET,
-                           static_cast<u32>(base + WCMDLINE_STR_OFFSET));
+    (void)memory.write_u16(base + wide_offset + wide.size() * sizeof(u16), 0);
+    if (m_guest_64bit) {
+        (void)memory.write_u64(base + WCMDLN_OFFSET, base + wide_offset);
+    } else {
+        (void)memory.write_u32(base + WCMDLN_OFFSET,
+                              static_cast<u32>(base + wide_offset));
+    }
     (void)memory.write_u16(base + EMPTY_WSTRING_OFFSET, 0);
 
     m_base = base;
@@ -240,6 +291,14 @@ u64 CrtDataBlock::resolve_data_import(std::string_view name) const {
     }
     if (name == "__mb_cur_max") {
         return mb_cur_max_addr();
+    }
+    if (name == "_mbctype") return mbctype_addr();
+    if (name == "__lc_codepage") return m_base + LC_CODEPAGE_OFFSET;
+    if (name == "__lc_collate_cp") return m_base + LC_COLLATE_CP_OFFSET;
+    if (name == "__lc_handle") return m_base + LC_HANDLE_OFFSET;
+    if (name == "__setlc_active") return m_base + SETLC_ACTIVE_OFFSET;
+    if (name == "__unguarded_readlc_active") {
+        return m_base + UNGUARDED_READLC_ACTIVE_OFFSET;
     }
     return 0;
 }

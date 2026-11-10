@@ -1,0 +1,6 @@
+query.ok=1 query.error=57005
+oversized.ok=1 capacity_unchanged=1 error=57005
+readonly_count.result=0 error=57005 unchanged=1
+readonly_query.result=4294967295 error=998
+bad_count.result=4294967295 error=998
+unaligned_list.ok=1 error=57005 capacity_unchanged=1

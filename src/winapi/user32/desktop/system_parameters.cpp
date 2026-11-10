@@ -30,6 +30,7 @@
 /// anti-aliasing (Vitreo's GDI has no ClearType), client-area animation is on.
 
 #include "winapi/user32/user32_ext.hpp"
+#include "winapi/user32/resources/resources.hpp"
 #include "winapi/user32/windows/nc_metrics.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
@@ -175,6 +176,28 @@ constexpr DwordSetting kDwordSettings[] = {
     {SPI_GETMOUSEWHEELROUTING, MOUSEWHEEL_ROUTING_MOUSE_POS},
 };
 
+/// SET actions that store one value their GET returns, as measured in an
+/// interactive session on Windows 11 (tests/oracle_data/spi_set_value_probe.*):
+/// the UI-effect BOOLs take the value in pvParam itself (any non-zero is TRUE,
+/// stored as 1) and fail with ERROR_INVALID_PARAMETER for a non-zero uiParam;
+/// SPI_SETMOUSETRAILS takes the trail count in uiParam (0 and 1 store 0).
+constexpr u32 SPI_SETMOUSETRAILS = 0x005D;
+constexpr u32 SPI_SETCURSORSHADOW = 0x101B;
+constexpr u32 SPI_SETMOUSESONAR = 0x101D;
+enum class SetKind : u8 { BoolInPvParam, CountInUiParam };
+struct SettableDword {
+    u32 get;
+    u32 set;
+    SetKind kind;
+};
+constexpr SettableDword kSettableDwords[] = {
+    {SPI_GETCURSORSHADOW, SPI_SETCURSORSHADOW, SetKind::BoolInPvParam},
+    {SPI_GETMOUSESONAR, SPI_SETMOUSESONAR, SetKind::BoolInPvParam},
+    {SPI_GETMOUSETRAILS, SPI_SETMOUSETRAILS, SetKind::CountInUiParam},
+};
+constexpr u32 SPIF_UPDATEINIFILE = 0x1;
+constexpr u32 SPIF_SENDCHANGE = 0x2;
+
 /// The accessibility structures: {GET, SET, size, measured default}.
 struct AccessibilityStruct {
     u32 get;
@@ -226,8 +249,7 @@ bool User32ExtManager::spi_call(Marshaler& m, bool wide, u32 dpi, bool for_dpi) 
     const u32 action = static_cast<u32>(m.arg(0));
     const u32 ui_param = static_cast<u32>(m.arg(1));
     const GuestAddr pv = m.arg_ptr(2);
-    (void)m.arg(3);  // fWinIni: nothing is persisted outside this process
-    (void)ui_param;
+    const u32 win_ini = static_cast<u32>(m.arg(3));
     const u32 metrics_dpi = dpi == 0 ? 96 : dpi;
 
     auto fail = [&](u32 error) {
@@ -251,6 +273,17 @@ bool User32ExtManager::spi_call(Marshaler& m, bool wide, u32 dpi, bool for_dpi) 
 
     bool valid = true;
     switch (action) {
+    case 0x0057: {  // SPI_SETCURSORS
+        // Learn: reloads the system cursors; every SetSystemCursor
+        // replacement reverts. Measured: TRUE with the last error set to 0
+        // (set_system_cursor_probe spi_setcursors).
+        (void)ui_param;
+        (void)win_ini;
+        if (m_resource_mgr != nullptr) m_resource_mgr->restore_system_cursors();
+        refresh_current_cursor();
+        set_last_error(0);
+        return true;
+    }
     case SPI_GETNONCLIENTMETRICS: {
         if (pv == 0) return fail(error_codes::ERROR_NOACCESS);
         const u32 lf = wide ? 92u : 60u;
@@ -356,6 +389,47 @@ bool User32ExtManager::spi_call(Marshaler& m, bool wide, u32 dpi, bool for_dpi) 
         }
     default:
         break;
+    }
+
+    for (const auto& s : kSettableDwords) {
+        if (action != s.get && action != s.set) continue;
+        std::lock_guard lock(m_spi_mutex);
+        if (action == s.set) {
+            u32 value = 0;
+            if (s.kind == SetKind::BoolInPvParam) {
+                if (ui_param != 0) return fail(error_codes::ERROR_INVALID_PARAMETER);
+                value = pv != 0 ? 1u : 0u;
+            } else {
+                value = ui_param <= 1 ? 0u : ui_param;
+            }
+            m_spi_values[s.get] = value;
+            // The profile and the WM_SETTINGCHANGE broadcast (its per-action
+            // lParam section name is unmeasured) are not modelled.
+            if ((win_ini & SPIF_UPDATEINIFILE) != 0) {
+                static std::once_flag once;
+                std::call_once(once, [] {
+                    std::fprintf(stderr, "[vitreo] UNIMPLEMENTED user32!SystemParametersInfo: "
+                                         "SPIF_UPDATEINIFILE (the setting is not written to the profile)\n");
+                });
+            }
+            if ((win_ini & SPIF_SENDCHANGE) != 0) {
+                static std::once_flag once;
+                std::call_once(once, [] {
+                    std::fprintf(stderr, "[vitreo] UNIMPLEMENTED user32!SystemParametersInfo: "
+                                         "SPIF_SENDCHANGE (no WM_SETTINGCHANGE broadcast)\n");
+                });
+            }
+            return true;
+        }
+        u32 value = 0;
+        if (auto it = m_spi_values.find(s.get); it != m_spi_values.end()) {
+            value = it->second;
+        } else {
+            for (const auto& d : kDwordSettings) if (d.action == s.get) value = d.value;
+        }
+        std::vector<u8> buf(4);
+        std::memcpy(buf.data(), &value, 4);
+        return write(buf);
     }
 
     for (const auto& a : kAccessibility) {

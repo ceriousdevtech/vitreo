@@ -105,11 +105,28 @@ struct HostMachine {
     HostChassis chassis = HostChassis::Unknown;
 };
 
+/// The physical disk holding the user's data volume: the whole-disk IOMedia
+/// under its APFS container (macOS), what Windows names \\.\PhysicalDrive0.
+enum class HostDiskBus : u8 { Unknown, Nvme, Sata, Usb, SecureDigital };
+
+struct HostDisk {
+    u64 size_bytes = 0;            ///< IOMedia "Size"; 0 = not found
+    u32 block_bytes = 0;           ///< IOMedia "Preferred Block Size"
+    /// The block storage device's "Device Characteristics", verbatim (empty
+    /// when the device publishes none).
+    std::string vendor;            ///< "Vendor Name"
+    std::string product;           ///< "Product Name", e.g. "APPLE SSD AP1024Z"
+    std::string revision;          ///< "Product Revision Level"
+    std::string serial;            ///< "Serial Number"
+    HostDiskBus bus = HostDiskBus::Unknown;
+};
+
 struct HostHardwareProfile {
     HostCpu cpu;
     HostMemory memory;
     HostGpu gpu;
     HostMachine machine;
+    HostDisk disk;
 };
 
 /// The host's profile, read on first use and immutable afterwards.

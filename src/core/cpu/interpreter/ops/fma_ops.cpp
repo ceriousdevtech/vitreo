@@ -25,7 +25,7 @@ Result<XmmReg, Error> read_xmm_or_m128(ExecContext& ctx, const Operand& op) noex
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<XmmReg, Error>::err(addr.error());
     XmmReg tmp{};
-    auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
+    auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
     if (!r) return Result<XmmReg, Error>::err(r.error());
     return Result<XmmReg, Error>::ok(tmp);
 }
@@ -36,7 +36,7 @@ Result<float, Error> read_f32_src(ExecContext& ctx, const Operand& op) noexcept 
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<float, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 4);
+    auto val = read_memory_av(ctx, addr.value(), 4);
     if (!val) return Result<float, Error>::err(val.error());
     float f;
     u32 u = static_cast<u32>(val.value());
@@ -51,7 +51,7 @@ Result<double, Error> read_f64_src(ExecContext& ctx, const Operand& op) noexcept
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<double, Error>::err(addr.error());
     XmmReg tmp{};
-    auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 8);
+    auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&tmp), 8);
     if (!r) return Result<double, Error>::err(r.error());
     return Result<double, Error>::ok(tmp.f64_[0]);
 }
@@ -140,7 +140,7 @@ ExecResult exec_fma_ps(ExecContext& ctx, const DecodedInstruction& instr,
         } else {
             auto addr = calc_effective_address(ctx, instr.operands[1].mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto r = ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&src3h), 16);
+            auto r = read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&src3h), 16);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
         }
         XmmReg& dsth = ctx.cpu.avx.ymm_high[di];
@@ -210,7 +210,7 @@ ExecResult exec_fma_pd(ExecContext& ctx, const DecodedInstruction& instr,
         } else {
             auto addr = calc_effective_address(ctx, instr.operands[1].mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto r = ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&src3h), 16);
+            auto r = read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&src3h), 16);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
         }
         XmmReg& dsth = ctx.cpu.avx.ymm_high[di];
@@ -318,10 +318,10 @@ ExecResult exec_fm_alternating(ExecContext& ctx, const DecodedInstruction& instr
     } else {
         auto addr = calc_effective_address(ctx, instr.operands[1].mem);
         if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-        auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&src3[0]), 16);
+        auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&src3[0]), 16);
         if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
         if (ymm) {
-            r = ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&src3[1]), 16);
+            r = read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&src3[1]), 16);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
         }
     }

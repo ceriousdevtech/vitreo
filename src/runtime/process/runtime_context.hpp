@@ -147,15 +147,18 @@
 #include "winapi/ui/imm32/imm32.hpp"
 #include "winapi/networking/iphlpapi/iphlpapi.hpp"
 #include "winapi/networking/dnsapi/dnsapi.hpp"
+#include "winapi/networking/wldap32/wldap32.hpp"
 #include "winapi/graphics/opengl32/opengl32.hpp"
 #include "winapi/graphics/glu32/glu32.hpp"
 #include "winapi/media/msvfw32/msvfw32.hpp"
+#include "winapi/media/avifil32/avifil32.hpp"
 #include "winapi/ui/oledlg/oledlg.hpp"
 
 // -- d3d9 --
 #include "winapi/graphics/ddraw/ddraw.hpp"
 #include "winapi/media/dinput/dinput.hpp"
 #include "winapi/media/dsound/dsound.hpp"
+#include "winapi/graphics/d3d8/d3d8.hpp"
 #include "winapi/graphics/d3d9/d3d9.hpp"
 #include "winapi/graphics/d3d11/d3d11.hpp"
 #include "winapi/graphics/d3d10/d3d10.hpp"
@@ -213,6 +216,10 @@ struct RuntimeContext {
     capsule::Vfs                  vfs;
     capsule::Registry             registry;
     winapi::ThunkRegistry         thunk_registry;
+
+    std::shared_ptr<std::atomic<bool>> gamepad_foreground=std::make_shared<std::atomic<bool>>(false);
+    std::shared_ptr<hardware::GamepadHost> gamepad_host;
+    std::shared_ptr<winapi::GamepadHidCatalog> gamepad_catalog;
 
     // ---- kernel32 managers ----
     winapi::ProcessManager        process_mgr;
@@ -346,9 +353,11 @@ struct RuntimeContext {
     winapi::Imm32Manager          imm32_mgr;
     winapi::IphlpapiManager       iphlpapi_mgr;
     winapi::DnsapiManager         dnsapi_mgr;
+    winapi::Wldap32Manager        wldap32_mgr;
     winapi::Opengl32Manager       opengl32_mgr;
     winapi::Glu32Manager          glu32_mgr;
     winapi::Msvfw32Manager        msvfw32_mgr;
+    winapi::Avifil32Manager       avifil32_mgr;
     winapi::OledlgManager         oledlg_mgr;
 
     // ---- DirectX graphics frontends ----
@@ -357,6 +366,7 @@ struct RuntimeContext {
     winapi::DirectDrawManager     ddraw_mgr;
     winapi::DirectInputManager    dinput_mgr;
     winapi::D3D9Manager           d3d9_mgr;
+    winapi::D3D8Manager           d3d8_mgr;
     winapi::DxgiManager           dxgi_mgr;
     winapi::D3D11Manager          d3d11_mgr;
     winapi::D3D12Manager          d3d12_mgr;

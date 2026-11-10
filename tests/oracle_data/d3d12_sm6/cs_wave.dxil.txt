@@ -1,0 +1,183 @@
+;
+; Note: shader requires additional functionality:
+;       Wave level operations
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: d0f98f12e4b45fa30a5cccdd397b2f47
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; src                               texture    byte         r/o      T0             t0     1
+; dst                                   UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%struct.ByteAddressBuffer = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+
+define void @cs_wave() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %4 = call i32 @dx.op.waveGetLaneCount(i32 112)  ; WaveGetLaneCount()
+  %5 = call i32 @dx.op.waveGetLaneIndex(i32 111)  ; WaveGetLaneIndex()
+  %6 = sub i32 %3, %5
+  %7 = shl i32 %3, 2
+  %8 = and i32 %7, 1020
+  %9 = call %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32 68, %dx.types.Handle %2, i32 %8, i32 undef)  ; BufferLoad(srv,index,wot)
+  %10 = extractvalue %dx.types.ResRet.i32 %9, 0
+  %11 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %5, i8 0, i8 1)  ; WaveActiveOp(value,op,sop)
+  %12 = add i32 %4, -1
+  %13 = mul i32 %12, %4
+  %14 = lshr i32 %13, 1
+  %15 = icmp eq i32 %11, %14
+  %16 = zext i1 %15 to i32
+  %17 = call i32 @dx.op.waveReadLaneFirst.i32(i32 118, i32 %3)  ; WaveReadLaneFirst(value)
+  %18 = icmp eq i32 %17, %6
+  %19 = zext i1 %18 to i32
+  %20 = call i32 @dx.op.wavePrefixOp.i32(i32 121, i32 1, i8 0, i8 1)  ; WavePrefixOp(value,op,sop)
+  %21 = icmp eq i32 %20, %5
+  %22 = zext i1 %21 to i32
+  %23 = call i1 @dx.op.waveIsFirstLane(i32 110)  ; WaveIsFirstLane()
+  %24 = icmp eq i32 %5, 0
+  %25 = xor i1 %24, %23
+  %26 = zext i1 %25 to i32
+  %27 = xor i32 %26, 1
+  %28 = icmp uge i32 %3, %6
+  %29 = call i1 @dx.op.waveAllTrue(i32 114, i1 %28)  ; WaveAllTrue(cond)
+  %30 = call i1 @dx.op.waveAnyTrue(i32 113, i1 %24)  ; WaveAnyTrue(cond)
+  %31 = and i1 %29, %30
+  %32 = zext i1 %31 to i32
+  %33 = call i32 @dx.op.waveAllOp(i32 135, i1 true)  ; WaveAllBitCount(value)
+  %34 = icmp eq i32 %33, %4
+  %35 = zext i1 %34 to i32
+  %36 = xor i32 %5, 1
+  %37 = call i32 @dx.op.waveReadLaneAt.i32(i32 117, i32 %10, i32 %36)  ; WaveReadLaneAt(value,lane)
+  %38 = add i32 %6, %36
+  %39 = shl i32 %38, 2
+  %40 = and i32 %39, 1020
+  %41 = call %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32 68, %dx.types.Handle %2, i32 %40, i32 undef)  ; BufferLoad(srv,index,wot)
+  %42 = extractvalue %dx.types.ResRet.i32 %41, 0
+  %43 = icmp eq i32 %37, %42
+  %44 = zext i1 %43 to i32
+  %45 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %5, i8 3, i8 1)  ; WaveActiveOp(value,op,sop)
+  %46 = icmp eq i32 %45, %12
+  %47 = call i32 @dx.op.waveActiveOp.i32(i32 119, i32 %3, i8 2, i8 1)  ; WaveActiveOp(value,op,sop)
+  %48 = icmp eq i32 %47, %6
+  %49 = and i1 %46, %48
+  %50 = and i32 %5, 31
+  %51 = shl i32 1, %50
+  %52 = call i32 @dx.op.waveActiveBit.i32(i32 120, i32 %51, i8 1)  ; WaveActiveBit(value,op)
+  %53 = icmp ne i32 %52, 0
+  %54 = and i1 %49, %53
+  %55 = zext i1 %54 to i32
+  %56 = shl i32 %3, 5
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %56, i32 undef, i32 %16, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %57 = or i32 %56, 4
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %57, i32 undef, i32 %19, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %58 = or i32 %56, 8
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %58, i32 undef, i32 %22, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %59 = or i32 %56, 12
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %59, i32 undef, i32 %27, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %60 = or i32 %56, 16
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %60, i32 undef, i32 %32, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %61 = or i32 %56, 20
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %61, i32 undef, i32 %35, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %62 = or i32 %56, 24
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %62, i32 undef, i32 %44, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %63 = or i32 %56, 28
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %63, i32 undef, i32 %55, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.waveGetLaneIndex(i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.waveGetLaneCount(i32) #0
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveActiveBit.i32(i32, i32, i8) #1
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveActiveOp.i32(i32, i32, i8, i8) #1
+
+; Function Attrs: nounwind
+declare i32 @dx.op.wavePrefixOp.i32(i32, i32, i8, i8) #1
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveReadLaneFirst.i32(i32, i32) #1
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveIsFirstLane(i32) #1
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveAnyTrue(i32, i1) #1
+
+; Function Attrs: nounwind
+declare i1 @dx.op.waveAllTrue(i32, i1) #1
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveAllOp(i32, i1) #1
+
+; Function Attrs: nounwind
+declare i32 @dx.op.waveReadLaneAt.i32(i32, i32, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32, %dx.types.Handle, i32, i32) #2
+
+; Function Attrs: nounwind
+declare void @dx.op.bufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8) #1
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind }
+attributes #2 = { nounwind readonly }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!9}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 0}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 0}
+!4 = !{!5, !7, null, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i32 0, null}
+!7 = !{!8}
+!8 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!9 = !{void ()* @cs_wave, !"cs_wave", null, !4, !10}
+!10 = !{i32 0, i64 524304, i32 4, !11}
+!11 = !{i32 64, i32 1, i32 1}

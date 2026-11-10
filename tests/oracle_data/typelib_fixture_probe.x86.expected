@@ -106,14 +106,14 @@ fixture=7-32 reader=32
 library syskind=1 version=7.11 locale=409 count=2
 type index=0 kind=3 flags=100 version=3.5 instance=4 funcs=1 vars=0 impl=0 vft=4
 func index=0 memid=123 kind=1 invoke=1 call=4 vft=0 params=2 optional=0 result=25
-param index=0 flags=1 type=29
+param index=0 flags=1 type=29 ref=0
 param index=1 flags=a type=26(3)
 type index=1 kind=0 flags=0 version=0.0 instance=4 funcs=0 vars=1 impl=0 vft=0
 fixture=7-64 reader=32
 library syskind=3 version=7.11 locale=409 count=2
 type index=0 kind=3 flags=100 version=3.5 instance=4 funcs=1 vars=0 impl=0 vft=4
 func index=0 memid=123 kind=1 invoke=1 call=4 vft=0 params=2 optional=0 result=25
-param index=0 flags=1 type=29
+param index=0 flags=1 type=29 ref=0
 param index=1 flags=a type=26(3)
 type index=1 kind=0 flags=0 version=0.0 instance=4 funcs=0 vars=1 impl=0 vft=0
 fixture=8-32 reader=32
@@ -142,3 +142,29 @@ type index=0 kind=3 flags=100 version=3.5 instance=4 funcs=1 vars=0 impl=0 vft=4
 func index=0 memid=123 kind=1 invoke=1 call=4 vft=0 params=2 optional=0 result=25
 param index=0 flags=1 type=8
 param index=1 flags=a type=26(3)
+fixture=10-32 reader=32
+library syskind=1 version=7.11 locale=409 count=5
+type index=0 kind=3 flags=100 version=3.5 instance=4 funcs=1 vars=0 impl=0 vft=4
+func index=0 memid=123 kind=1 invoke=1 call=4 vft=0 params=2 optional=0 result=25
+param index=0 flags=1 type=29 ref=6:6:0
+param index=1 flags=a type=26(29 ref=6=3)
+type index=1 kind=0 flags=0 version=0.0 instance=4 funcs=0 vars=1 impl=0 vft=0
+type index=2 kind=6 flags=0 version=0.0 instance=4 funcs=0 vars=0 impl=0 vft=0
+alias type=29 ref=0
+type index=3 kind=6 flags=0 version=0.0 instance=4 funcs=0 vars=0 impl=0 vft=0
+alias type=29 ref=6:0
+type index=4 kind=6 flags=0 version=0.0 instance=4 funcs=0 vars=0 impl=0 vft=0
+alias type=3
+fixture=10-64 reader=32
+library syskind=3 version=7.11 locale=409 count=5
+type index=0 kind=3 flags=100 version=3.5 instance=4 funcs=1 vars=0 impl=0 vft=4
+func index=0 memid=123 kind=1 invoke=1 call=4 vft=0 params=2 optional=0 result=25
+param index=0 flags=1 type=29 ref=6:6:0
+param index=1 flags=a type=26(29 ref=6=3)
+type index=1 kind=0 flags=0 version=0.0 instance=4 funcs=0 vars=1 impl=0 vft=0
+type index=2 kind=6 flags=0 version=0.0 instance=4 funcs=0 vars=0 impl=0 vft=0
+alias type=29 ref=0
+type index=3 kind=6 flags=0 version=0.0 instance=4 funcs=0 vars=0 impl=0 vft=0
+alias type=29 ref=6:0
+type index=4 kind=6 flags=0 version=0.0 instance=4 funcs=0 vars=0 impl=0 vft=0
+alias type=3

@@ -1,0 +1,72 @@
+fence CreateFence(SHARED, 7): 0x00000000 S_OK
+fence CreateSharedHandle: 0x00000000 S_OK handle=set info ok flags=0
+fence WaitForSingleObject(handle, 0): 0
+fence CreateSharedHandle(pHandle NULL): 0x80070057 E_INVALIDARG
+fence second CreateSharedHandle: 0x00000000 S_OK distinct=1
+fence WaitForSingleObject(handle of a fence at 0, 0): 0
+fence OpenSharedHandle(ID3D12Fence): 0x00000000 S_OK same-object=0
+fence opened GetCompletedValue / GetCreationFlags: 7 0x1
+fence second OpenSharedHandle: 0x00000000 S_OK same-as-first=0
+fence CPU signal original 9: opened: 9
+fence CPU signal opened 11: original: 11
+fence queue signal opened 20: original: 20
+fence CPU lower original to 3: opened: 3
+fence event on opened (5), original signals 5: 0x00000000 S_OK wait=0
+fence OpenSharedHandle(fence handle, ID3D12Heap): 0x80004002 E_NOINTERFACE out=NULL
+fence OpenSharedHandle(fence handle, ID3D12Resource): 0x80004002 E_NOINTERFACE out=NULL
+fence OpenSharedHandle(ID3D12Fence1): 0x00000000 S_OK out=obj
+fence OpenSharedHandle(IUnknown): 0x00000000 S_OK out=obj
+fence OpenSharedHandle(ppv NULL): 0x8000ffff E_UNEXPECTED
+fence DuplicateHandle: 1
+fence OpenSharedHandle(duplicate) after releasing every interface: 0x00000000 S_OK value=5
+fence OpenSharedHandle(closed handle): 0x80070006 E_HANDLE out=NULL
+fence OpenSharedHandle(event handle): 0x80070006 E_HANDLE out=NULL
+fence OpenSharedHandle(NULL handle): 0x80070006 E_HANDLE out=NULL
+fence CreateSharedHandle(non-shared fence): 0x80070057 E_INVALIDARG handle=NULL
+fence CreateSharedHandle(queue): 0x80070057 E_INVALIDARG handle=NULL
+fence end: GetDeviceRemovedReason 0x00000000 S_OK
+heap CreateHeap(SHARED|ALLOW_ONLY_BUFFERS): 0x00000000 S_OK
+heap CreateSharedHandle: 0x00000000 S_OK handle=set
+heap WaitForSingleObject(heap handle, 0): 4294967295
+heap OpenSharedHandle(ID3D12Heap): 0x00000000 S_OK same-object=0
+heap opened desc: size=65536 type=4 cpu=3 pool=1 flags=0xc1 align=65536
+heap OpenSharedHandle(heap handle, ID3D12Fence): 0x80004002 E_NOINTERFACE out=NULL
+heap OpenSharedHandle(ID3D12Heap1): 0x00000000 S_OK out=obj
+heap written through original heap, read through opened: 1 1 c0de0000 c0de0001 c0de0002 c0de0003
+heap OpenSharedHandle after releasing both heaps: 0x00000000 S_OK out=obj
+heap end: GetDeviceRemovedReason 0x00000000 S_OK
+resource CreateCommittedResource(buffer, heap SHARED): 0x00000000 S_OK
+resource original GetHeapProperties: 0x00000000 S_OK type=1 flags=0xc1
+resource CreateSharedHandle(buffer): 0x00000000 S_OK handle=set
+resource OpenSharedHandle(ID3D12Resource): 0x00000000 S_OK same-object=0
+resource opened desc: dim=1 width=256 flags=0x0 align=65536
+resource opened GetHeapProperties: 0x00000000 S_OK type=4 flags=0xc1
+resource GPU VA equal: 0
+resource written through original, read through opened: 1 1 beef0000 beef0001 beef0002 beef0003
+resource OpenSharedHandle(ID3D12Resource1): 0x00000000 S_OK out=obj
+resource OpenSharedHandle(resource handle, ID3D12Heap): 0x80004002 E_NOINTERFACE out=NULL
+resource CreateCommittedResource(RT texture, heap SHARED): 0x00000000 S_OK
+resource CreateSharedHandle(texture): 0x00000000 S_OK handle=set
+resource OpenSharedHandle(texture): 0x00000000 S_OK
+resource opened texture desc: dim=3 8x8 fmt=28 mips=1 flags=0x1 layout=0
+resource texture written through original, read through opened: 1 1 ff00ff00 ff00ff01 ff00ff02 ff00ff03
+resource CreateSharedHandle(non-shared committed buffer): 0x80070057 E_INVALIDARG handle=NULL
+resource CreateSharedHandle(placed buffer in a shared heap): 0x80070057 E_INVALIDARG handle=NULL
+resource CreateCommittedResource(UPLOAD buffer, heap SHARED): 0x80070057 E_INVALIDARG
+resource CreateCommittedResource(READBACK buffer, heap SHARED): 0x80070057 E_INVALIDARG
+resource CreateHeap(UPLOAD, SHARED): 0x80070057 E_INVALIDARG
+resource CreateHeap(READBACK, SHARED): 0x80070057 E_INVALIDARG
+resource CreateCommittedResource(CUSTOM WRITE_BACK L0 buffer, heap SHARED): 0x80070057 E_INVALIDARG
+resource end: GetDeviceRemovedReason 0x00000000 S_OK
+names CreateSharedHandle(named): 0x00000000 S_OK handle=set
+names CreateSharedHandle(same name again): 0x887a002c DXGI_ERROR_NAME_ALREADY_EXISTS handle=NULL
+names OpenSharedHandleByName: 0x00000000 S_OK handle=set distinct=1
+names OpenSharedHandle(by-name handle): 0x00000000 S_OK value=42
+names OpenSharedHandleByName(other case): 0x00000000 S_OK handle=set
+names OpenSharedHandleByName(Local\ prefix): 0x00000000 S_OK handle=set
+names OpenSharedHandleByName(unknown): 0x80070006 E_HANDLE handle=NULL
+names CreateEvent on the fence's name: NULL err=6
+names CreateSharedHandle(name an event holds): 0x887a002c DXGI_ERROR_NAME_ALREADY_EXISTS handle=NULL
+names OpenSharedHandleByName(an event's name): 0x80070006 E_HANDLE handle=NULL
+names OpenSharedHandleByName after closing the handle: 0x80070006 E_HANDLE handle=NULL
+names end: GetDeviceRemovedReason 0x00000000 S_OK

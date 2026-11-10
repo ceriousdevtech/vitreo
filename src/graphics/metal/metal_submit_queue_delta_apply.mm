@@ -40,6 +40,8 @@ void reset_draw(CsDraw& draw) {
     draw.viewports.clear();
     draw.scissors.clear();
     draw.resident.clear();
+    draw.resident_read_count = 0;
+    draw.resident_logs.clear();
 }
 
 /// Apply one DeltaDraw at @p record to @p state. False when it is not a
@@ -84,14 +86,21 @@ bool apply_delta(const u8* record, CsDraw& state, bool& valid) {
             return v;
         };
         const u16 f = e.field;
-        if (f == kFPipeline) {
+        if (f == kFIndirectReadOnly) {
+            state.indirect_resources_read_only = e.a != 0;
+        } else if (f == kFResidentReadCount) {
+            state.resident_read_count = e.a;
+        } else if (f == kFPipeline) {
             state.pipeline = h();
         } else if (f == kFDepth) {
             struct { void* h; u32 ref; u32 writes; } v{};
             std::memcpy(&v, payload, sizeof(v));
             state.depth_stencil = v.h;
             state.stencil_reference = v.ref;
-            state.writes_depth_stencil = v.writes != 0;
+            state.writes_depth_stencil = (v.writes & 1u) != 0;
+            state.writes_color = (v.writes & 2u) != 0;
+            state.writes_depth = (v.writes & 4u) != 0;
+            state.writes_stencil = (v.writes & 8u) != 0;
         } else if (f == kFStreamCount) {
             state.vertex_stream_count = e.a;
         } else if (f >= kFStream && f < kFStream + 16) {
@@ -160,9 +169,9 @@ bool apply_delta(const u8* record, CsDraw& state, bool& valid) {
             const HandleOffset v = ho();
             state.ps_statistics = v.h;
             state.ps_statistics_off = static_cast<usize>(v.off);
-        } else if (f >= kFVsTable && f < kFVsTable + 4) {
+        } else if (f >= kFVsTable && f < kFPsTable) {
             state.vs_descriptor_tables[f - kFVsTable] = h();
-        } else if (f >= kFPsTable && f < kFPsTable + 4) {
+        } else if (f >= kFPsTable && f < kFResident) {
             state.ps_descriptor_tables[f - kFPsTable] = h();
         } else if (f == kFResident) {
             state.resident.resize(e.a);
@@ -210,6 +219,10 @@ u64 cs_draw_state_hash(const CsDraw& d) {
     v(d.depth_stencil);
     v(d.stencil_reference);
     flag(d.writes_depth_stencil);
+    flag(d.writes_depth);
+    flag(d.writes_stencil);
+    flag(d.writes_color);
+    flag(d.indirect_resources_read_only);
     v(d.vertex_buffers);
     v(d.vertex_offsets);
     v(d.vertex_slots);
@@ -279,6 +292,7 @@ u64 cs_draw_state_hash(const CsDraw& d) {
     v(d.ps_statistics_off);
     v(d.vs_descriptor_tables);
     v(d.ps_descriptor_tables);
+    v(d.resident_read_count);
     v(d.resident.size());
     if (!d.resident.empty()) {
         mix(d.resident.data(), d.resident.size() * sizeof(void*));

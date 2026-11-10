@@ -63,7 +63,7 @@ u64 MetalSubmitQueue::record_begin_pass(CsBeginPass pass) {
         // dropped; this pass's attachments are that pass's, which its own
         // BeginPass holds.
         const CsBeginPass* const open = m_fold.begin;
-        if (m_fold.pass_id != 0 && m_fold.ended && !m_fold.wrote &&
+        if (m_fold.pass_id != 0 && m_fold.ended &&
             open != nullptr && pass.visibility_buffer == nullptr &&
             open->visibility_buffer == nullptr && pass_merge_enabled() &&
             !gpu_watch_split() && descriptors_continue(*open, pass) &&
@@ -136,6 +136,8 @@ u64 MetalSubmitQueue::record_begin_pass(CsBeginPass pass) {
         fold_reset_locked();
         m_fold.pass_id = m_record_pass_id;
         m_fold.begin = &*op.begin;
+        m_fold.color_dirty = !pass.preserve || pass.clear_color ||
+                             pass.color_clear_mask != 0;
         return m_record_pass_id;
     }
     retain_begin_attachments(pass);
@@ -214,7 +216,7 @@ bool MetalSubmitQueue::appends_in_place() const noexcept {
     // What append() would do for these kinds, minus the stack Op: no capture
     // to divert to, and no shared resource for note_shared_access to note
     // (it returns at once when the registry is empty).
-    return t_capture == nullptr && MetalSharedRegistry::instance().empty();
+    return !immediate_on_this_thread() && t_capture == nullptr && MetalSharedRegistry::instance().empty();
 }
 
 void MetalSubmitQueue::materialize_end_locked() {
@@ -236,6 +238,7 @@ void MetalSubmitQueue::fold_reset_locked() noexcept {
     m_fold.wrote = false;
     m_fold.reopened = false;
     m_fold.root_count = 0;
+    m_fold.color_dirty = false;
 }
 
 void MetalSubmitQueue::fold_split_locked(bool end_first) {
@@ -256,6 +259,9 @@ void MetalSubmitQueue::fold_split_locked(bool end_first) {
     m_fold.ended = false;
     m_fold.wrote = false;
     m_fold.reopened = false;
+    // The new encoder loads what the previous one stored, so colour memory
+    // matches the attachment again until a later draw writes it.
+    m_fold.color_dirty = false;
     ++m_folds_split;
 }
 
@@ -305,12 +311,14 @@ void MetalSubmitQueue::record_draw(CsDraw&& draw, u64 pass_id) {
                 // Still the candidate: BeginPass, a draw, EndPass.
                 m_fold.ended = true;
                 m_fold.wrote = writes;
+                if (draw.writes_color) m_fold.color_dirty = true;
                 return;
             } else {
                 if (m_fold.reopened && fold_draw_needs_split_locked(draw)) {
                     fold_split_locked(/*end_first=*/true);
                 }
                 if (draw_writes(draw)) m_fold.wrote = true;
+                if (draw.writes_color) m_fold.color_dirty = true;
             }
         } else {
             fold_settle_locked();
@@ -323,7 +331,7 @@ void MetalSubmitQueue::record_draw(CsDraw&& draw, u64 pass_id) {
     }
     // A captured list is replayed after this recording's arena is gone, and
     // the shared-resource path appends without it: the draw owns its bytes.
-    settle_push_into_vectors(draw);
+    if (!immediate_on_this_thread()) settle_push_into_vectors(draw);
     Op op{};
     op.kind = OpKind::Draw;
     op.draw = std::move(draw);

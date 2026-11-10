@@ -30,6 +30,12 @@ struct BackendSwapChainDesc {
     /// Back-buffer raster sample count. `1` is no MSAA. Present resolves
     /// into the single-sample drawable.
     unsigned sample_count{1};
+    /// This swapchain is one composition layer on a shared host view.
+    /// Create adds its layer and does not remove sibling CAMetalLayers
+    /// that other swapchains own. False is a window flip-model swapchain:
+    /// create still removes leftover CAMetalLayers so a reset does not
+    /// leave a stale black plate.
+    bool preserve_sibling_metal_layers{false};
 };
 
 /// How a presented image's values are to be interpreted (DXGI colour
@@ -170,6 +176,23 @@ public:
                       const std::array<BackendTexture2D*,
                                        BACKEND_MAX_RENDER_TARGETS>&
                           color_targets = {}) = 0;
+
+    /// begin_render_pass whose draws also add the samples that pass the
+    /// depth and stencil tests to @p occlusion_counter (from
+    /// GraphicsBackendDevice::create_occlusion_counter), exactly as
+    /// BackendRenderPassDesc::occlusion_counter does for a standalone pass.
+    /// A backend that cannot count refuses (null) instead of drawing
+    /// uncounted; a null counter is plain begin_render_pass.
+    [[nodiscard]] virtual std::unique_ptr<BackendRenderPass>
+    begin_render_pass_counted(
+        bool preserve_contents, bool clear_depth, float depth_clear_value,
+        const std::array<BackendTexture2D*, BACKEND_MAX_RENDER_TARGETS>&
+            color_targets,
+        GpuOcclusionCounter* occlusion_counter) {
+        if (occlusion_counter != nullptr) return nullptr;
+        return begin_render_pass(preserve_contents, clear_depth,
+                                 depth_clear_value, color_targets);
+    }
 
     /// Colour attachment draws / StretchRect should target. For an MSAA
     /// swap chain this is the multisample texture, not the 1x resolve.

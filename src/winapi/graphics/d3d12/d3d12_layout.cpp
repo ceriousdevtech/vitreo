@@ -355,7 +355,13 @@ const char* texture_violation(const ResourceDesc& desc, const LayoutCaps& caps) 
     if (ds && (family & FORMAT_SUPPORT1_DEPTH_STENCIL) == 0) return "format family has no depth";
     // A sampler feedback map is written through its own UAV kind, not a
     // typed one (measured: feedback formats take ALLOW_UNORDERED_ACCESS).
+    // B8G8R8X8_TYPELESS (92) is the exception: measured on WARP and the RTX
+    // 4080 (d3d12_a41_format_sweep [create]), it takes ALLOW_UNORDERED_ACCESS
+    // although no member of its family (88, 93) has a typed UAV, which both
+    // refuse with E_INVALIDARG.
+    constexpr u32 kB8G8R8X8Typeless = 92u;
     if (uav && !is_sampler_feedback(desc.format) &&
+        desc.format != kB8G8R8X8Typeless &&
         (family & FORMAT_SUPPORT1_TYPED_UNORDERED_ACCESS_VIEW) == 0) {
         return "format family has no typed UAV";
     }
@@ -369,6 +375,18 @@ const char* texture_violation(const ResourceDesc& desc, const LayoutCaps& caps) 
         if (!pow2_at_least_4(desc.mip_region_width) || !pow2_at_least_4(desc.mip_region_height) ||
             desc.mip_region_depth > 1) {
             return "sampler feedback format without a valid SamplerFeedbackMipRegion";
+        }
+        // DirectX-Specs "Sampler Feedback": each region dimension is at most
+        // half the paired texture's most detailed mip (measured: 32x32 of a
+        // 64x64 map is accepted, 64x64 is not); a map is a single-sample
+        // Texture2D (array) written through a UAV (measured: no
+        // ALLOW_UNORDERED_ACCESS, 4 samples and Texture3D are E_INVALIDARG,
+        // d3d12_a41_feedback_probe create).
+        if (desc.mip_region_width > desc.width / 2 || desc.mip_region_height > desc.height / 2) {
+            return "SamplerFeedbackMipRegion larger than half the texture";
+        }
+        if (dim != RESOURCE_DIMENSION_TEXTURE2D || msaa || !uav) {
+            return "sampler feedback map that is not a single-sample UAV Texture2D";
         }
     } else if (region) {
         return "SamplerFeedbackMipRegion on a non-feedback format";
@@ -655,6 +673,18 @@ void guest_get_copyable_footprints(GuestMemory& memory, const LayoutCaps& caps, 
 
 // ---- GetResourceAllocationInfo ----------------------------------------------
 
+u64 texture_placement_size(u64 backend_size, u64 backend_alignment, u64 alignment) noexcept {
+    if (alignment == 0) return 0;
+    const u64 slack = backend_alignment > alignment ? backend_alignment - alignment : 0;
+    if (backend_size > ~u64{0} - slack - alignment) return 0;
+    return align_up(backend_size + slack, alignment);
+}
+
+u64 placed_backend_offset(u64 heap_offset, u64 backend_alignment) noexcept {
+    if (backend_alignment <= 1) return heap_offset;
+    return (heap_offset + backend_alignment - 1) / backend_alignment * backend_alignment;
+}
+
 namespace {
 
 bool castable_ok(const ResourceDesc& desc, const CastableFormats& castable, const LayoutCaps& caps) {
@@ -674,6 +704,15 @@ bool castable_ok(const ResourceDesc& desc, const CastableFormats& castable, cons
     return true;
 }
 
+} // namespace
+
+bool castable_formats_ok(const ResourceDesc& desc, const CastableFormats& castable,
+                         const LayoutCaps& caps) {
+    return castable_ok(desc, castable, caps);
+}
+
+namespace {
+
 bool texture_allocation(const ResourceDesc& desc, const LayoutCaps& caps, u64& size,
                         u64& alignment) {
     const bool msaa = desc.sample_count > 1;
@@ -684,22 +723,17 @@ bool texture_allocation(const ResourceDesc& desc, const LayoutCaps& caps, u64& s
     if (caps.texture_heap_requirement) {
         const TextureHeapRequirement req = caps.texture_heap_requirement(desc, mips);
         if (!req.supported) return false;
-        if (req.alignment > alignment) {
-            // The backend cannot place the texture at the alignment the
-            // description asks for. For the 4 KiB small alignment that is
-            // the "not small" answer apps expect and retry from (Learn,
-            // Small resources sample); nothing above 64 KiB is expected of a
-            // Metal texture, so report that case.
-            if (alignment > SMALL_RESOURCE_PLACEMENT_ALIGNMENT) {
-                std::fprintf(stderr,
-                             "[vitreo] UNIMPLEMENTED d3d12!GetResourceAllocationInfo: texture "
-                             "needs %llu-byte placement alignment\n",
-                             static_cast<unsigned long long>(req.alignment));
-            }
+        if (req.alignment > alignment && alignment <= SMALL_RESOURCE_PLACEMENT_ALIGNMENT) {
+            // The backend cannot place the texture at the 4 KiB small
+            // alignment the description asks for: the "not small" answer
+            // apps expect and retry from (Learn, Small resources sample).
             return false;
         }
-        size = align_up(std::max<u64>(req.size, 1), alignment);
-        return true;
+        // 64 KiB / 4 MiB: a Metal alignment above D3D12's is met inside a
+        // range with slack (texture_placement_size), so the reported
+        // alignment stays one D3D12 defines.
+        size = texture_placement_size(std::max<u64>(req.size, 1), req.alignment, alignment);
+        return size != 0;
     }
     // No backend: the tight data size, every subresource once per sample.
     u64 total = 0;

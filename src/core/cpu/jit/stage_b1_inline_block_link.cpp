@@ -287,6 +287,7 @@ bool JitCompiler::emit_linked_tail_continue(u64 target, NzcvState carry,
     if (m_stack_entry_load_proof) {
         return false;
     }
+    if (m_span_stack_proof) emit_span_proof_lease(false);
     if (!s_jit_link_enabled.load(std::memory_order_acquire)) {
         return false;
     }
@@ -347,6 +348,9 @@ bool JitCompiler::emit_linked_tail_continue(u64 target, NzcvState carry,
         emit(str_w_uoff(REG_LOOP_CTR, REG_CPU_STATE,
                         jit_iters_offset() >> 2));
         emit(publish_rip);
+        // After RIP is stored: the flag store may clobber X0. Unarmed,
+        // this emits nothing and the tail stays byte-identical.
+        emit_link_miss_flags();
         emit_exit_reason(JitExitReason::ConstTailThunkTarget);  // DIAGNOSTIC
         // L3: offered to the in-chain exit, whose slot-map test decides
         // whether this thunk is an in-chain export.
@@ -441,6 +445,12 @@ bool JitCompiler::emit_linked_tail_continue(u64 target, NzcvState carry,
         }
         emit_direct_link_slot(target, edge);
     }
+    // The slot's patched branch jumps over this store into the successor.
+    // Every other path (unpatched slot, no slot, hop-budget bailout) falls
+    // through and publishes before the dispatcher can observe the flags.
+    // A block that did not prove the successor kills the record leaves
+    // this as a no-op, so its tail stays byte-identical.
+    emit_link_miss_flags();
 
     // The whole tail is out of line in a per-block stub keyed by
     // (carry, backward_edge). The stub reads the target out of REG_SCRATCH0,
@@ -490,6 +500,7 @@ bool JitCompiler::emit_linked_call_continue(u64 target, u64 next_rip) {
         !link_edge_enabled(LinkEdge::CallRel)) {
         return false;
     }
+    if (m_span_stack_proof) emit_span_proof_lease(false);
     const u64 thunk_lo = m_jit_ctx.thunk_region_lo;
     const u64 thunk_hi = m_jit_ctx.thunk_region_hi;
     if (thunk_hi > thunk_lo && target >= thunk_lo && target < thunk_hi) {
@@ -954,6 +965,8 @@ bool JitCompiler::emit_linked_tail_reg(u8 target_reg, NzcvState carry,
         || target_reg == 4 || target_reg == 5) {
         return false;
     }
+    // Inline lease: X16/X17 only. target_reg (including X0/X1) stays live.
+    if (m_span_stack_proof) emit_span_proof_lease(false);
     constexpr u32 cc_off =
         static_cast<u32>(offsetof(BasicBlock, compiled_link_code));
     static_assert((cc_off & 7) == 0,
@@ -1324,6 +1337,7 @@ bool JitCompiler::emit_linked_tail_reg(u8 target_reg, NzcvState carry,
 // callee-saved across the call; X29 is saved by the trampoline.
 // ---------------------------------------------------------------------------
 void JitCompiler::emit_shared_api_call_exit() {
+    if (m_span_stack_proof) emit_span_proof_lease(false);
     // An entry-authorized load block holds a GuestMemory protection lease
     // for this native entry only (execute() takes and drops it): a host
     // call made under it could wait on a writer that waits on the lease.
@@ -1432,6 +1446,19 @@ void JitCompiler::emit_api_test_inline(usize& to_cold, usize& plain) {
 }
 
 void JitCompiler::emit_api_call_exit_cold(usize plain) {
+    emit_persist_live_nzcv();
+    const u8 kind = m_cfg.linear64_jit_view
+        ? kApiCrossingJitView : kApiCrossingCheckMap;
+    if (m_linear_base_pinned && emit_dispatch_tail(kind)) {
+        m_vregs_clobbered = true;
+        return;
+    }
+    emit_api_crossing_body(plain, false, m_cfg.linear64_jit_view);
+    m_vregs_clobbered = true;
+}
+
+void JitCompiler::emit_api_crossing_body(usize plain, bool shared,
+                                         bool jit_view) {
     using namespace arm64;
     constexpr u32 tramp_off =
         static_cast<u32>(offsetof(JitContext, inchain_trampoline));
@@ -1443,17 +1470,33 @@ void JitCompiler::emit_api_call_exit_cold(usize plain) {
     static_assert(bits_off % 4 == 0 && bits_off / 4 < 4096);
     static_assert(kMaxLinkedHops == (1u << 12),
                   "hop-cap UBFX #12 must match the limit");
-    // .call: the export is in-chain; hand the crossing to the runtime.
-    emit_persist_live_nzcv();
-    emit_store_pins();
+    // Shared emission must also work during store adoption, before a block
+    // has established any compiler-local pin or memory configuration.
+    if (shared) {
+        for (u8 i = 0; i < 8; i += 2) {
+            emit(stp_x_off(kStdPins64[i], kStdPins64[i + 1], REG_CPU_STATE, i));
+        }
+    } else {
+        emit_store_pins();
+    }
     emit(ldr_x_uoff(16, REG_JIT_CTX, tramp_off >> 3));
     emit(0xD63F0200u);  // BLR X16
     emit(mov_x(16, 0));
-    m_vregs_clobbered = true;
-    emit_load_pins();
-    if (m_linear_base_pinned) emit_load_linear_base();
-    if (m_block_is_64bit && m_cfg.linear64 && m_linear_base_pinned) {
-        emit_load_linear64_check_map();
+    if (shared) {
+        for (u8 i = 0; i < 8; i += 2) {
+            emit(ldp_x_off(kStdPins64[i], kStdPins64[i + 1], REG_CPU_STATE, i));
+        }
+        emit(ldr_x_uoff(REG_LINEAR_BASE, REG_JIT_CTX,
+                        JIT_CTX_OFF_LINEAR_BASE >> 3));
+        emit(ldr_x_uoff(REG_LINEAR64_CHECK_MAP, REG_JIT_CTX,
+                        (jit_view ? JIT_CTX_OFF_JIT_VIEW_BASE
+                                  : JIT_CTX_OFF_LINEAR_CHECK_MAP) >> 3));
+    } else {
+        emit_load_pins();
+        if (m_linear_base_pinned) emit_load_linear_base();
+        if (m_block_is_64bit && m_cfg.linear64 && m_linear_base_pinned) {
+            emit_load_linear64_check_map();
+        }
     }
     // NZCV, exactly as execute() restores it before entering a block: a
     // constant thunk tail can hand over a live kind (a Tier-0 fused Jcc leg,
@@ -1476,6 +1519,12 @@ void JitCompiler::emit_api_call_exit_cold(usize plain) {
     m_code_buf[hop_cap] =
         cbnz_w(4, static_cast<i32>(m_code_buf.size() - hop_cap) * 4);
     emit(str_w_uoff(REG_LOOP_CTR, REG_CPU_STATE, jit_iters_offset() >> 2));
+    if (shared) {
+        emit(ldr_x_uoff(16, REG_JIT_CTX,
+                        (JIT_CTX_OFF_DISPATCH_TAIL >> 3) + kTailContinueLive));
+        emit(br(16));
+        return;
+    }
     const usize back = m_code_buf.size();
     emit(0);  // B .plain (hot part)
     patch_api_call_b(back, plain);

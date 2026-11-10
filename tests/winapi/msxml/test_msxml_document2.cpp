@@ -23,6 +23,10 @@
 using namespace vitreo;
 using namespace vitreo::winapi;
 
+namespace vitreo::winapi {
+#include "winapi/com/ole32/com_factory_contract.inc"
+}
+
 namespace {
 
 constexpr GuestAddr kStack    = 0x30000000;
@@ -828,4 +832,182 @@ TEST(MsxmlDocument2Slots, VtableCarriesDocument3LayoutAndStdcallBytes) {
     for (u32 i = 0; i < 7; ++i) {
         EXPECT_EQ(MsxmlManager::slot_stdcall_bytes(MsxmlIface::SchemaCollection, 7 + i), sc[i]) << 7 + i;
     }
+}
+
+
+// Values measured by the independent Windows SDK probe
+// tools/oracle_probe/msxml_factory_probe{32,64}.expected.
+TEST_P(MsxmlDocument2Test, RealClassFactoriesCreateIndependentParsingDocuments) {
+    const Guid factory_iid = com_factory_contract::iid_class_factory;
+    const Guid unknown_iid = com_factory_contract::iid_unknown;
+    const Guid bad_iid{};
+    const GuestAddr iid_at = kOut + 0x100;
+    Marshaler m(memory_); m.attach_cpu(cpu_);
+    for (const auto& clsid : {kClsid30, kClsid60}) {
+        write_ptr(kOut, 0xBAD);
+        EXPECT_EQ(mgr_.get_class_object(m, clsid, bad_iid, kOut), E_NOINTERFACE_);
+        EXPECT_EQ(read_ptr(kOut), 0u);
+        ASSERT_EQ(mgr_.get_class_object(m, clsid, factory_iid, kOut), S_OK_);
+        const GuestAddr factory = read_ptr(kOut);
+        ASSERT_NE(factory, 0u);
+        EXPECT_EQ(mgr_.can_unload_now(), S_FALSE_);
+        (void)m.write_struct<Guid>(iid_at, bad_iid);
+        EXPECT_EQ(call(MsxmlIface::ClassFactory, 0, factory, {u64{iid_at},u64{kOut}}), E_NOINTERFACE_);
+        EXPECT_EQ(read_ptr(kOut), 0u);
+        (void)m.write_struct<Guid>(iid_at, unknown_iid);
+        EXPECT_EQ(call(MsxmlIface::ClassFactory, 0, factory, {u64{iid_at},u64{kOut}}), S_OK_);
+        EXPECT_EQ(read_ptr(kOut), factory);
+        (void)call(MsxmlIface::ClassFactory, 2, factory);
+        EXPECT_EQ(call(MsxmlIface::ClassFactory, 4, factory, {u64{1}}), S_OK_);
+        (void)m.write_struct<Guid>(iid_at, kIidDoc2);
+        EXPECT_EQ(call(MsxmlIface::ClassFactory, 3, factory, {u64{1},u64{iid_at},u64{kOut}}), 0x80040110u);
+        EXPECT_EQ(read_ptr(kOut), 0u);
+        ASSERT_EQ(call(MsxmlIface::ClassFactory, 3, factory, {u64{0},u64{iid_at},u64{kOut}}), S_OK_);
+        const GuestAddr doc = read_ptr(kOut);
+        // Lock keeps the class object alive independently of interface refs.
+        EXPECT_EQ(call(MsxmlIface::ClassFactory, 2, factory), 1u);
+        const auto server = MsxmlManager::dom_document_version(clsid).value();
+        const auto other = server == msxml::MsxmlVersion::V3 ? msxml::MsxmlVersion::V6 : msxml::MsxmlVersion::V3;
+        EXPECT_EQ(mgr_.can_unload_now(server),S_FALSE_);
+        EXPECT_EQ(mgr_.can_unload_now(other),S_OK_);
+        // Server locks are shared across acquisitions, not tied to one pointer.
+        ASSERT_EQ(mgr_.get_class_object(m,clsid,factory_iid,kOut),S_OK_);
+        const GuestAddr reacquired=read_ptr(kOut);
+        EXPECT_EQ(call(MsxmlIface::ClassFactory, 4, reacquired, {u64{0}}), S_OK_);
+        (void)call(MsxmlIface::ClassFactory,2,reacquired);
+        const auto loaded = load(doc, "<root answer=\"7\">text</root>");
+        EXPECT_EQ(loaded.hr, S_OK_); EXPECT_EQ(loaded.ok, -1);
+        const GuestAddr root = out_object(MsxmlIface::Document, DocumentElement, doc);
+        ASSERT_NE(root, 0u);
+        EXPECT_EQ(node_string(MsxmlIface::Element, NodeName, root), "root");
+        EXPECT_EQ(node_string(MsxmlIface::Element, 26, root), "text");
+        EXPECT_EQ(node_string(MsxmlIface::Element, 34, root), "<root answer=\"7\">text</root>");
+        (void)call(MsxmlIface::Element, 2, root);
+        EXPECT_EQ(mgr_.can_unload_now(server),S_FALSE_);
+        // A child interface owns the tree and therefore the server after
+        // the original document interface has been released.
+        const GuestAddr child = out_object(MsxmlIface::Document, DocumentElement, doc);
+        (void)call(MsxmlIface::Document, 2, doc);
+        EXPECT_EQ(mgr_.can_unload_now(server),S_FALSE_);
+        EXPECT_EQ(node_string(MsxmlIface::Element,NodeName,child),"root");
+        EXPECT_EQ(mgr_.can_unload_now(other),S_OK_);
+        (void)call(MsxmlIface::Element,2,child);
+        EXPECT_EQ(mgr_.can_unload_now(server),S_OK_);
+        EXPECT_EQ(mgr_.get_class_object(m,clsid,factory_iid,0),E_INVALIDARG_);
+        write_ptr(kOut,0xBAD);
+        EXPECT_EQ(mgr_.get_class_object(m,clsid,factory_iid,kOut,other),0x80040111u);
+        EXPECT_EQ(read_ptr(kOut),0u);
+    }
+    EXPECT_EQ(mgr_.can_unload_now(), S_OK_);
+}
+
+TEST_P(MsxmlDocument2Test, CoGetClassObjectRoutesActualProviderAndValidatesContext) {
+    ComCoreManager com;
+    com.set_thunk_registry(&thunks_);
+    com.set_external_class_object_provider([this](Marshaler& m,const Guid& c,const Guid& i,GuestAddr out)->std::optional<u32> {
+        if (!MsxmlManager::is_dom_document_clsid(c)) return std::nullopt;
+        return mgr_.get_class_object(m,c,i,out);
+    });
+    Marshaler m(memory_); m.attach_cpu(cpu_);
+    const GuestAddr clsid_at=kOut+0x100, iid_at=kOut+0x120;
+    const Guid factory_iid = com_factory_contract::iid_class_factory;
+    (void)m.write_struct<Guid>(clsid_at,kClsid60);
+    (void)m.write_struct<Guid>(iid_at,factory_iid);
+    const auto get_factory=[&](u32 context,GuestAddr out=kOut,GuestAddr server=0) {
+        const u64 args[]={clsid_at,context,server,iid_at,out};
+        if(x64()) {
+            cpu_.gpr.rcx=args[0];cpu_.gpr.rdx=args[1];cpu_.gpr.r8=args[2];cpu_.gpr.r9=args[3];
+            (void)memory_.write_u64(kStack+40,args[4]);
+        } else for(usize i=0;i<5;++i) (void)memory_.write_u32(kStack+4+i*4,static_cast<u32>(args[i]));
+        return com.co_get_class_object(m);
+    };
+    EXPECT_EQ(get_factory(1),0x800401F0u); EXPECT_EQ(read_ptr(kOut),0u);
+    ASSERT_EQ(com.co_initialize_ex(m,com::COINIT_MULTITHREADED),S_OK_);
+    EXPECT_EQ(get_factory(1,0),E_INVALIDARG_);
+    for(u32 context:{0u,2u}) {write_ptr(kOut,0xBAD); EXPECT_EQ(get_factory(context),CLASSNOTREG_);EXPECT_EQ(read_ptr(kOut),0u);}
+    ASSERT_EQ(get_factory(1),S_OK_);
+    const GuestAddr factory=read_ptr(kOut);
+    (void)call(MsxmlIface::ClassFactory,2,factory);
+    // Null COSERVERINFO fields are accepted for in-process activation.
+    ASSERT_EQ(get_factory(1,kOut,kOut+0x180),S_OK_);
+    (void)call(MsxmlIface::ClassFactory,2,read_ptr(kOut));
+    (void)m.write_struct<Guid>(iid_at,Guid{});
+    EXPECT_EQ(get_factory(1),E_NOINTERFACE_);EXPECT_EQ(read_ptr(kOut),0u);
+}
+
+TEST_P(MsxmlDocument2Test, RegisteredFactoryRemainsAliveThroughReentrantRevoke) {
+    ComCoreManager com;
+    com.set_thunk_registry(&thunks_);
+    Marshaler m(memory_); m.attach_cpu(cpu_);
+    ASSERT_EQ(com.co_initialize_ex(m,com::COINIT_MULTITHREADED),S_OK_);
+    const Guid factory_iid = com_factory_contract::iid_class_factory;
+    const GuestAddr clsid_at=kOut+0x100, iid_at=kOut+0x120, cookie_at=kOut+0x140;
+    (void)m.write_struct<Guid>(clsid_at,kClsid60);
+    (void)m.write_struct<Guid>(iid_at,factory_iid);
+    ASSERT_EQ(mgr_.get_class_object(m,kClsid60,factory_iid,kOut),S_OK_);
+    const GuestAddr factory=read_ptr(kOut);
+    const auto set_args=[&](const std::vector<u64>& args) {
+        u64* regs[]={&cpu_.gpr.rcx,&cpu_.gpr.rdx,&cpu_.gpr.r8,&cpu_.gpr.r9};
+        for(usize i=0;i<args.size();++i) {
+            if(x64()&&i<4) *regs[i]=args[i];
+            else if(x64()) (void)memory_.write_u64(kStack+40+(i-4)*8,args[i]);
+            else (void)memory_.write_u32(kStack+4+i*4,static_cast<u32>(args[i]));
+        }
+    };
+    bool revoke_on_qi=false;
+    bool revoke_on_create=false;
+    u32 cookie=0;
+    com.set_guest_call([&](GuestAddr method,const u64* args,usize count,bool)->u64 {
+        const cpu::CpuState saved=cpu_;
+        u32 slot=5;
+        for(u32 i=0;i<5;++i) if(thunks_.get_thunk_address("msxml6.dll",MsxmlManager::slot_thunk_name(MsxmlIface::ClassFactory,i)).value()==method) slot=i;
+        EXPECT_LT(slot,5u);
+        if((slot==0&&revoke_on_qi) || ((slot==1||slot==3)&&revoke_on_create)) {
+            revoke_on_qi=false;
+            revoke_on_create=false;
+            set_args({cookie});com.impl_CoRevokeClassObject(m);
+            EXPECT_EQ(static_cast<u32>(cpu_.gpr.rax),S_OK_);
+        }
+        set_args(std::vector<u64>(args,args+count));
+        const u32 result=mgr_.dispatch(MsxmlIface::ClassFactory,slot,m);
+        cpu_=saved;
+        return result;
+    });
+    set_args({clsid_at,factory,1,1,cookie_at}); // CLSCTX_INPROC / REGCLS_MULTIPLEUSE
+    com.impl_CoRegisterClassObject(m);
+    ASSERT_EQ(static_cast<u32>(cpu_.gpr.rax),S_OK_);
+    cookie=memory_.read_u32(cookie_at).value();
+    revoke_on_qi=true;
+    set_args({clsid_at,1,0,iid_at,kOut});
+    ASSERT_EQ(com.co_get_class_object(m),S_OK_);
+    EXPECT_EQ(read_ptr(kOut),factory);
+    // Original reference and returned reference both remain independently live.
+    (void)call(MsxmlIface::ClassFactory,2,factory);
+    EXPECT_EQ(mgr_.can_unload_now(),S_FALSE_);
+    (void)call(MsxmlIface::ClassFactory,2,factory);
+    EXPECT_EQ(mgr_.can_unload_now(),S_OK_);
+    // A factory's AddRef or CreateInstance can reenter COM to revoke its
+    // registration. The outstanding activation must still create a real DOM.
+    ASSERT_EQ(mgr_.get_class_object(m,kClsid60,factory_iid,kOut),S_OK_);
+    const GuestAddr creating_factory=read_ptr(kOut);
+    set_args({clsid_at,creating_factory,1,1,cookie_at});
+    com.impl_CoRegisterClassObject(m);
+    ASSERT_EQ(static_cast<u32>(cpu_.gpr.rax),S_OK_);
+    cookie=memory_.read_u32(cookie_at).value();
+    (void)call(MsxmlIface::ClassFactory,2,creating_factory);
+    (void)m.write_struct<Guid>(iid_at,kIidDoc2);
+    revoke_on_create=true;
+    set_args({clsid_at,0,1,iid_at,kOut});
+    ASSERT_EQ(com.co_create_instance(m),S_OK_);
+    const GuestAddr created=read_ptr(kOut);
+    ASSERT_NE(created,0u);
+    const auto loaded=load(created,"<root answer=\"7\">text</root>");
+    EXPECT_EQ(loaded.hr,S_OK_);EXPECT_EQ(loaded.ok,-1);
+    (void)call(MsxmlIface::Document,2,created);
+    EXPECT_EQ(mgr_.can_unload_now(),S_OK_);
+    // No task-memory arena is needed to reject an unregistered class.
+    (void)m.write_struct<Guid>(clsid_at,Guid{});
+    set_args({clsid_at,0,1,iid_at,kOut});
+    EXPECT_EQ(com.co_create_instance(m),CLASSNOTREG_);
+    EXPECT_EQ(read_ptr(kOut),0u);
 }

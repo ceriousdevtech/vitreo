@@ -4,6 +4,7 @@
 /// @brief Guest-side x86 implementations of hot CRT primitives. See header.
 
 #include "winapi/msvcrt/guest_accel.hpp"
+#include "winapi/msvcrt/memory/vcruntime_interpose.hpp"
 #include "winapi/msvcrt/io/crt_stdio_buffer.hpp"
 #include "winapi/core/thunk_registry.hpp"
 #include "core/memory/guest_memory.hpp"
@@ -183,21 +184,6 @@ void emit_memset(Asm& a) {
     a.rep_stosb();
     a.pop_eax();                  // eax = dst
     a.pop_edi();
-    a.ret();
-}
-
-/// memcpy(dst, src, n) -> dst. Callers must not overlap; that is memmove.
-void emit_memcpy(Asm& a) {
-    a.push_esi();
-    a.push_edi();
-    a.mov_reg_esp(7, 0x0C);       // edi = dst
-    a.mov_reg_esp(6, 0x10);       // esi = src
-    a.mov_reg_esp(1, 0x14);       // ecx = n
-    a.push_edi();
-    a.rep_movsb();
-    a.pop_eax();
-    a.pop_edi();
-    a.pop_esi();
     a.ret();
 }
 
@@ -545,7 +531,11 @@ struct Accel {
 // subtly wrong implementation into the guest is not.
 constexpr Accel kAccelerated[] = {
     {"msvcrt.dll!memset",  emit_memset},
-    {"msvcrt.dll!memcpy",  emit_memcpy},
+    // memcpy is memmove: every Windows memcpy copies overlapping ranges
+    // correctly (tests/oracle_data/crt_memcpy_overlap_probe32.expected,
+    // 132/132 cases in vcruntime140, ucrtbase, msvcrt and ntdll) and
+    // programs rely on it, so a forward-only REP MOVSB is wrong here.
+    {"msvcrt.dll!memcpy",  emit_memmove},
     {"msvcrt.dll!memmove", emit_memmove},
     {"msvcrt.dll!strlen",  emit_strlen},
     {"msvcrt.dll!fgetc",   emit_fgetc},
@@ -555,7 +545,7 @@ constexpr Accel kAccelerated[] = {
     {"msvcrt.dll!_setjmp3", emit_setjmp},
     {"msvcrt.dll!bsearch",  emit_bsearch},
     {"ucrtbase.dll!memset",  emit_memset},
-    {"ucrtbase.dll!memcpy",  emit_memcpy},
+    {"ucrtbase.dll!memcpy",  emit_memmove},
     {"ucrtbase.dll!memmove", emit_memmove},
     {"ucrtbase.dll!strlen",  emit_strlen},
     {"ucrtbase.dll!fgetc",   emit_ucrt_fgetc},
@@ -575,9 +565,29 @@ constexpr Accel kCsAccelerated[] = {
     {"kernel32.dll!LeaveCriticalSection", emit_leave_critical_section},
 };
 
-bool g_arena_ready = false;
-
 } // namespace
+
+bool ensure_crt_accel_arena_x86(GuestMemory& memory) noexcept {
+    if (memory.fetch_ptr(CRT_ACCEL_BASE_X86, CRT_ACCEL_SIZE) != nullptr) return true;
+    return memory.map_region(CRT_ACCEL_BASE_X86, CRT_ACCEL_SIZE,
+                             MemoryProtection::ReadExecute).is_ok();
+}
+
+bool write_accel_code(GuestMemory& memory, GuestAddr addr, const u8* bytes,
+                      usize size) noexcept {
+    const GuestAddr first = addr & ~static_cast<GuestAddr>(0xFFF);
+    const GuestAddr last = (addr + size + 0xFFF) & ~static_cast<GuestAddr>(0xFFF);
+    if (memory.protect_region(first, last - first,
+                              MemoryProtection::ReadWriteExecute).is_err()) {
+        return false;
+    }
+    const bool ok = memory.write_bytes(addr, bytes, size).is_ok();
+    // Readable as well as executable: hook validators read the first bytes
+    // of a resolved function and query its page protection.
+    const bool back = memory.protect_region(first, last - first,
+                                            MemoryProtection::ReadExecute).is_ok();
+    return ok && back;
+}
 
 CrtAccelBlob build_guest_crt_code(GuestAddr base, bool include_critical_sections) {
     Asm asmbuf;
@@ -601,10 +611,13 @@ CrtAccelBlob build_guest_crt_code(GuestAddr base, bool include_critical_sections
 
 usize install_guest_crt_accelerators(GuestMemory& memory,
                                      ThunkRegistry& registry) noexcept {
+    // The checked CRT memory bodies' fault-resume record lives in this arena
+    // whether or not the accelerators below are installed.
+    (void)vcrt::publish_resume_record(memory, registry, /*x64=*/false);
     static const bool cs_accel = std::getenv("VITREO_NO_CS_ACCEL") == nullptr;
     CrtAccelBlob blob = build_guest_crt_code(CRT_ACCEL_BASE_X86, cs_accel);
     const auto& entry = blob.entries;
-    if (blob.code.size() > CRT_ACCEL_SIZE) return 0;
+    if (blob.code.size() > CRT_ACCEL_STUB_OFFSET_X86) return 0;
 
     // Resolve every tail-jump target before the code is written: a fast path
     // whose slow branch cannot be reached is worse than no fast path at all,
@@ -629,18 +642,17 @@ usize install_guest_crt_accelerators(GuestMemory& memory,
     // that path therefore has to call this again afterwards and have it take
     // effect. Guarding the whole function would silently leave those exports
     // pointing back at the host thunks.
-    if (!g_arena_ready) {
-        if (memory.map_region(CRT_ACCEL_BASE_X86, CRT_ACCEL_SIZE,
-                              MemoryProtection::ReadWrite).is_err()) {
+    // The arena may already be mapped (the vcruntime140 interposer maps it
+    // for its stub region), and a second install on the same memory finds
+    // the blob already in place; only a difference is written.
+    if (!ensure_crt_accel_arena_x86(memory)) return 0;
+    const Byte* live = memory.fetch_ptr(CRT_ACCEL_BASE_X86, blob.code.size());
+    if (live == nullptr ||
+        std::memcmp(live, blob.code.data(), blob.code.size()) != 0) {
+        if (!write_accel_code(memory, CRT_ACCEL_BASE_X86, blob.code.data(),
+                              blob.code.size())) {
             return 0;
         }
-        if (memory.write_bytes(CRT_ACCEL_BASE_X86, blob.code.data(),
-                               blob.code.size()).is_err()) {
-            return 0;
-        }
-        (void)memory.protect_region(CRT_ACCEL_BASE_X86, CRT_ACCEL_SIZE,
-                                    MemoryProtection::ReadExecute);
-        g_arena_ready = true;
     }
 
     // Overwrite each export's entry sled with a jump to its implementation.

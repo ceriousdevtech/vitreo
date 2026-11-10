@@ -227,7 +227,12 @@ bool MessageSendManager::dispatch_edit_control(Marshaler& m, windowing::HWND hwn
     const bool edit = ieq(class_name, L"Edit");
     const bool rich = ieq(class_name, L"RichEdit") || ieq(class_name, L"RichEdit20A") ||
                       ieq(class_name, L"RichEdit20W") || ieq(class_name, L"RichEdit50W");
-    if (!edit && !(rich && msg == EM_SETREADONLY)) return false;
+    // A warnings dialog writes its body with the same plain-text messages as
+    // EDIT (WM_SETTEXT / EM_REPLACESEL). Leaving RichEdit out of that path
+    // keeps the native view empty. RTF still goes through EM_SETTEXTEX and
+    // EM_STREAMIN.
+    const bool rich_plain = rich && (msg == WM_SETTEXT_ || msg == EM_REPLACESEL);
+    if (!edit && !(rich && msg == EM_SETREADONLY) && !rich_plain) return false;
     if (!force_native && win->wndproc != 0) return false;
     if (msg == EM_SETREADONLY) {
         // Shared documented message; preserve text and selection rather than

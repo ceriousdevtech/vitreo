@@ -41,6 +41,21 @@
         emit_vector_tso_fence(); \
     } while (0)
 
+// A jit_sse_op call whose operand is in guest memory. The helper's checked
+// access can fail, and then it raises STATUS_ACCESS_VIOLATION through
+// cpu->pending_raise (jit_raise_guest_av). The call site has to make that a
+// precise fault (Intel SDM Vol. 3A 6.5/6.6): CpuState.rip names this
+// instruction before the call -- published through X16, which the call
+// sequence reloads with the helper pointer anyway, so no argument register
+// is disturbed -- and the block leaves on the raise instead of running the
+// instructions after it. Register-operand forms keep EMIT_SSE_OP_CALL.
+#define EMIT_SSE_OP_MEM_CALL() \
+    do { \
+        emit_publish_rip_for_raising_helper(16); \
+        EMIT_SSE_OP_CALL(); \
+        emit_exit_if_pending_raise(); \
+    } while (0)
+
 // The same contract for the SSE helpers reached through an absolute function
 // pointer rather than the jit_ctx sse_op slot (jit_round_op, jit_pcmpxstrx,
 // jit_sse41_op, jit_fxsave_fxrstor). Each has a memory-operand form that
@@ -73,5 +88,19 @@ bool vex256_move_requires_align32(Opcode op);
 // lowering implements the whole VEX contract (SRC1 from vvvv, VEX.256,
 // YMM[255:128] zeroing) and must reach it with prefixes.vex still set.
 [[nodiscard]] bool sse_vex_lowered_directly(const DecodedInstruction& instr) noexcept;
+
+// The MIN/MAX family compile_sse hands to compile_sse_minmax before its VEX
+// bridge, VEX forms included.
+[[nodiscard]] constexpr bool sse_minmax_lowers_vex(Opcode op) noexcept {
+    switch (op) {
+    case Opcode::MINPS_XMM_XMMM128: case Opcode::MAXPS_XMM_XMMM128:
+    case Opcode::MINPD_XMM_XMMM128: case Opcode::MAXPD_XMM_XMMM128:
+    case Opcode::MINSS_XMM_XMMM32: case Opcode::MAXSS_XMM_XMMM32:
+    case Opcode::MINSD_XMM_XMMM64: case Opcode::MAXSD_XMM_XMMM64:
+        return true;
+    default:
+        return false;
+    }
+}
 
 } // namespace vitreo::cpu::jit

@@ -9,6 +9,7 @@
 #include "winapi/kernel32/memory/global_local.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/core/thunk_registry.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "ipc/process_handle.hpp"
 #include "winapi/system/ntdll/ntdll.hpp"
@@ -52,10 +53,9 @@ u32 ProcessManager::get_current_process() const noexcept {
 }
 
 u32 ProcessManager::get_current_process_id() const noexcept {
-    // Each concurrently running guest process has its own Vitreo host process.
-    // Using that pid keeps GetCurrentProcessId, Toolhelp, and the capsule
-    // process registry consistent even when optional shared IPC is disabled.
-    return static_cast<u32>(::getpid());
+    // Windows client ID, not the host pid. TEB ClientId, Toolhelp, and
+    // CreateProcess all read this value.
+    return ipc::guest_process_id();
 }
 
 std::optional<ipc::ProcessSnapshotEntry> ProcessManager::find_process(
@@ -617,11 +617,20 @@ static void impl_OpenProcess(Marshaler& m, ProcessManager& pm, HandleTable& ht) 
     // OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, …, 4) succeeds on Windows
     // (process_contract_probe.expected).
     constexpr u32 kWindowsSystemPid = 4;
-    ipc::ProcessObject* obj =
-        ipc::find_tracked_process(static_cast<pid_t>(pid));
+    // The argument is a Windows client ID. Never track_process() it: that
+    // table is keyed by the host pid.
+    ipc::ProcessObject* obj = ipc::find_tracked_client(pid);
+    if (obj == nullptr && pid == kWindowsSystemPid) {
+        obj = ipc::track_process(static_cast<pid_t>(pid));
+        if (obj != nullptr) obj->client_id.store(kWindowsSystemPid);
+    }
+    if (obj == nullptr && pid == pm.get_current_process_id()) {
+        obj = ipc::track_process(::getpid());
+        if (obj != nullptr) obj->client_id.store(pid);
+    }
     if (obj == nullptr) {
-        if (pid != kWindowsSystemPid &&
-            pid != pm.get_current_process_id() && !pm.find_process(pid)) {
+        const auto peer = pm.find_process(pid);
+        if (!peer.has_value() || peer->host_pid == 0) {
             ipc::ipc_log(
                 "OpenProcess(pid=%u) -> miss (not in capsule snapshot)",
                 pid);
@@ -629,12 +638,28 @@ static void impl_OpenProcess(Marshaler& m, ProcessManager& pm, HandleTable& ht) 
             m.set_return(0);
             return;
         }
-        obj = ipc::track_process(static_cast<pid_t>(pid));
-        if (obj == nullptr) {
-            set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-            m.set_return(0);
-            return;
+        obj = ipc::track_process(static_cast<pid_t>(peer->host_pid));
+        if (obj != nullptr) {
+            obj->client_id.store(peer->pid);
+            if (peer->parent_pid != 0) obj->parent_client_id.store(peer->parent_pid);
+            ipc::GuestProcessMetadata existing;
+            if (!obj->guest_metadata(existing)) {
+                if (auto metadata = pm.resolve_guest_metadata(peer->image_path)) {
+                    obj->publish_guest_metadata(*metadata);
+                    ipc::ipc_log(
+                        "OpenProcess(pid=%u) published peer metadata peb=0x%llx "
+                        "image_base=0x%llx bitness=%u",
+                        pid, static_cast<unsigned long long>(metadata->peb_address),
+                        static_cast<unsigned long long>(metadata->image_base),
+                        metadata->is_64bit ? 64u : 32u);
+                }
+            }
         }
+    }
+    if (obj == nullptr) {
+        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
+        m.set_return(0);
+        return;
     }
     u32 flags = inherit ? HandleFlags::Inherit : 0;
     Handle h = ht.allocate(HandleType::Process, obj, flags, desired_access);
@@ -744,7 +769,7 @@ static u32 terminate_process_status(Marshaler& m, ProcessManager& pm,
     // DuplicateHandle/OpenProcess can produce a real handle for this process.
     // It must have the same effect as the pseudo handle, without signaling the
     // host process out from underneath Vitreo's orderly guest shutdown.
-    if (process->pid == static_cast<pid_t>(pm.get_current_process_id())) {
+    if (process->pid == ::getpid()) {
         ipc::ipc_log("%s(self, code=0x%x) caller_ret=0x%llx", api,
                      exit_code,
                      static_cast<unsigned long long>(caller_ret));

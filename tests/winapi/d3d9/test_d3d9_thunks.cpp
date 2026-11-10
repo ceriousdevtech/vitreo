@@ -18,9 +18,9 @@ using vitreo::winapi::d3d9_test::D3D9ManagerTest;
 // =============================================================================
 
 TEST_F(D3D9ManagerTest, ThunksCoverEveryVtableSlotOfEveryInterface) {
-    // Direct3DCreate9, Direct3DCreate9Ex, DebugSetMute,
-    // Direct3DShaderValidatorCreate9, and the seven D3DPERF_* exports.
-    usize expected = 11;
+    // The eight non-PIX entry points of d3d9_exports_probe and the seven
+    // D3DPERF_* exports.
+    usize expected = 15;
     for (usize index = 0; index < D3D9_INTERFACE_COUNT; ++index) {
         expected += d3d9_interface_method_count(
             static_cast<D3D9InterfaceId>(index));
@@ -58,29 +58,77 @@ TEST_F(D3D9ManagerTest, EveryVtableSlotHasTheStdcallCleanupOfItsSignature) {
     }
 }
 
-TEST_F(D3D9ManagerTest, ThunkDirect3DCreate9) {
-    auto it = std::find_if(exports_.entries.begin(), exports_.entries.end(),
-        [](const ExportEntry& e) { return e.name == "Direct3DCreate9"; });
-    ASSERT_NE(it, exports_.entries.end());
-    EXPECT_EQ(it->ordinal, 1u);
-    EXPECT_EQ(it->stdcall_bytes, 4u);
+// Names, ordinals and argument bytes of the non-PIX entry points, from the
+// Windows 11 SysWOW64/System32 d3d9.dll export tables and prologues
+// (tools/oracle_probe/d3d9_exports_probe{32,64}.winoracle-gpu.expected).
+// An import by ordinal binds to whatever sits at that ordinal here.
+TEST_F(D3D9ManagerTest, EntryPointsMatchD3D9DllNamesOrdinalsAndStdcallBytes) {
+    struct Expected { const char* name; u32 ordinal; u16 bytes; };
+    constexpr Expected expected[] = {
+        {"Direct3DCreate9On12", 20, 12},    // (UINT, D3D9ON12_ARGS*, UINT)
+        {"Direct3DCreate9On12Ex", 21, 16},  // (..., IDirect3D9Ex**)
+        {"Direct3DShaderValidatorCreate9", 24, 0},
+        {"DebugSetLevel", 34, 0},           // plain ret
+        {"DebugSetMute", 35, 0},            // plain ret
+        {"Direct3D9EnableMaximizedWindowedModeShim", 36, 4},  // ret 4
+        {"Direct3DCreate9", 37, 4},         // (UINT)
+        {"Direct3DCreate9Ex", 38, 8},       // (UINT, IDirect3D9Ex**)
+    };
+    for (const Expected& e : expected) {
+        SCOPED_TRACE(e.name);
+        const ExportEntry& entry = export_named(e.name);
+        EXPECT_EQ(entry.ordinal, e.ordinal);
+        EXPECT_EQ(entry.stdcall_bytes, e.bytes);
+    }
 }
 
-TEST_F(D3D9ManagerTest, ThunkDirect3DCreate9Ex) {
-    auto it = std::find_if(exports_.entries.begin(), exports_.entries.end(),
-        [](const ExportEntry& e) { return e.name == "Direct3DCreate9Ex"; });
-    ASSERT_NE(it, exports_.entries.end());
-    EXPECT_EQ(it->ordinal, 2u);
-    EXPECT_EQ(it->stdcall_bytes, 8u);
+// Measured: 31 and 32 succeed with or without the D3D_DEBUG_INFO bit;
+// 0, 1, 30, 33 and 0x80000021 fail (NULL / D3DERR_NOTAVAILABLE).
+TEST_F(D3D9ManagerTest, FactoriesAcceptOnlyTheShippedSdkVersions) {
+    for (const u32 version : {31u, 32u, 0x80000020u, 0x8000001Fu}) {
+        EXPECT_TRUE(d3d9_sdk_version_supported(version)) << version;
+    }
+    for (const u32 version : {0u, 1u, 30u, 33u, 0x80000021u, 0x80000000u}) {
+        EXPECT_FALSE(d3d9_sdk_version_supported(version)) << version;
+    }
 }
 
-TEST_F(D3D9ManagerTest, ThunkDebugSetMute) {
-    auto it = std::find_if(exports_.entries.begin(), exports_.entries.end(),
-        [](const ExportEntry& e) { return e.name == "DebugSetMute"; });
-    ASSERT_NE(it, exports_.entries.end());
-    EXPECT_EQ(it->ordinal, 3u);
-    // DebugSetMute@0 takes no stack arguments.
-    EXPECT_EQ(it->stdcall_bytes, 0u);
+TEST_F(D3D9ManagerTest, Direct3DCreate9ExRejectsABadSdkVersionAndClearsOut) {
+    constexpr GuestAddr kOut = SCRATCH_ADDR + 0x900;
+    ASSERT_TRUE(memory_.write_u32(kOut, 0xDEADBEEFu).is_ok());
+    ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 4, 33u).is_ok());
+    ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 8, kOut).is_ok());
+    export_named("Direct3DCreate9Ex").handler(marshaler_);
+    EXPECT_EQ(static_cast<u32>(cpu_.gpr.rax), D3DERR_NOTAVAILABLE);
+    EXPECT_EQ(memory_.read_u32(kOut).value(), 0u);
+}
+
+TEST_F(D3D9ManagerTest, Direct3DCreate9On12RefusesACallerSuppliedD3D12Device) {
+    // One x86 D3D9ON12_ARGS (24 bytes): Enable9On12, pD3D12Device, ...
+    constexpr GuestAddr kArgs = SCRATCH_ADDR + 0x940;
+    ASSERT_TRUE(memory_.write_u32(kArgs, 1u).is_ok());
+    ASSERT_TRUE(memory_.write_u32(kArgs + 4, 0x00300000u).is_ok());
+    ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 4, 32u).is_ok());
+    ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 8, kArgs).is_ok());
+    ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 12, 1u).is_ok());
+    cpu_.gpr.rax = 0x5A5A5A5Au;
+    export_named("Direct3DCreate9On12").handler(marshaler_);
+    EXPECT_EQ(static_cast<u32>(cpu_.gpr.rax), 0u);
+    // An unsupported SDK version is NULL whatever the list says.
+    ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 4, 0u).is_ok());
+    ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 8, 0u).is_ok());
+    ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 12, 0u).is_ok());
+    export_named("Direct3DCreate9On12").handler(marshaler_);
+    EXPECT_EQ(static_cast<u32>(cpu_.gpr.rax), 0u);
+}
+
+TEST_F(D3D9ManagerTest, EnableMaximizedWindowedModeShimReturnsZero) {
+    for (const u32 value : {0u, 1u, 2u}) {
+        ASSERT_TRUE(memory_.write_u32(cpu_.gpr.rsp + 4, value).is_ok());
+        cpu_.gpr.rax = 0x5A5A5A5Au;
+        export_named("Direct3D9EnableMaximizedWindowedModeShim").handler(marshaler_);
+        EXPECT_EQ(static_cast<u32>(cpu_.gpr.rax), 0u) << value;
+    }
 }
 
 // The complete D3DPERF_* (PIX) export set. Names and ordinals come from the

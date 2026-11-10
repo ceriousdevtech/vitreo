@@ -37,12 +37,12 @@ u32 DxbcTranslator::scan_temp_count(usize start_token) const {
     return count;
 }
 
-std::map<u32, u32> DxbcTranslator::scan_indexable_temps(
+std::map<u32, DxbcTranslator::IndexableTempDecl> DxbcTranslator::scan_indexable_temps(
     usize start_token) const {
     // D3D10_SB_OPCODE_DCL_INDEXABLE_TEMP == 105. The three payload DWORDs
     // declare x# array slot, register count, and component count.
     DxbcDecoder scan(m_container.bytecode.data(), m_container.bytecode.size());
-    std::map<u32, u32> declarations;
+    std::map<u32, IndexableTempDecl> declarations;
     if (!scan.has_tokens(2)) return declarations;
     scan.set_position(start_token);
     while (scan.has_tokens(1)) {
@@ -63,7 +63,7 @@ std::map<u32, u32> DxbcTranslator::scan_indexable_temps(
             const u32 components = scan.read_token();
             if (count != 0u && count <= 4096u &&
                 components >= 1u && components <= 4u) {
-                declarations[slot] = count;
+                declarations[slot] = {count, components};
             }
             if (length > 4u) scan.skip_tokens(length - 4u);
             continue;
@@ -376,6 +376,47 @@ std::vector<u32> DxbcTranslator::scan_uav_counters() const {
                 std::find(registers.begin(), registers.end(), uav.index0) ==
                     registers.end()) {
                 registers.push_back(uav.index0);
+            }
+        }
+        const usize consumed = 1u + (scan.position() - operands_begin);
+        if (consumed < length) scan.skip_tokens(length - consumed);
+    }
+    return registers;
+}
+
+std::set<u32> DxbcTranslator::scan_uav_atomics() const {
+    // Instructions anywhere in the program, as scan_uav_counters. The
+    // atomic_* forms (169-177) name the memory first; the imm_atomic_*
+    // forms (180-189) after their destination.
+    DxbcDecoder scan(m_container.bytecode.data(), m_container.bytecode.size());
+    std::set<u32> registers;
+    if (!scan.has_tokens(2)) return registers;
+    scan.skip_tokens(2);
+    while (scan.has_tokens(1)) {
+        const u32 token = scan.read_token();
+        const u32 opcode = token & 0x7FFu;
+        const u32 length = (token >> 24) & 0x7Fu;
+        const usize operands_begin = scan.position();
+        if (opcode == 53u) {
+            if (!scan.has_tokens(1)) break;
+            const u32 block_length = scan.read_token();
+            if (block_length < 2u) break;
+            scan.skip_tokens(block_length - 2u);
+            continue;
+        }
+        if (length == 0u) break;
+        const bool plain = opcode >= static_cast<u32>(Sm4Opcode::ATOMIC_AND) &&
+                           opcode <= static_cast<u32>(Sm4Opcode::ATOMIC_UMIN);
+        const bool returning =
+            opcode >= static_cast<u32>(Sm4Opcode::IMM_ATOMIC_IADD) &&
+            opcode <= static_cast<u32>(Sm4Opcode::IMM_ATOMIC_UMIN);
+        if (plain || returning) {
+            Sm4Operand first, memory;
+            const bool ok = scan.decode_operand(first) &&
+                            (plain || scan.decode_operand(memory));
+            const Sm4Operand& target = plain ? first : memory;
+            if (ok && target.type == Sm4OperandType::UnorderedAccessView) {
+                registers.insert(target.index0);
             }
         }
         const usize consumed = 1u + (scan.position() - operands_begin);

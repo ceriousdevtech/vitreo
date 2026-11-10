@@ -97,7 +97,20 @@ bool Translator::handle_define() {
         return fail("a constant definition on register type " +
                     std::to_string(dst.type));
     }
-    m_defined_constants.emplace(dst.index, value);
+    const bool pixel = m_result.stage == ShaderStage::Fragment;
+    // Learn PS1.x/PS2/PS3 register tables: 8/32/224 constant registers.
+    // Every VS uses this runtime's advertised MaxVertexShaderConst (256).
+    const u32 limit = pixel ? (m_result.major == 1 ? 8u : m_result.major == 2 ? 32u : 224u)
+                            : SM3_MAX_FLOAT_CONSTANT_REGISTERS;
+    if (dst.index >= limit) return fail("DEF constant register above the shader constant file");
+    if (dst.write_mask != 0xFu || dst.result_modifier != 0u || dst.shift != 0u)
+        return fail("DEF requires an unmodified full constant-register destination");
+    if (pixel && m_pixel_definitions_closed)
+        return fail("pixel DEF after an arithmetic or addressing instruction");
+    // Learn def - ps: the last definition of a pixel constant persists.
+    // Leave vertex duplicate behavior unchanged; its source makes no such rule.
+    if (pixel) m_defined_constants.insert_or_assign(dst.index, value);
+    else m_defined_constants.emplace(dst.index, value);
     return true;
 }
 

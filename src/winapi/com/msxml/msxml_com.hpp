@@ -20,7 +20,9 @@
 #pragma once
 
 #include <functional>
+#include <array>
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -54,6 +56,7 @@ enum class MsxmlIface : u32 {
     /// IXMLDOMSchemaCollection: the read-only namespaces collection
     /// IXMLDOMDocument2::get_namespaces returns.
     SchemaCollection,
+    ClassFactory,
     Count,
 };
 
@@ -95,6 +98,12 @@ public:
     [[nodiscard]] u32 create_document(Marshaler& m, const Guid& clsid,
                                       const Guid& iid, GuestAddr ppv);
 
+    /// Real class object shared by COM activation and the server export.
+    [[nodiscard]] u32 get_class_object(Marshaler& m, const Guid& clsid,
+                                       const Guid& iid, GuestAddr ppv,
+                                       std::optional<msxml::MsxmlVersion> server = {});
+    [[nodiscard]] u32 can_unload_now(std::optional<msxml::MsxmlVersion> server = {});
+
     /// Vtable slot dispatch. @p iface selects the interface family.
     [[nodiscard]] u32 dispatch(MsxmlIface iface, u32 slot, Marshaler& m);
 
@@ -111,6 +120,7 @@ private:
     struct Object {
         MsxmlIface                       iface = MsxmlIface::Node;
         u32                              refs  = 0;
+        Guid factory_class{};
         msxml::Node::Ptr                 node;   ///< Node-backed interfaces.
         std::shared_ptr<msxml::Document> doc;    ///< Keeps the tree alive.
         std::vector<msxml::Node::Ptr>    list;   ///< NodeList / NamedNodeMap.
@@ -195,6 +205,8 @@ private:
     [[nodiscard]] bool write_guest_file(const std::string& path,
                                         std::string_view text) const;
 
+    std::recursive_mutex m_mutex;
+    std::array<u32, 2> m_server_locks{};
     GuestMemory*    m_memory  = nullptr;
     ThunkRegistry*  m_thunks  = nullptr;
     capsule::Vfs*   m_vfs     = nullptr;

@@ -126,6 +126,56 @@ TEST_F(D3D11MetalTest, ColourLutBakeFromAScreenVertexBuffer) {
         << "a skip / REJECT / failed line was counted for the bake";
 }
 
+// D3D11.3 17.18: a render-target array index outside the bound view selects
+// slice 0 of it (Metal would clamp it to the last slice). One instance of
+// the bake with layer 40 into the 32-slice view: slice 0 is drawn, every
+// other slice keeps its clear.
+TEST_F(D3D11MetalTest, AnOutOfRangeRenderTargetArrayIndexDrawsSliceZero) {
+    const GuestAddr vs =
+        shader(12, lut_vs_attribute, sizeof(lut_vs_attribute));
+    const GuestAddr gs = shader(13, lut_gs, sizeof(lut_gs));
+    const GuestAddr ps = shader(15, lut_ps, sizeof(lut_ps));
+    ASSERT_TRUE(vs != 0 && gs != 0 && ps != 0);
+    GuestAddr volume = 0;
+    GuestAddr rtv = 0;
+    make_lut(volume, rtv);
+    bind_bake(vs, gs, ps, rtv);
+    context_call(17, {input_layout({{"LAYER", 0, 42, 0, 1, 1}},
+                                   lut_vs_attribute,
+                                   sizeof(lut_vs_attribute))});
+    const std::array<u32, 1> layers{40};
+    vertex_buffer(layers.data(), sizeof(layers), 4);
+    context_call(21, {4, 1, 0, 0});  // DrawInstanced(4, 1, 0, 0)
+    context_call(33, {0, 0, 0});
+
+    const std::array<u32, 9> desc{kSide, kSide, kSide, 1, kFormat,
+                                  3 /* STAGING */, 0, 0x20000 /* READ */, 0};
+    const GuestAddr out = out_slot();
+    ASSERT_EQ(device_call(6, {put(desc), 0, out}), d3d11::S_OK);
+    const GuestAddr staging = memory.read_u64(out).value();
+    context_call(47, {staging, volume});  // CopyResource
+    const GuestAddr mapped = put(std::array<u64, 2>{0, 0});
+    ASSERT_EQ(context_call(14, {staging, 0, 1 /* READ */, 0, mapped}),
+              d3d11::S_OK);
+    const GuestAddr data = memory.read_u64(mapped).value();
+    const u32 row_pitch = memory.read_u32(mapped + 8).value();
+    const u32 depth_pitch = memory.read_u32(mapped + 12).value();
+    ASSERT_NE(data, 0u);
+    for (u32 z = 0; z < kSide; ++z) {
+        usize written = 0;
+        for (u32 y = 0; y < kSide; ++y) {
+            for (u32 x = 0; x < kSide; ++x) {
+                written += memory.read_u32(data + z * depth_pitch + y * row_pitch + x * 4)
+                                       .value() != 0
+                               ? 1u
+                               : 0u;
+            }
+        }
+        EXPECT_EQ(written, z == 0 ? usize{kSide} * kSide : 0u) << "W slice " << z;
+    }
+    context_call(15, {staging, 0});  // Unmap
+}
+
 // PSSpecifiedStencilRefSupported end to end (Learn D3D11_FEATURE_DATA_D3D11_OPTIONS2,
 // D3D11.3 functional spec: a pixel shader's SV_StencilRef replaces the stencil
 // reference of its own pixel, for the test and for REPLACE). A 4x4 D24S8

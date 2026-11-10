@@ -79,12 +79,32 @@ void ntdll::impl_NtDeviceIoControlFile(Marshaler& m, NtdllExtManager& mgr) {
 
     // The kernel32 DeviceIoControl path is the same device dispatch; going
     // through it keeps one implementation of every IOCTL Vitreo serves.
+    const bool hid=files->handle_table().get_type(file_handle)==HandleType::HidDevice;
+    if(hid && (apc || event)) {
+        static std::once_flag once;
+        std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED ntdll!NtDeviceIoControlFile: HID explicit-event/APC control completion\n");});
+        m.set_return(kUnsupportedIoctl);return;
+    }
+    if(hid && !m.memory().guest_can_write(io_status,m.cpu_is_64bit() ? 16u:8u)) {
+        m.set_return(nt_status::STATUS_ACCESS_VIOLATION);return;
+    }
+    const u32 saved_error=get_last_error();
     u32 transferred = 0;
     const bool ok = files->device_io_control(
         file_handle, control_code, input, input_length, output, output_length,
         transferred);
 
     u32 status = nt_status::STATUS_SUCCESS;
+    if(hid && !ok) {
+        const auto error=get_last_error();
+        status=error==error_codes::ERROR_INVALID_PARAMETER ? nt_status::STATUS_INVALID_PARAMETER :
+            error==error_codes::ERROR_INVALID_USER_BUFFER ? hid_sdk::kSTATUS_INVALID_BUFFER_SIZE :
+            error==error_codes::ERROR_NOACCESS ? nt_status::STATUS_ACCESS_VIOLATION :
+            error==error_codes::ERROR_INVALID_HANDLE ? nt_status::STATUS_INVALID_HANDLE : kUnsupportedIoctl;
+        // Windows oracle: immediate NT_ERROR leaves both IOSB members alone.
+        set_last_error(saved_error);m.set_return(status);return;
+    }
+    if(hid) set_last_error(saved_error);
     if (!ok) {
         // device_io_control reports a Win32 error; the only distinction a
         // caller acts on is "bad handle" versus "this device cannot do that".

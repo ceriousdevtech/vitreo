@@ -645,7 +645,7 @@ struct JitContext {
     /// Clobbers X2-X4, X16, X17, X30 and NZCV.
     void* rsb_push{nullptr};
     /// Process-wide dispatcher tails, indexed by JitCompiler::DispatchTail.
-    void* dispatch_tail[8]{};
+    void* dispatch_tail[10]{};
     /// Host entry of the lazy cold memory stubs (jit_cold_lazy.cpp,
     /// vitreo_jit_cold_lazy_trampoline). A block's lazy entry LDRs it and
     /// BRs with X30 pointing at the taking site's record.
@@ -672,8 +672,23 @@ struct JitContext {
     /// again later). A nonzero count makes the dispatcher service them.
     u64 tier_requests[1024]{};
     u32 tier_request_count{0};
+
+    // ---- WS2: loop idiom helper ----
+    /// jit_loop_idiom (loop_idiom_runtime.hpp): bulk prefix of a recognised
+    /// copy/fill/scan/compare loop, called from that block's prologue.
+    u32 (*loop_idiom)(CpuState*, GuestMemory*, u64, u64, u64, u64, u64, u64){nullptr};
+    /// 1 while this thread holds a span-proof GuestMemory lease. The block
+    /// prologue sets it; a link or host call clears it; execute() drops the
+    /// lease if a fault or an epilogue left it set.
+    u8 linear_proof_lease_held{0};
 };
 static_assert(offsetof(JitContext, atomic_xchg32) == 616);
+
+// ---- WS2: loop idiom helper ----
+constexpr u32 JIT_CTX_OFF_LOOP_IDIOM =
+    static_cast<u32>(offsetof(JitContext, loop_idiom));
+static_assert(JIT_CTX_OFF_LOOP_IDIOM % 8 == 0 && JIT_CTX_OFF_LOOP_IDIOM / 8 < 4096,
+              "emitted LDR (unsigned offset) cannot reach loop_idiom");
 
 constexpr u32 JIT_CTX_OFF_IR_SPILL_FRAME =
     static_cast<u32>(offsetof(JitContext, ir_spill_frame));

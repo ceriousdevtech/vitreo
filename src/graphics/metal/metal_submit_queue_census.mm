@@ -90,7 +90,7 @@ struct DrawCensus {
     std::array<void*, graphics::BACKEND_MAX_UAV_COUNTER_BINDINGS>
         ps_uav_counter{};
     void* ps_statistics{nullptr};
-    std::array<void*, 4> vs_tables{}, ps_tables{};
+    std::array<void*, BACKEND_MAX_DESCRIPTOR_SETS> vs_tables{}, ps_tables{};
     usize resident{0};
     // The window.
     u64 draws{0};

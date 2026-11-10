@@ -143,6 +143,22 @@ struct TextureHeapRequirement {
     u64 alignment{0};
 };
 
+/// The D3D12 placement size of a texture the backend places at
+/// @p backend_alignment, in a heap range aligned to the D3D12 @p alignment
+/// (64 KiB or 4 MiB; Learn D3D12_RESOURCE_ALLOCATION_INFO: Alignment is one
+/// of 4 KB, 64 KB or 4 MB). When the backend needs more than D3D12 can
+/// promise, the range carries slack for the backend offset to round up
+/// inside it: from an offset that is a multiple of @p alignment the next
+/// multiple of @p backend_alignment is at most backend_alignment -
+/// alignment bytes on (placed_backend_offset). 0 when the size overflows.
+[[nodiscard]] u64 texture_placement_size(u64 backend_size, u64 backend_alignment,
+                                         u64 alignment) noexcept;
+
+/// Where in the heap the backend texture of a placed resource at
+/// @p heap_offset goes: @p heap_offset rounded up to @p backend_alignment
+/// (unchanged when D3D12's alignment already satisfies the backend).
+[[nodiscard]] u64 placed_backend_offset(u64 heap_offset, u64 backend_alignment) noexcept;
+
 /// The device facts the layout rules depend on.
 struct LayoutCaps {
     /// D3D12_FORMAT_SUPPORT1 of this device for a DXGI format; 0 when the
@@ -257,6 +273,11 @@ struct CastableFormats {
     std::vector<u32> formats;
 };
 
+/// Whether @p castable may be cast to from @p desc (the
+/// GetResourceAllocationInfo3 rule, also CreateCommittedResource3's).
+[[nodiscard]] bool castable_formats_ok(const ResourceDesc& desc, const CastableFormats& castable,
+                                       const LayoutCaps& caps);
+
 /// GetResourceAllocationInfo / 1 / 2 / 3 over @p descs. @p castable is empty
 /// or one entry per description. On success @p per_resource (when set) gets
 /// one entry per description; on failure it is untouched (measured) and the
@@ -299,7 +320,13 @@ struct TiledLayout {
 [[nodiscard]] bool standard_tile_shape(const ResourceDesc& desc, u32& width, u32& height,
                                        u32& depth) noexcept;
 
-/// The layout WARP uses (measured): standard shapes, no packed mips.
+/// The layout WARP reports (d3d12_layout_probe [tiling], the shapes behind
+/// the reserved buffers and Texture2Ds in d3d12_a02_resources_probe):
+/// standard shapes, and no packed mip tail. Every measured full chain has
+/// NumPackedMips 0, including mips smaller than one tile; each of those is
+/// its own tile. That packing is WARP's (D3D11.3 5.9.2.8.5 leaves it to the
+/// implementation): a device reports its own tail on top of this shape
+/// (reserved_tiled_layout, d3d12_internal.hpp).
 [[nodiscard]] bool standard_tiled_layout(const ResourceDesc& desc, TiledLayout& layout) noexcept;
 
 struct SubresourceTiling {

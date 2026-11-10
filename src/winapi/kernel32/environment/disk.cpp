@@ -24,7 +24,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "capsule/vfs/vfs.hpp"
 #include "capsule/vfs/win_path.hpp"
-#include "platform/host_volume_space.hpp"
+
 #include "core/memory/guest_memory.hpp"
 
 #include <algorithm>
@@ -32,7 +32,6 @@
 #include <string>
 #include <vector>
 
-#include <sys/statvfs.h>
 
 /// @file disk.cpp
 /// @brief Disk
@@ -44,20 +43,6 @@ namespace vitreo::winapi {
 // =============================================================================
 // Disk
 // =============================================================================
-
-/// The host boot volume's size and the space a caller may write, purgeable
-/// space included (platform/host_volume_space.hpp).
-void get_host_disk_stats(u64& out_total_bytes, u64& out_free_bytes) {
-    platform::HostVolumeSpace space;
-    if (platform::host_volume_space("/", space)) {
-        out_total_bytes = space.total_bytes;
-        out_free_bytes  = space.available_bytes;
-    } else {
-        // Fallback
-        out_total_bytes = 500ULL * 1024 * 1024 * 1024;
-        out_free_bytes  = 200ULL * 1024 * 1024 * 1024;
-    }
-}
 
 void Kernel32ExtManager::impl_GetDiskFreeSpaceW(Marshaler& m) {
     // Same contract as GetDiskFreeSpaceA (directory_disk.cpp

@@ -6,6 +6,7 @@
 // universal interpreter-delegate path (which is always correct).
 
 #include "ops64_internal.hpp"
+#include "sse_internal.hpp"  // vex256_lane_split_allowed
 
 namespace vitreo::cpu::jit {
 
@@ -119,6 +120,51 @@ bool JitCompiler::compile_64bit(const DecodedInstruction& instr,
         DecodedInstruction legacy = instr;
         legacy.prefixes.vex = false;
         legacy.prefixes.vex_l = false;
+
+        int mem_index = -1;
+        for (u8 i = 0; i < instr.operand_count; ++i) {
+            if (is_memory_operand(instr.operands[i].type)) mem_index = i;
+        }
+        if (mem_index >= 0) {
+            // A faulting memory source commits nothing (Intel SDM Vol. 3A
+            // 6.5), so neither the merge copy nor the YMM[255:128] zero may
+            // precede the read; see compile_sse's bridge, which this mirrors.
+            // A merging form on the lane-split allowlist is left to that
+            // bridge: its lowering takes SRC1 from vvvv and needs no merge
+            // copy at all, so it is exact with no extra access.
+            // So is every form compile_sse lowers before its bridge (the
+            // VEX-direct set and the MIN/MAX family): they read SRC1 from
+            // vvvv themselves and need no probe.
+            if (merge && (vex256_lane_split_allowed(instr.opcode) ||
+                          sse_vex_lowered_directly(instr) ||
+                          sse_minmax_lowers_vex(instr.opcode))) {
+                return false;
+            }
+            usize mem_mark = m_code_buf.size();
+            if (merge) {
+                if (!emit_vex_bridge_source_probe(instr, mem_index, next_rip)) {
+                    return false;
+                }
+                // A decline below drops only the merge copy; the probe stays
+                // and compile_sse's bridge, tried next for this instruction,
+                // emits no second one (m_vex_bridge_source_proven).
+                mem_mark = m_code_buf.size();
+                emit(arm64::ldr_q_uoff(0, REG_CPU_STATE, xmm_u64_off(vvvv, 0) >> 4));
+                emit(arm64::str_q_uoff(0, REG_CPU_STATE, xmm_u64_off(dst, 0) >> 4));
+            }
+            // Not the last instruction for the lowering: it emits no block
+            // exit, so the upper-half zero can follow the read.
+            if (!compile_64bit(legacy, instr_rip, next_rip, /*is_last=*/false)) {
+                m_code_buf.resize(mem_mark);
+                return false;
+            }
+            if (xmm_dst) {
+                emit(arm64::eor_v16b(5, 5, 5));
+                emit(arm64::str_q_uoff(5, REG_CPU_STATE, dhi_off >> 4));
+            }
+            finish_vector_block(next_rip, is_last);
+            return true;
+        }
 
         // Both prologue steps run BEFORE the legacy lowering: on the block's
         // last instruction that lowering emits the block exit, so anything

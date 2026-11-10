@@ -70,7 +70,7 @@ void D3D9Manager::dispatch_device(Marshaler& m, usize slot, u32 self) {
             return;
         }
         (void)add_ref(state.parent_d3d9);
-        if (m.write_u32(out, state.parent_d3d9).is_err()) {
+        if (m.write_ptr(out, state.parent_d3d9).is_err()) {
             (void)release(state.parent_d3d9);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -116,12 +116,14 @@ void D3D9Manager::dispatch_device(Marshaler& m, usize slot, u32 self) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
-        const std::array<u32, 4> creation{state.adapter, state.device_type,
-                                          state.focus_window,
-                                          state.behavior_flags};
-        if (m.memory().write_bytes(
-                out, reinterpret_cast<const Byte*>(creation.data()),
-                D3DDEVICE_CREATION_PARAMETERS_SIZE).is_err()) {
+        // x86: four DWORDs; x64: the HWND widens to eight bytes at 8 and
+        // BehaviorFlags moves to 16.
+        const bool x64 = m.cpu_is_64bit();
+        if (m.write_u32(out, state.adapter).is_err() ||
+            m.write_u32(out + 4, state.device_type).is_err() ||
+            m.write_ptr(out + 8, state.focus_window).is_err() ||
+            m.write_u32(out + (x64 ? 16 : 12), state.behavior_flags).is_err() ||
+            (x64 && m.write_u32(out + 20, 0).is_err())) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }

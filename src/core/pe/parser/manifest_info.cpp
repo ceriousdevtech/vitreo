@@ -120,9 +120,21 @@ struct ResourceEntry {
     return read_entry(data, entries, result);
 }
 
+[[nodiscard]] std::span<const u8> manifest_resource(
+    std::span<const u8> data,
+    const ParsedPe& pe,
+    std::optional<u16> wanted_id) noexcept;
+
 [[nodiscard]] std::span<const u8> first_manifest(
     std::span<const u8> data,
     const ParsedPe& pe) noexcept {
+    return manifest_resource(data, pe, std::nullopt);
+}
+
+[[nodiscard]] std::span<const u8> manifest_resource(
+    std::span<const u8> data,
+    const ParsedPe& pe,
+    std::optional<u16> wanted_id) noexcept {
     if (pe.num_data_directories <= DIR_RESOURCE) return {};
     const auto& directory = pe.data_directories[DIR_RESOURCE];
     if (directory.VirtualAddress == 0 || directory.Size < 16) return {};
@@ -145,10 +157,12 @@ struct ResourceEntry {
         return {};
     }
     ResourceEntry name;
-    if (!first_entry(
-            data, resource_base, resource_size,
-            type.value & ~kDirectoryBit, name) ||
-        (name.value & kDirectoryBit) == 0) {
+    const bool found_name = wanted_id.has_value()
+        ? find_id_entry(data, resource_base, resource_size,
+                        type.value & ~kDirectoryBit, *wanted_id, name)
+        : first_entry(data, resource_base, resource_size,
+                      type.value & ~kDirectoryBit, name);
+    if (!found_name || (name.value & kDirectoryBit) == 0) {
         return {};
     }
     ResourceEntry language;
@@ -504,6 +518,13 @@ bool parse_manifest_common_controls_v6(std::span<const u8> manifest) {
 
 bool pe_common_controls_v6(std::span<const u8> pe_data, const ParsedPe& pe) {
     return parse_manifest_common_controls_v6(first_manifest(pe_data, pe));
+}
+
+std::span<const u8> pe_manifest_resource(
+    std::span<const u8> pe_data,
+    const ParsedPe& pe,
+    u16 resource_id) noexcept {
+    return manifest_resource(pe_data, pe, resource_id);
 }
 
 std::vector<std::string> pe_private_assemblies(

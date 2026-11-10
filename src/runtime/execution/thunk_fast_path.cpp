@@ -22,6 +22,7 @@
 #include "core/cpu/jit/block_cache.hpp"
 #include "core/cpu/jit/jit_block.hpp"
 #include "winapi/core/thunk_registry.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "winapi/kernel32/process/process.hpp"
 #include "winapi/kernel32/thread/thread.hpp"
 #include "winapi/kernel32/thread/thread_suspend.hpp"
@@ -439,6 +440,7 @@ void fast_sleep_ms(u32 milliseconds) {
 }
 
 void record_fast_sleep(u32 milliseconds, u64 actual_ns, u32 ret_addr) {
+    winapi::log_long_wait("Sleep", 0, milliseconds, actual_ns, ret_addr);
     // ARM routes Sleep through this fast path, so the sleep accounting in
     // impl_Sleep never sees it -- which is why VITREO_PROFILE_WAITS reported
     // "Sleep: count=0" on ARM while the guest was plainly sleeping. Aggregate
@@ -820,8 +822,8 @@ void maybe_clobber_x86_thunk_callee_stack(
         return true;
     }
     if (rip != 0 && rip == f.get_current_process_id) {
-        // DWORD GetCurrentProcessId(void) — host PID (ProcessManager contract).
-        set_eax(cpu, static_cast<u32>(::getpid()));
+        // DWORD GetCurrentProcessId(void) — Windows client ID.
+        set_eax(cpu, ipc::guest_process_id());
         return true;
     }
     if (rip != 0 && rip == f.is_debugger_present) {

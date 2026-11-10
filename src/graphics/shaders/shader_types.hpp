@@ -5,6 +5,7 @@
 /// @brief Common types for the shader compilation pipeline.
 
 #include <vitreo/common.hpp>
+#include <string>
 #include <vector>
 
 namespace vitreo::graphics {
@@ -99,6 +100,8 @@ struct CompiledShader {
     u32 workgroup_size_y;
     u32 workgroup_size_z;
     bool uses_push_constants;
+    /// Why the translation was refused (empty MSL); empty on success.
+    std::string failure;
 
     [[nodiscard]] const char* msl_text() const {
         return reinterpret_cast<const char*>(msl_source.data());
@@ -119,6 +122,12 @@ inline constexpr u32 SPIRV_UAV_COUNTER_DESCRIPTOR_SET = 5;
 /// adds to (DxbcTranslationOptions::count_pixel_invocations): binding 0,
 /// which spirv_to_msl maps to BACKEND_FRAGMENT_STATISTICS_BUFFER_INDEX.
 inline constexpr u32 SPIRV_STATISTICS_DESCRIPTOR_SET = 6;
+/// Descriptor set of a D3D12 descriptor-heap window
+/// (DxbcTranslationOptions::heap_window): the last argument-buffer set
+/// SPIRV-Cross has (kMaxArgumentBuffers is 8). spirv_to_msl maps it to the
+/// argument buffer at BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE +
+/// BACKEND_DESCRIPTOR_SET_HEAP_WINDOW.
+inline constexpr u32 SPIRV_HEAP_WINDOW_DESCRIPTOR_SET = 7;
 /// Counters one shader may use: the buffer indices left below Metal's limit.
 /// spirv_to_msl.cpp asserts this equals BACKEND_MAX_UAV_COUNTER_BINDINGS.
 inline constexpr u32 SPIRV_MAX_UAV_COUNTERS = 5;

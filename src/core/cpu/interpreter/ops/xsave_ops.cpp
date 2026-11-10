@@ -11,6 +11,13 @@ namespace {
 
 constexpr u32 kXsaveAlign = 64;
 
+/// Bytes of the standard-format XSAVE area that @p mask touches: the legacy
+/// region and the header always, YMM_Hi128 (offset 576, 256 bytes) for
+/// bit 2. This profile's XCR0 enables no component above bit 2.
+usize xsave_footprint(u64 mask) noexcept {
+    return (mask & 4) ? 832 : 576;
+}
+
 VoidResult write_u64_at(ExecContext& ctx, u64 addr, u64 v) noexcept {
     return write_memory(ctx, addr, v, 8);
 }
@@ -32,6 +39,13 @@ ExecResult xsave_image(ExecContext& ctx, const DecodedInstruction& instr, bool /
     }
     const u64 req = (static_cast<u64>(ctx.cpu.gpr.get32(2)) << 32) | ctx.cpu.gpr.get32(0);
     const u64 mask = req & ctx.cpu.xcr0;
+    // The whole area first, so a fault writes nothing
+    // (tests/oracle_data/fxsave_fault_probe.expected).
+    if (!check_xstate_image_access(ctx, base, xsave_footprint(mask),
+                                   /*is_write=*/true,
+                                   /*xrstor_header=*/false)) {
+        return ExecResult::Exception;
+    }
     // Header XSTATE_BV at offset 512.
     if (mask & 3) {
         // Legacy 512-byte region holds x87 + MXCSR + XMM (Intel SDM Vol. 1 §13.4).
@@ -96,6 +110,13 @@ ExecResult exec_xsave_ops(ExecContext& ctx, const DecodedInstruction& instr) noe
             const u64 req =
                 (static_cast<u64>(ctx.cpu.gpr.get32(2)) << 32) | ctx.cpu.gpr.get32(0);
             const u64 mask = req & ctx.cpu.xcr0;
+            // Header first, then the whole area, before any state changes
+            // (tests/oracle_data/fxsave_fault_probe.expected).
+            if (!check_xstate_image_access(ctx, base, xsave_footprint(mask),
+                                           /*is_write=*/false,
+                                           /*xrstor_header=*/true)) {
+                return ExecResult::Exception;
+            }
             auto bv_r = read_u64_at(ctx, base + 512);
             const u64 bv = bv_r ? bv_r.value() : 0;
             if (mask & 1) {

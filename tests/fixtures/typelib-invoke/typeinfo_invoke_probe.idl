@@ -1,0 +1,117 @@
+// Dual interface used by typeinfo_invoke_probe.c to measure native
+// ITypeInfo::Invoke / DispInvoke / DispCallFunc. Compiled with midl on
+// winoracle: /env win32 and /env x64 give the SYS_WIN32 and SYS_WIN64 .tlb.
+import "oaidl.idl";
+
+[uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B01), dual, oleautomation]
+interface IInvokeBase : IDispatch {
+    [id(30)] HRESULT BaseM([out, retval] long* r);
+};
+
+[uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B02), dual, oleautomation]
+interface IInvokeProbe : IInvokeBase {
+    [id(1)] HRESULT M0();
+    [id(2)] HRESULT Ints([in] long a, [in] short b, [in] unsigned char c, [out, retval] long* r);
+    [id(3)] HRESULT Floats([in] float f, [in] double d, [out, retval] double* r);
+    [id(4)] HRESULT Wide([in] CY c, [in] DATE d, [in] LONGLONG i, [in] long tail, [out, retval] BSTR* r);
+    [id(5)] HRESULT Str([in] BSTR s, [out, retval] BSTR* r);
+    [id(6)] HRESULT Var([in] VARIANT v, [in] long tail, [out, retval] VARIANT* r);
+    [id(7)] HRESULT VarPtr([in, out] VARIANT* v);
+    [id(8)] HRESULT OutLong([in, out] long* p);
+    [id(9)] HRESULT Fail([in] long code);
+    [id(10), propget] HRESULT Prop([out, retval] long* v);
+    [id(10), propput] HRESULT Prop([in] long v);
+    [id(11), propget] HRESULT Item([in] BSTR key, [out, retval] BSTR* v);
+    [id(11), propput] HRESULT Item([in] BSTR key, [in] BSTR v);
+    [id(12), propget] HRESULT Obj([out, retval] IDispatch** p);
+    [id(12), propputref] HRESULT Obj([in] IDispatch* p);
+    [id(13)] HRESULT Opt([in] long a, [in, optional] VARIANT b, [in, defaultvalue(5)] long c,
+                         [in, defaultvalue("dflt")] BSTR d, [out, retval] BSTR* r);
+    [id(14)] HRESULT Named([in] long a, [in] long b, [in] long c, [out, retval] long* r);
+    [id(15)] HRESULT Lcid([in] long a, [in, lcid] long lcid, [out, retval] long* r);
+    [id(16)] HRESULT Arr([in] SAFEARRAY(long) a, [out, retval] long* r);
+    [id(17)] HRESULT Unk([in] IUnknown* p, [out, retval] long* r);
+    [id(18)] HRESULT Bool([in] VARIANT_BOOL b, [out, retval] VARIANT_BOOL* r);
+    [id(19)] HRESULT OutBstr([out] BSTR* s);
+    [id(20)] HRESULT OptDouble([in, defaultvalue(2.5)] double d, [in, optional, defaultvalue(-7)] long n,
+                               [out, retval] double* r);
+};
+
+// Default-value encodings only (not implemented by the probe object).
+[uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B03), dual, oleautomation]
+interface IInvokeDefaults : IDispatch {
+    [id(1)] HRESULT Defs([in, defaultvalue(-3)] short a, [in, defaultvalue(1.5)] float b,
+                         [in, defaultvalue(-1)] VARIANT_BOOL c, [in, defaultvalue(70000)] unsigned long e,
+                         [in, defaultvalue(-2)] long f, [in, defaultvalue(5)] unsigned char g,
+                         [in, defaultvalue("")] BSTR h, [in, defaultvalue(0)] VARIANT i,
+                         [in, defaultvalue(67108864)] long big, [in, defaultvalue(67108863)] long imm,
+                         [in, defaultvalue(-1.25)] double r, [in, defaultvalue(7)] VARIANT v7,
+                         [in, defaultvalue("abc")] VARIANT vs);
+};
+
+// User-defined parameter types (typeinfo_invoke_probe.c, `ty` rows).
+[uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B04), oleautomation, object]
+interface IPlainUnk : IUnknown {
+    HRESULT Ping([out, retval] long* r);
+};
+
+[uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B06), oleautomation]
+interface IDispDerived : IDispatch {
+    [id(1)] HRESULT Ping([out, retval] long* r);
+};
+
+typedef [uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B07), public] enum EColor {
+    ColorRed = 1, ColorGreen = 2, ColorBlue = 3
+} EColor;
+typedef [public] EColor ColorAlias;
+typedef [public] IInvokeProbe* ProbeAlias;
+
+[uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B00), version(1.0)]
+library InvokeProbeLib {
+    importlib("stdole2.tlb");
+    interface IInvokeProbe;
+    interface IInvokeDefaults;
+
+    [uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B05)]
+    dispinterface DPure {
+        properties:
+        methods:
+            [id(1)] long Val();
+    };
+
+    [uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B08)]
+    coclass CProbe {
+        [default] interface IInvokeProbe;
+        interface IPlainUnk;
+    };
+
+    [uuid(5B0F4A10-7C21-4E5B-9A31-2D6E9F0A1B09), dual, oleautomation]
+    interface IInvokeTypes : IDispatch {
+        [id(1)] HRESULT InDual([in] IInvokeProbe* p, [out, retval] long* r);
+        [id(2)] HRESULT InUnk([in] IPlainUnk* p, [out, retval] long* r);
+        [id(3)] HRESULT InDisp([in] DPure* p, [out, retval] long* r);
+        [id(4)] HRESULT InDerived([in] IDispDerived* p, [out, retval] long* r);
+        [id(5)] HRESULT InOutDual([in, out] IInvokeProbe** p);
+        [id(6)] HRESULT OutDual([out] IInvokeProbe** p);
+        [id(7)] HRESULT RetDual([out, retval] IInvokeProbe** p);
+        [id(8)] HRESULT RetUnk([out, retval] IPlainUnk** p);
+        [id(9)] HRESULT RetDisp([out, retval] DPure** p);
+        [id(10)] HRESULT RetDerived([out, retval] IDispDerived** p);
+        [id(11)] HRESULT InEnum([in] EColor c, [out, retval] EColor* r);
+        [id(12)] HRESULT InAlias([in] ColorAlias c, [in] ProbeAlias p, [out, retval] ColorAlias* r);
+        [id(13)] HRESULT InImported([in] IEnumVARIANT* e, [out, retval] long* r);
+        [id(14)] HRESULT RetImported([out, retval] IEnumVARIANT** e);
+        [id(15)] HRESULT InFont([in] IFontDisp* f, [out, retval] long* r);
+        [id(16)] HRESULT InCoclass([in] CProbe* c, [out, retval] long* r);
+        [id(17)] HRESULT RetCoclass([out, retval] CProbe** c);
+        [id(18)] HRESULT InSA([in] SAFEARRAY(BSTR) a, [out, retval] long* r);
+        [id(19)] HRESULT InOutSA([in, out] SAFEARRAY(VARIANT)* a);
+        [id(20)] HRESULT RetSA([out, retval] SAFEARRAY(BSTR)* a);
+        [id(21)] HRESULT InOutEnum([in, out] EColor* c);
+        [id(22)] HRESULT RetAlias([out, retval] ProbeAlias* p);
+        [id(23)] HRESULT InUnkStd([in] IUnknown* p, [out, retval] long* r);
+        [id(24)] HRESULT InOutUnk([in, out] IPlainUnk** p);
+        [id(25)] HRESULT RetSAVar([out, retval] SAFEARRAY(VARIANT)* a);
+        [id(26)] HRESULT InSAUnk([in] SAFEARRAY(IPlainUnk*) a, [out, retval] long* r);
+    };
+};

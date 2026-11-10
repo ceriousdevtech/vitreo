@@ -59,6 +59,20 @@ public:
     void impl_ICLocate(Marshaler& m);
     void impl_DrawDibOpen(Marshaler& m);
     void impl_DrawDibClose(Marshaler& m);
+    void impl_ICDecompress(Marshaler& m);
+
+    // Host-level ICM for other DLLs (avifil32's AVIStreamGetFrame).
+    /// ICLocate: the handler named by @p fcc_handler (or by lpbiIn's
+    /// biCompression when 0) first, then every Drivers32 driver of
+    /// @p fcc_type; a driver is kept when the query message of @p mode
+    /// (ICM_DECOMPRESS_QUERY, ICM_COMPRESS_QUERY or ICM_DRAW_QUERY) answers
+    /// ICERR_OK. Returns the HIC or 0.
+    [[nodiscard]] u32 locate(Marshaler& m, u32 fcc_type, u32 fcc_handler, GuestAddr bi_in,
+                             GuestAddr bi_out, u32 mode);
+    /// ICSendMessage; ICERR_BADHANDLE for an unknown HIC.
+    [[nodiscard]] u64 send(Marshaler& m, u32 hic, u32 msg, u64 lparam1, u64 lparam2);
+    /// ICClose; ICERR_BADHANDLE for an unknown HIC.
+    [[nodiscard]] u32 close(Marshaler& m, u32 hic);
 
 private:
     struct OpenHic {

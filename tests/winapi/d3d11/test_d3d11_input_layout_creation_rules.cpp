@@ -189,8 +189,9 @@ TEST_F(D3D11InputLayoutRulesTest, DxbcContainerHashAndIsg1SignatureParse) {
 
 TEST_F(D3D11InputLayoutRulesTest, DrawMapsHighInputSlotsOntoFreeBackendStreams) {
     using namespace test_blobs;
-    // POSITION from IA slot 20 and TEXCOORD0 from slot 9: both past the
-    // backend's eight streams, and both recorded (a05 "vb set(16,1)").
+    // POSITION from IA slot 20 and TEXCOORD0 from slot 9: both past Metal's
+    // buffer table, so each takes a free bindable stream. Stream 0 stays
+    // slot 0's. Both are recorded (a05 "vb set(16,1)").
     ASSERT_EQ(layout({{"POSITION", 0, 6, 20, 0, 0, 0},
                       {"TEXCOORD", 0, 16, 9, 4, 0, 0}},
                      kVsPositionTexcoord, sizeof(kVsPositionTexcoord)),

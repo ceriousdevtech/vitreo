@@ -102,6 +102,13 @@ struct MachineState {
     std::optional<Display> display;
     u32 process_id{0};
     std::string current_directory;
+    /// The process current directory as kernel32 holds it now (it follows
+    /// SetCurrentDirectory). Empty function: current_directory is fixed, as
+    /// for an install the service runs with its client's directory.
+    std::function<std::string()> current_directory_source;
+    [[nodiscard]] std::string current_dir() const {
+        return current_directory_source ? current_directory_source() : current_directory;
+    }
     /// %name lookups (environment variables are case-insensitive). Empty
     /// function: no environment is available, every %name is unset.
     std::function<std::optional<std::string>(const std::string&)> environment;

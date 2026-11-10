@@ -424,7 +424,7 @@ void Engine::set_builtin_properties(Session& s, bool server_side) {
     if (!m_options.log_file.empty()) set("MsiLogFileLocation", m_options.log_file);
     if (server_side) {
         if (m.process_id != 0) set("CLIENTPROCESSID", std::to_string(m.process_id));
-        if (!m.current_directory.empty()) set("CURRENTDIRECTORY", m.current_directory);
+        if (const std::string dir = m.current_dir(); !dir.empty()) set("CURRENTDIRECTORY", dir);
     }
     const std::string product = s.property("ProductCode");
     const bool installed = !product.empty() && m_manager.is_product_registered(product);

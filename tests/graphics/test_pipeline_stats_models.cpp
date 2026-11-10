@@ -253,3 +253,34 @@ TEST(PipelineStatsModel, RecordIsSixtyFourBitSums) {
     EXPECT_EQ(stats_vertex_batch(1), 512u);
     EXPECT_EQ(stats_vertex_batch(6), 85u);
 }
+
+// D3D12 (tools/oracle_probe/d3d12_a10_statistics_probe.expected, WARP; x86 =
+// x64): the same rules give the D3D12 counters.
+TEST(PipelineStatsModel, D3D12StripAndClippedTriangle) {
+    // "strip 5 x3 IAVertices IAPrimitives CInvocations CPrimitives: 15 9 9 9"
+    EXPECT_EQ(ia_primitives(1, 3, 5) * 3u, 9u);
+    // "indirect draw 6 x2 ...: 12 4 4 6": a list of two triangles.
+    EXPECT_EQ(ia_primitives(0, 3, 6) * 2u, 4u);
+    // "clipped triangle ...: 3 1 1 2": (0,0) (3,0) (0,-3) against x <= w
+    // and y >= -w; WARP's clipper makes 2 triangles of it.
+    StatsClipVertex tri[3]{};
+    tri[0].position = {0.0f, 0.0f, 0.5f, 1.0f};
+    tri[1].position = {3.0f, 0.0f, 0.5f, 1.0f};
+    tri[2].position = {0.0f, -3.0f, 0.5f, 1.0f};
+    EXPECT_EQ(stats_clip_primitives(tri, 3, 0, true), 2u);
+}
+
+TEST(PipelineStatsModel, ClipLayoutFindsPositionAndDistances) {
+    std::vector<DxbcSignatureElement> outputs(3);
+    outputs[0] = {"COLOR", 0, 0, 0xF, 3, 0, 0};
+    outputs[1] = {"SV_Position", 0, 1, 0xF, 3, 1, 0};
+    outputs[2] = {"SV_ClipDistance", 0, 2, 0x3, 3, 2, 0};
+    const auto layout = stats_clip_layout_of(outputs, {0, 1, 2}, 0);
+    ASSERT_TRUE(layout.valid);
+    EXPECT_EQ(layout.position_slot, 1u);
+    EXPECT_EQ(layout.distances, 2u);
+    EXPECT_EQ(layout.distance_slot[1], 2u);
+    EXPECT_EQ(layout.distance_component[1], 1u);
+    // No position on stream 1: invalid (CPrimitives unmeasured).
+    EXPECT_FALSE(stats_clip_layout_of(outputs, {0, 1, 2}, 1).valid);
+}

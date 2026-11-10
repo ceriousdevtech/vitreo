@@ -154,7 +154,5 @@ void pipeline_diag(const char* format, ...);
 /// The Metal math mode a shader requires (d3d11_shader_translate.cpp).
 [[nodiscard]] graphics::BackendMathMode math_mode_for_dxbc(
     const std::vector<u8>& bytecode);
-/// Whether a shader uses precise (d3d11_shader_translate.cpp).
-[[nodiscard]] bool dxbc_uses_precise(const std::vector<u8>& bytecode);
 
 } // namespace vitreo::winapi

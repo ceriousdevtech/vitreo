@@ -59,6 +59,35 @@ struct TypeDescription {
     u32 reference{0};
 };
 
+/// A parameter's [defaultvalue] as stored in an MSFT function record.
+/// Measured from midl output (tests/fixtures/typelib-invoke, native values in
+/// tests/oracle_data/typeinfo_invoke_probe.*.expected `def` rows): when the
+/// record's flag word has 0x1000, one INT per parameter precedes the
+/// parameter array. -1 means none; bit 31 set means an immediate value
+/// (VARTYPE in bits 26..30, value in bits 0..25 truncated to the type's
+/// width); otherwise it is an offset into the custom-data segment holding
+/// a WORD VARTYPE followed by the value in its natural size (BSTR: DWORD
+/// length then that many ANSI bytes).
+struct ParamDefault {
+    u16 vt{0};
+    u64 bits{0};        ///< Scalar payload, little-endian, natural width.
+    std::string text;   ///< VT_BSTR only.
+};
+
+/// A parameter or return type in Automation terms: the VARTYPE an argument
+/// takes (VT_ARRAY|T for SAFEARRAY(T)), the pointer levels around it, and
+/// for interface types the IID ITypeInfo::Invoke QueryInterfaces to.
+/// A user-defined interface pointer `IFoo*` is VT_DISPATCH/VT_UNKNOWN at
+/// depth 0 (the interface consumes one VT_PTR); enums are VT_I4; aliases
+/// are expanded. Measured with typeinfo_invoke_probe (`ty` rows).
+struct ParamShape {
+    bool        valid{false};   ///< false: record, union, unresolvable import
+    u16         vt{0};
+    u8          depth{0};       ///< VT_PTR levels left (0 by value, 1 for T*)
+    bool        has_iid{false};
+    TypeLibGuid iid{};
+};
+
 /// Per-function summary from the MSFT member block (memoffset). Enough for
 /// GetFuncDesc / GetDocumentation(memid) / Invoke-via-vtable.
 struct FuncSummary {
@@ -92,6 +121,12 @@ struct FuncSummary {
     /// Referenced type GUID for user-defined parameters when the type library
     /// supplies one. All-zero means the reference could not be resolved.
     std::vector<TypeLibGuid> param_iids;
+    /// PARAMFLAG_FHASDEFAULT value per parameter (IDL order); nullopt when
+    /// the parameter has none or its encoding is not one Vitreo decodes.
+    std::vector<std::optional<ParamDefault>> param_defaults;
+    /// Automation shape per parameter (IDL order) and of the return type.
+    std::vector<ParamShape> param_shapes;
+    ParamShape result_shape;
     std::string name;
 };
 
@@ -126,6 +161,11 @@ struct TypeInfoSummary {
     /// coclass uses its linked reference records). Index 0 is the base
     /// interface used by GetIDsOfNames / GetNames.
     std::vector<u32> impl_hrefs;
+    /// IMPLTYPEFLAGS per impl_hrefs entry (coclass reference records only).
+    std::vector<u32> impl_flags;
+    /// TKIND_ALIAS only: TYPEATTR.tdescAlias, decoded from MSFT `datatype1`
+    /// (same encoding as a parameter TYPEDESC; native variant 10).
+    TypeDescription alias_description;
 
     [[nodiscard]] u32 reader_instance_size(u32 pointer_size) const {
         // Interfaces and coclasses describe a pointer-sized instance. Native

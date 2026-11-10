@@ -12,6 +12,7 @@
 #include "windowing/resources/resource_walker.hpp"
 #include "core/memory/guest_memory.hpp"
 #include "core/pe/parser/pe_structures.hpp"
+#include "winapi/user32/messages/static_image_layout.hpp"
 
 
 #include <cstdio>
@@ -115,6 +116,35 @@ void DialogManager::create_controls_from_template(
         if (const windowing::WindowData* dlg = m_hwnd_mgr.find(dlg_hwnd)) {
             child.hinstance = dlg->hinstance;
             child.owner_thread_id = dlg->owner_thread_id;
+        }
+
+        // An SS_BITMAP static naming its bitmap in the template sizes itself
+        // to that bitmap; the template's cx/cy are ignored (Learn: Static
+        // Control Styles). Size the window before it exists so the host view
+        // and every geometry query agree from the start.
+        if (item.class_ordinal == 0x0082 && (item.style & 0x1F) == 0x0E &&
+            (item.title_ordinal != 0 || !item.title.empty())) {
+            windowing::ResourceEntry bmp_res{};
+            if (item.title_ordinal != 0) {
+                bmp_res = windowing::find_resource(
+                    m_memory, rsrc_image_base, rsrc_rva, rsrc_size,
+                    windowing::RT::BITMAP, item.title_ordinal);
+            } else {
+                std::u16string name16;
+                for (wchar_t ch : item.title) {
+                    name16.push_back(static_cast<char16_t>(ch & 0xFFFF));
+                }
+                bmp_res = windowing::find_resource_by_string_name(
+                    m_memory, rsrc_image_base, rsrc_rva, rsrc_size,
+                    windowing::RT::BITMAP, name16.data(),
+                    static_cast<u16>(name16.size()));
+            }
+            i32 bw = 0, bh = 0;
+            if (bmp_res.data && packed_dib_size(bmp_res.data, bmp_res.size, bw, bh)) {
+                child.rect = static_image_window_rect(child.rect, child.rect,
+                                                      item.style, bw, bh);
+                child.client_rect = child.rect;
+            }
         }
 
         windowing::HWND child_hwnd = m_hwnd_mgr.create(child);

@@ -211,12 +211,16 @@ void pack_ff_vertex_uniforms(const FFPipelineState& state,
 
     if (ff_lighting_uniforms(state)) {
         // Direct3D lights in camera space (Learn, "Camera Space
-        // Transformations (Direct3D 9)"): the camera sits at the origin, and
-        // with D3DRS_LOCALVIEWER FALSE the halfway vector is
-        // norm((0,0,1) + Ldir) (Learn, "Specular Lighting (Direct3D 9)").
-        // GL lighting (gl_spot_model) reads neither.
+        // Transformations (Direct3D 9)"): the camera sits at the origin
+        // looking down +Z. With D3DRS_LOCALVIEWER TRUE the vertex-to-eye
+        // vector is norm(Cp - Vp); with FALSE it is that vector's limit for
+        // a viewer at infinity, (0,0,-1). Learn's "Specular Lighting" page
+        // writes (0,0,1), but hardware renders the limit: a light along +Z
+        // with the orthogonal viewer cancels to no highlight (RTX 4080,
+        // D3D9OracleTest ff_infinite_viewer: black, where (0,0,1) gives
+        // 0.6887^4 of the specular colour). GL lighting reads neither.
         append_float4(out, 0.0f, 0.0f, 0.0f, 1.0f);
-        append_float4(out, 0.0f, 0.0f, 1.0f, 0.0f);
+        append_float4(out, 0.0f, 0.0f, -1.0f, 0.0f);
         append_float4(out, state.global_ambient[0], state.global_ambient[1],
                       state.global_ambient[2], state.global_ambient[3]);
         append_bytes(out, state.material.diffuse, sizeof(float) * 4);

@@ -130,6 +130,13 @@ struct VfsFile {
     /// C's error indicator (ferror); set on I/O failure / wrong direction and
     /// cleared by clearerr/rewind/successful fseek (Learn ferror/clearerr).
     bool error_flag{false};
+    /// The guest FILE's _flag cell (legacy struct _iobuf: +0x0C on x86, +24
+    /// on x64), 0 for the opaque UCRT FILE. VC6-era headers define feof and
+    /// ferror as macros reading _IOEOF/_IOERR there, so the guest sees EOF and
+    /// error only through this cell; set_stream_eof/set_stream_error keep it
+    /// in step with eof_flag/error_flag.
+    GuestMemory* status_memory{nullptr};
+    GuestAddr status_flag{0};
     /// fopen access mode so fwrite/fgetc can refuse the wrong direction.
     capsule::AccessMode access{capsule::AccessMode::Read};
     /// Optional binary-mode buffer and synchronization sidecar inside the
@@ -195,6 +202,15 @@ void stdio_diag_vfs(Marshaler& m, const char* who, u32 stream, VfsFile& vf);
 
 /// Raw bytes already fetched from the VFS but not yet handed to the guest.
 usize pending_read_ahead(const VfsFile& vf);
+
+/// Set or clear the stream's end-of-file / error indicator: the host flag and
+/// the guest FILE's _IOEOF (0x10) / _IOERR (0x20) bit (stdio.h _iobuf).
+void set_stream_eof(VfsFile& vf, bool value);
+void set_stream_error(VfsFile& vf, bool value);
+
+/// fgets: the bytes of one line (through its '\n') or until @p dst is full,
+/// exactly as one-byte stdio_vfs_read_translated calls would deliver them.
+usize stdio_vfs_read_line(capsule::Vfs& vfs, VfsFile& vf, std::span<u8> dst);
 
 /// Drop any read-ahead, rewind the VFS position to the stream's logical
 /// position, and return the handle for direct use.

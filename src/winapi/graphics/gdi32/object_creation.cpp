@@ -250,6 +250,7 @@ Handle GdiManager::create_ic_w() {
     dc = DcState{};
     dc.associated_hwnd = 0; // information context — no window
     dc.screen_dc = true;    // the display's DC (GetObjectType OBJ_DC)
+    dc.reference_device_dc = true;
     dc.selected_brush = m_stock_objects[WHITE_BRUSH_ID];
     dc.selected_pen = m_stock_objects[BLACK_PEN_ID];
     dc.selected_font = m_stock_objects[SYSTEM_FONT_ID];

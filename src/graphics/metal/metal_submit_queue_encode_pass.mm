@@ -34,7 +34,10 @@
 
 namespace vitreo::graphics {
 
-void MetalSubmitQueue::encode_begin_pass(const CsBeginPass& pass) {
+void MetalSubmitQueue::encode_begin_pass(const CsBeginPass& pass,
+                                         u32 discard_colors,
+                                         bool discard_depth) {
+    clear_attachment_memo();
     @autoreleasepool {
         if (!m_recorder) {
             m_recorder = std::make_unique<MetalCommandRecorder>(
@@ -74,6 +77,11 @@ void MetalSubmitQueue::encode_begin_pass(const CsBeginPass& pass) {
                     (__bridge id<MTLTexture>)pass.resolve;
                 desc.colorAttachments[i].storeAction =
                     MTLStoreActionStoreAndMultisampleResolve;
+            } else if ((discard_colors & (1u << i)) != 0) {
+                // The next pass clears this attachment before any read, so
+                // the store would be replaced immediately. Tile memory can
+                // drop it.
+                desc.colorAttachments[i].storeAction = MTLStoreActionDontCare;
             } else {
                 desc.colorAttachments[i].storeAction = MTLStoreActionStore;
             }
@@ -112,7 +120,8 @@ void MetalSubmitQueue::encode_begin_pass(const CsBeginPass& pass) {
             desc.depthAttachment.slice = pass.depth_slice;
             desc.depthAttachment.loadAction =
                 pass.clear_depth ? MTLLoadActionClear : MTLLoadActionLoad;
-            desc.depthAttachment.storeAction = MTLStoreActionStore;
+            desc.depthAttachment.storeAction = discard_depth
+                ? MTLStoreActionDontCare : MTLStoreActionStore;
             desc.depthAttachment.clearDepth = pass.depth_clear;
             if (pass.stencil) {
                 desc.stencilAttachment.texture =
@@ -122,7 +131,8 @@ void MetalSubmitQueue::encode_begin_pass(const CsBeginPass& pass) {
                 desc.stencilAttachment.loadAction =
                     pass.clear_stencil ? MTLLoadActionClear
                                        : MTLLoadActionLoad;
-                desc.stencilAttachment.storeAction = MTLStoreActionStore;
+                desc.stencilAttachment.storeAction = discard_depth
+                    ? MTLStoreActionDontCare : MTLStoreActionStore;
                 desc.stencilAttachment.clearStencil = pass.stencil_clear;
             }
         }
@@ -164,6 +174,7 @@ void MetalSubmitQueue::encode_begin_pass(const CsBeginPass& pass) {
 }
 
 void MetalSubmitQueue::close_open_pass() {
+    clear_attachment_memo();
     if (m_recorder) {
         m_recorder->end_render_pass();
     }
@@ -172,7 +183,10 @@ void MetalSubmitQueue::close_open_pass() {
     m_open_pass_ended = false;
     m_open_pass_merged = false;
     m_open_pass_wrote = false;
+    m_open_uav_count = 0;
     m_open_depth_dirty = false;
+    m_open_stencil_dirty = false;
+    m_open_color_dirty = false;
     m_open_begin = nullptr;
     m_open_attachment_root_count = 0;
     if (m_open_begin_owned) [[unlikely]] {
@@ -296,7 +310,7 @@ bool MetalSubmitQueue::reopen_pass(u64 pass_id, const CsBeginPass* fallback) {
             }
         }
     }
-    encode_begin_pass(*again);
+    encode_begin_pass(*again, 0, false);
     if (!m_recorder->has_render_encoder()) {
         release_begin(*again);
         return false;
@@ -306,7 +320,27 @@ bool MetalSubmitQueue::reopen_pass(u64 pass_id, const CsBeginPass* fallback) {
     m_open_begin = m_open_begin_owned.get();
     // Loaded: the attachments hold what memory holds.
     m_open_depth_dirty = false;
+    m_open_stencil_dirty = false;
+    m_open_color_dirty = false;
     return true;
+}
+
+void MetalSubmitQueue::complete_visibility_carries(std::vector<VisibilityCarry> done) {
+        // Every command buffer of the list has completed (one queue retires
+        // in order, and this is the list's last): both slots are final.
+        for (const VisibilityCarry& entry : done) {
+            id<MTLBuffer> carry = (__bridge id<MTLBuffer>)entry.carry;
+            id<MTLBuffer> target = (__bridge id<MTLBuffer>)entry.target;
+            u64 add = 0;
+            u64 value = 0;
+            std::memcpy(&add, [carry contents], sizeof(add));
+            u8* const slot = static_cast<u8*>([target contents]) + entry.offset;
+            std::memcpy(&value, slot, sizeof(value));
+            value += add;
+            std::memcpy(slot, &value, sizeof(value));
+            release(entry.carry);
+            release(entry.target);
+        }
 }
 
 void MetalSubmitQueue::list_completed(u64 gen) {
@@ -326,21 +360,7 @@ void MetalSubmitQueue::list_completed(u64 gen) {
                 m_carry_lists.fetch_sub(1, std::memory_order_relaxed);
             }
         }
-        // Every command buffer of the list has completed (one queue retires
-        // in order, and this is the list's last): both slots are final.
-        for (const VisibilityCarry& entry : done) {
-            id<MTLBuffer> carry = (__bridge id<MTLBuffer>)entry.carry;
-            id<MTLBuffer> target = (__bridge id<MTLBuffer>)entry.target;
-            u64 add = 0;
-            u64 value = 0;
-            std::memcpy(&add, [carry contents], sizeof(add));
-            u8* const slot = static_cast<u8*>([target contents]) + entry.offset;
-            std::memcpy(&value, slot, sizeof(value));
-            value += add;
-            std::memcpy(slot, &value, sizeof(value));
-            release(entry.carry);
-            release(entry.target);
-        }
+        complete_visibility_carries(std::move(done));
     }
     signal_gpu_gen(gen);
 }

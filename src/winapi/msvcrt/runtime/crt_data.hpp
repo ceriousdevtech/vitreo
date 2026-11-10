@@ -33,6 +33,8 @@ public:
     static constexpr u64 FMODE_OFFSET      = 0x04; ///< int _fmode
     static constexpr u64 ADJUST_FDIV_OFFSET = 0x08; ///< int _adjust_fdiv
     static constexpr u64 ACMDLN_OFFSET     = 0x0C; ///< char* _acmdln
+    /// The native pointer cell must not overlap the x86 `_iob` at +0x10.
+    static constexpr u64 ACMDLN64_OFFSET   = 0xD40;
     static constexpr u64 IOB_OFFSET        = 0x10; ///< FILE _iob[3] (x86)
     static constexpr u64 LEGACY_FILE_SIZE  = 32;
     /// The x64 `FILE _iob[3]`. msvcrt's struct _iobuf has three pointer
@@ -89,6 +91,35 @@ public:
     static constexpr u64 CTYPE_TABLE_OFFSET = 0x1000;
     static constexpr u64 CTYPE_NEGATIVE_SLOTS = 128;
     static constexpr u64 CTYPE_TOTAL_SLOTS = CTYPE_NEGATIVE_SLOTS + 256;
+    /// unsigned char _mbctype[257] (index c + 1, slot 0 for EOF), after the
+    /// ctype table. msvcrt fills it at startup from the ANSI code page:
+    /// _SBUP for bytes GetStringTypeW calls C1_UPPER, otherwise _SBLOW for
+    /// C1_LOWER, and no lead bytes, while _getmbcp() still reports 0
+    /// (crt_legacy_exports_probe: the 1252 table, identical on x86 and x64).
+    static constexpr u64 MBCTYPE_OFFSET = 0x1300;
+    static constexpr u64 MBCTYPE_SIZE = 257;
+    static constexpr u8 MB_SBUP = 0x10;
+    static constexpr u8 MB_SBLOW = 0x20;
+    /// The VC6-era locale globals MSVCP60 imports as data. In msvcrt's "C"
+    /// locale they are all zero (crt_legacy_exports_probe): UINT
+    /// __lc_codepage, UINT __lc_collate_cp, LCID __lc_handle[6] (LC_ALL ..
+    /// LC_TIME), int __setlc_active, int __unguarded_readlc_active.
+    static constexpr u64 LC_CODEPAGE_OFFSET = 0x1420;
+    static constexpr u64 LC_COLLATE_CP_OFFSET = 0x1424;
+    static constexpr u64 LC_HANDLE_OFFSET = 0x1428;
+    static constexpr u64 LC_HANDLE_COUNT = 6;
+    static constexpr u64 SETLC_ACTIVE_OFFSET = 0x1440;
+    static constexpr u64 UNGUARDED_READLC_ACTIVE_OFFSET = 0x1444;
+    static_assert(CTYPE_TABLE_OFFSET + CTYPE_TOTAL_SLOTS * 2 <= MBCTYPE_OFFSET);
+    static_assert(MBCTYPE_OFFSET + MBCTYPE_SIZE <= LC_CODEPAGE_OFFSET);
+    static_assert(UNGUARDED_READLC_ACTIVE_OFFSET + 4 <= WCMDLINE_STR_OFFSET);
+
+    /// The _mbctype entry msvcrt derives for byte @p ch of the process ANSI
+    /// code page (0 when the byte does not decode on its own).
+    [[nodiscard]] static u8 mbctype_bits(u8 ch) noexcept;
+
+    /// Address of `unsigned char _mbctype[257]` (what __p__mbctype returns).
+    [[nodiscard]] u64 mbctype_addr() const noexcept { return m_base + MBCTYPE_OFFSET; }
 
     // MSVC ctype classification bits (public, stable across CRT versions).
     static constexpr u16 CT_UPPER   = 0x0001;
@@ -108,7 +139,8 @@ public:
     /// Allocate and initialize the CRT data block in guest memory.
     /// @param memory Guest memory to map the region in
     /// @param base Base address (default: DEFAULT_BASE)
-    /// @param cmdline Command line string for _acmdln (default: empty → "program.exe")
+    /// @param cmdline Original process command line in host UTF-8. The CRT
+    ///   publishes an ACP narrow copy and a UTF-16 copy (empty → "program.exe").
     /// @return true on success, false on failure
     [[nodiscard]] bool initialize(GuestMemory& memory, u64 base = DEFAULT_BASE,
                                   std::string_view cmdline = "");
@@ -126,7 +158,9 @@ public:
     [[nodiscard]] u64 adjust_fdiv_addr() const noexcept { return m_base + ADJUST_FDIV_OFFSET; }
 
     /// Get address of _acmdln
-    [[nodiscard]] u64 acmdln_addr() const noexcept { return m_base + ACMDLN_OFFSET; }
+    [[nodiscard]] u64 acmdln_addr() const noexcept {
+        return m_base + (m_guest_64bit ? ACMDLN64_OFFSET : ACMDLN_OFFSET);
+    }
 
     /// Get address of _wcmdln (wchar_t* cell)
     [[nodiscard]] u64 wcmdln_addr() const noexcept { return m_base + WCMDLN_OFFSET; }
@@ -243,6 +277,11 @@ public:
         return m_command_line;
     }
 
+    /// Original Unicode process command line, before lossy ACP conversion.
+    [[nodiscard]] const std::u16string& wide_command_line() const noexcept {
+        return m_wide_command_line;
+    }
+
     /// Lists the names in a directory (Windows path, "" = current directory)
     /// for the UCRT's _crt_argv_expanded_arguments wildcard expansion.
     /// Injected by the DLL registry, which owns the VFS.
@@ -260,6 +299,7 @@ private:
     bool m_guest_64bit{false};
     bool m_initialized{false};
     std::string m_command_line;
+    std::u16string m_wide_command_line;
     DirectoryLister m_directory_lister;
 };
 

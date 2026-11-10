@@ -24,8 +24,12 @@
 #include <cstring>
 #include <string>
 #include <vector>
+#include <mutex>
+#include <limits>
 
 namespace vitreo::winapi::gdi_text_exports {
+#include "ext_text_out_contract.inc"
+#include "text_extent_memory_contract.inc"
 
 namespace {
 
@@ -44,7 +48,9 @@ bool read_ansi(Marshaler& m, GuestAddr p, usize count, std::u16string& out) {
     std::vector<u8> bytes(count);
     if (m.memory().read_bytes(p, bytes.data(), count).is_err()) return false;
     std::vector<u16> units(count * 2 + 2);
-    const auto r = codepage::multi_byte_to_wide(codepage::kCpAcp, 0, bytes.data(), bytes.size(), units.data(),
+    // GDI uses the system ACP, independently of a process UTF-8 manifest
+    // (Learn: "Use UTF-8 code pages in Windows apps", GDI note).
+    const auto r = codepage::multi_byte_to_wide(codepage::kAnsiCodePage, 0, bytes.data(), bytes.size(), units.data(),
                                                 units.size());
     if (!r.ok()) return false;
     out.assign(units.begin(), units.begin() + r.count);
@@ -135,7 +141,7 @@ void text_out(GdiManager& mgr, Marshaler& m, bool wide) {
 
 // ExtTextOutW/A(hdc, x, y, options, lprect, lpString, c, lpDx)
 void ext_text_out(GdiManager& mgr, Marshaler& m, bool wide) {
-    constexpr u32 ETO_GLYPH_INDEX = 0x10, ETO_PDY = 0x2000;
+    namespace facts = ext_text_out_contract;
     const auto hdc = static_cast<Handle>(m.arg(0));
     const i32 x = static_cast<i32>(m.arg32(1));
     const i32 y = static_cast<i32>(m.arg32(2));
@@ -144,19 +150,51 @@ void ext_text_out(GdiManager& mgr, Marshaler& m, bool wide) {
     const GuestAddr str = m.arg_ptr(5);
     const u32 count = m.arg32(6);
     const GuestAddr dx_ptr = m.arg_ptr(7);
+    const auto unsupported = [&](std::once_flag& warning, const char* detail) {
+        std::call_once(warning, [detail, options, count] { std::fprintf(stderr,
+            "[vitreo] UNIMPLEMENTED gdi32!ExtTextOutA/W: %s (options=0x%x count=%u)\n",
+            detail, options, count); });
+        m.set_return(0u);
+    };
     if (!mgr.has_dc(hdc)) {  // "ExtTextOutW(NULL)=0 err=57005"
         m.set_return(0u);
         return;
     }
-    const bool glyphs = (options & ETO_GLYPH_INDEX) != 0;
+    if (count > facts::documented_max_count) {
+        static std::once_flag warning;
+        unsupported(warning, "count exceeds the documented supported limit"); return;
+    }
+    const bool glyphs = (options & facts::ETO_GLYPH_INDEX) != 0;
+    // Contrary to Learn's ANSI no-op prose, both original x86/x64 Windows
+    // probes draw and update CP for ANSI glyph indices just as W does.
+    // Preserve that measured behavior; do not invent a whole-call no-op.
+    const u32 ignored = glyphs ? facts::ETO_RTLREADING : 0;
+    const u32 supported = facts::ETO_OPAQUE | facts::ETO_CLIPPED |
+                          facts::ETO_GLYPH_INDEX | facts::ETO_PDY | ignored;
+    if ((options & ~supported) != 0) {
+        static std::once_flag warning;
+        unsupported(warning, "language, numeric, or unrecognized ETO options"); return;
+    }
+    if ((options & facts::ETO_PDY) != 0 && dx_ptr == 0) {
+        // Windows rejects this even when c is zero (original oracle probe).
+        m.set_return(0u); return;
+    }
+    if (!wide && !glyphs) {
+        const auto* font = mgr.get_dc_font_info(hdc);
+        if (font != nullptr && font->char_set != facts::ANSI_CHARSET &&
+            font->char_set != facts::DEFAULT_CHARSET) {
+            static std::once_flag warning;
+            unsupported(warning, "non-default ANSI font character set"); return;
+        }
+    }
     std::u16string text;
     if (count > 0) {
-        if (str == 0 || count > 0x7FFFFFFu) {
+        if (str == 0) {
             m.set_return(0u);
             return;
         }
         const bool ok = (wide || glyphs) ? read_wide(m, str, count, text)
-                                         : read_ansi(m, str, count, text);
+            : read_ansi(m, str, count, text);
         if (!ok) {
             m.set_return(0u);
             return;
@@ -164,9 +202,10 @@ void ext_text_out(GdiManager& mgr, Marshaler& m, bool wide) {
     }
     ClipRect rect;
     const ClipRect* rect_arg = nullptr;
-    if (rect_ptr != 0) {
+    if (rect_ptr != 0 && (options & (facts::ETO_OPAQUE | facts::ETO_CLIPPED)) != 0) {
         i32 r[4] = {};
-        if (m.memory().read_bytes(rect_ptr, reinterpret_cast<u8*>(r), 16).is_err()) {
+        static_assert(sizeof(r) == facts::RECT_SIZE);
+        if (m.memory().read_bytes(rect_ptr, reinterpret_cast<u8*>(r), sizeof(r)).is_err()) {
             m.set_return(0u);
             return;
         }
@@ -179,53 +218,117 @@ void ext_text_out(GdiManager& mgr, Marshaler& m, bool wide) {
     std::vector<i32> dx;
     const std::vector<i32>* dx_arg = nullptr;
     if (dx_ptr != 0 && !text.empty()) {
-        // ETO_PDY: lpDx holds (dx, dy) pairs; vertical offsets are not drawn.
-        const usize n = (options & ETO_PDY) ? text.size() * 2 : text.size();
+        // The A array is counted in input bytes, not decoded UTF-16 units.
+        const usize n = (options & facts::ETO_PDY) ? static_cast<usize>(count) * 2 : count;
         std::vector<i32> raw(n);
-        if (m.memory().read_bytes(dx_ptr, reinterpret_cast<u8*>(raw.data()), n * 4).is_err()) {
+        if (m.memory().read_bytes(dx_ptr, reinterpret_cast<u8*>(raw.data()), n * sizeof(i32)).is_err()) {
             m.set_return(0u);
             return;
         }
-        if (options & ETO_PDY) {
+        if (options & facts::ETO_PDY) {
             bool vertical = false;
-            for (usize i = 0; i < text.size(); ++i) {
+            for (usize i = 0; i < count; ++i) {
                 dx.push_back(raw[i * 2]);
                 vertical = vertical || raw[i * 2 + 1] != 0;
             }
-            static bool logged = false;
-            if (vertical && !logged) {
-                logged = true;
-                std::fprintf(stderr, "[vitreo] UNIMPLEMENTED gdi32!ExtTextOut: ETO_PDY vertical offsets\n");
+            if (vertical) {
+                static std::once_flag warning;
+                unsupported(warning, "nonzero ETO_PDY vertical displacement"); return;
             }
         } else {
             dx = std::move(raw);
+        }
+        if (!wide && !glyphs && text.size() != count) {
+            static std::once_flag warning;
+            unsupported(warning, "multibyte ANSI spacing for a system code page"); return;
+        }
+        i64 total = 0;
+        for (const i32 advance : dx) total += advance;
+        if (total < std::numeric_limits<i32>::min() || total > std::numeric_limits<i32>::max()) {
+            static std::once_flag warning;
+            unsupported(warning, "total character advance overflow"); return;
         }
         dx_arg = &dx;
     }
     const bool ok = mgr.ext_text_out(hdc, x, y, options, rect_arg, text, dx_arg, glyphs);
     // Drawing characters clears the last error; glyph indices leave it
     // (s3gdi_otm_probe "ExtTextOutW ok=1 err=0", "(glyph index)=1 err=57005").
-    if (ok && !glyphs && !text.empty()) set_last_error(0);
+    if (ok && !glyphs && !text.empty() && (options & facts::ETO_PDY) == 0) set_last_error(0);
     m.set_return(ok ? 1u : 0u);
 }
 
 // GetTextExtentPoint32W/A and GetTextExtentPointW/A(hdc, lpString, c, lpSize)
-void get_text_extent_point(GdiManager& mgr, Marshaler& m, bool wide) {
+void get_text_extent_point(GdiManager& mgr, Marshaler& m, bool wide, bool point32) {
+    namespace facts = text_extent_memory_contract;
+    static_assert(sizeof(i32) == facts::long_bytes);
     const auto hdc = static_cast<Handle>(m.arg(0));
     const GuestAddr str = m.arg_ptr(1);
     const i32 count = static_cast<i32>(m.arg32(2));
     const GuestAddr size = m.arg_ptr(3);
-    // NULL DC and c < 0: ERROR_INVALID_PARAMETER ("GetTextExtentPoint32W(NULL
-    // dc)=0 err=87", "(c=-1)=0 err=87"). A NULL SIZE faults inside gdi32 on
-    // Windows; it fails here the same way as a bad count.
-    if (!mgr.has_dc(hdc) || count < 0 || size == 0) {
+    auto& memory = m.memory();
+    // A zero count is a user-mode store before HDC or string validation.
+    // Windows x86 and x64 Point32W store two LONGs; the remaining x64
+    // exports store a whole SIZE, with no partial store on a page fault.
+    const auto first_denied = [&](GuestAddr base, usize bytes, MemoryProtection protection) {
+        if (memory.has_protection(base, bytes, protection)) return base + bytes;
+        for (usize i = 0; i < bytes; ++i) {
+            if (base + i < base || !memory.has_protection(base + i, 1, protection))
+                return base + i;
+        }
+        return base + bytes;
+    };
+    if (count == 0) {
+        const bool split = !m.cpu_is_64bit() ||
+            (wide ? (point32 ? facts::split64_Point32W : facts::split64_PointW)
+                  : (point32 ? facts::split64_Point32A : facts::split64_PointA));
+        const std::array<i32, 2> zeros{};
+        const usize store_bytes = split ? facts::long_bytes : facts::size_bytes;
+        for (usize offset = facts::cx_offset; offset < facts::size_bytes; offset += store_bytes) {
+            const auto address = size + offset;
+            const auto denied = first_denied(address, store_bytes, MemoryProtection::Write);
+            if (denied != address + store_bytes) {
+                m.set_return(0u);
+                (void)m.raise_access_violation(true, denied);
+                return;
+            }
+            if (memory.write_bytes(address, reinterpret_cast<const u8*>(zeros.data()), store_bytes).is_err()) {
+                m.set_return(0u);
+                (void)m.raise_access_violation(true, address);
+                return;
+            }
+        }
+        m.set_return(1u);
+        return;
+    }
+    if (count < 0 || !mgr.has_dc(hdc)) {
         set_last_error(error_codes::ERROR_INVALID_PARAMETER);
         m.set_return(0u);
         return;
     }
+    const usize source_bytes = static_cast<usize>(count) * (wide ? sizeof(u16) : sizeof(u8));
+    const auto denied = first_denied(str, source_bytes, MemoryProtection::Read);
+    if (denied != str + source_bytes) {
+        m.set_return(0u);
+        if (str == 0) {
+            (void)m.raise_access_violation(false, str);
+        } else {
+            // Only NULL-source faults are measured by the current oracle.
+            static std::once_flag warning;
+            std::call_once(warning, [] {
+                std::fprintf(stderr, "[vitreo] UNIMPLEMENTED gdi32!GetTextExtentPoint: non-NULL unreadable source fault contract\n");
+            });
+        }
+        return;
+    }
     std::u16string text;
-    if (count > 0 && (str == 0 || !read_text(m, str, static_cast<usize>(count), wide, text))) {
-        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
+    if (!read_text(m, str, static_cast<usize>(count), wide, text)) {
+        m.set_return(0u);
+        return;
+    }
+    // A NULL positive-count output fails before measurement and preserves
+    // LastError. Other invalid outputs are checked after measurement, return
+    // FALSE without SEH or partial writes, and leave the measured error state.
+    if (size == 0) {
         m.set_return(0u);
         return;
     }
@@ -236,14 +339,17 @@ void get_text_extent_point(GdiManager& mgr, Marshaler& m, bool wide) {
         m.set_return(0u);
         return;
     }
-    const i32 out[2] = {w, h};
-    (void)m.memory().write_bytes(size, reinterpret_cast<const u8*>(out), 8);
-    // The x86 gdi32 measures through the language-pack path, which clears
-    // the last error; x64 does too once a character needs a linked
-    // (fallback) face ("GetTextExtentPoint32W ok=1 err=0" on x86 only,
-    // "GetTextExtentPointW(cjk)=1 ... err=0" on both).
-    if (count > 0 && (!m.cpu_is_64bit() || linked)) set_last_error(0);
-    m.set_return(1u);
+    if (!memory.has_protection(size, facts::size_bytes, MemoryProtection::Write)) {
+        set_last_error(0);
+        m.set_return(0u);
+        return;
+    }
+    const std::array<i32, 2> out{w, h};
+    const bool ok = memory.write_bytes(size, reinterpret_cast<const u8*>(out.data()), facts::size_bytes).is_ok();
+    // Preserve the prior independent success measurements; the memory oracle
+    // deliberately excludes ambient successful font-path LastError values.
+    if (!ok || !m.cpu_is_64bit() || linked) set_last_error(0);
+    m.set_return(ok ? 1u : 0u);
 }
 
 // GetTextExtentExPointW/A(hdc, lpszString, cchString, nMaxExtent, lpnFit, lpnDx, lpSize)

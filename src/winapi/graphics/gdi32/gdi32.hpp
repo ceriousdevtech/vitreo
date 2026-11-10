@@ -6,6 +6,7 @@
 #include <vitreo/common.hpp>
 #include "winapi/kernel32/handle.hpp"
 #include "winapi/core/thunk_registry.hpp"
+#include "windowing/model/hwnd_manager.hpp"
 
 #include "winapi/graphics/dwrite/font_backend.hpp"
 #include "winapi/graphics/gdi32/bitmap_codec.hpp"
@@ -184,6 +185,9 @@ struct SoftBitmap {
     /// invisible). Its unpainted pixels are therefore transparent (A=0), and
     /// the presenter composites what lies beneath.
     bool child_window = false;
+    /// A child surface whose untouched (transparent) pixels have all been
+    /// filled from the parent's (see GdiManager::fill_child_backdrop).
+    bool backdrop_complete = false;
     /// A device-dependent bitmap's packed rows as last written through
     /// CreateBitmap/SetBitmapBits, kept only when its rows carry padding
     /// bits: GetBitmapBits hands those bits back unchanged
@@ -217,6 +221,7 @@ struct SoftBitmap {
         window_surface = true;
         const size_t count = static_cast<size_t>(w) * h;
         pixels.assign(count * 4, 0x00);
+        backdrop_complete = false;
         if (!child_window) {
             for (size_t i = 0; i < count; ++i) pixels[i * 4 + 3] = 0xFF;
         }
@@ -373,6 +378,18 @@ public:
     /// Replace a DC's clip region (device units), as BeginPaint does with
     /// the update region.
     void set_dc_clip(Handle hdc, const ClipRect& clip);
+    void set_dc_paint_region(Handle hdc, const ClipRect& clip);
+    [[nodiscard]] Handle get_window_dc(Handle hwnd);
+    struct SystemRegionState {
+        std::vector<std::pair<u64,ClipRect>> window_shapes;
+        // Initialized layering: true denotes per-pixel UpdateLayeredWindow.
+        std::vector<std::pair<u64,bool>> layered_windows;
+        std::vector<windowing::HwndManager::Geometry> window_geometry;
+        bool has_snapshot{false},snapshot_complete{true};
+    };
+    i32 set_meta_region(Handle hdc);
+    i32 get_random_region(Handle hdc, Handle hrgn, i32 selector, bool guest_is_64bit,
+                          const SystemRegionState* scene = nullptr);
     /// Replace a region object's shape; false for an unknown region.
     bool set_region(Handle hrgn, const ClipRect& shape) { ApiLock api_lock(*this);
         const auto it = m_region_objects.find(hrgn);
@@ -442,6 +459,11 @@ public:
 
     /// CreateCompatibleBitmap with real pixel buffer
     [[nodiscard]] Handle create_compatible_bitmap(Handle hdc, i32 width, i32 height);
+
+    /// CreateDIBitmap creates a DDB even when the reference selects a section.
+    /// A nonzero error is the measured LastError; zero preserves the caller's.
+    [[nodiscard]] Handle create_dib_bitmap(Handle hdc, GuestAddr header, u32 flags,
+        GuestAddr bits, GuestAddr info, u32 usage, u32* error = nullptr);
 
     /// Create an HBITMAP already holding @p rgba (top-down, width*height*4).
     /// Used by GDI+ to hand a decoded image to callers as a GDI object.
@@ -690,7 +712,8 @@ public:
     [[nodiscard]] bool resize_palette(Handle hPal, u32 cEntries);
 
     /// GetSystemPaletteEntries — return system palette entries
-    [[nodiscard]] u32 get_system_palette_entries(Handle hdc, u32 iStart, u32 cEntries, GuestAddr pPE);
+    [[nodiscard]] u32 get_system_palette_entries(Handle hdc, u32 iStart, u32 cEntries, GuestAddr pPE, Marshaler* marshaler = nullptr);
+    bool unrealize_object(Handle object);
 
     /// SetSystemPaletteUse — set SYSPAL_NOSTATIC/SYSPAL_STATIC mode
     [[nodiscard]] u32 set_system_palette_use(Handle hdc, u32 uUsage);
@@ -830,7 +853,7 @@ public:
     bool get_dc_clip(Handle hdc, ClipRect& out) const { ApiLock api_lock(*this);
         auto it = m_dc_states.find(hdc);
         if (it == m_dc_states.end()) return false;
-        out = it->second.clip_rect;
+        out = it->second.app_clip;
         return true;
     }
 
@@ -935,8 +958,11 @@ public:
     /// EnumFontFamiliesEx: calls @p proc (FONTENUMPROC) for the faces
     /// matching @p face (empty: one per family) and @p charset (1: every
     /// charset); the last callback's value, 1 when none ran, 0 for a bad DC.
+    /// @p one_charset_per_style: the legacy EnumFontFamilies shape, each
+    /// style once in the first charset it claims (oracle
+    /// enumfontfamilies_legacy*.expected).
     i32 enum_font_families_ex(Handle hdc, const std::u16string& face, u8 charset, GuestAddr proc, u64 lparam,
-                              bool wide, bool is_64bit);
+                              bool wide, bool is_64bit, bool one_charset_per_style = false);
     /// Enhanced metafiles as record streams (metafile_ops.cpp).
     [[nodiscard]] Handle set_enh_metafile_bits(std::span<const u8> data);
     [[nodiscard]] const std::vector<u8>* enh_metafile(Handle h) const;
@@ -988,7 +1014,7 @@ public:
     bool stroke_and_fill_path(Handle hdc);
     bool flatten_path(Handle hdc);
     bool widen_path(Handle hdc);
-    bool select_clip_path(Handle hdc, i32 mode);
+    bool select_clip_path(Handle hdc, i32 mode, const SystemRegionState* scene=nullptr);
     [[nodiscard]] Handle path_to_region(Handle hdc);
     /// GetPath: the closed path's points in logical units; -1 when there is
     /// no closed path.
@@ -1105,15 +1131,15 @@ public:
 
     /// SelectClipRgn — select region as clipping region
     /// Returns region complexity (SIMPLEREGION=2, NULLREGION=1, ERROR=0)
-    i32 select_clip_rgn(Handle hdc, Handle hrgn);
+    i32 select_clip_rgn(Handle hdc, Handle hrgn, const SystemRegionState* scene=nullptr);
 
     /// ExtSelectClipRgn — combine region with clip region using mode
     /// fnMode: RGN_AND=1, RGN_OR=2, RGN_XOR=3, RGN_DIFF=4, RGN_COPY=5
-    i32 ext_select_clip_rgn(Handle hdc, Handle hrgn, i32 fnMode);
+    i32 ext_select_clip_rgn(Handle hdc, Handle hrgn, i32 fnMode, const SystemRegionState* scene=nullptr);
 
     /// ExcludeClipRect — exclude rectangle from clipping region
     /// Returns region complexity
-    i32 exclude_clip_rect(Handle hdc, i32 left, i32 top, i32 right, i32 bottom);
+    i32 exclude_clip_rect(Handle hdc, i32 left, i32 top, i32 right, i32 bottom, const SystemRegionState* scene=nullptr);
 
     /// IntersectClipRect — intersect clip region with rectangle
     /// Returns region complexity
@@ -1145,6 +1171,23 @@ public:
     [[nodiscard]] Handle create_runtime_dib_section(i32 width, i32 height, bool bottom_up, u16 bpp,
                                                     GuestAddr* bits_out);
 
+    /// A memory DC with a new DIB section selected, for a runtime that lends
+    /// GDI a surface (IDirect3DSurface9::GetDC): @p bpp with BI_RGB
+    /// (@p compression 0) or BI_BITFIELDS (3, @p masks R/G/B), bottom-up
+    /// when @p bottom_up. The bits live in guest memory at *@p bits_out;
+    /// the caller fills them, then calls load_surface_dc_bits.
+    [[nodiscard]] Handle create_surface_dc(i32 width, i32 height, bool bottom_up,
+                                           u16 bpp, u32 compression,
+                                           const std::array<u32, 3>& masks,
+                                           GuestAddr* bits_out,
+                                           Handle* bitmap_out);
+    /// After the caller wrote the DIB's guest bits: make GDI draw over them.
+    void load_surface_dc_bits(Handle bitmap);
+    /// Before the caller reads the DIB's guest bits: write GDI's drawing out.
+    void store_surface_dc_bits(Handle bitmap);
+    /// Delete the DC and the DIB section create_surface_dc made.
+    void destroy_surface_dc(Handle hdc, Handle bitmap);
+
     /// Ellipse — draw an ellipse bounded by the given rectangle
     bool ellipse(Handle hdc, i32 left, i32 top, i32 right, i32 bottom);
 
@@ -1168,7 +1211,9 @@ public:
 private:
     /// Every GDI handle comes from here: at least kFirstGdiHandle.
     [[nodiscard]] Handle allocate_gdi_handle(HandleType type) {
-        return m_handles.allocate_at_least(kFirstGdiHandle, type, nullptr);
+        const Handle handle = m_handles.allocate_at_least(kFirstGdiHandle, type, nullptr);
+        m_retired_brushes.erase(handle);
+        return handle;
     }
 
     struct PresentationState {
@@ -1209,6 +1254,7 @@ private:
     struct DcState {
         u64    associated_hwnd{0};  ///< Non-zero for window DCs
         bool   screen_dc{false};    ///< GetDC(NULL), associated with desktop
+        bool   reference_device_dc{false}; ///< CreateDC/CreateIC device-resolution space
         bool   memory_dc{false};    ///< CreateCompatibleDC (OBJ_MEMDC)
         u32    dc_brush_color{0x00FFFFFF}; ///< SetDCBrushColor (DC_BRUSH)
         u32    dc_pen_color{0};            ///< SetDCPenColor (DC_PEN)
@@ -1227,7 +1273,11 @@ private:
         i32    rop2{13};            ///< Drawing mode (R2_COPYPEN=13)
         i32    brush_org_x{0};      ///< Brush origin X
         i32    brush_org_y{0};      ///< Brush origin Y
-        ClipRect clip_rect;         ///< Current clipping region
+        ClipRect clip_rect;         ///< Derived raster clip: app, meta and paint intersection
+        ClipRect app_clip;          ///< SelectClipRgn and logical clipping operations
+        ClipRect meta_clip;         ///< SetMetaRgn-owned restriction, saved by SaveDC
+        ClipRect paint_region;      ///< BeginPaint update, independent of app clip
+        bool whole_window_dc{false};
         u32    text_align{0};       ///< SetTextAlign mode
         i32    char_extra{0};       ///< SetTextCharacterExtra
         i32    map_mode{1};         ///< Mapping mode (1=MM_TEXT)
@@ -1267,6 +1317,18 @@ private:
     void lp_to_dp_point(const DcState& dc, i32& x, i32& y) const;
     void lp_to_dp_rect(const DcState& dc, i32& l, i32& t, i32& r, i32& b) const;
     bool raster_target(Handle hdc, RasterTarget& out);
+    /// A child window has no surface of its own on Windows: its DC draws into
+    /// the pixels its parent shows, so a raster operation that reads the
+    /// destination (SRCAND / SRCPAINT masking, ROP3s with D) sees the parent's
+    /// pixels wherever the child has not drawn. Fill the child surface's
+    /// untouched (alpha 0) pixels from the parent chain before drawing.
+    void fill_child_backdrop(Handle hwnd, SoftBitmap& surface);
+    /// Before an operation that reads the destination (a ROP3 with D,
+    /// AlphaBlend, TransparentBlt, DrawIcon masks) into @p t.
+    void prepare_destination_read(const RasterTarget& t);
+    /// The pixel @p hwnd's parent chain shows at client (@p x, @p y) of
+    /// @p hwnd, or nullopt when nothing has drawn there.
+    [[nodiscard]] std::optional<u32> parent_backdrop_pixel(Handle hwnd, i32 x, i32 y, int depth) const;
     void finish_raster(const RasterTarget& t);
     [[nodiscard]] bool raster_writable(const RasterTarget& t, i32 x, i32 y) const;
     void raster_store(const RasterTarget& t, i32 x, i32 y, u32 value) const;
@@ -1284,6 +1346,13 @@ private:
     /// Start a path figure at (cx, cy) when none is open.
     static void path_ensure_figure(DcState& dc, double cx, double cy);
     /// The DC's whole surface as a region (the clip when none is set).
+    static void refresh_dc_clip(DcState& dc);
+    [[nodiscard]] std::optional<ClipRect> dc_system_region(Handle hdc,const DcState& dc,
+        const SystemRegionState* scene,bool device_coordinates=false) const;
+    [[nodiscard]] std::optional<ClipRect> application_clip_base(Handle hdc,const DcState& dc,
+        const SystemRegionState* scene) const;
+    [[nodiscard]] std::optional<i32> clip_complexity(Handle hdc,const DcState& dc,
+        const ClipRect& app,const SystemRegionState* scene) const;
     [[nodiscard]] ClipRect dc_surface_region(const DcState& dc) const;
     /// Device <- logical through the DC's world and page transforms, and
     /// the inverse; false for a singular transform.
@@ -1321,6 +1390,7 @@ private:
     /// Every brush's LOGBRUSH (solid, hatched, pattern), for GetObject and
     /// hatch rendering.
     std::unordered_map<Handle, BrushInfo> m_brush_info;
+    std::unordered_set<Handle> m_retired_brushes;
     /// ExtCreatePen pens (OBJ_EXTPEN). Each also has a PenInfo in
     /// m_pen_objects so line drawing needs no second path.
     std::unordered_map<Handle, ExtPenInfo> m_extpen_objects;
@@ -1456,16 +1526,18 @@ private:
     /// The export registrars need access to DC and region state for inline stubs
     friend DllExports make_gdi32_exports(
         GdiManager& mgr,
-        std::function<std::string()> display_adapter_name_provider);
+        std::function<std::string()> display_adapter_name_provider, bool guest_is_64bit,
+        std::function<GdiManager::SystemRegionState()> system_region_state_provider);
     friend void add_gdi32_viewport_region_exports(DllExports&, GdiManager&);
     friend void add_gdi32_shape_region_exports(DllExports&, GdiManager&);
     friend void add_gdi32_dc_attribute_exports(DllExports&, GdiManager&);
-    friend void add_gdi32_path_print_exports(DllExports&, GdiManager&);
+    friend void add_gdi32_path_print_exports(DllExports&, GdiManager&,bool);
 };
 
 /// Create gdi32.dll exports
 [[nodiscard]] DllExports make_gdi32_exports(
     GdiManager& mgr,
-    std::function<std::string()> display_adapter_name_provider = {});
+    std::function<std::string()> display_adapter_name_provider = {}, bool guest_is_64bit = true,
+    std::function<GdiManager::SystemRegionState()> system_region_state_provider = {});
 
 } // namespace vitreo::winapi

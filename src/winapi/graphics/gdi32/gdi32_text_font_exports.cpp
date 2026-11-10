@@ -215,17 +215,9 @@ void add_gdi32_text_font_exports(DllExports& exports, GdiManager& mgr) {
         m.set_return(0u);
     }, 8});
 
-    // ---- BOOL UnrealizeObject(HGDIOBJ) --------------------------------------
-    //
-    // For a brush this resets the brush origin so the next selection realigns
-    // the pattern; for a logical palette it forces a full remap on the next
-    // RealizePalette. Vitreo draws brushes with an origin fixed at the device
-    // origin and has no palette realization step, so the state this would
-    // invalidate does not exist and the call has nothing left to do. A NULL
-    // object is still rejected, as Windows does.
-    exports.entries.push_back({"UnrealizeObject", 0, [](Marshaler& m) {
-        const auto object = static_cast<u32>(m.arg(0));
-        m.set_return(object != 0 ? 1u : 0u);
+    // Brush calls are no-ops; truecolor palettes require no physical remap.
+    exports.entries.push_back({"UnrealizeObject", 0, [&mgr](Marshaler& m) {
+        m.set_return(mgr.unrealize_object(static_cast<Handle>(m.arg(0))) ? 1u : 0u);
     }, 4});
 }
 

@@ -2,6 +2,7 @@
 /// @brief GetExtendedTcpTable: the host's TCP endpoints in MIB_TCPTABLE_* form.
 
 #include "iphlpapi_internal.hpp"
+#include "ipc/process_registry.hpp"
 
 namespace vitreo::winapi {
 
@@ -91,8 +92,8 @@ struct TcpEndpoint {
             row.state = map_bsd_tcp_state_to_windows(tcp.tcpsi_state);
             row.local_port = static_cast<u32>(in.insi_lport) & 0xFFFFu;
             row.remote_port = static_cast<u32>(in.insi_fport) & 0xFFFFu;
-            // Vitreo GetCurrentProcessId returns host getpid(), so host PIDs
-            // are the correct guest-visible owning process identifiers.
+            // Host pid, so the allowlist can drop foreign macOS processes.
+            // The value written to the guest is translated to a client ID.
             row.owning_pid = static_cast<u32>(pid);
             if (si.psi.soi_family == AF_INET) {
                 row.family = iphlp::kGuestAfInet;
@@ -221,6 +222,8 @@ void IphlpapiManager::impl_GetExtendedTcpTable(Marshaler& m) {
         u8* row = image.data() + header + i * row_size;
         const TcpEndpoint& r = rows[i];
         auto put = [&](u32 off, u32 value) { std::memcpy(row + off, &value, 4); };
+        const u32 windows_pid = ipc::windows_process_id_for_host(r.owning_pid);
+        const u32 published_pid = windows_pid != 0 ? windows_pid : r.owning_pid;
         if (v6) {
             std::memcpy(row, r.local.data(), 16);
             put(L.MIB_TCP6ROW_OWNER_PID_dwLocalScopeId, r.local_scope);
@@ -229,7 +232,7 @@ void IphlpapiManager::impl_GetExtendedTcpTable(Marshaler& m) {
             put(L.MIB_TCP6ROW_OWNER_PID_dwRemoteScopeId, r.remote_scope);
             put(L.MIB_TCP6ROW_OWNER_PID_dwRemotePort, r.remote_port);
             put(L.MIB_TCP6ROW_OWNER_PID_dwState, r.state);
-            put(L.MIB_TCP6ROW_OWNER_PID_dwOwningPid, r.owning_pid);
+            put(L.MIB_TCP6ROW_OWNER_PID_dwOwningPid, published_pid);
         } else {
             // MIB_TCPROW[_OWNER_PID]: state, local addr/port, remote addr/port, pid.
             put(0, r.state);
@@ -237,7 +240,7 @@ void IphlpapiManager::impl_GetExtendedTcpTable(Marshaler& m) {
             put(8, r.local_port);
             std::memcpy(row + 12, r.remote.data(), 4);
             put(16, r.remote_port);
-            if (with_pid) put(20, r.owning_pid);
+            if (with_pid) put(20, published_pid);
         }
     }
     if (m.memory().write_bytes(table, image.data(), image.size()).is_err()) {

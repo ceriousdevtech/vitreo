@@ -87,10 +87,12 @@ final class VitreoAppDelegate: NSObject, NSApplicationDelegate {
         if launchedToOpenFiles {
             enterLauncherMode()
         } else {
-            // Opening the manager from Applications publishes the command.
-            // An .exe launch is a launcher and exits, so it must not ask for
-            // an administrator password on the way out.
-            CommandLineLinkInstaller.ensure()
+            // Opening the Manager from Applications offers the Terminal
+            // command; nothing is written, and macOS asks for no password,
+            // until the user says yes. Asked once the window is up, so the
+            // question has the app behind it. An .exe launch is a launcher
+            // and exits, so it never asks.
+            Task { @MainActor in CommandLineLinkInstaller.ensure() }
         }
     }
 

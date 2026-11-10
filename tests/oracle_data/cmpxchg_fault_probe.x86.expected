@@ -1,0 +1,72 @@
+x86
+second page RESERVED (uncommitted)
+cx8     off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8    off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx16    off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx16   off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx32    off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx32   off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx8b    off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8b   off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+second page NOACCESS
+cx8     off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8    off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx16    off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx16   off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx32    off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx32   off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx8b    off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8b   off=+0 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx16    off=-1 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx16   off=-1 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx32    off=-1 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx32   off=-1 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx8b    off=-1 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8b   off=-1 -      : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+second page READONLY
+cx8     off=+0 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8    off=+0 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx16    off=+0 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx16   off=+0 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx32    off=+0 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx32   off=+0 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx8b    off=+0 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8b   off=+0 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx8     off=+0 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8    off=+0 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx16    off=+0 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx16   off=+0 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx32    off=+0 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx32   off=+0 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx8b    off=+0 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8b   off=+0 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx16    off=-1 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx16   off=-1 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx32    off=-1 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx32   off=-1 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx8b    off=-1 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8b   off=-1 match  : write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx16    off=-1 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx16   off=-1 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx32    off=-1 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx32   off=-1 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+cx8b    off=-1 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+lcx8b   off=-1 nomatch: write=1 reported=+0 ax_kept=1 cx_kept=1 zf=0 changed=0
+second page NOACCESS (fx/xsave)
+fxrstor off=-256: write=0 reported=+255
+xrstor  off=-256: write=0 reported=+264
+fxsave  off=-256: write=1 reported=+255
+xsave   off=-256: write=1 reported=+319
+fxrstor off=+0: write=0 reported=+511
+xrstor  off=+0: write=0 reported=+520
+fxsave  off=+0: write=1 reported=+511
+xsave   off=+0: write=1 reported=+575
+second page READONLY (fx/xsave)
+fxrstor off=-256: no fault
+xrstor  off=-256: no fault
+fxsave  off=-256: write=1 reported=+255
+xsave   off=-256: write=1 reported=+319
+fxrstor off=+0: no fault
+xrstor  off=+0: no fault
+fxsave  off=+0: write=1 reported=+511
+xsave   off=+0: write=1 reported=+575

@@ -8,8 +8,7 @@
 ///
 /// Both entries are here because a split cut across a caller and its callee.
 /// `normalize_dir_path` is defined near the top of kernel32_ext.cpp and used by
-/// the path APIs that moved to kernel32_environment.cpp; `get_host_disk_stats`
-/// moved with those APIs and is still called from three places that stayed.
+/// the path APIs that moved to kernel32_environment.cpp.
 
 #include <vitreo/common.hpp>
 
@@ -20,10 +19,6 @@ namespace vitreo::winapi {
 /// Trailing-backslash normalisation for a directory path, the form the Win32
 /// path APIs hand back. Defined in kernel32_ext.cpp.
 [[nodiscard]] std::string normalize_dir_path(std::string path);
-
-/// Host filesystem capacity, reported to the guest as its disk. Defined in
-/// kernel32_environment.cpp.
-void get_host_disk_stats(u64& out_total_bytes, u64& out_free_bytes);
 
 /// VITREO_IOCP_DIAG tracing. Timestamps each line and takes an exclusive lock on
 /// stderr, so completions arriving on several threads at once stay readable

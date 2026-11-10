@@ -15,6 +15,8 @@
 #include "winapi/kernel32/thread/thread_suspend.hpp"
 
 #include <cstdio>
+#include <optional>
+#include <vector>
 
 namespace vitreo::winapi {
 namespace {
@@ -98,15 +100,51 @@ u32 check_record(Marshaler& m, GuestAddr context) {
     return STATUS_SUCCESS;
 }
 
+/// Get/SetThreadContext on another process's primary thread (the hThread
+/// CreateProcess(CREATE_SUSPENDED) returned). nullopt when @p handle is a
+/// thread of this process.
+std::optional<u32> external_context(Marshaler& m, ThreadManager* threads,
+                                    u64 handle, GuestAddr context, bool set) {
+    if (threads == nullptr || handle == kCurrentThread64 ||
+        handle == kCurrentThread32) {
+        return std::nullopt;
+    }
+    std::vector<u8> record;
+    const bool is_64bit = m.cpu_is_64bit();
+    if (!threads->external_thread_context(static_cast<Handle>(handle), set,
+                                          is_64bit, record).has_value()) {
+        return std::nullopt;
+    }
+    if (const u32 s = check_record(m, context); s != STATUS_SUCCESS) return s;
+    record.resize(is_64bit ? cpu::kContext64Size : cpu::kContext32Size);
+    if (m.memory().read_bytes(context, record.data(), record.size()).is_err()) {
+        return STATUS_ACCESS_VIOLATION;
+    }
+    const auto status = threads->external_thread_context(
+        static_cast<Handle>(handle), set, is_64bit, record);
+    if (!status.has_value()) return STATUS_INVALID_HANDLE;
+    if (*status == STATUS_SUCCESS && !set &&
+        m.memory().write_bytes(context, record.data(), record.size()).is_err()) {
+        return STATUS_ACCESS_VIOLATION;
+    }
+    return *status;
+}
+
 } // namespace
 
-void seed_windows_initial_fpu(cpu::CpuState& state) {
+void seed_windows_initial_cpu_state(cpu::CpuState& state) {
+    // Running-context and POPF probes record IF set on Windows, both bitnesses.
+    // CPU reset remains architectural reset; this is Windows thread startup.
+    state.flags = cpu::Flags(cpu::FLAG_IF);
     state.fpu.control_word = kWindowsInitialFpuControlWord;
     state.sse.mxcsr = kWindowsInitialMxcsr;
 }
 
 u32 nt_get_context_thread(Marshaler& m, ThreadManager* threads, u64 handle,
                           GuestAddr context) {
+    if (const auto external = external_context(m, threads, handle, context, false)) {
+        return *external;
+    }
     u32 access_err = 0;
     const Target t = resolve(threads, handle, ThreadManager::THREAD_GET_CONTEXT,
                              access_err);
@@ -150,6 +188,9 @@ u32 nt_get_context_thread(Marshaler& m, ThreadManager* threads, u64 handle,
 
 u32 nt_set_context_thread(Marshaler& m, ThreadManager* threads, u64 handle,
                           GuestAddr context) {
+    if (const auto external = external_context(m, threads, handle, context, true)) {
+        return *external;
+    }
     u32 access_err = 0;
     const Target t = resolve(threads, handle, ThreadManager::THREAD_SET_CONTEXT,
                              access_err);

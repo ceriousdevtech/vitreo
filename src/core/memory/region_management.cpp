@@ -53,7 +53,7 @@ GuestMemory::linear_proof_lease_shard() noexcept {
     // pthread_self() is a register read on Darwin (no TLV call). Its pointer
     // is page-aligned per thread; fold the page number into a shard index.
     const auto self = reinterpret_cast<uintptr_t>(pthread_self());
-    const u64 h = (static_cast<u64>(self) >> 12) * 0x9E3779B97F4A7C15ull;
+    const u64 h = (static_cast<u64>(self) >> 12) * kLinearProofLeaseHash;
     static_assert(kLinearProofLeaseShards == 64,
                   "the shard index is the top 6 bits of the hash");
     return m_linear_proof_lease_shards[h >> (64 - 6)];
@@ -657,15 +657,16 @@ VoidResult GuestMemory::protect_region(GuestAddr guest_addr, usize size, MemoryP
     set_protection_range(*mapped, offset, size, prot);
     // VirtualProtect changes accessibility, not backing ownership. With
     // hardware enforcement the reservation carries the new accessibility too,
-    // composed most-restrictively per 16 KiB host page; without it, every
+    // joined per host page with software checks for mixed protections; without it, every
     // committed host page stays RW and the protection runs above are the only
     // enforcement (which is why every JIT direct access has to re-check).
     if (linear_backs(guest_addr, size)) {
-        if (m_linear_hw_protect) {
-            linear_reconcile_host_pages(guest_addr, size,
-                                        /*discard_unowned=*/false);
-            invalidate_tlb(false);
-        }
+        // Committed NOACCESS backing starts PROT_NONE even in software-check
+        // mode. A newly accessible subrange must acquire host RW backing;
+        // updating only its logical permissions leaves it unusable.
+        linear_reconcile_host_pages(guest_addr, size,
+                                    /*discard_unowned=*/false);
+        invalidate_tlb(false);
         return VoidResult::ok();
     }
 

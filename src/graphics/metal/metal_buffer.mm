@@ -814,6 +814,53 @@ MetalBuffer::MetalBuffer(void* device, void* external, usize size,
     }
 }
 
+MetalBuffer::MetalBuffer(void* device, usize size, BufferUsage usage,
+                         WindowStorage)
+    : m_device(device), m_size(size), m_usage(usage) {
+    // Every CPU update() is ordered on the queue (m_pinned): the frontend
+    // writes the lent bytes itself and moves to fresh ranges on DISCARD.
+    m_pinned = true;
+    m_window = true;
+}
+
+bool MetalBuffer::retarget_window(void* external, usize offset) {
+    id<MTLBuffer> buffer = (__bridge id<MTLBuffer>)external;
+    if (!m_window || buffer == nil || offset % 256u != 0 ||
+        offset > [buffer length] || m_size > [buffer length] - offset) {
+        return false;
+    }
+    UnfairLockGuard lock(m_mu);
+    void* const retained = (__bridge_retained void*)buffer;
+    if (m_owned != nullptr) CFRelease(m_owned);
+    m_owned = retained;
+    m_owned_offset = offset;
+    m_owned_gen.store(0, std::memory_order_relaxed);
+    m_slice_gen.store(0, std::memory_order_relaxed);
+    m_pin_recording.store(0, std::memory_order_relaxed);
+    m_bind_mark_gen.store(0, std::memory_order_relaxed);
+    m_gpu_write_gen = 0;
+    m_shadow.clear();
+    publish(m_owned, m_owned_offset);
+    return true;
+}
+
+bool MetalBuffer::storage_busy() const {
+    const u64 gen = storage_gen();
+    return gen != 0 &&
+           gen + kTagMargin > MetalSubmitQueue::instance().completed_generation();
+}
+
+bool MetalBuffer::gpu_write_pending() const {
+    return m_gpu_write_gen != 0 &&
+           m_gpu_write_gen + kTagMargin >
+               MetalSubmitQueue::instance().completed_generation();
+}
+
+bool MetalBuffer::wait_until_storage_idle() {
+    UnfairLockGuard lock(m_mu);
+    return wait_for_storage();
+}
+
 MetalBuffer::~MetalBuffer() {
     // A published pool slice needs nothing: its slab stays tagged with every
     // generation that bound it.
@@ -892,20 +939,28 @@ bool MetalBuffer::rename_storage(bool whole) {
     return true;
 }
 
-void MetalBuffer::wait_for_storage() {
+bool MetalBuffer::wait_for_storage() {
     auto& queue = MetalSubmitQueue::instance();
-    u64 gen = storage_gen();
+    // A bind's tag can be one generation early: a submit between the stamp
+    // and the append puts the use in the next list (kTagMargin), so that
+    // list must complete too, as storage_busy() counts it.
+    const u64 tag = storage_gen();
+    u64 gen = tag == 0 ? 0 : tag + kTagMargin;
     if (gen >= queue.recording_generation()) {
         // Hand over the list that may read it. A generation above the newest
         // submission was never given work: nothing reads the storage there.
         gen = std::min(gen, queue.submit());
     }
-    if (!queue.wait_for_generation(gen)) return;  // shut down
+    if (!queue.wait_for_generation(gen)) return false;  // shut down
+    // Never raise the tag past what a bind stamped; a clamped wait lowers it
+    // to the newest submission, past which nothing was recorded.
+    gen = std::min(gen, tag);
     if (published() == m_owned) {
         m_owned_gen.store(gen, std::memory_order_relaxed);
     } else {
         m_slice_gen.store(gen, std::memory_order_relaxed);
     }
+    return true;
 }
 
 void MetalBuffer::cpu_update(const void* data, usize offset, usize length,

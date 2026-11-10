@@ -44,6 +44,26 @@ bool sse_vex_lowered_directly(const DecodedInstruction& instr) noexcept {
     case Opcode::CVTPS2PD_XMM_XMMM64:
     case Opcode::CVTPD2DQ_XMM_XMMM128: case Opcode::CVTTPD2DQ_XMM_XMMM128:
         return (instr.prefixes.vex_vvvv & 15) == 0;
+    // WS3 begin — VEX.128 AES-NI / PCLMULQDQ (Intel SDM Vol. 2 VAESENC..
+    // VAESDECLAST, VPCLMULQDQ: NDS, SRC1 = vvvv; VAESIMC, VAESKEYGENASSIST:
+    // unary, vvvv reserved 1111b). VEX.256 needs CPUID VAES/VPCLMULQDQ, which
+    // is not advertised, so L=1 never decodes. The emitters (direct_armv8_
+    // aes.cpp, direct_armv8_pclmul.cpp) read every source before the store
+    // and zero YMM[255:128], which also covers rm == dst != vvvv, the shape
+    // the bridge declines. Host gate here so a declined form keeps the bridge.
+    case Opcode::AESENC_XMM_XMMM128: case Opcode::AESENCLAST_XMM_XMMM128:
+    case Opcode::AESDEC_XMM_XMMM128: case Opcode::AESDECLAST_XMM_XMMM128:
+        return !instr.prefixes.vex_l && ws3_crypto_direct_enabled() &&
+               host_supports_aes();
+    case Opcode::AESIMC_XMM_XMMM128:
+    case Opcode::AESKEYGENASSIST_XMM_XMMM128_IMM8:
+        return !instr.prefixes.vex_l && (instr.prefixes.vex_vvvv & 15) == 0 &&
+               ws3_crypto_direct_enabled() && host_supports_aes();
+    case Opcode::PCLMULQDQ_XMM_XMMM128_IMM8:
+        return !instr.prefixes.vex_l && ws3_crypto_direct_enabled() &&
+               host_supports_pmull() &&
+               std::getenv("VITREO_SW_PCLMUL") == nullptr;
+    // WS3 end
     default:
         return false;
     }

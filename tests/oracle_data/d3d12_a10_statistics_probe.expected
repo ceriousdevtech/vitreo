@@ -1,0 +1,62 @@
+indexed record+execute: 0x00000000 S_OK
+indexed indexed 12 x2 IAVertices IAPrimitives CInvocations CPrimitives: 24 8 8 8
+indexed indexed 12 x2 GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 0
+indexed indexed 12 x2 PSInvocations >= covered pixels (20): 1
+indexed indexed 12 x2 VSInvocations nonzero: 1
+# indexed indexed 12 x2 PSInvocations VSInvocations: 64 16
+indexed end: GetDeviceRemovedReason 0x00000000 S_OK
+strip record+execute: 0x00000000 S_OK
+strip strip 5 x3 IAVertices IAPrimitives CInvocations CPrimitives: 15 9 9 9
+strip strip 5 x3 GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 0
+strip strip 5 x3 PSInvocations >= covered pixels (16): 1
+strip strip 5 x3 VSInvocations nonzero: 1
+# strip strip 5 x3 PSInvocations VSInvocations: 108 15
+strip end: GetDeviceRemovedReason 0x00000000 S_OK
+clipped record+execute: 0x00000000 S_OK
+clipped clipped triangle IAVertices IAPrimitives CInvocations CPrimitives: 3 1 1 2
+clipped clipped triangle GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 0
+clipped clipped triangle PSInvocations >= covered pixels (16): 1
+clipped clipped triangle VSInvocations nonzero: 1
+# clipped clipped triangle PSInvocations VSInvocations: 24 3
+clipped end: GetDeviceRemovedReason 0x00000000 S_OK
+indirect record+execute: 0x00000000 S_OK
+indirect indirect draw 6 x2 IAVertices IAPrimitives CInvocations CPrimitives: 12 4 4 6
+indirect indirect draw 6 x2 GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 0
+indirect indirect draw 6 x2 PSInvocations >= covered pixels (0): 1
+indirect indirect draw 6 x2 VSInvocations nonzero: 1
+# indirect indirect draw 6 x2 PSInvocations VSInvocations: 72 12
+indirect indirect dispatch (3,2,1) IAVertices IAPrimitives CInvocations CPrimitives: 0 0 0 0
+indirect indirect dispatch (3,2,1) GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 12
+indirect indirect dispatch (3,2,1) PSInvocations >= covered pixels (0): 1
+indirect indirect dispatch (3,2,1) VSInvocations nonzero: 0
+# indirect indirect dispatch (3,2,1) PSInvocations VSInvocations: 0 0
+indirect end: GetDeviceRemovedReason 0x00000000 S_OK
+overlap record+execute: 0x00000000 S_OK
+overlap query 0 (A+B) IAVertices IAPrimitives CInvocations CPrimitives: 3 3 3 3
+overlap query 0 (A+B) GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 0
+overlap query 0 (A+B) PSInvocations >= covered pixels (0): 1
+overlap query 0 (A+B) VSInvocations nonzero: 1
+# overlap query 0 (A+B) PSInvocations VSInvocations: 8 3
+overlap query 1 (B+C) IAVertices IAPrimitives CInvocations CPrimitives: 6 6 6 6
+overlap query 1 (B+C) GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 0
+overlap query 1 (B+C) PSInvocations >= covered pixels (0): 1
+overlap query 1 (B+C) VSInvocations nonzero: 1
+# overlap query 1 (B+C) PSInvocations VSInvocations: 12 6
+overlap end: GetDeviceRemovedReason 0x00000000 S_OK
+stats1 record+execute: 0x00000000 S_OK
+stats1 stats1 strip 4 IAVertices IAPrimitives CInvocations CPrimitives: 4 2 2 2
+stats1 stats1 strip 4 GS/GSPrims/HS/DS/CS invocations: 0 0 0 0 0
+stats1 stats1 strip 4 PSInvocations >= covered pixels (16): 1
+stats1 stats1 strip 4 VSInvocations nonzero: 1
+# stats1 stats1 strip 4 PSInvocations VSInvocations: 24 4
+stats1 stats1 AS/MS invocations MSPrimitives: 0 0 0
+stats1 PIPELINE_STATISTICS type on a STATISTICS1 heap: Close: 0x80070057 E_INVALIDARG
+stats1 end: GetDeviceRemovedReason 0x00000000 S_OK
+so CreateGraphicsPipelineState(VS stream output): 0x00000000 S_OK
+so record+execute: 0x00000000 S_OK
+so STREAM0 written needed: 1 2
+so STREAM1 written needed: 0 0
+so STREAM0 no target written needed: 0 2
+so BufferFilledSize: 48
+so first vertex COLOR: 00000000 3f800000 40000000 40400000
+so end: GetDeviceRemovedReason 0x00000000 S_OK

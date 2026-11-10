@@ -296,8 +296,15 @@
     // GuestMemory lease while omitting both repeated guards. Failure branches
     // share one zero-instruction deopt stub.
     bool m_stack_entry_load_proof{false};
+    /// Mixed blocks: `[rsp+disp]` loads before the first non-filler still
+    /// share one entry check and the lease. Other memory in the block keeps
+    /// its own check. The lease is dropped before a link or a host call so
+    /// the direct jump stays, and taken again at the next such block.
+    bool m_span_stack_proof{false};
+    u64 m_span_stack_load_bits[4]{};
     std::vector<usize> m_stack_proof_branch_pos;
     std::vector<usize> m_stack_proof_mixed_branch_pos;
+    void emit_span_proof_lease(bool enter);
 
     // Shared per-block `pending_raise` exit stub. Every helper call site emits
     // LDRB W16,[X19,#active] + CBNZ and records the CBNZ's index here;

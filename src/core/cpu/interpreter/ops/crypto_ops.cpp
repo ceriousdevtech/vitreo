@@ -196,12 +196,17 @@ static Result<XmmReg, Error> read_pack_c(ExecContext& ctx, const Operand& op,
     if (!addr) return Result<XmmReg, Error>::err(addr.error());
     if (aligned_form && op.type == OperandType::Mem128 &&
         (addr.value() & 0xF) != 0) {
-        ctx.exception = CpuException::GeneralProtection;
+        record_misaligned_operand_gp(ctx);
         return Result<XmmReg, Error>::err(Error::InvalidArgument);
     }
     XmmReg tmp{};
     auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
-    if (!r) return Result<XmmReg, Error>::err(r.error());
+    if (!r) {
+        // STATUS_ACCESS_VIOLATION, [0] = 0 (read), [1] = the first
+        // inaccessible byte -- read_operand's rule for every memory read.
+        record_read_access_violation(ctx, addr.value(), 16);
+        return Result<XmmReg, Error>::err(r.error());
+    }
     return Result<XmmReg, Error>::ok(tmp);
 }
 

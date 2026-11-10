@@ -22,6 +22,7 @@
 #include "winapi/msvcrt/memory/crt_memory.hpp"
 #include "winapi/msvcrt/system/crt_environment.hpp"
 #include "winapi/core/marshaler.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "winapi/kernel32/process/process.hpp"
 #include "winapi/kernel32/thread/thread.hpp"
 #include "winapi/kernel32/thread/context64.hpp"
@@ -184,14 +185,9 @@ std::vector<std::string> expand_wildcards(const CrtDataBlock& crt_data,
     return out;
 }
 
-/// The command line as UTF-16 units (Latin-1 widening of the ANSI text, the
-/// same conversion _wcmdln is built with).
+/// Original Unicode command line, before the narrow ACP conversion.
 std::u16string wide_command_line(const CrtDataBlock& crt_data) {
-    const std::string& narrow = crt_data.command_line();
-    std::u16string wide;
-    wide.reserve(narrow.size());
-    for (char c : narrow) wide.push_back(static_cast<unsigned char>(c));
-    return wide;
+    return crt_data.wide_command_line();
 }
 
 std::vector<std::string> narrow_args(const CrtDataBlock& crt_data, int mode) {
@@ -262,6 +258,20 @@ DllExports create_crt_init_thunks(
     CrtEnvironmentManager& env_mgr) {
     DllExports exports;
     exports.entries.reserve(20);
+
+    // Microsoft SDK corecrt_startup.h: char** / wchar_t** __cdecl accessors.
+    // The SDK macros define _acmdln / _wcmdln by dereferencing these cells.
+    // Return the variable's address, preserving any pointer a caller stores.
+    exports.entries.push_back(ExportEntry{
+        "__p__acmdln", 0,
+        [&crt_data](Marshaler& m) { m.set_return(crt_data.acmdln_addr()); },
+        0
+    });
+    exports.entries.push_back(ExportEntry{
+        "__p__wcmdln", 0,
+        [&crt_data](Marshaler& m) { m.set_return(crt_data.wcmdln_addr()); },
+        0
+    });
 
     // int* __p___argc(void)
     //
@@ -565,7 +575,7 @@ DllExports create_crt_init_thunks(
     exports.entries.push_back(ExportEntry{
         "_get_narrow_winmain_command_line", 0,
         [&crt_data](Marshaler& m) {
-            m.set_return(crt_data.base() + CrtDataBlock::CMDLINE_STR_OFFSET);
+            m.set_return(m.read_ptr(crt_data.acmdln_addr()).value_or(0));
         }
     });
     // wchar_t* _get_wide_winmain_command_line(void), zero arguments, cdecl.
@@ -624,6 +634,13 @@ DllExports create_crt_init_thunks(
             m.set_return(0);
         }
     });
+    // unsigned char* __p__mbctype(void) — x86 msvcrt's accessor for the
+    // `_mbctype` data export: the same array (crt_legacy_exports_probe
+    // __p__mbctype_same).
+    exports.entries.push_back(ExportEntry{
+        "__p__mbctype", 0,
+        [&crt_data](Marshaler& m) { m.set_return(crt_data.mbctype_addr()); }
+    });
     exports.entries.push_back(ExportEntry{
         "_seh_filter_exe", 0,
         [](Marshaler& m) {
@@ -669,7 +686,7 @@ DllExports create_crt_init_thunks(
         // GetCurrentProcessId returns, which is what the guest sees elsewhere.
         "_getpid", 0,
         [](Marshaler& m) {
-            m.set_return(static_cast<u64>(::getpid()));
+            m.set_return(ipc::guest_process_id());
         },
         0});
     exports.entries.push_back(ExportEntry{

@@ -42,6 +42,7 @@ void JitCompiler::ir_emit_block(const BasicBlock& block) {
     // memory access (the only thing here that can call a helper).
     std::vector<u8> vloc(ir_block.next_value, 0xFF);
     u8 vnext = 0;
+    IrXmmReadCache xmm_reads;
     constexpr u8 kVecPool = 4;
     u64 current_rip = ir::kInvalidRip;
 
@@ -443,6 +444,7 @@ void JitCompiler::ir_emit_block(const BasicBlock& block) {
         // clearing: values are SSA and RIP-local, so no entry from a previous
         // instruction can be read.
         vnext = 0;
+        xmm_reads.clear();
 
         m_ir_stub_replay = StubFlagReplay{};
         for (const ResolvedPlan& r : resolved_plans) {
@@ -468,6 +470,7 @@ void JitCompiler::ir_emit_block(const BasicBlock& block) {
 
         for (; op < range_end; ++op) {
             const ir::Inst& in = ir_block.insts[op];
+            const auto forwarded_xmm = xmm_reads.visit(in);
             switch (in.op) {
             case ir::Op::FlagsIn:
                 break;  // architectural state; consumers read CpuState
@@ -847,6 +850,10 @@ void JitCompiler::ir_emit_block(const BasicBlock& block) {
                 break;
             }
             case ir::Op::XmmRead: {
+                if (forwarded_xmm != ir::kInvalidValue) {
+                    vloc[in.result] = vloc[forwarded_xmm];
+                    break;
+                }
                 const u8 v = vnext++;
                 vloc[in.result] = v;
                 emit(arm64::ldr_q_uoff(

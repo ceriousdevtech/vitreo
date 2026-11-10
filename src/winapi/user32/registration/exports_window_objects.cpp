@@ -125,6 +125,11 @@ void add_user32_ext_exports_window_objects(DllExports& exports, User32ExtManager
         4});
 
     exports.entries.push_back(ExportEntry{
+        "SetSystemCursor", 0,
+        [&mgr](Marshaler& m) { mgr.impl_SetSystemCursor(m); },
+        8});
+
+    exports.entries.push_back(ExportEntry{
         "SetPropA", 0,
         [&mgr](Marshaler& m) { mgr.impl_SetPropA(m); },
         12});

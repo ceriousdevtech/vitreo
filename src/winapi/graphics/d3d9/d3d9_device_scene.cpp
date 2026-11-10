@@ -9,9 +9,12 @@
 #include "winapi/graphics/d3d9/d3d9_state.hpp"
 #include "winapi/graphics/d3d9/d3d9_cs.hpp"
 #include "winapi/graphics/d3d9/d3d9_device_internal.hpp"
+#include "winapi/graphics/d3d9/d3d9_draw_internal.hpp"
 
 #include "core/memory/guest_memory.hpp"
 #include "winapi/core/marshaler.hpp"
+#include <vector>
+#include <algorithm>
 #include <vitreo/diagnostics.hpp>
 
 #include <array>
@@ -125,12 +128,12 @@ void D3D9Manager::dispatch_device_scene(Marshaler& m, usize slot,
         }
         const u32 surface = state.render_target_surfaces[index];
         if (surface == 0) {
-            (void)m.write_u32(out, 0);
+            (void)m.write_ptr(out, 0);
             m.set_return(D3DERR_NOTAVAILABLE);
             return;
         }
         (void)add_ref(surface);
-        if (m.write_u32(out, surface).is_err()) {
+        if (m.write_ptr(out, surface).is_err()) {
             (void)release(surface);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -170,14 +173,14 @@ void D3D9Manager::dispatch_device_scene(Marshaler& m, usize slot,
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
-        (void)m.write_u32(out, 0);
+        (void)m.write_ptr(out, 0);
         if (state.depth_stencil_surface == 0) {
             // Documented: no depth stencil is not an error.
             m.set_return(D3DERR_NOTFOUND_D3D);
             return;
         }
         (void)add_ref(state.depth_stencil_surface);
-        if (m.write_u32(out, state.depth_stencil_surface).is_err()) {
+        if (m.write_ptr(out, state.depth_stencil_surface).is_err()) {
             (void)release(state.depth_stencil_surface);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -232,6 +235,15 @@ void D3D9Manager::dispatch_device_scene(Marshaler& m, usize slot,
         const u32 flags = static_cast<u32>(m.arg(3));
         const u32 color = static_cast<u32>(m.arg(4));
 
+        if (static const bool xfer = std::getenv("VITREO_D3D9_XFER_LOG") != nullptr;
+            xfer && state.render_target_surface != state.back_buffer_surface) {
+            // Off-screen clears next to the StretchRect log (thumbnail passes).
+            static int shown = 0;
+            if (shown++ < 4000) {
+                std::fprintf(stderr, "[d3d9-xfer] Clear rt=%08x flags=0x%x color=0x%08x rects=%u\n",
+                             state.render_target_surface, flags, color, rect_count);
+            }
+        }
         if (d3d9_sequence_diag_enabled() && state.diagnostic_frame <= 8) {
             std::fprintf(stderr,
                          "[d3d9-sequence] frame=%llu clear after-draw=%u "
@@ -262,75 +274,68 @@ void D3D9Manager::dispatch_device_scene(Marshaler& m, usize slot,
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
-        // D3DRECT is { LONG x1, y1, x2, y2 }. Callers pass a rectangle even
-        // when it covers the whole target. Metal's clear load
-        // action is whole-attachment only; true scissored clears are future
-        // work. Expanding partial Clears to the full bound target is enough
-        // to initialise render targets that previously stayed as undefined
-        // attachment memory.
-        if (rect_count != 0) {
-            u32 rt_w = state.back_buffer_width();
-            u32 rt_h = state.back_buffer_height();
-            u32 rt_fmt = 0;
-            if (state.render_target_surface != 0 &&
-                state.render_target_surface != state.back_buffer_surface) {
-                ComObject* rt = find(state.render_target_surface,
-                                     D3D9InterfaceId::Surface);
-                if (rt != nullptr && rt->surface) {
-                    rt_w = rt->surface->width;
-                    rt_h = rt->surface->height;
-                    rt_fmt = rt->surface->format;
-                }
+        // Learn IDirect3DDevice9::Clear: pRects == NULL clears the entire
+        // VIEWPORT rectangle, and every rectangle is clipped to the viewport;
+        // with D3DRS_SCISSORTESTENABLE the scissor rectangle clips it too.
+        // The Sims 3 renders a thumbnail twice side by side into one target,
+        // clearing the left viewport black and the right one white, and
+        // recovers alpha from the pair; clearing the whole target wiped the
+        // black half and every portrait came out grey.
+        u32 rt_w = state.back_buffer_width();
+        u32 rt_h = state.back_buffer_height();
+        u32 rt_level = 0;
+        if (state.render_target_surface != 0 &&
+            state.render_target_surface != state.back_buffer_surface) {
+            if (ComObject* rt = find(state.render_target_surface, D3D9InterfaceId::Surface);
+                rt != nullptr && rt->surface) {
+                rt_w = rt->surface->width;
+                rt_h = rt->surface->height;
+                rt_level = rt->surface->level;
             }
-            bool covers_full = false;
-            for (u32 i = 0; i < rect_count; ++i) {
-                i32 x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-                const GuestAddr rect = rects + i * 16u;
-                if (m.memory().read_bytes(rect, reinterpret_cast<Byte*>(&x1),
-                                          4).is_err() ||
-                    m.memory().read_bytes(rect + 4,
-                                          reinterpret_cast<Byte*>(&y1), 4)
-                        .is_err() ||
-                    m.memory().read_bytes(rect + 8,
-                                          reinterpret_cast<Byte*>(&x2), 4)
-                        .is_err() ||
-                    m.memory().read_bytes(rect + 12,
-                                          reinterpret_cast<Byte*>(&y2), 4)
-                        .is_err()) {
-                    m.set_return(D3DERR_INVALIDCALL);
-                    return;
-                }
-                if (x1 <= 0 && y1 <= 0 &&
-                    x2 >= static_cast<i32>(rt_w) &&
-                    y2 >= static_cast<i32>(rt_h)) {
-                    covers_full = true;
-                }
-                if (d3d9_clear_diag_enabled()) {
-                    std::fprintf(stderr,
-                                 "[d3d9-clear-diag] rect=%u/%u "
-                                 "(%d,%d)-(%d,%d) flags=0x%x "
-                                 "color=0x%08x viewport=(%u,%u,%u,%u) "
-                                 "rt=%ux%u full=%u\n",
-                                 i + 1, rect_count, x1, y1, x2, y2, flags,
-                                 color, state.viewport[0], state.viewport[1],
-                                 state.viewport[2], state.viewport[3], rt_w,
-                                 rt_h, covers_full ? 1u : 0u);
-                }
-                static u32 clear_rect_trace = 0;
-                ++clear_rect_trace;
-                if (clear_rect_trace == 1 ||
-                    (clear_rect_trace & 0x3FFu) == 0) {
-                    VITREO_TRACE(
-                        "[d3d9] Clear rects=%u #%u (%d,%d)-(%d,%d) "
-                        "flags=0x%x color=0x%08x rt=%ux%u fmt=%u "
-                        "covers_full=%u (expanding to full target)\n",
-                        rect_count, clear_rect_trace, x1, y1, x2, y2, flags,
-                        color, rt_w, rt_h, rt_fmt,
-                        covers_full ? 1u : 0u);
-                }
-            }
-            (void)covers_full;
         }
+        using Area = std::array<i64, 4>;  // left, top, right, bottom
+        Area region{static_cast<i64>(state.viewport[0]), static_cast<i64>(state.viewport[1]),
+                    static_cast<i64>(state.viewport[0]) + state.viewport[2],
+                    static_cast<i64>(state.viewport[1]) + state.viewport[3]};
+        const auto clip = [](Area& a, const Area& b) {
+            a = {std::max(a[0], b[0]), std::max(a[1], b[1]), std::min(a[2], b[2]),
+                 std::min(a[3], b[3])};
+        };
+        clip(region, {0, 0, rt_w, rt_h});
+        if (const auto it = state.render_states.find(d3d9_draw_detail::D3DRS_SCISSORTESTENABLE);
+            it != state.render_states.end() && it->second != 0) {
+            clip(region, {state.scissor[0], state.scissor[1], state.scissor[2],
+                          state.scissor[3]});
+        }
+        std::vector<std::array<u32, 4>> areas;
+        const auto add_area = [&](Area a) {
+            clip(a, region);
+            if (a[2] > a[0] && a[3] > a[1]) {
+                areas.push_back({static_cast<u32>(a[0]), static_cast<u32>(a[1]),
+                                 static_cast<u32>(a[2] - a[0]),
+                                 static_cast<u32>(a[3] - a[1])});
+            }
+        };
+        if (rect_count == 0) {
+            add_area(region);
+        }
+        for (u32 i = 0; i < rect_count; ++i) {
+            i32 r[4] = {};
+            if (m.memory().read_bytes(rects + i * 16u, reinterpret_cast<Byte*>(r),
+                                      sizeof(r)).is_err()) {
+                m.set_return(D3DERR_INVALIDCALL);
+                return;
+            }
+            add_area({r[0], r[1], r[2], r[3]});
+        }
+        if (areas.empty()) {
+            // Nothing of the target lies inside the clear area.
+            m.set_return(D3D_OK);
+            return;
+        }
+        const bool whole_target = areas.size() == 1 && areas[0][0] == 0 &&
+                                  areas[0][1] == 0 && areas[0][2] == rt_w &&
+                                  areas[0][3] == rt_h;
         const bool to_back_buffer =
             state.render_target_surface == 0 ||
             state.render_target_surface == state.back_buffer_surface;
@@ -376,7 +381,56 @@ void D3D9Manager::dispatch_device_scene(Marshaler& m, usize slot,
             }
         }
 
-        if ((flags & D3DCLEAR_ZBUFFER) != 0) {
+        // A partial clear is a fill per rectangle, which needs single-sample
+        // textures in a format whose clear texel is known. Otherwise widen
+        // to the whole target, as before, and say so once.
+        bool partial = !whole_target;
+        std::array<std::array<u8, 16>, 4> color_texels{};
+        std::array<unsigned, 4> color_texel_bytes{};
+        std::array<unsigned, 4> color_levels{};
+        graphics::BackendTexture2D* depth_target = nullptr;
+        const char* widened = nullptr;
+        if (partial && to_back_buffer) widened = "the back buffer";
+        if (partial && widened == nullptr && (flags & D3DCLEAR_TARGET) != 0) {
+            for (u32 slot = 0; slot < rt_colors.size() && widened == nullptr; ++slot) {
+                graphics::BackendTexture2D* target = rt_colors[slot];
+                if (target == nullptr) continue;
+                const u32 surface_id =
+                    slot == 0 ? state.render_target_surface : state.render_target_surfaces[slot];
+                ComObject* surface = find(surface_id, D3D9InterfaceId::Surface);
+                if (target->desc().sample_count > 1) {
+                    widened = "a multisampled render target";
+                } else if (surface == nullptr || !surface->surface ||
+                           !d3d9_encode_clear_texel(surface->surface->format,
+                                                    target->desc().pixel_format,
+                                                    unpack_d3dcolor(color), color,
+                                                    color_texels[slot],
+                                                    color_texel_bytes[slot])) {
+                    widened = "a render target format without a clear texel";
+                } else {
+                    color_levels[slot] = slot == 0 ? rt_level : surface->surface->level;
+                }
+            }
+        }
+        if (partial && widened == nullptr &&
+            (flags & (D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL)) != 0) {
+            depth_target = resolve_depth_attachment(state, rt_w, rt_h);
+            if (depth_target == nullptr || depth_target->desc().sample_count > 1) {
+                widened = "this depth-stencil surface";
+            }
+        }
+        if (widened != nullptr) {
+            partial = false;
+            static int reported = 0;
+            if (reported++ < 4) {
+                std::fprintf(stderr,
+                             "[d3d9] Clear: a %ux%u partial clear of %s is widened "
+                             "to the whole target\n",
+                             areas[0][2], areas[0][3], widened);
+            }
+        }
+
+        if ((flags & D3DCLEAR_ZBUFFER) != 0 && !partial) {
             state.depth_clear_value = depth_value;
             // Next begin_render_pass on T1 consumes this. Worker may also
             // record swap-chain clear_depth; a redundant load-action clear
@@ -407,6 +461,14 @@ void D3D9Manager::dispatch_device_scene(Marshaler& m, usize slot,
         snap.depth = depth_value;
         snap.stencil = stencil;
         snap.to_back_buffer = to_back_buffer;
+        snap.partial = partial;
+        if (partial) {
+            snap.rects = std::move(areas);
+            snap.color_texels = color_texels;
+            snap.color_texel_bytes = color_texel_bytes;
+            snap.rt_color_levels = color_levels;
+            snap.depth_target = depth_target;
+        }
         if (state.render_pass) {
             snap.pass_to_end = std::move(state.render_pass);
             state.render_pass_color = nullptr;

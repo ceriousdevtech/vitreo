@@ -1,0 +1,206 @@
+;
+; Note: shader requires additional functionality:
+;       Double-precision floating point
+;       Double-precision extensions for 11.1
+;       Use native low precision
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 307f645c14a1337d781efefbaefd39b5
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+; cbuffer Root
+; {
+;
+;   struct Root
+;   {
+;
+;       uint k0;                                      ; Offset:    0
+;       uint k1;                                      ; Offset:    4
+;       uint k2;                                      ; Offset:    8
+;       uint k3;                                      ; Offset:   12
+;   
+;   } Root;                                           ; Offset:    0 Size:    16
+;
+; }
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; Root                              cbuffer      NA          NA     CB0            cb0     1
+; src                               texture    byte         r/o      T0             t0     1
+; dst                                   UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:8-i16:16-i32:32-i64:64-f16:16-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%dx.types.CBufRet.i32 = type { i32, i32, i32, i32 }
+%dx.types.splitdouble = type { i32, i32 }
+%struct.ByteAddressBuffer = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+%Root = type { i32, i32, i32, i32 }
+
+define void @cs_double16() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 2, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %4 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %5 = shl i32 %4, 2
+  %6 = and i32 %5, 1020
+  %7 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %6, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %8 = extractvalue %dx.types.ResRet.i32 %7, 0
+  %9 = add i32 %5, 4
+  %10 = and i32 %9, 1020
+  %11 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %10, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %12 = extractvalue %dx.types.ResRet.i32 %11, 0
+  %13 = sitofp i32 %8 to double
+  %14 = fmul fast double %13, 0x3ECBF647612F3696
+  %15 = uitofp i32 %12 to double
+  %16 = fmul fast double %15, 1.000000e-09
+  %17 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %3, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %18 = extractvalue %dx.types.CBufRet.i32 %17, 0
+  %19 = add i32 %18, 1072693757
+  %20 = shl i32 %4, 12
+  %21 = and i32 %20, 4096
+  %22 = call double @dx.op.makeDouble.f64(i32 101, i32 %21, i32 %19)  ; MakeDouble(lo,hi)
+  %23 = fptrunc double %14 to half
+  %24 = fptrunc double %16 to half
+  %25 = fptrunc double %22 to half
+  %26 = fsub fast half 0xH8000, %25
+  %27 = bitcast half %23 to i16
+  %28 = zext i16 %27 to i32
+  %29 = bitcast half %24 to i16
+  %30 = zext i16 %29 to i32
+  %31 = shl nuw i32 %30, 16
+  %32 = or i32 %31, %28
+  %33 = bitcast half %25 to i16
+  %34 = zext i16 %33 to i32
+  %35 = bitcast half %26 to i16
+  %36 = zext i16 %35 to i32
+  %37 = shl nuw i32 %36, 16
+  %38 = or i32 %37, %34
+  %39 = fpext half %23 to double
+  %40 = fptrunc double %39 to float
+  %41 = bitcast float %40 to i32
+  %42 = fpext half %24 to double
+  %43 = trunc i32 %8 to i16
+  %44 = uitofp i16 %43 to double
+  %45 = trunc i32 %12 to i16
+  %46 = sitofp i16 %45 to double
+  %47 = fadd fast double %46, %44
+  %48 = fadd fast double %47, %42
+  %49 = call %dx.types.splitdouble @dx.op.splitDouble.f64(i32 102, double %48)  ; SplitDouble(value)
+  %50 = extractvalue %dx.types.splitdouble %49, 0
+  %51 = extractvalue %dx.types.splitdouble %49, 1
+  %52 = shl i32 %4, 6
+  %53 = or i32 %52, 16
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %53, i32 undef, i32 %50, i32 %51, i32 undef, i32 undef, i8 3, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %54 = fmul fast double %13, 0xBF6B4E81B4E81B4E
+  %55 = fptosi double %54 to i16
+  %56 = sext i16 %55 to i32
+  %57 = fmul fast double %15, 0x3EB0C6F7A0B5ED8E
+  %58 = fptoui double %57 to i16
+  %59 = zext i16 %58 to i32
+  %60 = fmul fast double %13, 0x45060EE2E58AAE16
+  %61 = fptrunc double %60 to half
+  %62 = bitcast half %61 to i16
+  %63 = zext i16 %62 to i32
+  %64 = fmul fast double %15, 1.000000e-29
+  %65 = fptrunc double %64 to half
+  %66 = bitcast half %65 to i16
+  %67 = zext i16 %66 to i32
+  %68 = shl nuw i32 %67, 16
+  %69 = or i32 %68, %63
+  %70 = fmul fast double %15, 0x3D20E374A4F8E0B5
+  %71 = fptrunc double %70 to half
+  %72 = bitcast half %71 to i16
+  %73 = zext i16 %72 to i32
+  %74 = fmul fast double %15, -6.000000e-17
+  %75 = fptrunc double %74 to half
+  %76 = bitcast half %75 to i16
+  %77 = zext i16 %76 to i32
+  %78 = shl nuw i32 %77, 16
+  %79 = or i32 %78, %73
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %52, i32 undef, i32 %32, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %80 = or i32 %52, 4
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %80, i32 undef, i32 %38, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %81 = or i32 %52, 8
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %81, i32 undef, i32 %41, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %82 = or i32 %52, 12
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %82, i32 undef, i32 0, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %83 = or i32 %52, 24
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %83, i32 undef, i32 %56, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %84 = or i32 %52, 28
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %84, i32 undef, i32 %59, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %85 = or i32 %52, 32
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %85, i32 undef, i32 %69, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %86 = or i32 %52, 36
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %86, i32 undef, i32 %79, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare double @dx.op.makeDouble.f64(i32, i32, i32) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32, %dx.types.Handle, i32, i32, i8, i32) #2
+
+; Function Attrs: nounwind readnone
+declare %dx.types.splitdouble @dx.op.splitDouble.f64(i32, double) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32, %dx.types.Handle, i32) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #2
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind }
+attributes #2 = { nounwind readonly }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!11}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 2}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 2}
+!4 = !{!5, !7, !9, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i32 0, null}
+!7 = !{!8}
+!8 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!9 = !{!10}
+!10 = !{i32 0, %Root* undef, !"", i32 0, i32 0, i32 1, i32 16, null}
+!11 = !{void ()* @cs_double16, !"cs_double16", null, !4, !12}
+!12 = !{i32 0, i64 8388724, i32 4, !13}
+!13 = !{i32 64, i32 1, i32 1}

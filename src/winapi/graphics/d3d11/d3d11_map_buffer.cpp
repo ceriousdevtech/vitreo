@@ -10,6 +10,7 @@
 /// Split out of d3d11_context.cpp.
 
 #include "winapi/graphics/d3d11/d3d11.hpp"
+#include "winapi/graphics/d3d11/d3d11_buffer_ring.hpp"
 #include "winapi/core/com_direct.hpp"
 #include "winapi/graphics/d3d11/d3d11_internal.hpp"
 #include "winapi/graphics/d3d11/d3d11_texel_encode.hpp"
@@ -143,10 +144,18 @@ u32 D3D11Manager::map_buffer(GuestAddr resource, u32 subresource,
     // is the one exception: its mapping must show those writes -- WARP maps
     // the buffer's own memory -- so even WRITE_NO_OVERWRITE waits for them
     // then (a wait is a valid outcome of any Map).
+    // WS6: a zero-copy (ring) buffer's mapping IS its GPU storage, so a
+    // WRITE_NO_OVERWRITE after a GPU write into it (a copy, Learn
+    // D3D11_USAGE: "copy data between two resources of the same usage")
+    // must show that write: it waits for it, as a mappable DEFAULT buffer's
+    // does.
+    const bool ring = buffer->second.ring != nullptr;
     const bool map_waits_for_gpu =
         map_type == D3D11_MAP_READ || map_type == D3D11_MAP_READ_WRITE ||
         map_type == D3D11_MAP_WRITE ||
-        (default_map_ok && buffer->second.gpu_newer);
+        (default_map_ok && buffer->second.gpu_newer) ||
+        (ring && dynamic && map_type == D3D11_MAP_WRITE_NO_OVERWRITE &&
+         buffer->second.gpu_newer);
     // A shared buffer's memory is written by other devices and processes
     // too: what they published is complete, and its contents are the
     // backend's, not this opening's shadow.
@@ -176,6 +185,48 @@ u32 D3D11Manager::map_buffer(GuestAddr resource, u32 subresource,
             gpu_synchronized = m_backend.wait_idle();
         }
         if (gpu_synchronized) buffer->second.gpu_use_gen = 0;
+    }
+
+    if (ring) {
+        // WS6 (d3d11_buffer_ring.hpp): the guest maps the slice itself.
+        Buffer& b = buffer->second;
+        if (map_type == D3D11_MAP_WRITE_DISCARD) {
+            // Learn (D3D11_MAP_WRITE_DISCARD): the previous contents are
+            // undefined and the GPU keeps reading them for work already
+            // queued; the memory "might not even be the same for successive
+            // calls to Map" (D3D11_USAGE). A slice recorded work may still
+            // use is left to it: the buffer moves to a fresh one, or, when
+            // the ring has none, waits for that work and keeps the slice. A
+            // re-Map while mapped keeps the pointer (a06 "remap while
+            // mapped"). Only a queue that shut down fails it.
+            if (!b.mapped && b.backend && b.backend->storage_in_use() &&
+                !b.ring->discard()) {
+                std::fprintf(stderr,
+                             "[d3d11] Map buffer=0x%llx bytes=%u WRITE_DISCARD "
+                             "-> E_OUTOFMEMORY: the GPU queue shut down\n",
+                             static_cast<unsigned long long>(resource),
+                             b.desc.byte_width);
+                return 0x8007000Eu;
+            }
+            // Nothing recorded uses the slice mapped now.
+            b.gpu_newer = false;
+            b.gpu_use_gen = 0;
+        } else if (map_waits_for_gpu && gpu_synchronized && b.gpu_newer) {
+            // The wait retired the GPU's writes: the slice holds them.
+            b.gpu_newer = false;
+            ++b.shadow_version;
+        }
+        data = b.ring->guest();
+        pitch = (b.desc.byte_width + 3u) & ~3u;
+        const bool was_discard =
+            b.mapped && b.mapped_type == D3D11_MAP_WRITE_DISCARD;
+        b.mapped = true;
+        b.mapped_type = was_discard ? D3D11_MAP_WRITE_DISCARD : map_type;
+        d3d11_diag("ID3D11DeviceContext::Map buffer=0x%llx type=%u -> "
+                   "guest=0x%llx bytes=%u (zero-copy)",
+                   static_cast<unsigned long long>(resource), map_type,
+                   static_cast<unsigned long long>(data), b.desc.byte_width);
+        return d3d11::S_OK;
     }
 
     bool allocated_mapping = false;
@@ -294,6 +345,23 @@ u32 D3D11Manager::map_buffer(GuestAddr resource, u32 subresource,
     return d3d11::S_OK;
 }
 
+GuestAddr D3D11Ws6TestPeer::guest(const D3D11Manager& manager,
+                                  GuestAddr resource) {
+    const auto buffer = manager.m_buffers.find(resource);
+    return buffer != manager.m_buffers.end() && buffer->second.ring
+               ? buffer->second.ring->guest()
+               : 0;
+}
+
+std::shared_ptr<D3D11BufferRing> D3D11Ws6TestPeer::ring(
+    const D3D11Manager& manager) {
+    return manager.m_buffer_ring;
+}
+
+u64 D3D11Ws6TestPeer::waits(const D3D11Manager& manager) {
+    return manager.m_buffer_ring ? manager.m_buffer_ring->stats().waits : 0;
+}
+
 void D3D11Manager::note_uav_buffer_writes(GuestAddr context, bool compute) {
     const auto state = m_context_states.find(context);
     if (state == m_context_states.end()) return;
@@ -334,6 +402,19 @@ void D3D11Manager::unmap_buffer(GuestAddr resource, u32 subresource) {
             "ID3D11DeviceContext::Unmap invalid "
             "resource=0x%llx subresource=%u",
             static_cast<unsigned long long>(resource), subresource);
+        return;
+    }
+    if (buffer->second.ring) {
+        // WS6: the guest wrote the GPU's storage itself; nothing to diff or
+        // publish. The CPU view changed.
+        ++buffer->second.shadow_version;
+        buffer->second.mapped_pages_version = buffer->second.shadow_version;
+        buffer->second.mapped = false;
+        buffer->second.mapped_type = 0;
+        d3d11_diag("ID3D11DeviceContext::Unmap buffer=0x%llx bytes=%u -> "
+                   "zero-copy",
+                   static_cast<unsigned long long>(resource),
+                   buffer->second.desc.byte_width);
         return;
     }
     static const bool timing_enabled =

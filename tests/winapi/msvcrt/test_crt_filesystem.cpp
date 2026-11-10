@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 
 #include "capsule/vfs/filesystem.hpp"
+#include "capsule/vfs/host_filesystem.hpp"
 #include "capsule/vfs/vfs.hpp"
 #include "core/cpu/state/cpu_state.hpp"
 #include "core/memory/guest_memory.hpp"
@@ -12,6 +13,7 @@
 #include "winapi/msvcrt/memory/crt_memory.hpp"
 
 #include <algorithm>
+#include <filesystem>
 #include <string>
 
 using namespace vitreo;
@@ -123,6 +125,26 @@ TEST(CrtFilesystemGetcwd, ShortBufferSetsErange) {
         got.push_back(static_cast<char>(ch));
     }
     EXPECT_EQ(got, "C:\\Program Files\\Electronic Arts\\The Sims 3\\Game\\Bin");
+}
+
+TEST(CrtFilesystemGetdrives, IsTheMountedDriveBitmask) {
+    // Learn (_getdrives): bit 0 = A:, bit 1 = B:, ... of the available drives,
+    // the GetLogicalDrives mask.
+    GuestMemory memory;
+    capsule::Vfs vfs;
+    const std::string directory = std::filesystem::temp_directory_path().string();
+    ASSERT_TRUE(vfs.mount_drive('C', std::make_unique<capsule::HostFileSystem>(directory)).is_ok());
+    ASSERT_TRUE(vfs.mount_drive('E', std::make_unique<capsule::HostFileSystem>(directory)).is_ok());
+    CrtMemoryManager memory_manager{memory, 0x20000000, 0x10000};
+    auto exports = create_crt_filesystem_thunks(vfs, memory_manager);
+    ExportEntry* entry = find_export(exports, "_getdrives");
+    ASSERT_NE(entry, nullptr);
+    cpu::CpuState cpu;
+    cpu.init_long_mode();
+    Marshaler m(memory);
+    m.attach_cpu(cpu);
+    entry->handler(m);
+    EXPECT_EQ(static_cast<u32>(cpu.gpr.rax), (1u << 2) | (1u << 4));
 }
 
 #include "crt_stat_oracle.inc"

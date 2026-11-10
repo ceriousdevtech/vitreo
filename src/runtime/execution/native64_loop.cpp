@@ -3,6 +3,8 @@
 #if defined(VITREO_ARCH_X86_64)
 
 #include "runtime/execution/native64_loop.hpp"
+#include <sys/mman.h>
+#include "winapi/kernel32/synchronization/srw_word.hpp"
 
 #include "core/cpu/state/cpu_state.hpp"
 #include "core/cpu/x64/native64.hpp"
@@ -10,6 +12,7 @@
 #include "core/cpu/x64/x64_exception_bridge.hpp"
 #include "core/cpu/x64/x64_guest_thread.hpp"
 #include "core/cpu/x64/x64_segments.hpp"
+#include "core/memory/x64_high_arena.hpp"
 #include "core/memory/guest_memory.hpp"
 #include <vitreo/diagnostics.hpp>
 #include "winapi/core/marshaler.hpp"
@@ -223,21 +226,33 @@ usize rewrite_new_segment_extents(GuestMemory& memory, bool rewrite,
                                                   extent.first, extent.second,
                                                   ranges);
             // An extent .pdata does not describe still gets swept linearly,
-            // but a MODULE's bytes are not a pure instruction stream: the
-            // sweep desynchronises on its data and writes over it. A large
-            // guest DLL lands here (two extents, every process) and
-            // access-violates on
-            // Intel where ARM never faults at all. Vitreo-owned regions (the
-            // thunk region, guest-generated code) are genuinely all code and
-            // keep the unrestricted sweep.
+            // but its bytes are not a pure instruction stream: the sweep
+            // desynchronises on data and writes over it. That holds for a
+            // module without .pdata AND for guest-generated code: a V8 code
+            // space interleaves Code-object headers, metadata and constant
+            // pools with instructions, and V8 never emits a segment prefix,
+            // so every unrestricted rewrite there corrupted heap data (a CEF
+            // renderer took 7, then access-violated decoding pointers against
+            // its compression cage). Such sweeps are restricted to the TEB
+            // access shape, which still catches each real gs:[small disp]
+            // load a guest JIT emits (CoreCLR's inline TLS access).
+            //
+            // Only Vitreo's own stub code -- the non-module extents inside
+            // the high arenas it owns (x64_high_arena.hpp) -- is genuinely
+            // all instructions, and it carries a segment access that is not
+            // TEB-shaped, so it keeps the unrestricted sweep.
             const bool module_backed =
                 modules != nullptr &&
                 modules->module_for_address(extent.first).info != nullptr;
+            const u64 arena = ::vitreo::memory::x64_high_arena_base();
+            const bool vitreo_owned =
+                !module_backed && extent.first >= arena &&
+                extent.second <= arena + ::vitreo::memory::kX64HighArenaSpan;
             const usize rewrote = cpu::x64::rewrite_segment_overrides_in_range(
                 memory, extent.first, size,
                 guided ? ranges.data() : nullptr,
                 guided ? ranges.size() : 0,
-                /*teb_shape_only=*/!guided && module_backed);
+                /*teb_shape_only=*/!guided && !vitreo_owned);
             count += rewrote;
             if (std::getenv("VITREO_NATIVE64_TRACE_SEGMENTS") != nullptr) {
                 const auto at = modules != nullptr
@@ -291,7 +306,9 @@ void substitute_return_sentinel(GuestMemory& memory, cpu::CpuState& cpu,
     const auto sp = static_cast<GuestAddr>(cpu.gpr.get64(4));
     const auto on_stack = memory.read_u64(sp);
     if (on_stack.is_ok() && on_stack.value() == sentinel) {
-        (void)memory.write_u64(sp, cpu::x64::sentinel_return_address());
+        (void)memory.write_u64(sp, sentinel == kProcessReturnSentinel
+                                       ? cpu::x64::process_sentinel_return_address()
+                                       : cpu::x64::sentinel_return_address());
     }
 }
 
@@ -550,6 +567,13 @@ enum class Native64Stop { Sentinel, ProcessExit, ControlTransferred, Unresolved,
                          st.guest.mach_port());
         }
     }
+
+    // Translate any newly executable guest code BEFORE entering it. A DLL's
+    // DllMain / TLS callbacks run in a nested run_until started from inside
+    // LoadLibrary, before the post-dispatch rewrite below has seen the new
+    // mapping; MSVCP140's DllMain reads gs:[0x30] before its first API call
+    // and took an access violation on host GS. A no-op when nothing changed.
+    (void)rewrite_new_segment_extents(memory, true, process_mgr.module_manager());
 
     substitute_return_sentinel(memory, cpu, sentinel);
 
@@ -934,6 +958,28 @@ enum class Native64Stop { Sentinel, ProcessExit, ControlTransferred, Unresolved,
             return Native64Stop::ControlTransferred;
         }
 
+        // RaiseException (a C++ throw, the MSVC thread-name exception, ...)
+        // returns with the exception pending and RIP still at its gateway:
+        // resuming there executes the guard INT3. Dispatch it the way the
+        // interpreter does, then resume wherever the handler chose.
+        if (cpu.pending_raise.active) {
+            const u32 raise_code = cpu.pending_raise.code;
+            if (!dispatch_pending_raise_native(cpu, memory, thunk_registry,
+                                               process_mgr)) {
+                if (process_mgr.has_exited()) return Native64Stop::ProcessExit;
+                vitreo::diagnostics::dump_hostcalls(
+                    "native64-unhandled-raise");
+                std::fprintf(stderr,
+                             "[native64] unhandled raised exception 0x%08x "
+                             "(return 0x%llx)\n",
+                             raise_code,
+                             static_cast<unsigned long long>(cpu.rip));
+                return Native64Stop::Unhandled;
+            }
+            if (process_mgr.has_exited()) return Native64Stop::ProcessExit;
+            continue;
+        }
+
         if (event_pump && (++pumps & 0x3FFu) == 0) event_pump();
     }
 }
@@ -1053,6 +1099,60 @@ VoidResult native64_prepare(GuestMemory& memory,
     emit_teb_last_error("GetLastError", true);
     emit_teb_last_error("SetLastError", false);
 
+    // GetCurrentThreadId and the uncontended exclusive SRW lock operations are
+    // likewise served inside the guest thread. Measured on an idle Chromium
+    // renderer: TryAcquire/ReleaseSRWLockExclusive ~24,000 and
+    // GetCurrentThreadId ~2,900 of ~34,000 calls/s, each otherwise a full
+    // guest<->host thread round trip. The SRW bodies implement srw_word's
+    // in-word protocol exactly and hop for everything else (contention,
+    // waiters, recursion tolerance, unusual pointers).
+    const auto slot_of = [&](const char* name) -> GuestAddr {
+        const auto slot = thunk_registry.get_thunk_address("kernel32.dll", name);
+        if (slot.is_err() || slot.value() < thunk_base ||
+            slot.value() + 16u > thunk_base + cpu::x64::kN64ThunkRegionMapSize) {
+            std::fprintf(stderr,
+                         "[native64] no valid thunk slot for %s; it keeps the "
+                         "round-trip path\n", name);
+            return 0;
+        }
+        return slot.value();
+    };
+    if (const GuestAddr slot = slot_of("GetCurrentThreadId")) {
+        cpu::x64::emit_get_current_thread_id_stub(
+            host + static_cast<usize>(slot - thunk_base));
+    }
+    {
+        static u8* bodies = nullptr;
+        if (bodies == nullptr) {
+            void* page = ::mmap(nullptr, 4096, PROT_READ | PROT_WRITE,
+                                MAP_PRIVATE | MAP_ANON, -1, 0);
+            bodies = page == MAP_FAILED ? nullptr : static_cast<u8*>(page);
+        }
+        const GuestAddr try_slot = slot_of("TryAcquireSRWLockExclusive");
+        const GuestAddr rel_slot = slot_of("ReleaseSRWLockExclusive");
+        if (bodies != nullptr && try_slot != 0 && rel_slot != 0) {
+            (void)::mprotect(bodies, 4096, PROT_READ | PROT_WRITE);
+            const void* recursion = winapi::srw_word::threads_with_recursion();
+            u8* try_body = bodies;
+            u8* rel_body = bodies + 256;
+            (void)cpu::x64::emit_srw_try_acquire_exclusive_body(
+                try_body, try_slot + 8, recursion);
+            (void)cpu::x64::emit_srw_release_exclusive_body(
+                rel_body, rel_slot + 8, recursion);
+            (void)::mprotect(bodies, 4096, PROT_READ | PROT_EXEC);
+            cpu::x64::emit_absolute_jump(
+                host + static_cast<usize>(try_slot - thunk_base),
+                reinterpret_cast<u64>(try_body));
+            cpu::x64::emit_absolute_jump(
+                host + static_cast<usize>(rel_slot - thunk_base),
+                reinterpret_cast<u64>(rel_body));
+        } else {
+            std::fprintf(stderr,
+                         "[native64] SRW stubs not installed; SRW calls keep "
+                         "the round-trip path\n");
+        }
+    }
+
     (void)memory.protect_region(thunk_base, cpu::x64::kN64ThunkRegionMapSize,
                                 MemoryProtection::ReadExecute);
 
@@ -1116,9 +1216,28 @@ RunResult run_native64_loop(cpu::CpuState& cpu,
     }
 
     u64 thunks = 0;
-    const Native64Stop stop =
+    Native64Stop stop =
         run_until(cpu, memory, thunk_registry, process_mgr, *st,
                   kProcessReturnSentinel, event_pump, &thunks, trace);
+    // The top level has no enclosing dispatcher to own a control transfer:
+    // it is that dispatcher. RtlUserThreadStart into an entry point (how a
+    // launcher that injects a DLL into a suspended child resumes it), a
+    // top-level unwind or a longjmp all continue where they put the CPU, as
+    // the interpreter's top-level loop does.
+    while (stop == Native64Stop::ControlTransferred) {
+        const auto action = continue_control_transfer_native(
+            cpu, memory, thunk_registry, process_mgr);
+        if (action == NativeTransferAction::Exit) {
+            stop = Native64Stop::ProcessExit;
+            break;
+        }
+        if (action == NativeTransferAction::Unhandled) {
+            stop = Native64Stop::Unhandled;
+            break;
+        }
+        stop = run_until(cpu, memory, thunk_registry, process_mgr, *st,
+                         kProcessReturnSentinel, event_pump, &thunks, trace);
+    }
     result.instructions_executed = thunks;
 
     switch (stop) {

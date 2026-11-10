@@ -44,8 +44,26 @@ public:
         u32 instruction = (word_count << 16) | static_cast<u32>(op);
         auto& dest = section_words(m_section);
         dest.push_back(instruction);
+        const usize first = dest.size();
         dest.insert(dest.end(), operands.begin(), operands.end());
+        if (m_dynamic_offsets) {
+            // The image operands mask: after result type, id, image and
+            // coordinate, and a Dref op's reference.
+            const u32 o = static_cast<u32>(op);
+            const bool dref = o == 89u || o == 90u || o == 97u;
+            const bool image = (o >= 87u && o <= 90u) || o == 95u || o == 96u || o == 97u;
+            const usize at = first + (dref ? 5u : 4u);
+            if (image && at < dest.size() && (dest[at] & 0x8u) != 0u) {
+                // ConstOffset (0x8) -> Offset (0x10): no mask bit lies
+                // between them, so the operands keep their order.
+                dest[at] = (dest[at] & ~0x8u) | 0x10u;
+            }
+        }
     }
+
+    /// While set, every image instruction's ConstOffset operand is emitted
+    /// as Offset (a non-constant offset; SM 6.7 programmable offsets).
+    void set_dynamic_offsets(bool on) { m_dynamic_offsets = on; }
 
     /// OpCapability, once per capability.
     void emit_capability(SpvCapability cap) {
@@ -76,6 +94,37 @@ public:
         set_section(Section::MemoryModel);
         // Addressing model: Logical, Memory model: GLSL450
         emit(SpvOp::OpMemoryModel, {0, 1});
+    }
+
+    /// Switch the module to SPV_KHR_physical_storage_buffer addressing
+    /// (AddressingModel PhysicalStorageBuffer64 = 5348, spirv.hpp), once.
+    /// The memory model instruction is rewritten in place: it is emitted
+    /// before the translator knows whether a pointer will be formed.
+    void use_physical_storage_buffer() {
+        if (m_physical_storage_buffer) return;
+        m_physical_storage_buffer = true;
+        emit_capability(SpvCapability::PhysicalStorageBufferAddresses);
+        emit_extension("SPV_KHR_physical_storage_buffer");
+        auto& words = section_words(Section::MemoryModel);
+        words.clear();
+        const Section previous = m_section;
+        set_section(Section::MemoryModel);
+        emit(SpvOp::OpMemoryModel, {5348u, 1u});
+        set_section(previous);
+    }
+
+    /// OpLoad / OpStore with the Aligned memory operand (MemoryAccess
+    /// Aligned = 0x2): required for a PhysicalStorageBuffer pointer.
+    [[nodiscard]] u32 emit_load_aligned(u32 result_type, u32 pointer,
+                                        u32 alignment) {
+        set_section(Section::Functions);
+        u32 id = allocate_id();
+        emit(SpvOp::OpLoad, {result_type, id, pointer, 0x2u, alignment});
+        return id;
+    }
+    void emit_store_aligned(u32 pointer, u32 object, u32 alignment) {
+        set_section(Section::Functions);
+        emit(SpvOp::OpStore, {pointer, object, 0x2u, alignment});
     }
 
     void emit_entry_point(SpvExecutionModel model, u32 func_id,
@@ -295,7 +344,8 @@ public:
 
     void set_cached_uint_type(u32 type_id) { m_cached_uint_type = type_id; }
 
-    [[nodiscard]] u32 emit_variable(u32 type_id, SpvStorageClass storage) {
+    [[nodiscard]] u32 emit_variable(u32 type_id, SpvStorageClass storage,
+                                    u32 initializer = 0) {
         // Function-local variables belong inside the function; globals in types.
         if (storage == SpvStorageClass::Function) {
             set_section(Section::Functions);
@@ -303,7 +353,11 @@ public:
             set_section(Section::TypesGlobals);
         }
         u32 id = allocate_id();
-        emit(SpvOp::OpVariable, {type_id, id, static_cast<u32>(storage)});
+        if (initializer) {
+            emit(SpvOp::OpVariable, {type_id, id, static_cast<u32>(storage), initializer});
+        } else {
+            emit(SpvOp::OpVariable, {type_id, id, static_cast<u32>(storage)});
+        }
         if (storage == SpvStorageClass::Private) m_private_variables.push_back(id);
         return id;
     }
@@ -828,20 +882,27 @@ public:
         return id;
     }
 
+    /// @p min_lod: the MinLod image operand (0x80, capability MinLod), the
+    /// per-sample LOD clamp of sample_cl / sample_b_cl; 0 for none.
     [[nodiscard]] u32 emit_image_sample(u32 result_type, u32 sampled_image,
                                         u32 coordinate, u32 bias = 0,
-                                        u32 const_offset = 0) {
+                                        u32 const_offset = 0,
+                                        u32 min_lod = 0) {
+        // Before the section switch: OpCapability goes to its own section.
+        if (min_lod != 0) emit_capability(SpvCapability::MinLod);
         set_section(Section::Functions);
         u32 id = allocate_id();
         // SPIR-V image operands are listed in increasing bit order:
-        // Bias (0x1) then ConstOffset (0x8).
+        // Bias (0x1), ConstOffset (0x8), MinLod (0x80).
         std::vector<u32> words{result_type, id, sampled_image, coordinate};
         const u32 mask = (bias != 0 ? 0x1u : 0u) |
-                         (const_offset != 0 ? 0x8u : 0u);
+                         (const_offset != 0 ? 0x8u : 0u) |
+                         (min_lod != 0 ? 0x80u : 0u);
         if (mask != 0) {
             words.push_back(mask);
             if (bias != 0) words.push_back(bias);
             if (const_offset != 0) words.push_back(const_offset);
+            if (min_lod != 0) words.push_back(min_lod);
         }
         emit(SpvOp::OpImageSampleImplicitLod, words);
         return id;
@@ -912,18 +973,20 @@ public:
 
     [[nodiscard]] u32 emit_image_sample_grad(
         u32 result_type, u32 sampled_image, u32 coordinate,
-        u32 dx, u32 dy, u32 const_offset = 0) {
+        u32 dx, u32 dy, u32 const_offset = 0, u32 min_lod = 0) {
+        // Before the section switch: OpCapability goes to its own section.
+        if (min_lod != 0) emit_capability(SpvCapability::MinLod);
         set_section(Section::Functions);
         u32 id = allocate_id();
-        // Grad (0x4) then ConstOffset (0x8), in increasing bit order.
-        if (const_offset == 0) {
-            emit(SpvOp::OpImageSampleExplicitLod,
-                 {result_type, id, sampled_image, coordinate, 0x4u, dx, dy});
-        } else {
-            emit(SpvOp::OpImageSampleExplicitLod,
-                 {result_type, id, sampled_image, coordinate, 0xCu, dx, dy,
-                  const_offset});
-        }
+        // Grad (0x4), ConstOffset (0x8), MinLod (0x80), in increasing bit
+        // order.
+        std::vector<u32> words{result_type, id, sampled_image, coordinate,
+                               0x4u | (const_offset != 0 ? 0x8u : 0u) |
+                                   (min_lod != 0 ? 0x80u : 0u),
+                               dx, dy};
+        if (const_offset != 0) words.push_back(const_offset);
+        if (min_lod != 0) words.push_back(min_lod);
+        emit(SpvOp::OpImageSampleExplicitLod, words);
         return id;
     }
 
@@ -1014,17 +1077,40 @@ public:
 
     [[nodiscard]] u32 emit_image_sample_dref(
         u32 result_type, u32 sampled_image, u32 coordinate, u32 reference,
-        u32 bias = 0) {
+        u32 bias = 0, u32 min_lod = 0) {
+        // Before the section switch: OpCapability goes to its own section.
+        if (min_lod != 0) emit_capability(SpvCapability::MinLod);
         set_section(Section::Functions);
         u32 id = allocate_id();
-        if (bias == 0) {
-            emit(SpvOp::OpImageSampleDrefImplicitLod,
-                 {result_type, id, sampled_image, coordinate, reference});
-        } else {
-            emit(SpvOp::OpImageSampleDrefImplicitLod,
-                 {result_type, id, sampled_image, coordinate, reference,
-                  0x1u, bias});
+        // Bias (0x1) then MinLod (0x80), in increasing bit order.
+        std::vector<u32> words{result_type, id, sampled_image, coordinate,
+                               reference};
+        const u32 mask = (bias != 0 ? 0x1u : 0u) | (min_lod != 0 ? 0x80u : 0u);
+        if (mask != 0) {
+            words.push_back(mask);
+            if (bias != 0) words.push_back(bias);
+            if (min_lod != 0) words.push_back(min_lod);
         }
+        emit(SpvOp::OpImageSampleDrefImplicitLod, words);
+        return id;
+    }
+
+    /// sample_c with explicit gradients (VX_TEX SampleCmpGrad): Grad (0x4),
+    /// ConstOffset (0x8), MinLod (0x80), in increasing bit order.
+    [[nodiscard]] u32 emit_image_sample_dref_grad(
+        u32 result_type, u32 sampled_image, u32 coordinate, u32 reference,
+        u32 dx, u32 dy, u32 const_offset = 0, u32 min_lod = 0) {
+        if (min_lod != 0) emit_capability(SpvCapability::MinLod);
+        set_section(Section::Functions);
+        u32 id = allocate_id();
+        std::vector<u32> words{result_type, id, sampled_image, coordinate,
+                               reference,
+                               0x4u | (const_offset != 0 ? 0x8u : 0u) |
+                                   (min_lod != 0 ? 0x80u : 0u),
+                               dx, dy};
+        if (const_offset != 0) words.push_back(const_offset);
+        if (min_lod != 0) words.push_back(min_lod);
+        emit(SpvOp::OpImageSampleDrefExplicitLod, words);
         return id;
     }
 
@@ -1039,10 +1125,42 @@ public:
         return id;
     }
 
+    /// sample_c / sample_c_lz with an immediate texel offset (D3D11.3
+    /// 22.4.17-18: the aoffimmi controls apply to comparison samples too):
+    /// Bias (0x1) or Lod (0x2), then ConstOffset (0x8).
+    [[nodiscard]] u32 emit_image_sample_dref_offset(
+        u32 result_type, u32 sampled_image, u32 coordinate, u32 reference,
+        u32 bias, u32 const_offset) {
+        set_section(Section::Functions);
+        u32 id = allocate_id();
+        if (bias == 0) {
+            emit(SpvOp::OpImageSampleDrefImplicitLod,
+                 {result_type, id, sampled_image, coordinate, reference, 0x8u,
+                  const_offset});
+        } else {
+            emit(SpvOp::OpImageSampleDrefImplicitLod,
+                 {result_type, id, sampled_image, coordinate, reference, 0x9u,
+                  bias, const_offset});
+        }
+        return id;
+    }
+
+    [[nodiscard]] u32 emit_image_sample_dref_lz_offset(
+        u32 result_type, u32 sampled_image, u32 coordinate, u32 reference,
+        u32 lod, u32 const_offset) {
+        set_section(Section::Functions);
+        u32 id = allocate_id();
+        emit(SpvOp::OpImageSampleDrefExplicitLod,
+             {result_type, id, sampled_image, coordinate, reference, 0xAu,
+              lod, const_offset});
+        return id;
+    }
+
     [[nodiscard]] u32 emit_function(u32 result_type, u32 function_type) {
         set_section(Section::Functions);
         u32 id = allocate_id();
         emit(SpvOp::OpFunction, {result_type, id, 0, function_type});
+        note_function();
         return id;
     }
 
@@ -1064,31 +1182,71 @@ public:
         return id;
     }
 
-    void emit_function_id(u32 id, u32 result_type, u32 function_type) {
+    void emit_function_id(u32 id, u32 result_type, u32 function_type,
+                          u32 control = 0) {
         set_section(Section::Functions);
-        emit(SpvOp::OpFunction, {result_type, id, 0, function_type});
+        emit(SpvOp::OpFunction, {result_type, id, control, function_type});
+        note_function();
     }
 
     [[nodiscard]] u32 emit_label() {
         set_section(Section::Functions);
         u32 id = allocate_id();
         emit(SpvOp::OpLabel, {id});
+        note_label(id);
         return id;
     }
 
     void emit_label_id(u32 id) {
         set_section(Section::Functions);
         emit(SpvOp::OpLabel, {id});
+        note_label(id);
     }
 
     void emit_selection_merge(u32 merge_block) {
         set_section(Section::Functions);
         emit(SpvOp::OpSelectionMerge, {merge_block, 0u});
+        m_constructs.push_back({merge_block, 0u});
     }
 
     void emit_loop_merge(u32 merge_block, u32 continue_block) {
         set_section(Section::Functions);
         emit(SpvOp::OpLoopMerge, {merge_block, continue_block, 0u});
+        m_constructs.push_back({merge_block, 0u});
+    }
+
+    /// Where the next instruction is, for "does a value made there dominate
+    /// here" in the structured code this builder emits: the function, and
+    /// per open construct (OpSelectionMerge / OpLoopMerge, the function body
+    /// at depth 0) its merge block and the latest label opened at that depth
+    /// that is not a merge -- a new arm, case or block a branch can reach
+    /// around what came before. A merge label closes its construct and keeps
+    /// the enclosing depth's arm: a merge is dominated by its header.
+    struct ConstructLevel {
+        u32 merge{0};
+        u32 arm{0};
+        bool operator==(const ConstructLevel&) const = default;
+    };
+    struct DominanceMark {
+        u32 function{0};
+        std::vector<ConstructLevel> levels;
+    };
+    [[nodiscard]] DominanceMark dominance_mark() const {
+        return {m_function_serial, m_constructs};
+    }
+    /// A value defined at @p mark dominates the next instruction: the same
+    /// function, and every level of the mark still open in the same arm
+    /// (the current position is that block or nested inside it). A
+    /// conservative answer: any other label in between says no.
+    [[nodiscard]] bool dominates_here(const DominanceMark& mark) const {
+        if (mark.function != m_function_serial ||
+            mark.levels.size() > m_constructs.size()) {
+            return false;
+        }
+        for (usize i = 0; i < mark.levels.size(); ++i) {
+            if (!(mark.levels[i] == m_constructs[i])) return false;
+        }
+        return true;
     }
 
     void emit_branch(u32 target) {
@@ -1188,6 +1346,22 @@ public:
     }
 
 private:
+    void note_function() {
+        ++m_function_serial;
+        m_constructs.assign(1, ConstructLevel{});
+    }
+    void note_label(u32 id) {
+        if (m_constructs.size() > 1 && m_constructs.back().merge == id) {
+            m_constructs.pop_back();
+        } else {
+            m_constructs.back().arm = id;
+        }
+    }
+    u32 m_function_serial{0};
+    std::vector<ConstructLevel> m_constructs{ConstructLevel{}};
+
+    bool m_dynamic_offsets{false};
+    bool m_physical_storage_buffer{false};
     [[nodiscard]] std::vector<u32>& section_words(Section section) {
         switch (section) {
         case Section::Capabilities: return m_capabilities;

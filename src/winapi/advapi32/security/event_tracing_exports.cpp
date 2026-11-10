@@ -26,6 +26,24 @@
 
 namespace vitreo::winapi {
 
+// OpenEventLogA/W: Learn specifies NULL on failure; an unknown custom
+// log falls back to Application. No event-log service is implemented.
+void add_event_log_open_export(DllExports& exports, bool wide) {
+    exports.entries.push_back({wide ? "OpenEventLogW" : "OpenEventLogA", 0,
+        [wide](Marshaler& m) {
+            (void)m.arg_ptr(0);
+            (void)m.arg_ptr(1);
+            static std::atomic<bool> logged_a{false}, logged_w{false};
+            auto& logged = wide ? logged_w : logged_a;
+            if (!logged.exchange(true)) {
+                std::fprintf(stderr, "[vitreo] UNIMPLEMENTED advapi32!OpenEventLog%c: "
+                             "local and remote event-log service\n", wide ? 'W' : 'A');
+            }
+            set_last_error(error_codes::ERROR_CALL_NOT_IMPLEMENTED);
+            m.set_return(0);
+        }, 8});
+}
+
 /// Registers DeregisterEventSource, RegisterEventSourceW, ReportEventW.
 void add_event_source_exports(DllExports& exports) {
     // BOOL DeregisterEventSource(HANDLE hEventLog)
@@ -380,17 +398,7 @@ void add_event_tracing_exports(DllExports& exports,
             m.set_return(error_codes::ERROR_SUCCESS);
         }, 8});
 
-    // HANDLE OpenEventLogA(LPCSTR lpUNCServerName, LPCSTR lpSourceName)
-    // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-openeventloga
-    // No event-log service is present; NULL + ERROR_FILE_NOT_FOUND is the
-    // documented failure for a missing source, not a fabricated handle.
-    exports.entries.push_back({"OpenEventLogA", 0,
-        [](Marshaler& m) {
-            (void)m.arg_ptr(0);
-            (void)m.arg_ptr(1);
-            set_last_error(error_codes::ERROR_FILE_NOT_FOUND);
-            m.set_return(0);
-        }, 8});
+    add_event_log_open_export(exports, false);
     exports.entries.push_back({"CloseEventLog", 0,
         [](Marshaler& m) {
             (void)m.arg(0);

@@ -196,32 +196,8 @@ void Kernel32ExtManager::impl_SetCurrentDirectoryA(Marshaler& m) {
 }
 
 void Kernel32ExtManager::impl_GetShortPathNameA(Marshaler& m) {
-    // DWORD GetShortPathNameA(LPCSTR lpszLongPath, LPSTR lpszShortPath, DWORD cchBuffer)
-    // Vitreo's VFS has no 8.3 aliases, so the short path equals the long path.
-    GuestAddr long_path = m.arg_ptr(0);
-    GuestAddr short_path = m.arg_ptr(1);
-    u32 cch_buffer = static_cast<u32>(m.arg(2));
-
-    auto res = m.read_ansi_string(long_path);
-    if (res.is_err()) {
-        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-        m.set_return(0);
-        return;
-    }
-    const std::string& path = res.value();
-    u32 src_len = static_cast<u32>(path.size());
-
-    // Return value excludes the null terminator; needs cchBuffer > src_len to copy.
-    if (short_path != 0 && cch_buffer > src_len) {
-        for (u32 i = 0; i < src_len; ++i) {
-            (void)m_memory.write_u8(short_path + i, static_cast<u8>(path[i]));
-        }
-        (void)m_memory.write_u8(short_path + src_len, 0);
-        m.set_return(src_len);
-    } else {
-        // Buffer too small (or size query): return required size incl. null.
-        m.set_return(src_len + 1);
-    }
+    // The W contract on the ANSI spelling (environment_ext.cpp).
+    short_path_name_common(m, false);
 }
 
 void Kernel32ExtManager::impl_RemoveDirectoryW(Marshaler& m) {

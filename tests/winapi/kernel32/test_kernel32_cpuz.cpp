@@ -4,6 +4,7 @@
 #include "kernel32_cpuz_fixture.hpp"
 #include <winapi/kernel32/error.hpp>
 #include <winapi/kernel32/filesystem/file_pipe_internal.hpp>
+#include <platform/host_hardware.hpp>
 #include <algorithm>
 #include <array>
 #include <filesystem>
@@ -412,4 +413,129 @@ TEST_F(Kernel32CpuzTest, GlobalMemoryStatus_AvailVirtualIsRemainingUserVa) {
     EXPECT_EQ(total_virtual, kCeiling);
     EXPECT_EQ(avail_virtual, kCeiling - mapped);
     EXPECT_NE(avail_virtual, 0x60000000u);
+}
+
+// \\.\PhysicalDrive0 opened for query access and IOCTL_DISK_GET_DRIVE_GEOMETRY
+// (tools/oracle_probe/disk_geometry_probe{64,32}.expected). The disk is the
+// one winoracle measured: 536870912000 bytes of 512-byte sectors gave
+// Cylinders 65270, FixedMedia, 255 tracks, 63 sectors.
+TEST_F(Kernel32CpuzTest, PhysicalDriveZeroAccessReportsHostDiskGeometry) {
+    platform::HostHardwareProfile host = platform::host_hardware();
+    host.disk.size_bytes = 536870912000ull;
+    host.disk.block_bytes = 512;
+    platform::set_host_hardware_for_testing(&host);
+    struct Restore { ~Restore() { platform::set_host_hardware_for_testing(nullptr); } } restore;
+
+    constexpr u32 OPEN_EXISTING_ = 3, CREATE_NEW_ = 1, SHARE_RW = 3;
+    FileManager files{vfs, handles, memory};
+    EXPECT_EQ(files.create_file("\\\\.\\PhysicalDrive1", 0, SHARE_RW, OPEN_EXISTING_, 0), INVALID_HANDLE);
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_FILE_NOT_FOUND);
+    const Handle created = files.create_file("\\\\.\\physicaldrive0", 0, SHARE_RW, CREATE_NEW_, 0);
+    ASSERT_NE(created, INVALID_HANDLE);
+    EXPECT_TRUE(handles.close(created));
+    // Data access needs raw sectors, which are not provided: refused loudly.
+    EXPECT_EQ(files.create_file("\\\\.\\PhysicalDrive0", 0x80000000u, SHARE_RW, OPEN_EXISTING_, 0),
+              INVALID_HANDLE);
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_ACCESS_DENIED);
+
+    const Handle disk = files.create_file("\\\\.\\PhysicalDrive0", 0, SHARE_RW, OPEN_EXISTING_, 0);
+    ASSERT_NE(disk, INVALID_HANDLE);
+    constexpr GuestAddr output = DATA_BASE + 0x900;
+    constexpr u32 IOCTL_DISK_GET_DRIVE_GEOMETRY = 0x00070000;
+    constexpr u32 IOCTL_DISK_GET_LENGTH_INFO = 0x0007405C;
+    u32 bytes_returned = 0;
+    set_last_error(0xDEADu);
+    ASSERT_TRUE(files.device_io_control(disk, IOCTL_DISK_GET_DRIVE_GEOMETRY, 0, 0, output, 24,
+                                        bytes_returned));
+    EXPECT_EQ(bytes_returned, 24u);
+    EXPECT_EQ(memory.read_u64(output + 0).value(), 65270u);
+    EXPECT_EQ(memory.read_u32(output + 8).value(), 12u);
+    EXPECT_EQ(memory.read_u32(output + 12).value(), 255u);
+    EXPECT_EQ(memory.read_u32(output + 16).value(), 63u);
+    EXPECT_EQ(memory.read_u32(output + 20).value(), 512u);
+    EXPECT_EQ(get_last_error(), 0xDEADu);
+
+    EXPECT_FALSE(files.device_io_control(disk, IOCTL_DISK_GET_DRIVE_GEOMETRY, 0, 0, output, 23,
+                                         bytes_returned));
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_INSUFFICIENT_BUFFER);
+    EXPECT_FALSE(files.device_io_control(disk, IOCTL_DISK_GET_DRIVE_GEOMETRY, 0, 0, 0, 0,
+                                         bytes_returned));
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_INSUFFICIENT_BUFFER);
+    EXPECT_FALSE(files.device_io_control(disk, IOCTL_DISK_GET_LENGTH_INFO, 0, 0, output, 8,
+                                         bytes_returned));
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_ACCESS_DENIED);
+    EXPECT_TRUE(handles.close(disk));
+}
+
+TEST_F(Kernel32CpuzTest, PhysicalDriveAbsentWithoutHostDisk) {
+    platform::HostHardwareProfile host = platform::host_hardware();
+    host.disk = {};
+    platform::set_host_hardware_for_testing(&host);
+    struct Restore { ~Restore() { platform::set_host_hardware_for_testing(nullptr); } } restore;
+    FileManager files{vfs, handles, memory};
+    EXPECT_EQ(files.create_file("\\\\.\\PhysicalDrive0", 0, 3, 3, 0), INVALID_HANDLE);
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_FILE_NOT_FOUND);
+}
+
+// IOCTL_STORAGE_QUERY_PROPERTY on \\.\PhysicalDrive0
+// (tools/oracle_probe/storage_property_probe{64,32}.expected).
+TEST_F(Kernel32CpuzTest, PhysicalDriveStorageDevicePropertyFollowsWindowsRules) {
+    platform::HostHardwareProfile host = platform::host_hardware();
+    host.disk.size_bytes = 1000204886016ull;
+    host.disk.block_bytes = 4096;
+    host.disk.vendor = "";
+    host.disk.product = "TEST SSD";
+    host.disk.revision = "1.0";
+    host.disk.serial = "SN123";
+    host.disk.bus = platform::HostDiskBus::Nvme;
+    platform::set_host_hardware_for_testing(&host);
+    struct Restore { ~Restore() { platform::set_host_hardware_for_testing(nullptr); } } restore;
+
+    FileManager files{vfs, handles, memory};
+    const Handle disk = files.create_file("\\\\.\\PhysicalDrive0", 0, 3, 3, 0);
+    ASSERT_NE(disk, INVALID_HANDLE);
+    constexpr u32 IOCTL_STORAGE_QUERY_PROPERTY = 0x002D1400;
+    constexpr GuestAddr query = DATA_BASE + 0x800;
+    constexpr GuestAddr output = DATA_BASE + 0x900;
+    const auto set_query = [&](u32 id, u32 type) {
+        ASSERT_TRUE(memory.write_u32(query, id).is_ok());
+        ASSERT_TRUE(memory.write_u32(query + 4, type).is_ok());
+        ASSERT_TRUE(memory.write_u32(query + 8, 0).is_ok());
+    };
+    u32 bytes = 0xFFFF;
+
+    set_query(0, 1);  // exists
+    EXPECT_TRUE(files.device_io_control(disk, IOCTL_STORAGE_QUERY_PROPERTY, query, 12, 0, 0, bytes));
+    EXPECT_EQ(bytes, 0u);
+    set_query(0, 0);
+    EXPECT_TRUE(files.device_io_control(disk, IOCTL_STORAGE_QUERY_PROPERTY, query, 12, output, 8, bytes));
+    EXPECT_EQ(bytes, 8u);
+    EXPECT_EQ(memory.read_u32(output).value(), 40u);       // Version
+    const u32 size = memory.read_u32(output + 4).value();  // Size: 40 + "TEST SSD\0" "1.0\0" "SN123\0"
+    EXPECT_EQ(size, 40u + 9 + 4 + 6);
+    EXPECT_TRUE(files.device_io_control(disk, IOCTL_STORAGE_QUERY_PROPERTY, query, 12, output, 4, bytes));
+    EXPECT_EQ(bytes, 4u);  // a short buffer gets a prefix and succeeds
+    EXPECT_TRUE(files.device_io_control(disk, IOCTL_STORAGE_QUERY_PROPERTY, query, 12, 0, 0, bytes));
+    EXPECT_EQ(bytes, 0u);
+    ASSERT_TRUE(files.device_io_control(disk, IOCTL_STORAGE_QUERY_PROPERTY, query, 12, output, 512, bytes));
+    EXPECT_EQ(bytes, size);
+    EXPECT_EQ(memory.read_u8(output + 10).value(), 0u);    // RemovableMedia
+    EXPECT_EQ(memory.read_u8(output + 11).value(), 1u);    // CommandQueueing
+    EXPECT_EQ(memory.read_u32(output + 12).value(), 0u);   // no vendor
+    EXPECT_EQ(memory.read_u32(output + 16).value(), 40u);
+    EXPECT_EQ(memory.read_u32(output + 20).value(), 49u);
+    EXPECT_EQ(memory.read_u32(output + 24).value(), 53u);
+    EXPECT_EQ(memory.read_u32(output + 28).value(), 0x11u);  // BusTypeNvme
+    EXPECT_EQ(read_guest_ansi_string(output + 40), "TEST SSD");
+    EXPECT_EQ(read_guest_ansi_string(output + 53), "SN123");
+
+    set_query(0, 7);
+    EXPECT_FALSE(files.device_io_control(disk, IOCTL_STORAGE_QUERY_PROPERTY, query, 12, output, 64, bytes));
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_NOT_SUPPORTED);
+    set_query(99, 0);
+    EXPECT_FALSE(files.device_io_control(disk, IOCTL_STORAGE_QUERY_PROPERTY, query, 12, output, 64, bytes));
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_INVALID_FUNCTION);
+    EXPECT_FALSE(files.device_io_control(disk, IOCTL_STORAGE_QUERY_PROPERTY, query, 4, output, 64, bytes));
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_BAD_LENGTH);
+    EXPECT_TRUE(handles.close(disk));
 }

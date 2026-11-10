@@ -35,11 +35,67 @@ DllExports create_winmm_thunks(WinmmManager& mgr) {
     exports.entries.push_back(ExportEntry{"timeGetTime", 0, impl_timeGetTime, 0});
 
     // ---- mmio --------------------------------------------------------------
-    exports.entries.push_back(ExportEntry{"mmioOpenA", 0, [&mgr](Marshaler& m) { mgr.impl_mmioOpenA(m); }, 12});
+    // stdcall byte counts: libwinmm.a (i686) _mmioXxx@N.
+    exports.entries.push_back(ExportEntry{"mmioOpenA", 0, [&mgr](Marshaler& m) { mgr.impl_mmioOpen(m, false); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioOpenW", 0, [&mgr](Marshaler& m) { mgr.impl_mmioOpen(m, true); }, 12});
     exports.entries.push_back(ExportEntry{"mmioClose", 0, [&mgr](Marshaler& m) { mgr.impl_mmioClose(m); }, 8});
-    exports.entries.push_back(ExportEntry{"mmioDescend", 0, [&mgr](Marshaler& m) { mgr.impl_mmioDescend(m); }, 16});
     exports.entries.push_back(ExportEntry{"mmioRead", 0, [&mgr](Marshaler& m) { mgr.impl_mmioRead(m); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioWrite", 0, [&mgr](Marshaler& m) { mgr.impl_mmioWrite(m); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioSeek", 0, [&mgr](Marshaler& m) { mgr.impl_mmioSeek(m); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioGetInfo", 0, [&mgr](Marshaler& m) { mgr.impl_mmioGetInfo(m); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioSetInfo", 0, [&mgr](Marshaler& m) { mgr.impl_mmioSetInfo(m); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioSetBuffer", 0, [&mgr](Marshaler& m) { mgr.impl_mmioSetBuffer(m); }, 16});
+    exports.entries.push_back(ExportEntry{"mmioFlush", 0, [&mgr](Marshaler& m) { mgr.impl_mmioFlush(m); }, 8});
+    exports.entries.push_back(ExportEntry{"mmioAdvance", 0, [&mgr](Marshaler& m) { mgr.impl_mmioAdvance(m); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioSendMessage", 0, [&mgr](Marshaler& m) { mgr.impl_mmioSendMessage(m); }, 16});
+    exports.entries.push_back(ExportEntry{"mmioDescend", 0, [&mgr](Marshaler& m) { mgr.impl_mmioDescend(m); }, 16});
     exports.entries.push_back(ExportEntry{"mmioAscend", 0, [&mgr](Marshaler& m) { mgr.impl_mmioAscend(m); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioCreateChunk", 0, [&mgr](Marshaler& m) { mgr.impl_mmioCreateChunk(m); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioStringToFOURCCA", 0, [&mgr](Marshaler& m) { mgr.impl_mmioStringToFOURCC(m, false); }, 8});
+    exports.entries.push_back(ExportEntry{"mmioStringToFOURCCW", 0, [&mgr](Marshaler& m) { mgr.impl_mmioStringToFOURCC(m, true); }, 8});
+    exports.entries.push_back(ExportEntry{"mmioInstallIOProcA", 0, [&mgr](Marshaler& m) { mgr.impl_mmioInstallIOProc(m, false); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioInstallIOProcW", 0, [&mgr](Marshaler& m) { mgr.impl_mmioInstallIOProc(m, true); }, 12});
+    exports.entries.push_back(ExportEntry{"mmioRenameA", 0, [&mgr](Marshaler& m) { mgr.impl_mmioRename(m, false); }, 16});
+    exports.entries.push_back(ExportEntry{"mmioRenameW", 0, [&mgr](Marshaler& m) { mgr.impl_mmioRename(m, true); }, 16});
+    // The built-in DOS and MEM MMIOPROCs. Windows does not export them; the
+    // guest reaches them through MMIOINFO.pIOProc or MMIO_FINDPROC.
+    {
+        ExportEntry dos{std::string(kMmioDosIOProcExport), 0, [&mgr](Marshaler& m) { mgr.impl_mmioBuiltinIOProc(m, false); }, 16};
+        dos.internal = true;
+        exports.entries.push_back(std::move(dos));
+        ExportEntry mem{std::string(kMmioMemIOProcExport), 0, [&mgr](Marshaler& m) { mgr.impl_mmioBuiltinIOProc(m, true); }, 16};
+        mem.internal = true;
+        exports.entries.push_back(std::move(mem));
+    }
+
+    // ---- aux: no auxiliary audio device ------------------------------------
+    // winmm_mmio_probe aux_*: Windows 11 reports no aux device. A zero-size
+    // caps request succeeds untouched before anything else is checked
+    // (aux_capsa_null_cb0), a NULL output is MMSYSERR_INVALPARAM, and every
+    // device id, AUX_MAPPER included, is MMSYSERR_BADDEVICEID.
+    exports.entries.push_back(ExportEntry{"auxGetNumDevs", 0, [](Marshaler& m) { m.set_return(0u); }, 0});
+    for (const char* name : {"auxGetDevCapsA", "auxGetDevCapsW"}) {
+        exports.entries.push_back(ExportEntry{name, 0, [](Marshaler& m) {
+            (void)m.arg(0);  // UINT_PTR uDeviceID
+            const GuestAddr caps = m.arg_ptr(1);
+            const u32 size = m.arg32(2);
+            if (size == 0) { m.set_return(MMSYSERR_NOERROR); return; }
+            m.set_return(caps == 0 ? MMSYSERR_INVALPARAM : MMSYSERR_BADDEVICEID);
+        }, 12});
+    }
+    exports.entries.push_back(ExportEntry{"auxGetVolume", 0, [](Marshaler& m) {
+        (void)m.arg32(0);
+        m.set_return(m.arg_ptr(1) == 0 ? MMSYSERR_INVALPARAM : MMSYSERR_BADDEVICEID);
+    }, 8});
+    exports.entries.push_back(ExportEntry{"auxSetVolume", 0, [](Marshaler& m) {
+        (void)m.arg32(0);
+        (void)m.arg32(1);
+        m.set_return(MMSYSERR_BADDEVICEID);
+    }, 8});
+    exports.entries.push_back(ExportEntry{"auxOutMessage", 0, [](Marshaler& m) {
+        (void)m.arg32(0);
+        m.set_return(MMSYSERR_BADDEVICEID);
+    }, 16});
 
     // ---- waveOut -----------------------------------------------------------
     exports.entries.push_back(ExportEntry{"waveOutGetNumDevs", 0, [&mgr](Marshaler& m) { mgr.impl_waveOutGetNumDevs(m); }, 0});
@@ -66,11 +122,22 @@ DllExports create_winmm_thunks(WinmmManager& mgr) {
     exports.entries.push_back(ExportEntry{"waveOutGetErrorTextA", 0, [](Marshaler& m) { error_text(m, false, false); }, 12});
     exports.entries.push_back(ExportEntry{"waveOutGetErrorTextW", 0, [](Marshaler& m) { error_text(m, true, false); }, 12});
 
-    // mciSendCommandA(wDeviceID, uMsg, dwParam1, dwParam2) → MCIERROR
-    exports.entries.push_back(ExportEntry{"mciSendCommandA", 0, [](Marshaler& m) {
-        (void)m.arg(0); (void)m.arg(1); (void)m.arg(2); (void)m.arg(3);
-        m.set_return(0u); // success
-    }, 16});
+    // ---- MCI (winmm_mci.hpp) -----------------------------------------------
+    MciManager& mci = mgr.mci();
+    exports.entries.push_back(ExportEntry{"mciSendCommandA", 0, [&mci](Marshaler& m) { mci.impl_mciSendCommand(m, false); }, 16});
+    exports.entries.push_back(ExportEntry{"mciSendCommandW", 0, [&mci](Marshaler& m) { mci.impl_mciSendCommand(m, true); }, 16});
+    exports.entries.push_back(ExportEntry{"mciSendStringA", 0, [&mci](Marshaler& m) { mci.impl_mciSendString(m, false); }, 16});
+    exports.entries.push_back(ExportEntry{"mciSendStringW", 0, [&mci](Marshaler& m) { mci.impl_mciSendString(m, true); }, 16});
+    exports.entries.push_back(ExportEntry{"mciGetErrorStringA", 0, [&mci](Marshaler& m) { mci.impl_mciGetErrorString(m, false); }, 12});
+    exports.entries.push_back(ExportEntry{"mciGetErrorStringW", 0, [&mci](Marshaler& m) { mci.impl_mciGetErrorString(m, true); }, 12});
+    exports.entries.push_back(ExportEntry{"mciGetDeviceIDA", 0, [&mci](Marshaler& m) { mci.impl_mciGetDeviceID(m, false); }, 4});
+    exports.entries.push_back(ExportEntry{"mciGetDeviceIDW", 0, [&mci](Marshaler& m) { mci.impl_mciGetDeviceID(m, true); }, 4});
+    exports.entries.push_back(ExportEntry{"mciGetDeviceIDFromElementIDA", 0, [&mci](Marshaler& m) { mci.impl_mciGetDeviceIDFromElementID(m, false); }, 8});
+    exports.entries.push_back(ExportEntry{"mciGetDeviceIDFromElementIDW", 0, [&mci](Marshaler& m) { mci.impl_mciGetDeviceIDFromElementID(m, true); }, 8});
+    exports.entries.push_back(ExportEntry{"mciExecute", 0, [&mci](Marshaler& m) { mci.impl_mciExecute(m); }, 4});
+    exports.entries.push_back(ExportEntry{"mciGetCreatorTask", 0, [&mci](Marshaler& m) { mci.impl_mciGetCreatorTask(m); }, 4});
+    exports.entries.push_back(ExportEntry{"mciGetYieldProc", 0, [&mci](Marshaler& m) { mci.impl_mciGetYieldProc(m); }, 8});
+    exports.entries.push_back(ExportEntry{"mciSetYieldProc", 0, [&mci](Marshaler& m) { mci.impl_mciSetYieldProc(m); }, 12});
 
     // timeBeginPeriod(uPeriod) -> TIMERR_NOERROR / TIMERR_NOCANDO
     //
@@ -307,10 +374,20 @@ DllExports create_winmm_thunks(WinmmManager& mgr) {
 
     // UINT joyGetNumDevs(void)
     exports.entries.push_back(ExportEntry{ "joyGetNumDevs", 0,
-        [](Marshaler& m) { m.set_return(0u); }, 0 });
+        [](Marshaler& m) {
+            static const bool diag = std::getenv("VITREO_INPUT_DIAG") != nullptr;
+            static thread_local unsigned count = 0;
+            if (diag && count++ < 8) std::fprintf(stderr, "[joystick] joyGetNumDevs -> 0\n");
+            m.set_return(0u);
+        }, 0 });
 
     // MMRESULT joyGetDevCapsA/W(UINT_PTR uJoyID, LPJOYCAPS pjc, UINT cbjc)
     const auto joy_get_dev_caps = [](Marshaler& m) {
+        static const bool diag = std::getenv("VITREO_INPUT_DIAG") != nullptr;
+        static thread_local unsigned count = 0;
+        if (diag && count++ < 8)
+            std::fprintf(stderr, "[joystick] joyGetDevCaps id=%llu -> NODRIVER\n",
+                         static_cast<unsigned long long>(m.arg(0)));
         (void)m.arg(0);
         (void)m.arg(1);
         (void)m.arg(2);

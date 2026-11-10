@@ -91,6 +91,19 @@ struct StencilFlagRecovery {
     [[nodiscard]] bool active() const noexcept { return flag_op != 0; }
 };
 
+/// Temporary analysis only. A compiler reuses its workspace under its compile
+/// mutex; no references into these vectors enter published IR or native code.
+/// Retained capacity follows the largest supplied block, including callers
+/// that construct blocks larger than the production decoder's instruction cap.
+struct FlagLivenessScratch {
+    enum class Effect : u8 { Neutral = 0, FullWriter, Barrier };
+    enum class PubKind : u8 { None, Sub, And, Add };
+    std::vector<Effect> effects;
+    std::vector<u64> addresses;
+    std::vector<bool> joins;
+    std::vector<PubKind> publishers;
+};
+
 /// Compute per-instruction omit bits for `block`.
 /// `omit[i] & 3` is the publisher's omit state: 1 means instruction i's
 /// emit_set_lazy_flags(_64) should be a no-op, 2 additionally keeps the CF
@@ -109,7 +122,8 @@ void compute_omit_lazy_flags(
     const BasicBlock& block, std::vector<u8>& omit,
     std::vector<StencilFlagRecovery>* recovery = nullptr,
     std::vector<u32>* elided_span = nullptr,
-    bool cross_nzcv_readers = true) noexcept;
+    bool cross_nzcv_readers = true,
+    FlagLivenessScratch* scratch = nullptr) noexcept;
 
 /// True when a pending lazy FlagOp is dead across `instr`, so the delegate
 /// boundary can drop it instead of computing RFLAGS nobody will read.

@@ -79,6 +79,18 @@ static void stop_signal_handler(int /*sig*/) {
 namespace vitreo::cli {
 
 namespace {
+std::atomic<bool> g_host_runloop_service_active{false};
+}  // namespace
+
+void set_host_runloop_service_active(bool active) noexcept {
+    g_host_runloop_service_active.store(active, std::memory_order_release);
+}
+
+bool host_runloop_service_active() noexcept {
+    return g_host_runloop_service_active.load(std::memory_order_acquire);
+}
+
+namespace {
 
 // DIAGNOSTIC (VITREO_THUNK_MISS_BYTES=1): 19.7M chain-thunk misses per
 // One load, topped by memset, EnterCriticalSection,
@@ -657,8 +669,11 @@ RunResult run_execution_loop(cpu::CpuState& cpu,
             break;
         }
 
-        // Pump native events periodically to keep UI responsive (~60Hz)
-        if (event_pump && count >= next_pump_check_at) {
+        // Pump native events periodically to keep UI responsive (~60Hz).
+        // Skipped while the AppKit thread is already doing this: the hop
+        // would block this guest thread on that slice.
+        if (event_pump && !host_runloop_service_active() &&
+            count >= next_pump_check_at) {
             next_pump_check_at = count + PUMP_CHECK_INTERVAL;
             u64 now = mach_absolute_time();
             if (now - last_pump_time >= pump_interval_ticks) {
@@ -1787,7 +1802,8 @@ RunResult run_execution_loop(cpu::CpuState& cpu,
                             cpu::jit::JitCodeArena::arena_reclaim_pending()) {
                             break;
                         }
-                        if (event_pump && (chain_len & 0xFu) == 0) {
+                        if (event_pump && !host_runloop_service_active() &&
+                            (chain_len & 0xFu) == 0) {
                             u64 now = mach_absolute_time();
                             if (now - last_pump_time
                                     >= pump_interval_ticks) {
@@ -1797,6 +1813,9 @@ RunResult run_execution_loop(cpu::CpuState& cpu,
                                 // is a safepoint like any host call: it can
                                 // re-enter this dispatcher and reclaim the
                                 // arena, so park the chain lease around it.
+                                // Not taken while the AppKit thread is already
+                                // pumping: parking here dropped the chain
+                                // lease and blocked this thread on that pump.
                                 cpu::jit::JitCodeArena::HostCallSafepoint
                                     pump_safepoint{&chain_lease};
                                 pump_safepoint.park();
@@ -2033,6 +2052,8 @@ RunResult run_execution_loop(cpu::CpuState& cpu,
             }
         }
 
+        normalize_windows_interrupt(interp.context(), exec_result);
+
         switch (exec_result) {
             case cpu::ExecResult::Continue:
             case cpu::ExecResult::Branch:
@@ -2060,23 +2081,6 @@ RunResult run_execution_loop(cpu::CpuState& cpu,
                     result.exit_code = static_cast<int>(cpu::STATUS_STACK_BUFFER_OVERRUN);
                     result.success = false;
                     result.error_message = "guest fast fail (INT 0x29)";
-                    running = false;
-                } else if (ctx.interrupt_num == 0x2C && cpu.is_64bit()) {
-                    // Learn DbgRaiseAssertionFailure: __int2c raises an
-                    // assertion exception; it is not an exit service.
-                    const u64 address = cpu.rip;
-                    cpu.rip += 2; // software-interrupt resume context
-                    if (dispatch_x64_exception(
-                            cpu, memory, thunk_registry, process_mgr,
-                            cpu::STATUS_ASSERTION_FAILURE, 0, 0, nullptr,
-                            address, module_manager())) {
-                        ++count;
-                        break;
-                    }
-                    process_mgr.exit_process(cpu::STATUS_ASSERTION_FAILURE);
-                    result.exit_code = static_cast<int>(cpu::STATUS_ASSERTION_FAILURE);
-                    result.success = false;
-                    result.error_message = "unhandled STATUS_ASSERTION_FAILURE (INT 2C)";
                     running = false;
                 } else if (ctx.interrupt_num == 3) {
                     // INT 3 → STATUS_BREAKPOINT: dispatch through SEH

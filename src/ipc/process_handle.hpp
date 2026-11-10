@@ -30,6 +30,13 @@ struct GuestProcessMetadata {
 /// host process (the reaper never frees these — child-process count is tiny).
 struct ProcessObject {
     pid_t            pid{0};
+    /// Windows client ID. Zero until the creator or OpenProcess publishes it.
+    /// Host liveness stays on `pid`.
+    std::atomic<u32> client_id{0};
+    /// Windows client ID of the process that created this one
+    /// (PROCESS_BASIC_INFORMATION.InheritedFromUniqueProcessId); zero when
+    /// unknown or it has none.
+    std::atomic<u32> parent_client_id{0};
     u64              exit_event{0};            ///< ntsync manual-reset event id
     std::atomic<bool> exited{false};
     /// Set by the first exit notification; `exited` follows once exit_code
@@ -106,6 +113,15 @@ private:
 /// Returns the stable ProcessObject even after the host process has exited
 /// (Windows keeps the process object alive while handles remain open).
 [[nodiscard]] ProcessObject* find_tracked_process(pid_t pid);
+
+/// Lookup by Windows client ID, including a process whose host pid was
+/// reused and whose object was retired.
+[[nodiscard]] ProcessObject* find_tracked_client(u32 client_id);
+
+/// Windows client ID stored on @p process, or this process's client ID when
+/// the object is the current host process and no ID has been stored yet.
+/// Returns 0 when the object has no Windows identity.
+[[nodiscard]] u32 windows_process_id(const ProcessObject& process);
 
 /// Called on the reaper thread once a tracked pid has exited and its exit
 /// code and times are recorded, so the owner of a direct child can reap it

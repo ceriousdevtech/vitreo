@@ -24,7 +24,7 @@ x86_64-w64-mingw32-g++ -O2 -static tools/oracle_probe/typelib_fixture_probe.cpp 
 ```
 
 Copy the executables to a dedicated directory on `Windows`, run each there,
-and capture stdout separately. Both runs generate all twenty `.tlb` files;
+and capture stdout separately. Both runs generate all twenty-two `.tlb` files;
 copy the files back and compare their checksums before replacing fixtures.
 An executable also accepts one filename to inspect an existing fixture.
 
@@ -40,6 +40,7 @@ An executable also accepts one filename to inspect an existing fixture.
 | 7 | Local enum referenced by a parameter |
 | 8 | Coclass with implemented interface |
 | 9 | Help-string DLL and its extra header word |
+| 10 | Aliases: alias of a local enum, alias of that alias, alias of VT_I4; parameters reference the chained and scalar aliases |
 
 Each variant exists for SYS_WIN32 and SYS_WIN64. The decoder regression in
 `tests/winapi/oleaut32/test_typelib.cpp` compares library/type/function/parameter
@@ -51,7 +52,10 @@ also rejects damaged offsets, record lengths and descriptor cycles.
 The reader produces a summary, not a complete TYPEDESC graph or Automation
 implementation. Pointer types are flattened to values in that existing summary
 interface. Imported references remain unresolved VT_USERDEFINED references.
-Alias targets, C arrays, default values, full variable descriptions and imported
+Alias targets (variant 10, captured 2026-10-30) are stored in the alias
+TypeInfoBase `datatype1` word in the same encoding as a parameter TYPEDESC; the
+probe prints `ref=` with the TYPEKIND chain a VT_USERDEFINED names.
+C arrays, default values, full variable descriptions and imported
 library resolution are not established by this corpus. Cross-bitness native
 reads rescale some sizes; the decoder exposes file-target sizes and the existing
 public API layer still needs separate coverage for that transformation.

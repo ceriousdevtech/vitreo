@@ -98,4 +98,23 @@ struct PresentationRecipe {
     return s;
 }
 
+/// Where a top-level window sits while the process's guest screen is an
+/// exclusive display mode aspect-fitted onto the host screen: the guest
+/// screen @p guest_screen (the mode, normally 0,0,w,h) is shown at
+/// @p fit_x, @p fit_y, @p fit_w x @p fit_h (host points from the host
+/// screen's top-left), so a guest client rectangle @p client maps through
+/// the same scale. Results are host points from the host screen's top-left.
+struct ExclusiveDisplayPlacement {
+    double left{0};
+    double top{0};
+    double width{0};
+    double height{0};
+    double scale{0};
+};
+[[nodiscard]] bool exclusive_display_placement(const Rect& guest_screen,
+                                               double fit_x, double fit_y,
+                                               double fit_w, double fit_h,
+                                               const Rect& client,
+                                               ExclusiveDisplayPlacement& out) noexcept;
+
 } // namespace vitreo::windowing

@@ -13,7 +13,8 @@
 // an attachment read through a texture sees memory, not the tile. So these
 // tests check the three cases: plain draws merge and keep their order, a draw
 // that samples its own depth attachment still sees the earlier pass's depth,
-// and no pass joins an encoder after a draw that wrote a UAV. The counters
+// and a draw that wrote a UAV stays in the encoder, ordered by a fragment
+// memory barrier so the next draw still sees the write. The counters
 // make each test fail if merging never happens, not only if it goes wrong.
 //
 // Since WP-R2 (graphics/contracts/slim_record.hpp, "pass-fold") most merges
@@ -112,7 +113,9 @@ protected:
     static std::unique_ptr<BackendPipeline> pipeline(const char* vertex,
                                                      const std::string& fragment,
                                                      u32 key, bool depth,
-                                                     unsigned samples = 1) {
+                                                     unsigned samples = 1,
+                                                     PixelFormat color = PixelFormat::BGRA8Unorm,
+                                                     PixelFormat depth_format = PixelFormat::D32Float) {
         BackendPipelineDesc pdesc{};
         pdesc.vertex_shader_msl = vertex;
         pdesc.fragment_shader_msl = fragment;
@@ -120,9 +123,9 @@ protected:
         pdesc.fragment_entry_point = "main0";
         pdesc.vertex_attributes = {{0, 0, BackendVertexFormat::Float2, 0}};
         pdesc.vertex_stride = pdesc.vertex_buffer_strides[0] = 8;
-        pdesc.color_format = PixelFormat::BGRA8Unorm;
+        pdesc.color_format = color;
         pdesc.depth_attachment = depth;
-        if (depth) pdesc.depth_format = PixelFormat::D32Float;
+        if (depth) pdesc.depth_format = depth_format;
         pdesc.sample_count = samples;
         pdesc.cache_key = key;
         auto made = device().create_pipeline(pdesc);
@@ -213,6 +216,159 @@ protected:
 constexpr u32 kRed = 0xFFFF0000u;    // BGRA8 little-endian: A R G B
 constexpr u32 kGreen = 0xFF00FF00u;
 constexpr u32 kBlue = 0xFF0000FFu;
+
+TEST_F(RenderPassMergeTest, AttachmentBarrierOnlyStoresItsTexture) {
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE51E0u, false);
+    auto unrelated = device().create_texture_2d(target->desc(), nullptr, 0);
+    ASSERT_TRUE(solid && unrelated && unrelated->valid());
+    slim_record::force_all_for_test(slim_record::Force::Off);
+    MetalSubmitQueue::set_pass_merge_for_test(true);
+    const float green[4]{0, 1, 0, 1}, blue[4]{0, 0, 1, 1};
+    for (bool direct : {false, true}) for (u32 scope = 0; scope < 3; ++scope) {
+        (void)pixels();
+        const Counts before = counts();
+        auto lease = direct ? device().begin_immediate_execution() : nullptr;
+        if (direct) ASSERT_TRUE(lease);
+        BackendDrawCall call{};
+        call.pipeline = solid.get();
+        call.fragment_constants = green;
+        call.fragment_constants_size = sizeof(green);
+        pass(call);
+        device().attachment_barrier(scope == 0 ? unrelated.get() : scope == 1 ? target.get() : nullptr);
+        call.fragment_constants = blue;
+        call.scissor_enabled = true;
+        call.scissor = {0, 0, static_cast<int>(kSide), 1};
+        pass(call);
+        lease.reset();
+        const auto image = pixels();
+        for (u32 y = 0; y < kSide; ++y) for (u32 x = 0; x < kSide; ++x)
+            EXPECT_EQ(image[y * kSide + x], y == 0 ? kBlue : kGreen) << direct << ':' << scope;
+        EXPECT_EQ(merged(before, counts()), scope == 0 ? 1u : 0u) << direct << ':' << scope;
+    }
+}
+
+TEST_F(RenderPassMergeTest, AttachmentBarrierMatchesTheRootOfAMipView) {
+    auto td = target->desc();
+    td.width = td.height = kSide * 2;
+    td.mip_levels = 2;
+    target = device().create_texture_2d(td, nullptr, 0);
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE51E1u, false,
+                          1, PixelFormat::BGRA8Unorm_sRGB);
+    ASSERT_TRUE(target && target->valid() && solid);
+    slim_record::force_all_for_test(slim_record::Force::Off);
+    MetalSubmitQueue::set_pass_merge_for_test(true);
+    const float green[4]{0, 1, 0, 1}, blue[4]{0, 0, 1, 1};
+    std::vector<u32> image(kSide * kSide);
+    ASSERT_TRUE(target->readback(1, image.data(), kSide * 4));
+    const Counts before = counts();
+    for (u32 i = 0; i < 2; ++i) {
+        BackendRenderPassDesc desc{};
+        desc.color_targets[0] = target.get();
+        desc.color_formats[0] = PixelFormat::BGRA8Unorm_sRGB;
+        desc.color_levels[0] = 1;
+        desc.preserve_color_contents = true;
+        auto open = device().create_render_pass_standalone(desc);
+        ASSERT_TRUE(open && open->valid());
+        BackendDrawCall call{};
+        call.pipeline = solid.get();
+        call.vertex_count = 3;
+        call.topology = BackendPrimitiveTopology::TriangleList;
+        call.vertex_buffer = vertices.get();
+        call.vertex_buffers[0] = vertices.get();
+        call.fragment_constants = i == 0 ? green : blue;
+        call.fragment_constants_size = sizeof(green);
+        call.viewport = {0, 0, float(kSide), float(kSide), 0, 1};
+        call.scissor_enabled = i != 0;
+        call.scissor = {0, 0, int(kSide), 1};
+        ASSERT_TRUE(open->draw(call));
+        ASSERT_TRUE(open->end());
+        if (i == 0) device().attachment_barrier(target.get());
+    }
+    ASSERT_TRUE(target->readback(1, image.data(), kSide * 4));
+    for (u32 y = 0; y < kSide; ++y) for (u32 x = 0; x < kSide; ++x)
+        EXPECT_EQ(image[y * kSide + x], y == 0 ? kBlue : kGreen);
+    EXPECT_EQ(merged(before, counts()), 0u);
+}
+
+TEST_F(RenderPassMergeTest, AttachmentBarrierKeepsTheFullBoundaryForPlacedAliases) {
+    BackendHeapDesc hd{};
+    hd.size = 1024u * 1024u;
+    auto heap = device().create_heap(hd);
+    ASSERT_TRUE(heap && heap->valid());
+    auto td = target->desc();
+    td.heap = heap.get();
+    td.heap_offset = 0;
+    target = device().create_texture_2d(td, nullptr, 0);
+    auto alias = device().create_texture_2d(td, nullptr, 0);
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE51E0u, false);
+    ASSERT_TRUE(target && target->valid() && alias && alias->valid() && solid);
+    slim_record::force_all_for_test(slim_record::Force::Off);
+    MetalSubmitQueue::set_pass_merge_for_test(true);
+    (void)pixels();
+    const Counts before = counts();
+    const float green[4]{0, 1, 0, 1}, blue[4]{0, 0, 1, 1};
+    BackendDrawCall call{};
+    call.pipeline = solid.get();
+    call.fragment_constants = green;
+    call.fragment_constants_size = sizeof(green);
+    pass(call);
+    // Different native objects, but both textures occupy the same bytes.
+    device().attachment_barrier(alias.get());
+    call.fragment_constants = blue;
+    call.scissor_enabled = true;
+    call.scissor = {0, 0, int(kSide), 1};
+    pass(call);
+    const auto image = pixels();
+    for (u32 y = 0; y < kSide; ++y) for (u32 x = 0; x < kSide; ++x)
+        EXPECT_EQ(image[y * kSide + x], y == 0 ? kBlue : kGreen);
+    EXPECT_EQ(merged(before, counts()), 0u);
+    // The heap must outlive both placed textures.
+    target.reset();
+    alias.reset();
+}
+
+TEST_F(RenderPassMergeTest, AttachmentBarrierPreservesDisjointHeapRanges) {
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE51E0u, false);
+    ASSERT_TRUE(solid);
+    slim_record::force_all_for_test(slim_record::Force::Off);
+    MetalSubmitQueue::set_pass_merge_for_test(true);
+    const auto original = target->desc();
+    const float green[4]{0, 1, 0, 1}, blue[4]{0, 0, 1, 1};
+    for (bool different_heaps : {false, true}) {
+        BackendHeapDesc hd{};
+        hd.size = 1024u * 1024u;
+        auto heap = device().create_heap(hd);
+        auto second_heap = different_heaps ? device().create_heap(hd) : nullptr;
+        ASSERT_TRUE(heap && heap->valid());
+        if (different_heaps) ASSERT_TRUE(second_heap && second_heap->valid());
+        auto td = original;
+        td.heap = heap.get();
+        td.heap_offset = 0;
+        target = device().create_texture_2d(td, nullptr, 0);
+        td.heap = different_heaps ? second_heap.get() : heap.get();
+        td.heap_offset = different_heaps ? 0 : hd.size / 2;
+        auto unrelated = device().create_texture_2d(td, nullptr, 0);
+        ASSERT_TRUE(target && target->valid() && unrelated && unrelated->valid());
+        (void)pixels();
+        const Counts before = counts();
+        BackendDrawCall call{};
+        call.pipeline = solid.get();
+        call.fragment_constants = green;
+        call.fragment_constants_size = sizeof(green);
+        pass(call);
+        device().attachment_barrier(unrelated.get());
+        call.fragment_constants = blue;
+        call.scissor_enabled = true;
+        call.scissor = {0, 0, int(kSide), 1};
+        pass(call);
+        const auto image = pixels();
+        for (u32 y = 0; y < kSide; ++y) for (u32 x = 0; x < kSide; ++x)
+            EXPECT_EQ(image[y * kSide + x], y == 0 ? kBlue : kGreen) << different_heaps;
+        EXPECT_EQ(merged(before, counts()), 1u) << different_heaps;
+        target.reset();
+        unrelated.reset();
+    }
+}
 
 TEST_F(RenderPassMergeTest, ConsecutivePassesShareAnEncoderAndKeepTheirOrder) {
     auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE5100u, false);
@@ -340,9 +496,54 @@ TEST_F(RenderPassMergeTest, NoPassJoinsAnEncoderAfterAUavWrite) {
                 << "pixel " << x << "," << y;
         }
     }
-    EXPECT_EQ(merged(before, counts()), 0u)
-        << "Metal does not order a UAV write against the next draw inside "
-           "one encoder";
+    std::vector<u32> stored(kSide * kSide, 0u);
+    ASSERT_TRUE(words->read(0, stored.data(), stored.size() * sizeof(u32)));
+    for (u32 word : stored) EXPECT_EQ(word, 7u);
+    EXPECT_GT(merged(before, counts()), 0u)
+        << "a UAV write stays in the encoder; a barrier orders it";
+}
+
+// The draw after a UAV write has to observe that write. The barrier is what
+// makes the store visible without reloading the colour target.
+TEST_F(RenderPassMergeTest, ALaterDrawReadsTheEarlierUavWrite) {
+    const std::string writes_uav =
+        "#include <metal_stdlib>\nusing namespace metal;\n"
+        "fragment float4 main0(float4 position [[position]],\n"
+        "    device uint* words [[buffer(" +
+        std::to_string(BACKEND_UAV_BUFFER_BASE) + ")]]) {\n"
+        "    words[uint(position.y) * 4u + uint(position.x)] = 7u;\n"
+        "    return float4(0.0, 1.0, 0.0, 1.0);\n}\n";
+    const std::string reads_uav =
+        "#include <metal_stdlib>\nusing namespace metal;\n"
+        "fragment float4 main0(float4 position [[position]],\n"
+        "    device uint* words [[buffer(" +
+        std::to_string(BACKEND_UAV_BUFFER_BASE) + ")]]) {\n"
+        "    uint v = words[uint(position.y) * 4u + uint(position.x)];\n"
+        "    return float4(v == 7u ? 1.0 : 0.0, 0.0, 0.0, 1.0);\n}\n";
+    auto writer = pipeline(vertex_at(0.5f), writes_uav, 0xC0DE5131u, false);
+    auto reader = pipeline(vertex_at(0.5f), reads_uav, 0xC0DE5132u, false);
+    ASSERT_TRUE(writer && reader);
+    BackendBufferDesc bd{};
+    bd.byte_width = kSide * kSide * 4;
+    bd.shader_resource = true;
+    bd.unordered_access = true;
+    const std::vector<u32> zeros(kSide * kSide, 0u);
+    auto words = device().create_buffer(bd, zeros.data());
+    ASSERT_TRUE(words);
+    (void)pixels();
+    const Counts before = counts();
+
+    BackendDrawCall first{};
+    first.pipeline = writer.get();
+    first.fragment_uav_buffers[0] = words.get();
+    pass(first);
+    BackendDrawCall second{};
+    second.pipeline = reader.get();
+    second.fragment_uav_buffers[0] = words.get();
+    pass(second);
+
+    for (const u32 pixel : pixels()) EXPECT_EQ(pixel, kRed);
+    EXPECT_GT(merged(before, counts()), 0u);
 }
 
 // A table-mode shader (past the 8 flat texture slots) binds its t# through an
@@ -513,6 +714,152 @@ TEST_F(RenderPassMergeTest, DepthSampledInAnEncoderThatNeverChangedItStaysInIt) 
         << "nothing in the encoder changed the depth attachment";
 }
 
+// Depth and stencil are separate planes of a depth-stencil attachment, each
+// with its own load and store. D3D11's DSV flags say the same thing
+// (D3D11_DSV_READ_ONLY_DEPTH and _STENCIL are independent): UE's decal, light
+// and translucency draws sample scene depth through a view that is read-only
+// for depth alone and keep a stencil test that WRITES. A stencil write leaves
+// every depth texel in memory current, so the depth sample that follows it
+// stays in the encoder. One shared dirty bit restarted the pass before each of
+// those draws: ~170 encoders a frame at Satisfactory's menu, each a full-target
+// tile store and load.
+TEST_F(RenderPassMergeTest, StencilWriteDoesNotPutABoundaryBeforeADepthSample) {
+    BackendTexture2DDesc dd{};
+    dd.width = dd.height = kSide;
+    dd.mip_levels = dd.array_size = 1;
+    dd.pixel_format = PixelFormat::D32Float_S8Uint;
+    dd.depth_stencil = true;
+    dd.shader_resource = true;
+    auto depth = device().create_texture_2d(dd, nullptr, 0);
+    ASSERT_TRUE(depth && depth->valid());
+    auto write_depth = pipeline(vertex_at(0.25f), kSolidColour, 0xC0DE5301u,
+                                true, 1, PixelFormat::BGRA8Unorm,
+                                PixelFormat::D32Float_S8Uint);
+    auto read_depth = pipeline(vertex_at(0.25f), kDepthToRed, 0xC0DE5302u, true,
+                               1, PixelFormat::BGRA8Unorm,
+                               PixelFormat::D32Float_S8Uint);
+    ASSERT_TRUE(write_depth && read_depth);
+
+    // Depth = 0.25 everywhere, in a submission of its own.
+    const float black[4]{0, 0, 0, 1};
+    BackendDrawCall fill{};
+    fill.pipeline = write_depth.get();
+    fill.fragment_constants = black;
+    fill.fragment_constants_size = sizeof(black);
+    fill.depth_test_enabled = true;
+    fill.depth_write_enabled = true;
+    fill.depth_compare = BackendCompare::Always;
+    pass(fill, depth.get(), /*clear_depth=*/true);
+    (void)pixels();
+
+    const Counts before = counts();
+    // Three draws as UE issues them: each tests depth without writing it,
+    // REPLACEs stencil, and the second and third sample the depth plane.
+    const float green[4]{0, 1, 0, 1};
+    BackendDrawCall mark{};
+    mark.pipeline = write_depth.get();
+    mark.fragment_constants = green;
+    mark.fragment_constants_size = sizeof(green);
+    mark.depth_test_enabled = true;
+    mark.depth_write_enabled = false;
+    mark.depth_compare = BackendCompare::LessEqual;
+    mark.stencil_test_enabled = true;
+    mark.stencil_write_mask = 0xFF;
+    mark.stencil_reference = 1;
+    mark.front_stencil.pass = BackendStencilOperation::Replace;
+    mark.back_stencil.pass = BackendStencilOperation::Replace;
+    pass(mark, depth.get());
+    for (int i = 0; i < 2; ++i) {
+        BackendDrawCall sample = mark;
+        sample.pipeline = read_depth.get();
+        sample.fragment_constants = nullptr;
+        sample.fragment_constants_size = 0;
+        sample.textures[0] = depth.get();
+        pass(sample, depth.get());
+    }
+
+    for (const u32 pixel : pixels()) {
+        EXPECT_NEAR(static_cast<double>((pixel >> 16) & 0xFFu), 0.25 * 255.0,
+                    1.0)
+            << "0x" << std::hex << pixel;
+    }
+    const Counts after = counts();
+    EXPECT_EQ(merged(before, after), 2u);
+    EXPECT_EQ(after.restarted - before.restarted, 0u)
+        << "a stencil write does not change the depth plane a sample reads";
+}
+
+// D3D11_DEPTH_STENCILOP_DESC: the stencil buffer changes only through the
+// three stencil operations. A stencil TEST whose operations are all Keep
+// writes nothing whatever its write mask (D3D11's default mask is 0xFF), so
+// it dirties neither plane.
+TEST(DepthStencilWrites, OnlyAnOperationUnderAMaskWritesStencil) {
+    BackendDrawCall call{};
+    EXPECT_FALSE(depth_stencil_writes_of(call).depth);
+    EXPECT_FALSE(depth_stencil_writes_of(call).stencil);
+    call.stencil_test_enabled = true;
+    call.stencil_write_mask = 0xFF;  // every operation Keep (the default)
+    EXPECT_FALSE(depth_stencil_writes_of(call).stencil);
+    for (auto BackendStencilFaceDesc::* op :
+         {&BackendStencilFaceDesc::stencil_fail,
+          &BackendStencilFaceDesc::depth_fail, &BackendStencilFaceDesc::pass}) {
+        for (auto BackendDrawCall::* face :
+             {&BackendDrawCall::front_stencil, &BackendDrawCall::back_stencil}) {
+            BackendDrawCall one = call;
+            (one.*face).*op = BackendStencilOperation::IncrementWrap;
+            EXPECT_TRUE(depth_stencil_writes_of(one).stencil);
+            EXPECT_FALSE(depth_stencil_writes_of(one).depth);
+            one.stencil_write_mask = 0;
+            EXPECT_FALSE(depth_stencil_writes_of(one).stencil) << "zero mask";
+            one.stencil_write_mask = 0x80;
+            one.stencil_test_enabled = false;
+            EXPECT_FALSE(depth_stencil_writes_of(one).stencil) << "test off";
+        }
+    }
+    call.depth_write_enabled = true;
+    EXPECT_TRUE(depth_stencil_writes_of(call).depth);
+    EXPECT_FALSE(depth_stencil_writes_of(call).stencil);
+}
+
+// The colour form of the depth rule. A sample of the colour attachment in an
+// encoder that has only loaded it (no clear, no colour-writing draw) reads
+// the texels the load already holds. Ending the pass there stores and
+// reloads every target for the same bytes.
+TEST_F(RenderPassMergeTest, ColourSampledBeforeAnyColourWriteStaysInTheEncoder) {
+    auto read_colour = pipeline(vertex_at(0.5f), R"(
+        #include <metal_stdlib>
+        using namespace metal;
+        fragment float4 main0(float4 position [[position]],
+                              texture2d<float> t [[texture(0)]]) {
+            const float4 c = t.read(uint2(position.xy));
+            return float4(c.r, c.g, c.b, 1.0);
+        }
+    )", 0xC0DE51C0u, false);
+    ASSERT_TRUE(read_colour);
+    const float red[4]{1, 0, 0, 1};
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE51C1u, false);
+    ASSERT_TRUE(solid);
+    BackendDrawCall fill{};
+    fill.pipeline = solid.get();
+    fill.fragment_constants = red;
+    fill.fragment_constants_size = sizeof(red);
+    pass(fill);
+    (void)pixels();
+
+    const Counts before = counts();
+    BackendDrawCall sample{};
+    sample.pipeline = read_colour.get();
+    sample.textures[0] = target.get();
+    sample.writes_color = true;  // the sample's own write is after the read
+    pass(sample);
+    for (const u32 pixel : pixels()) {
+        EXPECT_EQ(pixel, kRed) << "0x" << std::hex << pixel;
+    }
+    const Counts after = counts();
+    EXPECT_EQ(after.restarted - before.restarted, 0u)
+        << "the load already matches the colour attachment";
+}
+
 // The other half of the rule: a draw that WRITES depth earlier in the encoder
 // (no clear involved) still puts a boundary before the draw that samples it,
 // and the sample sees the written value, not the one loaded at begin.
@@ -560,6 +907,56 @@ TEST_F(RenderPassMergeTest, DepthWrittenEarlierInTheEncoderStillGetsABoundary) {
     }
     EXPECT_EQ(restarted() - restarted_before, 1u)
         << "a draw in the encoder wrote depth; the sampler needs a boundary";
+}
+
+TEST_F(RenderPassMergeTest, ReusedTableDepthReadIsRecheckedAfterADepthWrite) {
+    if (!device().supports_descriptor_tables()) GTEST_SKIP();
+    // Exercise native encoder merging, including the direct replay owner;
+    // record-time folding must not settle the hazard before the encoder sees it.
+    slim_record::force_all_for_test(slim_record::Force::Off);
+    delta_record::force_all_for_test(delta_record::Force::Off);
+    BackendTexture2DDesc dd{};
+    dd.width = dd.height = kSide;
+    dd.mip_levels = dd.array_size = 1;
+    dd.pixel_format = PixelFormat::D32Float;
+    dd.depth_stencil = dd.shader_resource = true;
+    auto depth = device().create_texture_2d(dd, nullptr, 0);
+    auto table = device().create_descriptor_table({1, BackendDescriptorClass::Texture});
+    ASSERT_TRUE(depth && table && table->set_texture(0, depth.get(), whole_2d()));
+    auto writer = pipeline(vertex_at(0.25f), kSolidColour, 0xC0DE51D0u, true);
+    auto reader = pipeline(vertex_at(0.25f),
+        table_fragment("depth2d<float>",
+            "return float4(srvs.t.read(uint2(position.xy)), 0.0, 0.0, 1.0);"),
+        0xC0DE51D1u, true);
+    ASSERT_TRUE(writer && reader);
+    const float black[4]{0, 0, 0, 1};
+    for (const bool immediate : {false, true}) {
+        SCOPED_TRACE(immediate);
+        BackendDrawCall fill{};
+        fill.pipeline = writer.get();
+        fill.fragment_constants = black;
+        fill.fragment_constants_size = sizeof(black);
+        pass(fill, depth.get(), true);
+        (void)pixels();
+        auto direct = immediate ? device().begin_immediate_execution() : nullptr;
+        ASSERT_TRUE(!immediate || direct);
+        const u64 before = restarted();
+        BackendDrawCall sample{};
+        sample.pipeline = reader.get();
+        sample.fragment_descriptor_tables[1] = table.get();
+        pass(sample, depth.get());
+        pass(sample, depth.get()); // same resource is a proven harmless read
+        BackendDrawCall write = fill;
+        write.depth_test_enabled = write.depth_write_enabled = true;
+        write.depth_compare = BackendCompare::Always;
+        pass(write, depth.get());
+        pass(sample, depth.get()); // must not reuse the pre-write answer
+        direct.reset();
+        for (const u32 pixel : pixels()) {
+            EXPECT_NEAR(static_cast<double>((pixel >> 16) & 0xFFu), 0.25 * 255.0, 1.0);
+        }
+        EXPECT_EQ(restarted() - before, 1u);
+    }
 }
 
 // D3D11 creates shaders long before it draws with them, so the backend is
@@ -642,6 +1039,168 @@ TEST_F(RenderPassMergeTest, AClearFoldsIntoThePassThatRendersToItsView) {
     }
     EXPECT_EQ(MetalSubmitQueue::instance().clears_folded() - folded_before, 1u)
         << "the clear should have become the draw pass's load action";
+    EXPECT_GE(MetalSubmitQueue::instance().stores_elided(), 1u)
+        << "the pass stored before that clear wrote bytes the clear replaces";
+}
+
+// The store skip is only for an attachment the next pass clears. A later
+// pass that loads the same target still has to see what was drawn.
+TEST_F(RenderPassMergeTest, AFollowingLoadKeepsTheStoredColour) {
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE5110u, false);
+    ASSERT_TRUE(solid);
+    const float red[4]{1, 0, 0, 1};
+    BackendDrawCall call{};
+    call.pipeline = solid.get();
+    call.fragment_constants = red;
+    call.fragment_constants_size = sizeof(red);
+    pass(call);
+    const u64 elided = MetalSubmitQueue::instance().stores_elided();
+    BackendRenderPassDesc pass_desc{};
+    pass_desc.color_targets[0] = target.get();
+    pass_desc.color_formats[0] = PixelFormat::BGRA8Unorm;
+    pass_desc.preserve_color_contents = true;
+    auto open = device().create_render_pass_standalone(pass_desc);
+    ASSERT_TRUE(open && open->valid());
+    ASSERT_TRUE(open->end());
+    for (const u32 pixel : pixels()) EXPECT_EQ(pixel, kRed);
+    EXPECT_EQ(MetalSubmitQueue::instance().stores_elided(), elided);
+}
+
+// A pass on a different target sits between the draw and the clear. The
+// draw's texels are replaced by that clear, so the store in between is
+// bandwidth the tile never needed to write out.
+TEST_F(RenderPassMergeTest, AClearAfterAnUnrelatedPassDropsTheStore) {
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE5111u, false);
+    ASSERT_TRUE(solid);
+    BackendTexture2DDesc other_desc{};
+    other_desc.width = other_desc.height = kSide;
+    other_desc.mip_levels = other_desc.array_size = 1;
+    other_desc.pixel_format = PixelFormat::BGRA8Unorm;
+    other_desc.render_target = true;
+    other_desc.shader_resource = true;
+    auto other = device().create_texture_2d(other_desc, nullptr, 0);
+    ASSERT_TRUE(other && other->valid());
+
+    const float blue[4]{0, 0, 1, 1};
+    const float green[4]{0, 1, 0, 1};
+    BackendDrawCall call{};
+    call.pipeline = solid.get();
+    call.fragment_constants = blue;
+    call.fragment_constants_size = sizeof(blue);
+    pass(call);
+    pass_on(other.get(), call, nullptr, false, nullptr, nullptr);
+
+    const u64 elided = MetalSubmitQueue::instance().stores_elided();
+    ASSERT_TRUE(target->clear_render_target_view({1, 0, 0, 1},
+                                                 PixelFormat::BGRA8Unorm, 0, 0, 1));
+    call.fragment_constants = green;
+    call.scissor_enabled = true;
+    call.scissor = {0, 0, 2, static_cast<int>(kSide)};
+    pass(call);
+
+    const std::vector<u32> image = pixels();
+    for (u32 y = 0; y < kSide; ++y) {
+        for (u32 x = 0; x < kSide; ++x) {
+            EXPECT_EQ(image[y * kSide + x], x < 2 ? kGreen : kRed)
+                << "pixel " << x << "," << y;
+        }
+    }
+    EXPECT_GE(MetalSubmitQueue::instance().stores_elided() - elided, 1u)
+        << "the unrelated pass must not force a store the clear replaces";
+}
+
+// The same gap must not drop a store a later pass loads.
+TEST_F(RenderPassMergeTest, ALoadAfterAnUnrelatedPassKeepsTheStore) {
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE5112u, false);
+    ASSERT_TRUE(solid);
+    BackendTexture2DDesc other_desc{};
+    other_desc.width = other_desc.height = kSide;
+    other_desc.mip_levels = other_desc.array_size = 1;
+    other_desc.pixel_format = PixelFormat::BGRA8Unorm;
+    other_desc.render_target = true;
+    other_desc.shader_resource = true;
+    auto other = device().create_texture_2d(other_desc, nullptr, 0);
+    ASSERT_TRUE(other && other->valid());
+
+    const float red[4]{1, 0, 0, 1};
+    const float green[4]{0, 1, 0, 1};
+    BackendDrawCall call{};
+    call.pipeline = solid.get();
+    call.fragment_constants = red;
+    call.fragment_constants_size = sizeof(red);
+    pass(call);
+    call.fragment_constants = green;
+    pass_on(other.get(), call, nullptr, false, nullptr, nullptr);
+
+    const u64 elided = MetalSubmitQueue::instance().stores_elided();
+    BackendRenderPassDesc pass_desc{};
+    pass_desc.color_targets[0] = target.get();
+    pass_desc.color_formats[0] = PixelFormat::BGRA8Unorm;
+    pass_desc.preserve_color_contents = true;
+    auto open = device().create_render_pass_standalone(pass_desc);
+    ASSERT_TRUE(open && open->valid());
+    ASSERT_TRUE(open->end());
+    for (const u32 pixel : pixels()) EXPECT_EQ(pixel, kRed);
+    EXPECT_EQ(MetalSubmitQueue::instance().stores_elided(), elided);
+}
+
+// Classification may be cached, but a repeated sample must protect a NEW
+// pending store of the same attachment. The final clear must not erase either
+// sampled colour before its consumer has read it, including through a view.
+TEST_F(RenderPassMergeTest, RepeatedSamplesKeepEachNewPendingStore) {
+    auto solid = pipeline(vertex_at(0.5f), kSolidColour, 0xC0DE5200u, false);
+    auto copy = pipeline(vertex_at(0.5f), R"(
+        #include <metal_stdlib>
+        using namespace metal;
+        fragment float4 main0(float4 position [[position]],
+                              texture2d<float> source [[texture(0)]]) {
+            return source.read(uint2(position.xy));
+        }
+    )", 0xC0DE5201u, false);
+    ASSERT_TRUE(solid && copy);
+    BackendTexture2DDesc desc{};
+    desc.width = desc.height = kSide;
+    desc.mip_levels = desc.array_size = 1;
+    desc.pixel_format = PixelFormat::BGRA8Unorm;
+    desc.render_target = desc.shader_resource = true;
+    auto first = device().create_texture_2d(desc, nullptr, 0);
+    auto second = device().create_texture_2d(desc, nullptr, 0);
+    ASSERT_TRUE(first && first->valid() && second && second->valid());
+    const float red[4]{1, 0, 0, 1};
+    const float blue[4]{0, 0, 1, 1};
+    for (bool alias : {false, true}) {
+        for (auto delta : {delta_record::Force::Off, delta_record::Force::On}) {
+            SCOPED_TRACE(alias);
+            SCOPED_TRACE(static_cast<int>(delta));
+            (void)pixels();
+            slim_record::force_all_for_test(slim_record::Force::On);
+            delta_record::force_all_for_test(delta);
+            BackendDrawCall write{};
+            write.pipeline = solid.get();
+            write.fragment_constants = red;
+            write.fragment_constants_size = sizeof(red);
+            BackendDrawCall sample{};
+            sample.pipeline = copy.get();
+            sample.textures[0] = target.get();
+            if (alias) {
+                sample.texture_views[0] = whole_2d();
+                sample.texture_views[0].swizzle = BackendViewSwizzle::RGB1;
+            }
+            pass(write);
+            pass_on(first.get(), sample, nullptr, false, nullptr, nullptr);
+            write.fragment_constants = blue;
+            pass(write);
+            pass_on(second.get(), sample, nullptr, false, nullptr, nullptr);
+            ASSERT_TRUE(target->clear_render_target_view(
+                {0, 1, 0, 1}, PixelFormat::BGRA8Unorm, 0, 0, 1));
+            std::vector<u32> image(kSide * kSide);
+            ASSERT_TRUE(first->readback(0, image.data(), kSide * 4));
+            for (u32 pixel : image) EXPECT_EQ(pixel, kRed);
+            ASSERT_TRUE(second->readback(0, image.data(), kSide * 4));
+            for (u32 pixel : image) EXPECT_EQ(pixel, kBlue);
+            for (u32 pixel : pixels()) EXPECT_EQ(pixel, kGreen);
+        }
+    }
 }
 
 // Two clears of one view before the pass that renders to it: the later one is
@@ -1233,6 +1792,7 @@ TEST_F(RenderPassMergeTest, FoldedPassesMatchThePassMergeOffReferenceAcrossEvery
                  pass(solid_call(red, 0, 0, n, 1));
                  BackendDrawCall call = solid_call(red, 0, 0, 2, n);
                  call.pipeline = table_colour.get();
+                 call.indirect_resources_read_only = true;
                  call.fragment_constants = nullptr;
                  call.fragment_constants_size = 0;
                  call.fragment_descriptor_tables[1] = colour_table.get();
@@ -1246,6 +1806,7 @@ TEST_F(RenderPassMergeTest, FoldedPassesMatchThePassMergeOffReferenceAcrossEvery
                  depth_write(true);
                  BackendDrawCall call{};
                  call.pipeline = table_depth.get();
+                 call.indirect_resources_read_only = true;
                  call.fragment_descriptor_tables[1] = table.get();
                  pass(call, depth.get());
                  pass(call, depth.get());

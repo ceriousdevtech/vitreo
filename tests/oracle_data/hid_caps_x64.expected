@@ -1,0 +1,177 @@
+GetFileType=0 error=0
+GetUsageValue type=0 length=0 status=c0110003 raw=a5a5a5a5
+GetScaledUsageValue type=0 length=0 status=c0110003 raw=a5a5a5a5
+GetUsages type=0 length=0 status=c0110003 count=8 first=00000000
+GetUsagesEx type=0 length=0 status=c0110003 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=0 length=7 status=00110000 raw=0000ffff
+GetScaledUsageValue type=0 length=7 status=c0110005 raw=00000000
+GetUsages type=0 length=7 status=00110000 count=3 first=00020001
+GetUsagesEx type=0 length=7 status=00110000 count=3 bytes=01000900020009000300090000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=0 length=8 status=c0110003 raw=a5a5a5a5
+GetScaledUsageValue type=0 length=8 status=c0110003 raw=a5a5a5a5
+GetUsages type=0 length=8 status=c0110003 count=8 first=00000000
+GetUsagesEx type=0 length=8 status=c0110003 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=1 length=0 status=c0110010 raw=a5a5a5a5
+GetScaledUsageValue type=1 length=0 status=c0110010 raw=a5a5a5a5
+GetUsages type=1 length=0 status=c0110010 count=8 first=00000000
+GetUsagesEx type=1 length=0 status=c0110010 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=1 length=7 status=c0110003 raw=a5a5a5a5
+GetScaledUsageValue type=1 length=7 status=c0110003 raw=a5a5a5a5
+GetUsages type=1 length=7 status=c0110003 count=8 first=00000000
+GetUsagesEx type=1 length=7 status=c0110003 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=1 length=8 status=c0110003 raw=a5a5a5a5
+GetScaledUsageValue type=1 length=8 status=c0110003 raw=a5a5a5a5
+GetUsages type=1 length=8 status=c0110003 count=8 first=00000000
+GetUsagesEx type=1 length=8 status=c0110003 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=2 length=0 status=c0110010 raw=a5a5a5a5
+GetScaledUsageValue type=2 length=0 status=c0110010 raw=a5a5a5a5
+GetUsages type=2 length=0 status=c0110010 count=8 first=00000000
+GetUsagesEx type=2 length=0 status=c0110010 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=2 length=7 status=c0110003 raw=a5a5a5a5
+GetScaledUsageValue type=2 length=7 status=c0110003 raw=a5a5a5a5
+GetUsages type=2 length=7 status=c0110003 count=8 first=00000000
+GetUsagesEx type=2 length=7 status=c0110003 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=2 length=8 status=c0110003 raw=a5a5a5a5
+GetScaledUsageValue type=2 length=8 status=c0110003 raw=a5a5a5a5
+GetUsages type=2 length=8 status=c0110003 count=8 first=00000000
+GetUsagesEx type=2 length=8 status=c0110003 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=3 length=0 status=c0110002 raw=a5a5a5a5
+GetScaledUsageValue type=3 length=0 status=c0110002 raw=a5a5a5a5
+GetUsages type=3 length=0 status=c0110002 count=8 first=00000000
+GetUsagesEx type=3 length=0 status=c0110002 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=3 length=7 status=c0110002 raw=a5a5a5a5
+GetScaledUsageValue type=3 length=7 status=c0110002 raw=a5a5a5a5
+GetUsages type=3 length=7 status=c0110002 count=8 first=00000000
+GetUsagesEx type=3 length=7 status=c0110002 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue type=3 length=8 status=c0110002 raw=a5a5a5a5
+GetScaledUsageValue type=3 length=8 status=c0110002 raw=a5a5a5a5
+GetUsages type=3 length=8 status=c0110002 count=8 first=00000000
+GetUsagesEx type=3 length=8 status=c0110002 count=8 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsageValue.filter case=0 status=c0110004 raw=a5a5a5a5
+GetUsageValue.filter case=1 status=c0110004 raw=a5a5a5a5
+GetUsageValue.filter case=2 status=c0110004 raw=a5a5a5a5
+GetUsageValue.filter case=3 status=c011000a raw=a5a5a5a5
+GetUsages.filter case=0 status=c0110007 count=3 first=a5a5a5a5
+GetUsagesEx.filter case=0 status=c0110007 count=3 bytes=a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsages.filter case=1 status=c0110007 count=3 first=a5a50001
+GetUsagesEx.filter case=1 status=c0110007 count=3 bytes=01000900a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsages.filter case=2 status=c0110004 count=0 first=00000000
+GetUsagesEx.filter case=2 status=c0110004 count=0 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsages.filter case=3 status=c011000a count=0 first=00000000
+GetUsagesEx.filter case=3 status=c011000a count=0 bytes=00000000000000000000000000000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsages.fakepp ex=0 status=c0110001 count=8 bytes=a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetUsages.fakepp ex=1 status=c0110001 count=8 bytes=a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5
+GetCaps status=00110000 mask=01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101
+metadata usage=2 page=1 reports=7,0,0 buttoncaps=1,0,0 valuecaps=3,0,0 links=2
+GetData type=0 length=0 id=0 status=c0110003 count=8 changed=0
+Initialize type=0 length=0 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=0 length=0 id=127 status=c0110003 count=8 changed=0
+Initialize type=0 length=0 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=0 length=6 id=0 status=c0110003 count=8 changed=0
+Initialize type=0 length=6 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=0 length=6 id=127 status=c0110003 count=8 changed=0
+Initialize type=0 length=6 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=0 length=7 id=0 status=00110000 count=6 changed=27
+Initialize type=0 length=7 id=0 status=00110000 changed=7 bytes=00000000000000a5
+GetData type=0 length=7 id=127 status=00110000 count=0 changed=0
+Initialize type=0 length=7 id=127 status=c0110010 changed=7 bytes=7f000000000000a5
+GetData type=0 length=8 id=0 status=c0110003 count=8 changed=0
+Initialize type=0 length=8 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=0 length=8 id=127 status=c0110003 count=8 changed=0
+Initialize type=0 length=8 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=1 length=0 id=0 status=c0110010 count=8 changed=0
+Initialize type=1 length=0 id=0 status=c0110010 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=1 length=0 id=127 status=c0110010 count=8 changed=0
+Initialize type=1 length=0 id=127 status=c0110010 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=1 length=6 id=0 status=c0110003 count=8 changed=0
+Initialize type=1 length=6 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=1 length=6 id=127 status=c0110003 count=8 changed=0
+Initialize type=1 length=6 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=1 length=7 id=0 status=c0110003 count=8 changed=0
+Initialize type=1 length=7 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=1 length=7 id=127 status=c0110003 count=8 changed=0
+Initialize type=1 length=7 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=1 length=8 id=0 status=c0110003 count=8 changed=0
+Initialize type=1 length=8 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=1 length=8 id=127 status=c0110003 count=8 changed=0
+Initialize type=1 length=8 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=2 length=0 id=0 status=c0110010 count=8 changed=0
+Initialize type=2 length=0 id=0 status=c0110010 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=2 length=0 id=127 status=c0110010 count=8 changed=0
+Initialize type=2 length=0 id=127 status=c0110010 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=2 length=6 id=0 status=c0110003 count=8 changed=0
+Initialize type=2 length=6 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=2 length=6 id=127 status=c0110003 count=8 changed=0
+Initialize type=2 length=6 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=2 length=7 id=0 status=c0110003 count=8 changed=0
+Initialize type=2 length=7 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=2 length=7 id=127 status=c0110003 count=8 changed=0
+Initialize type=2 length=7 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=2 length=8 id=0 status=c0110003 count=8 changed=0
+Initialize type=2 length=8 id=0 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=2 length=8 id=127 status=c0110003 count=8 changed=0
+Initialize type=2 length=8 id=127 status=c0110003 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=3 length=0 id=0 status=c0110002 count=8 changed=0
+Initialize type=3 length=0 id=0 status=c0110002 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=3 length=0 id=127 status=c0110002 count=8 changed=0
+Initialize type=3 length=0 id=127 status=c0110002 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=3 length=6 id=0 status=c0110002 count=8 changed=0
+Initialize type=3 length=6 id=0 status=c0110002 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=3 length=6 id=127 status=c0110002 count=8 changed=0
+Initialize type=3 length=6 id=127 status=c0110002 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=3 length=7 id=0 status=c0110002 count=8 changed=0
+Initialize type=3 length=7 id=0 status=c0110002 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=3 length=7 id=127 status=c0110002 count=8 changed=0
+Initialize type=3 length=7 id=127 status=c0110002 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=3 length=8 id=0 status=c0110002 count=8 changed=0
+Initialize type=3 length=8 id=0 status=c0110002 changed=0 bytes=a5a5a5a5a5a5a5a5
+GetData type=3 length=8 id=127 status=c0110002 count=8 changed=0
+Initialize type=3 length=8 id=127 status=c0110002 changed=0 bytes=a5a5a5a5a5a5a5a5
+caps kind=button specific=0 type=0 page=0 link=0 usage=0 capacity=8 status=00110000 length=1 error=57005
+ mask=010101010101010101010101010101010101010100000000000000000000000000000000000000000000000000000000000000000000000001010101010101010101010101010101
+ bytes=0900000002000100010001000100000101000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a501000300000000000000000000000200
+caps kind=button specific=0 type=1 page=0 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=button specific=0 type=2 page=0 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=button specific=0 type=3 page=0 link=0 usage=0 capacity=8 status=c0110002 length=8 error=57005
+caps kind=button specific=0 type=0 page=0 link=0 usage=0 capacity=0 status=c0110007 length=1 error=57005
+caps kind=button specific=0 type=0 page=0 link=0 usage=0 capacity=1 status=00110000 length=1 error=57005
+ mask=010101010101010101010101010101010101010100000000000000000000000000000000000000000000000000000000000000000000000001010101010101010101010101010101
+ bytes=0900000002000100010001000100000101000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a501000300000000000000000000000200
+caps kind=button specific=1 type=0 page=0 link=0 usage=0 capacity=8 status=00110000 length=1 error=57005
+ mask=010101010101010101010101010101010101010100000000000000000000000000000000000000000000000000000000000000000000000001010101010101010101010101010101
+ bytes=0900000002000100010001000100000101000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a501000300000000000000000000000200
+caps kind=button specific=1 type=1 page=0 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=button specific=1 type=2 page=0 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=button specific=1 type=3 page=0 link=0 usage=0 capacity=8 status=c0110002 length=8 error=57005
+caps kind=button specific=1 type=0 page=0 link=0 usage=0 capacity=0 status=c0110007 length=1 error=57005
+caps kind=button specific=1 type=0 page=0 link=0 usage=0 capacity=1 status=00110000 length=1 error=57005
+ mask=010101010101010101010101010101010101010100000000000000000000000000000000000000000000000000000000000000000000000001010101010101010101010101010101
+ bytes=0900000002000100010001000100000101000000a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a501000300000000000000000000000200
+caps kind=button specific=1 type=0 page=65534 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=button specific=1 type=0 page=0 link=1234 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=button specific=1 type=0 page=0 link=65535 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=button specific=1 type=0 page=0 link=0 usage=65534 capacity=8 status=c0110004 length=0 error=57005
+caps kind=value specific=0 type=0 page=0 link=0 usage=0 capacity=8 status=00110000 length=3 error=57005
+ mask=010101010101010101010101010101010100010101010000000000000000000001010101010101010101010101010101010101010101010101010101010101010101010101010101
+ bytes=0100000002000100010001000000000100a510000100a5a5a5a5a5a5a5a5a5a5000000000000000000000000ff7f000000000000ff7f000031003100000000000000000003000300
+caps kind=value specific=0 type=1 page=0 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=value specific=0 type=2 page=0 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=value specific=0 type=3 page=0 link=0 usage=0 capacity=8 status=c0110002 length=8 error=57005
+caps kind=value specific=0 type=0 page=0 link=0 usage=0 capacity=0 status=c0110007 length=3 error=57005
+caps kind=value specific=0 type=0 page=0 link=0 usage=0 capacity=1 status=c0110007 length=3 error=57005
+ mask=010101010101010101010101010101010100010101010000000000000000000001010101010101010101010101010101010101010101010101010101010101010101010101010101
+ bytes=0100000002000100010001000000000100a510000100a5a5a5a5a5a5a5a5a5a5000000000000000000000000ff7f000000000000ff7f000031003100000000000000000003000300
+caps kind=value specific=1 type=0 page=0 link=0 usage=0 capacity=8 status=00110000 length=3 error=57005
+ mask=010101010101010101010101010101010100010101010000000000000000000001010101010101010101010101010101010101010101010101010101010101010101010101010101
+ bytes=0100000002000100010001000000000100a510000100a5a5a5a5a5a5a5a5a5a5000000000000000000000000ff7f000000000000ff7f000031003100000000000000000003000300
+caps kind=value specific=1 type=1 page=0 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=value specific=1 type=2 page=0 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=value specific=1 type=3 page=0 link=0 usage=0 capacity=8 status=c0110002 length=8 error=57005
+caps kind=value specific=1 type=0 page=0 link=0 usage=0 capacity=0 status=c0110007 length=3 error=57005
+caps kind=value specific=1 type=0 page=0 link=0 usage=0 capacity=1 status=c0110007 length=3 error=57005
+ mask=010101010101010101010101010101010100010101010000000000000000000001010101010101010101010101010101010101010101010101010101010101010101010101010101
+ bytes=0100000002000100010001000000000100a510000100a5a5a5a5a5a5a5a5a5a5000000000000000000000000ff7f000000000000ff7f000031003100000000000000000003000300
+caps kind=value specific=1 type=0 page=65534 link=0 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=value specific=1 type=0 page=0 link=1234 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=value specific=1 type=0 page=0 link=65535 usage=0 capacity=8 status=c0110004 length=0 error=57005
+caps kind=value specific=1 type=0 page=0 link=0 usage=65534 capacity=8 status=c0110004 length=0 error=57005

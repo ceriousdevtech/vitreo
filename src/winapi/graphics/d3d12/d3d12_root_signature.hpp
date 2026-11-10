@@ -155,6 +155,12 @@ struct RootSignatureDesc {
 [[nodiscard]] u32 validate_root_signature_for_device(
     const RootSignatureDesc& desc);
 
+/// A bare RTS0 part (no container) as CreateRootSignature parses and
+/// validates its blob's: the form a DXIL library's root-signature subobject
+/// carries in its RDAT part.
+[[nodiscard]] u32 parse_root_signature_part_for_device(const u8* part, usize size,
+                                                       RootSignatureDesc& desc);
+
 /// Serialize @p desc at @p version (1, 2 or 3), the way
 /// D3D12SerializeVersionedRootSignature does: validate (first error wins, in
 /// Windows' order), then write the blob. Fields @p version's structures do

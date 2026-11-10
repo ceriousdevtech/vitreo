@@ -226,8 +226,9 @@ void add_crt_stdio_open_exports(DllExports& exports, const StdioContext& ctx) {
             }
         }
         initialize_guest_binary_buffer(m, fake_ptr, vf);
-        stdio_arena().files[fake_ptr] = vf;
-        (void)bind_stream_descriptor(m, fake_ptr, vf);
+        // Bind the stored stream: binding records state (the guest _flag cell).
+        VfsFile& stored = stdio_arena().files[fake_ptr] = vf;
+        (void)bind_stream_descriptor(m, fake_ptr, stored);
         return fake_ptr;
     };
 
@@ -490,8 +491,9 @@ void add_crt_stdio_freopen_exports(DllExports& exports, const StdioContext& ctx)
             vf.text_mode = !has_b;
             vf.append = has_a;
             initialize_guest_binary_buffer(m, stream, vf);
-            stdio_arena().files[stream] = vf;
-            (void)bind_stream_descriptor(m, stream, vf);
+            // Bind the stored stream: binding records state (the guest _flag cell).
+            VfsFile& stored = stdio_arena().files[stream] = vf;
+            (void)bind_stream_descriptor(m, stream, stored);
             VITREO_TRACE("[crt] freopen(\"%s\", \"%s\", 0x%x) -> 0x%x%s\n",
                          path.c_str(), mode.c_str(), stream, stream,
                          standard_stream_index(stream) >= 0

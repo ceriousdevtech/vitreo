@@ -510,11 +510,16 @@ namespace vitreo::winapi {
                     put32(stub_rva + 2, 0);
                     put64(stub_rva + 6, registry.guest_entry(entry.thunk));
                 } else {
-                    // mov eax, imm32; jmp eax
-                    image[stub_rva + 0] = 0xB8;
-                    put32(stub_rva + 1, static_cast<u32>(entry.thunk));
-                    image[stub_rva + 5] = 0xFF;
-                    image[stub_rva + 6] = 0xE0;
+                    // jmp rel32 to the thunk, padded to the 7-byte stride.
+                    // Every register reaches the export as its caller left
+                    // it, as with the x64 veneer: RtlUserThreadStart takes
+                    // its routine in EAX (suspended_child_context_probe
+                    // REDIRECT), which `mov eax, imm32; jmp eax` destroyed.
+                    const u32 next = static_cast<u32>(image_base + stub_rva + 5);
+                    image[stub_rva + 0] = 0xE9;
+                    put32(stub_rva + 1, static_cast<u32>(entry.thunk) - next);
+                    image[stub_rva + 5] = 0x90;
+                    image[stub_rva + 6] = 0x90;
                 }
             }
             // The stubs' SYSCALL / SYSENTER / INT 2Eh enter the service EAX
@@ -541,6 +546,30 @@ namespace vitreo::winapi {
                 put32(data_directory + 28, 12);
                 ntdll_exception_rva = rf_rva;
                 ntdll_exception_size = 12;
+            }
+            // WoW64: `ret N` for every stdcall byte count, where a thread
+            // blocked in an API is reported (NTDLL_WOW64_API_RETURN_RVA).
+            if (ntdll_image && !is_64bit) {
+                constexpr usize table = NTDLL_WOW64_API_RETURN_RVA;
+                if (stubs_end <= table &&
+                    table + NTDLL_WOW64_API_RETURN_BYTES <= resource_rva) {
+                    for (u32 n = 0; n < NTDLL_WOW64_API_RETURN_BYTES; n += 4) {
+                        if (n == 0) {
+                            image[table] = 0xC3;
+                            image[table + 1] = 0xCC;
+                            image[table + 2] = 0xCC;
+                            image[table + 3] = 0xCC;
+                        } else {
+                            image[table + n] = 0xC2;
+                            put16(table + n + 1, static_cast<u16>(n));
+                            image[table + n + 3] = 0xCC;
+                        }
+                    }
+                } else {
+                    std::fprintf(stderr,
+                                 "[module] ntdll API-return table does not fit "
+                                 "(stubs end at 0x%zx)\n", stubs_end);
+                }
             }
             if (module_diag_enabled()) {
                 std::fprintf(

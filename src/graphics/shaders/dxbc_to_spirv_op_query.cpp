@@ -51,6 +51,8 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
         bool one_d = false, arrayed = false, volume = false, cube = false;
         bool single_mip = false;
         u32 image = 0;
+        u32 image_variable = 0;
+        u32 image_type_id = 0;
         if (uav) {
             const auto variable = m_uav_vars.find(resource.index0);
             if (variable == m_uav_vars.end() ||
@@ -59,7 +61,8 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
             }
             u32 image_type = 0, vector_type = 0;
             typed_uav_types(resource.index0, false, image_type, vector_type);
-            image = m_builder.emit_load(image_type, variable->second);
+            image_variable = variable->second;
+            image_type_id = image_type;
             one_d = m_uav_1d.contains(resource.index0);
             arrayed = m_array_uav_slots.contains(resource.index0);
             volume = m_volume_uav_slots.contains(resource.index0);
@@ -102,8 +105,41 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
                 : arrayed ? m_type_image_2d_array
                 : cube ? m_type_image_cube
                 : volume ? m_type_image_3d : m_type_image_2d;
-            image = m_builder.emit_load(image_type, texture_it->second);
+            image_variable = texture_it->second;
+            image_type_id = image_type;
         }
+        // D3D11.3 22.4.14: an unbound resource returns 0 in every component,
+        // mip count included. The image is not loaded: a null argument-buffer
+        // slot is not a texture.
+        const u32 is_null = descriptor_is_null(uav, resource.index0);
+        const u32 absent_block = is_null != 0 ? m_builder.allocate_id() : 0;
+        const u32 present_block = is_null != 0 ? m_builder.allocate_id() : 0;
+        const u32 merge_block = is_null != 0 ? m_builder.allocate_id() : 0;
+        u32 absent_result = 0;
+        if (is_null != 0) {
+            absent_result = return_mode == 2u
+                ? m_builder.emit_bitcast(
+                      m_type_vec4,
+                      m_builder.emit_composite_construct(
+                          m_type_ivec4,
+                          {m_builder.emit_constant_int(m_type_int, 0u),
+                           m_builder.emit_constant_int(m_type_int, 0u),
+                           m_builder.emit_constant_int(m_type_int, 0u),
+                           m_builder.emit_constant_int(m_type_int, 0u)}))
+                : m_builder.emit_composite_construct(
+                      m_type_vec4,
+                      {m_builder.emit_constant_float(m_type_float, 0.0f),
+                       m_builder.emit_constant_float(m_type_float, 0.0f),
+                       m_builder.emit_constant_float(m_type_float, 0.0f),
+                       m_builder.emit_constant_float(m_type_float, 0.0f)});
+            m_builder.emit_selection_merge(merge_block);
+            m_builder.emit_branch_conditional(is_null, absent_block,
+                                              present_block);
+            m_builder.emit_label_id(absent_block);
+            m_builder.emit_branch(merge_block);
+            m_builder.emit_label_id(present_block);
+        }
+        image = m_builder.emit_load(image_type_id, image_variable);
         m_builder.emit_capability(SpvCapability::ImageQuery);
 
         const u32 levels = single_mip
@@ -171,6 +207,13 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
             result = m_builder.emit_composite_construct(
                 m_type_vec4, {floats[0], floats[1], floats[2], floats[3]});
         }
+        if (is_null != 0) {
+            m_builder.emit_branch(merge_block);
+            m_builder.emit_label_id(merge_block);
+            result = m_builder.emit_phi(
+                m_type_vec4, {{absent_result, absent_block},
+                              {result, present_block}});
+        }
         result = apply_swizzle(result, resource.swizzle);
         if (!store_vec4(dst, result)) return false;
         break;
@@ -208,15 +251,48 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
                 variable = m_typed_buffer_srv_vars.at(slot);
             }
             // The bound texture's width less the view's element bias
-            // (typed_buffer_bias): NumElements.
-            count = typed_buffer_count(
-                m_builder.emit_load(image_type, variable),
-                typed_buffer_bias(typed_buffer_entry(uav, slot)));
-            if (!uav && rgb32_buffer_srv(slot)) {
-                // Three R32 texels per element (rgb32_buffer_srvs).
-                count = m_builder.emit_udiv(
-                    m_type_uint, count,
-                    m_builder.emit_constant_int(m_type_uint, 3u));
+            // (typed_buffer_bias, or the per-slot side buffer for a
+            // descriptor table): NumElements. A null descriptor reports 0
+            // and the image is not queried (D3D11.3 22.4.1).
+            const auto query_typed = [&]() {
+                // A view read as raw memory (kTypedBufferRaw) has no
+                // texture: its entry holds NumElements.
+                TypedRawSplit raw = typed_raw_begin(uav, slot);
+                if (raw.active) typed_raw_else(raw, typed_raw_count(uav, slot));
+                u32 queried = typed_buffer_count(
+                    m_builder.emit_load(image_type, variable),
+                    typed_buffer_bias(typed_buffer_entry(uav, slot)));
+                if (!uav && rgb32_buffer_srv(slot)) {
+                    // Three R32 texels per element (rgb32_buffer_srvs).
+                    queried = m_builder.emit_udiv(
+                        m_type_uint, queried,
+                        m_builder.emit_constant_int(m_type_uint, 3u));
+                }
+                return typed_raw_end(raw, m_type_uint, queried);
+            };
+            const u32 typed_null = descriptor_is_null(uav, slot);
+            if (typed_null == 0) {
+                count = query_typed();
+            } else {
+                const u32 present = m_builder.allocate_id();
+                const u32 absent = m_builder.allocate_id();
+                const u32 merge = m_builder.allocate_id();
+                m_builder.emit_selection_merge(merge);
+                m_builder.emit_branch_conditional(typed_null, absent, present);
+                m_builder.emit_label_id(absent);
+                m_builder.emit_branch(merge);
+                m_builder.emit_label_id(present);
+                const u32 queried = query_typed();
+                // query_typed may end in its own raw / texture merge block
+                // (typed_raw_end): the phi names the block that branches
+                // here, not `present`.
+                const u32 present_end = m_builder.allocate_id();
+                m_builder.emit_branch(present_end);
+                m_builder.emit_label_id(present_end);
+                m_builder.emit_branch(merge);
+                m_builder.emit_label_id(merge);
+                count = m_builder.emit_phi(
+                    m_type_uint, {{m_const_u0, absent}, {queried, present_end}});
             }
         } else {
             const bool raw = uav ? m_raw_uav_vars.contains(slot)
@@ -227,20 +303,29 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
             if (!raw && stride == strides.end()) {
                 return fail("BUFINFO: t#/u# is not a buffer view");
             }
-            if (!guards_buffer(resource.type) ||
-                slot >= (uav ? kGuardSizeUavSlots : kGuardSizeSrvSlots)) {
-                return fail("BUFINFO: the view size is not available to this "
-                            "stage");
-            }
             // The bounds guard's per-slot view size, in 32-bit words.
-            const u32 words = m_builder.emit_load(
-                m_type_uint,
-                m_builder.emit_access_chain(
-                    m_type_ptr_push_uint, push_block_var(),
-                    {m_builder.emit_constant_int(m_type_uint, 2u),
-                     m_builder.emit_constant_int(
-                         m_type_uint,
-                         (uav ? kGuardSizeSrvSlots : 0u) + slot)}));
+            // Descriptor tables read view_size_buffer (0 = empty view).
+            // The push block's 0 means "size unknown" and is limited to the
+            // D3D11 slot table.
+            u32 words = 0;
+            if ((uav ? m_uav_view_size_var : m_srv_view_size_var) != 0) {
+                words = view_size_words(uav, slot);
+                if (words == 0) return false;
+            } else {
+                if (!guards_buffer(resource.type) ||
+                    slot >= (uav ? kGuardSizeUavSlots : kGuardSizeSrvSlots)) {
+                    return fail("BUFINFO: the view size is not available to "
+                                "this stage");
+                }
+                words = m_builder.emit_load(
+                    m_type_uint,
+                    m_builder.emit_access_chain(
+                        m_type_ptr_push_uint, push_block_var(),
+                        {m_builder.emit_constant_int(m_type_uint, 2u),
+                         m_builder.emit_constant_int(
+                             m_type_uint,
+                             (uav ? kGuardSizeSrvSlots : 0u) + slot)}));
+            }
             const u32 bytes = m_builder.emit_imul(
                 m_type_uint, words,
                 m_builder.emit_constant_int(m_type_uint, 4u));
@@ -522,15 +607,45 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
         }
         const auto modes = scan_input_interpolation();
         const auto mode = modes.find(source.index0);
+        // A centroid input under target-independent rasterization is read
+        // through its Private register; its interpolant is evaluated here.
+        u32 interpolant = variable->second;
+        if (const auto found = m_re_interpolants.find(source.index0);
+            found != m_re_interpolants.end()) {
+            interpolant = found->second;
+        }
         u32 value = 0;
         if (mode != modes.end() && mode->second == 1u) {
             value = m_builder.emit_load(m_type_vec4, variable->second);
+        } else if (raster_target_independent() &&
+                   opcode != Sm4Opcode::EVAL_SNAPPED) {
+            // D3D11.3 3.5.6.2: "Pull Model attribute interpolation is based
+            // on the ForcedSampleCount pattern when selecting sample
+            // location by sample index", and the centroid is the first
+            // covered sample of that pattern (3.5.5).
+            m_builder.emit_capability(SpvCapability::InterpolationFunction);
+            u32 offset = 0;
+            if (centroid) {
+                offset = m_builder.emit_load(m_type_vec2, m_re_centroid_offset);
+            } else {
+                if (where.modifier != 0u) {
+                    return fail("EVAL: source modifiers are not supported");
+                }
+                u32 where4 = 0;
+                if (!load_vec4(where, where4)) return false;
+                offset = raster_sample_offset(m_builder.emit_composite_extract(
+                    m_type_int, m_builder.emit_bitcast(m_type_ivec4, where4),
+                    {0}));
+            }
+            value = m_builder.emit_ext_inst(m_type_vec4, m_glsl_std450,
+                                            kGlslStd450InterpolateAtOffset,
+                                            {interpolant, offset});
         } else {
             m_builder.emit_capability(SpvCapability::InterpolationFunction);
             if (centroid) {
                 value = m_builder.emit_ext_inst(
                     m_type_vec4, m_glsl_std450,
-                    kGlslStd450InterpolateAtCentroid, {variable->second});
+                    kGlslStd450InterpolateAtCentroid, {interpolant});
             } else {
                 if (where.modifier != 0u) {
                     return fail("EVAL: source modifiers are not supported");
@@ -542,7 +657,7 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
                     value = m_builder.emit_ext_inst(
                         m_type_vec4, m_glsl_std450,
                         kGlslStd450InterpolateAtSample,
-                        {variable->second,
+                        {interpolant,
                          m_builder.emit_composite_extract(m_type_int, bits,
                                                           {0})});
                 } else {
@@ -585,7 +700,7 @@ bool DxbcTranslator::translate_resource_query_operation(u32 opcode_token,
                     value = m_builder.emit_ext_inst(
                         m_type_vec4, m_glsl_std450,
                         kGlslStd450InterpolateAtOffset,
-                        {variable->second, offset});
+                        {interpolant, offset});
                 }
             }
         }

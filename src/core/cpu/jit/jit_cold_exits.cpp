@@ -560,6 +560,7 @@ void JitCompiler::emit_flush_mid_jcc_exits() {
         } else {
             m_code_buf[exit.branch_pos] = arm64::cbnz_w(0, off);
         }
+        emit_span_proof_lease(false);
         if (exit.helper_branch_pos != static_cast<usize>(-1)) {
             const i32 hoff = cold_branch_disp(exit.helper_branch_pos, dest, 19,
                                               "mid-block Jcc helper exit");

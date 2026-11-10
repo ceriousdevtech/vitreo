@@ -32,6 +32,15 @@
 /// Unflipped: CALayer.contents keeps SoftBitmap row 0 at the visual top.
 /// Guest coordinates stay Win32 Y-down — convert with
 /// vtr_win32_point_in_view at this boundary.
+/// The text view of a multiline EDIT / RichEdit. Without ES_NOHIDESEL an
+/// edit control's selection is hidden while it does not have the focus
+/// (Learn Edit Control Styles); AppKit would keep painting it, light grey.
+@interface VtrEditTextView : NSTextView
+@property(nonatomic) BOOL hidesSelectionWhenUnfocused;
+/// True when the selection is drawn now (tests).
+- (BOOL)vtrShowsSelectionHighlight;
+@end
+
 @interface VtrPixelView : NSView
 @property(nonatomic, assign) BOOL scalesFramebuffer;
 @property(nonatomic, assign) BOOL passesThroughEvents;
@@ -101,10 +110,17 @@ void vtr_ensure_enter_full_screen_menu(NSMenu* mainMenu);
     NSTimer* _liveResizeTimer;
     int32_t  _lastPostedW;   // last client size posted as WM_SIZE (-1 = none yet)
     int32_t  _lastPostedH;
+    // AppKit is zooming the window (windowShouldZoom:toFrame:), and the zoom
+    // state last reported to USER32. isZoomed alone is a geometry test.
+    BOOL     _zoomRequested;
+    BOOL     _reportedZoomed;
 }
 @property (nonatomic, assign) vitreo::windowing::HWND hwnd;
 @property (nonatomic, assign) vitreo::windowing::MessageQueue* queue;
 @property (nonatomic, assign) vitreo::windowing::CocoaBridge* bridge;
+/// Maximized as USER32 should see it (an AppKit zoom, not a frame that merely
+/// equals the work area).
+- (BOOL)reportZoomed:(NSWindow*)window;
 @end
 
 // -----------------------------------------------------------------------------
@@ -294,6 +310,9 @@ namespace vitreo::windowing {
 /// Run a block on the main thread and wait for it. Safe to call from the main
 /// thread, where it runs the block inline rather than deadlocking on itself.
 void vtr_run_on_main_sync(dispatch_block_t block);
+
+/// Queue a block on the main thread and return. The caller does not wait.
+void vtr_run_on_main_async(dispatch_block_t block);
 
 /// Run, on the main thread, every block other threads have queued for it
 /// (vtr_run_on_main_sync / _bailout / async). A no-op elsewhere. A main thread

@@ -191,6 +191,7 @@ void User32ExtManager::layered_style_cleared(windowing::HWND hwnd) {
                     (it->second.flags & kLwaAlpha) != 0;
         m_layered.erase(it);
     }
+    ipc::hwnd_registry_scene_changed();
     (void)m_host.set_window_per_pixel_alpha(hwnd, false);
     if (had_alpha) (void)m_host.set_window_opacity(hwnd, 255);
 }
@@ -258,6 +259,7 @@ bool User32ExtManager::update_layered_window(Marshaler& m, u32 hwnd, u32 hdc_src
 
     // The window now shows only what UpdateLayeredWindow composes, alpha
     // included; arm that before the first composed frame is presented.
+    ipc::hwnd_registry_scene_changed();
     if (hdc_src != 0) (void)m_host.set_window_per_pixel_alpha(h, true);
     return apply_update_layered_window(
         m_hwnd_mgr, m_gdi_mgr, m, hwnd, static_cast<Handle>(hdc_src), ppt_dst,
@@ -395,6 +397,7 @@ void User32ExtManager::impl_SetLayeredWindowAttributes(Marshaler& m) {
         state.flags = flags;
     }
     // Attribute layering presents ordinary painting, which is opaque.
+    ipc::hwnd_registry_scene_changed();
     (void)m_host.set_window_per_pixel_alpha(hwnd, false);
     VITREO_TRACE("[u32ext] SetLayeredWindowAttributes hwnd=0x%x key=0x%x alpha=%u flags=0x%x -> TRUE\n",
                  static_cast<u32>(hwnd), key, alpha, flags);
@@ -461,6 +464,26 @@ void User32ExtManager::impl_BringWindowToTop(Marshaler& m) {
     m.set_return(ok ? 1u : 0u);
 }
 
+std::vector<std::pair<u64,bool>> User32ExtManager::layered_window_snapshot() {
+    std::lock_guard lock(m_layered_mutex);
+    std::vector<std::pair<u64,bool>> result;
+    result.reserve(m_layered.size());
+    for (const auto& [hwnd,state]:m_layered)
+        if (state.mode!=LayeredState::Mode::none)
+            result.emplace_back(hwnd,state.mode==LayeredState::Mode::update);
+    return result;
+}
+
+std::vector<std::pair<u64,ClipRect>> User32ExtManager::window_region_snapshot() const {
+    std::lock_guard lock(m_window_state_mutex);
+    std::vector<std::pair<u64,ClipRect>> result;
+    result.reserve(m_window_regions.size());
+    for (const auto& [hwnd, region]:m_window_regions)
+        result.emplace_back(hwnd,ClipRect{region.bounds[0],region.bounds[1],
+            region.bounds[2],region.bounds[3],true,region.rects});
+    return result;
+}
+
 void User32ExtManager::impl_SetWindowRgn(Marshaler& m) {
     // MS Learn: SetWindowRgn(hWnd, hRgn, bRedraw) — the system owns hRgn after
     // success; nothing outside the region is displayed. An empty region
@@ -481,6 +504,7 @@ void User32ExtManager::impl_SetWindowRgn(Marshaler& m) {
             std::lock_guard lock(m_window_state_mutex);
             m_window_regions.erase(hwnd);
         }
+        ipc::hwnd_registry_scene_changed();
         m_host.set_window_rgn(
             static_cast<windowing::HWND>(hwnd),
             /*has_rgn=*/false, 0, 0, 0, 0, redraw, {});
@@ -506,6 +530,7 @@ void User32ExtManager::impl_SetWindowRgn(Marshaler& m) {
         m_window_regions[hwnd] = WindowRegion{
             {rgn.left, rgn.top, rgn.right, rgn.bottom}, rgn.rectangles};
     }
+    ipc::hwnd_registry_scene_changed();
     (void)m_gdi_mgr->delete_object(hrgn);
 
     // The whole region, not just its bounding box: a shaped window (a
@@ -885,6 +910,8 @@ bool User32ExtManager::change_active_window(windowing::HWND next, u32 state,
         }
         m_active_window = next;
         m_application_active = next != windowing::NULL_HWND;
+        if(m_gamepad_foreground_state) m_gamepad_foreground_state->store(m_application_active.load(),std::memory_order_release);
+        m_raw_gamepad_cv.notify_all();
     }
 
     // Returns true when a guest procedure received the message and returned
@@ -1100,6 +1127,8 @@ void User32ExtManager::release_activation(windowing::HWND hwnd,
             std::lock_guard<std::mutex> lock(m_activation_mutex);
             m_active_window = windowing::NULL_HWND;
             m_application_active = false;
+            if(m_gamepad_foreground_state) m_gamepad_foreground_state->store(false,std::memory_order_release);
+            m_raw_gamepad_cv.notify_all();
         }
         if (contains(hwnd, m_focus_hwnd)) {
             m_focus_hwnd = windowing::NULL_HWND;

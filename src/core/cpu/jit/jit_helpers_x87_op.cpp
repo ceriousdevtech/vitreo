@@ -136,7 +136,10 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
         switch (opcode_id) {
         case 0: { // FLD_M64
             auto r = mem->read_u64(addr);
-            if (!r.is_ok()) return;
+            if (!r.is_ok()) {
+                jit_raise_guest_av(cpu, mem, addr, 8, /*is_write=*/false);
+                return;
+            }
             double val;
             u64 bits = r.value();
             std::memcpy(&val, &bits, sizeof(double));
@@ -148,7 +151,9 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
             double d = fpu.store_m64(v);
             u64 bits;
             std::memcpy(&bits, &d, sizeof(double));
-            (void)mem->write_u64(addr, bits);
+            if (!mem->write_u64(addr, bits).is_ok()) {
+                jit_raise_guest_av(cpu, mem, addr, 8, /*is_write=*/true);
+            }
             return;
         }
         case 2: // FLDZ
@@ -156,7 +161,10 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
             return;
         case 3: { // FADD_M64
             auto r = mem->read_u64(addr);
-            if (!r.is_ok()) return;
+            if (!r.is_ok()) {
+                jit_raise_guest_av(cpu, mem, addr, 8, /*is_write=*/false);
+                return;
+            }
             double val;
             u64 bits = r.value();
             std::memcpy(&val, &bits, sizeof(double));
@@ -189,7 +197,10 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
         }
         case 6: { // FILD_M64
             auto r = mem->read_u64(addr);
-            if (!r.is_ok()) return;
+            if (!r.is_ok()) {
+                jit_raise_guest_av(cpu, mem, addr, 8, /*is_write=*/false);
+                return;
+            }
             i64 ival = static_cast<i64>(r.value());
             fpu.push(Float80::from_i64(ival));
             return;
@@ -202,7 +213,9 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
             float f = fpu.store_m32(v);
             u32 bits;
             std::memcpy(&bits, &f, sizeof(float));
-            (void)mem->write_u32(addr, bits);
+            if (!mem->write_u32(addr, bits).is_ok()) {
+                jit_raise_guest_av(cpu, mem, addr, 4, /*is_write=*/true);
+            }
             return;
         }
         case 9: // FSTP_STI
@@ -211,7 +224,10 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
             return;
         case 10: { // FILD_M32
             auto r = mem->read_u32(addr);
-            if (!r.is_ok()) return;
+            if (!r.is_ok()) {
+                jit_raise_guest_av(cpu, mem, addr, 4, /*is_write=*/false);
+                return;
+            }
             i32 ival = static_cast<i32>(r.value());
             fpu.push(Float80::from_i64(ival));
             return;
@@ -264,16 +280,8 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
     // guest is told. This path used to be reachable only under PC = 24, so the
     // gap sat unnoticed until PC = 64 started routing here for the 80-bit
     // arithmetic; JitExecTest.FaddM32ReadFaultDoesNotChangeX87Stack caught it.
-    const auto raise_av = [&](bool is_write) {
-        auto& pr = cpu->pending_raise;
-        if (pr.active) return;  // first AV wins
-        pr.active = true;
-        pr.from_helper = true;
-        pr.code = 0xC0000005u;  // STATUS_ACCESS_VIOLATION
-        pr.flags = 0;
-        pr.num_args = 2;
-        pr.args[0] = is_write ? 1u : 0u;
-        pr.args[1] = static_cast<u64>(gaddr);
+    const auto raise_av = [&](bool is_write, usize width) {
+        jit_raise_guest_av(cpu, mem, gaddr, width, is_write);
     };
     const auto read_f32 = [&](float& value) {
         if (kind == kKindM32Value) {
@@ -283,7 +291,7 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
         }
         if (load_host(sizeof(value), &value)) return true;
         const auto raw = mem->read_u32(gaddr);
-        if (!raw.is_ok()) { raise_av(false); return false; }
+        if (!raw.is_ok()) { raise_av(false, 4); return false; }
         const u32 bits = raw.value();
         std::memcpy(&value, &bits, sizeof(value));
         return true;
@@ -291,7 +299,7 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
     const auto read_f64 = [&](double& value) {
         if (load_host(sizeof(value), &value)) return true;
         const auto raw = mem->read_u64(gaddr);
-        if (!raw.is_ok()) { raise_av(false); return false; }
+        if (!raw.is_ok()) { raise_av(false, 8); return false; }
         const u64 bits = raw.value();
         std::memcpy(&value, &bits, sizeof(value));
         return true;
@@ -320,7 +328,10 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
             if (kind != kKindI64Value) {
                 if (!load_host(sizeof(raw), &raw)) {
                     const auto value = mem->read_u64(gaddr);
-                    if (!value.is_ok()) return;
+                    if (!value.is_ok()) {
+                        raise_av(false, 8);
+                        return;
+                    }
                     raw = value.value();
                 }
             }
@@ -342,7 +353,7 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
             std::memcpy(&bits, &stored, sizeof(bits));
             if (!store_host(sizeof(bits), &bits) &&
                 !mem->write_u32(gaddr, bits).is_ok()) {
-                raise_av(true);
+                raise_av(true, 4);
                 return;
             }
             if (op == Opcode::FSTP_M32) fpu.pop();
@@ -357,7 +368,7 @@ extern "C" void jit_fpu_op(CpuState* cpu, GuestMemory* mem, u32 opcode_id, u64 a
                 u64 bits = 0;
                 std::memcpy(&bits, &stored, sizeof(bits));
                 if (!mem->write_u64(gaddr, bits).is_ok()) {
-                    raise_av(true);
+                    raise_av(true, 8);
                     return;
                 }
             }

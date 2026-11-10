@@ -1,0 +1,201 @@
+enhanced_rules buf COPY->CS COPY_DEST->UAV 0/UINT64_MAX: Close 0x00000000 S_OK
+enhanced_rules buf Size = buffer size: Close 0x00000000 S_OK
+enhanced_rules buf Offset 0 Size 128: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf Offset 16 Size UINT64_MAX: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf Size 512 (past end): Close 0x80070057 E_INVALIDARG
+enhanced_rules buf Size 0: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf NULL resource: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf barrier on a texture: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf NONE/NO_ACCESS -> COPY/COPY_DEST: Close 0x00000000 S_OK
+enhanced_rules buf COPY/COPY_DEST -> NONE/NO_ACCESS: Close 0x00000000 S_OK
+enhanced_rules buf SyncAfter NONE, AccessAfter UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf SyncBefore COPY, AccessBefore NO_ACCESS: Close 0x00000000 S_OK
+enhanced_rules buf SyncAfter CS, AccessAfter NO_ACCESS: Close 0x00000000 S_OK
+enhanced_rules buf NONE/COMMON -> CS/UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf ALL/COMMON -> ALL/COMMON: Close 0x00000000 S_OK
+enhanced_rules buf AccessAfter NO_ACCESS|COPY_DEST: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf undefined sync bit 0x40000000: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf undefined access bit 0x40000000: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf SyncAfter SPLIT (begin): Close 0x00000000 S_OK
+enhanced_rules buf SyncBefore SPLIT (end, no begin): Close 0x00000000 S_OK
+enhanced_rules buf SyncAfter SPLIT|CS: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf SyncBefore SPLIT, SyncAfter SPLIT: Close 0x00000000 S_OK
+enhanced_rules buf AccessAfter UAV without ALLOW_UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf AccessAfter RENDER_TARGET: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf AccessAfter DEPTH_STENCIL_WRITE: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf UPLOAD AccessAfter COPY_DEST: Close 0x00000000 S_OK
+enhanced_rules buf UPLOAD AccessAfter COPY_SOURCE: Close 0x00000000 S_OK
+enhanced_rules buf READBACK AccessAfter SHADER_RESOURCE: Close 0x00000000 S_OK
+enhanced_rules buf READBACK AccessAfter COPY_DEST: Close 0x00000000 S_OK
+enhanced_rules buf sync DRAW with access COPY_DEST: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf sync PIXEL_SHADING with access UAV: Close 0x00000000 S_OK
+enhanced_rules buf sync COPY with access UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf sync CLEAR_UAV with access UAV: Close 0x00000000 S_OK
+enhanced_rules buf sync RAYTRACING with access SRV: Close 0x00000000 S_OK
+enhanced_rules buf sync VIDEO_DECODE: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf access RT_AS_READ: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf access SHADING_RATE_SOURCE: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf access INDIRECT_ARGUMENT: Close 0x00000000 S_OK
+enhanced_rules buf NON_PIXEL_SHADING + SHADER_RESOURCE: Close 0x00000000 S_OK
+enhanced_rules buf NON_PIXEL_SHADING + UNORDERED_ACCESS: Close 0x00000000 S_OK
+enhanced_rules buf NON_PIXEL_SHADING + CONSTANT_BUFFER: Close 0x00000000 S_OK
+enhanced_rules buf NON_PIXEL_SHADING + VERTEX_BUFFER: Close 0x00000000 S_OK
+enhanced_rules buf ALL_SHADING + VERTEX_BUFFER: Close 0x00000000 S_OK
+enhanced_rules buf ALL_SHADING + INDEX_BUFFER: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf DRAW + INDEX_BUFFER: Close 0x00000000 S_OK
+enhanced_rules buf VERTEX_SHADING + INDEX_BUFFER: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf INDEX_INPUT + INDEX_BUFFER: Close 0x00000000 S_OK
+enhanced_rules buf INDEX_INPUT + VERTEX_BUFFER: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf DRAW + SHADER_RESOURCE: Close 0x00000000 S_OK
+enhanced_rules buf DRAW + COMPUTE? (CS + VERTEX_BUFFER): Close 0x80070057 E_INVALIDARG
+enhanced_rules buf ALL_SHADING + UNORDERED_ACCESS: Close 0x00000000 S_OK
+enhanced_rules buf PREDICATION + PREDICATION: Close 0x00000000 S_OK
+enhanced_rules buf RESOLVE + COPY_DEST: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf COPY + RESOLVE_DEST: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf RESOLVE + RESOLVE_DEST: Close 0x00000000 S_OK
+enhanced_rules buf COPY|CS + COPY_DEST|UAV: Close 0x00000000 S_OK
+enhanced_rules buf COPY + COPY_DEST|UAV: Close 0x00000000 S_OK
+enhanced_rules buf VERTEX_SHADING + STREAM_OUTPUT: Close 0x00000000 S_OK
+enhanced_rules buf CS + STREAM_OUTPUT: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf BUILD_RTAS + SHADER_RESOURCE: Close 0x00000000 S_OK
+enhanced_rules buf EMIT_RTAS_POSTBUILD + UNORDERED_ACCESS: Close 0x00000000 S_OK
+enhanced_rules buf ALL + COPY_DEST: Close 0x00000000 S_OK
+enhanced_rules buf before COPY/COPY_DEST valid, after COPY/UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf before COPY/UAV, after COPY/COPY_DEST: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf SPLIT end with AccessBefore UAV (sync-free): Close 0x00000000 S_OK
+enhanced_rules buf SPLIT begin with AccessAfter UAV on COPY: Close 0x00000000 S_OK
+enhanced_rules compute: buf SPLIT with access VERTEX_BUFFER: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf AccessAfter DEPTH_STENCIL_READ: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf AccessAfter RESOLVE_SOURCE: Close 0x00000000 S_OK
+enhanced_rules buf AccessAfter RT_AS_WRITE: Close 0x80070057 E_INVALIDARG
+enhanced_rules buf AccessAfter VIDEO_DECODE_READ (sync ALL): Close 0x80070057 E_INVALIDARG
+enhanced_rules tex COMMON->RT all subresources: Close 0x00000000 S_OK
+enhanced_rules tex same layout (RT->RT, access only): Close 0x00000000 S_OK
+enhanced_rules tex RT layout without ALLOW_RENDER_TARGET: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex UAV layout without ALLOW_UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex DS_WRITE layout without ALLOW_DEPTH_STENCIL: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex DS_WRITE -> DS_READ on depth: Close 0x00000000 S_OK
+enhanced_rules tex NULL resource: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex barrier on a buffer (layouts UNDEFINED): Close 0x80070057 E_INVALIDARG
+enhanced_rules tex layout RT with AccessAfter SHADER_RESOURCE: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex layout COPY_DEST with AccessAfter COPY_SOURCE: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex layout COMMON with AccessAfter UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex layout DIRECT_QUEUE_COMMON with AccessAfter UAV: Close 0x00000000 S_OK
+enhanced_rules tex LayoutAfter UNDEFINED: Close 0x00000000 S_OK
+enhanced_rules tex LayoutBefore UNDEFINED -> RT: Close 0x00000000 S_OK
+enhanced_rules tex undefined layout 0x7f: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex VIDEO_QUEUE_COMMON layout: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex COMPUTE_QUEUE_COMMON on direct: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex VIDEO_DECODE_READ layout on direct: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex RESOLVE_DEST layout: Close 0x00000000 S_OK
+enhanced_rules tex SHADING_RATE_SOURCE layout: Close 0x00000000 S_OK
+enhanced_rules tex DS_READ layout without ALLOW_DEPTH_STENCIL: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex DIRECT_QUEUE_UNORDERED_ACCESS without ALLOW_UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex SHADER_RESOURCE on a depth texture: Close 0x00000000 S_OK
+enhanced_rules tex both UNDEFINED, access COPY_DEST: Close 0x00000000 S_OK
+enhanced_rules tex UNDEFINED -> COPY_DEST, AccessBefore COPY_DEST: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex GENERIC_READ with SRV|COPY_SOURCE: Close 0x00000000 S_OK
+enhanced_rules tex DIRECT_QUEUE_GENERIC_READ with DEPTH_STENCIL_READ (color): Close 0x80070057 E_INVALIDARG
+enhanced_rules tex DEPTH_STENCIL_WRITE layout with DS_READ access: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex COMMON with access COMMON: Close 0x00000000 S_OK
+enhanced_rules tex RT with access COMMON: Close 0x00000000 S_OK
+enhanced_rules tex SRV layout with AccessAfter VERTEX_BUFFER: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex DISCARD from UNDEFINED: Close 0x00000000 S_OK
+enhanced_rules tex DISCARD from COMMON: Close 0x00000000 S_OK
+enhanced_rules tex undefined flag 0x2: Close 0x00000000 S_OK
+enhanced_rules tex subresource index 3 (last): Close 0x00000000 S_OK
+enhanced_rules tex subresource index 4 (past end): Close 0x80070057 E_INVALIDARG
+enhanced_rules tex range 2 mips x 2 slices x 1 plane: Close 0x00000000 S_OK
+enhanced_rules tex range mips 1..2 (past end): Close 0x80070057 E_INVALIDARG
+enhanced_rules tex range slices 1..2 (past end): Close 0x80070057 E_INVALIDARG
+enhanced_rules tex range 0 slices: Close 0x00000000 S_OK
+enhanced_rules tex range 0 planes: Close 0x00000000 S_OK
+enhanced_rules tex range plane 1 of a 1-plane format: Close 0x80070057 E_INVALIDARG
+enhanced_rules tex D24S8 plane 1 (stencil): Close 0x00000000 S_OK
+enhanced_rules tex D24S8 subresource index 1 (stencil): Close 0x00000000 S_OK
+enhanced_rules global CS/UAV -> COPY/COPY_SOURCE: Close 0x00000000 S_OK
+enhanced_rules global ALL/COMMON -> ALL/COMMON: Close 0x00000000 S_OK
+enhanced_rules global NONE/NO_ACCESS -> NONE/NO_ACCESS: Close 0x00000000 S_OK
+enhanced_rules global SyncAfter SPLIT: Close 0x00000000 S_OK
+enhanced_rules global SyncBefore NONE, AccessBefore UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules global AccessAfter RENDER_TARGET: Close 0x00000000 S_OK
+enhanced_rules group NumBarriers 0, NULL array: Close 0x00000000 S_OK
+enhanced_rules 0 groups, NULL: Close 0x00000000 S_OK
+enhanced_rules group Type 3: Close 0x80070057 E_INVALIDARG
+enhanced_rules 2 groups: Close 0x00000000 S_OK
+enhanced_rules compute: buf COPY->CS: Close 0x00000000 S_OK
+enhanced_rules compute: buf sync PIXEL_SHADING: Close 0x80070057 E_INVALIDARG
+enhanced_rules compute: buf sync DRAW: Close 0x80070057 E_INVALIDARG
+enhanced_rules compute: buf access VERTEX_BUFFER: Close 0x80070057 E_INVALIDARG
+enhanced_rules compute: tex layout RT: Close 0x80070057 E_INVALIDARG
+enhanced_rules compute: tex COMPUTE_QUEUE_UNORDERED_ACCESS: Close 0x00000000 S_OK
+enhanced_rules compute: tex DIRECT_QUEUE_COMMON: Close 0x80070057 E_INVALIDARG
+enhanced_rules compute: tex UNORDERED_ACCESS: Close 0x00000000 S_OK
+enhanced_rules compute: global AccessAfter RENDER_TARGET: Close 0x80070057 E_INVALIDARG
+enhanced_rules copy: buf COPY->COPY: Close 0x00000000 S_OK
+enhanced_rules copy: buf sync COMPUTE_SHADING: Close 0x80070057 E_INVALIDARG
+enhanced_rules copy: buf sync ALL: Close 0x00000000 S_OK
+enhanced_rules copy: buf access UAV: Close 0x80070057 E_INVALIDARG
+enhanced_rules copy: tex COMMON->COPY_DEST: Close 0x80070057 E_INVALIDARG
+enhanced_rules copy: tex layout SHADER_RESOURCE: Close 0x80070057 E_INVALIDARG
+enhanced_rules copy: tex DIRECT_QUEUE_COPY_DEST: Close 0x80070057 E_INVALIDARG
+enhanced_rules bundle: buf COPY->CS: Close 0x80004005 E_FAIL
+enhanced_rules legacy transition then enhanced barrier: Close: 0x00000000 S_OK
+enhanced_rules end: GetDeviceRemovedReason 0x00000000 S_OK
+enhanced_exec DISCARD UNDEFINED->RT, clear, RT->COPY_SOURCE, copy: 0x00000000 S_OK
+enhanced_exec texel (0,0) (3,3): ff007fff ff007fff
+enhanced_exec copy -> global -> dispatch -> global -> copy: 0x00000000 S_OK
+enhanced_exec v*5+2 [0..3], [63]: 00000002 00000007 0000000c 00000011 0000013d
+enhanced_exec end: GetDeviceRemovedReason 0x00000000 S_OK
+enhanced_create buffer UNDEFINED: 0x00000000 S_OK out=obj
+enhanced_create buffer COMMON: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create buffer UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create UPLOAD buffer UNDEFINED: 0x00000000 S_OK out=obj
+enhanced_create READBACK buffer UNDEFINED: 0x00000000 S_OK out=obj
+enhanced_create UPLOAD buffer GENERIC_READ: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create texture UNDEFINED: 0x00000000 S_OK out=obj
+enhanced_create texture COMMON: 0x00000000 S_OK out=obj
+enhanced_create texture RENDER_TARGET: 0x00000000 S_OK out=obj
+enhanced_create texture UNORDERED_ACCESS: 0x00000000 S_OK out=obj
+enhanced_create texture COPY_DEST: 0x00000000 S_OK out=obj
+enhanced_create texture SHADER_RESOURCE: 0x00000000 S_OK out=obj
+enhanced_create texture GENERIC_READ: 0x00000000 S_OK out=obj
+enhanced_create texture DIRECT_QUEUE_COMMON: 0x00000000 S_OK out=obj
+enhanced_create texture COMPUTE_QUEUE_UNORDERED_ACCESS: 0x00000000 S_OK out=obj
+enhanced_create texture VIDEO_QUEUE_COMMON: 0x00000000 S_OK out=obj
+enhanced_create texture layout 0x7f: 0x00000000 S_OK out=obj
+enhanced_create plain texture RENDER_TARGET: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create plain texture UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create plain texture DEPTH_STENCIL_WRITE: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create depth DEPTH_STENCIL_WRITE: 0x00000000 S_OK out=obj
+enhanced_create depth DEPTH_STENCIL_READ: 0x00000000 S_OK out=obj
+enhanced_create depth COMMON: 0x00000000 S_OK out=obj
+enhanced_create simultaneous-access RENDER_TARGET: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create simultaneous-access COMMON: 0x00000000 S_OK out=obj
+enhanced_create simultaneous-access UNDEFINED: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create simultaneous-access SHADER_RESOURCE: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create simultaneous-access DIRECT_QUEUE_COMMON: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create plain texture DEPTH_STENCIL_READ: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create plain texture DIRECT_QUEUE_UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create plain texture COMPUTE_QUEUE_UNORDERED_ACCESS: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create depth RENDER_TARGET: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create depth SHADER_RESOURCE: 0x00000000 S_OK out=obj
+enhanced_create texture layout 0x20: 0x00000000 S_OK out=obj
+enhanced_create plain texture layout 0x7fffffff: 0x00000000 S_OK out=obj
+enhanced_create ppvResource NULL: 0x00000001 S_FALSE out=NULL
+enhanced_create typeless + 2 castable formats: 0x00000000 S_OK out=obj
+enhanced_create RGBA8 + castable R32_FLOAT: 0x00000000 S_OK out=obj
+enhanced_create 1 castable format, NULL array: 0x00000000 S_OK out=obj
+enhanced_create RGBA8 + castable R16G16_FLOAT: 0x00000000 S_OK out=obj
+enhanced_create RGBA8 + castable BC1_UNORM: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create buffer + 1 castable format: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create CreateHeap(ALLOW_ALL_BUFFERS_AND_TEXTURES): 0x00000000 S_OK
+enhanced_create placed buffer UNDEFINED: 0x00000000 S_OK out=obj
+enhanced_create placed buffer COMMON: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create placed texture COMMON: 0x00000000 S_OK out=obj
+enhanced_create placed texture UNDEFINED: 0x00000000 S_OK out=obj
+enhanced_create placed texture RENDER_TARGET: 0x00000000 S_OK out=obj
+enhanced_create placed plain texture RENDER_TARGET: 0x80070057 E_INVALIDARG out=NULL
+enhanced_create created RENDER_TARGET, barrier RT->COPY_SOURCE: execute: 0x00000000 S_OK
+enhanced_create then legacy COPY_SOURCE->COPY_DEST: execute: 0x00000000 S_OK
+enhanced_create end: GetDeviceRemovedReason 0x00000000 S_OK

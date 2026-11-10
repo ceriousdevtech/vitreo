@@ -16,11 +16,63 @@
 #include <cstring>
 #include <limits>
 #include <optional>
+#include <mutex>
 #include <span>
 #include <string_view>
 #include <vector>
 
 namespace vitreo::winapi {
+
+#include "../../../../tools/oracle_probe/ver_language.generated.inc"
+namespace {
+void ver_language_name(Marshaler& m, bool wide) {
+    const u16 language = static_cast<u16>(m.arg(0));
+    const GuestAddr buffer = m.arg_ptr(1);
+    const u32 capacity = static_cast<u32>(m.arg(2));
+    m.set_return(0);
+    // Original Windows x86/x64 oracle: NULL and zero capacity do not write.
+    // W capacity1 also does not write; A capacity1 stores only a terminator.
+    if (!buffer || !capacity || (wide && capacity == 1)) return;
+    const auto found = std::lower_bound(std::begin(ver_language_facts::names),
+        std::end(ver_language_facts::names), language,
+        [](const auto& name, u16 value) { return name.language < value; });
+    const auto name = found != std::end(ver_language_facts::names) && found->language == language
+        ? found->text : ver_language_facts::fallback;
+    std::vector<u8> bytes;
+    u32 stored = 0;
+    if (wide) {
+        stored = std::min<u32>(capacity - 1, static_cast<u32>(name.size()));
+        bytes.reserve((stored + 1) * sizeof(u16));
+        for (u32 i = 0; i < stored; ++i) {
+            bytes.push_back(static_cast<u8>(name[i]));
+            bytes.push_back(static_cast<u8>(name[i] >> 8));
+        }
+        bytes.push_back(0); bytes.push_back(0);
+    } else {
+        // The complete measured name set contains only BMP scalars. Convert
+        // one scalar at a time so a short A buffer never splits UTF-8 bytes.
+        for (const char16_t unit : name) {
+            const u16 scalar = static_cast<u16>(unit);
+            std::array<u8, 8> encoded{};
+            const auto converted = codepage::wide_to_multi_byte(codepage::kCpAcp, 0,
+                &scalar, 1, encoded.data(), encoded.size(), nullptr, false);
+            if (!converted.ok()) {
+                static std::once_flag once;
+                std::call_once(once, [] { std::fprintf(stderr,
+                    "[vitreo] UNIMPLEMENTED version!VerLanguageNameA: process ANSI code page\n"); });
+                return;
+            }
+            if (converted.count > capacity - 1 - stored) break;
+            bytes.insert(bytes.end(), encoded.begin(), encoded.begin() + converted.count);
+            stored += converted.count;
+        }
+        bytes.push_back(0);
+    }
+    if (m.memory().write_bytes(buffer, reinterpret_cast<const Byte*>(bytes.data()), bytes.size()).is_err())
+        return;
+    m.set_return(stored);
+}
+} // namespace
 
 // =============================================================================
 // VersionManager Implementation
@@ -1162,107 +1214,10 @@ DllExports create_version_thunks(VersionManager& mgr) {
         32
     });
 
-    // DWORD VerLanguageNameW(DWORD wLang, LPWSTR szLang, DWORD cch)
     exports.entries.push_back(ExportEntry{
-        "VerLanguageNameW", 15,
-        [](Marshaler& m) {
-            const u32 lang = static_cast<u32>(m.arg(0));
-            const GuestAddr buf = m.arg_ptr(1);
-            const u32 cch = static_cast<u32>(m.arg(2));
-            // Names match GetLocaleInfoW LOCALE_SLANGUAGE for known LCIDs
-            // (Windows VerLanguageNameW).
-            const char16_t* name = u"Language Neutral";
-            switch (lang) {
-            case 0x0409: name = u"English (United States)"; break;
-            case 0x0809: name = u"English (United Kingdom)"; break;
-            case 0x0407: name = u"German (Germany)"; break;
-            case 0x040C: name = u"French (France)"; break;
-            case 0x0C0A: name = u"Spanish (Spain)"; break;
-            case 0x0410: name = u"Italian (Italy)"; break;
-            case 0x0416: name = u"Portuguese (Brazil)"; break;
-            case 0x0413: name = u"Dutch (Netherlands)"; break;
-            case 0x0411: name = u"Japanese (Japan)"; break;
-            case 0x0404: name = u"Chinese (Traditional, Taiwan)"; break;
-            case 0x0804: name = u"Chinese (Simplified, China)"; break;
-            case 0x0412: name = u"Korean (Korea)"; break;
-            case 0x0419: name = u"Russian (Russia)"; break;
-            case 0x0415: name = u"Polish (Poland)"; break;
-            case 0x041D: name = u"Swedish (Sweden)"; break;
-            case 0x041F: name = u"Turkish (Turkey)"; break;
-            case 0x0422: name = u"Ukrainian (Ukraine)"; break;
-            case 0x0405: name = u"Czech (Czechia)"; break;
-            case 0: break;
-            default: name = u"Language Neutral"; break;
-            }
-            u32 needed = 0;
-            while (name[needed] != 0) ++needed;
-            ++needed; // NUL
-            if (buf == 0 || cch == 0) {
-                m.set_return(needed);
-                return;
-            }
-            // Windows: small buffer truncates and returns chars written
-            // (excluding NUL), e.g. cch=2 → "E\0", return 1.
-            const u32 store = (cch < needed) ? (cch > 0 ? cch - 1 : 0)
-                                             : (needed - 1);
-            for (u32 i = 0; i < store; ++i) {
-                (void)m.memory().write_u16(buf + static_cast<u64>(i) * 2,
-                                           static_cast<u16>(name[i]));
-            }
-            if (cch > 0) {
-                (void)m.memory().write_u16(
-                    buf + static_cast<u64>(store) * 2, 0);
-            }
-            m.set_return(store);
-        },
-        12
-    });
+        "VerLanguageNameW", 15, [](Marshaler& m) { ver_language_name(m, true); }, 12});
     exports.entries.push_back(ExportEntry{
-        "VerLanguageNameA", 14,
-        [](Marshaler& m) {
-            // Narrow via the wide path on a stack temp is heavy; reuse names
-            // as ASCII-only (all current table entries are ASCII).
-            const u32 lang = static_cast<u32>(m.arg(0));
-            const GuestAddr buf = m.arg_ptr(1);
-            const u32 cch = static_cast<u32>(m.arg(2));
-            const char* name = "Language Neutral";
-            switch (lang) {
-            case 0x0409: name = "English (United States)"; break;
-            case 0x0809: name = "English (United Kingdom)"; break;
-            case 0x0407: name = "German (Germany)"; break;
-            case 0x040C: name = "French (France)"; break;
-            case 0x0C0A: name = "Spanish (Spain)"; break;
-            case 0x0410: name = "Italian (Italy)"; break;
-            case 0x0416: name = "Portuguese (Brazil)"; break;
-            case 0x0413: name = "Dutch (Netherlands)"; break;
-            case 0x0411: name = "Japanese (Japan)"; break;
-            case 0x0404: name = "Chinese (Traditional, Taiwan)"; break;
-            case 0x0804: name = "Chinese (Simplified, China)"; break;
-            case 0x0412: name = "Korean (Korea)"; break;
-            case 0x0419: name = "Russian (Russia)"; break;
-            case 0x0415: name = "Polish (Poland)"; break;
-            case 0x041D: name = "Swedish (Sweden)"; break;
-            case 0x041F: name = "Turkish (Turkey)"; break;
-            case 0x0422: name = "Ukrainian (Ukraine)"; break;
-            case 0x0405: name = "Czech (Czechia)"; break;
-            case 0: break;
-            default: break;
-            }
-            const u32 needed = static_cast<u32>(std::strlen(name)) + 1;
-            if (buf == 0 || cch == 0) {
-                m.set_return(needed);
-                return;
-            }
-            const u32 store = (cch < needed) ? (cch > 0 ? cch - 1 : 0)
-                                             : (needed - 1);
-            for (u32 i = 0; i < store; ++i) {
-                (void)m.memory().write_u8(buf + i, static_cast<u8>(name[i]));
-            }
-            if (cch > 0) (void)m.memory().write_u8(buf + store, 0);
-            m.set_return(store);
-        },
-        12
-    });
+        "VerLanguageNameA", 14, [](Marshaler& m) { ver_language_name(m, false); }, 12});
 
     return exports;
 }

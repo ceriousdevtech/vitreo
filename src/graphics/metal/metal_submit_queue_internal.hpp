@@ -46,6 +46,26 @@ inline bool draw_writes(const CsDraw& draw) {
                nullptr;
 }
 
+/// UAV resources a later draw can read. The statistics record is not one:
+/// the CPU reads it after the encoder ends, so it must not stall every
+/// following fragment shader.
+inline bool draw_uav_orders(const CsDraw& draw) {
+    for (void* buffer : draw.ps_uav_buffer) {
+        if (buffer != nullptr) return true;
+    }
+    for (void* counter : draw.ps_uav_counter) {
+        if (counter != nullptr) return true;
+    }
+    for (usize i = graphics::BACKEND_UAV_TEXTURE_BASE;
+         i < draw.textures.size(); ++i) {
+        if (draw.textures[i] != nullptr) return true;
+    }
+    return draw.vs_descriptor_tables[graphics::BACKEND_DESCRIPTOR_SET_UAV] !=
+               nullptr ||
+           draw.ps_descriptor_tables[graphics::BACKEND_DESCRIPTOR_SET_UAV] !=
+               nullptr;
+}
+
 // P0 state census, backend half (metal_submit_queue_census.mm).
 extern const bool g_draw_census;
 [[gnu::noinline, gnu::cold]] void census_record_draw(const CsDraw& d);
@@ -112,13 +132,19 @@ constexpr u16 kFUav = kFRaster + 1;     ///< +8: buffer, offset
 constexpr u16 kFCounter = kFUav + 8;    ///< +BACKEND_MAX_UAV_COUNTER_BINDINGS
 constexpr u16 kFStats =
     kFCounter + static_cast<u16>(graphics::BACKEND_MAX_UAV_COUNTER_BINDINGS);
-constexpr u16 kFVsTable = kFStats + 1;  ///< +4: handle
-constexpr u16 kFPsTable = kFVsTable + 4;  ///< +4
-constexpr u16 kFResident = kFPsTable + 4;  ///< a = count, then the handles
+constexpr u16 kFVsTable = kFStats + 1;  ///< +BACKEND_MAX_DESCRIPTOR_SETS: handle
+constexpr u16 kFPsTable =
+    kFVsTable + static_cast<u16>(graphics::BACKEND_MAX_DESCRIPTOR_SETS);
+constexpr u16 kFResident =
+    kFPsTable + static_cast<u16>(graphics::BACKEND_MAX_DESCRIPTOR_SETS);  ///< a = count, then the handles
 constexpr u16 kFViewportArray = kFResident + 1;  ///< a = count, viewports, scissors
 constexpr u16 kFVsPush = kFViewportArray + 1;  ///< bytes, size
 constexpr u16 kFPsPush = kFVsPush + 1;
-constexpr u16 kFieldCount = kFPsPush + 1;
+constexpr u16 kFIndirectReadOnly = kFPsPush + 1;  ///< a = positive certificate
+/// How many leading `resident` handles are shader-resource / constant-buffer
+/// views (read-only). The rest are unordered-access views.
+constexpr u16 kFResidentReadCount = kFIndirectReadOnly + 1;  ///< a = count
+constexpr u16 kFieldCount = kFResidentReadCount + 1;
 
 // metal_submit_queue_delta_apply.mm:
 void reset_draw(CsDraw& draw);

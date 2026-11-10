@@ -232,6 +232,86 @@ namespace {
 
 }  // namespace
 
+bool pc24_narrowed_natively(Opcode op) noexcept {
+    switch (op) {
+    case Opcode::FADD_M32: case Opcode::FMUL_M32: case Opcode::FSUB_M32:
+    case Opcode::FSUBR_M32: case Opcode::FDIV_M32: case Opcode::FDIVR_M32:
+    case Opcode::FADD_M64: case Opcode::FMUL_M64: case Opcode::FSUB_M64:
+    case Opcode::FSUBR_M64: case Opcode::FDIV_M64: case Opcode::FDIVR_M64:
+    case Opcode::FADD_STI: case Opcode::FADDP_STI: case Opcode::FADD_TO_STI:
+    case Opcode::FSUB_STI: case Opcode::FSUBP_STI: case Opcode::FSUB_TO_STI:
+    case Opcode::FSUBR_STI: case Opcode::FSUBRP_STI: case Opcode::FSUBR_TO_STI:
+    case Opcode::FMUL_STI: case Opcode::FMULP_STI: case Opcode::FMUL_TO_STI:
+    case Opcode::FDIV_STI: case Opcode::FDIVP_STI: case Opcode::FDIV_TO_STI:
+    case Opcode::FDIVR_STI: case Opcode::FDIVRP_STI: case Opcode::FDIVR_TO_STI:
+    case Opcode::FIADD_M16: case Opcode::FIADD_M32:
+    case Opcode::FISUB_M16: case Opcode::FISUB_M32:
+    case Opcode::FISUBR_M16: case Opcode::FISUBR_M32:
+    case Opcode::FIMUL_M16: case Opcode::FIMUL_M32:
+    case Opcode::FIDIV_M16: case Opcode::FIDIV_M32:
+    case Opcode::FIDIVR_M16: case Opcode::FIDIVR_M32:
+    case Opcode::FSQRT:
+        return true;
+    default:
+        return false;
+    }
+}
+
+void JitCompiler::emit_x87_pc24_narrow_d0() {
+    // Intel SDM Vol. 1 8.1.5.2: PC = 24 rounds the result's significand to
+    // 24 bits but keeps the 15-bit extended exponent. Direct3D 9 selects it
+    // on every device created without D3DCREATE_FPU_PRESERVE, so for D3D9
+    // titles it is the common mode, not a rare one.
+    //
+    // D0 already holds the infinitely precise result rounded once to 53 bits
+    // in the FCW.RC mode (FPCR follows it). Rounding that again to 24 bits
+    // gives the once-rounded 24-bit result for + - * / and sqrt: in nearest
+    // mode because 53 >= 2 * 24 + 2 (double rounding is innocuous), and in
+    // the directed modes because they compose. FCVT S, D is that second
+    // rounding, and it raises PE exactly when the 24-bit result is inexact.
+    //
+    // FCVT also imposes binary32's exponent range, which x87 does not. So
+    // only results whose binary64 exponent lies in [2^-126, 2^127) -- where
+    // binary32 is normal and cannot overflow after rounding -- narrow here.
+    // Anything else becomes an all-ones NaN, which the body's special-result
+    // test already hands to the helper (FpuState::arith_x87 does PC = 24 in
+    // the architectural format). A zero is exact and a binary64 subnormal is
+    // already a helper case, so biased exponent 0 is left untouched.
+    constexpr u32 cw_off = static_cast<u32>(
+        offsetof(CpuState, fpu) + offsetof(FpuState, control_word));
+    constexpr u32 kMinExp = 1023u - 126u;   // 2^-126
+    constexpr u32 kSpan = 253u;             // through 2^127 - ulp
+    emit(arm64::add_x_imm(REG_SCRATCH4, REG_CPU_STATE, cw_off));
+    emit(arm64::ldrh_reg(REG_SCRATCH4, REG_SCRATCH4, 31));
+    emit(arm64::ubfx_w(REG_SCRATCH4, REG_SCRATCH4, 8, 2));
+    const usize not_single = m_code_buf.size();
+    emit(0);  // CBNZ W4 -> done (PC = 53; the guard admits only 24 and 53)
+    emit(arm64::fmov_x_from_d(REG_SCRATCH2, 0));
+    emit(arm64::ubfx_x(REG_SCRATCH2, REG_SCRATCH2, 52, 11));
+    const usize zero_exp = m_code_buf.size();
+    emit(0);  // CBZ W2 -> done
+    emit(arm64::sub_w_imm(REG_SCRATCH2, REG_SCRATCH2, kMinExp));
+    emit(arm64::cmp_w_imm(REG_SCRATCH2, kSpan));
+    const usize in_range = m_code_buf.size();
+    emit(0);  // B.LO -> narrow
+    emit(arm64::movn_x(REG_SCRATCH2, 0, 0));
+    emit(arm64::fmov_d_from_x(0, REG_SCRATCH2));
+    const usize out_done = m_code_buf.size();
+    emit(0);  // B -> done
+    const usize narrow_pos = m_code_buf.size();
+    emit(arm64::fcvt_s_from_d(0, 0));
+    emit(arm64::fcvt_d_from_s(0, 0));
+    const usize done_pos = m_code_buf.size();
+    m_code_buf[not_single] = arm64::cbnz_w(
+        REG_SCRATCH4, static_cast<i32>(done_pos - not_single) * 4);
+    m_code_buf[zero_exp] = arm64::cbz_w(
+        REG_SCRATCH2, static_cast<i32>(done_pos - zero_exp) * 4);
+    m_code_buf[in_range] = arm64::b_cond(
+        arm64::CC, static_cast<i32>(narrow_pos - in_range) * 4);
+    m_code_buf[out_done] = arm64::b_imm(
+        static_cast<i32>(done_pos - out_done) * 4);
+}
+
 bool JitCompiler::compile_fpu(const DecodedInstruction& instr,
                                u64 instr_rip, u64 next_rip,
                                bool is_last) {
@@ -378,8 +458,15 @@ bool JitCompiler::compile_fpu(const DecodedInstruction& instr,
     // guard), and the JIT keeps pending lazy flags live in NZCV, so a guard
     // that set NZCV would silently destroy the flags of a preceding
     // arithmetic instruction. `cmp; fld; fstp; sete` is real, compiled code.
-    emit(arm64::movz_w(REG_SCRATCH4, 2));
-    emit(arm64::eor_w(REG_SCRATCH4, REG_SCRATCH3, REG_SCRATCH4));
+    if (pc24_narrowed_natively(instr.opcode)) {
+        // PC = 24 runs natively too (emit_x87_pc24_narrow_d0): only the odd
+        // encodings, PC = 64 and the reserved 1, need the helper.
+        emit(arm64::movz_w(REG_SCRATCH4, 1));
+        emit(arm64::and_w(REG_SCRATCH4, REG_SCRATCH3, REG_SCRATCH4));
+    } else {
+        emit(arm64::movz_w(REG_SCRATCH4, 2));
+        emit(arm64::eor_w(REG_SCRATCH4, REG_SCRATCH3, REG_SCRATCH4));
+    }
     // Not-double -> helper. Recorded as a branch to the helper block that
     // follows, so the fall-through continues into the stack-tag test.
     // `true` marks the PC test, whose sense is inverted against the tag tests.
@@ -488,6 +575,10 @@ bool JitCompiler::compile_fpu(const DecodedInstruction& instr,
     emit_mov_imm32(2, (kind << 28) |
                       (static_cast<u32>(instr.opcode) & 0x0FFFFFFFu));
     emit(arm64::mov_x(3, REG_CALL_TMP));
+    // A memory form's helper read can fail and raise the access violation
+    // (jit_fpu_op): publish this instruction's RIP and leave the block on the
+    // raise, so nothing after the faulting instruction runs.
+    if (kind == kFpuKindMem) emit_publish_rip_for_raising_helper(16);
     emit(arm64::ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_FPU_OP >> 3));
     emit_semantic_helper_blr();
     // W6 is caller-saved under AAPCS64. Invalidate the adjacent D0 mirror
@@ -495,6 +586,7 @@ bool JitCompiler::compile_fpu(const DecodedInstruction& instr,
     // register allocation manufacture a false-valid forwarding edge.
     if (publish_d0) emit(arm64::movz_w(kX87D0Valid, 0));
     if (helper_hold) emit_nzcv_fill();
+    if (kind == kFpuKindMem) emit_exit_if_pending_raise();
     const usize to_end = m_code_buf.size();
     emit(0);  // B -> past the native body
 
@@ -673,11 +765,16 @@ bool JitCompiler::compile_fpu_native(const DecodedInstruction& instr,
     emit(arm64::mov_x(0, REG_CPU_STATE));
     emit(arm64::ldr_x_uoff(1, REG_JIT_CTX, JIT_CTX_OFF_MEMORY >> 3));
     emit_mov_imm32(2, packed);
+    // Same contract as the guard-path call above: a memory form's helper
+    // read (FILD m64 / FBLD m80 / the _M64 arithmetic) can raise.
+    if (kind == kFpuKindMem) emit_publish_rip_for_raising_helper(16);
     emit(arm64::ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_FPU_OP >> 3));
     emit_semantic_helper_blr(); // blr x16
 
     if (fpu_helper_hold) emit_nzcv_fill();
-    if (instr.opcode == Opcode::FWAIT) emit_exit_if_pending_raise();
+    if (instr.opcode == Opcode::FWAIT || kind == kFpuKindMem) {
+        emit_exit_if_pending_raise();
+    }
 
     if (is_last) {
         u32 ji_off = jit_iters_offset();

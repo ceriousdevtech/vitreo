@@ -290,8 +290,9 @@ void add_crt_stdio_tmpfile_exports(DllExports& exports, const StdioContext& ctx)
             vf.raw_handle = open_res.value();
             vf.text_mode = false;          // tmpfile is always binary
             initialize_guest_binary_buffer(m, fake_ptr, vf);
-            stdio_arena().files[fake_ptr] = vf;
-            (void)bind_stream_descriptor(m, fake_ptr, vf);
+            // Bind the stored stream: binding records state (the guest _flag cell).
+            VfsFile& stored = stdio_arena().files[fake_ptr] = vf;
+            (void)bind_stream_descriptor(m, fake_ptr, stored);
             VITREO_TRACE("[crt] tmpfile -> 0x%x (%s)\n", fake_ptr, name);
             m.set_return(static_cast<u64>(fake_ptr));
         }});

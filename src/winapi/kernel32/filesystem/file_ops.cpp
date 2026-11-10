@@ -448,6 +448,17 @@ DllExports create_file_ops_thunks(FileOpsManager& mgr) {
         [&mgr](Marshaler& m) { mgr.impl_MoveFileExA(m); },
         12
     });
+    // MoveFileWithProgress(existing, new, routine, data, flags) — 5 args.
+    exports.entries.push_back(ExportEntry{
+        "MoveFileWithProgressW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_MoveFileWithProgressW(m); },
+        20
+    });
+    exports.entries.push_back(ExportEntry{
+        "MoveFileWithProgressA", 0,
+        [&mgr](Marshaler& m) { mgr.impl_MoveFileWithProgressA(m); },
+        20
+    });
 
     // GetFileInformationByHandleEx (4 args, stdcall_bytes=16)
     exports.entries.push_back(ExportEntry{

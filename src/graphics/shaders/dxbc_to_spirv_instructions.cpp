@@ -4,6 +4,7 @@
 /// @brief The instruction loop and the opcode dispatch.
 
 #include "graphics/shaders/dxbc_to_spirv_internal.hpp"
+#include "graphics/shaders/dxbc_vitreo_ext.hpp"
 
 namespace vitreo::graphics::dxbc_spirv_detail {
 
@@ -49,7 +50,7 @@ bool DxbcTranslator::translate_instructions(usize end_token) {
             // block so the enclosing ENDIF/ENDLOOP still has somewhere to
             // branch from; that block is unreachable, which SPIR-V allows.
             m_emitted_early_return = true;
-            if (!emit_system_value_epilogue()) return false;
+            if (!emit_return_epilogue()) return false;
             m_builder.emit_return();
             m_builder.emit_label_id(m_builder.allocate_id());
             continue;
@@ -84,6 +85,7 @@ bool DxbcTranslator::translate_instructions(usize end_token) {
         if ((opc >= 88 && opc <= 106) || opc == 155u || opc == 156u ||
             opc == 157u || opc == 158u || opc == 159u || opc == 160u ||
             opc == 161u || opc == 162u || opc == 143u || opc == 206u ||
+            opc == dxbc_vitreo_ext::kOpDclAccelerationStructure ||
             (opc >= 113u && opc <= 116u) || (opc >= 144u && opc <= 154u)) {
             if (instruction_length > 1) {
                 m_decoder.skip_tokens(instruction_length - 1);
@@ -212,6 +214,35 @@ bool DxbcTranslator::translate_instruction(u32 opcode_token,
                 index);
             sampler_records.push_back(operand.index0);
         }
+        const bool track_slot =
+            (cls == DxbcRegisterClass::ShaderResource &&
+             (m_srv_view_size_var != 0 || m_srv_null_var != 0 ||
+              m_srv_typed_bias_var != 0 || m_options.tiled_status.enabled)) ||
+            (cls == DxbcRegisterClass::UnorderedAccess &&
+             (m_uav_view_size_var != 0 || m_uav_null_var != 0 ||
+              m_uav_typed_bias_var != 0 || m_options.tiled_status.enabled));
+        if (track_slot) {
+            // Table slot of this element: view size, the null flag, and
+            // the typed-buffer element bias.
+            const u32 index = array_element_index(operand, *range);
+            if (index == 0) return false;
+            // A heap window's element index is already its heap slot,
+            // which indexes the heap's side buffer (heap_window).
+            u32 slot = is_heap_window(*range)
+                           ? index
+                           : m_builder.emit_iadd(
+                                 m_type_uint,
+                                 m_builder.emit_constant_int(
+                                     m_type_uint, range->resolved.binding),
+                                 index);
+            if (operand.nonuniform && operand.register_relative) {
+                m_builder.emit_capability(
+                    SpvCapability::StorageBufferArrayNonUniformIndexing);
+                m_builder.emit_decorate(slot, SpvDecoration::NonUniform);
+            }
+            m_view_size_index[operand.index0] = slot;
+            sampler_records.push_back(operand.index0);
+        }
         const auto bind = [&](std::map<u32, u32>& table, u32 value) {
             const auto found = table.find(operand.index0);
             if (found == table.end()) return;
@@ -223,6 +254,7 @@ bool DxbcTranslator::translate_instruction(u32 opcode_token,
             bind(m_typed_buffer_srv_vars, element);
             bind(m_structured_srv_vars, element);
             bind(m_raw_srv_vars, element);
+            bind(m_rq_as_vars, element);
         } else if (cls == DxbcRegisterClass::Sampler) {
             bind(m_sampler_vars, element);
         } else {
@@ -234,8 +266,13 @@ bool DxbcTranslator::translate_instruction(u32 opcode_token,
             const auto counter_type =
                 m_uav_counter_element_types.find(operand.index0);
             if (counter_type != m_uav_counter_element_types.end()) {
-                const u32 index = array_element_index(operand, *range);
+                u32 index = array_element_index(operand, *range);
                 if (index == 0) return false;
+                // A heap window's counter is in its auxiliary region.
+                if (m_window_counter_slots.contains(operand.index0)) {
+                    index = heap_window_aux_index(index);
+                    if (index == 0) return false;
+                }
                 bind(m_uav_counter_vars,
                      m_builder.emit_access_chain(
                          counter_type->second,
@@ -245,11 +282,15 @@ bool DxbcTranslator::translate_instruction(u32 opcode_token,
     }
     const bool translated = translate_gated_operation(
         opcode_token, opcode, sample_controls);
+    if (!translated && !m_tiled.error.empty()) (void)fail(m_tiled.error);
     for (auto it = element_bindings.rbegin(); it != element_bindings.rend();
          ++it) {
         *it->entry = it->original;
     }
-    for (const u32 key : sampler_records) m_sampler_record_index.erase(key);
+    for (const u32 key : sampler_records) {
+        m_sampler_record_index.erase(key);
+        m_view_size_index.erase(key);
+    }
     return translated;
 }
 
@@ -285,7 +326,24 @@ bool DxbcTranslator::translate_gated_operation(u32 opcode_token,
 
 bool DxbcTranslator::translate_operation(u32 opcode_token, Sm4Opcode opcode,
                                          u32 sample_controls) {
+    // A tiled-resources status form (219-233) is its base instruction with
+    // a status destination after the destination and, for the _cl forms, a
+    // trailing MinLOD clamp; the base handler decodes both
+    // (decode_tiled_status, decode_tiled_clamp) and writes the status.
+    m_tiled = TiledInstruction{};
+    {
+        Sm4Opcode base = opcode;
+        bool clamp = false;
+        if (tiled_status_base(opcode, base, clamp)) {
+            m_tiled.active = true;
+            m_tiled.clamp = clamp;
+            opcode = base;
+        }
+    }
     switch (opcode) {
+    case Sm4Opcode::CHECK_ACCESS_FULLY_MAPPED:
+        return translate_check_access_fully_mapped();
+
     case Sm4Opcode::EMIT:
     case Sm4Opcode::CUT:
     case Sm4Opcode::EMITTHENCUT:
@@ -481,6 +539,9 @@ bool DxbcTranslator::translate_operation(u32 opcode_token, Sm4Opcode opcode,
         break;
 
     default:
+        if (dxbc_vitreo_ext::is_extension_opcode(static_cast<u32>(opcode))) {
+            return translate_vitreo_extension(static_cast<u32>(opcode));
+        }
         return fail("Unsupported opcode: " +
                     std::to_string(static_cast<u32>(opcode)));
     }

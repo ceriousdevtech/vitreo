@@ -15,7 +15,13 @@ bool DxbcTranslator::emit_function() {
 
     // Create main function
     m_main_func = m_builder.emit_function(m_type_void, m_func_type);
-    m_builder.emit_name(m_main_func, "main");
+    // ---- WS5 begin ----
+    // A mesh-lowered geometry shader's translated program is a function of
+    // its own, so DXBC `ret` and the invocation-limit exit return to a main
+    // that still reaches the workgroup barrier (emit_geometry_mesh_main).
+    m_builder.emit_name(m_main_func, gs_as_mesh() ? "vitreo_gs_body" : "main");
+    if (gs_as_mesh()) (void)push_block_var();
+    // ---- WS5 end ----
 
     // Entry point (SPIR-V 1.4+: interface must list all static globals used,
     // including Uniform blocks — not only Input/Output).
@@ -49,6 +55,16 @@ bool DxbcTranslator::emit_function() {
     if (m_depth_output != 0 && !gs_as_compute()) {
         interface_vars.push_back(m_depth_output);
     }
+    for (const u32 var : {m_re_edges[0], m_re_edges[1], m_re_edges[2],
+                          m_re_bounds, m_re_inverse_w, m_re_depth,
+                          m_re_frag_coord_declared, m_re_mask, m_re_inner,
+                          m_re_centroid_offset, m_re_edge3, m_re_edge_buffer,
+                          m_re_primitive_id_declared}) {
+        if (var != 0) interface_vars.push_back(var);
+    }
+    for (const auto& centroid : m_re_centroid_inputs) {
+        interface_vars.push_back(centroid.source);
+    }
     for (const u32 var : {m_sample_mask_output, m_sample_mask_input,
                           m_line_distance_input, m_line_frag_coord_declared,
                           m_uav_leader_sample_id, m_uav_leader_var,
@@ -70,6 +86,14 @@ bool DxbcTranslator::emit_function() {
     }
     for (const auto& [_, var_id] : m_border_twin_vars) {
         interface_vars.push_back(var_id);
+    }
+    // Tiled-resources residency companions, status twins and records.
+    for (const auto* vars : {&m_srv_companion_vars, &m_uav_companion_vars,
+                             &m_status_sampler_vars}) {
+        for (const auto& [_, var_id] : *vars) interface_vars.push_back(var_id);
+    }
+    for (const u32 var : {m_srv_residency_var, m_uav_residency_var}) {
+        if (var != 0) interface_vars.push_back(var);
     }
     for (const auto& [_, var_id] : m_uav_vars) {
         interface_vars.push_back(var_id);
@@ -124,12 +148,25 @@ bool DxbcTranslator::emit_function() {
     if (m_sampler_state_var != 0) {
         interface_vars.push_back(m_sampler_state_var);
     }
+    // SPIR-V 1.4 lists every global the entry point uses. The typed-buffer
+    // bias side buffers are StorageBuffer variables, same as the sampler
+    // records above.
+    if (m_srv_typed_bias_var != 0) {
+        interface_vars.push_back(m_srv_typed_bias_var);
+    }
+    if (m_uav_typed_bias_var != 0) {
+        interface_vars.push_back(m_uav_typed_bias_var);
+    }
     if (m_dispatch_thread_id != 0) {
         interface_vars.push_back(m_dispatch_thread_id);
     }
     if (m_group_id != 0) interface_vars.push_back(m_group_id);
     if (m_group_thread_id != 0) interface_vars.push_back(m_group_thread_id);
     if (m_group_index != 0) interface_vars.push_back(m_group_index);
+    for (const u32 var : {m_mesh_vertices, m_mesh_primitives, m_mesh_indices, m_mesh_counts, m_mesh_grid,
+                           m_mesh_payload}) {
+        if (var != 0) interface_vars.push_back(var);
+    }
     for (const u32 guard : m_loop_guard_vars) interface_vars.push_back(guard);
 
     // Hull and domain shaders run through the tessellation emulation (a
@@ -222,7 +259,8 @@ bool DxbcTranslator::emit_function() {
         // drawPatches call's numberOfPatchControlPoints must match.
         m_builder.emit_execution_mode(
             m_main_func, SpvExecutionMode::OutputVertices, m_ds_in_cp);
-    } else if (m_result.stage == ShaderStage::Compute) {
+    } else if (m_result.stage == ShaderStage::Compute && !gs_as_mesh() &&
+               !mesh_stage()) {
         m_builder.emit_execution_mode(
             m_main_func, SpvExecutionMode::LocalSize,
             m_compute_group_size_x, m_compute_group_size_y,
@@ -234,7 +272,7 @@ bool DxbcTranslator::emit_function() {
 
     // SPIR-V requires Function OpVariables at the start of the entry block.
     // (With subroutines they are module-scope Private, declared already.)
-    if (!m_temps_private) declare_function_temps(2);
+    if (!m_temps_private && !declare_function_temps(2)) return false;
 
     // A lowered geometry shader fills its Private input arrays from the
     // captured vertex-stage buffer before the translated body runs. This has
@@ -275,6 +313,11 @@ bool DxbcTranslator::emit_function() {
         }
         m_builder.emit_store(unpacked.target, integers);
     }
+    // Vertex pulling: every input register from the pull table.
+    if (!emit_vertex_pull_prologue()) return false;
+
+    // Raster emulation: the pixel's coverage before anything reads it.
+    if (raster_emulated() && !emit_raster_emulation_prologue()) return false;
 
     if (hs_as_compute()) {
         // The phases were translated into their own functions above; main
@@ -304,25 +347,50 @@ bool DxbcTranslator::emit_function() {
                                                sample, lowest));
         }
         if (m_stats_record_var != 0) emit_pixel_statistics_prologue();
+        for (const auto& split : m_primitive_split_inputs) {
+            // The vertex-fed components interpolated, the primitive-fed
+            // ones from their flat input.
+            const u32 vertex = m_builder.emit_load(split.value_type, split.vertex_var);
+            const u32 primitive = m_builder.emit_load(split.value_type, split.primitive_var);
+            std::array<u32, 4> lanes{};
+            u32 scalar = m_type_float;
+            if (split.value_type == m_type_uvec4) scalar = m_type_uint;
+            if (split.value_type == m_type_ivec4) scalar = m_type_int;
+            for (u32 c = 0; c < 4; ++c) {
+                lanes[c] = m_builder.emit_composite_extract(
+                    scalar, ((split.mask >> c) & 1u) != 0 ? primitive : vertex, {c});
+            }
+            m_builder.emit_store(split.shadow,
+                                 m_builder.emit_composite_construct(
+                                     split.value_type, {lanes[0], lanes[1], lanes[2], lanes[3]}));
+        }
 
         if (!translate_instructions(m_container.bytecode.size() / 4u)) {
             return false;
         }
     }
 
+    if (!emit_return_epilogue()) return false;
+
+    m_builder.emit_return();
+    m_builder.emit_function_end();
+    // ---- WS5 begin ----
+    if (gs_as_mesh() && !emit_geometry_mesh_main(m_main_func)) return false;
+    if (mesh_stage() && !emit_mesh_stage_main(m_main_func)) return false;
+    // ---- WS5 end ----
+
+    // After every function that calls them (a call may precede the
+    // callee's definition).
+    return emit_double_helpers() && emit_f32p_helpers() && emit_minmax_helpers();
+}
+
+bool DxbcTranslator::emit_return_epilogue() {
     if ((vs_capture() || vs_capture_rasterized()) &&
         !emit_vertex_capture_epilogue()) {
         return false;
     }
-    if (ds_as_compute() && !emit_domain_compute_epilogue()) return false;
-    if (!ds_as_compute() && !emit_system_value_epilogue()) return false;
-
-    m_builder.emit_return();
-    m_builder.emit_function_end();
-
-    // After every function that calls them (a call may precede the
-    // callee's definition).
-    return emit_double_helpers();
+    if (ds_as_compute()) return emit_domain_compute_epilogue();
+    return emit_system_value_epilogue();
 }
 
 bool DxbcTranslator::emit_system_value_epilogue() {
@@ -450,9 +518,10 @@ bool DxbcTranslator::emit_system_value_epilogue() {
     }
     for (const auto& [target, input] : m_logic_op_inputs) {
         // D3D11.3 17.7 logic op: result = op(source, destination) on the
-        // bits the target's format holds (D3D11_LOGIC_OP order, as the
-        // D3D11_LOGIC_OP reference lists it; the results measured on WARP,
-        // d3d11_fl111_probe "logic r32", match: e.g. AND_REVERSE s & ~d).
+        // bits the target's format holds (D3D11_LOGIC_OP / D3D12_LOGIC_OP
+        // order; the results measured on WARP, d3d11_fl111_probe "logic
+        // r32", match: e.g. AND_REVERSE s & ~d). One shared op, or this
+        // target's own op when the frontend stored one per target.
         const auto output = m_output_vars.find(target);
         if (output == m_output_vars.end()) continue;
         const u32 type = m_output_value_types.at(target);
@@ -481,8 +550,11 @@ bool DxbcTranslator::emit_system_value_epilogue() {
         };
         const u32 s = source;
         const u32 d = destination;
+        const u32 operation = m_options.logic_op_per_target
+                                  ? m_options.logic_ops[target]
+                                  : m_options.logic_op;
         u32 result = 0;
-        switch (m_options.logic_op) {
+        switch (operation) {
         case 0: result = m_const_u_zero4; break;                   // CLEAR
         case 1: result = m_const_u_ffff4; break;                   // SET
         case 2: result = s; break;                                 // COPY
@@ -504,8 +576,8 @@ bool DxbcTranslator::emit_system_value_epilogue() {
         case 14: result = op_or(s, invert(d)); break;              // OR_REVERSE
         case 15: result = op_or(invert(s), d); break;              // OR_INVERTED
         default:
-            return fail("logic op " + std::to_string(m_options.logic_op) +
-                        " is not a D3D11_LOGIC_OP");
+            return fail("logic op " + std::to_string(operation) + " on o" +
+                        std::to_string(target) + " is not a D3D11_LOGIC_OP");
         }
         result = m_builder.emit_bitwise_and(m_type_uvec4, result, mask);
         m_builder.emit_store(output->second,
@@ -546,7 +618,35 @@ bool DxbcTranslator::emit_system_value_epilogue() {
             return fail("SV_RenderTargetArrayIndex: o" + std::to_string(reg) +
                         " has no variable");
         }
-        m_builder.emit_store(m_layer_output, component_of(reg, component));
+        // D3D11.3 17.18 / DirectX-Specs "View Instancing": an index (plus
+        // the view instance's location) past the bound view's slices
+        // selects slice 0; Metal would clamp it to the last slice. The
+        // frontend states the slice count in push member 14
+        // (kLayerStateOffset); without kLayerLimitKnown the index is
+        // stored as it is.
+        const u32 state = m_builder.emit_load(
+            m_type_uvec4,
+            m_builder.emit_access_chain(
+                m_builder.emit_type_pointer(SpvStorageClass::PushConstant, m_type_uvec4),
+                push_block_var(),
+                {m_builder.emit_constant_int(m_type_uint, kPushMemberLayerState)}));
+        const u32 limit_word = m_builder.emit_composite_extract(m_type_uint, state, {0u});
+        const u32 addend = m_builder.emit_composite_extract(m_type_uint, state, {1u});
+        const u32 index = m_builder.emit_iadd(m_type_uint, component_of(reg, component), addend);
+        const u32 known = m_builder.emit_integer_compare(
+            SpvOp::OpINotEqual, m_type_bool,
+            m_builder.emit_bitwise_and(m_type_uint, limit_word,
+                                       m_builder.emit_constant_int(m_type_uint, kLayerLimitKnown)),
+            m_builder.emit_constant_int(m_type_uint, 0u));
+        const u32 limit = m_builder.emit_bitwise_and(
+            m_type_uint, limit_word, m_builder.emit_constant_int(m_type_uint, ~kLayerLimitKnown));
+        const u32 outside = m_builder.emit_logical(
+            SpvOp::OpLogicalAnd, m_type_bool, known,
+            m_builder.emit_integer_compare(SpvOp::OpUGreaterThanEqual, m_type_bool, index, limit));
+        m_builder.emit_store(
+            m_layer_output,
+            m_builder.emit_select(m_type_uint, outside, m_builder.emit_constant_int(m_type_uint, 0u),
+                                  index));
     }
     if (m_viewport_output != 0) {
         const auto [reg, component] = m_viewport_source;

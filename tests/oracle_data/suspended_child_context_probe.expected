@@ -1,0 +1,3 @@
+START get_ok=1 ip_is_RtlUserThreadStart=1 start_reg_is_entry=1 param_reg_is_peb=1 sp_rem=8
+GET_AFTER_SET ok=1 ip_is_stub=1
+REDIRECT set_ok=1 wait=0 exit=77

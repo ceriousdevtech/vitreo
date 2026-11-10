@@ -2,6 +2,7 @@
 /// @file process_registry.cpp
 
 #include "ipc/process_registry.hpp"
+#include "ipc/hwnd_registry.hpp"
 
 #include <algorithm>
 #include <cerrno>
@@ -21,7 +22,7 @@ namespace fs = std::filesystem;
 namespace {
 
 constexpr u32 kRegistryMagic = 0x56545052; // "VTPR"
-constexpr u32 kRegistryVersion = 3;
+constexpr u32 kRegistryVersion = 4;
 constexpr usize kMaxImageName = 260;
 constexpr usize kMaxImagePath = 32768;
 
@@ -49,7 +50,9 @@ bool process_is_live(pid_t pid) {
 ProcessRegistration::ProcessRegistration(const std::string& capsule_root,
                                          const std::string& image_name,
                                          const std::string& image_path,
-                                         u32 primary_thread_id) {
+                                         u32 primary_thread_id,
+                                         u32 guest_pid,
+                                         u32 guest_parent_pid) {
     if (capsule_root.empty() || image_name.empty()) return;
 
     const std::string directory = registry_directory(capsule_root);
@@ -63,6 +66,7 @@ ProcessRegistration::ProcessRegistration(const std::string& capsule_root,
 
     const u32 pid = static_cast<u32>(::getpid());
     const u32 parent_pid = static_cast<u32>(::getppid());
+    if (guest_pid == 0) guest_pid = guest_process_id();
     const std::string name = image_name.substr(0, kMaxImageName - 1);
     const std::string path = (image_path.empty() ? image_name : image_path)
                                  .substr(0, kMaxImagePath - 1);
@@ -83,6 +87,9 @@ ProcessRegistration::ProcessRegistration(const std::string& capsule_root,
         if (!out) return;
         out.write(reinterpret_cast<const char*>(&record), sizeof(record));
         out.write(reinterpret_cast<const char*>(&primary_thread_id), sizeof(primary_thread_id));
+        out.write(reinterpret_cast<const char*>(&guest_pid), sizeof(guest_pid));
+        out.write(reinterpret_cast<const char*>(&guest_parent_pid),
+                  sizeof(guest_parent_pid));
         out.write(name.data(), static_cast<std::streamsize>(name.size()));
         out.write(path.data(), static_cast<std::streamsize>(path.size()));
         out.close();
@@ -142,17 +149,25 @@ std::vector<ProcessSnapshotEntry> list_processes(
 
         RegistryRecord record{};
         u32 primary_thread_id = 0;
+        u32 guest_pid = 0;
+        u32 guest_parent_pid = 0;
         std::string image_name;
         std::string image_path;
         std::ifstream in(item.path(), std::ios::binary);
         if (in) {
             in.read(reinterpret_cast<char*>(&record), sizeof(record));
             if (in && record.magic == kRegistryMagic &&
-                (record.version == kRegistryVersion || record.version == 2) && record.pid != 0 &&
+                (record.version == kRegistryVersion || record.version == 3 ||
+                 record.version == 2) && record.pid != 0 &&
                 record.image_name_size < kMaxImageName &&
                 record.image_path_size < kMaxImagePath) {
-                if (record.version == kRegistryVersion) {
+                if (record.version >= 3) {
                     in.read(reinterpret_cast<char*>(&primary_thread_id), sizeof(primary_thread_id));
+                }
+                if (record.version >= 4) {
+                    in.read(reinterpret_cast<char*>(&guest_pid), sizeof(guest_pid));
+                    in.read(reinterpret_cast<char*>(&guest_parent_pid),
+                            sizeof(guest_parent_pid));
                 }
                 image_name.resize(record.image_name_size);
                 in.read(image_name.data(),
@@ -170,12 +185,21 @@ std::vector<ProcessSnapshotEntry> list_processes(
             continue;
         }
 
+        // v2/v3 stored the host pid in the guest-visible field. Keep those
+        // records readable, and publish a real client ID only from v4.
+        const u32 windows_pid = record.version >= 4 && guest_pid != 0
+                                    ? guest_pid
+                                    : record.pid;
+        const u32 windows_parent = record.version >= 4
+                                       ? guest_parent_pid
+                                       : record.parent_pid;
         result.push_back(ProcessSnapshotEntry{
-            record.pid,
-            record.parent_pid,
+            windows_pid,
+            windows_parent,
             std::move(image_name),
             std::move(image_path),
             primary_thread_id,
+            record.pid,
         });
     }
 
@@ -189,9 +213,22 @@ std::optional<u32> primary_thread_owner(u32 thread_id) {
     const char* scope = std::getenv("VITREO_IPC_SCOPE");
     if (thread_id == 0 || scope == nullptr || *scope == '\0') return std::nullopt;
     for (const auto& process : list_processes(scope)) {
-        if (process.primary_thread_id == thread_id) return process.pid;
+        if (process.primary_thread_id == thread_id) {
+            return process.host_pid != 0 ? process.host_pid : process.pid;
+        }
     }
     return std::nullopt;
+}
+
+u32 windows_process_id_for_host(u32 host_pid) {
+    if (host_pid == 0) return 0;
+    if (host_pid == static_cast<u32>(::getpid())) return guest_process_id();
+    const char* scope = std::getenv("VITREO_IPC_SCOPE");
+    if (scope == nullptr || *scope == '\0') return 0;
+    for (const auto& process : list_processes(scope)) {
+        if (process.host_pid == host_pid && process.pid != 0) return process.pid;
+    }
+    return 0;
 }
 
 } // namespace vitreo::ipc

@@ -27,6 +27,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "windowing/model/hwnd_manager.hpp"
+#include "windowing/model/diag_flags.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "ipc/hwnd_registry.hpp"
 #include "vitreo/result.hpp"
@@ -930,6 +931,7 @@ void User32ExtManager::apply_virtual_display_mode(windowing::HWND hwnd,
         VITREO_TRACE(
             "[user32_ext] virtual display restore hwnd=0x%x -> %dx%d\n",
             old_target, phys_w, phys_h);
+        m_host.update_cursor_clip_screen(guest_virtual_screen_rect());
         return;
     }
 
@@ -947,19 +949,52 @@ void User32ExtManager::apply_virtual_display_mode(windowing::HWND hwnd,
         desktop->client_rect = desktop->rect;
     }
     if (hwnd != windowing::NULL_HWND) {
-        size_window_to_display(hwnd, {0, 0, static_cast<i32>(width),
-                                      static_cast<i32>(height)});
         broadcast_display_change(bits_per_pixel, width, height);
-        post_display_size(hwnd, width, height);
+        if (!size_window_to_display(hwnd, {0, 0, static_cast<i32>(width),
+                                           static_cast<i32>(height)})) {
+            post_display_size(hwnd, width, height);
+        }
     }
     VITREO_TRACE(
         "[user32_ext] virtual display hwnd=0x%x mode=%ux%ux%u\n",
         hwnd, width, height, bits_per_pixel);
+    m_host.update_cursor_clip_screen(guest_virtual_screen_rect());
 }
 
-void User32ExtManager::size_window_to_display(windowing::HWND hwnd,
+bool User32ExtManager::size_window_to_display(windowing::HWND hwnd,
                                               const windowing::Rect& rect) {
-    if (windowing::WindowData* win = m_hwnd_mgr.find(hwnd)) {
+    // The runtime takes the window to the mode with an ordinary SetWindowPos
+    // (D3D9 CreateDevice/Reset with Windowed = FALSE, DirectDraw
+    // DDSCL_FULLSCREEN, DXGI SetFullscreenState), so the application sees
+    // the whole WM_WINDOWPOSCHANGING / WM_NCCALCSIZE / WM_WINDOWPOSCHANGED
+    // sequence, and WM_MOVE / WM_SIZE from DefWindowProc. Patching the rect
+    // and posting a lone WM_SIZE left engines that track their client size
+    // from WM_WINDOWPOSCHANGED on the pre-fullscreen size: The Sims 3 kept a
+    // 2552x1326 work-area client and hit-tested every click ~1.09x too low
+    // until a later mode change re-sized it.
+    constexpr u32 SWP_NOZORDER = 0x0004;
+    constexpr u32 SWP_NOACTIVATE = 0x0010;
+    constexpr u32 SWP_FRAMECHANGED = 0x0020;
+    bool sent = false;
+    if (m_hwnd_mgr.find(hwnd) != nullptr) {
+        // FRAMECHANGED: a D3D9 device window was just restyled frameless
+        // (style_d3d9_device_window); its client must be recomputed even when
+        // the outer rectangle already covers the mode.
+        sent = apply_set_window_pos(hwnd, windowing::HWND_TOP, rect.left, rect.top,
+                                    rect.width(), rect.height(),
+                                    SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED,
+                                    /*send_messages=*/true);
+    }
+    if (windowing::WindowData* win = m_hwnd_mgr.find(hwnd); win != nullptr && !sent) {
+        // No window procedure saw a placement: the exclusive surface is the
+        // mode. After a real SetWindowPos the client rect is whatever
+        // WM_NCCALCSIZE made of the frame (2540x1390 for a 2560x1440
+        // WS_OVERLAPPEDWINDOW), exactly what the guest was told. Overwriting
+        // it with the mode hid the later frame change: The Sims 3 drops its
+        // caption with SWP_FRAMECHANGED, which on Windows grows the client to
+        // the mode and sends WM_SIZE; with the client already patched to
+        // 2560x1440 that WM_SIZE never came, the game kept 2540x1390, treated
+        // the window as restored and put back its windowed rectangle.
         win->rect = rect;
         win->client_rect = rect;
     }
@@ -972,6 +1007,7 @@ void User32ExtManager::size_window_to_display(windowing::HWND hwnd,
     if (m_gdi_mgr) {
         m_gdi_mgr->ensure_framebuffer_size(hwnd, rect.width(), rect.height());
     }
+    return sent;
 }
 
 void User32ExtManager::broadcast_display_change(u32 bits_per_pixel, u32 width,
@@ -1007,6 +1043,40 @@ void User32ExtManager::broadcast_display_change(u32 bits_per_pixel, u32 width,
                            descendants.end());
         }
     }
+}
+
+void User32ExtManager::style_d3d9_device_window(windowing::HWND hwnd, bool enter) {
+    // Measured on an RTX 4080 (tools/oracle_probe/d3d9_fullscreen_mode_probe.c,
+    // x86): exclusive CreateDevice changes a WS_OVERLAPPEDWINDOW device
+    // window from style 0x14CF0000 / ex 0x100 to 0x14000000 / ex 0x8 -- the
+    // caption, system menu, sizing frame and min/max boxes go, the derived
+    // WS_EX_WINDOWEDGE goes, WS_EX_TOPMOST comes -- and releasing the device
+    // puts the style back (ex keeps WS_EX_TOPMOST: 0x108).
+    constexpr u32 kOverlappedFrame = 0x00CF0000u;
+    constexpr u32 kExWindowEdge = 0x00000100u;
+    constexpr u32 kExTopmost = 0x00000008u;
+    windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
+    if (win == nullptr) return;
+    u32 previous = 0;
+    if (enter) {
+        if (m_d3d9_device_window_styles.count(hwnd) != 0) return;
+        m_d3d9_device_window_styles[hwnd] = {win->style, win->ex_style};
+        const u32 ex_style = (win->ex_style & ~kExWindowEdge) | kExTopmost;
+        (void)change_window_style(hwnd, false, win->style & ~kOverlappedFrame, previous);
+        if (m_hwnd_mgr.find(hwnd) == nullptr) return;
+        (void)change_window_style(hwnd, true, ex_style, previous);
+        return;
+    }
+    const auto saved = m_d3d9_device_window_styles.find(hwnd);
+    if (saved == m_d3d9_device_window_styles.end()) return;
+    const SavedDeviceWindowStyle restore = saved->second;
+    m_d3d9_device_window_styles.erase(saved);
+    (void)change_window_style(hwnd, false, restore.style, previous);
+    if (m_hwnd_mgr.find(hwnd) == nullptr) return;
+    (void)change_window_style(hwnd, true, restore.ex_style | kExTopmost, previous);
+    constexpr u32 kKeepPlacement = 0x0001u | 0x0002u | 0x0004u | 0x0010u | 0x0020u;
+    (void)apply_set_window_pos(hwnd, windowing::HWND_TOP, 0, 0, 0, 0, kKeepPlacement,
+                               /*send_messages=*/true);
 }
 
 void User32ExtManager::post_display_size(windowing::HWND hwnd, u32 width,
@@ -1050,9 +1120,10 @@ bool User32ExtManager::enter_exclusive_display(windowing::HWND hwnd,
         broadcast_display_change(32, static_cast<u32>(output.width()),
                                  static_cast<u32>(output.height()));
     }
-    size_window_to_display(hwnd, output);
-    post_display_size(hwnd, static_cast<u32>(output.width()),
-                      static_cast<u32>(output.height()));
+    if (!size_window_to_display(hwnd, output)) {
+        post_display_size(hwnd, static_cast<u32>(output.width()),
+                          static_cast<u32>(output.height()));
+    }
     VITREO_TRACE("[user32_ext] exclusive display hwnd=0x%x covers %d,%d %dx%d "
                  "(desktop mode)\n",
                  hwnd, output.left, output.top, output.width(),
@@ -1206,12 +1277,13 @@ void User32ExtManager::enum_display_settings(Marshaler& m, bool wide) {
     }
 
     const DevmodeLayout& L = wide ? kDevmodeW : kDevmodeA;
-    // DEVMODE is an OUT parameter: clear the caller-declared size, and never
-    // less than Windows' own size. Unwritten fields must not leak the
-    // caller's stack contents, dmPosition included.
-    const u32 declared = m_memory.read_u16(devmode + L.size_off).value_or(0);
-    const u32 clear = std::clamp<u32>(declared, L.windows_size, 1024u);
-    std::vector<Byte> zeros(clear, 0);
+    // DEVMODE is an OUT parameter of exactly Windows' own size: measured
+    // (enumdisplaysettings_extent_probe{32,64}), Windows writes bytes 0..123
+    // of a DEVMODEA and 0..187 of a DEVMODEW and nothing past them, whatever
+    // dmSize and dmDriverExtra held on entry (an uninitialised stack
+    // DEVMODE is common), and returns dmDriverExtra 0. Every byte it writes
+    // is defined, so unwritten fields are zero rather than the caller's.
+    std::vector<Byte> zeros(L.windows_size, 0);
     (void)m_memory.write_bytes(devmode, zeros.data(), zeros.size());
     (void)m.write_u16(devmode + L.spec_off, DM_SPECVERSION);
     (void)m.write_u16(devmode + L.size_off, static_cast<u16>(L.windows_size));
@@ -1365,17 +1437,47 @@ i32 User32ExtManager::change_display_settings(Marshaler& m, GuestAddr device_ptr
     return DISP_CHANGE_SUCCESSFUL;
 }
 
+namespace {
+void trace_display_change(Marshaler& m, const char* api, GuestAddr devmode,
+                          bool wide, u32 flags, i32 result,
+                          windowing::HWND hwnd, i32 applied_width,
+                          i32 applied_height) {
+    static std::atomic<unsigned> count{0};
+    if (!windowing::diag::input_diag() ||
+        count.fetch_add(1, std::memory_order_relaxed) >= 96) return;
+    const DevmodeLayout& layout = wide ? kDevmodeW : kDevmodeA;
+    const u32 size = devmode ? m.read_u16(devmode + layout.size_off).value_or(0) : 0;
+    const u32 fields = devmode ? m.read_u32(devmode + layout.fields_off).value_or(0) : 0;
+    const u32 width = devmode ? m.read_u32(devmode + layout.width_off).value_or(0) : 0;
+    const u32 height = devmode ? m.read_u32(devmode + layout.height_off).value_or(0) : 0;
+    std::fprintf(stderr,
+        "[input] %s mode=0x%llx size=%u fields=0x%x raw=%ux%u flags=0x%x result=%d virtual=%dx%d hwnd=0x%llx caller=0x%llx\n",
+        api, static_cast<unsigned long long>(devmode), size, fields,
+        width, height, flags, result, applied_width, applied_height,
+        static_cast<unsigned long long>(hwnd),
+        static_cast<unsigned long long>(m.guest_return_address()));
+}
+} // namespace
+
 void User32ExtManager::impl_ChangeDisplaySettingsA(Marshaler& m) {
     // LONG ChangeDisplaySettingsA(DEVMODEA*, DWORD dwFlags)
     const GuestAddr devmode = m.arg_ptr(0);
     const u32 flags = static_cast<u32>(m.arg(1));
-    m.set_return(static_cast<u32>(change_display_settings(m, 0, devmode, false, flags)));
+    const i32 result = change_display_settings(m, 0, devmode, false, flags);
+    trace_display_change(m, "ChangeDisplaySettingsA", devmode, false, flags,
+                         result, m_virtual_fullscreen_hwnd,
+                         m_virtual_display_width, m_virtual_display_height);
+    m.set_return(static_cast<u32>(result));
 }
 
 void User32ExtManager::impl_ChangeDisplaySettingsW(Marshaler& m) {
     const GuestAddr devmode = m.arg_ptr(0);
     const u32 flags = static_cast<u32>(m.arg(1));
-    m.set_return(static_cast<u32>(change_display_settings(m, 0, devmode, true, flags)));
+    const i32 result = change_display_settings(m, 0, devmode, true, flags);
+    trace_display_change(m, "ChangeDisplaySettingsW", devmode, true, flags,
+                         result, m_virtual_fullscreen_hwnd,
+                         m_virtual_display_width, m_virtual_display_height);
+    m.set_return(static_cast<u32>(result));
 }
 
 void User32ExtManager::impl_ChangeDisplaySettingsExA(Marshaler& m) {
@@ -1383,14 +1485,22 @@ void User32ExtManager::impl_ChangeDisplaySettingsExA(Marshaler& m) {
     const GuestAddr device = m.arg_ptr(0);
     const GuestAddr devmode = m.arg_ptr(1);
     const u32 flags = static_cast<u32>(m.arg(3));
-    m.set_return(static_cast<u32>(change_display_settings(m, device, devmode, false, flags)));
+    const i32 result = change_display_settings(m, device, devmode, false, flags);
+    trace_display_change(m, "ChangeDisplaySettingsExA", devmode, false, flags,
+                         result, m_virtual_fullscreen_hwnd,
+                         m_virtual_display_width, m_virtual_display_height);
+    m.set_return(static_cast<u32>(result));
 }
 
 void User32ExtManager::impl_ChangeDisplaySettingsExW(Marshaler& m) {
     const GuestAddr device = m.arg_ptr(0);
     const GuestAddr devmode = m.arg_ptr(1);
     const u32 flags = static_cast<u32>(m.arg(3));
-    m.set_return(static_cast<u32>(change_display_settings(m, device, devmode, true, flags)));
+    const i32 result = change_display_settings(m, device, devmode, true, flags);
+    trace_display_change(m, "ChangeDisplaySettingsExW", devmode, true, flags,
+                         result, m_virtual_fullscreen_hwnd,
+                         m_virtual_display_width, m_virtual_display_height);
+    m.set_return(static_cast<u32>(result));
 }
 
 } // namespace vitreo::winapi

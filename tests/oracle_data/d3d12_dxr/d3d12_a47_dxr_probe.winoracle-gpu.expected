@@ -1,0 +1,707 @@
+# caps options5: 0x00000000 S_OK RaytracingTier=12 RenderPassesTier=0
+caps end: GetDeviceRemovedReason 0x00000000 S_OK
+# prebuild tier: CheckFeatureSupport(OPTIONS5) 0x00000000 S_OK RaytracingTier=12
+# prebuild blas: flags 0x0 result 8960 scratch 2688 update 0
+prebuild blas: flags 0x0 result>0 1 scratch>0 1 update 0
+# prebuild blas: flags 0x1 result 10112 scratch 2048 update 2048
+prebuild blas: flags 0x1 result>0 1 scratch>0 1 update >0
+# prebuild blas: flags 0x2 result 9216 scratch 3456 update 0
+prebuild blas: flags 0x2 result>0 1 scratch>0 1 update 0
+# prebuild blas: flags 0x8 result 7168 scratch 1536 update 0
+prebuild blas: flags 0x8 result>0 1 scratch>0 1 update 0
+prebuild blas: 30 tris <= 300 tris: result 1 scratch 1
+# prebuild tlas: 64 instances result 12672 scratch 6912
+prebuild tlas: 64 instances result>0 1 scratch>0 1 update 0
+prebuild tlas: 0 instances result>0 1
+prebuild identifier: junk 2 app-specific-type 1
+prebuild end: GetDeviceRemovedReason 0x00000000 S_OK
+# postbuild tier: CheckFeatureSupport(OPTIONS5) 0x00000000 S_OK RaytracingTier=12
+postbuild scene: build 0x00000000 S_OK
+# postbuild blas_tri: prebuild 2560 compacted 896 current 2560 decoded 2176 serialized 2616 pointers 0
+postbuild blas_tri: 0<compacted<=current 1 current<=prebuild 1 decoded>0 1 serialized>current-ish 1 pointers 0
+# postbuild blas_box: prebuild 896 compacted 896 current 896 decoded 2120 serialized 952 pointers 0
+postbuild blas_box: 0<compacted<=current 1 current<=prebuild 1 decoded>0 1 serialized>current-ish 1 pointers 0
+# postbuild tlas: prebuild 2304 compacted 2176 current 2304 decoded 328 serialized 2400 pointers 5
+postbuild tlas: 0<compacted<=current 1 current<=prebuild 1 decoded>0 1 serialized>current-ish 1 pointers 5
+postbuild build+post: 0x00000000 S_OK current>0 1 serialized>0 1 blas pointers 0 | pair: blas pointers 0 tlas pointers 5
+postbuild end: GetDeviceRemovedReason 0x00000000 S_OK
+# rq_cs tier: CheckFeatureSupport(OPTIONS5) 0x00000000 S_OK RaytracingTier=12
+rq_cs scene: build 0x00000000 S_OK
+rq_cs all r00: miss fl=0x0
+rq_cs all r01: miss fl=0x0
+rq_cs all r02: miss fl=0x0
+rq_cs all r03: miss fl=0x0
+rq_cs all r04: miss fl=0x0
+rq_cs all r05: miss fl=0x0
+rq_cs all r06: miss fl=0x0
+rq_cs all r07: miss fl=0x0
+rq_cs all r08: miss fl=0x0
+rq_cs all r09: miss fl=0x0
+rq_cs all r10: miss fl=0x0
+rq_cs all r11: miss fl=0x0
+rq_cs all r12: miss fl=0x0
+rq_cs all r13: miss fl=0x0
+rq_cs all r14: miss fl=0x0
+rq_cs all r15: miss fl=0x0
+rq_cs all r16: miss fl=0x0
+rq_cs all r17: miss fl=0x0
+rq_cs all r18: miss fl=0x0
+rq_cs all r19: miss fl=0x0
+rq_cs all r20: miss fl=0x0
+rq_cs all r21: miss fl=0x0
+rq_cs all r22: miss fl=0x0
+rq_cs all r23: miss fl=0x0
+rq_cs all r24: miss fl=0x0
+rq_cs all r25: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2812,0.3125 fl=0x0 ow=-5.2500
+rq_cs all r26: miss fl=0x0
+rq_cs all r27: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.2812,0.3125 fl=0x0 ow=-3.7500
+rq_cs all r28: miss fl=0x0
+rq_cs all r29: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276 b=0.0000,0.0000 fl=0x0 ow=-2.2500
+rq_cs all r30: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276 b=0.0000,0.0000 fl=0x0 ow=5.2500
+rq_cs all r31: miss fl=0x0
+rq_cs all r32: miss fl=0x0
+rq_cs all r33: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.5938,0.3125 fl=0x0 ow=-5.2500
+rq_cs all r34: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2188,0.6875 fl=0x0 ow=2.2500
+rq_cs all r35: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.5312,0.1562 fl=0x0 ow=-6.8750
+rq_cs all r36: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.1562,0.1562 fl=0x0 ow=-6.8750
+rq_cs all r37: miss fl=0x0
+rq_cs all r38: miss fl=0x0
+rq_cs all r39: miss fl=0x0
+rq_cs all r40: miss fl=0x0
+rq_cs all r41: miss fl=0x0
+rq_cs all r42: miss fl=0x0
+rq_cs all r43: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.2188,0.4688 fl=0x0 ow=-0.6250
+rq_cs all r44: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.3125,0.1562 fl=0x0 ow=-0.6250
+rq_cs all r45: miss fl=0x0
+rq_cs all r46: miss fl=0x0
+rq_cs all r47: miss fl=0x0
+rq_cs all r48: miss fl=0x0
+rq_cs all r49: miss fl=0x0
+rq_cs all r50: miss fl=0x0
+rq_cs all r51: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.6875,0.0938 fl=0x0 ow=5.6250
+rq_cs all r52: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.3125,0.4688 fl=0x0 ow=5.6250
+rq_cs all r53: miss fl=0x0
+rq_cs all r54: miss fl=0x0
+rq_cs all r55: miss fl=0x0
+rq_cs all r56: miss fl=0x0
+rq_cs all r57: miss fl=0x0
+rq_cs all r58: miss fl=0x0
+rq_cs all r59: miss fl=0x0
+rq_cs all r60: miss fl=0x0
+rq_cs all r61: miss fl=0x0
+rq_cs all r62: miss fl=0x0
+rq_cs all r63: miss fl=0x0
+rq_cs mask03 r00: miss fl=0x0
+rq_cs mask03 r01: miss fl=0x0
+rq_cs mask03 r02: miss fl=0x0
+rq_cs mask03 r03: miss fl=0x0
+rq_cs mask03 r04: miss fl=0x0
+rq_cs mask03 r05: miss fl=0x0
+rq_cs mask03 r06: miss fl=0x0
+rq_cs mask03 r07: miss fl=0x0
+rq_cs mask03 r08: miss fl=0x0
+rq_cs mask03 r09: miss fl=0x0
+rq_cs mask03 r10: miss fl=0x0
+rq_cs mask03 r11: miss fl=0x0
+rq_cs mask03 r12: miss fl=0x0
+rq_cs mask03 r13: miss fl=0x0
+rq_cs mask03 r14: miss fl=0x0
+rq_cs mask03 r15: miss fl=0x0
+rq_cs mask03 r16: miss fl=0x0
+rq_cs mask03 r17: miss fl=0x0
+rq_cs mask03 r18: miss fl=0x0
+rq_cs mask03 r19: miss fl=0x0
+rq_cs mask03 r20: miss fl=0x0
+rq_cs mask03 r21: miss fl=0x0
+rq_cs mask03 r22: miss fl=0x0
+rq_cs mask03 r23: miss fl=0x0
+rq_cs mask03 r24: miss fl=0x0
+rq_cs mask03 r25: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2812,0.3125 fl=0x0 ow=-5.2500
+rq_cs mask03 r26: miss fl=0x0
+rq_cs mask03 r27: miss fl=0x0
+rq_cs mask03 r28: miss fl=0x0
+rq_cs mask03 r29: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276 b=0.0000,0.0000 fl=0x0 ow=-2.2500
+rq_cs mask03 r30: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276 b=0.0000,0.0000 fl=0x0 ow=5.2500
+rq_cs mask03 r31: miss fl=0x0
+rq_cs mask03 r32: miss fl=0x0
+rq_cs mask03 r33: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.5938,0.3125 fl=0x0 ow=-5.2500
+rq_cs mask03 r34: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2188,0.6875 fl=0x0 ow=2.2500
+rq_cs mask03 r35: miss fl=0x0
+rq_cs mask03 r36: miss fl=0x0
+rq_cs mask03 r37: miss fl=0x0
+rq_cs mask03 r38: miss fl=0x0
+rq_cs mask03 r39: miss fl=0x0
+rq_cs mask03 r40: miss fl=0x0
+rq_cs mask03 r41: miss fl=0x0
+rq_cs mask03 r42: miss fl=0x0
+rq_cs mask03 r43: miss fl=0x0
+rq_cs mask03 r44: miss fl=0x0
+rq_cs mask03 r45: miss fl=0x0
+rq_cs mask03 r46: miss fl=0x0
+rq_cs mask03 r47: miss fl=0x0
+rq_cs mask03 r48: miss fl=0x0
+rq_cs mask03 r49: miss fl=0x0
+rq_cs mask03 r50: miss fl=0x0
+rq_cs mask03 r51: miss fl=0x0
+rq_cs mask03 r52: miss fl=0x0
+rq_cs mask03 r53: miss fl=0x0
+rq_cs mask03 r54: miss fl=0x0
+rq_cs mask03 r55: miss fl=0x0
+rq_cs mask03 r56: miss fl=0x0
+rq_cs mask03 r57: miss fl=0x0
+rq_cs mask03 r58: miss fl=0x0
+rq_cs mask03 r59: miss fl=0x0
+rq_cs mask03 r60: miss fl=0x0
+rq_cs mask03 r61: miss fl=0x0
+rq_cs mask03 r62: miss fl=0x0
+rq_cs mask03 r63: miss fl=0x0
+rq_cs mask08 r00: miss fl=0x0
+rq_cs mask08 r01: miss fl=0x0
+rq_cs mask08 r02: miss fl=0x0
+rq_cs mask08 r03: miss fl=0x0
+rq_cs mask08 r04: miss fl=0x0
+rq_cs mask08 r05: miss fl=0x0
+rq_cs mask08 r06: miss fl=0x0
+rq_cs mask08 r07: miss fl=0x0
+rq_cs mask08 r08: miss fl=0x0
+rq_cs mask08 r09: miss fl=0x0
+rq_cs mask08 r10: miss fl=0x0
+rq_cs mask08 r11: miss fl=0x0
+rq_cs mask08 r12: miss fl=0x0
+rq_cs mask08 r13: miss fl=0x0
+rq_cs mask08 r14: miss fl=0x0
+rq_cs mask08 r15: miss fl=0x0
+rq_cs mask08 r16: miss fl=0x0
+rq_cs mask08 r17: miss fl=0x0
+rq_cs mask08 r18: miss fl=0x0
+rq_cs mask08 r19: miss fl=0x0
+rq_cs mask08 r20: miss fl=0x0
+rq_cs mask08 r21: miss fl=0x0
+rq_cs mask08 r22: miss fl=0x0
+rq_cs mask08 r23: miss fl=0x0
+rq_cs mask08 r24: miss fl=0x0
+rq_cs mask08 r25: miss fl=0x0
+rq_cs mask08 r26: miss fl=0x0
+rq_cs mask08 r27: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.2812,0.3125 fl=0x0 ow=-3.7500
+rq_cs mask08 r28: miss fl=0x0
+rq_cs mask08 r29: miss fl=0x0
+rq_cs mask08 r30: miss fl=0x0
+rq_cs mask08 r31: miss fl=0x0
+rq_cs mask08 r32: miss fl=0x0
+rq_cs mask08 r33: miss fl=0x0
+rq_cs mask08 r34: miss fl=0x0
+rq_cs mask08 r35: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.5938,0.3125 fl=0x0 ow=-3.7500
+rq_cs mask08 r36: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.2188,0.6875 fl=0x0 ow=3.7500
+rq_cs mask08 r37: miss fl=0x0
+rq_cs mask08 r38: miss fl=0x0
+rq_cs mask08 r39: miss fl=0x0
+rq_cs mask08 r40: miss fl=0x0
+rq_cs mask08 r41: miss fl=0x0
+rq_cs mask08 r42: miss fl=0x0
+rq_cs mask08 r43: miss fl=0x0
+rq_cs mask08 r44: miss fl=0x0
+rq_cs mask08 r45: miss fl=0x0
+rq_cs mask08 r46: miss fl=0x0
+rq_cs mask08 r47: miss fl=0x0
+rq_cs mask08 r48: miss fl=0x0
+rq_cs mask08 r49: miss fl=0x0
+rq_cs mask08 r50: miss fl=0x0
+rq_cs mask08 r51: miss fl=0x0
+rq_cs mask08 r52: miss fl=0x0
+rq_cs mask08 r53: miss fl=0x0
+rq_cs mask08 r54: miss fl=0x0
+rq_cs mask08 r55: miss fl=0x0
+rq_cs mask08 r56: miss fl=0x0
+rq_cs mask08 r57: miss fl=0x0
+rq_cs mask08 r58: miss fl=0x0
+rq_cs mask08 r59: miss fl=0x0
+rq_cs mask08 r60: miss fl=0x0
+rq_cs mask08 r61: miss fl=0x0
+rq_cs mask08 r62: miss fl=0x0
+rq_cs mask08 r63: miss fl=0x0
+rq_cs cullback r00: miss fl=0x10
+rq_cs cullback r01: miss fl=0x10
+rq_cs cullback r02: miss fl=0x10
+rq_cs cullback r03: miss fl=0x10
+rq_cs cullback r04: miss fl=0x10
+rq_cs cullback r05: miss fl=0x10
+rq_cs cullback r06: miss fl=0x10
+rq_cs cullback r07: miss fl=0x10
+rq_cs cullback r08: miss fl=0x10
+rq_cs cullback r09: miss fl=0x10
+rq_cs cullback r10: miss fl=0x10
+rq_cs cullback r11: miss fl=0x10
+rq_cs cullback r12: miss fl=0x10
+rq_cs cullback r13: miss fl=0x10
+rq_cs cullback r14: miss fl=0x10
+rq_cs cullback r15: miss fl=0x10
+rq_cs cullback r16: miss fl=0x10
+rq_cs cullback r17: miss fl=0x10
+rq_cs cullback r18: miss fl=0x10
+rq_cs cullback r19: miss fl=0x10
+rq_cs cullback r20: miss fl=0x10
+rq_cs cullback r21: miss fl=0x10
+rq_cs cullback r22: miss fl=0x10
+rq_cs cullback r23: miss fl=0x10
+rq_cs cullback r24: miss fl=0x10
+rq_cs cullback r25: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2812,0.3125 fl=0x10 ow=-5.2500
+rq_cs cullback r26: miss fl=0x10
+rq_cs cullback r27: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.2812,0.3125 fl=0x10 ow=-3.7500
+rq_cs cullback r28: miss fl=0x10
+rq_cs cullback r29: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276 b=0.0000,0.0000 fl=0x10 ow=-2.2500
+rq_cs cullback r30: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276 b=0.0000,0.0000 fl=0x10 ow=5.2500
+rq_cs cullback r31: miss fl=0x10
+rq_cs cullback r32: miss fl=0x10
+rq_cs cullback r33: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.5938,0.3125 fl=0x10 ow=-5.2500
+rq_cs cullback r34: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2188,0.6875 fl=0x10 ow=2.2500
+rq_cs cullback r35: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.5938,0.3125 fl=0x10 ow=-3.7500
+rq_cs cullback r36: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.2188,0.6875 fl=0x10 ow=3.7500
+rq_cs cullback r37: miss fl=0x10
+rq_cs cullback r38: miss fl=0x10
+rq_cs cullback r39: miss fl=0x10
+rq_cs cullback r40: miss fl=0x10
+rq_cs cullback r41: miss fl=0x10
+rq_cs cullback r42: miss fl=0x10
+rq_cs cullback r43: miss fl=0x10
+rq_cs cullback r44: miss fl=0x10
+rq_cs cullback r45: miss fl=0x10
+rq_cs cullback r46: miss fl=0x10
+rq_cs cullback r47: miss fl=0x10
+rq_cs cullback r48: miss fl=0x10
+rq_cs cullback r49: miss fl=0x10
+rq_cs cullback r50: miss fl=0x10
+rq_cs cullback r51: miss fl=0x10
+rq_cs cullback r52: miss fl=0x10
+rq_cs cullback r53: miss fl=0x10
+rq_cs cullback r54: miss fl=0x10
+rq_cs cullback r55: miss fl=0x10
+rq_cs cullback r56: miss fl=0x10
+rq_cs cullback r57: miss fl=0x10
+rq_cs cullback r58: miss fl=0x10
+rq_cs cullback r59: miss fl=0x10
+rq_cs cullback r60: miss fl=0x10
+rq_cs cullback r61: miss fl=0x10
+rq_cs cullback r62: miss fl=0x10
+rq_cs cullback r63: miss fl=0x10
+rq_cs opaque r00: miss fl=0x1
+rq_cs opaque r01: miss fl=0x1
+rq_cs opaque r02: miss fl=0x1
+rq_cs opaque r03: miss fl=0x1
+rq_cs opaque r04: miss fl=0x1
+rq_cs opaque r05: miss fl=0x1
+rq_cs opaque r06: miss fl=0x1
+rq_cs opaque r07: miss fl=0x1
+rq_cs opaque r08: miss fl=0x1
+rq_cs opaque r09: miss fl=0x1
+rq_cs opaque r10: miss fl=0x1
+rq_cs opaque r11: miss fl=0x1
+rq_cs opaque r12: miss fl=0x1
+rq_cs opaque r13: miss fl=0x1
+rq_cs opaque r14: miss fl=0x1
+rq_cs opaque r15: miss fl=0x1
+rq_cs opaque r16: miss fl=0x1
+rq_cs opaque r17: st=1 ii=0 id=0x123 g=0 p=1 ff=1 t=5.0000 b=0.2812,0.0312 fl=0x1 ow=-5.2500
+rq_cs opaque r18: st=1 ii=0 id=0x123 g=0 p=1 ff=1 t=5.0000 b=0.2812,0.4062 fl=0x1 ow=2.2500
+rq_cs opaque r19: st=1 ii=4 id=0x9 g=0 p=1 ff=1 t=15.0000 b=0.2812,0.0312 fl=0x1 ow=-3.7500
+rq_cs opaque r20: st=1 ii=4 id=0x9 g=0 p=1 ff=1 t=15.0000 b=0.2812,0.4062 fl=0x1 ow=3.7500
+rq_cs opaque r21: miss fl=0x1
+rq_cs opaque r22: miss fl=0x1
+rq_cs opaque r23: miss fl=0x1
+rq_cs opaque r24: miss fl=0x1
+rq_cs opaque r25: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2812,0.3125 fl=0x1 ow=-5.2500
+rq_cs opaque r26: st=1 ii=0 id=0x123 g=0 p=1 ff=1 t=5.0000 b=0.5938,0.0938 fl=0x1 ow=2.2500
+rq_cs opaque r27: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.2812,0.3125 fl=0x1 ow=-3.7500
+rq_cs opaque r28: st=1 ii=4 id=0x9 g=0 p=1 ff=1 t=15.0000 b=0.5938,0.0938 fl=0x1 ow=3.7500
+rq_cs opaque r29: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276 b=0.0000,0.0000 fl=0x1 ow=-2.2500
+rq_cs opaque r30: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276 b=0.0000,0.0000 fl=0x1 ow=5.2500
+rq_cs opaque r31: miss fl=0x1
+rq_cs opaque r32: miss fl=0x1
+rq_cs opaque r33: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.5938,0.3125 fl=0x1 ow=-5.2500
+rq_cs opaque r34: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2188,0.6875 fl=0x1 ow=2.2500
+rq_cs opaque r35: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.5312,0.1562 fl=0x1 ow=-6.8750
+rq_cs opaque r36: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.1562,0.1562 fl=0x1 ow=-6.8750
+rq_cs opaque r37: miss fl=0x1
+rq_cs opaque r38: miss fl=0x1
+rq_cs opaque r39: miss fl=0x1
+rq_cs opaque r40: miss fl=0x1
+rq_cs opaque r41: miss fl=0x1
+rq_cs opaque r42: miss fl=0x1
+rq_cs opaque r43: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.2188,0.4688 fl=0x1 ow=-0.6250
+rq_cs opaque r44: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.3125,0.1562 fl=0x1 ow=-0.6250
+rq_cs opaque r45: miss fl=0x1
+rq_cs opaque r46: miss fl=0x1
+rq_cs opaque r47: miss fl=0x1
+rq_cs opaque r48: miss fl=0x1
+rq_cs opaque r49: miss fl=0x1
+rq_cs opaque r50: miss fl=0x1
+rq_cs opaque r51: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.6875,0.0938 fl=0x1 ow=5.6250
+rq_cs opaque r52: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.3125,0.4688 fl=0x1 ow=5.6250
+rq_cs opaque r53: miss fl=0x1
+rq_cs opaque r54: miss fl=0x1
+rq_cs opaque r55: miss fl=0x1
+rq_cs opaque r56: miss fl=0x1
+rq_cs opaque r57: miss fl=0x1
+rq_cs opaque r58: miss fl=0x1
+rq_cs opaque r59: miss fl=0x1
+rq_cs opaque r60: miss fl=0x1
+rq_cs opaque r61: miss fl=0x1
+rq_cs opaque r62: miss fl=0x1
+rq_cs opaque r63: miss fl=0x1
+rq_cs skipaabb r00: miss fl=0x200
+rq_cs skipaabb r01: miss fl=0x200
+rq_cs skipaabb r02: miss fl=0x200
+rq_cs skipaabb r03: miss fl=0x200
+rq_cs skipaabb r04: miss fl=0x200
+rq_cs skipaabb r05: miss fl=0x200
+rq_cs skipaabb r06: miss fl=0x200
+rq_cs skipaabb r07: miss fl=0x200
+rq_cs skipaabb r08: miss fl=0x200
+rq_cs skipaabb r09: miss fl=0x200
+rq_cs skipaabb r10: miss fl=0x200
+rq_cs skipaabb r11: miss fl=0x200
+rq_cs skipaabb r12: miss fl=0x200
+rq_cs skipaabb r13: miss fl=0x200
+rq_cs skipaabb r14: miss fl=0x200
+rq_cs skipaabb r15: miss fl=0x200
+rq_cs skipaabb r16: miss fl=0x200
+rq_cs skipaabb r17: miss fl=0x200
+rq_cs skipaabb r18: miss fl=0x200
+rq_cs skipaabb r19: miss fl=0x200
+rq_cs skipaabb r20: miss fl=0x200
+rq_cs skipaabb r21: miss fl=0x200
+rq_cs skipaabb r22: miss fl=0x200
+rq_cs skipaabb r23: miss fl=0x200
+rq_cs skipaabb r24: miss fl=0x200
+rq_cs skipaabb r25: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2812,0.3125 fl=0x200 ow=-5.2500
+rq_cs skipaabb r26: miss fl=0x200
+rq_cs skipaabb r27: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000 b=0.2812,0.3125 fl=0x200 ow=-3.7500
+rq_cs skipaabb r28: miss fl=0x200
+rq_cs skipaabb r29: miss fl=0x200
+rq_cs skipaabb r30: miss fl=0x200
+rq_cs skipaabb r31: miss fl=0x200
+rq_cs skipaabb r32: miss fl=0x200
+rq_cs skipaabb r33: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.5938,0.3125 fl=0x200 ow=-5.2500
+rq_cs skipaabb r34: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2188,0.6875 fl=0x200 ow=2.2500
+rq_cs skipaabb r35: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.5312,0.1562 fl=0x200 ow=-6.8750
+rq_cs skipaabb r36: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.1562,0.1562 fl=0x200 ow=-6.8750
+rq_cs skipaabb r37: miss fl=0x200
+rq_cs skipaabb r38: miss fl=0x200
+rq_cs skipaabb r39: miss fl=0x200
+rq_cs skipaabb r40: miss fl=0x200
+rq_cs skipaabb r41: miss fl=0x200
+rq_cs skipaabb r42: miss fl=0x200
+rq_cs skipaabb r43: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.2188,0.4688 fl=0x200 ow=-0.6250
+rq_cs skipaabb r44: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.3125,0.1562 fl=0x200 ow=-0.6250
+rq_cs skipaabb r45: miss fl=0x200
+rq_cs skipaabb r46: miss fl=0x200
+rq_cs skipaabb r47: miss fl=0x200
+rq_cs skipaabb r48: miss fl=0x200
+rq_cs skipaabb r49: miss fl=0x200
+rq_cs skipaabb r50: miss fl=0x200
+rq_cs skipaabb r51: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.6875,0.0938 fl=0x200 ow=5.6250
+rq_cs skipaabb r52: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.3125,0.4688 fl=0x200 ow=5.6250
+rq_cs skipaabb r53: miss fl=0x200
+rq_cs skipaabb r54: miss fl=0x200
+rq_cs skipaabb r55: miss fl=0x200
+rq_cs skipaabb r56: miss fl=0x200
+rq_cs skipaabb r57: miss fl=0x200
+rq_cs skipaabb r58: miss fl=0x200
+rq_cs skipaabb r59: miss fl=0x200
+rq_cs skipaabb r60: miss fl=0x200
+rq_cs skipaabb r61: miss fl=0x200
+rq_cs skipaabb r62: miss fl=0x200
+rq_cs skipaabb r63: miss fl=0x200
+rq_cs cullnonopaque r00: miss fl=0x80
+rq_cs cullnonopaque r01: miss fl=0x80
+rq_cs cullnonopaque r02: miss fl=0x80
+rq_cs cullnonopaque r03: miss fl=0x80
+rq_cs cullnonopaque r04: miss fl=0x80
+rq_cs cullnonopaque r05: miss fl=0x80
+rq_cs cullnonopaque r06: miss fl=0x80
+rq_cs cullnonopaque r07: miss fl=0x80
+rq_cs cullnonopaque r08: miss fl=0x80
+rq_cs cullnonopaque r09: miss fl=0x80
+rq_cs cullnonopaque r10: miss fl=0x80
+rq_cs cullnonopaque r11: miss fl=0x80
+rq_cs cullnonopaque r12: miss fl=0x80
+rq_cs cullnonopaque r13: miss fl=0x80
+rq_cs cullnonopaque r14: miss fl=0x80
+rq_cs cullnonopaque r15: miss fl=0x80
+rq_cs cullnonopaque r16: miss fl=0x80
+rq_cs cullnonopaque r17: miss fl=0x80
+rq_cs cullnonopaque r18: miss fl=0x80
+rq_cs cullnonopaque r19: miss fl=0x80
+rq_cs cullnonopaque r20: miss fl=0x80
+rq_cs cullnonopaque r21: miss fl=0x80
+rq_cs cullnonopaque r22: miss fl=0x80
+rq_cs cullnonopaque r23: miss fl=0x80
+rq_cs cullnonopaque r24: miss fl=0x80
+rq_cs cullnonopaque r25: st=1 ii=0 id=0x123 g=1 p=0 ff=1 t=7.0000 b=0.5625,0.1250 fl=0x80 ow=-5.2500
+rq_cs cullnonopaque r26: miss fl=0x80
+rq_cs cullnonopaque r27: st=1 ii=4 id=0x9 g=1 p=0 ff=1 t=17.0000 b=0.5625,0.1250 fl=0x80 ow=-3.7500
+rq_cs cullnonopaque r28: miss fl=0x80
+rq_cs cullnonopaque r29: miss fl=0x80
+rq_cs cullnonopaque r30: miss fl=0x80
+rq_cs cullnonopaque r31: miss fl=0x80
+rq_cs cullnonopaque r32: miss fl=0x80
+rq_cs cullnonopaque r33: miss fl=0x80
+rq_cs cullnonopaque r34: miss fl=0x80
+rq_cs cullnonopaque r35: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.5312,0.1562 fl=0x80 ow=-6.8750
+rq_cs cullnonopaque r36: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.1562,0.1562 fl=0x80 ow=-6.8750
+rq_cs cullnonopaque r37: miss fl=0x80
+rq_cs cullnonopaque r38: miss fl=0x80
+rq_cs cullnonopaque r39: miss fl=0x80
+rq_cs cullnonopaque r40: miss fl=0x80
+rq_cs cullnonopaque r41: miss fl=0x80
+rq_cs cullnonopaque r42: miss fl=0x80
+rq_cs cullnonopaque r43: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000 b=0.2188,0.4688 fl=0x80 ow=-0.6250
+rq_cs cullnonopaque r44: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.3125,0.1562 fl=0x80 ow=-0.6250
+rq_cs cullnonopaque r45: miss fl=0x80
+rq_cs cullnonopaque r46: miss fl=0x80
+rq_cs cullnonopaque r47: miss fl=0x80
+rq_cs cullnonopaque r48: miss fl=0x80
+rq_cs cullnonopaque r49: miss fl=0x80
+rq_cs cullnonopaque r50: miss fl=0x80
+rq_cs cullnonopaque r51: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.6875,0.0938 fl=0x80 ow=5.6250
+rq_cs cullnonopaque r52: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000 b=0.3125,0.4688 fl=0x80 ow=5.6250
+rq_cs cullnonopaque r53: miss fl=0x80
+rq_cs cullnonopaque r54: miss fl=0x80
+rq_cs cullnonopaque r55: miss fl=0x80
+rq_cs cullnonopaque r56: miss fl=0x80
+rq_cs cullnonopaque r57: miss fl=0x80
+rq_cs cullnonopaque r58: miss fl=0x80
+rq_cs cullnonopaque r59: miss fl=0x80
+rq_cs cullnonopaque r60: miss fl=0x80
+rq_cs cullnonopaque r61: miss fl=0x80
+rq_cs cullnonopaque r62: miss fl=0x80
+rq_cs cullnonopaque r63: miss fl=0x80
+rq_cs end: GetDeviceRemovedReason 0x00000000 S_OK
+# rq_ps tier: CheckFeatureSupport(OPTIONS5) 0x00000000 S_OK RaytracingTier=12
+rq_ps scene: build 0x00000000 S_OK
+rq_ps draw: 0x00000000 S_OK
+rq_ps ps r00: miss
+rq_ps ps r01: miss
+rq_ps ps r02: miss
+rq_ps ps r03: miss
+rq_ps ps r04: miss
+rq_ps ps r05: miss
+rq_ps ps r06: miss
+rq_ps ps r07: miss
+rq_ps ps r08: miss
+rq_ps ps r09: miss
+rq_ps ps r10: miss
+rq_ps ps r11: miss
+rq_ps ps r12: miss
+rq_ps ps r13: miss
+rq_ps ps r14: miss
+rq_ps ps r15: miss
+rq_ps ps r16: miss
+rq_ps ps r17: miss
+rq_ps ps r18: miss
+rq_ps ps r19: miss
+rq_ps ps r20: miss
+rq_ps ps r21: miss
+rq_ps ps r22: miss
+rq_ps ps r23: miss
+rq_ps ps r24: miss
+rq_ps ps r25: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000
+rq_ps ps r26: miss
+rq_ps ps r27: st=1 ii=4 id=0x9 g=0 p=0 ff=1 t=15.0000
+rq_ps ps r28: miss
+rq_ps ps r29: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276
+rq_ps ps r30: st=2 ii=1 id=0x456 g=0 p=0 ff=0 t=4.7276
+rq_ps ps r31: miss
+rq_ps ps r32: miss
+rq_ps ps r33: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000
+rq_ps ps r34: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000
+rq_ps ps r35: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000
+rq_ps ps r36: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000
+rq_ps ps r37: miss
+rq_ps ps r38: miss
+rq_ps ps r39: miss
+rq_ps ps r40: miss
+rq_ps ps r41: miss
+rq_ps ps r42: miss
+rq_ps ps r43: st=1 ii=2 id=0x7 g=0 p=0 ff=0 t=5.0000
+rq_ps ps r44: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000
+rq_ps ps r45: miss
+rq_ps ps r46: miss
+rq_ps ps r47: miss
+rq_ps ps r48: miss
+rq_ps ps r49: miss
+rq_ps ps r50: miss
+rq_ps ps r51: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000
+rq_ps ps r52: st=1 ii=2 id=0x7 g=0 p=1 ff=0 t=5.0000
+rq_ps ps r53: miss
+rq_ps ps r54: miss
+rq_ps ps r55: miss
+rq_ps ps r56: miss
+rq_ps ps r57: miss
+rq_ps ps r58: miss
+rq_ps ps r59: miss
+rq_ps ps r60: miss
+rq_ps ps r61: miss
+rq_ps ps r62: miss
+rq_ps ps r63: miss
+rq_ps end: GetDeviceRemovedReason 0x00000000 S_OK
+# copy tier: CheckFeatureSupport(OPTIONS5) 0x00000000 S_OK RaytracingTier=12
+copy scene: build 0x00000000 S_OK
+copy clone: 0x00000000 S_OK rays match 1
+copy compact: 0x00000000 S_OK rays match 1 current==compacted 1
+copy serialize: 0x00000000 S_OK identifier status 0 size==postbuild 1 deserialized<=current 1 pointers 5
+copy serialize: tlas pointers to the triangle bottom level 3
+copy deserialize: 0x00000000 S_OK rays match 1
+copy visualize tri: 0x00000000 S_OK type 1 descs 2 geometry0 type 0 flags 0
+# copy visualize tri: vertex format 6 count 6 index format 0 count 0
+copy visualize box: 0x00000000 S_OK type 1 descs 1 geometry0 type 1 flags 0
+copy visualize box: aabb count>=2 1
+copy end: GetDeviceRemovedReason 0x00000000 S_OK
+# update tier: CheckFeatureSupport(OPTIONS5) 0x00000000 S_OK RaytracingTier=12
+update scene: build 0x00000000 S_OK
+update update: 0x00000000 S_OK
+update updated r00: miss fl=0x0
+update updated r01: miss fl=0x0
+update updated r02: miss fl=0x0
+update updated r03: miss fl=0x0
+update updated r04: miss fl=0x0
+update updated r05: miss fl=0x0
+update updated r06: miss fl=0x0
+update updated r07: miss fl=0x0
+update updated r08: miss fl=0x0
+update updated r09: miss fl=0x0
+update updated r10: miss fl=0x0
+update updated r11: miss fl=0x0
+update updated r12: miss fl=0x0
+update updated r13: miss fl=0x0
+update updated r14: miss fl=0x0
+update updated r15: miss fl=0x0
+update updated r16: miss fl=0x0
+update updated r17: miss fl=0x0
+update updated r18: miss fl=0x0
+update updated r19: miss fl=0x0
+update updated r20: miss fl=0x0
+update updated r21: miss fl=0x0
+update updated r22: miss fl=0x0
+update updated r23: miss fl=0x0
+update updated r24: miss fl=0x0
+update updated r25: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2812,0.0625 fl=0x0 ow=-9.7500
+update updated r26: st=1 ii=0 id=0x123 g=1 p=0 ff=1 t=7.0000 b=0.3125,0.3750 fl=0x0 ow=-2.2500
+update updated r27: miss fl=0x0
+update updated r28: miss fl=0x0
+update updated r29: miss fl=0x0
+update updated r30: miss fl=0x0
+update updated r31: miss fl=0x0
+update updated r32: miss fl=0x0
+update updated r33: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.5938,0.0625 fl=0x0 ow=-9.7500
+update updated r34: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.2188,0.4375 fl=0x0 ow=-2.2500
+update updated r35: miss fl=0x0
+update updated r36: miss fl=0x0
+update updated r37: miss fl=0x0
+update updated r38: miss fl=0x0
+update updated r39: miss fl=0x0
+update updated r40: miss fl=0x0
+update updated r41: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.9062,0.0625 fl=0x0 ow=-9.7500
+update updated r42: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.5312,0.4375 fl=0x0 ow=-2.2500
+update updated r43: st=1 ii=0 id=0x123 g=0 p=0 ff=1 t=5.0000 b=0.1562,0.8125 fl=0x0 ow=5.2500
+update updated r44: miss fl=0x0
+update updated r45: miss fl=0x0
+update updated r46: miss fl=0x0
+update updated r47: miss fl=0x0
+update updated r48: miss fl=0x0
+update updated r49: miss fl=0x0
+update updated r50: miss fl=0x0
+update updated r51: miss fl=0x0
+update updated r52: miss fl=0x0
+update updated r53: miss fl=0x0
+update updated r54: miss fl=0x0
+update updated r55: miss fl=0x0
+update updated r56: miss fl=0x0
+update updated r57: miss fl=0x0
+update updated r58: miss fl=0x0
+update updated r59: miss fl=0x0
+update updated r60: miss fl=0x0
+update updated r61: miss fl=0x0
+update updated r62: miss fl=0x0
+update updated r63: miss fl=0x0
+update end: GetDeviceRemovedReason 0x00000000 S_OK
+# pipeline tier: CheckFeatureSupport(OPTIONS5) 0x00000000 S_OK RaytracingTier=12
+pipeline scene: build 0x00000000 S_OK
+pipeline create: CreateStateObject(RAYTRACING_PIPELINE) 0x00000000 S_OK out=obj
+pipeline create: QueryInterface(ID3D12StateObjectProperties) obj
+pipeline identifier: rg non-null
+pipeline identifier: ms non-null
+pipeline identifier: ms_shadow non-null
+pipeline identifier: hg_tri non-null
+pipeline identifier: hg_sphere non-null
+pipeline identifier: cl non-null
+pipeline identifier: ch_tri NULL
+pipeline identifier: nope NULL
+pipeline identifier: distinct rg/ms 1 hg_tri/hg_sphere 1
+# pipeline stack: rg 32 hg_tri::closesthit 32 hg_tri::anyhit 0 hg_sphere::intersection 0 pipeline 96
+pipeline dispatch: DispatchRays 0x00000000 S_OK
+pipeline ray r00: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r01: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r02: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r03: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r04: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r05: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r06: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r07: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r08: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r09: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r10: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r11: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r12: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r13: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r14: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r15: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r16: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r17: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r18: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r19: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r20: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r21: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r22: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r23: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r24: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r25: x=0x000000fe t=5.0000 z=0x00012310 w=0x000102ff
+pipeline ray r26: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r27: x=0x040000fe t=15.0000 z=0x00000910 w=0x000502ff
+pipeline ray r28: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r29: x=0x50000105 t=4.7276 z=0x00000120 w=0x00000014
+pipeline ray r30: x=0x50000105 t=4.7276 z=0x00000120 w=0x00000014
+pipeline ray r31: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r32: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r33: x=0x000000fe t=5.0000 z=0x00012310 w=0x5af202ff
+pipeline ray r34: x=0x000000fe t=5.0000 z=0x00012310 w=0x5af202ff
+pipeline ray r35: x=0x020000ff t=5.0000 z=0x00000710 w=0x00050302
+pipeline ray r36: x=0x020000ff t=5.0000 z=0x00000710 w=0x00050302
+pipeline ray r37: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r38: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r39: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r40: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r41: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r42: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r43: x=0x020000ff t=5.0000 z=0x00000710 w=0x00030302
+pipeline ray r44: x=0x020001ff t=5.0000 z=0x00000710 w=0x5af20302
+pipeline ray r45: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r46: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r47: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r48: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r49: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r50: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r51: x=0x020001ff t=5.0000 z=0x00000710 w=0x5af20302
+pipeline ray r52: x=0x020001ff t=5.0000 z=0x00000710 w=0x5af20302
+pipeline ray r53: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r54: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r55: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r56: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r57: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r58: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r59: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r60: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r61: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r62: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline ray r63: x=0xaa000031 t=0.0000 z=0x00000077 w=0x00000098
+pipeline create: MaxTraceRecursionDepth 1 0x00000000 S_OK
+pipeline end: GetDeviceRemovedReason 0x00000000 S_OK

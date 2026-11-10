@@ -8,6 +8,7 @@
 
 #include <vitreo/common.hpp>
 #include "ipc/process_registry.hpp"
+#include "ipc/process_handle.hpp"
 #include "core/memory/guest_memory.hpp"
 #include <string_view>
 #include <atomic>
@@ -98,8 +99,8 @@ void write_guest_startup_info(GuestMemory& memory, GuestAddr addr, bool is_64bit
 /// - ExitProcess
 /// - GetStartupInfoW
 ///
-/// The guest process ID is the backing Vitreo host process ID so independently
-/// running guests can discover each other. Thread IDs remain guest-local.
+/// The guest process ID is a Windows client ID (a multiple of 4, shared with
+/// thread IDs). The host pid stays on the process object for liveness.
 class ProcessManager {
 public:
     using ProcessSnapshotProvider =
@@ -126,11 +127,26 @@ public:
     /// GetCurrentProcess — returns pseudo-handle (not a real handle)
     [[nodiscard]] u32 get_current_process() const noexcept;
 
-    /// GetCurrentProcessId — returns the backing Vitreo host PID
+    /// GetCurrentProcessId — Windows client ID of this process
     [[nodiscard]] u32 get_current_process_id() const noexcept;
 
     void set_process_snapshot_provider(ProcessSnapshotProvider provider) {
         m_process_snapshot_provider = std::move(provider);
+    }
+
+    /// The startup identity (bitness, PEB, image base) of a peer process,
+    /// from its Windows image path. OpenProcess publishes it on a handle to a
+    /// process this one did not create, so NtQueryInformationProcess and
+    /// ReadProcessMemory answer as they do for a child.
+    using GuestMetadataResolver =
+        std::function<std::optional<ipc::GuestProcessMetadata>(const std::string&)>;
+    void set_guest_metadata_resolver(GuestMetadataResolver resolver) {
+        m_guest_metadata_resolver = std::move(resolver);
+    }
+    [[nodiscard]] std::optional<ipc::GuestProcessMetadata> resolve_guest_metadata(
+        const std::string& windows_image_path) const {
+        if (!m_guest_metadata_resolver || windows_image_path.empty()) return std::nullopt;
+        return m_guest_metadata_resolver(windows_image_path);
     }
 
     /// Supply the loader's module table so a guest process that ends itself
@@ -245,6 +261,7 @@ private:
     std::string              m_pending_launch_path;
     std::vector<std::string> m_pending_launch_args;
     ProcessSnapshotProvider  m_process_snapshot_provider;
+    GuestMetadataResolver    m_guest_metadata_resolver;
     ModuleManager*           m_module_manager = nullptr;
 };
 

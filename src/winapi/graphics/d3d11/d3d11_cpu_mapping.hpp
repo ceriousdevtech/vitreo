@@ -102,4 +102,77 @@ private:
     usize m_external_size{0};
 };
 
+class D3D11BufferRing;
+class D3D11RingLease;
+
+/// A buffer's CPU bytes (Buffer::shadow): owned storage (the shadow path),
+/// or -- a DYNAMIC or STAGING buffer on the zero-copy ring (WS6) -- a view
+/// of the ring slice the buffer uses now, followed through the lease's host
+/// slot so a DISCARD rename moves every reader with it. The vector-like
+/// surface keeps every reader unchanged; copy assignment copies bytes into
+/// the destination's storage rather than rebinding it.
+class BufferShadow {
+public:
+    BufferShadow() = default;
+    BufferShadow(const BufferShadow& other)
+        : m_owned(other.data(), other.data() + other.size()) {}
+    BufferShadow(BufferShadow&&) noexcept = default;
+    BufferShadow& operator=(BufferShadow&&) noexcept = default;
+    /// Owned: assigns. A view keeps its size: copies when the sizes match,
+    /// else changes nothing (as StagingBytes does for external memory).
+    BufferShadow& operator=(const BufferShadow& other) {
+        if (this == &other) return *this;
+        if (m_view != nullptr) {
+            if (other.size() == m_view_size && m_view_size != 0) {
+                std::memmove(*m_view, other.data(), m_view_size);
+            }
+            return *this;
+        }
+        m_owned.assign(other.data(), other.data() + other.size());
+        return *this;
+    }
+    [[nodiscard]] u8* data() noexcept {
+        return m_view != nullptr ? *m_view : m_owned.data();
+    }
+    [[nodiscard]] const u8* data() const noexcept {
+        return m_view != nullptr ? *m_view : m_owned.data();
+    }
+    [[nodiscard]] usize size() const noexcept {
+        return m_view != nullptr ? m_view_size : m_owned.size();
+    }
+    [[nodiscard]] bool empty() const noexcept { return size() == 0; }
+    [[nodiscard]] u8& operator[](usize index) noexcept {
+        return data()[index];
+    }
+    [[nodiscard]] const u8& operator[](usize index) const noexcept {
+        return data()[index];
+    }
+    [[nodiscard]] u8* begin() noexcept { return data(); }
+    [[nodiscard]] u8* end() noexcept { return data() + size(); }
+    [[nodiscard]] const u8* begin() const noexcept { return data(); }
+    [[nodiscard]] const u8* end() const noexcept { return data() + size(); }
+    /// The bytes as a vector (a copy).
+    [[nodiscard]] operator std::vector<u8>() const {
+        return std::vector<u8>(begin(), end());
+    }
+    /// Owned storage only: a view keeps the slice's size.
+    void resize(usize bytes) {
+        if (m_view == nullptr) m_owned.resize(bytes);
+    }
+    /// Read and write @p bytes bytes at *@p host_slot from now on, wherever
+    /// the slot points at the time. Drops owned bytes.
+    void view(u8* const* host_slot, usize bytes) noexcept {
+        m_owned.clear();
+        m_owned.shrink_to_fit();
+        m_view = host_slot;
+        m_view_size = bytes;
+    }
+    [[nodiscard]] bool is_view() const noexcept { return m_view != nullptr; }
+
+private:
+    std::vector<u8> m_owned;
+    u8* const* m_view{nullptr};
+    usize m_view_size{0};
+};
+
 } // namespace vitreo::winapi

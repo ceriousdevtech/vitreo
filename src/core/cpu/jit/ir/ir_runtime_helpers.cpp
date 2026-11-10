@@ -146,12 +146,9 @@ extern "C" u64 jit_ir_flags_image(CpuState* cpu) {
     return (cpu->flags.rflags & 0x00FCFFFFull) | 0x2ull;
 }
 
-extern "C" void jit_ir_flags_install(CpuState* cpu, u64 value) {
-    // CF,PF,AF,ZF,SF,TF,IF,DF,OF,AC,ID -- the user-writable set. Everything
-    // else keeps its current value.
-    constexpr u64 kUserMask = 0x00244FD5ull;
-    cpu->flags.rflags =
-        ((cpu->flags.rflags & ~kUserMask) | (value & kUserMask)) | 0x2ull;
+extern "C" void jit_ir_flags_install(CpuState* cpu, u64 value, u32 width) {
+    cpu->flags.rflags = popf_flags_image(cpu->flags.rflags, value,
+                                        static_cast<u8>(width), false);
     // A POPF is a full flag write: whatever the block still owed is dead, and
     // the CF/OF overlays a partial writer left behind must not be re-applied.
     cpu->set_flag_op(CpuState::FlagOp::None);

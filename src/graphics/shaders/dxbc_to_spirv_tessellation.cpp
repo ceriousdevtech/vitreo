@@ -10,25 +10,36 @@ namespace vitreo::graphics::dxbc_spirv_detail {
 // Temps (r#) and indexable temps (x#) of the function being emitted, declared
 // at its entry as SPIR-V requires; scanned from @p start_token to the next
 // `ret` (the program, or one hull-shader phase).
-void DxbcTranslator::declare_function_temps(usize start_token) {
+bool DxbcTranslator::declare_function_temps(usize start_token) {
     m_temp_vars.clear();
     m_indexable_temp_vars.clear();
+    if (!declare_readonly_indexable_arrays()) return false;
     const u32 temp_count = scan_temp_count(start_token);
     for (u32 i = 0; i < temp_count; ++i) {
         (void)get_temp_variable(i);
     }
-    for (const auto& [slot, count] : scan_indexable_temps(start_token)) {
+    for (const auto& [slot, declaration] : scan_indexable_temps(start_token)) {
+        if (m_readonly_indexable_words.contains(slot))
+            return fail_invalid("mutable declaration of a readonly global slot");
         const u32 length =
-            m_builder.emit_constant_int(m_type_uint, count);
+            m_builder.emit_constant_int(m_type_uint, declaration.count);
+        // Learn dcl_indexableTemp: ComponentCount is the element width.
+        // Keeping scalar arrays scalar avoids masked float4 read/modify/write
+        // at every dynamic index and quadrupled private storage.
+        const u32 element_type = declaration.components == 1 ? m_type_float
+            : declaration.components == 2 ? m_type_vec2
+            : declaration.components == 3 ? m_type_vec3 : m_type_vec4;
         const u32 array_type =
-            m_builder.emit_type_array(m_type_vec4, length);
+            m_builder.emit_type_array(element_type, length);
         const u32 pointer_type = m_builder.emit_type_pointer(
             temp_storage_class(), array_type);
         const u32 variable = m_builder.emit_variable(
             pointer_type, temp_storage_class());
         m_builder.emit_name(variable, "x" + std::to_string(slot));
-        m_indexable_temp_vars[slot] = variable;
+        m_indexable_temp_vars[slot] = {variable, element_type, declaration.components,
+            m_builder.emit_type_pointer(temp_storage_class(), element_type)};
     }
+    return true;
 }
 
 // One SPIR-V function per hull-shader phase: its own temps, its `ret` a plain
@@ -41,7 +52,7 @@ bool DxbcTranslator::emit_hull_phase_functions() {
         const u32 function = m_builder.emit_function(m_type_void, m_func_type);
         m_builder.emit_name(function, "hs_phase" + std::to_string(i));
         (void)m_builder.emit_label();
-        declare_function_temps(phase.begin);
+        if (!declare_function_temps(phase.begin)) return false;
         if (phase.kind == HsPhaseKind::ControlPoint) {
             m_output_vars = m_hs_cp_staging_vars;
             m_output_value_types = m_hs_cp_staging_types;
@@ -441,12 +452,9 @@ bool DxbcTranslator::emit_domain_compute_prologue() {
 
 // Every output register of this domain point into its record, ascending
 // register order -- the layout of a vertex capture, which the pass-through,
-// stream output and a geometry shader read.
+// stream output and a geometry shader read. Runs at every return of main
+// (emit_return_epilogue), so a point that returns early is still recorded.
 bool DxbcTranslator::emit_domain_compute_epilogue() {
-    if (m_emitted_early_return) {
-        return fail("domain emulation: the shader returns early, so its "
-                    "record would not be written for every point");
-    }
     const u32 member = m_const_u0;
     const u32 vec4_ptr =
         m_builder.emit_type_pointer(SpvStorageClass::StorageBuffer, m_type_vec4);

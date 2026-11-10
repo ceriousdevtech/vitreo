@@ -162,6 +162,7 @@ TEST_F(User32ExtThunkTest, MonitorFromPointDecodesPointByValueAndFlags) {
 TEST_F(User32ExtThunkTest, DisplayModeSendsTopLevelAndPostsChildBeforePaint) {
     WindowData data{};
     data.parent = HWND_DESKTOP;
+    data.style = WS::VISIBLE;
     data.visible = true;
     data.wndproc = 0x401000;
     const HWND hwnd = hwnd_mgr_.create(data);
@@ -180,9 +181,16 @@ TEST_F(User32ExtThunkTest, DisplayModeSendsTopLevelAndPostsChildBeforePaint) {
 
     MessageSendManager message_send(hwnd_mgr_, queue_, bridge_);
     std::vector<HWND> sent_to;
+    std::vector<u32> placement;
     message_send.set_wndproc_callback(
         [&](HWND target, u32 message, u64 wparam, u64 lparam, u64) {
-            EXPECT_EQ(message, 0x007Eu);
+            if (message != 0x007Eu) {
+                // The target window is then placed over the mode with the
+                // SetWindowPos sequence.
+                EXPECT_EQ(target, hwnd);
+                placement.push_back(message);
+                return 0u;
+            }
             EXPECT_EQ(wparam, 8u);
             EXPECT_EQ(lparam, 0x01E00280u);
             sent_to.push_back(target);
@@ -198,56 +206,81 @@ TEST_F(User32ExtThunkTest, DisplayModeSendsTopLevelAndPostsChildBeforePaint) {
     EXPECT_TRUE(std::is_permutation(sent_to.begin(), sent_to.end(),
                                     expected_tops.begin(), expected_tops.end()));
 
+    // WM_SIZE comes from DefWindowProc(WM_WINDOWPOSCHANGED), which this
+    // test procedure does not call; nothing is posted in its place.
+    EXPECT_EQ(placement, (std::vector<u32>{WM::WINDOWPOSCHANGING, 0x0083u /* WM_NCCALCSIZE */,
+                                           0x0085u /* WM_NCPAINT */,
+                                           WM::WINDOWPOSCHANGED}));
     MSG msg{};
     ASSERT_TRUE(queue_.get(msg));
     EXPECT_EQ(msg.hwnd, child);
     EXPECT_EQ(msg.message, 0x007Eu); // child delivery is posted
-    ASSERT_TRUE(queue_.get(msg));
-    EXPECT_EQ(msg.hwnd, hwnd);
-    EXPECT_EQ(msg.message, WM::SIZE);
     EXPECT_TRUE(queue_.empty());
     EXPECT_TRUE(painting.needs_paint(hwnd));
 }
 
-TEST_F(User32ExtThunkTest, VirtualFullscreenWindowMovesKeepDesktopOrigin) {
-    WindowData data{};
-    data.parent = HWND_DESKTOP;
-    data.rect = {100, 100, 740, 580};
-    data.client_rect = {0, 0, 640, 480};
-    const HWND hwnd = hwnd_mgr_.create(data);
-    mgr_->apply_virtual_display_mode(hwnd, 640, 480, 32);
-
-    cpu_.mode = cpu::CpuMode::Long;
-    cpu_.gpr.rcx = hwnd;
-    cpu_.gpr.rdx = 0;
-    cpu_.gpr.r8 = 100;
-    cpu_.gpr.r9 = 100;
-    set_fastcall_arg4_6(640, 480, 0x0014); // SWP_NOZORDER | SWP_NOACTIVATE
-    Marshaler marshaler(memory_);
-    marshaler.attach_cpu(cpu_);
-    find_export("SetWindowPos").handler(marshaler);
-
-    ASSERT_EQ(cpu_.gpr.rax, 1u);
-    const WindowData* fullscreen = hwnd_mgr_.find(hwnd);
-    ASSERT_NE(fullscreen, nullptr);
-    EXPECT_EQ(fullscreen->rect.left, 0);
-    EXPECT_EQ(fullscreen->rect.top, 0);
-    EXPECT_EQ(fullscreen->rect.width(), 640);
-    EXPECT_EQ(fullscreen->rect.height(), 480);
-
-    cpu_.gpr.rcx = hwnd;
-    cpu_.gpr.rdx = 100;
-    cpu_.gpr.r8 = 100;
-    cpu_.gpr.r9 = 640;
-    (void)memory_.write_u64(cpu_.gpr.rsp + 0x28, 480);
-    (void)memory_.write_u64(cpu_.gpr.rsp + 0x30, 1);
-    find_export("MoveWindow").handler(marshaler);
-
-    ASSERT_EQ(cpu_.gpr.rax, 1u);
-    EXPECT_EQ(fullscreen->rect.left, 0);
-    EXPECT_EQ(fullscreen->rect.top, 0);
-    EXPECT_EQ(fullscreen->rect.width(), 640);
-    EXPECT_EQ(fullscreen->rect.height(), 480);
+TEST_F(User32ExtThunkTest, VirtualFullscreenPlacementKeepsWindowAndDisplayIndependent) {
+    // Learn SetWindowPos: cx/cy and X/Y apply unless NOSIZE/NOMOVE.
+    // Windows x86/x64: dxgi_exclusive_fullscreen_probe window-resize,
+    // "guest approved larger window": HWND grows/moves while the display
+    // and swap-chain buffers remain in the lower mode.
+    for (const bool wide : {false, true}) {
+        SCOPED_TRACE(wide ? "x64" : "x86");
+        mgr_->set_is_64bit(wide);
+        cpu_.mode = wide ? cpu::CpuMode::Long : cpu::CpuMode::Protected;
+        WindowData data{};
+        data.parent = HWND_DESKTOP;
+        data.style = WS::POPUP | WS::VISIBLE;
+        data.rect = {0, 0, 640, 480};
+        data.client_rect = data.rect;
+        const HWND hwnd = hwnd_mgr_.create(data);
+        mgr_->apply_virtual_display_mode(hwnd, 640, 480, 32);
+        auto invoke = [&](const char* name, std::initializer_list<u32> args) {
+            if (wide) {
+                const std::vector<u32> values(args);
+                cpu_.gpr.rcx = values[0];
+                cpu_.gpr.rdx = values[1];
+                cpu_.gpr.r8 = values[2];
+                cpu_.gpr.r9 = values[3];
+                for (usize i = 4; i < values.size(); ++i)
+                    (void)memory_.write_u64(cpu_.gpr.rsp + 0x28 + (i - 4) * 8, values[i]);
+            } else {
+                usize i = 1;
+                for (const auto value : args)
+                    (void)memory_.write_u32(cpu_.gpr.rsp + 4 * i++, value);
+            }
+            Marshaler marshaler(memory_);
+            marshaler.attach_cpu(cpu_);
+            find_export(name).handler(marshaler);
+            EXPECT_EQ(cpu_.gpr.rax, 1u);
+        };
+        auto expect_rect = [&](i32 x, i32 y, i32 w, i32 h) {
+            const WindowData* win = hwnd_mgr_.find(hwnd);
+            ASSERT_NE(win, nullptr);
+            EXPECT_EQ(win->rect.left, x);
+            EXPECT_EQ(win->rect.top, y);
+            EXPECT_EQ(win->rect.width(), w);
+            EXPECT_EQ(win->rect.height(), h);
+            EXPECT_EQ(win->client_rect.width(), w);
+            EXPECT_EQ(win->client_rect.height(), h);
+            ASSERT_TRUE(mgr_->virtual_display_size().has_value());
+            EXPECT_EQ(*mgr_->virtual_display_size(), (std::pair<u32, u32>{640, 480}));
+        };
+        invoke("SetWindowPos", {hwnd, 0, 13, 17, 1280, 720, 0x0014});
+        expect_rect(13, 17, 1280, 720);
+        invoke("SetWindowPos", {hwnd, 0, 23, 29, 1, 1, 0x0015}); // NOSIZE
+        expect_rect(23, 29, 1280, 720);
+        invoke("SetWindowPos", {hwnd, 0, 1, 1, 800, 600, 0x0016}); // NOMOVE
+        expect_rect(23, 29, 800, 600);
+        invoke("MoveWindow", {hwnd, 31, 37, 1024, 768, 1});
+        expect_rect(31, 37, 1024, 768);
+        // A physical Cocoa fullscreen resize is presentation geometry, not
+        // another guest SetWindowPos or display-mode request.
+        EXPECT_TRUE(bridge_.on_native_resize(hwnd, 1920, 1080));
+        mgr_->drain_pending_native_resizes(hwnd_mgr_.find(hwnd)->owner_thread_id);
+        expect_rect(31, 37, 1024, 768);
+        mgr_->apply_virtual_display_mode(NULL_HWND, 0, 0, 0);
+    }
 }
 
 // DXGI exclusive full-screen with DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH uses
@@ -284,8 +317,13 @@ TEST_F(User32ExtThunkTest, ExclusiveDisplayModeSwitchIsPublishedAndRestored) {
                                               1280, 720, true));
     ASSERT_TRUE(mgr_->virtual_display_size().has_value());
     EXPECT_EQ(*mgr_->virtual_display_size(), (std::pair<u32, u32>{1280, 720}));
-    EXPECT_EQ(sent, (std::vector<std::tuple<HWND, u32, u64, u64>>{
-                        {hwnd, 0x007Eu, 32u, (720u << 16) | 1280u}}));
+    ASSERT_GE(sent.size(), 3u);
+    EXPECT_EQ(sent.front(), (std::tuple<HWND, u32, u64, u64>{
+                                hwnd, 0x007Eu, 32u, (720u << 16) | 1280u}));
+    // Then the SetWindowPos sequence over the mode; its WM_SIZE comes from
+    // DefWindowProc, which this procedure does not call, so none is posted.
+    EXPECT_EQ(std::get<1>(sent[1]), WM::WINDOWPOSCHANGING);
+    EXPECT_EQ(std::get<1>(sent.back()), WM::WINDOWPOSCHANGED);
     const WindowData* win = hwnd_mgr_.find(hwnd);
     ASSERT_NE(win, nullptr);
     EXPECT_EQ(win->rect.left, 0);
@@ -293,10 +331,6 @@ TEST_F(User32ExtThunkTest, ExclusiveDisplayModeSwitchIsPublishedAndRestored) {
     EXPECT_EQ(win->rect.width(), 1280);
     EXPECT_EQ(win->client_rect.height(), 720);
     MSG msg{};
-    ASSERT_TRUE(queue_.get(msg));
-    EXPECT_EQ(msg.hwnd, hwnd);
-    EXPECT_EQ(msg.message, WM::SIZE);
-    EXPECT_EQ(msg.lParam, (720u << 16) | 1280u);
 
     cpu_.mode = cpu::CpuMode::Long;
     Marshaler marshaler(memory_);
@@ -355,10 +389,8 @@ TEST_F(User32ExtThunkTest, ExclusiveDisplayWithoutModeSwitchOnlyCoversOutput) {
     ASSERT_NE(win, nullptr);
     EXPECT_EQ(win->rect.width(), 1600);
     EXPECT_EQ(win->client_rect.height(), 900);
-    MSG msg{};
-    ASSERT_TRUE(queue_.get(msg));
-    EXPECT_EQ(msg.message, WM::SIZE);
-    EXPECT_EQ(msg.lParam, (900u << 16) | 1600u);
+    // Placed with the SetWindowPos sequence (WM_SIZE via DefWindowProc).
+    EXPECT_NE(std::find(sent.begin(), sent.end(), WM::WINDOWPOSCHANGED), sent.end());
 
     sent.clear();
     mgr_->leave_exclusive_display(hwnd, false,

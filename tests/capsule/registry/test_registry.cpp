@@ -7,9 +7,12 @@
 #include <capsule/registry/hive.hpp>
 
 #include <algorithm>
+#include <chrono>
+#include <cstdio>
 #include <cwctype>
 #include <filesystem>
 #include <fstream>
+#include <iterator>
 #include <string>
 #include <unistd.h>
 #include <vector>
@@ -715,6 +718,162 @@ TEST(RegistryLiveJournalTest, ReopeningExistingKeyDoesNotAppendMutation) {
     std::filesystem::remove_all(directory, error);
 }
 
+TEST(RegistryLiveJournalTest, SnapshotPrefixPreservesMixedAndMissingHives) {
+    for (const int scenario : {0, 1, 2, 3}) {
+        SCOPED_TRACE(scenario);
+        const auto directory = std::filesystem::temp_directory_path() /
+            ("vitreo-registry-prefix-" + std::to_string(::getpid()) +
+             "-" + std::to_string(scenario));
+        std::error_code error;
+        std::filesystem::remove_all(directory, error);
+        Registry writer;
+        writer.load(directory);
+        auto user = writer.open_key(HKEY_CURRENT_USER, L"Software\\Prefix", true);
+        auto machine = writer.open_key(HKEY_LOCAL_MACHINE, L"Software\\Prefix", true);
+        ASSERT_TRUE(user.is_ok());
+        ASSERT_TRUE(machine.is_ok());
+        ASSERT_TRUE(writer.set_value(user.value(), L"Value",
+            RegValue{RegType::Dword, u32{1}}).is_ok());
+        ASSERT_TRUE(writer.set_value(machine.value(), L"Value",
+            RegValue{RegType::Dword, u32{2}}).is_ok());
+        writer.save(directory);
+        std::ifstream old_file(directory / "HKCU.reg");
+        std::string old_user{std::istreambuf_iterator<char>(old_file), {}};
+        old_file.close();
+        ASSERT_TRUE(writer.set_value(user.value(), L"Value",
+            RegValue{RegType::Dword, u32{3}}).is_ok());
+        ASSERT_TRUE(writer.set_value(machine.value(), L"Value",
+            RegValue{RegType::Dword, u32{4}}).is_ok());
+        writer.save(directory);
+        if (scenario == 1 || scenario == 3) {
+            if (scenario == 3) {
+                const auto begin = old_user.find("# Vitreo Journal Offset:");
+                ASSERT_NE(begin, std::string::npos);
+                old_user.erase(begin, old_user.find('\n', begin) - begin + 1);
+            }
+            std::ofstream out(directory / "HKCU.reg");
+            out << old_user;
+        } else if (scenario == 2) {
+            ASSERT_TRUE(std::filesystem::remove(directory / "HKCU.reg"));
+        }
+        Registry reader;
+        reader.load(directory);
+        auto loaded_user = reader.open_key(
+            HKEY_CURRENT_USER, L"Software\\Prefix", false);
+        auto loaded_machine = reader.open_key(
+            HKEY_LOCAL_MACHINE, L"Software\\Prefix", false);
+        ASSERT_TRUE(loaded_user.is_ok());
+        ASSERT_TRUE(loaded_machine.is_ok());
+        auto user_value = reader.query_value(loaded_user.value(), L"Value");
+        auto machine_value = reader.query_value(loaded_machine.value(), L"Value");
+        ASSERT_TRUE(user_value.is_ok());
+        ASSERT_TRUE(machine_value.is_ok());
+        EXPECT_EQ(std::get<u32>(user_value.value().data), 3u);
+        EXPECT_EQ(std::get<u32>(machine_value.value().data), 4u);
+        std::filesystem::remove_all(directory, error);
+    }
+}
+
+TEST(RegistryLiveJournalTest, SnapshotPrefixRetainsIncompleteTailUntilCommitted) {
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("vitreo-registry-prefix-tail-" + std::to_string(::getpid()));
+    std::error_code error;
+    std::filesystem::remove_all(directory, error);
+    Registry writer;
+    writer.load(directory);
+    auto key = writer.open_key(HKEY_CURRENT_USER, L"Software\\Prefix", true);
+    ASSERT_TRUE(key.is_ok());
+    ASSERT_TRUE(writer.set_value(key.value(), L"Value",
+        RegValue{RegType::Dword, u32{1}}).is_ok());
+    writer.save(directory);
+    ASSERT_TRUE(writer.set_value(key.value(), L"Value",
+        RegValue{RegType::Dword, u32{2}}).is_ok());
+    const auto journal = directory / "live.reglog";
+    std::filesystem::resize_file(journal, std::filesystem::file_size(journal) - 1);
+    Registry reader;
+    reader.load(directory);
+    auto loaded = reader.open_key(HKEY_CURRENT_USER, L"Software\\Prefix", false);
+    ASSERT_TRUE(loaded.is_ok());
+    auto value = reader.query_value(loaded.value(), L"Value");
+    ASSERT_TRUE(value.is_ok());
+    EXPECT_EQ(std::get<u32>(value.value().data), 1u);
+    {
+        std::ofstream out(journal, std::ios::app);
+        out << '\n';
+    }
+    value = reader.query_value(loaded.value(), L"Value");
+    ASSERT_TRUE(value.is_ok());
+    EXPECT_EQ(std::get<u32>(value.value().data), 2u);
+    std::filesystem::remove_all(directory, error);
+}
+
+TEST(RegistryLiveJournalTest, NonBoundarySnapshotOffsetsKeepCrossingRecord) {
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("vitreo-registry-prefix-boundary-" + std::to_string(::getpid()));
+    std::error_code error;
+    std::filesystem::remove_all(directory, error);
+    Registry writer;
+    writer.load(directory);
+    auto key = writer.open_key(HKEY_CURRENT_USER, L"Software\\Prefix", true);
+    ASSERT_TRUE(key.is_ok());
+    ASSERT_TRUE(writer.set_value(key.value(), L"Value",
+        RegValue{RegType::Dword, u32{9}}).is_ok());
+    const auto size = std::filesystem::file_size(directory / "live.reglog");
+    for (const auto* hive : {"HKCR.reg", "HKCU.reg", "HKLM.reg", "HKU.reg"}) {
+        std::ofstream out(directory / hive);
+        out << "# Vitreo Registry Hive: " << hive << '\n'
+            << "# Vitreo Journal Offset: " << size - 1 << "\n\n";
+    }
+    Registry reader;
+    reader.load(directory);
+    auto loaded = reader.open_key(HKEY_CURRENT_USER, L"Software\\Prefix", false);
+    ASSERT_TRUE(loaded.is_ok());
+    auto value = reader.query_value(loaded.value(), L"Value");
+    ASSERT_TRUE(value.is_ok());
+    EXPECT_EQ(std::get<u32>(value.value().data), 9u);
+    std::filesystem::remove_all(directory, error);
+}
+
+TEST(RegistryLiveJournalTest, DISABLED_SnapshotPrefixLoadBenchmark) {
+    const auto directory = std::filesystem::temp_directory_path() /
+        ("vitreo-registry-prefix-bench-" + std::to_string(::getpid()));
+    std::error_code error;
+    std::filesystem::remove_all(directory, error);
+    Registry writer;
+    writer.load(directory);
+    auto key = writer.open_key(HKEY_CURRENT_USER, L"Software\\Prefix", true);
+    ASSERT_TRUE(key.is_ok());
+    ASSERT_TRUE(writer.set_value(key.value(), L"Value",
+        RegValue{RegType::Dword, u32{7}}).is_ok());
+    const auto journal = directory / "live.reglog";
+    std::ifstream input(journal);
+    const std::string seed{std::istreambuf_iterator<char>(input), {}};
+    input.close();
+    ASSERT_FALSE(seed.empty());
+    std::string chunk;
+    while (chunk.size() < 1024 * 1024) chunk += seed;
+    {
+        std::ofstream out(journal, std::ios::trunc);
+        for (int i = 0; i < 32; ++i) out << chunk;
+        ASSERT_TRUE(out.good());
+    }
+    writer.save(directory);
+    const auto bytes = std::filesystem::file_size(journal);
+    const auto start = std::chrono::steady_clock::now();
+    Registry reader;
+    reader.load(directory);
+    const double ns = std::chrono::duration<double, std::nano>(
+        std::chrono::steady_clock::now() - start).count();
+    auto loaded = reader.open_key(HKEY_CURRENT_USER, L"Software\\Prefix", false);
+    ASSERT_TRUE(loaded.is_ok());
+    auto value = reader.query_value(loaded.value(), L"Value");
+    ASSERT_TRUE(value.is_ok());
+    EXPECT_EQ(std::get<u32>(value.value().data), 7u);
+    std::printf("registry-prefix-load bytes=%llu ns=%.0f ns_per_byte=%.6f\n",
+                static_cast<unsigned long long>(bytes), ns, ns / bytes);
+    std::filesystem::remove_all(directory, error);
+}
+
 // A version subkey whose name is numeric with a dot ("1.0") is an ordinary key
 // name, but it is also the shape SimCity 4 reads its install language from
 // (HKLM\Software\Maxis\SimCity 4\1.0\Language). Loading it back has to survive
@@ -1022,4 +1181,59 @@ TEST(RegistryWow64LiveJournalTest, ViewsShareOneStoreAcrossBitness) {
     ASSERT_TRUE(peer_clsid.is_ok());
     EXPECT_EQ(std::get<std::wstring>(native.query_value(peer_clsid.value(), L"").value().data), L"x86.dll");
     std::filesystem::remove_all(directory, error);
+}
+
+
+// RegRenameKey oracle: subtree values/identity survive, old names disappear,
+// collisions (including identical/case-only) leave both subtrees untouched.
+TEST(RegistryRenameTest, PreservesLiveKeyAndChildHandlesAcrossRenameAndPeerReplay) {
+    const auto directory=std::filesystem::temp_directory_path()/
+        ("vitreo-reg-rename-"+std::to_string(::getpid()));
+    std::filesystem::remove_all(directory);
+    Registry writer,peer;
+    writer.load(directory);peer.load(directory);
+    const auto key=writer.open_key(HKEY_CURRENT_USER,L"Software\\RenameFixture\\Stage",true);
+    ASSERT_TRUE(key.is_ok());
+    const auto child=writer.open_key(key.value(),L"Child",true);
+    ASSERT_TRUE(child.is_ok());
+    ASSERT_TRUE(writer.set_value(key.value(),L"Value",RegValue{RegType::Dword,u32{7}}).is_ok());
+    ASSERT_TRUE(writer.set_value(child.value(),L"Value",RegValue{RegType::Dword,u32{9}}).is_ok());
+    const auto peer_child=peer.open_key(HKEY_CURRENT_USER,L"Software\\RenameFixture\\Stage\\Child",false);
+    ASSERT_TRUE(peer_child.is_ok());
+    ASSERT_TRUE(writer.rename_key(key.value(),L"",L"Committed").is_ok());
+    EXPECT_TRUE(writer.open_key(HKEY_CURRENT_USER,L"Software\\RenameFixture\\Stage",false).is_err());
+    EXPECT_EQ(std::get<u32>(writer.query_value(child.value(),L"Value").value().data),9u);
+    EXPECT_EQ(writer.canonical_key_path(child.value()),L"hkey_current_user\\software\\renamefixture\\committed\\child");
+    // A peer loaded before rename keeps its own open child handle valid.
+    EXPECT_EQ(std::get<u32>(peer.query_value(peer_child.value(),L"Value").value().data),9u);
+    EXPECT_EQ(peer.canonical_key_path(peer_child.value()),L"hkey_current_user\\software\\renamefixture\\committed\\child");
+    ASSERT_TRUE(peer.set_value(peer_child.value(),L"After",RegValue{RegType::Dword,u32{11}}).is_ok());
+    EXPECT_EQ(std::get<u32>(writer.query_value(child.value(),L"After").value().data),11u);
+    EXPECT_EQ(writer.rename_key(key.value(),L"",L"Committed").error(),Error::AccessDenied);
+    EXPECT_EQ(writer.rename_key(key.value(),L"",L"committed").error(),Error::AccessDenied);
+    writer.save(directory);
+    Registry loaded;loaded.load(directory);
+    EXPECT_TRUE(loaded.open_key(HKEY_CURRENT_USER,L"Software\\RenameFixture\\Stage",false).is_err());
+    const auto reopened=loaded.open_key(HKEY_CURRENT_USER,L"Software\\RenameFixture\\Committed\\Child",false);
+    ASSERT_TRUE(reopened.is_ok());
+    EXPECT_EQ(std::get<u32>(loaded.query_value(reopened.value(),L"After").value().data),11u);
+    std::filesystem::remove_all(directory);
+}
+
+TEST(RegistryRenameTest, ClassesBackingRenameIsUnsupportedRegardlessOfLocalAliases) {
+    for (const bool alias_open : {false,true}) {
+        Registry registry;
+        const auto key = registry.open_key(HKEY_CURRENT_USER,
+            L"Software\\Classes\\RenameContract",true);
+        ASSERT_TRUE(key.is_ok());
+        if (alias_open) {
+            const auto alias = registry.open_key(HKEY_CLASSES_ROOT,L"RenameContract",false);
+            ASSERT_TRUE(alias.is_ok());
+        }
+        EXPECT_EQ(registry.rename_key(key.value(),L"",L"Moved").error(),Error::NotSupported);
+        EXPECT_TRUE(registry.open_key(HKEY_CURRENT_USER,
+            L"Software\\Classes\\RenameContract",false).is_ok());
+        EXPECT_TRUE(registry.open_key(HKEY_CURRENT_USER,
+            L"Software\\Classes\\Moved",false).is_err());
+    }
 }

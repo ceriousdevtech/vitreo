@@ -21,6 +21,7 @@
 #include <core/memory/guest_memory.hpp>
 #include <core/cpu/state/cpu_state.hpp>
 #include <capsule/vfs/vfs.hpp>
+#include <ipc/hwnd_registry.hpp>
 #include <ipc/process_handle.hpp>
 #include <winapi/kernel32/memory/remote_memory.hpp>
 #include <algorithm>
@@ -101,7 +102,13 @@ TEST_F(ProcessManagerTest, CurrentProcessPseudoMatchesNegativeOne) {
 // =============================================================================
 
 TEST_F(ProcessManagerTest, GetCurrentProcessIdReturnsHostProcessIdentity) {
-    EXPECT_EQ(pm.get_current_process_id(), static_cast<u32>(::getpid()));
+    const u32 id = pm.get_current_process_id();
+    EXPECT_NE(id, 0u);
+    EXPECT_EQ(id % 4u, 0u);
+    EXPECT_EQ(id, ipc::guest_process_id());
+    if ((static_cast<u32>(::getpid()) & 3u) != 0u) {
+        EXPECT_NE(id, static_cast<u32>(::getpid()));
+    }
 }
 
 TEST_F(ProcessManagerTest, GetCurrentProcessIdReturnsSameValue) {
@@ -716,7 +723,8 @@ TEST_F(ProcessThunkTest, MakeProcessExportsOrdinalsUnique) {
 TEST(ProcessHandleTest, OpenProcessAcceptsRegisteredPeerWithoutSharedIpc) {
     constexpr GuestAddr memory_base = 0x1000;
     constexpr GuestAddr stack_base = 0x8000;
-    constexpr u32 peer_pid = 424242;
+    constexpr u32 peer_client = 424244;
+    constexpr u32 peer_host = 424242;
 
     GuestMemory memory;
     ASSERT_TRUE(memory.map_region(memory_base, 0x1000,
@@ -731,8 +739,8 @@ TEST(ProcessHandleTest, OpenProcessAcceptsRegisteredPeerWithoutSharedIpc) {
     ProcessManager process_manager;
     process_manager.set_process_snapshot_provider([=] {
         return std::vector<ipc::ProcessSnapshotEntry>{
-            {peer_pid, 1, "Battle.net-Setup.exe",
-             "C:\\Vitreo\\Apps\\Win-exe\\Battle.net-Setup.exe"},
+            {peer_client, 4, "Battle.net-Setup.exe",
+             "C:\\Vitreo\\Apps\\Win-exe\\Battle.net-Setup.exe", 0, peer_host},
         };
     });
     HandleTable handles;
@@ -744,7 +752,7 @@ TEST(ProcessHandleTest, OpenProcessAcceptsRegisteredPeerWithoutSharedIpc) {
     ASSERT_NE(open_process, exports.entries.end());
     ASSERT_TRUE(memory.write_u32(cpu.sp() + 4, 0x1000).is_ok());
     ASSERT_TRUE(memory.write_u32(cpu.sp() + 8, 0).is_ok());
-    ASSERT_TRUE(memory.write_u32(cpu.sp() + 12, peer_pid).is_ok());
+    ASSERT_TRUE(memory.write_u32(cpu.sp() + 12, peer_client).is_ok());
 
     open_process->handler(marshaler);
 
@@ -754,7 +762,8 @@ TEST(ProcessHandleTest, OpenProcessAcceptsRegisteredPeerWithoutSharedIpc) {
     auto* process = static_cast<ipc::ProcessObject*>(
         handles.get(handle, HandleType::Process));
     ASSERT_NE(process, nullptr);
-    EXPECT_EQ(process->pid, static_cast<pid_t>(peer_pid));
+    EXPECT_EQ(process->pid, static_cast<pid_t>(peer_host));
+    EXPECT_EQ(process->client_id.load(), peer_client);
 }
 
 TEST(ProcessHandleTest, OpenProcessReopensTrackedExitedChild) {
@@ -772,6 +781,8 @@ TEST(ProcessHandleTest, OpenProcessReopensTrackedExitedChild) {
     }
     ASSERT_TRUE(tracked->exited.load());
     ::waitpid(child, nullptr, 0);
+    constexpr u32 child_client = 0x120;
+    tracked->client_id.store(child_client);
 
     constexpr GuestAddr stack_base = 0x8000;
     GuestMemory memory;
@@ -798,7 +809,7 @@ TEST(ProcessHandleTest, OpenProcessReopensTrackedExitedChild) {
     ASSERT_TRUE(memory.write_u32(cpu.sp() + 4, 0x1000).is_ok());
     ASSERT_TRUE(memory.write_u32(cpu.sp() + 8, 0).is_ok());
     ASSERT_TRUE(
-        memory.write_u32(cpu.sp() + 12, static_cast<u32>(child)).is_ok());
+        memory.write_u32(cpu.sp() + 12, child_client).is_ok());
 
     open_process->handler(marshaler);
 
@@ -1597,7 +1608,8 @@ TEST(GetProcessIdTest, TrackedProcessHandleReportsRealPid) {
     set_last_error(0);
     kernel32.impl_GetProcessId(marshaler);
 
-    EXPECT_EQ(cpu.gpr.rax, static_cast<u64>(::getpid()));
+    EXPECT_EQ(cpu.gpr.rax, ipc::guest_process_id());
+    EXPECT_EQ(static_cast<u32>(cpu.gpr.rax) % 4u, 0u);
     EXPECT_EQ(get_last_error(), 0u);
 }
 

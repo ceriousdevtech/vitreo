@@ -1,0 +1,38 @@
+# Measured SM5 tiled-resources opcode numbers -- fxc 10.1 (Windows SDK
+# 10.0.26100) on winoracle, 2026-11-03.
+#
+# Reproduce:
+#   scp -4 tools/oracle_probe/dxbc_tiled_opcode_probe.hlsl winoracle:tprobe.hlsl
+#   ssh -4 winoracle '& "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\fxc.exe" \
+#       /nologo /T ps_5_0 /E main /Od /Fc tprobe.asm /Fo tprobe.cso tprobe.hlsl'
+#   scp -4 winoracle:tprobe.asm winoracle:tprobe.cso .
+#   python3 tools/oracle_probe/dxbc_tiled_operand_decode.py tprobe.cso
+#
+# The /Fc listing and the decode pair one-to-one (178 instructions).
+#
+# Encoding (every _s opcode): operand 0 is the destination, operand 1 the
+# status destination -- a temp with a one-component mask (.x), or a NULL
+# operand (type 13) when the HLSL call passes no status -- then the base
+# instruction's operands. The *_cl_s forms end with the MinLOD clamp, a
+# scalar (select-1 source or immediate). fxc never emits a separate `_cl`
+# opcode: Sample(s, uv, off, clamp) is sample_cl_s with a NULL status, and
+# Sample(s, uv, off, 0.0f, st) is sample_cl_s with clamp l(0.0).
+# check_access_fully_mapped: dest (.x mask), src (select-1).
+#
+# mnemonic                    opcode
+gather4_s                       219
+gather4_c_s                     220
+gather4_po_s                    221
+gather4_po_c_s                  222
+ld_s                            223   (texture2d and buffer)
+ldms_s                          224
+ld_uav_typed_s                  225   (texture2d and buffer UAVs)
+ld_raw_s                        226   (SRV and UAV)
+ld_structured_s                 227   (SRV and UAV)
+sample_l_s                      228
+sample_c_lz_s                   229
+sample_cl_s                     230   (texture2d, 2darray, cube, 3d)
+sample_b_cl_s                   231
+sample_d_cl_s                   232
+sample_c_cl_s                   233
+check_access_fully_mapped       234

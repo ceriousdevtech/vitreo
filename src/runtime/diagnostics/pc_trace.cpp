@@ -425,6 +425,18 @@ static void pctrace_format(std::FILE* out, u64 seq, const PcTraceEntry& e) {
 
 void pctrace_set_module_manager(winapi::ModuleManager* modules) noexcept {
     g_pctrace_modules.store(modules, std::memory_order_release);
+    // VITREO_WATCH_DUMP_RING=1: dump the PC-trace ring at the first watched
+    // write made by guest code (not a loader/host bulk copy).
+    static const bool dump_on_watch = pctrace_env_true("VITREO_WATCH_DUMP_RING");
+    if (dump_on_watch) {
+        g_mem_watch_hit_hook.store(
+            [](const char* who) {
+                if (who != nullptr && std::strcmp(who, "interp.bytes") == 0) return;
+                static std::atomic<bool> dumped{false};
+                if (!dumped.exchange(true)) vitreo_pctrace_dump_ring("watched-write");
+            },
+            std::memory_order_release);
+    }
 }
 
 bool pctrace_active(u64 rip) {
@@ -488,24 +500,113 @@ const std::vector<u64>& pc_watch_addrs() {
     return addrs;
 }
 
+/// VITREO_PC_WATCH_MODULE=name: the VITREO_PC_WATCH_ADDR values are RVAs in
+/// that module, so a process that never loads it pays nothing (an absolute
+/// address is usually some other DLL's code in the processes that share the
+/// environment). The base is learned when the JIT first compiles a block
+/// inside the module; until then nothing matches.
+static const std::string& pc_watch_module() {
+    static const std::string name = [] {
+        const char* e = std::getenv("VITREO_PC_WATCH_MODULE");
+        std::string s = e != nullptr ? e : "";
+        for (char& c : s) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+        return s;
+    }();
+    return name;
+}
+static std::atomic<u64> g_pc_watch_module_base{0};
+
+/// The absolute addresses to compare against, or 0 base when the watch
+/// module is not known yet (then nothing matches).
+static bool pc_watch_base(u64& base) {
+    if (pc_watch_module().empty()) {
+        base = 0;
+        return true;
+    }
+    base = g_pc_watch_module_base.load(std::memory_order_acquire);
+    return base != 0;
+}
+
+static void pc_watch_learn_module(u64 start) {
+    if (pc_watch_module().empty() ||
+        g_pc_watch_module_base.load(std::memory_order_acquire) != 0) {
+        return;
+    }
+    // Block lookups repeat within the same code; skip a 64 KiB region already
+    // known not to be the module (module_for_address walks every module).
+    thread_local u64 t_last_miss_region = ~u64{0};
+    if ((start >> 16) == t_last_miss_region) return;
+    const auto* modules = g_pctrace_modules.load(std::memory_order_acquire);
+    if (modules == nullptr) return;
+    const auto at = modules->module_for_address(start);
+    std::string name = at.info != nullptr ? at.info->name : std::string();
+    for (char& c : name) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    if (at.info == nullptr || name != pc_watch_module()) {
+        t_last_miss_region = start >> 16;
+        return;
+    }
+    g_pc_watch_module_base.store(at.info->base_address, std::memory_order_release);
+    std::fprintf(stderr, "[pcwatch-custom] pid=%d module=%s base=0x%llx\n",
+                 static_cast<int>(::getpid()), name.c_str(),
+                 static_cast<unsigned long long>(at.info->base_address));
+}
+
+/// VITREO_PC_WATCH_ARM=addr: arm the write watch on @p addr (mem_watch.hpp)
+/// at the first PC-watch hit, so a store can be attributed from a known point
+/// on without interpreting the whole run.
+static void pc_watch_arm_on_hit() {
+    static const u64 arm = [] {
+        const char* e = std::getenv("VITREO_PC_WATCH_ARM");
+        return e != nullptr ? static_cast<u64>(std::strtoull(e, nullptr, 0)) : u64{0};
+    }();
+    static std::atomic<bool> armed{false};
+    if (arm == 0 || armed.exchange(true)) return;
+    mem_watch_arm(arm);
+    std::fprintf(stderr, "[pcwatch-custom] pid=%d armed write watch 0x%llx\n",
+                 static_cast<int>(::getpid()), static_cast<unsigned long long>(arm));
+}
+
 bool pc_watch_hit(u64 rip) {
+    u64 base = 0;
+    if (!pc_watch_base(base)) return false;
     for (u64 a : pc_watch_addrs()) {
-        if (a == rip) return true;
+        if (base + a == rip) {
+            pc_watch_arm_on_hit();
+            return true;
+        }
     }
     return false;
 }
 
 bool pc_watch_overlaps(u64 start, u64 length) {
     if (pc_watch_addrs().empty() || length == 0) return false;
+    pc_watch_learn_module(start);
+    u64 base = 0;
+    if (!pc_watch_base(base)) return false;
     const u64 end = start + length;
     for (u64 a : pc_watch_addrs()) {
-        if (a >= start && a < end) return true;
+        if (base + a >= start && base + a < end) return true;
     }
     return false;
 }
 
 void pctrace_capture(cpu::CpuState& cpu, GuestMemory& memory) {
     auto& cfg = pctrace_config();
+    // VITREO_PCTRACE_SP_RANGE=lo-hi: record only instructions whose RSP is in
+    // [lo, hi) -- one thread's stack -- so other threads running the same
+    // code do not flush it out of the ring.
+    static const std::pair<u64, u64> sp_range = [] {
+        const char* e = std::getenv("VITREO_PCTRACE_SP_RANGE");
+        if (e == nullptr || *e == '\0') return std::pair<u64, u64>{0, 0};
+        char* end = nullptr;
+        const u64 lo = std::strtoull(e, &end, 0);
+        const u64 hi = (end != nullptr && *end == '-') ? std::strtoull(end + 1, nullptr, 0) : 0;
+        return std::pair<u64, u64>{lo, hi};
+    }();
+    if (sp_range.second > sp_range.first &&
+        (cpu.sp() < sp_range.first || cpu.sp() >= sp_range.second)) {
+        return;
+    }
     u64 seq = g_pctrace_count.fetch_add(1, std::memory_order_relaxed);
     if (seq >= cfg.max_count) return;
 

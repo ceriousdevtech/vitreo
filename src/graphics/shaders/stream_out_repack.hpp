@@ -30,6 +30,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <cstdio>
 #include <string>
 #include <vector>
@@ -274,6 +275,9 @@ enum class PrimitiveAssembly : u8 { List, Strip, StripAdjacency };
 // unit tests execute in place of the GPU.
 
 /// Constants of vitreo_so_prepare (inline constant buffer, index 0).
+/// `sizes` is D3D12_STREAM_OUTPUT_BUFFER_VIEW::SizeInBytes (d3d12.h: UINT64),
+/// the buffer's capacity in bytes. BufferFilledSize is a separate 32-bit
+/// byte count (Learn, "Stream Output Counters"), not this capacity.
 struct SoPrepareParams {
     /// count_mode 0: the draw's primitives. 1: read from the count buffer
     /// as primitives; 2: read as vertices (a compaction total), divided by
@@ -292,9 +296,12 @@ struct SoPrepareParams {
     u32 reserved0{0};
     u32 reserved1{0};
     std::array<u32, BACKEND_MAX_STREAM_OUT_TARGETS> strides{};
-    std::array<u32, BACKEND_MAX_STREAM_OUT_TARGETS> sizes{};
+    /// Byte capacity of each slot. UINT64, matching SizeInBytes.
+    std::array<u64, BACKEND_MAX_STREAM_OUT_TARGETS> sizes{};
 };
-static_assert(sizeof(SoPrepareParams) == 64);
+static_assert(offsetof(SoPrepareParams, strides) == 32);
+static_assert(offsetof(SoPrepareParams, sizes) == 48);
+static_assert(sizeof(SoPrepareParams) == 80);
 
 inline constexpr unsigned SO_PREPARE_COUNT_INDEX = 1;
 inline constexpr unsigned SO_PREPARE_FILLED_BASE = 2;  // 2..5, one per slot
@@ -317,10 +324,16 @@ inline void stream_out_prepare_model(
     u32 fit = p.write_nothing != 0 ? 0u : primitives;
     for (u32 s = 0; s < BACKEND_MAX_STREAM_OUT_TARGETS; ++s) {
         if ((p.slot_mask & (1u << s)) == 0 || filled[s] == nullptr) continue;
-        const u32 f = *filled[s];
-        const u32 per = p.strides[s] * vpp;
-        const u32 room = f >= p.sizes[s] ? 0u : p.sizes[s] - f;
-        fit = std::min(fit, per == 0 ? 0u : room / per);
+        const u64 f = *filled[s];
+        const u64 per = static_cast<u64>(p.strides[s]) * vpp;
+        // The counter cannot pass 0xFFFFFFFF (it is a UINT). A capacity
+        // above 4 GiB still contributes every byte up to that limit; it is
+        // not reduced to its low 32 bits.
+        const u64 counter_room = f >= 0xFFFFFFFFull ? 0ull : 0xFFFFFFFFull - f;
+        const u64 buffer_room = f >= p.sizes[s] ? 0ull : p.sizes[s] - f;
+        const u64 room = std::min(buffer_room, counter_room);
+        const u64 n = per == 0 ? 0ull : room / per;
+        if (n < fit) fit = static_cast<u32>(n);
     }
     op.fill(0);
     op[SO_OP_VERTEX_COUNT] = fit * vpp;
@@ -452,17 +465,21 @@ struct SoPrepareParams {
     uint reserved0;
     uint reserved1;
     uint strides[4];
-    uint sizes[4];
+    ulong sizes[4];
 };
 
 static void so_fit_slot(constant SoPrepareParams& p, uint s,
                         device const uint* filled, uint vpp, thread uint& fit)
 {
     if ((p.slot_mask & (1u << s)) == 0u) return;
-    const uint f = filled[0];
-    const uint per = p.strides[s] * vpp;
-    const uint room = f >= p.sizes[s] ? 0u : p.sizes[s] - f;
-    fit = min(fit, per == 0u ? 0u : room / per);
+    const ulong f = ulong(filled[0]);
+    const ulong per = ulong(p.strides[s]) * ulong(vpp);
+    const ulong counter_limit = ulong(0xFFFFFFFFu);
+    const ulong counter_room = f >= counter_limit ? ulong(0) : counter_limit - f;
+    const ulong buffer_room = f >= p.sizes[s] ? ulong(0) : p.sizes[s] - f;
+    const ulong room = min(buffer_room, counter_room);
+    const ulong n = per == ulong(0) ? ulong(0) : room / per;
+    if (n < ulong(fit)) fit = uint(n);
 }
 
 static void so_advance_slot(constant SoPrepareParams& p, uint s,

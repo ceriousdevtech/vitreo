@@ -463,18 +463,15 @@ ExecResult execute_instruction(
             u8 size;
             if (ctx.cpu.is_64bit()) {
                 size = instr.prefixes.operand_size ? 2 : 8;
+            } else if (ctx.cpu.is_real_mode()) {
+                size = instr.prefixes.operand_size ? 4 : 2;
             } else {
                 size = instr.prefixes.operand_size ? 2 : 4;
             }
             auto val = pop_value(ctx, size);
             if (!val) { ctx.exception = stack_access_exception(val.error()); return ExecResult::Exception; }
-            // Preserve reserved bits, allow user-mode bits. Width only affects
-            // how many stack bytes are consumed; the writable EFLAGS mask is
-            // the same (high bits of a 16-bit pop are zero in val).
-            constexpr u64 user_mask = 0x00244FD5; // CF,PF,AF,ZF,SF,TF,IF,DF,OF,AC,ID
-            u64 new_flags = (ctx.cpu.flags.rflags & ~user_mask) | (val.value() & user_mask);
-            new_flags |= 0x0002; // bit 1 always set
-            ctx.cpu.flags.rflags = new_flags;
+            ctx.cpu.flags.rflags = popf_flags_image(ctx.cpu.flags.rflags,
+                val.value(), size, ctx.cpu.is_real_mode());
             ctx.cpu.set_flag_op(CpuState::FlagOp::None);
             return ExecResult::Continue;
         }

@@ -4,6 +4,9 @@
 /// @brief hid.dll exports (see hid.hpp for the contract).
 
 #include "winapi/system/hid/hid.hpp"
+#include "winapi/common/gamepad_hid_report.hpp"
+#include "winapi/kernel32/filesystem/file.hpp"
+#include "winapi/kernel32/memory/global_local.hpp"
 
 #include "hardware/contracts/bluetooth_host.hpp"
 #include "winapi/core/marshaler.hpp"
@@ -28,6 +31,211 @@ namespace {
 
 constexpr u32 HIDP_STATUS_INVALID_PREPARSED_DATA = 0xC0110001u;
 
+bool gamepad_preparsed(Marshaler& m, GuestAddr address) {
+    std::array<u8, gamepad_hid::kPreparsedData.size()> bytes{};
+    return m.memory().read_bytes(address, bytes.data(), bytes.size()).is_ok() &&
+           gamepad_hid::recognizes(bytes);
+}
+
+// HID parser capabilities: full selection/filtering, required counts and
+// partial writes follow hidpi.h plus hid_caps_{x86,x64}.expected.
+void gamepad_caps_query(Marshaler& m, bool value, bool specific) {
+    const u32 type = m.arg32(0);
+    const u16 page = specific ? static_cast<u16>(m.arg32(1)) : 0;
+    const u16 link = specific ? static_cast<u16>(m.arg32(2)) : 0;
+    const u16 usage = specific ? static_cast<u16>(m.arg32(3)) : 0;
+    const GuestAddr out = m.arg_ptr(specific ? 4 : 1);
+    const GuestAddr length = m.arg_ptr(specific ? 5 : 2);
+    if (!gamepad_preparsed(m, m.arg_ptr(specific ? 6 : 3))) {
+        m.set_return(hid_sdk::kHIDP_STATUS_INVALID_PREPARSED_DATA); return;
+    }
+    if (type > hid_sdk::kHidP_Feature) {
+        m.set_return(hid_sdk::kHIDP_STATUS_INVALID_REPORT_TYPE); return;
+    }
+    const auto capacity = m.read_u16(length);
+    if (capacity.is_err()) { (void)m.raise_access_violation(false,length); return; }
+    std::vector<gamepad_hid::Bytes> rows;
+    // All controls of the normalized collection live directly in its root.
+    const bool root = link == 0 || link == hid_sdk::kHIDP_LINK_COLLECTION_ROOT;
+    if (type == hid_sdk::kHidP_Input && root) {
+        if (value && (page == 0 || page == hid_sdk::kHID_USAGE_PAGE_GENERIC)) {
+            for (const auto& field : gamepad_hid::kValues)
+                if (usage == 0 || usage == field.usage)
+                    rows.push_back(gamepad_hid::value_capabilities(m.cpu_is_64bit(),field));
+        } else if (!value && (page == 0 || page == hid_sdk::kHID_USAGE_PAGE_BUTTON) &&
+                   (usage == 0 || usage <= gamepad_hid::kButtonMasks.size())) {
+            rows.push_back(gamepad_hid::button_capabilities(m.cpu_is_64bit()));
+        }
+    }
+    const auto* mask = value ? hid_sdk::kValueCapsWriteMask : hid_sdk::kButtonCapsWriteMask;
+    for (usize i = 0; i < std::min<usize>(capacity.value(),rows.size()); ++i) {
+        const auto& row = rows[i];
+        for (usize start=0; start<row.size();) {
+            if (!mask[start]) { ++start; continue; }
+            usize end = start+1;
+            while (end<row.size() && mask[end]) ++end;
+            const GuestAddr at = out+i*row.size()+start;
+            if (m.memory().write_bytes(at,row.data()+start,end-start).is_err()) {
+                (void)m.raise_access_violation(true,at); return;
+            }
+            start=end;
+        }
+    }
+    if (m.memory().write_u16(length,static_cast<u16>(rows.size())).is_err()) {
+        (void)m.raise_access_violation(true,length); return;
+    }
+    m.set_return(rows.empty() ? hid_sdk::kHIDP_STATUS_USAGE_NOT_FOUND :
+        capacity.value()<rows.size() ? hid_sdk::kHIDP_STATUS_BUFFER_TOO_SMALL :
+        hid_sdk::kHIDP_STATUS_SUCCESS);
+}
+
+// Shared report validation order measured on Windows: invalid enum first,
+// then exact length (including zero lengths for absent report types), then
+// report presence. A report ID unmatched by GetData is a successful empty set.
+u32 gamepad_report_status(u32 type, u32 length) {
+    if (type > hid_sdk::kHidP_Feature) return hid_sdk::kHIDP_STATUS_INVALID_REPORT_TYPE;
+    const u32 expected=type==hid_sdk::kHidP_Input ? gamepad_hid::kReportBytes : 0;
+    if (length!=expected) return hid_sdk::kHIDP_STATUS_INVALID_REPORT_LENGTH;
+    return type==hid_sdk::kHidP_Input ? hid_sdk::kHIDP_STATUS_SUCCESS :
+                                      hid_sdk::kHIDP_STATUS_REPORT_DOES_NOT_EXIST;
+}
+void gamepad_get_data(Marshaler& m) {
+    if (!gamepad_preparsed(m,m.arg_ptr(3))) {
+        m.set_return(hid_sdk::kHIDP_STATUS_INVALID_PREPARSED_DATA);return;
+    }
+    const u32 status=gamepad_report_status(m.arg32(0),m.arg32(5));
+    if (status!=hid_sdk::kHIDP_STATUS_SUCCESS) {m.set_return(status);return;}
+    const GuestAddr report_ptr=m.arg_ptr(4),length_ptr=m.arg_ptr(2),out=m.arg_ptr(1);
+    gamepad_hid::Report report{};
+    if (m.memory().read_bytes(report_ptr,report.data(),report.size()).is_err()) {
+        (void)m.raise_access_violation(false,report_ptr);return;
+    }
+    const auto capacity=m.read_u32(length_ptr);
+    if (capacity.is_err()) {(void)m.raise_access_violation(false,length_ptr);return;}
+    struct Data {u16 index;u32 value;bool button;};
+    std::array<Data,gamepad_hid::kHatDataIndex+1> entries{};
+    usize count=0;
+    if (report[0]==gamepad_hid::kReportId) {
+        // HID data index order follows the published normalized collection.
+        for (const auto& field : gamepad_hid::kValues)
+            if (field.data_index<gamepad_hid::kFirstButtonDataIndex)
+                entries[count++]={field.data_index,gamepad_hid::read_value(report,field),false};
+        for (u16 usage=1;usage<=gamepad_hid::kButtonMasks.size();++usage)
+            if (gamepad_hid::button_pressed(report,usage))
+                entries[count++]={static_cast<u16>(gamepad_hid::kFirstButtonDataIndex+usage-1),1,true};
+        const auto& hat=gamepad_hid::kValues[std::size(gamepad_hid::kValues)-1];
+        entries[count++]={hat.data_index,gamepad_hid::read_value(report,hat),false};
+    }
+    const auto& layout=gamepad_hid::layout(m.cpu_is_64bit());
+    for (usize i=0;i<std::min<usize>(capacity.value(),count);++i) {
+        const GuestAddr entry=out+i*layout.sizeof_HIDP_DATA;
+        const GuestAddr index=entry+layout.offsetof_HIDP_DATA_DataIndex;
+        const GuestAddr value=entry+layout.offsetof_HIDP_DATA_RawValue;
+        if (m.memory().write_u16(index,entries[i].index).is_err()) {
+            (void)m.raise_access_violation(true,index);return;
+        }
+        // A button writes BOOLEAN On only, not the other bytes of the
+        // RawValue union. Reserved bytes remain caller-owned (Windows oracle).
+        const bool written=entries[i].button ? m.write_u8(value,1).is_ok() :
+                                              m.write_u32(value,entries[i].value).is_ok();
+        if (!written) {(void)m.raise_access_violation(true,value);return;}
+    }
+    if (m.write_u32(length_ptr,static_cast<u32>(count)).is_err()) {
+        (void)m.raise_access_violation(true,length_ptr);return;
+    }
+    m.set_return(capacity.value()<count ? hid_sdk::kHIDP_STATUS_BUFFER_TOO_SMALL :
+                                        hid_sdk::kHIDP_STATUS_SUCCESS);
+}
+
+bool gamepad_root_link(u16 link) {
+    return link==0 || link==hid_sdk::kHIDP_LINK_COLLECTION_ROOT;
+}
+void gamepad_get_usage_value(Marshaler& m, bool scaled) {
+    if (!gamepad_preparsed(m,m.arg_ptr(5))) {
+        m.set_return(hid_sdk::kHIDP_STATUS_INVALID_PREPARSED_DATA);return;
+    }
+    u32 status=gamepad_report_status(m.arg32(0),m.arg32(7));
+    if(status!=hid_sdk::kHIDP_STATUS_SUCCESS) {m.set_return(status);return;}
+    const auto* field=gamepad_hid::find_value(static_cast<u16>(m.arg32(3)));
+    if(static_cast<u16>(m.arg32(1))!=hid_sdk::kHID_USAGE_PAGE_GENERIC ||
+       !gamepad_root_link(static_cast<u16>(m.arg32(2))) || !field) {
+        m.set_return(hid_sdk::kHIDP_STATUS_USAGE_NOT_FOUND);return;
+    }
+    gamepad_hid::Report report{};
+    if(m.memory().read_bytes(m.arg_ptr(6),report.data(),report.size()).is_err()) {
+        (void)m.raise_access_violation(false,m.arg_ptr(6));return;
+    }
+    if(report[0]!=gamepad_hid::kReportId) {
+        m.set_return(hid_sdk::kHIDP_STATUS_INCOMPATIBLE_REPORT_ID);return;
+    }
+    u32 value=gamepad_hid::read_value(report,*field);
+    // Every normalized field has unsigned logical/physical minimum zero
+    // and equal logical/physical maxima, so scaling is the identity. Null
+    // handling still applies; Windows writes zero for scaled range failures.
+    if(scaled && value>field->logical_max) {
+        value=0;
+        status=field->has_null ? hid_sdk::kHIDP_STATUS_NULL : hid_sdk::kHIDP_STATUS_VALUE_OUT_OF_RANGE;
+    }
+    if(m.write_u32(m.arg_ptr(4),value).is_err()) {
+        (void)m.raise_access_violation(true,m.arg_ptr(4));return;
+    }
+    m.set_return(status);
+}
+void gamepad_get_usages(Marshaler& m, bool extended) {
+    const unsigned shift=extended?1:0;
+    if(!gamepad_preparsed(m,m.arg_ptr(5-shift))) {
+        m.set_return(hid_sdk::kHIDP_STATUS_INVALID_PREPARSED_DATA);return;
+    }
+    const GuestAddr count_ptr=m.arg_ptr(4-shift),out=m.arg_ptr(3-shift);
+    const auto capacity=m.read_u32(count_ptr);
+    if(capacity.is_err()) {(void)m.raise_access_violation(false,count_ptr);return;}
+    // Windows clears a USAGE-sized prefix for BOTH variants, even though
+    // GetUsagesEx subsequently emits larger usage/page pairs. This happens
+    // before type/length validation, but after preparsed-data validation.
+    const u64 bytes=m.cpu_is_64bit() ? u64(capacity.value())*sizeof(u16) :
+        static_cast<u32>(capacity.value()*sizeof(u16));
+    static constexpr std::array<u8,256> zeros{};
+    for(u64 offset=0;offset<bytes;) {
+        const usize chunk=static_cast<usize>(std::min<u64>(zeros.size(),bytes-offset));
+        if(m.memory().write_bytes(out+offset,zeros.data(),chunk).is_err()) {
+            (void)m.raise_access_violation(true,out+offset);return;
+        }
+        offset+=chunk;
+    }
+    const u32 validation=gamepad_report_status(m.arg32(0),m.arg32(7-shift));
+    if(validation!=hid_sdk::kHIDP_STATUS_SUCCESS) {m.set_return(validation);return;}
+    const u16 page=extended ? hid_sdk::kHID_USAGE_PAGE_BUTTON : static_cast<u16>(m.arg32(1));
+    u32 status=hid_sdk::kHIDP_STATUS_SUCCESS;
+    std::array<u16,gamepad_hid::kButtonMasks.size()> usages{};
+    usize count=0;
+    if(page!=hid_sdk::kHID_USAGE_PAGE_BUTTON ||
+       !gamepad_root_link(static_cast<u16>(m.arg32(2-shift)))) {
+        status=hid_sdk::kHIDP_STATUS_USAGE_NOT_FOUND;
+    } else {
+        gamepad_hid::Report report{};
+        if(m.memory().read_bytes(m.arg_ptr(6-shift),report.data(),report.size()).is_err()) {
+            (void)m.raise_access_violation(false,m.arg_ptr(6-shift));return;
+        }
+        if(report[0]!=gamepad_hid::kReportId) status=hid_sdk::kHIDP_STATUS_INCOMPATIBLE_REPORT_ID;
+        else for(u16 usage=1;usage<=gamepad_hid::kButtonMasks.size();++usage)
+            if(gamepad_hid::button_pressed(report,usage)) usages[count++]=usage;
+    }
+    for(usize i=0;i<std::min<usize>(capacity.value(),count);++i) {
+        const GuestAddr at=out+i*sizeof(u16)*(extended?2:1);
+        if(m.memory().write_u16(at,usages[i]).is_err()) {
+            (void)m.raise_access_violation(true,at);return;
+        }
+        if(extended && m.memory().write_u16(at+sizeof(u16),page).is_err()) {
+            (void)m.raise_access_violation(true,at+sizeof(u16));return;
+        }
+    }
+    if(m.write_u32(count_ptr,static_cast<u32>(count)).is_err()) {
+        (void)m.raise_access_violation(true,count_ptr);return;
+    }
+    m.set_return(status!=hid_sdk::kHIDP_STATUS_SUCCESS ? status :
+        capacity.value()<count ? hid_sdk::kHIDP_STATUS_BUFFER_TOO_SMALL : hid_sdk::kHIDP_STATUS_SUCCESS);
+}
+
 /// HidD_* take the device handle first. NULL, INVALID_HANDLE_VALUE or a
 /// closed handle is ERROR_INVALID_HANDLE; an open handle that is not a HID
 /// device (every handle here) is ERROR_INVALID_PARAMETER; outputs untouched
@@ -47,16 +255,24 @@ ApiHandler not_a_hid_device(u32 args, HandleTable* handles) {
 }
 
 /// HidP_* with preparsed data Vitreo never issued.
-ApiHandler invalid_preparsed(u32 args) {
-    return [args](Marshaler& m) {
+ApiHandler unsupported_gamepad_parser(u32 args, u32 preparsed_arg, const char* name) {
+    const auto logged = std::make_shared<std::once_flag>();
+    return [args, preparsed_arg, name, logged](Marshaler& m) {
         for (u32 i = 0; i < args; ++i) (void)m.arg(i);
-        m.set_return(HIDP_STATUS_INVALID_PREPARSED_DATA);
+        if (gamepad_preparsed(m,m.arg_ptr(preparsed_arg))) {
+            std::call_once(*logged,[name] {
+                std::fprintf(stderr,"[vitreo] UNIMPLEMENTED hid.dll!%s: normalized gamepad collection\n",name);
+            });
+            m.set_return(hid_sdk::kHIDP_STATUS_NOT_IMPLEMENTED);
+        } else m.set_return(HIDP_STATUS_INVALID_PREPARSED_DATA);
     };
 }
 
 } // namespace
 
-DllExports create_hid_thunks(HandleTable* handles) {
+DllExports create_hid_thunks(HandleTable* handles, FileManager* files, GlobalLocalManager* allocator) {
+    struct Allocations {std::mutex mutex;std::unordered_set<GuestAddr> pointers;};
+    auto allocations=std::make_shared<Allocations>();
     DllExports hid;
     // void HidD_GetHidGuid(LPGUID): GUID_DEVINTERFACE_HID
     // {4D1E55B2-F16F-11CF-88CB-001111000030} (hidclass.h; hid_probe guid).
@@ -72,7 +288,13 @@ DllExports create_hid_thunks(HandleTable* handles) {
     // BOOLEAN HidD_FreePreparsedData(PHIDP_PREPARSED_DATA): nothing this DLL
     // issued, so FALSE with the last error untouched (hid_probe free_fake).
     hid.entries.push_back({"HidD_FreePreparsedData", 0,
-        [](Marshaler& m) { (void)m.arg(0); m.set_return(0); }, 4});
+        [allocations,allocator](Marshaler& m) {
+            std::lock_guard lock(allocations->mutex);
+            const auto at=m.arg_ptr(0);
+            if(!allocator || !allocations->pointers.erase(at)) {m.set_return(0);return;}
+            const auto saved=get_last_error();const bool ok=allocator->global_free(at)==0;
+            set_last_error(saved);m.set_return(ok ? 1:0);
+        }, 4});
 
     struct Row { const char* name; u16 args; };
     static constexpr Row kDevice[] = {
@@ -87,31 +309,156 @@ DllExports create_hid_thunks(HandleTable* handles) {
         {"HidD_SetOutputReport", 3},
     };
     for (const Row& row : kDevice) {
-        hid.entries.push_back({row.name, 0, not_a_hid_device(row.args, handles),
-                               static_cast<u16>(row.args * 4)});
+        auto fallback=not_a_hid_device(row.args,handles);
+        const auto once=std::make_shared<std::once_flag>();
+        hid.entries.push_back({row.name,0,[handles,files,allocator,allocations,row,fallback,once](Marshaler& m) {
+            auto file=handles ? handles->get_shared<HidOpenFile>(static_cast<Handle>(m.arg(0)),HandleType::HidDevice) : HidOpenFileHolder{};
+            if(m.arg(0)>0xFFFFFFFFull || !file) {fallback(m);return;}
+            const std::string_view name=row.name;
+            auto fail=[&](u32 error){set_last_error(error);m.set_return(0);};
+            auto completed=[&] {
+                // All measured HidD metadata routines use an explicit private
+                // event. It completes the synchronous file, not an async file.
+                if(file->completion_signal) {
+                    file->completion_signal->reset();
+                    if(!file->overlapped) file->completion_signal->signal();
+                }
+            };
+            auto write=[&](GuestAddr out,const auto& bytes) {
+                if(m.memory().write_bytes(out,bytes.data(),bytes.size()).is_err()) {fail(error_codes::ERROR_NOACCESS);return false;}
+                completed();m.set_return(1);return true;
+            };
+            if(name=="HidD_GetPreparsedData") {
+                if(!m.arg_ptr(1)) {(void)m.raise_access_violation(true,0);return;}
+                if(!allocator) {fail(error_codes::ERROR_NOT_SUPPORTED);return;}
+                const auto saved=get_last_error();
+                const GuestAddr pointer=allocator->global_alloc(GMEM_FIXED,gamepad_hid::kPreparsedData.size());
+                if(!pointer) {fail(error_codes::ERROR_NOT_ENOUGH_MEMORY);return;}
+                if(m.memory().write_bytes(pointer,gamepad_hid::kPreparsedData.data(),gamepad_hid::kPreparsedData.size()).is_err() ||
+                    (m.cpu_is_64bit() ? m.write_u64(m.arg_ptr(1),pointer).is_err() : m.write_u32(m.arg_ptr(1),static_cast<u32>(pointer)).is_err())) {
+                    (void)allocator->global_free(pointer);set_last_error(saved);(void)m.raise_access_violation(true,m.arg_ptr(1));return;
+                }
+                {std::lock_guard lock(allocations->mutex);allocations->pointers.insert(pointer);}
+                completed();set_last_error(saved);m.set_return(1);return;
+            }
+            if(name=="HidD_GetAttributes") {
+                const auto& l=gamepad_hid::layout(m.cpu_is_64bit());
+                gamepad_hid::Bytes bytes(l.sizeof_HIDD_ATTRIBUTES);
+                gamepad_hid::store32(bytes,l.offsetof_HIDD_ATTRIBUTES_Size,l.sizeof_HIDD_ATTRIBUTES);
+                gamepad_hid::store16(bytes,l.offsetof_HIDD_ATTRIBUTES_VersionNumber,1);
+                // Oracle: HIDD_ATTRIBUTES tail padding is caller-owned.
+                bytes.resize(l.offsetof_HIDD_ATTRIBUTES_VersionNumber+sizeof(u16));
+                if(m.memory().write_bytes(m.arg_ptr(1),bytes.data(),bytes.size()).is_err()) {(void)m.raise_access_violation(true,m.arg_ptr(1));return;}
+                completed();m.set_return(1);return;
+            }
+            if(name=="HidD_GetProductString" || name=="HidD_GetManufacturerString" || name=="HidD_GetSerialNumberString") {
+                const std::string text=name=="HidD_GetProductString" ? "Vitreo Virtual Gamepad" : name=="HidD_GetManufacturerString" ? "Vitreo" : std::to_string(file->slot)+"&"+std::to_string(file->generation);
+                gamepad_hid::Bytes bytes((text.size()+1)*2);
+                for(usize i=0;i<text.size();++i) bytes[i*2]=static_cast<u8>(text[i]);
+                if(m.arg32(2)<bytes.size()) {fail(error_codes::ERROR_INVALID_USER_BUFFER);return;}
+                (void)write(m.arg_ptr(1),bytes);return;
+            }
+            if(name=="HidD_GetNumInputBuffers") {
+                if(!m.arg_ptr(1)) {fail(error_codes::ERROR_INVALID_PARAMETER);return;}
+                std::lock_guard lock(file->mutex);
+                if(m.write_u32(m.arg_ptr(1),file->capacity).is_err()) fail(error_codes::ERROR_NOACCESS);else {completed();m.set_return(1);}
+                return;
+            }
+            if(name=="HidD_SetNumInputBuffers") {
+                const u32 count=m.arg32(1);
+                if(count<hid_sdk::kMinimumInputBuffers || count>hid_sdk::kMaximumInputBuffers) {fail(error_codes::ERROR_INVALID_PARAMETER);return;}
+                std::lock_guard lock(file->mutex);file->capacity=count;
+                while(file->reports.size()>count) file->reports.pop_front();completed();m.set_return(1);return;
+            }
+            if(name=="HidD_FlushQueue") {
+                std::lock_guard lock(file->mutex);file->reports.clear();completed();m.set_return(1);return;
+            }
+            if(name=="HidD_GetInputReport") {
+                if(m.arg32(2)<gamepad_hid::kReportBytes) {
+                    std::call_once(*once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED hid.dll!HidD_GetInputReport: undersized snapshot error contract\n");});
+                    fail(error_codes::ERROR_NOT_SUPPORTED);return;
+                }
+                const auto id=m.read_u8(m.arg_ptr(1));
+                if(id.is_err()) {fail(error_codes::ERROR_NOACCESS);return;}
+                if(id.value()!=gamepad_hid::kReportId) {
+                    std::call_once(*once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED hid.dll!HidD_GetInputReport: unmatched report ID\n");});
+                    fail(error_codes::ERROR_NOT_SUPPORTED);return;
+                }
+                const auto catalog=files ? files->gamepad_catalog() : nullptr;
+                bool host_failed=false,unsupported=false;
+                const auto report=catalog ? catalog->snapshot(file,&host_failed,&unsupported) : std::optional<gamepad_hid::Report>{};
+                if(unsupported) {
+                    std::call_once(*once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED hid.dll!HidD_GetInputReport: native background monitoring unavailable\n");});
+                    fail(error_codes::ERROR_NOT_SUPPORTED);return;
+                }
+                if(!report) {fail(host_failed ? error_codes::ERROR_GEN_FAILURE : error_codes::ERROR_DEVICE_NOT_CONNECTED);return;}
+                (void)write(m.arg_ptr(1),*report);return;
+            }
+            std::call_once(*once,[row]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED hid.dll!%s: normalized gamepad device operation\n",row.name);});
+            fail(error_codes::ERROR_NOT_SUPPORTED);
+        },static_cast<u16>(row.args*4)});
     }
-    static constexpr Row kParser[] = {
-        {"HidP_GetButtonCaps", 4},       {"HidP_GetCaps", 2},
-        {"HidP_GetData", 6},             {"HidP_GetExtendedAttributes", 5},
-        {"HidP_GetLinkCollectionNodes", 3}, {"HidP_GetScaledUsageValue", 8},
-        {"HidP_GetSpecificButtonCaps", 7}, {"HidP_GetSpecificValueCaps", 7},
-        {"HidP_GetUsageValue", 8},       {"HidP_GetUsageValueArray", 9},
-        {"HidP_GetUsages", 8},           {"HidP_GetUsagesEx", 7},
-        {"HidP_GetValueCaps", 4},        {"HidP_InitializeReportForID", 5},
-        {"HidP_SetData", 6},             {"HidP_SetScaledUsageValue", 8},
-        {"HidP_SetUsageValue", 8},       {"HidP_SetUsageValueArray", 9},
-        {"HidP_SetUsages", 8},           {"HidP_UnsetUsages", 8},
+    // The original, copyable preparsed collection is shared with Raw Input.
+    // Microsoft hidpi.h / HidP_GetCaps: the only status failure is invalid
+    // preparsed data; successful output is the complete HIDP_CAPS structure.
+    hid.entries.push_back({"HidP_GetCaps", 0, [](Marshaler& m) {
+        if (!gamepad_preparsed(m, m.arg_ptr(0))) {
+            m.set_return(hid_sdk::kHIDP_STATUS_INVALID_PREPARSED_DATA);
+            return;
+        }
+        const auto caps = gamepad_hid::capabilities(m.cpu_is_64bit());
+        const GuestAddr out = m.arg_ptr(1);
+        if (m.memory().write_bytes(out, caps.data(), caps.size()).is_err()) {
+            (void)m.raise_access_violation(true, out);
+            return;
+        }
+        m.set_return(hid_sdk::kHIDP_STATUS_SUCCESS);
+    }, 8});
+    hid.entries.push_back({"HidP_GetButtonCaps",0,
+        [](Marshaler& m) { gamepad_caps_query(m,false,false); },16});
+    hid.entries.push_back({"HidP_GetSpecificButtonCaps",0,
+        [](Marshaler& m) { gamepad_caps_query(m,false,true); },28});
+    hid.entries.push_back({"HidP_GetValueCaps",0,
+        [](Marshaler& m) { gamepad_caps_query(m,true,false); },16});
+    hid.entries.push_back({"HidP_GetSpecificValueCaps",0,
+        [](Marshaler& m) { gamepad_caps_query(m,true,true); },28});
+    hid.entries.push_back({"HidP_GetData",0,gamepad_get_data,24});
+    hid.entries.push_back({"HidP_GetUsageValue",0,
+        [](Marshaler& m){gamepad_get_usage_value(m,false);},32});
+    hid.entries.push_back({"HidP_GetScaledUsageValue",0,
+        [](Marshaler& m){gamepad_get_usage_value(m,true);},32});
+    hid.entries.push_back({"HidP_GetUsages",0,
+        [](Marshaler& m){gamepad_get_usages(m,false);},32});
+    hid.entries.push_back({"HidP_GetUsagesEx",0,
+        [](Marshaler& m){gamepad_get_usages(m,true);},28});
+    struct ParserRow { const char* name; u16 args; u16 preparsed_arg; };
+    static constexpr ParserRow kParser[] = {
+        {"HidP_GetExtendedAttributes",5,2},
+        {"HidP_GetLinkCollectionNodes",3,2}, {"HidP_GetUsageValueArray",9,6},
+        {"HidP_InitializeReportForID",5,2},
+        {"HidP_SetData",6,3}, {"HidP_SetScaledUsageValue",8,5},
+        {"HidP_SetUsageValue",8,5}, {"HidP_SetUsageValueArray",9,6},
+        {"HidP_SetUsages",8,5}, {"HidP_UnsetUsages",8,5},
     };
-    for (const Row& row : kParser) {
-        hid.entries.push_back({row.name, 0, invalid_preparsed(row.args), static_cast<u16>(row.args * 4)});
+    for (const ParserRow& row : kParser) {
+        hid.entries.push_back({row.name,0,
+            unsupported_gamepad_parser(row.args,row.preparsed_arg,row.name),static_cast<u16>(row.args*4)});
     }
     // ULONG HidP_MaxDataListLength(HIDP_REPORT_TYPE, PHIDP_PREPARSED_DATA)
     // and HidP_MaxUsageListLength(HIDP_REPORT_TYPE, USAGE, PHIDP_PREPARSED_DATA):
     // "zero if the preparsed data is not valid" (Learn; hid_probe maxdata_*).
     hid.entries.push_back({"HidP_MaxDataListLength", 0,
-        [](Marshaler& m) { (void)m.arg(0); (void)m.arg(1); m.set_return(0); }, 8});
+        [](Marshaler& m) {
+            m.set_return(m.arg32(0) == hid_sdk::kHidP_Input &&
+                gamepad_preparsed(m, m.arg_ptr(1)) ? gamepad_hid::kHatDataIndex + 1 : 0);
+        }, 8});
     hid.entries.push_back({"HidP_MaxUsageListLength", 0,
-        [](Marshaler& m) { (void)m.arg(0); (void)m.arg(1); (void)m.arg(2); m.set_return(0); }, 12});
+        [](Marshaler& m) {
+            const u16 page = static_cast<u16>(m.arg32(1));
+            m.set_return(m.arg32(0) == hid_sdk::kHidP_Input &&
+                (page == 0 || page == hid_sdk::kHID_USAGE_PAGE_BUTTON) &&
+                gamepad_preparsed(m, m.arg_ptr(2)) ? gamepad_hid::kButtonMasks.size() : 0);
+        }, 12});
     return hid;
 }
 

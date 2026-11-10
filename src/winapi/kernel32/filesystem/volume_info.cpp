@@ -12,6 +12,7 @@
 /// verified in both directions with tools/architecture/plan_extraction.py
 /// before moving.
 
+#include "winapi/kernel32/filesystem/drive_type.hpp"
 #include "winapi/kernel32/kernel32_ext.hpp"
 #include "winapi/kernel32/synthetic_handle_registry.hpp"
 #include "winapi/kernel32/kernel32_ext_internal.hpp"
@@ -23,6 +24,8 @@
 #include "winapi/kernel32/filesystem/file_search.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/module/module.hpp"
+#include "ipc/hwnd_registry.hpp"
+#include "ipc/process_handle.hpp"
 #include "winapi/kernel32/process/process.hpp"
 #include "winapi/kernel32/synchronization/sync.hpp"
 #include "winapi/kernel32/synchronization/critical_section.hpp"
@@ -35,7 +38,6 @@
 #include "winapi/system/ntdll/ntdll_ext.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "ipc/ipc_gate.hpp"
-#include "ipc/process_handle.hpp"
 #include "winapi/kernel32/memory/remote_memory.hpp"
 #include "ipc/process_session.hpp"
 #include "core/pe/loader/teb_setup.hpp"
@@ -157,16 +159,24 @@ void Kernel32ExtManager::impl_GetProcessId(Marshaler& m) {
     if (h_process == CURRENT_PROCESS_PSEUDO) {
         m.set_return(m_process_manager != nullptr
                          ? m_process_manager->get_current_process_id()
-                         : static_cast<u32>(::getpid()));
+                         : ipc::guest_process_id());
         return;
     }
 
-    // A real process handle from CreateProcess/OpenProcess carries the pid of
-    // the host process backing that guest process.
-    if (m_sync_manager != nullptr) {
-        u32 pid = 0;
-        if (m_sync_manager->process_pid(h_process, pid)) {
-            m.set_return(pid);
+    // A real process handle reports the Windows client ID. process_pid()
+    // stays the host pid because WaitForInputIdle matches window owners
+    // with it.
+    if (m_handle_table != nullptr) {
+        auto* process = m_handle_table->get_as<ipc::ProcessObject>(
+            h_process, HandleType::Process);
+        if (process != nullptr) {
+            const u32 id = ipc::windows_process_id(*process);
+            if (id == 0) {
+                set_last_error(error_codes::ERROR_INVALID_HANDLE);
+                m.set_return(0);
+                return;
+            }
+            m.set_return(id);
             return;
         }
     }
@@ -211,35 +221,11 @@ void Kernel32ExtManager::impl_CreateSemaphoreA(Marshaler& m) {
 }
 
 void Kernel32ExtManager::impl_GetDriveTypeA(Marshaler& m) {
-    std::string path;
-    if (GuestAddr path_ptr = m.arg_ptr(0); path_ptr != 0) {
-        auto value = m.read_ansi_string(path_ptr, 16);
-        if (value.is_ok()) path = value.value();
-    }
-    auto resolved = m_vfs.resolve_components(path);
-    m.set_return(resolved.is_ok() && resolved.value().first->is_optical()
-                     ? 5u  // DRIVE_CDROM
-                     : 3u); // DRIVE_FIXED
+    m.set_return(query_drive_type(m, m_vfs, m_current_directory, false));
 }
 
 void Kernel32ExtManager::impl_GetDiskFreeSpaceExA(Marshaler& m) {
-    (void)m.arg_ptr(0);
-    GuestAddr free_avail = m.arg_ptr(1);
-    GuestAddr total_bytes_ptr = m.arg_ptr(2);
-    GuestAddr total_free = m.arg_ptr(3);
-
-    u64 total_bytes = 0, free_bytes = 0;
-    get_host_disk_stats(total_bytes, free_bytes);
-
-    auto write_u64 = [&](GuestAddr addr, u64 val) {
-        (void)m_memory.write_u32(addr,     static_cast<u32>(val & 0xFFFFFFFF));
-        (void)m_memory.write_u32(addr + 4, static_cast<u32>(val >> 32));
-    };
-
-    if (free_avail != 0)      write_u64(free_avail, free_bytes);
-    if (total_bytes_ptr != 0) write_u64(total_bytes_ptr, total_bytes);
-    if (total_free != 0)      write_u64(total_free, free_bytes);
-    m.set_return(1u);
+    get_disk_free_space_ex(m, false);
 }
 
 void Kernel32ExtManager::impl_GetVolumeInformationA(Marshaler& m) {
@@ -318,6 +304,25 @@ void Kernel32ExtManager::impl_GetLogicalDriveStringsA(Marshaler& m) {
     m.set_return(required - 1);
 }
 
+void Kernel32ExtManager::impl_GetVolumePathNameA(Marshaler& m) {
+    (void)m.arg_ptr(0); // lpszFileName
+    GuestAddr out_buf = m.arg_ptr(1);
+    u32 cch = static_cast<u32>(m.arg(2));
+    if (out_buf == 0 || cch < 4) {
+        set_last_error(error_codes::ERROR_INSUFFICIENT_BUFFER);
+        m.set_return(0u);
+        return;
+    }
+    (void)m_memory.write_u8(out_buf + 0, static_cast<u8>('C'));
+    (void)m_memory.write_u8(out_buf + 1, static_cast<u8>(':'));
+    (void)m_memory.write_u8(out_buf + 2, static_cast<u8>('\\'));
+    (void)m_memory.write_u8(out_buf + 3, 0);
+    // last_error_on_success_probe: a successful GetVolumePathNameW leaves
+    // ERROR_MORE_DATA. The ANSI entry uses the same volume result.
+    set_last_error(error_codes::ERROR_MORE_DATA);
+    m.set_return(1u);
+}
+
 void Kernel32ExtManager::impl_GetVolumePathNameW(Marshaler& m) {
     (void)m.arg_ptr(0); // lpszFileName
     GuestAddr out_buf = m.arg_ptr(1);
@@ -331,6 +336,8 @@ void Kernel32ExtManager::impl_GetVolumePathNameW(Marshaler& m) {
     (void)m_memory.write_u16(out_buf + 2, u':');
     (void)m_memory.write_u16(out_buf + 4, u'\\');
     (void)m_memory.write_u16(out_buf + 6, 0);
+    // last_error_on_success_probe GetVolumePathNameW ok err=0xea.
+    set_last_error(error_codes::ERROR_MORE_DATA);
     m.set_return(1u);
 }
 

@@ -8,6 +8,7 @@
 #include "core/pe/mapper/section_mapper.hpp"
 #include "core/pe/parser/manifest_info.hpp"
 #include "core/pe/parser/pe_parser.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/process_registry.hpp"
 #include "winapi/kernel32/locale/codepage_convert.hpp"
 #include "winapi/kernel32/locale/string_conv.hpp"
@@ -46,6 +47,12 @@ std::optional<RunResult> configure_process_context(
         pe::pe_supports_windows_8(pe_data, pe) ||
         pe::pe_supports_windows_81(pe_data, pe) ||
         pe::pe_supports_windows_10(pe_data, pe));
+    // Display modes below 32 bpp are emulated for an image that does not
+    // target Windows 8 or later (Learn: EnumDisplaySettings).
+    ctx.d3d9_mgr.set_low_color_modes_emulated(
+        !(pe::pe_supports_windows_8(pe_data, pe) ||
+          pe::pe_supports_windows_81(pe_data, pe) ||
+          pe::pe_supports_windows_10(pe_data, pe)));
     // An image linked for a subsystem older than 6.0 sees SM_CXFRAME with
     // the padded border folded in (measured, s1win_display_probe).
     ctx.u32_ext_mgr.set_legacy_frame_metrics(pe.major_subsystem_version < 6);
@@ -304,33 +311,37 @@ void register_main_module(
             auto sep = image_name.find_last_of("\\/");
             if (sep != std::string::npos) image_name = image_name.substr(sep + 1);
             ctx.ntdll_ext_mgr.set_main_image_name(image_name);
-            process_registration.emplace(ctx.capsule_root(), image_name,
-                                         win_exe_path, ctx.thread_mgr.main_thread_id());
             const std::string process_capsule = ctx.capsule_root();
             auto snapshot_provider = [process_capsule] {
                 return ipc::list_processes(process_capsule);
             };
-            if (config.guest_parent_process_id != 0) {
-                ctx.ntdll_mgr.set_current_parent_process_id(
-                    config.guest_parent_process_id);
-            } else {
+            u32 parent_client = config.guest_parent_process_id;
+            if (parent_client == 0) {
                 const u32 host_parent = static_cast<u32>(::getppid());
                 const auto initial_processes = snapshot_provider();
-                const bool parent_is_capsule_guest = std::any_of(
+                const auto parent = std::find_if(
                     initial_processes.begin(), initial_processes.end(),
                     [host_parent](const ipc::ProcessSnapshotEntry& process) {
-                        return process.pid == host_parent;
+                        return process.host_pid == host_parent;
                     });
-                ctx.ntdll_mgr.set_current_parent_process_id(
-                    parent_is_capsule_guest ? host_parent : 0);
+                if (parent != initial_processes.end()) parent_client = parent->pid;
             }
+            ctx.ntdll_mgr.set_current_parent_process_id(parent_client);
+            process_registration.emplace(
+                ctx.capsule_root(), image_name, win_exe_path,
+                ctx.thread_mgr.main_thread_id(), ipc::guest_process_id(),
+                parent_client);
             ctx.k32_ext_mgr.set_process_snapshot_provider(snapshot_provider);
             ctx.process_mgr.set_process_snapshot_provider(snapshot_provider);
+            ctx.process_mgr.set_guest_metadata_resolver(
+                [&ctx](const std::string& windows_image_path) {
+                    return ctx.k32_ext_mgr.guest_process_metadata_for(windows_image_path);
+                });
             ctx.iphlpapi_mgr.set_pid_allowlist_provider(
                 [snapshot_provider]() -> std::unordered_set<u32> {
                     std::unordered_set<u32> pids;
                     for (const auto& proc : snapshot_provider()) {
-                        pids.insert(proc.pid);
+                        pids.insert(proc.host_pid != 0 ? proc.host_pid : proc.pid);
                     }
                     return pids;
                 });

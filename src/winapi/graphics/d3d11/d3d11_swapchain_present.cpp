@@ -453,7 +453,16 @@ u32 D3D11Manager::present_swap_chain(GuestAddr address, u32 sync_interval,
          chain.restrict_output == 0) ||
         ((flags & kPresentAllowTearing) != 0 &&
          ((chain.desc.flags & kSwapChainFlagAllowTearing) == 0 ||
-          sync_interval != 0))) {
+          sync_interval != 0 || chain.exclusive.fullscreen))) {
+        // Learn DXGI_PRESENT_ALLOW_TEARING: not in exclusive full-screen
+        // (measured a73: INVALID_CALL on a full-screen chain).
+        return DXGI_ERROR_INVALID_CALL;
+    }
+    // Learn SetFullscreenState: after a flip chain's full-screen / windowed
+    // transition "you must call ResizeBuffers to ensure that your call to
+    // IDXGISwapChain1::Present1 succeeds" (measured a73, both directions,
+    // DXGI_PRESENT_TEST included: INVALID_CALL until ResizeBuffers).
+    if (flip && chain.exclusive.needs_resize_buffers) {
         return DXGI_ERROR_INVALID_CALL;
     }
     if (flip) {
@@ -481,7 +490,7 @@ u32 D3D11Manager::present_swap_chain(GuestAddr address, u32 sync_interval,
     // guest's activation bookkeeping catches up.
     const bool occluded =
         chain.window_missing ||
-        (chain.occluded_by_focus_loss &&
+        (chain.exclusive.occluded_by_focus_loss &&
          (!m_window_services.window_occluded ||
           m_window_services.window_occluded(chain.desc.output_window)));
     if ((flags & kPresentTest) != 0) {

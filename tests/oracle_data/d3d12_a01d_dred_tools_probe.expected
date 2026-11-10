@@ -1,0 +1,162 @@
+dred_off QI(DRED2): 0x00000000 S_OK
+dred_off live GetAutoBreadcrumbsOutput: 0x887a0004 DXGI_ERROR_UNSUPPORTED head=-
+dred_off live GetAutoBreadcrumbsOutput1: 0x887a0004 DXGI_ERROR_UNSUPPORTED head=-
+dred_off live GetPageFaultAllocationOutput: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_off live GetPageFaultAllocationOutput1: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_off live GetPageFaultAllocationOutput2: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_off live GetDeviceState: 0
+dred_off RemoveDevice: reason: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+dred_off removed GetAutoBreadcrumbsOutput: 0x887a0004 DXGI_ERROR_UNSUPPORTED head=-
+dred_off removed GetAutoBreadcrumbsOutput1: 0x887a0004 DXGI_ERROR_UNSUPPORTED head=-
+dred_off removed GetPageFaultAllocationOutput: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_off removed GetPageFaultAllocationOutput1: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_off removed GetPageFaultAllocationOutput2: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_off removed GetDeviceState: 0
+dred_off end: GetDeviceRemovedReason 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+dred_on GetInterface(DREDSettings2): 0x00000000 S_OK
+dred_on dred-on device GetDesc: ret=RetVal flags=0x40000058 gbv=0x0 sdk=616 experimental=0
+dred_on execute: 0x00000000 S_OK
+dred_on pending Close: 0x00000000 S_OK
+dred_on QI(DRED2): 0x00000000 S_OK
+dred_on live GetAutoBreadcrumbsOutput: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE head=-
+dred_on live GetAutoBreadcrumbsOutput1: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE head=-
+dred_on live GetPageFaultAllocationOutput: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE
+dred_on live GetPageFaultAllocationOutput1: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE
+dred_on live GetPageFaultAllocationOutput2: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE
+dred_on live GetDeviceState: 0
+dred_on RemoveDevice: reason: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+dred_on removed GetAutoBreadcrumbsOutput: 0x00000000 S_OK head=NULL
+dred_on removed GetAutoBreadcrumbsOutput1: 0x00000000 S_OK head=NULL
+dred_on removed nodes: 0
+dred_on removed GetPageFaultAllocationOutput: 0x00000000 S_OK
+dred_on removed GetPageFaultAllocationOutput1: 0x00000000 S_OK
+dred_on removed GetPageFaultAllocationOutput2: 0x00000000 S_OK va=0x0 existing=0 freed=0 flags=0
+dred_on removed GetDeviceState: 0
+dred_on end: GetDeviceRemovedReason 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+dred_runtime_removal GetInterface(DREDSettings2): 0x00000000 S_OK
+dred_runtime_removal dred-on device GetDesc: ret=RetVal flags=0x40000058 gbv=0x0 sdk=616 experimental=0
+dred_runtime_removal execute: 0x00000000 S_OK
+dred_runtime_removal pending Close: 0x00000000 S_OK
+dred_runtime_removal QI(DRED2): 0x00000000 S_OK
+dred_runtime_removal live GetAutoBreadcrumbsOutput: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE head=-
+dred_runtime_removal live GetAutoBreadcrumbsOutput1: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE head=-
+dred_runtime_removal live GetPageFaultAllocationOutput: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE
+dred_runtime_removal live GetPageFaultAllocationOutput1: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE
+dred_runtime_removal live GetPageFaultAllocationOutput2: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE
+dred_runtime_removal live GetDeviceState: 0
+dred_runtime_removal SetStablePowerState(FALSE): 0x80004005 E_FAIL reason=0x887a0001 DXGI_ERROR_INVALID_CALL
+dred_runtime_removal removed GetAutoBreadcrumbsOutput: 0x00000000 S_OK head=NULL
+dred_runtime_removal removed GetAutoBreadcrumbsOutput1: 0x00000000 S_OK head=NULL
+dred_runtime_removal removed nodes: 0
+dred_runtime_removal removed GetPageFaultAllocationOutput: 0x00000000 S_OK
+dred_runtime_removal removed GetPageFaultAllocationOutput1: 0x00000000 S_OK
+dred_runtime_removal removed GetPageFaultAllocationOutput2: 0x00000000 S_OK va=0x0 existing=0 freed=0 flags=0
+dred_runtime_removal removed GetDeviceState: 0
+dred_runtime_removal end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+dred_markers GetInterface(DREDSettings2): 0x00000000 S_OK
+dred_markers markers device GetDesc: ret=RetVal flags=0x40000088 gbv=0x0 sdk=616 experimental=0
+dred_markers execute: 0x00000000 S_OK
+dred_markers pending Close: 0x00000000 S_OK
+dred_markers QI(DRED2): 0x00000000 S_OK
+dred_markers live GetAutoBreadcrumbsOutput: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE head=-
+dred_markers live GetAutoBreadcrumbsOutput1: 0x887a0022 DXGI_ERROR_NOT_CURRENTLY_AVAILABLE head=-
+dred_markers live GetPageFaultAllocationOutput: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_markers live GetPageFaultAllocationOutput1: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_markers live GetPageFaultAllocationOutput2: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_markers live GetDeviceState: 0
+dred_markers RemoveDevice: reason: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+dred_markers removed GetAutoBreadcrumbsOutput: 0x00000000 S_OK head=NULL
+dred_markers removed GetAutoBreadcrumbsOutput1: 0x00000000 S_OK head=NULL
+dred_markers removed nodes: 0
+dred_markers removed GetPageFaultAllocationOutput: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_markers removed GetPageFaultAllocationOutput1: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_markers removed GetPageFaultAllocationOutput2: 0x887a0004 DXGI_ERROR_UNSUPPORTED
+dred_markers removed GetDeviceState: 0
+dred_markers end: GetDeviceRemovedReason 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+config QI(DeviceConfiguration1): 0x00000000 S_OK
+config QI(DeviceConfiguration) same as 1: 0x00000000 S_OK same=1
+config QI(IUnknown) is the device's QI(IUnknown): 1
+config device GetDesc: ret=RetVal flags=0x40000000 gbv=0x0 sdk=616 experimental=0
+config GetEnabledExperimentalFeatures(NULL, 0): 0x00000000 S_OK
+config GetEnabledExperimentalFeatures(buf, 2): 0x00000000 S_OK first-byte=0xcd
+config SerializeVersionedRootSignature(1.1): 0x00000000 S_OK blob=obj err=NULL size=92
+config   same bytes as D3D12SerializeVersionedRootSignature: 1
+config SerializeVersionedRootSignature(version 9): 0x80070057 E_INVALIDARG blob=NULL err=NULL
+config CreateVersionedRootSignatureDeserializer: 0x00000000 S_OK out=obj
+config   GetRootSignatureDescAtVersion(1.1): 0x00000000 S_OK params=1
+config FromSubobjectInLibrary(root signature blob, "rs"): 0x80070057 E_INVALIDARG out=NULL
+config CreateVersionedRootSignatureDeserializer(junk): 0x80070057 E_INVALIDARG out=NULL
+config Release: 1
+config factory QI(DeviceConfiguration1): 0x00000000 S_OK
+config factory GetDesc: ret=RetVal flags=0x0 gbv=0x0 sdk=616 experimental=0
+config factory config QI(IUnknown) is the factory's QI(IUnknown): 1
+config factory after SetFlags(4) GetDesc: ret=RetVal flags=0x0 gbv=0x0 sdk=616 experimental=0
+config end: GetDeviceRemovedReason 0x00000000 S_OK
+factory_state CreateDeviceFactory(602, .\D3D12\): 0x00000000 S_OK out=obj
+factory_state CreateDeviceFactory(615, .\D3D12\): 0x00000000 S_OK out=obj
+factory_state CreateDeviceFactory(617, .\D3D12\): 0x887e0003 D3D12_ERROR_INVALID_REDIST out=NULL
+factory_state CreateDeviceFactory(1, .\D3D12\): 0x00000000 S_OK out=obj
+factory_state CreateDeviceFactory(0, .\D3D12\): 0x00000000 S_OK out=obj
+factory_state CreateDeviceFactory(100000, .\D3D12\): 0x887e0003 D3D12_ERROR_INVALID_REDIST out=NULL
+factory_state factory device (nothing set): 0x00000000 S_OK flags=0x40000000
+factory_state ALLOW_RETURNING_EXISTING_DEVICE with a live factory device: 0x00000000 S_OK same=0
+factory_state factory GetConfigurationInterface(DRED): 0x00000000 S_OK
+factory_state factory after its DRED auto on GetDesc: ret=RetVal flags=0x8 gbv=0x0 sdk=616 experimental=0
+factory_state factory device (factory DRED auto on): 0x00000000 S_OK flags=0x40000008
+factory_state then D3D12CreateDevice (global state untouched): 0x00000000 S_OK flags=0x40000000
+factory_state ApplyToGlobalState then D3D12CreateDevice: 0x00000000 S_OK flags=0x40000008
+factory_state new factory device before InitializeFromGlobalState: flags=0x40000000
+factory_state InitializeFromGlobalState then factory device: 0x00000000 S_OK flags=0x40000048
+tools QI(DeviceTools1): 0x00000000 S_OK
+tools QI(DeviceTools) same as 1: 1
+tools GetApplicationSpecificDriverState: 0x80004005 E_FAIL out=untouched
+tools GetApplicationSpecificDriverBlobStatus: 1
+tools create: buffer 0x80070057 E_INVALIDARG
+tools SetNextAllocationAddress(freed VA) then buffer: NULL same-va=0
+tools create: buffer 0x80070057 E_INVALIDARG
+tools   the buffer after it: NULL same-va=0
+tools SetNextAllocationAddress(0) then buffer: obj
+tools create: buffer 0x80070057 E_INVALIDARG
+tools SetNextAllocationAddress(live VA) then buffer: NULL same-va=0
+tools create: buffer 0x80070057 E_INVALIDARG
+tools SetNextAllocationAddress(unused VA +1 GiB) then buffer: NULL same-va=0
+tools   then CreateHeap: 0x00000000 S_OK
+tools Release: 1
+tools heap QI(PageableTools): 0x00000000 S_OK
+tools heap tools QI(IUnknown) identity: 1
+tools heap GetAllocation: 0x80004001 E_NOTIMPL start-nonzero=1 start==GetGPUVirtualAddress=0 size=14829735431805717965
+tools committed buffer QI(PageableTools): 0x00000000 S_OK
+tools committed buffer tools QI(IUnknown) identity: 1
+tools committed buffer GetAllocation: 0x80004001 E_NOTIMPL start-nonzero=1 start==GetGPUVirtualAddress=0 size=14829735431805717965
+tools texture QI(PageableTools): 0x00000000 S_OK
+tools texture tools QI(IUnknown) identity: 1
+tools texture GetAllocation: 0x80004001 E_NOTIMPL start-nonzero=1 start==GetGPUVirtualAddress=0 size=14829735431805717965
+tools placed buffer QI(PageableTools): 0x00000000 S_OK
+tools placed buffer tools QI(IUnknown) identity: 1
+tools placed buffer GetAllocation: 0x80004001 E_NOTIMPL start-nonzero=1 start==GetGPUVirtualAddress=0 size=14829735431805717965
+tools end: GetDeviceRemovedReason 0x00000000 S_OK
+compat QI(CompatibilityDevice): 0x00000000 S_OK
+compat CreateSharedHeap(SHARED, flags 0): 0x00000000 S_OK out=obj flags=0x1
+compat CreateSharedHeap(SHARED, NON_NT_HANDLE): 0x00000000 S_OK out=obj flags=0x1
+compat CreateSharedHeap(SHARED, KEYED_MUTEX): 0x00000000 S_OK out=obj flags=0x1
+compat CreateSharedHeap(SHARED, 9_ON_12): 0x00000000 S_OK out=obj flags=0x1
+compat CreateSharedHeap(SHARED, flag 0x8): 0x80070057 E_INVALIDARG out=NULL
+compat CreateSharedHeap(not SHARED, flags 0): 0x80070057 E_INVALIDARG out=NULL
+compat Reflect(compat heap, COMPATIBILITY_SHARED_FLAGS): 0x00000000 S_OK value=0x0
+compat Reflect(compat heap, D3D11_RESOURCE_FLAGS): 0x80070057 E_INVALIDARG bind=0xcdcdcdcd misc=0xcdcdcdcd cpu=0xcdcdcdcd stride=3452816845
+compat Reflect(compat heap, NON_NT_SHARED_HANDLE): 0x80070057 E_INVALIDARG handle=untouched
+compat Reflect(compat heap, COMPATIBILITY_SHARED_FLAGS, size 2): 0x80070057 E_INVALIDARG
+compat Reflect(compat heap, property 7): 0x80070057 E_INVALIDARG
+compat Reflect(non-NT compat heap, COMPATIBILITY_SHARED_FLAGS): 0x00000000 S_OK value=0x1
+compat Reflect(non-NT compat heap, D3D11_RESOURCE_FLAGS): 0x80070057 E_INVALIDARG bind=0xcdcdcdcd misc=0xcdcdcdcd cpu=0xcdcdcdcd stride=3452816845
+compat Reflect(non-NT compat heap, NON_NT_SHARED_HANDLE): 0x00000000 S_OK handle=set
+compat Reflect(non-NT compat heap, COMPATIBILITY_SHARED_FLAGS, size 2): 0x80070057 E_INVALIDARG
+compat Reflect(non-NT compat heap, property 7): 0x80070057 E_INVALIDARG
+compat Reflect(CreateHeap SHARED heap, COMPATIBILITY_SHARED_FLAGS): 0x00000000 S_OK value=0x0
+compat Reflect(non-shared heap, COMPATIBILITY_SHARED_FLAGS): 0x80070057 E_INVALIDARG value=0xcdcdcdcd
+compat CreateSharedResource(buffer, SHARED, no 11 flags): 0x00000000 S_OK out=obj
+compat   Reflect(D3D11_RESOURCE_FLAGS): 0x80004005 E_FAIL bind=0x0 misc=0x0 cpu=0x0 stride=0
+compat CreateSharedResource(tex2d, SHARED, BIND_SHADER_RESOURCE): 0x80070057 E_INVALIDARG out=NULL
+compat CreateSharedResource(buffer, not SHARED): 0x80070057 E_INVALIDARG out=NULL
+compat Release: 1
+compat end: GetDeviceRemovedReason 0x00000000 S_OK

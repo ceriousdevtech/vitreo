@@ -17,6 +17,7 @@
 /// why these are asserted rather than commented.
 
 #include "graphics/contracts/backend_device.hpp"
+#include "winapi/graphics/d3d12/d3d12_constants.hpp"
 
 #include <gtest/gtest.h>
 
@@ -39,8 +40,8 @@ TEST(BackendBindingLayout, BufferWindowsDoNotOverlap) {
     const Window windows[] = {
         {"inline constants", BACKEND_INLINE_CONSTANT_BUFFER_INDEX,
          BACKEND_INLINE_CONSTANT_BUFFER_INDEX + 1},
-        {"legacy vertex data", BACKEND_LEGACY_VERTEX_DATA_INDEX,
-         BACKEND_LEGACY_VERTEX_DATA_INDEX + 1},
+        {"vertex capture", BACKEND_VERTEX_CAPTURE_BUFFER_INDEX,
+         BACKEND_VERTEX_CAPTURE_BUFFER_INDEX + 1},
         {"b#", BACKEND_CONSTANT_BUFFER_BASE,
          BACKEND_CONSTANT_BUFFER_BASE + BACKEND_MAX_CONSTANT_BUFFER_SLOTS},
         {"structured t#", BACKEND_SRV_BUFFER_BASE,
@@ -112,8 +113,17 @@ TEST(BackendBindingLayout, CallStructsCoverTheWindowsFrontendsWriteTo) {
 // cost no behavioural test can see. This is a ratchet, not a law: raise the
 // bound deliberately, in the commit that needs it, having measured the draw
 // path. Do not raise it to make a build pass.
+// The growth from 3256 is the Windows input-slot count
+// (D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT): the two per-stream arrays in
+// BackendDrawCall. Measured sizeof(BackendDrawCall) after that growth. The
+// growth from 3640 to 3656 is the heap-window descriptor set
+// (BACKEND_DESCRIPTOR_SET_HEAP_WINDOW): one pointer per stage. The vertex-
+// pull table and the mesh fields took it to 3792; the mesh dispatch and the
+// object stage's tables moved out of line (BackendDrawCall::mesh), 3608.
 TEST(BackendBindingLayout, CallStructsStayWithinTheirSizeRatchet) {
-    EXPECT_LE(sizeof(BackendDrawCall), usize{3072})
+    EXPECT_EQ(BACKEND_MAX_VERTEX_BUFFERS,
+              winapi::d3d12::D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT);
+    EXPECT_LE(sizeof(BackendDrawCall), usize{3608})
         << "BackendDrawCall grew to " << sizeof(BackendDrawCall)
         << " bytes; it is built per draw call";
     EXPECT_LE(sizeof(BackendDispatchCall), usize{2048})
@@ -131,33 +141,37 @@ TEST(BackendBindingLayout, CallStructsStayWithinTheirSizeRatchet) {
 // vertex buffers bound, so its output buffer must not share an index with any
 // of them. The failure mode is invisible: two bindings at one index lose one,
 // and a draw that fetched its own output looks like a shader that wrote zeros.
-TEST(BackendBindingLayout, VertexCaptureBufferOwnsTheLastFreeBufferIndex) {
+TEST(BackendBindingLayout, VertexCaptureBufferDoesNotAliasInputStreams) {
     using namespace vitreo::graphics;
 
-    // It sits above every other buffer window, so it cannot alias one.
-    EXPECT_GE(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX,
-              BACKEND_VERTEX_BUFFER_BASE + BACKEND_MAX_VERTEX_BUFFERS);
-    EXPECT_GE(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX,
-              BACKEND_UAV_BUFFER_BASE + BACKEND_MAX_TEXTURE_SLOTS);
-    EXPECT_GE(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX,
-              BACKEND_SRV_BUFFER_BASE + BACKEND_MAX_TEXTURE_SLOTS);
-    EXPECT_GE(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX,
-              BACKEND_CONSTANT_BUFFER_BASE + BACKEND_MAX_CONSTANT_BUFFER_SLOTS);
+    // Capture owns the hole under the b# window. The vertex window now runs
+    // through the Windows slot count, which is past Metal's table, so capture
+    // cannot sit at the old last index.
+    EXPECT_LT(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX, BACKEND_VERTEX_BUFFER_BASE);
+    EXPECT_LT(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX, BACKEND_CONSTANT_BUFFER_BASE);
+    EXPECT_LT(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX, BACKEND_SRV_BUFFER_BASE);
+    EXPECT_LT(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX, BACKEND_UAV_BUFFER_BASE);
     EXPECT_NE(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX,
               BACKEND_INLINE_CONSTANT_BUFFER_INDEX);
+    EXPECT_EQ(BACKEND_LEGACY_VERTEX_DATA_INDEX, BACKEND_VERTEX_BUFFER_BASE);
     EXPECT_NE(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX,
               BACKEND_LEGACY_VERTEX_DATA_INDEX);
 
-    // And it fits, with nothing to spare. That is why stream-out targets are
-    // written by a compute repack, not by the vertex stage: four targets and a
-    // filled-size counter would need five more vertex-stage indices.
+    EXPECT_TRUE(vertex_stream_bindable(8u));
+    EXPECT_FALSE(vertex_stream_bindable(9u));
+    EXPECT_LT(vertex_stream_buffer_index(8u),
+              BACKEND_METAL_BUFFER_ARGUMENT_LIMIT);
+    EXPECT_GE(vertex_stream_buffer_index(9u),
+              BACKEND_METAL_BUFFER_ARGUMENT_LIMIT);
+
+    // Bindable streams fill the table. Stream-out targets still do not fit
+    // on the vertex stage: four targets and a filled-size counter would need
+    // indices past Metal's limit.
     EXPECT_LT(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX,
               BACKEND_METAL_BUFFER_ARGUMENT_LIMIT);
-    EXPECT_EQ(BACKEND_BUFFER_INDEX_LIMIT,
-              BACKEND_VERTEX_CAPTURE_BUFFER_INDEX + 1);
-    EXPECT_LE(BACKEND_BUFFER_INDEX_LIMIT, BACKEND_METAL_BUFFER_ARGUMENT_LIMIT);
-    EXPECT_GT(BACKEND_VERTEX_CAPTURE_BUFFER_INDEX +
-                  BACKEND_MAX_STREAM_OUT_TARGETS + 1,
+    EXPECT_EQ(BACKEND_BUFFER_INDEX_LIMIT, BACKEND_METAL_BUFFER_ARGUMENT_LIMIT);
+    EXPECT_GT(BACKEND_VERTEX_BUFFER_BASE + BACKEND_BINDABLE_VERTEX_STREAMS +
+                  BACKEND_MAX_STREAM_OUT_TARGETS,
               BACKEND_METAL_BUFFER_ARGUMENT_LIMIT)
         << "if this ever fits, the vertex stage could write SO targets directly";
     EXPECT_EQ(BACKEND_MAX_STREAM_OUT_TARGETS, 4u)

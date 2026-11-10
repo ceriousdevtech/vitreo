@@ -68,7 +68,8 @@ bool DxbcTranslator::emit_types() {
     const u32 bias_struct = m_builder.emit_type_struct(
         {bias_array, border_array, size_array, m_type_uint, m_type_uint,
          m_type_uint, m_type_uint, m_type_float, m_type_uint, m_type_float,
-         m_type_float, border_array, cb_limit_array, minmax_array});
+         m_type_float, border_array, cb_limit_array, minmax_array,
+         m_type_uvec4});
     m_builder.emit_decorate(bias_struct, SpvDecoration::Block);
     m_builder.emit_member_decorate(
         bias_struct, 0, SpvDecoration::Offset, 0);
@@ -106,6 +107,9 @@ bool DxbcTranslator::emit_types() {
     m_builder.emit_member_decorate(bias_struct, kPushMemberMinMaxSamplers,
                                    SpvDecoration::Offset,
                                    kMinMaxSamplerOffset);
+    // Member 14: the render-target array index rule (kLayerStateOffset).
+    m_builder.emit_member_decorate(bias_struct, kPushMemberLayerState,
+                                   SpvDecoration::Offset, kLayerStateOffset);
     m_type_ptr_push_vec4 =
         m_builder.emit_type_pointer(SpvStorageClass::PushConstant, m_type_vec4);
     m_type_ptr_push_float = m_builder.emit_type_pointer(
@@ -151,10 +155,21 @@ bool DxbcTranslator::emit_types() {
     m_type_uimage_2d_array =
         m_builder.emit_type_image(m_type_uint, SpvDim::Dim2D, true);
     m_type_uimage_3d = m_builder.emit_type_image(m_type_uint, SpvDim::Dim3D);
+    // Integer TextureCube / TextureCubeArray, same Dim as the float cubes.
+    // gather4 (D3D11.3 22.4.2, 7.18.12) reads the selected face and spills
+    // across edges; these are not 2D images.
+    m_type_uimage_cube =
+        m_builder.emit_type_image(m_type_uint, SpvDim::DimCube);
+    m_type_uimage_cube_array =
+        m_builder.emit_type_image(m_type_uint, SpvDim::DimCube, true);
     m_type_iimage_2d = m_builder.emit_type_image(m_type_int, SpvDim::Dim2D);
     m_type_iimage_2d_array =
         m_builder.emit_type_image(m_type_int, SpvDim::Dim2D, true);
     m_type_iimage_3d = m_builder.emit_type_image(m_type_int, SpvDim::Dim3D);
+    m_type_iimage_cube =
+        m_builder.emit_type_image(m_type_int, SpvDim::DimCube);
+    m_type_iimage_cube_array =
+        m_builder.emit_type_image(m_type_int, SpvDim::DimCube, true);
     m_type_ms_image_2d =
         m_builder.emit_type_image(m_type_float, SpvDim::Dim2D, false, true);
     m_type_ms_image_2d_array =
@@ -229,10 +244,18 @@ bool DxbcTranslator::emit_types() {
         m_builder.emit_type_sampled_image(m_type_uimage_2d);
     m_type_sampled_uimage_2d_array =
         m_builder.emit_type_sampled_image(m_type_uimage_2d_array);
+    m_type_sampled_uimage_cube =
+        m_builder.emit_type_sampled_image(m_type_uimage_cube);
+    m_type_sampled_uimage_cube_array =
+        m_builder.emit_type_sampled_image(m_type_uimage_cube_array);
     m_type_sampled_iimage_2d =
         m_builder.emit_type_sampled_image(m_type_iimage_2d);
     m_type_sampled_iimage_2d_array =
         m_builder.emit_type_sampled_image(m_type_iimage_2d_array);
+    m_type_sampled_iimage_cube =
+        m_builder.emit_type_sampled_image(m_type_iimage_cube);
+    m_type_sampled_iimage_cube_array =
+        m_builder.emit_type_sampled_image(m_type_iimage_cube_array);
     m_type_sampled_image_3d =
         m_builder.emit_type_sampled_image(m_type_image_3d);
     m_type_sampled_image_cube =
@@ -264,12 +287,20 @@ bool DxbcTranslator::emit_types() {
         SpvStorageClass::UniformConstant, m_type_uimage_2d_array);
     m_type_ptr_uniform_constant_uimage_3d = m_builder.emit_type_pointer(
         SpvStorageClass::UniformConstant, m_type_uimage_3d);
+    m_type_ptr_uniform_constant_uimage_cube = m_builder.emit_type_pointer(
+        SpvStorageClass::UniformConstant, m_type_uimage_cube);
+    m_type_ptr_uniform_constant_uimage_cube_array = m_builder.emit_type_pointer(
+        SpvStorageClass::UniformConstant, m_type_uimage_cube_array);
     m_type_ptr_uniform_constant_iimage_2d = m_builder.emit_type_pointer(
         SpvStorageClass::UniformConstant, m_type_iimage_2d);
     m_type_ptr_uniform_constant_iimage_2d_array = m_builder.emit_type_pointer(
         SpvStorageClass::UniformConstant, m_type_iimage_2d_array);
     m_type_ptr_uniform_constant_iimage_3d = m_builder.emit_type_pointer(
         SpvStorageClass::UniformConstant, m_type_iimage_3d);
+    m_type_ptr_uniform_constant_iimage_cube = m_builder.emit_type_pointer(
+        SpvStorageClass::UniformConstant, m_type_iimage_cube);
+    m_type_ptr_uniform_constant_iimage_cube_array = m_builder.emit_type_pointer(
+        SpvStorageClass::UniformConstant, m_type_iimage_cube_array);
     m_type_ptr_uniform_constant_ms_image_2d = m_builder.emit_type_pointer(
         SpvStorageClass::UniformConstant, m_type_ms_image_2d);
     m_type_ptr_uniform_constant_ms_image_2d_array =

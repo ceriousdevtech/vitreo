@@ -87,6 +87,11 @@ struct Sm3Shader {
     /// XYZRHW and the draw path must append viewport size after the c[] file
     /// so the translator can map it into Metal clip space.
     bool needs_viewport{false};
+    /// A ps_1_x bump op (texbem, texbeml, bem) reads D3DTSS_BUMPENVMAT00..11,
+    /// LSCALE and LOFFSET: the draw path appends `float4 bump_env[16]` after
+    /// the padded c/i/b file -- per stage s, [2s] = (MAT00, MAT01, MAT10,
+    /// MAT11) and [2s+1] = (LSCALE, LOFFSET, 0, 0).
+    bool uses_bump_env{false};
 };
 
 /// Translate a D3D9 shader token stream.
@@ -97,9 +102,13 @@ struct Sm3Shader {
 ///                    (ps_1_1–1_3 honour PROJECTED at sample time from this
 ///                    runtime state, not from the texldp opcode bit).
 /// @param stage_ttf_count Length of @p stage_ttf (stages beyond are treated as 0).
+/// @param stage_dims  Optional, @p stage_ttf_count long: ps_1_x has no sampler
+///                    declarations, so each stage samples in the dimension of
+///                    the texture bound to it (D3DSTT_2D 2, CUBE 3, VOLUME 4).
 [[nodiscard]] Sm3Shader translate_sm3_to_msl(
     const u32* tokens, usize token_count,
-    const u32* stage_ttf = nullptr, usize stage_ttf_count = 0);
+    const u32* stage_ttf = nullptr, usize stage_ttf_count = 0,
+    const u8* stage_dims = nullptr);
 
 /// Fold D3DRS_ALPHATESTENABLE into a translated pixel shader. Alpha test is
 /// a render state, not an opcode, so a `vs+ps` pair otherwise ignores it and

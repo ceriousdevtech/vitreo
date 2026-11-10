@@ -1,0 +1,71 @@
+tier options: 0x00000000 S_OK TiledResourcesTier=3 StandardSwizzle64KBSupported=1
+tier end: GetDeviceRemovedReason 0x00000000 S_OK
+tiling rgba8_256_chain: tiles=12 standard=9 packed=0 packed_tiles=0 packed_start=0 shape=128x128x1 subs=9
+tiling rgba8_256_chain: subresources 0:2x2x1@0 1:1x1x1@4 2:1x1x1@5 3:1x1x1@6 4:1x1x1@7 5:1x1x1@8 6:1x1x1@9 7:1x1x1@10 8:1x1x1@11
+tiling rgba8_1024x16_chain: tiles=22 standard=11 packed=0 packed_tiles=0 packed_start=0 shape=128x128x1 subs=11
+tiling rgba8_1024x16_chain: subresources 0:8x1x1@0 1:4x1x1@8 2:2x1x1@12 3:1x1x1@14 4:1x1x1@15 5:1x1x1@16 6:1x1x1@17 7:1x1x1@18 8:1x1x1@19 9:1x1x1@20 10:1x1x1@21
+tiling rgba32f_1024_chain: tiles=347 standard=11 packed=0 packed_tiles=0 packed_start=0 shape=64x64x1 subs=11
+tiling rgba32f_1024_chain: subresources 0:16x16x1@0 1:8x8x1@256 2:4x4x1@320 3:2x2x1@336 4:1x1x1@340 5:1x1x1@341 6:1x1x1@342 7:1x1x1@343 8:1x1x1@344 9:1x1x1@345 10:1x1x1@346
+tiling bc1_512_chain: tiles=11 standard=10 packed=0 packed_tiles=0 packed_start=0 shape=512x256x1 subs=10
+tiling bc1_512_chain: subresources 0:1x2x1@0 1:1x1x1@2 2:1x1x1@3 3:1x1x1@4 4:1x1x1@5 5:1x1x1@6 6:1x1x1@7 7:1x1x1@8 8:1x1x1@9 9:1x1x1@10
+tiling bc7_4096_chain: tiles=349 standard=13 packed=0 packed_tiles=0 packed_start=0 shape=256x256x1 subs=13
+tiling bc7_4096_chain: subresources 0:16x16x1@0 1:8x8x1@256 2:4x4x1@320 3:2x2x1@336 4:1x1x1@340 5:1x1x1@341 6:1x1x1@342 7:1x1x1@343 8:1x1x1@344 9:1x1x1@345 10:1x1x1@346 11:1x1x1@347 12:1x1x1@348
+tiling r8_200x300_chain: tiles=10 standard=9 packed=0 packed_tiles=0 packed_start=0 shape=256x256x1 subs=9
+tiling r8_200x300_chain: subresources 0:1x2x1@0 1:1x1x1@2 2:1x1x1@3 3:1x1x1@4 4:1x1x1@5 5:1x1x1@6 6:1x1x1@7 7:1x1x1@8 8:1x1x1@9
+tiling rgba8_256_array4_chain: CreateReservedResource 0x80070057 E_INVALIDARG
+tiling rgba8_256_array4_mips2: tiles=20 standard=2 packed=0 packed_tiles=0 packed_start=0 shape=128x128x1 subs=8
+tiling rgba8_256_array4_mips2: subresources 0:2x2x1@0 1:1x1x1@4 2:2x2x1@5 3:1x1x1@9 4:2x2x1@10 5:1x1x1@14 6:2x2x1@15 7:1x1x1@19
+tiling rgba8_3d_128x128x64_chain: tiles=78 standard=8 packed=0 packed_tiles=0 packed_start=0 shape=32x32x16 subs=8
+tiling rgba8_3d_128x128x64_chain: subresources 0:4x4x4@0 1:2x2x2@64 2:1x1x1@72 3:1x1x1@73 4:1x1x1@74 5:1x1x1@75 6:1x1x1@76 7:1x1x1@77
+tiling rgba16f_512_rt_chain: tiles=49 standard=10 packed=0 packed_tiles=0 packed_start=0 shape=128x64x1 subs=10
+tiling rgba16f_512_rt_chain: subresources 0:4x8x1@0 1:2x4x1@32 2:1x2x1@40 3:1x1x1@42 4:1x1x1@43 5:1x1x1@44 6:1x1x1@45 7:1x1x1@46 8:1x1x1@47 9:1x1x1@48
+tiling end: GetDeviceRemovedReason 0x00000000 S_OK
+residency reserved: MakeResident 0x00000000 S_OK
+residency reserved: removed 0x00000000 S_OK
+residency reserved: Evict 0x00000000 S_OK
+residency reserved: removed 0x00000000 S_OK
+residency reserved: MakeResident again 0x00000000 S_OK
+residency reserved: removed 0x00000000 S_OK
+residency heap: MakeResident 0x00000000 S_OK
+residency heap: Evict 0x00000000 S_OK
+residency heap: MakeResident again 0x00000000 S_OK
+residency heap: removed 0x00000000 S_OK
+residency reserved: SetResidencyPriority 0x80070057 E_INVALIDARG
+residency heap: SetResidencyPriority 0x00000000 S_OK
+residency end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+copytiles from_null: Close+run 0x00000000 S_OK
+copytiles from_null: words zero=16384 pattern=0 other=0
+copytiles to_null: Close+run 0x00000000 S_OK
+copytiles to_null: mapped tile 0 afterwards: pattern words=0
+copytiles end: GetDeviceRemovedReason 0x00000000 S_OK
+status dispatch: phase 0 0x00000000 S_OK
+status sample_inside: value=0x3f800000 mapped=1
+status sample_null: value=0x00000000 mapped=0
+status sample_last_centre: value=0x3f800000 mapped=1
+status sample_straddle_0.1: value=0x3f66feff mapped=0
+status sample_tiny_weight: value=0x3f800000 mapped=1
+status sample_half: value=0x3f000000 mapped=0
+status point_mapped: value=0x3f800000 mapped=1
+status point_null: value=0x00000000 mapped=0
+status lod_0.5_null_mip1: value=0x3f000000 mapped=0
+status lod_0.002: value=0x3f7efeff mapped=0
+status lod_1_null_mip1: value=0x00000000 mapped=0
+status grad_clamp_0: value=0x3f800000 mapped=1
+status grad_clamp_1_null_mip1: value=0x00000000 mapped=0
+status grad_clamp_0.5: value=0x3f000000 mapped=0
+status gather_straddle: value=0x40000000 mapped=0
+status gather_inside: value=0x40800000 mapped=1
+status load_inside: value=0x3f800000 mapped=1
+status load_null: value=0x00000000 mapped=0
+status load_null_mip1: value=0x00000000 mapped=0
+status load_out_of_bounds: value=0x00000000 mapped=1
+status raw_mapped: value=0x00000064 mapped=1
+status raw_null: value=0x00000000 mapped=0
+status raw4_across_tiles: value=0x00007ffd mapped=0
+status nontiled_sample: value=0x3f800000 mapped=1
+status nontiled_load: value=0x3f800000 mapped=1
+status dispatch: phase 1 0x00000000 S_OK
+status_after raw_after_null_write: value=0x00000000 mapped=0
+status_after tex_after_null_write: value=0x00000000 mapped=0
+status_after tex_after_mapped_write: value=0x3e808081 mapped=1
+status end: GetDeviceRemovedReason 0x00000000 S_OK

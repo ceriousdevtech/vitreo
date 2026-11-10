@@ -16,7 +16,11 @@
 #include "winapi/ui/uxtheme/uxtheme.hpp"
 #include "winapi/user32/user32_internal.hpp"
 #include "winapi/ui/riched20/riched20.hpp"
+#include "winapi/ui/msftedit/msftedit.hpp"
+#include "winapi/user32/classes/window_class.hpp"
 
+#include <atomic>
+#include <cstdio>
 #include <string>
 
 namespace vitreo::cli {
@@ -100,6 +104,68 @@ void register_ui_controls_dlls(RuntimeContext& ctx, bool guest_is_64bit) {
     {
         auto riched_exports = winapi::create_riched20_thunks();
         (void)reg.register_dll("riched20.dll", std::move(riched_exports));
+    }
+    // -- Msftedit.dll (Rich Edit 4.1+): loading registers RICHEDIT50W, whose
+    // windows are the native Rich Edit control; the last FreeLibrary removes
+    // the class and the module (msftedit_lifecycle_probe).
+    {
+        winapi::MsfteditServices services;
+        services.control_proc = [&ctx](winapi::Marshaler& m, bool ansi) {
+            ctx.u32_ext_mgr.native_control_proc(m, ansi);
+        };
+        services.export_address = [&ctx](const char* name) -> GuestAddr {
+            auto thunk = ctx.thunk_registry.get_thunk_address("msftedit.dll", name);
+            return thunk.is_ok() ? ctx.thunk_registry.guest_entry(thunk.value()) : 0;
+        };
+        services.register_class = [&ctx, guest_is_64bit](GuestAddr base, GuestAddr wndproc) {
+            // The IID_* data exports, published at the first load: their
+            // addresses then stay the same across unload and reload.
+            static std::atomic<bool> iids_published{false};
+            if (!iids_published.exchange(true)) {
+                const auto ids = winapi::msftedit_interface_ids();
+                const u64 block = ctx.vmm.virtual_alloc(0, ids.size() * 16,
+                                                        0x3000 /*MEM_COMMIT|MEM_RESERVE*/,
+                                                        0x04 /*PAGE_READWRITE*/);
+                if (block != 0) {
+                    for (usize i = 0; i < ids.size(); ++i) {
+                        const GuestAddr at = static_cast<GuestAddr>(block + i * 16);
+                        (void)ctx.u32_ext_mgr.memory().write_bytes(
+                            at, reinterpret_cast<const Byte*>(ids[i].guid.data()), 16);
+                        ctx.thunk_registry.register_data_export(
+                            "msftedit.dll", ids[i].name, at, ids[i].ordinal);
+                    }
+                    u32 old_protect = 0;
+                    (void)ctx.vmm.virtual_protect(block, ids.size() * 16, 0x02 /*PAGE_READONLY*/,
+                                                  &old_protect);
+                } else {
+                    std::fprintf(stderr, "[msftedit] cannot allocate the IID_* data exports\n");
+                }
+            }
+            winapi::set_module_native_class(L"RICHEDIT50W", wndproc);
+            winapi::WindowClassData cls;
+            cls.class_name = L"RICHEDIT50W";
+            cls.style = winapi::kMsfteditClassStyle;
+            cls.wndproc = wndproc;
+            cls.wnd_extra = guest_is_64bit ? 8 : 4;  // one pointer
+            cls.hinstance = base;
+            cls.hbr_background = winapi::kMsfteditClassBrush;
+            cls.unicode = true;
+            winapi::ClassError error = winapi::ClassError::None;
+            if (ctx.wclass_mgr.register_class(cls, error) == 0) {
+                std::fprintf(stderr, "[msftedit] RICHEDIT50W registration failed (%u)\n",
+                             static_cast<unsigned>(error));
+            }
+        };
+        services.unregister_class = [&ctx](GuestAddr base) {
+            winapi::ClassError error = winapi::ClassError::None;
+            // A class with live windows stays registered (UnregisterClass:
+            // ERROR_CLASS_HAS_WINDOWS), and so do its native windows.
+            if (ctx.wclass_mgr.unregister_class(L"RICHEDIT50W", base, error)) {
+                winapi::clear_module_native_class(L"RICHEDIT50W");
+            }
+        };
+        (void)reg.register_dll("msftedit.dll",
+                               winapi::create_msftedit_thunks(guest_is_64bit, std::move(services)));
     }
     // -- riched32.dll — Win95-era RichEdit 1.0 host; LoadLibrary target for
     // Older installers LoadLibrary this (Learn: Rich Edit Controls). Same surface
@@ -250,7 +316,14 @@ void register_media_foundation_dcomp_dlls(RuntimeContext& ctx) {
         (void)reg.register_dll("mfplat.dll",
                                winapi::create_mfplat_thunks(ctx.mfplat_mgr));
         (void)reg.register_dll("mfreadwrite.dll", winapi::create_mfreadwrite_thunks());
-        (void)reg.register_dll("mf.dll", winapi::create_mf_thunks());
+        // mf.dll (the Media Session, topology loader and sink factories) is
+        // not a built-in module until the Media Session exists (WS8 M6, the
+        // M7 gate registers it again). Serving it with every factory
+        // refusing let callers that need shlwapi/mf/mfplat/mfplay together
+        // (Unreal's WindowsMoviePlayer) reach MFStartup and assert on its
+        // E_NOTIMPL; with mf.dll missing they leave Media Foundation alone,
+        // as they do on a machine without it. create_mf_thunks() stays for
+        // the unit tests and for M7.
         (void)reg.register_dll("evr.dll", winapi::create_evr_thunks());
         (void)reg.register_dll("msmpeg2vdec.dll", winapi::create_msmpeg2vdec_thunks());
         (void)reg.register_dll("dxva2.dll", winapi::create_dxva2_thunks());
@@ -332,6 +405,16 @@ void register_media_foundation_dcomp_dlls(RuntimeContext& ctx) {
              slot < winapi::dcomp::RECTANGLE_CLIP_METHOD_COUNT; ++slot) {
             methods.rectangle_clip[slot] = thunk(
                 winapi::dcomp_rectangle_clip_method_export_name(slot));
+        }
+        for (usize slot = 0; slot < winapi::dcomp::SURFACE_METHOD_COUNT;
+             ++slot) {
+            methods.surface[slot] = thunk(
+                winapi::dcomp_surface_method_export_name(slot));
+        }
+        for (usize slot = 0; slot < winapi::dcomp::UPDATE_OBJECT_METHOD_COUNT;
+             ++slot) {
+            methods.update_object[slot] = thunk(
+                winapi::dcomp_update_object_method_export_name(slot));
         }
         ctx.dcomp_mgr.set_method_thunks(std::move(methods));
     }

@@ -1,0 +1,216 @@
+;
+; Note: shader requires additional functionality:
+;       Shader extensions for 11.1
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 3e1670d289e28af5fdd9d6d939c81d86
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+; cbuffer Root
+; {
+;
+;   struct Root
+;   {
+;
+;       uint k0;                                      ; Offset:    0
+;       uint k1;                                      ; Offset:    4
+;       uint k2;                                      ; Offset:    8
+;       uint k3;                                      ; Offset:   12
+;   
+;   } Root;                                           ; Offset:    0 Size:    16
+;
+; }
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; Root                              cbuffer      NA          NA     CB0            cb0     1
+; out_ops                               UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.CBufRet.i32 = type { i32, i32, i32, i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+%Root = type { i32, i32, i32, i32 }
+
+define void @cs_bits() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 2, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %4 = mul i32 %3, -1640531535
+  %5 = shl i32 %3, 7
+  %6 = xor i32 %4, %5
+  %7 = mul i32 %6, -2048144789
+  %8 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %2, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %9 = extractvalue %dx.types.CBufRet.i32 %8, 1
+  %10 = add i32 %7, %9
+  %11 = call i32 @dx.op.unaryBits.i32(i32 31, i32 %6)  ; Countbits(value)
+  %12 = call i32 @dx.op.unaryBits.i32(i32 33, i32 %6)  ; FirstbitHi(value)
+  %13 = sub i32 31, %12
+  %14 = icmp eq i32 %12, -1
+  %15 = select i1 %14, i32 -1, i32 %13
+  %16 = call i32 @dx.op.unaryBits.i32(i32 32, i32 %6)  ; FirstbitLo(value)
+  %17 = call i32 @dx.op.unaryBits.i32(i32 34, i32 %10)  ; FirstbitSHi(value)
+  %18 = sub i32 31, %17
+  %19 = icmp eq i32 %17, -1
+  %20 = select i1 %19, i32 -1, i32 %18
+  %21 = call i32 @dx.op.unary.i32(i32 30, i32 %6)  ; Bfrev(value)
+  %22 = call i32 @dx.op.tertiary.i32(i32 50, i32 %6, i32 %10, i32 %3)  ; Msad(a,b,c)
+  %23 = lshr i32 %10, 24
+  %24 = call i32 @dx.op.quaternary.i32(i32 53, i32 24, i32 8, i32 %6, i32 %23)  ; Bfi(width,offset,value,replacedValue)
+  %25 = call i32 @dx.op.tertiary.i32(i32 50, i32 %6, i32 %24, i32 4)  ; Msad(a,b,c)
+  %26 = uitofp i32 %3 to float
+  %27 = fadd fast float %26, -3.200000e+01
+  %28 = fmul fast float %27, 0x3FC24924A0000000
+  %29 = call i32 @dx.op.legacyF32ToF16(i32 130, float %28)  ; LegacyF32ToF16(value)
+  %30 = fmul fast float %26, 1.000000e+06
+  %31 = call i32 @dx.op.legacyF32ToF16(i32 130, float %30)  ; LegacyF32ToF16(value)
+  %32 = shl i32 %31, 16
+  %33 = or i32 %32, %29
+  %34 = call float @dx.op.legacyF16ToF32(i32 131, i32 %6)  ; LegacyF16ToF32(value)
+  %35 = lshr i32 %6, 16
+  %36 = call float @dx.op.legacyF16ToF32(i32 131, i32 %35)  ; LegacyF16ToF32(value)
+  %37 = fadd fast float %36, %34
+  %38 = bitcast float %37 to i32
+  %39 = and i32 %3, 31
+  %40 = lshr i32 %6, %39
+  %41 = and i32 %10, 15
+  %42 = shl i32 1, %41
+  %43 = add i32 %42, -1
+  %44 = and i32 %43, %40
+  %45 = and i32 %3, 15
+  %46 = shl i32 %6, %45
+  %47 = ashr i32 %46, %41
+  %48 = and i32 %3, 7
+  %49 = shl i32 255, %48
+  %50 = xor i32 %49, -1
+  %51 = and i32 %6, %50
+  %52 = and i32 %10, 255
+  %53 = shl i32 %52, %48
+  %54 = or i32 %53, %51
+  %55 = or i32 %10, 1
+  %56 = udiv i32 %6, %55
+  %57 = urem i32 %6, %55
+  %58 = mul i32 %57, 7
+  %59 = add i32 %58, %56
+  %60 = sdiv i32 %6, %55
+  %61 = srem i32 %6, %55
+  %62 = add i32 %61, %60
+  %63 = call i32 @dx.op.tertiary.i32(i32 49, i32 %6, i32 %10, i32 %3)  ; UMad(a,b,c)
+  %64 = sub i32 0, %6
+  %65 = call i32 @dx.op.binary.i32(i32 37, i32 %6, i32 %64)  ; IMax(a,b)
+  %66 = call i32 @dx.op.binary.i32(i32 38, i32 %6, i32 %10)  ; IMin(a,b)
+  %67 = xor i32 %66, %65
+  %68 = call i32 @dx.op.binary.i32(i32 39, i32 %6, i32 %10)  ; UMax(a,b)
+  %69 = xor i32 %67, %68
+  %70 = shl i32 %3, 6
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %70, i32 undef, i32 %11, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %71 = or i32 %70, 4
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %71, i32 undef, i32 %15, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %72 = or i32 %70, 8
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %72, i32 undef, i32 %16, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %73 = or i32 %70, 12
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %73, i32 undef, i32 %20, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %74 = or i32 %70, 16
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %74, i32 undef, i32 %21, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %75 = or i32 %70, 20
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %75, i32 undef, i32 %22, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %76 = or i32 %70, 24
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %76, i32 undef, i32 %25, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %77 = or i32 %70, 28
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %77, i32 undef, i32 %33, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %78 = or i32 %70, 32
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %78, i32 undef, i32 %38, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %79 = or i32 %70, 36
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %79, i32 undef, i32 %44, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %80 = or i32 %70, 40
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %80, i32 undef, i32 %47, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %81 = or i32 %70, 44
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %81, i32 undef, i32 %54, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %82 = or i32 %70, 48
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %82, i32 undef, i32 %59, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %83 = or i32 %70, 52
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %83, i32 undef, i32 %62, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %84 = or i32 %70, 56
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %84, i32 undef, i32 %63, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %85 = or i32 %70, 60
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %85, i32 undef, i32 %69, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.binary.i32(i32, i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.unary.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.unaryBits.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.quaternary.i32(i32, i32, i32, i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.tertiary.i32(i32, i32, i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.legacyF32ToF16(i32, float) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.legacyF16ToF32(i32, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32, %dx.types.Handle, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.bufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8) #2
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!9}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 0}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 0}
+!4 = !{null, !5, !7, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!7 = !{!8}
+!8 = !{i32 0, %Root* undef, !"", i32 0, i32 0, i32 1, i32 16, null}
+!9 = !{void ()* @cs_bits, !"cs_bits", null, !4, !10}
+!10 = !{i32 0, i64 144, i32 4, !11}
+!11 = !{i32 64, i32 1, i32 1}

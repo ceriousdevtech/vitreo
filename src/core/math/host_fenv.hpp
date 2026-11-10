@@ -113,8 +113,9 @@ void clear_host_fp_exceptions() noexcept;
 /// Windows API leaves the caller's MXCSR and x87 control word as they were.
 ///
 /// Construction folds the guest's pending host flags into their class, saves
-/// the installed environment, installs the host default and forgets the memo,
-/// so guest code a handler runs (a callback) installs its own mode afresh.
+/// the installed environment, installs the host default and forgets the memo.
+/// Native flags have a separate host owner, so guest code a handler runs
+/// (a callback) discards them before installing its own mode.
 /// Destruction drops the flags host code raised and restores the saved
 /// environment exactly; if anything installed a guest mode meanwhile (a
 /// nested callback, _controlfp), it re-installs the mode @p control_word /
@@ -122,7 +123,17 @@ void clear_host_fp_exceptions() noexcept;
 /// Both are read at destruction: a handler may change them.
 class HostFpEnvironmentScope {
 public:
-    HostFpEnvironmentScope(const u16& control_word, const u32& mxcsr) noexcept;
+    enum class Restore { Immediately, OnGuestFpUse };
+
+    /// OnGuestFpUse is for execution boundaries whose next guest FP instruction
+    /// passes through apply_*_rounding or the JIT's installed-environment guard.
+    /// On macOS ARM64 it leaves the host default installed after a non-reentrant
+    /// call, with the guest certificate invalid. Host-owned FPSR flags are
+    /// discarded lazily at the next guest FP use or status query, avoiding
+    /// status-register round trips between consecutive native calls.
+    /// Reentrant calls retain eager restoration.
+    HostFpEnvironmentScope(const u16& control_word, const u32& mxcsr,
+                          Restore restore = Restore::Immediately) noexcept;
     ~HostFpEnvironmentScope();
     HostFpEnvironmentScope(const HostFpEnvironmentScope&) = delete;
     HostFpEnvironmentScope& operator=(const HostFpEnvironmentScope&) = delete;
@@ -137,6 +148,7 @@ private:
     u8 m_saved_owner{0};
     u32 m_epoch{0};
     bool m_wrote_control{false};
+    Restore m_restore;
 };
 
 } // namespace vitreo::math

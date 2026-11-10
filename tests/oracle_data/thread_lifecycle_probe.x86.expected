@@ -18,6 +18,7 @@ GETCTX_NULLHANDLE ret=0 err=6
 SUSPENDED_IP_REDIRECT set_ok=1 wait=0 ran=1 on_our_stack=1 exit=4d
 BLOCKED_GET prev=0 ok=1 ip_in_ntdll=1
 BLOCKED_SET set_ok=1 ran_before_signal=0 wait=0 ran=1 rax_at_redirect=0 original_path_ran=0 exit=58
+BLOCKED_ROUNDTRIP prev=0 get_ok=1 set_ok=1 ran_before_signal=0 wait=0 returned=1 wait_result=0 frame_ok=1 exit=66
 RESUME_SELF_PSEUDO ret=0 err=dead
 SUSPEND_NULL ret=ffffffff err=6
 RESUME_NULL ret=ffffffff err=6

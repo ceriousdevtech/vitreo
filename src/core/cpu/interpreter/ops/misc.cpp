@@ -58,13 +58,15 @@ ExecResult exec_int(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
         
         // INT1 / ICEBP (F1) raises #DB directly rather than through the IDT
         // gate that INT 01 (CD 01) uses. Like #BP it is a trap: the resume
-        // context points past the one-byte instruction, and the trap address
-        // is kept separately for EXCEPTION_RECORD.ExceptionAddress.
+        // context points past the instruction, including any prefixes.
+        // Windows reports that same address in EXCEPTION_RECORD.
         case Opcode::INT_1:
             ctx.exception = CpuException::Debug;
             ctx.interrupt_num = 1;
-            ctx.exception_addr = ctx.cpu.rip;
             ctx.cpu.advance_ip(instr.length);
+            // Windows reports the trap's continuation address in both the
+            // exception record and CONTEXT (int1_record_probe{32,64}).
+            ctx.exception_addr = ctx.cpu.rip;
             return ExecResult::Interrupt;
 
         case Opcode::INT_IMM8: {

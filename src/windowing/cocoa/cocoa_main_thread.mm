@@ -77,6 +77,11 @@ CocoaBridge::NativeWaitScope::~NativeWaitScope() {
 // services what is sent to it. The equivalent here: every block for the main
 // thread joins this queue, a perform-block drains it as before, and the main
 // thread's own waits (CocoaBridge::wait_events) drain it too.
+// Defined with wake_main_runloop. CFRunLoopWakeUp does not interrupt
+// nextEventMatchingMask; this posts the coalesced NSEvent when that wait
+// is active.
+void wake_appkit_thread() noexcept;
+
 namespace {
 
 std::mutex& main_work_mutex() {
@@ -100,10 +105,16 @@ void vtr_enqueue_main_work(dispatch_block_t block) {
     CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopCommonModes, ^{
         vtr_drain_main_work();
     });
-    CFRunLoopWakeUp(CFRunLoopGetMain());
+    // CFRunLoopWakeUp interrupts CFRunLoopRunInMode. It does not interrupt
+    // nextEventMatchingMask:untilDate:, which keeps waiting for an event or
+    // the date. A worker parked in SetCursor (or any other sync hop) then
+    // sits out that date — the 16 ms service slice — on the frame thread.
+    wake_appkit_thread();
 }
 
 }  // namespace
+
+std::atomic<int> g_sync_main_hop_depth{0};
 
 void vtr_drain_main_work() {
     if (![NSThread isMainThread]) return;
@@ -173,7 +184,9 @@ void vtr_run_on_main_sync(dispatch_block_t block) {
     // so it would block the guest thread for the entire resize drag.
     dispatch_semaphore_t sem = dispatch_semaphore_create(0);
     vtr_enqueue_main_work(^{
+        g_sync_main_hop_depth.fetch_add(1, std::memory_order_relaxed);
         block();
+        g_sync_main_hop_depth.fetch_sub(1, std::memory_order_relaxed);
         dispatch_semaphore_signal(sem);
     });
     if (t_native_wait_dispatch) {
@@ -214,7 +227,9 @@ void vtr_run_on_main_sync_bailout(
     }
     dispatch_semaphore_t sem = dispatch_semaphore_create(0);
     vtr_enqueue_main_work(^{
+        g_sync_main_hop_depth.fetch_add(1, std::memory_order_relaxed);
         block();
+        g_sync_main_hop_depth.fetch_sub(1, std::memory_order_relaxed);
         dispatch_semaphore_signal(sem);
     });
 
@@ -298,6 +313,10 @@ void CocoaBridge::set_main_thread_parked(bool parked) noexcept {
     g_main_parked.store(parked, std::memory_order_seq_cst);
 }
 
+bool vtr_sync_main_hop_active() noexcept {
+    return g_sync_main_hop_depth.load(std::memory_order_relaxed) != 0;
+}
+
 bool vtr_main_wake_pending() noexcept {
     return g_main_parked.load(std::memory_order_seq_cst) &&
            g_main_wake_pending.load(std::memory_order_seq_cst);
@@ -314,7 +333,7 @@ bool vtr_consume_main_wake_event(void* ns_event) noexcept {
     return true;
 }
 
-void CocoaBridge::wake_main_runloop() noexcept {
+void wake_appkit_thread() noexcept {
     CFRunLoopWakeUp(CFRunLoopGetMain());
     if (NSApp == nil) return;
     if (!g_main_parked.load(std::memory_order_seq_cst) &&
@@ -344,6 +363,10 @@ void CocoaBridge::wake_main_runloop() noexcept {
             g_main_wake_posted.store(false, std::memory_order_release);
         }
     }
+}
+
+void CocoaBridge::wake_main_runloop() noexcept {
+    wake_appkit_thread();
 }
 
 } // namespace vitreo::windowing

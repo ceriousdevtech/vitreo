@@ -232,7 +232,57 @@ enum class Sm4Opcode : u32 {
     DTOU = 215,
     ITOD = 216,
     UTOD = 217,
+    // Tiled resources tier 2 (D3D11.3 5.9.4.5; the D3DWDDM1_3_SB_OPCODE_*
+    // _FEEDBACK and CHECK_ACCESS_FULLY_MAPPED entries of the tokenized
+    // program format), MEASURED: fxc 10.1 compiled
+    // tools/oracle_probe/dxbc_tiled_opcode_probe.hlsl on Windows
+    // (tests/oracle_data/dxbc_tiled_opcode_probe.expected, which a CTest
+    // compares with these values). Each _S form is its base instruction
+    // with a status destination after the destination; the _CL_S forms
+    // end with the per-sample MinLOD clamp.
+    GATHER4_S = 219,
+    GATHER4_C_S = 220,
+    GATHER4_PO_S = 221,
+    GATHER4_PO_C_S = 222,
+    LD_S = 223,
+    LD_MS_S = 224,
+    LD_UAV_TYPED_S = 225,
+    LD_RAW_S = 226,
+    LD_STRUCTURED_S = 227,
+    SAMPLE_L_S = 228,
+    SAMPLE_C_LZ_S = 229,
+    SAMPLE_CL_S = 230,
+    SAMPLE_B_CL_S = 231,
+    SAMPLE_D_CL_S = 232,
+    SAMPLE_C_CL_S = 233,
+    CHECK_ACCESS_FULLY_MAPPED = 234,
 };
+
+/// The base instruction of a tiled-resources status form (219-233), and
+/// whether it ends with a MinLOD clamp operand (the four _CL_S forms;
+/// sample_cl_s is sample with a clamp). False for every other opcode.
+[[nodiscard]] inline bool tiled_status_base(Sm4Opcode op, Sm4Opcode& base,
+                                            bool& clamp) {
+    clamp = false;
+    switch (op) {
+    case Sm4Opcode::GATHER4_S: base = Sm4Opcode::GATHER4; return true;
+    case Sm4Opcode::GATHER4_C_S: base = Sm4Opcode::GATHER4_C; return true;
+    case Sm4Opcode::GATHER4_PO_S: base = Sm4Opcode::GATHER4_PO; return true;
+    case Sm4Opcode::GATHER4_PO_C_S: base = Sm4Opcode::GATHER4_PO_C; return true;
+    case Sm4Opcode::LD_S: base = Sm4Opcode::LD; return true;
+    case Sm4Opcode::LD_MS_S: base = Sm4Opcode::LD_MS; return true;
+    case Sm4Opcode::LD_UAV_TYPED_S: base = Sm4Opcode::LD_UAV_TYPED; return true;
+    case Sm4Opcode::LD_RAW_S: base = Sm4Opcode::LD_RAW; return true;
+    case Sm4Opcode::LD_STRUCTURED_S: base = Sm4Opcode::LD_STRUCTURED; return true;
+    case Sm4Opcode::SAMPLE_L_S: base = Sm4Opcode::SAMPLE_L; return true;
+    case Sm4Opcode::SAMPLE_C_LZ_S: base = Sm4Opcode::SAMPLE_C_LZ; return true;
+    case Sm4Opcode::SAMPLE_CL_S: base = Sm4Opcode::SAMPLE; clamp = true; return true;
+    case Sm4Opcode::SAMPLE_B_CL_S: base = Sm4Opcode::SAMPLE_B; clamp = true; return true;
+    case Sm4Opcode::SAMPLE_D_CL_S: base = Sm4Opcode::SAMPLE_D; clamp = true; return true;
+    case Sm4Opcode::SAMPLE_C_CL_S: base = Sm4Opcode::SAMPLE_C; clamp = true; return true;
+    default: return false;
+    }
+}
 
 // SM4/SM5 Operand Type
 enum class Sm4OperandType : u32 {
@@ -264,6 +314,10 @@ enum class Sm4OperandType : u32 {
     InputPatchConstant = 27,
     InputDomainPoint = 28,
     InputCoverageMask = 35,
+    // vInnerCoverage (D3D11_SB_OPERAND_TYPE_INNER_COVERAGE, the tokenized-
+    // program format; fxc emits 0x0002a001 for `dcl_input vInnerCoverage`,
+    // tools/oracle_probe/d3d12_raster/ps_inner_uav).
+    InnerCoverage = 42,
     InputGSInstanceID = 37,
     OutputDepthGreaterEqual = 38,
     OutputDepthLessEqual = 39,
@@ -306,6 +360,7 @@ struct Sm4Operand {
     /// are relative).
     Sm4OperandType relative_type{Sm4OperandType::Temp};
     u32 relative_index0{0};
+    u32 relative_index1{0};
     u32 relative_component{0};
     /// index0's own relative register, kept when index1 is relative too
     /// (cb[r1.x + 0][r0.w + 0] in a class method, D3D11.3 7.19.5.2).
@@ -436,6 +491,7 @@ private:
 };
 
 std::vector<std::array<float, 4>> decode_immediate_constant_buffer(
-    const std::vector<u8>& bytecode);
+    const std::vector<u8>& bytecode, std::string* failure = nullptr,
+    std::map<u32, std::vector<u32>>* readonly_words = nullptr);
 
 } // namespace vitreo::graphics::dxbc_spirv_detail

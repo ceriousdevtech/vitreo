@@ -467,16 +467,11 @@ bool DxbcTranslator::translate_float_operation(u32 /*opcode_token*/,
             return false;
         }
 
-        const u32 a_is_nan = m_builder.emit_is_nan(m_type_bvec4, va);
-        const u32 b_is_nan = m_builder.emit_is_nan(m_type_bvec4, vb);
-        const u32 a_ge_b =
-            m_builder.emit_ford_ge(m_type_bvec4, va, vb);
-        const u32 ordered_max =
-            m_builder.emit_select(m_type_vec4, a_ge_b, va, vb);
-        const u32 b_nan_max =
-            m_builder.emit_select(m_type_vec4, b_is_nan, va, ordered_max);
-        const u32 result =
-            m_builder.emit_select(m_type_vec4, a_is_nan, vb, b_nan_max);
+        // GLSL.std.450 minNum/maxNum has D3D's one-NaN-selects-other
+        // behavior; Metal lowers it to precise::min/max in every math mode.
+        // D3D11.3 3.1.3 permits either zero sign on a tied zero comparison.
+        const u32 result = m_builder.emit_ext_inst(
+            m_type_vec4, m_glsl_std450, kGlslStd450NMax, {va, vb});
         if (!store_vec4(dst, result)) return false;
         break;
     }
@@ -494,16 +489,11 @@ bool DxbcTranslator::translate_float_operation(u32 /*opcode_token*/,
             return false;
         }
 
-        const u32 a_is_nan = m_builder.emit_is_nan(m_type_bvec4, va);
-        const u32 b_is_nan = m_builder.emit_is_nan(m_type_bvec4, vb);
-        const u32 a_lt_b =
-            m_builder.emit_ford_lt(m_type_bvec4, va, vb);
-        const u32 ordered_min =
-            m_builder.emit_select(m_type_vec4, a_lt_b, va, vb);
-        const u32 b_nan_min =
-            m_builder.emit_select(m_type_vec4, b_is_nan, va, ordered_min);
-        const u32 result =
-            m_builder.emit_select(m_type_vec4, a_is_nan, vb, b_nan_min);
+        // GLSL.std.450 minNum/maxNum has D3D's one-NaN-selects-other
+        // behavior; Metal lowers it to precise::min/max in every math mode.
+        // D3D11.3 3.1.3 permits either zero sign on a tied zero comparison.
+        const u32 result = m_builder.emit_ext_inst(
+            m_type_vec4, m_glsl_std450, kGlslStd450NMin, {va, vb});
         if (!store_vec4(dst, result)) return false;
         break;
     }

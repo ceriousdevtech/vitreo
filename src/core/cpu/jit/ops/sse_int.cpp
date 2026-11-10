@@ -362,7 +362,7 @@ std::optional<bool> JitCompiler::compile_sse_int(
             emit(arm64::movz_w(2, mem_opid));
             emit(arm64::movz_w(3, dst_xmm));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         break;
     }
@@ -399,7 +399,8 @@ std::optional<bool> JitCompiler::compile_sse_int(
             } else {
                 emit(arm64::mov_x(4, src_or_ea));
             }
-            EMIT_SSE_OP_CALL();
+            if (src_is_reg) EMIT_SSE_OP_CALL();
+            else EMIT_SSE_OP_MEM_CALL();
         };
         if (!fits_ldr_q_offset(off_d) || !fits_ldr_q_offset(off_1)) {
             if (!helper_ok) return false;
@@ -502,7 +503,7 @@ std::optional<bool> JitCompiler::compile_sse_int(
             emit(arm64::movz_w(2, 65));
             emit(arm64::movz_w(3, dst_xmm));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         break;
     }

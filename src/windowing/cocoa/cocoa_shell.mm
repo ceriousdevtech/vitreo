@@ -36,6 +36,30 @@ extern char** environ;
 #include <CoreGraphics/CGEventSource.h>
 #include <mach/mach_time.h>
 
+/// OK / Cancel for the modal color panel; closing the panel cancels.
+@interface VtrColorPanelTarget : NSObject
+- (void)accept:(id)sender;
+- (void)cancel:(id)sender;
+- (void)panelWillClose:(NSNotification*)note;
+@end
+
+@implementation VtrColorPanelTarget
+- (void)accept:(id)sender {
+    (void)sender;
+    [NSApp stopModalWithCode:NSModalResponseOK];
+}
+- (void)cancel:(id)sender {
+    (void)sender;
+    [NSApp stopModalWithCode:NSModalResponseCancel];
+}
+- (void)panelWillClose:(NSNotification*)note {
+    (void)note;
+    if ([NSApp modalWindow] == [NSColorPanel sharedColorPanel]) {
+        [NSApp stopModalWithCode:NSModalResponseCancel];
+    }
+}
+@end
+
 /// Keeps an Open/Save panel inside the capsule's drives. Items outside are
 /// disabled (folders above a drive root stay enabled so the user can navigate
 /// down to it), and a choice outside is refused with an error the panel shows
@@ -137,6 +161,68 @@ void CocoaBridge::clipboard_clear() {
     }
 }
 
+
+// =============================================================================
+// Native Delegation: Color dialog (NSColorPanel)
+// =============================================================================
+
+
+CocoaBridge::ColorDialogResult CocoaBridge::show_color_dialog(u32 initial_colorref) {
+    if (![NSThread isMainThread]) {
+        __block ColorDialogResult result;
+        vtr_run_on_main_sync(^{
+            result = show_color_dialog(initial_colorref);
+        });
+        return result;
+    }
+    ColorDialogResult result;
+    @autoreleasepool {
+        ensure_app_initialized();
+        NSColorPanel* panel = [NSColorPanel sharedColorPanel];
+        [panel setShowsAlpha:NO];
+        [panel setContinuous:YES];
+        [panel setColor:[NSColor colorWithSRGBRed:(initial_colorref & 0xFF) / 255.0
+                                            green:((initial_colorref >> 8) & 0xFF) / 255.0
+                                             blue:((initial_colorref >> 16) & 0xFF) / 255.0
+                                            alpha:1.0]];
+
+        VtrColorPanelTarget* target = [[VtrColorPanelTarget alloc] init];
+        NSView* buttons = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 220, 40)];
+        NSButton* cancel = [NSButton buttonWithTitle:@"Cancel" target:target
+                                              action:@selector(cancel:)];
+        [cancel setKeyEquivalent:@"\033"];
+        [cancel setFrame:NSMakeRect(20, 6, 90, 28)];
+        NSButton* ok = [NSButton buttonWithTitle:@"OK" target:target
+                                          action:@selector(accept:)];
+        [ok setKeyEquivalent:@"\r"];
+        [ok setFrame:NSMakeRect(115, 6, 90, 28)];
+        [buttons addSubview:cancel];
+        [buttons addSubview:ok];
+        [panel setAccessoryView:buttons];
+        [[NSNotificationCenter defaultCenter]
+            addObserver:target selector:@selector(panelWillClose:)
+                   name:NSWindowWillCloseNotification object:panel];
+
+        const NSModalResponse response = [NSApp runModalForWindow:panel];
+
+        [[NSNotificationCenter defaultCenter] removeObserver:target];
+        [panel setAccessoryView:nil];
+        [panel orderOut:nil];
+        if (response == NSModalResponseOK) {
+            NSColor* color = [[panel color] colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+            if (color != nil) {
+                const auto channel = [](CGFloat v) {
+                    return static_cast<u32>(std::lround(std::clamp<CGFloat>(v, 0, 1) * 255.0));
+                };
+                result.ok = true;
+                result.colorref = channel([color redComponent]) |
+                                  (channel([color greenComponent]) << 8) |
+                                  (channel([color blueComponent]) << 16);
+            }
+        }
+    }
+    return result;
+}
 
 // =============================================================================
 // Native Delegation: File Dialogs (NSOpenPanel / NSSavePanel)

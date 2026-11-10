@@ -9,6 +9,7 @@
 /// verbatim; user32_ext_registration.cpp calls the slices in registration
 /// order.
 
+#include "ipc/startup_message.hpp"
 #include "winapi/user32/registration/registration_parts.hpp"
 #include "windowing/model/diag_flags.hpp"
 
@@ -532,6 +533,7 @@ void add_user32_ext_exports_focus_cursor(DllExports& exports, User32ExtManager& 
     exports.entries.push_back(ExportEntry{
         "WaitMessage", 0,
         [&mgr](Marshaler& m) {
+            ipc::notify_startup_message();
             bool ready = mgr.wait_message();
             VITREO_TRACE("[user32_ext] WaitMessage() → %u\n", ready ? 1u : 0u);
             m.set_return(ready ? 1u : 0u);

@@ -103,6 +103,28 @@ void stdio_diag_vfs(Marshaler& m, const char* who, u32 stream, VfsFile& vf) {
 }
 
 /// Raw bytes already fetched from the VFS but not yet handed to the guest.
+namespace {
+// stdio.h (VC6 and later): #define _IOEOF 0x0010, #define _IOERR 0x0020.
+constexpr u32 kIoEof = 0x0010, kIoErr = 0x0020;
+void mirror_status_bit(VfsFile& vf, u32 bit, bool value) {
+    if (vf.status_memory == nullptr || vf.status_flag == 0) return;
+    const auto current = vf.status_memory->read_u32(vf.status_flag);
+    if (current.is_err()) return;
+    const u32 next = value ? (current.value() | bit) : (current.value() & ~bit);
+    if (next != current.value()) (void)vf.status_memory->write_u32(vf.status_flag, next);
+}
+}  // namespace
+
+void set_stream_eof(VfsFile& vf, bool value) {
+    vf.eof_flag = value;
+    mirror_status_bit(vf, kIoEof, value);
+}
+
+void set_stream_error(VfsFile& vf, bool value) {
+    vf.error_flag = value;
+    mirror_status_bit(vf, kIoErr, value);
+}
+
 usize pending_read_ahead(const VfsFile& vf) {
     return vf.read_ahead.size() - vf.read_ahead_pos;
 }
@@ -217,7 +239,7 @@ usize drain_guest_character_buffer(VfsFile& vf, std::span<u8> dst) {
         (void)vf.guest_memory->write_u32(vf.guest_stream + kHasRead, 1);
         vf.has_read_character = true;
         vf.pushback_valid = false;
-        vf.eof_flag = false;
+        set_stream_eof(vf, false);
     }
     return take;
 }
@@ -318,8 +340,64 @@ usize stdio_vfs_read_translated(capsule::Vfs& vfs, VfsFile& vf, std::span<u8> ds
     // A short read means the stream hit end-of-file. This is the ONLY
     // thing that may set the EOF indicator -- feof() reports this flag
     // and must not infer EOF from position.
-    if (delivered < dst.size()) vf.eof_flag = true;
+    if (delivered < dst.size()) set_stream_eof(vf, true);
     return delivered;
+}
+
+namespace {
+/// Bytes the guest-side character buffer still holds (fgetc's accelerator).
+u32 guest_buffered_bytes(VfsFile& vf) {
+    using namespace crt_stdio_buffer;
+    if (vf.guest_buffer == 0 || vf.guest_memory == nullptr) return 0;
+    GuestStreamLock stream_lock(vf);
+    return vf.guest_memory->read_u32(vf.guest_stream + cells(vf.layout).count).value_or(0);
+}
+}  // namespace
+
+// fgets' read: the bytes repeated one-byte stdio_vfs_read_translated calls
+// would deliver, stopping after a '\n' or when @p dst is full. While no
+// pushback, staged guest byte or deferred CR is pending, a line is taken from
+// the read-ahead block in place -- the text-mode rules are those of
+// vfs_read_translated_raw (CRLF -> LF, a lone CR stays) -- so a line costs one
+// scan, not a translated read per byte (a 2.6 MB text file took minutes).
+// Every other case, and a CR ending the block, takes the one-byte path.
+usize stdio_vfs_read_line(capsule::Vfs& vfs, VfsFile& vf, std::span<u8> dst) {
+    usize n = 0;
+    while (n < dst.size()) {
+        const usize pending = pending_read_ahead(vf);
+        if (!vf.pushback_valid && !vf.pending_cr && pending != 0 && guest_buffered_bytes(vf) == 0) {
+            const u8* p = vf.read_ahead.data() + vf.read_ahead_pos;
+            usize i = 0;
+            bool line_end = false;
+            while (i < pending && n < dst.size()) {
+                u8 c = p[i];
+                if (vf.text_mode && c == '\r') {
+                    if (i + 1 >= pending) break;  // CR ending the block: one-byte path
+                    if (p[i + 1] == '\n') {
+                        ++i;
+                        c = '\n';
+                    }
+                }
+                dst[n++] = c;
+                ++i;
+                if (c == '\n') {
+                    line_end = true;
+                    break;
+                }
+            }
+            vf.read_ahead_pos += i;
+            if (i != 0) {
+                vf.has_read_character = true;
+                if (line_end) return n;
+                continue;
+            }
+        }
+        u8 ch = 0;
+        if (stdio_vfs_read_translated(vfs, vf, std::span<u8>(&ch, 1)) == 0) break;
+        dst[n++] = ch;
+        if (ch == '\n') break;
+    }
+    return n;
 }
 
 // Text-mode writes must expand LF to CRLF: a stream opened "w" (not "wb")

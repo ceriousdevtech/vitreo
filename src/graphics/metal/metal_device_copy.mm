@@ -48,10 +48,31 @@
 #include "graphics/metal/metal_backend_buffer.hpp"
 #include "graphics/metal/metal_backend_texture_2d.hpp"
 #include "graphics/metal/metal_backend_texture_3d.hpp"
+#include "graphics/metal/metal_transcode.hpp"
+#include "graphics/contracts/format_422.hpp"
 
 using namespace vitreo;
 
 namespace vitreo::graphics {
+
+namespace {
+
+/// D3D12 / D3D11 boxes and footprints of a block-compressed level are whole
+/// blocks, so one may end at the block edge past the level's texel extent
+/// (a small mip, or a top level that is not a multiple of 4: D3D11.3
+/// 19.5.1, Learn D3D12_FEATURE_DATA_D3D12_OPTIONS8). Metal copies the
+/// level's own texels: such an extent is cut at the level's edge. Any
+/// other extent is left as given (and refused by the bounds checks).
+unsigned clamp_block_extent(unsigned origin, unsigned extent, unsigned level) {
+    if (origin >= level) return extent;
+    const unsigned padded = (level + 3u) & ~3u;
+    if (extent > level - origin && extent <= padded - origin) {
+        return level - origin;
+    }
+    return extent;
+}
+
+}  // namespace
 
 bool MetalDevice::copy_buffer_texture_row(BackendBuffer* buffer, u64 offset,
                                           BackendTexture2D* texture,
@@ -115,6 +136,27 @@ bool MetalDevice::copy_texture_buffer_region(
     }
     const unsigned level_width = std::max(1u, td.width >> level);
     const unsigned level_height = std::max(1u, td.height >> level);
+    if (is_422_storage(td.pixel_format)) {
+        // A box or footprint is whole 2x1 blocks; one may end at the block
+        // edge past an odd level width.
+        if (x % 2u != 0 || samples > 1) return false;
+        if (x < level_width && width == level_width - x + 1u &&
+            (level_width - x) % 2u != 0) {
+            width = level_width - x;
+        }
+        if (x >= level_width || y >= level_height ||
+            width > level_width - x || height > level_height - y) {
+            return false;
+        }
+        return copy_422_buffer_region(
+            static_cast<MetalBackendTexture2D*>(texture)->native_handle(),
+            td.pixel_format, level, slice, x, y, 0, width, height, 1, buffer,
+            offset, row_pitch, 0, to_texture);
+    }
+    if (format.is_compressed) {
+        width = clamp_block_extent(x, width, level_width);
+        height = clamp_block_extent(y, height, level_height);
+    }
     if (x >= level_width || y >= level_height || width > level_width - x ||
         height > level_height - y) {
         return false;
@@ -209,6 +251,26 @@ bool MetalDevice::copy_texture_3d_buffer_region(
     const unsigned level_width = std::max(1u, td.width >> level);
     const unsigned level_height = std::max(1u, td.height >> level);
     const unsigned level_depth = std::max(1u, td.depth >> level);
+    if (is_422_storage(td.pixel_format)) {
+        if (x % 2u != 0) return false;
+        if (x < level_width && width == level_width - x + 1u &&
+            (level_width - x) % 2u != 0) {
+            width = level_width - x;
+        }
+        if (x >= level_width || y >= level_height || z >= level_depth ||
+            width > level_width - x || height > level_height - y ||
+            depth > level_depth - z) {
+            return false;
+        }
+        return copy_422_buffer_region(
+            static_cast<MetalBackendTexture3D*>(texture)->native_handle(),
+            td.pixel_format, level, 0, x, y, z, width, height, depth, buffer,
+            offset, row_pitch, slice_pitch, to_texture);
+    }
+    if (format.is_compressed) {
+        width = clamp_block_extent(x, width, level_width);
+        height = clamp_block_extent(y, height, level_height);
+    }
     if (x >= level_width || y >= level_height || z >= level_depth ||
         width > level_width - x || height > level_height - y ||
         depth > level_depth - z) {
@@ -275,6 +337,77 @@ bool MetalDevice::copy_texture_3d_buffer_region(
     return true;
 }
 
+bool MetalDevice::copy_422_buffer_region(
+    void* texture, PixelFormat format, unsigned level, unsigned slice,
+    unsigned x, unsigned y, unsigned z, unsigned width, unsigned height,
+    unsigned depth, BackendBuffer* buffer, u64 offset, u64 row_pitch,
+    u64 slice_pitch, bool to_texture) {
+    if (texture == nullptr || width == 0 || height == 0 || depth == 0) {
+        return false;
+    }
+    // The guest side: (width + 1) / 2 blocks of 4 bytes per row.
+    const u64 row_bytes = static_cast<u64>((width + 1u) / 2u) * 4u;
+    const u64 image_bytes = (height - 1) * row_pitch + row_bytes;
+    if (depth == 1) slice_pitch = image_bytes;
+    const u64 span = (depth - 1) * slice_pitch + image_bytes;
+    const u64 buffer_bytes = buffer->desc().byte_width;
+    if (row_pitch < row_bytes || (depth > 1 && slice_pitch < image_bytes) ||
+        offset > buffer_bytes || span > buffer_bytes - offset) {
+        return false;
+    }
+    // The storage side: tightly packed RGBA8 texels.
+    const u64 texel_row = static_cast<u64>(width) * 4u;
+    const u64 texel_image = texel_row * height;
+    BackendBufferDesc scratch_desc{};
+    scratch_desc.byte_width = static_cast<usize>(texel_image * depth);
+    std::unique_ptr<BackendBuffer> scratch = create_buffer(scratch_desc, nullptr);
+    if (!scratch) return false;
+    auto* guest = static_cast<MetalBackendBuffer*>(buffer);
+    auto* texels = static_cast<MetalBackendBuffer*>(scratch.get());
+    if (to_texture) {
+        guest->note_gpu_bind();
+    } else {
+        guest->note_gpu_write();
+    }
+    texels->note_gpu_write();
+    void* guest_handle = guest->native_handle();
+    void* texel_handle = texels->native_handle();
+    if (guest_handle == nullptr || texel_handle == nullptr) return false;
+    const usize guest_at = static_cast<usize>(offset) + guest->native_offset();
+    const usize texel_at = texels->native_offset();
+    Transcode422Region region{};
+    region.width = width;
+    region.height = height;
+    region.depth = depth;
+    auto& queue = MetalSubmitQueue::instance();
+    if (to_texture) {
+        region.in_row = row_pitch;
+        region.in_slice = slice_pitch;
+        region.out_row = texel_row;
+        region.out_slice = texel_image;
+        if (!record_transcode_422(format, true, guest_handle, guest_at,
+                                  texel_handle, texel_at, region)) {
+            return false;
+        }
+        queue.record_upload_texture(texel_handle, texture,
+                                    static_cast<usize>(texel_row),
+                                    static_cast<usize>(texel_image), width,
+                                    height, depth, level, slice, x, y, z, 0,
+                                    texel_at);
+        return true;
+    }
+    queue.record_download_texture(texture, level, slice, x, y, z, width,
+                                  height, depth, texel_handle,
+                                  static_cast<usize>(texel_row),
+                                  static_cast<usize>(texel_image), texel_at);
+    region.in_row = texel_row;
+    region.in_slice = texel_image;
+    region.out_row = row_pitch;
+    region.out_slice = slice_pitch;
+    return record_transcode_422(format, false, texel_handle, texel_at,
+                                guest_handle, guest_at, region);
+}
+
 bool MetalDevice::copy_texture_2d(BackendTexture2D* dst,
                                   const BackendTexture2D* src) {
     if (!available() || dst == nullptr || src == nullptr) return false;
@@ -291,6 +424,266 @@ bool MetalDevice::copy_texture_2d(BackendTexture2D* dst,
             dst, 0, 0, src, 0, 0, dd.pixel_format);
     }
     return copy_texture_2d_region(dst, 0, 0, src, 0, 0, dd.width, dd.height);
+}
+
+namespace {
+
+/// Average of every sample, written into a single-sample depth or stencil
+/// attachment. Learn (D3D12_RESOLVE_MODE_AVERAGE) defines that reduction for
+/// the depth plane; the stencil plane uses the same reduction of the values
+/// its samples store. Metal's depth resolve filter is sample 0, min, or max,
+/// which is not this average, so the samples are read and combined here.
+constexpr const char* kDepthResolveSource = R"MSL(
+#include <metal_stdlib>
+using namespace metal;
+struct VOut { float4 pos [[position]]; };
+vertex VOut depth_resolve_vs(uint vid [[vertex_id]]) {
+    float2 uv = float2((vid << 1) & 2, vid & 2);
+    VOut o;
+    o.pos = float4(uv * float2(2.0, -2.0) + float2(-1.0, 1.0), 0.0, 1.0);
+    return o;
+}
+struct DepthOut { float depth [[depth(any)]]; };
+fragment DepthOut depth_resolve_average(
+    VOut in [[stage_in]],
+    depth2d_ms<float, access::read> src [[texture(0)]]) {
+    DepthOut o;
+    uint n = src.get_num_samples();
+    float sum = 0.0;
+    for (uint s = 0; s < n; ++s) {
+        sum += src.read(uint2(in.pos.xy), s);
+    }
+    o.depth = n == 0u ? 0.0 : sum / float(n);
+    return o;
+}
+struct StencilOut { uint stencil [[stencil]]; };
+fragment StencilOut stencil_resolve_average(
+    VOut in [[stage_in]],
+    texture2d_ms<uint, access::read> src [[texture(0)]]) {
+    StencilOut o;
+    uint n = src.get_num_samples();
+    uint sum = 0u;
+    for (uint s = 0; s < n; ++s) {
+        sum += src.read(uint2(in.pos.xy), s).x;
+    }
+    o.stencil = n == 0u ? 0u : (sum + n / 2u) / n;
+    return o;
+}
+)MSL";
+
+class DepthResolvePrograms {
+public:
+    static DepthResolvePrograms& instance() {
+        static DepthResolvePrograms* programs = new DepthResolvePrograms();
+        return *programs;
+    }
+
+    void* pipeline(void* device, bool stencil, u32 depth_format,
+                   u32 stencil_format) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        if (!load(device)) return nullptr;
+        const u64 key = (static_cast<u64>(stencil) << 63) |
+                        (static_cast<u64>(depth_format) << 16) |
+                        stencil_format;
+        void*& slot = m_pipelines[key];
+        if (slot != nullptr) return slot;
+        @autoreleasepool {
+            id<MTLLibrary> library = (__bridge id<MTLLibrary>)m_library;
+            MTLRenderPipelineDescriptor* desc =
+                [[MTLRenderPipelineDescriptor alloc] init];
+            desc.vertexFunction =
+                [library newFunctionWithName:@"depth_resolve_vs"];
+            desc.fragmentFunction = [library
+                newFunctionWithName:stencil ? @"stencil_resolve_average"
+                                            : @"depth_resolve_average"];
+            desc.rasterSampleCount = 1;
+            desc.depthAttachmentPixelFormat =
+                static_cast<MTLPixelFormat>(depth_format);
+            desc.stencilAttachmentPixelFormat =
+                static_cast<MTLPixelFormat>(stencil_format);
+            NSError* error = nil;
+            id<MTLRenderPipelineState> pso =
+                desc.vertexFunction != nil && desc.fragmentFunction != nil
+                    ? [(__bridge id<MTLDevice>)device
+                          newRenderPipelineStateWithDescriptor:desc
+                                                         error:&error]
+                    : nil;
+            if (pso == nil) {
+                static std::atomic<bool> told{false};
+                if (!told.exchange(true)) {
+                    std::fprintf(stderr,
+                                 "[metal] depth resolve pipeline failed: %s\n",
+                                 error != nil ? error.localizedDescription.UTF8String
+                                              : "unknown");
+                }
+                return nullptr;
+            }
+            slot = (__bridge_retained void*)pso;
+        }
+        return slot;
+    }
+
+    /// Always-pass. @p stencil replaces the stencil from the shader and
+    /// leaves depth stored; otherwise depth is replaced and stencil is not.
+    void* depth_state(void* device, bool stencil) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        void*& slot = stencil ? m_stencil_state : m_depth_state;
+        if (slot != nullptr) return slot;
+        @autoreleasepool {
+            MTLDepthStencilDescriptor* desc =
+                [[MTLDepthStencilDescriptor alloc] init];
+            desc.depthCompareFunction = MTLCompareFunctionAlways;
+            desc.depthWriteEnabled = !stencil;
+            if (stencil) {
+                MTLStencilDescriptor* face = [[MTLStencilDescriptor alloc] init];
+                face.stencilCompareFunction = MTLCompareFunctionAlways;
+                face.depthStencilPassOperation = MTLStencilOperationReplace;
+                face.depthFailureOperation = MTLStencilOperationReplace;
+                face.stencilFailureOperation = MTLStencilOperationReplace;
+                face.readMask = 0xFFu;
+                face.writeMask = 0xFFu;
+                desc.frontFaceStencil = face;
+                desc.backFaceStencil = face;
+            }
+            id<MTLDepthStencilState> state =
+                [(__bridge id<MTLDevice>)device
+                    newDepthStencilStateWithDescriptor:desc];
+            if (state != nil) slot = (__bridge_retained void*)state;
+        }
+        return slot;
+    }
+
+private:
+    bool load(void* device) {
+        if (m_library != nullptr) return true;
+        if (m_failed || device == nullptr) return false;
+        @autoreleasepool {
+            NSError* error = nil;
+            id<MTLLibrary> library = [(__bridge id<MTLDevice>)device
+                newLibraryWithSource:[NSString
+                                         stringWithUTF8String:kDepthResolveSource]
+                             options:nil
+                               error:&error];
+            if (library == nil) {
+                m_failed = true;
+                std::fprintf(stderr,
+                             "[metal] depth resolve shaders did not compile: "
+                             "%s\n",
+                             error != nil ? error.localizedDescription.UTF8String
+                                          : "unknown");
+                return false;
+            }
+            m_library = (__bridge_retained void*)library;
+        }
+        return true;
+    }
+
+    std::mutex m_mutex;
+    void* m_library{nullptr};
+    bool m_failed{false};
+    std::unordered_map<u64, void*> m_pipelines;
+    void* m_depth_state{nullptr};
+    void* m_stencil_state{nullptr};
+};
+
+}  // namespace
+
+bool MetalDevice::resolve_depth_stencil_2d(BackendTexture2D* dst,
+                                           unsigned dst_mip, unsigned dst_slice,
+                                           const BackendTexture2D* src,
+                                           unsigned src_mip, unsigned src_slice,
+                                           bool stencil) {
+    if (!available() || dst == nullptr || src == nullptr || !dst->valid() ||
+        !src->valid()) {
+        return false;
+    }
+    const auto& dd = dst->desc();
+    const auto& sd = src->desc();
+    if (dd.pixel_format != sd.pixel_format || dst_mip >= dd.mip_levels ||
+        src_mip >= sd.mip_levels || dst_slice >= dd.array_size ||
+        src_slice >= sd.array_size || dd.sample_count > 1 ||
+        sd.sample_count <= 1) {
+        return false;
+    }
+    const unsigned width = std::max(1u, dd.width >> dst_mip);
+    const unsigned height = std::max(1u, dd.height >> dst_mip);
+    if (width != std::max(1u, sd.width >> src_mip) ||
+        height != std::max(1u, sd.height >> src_mip)) {
+        return false;
+    }
+    const FormatInfo info = format_table(sd.pixel_format);
+    if (!info.is_depth || info.mtl_pixel_format == 0) return false;
+    const bool combined =
+        info.mtl_pixel_format == MTLPixelFormatDepth32Float_Stencil8;
+    if (stencil && !combined) return false;
+    if (info.mtl_pixel_format != MTLPixelFormatDepth32Float &&
+        info.mtl_pixel_format != MTLPixelFormatDepth16Unorm && !combined) {
+        return false;
+    }
+    auto* metal_dst = static_cast<MetalBackendTexture2D*>(dst);
+    const auto* metal_src = static_cast<const MetalBackendTexture2D*>(src);
+    void* dst_handle = metal_dst->native_handle();
+    void* src_handle = metal_src->native_handle();
+    if (dst_handle == nullptr || src_handle == nullptr) return false;
+    void* device = device_ptr();
+    if (device == nullptr) return false;
+
+    @autoreleasepool {
+        id<MTLTexture> dst_texture = (__bridge id<MTLTexture>)dst_handle;
+        id<MTLTexture> src_texture = (__bridge id<MTLTexture>)src_handle;
+        if ((src_texture.usage & MTLTextureUsageShaderRead) == 0 ||
+            (dst_texture.usage & MTLTextureUsageRenderTarget) == 0) {
+            return false;
+        }
+        id<MTLTexture> samples = src_texture;
+        if (stencil ||
+            src_texture.textureType != MTLTextureType2DMultisample ||
+            src_slice != 0 || src_mip != 0) {
+            const MTLPixelFormat view_format =
+                stencil ? MTLPixelFormatX32_Stencil8 : src_texture.pixelFormat;
+            samples = [src_texture
+                newTextureViewWithPixelFormat:view_format
+                                   textureType:MTLTextureType2DMultisample
+                                        levels:NSMakeRange(src_mip, 1)
+                                        slices:NSMakeRange(src_slice, 1)];
+            if (samples == nil) return false;
+        }
+        const u32 depth_format = info.mtl_pixel_format;
+        const u32 stencil_format = combined ? depth_format : 0u;
+        void* pipeline = DepthResolvePrograms::instance().pipeline(
+            device, stencil, depth_format, stencil_format);
+        void* state =
+            DepthResolvePrograms::instance().depth_state(device, stencil);
+        if (pipeline == nullptr || state == nullptr) return false;
+
+        CsBeginPass begin{};
+        begin.depth = dst_handle;
+        begin.depth_level = dst_mip;
+        begin.depth_slice = dst_slice;
+        begin.stencil = combined;
+        begin.preserve = true;
+        auto& queue = MetalSubmitQueue::instance();
+        const u64 pass = queue.record_begin_pass(begin);
+        if (pass == 0) return false;
+        CsDraw draw{};
+        draw.pipeline = pipeline;
+        CFRetain(draw.pipeline);
+        draw.depth_stencil = state;
+        CFRetain(draw.depth_stencil);
+        draw.textures[0] = (__bridge void*)samples;
+        CFRetain(draw.textures[0]);
+        draw.writes_color = false;
+        draw.writes_depth_stencil = true;
+        draw.viewport = {0.0f, 0.0f, static_cast<float>(width),
+                         static_cast<float>(height), 0.0f, 1.0f};
+        draw.primitive = MTLPrimitiveTypeTriangle;
+        draw.vertex_count = 3;
+        draw.instance_count = 1;
+        draw.cull_mode = MTLCullModeNone;
+        queue.record_draw(std::move(draw), pass);
+        queue.record_end_pass(pass);
+    }
+    return true;
 }
 
 bool MetalDevice::resolve_texture_2d(BackendTexture2D* dst,
@@ -475,6 +868,10 @@ bool MetalDevice::copy_texture_elements(const BackendTextureLocation& dst,
         return false;
     }
     // The source box, in its own texels: whole blocks, or up to the edge.
+    if (sf.is_compressed) {
+        width = clamp_block_extent(src.x, width, s.level_width);
+        height = clamp_block_extent(src.y, height, s.level_height);
+    }
     if (src.x >= s.level_width || src.y >= s.level_height ||
         src.z >= s.level_depth || width > s.level_width - src.x ||
         height > s.level_height - src.y || depth > s.level_depth - src.z) {

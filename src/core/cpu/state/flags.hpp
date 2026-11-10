@@ -31,6 +31,19 @@ enum FlagBits : u64 {
 /// Status flags that change based on arithmetic results
 constexpr u64 STATUS_FLAGS_MASK = FLAG_CF | FLAG_PF | FLAG_AF | FLAG_ZF | FLAG_SF | FLAG_OF;
 
+/// Intel SDM Vol.2B rev.093 POPF/POPFD/POPFQ, Table4-20. Protected/long
+/// execution in this user-mode runtime is CPL3; real mode has no privilege
+/// restriction. Width is in stack bytes. VM86 is not an execution mode here.
+[[nodiscard]] constexpr u64 popf_flags_image(u64 current, u64 image,
+                                            u8 width, bool real_mode) noexcept {
+    u64 writable = STATUS_FLAGS_MASK | FLAG_TF | FLAG_DF | FLAG_NT;
+    if (width != sizeof(u16)) writable |= FLAG_AC | FLAG_ID;
+    if (real_mode) writable |= FLAG_IF | FLAG_IOPL_MASK;
+    else if ((current & FLAG_IOPL_MASK) == FLAG_IOPL_MASK) writable |= FLAG_IF;
+    // Privileged/reserved bits survive; RF clears even for the word form.
+    return (current & ~(writable | FLAG_RF)) | (image & writable) | 0x2u;
+}
+
 /// CPU flags register
 struct Flags {
     u64 rflags;

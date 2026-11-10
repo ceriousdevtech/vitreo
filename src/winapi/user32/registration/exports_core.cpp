@@ -21,6 +21,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/locale/codepage_convert.hpp"
+#include "winapi/kernel32/locale/codepage_convert.hpp"
 #include "winapi/user32/windows/kbd_layout.hpp"
 #include "winapi/kernel32/module/module.hpp"
 #include "winapi/graphics/gdi32/gdi32.hpp"
@@ -317,16 +318,26 @@ void add_user32_ext_exports_core(DllExports& exports, User32ExtManager& mgr) {
                 m.set_return(0u);
                 return;
             }
-            // String names: bitmaps are read here; ANSI icon/cursor names and
-            // files are not converted yet and fail loudly.
+            // An icon or cursor name (a resource name or, with
+            // LR_LOADFROMFILE, a file) is the W call's after the ANSI
+            // string is converted with CP_ACP (Learn: "Conventions for
+            // Function Prototypes", the A entry converts and calls W).
             if (type != 0) {
-                static bool logged = false;
-                if (!logged) {
-                    logged = true;
-                    std::fprintf(stderr, "[vitreo] UNIMPLEMENTED user32!LoadImageA: icon/cursor by ANSI name\n");
+                auto bytes = m.read_ansi_string(name, 4096);
+                const std::string ansi = bytes.is_ok() ? bytes.value() : std::string{};
+                std::u16string wide;
+                if (!ansi.empty()) {
+                    const auto* src = reinterpret_cast<const u8*>(ansi.data());
+                    const auto need = codepage::multi_byte_to_wide(codepage::kCpAcp, 0, src,
+                                                                   ansi.size(), nullptr, 0);
+                    if (need.ok() && need.count > 0) {
+                        std::vector<u16> units(need.count);
+                        const auto got = codepage::multi_byte_to_wide(
+                            codepage::kCpAcp, 0, src, ansi.size(), units.data(), units.size());
+                        if (got.ok()) wide.assign(units.begin(), units.begin() + got.count);
+                    }
                 }
-                set_last_error(error_codes::ERROR_CALL_NOT_IMPLEMENTED);
-                m.set_return(0u);
+                mgr.impl_LoadImageW(m, &wide);
                 return;
             }
 

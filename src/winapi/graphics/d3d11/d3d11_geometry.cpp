@@ -39,10 +39,10 @@
 /// or reads back a GPU-written count.
 ///
 /// Creation refuses with E_NOTIMPL, never a half-working object, only what
-/// the emulation cannot express: cull distances (MSL has none) and shaders
-/// the translator cannot lower. A draw it cannot serve -- a topology that
-/// does not match the shader's input primitive -- draws nothing, with a
-/// diagnostic naming why.
+/// the emulation cannot express: shaders the translator cannot lower, each
+/// with the translator's reason (SV_CullDistance is culled in pass C). A
+/// draw it cannot serve -- a topology that does not match the shader's input
+/// primitive -- draws nothing, with a diagnostic naming why.
 
 #include "winapi/graphics/d3d11/d3d11.hpp"
 #include "winapi/graphics/d3d11/d3d11_internal.hpp"
@@ -60,6 +60,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdio>
+#include <cstring>
 #include <cstdlib>
 #include <functional>
 #include <string>
@@ -253,9 +254,13 @@ u32 D3D11Manager::build_geometry_program(
     graphics::DxbcTranslationOptions options{};
     options.emulate_geometry_with_compute = true;
     const auto lowered = graphics::translate_dxbc_to_spirv(container, options);
-    if (!lowered.valid() || !lowered.gs_lowered_to_compute) {
-        why = "the geometry emulation cannot express this shader: " +
-              lowered.failure;
+    if (!lowered.valid()) {
+        why = lowered.failure;
+        return lowered.invalid_program ? d3d11::E_INVALIDARG
+                                       : d3d11::E_NOTIMPL;
+    }
+    if (!lowered.gs_lowered_to_compute) {
+        why = "the geometry shader translated without its compute lowering";
         return d3d11::E_NOTIMPL;
     }
 
@@ -271,10 +276,6 @@ u32 D3D11Manager::build_geometry_program(
     for (const auto& element : container.output_signature) {
         const u32 sv = element.system_value_type;
         const bool delivered = element.stream == rasterized_stream;
-        if (delivered && sv == NAME_CULL_DISTANCE) {
-            why = "SV_CullDistance output: Metal has no cull distances";
-            return d3d11::E_NOTIMPL;
-        }
         // Several elements can share one register (packed components, or
         // the same o# in several streams); the record holds registers, so
         // one entry each.
@@ -296,7 +297,9 @@ u32 D3D11Manager::build_geometry_program(
         same->delivered = true;
         writes_viewport_index |= sv == NAME_VIEWPORT_ARRAY_INDEX;
         if (sv == NAME_POSITION) same->is_position = true;
-        if (sv == NAME_CLIP_DISTANCE ||
+        // SV_CullDistance culls in pass C, which sees each expanded
+        // primitive whole (generate_gs_passthrough_vertex_msl).
+        if (sv == NAME_CLIP_DISTANCE || sv == NAME_CULL_DISTANCE ||
             sv == NAME_RENDER_TARGET_ARRAY_INDEX ||
             sv == NAME_VIEWPORT_ARRAY_INDEX) {
             for (u32 c = 0; c < 4; ++c) {
@@ -324,7 +327,10 @@ u32 D3D11Manager::build_geometry_program(
     std::string passthrough =
         rasterizes ? graphics::generate_gs_passthrough_vertex_msl(
                          outputs, vertices_per_invocation,
-                         /*fixed_function_push=*/true)
+                         /*fixed_function_push=*/true, /*dense_records=*/false,
+                         lowered.gs_output_topology == 1u   ? 1u
+                         : lowered.gs_output_topology == 3u ? 2u
+                                                            : 3u)
                    : std::string{};
     // A shader with no outputs at all emits nothing (fxc leaves even the
     // output topology out) and is created like any other (measured,
@@ -364,6 +370,50 @@ u32 D3D11Manager::build_geometry_program(
     shader.line_quad_msl.clear();
     shader.writes_viewport_index = writes_viewport_index;
     shader.binding_layout = layout;
+    // ---- WS5 begin ----
+    // Whether this program can be drawn as a Metal mesh: one rasterized
+    // stream with a position, no UAVs (a mesh draw binds none on its geometry
+    // stage), and a shape inside Apple's mesh limits; the library must lower
+    // and compile. Creation never fails here -- an ineligible program keeps
+    // the three-pass path with its reason.
+    shader.mesh = {};
+    shader.mesh_msl.clear();
+    shader.mesh_ps_link.clear();
+    if (rasterized_stream != 0 || lowered.gs_stream_mask != 1u) {
+        shader.mesh.why = "more than one stream, or a rasterized stream other than 0";
+    } else if (shader.passthrough_msl.empty()) {
+        shader.mesh.why = "nothing to rasterize";
+    } else if (layout.uav_flat != 0 || layout.uav_arrayed != 0) {
+        shader.mesh.why = "the geometry shader declares UAVs";
+    } else if (lowered.gs_output_topology == 1u) {
+        // Neither pass C nor a mesh writes [[point_size]], and Metal leaves
+        // the size of such a point to the stage; nothing proves the two
+        // stages agree, so point output keeps the three passes.
+        shader.mesh.why = "point output";
+    } else {
+        const graphics::GsMeshFit fit = graphics::gs_mesh_fit(
+            outputs, lowered.gs_output_topology, lowered.gs_max_output_vertices);
+        if (!fit.fits) {
+            shader.mesh.why = fit.why;
+        } else {
+            graphics::GsMeshLayout mesh_layout{};
+            mesh_layout.outputs = outputs;
+            mesh_layout.output_topology = lowered.gs_output_topology;
+            mesh_layout.vertices_per_invocation = vertices_per_invocation;
+            mesh_layout.invocations_per_group = fit.invocations_per_group;
+            mesh_layout.record_vec4s = lowered.gs_output_registers;
+            std::string mesh_msl;
+            if (!compile_geometry_mesh(bytes, {}, mesh_layout, mesh_msl)) {
+                shader.mesh.why = "the mesh library does not compile";
+            } else {
+                shader.mesh.eligible = true;
+                shader.mesh.why = nullptr;
+                shader.mesh.fit = fit;
+                shader.mesh.layout = std::move(mesh_layout);
+            }
+        }
+    }
+    // ---- WS5 end ----
     return d3d11::S_OK;
 }
 
@@ -1162,6 +1212,40 @@ bool D3D11Manager::execute_geometry_direct(
         return decline("primitive assembly buffers could not be allocated");
     }
 
+    // ---- WS5 begin ----
+    // The mesh path (host-offload plan WS5):
+    // the capture runs in the guest's own pass, then one mesh draw expands
+    // and rasterizes in the same encoder. select_gs_path keeps everything it
+    // cannot draw bit-identically on the three passes below.
+    // The shader's own copy (GeometryShader::mesh_msl, a node-stable map):
+    // referenced, not copied, so the draw neither copies the source nor
+    // hashes it again for the pipeline key (msl_hash memoises by address).
+    const std::string* mesh_msl = nullptr;
+    if (auto gs_it = m_geometry_shaders.find(state.geometry_shader);
+        gs_it != m_geometry_shaders.end() && gs_it->second.mesh.eligible) {
+        GeometryShader& gs = gs_it->second;
+        const gs_mesh::GsPathChoice choice = gs_mesh::select_gs_path(
+            gs.mesh, gs_mesh_draw_facts(context, gs, /*indirect=*/false,
+                                        u64{primitives} * gs.instance_count));
+        if (choice.path == gs_mesh::GsPath::Mesh) {
+            const u32 minmax = minmax_sampler_mask(state.geometry_samplers);
+            const std::vector<u32> key =
+                kernel_variant_key(record_layout, minmax);
+            auto built = gs.mesh_msl.find(key);
+            if (built == gs.mesh_msl.end()) {
+                std::string msl;
+                if (!compile_geometry_mesh(gs.bytecode, record_layout,
+                                           gs.mesh.layout, msl, minmax)) {
+                    msl.clear();
+                }
+                built = gs.mesh_msl.emplace(key, std::move(msl)).first;
+            }
+            if (!built->second.empty()) mesh_msl = &built->second;
+        } else {
+            d3d11_diag("GS draw three-pass: %s", choice.why);
+        }
+    }
+    // ---- WS5 end ----
     // A: every instance's vertices in one capture draw, at the draw's own
     // StartInstanceLocation (per-instance elements step as in the real draw).
     DrawVariant capture_draw{};
@@ -1169,6 +1253,7 @@ bool D3D11Manager::execute_geometry_direct(
     capture_draw.buffer = records.get();
     capture_draw.offset = 0;
     capture_draw.target = m_stream_out_target.get();
+    capture_draw.capture_in_pass = mesh_msl != nullptr;  // WS5
     capture_draw.capture_relative = true;
     if (indexed) {
         capture_draw.capture_indices = capture_indices.get();
@@ -1190,7 +1275,324 @@ bool D3D11Manager::execute_geometry_direct(
     in.max_primitives = primitives;
     in.primitives_per_instance =
         resolved[graphics::IA_RESOLVED_PRIMITIVES_PER_INSTANCE];
-    return geometry_expand(context, state.geometry_shader, kernel, in, stats);
+    // ---- WS5 begin ----
+    if (mesh_msl != nullptr) {
+        bool refused = false;
+        if (geometry_mesh_draw(context, m_context_states[context].geometry_shader,
+                               *mesh_msl, in, refused)) {
+            return true;
+        }
+        // Not drawn (a pipeline that cannot be built, memoised, or a draw
+        // the backend declined): the captured records are exactly what the
+        // three-pass expansion reads, so it draws them instead.
+        d3d11_diag("GS mesh draw not submitted (%s); three-pass",
+                      refused ? "pipeline refused" : "declined");
+    }
+    // ---- WS5 end ----
+    return geometry_expand(context, m_context_states[context].geometry_shader,
+                           kernel, in, stats);
 }
+
+// ---- WS5 begin ----
+namespace {
+
+/// DXGI formats whose Min/Max blending gives the same bits in any order:
+/// blendable UNORM (dxgiformat.h values). Float (-0/+0, NaN), SNORM (two
+/// encodings of -1), sRGB and integer formats are left out.
+bool minmax_exact_dxgi_format(u32 format) {
+    switch (format) {
+    case 11:   // R16G16B16A16_UNORM
+    case 24:   // R10G10B10A2_UNORM
+    case 28:   // R8G8B8A8_UNORM
+    case 35:   // R16G16_UNORM
+    case 49:   // R8G8_UNORM
+    case 56:   // R16_UNORM
+    case 61:   // R8_UNORM
+    case 65:   // A8_UNORM
+    case 85:   // B5G6R5_UNORM
+    case 86:   // B5G5R5A1_UNORM
+    case 87:   // B8G8R8A8_UNORM
+    case 88:   // B8G8R8X8_UNORM
+    case 115:  // B4G4R4A4_UNORM
+        return true;
+    default:
+        return false;
+    }
+}
+
+// D3D_NAME values a pixel shader may read.
+constexpr u32 NAME_PRIMITIVE_ID = 7;
+
+}  // namespace
+
+gs_mesh::GsDrawFacts D3D11Manager::gs_mesh_draw_facts(GuestAddr context,
+                                                      GeometryShader& gs,
+                                                      bool indirect,
+                                                      u64 invocations) {
+    const auto& state = m_context_states[context];
+    gs_mesh::GsDrawFacts f{};
+    f.device_supports_mesh = m_backend.supports_mesh_pipelines();
+    f.indirect = indirect;
+    f.invocations = invocations;
+    f.statistics_query = pipeline_statistics_building(context);
+    f.stream_output = !gs.stream_out.empty();
+    bool wireframe = false;
+    if (const auto rs = m_rasterizer_states.find(state.rasterizer_state);
+        state.rasterizer_state != 0 && rs != m_rasterizer_states.end()) {
+        wireframe = rs->second.desc.fill_mode == 2u;  // D3D11_FILL_WIREFRAME
+    }
+    f.wireframe = wireframe;
+    f.line_quads = line_rasterization_mode(state) != 0 &&
+                   (gs.output_topology == 3 || (gs.output_topology == 5 && wireframe));
+
+    // The pixel shader: what it reads, and whether it writes memory or coverage.
+    if (const auto ps = m_pixel_shaders.find(state.pixel_shader);
+        state.pixel_shader != 0 && ps != m_pixel_shaders.end()) {
+        f.ps_uav = ps->second.binding_layout.uav_flat != 0 ||
+                   ps->second.binding_layout.uav_arrayed != 0;
+        f.ps_writes_coverage = ps->second.writes_coverage;
+        if (ps->second.msl_source_hash == 0) {
+            ps->second.msl_source_hash = std::hash<std::string>{}(ps->second.msl_source);
+        }
+        u8& link = gs.mesh_ps_link[ps->second.msl_source_hash];
+        if ((link & 1u) == 0) {
+            link = 1u | 2u;
+            const auto container = graphics::parse_dxbc(ps->second.bytecode.data(),
+                                                        ps->second.bytecode.size());
+            if (!container.valid()) link &= ~2u;
+            for (const auto& e : container.input_signature) {
+                const u32 sv = e.system_value_type;
+                if (sv == NAME_POSITION) continue;
+                if (sv == NAME_PRIMITIVE_ID) link |= 4u;
+                if (sv == NAME_RENDER_TARGET_ARRAY_INDEX || sv == NAME_VIEWPORT_ARRAY_INDEX) {
+                    // Refused only when the geometry shader does not write
+                    // the value (D3D_NAME 4 / 5 on a delivered output): the
+                    // mesh has no such per-primitive field then.
+                    const u8 name = static_cast<u8>(sv);
+                    const bool gs_writes = std::any_of(
+                        gs.passthrough_outputs.begin(), gs.passthrough_outputs.end(),
+                        [&](const graphics::GsPassthroughOutput& o) {
+                            return o.delivered &&
+                                   std::find(o.component_system_values.begin(),
+                                             o.component_system_values.end(),
+                                             name) != o.component_system_values.end();
+                        });
+                    if (!gs_writes) link |= 8u;
+                }
+                if (sv != 0 && sv != NAME_CLIP_DISTANCE) continue;  // other SVs are PS-side
+                const bool written = std::any_of(
+                    gs.passthrough_outputs.begin(), gs.passthrough_outputs.end(),
+                    [&](const graphics::GsPassthroughOutput& o) {
+                        return o.delivered && !o.is_position &&
+                               o.register_num == e.register_num;
+                    });
+                if (!written) link &= ~2u;
+            }
+        }
+        f.ps_inputs_covered = (link & 2u) != 0;
+        f.ps_reads_builtin_primitive_id = (link & 4u) != 0;
+        f.ps_reads_builtin_layer_or_viewport = (link & 8u) != 0;
+    }
+
+    // The output merger. A null blend state is the default: no blending,
+    // every channel written.
+    const auto blend = m_blend_states.find(state.blend_state);
+    const bool have_blend = state.blend_state != 0 && blend != m_blend_states.end();
+    if (have_blend) {
+        f.alpha_to_coverage = blend->second.desc.alpha_to_coverage_enable != 0;
+    }
+    for (u32 slot = 0; slot < 8; ++slot) {
+        if (state.render_targets[slot] == 0) continue;
+        const auto rtv = m_render_target_views.find(state.render_targets[slot]);
+        if (rtv == m_render_target_views.end()) continue;
+        gs_mesh::RenderTargetFacts& rt = f.rts[slot];
+        rt.bound = true;
+        rt.minmax_exact = minmax_exact_dxgi_format(rtv->second.format);
+        rt.write_mask = 0xF;
+        if (have_blend) {
+            const auto& d = blend->second.desc;
+            const u32 i = d.independent_blend_enable != 0 ? slot : 0u;
+            rt.write_mask = static_cast<u8>(d.render_target_write_mask[i] & 0xFu);
+            rt.blend = d.blend_enable[i] != 0;
+            rt.op_color = static_cast<u8>(d.blend_op[i]);
+            rt.op_alpha = static_cast<u8>(d.blend_op_alpha[i]);
+            rt.logic_op = d.logic_op_enable[0] != 0;
+        }
+    }
+    // Depth and stencil apply only with a depth-stencil view bound. A null
+    // state is the default: depth on, writes on, LESS, stencil off.
+    if (state.depth_stencil_view != 0) {
+        f.depth_enable = true;
+        f.depth_write = true;
+        f.depth_func = gs_mesh::kComparisonLess;
+        if (const auto dss = m_depth_stencil_states.find(state.depth_stencil_state);
+            state.depth_stencil_state != 0 && dss != m_depth_stencil_states.end()) {
+            const auto& d = dss->second.desc;
+            f.depth_enable = d.depth_enable != 0;
+            f.depth_write = d.depth_write_mask != 0;
+            f.depth_func = static_cast<u8>(d.depth_func);
+            f.stencil_enable = d.stencil_enable != 0;
+            f.stencil_write_mask = d.stencil_write_mask;
+            f.stencil_ops = {static_cast<u8>(d.front_stencil_fail_op),
+                             static_cast<u8>(d.front_stencil_depth_fail_op),
+                             static_cast<u8>(d.front_stencil_pass_op),
+                             static_cast<u8>(d.back_stencil_fail_op),
+                             static_cast<u8>(d.back_stencil_depth_fail_op),
+                             static_cast<u8>(d.back_stencil_pass_op)};
+        }
+    }
+    return f;
+}
+
+bool D3D11Manager::bind_geometry_mesh_stage(GuestAddr context,
+                                            const DrawVariant& variant,
+                                            graphics::BackendDrawCall& call,
+                                            float depth_offset,
+                                            std::vector<u32>& push,
+                                            graphics::BackendMeshDraw& mesh) {
+    const auto& state = m_context_states[context];
+    const auto gs_it = m_geometry_shaders.find(state.geometry_shader);
+    if (gs_it == m_geometry_shaders.end()) return false;
+    const d3d11::ShaderBindingLayout& layout = gs_it->second.binding_layout;
+    if (layout.uses_descriptor_tables) return false;
+    // Nothing of the vertex shader's: the mesh stage runs the geometry
+    // program, and the call's vertex-stage fields are what it binds.
+    call.vertex_constant_buffers.fill(nullptr);
+    call.vertex_constant_buffer_offsets.fill(0);
+    call.vertex_textures.fill(nullptr);
+    call.vertex_texture_views.fill({});
+    call.vertex_textures_3d.fill(nullptr);
+    call.vertex_samplers.fill({});
+    call.vertex_srv_buffers.fill(nullptr);
+    call.vertex_srv_buffer_offsets.fill(0);
+    call.vertex_srv_texture_buffers.fill(nullptr);
+    call.vertex_descriptor_tables.fill(nullptr);
+    call.vertex_border_twin_mask = 0;
+    call.vertex_capture_buffer = nullptr;
+    call.vertex_buffer = nullptr;
+    call.vertex_buffers.fill(nullptr);
+    call.index_buffer = nullptr;
+    call.index_count = 0;
+    call.vertex_count = 0;
+    call.indirect.buffer = nullptr;
+    // b#, t#, s#: as bind_compute_stage binds them for the expansion kernel.
+    for (u32 slot = 0; slot < graphics::BACKEND_MAX_CONSTANT_BUFFER_SLOTS; ++slot) {
+        const auto buffer = m_buffers.find(state.geometry_constant_buffers[slot]);
+        if (state.geometry_constant_buffers[slot] == 0 || buffer == m_buffers.end()) continue;
+        call.vertex_constant_buffers[slot] = buffer->second.backend.get();
+        call.vertex_constant_buffer_offsets[slot] = constant_buffer_bind_offset(
+            state.geometry_constant_buffers[slot], state.geometry_constant_first[slot]);
+    }
+    for (u32 slot = 0; slot < graphics::BACKEND_MAX_TEXTURE_SLOTS; ++slot) {
+        const GuestAddr address = state.geometry_shader_resources[slot];
+        if (const auto srv = m_shader_resource_views.find(address);
+            address != 0 && srv != m_shader_resource_views.end()) {
+            if (srv->second.texture_buffer != nullptr) {
+                call.vertex_srv_texture_buffers[slot] = srv->second.texture_buffer.get();
+            }
+            if (srv->second.buffer != 0 && srv->second.texture_buffer == nullptr) {
+                if (const auto buffer = m_buffers.find(srv->second.buffer);
+                    buffer != m_buffers.end()) {
+                    call.vertex_srv_buffers[slot] = buffer->second.backend.get();
+                    call.vertex_srv_buffer_offsets[slot] =
+                        srv->second.first_element * srv->second.element_bytes;
+                }
+            }
+            resolve_shader_resource(address, call.vertex_textures[slot],
+                                    call.vertex_texture_views[slot],
+                                    call.vertex_textures_3d[slot]);
+            if (call.vertex_textures[slot] != nullptr &&
+                !d3d11::fit_view_to_declaration(layout, false, slot,
+                                                call.vertex_texture_views[slot])) {
+                call.vertex_textures[slot] = nullptr;
+            }
+        }
+        (void)resolve_sampler(state.geometry_samplers[slot], call.vertex_samplers[slot],
+                              nullptr);
+    }
+    // The expansion window: records, control block, assembled ids.
+    mesh = {};
+    mesh.expansion_buffers = {variant.buffer, nullptr, variant.counts,
+                              variant.index_buffer};
+    mesh.expansion_offsets = {variant.offset, 0u, 0u, variant.index_offset};
+    mesh.mesh_groups = variant.mesh_groups;
+    mesh.object_threadgroups =
+        (variant.mesh_groups + graphics::kMaxMeshGroupsPerObjectGroup - 1) /
+        graphics::kMaxMeshGroupsPerObjectGroup;
+    mesh.barrier_before_mesh = true;
+    call.mesh = &mesh;
+    // The push block geometry_expand binds for the kernel, plus member 7.
+    push = sampler_push_block(state.geometry_samplers);
+    if (push.size() * sizeof(u32) < graphics::kPushBlockBytes) {
+        push.resize(graphics::kPushBlockBytes / sizeof(u32), 0u);
+    }
+    fill_constant_buffer_limits(push, state.geometry_constant_buffers,
+                                state.geometry_constant_first,
+                                state.geometry_constant_count);
+    fill_typed_buffer_biases(push, state.geometry_shader_resources);
+    std::memcpy(push.data() + graphics::kFixedFunctionOffset / sizeof(u32),
+                &depth_offset, sizeof(depth_offset));
+    call.vertex_constants = push.data();
+    call.vertex_constants_size = push.size() * sizeof(u32);
+    return true;
+}
+
+bool D3D11Manager::geometry_mesh_draw(GuestAddr context,
+                                      GuestAddr geometry_shader,
+                                      const std::string& mesh_msl,
+                                      const GeometryInput& in, bool& refused) {
+    refused = false;
+    const auto gs_it = m_geometry_shaders.find(geometry_shader);
+    if (gs_it == m_geometry_shaders.end() || !gs_it->second.mesh.eligible) {
+        return false;
+    }
+    const GeometryShader& gs = gs_it->second;
+    const u64 invocations = in.max_primitives * gs.instance_count;
+    if (invocations == 0) return true;
+    const u32 k = gs.mesh.fit.invocations_per_group;
+    const u64 groups = (invocations + k - 1) / k;
+    if (invocations > 0xFFFFFFFFull || groups > 0xFFFFFFFFull) return false;
+    // The control block geometry_expand writes (no count region: the counts
+    // are threadgroup memory). The invocation limit is always on, since the
+    // last threadgroup holds threads past the last invocation.
+    std::array<u32, graphics::kGsInvocationCountBase> control{};
+    control[graphics::kGsControlFlags] =
+        graphics::kGsFlagInvocationLimit |
+        (in.primitives_per_instance != 0 ? graphics::kGsFlagPrimitiveIdModulo : 0u) |
+        (in.primitive_id_table ? graphics::kGsFlagPrimitiveIdTable : 0u);
+    control[1] = 2u;
+    control[2] = 0u;
+    control[3] = 0u;
+    control[4] = in.vertices_per_primitive;
+    control[graphics::kGsControlInvocationLimit] = static_cast<u32>(invocations);
+    control[graphics::kGsControlPrimitivesPerInstance] = in.primitives_per_instance;
+    control[graphics::kGsControlStreamStride] = static_cast<u32>(invocations);
+    control[graphics::kGsControlPrimitiveIdTable] = in.primitive_id_table_offset;
+    graphics::BackendBufferDesc desc{};
+    desc.shader_resource = true;
+    desc.unordered_access = true;
+    desc.byte_width = sizeof(control);
+    auto block = m_transient.acquire(desc, control.data(), sizeof(control));
+    if (!block) return false;
+
+    DrawVariant mesh_draw{};
+    mesh_draw.kind = DrawVariant::Kind::MeshGeometry;
+    mesh_draw.vertex_msl = &mesh_msl;
+    mesh_draw.vertex_msl_owned = true;  // the geometry shader's own string
+    mesh_draw.buffer = in.records;
+    mesh_draw.offset = in.records_offset;
+    mesh_draw.counts = block.get();
+    mesh_draw.index_buffer = in.ids;
+    mesh_draw.index_offset = in.ids_offset;
+    mesh_draw.topology = list_topology(gs.output_topology);
+    mesh_draw.viewport_array = gs.writes_viewport_index;
+    mesh_draw.mesh_groups = static_cast<u32>(groups);
+    mesh_draw.mesh_threads = k;
+    execute_draw(context, false, 0, 0, 0, 1, 0, 0, 0, &mesh_draw);
+    refused = mesh_draw.mesh_refused;
+    if (mesh_draw.submitted) ++m_gs_mesh_draws;
+    return mesh_draw.submitted;
+}
+// ---- WS5 end ----
 
 }  // namespace vitreo::winapi

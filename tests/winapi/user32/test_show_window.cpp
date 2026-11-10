@@ -85,11 +85,13 @@ public:
         cursor_y = y;
         return cursor_move_succeeds;
     }
-    void set_cursor_clip(bool enabled, i32 l, i32 t, i32 r,
-                         i32 b) override {
+    bool set_cursor_clip(bool enabled, i32 l, i32 t, i32 r,
+                         i32 b, const windowing::Rect&) override {
         clip_enabled = enabled;
         clip = windowing::Rect{l, t, r, b};
+        return true;
     }
+    void update_cursor_clip_screen(const windowing::Rect&) override {}
     bool get_cursor_clip(i32& l, i32& t, i32& r, i32& b) const override {
         if (!clip_enabled) return false;
         l = clip.left; t = clip.top; r = clip.right; b = clip.bottom;
@@ -647,7 +649,7 @@ TEST(PlatformHostTest, SetCursorPosConfinesToClipCursorRect) {
     Marshaler marshaler(memory);
     marshaler.attach_cpu(cpu);
     const windowing::Rect screen{0, 0, 2560, 1440};
-    host.set_cursor_clip(true, 100, 200, 300, 400);
+    ASSERT_TRUE(host.set_cursor_clip(true, 100, 200, 300, 400, screen));
 
     cpu.gpr.rcx = 50;
     cpu.gpr.rdx = 1000;

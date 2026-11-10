@@ -542,23 +542,33 @@ cpu::jit::BasicBlock decode_basic_block(GuestMemory& memory, GuestAddr addr,
     u32 trace_jccs = 0;
     bool expect_guarded_terminal = false;
     u64 guarded_terminal_target = 0;
-    // DecodedInstruction is deliberately rich (four full operands), so
-    // reserving MAX_BLOCK_INSNS here makes every cached block own a 10 KiB
-    // allocation even though ordinary basic blocks are only a few
-    // instructions long. Large guests retain hundreds of thousands of blocks
-    // across their worker-thread caches. Decode into bounded temporary storage
-    // and retain only the instructions the block actually contains.
-    std::array<cpu::DecodedInstruction, MAX_BLOCK_INSNS> decoded{};
+    // Initialize only a short block's worth of scratch on the cold path.
+    // DecodedInstruction's default member initializers make even an array
+    // without {} initialize every operand in all 192 slots. Longer traces
+    // spill on demand; the published array still retains exactly its size.
+    constexpr u32 kInlineInsns = 16;
+    std::array<cpu::DecodedInstruction, kInlineInsns> decoded{};
+    std::vector<cpu::DecodedInstruction> overflow;
+    bool decode_failed = false;
     cpu::GuestMappedByteReader reader(memory, addr);
 
     for (u32 i = 0; i < MAX_BLOCK_INSNS; ++i) {
         cpu::DecodedInstruction instr{};
         auto err = cpu::decode_instruction(reader, mode, instr);
         if (err != cpu::DecodeError::Success) {
+            decode_failed = true;
             break;
         }
 
-        decoded[block.instruction_count] = instr;
+        if (block.instruction_count < kInlineInsns) {
+            decoded[block.instruction_count] = instr;
+        } else {
+            if (overflow.empty()) {
+                overflow.reserve(MAX_BLOCK_INSNS);
+                overflow.assign(decoded.begin(), decoded.end());
+            }
+            overflow.push_back(instr);
+        }
         block.instruction_count++;
         rip += instr.length;
 
@@ -639,7 +649,17 @@ cpu::jit::BasicBlock decode_basic_block(GuestMemory& memory, GuestAddr addr,
                 trace_jccs < MAX_TRACE_JCCS && instr.operand_count != 0) {
                 const u64 target = rip + static_cast<u64>(
                     static_cast<i64>(instr.operands[0].imm));
-                if (target > rip) {
+                // Only a short forward branch joins the trace. A far Jcc is
+                // a cold exit: pulling its target into this block puts rarely
+                // run bytes in the hot instruction cache. The cmp/jcc bodies
+                // that pay for a prologue per branch are a few dozen bytes.
+                // VITREO_JIT_TRACE_SPAN=0 keeps the old unlimited span.
+                static const u64 kSpan = []() -> u64 {
+                    const char* e = std::getenv("VITREO_JIT_TRACE_SPAN");
+                    if (e == nullptr) return 128u;
+                    return static_cast<u64>(std::strtoul(e, nullptr, 0));
+                }();
+                if (target > rip && (kSpan == 0 || target - rip <= kSpan)) {
                     ++trace_jccs;
                     if (guarded_terminal_islands) {
                         expect_guarded_terminal = true;
@@ -652,11 +672,19 @@ cpu::jit::BasicBlock decode_basic_block(GuestMemory& memory, GuestAddr addr,
         }
     }
 
-    block.instructions.assign(
-        decoded.begin(), decoded.begin() + block.instruction_count);
+    if (overflow.empty()) {
+        block.instructions.assign(
+            decoded.begin(), decoded.begin() + block.instruction_count);
+    } else {
+        block.instructions.assign(overflow.begin(), overflow.end());
+    }
     block.byte_length = static_cast<u32>(rip - addr);
 
-    if (memo_on && block.byte_length != 0) {
+    // A failed decode depends on bytes/protection AFTER the successful
+    // prefix, which its hash does not cover. Do not memoize that prefix:
+    // mapping the next page or repairing an undecodable suffix must allow
+    // the next lookup to discover the now-complete block.
+    if (memo_on && !decode_failed && block.byte_length != 0) {
         u64 code_hash = 0;
         auto shared = block.instructions.share();
         if (shared && hash_block_bytes(memory, addr, block.byte_length,

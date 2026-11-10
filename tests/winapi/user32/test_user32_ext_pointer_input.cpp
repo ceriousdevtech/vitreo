@@ -3,6 +3,7 @@
 ///        pointer-device notifications and inventory, TrackMouseEvent, touch registration.
 
 #include "user32_ext_thunk_harness.hpp"
+#include "winapi/common/hid_sdk.generated.hpp"
 
 // Learn EnableMouseInPointer: success means mouse input is delivered as
 // WM_POINTER* messages *instead of* WM_MOUSE*. This host has no WM_POINTER
@@ -356,5 +357,51 @@ TEST_F(User32ExtThunkTest, TouchRegistrationTablesSurviveIndependentOwnerThreads
         start.store(true);
         for (auto& worker : workers) worker.join();
         EXPECT_EQ(failures.load(), 0u);
+    }
+}
+
+// Microsoft Learn GetRawInputDeviceList + raw_device_list_{x86,x64}.expected:
+// a successful fill preserves the input capacity, including a read-only count;
+// a null-list query must actually write its count or fail ERROR_NOACCESS.
+TEST_F(User32ExtThunkTest, RawDeviceListPreservesCapacityAndChecksQueryWritesBothBitnesses) {
+    ASSERT_TRUE(memory_.map_region(0x30000, 0x1000, MemoryProtection::ReadWrite).is_ok());
+    for (bool is64 : {false, true}) {
+        cpu_.mode = is64 ? cpu::CpuMode::Long : cpu::CpuMode::Protected;
+        mgr_->set_is_64bit(is64);
+        const u32 entry_size = is64 ? hid_sdk::x64.sizeof_RAWINPUTDEVICELIST
+                                    : hid_sdk::x86.sizeof_RAWINPUTDEVICELIST;
+        const auto call_list = [&](GuestAddr list, GuestAddr count) -> u32 {
+            if (is64) {
+                cpu_.gpr.rcx = list; cpu_.gpr.rdx = count; cpu_.gpr.r8 = entry_size;
+            } else {
+                (void)memory_.write_u32(cpu_.gpr.rsp + 4, static_cast<u32>(list));
+                (void)memory_.write_u32(cpu_.gpr.rsp + 8, static_cast<u32>(count));
+                (void)memory_.write_u32(cpu_.gpr.rsp + 12, entry_size);
+            }
+            Marshaler m(memory_); m.attach_cpu(cpu_);
+            mgr_->impl_GetRawInputDeviceList(m);
+            return static_cast<u32>(cpu_.gpr.rax);
+        };
+        constexpr u32 capacity = 64; // Deliberately larger than the test inventory.
+        ASSERT_TRUE(memory_.write_u32(0x30000, capacity).is_ok());
+        set_last_error(0xdead);
+        EXPECT_LE(call_list(BUF_ADDR, 0x30000), capacity);
+        EXPECT_EQ(memory_.read_u32(0x30000).value(), capacity);
+        EXPECT_EQ(get_last_error(), 0xdeadu);
+
+        ASSERT_TRUE(memory_.write_u32(0x30000, capacity).is_ok());
+        ASSERT_TRUE(memory_.protect_region(0x30000, 0x1000, MemoryProtection::Read).is_ok());
+        set_last_error(0xdead);
+        EXPECT_LE(call_list(BUF_ADDR, 0x30000), capacity);
+        EXPECT_EQ(memory_.read_u32(0x30000).value(), capacity);
+        EXPECT_EQ(get_last_error(), 0xdeadu);
+        set_last_error(0xdead);
+        EXPECT_EQ(call_list(0, 0x30000), 0xffffffffu);
+        EXPECT_EQ(get_last_error(), error_codes::ERROR_NOACCESS);
+        ASSERT_TRUE(memory_.protect_region(0x30000, 0x1000, MemoryProtection::ReadWrite).is_ok());
+
+        set_last_error(0xdead);
+        EXPECT_EQ(call_list(0, 0x50000), 0xffffffffu); // Unmapped count output.
+        EXPECT_EQ(get_last_error(), error_codes::ERROR_NOACCESS);
     }
 }

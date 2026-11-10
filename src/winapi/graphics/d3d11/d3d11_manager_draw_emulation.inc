@@ -28,7 +28,10 @@
     ///    states, drawing a `topology` list whose vertex count comes from
     ///    `indirect_args`.
     struct DrawVariant {
-        enum class Kind : u8 { Capture, GeometryOutput, Tessellated };
+        /// MeshGeometry (WS5): the geometry program drawn as one object+mesh
+        /// draw over an in-pass capture's records (geometry_mesh_draw).
+        enum class Kind : u8 { Capture, GeometryOutput, Tessellated,
+                               MeshGeometry };
         Kind kind{Kind::Capture};
         graphics::BackendBuffer* buffer{nullptr};
         unsigned offset{0};
@@ -38,6 +41,10 @@
         graphics::BackendBuffer* capture_indices{nullptr};
         u32 capture_index_count{0};
         const std::string* vertex_msl{nullptr};
+        /// vertex_msl is a string a shader record owns (stable address until
+        /// that shader is released, which forgets the hash memo): its hash is
+        /// memoised by address instead of computed from the text every draw.
+        bool vertex_msl_owned{false};
         /// Capture of instance k of an instanced draw, drawn alone at
         /// StartInstanceLocation + k: the SV_InstanceID the shader must see.
         u32 instance_id_bias{0};
@@ -87,6 +94,20 @@
         /// Set once the draw reached the backend. Nothing downstream may run
         /// over a capture or an expansion that never happened.
         bool submitted{false};
+        // ---- WS5 begin ----
+        /// Capture: run in the guest's own render pass (its targets, formats
+        /// and sample count, rasterization off) instead of the 1x1 one, so
+        /// a following mesh draw shares the encoder.
+        bool capture_in_pass{false};
+        /// MeshGeometry: `vertex_msl` is the object+mesh library, `buffer`
+        /// / `offset` the records, `counts` the control block, `index_buffer`
+        /// / `index_offset` the assembled ids; `mesh_groups` threadgroups of
+        /// `mesh_threads`. `mesh_refused` reports a pipeline that could not
+        /// be built (memoised), so the caller draws the three-pass way.
+        u32 mesh_groups{0};
+        u32 mesh_threads{0};
+        bool mesh_refused{false};
+        // ---- WS5 end ----
     };
     /// @p host_indirect: an argument block of Vitreo's own (DrawAuto, an
     /// emulation pass) in place of @p indirect_args / @p indirect_offset.
@@ -293,6 +314,54 @@
         u32 rasterized_stream, GeometryShader& shader, std::string& why);
     /// Lower a geometry shader to its expansion kernel for one vertex-shader
     /// record layout. False, with the reason logged, when it cannot be.
+    // ---- WS5 begin ----
+    /// The mesh-pipeline twin of compile_geometry_kernel: the GS lowered for
+    /// a mesh (DxbcTranslationOptions::emulate_geometry_with_mesh) and its
+    /// object+mesh MSL for @p layout.
+    [[nodiscard]] bool compile_geometry_mesh(
+        const std::vector<u8>& bytecode, const std::vector<u32>& input_record,
+        const graphics::GsMeshLayout& layout, std::string& msl_out,
+        u32 minmax_samplers = 0);
+    /// What select_gs_path needs to know about this draw.
+    /// @p invocations: the draw's GS invocations when known (0 otherwise).
+    [[nodiscard]] gs_mesh::GsDrawFacts gs_mesh_draw_facts(
+        GuestAddr context, GeometryShader& gs, bool indirect,
+        u64 invocations = 0);
+    /// The mesh draw over captured records (`in`, as geometry_expand takes
+    /// them). False when it was not drawn; `refused` then says the mesh
+    /// pipeline cannot be built, and the caller expands the three-pass way.
+    [[nodiscard]] bool geometry_mesh_draw(GuestAddr context,
+                                          GuestAddr geometry_shader,
+                                          const std::string& mesh_msl,
+                                          const GeometryInput& in,
+                                          bool& refused);
+    /// The mesh draw's stage bindings: the geometry stage's b#/t#/s# at the
+    /// indices its expansion kernel reads them (bind_compute_stage), the
+    /// expansion buffers, and its push block with the vertex stages'
+    /// clip-space depth offset (kept alive in @p push until the draw). The
+    /// dispatch goes in @p mesh, which call.mesh points at until the draw.
+    [[nodiscard]] bool bind_geometry_mesh_stage(GuestAddr context,
+                                                const DrawVariant& variant,
+                                                graphics::BackendDrawCall& call,
+                                                float depth_offset,
+                                                std::vector<u32>& push,
+                                                graphics::BackendMeshDraw& mesh);
+    /// Pipeline keys whose mesh pipeline failed to build (never retried).
+    std::unordered_set<u64> m_gs_mesh_refused;
+    u64 m_gs_mesh_draws{0};
+public:  // this .inc is included in D3D11Manager's private section
+    /// Tests: GS draws that took the mesh path.
+    [[nodiscard]] u64 debug_gs_mesh_draws() const noexcept { return m_gs_mesh_draws; }
+    /// Tests: K of @p geometry_shader's mesh form (0: not mesh-eligible).
+    [[nodiscard]] u32 debug_gs_mesh_invocations_per_group(
+        GuestAddr geometry_shader) const {
+        const auto it = m_geometry_shaders.find(geometry_shader);
+        return it != m_geometry_shaders.end() && it->second.mesh.eligible
+                   ? it->second.mesh.fit.invocations_per_group
+                   : 0u;
+    }
+private:
+    // ---- WS5 end ----
     [[nodiscard]] bool compile_geometry_kernel(
         const std::vector<u8>& bytecode,
         const std::vector<u32>& input_record, std::string& msl_out,

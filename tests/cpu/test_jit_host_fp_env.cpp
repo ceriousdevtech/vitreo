@@ -57,7 +57,7 @@ TEST_F(JitExecTest, SseEnvironmentGuardPreservesRoundingFlushAndFlagsBothModes) 
         for (u32 rc = 0; rc < 4; ++rc) {
             for (u32 flush : {0u, 0x8000u, 0x40u, 0x8040u}) {
                 const u32 mxcsr = modes[rc] | flush;
-                for (unsigned entry = 0; entry < 3; ++entry) {
+                for (unsigned entry = 0; entry < 4; ++entry) {
                     SCOPED_TRACE(wide);
                     SCOPED_TRACE(mxcsr);
                     SCOPED_TRACE(entry);
@@ -74,6 +74,12 @@ TEST_F(JitExecTest, SseEnvironmentGuardPreservesRoundingFlushAndFlagsBothModes) 
                     m_cpu->sse.xmm[3].u32_[0] = 0x3F000000u;
                     m_cpu->sse.xmm[4].u32_[0] = 0x3FC00000u;
                     m_cpu->sse.xmm[5].u32_[0] = 0xBFC00000u;
+                    if (entry == 3) {
+                        math::apply_sse_rounding(mxcsr);
+                        math::HostFpEnvironmentScope native(
+                            m_cpu->fpu.control_word, m_cpu->sse.mxcsr,
+                            math::HostFpEnvironmentScope::Restore::OnGuestFpUse);
+                    }
                     auto run = compiled;
                     ASSERT_EQ(test::execute_like_dispatcher(*m_jit, run, *m_cpu), JitExecResult::Continue);
                     EXPECT_FALSE(m_cpu->pending_raise.active);

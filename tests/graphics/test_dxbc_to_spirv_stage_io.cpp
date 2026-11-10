@@ -165,7 +165,7 @@ TEST(DxbcToSpirvTest, FlatDecorationAppliesOnlyToIntegerVaryings) {
         ShaderStage::Vertex);
     ASSERT_TRUE(vertex_msl.valid());
     EXPECT_NE(std::string(vertex_msl.msl_text()).find(
-                  "float4 gl_Position [[position]]"),
+                  "float4 gl_Position [[position, invariant]]"),
               std::string::npos);
 
     DxbcContainer fragment{};
@@ -241,6 +241,15 @@ TEST(DxbcToSpirvTest, RejectsUnsupportedSystemValueInterfacesHonestly) {
         EXPECT_NE(output_result.failure.find(reason), std::string::npos)
             << system_value << ": " << output_result.failure;
     }
+    // A caller that culls itself (a vertex capture and pass C) takes the
+    // cull distance as an ordinary varying.
+    DxbcContainer culled = create_unary_vertex_shader(/*MOV=*/54u);
+    culled.output_signature[0].system_value_type = 3u;
+    culled.output_signature[0].semantic_name = "SV_CullDistance";
+    DxbcTranslationOptions caller_culls{};
+    caller_culls.vertex_cull_distances_culled_by_caller = true;
+    const auto culled_result = translate_dxbc_to_spirv(culled, caller_culls);
+    EXPECT_TRUE(culled_result.valid()) << culled_result.failure;
 }
 
 // Microsoft Learn (Semantics): SV_VertexID and SV_InstanceID come from the
@@ -411,7 +420,8 @@ TEST(DxbcToSpirvTest, UppercaseSystemPositionBecomesVertexPositionBuiltin) {
         result.spirv.data(), result.spirv.size(), ShaderStage::Vertex);
     ASSERT_TRUE(compiled.valid());
     const std::string msl = compiled.msl_text();
-    EXPECT_NE(msl.find("[[position]]"), std::string::npos);
+    // Every rasterized position is invariant (prepass / later pass agree).
+    EXPECT_NE(msl.find("[[position, invariant]]"), std::string::npos);
     EXPECT_EQ(msl.find("SV_POSITION0 [[user("), std::string::npos);
 }
 

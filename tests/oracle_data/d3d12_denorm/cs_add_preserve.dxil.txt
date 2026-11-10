@@ -1,0 +1,415 @@
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 824fdf94a8430429e36df4aa1ab3835f
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; src                               texture    byte         r/o      T0             t0     1
+; dst                                   UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%struct.ByteAddressBuffer = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+
+define void @cs_add() #0 {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %4 = mul i32 %3, 12
+  %5 = and i32 %4, 1020
+  %6 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %5, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %7 = extractvalue %dx.types.ResRet.i32 %6, 0
+  %8 = mul i32 %3, 20
+  %9 = add i32 %8, 4
+  %10 = and i32 %9, 1020
+  %11 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %10, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %12 = extractvalue %dx.types.ResRet.i32 %11, 0
+  %13 = and i32 %7, -2139095041
+  %14 = bitcast i32 %13 to float
+  %15 = and i32 %12, -2139095041
+  %16 = bitcast i32 %15 to float
+  %17 = fadd fast float %16, %14
+  %18 = bitcast float %17 to i32
+  %19 = add i32 %4, 4
+  %20 = and i32 %19, 1020
+  %21 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %20, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %22 = extractvalue %dx.types.ResRet.i32 %21, 0
+  %23 = add i32 %8, 8
+  %24 = and i32 %23, 1020
+  %25 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %24, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %26 = extractvalue %dx.types.ResRet.i32 %25, 0
+  %27 = and i32 %22, -2139095041
+  %28 = bitcast i32 %27 to float
+  %29 = and i32 %26, -2139095041
+  %30 = bitcast i32 %29 to float
+  %31 = fsub fast float %28, %30
+  %32 = bitcast float %31 to i32
+  %33 = add i32 %4, 8
+  %34 = and i32 %33, 1020
+  %35 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %34, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %36 = extractvalue %dx.types.ResRet.i32 %35, 0
+  %37 = add i32 %8, 12
+  %38 = and i32 %37, 1020
+  %39 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %38, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %40 = extractvalue %dx.types.ResRet.i32 %39, 0
+  %41 = mul i32 %3, 28
+  %42 = add i32 %41, 16
+  %43 = and i32 %42, 1020
+  %44 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %43, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %45 = extractvalue %dx.types.ResRet.i32 %44, 0
+  %46 = and i32 %36, -2139095041
+  %47 = bitcast i32 %46 to float
+  %48 = and i32 %40, -2139095041
+  %49 = shl i32 %45, 23
+  %50 = and i32 %49, 25165824
+  %51 = add nuw nsw i32 %50, 8388608
+  %52 = or i32 %51, %48
+  %53 = bitcast i32 %52 to float
+  %54 = fadd fast float %53, %47
+  %55 = bitcast float %54 to i32
+  %56 = add i32 %4, 12
+  %57 = and i32 %56, 1020
+  %58 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %57, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %59 = extractvalue %dx.types.ResRet.i32 %58, 0
+  %60 = add i32 %8, 16
+  %61 = and i32 %60, 1020
+  %62 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %61, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %63 = extractvalue %dx.types.ResRet.i32 %62, 0
+  %64 = add i32 %41, 20
+  %65 = and i32 %64, 1020
+  %66 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %65, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %67 = extractvalue %dx.types.ResRet.i32 %66, 0
+  %68 = and i32 %59, -2139095041
+  %69 = shl i32 %67, 23
+  %70 = and i32 %69, 8388608
+  %71 = add nuw nsw i32 %70, 8388608
+  %72 = or i32 %71, %68
+  %73 = bitcast i32 %72 to float
+  %74 = and i32 %63, -2139095041
+  %75 = shl i32 %67, 22
+  %76 = and i32 %75, 8388608
+  %77 = add nuw nsw i32 %76, 8388608
+  %78 = or i32 %77, %74
+  %79 = bitcast i32 %78 to float
+  %80 = fsub fast float %73, %79
+  %81 = bitcast float %80 to i32
+  %82 = add i32 %4, 16
+  %83 = and i32 %82, 1020
+  %84 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %83, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %85 = extractvalue %dx.types.ResRet.i32 %84, 0
+  %86 = add i32 %8, 20
+  %87 = and i32 %86, 1020
+  %88 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %87, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %89 = extractvalue %dx.types.ResRet.i32 %88, 0
+  %90 = add i32 %41, 24
+  %91 = and i32 %90, 1020
+  %92 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %91, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %93 = extractvalue %dx.types.ResRet.i32 %92, 0
+  %94 = and i32 %85, -2139095041
+  %95 = shl i32 %93, 23
+  %96 = and i32 %95, 260046848
+  %97 = add nuw nsw i32 %96, 8388608
+  %98 = or i32 %97, %94
+  %99 = bitcast i32 %98 to float
+  %100 = and i32 %89, -2139095041
+  %101 = bitcast i32 %100 to float
+  %102 = fadd fast float %99, %101
+  %103 = bitcast float %102 to i32
+  %104 = add i32 %4, 20
+  %105 = and i32 %104, 1020
+  %106 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %105, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %107 = extractvalue %dx.types.ResRet.i32 %106, 0
+  %108 = add i32 %8, 24
+  %109 = and i32 %108, 1020
+  %110 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %109, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %111 = extractvalue %dx.types.ResRet.i32 %110, 0
+  %112 = add i32 %41, 28
+  %113 = and i32 %112, 1020
+  %114 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %113, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %115 = extractvalue %dx.types.ResRet.i32 %114, 0
+  %116 = and i32 %107, -2139095041
+  %117 = shl i32 %115, 23
+  %118 = and i32 %117, 25165824
+  %119 = add nuw nsw i32 %118, 8388608
+  %120 = or i32 %119, %116
+  %121 = bitcast i32 %120 to float
+  %122 = and i32 %111, 255
+  %123 = xor i32 %122, %116
+  %124 = or i32 %119, %123
+  %125 = bitcast i32 %124 to float
+  %126 = fsub fast float %121, %125
+  %127 = bitcast float %126 to i32
+  %128 = add i32 %4, 24
+  %129 = and i32 %128, 1020
+  %130 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %129, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %131 = extractvalue %dx.types.ResRet.i32 %130, 0
+  %132 = add i32 %41, 32
+  %133 = and i32 %132, 1020
+  %134 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %133, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %135 = extractvalue %dx.types.ResRet.i32 %134, 0
+  %136 = and i32 %131, -2139095041
+  %137 = bitcast i32 %136 to float
+  %138 = and i32 %135, 7
+  %139 = xor i32 %138, %136
+  %140 = bitcast i32 %139 to float
+  %141 = fsub fast float %137, %140
+  %142 = bitcast float %141 to i32
+  %143 = add i32 %4, 28
+  %144 = and i32 %143, 1020
+  %145 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %144, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %146 = extractvalue %dx.types.ResRet.i32 %145, 0
+  %147 = add i32 %41, 36
+  %148 = and i32 %147, 1020
+  %149 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %148, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %150 = extractvalue %dx.types.ResRet.i32 %149, 0
+  %151 = and i32 %146, -2139095041
+  %152 = bitcast i32 %151 to float
+  %153 = and i32 %150, -2147483648
+  %154 = bitcast i32 %153 to float
+  %155 = fadd fast float %154, %152
+  %156 = bitcast float %155 to i32
+  %157 = add i32 %4, 32
+  %158 = and i32 %157, 1020
+  %159 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %158, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %160 = extractvalue %dx.types.ResRet.i32 %159, 0
+  %161 = add i32 %8, 36
+  %162 = and i32 %161, 1020
+  %163 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %162, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %164 = extractvalue %dx.types.ResRet.i32 %163, 0
+  %165 = and i32 %160, -2139095041
+  %166 = bitcast i32 %165 to float
+  %167 = and i32 %164, -2139095041
+  %168 = bitcast i32 %167 to float
+  %169 = fadd fast float %168, %166
+  %170 = bitcast float %169 to i32
+  %171 = add i32 %4, 36
+  %172 = and i32 %171, 1020
+  %173 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %172, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %174 = extractvalue %dx.types.ResRet.i32 %173, 0
+  %175 = add i32 %8, 40
+  %176 = and i32 %175, 1020
+  %177 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %176, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %178 = extractvalue %dx.types.ResRet.i32 %177, 0
+  %179 = and i32 %174, -2139095041
+  %180 = bitcast i32 %179 to float
+  %181 = and i32 %178, -2139095041
+  %182 = bitcast i32 %181 to float
+  %183 = fsub fast float %180, %182
+  %184 = bitcast float %183 to i32
+  %185 = add i32 %4, 40
+  %186 = and i32 %185, 1020
+  %187 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %186, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %188 = extractvalue %dx.types.ResRet.i32 %187, 0
+  %189 = add i32 %8, 44
+  %190 = and i32 %189, 1020
+  %191 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %190, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %192 = extractvalue %dx.types.ResRet.i32 %191, 0
+  %193 = add i32 %41, 48
+  %194 = and i32 %193, 1020
+  %195 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %194, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %196 = extractvalue %dx.types.ResRet.i32 %195, 0
+  %197 = and i32 %188, -2139095041
+  %198 = bitcast i32 %197 to float
+  %199 = and i32 %192, -2139095041
+  %200 = shl i32 %196, 23
+  %201 = and i32 %200, 25165824
+  %202 = add nuw nsw i32 %201, 8388608
+  %203 = or i32 %202, %199
+  %204 = bitcast i32 %203 to float
+  %205 = fadd fast float %204, %198
+  %206 = bitcast float %205 to i32
+  %207 = add i32 %4, 44
+  %208 = and i32 %207, 1020
+  %209 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %208, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %210 = extractvalue %dx.types.ResRet.i32 %209, 0
+  %211 = add i32 %8, 48
+  %212 = and i32 %211, 1020
+  %213 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %212, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %214 = extractvalue %dx.types.ResRet.i32 %213, 0
+  %215 = add i32 %41, 52
+  %216 = and i32 %215, 1020
+  %217 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %216, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %218 = extractvalue %dx.types.ResRet.i32 %217, 0
+  %219 = and i32 %210, -2139095041
+  %220 = shl i32 %218, 23
+  %221 = and i32 %220, 8388608
+  %222 = add nuw nsw i32 %221, 8388608
+  %223 = or i32 %222, %219
+  %224 = bitcast i32 %223 to float
+  %225 = and i32 %214, -2139095041
+  %226 = shl i32 %218, 22
+  %227 = and i32 %226, 8388608
+  %228 = add nuw nsw i32 %227, 8388608
+  %229 = or i32 %228, %225
+  %230 = bitcast i32 %229 to float
+  %231 = fsub fast float %224, %230
+  %232 = bitcast float %231 to i32
+  %233 = add i32 %4, 48
+  %234 = and i32 %233, 1020
+  %235 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %234, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %236 = extractvalue %dx.types.ResRet.i32 %235, 0
+  %237 = add i32 %8, 52
+  %238 = and i32 %237, 1020
+  %239 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %238, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %240 = extractvalue %dx.types.ResRet.i32 %239, 0
+  %241 = add i32 %41, 56
+  %242 = and i32 %241, 1020
+  %243 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %242, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %244 = extractvalue %dx.types.ResRet.i32 %243, 0
+  %245 = and i32 %236, -2139095041
+  %246 = shl i32 %244, 23
+  %247 = and i32 %246, 260046848
+  %248 = add nuw nsw i32 %247, 8388608
+  %249 = or i32 %248, %245
+  %250 = bitcast i32 %249 to float
+  %251 = and i32 %240, -2139095041
+  %252 = bitcast i32 %251 to float
+  %253 = fadd fast float %250, %252
+  %254 = bitcast float %253 to i32
+  %255 = add i32 %4, 52
+  %256 = and i32 %255, 1020
+  %257 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %256, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %258 = extractvalue %dx.types.ResRet.i32 %257, 0
+  %259 = add i32 %8, 56
+  %260 = and i32 %259, 1020
+  %261 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %260, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %262 = extractvalue %dx.types.ResRet.i32 %261, 0
+  %263 = add i32 %41, 60
+  %264 = and i32 %263, 1020
+  %265 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %264, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %266 = extractvalue %dx.types.ResRet.i32 %265, 0
+  %267 = and i32 %258, -2139095041
+  %268 = shl i32 %266, 23
+  %269 = and i32 %268, 25165824
+  %270 = add nuw nsw i32 %269, 8388608
+  %271 = or i32 %270, %267
+  %272 = bitcast i32 %271 to float
+  %273 = and i32 %262, 255
+  %274 = xor i32 %273, %267
+  %275 = or i32 %270, %274
+  %276 = bitcast i32 %275 to float
+  %277 = fsub fast float %272, %276
+  %278 = bitcast float %277 to i32
+  %279 = add i32 %4, 56
+  %280 = and i32 %279, 1020
+  %281 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %280, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %282 = extractvalue %dx.types.ResRet.i32 %281, 0
+  %283 = add i32 %41, 64
+  %284 = and i32 %283, 1020
+  %285 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %284, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %286 = extractvalue %dx.types.ResRet.i32 %285, 0
+  %287 = and i32 %282, -2139095041
+  %288 = bitcast i32 %287 to float
+  %289 = and i32 %286, 7
+  %290 = xor i32 %289, %287
+  %291 = bitcast i32 %290 to float
+  %292 = fsub fast float %288, %291
+  %293 = bitcast float %292 to i32
+  %294 = add i32 %4, 60
+  %295 = and i32 %294, 1020
+  %296 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %295, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %297 = extractvalue %dx.types.ResRet.i32 %296, 0
+  %298 = add i32 %41, 68
+  %299 = and i32 %298, 1020
+  %300 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %299, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %301 = extractvalue %dx.types.ResRet.i32 %300, 0
+  %302 = and i32 %297, -2139095041
+  %303 = bitcast i32 %302 to float
+  %304 = and i32 %301, -2147483648
+  %305 = bitcast i32 %304 to float
+  %306 = fadd fast float %305, %303
+  %307 = bitcast float %306 to i32
+  %308 = shl i32 %3, 6
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %308, i32 undef, i32 %18, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %309 = or i32 %308, 4
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %309, i32 undef, i32 %32, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %310 = or i32 %308, 8
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %310, i32 undef, i32 %55, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %311 = or i32 %308, 12
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %311, i32 undef, i32 %81, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %312 = or i32 %308, 16
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %312, i32 undef, i32 %103, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %313 = or i32 %308, 20
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %313, i32 undef, i32 %127, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %314 = or i32 %308, 24
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %314, i32 undef, i32 %142, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %315 = or i32 %308, 28
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %315, i32 undef, i32 %156, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %316 = or i32 %308, 32
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %316, i32 undef, i32 %170, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %317 = or i32 %308, 36
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %317, i32 undef, i32 %184, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %318 = or i32 %308, 40
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %318, i32 undef, i32 %206, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %319 = or i32 %308, 44
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %319, i32 undef, i32 %232, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %320 = or i32 %308, 48
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %320, i32 undef, i32 %254, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %321 = or i32 %308, 52
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %321, i32 undef, i32 %278, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %322 = or i32 %308, 56
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %322, i32 undef, i32 %293, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %323 = or i32 %308, 60
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %323, i32 undef, i32 %307, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32, %dx.types.Handle, i32, i32, i8, i32) #3
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #3
+
+attributes #0 = { "fp32-denorm-mode"="preserve" }
+attributes #1 = { nounwind readnone }
+attributes #2 = { nounwind }
+attributes #3 = { nounwind readonly }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!9}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 2}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 2}
+!4 = !{!5, !7, null, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i32 0, null}
+!7 = !{!8}
+!8 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!9 = !{void ()* @cs_add, !"cs_add", null, !4, !10}
+!10 = !{i32 0, i64 16, i32 4, !11}
+!11 = !{i32 64, i32 1, i32 1}

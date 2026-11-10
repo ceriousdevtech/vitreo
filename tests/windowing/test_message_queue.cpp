@@ -2,9 +2,16 @@
 #include <vitreo/common.hpp>
 #include <windowing/messages/message_queue.hpp>
 #include <windowing/model/hwnd_manager.hpp>
+#include <windowing/messages/input_latency.hpp>
 #include <atomic>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <fstream>
 #include <future>
+#include <iterator>
 #include <thread>
+#include <unistd.h>
 
 using namespace vitreo;
 using namespace vitreo::windowing;
@@ -18,6 +25,50 @@ protected:
 TEST_F(MessageQueueTest, NewQueueIsEmpty) {
     EXPECT_TRUE(queue.empty());
     EXPECT_EQ(queue.size(), 0u);
+}
+
+TEST_F(MessageQueueTest, LatencyProbeCanAccountForNonInputMessages) {
+    if (!input_latency::enabled()) {
+        GTEST_SKIP() << "Requires VITREO_INPUT_LATENCY=1";
+    }
+    const char* all = std::getenv("VITREO_INPUT_LATENCY_ALL");
+    const bool all_enabled = all != nullptr && all[0] == '1';
+    constexpr u32 posted_message = 0x8001;
+    MSG posted{};
+    posted.message = posted_message;
+    posted.host_post_ns = input_latency::now_ns() - 500000000u;
+    (void)input_latency::take_pending_action_age();
+
+    testing::internal::CaptureStderr();
+    EXPECT_TRUE(queue.post(posted));
+    MSG received{};
+    EXPECT_TRUE(queue.get(received));
+    input_latency::note_delivered(received);
+    const auto begin = input_latency::note_dispatch_begin(received);
+    input_latency::note_dispatch_end(received, begin);
+    input_latency::report_to(stderr);
+    const auto log = testing::internal::GetCapturedStderr();
+
+    EXPECT_EQ(received.host_post_ns, posted.host_post_ns);
+    EXPECT_FALSE(input_latency::is_input_message(posted_message));
+    EXPECT_EQ(input_latency::take_pending_action_age(), 0u);
+    EXPECT_EQ(begin != 0, all_enabled);
+    EXPECT_EQ(log.find("0x8001") != std::string::npos, all_enabled);
+    const char* trace = std::getenv("VITREO_INPUT_LATENCY_TRACE");
+    if (all_enabled && trace != nullptr && trace[0] == '1') {
+        std::string trace_log = log;
+        const char* destination = std::getenv("VITREO_INPUT_LATENCY");
+        ASSERT_NE(destination, nullptr);
+        if (std::strcmp(destination, "1") != 0) {
+            std::ifstream file(std::string(destination) + '.' +
+                               std::to_string(::getpid()));
+            ASSERT_TRUE(file.is_open());
+            trace_log.assign(std::istreambuf_iterator<char>(file),
+                             std::istreambuf_iterator<char>());
+        }
+        EXPECT_NE(trace_log.find("delivery pid="), std::string::npos);
+        EXPECT_NE(trace_log.find("monotonic_ns="), std::string::npos);
+    }
 }
 
 TEST_F(MessageQueueTest, TranslatedCharacterPrecedesLaterHardwareEnter) {

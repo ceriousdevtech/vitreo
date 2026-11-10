@@ -26,6 +26,16 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/tools/oracle_probe/check_typeinfo_bitness.py")
         SKIP_RETURN_CODE 77 LABELS "oracle;oleaut32" TIMEOUT 180)
 endif()
 
+if(EXISTS "${CMAKE_SOURCE_DIR}/tools/oracle_probe/check_typeinfo_invoke.py")
+    # ITypeInfo::Invoke / DispInvoke / DispCallFunc: the winoracle probe run
+    # under Vitreo must reproduce tests/oracle_data/typeinfo_invoke_probe.*.
+    add_test(NAME vitreo_typeinfo_invoke_probe
+        COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/oracle_probe/check_typeinfo_invoke.py
+                --vitreo $<TARGET_FILE:vitreo>)
+    set_tests_properties(vitreo_typeinfo_invoke_probe PROPERTIES
+        SKIP_RETURN_CODE 77 LABELS "oleaut32" TIMEOUT 300)
+endif()
+
 if(EXISTS "${CMAKE_SOURCE_DIR}/tools/architecture/check_platform_abstraction.py")
     add_test(
         NAME vitreo_platform_abstraction_guard
@@ -50,15 +60,17 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/tools/isa_audit.py")
     )
 endif()
 
-# The D3D12 device is opt-in (see d3d12::d3d12_enabled), so the tests that need a
-# device skip in the default run. Run them again with the gate on, or they would
-# only ever report "skipped" -- which proves nothing about the device.
+# Default device validation must run without an enable flag. The explicit
+# diagnostic opt-out is checked in a separate process (policy is cached).
 add_test(
-    NAME vitreo_d3d12_enabled_tests
-    COMMAND $<TARGET_FILE:vitreo_winapi_tests> --gtest_filter=*D3D12Test*
+    NAME vitreo_d3d12_default_tests
+    COMMAND ${CMAKE_COMMAND} -E env --unset=VITREO_D3D12
+        $<TARGET_FILE:vitreo_winapi_tests> --gtest_filter=*D3D12Test*:D3D12Gate.DeviceCreationIsAvailableByDefault
 )
-set_tests_properties(vitreo_d3d12_enabled_tests PROPERTIES
-    ENVIRONMENT "VITREO_D3D12=1"
+add_test(
+    NAME vitreo_d3d12_disabled_tests
+    COMMAND ${CMAKE_COMMAND} -E env VITREO_D3D12=0
+        $<TARGET_FILE:vitreo_winapi_tests> --gtest_filter=D3D12Gate.ExplicitDisableReportsUnsupportedAndClearsOutput
 )
 
 # D3D10 devices are on by default; the VITREO_D3D10=0 opt-out is only
@@ -202,6 +214,23 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/tools/audit_critical_section_constants.py")
     )
 endif()
 
+# winmm mmio*/aux* constants and MMIOINFO/MMCKINFO/AUXCAPS layouts against
+# the mingw-w64 SDK headers, both bitnesses.
+if(EXISTS "${CMAKE_SOURCE_DIR}/tools/audit_winmm_mmio_constants.py")
+    add_test(
+        NAME vitreo_winmm_mmio_constants_match_sdk
+        COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/audit_winmm_mmio_constants.py
+    )
+endif()
+
+# MCI constants (mci_constants.inc) regenerate byte-for-byte from the SDK.
+if(EXISTS "${CMAKE_SOURCE_DIR}/tools/gen_mci_constants.py")
+    add_test(
+        NAME vitreo_mci_constants_match_sdk
+        COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/gen_mci_constants.py --check
+    )
+endif()
+
 if(EXISTS "${CMAKE_SOURCE_DIR}/tools/audit_d3d11_query_constants.py")
     add_test(
         NAME vitreo_d3d11_query_constants_match_sdk
@@ -312,6 +341,46 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/tools/check_rtl_unwind64_probe.py")
     )
     set_tests_properties(vitreo_rtl_unwind64_matches_windows PROPERTIES
         SKIP_RETURN_CODE 77 TIMEOUT 600)
+endif()
+
+# x64 RtlUnwindEx caller-owned CONTEXT.Rax, including exception handlers and
+# host callbacks, compared with a native Windows recording. This API's x86
+# counterpart is RtlUnwind, which has no caller-owned CONTEXT parameter.
+if(EXISTS "${CMAKE_SOURCE_DIR}/tools/check_unwind_context_output_probe.py")
+    add_test(NAME vitreo_unwind_context_output_matches_windows
+        COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/check_unwind_context_output_probe.py
+                $<TARGET_FILE:vitreo>)
+    set_tests_properties(vitreo_unwind_context_output_matches_windows PROPERTIES
+        SKIP_RETURN_CODE 77 TIMEOUT 90)
+endif()
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/tools/check_loader_thread_serialization_probe.py")
+    add_test(NAME vitreo_loader_thread_serialization_matches_windows
+        COMMAND python3
+            ${CMAKE_SOURCE_DIR}/tools/check_loader_thread_serialization_probe.py
+            $<TARGET_FILE:vitreo>)
+    set_tests_properties(vitreo_loader_thread_serialization_matches_windows
+        PROPERTIES TIMEOUT 120 SKIP_RETURN_CODE 77)
+endif()
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/tools/check_popf_user_flags_probe.py")
+    add_test(NAME vitreo_popf_user_flags_matches_windows
+        COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/check_popf_user_flags_probe.py
+                $<TARGET_FILE:vitreo>)
+    set_tests_properties(vitreo_popf_user_flags_matches_windows PROPERTIES
+        TIMEOUT 120 SKIP_RETURN_CODE 77)
+endif()
+
+# avifil32 (AVIFile) read side: the probe builds its own AVI/WAVE files and
+# walks every read export and COM method, x64 and x86, compared with the
+# Windows recording. Skips without mingw-w64.
+if(EXISTS "${CMAKE_SOURCE_DIR}/tools/check_avifil32_probe.py")
+    add_test(
+        NAME vitreo_avifil32_matches_windows
+        COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/check_avifil32_probe.py
+                $<TARGET_FILE:vitreo>
+    )
+    set_tests_properties(vitreo_avifil32_matches_windows PROPERTIES TIMEOUT 1200)
 endif()
 
 # GetBinaryTypeW/A classify a file as an image section would (SCS_* or
@@ -590,6 +659,7 @@ if(VITREO_ARCH_X86_64)
             cpu/test_native64.cpp
             cpu/test_compat32.cpp
             cpu/test_x64_exception_bridge.cpp
+            cpu/test_host_protection_snapshot.cpp
         DEPS
             vitreo_cpu_x64
             vitreo_memory
@@ -602,7 +672,64 @@ endif()
 vitreo_add_test(NAME vitreo_compression_tests
     SOURCES
         core/compression/test_cabinet_mszip.cpp
+        core/compression/test_lzx.cpp
     DEPS vitreo_core vitreo_compression
+)
+
+vitreo_add_test(NAME vitreo_mscms_tests
+    SOURCES winapi/mscms/test_mscms.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+    COMPILE_DEFINITIONS VITREO_ORACLE_PROBE_DIR="${PROJECT_SOURCE_DIR}/tests/oracle_data"
+)
+add_test(NAME audit_mscms_contract
+    COMMAND python3 ${PROJECT_SOURCE_DIR}/tools/generate_mscms_contract.py --check)
+
+# Focused real MSXML DOM/class-object activation contract, both guest ABIs.
+vitreo_add_test(NAME vitreo_msxml_factory_tests
+    SOURCES winapi/msxml/test_msxml_document2.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+
+vitreo_add_test(NAME vitreo_activeds_tests
+    SOURCES winapi/activeds/test_activeds.cpp
+    DEPS vitreo_winapi_system vitreo_winapi_com vitreo_winapi_core vitreo_memory
+)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+add_test(NAME audit_com_factory_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_com_factory_contract.py
+        --check ${PROJECT_SOURCE_DIR}/src/winapi/com/ole32/com_factory_contract.inc)
+add_test(NAME audit_activeds_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_activeds_contract.py --check)
+
+# Original normalized HID report ABI, audited against the Windows SDK oracle.
+vitreo_add_test(NAME vitreo_gamepad_hid_report_tests
+    SOURCES winapi/hid/test_gamepad_hid_report.cpp
+    DEPS vitreo_core
+)
+add_test(NAME audit_hid_io_statuses
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_hid_io_statuses.py --check)
+add_test(NAME audit_io_event_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_io_event_contract.py --check)
+add_test(NAME audit_hid_sdk_layout
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_hid_sdk_layout.py --check)
+
+vitreo_add_test(NAME vitreo_gamepad_hid_raw_input_tests
+    SOURCES winapi/hid/test_gamepad_hid_raw_input.cpp
+    DEPS vitreo_winapi vitreo_memory vitreo_pe_loader vitreo_cpu_jit
+        vitreo_execution_runtime
+)
+
+vitreo_add_test(NAME vitreo_gamepad_hid_parser_tests
+    SOURCES winapi/hid/test_gamepad_hid_parser.cpp
+    DEPS vitreo_winapi_system vitreo_memory vitreo_pe_loader vitreo_cpu_jit
+        vitreo_execution_runtime
+)
+
+vitreo_add_test(NAME vitreo_gamepad_xinput_tests
+    SOURCES winapi/xinput/test_xinput.cpp
+    DEPS vitreo_winapi_media vitreo_memory
 )
 
 # Exercise the real media decoder with a controlled slow host audio device.
@@ -613,6 +740,12 @@ vitreo_add_test(NAME vitreo_media_startup_tests
         audio/test_media_startup.cpp
         ${CMAKE_SOURCE_DIR}/src/audio/ffmpeg/ffmpeg_media_player.cpp
     DEPS vitreo_core
+)
+
+vitreo_add_test(NAME vitreo_coreaudio_voice_tests
+    SOURCES
+        audio/test_coreaudio_voice.cpp
+    DEPS vitreo_audio
 )
 
 vitreo_add_test(NAME vitreo_memory_tests
@@ -633,6 +766,7 @@ vitreo_add_test(NAME vitreo_capsule_tests
     SOURCES
         capsule/test_vfs.cpp
         capsule/test_iso_filesystem.cpp
+        capsule/test_cd_image.cpp
         capsule/test_image_mount_store.cpp
         capsule/test_paths.cpp
         capsule/vfs/test_directory.cpp
@@ -646,6 +780,53 @@ vitreo_add_test(NAME vitreo_capsule_tests
 # CPU: decode, interpreter, JIT, SEH
 # ------------------------------------------------------------------------------
 
+# Explicitly built measurement tool, kept out of normal test builds/runs.
+add_executable(vitreo_decode_cold_bench EXCLUDE_FROM_ALL
+    cpu/bench_block_decoder.cpp
+    ${CMAKE_SOURCE_DIR}/src/runtime/execution/block_decoder.cpp)
+target_include_directories(vitreo_decode_cold_bench PRIVATE
+    ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(vitreo_decode_cold_bench PRIVATE
+    vitreo_cpu_jit vitreo_cpu_decode vitreo_memory)
+
+add_executable(vitreo_jit_cold_compile_bench EXCLUDE_FROM_ALL
+    cpu/bench_jit_cold_compile.cpp
+    ${CMAKE_SOURCE_DIR}/src/runtime/execution/block_decoder.cpp)
+target_include_directories(vitreo_jit_cold_compile_bench PRIVATE
+    ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(vitreo_jit_cold_compile_bench PRIVATE
+    vitreo_cpu_jit vitreo_cpu_decode vitreo_memory)
+
+add_executable(vitreo_jit_concurrent_compile_bench EXCLUDE_FROM_ALL
+    cpu/bench_jit_concurrent_compile.cpp
+    ${CMAKE_SOURCE_DIR}/src/runtime/execution/block_decoder.cpp)
+target_include_directories(vitreo_jit_concurrent_compile_bench PRIVATE
+    ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(vitreo_jit_concurrent_compile_bench PRIVATE
+    vitreo_cpu_jit vitreo_cpu_decode vitreo_cpu_interpreter vitreo_memory)
+
+add_executable(vitreo_jit_rep_scan_bench EXCLUDE_FROM_ALL
+    cpu/bench_jit_rep_scan.cpp)
+target_include_directories(vitreo_jit_rep_scan_bench PRIVATE
+    ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(vitreo_jit_rep_scan_bench PRIVATE
+    vitreo_cpu_jit vitreo_cpu_decode vitreo_cpu_interpreter vitreo_memory)
+
+# An executable inside the capsule keeps its own Windows path even when the
+# host names it through a symlink.
+vitreo_add_test(NAME vitreo_known_exe_path_tests
+    SOURCES app/test_known_windows_exe_path.cpp
+    DEPS vitreo_cli vitreo_memory
+    FRAMEWORKS CoreFoundation CFNetwork Security
+)
+
+# Shared main/callback dispatch fallback after a coalesced compile wait.
+vitreo_add_test(NAME vitreo_jit_compile_dispatch_tests
+    SOURCES cpu/test_jit_compile_dispatch.cpp
+    DEPS vitreo_cli vitreo_cpu_jit vitreo_memory
+    FRAMEWORKS CoreFoundation CFNetwork Security
+)
+
 vitreo_add_test(NAME vitreo_cpu_tests
     SOURCES
         winapi/test_guest_crt_accel.cpp
@@ -654,6 +835,7 @@ vitreo_add_test(NAME vitreo_cpu_tests
         exception_state_test.cpp
         cpu/test_state.cpp
         cpu/test_decoder.cpp
+        cpu/test_instruction_length.cpp
         cpu/test_vex_alias_routing.cpp
         cpu/test_interpreter.cpp
         cpu/test_arithmetic.cpp
@@ -673,6 +855,7 @@ vitreo_add_test(NAME vitreo_cpu_tests
         cpu/test_bit_ops.cpp
         cpu/test_cmov_setcc.cpp
         cpu/test_string_ops.cpp
+        cpu/test_jit_rep_scan.cpp
         cpu/test_indirect_ctrl.cpp
         cpu/test_sse_arith.cpp
         cpu/test_sse_data.cpp
@@ -782,6 +965,15 @@ vitreo_add_test(NAME vitreo_cpu_tests
         cpu/test_jit_sse2_native.cpp
         cpu/test_jit_sha256_native.cpp
         cpu/test_jit_aes_native.cpp
+        # WS3 begin
+        cpu/test_jit_sha1_native.cpp
+        cpu/test_jit_pclmul_native.cpp
+        cpu/test_simd_read_fault_contract.cpp
+        cpu/test_vex_aligned_move_contract.cpp
+        cpu/test_cmpxchg_fault_contract.cpp
+        cpu/test_vex256_lane_split_decline.cpp
+        cpu/test_xstate_fault_contract.cpp
+        # WS3 end
         cpu/test_jit_sse_histogram.cpp
         cpu/test_jit_coverage.cpp
         cpu/test_jit_provenance.cpp
@@ -1205,6 +1397,22 @@ vitreo_add_test(NAME vitreo_pe_tests
 # Level 1 — pure translation. Runs anywhere, needs no GPU: SM3/DXBC in, MSL or
 # SPIR-V out, compared as data.
 
+# DXIL (shader model 6): container, LLVM 3.7 bitcode reader and the
+# lowering to the shader model 5.1 token stream, against dxc output from
+# winoracle (tools/oracle_probe/d3d12_sm6/gen_d3d12_sm6.py).
+vitreo_add_test(NAME vitreo_dxil_tests
+    SOURCES
+        graphics/test_dxil_reader.cpp
+        graphics/test_dxil_lower.cpp
+        graphics/test_dxil_mesh.cpp
+        graphics/test_soft_float.cpp
+    DEPS
+        vitreo_graphics_core
+        vitreo_graphics_shader
+    COMPILE_DEFINITIONS
+        VITREO_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+)
+
 vitreo_add_test(NAME vitreo_graphics_tests
     SOURCES
         gpu_device_test.cpp
@@ -1212,6 +1420,7 @@ vitreo_add_test(NAME vitreo_graphics_tests
         graphics/test_present_rate.cpp
         graphics/test_gpu_busy.cpp
         graphics/test_binding_layout.cpp
+        graphics/test_read_only_resources.cpp
         graphics/test_sm3_to_msl.cpp
         graphics/test_ff_vertex_layout.cpp
         graphics/test_ff_emulation_d3d_golden.cpp
@@ -1228,16 +1437,20 @@ vitreo_add_test(NAME vitreo_graphics_tests
         graphics/test_dxbc_to_spirv_bits_convert.cpp
         graphics/test_dxbc_to_spirv_control_flow.cpp
         graphics/test_dxbc_to_spirv_texture_sample.cpp
+        graphics/test_dxbc_tiled_status.cpp
         graphics/test_dxbc_to_spirv_texture_fetch.cpp
         graphics/test_dxbc_to_spirv_geometry.cpp
         graphics/test_dxbc_to_spirv_compute.cpp
         graphics/test_dxbc_to_spirv_pixel_uav.cpp
         graphics/test_dxbc_to_spirv_oracle_blobs.cpp
+        graphics/test_raster_emulation.cpp
         graphics/test_dxbc_sm51.cpp
         graphics/test_gsso_models.cpp
         graphics/test_pipeline_stats_models.cpp
         graphics/test_soft_double.cpp
         graphics/test_block_recycler.cpp
+        graphics/test_translation_cache.cpp
+        graphics/test_msl_minmax_fence.cpp
     DEPS
         vitreo_graphics_core
         vitreo_graphics_shader
@@ -1252,18 +1465,24 @@ vitreo_add_test(NAME vitreo_graphics_tests
 # and is kept apart from the translation tests rather than forcing Metal into
 # their link.
 if(APPLE)
+    set_source_files_properties(graphics/test_metal_vertex_bindings.mm
+        PROPERTIES COMPILE_OPTIONS -fobjc-arc)
     vitreo_add_test(NAME vitreo_graphics_metal_tests
         SOURCES
             graphics/test_generated_msl_compiles.cpp
+            graphics/test_raster_emulation_metal.cpp
             graphics/test_ff_emulation_gl_metal.cpp
             graphics/test_ff_emulation_d3d_metal.cpp
             graphics/test_metal_readback.cpp
+            graphics/test_metal_swapchain_layers.mm
             graphics/test_metal_shared_resource.cpp
             graphics/test_indirect_args.cpp
             graphics/test_descriptor_tables.cpp
             graphics/test_timeline_fence.cpp
             graphics/test_gpu_timestamp.cpp
             graphics/test_compute_fence.cpp
+            graphics/test_compute_batch.mm
+            graphics/test_metal_vertex_bindings.mm
             graphics/test_metal_memory_floor.cpp
             graphics/test_autorelease_scope.mm
             graphics/test_gpu_watch.cpp
@@ -1292,6 +1511,7 @@ if(APPLE)
             graphics/test_resource_ops_gpu.cpp
             graphics/test_occlusion_gpu.cpp
             graphics/test_fl111_gpu.cpp
+            graphics/test_logic_op_targets_gpu.cpp
             graphics/test_ps_uav_msaa_gpu.cpp
             graphics/test_classlink_gpu.cpp
             graphics/test_pipeline_stats_gpu.cpp
@@ -1301,6 +1521,7 @@ if(APPLE)
             graphics/test_tessellation.cpp
             graphics/test_gsso_gpu.cpp
             graphics/test_tiled_resources_gpu.cpp
+            graphics/test_format_422_gpu.cpp
             graphics/test_d3d7_present_metal.cpp
             ../src/winapi/graphics/ddraw/d3d7_present.cpp
             graphics/test_sm51_gpu.cpp
@@ -1318,6 +1539,12 @@ if(APPLE)
     vitreo_add_test(NAME vitreo_d3d12_metal_tests
         SOURCES
             winapi/d3d12/test_d3d12_metal.cpp
+            winapi/d3d12/test_d3d12_dxil_metal.cpp
+            winapi/d3d12/test_d3d12_concurrent_pso.cpp
+            winapi/d3d12/test_d3d12_pso_refusal.cpp
+            winapi/d3d12/test_d3d12_pso_targets.cpp
+            winapi/d3d12/test_d3d12_frame_bench.cpp
+            winapi/d3d12/test_d3d12_pso_replay.cpp
         DEPS
             vitreo_winapi
             vitreo_windowing
@@ -1328,7 +1555,29 @@ if(APPLE)
             vitreo_memory
             vitreo_cpu_jit
         FRAMEWORKS CoreFoundation CFNetwork Security
+        # test_d3d12_dxil_metal.cpp reads WARP's output from
+        # tests/oracle_data/d3d12_sm6_exec_probe.expected.
+        COMPILE_DEFINITIONS
+            VITREO_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
     )
+
+    # Pipeline-creation benchmark over VITREO_D3D12_DUMP_PSOS directories
+    # (tests/tools/d3d12_pso_replay.cpp). A tool, not a test.
+    add_executable(vitreo_d3d12_pso_replay tools/d3d12_pso_replay.cpp)
+    if(VITREO_X64_GUEST_LINK_OPTIONS)
+        target_link_options(vitreo_d3d12_pso_replay PRIVATE ${VITREO_X64_GUEST_LINK_OPTIONS})
+    endif()
+    target_include_directories(vitreo_d3d12_pso_replay PRIVATE
+        ${CMAKE_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR})
+    target_link_libraries(vitreo_d3d12_pso_replay PRIVATE
+        vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+        vitreo_graphics_metal vitreo_pe_loader vitreo_memory vitreo_cpu_jit
+        "-framework CoreFoundation" "-framework CFNetwork" "-framework Security")
+    # Metal library compile timing over MSL files (tests/tools/metal_compile_bench.mm).
+    add_executable(vitreo_metal_compile_bench tools/metal_compile_bench.mm)
+    target_compile_options(vitreo_metal_compile_bench PRIVATE -fobjc-arc)
+    target_link_libraries(vitreo_metal_compile_bench PRIVATE
+        "-framework Foundation" "-framework Metal")
 
     # Direct3D 7 submission needs the ddraw front-end AND a real GPU, so it
     # cannot live in either vitreo_winapi_tests (no Metal) or the graphics
@@ -1364,6 +1613,7 @@ if(APPLE)
         SOURCES
             winapi/d3d11/test_d3d11_metal.cpp
             winapi/d3d11/test_d3d11_metal_typed_buffer_readers.cpp
+            winapi/d3d11/test_d3d11_metal_table_slots.cpp
             winapi/d3d11/test_d3d11_metal_typed_buffer_views.cpp
             winapi/d3d11/test_d3d11_metal_vt_readback.cpp
             winapi/d3d11/test_d3d11_metal_vt_pixel_atomics.cpp
@@ -1371,6 +1621,7 @@ if(APPLE)
             winapi/d3d11/test_d3d11_metal_vt_dump.cpp
             winapi/d3d11/test_d3d11_metal_array_windows.cpp
             winapi/d3d11/test_d3d11_metal_threading.cpp
+            winapi/d3d11/test_d3d11_frame_bench.cpp
         DEPS
             vitreo_winapi
             vitreo_windowing
@@ -1611,6 +1862,7 @@ vitreo_add_test(NAME vitreo_windowing_tests
         windowing/test_native_chrome_input.mm
         windowing/test_cursor_warp_deltas.mm
         windowing/test_window_presentation.cpp
+        windowing/test_exclusive_display_content.mm
         windowing/test_app_icon_presentation.mm
         windowing/test_animated_cursor.cpp
     DEPS
@@ -1659,6 +1911,7 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/kernel32/test_error.cpp
         winapi/kernel32/test_format_message.cpp
         winapi/test_critical_section_accel.cpp
+        winapi/test_critical_section_x64_guest_stress.cpp
         # Test-build-only seam: the hooked instantiation of the accelerated
         # LeaveCriticalSection (never compiled into vitreo_winapi).
         winapi/critical_section_test_seam.cpp
@@ -1703,6 +1956,7 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/kernel32/test_pipe_peer_close.cpp
         winapi/kernel32/test_file_information.cpp
         winapi/kernel32/test_disk_free_space.cpp
+        winapi/kernel32/test_disk_space_contract.cpp
         winapi/kernel32/test_final_path_by_handle.cpp
         winapi/kernel32/test_comm_port.cpp
         winapi/setupapi/test_setup_classes.cpp
@@ -1764,11 +2018,13 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/kernel32/test_kernel32_cpuz_exceptions_stack.cpp
         winapi/kernel32/test_kernel32_cpuz_init_once.cpp
         winapi/kernel32/test_kernel32_cpuz_module_resources.cpp
+        winapi/kernel32/test_actctx.cpp
         winapi/kernel32/test_kernel32_cpuz_process_environment.cpp
         winapi/kernel32/test_kernel32_cpuz_process.cpp
         winapi/kernel32/test_kernel32_cpuz_toolhelp.cpp
         winapi/kernel32/test_kernel32_cpuz_paths.cpp
         winapi/kernel32/test_kernel32_cpuz_profile_atoms.cpp
+        winapi/kernel32/test_profile_api.cpp
         winapi/kernel32/test_vectored_exception.cpp
         winapi/ntdll/test_ntdll.cpp
         winapi/ntdll/test_ntdll_ext.cpp
@@ -1792,6 +2048,7 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/user32/test_input_contracts.cpp
         winapi/user32/test_mouse_in_pointer.cpp
         winapi/user32/test_def_window_proc.cpp
+        winapi/user32/test_def_dlg_proc.cpp
         winapi/user32/test_resources.cpp
         winapi/user32/test_painting.cpp
         winapi/user32/test_user_paint.cpp
@@ -1810,6 +2067,8 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/user32/test_user32_ext_painting_controls.cpp
         winapi/user32/test_s1_windowing.cpp
         winapi/user32/test_owner_draw.cpp
+        winapi/user32/test_ctlcolor_static.cpp
+        winapi/user32/test_static_image_layout.cpp
         winapi/user32/test_user32_cpuz.cpp
         winapi/advapi32/test_registry.cpp
         winapi/advapi32/test_registry_enum.cpp
@@ -1850,10 +2109,12 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/msvcrt/test_crt_stdio_std_descriptors.cpp
         winapi/msvcrt/test_crt_stdio_descriptor_limits.cpp
         winapi/msvcrt/test_crt_stdio_binary_reads.cpp
+        winapi/msvcrt/test_crt_stdio_fgets_lines.cpp
         winapi/msvcrt/test_crt_printf.cpp
         winapi/msvcrt/test_crt_scanf.cpp
         winapi/msvcrt/test_crt_s6_contracts.cpp
         winapi/msvcrt/test_crt_filesystem.cpp
+        winapi/msvcrt/test_crt_legacy_exports.cpp
         winapi/msvcrt/test_crt_time.cpp
         winapi/msvcrt/test_rtti.cpp
         winapi/gdi32/test_gdi32.cpp
@@ -1903,6 +2164,7 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/msi/test_msi_engine.cpp
         winapi/msi/test_msi_exports.cpp
         winapi/msi/test_msi_engine_area.cpp
+        winapi/sxs/test_sxs.cpp
         winapi/msi/test_msi_features.cpp
         winapi/msi/test_msi_files.cpp
         winapi/msi/test_msi_search.cpp
@@ -1917,10 +2179,12 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/oleaut32/test_oleaut32.cpp
         winapi/oleaut32/test_typelib.cpp
         winapi/oleaut32/test_oleaut32_safearray_contract.cpp
+        winapi/oleaut32/test_oleaut32_dispatch.cpp
         winapi/combase/test_combase.cpp
         winapi/rpcrt4/test_rpcrt4.cpp
         winapi/comctl32/test_comctl32.cpp
         winapi/riched20/test_riched20.cpp
+        winapi/msftedit/test_msftedit.cpp
         winapi/comdlg32/test_comdlg32.cpp
         winapi/uxtheme/test_uxtheme.cpp
         winapi/uxtheme/test_uxtheme_oracle.cpp
@@ -1978,6 +2242,7 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/wininet/test_wininet.cpp
         winapi/winhttp/test_winhttp.cpp
         winapi/dnsapi/test_dns_service.cpp
+        winapi/wldap32/test_wldap32.cpp
         winapi/crypt32/test_crypt32_thunk_abi.cpp
         winapi/crypt32/test_crypt32_dpapi.cpp
         winapi/crypt32/test_crypt32.cpp
@@ -2004,6 +2269,8 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/authz/test_authz.cpp
         winapi/ssl/test_ssl_integration.cpp
         winapi/winmm/test_winmm.cpp
+        winapi/winmm/test_winmm_mmio.cpp
+        winapi/winmm/test_winmm_mci.cpp
         winapi/winmm/test_timer_scheduler.cpp
         winapi/dsound/test_dsound.cpp
         winapi/d2d1/test_d2d1.cpp
@@ -2075,6 +2342,7 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/d3d11/test_d3d11_predicates_and_buffers.cpp
         winapi/d3d11/test_d3d11_private_data_and_pitches.cpp
         winapi/d3d11/test_d3d11_query.cpp
+        winapi/d3d11/test_device_lock_profile.cpp
         winapi/d3d11/test_d3d11_register_capacity.cpp
         winapi/d3d11/test_d3d11_render_target_views.cpp
         winapi/d3d11/test_d3d11_resource_ops.cpp
@@ -2099,6 +2367,7 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/d3d12/test_d3d12_root_signature.cpp
         winapi/d3d12/test_d3d12_layout.cpp
         winapi/d3d12/test_d3d12_caps.cpp
+        winapi/d3d12/test_d3d12_stream_out.cpp
         winapi/dxgi/test_dxgi.cpp
         winapi/dxgi/test_dxgi_adapter.cpp
         winapi/dxgi/test_dxgi_adapter_identity.cpp
@@ -2124,6 +2393,7 @@ vitreo_add_test(NAME vitreo_winapi_tests
         winapi/media/test_mfplat.cpp
         winapi/media/test_mfplay.cpp
         winapi/media/test_msvfw32.cpp
+        winapi/media/test_avifil32.cpp
         winapi/media/test_inproc_servers.cpp
         winapi/ddraw/test_ddraw.cpp
         winapi/vulkan/test_vulkan.cpp
@@ -2144,13 +2414,35 @@ vitreo_add_test(NAME vitreo_winapi_tests
         vitreo_execution_runtime
     FRAMEWORKS CoreFoundation CFNetwork Security
 )
+# test_msftedit.cpp reads the genuine export tables and the winoracle
+# expectations (tools/oracle_probe, tests/oracle_data).
+set_source_files_properties(winapi/msftedit/test_msftedit.cpp PROPERTIES
+    COMPILE_DEFINITIONS VITREO_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+# test_avifil32.cpp replays tools/oracle_probe/avifil32_probe{32,64}.expected
+# and builds the probe's fixture files from avifil32_fixtures.h.
+set_source_files_properties(winapi/media/test_avifil32.cpp PROPERTIES
+    COMPILE_DEFINITIONS VITREO_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+# test_wldap32.cpp replays tools/oracle_probe/wldap32_contract_probe.*.expected.
+set_source_files_properties(winapi/wldap32/test_wldap32.cpp PROPERTIES
+    COMPILE_DEFINITIONS VITREO_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 # Oracle-probe expected files (Windows' own output) that WinAPI tests replay.
 target_compile_definitions(vitreo_winapi_tests PRIVATE
     VITREO_ORACLE_PROBE_DIR="${CMAKE_SOURCE_DIR}/tests/oracle_data")
+# WS7: GDI raster on Accelerate/vImage
+target_sources(vitreo_winapi_tests PRIVATE
+    winapi/gdi32/test_gdi_vimage_kernels.cpp
+    winapi/gdi32/test_gdi_vimage_blit.cpp
+    winapi/gdi32/test_gdi_vimage_bench.cpp)
+# end WS7
 
 # ------------------------------------------------------------------------------
 # Level 4: runtime integration — intentionally links the assembled runtime
 # ------------------------------------------------------------------------------
+
+# Native controller gesture ownership and connection-observer lifetime.
+vitreo_add_test(NAME vitreo_gamepad_host_tests
+    SOURCES hardware/test_gamepad_system_gestures.mm
+    DEPS vitreo_hardware)
 
 vitreo_add_test(NAME vitreo_platform_tests
     SOURCES
@@ -2192,6 +2484,7 @@ vitreo_add_test(NAME vitreo_integration_tests
         cli/test_inchain_thunk.cpp
         cli/test_inchain_kernel32.cpp
         cli/test_opengl32_registration.cpp
+        cli/test_media_foundation_registration.cpp
         cli/test_capsule.cpp
         cli/test_process_command.cpp
         cli/test_config.cpp
@@ -2534,3 +2827,281 @@ if(APPLE AND CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
         ${CMAKE_CURRENT_SOURCE_DIR})
     add_dependencies(vitreo_isa_matrix_tests vitreo_x86_oracle_runner)
 endif()
+
+# --- WS4 begin ---
+# Persistent compiled Metal shaders: archive identity, container, runtime,
+# routing, and the upper-bound / gate benchmarks (DISABLED_, run explicitly).
+if(APPLE)
+    vitreo_add_test(NAME vitreo_metal_pipeline_archive_tests
+        SOURCES
+            graphics/test_metal_pipeline_archive_bench.mm
+            graphics/test_metal_pipeline_archive_shader_cache.mm
+        DEPS
+            vitreo_graphics_core
+            vitreo_graphics_shader
+            vitreo_graphics_metal
+        FRAMEWORKS Metal Foundation
+        COMPILE_OPTIONS -fobjc-arc
+        COMPILE_DEFINITIONS
+            VITREO_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+    )
+endif()
+# --- WS4 end ---
+
+# WS6 begin: zero-copy D3D11 dynamic and staging buffers on the real Metal
+# device (BufferShadow, the ring, the Map contract matrix, the gate bench).
+if(APPLE)
+    vitreo_add_test(NAME vitreo_d3d11_zero_copy_tests
+        SOURCES
+            graphics/test_d3d11_map_zero_copy_ring.cpp
+            graphics/test_d3d11_map_zero_copy.cpp
+            graphics/test_d3d11_map_zero_copy_draw.cpp
+            graphics/test_d3d11_map_zero_copy_bench.cpp
+        DEPS
+            vitreo_winapi
+            vitreo_windowing
+            vitreo_graphics_core
+            vitreo_graphics_shader
+            vitreo_graphics_metal
+            vitreo_pe_loader
+            vitreo_memory
+            vitreo_cpu_jit
+        FRAMEWORKS CoreFoundation CFNetwork Security
+    )
+    target_compile_definitions(vitreo_d3d11_zero_copy_tests PRIVATE
+        VITREO_ORACLE_PROBE_DIR="${CMAKE_SOURCE_DIR}/tests/oracle_data")
+endif()
+# WS6 end
+
+# ---- WS2 begin ----
+# JIT loop-idiom recognition (copy / fill / scan / compare loops): matcher,
+# trip solver, bulk primitives, and the interpreter/JIT differential.
+# LoopIdiomBench.Gate is the microbenchmark; it runs only with
+# VITREO_BENCH_WS2=1 on an otherwise idle machine.
+vitreo_add_test(NAME vitreo_ws2_loop_idiom_tests
+    SOURCES
+        cpu/test_jit_loop_idiom_desc.cpp
+        cpu/test_jit_loop_idiom_matcher.cpp
+        cpu/test_jit_loop_idiom_trip.cpp
+        cpu/test_jit_loop_idiom_mem.cpp
+        cpu/test_jit_loop_idiom_diff.cpp
+        cpu/test_jit_loop_idiom_bench.cpp
+    DEPS
+        vitreo_cpu_state
+        vitreo_cpu_decode
+        vitreo_cpu_interpreter
+        vitreo_cpu_jit
+        vitreo_cpu_seh
+        vitreo_memory
+)
+# ---- WS2 end ----
+
+# --- WS1 (host vcruntime140 memory/string exports) ---------------------------
+target_sources(vitreo_integration_tests PRIVATE
+    winapi/msvcrt/test_vcruntime_interpose_bodies.cpp
+    winapi/msvcrt/test_vcruntime_interpose_stub.cpp
+    winapi/msvcrt/test_vcruntime_interpose_bench.cpp
+)
+# --- end WS1 ------------------------------------------------------------------
+
+# ---- WS5 begin ----
+# Geometry shaders on Metal mesh pipelines (host-offload plan WS5). The probe is raw Metal; it decides
+# whether the lever is worth building.
+if(APPLE)
+    # The probe (GsMeshProbe.UpperBound) and the GPU-time gate skip unless
+    # VITREO_WS5_PROBE=1 / VITREO_WS5_BENCH=1: a default sweep
+    # (ctest -E "[Oo]racle") must not run a benchmark.
+    vitreo_add_test(NAME vitreo_gs_mesh_tests
+        SOURCES
+            graphics/test_gs_mesh_probe.mm
+            graphics/test_gs_mesh_emit.cpp
+            graphics/test_gs_mesh_backend.mm
+        DEPS
+            vitreo_graphics_core
+            vitreo_graphics_shader
+            vitreo_graphics_metal
+        FRAMEWORKS Metal Foundation
+        COMPILE_OPTIONS -fobjc-arc
+    )
+endif()
+if(APPLE)
+    vitreo_add_test(NAME vitreo_d3d11_gs_mesh_metal_tests
+        SOURCES
+            winapi/d3d11/test_d3d11_gs_mesh_metal.cpp
+        DEPS
+            vitreo_winapi
+            vitreo_windowing
+            vitreo_graphics_core
+            vitreo_graphics_shader
+            vitreo_graphics_metal
+            vitreo_pe_loader
+            vitreo_memory
+            vitreo_cpu_jit
+        FRAMEWORKS CoreFoundation CFNetwork Security
+    )
+endif()
+target_sources(vitreo_winapi_tests PRIVATE winapi/d3d11/test_d3d11_gs_mesh_routing.cpp)
+vitreo_add_test(NAME vitreo_gs_mesh_select_tests
+    SOURCES
+        winapi/d3d11/test_d3d11_gs_mesh_select.cpp
+        ${CMAKE_SOURCE_DIR}/src/winapi/graphics/d3d11/d3d11_gs_mesh_select.cpp
+    DEPS
+        vitreo_graphics_core
+        vitreo_graphics_shader
+)
+# ---- WS5 end ----
+
+# Independent Windows RegRenameKey oracle, both guest calling conventions.
+vitreo_add_test(NAME vitreo_registry_contract_tests
+    SOURCES winapi/advapi32/test_registry.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_reg_rename_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_reg_rename_contract.py
+        --check ${PROJECT_SOURCE_DIR}/src/winapi/advapi32/registry/reg_rename_contract.inc)
+
+vitreo_add_test(NAME vitreo_gdi_region_contract_tests
+    SOURCES winapi/gdi32/test_get_random_rgn.cpp winapi/gdi32/test_gdi32_geometry.cpp
+            windowing/test_window_scene.cpp
+            winapi/user32/test_painting.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+    COMPILE_DEFINITIONS VITREO_ORACLE_PROBE_DIR="${CMAKE_SOURCE_DIR}/tests/oracle_data"
+)
+add_test(NAME audit_get_random_rgn_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_get_random_rgn_contract.py --check)
+
+# Keep the legacy process-launch regression independent of the monolithic suite.
+vitreo_add_test(NAME vitreo_winexec_contract_tests
+    SOURCES winapi/kernel32/test_winexec.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+
+vitreo_add_test(NAME vitreo_startup_message_tests
+    SOURCES ipc/test_startup_message.cpp
+    DEPS vitreo_ipc
+)
+
+vitreo_add_test(NAME vitreo_d3d8_tests
+    SOURCES winapi/d3d8/test_d3d8.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+
+add_test(NAME audit_d3d8_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/gen_d3d8_contract.py)
+
+add_test(NAME audit_winexec_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_winexec_contract.py --check)
+
+add_test(NAME audit_process_execute_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_process_execute_contract.py --check)
+
+vitreo_add_test(NAME vitreo_registry_query_contract_tests
+    SOURCES winapi/advapi32/test_registry_query.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_reg_query_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_reg_query_contract.py --check)
+
+vitreo_add_test(NAME vitreo_drive_type_contract_tests
+    SOURCES winapi/kernel32/test_drive_type.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_drive_type_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_drive_type_contract.py --check)
+
+vitreo_add_test(NAME vitreo_registry_open_contract_tests
+    SOURCES winapi/advapi32/test_registry_open_contract.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_reg_open_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/reg_open_sdk_generate.py --check)
+
+vitreo_add_test(NAME vitreo_ext_text_out_contract_tests
+    SOURCES winapi/gdi32/test_ext_text_out_contract.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_ext_text_out_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_ext_text_out_contract.py --check)
+
+vitreo_add_test(NAME vitreo_create_dibitmap_contract_tests
+    SOURCES winapi/gdi32/test_create_dibitmap_contract.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_create_dibitmap_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_create_dib_bitmap_contract.py --check)
+
+vitreo_add_test(NAME vitreo_palette_contract_tests
+    SOURCES winapi/gdi32/test_palette_contract.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_palette_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_palette_contract.py --check)
+
+vitreo_add_test(NAME vitreo_text_extent_output_contract_tests
+    SOURCES winapi/gdi32/test_text_extent_output_contract.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_text_extent_output_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_text_extent_output_contract.py --check)
+
+vitreo_add_test(NAME vitreo_ver_language_contract_tests
+    SOURCES winapi/version/test_ver_language_contract.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_ver_language_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/ver_language_generate.py --check)
+
+vitreo_add_test(NAME vitreo_cursor_confinement_tests
+    SOURCES windowing/test_cursor_confinement.cpp
+)
+target_include_directories(vitreo_cursor_confinement_tests PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+vitreo_add_test(NAME vitreo_cursor_clip_contract_tests
+    NO_DISCOVER
+    SOURCES winapi/user32/test_cursor_clip_contract.cpp windowing/test_cursor_warp_deltas.mm
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME cursor_clip_contract COMMAND vitreo_cursor_clip_contract_tests)
+add_test(NAME audit_cursor_clip_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_cursor_clip_contract.py --check)
+
+vitreo_add_test(NAME vitreo_flush_buffers_contract_tests
+    SOURCES winapi/kernel32/test_flush_buffers_contract.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_flush_buffers_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/oracle_probe/flush_buffers_generate.py --check)
+
+vitreo_add_test(NAME vitreo_dialog_result_contract_tests
+    SOURCES winapi/user32/test_dialog_result_contract.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+add_test(NAME audit_dialog_result_contract
+    COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tools/generate_dialog_result_contract.py --check)
+
+vitreo_add_test(NAME vitreo_child_dialog_geometry_tests
+    SOURCES winapi/user32/test_child_dialog_geometry.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)
+
+vitreo_add_test(NAME vitreo_crt_command_line_contract_tests
+    SOURCES winapi/msvcrt/test_crt_init.cpp
+    DEPS vitreo_winapi vitreo_windowing vitreo_graphics_core vitreo_graphics_shader
+         vitreo_pe_loader vitreo_memory vitreo_cpu_jit vitreo_execution_runtime
+)

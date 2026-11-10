@@ -21,6 +21,14 @@ namespace vitreo::winapi::d3d9_test {
 /// these tests is that a D3D9 call produced the real backend side effect, not
 /// merely a success HRESULT.
 struct BackendRecord {
+    /// Queries: TestGpuTimestamp readiness, the clock behind it, how many
+    /// samples each draw of a counted pass adds, refusals, counted passes.
+    std::atomic<bool> timestamps_ready{true};
+    u64 timestamp_clock_ns{0};
+    u64 samples_per_draw{100};
+    bool fail_timestamps{false};
+    bool fail_occlusion{false};
+    unsigned counted_passes{0};
     unsigned swap_chains_created{0};
     unsigned presents{0};
     unsigned back_buffer_clears{0};

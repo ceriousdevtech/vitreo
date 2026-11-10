@@ -211,9 +211,13 @@ void ComCoreManager::impl_CoRevokeClassObject(Marshaler& m) {
             return;
         }
         class_object = found->second.class_object;
+        if (found->second.borrow.use_count() > 1) {
+            found->second.borrow->release_pending = true;
+            class_object = 0; // last active class-object retrieval releases it
+        }
         m_class_objects.erase(found);
     }
-    guest_iunknown_release(m, class_object);
+    if (class_object) guest_iunknown_release(m, class_object);
     m.set_return(com::S_OK);
 }
 

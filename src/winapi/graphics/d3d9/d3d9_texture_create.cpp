@@ -42,6 +42,15 @@ void D3D9Manager::create_texture(Marshaler& m, u32 device) {
         m.set_return(D3DERR_INVALIDCALL);
         return;
     }
+    // A format CheckDeviceFormat refuses for this usage cannot be created;
+    // SCRATCH resources are not limited by device format support (Learn,
+    // D3DPOOL).
+    if (pool != D3DPOOL_SCRATCH &&
+        d3d9_check_format_usage(format, 3 /* D3DRTYPE_TEXTURE */, usage) ==
+            D3DERR_NOTAVAILABLE) {
+        m.set_return(D3DERR_INVALIDCALL);
+        return;
+    }
     if (shared_handle != 0) {
         VITREO_TRACE("[d3d9] CreateTexture -> E_NOTIMPL "
                      "(no shared-resource handles)\n");
@@ -180,7 +189,7 @@ void D3D9Manager::create_cube_texture(Marshaler& m, u32 device) {
     const GuestAddr out = m.arg_ptr(6);
     const GuestAddr shared_handle = m.arg_ptr(7);
 
-    if (out != 0) (void)m.write_u32(out, 0);
+    if (out != 0) (void)m.write_ptr(out, 0);
     auto finish = [&](u32 hr, const char* why) {
         std::fprintf(stderr,
                      "[d3d9] CreateCubeTexture edge=%u levels=%u usage=0x%x "
@@ -192,6 +201,12 @@ void D3D9Manager::create_cube_texture(Marshaler& m, u32 device) {
     };
     if (edge == 0 || out == 0) {
         finish(D3DERR_INVALIDCALL, "invalid edge/out");
+        return;
+    }
+    if (pool != D3DPOOL_SCRATCH &&
+        d3d9_check_format_usage(format, 5 /* D3DRTYPE_CUBETEXTURE */, usage) ==
+            D3DERR_NOTAVAILABLE) {
+        finish(D3DERR_INVALIDCALL, "format not supported for this usage");
         return;
     }
     if (shared_handle != 0) {
@@ -262,7 +277,7 @@ void D3D9Manager::create_cube_texture(Marshaler& m, u32 device) {
     texture.backend = std::move(backend_texture);
     texture.level_surfaces.assign(D3DCUBE_FACE_COUNT * levels, 0);
 
-    if (m.write_u32(out, object).is_err()) {
+    if (m.write_ptr(out, object).is_err()) {
         destroy_object(object);
         finish(E_POINTER_D3D, "out pointer");
         return;
@@ -329,8 +344,14 @@ void D3D9Manager::create_volume_texture(Marshaler& m, u32 device) {
     const GuestAddr out = m.arg_ptr(8);
     const GuestAddr shared_handle = m.arg_ptr(9);
 
-    if (out != 0) (void)m.write_u32(out, 0);
+    if (out != 0) (void)m.write_ptr(out, 0);
     if (width == 0 || height == 0 || depth == 0 || out == 0) {
+        m.set_return(D3DERR_INVALIDCALL);
+        return;
+    }
+    if (pool != D3DPOOL_SCRATCH &&
+        d3d9_check_format_usage(format, 4 /* D3DRTYPE_VOLUMETEXTURE */,
+                                usage) == D3DERR_NOTAVAILABLE) {
         m.set_return(D3DERR_INVALIDCALL);
         return;
     }
@@ -426,7 +447,7 @@ void D3D9Manager::create_volume_texture(Marshaler& m, u32 device) {
     texture.backend_3d = std::move(backend_3d);
     texture.level_surfaces.assign(levels, 0);
 
-    if (m.write_u32(out, object).is_err()) {
+    if (m.write_ptr(out, object).is_err()) {
         destroy_object(object);
         m.set_return(E_POINTER_D3D);
         return;

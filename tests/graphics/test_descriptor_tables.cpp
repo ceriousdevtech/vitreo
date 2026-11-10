@@ -351,6 +351,60 @@ TEST(DescriptorTable, TypedBufferSlotsReadTheirOwnViewWindow) {
     ASSERT_TRUE(srvs->set_texture_buffer(READ_SLOT, nullptr));
 }
 
+TEST(DescriptorTable, ComputeReadAndWriteAliasesKeepWritableResidency) {
+    auto& device = MetalDevice::instance();
+    if (!device.available() || !device.supports_descriptor_tables()) GTEST_SKIP();
+    for (const bool typed : {false, true}) {
+        SCOPED_TRACE(typed);
+        BackendComputePipelineDesc pd{};
+        pd.compute_entry_point = "main0";
+        pd.compute_shader_msl =
+            "#include <metal_stdlib>\nusing namespace metal;\nstruct Reads { " +
+            std::string(typed ? "texture_buffer<uint> value" : "const device uint* value") +
+            " [[id(0)]]; }; struct Writes { device uint* value [[id(0)]]; "
+            "device uint* output [[id(1)]]; }; kernel void main0(constant Reads& r [[buffer(" +
+            std::to_string(BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 1) +
+            ")]], constant Writes& w [[buffer(" +
+            std::to_string(BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 3) +
+            ")]]) { uint prior = " +
+            std::string(typed ? "r.value.read(0u).x" : "r.value[0]") +
+            "; w.value[0] = prior + 1u; w.output[0] = prior; }";
+        auto pipeline = device.create_compute_pipeline(pd);
+        ASSERT_TRUE(pipeline && pipeline->valid()) << pd.compute_shader_msl;
+        BackendBufferDesc bd{};
+        bd.byte_width = 256;
+        bd.shader_resource = bd.unordered_access = true;
+        std::array<vitreo::u32, 64> initial{};
+        initial[0] = 1;
+        auto values = device.create_buffer(bd, initial.data());
+        auto output = device.create_buffer(bd, initial.data());
+        ASSERT_TRUE(values && output);
+        auto srvs = device.create_descriptor_table(
+            {1, typed ? BackendDescriptorClass::Texture : BackendDescriptorClass::Buffer});
+        auto uavs = device.create_descriptor_table({2, BackendDescriptorClass::Buffer});
+        ASSERT_TRUE(srvs && uavs);
+        auto view = typed ? device.create_texture_buffer(*values, PixelFormat::R32Uint, 0, 64, false)
+                          : nullptr;
+        if (typed) ASSERT_TRUE(view && srvs->set_texture_buffer(0, view.get()));
+        else ASSERT_TRUE(srvs->set_buffer(0, values.get(), 0));
+        ASSERT_TRUE(uavs->set_buffer(0, values.get(), 0));
+        ASSERT_TRUE(uavs->set_buffer(1, output.get(), 0));
+        BackendDispatchCall call{};
+        call.pipeline = pipeline.get();
+        call.group_count_x = call.group_count_y = call.group_count_z = 1;
+        call.threads_per_group_x = call.threads_per_group_y = call.threads_per_group_z = 1;
+        call.descriptor_tables[1] = srvs.get();
+        call.descriptor_tables[3] = uavs.get();
+        for (vitreo::u32 n = 0; n < 30; ++n) ASSERT_TRUE(device.dispatch(call));
+        ASSERT_TRUE(device.wait_idle());
+        vitreo::u32 last = 0, prior = 0;
+        ASSERT_TRUE(values->read(0, &last, sizeof(last)));
+        ASSERT_TRUE(output->read(0, &prior, sizeof(prior)));
+        EXPECT_EQ(last, 31u); // thirty increments of the supplied one
+        EXPECT_EQ(prior, 30u);
+    }
+}
+
 // A table is persistent state, not a per-draw payload: a slot keeps its value
 // until it is overwritten. That is what lets a frontend mirror D3D's binding
 // model, where PSSetShaderResources touches only the range it names.

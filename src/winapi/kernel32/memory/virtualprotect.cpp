@@ -295,6 +295,7 @@ u32 VirtualMemoryManager::get_write_watch(u64 base, u64 size,
     u64 run_begin = ~0ull;
     u64 run_end = 0;
     bool run_committed = false;
+    bool truncated = false;
     // VITREO_WRITE_WATCH_TRAPS=0 only; see write_watch::stores_untracked.
     const bool report_all = write_watch::stores_untracked();
     for (u64 page = align_down(base, page_size); page < query_end;
@@ -321,10 +322,11 @@ u32 VirtualMemoryManager::get_write_watch(u64 base, u64 size,
             continue;
         }
         if (pages_out.size() >= capacity) {
-            // The caller's array cannot hold the answer; reporting a truncated
-            // set would look authoritative while hiding written pages.
-            pages_out.clear();
-            return 1;
+            // Windows (winoracle, write_watch_failure_probe): a full array is
+            // a SUCCESS that returns the first lpdwCount pages; RESET then
+            // clears only those, so a drain loop picks up the rest next call.
+            truncated = true;
+            break;
         }
         pages_out.push_back(page);
     }
@@ -333,9 +335,17 @@ u32 VirtualMemoryManager::get_write_watch(u64 base, u64 size,
         for (u64 page : pages_out) {
             write_watch::clear_bit(dirty.data(), (page - alloc_base) / page_size);
         }
-        write_watch::clear_linear_pages(base, query_end);
-        arm_write_watch_range_locked(alloc_base, allocation->second, base,
-                                     query_end);
+        if (!truncated) {
+            write_watch::clear_linear_pages(base, query_end);
+            arm_write_watch_range_locked(alloc_base, allocation->second, base,
+                                         query_end);
+        } else {
+            for (u64 page : pages_out) {
+                write_watch::clear_linear_pages(page, page + page_size);
+                arm_write_watch_range_locked(alloc_base, allocation->second,
+                                             page, page + page_size);
+            }
+        }
     }
 
     count_inout = static_cast<u64>(pages_out.size());

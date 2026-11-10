@@ -417,6 +417,18 @@ void register_dxgi_d3d_dlls(RuntimeContext& ctx) {
         {
             (void)reg.register_dll(
                 "d3d12.dll", winapi::create_d3d12_thunks(ctx.d3d12_mgr));
+            // D3D12DeviceRemovedExtendedData: a data export (the DRED block
+            // debugger extensions read).
+            if (const GuestAddr dred = ctx.d3d12_mgr.device_removed_extended_data(
+                    [&ctx](usize bytes) {
+                        return static_cast<GuestAddr>(ctx.vmm.virtual_alloc(
+                            0, bytes, 0x3000 /*MEM_COMMIT|MEM_RESERVE*/,
+                            0x04 /*PAGE_READWRITE*/));
+                    });
+                dred != 0) {
+                ctx.thunk_registry.register_data_export(
+                    "d3d12.dll", "D3D12DeviceRemovedExtendedData", dred);
+            }
             winapi::D3D12Manager::MethodThunks d3d12_methods{};
             const auto load_d3d12_vtable = [&reg](const char* interface_name,
                                                   GuestAddr* thunks,

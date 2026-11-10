@@ -1,0 +1,43 @@
+{
+  "bits": 32,
+  "sources": [
+    "Windows SDK 10.0.26100.0 um/winreg.h",
+    "Windows SDK 10.0.26100.0 shared/winerror.h",
+    "Windows SDK 10.0.26100.0 um/winnt.h",
+    "Windows native advapi32.dll export directory",
+    "tests/oracle_data/reg_rename_sdk_roots.txt",
+    "tests/oracle_data/reg_rename_sdk_access.txt"
+  ],
+  "constants": {
+    "ERROR_SUCCESS": 0,
+    "ERROR_FILE_NOT_FOUND": 2,
+    "ERROR_ACCESS_DENIED": 5,
+    "ERROR_INVALID_HANDLE": 6,
+    "ERROR_INVALID_PARAMETER": 87,
+    "ERROR_ALREADY_EXISTS": 183,
+    "ERROR_BADKEY": 1010,
+    "ERROR_KEY_DELETED": 1018,
+    "ERROR_BAD_PATHNAME": 161,
+    "ERROR_INVALID_NAME": 123,
+    "KEY_READ": 131097,
+    "KEY_WRITE": 131078,
+    "KEY_CREATE_SUB_KEY": 4,
+    "KEY_QUERY_VALUE": 1,
+    "KEY_SET_VALUE": 2,
+    "DELETE": 65536,
+    "KEY_ALL_ACCESS": 983103,
+    "READ_CONTROL": 131072,
+    "HKEY_CURRENT_CONFIG": 2147483653,
+    "MAXIMUM_ALLOWED": 33554432
+  },
+  "export": {
+    "RegRenameKey_args": 3,
+    "RegRenameKey_bytes": 12,
+    "RegRenameKey_ordinal": 1664
+  },
+  "name_limits": {
+    "max_utf16_units": 256,
+    "first_rejected_utf16_units": 257,
+    "source": "tools/oracle_probe/reg_rename_probe32.expected + reg_rename_limits_probe32.expected"
+  }
+}

@@ -131,6 +131,51 @@ TEST_F(NtsyncTest, ParkedWaitReportsBlockedTime) {
     mgr().destroy(id);
 }
 
+TEST_F(NtsyncTest, WakeLatencySeparatesReadyObjectsFromParkedHandoffs) {
+    if (std::getenv("VITREO_WAKE_LATENCY") == nullptr) {
+        GTEST_SKIP() << "Requires VITREO_WAKE_LATENCY=1";
+    }
+    const auto id = mgr().create_event(false, false);
+    constexpr unsigned rounds = 2000;
+    bool ready_ok = true;
+    testing::internal::CaptureStderr();
+    for (unsigned i = 0; i < rounds; ++i) {
+        ready_ok &= mgr().set_event(id);
+        ready_ok &= mgr().wait(&id, 1, false, 0, kT1) == WAIT_OBJECT_0;
+    }
+    const auto ready_log = testing::internal::GetCapturedStderr();
+
+    const auto before = mgr().wake_counters().waits;
+    std::atomic<unsigned> completed{0};
+    testing::internal::CaptureStderr();
+    std::thread waiter([&] {
+        for (unsigned i = 0; i < rounds; ++i) {
+            if (mgr().wait(&id, 1, false, 1000, kT2) != WAIT_OBJECT_0) break;
+            ++completed;
+        }
+    });
+    const auto deadline = std::chrono::steady_clock::now() +
+        std::chrono::seconds(10);
+    for (unsigned i = 0; i < rounds; ++i) {
+        while (mgr().wake_counters().waits < before + i + 1 &&
+               std::chrono::steady_clock::now() < deadline) {
+            std::this_thread::yield();
+        }
+        if (std::chrono::steady_clock::now() >= deadline) break;
+        EXPECT_TRUE(mgr().set_event(id));
+    }
+    waiter.join();
+    const auto handoff_log = testing::internal::GetCapturedStderr();
+    mgr().destroy(id);
+
+    EXPECT_TRUE(ready_ok);
+    EXPECT_EQ(completed.load(), rounds);
+    EXPECT_NE(ready_log.find("kind=ready"), std::string::npos);
+    EXPECT_EQ(ready_log.find("kind=handoff"), std::string::npos);
+    EXPECT_NE(handoff_log.find("kind=handoff"), std::string::npos);
+    EXPECT_EQ(handoff_log.find("kind=ready"), std::string::npos);
+}
+
 TEST_F(NtsyncTest, SemaphoreCountsDownToZero) {
     auto id = mgr().create_semaphore(/*initial=*/2, /*max=*/3);
     ObjectId ids[] = { id };

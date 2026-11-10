@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <deque>
+#include <limits>
 
 namespace vitreo::windowing {
 
@@ -29,18 +30,34 @@ public:
             // device movement produces one.
             const Warp oldest = m_warps.front();
             m_warps.pop_front();
-            m_warps.front().dx += oldest.dx;
-            m_warps.front().dy += oldest.dy;
+            // Across association eras, an old cancelled correction must not
+            // be merged into a later live one. As for the existing bounded
+            // fold, no queued device event between these oldest warps is
+            // expected once this many cursor-only moves have accumulated.
+            if (oldest.discard_after == m_warps.front().discard_after) {
+                m_warps.front().dx += oldest.dx;
+                m_warps.front().dy += oldest.dy;
+            }
         }
         m_warps.push_back(Warp{time, dx, dy});
+    }
+
+    // Disassociated events contain device deltas, not cursor displacement.
+    // Preserve correction for queued events from before this transition, but
+    // never subtract an old cursor warp from a later device-only event.
+    void note_disassociation(double time) noexcept {
+        for (auto& warp : m_warps)
+            if (time < warp.discard_after) warp.discard_after = time;
     }
 
     /// Turn the delta (@p dx, @p dy) of a host mouse event at @p event_time
     /// into device motion: remove every warp made before that event.
     void remove_warps(double event_time, double& dx, double& dy) {
         while (!m_warps.empty() && m_warps.front().time <= event_time) {
-            dx -= m_warps.front().dx;
-            dy -= m_warps.front().dy;
+            if (event_time < m_warps.front().discard_after) {
+                dx -= m_warps.front().dx;
+                dy -= m_warps.front().dy;
+            }
             m_warps.pop_front();
         }
     }
@@ -53,6 +70,7 @@ private:
         double time;
         double dx;
         double dy;
+        double discard_after = std::numeric_limits<double>::infinity();
     };
     std::deque<Warp> m_warps;
 };

@@ -64,6 +64,7 @@ bool DxbcTranslator::emit_resource_variables() {
     // format — it is addressed by byte offset and read as 32-bit words, which
     // is precisely a storage buffer of words. Nothing needs decoding, so
     // unlike a typed buffer it is not a texture.
+    if (!declare_acceleration_structures()) return false;
     for (const u32 slot : scan_raw_srvs()) {
         if (m_structured_srv_vars.contains(slot)) continue;
         const u32 var_id = emit_buffer_srv_variable(slot, "_raw");
@@ -110,7 +111,7 @@ bool DxbcTranslator::emit_resource_variables() {
     // decides, not m_result.stage: a geometry or hull shader lowered to a
     // kernel reads back as Compute.
     const auto uav_declarations = scan_uav_declaration_tokens();
-    if (!uav_declarations.empty() &&
+    if (!uav_declarations.empty() && !m_options.uavs_in_every_stage &&
         m_container.stage != ShaderStage::Fragment &&
         m_container.stage != ShaderStage::Compute) {
         return fail("u" + std::to_string(uav_declarations.begin()->first) +
@@ -141,15 +142,23 @@ bool DxbcTranslator::emit_resource_variables() {
             ? (arrayed ? m_type_ptr_uniform_constant_ms_image_2d_array
                        : m_type_ptr_uniform_constant_ms_image_2d)
             : uint_result
-            ? (arrayed ? m_type_ptr_uniform_constant_uimage_2d_array
-                       : dimension == SpvDim::Dim3D
-                           ? m_type_ptr_uniform_constant_uimage_3d
-                           : m_type_ptr_uniform_constant_uimage_2d)
+            ? (arrayed && dimension == SpvDim::DimCube
+                   ? m_type_ptr_uniform_constant_uimage_cube_array
+               : arrayed ? m_type_ptr_uniform_constant_uimage_2d_array
+               : dimension == SpvDim::DimCube
+                   ? m_type_ptr_uniform_constant_uimage_cube
+               : dimension == SpvDim::Dim3D
+                   ? m_type_ptr_uniform_constant_uimage_3d
+                   : m_type_ptr_uniform_constant_uimage_2d)
             : sint_result
-            ? (arrayed ? m_type_ptr_uniform_constant_iimage_2d_array
-                       : dimension == SpvDim::Dim3D
-                           ? m_type_ptr_uniform_constant_iimage_3d
-                           : m_type_ptr_uniform_constant_iimage_2d)
+            ? (arrayed && dimension == SpvDim::DimCube
+                   ? m_type_ptr_uniform_constant_iimage_cube_array
+               : arrayed ? m_type_ptr_uniform_constant_iimage_2d_array
+               : dimension == SpvDim::DimCube
+                   ? m_type_ptr_uniform_constant_iimage_cube
+               : dimension == SpvDim::Dim3D
+                   ? m_type_ptr_uniform_constant_iimage_3d
+                   : m_type_ptr_uniform_constant_iimage_2d)
             : arrayed && dimension == SpvDim::DimCube
             ? m_type_ptr_uniform_constant_image_cube_array
             : arrayed
@@ -402,8 +411,8 @@ bool DxbcTranslator::emit_resource_variables() {
         rebind(m_result.sampler_bindings, DxbcRegisterClass::Sampler);
     }
 
-    // DxbcTranslationOptions::sampler_state_buffer: {MipLODBias, flags, 0, 0}
-    // per sampler binding, read-only (an SRV-like view of frontend state).
+    // DxbcTranslationOptions::sampler_state_buffer: two uvec4s per sampler
+    // binding (bias, flags, lods, border), read-only.
     if (m_options.sampler_state_buffer.enabled) {
         if (!descriptor_table_translation()) {
             return fail("sampler_state_buffer: a D3D11 translation takes its "
@@ -421,7 +430,14 @@ bool DxbcTranslator::emit_resource_variables() {
                         "binding");
         }
         if (!m_sampler_vars.empty()) {
-            const u32 records = m_builder.emit_type_runtime_array(m_type_uvec4);
+            // kSamplerStateRecordWords / 4 uvec4s, tightly packed. The
+            // inner array stride is one uvec4; the record stride is all.
+            const u32 pair = m_builder.emit_type_array(
+                m_type_uvec4,
+                m_builder.emit_constant_int(m_type_uint,
+                                            kSamplerStateRecordWords / 4u));
+            m_builder.emit_decorate(pair, SpvDecoration::ArrayStride, 16u);
+            const u32 records = m_builder.emit_type_runtime_array(pair);
             m_builder.emit_decorate(records, SpvDecoration::ArrayStride,
                                     kSamplerStateRecordWords * 4u);
             const u32 block = m_builder.emit_type_struct({records});
@@ -440,6 +456,57 @@ bool DxbcTranslator::emit_resource_variables() {
             m_builder.emit_decorate(m_sampler_state_var,
                                     SpvDecoration::Binding,
                                     m_options.sampler_state_buffer.binding);
+        }
+    }
+
+    // Descriptor-table border twins: one parallel sampler (or array) per
+    // real sampler range, past the real slots. The sample opcode loads one
+    // only when the record's custom-border flag is set. A runtime array
+    // (descriptor_count 0) has no finite length here; the D3D12 frontend
+    // gives sampler ranges a finite count so the twin can follow them.
+    if (m_options.sampler_state_buffer.enabled &&
+        m_options.border_twin_samplers == 0) {
+        u32 high = 0;
+        for (const auto& [key, range] : m_ranges) {
+            if (key.first != DxbcRegisterClass::Sampler) continue;
+            const u32 n = range.resolved.descriptor_count == 0u
+                              ? 1u
+                              : range.resolved.descriptor_count;
+            high = std::max(high, range.resolved.binding + n);
+        }
+        const u32 base = std::max(m_options.border_twin_binding_base, high);
+        for (const auto& [key, range] : m_ranges) {
+            if (key.first != DxbcRegisterClass::Sampler) continue;
+            if (!m_sampler_vars.contains(key.second)) continue;
+            const u32 count = range.resolved.descriptor_count;
+            u32 var_type = m_type_ptr_uniform_constant_sampler;
+            if (range.is_array) {
+                const u32 array_type =
+                    count == 0u
+                        ? m_builder.emit_type_runtime_array(m_type_sampler)
+                        : m_builder.emit_type_array(
+                              m_type_sampler,
+                              m_builder.emit_constant_int(m_type_uint, count));
+                if (count == 0u) {
+                    m_builder.emit_capability(
+                        SpvCapability::RuntimeDescriptorArray);
+                }
+                m_builder.emit_capability(
+                    SpvCapability::SampledImageArrayDynamicIndexing);
+                var_type = m_builder.emit_type_pointer(
+                    SpvStorageClass::UniformConstant, array_type);
+            }
+            const u32 var_id =
+                m_builder.emit_variable(var_type, SpvStorageClass::UniformConstant);
+            m_builder.emit_name(
+                var_id, "s" + std::to_string(range.resolved.binding) +
+                            "_border_twin");
+            m_builder.emit_decorate(var_id, SpvDecoration::DescriptorSet,
+                                    range.resolved.descriptor_set);
+            m_builder.emit_decorate(
+                var_id, SpvDecoration::Binding,
+                base + range.resolved.binding);
+            m_border_twin_vars[key.second] = var_id;
         }
     }
 
@@ -463,6 +530,8 @@ bool DxbcTranslator::emit_resource_variables() {
         m_border_twin_vars[slot] = var_id;
     }
 
+    const std::set<u32> atomic_uavs =
+        m_options.typed_uav_uint_views ? scan_uav_atomics() : std::set<u32>{};
     for (const auto& [slot, declaration] : declared_uavs) {
         const auto [dimension, packed_return] = declaration;
         // Windows SDK tokenized-program format (D3D10_SB_RESOURCE_DIMENSION):
@@ -503,6 +572,14 @@ bool DxbcTranslator::emit_resource_variables() {
                         " is not implemented");
         }
         m_uav_return_types[slot] = return_type;
+        if (float_family && atomic_uavs.contains(slot)) {
+            // Declared and moved as 32-bit unsigned texels (the R32_UINT
+            // view the frontend binds): typed_uav_uint_views.
+            m_uav_return_types[slot] = 4u;
+            m_uav_float_bits_slots.insert(slot);
+            m_result.typed_uav_uint_view_registers.push_back(slot);
+        }
+        const u32 declared_type = m_uav_return_types[slot];
         if (volume_uav) m_volume_uav_slots.insert(slot);
         if (array_uav) m_array_uav_slots.insert(slot);
         if (uav_1d) m_uav_1d.insert(slot);
@@ -519,26 +596,26 @@ bool DxbcTranslator::emit_resource_variables() {
         const u32 var_id = declare_resource(
             DxbcRegisterClass::UnorderedAccess, slot,
             volume_uav
-                ? return_type == 4u
+                ? declared_type == 4u
                     ? m_type_ptr_uniform_constant_storage_image_3d_uint
-                    : return_type == 3u
+                    : declared_type == 3u
                         ? m_type_ptr_uniform_constant_storage_image_3d_int
                         : m_type_ptr_uniform_constant_storage_image_3d_float
             : array_uav
-                ? return_type == 4u
+                ? declared_type == 4u
                     ? m_type_ptr_uniform_constant_storage_image_2d_array_uint
-                    : return_type == 3u
+                    : declared_type == 3u
                         ? m_type_ptr_uniform_constant_storage_image_2d_array_int
                         : m_type_ptr_uniform_constant_storage_image_2d_array_float
             : !buffer_uav
-                ? return_type == 4u
+                ? declared_type == 4u
                     ? m_type_ptr_uniform_constant_storage_image_2d_uint
-                    : return_type == 3u
+                    : declared_type == 3u
                         ? m_type_ptr_uniform_constant_storage_image_2d_int
                         : m_type_ptr_uniform_constant_storage_image_2d_float
-                : return_type == 4u
+                : declared_type == 4u
                     ? m_type_ptr_uniform_constant_storage_buffer_image_uint
-                    : return_type == 3u
+                    : declared_type == 3u
                         ? m_type_ptr_uniform_constant_storage_buffer_image_int
                         : m_type_ptr_uniform_constant_storage_buffer_image_float,
             SpvStorageClass::UniformConstant,
@@ -644,6 +721,30 @@ bool DxbcTranslator::emit_resource_variables() {
             gs_as_compute()) {
             return fail("ATOMIC: UAV counters outside the pixel and compute "
                         "stages are not implemented");
+        }
+        const ResourceRange* window_range =
+            find_range(DxbcRegisterClass::UnorderedAccess, slot);
+        if (window_range != nullptr && is_heap_window(*window_range)) {
+            // A heap window element's counter is the descriptor's own
+            // (Learn, CreateUnorderedAccessView: pCounterResource at
+            // CounterOffsetInBytes), bound in the window's auxiliary region
+            // (kDescriptorHeapWindowAuxBinding): element limit + 1 + k is
+            // heap slot k's counter, null for a view without one.
+            const u32 struct_ty = m_builder.emit_type_struct({m_type_uint});
+            m_builder.emit_decorate(struct_ty, SpvDecoration::Block);
+            m_builder.emit_member_decorate(struct_ty, 0, SpvDecoration::Offset, 0);
+            m_builder.emit_capability(
+                SpvCapability::StorageBufferArrayDynamicIndexing);
+            const u32 var_id = declare_heap_window_aux(
+                window_range->resolved.binding, struct_ty,
+                SpvStorageClass::StorageBuffer,
+                "U" + std::to_string(slot) + "_counter");
+            if (var_id == 0) return false;
+            m_uav_counter_vars[slot] = var_id;
+            m_uav_counter_element_types[slot] = m_builder.emit_type_pointer(
+                SpvStorageClass::StorageBuffer, struct_ty);
+            m_window_counter_slots.insert(slot);
+            continue;
         }
         const u32 binding =
             static_cast<u32>(m_result.uav_counter_registers.size());
@@ -768,6 +869,159 @@ bool DxbcTranslator::emit_resource_variables() {
         }
     }
 
+    // Learn (ByteAddressBuffer / StructuredBuffer): a read past the view is
+    // 0 and a write is dropped. bufinfo reports the view, not the resource
+    // (D3D11.3 22.4.1). The push-block table is keyed by a D3D11 register, so
+    // a descriptor-table translation reads one uint per table slot instead.
+    // Declared after the raw and structured variables exist.
+    if (m_options.view_size_buffer.enabled) {
+        if (!descriptor_table_translation()) {
+            return fail("view_size_buffer: a D3D11 translation takes its "
+                        "view sizes from the push block");
+        }
+        const auto declare_sizes = [&](bool which, u32 set, u32 binding,
+                                       bool any, const char* name) -> u32 {
+            if (!which || !any) return 0;
+            const u32 words = m_builder.emit_type_runtime_array(m_type_uint);
+            m_builder.emit_decorate(words, SpvDecoration::ArrayStride, 4u);
+            const u32 block = m_builder.emit_type_struct({words});
+            m_builder.emit_decorate(block, SpvDecoration::Block);
+            m_builder.emit_member_decorate(block, 0, SpvDecoration::Offset, 0);
+            m_builder.emit_member_decorate(block, 0,
+                                           SpvDecoration::NonWritable);
+            const u32 variable = m_builder.emit_variable(
+                m_builder.emit_type_pointer(SpvStorageClass::StorageBuffer,
+                                            block),
+                SpvStorageClass::StorageBuffer);
+            m_builder.emit_name(variable, name);
+            m_builder.emit_decorate(variable, SpvDecoration::DescriptorSet,
+                                    set);
+            m_builder.emit_decorate(variable, SpvDecoration::Binding, binding);
+            return variable;
+        };
+        m_srv_view_size_var = declare_sizes(
+            m_options.view_size_buffer.srv,
+            m_options.view_size_buffer.srv_set,
+            m_options.view_size_buffer.srv_binding,
+            !m_raw_srv_vars.empty() || !m_structured_srv_vars.empty(),
+            "vitreo_srv_view_sizes");
+        m_uav_view_size_var = declare_sizes(
+            m_options.view_size_buffer.uav,
+            m_options.view_size_buffer.uav_set,
+            m_options.view_size_buffer.uav_binding,
+            !m_raw_uav_vars.empty() || !m_structured_uav_vars.empty(),
+            "vitreo_uav_view_sizes");
+    }
+
+    // D3D11.3 7.5: a constant-buffer element past the bound view reads 0.
+    // The push-block table is keyed by a D3D11 register, so a descriptor
+    // table reads one vector-count per CBV slot instead.
+    if (m_options.constant_buffer_limits.enabled) {
+        if (!descriptor_table_translation()) {
+            return fail("constant_buffer_limits: a D3D11 translation takes "
+                        "its limits from the push block");
+        }
+        if (!m_cbuffer_vars.empty()) {
+            const u32 words = m_builder.emit_type_runtime_array(m_type_uint);
+            m_builder.emit_decorate(words, SpvDecoration::ArrayStride, 4u);
+            const u32 block = m_builder.emit_type_struct({words});
+            m_builder.emit_decorate(block, SpvDecoration::Block);
+            m_builder.emit_member_decorate(block, 0, SpvDecoration::Offset, 0);
+            m_builder.emit_member_decorate(block, 0,
+                                           SpvDecoration::NonWritable);
+            m_cbv_limit_var = m_builder.emit_variable(
+                m_builder.emit_type_pointer(SpvStorageClass::StorageBuffer,
+                                            block),
+                SpvStorageClass::StorageBuffer);
+            m_builder.emit_name(m_cbv_limit_var, "vitreo_cbv_limits");
+            m_builder.emit_decorate(
+                m_cbv_limit_var, SpvDecoration::DescriptorSet,
+                m_options.constant_buffer_limits.descriptor_set);
+            m_builder.emit_decorate(m_cbv_limit_var, SpvDecoration::Binding,
+                                    m_options.constant_buffer_limits.binding);
+        }
+    }
+
+    // D3D11.3 22.4.14 / 22.4.1: resinfo and bufinfo on a null descriptor are
+    // 0 in every component. Declared after the texture and typed-buffer
+    // variables exist; a raw or structured view already reports 0 from its
+    // word count.
+    if (m_options.null_descriptors.enabled) {
+        const auto declare_flags = [&](bool which, u32 set, u32 binding,
+                                       bool any, const char* name) -> u32 {
+            if (!which || !any) return 0;
+            const u32 words = m_builder.emit_type_runtime_array(m_type_uint);
+            m_builder.emit_decorate(words, SpvDecoration::ArrayStride, 4u);
+            const u32 block = m_builder.emit_type_struct({words});
+            m_builder.emit_decorate(block, SpvDecoration::Block);
+            m_builder.emit_member_decorate(block, 0, SpvDecoration::Offset, 0);
+            m_builder.emit_member_decorate(block, 0,
+                                           SpvDecoration::NonWritable);
+            const u32 variable = m_builder.emit_variable(
+                m_builder.emit_type_pointer(SpvStorageClass::StorageBuffer,
+                                            block),
+                SpvStorageClass::StorageBuffer);
+            m_builder.emit_name(variable, name);
+            m_builder.emit_decorate(variable, SpvDecoration::DescriptorSet,
+                                    set);
+            m_builder.emit_decorate(variable, SpvDecoration::Binding, binding);
+            return variable;
+        };
+        const bool texture_uav = !m_uav_vars.empty();
+        m_srv_null_var = declare_flags(
+            m_options.null_descriptors.srv, m_options.null_descriptors.srv_set,
+            m_options.null_descriptors.srv_binding,
+            !m_texture_vars.empty() || !m_typed_buffer_srv_vars.empty(),
+            "vitreo_srv_null");
+        m_uav_null_var = declare_flags(
+            m_options.null_descriptors.uav, m_options.null_descriptors.uav_set,
+            m_options.null_descriptors.uav_binding, texture_uav,
+            "vitreo_uav_null");
+    }
+
+    // Learn (D3D12_BUFFER_SRV / D3D12_BUFFER_UAV): FirstElement is any
+    // element. The texture starts element_bias() texels below it. The
+    // push-block entry is keyed by a D3D11 register, so a descriptor-table
+    // translation reads one packed uint per table slot instead. Declared
+    // after the typed-buffer variables exist.
+    if (m_options.typed_buffer_bias_buffer.enabled) {
+        // A flat (shader model 5.0) translation may declare it too: the
+        // entry it holds is the push block's, and words 1-7 describe a view
+        // read as raw memory (kTypedBufferRaw).
+        const auto declare_bias = [&](bool which, u32 set, u32 binding,
+                                      bool any, const char* name) -> u32 {
+            if (!which || !any) return 0;
+            const u32 words = m_builder.emit_type_runtime_array(m_type_uint);
+            m_builder.emit_decorate(words, SpvDecoration::ArrayStride, 4u);
+            const u32 block = m_builder.emit_type_struct({words});
+            m_builder.emit_decorate(block, SpvDecoration::Block);
+            m_builder.emit_member_decorate(block, 0, SpvDecoration::Offset, 0);
+            m_builder.emit_member_decorate(block, 0,
+                                           SpvDecoration::NonWritable);
+            const u32 variable = m_builder.emit_variable(
+                m_builder.emit_type_pointer(SpvStorageClass::StorageBuffer,
+                                            block),
+                SpvStorageClass::StorageBuffer);
+            m_builder.emit_name(variable, name);
+            m_builder.emit_decorate(variable, SpvDecoration::DescriptorSet,
+                                    set);
+            m_builder.emit_decorate(variable, SpvDecoration::Binding, binding);
+            return variable;
+        };
+        m_srv_typed_bias_var = declare_bias(
+            m_options.typed_buffer_bias_buffer.srv,
+            m_options.typed_buffer_bias_buffer.srv_set,
+            m_options.typed_buffer_bias_buffer.srv_binding,
+            !m_typed_buffer_srv_vars.empty(), "vitreo_srv_typed_bias");
+        m_uav_typed_bias_var = declare_bias(
+            m_options.typed_buffer_bias_buffer.uav,
+            m_options.typed_buffer_bias_buffer.uav_set,
+            m_options.typed_buffer_bias_buffer.uav_binding,
+            !m_buffer_uav_slots.empty(), "vitreo_uav_typed_bias");
+    }
+
+    // Tiled resources tier 2: after every t#, u# and s# exists.
+    if (!declare_tiled_status_variables()) return false;
     return true;
 }
 

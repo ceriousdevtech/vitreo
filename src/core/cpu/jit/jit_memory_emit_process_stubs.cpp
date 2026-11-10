@@ -102,7 +102,7 @@ void* g_capture_cf_stub = nullptr;
 void* g_process_continue_exit = nullptr;
 void* g_link_probe[4]{};
 void* g_rsb_push = nullptr;
-void* g_dispatch_tail[8]{};
+void* g_dispatch_tail[10]{};
 void* g_linear64_hot_mem_wide[4]{};
 // The same helpers emitted under JitConfig::linear64_jit_view, whose X15 is
 // the JIT view: their check-map probe reloads the map from JitContext.
@@ -238,7 +238,7 @@ void fill_jit_context_locked(const LiveJitContext& live) {
         __atomic_store_n(&ctx.tier_counters, JitCompiler::tier_counter_base(),
                          __ATOMIC_RELEASE);
     }
-    for (u32 kind = 0; kind < 8; ++kind) {
+    for (u32 kind = 0; kind < std::size(g_dispatch_tail); ++kind) {
         if (ctx.dispatch_tail[kind] == nullptr) {
             __atomic_store_n(&ctx.dispatch_tail[kind], g_dispatch_tail[kind],
                              __ATOMIC_RELEASE);
@@ -516,7 +516,10 @@ void* JitCompiler::materialize_capture_cf_stub() {
         to_arm.push_back({m_code_buf.size(), arm});
         emit(cond);  // condition code; patched below
     };
-    enum : u8 { kSub64, kAdd64, kZero, kIncDec, kSub32, kAdd32, kNone, kArms };
+    enum : u8 {
+        kSub64, kAdd64, kZero, kIncDec, kSub32, kAdd32, kNone,
+        kSub8, kAdd8, kSub16, kAdd16, kArms
+    };
     emit(arm64::ldrb_uoff(3, REG_CPU_STATE, cf_overlay_offset()));
     const usize no_overlay = m_code_buf.size();
     emit(0);  // CBZ W3, record
@@ -546,21 +549,8 @@ void* JitCompiler::materialize_capture_cf_stub() {
     static_assert(static_cast<u32>(F::None) == 0);
     emit(arm64::cmp_w_imm(3, 0));
     branch_to(arm64::EQ, kNone);
-    // Every other kind: the C++ reference, with the caller-saved pins and
-    // X14/X15 kept on the host stack (16-byte aligned throughout).
-    emit(arm64::sub_x_imm(31, 31, 48));
-    emit(arm64::stp_x_off(29, 30, 31, 0));
-    emit(arm64::stp_x_off(12, 13, 31, 2));
-    emit(arm64::stp_x_off(14, 15, 31, 4));
-    emit(arm64::mov_x(0, REG_CPU_STATE));
-    emit(arm64::ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_CAPTURE_CF >> 3));
-    emit(0xD63F0200u);  // BLR X16
-    emit(arm64::mov_w(REG_CALL_TMP, 0));
-    emit(arm64::ldp_x_off(14, 15, 31, 4));
-    emit(arm64::ldp_x_off(12, 13, 31, 2));
-    emit(arm64::ldp_x_off(29, 30, 31, 0));
-    emit(arm64::add_x_imm(31, 31, 48));
-    emit(arm64::ret());
+    const usize narrow_dispatch = m_code_buf.size();
+    emit(0);
     usize arm_pos[kArms]{};
     // SUB: flag_dst = a - b, flag_src = b; the borrow is a < b, a = r + b.
     arm_pos[kSub64] = m_code_buf.size();
@@ -604,6 +594,53 @@ void* JitCompiler::materialize_capture_cf_stub() {
     emit(arm64::ldr_x_uoff(1, REG_CPU_STATE, cpu_rflags_offset() >> 3));
     emit(arm64::ubfx_x(REG_CALL_TMP, 1, 0, 1));
     emit(arm64::ret());
+    m_code_buf[narrow_dispatch] = arm64::b_imm(
+        static_cast<i32>(m_code_buf.size() - narrow_dispatch) * 4);
+    emit(arm64::cmp_w_imm(3, static_cast<u32>(F::Sub16)));
+    branch_to(arm64::EQ, kSub16);
+    emit(arm64::cmp_w_imm(3, static_cast<u32>(F::Add16)));
+    branch_to(arm64::EQ, kAdd16);
+    emit(arm64::cmp_w_imm(3, static_cast<u32>(F::Sub8)));
+    branch_to(arm64::EQ, kSub8);
+    emit(arm64::cmp_w_imm(3, static_cast<u32>(F::Add8)));
+    branch_to(arm64::EQ, kAdd8);
+    // Keep the C++ fallback behind the native arms, with the caller-saved
+    // pins and X14/X15 kept on the host stack (16-byte aligned throughout).
+    emit(arm64::sub_x_imm(31, 31, 48));
+    emit(arm64::stp_x_off(29, 30, 31, 0));
+    emit(arm64::stp_x_off(12, 13, 31, 2));
+    emit(arm64::stp_x_off(14, 15, 31, 4));
+    emit(arm64::mov_x(0, REG_CPU_STATE));
+    emit(arm64::ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_CAPTURE_CF >> 3));
+    emit(0xD63F0200u);  // BLR X16
+    emit(arm64::mov_w(REG_CALL_TMP, 0));
+    emit(arm64::ldp_x_off(14, 15, 31, 4));
+    emit(arm64::ldp_x_off(12, 13, 31, 2));
+    emit(arm64::ldp_x_off(29, 30, 31, 0));
+    emit(arm64::add_x_imm(31, 31, 48));
+    emit(arm64::ret());
+    // Intel SDM Vol. 2 ADD/SUB: CF is unsigned carry/borrow at the
+    // operand width. Narrow loads discard unrelated upper record bits.
+    const auto narrow_carry = [&](u8 arm, u32 width, bool subtract) {
+        arm_pos[arm] = m_code_buf.size();
+        emit(width == 8 ? arm64::ldrb_uoff(1, REG_CPU_STATE, src_off)
+                        : arm64::ldrh_uoff(1, REG_CPU_STATE, src_off >> 1));
+        emit(width == 8 ? arm64::ldrb_uoff(2, REG_CPU_STATE, dst_off)
+                        : arm64::ldrh_uoff(2, REG_CPU_STATE, dst_off >> 1));
+        if (subtract) {
+            emit(arm64::add_w(3, 2, 1));
+            emit(arm64::ubfx_w(3, 3, 0, width));
+            emit(arm64::subs_w(31, 3, 1));
+        } else {
+            emit(arm64::subs_w(31, 2, 1));
+        }
+        emit(arm64::cset_w(REG_CALL_TMP, arm64::CC));
+        emit(arm64::ret());
+    };
+    narrow_carry(kSub8, 8, true);
+    narrow_carry(kAdd8, 8, false);
+    narrow_carry(kSub16, 16, true);
+    narrow_carry(kAdd16, 16, false);
     for (const auto& [pos, arm] : to_arm) {
         const u8 cond = static_cast<u8>(m_code_buf[pos]);
         m_code_buf[pos] = arm64::b_cond(
@@ -772,11 +809,18 @@ bool JitCompiler::dispatch_tail_applies() const noexcept {
 
 void* JitCompiler::materialize_dispatch_tail(u8 kind) {
     assert(kind < kDispatchTails);
+    static_assert(std::size(g_dispatch_tail) == kDispatchTails);
+    static_assert(sizeof(JitContext::dispatch_tail) / sizeof(void*) == kDispatchTails);
     ts_note_stub(1u << (stored_stub::kDispatchTailShift + kind));
     if (void* published = m_jit_ctx.dispatch_tail[kind]) return published;
     // The raise tail ends in the process raise exit; publish that first
     // (it takes the same mutex).
     if (kind == kTailRaise && materialize_process_raise_exit() == nullptr) {
+        return nullptr;
+    }
+    // Publish the hop-cap destination before taking the helper mutex.
+    if ((kind == kApiCrossingCheckMap || kind == kApiCrossingJitView) &&
+        materialize_dispatch_tail(kTailContinueLive) == nullptr) {
         return nullptr;
     }
     std::lock_guard<std::mutex> lock(g_scalar_mem_helper_mu());
@@ -789,6 +833,8 @@ void* JitCompiler::materialize_dispatch_tail(u8 kind) {
     saved.swap(m_code_buf);
     if (kind == kTailApiTest) {
         emit_api_test_body();
+    } else if (kind == kApiCrossingCheckMap || kind == kApiCrossingJitView) {
+        emit_api_crossing_body(0, true, kind == kApiCrossingJitView);
     } else if (kind == kColdCounter) {
         emit_cold_counter_tail_body();
     } else if (kind == kTierCounter) {
@@ -832,7 +878,7 @@ void* JitCompiler::materialize_dispatch_tail(u8 kind) {
         "dispatch-tail-continue-live", "dispatch-tail-continue-spilled",
         "dispatch-tail-raise", "dispatch-tail-api-test",
         "entry-check-map", "entry-jit-view", "cold-entry-counter",
-        "ir-tier-counter"};
+        "ir-tier-counter", "api-crossing-check-map", "api-crossing-jit-view"};
     static_assert(std::size(kNames) == kDispatchTails);
     record_mem_helper(dest, words, kNames[kind], 0);
     g_dispatch_tail[kind] = dest;

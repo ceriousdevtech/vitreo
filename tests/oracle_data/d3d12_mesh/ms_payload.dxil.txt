@@ -1,0 +1,258 @@
+;
+; Note: shader requires additional functionality:
+;       UAVs at every shader stage
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; SV_Position              0   xyzw        0      POS   float   xyzw
+; COLOR                    0   xyzw        1     NONE   float   xyzw
+; TEXCOORD                 5   xyzw        2     NONE   float   xyzw
+;
+;
+; Patch Constant signature signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; PRIMCOLOR                0   xyzw        0     NONE   float   xyzw
+; SV_CullPrimitive         0    N/A  special CULLPRIM    uint    YES
+;
+; shader hash: 6ee1f1413367e16ff806e35aa0bac84f
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Vertex Output signature:
+;
+; Name                 Index             InterpMode DynIdx
+; -------------------- ----- ---------------------- ------
+; SV_Position              0          noperspective       
+; COLOR                    0                 linear       
+; TEXCOORD                 5                 linear       
+;
+; Primitive Output signature:
+;
+; Name                 Index             InterpMode DynIdx
+; -------------------- ----- ---------------------- ------
+; PRIMCOLOR                0        nointerpolation       
+; SV_CullPrimitive         0        nointerpolation       
+;
+; Buffer Definitions:
+;
+; cbuffer Params
+; {
+;
+;   struct Params
+;   {
+;
+;       uint g_tiles_x;                               ; Offset:    0
+;       uint g_flags;                                 ; Offset:    4
+;       uint g_base;                                  ; Offset:    8
+;       uint g_pad;                                   ; Offset:   12
+;   
+;   } Params;                                         ; Offset:    0 Size:    16
+;
+; }
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; Params                            cbuffer      NA          NA     CB0            cb0     1
+; g_counter                             UAV    byte         r/w      U0             u0     1
+;
+;
+; ViewId state:
+;
+; Number of inputs: 0, outputs: 12, primitive outputs: 4
+; Outputs dependent on ViewId: {  }
+; Primitive Outputs dependent on ViewId: {  }
+; Inputs contributing to computation of Outputs:
+; Inputs contributing to computation of Primitive Outputs:
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%struct.Payload = type { [8 x i32], i32, float }
+%dx.types.CBufRet.i32 = type { i32, i32, i32, i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+%Params = type { i32, i32, i32, i32 }
+
+define void @ms_payload() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 2, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call i32 @dx.op.flattenedThreadIdInGroup.i32(i32 96)  ; FlattenedThreadIdInGroup()
+  %4 = call i32 @dx.op.groupId.i32(i32 94, i32 0)  ; GroupId(component)
+  %5 = call %struct.Payload* @dx.op.getMeshPayload.struct.Payload(i32 170)  ; GetMeshPayload()
+  %6 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %1, i32 0, i32 0, i32 undef, i32 undef, i32 1)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %7 = icmp eq i32 %3, 0
+  br i1 %7, label %8, label %10
+
+; <label>:8                                       ; preds = %0
+  %9 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %1, i32 0, i32 8, i32 undef, i32 undef, i32 1)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  br label %10
+
+; <label>:10                                      ; preds = %8, %0
+  %11 = getelementptr inbounds %struct.Payload, %struct.Payload* %5, i32 0, i32 2
+  %12 = load float, float* %11, align 4, !tbaa !26
+  %13 = getelementptr inbounds %struct.Payload, %struct.Payload* %5, i32 0, i32 0, i32 %4
+  %14 = load i32, i32* %13, align 4, !tbaa !30
+  call void @dx.op.setMeshOutputCounts(i32 168, i32 4, i32 2)  ; SetMeshOutputCounts(numVertices,numPrimitives)
+  %15 = lshr i32 %14, 3
+  %16 = and i32 %14, -8
+  %17 = shl i32 %14, 3
+  %18 = and i32 %17, 56
+  %19 = and i32 %3, 1
+  %20 = icmp ne i32 %19, 0
+  %21 = select i1 %20, i32 7, i32 1
+  %22 = or i32 %18, %21
+  %23 = uitofp i32 %22 to float
+  %24 = and i32 %3, 2
+  %25 = icmp ne i32 %24, 0
+  %26 = select i1 %25, i32 7, i32 1
+  %27 = or i32 %16, %26
+  %28 = uitofp i32 %27 to float
+  %29 = fmul fast float %23, 3.125000e-02
+  %30 = fadd fast float %29, -1.000000e+00
+  %31 = fmul fast float %28, 3.125000e-02
+  %32 = fsub fast float 1.000000e+00, %31
+  %33 = shl i32 %14, 5
+  %34 = and i32 %33, 224
+  %35 = uitofp i32 %34 to float
+  %36 = fmul fast float %35, 0x3F70101020000000
+  %37 = shl i32 %15, 5
+  %38 = uitofp i32 %37 to float
+  %39 = fmul fast float %38, 0x3F70101020000000
+  %40 = uitofp i32 %3 to float
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 0, i32 0, i8 0, float %30, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 0, i32 0, i8 1, float %32, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 0, i32 0, i8 2, float 5.000000e-01, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 0, i32 0, i8 3, float 1.000000e+00, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 1, i32 0, i8 0, float %36, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 1, i32 0, i8 1, float %39, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 1, i32 0, i8 2, float 0.000000e+00, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 1, i32 0, i8 3, float 1.000000e+00, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 2, i32 0, i8 0, float %40, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 2, i32 0, i8 1, float %40, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 2, i32 0, i8 2, float %40, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  call void @dx.op.storeVertexOutput.f32(i32 171, i32 2, i32 0, i8 3, float %40, i32 %3)  ; StoreVertexOutput(outputSigId,rowIndex,colIndex,value,vertexIndex)
+  %41 = icmp ult i32 %3, 2
+  br i1 %41, label %42, label %59
+
+; <label>:42                                      ; preds = %10
+  %43 = zext i1 %7 to i32
+  %44 = xor i32 %43, 1
+  %45 = select i1 %7, i32 1, i32 3
+  call void @dx.op.emitIndices(i32 169, i32 %3, i32 %44, i32 %45, i32 2)  ; EmitIndices(PrimitiveIndex,VertexIndex0,VertexIndex1,VertexIndex2)
+  %46 = shl i32 %3, 7
+  %47 = or i32 %46, 64
+  %48 = uitofp i32 %47 to float
+  %49 = fmul fast float %48, 0x3F70101020000000
+  %50 = fadd fast float %12, %49
+  %51 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %2, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %52 = extractvalue %dx.types.CBufRet.i32 %51, 1
+  %53 = and i32 %14, 1
+  %54 = and i32 %53, %52
+  %55 = icmp ne i32 %54, 0
+  %56 = icmp eq i32 %3, 1
+  %57 = and i1 %56, %55
+  %58 = zext i1 %57 to i32
+  call void @dx.op.storePrimitiveOutput.f32(i32 172, i32 0, i32 0, i8 0, float 0.000000e+00, i32 %3)  ; StorePrimitiveOutput(outputSigId,rowIndex,colIndex,value,primitiveIndex)
+  call void @dx.op.storePrimitiveOutput.f32(i32 172, i32 0, i32 0, i8 1, float 0.000000e+00, i32 %3)  ; StorePrimitiveOutput(outputSigId,rowIndex,colIndex,value,primitiveIndex)
+  call void @dx.op.storePrimitiveOutput.f32(i32 172, i32 0, i32 0, i8 2, float %50, i32 %3)  ; StorePrimitiveOutput(outputSigId,rowIndex,colIndex,value,primitiveIndex)
+  call void @dx.op.storePrimitiveOutput.f32(i32 172, i32 0, i32 0, i8 3, float 1.000000e+00, i32 %3)  ; StorePrimitiveOutput(outputSigId,rowIndex,colIndex,value,primitiveIndex)
+  call void @dx.op.storePrimitiveOutput.i32(i32 172, i32 1, i32 0, i8 0, i32 %58, i32 %3)  ; StorePrimitiveOutput(outputSigId,rowIndex,colIndex,value,primitiveIndex)
+  br label %59
+
+; <label>:59                                      ; preds = %42, %10
+  ret void
+}
+
+; Function Attrs: nounwind
+declare void @dx.op.emitIndices(i32, i32, i32, i32, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %struct.Payload* @dx.op.getMeshPayload.struct.Payload(i32) #1
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.groupId.i32(i32, i32) #2
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.flattenedThreadIdInGroup.i32(i32) #2
+
+; Function Attrs: nounwind
+declare void @dx.op.storeVertexOutput.f32(i32, i32, i32, i8, float, i32) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.storePrimitiveOutput.f32(i32, i32, i32, i8, float, i32) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.storePrimitiveOutput.i32(i32, i32, i32, i8, i32, i32) #0
+
+; Function Attrs: nounwind
+declare i32 @dx.op.atomicBinOp.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.setMeshOutputCounts(i32, i32, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32, %dx.types.Handle, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #1
+
+attributes #0 = { nounwind }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind readnone }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.viewIdState = !{!9}
+!dx.entryPoints = !{!10}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 5}
+!2 = !{i32 1, i32 6}
+!3 = !{!"ms", i32 6, i32 5}
+!4 = !{null, !5, !7, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!7 = !{!8}
+!8 = !{i32 0, %Params* undef, !"", i32 0, i32 0, i32 1, i32 16, null}
+!9 = !{[3 x i32] [i32 0, i32 12, i32 4]}
+!10 = !{void ()* @ms_payload, !"ms_payload", !11, !4, !23}
+!11 = !{null, !12, !19}
+!12 = !{!13, !16, !17}
+!13 = !{i32 0, !"SV_Position", i8 9, i8 3, !14, i8 4, i32 1, i8 4, i32 0, i8 0, !15}
+!14 = !{i32 0}
+!15 = !{i32 3, i32 15}
+!16 = !{i32 1, !"COLOR", i8 9, i8 0, !14, i8 2, i32 1, i8 4, i32 1, i8 0, !15}
+!17 = !{i32 2, !"TEXCOORD", i8 9, i8 0, !18, i8 2, i32 1, i8 4, i32 2, i8 0, !15}
+!18 = !{i32 5}
+!19 = !{!20, !21}
+!20 = !{i32 0, !"PRIMCOLOR", i8 9, i8 0, !14, i8 1, i32 1, i8 4, i32 0, i8 0, !15}
+!21 = !{i32 1, !"SV_CullPrimitive", i8 1, i8 30, !14, i8 1, i32 1, i8 1, i32 -1, i8 -1, !22}
+!22 = !{i32 3, i32 1}
+!23 = !{i32 0, i64 65552, i32 9, !24}
+!24 = !{!25, i32 4, i32 2, i32 2, i32 40}
+!25 = !{i32 4, i32 1, i32 1}
+!26 = !{!27, !27, i64 0}
+!27 = !{!"float", !28, i64 0}
+!28 = !{!"omnipotent char", !29, i64 0}
+!29 = !{!"Simple C/C++ TBAA"}
+!30 = !{!31, !31, i64 0}
+!31 = !{!"int", !28, i64 0}

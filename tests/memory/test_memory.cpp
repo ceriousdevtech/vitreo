@@ -729,6 +729,93 @@ TEST(GuestMemoryTest, AlternatingProbeEntriesRespectProtectionAndRemapping) {
     EXPECT_FALSE(mem.probe_access(base, 4).writable);
 }
 
+TEST(GuestMemoryTest, CollidingProbeHintsPreservePermissionsAndOwnership) {
+    for (const GuestAddr width : {GuestAddr{0}, GuestAddr{1} << 32}) {
+        GuestMemory mem;
+        const GuestAddr a = width + 0x40000000;
+        const GuestAddr b = a + 0x401000; // Same folded page-hint bucket.
+        ASSERT_TRUE(mem.map_region(a, 0x1000, MemoryProtection::ReadWrite).is_ok());
+        ASSERT_TRUE(mem.map_region(b, 0x1000, MemoryProtection::ReadWrite).is_ok());
+        ASSERT_TRUE(mem.write_u32(a, 42).is_ok());
+        ASSERT_TRUE(mem.write_u32(b, 73).is_ok());
+        for (usize i = 0; i < 64; ++i) {
+            const GuestAddr addr = (i & 1) ? a : b;
+            const auto info = mem.probe_access(addr, sizeof(u32));
+            ASSERT_NE(info.host_ptr, nullptr);
+            EXPECT_TRUE(info.readable);
+            EXPECT_TRUE(info.writable);
+            EXPECT_EQ(mem.read_u32(addr).value(), (i & 1) ? 42u : 73u);
+        }
+        ASSERT_TRUE(mem.protect_region(a, 0x1000, MemoryProtection::Read).is_ok());
+        ASSERT_TRUE(mem.protect_region(b, 0x1000, MemoryProtection::None).is_ok());
+        EXPECT_FALSE(mem.probe_access(a, 4).writable);
+        EXPECT_TRUE(mem.write_u32(a, 1).is_err());
+        EXPECT_FALSE(mem.probe_access(b, 4).readable);
+        EXPECT_TRUE(mem.read_u32(b).is_err());
+        EXPECT_TRUE(mem.read_u32(a + 0xFFE).is_err());
+        ASSERT_TRUE(mem.unmap_region(b, 0x1000).is_ok());
+        EXPECT_EQ(mem.probe_access(b, 4).host_ptr, nullptr);
+        ASSERT_TRUE(mem.map_region(b, 0x1000, MemoryProtection::Read).is_ok());
+        EXPECT_EQ(mem.read_u32(b).value(), 0u);
+        EXPECT_TRUE(mem.write_u32(b, 1).is_err());
+
+        for (usize i = 0; i < 300; ++i) {
+            ASSERT_TRUE(mem.map_region(width + 0x10000000 + i * 0x10000,
+                                       0x1000, MemoryProtection::ReadWrite).is_ok());
+        }
+        for (usize i = 0; i < 300; ++i) {
+            ASSERT_NE(mem.probe_access(width + 0x10000000 + i * 0x10000, 4).host_ptr,
+                      nullptr);
+        }
+        EXPECT_EQ(mem.read_u32(a).value(), 42u);
+        EXPECT_FALSE(mem.probe_access(a, 4).writable);
+        EXPECT_EQ(mem.read_u32(b).value(), 0u);
+        EXPECT_FALSE(mem.probe_access(b, 4).writable);
+
+        GuestMemory other;
+        ASSERT_TRUE(other.map_region(a, 0x1000, MemoryProtection::ReadWrite).is_ok());
+        ASSERT_TRUE(other.write_u32(a, 99).is_ok());
+        EXPECT_EQ(other.read_u32(a).value(), 99u);
+        EXPECT_EQ(mem.read_u32(a).value(), 42u);
+        EXPECT_FALSE(mem.probe_access(a, 4).writable);
+    }
+}
+
+TEST(GuestMemoryTest, DISABLED_CollidingProbeBenchmark) {
+    GuestMemory mem;
+    constexpr usize background = 190;
+    constexpr usize iterations = 2000000;
+    constexpr GuestAddr base = 0x10000000;
+    constexpr GuestAddr hot[] = {0x40000000, 0x40401000};
+    for (usize i = 0; i < background; ++i) {
+        ASSERT_TRUE(mem.map_region(base + i * 0x10000, 0x1000,
+                                   MemoryProtection::ReadWrite).is_ok());
+    }
+    for (GuestAddr addr : hot) {
+        ASSERT_TRUE(mem.map_region(addr, 0x1000,
+                                   MemoryProtection::ReadWrite).is_ok());
+    }
+    for (usize i = 0; i < background; ++i) {
+        ASSERT_NE(mem.probe_access(base + i * 0x10000, 4).host_ptr, nullptr);
+    }
+    for (GuestAddr addr : hot) {
+        ASSERT_NE(mem.probe_access(addr, 4).host_ptr, nullptr);
+    }
+    for (usize count : {1u, 2u}) {
+        usize hits = 0;
+        const auto start = std::chrono::steady_clock::now();
+        for (usize i = 0; i < iterations; ++i) {
+            hits += mem.probe_access(hot[i & (count - 1)], 4).readable;
+        }
+        const auto ns = std::chrono::duration<double, std::nano>(
+            std::chrono::steady_clock::now() - start).count() / iterations;
+        EXPECT_EQ(hits, iterations);
+        RecordProperty(count == 1 ? "single_ns_per_probe" : "collision_ns_per_probe",
+                       ns);
+        std::printf("%zu colliding spans: %.2f ns/access\n", count, ns);
+    }
+}
+
 // Explicit opt-in timing probe: no wall-clock assertion in the unit suite.
 TEST(GuestMemoryTest, DISABLED_AlternatingProbeBenchmark) {
     GuestMemory mem;

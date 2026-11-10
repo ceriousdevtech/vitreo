@@ -282,3 +282,68 @@ TEST_F(D3D9ManagerTest, CreateDeviceFailsWhenBackendRejectsTheSwapChain) {
         D3DERR_NOTAVAILABLE);
     EXPECT_EQ(memory_.read_u32(DEVICE_OUT_ADDR).value(), 0u);
 }
+
+// IDirect3D9::CheckDeviceFormat (slot 10) answers per usage and resource
+// type, and agrees with Create*. Expected values: an RTX 4080
+// (tools/oracle_probe/d3d9_format_probe32.winoracle-gpu.expected).
+TEST_F(D3D9ManagerTest, CheckDeviceFormatAnswersPerUsageAndResourceType) {
+    const u32 object = mgr_.direct3d_create9(D3D_SDK_VERSION);
+    ASSERT_NE(object, 0u);
+    constexpr u32 X8R8G8B8 = 22, A8R8G8B8 = 21, A1R5G5B5 = 25, A4R4G4B4 = 26,
+                  L8 = 50, V8U8 = 60, D24S8 = 75, D16_LOCKABLE = 70;
+    constexpr u32 DXT1 = 0x31545844u, INTZ = 0x5A544E49u;
+    constexpr u32 RT = 0x1, DS = 0x2, AUTOGEN = 0x400;
+    constexpr u32 SURFACE = 1, TEXTURE = 3, VOLUMETEXTURE = 4, CUBE = 5;
+    const auto check = [&](u32 usage, u32 rtype, u32 format) {
+        return invoke_method(10, {object, 0, 1, X8R8G8B8, usage, rtype, format});
+    };
+    EXPECT_EQ(check(RT, SURFACE, A8R8G8B8), D3D_OK);
+    EXPECT_EQ(check(RT, TEXTURE, DXT1), D3DERR_NOTAVAILABLE);
+    EXPECT_EQ(check(RT, SURFACE, A4R4G4B4), D3DERR_NOTAVAILABLE);
+    EXPECT_EQ(check(0, SURFACE, DXT1), D3DERR_NOTAVAILABLE);   // no DXT offscreen
+    EXPECT_EQ(check(0, SURFACE, L8), D3DERR_NOTAVAILABLE);
+    EXPECT_EQ(check(0, CUBE, V8U8), D3DERR_NOTAVAILABLE);
+    EXPECT_EQ(check(0, VOLUMETEXTURE, DXT1), D3D_OK);
+    EXPECT_EQ(check(DS, SURFACE, D24S8), D3D_OK);
+    EXPECT_EQ(check(DS, TEXTURE, D24S8), D3D_OK);              // shadow maps
+    EXPECT_EQ(check(DS, SURFACE, D16_LOCKABLE), D3DERR_NOTAVAILABLE);
+    EXPECT_EQ(check(0, CUBE, D24S8), D3DERR_NOTAVAILABLE);
+    // DEPTHSTENCIL with a colour format, including the runtime's FOURCCs, is
+    // an invalid call; a vendor FOURCC is just unsupported here.
+    EXPECT_EQ(check(DS, SURFACE, X8R8G8B8), D3DERR_INVALIDCALL);
+    EXPECT_EQ(check(DS, TEXTURE, DXT1), D3DERR_INVALIDCALL);
+    EXPECT_EQ(check(DS, TEXTURE, INTZ), D3DERR_NOTAVAILABLE);
+    // AUTOGENMIPMAP on a format without automatic mipmaps is D3DOK_NOAUTOGEN.
+    EXPECT_EQ(check(AUTOGEN, TEXTURE, A8R8G8B8), D3D_OK);
+    EXPECT_EQ(check(AUTOGEN, TEXTURE, A1R5G5B5), D3DOK_NOAUTOGEN);
+    EXPECT_EQ(check(AUTOGEN, TEXTURE, DXT1), D3DOK_NOAUTOGEN);
+}
+
+TEST_F(D3D9ManagerTest, CreateRefusesWhatCheckDeviceFormatRefuses) {
+    const auto [factory, device] = create_device();
+    constexpr u32 X8R8G8B8 = 22, D24S8 = 75, DXT1 = 0x31545844u, L8 = 50;
+    // CreateDepthStencilSurface (29) with a colour format.
+    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 29,
+                     {device, 16, 16, X8R8G8B8, 0, 0, 0,
+                      static_cast<u32>(SCRATCH_ADDR), 0}),
+              D3DERR_INVALIDCALL);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 29,
+                     {device, 16, 16, D24S8, 0, 0, 0,
+                      static_cast<u32>(SCRATCH_ADDR), 0}),
+              D3D_OK);
+    // CreateRenderTarget (28) with DXT1.
+    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 28,
+                     {device, 16, 16, DXT1, 0, 0, 0,
+                      static_cast<u32>(SCRATCH_ADDR), 0}),
+              D3DERR_INVALIDCALL);
+    // CreateOffscreenPlainSurface (36): L8 refuses in DEFAULT, and SCRATCH
+    // is not limited by device format support.
+    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 36,
+                     {device, 16, 16, L8, D3DPOOL_DEFAULT,
+                      static_cast<u32>(SCRATCH_ADDR), 0}),
+              D3DERR_INVALIDCALL);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 36,
+                     {device, 16, 16, L8, D3DPOOL_SCRATCH,
+                      static_cast<u32>(SCRATCH_ADDR), 0}),
+              D3D_OK);
+}

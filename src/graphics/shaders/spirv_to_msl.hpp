@@ -8,6 +8,8 @@
 #include "shader_reflection.hpp"
 
 #include <array>
+#include <utility>
+#include <vector>
 
 namespace vitreo::graphics {
 
@@ -48,6 +50,10 @@ inline constexpr usize MSL_DESCRIPTOR_SET_COUNT = 4;
 inline constexpr const char* kRasterCoverageSemantic =
     "vitreo.raster_coverage";
 
+// ---- WS5 begin ----
+struct GsMeshLayout;  // msl_mesh_emit.hpp
+// ---- WS5 end ----
+
 struct MslCompileOptions {
     u32 msl_version = 30000;        // Metal 3.0: MTLResourceID descriptors
     u32 platform = 1;               // 0=iOS, 1=macOS
@@ -61,21 +67,32 @@ struct MslCompileOptions {
     bool argument_buffers = false;
     bool force_native_arrays = true;
     bool pad_fragment_output = false;
+    /// Fragment: the output locations the MSL writes (bit n: [[color(n)]]).
+    /// An output whose bit is clear is left out of the fragment's return
+    /// struct: the pipeline has no colour attachment there (D3D12: an
+    /// SV_Target past NumRenderTargets or with an UNKNOWN format, whose
+    /// writes are discarded). All bits by default.
+    u32 fragment_output_mask = 0xFFFFFFFFu;
     bool dual_source_blending = false; // Fragment locations 0/1 feed RT0 sources 0/1.
     /// SubpassData inputs become Metal framebuffer fetch ([[color(n)]] at
     /// their InputAttachmentIndex): the D3D11 logic-op variant
     /// (DxbcTranslationOptions::logic_op). Apple GPUs only.
     bool framebuffer_fetch = false;
-    /// Lower a precise (NoContraction) FAdd/FSub/FMul to the plain operator
-    /// and turn FP contraction off for the whole shader with
-    /// `#pragma clang fp contract(off)`, instead of calling SPIRV-Cross's
-    /// optnone spvFAdd/spvFSub and vitreoFMul. Exact only when the library
-    /// is compiled in MTLMathModeSafe, which never reassociates and keeps
-    /// INF/NaN: the D3D11 and D3D12 frontends compile every shader that has
-    /// a precise instruction that way (math_mode_for_dxbc). Measured on
-    /// Apple silicon: Safe mode alone still fuses a*b+c into an FMA; the
-    /// pragma stops it, bit-identical to the helpers, at 2.2x their speed.
+    /// Lower a precise (NoContraction) FAdd/FSub/FMul/Dot to an
+    /// always_inline helper whose own contraction and reassociation are
+    /// off, instead of SPIRV-Cross's optnone spvFAdd/spvFSub/vitreoFMul.
+    /// The rest of the shader still contracts. Exact when the library is
+    /// MTLMathModeSafe (no reassociation, INF/NaN kept): Safe alone still
+    /// fuses a non-precise a*b+c, which D3D11.3 22.19.2 allows wherever
+    /// refactoringAllowed is set. Measured on Apple silicon: a file-scope
+    /// `#pragma clang fp contract(off)` is bit-identical to the optnone
+    /// helpers and 2.2x faster, but it also refuses that legal FMA.
     bool precise_without_helpers = false;
+    /// With `precise_without_helpers`: file-scope
+    /// `#pragma clang fp contract(off)` and plain precise operators, so
+    /// nothing in the shader fuses. D3D11.3 22.3.2, for a shader that has
+    /// a precise op and whose global flags omit refactoringAllowed.
+    bool fp_contract_off = false;
     u32 buffer_size_buffer_index = 25; // Metal buffer index for buffer-size auxiliary
     /// Metal buffer index of the SPIR-V push-constant block (the D3D11
     /// frontend's 256-byte inline block: sampler LOD biases, border colours,
@@ -84,10 +101,50 @@ struct MslCompileOptions {
     /// pinned here instead of left to SPIRV-Cross's next-free-index rule,
     /// which put it at buffer(5) behind argument buffers.
     u32 push_constant_buffer_index = 0;
+    /// (descriptor set, binding) of every rasterizer-ordered UAV
+    /// (DxbcResolvedBinding with `declaration.rasterizer_ordered`, from a
+    /// translation with DxbcTranslationOptions::rasterizer_ordered_views).
+    /// Each becomes a member of Metal raster order group 0 (MSL 2.0
+    /// `[[raster_order_group(0)]]`): accesses to it from fragments that
+    /// overlap one pixel happen in primitive submission order, which is the
+    /// Learn "Rasterizer Order Views" guarantee. Empty for every D3D11 and
+    /// non-ROV compile, which therefore emit exactly what they did before.
+    std::vector<std::pair<u32, u32>> raster_ordered_bindings;
     /// Per-set argument-buffer layout, indexed by descriptor set. Ignored unless
     /// `argument_buffers` is set.
     std::array<MslArgumentBufferSet, MSL_DESCRIPTOR_SET_COUNT>
         argument_buffer_sets{};
+    /// A D3D12 descriptor-heap window (DxbcTranslationOptions::heap_window):
+    /// descriptor set `descriptor_set` (past the four register-space sets)
+    /// is one argument buffer at `metal_buffer_index`: every array of the
+    /// set starts at id(0) and aliases the others (Metal 3 argument-buffer
+    /// aliasing), element k at id(k), so a shader's texture, buffer and
+    /// constant-buffer windows all read the one heap. Each array is
+    /// registered as one binding of its whole length -- padding a million
+    /// slots one by one does not finish. Ignored unless
+    /// `argument_buffers` is set; off for every D3D11 compile.
+    struct HeapWindow {
+        bool enabled = false;
+        u32 descriptor_set = 0;
+        u32 metal_buffer_index = 0;
+    };
+    HeapWindow heap_window{};
+    // ---- WS5 begin ----
+    /// Non-null: the SPIR-V is a mesh-lowered geometry shader
+    /// (DxbcTranslationOptions::emulate_geometry_with_mesh), and its
+    /// GLCompute entry is written as a [[mesh]] function with the object
+    /// function beside it (msl_mesh_emit.hpp). A module without the
+    /// Vitreo.MeshGS import, or with another entry model, is refused.
+    const GsMeshLayout* mesh{nullptr};
+    // ---- WS5 end ----
+    /// Non-null: the SPIR-V is a lowered D3D12 mesh or amplification shader
+    /// (DxbcTranslationResult::mesh_stage, mesh_stage.hpp), whose GLCompute
+    /// entry is written as the [[mesh]] or [[object]] function. A module
+    /// without the Vitreo.Mesh import is refused.
+    const struct MeshStageLayout* mesh_stage{nullptr};
+    /// With mesh_stage: the 32-bit words of the payload the object function
+    /// writes and the mesh function reads (0: a mesh function without one).
+    u32 mesh_payload_words{0};
 };
 
 /// Bytes one descriptor occupies in a Tier-2 argument buffer.

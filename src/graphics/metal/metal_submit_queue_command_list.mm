@@ -95,6 +95,10 @@ bool MetalSubmitQueue::submit_command_list(CommandListId id) {
     for (const Op& op : copies) {
         note_shared_access(op);
     }
+    if (immediate_on_this_thread()) {
+        for (Op& op : copies) encode_immediate(std::move(op));
+        return true;
+    }
     {
         std::lock_guard<std::mutex> lock(m_mu);
         fold_settle_locked();

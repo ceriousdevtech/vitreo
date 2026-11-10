@@ -209,23 +209,65 @@ void Kernel32ExtManager::impl_GetFullPathNameW(Marshaler& m) {
     m.set_return(len);
 }
 
-void Kernel32ExtManager::impl_GetShortPathNameW(Marshaler& m) {
-    // DWORD GetShortPathNameW(LPCWSTR lpszLongPath, LPWSTR lpszShortPath, DWORD cchBuffer)
-    GuestAddr long_path = m.arg_ptr(0);
-    GuestAddr short_path = m.arg_ptr(1);
-    u32 cch_buffer = static_cast<u32>(m.arg(2));
-
-    u32 src_len = guest_wstrlen(long_path);
-
-    if (short_path != 0 && cch_buffer > src_len) {
-        for (u32 i = 0; i < src_len; ++i) {
-            auto ch = m_memory.read_u16(long_path + i * 2);
-            (void)m_memory.write_u16(short_path + i * 2, ch.is_ok() ? ch.value() : 0);
-        }
-        (void)m_memory.write_u16(short_path + src_len * 2, 0);
+// GetShortPathName (Learn GetShortPathNameW). What Learn leaves open is
+// measured on Windows 11, x86 = x64 (tests/oracle_data/short_path_probe.*):
+// a path that does not exist fails with ERROR_FILE_NOT_FOUND when its
+// directory exists and ERROR_PATH_NOT_FOUND when it does not (an empty path
+// too); NULL is ERROR_INVALID_PARAMETER; success leaves the last error alone;
+// a relative path stays relative and a trailing '\' is kept. The capsule
+// volume has no 8.3 names, so the short form is the path as given -- what
+// Learn documents for volumes without short names. Return value: the length
+// copied, or the size needed (with the terminator) when the buffer is short.
+void Kernel32ExtManager::short_path_name_common(Marshaler& m, bool wide) {
+    const GuestAddr long_path = m.arg_ptr(0);
+    const GuestAddr short_path = m.arg_ptr(1);
+    const u32 cch_buffer = static_cast<u32>(m.arg(2));
+    if (long_path == 0) {
+        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
+        m.set_return(0);
+        return;
     }
+    const usize unit = wide ? 2 : 1;
+    std::vector<u16> units;
+    for (GuestAddr p = long_path;; p += static_cast<GuestAddr>(unit)) {
+        const u16 c = wide ? m_memory.read_u16(p).value_or(0) : m_memory.read_u8(p).value_or(0);
+        if (c == 0 || units.size() >= 32767) break;
+        units.push_back(c);
+    }
+    auto text = wide ? m.read_wide_string(long_path) : m.read_ansi_string(long_path);
+    std::string path = text.is_ok() ? text.value() : std::string{};
+    if (!wide) path = capsule::ansi_to_utf8(path);
+    const auto full = capsule::win32_full_path(path, m_current_directory);
+    if (path.empty() || !full) {
+        set_last_error(error_codes::ERROR_PATH_NOT_FOUND);
+        m.set_return(0);
+        return;
+    }
+    if (m_vfs.stat(full->path).is_err()) {
+        std::string parent = full->path;
+        while (parent.size() > 3 && (parent.back() == '\\' || parent.back() == '/')) parent.pop_back();
+        const usize slash = parent.find_last_of("\\/");
+        parent = slash == std::string::npos ? std::string{} : parent.substr(0, slash == 2 ? 3 : slash);
+        const bool directory_exists = !parent.empty() && m_vfs.stat(parent).is_ok();
+        set_last_error(directory_exists ? error_codes::ERROR_FILE_NOT_FOUND : error_codes::ERROR_PATH_NOT_FOUND);
+        m.set_return(0);
+        return;
+    }
+    const u32 length = static_cast<u32>(units.size());
+    if (short_path == 0 || cch_buffer <= length) {
+        m.set_return(length + 1);
+        return;
+    }
+    for (u32 i = 0; i <= length; ++i) {
+        const u16 c = i < length ? units[i] : 0;
+        if (wide) (void)m_memory.write_u16(short_path + i * 2, c);
+        else (void)m_memory.write_u8(short_path + i, static_cast<u8>(c));
+    }
+    m.set_return(length);
+}
 
-    m.set_return(src_len);
+void Kernel32ExtManager::impl_GetShortPathNameW(Marshaler& m) {
+    short_path_name_common(m, true);
 }
 
 // GetTempFileName (Learn GetTempFileNameW): "<path>\<pre><uuuu>.tmp". What

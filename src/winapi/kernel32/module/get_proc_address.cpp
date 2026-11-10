@@ -6,6 +6,7 @@
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/locale/string_conv.hpp"
 #include "winapi/core/marshaler.hpp"
+#include "winapi/msvcrt/memory/vcruntime_interpose.hpp"
 #include "ipc/ipc_gate.hpp"
 
 #include "core/pe/parser/pe_parser.hpp"
@@ -45,6 +46,8 @@ GuestAddr ModuleManager::get_proc_address(GuestAddr module_base,
     std::string dll_key;
     bool image_backed = false;
     std::string forwarder;
+    GuestAddr hit = 0;
+    vcrt::LookupModule interpose_mod{};
     {
         std::shared_lock<HostRwLock> tables(m_tables_mutex);
         const std::string* dll_name = name_for_base(module_base);
@@ -60,7 +63,16 @@ GuestAddr ModuleManager::get_proc_address(GuestAddr module_base,
             image_backed = true;
             auto ex = it->second.exports_by_name.find(std::string(func_name));
             if (ex != it->second.exports_by_name.end()) {
-                return ex->second;
+                // A real PE image may be the redistributable runtime the
+                // vcruntime140 interposer serves; decide that after the
+                // table lock is released (it reads guest memory and may
+                // write a stub).
+                if (m_memory == nullptr || !it->second.is_pe_backed()) {
+                    return ex->second;
+                }
+                hit = ex->second;
+                interpose_mod = {it->second.base_address, it->second.image_end,
+                                 it->second.bitness};
             }
 
             auto fwd = it->second.forwarders_by_name.find(std::string(func_name));
@@ -68,6 +80,11 @@ GuestAddr ModuleManager::get_proc_address(GuestAddr module_base,
                 forwarder = fwd->second;
             }
         }
+    }
+
+    if (hit != 0) {
+        return vcrt::interpose_lookup(*m_memory, registry_, interpose_mod,
+                                      func_name, hit);
     }
 
     if (image_backed) {
@@ -86,6 +103,10 @@ GuestAddr ModuleManager::get_proc_address(GuestAddr module_base,
         if (thunk.is_ok()) {
             return registry_.guest_entry(thunk.value());
         }
+        // A data export (a variable, not a thunk) by its name.
+        if (const GuestAddr data = registry_.lookup_data_export(dll_with_ext, func_name)) {
+            return data;
+        }
 
         set_last_error(error_codes::ERROR_PROC_NOT_FOUND);
         return 0;
@@ -97,6 +118,9 @@ GuestAddr ModuleManager::get_proc_address(GuestAddr module_base,
     auto result = registry_.get_thunk_address(dll_with_ext, func_name);
     if (result.is_ok()) {
         return registry_.guest_entry(result.value());
+    }
+    if (const GuestAddr data = registry_.lookup_data_export(dll_with_ext, func_name)) {
+        return data;
     }
 
     set_last_error(error_codes::ERROR_PROC_NOT_FOUND);

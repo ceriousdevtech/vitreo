@@ -93,6 +93,28 @@ bool D3D11Manager::sync_descriptor_tables(
     }
 
     auto& tables = state.descriptor_tables[static_cast<usize>(stage)];
+    auto& cache =
+        state.descriptor_table_cache[static_cast<usize>(stage)];
+    // A failure leaves the tables half-written. The next draw republishes.
+    struct CacheGuard {
+        ContextState::DescriptorTableCache& cache;
+        bool commit{false};
+        ~CacheGuard() {
+            if (!commit) cache.valid = false;
+        }
+    } cache_guard{cache};
+    const bool srv_stable =
+        cache.valid && resources != nullptr && tables[1] != nullptr &&
+        resources->stamp() == cache.srv_stamp &&
+        cache.srv_generation == m_srv_set_generation &&
+        cache.texture_backend_gen == m_texture_backend_gen &&
+        layout.srv_slots <= cache.srv_slots;
+    const bool samplers_stable =
+        cache.valid && samplers != nullptr &&
+        (layout.sampler_slots == 0 || tables[2] != nullptr) &&
+        samplers->stamp() == cache.sampler_stamp &&
+        border_twins == cache.border_twins &&
+        layout.sampler_slots <= cache.sampler_slots;
     // A table is sized to the whole D3D register space, not to this shader's
     // high-water mark: the same table serves every shader this stage binds, and
     // slot N is descriptor N in all of them. The shader's own struct may be
@@ -136,20 +158,20 @@ bool D3D11Manager::sync_descriptor_tables(
         auto* table = ensure(1, d3d11::SHADER_RESOURCE_SLOTS,
                              graphics::BackendDescriptorClass::Texture);
         if (table == nullptr) return false;
-        for (u32 slot = 0; slot < layout.srv_slots; ++slot) {
+        // 1: buffer or typed buffer (must be republished; its storage can
+        // rename). 0: texture. -1: the table rejected the write.
+        const auto bind_srv = [&](u32 slot) -> int {
             const GuestAddr srv = (*resources)[slot];
             // A t# register names a texture, a structured/raw buffer, or a typed
             // buffer -- never more than one. Ask the buffer resolver first,
             // because a buffer SRV has no texture to resolve.
             const graphics::BackendBuffer* srv_buffer = nullptr;
-            unsigned srv_offset = 0;
+            u64 srv_offset = 0;
             const graphics::BackendTextureBuffer* typed_buffer = nullptr;
             resolve_buffer_resource(srv, srv_buffer, srv_offset, typed_buffer);
             if (srv_buffer != nullptr) {
-                if (!table->set_buffer(slot, srv_buffer, srv_offset)) {
-                    return false;
-                }
-                continue;
+                if (!table->set_buffer(slot, srv_buffer, srv_offset)) return -1;
+                return 1;
             }
             if (typed_buffer != nullptr) {
                 // A typed buffer is a texture-buffer view: the table holds it
@@ -157,10 +179,8 @@ bool D3D11Manager::sync_descriptor_tables(
                 // table-mode shader zeros -- UE's heavier GPU-scene vertex
                 // shaders lost their per-instance data this way while the
                 // flat-bound depth prepass kept it.
-                if (!table->set_texture_buffer(slot, typed_buffer)) {
-                    return false;
-                }
-                continue;
+                if (!table->set_texture_buffer(slot, typed_buffer)) return -1;
+                return 1;
             }
             const graphics::BackendTexture2D* texture_2d = nullptr;
             const graphics::BackendTexture3D* texture_3d = nullptr;
@@ -171,10 +191,63 @@ bool D3D11Manager::sync_descriptor_tables(
                 texture_2d = nullptr;
             }
             if (texture_3d != nullptr) {
-                if (!table->set_texture_3d(slot, texture_3d)) return false;
+                if (!table->set_texture_3d(slot, texture_3d)) return -1;
             } else if (!table->set_texture(slot, texture_2d, view)) {
-                return false;
+                return -1;
             }
+            return 0;
+        };
+        if (srv_stable) {
+            // Textures are unchanged. Buffer views still have to be told the
+            // GPU is reading them, or the next Map(DISCARD) overwrites a
+            // draw already recorded against this table.
+            for (u32 slot = 0; slot < layout.srv_slots; ++slot) {
+                const u64 bit = 1ull << (slot & 63u);
+                if ((cache.srv_buffers[slot / 64u] & bit) == 0) continue;
+                if (bind_srv(slot) < 0) return false;
+            }
+        } else {
+            // The slots a previous publication wrote are still what the
+            // table holds, as long as no view or texture backend changed.
+            const bool known =
+                cache.valid && cache.srv_generation == m_srv_set_generation &&
+                cache.texture_backend_gen == m_texture_backend_gen;
+            if (!known) {
+                cache.srv_known = 0;
+                cache.srv_buffers = {};
+            }
+            auto& mask = cache.srv_buffers;
+            for (u32 slot = 0; slot < layout.srv_slots; ++slot) {
+                const u64 bit = 1ull << (slot & 63u);
+                const u8 shape = static_cast<u8>(
+                    ((layout.srv_flat[slot / 64u] & bit) != 0 ? 1u : 0u) |
+                    ((layout.srv_arrayed[slot / 64u] & bit) != 0 ? 2u : 0u));
+                const GuestAddr srv = (*resources)[slot];
+                // A texture view fitted to the same declared shape is the
+                // descriptor already there. A buffer view is always
+                // republished (its storage can rename).
+                if (slot < cache.srv_known && cache.srv_bound[slot] == srv &&
+                    cache.srv_shape[slot] == shape &&
+                    (mask[slot / 64u] & bit) == 0) {
+                    continue;
+                }
+                // Not known until written: a failure below leaves it so.
+                cache.srv_bound[slot] = ~GuestAddr{0};
+                const int kind = bind_srv(slot);
+                if (kind < 0) return false;
+                if (kind == 1) {
+                    mask[slot / 64u] |= bit;
+                } else {
+                    mask[slot / 64u] &= ~bit;
+                }
+                cache.srv_bound[slot] = srv;
+                cache.srv_shape[slot] = shape;
+            }
+            cache.srv_known = std::max(cache.srv_known, layout.srv_slots);
+            cache.srv_slots = layout.srv_slots;
+            cache.srv_stamp = resources->stamp();
+            cache.srv_generation = m_srv_set_generation;
+            cache.texture_backend_gen = m_texture_backend_gen;
         }
         out[1] = table;
     }
@@ -185,21 +258,26 @@ bool D3D11Manager::sync_descriptor_tables(
         auto* table = ensure(2, 2 * d3d11::SAMPLER_SLOTS,
                              graphics::BackendDescriptorClass::Sampler);
         if (table == nullptr) return false;
-        for (u32 slot = 0; slot < layout.sampler_slots; ++slot) {
-            // s# is its own register space: never paired with t# of the same
-            // number (resolve_sampler).
-            graphics::BackendSamplerDesc sampler{};
-            (void)resolve_sampler((*samplers)[slot], sampler, nullptr);
-            if (!table->set_sampler(slot, sampler)) return false;
-        }
-        for (u32 slot = 0; slot < d3d11::SAMPLER_SLOTS; ++slot) {
-            if ((border_twins & (1u << slot)) == 0) continue;
-            graphics::BackendSamplerDesc twin{};
-            (void)resolve_sampler((*samplers)[slot], twin, nullptr);
-            twin.border_color = 0xFFFFFFFFu;  // opaque white
-            if (!table->set_sampler(d3d11::SAMPLER_SLOTS + slot, twin)) {
-                return false;
+        if (!samplers_stable) {
+            for (u32 slot = 0; slot < layout.sampler_slots; ++slot) {
+                // s# is its own register space: never paired with t# of the same
+                // number (resolve_sampler).
+                graphics::BackendSamplerDesc sampler{};
+                (void)resolve_sampler((*samplers)[slot], sampler, nullptr);
+                if (!table->set_sampler(slot, sampler)) return false;
             }
+            for (u32 slot = 0; slot < d3d11::SAMPLER_SLOTS; ++slot) {
+                if ((border_twins & (1u << slot)) == 0) continue;
+                graphics::BackendSamplerDesc twin{};
+                (void)resolve_sampler((*samplers)[slot], twin, nullptr);
+                twin.border_color = 0xFFFFFFFFu;  // opaque white
+                if (!table->set_sampler(d3d11::SAMPLER_SLOTS + slot, twin)) {
+                    return false;
+                }
+            }
+            cache.sampler_stamp = samplers->stamp();
+            cache.sampler_slots = layout.sampler_slots;
+            cache.border_twins = border_twins;
         }
         out[2] = table;
     }
@@ -299,6 +377,8 @@ bool D3D11Manager::sync_descriptor_tables(
         out[3] = table;
     }
 
+    cache.valid = true;
+    cache_guard.commit = true;
     return true;
 }
 

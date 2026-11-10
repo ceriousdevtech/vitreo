@@ -33,6 +33,26 @@
 
 namespace vitreo::winapi {
 
+namespace {
+
+/// True when this Set* would store the pointers already in @p slots.
+/// Output binds clear a conflicting SRV before the next set, so a matching
+/// span was already checked against the outputs that are bound now.
+template <class Slots, class Read>
+bool binding_span_matches(const Slots& slots, u32 start, u32 count,
+                          GuestAddr list, usize ptr_size, Read&& read) {
+    for (u32 i = 0; i < count && start + i < slots.size(); ++i) {
+        GuestAddr value = 0;
+        if (list != 0) {
+            read(list + static_cast<GuestAddr>(i) * ptr_size, value);
+        }
+        if (value != slots[start + i]) return false;
+    }
+    return true;
+}
+
+}  // namespace
+
 void D3D11Manager::context_shader_stage_method(Marshaler& m, usize slot,
                                                GuestAddr self) {
     switch (slot) {
@@ -43,6 +63,14 @@ void D3D11Manager::context_shader_stage_method(Marshaler& m, usize slot,
         const GuestAddr views = m.arg_ptr(3);
         auto& state = m_context_states[self];
         const usize ptr_size = m_is_64bit ? 8u : 4u;
+        const auto read = [&](GuestAddr addr, GuestAddr& out) {
+            (void)read_pointer(addr, out);
+        };
+        if (binding_span_matches(state.pixel_shader_resources, start, count,
+                                 views, ptr_size, read)) {
+            m.set_return(0);
+            return;
+        }
         for (u32 i = 0; i < count && start + i < state.pixel_shader_resources.size();
              ++i) {
             GuestAddr view = 0;
@@ -82,6 +110,14 @@ void D3D11Manager::context_shader_stage_method(Marshaler& m, usize slot,
         const GuestAddr samplers = m.arg_ptr(3);
         auto& state = m_context_states[self];
         const usize ptr_size = m_is_64bit ? 8u : 4u;
+        if (binding_span_matches(
+                state.pixel_samplers, start, count, samplers, ptr_size,
+                [&](GuestAddr addr, GuestAddr& out) {
+                    (void)read_pointer(addr, out);
+                })) {
+            m.set_return(0);
+            return;
+        }
         for (u32 i = 0; i < count && start + i < state.pixel_samplers.size();
              ++i) {
             GuestAddr samp = 0;
@@ -125,6 +161,14 @@ void D3D11Manager::context_shader_stage_method(Marshaler& m, usize slot,
                             : slot == 63 ? state.domain_shader_resources
                                          : state.vertex_shader_resources;
         const usize ptr_size = m_is_64bit ? 8u : 4u;
+        if (binding_span_matches(
+                stage_views, start, count, views, ptr_size,
+                [&](GuestAddr addr, GuestAddr& out) {
+                    (void)read_pointer(addr, out);
+                })) {
+            m.set_return(0);
+            return;
+        }
         for (u32 i = 0;
              i < count && start + i < stage_views.size();
              ++i) {
@@ -165,6 +209,14 @@ void D3D11Manager::context_shader_stage_method(Marshaler& m, usize slot,
                                : slot == 65 ? state.domain_samplers
                                             : state.vertex_samplers;
         const usize ptr_size = m_is_64bit ? 8u : 4u;
+        if (binding_span_matches(
+                stage_samplers, start, count, samplers, ptr_size,
+                [&](GuestAddr addr, GuestAddr& out) {
+                    (void)read_pointer(addr, out);
+                })) {
+            m.set_return(0);
+            return;
+        }
         for (u32 i = 0; i < count && start + i < stage_samplers.size();
              ++i) {
             GuestAddr sampler = 0;
@@ -193,6 +245,14 @@ void D3D11Manager::context_shader_stage_method(Marshaler& m, usize slot,
         const GuestAddr views = m.arg_ptr(3);
         auto& state = m_context_states[self];
         const usize ptr_size = m_is_64bit ? 8u : 4u;
+        if (binding_span_matches(
+                state.compute_shader_resources, start, count, views, ptr_size,
+                [&](GuestAddr addr, GuestAddr& out) {
+                    (void)read_pointer(addr, out);
+                })) {
+            m.set_return(0);
+            return;
+        }
         for (u32 i = 0; i < count && start + i < state.compute_shader_resources.size(); ++i) {
             GuestAddr next_view = 0;
             if (views != 0) (void)read_pointer(views + i * ptr_size, next_view);
@@ -306,6 +366,14 @@ void D3D11Manager::context_shader_stage_method(Marshaler& m, usize slot,
         const GuestAddr samplers = m.arg_ptr(3);
         auto& state = m_context_states[self];
         const usize ptr_size = m_is_64bit ? 8u : 4u;
+        if (binding_span_matches(
+                state.compute_samplers, start, count, samplers, ptr_size,
+                [&](GuestAddr addr, GuestAddr& out) {
+                    (void)read_pointer(addr, out);
+                })) {
+            m.set_return(0);
+            return;
+        }
         for (u32 i = 0; i < count && start + i < state.compute_samplers.size(); ++i) {
             GuestAddr next_sampler = 0;
             if (samplers != 0) (void)read_pointer(samplers + i * ptr_size, next_sampler);

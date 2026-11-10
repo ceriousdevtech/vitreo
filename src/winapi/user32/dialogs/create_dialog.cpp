@@ -6,6 +6,7 @@
 /// Closed method cut from dialog.cpp.
 
 #include "winapi/user32/dialogs/dialog.hpp"
+#include "winapi/user32/painting/painting.hpp"
 #include "winapi/user32/dialogs/dialog_internal.hpp"
 #include "winapi/user32/user32_internal.hpp"
 #include "winapi/user32/user32_ext.hpp"
@@ -246,6 +247,7 @@ windowing::HWND DialogManager::create_dialog(u64 hinstance,
     data.owner_thread_id = vitreo::winapi::ThreadManager::get_current_thread_id_static();
     data.hinstance   = hinstance;
     data.wndproc     = dlgproc;
+    data.dlgproc     = dlgproc;
     data.client_rect = data.rect;
     const bool template_visible = (data.style & windowing::WS::VISIBLE) != 0;
     data.style &= ~windowing::WS::VISIBLE;
@@ -360,90 +362,12 @@ windowing::HWND DialogManager::create_dialog(u64 hinstance,
     // inside that parent.
     bool is_child_dialog = (data.style & windowing::WS::CHILD) != 0 && parent != windowing::HWND_DESKTOP;
     if (is_child_dialog) {
-        // Embed the child page in the inner panel control (typically id 1018)
-        // when that control exists.
-        windowing::HWND native_parent = parent;
-        bool embed_full_parent = false;
-        // Template id 1 is a full-page dialog (welcome/finish). Those pages
-        // embed directly in the main dialog client.
-        if (template_id == 1) {
-            embed_full_parent = true;
-        }
-
-        // If parent is the main dialog, look for inner panel control (id=1018).
-        // Use it for regular pages when visible; otherwise keep full-parent mode.
-        DlgItemKey panel_key{parent, 1018};
-        auto panel_it = m_dlg_items.find(panel_key);
-        if (panel_it != m_dlg_items.end() && !embed_full_parent) {
-            const windowing::WindowData* panel_data = m_hwnd_mgr.find(panel_it->second);
-            bool panel_visible = panel_data && panel_data->visible;
-            if (panel_visible) {
-                native_parent = panel_it->second;
-                VITREO_TRACE("[dialog] create_dialog: using inner panel control 0x%x as native parent\n",
-                             native_parent);
-            } else {
-                embed_full_parent = true;
-            }
-        }
-
-        // Generic panel hosts display one successive page at a time. A tab
-        // control is different: every child dialog belongs to a distinct
-        // native tab item, and NSTabView owns which item is visible.
-        const bool is_tab_page_host =
-            m_control_host.tab_get_item_count(native_parent) >= 0;
-
-        // Hide any previous page in a generic selected host.
-        windowing::HWND page_host = (native_parent != parent) ? native_parent : parent;
-        if (!is_tab_page_host) {
-            auto prev_it = m_panel_page.find(page_host);
-            if (prev_it != m_panel_page.end() &&
-                prev_it->second != windowing::NULL_HWND) {
-                m_control_host.set_visible(prev_it->second, false);
-            }
-        }
-
-        // Resize embedded page to host client dimensions.
-        windowing::HWND size_host = embed_full_parent ? parent : native_parent;
-        if (const windowing::WindowData* p = m_hwnd_mgr.find(size_host)) {
-            i32 w = p->client_rect.right - p->client_rect.left;
-            i32 h = p->client_rect.bottom - p->client_rect.top;
-            if (w > 0 && h > 0) {
-                data.rect = windowing::Rect{0, 0, w, h};
-                data.client_rect = data.rect;
-                if (auto* stored = m_hwnd_mgr.find(hwnd)) {
-                    stored->rect = data.rect;
-                    stored->client_rect = data.client_rect;
-                }
-                VITREO_TRACE("[dialog] create_dialog: resizing embedded child dialog 0x%x to host client %dx%d\n",
-                             hwnd, w, h);
-            }
-        }
-
-        // Hide placeholder overlays on full-page host to avoid blank masking.
-        if (size_host == parent) {
-            auto hide_host_placeholder = [&](u16 ctrl_id) {
-                DlgItemKey key{parent, ctrl_id};
-                auto it = m_dlg_items.find(key);
-                if (it != m_dlg_items.end() && it->second != windowing::NULL_HWND) {
-                    m_control_host.set_visible(it->second, false);
-                }
-            };
-            hide_host_placeholder(1018);
-            hide_host_placeholder(1044);
-        }
-        
-        m_control_host.add_container_view(native_parent, hwnd, data);
-
-        // Generic panel hosts track one current page. Tab controls retain all
-        // pages and select them through their item views.
-        if (!is_tab_page_host) {
-            if (native_parent != parent) {
-                m_panel_page[native_parent] = hwnd;
-            } else {
-                // Full-page dialog embedded in the main dialog (Welcome/Finish)
-                m_panel_page[parent] = hwnd;
-            }
-        }
+        // A WS_CHILD dialog is an ordinary child window of its parent: its
+        // rectangle is the template's, in the parent's client coordinates
+        // (Learn DLGTEMPLATE, CreateDialogIndirectParamW). Nothing resizes it
+        // to the parent and creating it hides no sibling; a wizard that pages
+        // through children positions and shows them itself.
+        m_control_host.add_container_view(parent, hwnd, data);
     } else {
         (void)m_control_host.create_window(hwnd, data);
     }
@@ -464,12 +388,27 @@ windowing::HWND DialogManager::create_dialog(u64 hinstance,
     }
     (void)post_init;
 
-    if (m_hwnd_mgr.is_valid(hwnd) && !m_modal_ended) {
+    if (m_hwnd_mgr.is_valid(hwnd) && !dialog_ended(hwnd)) {
         if (windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
             win != nullptr && !win->visible && (modal || template_visible)) {
             win->visible = true;
             win->style |= windowing::WS::VISIBLE;
             m_control_host.set_visible(hwnd, true);
+            // As ShowWindow does: a window that becomes visible has its whole
+            // client invalid (erase pending), and so has each visible
+            // descendant, so the first WM_PAINT draws everything. A dialog
+            // that otherwise only invalidates part of itself on a timer
+            // showed just that part.
+            if (m_paint_mgr) {
+                auto invalidate_tree = [&](auto&& self, windowing::HWND h) -> void {
+                    (void)m_paint_mgr->invalidate_rect(static_cast<u64>(h), nullptr, true);
+                    for (windowing::HWND child : m_hwnd_mgr.enum_children(h)) {
+                        const windowing::WindowData* c = m_hwnd_mgr.find(child);
+                        if (c != nullptr && c->visible) self(self, child);
+                    }
+                };
+                invalidate_tree(invalidate_tree, hwnd);
+            }
         }
     }
 

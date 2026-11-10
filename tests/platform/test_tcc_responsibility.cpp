@@ -59,6 +59,12 @@ TEST(TccResponsibilityTest, DisclaimedChildIsResponsibleForItself) {
     EXPECT_EQ(responsible_of_sleeper(true), 0);
 }
 
+TEST(TccResponsibilityTest, AdHocBuildHasNoStableIdentity) {
+    // Test binaries are linked with the linker's ad-hoc signature, whose
+    // only designated requirement is the cdhash of this exact build.
+    EXPECT_FALSE(running_code_has_stable_identity());
+}
+
 TEST(TccResponsibilityTest, ExecutablePathOfARunningProcess) {
     char own[4096];
     uint32_t size = sizeof(own);

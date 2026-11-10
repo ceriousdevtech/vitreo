@@ -114,6 +114,7 @@ bool ModuleManager::reattach_detached_module(ModuleInfo& info) {
         return false;
     }
     info.dllmain_called = true;
+    sync_loader_entry(info);
     return true;
 }
 

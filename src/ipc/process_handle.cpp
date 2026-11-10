@@ -2,6 +2,8 @@
 /// @file process_handle.cpp
 
 #include "ipc/process_handle.hpp"
+#include "ipc/hwnd_registry.hpp"
+#include "ipc/process_registry.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "core/sync/ntsync.hpp"
 
@@ -226,6 +228,21 @@ public:
         return it == m_map.end() ? nullptr : it->second.get();
     }
 
+    ProcessObject* find_client(u32 client_id) {
+        if (client_id == 0) return nullptr;
+        std::lock_guard<std::mutex> lk(m_mu);
+        for (const auto& [pid, obj] : m_map) {
+            (void)pid;
+            if (obj && obj->client_id.load(std::memory_order_acquire) == client_id)
+                return obj.get();
+        }
+        for (const auto& obj : m_retired) {
+            if (obj && obj->client_id.load(std::memory_order_acquire) == client_id)
+                return obj.get();
+        }
+        return nullptr;
+    }
+
 private:
     Reaper() { m_kq = ::kqueue(); }
 
@@ -374,6 +391,24 @@ void set_child_exit_observer(ChildExitObserver observer) {
 ProcessObject* find_tracked_process(pid_t pid) {
     if (pid <= 0) return nullptr;
     return Reaper::instance().find(pid);
+}
+
+ProcessObject* find_tracked_client(u32 client_id) {
+    return Reaper::instance().find_client(client_id);
+}
+
+u32 windows_process_id(const ProcessObject& process) {
+    const u32 id = process.client_id.load(std::memory_order_acquire);
+    if (id != 0) return id;
+    // A handle duplicated into a child still names the parent's host pid.
+    // The capsule registry is what maps that back to the Windows client ID.
+    // Returning 0 makes Chromium execute its int3 CHECK.
+    if (process.pid > 0) {
+        const u32 windows = windows_process_id_for_host(
+            static_cast<u32>(process.pid));
+        if (windows != 0) return windows;
+    }
+    return 0;
 }
 
 ProcessObject* create_completed_process(u32 exit_code) {

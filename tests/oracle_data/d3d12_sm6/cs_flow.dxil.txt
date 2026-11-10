@@ -1,0 +1,293 @@
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: b415a0104aa79b857683d04e57e8875e
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+; cbuffer Root
+; {
+;
+;   struct Root
+;   {
+;
+;       uint k0;                                      ; Offset:    0
+;       uint k1;                                      ; Offset:    4
+;       uint k2;                                      ; Offset:    8
+;       uint k3;                                      ; Offset:   12
+;   
+;   } Root;                                           ; Offset:    0 Size:    16
+;
+; }
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; Root                              cbuffer      NA          NA     CB0            cb0     1
+; src                               texture    byte         r/o      T0             t0     1
+; dst                                   UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%dx.types.CBufRet.i32 = type { i32, i32, i32, i32 }
+%struct.ByteAddressBuffer = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+%Root = type { i32, i32, i32, i32 }
+
+define void @cs_flow() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 2, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %4 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %5 = shl i32 %4, 2
+  %6 = and i32 %5, 1020
+  %7 = call %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32 68, %dx.types.Handle %2, i32 %6, i32 undef)  ; BufferLoad(srv,index,wot)
+  %8 = extractvalue %dx.types.ResRet.i32 %7, 0
+  %9 = and i32 %8, 15
+  %10 = icmp eq i32 %9, 3
+  br i1 %10, label %11, label %14
+
+; <label>:11                                      ; preds = %0
+  %12 = or i32 %4, -559087616
+  %13 = shl i32 %4, 4
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %13, i32 undef, i32 %12, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  br label %80
+
+; <label>:14                                      ; preds = %0
+  %15 = and i32 %8, 3
+  br label %18
+
+; <label>:16                                      ; preds = %34
+  %17 = xor i32 %40, 85
+  br label %45
+
+; <label>:18                                      ; preds = %34, %14
+  %19 = phi i32 [ %15, %14 ], [ %40, %34 ]
+  %20 = phi i32 [ 0, %14 ], [ %21, %34 ]
+  %21 = add nuw nsw i32 %20, 1
+  %22 = and i32 %8, 63
+  %23 = icmp ugt i32 %20, %22
+  br i1 %23, label %44, label %24
+
+; <label>:24                                      ; preds = %18
+  %25 = xor i32 %21, %19
+  %26 = and i32 %25, 3
+  switch i32 %26, label %42 [
+    i32 0, label %27
+    i32 1, label %29
+  ]
+
+; <label>:27                                      ; preds = %24
+  %28 = add i32 %19, 7
+  br label %34
+
+; <label>:29                                      ; preds = %24
+  %30 = and i32 %19, 1
+  %31 = icmp ne i32 %30, 0
+  %32 = add i32 %19, 3
+  %33 = select i1 %31, i32 %19, i32 %32
+  br label %34
+
+; <label>:34                                      ; preds = %42, %29, %27
+  %35 = phi i32 [ %43, %42 ], [ %28, %27 ], [ %33, %29 ]
+  %36 = mul i32 %35, 31
+  %37 = and i32 %21, 31
+  %38 = lshr i32 %8, %37
+  %39 = and i32 %38, 3
+  %40 = add i32 %36, %39
+  %41 = icmp ugt i32 %40, 100000
+  br i1 %41, label %16, label %18
+
+; <label>:42                                      ; preds = %24
+  %43 = add i32 %19, -1
+  br label %34
+
+; <label>:44                                      ; preds = %18
+  br label %45
+
+; <label>:45                                      ; preds = %44, %16
+  %46 = phi i32 [ %17, %16 ], [ %19, %44 ]
+  br label %47
+
+; <label>:47                                      ; preds = %58, %45
+  %48 = phi i32 [ 0, %45 ], [ %59, %58 ]
+  %49 = phi i32 [ 0, %45 ], [ %52, %58 ]
+  %50 = and i32 %46, 255
+  %51 = add i32 %48, %50
+  %52 = add nuw nsw i32 %49, 1
+  %53 = shl i32 1, %52
+  %54 = and i32 %53, %8
+  %55 = icmp ne i32 %54, 0
+  %56 = icmp eq i32 %49, 0
+  %57 = and i1 %56, %55
+  br i1 %57, label %58, label %81
+
+; <label>:58                                      ; preds = %140, %130, %120, %110, %100, %90, %81, %47
+  %59 = phi i32 [ %51, %47 ], [ %83, %81 ], [ %93, %90 ], [ %103, %100 ], [ %113, %110 ], [ %123, %120 ], [ %133, %130 ], [ %143, %140 ]
+  %60 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %3, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %61 = extractvalue %dx.types.CBufRet.i32 %60, 3
+  %62 = mul i32 %61, 1000
+  %63 = icmp ule i32 %59, %62
+  %64 = icmp ult i32 %52, 8
+  %65 = and i1 %63, %64
+  br i1 %65, label %47, label %66
+
+; <label>:66                                      ; preds = %58
+  %67 = shl i32 %4, 4
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %67, i32 undef, i32 %46, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %68 = or i32 %67, 4
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %68, i32 undef, i32 %59, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %69 = or i32 %67, 8
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %69, i32 undef, i32 %21, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %70 = add i32 %59, %46
+  %71 = lshr i32 %70, 16
+  %72 = xor i32 %71, %70
+  %73 = mul i32 %72, 2146121005
+  %74 = lshr i32 %73, 15
+  %75 = xor i32 %74, %73
+  %76 = mul i32 %75, -2073254261
+  %77 = lshr i32 %76, 16
+  %78 = xor i32 %77, %76
+  %79 = or i32 %67, 12
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %79, i32 undef, i32 %78, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  br label %80
+
+; <label>:80                                      ; preds = %66, %11
+  ret void
+
+; <label>:81                                      ; preds = %47
+  %82 = add nuw nsw i32 %49, %50
+  %83 = add i32 %82, %51
+  %84 = add nuw nsw i32 %49, 2
+  %85 = shl i32 1, %84
+  %86 = and i32 %85, %8
+  %87 = icmp ne i32 %86, 0
+  %88 = icmp ult i32 %49, 2
+  %89 = and i1 %88, %87
+  br i1 %89, label %58, label %90
+
+; <label>:90                                      ; preds = %81
+  %91 = shl i32 %49, 1
+  %92 = add nuw nsw i32 %91, %50
+  %93 = add i32 %92, %83
+  %94 = add nuw nsw i32 %49, 3
+  %95 = shl i32 1, %94
+  %96 = and i32 %95, %8
+  %97 = icmp ne i32 %96, 0
+  %98 = icmp ult i32 %49, 3
+  %99 = and i1 %98, %97
+  br i1 %99, label %58, label %100
+
+; <label>:100                                     ; preds = %90
+  %101 = mul nuw nsw i32 %49, 3
+  %102 = add nuw nsw i32 %101, %50
+  %103 = add i32 %102, %93
+  %104 = add nuw nsw i32 %49, 4
+  %105 = shl i32 1, %104
+  %106 = and i32 %105, %8
+  %107 = icmp ne i32 %106, 0
+  %108 = icmp ult i32 %49, 4
+  %109 = and i1 %108, %107
+  br i1 %109, label %58, label %110
+
+; <label>:110                                     ; preds = %100
+  %111 = shl i32 %49, 2
+  %112 = add nuw nsw i32 %111, %50
+  %113 = add i32 %112, %103
+  %114 = add nuw nsw i32 %49, 5
+  %115 = shl i32 1, %114
+  %116 = and i32 %115, %8
+  %117 = icmp ne i32 %116, 0
+  %118 = icmp ult i32 %49, 5
+  %119 = and i1 %118, %117
+  br i1 %119, label %58, label %120
+
+; <label>:120                                     ; preds = %110
+  %121 = mul nuw nsw i32 %49, 5
+  %122 = add nuw nsw i32 %121, %50
+  %123 = add i32 %122, %113
+  %124 = add nuw nsw i32 %49, 6
+  %125 = shl i32 1, %124
+  %126 = and i32 %125, %8
+  %127 = icmp ne i32 %126, 0
+  %128 = icmp ult i32 %49, 6
+  %129 = and i1 %128, %127
+  br i1 %129, label %58, label %130
+
+; <label>:130                                     ; preds = %120
+  %131 = mul nuw nsw i32 %49, 6
+  %132 = add nuw nsw i32 %131, %50
+  %133 = add i32 %132, %123
+  %134 = add nuw nsw i32 %49, 7
+  %135 = shl i32 1, %134
+  %136 = and i32 %135, %8
+  %137 = icmp ne i32 %136, 0
+  %138 = icmp ult i32 %49, 7
+  %139 = and i1 %138, %137
+  br i1 %139, label %58, label %140
+
+; <label>:140                                     ; preds = %130
+  %141 = mul nuw nsw i32 %49, 7
+  %142 = add nuw nsw i32 %141, %50
+  %143 = add i32 %142, %133
+  br label %58
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32, %dx.types.Handle, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32, %dx.types.Handle, i32, i32) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.bufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8) #2
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!11}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 0}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 0}
+!4 = !{!5, !7, !9, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i32 0, null}
+!7 = !{!8}
+!8 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!9 = !{!10}
+!10 = !{i32 0, %Root* undef, !"", i32 0, i32 0, i32 1, i32 16, null}
+!11 = !{void ()* @cs_flow, !"cs_flow", null, !4, !12}
+!12 = !{i32 0, i64 16, i32 4, !13}
+!13 = !{i32 64, i32 1, i32 1}

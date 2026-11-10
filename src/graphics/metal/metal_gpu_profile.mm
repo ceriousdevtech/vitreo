@@ -508,7 +508,7 @@ void* begin_compute(RecordingPtr& recording, void* queue,
     if (first < 0) return nullptr;
     MTLComputePassDescriptor* desc =
         [MTLComputePassDescriptor computePassDescriptor];
-    desc.dispatchType = MTLDispatchTypeConcurrent;
+    desc.dispatchType = MTLDispatchTypeSerial;
     MTLComputePassSampleBufferAttachmentDescriptor* attach =
         desc.sampleBufferAttachments[0];
     attach.sampleBuffer = (__bridge id<MTLCounterSampleBuffer>)recording->samples;

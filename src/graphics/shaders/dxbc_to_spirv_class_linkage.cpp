@@ -402,11 +402,6 @@ bool DxbcTranslator::emit_interface_call(u32 opcode_token) {
         m_current_body = saved;
         return ok;
     };
-    if (hs_as_compute() && (!m_if_stack.empty() || !m_loop_stack.empty() ||
-                            !m_switch_stack.empty())) {
-        return fail("FCALL: invocation inside structured flow of a hull "
-                    "shader phase is not implemented");
-    }
     if (!target.index1_relative) {
         const u32 body = body_at(target.index0 + target.index1);
         // Unbound: the program is being validated, not run.

@@ -433,6 +433,85 @@ TEST_F(FFEmulationD3DMetal, D3D9TransformedVertexLandsWherePerspectiveMathSays) 
 // Lighting (Direct3D 9)"). A non-uniform world scale separates the inverse
 // transpose from the matrix itself; a scaled view separates camera-space
 // lighting from world-space lighting.
+// tools/oracle_probe/d3d8_lighting_no_normal_probe32.winoracle-gpu.expected:
+// D3DRS_LIGHTING applies the lighting equation to a vertex without a normal
+// and with no lights on (the normal is zero: lights add only their ambient
+// term). A grey (0x80) XYZ | DIFFUSE triangle over a black target.
+TEST_F(FFEmulationD3DMetal, LightingWithoutNormalsOrLightsFollowsTheEquation) {
+    Scene s{};
+    s.world = s.view = s.proj = scale(1, 1, 1);
+    const FFUniformInputs in = inputs_for(s);
+    std::vector<Vtx> v{vtx({-1, -1, 0.5}), vtx({-1, 3, 0.5}), vtx({3, -1, 0.5})};
+    for (Vtx& x : v) {
+        x.color[0] = x.color[1] = x.color[2] = 128.0f / 255.0f;
+        x.color[3] = 1.0f;
+    }
+    const auto base = [] {
+        FFPipelineState st = d3d_state(fvf::XYZ | fvf::DIFFUSE);
+        st.lighting_enabled = true;
+        st.material = FFMaterial{};
+        for (int k = 0; k < 4; ++k) {
+            st.material.diffuse[k] = st.material.ambient[k] = 0.0f;  // D3D's default material
+        }
+        return st;
+    };
+    const auto grey = [](float c) { return std::array<float, 3>{c, c, c}; };
+    struct Case {
+        const char* what;
+        FFPipelineState st;
+        std::array<float, 3> expect;
+    };
+    std::vector<Case> cases;
+    cases.push_back({"lit.no_lights -> 000000", base(), grey(0.0f)});
+    {
+        FFPipelineState st = base();
+        for (int k = 0; k < 3; ++k) st.global_ambient[k] = 64.0f / 255.0f;
+        st.global_ambient[3] = 1.0f;
+        cases.push_back({"lit.ambient404040 default_material -> 000000", st, grey(0.0f)});
+        FFPipelineState mat = st;
+        for (int k = 0; k < 4; ++k) mat.material.ambient[k] = 1.0f;
+        cases.push_back({"lit.ambient404040 mat_ambient1 -> 404040", mat, grey(64.0f / 255.0f)});
+        FFPipelineState src = st;
+        src.ambient_material_source = 1;  // D3DMCS_COLOR1
+        cases.push_back({"lit.ambient404040 ambient_source_color1 -> 202020", src,
+                         grey(64.0f / 255.0f * 128.0f / 255.0f)});
+    }
+    {
+        FFPipelineState st = base();
+        st.material.emissive[0] = 0.25f;
+        st.material.emissive[1] = 0.5f;
+        st.material.emissive[2] = 0.75f;
+        cases.push_back({"lit.emissive_40_80_bf -> 4080bf", st, {0.25f, 0.5f, 0.75f}});
+    }
+    {
+        FFPipelineState st = base();
+        st.active_light_count = 1;
+        st.lights[0].type = LightType::Directional;
+        st.lights[0].enabled = true;
+        for (int k = 0; k < 3; ++k) {
+            st.lights[0].diffuse[k] = 1.0f;
+            st.lights[0].ambient[k] = 0.5f;
+        }
+        st.lights[0].direction[2] = 1.0f;
+        cases.push_back({"lit.dir_light_no_normal mat0 -> 000000", st, grey(0.0f)});
+        FFPipelineState src = st;
+        src.ambient_material_source = 1;
+        cases.push_back({"lit.dir_light_no_normal ambient_source_color1 -> 404040", src,
+                         grey(0.5f * 128.0f / 255.0f)});
+    }
+    {
+        FFPipelineState st = base();
+        st.lighting_enabled = false;
+        cases.push_back({"unlit diffuse=808080 -> 808080", st, grey(128.0f / 255.0f)});
+    }
+    for (const Case& c : cases) {
+        const auto px = render(c.st, in, v, BackendPrimitiveTopology::TriangleList);
+        ASSERT_FALSE(px.empty()) << c.what;
+        const auto got = at(px, kW / 2, kH / 2);
+        for (int k = 0; k < 3; ++k) EXPECT_NEAR(got[k], c.expect[k], 2.5e-3) << c.what << ", channel " << k;
+    }
+}
+
 TEST_F(FFEmulationD3DMetal, D3D9LightingUsesInverseTransposeNormals) {
     const D3 n_obj = unit({0.4, 0.7, -0.6});
     const D3 light_dir{0.3, -0.5, 0.8};
@@ -846,7 +925,8 @@ TEST_F(FFEmulationD3DMetal, D3D9PointSpotLightCameraSpace) {
 
 // "Specular Lighting (Direct3D 9)": Cs * Ls * (N . H)^P * Atten * Spot, in
 // camera space. D3DRS_LOCALVIEWER TRUE: H = norm(norm(Cp - Vp) + Ldir), the
-// camera at the camera-space origin. FALSE: H = norm((0,0,1) + Ldir).
+// camera at the camera-space origin. FALSE: H = norm((0,0,-1) + Ldir) as
+// measured on Windows (Learn writes (0,0,1)).
 TEST_F(FFEmulationD3DMetal, D3D9SpecularHalfVectorLocalViewer) {
     Scene s = scene();
     const M4 wv = s.wv();
@@ -880,8 +960,10 @@ TEST_F(FFEmulationD3DMetal, D3D9SpecularHalfVectorLocalViewer) {
             ASSERT_GT(dot(n, to_light), 0.05) << i;
             const D3 to_eye = unit({-vcam[0], -vcam[1], -vcam[2]});
             const D3 h_local = unit({to_eye[0] + to_light[0], to_eye[1] + to_light[1], to_eye[2] + to_light[2]});
-            // Learn-literal (0,0,1); winoracle confirmation pending.
-            const D3 h_far = unit({to_light[0], to_light[1], to_light[2] + 1.0});
+            // Learn writes (0,0,1), but the RTX 4080 oracle (winoracle-gpu,
+            // d3d9 scene runner) lights with the infinite viewer at (0,0,-1)
+            // in camera space; ff_uniforms.cpp follows the measurement.
+            const D3 h_far = unit({to_light[0], to_light[1], to_light[2] - 1.0});
             const double nh_local = std::max(dot(n, h_local), 0.0), nh_far = std::max(dot(n, h_far), 0.0);
             max_gap = std::max(max_gap, std::abs(std::pow(nh_local, power) - std::pow(nh_far, power)));
             const double want = std::pow(local ? nh_local : nh_far, power);

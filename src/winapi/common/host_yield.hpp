@@ -36,4 +36,18 @@ inline void host_yield_timeslice() noexcept {
 #endif
 }
 
+/// Learn (SwitchToThread): yield only to a thread already waiting for this
+/// processor, and return at once when the processor's queue is empty.
+/// thread_switch puts the caller behind every runnable thread on the machine,
+/// so a render thread polling a completion flag gives its core away on every
+/// call. Other guest threads are host threads of their own and already run on
+/// the other cores. This hint does not enter the kernel.
+inline void host_yield_processor_hint() noexcept {
+#if defined(__aarch64__)
+    asm volatile("yield" ::: "memory");
+#else
+    host_yield_timeslice();
+#endif
+}
+
 }  // namespace vitreo::winapi

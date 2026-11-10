@@ -16,6 +16,8 @@
 #include <gtest/gtest.h>
 
 #include "core/cpu/state/cpu_state.hpp"
+#include "core/cpu/interpreter/interpreter.hpp"
+#include "core/math/host_fenv.hpp"
 #include "core/memory/guest_memory.hpp"
 #include "runtime/execution/guest_run_loop.hpp"
 #include "runtime/execution/thunk_direct.hpp"
@@ -27,6 +29,7 @@
 #include "winapi/kernel32/thread/thread_suspend.hpp"
 
 #include <array>
+#include <cfenv>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -261,6 +264,53 @@ TEST_F(DirectThunkTest, X64CrossingRestoresNonvolatilesAndReadsTheStackOnce) {
     EXPECT_EQ(cpu.sse.mxcsr & 0x3Fu, 0x20u);
     // The handler's stack window does not outlive the crossing.
     EXPECT_EQ(marshaler.stack_window().bytes, nullptr);
+}
+
+TEST_F(DirectThunkTest, NativeFpResidencyPreservesGuestModesBothBitnesses) {
+    constexpr u64 sp = kMemBase + 0x8000;
+    constexpr GuestAddr guest_fp = kMemBase;
+    const u8 code[] = {0xF3, 0x0F, 0x2D, 0xC0}; // cvtss2si eax,xmm0
+    ASSERT_TRUE(memory.write_bytes(guest_fp, code, sizeof(code)).is_ok());
+    ASSERT_TRUE(memory.write_u64(sp, guest_fp).is_ok());
+    constexpr u32 expected[] = {2, 1, 2, 1}; // Intel SDM: RC for +1.5
+    g_probe.clobber = false;
+    for (bool wide : {false, true}) {
+        for (u32 rc = 0; rc < 4; ++rc) {
+            SCOPED_TRACE(::testing::Message() << "x64=" << wide << " RC=" << rc);
+            cpu::CpuState current;
+            wide ? current.init_long_mode() : current.init_protected_mode();
+            current.rip = gateway("ProbeMethod");
+            current.set_sp(sp);
+            current.sse.mxcsr = 0x1F80u | (rc << 13);
+            current.sse.xmm[0].u32_[0] = 0x3FC00000u;
+            math::clear_host_fp_exceptions();
+            math::apply_sse_rounding(current.sse.mxcsr);
+            (void)std::feraiseexcept(FE_INEXACT);
+            winapi::Marshaler marshaler(memory);
+            marshaler.attach_cpu(current);
+            winapi::ThreadSuspendRegistry::PublishGuard guard(0x7101, &current);
+            const auto* direct = registry.direct_thunk(current.rip);
+            ASSERT_NE(direct, nullptr);
+            EXPECT_EQ(run_direct_thunk(*direct, current, memory, marshaler,
+                                       guard, nullptr),
+                      DirectThunkResult::Returned);
+            EXPECT_EQ(current.sse.mxcsr, 0x1F80u | (rc << 13));
+#if defined(__aarch64__) && defined(__APPLE__)
+            const char* eager = std::getenv("VITREO_NATIVE_FP_EAGER");
+            if (eager == nullptr || eager[0] != '1') {
+                EXPECT_EQ(std::fegetround(), FE_TONEAREST);
+                EXPECT_GT(*math::installed_sse_environment_key(), u64{0xFFFFFFFFu});
+            }
+#endif
+            cpu::Interpreter interpreter(current, memory);
+            EXPECT_NE(interpreter.run(1), cpu::ExecResult::Exception);
+            EXPECT_EQ(static_cast<u32>(current.gpr.rax), expected[rc]);
+            EXPECT_EQ(math::harvest_sse_exceptions(), 0x0020u);
+            EXPECT_EQ(math::harvest_x87_exceptions(), 0u);
+        }
+    }
+    math::apply_sse_rounding(0x1F80u);
+    math::clear_host_fp_exceptions();
 }
 
 TEST_F(DirectThunkTest, X86CrossingPopsStdcallBytesAndRestoresCalleeSaved) {

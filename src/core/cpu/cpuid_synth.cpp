@@ -12,6 +12,9 @@
 #include <vitreo/virtual_tsc.hpp>
 
 #include <algorithm>
+#if defined(__x86_64__)
+#include <cpuid.h>
+#endif
 #include <array>
 #include <cstdlib>
 #include <cstring>
@@ -360,6 +363,44 @@ void synth_cpuid_on(u32 processor, u32 leaf, u32 subleaf, bool long_mode,
         default:
             break;              // Unknown leaf: all zeros
     }
+#if defined(__x86_64__)
+    // On an x86-64 host the native backends run guest instructions on the
+    // host processor itself, so a feature bit is a promise the silicon must
+    // keep: advertise only what the host CPU reports (an i5-7500 has no SHA
+    // extensions, and a guest that selects SHA1MSG1 from leaf 7 takes #UD).
+    // The hypervisor bit and HTT describe Vitreo's own topology and stay.
+    {
+        u32 ha = 0, hb = 0, hc = 0, hd = 0;
+        switch (leaf) {
+            case 0x01:
+                __cpuid_count(0x01, 0, ha, hb, hc, hd);
+                ecx &= hc | (1u << 31);
+                edx &= hd | (1u << 28);
+                break;
+            case 0x07:
+                if (subleaf == 0) {
+                    __cpuid_count(0x07, 0, ha, hb, hc, hd);
+                    ebx &= hb;
+                    ecx &= hc;
+                    edx &= hd;
+                }
+                break;
+            case 0x0D:
+                if (subleaf == 1) {
+                    __cpuid_count(0x0D, 1, ha, hb, hc, hd);
+                    eax &= ha;
+                }
+                break;
+            case 0x80000001:
+                __cpuid_count(0x80000001, 0, ha, hb, hc, hd);
+                ecx &= hc;
+                edx &= hd;
+                break;
+            default:
+                break;
+        }
+    }
+#endif
 }
 
 void synth_cpuid(u32 leaf, u32 subleaf, bool long_mode,

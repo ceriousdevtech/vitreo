@@ -3,6 +3,8 @@
 
 #include "windowing/cocoa/window_presentation.hpp"
 
+#include <algorithm>
+
 namespace vitreo::windowing {
 
 bool presentation_has_caption(u32 style) noexcept {
@@ -189,6 +191,23 @@ PresentationRecipe make_presentation_recipe(
         r.space_fullscreen = true;
     }
     return r;
+}
+
+bool exclusive_display_placement(const Rect& guest_screen, double fit_x,
+                                 double fit_y, double fit_w, double fit_h,
+                                 const Rect& client,
+                                 ExclusiveDisplayPlacement& out) noexcept {
+    const i32 guest_w = guest_screen.right - guest_screen.left;
+    const i32 guest_h = guest_screen.bottom - guest_screen.top;
+    if (guest_w <= 0 || guest_h <= 0 || fit_w < 1.0 || fit_h < 1.0) return false;
+    out.scale = fit_w / static_cast<double>(guest_w);
+    const double client_w = static_cast<double>(std::max(1, client.right - client.left));
+    const double client_h = static_cast<double>(std::max(1, client.bottom - client.top));
+    out.left = fit_x + (client.left - guest_screen.left) * out.scale;
+    out.top = fit_y + (client.top - guest_screen.top) * out.scale;
+    out.width = client_w * out.scale;
+    out.height = client_h * out.scale;
+    return true;
 }
 
 } // namespace vitreo::windowing

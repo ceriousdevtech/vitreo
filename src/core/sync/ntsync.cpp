@@ -555,6 +555,7 @@ namespace {
 // Signal-to-wake latency, gated on VITREO_WAKE_LATENCY. Reported as a running
 // aggregate rather than a histogram so it is readable in a normal run log.
 struct WakeLatency {
+    const char* kind;
     std::atomic<bool> on{std::getenv("VITREO_WAKE_LATENCY") != nullptr};
     std::atomic<std::uint64_t> n{0}, total_us{0}, max_us{0}, over_1ms{0}, over_10ms{0};
     void add(std::uint64_t us) {
@@ -567,27 +568,36 @@ struct WakeLatency {
         if ((c % 2000) == 0) {
             std::fprintf(stderr,
                 "[wake-latency] n=%llu avg=%.3fms max=%.3fms >1ms=%llu (%.1f%%) "
-                ">10ms=%llu (%.1f%%)\n",
+                ">10ms=%llu (%.1f%%) kind=%s\n",
                 (unsigned long long)c,
                 total_us.load() / 1000.0 / c,
                 max_us.load() / 1000.0,
                 (unsigned long long)over_1ms.load(),
                 100.0 * over_1ms.load() / c,
                 (unsigned long long)over_10ms.load(),
-                100.0 * over_10ms.load() / c);
+                100.0 * over_10ms.load() / c, kind);
         }
     }
-    void add_since(std::chrono::steady_clock::time_point at) {
+    void add_since(std::chrono::steady_clock::time_point at,
+                   std::uint32_t tid = 0) {
         if (!on.load(std::memory_order_relaxed) ||
             at.time_since_epoch().count() == 0) {
             return;
         }
         const auto us = std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now() - at).count();
-        if (us >= 0) add(static_cast<std::uint64_t>(us));
+        if (us >= 0) {
+            add(static_cast<std::uint64_t>(us));
+            if (tid != 0 && us > 10000) {
+                std::fprintf(stderr,
+                    "[wake-latency-slow] kind=%s tid=%u delay=%.3fms\n",
+                    kind, tid, us / 1000.0);
+            }
+        }
     }
 };
-WakeLatency g_wake;
+WakeLatency g_wake{"ready"};
+WakeLatency g_handoff{"handoff"};
 } // namespace
 
 std::uint32_t Manager::consume_locked(Object& o, std::uint32_t tid) {
@@ -733,7 +743,7 @@ std::uint32_t Manager::wait(const ObjectId* ids,
         // that does not lose a release -- it outranks a deadline that passed
         // in the meantime and even a cancellation that landed after it.
         if (waiter.granted) {
-            g_wake.add_since(waiter.released_at);
+            g_handoff.add_since(waiter.released_at, waiter.tid);
             return waiter.result;
         }
         // Process teardown is a host-lifetime boundary, not a synthetic signal

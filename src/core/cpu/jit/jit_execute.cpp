@@ -630,6 +630,10 @@ JitExecResult JitCompiler::execute(CompiledBlock& block, CpuState& cpu) {
     if (protection_lease) {
         m_memory.exit_linear_proof_lease();
     }
+    if (m_jit_ctx.linear_proof_lease_held != 0) {
+        m_memory.exit_linear_proof_lease();
+        m_jit_ctx.linear_proof_lease_held = 0;
+    }
 
     // A software raise out of a block that elided flag records: rebuild the
     // record the faulting instruction's state must carry (Intel SDM Vol. 3A

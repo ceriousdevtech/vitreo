@@ -1,0 +1,128 @@
+;
+; Note: shader requires additional functionality:
+;       Wave level operations
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: b4da9cf47b4e156b65058c221002cf0f
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; outbuf                                UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResBind = type { i32, i32, i32, i8 }
+%dx.types.ResourceProperties = type { i32, i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+
+define void @cs_lin() {
+  %1 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind { i32 0, i32 0, i32 0, i8 1 }, i32 0, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %2 = call i32 @dx.op.flattenedThreadIdInGroup.i32(i32 96)  ; FlattenedThreadIdInGroup()
+  %3 = mul i32 %2, %2
+  %4 = uitofp i32 %3 to float
+  %5 = fmul fast float %4, 5.000000e-01
+  %6 = uitofp i32 %2 to float
+  %7 = fmul fast float %6, 3.000000e+00
+  %8 = fadd fast float %5, %7
+  %9 = call float @dx.op.unary.f32(i32 83, float %8)  ; DerivCoarseX(value)
+  %10 = bitcast float %9 to i32
+  %11 = shl i32 %2, 5
+  %12 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %12, i32 %11, i32 undef, i32 %10, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %13 = call float @dx.op.unary.f32(i32 84, float %8)  ; DerivCoarseY(value)
+  %14 = bitcast float %13 to i32
+  %15 = or i32 %11, 4
+  %16 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %16, i32 %15, i32 undef, i32 %14, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %17 = call float @dx.op.unary.f32(i32 85, float %8)  ; DerivFineX(value)
+  %18 = bitcast float %17 to i32
+  %19 = or i32 %11, 8
+  %20 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %20, i32 %19, i32 undef, i32 %18, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %21 = call float @dx.op.unary.f32(i32 86, float %8)  ; DerivFineY(value)
+  %22 = bitcast float %21 to i32
+  %23 = or i32 %11, 12
+  %24 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %24, i32 %23, i32 undef, i32 %22, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %25 = call i32 @dx.op.quadOp.i32(i32 123, i32 %2, i8 0)  ; QuadOp(value,op)
+  %26 = or i32 %11, 16
+  %27 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %27, i32 %26, i32 undef, i32 %25, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %28 = call i32 @dx.op.quadOp.i32(i32 123, i32 %2, i8 1)  ; QuadOp(value,op)
+  %29 = or i32 %11, 20
+  %30 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %30, i32 %29, i32 undef, i32 %28, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %31 = call i32 @dx.op.quadReadLaneAt.i32(i32 122, i32 %2, i32 3)  ; QuadReadLaneAt(value,quadLane)
+  %32 = or i32 %11, 24
+  %33 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %33, i32 %32, i32 undef, i32 %31, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %34 = fadd fast float %13, %9
+  %35 = bitcast float %34 to i32
+  %36 = or i32 %11, 28
+  %37 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %37, i32 %36, i32 undef, i32 %35, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.flattenedThreadIdInGroup.i32(i32) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.unary.f32(i32, float) #0
+
+; Function Attrs: nounwind
+declare i32 @dx.op.quadOp.i32(i32, i32, i8) #1
+
+; Function Attrs: nounwind
+declare i32 @dx.op.quadReadLaneAt.i32(i32, i32, i32) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #1
+
+; Function Attrs: nounwind readnone
+declare %dx.types.Handle @dx.op.annotateHandle(i32, %dx.types.Handle, %dx.types.ResourceProperties) #0
+
+; Function Attrs: nounwind readnone
+declare %dx.types.Handle @dx.op.createHandleFromBinding(i32, %dx.types.ResBind, i32, i1) #0
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!1}
+!dx.shaderModel = !{!2}
+!dx.resources = !{!3}
+!dx.entryPoints = !{!6}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 6}
+!2 = !{!"cs", i32 6, i32 6}
+!3 = !{null, !4, null, null}
+!4 = !{!5}
+!5 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!6 = !{void ()* @cs_lin, !"cs_lin", null, !3, !7}
+!7 = !{i32 0, i64 524304, i32 4, !8}
+!8 = !{i32 16, i32 1, i32 1}

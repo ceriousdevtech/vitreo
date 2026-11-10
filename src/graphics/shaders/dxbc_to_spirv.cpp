@@ -16,6 +16,7 @@
 /// - SPIR-V 1.6 specification
 
 #include "graphics/shaders/dxbc_to_spirv_internal.hpp"
+#include "graphics/shaders/compile_profile.hpp"
 
 namespace vitreo::graphics {
 
@@ -33,6 +34,11 @@ u32 shader_loop_iteration_cap() {
 namespace dxbc_spirv_detail {
 
 DxbcToSpirvResult DxbcTranslator::run() {
+    if (!m_immediate_constants_failure.empty()) {
+        (void)fail_invalid(m_immediate_constants_failure);
+        return m_result;
+    }
+
     m_result.stage = m_container.stage;
     m_result.shader_model_major = m_container.shader_model_major;
     m_result.shader_model_minor = m_container.shader_model_minor;
@@ -98,6 +104,24 @@ DxbcToSpirvResult DxbcTranslator::run() {
         m_compute_group_size_x = 1u;  // one primitive per thread
         m_compute_group_size_y = 1u;
         m_compute_group_size_z = 1u;
+        // ---- WS5 begin ----
+        if (gs_as_mesh()) {
+            // One mesh threadgroup holds K invocations, one thread each; the
+            // mesh holds one stream's primitives, so only a single-stream
+            // shader can be drawn this way (the rest stay three-pass).
+            if (m_gs_stream_mask != 1u) {
+                (void)fail("geometry mesh lowering: requires a single stream");
+                return m_result;
+            }
+            if (m_options.gs_mesh_invocations_per_group == 0u) {
+                (void)fail("geometry mesh lowering: no invocations per group");
+                return m_result;
+            }
+            m_gs_mesh_threads = m_options.gs_mesh_invocations_per_group;
+            m_compute_group_size_x = m_gs_mesh_threads;
+            m_result.gs_lowered_to_mesh = true;
+        }
+        // ---- WS5 end ----
     }
     m_result.workgroup_size_x = m_compute_group_size_x;
     m_result.workgroup_size_y = m_compute_group_size_y;
@@ -111,6 +135,9 @@ DxbcToSpirvResult DxbcTranslator::run() {
         const std::set<u32> listed(m_entry_interface.begin(),
                                    m_entry_interface.end());
         for (const u32 var : m_builder.private_variables()) {
+            if (!listed.contains(var)) m_entry_interface.push_back(var);
+        }
+        for (const u32 var : m_vx_interface) {
             if (!listed.contains(var)) m_entry_interface.push_back(var);
         }
     }
@@ -134,6 +161,12 @@ bool DxbcTranslator::emit_header() {
     m_builder.emit_capability(SpvCapability::ImageMSArray);
     m_builder.emit_capability(SpvCapability::ImageQuery);
     m_glsl_std450 = m_builder.emit_ext_inst_import("GLSL.std.450");
+    // ---- WS5 begin ----
+    if (gs_as_mesh()) {
+        m_gs_mesh_set = m_builder.emit_ext_inst_import(kMeshGsExtInstSet);
+    }
+    if (mesh_stage()) m_mesh_set = m_builder.emit_ext_inst_import(kMeshStageExtInstSet);
+    // ---- WS5 end ----
 
     // Memory model
     m_builder.emit_memory_model();
@@ -154,6 +187,7 @@ DxbcMathContract dxbc_math_contract(const DxbcContainer& container) {
 DxbcToSpirvResult translate_dxbc_to_spirv(
     const DxbcContainer& container,
     const DxbcTranslationOptions& options) {
+    const compile_profile::Scope timed(compile_profile::DxbcToSpirv);
     if (!container.valid()) {
         DxbcToSpirvResult result{};
         result.ok = false;

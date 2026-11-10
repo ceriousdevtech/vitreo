@@ -147,6 +147,18 @@ void install_window_message_callbacks(
         [&cpu, &memory, &ctx, is_64bit](
             windowing::HWND hwnd, u32 msg, u64 wParam, u64 lParam, u64 dlgproc
         ) -> u64 {
+            // A dialog's window procedure is the predefined dialog procedure
+            // around its DLGPROC (Learn DefDlgProc, "Dialog Box Default
+            // Message Processing"): the modal loop and WM_INITDIALOG reach
+            // the DLGPROC through it, so a FALSE return gets the default
+            // processing (WM_SETCURSOR's class cursor, WM_ERASEBKGND, ...).
+            if (const auto* win = ctx.hwnd_mgr.find(hwnd);
+                win != nullptr && win->is_dialog && win->dlgproc != 0 &&
+                dlgproc == win->dlgproc) {
+                ctx.dwp_mgr.set_is_64bit(is_64bit);
+                return ctx.dwp_mgr.dialog_procedure(hwnd, msg, wParam, lParam,
+                                                    static_cast<GuestAddr>(dlgproc));
+            }
             cpu::CpuState& callback_cpu = active_guest_cpu_or(cpu);
             // DLGPROC signature: INT_PTR CALLBACK DlgProc(HWND, UINT, WPARAM, LPARAM)
             u64 args[4] = {
@@ -164,9 +176,14 @@ void install_window_message_callbacks(
     // ShellExecute/CreateProcess. Our chain-load model serializes processes
     // (the current guest must exit before the chained executable runs), so
     // any pumping modal loop has to terminate to let the runtime proceed.
+    // ExitProcess never returns and ends every thread (Learn ExitProcess):
+    // a guest that calls it from inside a dialog procedure (an unhandled
+    // exception's CRT exit, say) must not leave this host modal loop pumping
+    // the dead process's dialog.
     ctx.dialog_mgr.set_modal_exit_predicate(
         [&ctx]() -> bool {
-            return ctx.process_mgr.has_pending_launch();
+            return ctx.process_mgr.has_pending_launch() ||
+                   ctx.process_mgr.has_exited();
         }
     );
 }

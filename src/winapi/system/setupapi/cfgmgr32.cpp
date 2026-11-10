@@ -13,11 +13,12 @@ using namespace setupapi_internal;
 DllExports create_cfgmgr32_thunks(
     std::function<std::string()> display_name_provider,
     RegistryThunks* registry,
-    const GuestElevationState* elevation) {
+    const GuestElevationState* elevation,std::shared_ptr<GamepadHidCatalog> gamepads) {
     auto state = std::make_shared<CfgmgrState>();
     state->display_name_provider = default_display_name_provider(std::move(display_name_provider));
     state->registry = registry;
     state->elevation = elevation;
+    state->gamepads=std::move(gamepads);
 
     DllExports exports;
     // x86 stdcall byte counts: cfgmgr32.lib decorations (_Name@N).

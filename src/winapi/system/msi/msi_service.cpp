@@ -10,6 +10,7 @@
 #include "winapi/system/msi/msi_ui.hpp"
 #include "winapi/advapi32/services/scm.hpp"
 #include "winapi/kernel32/locale/string_conv.hpp"
+#include "capsule/vfs/win32_full_path.hpp"
 #include "ipc/unix_pipe.hpp"
 
 #include <atomic>
@@ -205,7 +206,10 @@ InstallResult serve_install_request(MsiManager& mgr, RemoteChannel& channel, con
     machine.logon_user = q.identity.logon_user;
     if (!q.identity.profile_dir.empty()) machine.profile_dir = q.identity.profile_dir;
     if (!q.identity.temp_dir.empty()) machine.temp_dir = q.identity.temp_dir;
-    if (!q.identity.current_directory.empty()) machine.current_directory = q.identity.current_directory;
+    if (!q.identity.current_directory.empty()) {
+        machine.current_directory = q.identity.current_directory;
+        machine.current_directory_source = {};  // the client's, not this service's
+    }
     machine.admin_user = q.identity.admin_user;
     machine.elevated = q.identity.elevated;
     if (q.identity.user_lcid != 0) machine.user_lcid = q.identity.user_lcid;
@@ -421,11 +425,13 @@ std::string absolute_package_path(MsiManager& mgr, const std::string& path) {
     const bool absolute = (path.size() >= 3 && path[1] == ':' && (path[2] == '\\' || path[2] == '/')) ||
                           (path.size() >= 2 && (path[0] == '\\' || path[0] == '/') && (path[1] == '\\' || path[1] == '/'));
     if (absolute || path.empty()) return path;
-    std::string dir = mgr.machine_state().current_directory;
+    // A relative package names a file the way GetFullPathNameW would resolve
+    // it against the caller's current directory (a self-extracting package
+    // runs `msiexec /i pkg.msi` from the folder it extracted to).
+    const std::string dir = mgr.machine_state().current_dir();
     if (dir.empty()) return path;
-    if (path[0] == '\\' || path[0] == '/') return dir.substr(0, 2) + path;  // drive-relative root
-    if (dir.back() != '\\') dir += '\\';
-    return dir + path;
+    auto full = capsule::win32_full_path(path, dir);
+    return full.has_value() ? full->path : path;
 }
 
 void apply_enable_log(MsiManager& mgr, InstallInvocation& inv) {
@@ -490,7 +496,7 @@ u32 install_package(MsiManager& mgr, const InstallInvocation& inv) {
         request.identity.logon_user = machine.logon_user;
         request.identity.profile_dir = machine.profile_dir;
         request.identity.temp_dir = machine.temp_dir;
-        request.identity.current_directory = machine.current_directory;
+        request.identity.current_directory = machine.current_dir();
         request.identity.admin_user = machine.admin_user;
         request.identity.elevated = machine.elevated;
         request.identity.user_lcid = machine.user_lcid;

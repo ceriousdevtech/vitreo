@@ -80,11 +80,22 @@ std::string oracle_spelling(std::string s) {
 }
 
 /// Lines of a dump section that describe what the capsule can hold: no
-/// global Win32 (WinSxS) assembly (a recorded gap), no other product's
-/// assembly (stdole), no Fusion caches.
+/// other product's assembly (stdole), no Fusion caches.
 bool comparable(const std::string& l) {
-    return l.find("Vitreo.Probe.W32,") == std::string::npos && l.find("stdole") == std::string::npos &&
-           l.find("WinSxS") == std::string::npos && l.find("9C00-00000000000B}") == std::string::npos;
+    return l.find("stdole") == std::string::npos && l.find("GACChangeNotification") == std::string::npos &&
+           l.find("PublisherPolicy\\Default") == std::string::npos;
+}
+
+/// The side-by-side store names end in an undocumented 16-hex-digit hash
+/// (Vitreo uses its own: .docs/contracts/sxs.md); compare the rest.
+std::string without_store_hash(std::string s) {
+    for (usize p = 0; (p = s.find("_none_", p)) != std::string::npos;) {
+        p += 6;
+        usize n = 0;
+        while (p + n < s.size() && std::isxdigit(static_cast<unsigned char>(s[p + n]))) ++n;
+        if (n == 16) s.replace(p, 16, "<hash>");
+    }
+    return s;
 }
 
 class MsiAssemblyTest : public MsiTest {
@@ -218,9 +229,9 @@ protected:
             // file key paths; the ordinary components belong to the
             // registration-area tests.
             if (key.find("\\Components\\") != std::string::npos && want.rfind("String:<", 0) != 0 &&
+                want.rfind("String:>", 0) != 0 &&
                 want.find("Priv.dll") == std::string::npos && want.find("W32P.dll") == std::string::npos)
                 continue;
-            if (key.find("\\Components\\01E0C5D7E55AA1B4C9000000000000B0") != std::string::npos) continue;  // W32 global
             ++compared;
             EXPECT_EQ(value(hive, key, name), want) << key << " : " << name;
         }
@@ -341,7 +352,7 @@ protected:
                 got = locate ? got.substr(nl + 1) : got.substr(0, nl);
             }
             ++n;
-            EXPECT_EQ(oracle_spelling(got), want);
+            EXPECT_EQ(without_store_hash(oracle_spelling(got)), without_store_hash(want));
         }
         return n;
     }
@@ -356,7 +367,7 @@ protected:
 constexpr const char* kMachineAssemblies = "SOFTWARE\\Classes\\Installer\\Assemblies\\Global";
 
 TEST_P(MsiAssemblyTest, MachineX86InstallPlacesAndPublishesWhatWindowsDoes) {
-    ASSERT_EQ(install("assembly_x86", {{"ALLUSERS", "1"}, {"CLR2", "1"}}), 0u);
+    ASSERT_EQ(install("assembly_x86", {{"ALLUSERS", "1"}, {"CLR2", "1"}, {"W32", "1"}}), 0u);
     EXPECT_EQ(actual_files(), expected_files("msi_assembly_machine_x86_state.expected"));
     EXPECT_GT(compare_registry("msi_assembly_machine_x86_state.expected"), 15);
     // Nothing is left in the staging area once the script committed.
@@ -368,7 +379,7 @@ TEST_P(MsiAssemblyTest, MachineX86InstallPlacesAndPublishesWhatWindowsDoes) {
 }
 
 TEST_P(MsiAssemblyTest, MachineX64InstallPlacesAndPublishesWhatWindowsDoes) {
-    ASSERT_EQ(install("assembly_x64", {{"ALLUSERS", "1"}, {"CLR2", "1"}}), 0u);
+    ASSERT_EQ(install("assembly_x64", {{"ALLUSERS", "1"}, {"CLR2", "1"}, {"W32", "1"}}), 0u);
     EXPECT_EQ(actual_files(), expected_files("msi_assembly_machine_x64_state.expected"));
     EXPECT_GT(compare_registry("msi_assembly_machine_x64_state.expected"), 15);
     EXPECT_GT(replay(GetParam() ? "msi_assembly_machine_x64_api64.expected" : "msi_assembly_machine_x64_api32.expected",
@@ -377,7 +388,7 @@ TEST_P(MsiAssemblyTest, MachineX64InstallPlacesAndPublishesWhatWindowsDoes) {
 }
 
 TEST_P(MsiAssemblyTest, PerUserInstallPublishesUnderHkcu) {
-    ASSERT_EQ(install("assembly_x86", {{"CLR2", "1"}}), 0u);
+    ASSERT_EQ(install("assembly_x86", {{"CLR2", "1"}, {"W32", "1"}}), 0u);
     EXPECT_EQ(actual_files(), expected_files("msi_assembly_user_x86_state.expected"));
     EXPECT_GT(compare_registry("msi_assembly_user_x86_state.expected"), 15);
     EXPECT_FALSE(key_exists(capsule::HKEY_LOCAL_MACHINE, kMachineAssemblies));
@@ -438,10 +449,28 @@ TEST_P(MsiAssemblyTest, AFailedInstallCommitsNoAssembly) {
     if (fs::exists(tmp)) EXPECT_TRUE(fs::is_empty(tmp));
 }
 
-TEST_P(MsiAssemblyTest, AGlobalWin32AssemblyFailsTheInstall) {
-    // Recorded gap: WinSxS (registration.md "Assemblies").
-    EXPECT_EQ(install("assembly_x86", {{"ALLUSERS", "1"}, {"W32", "1"}}), 1603u);
-    EXPECT_EQ(actual_files(), std::set<std::string>{});
+TEST_P(MsiAssemblyTest, AGlobalWin32AssemblyGoesToTheSideBySideStoreAndLeavesWithTheProduct) {
+    // Measured layout (registration.md "Assemblies"; the api*.expected paths):
+    // WinSxS\Fusion\<arch>_<name>_<token>_none_<hash>\<maj.min>\<version>\ with the
+    // assembly's files and its manifest and catalog renamed after the identity.
+    ASSERT_EQ(install("assembly_x86", {{"ALLUSERS", "1"}, {"W32", "1"}}), 0u);
+    const fs::path fusion = root / "Windows" / "WinSxS" / "Fusion";
+    ASSERT_TRUE(fs::exists(fusion));
+    std::vector<std::string> found;
+    for (const auto& e : fs::recursive_directory_iterator(fusion))
+        if (e.is_regular_file()) found.push_back(without_store_hash(fs::relative(e.path(), fusion).string()));
+    std::sort(found.begin(), found.end());
+    EXPECT_EQ(found, (std::vector<std::string>{
+                         "x86_vitreo.probe.w32_ef51ea1264a47dc2_none_<hash>/1.0/1.0.0.0/VitreoW32.dll",
+                         "x86_vitreo.probe.w32_ef51ea1264a47dc2_none_<hash>/1.0/1.0.0.0/"
+                         "x86_vitreo.probe.w32_ef51ea1264a47dc2_1.0.0.0_none_<hash>.cat",
+                         "x86_vitreo.probe.w32_ef51ea1264a47dc2_none_<hash>/1.0/1.0.0.0/"
+                         "x86_vitreo.probe.w32_ef51ea1264a47dc2_1.0.0.0_none_<hash>.manifest"}));
+    EXPECT_TRUE(key_exists(capsule::HKEY_LOCAL_MACHINE, "SOFTWARE\\Classes\\Installer\\Win32Assemblies\\Global"));
+
+    ASSERT_EQ(install("assembly_x86", {{"ALLUSERS", "1"}, {"REMOVE", "ALL"}}), 0u);
+    EXPECT_TRUE(!fs::exists(fusion) || fs::is_empty(fusion));
+    EXPECT_FALSE(key_exists(capsule::HKEY_LOCAL_MACHINE, "SOFTWARE\\Classes\\Installer\\Win32Assemblies"));
 }
 
 INSTANTIATE_MSI_BITNESS(MsiAssemblyTest);

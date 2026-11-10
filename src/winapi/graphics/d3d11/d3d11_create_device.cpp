@@ -11,6 +11,7 @@
 #include "winapi/graphics/d3d11/d3d11_internal.hpp"
 #include "winapi/graphics/d3d11/d3d11_state_census.hpp"
 #include "winapi/graphics/d3d11/d3d11_stdcall.hpp"
+#include "winapi/graphics/common/adapter_device_presence.hpp"
 #include "winapi/graphics/common/gpu_event_signaler.hpp"
 #include "winapi/graphics/common/shared_keyed_mutex.hpp"
 #include "winapi/common/virtual_display_modes.hpp"
@@ -354,6 +355,7 @@ void D3D11Manager::impl_D3D11CreateDevice(Marshaler& m) {
             context_out != 0 ? device->second.context_interface : 0),
         static_cast<unsigned long long>(adapter),
         m_backend.backend_device_name().c_str());
+    graphics_common::note_adapter_device_created();
     diagnostics::phase_mark(diagnostics::LoadPhase::FirstDevice);
     m.set_return(d3d11::S_OK);
 }
@@ -509,6 +511,7 @@ void D3D11Manager::impl_D3D11CreateDeviceAndSwapChain(Marshaler& m) {
         static_cast<unsigned long long>(device->second.device_interface),
         static_cast<unsigned long long>(device->second.context_interface),
         static_cast<unsigned long long>(swap_chain));
+    graphics_common::note_adapter_device_created();
     diagnostics::phase_mark(diagnostics::LoadPhase::FirstDevice);
     m.set_return(swap_chain_result);
 }

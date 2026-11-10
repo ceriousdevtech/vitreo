@@ -388,7 +388,15 @@ bool JitCompiler::compile_vex256_lane_split(const DecodedInstruction& instr,
         if (is_memory_operand(lane.operands[i].type)) mem_index = i;
     }
 
-    const usize mark = m_code_buf.size();
+    // `mark` is where a decline rolls back to. Once the probe is emitted it
+    // moves to the end of the probe: a checked load registers its slow path
+    // (cold stub branch positions) as it is emitted, and resizing past it
+    // would leave those entries naming words the NEXT instruction then emits,
+    // which the block-tail flush patches. The probe is a pure checked read,
+    // so leaving it in a declined instruction's code is harmless; the
+    // fallback reads the operand again in the same order. Same rule as the
+    // VEX.128 bridge's probe (m_vex_bridge_source_proven).
+    usize mark = m_code_buf.size();
     if (mem_index >= 0) {
         const MemoryOperand& mem = lane.operands[mem_index].mem;
         // disp + 16 must stay an i32 (see the high-lane adjustment below).
@@ -412,6 +420,10 @@ bool JitCompiler::compile_vex256_lane_split(const DecodedInstruction& instr,
             emit_guest_load64(REG_SCRATCH0, addr);
         }
         if (hold) emit_nzcv_fill();
+        mark = m_code_buf.size();
+        // An m256 probe also covers any m128 probe a bridge would emit for
+        // the same instruction.
+        m_vex_bridge_source_proven = true;
     }
     m_vec_lane_split = true;
 

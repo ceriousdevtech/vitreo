@@ -1,3 +1,4 @@
+#include "winapi/kernel32/synchronization/io_event_contract.generated.hpp"
 // SPDX-License-Identifier: LGPL-2.1-only
 
 /// @file kernel32_ext.cpp
@@ -76,13 +77,16 @@ namespace vitreo::winapi {
 
 void Kernel32ExtManager::set_file_manager(FileManager* mgr) {
     if (m_file_manager != nullptr && m_file_manager != mgr) {
+        m_file_manager->shutdown_hid_io();
         m_file_manager->shutdown_overlapped_pipe_io();
         m_file_manager->clear_overlapped_completion_callback();
+        m_file_manager->set_overlapped_prepare_callback({});
         m_file_manager->clear_overlapped_trace_callback();
         m_file_manager->clear_io_completion_routine_queue();
     }
     m_file_manager = mgr;
     if (m_file_manager) {
+        m_file_manager->set_overlapped_prepare_callback([this](Handle h,GuestAddr ov,bool is64){return prepare_file_completion(h,ov,is64);});
         m_file_manager->set_io_completion_routine_queue(
             [this](GuestAddr pfn, u32 error_code, u32 bytes,
                    GuestAddr overlapped) {
@@ -107,19 +111,8 @@ void Kernel32ExtManager::set_file_manager(FileManager* mgr) {
                 // of the handle used to submit it. CloseHandle may cancel an
                 // outstanding read before its completion packet is posted.
                 if (event.stage == OverlappedIoTraceStage::Submitted) {
-                    snapshot_completion_route(event.handle, event.overlapped);
-                    // Learn (ReadFile/WriteFile, OVERLAPPED): the call resets
-                    // hEvent when the operation begins; a stale signal would
-                    // wake a waiter while Internal is still STATUS_PENDING.
-                    const GuestAddr event_field =
-                        event.overlapped + (event.is_64bit ? 24u : 16u);
-                    const u64 event_value = event.is_64bit
-                        ? m_memory.read_u64(event_field).value_or(0)
-                        : m_memory.read_u32(event_field).value_or(0);
-                    if (event_value != 0 && m_sync_manager) {
-                        (void)m_sync_manager->reset_event(
-                            static_cast<Handle>(event_value & ~u64{1}));
-                    }
+                    // Preparation owns validation, event references and route
+                    // snapshot. Trace observers never decide submission success.
                 } else if (event.stage == OverlappedIoTraceStage::Failed) {
                     std::lock_guard lock(m_iocp_registry_mutex);
                     m_pending_file_completions.erase(event.overlapped);
@@ -129,10 +122,54 @@ void Kernel32ExtManager::set_file_manager(FileManager* mgr) {
     }
 }
 
+u32 Kernel32ExtManager::prepare_file_completion(Handle handle,GuestAddr overlapped,bool is64) {
+    const GuestAddr event_field=overlapped+(is64 ? 24u:16u);u64 value=0;
+    if(is64) {const auto at=m_memory.read_u64(event_field);if(at.is_err()) return error_codes::ERROR_NOACCESS;value=at.value();}
+    else {const auto at=m_memory.read_u32(event_field);if(at.is_err()) return error_codes::ERROR_NOACCESS;value=at.value();}
+    std::shared_ptr<SyncEvent> event;
+    const bool hid=m_handle_table && m_handle_table->get_type(handle)==HandleType::HidDevice;
+    static const bool input_diag=[] {const char* p=std::getenv("VITREO_INPUT_DIAG");return p && *p && *p!='0';}();
+    auto log_prepare=[&](u32 error) {
+        if(!hid || !input_diag) return;
+        static std::atomic<unsigned> logged{0};if(logged.fetch_add(1)>=96) return;
+        const Handle canonical=static_cast<Handle>(value&~io_event_contract::kHandleTagMask);
+        bool manual=false,signaled=false;const bool queried=event && event->query_for_io(manual,signaled);
+        std::fprintf(stderr,"[input-delivery] HID prepare file=0x%x ov=0x%llx event=0x%llx canonical=0x%x type=%s access=0x%x error=%u ref=%p queried=%u manual=%u signaled=%u\n",
+            handle,static_cast<unsigned long long>(overlapped),static_cast<unsigned long long>(value),canonical,
+            m_handle_table ? handle_type_to_string(m_handle_table->get_type(canonical)):"unbound",m_handle_table ? m_handle_table->get_access(canonical):0,
+            error,static_cast<void*>(event.get()),unsigned(queried),unsigned(manual),unsigned(signaled));
+    };
+    if(value) {
+        if(!m_sync_manager) {log_prepare(error_codes::ERROR_NOT_SUPPORTED);return error_codes::ERROR_NOT_SUPPORTED;}
+        u32 error=0;event=m_sync_manager->reference_event_for_io(static_cast<Handle>(value&~io_event_contract::kHandleTagMask),error);
+        if(!event) {log_prepare(error);return error;}
+    }
+    snapshot_completion_route(handle,overlapped);
+    {std::lock_guard lock(m_iocp_registry_mutex);
+        auto& route=m_pending_file_completions[overlapped];route.event_reference=event;route.event_value=value;route.event_prepared=true;}
+    log_prepare(0);return 0;
+}
+
+std::shared_ptr<Kernel32ExtManager::PendingFileCompletion> Kernel32ExtManager::hid_completion_route(Handle handle,bool create) {
+    if(!m_handle_table) return {};
+    auto file=m_handle_table->get_shared<HidOpenFile>(handle,HandleType::HidDevice);
+    if(!file) return {};
+    std::lock_guard lock(file->mutex);
+    if(!file->completion_route && create) {
+        auto route=std::make_shared<PendingFileCompletion>();route->modes=file->notification_modes.load();
+        route->hid_signal=file->completion_signal;route->hid_synchronous=!file->overlapped;
+        if(!file->overlapped) route->modes &= static_cast<u8>(~hid_sdk::kFILE_SKIP_COMPLETION_PORT_ON_SUCCESS);
+        file->completion_route=route;
+    }
+    return std::static_pointer_cast<PendingFileCompletion>(file->completion_route);
+}
+
 void Kernel32ExtManager::snapshot_completion_route(Handle handle,
                                                    GuestAddr overlapped) {
+    auto hid_route=hid_completion_route(handle,true);
     std::lock_guard lock(m_iocp_registry_mutex);
     m_pending_file_completions.erase(overlapped);
+    if(hid_route) {m_pending_file_completions[overlapped]=*hid_route;return;}
     auto association = m_iocp_file_associations.find(handle);
     if (association == m_iocp_file_associations.end()) return;
     auto port = m_iocp_ports.find(association->second.port_handle);
@@ -538,6 +575,16 @@ void Kernel32ExtManager::dump_stuck_overlapped_traces() {
 }
 
 Kernel32ExtManager::~Kernel32ExtManager() {
+    // HID completions capture this manager; join them before any callback
+    // routing state is destroyed, even outside RuntimeContext shutdown.
+    if(m_file_manager) {
+        m_file_manager->shutdown_hid_io();
+        m_file_manager->shutdown_overlapped_pipe_io();
+        m_file_manager->set_overlapped_prepare_callback({});
+        m_file_manager->clear_overlapped_completion_callback();
+        m_file_manager->clear_overlapped_trace_callback();
+        m_file_manager->clear_io_completion_routine_queue();
+    }
     {
         std::lock_guard lock(m_job_mutex);
         for (const auto& [handle, job] : m_jobs) {
@@ -688,8 +735,28 @@ int Kernel32ExtManager::launch_guest_worker(
                 ipc::WorkerTokenContext::RestrictedService;
         }
     }
-    // Shell/legacy launches also need a fresh primary ID: inheriting the
-    // caller's runtime environment must not duplicate its thread identity.
+    // Shell/legacy launches also need fresh client IDs: inheriting the
+    // caller's runtime environment must not duplicate its process or thread.
+    u32 guest_pid = 0;
+    if (std::none_of(extra_env.begin(), extra_env.end(), [](const auto& entry) {
+            return entry.starts_with("VITREO_GUEST_PROCESS_ID=");
+        })) {
+        guest_pid = ipc::allocate_client_id();
+        if (guest_pid == 0) {
+            set_last_error(error_codes::ERROR_NOT_ENOUGH_MEMORY);
+            return -1;
+        }
+        extra_env.emplace_back("VITREO_GUEST_PROCESS_ID=" +
+                               std::to_string(guest_pid));
+    } else {
+        for (const auto& entry : extra_env) {
+            constexpr std::string_view key = "VITREO_GUEST_PROCESS_ID=";
+            if (!entry.starts_with(key)) continue;
+            guest_pid = static_cast<u32>(std::strtoul(
+                entry.c_str() + key.size(), nullptr, 10));
+            break;
+        }
+    }
     if (std::none_of(extra_env.begin(), extra_env.end(), [](const auto& entry) {
             return entry.starts_with("VITREO_PRIMARY_THREAD_ID=");
         })) {
@@ -722,16 +789,20 @@ int Kernel32ExtManager::launch_guest_worker(
     if (child > 0 && foreground_grant && m_foreground_granted) {
         m_foreground_granted(static_cast<int>(child));
     }
-    if (child > 0 && metadata.has_value()) {
+    if (child > 0) {
         if (auto* process = ipc::track_process(child)) {
-            process->publish_guest_metadata(*metadata);
-            ipc::ipc_log(
-                "published guest process metadata pid=%d peb=0x%llx "
-                "image_base=0x%llx bitness=%u",
-                static_cast<int>(child),
-                static_cast<unsigned long long>(metadata->peb_address),
-                static_cast<unsigned long long>(metadata->image_base),
-                metadata->is_64bit ? 64u : 32u);
+            if (guest_pid != 0) process->client_id.store(guest_pid);
+            process->parent_client_id.store(ipc::guest_process_id());
+            if (metadata.has_value()) {
+                process->publish_guest_metadata(*metadata);
+                ipc::ipc_log(
+                    "published guest process metadata pid=%d peb=0x%llx "
+                    "image_base=0x%llx bitness=%u",
+                    static_cast<int>(child),
+                    static_cast<unsigned long long>(metadata->peb_address),
+                    static_cast<unsigned long long>(metadata->image_base),
+                    metadata->is_64bit ? 64u : 32u);
+            }
         }
     }
     return static_cast<int>(child);
@@ -781,6 +852,21 @@ void Kernel32ExtManager::set_module_manager(ModuleManager* mgr) {
     }
 }
 
+// process_ext.cpp: a guest executable's host path (a temporary snapshot
+// copy when the second member is true).
+Result<std::pair<std::string, bool>, capsule::VfsError> resolve_guest_executable(
+    capsule::Vfs& vfs, const std::string& guest_path);
+
+std::optional<ipc::GuestProcessMetadata>
+Kernel32ExtManager::guest_process_metadata_for(const std::string& windows_image_path) {
+    auto executable = resolve_guest_executable(m_vfs, windows_image_path);
+    if (executable.is_err()) return std::nullopt;
+    const auto& [host_path, temporary] = executable.value();
+    auto metadata = guest_process_metadata(host_path);
+    if (temporary) (void)::unlink(host_path.c_str());
+    return metadata;
+}
+
 std::optional<std::string> Kernel32ExtManager::process_image_path(
     Handle process_handle) const {
     auto current_image_path = [this]() -> std::optional<std::string> {
@@ -803,9 +889,7 @@ std::optional<std::string> Kernel32ExtManager::process_image_path(
     auto* process = static_cast<ipc::ProcessObject*>(
         m_handle_table->get(process_handle, HandleType::Process));
     if (process == nullptr) return std::nullopt;
-    if (m_process_manager != nullptr &&
-        static_cast<u32>(process->pid) ==
-            m_process_manager->get_current_process_id()) {
+    if (process->pid == ::getpid()) {
         return current_image_path();
     }
     if (!m_process_snapshot_provider) return std::nullopt;
@@ -813,7 +897,8 @@ std::optional<std::string> Kernel32ExtManager::process_image_path(
     const auto processes = m_process_snapshot_provider();
     auto it = std::find_if(processes.begin(), processes.end(),
                            [process](const auto& entry) {
-                               return entry.pid == static_cast<u32>(process->pid);
+                               return entry.host_pid ==
+                                      static_cast<u32>(process->pid);
                            });
     if (it == processes.end() || it->image_path.empty()) return std::nullopt;
     return it->image_path;

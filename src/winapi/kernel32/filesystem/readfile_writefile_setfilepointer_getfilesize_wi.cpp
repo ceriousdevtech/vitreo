@@ -56,6 +56,7 @@ bool FileManager::read_file(Handle handle, GuestAddr buffer_addr,
 
     // Anonymous pipes.
     auto type = m_handles.get_type(handle);
+    if (type == HandleType::HidDevice) return read_hid(handle,buffer_addr,bytes_to_read,bytes_read_addr,bytes_read_out);
     if (type == HandleType::ConsoleInput && m_console) {
         Marshaler marshaler(*m_memory);
         return m_console->read_console_a(handle, buffer_addr, bytes_to_read,
@@ -592,6 +593,14 @@ bool FileManager::write_handle_bytes(Handle handle, std::string_view bytes) {
 bool FileManager::write_file(Handle handle, GuestAddr buffer_addr,
                              u32 bytes_to_write, GuestAddr bytes_written_addr,
                              u32* bytes_written_out) {
+    if(m_handles.get_type(handle)==HandleType::HidDevice) {
+        if(bytes_written_out) *bytes_written_out=0;
+        if(bytes_written_addr && m_memory) (void)m_memory->write_u32(bytes_written_addr,0);
+        static std::once_flag once;
+        std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!WriteFile: HID output report unavailable\n");});
+        set_last_error(error_codes::ERROR_NOT_SUPPORTED);return false;
+    }
+
     if (bytes_written_out) *bytes_written_out = 0;
     if (!m_memory) return false;
 

@@ -632,7 +632,7 @@ namespace {
 
 void advance_str_addr(u64& addr, i64 step, bool wide) {
     if (wide) {
-        addr = static_cast<u64>(static_cast<i64>(addr) + step);
+        addr += static_cast<u64>(step);
     } else {
         // AddressSize=32: ESI/EDI wrap in 32 bits (Intel SDM Vol. 2).
         addr = static_cast<u32>(static_cast<u32>(addr) + static_cast<u32>(step));
@@ -662,6 +662,32 @@ bool read_str_elem(GuestMemory* mem, u64 addr, u8 elem, u64& out) {
     if (!v.is_ok()) return false;
     out = v.value();
     return true;
+}
+
+// Reuse the shared fault contract only after a failed element read:
+// straddling #PF names the inaccessible byte; noncanonical #GP names -1.
+// The architectural index still points at the failed operand's start.
+u64 string_read_fault_address(CpuState* cpu, GuestMemory* memory,
+                              u64 address, u8 elem) {
+    ExecContext context{*cpu, *memory};
+    record_read_access_violation(context, address, elem);
+    return context.exception_addr;
+}
+
+// Default-address helper forms only: alternate address widths and CMPS
+// source overrides delegate to the interpreter. Long mode ignores DS/ES.
+u64 string_linear_address(const CpuState* cpu, u64 offset, SegIndex segment,
+                          bool wide) {
+    return wide ? offset
+                : static_cast<u32>(offset + cpu->seg.get_desc(segment).base);
+}
+
+usize forward_page_elements(u64 linear, u64 offset, u64 count,
+                            u8 elem, bool wide) {
+    constexpr usize page = usize{1} << kLinearGuestPageShift;
+    u64 bytes = page - (linear & (page - 1));
+    if (!wide) bytes = std::min(bytes, (u64{1} << 32) - static_cast<u32>(offset));
+    return static_cast<usize>(std::min(count, bytes / elem));
 }
 
 u64 host_elem_at(const Byte* p, u8 elem) {
@@ -702,79 +728,100 @@ void apply_cmps_flags(CpuState* cpu, u64 va, u64 vb, u8 elem) {
 
 // REPE: stop when ZF=0 (mismatch). REPNE: stop when ZF=1 (match).
 void run_rep_cmps(CpuState* cpu, GuestMemory* mem, u8 elem, bool repe) {
-    const bool df = (cpu->flags.rflags >> 10) & 1;
+    const bool df = cpu->flags.df();
     RepMovsState s = load_rep_movs(cpu);
     if (s.count == 0) return;
-
-    u64 last_a = 0;
-    u64 last_b = 0;
-    bool finished = false;
-
-    if (!df &&
-        (s.wide ||
-         (!addr32_wraps(s.src, static_cast<usize>(s.count) * elem) &&
-          !addr32_wraps(s.dst, static_cast<usize>(s.count) * elem)))) {
-        if (s.count > (std::numeric_limits<usize>::max() / elem)) {
-            // Fall through to scalar.
-        } else {
-        const usize total_bytes = static_cast<usize>(s.count) * elem;
-        const Byte* src_host =
-            mem->host_ptr(static_cast<GuestAddr>(s.src), total_bytes);
-        const Byte* dst_host =
-            mem->host_ptr(static_cast<GuestAddr>(s.dst), total_bytes);
-        if (src_host && dst_host) {
-            usize i = 0;
-            for (; i < s.count; ++i) {
-                const u64 a = host_elem_at(src_host + i * elem, elem);
-                const u64 b = host_elem_at(dst_host + i * elem, elem);
-                last_a = a;
-                last_b = b;
-                const bool eq = (a == b);
-                if (repe ? !eq : eq) {
-                    ++i; // advance past the terminating element
-                    break;
+    const i64 step = df ? -static_cast<i64>(elem) : static_cast<i64>(elem);
+    u64 last_a = 0, last_b = 0;
+    while (s.count != 0) {
+        const u64 src = string_linear_address(cpu, s.src, SegIndex::DS, s.wide);
+        const u64 dst = string_linear_address(cpu, s.dst, SegIndex::ES, s.wide);
+        if (!df) {
+            const usize n = std::min(
+                forward_page_elements(src, s.src, s.count, elem, s.wide),
+                forward_page_elements(dst, s.dst, s.count, elem, s.wide));
+            const Byte* a = n ? mem->host_ptr(src, n * elem) : nullptr;
+            const Byte* b = n ? mem->host_ptr(dst, n * elem) : nullptr;
+            if (a && b) {
+                usize done = 0;
+                bool stopped = false;
+                // Byte equality proves element equality for every width.
+                // Test the first element directly to retain early termination.
+                // On a bulk mismatch, locate its first ELEMENT with aligned
+                // prefix comparisons; memcmp's return sign is not its index
+                // and cannot provide the architectural subtraction flags.
+                if (repe) {
+                    last_a = host_elem_at(a, elem);
+                    last_b = host_elem_at(b, elem);
+                    done = 1;
+                    stopped = last_a != last_b;
+                    if (!stopped && n > 1) {
+                        if (std::memcmp(a + elem, b + elem, (n - 1) * elem) == 0) {
+                            done = n;
+                            last_a = host_elem_at(a + (n - 1) * elem, elem);
+                            last_b = last_a;
+                        } else {
+                            usize lo = 1, hi = n;
+                            // The first unequal element stays in [lo, hi).
+                            while ((hi - lo) * elem > sizeof(u64)) {
+                                const usize middle = lo + (hi - lo) / 2;
+                                if (std::memcmp(a + lo * elem, b + lo * elem,
+                                                (middle - lo) * elem) == 0) {
+                                    lo = middle;
+                                } else {
+                                    hi = middle;
+                                }
+                            }
+                            // One native word is cheaper to inspect directly
+                            // than making more tiny prefix-memcmp calls.
+                            done = lo;
+                            while (done < hi) {
+                                last_a = host_elem_at(a + done * elem, elem);
+                                last_b = host_elem_at(b + done * elem, elem);
+                                ++done;
+                                if (last_a != last_b) {
+                                    stopped = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    while (done < n) {
+                        last_a = host_elem_at(a + done * elem, elem);
+                        last_b = host_elem_at(b + done * elem, elem);
+                        ++done;
+                        if (repe ? last_a != last_b : last_a == last_b) {
+                            stopped = true;
+                            break;
+                        }
+                    }
                 }
+                advance_str_addr(s.src, static_cast<i64>(done * elem), s.wide);
+                advance_str_addr(s.dst, static_cast<i64>(done * elem), s.wide);
+                s.count -= done;
+                if (stopped) break;
+                continue;
             }
-            s.src += i * elem;
-            s.dst += i * elem;
-            s.count -= i;
+        }
+        // A page-crossing element, unreadable range, or backwards walk uses
+        // precise element reads. Do not inspect any following page in advance.
+        if (!read_str_elem(mem, src, elem, last_a)) {
             store_rep_movs(cpu, s);
-            finished = true;
+            raise_string_av(cpu, string_read_fault_address(cpu, mem, src, elem), /*is_write=*/false);
+            return; // REP faults preserve entry EFLAGS, including lazy state.
         }
+        if (!read_str_elem(mem, dst, elem, last_b)) {
+            store_rep_movs(cpu, s);
+            raise_string_av(cpu, string_read_fault_address(cpu, mem, dst, elem), /*is_write=*/false);
+            return;
         }
+        advance_str_addr(s.src, step, s.wide);
+        advance_str_addr(s.dst, step, s.wide);
+        --s.count;
+        if (repe ? last_a != last_b : last_a == last_b) break;
     }
-
-    if (!finished) {
-        const i64 step = df ? -static_cast<i64>(elem) : static_cast<i64>(elem);
-        while (s.count > 0) {
-            u64 a = 0;
-            u64 b = 0;
-            // A failed read is a FAULT, not a loop terminator. Committing the
-            // walk so far and raising is what makes the instruction
-            // restartable at the faulting element.
-            if (!read_str_elem(mem, s.src, elem, a)) {
-                store_rep_movs(cpu, s);
-                raise_string_av(cpu, s.src, /*is_write=*/false);
-                apply_cmps_flags(cpu, last_a, last_b, elem);
-                return;
-            }
-            if (!read_str_elem(mem, s.dst, elem, b)) {
-                store_rep_movs(cpu, s);
-                raise_string_av(cpu, s.dst, /*is_write=*/false);
-                apply_cmps_flags(cpu, last_a, last_b, elem);
-                return;
-            }
-            last_a = a;
-            last_b = b;
-            advance_str_addr(s.src, step, s.wide);
-            advance_str_addr(s.dst, step, s.wide);
-            --s.count;
-            const bool eq = (a == b);
-            if (repe ? !eq : eq) break;
-        }
-        store_rep_movs(cpu, s);
-    }
-
+    store_rep_movs(cpu, s);
     apply_cmps_flags(cpu, last_a, last_b, elem);
 }
 
@@ -799,79 +846,54 @@ void store_scas_state(CpuState* cpu, u64 dst, u64 count, bool wide) {
 }
 
 void run_rep_scas(CpuState* cpu, GuestMemory* mem, u8 elem, bool repe) {
-    constexpr u8 RDI = static_cast<u8>(RegIndex::RDI);
-    constexpr u8 RCX = static_cast<u8>(RegIndex::RCX);
-
-    const bool df = (cpu->flags.rflags >> 10) & 1;
+    const bool df = cpu->flags.df();
     const bool wide = cpu->is_64bit();
-    u64 count = wide ? cpu->gpr.get64(RCX) : cpu->gpr.get32(RCX);
+    u64 count = wide ? cpu->gpr.get64(kRCX) : cpu->gpr.get32(kRCX);
     if (count == 0) return;
-
     const u64 needle = scas_needle(cpu, elem);
-    u64 dst = wide ? cpu->gpr.get64(RDI) : cpu->gpr.get32(RDI);
+    u64 offset = wide ? cpu->gpr.get64(kRDI) : cpu->gpr.get32(kRDI);
+    const i64 step = df ? -static_cast<i64>(elem) : static_cast<i64>(elem);
     u64 last = 0;
-    bool finished = false;
-
-    if (!df) {
-        // Chunked host scan — strlen-style sites often pass ECX=0xFFFFFFFF.
-        constexpr usize CHUNK_ELEMS = 16384;
-        u64 scanned = 0;
-        while (scanned < count) {
-            const usize this_n = static_cast<usize>(
-                std::min<u64>(CHUNK_ELEMS, count - scanned));
-            const usize this_bytes = this_n * elem;
-            if (!wide && addr32_wraps(dst + scanned * elem, this_bytes)) {
-                break;
-            }
-            const Byte* host = mem->host_ptr(
-                static_cast<GuestAddr>(dst + scanned * elem), this_bytes);
-            if (!host) break;
-
-            usize i = 0;
-            for (; i < this_n; ++i) {
-                last = host_elem_at(host + i * elem, elem);
-                const bool eq = (last == needle);
-                if (repe ? !eq : eq) {
-                    scanned += i + 1;
-                    store_scas_state(cpu, dst + scanned * elem,
-                                     count - scanned, wide);
-                    finished = true;
-                    break;
+    while (count != 0) {
+        const u64 address = string_linear_address(cpu, offset, SegIndex::ES, wide);
+        if (!df) {
+            const usize n = forward_page_elements(address, offset, count, elem, wide);
+            const Byte* host = n ? mem->host_ptr(address, n * elem) : nullptr;
+            if (host) {
+                usize done = 0;
+                bool stopped = false;
+                if (elem == 1 && !repe) {
+                    const auto* found = static_cast<const Byte*>(
+                        std::memchr(host, static_cast<u8>(needle), n));
+                    stopped = found != nullptr;
+                    done = found ? static_cast<usize>(found - host) + 1 : n;
+                    last = found ? needle : host[n - 1];
+                } else {
+                    while (done < n) {
+                        last = host_elem_at(host + done * elem, elem);
+                        ++done;
+                        if (repe ? last != needle : last == needle) {
+                            stopped = true;
+                            break;
+                        }
+                    }
                 }
-            }
-            if (finished) break;
-            scanned += this_n;
-            if (scanned == count) {
-                store_scas_state(cpu, dst + scanned * elem, 0, wide);
-                finished = true;
-                break;
+                advance_str_addr(offset, static_cast<i64>(done * elem), wide);
+                count -= done;
+                if (stopped) break;
+                continue;
             }
         }
-        if (!finished && scanned > 0) {
-            dst += scanned * elem;
-            count -= scanned;
+        if (!read_str_elem(mem, address, elem, last)) {
+            store_scas_state(cpu, offset, count, wide);
+            raise_string_av(cpu, string_read_fault_address(cpu, mem, address, elem), /*is_write=*/false);
+            return; // No completion: entry lazy/status flags remain intact.
         }
+        advance_str_addr(offset, step, wide);
+        --count;
+        if (repe ? last != needle : last == needle) break;
     }
-
-    if (!finished) {
-        const i64 step = df ? -static_cast<i64>(elem) : static_cast<i64>(elem);
-        while (count > 0) {
-            u64 v = 0;
-            if (!read_str_elem(mem, dst, elem, v)) {
-                store_scas_state(cpu, dst, count, wide);
-                raise_string_av(cpu, dst, /*is_write=*/false);
-                apply_cmps_flags(cpu, needle, last, elem);
-                return;
-            }
-            last = v;
-            advance_str_addr(dst, step, wide);
-            --count;
-            const bool eq = (v == needle);
-            if (repe ? !eq : eq) break;
-        }
-        store_scas_state(cpu, dst, count, wide);
-    }
-
+    store_scas_state(cpu, offset, count, wide);
     apply_cmps_flags(cpu, needle, last, elem);
 }
 

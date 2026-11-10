@@ -18,6 +18,7 @@
 #include "winapi/graphics/gdi32/gdi32.hpp"
 #include "winapi/graphics/gdi32/gdi32_internal.hpp"
 #include "winapi/graphics/gdi32/bitmap_codec.hpp"
+#include "winapi/graphics/gdi32/gdi_vimage.hpp"
 
 #include "core/memory/guest_memory.hpp"
 #include "winapi/kernel32/error.hpp"
@@ -64,6 +65,69 @@ void copy_indices(const u8* src, u8* dst, u16 bpp, i32 count) {
             break;
         }
     }
+}
+
+/// WS7: the vImage kernel for a whole-surface conversion, or None.
+[[nodiscard]] gdi::accel::Kernel accel_kernel(gdi::accel::Op op, gdi::accel::Site site,
+                                              const gdi::PixelFormat& format, i64 pixels,
+                                              bool bottom_up = false) noexcept {
+    gdi::accel::Request r;
+    r.op = op;
+    r.site = site;
+    r.bottom_up = bottom_up;
+    r.format = &format;
+    r.pixels = pixels;
+    return gdi::accel::classify(r).kernel;
+}
+
+/// Decode a DDB's packed rows (top row first) into its RGBA pixels.
+[[nodiscard]] bool decode_rows_fast(const gdi::PixelFormat& format, const u8* packed,
+                                    std::ptrdiff_t stride, u8* rgba, i32 width, i32 height) {
+    const auto kernel = accel_kernel(gdi::accel::Op::Decode, gdi::accel::Site::DdbBits, format,
+                                     static_cast<i64>(width) * height);
+    return kernel != gdi::accel::Kernel::None &&
+           gdi::accel::decode_rows(kernel, format, packed, stride, rgba,
+                                   static_cast<usize>(width) * 4u, width, height, 0, false);
+}
+
+/// Encode a DDB's RGBA pixels into packed rows (top row first).
+[[nodiscard]] bool encode_rows_fast(const gdi::PixelFormat& format, const u8* rgba, u8* packed,
+                                    std::ptrdiff_t stride, i32 width, i32 height) {
+    const auto kernel = accel_kernel(gdi::accel::Op::Encode, gdi::accel::Site::DdbBits, format,
+                                     static_cast<i64>(width) * height);
+    return kernel != gdi::accel::Kernel::None &&
+           gdi::accel::encode_rows(kernel, format, rgba, static_cast<usize>(width) * 4u, packed,
+                                   stride, width, height);
+}
+
+/// The bitmap rows a Get/SetDIBits band covers. Scan lines count from the
+/// bottom: buffer row r holds scan start+r (bottom-up) or start+lines-1-r
+/// (top-down), and scan s is bitmap row dib_h-1-s. The rows inside
+/// [0, bitmap_h) are y0..y1-1; buffer row r0 holds y0 and each following
+/// bitmap row is `step` buffer rows further.
+struct BandRows {
+    i32 y0 = 0, y1 = 0;  ///< bitmap rows [y0, y1)
+    i32 r0 = 0;          ///< buffer row of y0
+    i32 step = 1;        ///< +1 top-down, -1 bottom-up
+};
+[[nodiscard]] BandRows band_rows(bool top_down, i32 dib_h, u32 start, u32 lines,
+                                 i32 bitmap_h) noexcept {
+    // Bitmap rows the band spans: scans [start, start+lines) map to rows
+    // (dib_h-1-start-lines, dib_h-1-start].
+    const i64 lo = static_cast<i64>(dib_h) - static_cast<i64>(start) - static_cast<i64>(lines);
+    const i64 hi = static_cast<i64>(dib_h) - static_cast<i64>(start);
+    BandRows b;
+    b.y0 = static_cast<i32>(std::clamp<i64>(lo, 0, bitmap_h));
+    b.y1 = static_cast<i32>(std::clamp<i64>(hi, 0, bitmap_h));
+    if (b.y1 < b.y0) b.y1 = b.y0;
+    if (top_down) {
+        b.step = 1;
+        b.r0 = static_cast<i32>(b.y0 - lo);
+    } else {
+        b.step = -1;
+        b.r0 = static_cast<i32>(hi - 1 - b.y0);
+    }
+    return b;
 }
 
 }  // namespace
@@ -158,9 +222,21 @@ void GdiManager::quantize_ddb_rows(SoftBitmap& bmp, i32 y0, i32 y1) const {
     ApiLock api_lock(*this);
     if (bmp.bpp == 32 || bmp.width <= 0) return;
     const gdi::PixelFormat format = gdi::ddb_pixel_format(bmp.bpp);
-    std::vector<u8> packed(gdi::ddb_stride(bmp.width, bmp.bpp) + 4u);
     y0 = std::max(y0, 0);
     y1 = std::min(y1, bmp.height);
+    if (y1 > y0) {
+        // WS7: a 24bpp round trip only clears the fourth byte.
+        if (const auto kernel = accel_kernel(gdi::accel::Op::Quantize, gdi::accel::Site::DdbBits,
+                                             format, static_cast<i64>(bmp.width) * (y1 - y0));
+            kernel != gdi::accel::Kernel::None &&
+            gdi::accel::clear_fourth_byte(
+                bmp.pixels.data() + static_cast<usize>(y0) * static_cast<usize>(bmp.width) * 4u,
+                static_cast<usize>(bmp.width) * 4u, bmp.width, y1 - y0)) {
+            bmp.dirty = true;
+            return;
+        }
+    }
+    std::vector<u8> packed(gdi::ddb_stride(bmp.width, bmp.bpp) + 4u);
     for (i32 y = y0; y < y1; ++y) {
         u8* row = bmp.pixels.data() + static_cast<usize>(y) * bmp.width * 4u;
         std::fill(packed.begin(), packed.end(), u8{0});
@@ -204,9 +280,12 @@ Handle GdiManager::create_bitmap(i32 width, i32 height, u32 planes, u32 bits_per
             return fail(kErrorInvalidParameter);
         }
         const gdi::PixelFormat format = gdi::ddb_pixel_format(depth);
-        for (i32 y = 0; y < height; ++y) {
-            gdi::decode_row(format, packed.data() + static_cast<usize>(y) * stride,
-                            bmp->pixels.data() + static_cast<usize>(y) * width * 4u, width);
+        if (!decode_rows_fast(format, packed.data(), static_cast<std::ptrdiff_t>(stride),
+                              bmp->pixels.data(), width, height)) {
+            for (i32 y = 0; y < height; ++y) {
+                gdi::decode_row(format, packed.data() + static_cast<usize>(y) * stride,
+                                bmp->pixels.data() + static_cast<usize>(y) * width * 4u, width);
+            }
         }
         if (static_cast<u64>(width) * depth != stride * 8u) bmp->ddb_raw = std::move(packed);
     }
@@ -282,9 +361,12 @@ i32 GdiManager::get_bitmap_bits(Handle hbm, i32 cb, GuestAddr out, u32* error) {
     } else {
         if (bmp->ddb_raw.size() == packed.size()) packed = bmp->ddb_raw;
         const gdi::PixelFormat format = gdi::ddb_pixel_format(bpp);
-        for (i32 y = 0; y < bmp->height; ++y) {
-            gdi::encode_row(format, bmp->pixels.data() + static_cast<usize>(y) * bmp->width * 4u,
-                            packed.data() + static_cast<usize>(y) * stride, bmp->width);
+        if (!encode_rows_fast(format, bmp->pixels.data(), packed.data(),
+                              static_cast<std::ptrdiff_t>(stride), bmp->width, bmp->height)) {
+            for (i32 y = 0; y < bmp->height; ++y) {
+                gdi::encode_row(format, bmp->pixels.data() + static_cast<usize>(y) * bmp->width * 4u,
+                                packed.data() + static_cast<usize>(y) * stride, bmp->width);
+            }
         }
     }
     if (m_guest_memory->write_bytes(out, packed.data(), n).is_err()) return 0;
@@ -326,16 +408,22 @@ i32 GdiManager::set_bitmap_bits(Handle hbm, u32 cb, GuestAddr in, u32* error) {
     const gdi::PixelFormat format = gdi::ddb_pixel_format(bpp);
     std::vector<u8> packed(total, 0);
     if (bmp->ddb_raw.size() == packed.size()) packed = bmp->ddb_raw;
-    for (i32 y = 0; y < bmp->height; ++y) {
-        gdi::encode_row(format, bmp->pixels.data() + static_cast<usize>(y) * bmp->width * 4u,
-                        packed.data() + static_cast<usize>(y) * stride, bmp->width);
+    if (!encode_rows_fast(format, bmp->pixels.data(), packed.data(),
+                          static_cast<std::ptrdiff_t>(stride), bmp->width, bmp->height)) {
+        for (i32 y = 0; y < bmp->height; ++y) {
+            gdi::encode_row(format, bmp->pixels.data() + static_cast<usize>(y) * bmp->width * 4u,
+                            packed.data() + static_cast<usize>(y) * stride, bmp->width);
+        }
     }
     std::memcpy(packed.data(), incoming.data(), n);
     if (static_cast<u64>(bmp->width) * bpp != static_cast<u64>(stride) * 8u) bmp->ddb_raw = packed;
-    for (i32 y = 0; y < bmp->height; ++y) {
-        gdi::decode_row(format, packed.data() + static_cast<usize>(y) * stride,
-                        bmp->pixels.data() + static_cast<usize>(y) * bmp->width * 4u,
-                        bmp->width);
+    if (!decode_rows_fast(format, packed.data(), static_cast<std::ptrdiff_t>(stride),
+                          bmp->pixels.data(), bmp->width, bmp->height)) {
+        for (i32 y = 0; y < bmp->height; ++y) {
+            gdi::decode_row(format, packed.data() + static_cast<usize>(y) * stride,
+                            bmp->pixels.data() + static_cast<usize>(y) * bmp->width * 4u,
+                            bmp->width);
+        }
     }
     bmp->dirty = true;
     return static_cast<i32>(n);
@@ -469,6 +557,31 @@ i32 GdiManager::get_dib_bits(Handle hdc, Handle hbm, u32 start_scan, u32 scan_li
 
     if (is_dib) sync_dib_from_guest(hbm);
     const i32 copy_w = std::min(dib_w, bw);
+    // WS7: the scan lines that land in the bitmap form one contiguous run of
+    // bitmap rows y0..y1; encode it in one call straight into the guest
+    // buffer, after zeroing the band as the row loop does.
+    if (!raw_indices) {
+        const BandRows band = band_rows(hdr.top_down(), dib_h, start_scan, lines, bh);
+        const i64 pixels = static_cast<i64>(copy_w) * (band.y1 - band.y0);
+        const auto kernel = band.y1 > band.y0
+                                ? accel_kernel(gdi::accel::Op::Encode, gdi::accel::Site::DibBits,
+                                               format, pixels, band.step < 0)
+                                : gdi::accel::Kernel::None;
+        u8* out = kernel != gdi::accel::Kernel::None
+                      ? mem.host_ptr_store(bits, static_cast<usize>(stride) * lines)
+                      : nullptr;
+        if (out != nullptr) {
+            std::memset(out, 0, static_cast<usize>(stride) * lines);
+            if (gdi::accel::encode_rows(kernel, format,
+                                        bmp->pixels.data() + static_cast<usize>(band.y0) * static_cast<usize>(bw) * 4u,
+                                        static_cast<usize>(bw) * 4u,
+                                        out + static_cast<usize>(band.r0) * stride,
+                                        band.step * static_cast<std::ptrdiff_t>(stride), copy_w,
+                                        band.y1 - band.y0)) {
+                return band.y1 - band.y0;
+            }
+        }
+    }
     std::vector<u8> row(stride);
     std::vector<u8> source_row;
     i32 copied = 0;
@@ -536,9 +649,31 @@ i32 GdiManager::set_dib_bits(Handle hdc, Handle hbm, u32 start_scan, u32 scan_li
     const bool keeps_fourth_byte = hdr.bpp == 32 && hdr.compression == gdi::kBiRgb;
     const u32 stride = hdr.stride();
     const i32 copy_w = std::min(dib_w, bmp->width);
+    // WS7: decode the contiguous band of bitmap rows straight from the guest
+    // buffer. A monochrome bitmap's background match and DIB_PAL_COLORS
+    // stay on the row loop.
+    bool decoded = false;
+    if (bmp->bpp != 1 && usage == gdi::kDibRgbColors && copy_w > 0) {
+        const BandRows band = band_rows(hdr.top_down(), dib_h, start_scan, lines, bmp->height);
+        const i64 pixels = static_cast<i64>(copy_w) * (band.y1 - band.y0);
+        const auto kernel = band.y1 > band.y0
+                                ? accel_kernel(gdi::accel::Op::Decode, gdi::accel::Site::DibBits,
+                                               format, pixels, band.step < 0)
+                                : gdi::accel::Kernel::None;
+        const u8* in = kernel != gdi::accel::Kernel::None
+                           ? m_guest_memory->host_ptr(bits_addr, static_cast<usize>(stride) * lines)
+                           : nullptr;
+        if (in != nullptr) {
+            decoded = gdi::accel::decode_rows(
+                kernel, format, in + static_cast<usize>(band.r0) * stride,
+                band.step * static_cast<std::ptrdiff_t>(stride),
+                bmp->pixels.data() + static_cast<usize>(band.y0) * static_cast<usize>(bmp->width) * 4u,
+                static_cast<usize>(bmp->width) * 4u, copy_w, band.y1 - band.y0, 0, false);
+        }
+    }
     std::vector<u8> row(stride);
     std::vector<u8> rgba(static_cast<usize>(dib_w) * 4u);
-    for (u32 r = 0; r < lines; ++r) {
+    for (u32 r = 0; r < lines && !decoded; ++r) {
         const u32 scan = hdr.top_down() ? start_scan + lines - 1 - r : start_scan + r;
         const i32 y = dib_h - 1 - static_cast<i32>(scan);
         if (y < 0 || y >= bmp->height) continue;

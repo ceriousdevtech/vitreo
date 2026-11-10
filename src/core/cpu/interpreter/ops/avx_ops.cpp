@@ -16,7 +16,7 @@ static Result<XmmReg, Error> read_xmm_or_m128(ExecContext& ctx, const Operand& o
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<XmmReg, Error>::err(addr.error());
     XmmReg tmp{};
-    auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
+    auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
     if (!r) return Result<XmmReg, Error>::err(r.error());
     return Result<XmmReg, Error>::ok(tmp);
 }
@@ -25,7 +25,7 @@ static Result<XmmReg, Error> read_xmm_or_m128(ExecContext& ctx, const Operand& o
 static Result<u32, Error> read_m32(ExecContext& ctx, const Operand& op) noexcept {
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u32, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 4);
+    auto val = read_memory_av(ctx, addr.value(), 4);
     if (!val) return Result<u32, Error>::err(val.error());
     return Result<u32, Error>::ok(static_cast<u32>(val.value()));
 }
@@ -37,7 +37,7 @@ static Result<u8, Error> read_byte_src(ExecContext& ctx, const Operand& op) noex
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u8, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 1);
+    auto val = read_memory_av(ctx, addr.value(), 1);
     if (!val) return Result<u8, Error>::err(val.error());
     return Result<u8, Error>::ok(static_cast<u8>(val.value()));
 }
@@ -48,7 +48,7 @@ static Result<u16, Error> read_word_src(ExecContext& ctx, const Operand& op) noe
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u16, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 2);
+    auto val = read_memory_av(ctx, addr.value(), 2);
     if (!val) return Result<u16, Error>::err(val.error());
     return Result<u16, Error>::ok(static_cast<u16>(val.value()));
 }
@@ -59,8 +59,8 @@ static Result<u64, Error> read_qword_src(ExecContext& ctx, const Operand& op) no
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u64, Error>::err(addr.error());
-    auto lo = read_memory(ctx, addr.value(), 4);
-    auto hi = read_memory(ctx, addr.value() + 4, 4);
+    auto lo = read_memory_av(ctx, addr.value(), 4);
+    auto hi = lo ? read_memory_av(ctx, addr.value() + 4, 4) : lo;
     if (!lo || !hi) return Result<u64, Error>::err(lo ? hi.error() : lo.error());
     return Result<u64, Error>::ok(static_cast<u64>(static_cast<u32>(lo.value())) |
                                   (static_cast<u64>(static_cast<u32>(hi.value())) << 32));
@@ -307,7 +307,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
             // A faulting m128 read raises and leaves DEST untouched. The
             // result used to be ignored, so an unmapped source silently
             // inserted zeros and the instruction completed.
-            if (!ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&src2), 16)) {
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&src2), 16)) {
                 ctx.exception = CpuException::GeneralProtection;
                 return ExecResult::Exception;
             }
@@ -337,8 +337,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&src2_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&src2_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&src2_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&src2_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         XmmReg result_lo = select_128_lane(ctx, src1_idx, src2_lo, src2_hi, imm & 0x0F);
         XmmReg result_hi = select_128_lane(ctx, src1_idx, src2_lo, src2_hi, (imm >> 4) & 0x0F);
@@ -366,7 +369,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             for (int i = 0; i < 8; ++i) {
-                auto v = read_memory(ctx, addr.value() + i * 4, 4);
+                auto v = read_memory_av(ctx, addr.value() + i * 4, 4);
                 if (!v) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
                 src[i] = static_cast<u32>(v.value());
             }
@@ -396,7 +399,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             for (int i = 0; i < 8; ++i) {
-                auto v = read_memory(ctx, addr.value() + i * 4, 4);
+                auto v = read_memory_av(ctx, addr.value() + i * 4, 4);
                 if (!v) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
                 src[i] = static_cast<u32>(v.value());
             }
@@ -424,8 +427,8 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             for (int i = 0; i < 4; ++i) {
-                auto lo = read_memory(ctx, addr.value() + i * 8, 4);
-                auto hi = read_memory(ctx, addr.value() + i * 8 + 4, 4);
+                auto lo = read_memory_av(ctx, addr.value() + i * 8, 4);
+                auto hi = lo ? read_memory_av(ctx, addr.value() + i * 8 + 4, 4) : lo;
                 if (!lo || !hi) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
                 src_q[i] = static_cast<u64>(static_cast<u32>(lo.value())) |
                            (static_cast<u64>(static_cast<u32>(hi.value())) << 32);
@@ -455,8 +458,8 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             for (int i = 0; i < 4; ++i) {
-                auto lo = read_memory(ctx, addr.value() + i * 8, 4);
-                auto hi = read_memory(ctx, addr.value() + i * 8 + 4, 4);
+                auto lo = read_memory_av(ctx, addr.value() + i * 8, 4);
+                auto hi = lo ? read_memory_av(ctx, addr.value() + i * 8 + 4, 4) : lo;
                 if (!lo || !hi) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
                 src_q[i] = static_cast<u64>(static_cast<u32>(lo.value())) |
                            (static_cast<u64>(static_cast<u32>(hi.value())) << 32);
@@ -496,8 +499,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&s2_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&s2_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&s2_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&s2_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         auto& dst_lo = ctx.cpu.sse.xmm[dst_idx];
         auto& dst_hi = ctx.cpu.avx.ymm_high[dst_idx];
@@ -541,8 +547,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&s2_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&s2_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&s2_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&s2_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         const auto& m_lo = ctx.cpu.sse.xmm[mask_idx];
         const auto& m_hi = ctx.cpu.avx.ymm_high[mask_idx];
@@ -602,8 +611,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&s2_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&s2_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&s2_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&s2_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         const auto m_lo = ctx.cpu.sse.xmm[mask_idx];
         const auto m_hi = ctx.cpu.avx.ymm_high[mask_idx];
@@ -651,8 +663,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&c_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&c_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         auto& dst_lo = ctx.cpu.sse.xmm[dst_idx];
         auto& dst_hi = ctx.cpu.avx.ymm_high[dst_idx];
@@ -689,8 +704,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&c_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&c_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         auto& dst_lo = ctx.cpu.sse.xmm[dst_idx];
         auto& dst_hi = ctx.cpu.avx.ymm_high[dst_idx];
@@ -727,8 +745,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&c_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&c_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         auto& dst_lo = ctx.cpu.sse.xmm[dst_idx];
         auto& dst_hi = ctx.cpu.avx.ymm_high[dst_idx];
@@ -765,8 +786,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&c_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&c_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         auto& dst_lo = ctx.cpu.sse.xmm[dst_idx];
         auto& dst_hi = ctx.cpu.avx.ymm_high[dst_idx];
@@ -804,8 +828,11 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&c_lo), 16);
-            ctx.mem.read_bytes(addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16);
+            if (!read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&c_lo), 16) ||
+                !read_bytes_av(ctx, addr.value() + 16, reinterpret_cast<Byte*>(&c_hi), 16)) {
+                ctx.exception = CpuException::GeneralProtection;
+                return ExecResult::Exception;
+            }
         }
         auto& dst_lo = ctx.cpu.sse.xmm[dst_idx];
         auto& dst_hi = ctx.cpu.avx.ymm_high[dst_idx];
@@ -872,7 +899,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
                 u64 addr = base + static_cast<u64>(static_cast<i32>(idx)) * vm.scale
                     + static_cast<u64>(static_cast<i64>(vm.disp));
                 if (is_32bit) addr = static_cast<u32>(addr);
-                auto val = read_memory(ctx, addr, 4);
+                auto val = read_memory_av(ctx, addr, 4);
                 if (!val) {
                     ctx.exception = CpuException::GeneralProtection;
                     return ExecResult::Exception;
@@ -977,8 +1004,8 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
                 if (is_32bit) addr = static_cast<u32>(addr);
                 u64 value = 0;
                 if (elem_qword) {
-                    auto lo = read_memory(ctx, addr, 4);
-                    auto hi = read_memory(ctx, addr + 4, 4);
+                    auto lo = read_memory_av(ctx, addr, 4);
+                    auto hi = lo ? read_memory_av(ctx, addr + 4, 4) : lo;
                     if (!lo || !hi) {
                         ctx.exception = CpuException::GeneralProtection;
                         return ExecResult::Exception;
@@ -986,7 +1013,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
                     value = static_cast<u64>(static_cast<u32>(lo.value()))
                         | (static_cast<u64>(static_cast<u32>(hi.value())) << 32);
                 } else {
-                    auto val = read_memory(ctx, addr, 4);
+                    auto val = read_memory_av(ctx, addr, 4);
                     if (!val) {
                         ctx.exception = CpuException::GeneralProtection;
                         return ExecResult::Exception;
@@ -1050,7 +1077,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
                 } else {
                     auto addr = calc_effective_address(ctx, src_op.mem);
                     if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-                    auto r = ctx.mem.read_bytes(addr.value() + 16,
+                    auto r = read_bytes_av(ctx, addr.value() + 16,
                                                 reinterpret_cast<Byte*>(&ctrl_hi), 16);
                     if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
                 }
@@ -1070,7 +1097,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
                 } else {
                     auto addr = calc_effective_address(ctx, src_op.mem);
                     if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-                    auto r = ctx.mem.read_bytes(addr.value() + 16,
+                    auto r = read_bytes_av(ctx, addr.value() + 16,
                                                 reinterpret_cast<Byte*>(&src_hi), 16);
                     if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
                 }
@@ -1134,7 +1161,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
             } else {
                 auto addr = calc_effective_address(ctx, src_op.mem);
                 if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-                auto r = ctx.mem.read_bytes(addr.value() + 16,
+                auto r = read_bytes_av(ctx, addr.value() + 16,
                                             reinterpret_cast<Byte*>(&src_hi), 16);
                 if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             }
@@ -1243,7 +1270,7 @@ ExecResult exec_avx_ops(ExecContext& ctx, const DecodedInstruction& instr) noexc
                     set_lane(dst, i, 0);
                     continue;
                 }
-                auto val = read_memory(ctx, addr.value() + static_cast<u64>(i) * elem,
+                auto val = read_memory_av(ctx, addr.value() + static_cast<u64>(i) * elem,
                                        elem);
                 if (!val) {
                     ctx.exception = CpuException::GeneralProtection;

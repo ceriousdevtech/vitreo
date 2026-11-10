@@ -16,9 +16,44 @@
 #include <algorithm>
 #include <array>
 #include <cstdio>
+#include <cstring>
 #include <memory>
 
 namespace vitreo::winapi {
+
+bool read_guest_present_parameters(
+    Marshaler& m, GuestAddr address,
+    std::array<u8, D3DPRESENT_PARAMETERS_SIZE>& out) {
+    if (!m.cpu_is_64bit()) {
+        return m.memory().read_bytes(address, out.data(), out.size()).is_ok();
+    }
+    std::array<u8, D3DPRESENT_PARAMETERS_SIZE_X64> raw{};
+    if (m.memory().read_bytes(address, raw.data(), raw.size()).is_err()) {
+        return false;
+    }
+    // Width..SwapEffect (0..27) are unchanged; the HWND's low half at 32;
+    // Windowed..PresentationInterval (40..63) land at 32..55.
+    std::memcpy(out.data(), raw.data(), PP_DEVICE_WINDOW);
+    std::memcpy(out.data() + PP_DEVICE_WINDOW, raw.data() + 32, 4);
+    std::memcpy(out.data() + PP_WINDOWED, raw.data() + 40,
+                D3DPRESENT_PARAMETERS_SIZE - PP_WINDOWED);
+    return true;
+}
+
+bool write_guest_present_parameters(
+    Marshaler& m, GuestAddr address,
+    const std::array<u8, D3DPRESENT_PARAMETERS_SIZE>& in) {
+    if (!m.cpu_is_64bit()) {
+        return m.memory().write_bytes(address, in.data(), in.size()).is_ok();
+    }
+    std::array<u8, D3DPRESENT_PARAMETERS_SIZE_X64> raw{};
+    std::memcpy(raw.data(), in.data(), PP_DEVICE_WINDOW);
+    std::memcpy(raw.data() + 32, in.data() + PP_DEVICE_WINDOW, 4);
+    std::memcpy(raw.data() + 40, in.data() + PP_WINDOWED,
+                D3DPRESENT_PARAMETERS_SIZE - PP_WINDOWED);
+    return m.memory().write_bytes(address, raw.data(), raw.size()).is_ok();
+}
+
 
 namespace {
 
@@ -41,7 +76,7 @@ void D3D9Manager::create_device(Marshaler& m, u32 factory) {
     const GuestAddr present_parameters = m.arg_ptr(5);
     const GuestAddr device_out = m.arg_ptr(6);
 
-    if (device_out != 0) (void)m.write_u32(device_out, 0);
+    if (device_out != 0) (void)m.write_ptr(device_out, 0);
     if (!valid_adapter(adapter, device_type) || present_parameters == 0 ||
         device_out == 0) {
         VITREO_TRACE("[d3d9] CreateDevice -> D3DERR_INVALIDCALL "
@@ -69,8 +104,11 @@ void D3D9Manager::create_device(Marshaler& m, u32 factory) {
     }
 
     std::array<u8, D3DPRESENT_PARAMETERS_SIZE> parameters{};
-    if (m.memory().read_bytes(present_parameters, parameters.data(),
-                              parameters.size()).is_err()) {
+    if (!read_guest_present_parameters(m, present_parameters, parameters)) {
+        m.set_return(D3DERR_INVALIDCALL);
+        return;
+    }
+    if (!exclusive_size_allowed(parameters.data())) {
         m.set_return(D3DERR_INVALIDCALL);
         return;
     }
@@ -91,7 +129,11 @@ void D3D9Manager::create_device(Marshaler& m, u32 factory) {
     state.device_type = device_type;
     state.focus_window = focus_window;
     state.behavior_flags = behavior_flags;
+    // The device holds a reference to the factory that created it; it is
+    // taken here, with the parent recorded, because every failure path below
+    // destroys the device and destroying a device gives the reference back.
     state.parent_d3d9 = factory;
+    (void)add_ref(factory);
     state.present_parameters = parameters;
 
     // Learn IDirect3D9::CreateDevice / D3DCREATE_FPU_PRESERVE: unless the
@@ -133,10 +175,8 @@ void D3D9Manager::create_device(Marshaler& m, u32 factory) {
 
     // Learn: pPresentationParameters is in/out — zeros and D3DFMT_UNKNOWN
     // are filled with the resolved back-buffer size/format.
-    if (m.memory()
-            .write_bytes(present_parameters, state.present_parameters.data(),
-                         state.present_parameters.size())
-            .is_err()) {
+    if (!write_guest_present_parameters(m, present_parameters,
+                                        state.present_parameters)) {
         destroy_object(device);
         m.set_return(D3DERR_INVALIDCALL);
         return;
@@ -144,10 +184,7 @@ void D3D9Manager::create_device(Marshaler& m, u32 factory) {
 
     reset_device_state(device);
 
-    // The device holds a reference to the factory that created it.
-    (void)add_ref(factory);
-
-    if (m.write_u32(device_out, device).is_err()) {
+    if (m.write_ptr(device_out, device).is_err()) {
         destroy_object(device);
         m.set_return(E_POINTER_D3D);
         return;
@@ -275,6 +312,9 @@ bool D3D9Manager::build_presentation(u32 device) {
                                D3D9InterfaceId::Surface);
         back != nullptr && back->surface) {
         back->surface->swap_chain_color = state.swap_chain->color_target();
+        back->surface->lockable_target =
+            (state.present_field(PP_FLAGS) &
+             D3DPRESENTFLAG_LOCKABLE_BACKBUFFER) != 0;
     }
     state.render_target_surface = state.back_buffer_surface;
     state.render_target_surfaces[0] = state.back_buffer_surface;

@@ -106,6 +106,16 @@ void ThreadSuspendRegistry::Slot::park_slow() {
     if (return_ctx_pending && live != nullptr &&
         host_call_depth.load() < return_ctx_depth) {
         const u64 result = live->gpr.get64(static_cast<u8>(cpu::RegIndex::RAX));
+        if (thread_diag_enabled()) {
+            std::fprintf(stderr,
+                         "[thread-diag] staged-apply tid=%u from rip=0x%llx "
+                         "rsp=0x%llx to rip=0x%llx rsp=0x%llx depth=%d<%d\n",
+                         tid, static_cast<unsigned long long>(live->rip),
+                         static_cast<unsigned long long>(live->sp()),
+                         static_cast<unsigned long long>(return_ctx.rip),
+                         static_cast<unsigned long long>(return_ctx.sp()),
+                         host_call_depth.load(), return_ctx_depth);
+        }
         *live = return_ctx;
         if (live->is_64bit()) {
             live->gpr.set64(static_cast<u8>(cpu::RegIndex::RAX), result);
@@ -612,6 +622,24 @@ bool ThreadSuspendRegistry::capture(u32 tid, cpu::CpuState& out) {
         out.flags.rflags |= 0x2;  // always set in a running thread's EFLAGS
         ok = true;
     }
+    if (thread_diag_enabled()) {
+        std::fprintf(stderr,
+                     "[thread-diag] capture self=%u target=%u ok=%d src=%s "
+                     "rip=0x%llx rsp=0x%llx rax=0x%llx live_rip=0x%llx "
+                     "hostcall_depth=%d base_depth=%d\n",
+                     ThreadManager::get_current_thread_id_static(), tid,
+                     ok ? 1 : 0,
+                     slot->return_ctx_pending ? "staged"
+                     : (slot->parked && slot->snapshot_valid) ? "parked"
+                     : slot->live == nullptr ? "none"
+                     : slot->blocked_in_host_call() ? "blocked" : "live",
+                     static_cast<unsigned long long>(ok ? out.rip : 0),
+                     static_cast<unsigned long long>(ok ? out.sp() : 0),
+                     static_cast<unsigned long long>(
+                         ok ? out.gpr.get64(static_cast<u8>(cpu::RegIndex::RAX)) : 0),
+                     static_cast<unsigned long long>(slot->live ? slot->live->rip : 0),
+                     slot->host_call_depth.load(), slot->guest_base_depth.load());
+    }
     unlock_mutex(slot->mu);
     return ok;
 }
@@ -641,6 +669,21 @@ bool ThreadSuspendRegistry::apply(u32 tid, const cpu::CpuState& in) {
     } else if (slot->live) {
         *slot->live = in;
         ok = true;
+    }
+    if (thread_diag_enabled()) {
+        std::fprintf(stderr,
+                     "[thread-diag] apply self=%u target=%u ok=%d mode=%s "
+                     "rip=0x%llx rsp=0x%llx live_rip=0x%llx "
+                     "return_ctx_depth=%d hostcall_depth=%d base_depth=%d\n",
+                     ThreadManager::get_current_thread_id_static(), tid,
+                     ok ? 1 : 0,
+                     slot->parked ? "parked"
+                     : slot->return_ctx_pending ? "staged" : "live",
+                     static_cast<unsigned long long>(in.rip),
+                     static_cast<unsigned long long>(in.sp()),
+                     static_cast<unsigned long long>(slot->live ? slot->live->rip : 0),
+                     slot->return_ctx_depth, slot->host_call_depth.load(),
+                     slot->guest_base_depth.load());
     }
     unlock_mutex(slot->mu);
     return ok;

@@ -4,6 +4,7 @@
 /// @brief See cpuid_intercept.hpp for why the guest must not see the host CPU.
 
 #include "core/cpu/x64/cpuid_intercept.hpp"
+#include "core/cpu/x64/host_protection_snapshot.hpp"
 
 #include "core/cpu/decode/decoder.hpp"
 #include "core/memory/guest_memory.hpp"
@@ -59,6 +60,12 @@ usize intercept_cpuid_in_range(GuestMemory& memory, u32 base, u32 size) {
     auto* const hi = reinterpret_cast<u8*>(
         (reinterpret_cast<uintptr_t>(host) + size + page - 1) & ~(page - 1));
     const usize span = static_cast<usize>(hi - lo);
+    // Hold off guest VirtualProtect for the span while it is open, and record
+    // each page's protection so the restore leaves the guest's contract (an
+    // RWX buffer stays writable) and any host arming exactly as found.
+    const auto protection_pin = memory.pin_protection();
+    const HostProtectionSnapshot original(reinterpret_cast<uintptr_t>(lo),
+                                          reinterpret_cast<uintptr_t>(hi));
     const bool opened =
         mprotect(lo, span, PROT_READ | PROT_WRITE | PROT_EXEC) == 0;
     if (!opened) {
@@ -100,9 +107,10 @@ usize intercept_cpuid_in_range(GuestMemory& memory, u32 base, u32 size) {
         offset += instr.length;
     }
 
-    // Restore execute-only-ish protection. Leaving guest code writable would
-    // hide genuine guest write-to-code bugs that Windows would fault on.
-    (void)mprotect(lo, span, PROT_READ | PROT_EXEC);
+    // Put every page back exactly as it was: read+execute code stays
+    // unwritable (a guest write to it still faults as on Windows), and a
+    // writable executable page stays writable.
+    original.restore();
 
     if (patched != 0) {
         std::fprintf(stderr,

@@ -104,11 +104,10 @@ TEST(DxbcToSpirvTest, SqrtUsesSqrtWithModifiersSwizzleAndMask) {
 /// Learn "Instruction Return Type and Modifiers": OpcodeToken0 bit 13
 /// (SATURATE) clamps every written destination component to [0,1] for any
 /// float-result instruction, with saturate(NaN) == 0. The translator applies
-/// it once, in store_vec4, as ordered compares feeding selects.
+/// it once, in store_vec4, as ordered compares feeding selects: 0 < x
+/// (a denormal or -0 gives +0) and x < 1, both OpFOrdLessThan.
 void expect_saturated_destination(const DxbcToSpirvResult& result) {
     ASSERT_TRUE(result.valid()) << result.failure;
-    EXPECT_TRUE(spirv_contains_opcode(result.spirv,
-                                      /*OpFOrdGreaterThanEqual=*/190u));
     EXPECT_TRUE(spirv_contains_opcode(result.spirv, /*OpFOrdLessThan=*/184u));
     EXPECT_TRUE(spirv_contains_opcode(result.spirv, /*OpSelect=*/169u));
 }

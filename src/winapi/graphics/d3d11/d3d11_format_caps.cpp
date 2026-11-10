@@ -548,6 +548,10 @@ ViewSwizzle view_swizzle_for(u32 view_format, bool depth_plane) noexcept {
     switch (view_format) {
     case 88: case 92: case 93:
         return ViewSwizzle::OpaqueAlpha;
+    // R8G8_B8G8 / G8R8_G8B8 as decoded RGBA8: the fourth byte is the
+    // partner pixel's G (graphics::format_422.hpp); views read alpha 1.
+    case 68: case 69:
+        return ViewSwizzle::OpaqueAlpha;
     case 115:
         return ViewSwizzle::Bgra4;
     default:

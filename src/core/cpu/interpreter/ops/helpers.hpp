@@ -24,6 +24,28 @@ constexpr u8 NO_REG = 255;
     u8 size
 ) noexcept;
 
+/// read_memory for an instruction's memory OPERAND: on failure it also
+/// records the Windows STATUS_ACCESS_VIOLATION parameters ([0] = 0 read,
+/// [1] = the first inaccessible byte; record_read_access_violation), so the
+/// caller only has to set ctx.exception and return. A caller that reads one
+/// operand in pieces must stop at the first failing piece: a later failing
+/// piece would overwrite the record with a later address.
+[[nodiscard]] Result<u64, Error> read_memory_av(
+    ExecContext& ctx,
+    u64 addr,
+    u8 size
+) noexcept;
+
+/// ctx.mem.read_bytes for an operand of @p size bytes (an m128/m256 half,
+/// m80, ...) with read_memory_av's failure record. @p dst is only meaningful
+/// on success; read into a temporary, never straight into a register.
+[[nodiscard]] VoidResult read_bytes_av(
+    ExecContext& ctx,
+    u64 addr,
+    void* dst,
+    u8 size
+) noexcept;
+
 /// Write value to memory of given size
 [[nodiscard]] VoidResult write_memory(
     ExecContext& ctx,

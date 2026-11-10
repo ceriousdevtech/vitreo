@@ -5,6 +5,80 @@
 
 #include "security_stubs_fixture.hpp"
 
+// OpenEventLogA/W Learn: NULL on failure; WinError.h/Learn: error 120
+// explicitly reports an unsupported function. This tests the declared gap,
+// not Windows' successful event-log behavior.
+TEST_F(SecurityStubsTest, OpenEventLogUnsupportedFailsHonestlyBothBitnesses) {
+    auto exports = create_advapi32_security_thunks(*m_stubs);
+    for (bool x64 : {false, true}) {
+        GuestMemory memory;
+        ASSERT_TRUE(memory.map_region(0x10000, 0x2000,
+                                      MemoryProtection::ReadWrite).is_ok());
+        cpu::CpuState cpu;
+        if (x64) cpu.init_long_mode(); else cpu.init_protected_mode();
+        cpu.gpr.rsp = 0x10800;
+        Marshaler marshaler(memory);
+        marshaler.attach_cpu(cpu);
+        for (const char* name : {"OpenEventLogA", "OpenEventLogW"}) {
+            auto* entry = find_export(exports, name);
+            ASSERT_NE(entry, nullptr) << name;
+            EXPECT_EQ(entry->stdcall_bytes, 2 * sizeof(u32));
+            for (GuestAddr server : {GuestAddr{0}, GuestAddr{0x11000}}) {
+                // Local/remote and named/default forms all explicitly fail;
+                // neither guest inputs nor fabricated handles escape.
+                for (GuestAddr source : {GuestAddr{0}, GuestAddr{0x11100}}) {
+                    if (x64) {
+                        cpu.gpr.rcx = server;
+                        cpu.gpr.rdx = source;
+                    } else {
+                        ASSERT_TRUE(memory.write_u32(cpu.gpr.rsp + 4, server).is_ok());
+                        ASSERT_TRUE(memory.write_u32(cpu.gpr.rsp + 8, source).is_ok());
+                    }
+                    cpu.gpr.rax = ~u64{0};
+                    set_last_error(error_codes::ERROR_SUCCESS);
+                    entry->handler(marshaler);
+                    EXPECT_EQ(cpu.gpr.rax, 0u) << name << " x64=" << x64;
+                    EXPECT_EQ(get_last_error(), error_codes::ERROR_CALL_NOT_IMPLEMENTED);
+                }
+            }
+        }
+    }
+}
+
+// Learn's BOOL failure is zero, rather than the generic missing-import
+// sentinel (which would claim that shutdown was accepted).
+TEST_F(SecurityStubsTest, ShutdownUnsupportedFailsHonestlyBothBitnesses) {
+    auto exports = create_advapi32_security_thunks(*m_stubs);
+    auto* entry = find_export(exports, "InitiateSystemShutdownExW");
+    ASSERT_NE(entry, nullptr);
+    EXPECT_EQ(entry->stdcall_bytes, 6 * sizeof(u32));
+    for (bool x64 : {false, true}) {
+        GuestMemory memory;
+        ASSERT_TRUE(memory.map_region(0x10000, 0x2000,
+                                      MemoryProtection::ReadWrite).is_ok());
+        cpu::CpuState cpu;
+        if (x64) cpu.init_long_mode(); else cpu.init_protected_mode();
+        cpu.gpr.rsp = 0x10800;
+        Marshaler marshaler(memory);
+        marshaler.attach_cpu(cpu);
+        for (u32 value : {0u, 1u, ~u32{0}}) {
+            if (x64) {
+                cpu.gpr.rcx = cpu.gpr.rdx = cpu.gpr.r8 = cpu.gpr.r9 = value;
+                ASSERT_TRUE(memory.write_u64(cpu.gpr.rsp + 40, value).is_ok());
+                ASSERT_TRUE(memory.write_u64(cpu.gpr.rsp + 48, value).is_ok());
+            } else {
+                for (u32 i = 0; i < 6; ++i)
+                    ASSERT_TRUE(memory.write_u32(cpu.gpr.rsp + 4 + i * 4, value).is_ok());
+            }
+            cpu.gpr.rax = ~u64{0};
+            set_last_error(error_codes::ERROR_SUCCESS);
+            entry->handler(marshaler);
+            EXPECT_EQ(cpu.gpr.rax, 0u);
+            EXPECT_EQ(get_last_error(), error_codes::ERROR_CALL_NOT_IMPLEMENTED);
+        }
+    }
+}
+
 TEST_F(SecurityStubsTest, TraceProviderHandlesHaveLifecycle) {
     u64 first = m_stubs->register_trace_provider();
     u64 second = m_stubs->register_trace_provider();

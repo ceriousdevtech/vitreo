@@ -669,3 +669,72 @@ TEST_F(ResourceTest, ExitWindowsExFailsInsteadOfFakingAShutdown) {
     EXPECT_EQ(static_cast<u32>(cpu.gpr.rax), 0u);
     EXPECT_EQ(get_last_error(), 50u);     // ERROR_NOT_SUPPORTED
 }
+
+// ---- SetSystemCursor ----
+// Windows (tests/oracle_data/set_system_cursor_probe{32,64}.expected, run in
+// an interactive session; both bitnesses identical): set_normal 1, the
+// IDC_ARROW handle keeps its value and shows the new hotspot, the hcur is
+// destroyed (DestroyCursor afterwards fails with 1402), NULL -> 1814, a bogus
+// handle -> 1402, an unknown id or OCR_SIZE -> FALSE with the error untouched
+// and hcur alive, OCR_ICON / OCR_PEN accepted, a system cursor as hcur swaps,
+// SPI_SETCURSORS restores the defaults.
+
+TEST_F(ResourceTest, SetSystemCursorReplacesTheSharedHandlesImage) {
+    const u32 arrow = mgr.load_cursor(0, idc::IDC_ARROW);
+    std::vector<u8> rgba(32 * 32 * 4, 0xff);
+    const u32 custom = mgr.create_cursor_rgba(10, 10, 32, 32, rgba);
+    ASSERT_NE(custom, 0u);
+    u32 error = 0xdead;
+    ASSERT_TRUE(mgr.set_system_cursor(custom, 32512, error));
+    EXPECT_EQ(error, 0u);
+    EXPECT_EQ(mgr.load_cursor(0, idc::IDC_ARROW), arrow);
+    auto image = mgr.cursor_image(arrow);
+    ASSERT_TRUE(image.has_value());
+    EXPECT_FALSE(image->is_system);
+    EXPECT_EQ(image->hotspot_x, 10u);
+    EXPECT_EQ(image->hotspot_y, 10u);
+    // hcur was consumed.
+    EXPECT_FALSE(mgr.cursor_image(custom).has_value());
+    EXPECT_TRUE(mgr.icon_was_destroyed(custom));
+    // SPI_SETCURSORS: back to the stock arrow, same handle.
+    mgr.restore_system_cursors();
+    image = mgr.cursor_image(arrow);
+    ASSERT_TRUE(image.has_value());
+    EXPECT_TRUE(image->is_system);
+    EXPECT_EQ(image->system_id, idc::IDC_ARROW);
+}
+
+TEST_F(ResourceTest, SetSystemCursorErrorsMatchWindows) {
+    std::vector<u8> rgba(32 * 32 * 4, 0xff);
+    u32 error = 0;
+    EXPECT_FALSE(mgr.set_system_cursor(0, 32512, error));
+    EXPECT_EQ(error, 1814u);
+    EXPECT_FALSE(mgr.set_system_cursor(0x12345678, 32512, error));
+    EXPECT_EQ(error, 1402u);
+    const u32 custom = mgr.create_cursor_rgba(1, 2, 32, 32, rgba);
+    for (u32 bad_id : {12345u, 32640u /* OCR_SIZE */}) {
+        EXPECT_FALSE(mgr.set_system_cursor(custom, bad_id, error));
+        EXPECT_EQ(error, 0u);  // last error untouched
+        EXPECT_TRUE(mgr.cursor_image(custom).has_value());  // still alive
+    }
+    for (u32 accepted : {32641u /* OCR_ICON */, 32631u /* OCR_PEN */}) {
+        const u32 c = mgr.create_cursor_rgba(1, 2, 32, 32, rgba);
+        EXPECT_TRUE(mgr.set_system_cursor(c, accepted, error)) << accepted;
+    }
+}
+
+TEST_F(ResourceTest, SetSystemCursorWithASystemCursorSwapsTheTwo) {
+    const u32 arrow = mgr.load_cursor(0, idc::IDC_ARROW);
+    const u32 ibeam = mgr.load_cursor(0, idc::IDC_IBEAM);
+    u32 error = 0;
+    ASSERT_TRUE(mgr.set_system_cursor(arrow, 32513, error));
+    auto shown_ibeam = mgr.cursor_image(ibeam);
+    auto shown_arrow = mgr.cursor_image(arrow);
+    ASSERT_TRUE(shown_ibeam && shown_arrow);
+    EXPECT_TRUE(shown_ibeam->is_system);
+    EXPECT_EQ(shown_ibeam->system_id, idc::IDC_ARROW);
+    EXPECT_TRUE(shown_arrow->is_system);
+    EXPECT_EQ(shown_arrow->system_id, idc::IDC_IBEAM);
+    mgr.restore_system_cursors();
+    EXPECT_EQ(mgr.cursor_image(arrow)->system_id, idc::IDC_ARROW);
+}

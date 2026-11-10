@@ -10,6 +10,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
 
+#include <atomic>
 #include <algorithm>
 #include <array>
 #include <cstdio>
@@ -30,6 +31,49 @@ constexpr u32 kErrorEmpty = 4306;
         return value != nullptr && value[0] != '\0' && value[0] != '0';
     }();
     return enabled;
+}
+
+// Temporary, bounded API-boundary discriminator. Host packets alone do not
+// prove which guest caller received the bytes. Keep module lookup outside this
+// owner: the guest return address can be matched to the process module census.
+void trace_guest_state(Marshaler& m,XInputDll dll,bool extended,u32 index,GuestAddr output,u32 result) {
+    if(!input_diag_enabled()) return;
+    struct Record {
+        bool used{};XInputDll dll{};bool extended{};u32 index{};GuestAddr caller{},output{};
+        u32 result{};bool readable{};std::array<u8,16> bytes{};
+    };
+    struct Budget {
+        bool initialized{};u32 result{};bool readable{};std::array<u8,16> bytes{};
+        unsigned changed{},first_callers{};
+    };
+    static std::mutex mutex;static std::array<Record,16> records{};
+    static std::array<std::array<std::array<Budget,kXUserMaxCount+1>,2>,3> budgets{};
+    const GuestAddr caller=m.guest_return_address();
+    std::array<u8,16> bytes{};
+    const bool readable=result==0 && m.memory().read_bytes(output,bytes.data(),bytes.size()).is_ok();
+    std::lock_guard lock(mutex);
+    auto found=std::find_if(records.begin(),records.end(),[&](const Record& r){return r.used && r.dll==dll && r.extended==extended && r.index==index && r.caller==caller && r.output==output;});
+    if(found!=records.end() && found->result==result && found->readable==readable && found->bytes==bytes) return;
+    const usize dll_index=dll==XInputDll::V1_4 ? 0u : dll==XInputDll::V1_3 ? 1u:2u;
+    auto& budget=budgets[dll_index][extended ? 1:0][std::min(index,kXUserMaxCount)];
+    const bool changed=!budget.initialized || budget.result!=result || budget.readable!=readable || budget.bytes!=bytes;
+    if(changed) {
+        if(budget.changed>=96) return;
+        ++budget.changed;budget.initialized=true;budget.result=result;budget.readable=readable;budget.bytes=bytes;
+    } else {
+        // A moving output pointer or another neutral caller cannot spend the
+        // control-change budget reserved for the later physical-input test.
+        if(budget.first_callers>=8) return;
+        ++budget.first_callers;
+    }
+    if(found==records.end()) found=std::find_if(records.begin(),records.end(),[](const Record& r){return !r.used;});
+    if(found!=records.end()) *found={true,dll,extended,index,caller,output,result,readable,bytes};
+    const char* name=dll==XInputDll::V1_4 ? "xinput1_4" : dll==XInputDll::V1_3 ? "xinput1_3" : "xinput9_1_0";
+    char hex[33]{};constexpr char digits[]="0123456789abcdef";
+    if(readable) for(usize i=0;i<bytes.size();++i) {hex[i*2]=digits[bytes[i]>>4];hex[i*2+1]=digits[bytes[i]&15];}
+    std::fprintf(stderr,"[input-delivery] %s!GetState%s bits=%u caller=0x%llx user=%u out=0x%llx result=%u return=%llu readback=%s\n",
+        name,extended ? "Ex":"",m.cpu_is_64bit() ? 64u:32u,static_cast<unsigned long long>(caller),index,
+        static_cast<unsigned long long>(output),result,static_cast<unsigned long long>(m.return_value()),readable ? hex:"unavailable");
 }
 
 class XInputRuntime {
@@ -247,9 +291,19 @@ DllExports create_xinput_thunks(XInputDll dll,
     // DWORD XInputGetState(DWORD dwUserIndex, XINPUT_STATE* pState)
     exports.entries.push_back(ExportEntry{
         "XInputGetState", 0,
-        [runtime](Marshaler& m) {
-            m.set_return(write_state(m, *runtime,
-                static_cast<u32>(m.arg(0)), m.arg_ptr(1)));
+        [runtime,dll](Marshaler& m) {
+            const u32 index = static_cast<u32>(m.arg(0));
+            const GuestAddr output = m.arg_ptr(1);
+            const u32 result = write_state(m, *runtime, index, output);
+            if (input_diag_enabled()) {
+                static std::atomic<unsigned> logged{0};
+                if (logged.fetch_add(1) < 16)
+                    std::fprintf(stderr,
+                        "[xinput] GetState user=%u output=0x%llx result=%u\n",
+                        index, static_cast<unsigned long long>(output), result);
+            }
+            m.set_return(result);
+            trace_guest_state(m,dll,false,index,output,result);
         },
         8,
     });
@@ -360,9 +414,10 @@ DllExports create_xinput_thunks(XInputDll dll,
     // key; apply_native_exports clears it.
     exports.entries.push_back(ExportEntry{
         "XInputGetStateEx", 0,
-        [runtime](Marshaler& m) {
-            m.set_return(write_state(m, *runtime,
-                static_cast<u32>(m.arg(0)), m.arg_ptr(1)));
+        [runtime,dll](Marshaler& m) {
+            const u32 index=static_cast<u32>(m.arg(0));const GuestAddr output=m.arg_ptr(1);
+            const u32 result=write_state(m,*runtime,index,output);m.set_return(result);
+            trace_guest_state(m,dll,true,index,output,result);
         },
         8,
     });

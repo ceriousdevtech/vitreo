@@ -4,6 +4,7 @@
 ///        description. Split out of d3d11.cpp as verbatim code motion.
 #include "winapi/graphics/d3d11/d3d11.hpp"
 #include "winapi/core/guest_com.hpp"
+#include "winapi/graphics/d3d11/d3d11_buffer_ring.hpp"
 #include "winapi/graphics/d3d11/d3d11_caps_log.hpp"
 #include "winapi/graphics/d3d11/d3d11_in_chain.hpp"
 #include "winapi/graphics/d3d11/d3d11_internal.hpp"
@@ -183,6 +184,68 @@ GuestAddr D3D11Manager::create_buffer(
         tiled_state = tiled_buffer_state(desc.byte_width);
         if (!tiled_state) return 0;
     }
+    // WS6: a mappable buffer's storage is a slice of the zero-copy ring
+    // (d3d11_buffer_ring.hpp): host pages mapped into the guest that the
+    // GPU reads and writes directly, so Map hands the guest the GPU's own
+    // bytes. Its backend buffer is a window onto the slice. That is every
+    // DYNAMIC and STAGING buffer, and a DEFAULT buffer with CPU access
+    // (Learn MapOnDefaultBuffers: the mapping is the buffer's own memory;
+    // measured d3d11_capsmall_probe "mapdef"). A DEFAULT buffer with no
+    // CPU access is never mapped and keeps the plain allocation. Shared
+    // buffers keep their cross-process store; tiled ones are address space
+    // only. An opening of a shared buffer is shared too, so storage handed
+    // in here otherwise is the plain allocation CreateBuffer made with the
+    // device lock released (d3d11_device_resources.cpp); the window
+    // replaces it.
+    const bool mappable_default =
+        desc.usage == D3D11_USAGE_DEFAULT && desc.cpu_access_flags != 0;
+    std::shared_ptr<D3D11RingLease> ring_lease;
+    if (!shared && !tile_pool && !tiled &&
+        desc.byte_width != 0 &&
+        (desc.usage == D3D11_USAGE_DYNAMIC ||
+         desc.usage == D3D11_USAGE_STAGING ||
+         mappable_default) &&
+        d3d11_ws6_enabled()) {
+        if (!m_buffer_ring) {
+            m_buffer_ring = std::make_shared<D3D11BufferRing>(
+                m_memory, m_backend, m_is_64bit);
+        }
+        switch (m_buffer_ring->lease(desc.byte_width, ring_lease)) {
+        case D3D11BufferRing::LeaseStatus::Ok: {
+            // Learn (D3D11_SUBRESOURCE_DATA): the initial contents; without
+            // them the bytes start zeroed, as a new allocation's do (a
+            // slice may have held another buffer).
+            if (initial_data != nullptr) {
+                std::memcpy(ring_lease->host(), initial_data,
+                            desc.byte_width);
+            } else {
+                std::memset(ring_lease->host(), 0, desc.byte_width);
+            }
+            graphics::BackendBufferDesc backend_desc =
+                backend_buffer_desc(desc);
+            backend_desc.window = true;
+            auto window = m_backend.create_buffer(backend_desc, nullptr);
+            if (window && ring_lease->attach(*window) && window->valid()) {
+                backend_buffer = std::move(window);
+            } else {
+                // The backend lends no windows: the shadow path.
+                ring_lease.reset();
+            }
+            break;
+        }
+        case D3D11BufferRing::LeaseStatus::OutOfMemory:
+            // The guest window holds no more ring heaps (a lease is never
+            // refused for the budget): Windows has no such limit, so the
+            // buffer takes the plain path instead of failing.
+            std::fprintf(stderr,
+                         "[d3d11] CreateBuffer: no zero-copy storage for "
+                         "%u bytes (guest window full): shadow path\n",
+                         desc.byte_width);
+            break;
+        case D3D11BufferRing::LeaseStatus::Unsupported:
+            break;
+        }
+    }
     if (!backend_buffer && !tile_pool) {
         graphics::BackendBufferDesc backend_desc = backend_buffer_desc(desc);
         backend_desc.tiled = tiled;
@@ -247,8 +310,14 @@ GuestAddr D3D11Manager::create_buffer(
     buffer.shared_nonce = shared_nonce;
     buffer.tile_pool = std::move(pool_state);
     buffer.tiled = std::move(tiled_state);
-    if (!tile_pool && !tiled) buffer.shadow.resize(desc.byte_width);
-    if (initial_data != nullptr && !buffer.shadow.empty()) {
+    buffer.ring = std::move(ring_lease);
+    if (buffer.ring) {
+        // The CPU view IS the slice (it already holds the initial data).
+        buffer.shadow.view(buffer.ring->host_slot(), desc.byte_width);
+    } else if (!tile_pool && !tiled) {
+        buffer.shadow.resize(desc.byte_width);
+    }
+    if (initial_data != nullptr && !buffer.ring && !buffer.shadow.empty()) {
         std::memcpy(buffer.shadow.data(), initial_data, desc.byte_width);
     }
     if (tiled) buffer.gpu_newer = true;  // no shadow to trust

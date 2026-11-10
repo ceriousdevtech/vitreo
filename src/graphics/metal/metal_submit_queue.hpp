@@ -8,12 +8,15 @@
 #include "graphics/contracts/backend_device.hpp"
 #include "graphics/metal/block_recycler.hpp"
 
+#include <algorithm>
 #include <array>
 #include <deque>
+#include <functional>
 #include <atomic>
 #include <condition_variable>
 #include <memory>
 #include <unordered_map>
+#include <unordered_set>
 #include <mutex>
 #include <optional>
 #include <string>
@@ -30,13 +33,71 @@ struct MetalTileMappingBatch;
 /// One resolved draw's plain state: every CsDraw field but the vectors, so a
 /// draw can be reset by assignment and compared field by field (the delta
 /// record, delta_record.hpp). Handles are `id<MTL*>`.
+/// Everything a persistent descriptor table (a D3D12 shader-visible heap,
+/// BackendDescriptorTableDesc::persistent) has reached since this log began:
+/// retained `id<MTLResource>` handles, appended only, each once. A draw
+/// carries a MetalResidentToken -- this log and its length when the draw was
+/// recorded -- instead of one handle per slot, and the encoder declares only
+/// the entries its encoder has not seen yet (MetalCommandRecorder::
+/// use_resident_log), so a draw costs O(1) however large the heap is.
+/// A handle a slot no longer names stays until the table starts a new log,
+/// which it does once such entries outnumber the live ones.
+class MetalResidentLog {
+public:
+    MetalResidentLog() = default;
+    MetalResidentLog(const MetalResidentLog&) = delete;
+    MetalResidentLog& operator=(const MetalResidentLog&) = delete;
+    /// Releases every handle (metal_submit_queue_ownership.mm).
+    ~MetalResidentLog();
+    /// Takes over one reference of @p retained.
+    void append(void* retained) {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_handles.push_back(retained);
+    }
+    [[nodiscard]] u32 size() const {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return static_cast<u32>(m_handles.size());
+    }
+    /// Entries [from, to) appended to @p out.
+    void read(u32 from, u32 to, std::vector<void*>& out) const {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        to = std::min<u32>(to, static_cast<u32>(m_handles.size()));
+        for (u32 i = from; i < to; ++i) out.push_back(m_handles[i]);
+    }
+
+private:
+    mutable std::mutex m_mutex;
+    std::vector<void*> m_handles;
+};
+
+/// A draw's or dispatch's view of a MetalResidentLog: its first `count`
+/// entries, declared read-only unless `writable`.
+struct MetalResidentToken {
+    std::shared_ptr<MetalResidentLog> log;
+    u32 count{0};
+    bool writable{false};
+};
+
 struct CsDrawState {
+    bool indirect_resources_read_only{false};
     void* pipeline{nullptr};
     void* depth_stencil{nullptr};
     u32 stencil_reference{0};
     /// The draw can write the depth or stencil attachment (depth writes on,
     /// or a stencil test with a non-zero write mask). Conservative.
     bool writes_depth_stencil{true};
+    /// The two planes of writes_depth_stencil, separately: the draw can
+    /// write the depth plane (depth writes on) / the stencil plane (a
+    /// stencil test with a non-zero write mask and an operation other than
+    /// Keep). A sample of the attached depth-stencil texture reads one plane
+    /// (a depth view or a stencil view), and only a write to THAT plane
+    /// makes the tile differ from the texel it reads. Conservative defaults.
+    bool writes_depth{true};
+    bool writes_stencil{true};
+    /// The draw can write a colour attachment. False when the pixel shader
+    /// is off or every render-target write mask is zero. A colour sample
+    /// needs an encoder boundary only after one of these.
+    bool writes_color{true};
     std::array<void*, 16> vertex_buffers{};
     std::array<usize, 16> vertex_offsets{};
     std::array<u32, 16> vertex_slots{};
@@ -114,8 +175,48 @@ struct CsDrawState {
     /// Descriptor-table argument buffers per stage, indexed by descriptor set,
     /// bound at BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + set. When any is set the
     /// flat bindings above are unused for that stage.
-    std::array<void*, 4> vs_descriptor_tables{};
-    std::array<void*, 4> ps_descriptor_tables{};
+    std::array<void*, BACKEND_MAX_DESCRIPTOR_SETS> vs_descriptor_tables{};
+    std::array<void*, BACKEND_MAX_DESCRIPTOR_SETS> ps_descriptor_tables{};
+    // ---- WS5 begin ----
+    /// A mesh draw (BackendMeshDraw): non-zero object threadgroups. Its
+    /// vertex-stage bindings above are bound on the mesh stage. Full records
+    /// only (record_backend_draw keeps mesh draws off the delta path).
+    u32 mesh_object_groups{0};
+    u32 mesh_groups{0};
+    u32 mesh_object_threads{0};
+    u32 mesh_threads{0};
+    bool barrier_before_mesh{false};
+    /// A D3D12 DispatchMesh (BackendMeshDraw::d3d12_dispatch): the grid, or
+    /// the indirect arguments, and both threadgroup shapes. The object
+    /// stage's tables (os_descriptor_tables) and push block (os_const).
+    std::array<u32, 3> mesh_grid{};
+    std::array<u32, 3> mesh_object_shape{1, 1, 1};
+    std::array<u32, 3> mesh_shape{1, 1, 1};
+    void* mesh_indirect{nullptr};
+    usize mesh_indirect_offset{0};
+    std::array<void*, BACKEND_MAX_DESCRIPTOR_SETS> os_descriptor_tables{};
+    void* mesh_statistics{nullptr};
+    usize mesh_statistics_offset{0};
+    /// BackendMeshDraw::scratch / group_origin / serialize.
+    void* mesh_scratch{nullptr};
+    usize mesh_scratch_offset{0};
+    std::array<u32, 4> mesh_origin{};
+    bool mesh_serialize{false};
+    /// BackendMeshDraw::origin_buffer / capture (raster capture).
+    void* mesh_origin_buffer{nullptr};
+    usize mesh_origin_buffer_offset{0};
+    void* mesh_capture{nullptr};
+    usize mesh_capture_offset{0};
+    /// BackendMeshDraw::object_capture / mesh_capture (view-instancing
+    /// records, kMeshViewCaptureBufferIndex).
+    void* object_view_capture{nullptr};
+    usize object_view_capture_offset{0};
+    void* mesh_view_capture{nullptr};
+    usize mesh_view_capture_offset{0};
+    [[nodiscard]] bool d3d12_mesh() const {
+        return mesh_object_groups == 0 && (mesh_grid[0] != 0 || mesh_indirect != nullptr);
+    }
+    // ---- WS5 end ----
 };
 
 /// One resolved draw. Handles are retained `id<MTL*>` until the worker
@@ -127,6 +228,7 @@ struct CsDraw : CsDrawState {
     using PushBytes = std::vector<u8, RecyclingAllocator<u8, 256>>;
     PushBytes vs_const;
     PushBytes ps_const;
+    PushBytes os_const;  ///< D3D12 mesh: the object stage's push block
     /// A viewport array (BackendDrawCall::viewports): all 16 slots, disabled
     /// ones already turned into empty scissor rects. Empty for the ordinary
     /// single-viewport draw, which uses the fields above.
@@ -135,7 +237,17 @@ struct CsDraw : CsDrawState {
     /// Resources reachable only through the descriptor tables (and typed
     /// buffers' storage). An argument buffer does not make what it points at
     /// resident, so the encoder has to be told.
+    ///
+    /// The first `resident_read_count` handles are shader-resource and
+    /// constant-buffer views: D3D defines those as read-only. The rest are
+    /// unordered-access views and are declared writable. Zero means the
+    /// split is unknown and the draw-level certificate decides.
     std::vector<void*> resident;
+    u32 resident_read_count{0};
+    /// What persistent descriptor tables (D3D12 heap windows) reach, one
+    /// token per table. Full records only: a draw that binds one is never
+    /// delta-recorded.
+    std::vector<MetalResidentToken> resident_logs;
 };
 
 /// A hash of everything @p draw makes the encoder bind and draw: every
@@ -216,8 +328,13 @@ struct CsCompute {
     /// the three threadgroup counts from this buffer at indirect_offset.
     void* indirect_args{nullptr};
     usize indirect_offset{0};
-    std::array<void*, 4> descriptor_tables{};
+    std::array<void*, BACKEND_MAX_DESCRIPTOR_SETS> descriptor_tables{};
     std::vector<void*> resident;
+    /// CBV/SRV/sampler resources precede UAV, unknown-set and typed storage
+    /// resources. Zero keeps conservative RW usage (also for persistent logs).
+    u32 resident_read_count{0};
+    /// As CsDraw::resident_logs.
+    std::vector<MetalResidentToken> resident_logs;
 };
 
 /// Written once, from Metal's completion queue, when the command buffer that
@@ -268,6 +385,12 @@ public:
     /// Monotonic, for tests and diagnostics.
     [[nodiscard]] u64 clears_folded() const noexcept {
         return m_clears_folded.load(std::memory_order_relaxed);
+    }
+    /// Colour or depth attachments whose store was skipped because the next
+    /// pass clears them before anything can read the stored bytes. Monotonic,
+    /// for tests.
+    [[nodiscard]] u64 stores_elided() const noexcept {
+        return m_stores_elided.load(std::memory_order_relaxed);
     }
     /// pass-fold (slim_record.hpp): BeginPasses folded at record time into
     /// the pass recorded just before them (each one an encode-time continue
@@ -414,6 +537,12 @@ public:
                             usize src_offset = 0, usize dst_offset = 0);
     /// Every byte of [offset, offset + size) of @p dst set to @p value.
     void record_fill_buffer(void* dst, usize offset, usize size, u8 value);
+    /// Run @p encode on the encode thread, in stream order, with the open
+    /// render or compute encoder ended: it receives the id<MTLCommandBuffer>
+    /// and encodes (and ends) encoders of its own. What it captures lives
+    /// until the op is released; GPU lifetime is the command buffer's
+    /// (retained references) or the closure's own completion handler.
+    void record_encode(std::function<void(void* command_buffer)> encode);
     void record_generate_mips(void* texture);
     void record_compute(CsCompute&& compute);
     /// Record a timeline signal or wait, in order with the draws around it.
@@ -458,6 +587,8 @@ public:
     /// share pool memory are distinct Metal resources, so hazard tracking
     /// does not order them.
     void record_tiled_barrier();
+    /// GraphicsBackendDevice::attachment_barrier.
+    void record_attachment_barrier(void* texture = nullptr);
     /// Drop a destroyed swapchain's present staging. Must be called from the
     /// swapchain's destructor: the staging pair is keyed by chain pointer, so
     /// without this the textures outlive the surface and a later chain could
@@ -492,6 +623,12 @@ public:
     /// Submit any recording, then wait until it is GPU-complete and any
     /// present has finished. Safe for readback and teardown.
     void drain();
+    /// Submit any recording and wait until every list is GPU-complete, but
+    /// not for a present to reach the display: a texture readback needs the
+    /// writes recorded before it, and a present writes no guest texture.
+    /// drain() also waits out nextDrawable, up to a refresh per frame in
+    /// flight, which stalled every D3D9 GetRenderTargetData.
+    void drain_for_readback();
     /// Generation the next submitted list will carry. Work recorded now
     /// belongs to this generation, so a resource bound now is live until
     /// completed_generation() reaches it.
@@ -520,6 +657,11 @@ public:
     [[nodiscard]] static bool thread_capturing() noexcept {
         return t_capture != nullptr;
     }
+    /// Explicit encoder lease used by synchronous D3D12 replay. Only the owning
+    /// thread bypasses recording; other producers keep the shared queued path.
+    [[nodiscard]] std::unique_ptr<BackendImmediateExecution> begin_immediate();
+    [[nodiscard]] bool immediate_on_this_thread() const noexcept;
+    [[nodiscard]] std::shared_ptr<GpuCompletion> flush_immediate(bool retire_generation = false);
     void shutdown();
 
     MetalSubmitQueue(const MetalSubmitQueue&) = delete;
@@ -561,6 +703,11 @@ private:
         /// Tiled resources: a mapping update and a full barrier.
         TileMapping,
         TiledBarrier,
+        /// GraphicsBackendDevice::attachment_barrier: the open render pass
+        /// ends here; the next one begins a new encoder.
+        AttachmentBarrier,
+        /// record_encode: a closure that encodes its own encoders.
+        Encode,
         Exit,
     };
 
@@ -582,6 +729,8 @@ private:
         std::string debug_label;
         /// TileMapping only.
         std::shared_ptr<MetalTileMappingBatch> tiles;
+        /// Encode only.
+        std::function<void(void*)> encode;
         u64 pass_id{0};
         /// Engaged only for BeginPass / Draw / Compute. Held by value but
         /// constructed only for the op's own kind: as plain members all three
@@ -595,6 +744,8 @@ private:
         u32 run_bytes{0};
         u32 run_draws{0};
         void* blit_src{nullptr};
+        // AttachmentBarrier also uses blit_src: a retained texture scope,
+        // or null for the unconditional boundary. Ownership is identical.
         void* blit_dst{nullptr};
         usize blit_size{0};
         /// CopyBuffer only: byte offsets into each buffer. A whole-buffer copy
@@ -646,6 +797,21 @@ private:
 
     void thread_main();
     void encode_draws(OpList& ops, u64 gpu_gen);
+    void encode_op(Op& op, u64 gpu_gen, const CsCompute*& previous_compute,
+                   const Op*& present, bool keep_compute, u32 discard_colors,
+                   bool discard_depth, u64& begins, u64& ends);
+    void encode_immediate(Op&& op);
+    void end_immediate();
+    bool start_immediate();
+    bool wait_immediate(u64 generation = 0);
+    class ImmediateLease;
+    static thread_local MetalSubmitQueue* t_immediate;
+    // Lock order is native -> m_mu. No wait for native ownership holds m_mu.
+    std::mutex m_native_mutex;
+    bool m_immediate_active{false};  // under m_mu, included in drain predicates
+    u64 m_immediate_gen{0};         // owned by the native encoder lease
+    std::optional<Op> m_immediate_compute;
+    std::optional<Op> m_immediate_begin;
     bool present_from_list(OpList& ops);
     void encode_draw(const CsDraw& draw, u64 pass_id);
     /// One draw as the Draw op case encodes it: the pass-merge rules, then
@@ -655,8 +821,17 @@ private:
     /// arena, extending the DrawRun at the stream's tail when it is the same
     /// pass's and the bytes fit its chunk. Caller holds m_mu.
     void append_delta_locked(const u8* bytes, usize size, u64 pass_id);
-    void encode_begin_pass(const CsBeginPass& pass);
-    void encode_compute(const CsCompute& compute);
+    void encode_begin_pass(const CsBeginPass& pass, u32 discard_colors,
+                           bool discard_depth);
+    /// One entry per BeginPass, in list order. A colour bit or the depth
+    /// flag is set when a later pass in this list clears that attachment
+    /// before any op reads it back from memory. A pass that resolves is
+    /// never dropped: the resolve is the store.
+    void plan_store_elision(const OpList& ops, std::vector<u32>& color_masks,
+                            std::vector<char>& depth_flags) const;
+    /// True while the compute encoder is kept for the next adjacent dispatch.
+    bool encode_compute(const CsCompute& compute, const CsCompute* previous,
+                        bool keep);
     void close_open_pass();
     /// Begin a new encoder for pass @p pass_id, which the encoder has met
     /// the BeginPass of and not yet the EndPass (m_live_passes), loading what
@@ -691,6 +866,7 @@ private:
     /// Whether @p draw, encoded into an encoder that already holds earlier
     /// passes, needs an encoder boundary before it.
     [[nodiscard]] bool draw_needs_own_encoder(const CsDraw& draw) const;
+    void clear_attachment_memo() const;
     /// Selects (and if needed allocates) the staging pair for `chain`,
     /// leaving it in `m_staging_current`.
     bool ensure_staging(const MetalSwapchain* chain, void* src,
@@ -750,6 +926,10 @@ private:
         u32 height{0};
         u32 format{0};
         u32 slot{0};
+        /// 1 while a deferred layer blit still owns this texture. Touched
+        /// only under the swapchain's drawable lock. The next copy onto the
+        /// slot waits until that blit's command buffer is committed.
+        u8 held[2]{};
     };
     std::unordered_map<const MetalSwapchain*, PresentStaging> m_staging_by_chain;
     /// The entry `ensure_staging` selected for the present being encoded.
@@ -841,6 +1021,10 @@ private:
         CsBeginPass replaced{};              ///< the last pass folded in
         std::array<void*, 18> roots{};       ///< attachments and their parents
         u32 root_count{0};
+        /// A draw since this encoder's load can write a colour attachment,
+        /// or the load itself was a clear/discard. While false, sampling a
+        /// colour attachment reads the same texels the attachment holds.
+        bool color_dirty{false};
         /// pass-continue (delta_record.hpp): the candidate's EndPass is owed
         /// but not yet in m_recording (`ended` is set). The next pass folds
         /// into the candidate without it; anything else records it first
@@ -848,6 +1032,17 @@ private:
         bool end_pending{false};
     };
     FoldState m_fold;
+    /// fold_draw_needs_split_locked: resident resources already found not to
+    /// be (views of) the candidate's attachments, for one candidate, one
+    /// colour-dirty state and one recording generation. Every entry is held
+    /// by a draw recorded since, so its address cannot be reused meanwhile.
+    /// A table republished every draw carries the same textures draw after
+    /// draw; each look-up of their roots is two associated-object loads.
+    mutable std::unordered_set<void*> m_fold_clear;
+    mutable u64 m_fold_clear_pass{0};
+    mutable u64 m_fold_clear_gen{0};
+    mutable bool m_fold_clear_dirty{false};
+    mutable void* m_fold_clear_depth_root{nullptr};
     /// pass-continue: record the candidate's owed EndPass, if any. Every
     /// path that adds to or reads the tail of m_recording calls it first,
     /// except the fold of the next pass into the candidate.
@@ -959,6 +1154,12 @@ private:
     bool m_open_pass_merged{false};
     /// A draw in the open encoder writes shader-visible memory.
     bool m_open_pass_wrote{false};
+    /// The UAV buffers and textures that write named. The next draw barriers
+    /// these, not every texture in the pass. Empty while a write could not
+    /// be named: the next order uses the scope barrier.
+    static constexpr u32 kOpenUavSlots = 32;
+    std::array<void*, kOpenUavSlots> m_open_uavs{};
+    u32 m_open_uav_count{0};
     /// The open encoder's depth/stencil attachment may differ from its
     /// texture in memory: its first pass cleared or discarded depth/stencil,
     /// or a draw since the encoder began could write them. While clear,
@@ -966,6 +1167,18 @@ private:
     /// holds (D3D11 allows that only through a read-only depth-stencil view),
     /// so such a draw needs no encoder boundary.
     bool m_open_depth_dirty{false};
+    /// The same for the stencil plane of that attachment. Depth and stencil
+    /// are separate planes with their own load and store: a stencil write
+    /// leaves every depth texel in memory current, and a depth write every
+    /// stencil texel. UE's depth-reading draws (decals, lights, translucency)
+    /// keep a stencil test that writes, through a view that is read-only for
+    /// depth alone; one shared bit made each of them restart the next.
+    bool m_open_stencil_dirty{false};
+    /// Same rule as depth, for colour. A clear or discard at begin, or a
+    /// draw with writes_color since, means a texture sample of a colour
+    /// attachment would miss tile writes. While false, that sample stays
+    /// in the encoder.
+    bool m_open_color_dirty{false};
     /// The descriptor the open encoder was, or would be re-, begun with.
     /// Points into the op list being encoded; reset with the encoder.
     const CsBeginPass* m_open_begin{nullptr};
@@ -978,6 +1191,11 @@ private:
     /// filled when a pass first joins it.
     std::array<void*, 18> m_open_attachment_roots{};
     u32 m_open_attachment_root_count{0};
+    /// Proven non-hazards for this encoder and its exact colour/depth dirty
+    /// state. Retained independently: direct replay releases each draw after
+    /// encoding, so raw addresses alone cannot establish object identity.
+    mutable std::unordered_set<void*> m_attachment_memo;
+    mutable u8 m_attachment_memo_dirty{0};
     std::atomic<u64> m_passes_continued{0};
     std::atomic<u64> m_passes_restarted{0};
     /// The passes whose BeginPass the encoder has met and whose EndPass it
@@ -1009,6 +1227,7 @@ private:
         void* target{nullptr};  ///< the pass's visibility buffer, retained
         usize offset{0};        ///< the pass's slot in `target`
     };
+    static void complete_visibility_carries(std::vector<VisibilityCarry> carries);
     /// The list being encoded's carries (encode thread only).
     std::vector<VisibilityCarry> m_list_carries;
     /// Handed to list_completed, by generation.
@@ -1024,6 +1243,7 @@ private:
     /// Written by recording threads under m_mu, once per folded clear: kept
     /// off the encode thread's lines.
     alignas(128) std::atomic<u64> m_clears_folded{0};
+    std::atomic<u64> m_stores_elided{0};
 };
 
 } // namespace vitreo::graphics

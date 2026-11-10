@@ -499,7 +499,10 @@ u64 VirtualMemoryManager::virtual_alloc(u64 address, u64 size,
     // top-down reservation stays on the inline path, and spill to the full
     // ceiling only when the reservation cannot hold the request. An explicit
     // lpAddress is not affected.
-    const auto find_auto_gap_top_down = [&]() -> u64 {
+    // @p limit bounds the search from above: an identity-mapping retry must
+    // look strictly below the address the host refused, or it finds the same
+    // candidate again (the host occupant is not in the region table).
+    const auto find_auto_gap_top_down = [&](u64 limit = ~u64{0}) -> u64 {
         std::vector<std::pair<u64, u64>> used;
         used.reserve(m_allocations.size() + 8);
         for (const auto& [lo, hi] : m_memory.region_extents()) {
@@ -517,6 +520,7 @@ u64 VirtualMemoryManager::virtual_alloc(u64 address, u64 size,
             : 0xFFFF0000ULL;
         const u64 full_ceiling = std::min(m_maximum_address + 1u, gm_end);
         const auto search_below = [&](u64 ceiling) -> u64 {
+            if (ceiling > limit) ceiling = limit;
             std::vector<std::pair<u64, u64>> freegaps;
             u64 cursor = 0x10000;
             for (const auto& [lo, hi] : used) {
@@ -758,7 +762,7 @@ u64 VirtualMemoryManager::virtual_alloc(u64 address, u64 size,
         // GuestMemory already recorded the host occupant as a reserved hole.
         // Search again rather than turning a single uncommittable span into a
         // guest OOM (ERROR_NOT_ENOUGH_MEMORY).
-        const u64 retry = top_down ? find_auto_gap_top_down()
+        const u64 retry = top_down ? find_auto_gap_top_down(base)
                                    : find_auto_gap(base + auto_alignment);
         if (retry == 0 || retry == base) {
             std::fprintf(stderr,
@@ -873,6 +877,55 @@ u64 VirtualMemoryManager::virtual_alloc(u64 address, u64 size,
                      static_cast<unsigned long long>(base));
     }
     return base;
+}
+
+bool VirtualMemoryManager::adopt_mapped_region(u64 base, u64 size,
+                                               bool write_watch) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (base == 0 || size == 0 || (base % 0x10000ull /* allocation granularity */) != 0 ||
+        (size % GUEST_PAGE_SIZE) != 0 || base + size < base) {
+        return false;
+    }
+    // No live allocation may overlap it.
+    auto next = m_allocations.lower_bound(base);
+    if (next != m_allocations.end() && next->first < base + size) return false;
+    if (next != m_allocations.begin()) {
+        auto previous = std::prev(next);
+        if (previous->first + previous->second.size > base) return false;
+    }
+    AllocInfo allocation{
+        size,
+        PAGE_READWRITE,
+        {{0, PageState{true, PAGE_READWRITE}}},
+        /*internal=*/true,
+        false,
+        false,
+        0,
+        write_watch,
+    };
+    if (write_watch) {
+        const usize bytes = static_cast<usize>((size / GUEST_PAGE_SIZE + 7u) / 8u);
+        // The owner filled the pages before handing them over (a D3D12 heap
+        // is zeroed): every page starts written (measured, a12 write_watch:
+        // the first GetWriteWatch of a fresh 64 KiB heap reports 16 pages).
+        allocation.write_watch_dirty.assign(bytes, 0xFF);
+        allocation.write_watch_armed.assign(bytes, 0);
+    }
+    auto [it, inserted] = m_allocations.emplace(base, std::move(allocation));
+    if (!inserted) return false;
+    if (write_watch) {
+        publish_write_watch_locked(base, it->second);
+        arm_write_watch_range_locked(base, it->second, base, base + size);
+    }
+    return true;
+}
+
+void VirtualMemoryManager::release_adopted_region(u64 base) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    auto it = m_allocations.find(base);
+    if (it == m_allocations.end() || !it->second.internal) return;
+    unpublish_write_watch_locked(base, it->second);
+    m_allocations.erase(it);
 }
 
 } // namespace vitreo::winapi

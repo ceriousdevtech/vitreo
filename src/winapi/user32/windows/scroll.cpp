@@ -63,10 +63,13 @@ void sync_scroll(User32ExtManager& manager, windowing::User32Host& host,
     auto* window = windows.find(hwnd);
     if (!window) return;
     const u32 bit = bar ? windowing::WS::VSCROLL : windowing::WS::HSCROLL;
-    const u32 previous = window->style;
-    window->style = state.visible ? previous | bit : previous & ~bit;
-    host.update_window_scrollbar(hwnd, bar, state, redraw);
-    if (window->style != previous)
+    u32 previous=0;
+    const auto geometry=windows.update_geometry(hwnd,[&](auto& data) {
+        previous=data.style;data.style=state.visible?previous|bit:previous&~bit;
+    });
+    if(!geometry)return;
+    host.update_window_scrollbar(hwnd,bar,state,redraw);
+    if(geometry->style!=previous)
         (void)manager.apply_set_window_pos(hwnd, 0, 0, 0, 0, 0, 0x37); // frame changed, no move/size/z/activate
 }
 windowing::ScrollBarState* scroll_state(windowing::HwndManager& manager, u32 hwnd, u32 bar) {

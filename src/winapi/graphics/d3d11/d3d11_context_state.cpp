@@ -176,6 +176,13 @@ void D3D11Manager::clear_context_state(GuestAddr context) {
     // would re-translate every shader combination after each ClearState.
     auto fresh = ContextState{};
     fresh.pipelines = std::move(m_context_states[context].pipelines);
+    // So do the descriptor tables: they are argument buffers the backend
+    // recycles, not bindings. Dropping them made every draw after a
+    // ClearState allocate new ones (a kernel call each) while the old ones
+    // were freed as their frames completed. Their slots are rewritten from
+    // the new bindings, because the cache that says "unchanged" is reset.
+    fresh.descriptor_tables =
+        std::move(m_context_states[context].descriptor_tables);
     // Measured quirk (d3d11_a05b_bind_rules_probe): ClearState resets the
     // stride and offset of IA slots 0..N only, N being the highest slot that
     // holds a buffer. Past it -- and in every slot when no buffer is bound --

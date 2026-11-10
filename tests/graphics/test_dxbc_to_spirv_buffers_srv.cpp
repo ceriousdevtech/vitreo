@@ -7,6 +7,8 @@
 #include "graphics/shaders/dxbc_to_spirv.hpp"
 #include "graphics/shaders/dxbc_parser.hpp"
 #include "graphics/shaders/spirv_to_msl.hpp"
+#include "graphics/shaders/dxbc_to_spirv_spv_defs.hpp"
+#include "dxbc_icb_test_fixture.hpp"
 #include "graphics/contracts/backend_device.hpp"
 
 #include "dxbc_to_spirv_test_shaders.h"
@@ -162,6 +164,10 @@ TEST(DxbcToSpirvTest, GuardsStructuredBufferLoadsAgainstTheViewSizeOnRequest) {
     ASSERT_TRUE(guarded.valid()) << guarded.failure;
     EXPECT_TRUE(spirv_contains_opcode(guarded.spirv, /*OpSelect=*/169u));
     EXPECT_TRUE(spirv_contains_opcode(guarded.spirv, /*OpULessThan=*/176u));
+    // The four words are one span: in-bounds loads are a straight line, and
+    // only a view that ends inside the group takes the per-word select.
+    EXPECT_TRUE(spirv_contains_opcode(guarded.spirv,
+                                      /*OpBranchConditional=*/250u));
     // The size comes from the push block, so the block must be part of the
     // vertex stage's interface (SPIRV-Cross otherwise leaves it undeclared:
     // "use of undeclared identifier 'vitreo_sampler_lod_biases'").
@@ -328,4 +334,74 @@ TEST(DxbcToSpirvTest, MulLoadsRelativeImmediateConstantBufferIndex) {
     const auto compiled = compile_spirv_to_msl(
         result.spirv.data(), result.spirv.size(), ShaderStage::Vertex);
     EXPECT_TRUE(compiled.valid());
+}
+
+TEST(DxbcToSpirvTest, ImmediateConstantBufferUsesOneGuardedConstantArray) {
+    for (u32 count : {1u, 1024u, 4096u}) {
+        std::vector<IcbRow> rows(count);
+        for (u32 i = 0; i < count; ++i) rows[i] = {i, i ^ 0x7fc12345u, 0x80000000u, 0xff800000u};
+        auto c = make_icb_fixture(rows, true, 1, 2, 0x1B, 3);
+        const auto result = translate_dxbc_to_spirv(c);
+        ASSERT_TRUE(result.valid()) << result.failure;
+        u32 selects = 0, initialized_private = 0;
+        using namespace vitreo::graphics::dxbc_spirv_detail;
+        for (usize at = 5; at < result.spirv.size();) {
+            const u32 word = result.spirv[at], size = word >> 16, op = word & 0xffff;
+            ASSERT_GT(size, 0u);
+            if (op == static_cast<u32>(SpvOp::OpSelect)) ++selects; // OpSelect
+            if (op == static_cast<u32>(SpvOp::OpVariable) && size == 5u &&
+                result.spirv[at + 3] == static_cast<u32>(SpvStorageClass::Private)) ++initialized_private;
+            at += size;
+        }
+        EXPECT_LE(selects, 6u);
+        EXPECT_EQ(initialized_private, 1u);
+        const auto msl = compile_spirv_to_msl(result.spirv.data(), result.spirv.size(), ShaderStage::Fragment);
+        ASSERT_TRUE(msl.valid());
+        const std::string text = msl.msl_text();
+        EXPECT_EQ(text.find("_array_copy"), std::string::npos);
+        EXPECT_NE(text.find("constant uint4"), std::string::npos) << text.substr(0, 2000);
+        if (count == 1024 && std::getenv("VITREO_TEST_DUMP_ICB")) {
+            std::ofstream("/tmp/vitreo-icb-authored-after.metal") << text;
+            std::ofstream tokens("/tmp/vitreo-icb-authored.tokens", std::ios::binary);
+            tokens.write(reinterpret_cast<const char*>(c.bytecode.data()), c.bytecode.size());
+        }
+    }
+}
+
+TEST(DxbcToSpirvTest, ImmediateConstantBufferRejectsInvalidDeclarations) {
+    for (u32 count : {0u, 4097u}) {
+        const auto result = translate_dxbc_to_spirv(make_icb_fixture(std::vector<IcbRow>(count), true));
+        EXPECT_FALSE(result.valid());
+        EXPECT_NE(result.failure.find("immediate constant buffer"), std::string::npos);
+    }
+    auto c = make_icb_fixture({IcbRow{1, 2, 3, 4}}, true);
+    const std::array<u32, 6> duplicate{0x1835, 6, 5, 6, 7, 8};
+    const auto* bytes = reinterpret_cast<const u8*>(duplicate.data());
+    c.bytecode.insert(c.bytecode.begin() + 4 * 10, bytes, bytes + sizeof(duplicate));
+    const u32 total_words = static_cast<u32>(c.bytecode.size() / sizeof(u32));
+    std::memcpy(c.bytecode.data() + sizeof(u32), &total_words, sizeof(total_words));
+    EXPECT_FALSE(translate_dxbc_to_spirv(c).valid());
+}
+
+TEST(DxbcToSpirvTest, ImmediateConstantBufferSupportsStaticIndexableRelativeRegister) {
+    auto c = make_icb_fixture({IcbRow{1, 2, 3, 4}}, true, 0, 2, 0xE4, 1, true);
+    const auto result = translate_dxbc_to_spirv(c);
+    ASSERT_TRUE(result.valid()) << result.failure;
+    const auto msl = compile_spirv_to_msl(result.spirv.data(), result.spirv.size(), ShaderStage::Fragment);
+    ASSERT_TRUE(msl.valid());
+}
+
+
+TEST(DxbcToSpirvTest, RejectsUnusedTruncatedImmediateConstantBuffer) {
+    DxbcContainer c{};
+    c.shader_model_major = 5;
+    c.stage = ShaderStage::Fragment;
+    // No operand ever reads the ICB: declaration validation must still reject
+    // its missing fourth component, rather than treating it as undeclared.
+    const std::array<u32, 7> words{0x50u, 7u, 0x1835u, 6u, 1u, 2u, 3u};
+    c.bytecode.resize(sizeof(words));
+    std::memcpy(c.bytecode.data(), words.data(), sizeof(words));
+    const auto result = translate_dxbc_to_spirv(c);
+    EXPECT_FALSE(result.valid());
+    EXPECT_EQ(result.failure, "invalid immediate constant buffer declaration");
 }

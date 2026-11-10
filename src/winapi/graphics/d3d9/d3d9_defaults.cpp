@@ -11,6 +11,9 @@
 
 #include "winapi/graphics/d3d9/d3d9_state.hpp"
 #include "graphics/contracts/format_converter.hpp"
+#include "graphics/shaders/sm3_to_msl.hpp"
+#include <cmath>
+#include <algorithm>
 #include <cstring>
 #include <vector>
 
@@ -278,6 +281,80 @@ bool d3d9_volume_storage(u32 format, u32 width, u32 height, u32 depth,
     slice_pitch_out = static_cast<u32>(slice_bytes);
     bytes_out = slice_bytes * depth;
     return true;
+}
+
+bool d3d9_encode_clear_texel(u32 d3d9_format, graphics::PixelFormat storage,
+                             const std::array<float, 4>& rgba, u32 d3dcolor,
+                             std::array<u8, 16>& texel, unsigned& bytes) noexcept {
+    using graphics::PixelFormat;
+    const auto unorm = [](float v, float max) {
+        return static_cast<u32>(std::lround(std::clamp(v, 0.0f, 1.0f) * max));
+    };
+    const auto put = [&](const void* data, unsigned size) {
+        std::memcpy(texel.data(), data, size);
+        bytes = size;
+        return true;
+    };
+    const u8 a = static_cast<u8>(d3dcolor >> 24);
+    const u8 r = static_cast<u8>(d3dcolor >> 16);
+    const u8 g = static_cast<u8>(d3dcolor >> 8);
+    const u8 b = static_cast<u8>(d3dcolor);
+    switch (storage) {
+    case PixelFormat::BGRA8Unorm: {
+        const u8 v[4] = {b, g, r, a};
+        return put(v, 4);
+    }
+    case PixelFormat::RGBA8Unorm: {
+        const u8 v[4] = {r, g, b, a};
+        return put(v, 4);
+    }
+    case PixelFormat::R8Unorm: {
+        // D3DFMT_A8 keeps alpha; D3DFMT_L8 and the rest keep the red channel.
+        const u8 v = d3d9_format == 28 ? a : r;
+        return put(&v, 1);
+    }
+    case PixelFormat::RG8Unorm: {  // D3DFMT_A8L8: L in R, A in G
+        const u8 v[2] = {r, a};
+        return put(v, 2);
+    }
+    case PixelFormat::RGB10A2Unorm: {
+        const u32 v = unorm(rgba[0], 1023.0f) | (unorm(rgba[1], 1023.0f) << 10) |
+                      (unorm(rgba[2], 1023.0f) << 20) | (unorm(rgba[3], 3.0f) << 30);
+        return put(&v, 4);
+    }
+    case PixelFormat::R16Unorm: {
+        const u16 v = static_cast<u16>(unorm(rgba[0], 65535.0f));
+        return put(&v, 2);
+    }
+    case PixelFormat::RG16Unorm: {
+        const u16 v[2] = {static_cast<u16>(unorm(rgba[0], 65535.0f)),
+                          static_cast<u16>(unorm(rgba[1], 65535.0f))};
+        return put(v, 4);
+    }
+    case PixelFormat::RGBA16Unorm: {
+        u16 v[4];
+        for (int i = 0; i < 4; ++i) v[i] = static_cast<u16>(unorm(rgba[i], 65535.0f));
+        return put(v, 8);
+    }
+    case PixelFormat::R16Float:
+    case PixelFormat::RG16Float:
+    case PixelFormat::RGBA16Float: {
+        const unsigned n = storage == PixelFormat::R16Float ? 1 :
+                           storage == PixelFormat::RG16Float ? 2 : 4;
+        _Float16 v[4];
+        for (unsigned i = 0; i < 4; ++i) v[i] = static_cast<_Float16>(rgba[i]);
+        return put(v, n * 2);
+    }
+    case PixelFormat::R32Float:
+    case PixelFormat::RG32Float:
+    case PixelFormat::RGBA32Float: {
+        const unsigned n = storage == PixelFormat::R32Float ? 1 :
+                           storage == PixelFormat::RG32Float ? 2 : 4;
+        return put(rgba.data(), n * 4);
+    }
+    default:
+        return false;
+    }
 }
 
 graphics::PixelFormat d3d9_backend_format(u32 format) noexcept {
@@ -709,7 +786,8 @@ void fill_d3d9_device_caps(std::array<u8, D3DCAPS9_SIZE>& caps,
     write_u32(D3DCAPS9_OFFSET_MAX_STREAMS, 16);
     write_u32(D3DCAPS9_OFFSET_MAX_STREAM_STRIDE, 255);
     write_u32(D3DCAPS9_OFFSET_VERTEX_SHADER_VERSION, 0xFFFE0300u); // vs_3_0
-    write_u32(D3DCAPS9_OFFSET_MAX_VERTEX_SHADER_CONST, 256);
+    write_u32(D3DCAPS9_OFFSET_MAX_VERTEX_SHADER_CONST,
+              graphics::SM3_MAX_FLOAT_CONSTANT_REGISTERS);
     write_u32(D3DCAPS9_OFFSET_PIXEL_SHADER_VERSION, 0xFFFF0300u); // ps_3_0
     write_f32(D3DCAPS9_OFFSET_PIXEL_SHADER_1X_MAX_VALUE, 8.0f);
     write_u32(D3DCAPS9_OFFSET_DEV_CAPS2,

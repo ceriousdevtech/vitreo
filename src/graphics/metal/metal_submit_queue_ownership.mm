@@ -34,6 +34,12 @@
 
 namespace vitreo::graphics {
 
+MetalResidentLog::~MetalResidentLog() {
+    for (void* handle : m_handles) {
+        if (handle != nullptr) CFRelease(handle);
+    }
+}
+
 void MetalSubmitQueue::retain(void* object) {
     if (object != nullptr) {
         CFRetain(object);

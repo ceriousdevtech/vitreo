@@ -30,7 +30,7 @@ static std::optional<u64> read_mmm64(ExecContext& ctx, const Operand& op) noexce
     // Memory operand
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return std::nullopt;
-    auto result = read_memory(ctx, addr.value(), 8);
+    auto result = read_memory_av(ctx, addr.value(), 8);
     if (!result) return std::nullopt;
     return result.value();
 }
@@ -43,7 +43,27 @@ static bool write_mem64(ExecContext& ctx, const Operand& op, u64 val) noexcept {
     return r.is_ok();
 }
 
+static ExecResult exec_mmx_body(ExecContext& ctx,
+                                const DecodedInstruction& instr) noexcept;
+
+/// Intel SDM Vol. 3A 6.5: a faulting instruction commits nothing, and the
+/// MMX state transition (TOP := 0, every tag Valid; Vol. 1 9.5.1) is part of
+/// executing it. The handlers below enter MMX state as they READ their
+/// register operand, before a memory operand is fetched, so an exception
+/// restores the x87 status and tag words the instruction found.
 ExecResult exec_mmx(ExecContext& ctx, const DecodedInstruction& instr) noexcept {
+    const u16 status_word = ctx.cpu.fpu.status_word;
+    const u16 tag_word = ctx.cpu.fpu.tag_word;
+    const ExecResult result = exec_mmx_body(ctx, instr);
+    if (result == ExecResult::Exception) {
+        ctx.cpu.fpu.status_word = status_word;
+        ctx.cpu.fpu.tag_word = tag_word;
+    }
+    return result;
+}
+
+static ExecResult exec_mmx_body(ExecContext& ctx,
+                                const DecodedInstruction& instr) noexcept {
     const auto& op0 = instr.operands[0];
     const auto& op1 = instr.operands[1];
 
@@ -91,7 +111,7 @@ ExecResult exec_mmx(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
                 ctx.exception = CpuException::GeneralProtection;
                 return ExecResult::Exception;
             }
-            auto result = read_memory(ctx, addr.value(), 4);
+            auto result = read_memory_av(ctx, addr.value(), 4);
             if (!result) {
                 ctx.exception = CpuException::GeneralProtection;
                 return ExecResult::Exception;
@@ -1047,7 +1067,7 @@ ExecResult exec_mmx(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
                 ctx.exception = CpuException::GeneralProtection;
                 return ExecResult::Exception;
             }
-            auto r = read_memory(ctx, addr.value(), 2);
+            auto r = read_memory_av(ctx, addr.value(), 2);
             if (!r) {
                 ctx.exception = CpuException::GeneralProtection;
                 return ExecResult::Exception;

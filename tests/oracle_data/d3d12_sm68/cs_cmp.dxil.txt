@@ -1,0 +1,219 @@
+;
+; Note: shader requires additional functionality:
+;       Tiled resources
+;       Advanced Texture Ops
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 2597e0937856552b9061fb786834a33f
+;
+; Pipeline Runtime Information: 
+;
+;PSVRuntimeInfo:
+; Compute Shader
+; NumThreads=(8,8,1)
+; MinimumExpectedWaveLaneCount: 0
+; MaximumExpectedWaveLaneCount: 4294967295
+; UsesViewID: false
+; SigInputElements: 0
+; SigOutputElements: 0
+; SigPatchConstOrPrimElements: 0
+; SigInputVectors: 0
+; SigOutputVectors[0]: 0
+; SigOutputVectors[1]: 0
+; SigOutputVectors[2]: 0
+; SigOutputVectors[3]: 0
+; EntryFunctionName: cs_cmp
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; cmp                               sampler      NA          NA      S0             s0     1
+; depth                             texture     f32          2d      T0             t0     1
+; outbuf                                UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResBind = type { i32, i32, i32, i8 }
+%dx.types.ResourceProperties = type { i32, i32 }
+%dx.types.ResRet.f32 = type { float, float, float, float, i32 }
+%"class.Texture2D<float>" = type { float, %"class.Texture2D<float>::mips_type" }
+%"class.Texture2D<float>::mips_type" = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+%struct.SamplerComparisonState = type { i32 }
+
+define void @cs_cmp() {
+  %1 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind { i32 0, i32 0, i32 0, i8 1 }, i32 0, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind zeroinitializer, i32 0, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %3 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind { i32 0, i32 0, i32 0, i8 3 }, i32 0, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %4 = call i32 @dx.op.threadIdInGroup.i32(i32 95, i32 0)  ; ThreadIdInGroup(component)
+  %5 = call i32 @dx.op.threadIdInGroup.i32(i32 95, i32 1)  ; ThreadIdInGroup(component)
+  %6 = call i32 @dx.op.flattenedThreadIdInGroup.i32(i32 96)  ; FlattenedThreadIdInGroup()
+  %7 = lshr i32 %4, 1
+  %8 = lshr i32 %5, 1
+  %9 = shl i32 %8, 2
+  %10 = add i32 %9, %7
+  %11 = and i32 %10, 3
+  %12 = uitofp i32 %11 to float
+  %13 = call float @dx.op.unary.f32(i32 21, float %12)  ; Exp(value)
+  %14 = lshr i32 %10, 2
+  %15 = uitofp i32 %14 to float
+  %16 = call float @dx.op.unary.f32(i32 21, float %15)  ; Exp(value)
+  %17 = fmul fast float %12, 0x3FA99999A0000000
+  %18 = fmul fast float %15, 0x3FA47AE140000000
+  %19 = and i32 %4, 1
+  %20 = uitofp i32 %19 to float
+  %21 = and i32 %5, 1
+  %22 = uitofp i32 %21 to float
+  %23 = fmul fast float %20, 2.734375e-02
+  %24 = fmul fast float %23, %13
+  %25 = fmul fast float %22, 1.953125e-02
+  %26 = fmul fast float %25, %16
+  %27 = fadd fast float %24, 0x3FB99999A0000000
+  %28 = fadd fast float %27, %17
+  %29 = fadd fast float %26, 0x3FC99999A0000000
+  %30 = fadd fast float %29, %18
+  %31 = and i32 %6, 7
+  %32 = uitofp i32 %31 to float
+  %33 = fmul fast float %32, 3.750000e-01
+  %34 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 2, i32 265 })  ; AnnotateHandle(res,props)  resource: Texture2D<F32>
+  %35 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %3, %dx.types.ResourceProperties { i32 32782, i32 0 })  ; AnnotateHandle(res,props)  resource: SamplerComparisonState
+  %36 = call %dx.types.ResRet.f32 @dx.op.sampleCmpLevel.f32(i32 224, %dx.types.Handle %34, %dx.types.Handle %35, float %28, float %30, float undef, float undef, i32 0, i32 0, i32 undef, float 3.125000e-01, float %33)  ; SampleCmpLevel(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,compareValue,lod)
+  %37 = extractvalue %dx.types.ResRet.f32 %36, 0
+  %38 = bitcast float %37 to i32
+  %39 = shl i32 %6, 5
+  %40 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %40, i32 %39, i32 undef, i32 %38, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %41 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 2, i32 265 })  ; AnnotateHandle(res,props)  resource: Texture2D<F32>
+  %42 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %3, %dx.types.ResourceProperties { i32 32782, i32 0 })  ; AnnotateHandle(res,props)  resource: SamplerComparisonState
+  %43 = call %dx.types.ResRet.f32 @dx.op.sampleCmpLevel.f32(i32 224, %dx.types.Handle %41, %dx.types.Handle %42, float %28, float %30, float undef, float undef, i32 1, i32 0, i32 undef, float 3.125000e-01, float 1.500000e+00)  ; SampleCmpLevel(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,compareValue,lod)
+  %44 = extractvalue %dx.types.ResRet.f32 %43, 0
+  %45 = bitcast float %44 to i32
+  %46 = or i32 %39, 4
+  %47 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %47, i32 %46, i32 undef, i32 %45, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %48 = urem i32 %6, 7
+  %49 = uitofp i32 %48 to float
+  %50 = fmul fast float %49, 0x3F9EB851E0000000
+  %51 = urem i32 %6, 5
+  %52 = uitofp i32 %51 to float
+  %53 = fmul fast float %52, 0x3FA99999A0000000
+  %54 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 2, i32 265 })  ; AnnotateHandle(res,props)  resource: Texture2D<F32>
+  %55 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %3, %dx.types.ResourceProperties { i32 32782, i32 0 })  ; AnnotateHandle(res,props)  resource: SamplerComparisonState
+  %56 = call %dx.types.ResRet.f32 @dx.op.sampleCmpGrad.f32(i32 254, %dx.types.Handle %54, %dx.types.Handle %55, float %28, float %30, float undef, float undef, i32 0, i32 0, i32 undef, float 3.125000e-01, float %53, float 0.000000e+00, float undef, float 0.000000e+00, float %50, float undef, float undef)  ; SampleCmpGrad(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,compareValue,ddx0,ddx1,ddx2,ddy0,ddy1,ddy2,clamp)
+  %57 = extractvalue %dx.types.ResRet.f32 %56, 0
+  %58 = bitcast float %57 to i32
+  %59 = or i32 %39, 8
+  %60 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %60, i32 %59, i32 undef, i32 %58, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %61 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 2, i32 265 })  ; AnnotateHandle(res,props)  resource: Texture2D<F32>
+  %62 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %3, %dx.types.ResourceProperties { i32 32782, i32 0 })  ; AnnotateHandle(res,props)  resource: SamplerComparisonState
+  %63 = call %dx.types.ResRet.f32 @dx.op.sampleCmpGrad.f32(i32 254, %dx.types.Handle %61, %dx.types.Handle %62, float %28, float %30, float undef, float undef, i32 0, i32 0, i32 undef, float 3.125000e-01, float 0x3FC99999A0000000, float 0.000000e+00, float undef, float 0.000000e+00, float 0x3FC99999A0000000, float undef, float 2.500000e+00)  ; SampleCmpGrad(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,compareValue,ddx0,ddx1,ddx2,ddy0,ddy1,ddy2,clamp)
+  %64 = extractvalue %dx.types.ResRet.f32 %63, 0
+  %65 = bitcast float %64 to i32
+  %66 = or i32 %39, 12
+  %67 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %67, i32 %66, i32 undef, i32 %65, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %68 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 2, i32 265 })  ; AnnotateHandle(res,props)  resource: Texture2D<F32>
+  %69 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %3, %dx.types.ResourceProperties { i32 32782, i32 0 })  ; AnnotateHandle(res,props)  resource: SamplerComparisonState
+  %70 = call %dx.types.ResRet.f32 @dx.op.sampleCmpBias.f32(i32 255, %dx.types.Handle %68, %dx.types.Handle %69, float %28, float %30, float undef, float undef, i32 0, i32 0, i32 undef, float 3.125000e-01, float 1.250000e+00, float undef)  ; SampleCmpBias(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,compareValue,bias,clamp)
+  %71 = extractvalue %dx.types.ResRet.f32 %70, 0
+  %72 = bitcast float %71 to i32
+  %73 = or i32 %39, 16
+  %74 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %74, i32 %73, i32 undef, i32 %72, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %75 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 2, i32 265 })  ; AnnotateHandle(res,props)  resource: Texture2D<F32>
+  %76 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %3, %dx.types.ResourceProperties { i32 32782, i32 0 })  ; AnnotateHandle(res,props)  resource: SamplerComparisonState
+  %77 = call %dx.types.ResRet.f32 @dx.op.sampleCmpBias.f32(i32 255, %dx.types.Handle %75, %dx.types.Handle %76, float %28, float %30, float undef, float undef, i32 0, i32 0, i32 undef, float 3.125000e-01, float -7.500000e-01, float 1.000000e+00)  ; SampleCmpBias(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,compareValue,bias,clamp)
+  %78 = extractvalue %dx.types.ResRet.f32 %77, 0
+  %79 = bitcast float %78 to i32
+  %80 = or i32 %39, 20
+  %81 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %81, i32 %80, i32 undef, i32 %79, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %82 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 2, i32 265 })  ; AnnotateHandle(res,props)  resource: Texture2D<F32>
+  %83 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %3, %dx.types.ResourceProperties { i32 32782, i32 0 })  ; AnnotateHandle(res,props)  resource: SamplerComparisonState
+  %84 = call %dx.types.ResRet.f32 @dx.op.sampleCmp.f32(i32 64, %dx.types.Handle %82, %dx.types.Handle %83, float %28, float %30, float undef, float undef, i32 0, i32 0, i32 undef, float 3.125000e-01, float undef)  ; SampleCmp(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,compareValue,clamp)
+  %85 = extractvalue %dx.types.ResRet.f32 %84, 0
+  %86 = bitcast float %85 to i32
+  %87 = or i32 %39, 24
+  %88 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %88, i32 %87, i32 undef, i32 %86, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %89 = or i32 %39, 28
+  %90 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %90, i32 %89, i32 undef, i32 %6, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadIdInGroup.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.flattenedThreadIdInGroup.i32(i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f32 @dx.op.sampleCmpBias.f32(i32, %dx.types.Handle, %dx.types.Handle, float, float, float, float, i32, i32, i32, float, float, float) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f32 @dx.op.sampleCmpLevel.f32(i32, %dx.types.Handle, %dx.types.Handle, float, float, float, float, i32, i32, i32, float, float) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f32 @dx.op.sampleCmpGrad.f32(i32, %dx.types.Handle, %dx.types.Handle, float, float, float, float, i32, i32, i32, float, float, float, float, float, float, float, float) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f32 @dx.op.sampleCmp.f32(i32, %dx.types.Handle, %dx.types.Handle, float, float, float, float, i32, i32, i32, float, float) #1
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.unary.f32(i32, float) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #2
+
+; Function Attrs: nounwind readnone
+declare %dx.types.Handle @dx.op.annotateHandle(i32, %dx.types.Handle, %dx.types.ResourceProperties) #0
+
+; Function Attrs: nounwind readnone
+declare %dx.types.Handle @dx.op.createHandleFromBinding(i32, %dx.types.ResBind, i32, i1) #0
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!12}
+
+!0 = !{!"dxc(private) 1.9.0.5399 (a107ba613)"}
+!1 = !{i32 1, i32 8}
+!2 = !{i32 1, i32 9}
+!3 = !{!"cs", i32 6, i32 8}
+!4 = !{!5, !8, null, !10}
+!5 = !{!6}
+!6 = !{i32 0, %"class.Texture2D<float>"* undef, !"", i32 0, i32 0, i32 1, i32 2, i32 0, !7}
+!7 = !{i32 0, i32 9}
+!8 = !{!9}
+!9 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!10 = !{!11}
+!11 = !{i32 0, %struct.SamplerComparisonState* undef, !"", i32 0, i32 0, i32 1, i32 1, null}
+!12 = !{void ()* @cs_cmp, !"cs_cmp", null, !4, !13}
+!13 = !{i32 0, i64 25769807888, i32 4, !14}
+!14 = !{i32 8, i32 8, i32 1}

@@ -28,6 +28,27 @@ class ModuleManager;
 
 namespace vitreo {
 
+// Translate Windows software-interrupt services at the runtime boundary.
+// Native int2c_record_probe: both record and context name the final CD byte;
+// returning ContinueExecution without editing IP repeats the assertion.
+inline void normalize_windows_interrupt(cpu::ExecContext& context,
+                                        cpu::ExecResult& result) noexcept {
+    if (result != cpu::ExecResult::Interrupt) return;
+    if (context.interrupt_num == 1 &&
+        context.exception == cpu::CpuException::Debug) {
+        result = cpu::ExecResult::Exception;
+    } else if (context.interrupt_num == 0x2c) {
+        context.exception = cpu::CpuException::AssertionFailure;
+        // Ignored prefixes count toward the hardware return IP. Windows
+        // backs that IP up by exactly two bytes, not the full instruction.
+        if (context.instr_length > 2) context.cpu.advance_ip(context.instr_length - 2);
+        context.exception_addr = context.cpu.rip;
+        context.exception_error = 0;
+        context.exception_num_params = 0;
+        result = cpu::ExecResult::Exception;
+    }
+}
+
 /// Human-readable label for CpuException values used in run-loop diagnostics.
 [[nodiscard]] inline const char* exception_name(cpu::CpuException ex) {
     // Note: CpuException::None and CpuException::DivideError both map to 0.
@@ -52,6 +73,7 @@ namespace vitreo {
         case 17: return "AlignmentCheck";
         case 18: return "MachineCheck";
         case 19: return "SimdFloatingPoint";
+        case static_cast<u8>(cpu::CpuException::AssertionFailure): return "AssertionFailure";
     }
     return "Unknown";
 }

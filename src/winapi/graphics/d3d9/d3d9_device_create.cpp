@@ -14,10 +14,60 @@
 #include <vitreo/diagnostics.hpp>
 
 #include <array>
+#include <map>
+#include <string>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <memory>
 #include <utility>
 
 namespace vitreo::winapi {
+
+// VITREO_D3D9_XFER_LOG: the first 400 surface/texture transfers with both
+// objects' shape and the result, to place a readback/copy chain.
+void D3D9Manager::log_transfer(Marshaler& m, const char* name, u32 src_arg, u32 dst_arg) {
+    static const bool enabled = std::getenv("VITREO_D3D9_XFER_LOG") != nullptr;
+    static std::map<std::string, int> shown;
+    if (!enabled || shown[name]++ >= 4000) return;
+    const auto describe = [&](u32 id, char* out, usize size) {
+        if (ComObject* e = find(id, D3D9InterfaceId::Surface); e != nullptr && e->surface) {
+            const SurfaceState& s = *e->surface;
+            std::snprintf(out, size, "surf %08x %ux%u fmt=%u pool=%u usage=%x ms=%u lvl=%u",
+                          id, s.width, s.height, s.format, s.pool, s.usage,
+                          s.multi_sample_type, s.level);
+        } else if (ComObject* t = find(id, D3D9InterfaceId::Texture);
+                   t != nullptr && t->texture) {
+            std::snprintf(out, size, "tex %08x fmt=%u", id, t->texture->format);
+        } else {
+            std::snprintf(out, size, "obj %08x", id);
+        }
+    };
+    char a[160];
+    char b[160] = "-";
+    describe(static_cast<u32>(m.arg(src_arg)), a, sizeof(a));
+    if (dst_arg != 0) describe(static_cast<u32>(m.arg(dst_arg)), b, sizeof(b));
+    char rects[96] = "";
+    if (std::strcmp(name, "StretchRect") == 0) {
+        // RECT* pSourceRect (arg 2), RECT* pDestRect (arg 4).
+        const auto read_rect = [&](GuestAddr at, char* out, usize size) {
+            if (at == 0) { std::snprintf(out, size, "full"); return; }
+            i32 v[4] = {};
+            for (int i = 0; i < 4; ++i) {
+                v[i] = static_cast<i32>(m.memory().read_u32(at + 4u * i).value_or(0));
+            }
+            std::snprintf(out, size, "(%d,%d,%d,%d)", v[0], v[1], v[2], v[3]);
+        };
+        char sr[40];
+        char dr[40];
+        read_rect(m.arg_ptr(2), sr, sizeof(sr));
+        read_rect(m.arg_ptr(4), dr, sizeof(dr));
+        std::snprintf(rects, sizeof(rects), " src=%s dst=%s filter=%u", sr, dr,
+                      static_cast<u32>(m.arg(5)));
+    }
+    std::fprintf(stderr, "[d3d9-xfer] %s %s -> %s%s = 0x%08llx\n", name, a, b, rects,
+                 static_cast<unsigned long long>(m.return_value() & 0xffffffffu));
+}
 
 // =============================================================================
 // Surfaces owned by the device
@@ -188,10 +238,13 @@ void D3D9Manager::dispatch_device_create(Marshaler& m, usize slot,
         const u32 multisample = static_cast<u32>(m.arg(4));
         const u32 lockable = static_cast<u32>(m.arg(6));
         const GuestAddr out = m.arg_ptr(7);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         if (width == 0 || height == 0 || out == 0 ||
             (multisample != D3DMULTISAMPLE_NONE && lockable != 0) ||
-            !d3d9_multisample_supported(m_backend, multisample)) {
+            !d3d9_multisample_supported(m_backend, multisample) ||
+            d3d9_check_format_usage(format, 1 /* D3DRTYPE_SURFACE */,
+                                    D3DUSAGE_RENDERTARGET) ==
+                D3DERR_NOTAVAILABLE) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
@@ -200,10 +253,14 @@ void D3D9Manager::dispatch_device_create(Marshaler& m, usize slot,
             D3DPOOL_DEFAULT,
             static_cast<int>(SurfaceState::Kind::RenderTarget), 0, 0, 0,
             multisample);
-        if (surface == 0 || m.write_u32(out, surface).is_err()) {
+        if (surface == 0 || m.write_ptr(out, surface).is_err()) {
             if (surface != 0) destroy_object(surface);
             m.set_return(D3DERR_INVALIDCALL);
             return;
+        }
+        if (ComObject* created = find(surface, D3D9InterfaceId::Surface);
+            created != nullptr && created->surface) {
+            created->surface->lockable_target = lockable != 0;
         }
         VITREO_TRACE("[d3d9] CreateRenderTarget -> 0x%08x %ux%u fmt=%u\n",
                      surface, width, height, format);
@@ -217,9 +274,12 @@ void D3D9Manager::dispatch_device_create(Marshaler& m, usize slot,
         const u32 format = static_cast<u32>(m.arg(3));
         const u32 multisample = static_cast<u32>(m.arg(4));
         const GuestAddr out = m.arg_ptr(7);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         if (width == 0 || height == 0 || out == 0 ||
-            !d3d9_multisample_supported(m_backend, multisample)) {
+            !d3d9_multisample_supported(m_backend, multisample) ||
+            d3d9_check_format_usage(format, 1 /* D3DRTYPE_SURFACE */,
+                                    D3DUSAGE_DEPTHSTENCIL) ==
+                D3DERR_NOTAVAILABLE) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
@@ -228,7 +288,7 @@ void D3D9Manager::dispatch_device_create(Marshaler& m, usize slot,
             D3DPOOL_DEFAULT,
             static_cast<int>(SurfaceState::Kind::DepthStencil), 0, 0, 0,
             multisample);
-        if (surface == 0 || m.write_u32(out, surface).is_err()) {
+        if (surface == 0 || m.write_ptr(out, surface).is_err()) {
             if (surface != 0) destroy_object(surface);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -242,12 +302,15 @@ void D3D9Manager::dispatch_device_create(Marshaler& m, usize slot,
 
     case 30: // UpdateSurface
         update_surface(m, self);
+        log_transfer(m, "UpdateSurface", 1, 3);
         return;
     case 31: // UpdateTexture
         update_texture(m, self);
+        log_transfer(m, "UpdateTexture", 1, 2);
         return;
     case 32: // GetRenderTargetData
         get_render_target_data(m, self);
+        log_transfer(m, "GetRenderTargetData", 1, 2);
         return;
     case 33: // GetFrontBufferData
         get_front_buffer_data(m, self, static_cast<u32>(m.arg(1)),
@@ -255,9 +318,11 @@ void D3D9Manager::dispatch_device_create(Marshaler& m, usize slot,
         return;
     case 34: // StretchRect
         stretch_rect(m, self);
+        log_transfer(m, "StretchRect", 1, 3);
         return;
     case 35: // ColorFill
         color_fill(m, self);
+        log_transfer(m, "ColorFill", 1, 0);
         return;
 
     case 36: { // CreateOffscreenPlainSurface
@@ -266,15 +331,18 @@ void D3D9Manager::dispatch_device_create(Marshaler& m, usize slot,
         const u32 format = static_cast<u32>(m.arg(3));
         const u32 pool = static_cast<u32>(m.arg(4));
         const GuestAddr out = m.arg_ptr(5);
-        if (out != 0) (void)m.write_u32(out, 0);
-        if (width == 0 || height == 0 || out == 0) {
+        if (out != 0) (void)m.write_ptr(out, 0);
+        if (width == 0 || height == 0 || out == 0 ||
+            (pool != D3DPOOL_SCRATCH &&
+             d3d9_check_format_usage(format, 1 /* D3DRTYPE_SURFACE */, 0) ==
+                 D3DERR_NOTAVAILABLE)) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
         const u32 surface = create_surface_object(
             self, width, height, format, 0, pool,
             static_cast<int>(SurfaceState::Kind::Offscreen), 0, 0);
-        if (surface == 0 || m.write_u32(out, surface).is_err()) {
+        if (surface == 0 || m.write_ptr(out, surface).is_err()) {
             if (surface != 0) destroy_object(surface);
             m.set_return(D3DERR_INVALIDCALL);
             return;

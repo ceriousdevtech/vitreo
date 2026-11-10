@@ -9,6 +9,7 @@
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/named_object_directory.hpp"
 #include "sync_internal.hpp"
+#include "winapi/kernel32/shared_resource_handle.hpp"
 #include "winapi/common/object_access_constants.hpp"
 #include "graphics/common/perf_diag.hpp"
 #include "winapi/common/timer_resolution.hpp"
@@ -255,6 +256,19 @@ u64 SyncManager::resolve_nt_id(Handle h) const {
     if (auto it = m_semaphores.find(h); it != m_semaphores.end()) return it->second->nt_id;
     if (auto it = m_extra_waitables.find(h); it != m_extra_waitables.end()) {
         return it->second;
+    }
+    if (m_handles.get_type(h) == HandleType::SharedResource) {
+        // A D3D12 fence's NT handle waits as an object that is always
+        // signaled (SharedResourceObject::always_signaled): one
+        // manual-reset event, set once, never reset, shared by every such
+        // handle and duplicate.
+        const auto object = shared_resource_object(m_handles, h);
+        if (object && object->always_signaled) {
+            static const u64 signaled =
+                ntsync::global().create_event(/*manual_reset=*/true,
+                                              /*initial_state=*/true);
+            return signaled;
+        }
     }
     return 0;
 }

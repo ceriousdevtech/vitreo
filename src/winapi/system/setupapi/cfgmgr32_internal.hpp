@@ -30,11 +30,12 @@ constexpr u32 CR_ACCESS_DENIED = 0x33;
 constexpr u32 CR_INVALID_PROPERTY = 0x35;
 
 struct CfgmgrState {
+    std::shared_ptr<GamepadHidCatalog> gamepads;
     std::function<std::string()> display_name_provider;
     RegistryThunks* registry{nullptr};
     const GuestElevationState* elevation{nullptr};
     [[nodiscard]] std::vector<NodeRecord> nodes() const {
-        return device_nodes(display_name_provider ? display_name_provider() : std::string{});
+        return device_nodes(display_name_provider ? display_name_provider() : std::string{},gamepads);
     }
     [[nodiscard]] bool elevated() const {
         return elevation != nullptr && elevation->is_elevated();

@@ -376,6 +376,12 @@ CocoaBridge::CocoaBridge() {
 }
 
 CocoaBridge::~CocoaBridge() {
+    vtr_run_on_main_sync(^{
+        m_guest_cursor_clip_enabled = false;
+        m_cursor_clip_cocoa_active = false;
+        m_cursor_clip_point_requested = false;
+        (void)release_cursor_clip_point_lock();
+    });
     stop_dock_session();
     // Frontends may already be destroyed. Tear down native monitors without
     // invoking their callbacks, then disable queued gesture notifications.

@@ -21,6 +21,8 @@
 ///    SWP_NOZORDER when the Z order did not move.
 
 #include "winapi/user32/user32_ext.hpp"
+#include "windowing/model/diag_flags.hpp"
+#include <cstdio>
 #include "winapi/user32/user32_internal.hpp"
 #include "winapi/user32/user32_errors.hpp"
 #include "winapi/user32/windows/windowpos_layout.hpp"
@@ -114,6 +116,15 @@ bool User32ExtManager::apply_set_window_pos(windowing::HWND hwnd,
                                             i32 x, i32 y, i32 cx, i32 cy,
                                             u32 flags, bool send_messages, bool host_geometry_applied) {
     if (!m_hwnd_mgr.find(hwnd)) return false;
+    if (windowing::diag::input_diag()) {
+        const windowing::WindowData* w = m_hwnd_mgr.find(hwnd);
+        std::fprintf(stderr,
+                     "[input] SetWindowPos hwnd=0x%x pos=(%d,%d) size=%dx%d flags=0x%x "
+                     "send=%d host=%d style=0x%x rect=(%d,%d,%d,%d)\n",
+                     hwnd, x, y, cx, cy, flags, send_messages ? 1 : 0,
+                     host_geometry_applied ? 1 : 0, w->style, w->rect.left, w->rect.top,
+                     w->rect.right, w->rect.bottom);
+    }
     // A WndProc can synchronously move another window and then continue
     // reading its own WINDOWPOS/NCCALCSIZE_PARAMS; keep the enclosing
     // transaction's structures as nested stack frames would on Windows.
@@ -235,10 +246,11 @@ bool User32ExtManager::swp_apply(SwpTransaction& txn) {
         new_rect.right = new_rect.left + std::max(txn.cx, 0);
         new_rect.bottom = new_rect.top + std::max(txn.cy, 0);
     }
-    if (hwnd == m_virtual_fullscreen_hwnd &&
-        m_virtual_display_width > 0 && m_virtual_display_height > 0) {
-        new_rect = {0, 0, m_virtual_display_width, m_virtual_display_height};
-    }
+    // The exclusive display mode does not override HWND geometry approved
+    // by WM_WINDOWPOSCHANGING. Windows permits moving/resizing this window
+    // before ResizeTarget changes the display mode (oracle: dxgi exclusive
+    // window-resize, x86/x64). Native full-screen coverage is kept separately
+    // below; replacing this rectangle with the old mode loses resize requests.
     txn.new_rect = new_rect;
     txn.outer_moved = new_rect.left != txn.old_rect.left || new_rect.top != txn.old_rect.top ||
                       txn.reparented;
@@ -251,7 +263,8 @@ bool User32ExtManager::swp_apply(SwpTransaction& txn) {
     // reports successful completion without touching a replacement HWND.
     win = m_hwnd_mgr.find(hwnd);
     if (!win) return false;
-    win->rect = new_rect;
+    const auto geometry=m_hwnd_mgr.update_geometry(hwnd,[&](auto& data){data.rect=new_rect;});
+    if(!geometry)return false;
 
     // Publish the identity alongside the geometry (hwnd_registry_publish
     // treats an empty class/title as "unchanged"); a window whose first
@@ -298,23 +311,17 @@ bool User32ExtManager::swp_apply(SwpTransaction& txn) {
                         ((win->ex_style ^ txn.old_ex) & 0x8u) != 0;
     }
 
-    if (txn.flags & SWP_SHOWWINDOW) {
-        win->visible = true;
-        win->style |= windowing::WS::VISIBLE;
-        if (!txn.was_visible) {
-            // SWP_NOACTIVATE shows must not make the native window key
-            // (Learn SetWindowPos: "does not activate the window").
-            if ((txn.flags & SWP_NOACTIVATE) != 0) m_host.show_without_activation(hwnd);
-            else m_host.set_visible(hwnd, true);
-        }
-    } else if (txn.flags & SWP_HIDEWINDOW) {
-        win->visible = false;
-        win->style &= ~windowing::WS::VISIBLE;
-        if (txn.was_visible) m_host.set_visible(hwnd, false);
-    }
-    if (win->visible != txn.was_visible) {
-        ipc::hwnd_registry_set_visible(static_cast<u32>(hwnd), win->visible);
-    }
+    const auto visibility=m_hwnd_mgr.update_geometry(hwnd,[&](auto& data) {
+        if(txn.flags&SWP_SHOWWINDOW){data.visible=true;data.style|=windowing::WS::VISIBLE;}
+        else if(txn.flags&SWP_HIDEWINDOW){data.visible=false;data.style&=~windowing::WS::VISIBLE;}
+    });
+    if(!visibility)return false;
+    if((txn.flags&SWP_SHOWWINDOW) && !txn.was_visible) {
+        if((txn.flags&SWP_NOACTIVATE)!=0)m_host.show_without_activation(hwnd);
+        else m_host.set_visible(hwnd,true);
+    } else if((txn.flags&SWP_HIDEWINDOW) && txn.was_visible)m_host.set_visible(hwnd,false);
+    if(visibility->visible!=txn.was_visible)
+        ipc::hwnd_registry_set_visible(static_cast<u32>(hwnd),visibility->visible);
     return true;
 }
 
@@ -660,11 +667,13 @@ u64 User32ExtManager::show_window_cmd(windowing::HWND hwnd, int cmd) {
         if (minimized != win->minimized) {
             notify_win_event(minimized ? 0x0016u : 0x0017u, win->handle);
         }
-        win->minimized = minimized;
-        win->maximized = !minimized && maximized;
-        win->style &= ~(windowing::WS::MINIMIZE | windowing::WS::MAXIMIZE);
-        if (win->minimized) win->style |= windowing::WS::MINIMIZE;
-        else if (win->maximized) win->style |= windowing::WS::MAXIMIZE;
+        (void)m_hwnd_mgr.update_geometry(hwnd,[&](auto& data) {
+            data.minimized=minimized;data.maximized=!minimized && maximized;
+            data.style&=~(windowing::WS::MINIMIZE|windowing::WS::MAXIMIZE);
+            if(data.minimized)data.style|=windowing::WS::MINIMIZE;
+            else if(data.maximized)data.style|=windowing::WS::MAXIMIZE;
+        });
+        win=m_hwnd_mgr.find(hwnd);
     };
     auto remember_normal = [&] {
         if (!win->minimized && !win->maximized) {
@@ -684,9 +693,10 @@ u64 User32ExtManager::show_window_cmd(windowing::HWND hwnd, int cmd) {
         if (show == prev_visible && cmd != SW::SHOWNA && cmd != SW::SHOWNOACTIVATE) return result;
         send(windowing::WM::SHOWWINDOW, show ? 1u : 0u, 0);
         if (!win) return result;
-        win->visible = show;
-        if (show) win->style |= windowing::WS::VISIBLE;
-        else win->style &= ~windowing::WS::VISIBLE;
+        if(!m_hwnd_mgr.update_geometry(hwnd,[&](auto& data) {
+            data.visible=show;
+            if(show)data.style|=windowing::WS::VISIBLE;else data.style&=~windowing::WS::VISIBLE;
+        }))return result;
         if (show != prev_visible) m_host.set_visible(hwnd, show);
         return result;
     }
@@ -724,6 +734,7 @@ u64 User32ExtManager::show_window_cmd(windowing::HWND hwnd, int cmd) {
         remember_normal();
         win->restore_to_maximized = win->maximized;
         set_state(true, false);
+        if(!win)return result;
         win->minimized_position = {kMinimizedParked, kMinimizedParked};
         m_host.set_minimized(hwnd, true);
         u32 flags = SWP_STATECHANGED | SWP_NOCOPYBITS | SWP_SHOWWINDOW | SWP_FRAMECHANGED;
@@ -752,6 +763,7 @@ u64 User32ExtManager::show_window_cmd(windowing::HWND hwnd, int cmd) {
         win = m_hwnd_mgr.find(hwnd);
         if (!win) return result;
         set_state(false, true);
+        if(!win)return result;
         win->restore_to_maximized = false;
         if (was_min) m_host.set_minimized(hwnd, false);
         u32 flags = SWP_STATECHANGED | SWP_FRAMECHANGED | (prev_visible ? 0u : SWP_SHOWWINDOW);
@@ -790,6 +802,7 @@ u64 User32ExtManager::show_window_cmd(windowing::HWND hwnd, int cmd) {
             win = m_hwnd_mgr.find(hwnd);
             if (!win) return result;
             set_state(false, true);
+        if(!win)return result;
             m_host.set_minimized(hwnd, false);
             (void)apply_set_window_pos(hwnd, windowing::HWND_TOP, r.left, r.top, r.width(),
                                        r.height(), SWP_STATECHANGED | SWP_FRAMECHANGED |
@@ -797,6 +810,7 @@ u64 User32ExtManager::show_window_cmd(windowing::HWND hwnd, int cmd) {
         } else {
             const windowing::Rect r = win->normal_rect;
             set_state(false, false);
+        if(!win)return result;
             win->restore_to_maximized = false;
             if (was_min) m_host.set_minimized(hwnd, false);
             (void)apply_set_window_pos(hwnd, windowing::HWND_TOP, r.left, r.top, r.width(),
@@ -867,9 +881,10 @@ void User32ExtManager::apply_initial_state(windowing::HWND hwnd, bool minimize) 
     win->normal_rect = win->rect;
     win->normal_client_rect = win->client_rect;
     if (minimize) {
-        win->minimized = true;
-        win->maximized = false;
-        win->style = (win->style & ~windowing::WS::MAXIMIZE) | windowing::WS::MINIMIZE;
+        if(!m_hwnd_mgr.update_geometry(hwnd,[](auto& data) {
+            data.minimized=true;data.maximized=false;
+            data.style=(data.style&~windowing::WS::MAXIMIZE)|windowing::WS::MINIMIZE;
+        }))return;
         const windowing::MonitorInfo mon = m_host.get_primary_monitor_info();
         const i32 x = mon.work_left;
         const i32 y = mon.work_bottom - kMinimizedHeight;
@@ -883,9 +898,10 @@ void User32ExtManager::apply_initial_state(windowing::HWND hwnd, bool minimize) 
     const windowing::Rect r = maximized_rect(hwnd);
     win = m_hwnd_mgr.find(hwnd);
     if (!win) return;
-    win->maximized = true;
-    win->minimized = false;
-    win->style = (win->style & ~windowing::WS::MINIMIZE) | windowing::WS::MAXIMIZE;
+    if(!m_hwnd_mgr.update_geometry(hwnd,[](auto& data) {
+        data.maximized=true;data.minimized=false;
+        data.style=(data.style&~windowing::WS::MINIMIZE)|windowing::WS::MAXIMIZE;
+    }))return;
     (void)apply_set_window_pos(hwnd, windowing::HWND_TOP, r.left, r.top, r.width(), r.height(),
                                SWP_STATECHANGED | SWP_FRAMECHANGED | SWP_NOACTIVATE, true);
 }
@@ -909,7 +925,7 @@ void User32ExtManager::owned_windows_follow_owner(windowing::HWND owner,
         }
         w = m_hwnd_mgr.find(h);
         if (!w) continue;
-        w->hidden_by_owner = hide;
+        if(!m_hwnd_mgr.update_geometry(h,[&](auto& data){data.hidden_by_owner=hide;}))continue;
         (void)apply_set_window_pos(h, windowing::HWND_TOP, 0, 0, 0, 0,
                                    (hide ? SWP_HIDEWINDOW : SWP_SHOWWINDOW) | SWP_NOSIZE |
                                    SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE, true);

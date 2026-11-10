@@ -5,6 +5,7 @@
 ///        Split out of d3d11_pipeline.cpp as verbatim code motion.
 
 #include "winapi/graphics/d3d11/d3d11.hpp"
+#include "winapi/graphics/d3d11/d3d11_read_only_resources.hpp"
 #include "winapi/graphics/d3d11/d3d11_pipeline_internal.hpp"
 #include "winapi/graphics/d3d11/d3d11_state_census.hpp"
 #include "winapi/graphics/d3d11/d3d11_stdcall.hpp"
@@ -128,6 +129,8 @@ enum class TableOverride { Automatic, Force, Off };
 [[nodiscard]] d3d11::ShaderBindingLayout shader_binding_layout(
     const graphics::DxbcToSpirvResult& translated) {
     d3d11::ShaderBindingLayout layout{};
+    layout.original_resources_read_only =
+        d3d11::original_dxbc_resources_read_only(translated);
     layout.srv_slots = register_high_water(translated.texture_bindings);
     layout.constant_buffer_slots =
         register_high_water(translated.cbuffer_bindings);
@@ -263,9 +266,14 @@ bool D3D11Manager::compile_shader_to_msl(
     graphics::MslCompileOptions msl_options =
         msl_options_for(layout, /*is_compute=*/false);
     raise_msl_version_for_typed_uav_atomics(msl_options, spirv);
-    // Exact because the render pipeline compiles this library in Safe mode
-    // whenever the shader has a precise instruction (math_mode_for_dxbc).
+    // Precise results stay unfused on their own (22.19.2). A file-scope
+    // contract pragma was also applied when refactoringAllowed was absent
+    // (22.3.2). On the captured Satisfactory shaders that pragma covered 331
+    // of 579 libraries and, measured here, stops Safe mode from fusing a
+    // non-precise a*b+c. Those operations contract again. The precise ones
+    // still go through the isolated helpers.
     msl_options.precise_without_helpers = true;
+    msl_options.fp_contract_off = false;
     msl_options.dual_source_blending = dual_source_blending;
     msl_options.framebuffer_fetch = logic_variant;
     auto compiled = graphics::compile_spirv_to_msl(
@@ -377,9 +385,10 @@ bool D3D11Manager::compile_compute_shader_to_msl(
     graphics::MslCompileOptions options =
         msl_options_for(layout, /*is_compute=*/true);
     raise_msl_version_for_typed_uav_atomics(options, spirv);
-    // Exact because the compute pipeline compiles this library in Safe mode
-    // whenever the shader has a precise instruction (math_mode_for_dxbc).
+    // See the vertex/pixel path: precise ops stay isolated, and the
+    // file-scope contraction pragma is not applied.
     options.precise_without_helpers = true;
+    options.fp_contract_off = false;
     const auto compiled = graphics::compile_spirv_to_msl(
         spirv.spirv.data(), spirv.spirv.size(),
         graphics::ShaderStage::Compute, options);
@@ -455,6 +464,50 @@ bool D3D11Manager::compile_geometry_kernel(
     msl_out = compiled.msl_text();
     return !msl_out.empty();
 }
+
+// ---- WS5 begin ----
+bool D3D11Manager::compile_geometry_mesh(
+    const std::vector<u8>& bytecode, const std::vector<u32>& input_record,
+    const graphics::GsMeshLayout& layout, std::string& msl_out,
+    u32 minmax_samplers) {
+    msl_out.clear();
+    const auto container =
+        graphics::parse_dxbc(bytecode.data(), bytecode.size());
+    if (!container.valid() ||
+        container.stage != graphics::ShaderStage::Geometry) {
+        return false;
+    }
+    // compile_geometry_kernel's options, plus the mesh lowering.
+    graphics::DxbcTranslationOptions options{};
+    options.emulate_geometry_with_compute = true;
+    options.emulate_geometry_with_mesh = true;
+    options.gs_mesh_invocations_per_group = layout.invocations_per_group;
+    options.gs_input_record_registers = input_record;
+    options.guard_constant_buffers = true;
+    options.typed_buffer_bias = true;
+    options.minmax_samplers = minmax_samplers;
+    const auto spirv = graphics::translate_dxbc_to_spirv(container, options);
+    if (!spirv.valid() || !spirv.gs_lowered_to_mesh) {
+        pipeline_diag("GS mesh lowering failed: %s", spirv.failure.c_str());
+        return false;
+    }
+    const d3d11::ShaderBindingLayout binding = shader_binding_layout(spirv);
+    if (binding.uses_descriptor_tables) return false;
+    graphics::MslCompileOptions msl_options =
+        msl_options_for(binding, /*is_compute=*/true);
+    raise_msl_version_for_typed_uav_atomics(msl_options, spirv);
+    msl_options.mesh = &layout;
+    const auto compiled = graphics::compile_spirv_to_msl(
+        spirv.spirv.data(), spirv.spirv.size(),
+        graphics::ShaderStage::Compute, msl_options);
+    if (!compiled.valid()) {
+        pipeline_diag("SPIR-V to MSL failed for the GS mesh library");
+        return false;
+    }
+    msl_out = compiled.msl_text();
+    return !msl_out.empty();
+}
+// ---- WS5 end ----
 
 bool D3D11Manager::compile_domain_shader(
     const std::vector<u8>& bytecode, std::string& msl_out,
@@ -559,13 +612,6 @@ bool D3D11Manager::compile_domain_kernel(
     return !contract.refactoring_allowed || contract.uses_precise
                ? graphics::BackendMathMode::Safe
                : graphics::BackendMathMode::Relaxed;
-}
-
-[[nodiscard]] bool dxbc_uses_precise(const std::vector<u8>& bytecode) {
-    const auto container = graphics::parse_dxbc(bytecode.data(),
-                                                bytecode.size());
-    return container.valid() &&
-           graphics::dxbc_math_contract(container).uses_precise;
 }
 
 } // namespace vitreo::winapi

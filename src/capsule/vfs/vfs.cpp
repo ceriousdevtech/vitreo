@@ -4,6 +4,7 @@
 #include "vfs.hpp"
 #include "capsule/vfs/path_encoding.hpp"
 #include "capsule/vfs/win32_full_path.hpp"
+#include "capsule/vfs/win32_namespace_path.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -39,6 +40,8 @@ ParsedPath parse_windows_path(std::string_view path) noexcept {
         path[3] == '\\' && is_valid_drive_letter(path[4]) && path[5] == ':') {
         path = path.substr(4);
     }
+
+    if (path.starts_with("\\??\\") && Win32NamespacePath::drive(path.substr(4))) path.remove_prefix(4);
 
     usize pos = 0;
     
@@ -350,6 +353,8 @@ bool Vfs::is_cwd_relative(std::string_view utf8_path) noexcept {
 std::string Vfs::viewed_path(std::string_view path) const {
     if (!wow64_view_) return std::string(path);
     const std::string utf8_path = guest_path_to_host_utf8(path);
+    const auto ns = win32_namespace_path(utf8_path);
+    if (ns.literal()) return wow64_redirect("\\\\?\\" + std::string(ns.body), false);
     const auto full = win32_full_path(utf8_path, cwd_);
     if (!full.has_value()) return std::string(path);
     return wow64_redirect(full->path, is_cwd_relative(utf8_path));
@@ -396,6 +401,50 @@ Result<std::pair<IFileSystem*, std::string>, VfsError> Vfs::resolve_path(std::st
             VfsError::PathNotFound);
     }
 
+    const auto ns = win32_namespace_path(utf8_path);
+    using Kind = Win32NamespacePath::Kind;
+    if (ns.kind == Kind::Network || ns.kind == Kind::OtherDevice)
+        return Result<std::pair<IFileSystem*, std::string>, VfsError>::err(VfsError::NotSupported);
+    if (ns.literal()) {
+        // Never send literal dot components to a host pathname: host traversal
+        // would violate the capsule, and Windows reports errors in prefix order.
+        std::string redirected = wow64_redirect(R"(\\?\)" + std::string(ns.body), false);
+        std::string_view body(redirected); body.remove_prefix(4);
+        if (body.size() < 3 || body[2] != '\\')
+            return Result<std::pair<IFileSystem*, std::string>, VfsError>::err(VfsError::PathNotFound);
+        auto it = drives_.find(normalize_drive_letter(body[0]));
+        if (it == drives_.end())
+            return Result<std::pair<IFileSystem*, std::string>, VfsError>::err(VfsError::DriveNotMounted);
+        auto tail = body.substr(3);
+        // Windows accepts one additional root separator, not arbitrary runs.
+        if (tail.starts_with(R"(\)")) tail.remove_prefix(1);
+        std::string relative;
+        while (!tail.empty()) {
+            const auto end = tail.find('\\');
+            const auto part = tail.substr(0, end);
+            const bool terminal = end == std::string_view::npos || end + 1 == tail.size();
+            if (part.empty() || part == ".." || part.find('/') != std::string_view::npos ||
+                (part == "." && terminal))
+                return Result<std::pair<IFileSystem*, std::string>, VfsError>::err(VfsError::InvalidPath);
+            if (part == ".")
+                return Result<std::pair<IFileSystem*, std::string>, VfsError>::err(VfsError::PathNotFound);
+            if (!relative.empty()) relative += '/';
+            relative += part;
+            if (terminal) break;
+            const auto prefix = it->second->stat(relative);
+            if (prefix.is_err()) {
+                const auto error = prefix.error();
+                return Result<std::pair<IFileSystem*, std::string>, VfsError>::err(
+                    error == VfsError::FileNotFound || error == VfsError::PathNotFound
+                        ? VfsError::PathNotFound : error);
+            }
+            if (!has_attribute(prefix.value().attributes, FileAttributes::Directory))
+                return Result<std::pair<IFileSystem*, std::string>, VfsError>::err(VfsError::NotADirectory);
+            tail.remove_prefix(end + 1);
+        }
+        return Result<std::pair<IFileSystem*, std::string>, VfsError>::ok({it->second.get(), std::move(relative)});
+    }
+
     // Learn (Naming Files) + X3: Win32 paths are normalized lexically before
     // lookup — `C:\a\missing\..\b.txt` names `C:\a\b.txt`, `C:\..\x` stays
     // under the drive root, trailing dots/spaces on the last component are
@@ -406,7 +455,7 @@ Result<std::pair<IFileSystem*, std::string>, VfsError> Vfs::resolve_path(std::st
             VfsError::InvalidPath);
     }
 
-    auto parsed = parse_windows_path(wow64_redirect(full->path, is_cwd_relative(utf8_path)));
+    auto parsed = parse_windows_path(wow64_redirect(win32_dos_lookup_path(full->path), is_cwd_relative(utf8_path)));
 
     char drive = parsed.drive_letter;
     if (drive == 0) {

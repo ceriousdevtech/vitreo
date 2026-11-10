@@ -70,6 +70,15 @@ if(VITREO_COVERAGE)
     add_link_options(-fprofile-instr-generate)
 endif()
 
+# ThreadSanitizer, for the multithreaded frontend tests (e.g. the D3D12
+# frontend lock: vitreo_d3d12_metal_tests --gtest_filter=
+# D3D12FrameBench.RecordExecuteAndCreateConcurrently). Use its own build dir.
+option(VITREO_TSAN "Build with ThreadSanitizer" OFF)
+if(VITREO_TSAN)
+    add_compile_options(-fsanitize=thread -fno-omit-frame-pointer)
+    add_link_options(-fsanitize=thread)
+endif()
+
 # Treat warnings as errors in CI
 option(VITREO_WERROR "Treat warnings as errors" OFF)
 if(VITREO_WERROR)

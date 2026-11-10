@@ -7,7 +7,31 @@
 
 namespace vitreo::cpu {
 
-DecodeError decode_instruction(
+namespace {
+// One instruction, not one stream: a block reader is reused at successive IPs.
+// Intel SDM Vol.3A Event13 specifies #GP(0) for >15 bytes. The Windows oracle
+// additionally confirms no byte16 fetch, including incomplete immediates.
+class InstructionByteReader final : public ByteReader {
+public:
+    explicit InstructionByteReader(ByteReader& source) noexcept
+        : m_source(source) {}
+    bool read_u8(u8& out) noexcept override {
+        if (m_remaining == 0) {
+            too_long = true;
+            return false;
+        }
+        if (!m_source.read_u8(out)) return false;
+        --m_remaining;
+        return true;
+    }
+    usize position() const noexcept override { return m_source.position(); }
+    bool too_long{false};
+private:
+    ByteReader& m_source;
+    usize m_remaining{kMaxInstructionLength};
+};
+
+DecodeError decode_instruction_impl(
     ByteReader& reader, 
     DecodeMode mode,
     DecodedInstruction& out
@@ -266,6 +290,14 @@ DecodeError decode_instruction(
         if (!vex_shape_is_legal()) return false;
         if (opcode_has_no_vex_form(out.opcode)) return false;
         if (prefix.vex_l && vex_l_is_reserved(out.opcode)) return false;
+        // WS3: VAESIMC / VAESKEYGENASSIST are unary; Intel SDM Vol. 2A §2.3.6
+        // and both instructions' exception lists: "#UD If VEX.vvvv != 1111B".
+        // prefix.vex_vvvv holds the un-complemented register, so 0 is 1111b.
+        if (prefix.vex_vvvv != 0 &&
+            (out.opcode == Opcode::AESIMC_XMM_XMMM128 ||
+             out.opcode == Opcode::AESKEYGENASSIST_XMM_XMMM128_IMM8)) {
+            return false;
+        }
         return true;
     };
 
@@ -365,6 +397,39 @@ DecodeError decode_instruction(
             // lowering — 212 mnemonics' worth of phantom work. The fault
             // belongs at decode.
             if (prefix.vex_l && vex_l_is_reserved(out.opcode)) {
+                return DecodeError::InvalidOpcode;
+            }
+            // Intel SDM Vol. 2 MOVAPS/MOVAPD/MOVUPS/MOVUPD/MOVDQA/MOVDQU,
+            // "Other Exceptions": "#UD If VEX.vvvv != 1111B" (prefix.vex_vvvv
+            // is un-complemented, so 0 is 1111b). Vitreo decoded the field and
+            // ignored it, so `C4 E1 68 28 03` ran as VMOVAPS.
+            const bool unary_vex_move =
+                out.opcode == Opcode::MOVAPS_XMM_XMMM128 ||
+                out.opcode == Opcode::MOVAPS_XMMM128_XMM ||
+                out.opcode == Opcode::MOVAPD_XMM_XMMM128 ||
+                out.opcode == Opcode::MOVAPD_XMMM128_XMM ||
+                out.opcode == Opcode::MOVUPS_XMM_XMMM128 ||
+                out.opcode == Opcode::MOVUPS_XMMM128_XMM ||
+                out.opcode == Opcode::MOVUPD_XMM_XMMM128 ||
+                out.opcode == Opcode::MOVUPD_XMMM128_XMM ||
+                out.opcode == Opcode::MOVDQA_XMM_XMMM128 ||
+                out.opcode == Opcode::MOVDQA_XMMM128_XMM ||
+                out.opcode == Opcode::MOVDQU_XMM_XMMM128 ||
+                out.opcode == Opcode::MOVDQU_XMMM128_XMM;
+            if (unary_vex_move && prefix.vex_vvvv != 0) {
+                return DecodeError::InvalidOpcode;
+            }
+            // VEX.pp is part of the opcode. 0F 28/29 are defined only as
+            // VEX.0F (VMOVAPS) and VEX.66.0F (VMOVAPD); there is no
+            // VEX.F3.0F or VEX.F2.0F 28/29 (SDM Vol. 2 MOVAPS/MOVAPD opcode
+            // tables, Appendix A Table A-3), so those encodings are #UD. The
+            // legacy decoder folds an F3/F2 into MOVAPS, which a VEX
+            // encoding must not inherit.
+            if ((prefix.rep || prefix.repne) &&
+                (out.opcode == Opcode::MOVAPS_XMM_XMMM128 ||
+                 out.opcode == Opcode::MOVAPS_XMMM128_XMM ||
+                 out.opcode == Opcode::MOVAPD_XMM_XMMM128 ||
+                 out.opcode == Opcode::MOVAPD_XMMM128_XMM)) {
                 return DecodeError::InvalidOpcode;
             }
         }
@@ -755,6 +820,19 @@ DecodeError decode_instruction(
     out.length = static_cast<u8>(reader.position() - start_pos);
     
     return DecodeError::Success;
+}
+
+} // namespace
+
+DecodeError decode_instruction(ByteReader& reader, DecodeMode mode,
+                                DecodedInstruction& out) noexcept {
+    InstructionByteReader bounded(reader);
+    const DecodeError result = decode_instruction_impl(bounded, mode, out);
+    if (bounded.too_long) {
+        out = DecodedInstruction{};
+        return DecodeError::InstructionTooLong;
+    }
+    return result;
 }
 
 } // namespace vitreo::cpu

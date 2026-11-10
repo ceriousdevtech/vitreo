@@ -598,7 +598,11 @@ void get_class_info(Marshaler& m, WindowClassManager& wcm, bool ex, bool ansi) {
     (void)m.write_u32(out + L.cls_extra(), static_cast<u32>(cls->cls_extra));
     (void)m.write_u32(out + L.wnd_extra(), static_cast<u32>(cls->wnd_extra));
     // System classes report a NULL hInstance (measured, button_hinstance_zero).
-    write_ptr(m, out + L.hinstance(), cls->system ? 0 : cls->hinstance, L.is64);
+    // A global class reports the caller's own hInstance argument, whoever
+    // registered it (msftedit_lifecycle_probe hinst_eq_arg for NULL, the
+    // owning module and the executable).
+    write_ptr(m, out + L.hinstance(),
+              cls->system ? 0 : (cls->global() ? hinstance : cls->hinstance), L.is64);
     write_ptr(m, out + L.hicon(), cls->hicon, L.is64);
     write_ptr(m, out + L.hcursor(), wcm.class_cursor(*cls), L.is64);
     write_ptr(m, out + L.hbr(), cls->hbr_background, L.is64);

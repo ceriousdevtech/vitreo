@@ -141,6 +141,181 @@ void expect_sse_matches_interpreter(const std::vector<u8>& code,
 
 }  // namespace
 
+namespace {
+
+void expect_xmm_read_reuse(const std::vector<u8>& code, bool long_mode,
+                          unsigned expected_loads, bool fault = false,
+                          bool expect_native = true) {
+    SCOPED_TRACE(long_mode ? "x64" : "x86");
+    GuestMemory memory;
+    ASSERT_TRUE(memory.map_region(0x1000, 0x10000,
+                                  MemoryProtection::ReadWrite));
+    ASSERT_TRUE(memory.write_bytes(kCode, code.data(), code.size()));
+    ASSERT_TRUE(memory.write_u32(0x2000, 0x12345678).is_ok());
+    BasicBlock block;
+    block.start_addr = kCode;
+    block.is_64bit = long_mode;
+    MemoryByteReader reader(code.data(), code.size());
+    while (reader.remaining()) {
+        DecodedInstruction instruction;
+        ASSERT_EQ(decode_instruction(reader, long_mode ? DecodeMode::Mode64
+                                                       : DecodeMode::Mode32,
+                                     instruction), DecodeError::Success);
+        block.instructions.push_back(instruction);
+    }
+    block.byte_length = static_cast<u32>(code.size());
+    block.instruction_count = static_cast<u32>(block.instructions.size());
+    CpuState oracle;
+    if (long_mode) oracle.init_long_mode();
+    else oracle.init_protected_mode();
+    oracle.rip = kCode;
+    oracle.gpr.set64(3, fault ? 0xDEAD0000 : 0x2000);
+    oracle.flags.rflags = 0xAD7;
+    for (u8 r = 0; r < 16; ++r) {
+        oracle.sse.xmm[r].u64_[0] = 0x0123456789ABCDEFull ^ (0x1111111111111111ull * r);
+        oracle.sse.xmm[r].u64_[1] = 0xFEDCBA9876543210ull ^ (0x2222222222222222ull * r);
+    }
+    auto state = oracle;
+    auto expected = oracle;
+    Interpreter interpreter(oracle, memory);
+    for (const auto& instruction : block.instructions) {
+        // Intel SDM Vol. 2D XORPS: full-width XOR, with no flag changes.
+        if (instruction.opcode == Opcode::XORPS_XMM_XMMM128) {
+            const auto dst = instruction.operands[0].reg;
+            const auto src = instruction.operands[1].reg;
+            for (unsigned lane = 0; lane < 2; ++lane)
+                expected.sse.xmm[dst].u64_[lane] ^=
+                    expected.sse.xmm[src].u64_[lane];
+        }
+        const auto result = interpreter.step();
+        if (fault && result != ExecResult::Continue) break;
+        ASSERT_EQ(result, ExecResult::Continue);
+    }
+    JitCompiler jit(memory);
+    ASSERT_TRUE(jit.ir_build_block(block).ok);
+    auto* native = jit.compile(block);
+    ASSERT_NE(native, nullptr);
+    ASSERT_EQ(jit.ir_emit_active(), expect_native)
+        << ir::decline_reason_name(jit.ir_emit_decline_reason());
+    const auto result = jit.execute(*native, state);
+    EXPECT_EQ(result, JitExecResult::Continue);
+    EXPECT_EQ(state.pending_raise.active, fault);
+    unsigned loads = 0;
+    const auto* words = static_cast<const u32*>(native->code);
+    for (usize at = 0; at < native->code_size / sizeof(u32); ++at) {
+        for (u8 reg = 0; reg < 16; ++reg) {
+            const usize offset = offsetof(CpuState, sse.xmm) +
+                                 reg * sizeof(state.sse.xmm[0]);
+            for (u8 v = 0; v < 32; ++v) {
+                // X19 is the fixed CpuState pin in both JIT ABIs.
+                if (words[at] == arm64::ldr_q_uoff(
+                        v, 19, static_cast<u32>(offset >> 4))) ++loads;
+            }
+        }
+    }
+    if (expect_native) EXPECT_EQ(loads, expected_loads);
+    for (u8 reg = 0; reg < 16; ++reg) {
+        for (unsigned lane = 0; lane < 2; ++lane) {
+            EXPECT_EQ(state.sse.xmm[reg].u64_[lane],
+                      expected.sse.xmm[reg].u64_[lane])
+                << "xmm" << unsigned(reg) << " lane " << lane;
+            EXPECT_EQ(state.sse.xmm[reg].u64_[lane],
+                      oracle.sse.xmm[reg].u64_[lane]);
+        }
+        EXPECT_EQ(state.gpr.get64(reg), oracle.gpr.get64(reg));
+    }
+    EXPECT_EQ(state.rip, oracle.rip);
+    state.materialize_lazy_flags();
+    EXPECT_EQ(state.flags.rflags, 0xAD7u);
+    EXPECT_EQ(state.sse.mxcsr, expected.sse.mxcsr);
+    if (fault) {
+        EXPECT_EQ(state.pending_raise.num_args, 2u);
+        EXPECT_EQ(state.pending_raise.args[0], 0u);
+        EXPECT_EQ(state.pending_raise.args[1], 0xDEAD0000u);
+    }
+}
+
+}  // namespace
+
+TEST(IrEmitSse, XmmReadReuseHandlesAliasedSources) {
+    REQUIRE_IR_GATE();
+    for (const bool long_mode : {false, true})
+        expect_xmm_read_reuse({0x0F, 0x57, 0xC0}, long_mode, 1);
+    expect_xmm_read_reuse({0x45, 0x0F, 0x57, 0xC0}, true, 1);
+}
+
+TEST(IrEmitSse, XmmReadReuseTracksOverwrittenSources) {
+    REQUIRE_IR_GATE();
+    for (const bool long_mode : {false, true})
+        expect_xmm_read_reuse({
+            0x0F, 0x57, 0xC1,  // xorps xmm0,xmm1
+            0x0F, 0x57, 0xCA,  // xorps xmm1,xmm2
+            0x0F, 0x57, 0xD9,  // xorps xmm3,xmm1
+        }, long_mode, long_mode ? 4 : 6);
+    expect_xmm_read_reuse({
+        0x45, 0x0F, 0x57, 0xC1,  // xorps xmm8,xmm9
+        0x45, 0x0F, 0x57, 0xCA,  // xorps xmm9,xmm10
+        0x45, 0x0F, 0x57, 0xD9,  // xorps xmm11,xmm9
+    }, true, 4);
+}
+
+TEST(IrEmitSse, XmmReadReuseStopsAtMemoryBoundaries) {
+    REQUIRE_IR_GATE();
+    for (const bool long_mode : {false, true})
+        expect_xmm_read_reuse({
+            0x0F, 0x57, 0xC1,  // xorps xmm0,xmm1
+            0x8B, 0x03,        // mov eax,[ebx/rbx]
+            0x0F, 0x57, 0xD1,  // xorps xmm2,xmm1
+        }, long_mode, 4);
+}
+
+TEST(IrEmitSse, XmmReadReusePreservesStateAtAFault) {
+    REQUIRE_IR_GATE();
+    for (const bool long_mode : {false, true})
+        expect_xmm_read_reuse({
+            0x0F, 0x57, 0xC1,
+            0x8B, 0x03,
+            0x0F, 0x57, 0xD1,
+        }, long_mode, 4, true);
+}
+
+TEST(IrEmitSse, XmmReadReuseSurvivesNativeScalarMoves) {
+    REQUIRE_IR_GATE();
+    for (const bool long_mode : {false, true})
+        expect_xmm_read_reuse({
+            0x0F, 0x57, 0xC1,
+            0x89, 0xD8,        // mov eax,ebx
+            0x0F, 0x57, 0xD1,
+        }, long_mode, long_mode ? 3 : 4);
+}
+
+TEST(IrEmitSse, XmmReadReuseStopsAtConditionHelpers) {
+    REQUIRE_IR_GATE();
+    expect_xmm_read_reuse({
+        0x0F, 0x57, 0xC1,
+        0x0F, 0x94, 0xC0,  // setz al: incoming flags can require a helper
+        0x0F, 0x57, 0xD1,
+    }, true, 4);
+}
+
+TEST(IrEmitSse, XmmReadReuseAdmitsLongModeVectorChains) {
+    REQUIRE_IR_GATE();
+    std::vector<u8> code;
+    for (unsigned repeat = 0; repeat < 12; ++repeat)
+        code.insert(code.end(), {0x0F, 0x57, 0xC1});
+    expect_xmm_read_reuse(code, true, 2);
+}
+
+TEST(IrEmitSse, XmmReadReuseRespectsThePhysicalVectorRegisterLimit) {
+    REQUIRE_IR_GATE();
+    std::vector<u8> code;
+    for (unsigned repeat = 0; repeat < 30; ++repeat)
+        code.insert(code.end(), {0x0F, 0x57, 0xC1});
+    expect_xmm_read_reuse(code, true, 2);
+    code.insert(code.end(), {0x0F, 0x57, 0xC1});
+    expect_xmm_read_reuse(code, true, 0, false, false);
+}
+
 TEST(IrEmitSse, XorpsRegisterRegisterMatchesInterpreter) {
     REQUIRE_IR_GATE();
     expect_sse_matches_interpreter({0x0F, 0x57, 0xC1}, "xorps xmm0, xmm1");

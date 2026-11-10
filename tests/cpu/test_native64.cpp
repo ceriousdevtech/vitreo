@@ -452,3 +452,206 @@ TEST_F(Native64Test, LayoutMatchesStubs) {
     EXPECT_NE(sentinel, 0u);
     EXPECT_NE(collect, sentinel);
 }
+
+// ---------------------------------------------------------------------------
+// Guest-side API stubs: GetCurrentThreadId and the uncontended exclusive SRW
+// lock operations run natively in the guest thread. Each test calls the stub
+// from real guest code and checks the result against srw_word's in-word
+// protocol (EXCL bit 0, WAITERS bit 1, owner tid from bit 2), and that every
+// case the host must decide reaches the collector exactly as the slot's own
+// call would have: gateway = slot + 8, arguments untouched.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+constexpr u64 kStubBodyAddr = kCodeAddr + 0x800;
+constexpr u32 kGuestTid = 0x1234;
+
+struct StubCall {
+    u64 rax = 0;
+    unsigned thunk_calls = 0;
+    u64 thunk_gateway = 0;
+    u64 thunk_rcx = 0;
+    bool clean = false;
+};
+
+class Native64StubTest : public Native64Test {
+protected:
+    enum class Kind { ThreadId, TryAcquire, Release };
+
+    /// mov rcx, <arg> / call <slot> / ret, with the slot holding the stub.
+    void assemble(Kind kind, u64 arg) {
+        ASSERT_EQ(mprotect(code_, 0x1000, PROT_READ | PROT_WRITE), 0);
+        std::memset(code_, 0xCC, 0x1000);
+        usize n = 0;
+        auto emit = [&](std::initializer_list<u8> bytes) {
+            for (const u8 b : bytes) code_[n++] = b;
+        };
+        emit({0x48, 0xB9});                              // mov rcx, imm64
+        std::memcpy(code_ + n, &arg, 8); n += 8;
+        const usize call_at = n;
+        emit({0xE8, 0, 0, 0, 0});                        // call kThunkSlot
+        const i32 rel = static_cast<i32>(static_cast<i64>(kThunkSlot) -
+                                         static_cast<i64>(kCodeAddr + call_at + 5));
+        std::memcpy(code_ + call_at + 1, &rel, sizeof(rel));
+        emit({0xC3});                                    // ret
+        u8* slot = code_ + (kThunkSlot - kCodeAddr);
+        u8* body = code_ + (kStubBodyAddr - kCodeAddr);
+        switch (kind) {
+        case Kind::ThreadId:
+            emit_get_current_thread_id_stub(slot);
+            break;
+        case Kind::TryAcquire:
+            ASSERT_LE(emit_srw_try_acquire_exclusive_body(body, kThunkGateway,
+                                                          &recursion_), kN64SrwBodyMax);
+            emit_absolute_jump(slot, kStubBodyAddr);
+            break;
+        case Kind::Release:
+            ASSERT_LE(emit_srw_release_exclusive_body(body, kThunkGateway,
+                                                      &recursion_), kN64SrwBodyMax);
+            emit_absolute_jump(slot, kStubBodyAddr);
+            break;
+        }
+        ASSERT_EQ(mprotect(code_, 0x1000, PROT_READ | PROT_EXEC), 0);
+    }
+
+    StubCall run(Kind kind, u64 arg) {
+        assemble(kind, arg);
+        StubCall out;
+        const u32 tid = kGuestTid;
+        std::memset(teb_ + kTebClientIdThread, 0, 8);
+        std::memcpy(teb_ + kTebClientIdThread, &tid, sizeof(tid));
+        const u64 initial_sp = prime_stack();
+        std::memset(xfer_, 0, sizeof(*xfer_));
+        publish_gs_hooks(teb_);
+        xfer_->rip = kCodeAddr;
+        xfer_->rsp = initial_sp;
+        xfer_->flags = 0x202;
+        Ctl ctl{};
+        GuestTebThread thread;
+        if (!thread.start(kTebAddr, &guest_body, &ctl).is_ok()) return out;
+        out.clean = thread.serve([&] {
+            const auto why = static_cast<Native64Exit>(xfer_->reason);
+            if (why == Native64Exit::ThunkCall) {
+                ++out.thunk_calls;
+                out.thunk_gateway = xfer_->rip;
+                out.thunk_rcx = xfer_->rcx;
+                u64 ret = 0;
+                std::memcpy(&ret, stack_ + (xfer_->rsp - kStackAddr), sizeof(ret));
+                xfer_->rip = ret;
+                xfer_->rsp += 8;
+                xfer_->rax = kInjectedRax;
+            } else {
+                ctl.stop = true;
+            }
+        }, 5'000'000'000ULL);
+        out.rax = xfer_->rax;
+        (void)thread.wait_until_exited();
+        return out;
+    }
+
+    static u64 owned(u64 waiters = 0) {
+        return 1u | (static_cast<u64>(kGuestTid) << 2) | waiters;
+    }
+
+    alignas(8) u64 lock_word_[2]{};
+    u64 recursion_ = 0;
+    u64 lock_addr() const { return reinterpret_cast<u64>(&lock_word_[0]); }
+};
+
+TEST_F(Native64StubTest, GetCurrentThreadIdReadsTebClientIdThread) {
+    const StubCall c = run(Kind::ThreadId, 0);
+    ASSERT_TRUE(c.clean);
+    EXPECT_EQ(c.thunk_calls, 0u);
+    EXPECT_EQ(c.rax, kGuestTid);
+}
+
+TEST_F(Native64StubTest, TryAcquireTakesAFreeWordWithOwnerTid) {
+    lock_word_[0] = 0;
+    const StubCall c = run(Kind::TryAcquire, lock_addr());
+    ASSERT_TRUE(c.clean);
+    EXPECT_EQ(c.thunk_calls, 0u);
+    EXPECT_EQ(c.rax, 1u);
+    EXPECT_EQ(lock_word_[0], owned());
+}
+
+TEST_F(Native64StubTest, TryAcquireKeepsTheWaitersBit) {
+    lock_word_[0] = 2;   // free, but a waiter may be parked
+    const StubCall c = run(Kind::TryAcquire, lock_addr());
+    ASSERT_TRUE(c.clean);
+    EXPECT_EQ(c.thunk_calls, 0u);
+    EXPECT_EQ(c.rax, 1u);
+    EXPECT_EQ(lock_word_[0], owned(2));
+}
+
+TEST_F(Native64StubTest, TryAcquireFailsOnAHeldWordWithoutTheHost) {
+    for (const u64 held : {owned(), owned(2), u64{1} << 2 /* one shared holder */,
+                           (u64{3} << 2) | 2}) {
+        lock_word_[0] = held;
+        const StubCall c = run(Kind::TryAcquire, lock_addr());
+        ASSERT_TRUE(c.clean);
+        EXPECT_EQ(c.thunk_calls, 0u) << std::hex << held;
+        EXPECT_EQ(c.rax, 0u) << std::hex << held;
+        EXPECT_EQ(lock_word_[0], held) << "a failed try must not change the word";
+    }
+}
+
+TEST_F(Native64StubTest, TryAcquireDefersToTheHostForUnusualCases) {
+    // Misaligned pointer, null pointer, and a live recursion entry.
+    const u64 misaligned = lock_addr() + 4;
+    for (const u64 arg : {misaligned, u64{0}}) {
+        const StubCall c = run(Kind::TryAcquire, arg);
+        ASSERT_TRUE(c.clean);
+        EXPECT_EQ(c.thunk_calls, 1u);
+        EXPECT_EQ(c.thunk_gateway, kThunkGateway);
+        EXPECT_EQ(c.thunk_rcx, arg);
+        EXPECT_EQ(c.rax, kInjectedRax);
+    }
+    recursion_ = 1;
+    lock_word_[0] = 0;
+    const StubCall c = run(Kind::TryAcquire, lock_addr());
+    ASSERT_TRUE(c.clean);
+    EXPECT_EQ(c.thunk_calls, 1u);
+    EXPECT_EQ(c.thunk_gateway, kThunkGateway);
+    EXPECT_EQ(lock_word_[0], 0u) << "the host, not the stub, decides";
+}
+
+TEST_F(Native64StubTest, ReleaseClearsAnOwnedUncontendedWord) {
+    lock_word_[0] = owned();
+    const StubCall c = run(Kind::Release, lock_addr());
+    ASSERT_TRUE(c.clean);
+    EXPECT_EQ(c.thunk_calls, 0u);
+    EXPECT_EQ(lock_word_[0], 0u);
+}
+
+TEST_F(Native64StubTest, ReleaseDefersWaitersUnheldForeignAndRecursionToTheHost) {
+    const u64 foreign = 1u | (u64{0x999} << 2);
+    for (const u64 word : {owned(2), u64{0}, u64{1} << 2, foreign}) {
+        lock_word_[0] = word;
+        const StubCall c = run(Kind::Release, lock_addr());
+        ASSERT_TRUE(c.clean);
+        EXPECT_EQ(c.thunk_calls, 1u) << std::hex << word;
+        EXPECT_EQ(c.thunk_gateway, kThunkGateway);
+        EXPECT_EQ(c.thunk_rcx, lock_addr());
+        EXPECT_EQ(lock_word_[0], word) << "only the host changes this word";
+    }
+    recursion_ = 1;
+    lock_word_[0] = owned();
+    const StubCall c = run(Kind::Release, lock_addr());
+    ASSERT_TRUE(c.clean);
+    EXPECT_EQ(c.thunk_calls, 1u);
+    EXPECT_EQ(lock_word_[0], owned());
+}
+
+TEST_F(Native64StubTest, StubsFitTheirSlotsAndBudget) {
+    std::vector<u8> buf(kN64SrwBodyMax + 64, 0xCC);
+    EXPECT_LE(emit_srw_try_acquire_exclusive_body(buf.data(), 0x1000, &recursion_),
+              kN64SrwBodyMax);
+    EXPECT_LE(emit_srw_release_exclusive_body(buf.data(), 0x1000, &recursion_),
+              kN64SrwBodyMax);
+    std::vector<u8> slot(16, 0xCC);
+    emit_absolute_jump(slot.data(), 0x1122334455667788ULL);
+    EXPECT_EQ(slot[14], 0xCC) << "the absolute jump fits a 16-byte slot";
+}
+
+} // namespace

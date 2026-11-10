@@ -229,6 +229,17 @@ _native64_sentinel_fs_trap:
     ud2
 
 // ---------------------------------------------------------------------------
+// _native64_process_sentinel -- the return address of a thread's outermost
+// frame (the process-return sentinel). Same capture as _native64_sentinel; a
+// distinct address so an unwinder can tell the end of a thread's stack from
+// a nested host callback boundary. A jmp changes no register or flag.
+// ---------------------------------------------------------------------------
+.globl _native64_process_sentinel
+.p2align 4
+_native64_process_sentinel:
+    jmp     _native64_sentinel
+
+// ---------------------------------------------------------------------------
 // _native64_fault_return -- a faulting guest thread walks back out here.
 //
 // The Mach bridge has already written the faulting register file and the fault

@@ -18,6 +18,7 @@
 #include "graphics/shaders/dxbc_parser.hpp"
 #include "graphics/shaders/dxbc_to_spirv.hpp"
 #include "graphics/shaders/ia_resolve.hpp"
+#include "graphics/shaders/msl_point_size.hpp"
 #include "graphics/shaders/pipeline_stats.hpp"
 #include "graphics/shaders/spirv_to_msl.hpp"
 
@@ -524,4 +525,75 @@ TEST(PipelineStatsGpu, TessellationKernelCountsEveryPrimitiveVertex) {
     w = run(3, 12, false);
     EXPECT_EQ(value(w, STAT_DS_INVOCATIONS), 36u);
     EXPECT_EQ(value(w, STAT_C_INVOCATIONS), 0u);
+}
+
+// D3D11.3 3.4.6: a point is one pixel. vs_pos writes no size, and Metal's
+// point size is undefined without [[point_size]] (msl_point_size.hpp), so a
+// point pipeline gains [[point_size]] = 1.0 and a triangle pipeline keeps the
+// function as it is (Metal refuses a point size there,
+// tools/oracle_probe/metal/metal_restart_point_facts.m).
+TEST(PointSizeGpu, PointsFromAVertexShaderWithoutASizeAreOnePixel) {
+    auto& dev = device();
+    const std::string vs = translate(pstats::g_vs_pos, sizeof(pstats::g_vs_pos),
+                                     ShaderStage::Vertex, false);
+    ASSERT_FALSE(vs.empty());
+    EXPECT_EQ(vs.find("[[point_size"), std::string::npos);
+    EXPECT_NE(msl_with_unit_point_size(vs).find("out.vitreo_point_size = 1.0;"),
+              std::string::npos);
+    BackendPipelineDesc pd{};
+    pd.vertex_shader_msl = vs;
+    pd.fragment_shader_msl =
+        "#include <metal_stdlib>\nusing namespace metal;\n"
+        "fragment float4 main0() { return float4(1.0); }\n";
+    pd.vertex_entry_point = pd.fragment_entry_point = "main0";
+    pd.vertex_attributes = {{0, 0, BackendVertexFormat::Float4, 0}};
+    pd.vertex_stride = pd.vertex_buffer_strides[0] = 16;
+    pd.color_format = PixelFormat::RGBA8Unorm;
+    pd.input_primitive_class = BackendPrimitiveClass::Triangle;
+    pd.cache_key = 0x9017A000ull;
+    auto triangles = dev.create_pipeline(pd);
+    EXPECT_TRUE(triangles && triangles->valid());
+    pd.input_primitive_class = BackendPrimitiveClass::Point;
+    pd.cache_key = 0x9017A001ull;
+    auto points = dev.create_pipeline(pd);
+    ASSERT_TRUE(points && points->valid());
+    BackendTexture2DDesc td{};
+    td.width = td.height = 8;
+    td.mip_levels = td.array_size = 1;
+    td.pixel_format = PixelFormat::RGBA8Unorm;
+    td.render_target = true;
+    const std::vector<u32> clear(64, 0);
+    auto target = dev.create_texture_2d(td, clear.data(), 32);
+    // Pixel centres (1,1), (4,2) and (6,6) of the 8x8 target.
+    const std::vector<float> vertices{-0.625f, 0.625f,  0.5f, 1.0f,
+                                      0.125f,  0.375f,  0.5f, 1.0f,
+                                      0.625f,  -0.625f, 0.5f, 1.0f};
+    auto vb = buffer(vertices.size() * 4, vertices.data());
+    ASSERT_TRUE(target && vb);
+    BackendRenderPassDesc pass_desc{};
+    pass_desc.color_targets[0] = target.get();
+    pass_desc.color_formats[0] = PixelFormat::RGBA8Unorm;
+    pass_desc.preserve_color_contents = true;
+    auto pass = dev.create_render_pass_standalone(pass_desc);
+    ASSERT_TRUE(pass && pass->valid());
+    std::array<u32, kPushBlockBytes / 4> push{};
+    BackendDrawCall call{};
+    call.pipeline = points.get();
+    call.topology = BackendPrimitiveTopology::PointList;
+    call.vertex_count = 3;
+    call.instance_count = 1;
+    call.vertex_buffer = vb.get();
+    call.vertex_buffers[0] = vb.get();
+    call.viewport = {0, 0, 8, 8, 0, 1};
+    call.vertex_constants = push.data();
+    call.vertex_constants_size = sizeof(push);
+    EXPECT_TRUE(pass->draw(call) && pass->end());
+    EXPECT_TRUE(dev.wait_idle());
+    std::vector<u32> pixels(64, 0xDDDDDDDDu);
+    ASSERT_TRUE(target->readback(0, pixels.data(), 32));
+    std::vector<u32> lit;
+    for (u32 i = 0; i < 64; ++i) {
+        if (pixels[i] != 0) lit.push_back(i);
+    }
+    EXPECT_EQ(lit, (std::vector<u32>{1 * 8 + 1, 2 * 8 + 4, 6 * 8 + 6}));
 }

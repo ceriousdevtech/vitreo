@@ -5,14 +5,17 @@
 /// @brief hid.dll exports.
 ///
 /// Vitreo exposes no HID device interfaces, so no guest handle is a HID
-/// device and no HIDP_PREPARSED_DATA is ever issued. Every entry point
-/// therefore reports exactly what Windows reports for a non-HID handle or
+/// device and no HIDP_PREPARSED_DATA is issued through device enumeration yet.
+/// The capability queries recognize the runtime-owned, copyable normalized
+/// gamepad collection (common/gamepad_hid_report.hpp); remaining parser operations
+/// on that collection fail NOT_IMPLEMENTED with a diagnostic until report access
+/// is complete. Other entry points report Windows errors for a non-HID handle or
 /// preparsed data it did not produce (tools/oracle_probe/hid_probe.expected):
 /// HidD_* -> FALSE with ERROR_INVALID_PARAMETER for an open handle (it is not
 /// a HID device) or ERROR_INVALID_HANDLE for NULL, INVALID_HANDLE_VALUE or a
 /// closed handle, outputs untouched;
-/// HidP_* -> HIDP_STATUS_INVALID_PREPARSED_DATA; the Max*ListLength queries
-/// -> 0. x86 stdcall byte counts come from the SDK import library
+/// Unknown HidP preparsed data -> HIDP_STATUS_INVALID_PREPARSED_DATA;
+/// Max*ListLength queries on unknown data -> 0. x86 stdcall byte counts come from the SDK import library
 /// (libhid.a decorations).
 
 #include "winapi/core/guest_com.hpp"
@@ -23,10 +26,12 @@ namespace vitreo::hardware { class BluetoothHost; }
 namespace vitreo::winapi {
 
 class HandleTable;
+class FileManager;
+class GlobalLocalManager;
 
 /// @p handles is the process handle table used to tell an open handle from
 /// a stale one.
-[[nodiscard]] DllExports create_hid_thunks(HandleTable* handles = nullptr);
+[[nodiscard]] DllExports create_hid_thunks(HandleTable* handles = nullptr, FileManager* files = nullptr, GlobalLocalManager* allocator = nullptr);
 
 /// winusb.dll: every export of the real DLL (winusb.lib decorations for the
 /// x86 byte counts). Vitreo has no USB stack, so no process ever holds a

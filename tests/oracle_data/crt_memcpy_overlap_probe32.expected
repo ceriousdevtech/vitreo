@@ -1,0 +1,4 @@
+vcruntime140.dll	present	memmove_safe_cases=132/132
+ucrtbase.dll	present	memmove_safe_cases=132/132
+msvcrt.dll	present	memmove_safe_cases=132/132
+ntdll.dll	present	memmove_safe_cases=132/132

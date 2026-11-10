@@ -98,6 +98,9 @@ std::optional<bool> JitCompiler::compile_locked_rmw32(
         emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                 JIT_CTX_OFF_LOCK_CMPXCHG32 >> 3));
         emit_helper_blr();
+        // A faulting destination raised in the helper (registers, flags and
+        // memory untouched); the block stops at this instruction.
+        emit_exit_if_pending_raise();
         // The helper materialises RFLAGS; both arms now leave CMP's NZCV.
         emit_nzcv_sub_from_rflags();
         join_native_lock(nl);
@@ -119,6 +122,9 @@ std::optional<bool> JitCompiler::compile_locked_rmw32(
         emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                 JIT_CTX_OFF_LOCK_CMPXCHG8 >> 3));
         emit_helper_blr();
+        // A faulting destination raised in the helper (registers, flags and
+        // memory untouched); the block stops at this instruction.
+        emit_exit_if_pending_raise();
         // The helper materialises RFLAGS: claim CMP's NZCV from them.
         emit_nzcv_sub_from_rflags();
         m_flags.nzcv = NzcvState::Sub;
@@ -133,6 +139,9 @@ std::optional<bool> JitCompiler::compile_locked_rmw32(
         emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                 JIT_CTX_OFF_LOCK_CMPXCHG8B >> 3));
         emit_helper_blr();
+        // A faulting destination raised in the helper (registers, flags and
+        // memory untouched); the block stops at this instruction.
+        emit_exit_if_pending_raise();
         break;
     }
 

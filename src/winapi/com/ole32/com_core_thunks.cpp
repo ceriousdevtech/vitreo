@@ -22,6 +22,8 @@
 
 namespace vitreo::winapi {
 
+#include "winapi/com/ole32/com_factory_contract.inc"
+
 // =============================================================================
 // Thunk Registration
 // =============================================================================
@@ -169,6 +171,10 @@ void append_com_lifecycle_thunks(DllExports& exports, ComCoreManager& mgr) {
         },
         8
     });
+    exports.entries.push_back(ExportEntry{
+        "CoGetClassObject", 0, [&mgr](Marshaler& m) {
+            m.set_return(mgr.co_get_class_object(m));
+        }, static_cast<u16>(com_factory_contract::co_get_stdcall_bytes)});
     // CoCreateInstance (5 args, stdcall_bytes=20)
     exports.entries.push_back(ExportEntry{
         "CoCreateInstance", 0,

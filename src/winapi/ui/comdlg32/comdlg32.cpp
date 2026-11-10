@@ -3,7 +3,9 @@
 #include "windowing/cocoa/cocoa_bridge.hpp"
 #include "capsule/vfs/vfs.hpp"
 #include <algorithm>
+#include <cstdio>
 #include <filesystem>
+#include <mutex>
 
 namespace vitreo::winapi {
 namespace {
@@ -46,7 +48,8 @@ std::optional<std::string> guest_path_for_host(capsule::Vfs* vfs, const std::str
 }
 
 DllExports create_comdlg32_thunks(windowing::CocoaBridge* bridge, capsule::Vfs* vfs,
-                                  FileDialogPresenter presenter) {
+                                  FileDialogPresenter presenter,
+                                  ColorDialogPresenter color_presenter) {
     DllExports exports;
     auto file_dialog = [bridge, vfs, presenter](Marshaler& m, bool save, bool wide) {
         dialog_error = 0;
@@ -116,14 +119,113 @@ DllExports create_comdlg32_thunks(windowing::CocoaBridge* bridge, capsule::Vfs* 
         (void)m.write_u16(ofn + (x64 ? 102 : 58),
             static_cast<u16>(string_units(guest->substr(0, extension), wide)));
         (void)m.write_u32(ofn + index_offset, index);
+        // lpstrFileTitle / nMaxFileTitle: the name and extension without the
+        // path, when the caller supplied a buffer that holds it.
+        const GuestAddr title_buffer = pointer(36, 64);
+        const u32 title_capacity = m.read_u32(ofn + (x64 ? 72 : 40)).value_or(0);
+        const std::string title_text = guest->substr(filename);
+        if (title_buffer != 0 && string_units(title_text, wide) + 1 <= title_capacity) {
+            (void)(wide ? m.write_wide_string(title_buffer, title_text)
+                        : m.write_ansi_string(title_buffer, title_text));
+        }
         m.set_return(1u);
     };
     exports.entries.push_back({"GetOpenFileNameW", 0,
         [file_dialog](Marshaler& m) { file_dialog(m, false, true); }, 4});
+    exports.entries.push_back({"GetOpenFileNameA", 0,
+        [file_dialog](Marshaler& m) { file_dialog(m, false, false); }, 4});
     exports.entries.push_back({"GetSaveFileNameW", 0,
         [file_dialog](Marshaler& m) { file_dialog(m, true, true); }, 4});
     exports.entries.push_back({"GetSaveFileNameA", 0,
         [file_dialog](Marshaler& m) { file_dialog(m, true, false); }, 4});
+    // BOOL ChooseColorA/W(LPCHOOSECOLOR)
+    // Learn ChooseColor / CHOOSECOLOR: lStructSize must be sizeof(CHOOSECOLOR)
+    // (36 x86 / 72 x64, from commdlg.h) or CDERR_STRUCTSIZE; CC_RGBINIT seeds
+    // the panel with rgbResult (black otherwise); OK writes rgbResult and
+    // returns TRUE; Cancel returns FALSE with CommDlgExtendedError 0. The
+    // panel is the native NSColorPanel; lpCustColors is left as it was,
+    // because the panel offers no way to edit the 16 custom slots. A hook or
+    // template dialog is guest UI the native panel cannot host: a missing
+    // hook is CDERR_NOHOOK, a missing template CDERR_NOTEMPLATE, and a real
+    // one fails loudly (CDERR_DIALOGFAILURE) instead of being dropped.
+    auto choose_color = [bridge, color_presenter](Marshaler& m, bool wide) {
+        constexpr u32 CC_RGBINIT = 0x1;
+        constexpr u32 CC_ENABLEHOOK = 0x10;
+        constexpr u32 CC_ENABLETEMPLATE = 0x20;
+        constexpr u32 CC_ENABLETEMPLATEHANDLE = 0x40;
+        constexpr u32 CDERR_STRUCTSIZE = 0x0001;
+        constexpr u32 CDERR_NOTEMPLATE = 0x0003;
+        constexpr u32 CDERR_NOHOOK = 0x000B;
+        constexpr u32 CDERR_DIALOGFAILURE = 0xFFFF;
+        dialog_error = 0;
+        const GuestAddr cc = m.arg_ptr(0);
+        const bool x64 = m.cpu_is_64bit();
+        if (cc == 0) {
+            dialog_error = CDERR_STRUCTSIZE;
+            m.set_return(0u);
+            return;
+        }
+        const u32 size = m.read_u32(cc).value_or(0);
+        if (size != (x64 ? 72u : 36u)) {
+            dialog_error = CDERR_STRUCTSIZE;
+            m.set_return(0u);
+            return;
+        }
+        const u32 rgb_offset = x64 ? 24 : 12;
+        const u32 flags = m.read_u32(cc + (x64 ? 40 : 20)).value_or(0);
+        const GuestAddr instance = m.read_ptr(cc + (x64 ? 16 : 8)).value_or(0);
+        const GuestAddr hook = m.read_ptr(cc + (x64 ? 56 : 28)).value_or(0);
+        const GuestAddr template_name = m.read_ptr(cc + (x64 ? 64 : 32)).value_or(0);
+        if ((flags & CC_ENABLEHOOK) != 0 && hook == 0) {
+            dialog_error = CDERR_NOHOOK;
+            m.set_return(0u);
+            return;
+        }
+        if (((flags & CC_ENABLETEMPLATEHANDLE) != 0 && instance == 0) ||
+            ((flags & CC_ENABLETEMPLATE) != 0 &&
+             (flags & CC_ENABLETEMPLATEHANDLE) == 0 &&
+             (instance == 0 || template_name == 0))) {
+            dialog_error = CDERR_NOTEMPLATE;
+            m.set_return(0u);
+            return;
+        }
+        if ((flags & (CC_ENABLEHOOK | CC_ENABLETEMPLATE | CC_ENABLETEMPLATEHANDLE)) != 0) {
+            static std::once_flag once;
+            std::call_once(once, [wide] {
+                std::fprintf(stderr, "[vitreo] UNIMPLEMENTED comdlg32!ChooseColor%c: "
+                                     "hook/template dialog (guest-drawn color dialog)\n",
+                             wide ? 'W' : 'A');
+            });
+            dialog_error = CDERR_DIALOGFAILURE;
+            m.set_return(0u);
+            return;
+        }
+        const u32 initial = (flags & CC_RGBINIT) != 0
+            ? (m.read_u32(cc + rgb_offset).value_or(0) & 0x00FFFFFFu)
+            : 0u;
+        std::optional<u32> chosen;
+        if (color_presenter) {
+            chosen = color_presenter(initial);
+        } else if (bridge != nullptr) {
+            const auto result = bridge->show_color_dialog(initial);
+            if (result.ok) chosen = result.colorref;
+        } else {
+            dialog_error = CDERR_DIALOGFAILURE;
+            m.set_return(0u);
+            return;
+        }
+        if (!chosen) {
+            m.set_return(0u);
+            return;
+        }
+        (void)m.write_u32(cc + rgb_offset, *chosen & 0x00FFFFFFu);
+        m.set_return(1u);
+    };
+    exports.entries.push_back({"ChooseColorA", 0,
+        [choose_color](Marshaler& m) { choose_color(m, false); }, 4});
+    exports.entries.push_back({"ChooseColorW", 0,
+        [choose_color](Marshaler& m) { choose_color(m, true); }, 4});
+
     exports.entries.push_back({"CommDlgExtendedError", 0,
         [](Marshaler& m) { m.set_return(dialog_error); }, 0});
 

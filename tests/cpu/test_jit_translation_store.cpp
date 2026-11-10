@@ -4,6 +4,7 @@
 // integrity, identity, invalidation and cold-vs-warm equivalence.
 
 #include "jit_exec_test_fixture.hpp"
+#include "jit_linear_fixture.hpp"
 
 #include "core/cpu/jit/jit_compile_memo.hpp"
 #include "core/cpu/jit/translation_store.hpp"
@@ -21,6 +22,7 @@
 
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
 #include <string>
 
 namespace {
@@ -528,6 +530,69 @@ TEST_F(TranslationStoreTest, TornTailIsIgnored) {
     EXPECT_EQ(tstats::count(Event::MissNoRecord), 1u);
 }
 
+std::string sidecar_of(const std::string& seg) { return seg.substr(0, seg.size() - 4) + ".tsi"; }
+
+TEST_F(TranslationStoreTest, SidecarIndexesEveryRecordAndServesTheNextProcess) {
+    StoreSession session;
+    place_image(kDivCode, sizeof kDivCode);
+    ASSERT_TRUE(session.open());
+    EXPECT_EQ(compile_and_run32(kDivCode, sizeof kDivCode), kDivExpectedAx);
+    const std::string dir = session.store_dir();
+    session.new_process();
+    const auto segs = segment_files(dir);
+    ASSERT_EQ(segs.size(), 1u);
+    struct stat sb{};
+    ASSERT_EQ(::stat(sidecar_of(segs[0]).c_str(), &sb), 0) << "no sidecar beside the segment";
+    EXPECT_EQ(sb.st_size, 16 + 16) << "header + one entry";
+    EXPECT_EQ(sb.st_mode & 0777, 0600u);
+    ASSERT_TRUE(session.open());
+    EXPECT_EQ(TranslationStore::indexed_records_for_test(), 1u);
+    EXPECT_EQ(compile_and_run32(kDivCode, sizeof kDivCode), kDivExpectedAx);
+    EXPECT_EQ(outcome_count(TranslationOutcome::StoreHit), 1u);
+}
+
+TEST_F(TranslationStoreTest, GarbageSidecarFallsBackToTheScan) {
+    StoreSession session;
+    place_image(kDivCode, sizeof kDivCode);
+    ASSERT_TRUE(session.open());
+    EXPECT_EQ(compile_and_run32(kDivCode, sizeof kDivCode), kDivExpectedAx);
+    const std::string dir = session.store_dir();
+    session.new_process();
+    const auto segs = segment_files(dir);
+    ASSERT_EQ(segs.size(), 1u);
+    // Keep the header, replace the entry with one at a wrong offset.
+    const int fd = ::open(sidecar_of(segs[0]).c_str(), O_WRONLY);
+    ASSERT_GE(fd, 0);
+    const unsigned char junk[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0x70, 0, 0, 0};
+    ASSERT_EQ(::pwrite(fd, junk, sizeof junk, 16), 16);
+    ::close(fd);
+    ASSERT_TRUE(session.open());
+    EXPECT_EQ(TranslationStore::indexed_records_for_test(), 1u) << "the scan found it";
+    EXPECT_EQ(compile_and_run32(kDivCode, sizeof kDivCode), kDivExpectedAx);
+    EXPECT_EQ(outcome_count(TranslationOutcome::StoreHit), 1u);
+}
+
+TEST_F(TranslationStoreTest, SidecarEntryOverACorruptRecordNeverHits) {
+    StoreSession session;
+    place_image(kDivCode, sizeof kDivCode);
+    ASSERT_TRUE(session.open());
+    EXPECT_EQ(compile_and_run32(kDivCode, sizeof kDivCode), kDivExpectedAx);
+    const std::string dir = session.store_dir();
+    session.new_process();
+    const auto segs = segment_files(dir);
+    ASSERT_EQ(segs.size(), 1u);
+    // The sidecar still names the record; its header no longer checks out.
+    const int fd = ::open(segs[0].c_str(), O_WRONLY);
+    ASSERT_GE(fd, 0);
+    const unsigned char bad[4] = {0xde, 0xad, 0xbe, 0xef};
+    ASSERT_EQ(::pwrite(fd, bad, sizeof bad, 64), 4);  // first record's magic
+    ::close(fd);
+    ASSERT_TRUE(session.open());
+    EXPECT_EQ(compile_and_run32(kDivCode, sizeof kDivCode), kDivExpectedAx);
+    EXPECT_EQ(outcome_count(TranslationOutcome::StoreHit), 0u);
+    EXPECT_EQ(outcome_count(TranslationOutcome::Fresh), 1u);
+}
+
 TEST_F(TranslationStoreTest, ChangedImageBytesMiss) {
     StoreSession session;
     place_image(kDivCode, sizeof kDivCode);
@@ -695,6 +760,138 @@ TEST_F(TranslationStoreTest, EvictionKeepsTheStoreUnderItsCap) {
     EXPECT_FALSE(std::filesystem::exists(dir + "/seg-1000-1-00000000.tss"));
 }
 
+TEST_F(TranslationStoreTest, ProcessIdentityEnvDoesNotSplitTheStore) {
+    // Every process of a multi-process guest carries its own id, foreground
+    // grant and (for sandboxed children) token variables. None reaches the
+    // emitter, so all of them must land in one store directory.
+    StoreSession session;
+    ASSERT_TRUE(session.open());
+    const std::string base_dir = session.store_dir();
+    const char* const kIdentity[][2] = {
+        {"VITREO_GUEST_PROCESS_ID", "4242"},
+        {"VITREO_FOREGROUND_GRANT", "1"},
+        {"VITREO_CHILD_PROCESS_RESTRICTED", "1"},
+        {"VITREO_TOKEN_RESTRICTED", "1"},
+        {"VITREO_TOKEN_INTEGRITY_RID", "4096"},
+    };
+    for (const auto& kv : kIdentity) {
+        session.new_process();
+        ::setenv(kv[0], kv[1], 1);
+        const bool opened = session.open();
+        const std::string dir = session.store_dir();
+        ::unsetenv(kv[0]);
+        ASSERT_TRUE(opened) << kv[0];
+        EXPECT_EQ(dir, base_dir) << kv[0] << " split the store";
+    }
+    // A knob that is not process identity still gets its own store.
+    session.new_process();
+    ::setenv("VITREO_TSTORE_TEST_KNOB", "1", 1);
+    const bool opened = session.open();
+    const std::string knob_dir = session.store_dir();
+    ::unsetenv("VITREO_TSTORE_TEST_KNOB");
+    ASSERT_TRUE(opened);
+    EXPECT_NE(knob_dir, base_dir);
+}
+
+TEST_F(TranslationStoreTest, RuntimeDiagnosticEnvReusesX86AndX64Translations) {
+    StoreSession session;
+    ASSERT_TRUE(m_memory->write_bytes(kX64Block, kDivCode, sizeof kDivCode));
+    place_image(kDivCode, sizeof kDivCode);
+    ASSERT_TRUE(session.open());
+    const std::string base_dir = session.store_dir();
+    EXPECT_EQ(compile_and_run32(kDivCode, sizeof kDivCode), kDivExpectedAx);
+    EXPECT_EQ(compile_and_run64(kDivCode, sizeof kDivCode), kDivExpectedAx);
+    ASSERT_EQ(tstats::count(Event::Produced), 2u);
+
+    const char* const diagnostics[] = {
+        "VITREO_INPUT_LATENCY",
+        "VITREO_INPUT_LATENCY_ALL",
+        "VITREO_INPUT_LATENCY_TRACE",
+        "VITREO_WAKE_LATENCY",
+        "VITREO_IOCP_DIAG",
+        "VITREO_IOCP_DIAG_POSTS",
+        "VITREO_IOCP_DIAG_PID",
+        "VITREO_IOCP_DIAG_OBJECT",
+        "VITREO_IOCP_DIAG_OV",
+        "VITREO_IOCP_DIAG_DUMP_PING_CALLBACK",
+    };
+    for (const char* name : diagnostics) {
+        const char* prior = std::getenv(name);
+        const bool had_prior = prior != nullptr;
+        const std::string saved = had_prior ? prior : "";
+        for (const char* value : {"1", "2"}) {
+            SCOPED_TRACE(std::string(name) + '=' + value);
+            session.new_process();
+            ::setenv(name, value, 1);
+            const bool opened = session.open();
+            const std::string dir = session.store_dir();
+            if (opened) {
+                EXPECT_EQ(compile_and_run32(kDivCode, sizeof kDivCode), kDivExpectedAx);
+                EXPECT_EQ(compile_and_run64(kDivCode, sizeof kDivCode), kDivExpectedAx);
+                EXPECT_EQ(outcome_count(TranslationOutcome::StoreHit), 2u);
+                EXPECT_EQ(outcome_count(TranslationOutcome::Fresh), 0u);
+            }
+            if (had_prior) ::setenv(name, saved.c_str(), 1);
+            else ::unsetenv(name);
+            ASSERT_TRUE(opened);
+            EXPECT_EQ(dir, base_dir);
+        }
+    }
+
+    for (const char* name : {"VITREO_JIT_INCHAIN_THUNKS",
+                             "VITREO_PERF_WINDOW",
+                             "VITREO_IOCP_DIAG_UNKNOWN_KNOB"}) {
+        SCOPED_TRACE(name);
+        session.new_process();
+        const char* prior = std::getenv(name);
+        const bool had_prior = prior != nullptr;
+        const std::string saved = had_prior ? prior : "";
+        ::setenv(name, saved == "1" ? "0" : "1", 1);
+        const bool opened = session.open();
+        const std::string dir = session.store_dir();
+        if (had_prior) ::setenv(name, saved.c_str(), 1);
+        else ::unsetenv(name);
+        ASSERT_TRUE(opened);
+        EXPECT_NE(dir, base_dir);
+    }
+}
+
+TEST_F(TranslationStoreTest, GcKeepsSameBuildSiblingsAndEvictsOldBuilds) {
+    StoreSession session;
+    ASSERT_TRUE(session.open());
+    const std::string own = session.store_dir();
+    const std::string build = [&] {
+        std::ifstream in(own + "/build");
+        std::string tag;
+        std::getline(in, tag);
+        return tag;
+    }();
+    ASSERT_EQ(build.size(), 32u) << "the store records the build it belongs to";
+    session.new_process();
+    const auto make_dir = [&](const std::string& name, const std::string& tag, time_t age) {
+        const std::string path = session.root() + "/" + name;
+        std::filesystem::create_directories(path);
+        std::ofstream(path + "/build") << tag;
+        struct timeval tv[2] = {{age, 0}, {age, 0}};
+        ::utimes(path.c_str(), tv);
+        return path;
+    };
+    // Two dead siblings of this build (other knob sets), three dead stores
+    // of other builds: the siblings stay, only the newest old build stays.
+    const std::string sib_a = make_dir(std::string(32, 'a'), build, 3000);
+    const std::string sib_b = make_dir(std::string(32, 'b'), build, 1000);
+    const std::string old_new = make_dir(std::string(32, 'c'), std::string(32, '0'), 2000);
+    const std::string old_mid = make_dir(std::string(32, 'd'), std::string(32, '1'), 1500);
+    const std::string old_untagged = make_dir(std::string(32, 'e'), "", 500);
+    ASSERT_TRUE(session.open());
+    EXPECT_TRUE(std::filesystem::exists(sib_a));
+    EXPECT_TRUE(std::filesystem::exists(sib_b));
+    EXPECT_TRUE(std::filesystem::exists(old_new));
+    EXPECT_FALSE(std::filesystem::exists(old_mid));
+    EXPECT_FALSE(std::filesystem::exists(old_untagged));
+    EXPECT_TRUE(std::filesystem::exists(own));
+}
+
 // ---- across real processes (a fresh host ASLR slide each) -------------------
 
 namespace {
@@ -839,6 +1036,96 @@ TEST(TranslationStoreCrossProcess, AdoptionPublishesProcessStubs) {
     EXPECT_EQ(run_child("adopt", dir, nullptr, kTest), 0);
     std::error_code ec;
     std::filesystem::remove_all(dir, ec);
+}
+
+class TranslationStoreCrossingTest : public vitreo::cpu::jit::test::JitLinear64Test {
+protected:
+    bool use_view() const override {
+        const char* value = std::getenv("VITREO_JIT_VIEW");
+        return value != nullptr && value[0] == '1';
+    }
+};
+
+TEST_F(TranslationStoreCrossingTest, ChildRole) {
+    const char* role = std::getenv("TSTORE_TEST_CHILD_ROLE");
+    const char* dir = std::getenv("TSTORE_TEST_CHILD_DIR");
+    if (role == nullptr || dir == nullptr) GTEST_SKIP() << "spawned by the cross-process test";
+    struct Restore {
+        ~Restore() {
+            JitCompiler::disable_jit_link();
+            JitCompiler::set_inchain_thunks_codegen_for_test(-1);
+            JitCompiler::set_shared_exit_stubs_for_test(-1);
+        }
+    } restore;
+    JitCompiler::enable_jit_link();
+    JitCompiler::set_inchain_thunks_codegen_for_test(1);
+    JitCompiler::set_shared_exit_stubs_for_test(1);
+    StoreSession session(nullptr, dir);
+    const std::vector<u8> code = {
+        0x48, 0x83, 0xD6, 0x00, // adc rsi,0
+        0x48, 0x39, 0xD1,       // cmp rcx,rdx
+        0xFF, 0xE0              // jmp rax
+    };
+    ASSERT_TRUE(m_memory->write_bytes(kCode64, code.data(), code.size()));
+    m_memory->images().register_image(
+        GuestImageIdentity{kCode64, kCode64 + 0x4000, 0xADC, kCode64});
+    ASSERT_TRUE(child_open(session));
+    constexpr GuestAddr thunk = 0x70000000u;
+    struct alignas(8) SlotMap {
+        u64 count{1};
+        u8 eligible{1};
+    } slots;
+    m_jit->set_thunk_region(thunk, thunk + (1u << kInChainSlotShift));
+    m_jit->set_inchain_slot_map(reinterpret_cast<const u8*>(&slots));
+    auto* cached = m_cache->insert(build64(code));
+    ASSERT_NE(cached, nullptr);
+    auto* compiled = m_jit->compile(*cached);
+    ASSERT_NE(compiled, nullptr);
+    CompiledBlock entry = *compiled;
+    m_jit->publish_compiled_block(*cached, *compiled);
+    CpuState cpu = cpu64(kData64);
+    cpu.gpr.r[0] = thunk;
+    cpu.gpr.r[1] = 1;
+    cpu.gpr.r[2] = 2;
+    cpu.flags.set_cf(true);
+    u32 calls = 0;
+    const auto hook = [](CpuState& current, void* raw) {
+        ++*static_cast<u32*>(raw);
+        current.rip = kCode64;
+        return InChainThunkResult::Returned;
+    };
+    JitCompiler::InChainScope crossing(m_jit.get(), hook, &calls);
+    EXPECT_EQ(test::execute_like_dispatcher(*m_jit, entry, cpu),
+              JitExecResult::Continue);
+    // Intel SDM ADC: RSI adds the preceding CMP's carry once per crossing.
+    // execute() seeds W22 with the initial dispatched block.
+    EXPECT_EQ(cpu.jit_iters, 4096u);
+    EXPECT_EQ(calls + 1, cpu.jit_iters);
+    EXPECT_EQ(cpu.gpr.r[static_cast<u8>(RegIndex::RSI)], calls);
+    if (std::string_view(role) == "produce") {
+        EXPECT_EQ(tstats::count(Event::Produced), 1u);
+    } else {
+        EXPECT_EQ(outcome_count(TranslationOutcome::StoreHit), 1u);
+        EXPECT_EQ(outcome_count(TranslationOutcome::Fresh), 0u);
+    }
+    TranslationStore::flush();
+}
+
+TEST(TranslationStoreCrossProcess, AdoptionPublishesApiCrossingsForBothMaps) {
+    for (bool view : {false, true}) {
+        SCOPED_TRACE(view);
+        char tmpl[] = "/tmp/vitreo-tstore-crossing-XXXXXX";
+        const char* made = ::mkdtemp(tmpl);
+        ASSERT_NE(made, nullptr);
+        const std::string dir = made;
+        const std::vector<std::string> env = {
+            view ? "VITREO_JIT_VIEW=1" : "VITREO_JIT_VIEW=0"};
+        constexpr const char* test = "TranslationStoreCrossingTest.ChildRole";
+        EXPECT_EQ(run_child("produce", dir, nullptr, test, env), 0);
+        EXPECT_EQ(run_child("adopt", dir, nullptr, test, env), 0);
+        std::error_code ec;
+        std::filesystem::remove_all(dir, ec);
+    }
 }
 
 // A process's first compiles run before a cold index would be built; the

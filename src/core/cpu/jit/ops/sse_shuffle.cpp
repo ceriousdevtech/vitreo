@@ -57,7 +57,7 @@ std::optional<bool> JitCompiler::compile_sse_shuffle(
             emit(arm64::movz_w(2, 255));
             emit(arm64::movz_w(3, dst_xmm));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         break;
     }
@@ -235,7 +235,7 @@ std::optional<bool> JitCompiler::compile_sse_shuffle(
             emit(arm64::movz_w(2, static_cast<u16>(base_opid + 1)));
             emit(arm64::movz_w(3, packed_dst));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         break;
     }

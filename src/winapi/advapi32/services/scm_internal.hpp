@@ -15,6 +15,7 @@
 ///
 /// Private to advapi32's SCM implementation; not part of scm.hpp's surface.
 
+#include "ipc/process_registry.hpp"
 #include "winapi/advapi32/services/scm.hpp"
 
 #include "winapi/core/marshaler.hpp"
@@ -119,7 +120,14 @@ inline void write_service_status(Marshaler& m, GuestAddr addr,
     (void)m.write_u32(addr + 20, s.check_point);
     (void)m.write_u32(addr + 24, s.wait_hint);
     if (with_process_info) {
-        (void)m.write_u32(addr + 28, s.process_id);
+        // The status file keeps the host pid so the SCM can wait and signal
+        // it. SERVICE_STATUS_PROCESS.dwProcessId is the Windows client ID.
+        u32 published = s.process_id;
+        if (published != 0) {
+            const u32 windows = ipc::windows_process_id_for_host(published);
+            if (windows != 0) published = windows;
+        }
+        (void)m.write_u32(addr + 28, published);
         (void)m.write_u32(addr + 32, 0);  // dwServiceFlags
     }
 }

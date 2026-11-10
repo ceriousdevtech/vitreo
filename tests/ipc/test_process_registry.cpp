@@ -41,11 +41,13 @@ TEST(ProcessRegistryTest, PublishesProcessForRegistrationLifetime) {
 
         const auto processes = list_processes(root.string());
         ASSERT_EQ(processes.size(), 1u);
-        EXPECT_EQ(processes[0].pid, static_cast<u32>(::getpid()));
+        EXPECT_NE(processes[0].pid, 0u);
+        EXPECT_EQ(processes[0].pid % 4u, 0u);
+        EXPECT_EQ(processes[0].host_pid, static_cast<u32>(::getpid()));
         EXPECT_EQ(processes[0].primary_thread_id, 101u);
         EXPECT_EQ(primary_thread_owner(101), static_cast<u32>(::getpid()));
         EXPECT_FALSE(primary_thread_owner(102).has_value());
-        EXPECT_EQ(processes[0].parent_pid, static_cast<u32>(::getppid()));
+        EXPECT_EQ(processes[0].parent_pid, 0u);
         EXPECT_EQ(processes[0].image_name, "Agent.exe");
         EXPECT_EQ(processes[0].image_path,
                   "C:\\ProgramData\\Battle.net\\Agent\\Agent.exe");

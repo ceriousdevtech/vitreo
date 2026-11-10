@@ -754,10 +754,11 @@ TEST_F(D3D11ManagerTest, DrawBindsEveryStagesBufferViewSizesForTheBoundsGuard) {
     constexpr usize kSizeTable = 192;  // member 2's byte offset
     // ... then the capture SV_InstanceID bias (16 bytes), the fixed-function
     // word quad (depth offset, SampleMask, viewport depth range) and the
-    // s8..s15 border colours, the b# read limits (one per slot, 16) and the
-    // min/max sampler states (16 x uvec4).
+    // s8..s15 border colours, the b# read limits (one per slot, 16), the
+    // min/max sampler states (16 x uvec4) and the render-target array index
+    // rule (member 14, one uvec4).
     constexpr usize kBlockBytes = kSizeTable + (128 + 8) * sizeof(u32) + 16 +
-                                  16 + 8 * 16 + 16 * 4 + 16 * 16;
+                                  16 + 8 * 16 + 16 * 4 + 16 * 16 + 16;
     const auto size_at = [&](const std::vector<u8>& block, usize slot) {
         u32 words = 0;
         std::memcpy(&words, block.data() + kSizeTable + slot * 4, 4);

@@ -70,7 +70,32 @@ public:
     /// write lands where every process's GPU reads.
     MetalBuffer(void* device, void* external, usize size, BufferUsage usage,
                 const void* initial_data = nullptr);
+    /// Window storage (BackendBufferDesc::window): a buffer with no storage
+    /// of its own until retarget_window lends it a range of a CPU-visible
+    /// heap's MTLBuffer. Never renamed into the DISCARD pool; its frontend
+    /// moves it to fresh ranges instead, and every CPU update() is a queued
+    /// blit (the frontend writes the lent bytes itself).
+    struct WindowStorage {};
+    MetalBuffer(void* device, usize size, BufferUsage usage, WindowStorage);
     ~MetalBuffer();
+
+    /// Window storage: publish bytes [@p offset, + size()) of @p external
+    /// (an id<MTLBuffer>, retained) for every use recorded from now on. The
+    /// new range starts with no recorded use and no pending GPU write. False
+    /// (nothing changed): not window storage, @p offset not a multiple of
+    /// 256, or the range does not fit.
+    [[nodiscard]] bool retarget_window(void* external, usize offset);
+    /// Recorded work may still use the storage published now (a bind can be
+    /// stamped one generation early across a submit, so one more generation
+    /// must complete: kTagMargin).
+    [[nodiscard]] bool storage_busy() const;
+    /// A GPU write into the published storage has not completed yet, so its
+    /// CPU-visible bytes are not the contents.
+    [[nodiscard]] bool gpu_write_pending() const;
+    /// Block until no recorded work uses the published storage. False: the
+    /// submit queue shut down before it completed.
+    [[nodiscard]] bool wait_until_storage_idle();
+    [[nodiscard]] bool window_storage() const { return m_window; }
 
     /// The storage to bind now (id<MTLBuffer>), at gpu_offset(). A published
     /// pool slice is pinned against reclaim for the list being recorded; call
@@ -165,7 +190,8 @@ private:
     /// the pool cannot supply it.
     [[nodiscard]] bool rename_storage(bool whole);
     /// Block until no submitted work reads the current storage.
-    void wait_for_storage();
+    /// False: the submit queue shut down before the storage's work completed.
+    bool wait_for_storage();
     void ordered_update(const void* data, usize offset, usize length);
 
     /// Guards which storage is published, the mirror and the CPU writes into
@@ -218,6 +244,8 @@ private:
     bool m_gpu_written{false};
     /// External storage (the shared-store constructor): never renamed.
     bool m_pinned{false};
+    /// Window storage (WindowStorage constructor): m_owned is lent.
+    bool m_window{false};
     /// Recording generation of the last GPU write into this buffer. Until it
     /// completes the CPU-side bytes (storage and mirror) are stale, so neither
     /// a rename's copy of "old contents" nor an in-place write is correct.

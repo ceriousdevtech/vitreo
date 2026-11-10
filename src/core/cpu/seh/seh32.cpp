@@ -22,6 +22,10 @@ namespace vitreo::cpu {
 
 u32 cpu_exception_to_status(CpuException ex) {
     switch (ex) {
+        case CpuException::AssertionFailure:
+            return STATUS_ASSERTION_FAILURE;
+        case CpuException::Debug:
+            return STATUS_SINGLE_STEP;
         case CpuException::Breakpoint:
             return STATUS_BREAKPOINT;
         case CpuException::DivideError:
@@ -100,6 +104,9 @@ bool consume_pending_helper_raise(
     }
 
     switch (pending.code) {
+        case STATUS_ASSERTION_FAILURE:
+            context.exception = CpuException::AssertionFailure;
+            break;
         case STATUS_INTEGER_DIVIDE_BY_ZERO:
             context.exception = CpuException::DivideError;
             break;

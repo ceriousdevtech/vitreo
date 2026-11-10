@@ -6,6 +6,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <IOKit/IOKitLib.h>
 #include <pthread.h>
+#include <sys/mount.h>
 #include <sys/sysctl.h>
 
 #include <algorithm>
@@ -197,6 +198,98 @@ std::optional<u32> u32_property(io_object_t entry, const char* key) {
     return std::nullopt;
 }
 
+std::string dictionary_string(CFDictionaryRef dict, const char* key) {
+    CFStringRef name = CFStringCreateWithCString(kCFAllocatorDefault, key, kCFStringEncodingUTF8);
+    const void* value = CFDictionaryGetValue(dict, name);
+    CFRelease(name);
+    if (value == nullptr || CFGetTypeID(value) != CFStringGetTypeID()) return {};
+    const auto text = static_cast<CFStringRef>(value);
+    const CFIndex capacity =
+        CFStringGetMaximumSizeForEncoding(CFStringGetLength(text), kCFStringEncodingUTF8) + 1;
+    std::string out(static_cast<usize>(capacity), '\0');
+    if (!CFStringGetCString(text, out.data(), capacity, kCFStringEncodingUTF8)) return {};
+    out.resize(std::strlen(out.c_str()));
+    return out;
+}
+
+std::optional<u64> u64_property(io_object_t entry, const char* key) {
+    const CfObject value = property(entry, key);
+    if (value.get() == nullptr || CFGetTypeID(value.get()) != CFNumberGetTypeID()) {
+        return std::nullopt;
+    }
+    i64 number = 0;
+    if (!CFNumberGetValue(static_cast<CFNumberRef>(value.get()), kCFNumberSInt64Type, &number) ||
+        number < 0) {
+        return std::nullopt;
+    }
+    return static_cast<u64>(number);
+}
+
+/// The whole physical disk under the volume holding @p path: walk the service
+/// plane from the volume's IOMedia towards the hardware and keep the last
+/// whole-disk IOMedia (an APFS container is itself "Whole"; the physical disk
+/// is further up, under the container's physical store).
+HostDisk read_disk(const char* path) {
+    HostDisk disk;
+    struct statfs fs {};
+    if (path == nullptr || statfs(path, &fs) != 0) return disk;
+    std::string_view device = fs.f_mntfromname;
+    if (device.starts_with("/dev/")) device.remove_prefix(5);
+    const std::string bsd_name(device);
+    IoObject media(IOServiceGetMatchingService(kIOMainPortDefault,
+                                               IOBSDNameMatching(kIOMainPortDefault, 0, bsd_name.c_str())));
+    io_object_t entry = media.get();
+    if (entry == IO_OBJECT_NULL) return disk;
+    IOObjectRetain(entry);
+    for (usize depth = 0; entry != IO_OBJECT_NULL && depth < 64; ++depth) {
+        if (IOObjectConformsTo(entry, "IOMedia")) {
+            const CfObject whole = property(entry, "Whole");
+            if (whole.get() != nullptr && CFGetTypeID(whole.get()) == CFBooleanGetTypeID() &&
+                CFBooleanGetValue(static_cast<CFBooleanRef>(whole.get()))) {
+                disk.size_bytes = u64_property(entry, "Size").value_or(0);
+                disk.block_bytes = u32_property(entry, "Preferred Block Size").value_or(0);
+            }
+        }
+        // The block storage device sits above the whole-disk IOMedia; the
+        // first one met on the way up is the disk's own.
+        if (disk.size_bytes != 0 && disk.product.empty()) {
+            const CfObject characteristics = property(entry, "Device Characteristics");
+            if (characteristics.get() != nullptr &&
+                CFGetTypeID(characteristics.get()) == CFDictionaryGetTypeID()) {
+                const auto dict = static_cast<CFDictionaryRef>(characteristics.get());
+                disk.vendor = dictionary_string(dict, "Vendor Name");
+                disk.product = dictionary_string(dict, "Product Name");
+                disk.revision = dictionary_string(dict, "Product Revision Level");
+                disk.serial = dictionary_string(dict, "Serial Number");
+                io_name_t class_name{};
+                IOObjectGetClass(entry, class_name);
+                std::string interconnect;
+                const CfObject protocol = property(entry, "Protocol Characteristics");
+                if (protocol.get() != nullptr && CFGetTypeID(protocol.get()) == CFDictionaryGetTypeID()) {
+                    interconnect = dictionary_string(static_cast<CFDictionaryRef>(protocol.get()),
+                                                     "Physical Interconnect");
+                }
+                if (std::string_view(class_name).find("NVMe") != std::string_view::npos ||
+                    interconnect.find("NVMe") != std::string::npos) {
+                    disk.bus = HostDiskBus::Nvme;
+                } else if (interconnect.find("SATA") != std::string::npos) {
+                    disk.bus = HostDiskBus::Sata;
+                } else if (interconnect.find("USB") != std::string::npos) {
+                    disk.bus = HostDiskBus::Usb;
+                } else if (interconnect == "Secure Digital") {
+                    disk.bus = HostDiskBus::SecureDigital;
+                }
+            }
+        }
+        io_object_t parent = IO_OBJECT_NULL;
+        const kern_return_t kr = IORegistryEntryGetParentEntry(entry, kIOServicePlane, &parent);
+        IOObjectRelease(entry);
+        entry = kr == KERN_SUCCESS ? parent : IO_OBJECT_NULL;
+    }
+    if (entry != IO_OBJECT_NULL) IOObjectRelease(entry);
+    return disk;
+}
+
 /// Apple silicon: one class per performance level, each logical CPU placed
 /// by its device-tree node.
 bool read_apple_silicon_cpu(HostCpu& cpu) {
@@ -324,6 +417,8 @@ HostHardwareProfile read_host() {
         cpu.processors.clear();
         read_intel_cpu(cpu);
     }
+
+    profile.disk = read_disk(std::getenv("HOME"));
 
     HostMemory& memory = profile.memory;
     memory.total_bytes = sysctl_u64("hw.memsize").value_or(0);

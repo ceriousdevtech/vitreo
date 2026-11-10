@@ -694,10 +694,6 @@ std::atomic<u32>* CriticalSectionManager::lock_word(
     // null this used to test for. Ask whether the model exists first.
     if (!m_memory.is_linear()) return nullptr;
     const GuestAddr word_addr = cs_addr + layout().off_lock_count;
-    // A CRITICAL_SECTION inside a module loaded above the reservation is a
-    // legitimate guest address that linear_host() cannot back; the managed
-    // CsState path is the correct (and pre-existing) fallback.
-    if (!m_memory.linear_backs(word_addr, sizeof(u32))) return nullptr;
     // linear_host() is pure arithmetic: it never rejects an address, so the
     // guest pointer must be validated here or the host dereferences whatever
     // the guest handed us. Two independent requirements:
@@ -716,7 +712,14 @@ std::atomic<u32>* CriticalSectionManager::lock_word(
     // general implementation this accel path is an optimization of.
     if ((word_addr & 3u) != 0) return nullptr;
     if (!m_memory.read_u32(word_addr).is_ok()) return nullptr;
-    u8* host = m_memory.linear_host(word_addr);
+    // A CRITICAL_SECTION above the linear window (a module loaded past the
+    // reservation) is still the guest's own word: the x64 guest fast path
+    // (guest_accel_x64.cpp) takes it with `lock cmpxchg` wherever it lives,
+    // so the host must contend on that same word, through the region's
+    // backing, rather than on a private mutex the guest cannot see.
+    u8* host = m_memory.linear_backs(word_addr, sizeof(u32))
+                   ? m_memory.linear_host(word_addr)
+                   : m_memory.host_ptr_mut(word_addr, sizeof(u32));
     if (host == nullptr) return nullptr;
     return reinterpret_cast<std::atomic<u32>*>(host);
 }

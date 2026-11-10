@@ -1359,7 +1359,7 @@ bool D3D11Manager::capture_indirect(GuestAddr context, bool indexed,
         graphics::BackendComputePipelineDesc pd{};
         pd.compute_entry_point = graphics::kIaResolveEntryPoint;
         pd.compute_shader_msl = graphics::ia_resolve_msl();
-        pd.cache_key = 0x1A7E501Full;
+        pd.cache_key = 0x1A7E5020ull;  // cut_mode
         m_ia_resolve = m_backend.create_compute_pipeline(pd);
     }
     if (!m_ia_resolve || !m_ia_resolve->valid()) {

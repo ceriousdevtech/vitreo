@@ -9,7 +9,8 @@
 // prove the native lowering is actually REACHED (the emitted block contains
 // the ARM AES opcodes and no helper BLR), run the FIPS-197 known-answer
 // vectors through a full 10-round AES-128 encryption and decryption built
-// entirely out of JIT-compiled AES-NI, and pin AESKEYGENASSIST to the helper.
+// entirely out of JIT-compiled AES-NI. WS3 adds the 32-bit non-linear memory
+// arm, AESKEYGENASSIST (AESE + TBL + RCON) and the VEX.128 forms.
 
 #include <gtest/gtest.h>
 
@@ -25,6 +26,7 @@
 #include "core/cpu/jit/block_cache.hpp"
 #include "core/cpu/jit/jit_compiler.hpp"
 #include "core/cpu/jit/stencils.hpp"
+#include "jit_crypto_test_harness.hpp"
 
 using namespace vitreo;
 using namespace vitreo::cpu;
@@ -384,14 +386,12 @@ TEST_F(JitAesNativeTest, MemoryFormMatchesInterpreterForAllVectors) {
                 const CpuState jitted =
                     run_jit(code, bits64, v.dst, v.src, &words);
                 expect_state_equal(interpreted, jitted);
-                // A 64-bit block always has a validated inline 128-bit vector
-                // load (linear64 or the x64 region), so the memory form is
-                // native there. A 32-bit block on non-linear memory has none,
-                // and keeps the checked helper by design.
-                if (bits64) {
-                    EXPECT_TRUE(has_any_arm_aes(words))
-                        << "64-bit memory-form AES regressed to the helper";
-                }
+                // Every memory configuration has a validated inline 128-bit
+                // load: linear64 or the x64 region in 64-bit blocks, and (WS3)
+                // two checked READ64 halves on 32-bit non-linear memory.
+                EXPECT_TRUE(has_any_arm_aes(words))
+                    << "memory-form AES regressed to the helper";
+                EXPECT_FALSE(ws3test::has_sse_op_call(words));
             }
         }
     }
@@ -695,17 +695,394 @@ TEST_F(JitAesNativeTest, OptOutRoutesBackToTheCheckedHelper) {
     }
 }
 
-TEST_F(JitAesNativeTest, KeygenAssistStaysOnHelper) {
-    // ARMv8 has no SubWord/RotWord primitive and AESKEYGENASSIST runs once per
-    // key schedule, not per block; it keeps its checked helper deliberately.
-    const VectorPair& v = kVectors[4];
-    // 66 0F 3A DF C1 01 -> AESKEYGENASSIST xmm0, xmm1, 1
-    const std::vector<u8> code{0x66, 0x0F, 0x3A, 0xDF, 0xC1, 0x01};
-    const CpuState interpreted = run_interpreter(code, false, v.dst, v.src);
-    std::vector<u32> words;
-    const CpuState jitted = run_jit(code, false, v.dst, v.src, &words);
-    expect_state_equal(interpreted, jitted);
-    EXPECT_TRUE(has_helper_blr(words));
+// ===========================================================================
+// 6. WS3: 32-bit non-linear memory arm, AESKEYGENASSIST, VEX.128
+// ===========================================================================
+
+namespace w = ws3test;
+
+constexpr u8 kAesOps[5] = {kAesEnc, kAesEncLast, kAesDec, kAesDecLast, kAesImc};
+
+TEST(JitAesWs3Test, MemoryForm32BitNonLinearIsDirect) {
+    w::CryptoRig rig;
+    ASSERT_TRUE(rig.init(w::MemCfg::NonLinear32));
+    for (u8 opcode : kAesOps) {
+        for (const VectorPair& v : kVectors) {
+            SCOPED_TRACE(::testing::Message() << std::hex << int(opcode) << " " << v.name);
+            CpuState init = rig.base();
+            std::memcpy(init.sse.xmm[0].u8_, v.dst.data(), 16);
+            ASSERT_TRUE(rig.mem().write_bytes(w::kData, v.src.data(), 16));
+            const w::JitRun r =
+                w::expect_parity(rig, {0x66, 0x0F, 0x38, opcode, 0x02}, init);
+            EXPECT_TRUE(w::has_arm_aes(r.words));
+            EXPECT_FALSE(w::has_sse_op_call(r.words));
+        }
+    }
+}
+
+TEST(JitAesWs3Test, MemoryForm32BitNonLinearFaultLeavesDestination) {
+    w::CryptoRig rig;
+    ASSERT_TRUE(rig.init(w::MemCfg::NonLinear32));
+    for (u8 opcode : kAesOps) {
+        SCOPED_TRACE(int(opcode));
+        CpuState init = rig.base();
+        init.gpr.set32(EDX, static_cast<u32>(w::kUnmapped));
+        w::expect_fault_untouched(
+            rig.jit({0x66, 0x0F, 0x38, opcode, 0x02}, init), init);
+    }
+}
+
+TEST(JitAesWs3Test, MemoryForm32BitPageEdge) {
+    w::CryptoRig rig;
+    ASSERT_TRUE(rig.init(w::MemCfg::NonLinear32));
+    ASSERT_TRUE(rig.mem().map_region(0x40000, 0x1000, MemoryProtection::ReadWrite));
+    ASSERT_TRUE(rig.mem().write_u64(0x40FF0, 0x0123456789ABCDEFULL));
+    ASSERT_TRUE(rig.mem().write_u64(0x40FF8, 0xFEDCBA9876543210ULL));
+    const std::vector<u8> code{0x66, 0x0F, 0x38, kAesEnc, 0x02};
+    CpuState init = rig.base();
+    init.gpr.set32(EDX, 0x40FF0);
+    w::expect_parity(rig, code, init);
+    init.gpr.set32(EDX, 0x41000);
+    w::expect_fault_untouched(rig.jit(code, init), init);
+}
+
+TEST(JitAesWs3Test, Ws3KillSwitchRestoresHelperFor32BitNonLinear) {
+    w::ScopedEnv off("VITREO_WS3", "0");
+    w::CryptoRig rig;
+    ASSERT_TRUE(rig.init(w::MemCfg::NonLinear32));
+    ASSERT_TRUE(rig.mem().write_bytes(w::kData, kVectors[4].src.data(), 16));
+    for (u8 opcode : kAesOps) {
+        SCOPED_TRACE(int(opcode));
+        const w::JitRun r =
+            w::expect_parity(rig, {0x66, 0x0F, 0x38, opcode, 0x02}, rig.base());
+        EXPECT_TRUE(w::has_sse_op_call(r.words));
+        EXPECT_FALSE(w::has_arm_aes(r.words));
+    }
+}
+
+// ---- AESKEYGENASSIST ----
+
+// Intel SDM Vol. 2 AESKEYGENASSIST Operation, from the FIPS-197 S-box above.
+XmmReg ref_keygen(const XmmReg& src, u8 imm) {
+    auto subword = [](u32 x) {
+        return u32{kSbox[x & 0xFF]} | u32{kSbox[(x >> 8) & 0xFF]} << 8 |
+               u32{kSbox[(x >> 16) & 0xFF]} << 16 | u32{kSbox[x >> 24]} << 24;
+    };
+    auto rotword = [](u32 x) { return (x >> 8) | (x << 24); };
+    const u32 x1 = src.u32_[1], x3 = src.u32_[3];
+    XmmReg out{};
+    out.u32_[0] = subword(x1);
+    out.u32_[1] = rotword(subword(x1)) ^ imm;
+    out.u32_[2] = subword(x3);
+    out.u32_[3] = rotword(subword(x3)) ^ imm;
+    return out;
+}
+
+TEST(JitAesWs3Test, KeygenAssistAllImmediatesMatchInterpreter) {
+    for (w::MemCfg cfg : {w::MemCfg::NonLinear32, w::MemCfg::Region64}) {
+        w::CryptoRig rig;
+        ASSERT_TRUE(rig.init(cfg));
+        for (int imm = 0; imm < 256; ++imm) {
+            for (const VectorPair& v : kVectors) {
+                SCOPED_TRACE(::testing::Message() << w::cfg_name(cfg)
+                             << " imm=" << imm << " " << v.name);
+                CpuState init = rig.base();
+                std::memcpy(init.sse.xmm[1].u8_, v.src.data(), 16);
+                const w::JitRun r = w::expect_parity(
+                    rig, {0x66, 0x0F, 0x3A, 0xDF, 0xC1, static_cast<u8>(imm)},
+                    init);
+                const XmmReg want =
+                    ref_keygen(init.sse.xmm[1], static_cast<u8>(imm));
+                EXPECT_EQ(r.cpu.sse.xmm[0].u64_[0], want.u64_[0]);
+                EXPECT_EQ(r.cpu.sse.xmm[0].u64_[1], want.u64_[1]);
+                EXPECT_FALSE(w::has_sse_op_call(r.words));
+                EXPECT_TRUE(w::has_arm_aes(r.words));
+                if (::testing::Test::HasFailure()) return;
+            }
+        }
+    }
+}
+
+TEST(JitAesWs3Test, KeygenAssistMemoryFormAllConfigs) {
+    for (w::MemCfg cfg : w::kAllCfgs) {
+        w::CryptoRig rig;
+        if (!rig.init(cfg)) {
+            ADD_FAILURE() << "linear reservation unavailable: " << w::cfg_name(cfg);
+            continue;
+        }
+        for (u8 imm : {u8{0x01}, u8{0x1B}, u8{0x36}, u8{0x80}}) {
+            for (const VectorPair& v : kVectors) {
+                SCOPED_TRACE(::testing::Message() << w::cfg_name(cfg)
+                             << " imm=" << int(imm) << " " << v.name);
+                ASSERT_TRUE(rig.mem().write_bytes(w::kData, v.src.data(), 16));
+                const w::JitRun r = w::expect_parity(
+                    rig, {0x66, 0x0F, 0x3A, 0xDF, 0x02, imm}, rig.base());
+                XmmReg m{};
+                std::memcpy(m.u8_, v.src.data(), 16);
+                const XmmReg want = ref_keygen(m, imm);
+                EXPECT_EQ(r.cpu.sse.xmm[0].u64_[0], want.u64_[0]);
+                EXPECT_EQ(r.cpu.sse.xmm[0].u64_[1], want.u64_[1]);
+                EXPECT_FALSE(w::has_sse_op_call(r.words));
+            }
+        }
+    }
+}
+
+TEST(JitAesWs3Test, KeygenAssistAliasDstEqualsSrc) {
+    for (w::MemCfg cfg : {w::MemCfg::NonLinear32, w::MemCfg::Region64}) {
+        w::CryptoRig rig;
+        ASSERT_TRUE(rig.init(cfg));
+        const CpuState init = rig.base();
+        const w::JitRun r =
+            w::expect_parity(rig, {0x66, 0x0F, 0x3A, 0xDF, 0xC0, 0x01}, init);
+        const XmmReg want = ref_keygen(init.sse.xmm[0], 1);
+        EXPECT_EQ(r.cpu.sse.xmm[0].u64_[0], want.u64_[0]);
+        EXPECT_EQ(r.cpu.sse.xmm[0].u64_[1], want.u64_[1]);
+    }
+}
+
+TEST(JitAesWs3Test, KeygenAssistSboxSpotValues) {
+    // S(0x53) = 0xED and S(0x00) = 0x63 (FIPS-197 Figure 7).
+    w::CryptoRig rig;
+    ASSERT_TRUE(rig.init(w::MemCfg::NonLinear32));
+    CpuState init = rig.base();
+    w::set_xmm(init, 1, 0x0000005300000000ULL, 0);
+    const w::JitRun r =
+        w::expect_parity(rig, {0x66, 0x0F, 0x3A, 0xDF, 0xC1, 0x00}, init);
+    EXPECT_EQ(r.cpu.sse.xmm[0].u32_[0], 0x636363EDu);
+    EXPECT_EQ(r.cpu.sse.xmm[0].u32_[1], 0xED636363u);
+    EXPECT_EQ(r.cpu.sse.xmm[0].u32_[2], 0x63636363u);
+    EXPECT_EQ(r.cpu.sse.xmm[0].u32_[3], 0x63636363u);
+}
+
+TEST(JitAesWs3Test, Fips197KeyExpansionThroughJitKeygenAssist) {
+    // FIPS-197 Appendix A.1: AES-128 key 2b7e1516 28aed2a6 abf71588 09cf4f3c.
+    w::CryptoRig rig;
+    ASSERT_TRUE(rig.init(w::MemCfg::NonLinear32));
+    const auto rk = expand_key_128(kFipsKey);
+    XmmReg key{};
+    std::memcpy(key.u8_, kFipsKey.data(), 16);
+    const u8 rcon[10] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
+                         0x1B, 0x36};
+    bool saw_helper = false;
+    for (int round = 1; round <= 10; ++round) {
+        CpuState cpu = rig.base();
+        cpu.sse.xmm[1] = key;
+        const w::JitRun r = rig.jit(
+            {0x66, 0x0F, 0x3A, 0xDF, 0xC1, rcon[round - 1]}, cpu);
+        ASSERT_TRUE(r.compiled);
+        saw_helper |= w::has_sse_op_call(r.words);
+        // The white-paper combine: PSHUFD 0xFF of the assist, then the
+        // running XOR of the previous key's words.
+        const u32 t = r.cpu.sse.xmm[0].u32_[3];
+        key.u32_[0] ^= t;
+        key.u32_[1] ^= key.u32_[0];
+        key.u32_[2] ^= key.u32_[1];
+        key.u32_[3] ^= key.u32_[2];
+        SCOPED_TRACE(round);
+        EXPECT_EQ(0, std::memcmp(key.u8_, rk[static_cast<usize>(round)].data(), 16));
+        if (round == 1) {
+            const u8 w4[16] = {0xa0,0xfa,0xfe,0x17,0x88,0x54,0x2c,0xb1,
+                               0x23,0xa3,0x39,0x39,0x2a,0x6c,0x76,0x05};
+            EXPECT_EQ(0, std::memcmp(key.u8_, w4, 16));
+        }
+        if (round == 10) {
+            const u8 w40[16] = {0xd0,0x14,0xf9,0xa8,0xc9,0xee,0x25,0x89,
+                                0xe1,0x3f,0x0c,0xc8,0xb6,0x63,0x0c,0xa6};
+            EXPECT_EQ(0, std::memcmp(key.u8_, w40, 16));
+        }
+    }
+    EXPECT_FALSE(saw_helper);
+}
+
+TEST(JitAesWs3Test, KeygenMisalignedRaisesGp) {
+    for (w::MemCfg cfg : {w::MemCfg::NonLinear32, w::MemCfg::Region64}) {
+        w::CryptoRig rig;
+        ASSERT_TRUE(rig.init(cfg));
+        CpuState init = rig.base();
+        init.gpr.set64(w::kRdx, w::kData + 8);
+        const std::vector<u8> code{0x66, 0x0F, 0x3A, 0xDF, 0x02, 0x01};
+        CpuState interpreted = init;
+        EXPECT_EQ(rig.interp(code, interpreted), ExecResult::Exception);
+        w::expect_fault_untouched(rig.jit(code, init), init);
+    }
+}
+
+TEST(JitAesWs3Test, KeygenFaultLeavesDestination) {
+    for (w::MemCfg cfg : {w::MemCfg::NonLinear32, w::MemCfg::Region64}) {
+        w::CryptoRig rig;
+        ASSERT_TRUE(rig.init(cfg));
+        CpuState init = rig.base();
+        init.gpr.set64(w::kRdx, w::kUnmapped);
+        w::expect_fault_untouched(
+            rig.jit({0x66, 0x0F, 0x3A, 0xDF, 0x02, 0x01}, init), init);
+    }
+}
+
+TEST(JitAesWs3Test, Ws3KillSwitchRestoresKeygenHelper) {
+    w::ScopedEnv off("VITREO_WS3", "0");
+    w::CryptoRig rig;
+    ASSERT_TRUE(rig.init(w::MemCfg::NonLinear32));
+    const w::JitRun r =
+        w::expect_parity(rig, {0x66, 0x0F, 0x3A, 0xDF, 0xC1, 0x01}, rig.base());
+    EXPECT_TRUE(w::has_sse_op_call(r.words));
+}
+
+// ---- VEX.128 VAESENC/VAESENCLAST/VAESDEC/VAESDECLAST/VAESIMC/
+//      VAESKEYGENASSIST/VPCLMULQDQ (Intel SDM Vol. 2, §2.3.5) ----
+
+struct VexCase {
+    const char* name;
+    std::vector<u8> code;
+    int dst;
+};
+
+const std::vector<VexCase>& vex_cases() {
+    static const std::vector<VexCase> k{
+        {"vaesenc x0,x1,x2", {0xC4, 0xE2, 0x71, 0xDC, 0xC2}, 0},
+        {"vaesenclast x0,x1,x2", {0xC4, 0xE2, 0x71, 0xDD, 0xC2}, 0},
+        {"vaesdec x0,x1,x2", {0xC4, 0xE2, 0x71, 0xDE, 0xC2}, 0},
+        {"vaesdeclast x0,x1,x2", {0xC4, 0xE2, 0x71, 0xDF, 0xC2}, 0},
+        {"vaesenc x1,x2,x1 (rm==dst)", {0xC4, 0xE2, 0x69, 0xDC, 0xC9}, 1},
+        {"vaesdeclast x1,x2,x1", {0xC4, 0xE2, 0x69, 0xDF, 0xC9}, 1},
+        {"vaesenc x1,x1,x1", {0xC4, 0xE2, 0x71, 0xDC, 0xC9}, 1},
+        {"vaesimc x1,x1", {0xC4, 0xE2, 0x79, 0xDB, 0xC9}, 1},
+        {"vaesimc x0,x2", {0xC4, 0xE2, 0x79, 0xDB, 0xC2}, 0},
+        {"vaeskeygenassist x1,x1,1b", {0xC4, 0xE3, 0x79, 0xDF, 0xC9, 0x1B}, 1},
+        {"vaeskeygenassist x0,x2,36", {0xC4, 0xE3, 0x79, 0xDF, 0xC2, 0x36}, 0},
+        {"vpclmulqdq x1,x2,x1,11", {0xC4, 0xE3, 0x69, 0x44, 0xC9, 0x11}, 1},
+        {"vpclmulqdq x0,x1,x2,01", {0xC4, 0xE3, 0x71, 0x44, 0xC2, 0x01}, 0},
+    };
+    return k;
+}
+
+TEST(JitAesWs3Test, VexFormsMatchInterpreterZeroUpperAndEmitNoSseOpCall) {
+    for (w::MemCfg cfg : {w::MemCfg::NonLinear32, w::MemCfg::Region64}) {
+        w::CryptoRig rig;
+        ASSERT_TRUE(rig.init(cfg));
+        for (const VexCase& c : vex_cases()) {
+            SCOPED_TRACE(::testing::Message() << w::cfg_name(cfg) << " " << c.name);
+            const CpuState init = rig.base();
+            const w::JitRun r = w::expect_parity(rig, c.code, init);
+            // VEX.128 zeroes DEST[255:128] and no other upper lane;
+            // expect_parity already compared every ymm_high to the
+            // interpreter, this pins the interpreter's answer as well.
+            EXPECT_EQ(r.cpu.avx.ymm_high[c.dst].u64_[0], 0u);
+            EXPECT_EQ(r.cpu.avx.ymm_high[c.dst].u64_[1], 0u);
+            for (int i = 0; i < 16; ++i) {
+                if (i == c.dst) continue;
+                EXPECT_EQ(r.cpu.avx.ymm_high[i].u64_[0], init.avx.ymm_high[i].u64_[0]);
+            }
+            EXPECT_FALSE(w::has_sse_op_call(r.words));
+        }
+    }
+}
+
+TEST(JitAesWs3Test, VexAesencMemoryUnalignedDoesNotFault) {
+    for (w::MemCfg cfg : {w::MemCfg::NonLinear32, w::MemCfg::Region64,
+                          w::MemCfg::Linear32, w::MemCfg::Linear64}) {
+        w::CryptoRig rig;
+        if (!rig.init(cfg)) {
+            ADD_FAILURE() << "linear reservation unavailable: " << w::cfg_name(cfg);
+            continue;
+        }
+        SCOPED_TRACE(w::cfg_name(cfg));
+        CpuState init = rig.base();
+        init.gpr.set64(w::kRdx, w::kData + 1);
+        w::put_m128(rig, w::kData + 1, 0x0F1571C947D9E859ULL, 0x0CB7ADD6AF7F6798ULL);
+        // vaesenc xmm0, xmm1, [edx]  and  vpclmulqdq xmm0, xmm1, [edx], 0x10
+        for (const std::vector<u8>& code :
+             {std::vector<u8>{0xC4, 0xE2, 0x71, 0xDC, 0x02},
+              std::vector<u8>{0xC4, 0xE3, 0x71, 0x44, 0x02, 0x10},
+              std::vector<u8>{0xC4, 0xE3, 0x79, 0xDF, 0x02, 0x01}}) {
+            const w::JitRun r = w::expect_parity(rig, code, init);
+            EXPECT_EQ(r.cpu.avx.ymm_high[0].u64_[0], 0u);
+            EXPECT_FALSE(w::has_sse_op_call(r.words));
+        }
+    }
+}
+
+TEST(JitAesWs3Test, VexAesencMemoryStraddleFaultLeavesDestinationAndUpper) {
+    // The 16 bytes start 8 bytes before the end of the mapping: the first
+    // half reads, the second faults; DEST and YMM[255:128] must be untouched.
+    for (w::MemCfg cfg : {w::MemCfg::NonLinear32, w::MemCfg::Region64}) {
+        w::CryptoRig rig;
+        ASSERT_TRUE(rig.init(cfg));
+        SCOPED_TRACE(w::cfg_name(cfg));
+        CpuState init = rig.base();
+        init.gpr.set64(w::kRdx, w::kCode + 0x10000 - 8);
+        w::expect_fault_untouched(
+            rig.jit({0xC4, 0xE2, 0x71, 0xDC, 0x02}, init), init);
+        w::expect_fault_untouched(
+            rig.jit({0xC4, 0xE3, 0x71, 0x44, 0x02, 0x00}, init), init);
+    }
+}
+
+TEST(JitAesWs3Test, Vex32BitM128CrossingFourGiBFaultsLikeInterpreter) {
+    // An unaligned VEX.128 m128 in a 32-bit block whose 16 bytes run from
+    // the top of the 4 GiB space into address 0. The 32-bit non-linear
+    // stager reads two 8-byte halves; the high half's address is EA+8 mod
+    // 2^32. Only the top page is mapped (no guest ever maps page 0). The
+    // interpreter, the reference, refuses the access; the JIT must fault too
+    // and leave DEST and YMM[255:128] untouched. (The interpreter's VEX.128
+    // bridge merges SRC1 into DEST before the legacy read faults, so its
+    // vector state is not the reference for what a fault leaves behind.)
+    w::CryptoRig rig;
+    ASSERT_TRUE(rig.init(w::MemCfg::NonLinear32));
+    ASSERT_TRUE(rig.mem().map_region(0xFFFFF000u, 0x1000,
+                                     MemoryProtection::ReadWrite));
+    ASSERT_TRUE(rig.mem().write_u64(0xFFFFFFF0u, 0x0F1571C947D9E859ULL));
+    ASSERT_TRUE(rig.mem().write_u64(0xFFFFFFF8u, 0x0CB7ADD6AF7F6798ULL));
+    // vaesenc xmm0,xmm1,[edx]; vpclmulqdq xmm0,xmm1,[edx],0x10;
+    // vaeskeygenassist xmm0,[edx],0x01
+    const std::vector<std::vector<u8>> codes{
+        {0xC4, 0xE2, 0x71, 0xDC, 0x02},
+        {0xC4, 0xE3, 0x71, 0x44, 0x02, 0x10},
+        {0xC4, 0xE3, 0x79, 0xDF, 0x02, 0x01}};
+    // 0xFFFFFFF8: the low half reads, the wrapped high half (at 0) faults.
+    // 0xFFFFFFFC / 0xFFFFFFF1: the low half itself crosses 4 GiB.
+    for (u32 start : {0xFFFFFFF8u, 0xFFFFFFFCu, 0xFFFFFFF1u}) {
+        for (const std::vector<u8>& code : codes) {
+            SCOPED_TRACE(::testing::Message()
+                         << std::hex << "ea=" << start << " op=" << int(code[3]));
+            CpuState init = rig.base();
+            init.gpr.set32(EDX, start);
+
+            ASSERT_TRUE(rig.mem().write_bytes(w::kCode, code.data(), code.size()));
+            CpuState interpreted = init;
+            Interpreter interpreter(interpreted, rig.mem());
+            EXPECT_EQ(interpreter.run(1), ExecResult::Exception);
+
+            const w::JitRun r = rig.jit(code, init);
+            w::expect_fault_untouched(r, init);
+            EXPECT_FALSE(w::has_sse_op_call(r.words));
+            EXPECT_EQ(r.cpu.pending_raise.args[0], 0u);  // a read
+            if (start == 0xFFFFFFF8u) {
+                // The first inaccessible byte is the wrapped high half's,
+                // never a 33-bit address a 32-bit guest cannot form.
+                EXPECT_EQ(r.cpu.pending_raise.args[1], 0u);
+            }
+        }
+    }
+}
+
+TEST(JitAesWs3Test, Ws3KillSwitchRestoresVexBridge) {
+    w::ScopedEnv off("VITREO_WS3", "0");
+    for (w::MemCfg cfg : {w::MemCfg::NonLinear32, w::MemCfg::Region64}) {
+        w::CryptoRig rig;
+        ASSERT_TRUE(rig.init(cfg));
+        SCOPED_TRACE(w::cfg_name(cfg));
+        const std::vector<u8> code{0xC4, 0xE2, 0x71, 0xDC, 0xC2};
+        const CpuState init = rig.base();
+        CpuState interpreted = init;
+        ASSERT_EQ(rig.interp(code, interpreted), ExecResult::Continue);
+        const w::JitRun r = rig.jit(code, init, /*allow_delegate=*/true);
+        ASSERT_TRUE(r.compiled);
+        w::expect_vec_state_equal(interpreted, r.cpu);
+        EXPECT_TRUE(w::has_arm_aes(r.words));
+        EXPECT_EQ(r.cpu.avx.ymm_high[0].u64_[0], 0u);
+        EXPECT_EQ(r.cpu.avx.ymm_high[0].u64_[1], 0u);
+    }
 }
 
 } // namespace

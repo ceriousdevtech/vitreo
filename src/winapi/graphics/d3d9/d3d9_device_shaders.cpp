@@ -75,7 +75,7 @@ void D3D9Manager::dispatch_device_shaders(Marshaler& m, usize slot,
         }
         const u32 shader =
             slot == 93 ? state.vertex_shader : state.pixel_shader;
-        if (m.write_u32(out, shader).is_err()) {
+        if (m.write_ptr(out, shader).is_err()) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }

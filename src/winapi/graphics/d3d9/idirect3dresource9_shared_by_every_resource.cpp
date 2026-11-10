@@ -237,7 +237,7 @@ bool D3D9Manager::dispatch_resource_base(Marshaler& m, usize slot, u32 self,
             return true;
         }
         (void)add_ref(entry->device);
-        if (m.write_u32(out, entry->device).is_err()) {
+        if (m.write_ptr(out, entry->device).is_err()) {
             (void)release(entry->device);
             m.set_return(D3DERR_INVALIDCALL);
             return true;

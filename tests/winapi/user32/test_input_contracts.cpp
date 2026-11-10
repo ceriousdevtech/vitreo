@@ -25,6 +25,10 @@
 #include <core/memory/guest_memory.hpp>
 #include <core/cpu/state/cpu_state.hpp>
 #include <capsule/vfs/vfs.hpp>
+#include <capsule/vfs/host_filesystem.hpp>
+#include <cstdlib>
+#include <filesystem>
+#include <fstream>
 
 #include <array>
 #include <atomic>
@@ -1115,3 +1119,74 @@ TEST_F(InputContractTest, OemTranslatorsMatchWindowsIncludingEdgeCases) {
 }
 
 }  // namespace
+
+// -----------------------------------------------------------------------------
+// LoadImageA of an icon or cursor by name
+// -----------------------------------------------------------------------------
+
+namespace {
+/// A 32x32 1 bpp .cur (ICONDIR + one entry + BITMAPINFOHEADER, black/white
+/// palette, XOR then AND plane) with hotspot (3, 5): a filled square.
+std::vector<u8> tiny_cursor_file() {
+    std::vector<u8> f;
+    auto u16le = [&](u32 v) { f.push_back(v & 0xFF); f.push_back((v >> 8) & 0xFF); };
+    auto u32le = [&](u32 v) { u16le(v & 0xFFFF); u16le(v >> 16); };
+    u16le(0); u16le(2); u16le(1);                   // ICONDIR: reserved, type=cursor, count
+    f.push_back(32); f.push_back(32); f.push_back(0); f.push_back(0);
+    u16le(3); u16le(5);                             // hotspot
+    const u32 image = 40 + 8 + 128 + 128;
+    u32le(image); u32le(22);
+    u32le(40); u32le(32); u32le(64); u16le(1); u16le(1);  // BITMAPINFOHEADER
+    u32le(0); u32le(0); u32le(0); u32le(0); u32le(0); u32le(0);
+    u32le(0x000000); u32le(0xFFFFFF);               // palette
+    for (int i = 0; i < 128; ++i) f.push_back(0x00);  // XOR: black
+    for (int y = 0; y < 32; ++y)                      // AND: opaque 8x8 square
+        for (int b = 0; b < 4; ++b) f.push_back(y < 8 && b == 0 ? 0x00 : 0xFF);
+    return f;
+}
+}  // namespace
+
+TEST_F(InputContractTest, LoadImageAConvertsAnAnsiCursorFileNameAndLoadsIt) {
+    // Learn LoadImageA: the A entry takes an ANSI (CP_ACP) name and loads
+    // what LoadImageW loads for the converted string; with LR_LOADFROMFILE
+    // and IMAGE_CURSOR the name is a .cur file.
+    ResourceManager resources(memory_);
+    resources.set_hwnd_manager(&hwnd_mgr_);
+    ext_->set_resource_manager(&resources);
+    char root[] = "/tmp/vitreo-loadimagea-XXXXXX";
+    ASSERT_NE(mkdtemp(root), nullptr);
+    ASSERT_TRUE(vfs_.mount_drive('C', std::make_unique<capsule::HostFileSystem>(root)).is_ok());
+    const auto file = tiny_cursor_file();
+    {
+        std::ofstream out(std::string(root) + "/cursor\xC3\xA9.cur", std::ios::binary);  // é in UTF-8 on the host
+        out.write(reinterpret_cast<const char*>(file.data()), static_cast<std::streamsize>(file.size()));
+    }
+    {
+        std::ofstream out(std::string(root) + "/plain.cur", std::ios::binary);
+        out.write(reinterpret_cast<const char*>(file.data()), static_cast<std::streamsize>(file.size()));
+    }
+    // Above 0x10000: a lower value is a MAKEINTRESOURCE id, not a string.
+    const GuestAddr name = STACK_BASE + 0x4000;
+    const char plain[] = "C:\\plain.cur";
+    ASSERT_TRUE(memory_.write_bytes(name, reinterpret_cast<const u8*>(plain), sizeof(plain)).is_ok());
+    EXPECT_NE(call(ext("LoadImageA"), 0, name, 2, 0, {0, 0x10}), 0u) << "error " << err();
+    const char ansi[] = "C:\\cursor\xE9.cur";  // é is 0xE9 in CP-1252
+    ASSERT_TRUE(memory_.write_bytes(name, reinterpret_cast<const u8*>(ansi), sizeof(ansi)).is_ok());
+    constexpr u32 IMAGE_CURSOR = 2, LR_LOADFROMFILE = 0x10;
+    const u32 cursor = static_cast<u32>(call(ext("LoadImageA"), 0, name, IMAGE_CURSOR, 0,
+                                             {0, LR_LOADFROMFILE}));
+    ASSERT_NE(cursor, 0u) << "error " << err();
+    const auto image = resources.cursor_image(cursor);
+    ASSERT_TRUE(image.has_value());
+    EXPECT_EQ(image->hotspot_x, 3u);
+    EXPECT_EQ(image->hotspot_y, 5u);
+
+    // A missing file fails as LoadImageW's does: NULL, ERROR_FILE_NOT_FOUND.
+    const char missing[] = "C:\\absent.cur";
+    ASSERT_TRUE(memory_.write_bytes(name, reinterpret_cast<const u8*>(missing), sizeof(missing)).is_ok());
+    seed_err();
+    EXPECT_EQ(call(ext("LoadImageA"), 0, name, IMAGE_CURSOR, 0, {0, LR_LOADFROMFILE}), 0u);
+    EXPECT_EQ(err(), 2u);
+    ext_->set_resource_manager(nullptr);
+    std::filesystem::remove_all(root);
+}

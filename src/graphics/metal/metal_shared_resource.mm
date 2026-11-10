@@ -14,7 +14,7 @@
 
 #include <libproc.h>
 #include <sys/proc.h>
-#include <os/os_sync_wait_on_address.h>
+#include "platform/host_address_wait.hpp"
 #include <sys/proc_info.h>
 #include <unistd.h>
 
@@ -419,7 +419,7 @@ void MetalSharedStore::finish_publish(u64 version) {
                seen, version, std::memory_order_acq_rel)) {
     }
     m_header->wake.fetch_add(1, std::memory_order_acq_rel);
-    (void)os_sync_wake_by_address_all(&m_header->wake, sizeof(u32),
+    (void)::vitreo::platform::address_wake_all(&m_header->wake, sizeof(u32),
                                       OS_SYNC_WAKE_BY_ADDRESS_SHARED);
 }
 
@@ -451,7 +451,7 @@ void MetalSharedStore::wait_foreign_pending() {
                 "publication; proceeding with the store's current contents");
             return;
         }
-        (void)os_sync_wait_on_address_with_timeout(
+        (void)::vitreo::platform::address_wait_with_timeout(
             &m_header->wake, seen, sizeof(u32),
             OS_SYNC_WAIT_ON_ADDRESS_SHARED, OS_CLOCK_MACH_ABSOLUTE_TIME,
             10'000'000);

@@ -346,4 +346,109 @@ TEST_F(JitCrc32Test, MemoryFaultDoesNotModifyDestination) {
     EXPECT_EQ(cpu.rip, kCode + 5);
 }
 
+// ===========================================================================
+// x64 R64 coverage (WS3): REX.W r/m8 memory, REX byte registers, r32
+// zero-extension in long mode, 66 ignored under REX.W, R64 memory fault.
+// Intel SDM Vol. 2 CRC32: "CRC32 r64, r/m8" and "CRC32 r64, r/m64" (REX.W);
+// a 32-bit destination write zero-extends into the full 64-bit register.
+// ===========================================================================
+
+constexpr u8 RSI = static_cast<u8>(RegIndex::RSI);
+
+struct Run64 {
+    CpuState interpreted;
+    CpuState jitted;
+    DecodedInstruction decoded;
+};
+
+class JitCrc32X64Test : public JitCrc32Test {
+protected:
+    CpuState initial64() const {
+        CpuState cpu;
+        cpu.init_long_mode();
+        cpu.gpr.set64(EAX, 0xFFFFFFFF00000000ULL | kInitialCrc);
+        cpu.gpr.set64(ECX, 0x1122334455667788ULL);
+        cpu.gpr.set64(EDX, kData);
+        cpu.gpr.set64(RSI, 0x000000000000AB12ULL);
+        cpu.gpr.set64(ESP, 0x10000);
+        cpu.flags.rflags = kInitialFlags;
+        cpu.rip = kCode;
+        return cpu;
+    }
+
+    Run64 run64(const std::vector<u8>& code, const CpuState& init,
+                bool expect_continue = true) {
+        Run64 out{init, init, {}};
+        EXPECT_TRUE(m_memory->write_bytes(kCode, code.data(), code.size()));
+        MemoryByteReader reader(code.data(), code.size());
+        EXPECT_EQ(decode_instruction(reader, DecodeMode::Mode64, out.decoded),
+                  DecodeError::Success);
+        BasicBlock block;
+        block.start_addr = kCode;
+        block.is_64bit = true;
+        block.instructions.push_back(out.decoded);
+        block.byte_length = static_cast<u32>(code.size());
+        block.instruction_count = 1;
+        {
+            Interpreter interpreter(out.interpreted, *m_memory);
+            const ExecResult r = interpreter.run(1);
+            if (expect_continue) EXPECT_EQ(r, ExecResult::Continue);
+        }
+        ScopedEnvironmentVariable no_delegate("VITREO_JIT_NO_DELEGATE", "1");
+        JitCompiler jit(*m_memory);
+        CompiledBlock* compiled = jit.compile(block);
+        EXPECT_NE(compiled, nullptr);
+        if (compiled) {
+            EXPECT_EQ(jit.execute(*compiled, out.jitted), JitExecResult::Continue);
+        }
+        return out;
+    }
+};
+
+TEST_F(JitCrc32X64Test, RexWRm8MemoryForm) {
+    // CRC32 RAX, byte [RDX]; [kData] = 0x40 (low byte of kSource).
+    const Run64 r = run64({0xF2, 0x48, 0x0F, 0x38, 0xF0, 0x02}, initial64());
+    EXPECT_EQ(r.decoded.opcode, Opcode::CRC32_R64_RM8);
+    const u64 want = crc32c_reference(kInitialCrc, kSource & 0xFF, 1);
+    EXPECT_EQ(r.interpreted.gpr.get64(EAX), want);
+    EXPECT_EQ(r.jitted.gpr.get64(EAX), want);
+    EXPECT_EQ(r.jitted.flags.rflags, kInitialFlags);
+}
+
+TEST_F(JitCrc32X64Test, RexWRm8RexByteRegisterIsSil) {
+    // With any REX, r/m8 = 6 names SIL (not DH): the byte is 0x12.
+    const Run64 r = run64({0xF2, 0x48, 0x0F, 0x38, 0xF0, 0xC6}, initial64());
+    const u64 want = crc32c_reference(kInitialCrc, 0x12, 1);
+    EXPECT_EQ(r.interpreted.gpr.get64(EAX), want);
+    EXPECT_EQ(r.jitted.gpr.get64(EAX), want);
+}
+
+TEST_F(JitCrc32X64Test, R32FormIn64BitBlockZeroExtends) {
+    const Run64 r = run64({0xF2, 0x0F, 0x38, 0xF1, 0xC1}, initial64());
+    EXPECT_EQ(r.decoded.opcode, Opcode::CRC32_R32_RM32);
+    const u64 want = crc32c_reference(kInitialCrc, 0x55667788u, 4);
+    EXPECT_EQ(r.interpreted.gpr.get64(EAX), want);
+    EXPECT_EQ(r.jitted.gpr.get64(EAX), want);
+}
+
+TEST_F(JitCrc32X64Test, OperandSizePrefixIgnoredUnderRexW) {
+    const Run64 r = run64({0x66, 0xF2, 0x48, 0x0F, 0x38, 0xF1, 0xC1}, initial64());
+    EXPECT_EQ(r.decoded.opcode, Opcode::CRC32_R64_RM64);
+    const u32 lo = crc32c_reference(kInitialCrc, 0x55667788u, 4);
+    const u64 want = crc32c_reference(lo, 0x11223344u, 4);
+    EXPECT_EQ(r.interpreted.gpr.get64(EAX), want);
+    EXPECT_EQ(r.jitted.gpr.get64(EAX), want);
+}
+
+TEST_F(JitCrc32X64Test, R64MemoryFaultDoesNotModifyDestination) {
+    CpuState init = initial64();
+    init.gpr.set64(EDX, 0x20000000u);
+    const Run64 r = run64({0xF2, 0x48, 0x0F, 0x38, 0xF1, 0x02}, init,
+                          /*expect_continue=*/false);
+    ASSERT_TRUE(r.jitted.pending_raise.active);
+    EXPECT_EQ(r.jitted.pending_raise.code, 0xC0000005u);
+    EXPECT_EQ(r.jitted.gpr.get64(EAX), init.gpr.get64(EAX));
+    EXPECT_EQ(r.jitted.flags.rflags, kInitialFlags);
+}
+
 } // namespace

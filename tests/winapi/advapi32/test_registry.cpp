@@ -823,7 +823,7 @@ TEST_F(Advapi32RegistryTest, SetAndQueryValueExA_RoundTripsAnsiString) {
 
 TEST_F(Advapi32RegistryTest, ExportTable_HasAllEntries) {
     auto exports = create_advapi32_registry_thunks(*m_thunks);
-    EXPECT_EQ(exports.entries.size(), 44u);
+    EXPECT_EQ(exports.entries.size(), 45u);
 
     auto has_export = [&](const char* name) {
         return std::find_if(exports.entries.begin(), exports.entries.end(),
@@ -839,6 +839,7 @@ TEST_F(Advapi32RegistryTest, ExportTable_HasAllEntries) {
     EXPECT_TRUE(has_export("RegNotifyChangeKeyValue"));
     EXPECT_TRUE(has_export("RegEnumValueW"));
     EXPECT_TRUE(has_export("RegFlushKey"));
+    EXPECT_TRUE(has_export("RegRenameKey"));
     EXPECT_TRUE(has_export("RegEnumKeyA"));
     EXPECT_TRUE(has_export("RegDeleteKeyA"));
     EXPECT_TRUE(has_export("RegDeleteTreeA"));
@@ -1056,4 +1057,63 @@ TEST_F(Advapi32RegistryTest, DeleteKeyExRejectsInvalidControlArguments) {
     EXPECT_EQ(m_thunks->reg_delete_key_ex(
                   HKEY_CURRENT_USER, L"Software\\Unused", 0, 1),
               ERROR_INVALID_PARAMETER);
+}
+
+namespace rename_facts {
+#include "winapi/advapi32/registry/reg_rename_contract.inc"
+}
+// Expected statuses/identity from reg_rename_probe{32,64}.expected on Windows.
+TEST_F(Advapi32RegistryTest, RenameContractBothGuestAbis) {
+    for (const bool is64 : {false, true}) {
+        u64 parent = 0, key = 0, readonly = 0;
+        ASSERT_EQ(m_thunks->reg_create_key_ex_w(HKEY_CURRENT_USER,
+            is64 ? L"Software\\Rename64" : L"Software\\Rename32", &parent, nullptr, rename_facts::reg_rename_contract::KEY_ALL_ACCESS), 0u);
+        ASSERT_EQ(m_thunks->reg_create_key_ex_w(parent,L"Stage",&key,nullptr,rename_facts::reg_rename_contract::KEY_WRITE),0u);
+        ASSERT_EQ(m_thunks->reg_open_key_ex_w(parent,L"Stage",0,1,&readonly),0u);
+        EXPECT_EQ(m_thunks->reg_rename_key(readonly,L"",L"Denied"),5u);
+        EXPECT_EQ(m_thunks->reg_rename_key(key,L"",L""),87u);
+        EXPECT_EQ(m_thunks->reg_rename_key(key,L"",L"a\\b"),87u);
+        EXPECT_EQ(m_thunks->reg_rename_key(key,L"",std::wstring(rename_facts::reg_rename_contract::max_new_name_utf16_units + 1,L'a')),87u);
+        const u32 value = 7;
+        ASSERT_EQ(m_thunks->reg_set_value_ex_w(key,L"Value",4,
+            reinterpret_cast<const u8*>(&value),sizeof(value)),0u);
+        GuestMemory memory;
+        ASSERT_TRUE(memory.map_region(0x1000,0x4000,MemoryProtection::ReadWrite).is_ok());
+        const char16_t name[] = u"Committed";
+        ASSERT_TRUE(memory.write_bytes(0x2000,reinterpret_cast<const Byte*>(name),sizeof(name)).is_ok());
+        auto exports = create_advapi32_registry_thunks(*m_thunks);
+        auto entry = std::find_if(exports.entries.begin(),exports.entries.end(),
+            [](const ExportEntry& item){return item.name=="RegRenameKey";});
+        ASSERT_NE(entry,exports.entries.end());
+        EXPECT_EQ(entry->ordinal,rename_facts::reg_rename_contract::reg_rename_ordinal64); EXPECT_EQ(entry->stdcall_bytes,rename_facts::reg_rename_contract::reg_rename_stdcall_bytes);
+        cpu::CpuState state;
+        if (is64) {
+            state.init_long_mode();state.gpr.rsp=0x4000;
+            state.gpr.rcx=key;state.gpr.rdx=0;state.gpr.r8=0x2000;
+        } else {
+            state.init_protected_mode();state.set_sp(0x4000);
+            ASSERT_TRUE(memory.write_u32(0x4004,static_cast<u32>(key)).is_ok());
+            ASSERT_TRUE(memory.write_u32(0x4008,0).is_ok());
+            ASSERT_TRUE(memory.write_u32(0x400c,0x2000).is_ok());
+        }
+        Marshaler m(memory);m.attach_cpu(state);entry->handler(m);
+        EXPECT_EQ(state.gpr.rax,0u);
+        EXPECT_EQ(m_thunks->reg_rename_key(key,L"",L"Committed"),5u);
+        u64 reopened=0;
+        EXPECT_EQ(m_thunks->reg_open_key_ex_w(parent,L"Stage",0,1,&reopened),2u);
+        ASSERT_EQ(m_thunks->reg_open_key_ex_w(parent,L"Committed",0,1,&reopened),0u);
+        u32 actual=0,size=sizeof(actual),type=0;
+        EXPECT_EQ(m_thunks->reg_query_value_ex_w(readonly,L"Value",&type,
+            reinterpret_cast<u8*>(&actual),&size),0u);EXPECT_EQ(actual,7u);
+        EXPECT_EQ(m_thunks->reg_rename_key(parent,L"Committed",std::wstring(rename_facts::reg_rename_contract::max_new_name_utf16_units,L'a')),0u);
+        u64 maximum=0, legacy=0;
+        ASSERT_EQ(m_thunks->reg_open_key_ex_w(parent,
+            std::wstring(rename_facts::reg_rename_contract::max_new_name_utf16_units,L'a'),0,
+            rename_facts::reg_rename_contract::MAXIMUM_ALLOWED,&maximum),0u);
+        EXPECT_EQ(m_thunks->reg_rename_key(maximum,L"",L"Maximum"),0u);
+        ASSERT_EQ(m_thunks->reg_open_key_w(parent,L"Maximum",&legacy),0u);
+        EXPECT_EQ(m_thunks->reg_rename_key(legacy,L"",L"LegacyW"),0u);
+        ASSERT_EQ(m_thunks->reg_open_key_a(parent,"LegacyW",&legacy),0u);
+        EXPECT_EQ(m_thunks->reg_rename_key(legacy,L"",L"LegacyA"),0u);
+    }
 }

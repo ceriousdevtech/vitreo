@@ -735,6 +735,18 @@ void impl_FlushInstructionCache(Marshaler& m, VirtualQueryManager& vqm) {
     m.set_return(1);
 }
 
+// GetWriteWatch / ResetWriteWatch fail with (UINT)-1 (Learn: "a nonzero
+// value"; winoracle x64+x86 measured 0xFFFFFFFF, see
+// tools/oracle_probe/write_watch_failure_probe.c). GetWriteWatch checks, in
+// order: dwFlags other than 0 / WRITE_WATCH_FLAG_RESET -> 87; *lpdwCount == 0
+// -> 87; lpAddresses not writable for *lpdwCount entries -> ERROR_NOACCESS
+// (even when no page is dirty); region not a MEM_WRITE_WATCH range -> 87.
+// The out-params are written only on success. A buffer too small for the
+// dirty set is NOT a failure: the first *lpdwCount pages are returned.
+// ResetWriteWatch fails without touching the thread's last error.
+constexpr u32 kWriteWatchFailed = 0xFFFFFFFFu;
+constexpr u32 kWriteWatchFlagReset = 0x1u;
+
 void impl_GetWriteWatch(Marshaler& m, VirtualMemoryManager& vmm) {
     // UINT GetWriteWatch(DWORD dwFlags, PVOID lpBaseAddress, SIZE_T dwRegionSize,
     //                    PVOID *lpAddresses, ULONG_PTR *lpdwCount,
@@ -745,31 +757,41 @@ void impl_GetWriteWatch(Marshaler& m, VirtualMemoryManager& vmm) {
     const GuestAddr addresses_ptr = m.arg_ptr(3);
     const GuestAddr count_ptr = m.arg_ptr(4);
     const GuestAddr granularity_ptr = m.arg_ptr(5);
+    const bool is_64 = m.cpu_is_64bit();
 
-    if (count_ptr == 0 || granularity_ptr == 0) {
-        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-        m.set_return(1);
+    auto fail = [&m](u32 error) {
+        set_last_error(error);
+        m.set_return(kWriteWatchFailed);
+    };
+    if ((flags & ~kWriteWatchFlagReset) != 0) {
+        fail(error_codes::ERROR_INVALID_PARAMETER);
         return;
     }
-
-    const bool is_64 = m.cpu_is_64bit();
+    if (count_ptr == 0 || granularity_ptr == 0 ||
+        !m.memory().is_range_writable(count_ptr, is_64 ? 8u : 4u, is_64) ||
+        !m.memory().is_range_writable(granularity_ptr, 4u, is_64)) {
+        fail(error_codes::ERROR_NOACCESS);
+        return;
+    }
     u64 count = 0;
     if (is_64) {
         auto r = m.read_u64(count_ptr);
-        if (r.is_err()) {
-            set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-            m.set_return(1);
-            return;
-        }
+        if (r.is_err()) { fail(error_codes::ERROR_NOACCESS); return; }
         count = r.value();
     } else {
         auto r = m.read_u32(count_ptr);
-        if (r.is_err()) {
-            set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-            m.set_return(1);
-            return;
-        }
+        if (r.is_err()) { fail(error_codes::ERROR_NOACCESS); return; }
         count = r.value();
+    }
+    if (count == 0) {
+        fail(error_codes::ERROR_INVALID_PARAMETER);
+        return;
+    }
+    const u64 entry = is_64 ? 8u : 4u;
+    if (addresses_ptr == 0 || count > (~0ull / entry) ||
+        !m.memory().is_range_writable(addresses_ptr, count * entry, is_64)) {
+        fail(error_codes::ERROR_NOACCESS);
+        return;
     }
 
     u32 granularity = 0;
@@ -777,8 +799,7 @@ void impl_GetWriteWatch(Marshaler& m, VirtualMemoryManager& vmm) {
     const u32 status = vmm.get_write_watch(base, size, count, granularity, pages,
                                            flags);
     if (status != 0) {
-        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-        m.set_return(status);
+        fail(error_codes::ERROR_INVALID_PARAMETER);
         return;
     }
     // Under-reporting here is the one unsafe direction: a collector that is
@@ -797,11 +818,6 @@ void impl_GetWriteWatch(Marshaler& m, VirtualMemoryManager& vmm) {
             static_cast<unsigned long long>(base),
             static_cast<unsigned long long>(size), flags,
             pages.size(), calls, empty);
-    }
-    if (!pages.empty() && addresses_ptr == 0) {
-        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-        m.set_return(1);
-        return;
     }
     for (usize i = 0; i < pages.size(); ++i) {
         if (is_64) {
@@ -826,10 +842,7 @@ void impl_ResetWriteWatch(Marshaler& m, VirtualMemoryManager& vmm) {
     const u64 base = m.arg(0);
     const u64 size = m.arg(1);
     const u32 status = vmm.reset_write_watch(base, size);
-    if (status != 0) {
-        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-    }
-    m.set_return(status);
+    m.set_return(status == 0 ? 0u : kWriteWatchFailed);
 }
 
 // =============================================================================

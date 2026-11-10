@@ -130,29 +130,23 @@ void User32ExtManager::recalculate_client_area(
         }
     }
 
-    win->client_offset = {
-        client.left - new_outer.left,
-        client.top - new_outer.top};
-    // Learn: keep a true zero client after WM_NCCALCSIZE / SetWindowPos.
-    // Native backing may still use a 1×1 AppKit surface separately.
-    win->client_rect = {0, 0, client.width(), client.height()};
-    const bool client_drawn =
-        windowing::nccalcsize_guest_owns_frame(new_outer, client, win->style);
-    static const bool input_diag = std::getenv("VITREO_INPUT_DIAG") != nullptr;
-    if (input_diag && win->client_drawn_frame != client_drawn) {
-        std::fprintf(stderr,
-                     "[input] WM_NCCALCSIZE hwnd=0x%x style=0x%x outer=(%d,%d,%d,%d) "
-                     "client=(%d,%d,%d,%d)\n",
-                     hwnd, win->style, new_outer.left, new_outer.top,
-                     new_outer.right, new_outer.bottom, client.left, client.top,
-                     client.right, client.bottom);
-    }
-    if (win->client_drawn_frame != client_drawn) {
-        win->client_drawn_frame = client_drawn;
-        if (m_host.has_native_window(hwnd)) {
-            m_host.set_client_drawn_frame(hwnd, client_drawn);
-        }
-    }
+    bool frame_changed=false,client_drawn=false;
+    const auto geometry=m_hwnd_mgr.update_geometry(hwnd,[&](auto& data) {
+        data.client_offset={client.left-new_outer.left,client.top-new_outer.top};
+        // Preserve a true zero client; native backing size is a separate owner.
+        data.client_rect={0,0,client.width(),client.height()};
+        client_drawn=windowing::nccalcsize_guest_owns_frame(new_outer,client,data.style);
+        frame_changed=data.client_drawn_frame!=client_drawn;
+        data.client_drawn_frame=client_drawn;
+    });
+    if(!geometry)return;
+    static const bool input_diag=std::getenv("VITREO_INPUT_DIAG")!=nullptr;
+    if(input_diag && frame_changed)std::fprintf(stderr,
+        "[input] WM_NCCALCSIZE hwnd=0x%x style=0x%x outer=(%d,%d,%d,%d) client=(%d,%d,%d,%d)\n",
+        hwnd,geometry->style,new_outer.left,new_outer.top,new_outer.right,new_outer.bottom,
+        client.left,client.top,client.right,client.bottom);
+    if(frame_changed && m_host.has_native_window(hwnd))m_host.set_client_drawn_frame(hwnd,client_drawn);
+
 }
 
 void User32ExtManager::impl_ScreenToClient(Marshaler& m) {
@@ -656,7 +650,8 @@ void User32ExtManager::impl_SetParent(Marshaler& m) {
             return;
         }
         if (windowing::WindowData* moved = m_hwnd_mgr.find(child)) {
-            if (parent == windowing::HWND_DESKTOP) moved->style |= windowing::WS::CLIPSIBLINGS;
+            if(parent==windowing::HWND_DESKTOP)
+                (void)m_hwnd_mgr.update_geometry(child,[](auto& data){data.style|=windowing::WS::CLIPSIBLINGS;});
             reposition_after_reparent(child);
         }
         if (was_visible && m_hwnd_mgr.find(child)) {

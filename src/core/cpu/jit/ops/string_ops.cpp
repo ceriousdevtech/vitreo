@@ -182,6 +182,13 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
                                       u64 instr_rip, u64 next_rip,
                                       bool is_last) {
 
+    const auto add_default_base = [&](SegReg segment) {
+        if (!m_block_is_64bit) {
+            emit(arm64::ldr_x_uoff(REG_SCRATCH3, REG_CPU_STATE,
+                                   seg_base_offset(segment) >> 3));
+            emit(arm64::add_w(REG_SCRATCH2, REG_SCRATCH2, REG_SCRATCH3));
+        }
+    };
     switch (instr.opcode) {
 
     // ---- STOSB / STOSW / STOSD — store AL/AX/EAX to [EDI], adjust EDI ±size ----
@@ -421,6 +428,8 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
     case Opcode::CMPSB:
     case Opcode::CMPSW:
     case Opcode::CMPSD_STR: {
+        if (instr.prefixes.address_size || instr.prefixes.segment != SegReg::Default)
+            return false;
         const u32 elem_sz = (instr.opcode == Opcode::CMPSB) ? 1u
                           : (instr.opcode == Opcode::CMPSW) ? 2u : 4u;
 
@@ -430,6 +439,9 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
                   (elem_sz == 1) ? JIT_CTX_OFF_REPE_CMPSB
                 : (elem_sz == 2) ? JIT_CTX_OFF_REPE_CMPSW
                                  : JIT_CTX_OFF_REPE_CMPSD;
+            // Long mode publishes implicit-memory RIP at instruction entry;
+            // PE32 publishes here before a helper can report a restart fault.
+            if (!m_block_is_64bit) emit_publish_rip_for_raising_helper(REG_SCRATCH3);
             emit(arm64::mov_x(0, REG_CPU_STATE));
             emit(arm64::ldr_x_uoff(1, REG_JIT_CTX,
                                     JIT_CTX_OFF_MEMORY >> 3));
@@ -447,6 +459,9 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
                   (elem_sz == 1) ? JIT_CTX_OFF_REPNE_CMPSB
                 : (elem_sz == 2) ? JIT_CTX_OFF_REPNE_CMPSW
                                  : JIT_CTX_OFF_REPNE_CMPSD;
+            // Long mode publishes implicit-memory RIP at instruction entry;
+            // PE32 publishes here before a helper can report a restart fault.
+            if (!m_block_is_64bit) emit_publish_rip_for_raising_helper(REG_SCRATCH3);
             emit(arm64::mov_x(0, REG_CPU_STATE));
             emit(arm64::ldr_x_uoff(1, REG_JIT_CTX,
                                     JIT_CTX_OFF_MEMORY >> 3));
@@ -460,31 +475,36 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
         }
 
         // Non-REP: single compare of [ESI] vs [EDI], then ±elem_sz on both.
-        // Load both operands before the SUB (emit_guest_load uses X0 scratch).
+        // X21 is the helper-safe callee-saved temporary: a slow destination
+        // load returns through X0 and must not destroy the first operand.
         emit_load_gpr_ptr(REG_SCRATCH2, static_cast<u8>(RegIndex::RSI));
+        add_default_base(SegReg::DS);
         CpuState::FlagOp flag_op;
         switch (elem_sz) {
         case 1:
-            emit_guest_load8(REG_SCRATCH0, REG_SCRATCH2);
+            emit_guest_load8(REG_CALL_TMP, REG_SCRATCH2);
             emit_load_gpr_ptr(REG_SCRATCH2, static_cast<u8>(RegIndex::RDI));
+            add_default_base(SegReg::ES);
             emit_guest_load8(REG_SCRATCH1, REG_SCRATCH2);
-            emit(arm64::sub_w(REG_SCRATCH0, REG_SCRATCH0, REG_SCRATCH1));
+            emit(arm64::sub_w(REG_SCRATCH0, REG_CALL_TMP, REG_SCRATCH1));
             emit(arm64::and_w_imm(REG_SCRATCH0, REG_SCRATCH0, 0xFF)); // AND W0,W0,#0xFF
             flag_op = CpuState::FlagOp::Sub8;
             break;
         case 2:
-            emit_guest_load16(REG_SCRATCH0, REG_SCRATCH2);
+            emit_guest_load16(REG_CALL_TMP, REG_SCRATCH2);
             emit_load_gpr_ptr(REG_SCRATCH2, static_cast<u8>(RegIndex::RDI));
+            add_default_base(SegReg::ES);
             emit_guest_load16(REG_SCRATCH1, REG_SCRATCH2);
-            emit(arm64::sub_w(REG_SCRATCH0, REG_SCRATCH0, REG_SCRATCH1));
+            emit(arm64::sub_w(REG_SCRATCH0, REG_CALL_TMP, REG_SCRATCH1));
             emit(arm64::and_w_imm(REG_SCRATCH0, REG_SCRATCH0, 0xFFFF)); // AND W0,W0,#0xFFFF
             flag_op = CpuState::FlagOp::Sub16;
             break;
         default:
-            emit_guest_load32(REG_SCRATCH0, REG_SCRATCH2);
+            emit_guest_load32(REG_CALL_TMP, REG_SCRATCH2);
             emit_load_gpr_ptr(REG_SCRATCH2, static_cast<u8>(RegIndex::RDI));
+            add_default_base(SegReg::ES);
             emit_guest_load32(REG_SCRATCH1, REG_SCRATCH2);
-            emit(arm64::sub_w(REG_SCRATCH0, REG_SCRATCH0, REG_SCRATCH1));
+            emit(arm64::sub_w(REG_SCRATCH0, REG_CALL_TMP, REG_SCRATCH1));
             flag_op = CpuState::FlagOp::Sub32;
             break;
         }
@@ -575,6 +595,7 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
     case Opcode::SCASB:
     case Opcode::SCASW:
     case Opcode::SCASD: {
+        if (instr.prefixes.address_size) return false;
         const u32 elem_sz = (instr.opcode == Opcode::SCASB) ? 1u
                           : (instr.opcode == Opcode::SCASW) ? 2u : 4u;
 
@@ -584,6 +605,9 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
                   (elem_sz == 1) ? JIT_CTX_OFF_REPNE_SCASB
                 : (elem_sz == 2) ? JIT_CTX_OFF_REPNE_SCASW
                                  : JIT_CTX_OFF_REPNE_SCASD;
+            // Long mode publishes implicit-memory RIP at instruction entry;
+            // PE32 publishes here before a helper can report a restart fault.
+            if (!m_block_is_64bit) emit_publish_rip_for_raising_helper(REG_SCRATCH3);
             emit(arm64::mov_x(0, REG_CPU_STATE));
             emit(arm64::ldr_x_uoff(1, REG_JIT_CTX,
                                     JIT_CTX_OFF_MEMORY >> 3));
@@ -601,6 +625,9 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
                   (elem_sz == 1) ? JIT_CTX_OFF_REPE_SCASB
                 : (elem_sz == 2) ? JIT_CTX_OFF_REPE_SCASW
                                  : JIT_CTX_OFF_REPE_SCASD;
+            // Long mode publishes implicit-memory RIP at instruction entry;
+            // PE32 publishes here before a helper can report a restart fault.
+            if (!m_block_is_64bit) emit_publish_rip_for_raising_helper(REG_SCRATCH3);
             emit(arm64::mov_x(0, REG_CPU_STATE));
             emit(arm64::ldr_x_uoff(1, REG_JIT_CTX,
                                     JIT_CTX_OFF_MEMORY >> 3));
@@ -619,6 +646,7 @@ bool JitCompiler::compile_string_ops(const DecodedInstruction& instr,
         // Load mem into REG_SCRATCH1 first (emit_guest_load uses X0 as
         // slow-path scratch), then load AL/AX/EAX into REG_SCRATCH0.
         emit_load_gpr_ptr(REG_SCRATCH2, static_cast<u8>(RegIndex::RDI));
+        add_default_base(SegReg::ES);
         CpuState::FlagOp flag_op;
         switch (elem_sz) {
         case 1:

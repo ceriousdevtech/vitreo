@@ -17,8 +17,9 @@
 ///    pin layout, every CompiledKey policy, link enablement, linear mapping,
 ///    thunk region, JitConfig hash, image base and image identity) inside a
 ///    directory named by the host build (LC_UUID), host CPU and the VITREO_*
-///    environment; adoption also compares the stored guest bytes with the
-///    current ones byte for byte.
+///    environment, excluding explicitly audited runtime-only identity/logging
+///    controls; adoption also compares the stored guest bytes with the
+///    current ones byte for byte. Unknown controls remain fingerprinted.
 ///  - host addresses: every helper address the emitter bakes is recorded at
 ///    emission (emit_host_addr_imm64) and relocated by the image slide; a
 ///    block that bakes any other host value is never stored, and a producer
@@ -79,11 +80,11 @@ constexpr u32 kCaptureCf = 1u << 1;
 constexpr u32 kRsbPush = 1u << 2;
 constexpr u32 kLinkProbeShift = 3;      ///< 3 kinds: bits 3..5
 constexpr u32 kLinkProbeKinds = 3;
-constexpr u32 kDispatchTailShift = 6;   ///< 8 kinds: bits 6..13
-constexpr u32 kDispatchTailKinds = 8;
-constexpr u32 kHotWideShift = 14;       ///< linear64_hot_wide_slot: bits 14..17
+constexpr u32 kDispatchTailShift = 6;   ///< 10 kinds: bits 6..15
+constexpr u32 kDispatchTailKinds = 10;
+constexpr u32 kHotWideShift = kDispatchTailShift + kDispatchTailKinds;
 constexpr u32 kHotWideSlots = 4;
-constexpr u32 kAll = (1u << 18) - 1;
+constexpr u32 kAll = (1u << (kHotWideShift + kHotWideSlots)) - 1;
 }  // namespace stored_stub
 
 /// A shared linear64 scalar cold-memory helper the words load from

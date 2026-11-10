@@ -138,6 +138,29 @@ TEST(CopyFileExportsTest, MoveFileExANullNullWithoutDelayFlagFailsPathNotFound) 
     EXPECT_EQ(gle, error_codes::ERROR_PATH_NOT_FOUND);
 }
 
+// A NULL progress routine is MoveFileEx (Learn MoveFileWithProgress). The
+// flag is the fifth argument. NULL names still fail ERROR_PATH_NOT_FOUND.
+TEST(CopyFileExportsTest, MoveFileWithProgressWNullRoutineNullNamesFailsPathNotFound) {
+    GuestMemory memory;
+    EXPECT_TRUE(memory.map_region(0x1000, 0x100000, MemoryProtection::ReadWrite).is_ok());
+    capsule::Vfs vfs;
+    FileOpsManager file_ops(memory, vfs);
+    cpu::CpuState cpu;
+    cpu.init_protected_mode();
+    constexpr GuestAddr kStack = 0x80000;
+    cpu.set_sp(kStack);
+    EXPECT_TRUE(memory.write_u32(kStack, 0xDEADBEEF).is_ok());
+    for (u32 i = 0; i < 5; ++i) {
+        EXPECT_TRUE(memory.write_u32(kStack + 4 + i * 4, 0).is_ok());
+    }
+    Marshaler marshaler(memory);
+    marshaler.attach_cpu(cpu);
+    set_last_error(0xDEADu);
+    file_ops.impl_MoveFileWithProgressW(marshaler);
+    EXPECT_EQ(static_cast<u32>(cpu.gpr.rax), 0u);
+    EXPECT_EQ(get_last_error(), error_codes::ERROR_PATH_NOT_FOUND);
+}
+
 TEST(CopyFileExportsTest, MoveFileExWNullNullDelayUntilRebootFailsPathNotFound) {
     u32 gle = 0;
     EXPECT_EQ(call_move_file_ex(true, 0, 0, 0x4, gle), 0u);
@@ -162,6 +185,8 @@ TEST(CopyFileExportsTest, FileExportsCleanUpTheirPrototypesStackBytes) {
         {&ops_exports, "MoveFileTransactedW", 24},
         {&ops_exports, "MoveFileExA", 12},
         {&ops_exports, "MoveFileExW", 12},
+        {&ops_exports, "MoveFileWithProgressA", 20},
+        {&ops_exports, "MoveFileWithProgressW", 20},
         {&k32_exports, "CopyFileExA", 24},
         {&k32_exports, "CopyFileExW", 24},
         {&k32_exports, "CopyFile2", 12},

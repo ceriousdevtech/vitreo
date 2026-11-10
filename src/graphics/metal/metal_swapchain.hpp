@@ -6,6 +6,7 @@
 
 #include <vitreo/common.hpp>
 #include <atomic>
+#include <condition_variable>
 #include <mutex>
 #include <vector>
 
@@ -24,6 +25,10 @@ struct SwapchainDesc {
     bool framebuffer_only = true;
     /// False for DXGI_ALPHA_MODE_PREMULTIPLIED / STRAIGHT composition.
     bool opaque = true;
+    /// One composition layer on a shared view: create must not remove
+    /// sibling CAMetalLayers owned by other swapchains. False removes
+    /// leftover CAMetalLayers (window flip-model reset).
+    bool preserve_sibling_metal_layers = false;
 };
 
 /// True when a CAMetalLayer accepts @p pixel_format (an MTLPixelFormat); a
@@ -56,6 +61,17 @@ public:
     /// recycled while the guest renders it, rather than being requested only
     /// when the guest arrives and finding nothing ready.
     void start_drawable_acquire();
+
+    /// Keep a completed frame until a drawable exists, then blit `src` to it.
+    /// `src` is retained until that blit is committed. `held` is set while the
+    /// blit owns the texture and cleared once the command buffer is committed.
+    /// Returns false when two blits are already waiting: the caller waits
+    /// (`wait_for_blit_slot`) and retries. The encode worker does not park
+    /// inside nextDrawable.
+    bool enqueue_layer_blit(void* src, u32 width, u32 height, u32 sync_interval,
+                            u8* held);
+    void wait_while_held(u8* held);
+    void wait_for_blit_slot();
 
     /// Off-guest present thread: block in `nextDrawable` until CA has one.
     /// Must not run on the AppKit thread (that starves drawable recycle).
@@ -98,8 +114,21 @@ private:
     void* m_current_drawable = nullptr; // id<CAMetalDrawable>
     void* m_acquire_queue = nullptr;    // dispatch_queue_t
     void* m_pending_drawable = nullptr; // id<CAMetalDrawable>, side-queue result
+    struct LayerBlit {
+        void* src{nullptr};
+        u32 width{0};
+        u32 height{0};
+        u32 sync_interval{0};
+        u8* held{nullptr};
+    };
+    std::vector<LayerBlit> m_blits;
     std::mutex m_drawable_mu;
+    std::condition_variable m_drawable_cv;
     bool m_acquire_in_flight = false;
+    /// Set (under m_drawable_mu) when the destructor starts: no acquire is
+    /// enqueued after it, so the destructor's drain of m_acquire_queue
+    /// waits for every block that names this object.
+    bool m_closing = false;
     bool m_vsync = true;
     u32 m_width = 0;
     u32 m_height = 0;
@@ -112,6 +141,19 @@ private:
     std::atomic<u64> m_last_async_refit_ns{0};
 
     void apply_layer_frame_on_main();
+    void note_acquired_drawable(void* drawable);
+    void pump_blits();
+    void commit_layer_blit(void* drawable, LayerBlit blit);
+    /// present() on an explicit drawable, which the caller keeps owning.
+    /// A layer blit presents its own drawable through this, so it never
+    /// touches m_current_drawable, which belongs to the guest's present
+    /// thread (next_drawable / present).
+    void present_drawable(void* drawable, void* cmd_buf, u32 sync_interval);
+    /// Held across a blit's dequeue and commit, so two threads pumping
+    /// (the guest's enqueue and the acquire queue's completion) present
+    /// the queued frames in order.
+    std::mutex m_blit_commit_mu;
+    void abandon_blits();
     void queue_async_layer_refit();
 };
 

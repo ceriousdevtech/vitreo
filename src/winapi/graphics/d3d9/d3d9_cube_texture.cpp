@@ -123,14 +123,14 @@ void D3D9Manager::dispatch_cube_texture(Marshaler& m, usize slot, u32 self) {
         const u32 face = static_cast<u32>(m.arg(1));
         const u32 level = static_cast<u32>(m.arg(2));
         const GuestAddr out = m.arg_ptr(3);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         const u32 surface = face_level_surface(face, level);
         if (out == 0 || surface == 0) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
         (void)add_ref(surface);
-        if (m.write_u32(out, surface).is_err()) {
+        if (m.write_ptr(out, surface).is_err()) {
             (void)release(surface);
             m.set_return(D3DERR_INVALIDCALL);
             return;

@@ -15,6 +15,7 @@
 namespace a09b_blobs {
 #include "../../oracle_data/d3d11_a09b_shaders.h"
 }  // namespace a09b_blobs
+#include "../../oracle_data/tess_ds_cull_shader.h"
 
 #include "d3d11_test_streamout.hpp"
 
@@ -114,10 +115,10 @@ TEST_F(D3D11GeometryTest, CreationServesProgramsAndRefusesWhatItCannotExpress) {
     EXPECT_EQ(create_gs(point_geometry_shader(2u)), d3d11::S_OK);
     const GuestAddr clipping = memory.read_u64(SHADER_OUT).value();
     EXPECT_NE(clipping, 0u);
-    // ...a cull distance cannot be (MSL has none): refuse, with the
-    // out-parameter NULLed, rather than draw without culling.
-    EXPECT_EQ(create_gs(point_geometry_shader(3u)), d3d11::E_NOTIMPL);
-    EXPECT_EQ(memory.read_u64(SHADER_OUT).value(), 0u);
+    // ...and a cull distance by pass C, which sees each expanded primitive
+    // whole (D3D11.3 15.4.2: discarded when negative at all its vertices).
+    EXPECT_EQ(create_gs(point_geometry_shader(3u)), d3d11::S_OK);
+    EXPECT_NE(memory.read_u64(SHADER_OUT).value(), 0u);
     // Real fxc gs_5_0: OSG5 signature, dcl_stream m0 / emit_stream m0,
     // [instance(4)], layer/viewport/clip outputs.
     const std::vector<u8> sm5(gs5_gs_layered,
@@ -436,6 +437,68 @@ TEST_F(D3D11GeometryTest, TransientBuffersAreReusedOnlyOnceTheirGenerationRetire
         << "a GS draw made a buffer after warm-up";
 }
 
+TEST_F(D3D11GeometryTest, TransientBufferBurstFitsTheByteBudgetWithoutChurning) {
+    backend.state.generations = true;
+    TransientBufferRing ring(backend);
+    graphics::BackendBufferDesc desc{};
+    desc.shader_resource = true;
+    desc.unordered_access = true;
+    desc.byte_width = 16;
+    constexpr usize count = 768;
+    std::vector<TransientBufferRing::Buffer> in_flight;
+    for (usize i = 0; i < count; ++i) {
+        auto buffer = ring.acquire(desc, nullptr, 0);
+        ASSERT_NE(buffer, nullptr);
+        in_flight.push_back(std::move(buffer));
+    }
+    in_flight.clear();
+    ASSERT_EQ(ring.stats().idle, count);
+    ASSERT_EQ(ring.stats().idle_bytes,
+              count * TransientBufferRing::size_class(desc.byte_width));
+    const unsigned creations = backend.state.buffer_creations;
+    for (unsigned frame = 0; frame < 3; ++frame) {
+        backend.state.completed_gen = backend.state.recording_gen++;
+        for (usize i = 0; i < count; ++i) {
+            const u32 value = static_cast<u32>(i + frame * count);
+            auto buffer = ring.acquire(desc, &value, sizeof(value));
+            ASSERT_NE(buffer, nullptr);
+            EXPECT_EQ(static_cast<TestBackendBuffer*>(buffer.get())
+                          ->live_words(0)[0], value);
+            for (const auto& other : in_flight) {
+                ASSERT_NE(buffer.get(), other.get());
+            }
+            in_flight.push_back(std::move(buffer));
+        }
+        EXPECT_EQ(backend.state.buffer_creations, creations);
+        in_flight.clear();
+    }
+    EXPECT_EQ(ring.stats().reused, 3 * count);
+}
+
+TEST_F(D3D11GeometryTest, TransientBufferPoolStillEvictsAtItsByteBudget) {
+    backend.state.generations = true;
+    TransientBufferRing ring(backend);
+    graphics::BackendBufferDesc desc{};
+    desc.shader_resource = true;
+    desc.byte_width = TransientBufferRing::kMaxBufferBytes;
+    std::vector<TransientBufferRing::Buffer> in_flight;
+    constexpr usize retained =
+        TransientBufferRing::kMaxIdleBytes / TransientBufferRing::kMaxBufferBytes;
+    for (usize i = 0; i < retained + 1; ++i) {
+        auto buffer = ring.acquire(desc, nullptr, 0);
+        ASSERT_NE(buffer, nullptr);
+        in_flight.push_back(std::move(buffer));
+    }
+    in_flight.clear();
+    EXPECT_EQ(ring.stats().idle, retained);
+    EXPECT_EQ(ring.stats().idle_bytes, TransientBufferRing::kMaxIdleBytes);
+    backend.state.completed_gen = backend.state.recording_gen++;
+    auto reused = ring.acquire(desc, nullptr, 0);
+    ASSERT_NE(reused, nullptr);
+    EXPECT_EQ(ring.stats().reused, 1u);
+    EXPECT_EQ(ring.stats().idle, retained - 1);
+}
+
 TEST_F(D3D11GeometryTest, IndirectDrawAssemblesAndExpandsOnTheGpuTimeline) {
     // DrawInstancedIndirect through a geometry program: the vertex and
     // instance counts are GPU memory, so the draw is assembled by
@@ -633,6 +696,48 @@ TEST_F(D3D11TessellationTest, TheSoftwareTessellatorServesWhatMetalCannot) {
             << c.label << ": the domain records, by the tessellator's count";
         EXPECT_EQ(backend.state.last_draw_patch_count, 0u) << c.label;
     }
+}
+
+TEST_F(D3D11TessellationTest, ADomainShadersCullDistancesCullThroughTheIndexList) {
+    // SV_CullDistance on the domain shader's rasterized output (D3D11.3
+    // 15.4.2) needs each primitive's vertices. The software tessellator's
+    // records are then drawn NON-indexed over the tessellator's index list,
+    // which the pass-through reads at t1 for its own record and its
+    // primitive's; a domain shader without cull distances keeps the indexed
+    // draw.
+    ASSERT_EQ(create_stage(tess_hs_tri, sizeof(tess_hs_tri), true),
+              d3d11::S_OK);
+    const GuestAddr hs = memory.read_u64(SHADER_OUT).value();
+    ASSERT_EQ(create_stage(tess_ds_tri_cull, sizeof(tess_ds_tri_cull), false),
+              d3d11::S_OK)
+        << "SV_CullDistance on a domain shader is no longer refused";
+    const GuestAddr ds = memory.read_u64(SHADER_OUT).value();
+    const GuestAddr vs = make_vertex_shader();
+    bind_render_target();
+    context_call(11, {vs, 0, 0});
+    context_call(60, {hs, 0, 0});
+    context_call(64, {ds, 0, 0});
+    context_call(24, {35});  // 3_CONTROL_POINT_PATCHLIST
+    const unsigned patch_pipelines = backend.state.tessellation_pipelines;
+    const unsigned indirect_draws = backend.state.indirect_draws;
+    context_call(13, {3, 0});  // Draw: one patch
+
+    EXPECT_EQ(backend.state.tessellation_pipelines, patch_pipelines)
+        << "Metal's tessellator has no cull distances: the software one runs";
+    EXPECT_EQ(backend.state.indirect_draws, indirect_draws + 1);
+    const auto& raster = backend.state.last_draw_call;
+    EXPECT_EQ(raster.index_buffer, nullptr) << "drawn non-indexed";
+    EXPECT_NE(raster.indirect.buffer, nullptr)
+        << "by the tessellator's index count";
+    ASSERT_NE(raster.vertex_srv_buffers[1], nullptr);
+    EXPECT_NE(raster.vertex_srv_buffers[1], raster.vertex_srv_buffers[0])
+        << "t1 is the index list, not the records";
+    EXPECT_NE(backend.state.last_pipeline_vertex_msl.find(
+                  "vitreo_gs_counts[vitreo_vertex_id]"),
+              std::string::npos)
+        << backend.state.last_pipeline_vertex_msl;
+    EXPECT_NE(backend.state.last_pipeline_vertex_msl.find("vitreo_cull_out"),
+              std::string::npos);
 }
 
 TEST_F(D3D11TessellationTest, PowerOfTwoPartitioningTakesTheIntegerTessellator) {

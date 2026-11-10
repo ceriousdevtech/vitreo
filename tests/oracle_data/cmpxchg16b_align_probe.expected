@@ -1,0 +1,4 @@
+cmpxchg16b off=8: code=c0000005 n=2 info0=0 info1=ffffffffffffffff
+lock cmpxchg16b off=8: code=c0000005 n=2 info0=0 info1=ffffffffffffffff
+cmpxchg16b off=1: code=c0000005 n=2 info0=0 info1=ffffffffffffffff
+lock cmpxchg16b off=1: code=c0000005 n=2 info0=0 info1=ffffffffffffffff

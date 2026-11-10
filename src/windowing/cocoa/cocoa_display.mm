@@ -132,11 +132,15 @@ bool CocoaBridge::composition_host_defers_to_owned(
     if (state.fullscreen) {
         return false;
     }
-    bool owns_other = false;
+    // Only an owned window the guest shows hands the UI over. A host whose
+    // owned windows are all hidden or gone (a setup engine between its wizard
+    // and its progress page) is itself the UI.
+    bool owns_other = m_owned_hide_hold.contains(state.hwnd);
     for (const auto& [hwnd, other] : m_windows) {
-        if (hwnd != state.hwnd && other.owner == state.hwnd) {
+        if (owns_other) break;
+        if (hwnd != state.hwnd && other.owner == state.hwnd && other.visible &&
+            !other.empty_window_rgn) {
             owns_other = true;
-            break;
         }
     }
     const auto kind = classify_window_presentation(make_presentation_signals(
@@ -144,6 +148,37 @@ bool CocoaBridge::composition_host_defers_to_owned(
         state.client_drawn_frame, state.owner != NULL_HWND, owns_other,
         state.fullscreen));
     return kind == WindowPresentationKind::CompositionHost;
+}
+
+void CocoaBridge::owned_visibility_changed(HWND owner, bool owned_now_visible,
+                                           bool resync_any_owner) {
+    auto owner_it = m_windows.find(owner);
+    if (owner == NULL_HWND || owner_it == m_windows.end()) return;
+    // Only a borderless popup can be a composition host; any other owner is
+    // unaffected and keeps its previous re-sync (destroy only), so showing
+    // or hiding an owned window never restacks or activates a captioned one.
+    if (!presentation_is_borderless_popup(owner_it->second.guest_style)) {
+        if (resync_any_owner) sync_native_window_visibility(owner_it->second);
+        return;
+    }
+    if (owned_now_visible) {
+        m_owned_hide_hold.erase(owner);
+        sync_native_window_visibility(m_windows[owner]);
+        return;
+    }
+    // A newer hold supersedes an older one: only the latest timer releases.
+    const u64 token = ++m_owned_hide_hold[owner];
+    sync_native_window_visibility(m_windows[owner]);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kOwnedHideHoldMs * NSEC_PER_MSEC),
+                   dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), ^{
+        vtr_run_on_main_async(^{
+            auto hold = m_owned_hide_hold.find(owner);
+            if (hold == m_owned_hide_hold.end() || hold->second != token) return;
+            m_owned_hide_hold.erase(hold);
+            auto it = m_windows.find(owner);
+            if (it != m_windows.end()) sync_native_window_visibility(it->second);
+        });
+    });
 }
 
 HWND CocoaBridge::family_presentation_hwnd(HWND owner) const {
@@ -258,6 +293,7 @@ void CocoaBridge::adopt_extra_family_dialog(HWND hwnd) {
         it->second.ns_delegate = nullptr;
     }
     m_windows.erase(it);
+    (void)refresh_cursor_clip_state();
 }
 
 void CocoaBridge::adopt_extra_dialogs_in_family(HWND root) {

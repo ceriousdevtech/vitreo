@@ -43,6 +43,8 @@ constexpr u32 PREDICATED_BIT = 1u << 28;
 
 constexpr u32 OPCODE_END = 0xFFFF;
 constexpr u32 OPCODE_COMMENT = 0xFFFE;
+/// D3DSIO_PHASE: the ps_1_4 phase marker.
+constexpr u32 OPCODE_PHASE = 0xFFFD;
 constexpr u32 COMMENT_LENGTH_SHIFT = 16;
 constexpr u32 COMMENT_LENGTH_MASK = 0x7FFF;
 
@@ -187,17 +189,29 @@ struct Parameter {
 class Translator {
 public:
     Translator(const u32* tokens, usize count, const u32* stage_ttf,
-               usize stage_ttf_count)
+               usize stage_ttf_count, const u8* stage_dims = nullptr)
         : m_tokens(tokens), m_count(count) {
         if (stage_ttf != nullptr && stage_ttf_count > 0) {
             const usize n = std::min(stage_ttf_count, m_stage_ttf.size());
             for (usize i = 0; i < n; ++i) m_stage_ttf[i] = stage_ttf[i];
+        }
+        if (stage_dims != nullptr && stage_ttf_count > 0) {
+            const usize n = std::min(stage_ttf_count, m_stage_dim.size());
+            for (usize i = 0; i < n; ++i) m_stage_dim[i] = stage_dims[i];
         }
     }
 
     Sm3Shader run();
 
 private:
+    /// texm3x2*/texm3x3*, texbem(l), texreg2*, texdp3(tex), texdepth, bem
+    /// (sm3_to_msl_sm1.cpp).
+    [[nodiscard]] bool translate_sm1_texture_op(u32 opcode);
+    /// A sample of SM1 stage @p stage at @p coord3 (a float3 expression),
+    /// in the dimension of the texture bound there.
+    [[nodiscard]] std::string sm1_sample(u32 stage,
+                                         const std::string& coord3) const;
+
     [[nodiscard]] bool fail(const std::string& reason) {
         m_result.ok = false;
         m_result.failure = reason;
@@ -313,6 +327,14 @@ private:
     usize m_position{0};
     /// D3DTSS_TEXTURETRANSFORMFLAGS per sampler stage (ps_1_x projective).
     std::array<u32, 16> m_stage_ttf{};
+    /// ps_1_x: the D3DSTT_* of the texture bound to each stage (2 = 2D,
+    /// 3 = cube, 4 = volume; 0 = unknown, 2D). SM1 has no sampler
+    /// declarations: a stage samples whatever texture is bound to it.
+    std::array<u8, 16> m_stage_dim{};
+    /// ps_1_x matrix sequence (texm3x2pad / texm3x3pad ... terminal op):
+    /// how many rows the open sequence has, and its MSL vector's number.
+    u32 m_sm1_matrix_rows{0};
+    u32 m_sm1_matrix_sequence{0};
     /// D3DSTT_* from `dcl_* s#` bits 27:24 (2 = 2D, 3 = cube, 4 = volume).
     /// Zero means undeclared; treated as 2D at sample / prologue time.
     std::array<u8, 16> m_sampler_dim{};
@@ -335,6 +357,7 @@ private:
     bool m_address_register_used{false};
     /// Shader uses c[a0+n] / c[aL+n]; MSL must return zeros out of range.
     bool m_relative_const_used{false};
+    bool m_pixel_definitions_closed{false};
     /// Pixel-shader vFace (REG_MISCTYPE index 1).
     bool m_vface_used{false};
     /// Pixel-shader oDepth write.

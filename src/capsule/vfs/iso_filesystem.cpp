@@ -153,16 +153,14 @@ bool IsoFileSystem::initialize() {
             return false;
         }
         image_path_ = (source.parent_path() / referenced_file).lexically_normal().string();
-        physical_sector_size_ = 2352;
-        payload_offset_ = 16;
     }
 
-    image_.open(image_path_, std::ios::binary);
-    if (!image_) {
-        error_message_ = "Unable to open image data";
+    disc_ = CdImage::open(image_path_, error_message_);
+    if (!disc_) {
         return false;
     }
-    if (extension != ".cue" && !configure_image_layout()) {
+    if (disc_->tracks().empty() || disc_->tracks().front().is_audio()) {
+        error_message_ = "The image's first track is not a data track";
         return false;
     }
 
@@ -204,8 +202,12 @@ bool IsoFileSystem::initialize() {
     volume_info_.label =
         trim_iso_field(std::span<const u8>(descriptor).subspan(40, 32), joliet_);
     volume_info_.filesystem_name = "CDFS";
-    volume_info_.max_component_length = 110;
-    volume_info_.filesystem_flags = 0x00080001u;
+    // Measured on Windows 11 CDFS (tools/oracle_probe/cdfs_volume_serial_probe):
+    // plain ISO 9660 maxlen=221 flags=0x1080001; Joliet maxlen=110
+    // flags=0x1080005 (FILE_UNICODE_ON_DISK added).
+    volume_info_.max_component_length = joliet_ ? 110u : 221u;
+    volume_info_.filesystem_flags = joliet_ ? 0x01080005u : 0x01080001u;
+    volume_serial_ = cdfs_volume_serial(descriptor);
     volume_info_.sectors_per_cluster = 1;
     volume_info_.bytes_per_sector = 2048;
     volume_info_.free_clusters = 0;
@@ -257,49 +259,19 @@ Result<usize, VfsError> IsoFileSystem::read_volume(u64 offset,
     return Result<usize, VfsError>::ok(buffer.size());
 }
 
-bool IsoFileSystem::configure_image_layout() {
-    auto has_signature = [&](u32 sector_size, u32 payload_offset) {
-        image_.clear();
-        image_.seekg(static_cast<std::streamoff>(16ull * sector_size + payload_offset + 1));
-        char signature[5]{};
-        image_.read(signature, sizeof(signature));
-        return image_.gcount() == static_cast<std::streamsize>(sizeof(signature)) &&
-               std::memcmp(signature, "CD001", sizeof(signature)) == 0;
-    };
-
-    if (has_signature(2048, 0)) {
-        physical_sector_size_ = 2048;
-        payload_offset_ = 0;
-        return true;
-    }
-    if (has_signature(2352, 16)) {
-        physical_sector_size_ = 2352;
-        payload_offset_ = 16;
-        return true;
-    }
-    error_message_ = "Image is not an ISO9660 or MODE1/2352 data image";
-    return false;
-}
-
 bool IsoFileSystem::read_logical(u64 offset, std::span<u8> buffer) {
+    std::array<u8, 2048> sector_data{};
     usize copied = 0;
     while (copied < buffer.size()) {
         const u64 logical = offset + copied;
         const u64 sector = logical / 2048;
         const usize in_sector = static_cast<usize>(logical % 2048);
         const usize chunk = std::min(buffer.size() - copied, 2048u - in_sector);
-        const u64 physical = sector * physical_sector_size_ + payload_offset_ + in_sector;
-
-        image_.clear();
-        image_.seekg(static_cast<std::streamoff>(physical));
-        if (!image_) {
+        if (sector > 0xFFFFFFFFull ||
+            !disc_->read_user_data(static_cast<u32>(sector), sector_data)) {
             return false;
         }
-        image_.read(reinterpret_cast<char*>(buffer.data() + copied),
-                    static_cast<std::streamsize>(chunk));
-        if (image_.gcount() != static_cast<std::streamsize>(chunk)) {
-            return false;
-        }
+        std::memcpy(buffer.data() + copied, sector_data.data() + in_sector, chunk);
         copied += chunk;
     }
     return true;
@@ -382,7 +354,21 @@ const IsoFileSystem::Entry* IsoFileSystem::find_entry(std::string_view path) con
     return it == entries_.end() ? nullptr : &it->second;
 }
 
-FileInfo IsoFileSystem::entry_info(const Entry& entry) {
+u32 cdfs_volume_serial(std::span<const u8> descriptor) noexcept {
+    // Windows CDFS (measured, cdfs_volume_serial_probe on three images): the
+    // 2048-byte volume descriptor it mounts (the Joliet supplementary one when
+    // present, else the primary) summed in four byte lanes; byte k of each
+    // 32-bit word adds into serial byte 3 - k.
+    u8 lanes[4] = {0, 0, 0, 0};
+    const usize size = std::min<usize>(descriptor.size(), 2048);
+    for (usize i = 0; i + 3 < size; i += 4) {
+        for (usize k = 0; k < 4; ++k) lanes[k] = static_cast<u8>(lanes[k] + descriptor[i + 3 - k]);
+    }
+    return static_cast<u32>(lanes[0]) | static_cast<u32>(lanes[1]) << 8 |
+           static_cast<u32>(lanes[2]) << 16 | static_cast<u32>(lanes[3]) << 24;
+}
+
+FileInfo IsoFileSystem::entry_info(const Entry& entry) const {
     FileInfo info;
     info.size = entry.size;
     info.attributes = FileAttributes::ReadOnly |
@@ -391,7 +377,7 @@ FileInfo IsoFileSystem::entry_info(const Entry& entry) {
     // normalized on-disc path as the stable per-volume identity instead.
     constexpr u64 fnv_offset = 14695981039346656037ULL;
     constexpr u64 fnv_prime = 1099511628211ULL;
-    info.volume_id = 0x49534f39363630ULL; // "ISO9660"
+    info.volume_id = volume_serial_;
     info.file_id = fnv_offset;
     for (unsigned char ch : entry.path) {
         info.file_id ^= ch;

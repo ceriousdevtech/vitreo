@@ -14,6 +14,7 @@
 
 #include "com_core.hpp"
 #include "ole_guid_internal.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/com/ole32/task_memory.hpp"
 #include "winapi/com/rpcrt4/rpcrt4.hpp"
@@ -1247,9 +1248,9 @@ u32 ComCoreManager::audio_session_get_process_id(Marshaler& m) {
         if (session == m_audio_sessions.end()) return E_NOINTERFACE;
         cross = session->second.cross_process;
     }
-    // GetCurrentProcessId is the host pid. Learn + measured: a cross-process
-    // session answers AUDCLNT_S_NO_SINGLE_PROCESS with its creator's pid.
-    if (m.write_u32(out, static_cast<u32>(::getpid())).is_err()) return com::E_POINTER;
+    // Learn + measured: a cross-process session answers
+    // AUDCLNT_S_NO_SINGLE_PROCESS with its creator's process ID.
+    if (m.write_u32(out, ipc::guest_process_id()).is_err()) return com::E_POINTER;
     return cross ? AUDCLNT_S_NO_SINGLE_PROCESS : com::S_OK;
 }
 

@@ -142,7 +142,12 @@ bool ff_texgen_needs_planes(const FFPipelineState& s) {
 }
 
 bool ff_lighting_uniforms(const FFPipelineState& s) {
-    return s.lighting_enabled && (s.active_light_count > 0 || s.gl_spot_model);
+    // D3DRS_LIGHTING (GL_LIGHTING) applies the lighting equation whatever
+    // lights are on: with none a vertex is global ambient * material ambient
+    // + emissive, black for the default material
+    // (tools/oracle_probe/d3d8_lighting_no_normal_probe: "lit.no_lights
+    // diffuse=808080 -> 000000").
+    return s.lighting_enabled;
 }
 
 /// The preconditions the OpenGL fields document (ff_emulation.hpp).
@@ -660,8 +665,11 @@ static std::string generate_vertex_shader(const FFPipelineState& state) {
     // position_is_homogeneous: the float4 object position, divided by its
     // own w where an eye-space point is needed.
     const bool homogeneous = state.position_is_homogeneous;
-    const bool lighting_active =
-        ff_lighting_uniforms(state) && (state.fvf_flags & fvf::NORMAL) != 0 && !pretransformed;
+    // A vertex without a normal is still lit: its normal is zero, so lights
+    // add only their ambient term (d3d8_lighting_no_normal_probe
+    // "lit.dir_light_no_normal ambient_source_color1 -> 404040").
+    const bool lighting_active = ff_lighting_uniforms(state) && !pretransformed;
+    const bool lit_without_normal = lighting_active && (state.fvf_flags & fvf::NORMAL) == 0;
 
     // Uniform buffer for transforms and lighting
     ss << "struct FFUniforms {\n"
@@ -1104,7 +1112,9 @@ static std::string generate_vertex_shader(const FFPipelineState& state) {
                               ? "(float4(tween_position, 1.0) * cb.world * cb.view).xyz;\n"
                               : "(float4(in.position, 1.0) * cb.world * cb.view).xyz;\n"));
         }
-        if (homogeneous) {
+        if (lit_without_normal) {
+            ss << "    float3 world_normal = float3(0.0);\n";
+        } else if (homogeneous) {
             ss << "    float3 world_normal = (float4(in.normal, 0.0) * "
                   "cb.world_inv_transpose).xyz;\n";
         } else {
@@ -1113,7 +1123,7 @@ static std::string generate_vertex_shader(const FFPipelineState& state) {
             ss << "    float3 world_normal = "
                << camera_space_normal_expr(state, vertex_blending) << ";\n";
         }
-        if (state.normalize_normals) {
+        if (state.normalize_normals && !lit_without_normal) {
             ss << "    world_normal = normalize(world_normal);\n";
         }
         if (state.gl_spot_model) {
@@ -1997,7 +2007,7 @@ std::string generate_ff_vertex_for_sm3_varyings(
     if (state.clip_planes_enabled && !pretransformed) {
         ss << "    float4 clip_planes[6];\n";
     }
-    if (state.lighting_enabled && state.active_light_count > 0) {
+    if (ff_lighting_uniforms(state)) {  // the uniform packer's layout
         ss << "    float4 global_ambient;\n"
            << "    float4 mat_diffuse;\n"
            << "    float4 mat_ambient;\n"

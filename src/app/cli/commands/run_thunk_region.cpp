@@ -7,6 +7,7 @@
 #include "core/memory/guest_memory.hpp"
 #include "core/pe/parser/pe_parser.hpp"
 #include "winapi/core/thunk_registry.hpp"
+#include "winapi/kernel32/module/module.hpp"
 #include "winapi/kernel32/thread/thread_suspend.hpp"
 #include "winapi/msvcrt/guest_accel.hpp"
 
@@ -24,11 +25,17 @@ namespace {
 const vitreo::winapi::ThunkRegistry* g_api_return_registry = nullptr;
 vitreo::GuestAddr g_api_return_stubs = 0;
 /// Windows reports a thread blocked in a host-backed wait inside ntdll's
-/// system-service stub. Prefer a ret that lives in the synthetic ntdll image
-/// so GetThreadContext's RIP is in SizeOfImage (thread_lifecycle_probe
-/// BLOCKED_GET ip_in_ntdll).
-vitreo::GuestAddr g_ntdll_blocked_rip = 0;
+/// system-service stub, at the return instruction after the SYSCALL. The
+/// reported RIP must BE that return: a context read back unchanged with
+/// SetThreadContext resumes there and completes the call
+/// (thread_lifecycle_probe BLOCKED_GET ip_in_ntdll, BLOCKED_ROUNDTRIP).
+/// x64: the `ret` of a synthetic ntdll service stub. WoW64: the synthetic
+/// ntdll's `ret N` table (NTDLL_WOW64_API_RETURN_RVA).
+vitreo::GuestAddr g_ntdll_x64_blocked_ret = 0;
+vitreo::GuestAddr g_ntdll_wow64_returns = 0;
 constexpr vitreo::u32 kApiReturnStubBytes = 0x104;  // N = 0..256, 4 bytes each
+static_assert(kApiReturnStubBytes ==
+              vitreo::winapi::NTDLL_WOW64_API_RETURN_BYTES);
 
 vitreo::GuestAddr api_return_for_gateway(vitreo::GuestAddr gateway,
                                          bool is_64bit) {
@@ -37,14 +44,48 @@ vitreo::GuestAddr api_return_for_gateway(vitreo::GuestAddr gateway,
         !registry->is_dispatch_address(gateway)) {
         return 0;
     }
-    if (g_ntdll_blocked_rip != 0) {
-        return g_ntdll_blocked_rip;
+    if (is_64bit) {
+        return g_ntdll_x64_blocked_ret != 0 ? g_ntdll_x64_blocked_ret
+                                            : g_api_return_stubs;
     }
-    if (g_api_return_stubs == 0) return 0;
-    if (is_64bit) return g_api_return_stubs;
     const vitreo::u16 bytes = registry->resolve_stdcall_bytes(gateway);
     if ((bytes & 3u) != 0 || bytes >= kApiReturnStubBytes) return 0;
+    if (g_ntdll_wow64_returns != 0) return g_ntdll_wow64_returns + bytes;
+    if (g_api_return_stubs == 0) return 0;
     return g_api_return_stubs + bytes;
+}
+
+/// The address of @p ntdll's return instruction for a blocked thread, after
+/// checking the bytes there are what the image builder wrote; 0 otherwise.
+vitreo::GuestAddr find_ntdll_x64_blocked_ret(vitreo::GuestMemory& memory,
+                                            RuntimeContext& ctx,
+                                            vitreo::GuestAddr ntdll) {
+    // Service stub: ... 0F 05 (syscall) at +0x12, C3 (ret) at +0x14.
+    const vitreo::GuestAddr stub =
+        ctx.module_mgr.get_proc_address(ntdll, "NtWaitForSingleObject");
+    if (stub == 0) return 0;
+    const auto syscall0 = memory.read_u8(stub + 0x12);
+    const auto syscall1 = memory.read_u8(stub + 0x13);
+    const auto ret = memory.read_u8(stub + 0x14);
+    if (syscall0.value_or(0) == 0x0F && syscall1.value_or(0) == 0x05 &&
+        ret.value_or(0) == 0xC3) {
+        return stub + 0x14;
+    }
+    return 0;
+}
+
+vitreo::GuestAddr find_ntdll_wow64_returns(vitreo::GuestMemory& memory,
+                                           vitreo::GuestAddr ntdll) {
+    const vitreo::GuestAddr table =
+        ntdll + vitreo::winapi::NTDLL_WOW64_API_RETURN_RVA;
+    const auto ret0 = memory.read_u8(table);
+    const auto ret4 = memory.read_u8(table + 4);
+    const auto n4 = memory.read_u8(table + 5);
+    if (ret0.value_or(0) == 0xC3 && ret4.value_or(0) == 0xC2 &&
+        n4.value_or(0) == 4) {
+        return table;
+    }
+    return 0;
 }
 
 } // namespace
@@ -93,14 +134,22 @@ void map_thunk_region(GuestMemory& memory, RuntimeContext& ctx,
         }
         g_api_return_stubs = ctx.thunk_registry.thunk_base() + stubs;
         g_api_return_registry = &ctx.thunk_registry;
-        // Prefer a RIP inside synthetic ntdll (Windows system-service stub
-        // range). RtlUserThreadStart's in-image veneer is always present.
+        // Prefer a return instruction inside synthetic ntdll (Windows
+        // system-service stub range); see g_ntdll_x64_blocked_ret.
         {
             const GuestAddr ntdll =
                 ctx.module_mgr.get_module_handle("ntdll.dll");
-            g_ntdll_blocked_rip = ntdll != 0
-                ? ctx.module_mgr.get_proc_address(ntdll, "RtlUserThreadStart")
-                : 0;
+            g_ntdll_x64_blocked_ret = 0;
+            g_ntdll_wow64_returns = 0;
+            if (ntdll != 0) {
+                if (pe.is_64bit) {
+                    g_ntdll_x64_blocked_ret =
+                        find_ntdll_x64_blocked_ret(memory, ctx, ntdll);
+                } else {
+                    g_ntdll_wow64_returns =
+                        find_ntdll_wow64_returns(memory, ntdll);
+                }
+            }
         }
         winapi::ThreadSuspendRegistry::instance().set_api_return_resolver(
             &api_return_for_gateway);

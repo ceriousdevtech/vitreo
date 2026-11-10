@@ -219,9 +219,25 @@ struct DirectThunk {
 inline constexpr u8 kInChainSlotDirect = 1;  ///< a direct entry (L3, WP-R1)
 inline constexpr u8 kInChainSlotHost = 2;    ///< an in_chain_only entry (L3-K)
 
+/// Host side of a host-implemented DLL's process attach and detach
+/// (Learn: DllMain, DLL_PROCESS_ATTACH / DLL_PROCESS_DETACH), for a DLL whose
+/// loading has Windows-visible effects -- Msftedit.dll registers its window
+/// class on load and removes it on unload. Each runs under the loader lock
+/// with the module's base (its HINSTANCE).
+struct DllLifecycle {
+    std::function<void(GuestAddr module_base)> process_attach;
+    std::function<void(GuestAddr module_base)> process_detach;
+    /// Windows unloads the DLL when its last reference is freed; GetModuleHandle
+    /// then fails and a further FreeLibrary fails with ERROR_MOD_NOT_FOUND.
+    /// Without it the module stays loaded like kernel32 (FreeLibrary succeeds
+    /// but never drops the last reference).
+    bool unloads_on_last_free{false};
+};
+
 /// Collection of exports for a DLL
 struct DllExports {
     std::vector<ExportEntry> entries;
+    DllLifecycle lifecycle;
 };
 
 // =============================================================================
@@ -363,14 +379,26 @@ public:
     /// @param dll_name DLL name (case-insensitive)
     /// @param name Exported variable name
     /// @param address Guest address of the variable
+    /// @param ordinal Export ordinal, or 0 when the variable has none
+    ///        registered (GetProcAddress by ordinal then does not find it)
     void register_data_export(std::string_view dll_name,
                               std::string_view name,
-                              GuestAddr address);
+                              GuestAddr address, u16 ordinal = 0);
 
     /// Look up a DLL data export registered via register_data_export().
     /// @return Guest address of the variable, or 0 when not a data export.
     [[nodiscard]] GuestAddr lookup_data_export(std::string_view dll_name,
                                                std::string_view name) const;
+
+    /// Look up a DLL data export by the ordinal it was registered with.
+    /// @return Guest address of the variable, or 0 when not a data export.
+    [[nodiscard]] GuestAddr lookup_data_export(std::string_view dll_name,
+                                               u16 ordinal) const;
+
+    /// The lifecycle a DLL was registered with (DllExports::lifecycle), or
+    /// nullptr for an unregistered DLL. The record lives as long as the
+    /// registry.
+    [[nodiscard]] const DllLifecycle* dll_lifecycle(std::string_view dll_name) const;
 
     /// Route an exact guest address outside the thunk arena to an existing
     /// thunk handler. Synthetic PE entry veneers use this for instruction
@@ -789,6 +817,10 @@ private:
     /// DLL data exports keyed by "<lower-dll>!<name>". These resolve to the
     /// address of a guest variable rather than to a callable thunk.
     std::unordered_map<std::string, GuestAddr> data_exports_;
+
+    /// DllExports::lifecycle by normalized DLL name. Nodes are never erased,
+    /// so dll_lifecycle() pointers stay valid.
+    std::unordered_map<std::string, DllLifecycle> lifecycles_;
 
     /// direct_thunk(): entries indexed like thunks_ (by slab index), with a
     /// null `fn` for exports that have no direct entry. register_dll

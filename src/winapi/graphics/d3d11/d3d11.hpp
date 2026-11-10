@@ -22,6 +22,7 @@
 #include "winapi/graphics/d3d11/d3d11_standard_swizzle.hpp"
 #include "winapi/graphics/d3d11/d3d11_draw_memo.hpp"
 #include "winapi/graphics/d3d10/d3d10_stdcall.hpp"
+#include "winapi/graphics/dxgi/dxgi_exclusive_fullscreen.hpp"
 
 #include <array>
 #include <atomic>
@@ -51,6 +52,9 @@
 #include "graphics/shaders/pipeline_stats.hpp"
 #include "graphics/shaders/gs_passthrough.hpp"
 #include "winapi/graphics/d3d11/d3d11_transient_ring.hpp"
+// ---- WS5 begin ----
+#include "winapi/graphics/d3d11/d3d11_gs_mesh_select.hpp"
+// ---- WS5 end ----
 #include "winapi/graphics/d3d11/d3d11_constants.hpp"
 #include "winapi/graphics/d3d11/d3d11_cpu_mapping.hpp"
 

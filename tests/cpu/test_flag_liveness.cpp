@@ -6,6 +6,7 @@
 
 #include <array>
 #include <cstring>
+#include <tuple>
 
 #include "core/cpu/decode/decoder.hpp"
 #include "core/cpu/jit/flag_liveness.hpp"
@@ -18,6 +19,12 @@ using namespace vitreo::cpu;
 using namespace vitreo::cpu::jit;
 
 namespace {
+
+auto recovery_key(const StencilFlagRecovery& r) {
+    return std::make_tuple(r.flag_op, r.recompute_dst, r.src_is_imm,
+        r.src_reg, r.src_imm, r.dst_is_imm, r.dst_reg, r.dst_imm,
+        r.def_rip, r.first_rip, r.last_rip, r.width, r.merge_cf);
+}
 
 BasicBlock decode_bytes(const u8* code, usize len, bool is_64bit) {
     BasicBlock block;
@@ -37,6 +44,61 @@ BasicBlock decode_bytes(const u8* code, usize len, bool is_64bit) {
     block.byte_length = static_cast<u32>(reader.position());
     block.instruction_count = static_cast<u32>(block.instructions.size());
     return block;
+}
+
+TEST(FlagLivenessTest, ReusedScratchMatchesIsolatedAnalysisAcrossShapesAndModes) {
+    FlagLivenessScratch reused, independent;
+    const std::vector<std::vector<u8>> shapes = {
+        {0x01,0xC8,0x11,0xD0,0x19,0xD8},
+        {0x39,0xC8,0x75,0x02,0x90,0x90,0x0F,0x94,0xC0},
+        {0x01,0xC8,0x8B,0x13,0x39,0xD0},
+        {0x48,0x83,0xC0,0x01}, {0x90}, {},
+        // Three-instruction shapes preserve size while clearing join[1]
+        // (JMP +0), then publisher[0] (ADD becomes NOP).
+        {0xEB,0x00,0x90,0x90},
+        {0x01,0xC8,0x11,0xD0,0x19,0xD8},
+        {0x90,0x11,0xD0,0x19,0xD8},
+    };
+    for (int round = 0; round < 3; ++round) {
+        for (const bool wide : {false, true}) {
+            for (const auto& bytes : shapes) {
+                auto block = decode_bytes(bytes.data(), bytes.size(), wide);
+                for (const bool cross : {false, true}) {
+                    std::vector<u8> expected, actual;
+                    std::vector<u32> expected_span, actual_span;
+                    std::vector<StencilFlagRecovery> expected_plans, actual_plans;
+                    compute_omit_lazy_flags(block, expected, &expected_plans, &expected_span, cross);
+                    compute_omit_lazy_flags(block, actual, &actual_plans, &actual_span, cross, &reused);
+                    EXPECT_EQ(actual, expected);
+                    EXPECT_EQ(actual_span, expected_span);
+                    ASSERT_EQ(actual_plans.size(), expected_plans.size());
+                    for (usize i = 0; i < actual_plans.size(); ++i)
+                        EXPECT_EQ(recovery_key(actual_plans[i]), recovery_key(expected_plans[i]));
+                    // A second owner cannot overwrite the first's workspace.
+                    const auto saved_addresses = reused.addresses;
+                    const auto saved_publishers = reused.publishers;
+                    compute_omit_lazy_flags(block, expected, nullptr, nullptr, cross, &independent);
+                    EXPECT_EQ(reused.addresses, saved_addresses);
+                    EXPECT_EQ(reused.publishers, saved_publishers);
+                }
+            }
+        }
+        // Public analysis callers may exceed the production decode cap.
+        auto one = decode_bytes(shapes[4].data(), shapes[4].size(), false);
+        std::vector<DecodedInstruction> many(257, one.instructions[0]);
+        BasicBlock large;
+        large.instruction_count = static_cast<u32>(many.size());
+        large.instructions.assign(many.begin(), many.end());
+        std::vector<u8> omit;
+        compute_omit_lazy_flags(large, omit, nullptr, nullptr, true, &reused);
+        ASSERT_EQ(omit.size(), many.size());
+        EXPECT_EQ(omit, std::vector<u8>(many.size(), 0));
+        EXPECT_GE(reused.addresses.capacity(), many.size());
+        // Malformed input refuses optimization; stale scratch must not leak.
+        ++large.instruction_count;
+        compute_omit_lazy_flags(large, omit, nullptr, nullptr, true, &reused);
+        EXPECT_EQ(omit, std::vector<u8>(many.size()+1, 0));
+    }
 }
 
 // -----------------------------------------------------------------------------

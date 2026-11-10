@@ -36,4 +36,9 @@ extern const bool kDisableX87D0Forward;
 // calls no getenv.
 [[nodiscard]] bool native_arith_allowed(Opcode op) noexcept;
 
+// The precision-controlled instructions (Intel SDM Vol. 1 8.1.5.2) whose
+// native bodies call emit_x87_pc24_narrow_d0, so PC = 24 may run them
+// natively as well as PC = 53.
+[[nodiscard]] bool pc24_narrowed_natively(Opcode op) noexcept;
+
 }  // namespace vitreo::cpu::jit

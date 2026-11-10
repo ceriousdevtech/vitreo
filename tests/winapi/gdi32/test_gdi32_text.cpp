@@ -19,6 +19,7 @@
 #include <core/cpu/state/cpu_state.hpp>
 
 #include <algorithm>
+#include <cctype>
 #include <chrono>
 #include <future>
 #include <cstring>
@@ -920,6 +921,123 @@ TEST_F(GdiTextTest, EnumFontsUsesLogfontPrefixAndExactAbi) {
     });
     EXPECT_EQ(call("EnumFontsA", {dc, kMem + 0x5100, 0x1000, 0}, false), 9u);
     EXPECT_GT(calls, 1u);
+    EXPECT_TRUE(mgr_.delete_dc(dc));
+}
+
+// Expected values: tools/oracle_probe/enumfontfamilies_legacy{32,64}.expected
+// (Windows 11, x86 and x64 identical).
+TEST_F(GdiTextTest, EnumFontFamiliesLegacyMatchesWindows) {
+    for (const char* name : {"EnumFontFamiliesW", "EnumFontFamiliesA"}) {
+        const auto it = std::find_if(exports_.entries.begin(), exports_.entries.end(),
+            [&](const auto& e) { return e.name == name; });
+        ASSERT_NE(it, exports_.entries.end()) << name;
+        EXPECT_EQ(it->stdcall_bytes, 16u) << name;
+    }
+    const GuestAddr wface = wstr(kMem + 0x5000, u"Arial");
+    const GuestAddr aface = kMem + 0x5100;
+    (void)memory_.write_bytes(aface, reinterpret_cast<const u8*>("Arial"), 6);
+    const GuestAddr aempty = kMem + 0x5200;
+    (void)memory_.write_bytes(aempty, reinterpret_cast<const u8*>(""), 1);
+    const GuestAddr amissing = kMem + 0x5300;
+    (void)memory_.write_bytes(amissing, reinterpret_cast<const u8*>("NoSuchFamilyXyz"), 16);
+
+    // "NULL dc ret=0 calls=0 err=6", "bogus dc ret=0 calls=0 err=6".
+    for (const bool is64 : {false, true}) {
+        for (const u64 bad : {u64{0}, u64{0x12345678}}) {
+            set_last_error(0x1111);
+            EXPECT_EQ(call("EnumFontFamiliesW", {bad, wface, 0x1000, 1}, is64), 0u);
+            EXPECT_EQ(get_last_error(), error_codes::ERROR_INVALID_HANDLE);
+            set_last_error(0x1111);
+            EXPECT_EQ(call("EnumFontFamiliesA", {bad, aface, 0x1000, 1}, is64), 0u);
+            EXPECT_EQ(get_last_error(), error_codes::ERROR_INVALID_HANDLE);
+        }
+    }
+
+    const Handle dc = mgr_.create_compatible_dc(0);
+    auto read_a = [&](GuestAddr at, usize max) {
+        std::string out;
+        for (usize i = 0; i < max; ++i) {
+            const u8 c = memory_.read_u8(at + i).value();
+            if (c == 0) break;
+            out.push_back(static_cast<char>(c));
+        }
+        return out;
+    };
+    auto read_w = [&](GuestAddr at, usize max) {
+        std::string out;
+        for (usize i = 0; i < max; ++i) {
+            const u16 c = memory_.read_u16(at + i * 2).value();
+            if (c == 0) break;
+            out.push_back(static_cast<char>(c));
+        }
+        return out;
+    };
+
+    // A named family: every style once, under the family name, in its first
+    // charset (Arial: Western), TRUETYPE_FONTTYPE, lParam passed through.
+    for (const bool wide : {false, true}) {
+        std::vector<std::string> full_names;
+        u64 ret_value = 1;
+        mgr_.set_guest_call([&](GuestAddr proc, const u64* args, usize n, bool) -> u64 {
+            EXPECT_EQ(proc, 0x1000u);
+            EXPECT_EQ(n, 4u);
+            EXPECT_EQ(args[2], 4u);
+            EXPECT_EQ(args[3], 0x55u);
+            const usize lf_size = wide ? 92 : 60;
+            EXPECT_EQ(wide ? read_w(args[0] + 28, 32) : read_a(args[0] + 28, 32), "Arial");
+            EXPECT_EQ(memory_.read_u8(args[0] + 23).value(), 0u);  // lfCharSet ANSI
+            EXPECT_EQ(memory_.read_u8(args[0] + 24).value(), 3u);  // OUT_STROKE_PRECIS
+            EXPECT_EQ(memory_.read_u8(args[0] + 25).value(), 2u);  // CLIP_STROKE_PRECIS
+            EXPECT_EQ(memory_.read_u8(args[0] + 26).value(), 1u);  // DRAFT_QUALITY
+            full_names.push_back(wide ? read_w(args[0] + lf_size, 64) : read_a(args[0] + lf_size, 64));
+            EXPECT_NE(static_cast<i32>(memory_.read_u32(args[1]).value()), 0);  // tmHeight
+            return ret_value;
+        });
+        const char* api = wide ? "EnumFontFamiliesW" : "EnumFontFamiliesA";
+        const GuestAddr face = wide ? wface : aface;
+        EXPECT_EQ(call(api, {dc, face, 0x1000, 0x55}, false), 1u);
+        ASSERT_FALSE(full_names.empty());
+        auto sorted = full_names;
+        std::sort(sorted.begin(), sorted.end());
+        EXPECT_EQ(std::adjacent_find(sorted.begin(), sorted.end()), sorted.end()) << "a style repeated";
+        // "ret77 ret=77 calls=21": a non-zero result passes through.
+        const usize styles = full_names.size();
+        full_names.clear();
+        ret_value = 77;
+        EXPECT_EQ(call(api, {dc, face, 0x1000, 0x55}, true), 77u);
+        EXPECT_EQ(full_names.size(), styles);
+        // "stop ret=0 calls=1".
+        full_names.clear();
+        ret_value = 0;
+        EXPECT_EQ(call(api, {dc, face, 0x1000, 0x55}, false), 0u);
+        EXPECT_EQ(full_names.size(), 1u);
+    }
+
+    // "empty family ret=1 calls=0", "missing ret=1 calls=0".
+    unsigned calls = 0;
+    mgr_.set_guest_call([&](GuestAddr, const u64*, usize, bool) -> u64 { ++calls; return 1; });
+    EXPECT_EQ(call("EnumFontFamiliesA", {dc, aempty, 0x1000, 0}, false), 1u);
+    EXPECT_EQ(call("EnumFontFamiliesW", {dc, wstr(kMem + 0x5400, u""), 0x1000, 0}, true), 1u);
+    EXPECT_EQ(call("EnumFontFamiliesA", {dc, amissing, 0x1000, 0}, false), 1u);
+    EXPECT_EQ(calls, 0u);
+
+    // NULL family: one entry per family ("dups=0"); W clears the last error
+    // ("W NULL family ... err=0"), A leaves it ("err=57005").
+    for (const bool wide : {false, true}) {
+        std::vector<std::string> faces;
+        mgr_.set_guest_call([&](GuestAddr, const u64* args, usize, bool) -> u64 {
+            std::string f = wide ? read_w(args[0] + 28, 32) : read_a(args[0] + 28, 32);
+            for (auto& c : f) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+            faces.push_back(f);
+            return 1;
+        });
+        set_last_error(0xDEAD);
+        EXPECT_EQ(call(wide ? "EnumFontFamiliesW" : "EnumFontFamiliesA", {dc, 0, 0x1000, 0}, false), 1u);
+        EXPECT_EQ(get_last_error(), wide ? 0u : 0xDEADu);
+        ASSERT_FALSE(faces.empty());
+        std::sort(faces.begin(), faces.end());
+        EXPECT_EQ(std::adjacent_find(faces.begin(), faces.end()), faces.end()) << "a family repeated";
+    }
     EXPECT_TRUE(mgr_.delete_dc(dc));
 }
 

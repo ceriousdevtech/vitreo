@@ -504,6 +504,22 @@ void User32ExtManager::impl_CreateIconIndirect(Marshaler& m) {
         }
         planes.width = static_cast<u32>(color.width);
         planes.height = static_cast<u32>(color.height);
+        if (cursor_diag()) {
+            usize alpha_nonzero = 0, alpha_full = 0, mask_transparent = 0;
+            for (usize i = 3; i < color.rgba.size(); i += 4) {
+                alpha_nonzero += color.rgba[i] != 0;
+                alpha_full += color.rgba[i] == 0xFF;
+            }
+            for (usize i = 3; i < mask.rgba.size(); i += 4) {
+                mask_transparent += (mask.rgba[i - 3] | mask.rgba[i - 2] | mask.rgba[i - 1]) != 0;
+            }
+            std::fprintf(stderr,
+                         "[input] CreateIconIndirect colour %dx%d bpp=%u dib=%d alpha!=0:%zu "
+                         "alpha=255:%zu mask-set:%zu mask bpp=%u dib=%d\n",
+                         color.width, color.height, color.bpp, color.from_dib ? 1 : 0,
+                         alpha_nonzero, alpha_full, mask_transparent, mask.bpp,
+                         mask.from_dib ? 1 : 0);
+        }
         planes.color = std::move(color.rgba);
         // Only a 32bpp colour bitmap carries an alpha byte.
         if (color.bpp != 32) {

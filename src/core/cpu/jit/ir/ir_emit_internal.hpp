@@ -57,10 +57,44 @@
 #include "../jit_stats.hpp"
 #include "../stencils.hpp"
 #include <vitreo/diagnostics.hpp>
+#include <array>
 
 namespace vitreo::cpu::jit {
 
 namespace {
+
+// Vector values are immutable within a bump allocation epoch. Only native
+// scalar moves preserve residency; other scalar ops may call helpers.
+class IrXmmReadCache {
+public:
+    IrXmmReadCache() { clear(); }
+
+    void clear() { m_values.fill(ir::kInvalidValue); }
+
+    [[nodiscard]] ir::ValueId visit(const ir::Inst& in) {
+        const bool scalar_move =
+            in.op == ir::Op::GprRead || in.op == ir::Op::GprWrite ||
+            in.op == ir::Op::Const || in.op == ir::Op::Lea ||
+            in.op == ir::Op::SegBase;
+        if (in.may_fault || (in.type != ir::Type::V128 &&
+                            in.op != ir::Op::XmmWrite && !scalar_move)) {
+            clear();
+            return ir::kInvalidValue;
+        }
+        if (in.op == ir::Op::XmmRead) {
+            auto& value = m_values[in.operands[0].reg_index];
+            const auto previous = value;
+            value = in.result;
+            return previous;
+        }
+        if (in.op == ir::Op::XmmWrite)
+            m_values[in.operands[0].reg_index] = in.operands[1].as_value();
+        return ir::kInvalidValue;
+    }
+
+private:
+    std::array<ir::ValueId, 16> m_values;
+};
 
 /// Temporaries available to the IR emitter. See the register-discipline note
 /// above for why the pool stops at three and excludes W3/W4/W5.
@@ -337,6 +371,6 @@ constexpr u32 kIrScratchCount =
 // ir_runtime_helpers.cpp.
 extern "C" int jit_ir_divide(CpuState* cpu, u64 divisor_bits, u32 kind);
 extern "C" u64 jit_ir_flags_image(CpuState* cpu);
-extern "C" void jit_ir_flags_install(CpuState* cpu, u64 value);
+extern "C" void jit_ir_flags_install(CpuState* cpu, u64 value, u32 width);
 
 }  // namespace vitreo::cpu::jit

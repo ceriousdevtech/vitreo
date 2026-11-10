@@ -20,6 +20,7 @@
 #include "winapi/msvcrt/memory/crt_memory.hpp"
 #include "winapi/msvcrt/runtime/cxx_eh.hpp"
 #include "winapi/msvcrt/runtime/rtti.hpp"
+#include "winapi/msvcrt/runtime/crt_type_name.hpp"
 #include "winapi/msvcrt/runtime/except_handler3.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "core/cpu/state/cpu_state.hpp"
@@ -863,6 +864,88 @@ DllExports create_crt_memory_thunks(CrtMemoryManager& mgr) {
         }
     };
     exports.entries.push_back(ExportEntry{"??1type_info@@UAE@XZ", 0, type_info_dtor});
+
+    // ---- const char* type_info::name() const --------------------------------
+    // x86 ?name@type_info@@QBEPBDXZ (thiscall, `this` in ECX) and x64
+    // ?name@type_info@@QEBAPEBDXZ (`this` in RCX). The undecorated text is
+    // computed once, malloc'd and cached in the member after the vfptr, which
+    // the destructor above frees; later calls return the cached pointer
+    // (crt_legacy_exports_probe: the returned pointer is the cached one). The
+    // text itself is msvcrt_type_info_name (crt_type_name.hpp).
+    auto type_info_name = [&mgr](Marshaler& m) {
+        if (!m.has_cpu()) return;
+        static std::mutex name_lock;  // msvcrt's _TYPEINFO_NAME lock
+        const bool x64 = m.cpu_is_64bit();
+        const GuestAddr self = x64 ? m.arg_ptr(0)
+                                   : static_cast<GuestAddr>(m.cpu()->gpr.rcx & 0xFFFFFFFFu);
+        const GuestAddr cell = self + (x64 ? 8u : 4u);
+        std::lock_guard lock(name_lock);
+        const auto cached = m.read_ptr(cell);
+        if (cached.is_err()) {
+            (void)m.raise_access_violation(false, cell);
+            return;
+        }
+        if (cached.value() != 0) {
+            m.set_return(cached.value());
+            return;
+        }
+        const auto decorated = m.read_ansi_string(cell + (x64 ? 8u : 4u));
+        if (decorated.is_err()) {
+            (void)m.raise_access_violation(false, cell);
+            return;
+        }
+        const std::string text = msvcrt_type_info_name(decorated.value());
+        const GuestAddr copy = mgr.crt_malloc(text.size() + 1);
+        if (copy == 0 || m.write_ansi_string(copy, text).is_err()) {
+            if (copy != 0) mgr.crt_free(copy);
+            m.set_return(0);
+            return;
+        }
+        (void)m.write_ptr(cell, copy);
+        m.set_return(copy);
+    };
+    exports.entries.push_back(ExportEntry{"?name@type_info@@QBEPBDXZ", 0, type_info_name});
+    exports.entries.push_back(ExportEntry{"?name@type_info@@QEBAPEBDXZ", 0, type_info_name});
+
+    // _EH_prolog (x86 only): the C++ EH frame prologue VC6 code calls with
+    // EAX = the function's EH handler. msvcrt's body (crt_legacy_exports_probe
+    // _EH_prolog bytes) is
+    //   push -1; push eax; mov eax,fs:[0]; push eax; mov eax,[esp+0Ch]
+    //   mov fs:[0],esp; mov [esp+0Ch],ebp; lea ebp,[esp+0Ch]; push eax; ret
+    // so with E = ESP at entry (holding the return address R): the frame
+    // {prev, handler, -1, saved EBP} lands at E-12..E, FS:[0] = E-12,
+    // EBP = E, EAX = R, and execution resumes at R with ESP = E-12. A push
+    // onto unmapped stack faults like the pushes it stands for.
+    exports.entries.push_back(ExportEntry{"_EH_prolog", 0, [](Marshaler& m) {
+        auto* cpu = m.cpu();
+        if (cpu == nullptr || m.cpu_is_64bit()) return;
+        const u32 entry_sp = static_cast<u32>(cpu->gpr.rsp);
+        const auto ret = m.read_u32(entry_sp);
+        if (ret.is_err()) {
+            (void)m.raise_access_violation(false, entry_sp);
+            return;
+        }
+        const GuestAddr fs0 = static_cast<GuestAddr>(cpu->seg.fs_desc.base);
+        const auto previous = m.read_u32(fs0);
+        if (previous.is_err()) {
+            (void)m.raise_access_violation(false, fs0);
+            return;
+        }
+        const u32 frame = entry_sp - 12;
+        if (m.write_u32(entry_sp - 4, 0xFFFFFFFFu).is_err() ||
+            m.write_u32(entry_sp - 8, static_cast<u32>(cpu->gpr.rax)).is_err() ||
+            m.write_u32(frame, previous.value()).is_err()) {
+            (void)m.raise_access_violation(true, frame);
+            return;
+        }
+        (void)m.write_u32(entry_sp, static_cast<u32>(cpu->gpr.rbp));
+        (void)m.write_u32(fs0, frame);
+        cpu->gpr.rbp = entry_sp;
+        cpu->gpr.rax = ret.value();
+        cpu->gpr.rsp = frame;
+        cpu->rip = ret.value();
+        cpu->thunk_control_transfer = true;
+    }});
 
     // char* __unDName(char* out, const char* name, int max_length,
     //                 void* (*alloc)(size_t), void (*free)(void*),

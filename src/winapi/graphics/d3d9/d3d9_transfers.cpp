@@ -14,6 +14,9 @@
 #include "core/memory/guest_memory.hpp"
 #include "winapi/core/marshaler.hpp"
 
+#include <cstdio>
+#include <cstdlib>
+#include <sys/stat.h>
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -629,6 +632,42 @@ void D3D9Manager::update_texture(Marshaler& m, u32 device) {
     m.set_return(D3D_OK);
 }
 
+bool D3D9Manager::read_render_target_to_guest(Marshaler& m, u32 self,
+                                              SurfaceState& surface) {
+    if (surface.kind != SurfaceState::Kind::BackBuffer &&
+        surface.kind != SurfaceState::Kind::RenderTarget) {
+        return false;
+    }
+    graphics::BackendTexture2D* backend = resolve_surface_color_backend(surface);
+    if (backend == nullptr || !backend->valid() || surface.pixels == 0) return false;
+    if (ComObject* entry = find_any(self); entry != nullptr) {
+        if (DeviceState* state = device_state_for(entry->device)) {
+            flush_render_pass(*state);
+        }
+    }
+    d3d9_cs_drain();
+    std::vector<u8> bgra(static_cast<usize>(surface.width) * surface.height * 4u);
+    if (!backend->readback(0, bgra.data(), surface.width * 4u)) return false;
+    return write_bgra_readback_to_surface(m, bgra.data(), surface);
+}
+
+bool D3D9Manager::write_render_target_from_guest(Marshaler& m, u32 self,
+                                                 SurfaceState& surface) {
+    if (surface.kind != SurfaceState::Kind::BackBuffer &&
+        surface.kind != SurfaceState::Kind::RenderTarget) {
+        return false;
+    }
+    graphics::BackendTexture2D* backend = resolve_surface_color_backend(surface);
+    if (backend == nullptr || !backend->valid() || surface.pixels == 0) return false;
+    DeviceState* state = nullptr;
+    if (ComObject* entry = find_any(self); entry != nullptr) {
+        state = device_state_for(entry->device);
+        if (state != nullptr) flush_render_pass(*state);
+    }
+    d3d9_cs_drain();
+    return upload_surface_level(backend, m, surface, state, nullptr);
+}
+
 void D3D9Manager::get_render_target_data(Marshaler& m, u32 device) {
     // Learn: GetRenderTargetData — DEFAULT RT → SYSTEMMEM, same size/format.
     const u32 src_obj = static_cast<u32>(m.arg(1));
@@ -647,6 +686,14 @@ void D3D9Manager::get_render_target_data(Marshaler& m, u32 device) {
         src.format != dst.format || src.locked || dst.locked ||
         src.multi_sample_type != D3DMULTISAMPLE_NONE ||
         (src.usage & D3DUSAGE_DEPTHSTENCIL) != 0) {
+        char why[160];
+        std::snprintf(why, sizeof(why),
+                      "INVALIDCALL src pool=%u %ux%u fmt=%u ms=%u kind=%d -> "
+                      "dst pool=%u %ux%u fmt=%u",
+                      src.pool, src.width, src.height, src.format,
+                      src.multi_sample_type, static_cast<int>(src.kind), dst.pool,
+                      dst.width, dst.height, dst.format);
+        d3d9_log_unimplemented_once("d3d9!GetRenderTargetData (diag)", why);
         m.set_return(D3DERR_INVALIDCALL);
         return;
     }
@@ -675,6 +722,27 @@ void D3D9Manager::get_render_target_data(Marshaler& m, u32 device) {
             sliced ? backend->readback_slice(src.level, src.face, bgra.data(),
                                              src.width * 4u)
                    : backend->readback(src.level, bgra.data(), src.width * 4u);
+        if (read_ok && std::getenv("VITREO_D3D9_XFER_LOG") != nullptr &&
+            src.width <= 512 && src.height <= 512) {
+            // Diagnostic: the read-back pixels as PAM (RGBA), to judge what
+            // the guest receives.
+            static int dumped = 0;
+            if (dumped < 200) {
+                ::mkdir("/tmp/vitreo-rtdata", 0755);
+                char path[128];
+                std::snprintf(path, sizeof(path), "/tmp/vitreo-rtdata/%03d_%ux%u.pam",
+                              dumped++, src.width, src.height);
+                if (std::FILE* f = std::fopen(path, "wb")) {
+                    std::fprintf(f, "P7\nWIDTH %u\nHEIGHT %u\nDEPTH 4\nMAXVAL 255\n"
+                                 "TUPLTYPE RGB_ALPHA\nENDHDR\n", src.width, src.height);
+                    for (usize i = 0; i + 3 < bgra.size(); i += 4) {
+                        const u8 px[4] = {bgra[i + 2], bgra[i + 1], bgra[i], bgra[i + 3]};
+                        std::fwrite(px, 1, 4, f);
+                    }
+                    std::fclose(f);
+                }
+            }
+        }
         if (read_ok) {
             if (!write_bgra_readback_to_surface(m, bgra.data(), dst)) {
                 m.set_return(D3DERR_INVALIDCALL);
@@ -732,7 +800,9 @@ void D3D9Manager::get_render_target_data(Marshaler& m, u32 device) {
         }
     }
 
-    VITREO_TRACE("[d3d9] GetRenderTargetData -> E_NOTIMPL "
+    if (static int shown = 0; shown++ < 8)
+
+        std::fprintf(stderr, "[d3d9] GetRenderTargetData -> E_NOTIMPL "
                  "(no readable backend for %ux%u fmt=%u)\n",
                  src.width, src.height, src.format);
     m.set_return(E_NOTIMPL_D3D);
@@ -896,7 +966,9 @@ void D3D9Manager::get_front_buffer_data(Marshaler& m, DeviceState& state,
         }
     }
 
-    VITREO_TRACE("[d3d9] GetFrontBufferData -> E_NOTIMPL "
+    if (static int shown = 0; shown++ < 8)
+
+        std::fprintf(stderr, "[d3d9] GetFrontBufferData -> E_NOTIMPL "
                  "(no readable front buffer for %ux%u)\n",
                  dst.width, dst.height);
     m.set_return(E_NOTIMPL_D3D);
@@ -969,6 +1041,39 @@ void D3D9Manager::stretch_rect(Marshaler& m, u32 device) {
         resolve_surface_color_backend(src);
     graphics::BackendTexture2D* dst_backend =
         resolve_surface_color_backend(dst);
+    unsigned src_level = src.level;
+    unsigned src_face = src.face;
+    // Learn (StretchRect): a multisampled render target is resolved by
+    // StretchRect into a non-multisampled destination, with or without a
+    // stretch. Resolve into a single-sample copy first; the copies below
+    // only read single-sample textures.
+    if (src_backend != nullptr && dst_backend != nullptr && m_backend != nullptr &&
+        src_backend->desc().sample_count > 1 && dst_backend->desc().sample_count <= 1 &&
+        device_entry != nullptr && device_entry->device_state) {
+        graphics::BackendTexture2DDesc desc = src_backend->desc();
+        const u64 key = (static_cast<u64>(desc.width) << 40) ^
+                        (static_cast<u64>(desc.height) << 16) ^
+                        static_cast<u64>(desc.pixel_format);
+        auto& scratch = device_entry->device_state->stretch_resolve_scratch[key];
+        if (!scratch || !scratch->valid()) {
+            desc.sample_count = 1;
+            desc.mip_levels = 1;
+            desc.array_size = 1;
+            desc.cube = false;
+            desc.render_target = true;
+            desc.shader_resource = true;
+            scratch = m_backend->create_texture_2d(desc, nullptr, 0);
+        }
+        if (scratch && scratch->valid() &&
+            m_backend->resolve_texture_2d(scratch.get(), 0, 0, src_backend, src.level,
+                                          src.face, scratch->desc().pixel_format)) {
+            src_backend = scratch.get();
+            src_level = 0;
+            src_face = 0;
+        } else {
+            src_backend = nullptr;
+        }
+    }
 
     // Prefer host blit for equal-size copies (full resource or sub-rect).
     // Scaled copies use a render-pass stretch: Metal blit cannot scale, and
@@ -999,7 +1104,7 @@ void D3D9Manager::stretch_rect(Marshaler& m, u32 device) {
                     static_cast<unsigned>(dst_rect.top), src_backend,
                     static_cast<unsigned>(src_rect.left),
                     static_cast<unsigned>(src_rect.top), copy_w, copy_h,
-                    dst.level, dst.face, src.level, src.face)) {
+                    dst.level, dst.face, src_level, src_face)) {
                 m.set_return(D3D_OK);
                 return;
             }
@@ -1015,14 +1120,15 @@ void D3D9Manager::stretch_rect(Marshaler& m, u32 device) {
                        filter == D3DTEXF_LINEAR
                            ? graphics::BackendFilter::Linear
                            : graphics::BackendFilter::Nearest,
-                       dst.face, src.face)) {
+                       dst.face, src_face)) {
             m.set_return(D3D_OK);
             return;
         }
     }
 
     if (src.pixels == 0 || dst.pixels == 0) {
-        VITREO_TRACE("[d3d9] StretchRect -> E_NOTIMPL "
+        if (static int shown = 0; shown++ < 8)
+            std::fprintf(stderr, "[d3d9] StretchRect -> E_NOTIMPL "
                      "(need lockable pixels or matching GPU textures) "
                      "%ux%u -> %ux%u\n",
                      rect_width(src_rect), rect_height(src_rect),
@@ -1149,7 +1255,8 @@ void D3D9Manager::color_fill(Marshaler& m, u32 device) {
         break;
     }
     if (surface.pixels == 0 || bpp == 0 || px_bytes == 0 || px_bytes != bpp) {
-        VITREO_TRACE("[d3d9] ColorFill -> E_NOTIMPL "
+        if (static int shown = 0; shown++ < 8)
+            std::fprintf(stderr, "[d3d9] ColorFill -> E_NOTIMPL "
                      "(unsupported format %u or non-lockable surface)\n",
                      surface.format);
         m.set_return(E_NOTIMPL_D3D);

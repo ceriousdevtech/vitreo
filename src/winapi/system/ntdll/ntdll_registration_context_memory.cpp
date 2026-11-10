@@ -14,6 +14,7 @@
 
 #include "winapi/system/ntdll/ntdll_registration_parts.hpp"
 #include "winapi/kernel32/memory/memory.hpp"
+#include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/thread/context64.hpp"
 #include "winapi/kernel32/thread/thread_context.hpp"
 #include "core/cpu/seh/seh32.hpp"
@@ -325,7 +326,19 @@ void append_context_memory_exports(NtdllExtManager& mgr,
             u32 old_protection = 0;
             if (!vmm->virtual_protect(aligned_base, aligned_size,
                                       new_protection, &old_protection)) {
-                m.set_return(nt_status::STATUS_INVALID_PARAMETER);
+                // Native no-change section probe: invalid protection writes
+                // PAGE_NOACCESS to OldProtection but leaves Base/Size intact.
+                const u32 error = vmm->take_last_alloc_error();
+                if (error == error_codes::ERROR_INVALID_PARAMETER) {
+                    if (old_protection != 0 &&
+                        !m.write_u32(old_protection_ptr, old_protection).is_ok()) {
+                        m.set_return(nt_status::STATUS_ACCESS_VIOLATION);
+                        return;
+                    }
+                    m.set_return(nt_status::STATUS_INVALID_PAGE_PROTECTION);
+                } else {
+                    m.set_return(nt_status::STATUS_INVALID_PARAMETER);
+                }
                 return;
             }
 

@@ -46,6 +46,7 @@
 #include <vector>
 
 #include "graphics/metal/metal_backend_buffer.hpp"
+#include "graphics/metal/metal_backend_enums.hpp"
 #include "graphics/metal/metal_backend_texture_3d.hpp"
 #include "graphics/metal/metal_backend_texture_ops.hpp"
 
@@ -465,6 +466,73 @@ BackendTexture3D* MetalBackendTexture3D::view(
         new MetalBackendTexture3D(*this, retained, std::move(view_desc)));
     BackendTexture3D* result = child.get();
     m_views.emplace(key, std::move(child));
+    return result;
+}
+
+BackendTexture3D* MetalBackendTexture3D::view(
+    PixelFormat format, unsigned first_mip, unsigned mip_count,
+    u16 component_mapping) {
+    // Identity is the unswizzled view, including returning this volume.
+    if (component_mapping == 0) return view(format, first_mip, mip_count);
+    // Learn (D3D12_SHADER_COMPONENT_MAPPING): each output is source 0..3
+    // or force 0 / force 1. A 3-bit value past those is not a mapping
+    // Metal can name, so the view fails instead of substituting one.
+    for (unsigned i = 0; i < 4; ++i) {
+        const unsigned source = (component_mapping >> (3u * i)) & 7u;
+        if (source > 5u) return nullptr;
+    }
+    if (!valid() || m_view_handle != nullptr) return nullptr;
+    if (format == PixelFormat::Unknown) format = m_desc.pixel_format;
+    if (mip_count == 0 || first_mip >= m_desc.mip_levels ||
+        mip_count > m_desc.mip_levels - first_mip) {
+        return nullptr;
+    }
+    const FormatInfo view_format = format_table(format);
+    if (view_format.mtl_pixel_format == 0 ||
+        view_format.bytes_per_pixel !=
+            format_table(m_desc.pixel_format).bytes_per_pixel) {
+        return nullptr;
+    }
+    const u64 sub = (static_cast<u64>(format) << 32u) |
+                    (static_cast<u64>(first_mip) << 16u) | mip_count;
+    const auto key = std::make_pair(sub, component_mapping);
+    std::lock_guard<std::mutex> lock(m_views_mutex);
+    if (const auto found = m_mapped_views.find(key);
+        found != m_mapped_views.end()) {
+        return found->second.get();
+    }
+    void* retained = nullptr;
+    @autoreleasepool {
+        id<MTLTexture> texture =
+            (__bridge id<MTLTexture>)m_texture->handle();
+        if (format != m_desc.pixel_format &&
+            (texture.usage & MTLTextureUsagePixelFormatView) == 0) {
+            return nullptr;
+        }
+        const MTLTextureSwizzleChannels swizzle = metal_component_mapping(
+            MTLTextureSwizzleChannelsDefault, component_mapping);
+        id<MTLTexture> view = [texture
+            newTextureViewWithPixelFormat:static_cast<MTLPixelFormat>(
+                                              view_format.mtl_pixel_format)
+                              textureType:MTLTextureType3D
+                                   levels:NSMakeRange(first_mip, mip_count)
+                                   slices:NSMakeRange(0, 1)
+                                  swizzle:swizzle];
+        if (view == nil) return nullptr;
+        retained = (__bridge_retained void*)view;
+    }
+    BackendTexture3DDesc view_desc = m_desc;
+    view_desc.pixel_format = format;
+    view_desc.width = std::max(1u, m_desc.width >> first_mip);
+    view_desc.height = std::max(1u, m_desc.height >> first_mip);
+    view_desc.depth = std::max(1u, m_desc.depth >> first_mip);
+    view_desc.mip_levels = mip_count;
+    view_desc.shareable = false;
+    view_desc.shared_metadata.clear();
+    auto child = std::unique_ptr<MetalBackendTexture3D>(
+        new MetalBackendTexture3D(*this, retained, std::move(view_desc)));
+    BackendTexture3D* result = child.get();
+    m_mapped_views.emplace(key, std::move(child));
     return result;
 }
 

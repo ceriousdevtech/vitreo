@@ -215,6 +215,7 @@ std::optional<bool> JitCompiler::compile_locked_narrow(
         emit_host_addr_imm64(16, static_cast<i64>(reinterpret_cast<uintptr_t>(
                               &jit_lock_cmpxchg16)));
         emit_helper_blr();
+        emit_exit_if_pending_raise();
         break;
     }
 

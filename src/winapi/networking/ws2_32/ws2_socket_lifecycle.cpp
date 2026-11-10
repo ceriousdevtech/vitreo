@@ -10,6 +10,7 @@
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/thread/thread.hpp"
 #include "winapi/core/marshaler.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "core/memory/guest_memory.hpp"
 
@@ -1476,8 +1477,8 @@ void ws2::impl_WSADuplicateSocket(Marshaler& m, Ws2Manager& mgr, bool unicode) {
     if (fd < 0) return fail(WSAENOTSOCK);
     const u32 info_bytes = unicode ? 628u : 372u;
     if (info == 0 || !ws2_guest_range_ok(m, info, info_bytes, true)) return fail(WSAEFAULT);
-    // GetCurrentProcessId is the host pid.
-    if (pid != static_cast<u32>(::getpid())) {
+    // The argument is a Windows client ID, the same value GetCurrentProcessId returns.
+    if (pid != ipc::guest_process_id()) {
         if (::kill(static_cast<pid_t>(pid), 0) != 0 && errno == ESRCH) {
             return fail(WSAEINVAL);
         }

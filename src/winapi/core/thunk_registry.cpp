@@ -317,6 +317,7 @@ VoidResult ThunkRegistry::register_dll(std::string_view dll_name, DllExports exp
     }
     
     // Store DLL entry
+    lifecycles_[normalized] = std::move(exports.lifecycle);
     dll_entries_[normalized] = std::move(dll_entry);
 
     if (!direct_entries.empty()) {
@@ -580,11 +581,29 @@ u64 ThunkRegistry::missing_export_call_count(std::string_view dll_name,
 
 void ThunkRegistry::register_data_export(std::string_view dll_name,
                                          std::string_view name,
-                                         GuestAddr address) {
+                                         GuestAddr address, u16 ordinal) {
     if (name.empty() || address == 0) return;
     std::unique_lock lock(*dispatch_alias_mutex_);
-    data_exports_[normalize_dll_name(dll_name) + "!" + std::string(name)] =
-        address;
+    const std::string dll = normalize_dll_name(dll_name);
+    data_exports_[dll + "!" + std::string(name)] = address;
+    // "#<ordinal>" cannot collide with a name: export names are C identifiers
+    // or decorated names, never starting with '#'.
+    if (ordinal != 0) data_exports_[dll + "!#" + std::to_string(ordinal)] = address;
+}
+
+GuestAddr ThunkRegistry::lookup_data_export(std::string_view dll_name,
+                                            u16 ordinal) const {
+    if (ordinal == 0) return 0;
+    std::shared_lock lock(*dispatch_alias_mutex_);
+    auto it = data_exports_.find(normalize_dll_name(dll_name) + "!#" +
+                                 std::to_string(ordinal));
+    return it == data_exports_.end() ? 0 : it->second;
+}
+
+const DllLifecycle* ThunkRegistry::dll_lifecycle(std::string_view dll_name) const {
+    std::shared_lock lock(*dispatch_alias_mutex_);
+    auto it = lifecycles_.find(normalize_dll_name(dll_name));
+    return it == lifecycles_.end() ? nullptr : &it->second;
 }
 
 GuestAddr ThunkRegistry::lookup_data_export(std::string_view dll_name,

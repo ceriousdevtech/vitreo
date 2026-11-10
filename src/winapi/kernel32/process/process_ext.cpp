@@ -35,7 +35,9 @@
 #include "winapi/kernel32/synchronization/sync.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/advapi32/security/security.hpp"
+#include "winapi/advapi32/security/file_execute_access.hpp"
 #include "capsule/vfs/vfs.hpp"
+#include "capsule/vfs/win_path.hpp"
 #include "core/memory/guest_memory.hpp"
 #include "core/pe/parser/pe_parser.hpp"
 #include "core/pe/parser/manifest_info.hpp"
@@ -44,6 +46,8 @@
 #include "ipc/ipc_gate.hpp"
 #include "ipc/process_handle.hpp"
 #include "ipc/hwnd_registry.hpp"
+#include "ipc/startup_message.hpp"
+#include "winapi/kernel32/process/winexec_contract.inc"
 
 #include <cstring>
 #include <mutex>
@@ -841,7 +845,10 @@ void Kernel32ExtManager::impl_CreateProcessCommon(
     }
     if (executable.is_err()) {
         VITREO_TRACE("[kernel32_ext] CreateProcessW: resolve_path failed for '%s'"
-                     " cmdline='%s'\n", app_path.c_str(), full_cmdline.c_str());
+                     " lpApplicationName=%s cmdline='%s'\n", app_path.c_str(),
+                     application_name_ptr == 0 ? "NULL"
+                         : (read_process_string(application_name_ptr).empty() ? "\"\"" : "set"),
+                     full_cmdline.c_str());
         set_last_error(error_codes::ERROR_FILE_NOT_FOUND);
         VITREO_CREATEPROCESS_FAIL("ERROR_FILE_NOT_FOUND");
         m.set_return(0);
@@ -937,10 +944,11 @@ void Kernel32ExtManager::impl_CreateProcessCommon(
             inherited_pipes += descriptors;
         }
     }
+    const u32 reported_pid = ipc::allocate_client_id();
     const u32 reported_tid = m_thread_manager
         ? m_thread_manager->allocate_thread_id()
         : ipc::allocate_system_thread_id();
-    if (reported_tid == 0) {
+    if (reported_pid == 0 || reported_tid == 0) {
         if (temporary) (void)::unlink(host_path.c_str());
         if (m_file_manager) m_file_manager->restore_inherited_pipe_close_on_exec();
         set_last_error(error_codes::ERROR_NOT_ENOUGH_MEMORY);
@@ -948,6 +956,7 @@ void Kernel32ExtManager::impl_CreateProcessCommon(
         return;
     }
     std::vector<std::string> process_attribute_environment{
+        "VITREO_GUEST_PROCESS_ID=" + std::to_string(reported_pid),
         "VITREO_PRIMARY_THREAD_ID=" + std::to_string(reported_tid)};
     if (selected_mitigation_policy_size != 0) {
         char value[2 * 16 + 2]{};
@@ -1146,6 +1155,12 @@ void Kernel32ExtManager::impl_CreateProcessCommon(
             std::string{}
         );
     }
+    if (process_handle != 0 && m_handle_table != nullptr) {
+        if (auto* created = m_handle_table->get_as<ipc::ProcessObject>(
+                process_handle, HandleType::Process)) {
+            created->client_id.store(reported_pid);
+        }
+    }
     if (process_handle != 0 && process_handle_inherit && m_handle_table != nullptr) {
         (void)m_handle_table->set_flags(process_handle, HandleFlags::Inherit,
                                         HandleFlags::Inherit);
@@ -1187,8 +1202,7 @@ void Kernel32ExtManager::impl_CreateProcessCommon(
         }
     }
 
-    // PROCESS_INFORMATION identifies the child, never the creating process.
-    const u32 reported_pid = static_cast<u32>(child_pid);
+    // PROCESS_INFORMATION identifies the child by its Windows client IDs.
     if (process_information_ptr != 0) {
         // PROCESS_INFORMATION layout is bitness-dependent: HANDLEs are
         // pointer-sized. Writing the x86 layout on x64 made the guest read
@@ -1414,6 +1428,160 @@ void Kernel32ExtManager::impl_CreateProcessA(Marshaler& m) {
     impl_CreateProcessCommon(
         m, 0, std::nullopt, /*with_token_w_layout=*/false,
         /*ansi_strings=*/true);
+}
+
+void Kernel32ExtManager::impl_WinExec(Marshaler& m) {
+    // Learn WinExec and winexec_probe_matrix{32,64}.expected. Windows uses
+    // CreateProcess-style progressive resolution, including extensionless
+    // paths; a quoted name is one candidate, even with an unmatched quote.
+    namespace wc = ::winexec_contract;
+    const auto fail = [&](u32 error) {
+        set_last_error(error);
+        // WinExec's legacy result is not GetLastError. Errors outside the
+        // documented small-code domain become the resource-failure return.
+        m.set_return(error == wc::ERROR_BAD_EXE_FORMAT ? wc::ERROR_BAD_FORMAT :
+            (error == wc::ERROR_FILE_NOT_FOUND || error == wc::ERROR_PATH_NOT_FOUND) ? error : 0u);
+    };
+    {
+        if (m.arg_ptr(0) == 0) { fail(wc::ERROR_INVALID_PARAMETER); return; }
+        auto input = m.read_ansi_string(m.arg_ptr(0), 0);
+        if (input.is_err()) { fail(error_codes::ERROR_NOACCESS); return; }
+        if (input.value().empty() || input.value().front() == ' ' || input.value().front() == '\t') {
+            fail(wc::ERROR_INVALID_PARAMETER); return;
+        }
+        const auto* bytes = reinterpret_cast<const u8*>(input.value().data());
+        auto conversion = codepage::multi_byte_to_wide(codepage::kCpAcp, 0,
+            bytes, input.value().size(), nullptr, 0);
+        if (!conversion.ok()) { fail(conversion.error); return; }
+        std::vector<u16> wide(conversion.count);
+        conversion = codepage::multi_byte_to_wide(codepage::kCpAcp, 0,
+            bytes, input.value().size(), wide.data(), wide.size());
+        if (!conversion.ok()) { fail(conversion.error); return; }
+        std::string command = utf16_to_utf8(wide.data(), static_cast<int>(wide.size()));
+        struct Candidate { std::string name; usize end; };
+        std::vector<Candidate> candidates;
+        const bool quoted = command.front() == '"';
+        if (quoted) {
+            const usize end = command.find('"', 1);
+            candidates.push_back({command.substr(1, end == std::string::npos ? end : end - 1),
+                                  end == std::string::npos ? command.size() : end + 1});
+        } else {
+            for (usize end = command.find_first_of(" \t"); end != std::string::npos;
+                 end = command.find_first_of(" \t", end + 1)) {
+                candidates.push_back({command.substr(0, end), end});
+            }
+            candidates.push_back({command, command.size()});
+        }
+        if (candidates.front().name.empty()) { fail(wc::ERROR_INVALID_PARAMETER); return; }
+
+        std::vector<std::string> search;
+        if (m_module_manager) search.push_back(createprocess_parent_dir(m_module_manager->main_module_path()));
+        search.push_back(m_current_directory);
+        search.emplace_back("C:\\Windows\\System32");
+        search.emplace_back("C:\\Windows");
+        if (m_environment_manager) {
+            auto path = m_environment_manager->get_variable("PATH");
+            if (path.is_ok()) {
+                auto dirs = createprocess_split_path(path.value());
+                search.insert(search.end(), dirs.begin(), dirs.end());
+            }
+        }
+        std::string image, host;
+        bool temporary = false;
+        usize selected_end = 0;
+        for (const auto& candidate : candidates) {
+            std::string name = candidate.name;
+            const usize slash = name.find_last_of("\\/");
+            const usize base = slash == std::string::npos ? 0 : slash + 1;
+            if (name.find('.', base) == std::string::npos) name += ".exe";
+            const std::vector<std::string> dirs = createprocess_has_directory(name)
+                || (name.size() > 1 && name[1] == ':') ? std::vector<std::string>{""} : search;
+            for (const auto& directory : dirs) {
+                const std::string path = capsule::make_absolute_win_path(
+                    createprocess_join_dir(directory, name), m_current_directory);
+                auto opened = m_vfs.open(path, capsule::AccessMode::Read,
+                    capsule::ShareMode::Read, capsule::CreationDisposition::OpenExisting);
+                if (opened.is_err()) {
+                    // Search misses are not launch failures. An existing
+                    // image denied by permissions/sharing must not become a
+                    // fictitious FILE_NOT_FOUND result.
+                    const auto error = opened.error();
+                    if (error == capsule::VfsError::FileNotFound ||
+                        error == capsule::VfsError::PathNotFound ||
+                        error == capsule::VfsError::DriveNotMounted) continue;
+                    fail(vfs_error_to_win32(error)); return;
+                }
+                (void)m_vfs.close(opened.value());
+                auto resolved = resolve_guest_executable(m_vfs, path);
+                if (resolved.is_err()) { fail(vfs_error_to_win32(resolved.error())); return; }
+                image = path; host = resolved.value().first; temporary = resolved.value().second;
+                selected_end = candidate.end;
+                break;
+            }
+            if (!image.empty()) break;
+        }
+        if (image.empty()) { fail(wc::ERROR_FILE_NOT_FOUND); return; }
+        // All temporary optical materializations are owned until the worker
+        // has snapshotted them, including every failure before spawn.
+        struct MaterializedImage {
+            const std::string& path; bool temporary;
+            ~MaterializedImage() { if (temporary) (void)::unlink(path.c_str()); }
+        } cleanup{host, temporary};
+        std::ifstream stream(host, std::ios::binary | std::ios::ate);
+        if (!stream) { fail(wc::ERROR_ACCESS_DENIED); return; }
+        const auto size = stream.tellg();
+        if (size <= 0) { fail(wc::ERROR_EXE_MACHINE_TYPE_MISMATCH); return; }
+        std::vector<u8> image_bytes(static_cast<usize>(size));
+        stream.seekg(0); stream.read(reinterpret_cast<char*>(image_bytes.data()), size);
+        if (!stream) { fail(wc::ERROR_ACCESS_DENIED); return; }
+        auto parsed = pe::parse_pe(image_bytes);
+        if (parsed.is_err()) {
+            fail(parsed.error() == pe::ParseError::UnsupportedMachine
+                ? wc::ERROR_BAD_EXE_FORMAT : wc::ERROR_EXE_MACHINE_TYPE_MISMATCH);
+            return;
+        }
+        if (static_cast<u32>(parsed.value().subsystem) != wc::IMAGE_SUBSYSTEM_WINDOWS_GUI &&
+            static_cast<u32>(parsed.value().subsystem) != wc::IMAGE_SUBSYSTEM_WINDOWS_CUI) {
+            fail(wc::ERROR_BAD_EXE_FORMAT); return;
+        }
+        const bool elevated = m_elevation && m_elevation->is_elevated();
+        if (!elevated && pe::requests_elevation(pe::pe_requested_execution_level(image_bytes, parsed.value()))) {
+            fail(wc::ERROR_ELEVATION_REQUIRED); return;
+        }
+        if (!m_process_session || !m_security_stubs) { fail(wc::ERROR_NOT_ENOUGH_MEMORY); return; }
+        if (const u32 error = check_file_execute_access(*m_security_stubs, m_vfs, image)) {
+            fail(error); return;
+        }
+        GuestStartupInfo startup{};
+        startup.flags = wc::STARTF_USESHOWWINDOW;
+        startup.show_window = static_cast<u16>(m.arg32(1));
+        std::vector<std::string> extra{"VITREO_STARTUP_INFO=" + encode_guest_startup_info(startup)};
+        const bool wait_for_messages = m_module_manager &&
+            m_module_manager->get_module_handle("user32.dll") != 0 &&
+            static_cast<u32>(parsed.value().subsystem) == wc::IMAGE_SUBSYSTEM_WINDOWS_GUI;
+        std::unique_ptr<ipc::StartupMessageEvent> ready;
+        if (wait_for_messages) {
+            ready = std::make_unique<ipc::StartupMessageEvent>();
+            if (!ready->valid()) { fail(wc::ERROR_NOT_ENOUGH_MEMORY); return; }
+            extra.push_back(ready->environment_entry());
+        }
+        if (!quoted && candidates.size() > 1 && selected_end > candidates.front().end) {
+            command = "\"" + command.substr(0, selected_end) + "\"" + command.substr(selected_end);
+        }
+        const int child = launch_guest_worker(host, image, command, {}, {}, {}, {},
+            elevated ? m_elevation->credential() : std::string_view{},
+            std::move(extra), inherited_guest_environment());
+        if (child < 0) {
+            fail(m_child_process_restricted ? wc::ERROR_ACCESS_DENIED : wc::ERROR_NOT_ENOUGH_MEMORY);
+            return;
+        }
+        if (ready) {
+            const auto* process = ipc::find_tracked_process(child);
+            (void)ready->wait(wc::observed_timeout_elapsed_ms, process ? &process->exited : nullptr);
+        }
+        set_last_error(wc::ERROR_SUCCESS);
+        m.set_return(wc::success_return);
+    }
 }
 
 void Kernel32ExtManager::impl_LoadModule(Marshaler& m) {

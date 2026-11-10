@@ -1,0 +1,14 @@
+Windows SDK 10.0.26100.0 um/wingdi.h on winoracle
+WINGDIAPI HDC     WINAPI CreateMetaFileA( _In_opt_ LPCSTR pszFile);
+WINGDIAPI HDC     WINAPI CreateMetaFileW( _In_opt_ LPCWSTR pszFile);
+WINGDIAPI HDC   WINAPI CreateEnhMetaFileA( _In_opt_ HDC hdc, _In_opt_ LPCSTR lpFilename, _In_opt_ CONST RECT *lprc, _In_opt_ LPCSTR lpDesc);
+WINGDIAPI HDC   WINAPI CreateEnhMetaFileW( _In_opt_ HDC hdc, _In_opt_ LPCWSTR lpFilename, _In_opt_ CONST RECT *lprc, _In_opt_ LPCWSTR lpDesc);
+Real gdi32.dll dumpbin /exports on winoracle:
+System32 (x64): 1075   3D 00007950 CreateEnhMetaFileA
+System32 (x64): 1076   3E 00009DC0 CreateEnhMetaFileW
+System32 (x64): 1087   49 00007B20 CreateMetaFileA
+System32 (x64): 1088   4A 00009E60 CreateMetaFileW
+SysWOW64 (x86): 1076   3D 0000A900 CreateEnhMetaFileA
+SysWOW64 (x86): 1077   3E 00005F70 CreateEnhMetaFileW
+SysWOW64 (x86): 1088   49 0000A9D0 CreateMetaFileA
+SysWOW64 (x86): 1089   4A 00005FA0 CreateMetaFileW

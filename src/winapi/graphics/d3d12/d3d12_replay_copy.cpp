@@ -38,6 +38,104 @@ void split_subresource(const Resource& r, u32 index, u32& mip, u32& slice,
     plane = index / (mips * slices);
 }
 
+/// One plane of @p texture. Plane 0 of NV12 / P010 / P016 is luma_plane():
+/// the parent's region copy writes chroma as well (Learn DXGI_FORMAT: Y and
+/// UV are separate subresources). Plane 1 is the half-size chroma texture.
+/// A non-planar plane 0 is the texture itself. Null when @p plane is not a
+/// plane this texture can address alone.
+[[nodiscard]] graphics::BackendTexture2D* plane_image(
+    graphics::BackendTexture2D* texture, u32 plane) {
+    if (texture == nullptr) return nullptr;
+    const bool planar =
+        graphics::is_planar_format(texture->desc().pixel_format);
+    if (plane == 0) {
+        if (!planar) return texture;
+        graphics::BackendTexture2D* luma = texture->luma_plane();
+        return luma != nullptr && luma != texture ? luma : nullptr;
+    }
+    if (plane != 1 || !planar) return nullptr;
+    graphics::BackendTexture2D* chroma = texture->view_plane(
+        graphics::planar_chroma_format(texture->desc().pixel_format));
+    return chroma != nullptr && chroma != texture ? chroma : nullptr;
+}
+
+/// One plane of a combined depth-stencil texture, whole texels, both
+/// directions. Learn (CopyTextureRegion): depth and stencil are separate
+/// subresources. The backend stores them as a float depth plane and a byte
+/// stencil plane (readback_ / update_depth_stencil_plane) and can move
+/// either for a single-sample Depth32Float_Stencil8 texture.
+[[nodiscard]] bool copy_depth_stencil_subresource(
+    graphics::GraphicsBackendDevice& backend, graphics::BackendTexture2D& dst,
+    u32 dst_mip, u32 dst_slice, graphics::BackendTexture2D& src, u32 src_mip,
+    u32 src_slice, bool stencil, u32 dst_x, u32 dst_y, u32 src_x, u32 src_y,
+    u32 width, u32 height) {
+    const auto& sd = src.desc();
+    const auto& dd = dst.desc();
+    if (sd.pixel_format != dd.pixel_format || sd.sample_count != dd.sample_count ||
+        sd.sample_count > 1) {
+        return false;
+    }
+    const u32 texel = stencil ? 1u : 4u;
+    const u32 sw = std::max(1u, sd.width >> src_mip);
+    const u32 sh = std::max(1u, sd.height >> src_mip);
+    const u32 dw = std::max(1u, dd.width >> dst_mip);
+    const u32 dh = std::max(1u, dd.height >> dst_mip);
+    if (width == 0 || height == 0 || src_x >= sw || src_y >= sh ||
+        dst_x >= dw || dst_y >= dh) {
+        return true;
+    }
+    width = std::min(width, std::min(sw - src_x, dw - dst_x));
+    height = std::min(height, std::min(sh - src_y, dh - dst_y));
+    g_replay_cpu_waits.fetch_add(1, std::memory_order_relaxed);
+    graphics::frame_profile::WaitScope profile_wait("replay:texture-region-cpu-copy");
+    if (auto completion = backend.flush_completion()) {
+        (void)completion->wait();
+    } else {
+        (void)backend.wait_idle();
+    }
+    std::vector<u8> src_level(static_cast<usize>(sw) * sh * texel);
+    const unsigned src_pitch = sw * texel;
+    if (!src.readback_depth_stencil_plane(src_mip, src_slice, stencil,
+                                          src_level.data(), src_pitch)) {
+        return false;
+    }
+    const bool same = &src == &dst && src_mip == dst_mip && src_slice == dst_slice;
+    if (same) {
+        std::vector<u8> box(static_cast<usize>(width) * height * texel);
+        for (u32 row = 0; row < height; ++row) {
+            std::memcpy(box.data() + static_cast<usize>(row) * width * texel,
+                        src_level.data() +
+                            (static_cast<usize>(src_y + row) * sw + src_x) * texel,
+                        static_cast<usize>(width) * texel);
+        }
+        for (u32 row = 0; row < height; ++row) {
+            std::memcpy(src_level.data() +
+                            (static_cast<usize>(dst_y + row) * sw + dst_x) * texel,
+                        box.data() + static_cast<usize>(row) * width * texel,
+                        static_cast<usize>(width) * texel);
+        }
+        return dst.update_depth_stencil_plane(dst_mip, dst_slice, stencil,
+                                              src_level.data(), src_pitch);
+    }
+    const bool covers = dst_x == 0 && dst_y == 0 && width == dw && height == dh;
+    std::vector<u8> dst_level(static_cast<usize>(dw) * dh * texel);
+    const unsigned dst_pitch = dw * texel;
+    if (!covers &&
+        !dst.readback_depth_stencil_plane(dst_mip, dst_slice, stencil,
+                                          dst_level.data(), dst_pitch)) {
+        return false;
+    }
+    for (u32 row = 0; row < height; ++row) {
+        std::memcpy(dst_level.data() +
+                        (static_cast<usize>(dst_y + row) * dw + dst_x) * texel,
+                    src_level.data() +
+                        (static_cast<usize>(src_y + row) * sw + src_x) * texel,
+                    static_cast<usize>(width) * texel);
+    }
+    return dst.update_depth_stencil_plane(dst_mip, dst_slice, stencil,
+                                          dst_level.data(), dst_pitch);
+}
+
 }  // namespace
 
 void Replayer::copy_volume_footprint(const cmd::CopyTextureRegion& c,
@@ -45,7 +143,9 @@ void Replayer::copy_volume_footprint(const cmd::CopyTextureRegion& c,
                                      bool to_buffer) {
     const CopyLocation& footprint = to_buffer ? c.dst : c.src;
     const CopyLocation& location = to_buffer ? c.src : c.dst;
-    const u32 mip = location.subresource % std::max(1u, texture.desc.mip_levels);
+    // Learn (Subresources): a Texture3D index is the mip. ArraySize is 1,
+    // so the index is not "mip + slice * mips" the way a 2D array is.
+    const u32 mip = location.subresource;
     const FormatBlock block = format_block_info(footprint.format);
     const u32 bw = std::max(1u, block.width);
     const u32 bh = std::max(1u, block.height);
@@ -109,6 +209,8 @@ void Replayer::copy_depth_stencil_plane(const cmd::CopyTextureRegion& c,
     const u32 texel = stencil ? 1u : 4u;
     std::vector<u8> level(static_cast<usize>(level_w) * level_h * texel);
     const unsigned level_pitch = level_w * texel;
+    g_replay_cpu_waits.fetch_add(1, std::memory_order_relaxed);
+    graphics::frame_profile::WaitScope profile_wait("replay:depth-stencil-plane-copy");
     if (auto completion = f.m_backend.flush_completion()) {
         (void)completion->wait();
     } else {
@@ -231,17 +333,69 @@ void Replayer::resolve(Resource& dst, Resource& src,
     u32 smip = 0, sslice = 0, splane = 0;
     split_subresource(dst, c.dst_sub, dmip, dslice, dplane);
     split_subresource(src, c.src_sub, smip, sslice, splane);
-    const auto format = graphics::pixel_format_from_dxgi(c.format);
-    const u32 sw = static_cast<u32>(std::max<u64>(1, src.desc.width >> smip));
-    const u32 sh = std::max(1u, src.desc.height >> smip);
-    if (!c.has_rect && c.dst_x == 0 && c.dst_y == 0) {
-        (void)f.m_backend.resolve_texture_2d(dst.texture.get(), dmip, dslice,
-                                             src.texture.get(), smip, sslice,
-                                             format);
+    if (dst.texture == nullptr || src.texture == nullptr) return;
+    // MIN / MAX / DECOMPRESS never reach here (the command list refuses
+    // them). What remains is AVERAGE, including a depth plane.
+    graphics::PixelFormat format = graphics::pixel_format_from_dxgi(c.format);
+    if (format == graphics::PixelFormat::Unknown &&
+        src.texture->desc().pixel_format == dst.texture->desc().pixel_format &&
+        (c.format == 0 || c.format == src.desc.format ||
+         c.format == dst.desc.format)) {
+        // DXGI_FORMAT_UNKNOWN, or a resource format whose only storage is
+        // the texture's own (texture_storage_format, e.g. XR_BIAS as R32).
+        format = src.texture->desc().pixel_format;
+    }
+    const u32 sw = std::max(1u, src.texture->desc().width >> smip);
+    const u32 sh = std::max(1u, src.texture->desc().height >> smip);
+    // Learn (ResolveSubresource, D3D12_RESOLVE_MODE_AVERAGE): the call with
+    // no mode averages every sample. AVERAGE includes the depth plane. A
+    // stencil subresource is the other plane (Learn, CopyTextureRegion:
+    // depth and stencil are separate subresources) and is the same average
+    // of the values stored there. A rectangle that is not the whole
+    // subresource at (0, 0) stays refused: the resolve draws the full plane.
+    const bool stored_depth =
+        graphics::format_table(src.texture->desc().pixel_format).is_depth &&
+        graphics::format_table(dst.texture->desc().pixel_format).is_depth;
+    const bool asked_depth = graphics::format_table(format).is_depth;
+    if (stored_depth || asked_depth) {
+        const bool entire =
+            !c.has_rect || (c.rect[0] == 0 && c.rect[1] == 0 &&
+                            c.rect[2] == static_cast<i32>(sw) &&
+                            c.rect[3] == static_cast<i32>(sh));
+        const bool stencil = dplane == 1 || splane == 1;
+        if (!entire || c.dst_x != 0 || c.dst_y != 0 || dplane != splane ||
+            dplane > 1) {
+            unimplemented("ResolveSubresourceRegion",
+                          "a scratch resolve the backend refused");
+            return;
+        }
+        if (!f.m_backend.resolve_depth_stencil_2d(
+                dst.texture.get(), dmip, dslice, src.texture.get(), smip,
+                sslice, stencil)) {
+            unimplemented("ResolveSubresource",
+                          stencil ? "a stencil resolve" : "a depth resolve");
+        }
         return;
     }
-    // ResolveSubresourceRegion: the source averaged whole into a scratch
-    // target, then the rectangle copied to (DstX, DstY).
+    if (!c.has_rect && c.dst_x == 0 && c.dst_y == 0) {
+        if (format == graphics::PixelFormat::Unknown) {
+            unimplemented("ResolveSubresource", "an unmapped resolve format");
+            return;
+        }
+        (void)f.m_backend.resolve_texture_2d(
+            dst.texture.get(), dmip, dslice, src.texture.get(), smip, sslice,
+            format);
+        return;
+    }
+    if (dplane != 0 || splane != 0 || format == graphics::PixelFormat::Unknown) {
+        unimplemented("ResolveSubresourceRegion",
+                      "a scratch resolve the backend refused");
+        return;
+    }
+    // ResolveSubresourceRegion: the source averaged whole into a target the
+    // same size, then the rectangle copied to (DstX, DstY). A rectangle
+    // that is the whole subresource at (0, 0) resolves straight into the
+    // destination the caller created.
     i32 left = 0, top = 0, right = static_cast<i32>(sw), bottom = static_cast<i32>(sh);
     if (c.has_rect) {
         left = c.rect[0];
@@ -253,14 +407,27 @@ void Replayer::resolve(Resource& dst, Resource& src,
         right > static_cast<i32>(sw) || bottom > static_cast<i32>(sh)) {
         return;
     }
+    const u32 dw = std::max(1u, dst.texture->desc().width >> dmip);
+    const u32 dh = std::max(1u, dst.texture->desc().height >> dmip);
+    const bool entire = left == 0 && top == 0 && right == static_cast<i32>(sw) &&
+                        bottom == static_cast<i32>(sh);
+    if (entire && c.dst_x == 0 && c.dst_y == 0 && dw == sw && dh == sh) {
+        if (!f.m_backend.resolve_texture_2d(dst.texture.get(), dmip, dslice,
+                                            src.texture.get(), smip, sslice,
+                                            format)) {
+            unimplemented("ResolveSubresourceRegion",
+                          "a scratch resolve the backend refused");
+        }
+        return;
+    }
     graphics::BackendTexture2DDesc desc{};
     desc.width = sw;
     desc.height = sh;
     desc.mip_levels = 1;
     desc.array_size = 1;
+    desc.sample_count = 1;
     desc.pixel_format = format;
     desc.render_target = true;
-    desc.shader_resource = true;
     auto scratch = f.m_backend.create_texture_2d(desc, nullptr, 0);
     if (!scratch ||
         !f.m_backend.resolve_texture_2d(scratch.get(), 0, 0, src.texture.get(),
@@ -299,24 +466,150 @@ void Replayer::copy_texture_region(const cmd::CopyTextureRegion& c) {
         c.src.type == D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
     if (dst_buffer == src_buffer) {
         if (dst_buffer) return;  // footprint to footprint is invalid
+        // Learn (CopyTextureRegion, D3D12_BOX): a volume copy is one mip
+        // and a texel box. right/bottom/back are exclusive. A null box is
+        // the whole mip, including its depth -- not one W slice.
+        if (dst->texture3d && src->texture3d) {
+            const u32 dmips = std::max(1u, dst->desc.mip_levels);
+            const u32 smips = std::max(1u, src->desc.mip_levels);
+            if (c.dst.subresource >= dmips || c.src.subresource >= smips) {
+                d3d12_diag("CopyTextureRegion: backend refused the copy");
+                return;
+            }
+            graphics::BackendTextureLocation to{};
+            graphics::BackendTextureLocation from{};
+            to.texture_3d = dst->texture3d.get();
+            to.mip = c.dst.subresource;
+            to.x = c.x;
+            to.y = c.y;
+            to.z = c.z;
+            from.texture_3d = src->texture3d.get();
+            from.mip = c.src.subresource;
+            u32 width = 0;
+            u32 height = 0;
+            u32 depth = 0;
+            if (c.has_box) {
+                from.x = c.box[0];
+                from.y = c.box[1];
+                from.z = c.box[2];
+                width = c.box[3] - c.box[0];
+                height = c.box[4] - c.box[1];
+                depth = c.box[5] - c.box[2];
+            } else {
+                const u32 mip = from.mip;
+                width = std::max(1u, static_cast<u32>(src->desc.width) >> mip);
+                height = std::max(1u, src->desc.height >> mip);
+                depth = std::max(1u, src->desc.depth_or_array_size >> mip);
+            }
+            if (width == 0 || height == 0 || depth == 0) return;
+            if (!f.m_backend.copy_texture_elements(to, from, width, height,
+                                                   depth)) {
+                d3d12_diag("CopyTextureRegion: backend refused the copy");
+            }
+            return;
+        }
         // Texture to texture.
         u32 dmip = 0, dslice = 0, dplane = 0, smip = 0, sslice = 0, splane = 0;
         split_subresource(*dst, c.dst.subresource, dmip, dslice, dplane);
         split_subresource(*src, c.src.subresource, smip, sslice, splane);
+        const bool dst_ds = dst->texture != nullptr &&
+                            plane_count_of(dst->desc.format) == 2 &&
+                            is_depth_stencil_family(dst->desc.format);
+        const bool src_ds = src->texture != nullptr &&
+                            plane_count_of(src->desc.format) == 2 &&
+                            is_depth_stencil_family(src->desc.format);
+        // Learn (CopyTextureRegion): a depth-stencil buffer's depth and
+        // stencil planes are separate subresources. Copy each plane the
+        // backend can read and write; a combined blit would overwrite the
+        // other plane.
+        if (dst_ds && src_ds && dplane == splane && dplane <= 1) {
+            u32 sx = 0, sy = 0, width = 0, height = 0;
+            if (c.has_box) {
+                sx = c.box[0];
+                sy = c.box[1];
+                width = c.box[3] - c.box[0];
+                height = c.box[4] - c.box[1];
+            } else {
+                width = std::max(1u, src->texture->desc().width >> smip);
+                height = std::max(1u, src->texture->desc().height >> smip);
+            }
+            if (!copy_depth_stencil_subresource(
+                    f.m_backend, *dst->texture, dmip, dslice, *src->texture,
+                    smip, sslice, dplane == 1, c.x, c.y, sx, sy, width,
+                    height)) {
+                unimplemented("CopyTextureRegion",
+                              dplane == 1 ? "stencil-plane copies"
+                                          : "a depth-stencil plane the backend "
+                                            "cannot read");
+            }
+            return;
+        }
+        if (dplane == 1 && splane == 1 && dst->texture && src->texture) {
+            graphics::BackendTexture2D* to_plane = plane_image(dst->texture.get(), 1);
+            graphics::BackendTexture2D* from_plane =
+                plane_image(src->texture.get(), 1);
+            if (to_plane == nullptr || from_plane == nullptr) {
+                unimplemented("CopyTextureRegion", "stencil-plane copies");
+                return;
+            }
+            graphics::BackendTextureLocation to{};
+            graphics::BackendTextureLocation from{};
+            to.texture_2d = to_plane;
+            to.mip = dmip;
+            to.slice = dslice;
+            to.x = c.x;
+            to.y = c.y;
+            from.texture_2d = from_plane;
+            from.mip = smip;
+            from.slice = sslice;
+            u32 width = 0, height = 0;
+            if (c.has_box) {
+                from.x = c.box[0];
+                from.y = c.box[1];
+                width = c.box[3] - c.box[0];
+                height = c.box[4] - c.box[1];
+            } else {
+                width = std::max(1u, from_plane->desc().width >> smip);
+                height = std::max(1u, from_plane->desc().height >> smip);
+            }
+            if (width == 0 || height == 0) return;
+            if (!f.m_backend.copy_texture_elements(to, from, width, height, 1)) {
+                unimplemented("CopyTextureRegion", "stencil-plane copies");
+            }
+            return;
+        }
         if (dplane != 0 || splane != 0) {
             unimplemented("CopyTextureRegion", "stencil-plane copies");
             return;
         }
         graphics::BackendTextureLocation to{};
         graphics::BackendTextureLocation from{};
-        to.texture_2d = dst->texture.get();
+        // Plane 0 of NV12 / P010 / P016 is the luma texture. The parent
+        // would take a planar region copy, which writes chroma as well.
+        graphics::BackendTexture2D* dst_image = dst->texture.get();
+        graphics::BackendTexture2D* src_image = src->texture.get();
+        const auto wants_luma = [](const Resource& resource,
+                                   graphics::BackendTexture2D* image) {
+            return image != nullptr && plane_count_of(resource.desc.format) > 1 &&
+                   graphics::is_planar_format(image->desc().pixel_format);
+        };
+        const bool dst_luma = wants_luma(*dst, dst_image);
+        const bool src_luma = wants_luma(*src, src_image);
+        if (dst_luma) dst_image = plane_image(dst_image, 0);
+        if (src_luma) src_image = plane_image(src_image, 0);
+        if ((dst_luma && dst_image == nullptr) ||
+            (src_luma && src_image == nullptr)) {
+            unimplemented("CopyTextureRegion", "a planar luma plane");
+            return;
+        }
+        to.texture_2d = dst_image;
         to.texture_3d = dst->texture3d.get();
         to.mip = dmip;
         to.slice = dslice;
         to.x = c.x;
         to.y = c.y;
         to.z = c.z;
-        from.texture_2d = src->texture.get();
+        from.texture_2d = src_image;
         from.texture_3d = src->texture3d.get();
         from.mip = smip;
         from.slice = sslice;
@@ -362,9 +655,21 @@ void Replayer::copy_texture_region(const cmd::CopyTextureRegion& c) {
                                  slice, plane, dst_buffer);
         return;
     }
-    if (plane != 0) {
-        unimplemented("CopyTextureRegion", "plane footprint copies of this format");
-        return;
+    graphics::BackendTexture2D* image = texture_resource->texture.get();
+    const bool planar_planes =
+        plane_count_of(texture_resource->desc.format) > 1 &&
+        graphics::is_planar_format(image->desc().pixel_format);
+    if (planar_planes || plane != 0) {
+        // Plane 0 is the luma texture; plane 1 is the half-size chroma
+        // texture. The footprint is already in that plane's texels
+        // (R8 / R16, or R8G8 / R16G16).
+        image = plane_image(image, plane);
+        if (image == nullptr) {
+            unimplemented("CopyTextureRegion",
+                          plane == 0 ? "a planar luma plane"
+                                     : "plane footprint copies of this format");
+            return;
+        }
     }
     // The texel rectangle: the box (source texture) or the footprint's size.
     u32 x = 0, y = 0, width = footprint.width, height = footprint.height;
@@ -396,9 +701,8 @@ void Replayer::copy_texture_region(const cmd::CopyTextureRegion& c) {
     }
     if (width == 0 || height == 0) return;
     if (!f.m_backend.copy_texture_buffer_region(
-            texture_resource->texture.get(), mip, slice, x, y, width, height,
-            buffer_resource->buffer(), offset, footprint.row_pitch,
-            /*to_texture=*/!dst_buffer)) {
+            image, mip, slice, x, y, width, height, buffer_resource->buffer(),
+            offset, footprint.row_pitch, /*to_texture=*/!dst_buffer)) {
         d3d12_diag("CopyTextureRegion: backend refused the footprint copy");
     }
 }
@@ -407,6 +711,15 @@ void Replayer::copy_resource(const cmd::CopyResource& c) {
     Resource* dst = resource(c.dst, c.dst_serial);
     Resource* src = resource(c.src, c.src_serial);
     if (dst == nullptr || src == nullptr) return;
+    if (dst->feedback_map && src->feedback_map) {
+        // Same geometry (the command list checked): the opaque storage.
+        if (!f.m_backend.copy_buffer_region(dst->buffer(), dst->offset,
+                                            src->buffer(), src->offset,
+                                            dst->feedback.total_words() * 4u)) {
+            d3d12_diag("CopyResource: backend refused the feedback map copy");
+        }
+        return;
+    }
     if (dst->is_buffer()) {
         if (!f.m_backend.copy_buffer_region(dst->buffer(), dst->offset,
                                             src->buffer(), src->offset,

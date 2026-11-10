@@ -27,6 +27,13 @@ inline void cpu_relax() noexcept { __asm__ volatile("pause" ::: "memory"); }
 /// to R10 before `syscall` (which itself clobbers RCX). The public kernel
 /// contract assigns 515/516 to ulock_wait/ulock_wake and operation 1 to a
 /// 32-bit compare-and-wait.
+///
+/// The kernel also returns a second result in RDX (unix_syscall64 writes
+/// rval[1] there), so RDX is an in/out operand, never a plain input. Declared
+/// input-only, the compiler kept `expected` in EDX across guest_request()'s
+/// retry loop: the first spurious or interrupted return left RDX = 0, the
+/// retry then waited for kIdle, spun until the host stored kIdle, and slept
+/// after the host's only wake. Steam's main thread hung there on Intel.
 constexpr u64 kDarwinBsdSyscallBase = 0x2000000ULL;
 constexpr u64 kUlockWaitSyscall = kDarwinBsdSyscallBase + 515;
 constexpr u64 kUlockWakeSyscall = kDarwinBsdSyscallBase + 516;
@@ -35,25 +42,24 @@ constexpr u32 kUlockCompareAndWait = 1;
 inline void raw_ulock_wait(std::atomic<u32>* address, u32 expected,
                            u32 timeout_us = 0) noexcept {
     register u64 number __asm__("rax") = kUlockWaitSyscall;
+    register u64 value __asm__("rdx") = expected;
     register u64 syscall_timeout __asm__("r10") = timeout_us;
     __asm__ volatile(
         "syscall"
-        : "+a"(number)
+        : "+a"(number), "+d"(value), "+r"(syscall_timeout)
         : "D"(static_cast<u64>(kUlockCompareAndWait)),
-          "S"(address),
-          "d"(static_cast<u64>(expected)),
-          "r"(syscall_timeout)
+          "S"(address)
         : "rcx", "r11", "cc", "memory");
 }
 
 inline void raw_ulock_wake(std::atomic<u32>* address) noexcept {
     register u64 number __asm__("rax") = kUlockWakeSyscall;
+    register u64 wake_value __asm__("rdx") = 0;
     __asm__ volatile(
         "syscall"
-        : "+a"(number)
+        : "+a"(number), "+d"(wake_value)
         : "D"(static_cast<u64>(kUlockCompareAndWait)),
-          "S"(address),
-          "d"(0ULL)
+          "S"(address)
         : "rcx", "r11", "cc", "memory");
 }
 
@@ -155,9 +161,26 @@ void* guest_thread_main(void* arg) {
 // GuestHostHop
 // ---------------------------------------------------------------------------
 
+// Every Windows API call on this backend is two cross-thread handoffs (guest
+// -> host to service it, host -> guest to resume), and most calls are
+// serviced in microseconds. Parking in the kernel straight away made each
+// handoff a full sleep/wake, which is far slower than the work itself once
+// an idle core has dropped into a deep C-state: a CEF renderer's main thread
+// and its servicer were BOTH blocked for ~7.8 s of a ~13 s startup. Each side
+// therefore watches the state word for a bounded spin first and parks only
+// when the other side is genuinely busy. The kernel wait stays the fallback,
+// so the protocol is unchanged. PAUSE is the spin-wait hint the SDM
+// prescribes and keeps the loop libc-free, as the guest side must be.
+// ~2000 PAUSEs is tens of microseconds on Skylake-class cores.
+constexpr u32 kHopSpinIterations = 2000;
+
 void GuestHostHop::guest_request() noexcept {
     m_state.store(kRequested, std::memory_order_release);
     raw_ulock_wake(&m_state);
+    for (u32 i = 0; i < kHopSpinIterations; ++i) {
+        if (m_state.load(std::memory_order_acquire) != kRequested) return;
+        cpu_relax();
+    }
     while (m_state.load(std::memory_order_acquire) == kRequested) {
         raw_ulock_wait(&m_state, kRequested);
     }
@@ -169,6 +192,13 @@ void GuestHostHop::guest_finish() noexcept {
 }
 
 GuestHostHop::Wait GuestHostHop::host_wait(u64 timeout_ns) noexcept {
+    // Bounded spin before parking; see kHopSpinIterations.
+    for (u32 i = 0; i < kHopSpinIterations; ++i) {
+        const u32 s = m_state.load(std::memory_order_acquire);
+        if (s == kRequested) return Wait::Request;
+        if (s == kFinished) return Wait::Finished;
+        cpu_relax();
+    }
     const auto start = std::chrono::steady_clock::now();
     for (;;) {
         const u32 s = m_state.load(std::memory_order_acquire);

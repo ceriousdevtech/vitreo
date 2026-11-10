@@ -412,8 +412,9 @@ bool MetalBackendTexture2D::blit_to_host(
     // texture) must observe draws already encoded against this resource.
     // Clears/draws now live on the submit queue; commit_frame alone
     // leaves the texture uninitialized (magenta) and the blit wins the
-    // race. drain() submits the queue and waits before this blit.
-    MetalSubmitQueue::instance().drain();
+    // race. drain_for_readback() submits the queue and waits for it to
+    // complete on the GPU before this blit (not for presents to finish).
+    MetalSubmitQueue::instance().drain_for_readback();
     const usize transfer_pitch = (row_bytes + 255u) & ~usize{255u};
     if (transfer_pitch > SIZE_MAX / rows) return false;
     @autoreleasepool {

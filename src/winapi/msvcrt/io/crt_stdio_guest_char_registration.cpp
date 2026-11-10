@@ -57,7 +57,7 @@ void add_crt_stdio_guest_char_exports(DllExports& exports, const StdioContext& c
                 (void)vf.guest_memory->write_u32(
                     vf.guest_stream + kPushback, 0);
                 (void)vf.guest_memory->write_u32(vf.guest_stream + kEof, 1);
-                vf.eof_flag = true;
+                set_stream_eof(vf, true);
                 return EOF;
             }
 
@@ -78,7 +78,7 @@ void add_crt_stdio_guest_char_exports(DllExports& exports, const StdioContext& c
             (void)vf.guest_memory->write_u32(vf.guest_stream + kEof, 0);
             vf.has_read_character = true;
             vf.pushback_valid = false;
-            vf.eof_flag = false;
+            set_stream_eof(vf, false);
             return static_cast<i32>(block[0]);
         };
 
@@ -134,7 +134,7 @@ void add_crt_stdio_guest_char_exports(DllExports& exports, const StdioContext& c
                 vf.guest_stream + kPushback, 1);
             (void)vf.guest_memory->write_u32(vf.guest_stream + kEof, 0);
             vf.pushback_valid = false; // represented by the guest count now
-            vf.eof_flag = false;
+            set_stream_eof(vf, false);
             return static_cast<i32>(value);
         };
 

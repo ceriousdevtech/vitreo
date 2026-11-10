@@ -58,6 +58,12 @@ public:
 
     [[nodiscard]] std::unique_ptr<BackendTilePool> create_pool();
 
+    /// A tile pool whose tile 0 holds the 8-byte @p pattern repeated: the
+    /// memory every mapped tile of a residency companion shows
+    /// (BackendTexture2DDesc::residency_companion). Created and filled on
+    /// first use, kept for the process; null when it cannot be.
+    [[nodiscard]] BackendTilePool* residency_pool(u64 pattern);
+
     /// CopyTiles / UpdateTiles of a box of a multisampled texture (native
     /// handle) against a buffer at @p buffer_offset (native) + @p offset,
     /// in the D3D linear layout: every pixel's samples in index order,

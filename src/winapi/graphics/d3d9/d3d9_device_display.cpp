@@ -60,6 +60,27 @@ void D3D9Manager::dispatch_device_display(Marshaler& m, usize slot,
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
+        {
+            // One line per call: where the cursor image lives and whether its
+            // guest pixels hold any coverage (a GPU-filled surface's guest
+            // copy can be stale).
+            u32 opaque = 0;
+            if (bitmap.pixels != 0 && m_memory != nullptr) {
+                for (u32 y = 0; y < bitmap.height; ++y) {
+                    for (u32 x = 0; x < bitmap.width; ++x) {
+                        auto px = m_memory->read_u32(bitmap.pixels + y * bitmap.pitch + x * 4);
+                        if (px.is_ok() && (px.value() >> 24) != 0) ++opaque;
+                    }
+                }
+            }
+            if (static int shown = 0; shown++ < 16) {
+                std::fprintf(stderr,
+                             "[d3d9] SetCursorProperties %ux%u hot=(%u,%u) pool=%u kind=%d "
+                             "container=0x%x opaque_px=%u\n",
+                             bitmap.width, bitmap.height, hotspot_x, hotspot_y, bitmap.pool,
+                             static_cast<int>(bitmap.kind), bitmap.container, opaque);
+            }
+        }
         if (m_cursor_image_cb) {
             // Host path exists: refuse success unless the A8R8G8B8 surface is
             // readable and the host accepts the converted RGBA blob.

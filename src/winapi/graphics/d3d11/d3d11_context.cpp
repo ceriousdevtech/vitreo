@@ -30,9 +30,11 @@
 #include "graphics/contracts/backend_device.hpp"
 #include "graphics/contracts/gpu_resource.hpp"
 #include "core/memory/guest_memory.hpp"
+#include <vitreo/present_cpu.hpp>
 
 #include <algorithm>
 #include <array>
+#include <cstdio>
 #include <span>
 #include <atomic>
 #include <chrono>
@@ -45,6 +47,59 @@
 #include <vector>
 
 namespace vitreo::winapi {
+
+namespace {
+
+enum class ContextHost : int { Draw = 0, Bind = 1, Fixed = 2, Constant = 3 };
+
+/// Host time inside the three context families that record a frame, when
+/// VITREO_PRESENT_RATE is set. One line a second, per calling thread:
+/// draw_ms is context_draw_method, bind_ms is shader-stage sets, fixed_ms is
+/// IA/OM/RS sets. Divide by the present rate for a per-frame split. Off, this
+/// is one predicted branch.
+void note_context_host(ContextHost bucket,
+                       std::chrono::steady_clock::duration spent) noexcept {
+    struct Tally {
+        u64 ns[4]{};
+        u64 n[4]{};
+        double window_start_ms{0};
+    };
+    static thread_local Tally tally;
+    const int index = static_cast<int>(bucket);
+    tally.ns[index] += static_cast<u64>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(spent).count());
+    ++tally.n[index];
+    const double now = diagnostics::present_cpu::host_mono_ms();
+    if (tally.window_start_ms == 0.0) tally.window_start_ms = now;
+    if (now - tally.window_start_ms < 1000.0) return;
+    std::fprintf(
+        stderr,
+        "[d3d11-host] t_ms=%.1f draw_ms=%.1f bind_ms=%.1f fixed_ms=%.1f "
+        "cb_ms=%.1f draws=%llu binds=%llu fixed=%llu cbs=%llu\n",
+        now, static_cast<double>(tally.ns[0]) / 1.0e6,
+        static_cast<double>(tally.ns[1]) / 1.0e6,
+        static_cast<double>(tally.ns[2]) / 1.0e6,
+        static_cast<double>(tally.ns[3]) / 1.0e6,
+        static_cast<unsigned long long>(tally.n[0]),
+        static_cast<unsigned long long>(tally.n[1]),
+        static_cast<unsigned long long>(tally.n[2]),
+        static_cast<unsigned long long>(tally.n[3]));
+    tally = {};
+    tally.window_start_ms = now;
+}
+
+template <class Fn>
+void time_context_host(ContextHost bucket, Fn&& fn) {
+    if (!diagnostics::present_cpu::enabled()) {
+        fn();
+        return;
+    }
+    const auto start = std::chrono::steady_clock::now();
+    fn();
+    note_context_host(bucket, std::chrono::steady_clock::now() - start);
+}
+
+}  // namespace
 
 void D3D11Manager::impl_ContextMethod(Marshaler& m, usize slot) {
     // Diagnostic census. A survey built from failure messages alone only sees
@@ -435,7 +490,9 @@ void D3D11Manager::impl_ContextMethod(Marshaler& m, usize slot) {
     case 128:  // GSGetConstantBuffers1
     case 129:  // PSGetConstantBuffers1
     case 130:  // CSGetConstantBuffers1
-        context_constant_buffer_method(m, slot, self);
+        time_context_host(ContextHost::Constant, [&] {
+            context_constant_buffer_method(m, slot, self);
+        });
         return;
     case 8:    // PSSetShaderResources
     case 9:    // PSSetShader
@@ -456,7 +513,9 @@ void D3D11Manager::impl_ContextMethod(Marshaler& m, usize slot) {
     case 68:   // CSSetUnorderedAccessViews
     case 69:   // CSSetShader
     case 70:   // CSSetSamplers
-        context_shader_stage_method(m, slot, self);
+        time_context_host(ContextHost::Bind, [&] {
+            context_shader_stage_method(m, slot, self);
+        });
         return;
     case 17:   // IASetInputLayout
     case 18:   // IASetVertexBuffers
@@ -470,7 +529,9 @@ void D3D11Manager::impl_ContextMethod(Marshaler& m, usize slot) {
     case 43:   // RSSetState
     case 44:   // RSSetViewports
     case 45:   // RSSetScissorRects
-        context_fixed_stage_method(m, slot, self);
+        time_context_host(ContextHost::Fixed, [&] {
+            context_fixed_stage_method(m, slot, self);
+        });
         return;
     case 12:   // DrawIndexed
     case 13:   // Draw
@@ -481,7 +542,9 @@ void D3D11Manager::impl_ContextMethod(Marshaler& m, usize slot) {
     case 40:   // DrawInstancedIndirect
     case 41:   // Dispatch
     case 42:   // DispatchIndirect
-        context_draw_method(m, slot, self);
+        time_context_host(ContextHost::Draw, [&] {
+            context_draw_method(m, slot, self);
+        });
         return;
     case 46:   // CopySubresourceRegion
     case 47:   // CopyResource

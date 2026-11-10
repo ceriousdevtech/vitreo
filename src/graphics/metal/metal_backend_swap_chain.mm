@@ -506,6 +506,17 @@ public:
         float depth_clear_value,
         const std::array<BackendTexture2D*, BACKEND_MAX_RENDER_TARGETS>&
             color_targets) override {
+        return begin_render_pass_counted(preserve_contents, clear_depth,
+                                         depth_clear_value, color_targets,
+                                         nullptr);
+    }
+
+    std::unique_ptr<BackendRenderPass> begin_render_pass_counted(
+        bool preserve_contents, bool clear_depth,
+        float depth_clear_value,
+        const std::array<BackendTexture2D*, BACKEND_MAX_RENDER_TARGETS>&
+            color_targets,
+        GpuOcclusionCounter* occlusion_counter) override {
         if (!valid()) return nullptr;
         // Apple GPUs read uninitialised MSAA memory as magenta and depth 0.
         // The first pass after Reset must not Load that garbage. A Z-tested
@@ -520,7 +531,8 @@ public:
         }
         auto pass = std::make_unique<MetalBackendRenderPass>(
             m_device, color_attachment(), depth_attachment(),
-            preserve, clear_z, depth_clear_value, resolve, color_targets);
+            preserve, clear_z, depth_clear_value, resolve, color_targets,
+            occlusion_counter);
         if (!pass->valid()) return nullptr;
         m_color_initialized = true;
         m_depth_initialized = true;
@@ -582,6 +594,8 @@ private:
         // Present still returns success.
         swapchain_desc.framebuffer_only = false;
         swapchain_desc.opaque = !m_desc.premultiplied_alpha;
+        swapchain_desc.preserve_sibling_metal_layers =
+            m_desc.preserve_sibling_metal_layers;
         m_swapchain =
             std::make_unique<MetalSwapchain>(swapchain_desc);
         if (!m_swapchain->valid()) {

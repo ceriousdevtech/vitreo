@@ -34,7 +34,7 @@ const bool kForceSwPclmul = std::getenv("VITREO_SW_PCLMUL") != nullptr;
             emit(arm64::movz_w(2, MEM_OPID)); \
             emit(arm64::movz_w(3, dst_xmm)); \
             emit(arm64::mov_x(4, REG_SCRATCH4)); \
-            EMIT_SSE_OP_CALL(); \
+            EMIT_SSE_OP_MEM_CALL(); \
         } \
         break; \
     }
@@ -108,12 +108,64 @@ void JitCompiler::emit_sha1_native(Opcode op, u8 dst, u8 imm8) {
     }
 }
 
+// WS3 entry point: the direct ARMv8 crypto lowerings that replace the
+// remaining jit_sse_op arms below (SHA256RNDS2, SHA256MSG1/2 memory, SHA-1 in
+// every form, PCLMULQDQ memory, AESKEYGENASSIST, the AES 32-bit non-linear
+// memory arm and the VEX.128 AES/PCLMULQDQ forms). Each family emitter emits
+// nothing when it declines, so VITREO_WS3=0 (or a missing host feature)
+// leaves exactly the pre-WS3 sequence below.
+bool JitCompiler::emit_crypto_direct(const DecodedInstruction& instr,
+                                     u64 next_rip) {
+    if (!ws3_crypto_direct_enabled() || m_vec_lane_split) return false;
+    switch (instr.opcode) {
+    case Opcode::AESENC_XMM_XMMM128:
+    case Opcode::AESENCLAST_XMM_XMMM128:
+    case Opcode::AESDEC_XMM_XMMM128:
+    case Opcode::AESDECLAST_XMM_XMMM128:
+    case Opcode::AESIMC_XMM_XMMM128:
+        return emit_aes_direct(instr, next_rip);
+    case Opcode::AESKEYGENASSIST_XMM_XMMM128_IMM8:
+        return emit_aes_keygen_direct(instr, next_rip);
+    case Opcode::SHA256RNDS2_XMM_XMMM128:
+    case Opcode::SHA256MSG1_XMM_XMMM128:
+    case Opcode::SHA256MSG2_XMM_XMMM128:
+        return emit_sha256_direct(instr, next_rip);
+    case Opcode::SHA1RNDS4_XMM_XMMM128_IMM8:
+    case Opcode::SHA1NEXTE_XMM_XMMM128:
+    case Opcode::SHA1MSG1_XMM_XMMM128:
+    case Opcode::SHA1MSG2_XMM_XMMM128:
+        return emit_sha1_direct(instr, next_rip);
+    case Opcode::PCLMULQDQ_XMM_XMMM128_IMM8:
+        return emit_pclmul_direct(instr, next_rip);
+    default:
+        return false;
+    }
+}
+
 std::optional<bool> JitCompiler::compile_sse_crypto(
     const DecodedInstruction& instr, u64 instr_rip, u64 next_rip) {
     const bool s_force_sw_pclmul = kForceSwPclmul;
     const auto& op0 = instr.operands[0];
     const auto& op1 = instr.operands[1];
     (void)op0; (void)op1; (void)instr_rip;
+
+    if (emit_crypto_direct(instr, next_rip)) return true;
+    // A VEX form reaches this family only through sse_vex_lowered_directly,
+    // whose direct emitters read SRC1 from vvvv and zero YMM[255:128]. The
+    // legacy arms below implement neither, so a declined VEX form goes to the
+    // interpreter rather than being run as its legacy two-operand twin.
+    if (instr.prefixes.vex) {
+        switch (instr.opcode) {
+        case Opcode::AESENC_XMM_XMMM128: case Opcode::AESENCLAST_XMM_XMMM128:
+        case Opcode::AESDEC_XMM_XMMM128: case Opcode::AESDECLAST_XMM_XMMM128:
+        case Opcode::AESIMC_XMM_XMMM128:
+        case Opcode::AESKEYGENASSIST_XMM_XMMM128_IMM8:
+        case Opcode::PCLMULQDQ_XMM_XMMM128_IMM8:
+            return false;
+        default:
+            break;
+        }
+    }
 
     switch (instr.opcode) {
 
@@ -139,8 +191,9 @@ std::optional<bool> JitCompiler::compile_sse_crypto(
 
     // ---- SHA-256 (op_ids 260-265) ----
     // The register-source message-schedule forms map onto ARMv8 SHA-256 and
-    // are emitted directly. Memory-source forms keep the helper, which owns
-    // the two checked guest reads and their fault behavior.
+    // are emitted directly. With WS3 on, emit_crypto_direct (above) has
+    // already lowered SHA256RNDS2 and the memory forms; these helper arms are
+    // the VITREO_WS3=0 / no-FEAT_SHA256 path.
     case Opcode::SHA256RNDS2_XMM_XMMM128: EMIT_SSE_XMM_XMMM128(260, 261)
     case Opcode::SHA256MSG1_XMM_XMMM128:
         if (is_register_operand(op1.type) &&
@@ -183,7 +236,7 @@ std::optional<bool> JitCompiler::compile_sse_crypto(
             emit(arm64::movz_w(2, 251));
             emit(arm64::movz_w(3, packed_dst));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         break;
     }
@@ -227,7 +280,7 @@ std::optional<bool> JitCompiler::compile_sse_crypto(
             emit(arm64::movz_w(2, 253));
             emit(arm64::movz_w(3, packed_dst));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         break;
     }
@@ -261,7 +314,7 @@ std::optional<bool> JitCompiler::compile_sse_crypto(
             emit(arm64::movz_w(2, 267));
             emit(arm64::movz_w(3, packed_dst));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         break;
     }

@@ -343,7 +343,11 @@ enum class DecodeError : u8 {
     InvalidPrefix,        // Invalid prefix combination
     InvalidOperand,       // Invalid operand encoding
     UnsupportedMode,      // Instruction not supported in current mode
+    InstructionTooLong,   // Needs byte16: #GP(0), not #UD or a fetch of byte16
 };
+
+/// Intel SDM Vol.2A section 2.3.11; instruction_length_probe{32,64}.expected.
+constexpr usize kMaxInstructionLength = 15;
 
 /// Decoder mode (affects instruction decoding)
 enum class DecodeMode : u8 {

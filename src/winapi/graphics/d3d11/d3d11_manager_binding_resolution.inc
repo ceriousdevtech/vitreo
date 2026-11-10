@@ -239,7 +239,7 @@
         std::array<graphics::BackendTextureViewDesc, N> views{};
         std::array<const graphics::BackendTexture3D*, N> textures_3d{};
         std::array<const graphics::BackendBuffer*, N> buffers{};
-        std::array<unsigned, N> offsets{};
+        std::array<u64, N> offsets{};
         std::array<const graphics::BackendTextureBuffer*, N> texture_buffers{};
     };
     [[nodiscard]] const ResolvedSrvs& resolved_srvs(u32 stage,
@@ -341,5 +341,5 @@
     /// typed buffer, which is a texture-buffer view rather than a plain buffer.
     void resolve_buffer_resource(
         GuestAddr srv_address, const graphics::BackendBuffer*& out_buffer,
-        unsigned& out_offset,
+        u64& out_offset,
         const graphics::BackendTextureBuffer*& out_texture_buffer);

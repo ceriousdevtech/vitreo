@@ -358,6 +358,19 @@ void append_atom_comm_exports(Kernel32ExtManager& mgr, DllExports& exports) {
     exports.entries.push_back(ExportEntry{
         "GetCurrentActCtx", 0,
         [&mgr](Marshaler& m) { mgr.impl_GetCurrentActCtx(m); }, 4});
+    // AddRefActCtx (1), FindActCtxSectionStringA/W (5), QueryActCtxW (7).
+    exports.entries.push_back(ExportEntry{
+        "AddRefActCtx", 0,
+        [&mgr](Marshaler& m) { mgr.impl_AddRefActCtx(m); }, 4});
+    exports.entries.push_back(ExportEntry{
+        "FindActCtxSectionStringA", 0,
+        [&mgr](Marshaler& m) { mgr.impl_FindActCtxSectionStringA(m); }, 20});
+    exports.entries.push_back(ExportEntry{
+        "FindActCtxSectionStringW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_FindActCtxSectionStringW(m); }, 20});
+    exports.entries.push_back(ExportEntry{
+        "QueryActCtxW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_QueryActCtxW(m); }, 28});
 
     // BOOL CancelSynchronousIo(HANDLE hThread)
     // https://learn.microsoft.com/en-us/windows/win32/fileio/cancelsynchronousio-func

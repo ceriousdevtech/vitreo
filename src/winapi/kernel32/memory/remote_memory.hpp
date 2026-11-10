@@ -59,6 +59,12 @@ using WindowSetParentHandler = std::function<bool(u32 child, u32 parent)>;
 /// (Learn: an HWND is valid system-wide). Returns ShowWindow's result, or
 /// nullopt when the window is not (or no longer) valid here.
 using WindowShowHandler = std::function<std::optional<u64>(u32 hwnd, i32 cmd)>;
+/// GetThreadContext (@p set false) / SetThreadContext (@p set true) on this
+/// process's primary thread while CreateProcess(CREATE_SUSPENDED) still holds
+/// it. @p record is a CONTEXT in this process's guest memory, laid out for
+/// @p is_64bit. Returns the NTSTATUS.
+using PrimaryContextHandler =
+    std::function<u32(bool set, GuestAddr record, bool is_64bit)>;
 /// Post an HWND-less message to this process's primary guest thread.
 using ThreadMessageHandler =
     std::function<bool(u32 message, u64 wparam, u64 lparam)>;
@@ -89,6 +95,13 @@ using ComInterfaceMarshalHandler = std::function<GuestAddr(
     u32 owner_pid, GuestAddr object, u32 pointer_size,
     std::span<const Byte> iid)>;
 
+
+/// Fetch a local immutable scene encoded by its owner. This callback runs on
+/// the RPC server thread, never the GUI thread. It must only copy owned local
+/// state: no outbound RPC, guest execution, GUI calls or borrowed payloads.
+/// nullopt is failure; an owned empty vector is a successful empty snapshot.
+using WindowSceneSnapshotHandler =
+    std::function<std::optional<std::vector<Byte>>()>;
 
 /// Pointer-width-independent representation of MEMORY_BASIC_INFORMATION used
 /// by the process-local memory RPC. The caller serializes this into the ABI
@@ -147,6 +160,9 @@ public:
     void set_window_show_handler(WindowShowHandler handler) {
         m_window_show = std::move(handler);
     }
+    void set_primary_context_handler(PrimaryContextHandler handler) {
+        m_primary_context = std::move(handler);
+    }
     void set_thread_message_handler(ThreadMessageHandler handler) {
         m_thread_message = std::move(handler);
     }
@@ -169,6 +185,13 @@ public:
         m_com_interface_marshal = std::move(handler);
     }
 
+    /// Callback replacement is thread-safe; invocation happens outside its
+    /// registration mutex. The callback must obey the local-copy contract.
+    void set_window_scene_snapshot_handler(WindowSceneSnapshotHandler handler) {
+        std::lock_guard lock(m_window_scene_snapshot_mutex);
+        m_window_scene_snapshot = std::move(handler);
+    }
+
 private:
     void serve();
 
@@ -185,6 +208,7 @@ private:
     WindowSetWindowPosHandler m_window_set_window_pos;
     WindowSetParentHandler m_window_set_parent;
     WindowShowHandler m_window_show;
+    PrimaryContextHandler m_primary_context;
     ThreadMessageHandler m_thread_message;
     WindowSendMessageHandler m_window_send_message;
     WindowPostMessageHandler m_window_post_message;
@@ -197,7 +221,15 @@ private:
     std::condition_variable m_resume_cv;
     bool m_initially_suspended{false};
     bool m_resumed{false};
+    std::mutex m_window_scene_snapshot_mutex;
+    WindowSceneSnapshotHandler m_window_scene_snapshot;
 };
+
+/// Schema-neutral owned snapshot bytes from the owner process. The transport
+/// enforces its existing 1 MiB transfer cap; nullopt means failure, while an
+/// empty vector means a successful empty snapshot.
+[[nodiscard]] std::optional<std::vector<Byte>> remote_window_scene_snapshot(
+    pid_t owner_pid);
 
 [[nodiscard]] bool remote_read_process_memory(
     pid_t pid, GuestAddr address, std::span<Byte> output);
@@ -213,10 +245,33 @@ private:
     pid_t pid, GuestAddr address, u64 maximum_address,
     RemoteMemoryBasicInformation& information);
 [[nodiscard]] bool remote_resume_primary_thread(pid_t pid);
+/// Get/SetThreadContext on @p pid's still-suspended primary thread, through a
+/// CONTEXT record at @p record in @p pid's guest memory. Returns the NTSTATUS,
+/// or nullopt when the process cannot be reached.
+[[nodiscard]] std::optional<u32> remote_primary_thread_context(
+    pid_t pid, bool set, GuestAddr record, bool is_64bit);
 /// True when @p pid has already published its process-local RPC endpoint.
 /// Unlike normal CREATE_SUSPENDED operations this probe never waits for a
 /// future endpoint to appear.
 [[nodiscard]] bool remote_process_endpoint_available(pid_t pid);
+
+/// Make @p member_pid a member of a JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE job
+/// owned by this process, across host processes. Returns the link descriptor
+/// (close-on-exec), or -1 when the peer has no endpoint.
+///
+/// A job's handles all live in this process, so its last handle closes when
+/// this process ends by any path, including TerminateProcess (SIGKILL) and a
+/// crash, which run no job teardown. The host closes the link then, and the
+/// member terminates itself with exit code 0. Plain close() of the link has
+/// the same effect: use it when the job's last handle closes.
+///
+/// Waits (up to ~30 s) for a member that has not published its endpoint
+/// yet; @p still_wanted, polled between attempts, ends the wait early.
+[[nodiscard]] int remote_link_job_kill_on_close(
+    pid_t member_pid, const std::function<bool()>& still_wanted = {});
+
+/// The job stopped killing on close: tell the member, then close @p link_fd.
+void release_job_kill_on_close_link(int link_fd);
 /// Execute @p function in @p pid's guest address space using that process's
 /// native guest calling convention.
 [[nodiscard]] std::optional<u64> remote_call_guest(

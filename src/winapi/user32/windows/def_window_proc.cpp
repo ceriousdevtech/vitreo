@@ -42,6 +42,26 @@ DefWindowProcManager::DefWindowProcManager(
 // def_window_proc
 // -----------------------------------------------------------------------------
 
+namespace {
+// Messages and values from winuser.h (MinGW SDK headers).
+constexpr u32 kWmCtlColorMsgBox = 0x0132, kWmCtlColorEdit = 0x0133, kWmCtlColorListBox = 0x0134,
+              kWmCtlColorBtn = 0x0135, kWmCtlColorDlg = 0x0136, kWmCtlColorScrollBar = 0x0137,
+              kWmCtlColorStatic = 0x0138;
+constexpr u32 kWmCharToItem = 0x002F, kWmCompareItem = 0x0039, kWmVKeyToItem = 0x002E,
+              kWmQueryDragIcon = 0x0037, kWmInitDialog = 0x0110, kWmGetFont = 0x0031,
+              kWmNcDestroy = 0x0082, kWmCommand = 0x0111;
+constexpr u32 kDmGetDefId = 0x0400, kDmSetDefId = 0x0401;
+constexpr u32 kDcHasDefId = 0x534B;
+constexpr u32 kIdCancel = 2, kBnClicked = 0;
+constexpr u32 kColorWindow = 5, kColorWindowText = 8, kColor3DFace = 15;
+constexpr i32 kOpaque = 2;
+constexpr u32 kButtonTypeMask = 0x0F, kBsPushButton = 0x00, kBsDefPushButton = 0x01;
+constexpr u16 kAtomButton = 0x0080;
+constexpr u32 kWsDisabled = 0x08000000;
+
+u64 sys_brush(u32 index) { return sys_colors::kSysBrushBase | index; }
+}  // namespace
+
 u64 DefWindowProcManager::def_window_proc(HWND hwnd, u32 msg, u64 wParam, u64 lParam) {
     if (windowing::diag::input_diag() &&
         ((msg >= 0x00A0 && msg <= 0x00AF) || msg == 0x0112 ||
@@ -90,6 +110,9 @@ u64 DefWindowProcManager::def_window_proc(HWND hwnd, u32 msg, u64 wParam, u64 lP
         case WM::SETTEXT:       return handle_settext(hwnd, lParam);
         case WM::GETTEXTLENGTH: return handle_gettextlength(hwnd);
         case WM::ERASEBKGND:    return handle_erasebkgnd(hwnd);
+        case kWmCtlColorMsgBox: case kWmCtlColorEdit: case kWmCtlColorListBox: case kWmCtlColorBtn:
+        case kWmCtlColorDlg: case kWmCtlColorScrollBar: case kWmCtlColorStatic:
+            return default_control_color(msg, wParam);
         case WM::QUERYOPEN:     return handle_queryopen();
         case WM::SYSCOMMAND:    return handle_syscommand(hwnd, wParam);
         case WM::PAINT:         return handle_paint(hwnd);
@@ -256,7 +279,10 @@ u64 DefWindowProcManager::handle_setcursor(HWND hwnd, u64 lParam) {
         m_wclass_mgr != nullptr) {
         if (const WindowClassData* cls =
                 m_wclass_mgr->find_by_atom(win->class_atom)) {
-            cursor = cls->hcursor;
+            // GCLP_HCURSOR: a system class's arrow (the dialog class #32770
+            // among them, dialog_class_cursor_probe) is resolved here; the
+            // raw field is 0 for those classes.
+            cursor = static_cast<u32>(m_wclass_mgr->class_cursor(*cls));
         }
     }
     if (windowing::diag::input_diag()) {
@@ -631,24 +657,206 @@ void impl_DefWindowProcA(Marshaler& m, DefWindowProcManager& dwp) {
     def_window_proc_thunk(m, dwp, true);
 }
 
-// DefDlgProc provides the default processing for dialog windows whose custom
-// window proc (e.g. PuTTY's config-box class) falls through to it. It is the
-// default-window-proc behavior plus dialog extras; for the messages that matter
-// to real dialogs (notably WM_PAINT, which MUST be validated or the window
-// re-posts WM_PAINT forever) routing to def_window_proc is correct. Previously
-// DefDlgProcA/W were missing-export stubs returning a bogus value, so dialog
-// WM_PAINT never validated (paint storm) and no default dialog behavior ran.
+
+GuestAddr DefWindowProcManager::dialog_dlgproc_for_def_dlg_proc(HWND hwnd) const {
+    const windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
+    if (win == nullptr || win->dlgproc == 0 || win->wndproc == win->dlgproc) return 0;
+    return static_cast<GuestAddr>(win->dlgproc);
+}
+
+bool DefWindowProcManager::is_direct_dialog_result(u32 msg) noexcept {
+    return msg == kWmCharToItem || msg == kWmCompareItem || msg == kWmVKeyToItem ||
+           msg == kWmQueryDragIcon || msg == kWmInitDialog ||
+           (msg >= kWmCtlColorMsgBox && msg <= kWmCtlColorStatic);
+}
+
+// WM_CTLCOLOR* default handling (Learn "Control-Color Messages"; measured
+// defdlgproc_probe on Windows 11, x86 and x64 alike): edit and list boxes get
+// the window colour, the dialog, button, static and message box the 3D face
+// colour; text is the window-text colour on an OPAQUE background of the
+// brush's colour. A scroll bar's default is a pattern brush in the 3D face
+// and window colours.
+u64 DefWindowProcManager::default_control_color(u32 msg, u64 hdc) {
+    if (!m_gdi_mgr) return 0;
+    const auto dc = static_cast<Handle>(hdc);
+    if (msg == kWmCtlColorScrollBar) {
+        (void)m_gdi_mgr->set_text_color(dc, sys_colors::get(kColor3DFace));
+        (void)m_gdi_mgr->set_bk_color(dc, sys_colors::get(kColorWindow));
+        (void)m_gdi_mgr->set_bk_mode(dc, kOpaque);
+        static bool logged = false;
+        if (!logged) {
+            logged = true;
+            std::fprintf(stderr, "[vitreo] UNIMPLEMENTED user32!DefWindowProc: WM_CTLCOLORSCROLLBAR default "
+                                 "pattern brush (returns NULL)\n");
+        }
+        return 0;
+    }
+    const u32 index = (msg == kWmCtlColorEdit || msg == kWmCtlColorListBox) ? kColorWindow : kColor3DFace;
+    (void)m_gdi_mgr->set_text_color(dc, sys_colors::get(kColorWindowText));
+    (void)m_gdi_mgr->set_bk_color(dc, sys_colors::get(index));
+    (void)m_gdi_mgr->set_bk_mode(dc, kOpaque);
+    return sys_brush(index);
+}
+
+// WM_ERASEBKGND: "Fills the dialog box client area by using either the brush
+// returned from the WM_CTLCOLORDLG message or with the default window color"
+// (Learn); the dialog class has no class brush. Measured: WM_CTLCOLORDLG goes
+// to the dialog once, the default brush is COLOR_3DFACE, the result is 1.
+u64 DefWindowProcManager::dialog_erase_background(HWND hwnd, u64 hdc) {
+    if (!m_gdi_mgr || !m_msgsend_mgr || hdc == 0) return 1;
+    const u64 brush = m_msgsend_mgr->send_message(hwnd, kWmCtlColorDlg, hdc, static_cast<u64>(hwnd));
+    const windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
+    if (win == nullptr) return 1;
+    const i32 w = win->client_rect.right - win->client_rect.left;
+    const i32 h = win->client_rect.bottom - win->client_rect.top;
+    const auto dc = static_cast<Handle>(hdc);
+    // A real GDI brush first: small GDI handles overlap COLOR_xxx + 1.
+    u32 color = 0;
+    if (brush != 0 && m_gdi_mgr->lookup_brush_color(static_cast<Handle>(brush), &color)) {
+        (void)m_gdi_mgr->fill_rect_gdi(dc, 0, 0, w, h, color);
+    } else if (const auto sys = brush != 0 ? sys_colors::from_brush(brush) : std::nullopt) {
+        (void)m_gdi_mgr->fill_rect_gdi(dc, 0, 0, w, h, *sys);
+    } else if (brush != 0) {
+        (void)m_gdi_mgr->fill_rect_with_brush(dc, 0, 0, w, h, static_cast<Handle>(brush));
+    }
+    return 1;
+}
+
+// WM_CLOSE: "Posts the BN_CLICKED notification message to the dialog box,
+// specifying IDCANCEL as the control identifier. If the dialog box has an
+// IDCANCEL control identifier and the control is currently disabled, the
+// procedure sounds a warning and does not post the message" (Learn).
+// Measured: the post carries the IDCANCEL control's handle, or NULL when the
+// dialog has none, and WM_CLOSE returns 0.
+u64 DefWindowProcManager::dialog_close(HWND hwnd) {
+    HWND cancel = NULL_HWND;
+    for (HWND child : m_hwnd_mgr.enum_children(hwnd)) {
+        const windowing::WindowData* c = m_hwnd_mgr.find(child);
+        if (c != nullptr && c->ctrl_id == kIdCancel) { cancel = child; break; }
+    }
+    if (cancel != NULL_HWND) {
+        const windowing::WindowData* c = m_hwnd_mgr.find(cancel);
+        if (c != nullptr && (!c->enabled || (c->style & kWsDisabled) != 0)) {
+            std::fputc('\a', stderr);  // the warning sound has no host meaning here
+            return 0;
+        }
+    }
+    if (m_msgsend_mgr) {
+        (void)m_msgsend_mgr->post_message(hwnd, kWmCommand, (kBnClicked << 16) | kIdCancel,
+                                          static_cast<u64>(cancel));
+    }
+    return 0;
+}
+
+// DM_GETDEFID: MAKELONG(id, DC_HASDEFID) of the default push button, else 0
+// (Learn). Measured: with no DM_SETDEFID it is the BS_DEFPUSHBUTTON child; an
+// id DM_SETDEFID named that no control has is reported only while no child
+// carries BS_DEFPUSHBUTTON.
+u64 DefWindowProcManager::dialog_get_default_id(HWND hwnd) {
+    const windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
+    if (win == nullptr) return 0;
+    const u32 stored = win->dialog_default_id;
+    u32 styled = 0;
+    bool stored_exists = false;
+    for (HWND child : m_hwnd_mgr.enum_children(hwnd)) {
+        const windowing::WindowData* c = m_hwnd_mgr.find(child);
+        if (c == nullptr) continue;
+        if (stored != 0 && c->ctrl_id == stored) stored_exists = true;
+        if (styled == 0 && c->class_atom == kAtomButton && (c->style & kButtonTypeMask) == kBsDefPushButton)
+            styled = c->ctrl_id;
+    }
+    const u32 id = stored_exists ? stored : styled != 0 ? styled : stored;
+    return id == 0 ? 0 : (static_cast<u64>(kDcHasDefId) << 16) | (id & 0xFFFF);
+}
+
+// DM_SETDEFID: the default push button becomes the control with id wParam;
+// the previous default button returns to BS_PUSHBUTTON (measured), returns
+// TRUE, also for an id no control has, which restyles nothing (measured: the
+// old default button keeps BS_DEFPUSHBUTTON and DM_GETDEFID still names it).
+u64 DefWindowProcManager::dialog_set_default_id(HWND hwnd, u32 id) {
+    windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
+    if (win == nullptr) return 0;
+    win->dialog_default_id = id;
+    bool exists = false;
+    for (HWND child : m_hwnd_mgr.enum_children(hwnd)) {
+        const windowing::WindowData* c = m_hwnd_mgr.find(child);
+        exists |= c != nullptr && c->ctrl_id == id;
+    }
+    if (!exists) return 1;
+    for (HWND child : m_hwnd_mgr.enum_children(hwnd)) {
+        windowing::WindowData* c = m_hwnd_mgr.find(child);
+        if (c == nullptr || c->class_atom != kAtomButton) continue;
+        const u32 type = c->style & kButtonTypeMask;
+        if (c->ctrl_id == id && type == kBsPushButton) {
+            c->style = (c->style & ~kButtonTypeMask) | kBsDefPushButton;
+        } else if (c->ctrl_id != id && type == kBsDefPushButton) {
+            c->style = (c->style & ~kButtonTypeMask) | kBsPushButton;
+        }
+    }
+    return 1;
+}
+
+u64 DefWindowProcManager::dialog_procedure(HWND hwnd, u32 msg, u64 wParam, u64 lParam, GuestAddr dlgproc) {
+    // DWLP_MSGRESULT starts each message at 0 (measured: a TRUE return without
+    // SetWindowLongPtr(DWLP_MSGRESULT) yields 0, not an earlier value).
+    if (windowing::WindowData* win = m_hwnd_mgr.find(hwnd)) win->msg_result = 0;
+    u64 result = 0;
+    if (dlgproc != 0 && m_guest_call) {
+        const u64 args[4] = {static_cast<u64>(hwnd), msg, wParam, lParam};
+        result = m_guest_call(dlgproc, args, 4, m_is_64bit);
+        if (!m_is_64bit) result = static_cast<u64>(static_cast<i64>(static_cast<i32>(result)));
+    }
+    if (result != 0) {
+        if (is_direct_dialog_result(msg)) return result;
+        const windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
+        return win != nullptr ? win->msg_result : 0;
+    }
+    return def_dlg_proc(hwnd, msg, wParam, lParam);
+}
+
+// The default processing of the predefined dialog procedure for a message
+// the DLGPROC returned FALSE for (Learn "Dialog Box Default Message
+// Processing"); every other message goes to DefWindowProc.
 u64 DefWindowProcManager::def_dlg_proc(HWND hwnd, u32 msg, u64 wParam,
                                        u64 lParam) {
-    if (msg == WM::ACTIVATE) {
-        // Learn DefDlgProc WM_ACTIVATE: restores focus to the saved control
-        // when activated, otherwise saves the control that has focus.
+    switch (msg) {
+    case WM::ACTIVATE:
+        // Restores focus to the saved control when activated, otherwise saves
+        // the control that has focus.
         if (m_dialog_activate) {
             m_dialog_activate(hwnd, (wParam & 0xFFFFu) != WA::INACTIVE);
         }
         return 0;
+    case kWmCharToItem:
+    case kWmCompareItem:
+    case kWmVKeyToItem:
+    case kWmInitDialog:
+        return 0;
+    case WM::ERASEBKGND:
+        return dialog_erase_background(hwnd, wParam);
+    case WM::CLOSE:
+        return dialog_close(hwnd);
+    case kDmGetDefId:
+        return dialog_get_default_id(hwnd);
+    case kDmSetDefId:
+        return dialog_set_default_id(hwnd, static_cast<u32>(wParam));
+    case kWmGetFont: {
+        // The dialog's DS_SETFONT font, 0 without one (measured).
+        const windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
+        return win != nullptr ? win->hfont : 0;
     }
-    return def_window_proc(hwnd, msg, wParam, lParam);
+    case kWmNcDestroy: {
+        // Frees the DS_SETFONT font, then DefWindowProc.
+        windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
+        if (win != nullptr && win->hfont != 0 && m_gdi_mgr) {
+            (void)m_gdi_mgr->delete_object(static_cast<Handle>(win->hfont));
+            win->hfont = 0;
+        }
+        return def_window_proc(hwnd, msg, wParam, lParam);
+    }
+    default:
+        return def_window_proc(hwnd, msg, wParam, lParam);
+    }
 }
 
 void impl_DefDlgProcW(Marshaler& m, DefWindowProcManager& dwp) {
@@ -657,7 +865,15 @@ void impl_DefDlgProcW(Marshaler& m, DefWindowProcManager& dwp) {
     auto wParam = m.arg(2);
     auto lParam = m.arg(3);
     dwp.set_is_64bit(m.cpu_is_64bit());
-    u64 result = dwp.def_dlg_proc(hwnd, msg, wParam, lParam);
+    // DefDlgProc "carries out the same default message processing as the
+    // window procedure for the predefined dialog box, which includes calling
+    // the dialog box procedure" (Learn, Custom Dialog Boxes): a custom dialog
+    // class's procedure gets DWLP_DLGPROC's handling first. A DLGPROC that is
+    // itself the window procedure only gets the defaults (it must not call
+    // DefDlgProc; doing so would recurse).
+    const GuestAddr dlgproc = dwp.dialog_dlgproc_for_def_dlg_proc(hwnd);
+    const u64 result = dlgproc != 0 ? dwp.dialog_procedure(hwnd, msg, wParam, lParam, dlgproc)
+                                    : dwp.def_dlg_proc(hwnd, msg, wParam, lParam);
     m.set_return(static_cast<u64>(result));
 }
 

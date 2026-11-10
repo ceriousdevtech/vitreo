@@ -29,6 +29,7 @@
 #include "winapi/graphics/common/gpu_event_signaler.hpp"
 #include "winapi/graphics/common/shared_keyed_mutex.hpp"
 #include "winapi/common/virtual_display_modes.hpp"
+#include "windowing/model/diag_flags.hpp"
 
 #include "graphics/contracts/backend_device.hpp"
 #include "graphics/common/diagnostic_path.hpp"
@@ -39,6 +40,7 @@
 #include <vitreo/virtual_tsc.hpp>
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
 #include <array>
 #include <chrono>
@@ -197,6 +199,15 @@ u32 D3D11Manager::create_swap_chain(
     u32 stereo, GuestAddr factory, GuestAddr restrict_output,
     GuestAddr& created) {
     created = 0;
+    static std::atomic<unsigned> trace_count{0};
+    const bool trace = windowing::diag::input_diag() &&
+        trace_count.fetch_add(1, std::memory_order_relaxed) < 64;
+    if (trace) {
+        std::fprintf(stderr,
+            "[input] DXGI CreateSwapChain request hwnd=0x%llx windowed=%u size=%ux%u flags=0x%x api=%u\n",
+            static_cast<unsigned long long>(desc.output_window), desc.windowed,
+            desc.width, desc.height, desc.flags, static_cast<unsigned>(api));
+    }
     InterfaceType interface_type{};
     Device* device = find_device(device_interface, &interface_type);
     if (device == nullptr ||
@@ -372,10 +383,29 @@ u32 D3D11Manager::create_swap_chain(
                    static_cast<unsigned long long>(desc.output_window));
     }
     created = address;
-    if (!fullscreen_requested) return d3d11::S_OK;
-    return enter_exclusive_fullscreen(address, 0) == d3d11::S_OK
-        ? d3d11::S_OK
-        : d3d11::DXGI_STATUS_OCCLUDED;
+    const u32 result = !fullscreen_requested ? d3d11::S_OK :
+        (enter_exclusive_fullscreen(address, 0) == d3d11::S_OK
+             ? d3d11::S_OK : d3d11::DXGI_STATUS_OCCLUDED);
+    // Buffers made at creation are the full-screen ones: no ResizeBuffers
+    // is owed (dxgi::ExclusiveState::needs_resize_buffers).
+    if (auto it = m_swap_chains.find(address); it != m_swap_chains.end()) {
+        it->second.exclusive.needs_resize_buffers = false;
+    }
+    if (trace) {
+        const auto current = m_swap_chains.find(address);
+        const bool found = current != m_swap_chains.end();
+        std::fprintf(stderr,
+            "[input] DXGI CreateSwapChain created chain=0x%llx hwnd=0x%llx requestedFullscreen=%d fullscreen=%d windowed=%u size=%ux%u flags=0x%x result=0x%08x\n",
+            static_cast<unsigned long long>(address),
+            static_cast<unsigned long long>(desc.output_window),
+            fullscreen_requested ? 1 : 0,
+            found && current->second.exclusive.fullscreen ? 1 : 0,
+            found ? current->second.desc.windowed : 0,
+            found ? current->second.desc.width : 0,
+            found ? current->second.desc.height : 0,
+            found ? current->second.desc.flags : 0, result);
+    }
+    return result;
 }
 
 void D3D11Manager::destroy_swap_chain_if_unreferenced(GuestAddr address) {
@@ -398,6 +428,12 @@ void D3D11Manager::destroy_swap_chain_if_unreferenced(GuestAddr address) {
     }
     SwapChain dead = std::move(swap_chain->second);
     m_swap_chains.erase(swap_chain);
+    // A dead chain holds no display mode (release_swap_chain left it).
+    GuestAddr owner = address;
+    (void)m_dxgi.exclusive_fullscreen().owner.compare_exchange_strong(owner, 0);
+    if (dead.exclusive.output != 0) {
+        m_dxgi.release_dxgi_object(dead.exclusive.output);
+    }
     free_object(address);
     dead.backend.reset();
     release_swap_chain_index_buffers(dead);
@@ -420,7 +456,7 @@ u32 D3D11Manager::release_swap_chain(GuestAddr address) {
     // leave full-screen before the last Release. One that does not still
     // gets the desktop mode, its window and the host Space back.
     if (swap_chain->second.ref_count == 1 &&
-        (swap_chain->second.fullscreen || swap_chain->second.host_space)) {
+        (swap_chain->second.exclusive.fullscreen || swap_chain->second.exclusive.host_space)) {
         leave_exclusive_fullscreen(address, true);
         swap_chain = m_swap_chains.find(address);
         if (swap_chain == m_swap_chains.end() ||

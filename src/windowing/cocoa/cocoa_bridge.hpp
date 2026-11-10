@@ -11,6 +11,7 @@
 #include "windowing/contracts/syslink_markup.hpp"
 #include "windowing/contracts/theme_host.hpp"
 #include "windowing/cocoa/cursor_warp_deltas.hpp"
+#include "windowing/model/cursor_confinement.hpp"
 #include "windowing/cocoa/wheel_delta.hpp"
 #include <vitreo/common.hpp>
 #include <array>
@@ -66,6 +67,10 @@ bool vtr_consume_main_wake_event(void* ns_event) noexcept;
 bool vtr_main_wake_pending() noexcept;
 /// True while AppKit is reading an event, including unarmed native sends.
 bool vtr_main_event_wait_active() noexcept;
+/// True while a worker's synchronous main-thread hop is running on the main
+/// thread. That hop translates input; it must not also run window maintenance
+/// the AppKit service loop already owns.
+bool vtr_sync_main_hop_active() noexcept;
 /// VITREO_GUI_PARK_DIAG counters.
 extern std::atomic<u64> g_gui_wake_posted, g_gui_wake_suppressed_flag,
     g_gui_wake_not_parked, g_gui_wake_consumed;
@@ -76,6 +81,10 @@ extern std::atomic<u64> g_gui_wake_posted, g_gui_wake_suppressed_flag,
 
 class CocoaBridge final : public User32Host, public ThemeHost {
 public:
+    /// How long a composition host stays off screen after its last visible
+    /// owned window hides or is destroyed (see owned_visibility_changed).
+    static constexpr u32 kOwnedHideHoldMs = 250;
+
     CocoaBridge();
     ~CocoaBridge();
 
@@ -412,6 +421,18 @@ public:
 
     /// Move/resize native window
     void set_frame(HWND hwnd, const Rect& rect) override;
+    /// set_frame for a top-level window while another window of the process
+    /// holds the exclusive display mode: the window is placed in the
+    /// aspect-fitted guest screen (cocoa_window_geometry.mm). False when no
+    /// exclusive display is active. Main thread.
+    bool place_in_exclusive_display(HWND hwnd, void* ns_window, const Rect& rect);
+    /// Re-place the process's other top-level windows when exclusive mode
+    /// starts or ends. Main thread.
+    void replace_windows_for_exclusive_display(HWND exclusive);
+    /// Content view @p ns_view's bounds become (0,0,width,height) — the guest
+    /// client size under a scaled placement — and its full-cover subviews are
+    /// laid onto them.
+    static void set_content_bounds(void* ns_view, double width, double height);
 
     /// Maximize (zoom) a native window to fill the screen.
     /// Returns the resulting content size (client rect) in Win32 pixels.
@@ -526,8 +547,9 @@ public:
     /// exclusive fullscreen those guest coordinates are mapped through the
     /// presentation surface, same as SetCursorPos. Pass enabled=false to
     /// release a guest clip (exclusive-mode confinement may still apply).
-    void set_cursor_clip(bool enabled, i32 left, i32 top, i32 right,
-                         i32 bottom) override;
+    [[nodiscard]] bool set_cursor_clip(bool enabled, i32 left, i32 top, i32 right,
+                         i32 bottom, const Rect& guest_screen) override;
+    void update_cursor_clip_screen(const Rect& guest_screen) override;
 
     /// Current guest ClipCursor rectangle, if any.
     [[nodiscard]] bool get_cursor_clip(i32& left, i32& top, i32& right,
@@ -937,6 +959,10 @@ public:
     /// @return true if the control was found
     bool set_control_font(
         HWND ctrl_hwnd, float pt_size, u16 weight, bool italic) override;
+    bool set_control_colors(HWND hwnd, const ControlColors& colors) override;
+    /// The colours a native label draws with (tests): text, and the
+    /// background fill when it draws one. False for no such label.
+    bool native_label_colors(HWND hwnd, u32* text, std::optional<u32>* fill) const;
     bool set_control_font_face(HWND ctrl_hwnd, const std::u16string& face, float pt_size,
                                u16 weight, bool italic) override;
 
@@ -951,6 +977,14 @@ public:
     bool edit_set_selection(HWND hwnd, u32 start, u32 end);
     bool edit_scroll_caret(HWND hwnd);
     void edit_set_read_only(HWND hwnd, bool read_only);
+    /// True when the native edit refuses typing (ES_READONLY; tests).
+    [[nodiscard]] bool edit_is_read_only(HWND hwnd) const;
+    /// Selects all of a multiline edit's text, takes the focus away and
+    /// says whether the selection is still highlighted (tests).
+    [[nodiscard]] bool edit_shows_unfocused_selection(HWND hwnd) const;
+    /// COLORREF a multiline edit gives newly typed text (tests); all ones
+    /// without one.
+    [[nodiscard]] u32 edit_typing_text_color(HWND hwnd) const;
     void edit_set_cue_banner(HWND hwnd, const std::wstring& cue);
     /// Start index of each visual line of a multiline view (empty otherwise).
     [[nodiscard]] std::vector<u32> edit_visual_line_starts(HWND hwnd) const;
@@ -1234,6 +1268,8 @@ public:
 
     /// True when the HWND's NSWindow is ordered on screen (ShowWindow visible).
     bool native_window_is_visible(HWND hwnd) const;
+    /// True when @p hwnd has a child/container view and AppKit hides it.
+    bool control_view_is_hidden(HWND hwnd) const;
 
     /// True when the HWND's NSWindow is AppKit-opaque. Client-drawn DComp
     /// hosts must not be, or premultiplied swap-chain alpha composites onto
@@ -1490,7 +1526,7 @@ public:
     /// The same for the host mouse event @p ns_event (NSEvent*): its device
     /// motion is its delta less the cursor warps Vitreo made before it
     /// (CursorWarpDeltas). Main-thread only.
-    void note_native_mouse_motion(i32 screen_x, i32 screen_y, void* ns_event,
+    void note_native_mouse_motion(i32& screen_x, i32& screen_y, void* ns_event,
                                   HWND hwnd) noexcept;
 
     /// The device motion of host mouse event @p ns_event (NSEvent*): its
@@ -1545,6 +1581,14 @@ public:
         const std::string& filter,
         const std::string& title);
 
+    /// ChooseColor as a modal NSColorPanel with OK / Cancel (closing the
+    /// panel is Cancel). Colors are Win32 COLORREFs (0x00BBGGRR) in sRGB.
+    struct ColorDialogResult {
+        bool ok = false;   ///< true when the user pressed OK
+        u32 colorref = 0;  ///< the chosen color
+    };
+    [[nodiscard]] ColorDialogResult show_color_dialog(u32 initial_colorref);
+
     /// Show a native Save File dialog.
     [[nodiscard]] FileDialogResult show_save_file_dialog(
         const std::string& initial_dir,
@@ -1591,6 +1635,10 @@ private:
         /// The pending show came from SW_SHOWNOACTIVATE / SW_SHOWNA /
         /// SWP_NOACTIVATE: order the window in without making it key.
         bool show_without_activation = false;
+        // Guest minimize intent is distinct from AppKit's observed state:
+        // miniaturize: can be refused during a Space/app transition.
+        bool requested_minimized = false;
+        bool minimize_attempted = false;
         bool is_dialog = false;
         u32 guest_style = 0;
         u32 guest_ex_style = 0;
@@ -1651,11 +1699,22 @@ private:
     /// primary display as a second visible white-box wizard.
     [[nodiscard]] bool guest_rect_intersects_any_monitor(const Rect& r) const;
 
-    /// True when a display-covering borderless popup owns other top-level
-    /// HWNDs. Those owned windows are the UI; presenting the host is the
-    /// black/chromeless plate seen between wizard pages.
+    /// True when a display-covering borderless popup owns a VISIBLE top-level
+    /// HWND. That owned window is the UI; presenting the host is the
+    /// black/chromeless plate seen between wizard pages. With no owned
+    /// window visible the host presents like any other borderless popup, so
+    /// content it shows itself (its WS_CHILD dialogs: a setup engine's
+    /// progress page) reaches the screen.
     [[nodiscard]] bool composition_host_defers_to_owned(
         const NativeWindowState& state) const;
+    /// An owned window of @p owner was shown, hidden or destroyed. A show
+    /// re-syncs the owner at once; a hide or destroy holds the owner back
+    /// for kOwnedHideHoldMs first, so a wizard's page change (destroy page N,
+    /// create page N+1) does not flash the host on screen in between.
+    /// @p resync_any_owner: also re-sync an owner that cannot be a
+    /// composition host (the destroy path always has).
+    void owned_visibility_changed(HWND owner, bool owned_now_visible,
+                                  bool resync_any_owner);
     void sync_borderless_fullscreen(HWND hwnd);
 
     /// NSWindow that should host owned dialogs of this owner-family, or
@@ -1953,6 +2012,8 @@ private:
     /// window must not resurrect them: a dialog that reflows itself (hiding
     /// the controls it does not need) would otherwise keep painting them.
     std::unordered_set<HWND> m_controls_hidden_by_guest;
+    /// Composition hosts inside their kOwnedHideHoldMs hold (main thread).
+    std::unordered_map<HWND, u64> m_owned_hide_hold;
     /// Peer-process WS_CHILD HWNDs hosted as local NSViews after SetParent.
     std::unordered_set<HWND> m_hosted_peer_children;
     /// Child HWNDs created with WS_EX_TRANSPARENT.
@@ -1991,6 +2052,10 @@ private:
         u32 radio_group{0}; ///< Non-zero for radio buttons (WS_GROUP-aware)
     };
     std::unordered_map<HWND, NativeControlState> m_control_state;
+    /// WM_CTLCOLORSTATIC colours of native labels, re-applied after each
+    /// text change (setStringValue drops attributed text backgrounds).
+    std::unordered_map<HWND, ControlColors> m_control_colors;
+    void apply_control_colors(HWND hwnd, void* ns_view);
     std::unordered_map<HWND, std::vector<HWND>> m_control_order;
     std::unordered_map<HWND, std::vector<HWND>> m_tab_order;
     std::unordered_map<HWND, std::unordered_map<u32, HWND>> m_mnemonics;
@@ -2108,6 +2173,9 @@ private:
     /// Guest ClipCursor rect in Windows Y-down screen coordinates.
     bool m_guest_cursor_clip_enabled = false;
     Rect m_guest_cursor_clip_win{};
+    Rect m_guest_cursor_clip_screen{};
+    CursorClipNativeState m_cursor_clip_native;
+    bool m_cursor_clip_point_requested = false;
     /// Exclusive fullscreen HWND whose display currently owns auto-confine
     /// (0 = none). Takes effect when the app is active and presentation is
     /// not suspended.
@@ -2134,9 +2202,11 @@ private:
 
     /// Recompute effective Cocoa clip from guest + exclusive state and (re)install
     /// the mouse-moved monitor. Main-thread only.
-    void refresh_cursor_clip_state();
+    bool refresh_cursor_clip_state();
     /// Warp the cursor inside the active clip if it has left. Main-thread only.
-    void enforce_cursor_clip();
+    bool enforce_cursor_clip();
+    bool release_cursor_clip_point_lock();
+    bool acquire_cursor_clip_point_lock();
     /// Map guest screen coords (GetCursorPos / ClipCursor space) to Cocoa
     /// global bottom-left coordinates via the window's presentation surface.
     /// @p require_surface: fail when no presented surface owns the point

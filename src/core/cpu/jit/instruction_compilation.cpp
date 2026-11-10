@@ -204,7 +204,31 @@ JitCompiler::fp_rounding_class(Opcode op) noexcept {
         op == Opcode::FBSTP_M80) {
         return FpRoundingClass::X87;
     }
-    // SSE/AVX, but only the opcodes whose RESULT depends on MXCSR.RC. Being
+    // Intel SDM Vol. 1 10.2.3: these operations also consume DAZ/RC or produce
+    // FP status, including exact half widening. Native calls may leave FPCR
+    // at host defaults, so they need SSE ownership before executing.
+    switch (op) {
+    case Opcode::CMPPS_XMM_XMMM128_IMM8:
+    case Opcode::CMPPD_XMM_XMMM128_IMM8:
+    case Opcode::CMPSS_XMM_XMMM32_IMM8:
+    case Opcode::CMPSD_XMM_XMMM64_IMM8:
+    case Opcode::COMISS_XMM_XMMM32:
+    case Opcode::UCOMISS_XMM_XMMM32:
+    case Opcode::COMISD_XMM_XMMM64:
+    case Opcode::UCOMISD_XMM_XMMM64:
+    case Opcode::ROUNDPS_XMM_XMMM128_IMM8:
+    case Opcode::ROUNDPD_XMM_XMMM128_IMM8:
+    case Opcode::ROUNDSS_XMM_XMMM32_IMM8:
+    case Opcode::ROUNDSD_XMM_XMMM64_IMM8:
+    case Opcode::DPPS_XMM_XMMM128_IMM8:
+    case Opcode::DPPD_XMM_XMMM128_IMM8:
+    case Opcode::VCVTPH2PS_XMM_XMMM64:
+    case Opcode::VCVTPH2PS_YMM_XMMM128:
+        return FpRoundingClass::Sse;
+    default:
+        break;
+    }
+    // Other SSE/AVX opcodes whose result depends on the FP environment. Being
     // over-inclusive here would be wrong in a way that matters: the integer
     // and data-movement SIMD lowerings are asserted to be helper-call free
     // (tests/cpu/test_jit_sse2_native.cpp scans for BLR X16), and a guard in
@@ -269,7 +293,7 @@ void JitCompiler::emit_block_fp_rounding_prologue(const BasicBlock& block) {
     // address, a BLR and a fill in front of every ADDPS / MULSS / CVTSI2SD.
     //
     // That is the entire measured gap between packed/scalar FP SSE and integer
-    // SSE of identical shape (ANDPS / PXOR / CMPPS are deliberately outside
+    // SSE of identical shape (ANDPS / PXOR are deliberately outside
     // FpRoundingClass and pay nothing): a flat ~3 ns per iteration that does
     // not depend on which FP op it guards, and that survives replacing the
     // lowered FADD with a plain AND.
@@ -392,6 +416,7 @@ bool JitCompiler::compile_instruction(const DecodedInstruction& instr,
                                        u64 instr_rip, u64 next_rip,
                                        bool is_last) {
     m_diagnostic_instruction_rip = instr_rip;
+    m_vex_bridge_source_proven = false;
     m_last_insn_delegated = false;
     m_flags.preserved_pred_nzcv = false;
     m_flags.lazy_kind_published = kLazyKindUnknown;

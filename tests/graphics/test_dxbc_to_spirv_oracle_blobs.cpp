@@ -94,6 +94,44 @@ TEST(DxbcToSpirvTest, BufinfoReportsViewElementCounts) {
     const auto unguarded = translate_dxbc_to_spirv(container);
     EXPECT_FALSE(unguarded.valid());
     EXPECT_NE(unguarded.failure.find("BUFINFO"), std::string::npos);
+
+    // The same blob through a descriptor-table translation. The push-block
+    // guard is refused; view_size_buffer supplies the word counts bufinfo
+    // divides into bytes (raw) or structures (structured). D3D11.3 22.4.1.
+    DxbcTranslationOptions table{};
+    std::array<u32, 4> next{};
+    for (const auto& declaration : container.binding_declarations) {
+        DxbcRegisterRemap entry{};
+        entry.register_class = declaration.register_class;
+        entry.space = declaration.space;
+        entry.first_register = declaration.lower;
+        entry.register_count = declaration.count();
+        entry.descriptor_set =
+            declaration.register_class == DxbcRegisterClass::ConstantBuffer ? 0u
+            : declaration.register_class == DxbcRegisterClass::ShaderResource
+                ? 1u
+            : declaration.register_class == DxbcRegisterClass::Sampler ? 2u
+                                                                       : 3u;
+        entry.first_slot = next[entry.descriptor_set];
+        const u32 span = declaration.unbounded() ? 1u : declaration.count();
+        next[entry.descriptor_set] += span;
+        table.register_remap.push_back(entry);
+    }
+    table.view_size_buffer.enabled = true;
+    table.view_size_buffer.srv = true;
+    table.view_size_buffer.srv_set = 0;
+    table.view_size_buffer.srv_binding = next[0];
+    table.view_size_buffer.uav = true;
+    table.view_size_buffer.uav_set = 0;
+    table.view_size_buffer.uav_binding = next[0] + 1u;
+    const auto ranged = translate_dxbc_to_spirv(container, table);
+    ASSERT_TRUE(ranged.valid()) << ranged.failure;
+    EXPECT_TRUE(spirv_contains_opcode(ranged.spirv, /*OpUDiv=*/134u));
+    auto refused = table;
+    refused.view_size_buffer = {};
+    const auto no_sizes = translate_dxbc_to_spirv(container, refused);
+    EXPECT_FALSE(no_sizes.valid());
+    EXPECT_NE(no_sizes.failure.find("BUFINFO"), std::string::npos);
 }
 
 // 22.4.21/22 sampleinfo / samplepos (111 / 110) on a multisampled t# and on

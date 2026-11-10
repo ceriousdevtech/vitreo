@@ -23,12 +23,14 @@ namespace vitreo::winapi {
 class Marshaler;
 class ThreadManager;
 
-/// Gives a new guest thread's register file the floating-point state Windows
+/// Gives a new guest thread's register file the execution state Windows
 /// starts every user thread with -- main thread and CreateThread, x86 and x64:
 /// x87 control word 0x27F (53-bit precision, all exceptions masked; NOT the
 /// FNINIT value 0x37F) and MXCSR 0x1F80. Measured:
-/// tools/oracle_probe/initial_fpu_state_probe.c / .expected.
-void seed_windows_initial_fpu(cpu::CpuState& state);
+/// tools/oracle_probe/initial_fpu_state_probe.c / .expected. EFLAGS starts
+/// with IF and fixed bit 1 set, measured by popf_user_flags_probe{32,64}.expected
+/// and the running CAPTURE rows in thread_context{,32}_probe.expected.
+void seed_windows_initial_cpu_state(cpu::CpuState& state);
 
 /// Returns an NTSTATUS.
 [[nodiscard]] u32 nt_get_context_thread(Marshaler& m, ThreadManager* threads,

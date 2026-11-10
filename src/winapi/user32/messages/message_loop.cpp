@@ -1,6 +1,7 @@
 /// @file message_loop.cpp
 /// @brief GetMessageW/PeekMessageW/DispatchMessageW/TranslateMessage (WIN32-053)
 
+#include "ipc/startup_message.hpp"
 #include "message_loop.hpp"
 #include "winapi/user32/messages/ansi_char_message.hpp"
 #include "winapi/user32/messages/message_time.hpp"
@@ -800,6 +801,7 @@ void MessageLoopManager::dispatch_get_message_hook(
 }
 
 void impl_GetMessageW(Marshaler& m, MessageLoopManager& mlm, bool ansi) {
+    ipc::notify_startup_message();
     GuestAddr msg_ptr = m.arg_ptr(0);
     auto filter_hwnd  = static_cast<windowing::HWND>(m.arg(1));
     auto filter_min   = static_cast<u32>(m.arg(2));

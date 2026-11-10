@@ -40,6 +40,9 @@
 #include "core/memory/guest_memory.hpp"
 #include "core/memory/mem_watch.hpp"
 #include "core/cpu/seh/seh32.hpp"
+#if defined(VITREO_ARCH_X86_64)
+#include "core/cpu/x64/native64.hpp"
+#endif
 #include "winapi/msvcrt/runtime/cxx_eh.hpp"
 #include <vitreo/diagnostics.hpp>
 #include "runtime/diagnostics/pc_trace.hpp"
@@ -136,6 +139,7 @@ static bool is_fault_class(u32 code, u32 flags) {
     if ((flags & EXCEPTION_SOFTWARE_ORIGINATE_FLAG) != 0) return false;
     switch (code) {
         case 0x80000003u:  // STATUS_BREAKPOINT (int3, trap)
+        case cpu::STATUS_ASSERTION_FAILURE: // INT2C: instruction-start IP, RF=0 (native probe)
         case 0x80000004u:  // STATUS_SINGLE_STEP (trap)
         case 0xC0000095u:  // STATUS_INTEGER_OVERFLOW (INTO, trap)
             return false;
@@ -367,6 +371,11 @@ bool dispatch_x64_exception(
     winapi::ModuleManager* module_mgr,
     u64 record_address)
 {
+    // JIT faults can arrive with pending arithmetic flags. CONTEXT producers
+    // require materialized EFLAGS, including before any nested guest callback
+    // or the saved pre-dispatch state is copied.
+    cpu.materialize_lazy_flags();
+
     // A JIT registers its unwind information through
     // RtlInstallFunctionTableCallback, which resolves each PC by calling back
     // into GUEST code. Both the search and the unwind pass may need it, and
@@ -717,7 +726,14 @@ bool dispatch_x64_exception(
             // A sentinel or null return address is a genuine end of stack; let
             // the existing end-of-walk reporting handle it rather than chasing
             // a synthetic address into the RUNTIME_FUNCTION lookup.
-            if (leaf_caller == 0 ||
+            bool native_sentinel = false;
+#if defined(VITREO_ARCH_X86_64)
+            // The native backend's executable stand-ins for both sentinels.
+            native_sentinel =
+                leaf_caller == cpu::x64::sentinel_return_address() ||
+                leaf_caller == cpu::x64::process_sentinel_return_address();
+#endif
+            if (leaf_caller == 0 || native_sentinel ||
                 leaf_caller == CALLBACK_RETURN_SENTINEL ||
                 leaf_caller == PROCESS_RETURN_SENTINEL) {
                 std::fprintf(stderr,
@@ -1004,6 +1020,10 @@ bool dispatch_x64_exception(
         static_cast<unsigned long long>(walk_rip));
     // A PCTRACE ring (VITREO_PCTRACE_RING) holds the instructions leading here.
     vitreo_pctrace_dump_ring("unhandled-x64-exception");
+    // The guest's own crash handler runs next and is often killed by its
+    // reporter process, so this is the last point the API history is intact.
+    // Opt-in (VITREO_HOSTCALL_RING); silent otherwise.
+    vitreo::diagnostics::dump_hostcalls("unhandled-x64-exception");
     for (u32 i = 0; i < walked_count; ++i) {
         std::fprintf(stderr,
             "[seh64-frame] depth=%u rip=0x%llx rsp=0x%llx runtime_func=0x%llx\n",

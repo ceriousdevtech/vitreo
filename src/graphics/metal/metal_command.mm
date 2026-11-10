@@ -2,6 +2,7 @@
 #import <Metal/Metal.h>
 #import <CoreFoundation/CoreFoundation.h>
 #include "graphics/metal/metal_gpu_profile.hpp"
+#include "graphics/common/frame_profile.hpp"
 #include "graphics/metal/metal_gpu_watch.hpp"
 
 #include <cstdio>
@@ -92,6 +93,9 @@ void MetalCommandRecorder::begin_render_pass(void* descriptor) {
                                       descriptor);
     }
     if (enc == nil) enc = [buf renderCommandEncoderWithDescriptor:desc];
+    if (frame_profile::enabled()) [[unlikely]] {
+        frame_profile::add(frame_profile::Counter::RenderEncoders);
+    }
     if (enc == nil) {
         m_render_encoder = nullptr;
         return;
@@ -318,7 +322,8 @@ void gpu_dump_floats(const char* tag, const void* base, usize byte_offset,
 }
 } // namespace
 
-void MetalCommandRecorder::set_vertex_buffer(void* buffer, usize offset, u32 index) {
+void MetalCommandRecorder::set_vertex_buffer(void* buffer, usize offset, u32 index,
+                                             u32 stride) {
     if (gpu_dump_enabled() && index >= 16 && buffer != nullptr) {
         id<MTLBuffer> b = (__bridge id<MTLBuffer>)buffer;
         if ([b contents] != nullptr) {
@@ -339,17 +344,26 @@ void MetalCommandRecorder::set_vertex_buffer(void* buffer, usize offset, u32 ind
     }
     if (index < kCachedBufferSlots && m_vertex_buffer_bound[index] &&
         m_vertex_buffers[index] == buffer &&
-        m_vertex_buffer_offsets[index] == offset) {
+        m_vertex_buffer_offsets[index] == offset &&
+        m_vertex_buffer_strides[index] == stride) {
         return;
     }
     id<MTLRenderCommandEncoder> enc =
         (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
     id<MTLBuffer> buf = (__bridge id<MTLBuffer>)buffer;
-    [enc setVertexBuffer:buf offset:offset atIndex:index];
+    if (stride != 0) {
+        // A dynamic-stride pipeline (only built on macOS 14+).
+        if (@available(macOS 14.0, *)) {
+            [enc setVertexBuffer:buf offset:offset attributeStride:stride atIndex:index];
+        }
+    } else {
+        [enc setVertexBuffer:buf offset:offset atIndex:index];
+    }
     if (index < kCachedBufferSlots) {
         m_vertex_buffers[index] = buffer;
         m_vertex_buffer_offsets[index] = offset;
         m_vertex_buffer_bound[index] = true;
+        m_vertex_buffer_strides[index] = stride;
     }
 }
 
@@ -472,6 +486,7 @@ void MetalCommandRecorder::bind_large_constants(bool vertex, const void* data,
             m_vertex_buffers[index] = slab->buffer;
             m_vertex_buffer_offsets[index] = start;
             m_vertex_buffer_bound[index] = true;
+            m_vertex_buffer_strides[index] = 0;
         }
     } else {
         [enc setFragmentBuffer:buf offset:start atIndex:index];
@@ -514,14 +529,156 @@ void MetalCommandRecorder::set_fragment_bytes(const void* data, usize length,
 }
 
 void MetalCommandRecorder::set_vertex_texture(void* texture, u32 index) {
+    if (m_render_encoder == nullptr) return;
+    if (texture == nullptr) {
+        texture = dummy_black_texture();
+        if (texture == nullptr) return;
+    }
+    if (index < kCachedTextureSlots && m_vertex_texture_bound[index] &&
+        m_vertex_textures[index] == texture) {
+        return;
+    }
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    id<MTLTexture> tex = (__bridge id<MTLTexture>)texture;
+    [enc setVertexTexture:tex atIndex:index];
+    if (index < kCachedTextureSlots) {
+        m_vertex_textures[index] = texture;
+        m_vertex_texture_bound[index] = true;
+    }
+}
+
+// ---- WS5 begin ----
+void MetalCommandRecorder::set_mesh_buffer(void* buffer, usize offset,
+                                           u32 index) {
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc setMeshBuffer:(__bridge id<MTLBuffer>)buffer offset:offset
+               atIndex:index];
+}
+
+void MetalCommandRecorder::set_mesh_bytes(const void* data, usize length,
+                                          u32 index) {
+    if (data == nullptr || length == 0) return;
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc setMeshBytes:data length:length atIndex:index];
+}
+
+void MetalCommandRecorder::set_mesh_texture(void* texture, u32 index) {
     if (texture == nullptr) {
         texture = dummy_black_texture();
         if (texture == nullptr) return;
     }
     id<MTLRenderCommandEncoder> enc =
         (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
-    id<MTLTexture> tex = (__bridge id<MTLTexture>)texture;
-    [enc setVertexTexture:tex atIndex:index];
+    [enc setMeshTexture:(__bridge id<MTLTexture>)texture atIndex:index];
+}
+
+void MetalCommandRecorder::set_mesh_sampler(void* sampler, u32 index) {
+    if (sampler == nullptr) return;
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc setMeshSamplerState:(__bridge id<MTLSamplerState>)sampler
+                     atIndex:index];
+}
+
+void MetalCommandRecorder::set_object_bytes(const void* data, usize length,
+                                            u32 index) {
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc setObjectBytes:data length:length atIndex:index];
+}
+
+void MetalCommandRecorder::memory_barrier_vertex_to_mesh() {
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc memoryBarrierWithScope:MTLBarrierScopeBuffers
+                    afterStages:MTLRenderStageVertex
+                   beforeStages:MTLRenderStageObject | MTLRenderStageMesh];
+}
+
+void MetalCommandRecorder::memory_barrier_mesh_to_mesh() {
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc memoryBarrierWithScope:MTLBarrierScopeBuffers
+                    afterStages:MTLRenderStageObject | MTLRenderStageMesh
+                   beforeStages:MTLRenderStageObject | MTLRenderStageMesh];
+}
+
+void MetalCommandRecorder::memory_barrier_fragment_writes() {
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc memoryBarrierWithScope:MTLBarrierScopeBuffers | MTLBarrierScopeTextures
+                    afterStages:MTLRenderStageFragment
+                   beforeStages:MTLRenderStageVertex | MTLRenderStageFragment];
+}
+
+void MetalCommandRecorder::memory_barrier_fragment_resources(
+    void* const* resources, u32 count) {
+    if (count == 0 || resources == nullptr || m_render_encoder == nullptr) {
+        return;
+    }
+    id<MTLResource> named[32];
+    NSUInteger n = 0;
+    for (u32 i = 0; i < count && n < 32; ++i) {
+        if (resources[i] == nullptr) continue;
+        id<MTLResource> resource = (__bridge id<MTLResource>)resources[i];
+        bool seen = false;
+        for (NSUInteger j = 0; j < n; ++j) {
+            if (named[j] == resource) {
+                seen = true;
+                break;
+            }
+        }
+        if (!seen) named[n++] = resource;
+    }
+    if (n == 0) return;
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc memoryBarrierWithResources:named
+                              count:n
+                        afterStages:MTLRenderStageFragment
+                       beforeStages:MTLRenderStageVertex | MTLRenderStageFragment];
+}
+
+void MetalCommandRecorder::draw_mesh(u32 object_threadgroups,
+                                     u32 threads_per_object,
+                                     u32 threads_per_mesh) {
+    if (m_profile) gpu_profile::note_work(m_profile.get());
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc drawMeshThreadgroups:MTLSizeMake(object_threadgroups, 1, 1)
+        threadsPerObjectThreadgroup:MTLSizeMake(threads_per_object, 1, 1)
+          threadsPerMeshThreadgroup:MTLSizeMake(threads_per_mesh, 1, 1)];
+}
+// ---- WS5 end ----
+
+void MetalCommandRecorder::draw_mesh_grid(const std::array<u32, 3>& grid,
+                                          const std::array<u32, 3>& object_shape,
+                                          const std::array<u32, 3>& mesh_shape,
+                                          void* indirect, usize indirect_offset) {
+    if (m_profile) gpu_profile::note_work(m_profile.get());
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    const MTLSize object = MTLSizeMake(object_shape[0], object_shape[1], object_shape[2]);
+    const MTLSize mesh = MTLSizeMake(mesh_shape[0], mesh_shape[1], mesh_shape[2]);
+    if (indirect != nullptr) {
+        [enc drawMeshThreadgroupsWithIndirectBuffer:(__bridge id<MTLBuffer>)indirect
+                               indirectBufferOffset:indirect_offset
+                        threadsPerObjectThreadgroup:object
+                          threadsPerMeshThreadgroup:mesh];
+        return;
+    }
+    [enc drawMeshThreadgroups:MTLSizeMake(grid[0], grid[1], grid[2])
+        threadsPerObjectThreadgroup:object
+          threadsPerMeshThreadgroup:mesh];
+}
+
+void MetalCommandRecorder::set_object_buffer(void* buffer, usize offset, u32 index) {
+    id<MTLRenderCommandEncoder> enc =
+        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    [enc setObjectBuffer:(__bridge id<MTLBuffer>)buffer offset:offset atIndex:index];
 }
 
 void MetalCommandRecorder::set_fragment_texture(void* texture, u32 index) {
@@ -544,14 +701,23 @@ void MetalCommandRecorder::set_fragment_texture(void* texture, u32 index) {
 }
 
 void MetalCommandRecorder::set_vertex_sampler(void* sampler, u32 index) {
+    if (m_render_encoder == nullptr) return;
     if (sampler == nullptr) {
         sampler = default_sampler();
         if (sampler == nullptr) return;
+    }
+    if (index < kCachedTextureSlots && m_vertex_sampler_bound[index] &&
+        m_vertex_samplers[index] == sampler) {
+        return;
     }
     id<MTLRenderCommandEncoder> enc =
         (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
     id<MTLSamplerState> s = (__bridge id<MTLSamplerState>)sampler;
     [enc setVertexSamplerState:s atIndex:index];
+    if (index < kCachedTextureSlots) {
+        m_vertex_samplers[index] = sampler;
+        m_vertex_sampler_bound[index] = true;
+    }
 }
 
 void MetalCommandRecorder::set_fragment_sampler(void* sampler, u32 index) {
@@ -683,6 +849,10 @@ void MetalCommandRecorder::set_front_facing(u32 winding) {
 }
 
 void MetalCommandRecorder::reset_render_state_cache() {
+    m_declared_logs.clear();
+    m_log_encoder = nullptr;
+    m_resource_usage.clear();
+    m_resource_encoder = nullptr;
     m_render_pipeline_bound = false;
     m_depth_stencil_bound = false;
     m_viewport_bound = false;
@@ -694,6 +864,8 @@ void MetalCommandRecorder::reset_render_state_cache() {
     m_front_facing_bound = false;
     m_vertex_buffer_bound.fill(false);
     m_fragment_buffer_bound.fill(false);
+    m_vertex_texture_bound.fill(false);
+    m_vertex_sampler_bound.fill(false);
     m_fragment_texture_bound.fill(false);
     m_fragment_sampler_bound.fill(false);
     m_vs_bytes_bound = false;
@@ -844,36 +1016,168 @@ void MetalCommandRecorder::draw_indexed_instanced_indirect(
 }
 
 void MetalCommandRecorder::use_render_resources(
-    const std::vector<void*>& resources) {
-    if (resources.empty()) return;
-    id<MTLRenderCommandEncoder> enc =
-        (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+    const std::vector<void*>& resources, bool read_only) {
+    use_render_resources(resources.data(), static_cast<u32>(resources.size()),
+                         read_only);
+}
+
+void MetalCommandRecorder::use_render_resources(
+    void* const* resources, u32 count, bool read_only) {
+    if (count == 0 || resources == nullptr || m_render_encoder == nullptr) {
+        return;
+    }
+    // Optional cumulative eligibility evidence. No counters/atomics run when
+    // unset, and the first sixteen powers of two bound each worker's output.
+    static const bool diagnose = [] {
+        const char* value = std::getenv("VITREO_INDIRECT_RESOURCE_ACCESS_DIAG");
+        return value != nullptr && value[0] == '1';
+    }();
+    if (diagnose) {
+        struct Counts { u64 draws{0}, read_only{0}, resources{0}, read_only_resources{0}; };
+        static thread_local Counts counts;
+        ++counts.draws;
+        counts.read_only += read_only ? 1u : 0u;
+        counts.resources += count;
+        if (read_only) counts.read_only_resources += count;
+        if (counts.draws <= 32768 && (counts.draws & (counts.draws - 1)) == 0) {
+            std::fprintf(stderr, "[indirect-access] draws=%llu read_only=%llu "
+                         "resources=%llu read_only_resources=%llu\n",
+                         static_cast<unsigned long long>(counts.draws),
+                         static_cast<unsigned long long>(counts.read_only),
+                         static_cast<unsigned long long>(counts.resources),
+                         static_cast<unsigned long long>(counts.read_only_resources));
+        }
+    }
+    if (m_resource_encoder != m_render_encoder) {
+        m_resource_usage.clear();
+        m_resource_encoder = m_render_encoder;
+        m_last_use_valid = false;
+    }
+    const unsigned need = read_only
+        ? static_cast<unsigned>(MTLResourceUsageRead)
+        : static_cast<unsigned>(MTLResourceUsageRead | MTLResourceUsageWrite);
+    if (m_last_use_valid && m_last_use_need == need &&
+        m_last_use.size() == count &&
+        std::memcmp(m_last_use.data(), resources, count * sizeof(void*)) ==
+            0) {
+        return;
+    }
+    std::vector<id<MTLResource>> fresh;
+    fresh.reserve(count);
+    for (u32 i = 0; i < count; ++i) {
+        void* resource = resources[i];
+        if (resource == nullptr) continue;
+        const auto it = m_resource_usage.find(resource);
+        const unsigned have = it == m_resource_usage.end() ? 0u : it->second;
+        if ((have & need) == need) continue;
+        if (it == m_resource_usage.end()) m_resource_usage.emplace(resource, need);
+        else it->second = have | need;
+        fresh.push_back((__bridge id<MTLResource>)resource);
+    }
+    if (!fresh.empty()) {
+        id<MTLRenderCommandEncoder> enc =
+            (__bridge id<MTLRenderCommandEncoder>)m_render_encoder;
+        // The frontend certifies the final typed shaders, never native
+        // reflection. Unknown/generated/native stages keep the RW union.
+        // Attachment access and object retention are independent of this
+        // declaration for resources reached through argument buffers.
+        if (frame_profile::enabled()) [[unlikely]] {
+            frame_profile::add(frame_profile::Counter::ResidencyDecls, fresh.size());
+        }
+        [enc useResources:fresh.data()
+                    count:fresh.size()
+                    usage:static_cast<MTLResourceUsage>(need)
+                   stages:MTLRenderStageVertex | MTLRenderStageFragment |
+                          MTLRenderStageObject | MTLRenderStageMesh];
+    }
+    // Every non-null entry is now declared at `need` on this encoder, so a
+    // repeated draw can skip the map.
+    m_last_use.assign(resources, resources + count);
+    m_last_use_need = need;
+    m_last_use_valid = true;
+}
+
+void MetalCommandRecorder::use_render_resident_log(
+    const MetalResidentToken& token) {
+    use_resident_log(token, m_render_encoder, true);
+}
+
+void MetalCommandRecorder::use_compute_resident_log(
+    const MetalResidentToken& token) {
+    use_resident_log(token, m_compute_encoder, false);
+}
+
+void MetalCommandRecorder::use_resident_log(const MetalResidentToken& token,
+                                            void* encoder, bool render) {
+    if (encoder == nullptr || token.log == nullptr || token.count == 0) return;
+    if (m_log_encoder != encoder) {
+        m_declared_logs.clear();
+        m_log_encoder = encoder;
+    }
+    DeclaredLog& declared = m_declared_logs[token.log.get()];
+    if (declared.log == nullptr) declared.log = token.log;
+    // A token that asks for writes re-declares what was declared read-only.
+    u32 from = declared.count;
+    if (token.writable && !declared.writable) {
+        from = 0;
+        declared.writable = true;
+    }
+    if (from >= token.count) return;
+    m_log_scratch.clear();
+    token.log->read(from, token.count, m_log_scratch);
+    declared.count = std::max(declared.count, token.count);
+    if (m_log_scratch.empty()) return;
+    if (frame_profile::enabled()) [[unlikely]] {
+        frame_profile::add(frame_profile::Counter::ResidencyDecls, m_log_scratch.size());
+    }
+    const MTLResourceUsage usage =
+        declared.writable ? (MTLResourceUsageRead | MTLResourceUsageWrite)
+                          : MTLResourceUsageRead;
     @autoreleasepool {
-        for (void* resource : resources) {
-            if (resource == nullptr) continue;
-            // Both stages, read and write. A table does not know which stages
-            // read it or which of its slots are u# rather than t#; that lives on
-            // the far side of the shader translator. Declaring the union is
-            // correct but conservative -- narrowing it is a later optimisation
-            // that needs the shader's declared access to be plumbed through.
-            [enc useResource:(__bridge id<MTLResource>)resource
-                      usage:MTLResourceUsageRead | MTLResourceUsageWrite
-                     stages:MTLRenderStageVertex | MTLRenderStageFragment];
+        std::vector<id<MTLResource>> list;
+        list.reserve(m_log_scratch.size());
+        for (void* handle : m_log_scratch) {
+            list.push_back((__bridge id<MTLResource>)handle);
+        }
+        if (render) {
+            [(__bridge id<MTLRenderCommandEncoder>)encoder
+                useResources:list.data()
+                       count:list.size()
+                       usage:usage
+                      stages:MTLRenderStageVertex | MTLRenderStageFragment];
+        } else {
+            [(__bridge id<MTLComputeCommandEncoder>)encoder
+                useResources:list.data()
+                       count:list.size()
+                       usage:usage];
         }
     }
 }
 
 void MetalCommandRecorder::use_compute_resources(
-    const std::vector<void*>& resources) {
+    const std::vector<void*>& resources, u32 read_count) {
     if (resources.empty()) return;
+    if (frame_profile::enabled()) [[unlikely]] {
+        frame_profile::add(frame_profile::Counter::ResidencyDecls, resources.size());
+    }
     id<MTLComputeCommandEncoder> enc =
         (__bridge id<MTLComputeCommandEncoder>)m_compute_encoder;
     @autoreleasepool {
-        for (void* resource : resources) {
-            if (resource == nullptr) continue;
-            [enc useResource:(__bridge id<MTLResource>)resource
-                       usage:MTLResourceUsageRead | MTLResourceUsageWrite];
-        }
+        const usize split = std::min<usize>(read_count, resources.size());
+        std::vector<id<MTLResource>> batch;
+        batch.reserve(resources.size());
+        const auto declare = [&](usize first, usize last, MTLResourceUsage usage) {
+            batch.clear();
+            for (usize i = first; i < last; ++i) {
+                if (resources[i] != nullptr)
+                    batch.push_back((__bridge id<MTLResource>)resources[i]);
+            }
+            if (!batch.empty()) [enc useResources:batch.data() count:batch.size() usage:usage];
+        };
+        declare(0, split, MTLResourceUsageRead);
+        // A resource also present as an SRV is upgraded by this later RW
+        // declaration; never deduplicate it out of the writable suffix.
+        declare(split, resources.size(), MTLResourceUsageRead | MTLResourceUsageWrite);
     }
 }
 
@@ -890,7 +1194,10 @@ void MetalCommandRecorder::begin_compute() {
             gpu_profile::begin_compute(m_profile, m_queue, m_command_buffer);
     }
     if (enc == nil) {
-        enc = [buf computeCommandEncoderWithDispatchType:MTLDispatchTypeConcurrent];
+        enc = [buf computeCommandEncoderWithDispatchType:MTLDispatchTypeSerial];
+    }
+    if (frame_profile::enabled()) [[unlikely]] {
+        frame_profile::add(frame_profile::Counter::ComputeEncoders);
     }
     m_compute_encoder = (__bridge_retained void*)enc;
     open_debug_groups(m_compute_encoder);
@@ -898,6 +1205,8 @@ void MetalCommandRecorder::begin_compute() {
 }
 
 void MetalCommandRecorder::end_compute() {
+    m_declared_logs.clear();
+    m_log_encoder = nullptr;
     if (m_compute_encoder) {
         close_debug_groups(m_compute_encoder);
         id<MTLComputeCommandEncoder> enc =
@@ -906,6 +1215,14 @@ void MetalCommandRecorder::end_compute() {
         m_compute_encoder = nullptr;
         VITREO_TRACE("[command] end_compute\n");
     }
+}
+
+void MetalCommandRecorder::memory_barrier_compute() {
+    id<MTLComputeCommandEncoder> enc =
+        (__bridge id<MTLComputeCommandEncoder>)m_compute_encoder;
+    // Concurrent encoders complete prior dispatches and publish side effects.
+    // Serial encoders already execute in dispatch order and ignore this API.
+    [enc memoryBarrierWithScope:MTLBarrierScopeBuffers | MTLBarrierScopeTextures];
 }
 
 void MetalCommandRecorder::set_compute_pipeline(void* pso) {
@@ -1025,6 +1342,9 @@ void MetalCommandRecorder::ensure_blit_encoder() {
                 gpu_profile::begin_blit(m_profile, m_queue, m_command_buffer);
         }
         if (enc == nil) enc = [buf blitCommandEncoder];
+        if (frame_profile::enabled()) [[unlikely]] {
+            frame_profile::add(frame_profile::Counter::BlitEncoders);
+        }
         m_blit_encoder = (__bridge_retained void*)enc;
         open_debug_groups(m_blit_encoder);
         VITREO_TRACE("[command] blit encoder created enc=%p\n", m_blit_encoder);
@@ -1266,6 +1586,8 @@ void MetalCommandRecorder::commit_and_wait() {
 // =============================================================================
 
 void MetalCommandRecorder::end_active_encoder() {
+    m_declared_logs.clear();
+    m_log_encoder = nullptr;
     if (m_render_encoder) {
         close_debug_groups(m_render_encoder);
         id<MTLRenderCommandEncoder> enc =

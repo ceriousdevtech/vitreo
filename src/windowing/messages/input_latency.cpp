@@ -6,12 +6,14 @@
 #include "windowing/messages/input_latency.hpp"
 
 #include <algorithm>
-#include <array>
+#include <cerrno>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <map>
 #include <mutex>
+#include <pthread.h>
 #include <string>
 #include <unistd.h>
 #include <vector>
@@ -44,9 +46,10 @@ struct State {
     std::vector<u32> event_age_us;
     std::vector<u32> click_to_pixel_us;
     std::atomic<u64> pending_action_ns{0};
-    std::array<Bucket, 0x20F> buckets{};   // indexed by message id
+    std::map<u32, Bucket> buckets;
     std::FILE* out = nullptr;
     bool trace = false;
+    bool all_messages = false;
     bool reported = false;
 };
 
@@ -68,10 +71,16 @@ bool init() {
         path += '.';
         path += std::to_string(static_cast<int>(::getpid()));
         s.out = std::fopen(path.c_str(), "w");
-        if (s.out == nullptr) return false;
+        if (s.out == nullptr) {
+            std::fprintf(stderr, "[vitreo] input latency: cannot open '%s': %s\n",
+                         path.c_str(), std::strerror(errno));
+            return false;
+        }
     }
     const char* trace = std::getenv("VITREO_INPUT_LATENCY_TRACE");
     s.trace = trace != nullptr && trace[0] == '1';
+    const char* all = std::getenv("VITREO_INPUT_LATENCY_ALL");
+    s.all_messages = all != nullptr && all[0] == '1';
     std::atexit([] { report(); });
     return true;
 }
@@ -182,14 +191,16 @@ u64 take_pending_action_age() noexcept {
 }
 
 void note_delivered(const MSG& msg) noexcept {
-    if (!enabled() || !is_input_message(msg.message)) return;
+    if (!enabled() ||
+        (!is_input_message(msg.message) && !state().all_messages)) return;
 
     t_pending_message = msg.message;
     t_pending_hwnd = msg.hwnd;
     t_pending_post_ns = msg.host_post_ns;
 
     if (msg.host_post_ns == 0) return;   // never went through post_impl
-    const u64 waited = now_ns() - msg.host_post_ns;
+    const u64 delivered_ns = now_ns();
+    const u64 waited = delivered_ns - msg.host_post_ns;
 
     State& s = state();
     std::lock_guard<std::mutex> lock(s.mutex);
@@ -199,6 +210,16 @@ void note_delivered(const MSG& msg) noexcept {
         b.queue_us.push_back(to_us(waited));
     } else {
         ++b.dropped;
+    }
+    if (s.trace && !is_input_message(msg.message) && waited >= 100000000u) {
+        u64 tid = 0;
+        pthread_threadid_np(nullptr, &tid);
+        std::fprintf(s.out,
+            "delivery pid=%d tid=%llu msg=0x%x hwnd=0x%x queue_us=%u "
+            "post_ns=%llu monotonic_ns=%llu\n",
+            static_cast<int>(::getpid()), tid, msg.message, msg.hwnd,
+            to_us(waited), msg.host_post_ns, delivered_ns);
+        std::fflush(s.out);
     }
 }
 
@@ -212,7 +233,8 @@ void note_flush(const MSG& msg, u64 begin_ns) noexcept {
 }
 
 u64 note_dispatch_begin(const MSG& msg) noexcept {
-    if (!enabled() || !is_input_message(msg.message)) return 0;
+    if (!enabled() ||
+        (!is_input_message(msg.message) && !state().all_messages)) return 0;
     return now_ns();
 }
 
@@ -236,16 +258,23 @@ void note_dispatch_end(const MSG& msg, u64 begin_ns) noexcept {
         Bucket& b = s.buckets[msg.message];
         if (b.proc_us.size() < kMaxSamples) b.proc_us.push_back(to_us(proc));
     }
-    if (s.trace && s.out != nullptr) {
+    if (s.trace && s.out != nullptr &&
+        (is_input_message(msg.message) || proc >= 100000000u ||
+         (paired && end_ns - post_ns >= 100000000u))) {
+        u64 tid = 0;
+        pthread_threadid_np(nullptr, &tid);
         std::fprintf(s.out,
             "msg=0x%03x %-16s hwnd=0x%x queue_us=%u proc_us=%u total_us=%u "
-            "wparam=0x%llx lparam=0x%llx\n",
+            "wparam=0x%llx lparam=0x%llx pid=%d tid=%llu "
+            "monotonic_ns=%llu paired=%d\n",
             msg.message, message_name(msg.message), msg.hwnd,
             paired ? to_us(begin_ns - post_ns) : 0u,
             to_us(proc),
             paired ? to_us(end_ns - post_ns) : 0u,
             static_cast<unsigned long long>(msg.wParam),
-            static_cast<unsigned long long>(msg.lParam));
+            static_cast<unsigned long long>(msg.lParam),
+            static_cast<int>(::getpid()), tid, end_ns, paired ? 1 : 0);
+        if (!is_input_message(msg.message)) std::fflush(s.out);
     }
 }
 
@@ -297,8 +326,7 @@ void report_to(std::FILE* out) noexcept {
     }
 
     bool any = false;
-    for (u32 id = 0; id < s.buckets.size(); ++id) {
-        Bucket& b = s.buckets[id];
+    for (auto& [id, b] : s.buckets) {
         if (b.n == 0 && b.proc_us.empty() && b.flush_us.empty()) continue;
         any = true;
         char label[32];

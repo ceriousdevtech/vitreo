@@ -26,6 +26,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <optional>
+#include <unistd.h>
 
 using namespace vitreo;
 using namespace vitreo::winapi;
@@ -499,7 +500,8 @@ TEST_F(ThreadTest, DuplicateCurrentThreadHandleReturnsRealThreadHandle) {
     EXPECT_NE(duplicated, ThreadManager::get_current_thread());
     EXPECT_TRUE(m_handles->is_valid(duplicated));
     EXPECT_EQ(m_handles->get_type(duplicated), HandleType::Thread);
-    EXPECT_EQ(m_mgr->get_thread_by_handle(duplicated), m_mgr->get_thread(1));
+    EXPECT_EQ(m_mgr->get_thread_by_handle(duplicated),
+              m_mgr->get_thread(m_mgr->main_thread_id()));
 }
 
 TEST_F(ThreadTest, DuplicateRealThreadHandleReturnsAnotherRealThreadHandle) {
@@ -519,7 +521,10 @@ TEST_F(ThreadTest, DuplicateRealThreadHandleReturnsAnotherRealThreadHandle) {
 // 6. GetCurrentThreadId returns the calling thread's guest TID
 // ---------------------------------------------------------------------------
 TEST_F(ThreadTest, GetCurrentThreadIdReturnsMainTid) {
-    EXPECT_EQ(m_mgr->get_current_thread_id(), 1u);
+    const u32 tid = m_mgr->main_thread_id();
+    EXPECT_EQ(m_mgr->get_current_thread_id(), tid);
+    EXPECT_NE(tid, 0u);
+    EXPECT_EQ(tid % 4u, 0u);
 }
 
 TEST_F(ThreadTest, GetCurrentThreadIdFollowsPerHostThreadTid) {
@@ -530,7 +535,7 @@ TEST_F(ThreadTest, GetCurrentThreadIdFollowsPerHostThreadTid) {
 }
 
 TEST_F(ThreadTest, MainThreadIsMarkedLaunched) {
-    const GuestThread* main_thread = m_mgr->get_thread(1);
+    const GuestThread* main_thread = m_mgr->get_thread(m_mgr->main_thread_id());
     ASSERT_NE(main_thread, nullptr);
     EXPECT_TRUE(main_thread->launched);
 }
@@ -1464,10 +1469,33 @@ TEST_F(ThreadTest, IdentityAllocationFailureDoesNotUseALocalFallback) {
 }
 
 TEST_F(ThreadTest, LocalIdentityExhaustionDoesNotWrapIntoLiveIds) {
-    ThreadManager exhausted(*m_handles, UINT32_MAX);
-    EXPECT_EQ(exhausted.allocate_thread_id(), 0u);
-    EXPECT_EQ(exhausted.allocate_thread_id(), 0u);
-    EXPECT_EQ(exhausted.create_thread(0, 0x1000, 0, 0, nullptr), NULL_HANDLE);
+    namespace fs = std::filesystem;
+    const auto root = fs::temp_directory_path() /
+        ("vitreo-thread-id-exhausted-" + std::to_string(::getpid()));
+    fs::create_directories(root / "runtime");
+    const char* scope = std::getenv("VITREO_IPC_SCOPE");
+    const std::optional<std::string> previous = scope
+        ? std::optional<std::string>(scope) : std::nullopt;
+    struct Restore {
+        std::optional<std::string> scope;
+        fs::path path;
+        ~Restore() {
+            if (scope) ::setenv("VITREO_IPC_SCOPE", scope->c_str(), 1);
+            else ::unsetenv("VITREO_IPC_SCOPE");
+            std::error_code ec;
+            fs::remove_all(path, ec);
+        }
+    } restore{previous, root};
+    ASSERT_EQ(::setenv("VITREO_IPC_SCOPE", root.c_str(), 1), 0);
+    const u32 exhausted_counter = 0x80000000u;
+    {
+        std::ofstream out(root / "runtime/next-cid", std::ios::binary | std::ios::trunc);
+        out.write(reinterpret_cast<const char*>(&exhausted_counter),
+                  sizeof(exhausted_counter));
+    }
+    EXPECT_EQ(m_mgr->allocate_thread_id(), 0u);
+    EXPECT_EQ(m_mgr->allocate_thread_id(), 0u);
+    EXPECT_EQ(m_mgr->create_thread(0, 0x1000, 0, 0, nullptr), NULL_HANDLE);
     EXPECT_EQ(get_last_error(), error_codes::ERROR_NOT_ENOUGH_MEMORY);
 }
 

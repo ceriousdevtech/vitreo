@@ -157,7 +157,6 @@ ThreadManager::ThreadManager(HandleTable& handles, u32 primary_thread_id)
         std::fprintf(stderr, "[vitreo] primary thread identity allocation failed\n");
         return;
     }
-    m_next_tid.store(primary_thread_id + 1u, std::memory_order_relaxed);
     set_current_thread_id(primary_thread_id);
     g_thread_manager = this;
     diagnostics::set_perf_thread_snapshot(&snapshot_threads_for_perf);
@@ -177,19 +176,9 @@ ThreadManager::ThreadManager(HandleTable& handles, u32 primary_thread_id)
 }
 
 u32 ThreadManager::allocate_thread_id() {
-    const u32 system_tid = ipc::allocate_system_thread_id();
-    if (system_tid != 0) return system_tid;
-    // A configured capsule must not fall back to a process-local namespace:
-    // a failed shared allocation would silently duplicate another guest TID.
-    if (const char* scope = std::getenv("VITREO_IPC_SCOPE"); scope && *scope)
-        return 0;
-    u32 next = m_next_tid.load(std::memory_order_relaxed);
-    while (next != 0) {
-        if (m_next_tid.compare_exchange_weak(next, next + 1u,
-                                            std::memory_order_relaxed))
-            return next;
-    }
-    return 0;
+    // Process and thread IDs share one client-ID counter. A failed allocation
+    // stays failed: a second counter would reuse an ID the first one issued.
+    return ipc::allocate_system_thread_id();
 }
 
 ThreadManager::~ThreadManager() {
@@ -331,7 +320,7 @@ Handle ThreadManager::create_thread(usize stack_size, GuestAddr start_address,
 
     // Without a runtime (unit tests) the start context has no stack yet.
     thread->cpu.init_long_mode();
-    seed_windows_initial_fpu(thread->cpu);
+    seed_windows_initial_cpu_state(thread->cpu);
     thread->cpu.rip = start_address;
     thread->cpu.gpr.set64(static_cast<u8>(cpu::RegIndex::RCX), parameter);
     thread->cpu.gpr.set64(static_cast<u8>(cpu::RegIndex::RDX), second_parameter);
@@ -408,7 +397,12 @@ void ThreadManager::user_thread_start(Marshaler& m) const {
     // exit=5678). Return into the callback sentinel so the runner takes
     // RAX as the exit code, matching a normal ThreadProc return.
     auto& memory = m.memory();
-    const GuestAddr ret = callback_return_sentinel(cpu->is_64bit());
+    // The primary thread reaches this only when a parent redirected its
+    // suspended start (SetThreadContext) and the redirect continues here; its
+    // image entry then returns as from an ordinary process start.
+    const bool primary = get_current_thread_id_static() == main_thread_id();
+    const GuestAddr ret = primary ? process_return_sentinel(cpu->is_64bit())
+                                  : callback_return_sentinel(cpu->is_64bit());
     if (cpu->is_64bit()) {
         const GuestAddr start = cpu->gpr.get64(static_cast<u8>(cpu::RegIndex::RCX));
         const GuestAddr param = cpu->gpr.get64(static_cast<u8>(cpu::RegIndex::RDX));

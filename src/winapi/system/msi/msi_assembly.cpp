@@ -17,10 +17,12 @@
 #include "winapi/kernel32/locale/string_conv.hpp"
 #include "capsule/registry/registry.hpp"
 #include "capsule/vfs/vfs.hpp"
+#include "winapi/common/sxs/sxs_context.hpp"
 
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
+#include <map>
 #include <memory>
 #include <random>
 
@@ -239,6 +241,35 @@ std::string random_staging_name() {
 std::string manifest_file_name(Session& s, const PackageAssembly& a) {
     const FileRow* f = find_file_row(s, a.manifest);
     return f ? target_file_name(s, *f) : std::string{};
+}
+
+// A Win32 assembly name (MsiAssemblyName rows / the published value name)
+// as a side-by-side identity.
+std::optional<sxs::Identity> win32_identity(const AssemblyName& n) {
+    sxs::Identity id;
+    id.name = n.name;
+    for (const auto& [k, v] : n.attributes) {
+        if (iequals(k, "type")) id.type = v;
+        else if (iequals(k, "version")) id.version = sxs::Version::parse(v);
+        else if (iequals(k, "processorArchitecture")) id.architecture = v;
+        else if (iequals(k, "publicKeyToken")) id.public_key_token = lower(v);
+        else if (iequals(k, "language")) id.language = v;
+    }
+    if (id.type.empty()) id.type = "win32";
+    if (!id.version || id.architecture.empty()) return std::nullopt;
+    return id;
+}
+
+std::optional<sxs::Identity> win32_identity(const PackageAssembly& a) {
+    const auto n = parse_win32_assembly_name(a.identity());
+    return n ? win32_identity(*n) : std::nullopt;
+}
+
+bool same_win32_identity(const sxs::Identity& a, const sxs::Identity& b) {
+    return sxs::iequal(a.name, b.name) && sxs::iequal(a.type, b.type) && a.version == b.version &&
+           sxs::iequal(a.architecture, b.architecture) && sxs::iequal(a.public_key_token, b.public_key_token) &&
+           sxs::iequal(a.language.empty() || a.language == "*" ? "neutral" : a.language,
+                       b.language.empty() || b.language == "*" ? "neutral" : b.language);
 }
 
 }  // namespace
@@ -463,8 +494,14 @@ std::optional<std::string> resolve_assembly_key_path(capsule::Vfs& vfs, const st
     const usize slash = key_path.find('\\');
     if (slash == std::string_view::npos) return std::nullopt;
     if (key_path.front() == '>') {
-        log_unimplemented(api, "a global Win32 assembly's WinSxS path (the component-store hash is undocumented)");
-        return std::nullopt;
+        (void)api;
+        const auto name = parse_win32_assembly_name(key_path.substr(slash + 1));
+        const auto id = name ? win32_identity(*name) : std::nullopt;
+        if (!id) return std::nullopt;
+        const auto entry = sxs::store_find(vfs, windows_dir, *id);
+        if (!entry) return std::nullopt;
+        const std::string file(key_path.substr(1, slash - 1));
+        return file.empty() ? entry->manifest_path : entry->directory + "\\" + file;
     }
     const auto id = parse_net_assembly_name(key_path.substr(slash + 1));
     if (!id) return std::nullopt;
@@ -478,9 +515,21 @@ AssemblyInstall plan_assembly_install(Session& session, capsule::Vfs* vfs, const
     const auto a = package_assembly(session, component);
     if (!a || !a->global()) return out;
     if (a->win32) {
-        log_unimplemented("InstallFiles", "global Win32 assembly (WinSxS: the component-store directory hash is "
-                                          "undocumented and no Vitreo loader probes WinSxS)");
-        out.kind = AssemblyInstall::Kind::Unsupported;
+        // Learn "Installation of Win32 Assemblies": a global Win32 assembly
+        // goes to the side-by-side store, not the component's directory.
+        const auto id = win32_identity(*a);
+        if (!id) {
+            std::fprintf(stderr, "[vitreo] msi: MsiAssemblyName of %s is not a complete Win32 identity\n",
+                         component.c_str());
+            out.kind = AssemblyInstall::Kind::Unsupported;
+            return out;
+        }
+        if (vfs != nullptr && sxs::store_find(*vfs, windows_dir_of(session), *id)) {
+            out.kind = AssemblyInstall::Kind::AlreadyCached;
+            return out;
+        }
+        out.kind = AssemblyInstall::Kind::Stage;
+        out.staging = windows_dir_of(session) + "\\WinSxS\\InstallTemp\\" + random_staging_name() + "\\";
         return out;
     }
     const auto id = parse_net_assembly_name(a->identity());
@@ -517,6 +566,57 @@ void schedule_assembly_commit(ActionContext& ctx, const std::string& component, 
     const std::string manifest = manifest_file_name(s, *a), windows = windows_dir_of(s), identity = a->identity();
     Services* services = &ctx.services();
     auto target = std::make_shared<std::string>();
+
+    if (a->win32) {
+        const auto expected = win32_identity(*a);
+        // Check while the script runs: the staged manifest is the assembly
+        // MsiAssemblyName describes (Learn "MsiAssemblyName Table": the
+        // values must match the assembly's manifest), else the install rolls
+        // back with the staged copies.
+        ScriptOp check;
+        check.action = "InstallFiles";
+        check.run = [=]() -> u32 {
+            capsule::Vfs* vfs = services->vfs;
+            if (vfs == nullptr || !expected) return kActionFailure;
+            const auto bytes = read_file(*vfs, staging + manifest);
+            const auto parsed = bytes ? sxs::parse_manifest(*bytes) : std::nullopt;
+            if (!parsed || !parsed->identity || !same_win32_identity(*parsed->identity, *expected)) {
+                std::fprintf(stderr, "[vitreo] msi: %s is not the Win32 assembly %s\n", (staging + manifest).c_str(),
+                             identity.c_str());
+                return kActionFailure;
+            }
+            return kActionSuccess;
+        };
+        ctx.schedule(std::move(check));
+
+        ScriptOp commit;
+        commit.action = "InstallFiles";
+        commit.commit_only = true;
+        commit.run = [=]() -> u32 {
+            capsule::Vfs* vfs = services->vfs;
+            if (vfs == nullptr) return kActionSuccess;
+            const auto bytes = read_file(*vfs, staging + manifest);
+            if (!bytes) return kActionFailure;
+            std::map<std::string, std::string> sources;
+            std::string catalog;
+            for (const std::string& f : files) {
+                sources[f] = staging + f;
+                if (f.size() > 4 && iequals(std::string_view(f).substr(f.size() - 4), ".cat")) catalog = staging + f;
+            }
+            const u32 error = sxs::store_install(*vfs, windows, *bytes, sources, catalog);
+            if (error != 0) {
+                std::fprintf(stderr, "[vitreo] msi: installing %s into the side-by-side store failed (%u)\n",
+                             identity.c_str(), error);
+            }
+            for (const std::string& f : files) (void)vfs->remove(staging + f);
+            std::string dir = staging;
+            while (!dir.empty() && dir.back() == '\\') dir.pop_back();
+            if (dir_empty(*vfs, dir)) (void)vfs->remove(dir);
+            return error == 0 ? kActionSuccess : kActionFailure;
+        };
+        ctx.schedule(std::move(commit));
+        return;
+    }
 
     // First step (Learn "Rollback of Assemblies in the Global Assembly
     // Cache"): the staged assembly is checked while the script runs; a
@@ -582,9 +682,54 @@ bool schedule_assembly_removal(ActionContext& ctx, const std::string& component)
     Session& s = ctx.session();
     const auto a = package_assembly(s, component);
     if (!a || !a->global()) return false;
-    // A global Win32 assembly is never installed here (see InstallFiles):
-    // nothing of it is in the component's directory or anywhere else.
-    if (a->win32) return true;
+    if (a->win32) {
+        const auto id = win32_identity(*a);
+        if (!id) return true;
+        capsule::Registry* registry = ctx.services().registry;
+        Services* services = &ctx.services();
+        const auto db = action_database(ctx);
+        const std::string sid = db ? db->user_sid() : std::string{};
+        const std::string windows = windows_dir_of(s);
+        const sxs::Identity identity = *id;
+        ScriptOp commit;
+        commit.action = "RemoveFiles";
+        commit.commit_only = true;
+        commit.run = [=]() -> u32 {
+            capsule::Vfs* vfs = services->vfs;
+            if (vfs == nullptr) return kActionSuccess;
+            // The store copy stays while any product still publishes it
+            // (MsiUnpublishAssemblies ran earlier in the script).
+            if (registry != nullptr) {
+                ProductDatabase d(*registry, sid);
+                for (const u32 context : {kContextMachine, kContextUserUnmanaged, kContextUserManaged}) {
+                    const auto keys = d.keys(context, sid);
+                    auto k = registry->open_key(registry->view_root(keys.advertised_hive, capsule::RegView::Native64),
+                                                keys.advertised_root + L"\\Win32Assemblies\\Global", false);
+                    if (k.is_err()) continue;
+                    bool referenced = false;
+                    if (auto names = registry->enum_values(k.value()); names.is_ok()) {
+                        for (const std::wstring& n : names.value()) {
+                            const auto other_name = parse_win32_assembly_name(narrow(n));
+                            const auto other = other_name ? win32_identity(*other_name) : std::nullopt;
+                            if (!other || !same_win32_identity(*other, identity)) continue;
+                            auto v = registry->query_value(k.value(), n);
+                            if (v.is_ok())
+                                if (const auto* list = std::get_if<std::vector<std::wstring>>(&v.value().data))
+                                    referenced = std::any_of(list->begin(), list->end(),
+                                                             [](const std::wstring& e) { return !e.empty(); });
+                            if (referenced) break;
+                        }
+                    }
+                    registry->close_key(k.value());
+                    if (referenced) return kActionSuccess;
+                }
+            }
+            (void)sxs::store_remove(*vfs, windows, identity);
+            return kActionSuccess;
+        };
+        ctx.schedule(std::move(commit));
+        return true;
+    }
     const auto id = parse_net_assembly_name(a->identity());
     if (!id) return true;
     capsule::Registry* registry = ctx.services().registry;
@@ -716,10 +861,6 @@ u32 assembly_publication(ActionContext& ctx, bool publish) {
     Session* session = &s;
     Services* services = &ctx.services();
     for (const PackageAssembly& a : wanted) {
-        if (publish && a.win32 && a.global()) {
-            log_unimplemented(action, "global Win32 assembly (WinSxS store)");
-            return kActionFailure;
-        }
         std::string context = "Global";
         if (!a.global()) {
             context = file_target_path(s, a.application);

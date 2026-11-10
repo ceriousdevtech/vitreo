@@ -16,8 +16,12 @@
 #include "tessellation_shaders.h"
 #include "../oracle_data/d3d11_gsso_shaders.h"
 
+#include <array>
+#include <cstring>
+#include <optional>
 #include <string>
 #include <tuple>
+#include <vector>
 
 using namespace vitreo;
 using namespace vitreo::graphics;
@@ -375,4 +379,307 @@ TEST(Tessellation, AForkPhaseWritesTheRegisterItsInstanceIndexes) {
     EXPECT_EQ(constants[info + 0], 4u);
     EXPECT_EQ(constants[info + 1], 6u);
     EXPECT_EQ(constants[info + 2], 15u);
+}
+
+// D3D11.3 22.7.15 / 22.7.17: `ret` and a taken `retc` return to the caller
+// from anywhere in a subroutine body, nested flow control included. A hull
+// shader phase inlines what it calls, so a nested return is a structured
+// exit from the inlined body (a single-iteration loop construct, and a flag
+// leaving each enclosing loop or switch). g_hs_main_3's last join phase
+// (mov o4.w, vPrimitiveID) is replaced by
+//     dcl_temps 1; call l0; iadd r0.x, r0.x, l(0x10000); mov o4.w, r0.x; ret
+// followed by the subroutine bodies below, so INFO.w is 0x10000 plus what the
+// subroutine left in r0.x -- which shows both where it returned from and
+// that the phase resumed after the call.
+namespace {
+
+constexpr u32 kRet = 0x0100003Eu;
+constexpr u32 kEndif = 0x01000015u;
+constexpr u32 kLoop = 0x01000030u;
+constexpr u32 kEndloop = 0x01000016u;
+constexpr u32 kBreak = 0x01000002u;
+constexpr u32 kDefault = 0x0100000Au;
+constexpr u32 kEndswitch = 0x01000017u;
+
+void put_label(std::vector<u32>& w, u32 l) {
+    w.insert(w.end(), {0x0300002Cu, 0x0010A000u, l});
+}
+void put_call(std::vector<u32>& w, u32 l) {
+    w.insert(w.end(), {0x03000004u, 0x0010A000u, l});
+}
+void put_set(std::vector<u32>& w, u32 value) {  // mov r0.x, l(value)
+    w.insert(w.end(), {0x05000036u, 0x00100012u, 0u, 0x00004001u, value});
+}
+void put_add(std::vector<u32>& w, u32 value) {  // iadd r0.x, r0.x, l(value)
+    w.insert(w.end(), {0x0700001Eu, 0x00100012u, 0u, 0x0010000Au, 0u,
+                       0x00004001u, value});
+}
+void put_if_nz(std::vector<u32>& w, u32 value) {  // if_nz l(value)
+    w.insert(w.end(), {0x0304001Fu, 0x00004001u, value});
+}
+void put_retc(std::vector<u32>& w, bool nonzero, u32 value) {
+    w.insert(w.end(), {nonzero ? 0x0304003Fu : 0x0300003Fu, 0x00004001u,
+                       value});
+}
+void put_switch(std::vector<u32>& w, u32 value) {
+    w.insert(w.end(), {0x0300004Cu, 0x00004001u, value});
+}
+void put_case(std::vector<u32>& w, u32 value) {
+    w.insert(w.end(), {0x03000006u, 0x00004001u, value});
+}
+
+// g_hs_main_3 with its last join phase replaced by @p phase and @p bodies
+// appended after the program.
+DxbcContainer hull_calling(const std::vector<u32>& phase,
+                           const std::vector<u32>& bodies) {
+    auto container = parse_dxbc(g_hs_main_3, sizeof(g_hs_main_3));
+    EXPECT_TRUE(container.valid());
+    std::vector<u32> words(container.bytecode.size() / 4u);
+    std::memcpy(words.data(), container.bytecode.data(), words.size() * 4u);
+    // Word 127 opens the last join phase (dcl_input vPrim; dcl_output o4.w;
+    // mov o4.w, vPrim at 133; ret).
+    EXPECT_EQ(words.size(), 138u);
+    EXPECT_EQ(words[127], 0x01000073u);
+    EXPECT_EQ(words[133], 0x04000036u);
+    words.resize(133);
+    words.insert(words.end(), phase.begin(), phase.end());
+    words.insert(words.end(), bodies.begin(), bodies.end());
+    words[1] = static_cast<u32>(words.size());
+    container.bytecode.assign(
+        reinterpret_cast<const u8*>(words.data()),
+        reinterpret_cast<const u8*>(words.data() + words.size()));
+    return container;
+}
+
+// INFO.w after running one patch through the hull kernel, or nullopt.
+std::optional<u32> run_hull_calling(const std::vector<u32>& bodies,
+                                    std::string& failure) {
+    auto& device = MetalDevice::instance();
+    std::vector<u32> phase{0x02000068u, 1u};  // dcl_temps 1
+    put_call(phase, 0);
+    put_add(phase, 0x10000u);
+    phase.insert(phase.end(), {0x05000036u, 0x00102082u, 4u, 0x0010000Au,
+                               0u});  // mov o4.w, r0.x
+    phase.push_back(kRet);
+    const auto container = hull_calling(phase, bodies);
+    DxbcTranslationOptions options{};
+    options.emulate_tessellation = true;
+    options.gs_input_record_registers = {0};
+    const auto hs = translate_dxbc_to_spirv(container, options);
+    if (!hs.valid()) {
+        failure = hs.failure;
+        return std::nullopt;
+    }
+    MslCompileOptions flat{};
+    flat.argument_buffers = false;
+    const auto msl = compile_spirv_to_msl(hs.spirv.data(), hs.spirv.size(),
+                                          ShaderStage::Compute, flat);
+    if (!msl.valid()) {
+        failure = "SPIR-V -> MSL failed";
+        return std::nullopt;
+    }
+    BackendComputePipelineDesc kd{};
+    kd.compute_shader_msl = msl.msl_text();
+    kd.compute_entry_point = "main0";
+    kd.cache_key = std::hash<std::string>{}(kd.compute_shader_msl);
+    auto kernel = device.create_compute_pipeline(kd);
+    if (!kernel || !kernel->valid()) {
+        failure = "kernel does not compile:\n" + kd.compute_shader_msl;
+        return std::nullopt;
+    }
+    const std::array<u32, 12> points{4, 1004, 0, 0, 5, 1005, 0, 0,
+                                     6, 1006, 0, 0};
+    const u32 cp_stride = hs.hs_cp_record_vec4s;
+    const u32 pc_stride = hs.hs_pc_record_vec4s;
+    const std::array<u32, 8> control{0, 2, 0, 0, 3, cp_stride, pc_stride, 0};
+    const std::array<u32, 3> ids{0, 1, 2};
+    BackendBufferDesc bd{};
+    bd.shader_resource = bd.unordered_access = true;
+    const auto make = [&](const void* data, usize bytes) {
+        bd.byte_width = bytes;
+        return device.create_buffer(bd, data);
+    };
+    auto cp_in = make(points.data(), sizeof(points));
+    auto cp_out = make(nullptr, cp_stride * 16);
+    auto control_buffer = make(control.data(), sizeof(control));
+    auto id_buffer = make(ids.data(), sizeof(ids));
+    auto pc_out = make(nullptr, pc_stride * 16);
+    auto factor_buffer = make(nullptr, 16);
+    if (!cp_in || !cp_out || !control_buffer || !id_buffer || !pc_out ||
+        !factor_buffer) {
+        failure = "buffers";
+        return std::nullopt;
+    }
+    BackendDispatchCall dispatch{};
+    dispatch.pipeline = kernel.get();
+    dispatch.group_count_x = dispatch.group_count_y = dispatch.group_count_z = 1;
+    constexpr unsigned base = BACKEND_GS_EXPANSION_BUFFER_BASE;
+    dispatch.buffers[base + 0] = cp_in.get();
+    dispatch.buffers[base + 1] = cp_out.get();
+    dispatch.buffers[base + 2] = control_buffer.get();
+    dispatch.buffers[base + 3] = id_buffer.get();
+    dispatch.buffers[base + 4] = pc_out.get();
+    dispatch.buffers[base + 5] = factor_buffer.get();
+    if (!device.dispatch(dispatch)) {
+        failure = "dispatch";
+        return std::nullopt;
+    }
+    device.wait_idle();
+    std::vector<u32> constants(pc_stride * 4);
+    if (!pc_out->read(0, constants.data(), constants.size() * 4)) {
+        failure = "readback";
+        return std::nullopt;
+    }
+    return constants[(pc_stride - 1) * 4 + 3];
+}
+
+}  // namespace
+
+TEST(Tessellation, AReturnNestedInAnInlinedSubroutineReturnsToThePhase) {
+    if (!MetalDevice::instance().available()) GTEST_SKIP() << "no Metal device";
+    struct Case {
+        const char* name;
+        std::vector<u32> bodies;
+        u32 expected;  // r0.x at the return, before the phase adds 0x10000
+    };
+    std::vector<Case> cases;
+    {
+        std::vector<u32> w;
+        put_label(w, 0);
+        put_set(w, 1);
+        put_if_nz(w, 1);
+        put_set(w, 2);
+        w.push_back(kRet);
+        w.push_back(kEndif);
+        put_set(w, 3);
+        w.push_back(kRet);
+        cases.push_back({"ret in if", w, 2});
+    }
+    {
+        std::vector<u32> w;
+        put_label(w, 0);
+        put_set(w, 1);
+        w.push_back(kLoop);
+        put_set(w, 4);
+        w.push_back(kRet);
+        w.push_back(kEndloop);
+        put_set(w, 5);
+        w.push_back(kRet);
+        cases.push_back({"ret in loop", w, 4});
+    }
+    {
+        std::vector<u32> w;
+        put_label(w, 0);
+        put_set(w, 1);
+        w.push_back(kLoop);
+        put_switch(w, 7);
+        put_case(w, 7);
+        put_set(w, 6);
+        w.push_back(kRet);
+        w.push_back(kDefault);
+        w.push_back(kBreak);
+        w.push_back(kEndswitch);
+        put_set(w, 7);
+        w.push_back(kBreak);
+        w.push_back(kEndloop);
+        put_set(w, 8);
+        w.push_back(kRet);
+        cases.push_back({"ret in switch in loop", w, 6});
+    }
+    {
+        std::vector<u32> w;
+        put_label(w, 0);
+        put_set(w, 1);
+        put_if_nz(w, 1);
+        w.push_back(kLoop);
+        put_if_nz(w, 1);
+        put_set(w, 14);
+        w.push_back(kRet);
+        w.push_back(kEndif);
+        w.push_back(kBreak);
+        w.push_back(kEndloop);
+        put_set(w, 15);
+        w.push_back(kEndif);
+        put_set(w, 16);
+        w.push_back(kRet);
+        cases.push_back({"ret in if in loop in if", w, 14});
+    }
+    {
+        std::vector<u32> w;
+        put_label(w, 0);
+        put_set(w, 9);
+        w.push_back(kLoop);
+        put_retc(w, true, 1);
+        w.push_back(kBreak);
+        w.push_back(kEndloop);
+        put_set(w, 11);
+        w.push_back(kRet);
+        cases.push_back({"retc_nz taken in loop", w, 9});
+    }
+    {
+        std::vector<u32> w;
+        put_label(w, 0);
+        put_set(w, 12);
+        put_retc(w, false, 1);  // the lane is nonzero: not taken
+        put_set(w, 13);
+        w.push_back(kRet);
+        cases.push_back({"retc_z not taken", w, 13});
+    }
+    {
+        std::vector<u32> w;
+        put_label(w, 0);
+        put_set(w, 17);
+        put_retc(w, false, 0);
+        put_set(w, 18);
+        w.push_back(kRet);
+        cases.push_back({"retc_z taken", w, 17});
+    }
+    {
+        // l1's nested ret returns to l0 (inside l0's loop), which carries on.
+        std::vector<u32> w;
+        put_label(w, 0);
+        put_set(w, 1);
+        w.push_back(kLoop);
+        put_call(w, 1);
+        put_add(w, 20);
+        w.push_back(kBreak);
+        w.push_back(kEndloop);
+        w.push_back(kRet);
+        put_label(w, 1);
+        put_if_nz(w, 1);
+        put_add(w, 300);
+        w.push_back(kRet);
+        w.push_back(kEndif);
+        put_set(w, 0);
+        w.push_back(kRet);
+        cases.push_back({"nested call", w, 321});
+    }
+    for (const Case& c : cases) {
+        std::string failure;
+        const auto value = run_hull_calling(c.bodies, failure);
+        ASSERT_TRUE(value.has_value()) << c.name << ": " << failure;
+        EXPECT_EQ(*value, 0x10000u + c.expected) << c.name;
+    }
+}
+
+// A subroutine's flow is balanced within its body (22.7.10): a break with no
+// loop of the body's own cannot reach the caller's loop through the inlined
+// body. Refused, not miscompiled.
+TEST(Tessellation, ABreakLeavingAnInlinedSubroutineBodyIsRefused) {
+    std::vector<u32> phase{kLoop};
+    put_call(phase, 0);
+    phase.push_back(kBreak);
+    phase.push_back(kEndloop);
+    phase.push_back(kRet);
+    std::vector<u32> body;
+    put_label(body, 0);
+    body.push_back(kBreak);
+    body.push_back(kRet);
+    DxbcTranslationOptions options{};
+    options.emulate_tessellation = true;
+    const auto hs =
+        translate_dxbc_to_spirv(hull_calling(phase, body), options);
+    EXPECT_FALSE(hs.valid());
+    EXPECT_NE(hs.failure.find("leaves the body"), std::string::npos)
+        << hs.failure;
 }

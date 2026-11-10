@@ -32,7 +32,15 @@ State& state() {
     return s;
 }
 
-constexpr mach_vm_address_t kFourGiB = 0x100000000ull;
+
+/// End of the claimed range. Above 4GB sit the preferred bases of x64 EXEs,
+/// which ship without relocations as routinely as 32-bit ones do: the old
+/// LINK default 0x1'0000'0000 (DirectX's infinst.exe, RELOCS_STRIPPED) and
+/// MSVC's 0x1'4000'0000, and MSVC's default x64 DLL base 0x1'8000'0000. With
+/// only the low 4GB claimed, macOS malloc puts its
+/// zones at the first free address -- exactly 0x1'0000'0000 -- and such an
+/// image can never load. Claim up to 8GB so the host allocates above them.
+constexpr mach_vm_address_t kReserveEnd = 0x200000000ull;
 
 const char* vm_tag_name(unsigned tag) {
     switch (tag) {
@@ -176,7 +184,7 @@ usize reserve_low_guest_space() {
     st.active = true;
 
     release_guest_placeholder();
-    claim_or_split(kLowReserveStart, kFourGiB, 0);
+    claim_or_split(kLowReserveStart, kReserveEnd, 0);
 
     // Binary split records a hole when allocate fails, but PROT_NONE malloc
     // guards can sit between a tiny zone and our tag-240 claim without being
@@ -184,7 +192,7 @@ usize reserve_low_guest_space() {
     // a host occupant -- including PROT_NONE -- and must stay off the guest.
     {
         mach_vm_address_t walk = 0;
-        while (walk < kFourGiB) {
+        while (walk < kReserveEnd) {
             mach_vm_size_t sz = 0;
             natural_t depth = 0;
             vm_region_submap_info_data_64_t info{};
@@ -193,12 +201,12 @@ usize reserve_low_guest_space() {
             kern_return_t kr = mach_vm_region_recurse(
                 mach_task_self(), &addr, &sz, &depth,
                 reinterpret_cast<vm_region_recurse_info_t>(&info), &count);
-            if (kr != KERN_SUCCESS || addr >= kFourGiB) break;
+            if (kr != KERN_SUCCESS || addr >= kReserveEnd) break;
             if (sz == 0) break;
             if (static_cast<unsigned>(info.user_tag) != kGuestIdentityVmTag) {
                 st.holes.emplace_back(
                     static_cast<GuestAddr>(addr),
-                    static_cast<GuestAddr>(std::min(addr + sz, kFourGiB)));
+                    static_cast<GuestAddr>(std::min(addr + sz, kReserveEnd)));
             }
             walk = addr + sz;
         }
@@ -227,7 +235,7 @@ usize reserve_low_guest_space() {
 
     std::fprintf(stderr, "[low-reserve] host mappings below 4GB:\n");
     mach_vm_address_t walk = 0;
-    while (walk < kFourGiB) {
+    while (walk < kReserveEnd) {
         mach_vm_size_t sz = 0;
         natural_t depth = 0;
         vm_region_submap_info_data_64_t info{};
@@ -236,7 +244,7 @@ usize reserve_low_guest_space() {
         kern_return_t kr = mach_vm_region_recurse(
             mach_task_self(), &addr, &sz, &depth,
             reinterpret_cast<vm_region_recurse_info_t>(&info), &count);
-        if (kr != KERN_SUCCESS || addr >= kFourGiB) break;
+        if (kr != KERN_SUCCESS || addr >= kReserveEnd) break;
         if (static_cast<unsigned>(info.user_tag) != kGuestIdentityVmTag) {
             std::fprintf(stderr,
                          "  0x%llx-0x%llx %llu KiB tag=%u (%s) prot=%x\n",

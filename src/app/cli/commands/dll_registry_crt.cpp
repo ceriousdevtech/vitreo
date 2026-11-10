@@ -5,6 +5,8 @@
 #include "dll_registry_internal.hpp"
 
 #include "winapi/msvcrt/crt_ordinals.hpp"
+#include "winapi/msvcrt/io/crt_find.hpp"
+#include "winapi/msvcrt/text/crt_nls_helpers.hpp"
 #include "winapi/msvcrt/io/crt_printf.hpp"
 #include "winapi/msvcrt/memory/crt_memory.hpp"
 
@@ -98,6 +100,10 @@ static winapi::DllExports make_crt_exports(
     });
     merge_exports(exports, winapi::create_crt_time_thunks(ctx.crt_time_mgr));
     merge_exports(exports, winapi::create_crt_filesystem_thunks(ctx.vfs, ctx.crt_mem_mgr));
+    // _find* searches are FindFirstFile searches (crt_find.hpp).
+    merge_exports(exports, winapi::create_crt_find_thunks(ctx.fsearch_mgr, ctx.crt_mem_mgr));
+    // __crtCompareStringA / __crtLCMapStringA (crt_nls_helpers.hpp).
+    merge_exports(exports, winapi::create_crt_nls_helper_thunks(ctx.locale_str_mgr));
     // printf family on the shared output processor (crt_printf.hpp).
     merge_exports(exports, winapi::create_crt_printf_thunks(ctx.crt_mem_mgr));
 

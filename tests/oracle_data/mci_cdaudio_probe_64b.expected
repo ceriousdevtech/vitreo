@@ -1,0 +1,182 @@
+drive	F:
+sizes	24 18 10 10 10 14 c 8
+str	open F: type cdaudio alias cd wait	0	[1]
+str	open F: type cdaudio alias cd2 wait	123	[]	The device driver is already in use.  To share it, use the 'shareable' parameter with each 'open' command.
+str	open F: type cdaudio shareable alias cd3 wait	123	[]	The device driver is already in use.  To share it, use the 'shareable' parameter with each 'open' command.
+str	close cd3	107	[]	The specified device is not open or is not recognized by MCI.
+str	status cd number of tracks	0	[1]
+str	status cd time format	0	[msf]
+str	status cd length	0	[00:58:68]
+str	status cd length track 1	0	[00:58:68]
+str	status cd length track 2	11a	[]	The specified parameter is out of range for the specified command.
+str	status cd position	0	[00:02:00]
+str	status cd position track 1	0	[00:02:00]
+str	status cd start position	0	[00:02:00]
+str	status cd type track 1	0	[other]
+str	status cd mode	0	[not ready]
+str	status cd media present	0	[true]
+str	status cd ready	0	[false]
+str	status cd current track	0	[1]
+str	set cd time format msf	0	[]
+str	status cd time format	0	[msf]
+str	status cd length	0	[00:58:68]
+str	status cd length track 1	0	[00:58:68]
+str	status cd position track 1	0	[00:02:00]
+str	status cd start position	0	[00:02:00]
+str	set cd time format tmsf	0	[]
+str	status cd time format	0	[tmsf]
+str	status cd length	0	[00:58:68]
+str	status cd length track 1	0	[00:58:68]
+str	status cd position	0	[01:00:00:00]
+str	status cd position track 1	0	[01:00:00:00]
+str	status cd start position	0	[01:00:00:00]
+str	set cd time format milliseconds	0	[]
+str	status cd length	0	[58907]
+str	status cd length track 1	0	[58907]
+str	status cd position track 1	0	[2001]
+str	set cd time format ms	0	[]
+str	status cd time format	0	[milliseconds]
+str	set cd time format bytes	122	[]	The specified parameter is invalid for this command.
+str	set cd time format samples	122	[]	The specified parameter is invalid for this command.
+str	set cd time format frames	122	[]	The specified parameter is invalid for this command.
+str	status cd bogus	122	[]	The specified parameter is invalid for this command.
+str	status cd length track 0	11a	[]	The specified parameter is out of range for the specified command.
+str	status cd length track 9	11a	[]	The specified parameter is out of range for the specified command.
+str	status cd	111	[]	The specified command requires a parameter.  Please supply one.
+str	info cd product	0	[CD Audio]
+str	info cd identity	0	[4931]
+str	info cd upc	15e	[]	Cannot determine media identity or universal product code.
+str	info cd file	103	[]	The driver cannot recognize the specified command parameter.
+str	capability cd can play	0	[true]
+str	capability cd can record	0	[false]
+str	capability cd can save	0	[false]
+str	capability cd can eject	0	[true]
+str	capability cd device type	0	[cdaudio]
+str	capability cd has audio	0	[true]
+str	capability cd has video	0	[false]
+str	capability cd uses files	0	[false]
+str	capability cd compound device	0	[false]
+str	play cd	0	[]
+str	status cd mode	0	[playing]
+str	status cd position	0	[60907]
+str	play cd from 1 to 2	11a	[]	The specified parameter is out of range for the specified command.
+str	seek cd to start	0	[]
+str	status cd mode	0	[stopped]
+str	seek cd to 1	11a	[]	The specified parameter is out of range for the specified command.
+str	seek cd to end	0	[]
+str	stop cd	0	[]
+str	pause cd	0	[]
+str	resume cd	0	[]
+str	status cd mode	0	[playing]
+str	set cd audio all off	0	[]
+str	sysinfo cdaudio quantity	0	[1]
+str	sysinfo cdaudio quantity open	0	[1]
+str	sysinfo cdaudio name 1	0	[CDAudio]
+str	sysinfo cd installname	0	[cdaudio]
+str	sysinfo all quantity	0	[5]
+str	close cd	0	[]
+str	close cd	107	[]	The specified device is not open or is not recognized by MCI.
+str	open F: type cdaudio alias e wait	0	[1]
+str	status e number of tracks	0	[1]
+str	close e	0	[]
+str	open F: alias f wait	107	[]	The specified device is not open or is not recognized by MCI.
+str	close f	107	[]	The specified device is not open or is not recognized by MCI.
+str	open Q: type cdaudio alias g wait	128	[]	The specified file cannot be played on the specified MCI device.  The file may be corrupt, not in the correct format, or no file handler available for this format.
+str	open waveaudio alias w wait	0	[1]
+str	open sequencer alias s wait	0	[2]
+str	open bogusdevice alias b wait	107	[]	The specified device is not open or is not recognized by MCI.
+str	open avivideo alias v wait	0	[3]
+str	close all	0	[]
+cmd	open_typeid_element	0	000000000000000001000000040200000000000000307a95f77f00000000000000000000
+devid	1	getid	0	1
+cmd	set_time_format	0	000000000000000000000000cccccccc
+cmd	status_length	0	00000000000000001be600000000000001000000cccccccc
+cmd	status_length_track1	0	00000000000000001be60000000000000100000001000000
+cmd	status_position_track1	0	0000000000000000d1070000000000000200000001000000
+cmd	status_position	0	0000000000000000d10700000000000002000000cccccccc
+cmd	status_start	0	0000000000000000d10700000000000002000000cccccccc
+cmd	set_time_format	0	000000000000000002000000cccccccc
+cmd	status_length	0	0000000000000000003a44000000000001000000cccccccc
+cmd	status_length_track1	0	0000000000000000003a4400000000000100000001000000
+cmd	status_position_track1	0	000000000000000000020000000000000200000001000000
+cmd	status_position	0	0000000000000000000200000000000002000000cccccccc
+cmd	status_start	0	0000000000000000000200000000000002000000cccccccc
+cmd	set_time_format	0	00000000000000000a000000cccccccc
+cmd	status_length	0	0000000000000000003a44000000000001000000cccccccc
+cmd	status_length_track1	0	0000000000000000003a4400000000000100000001000000
+cmd	status_position_track1	0	000000000000000001000000000000000200000001000000
+cmd	status_position	0	0000000000000000010000000000000002000000cccccccc
+cmd	status_start	0	0000000000000000010000000000000002000000cccccccc
+cmd	set_time_format	125	000000000000000008000000cccccccc
+cmd	status_length	0	0000000000000000003a44000000000001000000cccccccc
+cmd	status_length_track1	0	0000000000000000003a4400000000000100000001000000
+cmd	status_position_track1	0	000000000000000001000000000000000200000001000000
+cmd	status_position	0	0000000000000000010000000000000002000000cccccccc
+cmd	status_start	0	0000000000000000010000000000000002000000cccccccc
+cmd	set_time_format	125	000000000000000003000000cccccccc
+cmd	status_length	0	0000000000000000003a44000000000001000000cccccccc
+cmd	status_length_track1	0	0000000000000000003a4400000000000100000001000000
+cmd	status_position_track1	0	000000000000000001000000000000000200000001000000
+cmd	status_position	0	0000000000000000010000000000000002000000cccccccc
+cmd	status_start	0	0000000000000000010000000000000002000000cccccccc
+cmd	set_time_format	125	000000000000000009000000cccccccc
+cmd	status_length	0	0000000000000000003a44000000000001000000cccccccc
+cmd	status_length_track1	0	0000000000000000003a4400000000000100000001000000
+cmd	status_position_track1	0	000000000000000001000000000000000200000001000000
+cmd	status_position	0	0000000000000000010000000000000002000000cccccccc
+cmd	status_start	0	0000000000000000010000000000000002000000cccccccc
+cmd	status_item	0	000000000000000001000000000000000300000001000000
+cmd	status_item	0	00000000000000000c020000000000000400000001000000
+cmd	status_item	0	000000000000000001000000000000000500000001000000
+cmd	status_item	0	000000000000000000000000000000000700000001000000
+cmd	status_item	0	000000000000000001000000000000000800000001000000
+cmd	status_item	0	00000000000000000a000000000000000600000001000000
+cmd	status_item	0	000000000000000041040000000000000140000001000000
+cmd	status_item	112	0000000000000000cccccccccccccccc4523010001000000
+cmd	status_type_notrack	0	0000000000000000cccccccccccccccc01400000cccccccc
+cmd	status_length_track7	11a	0000000000000000000000ff000000000100000007000000
+cmd	status_noitemflag	111	0000000000000000cccccccccccccccc01000000cccccccc
+cmd	devcaps	0	00000000000000000000000001000000
+cmd	devcaps	0	00000000000000000100000002000000
+cmd	devcaps	0	00000000000000000000000003000000
+cmd	devcaps	0	00000000000000000402000004000000
+cmd	devcaps	0	00000000000000000000000005000000
+cmd	devcaps	0	00000000000000000000000006000000
+cmd	devcaps	0	00000000000000000100000007000000
+cmd	devcaps	0	00000000000000000100000008000000
+cmd	devcaps	0	00000000000000000000000009000000
+cmd	devcaps	112	0000000000000000cccccccc77070000
+info	100	0	[CD Audio]
+info	800	0	[4931]
+info	400	15e	[]
+info	200	111	[]
+cmd	play	0	0000000000000000cccccccccccccccc
+cmd	mode_while_playing	0	00000000000000000e020000000000000400000000000000
+cmd	seek_start	0	0000000000000000cccccccc
+cmd	seek_end	0	0000000000000000cccccccc
+cmd	stop	0	0000000000000000
+cmd	pause	0	0000000000000000
+cmd	bogus_msg	112	0000000000000000
+cmd	close	0	0000000000000000
+cmd	close_again	112	0000000000000000
+cmd	open_typeid_noelement	0	000000000000000001000000040200000000000000307a95f77f00000000000000000000
+cmd	close2	0	0000000000000000
+cmd	open_typename_alias	0	00000000000000000100000028467a95f77f000000307a95f77f00005f477a95f77f0000
+getid_alias	1
+cmd	close3	0	0000000000000000
+cmd	open_wave_typeid	0	0000000000000000010000000a0200000000000000000000000000000000000000000000
+cmd	status_badid	112	0000000000000000cccccccccccccccc01000000cccccccc
+errtext	0	1	The specified command was carried out.
+errtext	101	1	Invalid MCI device ID.  Use the ID returned when opening the MCI device.
+errtext	105	1	The driver cannot recognize the specified command.
+errtext	106	1	There is a problem with your media device.  Make sure it is working correctly or contact the device manufacturer.
+errtext	125	1	The specified value for the time format is invalid.  Refer to the MCI documentation for valid formats.
+errtext	11a	1	The specified parameter is out of range for the specified command.
+errtext	114	1	The device driver is not ready.
+errtext	112	1	The MCI device you are using does not support the specified command.
+errtext	10a	1	Unknown problem while loading the specified device driver.
+errtext	109	1	The device name is already being used as an alias by this application.  Use a unique alias.
+errtext	107	1	The specified device is not open or is not recognized by MCI.
+errtext	140	1	All wave devices that can play files in the current format are in use.  Wait until a wave device is free, and then try again.
+errtext	9999	0	
+reopen	0

@@ -50,7 +50,8 @@ void User32ExtManager::impl_GetPointerDevices(Marshaler& m) {
 void User32ExtManager::impl_GetRawInputDeviceList(Marshaler& m) {
     // Two devices, matching the handles written into RAWINPUTHEADER:
     // keyboard 1 (RIM_TYPEKEYBOARD) and mouse 2 (RIM_TYPEMOUSE).
-    constexpr u32 kDeviceCount = 2u;
+    const auto gamepads=m_gamepad_catalog ? m_gamepad_catalog->devices() : std::vector<GamepadHidCatalog::Device>{};
+    const u32 kDeviceCount=2u+static_cast<u32>(gamepads.size());
     const GuestAddr list = m.arg_ptr(0);
     const GuestAddr count_ptr = m.arg_ptr(1);
     const u32 entry_size = static_cast<u32>(m.arg(2));
@@ -68,7 +69,11 @@ void User32ExtManager::impl_GetRawInputDeviceList(Marshaler& m) {
         return;
     }
     if (list == 0) {
-        (void)m.write_u32(count_ptr, kDeviceCount);
+        if (m.write_u32(count_ptr, kDeviceCount).is_err()) {
+            set_last_error(error_codes::ERROR_NOACCESS);
+            m.set_return(0xFFFFFFFFu);
+            return;
+        }
         m.set_return(0u);
         return;
     }
@@ -79,8 +84,8 @@ void User32ExtManager::impl_GetRawInputDeviceList(Marshaler& m) {
         return;
     }
     if (have.value() < kDeviceCount) {
-        (void)m.write_u32(count_ptr, kDeviceCount);
-        set_last_error(error_codes::ERROR_INSUFFICIENT_BUFFER);
+        set_last_error(m.write_u32(count_ptr, kDeviceCount).is_ok()
+            ? error_codes::ERROR_INSUFFICIENT_BUFFER : error_codes::ERROR_NOACCESS);
         m.set_return(0xFFFFFFFFu);
         return;
     }
@@ -92,12 +97,16 @@ void User32ExtManager::impl_GetRawInputDeviceList(Marshaler& m) {
         return m.write_u32(at, static_cast<u32>(handle)).is_ok() &&
                m.write_u32(at + 4, type).is_ok();
     };
+    // Learn: a successful fill leaves the caller's capacity unchanged.
+    // Windows also accepts a read-only count here (raw_device_list oracle).
     if (!write_device(list, 1u, 1u) ||
-        !write_device(list + expected, 2u, 0u) ||
-        m.write_u32(count_ptr, kDeviceCount).is_err()) {
+        !write_device(list + expected, 2u, 0u)) {
         set_last_error(error_codes::ERROR_NOACCESS);
         m.set_return(0xFFFFFFFFu);
         return;
+    }
+    for(usize i=0;i<gamepads.size();++i) if(!write_device(list+(i+2)*expected,gamepads[i].raw_handle(),hid_sdk::kRIM_TYPEHID)) {
+        set_last_error(error_codes::ERROR_NOACCESS);m.set_return(0xFFFFFFFFu);return;
     }
     VITREO_TRACE("[u32ext] GetRawInputDeviceList -> %u\n", kDeviceCount);
     if (raw_input_diag()) {
@@ -110,7 +119,45 @@ void User32ExtManager::impl_GetRawInputDeviceList(Marshaler& m) {
 
 namespace {
 
-bool write_raw_device_info(Marshaler& m, bool wide) {
+bool write_raw_device_info(Marshaler& m, bool wide, const std::shared_ptr<GamepadHidCatalog>& catalog) {
+    if(catalog) for(const auto& device:catalog->devices()) if(device.raw_handle()==m.arg(0)) {
+        const auto& l=gamepad_hid::layout(m.cpu_is_64bit());
+        const u32 command=m.arg32(1);const GuestAddr out=m.arg_ptr(2),size=m.arg_ptr(3);
+        gamepad_hid::Bytes bytes;
+        u32 units=0;
+        if(command==hid_sdk::kRIDI_PREPARSEDDATA) {
+            bytes.assign(gamepad_hid::kPreparsedData.begin(),gamepad_hid::kPreparsedData.end());units=static_cast<u32>(bytes.size());
+        } else if(command==hid_sdk::kRIDI_DEVICENAME) {
+            const auto name=device.path();units=static_cast<u32>(name.size()+1);
+            bytes.resize(units*(wide ? 2:1));
+            for(usize i=0;i<name.size();++i) bytes[i*(wide ? 2:1)]=static_cast<u8>(name[i]);
+        } else if(command==hid_sdk::kRIDI_DEVICEINFO) {
+            bytes.resize(l.sizeof_RID_DEVICE_INFO);units=static_cast<u32>(bytes.size());
+            gamepad_hid::store32(bytes,0,units);gamepad_hid::store32(bytes,4,hid_sdk::kRIM_TYPEHID);
+            gamepad_hid::store32(bytes,l.offsetof_RID_DEVICE_INFO_hid+l.offsetof_RID_DEVICE_INFO_HID_dwVersionNumber,1);
+            gamepad_hid::store16(bytes,l.offsetof_RID_DEVICE_INFO_hid+l.offsetof_RID_DEVICE_INFO_HID_usUsagePage,hid_sdk::kHID_USAGE_PAGE_GENERIC);
+            gamepad_hid::store16(bytes,l.offsetof_RID_DEVICE_INFO_hid+l.offsetof_RID_DEVICE_INFO_HID_usUsage,hid_sdk::kHID_USAGE_GENERIC_GAMEPAD);
+        } else {set_last_error(error_codes::ERROR_INVALID_PARAMETER);m.set_return(0xFFFFFFFFu);return true;}
+        if(!size) {set_last_error(error_codes::ERROR_NOACCESS);m.set_return(0xFFFFFFFFu);return true;}
+        if(!out) {
+            if(m.write_u32(size,units).is_err()) {set_last_error(error_codes::ERROR_NOACCESS);m.set_return(0xFFFFFFFFu);} else m.set_return(0);
+            return true;
+        }
+        const auto capacity=m.read_u32(size);
+        if(capacity.is_err() || capacity.value()<units) {
+            set_last_error(capacity.is_err() || m.write_u32(size,units).is_err() ? error_codes::ERROR_NOACCESS : error_codes::ERROR_INSUFFICIENT_BUFFER);
+            m.set_return(0xFFFFFFFFu);return true;
+        }
+        if(command==hid_sdk::kRIDI_DEVICEINFO) {
+            const auto cb=m.read_u32(out);
+            if(cb.is_err() || cb.value()!=l.sizeof_RID_DEVICE_INFO) {
+                set_last_error(cb.is_err() ? error_codes::ERROR_NOACCESS : error_codes::ERROR_INVALID_PARAMETER);m.set_return(0xFFFFFFFFu);return true;
+            }
+        }
+        if(m.memory().write_bytes(out,bytes.data(),bytes.size()).is_err()) {set_last_error(error_codes::ERROR_NOACCESS);m.set_return(0xFFFFFFFFu);return true;}
+        m.set_return(units);return true;
+    }
+
     constexpr u32 kRidiDeviceName = 0x20000007u;
     constexpr u32 kRidiDeviceInfo = 0x2000000bu;
     const u64 device = m.arg(0);
@@ -215,7 +262,7 @@ bool write_raw_device_info(Marshaler& m, bool wide) {
 
 void User32ExtManager::impl_GetRawInputDeviceInfoA(Marshaler& m) {
     const u64 device = m.arg(0), command = m.arg(1);
-    (void)write_raw_device_info(m, false);
+    (void)write_raw_device_info(m, false,m_gamepad_catalog);
     if (raw_input_diag()) {
         std::fprintf(stderr, "[rawinput] GetRawInputDeviceInfoA dev=0x%llx cmd=0x%llx -> 0x%llx\n",
                      static_cast<unsigned long long>(device),
@@ -226,7 +273,7 @@ void User32ExtManager::impl_GetRawInputDeviceInfoA(Marshaler& m) {
 
 void User32ExtManager::impl_GetRawInputDeviceInfoW(Marshaler& m) {
     const u64 device = m.arg(0), command = m.arg(1);
-    (void)write_raw_device_info(m, true);
+    (void)write_raw_device_info(m, true,m_gamepad_catalog);
     if (raw_input_diag()) {
         std::fprintf(stderr, "[rawinput] GetRawInputDeviceInfoW dev=0x%llx cmd=0x%llx -> 0x%llx\n",
                      static_cast<unsigned long long>(device),

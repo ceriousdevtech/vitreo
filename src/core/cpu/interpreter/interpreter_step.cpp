@@ -106,10 +106,10 @@ public:
     GuestMemoryReader(GuestMemory& memory, u64 address) noexcept
         : m_memory(memory), m_start(address), m_pos(0), m_len(0) {
         // Prefetch up to 15 bytes (max x86 instruction length)
-        const Byte* p = memory.fetch_ptr(static_cast<GuestAddr>(address), 15);
+        const Byte* p = memory.fetch_ptr(static_cast<GuestAddr>(address), kMaxInstructionLength);
         if (p) {
-            std::memcpy(m_buf, p, 15);
-            m_len = 15;
+            std::memcpy(m_buf, p, kMaxInstructionLength);
+            m_len = kMaxInstructionLength;
         }
     }
     
@@ -120,7 +120,11 @@ public:
         }
         // Fallback for instructions spanning region boundaries
         auto result = m_memory.fetch_u8(m_start + m_pos);
-        if (!result) return false;
+        if (!result) {
+            m_fetch_failed = true;
+            m_fault_address = m_start + m_pos;
+            return false;
+        }
         out = result.value();
         ++m_pos;
         return true;
@@ -129,13 +133,18 @@ public:
     [[nodiscard]] usize position() const noexcept override {
         return m_pos;
     }
+
+    [[nodiscard]] bool fetch_failed() const noexcept { return m_fetch_failed; }
+    [[nodiscard]] u64 fault_address() const noexcept { return m_fault_address; }
     
 private:
     GuestMemory& m_memory;
     u64 m_start;
     usize m_pos;
     usize m_len;
-    u8 m_buf[15];
+    bool m_fetch_failed{false};
+    u64 m_fault_address{0};
+    u8 m_buf[kMaxInstructionLength];
 };
 
 } // anonymous namespace
@@ -250,6 +259,33 @@ ExecResult Interpreter::step() noexcept {
     DecodeError err = decode_instruction(reader, mode, instr);
     
     if (err != DecodeError::Success) {
+        m_ctx.exception_error = 0;
+        m_ctx.exception_addr = 0;
+        m_ctx.exception_num_params = 0;
+        m_ctx.instr_length = 0;
+        m_ctx.interrupt_num = 0;
+        if (err == DecodeError::InstructionTooLong) {
+            // #GP(0), with no CR2. Windows reports read AV at all-ones in
+            // both modes (instruction_length_probe{32,64}.expected), at the
+            // original IP and without executing any part of the instruction.
+            m_ctx.exception = CpuException::GeneralProtection;
+            m_ctx.exception_addr = m_cpu.is_64bit() ? ~u64{0} : u64{0xFFFFFFFFu};
+            m_ctx.exception_num_params = 2;
+            return ExecResult::Exception;
+        }
+        if (reader.fetch_failed()) {
+            // A required instruction byte was inaccessible, not an invalid
+            // encoding. Intel SDM Vol. 3A, Page-Fault Exceptions: CR2 names
+            // that byte; the saved IP stays at the instruction's beginning.
+            // Windows exposes the fetch as AV parameters {8, fault VA}
+            // (instruction_fetch_probe{32,64}.expected). Bulk-prefetch failure
+            // alone never sets this flag, so a final-byte RET still executes.
+            m_ctx.exception = CpuException::PageFault;
+            m_ctx.exception_error = 8;
+            m_ctx.exception_addr = reader.fault_address();
+            m_ctx.exception_num_params = 2;
+            return ExecResult::Exception;
+        }
         // Debug: dump the first bytes at the failing IP
         u8 raw[8] = {};
         for (int i = 0; i < 8; ++i) {

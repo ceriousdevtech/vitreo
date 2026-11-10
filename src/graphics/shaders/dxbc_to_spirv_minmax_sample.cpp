@@ -4,6 +4,7 @@
 /// @brief Texture addressing and MINIMUM_/MAXIMUM_ filtering.
 
 #include "graphics/shaders/dxbc_to_spirv_internal.hpp"
+#include "graphics/shaders/minmax_reduction.hpp"
 
 namespace vitreo::graphics::dxbc_spirv_detail {
 
@@ -80,7 +81,9 @@ u32 DxbcTranslator::emit_minmax_sample(const MinMaxSample& a) {
     const u32 true_ = b.emit_integer_compare(SpvOp::OpIEqual, tb, m_const_u0,
                                              m_const_u0);
 
-    // The sampler state (push member 13) and its MipLODBias (member 0).
+    // The sampler state: the D3D11 push block, or the descriptor-table
+    // record when the caller already loaded it (a.slot is a register then
+    // and has no meaning).
     const auto state_word = [&](u32 component) {
         return b.emit_load(
             m_type_uint,
@@ -88,13 +91,20 @@ u32 DxbcTranslator::emit_minmax_sample(const MinMaxSample& a) {
                                 {U(kPushMemberMinMaxSamplers), U(a.slot),
                                  U(component)}));
     };
-    const u32 filter = state_word(0);
-    const u32 min_lod = b.emit_bitcast(tf, state_word(1));
-    const u32 max_lod = b.emit_bitcast(tf, state_word(2));
-    const u32 max_aniso = b.emit_convert_u_to_f(tf, state_word(3));
-    const u32 bias = b.emit_load(
-        tf, b.emit_access_chain(m_type_ptr_push_float, push_block_var(),
-                                {U(0), U(a.slot)}));
+    const u32 filter = a.filter_id != 0 ? a.filter_id : state_word(0);
+    const u32 min_lod =
+        a.min_lod_id != 0 ? a.min_lod_id : b.emit_bitcast(tf, state_word(1));
+    const u32 max_lod =
+        a.max_lod_id != 0 ? a.max_lod_id : b.emit_bitcast(tf, state_word(2));
+    const u32 max_aniso = a.max_aniso_id != 0
+                              ? a.max_aniso_id
+                              : b.emit_convert_u_to_f(tf, state_word(3));
+    const u32 bias =
+        a.bias_id != 0
+            ? a.bias_id
+            : b.emit_load(tf, b.emit_access_chain(m_type_ptr_push_float,
+                                                  push_block_var(),
+                                                  {U(0), U(a.slot)}));
     const auto has = [&](u32 mask) {
         return b.emit_inotequal(tb, b.emit_bitwise_and(m_type_uint, filter,
                                                        U(mask)),
@@ -367,7 +377,7 @@ u32 DxbcTranslator::emit_minmax_sample(const MinMaxSample& a) {
             u32 second{0};  // bool: the next texel is weighted
         };
         const auto axis = [&](u32 coordinate, u32 extent, i32 offset,
-                              u32 probe_offset) {
+                              u32 probe_offset, u32 lane) {
             const u32 scaled = mul(coordinate, extent);
             u32 texel_space = sub(scaled, F(0.5f));
             if (probe_offset != 0) texel_space = add(texel_space, probe_offset);
@@ -383,15 +393,19 @@ u32 DxbcTranslator::emit_minmax_sample(const MinMaxSample& a) {
                             floor1(scaled));
             out.second =
                 land(linear, land(lnot(carry), lt(F(0.0f), fraction)));
-            if (offset != 0) {
+            if (a.offset_id != 0) {
+                out.first = add(out.first,
+                                b.emit_convert_s_to_f(
+                                    tf, b.emit_composite_extract(m_type_int, a.offset_id, {lane})));
+            } else if (offset != 0) {
                 out.first = add(out.first, F(static_cast<float>(offset)));
             }
             return out;
         };
-        const Axis au = axis(pu, size[0], a.offset[0], ou);
+        const Axis au = axis(pu, size[0], a.offset[0], ou, 0);
         const Axis av =
-            filter_v ? axis(pv, size[1], a.offset[1], ov) : Axis{};
-        const Axis aw = a.volume ? axis(pw, size[2], a.offset[2], 0) : Axis{};
+            filter_v ? axis(pv, size[1], a.offset[1], ov, 1) : Axis{};
+        const Axis aw = a.volume ? axis(pw, size[2], a.offset[2], 0, 2) : Axis{};
         const auto centre = [&](u32 index, u32 extent) {
             return div(add(index, F(0.5f)), extent);
         };
@@ -440,11 +454,28 @@ u32 DxbcTranslator::emit_minmax_sample(const MinMaxSample& a) {
                         where = b.emit_composite_construct(m_type_vec2,
                                                            {tu, tv});
                     }
+                    // OpSampledImage cannot be consumed in another block.
+                    // A descriptor-table reduction branches, so the sampled
+                    // image is built at the fetch. The D3D11 path passes the
+                    // image built in this same straight-line prefix.
+                    const u32 through =
+                        a.sampler_id != 0
+                            ? b.emit_sampled_image(a.sampled_image_type,
+                                                   a.image, a.sampler_id)
+                            : a.sampled_image;
                     u32 texel = b.emit_image_sample_explicit_lod(
-                        m_type_vec4, a.sampled_image, where, level);
-                    if (a.twin_sampled_image != 0) {
+                        m_type_vec4, through, where, level);
+                    const bool twinned =
+                        a.twin_sampled_image != 0 || a.twin_sampler_id != 0;
+                    if (twinned) {
+                        const u32 twin =
+                            a.twin_sampler_id != 0
+                                ? b.emit_sampled_image(a.sampled_image_type,
+                                                       a.image,
+                                                       a.twin_sampler_id)
+                                : a.twin_sampled_image;
                         const u32 hi = b.emit_image_sample_explicit_lod(
-                            m_type_vec4, a.twin_sampled_image, where, level);
+                            m_type_vec4, twin, where, level);
                         texel = b.emit_fadd(
                             m_type_vec4, texel,
                             b.emit_fmul(m_type_vec4,
@@ -481,10 +512,11 @@ u32 DxbcTranslator::emit_minmax_sample(const MinMaxSample& a) {
     b.emit_label_id(header);
     const u32 acc = b.emit_phi(m_type_vec4, {{nan, pre}, {acc_next, continue_block}});
     const u32 k = b.emit_phi(m_type_uint, {{m_const_u0, pre}, {k_next, continue_block}});
+    // OpLoopMerge must be the instruction immediately before the branch.
+    const u32 continuing = b.emit_integer_compare(
+        SpvOp::OpULessThan, tb, k, probe_count);
     b.emit_loop_merge(merge, continue_block);
-    b.emit_branch_conditional(
-        b.emit_integer_compare(SpvOp::OpULessThan, tb, k, probe_count), body,
-        merge);
+    b.emit_branch_conditional(continuing, body, merge);
     b.emit_label_id(body);
     // This probe's offset, in texels of the mip sampled, along the axis.
     u32 ou = 0, ov = 0;
@@ -506,6 +538,183 @@ u32 DxbcTranslator::emit_minmax_sample(const MinMaxSample& a) {
     b.emit_branch(header);
     b.emit_label_id(merge);
     return acc;
+}
+
+// A descriptor-table translation cannot know at creation whether a sampler
+// it reads will be a MINIMUM_ / MAXIMUM_ one (the sampler-state record says,
+// at draw time), so every sample, sample_b, sample_l and sample_d through
+// such a table carries the reduction behind the record's flag. Inlined at
+// each site that is up to 32 fetches per instruction, and the Metal compile
+// of a shader with tens of samples grew by seconds. The reduction is instead
+// one out-of-line function per shape (the image and coordinate types, the
+// LOD kind, the border twin), which spirv_to_msl keeps `noinline`: the
+// shader carries one copy, and a site costs a call that only runs when the
+// record asks for the reduction. An implicit LOD's coarse derivatives are
+// taken at the call site, in the caller's quad (a derivative has no meaning
+// in a called function's own control flow), and enter the helper as
+// gradients; the LOD that follows is the same expression either way.
+u32 DxbcTranslator::emit_minmax_sample_call(const MinMaxSample& a,
+                                            u32 image_type) {
+    auto& b = m_builder;
+    const u32 tf = m_type_float;
+    const bool twinned = a.twin_sampler_id != 0;
+    const bool explicit_lod = a.lod == MinMaxSample::Lod::Explicit;
+    const u32 coordinate_type = a.cube && a.arrayed ? m_type_vec4
+                                : (a.cube || a.volume || a.arrayed) ? m_type_vec3
+                                                                     : m_type_vec2;
+    MinMaxHelper* helper = nullptr;
+    for (MinMaxHelper& h : m_minmax_helpers) {
+        if (h.image_type == image_type &&
+            h.sampled_image_type == a.sampled_image_type &&
+            h.coordinate_type == coordinate_type && h.texture_1d == a.texture_1d &&
+            h.cube == a.cube && h.volume == a.volume && h.arrayed == a.arrayed &&
+            h.explicit_lod == explicit_lod && h.twinned == twinned) {
+            helper = &h;
+            break;
+        }
+    }
+    if (helper == nullptr) {
+        MinMaxHelper h{};
+        h.image_type = image_type;
+        h.sampled_image_type = a.sampled_image_type;
+        h.coordinate_type = coordinate_type;
+        h.texture_1d = a.texture_1d;
+        h.cube = a.cube;
+        h.volume = a.volume;
+        h.arrayed = a.arrayed;
+        h.explicit_lod = explicit_lod;
+        h.twinned = twinned;
+        h.function = b.allocate_id();
+        m_minmax_helpers.push_back(h);
+        helper = &m_minmax_helpers.back();
+    }
+    const auto comp = [&](u32 v, u32 i) {
+        return b.emit_composite_extract(tf, v, {i});
+    };
+    const u32 zero = b.emit_constant_float(tf, 0.0f);
+    std::vector<u32> args{a.image, a.sampler_id};
+    if (twinned) {
+        args.push_back(a.twin_sampler_id);
+        args.push_back(a.border_colour);
+    }
+    args.push_back(a.coordinate);
+    args.push_back(a.lod_operand != 0 ? a.lod_operand : zero);
+    if (!explicit_lod) {
+        u32 dx = a.gradient_x;
+        u32 dy = a.gradient_y;
+        if (a.lod == MinMaxSample::Lod::Implicit) {
+            // deriv_rtx_coarse / deriv_rty_coarse (22.5.2/3) of what the
+            // reduction addresses: the cube direction, else (u, v, w).
+            if (!m_derivative_control_capability_emitted) {
+                b.emit_capability(SpvCapability::DerivativeControl);
+                m_derivative_control_capability_emitted = true;
+            }
+            b.emit_capability(SpvCapability::GroupNonUniform);
+            b.emit_capability(SpvCapability::GroupNonUniformQuad);
+            const u32 source = b.emit_composite_construct(
+                m_type_vec4,
+                {comp(a.coordinate, 0), comp(a.coordinate, 1),
+                 (a.cube || a.volume) ? comp(a.coordinate, 2) : zero, zero});
+            const auto coarse = [&](SpvOp op) {
+                return b.emit_quad_broadcast(
+                    m_type_vec4, b.emit_constant_int(m_type_uint, 3u),
+                    b.emit_derivative(op, m_type_vec4, source), m_const_u0);
+            };
+            dx = coarse(SpvOp::OpDPdxFine);
+            dy = coarse(SpvOp::OpDPdyFine);
+        }
+        args.push_back(dx);
+        args.push_back(dy);
+    }
+    if (a.offset_id != 0) {
+        args.push_back(a.offset_id);
+    } else {
+        const auto I = [&](i32 v) {
+            return b.emit_constant_int(m_type_int, static_cast<u32>(v));
+        };
+        args.push_back(b.emit_constant_composite(
+            m_type_ivec4, {I(a.offset[0]), I(a.offset[1]), I(a.offset[2]), I(0)}));
+    }
+    args.push_back(a.filter_id);
+    args.push_back(a.min_lod_id);
+    args.push_back(a.max_lod_id);
+    args.push_back(a.max_aniso_id);
+    args.push_back(a.bias_id);
+    return b.emit_function_call(m_type_vec4, helper->function, args);
+}
+
+u32 DxbcTranslator::minmax_reduction_gate() {
+    if (m_minmax_reduction_gate == 0) {
+        m_builder.set_section(SpirvBuilder::Section::TypesGlobals);
+        m_minmax_reduction_gate = m_builder.allocate_id();
+        m_builder.emit(SpvOp::OpSpecConstantFalse,
+                       {m_type_bool, m_minmax_reduction_gate});
+        m_builder.emit_decorate(m_minmax_reduction_gate, SpvDecoration::SpecId,
+                                kMinMaxReductionSpecId);
+        m_builder.emit_name(m_minmax_reduction_gate, kMinMaxReductionSpecName);
+    }
+    return m_minmax_reduction_gate;
+}
+
+bool DxbcTranslator::emit_minmax_helpers() {
+    auto& b = m_builder;
+    const u32 tf = m_type_float;
+    for (usize index = 0; index < m_minmax_helpers.size(); ++index) {
+        const MinMaxHelper h = m_minmax_helpers[index];
+        std::vector<u32> types{h.image_type, m_type_sampler};
+        if (h.twinned) {
+            types.push_back(m_type_sampler);
+            types.push_back(m_type_vec4);
+        }
+        types.push_back(h.coordinate_type);
+        types.push_back(tf);
+        if (!h.explicit_lod) {
+            types.push_back(m_type_vec4);
+            types.push_back(m_type_vec4);
+        }
+        types.push_back(m_type_ivec4);
+        types.push_back(m_type_uint);
+        for (u32 i = 0; i < 4; ++i) types.push_back(tf);
+        const u32 function_type = b.emit_type_function(m_type_vec4, types);
+        // FunctionControl DontInline (2); SPIRV-Cross writes every helper
+        // always_inline, and spirv_to_msl rewrites these by name.
+        b.emit_function_id(h.function, m_type_vec4, function_type, 2u);
+        b.emit_name(h.function, "vitreoMinMaxSample" + std::to_string(index));
+        std::vector<u32> p;
+        for (const u32 type : types) p.push_back(b.emit_function_parameter(type));
+        (void)b.emit_label();
+        MinMaxSample a{};
+        usize at = 0;
+        a.image = p[at++];
+        a.sampler_id = p[at++];
+        if (h.twinned) {
+            a.twin_sampler_id = p[at++];
+            a.border_colour = p[at++];
+        }
+        a.coordinate = p[at++];
+        a.lod_operand = p[at++];
+        a.lod = h.explicit_lod ? MinMaxSample::Lod::Explicit
+                               : MinMaxSample::Lod::Gradient;
+        if (!h.explicit_lod) {
+            a.gradient_x = p[at++];
+            a.gradient_y = p[at++];
+        }
+        a.offset_id = p[at++];
+        a.filter_id = p[at++];
+        a.min_lod_id = p[at++];
+        a.max_lod_id = p[at++];
+        a.max_aniso_id = p[at++];
+        a.bias_id = p[at++];
+        a.sampled_image_type = h.sampled_image_type;
+        a.texture_1d = h.texture_1d;
+        a.cube = h.cube;
+        a.volume = h.volume;
+        a.arrayed = h.arrayed;
+        const u32 reduced = emit_minmax_sample(a);
+        b.emit_return_value(reduced);
+        b.emit_function_end();
+    }
+    return true;
 }
 
 } // namespace vitreo::graphics::dxbc_spirv_detail

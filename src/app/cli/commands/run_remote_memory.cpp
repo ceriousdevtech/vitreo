@@ -3,6 +3,7 @@
 // CLI-002: cross-process window, message and guest-call handlers of the process memory endpoint
 
 #include "run_internal.hpp"
+#include "window_scene_capture.hpp"
 #include "runtime/process/runtime_context.hpp"
 #include "runtime/execution/guest_run_loop.hpp"
 #include "core/cpu/state/cpu_state.hpp"
@@ -153,6 +154,7 @@ void install_remote_memory_handlers(
             }
             return presented;
         });
+    remote_memory_server.set_window_scene_snapshot_handler([&ctx] {return capture_local_window_scene(ctx);});
     remote_memory_server.set_window_refresh_handler(
         [&ctx](u32 hwnd) -> bool {
             return ctx.d3d11_mgr.refresh_window_presentation(

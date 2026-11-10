@@ -1,0 +1,496 @@
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 9814e6a86297b639f284b1a0902d5a4e
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+; cbuffer Root
+; {
+;
+;   struct Root
+;   {
+;
+;       uint k0;                                      ; Offset:    0
+;       uint k1;                                      ; Offset:    4
+;       uint k2;                                      ; Offset:    8
+;       uint k3;                                      ; Offset:   12
+;   
+;   } Root;                                           ; Offset:    0 Size:    16
+;
+; }
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; Root                              cbuffer      NA          NA     CB0            cb0     1
+; src                               texture    byte         r/o      T0             t0     1
+; dst                                   UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%dx.types.CBufRet.i32 = type { i32, i32, i32, i32 }
+%struct.ByteAddressBuffer = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+%Root = type { i32, i32, i32, i32 }
+
+@"\01?gs_words@@3PAIA" = external addrspace(3) global [64 x i32], align 4
+@"\01?gs_floats@@3PAMA" = external addrspace(3) global [64 x float], align 4
+
+define void @cs_alu() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 2, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %4 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %5 = call i32 @dx.op.flattenedThreadIdInGroup.i32(i32 96)  ; FlattenedThreadIdInGroup()
+  %6 = alloca [8 x i32], align 4
+  %7 = shl i32 %4, 2
+  %8 = and i32 %7, 1020
+  %9 = call %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32 68, %dx.types.Handle %2, i32 %8, i32 undef)  ; BufferLoad(srv,index,wot)
+  %10 = extractvalue %dx.types.ResRet.i32 %9, 0
+  %11 = mul i32 %4, 28
+  %12 = add i32 %11, 12
+  %13 = and i32 %12, 1020
+  %14 = call %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32 68, %dx.types.Handle %2, i32 %13, i32 undef)  ; BufferLoad(srv,index,wot)
+  %15 = extractvalue %dx.types.ResRet.i32 %14, 0
+  %16 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %3, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %17 = extractvalue %dx.types.CBufRet.i32 %16, 1
+  %18 = mul i32 %17, %15
+  %19 = add i32 %18, %10
+  %20 = extractvalue %dx.types.CBufRet.i32 %16, 0
+  %21 = and i32 %20, 31
+  %22 = lshr i32 %10, %21
+  %23 = sub i32 %19, %22
+  %24 = or i32 %15, 1
+  %25 = sdiv i32 %10, %24
+  %26 = srem i32 %10, %24
+  %27 = xor i32 %26, %25
+  %28 = udiv i32 %10, %24
+  %29 = and i32 %15, 254
+  %30 = or i32 %29, 1
+  %31 = urem i32 %10, %30
+  %32 = add i32 %31, %28
+  %33 = call i32 @dx.op.unaryBits.i32(i32 31, i32 %10)  ; Countbits(value)
+  %34 = call i32 @dx.op.unaryBits.i32(i32 33, i32 %10)  ; FirstbitHi(value)
+  %35 = sub i32 31, %34
+  %36 = icmp eq i32 %34, -1
+  %37 = shl i32 %35, 8
+  %38 = select i1 %36, i32 -256, i32 %37
+  %39 = call i32 @dx.op.unaryBits.i32(i32 32, i32 %15)  ; FirstbitLo(value)
+  %40 = shl i32 %39, 16
+  %41 = call i32 @dx.op.unaryBits.i32(i32 34, i32 %15)  ; FirstbitSHi(value)
+  %42 = sub i32 31, %41
+  %43 = icmp eq i32 %41, -1
+  %44 = shl i32 %42, 24
+  %45 = select i1 %43, i32 -16777216, i32 %44
+  %46 = or i32 %40, %33
+  %47 = or i32 %46, %38
+  %48 = or i32 %47, %45
+  %49 = call i32 @dx.op.unary.i32(i32 30, i32 %10)  ; Bfrev(value)
+  %50 = and i32 %10, 31
+  %51 = shl i32 %15, %50
+  %52 = and i32 %15, 31
+  %53 = ashr i32 %10, %52
+  %54 = xor i32 %53, %51
+  %55 = xor i32 %54, %49
+  %56 = call i32 @dx.op.binary.i32(i32 40, i32 %10, i32 %15)  ; UMin(a,b)
+  %57 = call i32 @dx.op.binary.i32(i32 37, i32 %10, i32 %15)  ; IMax(a,b)
+  %58 = add i32 %57, %56
+  %59 = sub i32 0, %15
+  %60 = call i32 @dx.op.binary.i32(i32 37, i32 %15, i32 %59)  ; IMax(a,b)
+  %61 = add i32 %58, %60
+  %62 = call i32 @dx.op.binary.i32(i32 37, i32 %10, i32 -100)  ; IMax(a,b)
+  %63 = call i32 @dx.op.binary.i32(i32 38, i32 %62, i32 100)  ; IMin(a,b)
+  %64 = add i32 %61, %63
+  %65 = and i32 %10, 65535
+  %66 = uitofp i32 %65 to float
+  %67 = fmul fast float %66, 1.562500e-02
+  %68 = fadd fast float %67, -3.000000e+02
+  %69 = lshr i32 %15, 20
+  %70 = uitofp i32 %69 to float
+  %71 = fmul fast float %70, 6.250000e-02
+  %72 = fadd fast float %71, 2.500000e-01
+  %73 = fmul fast float %72, %68
+  %74 = fdiv fast float %68, %72
+  %75 = fadd fast float %74, %73
+  %76 = bitcast float %75 to i32
+  %77 = call float @dx.op.tertiary.f32(i32 46, float %68, float %72, float 1.500000e+00)  ; FMad(a,b,c)
+  %78 = bitcast float %77 to i32
+  %79 = call float @dx.op.unary.f32(i32 6, float %68)  ; FAbs(value)
+  %80 = call float @dx.op.unary.f32(i32 24, float %79)  ; Sqrt(value)
+  %81 = bitcast float %80 to i32
+  %82 = xor i32 %81, %78
+  %83 = call float @dx.op.unary.f32(i32 25, float %72)  ; Rsqrt(value)
+  %84 = bitcast float %83 to i32
+  %85 = xor i32 %82, %84
+  %86 = fmul fast float %66, 0x3FAD9999A0000000
+  %87 = fadd fast float %86, -1.110000e+03
+  %88 = fptosi float %87 to i32
+  %89 = fmul fast float %70, 6.250000e+01
+  %90 = fadd fast float %89, 2.500000e+02
+  %91 = fptoui float %90 to i32
+  %92 = add i32 %91, %88
+  %93 = call float @dx.op.unary.f32(i32 27, float %68)  ; Round_ni(value)
+  %94 = call float @dx.op.unary.f32(i32 28, float %72)  ; Round_pi(value)
+  %95 = fadd fast float %94, %93
+  %96 = fmul fast float %66, 7.812500e-03
+  %97 = fadd fast float %96, -1.500000e+02
+  %98 = call float @dx.op.unary.f32(i32 26, float %97)  ; Round_ne(value)
+  %99 = fadd fast float %95, %98
+  %100 = fmul fast float %70, 1.875000e-01
+  %101 = fadd fast float %100, 7.500000e-01
+  %102 = call float @dx.op.unary.f32(i32 29, float %101)  ; Round_z(value)
+  %103 = fadd fast float %99, %102
+  %104 = bitcast float %103 to i32
+  %105 = add i32 %92, %104
+  %106 = call float @dx.op.unary.f32(i32 22, float %68)  ; Frc(value)
+  %107 = fmul fast float %70, 7.812500e-03
+  %108 = fadd fast float %107, 3.125000e-02
+  %109 = call float @dx.op.unary.f32(i32 21, float %108)  ; Exp(value)
+  %110 = fadd fast float %109, %106
+  %111 = fadd fast float %71, 1.250000e+00
+  %112 = call float @dx.op.unary.f32(i32 23, float %111)  ; Log(value)
+  %113 = fadd fast float %110, %112
+  %114 = bitcast float %113 to i32
+  %115 = call float @dx.op.binary.f32(i32 36, float %68, float %72)  ; FMin(a,b)
+  %116 = call float @dx.op.binary.f32(i32 35, float %68, float %72)  ; FMax(a,b)
+  %117 = fsub fast float %115, %116
+  %118 = fadd fast float %71, -1.750000e+00
+  %119 = call float @dx.op.unary.f32(i32 7, float %118)  ; Saturate(value)
+  %120 = fadd fast float %117, %119
+  %121 = bitcast float %120 to i32
+  %122 = fcmp fast olt float %68, %72
+  %123 = zext i1 %122 to i32
+  %124 = fcmp fast oeq float %68, %72
+  %125 = select i1 %124, i32 2, i32 0
+  %126 = icmp slt i32 %10, %15
+  %127 = select i1 %126, i32 4, i32 0
+  %128 = icmp uge i32 %10, %15
+  %129 = select i1 %128, i32 8, i32 0
+  %130 = fdiv fast float %68, 0.000000e+00
+  %131 = call i1 @dx.op.isSpecialFloat.f32(i32 8, float %130)  ; IsNaN(value)
+  %132 = select i1 %131, i32 16, i32 0
+  %133 = fdiv fast float %72, 0.000000e+00
+  %134 = call i1 @dx.op.isSpecialFloat.f32(i32 9, float %133)  ; IsInf(value)
+  %135 = select i1 %134, i32 32, i32 0
+  %136 = call i1 @dx.op.isSpecialFloat.f32(i32 10, float %68)  ; IsFinite(value)
+  %137 = select i1 %136, i32 64, i32 0
+  %138 = or i32 %129, %127
+  %139 = or i32 %138, %125
+  %140 = or i32 %139, %123
+  %141 = or i32 %140, %132
+  %142 = or i32 %141, %135
+  %143 = or i32 %142, %137
+  br label %144
+
+; <label>:144                                     ; preds = %162, %0
+  %145 = phi i32 [ 0, %0 ], [ %163, %162 ]
+  %146 = phi i32 [ 0, %0 ], [ %164, %162 ]
+  %147 = shl i32 1, %146
+  %148 = and i32 %147, %10
+  %149 = icmp eq i32 %148, 0
+  br i1 %149, label %162, label %150
+
+; <label>:150                                     ; preds = %144
+  %151 = xor i32 %146, %15
+  %152 = lshr i32 %151, 16
+  %153 = xor i32 %152, %151
+  %154 = mul i32 %153, 2146121005
+  %155 = lshr i32 %154, 15
+  %156 = xor i32 %155, %154
+  %157 = mul i32 %156, -2073254261
+  %158 = lshr i32 %157, 16
+  %159 = xor i32 %158, %157
+  %160 = add i32 %159, %145
+  %161 = icmp ugt i32 %160, -268435456
+  br i1 %161, label %166, label %162
+
+; <label>:162                                     ; preds = %150, %144
+  %163 = phi i32 [ %145, %144 ], [ %160, %150 ]
+  %164 = add nuw nsw i32 %146, 1
+  %165 = icmp ult i32 %164, 32
+  br i1 %165, label %144, label %166
+
+; <label>:166                                     ; preds = %162, %150
+  %167 = phi i32 [ %160, %150 ], [ %163, %162 ]
+  %168 = and i32 %10, 7
+  switch i32 %168, label %182 [
+    i32 0, label %184
+    i32 1, label %169
+    i32 2, label %171
+    i32 3, label %171
+    i32 5, label %180
+  ]
+
+; <label>:169                                     ; preds = %166
+  %170 = mul i32 %15, 3
+  br label %184
+
+; <label>:171                                     ; preds = %166, %166
+  %172 = lshr i32 %15, 16
+  %173 = xor i32 %172, %15
+  %174 = mul i32 %173, 2146121005
+  %175 = lshr i32 %174, 15
+  %176 = xor i32 %175, %174
+  %177 = mul i32 %176, -2073254261
+  %178 = lshr i32 %177, 16
+  %179 = xor i32 %178, %177
+  br label %184
+
+; <label>:180                                     ; preds = %166
+  %181 = xor i32 %15, -1
+  br label %184
+
+; <label>:182                                     ; preds = %166
+  %183 = xor i32 %15, %10
+  br label %184
+
+; <label>:184                                     ; preds = %182, %180, %171, %169, %166
+  %185 = phi i32 [ %183, %182 ], [ %181, %180 ], [ %179, %171 ], [ %170, %169 ], [ %15, %166 ]
+  %186 = lshr i32 %10, 16
+  %187 = xor i32 %186, %10
+  %188 = mul i32 %187, 2146121005
+  %189 = lshr i32 %188, 15
+  %190 = xor i32 %189, %188
+  %191 = mul i32 %190, -2073254261
+  %192 = lshr i32 %191, 16
+  %193 = xor i32 %192, %191
+  %194 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 0
+  store i32 %193, i32* %194, align 4, !tbaa !14
+  %195 = add i32 %10, 1
+  %196 = lshr i32 %195, 16
+  %197 = xor i32 %196, %195
+  %198 = mul i32 %197, 2146121005
+  %199 = lshr i32 %198, 15
+  %200 = xor i32 %199, %198
+  %201 = mul i32 %200, -2073254261
+  %202 = lshr i32 %201, 16
+  %203 = xor i32 %202, %201
+  %204 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 1
+  store i32 %203, i32* %204, align 4, !tbaa !14
+  %205 = add i32 %10, 2
+  %206 = lshr i32 %205, 16
+  %207 = xor i32 %206, %205
+  %208 = mul i32 %207, 2146121005
+  %209 = lshr i32 %208, 15
+  %210 = xor i32 %209, %208
+  %211 = mul i32 %210, -2073254261
+  %212 = lshr i32 %211, 16
+  %213 = xor i32 %212, %211
+  %214 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 2
+  store i32 %213, i32* %214, align 4, !tbaa !14
+  %215 = add i32 %10, 3
+  %216 = lshr i32 %215, 16
+  %217 = xor i32 %216, %215
+  %218 = mul i32 %217, 2146121005
+  %219 = lshr i32 %218, 15
+  %220 = xor i32 %219, %218
+  %221 = mul i32 %220, -2073254261
+  %222 = lshr i32 %221, 16
+  %223 = xor i32 %222, %221
+  %224 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 3
+  store i32 %223, i32* %224, align 4, !tbaa !14
+  %225 = add i32 %10, 4
+  %226 = lshr i32 %225, 16
+  %227 = xor i32 %226, %225
+  %228 = mul i32 %227, 2146121005
+  %229 = lshr i32 %228, 15
+  %230 = xor i32 %229, %228
+  %231 = mul i32 %230, -2073254261
+  %232 = lshr i32 %231, 16
+  %233 = xor i32 %232, %231
+  %234 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 4
+  store i32 %233, i32* %234, align 4, !tbaa !14
+  %235 = add i32 %10, 5
+  %236 = lshr i32 %235, 16
+  %237 = xor i32 %236, %235
+  %238 = mul i32 %237, 2146121005
+  %239 = lshr i32 %238, 15
+  %240 = xor i32 %239, %238
+  %241 = mul i32 %240, -2073254261
+  %242 = lshr i32 %241, 16
+  %243 = xor i32 %242, %241
+  %244 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 5
+  store i32 %243, i32* %244, align 4, !tbaa !14
+  %245 = add i32 %10, 6
+  %246 = lshr i32 %245, 16
+  %247 = xor i32 %246, %245
+  %248 = mul i32 %247, 2146121005
+  %249 = lshr i32 %248, 15
+  %250 = xor i32 %249, %248
+  %251 = mul i32 %250, -2073254261
+  %252 = lshr i32 %251, 16
+  %253 = xor i32 %252, %251
+  %254 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 6
+  store i32 %253, i32* %254, align 4, !tbaa !14
+  %255 = add i32 %10, 7
+  %256 = lshr i32 %255, 16
+  %257 = xor i32 %256, %255
+  %258 = mul i32 %257, 2146121005
+  %259 = lshr i32 %258, 15
+  %260 = xor i32 %259, %258
+  %261 = mul i32 %260, -2073254261
+  %262 = lshr i32 %261, 16
+  %263 = xor i32 %262, %261
+  %264 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 7
+  store i32 %263, i32* %264, align 4, !tbaa !14
+  %265 = and i32 %15, 7
+  %266 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 %265
+  %267 = load i32, i32* %266, align 4, !tbaa !14
+  %268 = lshr i32 %15, 3
+  %269 = and i32 %268, 7
+  %270 = getelementptr inbounds [8 x i32], [8 x i32]* %6, i32 0, i32 %269
+  %271 = load i32, i32* %270, align 4, !tbaa !14
+  %272 = add i32 %271, %267
+  %273 = getelementptr [64 x i32], [64 x i32] addrspace(3)* @"\01?gs_words@@3PAIA", i32 0, i32 %5
+  store i32 %10, i32 addrspace(3)* %273, align 4, !tbaa !14
+  %274 = getelementptr [64 x float], [64 x float] addrspace(3)* @"\01?gs_floats@@3PAMA", i32 0, i32 %5
+  store float %68, float addrspace(3)* %274, align 4, !tbaa !18
+  call void @dx.op.barrier(i32 80, i32 9)  ; Barrier(barrierMode)
+  %275 = add i32 %5, 1
+  %276 = and i32 %275, 63
+  %277 = getelementptr [64 x i32], [64 x i32] addrspace(3)* @"\01?gs_words@@3PAIA", i32 0, i32 %276
+  %278 = atomicrmw add i32 addrspace(3)* %277, i32 1 seq_cst
+  call void @dx.op.barrier(i32 80, i32 9)  ; Barrier(barrierMode)
+  %279 = add i32 %5, 5
+  %280 = and i32 %279, 63
+  %281 = getelementptr [64 x i32], [64 x i32] addrspace(3)* @"\01?gs_words@@3PAIA", i32 0, i32 %280
+  %282 = load i32, i32 addrspace(3)* %281, align 4, !tbaa !14
+  %283 = sub i32 63, %5
+  %284 = getelementptr [64 x float], [64 x float] addrspace(3)* @"\01?gs_floats@@3PAMA", i32 0, i32 %283
+  %285 = load float, float addrspace(3)* %284, align 4, !tbaa !18
+  %286 = bitcast float %285 to i32
+  %287 = xor i32 %286, %282
+  %288 = shl i32 %4, 6
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %288, i32 undef, i32 %23, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %289 = or i32 %288, 4
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %289, i32 undef, i32 %27, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %290 = or i32 %288, 8
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %290, i32 undef, i32 %32, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %291 = or i32 %288, 12
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %291, i32 undef, i32 %48, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %292 = or i32 %288, 16
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %292, i32 undef, i32 %55, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %293 = or i32 %288, 20
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %293, i32 undef, i32 %64, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %294 = or i32 %288, 24
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %294, i32 undef, i32 %76, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %295 = or i32 %288, 28
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %295, i32 undef, i32 %85, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %296 = or i32 %288, 32
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %296, i32 undef, i32 %105, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %297 = or i32 %288, 36
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %297, i32 undef, i32 %114, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %298 = or i32 %288, 40
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %298, i32 undef, i32 %121, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %299 = or i32 %288, 44
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %299, i32 undef, i32 %143, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %300 = or i32 %288, 48
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %300, i32 undef, i32 %167, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %301 = or i32 %288, 52
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %301, i32 undef, i32 %185, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %302 = or i32 %288, 56
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %302, i32 undef, i32 %272, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %303 = or i32 %288, 60
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %303, i32 undef, i32 %287, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %304 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %1, i32 0, i32 4092, i32 undef, i32 undef, i32 %65)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %305 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %1, i32 7, i32 4088, i32 undef, i32 undef, i32 %10)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %306 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %1, i32 3, i32 4084, i32 undef, i32 undef, i32 %15)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.flattenedThreadIdInGroup.i32(i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.binary.i32(i32, i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.unary.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.unaryBits.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.tertiary.f32(i32, float, float, float) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.unary.f32(i32, float) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.binary.f32(i32, float, float) #0
+
+; Function Attrs: nounwind readnone
+declare i1 @dx.op.isSpecialFloat.f32(i32, float) #0
+
+; Function Attrs: noduplicate nounwind
+declare void @dx.op.barrier(i32, i32) #1
+
+; Function Attrs: nounwind
+declare i32 @dx.op.atomicBinOp.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32, %dx.types.Handle, i32) #3
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #3
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32, %dx.types.Handle, i32, i32) #3
+
+; Function Attrs: nounwind
+declare void @dx.op.bufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8) #2
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { noduplicate nounwind }
+attributes #2 = { nounwind }
+attributes #3 = { nounwind readonly }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!11}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 0}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 0}
+!4 = !{!5, !7, !9, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i32 0, null}
+!7 = !{!8}
+!8 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!9 = !{!10}
+!10 = !{i32 0, %Root* undef, !"", i32 0, i32 0, i32 1, i32 16, null}
+!11 = !{void ()* @cs_alu, !"cs_alu", null, !4, !12}
+!12 = !{i32 0, i64 16, i32 4, !13}
+!13 = !{i32 64, i32 1, i32 1}
+!14 = !{!15, !15, i64 0}
+!15 = !{!"int", !16, i64 0}
+!16 = !{!"omnipotent char", !17, i64 0}
+!17 = !{!"Simple C/C++ TBAA"}
+!18 = !{!19, !19, i64 0}
+!19 = !{!"float", !16, i64 0}

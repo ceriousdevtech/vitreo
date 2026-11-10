@@ -179,10 +179,13 @@ private:
             return (hi << 16) | lo;
         }
 
-        /// Drop to the next 16-bit boundary and hand back a raw byte cursor.
+        /// Consume 1..16 padding bits and hand back a raw byte cursor.
         /// Uncompressed blocks leave the bitstream entirely and read plain
         /// little-endian bytes from that boundary.
         void realign16() noexcept {
+            // MS-PATCH 2.3.2.1 requires a full padding word when the block
+            // header already ends on a word boundary (unlike chunk padding).
+            if ((bit_count_ % 16) == 0) (void)read(16);
             bit_count_ -= (bit_count_ % 16);
             pos_ -= bit_count_ / 8;
             bit_count_ = 0;

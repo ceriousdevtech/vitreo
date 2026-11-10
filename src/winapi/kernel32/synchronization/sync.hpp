@@ -121,6 +121,13 @@ struct SyncMutex {
     object_access::Descriptor security;
 };
 
+/// VITREO_LONG_WAITS[=<ms>, default 20]: one stderr line per guest wait or
+/// sleep that blocked at least that long -- thread, API, handle, requested
+/// timeout, wall time and the guest return address -- to place a stall in
+/// time (the aggregate VITREO_PROFILE_WAITS table cannot).
+void log_long_wait(const char* api, u64 handle, u32 timeout_ms, u64 blocked_ns,
+                   u64 caller);
+
 struct SyncTraceContext {
     std::string_view api;
     GuestAddr caller{0};
@@ -147,6 +154,10 @@ struct EventCausality {
 };
 
 struct SyncEvent {
+    ~SyncEvent();
+    [[nodiscard]] bool reset_for_io();
+    [[nodiscard]] bool signal_for_io();
+    [[nodiscard]] bool query_for_io(bool& manual,bool& signaled);
     u64 nt_id{0};
     std::shared_ptr<ipc::SharedSyncObject> shared;
     std::string name;  ///< named events only (for cross-process handshake diag)
@@ -157,6 +168,9 @@ struct SyncEvent {
     /// True when the handle was created by CreateWaitableTimer*: SetEvent /
     /// ResetEvent / PulseEvent must fail with ERROR_INVALID_HANDLE.
     bool waitable_timer{false};
+    // Also used by pending I/O references, which outlive a handle or manager.
+    // Promotion must hold this lock while replacing the native backend.
+    std::mutex backend_mutex;
 };
 
 struct SyncSemaphore {
@@ -288,6 +302,7 @@ public:
                                       bool inheritable = false,
                                       SyncTraceContext trace = {},
                                       bool waitable_timer = false);
+    [[nodiscard]] std::shared_ptr<SyncEvent> reference_event_for_io(Handle h,u32& error);
     /// Register a non-Event/Mutex/Semaphore handle (console input, …) as
     /// waitable via an ntsync event id. Used by ConsoleManager.
     void register_waitable(Handle h, u64 nt_id);
@@ -444,6 +459,14 @@ public:
     void set_wait_park(WaitPark park) { m_wait_park = std::move(park); }
     /// Arms the park's wake before the probe that precedes it (true) and
     /// disarms it after the park (false).
+    /// Whether a GUI-thread wait has host UI to keep alive right now. The
+    /// pump and park exist only for that; WaitForSingleObject itself never
+    /// pumps (Learn). False makes the wait block on its object directly, so
+    /// a process with no host UI does not spin through instant parks.
+    using WaitPumpNeeded = std::function<bool()>;
+    void set_wait_pump_needed(WaitPumpNeeded needed) {
+        m_wait_pump_needed = std::move(needed);
+    }
     using WaitParkArm = std::function<void(bool)>;
     void set_wait_park_arm(WaitParkArm arm) { m_wait_park_arm = std::move(arm); }
     /// Arm the GUI thread's run-loop wake for exactly these handles (call
@@ -533,6 +556,7 @@ public:
     void sleep(u32 milliseconds);
 
 private:
+    void release_event_handles();
     [[nodiscard]] Handle import_transferred_handle_impl(
         std::string_view descriptor,
         std::optional<Handle> inherited_handle);
@@ -580,6 +604,7 @@ private:
     std::atomic<bool> m_shutdown{false};
     WaitPump m_wait_pump;
     WaitPark m_wait_park;
+    WaitPumpNeeded m_wait_pump_needed;
     WaitParkArm m_wait_park_arm;
     AlertableApcDrain m_alertable_apc_drain;
     std::mutex m_apc_events_mutex;

@@ -12,6 +12,8 @@
 #include "runtime/execution/inherited_handles.hpp"
 #include "core/cpu/jit/linear_fault.hpp"
 #include "ipc/ipc_gate.hpp"
+#include "core/cpu/state/context32_record.hpp"
+#include "core/cpu/state/context64_record.hpp"
 #include "ipc/process_registry.hpp"
 #include "winapi/kernel32/memory/remote_memory.hpp"
 #include "ipc/process_session.hpp"
@@ -41,6 +43,7 @@
 #include <cctype>
 #include <span>
 #include <vector>
+#include <mutex>
 #include <optional>
 #include <sys/resource.h>
 #include <unistd.h>
@@ -244,6 +247,26 @@ RunResult execute_pe(const RunConfig& config) {
 
     auto map_result =
         pe::map_pe(memory, pe, std::span<const u8>(pe_data), placement.base);
+    // Host occupancy above 4 GiB is only discovered when a mapping meets it
+    // (malloc's large-allocation zone can sit exactly at 0x1'0000'0000, a
+    // common x64 ImageBase). The failed attempt records the occupant as a
+    // reserved hole and leaves nothing mapped, so a relocatable image is
+    // placed again, clear of it, as the Windows loader relocates an image
+    // whose preferred base is unavailable.
+    if (map_result.is_err() &&
+        map_result.error() == pe::MapError::MemoryMapFailed &&
+        pe.has_relocations()) {
+        const auto retry = pe::select_image_base(memory, pe);
+        if (retry.ok() && retry.base != placement.base) {
+            std::fprintf(stderr,
+                         "[loader] image base 0x%llx is host-owned; "
+                         "relocating to 0x%llx\n",
+                         static_cast<unsigned long long>(placement.base),
+                         static_cast<unsigned long long>(retry.base));
+            map_result = pe::map_pe(memory, pe, std::span<const u8>(pe_data),
+                                    retry.base);
+        }
+    }
     if (map_result.is_err()) {
         return RunResult{1, 0,
             std::string("Section mapping error: ") +
@@ -329,6 +352,11 @@ RunResult execute_pe(const RunConfig& config) {
                        elevation_credential,
                        config.token_context,
                        config.elevation_authorizer, *inherited_handles);
+    ctx.gamepad_host=hardware::make_platform_gamepad_host();
+    ctx.u32_ext_mgr.set_gamepad_foreground_state(ctx.gamepad_foreground);
+    ctx.gamepad_catalog=std::make_shared<winapi::GamepadHidCatalog>(ctx.gamepad_host);
+    ctx.file_mgr.set_gamepad_catalog(ctx.gamepad_catalog);
+    ctx.u32_ext_mgr.set_gamepad_catalog(ctx.gamepad_catalog);
     if (auto failure = configure_process_context(
             ctx, config, pe, pe_data, win_exe_path)) {
         return *failure;
@@ -487,7 +515,7 @@ RunResult execute_pe(const RunConfig& config) {
     } else {
         cpu.init_protected_mode();
     }
-    winapi::seed_windows_initial_fpu(cpu);
+    winapi::seed_windows_initial_cpu_state(cpu);
     // The guest's FP state is the one just seeded. Host start-up code on this
     // thread (framework initializers, Vitreo's own setup) can leave sticky
     // host FP exception flags set, and the first guest FSTSW/STMXCSR would
@@ -588,19 +616,12 @@ RunResult execute_pe(const RunConfig& config) {
     for (const GuestAddr module_base : ctx.module_mgr.get_all_module_handles()) {
         const auto* module = ctx.module_mgr.get_module_info_by_handle(module_base);
         if (module != nullptr) {
-            pe::TebModuleInfo entry{module_base, module->path};
+            pe::TebModuleInfo entry = winapi::ModuleManager::loader_entry_info(*module);
             entry.is_executable = module_base == image.base_address;
             // An IL-only executable's loader entry is NULL (cor_loader_probe).
             entry.entry_point = entry.is_executable && module->entry_point == 0
                 ? (il_only_exe ? 0 : image.entry_point)
                 : module->entry_point;
-            // A synthetic (thunk-backed) module still occupies its slot, and a
-            // guest resolving an address to its module tests
-            // DllBase <= addr < DllBase + SizeOfImage. Reporting zero there
-            // makes every system DLL invisible to that lookup.
-            entry.size_of_image = module->image_end > module_base
-                ? module->image_end - module_base
-                : winapi::SYNTHETIC_MODULE_SLOT_SIZE;
             teb_config.loaded_modules.push_back(entry);
         }
     }
@@ -673,11 +694,146 @@ RunResult execute_pe(const RunConfig& config) {
         remote_memory_server, ctx, memory, is_64bit, peb_address,
         pe_tls_data_start, pe_tls_data_size, com_rpc_thread_context,
         com_rpc_jit_initialized);
+    // Get/SetThreadContext from the parent while CREATE_SUSPENDED holds the
+    // primary thread. Windows reports it at ntdll!RtlUserThreadStart with the
+    // image entry in RCX/EAX and the PEB in RDX/EBX, on its initial stack
+    // (thread_lifecycle_probe SUSPENDED_START); a context set now is where
+    // the thread starts once resumed, after loader initialization.
+    std::mutex primary_context_mutex;
+    std::optional<cpu::CpuState> primary_context;
+    const GuestAddr ntdll_base = ctx.module_mgr.get_module_handle("ntdll.dll");
+    const GuestAddr rtl_user_thread_start = ntdll_base != 0
+        ? ctx.module_mgr.get_proc_address(ntdll_base, "RtlUserThreadStart")
+        : 0;
+    const auto reported_primary_start = [&]() {
+        cpu::CpuState state = cpu;
+        for (u8 reg = 0; reg < 16; ++reg) {
+            if (reg != static_cast<u8>(cpu::RegIndex::RSP)) state.gpr.set64(reg, 0);
+        }
+        state.rip = rtl_user_thread_start;
+        if (is_64bit) {
+            state.gpr.set64(static_cast<u8>(cpu::RegIndex::RCX), cpu.rip);
+            state.gpr.set64(static_cast<u8>(cpu::RegIndex::RDX), peb_address);
+        } else {
+            state.gpr.set32(static_cast<u8>(cpu::RegIndex::RAX),
+                            static_cast<u32>(cpu.rip));
+            state.gpr.set32(static_cast<u8>(cpu::RegIndex::RBX),
+                            static_cast<u32>(peb_address));
+            // The x86 start stack is the one before the entry's return slot
+            // (ESP = 0 mod 16, suspended_child_context_probe START sp_rem).
+            state.set_sp(cpu.sp() + 4);
+        }
+        state.flags.rflags = 0x200;
+        return state;
+    };
+    remote_memory_server.set_primary_context_handler(
+        [&](bool set, GuestAddr record, bool record_64bit) -> u32 {
+            constexpr u32 STATUS_SUCCESS = 0x00000000u;
+            constexpr u32 STATUS_ACCESS_VIOLATION = 0xC0000005u;
+            constexpr u32 STATUS_NOT_SUPPORTED = 0xC00000BBu;
+            if (record_64bit != is_64bit || rtl_user_thread_start == 0) {
+                std::fprintf(stderr,
+                             "[vitreo] UNIMPLEMENTED kernel32!%sThreadContext: "
+                             "%s-bit CONTEXT for a %s-bit primary thread\n",
+                             set ? "Set" : "Get", record_64bit ? "64" : "32",
+                             is_64bit ? "64" : "32");
+                return STATUS_NOT_SUPPORTED;
+            }
+            std::lock_guard lock(primary_context_mutex);
+            cpu::CpuState state =
+                primary_context.value_or(reported_primary_start());
+            if (!set) {
+                if (is_64bit) {
+                    const auto flags = memory.read_u32(
+                        record + cpu::kContext64FlagsOffset);
+                    if (!flags.is_ok() ||
+                        cpu::store_context64(memory, record, state,
+                                             flags.value()) !=
+                            cpu::Context64Status::Ok) {
+                        return STATUS_ACCESS_VIOLATION;
+                    }
+                    // EFlags as the thread holds it (store_context64 forces
+                    // bit 1, which a thread that has not run does not have).
+                    if ((flags.value() & 0x1u) != 0 &&
+                        !memory.write_u32(record + 0x44,
+                                          static_cast<u32>(state.flags.rflags))
+                             .is_ok()) {
+                        return STATUS_ACCESS_VIOLATION;
+                    }
+                    return STATUS_SUCCESS;
+                }
+                const auto flags = memory.read_u32(record);
+                return flags.is_ok() &&
+                               cpu::store_context32(memory, record, state,
+                                                    flags.value()) ==
+                                   cpu::Context32Status::Ok
+                           ? STATUS_SUCCESS
+                           : STATUS_ACCESS_VIOLATION;
+            }
+            if (is_64bit) {
+                const auto status = cpu::load_context64(
+                    memory, record, state, /*restoring_current_thread=*/false);
+                if (status == cpu::Context64Status::DebugRegistersUnsupported) {
+                    std::fprintf(stderr,
+                                 "[vitreo] UNIMPLEMENTED kernel32!SetThreadContext: "
+                                 "DR7 arms a hardware breakpoint; no "
+                                 "debug-register support\n");
+                    return STATUS_NOT_SUPPORTED;
+                }
+                if (status != cpu::Context64Status::Ok) {
+                    return STATUS_ACCESS_VIOLATION;
+                }
+                // Learn SetThreadContext: privileged EFlags bits are silently
+                // corrected; measured mask (value & 0x00210FD5) | 0x200.
+                const u32 flags = memory.read_u32(
+                    record + cpu::kContext64FlagsOffset).value_or(0);
+                if ((flags & 0x1u) != 0) {
+                    state.flags.rflags =
+                        (memory.read_u32(record + 0x44).value_or(0) &
+                         0x00210FD5u) | 0x200u;
+                }
+            } else {
+                const auto status = cpu::load_context32(memory, record, state);
+                if (status == cpu::Context32Status::DebugRegistersUnsupported) {
+                    std::fprintf(stderr,
+                                 "[vitreo] UNIMPLEMENTED kernel32!SetThreadContext: "
+                                 "DR7 arms a hardware breakpoint; no "
+                                 "debug-register support\n");
+                    return STATUS_NOT_SUPPORTED;
+                }
+                if (status != cpu::Context32Status::Ok) {
+                    return STATUS_ACCESS_VIOLATION;
+                }
+            }
+            primary_context = state;
+            return STATUS_SUCCESS;
+        });
     if (!remote_memory_server.start(primary_thread_suspended)) {
         return RunResult{
             1, 0, "Failed to start guest process memory endpoint", false};
     }
     remote_memory_server.wait_for_initial_resume();
+    {
+        // The parent changed where the primary thread starts. A context equal
+        // to the reported start state is the ordinary start and keeps it.
+        std::lock_guard lock(primary_context_mutex);
+        if (primary_context.has_value()) {
+            const cpu::CpuState reported = reported_primary_start();
+            const bool unchanged =
+                primary_context->rip == reported.rip &&
+                primary_context->sp() == reported.sp() &&
+                primary_context->gpr.get64(static_cast<u8>(cpu::RegIndex::RCX)) ==
+                    reported.gpr.get64(static_cast<u8>(cpu::RegIndex::RCX)) &&
+                primary_context->gpr.get64(static_cast<u8>(cpu::RegIndex::RAX)) ==
+                    reported.gpr.get64(static_cast<u8>(cpu::RegIndex::RAX));
+            if (!unchanged) {
+                cpu = *primary_context;
+                ipc::ipc_log("primary thread starts at SetThreadContext rip=0x%llx",
+                             static_cast<unsigned long long>(cpu.rip));
+            }
+        }
+        remote_memory_server.set_primary_context_handler({});
+    }
 
     // -------------------------------------------------------------------------
     // Step 8c: Set up wndproc callback for DispatchMessageW

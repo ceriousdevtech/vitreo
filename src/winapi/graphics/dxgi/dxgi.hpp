@@ -13,9 +13,11 @@
 #include "winapi/core/thunk_registry.hpp"
 #include "winapi/core/guest_com.hpp"
 #include "winapi/graphics/common/device_lock_profile.hpp"
+#include "winapi/graphics/dxgi/dxgi_exclusive_fullscreen.hpp"
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <functional>
 #include <memory>
 #include <mutex>
@@ -277,6 +279,13 @@ public:
     [[nodiscard]] u32 query_object_interface(GuestAddr object,
                                              GuestAddr iid_address,
                                              GuestAddr object_out);
+    /// Exclusive full-screen shared by every frontend's swap chains: the one
+    /// chain that holds the display mode and whether a transition is
+    /// running (dxgi_exclusive_fullscreen.hpp). Read and written under the
+    /// calling frontend's API lock.
+    [[nodiscard]] dxgi::ExclusiveRegistry& exclusive_fullscreen() noexcept {
+        return m_exclusive_fullscreen;
+    }
 
     void impl_CreateDXGIFactory(Marshaler& m);
     void impl_CreateDXGIFactory1(Marshaler& m);
@@ -432,7 +441,11 @@ private:
     bool m_is_64bit;
     dxgi::AdapterInfo m_adapter_info;
     bool m_adapter_info_is_explicit{false};
+    // IDXGIAdapter3::SetVideoMemoryReservation per segment group (LOCAL,
+    // NON_LOCAL), reported back as CurrentReservation.
+    std::atomic<u64> m_video_memory_reservation[2]{};
     MethodThunks m_method_thunks{};
+    dxgi::ExclusiveRegistry m_exclusive_fullscreen{};
     SwapChainCreator m_swap_chain_creator;
     SwapChainCreator m_swap_chain_for_hwnd_creator;
     SwapChainCreator m_swap_chain_for_composition_creator;

@@ -27,8 +27,42 @@
 #include <CoreFoundation/CFRunLoop.h>
 #include <CoreGraphics/CGEventSource.h>
 #include <mach/mach_time.h>
+#include <atomic>
 
 namespace vitreo::windowing {
+namespace {
+bool associate_cursor_for_clip(bool connected) {
+    const CGError result = CGAssociateMouseAndMouseCursorPosition(connected);
+    if (result != kCGErrorSuccess) {
+        std::fprintf(stderr, "[vitreo] cursor association connected=%d CGError=%d\n",
+                     connected ? 1 : 0, static_cast<int>(result));
+        return false;
+    }
+    if (diag::input_diag()) {
+        static std::atomic<unsigned> traces{0};
+        if (traces.fetch_add(1, std::memory_order_relaxed) < 96)
+            std::fprintf(stderr, "[input] cursor association connected=%d result=0\n",
+                         connected ? 1 : 0);
+    }
+    return true;
+}
+
+// SetCursorPos publishes this before the host cursor actually moves. GetCursorPos
+// reads it so the caller is not parked on the AppKit thread and the window
+// server. Cleared once the warp has landed, or replaced by a newer request.
+std::atomic<u64> g_cursor_override{0};
+std::atomic<bool> g_cursor_override_valid{false};
+
+[[nodiscard]] u64 pack_cursor(i32 x, i32 y) noexcept {
+    return (static_cast<u64>(static_cast<u32>(x)) << 32) |
+           static_cast<u32>(y);
+}
+
+void unpack_cursor(u64 packed, i32& x, i32& y) noexcept {
+    x = static_cast<i32>(static_cast<u32>(packed >> 32));
+    y = static_cast<i32>(static_cast<u32>(packed));
+}
+} // namespace
 
 // =============================================================================
 // Native Delegation: Input State (NSEvent)
@@ -137,6 +171,15 @@ void CocoaBridge::note_native_mouse_button_transition(u32 vk_code,
     }
     const u32 button_index = vk_code == 0x01 ? 0u : vk_code == 0x02 ? 1u :
                              vk_code == 0x04 ? 2u : UINT32_MAX;
+    if (button_index != UINT32_MAX) {
+        // DirectInput immediate state observes this same physical bitmap.
+        // Publish before the mouse callback; the keyboard callback must not
+        // receive a mouse transition or manufacture raw keyboard input.
+        const u64 mask = u64{1} << (vk_code & 63u);
+        auto& buttons = m_native_keys_down[vk_code >> 6u];
+        if (down) buttons.fetch_or(mask, std::memory_order_relaxed);
+        else buttons.fetch_and(~mask, std::memory_order_relaxed);
+    }
     if (button_index != UINT32_MAX && m_native_mouse_button_callback) {
         m_native_mouse_button_callback(button_index, down, hwnd);
     }
@@ -152,12 +195,61 @@ void CocoaBridge::note_native_mouse_motion(i32 screen_x, i32 screen_y,
     }
 }
 
-void CocoaBridge::note_native_mouse_motion(i32 screen_x, i32 screen_y,
+void CocoaBridge::note_native_mouse_motion(i32& screen_x, i32& screen_y,
                                             void* ns_event,
                                             HWND hwnd) noexcept {
     double device_dx = 0;
     double device_dy = 0;
     native_mouse_device_delta(ns_event, device_dx, device_dy);
+    if (m_guest_cursor_clip_enabled && m_cursor_clip_cocoa_active) {
+        const auto window = m_windows.find(hwnd);
+        const bool screen = window == m_windows.end() || window->second.fullscreen;
+        const Point origin{screen ? 0 : window->second.frame.left,
+                           screen ? 0 : window->second.frame.top};
+        // screen_x/screen_y are content-view points here; the presented
+        // surface maps them to guest pixels only later (retarget). The clip
+        // rectangle is in guest pixels, so confine in that space: clamping
+        // view points against a 640x480 clip pinned a 3x-scaled exclusive
+        // game's cursor to a 640x480-point box.
+        NSWindow* ns_window = window != m_windows.end()
+            ? reinterpret_cast<NSWindow*>(window->second.ns_window) : nil;
+        NSView* content = ns_window ? [ns_window contentView] : nil;
+        Point guest{screen_x, screen_y};
+        if (content != nil) {
+            const NSPoint window_point = [content
+                convertPoint:vtr_win32_point_in_view(content, NSMakePoint(screen_x, screen_y))
+                      toView:nil];
+            i32 gx = 0, gy = 0;
+            if (map_native_point_to_guest_surface(ns_window, window_point, screen, gx, gy))
+                guest = {gx, gy};
+        }
+        Point point = confine_cursor_coordinates(
+            static_cast<i64>(guest.x) + origin.x,
+            static_cast<i64>(guest.y) + origin.y,
+            m_guest_cursor_clip_screen, &m_guest_cursor_clip_win);
+        if (m_cursor_clip_native.owns_point_lock()) {
+            if (const auto locked = m_cursor_clip_native.guest_point()) point = *locked;
+        }
+        // The original NSEvent may carry its pre-warp location. Windows
+        // cursor-position messages use the clipped location, while the raw
+        // device delta passed below remains unchanged. An unconfined point
+        // keeps its view coordinates exactly (no round-trip rounding).
+        const Point clipped{point.x - origin.x, point.y - origin.y};
+        if (clipped.x != guest.x || clipped.y != guest.y) {
+            NSPoint window_point{};
+            if (content != nil &&
+                map_guest_surface_point_to_native(ns_window, clipped.x, clipped.y,
+                                                  window_point)) {
+                const NSPoint view_point = vtr_win32_point_in_view(content,
+                    [content convertPoint:window_point fromView:nil]);
+                screen_x = static_cast<i32>(std::floor(view_point.x));
+                screen_y = static_cast<i32>(std::floor(view_point.y));
+            } else {
+                screen_x = clipped.x;
+                screen_y = clipped.y;
+            }
+        }
+    }
     note_native_mouse_motion(screen_x, screen_y, device_dx, device_dy, hwnd);
 }
 
@@ -167,6 +259,23 @@ void CocoaBridge::native_mouse_device_delta(void* ns_event, double& device_dx,
     device_dx = [event deltaX];
     device_dy = [event deltaY];
     m_cursor_warp_deltas.remove_warps([event timestamp], device_dx, device_dy);
+    const NSEventType type = [event type];
+    if (m_cursor_clip_native.owns_point_lock() && m_cursor_clip_point_requested &&
+        (type == NSEventTypeMouseMoved || type == NSEventTypeLeftMouseDragged ||
+         type == NSEventTypeRightMouseDragged || type == NSEventTypeOtherMouseDragged) &&
+        (device_dx != 0 || device_dy != 0)) {
+        if (const auto previous = m_cursor_clip_native.guest_point()) {
+            const Point target = move_point_cursor_clip(*previous, device_dx, device_dy,
+                m_guest_cursor_clip_screen, m_guest_cursor_clip_win);
+            double x = 0, y = 0;
+            if (!map_guest_screen_to_cocoa(active_hwnd(), target.x, target.y, x, y)) {
+                x = target.x;
+                y = static_cast<double>(cocoa_virtual_top_y()) - target.y;
+            }
+            if (warp_host_cursor(x, static_cast<double>(cocoa_virtual_top_y()) - y))
+                m_cursor_clip_native.note_guest_point(target);
+        }
+    }
 }
 
 void CocoaBridge::note_offwindow_mouse_motion(void* ns_event) noexcept {
@@ -201,15 +310,21 @@ bool CocoaBridge::warp_host_cursor(double x, double y) {
         CFRelease(now);
     }
     const double time = [[NSProcessInfo processInfo] systemUptime];
-    if (CGWarpMouseCursorPosition(CGPointMake(static_cast<CGFloat>(x),
-                                              static_cast<CGFloat>(y))) !=
-        kCGErrorSuccess) {
+    const CGError warp_result = CGWarpMouseCursorPosition(
+        CGPointMake(static_cast<CGFloat>(x), static_cast<CGFloat>(y)));
+    if (warp_result != kCGErrorSuccess) {
+        std::fprintf(stderr, "[vitreo] cursor warp CGError=%d\n", static_cast<int>(warp_result));
         return false;
     }
     // Without this the OS keeps applying the pre-warp delta for a moment and
     // the next reported position undoes the warp.
-    CGAssociateMouseAndMouseCursorPosition(true);
-    note_host_cursor_warp(time, x - from.x, y - from.y);
+    // An explicit point clip owns disassociation. A guest SetCursorPos must
+    // not reconnect physical movement and let the pointer escape that lock.
+    if (!m_cursor_clip_native.owns_point_lock())
+        (void)associate_cursor_for_clip(true);
+    if (!m_cursor_clip_native.owns_point_lock())
+        note_host_cursor_warp(time, x - from.x, y - from.y);
+    m_cursor_clip_native.note_warp(x, static_cast<double>(cocoa_virtual_top_y()) - y);
     return true;
 }
 
@@ -255,6 +370,11 @@ i16 CocoaBridge::get_native_async_key_state(u32 vk_code) {
 }
 
 void CocoaBridge::get_native_cursor_pos(i32& out_x, i32& out_y) const {
+    if (g_cursor_override_valid.load(std::memory_order_acquire)) {
+        unpack_cursor(g_cursor_override.load(std::memory_order_acquire),
+                      out_x, out_y);
+        return;
+    }
     @autoreleasepool {
         NSPoint loc = [NSEvent mouseLocation];
         const HWND hwnd = active_hwnd();
@@ -321,29 +441,37 @@ void CocoaBridge::get_native_cursor_pos(i32& out_x, i32& out_y) const {
 }
 
 bool CocoaBridge::set_native_cursor_pos(i32 x, i32 y) {
-    __block bool moved = false;
-    vtr_run_on_main_sync(^{
+    // The guest position is visible as soon as this returns. The host warp
+    // runs later on the AppKit thread. Waiting here parked the render thread
+    // behind the main run loop and a window-server round trip, which is a
+    // hitch on every recenter.
+    const u64 packed = pack_cursor(x, y);
+    g_cursor_override.store(packed, std::memory_order_relaxed);
+    g_cursor_override_valid.store(true, std::memory_order_release);
+    vtr_run_on_main_async(^{
         @autoreleasepool {
-            // Translate the guest screen position back through the same
-            // window/viewport mapping get_native_cursor_pos reads it through.
             double screen_x = x;
             double screen_y = y;
             bool mapped = false;
-
             const HWND hwnd = active_hwnd();
             double cocoa_x = 0;
             double cocoa_y = 0;
             if (map_guest_screen_to_cocoa(hwnd, x, y, cocoa_x, cocoa_y)) {
-                // CGWarpMouseCursorPosition wants CG global coordinates, which
-                // flip against the primary screen (cocoa_virtual_top_y), not
-                // the screen the window is on: a window on a display of
-                // another height or vertical offset warped to the wrong row.
                 screen_x = cocoa_x;
                 screen_y = static_cast<double>(cocoa_virtual_top_y()) - cocoa_y;
                 mapped = true;
             }
-
-            moved = warp_host_cursor(screen_x, screen_y);
+            bool moved = false;
+            if (mapped && m_cursor_clip_native.is_last_warp(cocoa_x, cocoa_y)) {
+                m_cursor_clip_native.note_guest_point({x, y});
+                moved = true;
+            } else {
+                moved = warp_host_cursor(screen_x, screen_y);
+                if (moved) m_cursor_clip_native.note_guest_point({x, y});
+            }
+            if (g_cursor_override.load(std::memory_order_relaxed) == packed) {
+                g_cursor_override_valid.store(false, std::memory_order_release);
+            }
             if (diag::input_diag()) {
                 std::fprintf(stderr,
                              "[input] SetCursorPos guest=(%d,%d) -> screen=(%.1f,%.1f) mapped=%d ok=%d\n",
@@ -352,7 +480,7 @@ bool CocoaBridge::set_native_cursor_pos(i32 x, i32 y) {
             }
         }
     });
-    return moved;
+    return true;
 }
 
 bool CocoaBridge::map_guest_screen_to_cocoa(HWND hwnd, i32 guest_x, i32 guest_y,
@@ -382,35 +510,73 @@ bool CocoaBridge::map_guest_screen_to_cocoa(HWND hwnd, i32 guest_x, i32 guest_y,
     return true;
 }
 
-void CocoaBridge::set_cursor_clip(bool enabled, i32 left, i32 top, i32 right,
-                                  i32 bottom) {
+bool CocoaBridge::acquire_cursor_clip_point_lock() {
+    return m_cursor_clip_native.acquire_point_lock([this](bool connected) {
+        if (!associate_cursor_for_clip(connected)) return false;
+        m_cursor_warp_deltas.note_disassociation([[NSProcessInfo processInfo] systemUptime]);
+        return true;
+    });
+}
+
+bool CocoaBridge::release_cursor_clip_point_lock() {
+    return m_cursor_clip_native.release_point_lock(associate_cursor_for_clip);
+}
+
+bool CocoaBridge::set_cursor_clip(bool enabled, i32 left, i32 top, i32 right,
+                                  i32 bottom, const Rect& guest_screen) {
+    __block bool applied = false;
     vtr_run_on_main_sync(^{
-        if (!enabled || right <= left || bottom <= top) {
-            m_guest_cursor_clip_enabled = false;
-            m_guest_cursor_clip_win = {};
-        } else {
-            m_guest_cursor_clip_enabled = true;
-            m_guest_cursor_clip_win = Rect{left, top, right, bottom};
+        const bool old_enabled = m_guest_cursor_clip_enabled;
+        const Rect old_clip = m_guest_cursor_clip_win;
+        const Rect old_screen = m_guest_cursor_clip_screen;
+        const bool old_owned = m_cursor_clip_native.owns_point_lock();
+        const NSPoint old_position = [NSEvent mouseLocation];
+        // Stage and apply while holding the main-thread owner. GetClipCursor
+        // also runs on this owner, so no caller sees a failed staged value.
+        m_guest_cursor_clip_enabled = enabled;
+        m_guest_cursor_clip_win = enabled ? Rect{left, top, right, bottom} : Rect{};
+        m_guest_cursor_clip_screen = guest_screen;
+        m_cursor_clip_native.invalidate_position();
+        applied = refresh_cursor_clip_state() && enforce_cursor_clip();
+        if (!applied) {
+            m_guest_cursor_clip_enabled = old_enabled;
+            m_guest_cursor_clip_win = old_clip;
+            m_guest_cursor_clip_screen = old_screen;
+            (void)refresh_cursor_clip_state();
+            if (!old_owned) (void)release_cursor_clip_point_lock();
+            (void)warp_host_cursor(old_position.x,
+                static_cast<double>(cocoa_virtual_top_y()) - old_position.y);
+            if (old_owned)
+                (void)acquire_cursor_clip_point_lock();
         }
-        refresh_cursor_clip_state();
-        enforce_cursor_clip();
-        VITREO_TRACE("[cocoa] ClipCursor enabled=%d win=(%d,%d)-(%d,%d)\n",
-                     m_guest_cursor_clip_enabled ? 1 : 0, left, top, right,
-                     bottom);
+    });
+    return applied;
+}
+
+void CocoaBridge::update_cursor_clip_screen(const Rect& guest_screen) {
+    vtr_run_on_main_sync(^{
+        m_guest_cursor_clip_screen = guest_screen;
+        m_cursor_clip_native.invalidate_position();
+        (void)refresh_cursor_clip_state();
+        (void)enforce_cursor_clip();
     });
 }
 
 bool CocoaBridge::get_cursor_clip(i32& left, i32& top, i32& right,
                                   i32& bottom) const {
-    if (!m_guest_cursor_clip_enabled) return false;
-    left = m_guest_cursor_clip_win.left;
-    top = m_guest_cursor_clip_win.top;
-    right = m_guest_cursor_clip_win.right;
-    bottom = m_guest_cursor_clip_win.bottom;
+    __block bool enabled = false;
+    __block Rect clip{};
+    vtr_run_on_main_sync(^{
+        enabled = m_guest_cursor_clip_enabled;
+        clip = m_guest_cursor_clip_win;
+    });
+    if (!enabled) return false;
+    left = clip.left; top = clip.top; right = clip.right; bottom = clip.bottom;
     return true;
 }
 
-void CocoaBridge::refresh_cursor_clip_state() {
+bool CocoaBridge::refresh_cursor_clip_state() {
+    bool native_ok = true;
     // Main-thread only (callers use vtr_run_on_main_sync or are already on it).
     @autoreleasepool {
         bool want = false;
@@ -461,50 +627,53 @@ void CocoaBridge::refresh_cursor_clip_state() {
 
         if (guest_clip_active) {
             const Rect& w = m_guest_cursor_clip_win;
-            // ClipCursor uses the same screen space as GetCursorPos. In
-            // exclusive fullscreen that space is the guest logical mode
-            // mapped through the aspect-fit presentation — not 1:1 host
-            // desktop pixels (which would lock the cursor to a 640×480-style
-            // box on the display).
-            if (exclusive_is_fullscreen) {
-                double c0x = 0, c0y = 0, c1x = 0, c1y = 0;
-                double c2x = 0, c2y = 0, c3x = 0, c3y = 0;
-                const i32 x1 = w.right - 1;
-                const i32 y1 = w.bottom - 1;
-                if (map_guest_screen_to_cocoa(exclusive_hwnd, w.left, w.top,
-                                              c0x, c0y, true) &&
-                    map_guest_screen_to_cocoa(exclusive_hwnd, x1, w.top, c1x,
-                                              c1y, true) &&
-                    map_guest_screen_to_cocoa(exclusive_hwnd, w.left, y1, c2x,
-                                              c2y, true) &&
-                    map_guest_screen_to_cocoa(exclusive_hwnd, x1, y1, c3x,
-                                              c3y, true)) {
-                    x_min = std::min(std::min(c0x, c1x), std::min(c2x, c3x));
-                    x_max = std::max(std::max(c0x, c1x), std::max(c2x, c3x));
-                    y_min = std::min(std::min(c0y, c1y), std::min(c2y, c3y));
-                    y_max = std::max(std::max(c0y, c1y), std::max(c2y, c3y));
-                    want = x_max > x_min && y_max > y_min;
-                }
-                if (!want) {
-                    // Presentation surface not ready yet — confine to the
-                    // exclusive display so the cursor cannot escape mid-mode
-                    // switch, and map the guest rectangle once it has
-                    // presented (enforce_cursor_clip retries).
-                    const Rect& f =
-                        m_windows.find(exclusive_hwnd)->second.fullscreen_screen_frame;
-                    x_min = static_cast<double>(f.left);
-                    y_min = static_cast<double>(f.top);
-                    x_max = static_cast<double>(f.right);
-                    y_max = static_cast<double>(f.bottom);
-                    want = x_max > x_min && y_max > y_min;
-                    surface_pending = true;
-                }
-            } else {
-                x_min = static_cast<double>(w.left);
-                x_max = static_cast<double>(w.right);
-                y_min = static_cast<double>(top_y) - static_cast<double>(w.bottom);
-                y_max = static_cast<double>(top_y) - static_cast<double>(w.top);
+            const Rect& screen = m_guest_cursor_clip_screen;
+            // Use SetCursorPos's mapping for borderless and exclusive spaces,
+            // including pixel centres. Clamp endpoints to the virtual desktop
+            // separately: a valid zero clip may sit on its right/bottom edge.
+            const i32 x0 = static_cast<i32>(confine_cursor_axis(w.left, screen.left, screen.right));
+            const i32 y0 = static_cast<i32>(confine_cursor_axis(w.top, screen.top, screen.bottom));
+            const i32 x1 = static_cast<i32>(confine_cursor_axis(static_cast<i64>(w.right) - 1, screen.left, screen.right));
+            const i32 y1 = static_cast<i32>(confine_cursor_axis(static_cast<i64>(w.bottom) - 1, screen.top, screen.bottom));
+            // In exclusive fullscreen the guest screen is the logical mode
+            // mapped through the aspect-fit presentation, so the desktop
+            // fallback would confine the cursor to a mode-sized box in the
+            // display's top-left. Those corners require a presented surface.
+            const HWND mapping_hwnd =
+                exclusive_is_fullscreen ? exclusive_hwnd : active_hwnd();
+            bool mapped_all = true;
+            const auto map = [&](i32 x, i32 y, double& cx, double& cy) {
+                if (map_guest_screen_to_cocoa(mapping_hwnd, x, y, cx, cy,
+                                              exclusive_is_fullscreen))
+                    return;
+                mapped_all = false;
+                // Same desktop fallback as set_native_cursor_pos.
+                cx = static_cast<double>(x);
+                cy = static_cast<double>(top_y) - y;
+            };
+            double c0x = 0, c0y = 0, c1x = 0, c1y = 0;
+            double c2x = 0, c2y = 0, c3x = 0, c3y = 0;
+            map(x0, y0, c0x, c0y); map(x1, y0, c1x, c1y);
+            map(x0, y1, c2x, c2y); map(x1, y1, c3x, c3y);
+            if (exclusive_is_fullscreen && !mapped_all) {
+                // Presentation surface not ready yet: confine to the
+                // exclusive display so the cursor cannot escape mid-mode
+                // switch, and map the guest rectangle once it has presented
+                // (enforce_cursor_clip retries).
+                const Rect& f =
+                    m_windows.find(exclusive_hwnd)->second.fullscreen_screen_frame;
+                x_min = static_cast<double>(f.left);
+                y_min = static_cast<double>(f.top);
+                x_max = static_cast<double>(f.right);
+                y_max = static_cast<double>(f.bottom);
                 want = x_max > x_min && y_max > y_min;
+                surface_pending = true;
+            } else {
+                x_min = std::min({c0x, c1x, c2x, c3x});
+                x_max = std::max({c0x, c1x, c2x, c3x});
+                y_min = std::min({c0y, c1y, c2y, c3y});
+                y_max = std::max({c0y, c1y, c2y, c3y});
+                want = x_max >= x_min && y_max >= y_min;
             }
         } else if (exclusive_is_fullscreen) {
             // fullscreen_screen_frame is an NSScreen frame in Cocoa coords
@@ -518,9 +687,35 @@ void CocoaBridge::refresh_cursor_clip_state() {
             want = x_max > x_min && y_max > y_min;
         }
 
+        const bool point_requested = guest_clip_active &&
+            cursor_clip_is_point(m_guest_cursor_clip_win);
+        if (!point_requested) native_ok = release_cursor_clip_point_lock();
+        if (want != m_cursor_clip_cocoa_active ||
+            point_requested != m_cursor_clip_point_requested ||
+            x_min != m_clip_cocoa_x_min || x_max != m_clip_cocoa_x_max ||
+            y_min != m_clip_cocoa_y_min || y_max != m_clip_cocoa_y_max)
+            m_cursor_clip_native.invalidate_position();
+        m_cursor_clip_point_requested = point_requested;
         m_cursor_clip_cocoa_active = want;
         m_cursor_clip_surface_pending = surface_pending;
         if (diag::input_diag()) {
+            HWND key_hwnd = NULL_HWND;
+            bool key_fullscreen = false, key_borderless = false;
+            for (const auto& [candidate, state] : m_windows) {
+                if (state.ns_window &&
+                    [reinterpret_cast<NSWindow*>(state.ns_window) isKeyWindow]) {
+                    key_hwnd = candidate;
+                    key_fullscreen = state.fullscreen;
+                    key_borderless = state.borderless_fullscreen;
+                    break;
+                }
+            }
+            std::fprintf(stderr,
+                         "[input] cursor-mode key=0x%x fullscreen=%d borderless=%d "
+                         "confine_owner=0x%x suspended=%d active=%d\n",
+                         key_hwnd, key_fullscreen, key_borderless,
+                         m_exclusive_cursor_confine_hwnd,
+                         m_fullscreen_presentation_suspended, [NSApp isActive] == YES);
             std::fprintf(stderr,
                          "[input] cursor-clip guest=%d (%d,%d)-(%d,%d) exclusive=%d "
                          "cocoa=%d (%.1f,%.1f)-(%.1f,%.1f) surface_pending=%d\n",
@@ -566,36 +761,86 @@ void CocoaBridge::refresh_cursor_clip_state() {
             }
         }
     }
+    return native_ok;
 }
 
-void CocoaBridge::enforce_cursor_clip() {
-    // A clip held at the whole display while the surface was not ready is
-    // remapped as soon as the surface can map it (first present).
-    if (m_cursor_clip_surface_pending) refresh_cursor_clip_state();
-    if (!m_cursor_clip_cocoa_active) return;
+bool CocoaBridge::enforce_cursor_clip() {
+    if (m_cursor_clip_surface_pending && !refresh_cursor_clip_state()) return false;
+    if (!m_cursor_clip_cocoa_active) return true;
     @autoreleasepool {
-        NSPoint loc = [NSEvent mouseLocation];
-        const double margin = 1.0;
-        const double max_x = m_clip_cocoa_x_max - margin;
-        const double max_y = m_clip_cocoa_y_max - margin;
-        const double min_x = m_clip_cocoa_x_min + margin;
-        const double min_y = m_clip_cocoa_y_min + margin;
-        if (max_x <= min_x || max_y <= min_y) return;
-
-        double x = loc.x;
-        double y = loc.y;
-        bool outside = false;
-        if (x < min_x) { x = min_x; outside = true; }
-        if (x > max_x) { x = max_x; outside = true; }
-        if (y < min_y) { y = min_y; outside = true; }
-        if (y > max_y) { y = max_y; outside = true; }
-        if (!outside) return;
-
-        // CGWarpMouseCursorPosition uses top-left global coordinates on the
-        // primary-display space; convert from Cocoa bottom-left using the
-        // same virtual top as monitor enumeration.
-        const CGFloat top_y = cocoa_virtual_top_y();
-        (void)warp_host_cursor(x, static_cast<double>(top_y) - y);
+        const NSPoint loc = [NSEvent mouseLocation];
+        // A window or screen clip must leave the pointer where the user put
+        // it. Re-warping every sample onto the centre of the guest pixel
+        // under the cursor freezes absolute-position games: the mapped centre
+        // is not the host point, so each move is pulled back. Point clips
+        // (a locked cursor) still reposition on every sample.
+        if (m_guest_cursor_clip_enabled &&
+            !cursor_clip_should_reposition_host(
+                loc.x, loc.y, m_clip_cocoa_x_min, m_clip_cocoa_y_min,
+                m_clip_cocoa_x_max, m_clip_cocoa_y_max,
+                m_cursor_clip_point_requested)) {
+            return true;
+        }
+        const auto apply_warp = [&](double x, double y) {
+            const bool owned = m_cursor_clip_native.owns_point_lock();
+            // Freeze physical movement BEFORE positioning the point. Acquiring
+            // after a warp leaves a move/click race between the two operations.
+            if (m_cursor_clip_point_requested &&
+                !acquire_cursor_clip_point_lock())
+                return false;
+            if (warp_host_cursor(x, static_cast<double>(cocoa_virtual_top_y()) - y))
+                return true;
+            if (!owned) (void)release_cursor_clip_point_lock();
+            return false;
+        };
+        if (m_cursor_clip_native.is_last_warp(loc.x, loc.y)) {
+            if (m_guest_cursor_clip_enabled) {
+                if (const auto point = m_cursor_clip_native.guest_point()) {
+                    double mapped_x = 0, mapped_y = 0;
+                    if (!map_guest_screen_to_cocoa(active_hwnd(), point->x, point->y,
+                                                   mapped_x, mapped_y)) {
+                        mapped_x = point->x;
+                        mapped_y = static_cast<double>(cocoa_virtual_top_y()) - point->y;
+                    }
+                    // One-point reprojection detects a changed drawable/aspect
+                    // mapping without four-corner polling or a diagnostic counter.
+                    if (mapped_x != loc.x || mapped_y != loc.y ||
+                        (m_cursor_clip_point_requested && !m_cursor_clip_native.owns_point_lock())) {
+                        if (!apply_warp(mapped_x, mapped_y)) return false;
+                        m_cursor_clip_native.note_guest_point(*point);
+                    }
+                    return true;
+                }
+            } else return true;
+        }
+        double x = loc.x, y = loc.y;
+        if (m_guest_cursor_clip_enabled) {
+            i32 guest_x = 0, guest_y = 0;
+            get_native_cursor_pos(guest_x, guest_y);
+            const Point target = confine_cursor_point({guest_x, guest_y},
+                m_guest_cursor_clip_screen, &m_guest_cursor_clip_win);
+            if (!map_guest_screen_to_cocoa(active_hwnd(), target.x, target.y, x, y)) {
+                x = static_cast<double>(target.x);
+                y = static_cast<double>(cocoa_virtual_top_y()) - target.y;
+            }
+            if (!m_cursor_clip_point_requested && x == loc.x && y == loc.y) {
+                m_cursor_clip_native.note_warp(x, y);
+                m_cursor_clip_native.note_guest_point(target);
+                return true;
+            }
+            if (!apply_warp(x, y)) return false;
+            m_cursor_clip_native.note_guest_point(target);
+            return true;
+        } else {
+            // Implicit exclusive display bounds are half-open native bounds.
+            x = std::clamp(x, m_clip_cocoa_x_min,
+                          std::max(m_clip_cocoa_x_min, m_clip_cocoa_x_max - 1));
+            y = std::clamp(y, m_clip_cocoa_y_min,
+                          std::max(m_clip_cocoa_y_min, m_clip_cocoa_y_max - 1));
+            if (x == loc.x && y == loc.y) return true;
+        }
+        return apply_warp(x, y);
     }
 }
+
 } // namespace vitreo::windowing

@@ -187,6 +187,35 @@ void install_module_and_com_callbacks(
             return result;
         });
 
+    // DispCallFunc / ITypeInfo::Invoke need the whole return-register state
+    // (EDX:EAX, ST(0), XMM0) and the x86 stdcall pop count.
+    ctx.oleaut32_mgr.set_guest_call_ex(
+        [&cpu, &memory, &ctx](GuestAddr func_addr, const u64* args,
+                              usize arg_count, bool is_mod_64bit,
+                              bool pop_st0) {
+            cpu::CpuState& callback_cpu = active_guest_cpu_or(cpu);
+            GuestCallbackReturnState state;
+            state.want_st0 = pop_st0;
+            bool completed_normally = false;
+            (void)run_guest_callback(
+                callback_cpu, memory, ctx.thunk_registry, ctx.process_mgr,
+                func_addr, args, arg_count, is_mod_64bit, &completed_normally,
+                GuestCallbackKind::Nested, 0, 0, &state);
+            winapi::OleAut32Manager::GuestCallResult out;
+            out.rax = state.rax;
+            out.rdx = state.rdx;
+            out.xmm0 = state.xmm0_low;
+            out.st0 = state.st0;
+            out.callee_popped = state.callee_popped;
+            out.completed = completed_normally;
+            if (!completed_normally) {
+                std::fprintf(stderr,
+                    "[oleaut32] DispCallFunc target 0x%llx terminated abnormally\n",
+                    static_cast<unsigned long long>(func_addr));
+            }
+            return out;
+        });
+
     // IP Helper: NotifyIpInterfaceChange's initial notification runs the
     // guest callback on the registering thread; later changes run it on
     // guest worker threads the thread manager creates.
@@ -388,6 +417,16 @@ void install_module_and_com_callbacks(
         }
     );
 
+    ctx.avifil32_mgr.set_guest_call(
+        [&cpu, &memory, &ctx](GuestAddr func_addr, const u64* args,
+                              usize arg_count, bool is_mod_64bit) -> u64 {
+            cpu::CpuState& callback_cpu = active_guest_cpu_or(cpu);
+            return run_guest_callback(callback_cpu, memory, ctx.thunk_registry,
+                                      ctx.process_mgr, func_addr, args,
+                                      arg_count, is_mod_64bit, nullptr);
+        }
+    );
+
     // oledlg calls user32/kernel32/ole32 through their guest exports and
     // runs the caller's LPFNOLEUIHOOK.
     ctx.oledlg_mgr.set_guest_call(
@@ -417,6 +456,13 @@ void install_module_and_com_callbacks(
         }));
 
     ctx.k32_ext_mgr.set_guest_call(
+        [&cpu, &memory, &ctx](GuestAddr func_addr, const u64* args, usize arg_count, bool is_mod_64bit) -> u64 {
+            cpu::CpuState& callback_cpu = active_guest_cpu_or(cpu);
+            return run_guest_callback(callback_cpu, memory, ctx.thunk_registry,
+                                      ctx.process_mgr, func_addr, args, arg_count, is_mod_64bit);
+        }
+    );
+    ctx.file_ops_mgr.set_guest_call(
         [&cpu, &memory, &ctx](GuestAddr func_addr, const u64* args, usize arg_count, bool is_mod_64bit) -> u64 {
             cpu::CpuState& callback_cpu = active_guest_cpu_or(cpu);
             return run_guest_callback(callback_cpu, memory, ctx.thunk_registry,
@@ -577,6 +623,35 @@ void install_module_and_com_callbacks(
                 func_addr, args, arg_count, is_mod_64bit);
         }
     );
+
+    // The predefined dialog window procedure calls a dialog's DLGPROC.
+    ctx.dwp_mgr.set_guest_call(
+        [&cpu, &memory, &ctx](GuestAddr func_addr, const u64* args, usize arg_count, bool is_mod_64bit) -> u64 {
+            cpu::CpuState& callback_cpu = active_guest_cpu_or(cpu);
+            return run_guest_callback(callback_cpu, memory, ctx.thunk_registry, ctx.process_mgr,
+                                      func_addr, args, arg_count, is_mod_64bit);
+        });
+    // A dialog's own window procedure is the predefined dialog procedure
+    // around its DLGPROC (DWLP_DLGPROC); every other one is guest code.
+    ctx.comctl32_mgr.set_window_procedure_call(
+        [&cpu, &memory, &ctx](windowing::HWND hwnd, u32 msg, u64 wParam, u64 lParam, GuestAddr proc,
+                              bool is_64bit) -> u64 {
+            if (const auto* win = ctx.hwnd_mgr.find(hwnd);
+                win != nullptr && win->is_dialog && win->dlgproc != 0 && proc == win->dlgproc) {
+                ctx.dwp_mgr.set_is_64bit(is_64bit);
+                return ctx.dwp_mgr.dialog_procedure(hwnd, msg, wParam, lParam, proc);
+            }
+            const u64 args[4] = {static_cast<u64>(hwnd), msg, wParam, lParam};
+            cpu::CpuState& callback_cpu = active_guest_cpu_or(cpu);
+            return run_guest_callback(callback_cpu, memory, ctx.thunk_registry, ctx.process_mgr, proc, args, 4,
+                                      is_64bit);
+        });
+
+    ctx.u32_ext_mgr.set_dialog_procedure(
+        [&ctx](windowing::HWND hwnd, u32 msg, u64 wParam, u64 lParam, GuestAddr dlgproc, bool is_64bit) -> u64 {
+            ctx.dwp_mgr.set_is_64bit(is_64bit);
+            return ctx.dwp_mgr.dialog_procedure(hwnd, msg, wParam, lParam, dlgproc);
+        });
 
     // Wire up user32_ext guest callbacks (EnumWindows, etc.)
     ctx.u32_ext_mgr.set_guest_call(

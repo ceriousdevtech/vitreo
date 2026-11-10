@@ -16,6 +16,8 @@
 
 namespace vitreo::capsule {
 
+class CdImage;
+
 // =============================================================================
 // VFS Error Codes
 // =============================================================================
@@ -263,7 +265,8 @@ struct DirectoryEntry {
 
 /// What a volume reports about itself. The geometry is GetDiskFreeSpace's
 /// view: zero sectors_per_cluster or bytes_per_sector means the volume does
-/// not know its geometry, and callers fall back to the host's statistics.
+/// not know its geometry. Callers must fail queries that require it rather
+/// than substitute statistics from an unrelated host volume.
 /// free_clusters / total_clusters are DWORD counts, clamped to 0xFFFFFFFF;
 /// the byte counts are exact when total_bytes is nonzero.
 struct VolumeInfo {
@@ -297,6 +300,12 @@ public:
 
     /// Whether this filesystem represents read-only optical media.
     [[nodiscard]] virtual bool is_optical() const noexcept { return false; }
+
+    /// The disc behind an optical filesystem mounted from a CD image: its
+    /// table of contents and frames (MCI cdaudio, raw CD reads). nullptr
+    /// for every other filesystem, and for an optical drive backed by a
+    /// host directory, which has no disc layout.
+    [[nodiscard]] virtual CdImage* cd_image() noexcept { return nullptr; }
 
     /// Return filesystem-specific volume metadata when available.
     [[nodiscard]] virtual bool volume_info(VolumeInfo&) const noexcept { return false; }

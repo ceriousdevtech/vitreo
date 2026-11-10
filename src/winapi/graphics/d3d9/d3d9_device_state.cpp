@@ -270,7 +270,7 @@ void D3D9Manager::dispatch_device_state(Marshaler& m, usize slot,
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
-        if (m.write_u32(out, found->second ? 1u : 0u).is_err()) {
+        if (m.write_ptr(out, found->second ? 1u : 0u).is_err()) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }

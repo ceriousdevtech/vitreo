@@ -18,7 +18,7 @@ namespace vitreo::cpu {
 class GuestMappedByteReader final : public ByteReader {
 public:
     static constexpr usize kDefaultWindow = 1024;
-    static constexpr usize kMaxInsn = 15;
+    static constexpr usize kMaxInsn = kMaxInstructionLength;
 
     GuestMappedByteReader(GuestMemory& memory, u64 address,
                           usize window = kDefaultWindow) noexcept

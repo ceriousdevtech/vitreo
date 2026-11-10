@@ -803,6 +803,25 @@ bool GuestMemory::identity_prepare_span(GuestAddr guest_addr, usize size,
     uintptr_t lo = static_cast<uintptr_t>(guest_addr) & ~(hp - 1);
     uintptr_t hi = (static_cast<uintptr_t>(guest_addr) + size + hp - 1)
                    & ~(hp - 1);
+    const vm_prot_t host_prot =
+        static_cast<vm_prot_t>(identity_mmap_prot(prot));
+
+    // A commit, protection change or decommit inside a region the guest
+    // already owns (every caller resolved it in the region table and checked
+    // containment) needs no ownership walk: the span was claimed or verified
+    // when the region was mapped, and allocated guest pages cannot turn into
+    // host pages while the region exists. The walk is one
+    // mach_vm_region_recurse per VM entry, linear in the size of the whole
+    // VM map, and it was the cost: a CEF renderer spent 1.67 s of its 2.03 s
+    // of startup VirtualAlloc time in it. vm_map_protect validates the entire
+    // range before changing anything, so when the kernel refuses (a hole, or
+    // a page whose max protection forbids the request) nothing was applied
+    // and the verifying walk below repairs the span exactly as before.
+    if (existing_guest_region &&
+        mach_vm_protect(mach_task_self(), lo, hi - lo, FALSE, host_prot) ==
+            KERN_SUCCESS) {
+        return true;
+    }
 
     const auto refuse_foreign = [&](const IdentityVmRegion& region) -> bool {
         const unsigned tag = region.tag;
@@ -906,8 +925,6 @@ bool GuestMemory::identity_prepare_span(GuestAddr guest_addr, usize size,
         cursor = region_end;
     }
 
-    const vm_prot_t host_prot =
-        static_cast<vm_prot_t>(identity_mmap_prot(prot));
     kern_return_t kr = mach_vm_protect(mach_task_self(), lo, hi - lo, FALSE,
                                        host_prot);
     if (kr == KERN_SUCCESS) return true;

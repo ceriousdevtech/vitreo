@@ -44,7 +44,7 @@ constexpr char COMPUTER_CONTAINER_ID[] = "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}
 
 /// The devnodes that exist right now. The display adapter is present only
 /// while the host exposes a Metal device (an empty name means none).
-[[nodiscard]] std::vector<NodeRecord> device_nodes(const std::string& display_name) {
+[[nodiscard]] std::vector<NodeRecord> device_nodes(const std::string& display_name,const std::shared_ptr<GamepadHidCatalog>& gamepads) {
     std::vector<NodeRecord> nodes;
     NodeRecord root;
     root.instance_id = ROOT_INSTANCE_ID;
@@ -69,6 +69,33 @@ constexpr char COMPUTER_CONTAINER_ID[] = "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}
         display.interfaces = {GUID_DEVINTERFACE_DISPLAY_ADAPTER,
                               GUID_DISPLAY_DEVICE_ARRIVAL};
         nodes.push_back(std::move(display));
+    }
+    if(gamepads) for(const auto& device:gamepads->devices()) {
+        NodeRecord pad;
+        pad.instance_id=device.instance_id();
+        pad.parent=ROOT_INSTANCE_ID;pad.class_name="HIDClass";
+        static constexpr SetupClass classes[]={
+#include "winapi/system/setupapi/setup_classes.inc"
+        };
+        for(const auto& entry:classes) if(std::string_view(entry.name)=="HIDClass") pad.class_guid=entry.guid;
+        // GUID words are generated from hidclass.h, not a copied physical device.
+        Guid iface{};
+        gamepad_hid::store32(iface,0,hid_sdk::kGUID_DEVINTERFACE_HID_Data1);
+        gamepad_hid::store16(iface,4,hid_sdk::kGUID_DEVINTERFACE_HID_Data2);
+        gamepad_hid::store16(iface,6,hid_sdk::kGUID_DEVINTERFACE_HID_Data3);
+        const u32 tail[]={hid_sdk::kGUID_DEVINTERFACE_HID_Data4_0,hid_sdk::kGUID_DEVINTERFACE_HID_Data4_1,
+            hid_sdk::kGUID_DEVINTERFACE_HID_Data4_2,hid_sdk::kGUID_DEVINTERFACE_HID_Data4_3,
+            hid_sdk::kGUID_DEVINTERFACE_HID_Data4_4,hid_sdk::kGUID_DEVINTERFACE_HID_Data4_5,
+            hid_sdk::kGUID_DEVINTERFACE_HID_Data4_6,hid_sdk::kGUID_DEVINTERFACE_HID_Data4_7};
+        for(usize i=0;i<8;++i) iface[8+i]=static_cast<u8>(tail[i]);
+        pad.interfaces={iface};pad.device_desc="Vitreo Virtual Gamepad";pad.friendly_name=pad.device_desc;
+        pad.hardware_ids={device.instance_id().substr(0,device.instance_id().find_last_of('\\'))};pad.mfg="Vitreo";pad.enumerator="HID";
+        if(pad.class_guid) pad.driver=guid_string(*pad.class_guid)+"\\000"+std::to_string(device.slot);
+        pad.container_id=COMPUTER_CONTAINER_ID;
+        // This collection is enumerated by the virtual HID provider, rather
+        // than falsely claiming a ROOT-enumerator instance identity.
+        pad.status=ROOT_ENUMERATED_STARTED & ~DN_ROOT_ENUMERATED;
+        nodes.push_back(std::move(pad));
     }
     return nodes;
 }

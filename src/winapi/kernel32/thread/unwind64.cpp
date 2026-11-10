@@ -43,6 +43,9 @@
 #include "core/memory/guest_memory.hpp"
 #include <vitreo/diagnostics.hpp>
 #include <vitreo/guest_sentinels.hpp>
+#if defined(VITREO_ARCH_X86_64)
+#include "core/cpu/x64/native64.hpp"
+#endif
 
 #include <atomic>
 #include <cstdio>
@@ -183,12 +186,35 @@ Unwind64Stop walk_unwind64(Marshaler& m, ModuleManager& modules,
     };
 
     for (u32 depth = 0; depth < kMaxFrames; ++depth) {
+        // RtlUnwindEx publishes ReturnValue in the caller-owned context too,
+        // including when this level stops at a callback boundary. Native
+        // unwind_context_output_probe64.expected covers handler-owned and
+        // external buffers, direct calls and callbacks, at full u64 width.
+        (void)memory.write_u64(s.cursor + kCtxRax, target.return_value);
         u64 control_pc = memory.read_u64(s.cursor + kCtxRip).value_or(0);
         if (control_pc == kCallbackReturnSentinel) {
             return Unwind64Stop::CallbackBoundary;
         }
+#if defined(VITREO_ARCH_X86_64)
+        // The native backend replaces each logical sentinel on the guest
+        // stack with an executable stub address, which is what this walk
+        // reads: the callback stub is a host callback boundary, the process
+        // stub the end of the thread's stack.
+        if (control_pc == cpu::x64::sentinel_return_address()) {
+            return Unwind64Stop::CallbackBoundary;
+        }
+        if (control_pc == cpu::x64::process_sentinel_return_address()) {
+            control_pc = kProcessReturnSentinel;
+        }
+#endif
         if (control_pc == 0 || control_pc == kProcessReturnSentinel ||
             !is_canonical(control_pc)) {
+            VITREO_TRACE("[seh64] RtlUnwindEx walk ends depth=%u rip=0x%llx rsp=0x%llx "
+                         "target=0x%llx\n", depth,
+                         static_cast<unsigned long long>(control_pc),
+                         static_cast<unsigned long long>(
+                             memory.read_u64(s.cursor + kCtxRsp).value_or(0)),
+                         static_cast<unsigned long long>(target.frame));
             return Unwind64Stop::EndOfStack;
         }
 
@@ -265,6 +291,7 @@ Unwind64Stop walk_unwind64(Marshaler& m, ModuleManager& modules,
                 const u32 flags = unwind_flags(original_flags, target) | collided |
                                   (is_target ? EXCEPTION_TARGET_UNWIND_BIT : 0u);
                 (void)memory.write_u32(target.record + kErecFlags, flags);
+                (void)memory.write_u64(s.cursor + kCtxRax, target.return_value);
                 (void)memory.write_u64(s.frame + kCtxRax, target.return_value);
                 write_dispatcher_context(memory, s.dispatcher, control_pc, image_base,
                                          function_entry, establisher, target.ip,
@@ -352,6 +379,7 @@ Unwind64Stop walk_unwind64(Marshaler& m, ModuleManager& modules,
         }
 
         if (target.frame != 0 && establisher == target.frame) {
+            (void)memory.write_u64(s.cursor + kCtxRax, target.return_value);
             (void)memory.write_u64(s.frame + kCtxRax, target.return_value);
             const u32 code = memory.read_u32(target.record + kErecCode).value_or(0);
             if (code != STATUS_UNWIND_CONSOLIDATE_CODE) {

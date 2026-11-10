@@ -7,6 +7,7 @@
 #include "graphics/shaders/spirv_to_msl.hpp"
 #include "dxbc_to_spirv.hpp"
 #include "gs_passthrough.hpp"
+#include "mesh_stage.hpp"
 #include "pipeline_stats.hpp"
 #include "soft_double.hpp"
 #include <vitreo/common.hpp>
@@ -27,6 +28,68 @@
 
 namespace vitreo::graphics::dxbc_spirv_detail {
 
+/// The ids the tiled-status helpers need from the module that calls them
+/// (DxbcTranslator fills it from its own types; another front end -- DXIL --
+/// supplies its equivalents).
+struct TiledStatusTypes {
+    u32 type_bool{0};
+    u32 type_uint{0};
+    u32 type_float{0};
+    u32 type_vec4{0};
+    u32 type_bvec4{0};
+    /// uvec2 / uvec3 and bvec2 / bvec3: texel coordinates and their tests.
+    u32 type_uvec2{0};
+    u32 type_uvec3{0};
+    u32 type_bvec2{0};
+    u32 type_bvec3{0};
+    /// Pointer to a StorageBuffer uint (a residency word).
+    u32 ptr_storage_buffer_uint{0};
+};
+
+/// Tiled resources tier 2 status (D3D11.3 5.9.4.5): free helpers over the
+/// SPIR-V builder that the DXBC translator uses and the DXIL translator can
+/// share. Each returns a uint: 0 when every texel or byte the access reads
+/// lies in a mapped tile, 1 (a miss) otherwise. Statuses of a multi-part
+/// access are ORed (5.9.4.6). The residency sources are the ones
+/// DxbcTranslationOptions::tiled_status describes.
+struct TiledStatus {
+    /// How the sample being checked selects its LOD.
+    struct Lod {
+        enum class Kind : u8 { Implicit, Explicit, Gradient } kind{Kind::Implicit};
+        u32 bias{0};    ///< Implicit: the Bias operand, 0 for none
+        u32 lod{0};     ///< Explicit: the Lod operand
+        u32 grad_x{0};  ///< Gradient: the Grad operands
+        u32 grad_y{0};
+    };
+    /// A sample (or, @p gather, a gather of component 0) of the residency
+    /// companion through the status twin sampler (@p companion: their
+    /// OpSampledImage), with the access's own coordinate, offsets, LOD and
+    /// MinLOD clamp (@p min_lod, 0 for none). A miss is a result below
+    /// 1.0 -- in any of a gather's four lanes.
+    [[nodiscard]] static u32 emit_texture_status(
+        SpirvBuilder& b, const TiledStatusTypes& t, u32 companion,
+        u32 coordinate, const Lod& lod, u32 const_offset, u32 offset,
+        u32 min_lod, bool gather);
+    /// A load of texel @p coordinate (a uvec2 or uvec3 of @p components)
+    /// from the companion image @p image: mip @p lod_or_sample, or sample
+    /// @p lod_or_sample when @p multisampled. A texel outside the image (or
+    /// a mip / sample it lacks) reads nothing and is not a miss.
+    [[nodiscard]] static u32 emit_texel_status(
+        SpirvBuilder& b, const TiledStatusTypes& t, u32 image,
+        u32 coordinate, u32 components, u32 lod_or_sample, bool multisampled);
+    /// Units @p first .. @p last of the buffer view whose residency header
+    /// entry is word @p slot of @p residency (a StorageBuffer block whose
+    /// member 0 is a uint array; record layout kTiledResidency*). An access
+    /// that starts past the view is not a miss; one that ends past it is
+    /// checked up to the view's end.
+    [[nodiscard]] static u32 emit_buffer_status(
+        SpirvBuilder& b, const TiledStatusTypes& t, u32 residency, u32 slot,
+        u32 first, u32 last);
+    /// check_access_fully_mapped: 0xFFFFFFFF for status 0, else 0.
+    [[nodiscard]] static u32 emit_check_fully_mapped(
+        SpirvBuilder& b, const TiledStatusTypes& t, u32 status);
+};
+
 [[nodiscard]] DxbcMathContract math_contract_of(const DxbcContainer& container);
 
 // =============================================================================
@@ -39,9 +102,9 @@ public:
                    const DxbcTranslationOptions& options)
         : m_container(container),
           m_options(options),
-          m_decoder(container.bytecode.data(), container.bytecode.size()),
-          m_immediate_constants(
-              decode_immediate_constant_buffer(container.bytecode)) {
+          m_decoder(container.bytecode.data(), container.bytecode.size()) {
+        m_immediate_constants = decode_immediate_constant_buffer(
+            container.bytecode, &m_immediate_constants_failure, &m_readonly_indexable_words);
         m_decoder.set_sm51_resource_operands(container.is_sm51_plus());
     }
 
@@ -52,6 +115,11 @@ private:
         m_result.ok = false;
         m_result.failure = reason;
         return false;
+    }
+    /// fail() for a program the spec calls invalid (invalid_program).
+    [[nodiscard]] bool fail_invalid(const std::string& reason) {
+        m_result.invalid_program = true;
+        return fail(reason);
     }
 
     /// What one descriptor is, for the SPIR-V capabilities its array needs.
@@ -127,6 +195,12 @@ private:
     bool translate_subroutine(u32 label);
     bool emit_subroutine_functions();
     bool emit_subroutine_call(u32 label);
+    /// A `ret`/`retc` (taken) in a subroutine a hull-shader phase inlines:
+    /// leave the innermost construct towards the inline frame's merge.
+    bool emit_inline_return();
+    /// After an ENDLOOP/ENDSWITCH inside an inlined body: a `ret` nested
+    /// in that construct keeps leaving the enclosing ones.
+    void emit_inline_return_propagation();
     // Double precision (D3D11.3 22.14-22.17): soft_double.hpp helpers, one
     // SPIR-V function each, emitted after main for the ones a shader calls.
     enum class DoubleHelper : u32 {
@@ -134,6 +208,72 @@ private:
         ToUint, FromInt, FromUint, Saturate, SaturateFloat, Count
     };
     bool translate_double(Sm4Opcode opcode);
+    // Vitreo extension instructions (dxbc_vitreo_ext.hpp): wave / quad
+    // operations, 64-bit integers and halves, for lowered DXIL.
+    bool translate_vitreo_extension(u32 opcode);
+    bool translate_vx_wave(u32 control);
+    bool translate_vx_i64(u32 control);
+    bool translate_vx_f16(u32 control);
+    // D3D12 mesh / amplification shaders (dxbc_to_spirv_mesh.cpp).
+    [[nodiscard]] bool mesh_stage() const { return m_container.mesh.kind != DxbcMeshState::None; }
+    bool emit_mesh_stage_declarations();
+    bool emit_mesh_stage_main(u32 body);
+    bool translate_vx_mesh(u32 control);
+    u32 mesh_scalar(const Sm4Operand& operand, bool& ok);
+    void mesh_if(u32 condition, const std::function<void()>& then);
+    void mesh_store_word(u32 var, u32 index, u32 value);
+    const MeshStageLayout* m_mesh_layout{nullptr};
+    MeshStageLayout m_mesh_default_layout;
+    u32 m_mesh_set{0};
+    u32 m_mesh_vertices{0};
+    u32 m_mesh_primitives{0};
+    u32 m_mesh_indices{0};
+    u32 m_mesh_counts{0};
+    u32 m_mesh_grid{0};
+    u32 m_mesh_payload{0};  ///< Workgroup: the payload copy (mesh)
+    i32 m_mesh_payload_tgsm{-1};
+    /// Inline ray tracing (dxbc_to_spirv_rayquery.cpp).
+    bool translate_vx_ray_query(u32 control);
+    [[nodiscard]] std::set<u32> scan_acceleration_structures() const;
+    bool declare_acceleration_structures();
+    u32 rq_type_acceleration_structure();
+    /// VX_F32P (SM 6.2 fp32-denorm-mode preserve): dxbc_to_spirv_denorm.cpp.
+    bool translate_vx_f32p(u32 control);
+    /// VX_TEX (dxbc_to_spirv_vitreo_tex.cpp).
+    bool translate_vx_tex(u32 control);
+    /// VX_BARY (dxbc_to_spirv_vitreo_bary.cpp).
+    bool translate_vx_bary(u32 control);
+    u32 m_vx_bary{0}, m_vx_bary_mode{0};
+    u32 m_vx_bary_no_perspective{0}, m_vx_bary_no_perspective_mode{0};
+    /// VX_TEX_OFFSET: the ivec4 offsets the next sample instruction takes
+    /// (0 when none is pending).
+    u32 m_vx_dynamic_offset{0};
+    /// VX_BARY AttributeAtVertex: register -> its three flat per-vertex inputs.
+    std::map<u32, std::array<u32, 3>> m_vx_per_vertex;
+    /// Set while VX_TEX SampleCmpGrad runs sample_c with gradients.
+    bool m_vx_compare_gradient{false};
+    /// Set while VX_TEX SampleCmpLevel runs sample_c_lz with an LOD operand.
+    bool m_vx_compare_level{false};
+    /// Set while VX_TEX SampleCmpBias runs sample_c with a bias operand.
+    bool m_vx_compare_bias{false};
+    bool emit_f32p_helpers();
+    [[nodiscard]] u32 vx_type_u64();
+    [[nodiscard]] u32 vx_type_i64();
+    [[nodiscard]] u32 vx_type_half();
+    [[nodiscard]] u32 vx_type_u16();
+    [[nodiscard]] u32 vx_builtin(SpvBuiltIn builtin, u32 pointer_type, u32 type,
+                                 u32& variable, const char* name);
+    [[nodiscard]] u32 vx_u64_of(u32 uvec4, u32 first = 0);
+    /// This lane's index, the active lanes' ballot of @p condition, and the
+    /// lowest active lane (from reductions only: dxbc_to_spirv_vitreo_ext).
+    [[nodiscard]] u32 vx_lane();
+    [[nodiscard]] u32 vx_ballot(u32 condition);
+    [[nodiscard]] u32 vx_first_lane();
+    [[nodiscard]] u32 vx_uvec4_of_u64(u32 value);
+    /// The subgroup scan / reduction / match loops over every lane (64-bit
+    /// values, WaveMultiPrefix*, WaveMatch): dxbc_to_spirv_vitreo_ext.cpp.
+    [[nodiscard]] u32 vx_lane_loop(u32 kind, u32 op, u32 type, u32 lo, u32 hi,
+                                   u32 mask);
     [[nodiscard]] u32 call_double(DoubleHelper helper,
                                   const std::vector<u32>& args);
     bool emit_double_helpers();
@@ -214,12 +354,56 @@ private:
         u32 gradient_y{0};
         /// aoffimmi, in texels.
         std::array<i32, 3> offset{};
+        /// Non-zero: an ivec4 of SM 6.7 programmable offsets (VX_TEX_OFFSET,
+        /// already in [-8, 7]) used in place of `offset`.
+        u32 offset_id{0};
+        /// Non-zero: descriptor-table sampler_state record, already loaded.
+        /// Zero: the D3D11 push block (kPushMemberMinMaxSamplers, member 0).
+        u32 filter_id{0};
+        u32 min_lod_id{0};
+        u32 max_lod_id{0};
+        u32 max_aniso_id{0};
+        u32 bias_id{0};
+        /// When non-zero, OpSampledImage is emitted in the fetch's own
+        /// block (SPIR-V: it cannot cross blocks). The type id is
+        /// sampled_image_type. twin_sampler_id is the opaque-white twin.
+        u32 sampler_id{0};
+        u32 sampled_image_type{0};
+        u32 twin_sampler_id{0};
     };
     [[nodiscard]] u32 emit_minmax_sample(const MinMaxSample& sample);
+    /// A descriptor-table reduction (filter_id .. bias_id and sampler_id
+    /// set) as a call of an out-of-line helper, one per shape: see
+    /// dxbc_to_spirv_minmax_sample.cpp. @p image_type is a.image's type.
+    [[nodiscard]] u32 emit_minmax_sample_call(const MinMaxSample& sample,
+                                              u32 image_type);
+    /// The helpers emit_minmax_sample_call named, after every caller.
+    bool emit_minmax_helpers();
+    struct MinMaxHelper {
+        u32 image_type{0};
+        u32 sampled_image_type{0};
+        u32 coordinate_type{0};
+        bool texture_1d{false};
+        bool cube{false};
+        bool volume{false};
+        bool arrayed{false};
+        bool explicit_lod{false};
+        bool twinned{false};
+        u32 function{0};
+    };
+    std::vector<MinMaxHelper> m_minmax_helpers;
+    /// The bool specialization constant kMinMaxReductionSpecName
+    /// (graphics/shaders/minmax_reduction.hpp) the table reductions' branch
+    /// is ANDed with; made on first use.
+    [[nodiscard]] u32 minmax_reduction_gate();
+    u32 m_minmax_reduction_gate{0};
+    u32 m_custom_border_gate{0};
+    u32 m_non_normalized_gate{0};
     /// From @p start_token (2 = the first instruction) to the next `ret`: a
     /// hull-shader phase is scanned from its own first token.
     [[nodiscard]] u32 scan_temp_count(usize start_token = 2) const;
-    [[nodiscard]] std::map<u32, u32> scan_indexable_temps(
+    struct IndexableTempDecl { u32 count; u32 components; };
+    [[nodiscard]] std::map<u32, IndexableTempDecl> scan_indexable_temps(
         usize start_token = 2) const;
     [[nodiscard]] std::map<u32, u32> scan_constant_buffers() const;
     [[nodiscard]] std::tuple<std::map<u32, u32>, std::map<u32, u32>,
@@ -304,11 +488,66 @@ private:
     [[nodiscard]] u32 load_rgb32_buffer_element(u32 image, u32 result_type,
                                                 u32 return_type, u32 element,
                                                 u32 bias);
-    /// DxbcTranslationOptions::typed_buffer_bias: the size-table entry of
-    /// the typed buffer view at t# (@p uav false) or u# @p slot; 0 (no id)
-    /// when this translation has none (the option is off, or a u# past the
+    /// The size-table entry of the typed buffer view at t# (@p uav false)
+    /// or u# @p slot: the push block when DxbcTranslationOptions::
+    /// typed_buffer_bias is set, or the per-slot side buffer when
+    /// typed_buffer_bias_buffer declared one for this class. 0 (no id)
+    /// when this translation has neither (or a push-block u# past the
     /// table).
     [[nodiscard]] u32 typed_buffer_entry(bool uav, u32 slot);
+    // ---- Typed buffer views read as raw memory -------------------------
+    // (dxbc_to_spirv_typed_raw.cpp; kTypedBufferRaw.) A descriptor-table
+    // translation reads such a view's bytes through a device address and
+    // converts its DXGI format itself.
+    /// Word @p word of the side-buffer entry of t#/u# @p slot (0 when the
+    /// translation has no side buffer for that class).
+    [[nodiscard]] u32 typed_raw_word(bool uav, u32 slot, u32 word);
+    /// An if (entry is raw) { ... } else { ... } split around existing code.
+    struct TypedRawSplit {
+        u32 raw_end{0};
+        u32 texture_block{0};
+        u32 texture_end{0};
+        u32 merge{0};
+        u32 raw_value{0};
+        bool active{false};
+    };
+    /// Opens the split when this translation can see a raw view at that
+    /// slot; the code after it is the raw branch.
+    [[nodiscard]] TypedRawSplit typed_raw_begin(bool uav, u32 slot);
+    /// Ends the raw branch (with @p raw_value, 0 for none) and opens the
+    /// texture branch.
+    void typed_raw_else(TypedRawSplit& split, u32 raw_value);
+    /// Closes the split; the phi of @p result_type, or 0 when @p
+    /// result_type is 0.
+    [[nodiscard]] u32 typed_raw_end(TypedRawSplit& split, u32 result_type,
+                                    u32 texture_value);
+    /// ld / ld_uav_typed of @p element: a 4-vector of @p result_type (the
+    /// declared @p return_type, 4 UINT, 3 SINT, else float), past the view
+    /// (0, 0, 0, default alpha).
+    [[nodiscard]] u32 typed_raw_load(bool uav, u32 slot, u32 element,
+                                     u32 return_type, u32 result_type);
+    /// store_uav_typed of @p texel (uvec4 bits) at @p element: nothing past
+    /// the view.
+    void typed_raw_store(u32 slot, u32 element, u32 texel, u32 return_type);
+    /// A typed UAV atomic @p op on u# @p slot's @p element (the 32-bit
+    /// word at element * element bytes): the previous value, 0 past the
+    /// view (nothing is written). @p operand / @p comparator are the uint
+    /// sources, already leader-gated (m_uav_leader_var) except for an
+    /// exchange, which a non-leader reads with a compare-exchange.
+    [[nodiscard]] u32 typed_raw_atomic(u32 slot, u32 element, SpvOp op,
+                                       bool compares, u32 operand,
+                                       u32 comparator, bool leader_gated,
+                                       u32 scope, u32 semantics);
+    /// NumElements of the raw view.
+    [[nodiscard]] u32 typed_raw_count(bool uav, u32 slot);
+    /// A PhysicalStorageBuffer uint pointer at byte @p byte_lo/@p byte_hi
+    /// (64-bit) past the view's address: element 0 of an OpPtrAccessChain,
+    /// a memory location an atomic can take (a bare bitcast pointer value
+    /// is an rvalue in the MSL emission).
+    [[nodiscard]] u32 typed_raw_pointer(bool uav, u32 slot, u32 byte_lo,
+                                        u32 byte_hi);
+    u32 m_type_ptr_physical_uint{0};
+    u32 m_type_add_carry{0};
     /// The element bias in a typed_buffer_entry (kTypedBufferBiasMask); 0
     /// (no id) for no entry.
     [[nodiscard]] u32 typed_buffer_bias(u32 entry);
@@ -329,6 +568,14 @@ private:
     /// backend never dereferences past the buffer).
     [[nodiscard]] u32 guarded_buffer_word_load(u32 variable, u32 pointer_type,
                                                u32 word, u32 in_bounds);
+    /// `count` (1..4) consecutive words at `base_word`. One test covers the
+    /// span: when the last word is inside the view, the loads are plain and
+    /// adjacent so MSL can widen them. A span that crosses the view uses the
+    /// per-word guard (out-of-view reads 0, and a load must not run past the
+    /// allocation).
+    void load_guarded_word_span(bool uav, u32 slot, u32 variable,
+                                u32 pointer_type, bool indexed_through_member,
+                                u32 base_word, u32 count, u32* out_words);
     /// Store one word only when `in_bounds` (D3D drops out-of-view writes).
     void guarded_buffer_word_store(u32 variable, u32 pointer_type, u32 word,
                                    u32 value, u32 in_bounds);
@@ -344,6 +591,8 @@ private:
     [[nodiscard]] std::map<u32, u32> scan_structured_uavs() const;
     /// The u# whose hidden counter the program moves, in first-use order.
     [[nodiscard]] std::vector<u32> scan_uav_counters() const;
+    /// The u# operands of every atomic_* / imm_atomic_* (not alloc / consume).
+    [[nodiscard]] std::set<u32> scan_uav_atomics() const;
     /// Every dcl_uav_typed / dcl_uav_raw / dcl_uav_structured: u# slot -> the
     /// declaration's OpcodeToken0, whose bit 16 is the `_glc` flag.
     [[nodiscard]] std::map<u32, u32> scan_uav_declaration_tokens() const;
@@ -358,6 +607,11 @@ private:
     /// Copy clip-distance and layer components into their builtins; run
     /// before every return from main.
     bool emit_system_value_epilogue();
+    /// What every return of main runs: the vertex capture or domain record
+    /// writes of an emulation pass, then the system-value epilogue (not
+    /// for a domain pass, which has no rasterizer outputs). An early
+    /// ret / retc runs it too, so its vertex or point is still recorded.
+    bool emit_return_epilogue();
     [[nodiscard]] bool translate_instructions(usize end_token);
 
     /// dcl_tgsm_structured declarations: g# slot -> (byte stride, count).
@@ -405,7 +659,9 @@ private:
     u32 m_type_image_cube{0};
     u32 m_type_image_cube_array{0};
     u32 m_type_uimage_2d{0}, m_type_uimage_2d_array{0}, m_type_uimage_3d{0};
+    u32 m_type_uimage_cube{0}, m_type_uimage_cube_array{0};
     u32 m_type_iimage_2d{0}, m_type_iimage_2d_array{0}, m_type_iimage_3d{0};
+    u32 m_type_iimage_cube{0}, m_type_iimage_cube_array{0};
     u32 m_type_ms_image_2d{0}, m_type_ms_image_2d_array{0};
     u32 m_type_ms_uimage_2d{0}, m_type_ms_uimage_2d_array{0};
     u32 m_type_ms_iimage_2d{0}, m_type_ms_iimage_2d_array{0};
@@ -426,8 +682,12 @@ private:
     u32 m_type_sampled_image_2d_array{0};
     u32 m_type_sampled_uimage_2d{0};
     u32 m_type_sampled_uimage_2d_array{0};
+    u32 m_type_sampled_uimage_cube{0};
+    u32 m_type_sampled_uimage_cube_array{0};
     u32 m_type_sampled_iimage_2d{0};
     u32 m_type_sampled_iimage_2d_array{0};
+    u32 m_type_sampled_iimage_cube{0};
+    u32 m_type_sampled_iimage_cube_array{0};
     u32 m_type_sampled_image_3d{0};
     u32 m_type_sampled_image_cube{0};
     u32 m_type_sampled_image_cube_array{0};
@@ -445,9 +705,13 @@ private:
     u32 m_type_ptr_uniform_constant_uimage_2d{0};
     u32 m_type_ptr_uniform_constant_uimage_2d_array{0};
     u32 m_type_ptr_uniform_constant_uimage_3d{0};
+    u32 m_type_ptr_uniform_constant_uimage_cube{0};
+    u32 m_type_ptr_uniform_constant_uimage_cube_array{0};
     u32 m_type_ptr_uniform_constant_iimage_2d{0};
     u32 m_type_ptr_uniform_constant_iimage_2d_array{0};
     u32 m_type_ptr_uniform_constant_iimage_3d{0};
+    u32 m_type_ptr_uniform_constant_iimage_cube{0};
+    u32 m_type_ptr_uniform_constant_iimage_cube_array{0};
     u32 m_type_ptr_uniform_constant_ms_image_2d{0};
     u32 m_type_ptr_uniform_constant_ms_image_2d_array{0};
     u32 m_type_ptr_uniform_constant_ms_uimage_2d{0};
@@ -481,7 +745,14 @@ private:
     // Variable IDs
     u32 m_main_func{0};
     std::map<u32, u32> m_temp_vars;
-    std::map<u32, u32> m_indexable_temp_vars;
+    struct IndexableTempVar {
+        u32 variable; u32 type; u32 components; u32 pointer_type;
+        std::vector<u32> readonly_strides{};
+    };
+    std::map<u32, IndexableTempVar> m_indexable_temp_vars;
+    std::map<u32, std::vector<u32>> m_readonly_indexable_words;
+    std::map<u32, IndexableTempVar> m_readonly_indexable_vars;
+    bool declare_readonly_indexable_arrays();
     std::map<u32, u32> m_input_vars;
     /// The v# register a pixel shader reads SV_Position from (~0: none).
     u32 m_frag_coord_register{~0u};
@@ -498,6 +769,20 @@ private:
         u32 type{0};
     };
     std::vector<UnpackedVertexInput> m_unpacked_vertex_inputs;
+    /// Vertex-pulled inputs (DxbcTranslationOptions::vertex_pulling): the
+    /// register, its Private variable and type.
+    struct PulledVertexInput {
+        u32 reg{0};
+        u32 target{0};
+        u32 type{0};
+    };
+    std::vector<PulledVertexInput> m_pulled_vertex_inputs;
+    /// The pull table (set 4, VERTEX_PULL_TABLE_BINDING); 0 until declared.
+    u32 m_vertex_pull_table{0};
+    /// emit_vertex_pull_prologue: fill every pulled register.
+    [[nodiscard]] bool emit_vertex_pull_prologue();
+    /// One pulled element's four lanes as uint bits.
+    [[nodiscard]] u32 vertex_pull_element(const VertexPullElement& element);
     std::map<u32, u32> m_input_pointer_types;
     /// Vertex-stage system values that SPIR-V models as a scalar builtin
     /// rather than a location-bound varying (SV_VertexID, SV_InstanceID):
@@ -523,8 +808,25 @@ private:
     std::map<u32, u32> m_output_vars;
     std::map<u32, u32> m_output_value_types;
     std::map<u32, u32> m_cbuffer_vars;    // CB slot -> Uniform variable ID
+    /// Bounds-guarded constant-buffer elements at a literal index already
+    /// loaded, by (buffer variable, element): the value and where it was
+    /// made. A constant buffer cannot change during an invocation, so a
+    /// later read the definition dominates (SpirvBuilder::dominates_here)
+    /// takes the same value instead of a second guard.
+    struct DominatingValue {
+        u32 value{0};
+        SpirvBuilder::DominanceMark mark;
+    };
+    std::map<std::pair<u32, u32>, std::vector<DominatingValue>> m_guarded_cb_elements;
+    /// Runtime-owned immutable view limits, by (buffer, index SSA ID).
+    /// Reuse only a dominating load; descriptor-array indices remain part
+    /// of the key and no load is hoisted out of its original branch.
+    std::map<std::pair<u32, u32>, std::vector<DominatingValue>> m_view_size_values;
     std::map<u32, u32> m_cbuffer_sizes;   // CB slot -> vec4 count
     std::vector<std::array<float, 4>> m_immediate_constants;
+    std::string m_immediate_constants_failure;
+    u32 m_immediate_constants_var{0};
+    u32 m_immediate_constants_element_ptr{0};
     std::map<u32, u32> m_texture_vars;
     /// Render target n -> its framebuffer-fetch input (logic-op variant).
     std::map<u32, u32> m_logic_op_inputs;
@@ -561,6 +863,10 @@ private:
     std::set<u32> m_uav_1d;
     /// Resource return type of a typed UAV: 3 = SINT, 4 = UINT, 5 = FLOAT.
     std::map<u32, u32> m_uav_return_types;
+    /// Float typed UAVs declared as uint images for their atomics
+    /// (DxbcTranslationOptions::typed_uav_uint_views): loads return the
+    /// texel's bits as x and (0, 0, 1.0) in yzw.
+    std::set<u32> m_uav_float_bits_slots;
 
     /// Image type and result/texel vector type for a typed UAV slot, honouring
     /// its resource return type. An integer-typed image reads and writes
@@ -618,6 +924,12 @@ private:
     /// 32-bit words with no format at all, so — unlike a typed buffer — a
     /// storage buffer of words is the exact model: slot -> variable id.
     std::map<u32, u32> m_raw_srv_vars;
+    /// Acceleration structures (t# range ID -> variable), ray queries and
+    /// their flags words (query index -> variable).
+    std::map<u32, u32> m_rq_as_vars;
+    std::map<u32, u32> m_rq_vars;
+    std::map<u32, u32> m_rq_flag_vars;
+    u32 m_rq_type_as{0}, m_rq_type_query{0}, m_rq_type_mat43{0};
     std::map<u32, u32> m_tgsm_vars;
     std::map<u32, u32> m_tgsm_word_counts;
     /// Byte stride of a groupshared array declared with dcl_tgsm_structured;
@@ -664,8 +976,83 @@ private:
     /// element, a uint id) of each descriptor-array s# operand.
     u32 m_sampler_state_var{0};
     std::map<u32, u32> m_sampler_record_index;
+    /// DxbcTranslationOptions::view_size_buffer, and for the instruction
+    /// being translated the table slot (binding + element, a uint id) of
+    /// each descriptor-array t#/u# operand.
+    u32 m_srv_view_size_var{0};
+    u32 m_uav_view_size_var{0};
+    std::map<u32, u32> m_view_size_index;
+    /// DxbcTranslationOptions::constant_buffer_limits.
+    u32 m_cbv_limit_var{0};
+    /// DxbcTranslationOptions::null_descriptors.
+    u32 m_srv_null_var{0};
+    u32 m_uav_null_var{0};
+    /// DxbcTranslationOptions::typed_buffer_bias_buffer.
+    u32 m_srv_typed_bias_var{0};
+    u32 m_uav_typed_bias_var{0};
+    /// DxbcTranslationOptions::heap_window: the params buffer (limit and
+    /// segment bases) and the heap's side buffer, declared on first use.
+    u32 m_heap_window_params_var{0};
+    u32 m_heap_window_side_var{0};
+    /// The writable buffer array every window array aliases (declared
+    /// before the first of them, see declare_heap_window_base).
+    u32 m_heap_window_base_var{0};
+    void declare_heap_window_base();
+    /// The window buffer residency buffer (heap_window.residency_binding),
+    /// declared on first use.
+    u32 m_heap_window_residency_var{0};
+    /// The declared length of every window array: twice
+    /// kDescriptorHeapWindowLength when the shader may read the auxiliary
+    /// region (kDescriptorHeapWindowAuxBinding: tiled status or a UAV
+    /// counter), so all of them alias the argument buffer at one length.
+    [[nodiscard]] u32 heap_window_length();
+    i32 m_heap_window_length{-1};
+    /// The heap's descriptor count `limit` (params word 0). 0 after fail().
+    [[nodiscard]] u32 heap_window_limit();
+    /// Heap slot @p slot's auxiliary slot, limit + 1 + slot.
+    [[nodiscard]] u32 heap_window_aux_index(u32 slot);
+    /// Declare @p name, an array of the window's length of @p element_pointer
+    /// 's pointee in the window set at kDescriptorHeapWindowAuxBinding + @p
+    /// binding (storage class @p storage), and note the auxiliary region.
+    [[nodiscard]] u32 declare_heap_window_aux(u32 binding, u32 element_type,
+                                              SpvStorageClass storage,
+                                              const std::string& name);
+    /// u# keys whose counter is a heap window's auxiliary counter array.
+    std::set<u32> m_window_counter_slots;
+    /// The range is a heap window (its run is in heap_window.descriptor_set).
+    [[nodiscard]] bool is_heap_window(const ResourceRange& range) const {
+        return m_options.heap_window.enabled && range.is_array &&
+               range.resolved.descriptor_set ==
+                   m_options.heap_window.descriptor_set;
+    }
+    /// A heap window element's heap slot: the slot the first segment of
+    /// @p range that covers @p element maps it to, or the sentinel slot
+    /// `limit` (DxbcTranslationOptions::heap_window). 0 after fail().
+    [[nodiscard]] u32 heap_window_slot(const ResourceRange& range, u32 element);
+    /// Word @p word of heap slot @p slot's side record. 0 after fail().
+    [[nodiscard]] u32 heap_window_side_word(u32 slot, u32 word);
+    /// The range @p range_id of the t# or u# class is a heap window.
+    [[nodiscard]] bool heap_window_key(bool uav, u32 range_id) const {
+        const ResourceRange* range = find_range(
+            uav ? DxbcRegisterClass::UnorderedAccess
+                : DxbcRegisterClass::ShaderResource,
+            range_id);
+        return range != nullptr && is_heap_window(*range);
+    }
     /// One word of s# `sampler`'s record (sampler_state_buffer).
     [[nodiscard]] u32 sampler_state_word(const Sm4Operand& sampler, u32 word);
+    /// The bound view's size in 32-bit words (view_size_buffer). 0 after
+    /// fail(). `range_id` is the operand's index0.
+    [[nodiscard]] u32 view_size_words(bool uav, u32 range_id);
+    /// The CBV-table slot whose limit `src` reads (constant_buffer_limits).
+    /// 0 after fail().
+    [[nodiscard]] u32 cbv_limit_index(const Sm4Operand& src);
+    /// The t#/u# table slot `range_id` names (view sizes and null flags).
+    /// 0 after fail().
+    [[nodiscard]] u32 descriptor_slot_index(bool uav, u32 range_id);
+    /// True when the descriptor is null (null_descriptors). 0 when this
+    /// translation has no flag buffer for the class.
+    [[nodiscard]] u32 descriptor_is_null(bool uav, u32 range_id);
     u32 m_sampler_biases{0};
     u32 m_dispatch_thread_id{0};
     u32 m_group_id{0};
@@ -722,6 +1109,10 @@ private:
     /// struct { uint; uint; }: OpUMulExtended's scalar result.
     u32 m_type_uint_pair{0};
     std::map<usize, u32> m_double_function_types;
+    /// Function ids of the VX_F32P helpers the shader calls (0: unused),
+    /// indexed by dxbc_vitreo_ext::F32POp, and their types by source count.
+    std::array<u32, 11> m_f32p_helpers{};
+    std::array<u32, 4> m_f32p_function_types{};
     std::map<u32, usize> m_subroutine_labels;
     /// m_subroutine_labels / m_subroutine_functions key of `label fb#` (a
     /// function body, D3D11.3 22.3.49): fb# | kFunctionBodyKey. `label l#`
@@ -759,6 +1150,19 @@ private:
     /// The function body being translated (fb#), or kOutsideBodies.
     u32 m_current_body{kOutsideBodies};
     std::vector<u32> m_call_stack;
+    /// One per subroutine body a hull-shader phase is inlining: the body is
+    /// wrapped in a single-iteration loop construct, so a `ret`/`retc`
+    /// nested in its flow (D3D11.3 22.7.15/22.7.17: return to the caller)
+    /// is a structured break to merge_block. A `ret` inside a loop or switch
+    /// of the body sets returned_var (Private uint, 0 when the body needs
+    /// none) and breaks each enclosing construct of the body in turn.
+    struct InlineFrame {
+        u32 merge_block{0};
+        u32 returned_var{0};
+        usize breakable_base{0};
+        usize loop_base{0};
+    };
+    std::vector<InlineFrame> m_inline_stack;
     /// Outside a hull shader every `label` body is a SPIR-V function of its
     /// own (label -> function id), so `call`/`callc` work anywhere and a
     /// `ret`/`retc` in the body returns from it. The r#/x# registers are
@@ -855,6 +1259,18 @@ private:
     /// A hull shader lowered to a per-patch compute kernel, and a domain
     /// shader lowered to a TessellationEvaluation module fed by its buffers
     /// (.docs/design-tessellation-emulation.md).
+    // ---- WS5 begin ----
+    /// A geometry shader lowered for a mesh pipeline (WS5 D2).
+    [[nodiscard]] bool gs_as_mesh() const {
+        return gs_as_compute() && m_options.emulate_geometry_with_mesh;
+    }
+    bool emit_geometry_mesh_main(u32 body);
+    u32 m_gs_mesh_set{0};             ///< OpExtInstImport kMeshGsExtInstSet
+    u32 m_gs_mesh_counts_var{0};      ///< Workgroup uint[K]
+    u32 m_gs_mesh_local_var{0};       ///< Private: index in the threadgroup
+    u32 m_gs_mesh_invocation_var{0};  ///< Private: invocation from main
+    u32 m_gs_mesh_threads{0};         ///< K
+    // ---- WS5 end ----
     [[nodiscard]] bool hs_as_compute() const {
         return m_container.stage == ShaderStage::Hull &&
                m_options.emulate_tessellation;
@@ -941,7 +1357,7 @@ private:
     [[nodiscard]] bool emit_tessellation_declarations();
     [[nodiscard]] bool emit_hull_program();
     [[nodiscard]] bool emit_hull_phase_functions();
-    void declare_function_temps(usize start_token);
+    bool declare_function_temps(usize start_token);
     std::vector<u32> m_hs_phase_functions;
     [[nodiscard]] bool emit_domain_input_prologue();
     [[nodiscard]] bool emit_domain_compute_prologue();
@@ -972,6 +1388,61 @@ private:
     /// mask rather than ANDing it in.
     bool m_sample_mask_from_state_only{false};
     u32 m_sample_mask_input{0};
+    /// DxbcTranslationOptions::raster_emulation (dxbc_to_spirv_raster.cpp):
+    /// pass C's flat per-triangle inputs, the fragment position they are
+    /// evaluated at (m_re_frag_coord_declared when this translation declared
+    /// it), and the Private results the prologue computes -- the coverage
+    /// (vCoverage), InnerCoverage, and the centroid's offset from the pixel
+    /// centre.
+    std::array<u32, 3> m_re_edges{};
+    /// RasterPrimitive::Quad: the fourth edge. edges_in_buffer: the edge
+    /// buffer and Metal's primitive id (declared here when the shader has
+    /// no SV_PrimitiveID of its own).
+    u32 m_re_edge3{0};
+    u32 m_re_edge_buffer{0};
+    u32 m_re_primitive_id{0};
+    u32 m_re_primitive_id_declared{0};
+    u32 m_re_bounds{0};
+    u32 m_re_inverse_w{0};
+    u32 m_re_depth{0};
+    u32 m_re_frag_coord{0};
+    u32 m_re_frag_coord_declared{0};
+    u32 m_re_mask{0};
+    u32 m_re_inner{0};
+    u32 m_re_centroid_offset{0};
+    /// Centroid inputs under target-independent rasterization: the
+    /// interpolant (Input, no centroid decoration) and the Private register
+    /// the prologue fills with it at the forced pattern's centroid. Pull-
+    /// model evaluation reads the interpolant (m_re_interpolants by v#).
+    struct RasterCentroidInput {
+        u32 source{0};
+        u32 target{0};
+    };
+    std::vector<RasterCentroidInput> m_re_centroid_inputs;
+    /// DxbcTranslationOptions::pixel_primitive_split: the register's Private
+    /// shadow the prologue fills from its vertex-fed and primitive-fed inputs.
+    struct PrimitiveSplitInput {
+        u32 vertex_var{0};
+        u32 primitive_var{0};
+        u32 shadow{0};
+        u32 value_type{0};
+        u8 mask{0};
+    };
+    std::vector<PrimitiveSplitInput> m_primitive_split_inputs;
+    std::map<u32, u32> m_re_interpolants;
+    [[nodiscard]] bool raster_emulated() const {
+        return m_result.stage == ShaderStage::Fragment &&
+               m_options.raster_emulation.mode != RasterEmulationMode::Off;
+    }
+    [[nodiscard]] bool raster_target_independent() const {
+        return raster_emulated() && m_options.raster_emulation.mode ==
+                                        RasterEmulationMode::TargetIndependent;
+    }
+    void declare_raster_emulation_inputs();
+    bool emit_raster_emulation_prologue();
+    /// The forced pattern's offset of sample @p index (an int id), in
+    /// pixels from the centre, as MSL interpolate_at_offset takes it.
+    [[nodiscard]] u32 raster_sample_offset(u32 index);
     /// D3D runs a pixel shader that is not at sample frequency once per
     /// pixel, so each u# write and atomic happens once per pixel. Metal runs
     /// a fragment function that writes memory once per covered sample
@@ -994,6 +1465,11 @@ private:
     u32 m_stats_record_var{0};
     u32 m_stats_helper_var{0};
     u32 m_stats_lane_var{0};
+    // Vitreo extension instructions: types and builtins, made on first use,
+    // and the globals they add to the entry point's interface.
+    u32 m_vx_u64{0}, m_vx_i64{0}, m_vx_half{0}, m_vx_u16{0};
+    u32 m_vx_subgroup_size{0}, m_vx_subgroup_lane{0}, m_vx_helper{0};
+    std::vector<u32> m_vx_interface;
     u32 m_stats_sample_id{0};
     bool m_stats_sample_id_declared{false};
     bool emit_pixel_statistics_declarations();
@@ -1043,6 +1519,68 @@ private:
     u32 m_viewport_output{0};
     bool m_derivative_control_capability_emitted{false};
     std::set<u32> m_allocated_temps;
+
+    // Tiled resources tier 2 (dxbc_to_spirv_tiled.cpp).
+    /// The instruction being translated is a status form: its status
+    /// destination (decoded after the destination) and MinLOD clamp.
+    struct TiledInstruction {
+        bool active{false};
+        bool clamp{false};
+        bool has_status{false};
+        Sm4Operand status;
+        /// Why the status operand was refused; the handler's own "bad
+        /// operands" failure would hide it (translate_instruction).
+        std::string error;
+    };
+    TiledInstruction m_tiled;
+    /// t# / u# range -> its residency companion variable, s# -> its status
+    /// twin, and the buffer residency headers (DxbcTranslationOptions::
+    /// tiled_status).
+    std::map<u32, u32> m_srv_companion_vars;
+    std::map<u32, u32> m_uav_companion_vars;
+    std::map<u32, u32> m_status_sampler_vars;
+    u32 m_srv_residency_var{0};
+    u32 m_uav_residency_var{0};
+    [[nodiscard]] TiledStatusTypes tiled_status_types() const;
+    [[nodiscard]] bool declare_tiled_status_variables();
+    /// After the destination of a status form: its status operand.
+    [[nodiscard]] bool decode_tiled_status();
+    /// The _cl forms' last operand, as a float id (0 for any other form).
+    [[nodiscard]] bool decode_tiled_clamp(u32& min_lod);
+    /// Write @p miss (a uint) to the status destination, if any.
+    [[nodiscard]] bool store_tiled_status(u32 miss);
+    [[nodiscard]] bool translate_check_access_fully_mapped();
+    /// The loaded companion of t# (@p uav false) or u#, with its
+    /// sampled-image type and whether it is multisampled. 0 after fail().
+    [[nodiscard]] u32 tiled_companion(const Sm4Operand& resource, bool uav,
+                                      u32& sampled_type, bool& multisampled);
+    /// s#'s status twin, loaded.
+    [[nodiscard]] u32 tiled_status_sampler(const Sm4Operand& sampler);
+    /// Status of units @p first .. @p last of a buffer view.
+    [[nodiscard]] u32 tiled_buffer_status(bool uav, u32 range_id, u32 first,
+                                          u32 last);
+    /// Status of a texture load from t# / u# at @p coordinate (uint vector
+    /// of @p components) and mip or sample @p lod_or_sample.
+    [[nodiscard]] u32 tiled_texel_status(const Sm4Operand& resource, bool uav,
+                                         u32 coordinate, u32 components,
+                                         u32 lod_or_sample);
+    /// Status of the words a raw or structured load reads: those the
+    /// destination mask selects through @p swizzle, from @p base_byte.
+    [[nodiscard]] u32 tiled_words_status(bool uav, u32 range_id, u32 base_byte,
+                                         u32 write_mask, u32 swizzle);
+    /// @p coordinate (a uvec2 / uvec3 texel address) plus the ld / ld2dms
+    /// immediate offset in @p sample_controls: u, v (not for a Texture1D)
+    /// and, for a volume, w; an array slice takes none.
+    [[nodiscard]] u32 tiled_offset_texel(u32 coordinate, u32 components,
+                                         u32 sample_controls, bool texture_1d,
+                                         bool volume);
 };
 
 } // namespace vitreo::graphics::dxbc_spirv_detail
+
+namespace vitreo::graphics {
+/// The tiled-resources status helpers (dxbc_to_spirv_tiled.cpp), for the
+/// DXIL translator too.
+using dxbc_spirv_detail::TiledStatus;
+using dxbc_spirv_detail::TiledStatusTypes;
+}  // namespace vitreo::graphics

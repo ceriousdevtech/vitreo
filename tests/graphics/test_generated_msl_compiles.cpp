@@ -14,6 +14,17 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
+#include <cstring>
+#include <CoreFoundation/CoreFoundation.h>
+#include <thread>
+#include <chrono>
+#include <mutex>
+#include <condition_variable>
+#include "graphics/metal/metal_submit_queue.hpp"
+#include "graphics/metal/metal_minmax_rebuild.hpp"
+#include "graphics/shaders/compile_profile.hpp"
+
 #include "graphics/shaders/ff_vertex_layout.hpp"
 #include "graphics/contracts/backend_device.hpp"
 #include "graphics/shaders/ff_emulation.hpp"
@@ -21,9 +32,15 @@
 #include "graphics/shaders/dxbc_to_spirv.hpp"
 #include "graphics/shaders/gs_passthrough.hpp"
 #include "graphics/shaders/spirv_to_msl.hpp"
+#include "graphics/shaders/dxil_to_dxbc.hpp"
+#include "graphics/shaders/dxil_lower_internal.hpp"
+#include "../oracle_data/d3d12_sm6/d3d12_sm6_stages_shaders.h"
+#include "../oracle_data/d3d12_packed_bytes_shaders.h"
+#include <regex>
 #include "graphics/metal/metal_device.hpp"
 
 #include <array>
+#include <algorithm>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -31,7 +48,304 @@
 using namespace vitreo;
 using namespace vitreo::graphics;
 
+TEST(ScalarTempStoreMetal, OverlappingSourcesAndUntouchedNanBitsStayExact) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP();
+    using namespace vitreo::graphics::dxil_lower;
+    // Use the audited token emitter and a dxc-generated version token, with
+    // the minor version cleared for ordinary SM5.0 register operands.
+    const auto original = dxil_to_dxbc(sm6s_cs_dot4, sizeof(sm6s_cs_dot4));
+    ASSERT_TRUE(original.ok);
+    const auto parsed = parse_dxbc(original.container.data(), original.container.size());
+    ASSERT_TRUE(parsed.valid());
+    u32 version = 0;
+    std::memcpy(&version, parsed.bytecode.data(), sizeof(version));
+    Emitter code;
+    code.raw(version & ~0xFu);
+    code.raw(0);
+    code.inst(kDclTemps, {}, {1});
+    code.inst(kDclThreadGroup, {}, {1, 1, 1});
+    // OperandToken0 index dimension/type fields are defined by the SDK
+    // encoding documented in dxil_lower_internal.hpp; register u0.
+    const Operand uav{{(static_cast<u32>(Sm4OperandType::UnorderedAccessView) << 12) |
+                       (1u << 20), 0u}};
+    code.inst(kDclUavRaw, {&uav});
+    Operand uav_store = uav;
+    uav_store.tokens[0] |= 2u | (15u << 4); // four components, xyzw mask
+    const Operand all = dst_temp(0, 15), input = imm4(0x7FC12345u, 0xFF812345u, 0x80000000u, 0x12345678u);
+    const Operand whole = src_temp(0, 0xE4);
+    code.inst(static_cast<u32>(Sm4Opcode::MOV), {&all, &input});
+    const auto save = [&](u32 offset) {
+        const Operand address = imm(offset);
+        code.inst(static_cast<u32>(Sm4Opcode::STORE_RAW), {&uav_store, &address, &whole});
+    };
+    save(0);
+    const Operand y = dst_temp(0, 2), reverse = src_temp(0, 3u | (2u << 2) | (1u << 4));
+    code.inst(static_cast<u32>(Sm4Opcode::MOV), {&y, &reverse});
+    save(16);
+    const Operand w = dst_temp(0, 8), x_source = src_temp_scalar(0, 0);
+    code.inst(static_cast<u32>(Sm4Opcode::MOV), {&w, &x_source});
+    save(32);
+    const Operand x = dst_temp(0, 1), new_nan = imm(0x7F8ABCDEu);
+    code.inst(static_cast<u32>(Sm4Opcode::MOV), {&x, &new_nan});
+    save(48);
+    code.inst(static_cast<u32>(Sm4Opcode::RET), {});
+    code.mutable_code()[1] = static_cast<u32>(code.size());
+    DxbcContainer container{};
+    container.stage = ShaderStage::Compute;
+    container.shader_model_major = 5;
+    container.bytecode.resize(code.size() * sizeof(u32));
+    std::memcpy(container.bytecode.data(), code.code().data(), container.bytecode.size());
+    const auto spirv = translate_dxbc_to_spirv(container);
+    ASSERT_TRUE(spirv.valid()) << spirv.failure;
+    const auto msl = compile_spirv_to_msl(spirv.spirv.data(), spirv.spirv.size(), ShaderStage::Compute);
+    ASSERT_TRUE(msl.valid());
+    const std::string text = msl.msl_text();
+    std::smatch match;
+    ASSERT_TRUE(std::regex_search(text, match, std::regex(R"(u0\w*\s*\[\[buffer\((\d+)\)\]\])"))) << text;
+    BackendComputePipelineDesc pd{};
+    pd.compute_entry_point = "main0";
+    pd.compute_shader_msl = text;
+    auto pipeline = device.create_compute_pipeline(pd);
+    ASSERT_TRUE(pipeline && pipeline->valid()) << text;
+    std::array<u32, 16> words{};
+    BackendBufferDesc bd{};
+    bd.byte_width = sizeof(words);
+    bd.unordered_access = bd.shader_resource = true;
+    auto output = device.create_buffer(bd, words.data());
+    ASSERT_TRUE(output);
+    BackendDispatchCall call{};
+    call.pipeline = pipeline.get();
+    call.group_count_x = call.group_count_y = call.group_count_z = 1;
+    call.threads_per_group_x = call.threads_per_group_y = call.threads_per_group_z = 1;
+    call.buffers[std::stoul(match[1])] = output.get();
+    ASSERT_TRUE(device.dispatch(call));
+    ASSERT_TRUE(device.wait_idle());
+    ASSERT_TRUE(output->read(0, words.data(), sizeof(words)));
+    // MOV is bit-preserving; reverse.y reads the OLD z before the y write.
+    const std::array<u32, 16> expected{
+        0x7FC12345u, 0xFF812345u, 0x80000000u, 0x12345678u,
+        0x7FC12345u, 0x80000000u, 0x80000000u, 0x12345678u,
+        0x7FC12345u, 0x80000000u, 0x80000000u, 0x7FC12345u,
+        0x7F8ABCDEu, 0x80000000u, 0x80000000u, 0x7FC12345u};
+    EXPECT_EQ(words, expected);
+}
+
+// SM6.4's packed-dot contract is integer byte products plus a wrapping
+// accumulator. Execute dxc's existing shader against that integer definition,
+// independently of the translator's float32 dot optimization.
+TEST(DxilPackedDotMetal, SignedUnsignedBytesAndFullWidthAccumulatorsStayExact) {
+    auto& device = MetalDevice::instance();
+    if (!device.available() || !device.supports_descriptor_tables()) GTEST_SKIP();
+    const auto* shader = &kSm6StageBlobs[0];
+    for (const auto& candidate : kSm6StageBlobs) {
+        if (std::string(candidate.name) == "cs_dot4") shader = &candidate;
+    }
+    ASSERT_EQ(std::string(shader->name), "cs_dot4");
+    auto dxbc = dxil_to_dxbc(shader->code, shader->size);
+    ASSERT_TRUE(dxbc.ok) << dxbc.failure;
+    auto container = parse_dxbc(dxbc.container.data(), dxbc.container.size());
+    ASSERT_TRUE(container.valid());
+    DxbcTranslationOptions options{};
+    options.register_remap = {
+        {DxbcRegisterClass::ConstantBuffer, 0, 0, 1, 0, 0},
+        {DxbcRegisterClass::UnorderedAccess, 0, 0, 1, 3, 0}};
+    options.view_size_buffer.enabled = options.view_size_buffer.uav = true;
+    options.view_size_buffer.uav_binding = 1;
+    const auto spirv = translate_dxbc_to_spirv(container, options);
+    ASSERT_TRUE(spirv.valid()) << spirv.failure;
+    MslCompileOptions msl{};
+    msl.argument_buffers = true;
+    msl.argument_buffer_sets[0] = {2, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE, MslDescriptorClass::Buffer};
+    msl.argument_buffer_sets[3] = {1, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 3, MslDescriptorClass::Buffer};
+    const auto compiled = compile_spirv_to_msl(spirv.spirv.data(), spirv.spirv.size(), ShaderStage::Compute, msl);
+    ASSERT_TRUE(compiled.valid());
+    BackendComputePipelineDesc pd{};
+    pd.compute_shader_msl = compiled.msl_text();
+    pd.compute_entry_point = "main0";
+    auto pipeline = device.create_compute_pipeline(pd);
+    ASSERT_TRUE(pipeline && pipeline->valid()) << pd.compute_shader_msl;
+    constexpr u32 threads = 16384, word_count = threads * 4;
+    const std::array<u32, 4> constants{0xFFFFFFF7u, 0xFFFFFFFFu, 13u, 0x80000001u};
+    const auto buffer = [&](const void* bytes, usize size) {
+        BackendBufferDesc desc{};
+        desc.byte_width = size;
+        desc.shader_resource = desc.constant_buffer = desc.unordered_access = true;
+        return device.create_buffer(desc, bytes);
+    };
+    auto cb = buffer(constants.data(), sizeof(constants));
+    auto sizes = buffer(&word_count, sizeof(word_count));
+    std::vector<u32> words(word_count, 0xDEADBEEFu);
+    auto output = buffer(words.data(), words.size() * sizeof(u32));
+    auto cbvs = device.create_descriptor_table({2, BackendDescriptorClass::Buffer});
+    auto uavs = device.create_descriptor_table({1, BackendDescriptorClass::Buffer});
+    ASSERT_TRUE(cb && sizes && output && cbvs && uavs);
+    ASSERT_TRUE(cbvs->set_buffer(0, cb.get(), 0));
+    ASSERT_TRUE(cbvs->set_buffer(1, sizes.get(), 0));
+    ASSERT_TRUE(uavs->set_buffer(0, output.get(), 0));
+    BackendDispatchCall call{};
+    call.pipeline = pipeline.get();
+    call.group_count_x = threads / 64;
+    call.group_count_y = call.group_count_z = 1;
+    call.threads_per_group_x = 64;
+    call.threads_per_group_y = call.threads_per_group_z = 1;
+    call.descriptor_tables[0] = cbvs.get();
+    call.descriptor_tables[3] = uavs.get();
+    ASSERT_TRUE(device.dispatch(call));
+    ASSERT_TRUE(device.wait_idle());
+    ASSERT_TRUE(output->read(0, words.data(), words.size() * sizeof(u32)));
+    const auto integer_dot = [](u32 a, u32 b, u32 acc, bool signed_bytes) {
+        i64 sum = 0;
+        for (u32 shift = 0; shift < 32; shift += 8) {
+            i64 x = (a >> shift) & 255u, y = (b >> shift) & 255u;
+            if (signed_bytes) { if (x >= 128) x -= 256; if (y >= 128) y -= 256; }
+            sum += x * y;
+        }
+        return acc + static_cast<u32>(sum);
+    };
+    for (u32 t = 0; t < threads; ++t) {
+        const u32 a = t * 0x9E3779B1u ^ (t << 7);
+        const u32 b = a * 0x85EBCA6Bu + constants[1];
+        EXPECT_EQ(words[t * 4], integer_dot(a, b, t * 1000u, false)) << t;
+        EXPECT_EQ(words[t * 4 + 1], integer_dot(a, b, t - 32u, true)) << t;
+        EXPECT_EQ(words[t * 4 + 2], integer_dot(b, b, constants[0], false)) << t;
+        EXPECT_EQ(words[t * 4 + 3], integer_dot(a, a, 0u - constants[3], true)) << t;
+    }
+}
+
 namespace {
+
+void execute_byte_fixture(const unsigned char* code, usize size,
+                          const std::vector<u32>& input, std::vector<u32>& output,
+                          u32 groups, u32 threads_per_group) {
+    auto& device = MetalDevice::instance();
+    const auto lowered = dxil_to_dxbc(code, size);
+    ASSERT_TRUE(lowered.ok) << lowered.failure;
+    const auto container = parse_dxbc(lowered.container.data(), lowered.container.size());
+    ASSERT_TRUE(container.valid());
+    DxbcTranslationOptions options{};
+    options.register_remap = {{DxbcRegisterClass::ShaderResource, 0, 0, 1, 1, 0},
+                              {DxbcRegisterClass::UnorderedAccess, 0, 0, 1, 3, 0}};
+    options.view_size_buffer.enabled = options.view_size_buffer.srv = options.view_size_buffer.uav = true;
+    options.view_size_buffer.srv_binding = 0;
+    options.view_size_buffer.uav_binding = 1;
+    const auto spirv = translate_dxbc_to_spirv(container, options);
+    ASSERT_TRUE(spirv.valid()) << spirv.failure;
+    MslCompileOptions msl{};
+    msl.argument_buffers = true;
+    msl.argument_buffer_sets[0] = {2, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE, MslDescriptorClass::Buffer};
+    msl.argument_buffer_sets[1] = {1, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 1, MslDescriptorClass::Buffer};
+    msl.argument_buffer_sets[3] = {1, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 3, MslDescriptorClass::Buffer};
+    const auto compiled = compile_spirv_to_msl(spirv.spirv.data(), spirv.spirv.size(), ShaderStage::Compute, msl);
+    ASSERT_TRUE(compiled.valid());
+    BackendComputePipelineDesc pd{};
+    pd.compute_shader_msl = compiled.msl_text();
+    pd.compute_entry_point = "main0";
+    auto pipeline = device.create_compute_pipeline(pd);
+    ASSERT_TRUE(pipeline && pipeline->valid()) << pd.compute_shader_msl;
+    const auto buffer = [&](const void* data, usize bytes) {
+        BackendBufferDesc desc{};
+        desc.byte_width = bytes;
+        desc.shader_resource = desc.unordered_access = true;
+        return device.create_buffer(desc, data);
+    };
+    const u32 in_words = static_cast<u32>(input.size()), out_words = static_cast<u32>(output.size());
+    auto source = buffer(input.data(), input.size() * sizeof(u32));
+    auto target = buffer(output.data(), output.size() * sizeof(u32));
+    auto in_size = buffer(&in_words, sizeof(in_words)), out_size = buffer(&out_words, sizeof(out_words));
+    auto limits = device.create_descriptor_table({2, BackendDescriptorClass::Buffer});
+    auto srvs = device.create_descriptor_table({1, BackendDescriptorClass::Buffer});
+    auto uavs = device.create_descriptor_table({1, BackendDescriptorClass::Buffer});
+    ASSERT_TRUE(source && target && in_size && out_size && limits && srvs && uavs);
+    ASSERT_TRUE(limits->set_buffer(0, in_size.get(), 0));
+    ASSERT_TRUE(limits->set_buffer(1, out_size.get(), 0));
+    ASSERT_TRUE(srvs->set_buffer(0, source.get(), 0));
+    ASSERT_TRUE(uavs->set_buffer(0, target.get(), 0));
+    BackendDispatchCall call{};
+    call.pipeline = pipeline.get();
+    call.group_count_x = groups;
+    call.group_count_y = call.group_count_z = 1;
+    call.threads_per_group_x = threads_per_group;
+    call.threads_per_group_y = call.threads_per_group_z = 1;
+    call.descriptor_tables[0] = limits.get();
+    call.descriptor_tables[1] = srvs.get();
+    call.descriptor_tables[3] = uavs.get();
+    ASSERT_TRUE(device.dispatch(call));
+    ASSERT_TRUE(device.wait_idle());
+    ASSERT_TRUE(target->read(0, output.data(), output.size() * sizeof(u32)));
+}
+
+// Independent integer implementation of the Microsoft pack/unpack contract.
+u32 pack_bytes(const std::array<i64, 4>& values, u32 mode) {
+    u32 word = 0;
+    for (u32 k = 0; k < 4; ++k) {
+        i64 v = values[k];
+        if (mode != 0u) v = std::clamp(v, mode == 1u ? i64{0} : i64{-128}, mode == 1u ? i64{255} : i64{127});
+        word |= (static_cast<u32>(v) & 255u) << (8 * k);
+    }
+    return word;
+}
+
+TEST(PackedBytesMetal, Native16AllPackModesAndBothUnpacksStayExact) {
+    if (!MetalDevice::instance().available()) GTEST_SKIP();
+    constexpr u32 threads = 1024;
+    std::vector<u32> input(threads * 20), output(threads * 12, 0xDEADBEEFu);
+    constexpr std::array<i32, 12> edges{-32768, -257, -129, -128, -1, 0, 1, 127, 128, 255, 256, 32767};
+    for (u32 t = 0; t < threads; ++t) {
+        for (u32 k = 0; k < 16; ++k)
+            input[t * 20 + k] = (t & 1) ? (t * 0x9E3779B1u + k * 0x85EBCA6Bu)
+                                                   : static_cast<u32>(edges[(t / 2 + k) % edges.size()]);
+        input[t * 20 + 16] = t * 0x9E3779B1u;
+    }
+    execute_byte_fixture(kPackedBytesNative16, sizeof(kPackedBytesNative16), input, output, threads, 1);
+    ASSERT_FALSE(HasFatalFailure());
+    for (u32 t = 0; t < threads; ++t) {
+        for (u32 p = 0; p < 4; ++p) {
+            std::array<i64, 4> v{};
+            for (u32 k = 0; k < 4; ++k) {
+                const u32 bits = input[t * 20 + p * 4 + k] & 0xFFFFu;
+                v[k] = bits >= 32768u ? i64{bits} - 65536 : bits;
+            }
+            EXPECT_EQ(output[t * 12 + p], pack_bytes(v, p < 2 ? 0u : p - 1u)) << t << ':' << p;
+        }
+        for (u32 k = 0; k < 4; ++k) {
+            const u32 byte = (input[t * 20 + 16] >> (k * 8)) & 255u;
+            EXPECT_EQ(output[t * 12 + 4 + k], byte) << t;
+            EXPECT_EQ(output[t * 12 + 8 + k], byte >= 128 ? byte | 0xFFFFFF00u : byte) << t;
+        }
+    }
+}
+
+TEST(PackedBytesMetal, Native32AllPackModesAndBothUnpacksStayExact) {
+    if (!MetalDevice::instance().available()) GTEST_SKIP();
+    const Sm6StageBlob* shader = nullptr;
+    for (const auto& b : kSm6StageBlobs) if (std::string(b.name) == "cs_pack") shader = &b;
+    ASSERT_NE(shader, nullptr);
+    constexpr u32 threads = 4096;
+    std::vector<u32> output(threads * 8, 0xDEADBEEFu);
+    execute_byte_fixture(shader->code, shader->size, std::vector<u32>(4), output, threads / 64, 64);
+    ASSERT_FALSE(HasFatalFailure());
+    for (u32 t = 0; t < threads; ++t) {
+        const u32 a = t * 0x9E3779B1u ^ (t << 7);
+        const std::array<u32, 4> u{a & 511u, (a >> 9) & 511u, t, 300u - t * 5u};
+        std::array<i64, 4> uv{}, sv{};
+        for (u32 k = 0; k < 4; ++k) {
+            uv[k] = u[k];
+            const u32 b = u[k] - 200u;
+            sv[k] = b >= 0x80000000u ? i64{b} - 0x100000000LL : b;
+        }
+        EXPECT_EQ(output[t * 8], pack_bytes(uv, 0)) << t;
+        EXPECT_EQ(output[t * 8 + 1], pack_bytes(sv, 0)) << t;
+        EXPECT_EQ(output[t * 8 + 2], pack_bytes(sv, 1)) << t;
+        EXPECT_EQ(output[t * 8 + 3], pack_bytes(sv, 2)) << t;
+        std::array<i64, 4> ub{}, sb{};
+        for (u32 k = 0; k < 4; ++k) { ub[k] = (a >> (k * 8)) & 255u; sb[k] = ub[k] >= 128 ? ub[k] - 256 : ub[k]; }
+        EXPECT_EQ(output[t * 8 + 4], static_cast<u32>(ub[0] + ub[1] * 3 + ub[2] * 5 + ub[3] * 7)) << t;
+        EXPECT_EQ(output[t * 8 + 5], static_cast<u32>(sb[0] + sb[1] * 3 + sb[2] * 5 + sb[3] * 7)) << t;
+        EXPECT_EQ(output[t * 8 + 6], static_cast<u32>(ub[3]) ^ static_cast<u32>(sb[2])) << t;
+        EXPECT_EQ(output[t * 8 + 7], static_cast<u32>(sb[0])) << t;
+    }
+}
 
 class GeneratedMslTest : public ::testing::Test {
 protected:
@@ -1651,6 +1965,211 @@ fragment float4 fragment_main(in_t in [[stage_in]])
         << vertex_msl;
 }
 
+TEST_F(GeneratedMslTest, GsPassthroughOfPointsWritesAOnePixelPointSize) {
+    // Metal leaves a point's size undefined unless the vertex stage writes
+    // [[point_size]]; D3D11.3 3.4.4 rasterizes every point as one pixel. A
+    // tessellator or geometry shader with point output drew garbage-sized
+    // squares (a51 ts_indirect: 228 lit pixels where Windows lights 21).
+    const std::vector<GsPassthroughOutput> signature{
+        {0u, 3u, /*is_position=*/true},
+        {1u, 3u, false},
+    };
+    for (const bool dense : {false, true}) {
+        const std::string points = generate_gs_passthrough_vertex_msl(
+            signature, dense ? 0u : 1u, /*fixed_function_push=*/true, dense,
+            /*primitive_vertices=*/1u);
+        ASSERT_FALSE(points.empty());
+        EXPECT_NE(points.find("[[point_size]]"), std::string::npos) << points;
+        EXPECT_NE(points.find("out.vitreo_point_size = 1.0;"), std::string::npos)
+            << points;
+        BackendPipelineDesc desc{};
+        desc.vertex_shader_msl = points;
+        desc.fragment_shader_msl = R"(#include <metal_stdlib>
+using namespace metal;
+struct in_t { float4 position [[position]]; float4 locn1 [[user(locn1)]]; };
+fragment float4 fragment_main(in_t in [[stage_in]]) { return in.locn1; }
+)";
+        desc.vertex_entry_point = kGsPassthroughEntryPoint;
+        desc.fragment_entry_point = "fragment_main";
+        desc.color_format = PixelFormat::BGRA8Unorm;
+        desc.cache_key = dense ? 0x6503C2u : 0x6503C1u;
+        auto pipeline = MetalDevice::instance().create_pipeline(desc);
+        EXPECT_TRUE(pipeline != nullptr && pipeline->valid()) << points;
+    }
+    // Lines and triangles have no point size to give.
+    for (const u32 vertices : {2u, 3u}) {
+        const std::string msl = generate_gs_passthrough_vertex_msl(
+            signature, 3u, true, false, vertices);
+        EXPECT_EQ(msl.find("[[point_size]]"), std::string::npos) << msl;
+    }
+}
+
+TEST_F(GeneratedMslTest, GsPassthroughCullDistanceCompilesAndTestsEveryVertex) {
+    // D3D11.3 15.4.2: a primitive is discarded when one cull distance is
+    // negative (or NaN) at all of its vertices. o1.x and o1.z carry cull
+    // distances of triangles (3 vertices per primitive).
+    GsPassthroughOutput cull{1u, 3u, false};
+    cull.component_system_values = {3u, 0u, 3u, 0u};
+    const std::vector<GsPassthroughOutput> signature{
+        {0u, 3u, /*is_position=*/true}, cull};
+    const std::string vertex_msl = generate_gs_passthrough_vertex_msl(
+        signature, 6u, /*fixed_function_push=*/false, /*dense_records=*/false,
+        /*primitive_vertices=*/3u);
+    ASSERT_FALSE(vertex_msl.empty());
+    // Both components, each over the primitive's three records.
+    for (const char* lane : {"].x)", "].z)"}) {
+        usize count = 0;
+        for (usize at = vertex_msl.find(lane); at != std::string::npos;
+             at = vertex_msl.find(lane, at + 1)) {
+            ++count;
+        }
+        EXPECT_EQ(count, 3u) << lane << "\n" << vertex_msl;
+    }
+    EXPECT_NE(vertex_msl.find("% 3u"), std::string::npos) << vertex_msl;
+
+    const std::string fragment_msl = R"(#include <metal_stdlib>
+using namespace metal;
+
+struct in_t {
+    float4 position [[position]];
+    float4 locn1 [[user(locn1)]];
+};
+
+fragment float4 fragment_main(in_t in [[stage_in]])
+{
+    return in.locn1;
+}
+)";
+    BackendPipelineDesc desc{};
+    desc.vertex_shader_msl = vertex_msl;
+    desc.fragment_shader_msl = fragment_msl;
+    desc.vertex_entry_point = kGsPassthroughEntryPoint;
+    desc.fragment_entry_point = "fragment_main";
+    desc.vertex_attributes = {};
+    desc.vertex_stride = 0;
+    desc.color_format = PixelFormat::BGRA8Unorm;
+    desc.cache_key = 0x6503C1u;
+    auto pipeline = MetalDevice::instance().create_pipeline(desc);
+    EXPECT_TRUE(pipeline != nullptr && pipeline->valid()) << vertex_msl;
+
+    // Dense records (a domain shader's points through an index list) and an
+    // unknown primitive size cannot cull: the caller refuses those.
+    EXPECT_TRUE(generate_gs_passthrough_vertex_msl(signature, 0u, false,
+                                                   /*dense_records=*/true, 3u)
+                    .empty());
+    EXPECT_TRUE(generate_gs_passthrough_vertex_msl(signature, 6u).empty());
+}
+
+TEST_F(GeneratedMslTest, DenseRecordsThroughTheIndexListCullWholePrimitives) {
+    // A compute-lowered domain shader's records drawn NON-indexed, one vertex
+    // per entry of the tessellator's index list (at t1), so each vertex sees
+    // its primitive. D3D11.3 15.4.2: a primitive is discarded when a cull
+    // distance is < 0 at all of its vertices; a NaN distance counts as < 0;
+    // -0.0 is not < 0.
+    GsPassthroughOutput cull{1u, 3u, false};
+    cull.component_system_values = {3u, 0u, 0u, 0u};
+    const std::vector<GsPassthroughOutput> signature{
+        {0u, 3u, /*is_position=*/true}, cull};
+    const std::string vertex_msl = generate_gs_passthrough_vertex_msl(
+        signature, 0u, /*fixed_function_push=*/false, /*dense_records=*/true,
+        /*primitive_vertices=*/3u, /*records_through_index_list=*/true);
+    ASSERT_FALSE(vertex_msl.empty());
+    EXPECT_NE(vertex_msl.find("vitreo_gs_counts[vitreo_vertex_id] * 2u"),
+              std::string::npos)
+        << vertex_msl;
+    // Without cull distances the indexed draw's shader is unchanged.
+    EXPECT_EQ(generate_gs_passthrough_vertex_msl({{0u, 3u, true}}, 0u, true,
+                                                 true),
+              generate_gs_passthrough_vertex_msl({{0u, 3u, true}}, 0u, true,
+                                                 true, 0u, false));
+
+    auto& device = MetalDevice::instance();
+    BackendPipelineDesc desc{};
+    desc.vertex_shader_msl = vertex_msl;
+    desc.vertex_entry_point = kGsPassthroughEntryPoint;
+    desc.fragment_shader_msl = R"(#include <metal_stdlib>
+using namespace metal;
+struct In { float4 position [[position]]; };
+fragment float4 main0(In in [[stage_in]]) { return float4(0, 1, 0, 1); }
+)";
+    desc.fragment_entry_point = "main0";
+    desc.color_format = PixelFormat::BGRA8Unorm;
+    desc.cache_key = 0x6503C2u;
+    auto pipeline = device.create_pipeline(desc);
+    ASSERT_TRUE(pipeline && pipeline->valid()) << vertex_msl;
+
+    // Four triangles, one per pixel of a 4x1 target. The records are stored
+    // in reverse primitive order, and the index list puts them back, so the
+    // shader must read the list both for its own record and its primitive's.
+    const float nan = std::numeric_limits<float>::quiet_NaN();
+    const std::array<std::array<float, 3>, 4> distances{{
+        {-1.0f, -1.0f, -1.0f},  // all < 0: culled
+        {-1.0f, 1.0f, -1.0f},   // one in: drawn
+        {nan, -1.0f, -1.0f},    // NaN counts as < 0: culled
+        {-0.0f, -1.0f, -1.0f},  // -0.0 is not < 0: drawn
+    }};
+    std::vector<float> records;   // [pos, (cull, 0, 0, 0)] per record
+    std::vector<u32> list;
+    for (u32 slot = 0; slot < 4; ++slot) {
+        const u32 primitive = 3u - slot;  // stored in reverse
+        const float cx = -1.0f + 0.5f * static_cast<float>(primitive) + 0.25f;
+        const std::array<std::array<float, 2>, 3> corners{
+            {{cx - 0.2f, -0.9f}, {cx + 0.2f, -0.9f}, {cx, 0.9f}}};
+        for (u32 k = 0; k < 3; ++k) {
+            records.insert(records.end(),
+                           {corners[k][0], corners[k][1], 0.5f, 1.0f,
+                            distances[primitive][k], 0.0f, 0.0f, 0.0f});
+        }
+    }
+    for (u32 primitive = 0; primitive < 4; ++primitive) {
+        const u32 slot = 3u - primitive;
+        // Within a primitive, the corners in reverse too.
+        for (u32 k = 0; k < 3; ++k) list.push_back(slot * 3u + (2u - k));
+    }
+    // Reversing the corners flips the winding the records carry; the
+    // pipeline does not cull by facing.
+    BackendBufferDesc storage{};
+    storage.shader_resource = true;
+    storage.byte_width = records.size() * sizeof(float);
+    auto record_buffer = device.create_buffer(storage, records.data());
+    storage.byte_width = list.size() * sizeof(u32);
+    auto list_buffer = device.create_buffer(storage, list.data());
+    ASSERT_TRUE(record_buffer && list_buffer);
+
+    BackendTexture2DDesc td{};
+    td.width = 4;
+    td.height = 1;
+    td.mip_levels = td.array_size = 1;
+    td.pixel_format = PixelFormat::BGRA8Unorm;
+    td.render_target = true;
+    auto target = device.create_texture_2d(td, nullptr, 0);
+    ASSERT_TRUE(target->clear_render_target({1.0f, 0.0f, 0.0f, 1.0f}));
+    BackendRenderPassDesc pass_desc{};
+    pass_desc.color_targets[0] = target.get();
+    pass_desc.color_formats[0] = PixelFormat::BGRA8Unorm;
+    pass_desc.preserve_color_contents = true;
+    {
+        auto pass = device.create_render_pass_standalone(pass_desc);
+        BackendDrawCall call{};
+        call.pipeline = pipeline.get();
+        call.topology = BackendPrimitiveTopology::TriangleList;
+        call.vertex_count = static_cast<u32>(list.size());
+        call.vertex_srv_buffers[0] = record_buffer.get();
+        call.vertex_srv_buffers[1] = list_buffer.get();
+        call.viewport = {0, 0, 4, 1, 0, 1};
+        ASSERT_TRUE(pass->draw(call));
+        ASSERT_TRUE(pass->end());
+    }
+    std::array<u8, 16> pixels{};
+    ASSERT_TRUE(target->readback(0, pixels.data(), 16));
+    const std::array<bool, 4> drawn{false, true, false, true};
+    for (usize p = 0; p < 4; ++p) {
+        // BGRA8: green where drawn, the red clear where culled.
+        EXPECT_EQ(pixels[p * 4 + 1], drawn[p] ? 255u : 0u) << "pixel " << p;
+        EXPECT_EQ(pixels[p * 4 + 2], drawn[p] ? 0u : 255u) << "pixel " << p;
+    }
+}
+
 TEST_F(GeneratedMslTest, GsPassthroughRefusesASignatureWithNoPosition) {
     // A draw with no clip-space output cannot rasterise. Generating a shader
     // that left position at zero would draw a degenerate primitive instead of
@@ -2432,4 +2951,542 @@ TEST(PreciseContractionTest, SafeModeWithContractionOffDoesNotFuse) {
         << "the inputs no longer tell a fused result from an unfused one";
 }
 
+// The lowering precise_without_helpers emits for a shader that still has
+// refactoringAllowed (D3D11.3 22.19.2). Safe mode, no file-scope pragma.
+// A precise mul then a precise sub is two roundings. A non-precise a*b+c
+// in the same shader is one FMA: that is the contraction Safe mode keeps
+// once the pragma is not painted over the whole library. (big + a) - big
+// is not reassociated. precise(-1 * 0) is -0 (D3D11.3 3.1.3.1).
+TEST(PreciseContractionTest, IsolatedPreciseOpsLeaveOtherContractions) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal device";
+    const std::string msl =
+        "#include <metal_stdlib>\n"
+        "using namespace metal;\n"
+        "template<typename T> [[clang::always_inline]] T vitreoPreciseMul(T l, T r) "
+        "{ _Pragma(\"clang fp contract(off) reassociate(off)\") return l * r; }\n"
+        "template<typename T> [[clang::always_inline]] T vitreoPreciseSub(T l, T r) "
+        "{ _Pragma(\"clang fp contract(off) reassociate(off)\") return l - r; }\n"
+        "kernel void main0(device const float* in [[buffer(" +
+        std::to_string(BACKEND_SRV_BUFFER_BASE) +
+        ")]], device float* out [[buffer(" +
+        std::to_string(BACKEND_UAV_BUFFER_BASE) +
+        ")]], uint id [[thread_position_in_grid]]) {\n"
+        "    const float a = in[3 * id], b = in[3 * id + 1], c = in[3 * id + 2];\n"
+        "    out[4 * id] = vitreoPreciseSub(vitreoPreciseMul(a, b), c);\n"
+        "    out[4 * id + 1] = a * b + c;\n"
+        "    const float big = c * 16777216.0f;\n"
+        "    out[4 * id + 2] = (big + a) - big;\n"
+        "    out[4 * id + 3] = vitreoPreciseMul(-1.0f, 0.0f);\n"
+        "}\n";
+    BackendComputePipelineDesc pd{};
+    pd.compute_entry_point = "main0";
+    pd.compute_shader_msl = msl;
+    pd.math_mode = BackendMathMode::Safe;
+    pd.cache_key = 0xC0DE5A12u;
+    auto pipeline = device.create_compute_pipeline(pd);
+    ASSERT_TRUE(pipeline && pipeline->valid()) << msl;
+
+    constexpr unsigned kThreads = 64u * 256u;
+    std::vector<float> input(3u * kThreads);
+    u32 state = 0x2545F491u;
+    for (float& v : input) {
+        state = state * 1664525u + 1013904223u;
+        v = 0.5f + static_cast<float>(state >> 8) * (1.0f / 16777216.0f);
+    }
+    BackendBufferDesc in_desc{};
+    in_desc.byte_width = static_cast<unsigned>(input.size() * sizeof(float));
+    in_desc.shader_resource = true;
+    auto in = device.create_buffer(in_desc, input.data());
+    BackendBufferDesc out_desc{};
+    out_desc.byte_width = 4u * kThreads * sizeof(float);
+    out_desc.unordered_access = true;
+    out_desc.shader_resource = true;
+    auto out = device.create_buffer(out_desc, nullptr);
+    ASSERT_TRUE(in && out);
+
+    BackendDispatchCall call{};
+    call.pipeline = pipeline.get();
+    call.group_count_x = kThreads / 64u;
+    call.group_count_y = call.group_count_z = 1;
+    call.threads_per_group_x = 64;
+    call.threads_per_group_y = call.threads_per_group_z = 1;
+    call.buffers[BACKEND_SRV_BUFFER_BASE] = in.get();
+    call.buffers[BACKEND_UAV_BUFFER_BASE] = out.get();
+    ASSERT_TRUE(device.dispatch(call));
+    device.wait_idle();
+    std::vector<float> got(4u * kThreads);
+    ASSERT_TRUE(out->read(0, got.data(), out_desc.byte_width));
+
+    unsigned fused_would_differ = 0;
+    unsigned add_would_differ = 0;
+    unsigned plain_fused = 0;
+    for (unsigned i = 0; i < kThreads; ++i) {
+        const float a = input[3 * i], b = input[3 * i + 1], c = input[3 * i + 2];
+        volatile float product = a * b;
+        const float unfused = product - c;
+        const float fused_sub = std::fma(a, b, -c);
+        if (unfused != fused_sub) ++fused_would_differ;
+        ASSERT_EQ(got[4 * i], unfused) << "thread " << i << ": precise a*b-c was fused";
+        volatile float product_add = a * b;
+        const float unfused_add = product_add + c;
+        const float fused_add = std::fma(a, b, c);
+        if (unfused_add != fused_add) {
+            ++add_would_differ;
+            if (got[4 * i + 1] == fused_add) ++plain_fused;
+        }
+        volatile float big = c * 16777216.0f;
+        volatile float sum = big + a;
+        const float rounded = sum - big;
+        ASSERT_EQ(got[4 * i + 2], rounded)
+            << "thread " << i << ": (big + a) - big was reassociated";
+        ASSERT_TRUE(std::signbit(got[4 * i + 3]))
+            << "precise (-1 * 0) lost its sign";
+    }
+    EXPECT_GT(fused_would_differ, kThreads / 4u)
+        << "the inputs no longer tell a fused result from an unfused one";
+    EXPECT_GT(add_would_differ, kThreads / 8u);
+    // Every input whose rounded product-add differs from an FMA took the FMA.
+    EXPECT_EQ(plain_fused, add_would_differ)
+        << "non-precise a*b+c did not contract; the precise helpers painted "
+           "the whole shader";
+}
+
 }  // namespace
+
+namespace {
+void* retained_feature_state(unsigned value) {
+    unsigned bytes[8] = {value};
+    return const_cast<void*>(static_cast<const void*>(CFDataCreate(
+        kCFAllocatorDefault, reinterpret_cast<const UInt8*>(bytes), sizeof(bytes))));
+}
+unsigned feature_state_value(void* state) {
+    unsigned value = 0;
+    std::memcpy(&value, CFDataGetBytePtr(static_cast<CFDataRef>(state)), sizeof(value));
+    return value;
+}
+}
+
+TEST(SamplerFeatureRebuildTest, RebuildsEachNewRequiredFeatureAndRetainsOldStates) {
+    std::atomic<void*> state{retained_feature_state(0)};
+    unsigned active = 0, calls = 0;
+    void* initial = state.load();
+    {
+        SamplerFeatureRebuild rebuild(7u, 0u, [&] {
+            ++calls; return retained_feature_state(active);
+        });
+        EXPECT_EQ(rebuild.current(state, 0u), initial);
+        active = 1;
+        void* first = rebuild.current(state, active);
+        ASSERT_NE(first, nullptr);
+        EXPECT_EQ(feature_state_value(first), 1u);
+        active = 3;
+        void* second = rebuild.current(state, active);
+        ASSERT_NE(second, nullptr);
+        EXPECT_EQ(feature_state_value(second), 3u);
+        EXPECT_EQ(feature_state_value(initial), 0u);
+        EXPECT_EQ(feature_state_value(first), 1u);
+        EXPECT_EQ(rebuild.current(state, active), second);
+        active = 7;
+        void* third = rebuild.current(state, active);
+        ASSERT_NE(third, nullptr);
+        EXPECT_EQ(feature_state_value(third), 7u);
+        EXPECT_EQ(feature_state_value(initial), 0u);
+        EXPECT_EQ(feature_state_value(first), 1u);
+        EXPECT_EQ(feature_state_value(second), 3u);
+        EXPECT_EQ(calls, 3u);
+    }
+    release_retained_metal_object(state.load());
+}
+
+TEST(SamplerFeatureRebuildTest, ConcurrentUseBuildsOneReplacement) {
+    std::atomic<void*> state{retained_feature_state(0)};
+    std::atomic<unsigned> calls{0};
+    {
+        SamplerFeatureRebuild rebuild(2u, 0u, [&] {
+            calls.fetch_add(1); return retained_feature_state(2);
+        });
+        std::array<void*, 8> results{};
+        std::vector<std::thread> threads;
+        for (unsigned i = 0; i < results.size(); ++i)
+            threads.emplace_back([&, i] { results[i] = rebuild.current(state, 2u); });
+        for (auto& thread : threads) thread.join();
+        EXPECT_EQ(calls.load(), 1u);
+        for (void* result : results) EXPECT_EQ(result, state.load());
+    }
+    release_retained_metal_object(state.load());
+}
+
+TEST(SamplerFeatureRebuildTest, RequiredRebuildFailureDisablesNewUses) {
+    std::atomic<void*> state{retained_feature_state(0)};
+    unsigned calls = 0;
+    {
+        SamplerFeatureRebuild rebuild(3u, 0u, [&]() -> void* { ++calls; return nullptr; });
+        EXPECT_EQ(rebuild.current(state, 2u), nullptr);
+        EXPECT_EQ(state.load(), nullptr);
+        EXPECT_EQ(rebuild.current(state, 3u), nullptr);
+        EXPECT_EQ(calls, 1u);
+    }
+}
+
+TEST(SamplerFeatureRebuildTest, UnusedFeaturesDoNotRebuildThePipeline) {
+    std::atomic<void*> state{retained_feature_state(0)};
+    unsigned calls = 0;
+    {
+        SamplerFeatureRebuild rebuild(2u, 0u, [&] {
+            ++calls; return retained_feature_state(2);
+        });
+        EXPECT_EQ(rebuild.current(state, 1u), state.load());
+        EXPECT_EQ(calls, 0u);
+        EXPECT_NE(rebuild.current(state, 3u), nullptr);
+        EXPECT_EQ(calls, 1u);
+        EXPECT_EQ(rebuild.current(state, 7u), state.load());
+        EXPECT_EQ(calls, 1u);
+    }
+    release_retained_metal_object(state.load());
+}
+
+// Run this lifecycle case by itself so the feature is initially absent. The
+// deliberately invalid newly enabled arm verifies the backend's failure path.
+TEST(SamplerFeatureRebuildGpuTest, RequiredFeatureCompileFailureRejectsDispatch) {
+    if ((enabled_sampler_features() & static_cast<unsigned>(SamplerFeature::CustomBorder)) != 0)
+        GTEST_SKIP() << "requires a fresh process";
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal device";
+    BackendComputePipelineDesc pd{};
+    pd.compute_entry_point = "main0";
+    pd.math_mode = BackendMathMode::Safe;
+    pd.compute_shader_msl =
+        "#include <metal_stdlib>\nusing namespace metal;\n"
+        "#ifndef VITREO_CUSTOM_BORDER\n#define VITREO_CUSTOM_BORDER 0\n#endif\n"
+        "#if VITREO_CUSTOM_BORDER\n#error required_feature_compile_failure\n#endif\n"
+        "kernel void main0(device uint* out [[buffer(" +
+        std::to_string(BACKEND_UAV_BUFFER_BASE) + ")]]) { out[0] = 1u; }\n";
+    auto pipeline = device.create_compute_pipeline(pd);
+    ASSERT_TRUE(pipeline && pipeline->valid());
+    BackendBufferDesc bd{};
+    bd.byte_width = sizeof(u32);
+    bd.unordered_access = true;
+    const u32 zero = 0;
+    auto output = device.create_buffer(bd, &zero);
+    ASSERT_TRUE(output);
+    BackendDispatchCall call{};
+    call.pipeline = pipeline.get();
+    call.group_count_x = call.group_count_y = call.group_count_z = 1;
+    call.threads_per_group_x = call.threads_per_group_y = call.threads_per_group_z = 1;
+    call.buffers[BACKEND_UAV_BUFFER_BASE] = output.get();
+    ASSERT_TRUE(device.dispatch(call));
+    ASSERT_TRUE(device.wait_idle());
+    u32 value = 0;
+    ASSERT_TRUE(output->read(0, &value, sizeof(value)));
+    ASSERT_EQ(value, 1u);
+    enable_sampler_feature(SamplerFeature::CustomBorder);
+    EXPECT_FALSE(device.dispatch(call));
+    EXPECT_FALSE(pipeline->valid());
+    EXPECT_TRUE(device.wait_idle());
+    ASSERT_TRUE(output->read(0, &value, sizeof(value)));
+    EXPECT_EQ(value, 1u);
+}
+
+TEST_F(GeneratedMslTest, ImmediateEncodingPreservesSharedProducerAndFlushOrdering) {
+    auto& device = MetalDevice::instance();
+    ASSERT_TRUE(device.wait_idle());
+    BackendBufferDesc desc{};
+    desc.byte_width = sizeof(u32);
+    const u32 first = 0x11223344u, second = 0x55667788u, zero = 0;
+    auto a = device.create_buffer(desc, &first);
+    auto b = device.create_buffer(desc, &second);
+    auto result = device.create_buffer(desc, &zero);
+    ASSERT_TRUE(a && b && result);
+    auto direct = device.begin_immediate_execution();
+    ASSERT_TRUE(direct);
+    const u64 generation = device.recording_generation();
+    ASSERT_TRUE(device.copy_buffer(result.get(), a.get()));
+    EXPECT_EQ(device.last_recorded_generation(), generation);
+    const auto partial = device.flush_completion();
+    ASSERT_TRUE(partial);
+    ASSERT_TRUE(partial->wait());
+    EXPECT_FALSE(device.generation_complete(generation));
+    u32 observed = 0;
+    ASSERT_TRUE(result->read(0, &observed, sizeof(observed)));
+    EXPECT_EQ(observed, first);
+
+    // Another frontend can queue a later generation while the lease is open.
+    // An intra-lease flush must neither execute nor retire that later work.
+    std::thread producer([&] {
+        EXPECT_TRUE(device.copy_buffer(result.get(), b.get()));
+        device.flush();
+    });
+    producer.join();
+    ASSERT_TRUE(device.copy_buffer(result.get(), a.get()));
+    ASSERT_TRUE(device.flush_completion()->wait());
+    ASSERT_TRUE(result->read(0, &observed, sizeof(observed)));
+    EXPECT_EQ(observed, first);
+    EXPECT_EQ(device.recording_generation(), generation);
+    direct.reset();
+    ASSERT_TRUE(device.wait_idle());
+    ASSERT_TRUE(result->read(0, &observed, sizeof(observed)));
+    EXPECT_EQ(observed, second);
+    EXPECT_TRUE(device.generation_complete(generation));
+}
+
+TEST_F(GeneratedMslTest, ImmediateEncodingReadbackReleasesAndResumesOwnership) {
+    auto& device = MetalDevice::instance();
+    BackendBufferDesc desc{};
+    desc.byte_width = sizeof(u32);
+    const u32 expected = 0x12345678u, zero = 0;
+    auto source = device.create_buffer(desc, &expected);
+    auto result = device.create_buffer(desc, &zero);
+    ASSERT_TRUE(source && result);
+    auto direct = device.begin_immediate_execution();
+    ASSERT_TRUE(direct);
+    const u64 generation = device.recording_generation();
+    ASSERT_TRUE(device.copy_buffer(result.get(), source.get()));
+    ASSERT_TRUE(device.wait_generation(generation));
+    EXPECT_GT(device.recording_generation(), generation);
+    EXPECT_TRUE(device.generation_complete(generation));
+    u32 observed = 0;
+    ASSERT_TRUE(result->read(0, &observed, sizeof(observed)));
+    EXPECT_EQ(observed, expected);
+    ASSERT_TRUE(device.copy_buffer(result.get(), source.get()));
+    direct.reset();
+    EXPECT_TRUE(device.wait_idle());
+}
+
+TEST_F(GeneratedMslTest, ImmediateEncodingWaitIncludesAnotherProducersGeneration) {
+    auto& device = MetalDevice::instance();
+    auto fence = device.create_fence(0);
+    ASSERT_TRUE(fence && fence->valid());
+    auto direct = device.begin_immediate_execution();
+    ASSERT_TRUE(direct);
+    const u64 own = device.recording_generation();
+    u64 later = 0;
+    std::thread producer([&] {
+        EXPECT_TRUE(fence->wait_gpu(1));
+        later = device.recording_generation();
+        device.flush();
+    });
+    producer.join();
+    ASSERT_GT(later, own);
+    std::thread release([&] {
+        std::this_thread::sleep_for(std::chrono::milliseconds(30));
+        EXPECT_TRUE(fence->signal_cpu(1));
+    });
+    const bool completed = device.wait_generation(later);
+    const bool actually_complete = device.generation_complete(later);
+    release.join();
+    EXPECT_TRUE(completed);
+    EXPECT_TRUE(actually_complete);
+    EXPECT_GE(fence->completed_value(), 1u);
+    direct.reset();
+    EXPECT_TRUE(device.wait_idle());
+}
+
+TEST_F(GeneratedMslTest, ImmediateEncodingMainThreadAcquisitionPumpsRunLoop) {
+    auto& device = MetalDevice::instance();
+    ASSERT_TRUE(device.wait_idle());
+    struct Bridge {
+        std::mutex mutex;
+        std::condition_variable cv;
+        bool entered{false};
+        bool pumped{false};
+    } bridge;
+    CFRunLoopSourceContext context{};
+    context.info = &bridge;
+    context.perform = [](void* opaque) {
+        auto& state = *static_cast<Bridge*>(opaque);
+        std::lock_guard lock(state.mutex);
+        state.pumped = true;
+        state.cv.notify_all();
+    };
+    CFRunLoopRef loop = CFRunLoopGetCurrent();
+    CFRunLoopSourceRef source = CFRunLoopSourceCreate(nullptr, 0, &context);
+    ASSERT_NE(source, nullptr);
+    CFRunLoopAddSource(loop, source, kCFRunLoopDefaultMode);
+    auto& queue = MetalSubmitQueue::instance();
+    queue.record_encode([&](void*) {
+        std::unique_lock lock(bridge.mutex);
+        bridge.entered = true;
+        bridge.cv.notify_all();
+        CFRunLoopSourceSignal(source);
+        CFRunLoopWakeUp(loop);
+        // RED fails promptly rather than hanging the test process forever.
+        bridge.cv.wait_for(lock, std::chrono::seconds(2), [&] { return bridge.pumped; });
+    });
+    (void)queue.submit();
+    {
+        std::unique_lock lock(bridge.mutex);
+        bridge.cv.wait(lock, [&] { return bridge.entered; });
+    }
+    auto direct = device.begin_immediate_execution();
+    bool pumped = false;
+    {
+        std::lock_guard lock(bridge.mutex);
+        pumped = bridge.pumped;
+    }
+    direct.reset();
+    CFRunLoopRemoveSource(loop, source, kCFRunLoopDefaultMode);
+    CFRelease(source);
+    EXPECT_TRUE(pumped);
+    EXPECT_TRUE(device.wait_idle());
+}
+
+TEST_F(GeneratedMslTest, ImmediateEncodingMainThreadGenerationWaitPumpsRunLoop) {
+    auto& device = MetalDevice::instance();
+    ASSERT_TRUE(device.wait_idle());
+    struct Bridge {
+        std::mutex mutex;
+        std::condition_variable cv;
+        bool entered{false};
+        bool pumped{false};
+    } bridge;
+    CFRunLoopSourceContext context{};
+    context.info = &bridge;
+    context.perform = [](void* opaque) {
+        auto& state = *static_cast<Bridge*>(opaque);
+        std::lock_guard lock(state.mutex);
+        state.pumped = true;
+        state.cv.notify_all();
+    };
+    CFRunLoopRef loop = CFRunLoopGetCurrent();
+    CFRunLoopSourceRef source = CFRunLoopSourceCreate(nullptr, 0, &context);
+    ASSERT_NE(source, nullptr);
+    CFRunLoopAddSource(loop, source, kCFRunLoopDefaultMode);
+    auto& queue = MetalSubmitQueue::instance();
+    auto direct = device.begin_immediate_execution();
+    ASSERT_TRUE(direct);
+    u64 generation = 0;
+    std::thread producer([&] {
+    queue.record_encode([&](void*) {
+        std::unique_lock lock(bridge.mutex);
+        bridge.entered = true;
+        bridge.cv.notify_all();
+        CFRunLoopSourceSignal(source);
+        CFRunLoopWakeUp(loop);
+        // RED fails promptly rather than hanging the test process forever.
+        bridge.cv.wait_for(lock, std::chrono::seconds(2), [&] { return bridge.pumped; });
+    });
+    generation = queue.recording_generation();
+    (void)queue.submit();
+    });
+    producer.join();
+    EXPECT_TRUE(device.wait_generation(generation));
+    bool pumped = false;
+    {
+        std::lock_guard lock(bridge.mutex);
+        pumped = bridge.pumped;
+    }
+    direct.reset();
+    CFRunLoopRemoveSource(loop, source, kCFRunLoopDefaultMode);
+    CFRelease(source);
+    EXPECT_TRUE(pumped);
+    EXPECT_TRUE(device.wait_idle());
+}
+
+
+namespace {
+BackendPipelineDesc exact_cache_pipeline(const char* tag) {
+    BackendPipelineDesc desc{};
+    desc.vertex_shader_msl = std::string("// ") + tag + R"(
+#include <metal_stdlib>
+using namespace metal;
+vertex float4 exact_cache_vertex(uint id [[vertex_id]]) {
+    const float2 positions[3] = {float2(-1,-1), float2(3,-1), float2(-1,3)};
+    return float4(positions[id], 0, 1);
+}
+)";
+    desc.fragment_shader_msl = std::string("// ") + tag + R"(
+#include <metal_stdlib>
+using namespace metal;
+fragment float4 exact_cache_fragment() { return float4(0.2,0.3,0.4,1); }
+)";
+    desc.vertex_entry_point = "exact_cache_vertex";
+    desc.fragment_entry_point = "exact_cache_fragment";
+    desc.color_format = PixelFormat::BGRA8Unorm;
+    return desc;
+}
+}
+
+TEST_F(GeneratedMslTest, IdenticalSynchronousPipelinesCompileOnceAcrossCallerKeys) {
+    auto& device = MetalDevice::instance();
+    auto desc = exact_cache_pipeline("separate caller identities");
+    desc.cache_key = 1001;
+    const auto before = compile_profile::snapshot();
+    auto first = device.create_pipeline(desc);
+    ASSERT_TRUE(first && first->valid());
+    desc.cache_key = 2001;
+    auto second = device.create_pipeline(desc);
+    ASSERT_TRUE(second && second->valid());
+    const auto after = compile_profile::snapshot();
+    EXPECT_EQ(after.count[compile_profile::MetalRenderState] -
+              before.count[compile_profile::MetalRenderState], 1u);
+}
+
+TEST_F(GeneratedMslTest, SynchronousPipelineCacheDistinguishesStateWithSameCallerKey) {
+    auto& device = MetalDevice::instance();
+    auto desc = exact_cache_pipeline("same caller identity different masks");
+    desc.cache_key = 4001;
+    const auto before = compile_profile::snapshot();
+    auto first = device.create_pipeline(desc);
+    ASSERT_TRUE(first && first->valid());
+    desc.color_write_mask = 0;
+    auto second = device.create_pipeline(desc);
+    ASSERT_TRUE(second && second->valid());
+    const auto after = compile_profile::snapshot();
+    EXPECT_EQ(after.count[compile_profile::MetalRenderState] -
+              before.count[compile_profile::MetalRenderState], 2u);
+}
+
+TEST_F(GeneratedMslTest, ConcurrentIdenticalSynchronousPipelinesCompileOnce) {
+    auto& device = MetalDevice::instance();
+    const auto source = exact_cache_pipeline("concurrent exact descriptions");
+    std::array<std::unique_ptr<BackendPipeline>, 6> pipelines;
+    std::array<std::thread, 6> workers;
+    std::atomic<bool> start{false};
+    const auto before = compile_profile::snapshot();
+    for (unsigned i = 0; i < workers.size(); ++i) {
+        workers[i] = std::thread([&, i] {
+            while (!start.load(std::memory_order_acquire)) std::this_thread::yield();
+            auto desc = source;
+            desc.cache_key = i + 5001;
+            pipelines[i] = device.create_pipeline(desc);
+        });
+    }
+    start.store(true, std::memory_order_release);
+    for (auto& worker : workers) worker.join();
+    for (const auto& pipeline : pipelines) ASSERT_TRUE(pipeline && pipeline->valid());
+    const auto after = compile_profile::snapshot();
+    EXPECT_EQ(after.count[compile_profile::MetalRenderState] -
+              before.count[compile_profile::MetalRenderState], 1u);
+}
+
+TEST_F(GeneratedMslTest, SynchronousPipelineCacheDistinguishesCompiledFunctions) {
+    auto& device = MetalDevice::instance();
+    auto desc = exact_cache_pipeline("same render state different function");
+    const auto before = compile_profile::snapshot();
+    auto first = device.create_pipeline(desc);
+    ASSERT_TRUE(first && first->valid());
+    desc.fragment_shader_msl.replace(desc.fragment_shader_msl.find("0.2,0.3,0.4"),
+                                     std::strlen("0.2,0.3,0.4"), "0.7,0.6,0.5");
+    auto second = device.create_pipeline(desc);
+    ASSERT_TRUE(second && second->valid());
+    const auto after = compile_profile::snapshot();
+    EXPECT_EQ(after.count[compile_profile::MetalRenderState] -
+              before.count[compile_profile::MetalRenderState], 2u);
+}
+
+TEST_F(GeneratedMslTest, FailedSynchronousNativePipelineCreationCanRetry) {
+    auto& device = MetalDevice::instance();
+    auto desc = exact_cache_pipeline("native failure retry");
+    // Metal requires an integer fragment output for an integer attachment.
+    // The library is valid; native pipeline creation must reject this pair.
+    desc.color_format = PixelFormat::R32Uint;
+    const auto before = compile_profile::snapshot();
+    auto first = device.create_pipeline(desc);
+    EXPECT_FALSE(first && first->valid());
+    auto second = device.create_pipeline(desc);
+    EXPECT_FALSE(second && second->valid());
+    const auto after = compile_profile::snapshot();
+    EXPECT_EQ(after.count[compile_profile::MetalRenderState] -
+              before.count[compile_profile::MetalRenderState], 2u);
+}

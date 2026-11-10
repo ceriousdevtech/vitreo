@@ -180,8 +180,9 @@ constexpr usize SAMPLER_SLOTS = 16;
 // is a separate contract this frontend does not yet claim.
 constexpr usize UAV_SLOTS = 8;
 // D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT. Every slot is recorded and read
-// back; the draw maps the slots an input layout uses onto the backend's
-// BACKEND_MAX_VERTEX_BUFFERS streams (InputLayout::backend_stream).
+// back; the draw maps each slot onto a backend stream (InputLayout::backend_stream).
+// A slot past Metal's buffer table takes a free bindable stream, or the draw
+// fails loudly.
 constexpr usize VERTEX_BUFFER_SLOTS = 32;
 // R4 (d3d11_draw_memo.hpp): every stage's t# and s# arrays re-stamp on each
 // change, so draw-time derivations can be keyed by the stamp.
@@ -214,6 +215,9 @@ enum class StageBindings : u32 { Vertex = 0, Pixel = 1, Compute = 2, Count };
 
 /// How a compiled shader expects its registers to be bound.
 struct ShaderBindingLayout {
+    /// Positive typed-DXBC proof for this original shader. Generated variants
+    /// must establish their own proof; native MSL never inherits this one.
+    bool original_resources_read_only{false};
     /// Highest declared register + 1, per D3D register space. Zero when the
     /// shader declares none.
     u32 srv_slots{0};

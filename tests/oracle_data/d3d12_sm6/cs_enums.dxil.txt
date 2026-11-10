@@ -1,0 +1,403 @@
+;
+; Note: shader requires additional functionality:
+;       Double-precision floating point
+;       64 UAV slots
+;       Minimum-precision data types
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 94816fd5b032638cbbd188824479e38c
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+; Resource bind info for sb
+; {
+;
+;   float $Element;                                   ; Offset:    0 Size:     4
+;
+; }
+;
+; Resource bind info for usb
+; {
+;
+;   uint $Element;                                    ; Offset:    0 Size:     4
+;
+; }
+;
+; Resource bind info for ucnt
+; {
+;
+;   uint $Element;                                    ; Offset:    0 Size:     4
+;
+; }
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; s0                                sampler      NA          NA      S0             s0     1
+; s1                                sampler      NA          NA      S1             s1     1
+; t1d                               texture     f32          1d      T0             t0     1
+; t1da                              texture     f32     1darray      T1             t1     1
+; t2d                               texture     i32          2d      T2             t2     1
+; t2da                              texture     u32     2darray      T3             t3     1
+; t2dms                             texture     f32        2dMS      T4             t4     1
+; t2dmsa                            texture     f32   2darrayMS      T5             t5     1
+; t3d                               textureunorm_f32          3d      T6             t6     1
+; tc                                texturesnorm_f32        cube      T7             t7     1
+; tca                               texture     f32   cubearray      T8             t8     1
+; tbd                               texture     u32         buf      T9             t9     1
+; tbh                               texture     f16         buf     T10            t10     1
+; rb                                texture    byte         r/o     T11            t11     1
+; sb                                texture  struct         r/o     T12            t12     1
+; u1d                                   UAV     f32          1d      U0             u0     1
+; u1da                                  UAV     f32     1darray      U1             u1     1
+; u2d                                   UAV     f32          2d      U2             u2     1
+; u2da                                  UAV     f32     2darray      U3             u3     1
+; u3d                                   UAV     f32          3d      U4             u4     1
+; ub                                    UAV     i32         buf      U5             u5     1
+; urb                                   UAV    byte         r/w      U6             u6     1
+; usb                                   UAV  struct         r/w      U7             u7     1
+; ucoh                                  UAV    byte         r/w      U8             u8     1
+; ucnt                                  UAV  struct     r/w+cnt      U9             u9     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResRet.f32 = type { float, float, float, float, i32 }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%dx.types.ResRet.f16 = type { half, half, half, half, i32 }
+%"class.Texture1D<vector<float, 4> >" = type { <4 x float>, %"class.Texture1D<vector<float, 4> >::mips_type" }
+%"class.Texture1D<vector<float, 4> >::mips_type" = type { i32 }
+%"class.Texture1DArray<vector<float, 4> >" = type { <4 x float>, %"class.Texture1DArray<vector<float, 4> >::mips_type" }
+%"class.Texture1DArray<vector<float, 4> >::mips_type" = type { i32 }
+%"class.Texture2D<vector<int, 4> >" = type { <4 x i32>, %"class.Texture2D<vector<int, 4> >::mips_type" }
+%"class.Texture2D<vector<int, 4> >::mips_type" = type { i32 }
+%"class.Texture2DArray<vector<unsigned int, 4> >" = type { <4 x i32>, %"class.Texture2DArray<vector<unsigned int, 4> >::mips_type" }
+%"class.Texture2DArray<vector<unsigned int, 4> >::mips_type" = type { i32 }
+%"class.Texture2DMS<vector<float, 4>, 0>" = type { <4 x float>, %"class.Texture2DMS<vector<float, 4>, 0>::sample_type" }
+%"class.Texture2DMS<vector<float, 4>, 0>::sample_type" = type { i32 }
+%"class.Texture2DMSArray<vector<float, 4>, 0>" = type { <4 x float>, %"class.Texture2DMSArray<vector<float, 4>, 0>::sample_type" }
+%"class.Texture2DMSArray<vector<float, 4>, 0>::sample_type" = type { i32 }
+%"class.Texture3D<vector<float, 4> >" = type { <4 x float>, %"class.Texture3D<vector<float, 4> >::mips_type" }
+%"class.Texture3D<vector<float, 4> >::mips_type" = type { i32 }
+%"class.TextureCube<vector<float, 4> >" = type { <4 x float> }
+%"class.TextureCubeArray<vector<float, 4> >" = type { <4 x float> }
+%"class.Buffer<double>" = type { double }
+%"class.Buffer<min16float>" = type { half }
+%struct.ByteAddressBuffer = type { i32 }
+%"class.StructuredBuffer<float>" = type { float }
+%"class.RWTexture1D<vector<float, 4> >" = type { <4 x float> }
+%"class.RWTexture1DArray<vector<float, 4> >" = type { <4 x float> }
+%"class.RWTexture2D<vector<float, 4> >" = type { <4 x float> }
+%"class.RWTexture2DArray<vector<float, 4> >" = type { <4 x float> }
+%"class.RWTexture3D<vector<float, 4> >" = type { <4 x float> }
+%"class.RWBuffer<int>" = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+%"class.RWStructuredBuffer<unsigned int>" = type { i32 }
+%struct.SamplerState = type { i32 }
+%struct.SamplerComparisonState = type { i32 }
+
+@"\01?g@@3PAIA" = external addrspace(3) global [16 x i32], align 4
+
+define void @cs_enums() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 9, i32 9, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 8, i32 8, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 7, i32 7, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %4 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 6, i32 6, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %5 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 5, i32 5, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %6 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 4, i32 4, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %7 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 3, i32 3, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %8 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 2, i32 2, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %9 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 1, i32 1, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %10 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %11 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 12, i32 12, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %12 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 11, i32 11, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %13 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 10, i32 10, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %14 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 9, i32 9, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %15 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 8, i32 8, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %16 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 7, i32 7, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %17 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 6, i32 6, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %18 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 5, i32 5, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %19 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 4, i32 4, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %20 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 3, i32 3, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %21 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 2, i32 2, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %22 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 1, i32 1, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %23 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %24 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 3, i32 1, i32 1, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %25 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 3, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %26 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %27 = call i32 @dx.op.threadId.i32(i32 93, i32 1)  ; ThreadId(component)
+  %28 = call i32 @dx.op.threadId.i32(i32 93, i32 2)  ; ThreadId(component)
+  %29 = call %dx.types.ResRet.f32 @dx.op.sampleLevel.f32(i32 62, %dx.types.Handle %23, %dx.types.Handle %25, float 5.000000e-01, float undef, float undef, float undef, i32 0, i32 undef, i32 undef, float 0.000000e+00)  ; SampleLevel(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,LOD)
+  %30 = extractvalue %dx.types.ResRet.f32 %29, 0
+  %31 = extractvalue %dx.types.ResRet.f32 %29, 1
+  %32 = extractvalue %dx.types.ResRet.f32 %29, 2
+  %33 = extractvalue %dx.types.ResRet.f32 %29, 3
+  %34 = call %dx.types.ResRet.f32 @dx.op.sampleLevel.f32(i32 62, %dx.types.Handle %22, %dx.types.Handle %25, float 5.000000e-01, float 1.000000e+00, float undef, float undef, i32 0, i32 undef, i32 undef, float 0.000000e+00)  ; SampleLevel(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,LOD)
+  %35 = extractvalue %dx.types.ResRet.f32 %34, 0
+  %36 = extractvalue %dx.types.ResRet.f32 %34, 1
+  %37 = extractvalue %dx.types.ResRet.f32 %34, 2
+  %38 = extractvalue %dx.types.ResRet.f32 %34, 3
+  %39 = fadd fast float %35, %30
+  %40 = fadd fast float %36, %31
+  %41 = fadd fast float %37, %32
+  %42 = fadd fast float %38, %33
+  %43 = call %dx.types.ResRet.i32 @dx.op.textureLoad.i32(i32 66, %dx.types.Handle %21, i32 0, i32 %26, i32 %27, i32 undef, i32 undef, i32 undef, i32 undef)  ; TextureLoad(srv,mipLevelOrSampleCount,coord0,coord1,coord2,offset0,offset1,offset2)
+  %44 = extractvalue %dx.types.ResRet.i32 %43, 0
+  %45 = extractvalue %dx.types.ResRet.i32 %43, 1
+  %46 = extractvalue %dx.types.ResRet.i32 %43, 2
+  %47 = extractvalue %dx.types.ResRet.i32 %43, 3
+  %48 = sitofp i32 %44 to float
+  %49 = sitofp i32 %45 to float
+  %50 = sitofp i32 %46 to float
+  %51 = sitofp i32 %47 to float
+  %52 = fadd fast float %39, %48
+  %53 = fadd fast float %40, %49
+  %54 = fadd fast float %41, %50
+  %55 = fadd fast float %42, %51
+  %56 = call %dx.types.ResRet.i32 @dx.op.textureLoad.i32(i32 66, %dx.types.Handle %20, i32 0, i32 %26, i32 %27, i32 %28, i32 undef, i32 undef, i32 undef)  ; TextureLoad(srv,mipLevelOrSampleCount,coord0,coord1,coord2,offset0,offset1,offset2)
+  %57 = extractvalue %dx.types.ResRet.i32 %56, 0
+  %58 = extractvalue %dx.types.ResRet.i32 %56, 1
+  %59 = extractvalue %dx.types.ResRet.i32 %56, 2
+  %60 = extractvalue %dx.types.ResRet.i32 %56, 3
+  %61 = uitofp i32 %57 to float
+  %62 = uitofp i32 %58 to float
+  %63 = uitofp i32 %59 to float
+  %64 = uitofp i32 %60 to float
+  %65 = fadd fast float %52, %61
+  %66 = fadd fast float %53, %62
+  %67 = fadd fast float %54, %63
+  %68 = fadd fast float %55, %64
+  %69 = call %dx.types.ResRet.f32 @dx.op.textureLoad.f32(i32 66, %dx.types.Handle %19, i32 1, i32 %26, i32 %27, i32 undef, i32 undef, i32 undef, i32 undef)  ; TextureLoad(srv,mipLevelOrSampleCount,coord0,coord1,coord2,offset0,offset1,offset2)
+  %70 = extractvalue %dx.types.ResRet.f32 %69, 0
+  %71 = extractvalue %dx.types.ResRet.f32 %69, 1
+  %72 = extractvalue %dx.types.ResRet.f32 %69, 2
+  %73 = extractvalue %dx.types.ResRet.f32 %69, 3
+  %74 = fadd fast float %65, %70
+  %75 = fadd fast float %66, %71
+  %76 = fadd fast float %67, %72
+  %77 = fadd fast float %68, %73
+  %78 = call %dx.types.ResRet.f32 @dx.op.textureLoad.f32(i32 66, %dx.types.Handle %18, i32 2, i32 %26, i32 %27, i32 %28, i32 undef, i32 undef, i32 undef)  ; TextureLoad(srv,mipLevelOrSampleCount,coord0,coord1,coord2,offset0,offset1,offset2)
+  %79 = extractvalue %dx.types.ResRet.f32 %78, 0
+  %80 = extractvalue %dx.types.ResRet.f32 %78, 1
+  %81 = extractvalue %dx.types.ResRet.f32 %78, 2
+  %82 = extractvalue %dx.types.ResRet.f32 %78, 3
+  %83 = fadd fast float %74, %79
+  %84 = fadd fast float %75, %80
+  %85 = fadd fast float %76, %81
+  %86 = fadd fast float %77, %82
+  %87 = call %dx.types.ResRet.f32 @dx.op.sampleLevel.f32(i32 62, %dx.types.Handle %17, %dx.types.Handle %25, float 5.000000e-01, float 5.000000e-01, float 5.000000e-01, float undef, i32 0, i32 0, i32 0, float 0.000000e+00)  ; SampleLevel(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,LOD)
+  %88 = extractvalue %dx.types.ResRet.f32 %87, 0
+  %89 = extractvalue %dx.types.ResRet.f32 %87, 1
+  %90 = extractvalue %dx.types.ResRet.f32 %87, 2
+  %91 = extractvalue %dx.types.ResRet.f32 %87, 3
+  %92 = fadd fast float %83, %88
+  %93 = fadd fast float %84, %89
+  %94 = fadd fast float %85, %90
+  %95 = fadd fast float %86, %91
+  %96 = call %dx.types.ResRet.f32 @dx.op.sampleLevel.f32(i32 62, %dx.types.Handle %16, %dx.types.Handle %25, float 5.000000e-01, float 5.000000e-01, float 5.000000e-01, float undef, i32 undef, i32 undef, i32 undef, float 0.000000e+00)  ; SampleLevel(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,LOD)
+  %97 = extractvalue %dx.types.ResRet.f32 %96, 0
+  %98 = extractvalue %dx.types.ResRet.f32 %96, 1
+  %99 = extractvalue %dx.types.ResRet.f32 %96, 2
+  %100 = extractvalue %dx.types.ResRet.f32 %96, 3
+  %101 = fadd fast float %92, %97
+  %102 = fadd fast float %93, %98
+  %103 = fadd fast float %94, %99
+  %104 = fadd fast float %95, %100
+  %105 = call %dx.types.ResRet.f32 @dx.op.sampleLevel.f32(i32 62, %dx.types.Handle %15, %dx.types.Handle %25, float 5.000000e-01, float 5.000000e-01, float 5.000000e-01, float 1.000000e+00, i32 undef, i32 undef, i32 undef, float 0.000000e+00)  ; SampleLevel(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,LOD)
+  %106 = extractvalue %dx.types.ResRet.f32 %105, 0
+  %107 = extractvalue %dx.types.ResRet.f32 %105, 1
+  %108 = extractvalue %dx.types.ResRet.f32 %105, 2
+  %109 = extractvalue %dx.types.ResRet.f32 %105, 3
+  %110 = fadd fast float %101, %106
+  %111 = fadd fast float %102, %107
+  %112 = fadd fast float %103, %108
+  %113 = fadd fast float %104, %109
+  %114 = call %dx.types.ResRet.f32 @dx.op.sampleCmpLevelZero.f32(i32 65, %dx.types.Handle %16, %dx.types.Handle %24, float 1.000000e+00, float 0.000000e+00, float 0.000000e+00, float undef, i32 undef, i32 undef, i32 undef, float 5.000000e-01)  ; SampleCmpLevelZero(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1,offset2,compareValue)
+  %115 = extractvalue %dx.types.ResRet.f32 %114, 0
+  %116 = fadd fast float %110, %115
+  %117 = call %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32 68, %dx.types.Handle %14, i32 %26, i32 undef)  ; BufferLoad(srv,index,wot)
+  %118 = extractvalue %dx.types.ResRet.i32 %117, 0
+  %119 = extractvalue %dx.types.ResRet.i32 %117, 1
+  %120 = call double @dx.op.makeDouble.f64(i32 101, i32 %118, i32 %119)  ; MakeDouble(lo,hi)
+  %121 = fptrunc double %120 to float
+  %122 = fadd fast float %116, %121
+  %123 = call %dx.types.ResRet.f16 @dx.op.bufferLoad.f16(i32 68, %dx.types.Handle %13, i32 %26, i32 undef)  ; BufferLoad(srv,index,wot)
+  %124 = extractvalue %dx.types.ResRet.f16 %123, 0
+  %125 = fpext half %124 to float
+  %126 = fadd fast float %122, %125
+  %127 = shl i32 %26, 2
+  %128 = call %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32 68, %dx.types.Handle %12, i32 %127, i32 undef)  ; BufferLoad(srv,index,wot)
+  %129 = extractvalue %dx.types.ResRet.i32 %128, 0
+  %130 = bitcast i32 %129 to float
+  %131 = fadd fast float %126, %130
+  %132 = call %dx.types.ResRet.f32 @dx.op.bufferLoad.f32(i32 68, %dx.types.Handle %11, i32 %26, i32 0)  ; BufferLoad(srv,index,wot)
+  %133 = extractvalue %dx.types.ResRet.f32 %132, 0
+  %134 = fadd fast float %131, %133
+  call void @dx.op.textureStore.f32(i32 67, %dx.types.Handle %10, i32 %26, i32 undef, i32 undef, float %134, float %111, float %112, float %113, i8 15)  ; TextureStore(srv,coord0,coord1,coord2,value0,value1,value2,value3,mask)
+  call void @dx.op.textureStore.f32(i32 67, %dx.types.Handle %9, i32 %26, i32 %27, i32 undef, float %134, float %111, float %112, float %113, i8 15)  ; TextureStore(srv,coord0,coord1,coord2,value0,value1,value2,value3,mask)
+  call void @dx.op.textureStore.f32(i32 67, %dx.types.Handle %8, i32 %26, i32 %27, i32 undef, float %134, float %111, float %112, float %113, i8 15)  ; TextureStore(srv,coord0,coord1,coord2,value0,value1,value2,value3,mask)
+  call void @dx.op.textureStore.f32(i32 67, %dx.types.Handle %7, i32 %26, i32 %27, i32 %28, float %134, float %111, float %112, float %113, i8 15)  ; TextureStore(srv,coord0,coord1,coord2,value0,value1,value2,value3,mask)
+  call void @dx.op.textureStore.f32(i32 67, %dx.types.Handle %6, i32 %26, i32 %27, i32 %28, float %134, float %111, float %112, float %113, i8 15)  ; TextureStore(srv,coord0,coord1,coord2,value0,value1,value2,value3,mask)
+  %135 = fptosi float %134 to i32
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %5, i32 %26, i32 undef, i32 %135, i32 %135, i32 %135, i32 %135, i8 15)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %136 = fptoui float %111 to i32
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %3, i32 %26, i32 0, i32 %136, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %137 = call i32 @dx.op.bufferUpdateCounter(i32 70, %dx.types.Handle %1, i8 1)  ; BufferUpdateCounter(uav,inc)
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %137, i32 0, i32 1, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %2, i32 0, i32 undef, i32 1, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %138 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 0, i32 0, i32 undef, i32 undef, i32 1)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %139 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 1, i32 4, i32 undef, i32 undef, i32 %138)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %140 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 2, i32 8, i32 undef, i32 undef, i32 %139)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %141 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 3, i32 12, i32 undef, i32 undef, i32 %140)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %142 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 4, i32 16, i32 undef, i32 undef, i32 %141)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %143 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 5, i32 20, i32 undef, i32 undef, i32 %142)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %144 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 6, i32 24, i32 undef, i32 undef, i32 %143)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %145 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 7, i32 28, i32 undef, i32 undef, i32 %144)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %146 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %4, i32 8, i32 32, i32 undef, i32 undef, i32 %145)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  %147 = call i32 @dx.op.atomicCompareExchange.i32(i32 79, %dx.types.Handle %4, i32 36, i32 undef, i32 undef, i32 1, i32 %146)  ; AtomicCompareExchange(handle,offset0,offset1,offset2,compareValue,newValue)
+  %148 = getelementptr [16 x i32], [16 x i32] addrspace(3)* @"\01?g@@3PAIA", i32 0, i32 %26
+  %149 = atomicrmw add i32 addrspace(3)* %148, i32 1 seq_cst
+  %150 = add i32 %26, 1
+  %151 = getelementptr [16 x i32], [16 x i32] addrspace(3)* @"\01?g@@3PAIA", i32 0, i32 %150
+  %152 = atomicrmw xchg i32 addrspace(3)* %151, i32 %149 seq_cst
+  %153 = add i32 %26, 2
+  %154 = getelementptr [16 x i32], [16 x i32] addrspace(3)* @"\01?g@@3PAIA", i32 0, i32 %153
+  %155 = cmpxchg i32 addrspace(3)* %154, i32 1, i32 %152 seq_cst seq_cst
+  %156 = extractvalue { i32, i1 } %155, 0
+  call void @dx.op.barrier(i32 80, i32 9)  ; Barrier(barrierMode)
+  call void @dx.op.barrier(i32 80, i32 8)  ; Barrier(barrierMode)
+  call void @dx.op.barrier(i32 80, i32 3)  ; Barrier(barrierMode)
+  call void @dx.op.barrier(i32 80, i32 2)  ; Barrier(barrierMode)
+  call void @dx.op.barrier(i32 80, i32 11)  ; Barrier(barrierMode)
+  call void @dx.op.barrier(i32 80, i32 10)  ; Barrier(barrierMode)
+  %157 = load i32, i32 addrspace(3)* getelementptr inbounds ([16 x i32], [16 x i32] addrspace(3)* @"\01?g@@3PAIA", i32 0, i32 0), align 4, !tbaa !43
+  %158 = add i32 %157, %156
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %4, i32 40, i32 undef, i32 %158, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f32 @dx.op.sampleLevel.f32(i32, %dx.types.Handle, %dx.types.Handle, float, float, float, float, i32, i32, i32, float) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.textureLoad.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f32 @dx.op.textureLoad.f32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f32 @dx.op.sampleCmpLevelZero.f32(i32, %dx.types.Handle, %dx.types.Handle, float, float, float, float, i32, i32, i32, float) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.bufferLoad.i32(i32, %dx.types.Handle, i32, i32) #1
+
+; Function Attrs: nounwind readnone
+declare double @dx.op.makeDouble.f64(i32, i32, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f16 @dx.op.bufferLoad.f16(i32, %dx.types.Handle, i32, i32) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.textureStore.f32(i32, %dx.types.Handle, i32, i32, i32, float, float, float, float, i8) #2
+
+; Function Attrs: nounwind
+declare void @dx.op.bufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.bufferUpdateCounter(i32, %dx.types.Handle, i8) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.atomicBinOp.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32) #2
+
+; Function Attrs: nounwind
+declare i32 @dx.op.atomicCompareExchange.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32) #2
+
+; Function Attrs: noduplicate nounwind
+declare void @dx.op.barrier(i32, i32) #3
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f32 @dx.op.bufferLoad.f32(i32, %dx.types.Handle, i32, i32) #1
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind }
+attributes #3 = { noduplicate nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!40}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 0}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 0}
+!4 = !{!5, !26, null, !37}
+!5 = !{!6, !8, !9, !11, !13, !14, !15, !17, !19, !20, !21, !23, !24}
+!6 = !{i32 0, %"class.Texture1D<vector<float, 4> >"* undef, !"", i32 0, i32 0, i32 1, i32 1, i32 0, !7}
+!7 = !{i32 0, i32 9}
+!8 = !{i32 1, %"class.Texture1DArray<vector<float, 4> >"* undef, !"", i32 0, i32 1, i32 1, i32 6, i32 0, !7}
+!9 = !{i32 2, %"class.Texture2D<vector<int, 4> >"* undef, !"", i32 0, i32 2, i32 1, i32 2, i32 0, !10}
+!10 = !{i32 0, i32 4}
+!11 = !{i32 3, %"class.Texture2DArray<vector<unsigned int, 4> >"* undef, !"", i32 0, i32 3, i32 1, i32 7, i32 0, !12}
+!12 = !{i32 0, i32 5}
+!13 = !{i32 4, %"class.Texture2DMS<vector<float, 4>, 0>"* undef, !"", i32 0, i32 4, i32 1, i32 3, i32 0, !7}
+!14 = !{i32 5, %"class.Texture2DMSArray<vector<float, 4>, 0>"* undef, !"", i32 0, i32 5, i32 1, i32 8, i32 0, !7}
+!15 = !{i32 6, %"class.Texture3D<vector<float, 4> >"* undef, !"", i32 0, i32 6, i32 1, i32 4, i32 0, !16}
+!16 = !{i32 0, i32 14}
+!17 = !{i32 7, %"class.TextureCube<vector<float, 4> >"* undef, !"", i32 0, i32 7, i32 1, i32 5, i32 0, !18}
+!18 = !{i32 0, i32 13}
+!19 = !{i32 8, %"class.TextureCubeArray<vector<float, 4> >"* undef, !"", i32 0, i32 8, i32 1, i32 9, i32 0, !7}
+!20 = !{i32 9, %"class.Buffer<double>"* undef, !"", i32 0, i32 9, i32 1, i32 10, i32 0, !12}
+!21 = !{i32 10, %"class.Buffer<min16float>"* undef, !"", i32 0, i32 10, i32 1, i32 10, i32 0, !22}
+!22 = !{i32 0, i32 8}
+!23 = !{i32 11, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 11, i32 1, i32 11, i32 0, null}
+!24 = !{i32 12, %"class.StructuredBuffer<float>"* undef, !"", i32 0, i32 12, i32 1, i32 12, i32 0, !25}
+!25 = !{i32 1, i32 4}
+!26 = !{!27, !28, !29, !30, !31, !32, !33, !34, !35, !36}
+!27 = !{i32 0, %"class.RWTexture1D<vector<float, 4> >"* undef, !"", i32 0, i32 0, i32 1, i32 1, i1 false, i1 false, i1 false, !7}
+!28 = !{i32 1, %"class.RWTexture1DArray<vector<float, 4> >"* undef, !"", i32 0, i32 1, i32 1, i32 6, i1 false, i1 false, i1 false, !7}
+!29 = !{i32 2, %"class.RWTexture2D<vector<float, 4> >"* undef, !"", i32 0, i32 2, i32 1, i32 2, i1 false, i1 false, i1 false, !7}
+!30 = !{i32 3, %"class.RWTexture2DArray<vector<float, 4> >"* undef, !"", i32 0, i32 3, i32 1, i32 7, i1 false, i1 false, i1 false, !7}
+!31 = !{i32 4, %"class.RWTexture3D<vector<float, 4> >"* undef, !"", i32 0, i32 4, i32 1, i32 4, i1 false, i1 false, i1 false, !7}
+!32 = !{i32 5, %"class.RWBuffer<int>"* undef, !"", i32 0, i32 5, i32 1, i32 10, i1 false, i1 false, i1 false, !10}
+!33 = !{i32 6, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 6, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!34 = !{i32 7, %"class.RWStructuredBuffer<unsigned int>"* undef, !"", i32 0, i32 7, i32 1, i32 12, i1 false, i1 false, i1 false, !25}
+!35 = !{i32 8, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 8, i32 1, i32 11, i1 true, i1 false, i1 false, null}
+!36 = !{i32 9, %"class.RWStructuredBuffer<unsigned int>"* undef, !"", i32 0, i32 9, i32 1, i32 12, i1 false, i1 true, i1 false, !25}
+!37 = !{!38, !39}
+!38 = !{i32 0, %struct.SamplerState* undef, !"", i32 0, i32 0, i32 1, i32 0, null}
+!39 = !{i32 1, %struct.SamplerComparisonState* undef, !"", i32 0, i32 1, i32 1, i32 1, null}
+!40 = !{void ()* @cs_enums, !"cs_enums", null, !4, !41}
+!41 = !{i32 0, i64 32820, i32 4, !42}
+!42 = !{i32 4, i32 1, i32 1}
+!43 = !{!44, !44, i64 0}
+!44 = !{!"int", !45, i64 0}
+!45 = !{!"omnipotent char", !46, i64 0}
+!46 = !{!"Simple C/C++ TBAA"}

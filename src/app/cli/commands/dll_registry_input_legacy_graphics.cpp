@@ -68,11 +68,11 @@ void register_input_and_legacy_graphics_dlls(RuntimeContext& ctx, GuestMemory& m
     {
         using winapi::XInputDll;
         (void)reg.register_dll("xinput1_4.dll",
-                               winapi::create_xinput_thunks(XInputDll::V1_4));
+                               winapi::create_xinput_thunks(XInputDll::V1_4,ctx.gamepad_host));
         (void)reg.register_dll("xinput1_3.dll",
-                               winapi::create_xinput_thunks(XInputDll::V1_3));
+                               winapi::create_xinput_thunks(XInputDll::V1_3,ctx.gamepad_host));
         (void)reg.register_dll("xinput9_1_0.dll",
-                               winapi::create_xinput_thunks(XInputDll::V9_1_0));
+                               winapi::create_xinput_thunks(XInputDll::V9_1_0,ctx.gamepad_host));
     }
 
     // -- ddraw.dll --
@@ -91,6 +91,7 @@ void register_input_and_legacy_graphics_dlls(RuntimeContext& ctx, GuestMemory& m
 
     // -- d3d9.dll --
     {
+        ctx.d3d9_mgr.set_gdi_manager(&ctx.gdi_mgr);
         auto d3d9_exports = winapi::create_d3d9_thunks(ctx.d3d9_mgr);
         (void)reg.register_dll("d3d9.dll", std::move(d3d9_exports));
         // Publish the guest-callable address of every COM vtable slot, for
@@ -105,6 +106,25 @@ void register_input_and_legacy_graphics_dlls(RuntimeContext& ctx, GuestMemory& m
                 thunks[slot] = address.is_ok() ? address.value() : GuestAddr{0};
             }
             ctx.d3d9_mgr.set_interface_thunks(iface, std::move(thunks));
+        }
+    }
+
+    // -- d3d8.dll --
+    // Layered on the D3D9 frontend registered above; publishes its own
+    // vtables (d3d8.h order and x86 stdcall sizes).
+    {
+        auto d3d8_exports = winapi::create_d3d8_thunks(ctx.d3d8_mgr);
+        (void)reg.register_dll("d3d8.dll", std::move(d3d8_exports));
+        for (usize index = 0; index < winapi::D3D8_INTERFACE_COUNT; ++index) {
+            const auto iface = static_cast<winapi::D3D8InterfaceId>(index);
+            const usize count = winapi::d3d8_interface_method_count(iface);
+            winapi::D3D8Manager::InterfaceThunks thunks(count, GuestAddr{0});
+            for (usize slot = 0; slot < count; ++slot) {
+                const auto address = reg.get_thunk_address(
+                    "d3d8.dll", winapi::d3d8_method_export_name(iface, slot));
+                thunks[slot] = address.is_ok() ? address.value() : GuestAddr{0};
+            }
+            ctx.d3d8_mgr.set_interface_thunks(iface, std::move(thunks));
         }
     }
 

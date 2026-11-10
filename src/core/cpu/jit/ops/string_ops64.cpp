@@ -117,6 +117,8 @@ std::optional<bool> JitCompiler::compile_string_ops64(
     // CMPSQ — Intel SDM Vol. 2 CMPS: CMP qword [RSI],[RDI]; ZF early-exit
     // for REPE/REPNE. AddressSize=64 → RSI/RDI/RCX.
     case Opcode::CMPSQ: {
+        if (instr.prefixes.address_size || instr.prefixes.segment != SegReg::Default)
+            return false;
         if (instr.prefixes.rep && !instr.prefixes.repne) {
             emit(arm64::mov_x(0, REG_CPU_STATE));
             emit(arm64::ldr_x_uoff(1, REG_JIT_CTX,
@@ -124,6 +126,7 @@ std::optional<bool> JitCompiler::compile_string_ops64(
             emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                     JIT_CTX_OFF_REPE_CMPSQ >> 3));
             emit_helper_blr();
+            emit_exit_if_pending_raise();
             break;
         }
         if (instr.prefixes.repne) {
@@ -133,13 +136,14 @@ std::optional<bool> JitCompiler::compile_string_ops64(
             emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                     JIT_CTX_OFF_REPNE_CMPSQ >> 3));
             emit_helper_blr();
+            emit_exit_if_pending_raise();
             break;
         }
         emit_load_gpr64(REG_SCRATCH2, static_cast<u8>(RegIndex::RSI));
-        emit_guest_load64(REG_SCRATCH0, REG_SCRATCH2);
+        emit_guest_load64(REG_CALL_TMP, REG_SCRATCH2);
         emit_load_gpr64(REG_SCRATCH2, static_cast<u8>(RegIndex::RDI));
         emit_guest_load64(REG_SCRATCH1, REG_SCRATCH2);
-        emit(arm64::sub_x(REG_SCRATCH0, REG_SCRATCH0, REG_SCRATCH1));
+        emit(arm64::sub_x(REG_SCRATCH0, REG_CALL_TMP, REG_SCRATCH1));
         emit_set_lazy_flags64(CpuState::FlagOp::Sub64,
                               REG_SCRATCH1, REG_SCRATCH0);
 
@@ -171,6 +175,7 @@ std::optional<bool> JitCompiler::compile_string_ops64(
     // SCASQ — Intel SDM Vol. 2 SCAS: CMP RAX, [RDI]; adjust RDI ±8.
     // REPE/REPNE use the bulk helpers (AddressSize=64 → RDI/RCX).
     case Opcode::SCASQ: {
+        if (instr.prefixes.address_size) return false;
         if (instr.prefixes.repne) {
             emit(arm64::mov_x(0, REG_CPU_STATE));
             emit(arm64::ldr_x_uoff(1, REG_JIT_CTX,
@@ -178,6 +183,7 @@ std::optional<bool> JitCompiler::compile_string_ops64(
             emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                     JIT_CTX_OFF_REPNE_SCASQ >> 3));
             emit_helper_blr();
+            emit_exit_if_pending_raise();
             break;
         }
         if (instr.prefixes.rep) {
@@ -187,6 +193,7 @@ std::optional<bool> JitCompiler::compile_string_ops64(
             emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                     JIT_CTX_OFF_REPE_SCASQ >> 3));
             emit_helper_blr();
+            emit_exit_if_pending_raise();
             break;
         }
         emit_load_gpr64(REG_SCRATCH2, static_cast<u8>(RegIndex::RDI));

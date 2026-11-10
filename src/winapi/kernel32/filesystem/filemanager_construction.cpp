@@ -4,6 +4,7 @@
 /// @brief CreateFileW / CreateFileA / ReadFile / WriteFile implementation (WIN32-010/011)
 
 #include "winapi/kernel32/filesystem/file.hpp"
+#include "winapi/kernel32/filesystem/hid_io_status.generated.hpp"
 #include <poll.h>
 #include "winapi/kernel32/filesystem/file_pipe_internal.hpp"
 #include "winapi/kernel32/console/console.hpp"
@@ -45,6 +46,30 @@
 /// Closed cut from file.cpp — verified with plan_extraction.py.
 
 namespace vitreo::winapi {
+void FileManager::abandon_overlapped_io(Handle handle,GuestAddr overlapped,bool is64,u32 error) {
+    trace_overlapped({.stage=OverlappedIoTraceStage::Failed,.handle=handle,.overlapped=overlapped,.win32_error=error,.is_64bit=is64});
+}
+u32 FileManager::prepare_overlapped_io(Handle handle,GuestAddr overlapped,bool is64) {
+    if(!m_memory || !overlapped) return error_codes::ERROR_INVALID_PARAMETER;
+    const auto pending=is64 ? m_memory->write_u64(overlapped,hid_io_status::kSTATUS_PENDING) : m_memory->write_u32(overlapped,hid_io_status::kSTATUS_PENDING);
+    if(pending.is_err()) return error_codes::ERROR_NOACCESS;
+    switch(m_handles.get_type(handle)) {
+        case HandleType::File:case HandleType::Pipe:case HandleType::HidDevice:
+        case HandleType::Device:case HandleType::ConsoleInput:case HandleType::ConsoleOutput:break;
+        default:return error_codes::ERROR_INVALID_HANDLE;
+    }
+    // Windows preserves InternalHigh until completion, including invalid-event
+    // submission failures (both-bitness I/O event oracle).
+    if(m_overlapped_prepare) return m_overlapped_prepare(handle,overlapped,is64);
+    u64 event=0;
+    if(is64) {const auto value=m_memory->read_u64(overlapped+24);if(value.is_err()) return error_codes::ERROR_NOACCESS;event=value.value();}
+    else {const auto value=m_memory->read_u32(overlapped+16);if(value.is_err()) return error_codes::ERROR_NOACCESS;event=value.value();}
+    if(event) {
+        static std::once_flag once;std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!OverlappedIo: event reference provider unavailable\n");});
+        return error_codes::ERROR_NOT_SUPPORTED;
+    }
+    return 0;
+}
 
 namespace {
 constexpr uintptr_t kPipeWriteWakeIdent = 1;
@@ -64,6 +89,7 @@ FileManager::FileManager(capsule::Vfs& vfs, HandleTable& handles, GuestMemory& m
     , m_memory(&memory) {}
 
 FileManager::~FileManager() {
+    shutdown_hid_io();
     shutdown_overlapped_pipe_io();
 }
 
@@ -650,6 +676,8 @@ OverlappedPipeIoResult FileManager::begin_overlapped_pipe_read(
                      static_cast<int>(::getpid()), handle, io->fd(), io->peer_pid(),
                      static_cast<unsigned long long>(overlapped));
     }
+    const u32 preparation=prepare_overlapped_io(handle,overlapped,is_64bit);
+    if(preparation) {set_last_error(preparation);return OverlappedPipeIoResult::Failed;}
     trace_overlapped({
         .stage = OverlappedIoTraceStage::Submitted,
         .handle = handle,
@@ -750,16 +778,6 @@ OverlappedPipeIoResult FileManager::begin_overlapped_pipe_read(
         return OverlappedPipeIoResult::Completed;
     }
 
-    const auto pending_write = is_64bit
-        ? m_memory->write_u64(overlapped, STATUS_PENDING)
-        : m_memory->write_u32(overlapped, STATUS_PENDING);
-    const auto count_write = is_64bit
-        ? m_memory->write_u64(overlapped + 8, 0)
-        : m_memory->write_u32(overlapped + 4, 0);
-    if (pending_write.is_err() || count_write.is_err()) {
-        set_last_error(error_codes::ERROR_NOACCESS);
-        return OverlappedPipeIoResult::Failed;
-    }
 
     std::lock_guard<std::mutex> lock(m_overlapped_pipe_io_mutex);
     track_pending_pipe_io(handle, overlapped, is_64bit);
@@ -896,6 +914,8 @@ OverlappedPipeIoResult FileManager::begin_overlapped_pipe_write(
     // The request exists from here on: its completion port route is
     // recorded and its hEvent reset now, as for reads (kernel32_ext trace
     // hook), so a CloseHandle before completion still reaches the port.
+    const u32 preparation=prepare_overlapped_io(handle,overlapped,is_64bit);
+    if(preparation) {set_last_error(preparation);return OverlappedPipeIoResult::Failed;}
     trace_overlapped({
         .stage = OverlappedIoTraceStage::Submitted,
         .handle = handle,
@@ -919,6 +939,7 @@ OverlappedPipeIoResult FileManager::begin_overlapped_pipe_write(
             bytes_to_write);
         if (read.is_err()) {
             set_last_error(error_codes::ERROR_NOACCESS);
+            abandon_overlapped_io(handle,overlapped,is_64bit,get_last_error());
             return OverlappedPipeIoResult::Failed;
         }
         pipe_diag_payload("write", handle, payload.data(), payload.size());
@@ -961,7 +982,8 @@ OverlappedPipeIoResult FileManager::begin_overlapped_pipe_write(
                 pipe_diag("overlapped-write-failed", handle, bytes_to_write, -1,
                           overlapped);
                 set_last_error(error_codes::ERROR_BROKEN_PIPE);
-                return OverlappedPipeIoResult::Failed;
+                abandon_overlapped_io(handle,overlapped,is_64bit,get_last_error());
+            return OverlappedPipeIoResult::Failed;
             }
             break;  // EWOULDBLOCK — finish asynchronously.
         }
@@ -982,23 +1004,17 @@ OverlappedPipeIoResult FileManager::begin_overlapped_pipe_write(
         return OverlappedPipeIoResult::Completed;
     }
 
-    const auto pending_write = is_64bit
-        ? m_memory->write_u64(overlapped, STATUS_PENDING)
-        : m_memory->write_u32(overlapped, STATUS_PENDING);
-    const auto count_write = is_64bit
-        ? m_memory->write_u64(overlapped + 8, 0)
-        : m_memory->write_u32(overlapped + 4, 0);
-    if (pending_write.is_err() || count_write.is_err() ||
-        (bytes_written_addr != 0 &&
-         m_memory->write_u32(bytes_written_addr, 0).is_err())) {
+    if (bytes_written_addr != 0 && m_memory->write_u32(bytes_written_addr, 0).is_err()) {
         set_last_error(error_codes::ERROR_NOACCESS);
-        return OverlappedPipeIoResult::Failed;
+        abandon_overlapped_io(handle,overlapped,is_64bit,get_last_error());
+            return OverlappedPipeIoResult::Failed;
     }
 
     {
         std::lock_guard<std::mutex> lock(m_overlapped_pipe_io_mutex);
         if (!ensure_pipe_write_service()) {
             set_last_error(error_codes::ERROR_NO_SYSTEM_RESOURCES);
+            abandon_overlapped_io(handle,overlapped,is_64bit,get_last_error());
             return OverlappedPipeIoResult::Failed;
         }
         track_pending_pipe_io(handle, overlapped, is_64bit);

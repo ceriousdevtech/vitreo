@@ -1,0 +1,2163 @@
+bits	64
+memcmp	1	0	01	80	-1
+memcmp	1	0	80	01	1
+memcmp	1	0	00	ff	-1
+memcmp	1	0	41	42	-1
+memcmp	1	0	42	41	1
+memcmp	2	0	01	80	-1
+memcmp	2	0	80	01	1
+memcmp	2	0	00	ff	-1
+memcmp	2	0	41	42	-1
+memcmp	2	0	42	41	1
+memcmp	2	1	01	80	-1
+memcmp	2	1	80	01	1
+memcmp	2	1	00	ff	-1
+memcmp	2	1	41	42	-1
+memcmp	2	1	42	41	1
+memcmp	7	0	01	80	-1
+memcmp	7	0	80	01	1
+memcmp	7	0	00	ff	-1
+memcmp	7	0	41	42	-1
+memcmp	7	0	42	41	1
+memcmp	7	1	01	80	-1
+memcmp	7	1	80	01	1
+memcmp	7	1	00	ff	-1
+memcmp	7	1	41	42	-1
+memcmp	7	1	42	41	1
+memcmp	7	5	01	80	-1
+memcmp	7	5	80	01	1
+memcmp	7	5	00	ff	-1
+memcmp	7	5	41	42	-1
+memcmp	7	5	42	41	1
+memcmp	8	0	01	80	-1
+memcmp	8	0	80	01	1
+memcmp	8	0	00	ff	-1
+memcmp	8	0	41	42	-1
+memcmp	8	0	42	41	1
+memcmp	8	1	01	80	-1
+memcmp	8	1	80	01	1
+memcmp	8	1	00	ff	-1
+memcmp	8	1	41	42	-1
+memcmp	8	1	42	41	1
+memcmp	8	5	01	80	-1
+memcmp	8	5	80	01	1
+memcmp	8	5	00	ff	-1
+memcmp	8	5	41	42	-1
+memcmp	8	5	42	41	1
+memcmp	15	0	01	80	-1
+memcmp	15	0	80	01	1
+memcmp	15	0	00	ff	-1
+memcmp	15	0	41	42	-1
+memcmp	15	0	42	41	1
+memcmp	15	1	01	80	-1
+memcmp	15	1	80	01	1
+memcmp	15	1	00	ff	-1
+memcmp	15	1	41	42	-1
+memcmp	15	1	42	41	1
+memcmp	15	5	01	80	-1
+memcmp	15	5	80	01	1
+memcmp	15	5	00	ff	-1
+memcmp	15	5	41	42	-1
+memcmp	15	5	42	41	1
+memcmp	16	0	01	80	-1
+memcmp	16	0	80	01	1
+memcmp	16	0	00	ff	-1
+memcmp	16	0	41	42	-1
+memcmp	16	0	42	41	1
+memcmp	16	1	01	80	-1
+memcmp	16	1	80	01	1
+memcmp	16	1	00	ff	-1
+memcmp	16	1	41	42	-1
+memcmp	16	1	42	41	1
+memcmp	16	5	01	80	-1
+memcmp	16	5	80	01	1
+memcmp	16	5	00	ff	-1
+memcmp	16	5	41	42	-1
+memcmp	16	5	42	41	1
+memcmp	16	15	01	80	-1
+memcmp	16	15	80	01	1
+memcmp	16	15	00	ff	-1
+memcmp	16	15	41	42	-1
+memcmp	16	15	42	41	1
+memcmp	31	0	01	80	-1
+memcmp	31	0	80	01	1
+memcmp	31	0	00	ff	-1
+memcmp	31	0	41	42	-1
+memcmp	31	0	42	41	1
+memcmp	31	1	01	80	-1
+memcmp	31	1	80	01	1
+memcmp	31	1	00	ff	-1
+memcmp	31	1	41	42	-1
+memcmp	31	1	42	41	1
+memcmp	31	5	01	80	-1
+memcmp	31	5	80	01	1
+memcmp	31	5	00	ff	-1
+memcmp	31	5	41	42	-1
+memcmp	31	5	42	41	1
+memcmp	31	15	01	80	-1
+memcmp	31	15	80	01	1
+memcmp	31	15	00	ff	-1
+memcmp	31	15	41	42	-1
+memcmp	31	15	42	41	1
+memcmp	31	17	01	80	-1
+memcmp	31	17	80	01	1
+memcmp	31	17	00	ff	-1
+memcmp	31	17	41	42	-1
+memcmp	31	17	42	41	1
+memcmp	32	0	01	80	-1
+memcmp	32	0	80	01	1
+memcmp	32	0	00	ff	-1
+memcmp	32	0	41	42	-1
+memcmp	32	0	42	41	1
+memcmp	32	1	01	80	-1
+memcmp	32	1	80	01	1
+memcmp	32	1	00	ff	-1
+memcmp	32	1	41	42	-1
+memcmp	32	1	42	41	1
+memcmp	32	5	01	80	-1
+memcmp	32	5	80	01	1
+memcmp	32	5	00	ff	-1
+memcmp	32	5	41	42	-1
+memcmp	32	5	42	41	1
+memcmp	32	15	01	80	-1
+memcmp	32	15	80	01	1
+memcmp	32	15	00	ff	-1
+memcmp	32	15	41	42	-1
+memcmp	32	15	42	41	1
+memcmp	32	17	01	80	-1
+memcmp	32	17	80	01	1
+memcmp	32	17	00	ff	-1
+memcmp	32	17	41	42	-1
+memcmp	32	17	42	41	1
+memcmp	32	31	01	80	-1
+memcmp	32	31	80	01	1
+memcmp	32	31	00	ff	-1
+memcmp	32	31	41	42	-1
+memcmp	32	31	42	41	1
+memcmp	33	0	01	80	-1
+memcmp	33	0	80	01	1
+memcmp	33	0	00	ff	-1
+memcmp	33	0	41	42	-1
+memcmp	33	0	42	41	1
+memcmp	33	1	01	80	-1
+memcmp	33	1	80	01	1
+memcmp	33	1	00	ff	-1
+memcmp	33	1	41	42	-1
+memcmp	33	1	42	41	1
+memcmp	33	5	01	80	-1
+memcmp	33	5	80	01	1
+memcmp	33	5	00	ff	-1
+memcmp	33	5	41	42	-1
+memcmp	33	5	42	41	1
+memcmp	33	15	01	80	-1
+memcmp	33	15	80	01	1
+memcmp	33	15	00	ff	-1
+memcmp	33	15	41	42	-1
+memcmp	33	15	42	41	1
+memcmp	33	17	01	80	-1
+memcmp	33	17	80	01	1
+memcmp	33	17	00	ff	-1
+memcmp	33	17	41	42	-1
+memcmp	33	17	42	41	1
+memcmp	33	31	01	80	-1
+memcmp	33	31	80	01	1
+memcmp	33	31	00	ff	-1
+memcmp	33	31	41	42	-1
+memcmp	33	31	42	41	1
+memcmp	63	0	01	80	-1
+memcmp	63	0	80	01	1
+memcmp	63	0	00	ff	-1
+memcmp	63	0	41	42	-1
+memcmp	63	0	42	41	1
+memcmp	63	1	01	80	-1
+memcmp	63	1	80	01	1
+memcmp	63	1	00	ff	-1
+memcmp	63	1	41	42	-1
+memcmp	63	1	42	41	1
+memcmp	63	5	01	80	-1
+memcmp	63	5	80	01	1
+memcmp	63	5	00	ff	-1
+memcmp	63	5	41	42	-1
+memcmp	63	5	42	41	1
+memcmp	63	15	01	80	-1
+memcmp	63	15	80	01	1
+memcmp	63	15	00	ff	-1
+memcmp	63	15	41	42	-1
+memcmp	63	15	42	41	1
+memcmp	63	17	01	80	-1
+memcmp	63	17	80	01	1
+memcmp	63	17	00	ff	-1
+memcmp	63	17	41	42	-1
+memcmp	63	17	42	41	1
+memcmp	63	31	01	80	-1
+memcmp	63	31	80	01	1
+memcmp	63	31	00	ff	-1
+memcmp	63	31	41	42	-1
+memcmp	63	31	42	41	1
+memcmp	63	33	01	80	-1
+memcmp	63	33	80	01	1
+memcmp	63	33	00	ff	-1
+memcmp	63	33	41	42	-1
+memcmp	63	33	42	41	1
+memcmp	64	0	01	80	-1
+memcmp	64	0	80	01	1
+memcmp	64	0	00	ff	-1
+memcmp	64	0	41	42	-1
+memcmp	64	0	42	41	1
+memcmp	64	1	01	80	-1
+memcmp	64	1	80	01	1
+memcmp	64	1	00	ff	-1
+memcmp	64	1	41	42	-1
+memcmp	64	1	42	41	1
+memcmp	64	5	01	80	-1
+memcmp	64	5	80	01	1
+memcmp	64	5	00	ff	-1
+memcmp	64	5	41	42	-1
+memcmp	64	5	42	41	1
+memcmp	64	15	01	80	-1
+memcmp	64	15	80	01	1
+memcmp	64	15	00	ff	-1
+memcmp	64	15	41	42	-1
+memcmp	64	15	42	41	1
+memcmp	64	17	01	80	-1
+memcmp	64	17	80	01	1
+memcmp	64	17	00	ff	-1
+memcmp	64	17	41	42	-1
+memcmp	64	17	42	41	1
+memcmp	64	31	01	80	-1
+memcmp	64	31	80	01	1
+memcmp	64	31	00	ff	-1
+memcmp	64	31	41	42	-1
+memcmp	64	31	42	41	1
+memcmp	64	33	01	80	-1
+memcmp	64	33	80	01	1
+memcmp	64	33	00	ff	-1
+memcmp	64	33	41	42	-1
+memcmp	64	33	42	41	1
+memcmp	100	0	01	80	-1
+memcmp	100	0	80	01	1
+memcmp	100	0	00	ff	-1
+memcmp	100	0	41	42	-1
+memcmp	100	0	42	41	1
+memcmp	100	1	01	80	-1
+memcmp	100	1	80	01	1
+memcmp	100	1	00	ff	-1
+memcmp	100	1	41	42	-1
+memcmp	100	1	42	41	1
+memcmp	100	5	01	80	-1
+memcmp	100	5	80	01	1
+memcmp	100	5	00	ff	-1
+memcmp	100	5	41	42	-1
+memcmp	100	5	42	41	1
+memcmp	100	15	01	80	-1
+memcmp	100	15	80	01	1
+memcmp	100	15	00	ff	-1
+memcmp	100	15	41	42	-1
+memcmp	100	15	42	41	1
+memcmp	100	17	01	80	-1
+memcmp	100	17	80	01	1
+memcmp	100	17	00	ff	-1
+memcmp	100	17	41	42	-1
+memcmp	100	17	42	41	1
+memcmp	100	31	01	80	-1
+memcmp	100	31	80	01	1
+memcmp	100	31	00	ff	-1
+memcmp	100	31	41	42	-1
+memcmp	100	31	42	41	1
+memcmp	100	33	01	80	-1
+memcmp	100	33	80	01	1
+memcmp	100	33	00	ff	-1
+memcmp	100	33	41	42	-1
+memcmp	100	33	42	41	1
+memcmp	4096	0	01	80	-1
+memcmp	4096	0	80	01	1
+memcmp	4096	0	00	ff	-1
+memcmp	4096	0	41	42	-1
+memcmp	4096	0	42	41	1
+memcmp	4096	1	01	80	-1
+memcmp	4096	1	80	01	1
+memcmp	4096	1	00	ff	-1
+memcmp	4096	1	41	42	-1
+memcmp	4096	1	42	41	1
+memcmp	4096	5	01	80	-1
+memcmp	4096	5	80	01	1
+memcmp	4096	5	00	ff	-1
+memcmp	4096	5	41	42	-1
+memcmp	4096	5	42	41	1
+memcmp	4096	15	01	80	-1
+memcmp	4096	15	80	01	1
+memcmp	4096	15	00	ff	-1
+memcmp	4096	15	41	42	-1
+memcmp	4096	15	42	41	1
+memcmp	4096	17	01	80	-1
+memcmp	4096	17	80	01	1
+memcmp	4096	17	00	ff	-1
+memcmp	4096	17	41	42	-1
+memcmp	4096	17	42	41	1
+memcmp	4096	31	01	80	-1
+memcmp	4096	31	80	01	1
+memcmp	4096	31	00	ff	-1
+memcmp	4096	31	41	42	-1
+memcmp	4096	31	42	41	1
+memcmp	4096	33	01	80	-1
+memcmp	4096	33	80	01	1
+memcmp	4096	33	00	ff	-1
+memcmp	4096	33	41	42	-1
+memcmp	4096	33	42	41	1
+memcmp	4096	100	01	80	-1
+memcmp	4096	100	80	01	1
+memcmp	4096	100	00	ff	-1
+memcmp	4096	100	41	42	-1
+memcmp	4096	100	42	41	1
+memcmp	8192	0	01	80	-1
+memcmp	8192	0	80	01	1
+memcmp	8192	0	00	ff	-1
+memcmp	8192	0	41	42	-1
+memcmp	8192	0	42	41	1
+memcmp	8192	1	01	80	-1
+memcmp	8192	1	80	01	1
+memcmp	8192	1	00	ff	-1
+memcmp	8192	1	41	42	-1
+memcmp	8192	1	42	41	1
+memcmp	8192	5	01	80	-1
+memcmp	8192	5	80	01	1
+memcmp	8192	5	00	ff	-1
+memcmp	8192	5	41	42	-1
+memcmp	8192	5	42	41	1
+memcmp	8192	15	01	80	-1
+memcmp	8192	15	80	01	1
+memcmp	8192	15	00	ff	-1
+memcmp	8192	15	41	42	-1
+memcmp	8192	15	42	41	1
+memcmp	8192	17	01	80	-1
+memcmp	8192	17	80	01	1
+memcmp	8192	17	00	ff	-1
+memcmp	8192	17	41	42	-1
+memcmp	8192	17	42	41	1
+memcmp	8192	31	01	80	-1
+memcmp	8192	31	80	01	1
+memcmp	8192	31	00	ff	-1
+memcmp	8192	31	41	42	-1
+memcmp	8192	31	42	41	1
+memcmp	8192	33	01	80	-1
+memcmp	8192	33	80	01	1
+memcmp	8192	33	00	ff	-1
+memcmp	8192	33	41	42	-1
+memcmp	8192	33	42	41	1
+memcmp	8192	100	01	80	-1
+memcmp	8192	100	80	01	1
+memcmp	8192	100	00	ff	-1
+memcmp	8192	100	41	42	-1
+memcmp	8192	100	42	41	1
+memcmp	8192	4100	01	80	-1
+memcmp	8192	4100	80	01	1
+memcmp	8192	4100	00	ff	-1
+memcmp	8192	4100	41	42	-1
+memcmp	8192	4100	42	41	1
+memcmp	equal	0	zero_len_null	0
+memcpy	1	1	memmove_equal=1	ret_ok=1
+memcpy	1	2	memmove_equal=1	ret_ok=1
+memcpy	1	3	memmove_equal=1	ret_ok=1
+memcpy	1	4	memmove_equal=1	ret_ok=1
+memcpy	1	7	memmove_equal=1	ret_ok=1
+memcpy	1	8	memmove_equal=1	ret_ok=1
+memcpy	1	15	memmove_equal=1	ret_ok=1
+memcpy	1	16	memmove_equal=1	ret_ok=1
+memcpy	1	17	memmove_equal=1	ret_ok=1
+memcpy	1	31	memmove_equal=1	ret_ok=1
+memcpy	1	32	memmove_equal=1	ret_ok=1
+memcpy	1	33	memmove_equal=1	ret_ok=1
+memcpy	1	63	memmove_equal=1	ret_ok=1
+memcpy	1	64	memmove_equal=1	ret_ok=1
+memcpy	1	65	memmove_equal=1	ret_ok=1
+memcpy	1	100	memmove_equal=1	ret_ok=1
+memcpy	1	127	memmove_equal=1	ret_ok=1
+memcpy	1	128	memmove_equal=1	ret_ok=1
+memcpy	1	129	memmove_equal=1	ret_ok=1
+memcpy	1	255	memmove_equal=1	ret_ok=1
+memcpy	1	256	memmove_equal=1	ret_ok=1
+memcpy	1	257	memmove_equal=1	ret_ok=1
+memcpy	1	1000	memmove_equal=1	ret_ok=1
+memcpy	1	4096	memmove_equal=1	ret_ok=1
+memcpy	1	5000	memmove_equal=1	ret_ok=1
+memcpy	2	1	memmove_equal=1	ret_ok=1
+memcpy	2	2	memmove_equal=1	ret_ok=1
+memcpy	2	3	memmove_equal=1	ret_ok=1
+memcpy	2	4	memmove_equal=1	ret_ok=1
+memcpy	2	7	memmove_equal=1	ret_ok=1
+memcpy	2	8	memmove_equal=1	ret_ok=1
+memcpy	2	15	memmove_equal=1	ret_ok=1
+memcpy	2	16	memmove_equal=1	ret_ok=1
+memcpy	2	17	memmove_equal=1	ret_ok=1
+memcpy	2	31	memmove_equal=1	ret_ok=1
+memcpy	2	32	memmove_equal=1	ret_ok=1
+memcpy	2	33	memmove_equal=1	ret_ok=1
+memcpy	2	63	memmove_equal=1	ret_ok=1
+memcpy	2	64	memmove_equal=1	ret_ok=1
+memcpy	2	65	memmove_equal=1	ret_ok=1
+memcpy	2	100	memmove_equal=1	ret_ok=1
+memcpy	2	127	memmove_equal=1	ret_ok=1
+memcpy	2	128	memmove_equal=1	ret_ok=1
+memcpy	2	129	memmove_equal=1	ret_ok=1
+memcpy	2	255	memmove_equal=1	ret_ok=1
+memcpy	2	256	memmove_equal=1	ret_ok=1
+memcpy	2	257	memmove_equal=1	ret_ok=1
+memcpy	2	1000	memmove_equal=1	ret_ok=1
+memcpy	2	4096	memmove_equal=1	ret_ok=1
+memcpy	2	5000	memmove_equal=1	ret_ok=1
+memcpy	3	1	memmove_equal=1	ret_ok=1
+memcpy	3	2	memmove_equal=1	ret_ok=1
+memcpy	3	3	memmove_equal=1	ret_ok=1
+memcpy	3	4	memmove_equal=1	ret_ok=1
+memcpy	3	7	memmove_equal=1	ret_ok=1
+memcpy	3	8	memmove_equal=1	ret_ok=1
+memcpy	3	15	memmove_equal=1	ret_ok=1
+memcpy	3	16	memmove_equal=1	ret_ok=1
+memcpy	3	17	memmove_equal=1	ret_ok=1
+memcpy	3	31	memmove_equal=1	ret_ok=1
+memcpy	3	32	memmove_equal=1	ret_ok=1
+memcpy	3	33	memmove_equal=1	ret_ok=1
+memcpy	3	63	memmove_equal=1	ret_ok=1
+memcpy	3	64	memmove_equal=1	ret_ok=1
+memcpy	3	65	memmove_equal=1	ret_ok=1
+memcpy	3	100	memmove_equal=1	ret_ok=1
+memcpy	3	127	memmove_equal=1	ret_ok=1
+memcpy	3	128	memmove_equal=1	ret_ok=1
+memcpy	3	129	memmove_equal=1	ret_ok=1
+memcpy	3	255	memmove_equal=1	ret_ok=1
+memcpy	3	256	memmove_equal=1	ret_ok=1
+memcpy	3	257	memmove_equal=1	ret_ok=1
+memcpy	3	1000	memmove_equal=1	ret_ok=1
+memcpy	3	4096	memmove_equal=1	ret_ok=1
+memcpy	3	5000	memmove_equal=1	ret_ok=1
+memcpy	4	1	memmove_equal=1	ret_ok=1
+memcpy	4	2	memmove_equal=1	ret_ok=1
+memcpy	4	3	memmove_equal=1	ret_ok=1
+memcpy	4	4	memmove_equal=1	ret_ok=1
+memcpy	4	7	memmove_equal=1	ret_ok=1
+memcpy	4	8	memmove_equal=1	ret_ok=1
+memcpy	4	15	memmove_equal=1	ret_ok=1
+memcpy	4	16	memmove_equal=1	ret_ok=1
+memcpy	4	17	memmove_equal=1	ret_ok=1
+memcpy	4	31	memmove_equal=1	ret_ok=1
+memcpy	4	32	memmove_equal=1	ret_ok=1
+memcpy	4	33	memmove_equal=1	ret_ok=1
+memcpy	4	63	memmove_equal=1	ret_ok=1
+memcpy	4	64	memmove_equal=1	ret_ok=1
+memcpy	4	65	memmove_equal=1	ret_ok=1
+memcpy	4	100	memmove_equal=1	ret_ok=1
+memcpy	4	127	memmove_equal=1	ret_ok=1
+memcpy	4	128	memmove_equal=1	ret_ok=1
+memcpy	4	129	memmove_equal=1	ret_ok=1
+memcpy	4	255	memmove_equal=1	ret_ok=1
+memcpy	4	256	memmove_equal=1	ret_ok=1
+memcpy	4	257	memmove_equal=1	ret_ok=1
+memcpy	4	1000	memmove_equal=1	ret_ok=1
+memcpy	4	4096	memmove_equal=1	ret_ok=1
+memcpy	4	5000	memmove_equal=1	ret_ok=1
+memcpy	7	1	memmove_equal=1	ret_ok=1
+memcpy	7	2	memmove_equal=1	ret_ok=1
+memcpy	7	3	memmove_equal=1	ret_ok=1
+memcpy	7	4	memmove_equal=1	ret_ok=1
+memcpy	7	7	memmove_equal=1	ret_ok=1
+memcpy	7	8	memmove_equal=1	ret_ok=1
+memcpy	7	15	memmove_equal=1	ret_ok=1
+memcpy	7	16	memmove_equal=1	ret_ok=1
+memcpy	7	17	memmove_equal=1	ret_ok=1
+memcpy	7	31	memmove_equal=1	ret_ok=1
+memcpy	7	32	memmove_equal=1	ret_ok=1
+memcpy	7	33	memmove_equal=1	ret_ok=1
+memcpy	7	63	memmove_equal=1	ret_ok=1
+memcpy	7	64	memmove_equal=1	ret_ok=1
+memcpy	7	65	memmove_equal=1	ret_ok=1
+memcpy	7	100	memmove_equal=1	ret_ok=1
+memcpy	7	127	memmove_equal=1	ret_ok=1
+memcpy	7	128	memmove_equal=1	ret_ok=1
+memcpy	7	129	memmove_equal=1	ret_ok=1
+memcpy	7	255	memmove_equal=1	ret_ok=1
+memcpy	7	256	memmove_equal=1	ret_ok=1
+memcpy	7	257	memmove_equal=1	ret_ok=1
+memcpy	7	1000	memmove_equal=1	ret_ok=1
+memcpy	7	4096	memmove_equal=1	ret_ok=1
+memcpy	7	5000	memmove_equal=1	ret_ok=1
+memcpy	8	1	memmove_equal=1	ret_ok=1
+memcpy	8	2	memmove_equal=1	ret_ok=1
+memcpy	8	3	memmove_equal=1	ret_ok=1
+memcpy	8	4	memmove_equal=1	ret_ok=1
+memcpy	8	7	memmove_equal=1	ret_ok=1
+memcpy	8	8	memmove_equal=1	ret_ok=1
+memcpy	8	15	memmove_equal=1	ret_ok=1
+memcpy	8	16	memmove_equal=1	ret_ok=1
+memcpy	8	17	memmove_equal=1	ret_ok=1
+memcpy	8	31	memmove_equal=1	ret_ok=1
+memcpy	8	32	memmove_equal=1	ret_ok=1
+memcpy	8	33	memmove_equal=1	ret_ok=1
+memcpy	8	63	memmove_equal=1	ret_ok=1
+memcpy	8	64	memmove_equal=1	ret_ok=1
+memcpy	8	65	memmove_equal=1	ret_ok=1
+memcpy	8	100	memmove_equal=1	ret_ok=1
+memcpy	8	127	memmove_equal=1	ret_ok=1
+memcpy	8	128	memmove_equal=1	ret_ok=1
+memcpy	8	129	memmove_equal=1	ret_ok=1
+memcpy	8	255	memmove_equal=1	ret_ok=1
+memcpy	8	256	memmove_equal=1	ret_ok=1
+memcpy	8	257	memmove_equal=1	ret_ok=1
+memcpy	8	1000	memmove_equal=1	ret_ok=1
+memcpy	8	4096	memmove_equal=1	ret_ok=1
+memcpy	8	5000	memmove_equal=1	ret_ok=1
+memcpy	15	1	memmove_equal=1	ret_ok=1
+memcpy	15	2	memmove_equal=1	ret_ok=1
+memcpy	15	3	memmove_equal=1	ret_ok=1
+memcpy	15	4	memmove_equal=1	ret_ok=1
+memcpy	15	7	memmove_equal=1	ret_ok=1
+memcpy	15	8	memmove_equal=1	ret_ok=1
+memcpy	15	15	memmove_equal=1	ret_ok=1
+memcpy	15	16	memmove_equal=1	ret_ok=1
+memcpy	15	17	memmove_equal=1	ret_ok=1
+memcpy	15	31	memmove_equal=1	ret_ok=1
+memcpy	15	32	memmove_equal=1	ret_ok=1
+memcpy	15	33	memmove_equal=1	ret_ok=1
+memcpy	15	63	memmove_equal=1	ret_ok=1
+memcpy	15	64	memmove_equal=1	ret_ok=1
+memcpy	15	65	memmove_equal=1	ret_ok=1
+memcpy	15	100	memmove_equal=1	ret_ok=1
+memcpy	15	127	memmove_equal=1	ret_ok=1
+memcpy	15	128	memmove_equal=1	ret_ok=1
+memcpy	15	129	memmove_equal=1	ret_ok=1
+memcpy	15	255	memmove_equal=1	ret_ok=1
+memcpy	15	256	memmove_equal=1	ret_ok=1
+memcpy	15	257	memmove_equal=1	ret_ok=1
+memcpy	15	1000	memmove_equal=1	ret_ok=1
+memcpy	15	4096	memmove_equal=1	ret_ok=1
+memcpy	15	5000	memmove_equal=1	ret_ok=1
+memcpy	16	1	memmove_equal=1	ret_ok=1
+memcpy	16	2	memmove_equal=1	ret_ok=1
+memcpy	16	3	memmove_equal=1	ret_ok=1
+memcpy	16	4	memmove_equal=1	ret_ok=1
+memcpy	16	7	memmove_equal=1	ret_ok=1
+memcpy	16	8	memmove_equal=1	ret_ok=1
+memcpy	16	15	memmove_equal=1	ret_ok=1
+memcpy	16	16	memmove_equal=1	ret_ok=1
+memcpy	16	17	memmove_equal=1	ret_ok=1
+memcpy	16	31	memmove_equal=1	ret_ok=1
+memcpy	16	32	memmove_equal=1	ret_ok=1
+memcpy	16	33	memmove_equal=1	ret_ok=1
+memcpy	16	63	memmove_equal=1	ret_ok=1
+memcpy	16	64	memmove_equal=1	ret_ok=1
+memcpy	16	65	memmove_equal=1	ret_ok=1
+memcpy	16	100	memmove_equal=1	ret_ok=1
+memcpy	16	127	memmove_equal=1	ret_ok=1
+memcpy	16	128	memmove_equal=1	ret_ok=1
+memcpy	16	129	memmove_equal=1	ret_ok=1
+memcpy	16	255	memmove_equal=1	ret_ok=1
+memcpy	16	256	memmove_equal=1	ret_ok=1
+memcpy	16	257	memmove_equal=1	ret_ok=1
+memcpy	16	1000	memmove_equal=1	ret_ok=1
+memcpy	16	4096	memmove_equal=1	ret_ok=1
+memcpy	16	5000	memmove_equal=1	ret_ok=1
+memcpy	17	1	memmove_equal=1	ret_ok=1
+memcpy	17	2	memmove_equal=1	ret_ok=1
+memcpy	17	3	memmove_equal=1	ret_ok=1
+memcpy	17	4	memmove_equal=1	ret_ok=1
+memcpy	17	7	memmove_equal=1	ret_ok=1
+memcpy	17	8	memmove_equal=1	ret_ok=1
+memcpy	17	15	memmove_equal=1	ret_ok=1
+memcpy	17	16	memmove_equal=1	ret_ok=1
+memcpy	17	17	memmove_equal=1	ret_ok=1
+memcpy	17	31	memmove_equal=1	ret_ok=1
+memcpy	17	32	memmove_equal=1	ret_ok=1
+memcpy	17	33	memmove_equal=1	ret_ok=1
+memcpy	17	63	memmove_equal=1	ret_ok=1
+memcpy	17	64	memmove_equal=1	ret_ok=1
+memcpy	17	65	memmove_equal=1	ret_ok=1
+memcpy	17	100	memmove_equal=1	ret_ok=1
+memcpy	17	127	memmove_equal=1	ret_ok=1
+memcpy	17	128	memmove_equal=1	ret_ok=1
+memcpy	17	129	memmove_equal=1	ret_ok=1
+memcpy	17	255	memmove_equal=1	ret_ok=1
+memcpy	17	256	memmove_equal=1	ret_ok=1
+memcpy	17	257	memmove_equal=1	ret_ok=1
+memcpy	17	1000	memmove_equal=1	ret_ok=1
+memcpy	17	4096	memmove_equal=1	ret_ok=1
+memcpy	17	5000	memmove_equal=1	ret_ok=1
+memcpy	31	1	memmove_equal=1	ret_ok=1
+memcpy	31	2	memmove_equal=1	ret_ok=1
+memcpy	31	3	memmove_equal=1	ret_ok=1
+memcpy	31	4	memmove_equal=1	ret_ok=1
+memcpy	31	7	memmove_equal=1	ret_ok=1
+memcpy	31	8	memmove_equal=1	ret_ok=1
+memcpy	31	15	memmove_equal=1	ret_ok=1
+memcpy	31	16	memmove_equal=1	ret_ok=1
+memcpy	31	17	memmove_equal=1	ret_ok=1
+memcpy	31	31	memmove_equal=1	ret_ok=1
+memcpy	31	32	memmove_equal=1	ret_ok=1
+memcpy	31	33	memmove_equal=1	ret_ok=1
+memcpy	31	63	memmove_equal=1	ret_ok=1
+memcpy	31	64	memmove_equal=1	ret_ok=1
+memcpy	31	65	memmove_equal=1	ret_ok=1
+memcpy	31	100	memmove_equal=1	ret_ok=1
+memcpy	31	127	memmove_equal=1	ret_ok=1
+memcpy	31	128	memmove_equal=1	ret_ok=1
+memcpy	31	129	memmove_equal=1	ret_ok=1
+memcpy	31	255	memmove_equal=1	ret_ok=1
+memcpy	31	256	memmove_equal=1	ret_ok=1
+memcpy	31	257	memmove_equal=1	ret_ok=1
+memcpy	31	1000	memmove_equal=1	ret_ok=1
+memcpy	31	4096	memmove_equal=1	ret_ok=1
+memcpy	31	5000	memmove_equal=1	ret_ok=1
+memcpy	32	1	memmove_equal=1	ret_ok=1
+memcpy	32	2	memmove_equal=1	ret_ok=1
+memcpy	32	3	memmove_equal=1	ret_ok=1
+memcpy	32	4	memmove_equal=1	ret_ok=1
+memcpy	32	7	memmove_equal=1	ret_ok=1
+memcpy	32	8	memmove_equal=1	ret_ok=1
+memcpy	32	15	memmove_equal=1	ret_ok=1
+memcpy	32	16	memmove_equal=1	ret_ok=1
+memcpy	32	17	memmove_equal=1	ret_ok=1
+memcpy	32	31	memmove_equal=1	ret_ok=1
+memcpy	32	32	memmove_equal=1	ret_ok=1
+memcpy	32	33	memmove_equal=1	ret_ok=1
+memcpy	32	63	memmove_equal=1	ret_ok=1
+memcpy	32	64	memmove_equal=1	ret_ok=1
+memcpy	32	65	memmove_equal=1	ret_ok=1
+memcpy	32	100	memmove_equal=1	ret_ok=1
+memcpy	32	127	memmove_equal=1	ret_ok=1
+memcpy	32	128	memmove_equal=1	ret_ok=1
+memcpy	32	129	memmove_equal=1	ret_ok=1
+memcpy	32	255	memmove_equal=1	ret_ok=1
+memcpy	32	256	memmove_equal=1	ret_ok=1
+memcpy	32	257	memmove_equal=1	ret_ok=1
+memcpy	32	1000	memmove_equal=1	ret_ok=1
+memcpy	32	4096	memmove_equal=1	ret_ok=1
+memcpy	32	5000	memmove_equal=1	ret_ok=1
+memcpy	33	1	memmove_equal=1	ret_ok=1
+memcpy	33	2	memmove_equal=1	ret_ok=1
+memcpy	33	3	memmove_equal=1	ret_ok=1
+memcpy	33	4	memmove_equal=1	ret_ok=1
+memcpy	33	7	memmove_equal=1	ret_ok=1
+memcpy	33	8	memmove_equal=1	ret_ok=1
+memcpy	33	15	memmove_equal=1	ret_ok=1
+memcpy	33	16	memmove_equal=1	ret_ok=1
+memcpy	33	17	memmove_equal=1	ret_ok=1
+memcpy	33	31	memmove_equal=1	ret_ok=1
+memcpy	33	32	memmove_equal=1	ret_ok=1
+memcpy	33	33	memmove_equal=1	ret_ok=1
+memcpy	33	63	memmove_equal=1	ret_ok=1
+memcpy	33	64	memmove_equal=1	ret_ok=1
+memcpy	33	65	memmove_equal=1	ret_ok=1
+memcpy	33	100	memmove_equal=1	ret_ok=1
+memcpy	33	127	memmove_equal=1	ret_ok=1
+memcpy	33	128	memmove_equal=1	ret_ok=1
+memcpy	33	129	memmove_equal=1	ret_ok=1
+memcpy	33	255	memmove_equal=1	ret_ok=1
+memcpy	33	256	memmove_equal=1	ret_ok=1
+memcpy	33	257	memmove_equal=1	ret_ok=1
+memcpy	33	1000	memmove_equal=1	ret_ok=1
+memcpy	33	4096	memmove_equal=1	ret_ok=1
+memcpy	33	5000	memmove_equal=1	ret_ok=1
+memcpy	63	1	memmove_equal=1	ret_ok=1
+memcpy	63	2	memmove_equal=1	ret_ok=1
+memcpy	63	3	memmove_equal=1	ret_ok=1
+memcpy	63	4	memmove_equal=1	ret_ok=1
+memcpy	63	7	memmove_equal=1	ret_ok=1
+memcpy	63	8	memmove_equal=1	ret_ok=1
+memcpy	63	15	memmove_equal=1	ret_ok=1
+memcpy	63	16	memmove_equal=1	ret_ok=1
+memcpy	63	17	memmove_equal=1	ret_ok=1
+memcpy	63	31	memmove_equal=1	ret_ok=1
+memcpy	63	32	memmove_equal=1	ret_ok=1
+memcpy	63	33	memmove_equal=1	ret_ok=1
+memcpy	63	63	memmove_equal=1	ret_ok=1
+memcpy	63	64	memmove_equal=1	ret_ok=1
+memcpy	63	65	memmove_equal=1	ret_ok=1
+memcpy	63	100	memmove_equal=1	ret_ok=1
+memcpy	63	127	memmove_equal=1	ret_ok=1
+memcpy	63	128	memmove_equal=1	ret_ok=1
+memcpy	63	129	memmove_equal=1	ret_ok=1
+memcpy	63	255	memmove_equal=1	ret_ok=1
+memcpy	63	256	memmove_equal=1	ret_ok=1
+memcpy	63	257	memmove_equal=1	ret_ok=1
+memcpy	63	1000	memmove_equal=1	ret_ok=1
+memcpy	63	4096	memmove_equal=1	ret_ok=1
+memcpy	63	5000	memmove_equal=1	ret_ok=1
+memcpy	64	1	memmove_equal=1	ret_ok=1
+memcpy	64	2	memmove_equal=1	ret_ok=1
+memcpy	64	3	memmove_equal=1	ret_ok=1
+memcpy	64	4	memmove_equal=1	ret_ok=1
+memcpy	64	7	memmove_equal=1	ret_ok=1
+memcpy	64	8	memmove_equal=1	ret_ok=1
+memcpy	64	15	memmove_equal=1	ret_ok=1
+memcpy	64	16	memmove_equal=1	ret_ok=1
+memcpy	64	17	memmove_equal=1	ret_ok=1
+memcpy	64	31	memmove_equal=1	ret_ok=1
+memcpy	64	32	memmove_equal=1	ret_ok=1
+memcpy	64	33	memmove_equal=1	ret_ok=1
+memcpy	64	63	memmove_equal=1	ret_ok=1
+memcpy	64	64	memmove_equal=1	ret_ok=1
+memcpy	64	65	memmove_equal=1	ret_ok=1
+memcpy	64	100	memmove_equal=1	ret_ok=1
+memcpy	64	127	memmove_equal=1	ret_ok=1
+memcpy	64	128	memmove_equal=1	ret_ok=1
+memcpy	64	129	memmove_equal=1	ret_ok=1
+memcpy	64	255	memmove_equal=1	ret_ok=1
+memcpy	64	256	memmove_equal=1	ret_ok=1
+memcpy	64	257	memmove_equal=1	ret_ok=1
+memcpy	64	1000	memmove_equal=1	ret_ok=1
+memcpy	64	4096	memmove_equal=1	ret_ok=1
+memcpy	64	5000	memmove_equal=1	ret_ok=1
+memcpy	65	1	memmove_equal=1	ret_ok=1
+memcpy	65	2	memmove_equal=1	ret_ok=1
+memcpy	65	3	memmove_equal=1	ret_ok=1
+memcpy	65	4	memmove_equal=1	ret_ok=1
+memcpy	65	7	memmove_equal=1	ret_ok=1
+memcpy	65	8	memmove_equal=1	ret_ok=1
+memcpy	65	15	memmove_equal=1	ret_ok=1
+memcpy	65	16	memmove_equal=1	ret_ok=1
+memcpy	65	17	memmove_equal=1	ret_ok=1
+memcpy	65	31	memmove_equal=1	ret_ok=1
+memcpy	65	32	memmove_equal=1	ret_ok=1
+memcpy	65	33	memmove_equal=1	ret_ok=1
+memcpy	65	63	memmove_equal=1	ret_ok=1
+memcpy	65	64	memmove_equal=1	ret_ok=1
+memcpy	65	65	memmove_equal=1	ret_ok=1
+memcpy	65	100	memmove_equal=1	ret_ok=1
+memcpy	65	127	memmove_equal=1	ret_ok=1
+memcpy	65	128	memmove_equal=1	ret_ok=1
+memcpy	65	129	memmove_equal=1	ret_ok=1
+memcpy	65	255	memmove_equal=1	ret_ok=1
+memcpy	65	256	memmove_equal=1	ret_ok=1
+memcpy	65	257	memmove_equal=1	ret_ok=1
+memcpy	65	1000	memmove_equal=1	ret_ok=1
+memcpy	65	4096	memmove_equal=1	ret_ok=1
+memcpy	65	5000	memmove_equal=1	ret_ok=1
+memcpy	1000	1	memmove_equal=1	ret_ok=1
+memcpy	1000	2	memmove_equal=1	ret_ok=1
+memcpy	1000	3	memmove_equal=1	ret_ok=1
+memcpy	1000	4	memmove_equal=1	ret_ok=1
+memcpy	1000	7	memmove_equal=1	ret_ok=1
+memcpy	1000	8	memmove_equal=1	ret_ok=1
+memcpy	1000	15	memmove_equal=1	ret_ok=1
+memcpy	1000	16	memmove_equal=1	ret_ok=1
+memcpy	1000	17	memmove_equal=1	ret_ok=1
+memcpy	1000	31	memmove_equal=1	ret_ok=1
+memcpy	1000	32	memmove_equal=1	ret_ok=1
+memcpy	1000	33	memmove_equal=1	ret_ok=1
+memcpy	1000	63	memmove_equal=1	ret_ok=1
+memcpy	1000	64	memmove_equal=1	ret_ok=1
+memcpy	1000	65	memmove_equal=1	ret_ok=1
+memcpy	1000	100	memmove_equal=1	ret_ok=1
+memcpy	1000	127	memmove_equal=1	ret_ok=1
+memcpy	1000	128	memmove_equal=1	ret_ok=1
+memcpy	1000	129	memmove_equal=1	ret_ok=1
+memcpy	1000	255	memmove_equal=1	ret_ok=1
+memcpy	1000	256	memmove_equal=1	ret_ok=1
+memcpy	1000	257	memmove_equal=1	ret_ok=1
+memcpy	1000	1000	memmove_equal=1	ret_ok=1
+memcpy	1000	4096	memmove_equal=1	ret_ok=1
+memcpy	1000	5000	memmove_equal=1	ret_ok=1
+memcpy	-1	1	memmove_equal=1	ret_ok=1
+memcpy	-1	2	memmove_equal=1	ret_ok=1
+memcpy	-1	3	memmove_equal=1	ret_ok=1
+memcpy	-1	4	memmove_equal=1	ret_ok=1
+memcpy	-1	7	memmove_equal=1	ret_ok=1
+memcpy	-1	8	memmove_equal=1	ret_ok=1
+memcpy	-1	15	memmove_equal=1	ret_ok=1
+memcpy	-1	16	memmove_equal=1	ret_ok=1
+memcpy	-1	17	memmove_equal=1	ret_ok=1
+memcpy	-1	31	memmove_equal=1	ret_ok=1
+memcpy	-1	32	memmove_equal=1	ret_ok=1
+memcpy	-1	33	memmove_equal=1	ret_ok=1
+memcpy	-1	63	memmove_equal=1	ret_ok=1
+memcpy	-1	64	memmove_equal=1	ret_ok=1
+memcpy	-1	65	memmove_equal=1	ret_ok=1
+memcpy	-1	100	memmove_equal=1	ret_ok=1
+memcpy	-1	127	memmove_equal=1	ret_ok=1
+memcpy	-1	128	memmove_equal=1	ret_ok=1
+memcpy	-1	129	memmove_equal=1	ret_ok=1
+memcpy	-1	255	memmove_equal=1	ret_ok=1
+memcpy	-1	256	memmove_equal=1	ret_ok=1
+memcpy	-1	257	memmove_equal=1	ret_ok=1
+memcpy	-1	1000	memmove_equal=1	ret_ok=1
+memcpy	-1	4096	memmove_equal=1	ret_ok=1
+memcpy	-1	5000	memmove_equal=1	ret_ok=1
+memcpy	-2	1	memmove_equal=1	ret_ok=1
+memcpy	-2	2	memmove_equal=1	ret_ok=1
+memcpy	-2	3	memmove_equal=1	ret_ok=1
+memcpy	-2	4	memmove_equal=1	ret_ok=1
+memcpy	-2	7	memmove_equal=1	ret_ok=1
+memcpy	-2	8	memmove_equal=1	ret_ok=1
+memcpy	-2	15	memmove_equal=1	ret_ok=1
+memcpy	-2	16	memmove_equal=1	ret_ok=1
+memcpy	-2	17	memmove_equal=1	ret_ok=1
+memcpy	-2	31	memmove_equal=1	ret_ok=1
+memcpy	-2	32	memmove_equal=1	ret_ok=1
+memcpy	-2	33	memmove_equal=1	ret_ok=1
+memcpy	-2	63	memmove_equal=1	ret_ok=1
+memcpy	-2	64	memmove_equal=1	ret_ok=1
+memcpy	-2	65	memmove_equal=1	ret_ok=1
+memcpy	-2	100	memmove_equal=1	ret_ok=1
+memcpy	-2	127	memmove_equal=1	ret_ok=1
+memcpy	-2	128	memmove_equal=1	ret_ok=1
+memcpy	-2	129	memmove_equal=1	ret_ok=1
+memcpy	-2	255	memmove_equal=1	ret_ok=1
+memcpy	-2	256	memmove_equal=1	ret_ok=1
+memcpy	-2	257	memmove_equal=1	ret_ok=1
+memcpy	-2	1000	memmove_equal=1	ret_ok=1
+memcpy	-2	4096	memmove_equal=1	ret_ok=1
+memcpy	-2	5000	memmove_equal=1	ret_ok=1
+memcpy	-3	1	memmove_equal=1	ret_ok=1
+memcpy	-3	2	memmove_equal=1	ret_ok=1
+memcpy	-3	3	memmove_equal=1	ret_ok=1
+memcpy	-3	4	memmove_equal=1	ret_ok=1
+memcpy	-3	7	memmove_equal=1	ret_ok=1
+memcpy	-3	8	memmove_equal=1	ret_ok=1
+memcpy	-3	15	memmove_equal=1	ret_ok=1
+memcpy	-3	16	memmove_equal=1	ret_ok=1
+memcpy	-3	17	memmove_equal=1	ret_ok=1
+memcpy	-3	31	memmove_equal=1	ret_ok=1
+memcpy	-3	32	memmove_equal=1	ret_ok=1
+memcpy	-3	33	memmove_equal=1	ret_ok=1
+memcpy	-3	63	memmove_equal=1	ret_ok=1
+memcpy	-3	64	memmove_equal=1	ret_ok=1
+memcpy	-3	65	memmove_equal=1	ret_ok=1
+memcpy	-3	100	memmove_equal=1	ret_ok=1
+memcpy	-3	127	memmove_equal=1	ret_ok=1
+memcpy	-3	128	memmove_equal=1	ret_ok=1
+memcpy	-3	129	memmove_equal=1	ret_ok=1
+memcpy	-3	255	memmove_equal=1	ret_ok=1
+memcpy	-3	256	memmove_equal=1	ret_ok=1
+memcpy	-3	257	memmove_equal=1	ret_ok=1
+memcpy	-3	1000	memmove_equal=1	ret_ok=1
+memcpy	-3	4096	memmove_equal=1	ret_ok=1
+memcpy	-3	5000	memmove_equal=1	ret_ok=1
+memcpy	-4	1	memmove_equal=1	ret_ok=1
+memcpy	-4	2	memmove_equal=1	ret_ok=1
+memcpy	-4	3	memmove_equal=1	ret_ok=1
+memcpy	-4	4	memmove_equal=1	ret_ok=1
+memcpy	-4	7	memmove_equal=1	ret_ok=1
+memcpy	-4	8	memmove_equal=1	ret_ok=1
+memcpy	-4	15	memmove_equal=1	ret_ok=1
+memcpy	-4	16	memmove_equal=1	ret_ok=1
+memcpy	-4	17	memmove_equal=1	ret_ok=1
+memcpy	-4	31	memmove_equal=1	ret_ok=1
+memcpy	-4	32	memmove_equal=1	ret_ok=1
+memcpy	-4	33	memmove_equal=1	ret_ok=1
+memcpy	-4	63	memmove_equal=1	ret_ok=1
+memcpy	-4	64	memmove_equal=1	ret_ok=1
+memcpy	-4	65	memmove_equal=1	ret_ok=1
+memcpy	-4	100	memmove_equal=1	ret_ok=1
+memcpy	-4	127	memmove_equal=1	ret_ok=1
+memcpy	-4	128	memmove_equal=1	ret_ok=1
+memcpy	-4	129	memmove_equal=1	ret_ok=1
+memcpy	-4	255	memmove_equal=1	ret_ok=1
+memcpy	-4	256	memmove_equal=1	ret_ok=1
+memcpy	-4	257	memmove_equal=1	ret_ok=1
+memcpy	-4	1000	memmove_equal=1	ret_ok=1
+memcpy	-4	4096	memmove_equal=1	ret_ok=1
+memcpy	-4	5000	memmove_equal=1	ret_ok=1
+memcpy	-7	1	memmove_equal=1	ret_ok=1
+memcpy	-7	2	memmove_equal=1	ret_ok=1
+memcpy	-7	3	memmove_equal=1	ret_ok=1
+memcpy	-7	4	memmove_equal=1	ret_ok=1
+memcpy	-7	7	memmove_equal=1	ret_ok=1
+memcpy	-7	8	memmove_equal=1	ret_ok=1
+memcpy	-7	15	memmove_equal=1	ret_ok=1
+memcpy	-7	16	memmove_equal=1	ret_ok=1
+memcpy	-7	17	memmove_equal=1	ret_ok=1
+memcpy	-7	31	memmove_equal=1	ret_ok=1
+memcpy	-7	32	memmove_equal=1	ret_ok=1
+memcpy	-7	33	memmove_equal=1	ret_ok=1
+memcpy	-7	63	memmove_equal=1	ret_ok=1
+memcpy	-7	64	memmove_equal=1	ret_ok=1
+memcpy	-7	65	memmove_equal=1	ret_ok=1
+memcpy	-7	100	memmove_equal=1	ret_ok=1
+memcpy	-7	127	memmove_equal=1	ret_ok=1
+memcpy	-7	128	memmove_equal=1	ret_ok=1
+memcpy	-7	129	memmove_equal=1	ret_ok=1
+memcpy	-7	255	memmove_equal=1	ret_ok=1
+memcpy	-7	256	memmove_equal=1	ret_ok=1
+memcpy	-7	257	memmove_equal=1	ret_ok=1
+memcpy	-7	1000	memmove_equal=1	ret_ok=1
+memcpy	-7	4096	memmove_equal=1	ret_ok=1
+memcpy	-7	5000	memmove_equal=1	ret_ok=1
+memcpy	-8	1	memmove_equal=1	ret_ok=1
+memcpy	-8	2	memmove_equal=1	ret_ok=1
+memcpy	-8	3	memmove_equal=1	ret_ok=1
+memcpy	-8	4	memmove_equal=1	ret_ok=1
+memcpy	-8	7	memmove_equal=1	ret_ok=1
+memcpy	-8	8	memmove_equal=1	ret_ok=1
+memcpy	-8	15	memmove_equal=1	ret_ok=1
+memcpy	-8	16	memmove_equal=1	ret_ok=1
+memcpy	-8	17	memmove_equal=1	ret_ok=1
+memcpy	-8	31	memmove_equal=1	ret_ok=1
+memcpy	-8	32	memmove_equal=1	ret_ok=1
+memcpy	-8	33	memmove_equal=1	ret_ok=1
+memcpy	-8	63	memmove_equal=1	ret_ok=1
+memcpy	-8	64	memmove_equal=1	ret_ok=1
+memcpy	-8	65	memmove_equal=1	ret_ok=1
+memcpy	-8	100	memmove_equal=1	ret_ok=1
+memcpy	-8	127	memmove_equal=1	ret_ok=1
+memcpy	-8	128	memmove_equal=1	ret_ok=1
+memcpy	-8	129	memmove_equal=1	ret_ok=1
+memcpy	-8	255	memmove_equal=1	ret_ok=1
+memcpy	-8	256	memmove_equal=1	ret_ok=1
+memcpy	-8	257	memmove_equal=1	ret_ok=1
+memcpy	-8	1000	memmove_equal=1	ret_ok=1
+memcpy	-8	4096	memmove_equal=1	ret_ok=1
+memcpy	-8	5000	memmove_equal=1	ret_ok=1
+memcpy	-15	1	memmove_equal=1	ret_ok=1
+memcpy	-15	2	memmove_equal=1	ret_ok=1
+memcpy	-15	3	memmove_equal=1	ret_ok=1
+memcpy	-15	4	memmove_equal=1	ret_ok=1
+memcpy	-15	7	memmove_equal=1	ret_ok=1
+memcpy	-15	8	memmove_equal=1	ret_ok=1
+memcpy	-15	15	memmove_equal=1	ret_ok=1
+memcpy	-15	16	memmove_equal=1	ret_ok=1
+memcpy	-15	17	memmove_equal=1	ret_ok=1
+memcpy	-15	31	memmove_equal=1	ret_ok=1
+memcpy	-15	32	memmove_equal=1	ret_ok=1
+memcpy	-15	33	memmove_equal=1	ret_ok=1
+memcpy	-15	63	memmove_equal=1	ret_ok=1
+memcpy	-15	64	memmove_equal=1	ret_ok=1
+memcpy	-15	65	memmove_equal=1	ret_ok=1
+memcpy	-15	100	memmove_equal=1	ret_ok=1
+memcpy	-15	127	memmove_equal=1	ret_ok=1
+memcpy	-15	128	memmove_equal=1	ret_ok=1
+memcpy	-15	129	memmove_equal=1	ret_ok=1
+memcpy	-15	255	memmove_equal=1	ret_ok=1
+memcpy	-15	256	memmove_equal=1	ret_ok=1
+memcpy	-15	257	memmove_equal=1	ret_ok=1
+memcpy	-15	1000	memmove_equal=1	ret_ok=1
+memcpy	-15	4096	memmove_equal=1	ret_ok=1
+memcpy	-15	5000	memmove_equal=1	ret_ok=1
+memcpy	-16	1	memmove_equal=1	ret_ok=1
+memcpy	-16	2	memmove_equal=1	ret_ok=1
+memcpy	-16	3	memmove_equal=1	ret_ok=1
+memcpy	-16	4	memmove_equal=1	ret_ok=1
+memcpy	-16	7	memmove_equal=1	ret_ok=1
+memcpy	-16	8	memmove_equal=1	ret_ok=1
+memcpy	-16	15	memmove_equal=1	ret_ok=1
+memcpy	-16	16	memmove_equal=1	ret_ok=1
+memcpy	-16	17	memmove_equal=1	ret_ok=1
+memcpy	-16	31	memmove_equal=1	ret_ok=1
+memcpy	-16	32	memmove_equal=1	ret_ok=1
+memcpy	-16	33	memmove_equal=1	ret_ok=1
+memcpy	-16	63	memmove_equal=1	ret_ok=1
+memcpy	-16	64	memmove_equal=1	ret_ok=1
+memcpy	-16	65	memmove_equal=1	ret_ok=1
+memcpy	-16	100	memmove_equal=1	ret_ok=1
+memcpy	-16	127	memmove_equal=1	ret_ok=1
+memcpy	-16	128	memmove_equal=1	ret_ok=1
+memcpy	-16	129	memmove_equal=1	ret_ok=1
+memcpy	-16	255	memmove_equal=1	ret_ok=1
+memcpy	-16	256	memmove_equal=1	ret_ok=1
+memcpy	-16	257	memmove_equal=1	ret_ok=1
+memcpy	-16	1000	memmove_equal=1	ret_ok=1
+memcpy	-16	4096	memmove_equal=1	ret_ok=1
+memcpy	-16	5000	memmove_equal=1	ret_ok=1
+memcpy	-17	1	memmove_equal=1	ret_ok=1
+memcpy	-17	2	memmove_equal=1	ret_ok=1
+memcpy	-17	3	memmove_equal=1	ret_ok=1
+memcpy	-17	4	memmove_equal=1	ret_ok=1
+memcpy	-17	7	memmove_equal=1	ret_ok=1
+memcpy	-17	8	memmove_equal=1	ret_ok=1
+memcpy	-17	15	memmove_equal=1	ret_ok=1
+memcpy	-17	16	memmove_equal=1	ret_ok=1
+memcpy	-17	17	memmove_equal=1	ret_ok=1
+memcpy	-17	31	memmove_equal=1	ret_ok=1
+memcpy	-17	32	memmove_equal=1	ret_ok=1
+memcpy	-17	33	memmove_equal=1	ret_ok=1
+memcpy	-17	63	memmove_equal=1	ret_ok=1
+memcpy	-17	64	memmove_equal=1	ret_ok=1
+memcpy	-17	65	memmove_equal=1	ret_ok=1
+memcpy	-17	100	memmove_equal=1	ret_ok=1
+memcpy	-17	127	memmove_equal=1	ret_ok=1
+memcpy	-17	128	memmove_equal=1	ret_ok=1
+memcpy	-17	129	memmove_equal=1	ret_ok=1
+memcpy	-17	255	memmove_equal=1	ret_ok=1
+memcpy	-17	256	memmove_equal=1	ret_ok=1
+memcpy	-17	257	memmove_equal=1	ret_ok=1
+memcpy	-17	1000	memmove_equal=1	ret_ok=1
+memcpy	-17	4096	memmove_equal=1	ret_ok=1
+memcpy	-17	5000	memmove_equal=1	ret_ok=1
+memcpy	-31	1	memmove_equal=1	ret_ok=1
+memcpy	-31	2	memmove_equal=1	ret_ok=1
+memcpy	-31	3	memmove_equal=1	ret_ok=1
+memcpy	-31	4	memmove_equal=1	ret_ok=1
+memcpy	-31	7	memmove_equal=1	ret_ok=1
+memcpy	-31	8	memmove_equal=1	ret_ok=1
+memcpy	-31	15	memmove_equal=1	ret_ok=1
+memcpy	-31	16	memmove_equal=1	ret_ok=1
+memcpy	-31	17	memmove_equal=1	ret_ok=1
+memcpy	-31	31	memmove_equal=1	ret_ok=1
+memcpy	-31	32	memmove_equal=1	ret_ok=1
+memcpy	-31	33	memmove_equal=1	ret_ok=1
+memcpy	-31	63	memmove_equal=1	ret_ok=1
+memcpy	-31	64	memmove_equal=1	ret_ok=1
+memcpy	-31	65	memmove_equal=1	ret_ok=1
+memcpy	-31	100	memmove_equal=1	ret_ok=1
+memcpy	-31	127	memmove_equal=1	ret_ok=1
+memcpy	-31	128	memmove_equal=1	ret_ok=1
+memcpy	-31	129	memmove_equal=1	ret_ok=1
+memcpy	-31	255	memmove_equal=1	ret_ok=1
+memcpy	-31	256	memmove_equal=1	ret_ok=1
+memcpy	-31	257	memmove_equal=1	ret_ok=1
+memcpy	-31	1000	memmove_equal=1	ret_ok=1
+memcpy	-31	4096	memmove_equal=1	ret_ok=1
+memcpy	-31	5000	memmove_equal=1	ret_ok=1
+memcpy	-32	1	memmove_equal=1	ret_ok=1
+memcpy	-32	2	memmove_equal=1	ret_ok=1
+memcpy	-32	3	memmove_equal=1	ret_ok=1
+memcpy	-32	4	memmove_equal=1	ret_ok=1
+memcpy	-32	7	memmove_equal=1	ret_ok=1
+memcpy	-32	8	memmove_equal=1	ret_ok=1
+memcpy	-32	15	memmove_equal=1	ret_ok=1
+memcpy	-32	16	memmove_equal=1	ret_ok=1
+memcpy	-32	17	memmove_equal=1	ret_ok=1
+memcpy	-32	31	memmove_equal=1	ret_ok=1
+memcpy	-32	32	memmove_equal=1	ret_ok=1
+memcpy	-32	33	memmove_equal=1	ret_ok=1
+memcpy	-32	63	memmove_equal=1	ret_ok=1
+memcpy	-32	64	memmove_equal=1	ret_ok=1
+memcpy	-32	65	memmove_equal=1	ret_ok=1
+memcpy	-32	100	memmove_equal=1	ret_ok=1
+memcpy	-32	127	memmove_equal=1	ret_ok=1
+memcpy	-32	128	memmove_equal=1	ret_ok=1
+memcpy	-32	129	memmove_equal=1	ret_ok=1
+memcpy	-32	255	memmove_equal=1	ret_ok=1
+memcpy	-32	256	memmove_equal=1	ret_ok=1
+memcpy	-32	257	memmove_equal=1	ret_ok=1
+memcpy	-32	1000	memmove_equal=1	ret_ok=1
+memcpy	-32	4096	memmove_equal=1	ret_ok=1
+memcpy	-32	5000	memmove_equal=1	ret_ok=1
+memcpy	-33	1	memmove_equal=1	ret_ok=1
+memcpy	-33	2	memmove_equal=1	ret_ok=1
+memcpy	-33	3	memmove_equal=1	ret_ok=1
+memcpy	-33	4	memmove_equal=1	ret_ok=1
+memcpy	-33	7	memmove_equal=1	ret_ok=1
+memcpy	-33	8	memmove_equal=1	ret_ok=1
+memcpy	-33	15	memmove_equal=1	ret_ok=1
+memcpy	-33	16	memmove_equal=1	ret_ok=1
+memcpy	-33	17	memmove_equal=1	ret_ok=1
+memcpy	-33	31	memmove_equal=1	ret_ok=1
+memcpy	-33	32	memmove_equal=1	ret_ok=1
+memcpy	-33	33	memmove_equal=1	ret_ok=1
+memcpy	-33	63	memmove_equal=1	ret_ok=1
+memcpy	-33	64	memmove_equal=1	ret_ok=1
+memcpy	-33	65	memmove_equal=1	ret_ok=1
+memcpy	-33	100	memmove_equal=1	ret_ok=1
+memcpy	-33	127	memmove_equal=1	ret_ok=1
+memcpy	-33	128	memmove_equal=1	ret_ok=1
+memcpy	-33	129	memmove_equal=1	ret_ok=1
+memcpy	-33	255	memmove_equal=1	ret_ok=1
+memcpy	-33	256	memmove_equal=1	ret_ok=1
+memcpy	-33	257	memmove_equal=1	ret_ok=1
+memcpy	-33	1000	memmove_equal=1	ret_ok=1
+memcpy	-33	4096	memmove_equal=1	ret_ok=1
+memcpy	-33	5000	memmove_equal=1	ret_ok=1
+memcpy	-63	1	memmove_equal=1	ret_ok=1
+memcpy	-63	2	memmove_equal=1	ret_ok=1
+memcpy	-63	3	memmove_equal=1	ret_ok=1
+memcpy	-63	4	memmove_equal=1	ret_ok=1
+memcpy	-63	7	memmove_equal=1	ret_ok=1
+memcpy	-63	8	memmove_equal=1	ret_ok=1
+memcpy	-63	15	memmove_equal=1	ret_ok=1
+memcpy	-63	16	memmove_equal=1	ret_ok=1
+memcpy	-63	17	memmove_equal=1	ret_ok=1
+memcpy	-63	31	memmove_equal=1	ret_ok=1
+memcpy	-63	32	memmove_equal=1	ret_ok=1
+memcpy	-63	33	memmove_equal=1	ret_ok=1
+memcpy	-63	63	memmove_equal=1	ret_ok=1
+memcpy	-63	64	memmove_equal=1	ret_ok=1
+memcpy	-63	65	memmove_equal=1	ret_ok=1
+memcpy	-63	100	memmove_equal=1	ret_ok=1
+memcpy	-63	127	memmove_equal=1	ret_ok=1
+memcpy	-63	128	memmove_equal=1	ret_ok=1
+memcpy	-63	129	memmove_equal=1	ret_ok=1
+memcpy	-63	255	memmove_equal=1	ret_ok=1
+memcpy	-63	256	memmove_equal=1	ret_ok=1
+memcpy	-63	257	memmove_equal=1	ret_ok=1
+memcpy	-63	1000	memmove_equal=1	ret_ok=1
+memcpy	-63	4096	memmove_equal=1	ret_ok=1
+memcpy	-63	5000	memmove_equal=1	ret_ok=1
+memcpy	-64	1	memmove_equal=1	ret_ok=1
+memcpy	-64	2	memmove_equal=1	ret_ok=1
+memcpy	-64	3	memmove_equal=1	ret_ok=1
+memcpy	-64	4	memmove_equal=1	ret_ok=1
+memcpy	-64	7	memmove_equal=1	ret_ok=1
+memcpy	-64	8	memmove_equal=1	ret_ok=1
+memcpy	-64	15	memmove_equal=1	ret_ok=1
+memcpy	-64	16	memmove_equal=1	ret_ok=1
+memcpy	-64	17	memmove_equal=1	ret_ok=1
+memcpy	-64	31	memmove_equal=1	ret_ok=1
+memcpy	-64	32	memmove_equal=1	ret_ok=1
+memcpy	-64	33	memmove_equal=1	ret_ok=1
+memcpy	-64	63	memmove_equal=1	ret_ok=1
+memcpy	-64	64	memmove_equal=1	ret_ok=1
+memcpy	-64	65	memmove_equal=1	ret_ok=1
+memcpy	-64	100	memmove_equal=1	ret_ok=1
+memcpy	-64	127	memmove_equal=1	ret_ok=1
+memcpy	-64	128	memmove_equal=1	ret_ok=1
+memcpy	-64	129	memmove_equal=1	ret_ok=1
+memcpy	-64	255	memmove_equal=1	ret_ok=1
+memcpy	-64	256	memmove_equal=1	ret_ok=1
+memcpy	-64	257	memmove_equal=1	ret_ok=1
+memcpy	-64	1000	memmove_equal=1	ret_ok=1
+memcpy	-64	4096	memmove_equal=1	ret_ok=1
+memcpy	-64	5000	memmove_equal=1	ret_ok=1
+memcpy	-65	1	memmove_equal=1	ret_ok=1
+memcpy	-65	2	memmove_equal=1	ret_ok=1
+memcpy	-65	3	memmove_equal=1	ret_ok=1
+memcpy	-65	4	memmove_equal=1	ret_ok=1
+memcpy	-65	7	memmove_equal=1	ret_ok=1
+memcpy	-65	8	memmove_equal=1	ret_ok=1
+memcpy	-65	15	memmove_equal=1	ret_ok=1
+memcpy	-65	16	memmove_equal=1	ret_ok=1
+memcpy	-65	17	memmove_equal=1	ret_ok=1
+memcpy	-65	31	memmove_equal=1	ret_ok=1
+memcpy	-65	32	memmove_equal=1	ret_ok=1
+memcpy	-65	33	memmove_equal=1	ret_ok=1
+memcpy	-65	63	memmove_equal=1	ret_ok=1
+memcpy	-65	64	memmove_equal=1	ret_ok=1
+memcpy	-65	65	memmove_equal=1	ret_ok=1
+memcpy	-65	100	memmove_equal=1	ret_ok=1
+memcpy	-65	127	memmove_equal=1	ret_ok=1
+memcpy	-65	128	memmove_equal=1	ret_ok=1
+memcpy	-65	129	memmove_equal=1	ret_ok=1
+memcpy	-65	255	memmove_equal=1	ret_ok=1
+memcpy	-65	256	memmove_equal=1	ret_ok=1
+memcpy	-65	257	memmove_equal=1	ret_ok=1
+memcpy	-65	1000	memmove_equal=1	ret_ok=1
+memcpy	-65	4096	memmove_equal=1	ret_ok=1
+memcpy	-65	5000	memmove_equal=1	ret_ok=1
+memcpy	-1000	1	memmove_equal=1	ret_ok=1
+memcpy	-1000	2	memmove_equal=1	ret_ok=1
+memcpy	-1000	3	memmove_equal=1	ret_ok=1
+memcpy	-1000	4	memmove_equal=1	ret_ok=1
+memcpy	-1000	7	memmove_equal=1	ret_ok=1
+memcpy	-1000	8	memmove_equal=1	ret_ok=1
+memcpy	-1000	15	memmove_equal=1	ret_ok=1
+memcpy	-1000	16	memmove_equal=1	ret_ok=1
+memcpy	-1000	17	memmove_equal=1	ret_ok=1
+memcpy	-1000	31	memmove_equal=1	ret_ok=1
+memcpy	-1000	32	memmove_equal=1	ret_ok=1
+memcpy	-1000	33	memmove_equal=1	ret_ok=1
+memcpy	-1000	63	memmove_equal=1	ret_ok=1
+memcpy	-1000	64	memmove_equal=1	ret_ok=1
+memcpy	-1000	65	memmove_equal=1	ret_ok=1
+memcpy	-1000	100	memmove_equal=1	ret_ok=1
+memcpy	-1000	127	memmove_equal=1	ret_ok=1
+memcpy	-1000	128	memmove_equal=1	ret_ok=1
+memcpy	-1000	129	memmove_equal=1	ret_ok=1
+memcpy	-1000	255	memmove_equal=1	ret_ok=1
+memcpy	-1000	256	memmove_equal=1	ret_ok=1
+memcpy	-1000	257	memmove_equal=1	ret_ok=1
+memcpy	-1000	1000	memmove_equal=1	ret_ok=1
+memcpy	-1000	4096	memmove_equal=1	ret_ok=1
+memcpy	-1000	5000	memmove_equal=1	ret_ok=1
+memmove	1	1	memmove_equal=1	ret_ok=1
+memmove	1	2	memmove_equal=1	ret_ok=1
+memmove	1	3	memmove_equal=1	ret_ok=1
+memmove	1	4	memmove_equal=1	ret_ok=1
+memmove	1	7	memmove_equal=1	ret_ok=1
+memmove	1	8	memmove_equal=1	ret_ok=1
+memmove	1	15	memmove_equal=1	ret_ok=1
+memmove	1	16	memmove_equal=1	ret_ok=1
+memmove	1	17	memmove_equal=1	ret_ok=1
+memmove	1	31	memmove_equal=1	ret_ok=1
+memmove	1	32	memmove_equal=1	ret_ok=1
+memmove	1	33	memmove_equal=1	ret_ok=1
+memmove	1	63	memmove_equal=1	ret_ok=1
+memmove	1	64	memmove_equal=1	ret_ok=1
+memmove	1	65	memmove_equal=1	ret_ok=1
+memmove	1	100	memmove_equal=1	ret_ok=1
+memmove	1	127	memmove_equal=1	ret_ok=1
+memmove	1	128	memmove_equal=1	ret_ok=1
+memmove	1	129	memmove_equal=1	ret_ok=1
+memmove	1	255	memmove_equal=1	ret_ok=1
+memmove	1	256	memmove_equal=1	ret_ok=1
+memmove	1	257	memmove_equal=1	ret_ok=1
+memmove	1	1000	memmove_equal=1	ret_ok=1
+memmove	1	4096	memmove_equal=1	ret_ok=1
+memmove	1	5000	memmove_equal=1	ret_ok=1
+memmove	2	1	memmove_equal=1	ret_ok=1
+memmove	2	2	memmove_equal=1	ret_ok=1
+memmove	2	3	memmove_equal=1	ret_ok=1
+memmove	2	4	memmove_equal=1	ret_ok=1
+memmove	2	7	memmove_equal=1	ret_ok=1
+memmove	2	8	memmove_equal=1	ret_ok=1
+memmove	2	15	memmove_equal=1	ret_ok=1
+memmove	2	16	memmove_equal=1	ret_ok=1
+memmove	2	17	memmove_equal=1	ret_ok=1
+memmove	2	31	memmove_equal=1	ret_ok=1
+memmove	2	32	memmove_equal=1	ret_ok=1
+memmove	2	33	memmove_equal=1	ret_ok=1
+memmove	2	63	memmove_equal=1	ret_ok=1
+memmove	2	64	memmove_equal=1	ret_ok=1
+memmove	2	65	memmove_equal=1	ret_ok=1
+memmove	2	100	memmove_equal=1	ret_ok=1
+memmove	2	127	memmove_equal=1	ret_ok=1
+memmove	2	128	memmove_equal=1	ret_ok=1
+memmove	2	129	memmove_equal=1	ret_ok=1
+memmove	2	255	memmove_equal=1	ret_ok=1
+memmove	2	256	memmove_equal=1	ret_ok=1
+memmove	2	257	memmove_equal=1	ret_ok=1
+memmove	2	1000	memmove_equal=1	ret_ok=1
+memmove	2	4096	memmove_equal=1	ret_ok=1
+memmove	2	5000	memmove_equal=1	ret_ok=1
+memmove	3	1	memmove_equal=1	ret_ok=1
+memmove	3	2	memmove_equal=1	ret_ok=1
+memmove	3	3	memmove_equal=1	ret_ok=1
+memmove	3	4	memmove_equal=1	ret_ok=1
+memmove	3	7	memmove_equal=1	ret_ok=1
+memmove	3	8	memmove_equal=1	ret_ok=1
+memmove	3	15	memmove_equal=1	ret_ok=1
+memmove	3	16	memmove_equal=1	ret_ok=1
+memmove	3	17	memmove_equal=1	ret_ok=1
+memmove	3	31	memmove_equal=1	ret_ok=1
+memmove	3	32	memmove_equal=1	ret_ok=1
+memmove	3	33	memmove_equal=1	ret_ok=1
+memmove	3	63	memmove_equal=1	ret_ok=1
+memmove	3	64	memmove_equal=1	ret_ok=1
+memmove	3	65	memmove_equal=1	ret_ok=1
+memmove	3	100	memmove_equal=1	ret_ok=1
+memmove	3	127	memmove_equal=1	ret_ok=1
+memmove	3	128	memmove_equal=1	ret_ok=1
+memmove	3	129	memmove_equal=1	ret_ok=1
+memmove	3	255	memmove_equal=1	ret_ok=1
+memmove	3	256	memmove_equal=1	ret_ok=1
+memmove	3	257	memmove_equal=1	ret_ok=1
+memmove	3	1000	memmove_equal=1	ret_ok=1
+memmove	3	4096	memmove_equal=1	ret_ok=1
+memmove	3	5000	memmove_equal=1	ret_ok=1
+memmove	4	1	memmove_equal=1	ret_ok=1
+memmove	4	2	memmove_equal=1	ret_ok=1
+memmove	4	3	memmove_equal=1	ret_ok=1
+memmove	4	4	memmove_equal=1	ret_ok=1
+memmove	4	7	memmove_equal=1	ret_ok=1
+memmove	4	8	memmove_equal=1	ret_ok=1
+memmove	4	15	memmove_equal=1	ret_ok=1
+memmove	4	16	memmove_equal=1	ret_ok=1
+memmove	4	17	memmove_equal=1	ret_ok=1
+memmove	4	31	memmove_equal=1	ret_ok=1
+memmove	4	32	memmove_equal=1	ret_ok=1
+memmove	4	33	memmove_equal=1	ret_ok=1
+memmove	4	63	memmove_equal=1	ret_ok=1
+memmove	4	64	memmove_equal=1	ret_ok=1
+memmove	4	65	memmove_equal=1	ret_ok=1
+memmove	4	100	memmove_equal=1	ret_ok=1
+memmove	4	127	memmove_equal=1	ret_ok=1
+memmove	4	128	memmove_equal=1	ret_ok=1
+memmove	4	129	memmove_equal=1	ret_ok=1
+memmove	4	255	memmove_equal=1	ret_ok=1
+memmove	4	256	memmove_equal=1	ret_ok=1
+memmove	4	257	memmove_equal=1	ret_ok=1
+memmove	4	1000	memmove_equal=1	ret_ok=1
+memmove	4	4096	memmove_equal=1	ret_ok=1
+memmove	4	5000	memmove_equal=1	ret_ok=1
+memmove	7	1	memmove_equal=1	ret_ok=1
+memmove	7	2	memmove_equal=1	ret_ok=1
+memmove	7	3	memmove_equal=1	ret_ok=1
+memmove	7	4	memmove_equal=1	ret_ok=1
+memmove	7	7	memmove_equal=1	ret_ok=1
+memmove	7	8	memmove_equal=1	ret_ok=1
+memmove	7	15	memmove_equal=1	ret_ok=1
+memmove	7	16	memmove_equal=1	ret_ok=1
+memmove	7	17	memmove_equal=1	ret_ok=1
+memmove	7	31	memmove_equal=1	ret_ok=1
+memmove	7	32	memmove_equal=1	ret_ok=1
+memmove	7	33	memmove_equal=1	ret_ok=1
+memmove	7	63	memmove_equal=1	ret_ok=1
+memmove	7	64	memmove_equal=1	ret_ok=1
+memmove	7	65	memmove_equal=1	ret_ok=1
+memmove	7	100	memmove_equal=1	ret_ok=1
+memmove	7	127	memmove_equal=1	ret_ok=1
+memmove	7	128	memmove_equal=1	ret_ok=1
+memmove	7	129	memmove_equal=1	ret_ok=1
+memmove	7	255	memmove_equal=1	ret_ok=1
+memmove	7	256	memmove_equal=1	ret_ok=1
+memmove	7	257	memmove_equal=1	ret_ok=1
+memmove	7	1000	memmove_equal=1	ret_ok=1
+memmove	7	4096	memmove_equal=1	ret_ok=1
+memmove	7	5000	memmove_equal=1	ret_ok=1
+memmove	8	1	memmove_equal=1	ret_ok=1
+memmove	8	2	memmove_equal=1	ret_ok=1
+memmove	8	3	memmove_equal=1	ret_ok=1
+memmove	8	4	memmove_equal=1	ret_ok=1
+memmove	8	7	memmove_equal=1	ret_ok=1
+memmove	8	8	memmove_equal=1	ret_ok=1
+memmove	8	15	memmove_equal=1	ret_ok=1
+memmove	8	16	memmove_equal=1	ret_ok=1
+memmove	8	17	memmove_equal=1	ret_ok=1
+memmove	8	31	memmove_equal=1	ret_ok=1
+memmove	8	32	memmove_equal=1	ret_ok=1
+memmove	8	33	memmove_equal=1	ret_ok=1
+memmove	8	63	memmove_equal=1	ret_ok=1
+memmove	8	64	memmove_equal=1	ret_ok=1
+memmove	8	65	memmove_equal=1	ret_ok=1
+memmove	8	100	memmove_equal=1	ret_ok=1
+memmove	8	127	memmove_equal=1	ret_ok=1
+memmove	8	128	memmove_equal=1	ret_ok=1
+memmove	8	129	memmove_equal=1	ret_ok=1
+memmove	8	255	memmove_equal=1	ret_ok=1
+memmove	8	256	memmove_equal=1	ret_ok=1
+memmove	8	257	memmove_equal=1	ret_ok=1
+memmove	8	1000	memmove_equal=1	ret_ok=1
+memmove	8	4096	memmove_equal=1	ret_ok=1
+memmove	8	5000	memmove_equal=1	ret_ok=1
+memmove	15	1	memmove_equal=1	ret_ok=1
+memmove	15	2	memmove_equal=1	ret_ok=1
+memmove	15	3	memmove_equal=1	ret_ok=1
+memmove	15	4	memmove_equal=1	ret_ok=1
+memmove	15	7	memmove_equal=1	ret_ok=1
+memmove	15	8	memmove_equal=1	ret_ok=1
+memmove	15	15	memmove_equal=1	ret_ok=1
+memmove	15	16	memmove_equal=1	ret_ok=1
+memmove	15	17	memmove_equal=1	ret_ok=1
+memmove	15	31	memmove_equal=1	ret_ok=1
+memmove	15	32	memmove_equal=1	ret_ok=1
+memmove	15	33	memmove_equal=1	ret_ok=1
+memmove	15	63	memmove_equal=1	ret_ok=1
+memmove	15	64	memmove_equal=1	ret_ok=1
+memmove	15	65	memmove_equal=1	ret_ok=1
+memmove	15	100	memmove_equal=1	ret_ok=1
+memmove	15	127	memmove_equal=1	ret_ok=1
+memmove	15	128	memmove_equal=1	ret_ok=1
+memmove	15	129	memmove_equal=1	ret_ok=1
+memmove	15	255	memmove_equal=1	ret_ok=1
+memmove	15	256	memmove_equal=1	ret_ok=1
+memmove	15	257	memmove_equal=1	ret_ok=1
+memmove	15	1000	memmove_equal=1	ret_ok=1
+memmove	15	4096	memmove_equal=1	ret_ok=1
+memmove	15	5000	memmove_equal=1	ret_ok=1
+memmove	16	1	memmove_equal=1	ret_ok=1
+memmove	16	2	memmove_equal=1	ret_ok=1
+memmove	16	3	memmove_equal=1	ret_ok=1
+memmove	16	4	memmove_equal=1	ret_ok=1
+memmove	16	7	memmove_equal=1	ret_ok=1
+memmove	16	8	memmove_equal=1	ret_ok=1
+memmove	16	15	memmove_equal=1	ret_ok=1
+memmove	16	16	memmove_equal=1	ret_ok=1
+memmove	16	17	memmove_equal=1	ret_ok=1
+memmove	16	31	memmove_equal=1	ret_ok=1
+memmove	16	32	memmove_equal=1	ret_ok=1
+memmove	16	33	memmove_equal=1	ret_ok=1
+memmove	16	63	memmove_equal=1	ret_ok=1
+memmove	16	64	memmove_equal=1	ret_ok=1
+memmove	16	65	memmove_equal=1	ret_ok=1
+memmove	16	100	memmove_equal=1	ret_ok=1
+memmove	16	127	memmove_equal=1	ret_ok=1
+memmove	16	128	memmove_equal=1	ret_ok=1
+memmove	16	129	memmove_equal=1	ret_ok=1
+memmove	16	255	memmove_equal=1	ret_ok=1
+memmove	16	256	memmove_equal=1	ret_ok=1
+memmove	16	257	memmove_equal=1	ret_ok=1
+memmove	16	1000	memmove_equal=1	ret_ok=1
+memmove	16	4096	memmove_equal=1	ret_ok=1
+memmove	16	5000	memmove_equal=1	ret_ok=1
+memmove	17	1	memmove_equal=1	ret_ok=1
+memmove	17	2	memmove_equal=1	ret_ok=1
+memmove	17	3	memmove_equal=1	ret_ok=1
+memmove	17	4	memmove_equal=1	ret_ok=1
+memmove	17	7	memmove_equal=1	ret_ok=1
+memmove	17	8	memmove_equal=1	ret_ok=1
+memmove	17	15	memmove_equal=1	ret_ok=1
+memmove	17	16	memmove_equal=1	ret_ok=1
+memmove	17	17	memmove_equal=1	ret_ok=1
+memmove	17	31	memmove_equal=1	ret_ok=1
+memmove	17	32	memmove_equal=1	ret_ok=1
+memmove	17	33	memmove_equal=1	ret_ok=1
+memmove	17	63	memmove_equal=1	ret_ok=1
+memmove	17	64	memmove_equal=1	ret_ok=1
+memmove	17	65	memmove_equal=1	ret_ok=1
+memmove	17	100	memmove_equal=1	ret_ok=1
+memmove	17	127	memmove_equal=1	ret_ok=1
+memmove	17	128	memmove_equal=1	ret_ok=1
+memmove	17	129	memmove_equal=1	ret_ok=1
+memmove	17	255	memmove_equal=1	ret_ok=1
+memmove	17	256	memmove_equal=1	ret_ok=1
+memmove	17	257	memmove_equal=1	ret_ok=1
+memmove	17	1000	memmove_equal=1	ret_ok=1
+memmove	17	4096	memmove_equal=1	ret_ok=1
+memmove	17	5000	memmove_equal=1	ret_ok=1
+memmove	31	1	memmove_equal=1	ret_ok=1
+memmove	31	2	memmove_equal=1	ret_ok=1
+memmove	31	3	memmove_equal=1	ret_ok=1
+memmove	31	4	memmove_equal=1	ret_ok=1
+memmove	31	7	memmove_equal=1	ret_ok=1
+memmove	31	8	memmove_equal=1	ret_ok=1
+memmove	31	15	memmove_equal=1	ret_ok=1
+memmove	31	16	memmove_equal=1	ret_ok=1
+memmove	31	17	memmove_equal=1	ret_ok=1
+memmove	31	31	memmove_equal=1	ret_ok=1
+memmove	31	32	memmove_equal=1	ret_ok=1
+memmove	31	33	memmove_equal=1	ret_ok=1
+memmove	31	63	memmove_equal=1	ret_ok=1
+memmove	31	64	memmove_equal=1	ret_ok=1
+memmove	31	65	memmove_equal=1	ret_ok=1
+memmove	31	100	memmove_equal=1	ret_ok=1
+memmove	31	127	memmove_equal=1	ret_ok=1
+memmove	31	128	memmove_equal=1	ret_ok=1
+memmove	31	129	memmove_equal=1	ret_ok=1
+memmove	31	255	memmove_equal=1	ret_ok=1
+memmove	31	256	memmove_equal=1	ret_ok=1
+memmove	31	257	memmove_equal=1	ret_ok=1
+memmove	31	1000	memmove_equal=1	ret_ok=1
+memmove	31	4096	memmove_equal=1	ret_ok=1
+memmove	31	5000	memmove_equal=1	ret_ok=1
+memmove	32	1	memmove_equal=1	ret_ok=1
+memmove	32	2	memmove_equal=1	ret_ok=1
+memmove	32	3	memmove_equal=1	ret_ok=1
+memmove	32	4	memmove_equal=1	ret_ok=1
+memmove	32	7	memmove_equal=1	ret_ok=1
+memmove	32	8	memmove_equal=1	ret_ok=1
+memmove	32	15	memmove_equal=1	ret_ok=1
+memmove	32	16	memmove_equal=1	ret_ok=1
+memmove	32	17	memmove_equal=1	ret_ok=1
+memmove	32	31	memmove_equal=1	ret_ok=1
+memmove	32	32	memmove_equal=1	ret_ok=1
+memmove	32	33	memmove_equal=1	ret_ok=1
+memmove	32	63	memmove_equal=1	ret_ok=1
+memmove	32	64	memmove_equal=1	ret_ok=1
+memmove	32	65	memmove_equal=1	ret_ok=1
+memmove	32	100	memmove_equal=1	ret_ok=1
+memmove	32	127	memmove_equal=1	ret_ok=1
+memmove	32	128	memmove_equal=1	ret_ok=1
+memmove	32	129	memmove_equal=1	ret_ok=1
+memmove	32	255	memmove_equal=1	ret_ok=1
+memmove	32	256	memmove_equal=1	ret_ok=1
+memmove	32	257	memmove_equal=1	ret_ok=1
+memmove	32	1000	memmove_equal=1	ret_ok=1
+memmove	32	4096	memmove_equal=1	ret_ok=1
+memmove	32	5000	memmove_equal=1	ret_ok=1
+memmove	33	1	memmove_equal=1	ret_ok=1
+memmove	33	2	memmove_equal=1	ret_ok=1
+memmove	33	3	memmove_equal=1	ret_ok=1
+memmove	33	4	memmove_equal=1	ret_ok=1
+memmove	33	7	memmove_equal=1	ret_ok=1
+memmove	33	8	memmove_equal=1	ret_ok=1
+memmove	33	15	memmove_equal=1	ret_ok=1
+memmove	33	16	memmove_equal=1	ret_ok=1
+memmove	33	17	memmove_equal=1	ret_ok=1
+memmove	33	31	memmove_equal=1	ret_ok=1
+memmove	33	32	memmove_equal=1	ret_ok=1
+memmove	33	33	memmove_equal=1	ret_ok=1
+memmove	33	63	memmove_equal=1	ret_ok=1
+memmove	33	64	memmove_equal=1	ret_ok=1
+memmove	33	65	memmove_equal=1	ret_ok=1
+memmove	33	100	memmove_equal=1	ret_ok=1
+memmove	33	127	memmove_equal=1	ret_ok=1
+memmove	33	128	memmove_equal=1	ret_ok=1
+memmove	33	129	memmove_equal=1	ret_ok=1
+memmove	33	255	memmove_equal=1	ret_ok=1
+memmove	33	256	memmove_equal=1	ret_ok=1
+memmove	33	257	memmove_equal=1	ret_ok=1
+memmove	33	1000	memmove_equal=1	ret_ok=1
+memmove	33	4096	memmove_equal=1	ret_ok=1
+memmove	33	5000	memmove_equal=1	ret_ok=1
+memmove	63	1	memmove_equal=1	ret_ok=1
+memmove	63	2	memmove_equal=1	ret_ok=1
+memmove	63	3	memmove_equal=1	ret_ok=1
+memmove	63	4	memmove_equal=1	ret_ok=1
+memmove	63	7	memmove_equal=1	ret_ok=1
+memmove	63	8	memmove_equal=1	ret_ok=1
+memmove	63	15	memmove_equal=1	ret_ok=1
+memmove	63	16	memmove_equal=1	ret_ok=1
+memmove	63	17	memmove_equal=1	ret_ok=1
+memmove	63	31	memmove_equal=1	ret_ok=1
+memmove	63	32	memmove_equal=1	ret_ok=1
+memmove	63	33	memmove_equal=1	ret_ok=1
+memmove	63	63	memmove_equal=1	ret_ok=1
+memmove	63	64	memmove_equal=1	ret_ok=1
+memmove	63	65	memmove_equal=1	ret_ok=1
+memmove	63	100	memmove_equal=1	ret_ok=1
+memmove	63	127	memmove_equal=1	ret_ok=1
+memmove	63	128	memmove_equal=1	ret_ok=1
+memmove	63	129	memmove_equal=1	ret_ok=1
+memmove	63	255	memmove_equal=1	ret_ok=1
+memmove	63	256	memmove_equal=1	ret_ok=1
+memmove	63	257	memmove_equal=1	ret_ok=1
+memmove	63	1000	memmove_equal=1	ret_ok=1
+memmove	63	4096	memmove_equal=1	ret_ok=1
+memmove	63	5000	memmove_equal=1	ret_ok=1
+memmove	64	1	memmove_equal=1	ret_ok=1
+memmove	64	2	memmove_equal=1	ret_ok=1
+memmove	64	3	memmove_equal=1	ret_ok=1
+memmove	64	4	memmove_equal=1	ret_ok=1
+memmove	64	7	memmove_equal=1	ret_ok=1
+memmove	64	8	memmove_equal=1	ret_ok=1
+memmove	64	15	memmove_equal=1	ret_ok=1
+memmove	64	16	memmove_equal=1	ret_ok=1
+memmove	64	17	memmove_equal=1	ret_ok=1
+memmove	64	31	memmove_equal=1	ret_ok=1
+memmove	64	32	memmove_equal=1	ret_ok=1
+memmove	64	33	memmove_equal=1	ret_ok=1
+memmove	64	63	memmove_equal=1	ret_ok=1
+memmove	64	64	memmove_equal=1	ret_ok=1
+memmove	64	65	memmove_equal=1	ret_ok=1
+memmove	64	100	memmove_equal=1	ret_ok=1
+memmove	64	127	memmove_equal=1	ret_ok=1
+memmove	64	128	memmove_equal=1	ret_ok=1
+memmove	64	129	memmove_equal=1	ret_ok=1
+memmove	64	255	memmove_equal=1	ret_ok=1
+memmove	64	256	memmove_equal=1	ret_ok=1
+memmove	64	257	memmove_equal=1	ret_ok=1
+memmove	64	1000	memmove_equal=1	ret_ok=1
+memmove	64	4096	memmove_equal=1	ret_ok=1
+memmove	64	5000	memmove_equal=1	ret_ok=1
+memmove	65	1	memmove_equal=1	ret_ok=1
+memmove	65	2	memmove_equal=1	ret_ok=1
+memmove	65	3	memmove_equal=1	ret_ok=1
+memmove	65	4	memmove_equal=1	ret_ok=1
+memmove	65	7	memmove_equal=1	ret_ok=1
+memmove	65	8	memmove_equal=1	ret_ok=1
+memmove	65	15	memmove_equal=1	ret_ok=1
+memmove	65	16	memmove_equal=1	ret_ok=1
+memmove	65	17	memmove_equal=1	ret_ok=1
+memmove	65	31	memmove_equal=1	ret_ok=1
+memmove	65	32	memmove_equal=1	ret_ok=1
+memmove	65	33	memmove_equal=1	ret_ok=1
+memmove	65	63	memmove_equal=1	ret_ok=1
+memmove	65	64	memmove_equal=1	ret_ok=1
+memmove	65	65	memmove_equal=1	ret_ok=1
+memmove	65	100	memmove_equal=1	ret_ok=1
+memmove	65	127	memmove_equal=1	ret_ok=1
+memmove	65	128	memmove_equal=1	ret_ok=1
+memmove	65	129	memmove_equal=1	ret_ok=1
+memmove	65	255	memmove_equal=1	ret_ok=1
+memmove	65	256	memmove_equal=1	ret_ok=1
+memmove	65	257	memmove_equal=1	ret_ok=1
+memmove	65	1000	memmove_equal=1	ret_ok=1
+memmove	65	4096	memmove_equal=1	ret_ok=1
+memmove	65	5000	memmove_equal=1	ret_ok=1
+memmove	1000	1	memmove_equal=1	ret_ok=1
+memmove	1000	2	memmove_equal=1	ret_ok=1
+memmove	1000	3	memmove_equal=1	ret_ok=1
+memmove	1000	4	memmove_equal=1	ret_ok=1
+memmove	1000	7	memmove_equal=1	ret_ok=1
+memmove	1000	8	memmove_equal=1	ret_ok=1
+memmove	1000	15	memmove_equal=1	ret_ok=1
+memmove	1000	16	memmove_equal=1	ret_ok=1
+memmove	1000	17	memmove_equal=1	ret_ok=1
+memmove	1000	31	memmove_equal=1	ret_ok=1
+memmove	1000	32	memmove_equal=1	ret_ok=1
+memmove	1000	33	memmove_equal=1	ret_ok=1
+memmove	1000	63	memmove_equal=1	ret_ok=1
+memmove	1000	64	memmove_equal=1	ret_ok=1
+memmove	1000	65	memmove_equal=1	ret_ok=1
+memmove	1000	100	memmove_equal=1	ret_ok=1
+memmove	1000	127	memmove_equal=1	ret_ok=1
+memmove	1000	128	memmove_equal=1	ret_ok=1
+memmove	1000	129	memmove_equal=1	ret_ok=1
+memmove	1000	255	memmove_equal=1	ret_ok=1
+memmove	1000	256	memmove_equal=1	ret_ok=1
+memmove	1000	257	memmove_equal=1	ret_ok=1
+memmove	1000	1000	memmove_equal=1	ret_ok=1
+memmove	1000	4096	memmove_equal=1	ret_ok=1
+memmove	1000	5000	memmove_equal=1	ret_ok=1
+memmove	-1	1	memmove_equal=1	ret_ok=1
+memmove	-1	2	memmove_equal=1	ret_ok=1
+memmove	-1	3	memmove_equal=1	ret_ok=1
+memmove	-1	4	memmove_equal=1	ret_ok=1
+memmove	-1	7	memmove_equal=1	ret_ok=1
+memmove	-1	8	memmove_equal=1	ret_ok=1
+memmove	-1	15	memmove_equal=1	ret_ok=1
+memmove	-1	16	memmove_equal=1	ret_ok=1
+memmove	-1	17	memmove_equal=1	ret_ok=1
+memmove	-1	31	memmove_equal=1	ret_ok=1
+memmove	-1	32	memmove_equal=1	ret_ok=1
+memmove	-1	33	memmove_equal=1	ret_ok=1
+memmove	-1	63	memmove_equal=1	ret_ok=1
+memmove	-1	64	memmove_equal=1	ret_ok=1
+memmove	-1	65	memmove_equal=1	ret_ok=1
+memmove	-1	100	memmove_equal=1	ret_ok=1
+memmove	-1	127	memmove_equal=1	ret_ok=1
+memmove	-1	128	memmove_equal=1	ret_ok=1
+memmove	-1	129	memmove_equal=1	ret_ok=1
+memmove	-1	255	memmove_equal=1	ret_ok=1
+memmove	-1	256	memmove_equal=1	ret_ok=1
+memmove	-1	257	memmove_equal=1	ret_ok=1
+memmove	-1	1000	memmove_equal=1	ret_ok=1
+memmove	-1	4096	memmove_equal=1	ret_ok=1
+memmove	-1	5000	memmove_equal=1	ret_ok=1
+memmove	-2	1	memmove_equal=1	ret_ok=1
+memmove	-2	2	memmove_equal=1	ret_ok=1
+memmove	-2	3	memmove_equal=1	ret_ok=1
+memmove	-2	4	memmove_equal=1	ret_ok=1
+memmove	-2	7	memmove_equal=1	ret_ok=1
+memmove	-2	8	memmove_equal=1	ret_ok=1
+memmove	-2	15	memmove_equal=1	ret_ok=1
+memmove	-2	16	memmove_equal=1	ret_ok=1
+memmove	-2	17	memmove_equal=1	ret_ok=1
+memmove	-2	31	memmove_equal=1	ret_ok=1
+memmove	-2	32	memmove_equal=1	ret_ok=1
+memmove	-2	33	memmove_equal=1	ret_ok=1
+memmove	-2	63	memmove_equal=1	ret_ok=1
+memmove	-2	64	memmove_equal=1	ret_ok=1
+memmove	-2	65	memmove_equal=1	ret_ok=1
+memmove	-2	100	memmove_equal=1	ret_ok=1
+memmove	-2	127	memmove_equal=1	ret_ok=1
+memmove	-2	128	memmove_equal=1	ret_ok=1
+memmove	-2	129	memmove_equal=1	ret_ok=1
+memmove	-2	255	memmove_equal=1	ret_ok=1
+memmove	-2	256	memmove_equal=1	ret_ok=1
+memmove	-2	257	memmove_equal=1	ret_ok=1
+memmove	-2	1000	memmove_equal=1	ret_ok=1
+memmove	-2	4096	memmove_equal=1	ret_ok=1
+memmove	-2	5000	memmove_equal=1	ret_ok=1
+memmove	-3	1	memmove_equal=1	ret_ok=1
+memmove	-3	2	memmove_equal=1	ret_ok=1
+memmove	-3	3	memmove_equal=1	ret_ok=1
+memmove	-3	4	memmove_equal=1	ret_ok=1
+memmove	-3	7	memmove_equal=1	ret_ok=1
+memmove	-3	8	memmove_equal=1	ret_ok=1
+memmove	-3	15	memmove_equal=1	ret_ok=1
+memmove	-3	16	memmove_equal=1	ret_ok=1
+memmove	-3	17	memmove_equal=1	ret_ok=1
+memmove	-3	31	memmove_equal=1	ret_ok=1
+memmove	-3	32	memmove_equal=1	ret_ok=1
+memmove	-3	33	memmove_equal=1	ret_ok=1
+memmove	-3	63	memmove_equal=1	ret_ok=1
+memmove	-3	64	memmove_equal=1	ret_ok=1
+memmove	-3	65	memmove_equal=1	ret_ok=1
+memmove	-3	100	memmove_equal=1	ret_ok=1
+memmove	-3	127	memmove_equal=1	ret_ok=1
+memmove	-3	128	memmove_equal=1	ret_ok=1
+memmove	-3	129	memmove_equal=1	ret_ok=1
+memmove	-3	255	memmove_equal=1	ret_ok=1
+memmove	-3	256	memmove_equal=1	ret_ok=1
+memmove	-3	257	memmove_equal=1	ret_ok=1
+memmove	-3	1000	memmove_equal=1	ret_ok=1
+memmove	-3	4096	memmove_equal=1	ret_ok=1
+memmove	-3	5000	memmove_equal=1	ret_ok=1
+memmove	-4	1	memmove_equal=1	ret_ok=1
+memmove	-4	2	memmove_equal=1	ret_ok=1
+memmove	-4	3	memmove_equal=1	ret_ok=1
+memmove	-4	4	memmove_equal=1	ret_ok=1
+memmove	-4	7	memmove_equal=1	ret_ok=1
+memmove	-4	8	memmove_equal=1	ret_ok=1
+memmove	-4	15	memmove_equal=1	ret_ok=1
+memmove	-4	16	memmove_equal=1	ret_ok=1
+memmove	-4	17	memmove_equal=1	ret_ok=1
+memmove	-4	31	memmove_equal=1	ret_ok=1
+memmove	-4	32	memmove_equal=1	ret_ok=1
+memmove	-4	33	memmove_equal=1	ret_ok=1
+memmove	-4	63	memmove_equal=1	ret_ok=1
+memmove	-4	64	memmove_equal=1	ret_ok=1
+memmove	-4	65	memmove_equal=1	ret_ok=1
+memmove	-4	100	memmove_equal=1	ret_ok=1
+memmove	-4	127	memmove_equal=1	ret_ok=1
+memmove	-4	128	memmove_equal=1	ret_ok=1
+memmove	-4	129	memmove_equal=1	ret_ok=1
+memmove	-4	255	memmove_equal=1	ret_ok=1
+memmove	-4	256	memmove_equal=1	ret_ok=1
+memmove	-4	257	memmove_equal=1	ret_ok=1
+memmove	-4	1000	memmove_equal=1	ret_ok=1
+memmove	-4	4096	memmove_equal=1	ret_ok=1
+memmove	-4	5000	memmove_equal=1	ret_ok=1
+memmove	-7	1	memmove_equal=1	ret_ok=1
+memmove	-7	2	memmove_equal=1	ret_ok=1
+memmove	-7	3	memmove_equal=1	ret_ok=1
+memmove	-7	4	memmove_equal=1	ret_ok=1
+memmove	-7	7	memmove_equal=1	ret_ok=1
+memmove	-7	8	memmove_equal=1	ret_ok=1
+memmove	-7	15	memmove_equal=1	ret_ok=1
+memmove	-7	16	memmove_equal=1	ret_ok=1
+memmove	-7	17	memmove_equal=1	ret_ok=1
+memmove	-7	31	memmove_equal=1	ret_ok=1
+memmove	-7	32	memmove_equal=1	ret_ok=1
+memmove	-7	33	memmove_equal=1	ret_ok=1
+memmove	-7	63	memmove_equal=1	ret_ok=1
+memmove	-7	64	memmove_equal=1	ret_ok=1
+memmove	-7	65	memmove_equal=1	ret_ok=1
+memmove	-7	100	memmove_equal=1	ret_ok=1
+memmove	-7	127	memmove_equal=1	ret_ok=1
+memmove	-7	128	memmove_equal=1	ret_ok=1
+memmove	-7	129	memmove_equal=1	ret_ok=1
+memmove	-7	255	memmove_equal=1	ret_ok=1
+memmove	-7	256	memmove_equal=1	ret_ok=1
+memmove	-7	257	memmove_equal=1	ret_ok=1
+memmove	-7	1000	memmove_equal=1	ret_ok=1
+memmove	-7	4096	memmove_equal=1	ret_ok=1
+memmove	-7	5000	memmove_equal=1	ret_ok=1
+memmove	-8	1	memmove_equal=1	ret_ok=1
+memmove	-8	2	memmove_equal=1	ret_ok=1
+memmove	-8	3	memmove_equal=1	ret_ok=1
+memmove	-8	4	memmove_equal=1	ret_ok=1
+memmove	-8	7	memmove_equal=1	ret_ok=1
+memmove	-8	8	memmove_equal=1	ret_ok=1
+memmove	-8	15	memmove_equal=1	ret_ok=1
+memmove	-8	16	memmove_equal=1	ret_ok=1
+memmove	-8	17	memmove_equal=1	ret_ok=1
+memmove	-8	31	memmove_equal=1	ret_ok=1
+memmove	-8	32	memmove_equal=1	ret_ok=1
+memmove	-8	33	memmove_equal=1	ret_ok=1
+memmove	-8	63	memmove_equal=1	ret_ok=1
+memmove	-8	64	memmove_equal=1	ret_ok=1
+memmove	-8	65	memmove_equal=1	ret_ok=1
+memmove	-8	100	memmove_equal=1	ret_ok=1
+memmove	-8	127	memmove_equal=1	ret_ok=1
+memmove	-8	128	memmove_equal=1	ret_ok=1
+memmove	-8	129	memmove_equal=1	ret_ok=1
+memmove	-8	255	memmove_equal=1	ret_ok=1
+memmove	-8	256	memmove_equal=1	ret_ok=1
+memmove	-8	257	memmove_equal=1	ret_ok=1
+memmove	-8	1000	memmove_equal=1	ret_ok=1
+memmove	-8	4096	memmove_equal=1	ret_ok=1
+memmove	-8	5000	memmove_equal=1	ret_ok=1
+memmove	-15	1	memmove_equal=1	ret_ok=1
+memmove	-15	2	memmove_equal=1	ret_ok=1
+memmove	-15	3	memmove_equal=1	ret_ok=1
+memmove	-15	4	memmove_equal=1	ret_ok=1
+memmove	-15	7	memmove_equal=1	ret_ok=1
+memmove	-15	8	memmove_equal=1	ret_ok=1
+memmove	-15	15	memmove_equal=1	ret_ok=1
+memmove	-15	16	memmove_equal=1	ret_ok=1
+memmove	-15	17	memmove_equal=1	ret_ok=1
+memmove	-15	31	memmove_equal=1	ret_ok=1
+memmove	-15	32	memmove_equal=1	ret_ok=1
+memmove	-15	33	memmove_equal=1	ret_ok=1
+memmove	-15	63	memmove_equal=1	ret_ok=1
+memmove	-15	64	memmove_equal=1	ret_ok=1
+memmove	-15	65	memmove_equal=1	ret_ok=1
+memmove	-15	100	memmove_equal=1	ret_ok=1
+memmove	-15	127	memmove_equal=1	ret_ok=1
+memmove	-15	128	memmove_equal=1	ret_ok=1
+memmove	-15	129	memmove_equal=1	ret_ok=1
+memmove	-15	255	memmove_equal=1	ret_ok=1
+memmove	-15	256	memmove_equal=1	ret_ok=1
+memmove	-15	257	memmove_equal=1	ret_ok=1
+memmove	-15	1000	memmove_equal=1	ret_ok=1
+memmove	-15	4096	memmove_equal=1	ret_ok=1
+memmove	-15	5000	memmove_equal=1	ret_ok=1
+memmove	-16	1	memmove_equal=1	ret_ok=1
+memmove	-16	2	memmove_equal=1	ret_ok=1
+memmove	-16	3	memmove_equal=1	ret_ok=1
+memmove	-16	4	memmove_equal=1	ret_ok=1
+memmove	-16	7	memmove_equal=1	ret_ok=1
+memmove	-16	8	memmove_equal=1	ret_ok=1
+memmove	-16	15	memmove_equal=1	ret_ok=1
+memmove	-16	16	memmove_equal=1	ret_ok=1
+memmove	-16	17	memmove_equal=1	ret_ok=1
+memmove	-16	31	memmove_equal=1	ret_ok=1
+memmove	-16	32	memmove_equal=1	ret_ok=1
+memmove	-16	33	memmove_equal=1	ret_ok=1
+memmove	-16	63	memmove_equal=1	ret_ok=1
+memmove	-16	64	memmove_equal=1	ret_ok=1
+memmove	-16	65	memmove_equal=1	ret_ok=1
+memmove	-16	100	memmove_equal=1	ret_ok=1
+memmove	-16	127	memmove_equal=1	ret_ok=1
+memmove	-16	128	memmove_equal=1	ret_ok=1
+memmove	-16	129	memmove_equal=1	ret_ok=1
+memmove	-16	255	memmove_equal=1	ret_ok=1
+memmove	-16	256	memmove_equal=1	ret_ok=1
+memmove	-16	257	memmove_equal=1	ret_ok=1
+memmove	-16	1000	memmove_equal=1	ret_ok=1
+memmove	-16	4096	memmove_equal=1	ret_ok=1
+memmove	-16	5000	memmove_equal=1	ret_ok=1
+memmove	-17	1	memmove_equal=1	ret_ok=1
+memmove	-17	2	memmove_equal=1	ret_ok=1
+memmove	-17	3	memmove_equal=1	ret_ok=1
+memmove	-17	4	memmove_equal=1	ret_ok=1
+memmove	-17	7	memmove_equal=1	ret_ok=1
+memmove	-17	8	memmove_equal=1	ret_ok=1
+memmove	-17	15	memmove_equal=1	ret_ok=1
+memmove	-17	16	memmove_equal=1	ret_ok=1
+memmove	-17	17	memmove_equal=1	ret_ok=1
+memmove	-17	31	memmove_equal=1	ret_ok=1
+memmove	-17	32	memmove_equal=1	ret_ok=1
+memmove	-17	33	memmove_equal=1	ret_ok=1
+memmove	-17	63	memmove_equal=1	ret_ok=1
+memmove	-17	64	memmove_equal=1	ret_ok=1
+memmove	-17	65	memmove_equal=1	ret_ok=1
+memmove	-17	100	memmove_equal=1	ret_ok=1
+memmove	-17	127	memmove_equal=1	ret_ok=1
+memmove	-17	128	memmove_equal=1	ret_ok=1
+memmove	-17	129	memmove_equal=1	ret_ok=1
+memmove	-17	255	memmove_equal=1	ret_ok=1
+memmove	-17	256	memmove_equal=1	ret_ok=1
+memmove	-17	257	memmove_equal=1	ret_ok=1
+memmove	-17	1000	memmove_equal=1	ret_ok=1
+memmove	-17	4096	memmove_equal=1	ret_ok=1
+memmove	-17	5000	memmove_equal=1	ret_ok=1
+memmove	-31	1	memmove_equal=1	ret_ok=1
+memmove	-31	2	memmove_equal=1	ret_ok=1
+memmove	-31	3	memmove_equal=1	ret_ok=1
+memmove	-31	4	memmove_equal=1	ret_ok=1
+memmove	-31	7	memmove_equal=1	ret_ok=1
+memmove	-31	8	memmove_equal=1	ret_ok=1
+memmove	-31	15	memmove_equal=1	ret_ok=1
+memmove	-31	16	memmove_equal=1	ret_ok=1
+memmove	-31	17	memmove_equal=1	ret_ok=1
+memmove	-31	31	memmove_equal=1	ret_ok=1
+memmove	-31	32	memmove_equal=1	ret_ok=1
+memmove	-31	33	memmove_equal=1	ret_ok=1
+memmove	-31	63	memmove_equal=1	ret_ok=1
+memmove	-31	64	memmove_equal=1	ret_ok=1
+memmove	-31	65	memmove_equal=1	ret_ok=1
+memmove	-31	100	memmove_equal=1	ret_ok=1
+memmove	-31	127	memmove_equal=1	ret_ok=1
+memmove	-31	128	memmove_equal=1	ret_ok=1
+memmove	-31	129	memmove_equal=1	ret_ok=1
+memmove	-31	255	memmove_equal=1	ret_ok=1
+memmove	-31	256	memmove_equal=1	ret_ok=1
+memmove	-31	257	memmove_equal=1	ret_ok=1
+memmove	-31	1000	memmove_equal=1	ret_ok=1
+memmove	-31	4096	memmove_equal=1	ret_ok=1
+memmove	-31	5000	memmove_equal=1	ret_ok=1
+memmove	-32	1	memmove_equal=1	ret_ok=1
+memmove	-32	2	memmove_equal=1	ret_ok=1
+memmove	-32	3	memmove_equal=1	ret_ok=1
+memmove	-32	4	memmove_equal=1	ret_ok=1
+memmove	-32	7	memmove_equal=1	ret_ok=1
+memmove	-32	8	memmove_equal=1	ret_ok=1
+memmove	-32	15	memmove_equal=1	ret_ok=1
+memmove	-32	16	memmove_equal=1	ret_ok=1
+memmove	-32	17	memmove_equal=1	ret_ok=1
+memmove	-32	31	memmove_equal=1	ret_ok=1
+memmove	-32	32	memmove_equal=1	ret_ok=1
+memmove	-32	33	memmove_equal=1	ret_ok=1
+memmove	-32	63	memmove_equal=1	ret_ok=1
+memmove	-32	64	memmove_equal=1	ret_ok=1
+memmove	-32	65	memmove_equal=1	ret_ok=1
+memmove	-32	100	memmove_equal=1	ret_ok=1
+memmove	-32	127	memmove_equal=1	ret_ok=1
+memmove	-32	128	memmove_equal=1	ret_ok=1
+memmove	-32	129	memmove_equal=1	ret_ok=1
+memmove	-32	255	memmove_equal=1	ret_ok=1
+memmove	-32	256	memmove_equal=1	ret_ok=1
+memmove	-32	257	memmove_equal=1	ret_ok=1
+memmove	-32	1000	memmove_equal=1	ret_ok=1
+memmove	-32	4096	memmove_equal=1	ret_ok=1
+memmove	-32	5000	memmove_equal=1	ret_ok=1
+memmove	-33	1	memmove_equal=1	ret_ok=1
+memmove	-33	2	memmove_equal=1	ret_ok=1
+memmove	-33	3	memmove_equal=1	ret_ok=1
+memmove	-33	4	memmove_equal=1	ret_ok=1
+memmove	-33	7	memmove_equal=1	ret_ok=1
+memmove	-33	8	memmove_equal=1	ret_ok=1
+memmove	-33	15	memmove_equal=1	ret_ok=1
+memmove	-33	16	memmove_equal=1	ret_ok=1
+memmove	-33	17	memmove_equal=1	ret_ok=1
+memmove	-33	31	memmove_equal=1	ret_ok=1
+memmove	-33	32	memmove_equal=1	ret_ok=1
+memmove	-33	33	memmove_equal=1	ret_ok=1
+memmove	-33	63	memmove_equal=1	ret_ok=1
+memmove	-33	64	memmove_equal=1	ret_ok=1
+memmove	-33	65	memmove_equal=1	ret_ok=1
+memmove	-33	100	memmove_equal=1	ret_ok=1
+memmove	-33	127	memmove_equal=1	ret_ok=1
+memmove	-33	128	memmove_equal=1	ret_ok=1
+memmove	-33	129	memmove_equal=1	ret_ok=1
+memmove	-33	255	memmove_equal=1	ret_ok=1
+memmove	-33	256	memmove_equal=1	ret_ok=1
+memmove	-33	257	memmove_equal=1	ret_ok=1
+memmove	-33	1000	memmove_equal=1	ret_ok=1
+memmove	-33	4096	memmove_equal=1	ret_ok=1
+memmove	-33	5000	memmove_equal=1	ret_ok=1
+memmove	-63	1	memmove_equal=1	ret_ok=1
+memmove	-63	2	memmove_equal=1	ret_ok=1
+memmove	-63	3	memmove_equal=1	ret_ok=1
+memmove	-63	4	memmove_equal=1	ret_ok=1
+memmove	-63	7	memmove_equal=1	ret_ok=1
+memmove	-63	8	memmove_equal=1	ret_ok=1
+memmove	-63	15	memmove_equal=1	ret_ok=1
+memmove	-63	16	memmove_equal=1	ret_ok=1
+memmove	-63	17	memmove_equal=1	ret_ok=1
+memmove	-63	31	memmove_equal=1	ret_ok=1
+memmove	-63	32	memmove_equal=1	ret_ok=1
+memmove	-63	33	memmove_equal=1	ret_ok=1
+memmove	-63	63	memmove_equal=1	ret_ok=1
+memmove	-63	64	memmove_equal=1	ret_ok=1
+memmove	-63	65	memmove_equal=1	ret_ok=1
+memmove	-63	100	memmove_equal=1	ret_ok=1
+memmove	-63	127	memmove_equal=1	ret_ok=1
+memmove	-63	128	memmove_equal=1	ret_ok=1
+memmove	-63	129	memmove_equal=1	ret_ok=1
+memmove	-63	255	memmove_equal=1	ret_ok=1
+memmove	-63	256	memmove_equal=1	ret_ok=1
+memmove	-63	257	memmove_equal=1	ret_ok=1
+memmove	-63	1000	memmove_equal=1	ret_ok=1
+memmove	-63	4096	memmove_equal=1	ret_ok=1
+memmove	-63	5000	memmove_equal=1	ret_ok=1
+memmove	-64	1	memmove_equal=1	ret_ok=1
+memmove	-64	2	memmove_equal=1	ret_ok=1
+memmove	-64	3	memmove_equal=1	ret_ok=1
+memmove	-64	4	memmove_equal=1	ret_ok=1
+memmove	-64	7	memmove_equal=1	ret_ok=1
+memmove	-64	8	memmove_equal=1	ret_ok=1
+memmove	-64	15	memmove_equal=1	ret_ok=1
+memmove	-64	16	memmove_equal=1	ret_ok=1
+memmove	-64	17	memmove_equal=1	ret_ok=1
+memmove	-64	31	memmove_equal=1	ret_ok=1
+memmove	-64	32	memmove_equal=1	ret_ok=1
+memmove	-64	33	memmove_equal=1	ret_ok=1
+memmove	-64	63	memmove_equal=1	ret_ok=1
+memmove	-64	64	memmove_equal=1	ret_ok=1
+memmove	-64	65	memmove_equal=1	ret_ok=1
+memmove	-64	100	memmove_equal=1	ret_ok=1
+memmove	-64	127	memmove_equal=1	ret_ok=1
+memmove	-64	128	memmove_equal=1	ret_ok=1
+memmove	-64	129	memmove_equal=1	ret_ok=1
+memmove	-64	255	memmove_equal=1	ret_ok=1
+memmove	-64	256	memmove_equal=1	ret_ok=1
+memmove	-64	257	memmove_equal=1	ret_ok=1
+memmove	-64	1000	memmove_equal=1	ret_ok=1
+memmove	-64	4096	memmove_equal=1	ret_ok=1
+memmove	-64	5000	memmove_equal=1	ret_ok=1
+memmove	-65	1	memmove_equal=1	ret_ok=1
+memmove	-65	2	memmove_equal=1	ret_ok=1
+memmove	-65	3	memmove_equal=1	ret_ok=1
+memmove	-65	4	memmove_equal=1	ret_ok=1
+memmove	-65	7	memmove_equal=1	ret_ok=1
+memmove	-65	8	memmove_equal=1	ret_ok=1
+memmove	-65	15	memmove_equal=1	ret_ok=1
+memmove	-65	16	memmove_equal=1	ret_ok=1
+memmove	-65	17	memmove_equal=1	ret_ok=1
+memmove	-65	31	memmove_equal=1	ret_ok=1
+memmove	-65	32	memmove_equal=1	ret_ok=1
+memmove	-65	33	memmove_equal=1	ret_ok=1
+memmove	-65	63	memmove_equal=1	ret_ok=1
+memmove	-65	64	memmove_equal=1	ret_ok=1
+memmove	-65	65	memmove_equal=1	ret_ok=1
+memmove	-65	100	memmove_equal=1	ret_ok=1
+memmove	-65	127	memmove_equal=1	ret_ok=1
+memmove	-65	128	memmove_equal=1	ret_ok=1
+memmove	-65	129	memmove_equal=1	ret_ok=1
+memmove	-65	255	memmove_equal=1	ret_ok=1
+memmove	-65	256	memmove_equal=1	ret_ok=1
+memmove	-65	257	memmove_equal=1	ret_ok=1
+memmove	-65	1000	memmove_equal=1	ret_ok=1
+memmove	-65	4096	memmove_equal=1	ret_ok=1
+memmove	-65	5000	memmove_equal=1	ret_ok=1
+memmove	-1000	1	memmove_equal=1	ret_ok=1
+memmove	-1000	2	memmove_equal=1	ret_ok=1
+memmove	-1000	3	memmove_equal=1	ret_ok=1
+memmove	-1000	4	memmove_equal=1	ret_ok=1
+memmove	-1000	7	memmove_equal=1	ret_ok=1
+memmove	-1000	8	memmove_equal=1	ret_ok=1
+memmove	-1000	15	memmove_equal=1	ret_ok=1
+memmove	-1000	16	memmove_equal=1	ret_ok=1
+memmove	-1000	17	memmove_equal=1	ret_ok=1
+memmove	-1000	31	memmove_equal=1	ret_ok=1
+memmove	-1000	32	memmove_equal=1	ret_ok=1
+memmove	-1000	33	memmove_equal=1	ret_ok=1
+memmove	-1000	63	memmove_equal=1	ret_ok=1
+memmove	-1000	64	memmove_equal=1	ret_ok=1
+memmove	-1000	65	memmove_equal=1	ret_ok=1
+memmove	-1000	100	memmove_equal=1	ret_ok=1
+memmove	-1000	127	memmove_equal=1	ret_ok=1
+memmove	-1000	128	memmove_equal=1	ret_ok=1
+memmove	-1000	129	memmove_equal=1	ret_ok=1
+memmove	-1000	255	memmove_equal=1	ret_ok=1
+memmove	-1000	256	memmove_equal=1	ret_ok=1
+memmove	-1000	257	memmove_equal=1	ret_ok=1
+memmove	-1000	1000	memmove_equal=1	ret_ok=1
+memmove	-1000	4096	memmove_equal=1	ret_ok=1
+memmove	-1000	5000	memmove_equal=1	ret_ok=1
+memcpy	zero_len_null_ret=0000000000000000
+memset	c=0x1A5	byte=a5
+memset	c=-1	byte=ff
+chr	c=97	strchr=0	strrchr=3	memchr=0
+chr	c=99	strchr=2	strrchr=5	memchr=2
+chr	c=0	strchr=10	strrchr=10	memchr=10
+chr	c=353	strchr=0	strrchr=3	memchr=0
+chr	c=-159	strchr=0	strrchr=3	memchr=0
+chr	c=128	strchr=6	strrchr=6	memchr=6
+chr	c=-128	strchr=6	strrchr=6	memchr=6
+chr	c=384	strchr=6	strrchr=6	memchr=6
+chr	c=113	strchr=-1	strrchr=-1	memchr=-1
+memchr	zero_len=0000000000000000
+strstr	empty=0	found=2	missing=0000000000000000	same=0	longer=0000000000000000
+wchr	c=61	wcschr=0	wcsrchr=3
+wchr	c=62	wcschr=1	wcsrchr=4
+wchr	c=0	wcschr=8	wcsrchr=8
+wchr	c=10061	wcschr=0	wcsrchr=3
+wchr	c=8000	wcschr=5	wcsrchr=5
+wchr	c=18000	wcschr=5	wcsrchr=5
+wchr	c=71	wcschr=-1	wcsrchr=-1
+wcsstr	empty=0	found=2	missing=0000000000000000
+fault	memcpy_write_noaccess_200	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_noaccess_200	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_noaccess_200	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_read_noaccess_200	count=1	code=c0000005	n=2	rw=0	off_in_page=68	matched_before=1
+fault	memmove_back_noaccess_200	count=1	code=c0000005	n=2	rw=0	off_in_page=34	matched_before=0
+memcmp_ret	memcmp_eq_noaccess_200	0
+fault	memcmp_eq_noaccess_200	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff90_noaccess_200	1
+fault	memcmp_diff90_noaccess_200	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff2_noaccess_200	1
+fault	memcmp_diff2_noaccess_200	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit40_noaccess_200	40
+fault	memchr_hit40_noaccess_200	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit97_noaccess_200	97
+fault	memchr_hit97_noaccess_200	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_miss_noaccess_200	-1
+fault	memchr_miss_noaccess_200	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+fault	memcpy_write_noaccess_300	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_noaccess_300	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_noaccess_300	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_read_noaccess_300	count=1	code=c0000005	n=2	rw=0	off_in_page=168	matched_before=1
+fault	memmove_back_noaccess_300	count=1	code=c0000005	n=2	rw=0	off_in_page=134	matched_before=0
+memcmp_ret	memcmp_eq_noaccess_300	0
+fault	memcmp_eq_noaccess_300	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff90_noaccess_300	1
+fault	memcmp_diff90_noaccess_300	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff2_noaccess_300	1
+fault	memcmp_diff2_noaccess_300	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit40_noaccess_300	40
+fault	memchr_hit40_noaccess_300	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit97_noaccess_300	97
+fault	memchr_hit97_noaccess_300	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_miss_noaccess_300	-1
+fault	memchr_miss_noaccess_300	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+fault	memcpy_write_noaccess_1000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_noaccess_1000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_noaccess_1000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_read_noaccess_1000	count=1	code=c0000005	n=2	rw=0	off_in_page=868	matched_before=1
+fault	memmove_back_noaccess_1000	count=1	code=c0000005	n=2	rw=0	off_in_page=834	matched_before=0
+memcmp_ret	memcmp_eq_noaccess_1000	0
+fault	memcmp_eq_noaccess_1000	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff90_noaccess_1000	1
+fault	memcmp_diff90_noaccess_1000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff2_noaccess_1000	1
+fault	memcmp_diff2_noaccess_1000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit40_noaccess_1000	40
+fault	memchr_hit40_noaccess_1000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit97_noaccess_1000	97
+fault	memchr_hit97_noaccess_1000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_miss_noaccess_1000	336
+fault	memchr_miss_noaccess_1000	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+fault	memcpy_write_noaccess_5000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_noaccess_5000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_noaccess_5000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_read_noaccess_5000	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=1
+fault	memmove_back_noaccess_5000	count=1	code=c0000005	n=2	rw=0	off_in_page=4094	matched_before=0
+memcmp_ret	memcmp_eq_noaccess_5000	0
+fault	memcmp_eq_noaccess_5000	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff90_noaccess_5000	1
+fault	memcmp_diff90_noaccess_5000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff2_noaccess_5000	1
+fault	memcmp_diff2_noaccess_5000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit40_noaccess_5000	40
+fault	memchr_hit40_noaccess_5000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit97_noaccess_5000	97
+fault	memchr_hit97_noaccess_5000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_miss_noaccess_5000	336
+fault	memchr_miss_noaccess_5000	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+fault	memcpy_write_readonly_200	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_readonly_200	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_readonly_200	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_write_readonly_300	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_readonly_300	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_readonly_300	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_write_readonly_1000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_readonly_1000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_readonly_1000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_write_readonly_5000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_readonly_5000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_readonly_5000	count=1	code=c0000005	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_write_guard_200	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_guard_200	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_guard_200	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_read_guard_200	count=1	code=80000001	n=2	rw=0	off_in_page=68	matched_before=1
+fault	memmove_back_guard_200	count=1	code=80000001	n=2	rw=0	off_in_page=34	matched_before=0
+memcmp_ret	memcmp_eq_guard_200	0
+fault	memcmp_eq_guard_200	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff90_guard_200	1
+fault	memcmp_diff90_guard_200	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff2_guard_200	1
+fault	memcmp_diff2_guard_200	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit40_guard_200	40
+fault	memchr_hit40_guard_200	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit97_guard_200	97
+fault	memchr_hit97_guard_200	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_miss_guard_200	-1
+fault	memchr_miss_guard_200	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+fault	memcpy_write_guard_300	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_guard_300	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_guard_300	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_read_guard_300	count=1	code=80000001	n=2	rw=0	off_in_page=168	matched_before=1
+fault	memmove_back_guard_300	count=1	code=80000001	n=2	rw=0	off_in_page=134	matched_before=0
+memcmp_ret	memcmp_eq_guard_300	0
+fault	memcmp_eq_guard_300	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff90_guard_300	1
+fault	memcmp_diff90_guard_300	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff2_guard_300	1
+fault	memcmp_diff2_guard_300	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit40_guard_300	40
+fault	memchr_hit40_guard_300	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit97_guard_300	97
+fault	memchr_hit97_guard_300	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_miss_guard_300	-1
+fault	memchr_miss_guard_300	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+fault	memcpy_write_guard_1000	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_guard_1000	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_guard_1000	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_read_guard_1000	count=1	code=80000001	n=2	rw=0	off_in_page=868	matched_before=1
+fault	memmove_back_guard_1000	count=1	code=80000001	n=2	rw=0	off_in_page=834	matched_before=0
+memcmp_ret	memcmp_eq_guard_1000	0
+fault	memcmp_eq_guard_1000	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff90_guard_1000	1
+fault	memcmp_diff90_guard_1000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff2_guard_1000	1
+fault	memcmp_diff2_guard_1000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit40_guard_1000	40
+fault	memchr_hit40_guard_1000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit97_guard_1000	97
+fault	memchr_hit97_guard_1000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_miss_guard_1000	336
+fault	memchr_miss_guard_1000	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+fault	memcpy_write_guard_5000	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memmove_write_guard_5000	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memset_write_guard_5000	count=1	code=80000001	n=2	rw=1	off_in_page=0	matched_before=96
+fault	memcpy_read_guard_5000	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=1
+fault	memmove_back_guard_5000	count=1	code=80000001	n=2	rw=0	off_in_page=4094	matched_before=0
+memcmp_ret	memcmp_eq_guard_5000	0
+fault	memcmp_eq_guard_5000	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff90_guard_5000	1
+fault	memcmp_diff90_guard_5000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memcmp_ret	memcmp_diff2_guard_5000	1
+fault	memcmp_diff2_guard_5000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit40_guard_5000	40
+fault	memchr_hit40_guard_5000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_hit97_guard_5000	97
+fault	memchr_hit97_guard_5000	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+memchr_ret	memchr_miss_guard_5000	336
+fault	memchr_miss_guard_5000	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strchr_term_at_end_noaccess	0000000000000000
+fault	strchr_term_at_end_noaccess	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strrchr_term_at_end_noaccess	62
+fault	strrchr_term_at_end_noaccess	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strstr_term_at_end_noaccess	0000000000000000
+fault	strstr_term_at_end_noaccess	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strchr_runs_in_noaccess	00000230ED1F10A2
+fault	strchr_runs_in_noaccess	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strchr_hit0_runs_in_noaccess	0
+fault	strchr_hit0_runs_in_noaccess	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	wcschr_term_at_end_noaccess	0000000000000000
+fault	wcschr_term_at_end_noaccess	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	wcsstr_term_at_end_noaccess	0000000000000000
+fault	wcsstr_term_at_end_noaccess	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	wcsrchr_runs_in_noaccess	00000230ED1F0FFE
+fault	wcsrchr_runs_in_noaccess	count=1	code=c0000005	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	wcschr_odd_noaccess	0000000000000000
+fault	wcschr_odd_noaccess	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strchr_term_at_end_guard	0000000000000000
+fault	strchr_term_at_end_guard	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strrchr_term_at_end_guard	62
+fault	strrchr_term_at_end_guard	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strstr_term_at_end_guard	0000000000000000
+fault	strstr_term_at_end_guard	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strchr_runs_in_guard	00000230ED1F10A2
+fault	strchr_runs_in_guard	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	strchr_hit0_runs_in_guard	0
+fault	strchr_hit0_runs_in_guard	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	wcschr_term_at_end_guard	0000000000000000
+fault	wcschr_term_at_end_guard	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	wcsstr_term_at_end_guard	0000000000000000
+fault	wcsstr_term_at_end_guard	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	wcsrchr_runs_in_guard	00000230ED1F0FFE
+fault	wcsrchr_runs_in_guard	count=1	code=80000001	n=2	rw=0	off_in_page=0	matched_before=0
+str_ret	wcschr_odd_guard	0000000000000000
+fault	wcschr_odd_guard	count=0	code=00000000	n=2	rw=0	off_in_page=0	matched_before=0

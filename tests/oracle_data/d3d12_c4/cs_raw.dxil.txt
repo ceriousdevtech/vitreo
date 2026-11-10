@@ -1,0 +1,161 @@
+;
+; Note: shader requires additional functionality:
+;       64-Bit integer
+;       Advanced Texture Ops
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: c7659f132920152a0095e97c00aa7e66
+;
+; Pipeline Runtime Information: 
+;
+;PSVRuntimeInfo:
+; Compute Shader
+; NumThreads=(16,1,1)
+; MinimumExpectedWaveLaneCount: 0
+; MaximumExpectedWaveLaneCount: 4294967295
+; UsesViewID: false
+; SigInputElements: 0
+; SigOutputElements: 0
+; SigPatchConstOrPrimElements: 0
+; SigInputVectors: 0
+; SigOutputVectors[0]: 0
+; SigOutputVectors[1]: 0
+; SigOutputVectors[2]: 0
+; SigOutputVectors[3]: 0
+; EntryFunctionName: cs_raw
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; s0                                sampler      NA          NA      S0             s0     1
+; t1                                texture     u32          2d      T0             t1     1
+; t3                                texture     u32          2d      T1             t3     1
+; outbuf                                UAV    byte         r/w      U0             u1     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResBind = type { i32, i32, i32, i8 }
+%dx.types.ResourceProperties = type { i32, i32 }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%dx.types.ResRet.i64 = type { i64, i64, i64, i64, i32 }
+%"class.Texture2D<unsigned int>" = type { i32, %"class.Texture2D<unsigned int>::mips_type" }
+%"class.Texture2D<unsigned int>::mips_type" = type { i32 }
+%"class.Texture2D<unsigned long long>" = type { i64, %"class.Texture2D<unsigned long long>::mips_type" }
+%"class.Texture2D<unsigned long long>::mips_type" = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+%struct.SamplerState = type { i32 }
+
+define void @cs_raw() {
+  %1 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind { i32 1, i32 1, i32 0, i8 1 }, i32 1, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind { i32 3, i32 3, i32 0, i8 0 }, i32 3, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %3 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind { i32 1, i32 1, i32 0, i8 0 }, i32 1, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %4 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind { i32 0, i32 0, i32 0, i8 3 }, i32 0, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %5 = call i32 @dx.op.flattenedThreadIdInGroup.i32(i32 96)  ; FlattenedThreadIdInGroup()
+  %6 = and i32 %5, 7
+  %7 = uitofp i32 %6 to float
+  %8 = lshr i32 %5, 3
+  %9 = uitofp i32 %8 to float
+  %10 = fadd fast float %7, 5.000000e-01
+  %11 = fadd fast float %9, 5.000000e-01
+  %12 = fmul fast float %10, 1.250000e-01
+  %13 = fmul fast float %11, 1.250000e-01
+  %14 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %3, %dx.types.ResourceProperties { i32 2, i32 261 })  ; AnnotateHandle(res,props)  resource: Texture2D<U32>
+  %15 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %4, %dx.types.ResourceProperties { i32 14, i32 0 })  ; AnnotateHandle(res,props)  resource: SamplerState
+  %16 = call %dx.types.ResRet.i32 @dx.op.textureGatherRaw.i32(i32 223, %dx.types.Handle %14, %dx.types.Handle %15, float %12, float %13, float undef, float undef, i32 0, i32 0)  ; TextureGatherRaw(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1)
+  %17 = extractvalue %dx.types.ResRet.i32 %16, 0
+  %18 = extractvalue %dx.types.ResRet.i32 %16, 1
+  %19 = extractvalue %dx.types.ResRet.i32 %16, 2
+  %20 = extractvalue %dx.types.ResRet.i32 %16, 3
+  %21 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 2, i32 261 })  ; AnnotateHandle(res,props)  resource: Texture2D<U32>
+  %22 = call %dx.types.ResRet.i64 @dx.op.textureGatherRaw.i64(i32 223, %dx.types.Handle %21, %dx.types.Handle %15, float %12, float %13, float undef, float undef, i32 0, i32 0)  ; TextureGatherRaw(srv,sampler,coord0,coord1,coord2,coord3,offset0,offset1)
+  %23 = extractvalue %dx.types.ResRet.i64 %22, 0
+  %24 = extractvalue %dx.types.ResRet.i64 %22, 1
+  %25 = extractvalue %dx.types.ResRet.i64 %22, 2
+  %26 = extractvalue %dx.types.ResRet.i64 %22, 3
+  %27 = mul i32 %5, 48
+  %28 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %28, i32 %27, i32 undef, i32 %17, i32 %18, i32 %19, i32 %20, i8 15, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %29 = trunc i64 %23 to i32
+  %30 = lshr i64 %23, 32
+  %31 = trunc i64 %30 to i32
+  %32 = trunc i64 %24 to i32
+  %33 = lshr i64 %24, 32
+  %34 = trunc i64 %33 to i32
+  %35 = add i32 %27, 16
+  %36 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %36, i32 %35, i32 undef, i32 %29, i32 %31, i32 %32, i32 %34, i8 15, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %37 = trunc i64 %25 to i32
+  %38 = lshr i64 %25, 32
+  %39 = trunc i64 %38 to i32
+  %40 = trunc i64 %26 to i32
+  %41 = lshr i64 %26, 32
+  %42 = trunc i64 %41 to i32
+  %43 = add i32 %27, 32
+  %44 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %44, i32 %43, i32 undef, i32 %37, i32 %39, i32 %40, i32 %42, i8 15, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.flattenedThreadIdInGroup.i32(i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.textureGatherRaw.i32(i32, %dx.types.Handle, %dx.types.Handle, float, float, float, float, i32, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i64 @dx.op.textureGatherRaw.i64(i32, %dx.types.Handle, %dx.types.Handle, float, float, float, float, i32, i32) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #2
+
+; Function Attrs: nounwind readnone
+declare %dx.types.Handle @dx.op.annotateHandle(i32, %dx.types.Handle, %dx.types.ResourceProperties) #0
+
+; Function Attrs: nounwind readnone
+declare %dx.types.Handle @dx.op.createHandleFromBinding(i32, %dx.types.ResBind, i32, i1) #0
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!13}
+
+!0 = !{!"dxc(private) 1.9.0.5399 (a107ba613)"}
+!1 = !{i32 1, i32 7}
+!2 = !{i32 1, i32 9}
+!3 = !{!"cs", i32 6, i32 7}
+!4 = !{!5, !9, null, !11}
+!5 = !{!6, !8}
+!6 = !{i32 0, %"class.Texture2D<unsigned int>"* undef, !"", i32 0, i32 1, i32 1, i32 2, i32 0, !7}
+!7 = !{i32 0, i32 5}
+!8 = !{i32 1, %"class.Texture2D<unsigned long long>"* undef, !"", i32 0, i32 3, i32 1, i32 2, i32 0, !7}
+!9 = !{!10}
+!10 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 1, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!11 = !{!12}
+!12 = !{i32 0, %struct.SamplerState* undef, !"", i32 0, i32 0, i32 1, i32 0, null}
+!13 = !{void ()* @cs_raw, !"cs_raw", null, !4, !14}
+!14 = !{i32 0, i64 25770852368, i32 4, !15}
+!15 = !{i32 16, i32 1, i32 1}

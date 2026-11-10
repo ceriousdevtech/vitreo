@@ -91,12 +91,13 @@ TEST(DxbcToSpirvTest, PreciseInstructionsDecorateNoContraction) {
 }
 
 // MslCompileOptions::precise_without_helpers (the D3D11 and D3D12 frontends,
-// whose precise shaders compile in MTLMathModeSafe, which never reassociates):
-// a precise op is the plain operator and the shader turns contraction off,
-// instead of a call to an optnone helper. Measured on Apple silicon
-// (scratchpad microbenchmark, 2026-10-09): Safe mode alone fuses a*b+c into
-// an FMA, `#pragma clang fp contract(off)` stops it, bit-identical to the
-// helpers, at 2.2x their speed. A shader with nothing precise is unchanged.
+// whose precise shaders compile in MTLMathModeSafe, which never reassociates).
+// D3D11.3 22.19.2: only the precise result is barred from fusion, so that op
+// is an always_inline helper and the rest of the shader may still contract
+// (Safe mode fuses a non-precise a*b+c; a file pragma would refuse it).
+// 22.3.2, fp_contract_off: nothing may fuse, so the precise op is the plain
+// operator under a file-scope pragma. A shader with nothing precise is
+// unchanged either way.
 TEST(DxbcToSpirvTest, PreciseOpsArePlainOperatorsWithContractionOffOnRequest) {
     DxbcContainer container{};
     container.shader_model_major = 5;
@@ -133,19 +134,72 @@ TEST(DxbcToSpirvTest, PreciseOpsArePlainOperatorsWithContractionOffOnRequest) {
     };
     const auto precise = build(true);
     ASSERT_TRUE(precise.valid()) << precise.failure;
-    const std::string msl = compile(precise);
-    EXPECT_NE(msl.find("#pragma clang fp contract(off)"), std::string::npos)
-        << msl;
-    EXPECT_EQ(msl.find("vitreoFMul(in."), std::string::npos) << msl;
-    EXPECT_EQ(msl.find("spvFMul(in."), std::string::npos) << msl;
-    EXPECT_NE(msl.find("in.POSITION0 * in.POSITION0"),
-              std::string::npos) << msl;
+    const std::string isolated = compile(precise);
+    EXPECT_EQ(isolated.find("#pragma clang fp contract(off)"),
+              std::string::npos)
+        << isolated;
+    EXPECT_NE(isolated.find("vitreoPreciseMul(in.POSITION0, in.POSITION0)"),
+              std::string::npos)
+        << isolated;
+    EXPECT_EQ(isolated.find("vitreoFMul(in."), std::string::npos) << isolated;
+    EXPECT_EQ(isolated.find("spvFMul(in."), std::string::npos) << isolated;
 
+    msl_options.fp_contract_off = true;
+    const std::string whole = compile(precise);
+    EXPECT_NE(whole.find("#pragma clang fp contract(off)"), std::string::npos)
+        << whole;
+    EXPECT_EQ(whole.find("vitreoPreciseMul("), std::string::npos) << whole;
+    EXPECT_NE(whole.find("in.POSITION0 * in.POSITION0"), std::string::npos)
+        << whole;
+
+    msl_options.fp_contract_off = false;
     const auto plain = build(false);
     ASSERT_TRUE(plain.valid()) << plain.failure;
     EXPECT_EQ(compile(plain).find("#pragma clang fp contract(off)"),
               std::string::npos)
         << "nothing precise: the shader keeps contraction";
+    EXPECT_EQ(compile(plain).find("vitreoPreciseMul("), std::string::npos);
+}
+
+// A depth prepass and a later pass over the same geometry run different
+// vertex shaders with the same position code, and D3D gives both the same
+// bits (engines depth-test the second pass EQUAL / GREATER_EQUAL against the
+// first). The rasterized position is therefore [[invariant]] in every vertex
+// shader -- including one with nothing precise, compiled under
+// refactoringAllowed, which is how fxc ships UE4's base-pass and depth-only
+// shaders -- and the frontends compile it with preserveInvariance.
+TEST(DxbcToSpirvTest, RasterizedPositionIsInvariantWithoutPrecise) {
+    DxbcContainer container{};
+    container.shader_model_major = 5;
+    container.shader_model_minor = 0;
+    container.stage = ShaderStage::Vertex;
+    container.input_signature.push_back({"POSITION", 0, 0, 0xFu, 3});
+    container.output_signature.push_back({"SV_Position", 0, 0, 0xFu, 3});
+    const auto append_word = [&](u32 word) {
+        const auto* bytes = reinterpret_cast<const u8*>(&word);
+        container.bytecode.insert(container.bytecode.end(), bytes, bytes + 4);
+    };
+    append_word(0x00010050u);  // vs_5_0
+    append_word(11u);
+    append_word(0x0100086Au);  // dcl_globalFlags refactoringAllowed
+    // mul o0.xyzw, v0.xyzw, v0.xyzw  (opcode 56, length 7), not precise
+    append_word(56u | (7u << 24));
+    append_word(0x001020F2u); append_word(0u);
+    append_word(0x001010E4u); append_word(0u);
+    append_word(0x001010E4u); append_word(0u);
+    append_word(62u | (1u << 24));  // ret
+    ASSERT_FALSE(dxbc_math_contract(container).uses_precise);
+    ASSERT_TRUE(dxbc_math_contract(container).refactoring_allowed);
+    const auto spirv = translate_dxbc_to_spirv(container);
+    ASSERT_TRUE(spirv.valid()) << spirv.failure;
+    MslCompileOptions msl_options{};
+    msl_options.argument_buffers = false;
+    const auto compiled = compile_spirv_to_msl(
+        spirv.spirv.data(), spirv.spirv.size(), ShaderStage::Vertex,
+        msl_options);
+    ASSERT_TRUE(compiled.valid());
+    const std::string msl(compiled.msl_text());
+    EXPECT_NE(msl.find("[[position, invariant]]"), std::string::npos) << msl;
 }
 
 // The guard's size table has one entry per slot: t9's load is checked
@@ -370,28 +424,22 @@ TEST(DxbcToSpirvTest, TranslatesMaxWithDirect3DNaNSelection) {
         create_binary_vertex_shader(/*MAX=*/52u));
     ASSERT_TRUE(result.valid()) << result.failure;
 
-    // Khronos SPIR-V unified opcodes. The explicit NaN tests preserve the
-    // Shader Model 4 rule that a single NaN selects the other operand.
-    EXPECT_TRUE(spirv_contains_opcode(result.spirv, /*OpIsNan=*/156u));
-    EXPECT_TRUE(spirv_contains_opcode(
-        result.spirv, /*OpFOrdGreaterThanEqual=*/190u));
-
     auto compiled = compile_spirv_to_msl(
         result.spirv.data(), result.spirv.size(), ShaderStage::Vertex);
-    EXPECT_TRUE(compiled.valid());
+    ASSERT_TRUE(compiled.valid());
+    EXPECT_NE(std::string(compiled.msl_text()).find("precise::max("),
+              std::string::npos) << compiled.msl_text();
 }
 
 TEST(DxbcToSpirvTest, TranslatesMinWithDirect3DNaNSelection) {
     auto result = translate_dxbc_to_spirv(
         create_binary_vertex_shader(/*MIN=*/51u));
     ASSERT_TRUE(result.valid()) << result.failure;
-    EXPECT_TRUE(spirv_contains_opcode(result.spirv, /*OpIsNan=*/156u));
-    EXPECT_TRUE(spirv_contains_opcode(
-        result.spirv, /*OpFOrdLessThan=*/184u));
-
     auto compiled = compile_spirv_to_msl(
         result.spirv.data(), result.spirv.size(), ShaderStage::Vertex);
-    EXPECT_TRUE(compiled.valid());
+    ASSERT_TRUE(compiled.valid());
+    EXPECT_NE(std::string(compiled.msl_text()).find("precise::min("),
+              std::string::npos) << compiled.msl_text();
 }
 
 TEST(DxbcToSpirvTest, NeUsesUnorderedNotEqualOpcode) {
@@ -545,9 +593,7 @@ TEST(DxbcToSpirvTest, AddAppliesDestinationSaturateModifier) {
     const auto result = translate_dxbc_to_spirv(container);
     ASSERT_TRUE(result.valid()) << result.failure;
     // saturate(x) == min(max(x, 0), 1) with saturate(NaN) == 0, built from
-    // ordered compares so NaN takes the 0 branch.
-    EXPECT_TRUE(spirv_contains_opcode(result.spirv,
-                                      /*OpFOrdGreaterThanEqual=*/190u));
+    // ordered compares (0 < x, x < 1) so NaN takes the 0 branch.
     EXPECT_TRUE(spirv_contains_opcode(result.spirv, /*OpFOrdLessThan=*/184u));
     EXPECT_TRUE(spirv_contains_opcode(result.spirv, /*OpSelect=*/169u));
     const auto compiled = compile_spirv_to_msl(

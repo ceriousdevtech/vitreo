@@ -131,4 +131,10 @@ void add_set_token_information_exports(DllExports& exports,
 /// Register DecryptFileA/W.
 void add_decrypt_file_exports(DllExports& exports, capsule::Vfs* vfs);
 
+/// Register an explicit unsupported event-log opener (A or W).
+void add_event_log_open_export(DllExports& exports, bool wide);
+
+/// Register the explicit unsupported shutdown-service boundary.
+void add_shutdown_exports(DllExports& exports);
+
 } // namespace vitreo::winapi

@@ -271,11 +271,18 @@ u32 D3D11Manager::build_tessellation_program(
     options.emulate_tessellation = true;
     options.domain_to_compute = true;
     const auto lowered = graphics::translate_dxbc_to_spirv(container, options);
-    if (!lowered.valid() ||
-        !(hull ? lowered.hs_lowered_to_compute
+    if (!lowered.valid()) {
+        // The translator names the case; a program the spec calls invalid
+        // is the caller's error (D3D11.3 10.6 control point counts).
+        why = lowered.failure;
+        return lowered.invalid_program ? d3d11::E_INVALIDARG
+                                       : d3d11::E_NOTIMPL;
+    }
+    if (!(hull ? lowered.hs_lowered_to_compute
                : lowered.ds_lowered_to_compute)) {
-        why = "the tessellation emulation cannot express this shader: " +
-              lowered.failure;
+        why = hull ? "the hull shader translated without its compute lowering"
+                   : "the domain shader translated without its compute "
+                     "lowering";
         return d3d11::E_NOTIMPL;
     }
 
@@ -309,10 +316,9 @@ u32 D3D11Manager::build_tessellation_program(
         std::vector<graphics::GsPassthroughOutput> outputs;
         for (const auto& element : container.output_signature) {
             const u32 sv = element.system_value_type;
-            if (sv == 3u) {  // D3D_NAME_CULL_DISTANCE
-                why = "SV_CullDistance output: Metal has no cull distances";
-                return d3d11::E_NOTIMPL;
-            }
+            // D3D_NAME_CULL_DISTANCE: culled by the pass-through, which then
+            // reads the index list itself (cull_distances).
+            domain_shader.cull_distances |= sv == 3u;
             domain_shader.writes_viewport_index |= sv == 5u;
             auto same = std::find_if(outputs.begin(), outputs.end(),
                                      [&](const auto& o) {
@@ -325,7 +331,7 @@ u32 D3D11Manager::build_tessellation_program(
                 same = std::prev(outputs.end());
             }
             if (sv == 1u) same->is_position = true;
-            if (sv == 2u || sv == 4u || sv == 5u) {
+            if (sv == 2u || sv == 3u || sv == 4u || sv == 5u) {
                 for (u32 c = 0; c < 4; ++c) {
                     if ((element.component_mask & (1u << c)) != 0u) {
                         same->component_system_values[c] =
@@ -334,10 +340,20 @@ u32 D3D11Manager::build_tessellation_program(
                 }
             }
         }
+        // With cull distances the draw picks the pass-through for the hull
+        // shader's output primitive; this one (triangles) only says whether
+        // the records can be rasterized at all (an SV_Position).
         domain_shader.passthrough_msl =
             graphics::generate_gs_passthrough_vertex_msl(
                 outputs, 0, /*fixed_function_push=*/true,
-                /*dense_records=*/true);
+                /*dense_records=*/true,
+                domain_shader.cull_distances ? 3u : 0u,
+                /*records_through_index_list=*/domain_shader.cull_distances);
+        if (domain_shader.cull_distances) {
+            domain_shader.culling_passthrough_msl.emplace(
+                3u, domain_shader.passthrough_msl);
+        }
+        domain_shader.passthrough_outputs = std::move(outputs);
         domain_shader.stats_clip = stats_clip_layout(
             container.output_signature, domain_shader.record_registers, 0);
         domain_shader.domain = lowered.tess_domain;
@@ -895,7 +911,27 @@ void D3D11Manager::execute_tessellation_software(
         domain_kernel = found->second;
     }
     const std::vector<u32> ds_records = ds.record_registers;
-    const std::string ds_passthrough = ds.passthrough_msl;
+    // Cull distances: the pass-through for this output primitive, drawn
+    // non-indexed over the index list (DomainShader::cull_distances).
+    const bool ds_cull = ds.cull_distances;
+    if (ds_cull && !ds.culling_passthrough_msl.contains(vpp)) {
+        ds.culling_passthrough_msl.emplace(
+            vpp, graphics::generate_gs_passthrough_vertex_msl(
+                     ds.passthrough_outputs, 0, /*fixed_function_push=*/true,
+                     /*dense_records=*/true, vpp,
+                     /*records_through_index_list=*/true));
+    }
+    // Point output: a pass-through that writes a one-pixel [[point_size]]
+    // (generate_gs_passthrough_vertex_msl, primitive_vertices 1).
+    if (!ds_cull && vpp == 1u && ds.point_passthrough_msl.empty()) {
+        ds.point_passthrough_msl = graphics::generate_gs_passthrough_vertex_msl(
+            ds.passthrough_outputs, 0, /*fixed_function_push=*/true,
+            /*dense_records=*/true, 1u);
+    }
+    const std::string ds_passthrough =
+        ds_cull ? ds.culling_passthrough_msl.at(vpp)
+        : vpp == 1u ? ds.point_passthrough_msl
+                    : ds.passthrough_msl;
     const bool ds_viewport_array = ds.writes_viewport_index;
     const d3d11::ShaderBindingLayout ds_layout = ds.compute_layout;
     if (!domain_kernel) return decline("the domain kernel does not compile");
@@ -1183,7 +1219,15 @@ void D3D11Manager::execute_tessellation_software(
                 draw.kind = DrawVariant::Kind::GeometryOutput;
                 draw.buffer = records.get();
                 draw.vertex_msl = &ds_passthrough;
-                draw.index_buffer = indices.get();
+                if (ds_cull) {
+                    // One vertex per index-list entry; the list is the
+                    // pass-through's t1. The argument block's indexed form
+                    // {count, 1, 0, 0, 0} reads as the non-indexed
+                    // {count, 1, 0, 0}.
+                    draw.counts = indices.get();
+                } else {
+                    draw.index_buffer = indices.get();
+                }
                 draw.vertex_count = index_capacity;
                 draw.indirect = IndirectDraw{
                     args.get(),

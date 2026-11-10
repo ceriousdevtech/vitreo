@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <vector>
+#include "popf_user_cases.hpp"
 #include "core/cpu/decode/decoder.hpp"
 #include "core/cpu/interpreter/interpreter.hpp"
 #include "core/cpu/jit/jit_compiler.hpp"
@@ -401,6 +402,60 @@ protected:
 // PUSH execution tests
 // ----------------------------------------------------------------------------
 
+TEST_F(StackInterpTest, PopfUserFlagsMatchWindowsAtBothWidthsAndBitnesses) {
+    for(const auto mode:{CpuMode::Protected,CpuMode::Long}) {
+        for(const auto& row:popf_test::kPopfUserCases) for(const bool narrow:{false,true}) {
+            SCOPED_TRACE(::testing::Message()<<"mode="<<unsigned(mode)<<" narrow="<<narrow<<" seed="<<std::hex<<row.seed<<" value="<<row.value);
+            cpu.mode=mode;cpu.rip=CODE_BASE;cpu.discard_lazy_flags();cpu.flags.rflags=row.seed;
+            cpu.set_sp(STACK_BASE+0x100);
+            ASSERT_TRUE(memory.write_u64(cpu.sp(),row.value));
+            const auto before=cpu.sp();
+            ASSERT_EQ(narrow?execute({0x66,0x9d}):execute({0x9d}),ExecResult::Continue);
+            EXPECT_EQ(cpu.flags.rflags,narrow?row.narrow_expected:row.wide_expected);
+            EXPECT_EQ(cpu.sp(),before+(narrow?2:mode==CpuMode::Long?8:4));
+        }
+    }
+}
+
+TEST_F(StackInterpTest, PopfPreservesPrivilegedBitsClearsRfAndHonorsIopl) {
+    for(const auto mode:{CpuMode::Protected,CpuMode::Long}) for(const bool narrow:{false,true}) {
+        for(const bool permit_if:{false,true}) {
+            cpu.mode=mode;cpu.rip=CODE_BASE;cpu.discard_lazy_flags();
+            const u64 privileged=FLAG_VIP|FLAG_VIF|(permit_if?FLAG_IOPL_MASK:0);
+            cpu.flags.rflags=privileged|FLAG_RF|FLAG_AC|FLAG_ID|2;
+            cpu.set_sp(STACK_BASE+0x100);
+            ASSERT_TRUE(memory.write_u64(cpu.sp(),FLAG_IF|FLAG_TF|2));
+            ASSERT_EQ(narrow?execute({0x66,0x9d}):execute({0x9d}),ExecResult::Continue);
+            EXPECT_EQ(cpu.flags.rflags,privileged|FLAG_TF|(permit_if?FLAG_IF:0)|
+                      (narrow?(FLAG_AC|FLAG_ID):0)|2);
+        }
+    }
+}
+
+TEST_F(StackInterpTest, PopfFaultLeavesStackAndFlagsUntouched) {
+    for(const auto mode:{CpuMode::Protected,CpuMode::Long}) for(const bool narrow:{false,true}) {
+        cpu.mode=mode;cpu.rip=CODE_BASE;cpu.discard_lazy_flags();
+        cpu.flags.rflags=FLAG_IF|FLAG_ID|FLAG_CF|2;
+        cpu.set_sp(STACK_BASE+STACK_SIZE);
+        const auto old_flags=cpu.flags.rflags,old_sp=cpu.sp();
+        ASSERT_EQ(narrow?execute({0x66,0x9d}):execute({0x9d}),ExecResult::Exception);
+        EXPECT_EQ(cpu.sp(),old_sp);EXPECT_EQ(cpu.flags.rflags,old_flags);
+    }
+}
+
+TEST_F(StackInterpTest, RealModePopfUsesWordDefaultAndAllowsPrivilegedFlags) {
+    for(const bool wide:{false,true}) {
+        cpu.mode=CpuMode::Real;cpu.rip=CODE_BASE;cpu.discard_lazy_flags();
+        cpu.flags.rflags=FLAG_AC|FLAG_ID|FLAG_RF|2;cpu.set_sp(CODE_BASE+0x800);
+        const u64 image=FLAG_IF|FLAG_IOPL_MASK|STATUS_FLAGS_MASK|2;
+        ASSERT_TRUE(memory.write_u64(cpu.sp(),image));
+        const auto old_sp=cpu.sp();
+        ASSERT_EQ(wide?execute({0x66,0x9d}):execute({0x9d}),ExecResult::Continue);
+        EXPECT_EQ(cpu.sp(),old_sp+(wide?4:2));
+        EXPECT_EQ(cpu.flags.rflags,image|(wide?0:(FLAG_AC|FLAG_ID)));
+    }
+}
+
 TEST_F(StackInterpTest, PushRaxDecrementsRsp) {
     u64 initial_sp = cpu.sp();
     cpu.gpr.set64(0, 0x1234567890ABCDEF);  // RAX
@@ -713,7 +768,7 @@ TEST_F(StackInterp32Test, PopfwConsumes2Bytes) {
     auto result = execute({0x66, 0x9D});  // POPFW
     EXPECT_EQ(result, ExecResult::Continue);
     EXPECT_EQ(static_cast<u32>(cpu.sp()), initial_sp);
-    EXPECT_EQ(cpu.flags.rflags & 0xFFFFu, 0x0202u);
+    EXPECT_EQ(cpu.flags.rflags & 0xFFFFu, 0x0002u); // CPL3 cannot change IF.
 }
 
 TEST_F(StackInterp32Test, PushFsPopGsRoundTrip) {

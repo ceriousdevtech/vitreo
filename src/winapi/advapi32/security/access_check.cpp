@@ -14,10 +14,15 @@
 #include "winapi/advapi32/security/security_internal.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
+#include "winapi/advapi32/security/file_execute_access.hpp"
+#include "winapi/advapi32/security/named_security.hpp"
+#include "winapi/advapi32/security/process_execute_contract.inc"
 
 #include <algorithm>
 #include <cstring>
 #include <vector>
+#include <mutex>
+#include <cstdio>
 
 namespace vitreo::winapi {
 
@@ -178,6 +183,91 @@ void write_privilege_set(Marshaler& m, GuestAddr set,
 }
 
 } // namespace
+
+u32 check_file_execute_access(SecurityStubs& stubs, capsule::Vfs& vfs,
+                              const std::string& path) {
+    namespace rights = ::process_execute_sdk;
+    bool impersonating = false;
+    const auto identity = stubs.effective_identity(impersonating);
+    const auto principal = stubs.principal();
+    std::vector<std::vector<u8>> principals, deny_only;
+    if (!identity.user.empty()) {
+        (identity.user_deny_only ? deny_only : principals).push_back(identity.user);
+    }
+    for (const auto& group : identity.groups) {
+        if ((group.attributes & kSeGroupUseForDenyOnly) != 0) deny_only.push_back(group.sid);
+        else if ((group.attributes & kSeGroupEnabled) != 0) principals.push_back(group.sid);
+    }
+    const auto authorize = [&](const std::string& object, u32 request) -> u32 {
+        named_sd::Parts parts;
+        if (const u32 error = named_sd::effective_file_sd(vfs, object, principal, parts)) return error;
+        if (parts.dacl_present && !parts.dacl_null) {
+            for (const auto& raw : parts.dacl) {
+                if (raw.size() < 2) return error_codes::ERROR_INVALID_PARAMETER;
+                if ((raw[1] & rights::INHERIT_ONLY_ACE) != 0) continue;
+                if (raw[0] != rights::ACCESS_ALLOWED_ACE_TYPE &&
+                    raw[0] != rights::ACCESS_DENIED_ACE_TYPE &&
+                    raw[0] != rights::ACCESS_ALLOWED_OBJECT_ACE_TYPE &&
+                    raw[0] != rights::ACCESS_DENIED_OBJECT_ACE_TYPE) {
+                    static std::once_flag warning;
+                    std::call_once(warning, [] {
+                        std::fprintf(stderr, "[vitreo] UNIMPLEMENTED kernel32!WinExec: "
+                            "file execution with a conditional/unsupported DACL ACE\n");
+                    });
+                    return error_codes::ERROR_CALL_NOT_IMPLEMENTED;
+                }
+            }
+            auto aces = dacl_aces(named_sd::build_acl(parts.dacl_revision, parts.dacl));
+            for (auto& ace : aces) {
+                apply_generic_mapping(ace.mask,
+                    static_cast<u32>(rights::FILE_GENERIC_READ),
+                    static_cast<u32>(rights::FILE_GENERIC_WRITE),
+                    static_cast<u32>(rights::FILE_GENERIC_EXECUTE),
+                    static_cast<u32>(rights::FILE_ALL_ACCESS));
+            }
+            if (!evaluate(aces, principals, deny_only, parts.owner, request).request_granted) {
+                return error_codes::ERROR_ACCESS_DENIED;
+            }
+            if (!identity.restricting.empty() &&
+                !evaluate(aces, identity.restricting, {}, parts.owner, request).request_granted) {
+                return error_codes::ERROR_ACCESS_DENIED;
+            }
+        }
+        sddl::SdView view;
+        view.sacl_present = parts.sacl_present; view.sacl_null = parts.sacl_null;
+        view.sacl = named_sd::build_acl(parts.sacl_revision, parts.sacl);
+        u32 integrity = 0, policy = 0;
+        object_label(view, integrity, policy);
+        if (identity.integrity_rid < integrity &&
+            (policy & rights::SYSTEM_MANDATORY_LABEL_NO_EXECUTE_UP) != 0) {
+            return error_codes::ERROR_ACCESS_DENIED;
+        }
+        return error_codes::ERROR_SUCCESS;
+    };
+    // File traversal is bypassed only by an enabled SeChangeNotifyPrivilege.
+    // The name resolves through the existing Windows privilege table.
+    u64 traverse_luid = 0;
+    const bool known = stubs.lookup_privilege_value_w(L"SeChangeNotifyPrivilege", traverse_luid);
+    const bool bypass = known && std::any_of(identity.privileges.begin(), identity.privileges.end(),
+        [&](const auto& privilege) {
+            return privilege.luid == traverse_luid && (privilege.attributes & kSePrivilegeEnabled) != 0;
+        });
+    if (!bypass) {
+        std::string parent = path;
+        for (;;) {
+            const usize slash = parent.find_last_of("\\/");
+            if (slash == std::string::npos || slash == 0) break;
+            const bool drive_root = slash == 2 && parent[1] == ':';
+            parent.resize(drive_root ? slash + 1 : slash);
+            // FILE_EXECUTE and FILE_TRAVERSE name the same file-object bit.
+            if (const u32 error = authorize(parent, static_cast<u32>(rights::FILE_EXECUTE))) return error;
+            if (drive_root) break;
+        }
+    }
+    // WinExec execute-rights oracle, both ABIs, including OWNER RIGHTS:
+    // EXECUTE alone fails; EXECUTE|SYNCHRONIZE succeeds without READ_CONTROL.
+    return authorize(path, static_cast<u32>(rights::FILE_EXECUTE | rights::SYNCHRONIZE));
+}
 
 void add_access_check_export(DllExports& exports, SecurityStubs& stubs) {
     // BOOL AccessCheck(PSECURITY_DESCRIPTOR, HANDLE ClientToken,

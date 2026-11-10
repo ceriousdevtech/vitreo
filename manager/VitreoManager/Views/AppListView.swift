@@ -37,19 +37,7 @@ struct AppListView: View {
             } else if service.apps.isEmpty {
                 emptyState
             } else if filteredApps.isEmpty {
-                ContentUnavailableView {
-                    Label(searchText.isEmpty ? "No Favorites Yet" : "No Matching Apps",
-                          systemImage: searchText.isEmpty ? "star" : "magnifyingglass")
-                } description: {
-                    Text(searchText.isEmpty
-                         ? "Add favorites from an app’s options menu to keep them close."
-                         : "Try a different search or show all your apps.")
-                } actions: {
-                    Button("Show All Apps") {
-                        searchText = ""
-                        favoritesOnly = false
-                    }
-                }
+                noMatchesState
             } else {
                 // App list
                 ScrollView {
@@ -83,6 +71,45 @@ struct AppListView: View {
             if $0.isFavorite != $1.isFavorite { return $0.isFavorite }
             return $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
         }
+    }
+
+    /// No app matches the search or the favorites filter.
+    /// ContentUnavailableView is macOS 14+; the x86_64 build also runs on
+    /// macOS 13, where the same title, icon, message and action are stacked.
+    @ViewBuilder
+    private var noMatchesState: some View {
+        let title = searchText.isEmpty ? "No Favorites Yet" : "No Matching Apps"
+        let symbol = searchText.isEmpty ? "star" : "magnifyingglass"
+        let message = searchText.isEmpty
+            ? "Add favorites from an app’s options menu to keep them close."
+            : "Try a different search or show all your apps."
+        if #available(macOS 14.0, *) {
+            ContentUnavailableView {
+                Label(title, systemImage: symbol)
+            } description: {
+                Text(message)
+            } actions: {
+                Button("Show All Apps") { showAllApps() }
+            }
+        } else {
+            VStack(spacing: 12) {
+                Image(systemName: symbol)
+                    .font(.system(size: 40))
+                    .foregroundStyle(.secondary)
+                Text(title).font(.title2.bold())
+                Text(message)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                Button("Show All Apps") { showAllApps() }
+            }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private func showAllApps() {
+        searchText = ""
+        favoritesOnly = false
     }
 
     private var emptyState: some View {

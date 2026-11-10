@@ -75,6 +75,14 @@ struct BackendTexture2DDesc {
     /// out in 64 KiB tiles (tiled_texture_layout) that update_tile_mappings
     /// points at tile-pool memory. Every tile starts unmapped.
     bool tiled{false};
+    /// A tiled texture whose tile residency shaders read (D3D12 tiled
+    /// resources tier 2, DxbcTranslationOptions::tiled_status): the backend
+    /// keeps a residency companion -- a float texture of the same size,
+    /// mips, array, samples and tile grid that reads 1.0 in every mapped
+    /// tile and 0.0 in every unmapped one -- mirroring each
+    /// update_tile_mappings of this texture, packed tail included
+    /// (BackendDescriptorTable::set_residency_texture binds it).
+    bool residency_companion{false};
     /// Place the texture's storage inside @p heap at @p heap_offset instead
     /// of allocating its own (D3D12 CreatePlacedResource): it then aliases
     /// every other resource placed over the same bytes. The offset must be
@@ -107,6 +115,11 @@ public:
 
     [[nodiscard]] virtual bool valid() const noexcept = 0;
     [[nodiscard]] virtual const BackendTexture2DDesc& desc() const noexcept = 0;
+    /// The residency companion BackendTexture2DDesc::residency_companion
+    /// asked for exists (it is created with the texture, or not at all).
+    [[nodiscard]] virtual bool has_residency_companion() const noexcept {
+        return false;
+    }
     /// The global id of the texture's shared storage, once it has one (a
     /// zero-copy shared texture has one from creation, a mirrored one from
     /// its first export_shared()); 0 otherwise.
@@ -114,12 +127,22 @@ public:
     /// The plane a view of @p view_format addresses: this texture, or for a
     /// planar video format (PixelFormat::NV12 / P010) and a chroma view
     /// format (planar_chroma_format and its integer twin) the chroma plane,
-    /// a texture of half the width and height.
+    /// a texture of half the width and height. A luma view format is not a
+    /// chroma view: this texture's own update_region still writes both
+    /// planes. Luma alone is luma_plane().
     [[nodiscard]] virtual BackendTexture2D* view_plane(
         PixelFormat view_format) noexcept {
         (void)view_format;
         return this;
     }
+    /// The luma plane of a planar video texture (Learn DXGI_FORMAT NV12 /
+    /// P010 / P016: the Y plane, full width and height, R8 or R16), as a
+    /// texture whose update_region, readback_slice, and copies address only
+    /// that plane. The planar texture's own region upload and the planar
+    /// region copy write the chroma plane as well. Null when this texture
+    /// is not planar, so a caller refuses the luma plane instead of writing
+    /// both. Default: none.
+    [[nodiscard]] virtual BackendTexture2D* luma_plane() { return nullptr; }
     /// The id another device or process opens this shareable texture by
     /// (GraphicsBackendDevice::open_shared_resource). A mirrored texture gets
     /// its canonical store here, with the current contents published to it.

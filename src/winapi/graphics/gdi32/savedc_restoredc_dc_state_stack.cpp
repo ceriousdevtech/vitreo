@@ -68,6 +68,10 @@ bool GdiManager::restore_dc(Handle hdc, i32 nSavedDC) {
     restored.associated_hwnd = dc.associated_hwnd;
     restored.screen_dc = dc.screen_dc;
     restored.memory_dc = dc.memory_dc;
+    restored.reference_device_dc = dc.reference_device_dc;
+    restored.whole_window_dc = dc.whole_window_dc;
+    restored.paint_region = dc.paint_region;
+    refresh_dc_clip(restored);
     if (!dc.memory_dc) {
         restored.bitmap = dc.bitmap;
         restored.selected_bitmap_handle = dc.selected_bitmap_handle;

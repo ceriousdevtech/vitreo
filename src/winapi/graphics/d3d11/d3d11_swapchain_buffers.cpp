@@ -445,6 +445,9 @@ u32 D3D11Manager::resize_swap_chain_buffers(GuestAddr self, u32 count,
         return d3d11::E_OUTOFMEMORY;
     }
     chain.buffers_lost = false;
+    // The ResizeBuffers a flip chain owes after a full-screen transition
+    // (measured a73: Present is INVALID_CALL until it).
+    chain.exclusive.needs_resize_buffers = false;
     // IDXGISwapChain2 source size follows the new buffers (measured).
     chain.source_width = width;
     chain.source_height = height;

@@ -246,6 +246,10 @@ void JitCompiler::ir_attempt_block(const BasicBlock& block) {
     // builds the IR: that cost is what tiering defers.
     if (m_tier_stencil || !ir_gate_open(block)) return;
     if (!ir_build_block(block).ok) return;
+    // A live-out flag record whose every successor redefines the flags
+    // before a read or a fault is stored on the dispatcher exit only. A
+    // patched hop into that successor skips the store.
+    ir_measure_cross_block_flags();
     // Feasibility is decided HERE, while declining is still free. Emission
     // itself has no failure path (ADR-0002 / ir_emit.cpp).
     m_ir_emit_active = ir_emit_feasible(m_ir_block);
@@ -257,7 +261,6 @@ void JitCompiler::ir_attempt_block(const BasicBlock& block) {
                                       ir::kNoInsnIndex, 0};
     }
     ir::stats::record(m_ir_result);
-    if (ir::stats::enabled()) ir_measure_cross_block_flags();
 }
 
 void JitCompiler::ir_measure_cross_block_flags() noexcept {
@@ -310,6 +313,14 @@ void JitCompiler::ir_measure_cross_block_flags() noexcept {
         return;
     }
 
+    // Both edges of a conditional branch have to be proven. A missing edge
+    // is an indirect exit, not a free pass.
+    if (term.op == ir::Op::Jcc &&
+        (targets[0] == ir::kInvalidRip || targets[1] == ir::kInvalidRip)) {
+        ir::stats::note_liveout(ir::stats::LiveOutVerdict::IndirectSuccessor);
+        return;
+    }
+
     // Scan forward from each successor until the flags are settled. One
     // instruction is far too shallow a look — real code opens a block with a
     // MOV or a LEA and reaches its first flag writer several instructions in,
@@ -322,8 +333,10 @@ void JitCompiler::ir_measure_cross_block_flags() noexcept {
     // skipped publishing.
     constexpr u32 kScanDepth = 8;
     bool fault_blocked = false;
+    bool saw_target = false;
     for (u64 target : targets) {
         if (target == ir::kInvalidRip) continue;
+        saw_target = true;
         GuestMappedByteReader reader(m_memory, target);
         bool settled = false;
         for (u32 depth = 0; depth < kScanDepth && !settled; ++depth) {
@@ -374,9 +387,44 @@ void JitCompiler::ir_measure_cross_block_flags() noexcept {
             return;
         }
     }
-    ir::stats::note_liveout(fault_blocked
-                                ? ir::stats::LiveOutVerdict::FaultBlocked
-                                : ir::stats::LiveOutVerdict::Killable);
+    if (!saw_target) {
+        ir::stats::note_liveout(ir::stats::LiveOutVerdict::IndirectSuccessor);
+        return;
+    }
+    if (fault_blocked) {
+        ir::stats::note_liveout(ir::stats::LiveOutVerdict::FaultBlocked);
+        return;
+    }
+    ir::stats::note_liveout(ir::stats::LiveOutVerdict::Killable);
+
+    ir::Inst& def = m_ir_block.insts[last_def];
+    // A shift record is conditional on its count, and a pinned or
+    // exit-deferred record has a reader this scan does not see.
+    if (def.flags.repr != ir::FlagRepr::InCpuStateRecord ||
+        def.flags.shift_count != 0 || def.flags.record_pinned ||
+        def.flags.exit_deferred || def.flags.keep_overlay ||
+        def.flags.overlay_live || def.operand_count != 2) {
+        return;
+    }
+    // A CALL's callee is not the only successor: the return site sees the
+    // flags the callee left, and the callee itself may read these flags.
+    if (term.op != ir::Op::Jmp || term.branch.return_site != ir::kInvalidRip) {
+        return;
+    }
+    // Anything after the definition in THIS block can still observe it.
+    for (usize j = last_def + 1; j < m_ir_block.insts.size(); ++j) {
+        const ir::Inst& later = m_ir_block.insts[j];
+        if (later.may_fault) return;
+        for (u32 k = 0; k < later.operand_count; ++k) {
+            if (later.operands[k].kind == ir::OperandKind::Value &&
+                later.operands[k].as_value() == def.result) {
+                return;
+            }
+        }
+    }
+    // Publish on the dispatcher exit. A patched hop into the successor
+    // that just proved the record dead skips the store.
+    def.flags.link_miss_only = true;
 }
 
 } // namespace vitreo::cpu::jit

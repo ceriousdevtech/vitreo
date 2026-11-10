@@ -523,6 +523,12 @@ usize rewrite_segment_overrides_in_range(GuestMemory& memory,
         ranges != nullptr
             ? rewrite_segment_overrides_ranges(host, size, ranges, count)
             : rewrite_segment_overrides(host, size, teb_shape_only);
+    // The span is an executable extent of the guest's region table, so its
+    // guest protection is read+execute, plus write when the guest made it
+    // writable. Do NOT replay the host's per-page protections here (as the
+    // CPUID patcher does): on a native64 CEF renderer that left pages the
+    // guest owns inaccessible and stalled steam.exe's UI thread for 11-69 s,
+    // until Steam quit on a WebUI transport timeout. Measured 2026-11-06.
     int restore = PROT_READ | PROT_EXEC;
     if (was_writable) restore |= PROT_WRITE;
     (void)mprotect(lo, span, restore);

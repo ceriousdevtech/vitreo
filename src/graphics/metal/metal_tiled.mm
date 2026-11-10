@@ -636,6 +636,65 @@ std::unique_ptr<BackendTilePool> MetalTiled::create_pool() {
     return std::make_unique<MetalTilePool>(m_device);
 }
 
+BackendTilePool* MetalTiled::residency_pool(u64 pattern) {
+    if (!available()) return nullptr;
+    // Never destroyed: companions of any live texture map these tiles.
+    static std::mutex mutex;
+    static auto* pools = new std::map<u64, MetalTilePool*>();
+    std::lock_guard<std::mutex> lock(mutex);
+    if (const auto found = pools->find(pattern); found != pools->end()) {
+        return found->second;
+    }
+    auto* pool = new MetalTilePool(m_device);
+    pool->set_size(1);
+    if (!pool->reference(0)) {
+        delete pool;
+        return nullptr;
+    }
+    u64 offset = 0;
+    void* heap_handle = pool->heap_for(0, offset);
+    bool filled = false;
+    if (@available(macOS 26.0, *)) {
+        @autoreleasepool {
+            id<MTLDevice> device = (__bridge id<MTLDevice>)m_device;
+            id<MTLHeap> heap = (__bridge id<MTLHeap>)heap_handle;
+            // The tile's bytes through a placement buffer over the same page,
+            // written once by a blit that has finished before any companion
+            // maps the page.
+            id<MTLBuffer> page = [heap
+                newBufferWithLength:BACKEND_TILE_BYTES
+                            options:MTLResourceStorageModePrivate
+                             offset:static_cast<NSUInteger>(offset *
+                                                            BACKEND_TILE_BYTES)];
+            id<MTLBuffer> source =
+                [device newBufferWithLength:BACKEND_TILE_BYTES
+                                    options:MTLResourceStorageModeShared];
+            id<MTLCommandQueue> queue = [device newCommandQueue];
+            if (page != nil && source != nil && queue != nil) {
+                auto* words = static_cast<u64*>(source.contents);
+                for (u64 i = 0; i < BACKEND_TILE_BYTES / 8; ++i) words[i] = pattern;
+                [queue addResidencySet:(__bridge id<MTLResidencySet>)m_residency];
+                id<MTLCommandBuffer> commands = [queue commandBuffer];
+                id<MTLBlitCommandEncoder> blit = [commands blitCommandEncoder];
+                [blit copyFromBuffer:source sourceOffset:0 toBuffer:page
+                     destinationOffset:0 size:BACKEND_TILE_BYTES];
+                [blit endEncoding];
+                [commands commit];
+                [commands waitUntilCompleted];
+                filled = commands.status == MTLCommandBufferStatusCompleted;
+                [queue removeResidencySet:(__bridge id<MTLResidencySet>)m_residency];
+            }
+        }
+    }
+    if (!filled) {
+        pool->unreference(0);
+        delete pool;
+        return nullptr;
+    }
+    pools->emplace(pattern, pool);
+    return pool;
+}
+
 bool MetalTiled::self_aliased(const void* resource) {
     if (resource == nullptr ||
         m_self_aliased_count.load(std::memory_order_acquire) == 0) {

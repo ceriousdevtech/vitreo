@@ -488,6 +488,37 @@ named_sd::Parts registry_key_parts(const std::string& object, const named_sd::Pr
 
 } // namespace
 
+// Renaming descriptors requires subtree DELETE and parent CREATE_SUB_KEY checks.
+// Default capsule keys have a NULL DACL; custom descriptors need a real access
+// check and descriptor-path migration before this route can support them.
+bool registry_rename_security_supported(std::wstring_view path) {
+    std::string name;
+    // Named security stores UTF-8 while registry paths retain UTF-16 units.
+    // Until that canonical conversion is shared, reject this unsupported case
+    // instead of missing a custom descriptor through lossy '?' replacement.
+    for (wchar_t ch : path) {
+        if (ch >= 0x80) return false;
+        name.push_back(static_cast<char>(ch));
+    }
+    name = normalize_registry_object_name(name);
+    for (const auto& pair : {std::pair{"HKEY_CURRENT_USER", "CURRENT_USER"},
+                            std::pair{"HKEY_LOCAL_MACHINE", "MACHINE"},
+                            std::pair{"HKEY_USERS", "USERS"}}) {
+        const std::string root = pair.first;
+        if (name == root || name.starts_with(root + "\\"))
+            name = std::string(pair.second) + name.substr(root.size());
+    }
+    const auto parent = name.substr(0, name.find_last_of('\\'));
+    auto& store = named_registry_sds();
+    std::lock_guard lock(store.mutex);
+    for (const auto& [key, descriptor] : store.by_name) {
+        (void)descriptor;
+        if (key == name || key.starts_with(name + "\\") ||
+            parent == key || parent.starts_with(key + "\\")) return false;
+    }
+    return true;
+}
+
 void add_registry_key_security_exports(DllExports& exports, SecurityStubs& stubs,
                                        RegistryThunks& registry) {
     // Measured on Windows 11 (tools/oracle_probe/shlwapi_regsec_shell_probe.c,

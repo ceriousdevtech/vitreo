@@ -21,6 +21,15 @@ namespace vitreo::graphics {
 bool record_backend_draw(const BackendDrawCall& call, bool has_depth,
                          MetalPassStateCache& cache, u64 pass_id);
 
+/// Occlusion counting for passes outside metal_backend_render_pass.mm, where
+/// the counter type lives: point @p begin at @p counter's visibility slot
+/// (false: no slot, refuse the pass), note that an op counting into it was
+/// just recorded, and the test hook around a counted BeginPass.
+[[nodiscard]] bool metal_occlusion_bind(GpuOcclusionCounter* counter,
+                                        CsBeginPass& begin);
+void metal_occlusion_recorded(GpuOcclusionCounter* counter);
+void metal_occlusion_pass_hook(bool after);
+
 /// Records draws against a colour (and optional depth) attachment onto the
 /// command stream. The worker encodes and submits them.
 class MetalBackendRenderPass final : public BackendRenderPass {
@@ -31,7 +40,8 @@ public:
                            void* resolve_texture,
                            const std::array<BackendTexture2D*,
                                             BACKEND_MAX_RENDER_TARGETS>&
-                               color_targets)
+                               color_targets,
+                           GpuOcclusionCounter* occlusion_counter = nullptr)
         : m_cache(device) {
         // Record-only: T1 already ended the previous pass (or handed it
         // to the D3D9 worker). The Metal worker serializes encode; do
@@ -55,7 +65,18 @@ public:
         begin.depth_clear = depth_clear_value;
         begin.stencil = depth_texture != nullptr;
         m_has_depth = depth_texture != nullptr;
+        if (occlusion_counter != nullptr &&
+            !metal_occlusion_bind(occlusion_counter, begin)) {
+            // No slot for the count: refuse rather than draw uncounted.
+            return;
+        }
+        if (occlusion_counter != nullptr) metal_occlusion_pass_hook(false);
         m_pass_id = MetalSubmitQueue::instance().record_begin_pass(begin);
+        if (occlusion_counter != nullptr) {
+            metal_occlusion_pass_hook(true);
+            metal_occlusion_recorded(occlusion_counter);
+        }
+        m_counter = occlusion_counter;
         m_open = true;
     }
 
@@ -73,7 +94,11 @@ public:
             VITREO_TRACE("[metal] draw rejected: render pass is not open\n");
             return false;
         }
-        return record_backend_draw(call, m_has_depth, m_cache, m_pass_id);
+        if (!record_backend_draw(call, m_has_depth, m_cache, m_pass_id)) {
+            return false;
+        }
+        if (m_counter != nullptr) metal_occlusion_recorded(m_counter);
+        return true;
     }
 
     bool end() override {
@@ -85,6 +110,9 @@ public:
 
 private:
     MetalPassStateCache m_cache;
+    /// The counter this pass's draws count into (kept alive by the frontend
+    /// while the pass records), or null.
+    GpuOcclusionCounter* m_counter{nullptr};
     u64 m_pass_id{0};
     bool m_open{false};
     bool m_has_depth{false};

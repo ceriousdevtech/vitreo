@@ -154,6 +154,19 @@ struct D3d9ClearSnapshot {
     u32 stencil{0};
     bool to_back_buffer{false};
 
+    /// Clear only these rectangles (x, y, width, height in render-target
+    /// pixels): the viewport, clipped by pRects and the scissor rectangle.
+    /// Empty with `partial` false: the whole target.
+    bool partial{false};
+    std::vector<std::array<u32, 4>> rects;
+    /// Per colour slot, the clear colour in that target's storage layout
+    /// (bytes == 0: slot not filled), and the mip it renders to.
+    std::array<std::array<u8, 16>, 4> color_texels{};
+    std::array<unsigned, 4> color_texel_bytes{};
+    std::array<unsigned, 4> rt_color_levels{};
+    /// Depth/stencil texture for a partial ZBUFFER/STENCIL clear.
+    graphics::BackendTexture2D* depth_target{nullptr};
+
     std::vector<u32> retained;
 };
 
@@ -220,6 +233,9 @@ private:
     std::thread m_thread;
     std::atomic<bool> m_running{true};
     bool m_busy{false};
+    /// The worker is blocked in m_cv.wait (guarded by m_mu).
+    bool m_worker_sleeping{false};
+    static constexpr usize kWakeBatch = 32;
     u64 m_submit_gen{0};
     u64 m_done_gen{0};
 };

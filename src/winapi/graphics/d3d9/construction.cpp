@@ -51,6 +51,15 @@ void D3D9Manager::apply_exclusive_fullscreen(const DeviceState& state) {
         if (m_display_mode_cb) {
             m_display_mode_cb(m_fullscreen_hwnd, 0, 0, 0);
         }
+        if (m_device_window_cb) m_device_window_cb(m_fullscreen_hwnd, false);
+    }
+    // Measured (tools/oracle_probe/d3d9_fullscreen_mode_probe.c, RTX 4080):
+    // an exclusive CreateDevice turns a WS_OVERLAPPEDWINDOW device window
+    // (style 0x14CF0000, ex 0x100) into a frameless topmost one (0x14000000,
+    // ex 0x8) covering the mode, so its client area IS the mode; releasing
+    // the device restores the style.
+    if (m_device_window_cb && m_fullscreen_hwnd != window) {
+        m_device_window_cb(window, true);
     }
     if (m_display_mode_cb) {
         m_display_mode_cb(window, width, height, bits);
@@ -69,6 +78,7 @@ void D3D9Manager::clear_exclusive_fullscreen() {
     if (m_display_mode_cb) {
         m_display_mode_cb(m_fullscreen_hwnd, 0, 0, 0);
     }
+    if (m_device_window_cb) m_device_window_cb(m_fullscreen_hwnd, false);
     VITREO_TRACE("[d3d9] exclusive fullscreen cleared hwnd=0x%x\n",
                  m_fullscreen_hwnd);
     m_fullscreen_hwnd = 0;

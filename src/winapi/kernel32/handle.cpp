@@ -290,6 +290,16 @@ Handle HandleTable::allocate_handle_value(Handle floor) {
 void impl_CloseHandle(Marshaler& m, HandleTable& table) {
     // BOOL WINAPI CloseHandle(HANDLE hObject);
     auto handle = static_cast<Handle>(m.arg(0));
+    static const bool input_diag=[] {const char* p=std::getenv("VITREO_INPUT_DIAG");return p && *p && *p!='0';}();
+    const bool hid=input_diag && table.get_type(handle)==HandleType::HidDevice;
+    const auto caller=hid ? m.guest_return_address():0;
+    auto log_close=[&](const char* phase) {
+        if(!hid) return;static std::atomic<unsigned> logged{0};if(logged.fetch_add(1)>=128) return;
+        std::fprintf(stderr,"[input-delivery] HID CloseHandle phase=%s caller=0x%llx handle=0x%x result=%llu gle=%u\n",phase,
+            static_cast<unsigned long long>(caller),handle,static_cast<unsigned long long>(m.return_value()),get_last_error());
+    };
+    struct ReturnTrace {decltype(log_close)& log;~ReturnTrace(){log("return");}} trace{log_close};
+    log_close("enter");
     VITREO_TRACE("[handle] CloseHandle(0x%x)\n", static_cast<unsigned>(handle));
 
     if (handle == NULL_HANDLE) {

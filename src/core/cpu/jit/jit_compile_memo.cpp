@@ -10,12 +10,118 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <condition_variable>
 #include <iterator>
 #include <mutex>
 #include <shared_mutex>
 #include <unordered_set>
 
 namespace vitreo::cpu::jit {
+
+namespace {
+struct CompileFlightKey {
+    GuestMemory* memory;
+    JitCompileMemo::CompiledKey code;
+    u64 executable_generation;
+    u32 instruction_count;
+    bool operator==(const CompileFlightKey&) const = default;
+};
+struct CompileFlightHash {
+    usize operator()(const CompileFlightKey& key) const noexcept {
+        usize h = JitCompileMemo::CompiledKeyHash{}(key.code);
+        const auto mix = [&](usize value) { h ^= value + (h << 6) + (h >> 2); };
+        mix(std::hash<GuestMemory*>{}(key.memory));
+        mix(std::hash<u64>{}(key.executable_generation));
+        mix(std::hash<u32>{}(key.instruction_count));
+        return h;
+    }
+};
+}
+
+struct CompileFlightState {
+    explicit CompileFlightState(const CompileFlightKey& identity) : key(identity) {}
+    CompileFlightKey key;
+    std::condition_variable done;
+    bool active{true};
+};
+
+namespace {
+using CompileFlightMap = std::unordered_map<
+    CompileFlightKey, std::shared_ptr<CompileFlightState>, CompileFlightHash>;
+struct CompileFlightShard {
+    std::mutex mutex;
+    CompileFlightMap active;
+};
+std::array<CompileFlightShard, JitCompileMemo::kMemoShards> g_compile_flights;
+std::atomic<usize> g_compile_waiters{0};
+// A nested callback may need another compiler while its caller owns a claim.
+// Never wait in that situation: two callbacks could otherwise form a cycle.
+thread_local usize g_owned_compile_claims = 0;
+// One unlinked node per thread. Its state holds only identity and wakeup
+// storage, never guest memory/IR/native-code ownership. State reuse also
+// requires the same shard mutex: use_count alone is not synchronization
+// with the completed waiter's reads of active under its old mutex.
+thread_local CompileFlightMap::node_type g_cached_compile_flight;
+}
+
+void JitCompileMemo::CompilationClaim::acquire(
+    GuestMemory& memory, const CompiledKey& key,
+    u32 instruction_count, u64 executable_generation) {
+    m_waited = false;
+    if (g_owned_compile_claims != 0) return;
+    const CompileFlightKey identity{&memory, key, executable_generation, instruction_count};
+    auto& shard = g_compile_flights[JitCompileMemo::shard_index(key.start_addr)];
+    std::unique_lock lock(shard.mutex);
+    if (const auto it = shard.active.find(identity); it != shard.active.end()) {
+        auto state = it->second;
+        m_waited = true;
+        struct Waiting {
+            Waiting() { g_compile_waiters.fetch_add(1, std::memory_order_relaxed); }
+            ~Waiting() { g_compile_waiters.fetch_sub(1, std::memory_order_relaxed); }
+        } waiting;
+        state->done.wait(lock, [&] { return !state->active; });
+        return;
+    }
+    if (!g_cached_compile_flight.empty() &&
+        JitCompileMemo::shard_index(g_cached_compile_flight.key().code.start_addr) ==
+            JitCompileMemo::shard_index(key.start_addr) &&
+        g_cached_compile_flight.mapped().use_count() == 1) {
+        auto& state = g_cached_compile_flight.mapped();
+        state->key = identity;
+        state->active = true;
+        g_cached_compile_flight.key() = identity;
+        auto inserted = shard.active.insert(std::move(g_cached_compile_flight));
+        m_state = inserted.position->second;
+    } else {
+        // Do not reset a state synchronized by another shard's mutex. Drop
+        // the cached node; any former waiter keeps its own strong reference.
+        g_cached_compile_flight = {};
+        auto state = std::make_shared<CompileFlightState>(identity);
+        shard.active.emplace(identity, state);
+        m_state = std::move(state);
+    }
+    ++g_owned_compile_claims;
+}
+
+JitCompileMemo::CompilationClaim::~CompilationClaim() {
+    if (!m_state) return;
+    auto& shard = g_compile_flights[JitCompileMemo::shard_index(m_state->key.code.start_addr)];
+    CompileFlightMap::node_type completed;
+    {
+        std::lock_guard lock(shard.mutex);
+        completed = shard.active.extract(m_state->key);
+        m_state->active = false;
+    }
+    --g_owned_compile_claims;
+    m_state->done.notify_all();
+    // Notify before caching. m_state itself remains a reference until this
+    // destructor returns, and surviving waiters independently retain theirs.
+    g_cached_compile_flight = std::move(completed);
+}
+
+usize JitCompileMemo::compile_waiters_for_test() noexcept {
+    return g_compile_waiters.load(std::memory_order_relaxed);
+}
 
 // Process-wide compiled-block memo (Stage A2).
 std::array<JitCompileMemo::Shard, JitCompileMemo::kMemoShards> JitCompileMemo::s_shards;
@@ -357,6 +463,9 @@ bool JitCompileMemo::publish_record_impl(const CompiledKey& key,
             CompiledEntry& stored = list.push(key, std::move(record));
             index_compiled_record_locked(shard, key, stored.record,
                                          /*pages_retained=*/false);
+            shard.publication_sequence.store(
+                shard.publication_sequence.load(std::memory_order_relaxed) + 1,
+                std::memory_order_release);
             return true;
         }
         // The probe above created the node; do not leave an empty list
@@ -422,6 +531,9 @@ bool JitCompileMemo::publish_record_impl(const CompiledKey& key,
             CompiledEntry& stored = lit->second.push(key, std::move(record));
             index_compiled_record_locked(shard, key, stored.record,
                                          /*pages_retained=*/true);
+            shard.publication_sequence.store(
+                shard.publication_sequence.load(std::memory_order_relaxed) + 1,
+                std::memory_order_release);
             inserted = true;
         }
     }

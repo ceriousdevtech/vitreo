@@ -152,6 +152,11 @@ bool DxbcTranslator::emit_variables() {
     const std::map<u32, u32> input_interpolation =
         m_result.stage == ShaderStage::Fragment ? scan_input_interpolation()
                                                 : std::map<u32, u32>{};
+    for (const auto& [reg, mode] : input_interpolation) {
+        if (reg < m_result.pixel_input_interpolation.size()) {
+            m_result.pixel_input_interpolation[reg] = static_cast<u8>(mode);
+        }
+    }
     for (const auto& input : m_container.input_signature) {
         // Microsoft Learn: SV_Position read by a pixel shader is the
         // rasterizer-provided pixel center in screen space (with the 0.5
@@ -268,7 +273,9 @@ bool DxbcTranslator::emit_variables() {
         // SAMPLE_INDEX 10. Scalar builtins, like SV_VertexID for a VS; a
         // stage that did not write the index reads 0, in both APIs.
         const u32 isv = input.system_value_type;
-        if (m_result.stage == ShaderStage::Fragment &&
+        const bool primitive_id_varying = m_result.stage == ShaderStage::Fragment &&
+                                          isv == 7u && m_options.primitive_id_varying;
+        if (m_result.stage == ShaderStage::Fragment && !primitive_id_varying &&
             (isv == 4u || isv == 5u || isv == 7u || isv == 10u)) {
             const SpvBuiltIn builtin = isv == 4u ? SpvBuiltIn::Layer
                 : isv == 5u ? SpvBuiltIn::ViewportIndex
@@ -309,7 +316,7 @@ bool DxbcTranslator::emit_variables() {
         const bool distance_input = m_result.stage == ShaderStage::Fragment &&
                                     (isv == 2u || isv == 3u);
         if (input.system_value_type != 0u && !distance_input &&
-            !fragment_position && !geometry_position) {
+            !primitive_id_varying && !fragment_position && !geometry_position) {
             return fail("unsupported input system value " +
                         std::to_string(input.system_value_type) +
                         " at register " +
@@ -340,6 +347,25 @@ bool DxbcTranslator::emit_variables() {
         // path -- the access chain on the vertex index, the bitcasts, the
         // swizzles -- untouched; a compute shader cannot carry
         // location-bound Input variables at all.
+        if (m_result.stage == ShaderStage::Vertex && !private_inputs() &&
+            m_options.vertex_pulling) {
+            // Vertex pulling: no stage-in at all. The register is a Private
+            // copy emit_vertex_pull_prologue fills from the pull table.
+            const u32 pulled = m_builder.emit_variable(
+                m_builder.emit_type_pointer(SpvStorageClass::Private,
+                                            value_type),
+                SpvStorageClass::Private);
+            m_builder.emit_name(pulled, input.semantic_name +
+                                            std::to_string(input.semantic_index));
+            m_pulled_vertex_inputs.push_back(
+                {input.register_num, pulled, value_type});
+            m_input_vars[input.register_num] = pulled;
+            m_input_value_types[input.register_num] = value_type;
+            m_input_pointer_types[input.register_num] =
+                m_builder.emit_type_pointer(SpvStorageClass::Private,
+                                            value_type);
+            continue;
+        }
         if (m_result.stage == ShaderStage::Vertex && !private_inputs() &&
             input.register_num < 32 &&
             (m_options.vertex_input_unpack_uint1010102 &
@@ -431,8 +457,30 @@ bool DxbcTranslator::emit_variables() {
                     m_builder.emit_decorate(var_id,
                                             SpvDecoration::NoPerspective);
                 }
-                if (m == 3u || m == 5u) {
+                // Raster emulation (dxbc_to_spirv_raster.cpp): centroid is
+                // the pixel centre under conservative rasterization, and the
+                // forced pattern's centroid -- evaluated by the prologue --
+                // under target-independent rasterization.
+                if ((m == 3u || m == 5u) && !raster_emulated()) {
                     m_builder.emit_decorate(var_id, SpvDecoration::Centroid);
+                }
+                if ((m == 3u || m == 5u) && raster_target_independent()) {
+                    const u32 shadow = m_builder.emit_variable(
+                        m_builder.emit_type_pointer(SpvStorageClass::Private,
+                                                    value_type),
+                        SpvStorageClass::Private);
+                    m_builder.emit_name(shadow,
+                                        input.semantic_name +
+                                            std::to_string(input.semantic_index) +
+                                            "_centroid");
+                    m_re_centroid_inputs.push_back({var_id, shadow});
+                    m_re_interpolants[input.register_num] = var_id;
+                    m_input_vars[input.register_num] = shadow;
+                    m_input_value_types[input.register_num] = value_type;
+                    m_input_pointer_types[input.register_num] =
+                        m_builder.emit_type_pointer(SpvStorageClass::Private,
+                                                    value_type);
+                    continue;
                 }
                 if (m == 6u || m == 7u) {
                     m_builder.emit_capability(
@@ -442,6 +490,32 @@ bool DxbcTranslator::emit_variables() {
             }
         }
 
+        if (m_result.stage == ShaderStage::Fragment && !private_inputs() &&
+            input.register_num < 32u &&
+            m_options.pixel_primitive_split[input.register_num] != 0) {
+            // Its primitive-fed components: a flat input of their own, the
+            // register read through a Private shadow the prologue fills.
+            const u32 reg = input.register_num;
+            const u32 primitive_var = m_builder.emit_variable(
+                m_builder.emit_type_pointer(SpvStorageClass::Input, value_type),
+                SpvStorageClass::Input);
+            m_builder.emit_name(primitive_var, "vitreo_primitive_split" + std::to_string(reg));
+            m_builder.emit_decorate(primitive_var, SpvDecoration::Location,
+                                    primitive_split_input_location(reg));
+            m_builder.emit_decorate(primitive_var, SpvDecoration::Flat);
+            m_vx_interface.push_back(primitive_var);
+            m_vx_interface.push_back(var_id);
+            const u32 private_pointer =
+                m_builder.emit_type_pointer(SpvStorageClass::Private, value_type);
+            const u32 shadow = m_builder.emit_variable(private_pointer, SpvStorageClass::Private);
+            m_builder.emit_name(shadow, "vitreo_split" + std::to_string(reg));
+            m_primitive_split_inputs.push_back(
+                {var_id, primitive_var, shadow, value_type, m_options.pixel_primitive_split[reg]});
+            m_input_vars[reg] = shadow;
+            m_input_value_types[reg] = value_type;
+            m_input_pointer_types[reg] = private_pointer;
+            continue;
+        }
         m_input_vars[input.register_num] = var_id;
         m_input_value_types[input.register_num] = value_type;
         m_input_pointer_types[input.register_num] = element_pointer_type;
@@ -477,7 +551,10 @@ bool DxbcTranslator::emit_variables() {
     bool layer_output = false;
     bool viewport_output = false;
     // Create output variables based on signature
-    for (const auto& output : m_container.output_signature) {
+    // A mesh shader writes its outputs through MeshOp stores (mesh_stage.hpp).
+    static const std::vector<DxbcSignatureElement> kNoOutputs;
+    for (const auto& output :
+         mesh_stage() ? kNoOutputs : m_container.output_signature) {
         // The rasterizer position is the output whose system value is
         // D3D_NAME_POSITION. A semantic spelled POSITION<n> is an ordinary
         // user output: fxc gives it SysValue NONE, and even a level-9 shader
@@ -590,7 +667,12 @@ bool DxbcTranslator::emit_variables() {
                 }
                 delivered = true;
             } else if (rasterized_vertex && sv == 3u) {
-                return fail("SV_CullDistance: Metal has no cull distances");
+                if (m_result.stage != ShaderStage::Vertex ||
+                    !m_options.vertex_cull_distances_culled_by_caller) {
+                    return fail("SV_CullDistance: Metal has no cull distances");
+                }
+                // The caller culls; the register stays a varying.
+                delivered = true;
             }
         }
         if (hs_as_compute()) delivered = true;  // control-point data
@@ -654,15 +736,20 @@ bool DxbcTranslator::emit_variables() {
         } else if (position) {
             m_builder.emit_decorate(var_id, SpvDecoration::BuiltIn,
                                    static_cast<u32>(SpvBuiltIn::Position));
-            // Learn `precise` / D3D11.3 22.19.2: a precise position is
-            // computed without refactoring, which is what lets a depth
-            // prepass and a later pass over the same geometry (different
-            // shaders) agree bit for bit. Metal's mechanism for that is an
-            // [[invariant]] position compiled with preserveInvariance, which
-            // the D3D11 frontend requests for these shaders.
-            if (math_contract_of(m_container).uses_precise) {
-                m_builder.emit_decorate(var_id, SpvDecoration::Invariant);
-            }
+            // The rasterized position is invariant in every vertex shader,
+            // not only a `precise` one (Learn `precise` / D3D11.3 22.19.2).
+            // A depth prepass and a later pass over the same geometry run
+            // different shaders whose position code is the same instruction
+            // stream, and a D3D driver gives them the same bits, so engines
+            // depth-test the second pass with EQUAL / GREATER_EQUAL against
+            // the first. Metal optimises each pipeline's vertex function on
+            // its own (fused multiply-adds, reassociation under Relaxed), so
+            // without [[invariant]] + preserveInvariance the two passes
+            // round differently and the second pass loses whole 32x32 tiles
+            // and rows of pixels (UE4 base pass after its depth prepass).
+            // The frontends compile every rasterizing vertex function with
+            // preserveInvariance.
+            m_builder.emit_decorate(var_id, SpvDecoration::Invariant);
             m_position_output = var_id;
         } else {
             m_builder.emit_decorate(var_id, SpvDecoration::Location,
@@ -691,6 +778,7 @@ bool DxbcTranslator::emit_variables() {
                                 static_cast<u32>(SpvBuiltIn::SampleMask));
         m_sample_mask_from_state_only = true;
     }
+    if (raster_emulated()) declare_raster_emulation_inputs();
     if (m_result.stage == ShaderStage::Fragment &&
         m_options.line_coverage_alpha) {
         // The alpha-antialiased line as (n.x, n.y, c) in window pixels, n
@@ -752,6 +840,9 @@ bool DxbcTranslator::emit_variables() {
         m_builder.emit_name(m_layer_output, "SV_RenderTargetArrayIndex");
         m_builder.emit_decorate(m_layer_output, SpvDecoration::BuiltIn,
                                 static_cast<u32>(SpvBuiltIn::Layer));
+        // The epilogue applies the slice-range rule from push member 14:
+        // declare the push block with the other interface variables.
+        (void)push_block_var();
     }
     if (viewport_output) {
         m_builder.emit_capability(SpvCapability::ShaderViewportIndex);
@@ -771,6 +862,7 @@ bool DxbcTranslator::emit_variables() {
         }
         if (!emit_geometry_expansion_buffers()) return false;
     }
+    if (mesh_stage() && !emit_mesh_stage_declarations()) return false;
     if ((vs_capture() || vs_capture_rasterized()) &&
         !emit_vertex_capture_declarations()) {
         return false;

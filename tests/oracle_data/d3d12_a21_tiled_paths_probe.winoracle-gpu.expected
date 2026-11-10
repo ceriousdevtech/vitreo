@@ -1,0 +1,31 @@
+paths create: ms 0x00000000 S_OK
+paths create: cube 0x00000000 S_OK
+paths create: array 0x00000000 S_OK
+paths create: texture 0x00000000 S_OK
+paths create: uav texture 0x00000000 S_OK
+paths create: buffer 0x00000000 S_OK
+paths dispatch: 0x00000000 S_OK
+paths ms_mapped: value=0x3f800000 mapped=1
+paths ms_null: value=0x00000000 mapped=0
+paths cube_face0_mapped: value=0x3f800000 mapped=1
+paths cube_face1_null: value=0x00000000 mapped=0
+paths cube_gather_face0: value=0x40800000 mapped=1
+paths array_slice0_null: value=0x00000000 mapped=0
+paths array_slice1_mapped: value=0x3f800000 mapped=1
+paths array_load_slice1: value=0x3f800000 mapped=1
+paths typed_mapped: value=0x41200000 mapped=1
+paths typed_null: value=0x00000000 mapped=0
+paths structured_mapped: value=0x467ffc00 mapped=0
+paths structured_null: value=0x00000000 mapped=0
+paths table_array_nontiled: value=0x3f800000 mapped=1
+paths table_array_null: value=0x00000000 mapped=0
+paths table_array_mapped: value=0x3f800000 mapped=1
+paths root_srv_mapped: value=0x42c80000 mapped=0
+paths root_srv_null: value=0x00000000 mapped=0
+paths uav_texture_mapped: value=0x3f800000 mapped=1
+paths uav_texture_null: value=0x00000000 mapped=0
+paths uav_typed_mapped: value=0x3f800000 mapped=1
+paths uav_typed_null: value=0x3f800000 mapped=0
+paths root_uav_mapped: value=0x40000000 mapped=1
+paths root_uav_null: value=0x00000000 mapped=1
+paths end: GetDeviceRemovedReason 0x00000000 S_OK

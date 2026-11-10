@@ -30,6 +30,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <algorithm>
+#include <optional>
 #include <limits>
 #include <algorithm>
 #include <CoreFoundation/CFRunLoop.h>
@@ -144,8 +146,15 @@ bool CocoaBridge::set_control_text(HWND ctrl_hwnd, const std::wstring& text) {
     if ([view isKindOfClass:[NSTextField class]]) {
         [(NSTextField*)view setStringValue:ns_text];
         underline_win_accelerator((NSControl*)view, accel_range);
+        apply_control_colors(ctrl_hwnd, (__bridge void*)view);
     } else if (NSTextView* tv = vtr_document_text_view(view)) {
         [tv setString:ns_text ?: @""];
+        // setString drops the creation-time color. A warnings RichEdit then
+        // draws nothing visible if the attributes come back white.
+        [tv setTextColor:[NSColor textColor]];
+        // Colours the parent chose (WM_CTLCOLOR*) apply to the new text and
+        // to what is typed after it.
+        apply_control_colors(ctrl_hwnd, (__bridge void*)view);
     } else if ([view isKindOfClass:[NSButton class]]) {
         NSRange button_accel_range = NSMakeRange(NSNotFound, 0);
         NSString* button_title = strip_win_accelerator(ns_text, &accel_char,
@@ -472,6 +481,8 @@ bool CocoaBridge::set_control_enabled(HWND ctrl_hwnd, bool enable) {
             [tv setSelectable:enable];
             [tv setTextColor:enable ? [NSColor textColor] : [NSColor disabledControlTextColor]];
             [view setAlphaValue:enable ? 1.0 : 0.7];
+            // Colours the parent chose (WM_CTLCOLOR*) win over the defaults.
+            apply_control_colors(ctrl_hwnd, (__bridge void*)view);
         } else {
             // Non-NSControl views (labels, boxes): use alpha to indicate disabled
             [view setAlphaValue:enable ? 1.0 : 0.4];
@@ -895,6 +906,166 @@ u32 CocoaBridge::get_button_check(HWND ctrl_hwnd) const {
 
 bool CocoaBridge::set_control_font(HWND ctrl_hwnd, float pt_size, u16 weight, bool italic) {
     return set_control_font_face(ctrl_hwnd, {}, pt_size, weight, italic);
+}
+
+namespace {
+NSColor* colorref_to_nscolor(u32 c) {
+    return [NSColor colorWithSRGBRed:static_cast<CGFloat>(c & 0xFF) / 255.0
+                               green:static_cast<CGFloat>((c >> 8) & 0xFF) / 255.0
+                                blue:static_cast<CGFloat>((c >> 16) & 0xFF) / 255.0
+                               alpha:1.0];
+}
+u32 nscolor_to_colorref(NSColor* color) {
+    NSColor* rgb = [color colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+    if (rgb == nil) return 0;
+    const auto channel = [](CGFloat v) {
+        return static_cast<u32>(std::lround(std::clamp(v, 0.0, 1.0) * 255.0));
+    };
+    return channel(rgb.redComponent) | (channel(rgb.greenComponent) << 8) |
+           (channel(rgb.blueComponent) << 16);
+}
+}  // namespace
+
+namespace {
+// A multiline EDIT (NSTextView) or a LISTBOX (cell-based NSTableView) in its
+// NSScrollView: the brush fills the control, the DC text colour draws its
+// text and, in OPAQUE mode, the DC background colour sits behind the text.
+bool apply_scroll_control_colors(NSView* view, const vitreo::windowing::ControlHost::ControlColors& colors) {
+    if (![view isKindOfClass:[NSScrollView class]]) return false;
+    NSScrollView* scroll = (NSScrollView*)view;
+    NSView* document = [scroll documentView];
+    NSColor* fill = colors.fill ? colorref_to_nscolor(*colors.fill) : nil;
+    NSColor* text = colorref_to_nscolor(colors.text);
+    [scroll setDrawsBackground:fill != nil];
+    if (fill) [scroll setBackgroundColor:fill];
+    if ([document isKindOfClass:[NSTextView class]]) {
+        NSTextView* tv = (NSTextView*)document;
+        [tv setDrawsBackground:fill != nil];
+        if (fill) [tv setBackgroundColor:fill];
+        [tv setTextColor:text];
+        [tv setInsertionPointColor:text];
+        NSMutableDictionary* typing = [[tv typingAttributes] mutableCopy];
+        typing[NSForegroundColorAttributeName] = text;
+        NSTextStorage* storage = [tv textStorage];
+        const NSRange all = NSMakeRange(0, storage.length);
+        if (colors.text_background) {
+            NSColor* bk = colorref_to_nscolor(*colors.text_background);
+            typing[NSBackgroundColorAttributeName] = bk;
+            if (all.length > 0) [storage addAttribute:NSBackgroundColorAttributeName value:bk range:all];
+        } else {
+            [typing removeObjectForKey:NSBackgroundColorAttributeName];
+            if (all.length > 0) [storage removeAttribute:NSBackgroundColorAttributeName range:all];
+        }
+        [tv setTypingAttributes:typing];
+        return true;
+    }
+    if ([document isKindOfClass:[NSTableView class]]) {
+        NSTableView* table = (NSTableView*)document;
+        [table setBackgroundColor:fill ?: [NSColor clearColor]];
+        for (NSTableColumn* column in [table tableColumns]) {
+            if ([[column dataCell] isKindOfClass:[NSTextFieldCell class]]) {
+                NSTextFieldCell* cell = (NSTextFieldCell*)[column dataCell];
+                [cell setTextColor:text];
+                [cell setDrawsBackground:colors.text_background.has_value()];
+                if (colors.text_background) [cell setBackgroundColor:colorref_to_nscolor(*colors.text_background)];
+            }
+        }
+        [table setNeedsDisplay:YES];
+        return true;
+    }
+    return false;
+}
+}  // namespace
+
+void CocoaBridge::apply_control_colors(HWND hwnd, void* ns_view) {
+    auto it = m_control_colors.find(hwnd);
+    NSView* view = (__bridge NSView*)ns_view;
+    if (it == m_control_colors.end()) return;
+    if (apply_scroll_control_colors(view, it->second)) return;
+    if (![view isKindOfClass:[NSTextField class]]) return;
+    NSTextField* field = (NSTextField*)view;
+    const ControlColors& colors = it->second;
+    // The static fills its rectangle with the returned brush; a hollow brush
+    // leaves the parent's pixels showing.
+    if (colors.fill) {
+        [field setDrawsBackground:YES];
+        [field setBackgroundColor:colorref_to_nscolor(*colors.fill)];
+    } else {
+        [field setDrawsBackground:NO];
+    }
+    [field setTextColor:colorref_to_nscolor(colors.text)];
+    // OPAQUE mode paints the DC background colour behind the text itself.
+    NSMutableAttributedString* text = [[field attributedStringValue] mutableCopy];
+    if (text.length > 0) {
+        const NSRange all = NSMakeRange(0, text.length);
+        [text addAttribute:NSForegroundColorAttributeName
+                     value:colorref_to_nscolor(colors.text) range:all];
+        if (colors.text_background) {
+            [text addAttribute:NSBackgroundColorAttributeName
+                         value:colorref_to_nscolor(*colors.text_background) range:all];
+        } else {
+            [text removeAttribute:NSBackgroundColorAttributeName range:all];
+        }
+        [field setAttributedStringValue:text];
+    }
+}
+
+bool CocoaBridge::set_control_colors(HWND hwnd, const ControlColors& colors) {
+    __block bool ok = false;
+    const ControlColors copy = colors;
+    vtr_run_on_main_sync(^{
+        auto it = m_controls.find(hwnd);
+        if (it == m_controls.end() || it->second == nullptr) return;
+        NSView* view = (__bridge NSView*)it->second;
+        const bool scroll_control =
+            [view isKindOfClass:[NSScrollView class]] &&
+            ([[(NSScrollView*)view documentView] isKindOfClass:[NSTextView class]] ||
+             [[(NSScrollView*)view documentView] isKindOfClass:[NSTableView class]]);
+        if (![view isKindOfClass:[NSTextField class]] && !scroll_control) return;
+        m_control_colors[hwnd] = copy;
+        apply_control_colors(hwnd, it->second);
+        ok = true;
+    });
+    return ok;
+}
+
+bool CocoaBridge::native_label_colors(HWND hwnd, u32* text, std::optional<u32>* fill) const {
+    __block bool ok = false;
+    vtr_run_on_main_sync(^{
+        auto it = m_controls.find(hwnd);
+        if (it == m_controls.end() || it->second == nullptr) return;
+        NSView* view = (__bridge NSView*)it->second;
+        if ([view isKindOfClass:[NSScrollView class]]) {
+            NSScrollView* scroll = (NSScrollView*)view;
+            NSView* document = [scroll documentView];
+            if ([document isKindOfClass:[NSTextView class]]) {
+                NSTextView* tv = (NSTextView*)document;
+                if (text) *text = nscolor_to_colorref([tv textColor] ?: [NSColor textColor]);
+                if (fill) *fill = [tv drawsBackground] ? std::optional<u32>(nscolor_to_colorref([tv backgroundColor]))
+                                                       : std::nullopt;
+                ok = true;
+            } else if ([document isKindOfClass:[NSTableView class]]) {
+                NSTableView* table = (NSTableView*)document;
+                NSTableColumn* column = [[table tableColumns] firstObject];
+                if (text && [[column dataCell] isKindOfClass:[NSTextFieldCell class]]) {
+                    *text = nscolor_to_colorref([(NSTextFieldCell*)[column dataCell] textColor]);
+                }
+                if (fill) *fill = [scroll drawsBackground] ? std::optional<u32>(nscolor_to_colorref([table backgroundColor]))
+                                                           : std::nullopt;
+                ok = true;
+            }
+            return;
+        }
+        if (![view isKindOfClass:[NSTextField class]]) return;
+        NSTextField* field = (NSTextField*)view;
+        if (text) *text = nscolor_to_colorref([field textColor]);
+        if (fill) {
+            *fill = [field drawsBackground] ? std::optional<u32>(nscolor_to_colorref([field backgroundColor]))
+                                            : std::nullopt;
+        }
+        ok = true;
+    });
+    return ok;
 }
 
 bool CocoaBridge::set_control_font_face(HWND ctrl_hwnd, const std::u16string& face,

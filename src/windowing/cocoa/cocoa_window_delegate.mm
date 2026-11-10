@@ -101,9 +101,35 @@ static constexpr CFAbsoluteTime kResizeThrottleInterval = 1.0 / 60.0;
 - (void)windowDidDeminiaturize:(NSNotification *)notification {
     NSWindow* window = (NSWindow*)notification.object;
     if (_bridge) {
-        _bridge->on_native_show_state(
-            _hwnd, false, [window isZoomed] == YES);
+        _bridge->on_native_show_state(_hwnd, false, [self reportZoomed:window] == YES);
     }
+}
+
+// Maximized as USER32 should see it. windowWillUseStandardFrame: answers the
+// visible frame, so AppKit's isZoomed is YES for ANY window whose frame equals
+// the work area -- including one the guest merely sized to it. Windows does not
+// maximize such a window (the game's own SetWindowPos to the work area leaves
+// WS_MAXIMIZE clear), and treating it as maximized made a later
+// ShowWindow(SW_SHOWNORMAL) "restore" it to a smaller rectangle: The Sims 3
+// shrank its exclusive-mode window that way and hit-tested every click against
+// the wrong size. A window becomes maximized here only through an actual
+// AppKit zoom; once it is, it stays so while AppKit still reports zoomed.
+- (BOOL)reportZoomed:(NSWindow*)window {
+    const BOOL zoomed = [window isZoomed];
+    if (!zoomed) {
+        _reportedZoomed = NO;
+    } else if (_zoomRequested) {
+        _reportedZoomed = YES;
+    }
+    _zoomRequested = NO;
+    return _reportedZoomed;
+}
+
+- (BOOL)windowShouldZoom:(NSWindow*)window toFrame:(NSRect)newFrame {
+    (void)window;
+    (void)newFrame;
+    _zoomRequested = YES;
+    return YES;
 }
 
 - (NSRect)windowWillUseStandardFrame:(NSWindow*)window
@@ -208,7 +234,7 @@ static constexpr CFAbsoluteTime kResizeThrottleInterval = 1.0 / 60.0;
     // the current dimensions with the maximized frame.
     if (_bridge) {
         _bridge->on_native_show_state(
-            _hwnd, [window isMiniaturized] == YES, [window isZoomed] == YES);
+            _hwnd, [window isMiniaturized] == YES, [self reportZoomed:window] == YES);
     }
 
     // Update bridge + HwndManager state immediately so GetClientRect returns

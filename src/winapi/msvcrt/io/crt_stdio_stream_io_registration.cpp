@@ -110,7 +110,7 @@ void add_crt_stdio_transfer_exports(DllExports& exports, const StdioContext& ctx
             stdio_diag_vfs(m, "fwrite", fp, it->second);
             if (!capsule::has_access(it->second.access,
                                      capsule::AccessMode::Write)) {
-                it->second.error_flag = true;
+                set_stream_error(it->second, true);
                 memory_manager.set_errno(9);  // EBADF
                 m.set_return(0);
                 return;
@@ -127,12 +127,21 @@ void add_crt_stdio_transfer_exports(DllExports& exports, const StdioContext& ctx
             if (it != stdio_arena().files.end() &&
                 !capsule::has_access(it->second.access,
                                      capsule::AccessMode::Read)) {
-                it->second.error_flag = true;
+                set_stream_error(it->second, true);
                 m.set_return(static_cast<u32>(-1));  // EOF
                 return;
             }
             m.set_return(static_cast<u32>(mgr.guest_fgetc(fp)));
         }});
+    // int getc(FILE*) — Learn: identical to fgetc, implemented as a function
+    // export in msvcrt.dll as well as the macro; same stream lock binding
+    // (crt_stdio_export_locking.cpp lists it with fgetc).
+    {
+        ExportEntry getc_entry = exports.entries.back();
+        getc_entry.name = "getc";
+        getc_entry.ordinal = 0;
+        exports.entries.push_back(std::move(getc_entry));
+    }
     exports.entries.push_back(
         {"putchar", 0,
          [&mgr](Marshaler& m) {
@@ -171,7 +180,7 @@ void add_crt_stdio_transfer_exports(DllExports& exports, const StdioContext& ctx
         }});
     exports.entries.push_back(
         {"fgets", 8,
-         [&mgr, &memory_manager, vfs_read_translated, host_standard_stream](Marshaler& m) {
+         [&mgr, &memory_manager, &vfs, host_standard_stream](Marshaler& m) {
             (void)mgr;
             GuestAddr buf_ptr = m.arg_ptr(0);
             i32 n  = static_cast<i32>(m.arg(1));
@@ -200,23 +209,17 @@ void add_crt_stdio_transfer_exports(DllExports& exports, const StdioContext& ctx
             if (it == stdio_arena().files.end()) { m.set_return(0); return; }
             if (!capsule::has_access(it->second.access,
                                      capsule::AccessMode::Read)) {
-                it->second.error_flag = true;
+                set_stream_error(it->second, true);
                 m.set_return(0);
                 return;
             }
-            // Read up to n-1 bytes, stopping at newline
-            i32 i = 0;
-            bool got_any = false;
-            while (i < n - 1) {
-                u8 ch = 0;
-                usize ngot = vfs_read_translated(it->second, std::span<u8>(&ch, 1));
-                if (ngot == 0) break;
-                got_any = true;
-                (void)m.write_u8(buf_ptr + static_cast<GuestAddr>(i++), ch);
-                if (ch == '\n') break;
-            }
-            if (!got_any) { m.set_return(0); return; }
-            (void)m.write_u8(buf_ptr + static_cast<GuestAddr>(i), 0);
+            // Read up to n-1 bytes, stopping after a newline, then terminate.
+            std::vector<u8> line(static_cast<usize>(n));
+            const usize got = stdio_vfs_read_line(vfs, it->second,
+                                                  std::span<u8>(line.data(), static_cast<usize>(n - 1)));
+            if (got == 0) { m.set_return(0); return; }
+            line[got] = 0;
+            (void)m.memory().write_bytes(buf_ptr, line.data(), got + 1);
             m.set_return(static_cast<u64>(buf_ptr));
         }});
     // puts() writes the string to stdout AND appends a newline (fputs does

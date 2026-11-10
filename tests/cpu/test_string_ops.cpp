@@ -211,6 +211,140 @@ protected:
     std::unique_ptr<CpuState> m_cpu;
 };
 
+TEST_F(StringOpsTest, RepeatCompareFaultRestoresEntryFlagsAndCommitsProgress) {
+    // Intel SDM REP; native Windows oracle rep_compare_fault_probe{32,64}
+    // confirms entry status 0x895/0xc95 on both first and partial faults.
+    const u64 seed = FLAG_CF | FLAG_PF | FLAG_AF | FLAG_SF | FLAG_OF | 2;
+    for (bool wide : {false, true}) for (u8 elem : {u8{1}, u8{2}, u8{4}, u8{8}}) {
+        if (!wide && elem == 8) continue;
+        for (bool repe : {false, true}) for (bool backward : {false, true})
+        for (bool partial : {false, true}) for (int side : {0, 1, 2}) {
+            SCOPED_TRACE(::testing::Message() << "wide=" << wide << " elem=" << int(elem)
+                << " repe=" << repe << " backward=" << backward
+                << " partial=" << partial << " side=" << side);
+            std::vector<u8> fill(0x10000, 0x55);
+            ASSERT_TRUE(m_memory->write_bytes(0x1000, fill.data(), fill.size()));
+            if (!repe) {
+                const std::vector<u8> other(32, 0x44);
+                ASSERT_TRUE(m_memory->write_bytes(0x3FF0, other.data(), other.size()));
+            }
+            std::vector<u8> code{static_cast<u8>(repe ? 0xF3 : 0xF2)};
+            if (elem == 2) code.push_back(0x66);
+            if (elem == 8) code.push_back(0x48);
+            code.push_back(side == 0 ? (elem == 1 ? 0xAE : 0xAF)
+                                    : (elem == 1 ? 0xA6 : 0xA7));
+            ASSERT_TRUE(m_memory->write_bytes(0x8000, code.data(), code.size()));
+            if (wide) m_cpu->init_long_mode(); else m_cpu->init_protected_mode();
+            m_cpu->rip = 0x8000;
+            m_cpu->flags.rflags = seed | (backward ? FLAG_DF : 0);
+            const u64 bad = backward ? 0x1000 - elem : 0x11000;
+            const u64 first = partial ? (backward ? bad + 2 * elem : bad - 2 * elem) : bad;
+            m_cpu->gpr.set64(RSI, side == 1 ? first : 0x4000);
+            m_cpu->gpr.set64(RDI, side != 1 ? first : 0x4000);
+            m_cpu->gpr.set64(RCX, 4);
+            m_cpu->gpr.set64(RAX, repe ? 0x5555555555555555ull : 0x4444444444444444ull);
+            EXPECT_EQ(execute_one(), ExecResult::Exception);
+            EXPECT_EQ(m_cpu->flags.rflags, seed | (backward ? FLAG_DF : 0));
+            EXPECT_EQ(m_cpu->gpr.get64(RCX), partial ? 2u : 4u);
+            EXPECT_EQ(m_cpu->gpr.get64(side == 1 ? RSI : RDI), bad);
+            EXPECT_EQ(m_cpu->rip, 0x8000u);
+        }
+    }
+}
+
+TEST_F(StringOpsTest, CompareAddressOverrideUsesIndexAndCountWidth) {
+    for (bool wide : {false, true}) for (bool cmps : {false, true}) {
+        if (wide) m_cpu->init_long_mode(); else m_cpu->init_protected_mode();
+        m_cpu->rip = 0x1000;
+        const std::vector<u8> code{0x67, 0xF3, static_cast<u8>(cmps ? 0xA6 : 0xAE)};
+        write_code(code.data(), code.size());
+        const u8 equal[] = {0x55, 0x55};
+        write_data(0x2000, equal, sizeof(equal));
+        write_data(0x3000, equal, sizeof(equal));
+        const u64 high = wide ? 0x1234567800000000ull : 0x12340000ull;
+        m_cpu->gpr.set64(RSI, high | 0x2000);
+        m_cpu->gpr.set64(RDI, high | 0x3000);
+        m_cpu->gpr.set64(RCX, high | 2);
+        m_cpu->gpr.set64(RAX, 0x55);
+        EXPECT_EQ(execute_one(), ExecResult::Continue);
+        const u64 expected_high = wide ? 0 : high;
+        EXPECT_EQ(m_cpu->gpr.get64(RDI), expected_high | 0x3002);
+        EXPECT_EQ(m_cpu->gpr.get64(RCX), expected_high);
+        EXPECT_EQ(m_cpu->gpr.get64(RSI), cmps ? expected_high | 0x2002 : high | 0x2000);
+        EXPECT_TRUE(m_cpu->flags.zf());
+    }
+}
+
+TEST_F(StringOpsTest, CompareUsesImplicitSegmentsAndScasIgnoresOverride) {
+    const u8 equal = 0x55, unequal = 0x44;
+    for (bool wide : {false, true}) for (bool cmps : {false, true}) {
+        if (wide) m_cpu->init_long_mode(); else m_cpu->init_protected_mode();
+        m_cpu->rip = 0x1000;
+        m_cpu->seg.fs_desc.base = 0x4000;
+        if (!wide) {
+            m_cpu->seg.ds_desc.base = 0x4000;
+            m_cpu->seg.es_desc.base = 0x5000;
+        }
+        // FS overrides CMPS's source; SCAS still reads ES:(E/R)DI.
+        const std::vector<u8> code{0x64, 0xF3, static_cast<u8>(cmps ? 0xA6 : 0xAE)};
+        write_code(code.data(), code.size());
+        write_data(0x2000, &unequal, 1);
+        write_data(0x6000, &equal, 1);
+        write_data(wide ? 0x3000 : 0x8000, &equal, 1);
+        write_data(0x7000, &unequal, 1);
+        m_cpu->gpr.set64(RSI, 0x2000);
+        m_cpu->gpr.set64(RDI, 0x3000);
+        m_cpu->gpr.set64(RCX, 1);
+        m_cpu->gpr.set64(RAX, equal);
+        EXPECT_EQ(execute_one(), ExecResult::Continue);
+        EXPECT_TRUE(m_cpu->flags.zf());
+        EXPECT_EQ(m_cpu->gpr.get64(RDI), 0x3001u);
+        EXPECT_EQ(m_cpu->gpr.get64(RSI), cmps ? 0x2001u : 0x2000u);
+    }
+}
+
+TEST_F(StringOpsTest, CompareSixteenBitIndicesWrapBeforeSegmentAddition) {
+    ASSERT_TRUE(m_memory->map_region(0x11000, 0x3000, MemoryProtection::ReadWrite));
+    m_cpu->init_protected_mode();
+    m_cpu->rip = 0x1000;
+    m_cpu->seg.ds_desc.base = 0x2000;
+    m_cpu->seg.es_desc.base = 0x3000;
+    const u8 code[] = {0x67, 0xF3, 0xA6};
+    write_code(code, sizeof(code));
+    const u8 value = 0x55;
+    for (u64 addr : {0x11FFFull, 0x12FFFull, 0x2000ull, 0x3000ull})
+        write_data(addr, &value, 1);
+    m_cpu->gpr.set64(RSI, 0x5678FFFF);
+    m_cpu->gpr.set64(RDI, 0x9ABCFFFF);
+    m_cpu->gpr.set64(RCX, 0x12340002);
+    EXPECT_EQ(execute_one(), ExecResult::Continue);
+    EXPECT_EQ(m_cpu->gpr.get64(RSI), 0x56780001u);
+    EXPECT_EQ(m_cpu->gpr.get64(RDI), 0x9ABC0001u);
+    EXPECT_EQ(m_cpu->gpr.get64(RCX), 0x12340000u);
+    EXPECT_TRUE(m_cpu->flags.zf());
+}
+
+TEST_F(StringOpsTest, CompareBulkScanDoesNotCrossLinearAddressWrap) {
+    ASSERT_TRUE(m_memory->map_region(0, 0x1000, MemoryProtection::ReadWrite));
+    ASSERT_TRUE(m_memory->map_region(0xFFFFF000, 0x2000, MemoryProtection::ReadWrite));
+    m_cpu->init_protected_mode();
+    m_cpu->rip = 0x1000;
+    m_cpu->seg.es_desc.base = 0xFFFFD000;
+    const u8 code[] = {0xF3, 0xAE};
+    write_code(code, sizeof(code));
+    const u8 equal = 0x55, unequal = 0x44;
+    write_data(0xFFFFFFFF, &equal, 1);
+    write_data(0x100000000ull, &equal, 1); // Decoy, outside linear32 space.
+    write_data(0, &unequal, 1);
+    m_cpu->gpr.set64(RDI, 0x2FFF);
+    m_cpu->gpr.set64(RCX, 2);
+    m_cpu->gpr.set64(RAX, equal);
+    EXPECT_EQ(execute_one(), ExecResult::Continue);
+    EXPECT_EQ(m_cpu->gpr.get64(RDI), 0x3001u);
+    EXPECT_EQ(m_cpu->gpr.get64(RCX), 0u);
+    EXPECT_FALSE(m_cpu->flags.zf());
+}
+
 // ----------------------------------------------------------------------------
 // 1. MOVSB - copies one byte from [RSI] to [RDI]
 // ----------------------------------------------------------------------------

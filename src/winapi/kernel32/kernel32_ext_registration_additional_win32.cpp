@@ -112,6 +112,11 @@ void append_additional_win32_exports(Kernel32ExtManager& mgr, DllExports& export
         8
     });
     exports.entries.push_back(ExportEntry{
+        "GetVolumePathNameA", 0,
+        [&mgr](Marshaler& m) { mgr.impl_GetVolumePathNameA(m); },
+        12
+    });
+    exports.entries.push_back(ExportEntry{
         "GetVolumePathNameW", 0,
         [&mgr](Marshaler& m) { mgr.impl_GetVolumePathNameW(m); },
         12
@@ -140,6 +145,73 @@ void append_additional_win32_exports(Kernel32ExtManager& mgr, DllExports& export
     exports.entries.push_back(ExportEntry{
         "GetPrivateProfileSectionNamesA", 0,
         [&mgr](Marshaler& m) { mgr.impl_GetPrivateProfileSectionNamesA(m); },
+        12
+    });
+    // The rest of the INI profile family. stdcall bytes from the SDK import
+    // library (um/x86/kernel32.lib: _GetPrivateProfileStructA@20, ...).
+    exports.entries.push_back(ExportEntry{
+        "GetPrivateProfileSectionW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_GetPrivateProfileSectionW(m); },
+        16
+    });
+    exports.entries.push_back(ExportEntry{
+        "GetPrivateProfileSectionNamesW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_GetPrivateProfileSectionNamesW(m); },
+        12
+    });
+    exports.entries.push_back(ExportEntry{
+        "WritePrivateProfileSectionW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_WritePrivateProfileSectionW(m); },
+        12
+    });
+    exports.entries.push_back(ExportEntry{
+        "GetPrivateProfileStructA", 0,
+        [&mgr](Marshaler& m) { mgr.impl_GetPrivateProfileStructA(m); },
+        20
+    });
+    exports.entries.push_back(ExportEntry{
+        "GetPrivateProfileStructW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_GetPrivateProfileStructW(m); },
+        20
+    });
+    exports.entries.push_back(ExportEntry{
+        "WritePrivateProfileStructA", 0,
+        [&mgr](Marshaler& m) { mgr.impl_WritePrivateProfileStructA(m); },
+        20
+    });
+    exports.entries.push_back(ExportEntry{
+        "WritePrivateProfileStructW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_WritePrivateProfileStructW(m); },
+        20
+    });
+    exports.entries.push_back(ExportEntry{
+        "GetProfileSectionA", 0,
+        [&mgr](Marshaler& m) { mgr.impl_GetProfileSectionA(m); },
+        12
+    });
+    exports.entries.push_back(ExportEntry{
+        "GetProfileSectionW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_GetProfileSectionW(m); },
+        12
+    });
+    exports.entries.push_back(ExportEntry{
+        "WriteProfileSectionA", 0,
+        [&mgr](Marshaler& m) { mgr.impl_WriteProfileSectionA(m); },
+        8
+    });
+    exports.entries.push_back(ExportEntry{
+        "WriteProfileSectionW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_WriteProfileSectionW(m); },
+        8
+    });
+    exports.entries.push_back(ExportEntry{
+        "WriteProfileStringA", 0,
+        [&mgr](Marshaler& m) { mgr.impl_WriteProfileStringA(m); },
+        12
+    });
+    exports.entries.push_back(ExportEntry{
+        "WriteProfileStringW", 0,
+        [&mgr](Marshaler& m) { mgr.impl_WriteProfileStringW(m); },
         12
     });
     exports.entries.push_back(ExportEntry{

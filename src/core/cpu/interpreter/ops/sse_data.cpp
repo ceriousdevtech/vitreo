@@ -51,7 +51,7 @@ inline XmmReg& xmm(ExecContext& ctx, u8 idx) noexcept {
 
 /// Read 128 bits from guest memory into an XmmReg
 inline VoidResult read_xmm_mem(ExecContext& ctx, u64 addr, XmmReg& dst) noexcept {
-    return ctx.mem.read_bytes(addr, dst.u8_, 16);
+    return read_bytes_av(ctx, addr, dst.u8_, 16);
 }
 
 /// Write 128 bits from an XmmReg to guest memory
@@ -62,7 +62,8 @@ inline VoidResult write_xmm_mem(ExecContext& ctx, u64 addr, const XmmReg& src) n
 /// Validate 16-byte alignment; sets GP exception and returns false on failure
 inline bool require_align16(ExecContext& ctx, u64 addr) noexcept {
     if (addr & 0xF) {
-        ctx.exception = CpuException::GeneralProtection;
+        // #GP(0): STATUS_ACCESS_VIOLATION with [0] = 0, [1] = all-ones.
+        record_misaligned_operand_gp(ctx);
         return false;
     }
     return true;
@@ -77,6 +78,14 @@ inline ExecResult gp_fault(ExecContext& ctx) noexcept {
 /// A rejected vector store: Windows reports a write of the first
 /// inaccessible byte and leaves memory untouched
 /// (tools/oracle_probe/simd_store_fault_probe.expected).
+/// A failed operand READ of @p size bytes: STATUS_ACCESS_VIOLATION with
+/// [0] = 0 and [1] = the first inaccessible byte (read_xmm_mem records the
+/// m128 case itself).
+inline ExecResult read_fault(ExecContext& ctx, u64 addr, u8 size) noexcept {
+    record_read_access_violation(ctx, addr, size);
+    return gp_fault(ctx);
+}
+
 inline ExecResult store_fault(ExecContext& ctx, u64 addr, u8 size) noexcept {
     record_write_access_violation(ctx, addr, size);
     return gp_fault(ctx);
@@ -299,7 +308,7 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
             auto addr = calc_effective_address(ctx, src.mem);
             if (!addr) return gp_fault(ctx);
             auto val = ctx.mem.read_u32(addr.value());
-            if (!val) return gp_fault(ctx);
+            if (!val) return read_fault(ctx, addr.value(), 4);
             auto& d = xmm(ctx, dst);
             d.clear();
             d.u32_[0] = val.value();
@@ -340,7 +349,7 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
             auto addr = calc_effective_address(ctx, src.mem);
             if (!addr) return gp_fault(ctx);
             auto val = ctx.mem.read_u64(addr.value());
-            if (!val) return gp_fault(ctx);
+            if (!val) return read_fault(ctx, addr.value(), 8);
             auto& d = xmm(ctx, dst);
             d.clear();
             d.u64_[0] = val.value();
@@ -374,7 +383,7 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
         auto addr = calc_effective_address(ctx, instr.operands[1].mem);
         if (!addr) return gp_fault(ctx);
         auto val = ctx.mem.read_u64(addr.value());
-        if (!val) return gp_fault(ctx);
+        if (!val) return read_fault(ctx, addr.value(), 8);
         xmm(ctx, dst).u64_[0] = val.value();
         return ExecResult::Continue;
     }
@@ -487,7 +496,7 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
             auto addr = calc_effective_address(ctx, src.mem);
             if (!addr) return gp_fault(ctx);
             auto val = ctx.mem.read_u64(addr.value());
-            if (!val) return gp_fault(ctx);
+            if (!val) return read_fault(ctx, addr.value(), 8);
             lo = val.value();
         }
         auto& d = xmm(ctx, dst);
@@ -505,7 +514,7 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
         auto addr = calc_effective_address(ctx, instr.operands[1].mem);
         if (!addr) return gp_fault(ctx);
         auto val = ctx.mem.read_u64(addr.value());
-        if (!val) return gp_fault(ctx);
+        if (!val) return read_fault(ctx, addr.value(), 8);
         xmm(ctx, dst).u64_[1] = val.value();
         return ExecResult::Continue;
     }
@@ -622,13 +631,18 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
         if (!addr) return gp_fault(ctx);
         if (!require_align16(ctx, addr.value())) return ExecResult::Exception;
 
+        if (!check_xstate_image_access(ctx, addr.value(), kFxImageBytes,
+                                       /*is_write=*/true,
+                                       /*xrstor_header=*/false)) {
+            return ExecResult::Exception;
+        }
         const bool fxsave64 = ctx.cpu.is_long_mode() && instr.prefixes.rex_w();
         const u8 xmm_count = ctx.cpu.is_long_mode() ? 16 : 8;
         u8 image[kFxImageBytes]{};
         fx_image_save(ctx.cpu, image, fxsave64, xmm_count);
 
         auto result = ctx.mem.write_bytes(addr.value(), image, sizeof(image));
-        if (!result) return gp_fault(ctx);
+        if (!result) return store_fault(ctx, addr.value(), 1);
         return ExecResult::Continue;
     }
 
@@ -641,9 +655,14 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
         if (!addr) return gp_fault(ctx);
         if (!require_align16(ctx, addr.value())) return ExecResult::Exception;
 
+        if (!check_xstate_image_access(ctx, addr.value(), kFxImageBytes,
+                                       /*is_write=*/false,
+                                       /*xrstor_header=*/false)) {
+            return ExecResult::Exception;
+        }
         u8 image[kFxImageBytes]{};
         auto loaded = ctx.mem.read_bytes(addr.value(), image, sizeof(image));
-        if (!loaded) return gp_fault(ctx);
+        if (!loaded) return read_fault(ctx, addr.value(), 1);
 
         const bool fxrstor64 = ctx.cpu.is_long_mode() && instr.prefixes.rex_w();
         const u8 xmm_count = ctx.cpu.is_long_mode() ? 16 : 8;
@@ -660,7 +679,7 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
         auto addr = calc_effective_address(ctx, instr.operands[0].mem);
         if (!addr) return gp_fault(ctx);
         auto probe = ctx.mem.read_u8(addr.value());
-        if (!probe) return gp_fault(ctx);
+        if (!probe) return read_fault(ctx, addr.value(), 1);
         return ExecResult::Continue;
     }
 
@@ -692,7 +711,7 @@ ExecResult exec_sse_data(ExecContext& ctx, const DecodedInstruction& instr) noex
         auto addr = calc_effective_address(ctx, instr.operands[0].mem);
         if (!addr) return gp_fault(ctx);
         auto val = ctx.mem.read_u32(addr.value());
-        if (!val) return gp_fault(ctx);
+        if (!val) return read_fault(ctx, addr.value(), 4);
         // LDMXCSR writes the sticky exception bits outright, so anything the
         // host accumulated for the SSE class before now is superseded and must
         // not resurface on the next STMXCSR.

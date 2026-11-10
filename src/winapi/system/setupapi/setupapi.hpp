@@ -15,12 +15,14 @@
 #include "winapi/core/thunk_registry.hpp"
 
 #include <functional>
+#include <memory>
 #include <string>
 
 namespace vitreo { namespace capsule { class Vfs; } }
 
 namespace vitreo::winapi {
 
+class GamepadHidCatalog;
 class RegistryThunks;
 class GuestElevationState;
 
@@ -88,7 +90,8 @@ struct SetupapiGuestServices {
     capsule::Vfs* vfs = nullptr,
     RegistryThunks* registry = nullptr,
     const GuestElevationState* elevation = nullptr,
-    const SetupapiGuestServices* services = nullptr);
+    const SetupapiGuestServices* services = nullptr,
+    std::shared_ptr<GamepadHidCatalog> gamepads = {});
 
 /// cfgmgr32.dll: the CM_* devnode API over the same device tree. setupapi.dll
 /// re-exports (forwards) the subset of these names that the real setupapi.dll
@@ -96,6 +99,7 @@ struct SetupapiGuestServices {
 [[nodiscard]] DllExports create_cfgmgr32_thunks(
     std::function<std::string()> display_name_provider = {},
     RegistryThunks* registry = nullptr,
-    const GuestElevationState* elevation = nullptr);
+    const GuestElevationState* elevation = nullptr,
+    std::shared_ptr<GamepadHidCatalog> gamepads = {});
 
 } // namespace vitreo::winapi

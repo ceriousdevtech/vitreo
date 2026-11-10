@@ -213,6 +213,52 @@ struct StatsClipLayout {
     std::array<u32, 8> distance_component{};
 };
 
+/// Where records laid out as @p record_registers (the output register each
+/// vec4 slot holds) keep a stage's SV_Position and SV_ClipDistance components
+/// -- the elements of @p outputs on @p stream -- for the clipper (invalid
+/// without a position). Shared by the D3D11 and D3D12 frontends.
+[[nodiscard]] inline StatsClipLayout stats_clip_layout_of(
+    const std::vector<DxbcSignatureElement>& outputs,
+    const std::vector<u32>& record_registers, u32 stream) {
+    StatsClipLayout layout{};
+    const auto slot_of = [&](u32 reg, u32& slot) {
+        const auto found =
+            std::find(record_registers.begin(), record_registers.end(), reg);
+        if (found == record_registers.end()) return false;
+        slot = static_cast<u32>(found - record_registers.begin());
+        return true;
+    };
+    // SV_ClipDistance components in clip-array order: by semantic index,
+    // then component (the rasterizer's order, D3D11.3 15.4.1).
+    std::vector<std::array<u32, 3>> distances;
+    for (const auto& element : outputs) {
+        if (element.stream != stream) continue;
+        if (element.system_value_type == 1u) {  // D3D_NAME_POSITION
+            layout.valid = slot_of(element.register_num, layout.position_slot);
+        } else if (element.system_value_type == 2u) {  // CLIP_DISTANCE
+            for (u32 c = 0; c < 4; ++c) {
+                if ((element.component_mask & (1u << c)) != 0u) {
+                    distances.push_back(
+                        {element.semantic_index, element.register_num, c});
+                }
+            }
+        }
+    }
+    std::sort(distances.begin(), distances.end());
+    for (const auto& [index, reg, component] : distances) {
+        (void)index;
+        u32 slot = 0;
+        if (layout.distances >= 8 || !slot_of(reg, slot)) {
+            layout.valid = false;
+            break;
+        }
+        layout.distance_slot[layout.distances] = slot;
+        layout.distance_component[layout.distances] = component;
+        ++layout.distances;
+    }
+    return layout;
+}
+
 /// Kernel constants (inline constant buffer, index 0) of the three
 /// primitive kernels. One layout serves all three.
 struct StatsKernelParams {
@@ -293,59 +339,11 @@ inline constexpr const char* kStatsGeometryEntryPoint = "vitreo_stats_geometry";
 inline constexpr const char* kStatsTessellationEntryPoint =
     "vitreo_stats_tessellation";
 
-/// The four kernels (one library).
-[[nodiscard]] inline std::string pipeline_stats_msl() {
-    const auto u = [](u32 v) { return std::to_string(v) + "u"; };
-    std::string msl = R"(#include <metal_stdlib>
-using namespace metal;
-
-struct StatsParams {
-    uint vpp;
-    uint batch;
-    uint flags;
-    uint raster_pick;
-    uint raster_vertices;
-    uint key_mode;
-    uint primitives_per_instance;
-    uint instances;
-    uint key_stride;
-    uint record_vec4s;
-    uint record_base;
-    uint position_slot;
-    uint distances;
-    uint distance_slots[8];
-    uint invocations;
-    uint gs_instances;
-    uint vertices_per_invocation;
-    uint stream_mask;
-    uint raster_stream;
-    uint capacity;
-    uint pad[5];
-};
-
-// 64-bit sums from 32-bit atomics: add to the low word, carry on wrap.
-static void stats_add(device atomic_uint* r, uint counter, ulong value)
-{
-    const uint lo = uint(value);
-    uint hi = uint(value >> 32);
-    if (lo != 0u) {
-        const uint old = atomic_fetch_add_explicit(r + 2u * counter, lo,
-                                                   memory_order_relaxed);
-        if (old + lo < old) hi += 1u;
-    }
-    if (hi != 0u) {
-        atomic_fetch_add_explicit(r + 2u * counter + 1u, hi,
-                                  memory_order_relaxed);
-    }
-}
-
-static void stats_flag(device atomic_uint* r, uint bits)
-{
-    atomic_fetch_or_explicit(r + )" + u(STATS_FLAGS_WORD) + R"(, bits,
-                             memory_order_relaxed);
-}
-
-struct ClipV {
+/// The clipper the kernels count CPrimitives with (ClipV, stats_clip):
+/// Sutherland-Hodgman over the six view-volume planes and the clip
+/// distances; the mesh stage's statistics variant uses it too.
+[[nodiscard]] inline std::string stats_clip_msl() {
+    return R"(struct ClipV {
     float4 p;
     float d[8];
 };
@@ -429,7 +427,62 @@ static uint stats_clip(thread ClipV* v, uint count, uint distances,
     return n >= 3u ? n - 2u : 0u;
 }
 
-static ClipV clip_vertex(constant StatsParams& p, device const float4* records,
+)";
+}
+
+/// The four kernels (one library).
+[[nodiscard]] inline std::string pipeline_stats_msl() {
+    const auto u = [](u32 v) { return std::to_string(v) + "u"; };
+    std::string msl = R"(#include <metal_stdlib>
+using namespace metal;
+
+struct StatsParams {
+    uint vpp;
+    uint batch;
+    uint flags;
+    uint raster_pick;
+    uint raster_vertices;
+    uint key_mode;
+    uint primitives_per_instance;
+    uint instances;
+    uint key_stride;
+    uint record_vec4s;
+    uint record_base;
+    uint position_slot;
+    uint distances;
+    uint distance_slots[8];
+    uint invocations;
+    uint gs_instances;
+    uint vertices_per_invocation;
+    uint stream_mask;
+    uint raster_stream;
+    uint capacity;
+    uint pad[5];
+};
+
+// 64-bit sums from 32-bit atomics: add to the low word, carry on wrap.
+static void stats_add(device atomic_uint* r, uint counter, ulong value)
+{
+    const uint lo = uint(value);
+    uint hi = uint(value >> 32);
+    if (lo != 0u) {
+        const uint old = atomic_fetch_add_explicit(r + 2u * counter, lo,
+                                                   memory_order_relaxed);
+        if (old + lo < old) hi += 1u;
+    }
+    if (hi != 0u) {
+        atomic_fetch_add_explicit(r + 2u * counter + 1u, hi,
+                                  memory_order_relaxed);
+    }
+}
+
+static void stats_flag(device atomic_uint* r, uint bits)
+{
+    atomic_fetch_or_explicit(r + )" + u(STATS_FLAGS_WORD) + R"(, bits,
+                             memory_order_relaxed);
+}
+
+)" + stats_clip_msl() + R"(static ClipV clip_vertex(constant StatsParams& p, device const float4* records,
                          uint record)
 {
     ClipV v;

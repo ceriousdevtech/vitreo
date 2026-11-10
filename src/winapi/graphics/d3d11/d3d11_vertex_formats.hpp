@@ -2,6 +2,7 @@
 #pragma once
 
 #include "graphics/contracts/backend_device.hpp"
+#include "graphics/shaders/dxbc_to_spirv.hpp"
 
 #include <array>
 #include <limits>
@@ -115,6 +116,119 @@ vertex_storage_component_type(u32 dxgi_format) noexcept {
     }
     return graphics::BackendVertexComponentType::Float;
 }
+
+/// Channels of an IA vertex format (dxgiformat.h: the R/G/B/A of each
+/// name); 0 for a format kVertexFormats does not list.
+[[nodiscard]] constexpr u32 vertex_format_components(u32 dxgi_format) noexcept {
+    switch (dxgi_format) {
+    case 2: case 3: case 4: case 10: case 11: case 12: case 13: case 14:
+    case 24: case 25: case 28: case 30: case 31: case 32: case 87:
+        return 4;
+    case 6: case 7: case 8: case 26:
+        return 3;
+    case 16: case 17: case 18: case 34: case 35: case 36: case 37: case 38:
+    case 49: case 50: case 51: case 52:
+        return 2;
+    case 41: case 42: case 43: case 54: case 56: case 57: case 58: case 59:
+    case 61: case 62: case 63: case 64:
+        return 1;
+    default:
+        return 0;
+    }
+}
+
+/// The element size of an IA format that has no Metal vertex format and is
+/// read only by vertex pulling (graphics::VertexPullKind::UNormB5G6R5 ..
+/// UNormBGRX8): B5G6R5, B5G5R5A1 and B4G4R4A4 (2 bytes), B8G8R8X8 (4);
+/// 0 for any other format.
+[[nodiscard]] constexpr u32 pulled_only_vertex_format_bytes(
+    u32 dxgi_format) noexcept {
+    switch (dxgi_format) {
+    case 85: case 86: case 115: return 2;
+    case 88: return 4;
+    default: return 0;
+    }
+}
+
+/// The vertex-pull form of an IA format (graphics::VertexPullElement kind,
+/// components, bits, storage type); false for a format the IA cannot read.
+[[nodiscard]] constexpr bool vertex_pull_format(
+    u32 dxgi_format, graphics::VertexPullElement& out) noexcept {
+    using graphics::VertexPullKind;
+    if (pulled_only_vertex_format_bytes(dxgi_format) != 0) {
+        out.storage_type = 3u;
+        out.components = dxgi_format == 85 || dxgi_format == 88 ? 3u : 4u;
+        out.bits = 0;
+        out.kind = dxgi_format == 85   ? VertexPullKind::UNormB5G6R5
+                   : dxgi_format == 86 ? VertexPullKind::UNormB5G5R5A1
+                   : dxgi_format == 115 ? VertexPullKind::UNormB4G4R4A4
+                                        : VertexPullKind::UNormBGRX8;
+        return true;
+    }
+    const auto* info = vertex_format_info(dxgi_format);
+    const u32 components = vertex_format_components(dxgi_format);
+    if (info == nullptr || components == 0) return false;
+    out.components = static_cast<u8>(components);
+    out.bits = static_cast<u8>(info->byte_size * 8u / components);
+    out.storage_type =
+        info->component_kind == VertexComponentKind::UInt   ? 1u
+        : info->component_kind == VertexComponentKind::SInt ? 2u
+                                                            : 3u;
+    switch (info->backend_format) {
+    case graphics::BackendVertexFormat::UInt1010102Normalized:
+        out.kind = VertexPullKind::UNorm1010102;
+        return true;
+    case graphics::BackendVertexFormat::UInt1010102:
+        out.kind = VertexPullKind::UInt1010102;
+        return true;
+    case graphics::BackendVertexFormat::FloatRG11B10:
+        out.kind = VertexPullKind::Float111110;
+        return true;
+    case graphics::BackendVertexFormat::UByte4NormalizedBGRA:
+        out.kind = VertexPullKind::UNormBGRA8;
+        return true;
+    default:
+        break;
+    }
+    switch (info->component_kind) {
+    case VertexComponentKind::Float:
+        out.kind = out.bits == 16 ? VertexPullKind::Half : VertexPullKind::Float;
+        break;
+    case VertexComponentKind::UInt: out.kind = VertexPullKind::UInt; break;
+    case VertexComponentKind::SInt: out.kind = VertexPullKind::SInt; break;
+    case VertexComponentKind::UNorm: out.kind = VertexPullKind::UNorm; break;
+    case VertexComponentKind::SNorm: out.kind = VertexPullKind::SNorm; break;
+    }
+    return true;
+}
+
+/// The pull form of the IA format whose fetch form is @p format.
+[[nodiscard]] constexpr bool vertex_pull_format_of_backend(
+    graphics::BackendVertexFormat format,
+    graphics::VertexPullElement& out) noexcept {
+    for (const auto& info : kVertexFormats) {
+        if (info.backend_format == format) {
+            return vertex_pull_format(info.dxgi_format, out);
+        }
+    }
+    return false;
+}
+
+/// Every IA format has a pull form (checked against the table).
+[[nodiscard]] constexpr bool every_vertex_format_pulls() noexcept {
+    for (const auto& info : kVertexFormats) {
+        graphics::VertexPullElement element{};
+        if (!vertex_pull_format(info.dxgi_format, element)) return false;
+        if (element.bits * element.components != info.byte_size * 8u &&
+            element.kind != graphics::VertexPullKind::Float111110 &&
+            element.kind != graphics::VertexPullKind::UNorm1010102 &&
+            element.kind != graphics::VertexPullKind::UInt1010102) {
+            return false;
+        }
+    }
+    return true;
+}
+static_assert(every_vertex_format_pulls());
 
 inline constexpr u32 kAppendAlignedElement = 0xffffffffu;
 

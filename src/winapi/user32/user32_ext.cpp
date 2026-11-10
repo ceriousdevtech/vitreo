@@ -36,6 +36,7 @@
 #include <cstdlib>
 
 #include <array>
+#include <shared_mutex>
 #include <atomic>
 #include <cctype>
 #include <optional>
@@ -88,7 +89,54 @@ bool diag_logs_enabled() noexcept {
 namespace {
 /// Set once while user32's thunks are registered; read from guest threads.
 std::atomic<u64> g_native_control_wndproc{0};
+
+/// set_module_native_class() records: lowercase class name -> procedure.
+/// Written on DLL load/unload, read on every native-control dispatch.
+std::shared_mutex g_module_native_classes_mutex;
+std::vector<std::pair<std::wstring, u64>> g_module_native_classes;
+
+[[nodiscard]] std::wstring fold_ascii(std::wstring_view name) {
+    std::wstring out(name);
+    for (auto& ch : out) {
+        if (ch >= L'A' && ch <= L'Z') ch = static_cast<wchar_t>(ch + (L'a' - L'A'));
+    }
+    return out;
+}
+
+[[nodiscard]] u64 module_native_class_proc(std::wstring_view class_name) {
+    const std::wstring key = fold_ascii(class_name);
+    std::shared_lock lock(g_module_native_classes_mutex);
+    for (const auto& [name, proc] : g_module_native_classes) {
+        if (name == key) return proc;
+    }
+    return 0;
+}
 } // namespace
+
+void set_module_native_class(std::wstring_view class_name, u64 proc) {
+    const std::wstring key = fold_ascii(class_name);
+    std::unique_lock lock(g_module_native_classes_mutex);
+    for (auto& entry : g_module_native_classes) {
+        if (entry.first == key) { entry.second = proc; return; }
+    }
+    g_module_native_classes.emplace_back(key, proc);
+}
+
+void clear_module_native_class(std::wstring_view class_name) {
+    const std::wstring key = fold_ascii(class_name);
+    std::unique_lock lock(g_module_native_classes_mutex);
+    std::erase_if(g_module_native_classes,
+                  [&](const auto& entry) { return entry.first == key; });
+}
+
+bool is_module_native_class_proc(u64 proc) noexcept {
+    if (proc == 0) return false;
+    std::shared_lock lock(g_module_native_classes_mutex);
+    for (const auto& entry : g_module_native_classes) {
+        if (entry.second == proc) return true;
+    }
+    return false;
+}
 
 void set_native_control_wndproc_address(u64 address) noexcept {
     g_native_control_wndproc.store(address, std::memory_order_release);
@@ -104,15 +152,22 @@ void set_native_control_wndproc_address(u64 address) noexcept {
     if (win.wndproc != 0) {
         return win.wndproc;
     }
-    return is_native_host_control(win) ?
-        (find_system_class(win.class_name) ? system_class_wndproc(win.class_name, !win.unicode) : native_control_wndproc_address()) : 0;
+    if (!is_native_host_control(win)) return 0;
+    if (find_system_class(win.class_name)) {
+        return system_class_wndproc(win.class_name, !win.unicode);
+    }
+    // A class a loaded DLL registers reports that DLL's procedure
+    // (msftedit_lifecycle_probe window RICHEDIT50W wndproc_eq_RichEditWndProc).
+    if (const u64 proc = module_native_class_proc(win.class_name)) return proc;
+    return native_control_wndproc_address();
 }
 
 [[nodiscard]] bool is_native_control_wndproc(u64 proc) noexcept {
     // The bare constant stays recognised: a guest may still be holding one
     // handed out before the thunk address was known.
     return find_system_class_by_wndproc(proc) || proc == 0 || proc == kNativeControlWndProc ||
-           proc == g_native_control_wndproc.load(std::memory_order_acquire);
+           proc == g_native_control_wndproc.load(std::memory_order_acquire) ||
+           is_module_native_class_proc(proc);
 }
 
 
@@ -563,11 +618,10 @@ User32ExtManager::User32ExtManager(GuestMemory& memory,
             if (hwnd == m_virtual_fullscreen_hwnd &&
                 m_virtual_display_width > 0 &&
                 m_virtual_display_height > 0) {
-                // The host window covers the physical macOS display, while a
-                // legacy exclusive-mode guest observes the logical resolution
-                // selected through ChangeDisplaySettings.
-                client_w = m_virtual_display_width;
-                client_h = m_virtual_display_height;
+                // Cocoa's physical fullscreen geometry does not change the
+                // guest HWND or its display mode. The guest may deliberately
+                // resize its HWND before changing the exclusive target mode.
+                return true;
             }
             if (m_msgsend_mgr && win->wndproc != 0 && m_windowpos_scratch != 0) {
                 queue_native_action(hwnd, win->owner_thread_id,
@@ -657,6 +711,8 @@ User32ExtManager::User32ExtManager(GuestMemory& memory,
         [this](windowing::HWND hwnd, i32 client_x, i32 client_y) {
             windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
             if (!win) return;
+            if (hwnd == m_virtual_fullscreen_hwnd &&
+                m_virtual_display_width > 0 && m_virtual_display_height > 0) return;
             const i32 x = client_x - win->client_offset.x;
             const i32 y = client_y - win->client_offset.y;
             queue_native_action(hwnd, win->owner_thread_id,
@@ -743,6 +799,19 @@ void User32ExtManager::queue_native_action(windowing::HWND hwnd, u32 thread_id,
         std::lock_guard lock(m_native_resize_mutex);
         wake = std::none_of(m_pending_native_actions.begin(), m_pending_native_actions.end(),
             [hwnd](const auto& action) { return action.hwnd == hwnd; });
+        // These SysCommands are native show-state observations (minimize /
+        // restore), not independent guest messages. Coalesce only matching
+        // pending state observations; an intervening opposite state and any
+        // retry after draining remain distinct.
+        if (kind == NativeActionKind::SysCommand) {
+            const auto previous = std::find_if(m_pending_native_actions.rbegin(),
+                m_pending_native_actions.rend(), [&](const auto& action) {
+                    return action.hwnd == hwnd && action.thread_id == thread_id &&
+                           action.kind == NativeActionKind::SysCommand;
+                });
+            if (previous != m_pending_native_actions.rend() &&
+                previous->first == first && previous->second == second) return;
+        }
         const bool geometry = kind == NativeActionKind::Resize || kind == NativeActionKind::Move;
         if (geometry && !m_pending_native_actions.empty()) {
             auto& last = m_pending_native_actions.back();
@@ -786,6 +855,13 @@ void User32ExtManager::drain_pending_native_resizes(u32 thread_id) {
         const auto hwnd = action.hwnd;
         const auto* win = m_hwnd_mgr.find(hwnd);
         if (!win || win->owner_thread_id != thread_id) continue;
+        // A host event may have been queued before exclusive-mode entry.
+        // Recheck when consuming it so an old physical size/origin cannot
+        // undo the guest's newly published display/window geometry.
+        if ((action.kind == NativeActionKind::Resize ||
+             action.kind == NativeActionKind::Move) &&
+            hwnd == m_virtual_fullscreen_hwnd &&
+            m_virtual_display_width > 0 && m_virtual_display_height > 0) continue;
         if (action.kind == NativeActionKind::EnterMoveSize ||
             action.kind == NativeActionKind::ExitMoveSize) {
             const bool entering = action.kind == NativeActionKind::EnterMoveSize;

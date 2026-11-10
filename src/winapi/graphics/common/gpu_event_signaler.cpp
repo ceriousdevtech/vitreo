@@ -153,8 +153,18 @@ void GpuEventSignaler::run() {
         }
         // Collect what is ready without holding the lock across a wait.
         std::vector<u64> ready;
-        std::vector<std::function<void()>> actions;
-        std::vector<std::shared_ptr<graphics::GpuCompletion>> completions;
+        // Submission completions in request order, each with its action or
+        // event: one is waited for and acted on before the next is waited
+        // for, because a later submission can wait on what an earlier
+        // action signals (a ResolveQueryData copy waits on the CPU write
+        // the previous resolve's action makes). Waiting for every
+        // completion first deadlocked two resolves in one list.
+        struct Completed {
+            std::shared_ptr<graphics::GpuCompletion> completion;
+            std::function<void()> action;
+            u64 event_handle{0};
+        };
+        std::vector<Completed> completions;
         for (auto it = m_pending.begin(); it != m_pending.end();) {
             if (!it->fences.empty()) {
                 if (it->fences_done()) {
@@ -175,21 +185,23 @@ void GpuEventSignaler::run() {
                 continue;
             }
             // A submission completion: wait for it outside the lock below.
-            completions.push_back(it->completion);
-            if (it->action) {
-                actions.push_back(std::move(it->action));
-            } else {
-                ready.push_back(it->event_handle);
-            }
+            completions.push_back(
+                {it->completion, std::move(it->action), it->event_handle});
             it = m_pending.erase(it);
         }
         SignalFn signal = m_signal;
         lock.unlock();
-        for (auto& completion : completions) (void)completion->wait();
         if (signal) {
             for (const u64 handle : ready) signal(handle);
         }
-        for (auto& action : actions) action();
+        for (auto& done : completions) {
+            (void)done.completion->wait();
+            if (done.action) {
+                done.action();
+            } else if (signal) {
+                signal(done.event_handle);
+            }
+        }
         lock.lock();
         if (!m_pending.empty() && !m_stop) {
             // Fence timelines have no completion callback in the backend

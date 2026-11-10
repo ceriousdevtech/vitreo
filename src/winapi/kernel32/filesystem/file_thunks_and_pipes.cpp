@@ -173,6 +173,11 @@ void impl_WriteFile(Marshaler& m, FileManager& fm) {
     u32 bytes_to_write    = static_cast<u32>(m.arg(2));     // R8
     GuestAddr bytes_written = m.arg_ptr(3);                 // R9
     GuestAddr overlapped    = m.arg_ptr(4);
+    if(bytes_written && m.write_u32(bytes_written,0).is_err()) {set_last_error(error_codes::ERROR_NOACCESS);m.set_return(0);return;}
+    if(fm.handle_table().get_type(handle)==HandleType::HidDevice) {
+        u32 actual=0;(void)fm.write_file(handle,buffer,bytes_to_write,bytes_written,&actual);
+        m.set_return(0);return;
+    }
     // Windows 11 (files_core_probe WriteFile_null_bytes_null_ov): a NULL
     // lpNumberOfBytesWritten with NULL OVERLAPPED succeeds and leaves last
     // error untouched — the out-count write is skipped. Learn's "may be NULL
@@ -180,6 +185,7 @@ void impl_WriteFile(Marshaler& m, FileManager& fm) {
     u32 actual = 0;
     auto __t0 = file_profile_wanted() ? std::chrono::steady_clock::now() : std::chrono::steady_clock::time_point{};
     bool ok = false;
+    bool completion_notified=false;
     u64 offset = 0;
     OverlappedPipeIoResult pipe_result = OverlappedPipeIoResult::Failed;
     if (overlapped != 0 &&
@@ -189,6 +195,9 @@ void impl_WriteFile(Marshaler& m, FileManager& fm) {
             m.cpu_is_64bit(), actual);
         ok = pipe_result == OverlappedPipeIoResult::Completed;
     } else if (overlapped != 0) {
+        const u32 preparation=fm.prepare_overlapped_io(handle,overlapped,m.cpu_is_64bit());
+        if(preparation) {set_last_error(preparation);m.set_return(0);return;}
+
         const GuestAddr offset_field = overlapped + (m.cpu_is_64bit() ? 16u : 8u);
         const u32 offset_low = m.read_u32(offset_field).value_or(0);
         const u32 offset_high = m.read_u32(offset_field + 4).value_or(0);
@@ -212,7 +221,8 @@ void impl_WriteFile(Marshaler& m, FileManager& fm) {
             // already completed (event set, Internal = STATUS_SUCCESS); the
             // result is collected through the event / GetOverlappedResult /
             // the completion port.
-            fm.notify_overlapped_completion(handle, actual, overlapped,
+            completion_notified=true;
+                fm.notify_overlapped_completion(handle, actual, overlapped,
                                             m.cpu_is_64bit(), 0, 0,
                                             /*completed_synchronously=*/false);
             set_last_error(error_codes::ERROR_IO_PENDING);
@@ -230,7 +240,8 @@ void impl_WriteFile(Marshaler& m, FileManager& fm) {
     }
     if (ok && overlapped != 0 &&
         pipe_result != OverlappedPipeIoResult::Pending) {
-        fm.notify_overlapped_completion(handle, actual, overlapped,
+        completion_notified=true;
+                fm.notify_overlapped_completion(handle, actual, overlapped,
                                         m.cpu_is_64bit(), 0, 0,
                                         /*completed_synchronously=*/true);
     }
@@ -299,6 +310,8 @@ void impl_WriteFile(Marshaler& m, FileManager& fm) {
             static_cast<unsigned long long>(offset),
             ok ? "TRUE" : "FALSE");
     }
+    if(overlapped && !ok && !completion_notified && pipe_result!=OverlappedPipeIoResult::Pending && fm.handle_table().get_type(handle)!=HandleType::Pipe)
+        fm.abandon_overlapped_io(handle,overlapped,m.cpu_is_64bit(),get_last_error());
     m.set_return(ok ? 1u : 0u);
 }
 
@@ -321,8 +334,30 @@ void impl_ReadFile(Marshaler& m, FileManager& fm) {
     u32 actual = 0;
     auto __t0 = file_profile_wanted() ? std::chrono::steady_clock::now() : std::chrono::steady_clock::time_point{};
     bool ok = false;
+    bool completion_notified=false;
     u64 offset = 0;
     OverlappedPipeIoResult pipe_result = OverlappedPipeIoResult::Failed;
+    if(bytes_read && m.write_u32(bytes_read,0).is_err()) {set_last_error(error_codes::ERROR_NOACCESS);m.set_return(0);return;}
+    if(fm.handle_table().get_type(handle)==HandleType::HidDevice) {
+        if(bytes_read!=0 && m.write_u32(bytes_read,0).is_err()) {
+            set_last_error(error_codes::ERROR_NOACCESS);m.set_return(0);return;
+        }
+        if(overlapped) {
+            const auto result=fm.begin_overlapped_hid_read(handle,buffer,bytes_to_read,overlapped,m.cpu_is_64bit(),actual);
+            if(result==OverlappedPipeIoResult::Completed && bytes_read) (void)m.write_u32(bytes_read,actual);
+            m.set_return(result==OverlappedPipeIoResult::Completed ? 1:0);
+        } else m.set_return(fm.read_hid(handle,buffer,bytes_to_read,bytes_read,&actual) ? 1:0);
+        static const bool diagnostic=[] {const char* value=std::getenv("VITREO_INPUT_DIAG");return value && *value && *value!='0';}();
+        if(diagnostic) {
+            static std::atomic<unsigned> logged{0};
+            if(logged.fetch_add(1,std::memory_order_relaxed)<96) std::fprintf(stderr,
+                "[input-delivery] HID ReadFile bits=%u caller=0x%llx handle=0x%x buffer=0x%llx length=%u ov=0x%llx return=%llu error=%u actual=%u\n",
+                m.cpu_is_64bit() ? 64u:32u,static_cast<unsigned long long>(m.guest_return_address()),handle,
+                static_cast<unsigned long long>(buffer),bytes_to_read,static_cast<unsigned long long>(overlapped),
+                static_cast<unsigned long long>(m.return_value()),get_last_error(),actual);
+        }
+        return;
+    }
     if (overlapped != 0 &&
         fm.handle_table().get_type(handle) == HandleType::Pipe) {
         pipe_result = fm.begin_overlapped_pipe_read(
@@ -330,6 +365,9 @@ void impl_ReadFile(Marshaler& m, FileManager& fm) {
             actual);
         ok = pipe_result == OverlappedPipeIoResult::Completed;
     } else if (overlapped != 0) {
+        const u32 preparation=fm.prepare_overlapped_io(handle,overlapped,m.cpu_is_64bit());
+        if(preparation) {set_last_error(preparation);m.set_return(0);return;}
+
         const GuestAddr offset_field = overlapped + (m.cpu_is_64bit() ? 16u : 8u);
         const u32 offset_low = m.read_u32(offset_field).value_or(0);
         const u32 offset_high = m.read_u32(offset_field + 4).value_or(0);
@@ -365,6 +403,7 @@ void impl_ReadFile(Marshaler& m, FileManager& fm) {
         const bool async_file = fm.is_overlapped_file(handle);
         if (disk_overlapped && async_file) {
             if (ok && bytes_to_read > 0 && actual == 0) {
+                completion_notified=true;
                 fm.notify_overlapped_completion(
                     handle, 0, overlapped, m.cpu_is_64bit(), kStatusEndOfFile,
                     error_codes::ERROR_HANDLE_EOF,
@@ -374,6 +413,7 @@ void impl_ReadFile(Marshaler& m, FileManager& fm) {
                 return;
             }
             if (ok) {
+                completion_notified=true;
                 fm.notify_overlapped_completion(
                     handle, actual, overlapped, m.cpu_is_64bit(), 0, 0,
                     /*completed_synchronously=*/false);
@@ -383,13 +423,15 @@ void impl_ReadFile(Marshaler& m, FileManager& fm) {
             }
         } else if (disk_overlapped && ok && bytes_to_read > 0 && actual == 0) {
             set_last_error(error_codes::ERROR_HANDLE_EOF);
-            fm.notify_overlapped_completion(
+            completion_notified=true;
+                fm.notify_overlapped_completion(
                 handle, 0, overlapped, m.cpu_is_64bit(), kStatusEndOfFile,
                 error_codes::ERROR_HANDLE_EOF,
                 /*completed_synchronously=*/true);
             ok = false;
         } else if (disk_overlapped && ok) {
-            fm.notify_overlapped_completion(handle, actual, overlapped,
+            completion_notified=true;
+                fm.notify_overlapped_completion(handle, actual, overlapped,
                                             m.cpu_is_64bit(), 0, 0,
                                             /*completed_synchronously=*/true);
         } else if (pipe_result == OverlappedPipeIoResult::Completed) {
@@ -398,7 +440,8 @@ void impl_ReadFile(Marshaler& m, FileManager& fm) {
             // FILE_SKIP_COMPLETION_PORT_ON_SUCCESS. The caller may still wait
             // on that packet for the invitation even when ReadFile succeeded
             // inline.
-            fm.notify_overlapped_completion(handle, actual, overlapped,
+            completion_notified=true;
+                fm.notify_overlapped_completion(handle, actual, overlapped,
                                             m.cpu_is_64bit(), 0, 0,
                                             /*completed_synchronously=*/true);
         }
@@ -490,10 +533,18 @@ void impl_ReadFile(Marshaler& m, FileManager& fm) {
         m.set_return(0);
         return;
     }
+    if(overlapped && !ok && !completion_notified && pipe_result!=OverlappedPipeIoResult::Pending && fm.handle_table().get_type(handle)!=HandleType::Pipe)
+        fm.abandon_overlapped_io(handle,overlapped,m.cpu_is_64bit(),get_last_error());
     m.set_return(ok ? 1u : 0u);
 }
 
 void impl_ReadFileEx(Marshaler& m, FileManager& fm) {
+    if(fm.handle_table().get_type(static_cast<Handle>(m.arg(0)))==HandleType::HidDevice) {
+        static std::once_flag once;
+        std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!ReadFileEx: HID completion-routine I/O\n");});
+        set_last_error(error_codes::ERROR_NOT_SUPPORTED);m.set_return(0);return;
+    }
+
     // BOOL ReadFileEx(HANDLE, LPVOID, DWORD, LPOVERLAPPED,
     //                 LPOVERLAPPED_COMPLETION_ROUTINE)
     // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfileex
@@ -552,6 +603,12 @@ void impl_ReadFileEx(Marshaler& m, FileManager& fm) {
 }
 
 void impl_WriteFileEx(Marshaler& m, FileManager& fm) {
+    if(fm.handle_table().get_type(static_cast<Handle>(m.arg(0)))==HandleType::HidDevice) {
+        static std::once_flag once;
+        std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!WriteFileEx: HID completion-routine I/O\n");});
+        set_last_error(error_codes::ERROR_NOT_SUPPORTED);m.set_return(0);return;
+    }
+
     // BOOL WriteFileEx(HANDLE, LPCVOID, DWORD, LPOVERLAPPED,
     //                  LPOVERLAPPED_COMPLETION_ROUTINE)
     // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefileex
@@ -922,7 +979,7 @@ DllExports make_file_exports(FileManager& fm) {
             if (m.arg(0) == 0) { set_last_error(error_codes::ERROR_INVALID_HANDLE); m.set_return(0); return; }
             Handle h = static_cast<Handle>(m.arg(0));
             const u32 result = fm.file_type(h);
-            if (result == 0) {
+            if (result == 0 && fm.handle_table().get_type(h)!=HandleType::HidDevice) {
                 // Windows reports FILE_TYPE_UNKNOWN with
                 // ERROR_INVALID_HANDLE for a handle it does not recognize.
                 set_last_error(error_codes::ERROR_INVALID_HANDLE);

@@ -201,6 +201,113 @@ TEST_F(DecodeMemoTest, DistinctAddressesEachRetainOnce) {
     EXPECT_EQ(stats.retained_bytes, 16u * 2u * sizeof(DecodedInstruction));
 }
 
+// The unreadable suffix is not covered by the successful prefix's hash.
+// Mapping it later must extend the decode even though that prefix is unchanged.
+TEST_F(DecodeMemoTest, FailedFetchIsNotMemoized) {
+    for (const bool wide : {false, true}) {
+        reset_decode_memo();
+        const GuestAddr start = kBase + 0xFFF;
+        write(start, {0x90}); // nop; next instruction is initially unmapped
+        auto first = decode_basic_block(m_memory, start, wide);
+        ASSERT_EQ(first.instruction_count, 1u);
+        EXPECT_EQ(decode_memo_stats().entries, 0u);
+
+        ASSERT_TRUE(m_memory.map_region(kBase + 0x1000, 0x1000,
+                                        MemoryProtection::ReadWriteExecute));
+        write(kBase + 0x1000, {0xC3}); // ret
+        auto second = decode_basic_block(m_memory, start, wide);
+        ASSERT_EQ(second.instruction_count, 2u);
+        EXPECT_EQ(second.byte_length, 2u);
+        EXPECT_TRUE(second.ends_with_branch);
+        EXPECT_EQ(second.instructions[1].opcode, Opcode::RET_NEAR);
+        ASSERT_TRUE(m_memory.unmap_region(kBase + 0x1000, 0x1000));
+    }
+}
+
+TEST_F(DecodeMemoTest, FailedMidInstructionFetchIsNotMemoized) {
+    for (const bool wide : {false, true}) {
+        reset_decode_memo();
+        const GuestAddr start = kBase + 0xFFE;
+        write(start, {0x90, 0xB8}); // nop; mov eax,imm32 straddles the boundary
+        auto first = decode_basic_block(m_memory, start, wide);
+        ASSERT_EQ(first.instruction_count, 1u);
+        EXPECT_EQ(first.byte_length, 1u);
+        EXPECT_EQ(decode_memo_stats().entries, 0u);
+
+        ASSERT_TRUE(m_memory.map_region(kBase + 0x1000, 0x1000,
+                                        MemoryProtection::ReadWriteExecute));
+        write(kBase + 0x1000, {0x78, 0x56, 0x34, 0x12, 0xC3});
+        auto second = decode_basic_block(m_memory, start, wide);
+        ASSERT_EQ(second.instruction_count, 3u);
+        EXPECT_EQ(second.byte_length, 7u);
+        EXPECT_EQ(second.instructions[1].operands[1].imm, 0x12345678u);
+        EXPECT_EQ(second.instructions[2].opcode, Opcode::RET_NEAR);
+        ASSERT_TRUE(m_memory.unmap_region(kBase + 0x1000, 0x1000));
+    }
+}
+
+TEST_F(DecodeMemoTest, RepairedMalformedSuffixIsDecodedAgain) {
+    for (const bool wide : {false, true}) {
+        reset_decode_memo();
+        // 0F 38 FF has no legacy instruction in the SDM opcode map. This
+        // undecodable suffix is readable but outside the NOP prefix's hash.
+        write(kBase, {0x90, 0x0F, 0x38, 0xFF});
+        auto first = decode_basic_block(m_memory, kBase, wide);
+        ASSERT_EQ(first.instruction_count, 1u);
+        EXPECT_EQ(decode_memo_stats().entries, 0u);
+
+        write(kBase + 1, {0xC3});
+        auto second = decode_basic_block(m_memory, kBase, wide);
+        ASSERT_EQ(second.instruction_count, 2u);
+        EXPECT_TRUE(second.ends_with_branch);
+        EXPECT_EQ(second.instructions[1].opcode, Opcode::RET_NEAR);
+    }
+}
+
+TEST_F(DecodeMemoTest, EmptyFetchAndInstructionCapPreserveMemoRules) {
+    for (const bool wide : {false, true}) {
+        reset_decode_memo();
+        auto empty = decode_basic_block(m_memory, kBase + 0x1000, wide);
+        EXPECT_EQ(empty.instruction_count, 0u);
+        EXPECT_TRUE(empty.instructions.empty());
+        EXPECT_EQ(decode_memo_stats().entries, 0u);
+
+        // A deliberate instruction cap, unlike an error, is fully determined
+        // by the retained bytes. A suffix change must not discard this hit.
+        std::vector<u8> bytes(193, 0x90);
+        write(kBase, bytes);
+        auto capped = decode_basic_block(m_memory, kBase, wide);
+        ASSERT_EQ(capped.instruction_count, 192u);
+        EXPECT_EQ(capped.byte_length, 192u);
+        EXPECT_FALSE(capped.ends_with_branch);
+        write(kBase + 192, {0xC3});
+        auto hit = decode_basic_block(m_memory, kBase, wide);
+        EXPECT_EQ(hit.instructions.data(), capped.instructions.data());
+        EXPECT_EQ(hit.instruction_count, 192u);
+        EXPECT_FALSE(hit.ends_with_branch);
+    }
+}
+
+TEST_F(DecodeMemoTest, ScratchBoundaryAndInstructionLimitPreserveDecode) {
+    for (const bool wide : {false, true}) {
+        for (const u32 count : {1u, 2u, 16u, 17u, 64u, 192u}) {
+            reset_decode_memo();
+            std::vector<u8> bytes(count - 1, 0x90);
+            bytes.push_back(0xC3); // NOPs followed by RET, per Intel SDM Vol. 2
+            write(kBase, bytes);
+            auto block = decode_basic_block(m_memory, kBase, wide);
+            ASSERT_EQ(block.instruction_count, count);
+            ASSERT_EQ(block.instructions.size(), count);
+            EXPECT_EQ(block.byte_length, count);
+            EXPECT_EQ(block.instructions[count - 1].opcode, Opcode::RET_NEAR);
+            EXPECT_TRUE(block.ends_with_branch);
+            EXPECT_EQ(block.instructions.capacity(), count);
+            auto hit = decode_basic_block(m_memory, kBase, wide);
+            EXPECT_EQ(hit.instructions.data(), block.instructions.data());
+        }
+    }
+}
+
 // The env-flag cache must still be A/B-able in one process, or the guarded
 // terminal-island tests silently stop testing what they name.
 TEST_F(DecodeMemoTest, EnvFlagCacheIsRefreshable) {

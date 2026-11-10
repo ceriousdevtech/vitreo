@@ -190,15 +190,17 @@ bool JitCompiler::ir_emit_feasible(const ir::IrBlock& block) const noexcept {
                     operand.as_value() >= block.next_value) return false;
             }
         }
-        // The vector "allocator" is a bump over the V registers with no reuse,
-        // so a block defining more vector values than there are registers
-        // would wrap into a different register and silently compute with the
-        // wrong one. Bounded here rather than clamped at the bump.
+        // Count physical allocations, using the emitter's read forwarding.
+        // Aliased XMM reads define SSA values without consuming a V register.
         {
             u32 vector_defs = 0;
-            for (const ir::Inst& in : block.insts)
-                if (in.defines_value() && in.type == ir::Type::V128)
+            IrXmmReadCache xmm_reads;
+            for (const ir::Inst& in : block.insts) {
+                const auto forwarded = xmm_reads.visit(in);
+                if (in.defines_value() && in.type == ir::Type::V128 &&
+                    forwarded == ir::kInvalidValue)
                     ++vector_defs;
+            }
             if (vector_defs > 32) return false;
         }
 

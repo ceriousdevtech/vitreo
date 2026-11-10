@@ -11,6 +11,7 @@
 #include "winapi/msvcrt/text/crt_string_internal.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "core/memory/mem_watch.hpp"
+#include "winapi/msvcrt/memory/vcruntime_interpose.hpp"
 #include <algorithm>
 #include <cstring>
 #include <limits>
@@ -165,45 +166,16 @@ void add_crt_wide_string_exports(DllExports& exports) {
     });
 
     // wcsstr(const u16* haystack, const u16* needle) -> u16*
+    // wcsrchr(const u16* s, wchar_t c) -> u16*
+    // Shared checked bodies: no length cap, and a fault raises
+    // STATUS_ACCESS_VIOLATION instead of reading as a terminator.
     exports.entries.push_back(ExportEntry{
         "wcsstr", 0,
-        [](Marshaler& m) {
-            GuestAddr h = m.arg_ptr(0);
-            GuestAddr n = m.arg_ptr(1);
-            // Empty needle: return haystack
-            u16 first = m.read_u16(n).value_or(0);
-            if (first == 0) { m.set_return(h); return; }
-            for (usize i = 0; i < (1u << 22); ++i) {
-                u16 hc = m.read_u16(h + i * 2).value_or(0);
-                if (hc == 0) break;
-                if (hc != first) continue;
-                bool match = true;
-                for (usize j = 1; ; ++j) {
-                    u16 nc = m.read_u16(n + j * 2).value_or(0);
-                    if (nc == 0) break;
-                    u16 hh = m.read_u16(h + (i + j) * 2).value_or(0);
-                    if (hh != nc) { match = false; break; }
-                }
-                if (match) { m.set_return(h + i * 2); return; }
-            }
-            m.set_return(0);
-        }
+        [](Marshaler& m) { vcrt::run_body(vcrt::Fn::Wcsstr, m); }
     });
-
-    // wcsrchr(const u16* s, u16 c) -> u16*
     exports.entries.push_back(ExportEntry{
         "wcsrchr", 0,
-        [](Marshaler& m) {
-            GuestAddr s = m.arg_ptr(0);
-            u16 ch = static_cast<u16>(m.arg(1));
-            GuestAddr last = 0;
-            for (usize i = 0; i < (1u << 22); ++i) {
-                u16 c = m.read_u16(s + i * 2).value_or(0);
-                if (c == ch) last = s + i * 2;
-                if (c == 0) break;
-            }
-            m.set_return(last);
-        }
+        [](Marshaler& m) { vcrt::run_body(vcrt::Fn::Wcsrchr, m); }
     });
 
     // wcsncat(u16* dst, const u16* src, size_t n) -> u16*

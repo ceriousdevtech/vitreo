@@ -11,6 +11,9 @@
 #include <core/cpu/jit/stencils_arm64_fields.hpp>
 #include <vitreo/common.hpp>
 
+#include <cstdlib>
+#include <cstring>
+
 namespace vitreo::cpu::jit::arm64 {
 
 /// Encode ARM64 CRC32CB Wd, Wn, Wm (Castagnoli CRC over one byte).
@@ -130,4 +133,57 @@ constexpr u32 sha256su1(u8 d, u8 n, u8 m) noexcept {
                       | (static_cast<u32>(n) << 5) | static_cast<u32>(d);
 }
 
+// ---- ARMv8 SHA-256 hash rounds (FEAT_SHA256), WS3 ----
+//
+// ARM ARM SHA256H / SHA256H2: four SHA-256 rounds over X = {a,b,c,d} and
+// Y = {e,f,g,h} (lane 0 = a / e) with W = Vm.4S, the round constants already
+// added. SHA256H Qd, Qn, Vm returns the new X (Qd = X, Qn = Y); SHA256H2
+// Qd, Qn, Vm returns the new Y (Qd = Y, Qn = X). Gate on host_supports_sha256().
+
+/// SHA256H Qd, Qn, Vm.4S.
+constexpr u32 sha256h(u8 d, u8 n, u8 m) noexcept {
+    return 0x5E004000u | (static_cast<u32>(m) << 16)
+                      | (static_cast<u32>(n) << 5) | static_cast<u32>(d);
+}
+
+/// SHA256H2 Qd, Qn, Vm.4S.
+constexpr u32 sha256h2(u8 d, u8 n, u8 m) noexcept {
+    return 0x5E005000u | (static_cast<u32>(m) << 16)
+                      | (static_cast<u32>(n) << 5) | static_cast<u32>(d);
+}
+// llvm-mc -triple=aarch64 -mattr=+sha2 -show-encoding.
+static_assert(sha256h(0, 1, 2) == 0x5E024020u);    // sha256h  q0, q1, v2.4s
+static_assert(sha256h2(3, 4, 2) == 0x5E025083u);   // sha256h2 q3, q4, v2.4s
+static_assert(sha256h(3, 4, 2) == 0x5E024083u);    // sha256h  q3, q4, v2.4s
+static_assert(sha256h2(4, 5, 2) == 0x5E0250A4u);   // sha256h2 q4, q5, v2.4s
+
 } // namespace vitreo::cpu::jit::arm64
+
+namespace vitreo::cpu::jit {
+
+// ---- WS3 host gates and kill switch ----
+//
+// Compile-time queries only; never called from emitted code.
+
+/// False only when VITREO_WS3 is exactly "0": the WS3 crypto lowerings (the
+/// SHA-1 / SHA-256 round / PCLMULQDQ memory / AESKEYGENASSIST / VEX.128 AES
+/// direct forms and the 32-bit non-linear m128 stager) then emit nothing and
+/// the pre-WS3 code is produced exactly. Read uncached so tests and the
+/// direct-vs-helper benchmark can A/B in one process.
+inline bool ws3_crypto_direct_enabled() noexcept {
+    const char* v = std::getenv("VITREO_WS3");
+    return v == nullptr || std::strcmp(v, "0") != 0;
+}
+
+// sysctl hw.optional.arm.FEAT_* (an absent key means not advertised), cached
+// per process. Defined in ops/direct_armv8_aes.cpp so <sys/sysctl.h> (whose
+// <sys/param.h> defines FSCALE and friends) stays out of this header.
+
+/// FEAT_SHA1 (SHA1C/P/M/H, SHA1SU0/SU1).
+[[nodiscard]] bool host_supports_sha1() noexcept;
+/// FEAT_SHA256 (SHA256H/H2, SHA256SU0/SU1).
+[[nodiscard]] bool host_supports_sha256() noexcept;
+/// FEAT_PMULL (PMULL/PMULL2 .1Q).
+[[nodiscard]] bool host_supports_pmull() noexcept;
+
+} // namespace vitreo::cpu::jit

@@ -43,6 +43,34 @@ bool string_repeats(const DecodedInstruction& instr) noexcept {
     return instr.prefixes.rep || instr.prefixes.repne;
 }
 
+// Intel SDM Vol. 2 CMPS/SCAS and REP: address size selects the index and
+// count registers independently of operand size. Truncate the offset before
+// adding the implicit segment base; ES is never overridable.
+u8 compare_address_bits(const ExecContext& ctx,
+                        const DecodedInstruction& instr) noexcept {
+    return ctx.cpu.is_64bit() ? (instr.prefixes.address_size ? 32 : 64)
+                            : (instr.prefixes.address_size ? 16 : 32);
+}
+
+u64 compare_register(const CpuState& cpu, u8 reg, u8 bits) noexcept {
+    return bits == 64 ? cpu.gpr.get64(reg)
+                     : bits == 32 ? cpu.gpr.get32(reg) : cpu.gpr.get16(reg);
+}
+
+void set_compare_register(CpuState& cpu, u8 reg, u64 value, u8 bits) noexcept {
+    if (bits == 64) cpu.gpr.set64(reg, value);
+    else if (bits == 32) cpu.gpr.set32(reg, static_cast<u32>(value));
+    else cpu.gpr.set16(reg, static_cast<u16>(value));
+}
+
+u64 compare_linear_address(const CpuState& cpu, u64 offset,
+                           SegReg segment) noexcept {
+    if (!cpu.is_64bit() || segment == SegReg::FS || segment == SegReg::GS) {
+        offset += cpu.seg.get_desc(static_cast<SegIndex>(static_cast<u8>(segment))).base;
+    }
+    return cpu.is_64bit() ? offset : static_cast<u32>(offset);
+}
+
 } // anonymous namespace
 
 ExecResult exec_movs(ExecContext& ctx, const DecodedInstruction& instr) noexcept {
@@ -279,19 +307,24 @@ ExecResult exec_lods(ExecContext& ctx, const DecodedInstruction& instr) noexcept
 ExecResult exec_cmps(ExecContext& ctx, const DecodedInstruction& instr) noexcept {
     const u8 size = string_element_size(instr.opcode);
     const i64 step = step_direction(ctx, size);
+    const u8 address_bits = compare_address_bits(ctx, instr);
+    const u64 entry_flags = ctx.cpu.flags.rflags;
 
     constexpr u8 RSI = static_cast<u8>(RegIndex::RSI);
     constexpr u8 RDI = static_cast<u8>(RegIndex::RDI);
     constexpr u8 RCX = static_cast<u8>(RegIndex::RCX);
 
     auto do_one_cmps = [&]() -> bool {
-        u64 src_addr = ctx.cpu.gpr.get64(RSI);
-        u64 dst_addr = ctx.cpu.gpr.get64(RDI);
+        u64 src_addr = compare_register(ctx.cpu, RSI, address_bits);
+        u64 dst_addr = compare_register(ctx.cpu, RDI, address_bits);
 
-        auto a = read_memory(ctx, src_addr, size);
-        auto b = read_memory(ctx, dst_addr, size);
+        auto a = read_memory_av(ctx, compare_linear_address(ctx.cpu, src_addr,
+            instr.prefixes.segment == SegReg::Default ? SegReg::DS : instr.prefixes.segment), size);
+        auto b = a ? read_memory_av(ctx, compare_linear_address(ctx.cpu, dst_addr, SegReg::ES), size)
+                   : a;
         if (!a || !b) {
             ctx.exception = CpuException::GeneralProtection;
+            if (string_repeats(instr)) ctx.cpu.flags.rflags = entry_flags;
             return false;
         }
 
@@ -307,23 +340,23 @@ ExecResult exec_cmps(ExecContext& ctx, const DecodedInstruction& instr) noexcept
             default: break;
         }
 
-        ctx.cpu.gpr.set64(RSI, static_cast<u64>(static_cast<i64>(src_addr) + step));
-        ctx.cpu.gpr.set64(RDI, static_cast<u64>(static_cast<i64>(dst_addr) + step));
+        set_compare_register(ctx.cpu, RSI, src_addr + static_cast<u64>(step), address_bits);
+        set_compare_register(ctx.cpu, RDI, dst_addr + static_cast<u64>(step), address_bits);
         return true;
     };
 
     if (instr.prefixes.rep) {
         // REPE/REPZ: loop while RCX > 0 AND ZF == 1
-        while (ctx.cpu.gpr.get64(RCX) > 0) {
+        while (compare_register(ctx.cpu, RCX, address_bits) > 0) {
             if (!do_one_cmps()) return ExecResult::Exception;
-            ctx.cpu.gpr.set64(RCX, ctx.cpu.gpr.get64(RCX) - 1);
+            set_compare_register(ctx.cpu, RCX, compare_register(ctx.cpu, RCX, address_bits) - 1, address_bits);
             if (!ctx.cpu.flags.zf()) break;  // Stop at first mismatch
         }
     } else if (instr.prefixes.repne) {
         // REPNE/REPNZ: loop while RCX > 0 AND ZF == 0
-        while (ctx.cpu.gpr.get64(RCX) > 0) {
+        while (compare_register(ctx.cpu, RCX, address_bits) > 0) {
             if (!do_one_cmps()) return ExecResult::Exception;
-            ctx.cpu.gpr.set64(RCX, ctx.cpu.gpr.get64(RCX) - 1);
+            set_compare_register(ctx.cpu, RCX, compare_register(ctx.cpu, RCX, address_bits) - 1, address_bits);
             if (ctx.cpu.flags.zf()) break;  // Stop at first match
         }
     } else {
@@ -337,17 +370,20 @@ ExecResult exec_cmps(ExecContext& ctx, const DecodedInstruction& instr) noexcept
 ExecResult exec_scas(ExecContext& ctx, const DecodedInstruction& instr) noexcept {
     const u8 size = string_element_size(instr.opcode);
     const i64 step = step_direction(ctx, size);
+    const u8 address_bits = compare_address_bits(ctx, instr);
+    const u64 entry_flags = ctx.cpu.flags.rflags;
 
     constexpr u8 RAX = static_cast<u8>(RegIndex::RAX);
     constexpr u8 RDI = static_cast<u8>(RegIndex::RDI);
     constexpr u8 RCX = static_cast<u8>(RegIndex::RCX);
 
     auto do_one_scas = [&]() -> bool {
-        u64 dst_addr = ctx.cpu.gpr.get64(RDI);
+        u64 dst_addr = compare_register(ctx.cpu, RDI, address_bits);
 
-        auto b = read_memory(ctx, dst_addr, size);
+        auto b = read_memory_av(ctx, compare_linear_address(ctx.cpu, dst_addr, SegReg::ES), size);
         if (!b) {
             ctx.exception = CpuException::GeneralProtection;
+            if (string_repeats(instr)) ctx.cpu.flags.rflags = entry_flags;
             return false;
         }
 
@@ -371,20 +407,25 @@ ExecResult exec_scas(ExecContext& ctx, const DecodedInstruction& instr) noexcept
             default: break;
         }
 
-        ctx.cpu.gpr.set64(RDI, static_cast<u64>(static_cast<i64>(dst_addr) + step));
+        set_compare_register(ctx.cpu, RDI, dst_addr + static_cast<u64>(step), address_bits);
         return true;
     };
 
     if (instr.prefixes.rep) {
         // REPE/REPZ SCAS: loop while RCX > 0 AND ZF == 1
-        u64 count = ctx.cpu.gpr.get64(RCX);
+        u64 count = compare_register(ctx.cpu, RCX, address_bits);
         if (count == 0) return ExecResult::Continue;
 
         // Bulk fast-path for forward REPE SCASB: find first non-match
-        if (size == 1 && !ctx.cpu.flags.df()) {
-            u64 dst_addr = ctx.cpu.gpr.get64(RDI);
+        if (size == 1 && !ctx.cpu.flags.df() &&
+            (address_bits == 64 || count <= (u64{1} << address_bits) -
+                compare_register(ctx.cpu, RDI, address_bits)) &&
+            (ctx.cpu.is_64bit() || count <= 0x100000000ull -
+                compare_linear_address(ctx.cpu,
+                    compare_register(ctx.cpu, RDI, address_bits), SegReg::ES))) {
+            u64 dst_addr = compare_register(ctx.cpu, RDI, address_bits);
             usize total = static_cast<usize>(count);
-            const Byte* dp = ctx.mem.host_ptr(static_cast<GuestAddr>(dst_addr), total);
+            const Byte* dp = ctx.mem.host_ptr(static_cast<GuestAddr>(compare_linear_address(ctx.cpu, dst_addr, SegReg::ES)), total);
             if (dp) {
                 u8 needle = ctx.cpu.gpr.get8l(RAX);
                 usize i = 0;
@@ -394,33 +435,38 @@ ExecResult exec_scas(ExecContext& ctx, const DecodedInstruction& instr) noexcept
                 if (i == total) {
                     u8 va = needle, vb = dp[total - 1];
                     ctx.cpu.flags.update_flags_sub(va, vb, static_cast<u8>(va - vb));
-                    ctx.cpu.gpr.set64(RDI, dst_addr + total);
-                    ctx.cpu.gpr.set64(RCX, 0);
+                    set_compare_register(ctx.cpu, RDI, dst_addr + total, address_bits);
+                    set_compare_register(ctx.cpu, RCX, 0, address_bits);
                 } else {
                     u8 va = needle, vb = dp[i];
                     ctx.cpu.flags.update_flags_sub(va, vb, static_cast<u8>(va - vb));
-                    ctx.cpu.gpr.set64(RDI, dst_addr + i + 1);
-                    ctx.cpu.gpr.set64(RCX, count - i - 1);
+                    set_compare_register(ctx.cpu, RDI, dst_addr + i + 1, address_bits);
+                    set_compare_register(ctx.cpu, RCX, count - i - 1, address_bits);
                 }
                 return ExecResult::Continue;
             }
         }
 
-        while (ctx.cpu.gpr.get64(RCX) > 0) {
+        while (compare_register(ctx.cpu, RCX, address_bits) > 0) {
             if (!do_one_scas()) return ExecResult::Exception;
-            ctx.cpu.gpr.set64(RCX, ctx.cpu.gpr.get64(RCX) - 1);
+            set_compare_register(ctx.cpu, RCX, compare_register(ctx.cpu, RCX, address_bits) - 1, address_bits);
             if (!ctx.cpu.flags.zf()) break;  // Stop at first mismatch
         }
     } else if (instr.prefixes.repne) {
         // REPNE/REPNZ SCAS: loop while RCX > 0 AND ZF == 0
-        u64 count = ctx.cpu.gpr.get64(RCX);
+        u64 count = compare_register(ctx.cpu, RCX, address_bits);
         if (count == 0) return ExecResult::Continue;
 
         // Bulk fast-path for forward REPNE SCASB: find first match (strlen-like)
-        if (size == 1 && !ctx.cpu.flags.df()) {
-            u64 dst_addr = ctx.cpu.gpr.get64(RDI);
+        if (size == 1 && !ctx.cpu.flags.df() &&
+            (address_bits == 64 || count <= (u64{1} << address_bits) -
+                compare_register(ctx.cpu, RDI, address_bits)) &&
+            (ctx.cpu.is_64bit() || count <= 0x100000000ull -
+                compare_linear_address(ctx.cpu,
+                    compare_register(ctx.cpu, RDI, address_bits), SegReg::ES))) {
+            u64 dst_addr = compare_register(ctx.cpu, RDI, address_bits);
             usize total = static_cast<usize>(count);
-            const Byte* dp = ctx.mem.host_ptr(static_cast<GuestAddr>(dst_addr), total);
+            const Byte* dp = ctx.mem.host_ptr(static_cast<GuestAddr>(compare_linear_address(ctx.cpu, dst_addr, SegReg::ES)), total);
             if (dp) {
                 u8 needle = ctx.cpu.gpr.get8l(RAX);
                 const void* found = ::memchr(dp, needle, total);
@@ -428,22 +474,22 @@ ExecResult exec_scas(ExecContext& ctx, const DecodedInstruction& instr) noexcept
                     usize i = static_cast<usize>(static_cast<const Byte*>(found) - dp);
                     u8 va = needle, vb = dp[i];
                     ctx.cpu.flags.update_flags_sub(va, vb, static_cast<u8>(va - vb));
-                    ctx.cpu.gpr.set64(RDI, dst_addr + i + 1);
-                    ctx.cpu.gpr.set64(RCX, count - i - 1);
+                    set_compare_register(ctx.cpu, RDI, dst_addr + i + 1, address_bits);
+                    set_compare_register(ctx.cpu, RCX, count - i - 1, address_bits);
                 } else {
                     // No match found - compare last element
                     u8 va = needle, vb = dp[total - 1];
                     ctx.cpu.flags.update_flags_sub(va, vb, static_cast<u8>(va - vb));
-                    ctx.cpu.gpr.set64(RDI, dst_addr + total);
-                    ctx.cpu.gpr.set64(RCX, 0);
+                    set_compare_register(ctx.cpu, RDI, dst_addr + total, address_bits);
+                    set_compare_register(ctx.cpu, RCX, 0, address_bits);
                 }
                 return ExecResult::Continue;
             }
         }
 
-        while (ctx.cpu.gpr.get64(RCX) > 0) {
+        while (compare_register(ctx.cpu, RCX, address_bits) > 0) {
             if (!do_one_scas()) return ExecResult::Exception;
-            ctx.cpu.gpr.set64(RCX, ctx.cpu.gpr.get64(RCX) - 1);
+            set_compare_register(ctx.cpu, RCX, compare_register(ctx.cpu, RCX, address_bits) - 1, address_bits);
             if (ctx.cpu.flags.zf()) break;  // Stop at first match
         }
     } else {

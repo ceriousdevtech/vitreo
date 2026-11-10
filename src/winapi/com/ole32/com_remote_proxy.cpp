@@ -493,6 +493,26 @@ u32 ComCoreManager::remote_dispatch_get_ids_of_names(Marshaler& m) {
     return *result;
 }
 
+void ComCoreManager::release_remote_proxies_at_exit() {
+    std::vector<RemoteInterfaceProxy> held;
+    {
+        std::lock_guard lock(m_remote_proxies_mutex);
+        for (const auto& [object, proxy] : m_remote_proxies) {
+            (void)object;
+            held.push_back(proxy);
+        }
+        m_remote_proxies.clear();
+        m_remote_methods.clear();
+    }
+    for (const RemoteInterfaceProxy& proxy : held) {
+        const std::array<u64, 1> arguments{proxy.remote_object};
+        (void)call_remote_iunknown(proxy, 2, arguments);
+    }
+    if (!held.empty()) {
+        VITREO_TRACE("[ole32] process exit released %zu remote proxy reference(s)\n", held.size());
+    }
+}
+
 u32 ComCoreManager::remote_proxy_release(Marshaler& m) {
     const GuestAddr object = m.arg_ptr(0);
     RemoteInterfaceProxy proxy{};

@@ -16,6 +16,14 @@ public:
     [[nodiscard]] virtual bool wait() = 0;
 };
 
+/// Exclusive CPU encoding scope. Destruction submits its remaining work without
+/// waiting for the GPU. Existing shared resources and the backend queue remain
+/// authoritative; implementations must preserve ordering with other producers.
+class BackendImmediateExecution {
+public:
+    virtual ~BackendImmediateExecution() = default;
+};
+
 /// A point in the GPU command stream: D3D11 End on a TIMESTAMP, EVENT or
 /// TIMESTAMP_DISJOINT query. It becomes ready once the GPU has finished every
 /// command recorded before it; gpu_time_ns() is then the host-clock time, in

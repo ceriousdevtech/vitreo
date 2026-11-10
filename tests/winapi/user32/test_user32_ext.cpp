@@ -251,6 +251,172 @@ TEST_F(User32ExtThunkTest, RawKeyboardRegistrationDeliversWmInputPacket) {
     EXPECT_EQ(memory_.read_u32(packet + 32).value(), WM::KEYDOWN);
 }
 
+// RIDEV_PAGEONLY / RIDEV_EXCLUDE. Learn (RAWINPUTDEVICE): PAGEONLY "specifies
+// all devices whose top level collection is from the specified usUsagePage.
+// Note that usUsage must be zero. To exclude a particular top level
+// collection, use RIDEV_EXCLUDE." Every return value, error and listing below
+// is the one Windows gave (tools/oracle_probe/rawinput_pageonly_probe.expected),
+// in the probe's order.
+namespace {
+struct RawRow {
+    u16 page, usage;
+    u32 flags;
+    u64 target;
+    bool operator==(const RawRow&) const = default;
+};
+}  // namespace
+
+TEST_F(User32ExtThunkTest, RawInputPageOnlyAndExcludeMatchWindows) {
+    auto register_raw = find_export("RegisterRawInputDevices");
+    auto get_registered = find_export("GetRegisteredRawInputDevices");
+    cpu_.mode = cpu::CpuMode::Long;
+    Marshaler m(memory_);
+    m.attach_cpu(cpu_);
+    WindowData window{};
+    const HWND hwnd = hwnd_mgr_.create(window);
+    constexpr u32 kInvalidParameter = 87;  // 0x57
+    constexpr u32 kSentinel = 0xdead;
+    constexpr u32 kPageOnly = 0x20, kExclude = 0x10, kNoLegacy = 0x30;
+    constexpr u32 kRemove = 0x1, kInputSink = 0x100, kDevNotify = 0x2000;
+
+    struct Result { u64 ret; u32 err; };
+    const auto reg = [&](std::initializer_list<RawRow> rows) {
+        GuestAddr at = BUF_ADDR;
+        for (const RawRow& r : rows) {
+            EXPECT_TRUE(memory_.write_u16(at, r.page).is_ok());
+            EXPECT_TRUE(memory_.write_u16(at + 2, r.usage).is_ok());
+            EXPECT_TRUE(memory_.write_u32(at + 4, r.flags).is_ok());
+            EXPECT_TRUE(memory_.write_u64(at + 8, r.target).is_ok());
+            at += 16;
+        }
+        cpu_.gpr.rcx = BUF_ADDR;
+        cpu_.gpr.rdx = rows.size();
+        cpu_.gpr.r8 = 16u;
+        set_last_error(kSentinel);
+        register_raw.handler(m);
+        return Result{cpu_.gpr.rax, get_last_error()};
+    };
+    const auto list = [&] {
+        constexpr GuestAddr out = BUF_ADDR + 0x200, count = BUF_ADDR + 0x400;
+        EXPECT_TRUE(memory_.write_u32(count, 16).is_ok());
+        cpu_.gpr.rcx = out;
+        cpu_.gpr.rdx = count;
+        cpu_.gpr.r8 = 16u;
+        get_registered.handler(m);
+        std::vector<RawRow> rows;
+        const u32 n = static_cast<u32>(cpu_.gpr.rax);
+        if (n == 0xFFFFFFFFu) return rows;
+        for (u32 i = 0; i < n; ++i) {
+            const GuestAddr at = out + i * 16;
+            rows.push_back({memory_.read_u16(at).value(), memory_.read_u16(at + 2).value(),
+                            memory_.read_u32(at + 4).value(), memory_.read_u64(at + 8).value()});
+        }
+        return rows;
+    };
+    const auto ok = [&](Result r) { return r.ret == 1 && r.err == kSentinel; };
+    const auto refused = [&](Result r) { return r.ret == 0 && r.err == kInvalidParameter; };
+    using Rows = std::vector<RawRow>;
+
+    // game_three: keyboard, mouse and the whole Generic Desktop page.
+    EXPECT_TRUE(ok(reg({{1, 6, kDevNotify, hwnd}, {1, 2, kDevNotify, hwnd},
+                        {1, 0, kPageOnly | kDevNotify, hwnd}})));
+    EXPECT_EQ(list(), (Rows{{1, 0, 0x20, hwnd}, {1, 2, 0, hwnd}, {1, 6, 0, hwnd}}));
+    EXPECT_TRUE(ok(reg({{1, 0, kRemove | kPageOnly, 0}, {1, 2, kRemove, 0}, {1, 6, kRemove, 0}})));
+    EXPECT_EQ(list(), Rows{});
+
+    EXPECT_TRUE(ok(reg({{1, 0, kPageOnly, 0}})));                       // pageonly_null_target
+    EXPECT_EQ(list(), (Rows{{1, 0, 0x20, 0}}));
+    EXPECT_TRUE(refused(reg({{1, 5, kPageOnly, 0}})));                  // pageonly_nonzero_usage
+    EXPECT_TRUE(refused(reg({{1, 0, 0, 0}})));                          // usage_zero_no_pageonly
+    EXPECT_TRUE(ok(reg({{1, 0, kPageOnly | kInputSink, hwnd}})));       // pageonly_inputsink
+    EXPECT_EQ(list(), (Rows{{1, 0, 0x120, hwnd}}));
+    EXPECT_TRUE(refused(reg({{1, 0, kNoLegacy, 0}})));                  // page_nolegacy_usage_zero
+    EXPECT_EQ(list(), (Rows{{1, 0, 0x120, hwnd}}));
+
+    EXPECT_TRUE(ok(reg({{1, 2, kExclude, 0}})));                        // exclude_mouse
+    EXPECT_EQ(list(), (Rows{{1, 0, 0x120, hwnd}, {1, 2, 0x10, 0}}));
+    EXPECT_TRUE(refused(reg({{1, 6, kExclude, hwnd}})));                // exclude_with_hwnd
+    EXPECT_TRUE(refused(reg({{1, 0, kExclude, 0}})));                   // exclude_usage_zero
+    EXPECT_TRUE(ok(reg({{1, 2, 0, hwnd}})));                            // explicit_mouse_over_exclude
+    EXPECT_EQ(list(), (Rows{{1, 0, 0x120, hwnd}, {1, 2, 0, hwnd}}));
+    EXPECT_TRUE(ok(reg({{1, 6, kInputSink, hwnd}})));                   // explicit_keyboard_over_page
+    EXPECT_EQ(list(), (Rows{{1, 0, 0x120, hwnd}, {1, 2, 0, hwnd}, {1, 6, 0x100, hwnd}}));
+
+    EXPECT_TRUE(refused(reg({{1, 0, kRemove, 0}})));                    // remove_usage_zero_plain
+    EXPECT_EQ(list().size(), 3u);
+    EXPECT_TRUE(ok(reg({{1, 0, kRemove | kPageOnly, 0}})));             // remove_pageonly
+    EXPECT_EQ(list(), (Rows{{1, 2, 0, hwnd}, {1, 6, 0x100, hwnd}}));
+    EXPECT_TRUE(ok(reg({{1, 2, kRemove, 0}})));
+    EXPECT_TRUE(ok(reg({{1, 6, kRemove, 0}})));
+    EXPECT_EQ(list(), Rows{});
+
+    EXPECT_TRUE(ok(reg({{1, 2, kExclude, 0}})));                        // exclude_without_page
+    EXPECT_EQ(list(), (Rows{{1, 2, 0x10, 0}}));
+    EXPECT_TRUE(ok(reg({{1, 2, kRemove, 0}})));
+    EXPECT_TRUE(ok(reg({{0xC, 0, kPageOnly, hwnd}})));                  // pageonly_consumer_page
+    EXPECT_TRUE(ok(reg({{1, 0, kPageOnly, hwnd}})));
+    EXPECT_EQ(list(), (Rows{{1, 0, 0x20, hwnd}, {0xC, 0, 0x20, hwnd}}));
+    EXPECT_TRUE(ok(reg({{1, 0, kRemove | kPageOnly, 0}, {0xC, 0, kRemove | kPageOnly, 0}})));
+
+    // valid_then_invalid: a call with one bad entry applies nothing.
+    EXPECT_TRUE(refused(reg({{1, 2, 0, hwnd}, {1, 5, kPageOnly, 0}})));
+    EXPECT_EQ(list(), Rows{});
+}
+
+// A page registration receives its page's devices: the mouse and the keyboard
+// are Generic Desktop collections (usages 2 and 6). A collection with its own
+// registration is delivered there, and an excluded one is not delivered.
+TEST_F(User32ExtThunkTest, RawInputPageRegistrationDeliversMouseAndKeyboard) {
+    auto register_raw = find_export("RegisterRawInputDevices");
+    cpu_.mode = cpu::CpuMode::Long;
+    Marshaler m(memory_);
+    m.attach_cpu(cpu_);
+    WindowData window{};
+    const HWND page_hwnd = hwnd_mgr_.create(window);
+    const HWND mouse_hwnd = hwnd_mgr_.create(window);
+    const auto reg = [&](u16 page, u16 usage, u32 flags, u64 target) {
+        EXPECT_TRUE(memory_.write_u16(BUF_ADDR, page).is_ok());
+        EXPECT_TRUE(memory_.write_u16(BUF_ADDR + 2, usage).is_ok());
+        EXPECT_TRUE(memory_.write_u32(BUF_ADDR + 4, flags).is_ok());
+        EXPECT_TRUE(memory_.write_u64(BUF_ADDR + 8, target).is_ok());
+        cpu_.gpr.rcx = BUF_ADDR;
+        cpu_.gpr.rdx = 1u;
+        cpu_.gpr.r8 = 16u;
+        register_raw.handler(m);
+        return cpu_.gpr.rax == 1u;
+    };
+    const auto next_input_target = [&]() -> HWND {
+        MSG message{};
+        while (queue_.get(message)) {
+            if (message.message == WM::INPUT) return message.hwnd;
+        }
+        return NULL_HWND;
+    };
+
+    mgr_->note_raw_mouse_button(0, true, mouse_hwnd);
+    EXPECT_EQ(next_input_target(), NULL_HWND) << "nothing registered";
+
+    ASSERT_TRUE(reg(1, 0, 0x20, page_hwnd));
+    mgr_->note_raw_mouse_button(0, true, mouse_hwnd);
+    EXPECT_EQ(next_input_target(), page_hwnd) << "the page covers the mouse";
+    mgr_->note_raw_keyboard_transition('A', true);
+    EXPECT_EQ(next_input_target(), page_hwnd) << "and the keyboard";
+
+    ASSERT_TRUE(reg(1, 2, 0, mouse_hwnd));
+    mgr_->note_raw_mouse_button(0, false, page_hwnd);
+    EXPECT_EQ(next_input_target(), mouse_hwnd) << "the mouse's own registration wins";
+
+    ASSERT_TRUE(reg(1, 2, 0x10, 0));  // RIDEV_EXCLUDE replaces it
+    mgr_->note_raw_mouse_button(0, true, mouse_hwnd);
+    EXPECT_EQ(next_input_target(), NULL_HWND) << "an excluded collection is not delivered";
+    mgr_->note_raw_keyboard_transition('A', false);
+    EXPECT_EQ(next_input_target(), page_hwnd) << "the rest of the page still is";
+
+    ASSERT_TRUE(reg(1, 0, 0x21, 0));  // RIDEV_REMOVE | RIDEV_PAGEONLY
+    mgr_->note_raw_keyboard_transition('B', true);
+    EXPECT_EQ(next_input_target(), NULL_HWND);
+}
+
 // Windows rawinput_lifetime_probe.expected and .x86.expected: reads are
 // repeatable until the next successful message removal on the owning thread.
 TEST_F(User32ExtThunkTest, RawInputHandleSurvivesReadsUntilNextMessageRemoval) {

@@ -251,6 +251,17 @@ public:
                                       std::vector<u64>& pages_out,
                                       u32 flags = 0);
 
+    /// Record [@p base, +@p size), a range another subsystem already mapped
+    /// into guest memory (a D3D12 heap's persistent CPU mapping), as a
+    /// committed read-write allocation the guest cannot free, with
+    /// MEM_WRITE_WATCH tracking when @p write_watch: GetWriteWatch /
+    /// ResetWriteWatch then see stores into it as into
+    /// VirtualAlloc(MEM_WRITE_WATCH) memory. False when the range is not
+    /// 64 KiB aligned or overlaps an allocation.
+    [[nodiscard]] bool adopt_mapped_region(u64 base, u64 size, bool write_watch);
+    /// Forget an adopted range (before its owner unmaps it).
+    void release_adopted_region(u64 base);
+
     /// ResetWriteWatch — clear the dirty set and re-arm write traps for a
     /// MEM_WRITE_WATCH region. Succeeds when the region exists and was
     /// allocated with MEM_WRITE_WATCH.

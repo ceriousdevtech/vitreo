@@ -126,7 +126,8 @@ void GdiManager::free_object(Handle obj) {
     m_pen_objects.erase(obj);
     m_extpen_objects.erase(obj);
     m_brush_colors.erase(obj);
-    m_brush_info.erase(obj);
+    if (m_brush_info.erase(obj) != 0 || m_brush_patterns.contains(obj))
+        m_retired_brushes.insert(obj);
     m_brush_patterns.erase(obj);
     if (m_owned_fonts.erase(obj) != 0) {
         std::lock_guard font_lock(gdi_font_registry_mutex());

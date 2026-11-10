@@ -315,9 +315,12 @@ void CocoaBridge::add_child_view(HWND parent_hwnd, HWND child_hwnd,
                 [scroll setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
                 NSSize contentSize = [scroll contentSize];
-                NSTextView* textView = [[NSTextView alloc]
+                VtrEditTextView* textView = [[VtrEditTextView alloc]
                     initWithFrame:NSMakeRect(0, 0, contentSize.width, contentSize.height)];
-                [textView setEditable:YES];
+                textView.hidesSelectionWhenUnfocused = (data.style & 0x00000100) == 0;  // ES_NOHIDESEL
+                // ES_READONLY: the user cannot change the text (Learn Edit
+                // Control Styles); EM_SETREADONLY toggles it later.
+                [textView setEditable:(data.style & 0x00000800) == 0];
                 [textView setSelectable:YES];
                 [textView setRichText:NO];
                 [textView setHorizontallyResizable:NO];
@@ -332,7 +335,7 @@ void CocoaBridge::add_child_view(HWND parent_hwnd, HWND child_hwnd,
             } else {
                 NSTextField* field = [[NSTextField alloc] initWithFrame:frame];
                 [field setStringValue:label];
-                [field setEditable:YES];
+                [field setEditable:(data.style & 0x00000800) == 0];  // ES_READONLY
                 [field setBezeled:YES];
                 [field setDrawsBackground:YES];
                 [field setBezelStyle:NSTextFieldSquareBezel];
@@ -364,13 +367,30 @@ void CocoaBridge::add_child_view(HWND parent_hwnd, HWND child_hwnd,
             } else if (ss_type == 0x04 || ss_type == 0x05 || ss_type == 0x06
                     || ss_type == 0x07 || ss_type == 0x08 || ss_type == 0x09) {
                 // SS_BLACKRECT / SS_GRAYRECT / SS_WHITERECT / SS_*FRAME.
-                // Installer wizards use these styles as an embedding panel
-                // (control id 1018 is a common one).
-                // Use a plain NSView to avoid NSBox content insets affecting layout.
-                // Do NOT use setWantsLayer:YES — a layer-backed panel with default
-                // contentsScale=1.0 can cause all subviews to render at 1x on Retina,
-                // producing blurry text and images.
+                // Learn Static Control Styles: RECT styles fill with the frame
+                // color; FRAME styles draw that color as a border only.
+                // Installer wizards also use these as an embedding panel
+                // (control id 1018). That panel stays a plain NSView so child
+                // layout is not inset. A leaf frame is not an embedding host:
+                // a layer on it does not scale sibling controls.
                 NSView* panel = [[NSView alloc] initWithFrame:frame];
+                constexpr u32 kEmbedPanelId = 1018;
+                if (data.ctrl_id != kEmbedPanelId) {
+                    const bool frame_style = ss_type >= 0x07;
+                    NSColor* ink = NSColor.whiteColor;
+                    if (ss_type == 0x04 || ss_type == 0x07) ink = NSColor.blackColor;
+                    else if (ss_type == 0x05 || ss_type == 0x08) ink = NSColor.grayColor;
+                    panel.wantsLayer = YES;
+                    const CGFloat scale = [NSScreen mainScreen].backingScaleFactor;
+                    panel.layer.contentsScale = scale > 0 ? scale : 2.0;
+                    if (frame_style) {
+                        panel.layer.borderWidth = 1.0;
+                        panel.layer.borderColor = ink.CGColor;
+                        panel.layer.backgroundColor = NSColor.clearColor.CGColor;
+                    } else {
+                        panel.layer.backgroundColor = ink.CGColor;
+                    }
+                }
                 view = panel;
             } else if (ss_type == 0x0E || ss_type == 0x03) {
                 // SS_BITMAP (0x0E) / SS_ICON (0x03)
@@ -389,8 +409,13 @@ void CocoaBridge::add_child_view(HWND parent_hwnd, HWND child_hwnd,
                         [iv setImageScaling:NSImageScaleAxesIndependently];
                     }
                 } else {
+                    // SS_CENTERIMAGE alone: centered, never resized, clipped
+                    // when too large. Otherwise user32 sizes the control to
+                    // the image (static_image_layout.hpp), drawn top-left.
                     [iv setImageScaling:NSImageScaleNone];
-                    [iv setImageAlignment:NSImageAlignTopLeft];
+                    [iv setImageAlignment:(data.style & kSsCenterImage) != 0
+                                              ? NSImageAlignCenter
+                                              : NSImageAlignTopLeft];
                 }
                 [iv setImage:nil];
                 view = iv;
@@ -582,8 +607,9 @@ void CocoaBridge::add_child_view(HWND parent_hwnd, HWND child_hwnd,
                     [[scroll contentView] setPostsBoundsChangedNotifications:YES];
 
                     NSSize contentSize = [scroll contentSize];
-                    NSTextView* textView = [[NSTextView alloc]
+                    VtrEditTextView* textView = [[VtrEditTextView alloc]
                         initWithFrame:NSMakeRect(0, 0, contentSize.width, contentSize.height)];
+                    textView.hidesSelectionWhenUnfocused = (data.style & 0x00000100) == 0;  // ES_NOHIDESEL
                     const bool readonly = (data.style & 0x00000800) != 0; // ES_READONLY
                     [textView setEditable:!readonly];
                     [textView setSelectable:YES];

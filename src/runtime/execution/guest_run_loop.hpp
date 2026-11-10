@@ -45,6 +45,13 @@ struct Seh64HostCallbackFrame {
 /// Called every N instructions to keep the UI responsive.
 using EventPumpCallback = std::function<void()>;
 
+/// The host main thread is inside its AppKit service loop and is the one
+/// translating native input. Guest execution must not also hop there on its
+/// own timer: that hop runs on the game thread and waits out the main
+/// thread's slice.
+void set_host_runloop_service_active(bool active) noexcept;
+[[nodiscard]] bool host_runloop_service_active() noexcept;
+
 /// Distinguishes a Windows thread's top-level entry point from callbacks
 /// nested inside API dispatch (WndProc, guest callbacks, timer procedures).
 enum class GuestCallbackKind {
@@ -109,6 +116,18 @@ RunResult run_execution_loop(cpu::CpuState& cpu,
                              const RunConfig& config,
                              EventPumpCallback event_pump = nullptr);
 
+/// Return registers of a guest call, captured at the callback sentinel
+/// before run_guest_callback restores the caller's state. Used by
+/// oleaut32!DispCallFunc, whose return value can be EDX:EAX, ST(0) or XMM0.
+struct GuestCallbackReturnState {
+    bool want_st0{false};      ///< in: pop ST(0) into st0 (x86 FP return)
+    u64 rax{0};
+    u64 rdx{0};
+    u64 xmm0_low{0};
+    double st0{0.0};
+    u64 callee_popped{0};      ///< x86: argument bytes the callee removed
+};
+
 /// Execute a guest callback function (e.g. WndProc, DialogProc).
 ///
 /// Sets up a call frame, runs the interpreter until the callback returns,
@@ -137,6 +156,10 @@ RunResult run_execution_loop(cpu::CpuState& cpu,
 ///        The handler is also treated as having left once ESP rises above its
 ///        own argument area -- how MSVC's catch continuation and __except
 ///        entry leave -- whatever page RIP is on.
+/// @param return_state   Optional: receives the full return-register state
+///        (EDX:EAX / RAX, XMM0, an x87 ST(0) result, and how many argument
+///        bytes an x86 callee popped). Set want_st0 to pop a floating-point
+///        return off the x87 stack the way a caller's FSTP does.
 /// @return The callback's return value
 u64 run_guest_callback(cpu::CpuState& cpu,
                        GuestMemory& memory,
@@ -149,7 +172,8 @@ u64 run_guest_callback(cpu::CpuState& cpu,
                        bool* completed_normally = nullptr,
                        GuestCallbackKind kind = GuestCallbackKind::Nested,
                        u32 seh_abandon_ctx_addr = 0,
-                       u32 seh_abandon_esp_min = 0);
+                       u32 seh_abandon_esp_min = 0,
+                       GuestCallbackReturnState* return_state = nullptr);
 
 /// True, once, after the most recent SEH frame-handler callback on this
 /// thread LEFT instead of returning (see seh_abandon_ctx_addr). Its caller
@@ -212,6 +236,42 @@ enum class NativeThunkDispatch : u8 {
     u32 status,
     u64 fault_address,
     bool is_write);
+
+/// Dispatch the software exception an API call left in `cpu.pending_raise`
+/// (RaiseException, a C++ throw, the MSVC thread-name exception), under a
+/// native x64 backend.
+///
+/// RaiseException returns with RIP still at its thunk gateway, whose first
+/// byte is a guard INT3, so the guest must never be resumed there. This takes
+/// the interpreter's x64 raise step exactly: simulate the RET out of the
+/// thunk, then run the table-based SEH/VEH dispatch from that return address.
+///
+/// @return true when a handler resolved it and `cpu` holds the context to
+///         resume; false when nothing handled it, which is fatal for the guest.
+[[nodiscard]] bool dispatch_pending_raise_native(
+    cpu::CpuState& cpu,
+    GuestMemory& memory,
+    winapi::ThunkRegistry& thunk_registry,
+    winapi::ProcessManager& process_mgr);
+
+/// What a native backend's top-level loop does after an API call transferred
+/// control (RtlUserThreadStart into an entry point, an unwind, a longjmp).
+enum class NativeTransferAction {
+    Resume,     ///< cpu holds the new context: keep running at cpu.rip
+    Exit,       ///< the process ended
+    Unhandled,  ///< a raise during the transfer found no handler
+};
+
+/// The interpreter's top-level handling of SlowThunkDispatch::ControlTransferred,
+/// for a native backend: apply a pending x64 unwind (outside any callback
+/// level), dispatch a raise it leaves behind, and otherwise continue where
+/// the transfer put the CPU. Only a guest callback level has an enclosing
+/// dispatcher to hand the transfer to; the top level is that dispatcher.
+[[nodiscard]] NativeTransferAction continue_control_transfer_native(
+    cpu::CpuState& cpu,
+    GuestMemory& memory,
+    winapi::ThunkRegistry& thunk_registry,
+    winapi::ProcessManager& process_mgr);
 
 [[nodiscard]] NativeThunkDispatch dispatch_api_thunk_native(
     cpu::CpuState& cpu,

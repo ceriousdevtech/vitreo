@@ -223,6 +223,40 @@ TEST_F(D3D11FixedFunctionTest, TheCutValueInAListRestartsAssembly) {
     EXPECT_FALSE(backend.state.last_draw_call.index_32bit);
 }
 
+TEST_F(D3D11FixedFunctionTest, EveryRangeOfASharedIndexBufferKeepsItsOwnCut) {
+    // One index buffer holding many meshes, drawn range by range and then
+    // again (as a frame after a frame): each range's answer is its own,
+    // however many other ranges were drawn in between. Same contract as
+    // above (D3D11.3 8.12/8.13).
+    bind_target();
+    bind_attr_inst_streams(1);
+    context_call(24, {4});
+    // 40 R32 ranges of 4 indices {b, b+1, b+2, x}: x is the cut in every
+    // third range.
+    constexpr u32 kRanges = 40;
+    std::vector<u32> words;
+    for (u32 r = 0; r < kRanges; ++r) {
+        const u32 b = r * 3;
+        words.insert(words.end(),
+                     {b, b + 1, b + 2, r % 3 == 0 ? 0xFFFFFFFFu : b});
+    }
+    const GuestAddr ib = buffer(0x2, words);
+    context_call(19, {ib, 42, 0});
+    for (int pass = 0; pass < 2; ++pass) {
+        for (u32 r = 0; r < kRanges; ++r) {
+            context_call(12, {4, r * 4, 0});
+            const u32 b = r * 3;
+            if (r % 3 == 0) {
+                EXPECT_EQ(drawn_indices(), (std::vector<u32>{b, b + 1, b + 2}))
+                    << "range " << r << " pass " << pass;
+            } else {
+                EXPECT_EQ(backend.state.last_draw_call.index_count, 4u)
+                    << "range " << r << ": the guest's own stream";
+            }
+        }
+    }
+}
+
 TEST_F(D3D11FixedFunctionTest, D24DepthBiasIsConstantInUnormUnits) {
     // D3D11.3 15.10, UNORM: Bias = DepthBias * r, r = 1/(2^24 - 1), whatever
     // z is (Windows: z=.25 bias 100 -> +100 units, `R4 D24S8 bias=100`).

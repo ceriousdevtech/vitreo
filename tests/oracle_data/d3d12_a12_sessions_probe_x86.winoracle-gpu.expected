@@ -1,0 +1,82 @@
+lifetime CreateLifetimeTracker: 0x00000000 S_OK out=obj owner refs=1
+lifetime CreateLifetimeTracker(NULL owner): 0x80070057 E_INVALIDARG out=untouched
+lifetime CreateLifetimeTracker(ppv NULL): 0x8000ffff E_UNEXPECTED
+lifetime QI(Pageable): 0x80004002 E_NOINTERFACE
+lifetime DestroyOwnedObject(buffer): 0x80070057 E_INVALIDARG buffer refs 1 -> 1 updates=0
+lifetime Release: 0 owner refs=1 updates=0
+lifetime end: GetDeviceRemovedReason 0x00000000 S_OK
+protected PROTECTED_RESOURCE_SESSION_SUPPORT: 0x00000000 S_OK support=0x1
+protected PROTECTED_RESOURCE_SESSION_TYPE_COUNT: 0x00000000 S_OK count=1
+protected CreateProtectedResourceSession(node 0): 0x00000000 S_OK out=obj
+protected   GetSessionStatus: 0
+protected   GetStatusFence: 0x00000000 S_OK out=obj
+protected CreateProtectedResourceSession(flags 1): 0x80070057 E_INVALIDARG out=NULL
+protected CreateProtectedResourceSession(node 2): 0x80070057 E_INVALIDARG out=NULL
+protected end: GetDeviceRemovedReason 0x00000000 S_OK
+state_object # RaytracingTier: 0
+state_object CreateStateObject(COLLECTION, none): 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+state_object CreateStateObject(EXECUTABLE, none): 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+state_object CreateStateObject(RAYTRACING_PIPELINE, none): 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+state_object CreateStateObject(COLLECTION, config): 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+state_object CreateStateObject(COLLECTION, global root): 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+state_object CreateStateObject(COLLECTION, node mask): 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+state_object CreateStateObject(EXECUTABLE, global root): 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+state_object CreateStateObject(COLLECTION, two configs): 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+state_object CreateStateObject(COLLECTION, config flags 0x80): 0x80070057 E_INVALIDARG out=NULL
+state_object CreateStateObject(COLLECTION, subobject type 99): 0x80070057 E_INVALIDARG out=NULL
+state_object CreateStateObject(COLLECTION, NULL desc): 0x80070057 E_INVALIDARG out=NULL
+state_object end: GetDeviceRemovedReason 0x887a0020 DXGI_ERROR_DRIVER_INTERNAL_ERROR
+write_watch CreateHeap(WRITE_WATCH, UPLOAD): 0x00000000 S_OK flags=0x2c0
+write_watch CreateHeap(WRITE_WATCH, READBACK): 0x00000000 S_OK flags=0x2c0
+write_watch CreateHeap(WRITE_WATCH, DEFAULT): 0x80070057 E_INVALIDARG flags=0x0
+write_watch CreateHeap(WRITE_WATCH, CUSTOM WRITE_BACK L0): 0x00000000 S_OK flags=0x2c0
+write_watch   CreatePlacedResource: 0x00000000 S_OK
+write_watch   Map: 0x00000000 S_OK
+write_watch   GetWriteWatch(reset, fresh): 0 count=16 gran=4096
+write_watch   GetWriteWatch(after 2 pages written): 0 count=2 first=+0 second=+8192
+write_watch   ResetWriteWatch: 0
+write_watch   GetWriteWatch(after reset): 0 count=0
+write_watch CreateHeap(WRITE_WATCH, CUSTOM WRITE_COMBINE L0): 0x00000000 S_OK flags=0x2c0
+write_watch CreateHeap(WRITE_WATCH, CUSTOM NOT_AVAILABLE L0): 0x80070057 E_INVALIDARG flags=0x0
+write_watch CreateCommittedResource(WRITE_WATCH, CUSTOM WRITE_BACK L0): 0x00000000 S_OK
+write_watch   GetHeapProperties flags: 0x2c0
+write_watch   GetWriteWatch(one page written): 0 count=1 first=+12288
+write_watch GetWriteWatch(upload buffer without the flag): 4294967295 gle=87
+write_watch end: GetDeviceRemovedReason 0x00000000 S_OK
+existing_heap EXISTING_HEAPS: 0x00000000 S_OK supported=1
+existing_heap OpenExistingHeapFromAddress(192 KiB): 0x00000000 S_OK size=196608
+existing_heap   CreatePlacedResource(+64 KiB): 0x00000000 S_OK
+existing_heap   copy: 0x00000000 S_OK
+existing_heap   CPU sees GPU write: a0000000 a000000f
+existing_heap   Map is the existing address: 0x00000000 S_OK 1
+existing_heap OpenExistingHeapFromAddress(+64 KiB): 0x80070057 E_INVALIDARG
+existing_heap OpenExistingHeapFromAddress(image data): 0x80070057 E_INVALIDARG
+existing_heap OpenExistingHeapFromAddress(NULL): 0x80070057 E_INVALIDARG out=NULL
+existing_heap OpenExistingHeapFromAddress(4 KiB): 0x00000000 S_OK size=4096
+existing_heap OpenExistingHeapFromAddress(PAGE_READONLY): 0x80070057 E_INVALIDARG
+existing_heap OpenExistingHeapFromAddress(reserved only): 0x80070057 E_INVALIDARG
+existing_heap OpenExistingHeapFromFileMapping(64 KiB section): 0x00000000 S_OK size=65536 flags=0x421
+existing_heap OpenExistingHeapFromFileMapping(bogus): 0x80070057 E_INVALIDARG out=NULL
+existing_heap end: GetDeviceRemovedReason 0x00000000 S_OK
+fence_wait WaitForMultipleObjects(event, fence; any): 1
+fence_wait WaitForMultipleObjects(event, fence; all): 258
+fence_wait WaitForMultipleObjects(set event, fence; all): 0
+fence_wait WaitForSingleObject after Signal(5): 0
+fence_wait WaitForSingleObject again: 0
+fence_wait WaitForSingleObject(duplicate): 0
+fence_wait WaitForSingleObject after the fence's release: 0
+fence_wait end: GetDeviceRemovedReason 0x00000000 S_OK
+exports D3D12PIXGetThreadInfo: exported
+exports D3D12PIXEventsReplaceBlock: exported
+exports D3D12PIXNotifyWakeFromFenceSignal: exported
+exports D3D12PIXReportCounter: exported
+exports D3D12DeviceRemovedExtendedData: exported
+exports GetBehaviorValue: exported
+exports SetAppCompatStringPointer: exported
+exports D3D12CoreCreateLayeredDevice: exported
+exports D3D12CoreGetLayeredDeviceSize: exported
+exports D3D12CoreRegisterLayers: exported
+exports D3D12PIXGetThreadInfo(): NULL
+exports D3D12PIXNotifyWakeFromFenceSignal(event): returned event=unset
+exports D3D12PIXReportCounter: returned
+exports D3D12DeviceRemovedExtendedData: words 3 0 0 0 protect=0x4

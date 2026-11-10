@@ -318,6 +318,7 @@ protected:
 
 class JitLinear64Test : public ::testing::Test {
 protected:
+    virtual bool use_view() const { return false; }
     static constexpr GuestAddr kCode64 = 0x0000000140000000ull;
     static constexpr GuestAddr kData64 = 0x0000000180000000ull;
     static constexpr GuestAddr kUnmapped64 = 0x00000001C0000000ull;
@@ -340,8 +341,13 @@ protected:
         // address is mapped. Every protection test below is therefore a test
         // of the host page, not of a slot table.
         ASSERT_TRUE(m_memory->enable_linear_hardware_protection());
+        if (use_view()) ASSERT_TRUE(m_memory->enable_linear_jit_view());
         ASSERT_TRUE(register_linear_reservation(m_memory->linear_base(),
                                                 kReservation64));
+        if (use_view()) {
+            ASSERT_TRUE(register_linear_jit_view(
+                m_memory->linear_jit_view_base(), kReservation64));
+        }
         ASSERT_TRUE(m_memory->map_region(kCode64, 0x4000,
                                          MemoryProtection::ReadWrite));
         ASSERT_TRUE(m_memory->map_region(kData64, 0x4000,
@@ -352,7 +358,12 @@ protected:
     }
 
     void TearDown() override {
-        if (m_memory) unregister_linear_reservation(m_memory->linear_base());
+        if (m_memory) {
+            if (m_memory->linear_jit_view_base()) {
+                unregister_linear_jit_view(m_memory->linear_jit_view_base());
+            }
+            unregister_linear_reservation(m_memory->linear_base());
+        }
     }
 
     BasicBlock build64(const std::vector<u8>& code) {

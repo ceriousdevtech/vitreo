@@ -70,14 +70,14 @@ static void jit_print_av_dump(JitContext* ctx, GuestAddr addr, bool is_write);
 /// page and runs into a denied one, that is the denied page's first byte, not
 /// the access's -- measured for 2-, 4- and 8-byte loads and stores at every
 /// straddling offset (tools/oracle_probe/split_access_fault_address_probe).
-static GuestAddr jit_av_address(JitContext* ctx, GuestAddr addr, usize width,
-                                bool is_write) {
+static GuestAddr jit_av_address(GuestMemory* memory, GuestAddr addr,
+                                usize width, bool is_write) {
     const GuestAddr next_page = (addr | GuestAddr{0xFFF}) + 1;
     if (width <= 1 || next_page == 0 || next_page - addr >= width) return addr;
     GuestAddr base = 0;
     usize size = 0;
     MemoryProtection prot{};
-    const bool mapped = ctx->memory->query_region(addr, base, size, prot);
+    const bool mapped = memory->query_region(addr, base, size, prot);
     const bool first_page_ok =
         mapped && has_flag(prot, is_write ? MemoryProtection::Write
                                           : MemoryProtection::Read);
@@ -118,8 +118,46 @@ void jit_raise_memory_av(JitContext* ctx, GuestAddr addr, usize width,
         jit_raise_access_violation(ctx, ~GuestAddr{0}, /*is_write=*/false);
         return;
     }
-    jit_raise_access_violation(ctx, jit_av_address(ctx, addr, width, is_write),
-                               is_write);
+    jit_raise_access_violation(
+        ctx, jit_av_address(ctx->memory, addr, width, is_write), is_write);
+}
+
+void jit_raise_guest_av(CpuState* cpu, GuestMemory* mem, GuestAddr addr,
+                        usize width, bool is_write) noexcept {
+    if (cpu == nullptr) return;
+    auto& pr = cpu->pending_raise;
+    if (pr.active) return;  // first AV wins
+    const GuestAddr last = addr + static_cast<GuestAddr>(width - 1);
+    const bool canonical = x64_canonical(addr) && x64_canonical(last);
+    pr.active = true;
+    pr.from_helper = true;
+    pr.code = 0xC0000005u;  // STATUS_ACCESS_VIOLATION
+    pr.flags = 0;
+    pr.num_args = 2;
+    pr.args[0] = (canonical && is_write) ? 1u : 0u;
+    pr.args[1] = canonical
+        ? static_cast<u64>(jit_av_address(mem, addr, width, is_write))
+        : ~u64{0};
+}
+
+void jit_raise_cmpxchg16b_misaligned(CpuState* cpu) noexcept {
+    if (cpu == nullptr || cpu->pending_raise.active) return;
+    auto& pr = cpu->pending_raise;
+    pr.active = true;
+    pr.from_helper = true;
+    pr.code = 0xC0000005u;  // STATUS_ACCESS_VIOLATION
+    pr.flags = 0;
+    pr.num_args = 2;
+    pr.args[0] = 0;
+    pr.args[1] = ~u64{0};
+}
+
+bool jit_cmpxchg_dest_faults(CpuState* cpu, GuestMemory* mem, GuestAddr addr,
+                             usize width) noexcept {
+    if (cpu == nullptr || cpu->pending_raise.active) return true;
+    if (mem->guest_can_write(addr, width)) return false;
+    jit_raise_guest_av(cpu, mem, addr, width, /*is_write=*/true);
+    return true;
 }
 
 void jit_flush_pending_av_dump() {

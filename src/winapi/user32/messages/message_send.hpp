@@ -272,6 +272,10 @@ public:
     /// Show @p icon in the native image view of static @p hwnd; false when
     /// the icon is unknown or the control has no image view.
     bool show_static_icon(windowing::HWND hwnd, u64 icon);
+    /// An SS_BITMAP / SS_ICON static sizes itself to the image it shows
+    /// unless SS_CENTERIMAGE or SS_REALSIZECONTROL keep its size
+    /// (static_image_layout.hpp).
+    void size_static_to_image(windowing::HWND hwnd, i32 image_w, i32 image_h);
     /// Process setup: whether the exe manifest asks for comctl32 v6.
     void set_common_controls_v6(bool v6) { m_common_controls_v6 = v6; }
     /// Image sizes BCM_GETIDEALSIZE adds: a comctl32 image list's icon size

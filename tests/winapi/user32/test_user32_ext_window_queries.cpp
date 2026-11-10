@@ -3,6 +3,7 @@
 ///        ChildWindowFromPointEx, GetDlgCtrlID, EnumWindows, GetAncestor, window properties.
 
 #include "user32_ext_thunk_harness.hpp"
+#include "ipc/hwnd_registry.hpp"
 
 TEST_F(User32ExtThunkTest, WindowFromPointDecodesPointByValue) {
     WindowData data{};
@@ -261,7 +262,8 @@ TEST_F(User32ExtThunkTest, GetWindowThreadProcessIdPeerReportsPublishedThreadId)
     mgr_->impl_GetWindowThreadProcessId(marshaler);
 
     EXPECT_EQ(cpu_.gpr.rax, peer_primary_tid);
-    EXPECT_EQ(memory_.read_u32(BUF_ADDR).value(), static_cast<u32>(::getpid()));
+    EXPECT_EQ(memory_.read_u32(BUF_ADDR).value(), ipc::guest_process_id());
+    EXPECT_EQ(ipc::guest_process_id() % 4u, 0u);
 
     ipc::hwnd_registry_unpublish(peer_hwnd);
     (void)::unsetenv("VITREO_IPC_SCOPE");

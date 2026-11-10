@@ -192,13 +192,18 @@ private:
         /// IR tier counter (jit_compiler_cold_residency.hpp). BLR'd with
         /// X30 at the site's data word; returns past it.
         kTierCounter = 7,
-        kDispatchTails = 8,
+        /// API crossing after site-local NZCV persistence. BR'd; resumes
+        /// through X0 from the trampoline or leaves at the linked-hop cap.
+        kApiCrossingCheckMap = 8,
+        kApiCrossingJitView = 9,
+        kDispatchTails = 10,
     };
     /// Off under VITREO_JIT_PROLOGUE_LEGACY=1.
     [[nodiscard]] static bool shared_prologue_enabled() noexcept;
     /// x64 linear64 block whose pins are exactly kStdPins64.
     [[nodiscard]] bool std_pin_block() const noexcept;
     void emit_api_test_body();
+    void emit_api_crossing_body(usize plain, bool shared, bool jit_view);
     static constexpr u8 kStdPins64[8] = {23, 24, 25, 26, 12, 13, 27, 28};
     /// Off under VITREO_JIT_DISPATCH_TAIL_LEGACY=1.
     [[nodiscard]] static bool shared_dispatch_tail_enabled() noexcept;
@@ -221,4 +226,3 @@ private:
     /// `emit_shared_continue_exit` branch to them. Must run after every other
     /// flush, because those flushes emit tails of their own.
     void emit_flush_continue_exit_stubs();
-

@@ -69,6 +69,7 @@ private:
     // Set by compile() when its null return means "not now" rather than
     // "never". See compile_deferred().
     bool m_compile_deferred{false};
+    bool m_compile_source_changed{false};
     // Guest code hash of the block compile_attempt() is emitting, handed to
     // JitCodeArena::note_fresh_translation() for retirement-thrash
     // accounting. Valid only while m_emit_has_hash is set.

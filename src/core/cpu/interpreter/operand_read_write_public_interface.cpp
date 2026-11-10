@@ -30,7 +30,7 @@ namespace {
 /// one is the denied page's first byte
 /// (tools/oracle_probe/high_address_fault_probe.expected,
 /// split_access_fault_address_probe.expected).
-void record_access_violation(ExecContext& ctx, u64 addr, u8 size,
+void record_access_violation(ExecContext& ctx, u64 addr, usize size,
                              bool is_write) {
     const auto canonical = [](u64 a) {
         return static_cast<u64>(static_cast<i64>(a << 16) >> 16) == a;
@@ -227,7 +227,7 @@ Result<u64, Error> pop_value(
 void record_read_access_violation(
     ExecContext& ctx,
     u64 addr,
-    u8 size
+    usize size
 ) noexcept {
     record_access_violation(ctx, addr, size, /*is_write=*/false);
 }
@@ -235,9 +235,48 @@ void record_read_access_violation(
 void record_write_access_violation(
     ExecContext& ctx,
     u64 addr,
-    u8 size
+    usize size
 ) noexcept {
     record_access_violation(ctx, addr, size, /*is_write=*/true);
+}
+
+bool check_xstate_image_access(
+    ExecContext& ctx,
+    u64 base,
+    usize size,
+    bool is_write,
+    bool xrstor_header
+) noexcept {
+    // Protection is per 4 KiB page, so one byte stands for its page.
+    const auto accessible = [&](u64 a) {
+        if (is_write) return ctx.mem.guest_can_write(a, 1);
+        return ctx.mem.read_u8(a).is_ok();
+    };
+    const u64 last = base + (size - 1);
+    u64 first_bad = 0;
+    bool all_ok = true;
+    for (u64 page = base; ; ) {
+        if (!accessible(page)) {
+            first_bad = page;
+            all_ok = false;
+            break;
+        }
+        const u64 next = (page | u64{0xFFF}) + 1;
+        if (next == 0 || next > last) break;
+        page = next;
+    }
+    if (all_ok) return true;
+
+    u64 reported = first_bad;
+    if (xrstor_header && size > 520 && !accessible(base + 520)) {
+        reported = base + 520;
+    } else if (!accessible(last)) {
+        reported = last;
+    }
+    ctx.exception = CpuException::PageFault;
+    ctx.exception_error = is_write ? 1 : 0;
+    ctx.exception_addr = reported;
+    return false;
 }
 
 } // namespace vitreo::cpu

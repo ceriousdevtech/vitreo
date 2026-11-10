@@ -95,7 +95,7 @@ void JitCompiler::emit_sse_load_mem128_fast(u8 dst_xmm, u8 guest_addr_reg, u32 m
         emit(arm64::movz_w(2, mem_op_id));
         emit(arm64::movz_w(3, dst_xmm));
         emit(arm64::mov_x(4, guest_addr_reg));
-        EMIT_SSE_OP_CALL();
+        EMIT_SSE_OP_MEM_CALL();
     };
     // Intel SDM Vol. 1 §3.3.7: long-mode EA is 64-bit. The 32-bit region
     // path below does `mov w9, addr` and aliases 0x14000xxxx onto heap.
@@ -196,7 +196,7 @@ void JitCompiler::emit_sse_load_mem128_fast(u8 dst_xmm, u8 guest_addr_reg, u32 m
     emit(arm64::movz_w(2, mem_op_id));
     emit(arm64::movz_w(3, dst_xmm));
     emit(arm64::mov_w(4, 9));
-    EMIT_SSE_OP_CALL();
+    EMIT_SSE_OP_MEM_CALL();
 
     u32 done_idx = static_cast<u32>(m_code_buf.size());
     m_code_buf[r1_blo_idx]  = arm64::b_cond(arm64::CC,

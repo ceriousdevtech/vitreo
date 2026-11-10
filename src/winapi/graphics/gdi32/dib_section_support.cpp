@@ -20,6 +20,7 @@
 #include "winapi/graphics/gdi32/gdi32.hpp"
 #include "winapi/graphics/gdi32/gdi32_internal.hpp"
 #include "winapi/graphics/gdi32/bitmap_codec.hpp"
+#include "winapi/graphics/gdi32/gdi_vimage.hpp"
 #include "winapi/common/display_device_identity.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "winapi/core/marshaler.hpp"
@@ -53,6 +54,18 @@ namespace {
 /// One pre-main environment lookup. The DIB syncs below run on every blit, and
 /// getenv locks and walks the whole environment block each call.
 const bool g_gdi_diag = std::getenv("VITREO_GDI_DIAG") != nullptr;
+
+/// WS7: the vImage kernel for a whole-surface DIB section conversion, or None.
+[[nodiscard]] gdi::accel::Kernel accel_kernel(gdi::accel::Op op, const gdi::PixelFormat& format,
+                                              i64 pixels, bool bottom_up) noexcept {
+    gdi::accel::Request r;
+    r.op = op;
+    r.site = gdi::accel::Site::DibSection;
+    r.bottom_up = bottom_up;
+    r.format = &format;
+    r.pixels = pixels;
+    return gdi::accel::classify(r).kernel;
+}
 
 
 } // namespace
@@ -354,6 +367,46 @@ Handle GdiManager::create_runtime_dib_section(i32 width, i32 height, bool bottom
                             entries, entries, 0, 0, bits_out, nullptr);
 }
 
+Handle GdiManager::create_surface_dc(i32 width, i32 height, bool bottom_up, u16 bpp,
+                                     u32 compression, const std::array<u32, 3>& masks,
+                                     GuestAddr* bits_out, Handle* bitmap_out) {
+    ApiLock api_lock(*this);
+    if (bitmap_out != nullptr) *bitmap_out = 0;
+    if (width <= 0 || height <= 0 || (bpp != 16 && bpp != 24 && bpp != 32) ||
+        (compression != gdi::kBiRgb && compression != gdi::kBiBitfields)) {
+        return 0;
+    }
+    const Handle bitmap =
+        make_dib_section(width, height, bottom_up, bpp, compression,
+                         compression == gdi::kBiBitfields ? masks : std::array<u32, 3>{}, {}, 0,
+                         {}, 0, 0, 0, 0, bits_out, nullptr);
+    if (bitmap == 0) return 0;
+    const Handle dc = create_compatible_dc(0);
+    if (dc == 0) {
+        (void)delete_object(bitmap);
+        return 0;
+    }
+    if (select_object(dc, bitmap) == 0) {
+        (void)delete_dc(dc);
+        (void)delete_object(bitmap);
+        return 0;
+    }
+    if (bitmap_out != nullptr) *bitmap_out = bitmap;
+    return dc;
+}
+
+void GdiManager::load_surface_dc_bits(Handle bitmap) { sync_dib_from_guest(bitmap); }
+
+void GdiManager::store_surface_dc_bits(Handle bitmap) { sync_dib_to_guest(bitmap); }
+
+void GdiManager::destroy_surface_dc(Handle hdc, Handle bitmap) {
+    ApiLock api_lock(*this);
+    // DeleteDC first: a bitmap still selected would only be marked for a
+    // deferred delete.
+    (void)delete_dc(hdc);
+    (void)delete_object(bitmap);
+}
+
 void GdiManager::sync_dib_from_guest(Handle bitmap_handle) {
     ApiLock api_lock(*this);
     auto dib_it = m_dib_sections.find(bitmap_handle);
@@ -390,6 +443,19 @@ void GdiManager::sync_dib_from_guest(Handle bitmap_handle) {
     const i32 copy_h = std::min(dib.height, bmp->height);
     if (copy_w <= 0 || copy_h <= 0) return;
     bmp->dirty = true;
+    // WS7: the same rows through vImage when the format converts exactly.
+    if (const auto kernel = accel_kernel(gdi::accel::Op::Decode, format,
+                                         static_cast<i64>(copy_w) * copy_h, dib.bottom_up);
+        kernel != gdi::accel::Kernel::None) {
+        const std::ptrdiff_t stride = static_cast<std::ptrdiff_t>(dib.stride);
+        const u8* first_row =
+            pixel_data + (dib.bottom_up ? static_cast<usize>(dib.height - 1) * dib.stride : 0u);
+        if (gdi::accel::decode_rows(kernel, format, first_row, dib.bottom_up ? -stride : stride,
+                                    bmp->pixels.data(), static_cast<usize>(bmp->width) * 4u, copy_w,
+                                    copy_h, 0, false)) {
+            return;
+        }
+    }
     for (i32 row = 0; row < copy_h; ++row) {
         // For bottom-up DIBs buffer row 0 is the bottom scan line.
         const i32 src_row = dib.bottom_up ? (dib.height - 1 - row) : row;
@@ -422,7 +488,20 @@ void GdiManager::sync_dib_to_guest(Handle bitmap_handle) {
     const gdi::PixelFormat format = dib_pixel_format_of(dib);
     const i32 copy_w = std::min(dib.width, bmp->width);
     const i32 copy_h = std::min(dib.height, bmp->height);
-    for (i32 row = 0; row < copy_h; ++row) {
+    bool encoded = false;
+    if (copy_w > 0 && copy_h > 0) {
+        if (const auto kernel = accel_kernel(gdi::accel::Op::Encode, format,
+                                             static_cast<i64>(copy_w) * copy_h, dib.bottom_up);
+            kernel != gdi::accel::Kernel::None) {
+            const std::ptrdiff_t stride = static_cast<std::ptrdiff_t>(dib.stride);
+            u8* first_row =
+                pixel_data + (dib.bottom_up ? static_cast<usize>(dib.height - 1) * dib.stride : 0u);
+            encoded = gdi::accel::encode_rows(kernel, format, bmp->pixels.data(),
+                                              static_cast<usize>(bmp->width) * 4u, first_row,
+                                              dib.bottom_up ? -stride : stride, copy_w, copy_h);
+        }
+    }
+    for (i32 row = 0; row < copy_h && !encoded; ++row) {
         const i32 dst_row = dib.bottom_up ? dib.height - 1 - row : row;
         gdi::encode_row(format, bmp->pixels.data() + static_cast<usize>(row) * bmp->width * 4u,
                         pixel_data + static_cast<usize>(dst_row) * dib.stride, copy_w);
@@ -484,6 +563,34 @@ bool GdiManager::copy_bitmap_rgba(Handle bitmap, BitmapRgbaCopy& out) {
     if (const auto dib = m_dib_sections.find(bitmap); dib != m_dib_sections.end()) {
         out.bpp = dib->second.bpp;
         out.from_dib = true;
+        // The fourth byte of a 32bpp DIB pixel is unused to GDI drawing, so
+        // the decoded surface does not keep it -- but it is the pixel's alpha
+        // to CreateIconIndirect and AlphaBlend (Learn: ICONINFO, "Using
+        // Alpha"). Take it from the guest bits, which hold what the
+        // application wrote.
+        const DIBSectionInfo& info = dib->second;
+        if (info.bpp == 32 && m_guest_memory != nullptr && info.guest_bits != 0 &&
+            info.width == bmp->width && info.height == bmp->height) {
+            const u32 alpha_shift = [&]() -> u32 {
+                if (info.compression != gdi::kBiBitfields) return 24;
+                const u32 used = info.masks[0] | info.masks[1] | info.masks[2];
+                return (used & 0xFF000000u) == 0 ? 24u : 32u;  // 32: no alpha byte
+            }();
+            if (alpha_shift == 24) {
+                std::vector<u8> row(info.stride);
+                for (i32 y = 0; y < info.height; ++y) {
+                    const i32 src_row = info.bottom_up ? info.height - 1 - y : y;
+                    if (m_guest_memory->read_bytes(info.guest_bits + static_cast<GuestAddr>(src_row) * info.stride,
+                                                   row.data(), info.stride).is_err()) {
+                        break;
+                    }
+                    for (i32 x = 0; x < info.width; ++x) {
+                        out.rgba[(static_cast<usize>(y) * info.width + x) * 4u + 3u] =
+                            row[static_cast<usize>(x) * 4u + 3u];
+                    }
+                }
+            }
+        }
     } else {
         out.bpp = bmp->bpp;
         out.from_dib = false;

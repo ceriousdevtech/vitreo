@@ -97,6 +97,17 @@ DispatchCompileResult compile_and_publish_dispatch_block(
         return {DispatchCompileStatus::Published, code_size};
     }
 
+    if (compiler.compile_source_changed()) {
+        // Waiting for another compiler can cross an executable write. Neither
+        // old native entries nor the old decoded array may reach fallback.
+        // Rebuild from current guest bytes, or single-step if its shape changed.
+        cpu::jit::publish_compiled(block, cpu::jit::CompiledBlock{});
+        block.instructions.reset();
+        block.instructions_released = true;
+        block.compile_failed = false;
+        return {DispatchCompileStatus::Deferred, 0};
+    }
+
     // Arena pressure is transient: the next dispatch must be allowed to retry.
     if (compiler.compile_deferred()) {
         return {DispatchCompileStatus::Deferred, 0};

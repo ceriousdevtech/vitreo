@@ -27,7 +27,9 @@
 #include "winapi/system/ntdll/ntdll_ext.hpp"
 #include "winapi/kernel32/filesystem/file_search.hpp"
 #include "winapi/kernel32/synchronization/sync.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/process_handle.hpp"
+#include <unistd.h>
 #include "winapi/kernel32/memory/remote_memory.hpp"
 #include "winapi/kernel32/memory/file_mapping.hpp"
 #include "winapi/advapi32/security/security.hpp"
@@ -168,8 +170,11 @@ void Kernel32ExtManager::impl_DuplicateHandle(Marshaler& m) {
                 set_last_error(error_codes::ERROR_INVALID_HANDLE);
                 return std::nullopt;
             }
-            process = ipc::track_process(static_cast<pid_t>(
-                m_process_manager->get_current_process_id()));
+            process = ipc::track_process(::getpid());
+            if (process != nullptr) {
+                const u32 client = ipc::guest_process_id();
+                if (client != 0) process->client_id.store(client);
+            }
         } else if (m_handle_table != nullptr &&
                    m_handle_table->get_type(source_handle) ==
                        HandleType::Process) {
@@ -457,8 +462,11 @@ void Kernel32ExtManager::impl_DuplicateHandle(Marshaler& m) {
             set_last_error(error_codes::ERROR_INVALID_HANDLE);
         } else if (source == CURRENT_PROCESS_PSEUDO) {
             if (m_process_manager != nullptr) {
-                process = ipc::track_process(static_cast<pid_t>(
-                    m_process_manager->get_current_process_id()));
+                process = ipc::track_process(::getpid());
+                if (process != nullptr) {
+                    const u32 client = ipc::guest_process_id();
+                    if (client != 0) process->client_id.store(client);
+                }
             }
             if ((options & DUPLICATE_SAME_ACCESS) != 0) {
                 access = HandleAccess::All;
@@ -522,7 +530,8 @@ void Kernel32ExtManager::impl_DuplicateHandle(Marshaler& m) {
                 static_cast<unsigned>(source), access, get_last_error());
         }
     } else if (m_handle_table != nullptr &&
-               (m_handle_table->get_type(source) == HandleType::Pipe ||
+               (m_handle_table->get_type(source) == HandleType::HidDevice ||
+                m_handle_table->get_type(source) == HandleType::Pipe ||
                 m_handle_table->get_type(source) == HandleType::File) &&
                m_file_manager != nullptr) {
         const u32 access = (options & DUPLICATE_SAME_ACCESS) != 0
@@ -837,8 +846,9 @@ void Kernel32ExtManager::impl_GetHandleInformation(Marshaler& m) {
 }
 
 bool Kernel32ExtManager::has_iocp_association(Handle handle) {
+    auto route=hid_completion_route(handle,false);
     std::lock_guard<std::mutex> lock(m_iocp_registry_mutex);
-    return m_iocp_file_associations.find(handle) != m_iocp_file_associations.end();
+    return route ? bool(route->port) : m_iocp_file_associations.find(handle) != m_iocp_file_associations.end();
 }
 
 void Kernel32ExtManager::on_iocp_handle_close(Handle handle) {

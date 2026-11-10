@@ -3,8 +3,10 @@
 
 #include "ipc/process_session.hpp"
 #include "ipc/macos_app_identity.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "ipc/process_handle.hpp"
+#include "ipc/startup_message.hpp"
 
 #include <algorithm>
 #include <array>
@@ -239,6 +241,33 @@ pid_t ProcessSession::launch_worker(const WorkerLaunchSpec& spec) {
         return -1;
     }
 
+    // Reserve the child's Windows IDs before spawn when the caller has not.
+    // The inherited environment still carries this process's own
+    // VITREO_GUEST_PROCESS_ID and VITREO_PRIMARY_THREAD_ID; those must not
+    // become the child's. guest_process_id() runs first so the parent's
+    // client ID is cached before the child's IDs are taken from the same
+    // counter.
+    const u32 parent_client = ipc::guest_process_id();
+    if (parent_client == 0) return -1;
+    const auto env_has = [&](std::string_view key) {
+        for (const auto& entry : spec.extra_env) {
+            if (entry.starts_with(key)) return true;
+        }
+        return false;
+    };
+    std::string child_pid_env;
+    std::string child_tid_env;
+    if (!env_has("VITREO_GUEST_PROCESS_ID=")) {
+        const u32 child_pid = ipc::allocate_client_id();
+        if (child_pid == 0) return -1;
+        child_pid_env = "VITREO_GUEST_PROCESS_ID=" + std::to_string(child_pid);
+    }
+    if (!env_has("VITREO_PRIMARY_THREAD_ID=")) {
+        const u32 child_tid = ipc::allocate_client_id();
+        if (child_tid == 0) return -1;
+        child_tid_env = "VITREO_PRIMARY_THREAD_ID=" + std::to_string(child_tid);
+    }
+
     const std::string runtime_path =
         spec.runtime_path.empty() ? current_runtime_path() : spec.runtime_path;
     if (runtime_path.empty()) return -1;
@@ -336,7 +365,7 @@ pid_t ProcessSession::launch_worker(const WorkerLaunchSpec& spec) {
         death_pipe[0] >= 0 ? std::to_string(death_pipe[0]) : std::string{};
     const std::string exit_code_fd_text =
         std::to_string(exit_code_pipe[1]);
-    const std::string guest_parent_pid_text = std::to_string(::getpid());
+    const std::string guest_parent_pid_text = std::to_string(parent_client);
     argv.push_back(runtime_path.c_str());
     argv.push_back("run");
     argv.push_back("--relaunched-as");
@@ -412,6 +441,28 @@ pid_t ProcessSession::launch_worker(const WorkerLaunchSpec& spec) {
     // application presentation. The worker remains a full, independent guest
     // process, but AppKit must not publish a separate Dock tile for it.
     std::vector<std::string> launch_environment = spec.extra_env;
+    // A startup notification belongs to one creator/child pair. Descendants
+    // must never inherit their parent's creator's event.
+    if (std::none_of(launch_environment.begin(), launch_environment.end(),
+            [](const std::string& entry) {
+                return entry.starts_with(std::string(startup_message_environment) + "=");
+            })) {
+        launch_environment.emplace_back(std::string(startup_message_environment) + "=");
+    }
+    if (!child_pid_env.empty()) launch_environment.push_back(child_pid_env);
+    if (!child_tid_env.empty()) launch_environment.push_back(child_tid_env);
+    // Learn CreateProcess: the new primary thread is suspended only when
+    // this call passes CREATE_SUSPENDED. Callers that request it put
+    // VITREO_PRIMARY_THREAD_SUSPENDED=1 in extra_env. Everyone else must
+    // force 0, because a parent created suspended still has 1 in its
+    // environment after ResumeThread and the child would otherwise inherit it.
+    if (std::none_of(launch_environment.begin(), launch_environment.end(),
+                     [](const std::string& entry) {
+                         return entry.starts_with(
+                             "VITREO_PRIMARY_THREAD_SUSPENDED=");
+                     })) {
+        launch_environment.emplace_back("VITREO_PRIMARY_THREAD_SUSPENDED=0");
+    }
     std::erase_if(launch_environment, [](const std::string& entry) {
         return entry.starts_with("VITREO_MACOS_APP_SESSION=");
     });

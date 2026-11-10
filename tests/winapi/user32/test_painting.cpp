@@ -670,3 +670,42 @@ TEST_F(WindowSurfaceTest, ChildWindowUnpaintedPixelsAreTransparent) {
     EXPECT_EQ(alpha_at(child_dc, 5, 5), 0xFF);
     EXPECT_EQ(alpha_at(child_dc, 20, 20), 0x00);
 }
+
+// A child window draws into the pixels its parent shows (it has no surface of
+// its own on Windows), so a SRCAND mask blit into the child keeps the
+// parent's colour wherever the mask is white -- the transparent-skin idiom.
+TEST(ChildWindowBackdrop, DestinationReadingBlitSeesTheParentPixels) {
+    HandleTable handles;
+    GdiManager gdi{handles};
+    HwndManager hwnd_mgr;
+    gdi.set_hwnd_manager(&hwnd_mgr);
+
+    WindowData parent_data{};
+    parent_data.parent = windowing::HWND_DESKTOP;
+    parent_data.rect = {0, 0, 200, 100};
+    parent_data.client_rect = {0, 0, 200, 100};
+    parent_data.visible = true;
+    const windowing::HWND parent = hwnd_mgr.create(parent_data);
+    WindowData child_data{};
+    child_data.parent = parent;
+    child_data.style = 0x40000000u | 0x10000000u;  // WS_CHILD | WS_VISIBLE
+    child_data.rect = {50, 40, 80, 60};            // parent client coordinates
+    child_data.client_rect = {0, 0, 30, 20};
+    child_data.visible = true;
+    const windowing::HWND child = hwnd_mgr.create(child_data);
+
+    constexpr u32 kParentColor = 0x00C08040u;  // COLORREF RGB(0x40, 0x80, 0xC0)
+    const Handle parent_dc = gdi.get_dc(parent);
+    ASSERT_TRUE(gdi.fill_rect_gdi(parent_dc, 0, 0, 200, 100, kParentColor));
+
+    const Handle child_dc = gdi.get_dc(child);
+    const Handle mask_dc = gdi.create_compatible_dc(child_dc);
+    const Handle mask = gdi.create_compatible_bitmap(child_dc, 30, 20);
+    (void)gdi.select_object(mask_dc, mask);
+    ASSERT_TRUE(gdi.fill_rect_gdi(mask_dc, 0, 0, 30, 20, 0x00FFFFFFu));
+    ASSERT_TRUE(gdi.fill_rect_gdi(mask_dc, 0, 0, 10, 10, 0x00000000u));
+    ASSERT_TRUE(gdi.bit_blt(child_dc, 0, 0, 30, 20, mask_dc, 0, 0, 0x008800C6u));  // SRCAND
+
+    EXPECT_EQ(gdi.get_pixel(child_dc, 20, 15) & 0x00FFFFFFu, kParentColor);
+    EXPECT_EQ(gdi.get_pixel(child_dc, 5, 5) & 0x00FFFFFFu, 0u);
+}

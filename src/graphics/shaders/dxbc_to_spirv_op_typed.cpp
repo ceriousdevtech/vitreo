@@ -16,7 +16,7 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         // components. Texture2D uses xy, Texture2DArray/Texture3D use xyz,
         // and address.w selects the mip. No sampler participates.
         Sm4Operand dst, address, resource;
-        if (!m_decoder.decode_operand(dst) ||
+        if (!m_decoder.decode_operand(dst) || !decode_tiled_status() ||
             !m_decoder.decode_operand(address) ||
             !m_decoder.decode_operand(resource)) {
             return fail("LD: bad operands");
@@ -51,9 +51,17 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
             const u32 coordinate = m_builder.emit_composite_extract(
                 m_type_uint,
                 m_builder.emit_bitcast(m_type_uvec4, address_bits), {0u});
+            // A view read as raw memory (kTypedBufferRaw) has no texture.
+            TypedRawSplit raw = typed_raw_begin(false, resource.index0);
+            if (raw.active) {
+                typed_raw_else(raw, typed_raw_load(false, resource.index0,
+                                                   coordinate, return_type,
+                                                   result_type));
+            }
             const u32 image =
                 m_builder.emit_load(image_type, typed_buffer->second);
-            // The view's size-table entry (typed_buffer_bias): the bound
+            // The view's size-table entry (typed_buffer_bias, or the
+            // per-slot side buffer for a descriptor table): the bound
             // texture starts its element bias in front of FirstElement.
             const u32 entry = typed_buffer_entry(false, resource.index0);
             const u32 bias = typed_buffer_bias(entry);
@@ -95,11 +103,18 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
                 loaded = m_builder.emit_image_fetch_plain(result_type, image,
                                                           coordinate);
             }
+            loaded = typed_raw_end(raw, result_type, loaded);
             if (return_type == 4u || return_type == 3u) {
                 loaded = m_builder.emit_bitcast(m_type_vec4, loaded);
             }
             loaded = apply_swizzle(loaded, resource.swizzle);
             if (!store_vec4(dst, loaded)) return false;
+            if (m_tiled.has_status) {
+                // The element's bytes, in the view's own element units.
+                const u32 miss = tiled_buffer_status(false, resource.index0,
+                                                     coordinate, coordinate);
+                if (miss == 0 || !store_tiled_status(miss)) return false;
+            }
             break;
         }
         const auto texture_it = m_texture_vars.find(resource.index0);
@@ -187,6 +202,17 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         }
         loaded = apply_swizzle(loaded, resource.swizzle);
         if (!store_vec4(dst, loaded)) return false;
+        if (m_tiled.has_status) {
+            // The texel the load reads: the address plus its offset (the
+            // array axis takes none).
+            const u32 components = volume || arrayed ? 3u : 2u;
+            const u32 texel = tiled_offset_texel(coordinate, components,
+                                                 sample_controls, texture_1d,
+                                                 volume);
+            const u32 miss = tiled_texel_status(resource, false, texel,
+                                                components, mip);
+            if (miss == 0 || !store_tiled_status(miss)) return false;
+        }
         break;
     }
 
@@ -194,7 +220,7 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         // Learn ld2dms: unsigned xy texel address, optional z array slice,
         // and a separate scalar sample index. Mip/address.w is ignored.
         Sm4Operand dst, address, resource, sample_operand;
-        if (!m_decoder.decode_operand(dst) ||
+        if (!m_decoder.decode_operand(dst) || !decode_tiled_status() ||
             !m_decoder.decode_operand(address) ||
             !m_decoder.decode_operand(resource) ||
             !m_decoder.decode_operand(sample_operand)) {
@@ -267,6 +293,15 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         }
         loaded = apply_swizzle(loaded, resource.swizzle);
         if (!store_vec4(dst, loaded)) return false;
+        if (m_tiled.has_status) {
+            const u32 components = arrayed ? 3u : 2u;
+            const u32 texel = tiled_offset_texel(coordinate, components,
+                                                 sample_controls, false, false);
+            const u32 miss = tiled_texel_status(
+                resource, false, texel, components,
+                single_sample_ms_srv(resource.index0) ? m_const_u0 : sample);
+            if (miss == 0 || !store_tiled_status(miss)) return false;
+        }
         break;
     }
 
@@ -281,7 +316,7 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
             return fail("LD_UAV_TYPED: unsupported opcode modifier");
         }
         Sm4Operand destination, address, uav;
-        if (!m_decoder.decode_operand(destination) ||
+        if (!m_decoder.decode_operand(destination) || !decode_tiled_status() ||
             !m_decoder.decode_operand(address) ||
             !m_decoder.decode_operand(uav)) {
             return fail("LD_UAV_TYPED: bad operands");
@@ -329,15 +364,35 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         const u32 coordinate = volume_uav
             ? volume_uav_window(uav.index0, view_coordinate, window_outside)
             : view_coordinate;
+        // A buffer view read as raw memory (kTypedBufferRaw) has no texture.
+        TypedRawSplit raw{};
+        if (buffer_uav) {
+            raw = typed_raw_begin(true, uav.index0);
+            if (raw.active) {
+                const auto kind = m_uav_return_types.find(uav.index0);
+                const u32 declared =
+                    kind == m_uav_return_types.end() ? 5u : kind->second;
+                const u32 vector = declared == 4u   ? m_type_uvec4
+                                   : declared == 3u ? m_type_ivec4
+                                                    : m_type_vec4;
+                u32 value = typed_raw_load(true, uav.index0, coordinate,
+                                           declared, vector);
+                if (vector != m_type_vec4) {
+                    value = m_builder.emit_bitcast(m_type_vec4, value);
+                }
+                typed_raw_else(raw, value);
+            }
+        }
         u32 image_type = 0;
         u32 texel_type = 0;
         typed_uav_types(uav.index0, buffer_uav, image_type, texel_type);
         const u32 image = m_builder.emit_load(image_type, found->second);
         u32 in_range = 0;
-        // A buffer view's element bias (typed_buffer_bias): its element i is
-        // texel i + bias of the bound texture, which is bias + NumElements
-        // wide. The bounds test is on i, so no index wraps into the elements
-        // in front of the view.
+        // A buffer view's element bias (typed_buffer_bias, or the per-slot
+        // side buffer for a descriptor table): its element i is texel
+        // i + bias of the bound texture, which is bias + NumElements wide.
+        // The bounds test is on i, so no index wraps into the elements in
+        // front of the view.
         u32 texel_coordinate = coordinate;
         u32 entry = 0;
         if (buffer_uav) {
@@ -400,8 +455,28 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         u32 result = m_builder.emit_phi(
             m_type_vec4,
             {{loaded, read_block}, {zero, zero_block}});
+        result = typed_raw_end(raw, m_type_vec4, result);
+        if (m_uav_float_bits_slots.contains(uav.index0)) {
+            // An R32_FLOAT texel read through the R32_UINT view
+            // (typed_uav_uint_views): x is the float's bits; the format's
+            // missing components read (0, 0, 1.0) (D3D11.3 19.1.3.3).
+            const u32 zero = m_builder.emit_constant_float(m_type_float, 0.0f);
+            const u32 one = m_builder.emit_constant_float(m_type_float, 1.0f);
+            const u32 x =
+                m_builder.emit_composite_extract(m_type_float, result, {0u});
+            result = m_builder.emit_composite_construct(m_type_vec4,
+                                                        {x, zero, zero, one});
+        }
         result = apply_swizzle(result, uav.swizzle);
         if (!store_vec4(destination, result)) return false;
+        if (m_tiled.has_status) {
+            // A buffer view's element, or the texel of the view's one mip.
+            const u32 miss = buffer_uav
+                ? tiled_buffer_status(true, uav.index0, coordinate, coordinate)
+                : tiled_texel_status(uav, true, view_coordinate,
+                                     three_component_uav ? 3u : 2u, m_const_u0);
+            if (miss == 0 || !store_tiled_status(miss)) return false;
+        }
         break;
     }
 
@@ -462,6 +537,16 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         const u32 coordinate = volume_uav
             ? volume_uav_window(uav.index0, view_coordinate, window_outside)
             : view_coordinate;
+        // A buffer view read as raw memory (kTypedBufferRaw) has no texture.
+        TypedRawSplit raw{};
+        if (buffer_uav) {
+            raw = typed_raw_begin(true, uav.index0);
+            if (raw.active) {
+                typed_raw_store(uav.index0, coordinate,
+                                m_builder.emit_bitcast(m_type_uvec4, texel), 0);
+                typed_raw_else(raw, 0);
+            }
+        }
         u32 image_type = 0;
         u32 texel_type = 0;
         typed_uav_types(uav.index0, buffer_uav, image_type, texel_type);
@@ -472,7 +557,8 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         // D3D's contract makes an out-of-bounds UAV store a no-op. Guard the
         // SPIR-V write explicitly instead of inheriting backend OOB behavior.
         // A buffer view's element i is texel i + its element bias
-        // (typed_buffer_bias), tested on i as ld_uav_typed does.
+        // (typed_buffer_bias, or the per-slot side buffer for a descriptor
+        // table), tested on i as ld_uav_typed does.
         u32 in_range = 0;
         u32 texel_coordinate = coordinate;
         if (buffer_uav) {
@@ -512,6 +598,7 @@ bool DxbcTranslator::translate_typed_resource_operation(u32 opcode_token,
         m_builder.emit_image_write(image, texel_coordinate, texel);
         m_builder.emit_branch(merge_block);
         m_builder.emit_label_id(merge_block);
+        (void)typed_raw_end(raw, 0, 0);
         break;
     }
 

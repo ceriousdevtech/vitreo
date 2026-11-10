@@ -1148,6 +1148,8 @@ void D3D11Manager::execute_command_list(GuestAddr context,
     ContextState run{};
     run.pipelines = std::move(outer.pipelines);
     run.descriptor_tables = std::move(outer.descriptor_tables);
+    // The replayed bindings are not the ones that published these tables.
+    run.descriptor_table_cache = {};
     run.counting_queries = std::move(outer.counting_queries);
     run.occlusion_interval = std::move(outer.occlusion_interval);
     if (recording.initial) {
@@ -1179,6 +1181,8 @@ void D3D11Manager::execute_command_list(GuestAddr context,
     ContextState after = restore_state ? std::move(outer) : ContextState{};
     after.pipelines = std::move(done.pipelines);
     after.descriptor_tables = std::move(done.descriptor_tables);
+    // Tables just moved independently of whoever published them.
+    after.descriptor_table_cache = {};
     after.counting_queries = std::move(done.counting_queries);
     after.occlusion_interval = std::move(done.occlusion_interval);
     m_context_states[context] = std::move(after);

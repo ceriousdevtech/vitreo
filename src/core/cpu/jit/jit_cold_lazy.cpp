@@ -41,6 +41,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <mutex>
+#include <shared_mutex>
 #include <libkern/OSCacheControl.h>
 #include <pthread.h>
 
@@ -119,15 +120,19 @@ void retarget(u32* word, uintptr_t slot, uintptr_t to) noexcept {
 namespace {
 // Instruction RIPs whose lazy stub could not be materialized. Ordered, so a
 // block's range query is one lower_bound. Grows by at most one entry per
-// failing site; read on every compile only once it is non-empty.
-std::mutex g_cold_eager_mu;
-std::set<GuestAddr> g_cold_eager_rips;
+// failing site; read on every compile only once it is non-empty, so readers
+// share the lock: an exclusive mutex here serialized every compiling thread
+// of a CEF guest (the top JIT mutex wait in a Spotify cold-start sample).
+// Leaked on purpose: guest threads still compile while static destructors
+// run at process exit, and a destroyed lock throws from under them.
+std::shared_mutex& g_cold_eager_mu = *new std::shared_mutex();
+std::set<GuestAddr>& g_cold_eager_rips = *new std::set<GuestAddr>();
 std::atomic<bool> g_cold_eager_any{false};
 std::atomic<u64> g_cold_eager_withdrawn{0};
 }  // namespace
 
 void JitCompiler::note_cold_eager_rip(GuestAddr rip) {
-    std::lock_guard<std::mutex> lock(g_cold_eager_mu);
+    std::lock_guard<std::shared_mutex> lock(g_cold_eager_mu);
     g_cold_eager_rips.insert(rip);
     g_cold_eager_any.store(true, std::memory_order_release);
 }
@@ -140,7 +145,7 @@ bool cold_eager_requested_for(GuestAddr start, u32 length) noexcept {
     if (!g_cold_eager_any.load(std::memory_order_acquire) || length == 0) {
         return false;
     }
-    std::lock_guard<std::mutex> lock(g_cold_eager_mu);
+    std::shared_lock<std::shared_mutex> lock(g_cold_eager_mu);
     const auto it = g_cold_eager_rips.lower_bound(start);
     return it != g_cold_eager_rips.end() &&
            *it < start + static_cast<GuestAddr>(length);
@@ -217,7 +222,7 @@ void set_cold_lazy_mixed_eager_for_test(bool on) noexcept {
 }
 
 void reset_cold_eager_for_test() noexcept {
-    std::lock_guard<std::mutex> lock(g_cold_eager_mu);
+    std::lock_guard<std::shared_mutex> lock(g_cold_eager_mu);
     g_cold_eager_rips.clear();
     g_cold_eager_any.store(false, std::memory_order_release);
 }

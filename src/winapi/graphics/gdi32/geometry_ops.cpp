@@ -623,8 +623,8 @@ i32 GdiManager::get_clip_region(Handle hdc, Handle hrgn) {
     const auto it = m_dc_states.find(hdc);
     const auto rgn = m_region_objects.find(hrgn);
     if (it == m_dc_states.end() || rgn == m_region_objects.end()) return -1;
-    if (!it->second.clip_rect.valid) return 0;
-    rgn->second = it->second.clip_rect;
+    if (!it->second.app_clip.valid) return 0;
+    rgn->second = it->second.app_clip;
     return 1;
 }
 
@@ -895,41 +895,20 @@ bool GdiManager::widen_path(Handle hdc) {
     return true;
 }
 
-bool GdiManager::select_clip_path(Handle hdc, i32 mode) {
-    ApiLock api_lock(*this);
-    // The closed path becomes (or combines into) the clip region and is
-    // consumed ("clip path clipbox=2 10,10,40,30").
-    const auto it = m_dc_states.find(hdc);
-    if (it == m_dc_states.end() || it->second.path.state != 2 || mode < 1 || mode > 5) return false;
-    DcState& dc = it->second;
-    std::vector<Poly> polys;
-    for (auto& f : figures_of(dc.path.points)) polys.push_back(std::move(f.pts));
-    dc.path = PathState{};
-    const ClipRect region = coverage_region(polygon_coverage(polys, dc.poly_fill_mode));
-    if (mode == 5 || !dc.clip_rect.valid) {
-        if (mode == 5 || mode == 1 || mode == 2 || mode == 3) {
-            if (!dc.clip_rect.valid && mode != 5) {
-                ClipRect whole;
-                whole.left = whole.top = 0;
-                whole.right = dc.bitmap ? dc.bitmap->width : 32767;
-                whole.bottom = dc.bitmap ? dc.bitmap->height : 32767;
-                whole.valid = true;
-                dc.clip_rect = ClipRect::combine(whole, region, mode);
-            } else {
-                dc.clip_rect = region;
-            }
-            return true;
-        }
+bool GdiManager::select_clip_path(Handle hdc,i32 mode,const SystemRegionState* scene) {
+    ApiLock lock(*this);
+    const auto it=m_dc_states.find(hdc);
+    if(it==m_dc_states.end() || it->second.path.state!=2 || mode<1 || mode>5)return false;
+    auto& dc=it->second;
+    std::optional<ClipRect> base;
+    if(mode!=5 && !(mode==1 && !dc.app_clip.valid)) {
+        base=dc.app_clip.valid?std::optional<ClipRect>{dc.app_clip}:application_clip_base(hdc,dc,scene);
+        if(!base)return false;
     }
-    if (!dc.clip_rect.valid) {
-        ClipRect whole;
-        whole.right = dc.bitmap ? dc.bitmap->width : 32767;
-        whole.bottom = dc.bitmap ? dc.bitmap->height : 32767;
-        whole.valid = true;
-        dc.clip_rect = whole;
-    }
-    dc.clip_rect = ClipRect::combine(dc.clip_rect, region, mode);
-    return true;
+    std::vector<Poly> polys;for(auto& f:figures_of(dc.path.points))polys.push_back(std::move(f.pts));
+    auto region=coverage_region(polygon_coverage(polys,dc.poly_fill_mode));
+    dc.app_clip=base?ClipRect::combine(*base,region,mode):std::move(region);
+    dc.path=PathState{};refresh_dc_clip(dc);return true;
 }
 
 Handle GdiManager::path_to_region(Handle hdc) {

@@ -12,6 +12,7 @@
 #include <initializer_list>
 #include <cctype>
 #include <algorithm>
+#include <chrono>
 #include <unordered_set>
 
 namespace vitreo::pe {
@@ -21,8 +22,164 @@ namespace {
 constexpr u64 LDR_PAGE_OFFSET = 0x2000;
 constexpr u64 LDR_PAGE_SIZE = 0x1000;
 constexpr u64 ENTRY_PAGE_SIZE = 0x1000;
-constexpr u64 ENTRY_NAME_OFFSET = 0x100;
+// One page per module: LDR_DATA_TABLE_ENTRY at +0, its LDR_DDAG_NODE at
+// +DDAG_NODE_OFFSET, the UTF-16 path past both. The name must not overlap the
+// Win10+ tail of the entry (OriginalBase .. HotPatchState).
+constexpr u64 ENTRY_DDAG_NODE_OFFSET_64 = 0x140;
+constexpr u64 ENTRY_DDAG_NODE_OFFSET_32 = 0xC0;
+constexpr u64 ENTRY_NAME_OFFSET = 0x200;
 constexpr u64 ENTRY_SEARCH_BASE = 0x10000;
+// ntdll keeps LdrpHashTable (32 LIST_ENTRY buckets keyed by
+// RtlHashUnicodeString(BaseDllName, TRUE, X65599) & 31) outside every entry;
+// Vitreo keeps it in the loader page after PEB_LDR_DATA.
+constexpr u64 LDR_HASH_TABLE_OFFSET = 0x100;
+constexpr u32 LDR_HASH_BUCKETS = 32;
+
+/// LDR_DATA_TABLE_ENTRY and LDR_DDAG_NODE field offsets, Windows 10+.
+/// Measured: tools/oracle_probe/ldr_entry_contract_probe (entry heap size
+/// 0x138 / 0xB8; TimeDateStamp, CheckSum, OriginalBase and BaseNameHashValue
+/// each verified against its source).
+struct LdrEntryLayout {
+    u64 ptr;
+    u64 dll_base, entry_point, size_of_image, full_name, base_name;
+    u64 flags, obsolete_load_count, tls_index, hash_links, time_date_stamp;
+    u64 ddag_node, node_module_link, original_base, load_time;
+    u64 base_name_hash, load_reason, reference_count, dependent_load_flags;
+    u64 check_sum;
+    u64 ddag_offset;  // where this page keeps the entry's LDR_DDAG_NODE
+    u64 ddag_load_count, ddag_state;
+};
+constexpr LdrEntryLayout kLdrEntry64{
+    8,    0x30, 0x38, 0x40, 0x48, 0x58,
+    0x68, 0x6C, 0x6E, 0x70, 0x80,
+    0x98, 0xA0, 0xF8, 0x100,
+    0x108, 0x10C, 0x114, 0x118,
+    0x120,
+    ENTRY_DDAG_NODE_OFFSET_64,
+    0x18, 0x38};
+constexpr LdrEntryLayout kLdrEntry32{
+    4,    0x18, 0x1C, 0x20, 0x24, 0x2C,
+    0x34, 0x38, 0x3A, 0x3C, 0x44,
+    0x50, 0x54, 0x80, 0x88,
+    0x90, 0x94, 0x9C, 0xA0,
+    0xA8,
+    ENTRY_DDAG_NODE_OFFSET_32,
+    0x0C, 0x20};
+
+// LDR_DATA_TABLE_ENTRY.Flags bits, composed exactly as measured
+// (ldr_entry_contract_probe): exe 0x22CC; ntdll 0x20A2C4 / 0xA2C4; attached
+// DLL 0x28A2CC / 0x8A2CC (+DontCallForThreads for kernel32). ReservedFlags1's
+// high bit (0x800) was observed both set and clear for the same modules across
+// runs on one machine; it is left clear.
+constexpr u32 kLdrImageDll = 0x00000004;
+constexpr u32 kLdrLoadNotificationsSent = 0x00000008;
+constexpr u32 kLdrInLegacyLists = 0x00000040;
+constexpr u32 kLdrInIndexes = 0x00000080;
+constexpr u32 kLdrInExceptionTable = 0x00000200;
+constexpr u32 kLdrLoadConfigProcessed = 0x00002000;
+constexpr u32 kLdrProtectDelayLoad = 0x00008000;    // every DLL, never the image
+constexpr u32 kLdrDontCallForThreads = 0x00040000;
+constexpr u32 kLdrProcessAttachCalled = 0x00080000;
+constexpr u32 kLdrX64DllBit21 = 0x00200000;         // every x64 DLL, no x86 one
+// LDR_DLL_LOAD_REASON and LDR_DDAG_STATE values.
+constexpr u32 kLoadReasonStaticDependency = 0;
+constexpr u32 kLoadReasonDynamicLoad = 4;
+constexpr u32 kDdagStateReadyToRun = 9;
+
+/// The PE header fields an entry mirrors, read from the mapped image. A
+/// synthetic (thunk-backed) module maps no header, so every field reads 0.
+struct MappedImageFacts {
+    u32 time_date_stamp{0};
+    u32 check_sum{0};
+    bool has_tls{false};
+    u16 dependent_load_flags{0};
+};
+
+MappedImageFacts read_mapped_image_facts(GuestMemory& memory, u64 base) {
+    MappedImageFacts facts;
+    if (memory.read_u16(base).value_or(0) != 0x5A4D) return facts;  // "MZ"
+    const u64 nt = base + memory.read_u32(base + 0x3C).value_or(0);
+    if (memory.read_u32(nt).value_or(0) != 0x00004550) return facts;  // "PE\0\0"
+    facts.time_date_stamp = memory.read_u32(nt + 0x08).value_or(0);
+    const u64 opt = nt + 0x18;
+    const bool pe32plus = memory.read_u16(opt).value_or(0) == 0x20B;
+    facts.check_sum = memory.read_u32(opt + 0x40).value_or(0);
+    const u32 dir_count = memory.read_u32(opt + (pe32plus ? 0x6C : 0x5C)).value_or(0);
+    const u64 dirs = opt + (pe32plus ? 0x70 : 0x60);
+    constexpr u32 kTlsDirectory = 9;
+    constexpr u32 kLoadConfigDirectory = 10;
+    if (dir_count > kTlsDirectory) {
+        facts.has_tls = memory.read_u32(dirs + kTlsDirectory * 8 + 4).value_or(0) != 0;
+    }
+    if (dir_count > kLoadConfigDirectory) {
+        const u32 rva = memory.read_u32(dirs + kLoadConfigDirectory * 8).value_or(0);
+        // IMAGE_LOAD_CONFIG_DIRECTORY{64,32}.DependentLoadFlags, present when
+        // the directory's own Size field reaches it.
+        const u64 field = pe32plus ? 0x4E : 0x36;
+        if (rva != 0 && memory.read_u32(base + rva).value_or(0) >= field + 2) {
+            facts.dependent_load_flags = memory.read_u16(base + rva + field).value_or(0);
+        }
+    }
+    return facts;
+}
+
+/// RtlUpcaseUnicodeChar over the code units this loader writes (paths are
+/// stored one byte per code unit, so only U+0000..U+00FF occur).
+u16 upcase_unit(u16 c) {
+    if (c >= 'a' && c <= 'z') return static_cast<u16>(c - 0x20);
+    if (c >= 0xE0 && c <= 0xFE && c != 0xF7) return static_cast<u16>(c - 0x20);
+    if (c == 0xFF) return 0x178;
+    if (c == 0xB5) return 0x39C;
+    return c;
+}
+
+/// RtlHashUnicodeString(name, CaseInSensitive=TRUE, HASH_STRING_ALGORITHM_X65599).
+u32 hash_base_name(std::string_view base_name) {
+    u32 h = 0;
+    for (const char c : base_name) {
+        h = h * 65599u + upcase_unit(static_cast<u8>(c));
+    }
+    return h;
+}
+
+std::string_view base_name_of(std::string_view path) {
+    const usize separator = path.find_last_of("\\/");
+    return separator == std::string_view::npos ? path : path.substr(separator + 1);
+}
+
+bool equals_ignore_case(std::string_view a, std::string_view b) {
+    if (a.size() != b.size()) return false;
+    for (usize i = 0; i < a.size(); ++i) {
+        if (std::tolower(static_cast<unsigned char>(a[i])) !=
+            std::tolower(static_cast<unsigned char>(b[i]))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+u32 ldr_entry_flags(const TebModuleInfo& module, bool is_64bit) {
+    const bool is_ntdll = equals_ignore_case(base_name_of(module.path), "ntdll.dll");
+    u32 flags = kLdrImageDll | kLdrInLegacyLists | kLdrInIndexes |
+                kLdrInExceptionTable | kLdrLoadConfigProcessed;
+    // ntdll is mapped by the kernel before any notification can be sent.
+    if (!is_ntdll) flags |= kLdrLoadNotificationsSent;
+    if (!module.is_executable) {
+        flags |= kLdrProtectDelayLoad;
+        if (is_64bit) flags |= kLdrX64DllBit21;
+        if (!is_ntdll && module.process_attach_called) flags |= kLdrProcessAttachCalled;
+        if (module.thread_calls_disabled) flags |= kLdrDontCallForThreads;
+    }
+    return flags;
+}
+
+/// Windows FILETIME (100 ns since 1601-01-01 UTC) for LoadTime.
+u64 current_filetime() {
+    constexpr u64 kUnixEpochAsFiletime = 116444736000000000ULL;
+    const auto now = std::chrono::system_clock::now().time_since_epoch();
+    return kUnixEpochAsFiletime + static_cast<u64>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(now).count() / 100);
+}
 
 u16 write_ascii_as_utf16(GuestMemory& memory, u64 buf,
                          std::string_view text) noexcept {
@@ -126,12 +283,22 @@ bool setup_peb_loader_data(GuestMemory& memory, u64 peb_address,
             (void)memory.write_u64(head + 0x00, head);
             (void)memory.write_u64(head + 0x08, head);
         }
+        for (u32 bucket = 0; bucket < LDR_HASH_BUCKETS; ++bucket) {
+            const u64 head = ldr + LDR_HASH_TABLE_OFFSET + bucket * 0x10;
+            (void)memory.write_u64(head + 0x00, head);
+            (void)memory.write_u64(head + 0x08, head);
+        }
     } else {
         (void)memory.write_u32(peb_address + 0x0C,
                                static_cast<u32>(ldr));
         (void)memory.write_u32(ldr + 0x00, 0x30); // Length
         (void)memory.write_u8(ldr + 0x04, 1);     // Initialized
         for (const u64 head : {ldr + 0x0C, ldr + 0x14, ldr + 0x1C}) {
+            (void)memory.write_u32(head + 0x00, static_cast<u32>(head));
+            (void)memory.write_u32(head + 0x04, static_cast<u32>(head));
+        }
+        for (u32 bucket = 0; bucket < LDR_HASH_BUCKETS; ++bucket) {
+            const u64 head = ldr + LDR_HASH_TABLE_OFFSET + bucket * 0x08;
             (void)memory.write_u32(head + 0x00, static_cast<u32>(head));
             (void)memory.write_u32(head + 0x04, static_cast<u32>(head));
         }
@@ -187,6 +354,125 @@ bool setup_peb_loader_data(GuestMemory& memory, u64 peb_address,
 }
 
 }  // namespace
+
+namespace {
+
+u64 read_guest_ptr(GuestMemory& memory, bool is_64bit, u64 at) {
+    return is_64bit ? memory.read_u64(at).value_or(0)
+                    : memory.read_u32(at).value_or(0);
+}
+
+void write_guest_ptr(GuestMemory& memory, bool is_64bit, u64 at, u64 value) {
+    if (is_64bit) (void)memory.write_u64(at, value);
+    else (void)memory.write_u32(at, static_cast<u32>(value));
+}
+
+/// Insert @p link at the tail of the LIST_ENTRY ring headed by @p head.
+void list_insert_tail(GuestMemory& memory, bool is_64bit, u64 head, u64 link) {
+    const u64 ptr = is_64bit ? 8 : 4;
+    if (read_guest_ptr(memory, is_64bit, head) == 0) {  // never initialized
+        write_guest_ptr(memory, is_64bit, head, head);
+        write_guest_ptr(memory, is_64bit, head + ptr, head);
+    }
+    const u64 tail = read_guest_ptr(memory, is_64bit, head + ptr);
+    write_guest_ptr(memory, is_64bit, link, head);
+    write_guest_ptr(memory, is_64bit, link + ptr, tail);
+    write_guest_ptr(memory, is_64bit, tail, link);
+    write_guest_ptr(memory, is_64bit, head + ptr, link);
+}
+
+/// The entry whose DllBase is @p base on the load-order list, or 0.
+u64 find_ldr_entry(GuestMemory& memory, u64 peb_address, bool is_64bit, u64 base) {
+    const LdrEntryLayout& layout = is_64bit ? kLdrEntry64 : kLdrEntry32;
+    const u64 ldr = read_guest_ptr(memory, is_64bit, peb_address + (is_64bit ? 0x18 : 0x0C));
+    if (ldr == 0) return 0;
+    const u64 head = ldr + (is_64bit ? 0x10 : 0x0C);
+    u64 link = read_guest_ptr(memory, is_64bit, head);
+    for (usize guard = 0; link != head && link != 0 && guard < 65536; ++guard) {
+        if (read_guest_ptr(memory, is_64bit, link + layout.dll_base) == base) return link;
+        link = read_guest_ptr(memory, is_64bit, link);
+    }
+    return 0;
+}
+
+/// The state-dependent fields: Flags and DdagNode->LoadCount.
+void write_ldr_entry_state(GuestMemory& memory, bool is_64bit, u64 entry,
+                           const TebModuleInfo& module) {
+    const LdrEntryLayout& layout = is_64bit ? kLdrEntry64 : kLdrEntry32;
+    (void)memory.write_u32(entry + layout.flags, ldr_entry_flags(module, is_64bit));
+    // A module of the startup set is pinned: LoadCount -1 (measured).
+    (void)memory.write_u32(entry + layout.ddag_offset + layout.ddag_load_count,
+                           module.dynamic_load ? module.load_count : 0xFFFFFFFFu);
+}
+
+/// Every Win10+ field past the names. Fields the probe measured as zero for
+/// all modules (EntryPointActivationContext, Lock, LoadContext, ActivePatch-
+/// ImageBase, HotPatchState, SigningLevel) stay zero from the fresh page.
+/// Not modelled (recorded in .docs/contracts/ldr_data_table_entry.md):
+/// ParentDllBase, SwitchBackContext, BaseAddressIndexNode /
+/// MappingInfoIndexNode (ntdll's red-black indexes), ImplicitPathOptions and
+/// the DdagNode dependency graph.
+void write_ldr_entry_tail(GuestMemory& memory, bool is_64bit, u64 ldr, u64 entry,
+                          const TebModuleInfo& module, std::string_view base_name) {
+    const LdrEntryLayout& layout = is_64bit ? kLdrEntry64 : kLdrEntry32;
+    const MappedImageFacts facts = read_mapped_image_facts(memory, module.base_address);
+    const bool is_ntdll = equals_ignore_case(base_name, "ntdll.dll");
+    const bool is_kernel32 = equals_ignore_case(base_name, "kernel32.dll");
+
+    (void)memory.write_u16(entry + layout.obsolete_load_count,
+                           module.dynamic_load ? 6 : 0xFFFF);
+    (void)memory.write_u16(entry + layout.tls_index, facts.has_tls ? 0xFFFF : 0);
+    (void)memory.write_u32(entry + layout.time_date_stamp, facts.time_date_stamp);
+    write_guest_ptr(memory, is_64bit, entry + layout.original_base, module.base_address);
+    (void)memory.write_u64(entry + layout.load_time, current_filetime());
+    const u32 hash = hash_base_name(base_name);
+    (void)memory.write_u32(entry + layout.base_name_hash, hash);
+    // The loader loads the image and kernel32 itself (DynamicLoad); every
+    // other startup module is a static dependency.
+    (void)memory.write_u32(entry + layout.load_reason,
+                           module.dynamic_load || module.is_executable || is_kernel32
+                               ? kLoadReasonDynamicLoad
+                               : kLoadReasonStaticDependency);
+    (void)memory.write_u32(entry + layout.reference_count,
+                           !module.dynamic_load &&
+                                   (module.is_executable || is_ntdll || is_kernel32)
+                               ? 2u : 1u);
+    (void)memory.write_u32(entry + layout.dependent_load_flags, facts.dependent_load_flags);
+    (void)memory.write_u32(entry + layout.check_sum, facts.check_sum);
+
+    const u64 bucket = hash % LDR_HASH_BUCKETS;
+    list_insert_tail(memory, is_64bit,
+                     ldr + LDR_HASH_TABLE_OFFSET + bucket * (is_64bit ? 0x10 : 0x08),
+                     entry + layout.hash_links);
+
+    // LDR_DDAG_NODE: Modules ring holding this entry's NodeModuleLink,
+    // State LdrModulesReadyToRun.
+    const u64 node = entry + layout.ddag_offset;
+    write_guest_ptr(memory, is_64bit, node, node);
+    write_guest_ptr(memory, is_64bit, node + layout.ptr, node);
+    list_insert_tail(memory, is_64bit, node, entry + layout.node_module_link);
+    (void)memory.write_u32(node + layout.ddag_state, kDdagStateReadyToRun);
+    write_guest_ptr(memory, is_64bit, entry + layout.ddag_node, node);
+
+    write_ldr_entry_state(memory, is_64bit, entry, module);
+}
+
+}  // namespace
+
+bool update_peb_loader_module(GuestMemory& memory, u64 peb_address,
+                              bool is_64bit, const TebModuleInfo& module) {
+    if (peb_address == 0 || module.base_address == 0) return false;
+    const u64 entry = find_ldr_entry(memory, peb_address, is_64bit, module.base_address);
+    if (entry == 0) return false;
+    // Whether the entry was published as a dynamic load is fixed at
+    // publication; its ObsoleteLoadCount (6 vs 0xFFFF) records it.
+    const LdrEntryLayout& layout = is_64bit ? kLdrEntry64 : kLdrEntry32;
+    TebModuleInfo state = module;
+    state.dynamic_load =
+        memory.read_u16(entry + layout.obsolete_load_count).value_or(0xFFFF) == 6;
+    write_ldr_entry_state(memory, is_64bit, entry, state);
+    return true;
+}
 
 bool append_peb_loader_module(GuestMemory& memory, u64 peb_address,
                               bool is_64bit,
@@ -270,6 +556,8 @@ bool append_peb_loader_module(GuestMemory& memory, u64 peb_address,
         write_unicode_string64(memory, entry + 0x48, name, name_bytes);
         write_unicode_string64(memory, entry + 0x58, base_name,
                                base_name_bytes);
+        write_ldr_entry_tail(memory, true, ldr, entry, module,
+                             std::string_view(path).substr(base_offset));
     } else {
         if (module.base_address > 0xFFFFFFFFULL) {
             (void)memory.unmap_region(entry, ENTRY_PAGE_SIZE);
@@ -300,6 +588,8 @@ bool append_peb_loader_module(GuestMemory& memory, u64 peb_address,
         write_unicode_string32(memory, entry + 0x24, name, name_bytes);
         write_unicode_string32(memory, entry + 0x2C, base_name,
                                base_name_bytes);
+        write_ldr_entry_tail(memory, false, ldr, entry, module,
+                             std::string_view(path).substr(base_offset));
     }
     return true;
 }
@@ -347,7 +637,8 @@ bool remove_peb_loader_module(GuestMemory& memory, u64 peb_address,
 
         if (is_64bit) {
             for (const u64 entry_links :
-                 {entry + 0x00, entry + 0x10, entry + 0x20}) {
+                 {entry + 0x00, entry + 0x10, entry + 0x20,
+                  entry + kLdrEntry64.hash_links}) {
                 const auto next = memory.read_u64(entry_links + 0x00);
                 const auto previous = memory.read_u64(entry_links + 0x08);
                 if (next.is_err() || previous.is_err()) return false;
@@ -357,7 +648,8 @@ bool remove_peb_loader_module(GuestMemory& memory, u64 peb_address,
             }
         } else {
             for (const u64 entry_links :
-                 {entry + 0x00, entry + 0x08, entry + 0x10}) {
+                 {entry + 0x00, entry + 0x08, entry + 0x10,
+                  entry + kLdrEntry32.hash_links}) {
                 const auto next = memory.read_u32(entry_links + 0x00);
                 const auto previous = memory.read_u32(entry_links + 0x04);
                 if (next.is_err() || previous.is_err()) return false;

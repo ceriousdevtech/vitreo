@@ -28,7 +28,7 @@ static Result<f32, Error> read_ss(ExecContext& ctx, const Operand& op) noexcept 
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<f32, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 4);
+    auto val = read_memory_av(ctx, addr.value(), 4);
     if (!val) return Result<f32, Error>::err(val.error());
     f32 f;
     u32 bits = static_cast<u32>(val.value());
@@ -43,7 +43,7 @@ static Result<f64, Error> read_sd(ExecContext& ctx, const Operand& op) noexcept 
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<f64, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 8);
+    auto val = read_memory_av(ctx, addr.value(), 8);
     if (!val) return Result<f64, Error>::err(val.error());
     f64 d;
     u64 bits = val.value();
@@ -74,11 +74,11 @@ static Result<XmmReg, Error> read_ps(ExecContext& ctx, const Operand& op,
     if (!addr) return Result<XmmReg, Error>::err(addr.error());
     if (aligned_form && op.type == OperandType::Mem128 &&
         (addr.value() & 0xF) != 0) {
-        ctx.exception = CpuException::GeneralProtection;
+        record_misaligned_operand_gp(ctx);
         return Result<XmmReg, Error>::err(Error::InvalidArgument);
     }
     XmmReg tmp{};
-    auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
+    auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
     if (!r) return Result<XmmReg, Error>::err(r.error());
     return Result<XmmReg, Error>::ok(tmp);
 }
@@ -242,7 +242,7 @@ ExecResult exec_sse_minmax(ExecContext& ctx, const DecodedInstruction& instr) no
             return ExecResult::Exception;
         }
         const usize bytes = pd ? sizeof(u64) : sizeof(u32);
-        auto value = read_memory(ctx,address.value(),bytes);
+        auto value = read_memory_av(ctx,address.value(),bytes);
         if (!value) {
             ctx.exception = CpuException::PageFault;
             ctx.exception_addr = address.value();
@@ -274,7 +274,7 @@ ExecResult exec_sse_minmax(ExecContext& ctx, const DecodedInstruction& instr) no
         // Read the whole operand before touching flags or destination. The
         // common reader owns page faults and x86/x64 address translation.
         for (usize half=0;half<halves;++half) for (usize word=0;word<2;++word) {
-            auto value = read_memory(ctx,address.value()+half*sizeof(XmmReg)+word*sizeof(u64),sizeof(u64));
+            auto value = read_memory_av(ctx,address.value()+half*sizeof(XmmReg)+word*sizeof(u64),sizeof(u64));
             if (!value) {
                 ctx.exception = CpuException::PageFault;
                 const u64 start = address.value()+half*sizeof(XmmReg)+word*sizeof(u64);

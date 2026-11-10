@@ -1585,3 +1585,298 @@ TEST(MetalBufferRename, OversizeSlabSurvivesAlternateFrameDiscards) {
             << "frame " << f;
     }
 }
+
+// ---------------------------------------------------------------------------
+// Window buffers (WS6): a BackendBuffer whose storage is a range of a
+// CPU-visible heap lent by the frontend (BackendBufferDesc::window). Work
+// recorded against one range keeps it when the buffer moves; a GPU write
+// into a range queued work still reads moves the buffer to a fresh range
+// from its BackendBufferWindowSource, keeping every byte outside the write.
+
+namespace {
+
+struct WindowFixture {
+    MetalDevice& device = MetalDevice::instance();
+    std::unique_ptr<BackendHeap> heap;
+    u8* host{nullptr};
+
+    bool init() {
+        heap = device.create_heap(
+            {.size = 1u << 20, .cpu_visible = true, .buffers_only = true});
+        if (!heap || heap->buffer() == nullptr) return false;
+        host = static_cast<u8*>(heap->host_pointer());
+        return host != nullptr;
+    }
+    std::unique_ptr<BackendBuffer> window(usize bytes, usize offset) {
+        BackendBufferDesc desc{};
+        desc.byte_width = bytes;
+        desc.vertex_buffer = true;
+        desc.window = true;
+        auto buffer = device.create_buffer(desc, nullptr);
+        if (buffer && !buffer->set_window({heap->buffer(), offset})) {
+            buffer.reset();
+        }
+        return buffer;
+    }
+    std::unique_ptr<BackendBuffer> plain(usize bytes, const void* init) {
+        BackendBufferDesc desc{};
+        desc.byte_width = bytes;
+        desc.shader_resource = true;
+        return device.create_buffer(desc, init);
+    }
+    std::vector<u8> read(BackendBuffer& buffer, usize bytes) {
+        MetalSubmitQueue::instance().drain();
+        std::vector<u8> out(bytes, 0xCD);
+        EXPECT_TRUE(buffer.read(0, out.data(), bytes));
+        return out;
+    }
+};
+
+struct FixedWindowSource final : BackendBufferWindowSource {
+    BackendBuffer* storage{nullptr};
+    usize offset{0};
+    int calls{0};
+    bool replace_window(BackendBuffer& buffer,
+                        BackendBufferWindow& out) override {
+        ++calls;
+        // The contract: a true answer has moved the buffer already.
+        if (!buffer.set_window({storage, offset})) return false;
+        out = {storage, offset};
+        return true;
+    }
+};
+
+struct CopyCounter {
+    std::atomic<int> copies{0};
+    static void hook(MetalSubmitQueue::TestAppendKind kind, void* context) {
+        if (kind == MetalSubmitQueue::TestAppendKind::CopyBuffer) {
+            static_cast<CopyCounter*>(context)->copies.fetch_add(1);
+        }
+    }
+};
+
+}  // namespace
+
+TEST(MetalWindowBuffer, PublishesTheHeapSliceItIsGiven) {
+    WindowFixture f;
+    if (!f.device.available()) GTEST_SKIP() << "no Metal device";
+    ASSERT_TRUE(f.init());
+    BackendBufferDesc desc{};
+    desc.byte_width = 4096;
+    desc.window = true;
+    auto window = f.device.create_buffer(desc, nullptr);
+    ASSERT_NE(window, nullptr);
+    EXPECT_FALSE(window->valid()) << "no storage before set_window";
+    EXPECT_FALSE(window->set_window({f.heap->buffer(), 100}))
+        << "a window offset is a multiple of 256";
+    EXPECT_FALSE(window->set_window({f.heap->buffer(), (1u << 20) - 2048}))
+        << "a window must fit its storage";
+    ASSERT_TRUE(window->set_window({f.heap->buffer(), 8192}));
+    EXPECT_TRUE(window->valid());
+    std::memset(f.host + 8192, 0, 4096);
+    f.host[8192 + 7] = 0x5A;
+    auto readback = f.plain(kProbe, nullptr);
+    ASSERT_NE(readback, nullptr);
+    ASSERT_TRUE(f.device.copy_buffer_region(readback.get(), 0, window.get(),
+                                            0, kProbe));
+    const auto got = f.read(*readback, kProbe);
+    EXPECT_EQ(got[7], 0x5A) << "the GPU reads the host bytes it was lent";
+    EXPECT_EQ(got[6], 0);
+}
+
+TEST(MetalWindowBuffer, RetargetMovesLaterWorkNotEarlierWork) {
+    WindowFixture f;
+    if (!f.device.available()) GTEST_SKIP() << "no Metal device";
+    if (!f.device.supports_fences()) GTEST_SKIP() << "no timeline fences";
+    ASSERT_TRUE(f.init());
+    MetalSubmitQueue::instance().drain();
+    auto window = f.window(kProbe, 0);
+    auto readback = f.plain(2 * kProbe, nullptr);
+    ASSERT_NE(window, nullptr);
+    ASSERT_NE(readback, nullptr);
+    std::memset(f.host, 0x11, kProbe);
+    std::memset(f.host + 4096, 0x22, kProbe);
+    auto gate = f.device.create_fence(0);
+    ASSERT_NE(gate, nullptr);
+    GateGuard guard{gate.get()};
+    ASSERT_TRUE(gate->wait_gpu(1));
+    (void)MetalSubmitQueue::instance().submit();
+    ASSERT_TRUE(f.device.copy_buffer_region(readback.get(), 0, window.get(),
+                                            0, kProbe));
+    ASSERT_TRUE(window->set_window({f.heap->buffer(), 4096}));
+    ASSERT_TRUE(f.device.copy_buffer_region(readback.get(), kProbe,
+                                            window.get(), 0, kProbe));
+    ASSERT_TRUE(gate->signal_cpu(1));
+    const auto got = f.read(*readback, 2 * kProbe);
+    EXPECT_TRUE(all_bytes(got.data(), kProbe, 0x11))
+        << "work recorded before the move reads the old window";
+    EXPECT_TRUE(all_bytes(got.data() + kProbe, kProbe, 0x22))
+        << "work recorded after it reads the new one";
+}
+
+TEST(MetalWindowBuffer, StorageInUseFollowsBindsAndCompletion) {
+    WindowFixture f;
+    if (!f.device.available()) GTEST_SKIP() << "no Metal device";
+    ASSERT_TRUE(f.init());
+    MetalSubmitQueue::instance().drain();
+    auto window = f.window(kProbe, 0);
+    auto readback = f.plain(kProbe, nullptr);
+    auto other = f.plain(kProbe, nullptr);
+    ASSERT_NE(window, nullptr);
+    EXPECT_FALSE(window->storage_in_use()) << "nothing recorded uses it";
+    ASSERT_TRUE(f.device.copy_buffer_region(readback.get(), 0, window.get(),
+                                            0, kProbe));
+    EXPECT_TRUE(window->storage_in_use()) << "a recorded read uses it";
+    // The bind's generation and the one after it (kTagMargin) complete.
+    for (int i = 0; i < 3; ++i) {
+        ASSERT_TRUE(f.device.copy_buffer_region(other.get(), 0,
+                                                readback.get(), 0, 16));
+        MetalSubmitQueue::instance().drain();
+    }
+    EXPECT_FALSE(window->storage_in_use()) << "its work has retired";
+}
+
+TEST(MetalWindowBuffer, GpuWriteIntoABusyWindowTakesTheSourcesWindowAndPreserves) {
+    WindowFixture f;
+    if (!f.device.available()) GTEST_SKIP() << "no Metal device";
+    if (!f.device.supports_fences()) GTEST_SKIP() << "no timeline fences";
+    ASSERT_TRUE(f.init());
+    MetalSubmitQueue::instance().drain();
+    auto window = f.window(kProbe, 0);
+    auto readback = f.plain(kProbe, nullptr);
+    std::vector<u8> fill(32, 0xEE);
+    auto source = f.plain(32, fill.data());
+    ASSERT_NE(window, nullptr);
+    ASSERT_NE(source, nullptr);
+    for (usize i = 0; i < kProbe; ++i) f.host[i] = static_cast<u8>(i);
+    std::memset(f.host + 4096, 0x77, kProbe);
+    FixedWindowSource lender;
+    lender.storage = f.heap->buffer();
+    lender.offset = 4096;
+    window->set_window_source(&lender);
+    auto gate = f.device.create_fence(0);
+    GateGuard guard{gate.get()};
+    ASSERT_TRUE(gate->wait_gpu(1));
+    (void)MetalSubmitQueue::instance().submit();
+    ASSERT_TRUE(f.device.copy_buffer_region(readback.get(), 0, window.get(),
+                                            0, kProbe));
+    ASSERT_TRUE(f.device.copy_buffer_region(window.get(), 16, source.get(),
+                                            0, 32));
+    EXPECT_EQ(lender.calls, 1);
+    ASSERT_TRUE(gate->signal_cpu(1));
+    const auto got = f.read(*readback, kProbe);
+    for (usize i = 0; i < kProbe; ++i) {
+        ASSERT_EQ(got[i], static_cast<u8>(i))
+            << "the read recorded first saw the copy at byte " << i;
+    }
+    for (usize i = 0; i < kProbe; ++i) {
+        const u8 want = i >= 16 && i < 48 ? 0xEE : static_cast<u8>(i);
+        ASSERT_EQ(f.host[4096 + i], want) << "new window byte " << i;
+    }
+    for (usize i = 16; i < 48; ++i) {
+        ASSERT_EQ(f.host[i], static_cast<u8>(i)) << "old window byte " << i;
+    }
+}
+
+TEST(MetalWindowBuffer, PreserveUsesABlitWhileAGpuWriteIsPending) {
+    WindowFixture f;
+    if (!f.device.available()) GTEST_SKIP() << "no Metal device";
+    if (!f.device.supports_fences()) GTEST_SKIP() << "no timeline fences";
+    ASSERT_TRUE(f.init());
+    MetalSubmitQueue::instance().drain();
+    auto window = f.window(kProbe, 0);
+    std::vector<u8> x(16, 0xA1), y(16, 0xB2);
+    auto source_x = f.plain(16, x.data());
+    auto source_y = f.plain(16, y.data());
+    ASSERT_NE(window, nullptr);
+    for (usize i = 0; i < kProbe; ++i) f.host[i] = static_cast<u8>(i);
+    std::memset(f.host + 8192, 0x77, kProbe);
+    FixedWindowSource lender;
+    lender.storage = f.heap->buffer();
+    lender.offset = 8192;
+    window->set_window_source(&lender);
+    auto gate = f.device.create_fence(0);
+    GateGuard guard{gate.get()};
+    ASSERT_TRUE(gate->wait_gpu(1));
+    (void)MetalSubmitQueue::instance().submit();
+    // Nothing reads the window yet: the first copy lands in place.
+    ASSERT_TRUE(f.device.copy_buffer_region(window.get(), 0, source_x.get(),
+                                            0, 16));
+    EXPECT_EQ(lender.calls, 0);
+    // Its write is pending behind the gate: the second copy moves to a fresh
+    // window, whose other bytes must come from the old one after that write.
+    ASSERT_TRUE(f.device.copy_buffer_region(window.get(), 64, source_y.get(),
+                                            0, 16));
+    EXPECT_EQ(lender.calls, 1);
+    ASSERT_TRUE(gate->signal_cpu(1));
+    MetalSubmitQueue::instance().drain();
+    for (usize i = 0; i < kProbe; ++i) {
+        const u8 want = i < 16                ? 0xA1
+                        : i >= 64 && i < 80   ? 0xB2
+                                              : static_cast<u8>(i);
+        ASSERT_EQ(f.host[8192 + i], want) << "byte " << i;
+    }
+}
+
+TEST(MetalWindowBuffer, GpuWriteWithoutASourceWaitsForTheWindow) {
+    WindowFixture f;
+    if (!f.device.available()) GTEST_SKIP() << "no Metal device";
+    if (!f.device.supports_fences()) GTEST_SKIP() << "no timeline fences";
+    ASSERT_TRUE(f.init());
+    MetalSubmitQueue::instance().drain();
+    auto window = f.window(kProbe, 0);
+    auto readback = f.plain(kProbe, nullptr);
+    std::vector<u8> fill(32, 0xEE);
+    auto source = f.plain(32, fill.data());
+    std::memset(f.host, 0x31, kProbe);
+    auto gate = f.device.create_fence(0);
+    GateGuard guard{gate.get()};
+    ASSERT_TRUE(gate->wait_gpu(1));
+    (void)MetalSubmitQueue::instance().submit();
+    ASSERT_TRUE(f.device.copy_buffer_region(readback.get(), 0, window.get(),
+                                            0, kProbe));
+    std::atomic<bool> released{false};
+    std::thread releaser([&] {
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        released.store(true);
+        (void)gate->signal_cpu(1);
+    });
+    ASSERT_TRUE(f.device.copy_buffer_region(window.get(), 0, source.get(), 0,
+                                            32));
+    EXPECT_TRUE(released.load()) << "the write waited for the queued read";
+    releaser.join();
+    const auto got = f.read(*readback, kProbe);
+    EXPECT_TRUE(all_bytes(got.data(), kProbe, 0x31));
+}
+
+TEST(MetalWindowBuffer, WholeCopyDoesNotPreserve) {
+    WindowFixture f;
+    if (!f.device.available()) GTEST_SKIP() << "no Metal device";
+    if (!f.device.supports_fences()) GTEST_SKIP() << "no timeline fences";
+    ASSERT_TRUE(f.init());
+    MetalSubmitQueue::instance().drain();
+    auto window = f.window(kProbe, 0);
+    std::vector<u8> x(kProbe, 0xA1), y(kProbe, 0xB2);
+    auto source_x = f.plain(kProbe, x.data());
+    auto source_y = f.plain(kProbe, y.data());
+    FixedWindowSource lender;
+    lender.storage = f.heap->buffer();
+    lender.offset = 4096;
+    window->set_window_source(&lender);
+    auto gate = f.device.create_fence(0);
+    GateGuard guard{gate.get()};
+    ASSERT_TRUE(gate->wait_gpu(1));
+    (void)MetalSubmitQueue::instance().submit();
+    ASSERT_TRUE(f.device.copy_buffer_region(window.get(), 0, source_x.get(),
+                                            0, 16));
+    CopyCounter counter;
+    MetalSubmitQueue::set_append_hook_for_test(&CopyCounter::hook, &counter);
+    const bool copied = f.device.copy_buffer(window.get(), source_y.get());
+    MetalSubmitQueue::set_append_hook_for_test(nullptr, nullptr);
+    ASSERT_TRUE(copied);
+    EXPECT_EQ(lender.calls, 1);
+    EXPECT_EQ(counter.copies.load(), 1) << "a whole copy needs no preserve";
+    ASSERT_TRUE(gate->signal_cpu(1));
+    MetalSubmitQueue::instance().drain();
+    EXPECT_TRUE(all_bytes(f.host + 4096, kProbe, 0xB2));
+}

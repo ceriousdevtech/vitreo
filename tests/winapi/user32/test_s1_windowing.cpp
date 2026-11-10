@@ -1121,6 +1121,22 @@ TEST_F(S1WindowingTest, DisplayDevicesSettingsAndModeChanges) {
     EXPECT_EQ(memory_.read_u32(dm + 72).value(), 0x207C00A0u);
     EXPECT_EQ(memory_.read_u16(dm + 64).value(), 0x0401u);
     EXPECT_EQ(call("EnumDisplaySettingsW", {wstr(L"\\\\.\\DISPLAY99"), 0xFFFFFFFFull, dm}), 0u);
+    // Measured (enumdisplaysettings_extent_probe): exactly 188 / 124 bytes are
+    // written whatever dmSize / dmDriverExtra held; dmDriverExtra becomes 0.
+    for (const bool wide : {true, false}) {
+        const u32 own = wide ? 188u : 124u;
+        const GuestAddr big = buffer(1024);
+        std::vector<u8> fill(1024, 0xCC);
+        ASSERT_TRUE(memory_.write_bytes(big, fill.data(), fill.size()).is_ok());
+        EXPECT_EQ(call(wide ? "EnumDisplaySettingsW" : "EnumDisplaySettingsA",
+                       {0, 0xFFFFFFFFull, big}),
+                  1u);
+        EXPECT_EQ(memory_.read_u16(big + (wide ? 68u : 36u)).value(), own);
+        EXPECT_EQ(memory_.read_u16(big + (wide ? 70u : 38u)).value(), 0u);
+        for (u32 i = own; i < 1024; ++i) {
+            ASSERT_EQ(memory_.read_u8(big + i).value(), 0xCCu) << (wide ? "W " : "A ") << i;
+        }
+    }
     // ChangeDisplaySettingsEx validation.
     (void)memory_.write_u16(dm + 68, 220);
     ASSERT_EQ(call("EnumDisplaySettingsW", {0, 0xFFFFFFFFull, dm}), 1u);

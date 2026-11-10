@@ -1,0 +1,20 @@
+{
+  "bits": 32,
+  "source": "tests/oracle_data/get_random_rgn_sdk.txt",
+  "constants": {
+    "SYSRGN": 4,
+    "ERROR_INVALID_HANDLE": 6,
+    "RGN_AND": 1,
+    "RGN_DIFF": 4,
+    "WS_EX_LAYOUTRTL": 4194304,
+    "WS_EX_TRANSPARENT": 32,
+    "WS_EX_LAYERED": 524288,
+    "CS_PARENTDC": 128
+  },
+  "export": {
+    "name": "GetRandomRgn",
+    "ordinal": 1736,
+    "argc": 3,
+    "stdcall_bytes32": 12
+  }
+}

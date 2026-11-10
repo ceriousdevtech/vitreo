@@ -5,6 +5,7 @@
 
 #include "file_mapping.hpp"
 #include "file_mapping_internal.hpp"
+#include "section_no_change_contract.hpp"
 #include "winapi/kernel32/filesystem/file.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/named_object_directory.hpp"
@@ -165,6 +166,16 @@ Handle FileMappingManager::create_file_mapping(Handle h_file, u32 protect,
     constexpr u32 kSecImageFlag = 0x01000000u;
     constexpr u32 kSecImageNoExecFlag = 0x11000000u;
     const bool want_reserve = (sec_attrs & kSecReserveFlag) != 0;
+    if (want_reserve && (sec_attrs & SECTION_NO_CHANGE) != 0) {
+        static std::atomic_flag reported = ATOMIC_FLAG_INIT;
+        if (!reported.test_and_set()) {
+            std::fprintf(stderr,
+                "[vitreo] UNIMPLEMENTED kernel32!CreateFileMappingW: "
+                "SEC_RESERVE | SEC_NO_CHANGE shared commitment\n");
+        }
+        set_last_error(error_codes::ERROR_NOT_SUPPORTED);
+        return NULL_HANDLE;
+    }
     const bool want_image_no_exec =
         (sec_attrs & kSecImageNoExecFlag) == kSecImageNoExecFlag;
     const bool want_image =

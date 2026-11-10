@@ -12,6 +12,10 @@
 #include "core/pe/imports/api_set_resolver.hpp"
 #include "core/memory/guest_memory.hpp"
 #include "winapi/kernel32/module/module.hpp"
+#include "winapi/kernel32/kernel32_ext.hpp"
+#include "winapi/common/sxs/sxs_context.hpp"
+#include "capsule/vfs/vfs.hpp"
+#include <array>
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -83,10 +87,10 @@ RunResult setup_imports(RuntimeContext& ctx,
                         bool verbose) {
     // Allocate CRT global data block for data imports (_commode, _fmode, etc.)
     // Pass the actual command line so _acmdln reflects the guest PE name.
-    std::string cmdline_a = ctx.env_mgr.get_command_line_a();
+    const std::string cmdline_utf8 = ctx.env_mgr.get_command_line_w_utf8();
     // The `_iob` data export's FILE layout follows the image's bitness.
     ctx.crt_data.set_guest_64bit(pe.is_64bit);
-    if (!ctx.crt_data.initialize(memory, winapi::CrtDataBlock::DEFAULT_BASE, cmdline_a)) {
+    if (!ctx.crt_data.initialize(memory, winapi::CrtDataBlock::DEFAULT_BASE, cmdline_utf8)) {
         return RunResult{1, 0, "Failed to allocate CRT data region", false};
     }
 
@@ -108,6 +112,15 @@ RunResult setup_imports(RuntimeContext& ctx,
         // Versioned redistributables own their data in their real PE images.
         for (const char* crt_dll : {"msvcrt.dll", "crtdll.dll"}) {
             ctx.thunk_registry.register_data_export(crt_dll, data_name, addr);
+        }
+    }
+    // msvcrt.dll's multibyte table and the VC6 locale globals MSVCP60 reads
+    // directly (crt_data.hpp); crtdll.dll exports none of them.
+    for (const char* data_name : {"_mbctype", "__lc_codepage", "__lc_collate_cp",
+                                  "__lc_handle", "__setlc_active",
+                                  "__unguarded_readlc_active"}) {
+        if (const u64 addr = ctx.crt_data.resolve_data_import(data_name); addr != 0) {
+            ctx.thunk_registry.register_data_export("msvcrt.dll", data_name, addr);
         }
     }
 
@@ -141,12 +154,72 @@ RunResult setup_imports(RuntimeContext& ctx,
 
     auto& thunk_registry = ctx.thunk_registry;
     auto& module_mgr     = ctx.module_mgr;
+    auto& kernel32       = ctx.k32_ext_mgr;
+
+    // The process default activation context (Learn "Activation Contexts",
+    // "Application Manifests"): the executable's
+    // CREATEPROCESS_MANIFEST_RESOURCE_ID (1) manifest, or <exe>.manifest
+    // beside it when it has none (an embedded manifest takes precedence),
+    // with <exe>.config's assembly bindings. Windows refuses to start a
+    // process whose context cannot be generated.
+    {
+        const std::string exe(module_mgr.main_module_path());
+        const auto slash = exe.find_last_of("\\/");
+        const std::string exe_dir = slash == std::string::npos ? std::string{} : exe.substr(0, slash);
+        std::vector<u8> external;
+        std::span<const u8> manifest = pe::pe_manifest_resource(pe_data, pe, 1);
+        const auto read_all = [&](const std::string& path) -> std::optional<std::vector<u8>> {
+            auto h = ctx.vfs.open(path, capsule::AccessMode::Read, capsule::ShareMode::Read,
+                                  capsule::CreationDisposition::OpenExisting);
+            if (h.is_err()) return std::nullopt;
+            std::vector<u8> bytes;
+            std::array<u8, 64 * 1024> chunk{};
+            for (;;) {
+                auto n = ctx.vfs.read(h.value(), chunk);
+                if (n.is_err() || n.value() == 0) break;
+                bytes.insert(bytes.end(), chunk.begin(), chunk.begin() + static_cast<std::ptrdiff_t>(n.value()));
+            }
+            (void)ctx.vfs.close(h.value());
+            return bytes;
+        };
+        if (manifest.empty() && !exe.empty()) {
+            if (auto bytes = read_all(exe + ".manifest")) {
+                external = std::move(*bytes);
+                manifest = external;
+            }
+        }
+        if (!manifest.empty()) {
+            winapi::sxs::ContextRequest request;
+            request.manifest = manifest;
+            request.manifest_path = external.empty() ? exe : exe + ".manifest";
+            request.root_directory = exe_dir;
+            request.application_dir = exe_dir;
+            request.architecture = pe.is_64bit ? "amd64" : "x86";
+            bool config_ok = true;
+            if (auto config = read_all(exe + ".config")) {
+                request.config = winapi::sxs::parse_app_config(*config);
+                config_ok = request.config.has_value();
+            }
+            winapi::sxs::ContextResult generated;
+            if (config_ok) generated = winapi::sxs::build_context(ctx.vfs, request);
+            if (!config_ok || !generated.data) {
+                constexpr u32 kStatusSxsCantGenActCtx = 0xC0150002u;  // ntstatus.h
+                const std::string detail = config_ok ? generated.detail : exe + ".config is not well-formed";
+                std::fprintf(stderr, "[vitreo] side-by-side configuration is incorrect: %s "
+                             "(STATUS_SXS_CANT_GEN_ACTCTX)\n", detail.c_str());
+                return RunResult{static_cast<int>(kStatusSxsCantGenActCtx), 0,
+                                 "Side-by-side configuration is incorrect: " + detail, false};
+            }
+            kernel32.set_process_default_activation_context(
+                std::make_shared<const winapi::sxs::ContextData>(std::move(*generated.data)));
+        }
+    }
     const auto search_directories = main_import_search_directories(
         module_mgr.main_module_path(), ctx.vfs.cwd(),
         pe::pe_private_assemblies(pe_data, pe));
 
     pe::ImportCallback resolver = [
-        &thunk_registry, &module_mgr, search_directories
+        &thunk_registry, &module_mgr, &kernel32, search_directories
     ](
         std::string_view dll_name,
         std::string_view func_name,
@@ -168,6 +241,16 @@ RunResult setup_imports(RuntimeContext& ctx,
 
         // Load-time dynamic linking loads every imported DLL: a host DLL
         // bound here must be a module GetModuleHandle finds by base name.
+        // Side-by-side redirection is the first step of the DLL search
+        // order for a module name; a redirected DLL is the one bound.
+        if (const auto redirected = kernel32.sxs_redirect_dll(dll_name)) {
+            const GuestAddr base = module_mgr.load_library(*redirected);
+            if (base == 0) return 0;
+            if (!func_name.empty()) return module_mgr.get_proc_address(base, func_name);
+            if (ordinal != 0) return module_mgr.get_proc_address_by_ordinal(base, ordinal);
+            return 0;
+        }
+
         if (thunk_registry.has_dll(dll_name) ||
             thunk_registry.has_dll(pe::resolve_api_set(dll_name))) {
             (void)module_mgr.ensure_static_import_module(dll_name);

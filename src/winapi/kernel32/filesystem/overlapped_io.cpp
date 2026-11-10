@@ -1,3 +1,4 @@
+#include "winapi/kernel32/synchronization/io_event_contract.generated.hpp"
 // SPDX-License-Identifier: LGPL-2.1-only
 
 /// @file overlapped_io.cpp
@@ -15,6 +16,7 @@
 #include "winapi/kernel32/memory/global_local.hpp"
 #include "winapi/kernel32/memory/memory.hpp"
 #include "winapi/kernel32/filesystem/file.hpp"
+#include "winapi/kernel32/filesystem/hid_io_status.generated.hpp"
 #include "winapi/kernel32/memory/file_mapping.hpp"
 #include "winapi/kernel32/filesystem/file_search.hpp"
 #include "winapi/kernel32/error.hpp"
@@ -97,15 +99,19 @@ u32 overlapped_status_to_win32(u32 status) {
         return status & 0xFFFFu;
     }
     switch (status) {
-        case 0xC0000120u: return error_codes::ERROR_OPERATION_ABORTED;  // STATUS_CANCELLED
-        case 0xC0000022u: return error_codes::ERROR_ACCESS_DENIED;      // STATUS_ACCESS_DENIED
-        case 0xC0000008u: return error_codes::ERROR_INVALID_HANDLE;     // STATUS_INVALID_HANDLE
+        case hid_io_status::kSTATUS_DEVICE_NOT_CONNECTED: return error_codes::ERROR_DEVICE_NOT_CONNECTED;
+        case hid_io_status::kSTATUS_NOT_SUPPORTED: return error_codes::ERROR_NOT_SUPPORTED;
+        case hid_io_status::kSTATUS_INVALID_PARAMETER: return error_codes::ERROR_INVALID_PARAMETER;
+        case hid_sdk::kSTATUS_INVALID_BUFFER_SIZE: return error_codes::ERROR_INVALID_USER_BUFFER;
+        case hid_io_status::kSTATUS_CANCELLED: return error_codes::ERROR_OPERATION_ABORTED;  // STATUS_CANCELLED
+        case hid_io_status::kSTATUS_ACCESS_DENIED: return error_codes::ERROR_ACCESS_DENIED;      // STATUS_ACCESS_DENIED
+        case hid_io_status::kSTATUS_INVALID_HANDLE: return error_codes::ERROR_INVALID_HANDLE;     // STATUS_INVALID_HANDLE
         case 0xC0000011u: return error_codes::ERROR_HANDLE_EOF;         // STATUS_END_OF_FILE
         case 0xC000014Bu: return error_codes::ERROR_BROKEN_PIPE;        // STATUS_PIPE_BROKEN
         case 0xC00000B0u: return 233;  // STATUS_PIPE_DISCONNECTED -> ERROR_PIPE_NOT_CONNECTED
         case 0xC00000B3u: return 536;  // STATUS_PIPE_LISTENING -> ERROR_PIPE_LISTENING
         case 0x80000005u: return 234;  // STATUS_BUFFER_OVERFLOW -> ERROR_MORE_DATA
-        case 0xC0000005u: return error_codes::ERROR_NOACCESS;           // STATUS_ACCESS_VIOLATION
+        case hid_io_status::kSTATUS_ACCESS_VIOLATION: return error_codes::ERROR_NOACCESS;           // STATUS_ACCESS_VIOLATION
         case 0x0000010Bu: return 745;   // STATUS_NOTIFY_CLEANUP -> ERROR_NOTIFY_CLEANUP
         case 0x0000010Cu: return 1022;  // STATUS_NOTIFY_ENUM_DIR -> ERROR_NOTIFY_ENUM_DIR
         default: return 31;            // ERROR_GEN_FAILURE
@@ -136,29 +142,48 @@ void Kernel32ExtManager::get_overlapped_result(Marshaler& m, u32 timeout_ms,
     const GuestAddr overlapped = m.arg_ptr(1);
     const GuestAddr bytes_ptr = m.arg_ptr(2);
     const bool is_64bit = m.cpu_is_64bit();
+    static const bool input_diag=[] {const char* p=std::getenv("VITREO_INPUT_DIAG");return p && *p && *p!='0';}();
+    const bool hid=input_diag && m_handle_table && m_handle_table->get_type(file_handle)==HandleType::HidDevice;
+    const auto caller=hid ? m.guest_return_address():0;u64 observed_status=~u64{0},observed_count=~u64{0};
+    auto log_result=[&](bool entering) {
+        if(!hid) return;
+        struct Record {bool used{},entering{};Handle file{};GuestAddr ov{},caller{};u32 wait{},error{};u64 status{},count{},result{};};
+        static std::mutex mutex;static std::array<Record,16> records{};static unsigned logged=0;
+        const Record now{true,entering,file_handle,overlapped,caller,timeout_ms,entering ? 0u:get_last_error(),observed_status,observed_count,entering ? ~u64{0}:m.return_value()};
+        std::lock_guard lock(mutex);if(logged>=96) return;
+        auto found=std::find_if(records.begin(),records.end(),[&](const auto& r){return r.used && r.entering==now.entering && r.file==now.file && r.ov==now.ov && r.caller==now.caller && r.wait==now.wait;});
+        if(found!=records.end() && found->error==now.error && found->status==now.status && found->count==now.count && found->result==now.result) return;
+        if(found==records.end()) found=std::find_if(records.begin(),records.end(),[](const auto& r){return !r.used;});if(found!=records.end()) *found=now;++logged;
+        std::fprintf(stderr,"[input-delivery] HID GOR phase=%s bits=%u caller=0x%llx file=0x%x ov=0x%llx wait=%u status=0x%llx count=%llu result=%llu error=%u\n",
+            entering ? "enter":"return",is_64bit ? 64u:32u,static_cast<unsigned long long>(caller),file_handle,static_cast<unsigned long long>(overlapped),timeout_ms,
+            static_cast<unsigned long long>(observed_status),static_cast<unsigned long long>(observed_count),static_cast<unsigned long long>(now.result),now.error);
+    };
+    struct ReturnTrace {decltype(log_result)& log;~ReturnTrace(){log(false);}} trace{log_result};
 
     if (overlapped == 0 || bytes_ptr == 0 || !m_handle_table ||
         (m_handle_table->get_type(file_handle) != HandleType::File &&
          m_handle_table->get_type(file_handle) != HandleType::Pipe &&
+         m_handle_table->get_type(file_handle) != HandleType::HidDevice &&
          m_handle_table->get_type(file_handle) != HandleType::NetworkNotification)) {
         set_last_error(error_codes::ERROR_INVALID_PARAMETER);
         m.set_return(0);
         return;
     }
 
+    auto observed=[&](GuestAddr address,u64 value) {if(address==overlapped) observed_status=value;else if(address==overlapped+(is_64bit ? 8u:4u)) observed_count=value;return value;};
     auto read_uptr = [&](GuestAddr address) -> std::optional<u64> {
         if (is_64bit) {
             auto value = m_memory.read_u64(address);
             if (value.is_err()) return std::nullopt;
-            return value.value();
+            return observed(address,value.value());
         }
         auto value = m_memory.read_u32(address);
         if (value.is_err()) return std::nullopt;
-        return value.value();
+        return observed(address,value.value());
     };
 
     constexpr u32 STATUS_PENDING = 0x00000103;
-    auto internal = read_uptr(overlapped);
+    auto internal = read_uptr(overlapped);log_result(true);
     if (!internal) {
         set_last_error(error_codes::ERROR_NOACCESS);
         m.set_return(0);
@@ -177,7 +202,7 @@ void Kernel32ExtManager::get_overlapped_result(Marshaler& m, u32 timeout_ms,
         const auto event_value = read_uptr(event_field);
         u32 wait = WAIT_TIMEOUT;
         if (event_value && *event_value != 0 && m_sync_manager) {
-            wait = wait_handle_ex(static_cast<Handle>(*event_value & ~u64{1}),
+            wait = wait_handle_ex(static_cast<Handle>(*event_value & ~io_event_contract::kHandleTagMask),
                                   timeout_ms, alertable);
         } else {
             // No hEvent: Windows waits on the file object, which the
@@ -186,6 +211,7 @@ void Kernel32ExtManager::get_overlapped_result(Marshaler& m, u32 timeout_ms,
             wait = wait_overlapped_internal(overlapped, is_64bit, timeout_ms,
                                             alertable);
         }
+        if(wait==WAIT_FAILED) {m.set_return(0);return;}
         if (wait == WAIT_IO_COMPLETION) {
             set_last_error(WAIT_IO_COMPLETION);
             m.set_return(0);
@@ -206,6 +232,9 @@ void Kernel32ExtManager::get_overlapped_result(Marshaler& m, u32 timeout_ms,
         m.set_return(0);
         return;
     }
+    // Pair with completion publication before reading InternalHigh. Polling
+    // callers do not acquire the explicit-event/file-object wait lock.
+    std::atomic_thread_fence(std::memory_order_acquire);
     // Windows notification cancellation reports zero transferred bytes even
     // when GetOverlappedResult returns ERROR_OPERATION_ABORTED.
     if (m_handle_table->get_type(file_handle) == HandleType::NetworkNotification) {
@@ -318,7 +347,7 @@ void Kernel32ExtManager::impl_CancelIo(Marshaler& m) {
     }
     const HandleType type = m_handle_table->get_type(handle);
     const bool cancelable =
-        type == HandleType::Pipe || type == HandleType::File ||
+        type == HandleType::Pipe || type == HandleType::HidDevice || type == HandleType::File ||
         type == HandleType::Device || type == HandleType::ConsoleInput ||
         type == HandleType::ConsoleOutput || type == HandleType::Mailslot;
     if (!cancelable) {
@@ -326,6 +355,7 @@ void Kernel32ExtManager::impl_CancelIo(Marshaler& m) {
         m.set_return(0);
         return;
     }
+    if (m_file_manager != nullptr && type == HandleType::HidDevice) (void)m_file_manager->cancel_hid_io(handle,0,true);
     if (m_file_manager != nullptr && type == HandleType::Pipe) {
         (void)m_file_manager->cancel_pipe_handle_io(handle, 0, true);
     }
@@ -369,6 +399,7 @@ void Kernel32ExtManager::impl_CancelIoEx(Marshaler& m) {
 
     if (m_handle_table == nullptr ||
         (m_handle_table->get_type(handle) != HandleType::Pipe &&
+         m_handle_table->get_type(handle) != HandleType::HidDevice &&
          m_handle_table->get_type(handle) != HandleType::File &&
          m_handle_table->get_type(handle) != HandleType::Device &&
          m_handle_table->get_type(handle) != HandleType::ConsoleInput &&
@@ -377,6 +408,11 @@ void Kernel32ExtManager::impl_CancelIoEx(Marshaler& m) {
         set_last_error(error_codes::ERROR_INVALID_HANDLE);
         m.set_return(0);
         return;
+    }
+    if(m_handle_table->get_type(handle)==HandleType::HidDevice && m_file_manager) {
+        const auto marked=m_file_manager->cancel_hid_io(handle,overlapped,false);
+        if(!marked) set_last_error(error_codes::ERROR_NOT_FOUND);
+        m.set_return(marked ? 1:0);return;
     }
     if (m_handle_table->get_type(handle) == HandleType::File && m_directory_changes &&
         m_directory_changes->cancel(handle, overlapped, 0) > 0) {

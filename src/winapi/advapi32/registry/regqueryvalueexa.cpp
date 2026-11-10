@@ -16,6 +16,7 @@
 #include <cwctype>
 #include <string>
 #include <variant>
+#include "winapi/kernel32/locale/codepage_convert.hpp"
 
 /// @file regqueryvalueexa.cpp
 /// @brief RegQueryValueExA
@@ -31,51 +32,19 @@ namespace vitreo::winapi {
 u32 RegistryThunks::reg_query_value_ex_a(u64 hkey, const std::string& value_name,
                                           u32* type_out, u8* data_out,
                                           u32* data_size) {
-    capsule::RegHandle rh = resolve_hkey(hkey);
-    auto res = m_registry.query_value(rh, ansi_to_wide(value_name));
-    if (res.is_err()) {
-        return ERROR_FILE_NOT_FOUND;
+    std::wstring wide_name;
+    if (!value_name.empty()) {
+        const auto* bytes = reinterpret_cast<const u8*>(value_name.data());
+        const auto count = codepage::multi_byte_to_wide(
+            codepage::kCpAcp, 0, bytes, value_name.size(), nullptr, 0);
+        if (!count.ok()) return count.error;
+        std::vector<u16> units(count.count);
+        const auto converted = codepage::multi_byte_to_wide(
+            codepage::kCpAcp, 0, bytes, value_name.size(), units.data(), units.size());
+        if (!converted.ok()) return converted.error;
+        wide_name.assign(units.begin(), units.end());
     }
-
-    const capsule::RegValue& val = res.value();
-    if (type_out) {
-        *type_out = reg_type_to_win32(val);
-    }
-
-    if (val.type != capsule::RegType::Sz &&
-        val.type != capsule::RegType::ExpandSz) {
-        const u32 required = serialise_value(val, nullptr, 0);
-        if (data_out == nullptr) {
-            if (data_size) *data_size = required;
-            return ERROR_SUCCESS;
-        }
-        const u32 available = data_size ? *data_size : 0;
-        if (available < required) {
-            if (data_size) *data_size = required;
-            return ERROR_MORE_DATA;
-        }
-        serialise_value(val, data_out, available);
-        if (data_size) *data_size = required;
-        return ERROR_SUCCESS;
-    }
-
-    const auto& text = std::get<std::wstring>(val.data);
-    const u32 required = static_cast<u32>(text.size() + 1);
-    if (data_out == nullptr) {
-        if (data_size) *data_size = required;
-        return ERROR_SUCCESS;
-    }
-    const u32 available = data_size ? *data_size : 0;
-    if (available < required) {
-        if (data_size) *data_size = required;
-        return ERROR_MORE_DATA;
-    }
-    for (usize i = 0; i < text.size(); ++i) {
-        data_out[i] = text[i] <= 0xFF ? static_cast<u8>(text[i]) : static_cast<u8>('?');
-    }
-    data_out[text.size()] = 0;
-    if (data_size) *data_size = required;
-    return ERROR_SUCCESS;
+    return query_value_ex(hkey, wide_name, true, type_out, data_out, data_size);
 }
 
 } // namespace vitreo::winapi

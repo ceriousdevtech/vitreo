@@ -105,6 +105,39 @@ TEST_F(SyncTest, MixedLocalAndPromotedSharedWaitAnyObservesSharedSignal) {
     EXPECT_EQ(result.load(std::memory_order_acquire), WAIT_OBJECT_0 + 1);
 }
 
+TEST_F(SyncTest, SingleWaitSurvivesTransferOfTheWaitedHandle) {
+    if (!ipc::ipc_enabled()) GTEST_SKIP() << "requires VITREO_IPC";
+    // Learn WaitForSingleObject: the wait returns when the object is
+    // signaled or the interval elapses. Another process duplicating the
+    // handle (which moves it onto shared backing) is neither.
+    const Handle event = m_mgr->create_event(/*manual_reset=*/false,
+                                             /*initial_state=*/false, "");
+    ASSERT_NE(event, NULL_HANDLE);
+    constexpr u32 kPending = 0xDEADu;
+    const auto parked_before = ntsync::global().wake_counters().waits;
+    std::atomic<u32> result{kPending};
+    std::thread waiter([&] {
+        ThreadManager::set_current_thread_id(41);
+        result.store(m_mgr->wait_for_single_object(event, 2000),
+                     std::memory_order_release);
+    });
+    const auto deadline = std::chrono::steady_clock::now() +
+        std::chrono::milliseconds(500);
+    while (ntsync::global().wake_counters().waits == parked_before &&
+           std::chrono::steady_clock::now() < deadline) {
+        std::this_thread::yield();
+    }
+    std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    ASSERT_TRUE(m_mgr->prepare_transferred_handle(
+        event, sync_access::EVENT_ALL_ACCESS, false).has_value());
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    EXPECT_EQ(result.load(std::memory_order_acquire), kPending)
+        << "the wait must still be pending";
+    ASSERT_TRUE(m_mgr->set_event(event));
+    waiter.join();
+    EXPECT_EQ(result.load(std::memory_order_acquire), WAIT_OBJECT_0);
+}
+
 TEST_F(SyncTest, MixedWaitParkingDoesNotConsumeLocalRelease) {
     if (!ipc::ipc_enabled()) GTEST_SKIP() << "requires VITREO_IPC";
     // Learn WaitForMultipleObjects: only the object satisfying the final

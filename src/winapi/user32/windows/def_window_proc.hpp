@@ -71,6 +71,8 @@ namespace SC {
 
 class DefWindowProcManager {
 public:
+    using GuestCall = std::function<u64(GuestAddr, const u64*, usize, bool)>;
+public:
     /// A window DefWindowProc can act on (local, or the desktop).
     [[nodiscard]] bool window_exists(windowing::HWND hwnd) const {
         return hwnd == windowing::HWND_DESKTOP || m_hwnd_mgr.find(hwnd) != nullptr;
@@ -117,6 +119,13 @@ private:
     std::function<bool(windowing::HWND, u32)> m_begin_window_resize;
     std::function<void(windowing::HWND)> m_focus_window;
     std::function<void(windowing::HWND, bool)> m_dialog_activate;
+    GuestCall m_guest_call;
+    /// DefWindowProc WM_CTLCOLOR* defaults (measured defdlgproc_probe).
+    u64 default_control_color(u32 msg, u64 hdc);
+    u64 dialog_erase_background(windowing::HWND hwnd, u64 hdc);
+    u64 dialog_close(windowing::HWND hwnd);
+    u64 dialog_get_default_id(windowing::HWND hwnd);
+    u64 dialog_set_default_id(windowing::HWND hwnd, u32 id);
     std::function<void(windowing::HWND, const std::wstring&)> m_display_text;
 
     // Track if a DestroyWindow was triggered (for testing)
@@ -172,6 +181,23 @@ public:
     }
     /// DefDlgProc: the dialog-specific defaults, then DefWindowProc.
     u64 def_dlg_proc(windowing::HWND hwnd, u32 msg, u64 wParam, u64 lParam);
+
+    /// Calls guest code (the DLGPROC a dialog's window procedure calls).
+    void set_guest_call(GuestCall call) { m_guest_call = std::move(call); }
+    /// The predefined dialog window procedure around @p dlgproc (Learn
+    /// DLGPROC, "Dialog Box Default Message Processing"; measured
+    /// defdlgproc_probe): DWLP_MSGRESULT is cleared, the DLGPROC is called; a
+    /// nonzero result returns DWLP_MSGRESULT, except for the messages whose
+    /// value is the DLGPROC's own (is_direct_dialog_result); zero runs the
+    /// default dialog processing.
+    u64 dialog_procedure(windowing::HWND hwnd, u32 msg, u64 wParam, u64 lParam,
+                         GuestAddr dlgproc);
+    /// WM_CHARTOITEM, WM_COMPAREITEM, WM_CTLCOLOR*, WM_INITDIALOG,
+    /// WM_QUERYDRAGICON, WM_VKEYTOITEM (Learn DLGPROC return value).
+    [[nodiscard]] static bool is_direct_dialog_result(u32 msg) noexcept;
+    /// The DLGPROC a guest's own DefDlgProc call runs first: DWLP_DLGPROC of
+    /// a dialog whose window procedure is another one, else 0.
+    [[nodiscard]] GuestAddr dialog_dlgproc_for_def_dlg_proc(windowing::HWND hwnd) const;
 
 
 };

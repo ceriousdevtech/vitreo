@@ -1018,9 +1018,9 @@ TEST_F(JitLockPrefixTest, LockCmpxchg8bUnalignedHelperDoesNotFault) {
 }
 
 // Intel SDM Vol. 2 CMPXCHG16B: the m128 operand MUST be 16-byte aligned;
-// otherwise #GP(0). Vitreo surfaces that as STATUS_ACCESS_VIOLATION, the same
-// mapping the interpreter uses (tests/cpu/test_atomics_misc.cpp
-// LockCmpxchg16bUnalignedRaisesGp).
+// otherwise #GP(0). Windows reports that as STATUS_ACCESS_VIOLATION with
+// [0] = 0 and [1] = 0xFFFFFFFFFFFFFFFF (a #GP has no fault address;
+// tests/oracle_data/cmpxchg16b_align_probe.expected), plain and LOCK.
 TEST_F(JitLockPrefixTest, LockCmpxchg16bUnalignedRaisesAccessViolation) {
     CpuState cpu;
     cpu.init_long_mode();
@@ -1033,7 +1033,8 @@ TEST_F(JitLockPrefixTest, LockCmpxchg16bUnalignedRaisesAccessViolation) {
     jit_lock_cmpxchg16b(&cpu, m_memory.get(), kUnaligned);
     EXPECT_TRUE(cpu.pending_raise.active);
     EXPECT_EQ(cpu.pending_raise.code, 0xC0000005u);
-    EXPECT_EQ(cpu.pending_raise.args[1], kUnaligned);
+    EXPECT_EQ(cpu.pending_raise.args[0], 0u);
+    EXPECT_EQ(cpu.pending_raise.args[1], ~u64{0});
     EXPECT_EQ(m_memory->read_u64(kUnaligned).value_or(1), 0u)
         << "an unaligned CMPXCHG16B must never store non-atomically";
 }

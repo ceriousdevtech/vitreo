@@ -19,6 +19,8 @@ struct SettingsView: View {
     private var externalLaunchPolicy: ExternalLaunchPolicy = .askEveryTime
 
     @State private var showBinaryPicker = false
+    @State private var commandLineStatus = CommandLineLinkInstaller.status()
+    @State private var commandLineError: String?
     @State private var rememberedRules = 0
 
     var body: some View {
@@ -83,7 +85,7 @@ struct SettingsView: View {
                 }
                 .labelsHidden()
                 .frame(maxWidth: 200)
-                .onChange(of: refreshInterval) { _, _ in
+                .onValueChange(of: refreshInterval) {
                     service.restartAutoRefresh()
                 }
             }
@@ -193,6 +195,13 @@ struct SettingsView: View {
 
             Divider().padding(.leading, 140)
 
+            SettingsRow(label: "Command Line Tool",
+                        detail: "vitreo in \(CommandLineLink.path)") {
+                commandLineControl
+            }
+
+            Divider().padding(.leading, 140)
+
             // Interpreter mode
             SettingsRow(label: "Interpreter Mode",
                         detail: "Disable JIT — slower but more compatible") {
@@ -261,6 +270,37 @@ struct SettingsView: View {
             }
             .padding(16)
         }
+    }
+
+    @ViewBuilder
+    private var commandLineControl: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            switch commandLineStatus {
+            case .linked:
+                Label("Installed", systemImage: "checkmark.circle.fill")
+                    .foregroundStyle(.green)
+            case .notLinked:
+                HStack(spacing: 8) {
+                    Text("Not installed").foregroundStyle(.secondary)
+                    Button("Add Command…") {
+                        commandLineError = CommandLineLinkInstaller.installFromSettings()
+                        commandLineStatus = CommandLineLinkInstaller.status()
+                    }
+                }
+            case .blockedByRegularFile:
+                Label("Another file is at this path", systemImage: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.orange)
+            case .unavailable:
+                Text("Available when Vitreo is in Applications")
+                    .foregroundStyle(.secondary)
+            }
+            if let commandLineError {
+                Text(commandLineError)
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+            }
+        }
+        .onAppear { commandLineStatus = CommandLineLinkInstaller.status() }
     }
 
     private func openBundled(_ name: String) {
@@ -369,5 +409,20 @@ private struct SettingsRow<Control: View>: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
+    }
+}
+
+private extension View {
+    /// `onChange(of:)` whose two-parameter form is macOS 14+. The app also
+    /// ships for x86_64 Macs that top out at macOS 13, so fall back to the
+    /// single-value form there.
+    @ViewBuilder
+    func onValueChange<Value: Equatable>(of value: Value,
+                                         perform action: @escaping () -> Void) -> some View {
+        if #available(macOS 14.0, *) {
+            onChange(of: value) { _, _ in action() }
+        } else {
+            onChange(of: value) { _ in action() }
+        }
     }
 }

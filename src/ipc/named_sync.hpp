@@ -49,6 +49,9 @@ public:
 
     [[nodiscard]] SyncKind kind() const noexcept { return m_kind; }
     [[nodiscard]] bool was_created() const noexcept { return m_was_created; }
+    /// Last real local handle releases its namespace reference; an in-flight
+    /// operation may retain this object's mapping and still signal it.
+    void release_handle_reference();
 
     // -- Signal / release (return false on wrong-owner etc.) --
     /// Set / reset the event; returns the state before the change.

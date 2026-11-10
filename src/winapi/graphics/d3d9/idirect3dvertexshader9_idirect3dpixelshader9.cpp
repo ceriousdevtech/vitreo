@@ -38,7 +38,7 @@ namespace vitreo::winapi {
 void D3D9Manager::create_shader(Marshaler& m, u32 device, bool pixel) {
     const GuestAddr function = m.arg_ptr(1);
     const GuestAddr out = m.arg_ptr(2);
-    if (out != 0) (void)m.write_u32(out, 0);
+    if (out != 0) (void)m.write_ptr(out, 0);
     if (function == 0 || out == 0) {
         m.set_return(D3DERR_INVALIDCALL);
         return;
@@ -146,7 +146,7 @@ void D3D9Manager::create_shader(Marshaler& m, u32 device, bool pixel) {
         }
     }
 
-    if (m.write_u32(out, object).is_err()) {
+    if (m.write_ptr(out, object).is_err()) {
         destroy_object(object);
         m.set_return(E_POINTER_D3D);
         return;
@@ -180,7 +180,7 @@ void D3D9Manager::dispatch_shader(Marshaler& m, usize slot, u32 self,
             return;
         }
         (void)add_ref(entry->device);
-        if (m.write_u32(out, entry->device).is_err()) {
+        if (m.write_ptr(out, entry->device).is_err()) {
             (void)release(entry->device);
             m.set_return(D3DERR_INVALIDCALL);
             return;

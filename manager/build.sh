@@ -10,6 +10,23 @@ BUILD_DIR="build/${CONFIG}"
 APP_NAME="Vitreo"
 APP_BUNDLE="${BUILD_DIR}/${APP_NAME}.app"
 
+# Target architecture: arm64 (Apple silicon) or x86_64 (Intel). Defaults to
+# this Mac's. Intel Macs top out at macOS 13, so the x86_64 app targets it;
+# the arm64 app keeps macOS 14.
+VITREO_ARCH="${VITREO_ARCH:-$(uname -m)}"
+case "${VITREO_ARCH}" in
+    arm64)  MIN_MACOS="14.0" ;;
+    x86_64) MIN_MACOS="13.0" ;;
+    *) echo "error: VITREO_ARCH must be arm64 or x86_64 (got ${VITREO_ARCH})" >&2; exit 1 ;;
+esac
+SWIFT_TARGET="${VITREO_ARCH}-apple-macos${MIN_MACOS}"
+# A build for the other architecture stages separately, so it never replaces
+# the bundle install.sh picks up for this Mac.
+if [ "${VITREO_ARCH}" != "$(uname -m)" ]; then
+    BUILD_DIR="build/${CONFIG}-${VITREO_ARCH}"
+    APP_BUNDLE="${BUILD_DIR}/${APP_NAME}.app"
+fi
+
 # Collect all Swift source files
 SOURCES=$(find VitreoManager -name "*.swift" -type f)
 
@@ -18,7 +35,7 @@ if [ -z "$SOURCES" ]; then
     exit 1
 fi
 
-echo "=== Building Vitreo (${CONFIG}) ==="
+echo "=== Building Vitreo (${CONFIG}, ${VITREO_ARCH}, macOS ${MIN_MACOS}+) ==="
 
 # Create app bundle structure
 mkdir -p "${APP_BUNDLE}/Contents/MacOS"
@@ -33,7 +50,7 @@ fi
 echo "Compiling ${APP_NAME}..."
 swiftc \
     ${SWIFT_FLAGS} \
-    -target arm64-apple-macos14.0 \
+    -target "${SWIFT_TARGET}" \
     -sdk "$(xcrun --show-sdk-path --sdk macosx)" \
     -module-name "${APP_NAME}" \
     -emit-executable \
@@ -43,7 +60,7 @@ swiftc \
 echo "Compiling native launcher helper..."
 swiftc \
     -O \
-    -target arm64-apple-macos14.0 \
+    -target "${SWIFT_TARGET}" \
     -sdk "$(xcrun --show-sdk-path --sdk macosx)" \
     -o "${APP_BUNDLE}/Contents/Resources/VitreoLauncher" \
     LauncherHelper/main.swift
@@ -257,6 +274,9 @@ cat > "${APP_BUNDLE}/Contents/Info.plist" << 'PLIST'
 </plist>
 PLIST
 
+/usr/libexec/PlistBuddy -c "Set :LSMinimumSystemVersion ${MIN_MACOS}" \
+    "${APP_BUNDLE}/Contents/Info.plist"
+
 # Compile the asset catalog, including the app icon. actool only emits
 # AppIcon.icns when --app-icon names the set.
 if command -v actool &>/dev/null; then
@@ -264,7 +284,7 @@ if command -v actool &>/dev/null; then
     ACTOOL_PARTIAL="${APP_BUNDLE}/Contents/Info-actool.plist"
     actool --compile "${APP_BUNDLE}/Contents/Resources" \
            --platform macosx \
-           --minimum-deployment-target 14.0 \
+           --minimum-deployment-target "${MIN_MACOS}" \
            --app-icon AppIcon \
            --output-partial-info-plist "${ACTOOL_PARTIAL}" \
            VitreoManager/Assets.xcassets > "${ACTOOL_PLIST}"

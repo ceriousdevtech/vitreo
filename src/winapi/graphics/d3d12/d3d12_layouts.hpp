@@ -606,6 +606,16 @@ inline constexpr std::array<D3D12_VIEW_INSTANCING_DESC_Layout, 2> D3D12_VIEW_INS
     {24, 0, 8, 16},
 }};
 
+struct D3D12_VIEW_INSTANCE_LOCATION_Layout {
+    u32 size;
+    u32 ViewportArrayIndex;
+    u32 RenderTargetArrayIndex;
+};
+inline constexpr std::array<D3D12_VIEW_INSTANCE_LOCATION_Layout, 2> D3D12_VIEW_INSTANCE_LOCATION{{
+    {8, 0, 4},
+    {8, 0, 4},
+}};
+
 struct D3D12_INPUT_ELEMENT_DESC_Layout {
     u32 size;
     u32 SemanticName;
@@ -786,6 +796,83 @@ struct D3D12_RESOURCE_BARRIER_Layout {
 inline constexpr std::array<D3D12_RESOURCE_BARRIER_Layout, 2> D3D12_RESOURCE_BARRIER{{
     {24, 0, 4, 8, 8, 12, 16, 20, 8, 8, 12, 8, 8},
     {32, 0, 4, 8, 8, 16, 20, 24, 8, 8, 16, 8, 8},
+}};
+
+struct D3D12_BARRIER_SUBRESOURCE_RANGE_Layout {
+    u32 size;
+    u32 IndexOrFirstMipLevel;
+    u32 NumMipLevels;
+    u32 FirstArraySlice;
+    u32 NumArraySlices;
+    u32 FirstPlane;
+    u32 NumPlanes;
+};
+inline constexpr std::array<D3D12_BARRIER_SUBRESOURCE_RANGE_Layout, 2> D3D12_BARRIER_SUBRESOURCE_RANGE{{
+    {24, 0, 4, 8, 12, 16, 20},
+    {24, 0, 4, 8, 12, 16, 20},
+}};
+
+struct D3D12_GLOBAL_BARRIER_Layout {
+    u32 size;
+    u32 SyncBefore;
+    u32 SyncAfter;
+    u32 AccessBefore;
+    u32 AccessAfter;
+};
+inline constexpr std::array<D3D12_GLOBAL_BARRIER_Layout, 2> D3D12_GLOBAL_BARRIER{{
+    {16, 0, 4, 8, 12},
+    {16, 0, 4, 8, 12},
+}};
+
+struct D3D12_TEXTURE_BARRIER_Layout {
+    u32 size;
+    u32 SyncBefore;
+    u32 SyncAfter;
+    u32 AccessBefore;
+    u32 AccessAfter;
+    u32 LayoutBefore;
+    u32 LayoutAfter;
+    u32 pResource;
+    u32 Subresources;
+    u32 Subresources_IndexOrFirstMipLevel;
+    u32 Subresources_NumMipLevels;
+    u32 Subresources_FirstArraySlice;
+    u32 Subresources_NumArraySlices;
+    u32 Subresources_FirstPlane;
+    u32 Subresources_NumPlanes;
+    u32 Flags;
+};
+inline constexpr std::array<D3D12_TEXTURE_BARRIER_Layout, 2> D3D12_TEXTURE_BARRIER{{
+    {56, 0, 4, 8, 12, 16, 20, 24, 28, 28, 32, 36, 40, 44, 48, 52},
+    {64, 0, 4, 8, 12, 16, 20, 24, 32, 32, 36, 40, 44, 48, 52, 56},
+}};
+
+struct D3D12_BUFFER_BARRIER_Layout {
+    u32 size;
+    u32 SyncBefore;
+    u32 SyncAfter;
+    u32 AccessBefore;
+    u32 AccessAfter;
+    u32 pResource;
+    u32 Offset;
+    u32 Size;
+};
+inline constexpr std::array<D3D12_BUFFER_BARRIER_Layout, 2> D3D12_BUFFER_BARRIER{{
+    {40, 0, 4, 8, 12, 16, 24, 32},
+    {40, 0, 4, 8, 12, 16, 24, 32},
+}};
+
+struct D3D12_BARRIER_GROUP_Layout {
+    u32 size;
+    u32 Type;
+    u32 NumBarriers;
+    u32 pGlobalBarriers;
+    u32 pTextureBarriers;
+    u32 pBufferBarriers;
+};
+inline constexpr std::array<D3D12_BARRIER_GROUP_Layout, 2> D3D12_BARRIER_GROUP{{
+    {12, 0, 4, 8, 8, 8},
+    {16, 0, 4, 8, 8, 8},
 }};
 
 struct D3D12_SUBRESOURCE_FOOTPRINT_Layout {
@@ -1186,6 +1273,393 @@ struct LUID_Layout {
 inline constexpr std::array<LUID_Layout, 2> LUID{{
     {8, 0, 4},
     {8, 0, 4},
+}};
+
+struct D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT_Layout {
+    u32 size;
+    u32 pHeadAutoBreadcrumbNode;
+};
+inline constexpr std::array<D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT_Layout, 2> D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT{{
+    {4, 0},
+    {8, 0},
+}};
+
+struct D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT1_Layout {
+    u32 size;
+    u32 pHeadAutoBreadcrumbNode;
+};
+inline constexpr std::array<D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT1_Layout, 2> D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT1{{
+    {4, 0},
+    {8, 0},
+}};
+
+struct D3D12_DRED_PAGE_FAULT_OUTPUT_Layout {
+    u32 size;
+    u32 PageFaultVA;
+    u32 pHeadExistingAllocationNode;
+    u32 pHeadRecentFreedAllocationNode;
+};
+inline constexpr std::array<D3D12_DRED_PAGE_FAULT_OUTPUT_Layout, 2> D3D12_DRED_PAGE_FAULT_OUTPUT{{
+    {16, 0, 8, 12},
+    {24, 0, 8, 16},
+}};
+
+struct D3D12_DRED_PAGE_FAULT_OUTPUT1_Layout {
+    u32 size;
+    u32 PageFaultVA;
+    u32 pHeadExistingAllocationNode;
+    u32 pHeadRecentFreedAllocationNode;
+};
+inline constexpr std::array<D3D12_DRED_PAGE_FAULT_OUTPUT1_Layout, 2> D3D12_DRED_PAGE_FAULT_OUTPUT1{{
+    {16, 0, 8, 12},
+    {24, 0, 8, 16},
+}};
+
+struct D3D12_DRED_PAGE_FAULT_OUTPUT2_Layout {
+    u32 size;
+    u32 PageFaultVA;
+    u32 pHeadExistingAllocationNode;
+    u32 pHeadRecentFreedAllocationNode;
+    u32 PageFaultFlags;
+};
+inline constexpr std::array<D3D12_DRED_PAGE_FAULT_OUTPUT2_Layout, 2> D3D12_DRED_PAGE_FAULT_OUTPUT2{{
+    {24, 0, 8, 12, 16},
+    {32, 0, 8, 16, 24},
+}};
+
+struct D3D12_DEVICE_CONFIGURATION_DESC_Layout {
+    u32 size;
+    u32 Flags;
+    u32 GpuBasedValidationFlags;
+    u32 SDKVersion;
+    u32 NumEnabledExperimentalFeatures;
+};
+inline constexpr std::array<D3D12_DEVICE_CONFIGURATION_DESC_Layout, 2> D3D12_DEVICE_CONFIGURATION_DESC{{
+    {16, 0, 4, 8, 12},
+    {16, 0, 4, 8, 12},
+}};
+
+struct D3D12_GPU_VIRTUAL_ADDRESS_RANGE_Layout {
+    u32 size;
+    u32 StartAddress;
+    u32 SizeInBytes;
+};
+inline constexpr std::array<D3D12_GPU_VIRTUAL_ADDRESS_RANGE_Layout, 2> D3D12_GPU_VIRTUAL_ADDRESS_RANGE{{
+    {16, 0, 8},
+    {16, 0, 8},
+}};
+
+struct D3D12_SHADER_CACHE_SESSION_DESC_Layout {
+    u32 size;
+    u32 Identifier;
+    u32 Identifier_Data1;
+    u32 Identifier_Data2;
+    u32 Identifier_Data3;
+    u32 Identifier_Data4;
+    u32 Mode;
+    u32 Flags;
+    u32 MaximumInMemoryCacheSizeBytes;
+    u32 MaximumInMemoryCacheEntries;
+    u32 MaximumValueFileSizeBytes;
+    u32 Version;
+};
+inline constexpr std::array<D3D12_SHADER_CACHE_SESSION_DESC_Layout, 2> D3D12_SHADER_CACHE_SESSION_DESC{{
+    {48, 0, 0, 4, 6, 8, 16, 20, 24, 28, 32, 40},
+    {48, 0, 0, 4, 6, 8, 16, 20, 24, 28, 32, 40},
+}};
+
+struct D3D12_STATE_OBJECT_DESC_Layout {
+    u32 size;
+    u32 Type;
+    u32 NumSubobjects;
+    u32 pSubobjects;
+};
+inline constexpr std::array<D3D12_STATE_OBJECT_DESC_Layout, 2> D3D12_STATE_OBJECT_DESC{{
+    {12, 0, 4, 8},
+    {16, 0, 4, 8},
+}};
+
+struct D3D12_STATE_SUBOBJECT_Layout {
+    u32 size;
+    u32 Type;
+    u32 pDesc;
+};
+inline constexpr std::array<D3D12_STATE_SUBOBJECT_Layout, 2> D3D12_STATE_SUBOBJECT{{
+    {8, 0, 4},
+    {16, 0, 8},
+}};
+
+struct D3D12_STATE_OBJECT_CONFIG_Layout {
+    u32 size;
+    u32 Flags;
+};
+inline constexpr std::array<D3D12_STATE_OBJECT_CONFIG_Layout, 2> D3D12_STATE_OBJECT_CONFIG{{
+    {4, 0},
+    {4, 0},
+}};
+
+struct D3D12_GLOBAL_ROOT_SIGNATURE_Layout {
+    u32 size;
+    u32 pGlobalRootSignature;
+};
+inline constexpr std::array<D3D12_GLOBAL_ROOT_SIGNATURE_Layout, 2> D3D12_GLOBAL_ROOT_SIGNATURE{{
+    {4, 0},
+    {8, 0},
+}};
+
+struct D3D12_NODE_MASK_Layout {
+    u32 size;
+    u32 NodeMask;
+};
+inline constexpr std::array<D3D12_NODE_MASK_Layout, 2> D3D12_NODE_MASK{{
+    {4, 0},
+    {4, 0},
+}};
+
+struct D3D12_EXISTING_COLLECTION_DESC_Layout {
+    u32 size;
+    u32 pExistingCollection;
+    u32 NumExports;
+    u32 pExports;
+};
+inline constexpr std::array<D3D12_EXISTING_COLLECTION_DESC_Layout, 2> D3D12_EXISTING_COLLECTION_DESC{{
+    {12, 0, 4, 8},
+    {24, 0, 8, 16},
+}};
+
+struct D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS_Layout {
+    u32 size;
+    u32 Type;
+    u32 Flags;
+    u32 NumDescs;
+    u32 DescsLayout;
+    u32 InstanceDescs;
+    u32 pGeometryDescs;
+    u32 ppGeometryDescs;
+};
+inline constexpr std::array<D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS_Layout, 2> D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS{{
+    {24, 0, 4, 8, 12, 16, 16, 16},
+    {24, 0, 4, 8, 12, 16, 16, 16},
+}};
+
+struct D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC_Layout {
+    u32 size;
+    u32 DestAccelerationStructureData;
+    u32 Inputs;
+    u32 Inputs_Type;
+    u32 Inputs_Flags;
+    u32 Inputs_NumDescs;
+    u32 Inputs_DescsLayout;
+    u32 Inputs_InstanceDescs;
+    u32 Inputs_pGeometryDescs;
+    u32 Inputs_ppGeometryDescs;
+    u32 SourceAccelerationStructureData;
+    u32 ScratchAccelerationStructureData;
+};
+inline constexpr std::array<D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC_Layout, 2> D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC{{
+    {48, 0, 8, 8, 12, 16, 20, 24, 24, 24, 32, 40},
+    {48, 0, 8, 8, 12, 16, 20, 24, 24, 24, 32, 40},
+}};
+
+struct D3D12_RAYTRACING_GEOMETRY_DESC_Layout {
+    u32 size;
+    u32 Type;
+    u32 Flags;
+    u32 Triangles;
+    u32 Triangles_Transform3x4;
+    u32 Triangles_IndexFormat;
+    u32 Triangles_VertexFormat;
+    u32 Triangles_IndexCount;
+    u32 Triangles_VertexCount;
+    u32 Triangles_IndexBuffer;
+    u32 Triangles_VertexBuffer;
+    u32 Triangles_VertexBuffer_StartAddress;
+    u32 Triangles_VertexBuffer_StrideInBytes;
+    u32 AABBs;
+    u32 AABBs_AABBCount;
+    u32 AABBs_AABBs;
+    u32 AABBs_AABBs_StartAddress;
+    u32 AABBs_AABBs_StrideInBytes;
+};
+inline constexpr std::array<D3D12_RAYTRACING_GEOMETRY_DESC_Layout, 2> D3D12_RAYTRACING_GEOMETRY_DESC{{
+    {56, 0, 4, 8, 8, 16, 20, 24, 28, 32, 40, 40, 48, 8, 8, 16, 16, 24},
+    {56, 0, 4, 8, 8, 16, 20, 24, 28, 32, 40, 40, 48, 8, 8, 16, 16, 24},
+}};
+
+struct D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO_Layout {
+    u32 size;
+    u32 ResultDataMaxSizeInBytes;
+    u32 ScratchDataSizeInBytes;
+    u32 UpdateScratchDataSizeInBytes;
+};
+inline constexpr std::array<D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO_Layout, 2> D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO{{
+    {24, 0, 8, 16},
+    {24, 0, 8, 16},
+}};
+
+struct D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC_Layout {
+    u32 size;
+    u32 DestBuffer;
+    u32 InfoType;
+};
+inline constexpr std::array<D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC_Layout, 2> D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC{{
+    {16, 0, 8},
+    {16, 0, 8},
+}};
+
+struct D3D12_DISPATCH_RAYS_DESC_Layout {
+    u32 size;
+    u32 RayGenerationShaderRecord;
+    u32 RayGenerationShaderRecord_StartAddress;
+    u32 RayGenerationShaderRecord_SizeInBytes;
+    u32 MissShaderTable;
+    u32 MissShaderTable_StartAddress;
+    u32 MissShaderTable_SizeInBytes;
+    u32 MissShaderTable_StrideInBytes;
+    u32 HitGroupTable;
+    u32 HitGroupTable_StartAddress;
+    u32 HitGroupTable_SizeInBytes;
+    u32 HitGroupTable_StrideInBytes;
+    u32 CallableShaderTable;
+    u32 CallableShaderTable_StartAddress;
+    u32 CallableShaderTable_SizeInBytes;
+    u32 CallableShaderTable_StrideInBytes;
+    u32 Width;
+    u32 Height;
+    u32 Depth;
+};
+inline constexpr std::array<D3D12_DISPATCH_RAYS_DESC_Layout, 2> D3D12_DISPATCH_RAYS_DESC{{
+    {104, 0, 0, 8, 16, 16, 24, 32, 40, 40, 48, 56, 64, 64, 72, 80, 88, 92, 96},
+    {104, 0, 0, 8, 16, 16, 24, 32, 40, 40, 48, 56, 64, 64, 72, 80, 88, 92, 96},
+}};
+
+struct D3D12_DXIL_LIBRARY_DESC_Layout {
+    u32 size;
+    u32 DXILLibrary;
+    u32 DXILLibrary_pShaderBytecode;
+    u32 DXILLibrary_BytecodeLength;
+    u32 NumExports;
+    u32 pExports;
+};
+inline constexpr std::array<D3D12_DXIL_LIBRARY_DESC_Layout, 2> D3D12_DXIL_LIBRARY_DESC{{
+    {16, 0, 0, 4, 8, 12},
+    {32, 0, 0, 8, 16, 24},
+}};
+
+struct D3D12_EXPORT_DESC_Layout {
+    u32 size;
+    u32 Name;
+    u32 ExportToRename;
+    u32 Flags;
+};
+inline constexpr std::array<D3D12_EXPORT_DESC_Layout, 2> D3D12_EXPORT_DESC{{
+    {12, 0, 4, 8},
+    {24, 0, 8, 16},
+}};
+
+struct D3D12_HIT_GROUP_DESC_Layout {
+    u32 size;
+    u32 HitGroupExport;
+    u32 Type;
+    u32 AnyHitShaderImport;
+    u32 ClosestHitShaderImport;
+    u32 IntersectionShaderImport;
+};
+inline constexpr std::array<D3D12_HIT_GROUP_DESC_Layout, 2> D3D12_HIT_GROUP_DESC{{
+    {20, 0, 4, 8, 12, 16},
+    {40, 0, 8, 16, 24, 32},
+}};
+
+struct D3D12_RAYTRACING_SHADER_CONFIG_Layout {
+    u32 size;
+    u32 MaxPayloadSizeInBytes;
+    u32 MaxAttributeSizeInBytes;
+};
+inline constexpr std::array<D3D12_RAYTRACING_SHADER_CONFIG_Layout, 2> D3D12_RAYTRACING_SHADER_CONFIG{{
+    {8, 0, 4},
+    {8, 0, 4},
+}};
+
+struct D3D12_RAYTRACING_PIPELINE_CONFIG_Layout {
+    u32 size;
+    u32 MaxTraceRecursionDepth;
+};
+inline constexpr std::array<D3D12_RAYTRACING_PIPELINE_CONFIG_Layout, 2> D3D12_RAYTRACING_PIPELINE_CONFIG{{
+    {4, 0},
+    {4, 0},
+}};
+
+struct D3D12_RAYTRACING_PIPELINE_CONFIG1_Layout {
+    u32 size;
+    u32 MaxTraceRecursionDepth;
+    u32 Flags;
+};
+inline constexpr std::array<D3D12_RAYTRACING_PIPELINE_CONFIG1_Layout, 2> D3D12_RAYTRACING_PIPELINE_CONFIG1{{
+    {8, 0, 4},
+    {8, 0, 4},
+}};
+
+struct D3D12_LOCAL_ROOT_SIGNATURE_Layout {
+    u32 size;
+    u32 pLocalRootSignature;
+};
+inline constexpr std::array<D3D12_LOCAL_ROOT_SIGNATURE_Layout, 2> D3D12_LOCAL_ROOT_SIGNATURE{{
+    {4, 0},
+    {8, 0},
+}};
+
+struct D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION_Layout {
+    u32 size;
+    u32 pSubobjectToAssociate;
+    u32 NumExports;
+    u32 pExports;
+};
+inline constexpr std::array<D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION_Layout, 2> D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION{{
+    {12, 0, 4, 8},
+    {24, 0, 8, 16},
+}};
+
+struct D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION_Layout {
+    u32 size;
+    u32 SubobjectToAssociate;
+    u32 NumExports;
+    u32 pExports;
+};
+inline constexpr std::array<D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION_Layout, 2> D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION{{
+    {12, 0, 4, 8},
+    {24, 0, 8, 16},
+}};
+
+struct D3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER_Layout {
+    u32 size;
+    u32 DriverOpaqueGUID;
+    u32 DriverOpaqueGUID_Data1;
+    u32 DriverOpaqueGUID_Data2;
+    u32 DriverOpaqueGUID_Data3;
+    u32 DriverOpaqueGUID_Data4;
+    u32 DriverOpaqueVersioningData;
+};
+inline constexpr std::array<D3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER_Layout, 2> D3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER{{
+    {32, 0, 0, 4, 6, 8, 16},
+    {32, 0, 0, 4, 6, 8, 16},
+}};
+
+struct D3D12_SERIALIZED_RAYTRACING_ACCELERATION_STRUCTURE_HEADER_Layout {
+    u32 size;
+    u32 DriverMatchingIdentifier;
+    u32 DriverMatchingIdentifier_DriverOpaqueGUID;
+    u32 DriverMatchingIdentifier_DriverOpaqueGUID_Data1;
+    u32 DriverMatchingIdentifier_DriverOpaqueGUID_Data2;
+    u32 DriverMatchingIdentifier_DriverOpaqueGUID_Data3;
+    u32 DriverMatchingIdentifier_DriverOpaqueGUID_Data4;
+    u32 DriverMatchingIdentifier_DriverOpaqueVersioningData;
+    u32 SerializedSizeInBytesIncludingHeader;
+    u32 DeserializedSizeInBytes;
+    u32 NumBottomLevelAccelerationStructurePointersAfterHeader;
+};
+inline constexpr std::array<D3D12_SERIALIZED_RAYTRACING_ACCELERATION_STRUCTURE_HEADER_Layout, 2> D3D12_SERIALIZED_RAYTRACING_ACCELERATION_STRUCTURE_HEADER{{
+    {56, 0, 0, 0, 4, 6, 8, 16, 32, 40, 48},
+    {56, 0, 0, 0, 4, 6, 8, 16, 32, 40, 48},
 }};
 
 } // namespace vitreo::winapi::d3d12::layout

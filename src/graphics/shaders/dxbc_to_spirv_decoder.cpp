@@ -4,6 +4,7 @@
 /// @brief DXBC operand decoding and the immediate constant buffer.
 
 #include "graphics/shaders/dxbc_to_spirv_internal.hpp"
+#include "graphics/shaders/dxbc_vitreo_ext.hpp"
 
 namespace vitreo::graphics::dxbc_spirv_detail {
 
@@ -172,6 +173,7 @@ bool DxbcDecoder::decode_operand_tokens(Sm4Operand& op) {
         is_relative = true;
         op.relative_type = relative.type;
         op.relative_index0 = relative.index0;
+        op.relative_index1 = relative.index1;
         op.relative_component = relative.swizzle & 0x3u;
         return true;
     };
@@ -227,8 +229,10 @@ bool DxbcDecoder::decode_operand_tokens(Sm4Operand& op) {
 }
 
 std::vector<std::array<float, 4>> decode_immediate_constant_buffer(
-    const std::vector<u8>& bytecode) {
+    const std::vector<u8>& bytecode, std::string* failure,
+    std::map<u32, std::vector<u32>>* readonly_words) {
     std::vector<std::array<float, 4>> values;
+    bool declared = false;
     DxbcDecoder scan(bytecode.data(), bytecode.size());
     if (!scan.has_tokens(2)) return values;
     scan.skip_tokens(2);
@@ -236,13 +240,35 @@ std::vector<std::array<float, 4>> decode_immediate_constant_buffer(
         const u32 token = scan.read_token();
         const u32 opcode = token & 0x7ffu;
         if (opcode == 53u) {
-            if (!scan.has_tokens(1)) return {};
+            const u32 custom_class = (token >> 11u) & 0x1fffffu;
+            const auto invalid = [&]() {
+                if (failure && (custom_class == 3u ||
+                    custom_class == dxbc_vitreo_ext::kReadonlyIndexableDataClass)) {
+                    *failure = custom_class == 3u ? "invalid immediate constant buffer declaration"
+                        : "invalid readonly global initializer";
+                }
+                return std::vector<std::array<float, 4>>{};
+            };
+            if (!scan.has_tokens(1)) return invalid();
             const u32 block_length = scan.read_token();
             if (block_length < 2u || !scan.has_tokens(block_length - 2u)) {
-                return {};
+                return invalid();
             }
-            const u32 custom_class = (token >> 11u) & 0x1fffffu;
-            if (custom_class == 3u && ((block_length - 2u) % 4u) == 0u) {
+            if (custom_class == dxbc_vitreo_ext::kReadonlyIndexableDataClass) {
+                if (block_length < 4u || !readonly_words) return invalid();
+                const u32 slot = scan.read_token();
+                if (readonly_words->contains(slot)) return invalid();
+                auto& words = (*readonly_words)[slot];
+                words.reserve(block_length - 3u);
+                for (u32 i = 3; i < block_length; ++i) words.push_back(scan.read_token());
+            } else if (custom_class == 3u) {
+                const u32 count = (block_length - 2u) / 4u;
+                if (declared || count == 0u || count > 4096u ||
+                    ((block_length - 2u) % 4u) != 0u) {
+                    if (failure) *failure = "invalid immediate constant buffer declaration";
+                    return {};
+                }
+                declared = true;
                 values.reserve((block_length - 2u) / 4u);
                 for (u32 i = 2; i < block_length; i += 4u) {
                     std::array<float, 4> value{};

@@ -32,8 +32,13 @@ struct Entry {
     void* buffer{nullptr};
 };
 
-std::mutex g_mutex;
-std::map<u64, Entry> g_inflight;  // ordered by commit serial
+// Never destroyed: the detached watchdog thread and late completion handlers
+// keep using both after exit() has run static destructors. A destroyed
+// std::mutex made every guest exit abort with "mutex lock failed: Invalid
+// argument" (signal 6 in watchdog_loop) after the process had already
+// returned its exit code.
+std::mutex& g_mutex = *new std::mutex;
+std::map<u64, Entry>& g_inflight = *new std::map<u64, Entry>;  // ordered by commit serial
 u64 g_next_serial = 1;
 // Per-second GPU utilization (VITREO_GPU_WATCH_STATS=1): GPU-busy seconds and
 // command buffers retired in the current one-second window.

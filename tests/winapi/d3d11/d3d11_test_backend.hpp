@@ -304,7 +304,7 @@ public:
     }
     std::unique_ptr<graphics::BackendTextureBuffer> create_texture_buffer(
         const graphics::BackendBuffer&, graphics::PixelFormat pixel_format,
-        unsigned first_element, unsigned num_elements,
+        u64 first_element, unsigned num_elements,
         bool shader_write = false) override {
         state.texture_buffer_creations.push_back(
             {pixel_format, first_element, num_elements, shader_write});
@@ -394,6 +394,15 @@ public:
         if (!desc.rasterization_enabled) ++state.rasterization_disabled_pipelines;
         return std::make_unique<TestBackendPipeline>(desc);
     }
+    // ---- WS5 begin ----
+    bool supports_mesh_pipelines() const noexcept override { return state.mesh_supported; }
+    std::unique_ptr<graphics::BackendPipeline> create_mesh_pipeline(
+        const graphics::BackendMeshPipelineDesc&) override {
+        if (!state.mesh_supported) return nullptr;
+        ++state.mesh_pipelines_created;
+        return std::make_unique<TestMeshPipeline>(!state.mesh_pipeline_fails);
+    }
+    // ---- WS5 end ----
     std::unique_ptr<graphics::BackendComputePipeline> create_compute_pipeline(
         const graphics::BackendComputePipelineDesc& desc) override {
         ++state.compute_pipeline_creations;

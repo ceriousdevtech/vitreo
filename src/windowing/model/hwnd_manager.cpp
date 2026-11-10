@@ -30,6 +30,36 @@ HwndManager::HwndManager()
     m_windows.emplace(HWND_DESKTOP, desktop_data);
 }
 
+std::vector<HwndManager::Geometry> HwndManager::geometry_snapshot() const {
+    std::shared_lock lock(m_mutex);
+    std::vector<Geometry> result;
+    result.reserve(m_windows.size());
+    for (const auto& [hwnd, data] : m_windows) {
+        usize order = 0;
+        if (const auto parent = m_windows.find(data.parent); parent != m_windows.end()) {
+            const auto& children = parent->second.children;
+            order = static_cast<usize>(std::find(children.begin(),children.end(),hwnd)-children.begin());
+        }
+        result.push_back({hwnd,data.parent,data.style,data.ex_style,data.class_style,data.rect,data.client_rect,
+            data.client_offset,data.visible,data.minimized,data.hidden_by_owner,order});
+    }
+    return result;
+}
+
+std::optional<HwndManager::Geometry> HwndManager::update_geometry(HWND hwnd,
+    const std::function<void(WindowData&)>& update) {
+    std::unique_lock lock(m_mutex);
+    const auto it=m_windows.find(hwnd);if(it==m_windows.end())return std::nullopt;
+    update(it->second);
+    const auto& data=it->second;usize order=0;
+    if(const auto parent=m_windows.find(data.parent);parent!=m_windows.end()) {
+        const auto& children=parent->second.children;
+        order=static_cast<usize>(std::find(children.begin(),children.end(),hwnd)-children.begin());
+    }
+    return Geometry{hwnd,data.parent,data.style,data.ex_style,data.class_style,data.rect,data.client_rect,
+        data.client_offset,data.visible,data.minimized,data.hidden_by_owner,order};
+}
+
 // -----------------------------------------------------------------------------
 // Handle Allocation
 // -----------------------------------------------------------------------------
@@ -52,6 +82,19 @@ HWND HwndManager::allocate_handle() {
 void HwndManager::set_handle_allocator(std::function<HWND()> allocator) {
     std::unique_lock lock(m_mutex);
     m_handle_allocator = std::move(allocator);
+}
+
+void HwndManager::set_child_order_observer(std::function<void(const ChildOrderEvent&)> observer) {
+    std::unique_lock lock(m_mutex);
+    m_child_order_observer=std::move(observer);
+}
+
+void HwndManager::child_style_changed(HWND hwnd,u32 previous_style) {
+    std::unique_lock lock(m_mutex);
+    const auto it=m_windows.find(hwnd);if(it==m_windows.end() || !m_child_order_observer)return;
+    const bool was_child=(previous_style&WS::CHILD)!=0,now_child=(it->second.style&WS::CHILD)!=0;
+    if(was_child!=now_child)m_child_order_observer({now_child?ChildOrderAction::Append:ChildOrderAction::Remove,
+        hwnd,it->second.parent,HWND_BOTTOM});
 }
 
 // -----------------------------------------------------------------------------
@@ -100,6 +143,8 @@ HWND HwndManager::create(const WindowData& data) {
             siblings.push_back(h);
         }
     }
+    if ((entry.style&WS::CHILD) && m_child_order_observer)
+        m_child_order_observer({ChildOrderAction::Append,h,entry.parent,HWND_BOTTOM});
     return h;
 }
 
@@ -115,6 +160,8 @@ void HwndManager::destroy(HWND hwnd) {
         return;
     }
 
+    if ((it->second.style&WS::CHILD) && m_child_order_observer)
+        m_child_order_observer({ChildOrderAction::Remove,hwnd,it->second.parent,HWND_BOTTOM});
     remove_from_parent_unlocked(hwnd);
     m_windows.erase(it);
 }
@@ -128,6 +175,8 @@ bool HwndManager::set_parent(HWND hwnd, HWND parent, HWND& previous_parent) {
     if (previous_parent == parent) return true;
     remove_from_parent_unlocked(hwnd);
     it->second.parent = parent;
+    if ((it->second.style&WS::CHILD) && m_child_order_observer)
+        m_child_order_observer({ChildOrderAction::Append,hwnd,parent,HWND_BOTTOM});
     auto parent_it = m_windows.find(parent);
     if (parent_it != m_windows.end()) {
         auto& siblings = parent_it->second.children;
@@ -401,9 +450,13 @@ bool HwndManager::set_z_order(HWND hwnd, HWND insert_after) {
     }
 
     HWND parent = it->second.parent;
+    const bool child=(it->second.style&WS::CHILD)!=0;
+    if (child && m_child_order_observer && insert_after!=hwnd &&
+        insert_after!=HWND_TOPMOST && insert_after!=HWND_NOTOPMOST)
+        m_child_order_observer({ChildOrderAction::Reorder,hwnd,parent,insert_after});
     auto pit = m_windows.find(parent);
     if (pit == m_windows.end()) {
-        return false;
+        return child && static_cast<bool>(m_child_order_observer);
     }
 
     auto& siblings = pit->second.children;

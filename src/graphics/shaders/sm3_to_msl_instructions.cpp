@@ -12,6 +12,14 @@ bool Translator::parse_instruction_body(u32 token, bool& finished) {
     const u32 opcode = token & OPCODE_MASK;
     const u32 control = (token >> CONTROL_SHIFT) & CONTROL_MASK;
     (void)finished;
+    // Learn def - ps: definitions precede arithmetic/addressing. NOP and
+    // flow/declaration tokens alone are not that boundary.
+    const bool arithmetic_or_address =
+        (opcode >= OP_MOV && opcode <= OP_M3X2) ||
+        (opcode >= OP_POW && opcode <= OP_SINCOS) || opcode == OP_MOVA ||
+        (opcode >= OP_TEXCOORD && opcode <= OP_TEXLDL && opcode != OP_DEF);
+    if (m_result.stage == ShaderStage::Fragment && arithmetic_or_address)
+        m_pixel_definitions_closed = true;
 
     if (m_expect_label_or_end && opcode != OP_LABEL) {
         return fail("code after ret must begin a new label");
@@ -423,6 +431,16 @@ bool Translator::parse_instruction_body(u32 token, bool& finished) {
         if (projected && (m_stage_ttf[stage] & 0x100u) == 0) {
             uv = "((" + tc4 + ").xy / max(abs((" + tc4 + ").w), 1e-6))";
         }
+        if (m_result.major == 1 && stage < m_stage_dim.size() &&
+            (m_stage_dim[stage] == 3 || m_stage_dim[stage] == 4)) {
+            // A cube or volume texture bound to the stage takes (u, v, w),
+            // projected by the same rule.
+            const bool divide =
+                projected || (m_stage_ttf[stage] & 0x100u) != 0;
+            uv = divide ? "((" + tc4 + ").xyz / max(abs((" + tc4 +
+                              ").w), 1e-6))"
+                        : "(" + tc4 + ").xyz";
+        }
         return assign(dst, "tex" + index + ".sample(samp" + index + ", " + uv +
                                ")" + mask_to_string(dst.write_mask));
     }
@@ -479,66 +497,14 @@ bool Translator::parse_instruction_body(u32 token, bool& finished) {
     case OP_TEXM3X2DEPTH:
     case OP_TEXDEPTH:
     case OP_TEXM3X3:
-    case OP_BEM: {
-        // SM1 dependent-read / bump / matrix tex ops. The bump matrix lives
-        // in D3DTSS state that this translator does not yet bind as a
-        // uniform, so use an identity transform: copy the source texreg
-        // and optionally sample. That is enough for titles to create the
-        // shader and draw; lighting will be wrong until matrices are wired.
+    case OP_BEM:
+        // SM1 dependent reads, matrix rows and bump mapping (Microsoft
+        // Learn, ps_1_1 - ps_1_4 instruction reference). They exist only
+        // below shader model 2.
         if (m_result.major >= 2) {
             return fail("opcode " + std::to_string(opcode));
         }
-        Parameter dst;
-        if (!read_dst(dst)) return fail("a truncated instruction");
-        Parameter src;
-        const bool needs_src =
-            opcode != OP_TEXDEPTH; // texdepth is dest-only
-        if (needs_src && !read_src(src)) {
-            return fail("a truncated texture instruction");
-        }
-        std::string src_xy;
-        std::string src_xyz;
-        if (needs_src) {
-            if (!source_expression(src, 0x3, src_xy) ||
-                !source_expression(src, 0x7, src_xyz)) {
-                return false;
-            }
-        }
-        const bool sample =
-            opcode == OP_TEXM3X2TEX || opcode == OP_TEXM3X3TEX ||
-            opcode == OP_TEXM3X3SPEC || opcode == OP_TEXM3X3VSPEC ||
-            opcode == OP_TEXBEM || opcode == OP_TEXBEML ||
-            opcode == OP_TEXREG2AR || opcode == OP_TEXREG2GB ||
-            opcode == OP_TEXREG2RGB || opcode == OP_TEXDP3TEX ||
-            opcode == OP_TEXM3X2DEPTH;
-        if (dst.type == REG_ADDR) {
-            m_texregs_used.insert(dst.index);
-            m_texcoords_written.insert(dst.index);
-        }
-        if (sample) {
-            const u32 stage = dst.index;
-            if (stage >= m_result.samplers_used.size()) {
-                return fail("a sampler register above s15");
-            }
-            m_result.samplers_used[stage] = true;
-            const std::string index = std::to_string(stage);
-            const std::string coord =
-                needs_src ? src_xy : ("t" + index + ".xy");
-            return assign(dst, "tex" + index + ".sample(samp" + index +
-                                   ", " + coord + ")" +
-                                   mask_to_string(dst.write_mask));
-        }
-        // Pad / project ops: write the (identity-transformed) coordinate.
-        if (opcode == OP_TEXM3X3PAD || opcode == OP_TEXM3X3 ||
-            opcode == OP_TEXDP3) {
-            Parameter coordinate_dst = dst;
-            coordinate_dst.write_mask &= 0x7u;
-            return assign(coordinate_dst, src_xyz);
-        }
-        Parameter coordinate_dst = dst;
-        coordinate_dst.write_mask &= 0x3u;
-        return assign(coordinate_dst, src_xy);
-    }
+        return translate_sm1_texture_op(opcode);
     case OP_SETP: {
         Parameter dst;
         Parameter src0;

@@ -1,4 +1,5 @@
 #pragma once
+#include "winapi/common/gamepad_hid_catalog.hpp"
 
 /// @file file.hpp
 /// @brief CreateFileW / CreateFileA emulation (WIN32-010)
@@ -189,6 +190,10 @@ public:
         std::function<void(Handle, u32, GuestAddr, bool, u32, u32, bool)>;
     using OverlappedTraceCallback =
         std::function<void(const OverlappedIoTraceEvent&)>;
+    using OverlappedPrepareCallback=std::function<u32(Handle,GuestAddr,bool)>;
+    void set_overlapped_prepare_callback(OverlappedPrepareCallback callback) {m_overlapped_prepare=std::move(callback);}
+    [[nodiscard]] u32 prepare_overlapped_io(Handle handle,GuestAddr overlapped,bool is64);
+    void abandon_overlapped_io(Handle handle,GuestAddr overlapped,bool is64,u32 error);
     /// Queue a ReadFileEx/WriteFileEx FileIOCompletionRoutine for the issuing
     /// thread. Wired to ThreadManager so SleepEx can deliver it.
     using IoCompletionRoutineQueue =
@@ -216,6 +221,17 @@ public:
 
     /// Destructor
     ~FileManager();
+    void set_gamepad_catalog(std::shared_ptr<GamepadHidCatalog> catalog) { m_gamepad_catalog=std::move(catalog); }
+    [[nodiscard]] std::shared_ptr<GamepadHidCatalog> gamepad_catalog() const { return m_gamepad_catalog; }
+    bool read_hid(Handle handle, GuestAddr buffer, u32 length, GuestAddr count, u32* actual, bool signal_completion=true);
+    OverlappedPipeIoResult begin_overlapped_hid_read(Handle handle, GuestAddr buffer, u32 length,
+        GuestAddr overlapped, bool is64, u32& actual);
+    usize cancel_hid_io(Handle handle, GuestAddr overlapped, bool calling_thread_only);
+    void shutdown_hid_io();
+    void set_hid_waitable_callbacks(std::function<void(Handle,u64)> add,std::function<void(Handle)> remove) {
+        m_register_hid_waitable=std::move(add);m_unregister_hid_waitable=std::move(remove);
+    }
+    void initialize_hid_waitable(Handle handle,const HidOpenFileHolder& file);
 
     // -------------------------------------------------------------------------
     // Internal Accessors (for kernel32 thunks)
@@ -737,6 +753,20 @@ private:
     SocketHandleProbe m_socket_handle_probe;
     IoCompletionRoutineQueue m_io_completion_routine_queue;
     std::mutex m_positioned_io_mutex;
+    std::function<void(Handle,u64)> m_register_hid_waitable;
+    std::function<void(Handle)> m_unregister_hid_waitable;
+    std::shared_ptr<GamepadHidCatalog> m_gamepad_catalog;
+    struct HidReadRequest {
+        Handle handle{}; HidOpenFileHolder file; GuestAddr buffer{}; GuestAddr overlapped{};
+        u32 length{}; u32 tid{}; bool is64{}; bool cancelled{};
+    };
+    std::mutex m_hid_io_mutex;
+    std::condition_variable m_hid_io_cv;
+    std::vector<HidReadRequest> m_hid_reads;
+    std::unordered_set<Handle> m_hid_input_handles;
+    std::unordered_map<Handle,HidOpenFileHolder> m_hid_open_files;
+    std::jthread m_hid_io_worker;
+    void run_hid_io(std::stop_token stop);
     mutable std::mutex m_device_mutex;
     std::mutex m_overlapped_pipe_io_mutex;
     /// Pipe transports whose FD_CLOEXEC prepare_inherited_named_pipes cleared
@@ -869,6 +899,7 @@ private:
     std::set<std::string> m_running_kernel_devices;
 
     void trace_overlapped(OverlappedIoTraceEvent event) const;
+    OverlappedPrepareCallback m_overlapped_prepare;
 };
 
 // =============================================================================

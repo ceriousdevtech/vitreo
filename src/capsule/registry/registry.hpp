@@ -114,6 +114,12 @@ public:
                                                  std::wstring_view subkey,
                                                  RegView view = RegView::Default);
 
+    /// Rename a key/subtree in its current parent, preserving live handles.
+    /// Empty subkey names the supplied key itself. Merged HKCR and hive-root
+    /// renames require separate contracts and return NotSupported.
+    [[nodiscard]] VoidResult rename_key(RegHandle key,
+        std::wstring_view subkey, std::wstring_view new_name);
+
     /// List the subkey names immediately under `key`.
     [[nodiscard]] Result<std::vector<std::wstring>, Error>
     enum_keys(RegHandle key);
@@ -171,6 +177,7 @@ private:
     /// `path` joined with its case kept, for live-journal records.
     [[nodiscard]] static std::wstring journal_path(const Path& path);
     void forget_handles_to(RegNode* node);
+    VoidResult rename_physical(const Path& source, std::wstring_view new_name);
     Result<void, Error> delete_physical(const Path& path);
     void add_link_children(const Path& path,
                            std::map<std::wstring, std::wstring,
@@ -184,7 +191,8 @@ private:
                        const std::vector<std::wstring>& parts,
                        bool create);
 
-    void sync_live_journal();
+    using SnapshotOffsets = std::map<std::wstring, u64, RegCaseInsensitive>;
+    void sync_live_journal(const SnapshotOffsets* snapshot_offsets = nullptr);
     void record_live_key(std::wstring_view canonical_path);
     void record_live_value(std::wstring_view canonical_path,
                            std::wstring_view name,
@@ -192,6 +200,8 @@ private:
     void record_live_value_delete(std::wstring_view canonical_path,
                                   std::wstring_view name);
     void record_live_key_delete(std::wstring_view canonical_path);
+    void record_live_key_rename(std::wstring_view canonical_path,
+                                std::wstring_view new_name);
     void append_live_record(std::string record);
     void apply_live_record(std::string_view record);
     RegNode* live_write_node(std::wstring_view canonical_path, bool create);

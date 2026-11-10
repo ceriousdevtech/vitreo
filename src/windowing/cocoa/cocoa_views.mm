@@ -175,6 +175,29 @@
 // are never destroyed when VtrPixelView is added later.
 // =============================================================================
 
+@implementation VtrEditTextView
+- (BOOL)vtrFocused {
+    return self.window != nil && self.window.firstResponder == self;
+}
+- (NSDictionary<NSAttributedStringKey, id>*)selectedTextAttributes {
+    if (self.hidesSelectionWhenUnfocused && ![self vtrFocused]) return @{};
+    return [super selectedTextAttributes];
+}
+- (BOOL)vtrShowsSelectionHighlight {
+    return [[self selectedTextAttributes] objectForKey:NSBackgroundColorAttributeName] != nil;
+}
+- (BOOL)becomeFirstResponder {
+    const BOOL ok = [super becomeFirstResponder];
+    if (ok && self.hidesSelectionWhenUnfocused) [self setNeedsDisplay:YES];
+    return ok;
+}
+- (BOOL)resignFirstResponder {
+    const BOOL ok = [super resignFirstResponder];
+    if (ok && self.hidesSelectionWhenUnfocused) [self setNeedsDisplay:YES];
+    return ok;
+}
+@end
+
 @implementation VtrContentView
 - (BOOL)isFlipped { return YES; }
 // Guest client pixels never move the window. NSView's default answers YES

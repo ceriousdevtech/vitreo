@@ -11,6 +11,7 @@
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/filesystem/file.hpp"
 #include "winapi/kernel32/memory/file_mapping.hpp"
+#include "winapi/kernel32/memory/section_no_change_contract.hpp"
 #include "winapi/kernel32/module/module.hpp"
 #include "winapi/kernel32/synchronization/sync.hpp"
 #include "winapi/kernel32/thread/thread.hpp"
@@ -19,6 +20,7 @@
 #include "winapi/system/ntdll/nt_timeout.hpp"
 #include "winapi/common/write_sha1_debug.hpp"
 #include "capsule/vfs/filesystem.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/ipc_gate.hpp"
 
 #include <algorithm>
@@ -580,12 +582,21 @@ void ntdll::impl_NtQuerySystemInformation(Marshaler& m, NtdllExtManager& mgr) {
             (void)m.write_u16(name1_addr + i * 2, static_cast<u16>(kSystemName[i]));
         }
 
-        // Build entry 2: vitreo.exe (PID 1000)
+        // Client IDs only. The running image uses its real client ID so a
+        // guest that compares this list with GetCurrentProcessId finds itself.
+        const u32 self_pid = ipc::guest_process_id();
+        u32 runtime_pid = 1000;
+        u32 shell_pid = 1004;
+        if (self_pid == runtime_pid) runtime_pid = 1008;
+        if (self_pid == shell_pid || runtime_pid == shell_pid) shell_pid = 1012;
+        const u32 image_pid = self_pid != 0 ? self_pid : 1016u;
+
+        // Build entry 2: vitreo.exe
         GuestAddr entry2_addr = entry1_addr + kEntry1;
         GuestSystemProcessInfo e2{};
         std::memset(&e2, 0, sizeof(e2));
         e2.NextEntryOffset = kEntry2;
-        e2.UniqueProcessId = 1000;
+        e2.UniqueProcessId = runtime_pid;
         e2.InheritedFromUniqueProcessId = 4;
         e2.BasePriority = 8;
         e2.ImageName_Length = static_cast<u16>(kVitreoNameBytes - 2);
@@ -598,13 +609,13 @@ void ntdll::impl_NtQuerySystemInformation(Marshaler& m, NtdllExtManager& mgr) {
             (void)m.write_u16(name2_addr + i * 2, static_cast<u16>(kVitreoName[i]));
         }
 
-        // Build entry 3: <main image> (PID 1001) — current guest process.
+        // Build entry 3: <main image> — current guest process.
         GuestAddr entry3_addr = entry2_addr + kEntry2;
         GuestSystemProcessInfo e3{};
         std::memset(&e3, 0, sizeof(e3));
         e3.NextEntryOffset = kEntry3;
-        e3.UniqueProcessId = 1001;
-        e3.InheritedFromUniqueProcessId = 1000;
+        e3.UniqueProcessId = image_pid;
+        e3.InheritedFromUniqueProcessId = runtime_pid;
         e3.BasePriority = 8;
         e3.ImageName_Length = static_cast<u16>(kMainNameBytes - 2);
         e3.ImageName_MaxLength = static_cast<u16>(kMainNameBytes);
@@ -616,12 +627,12 @@ void ntdll::impl_NtQuerySystemInformation(Marshaler& m, NtdllExtManager& mgr) {
             (void)m.write_u16(name3_addr + i * 2, static_cast<u16>(kMainName[i]));
         }
 
-        // Build entry 4: explorer.exe (PID 1003)
+        // Build entry 4: explorer.exe
         GuestAddr entry4_addr = entry3_addr + kEntry3;
         GuestSystemProcessInfo e4{};
         std::memset(&e4, 0, sizeof(e4));
         e4.NextEntryOffset = 0;
-        e4.UniqueProcessId = 1003;
+        e4.UniqueProcessId = shell_pid;
         e4.InheritedFromUniqueProcessId = 4;
         e4.BasePriority = 8;
         e4.ImageName_Length = static_cast<u16>(kExplorerNameBytes - 2);
@@ -846,7 +857,8 @@ void ntdll::impl_NtCreateSection(Marshaler& m, NtdllExtManager& mgr) {
         }
     } else {
         const u32 kinds = alloc_attributes & (SEC_COMMIT | SEC_RESERVE);
-        const u32 modifiers = SEC_FILE | SEC_NOCACHE | SEC_WRITECOMBINE | SEC_LARGE_PAGES;
+        const u32 modifiers = SEC_FILE | SEC_NOCACHE | SEC_WRITECOMBINE |
+                              SEC_LARGE_PAGES | SECTION_NO_CHANGE;
         if ((kinds != SEC_COMMIT && kinds != SEC_RESERVE) ||
             (alloc_attributes & ~(SEC_COMMIT | SEC_RESERVE | modifiers)) != 0) {
             m.set_return(STATUS_INVALID_PARAMETER_6);
@@ -893,6 +905,22 @@ void ntdll::impl_NtCreateSection(Marshaler& m, NtdllExtManager& mgr) {
     }
     if (!file_backed && max_size == 0) {
         m.set_return(nt_status::STATUS_INVALID_PARAMETER);
+        return;
+    }
+
+    // The native oracle accepts this combination, but its commitment must
+    // propagate to every alias while preserving each view's own protection.
+    // The current SEC_RESERVE implementation does not provide that contract.
+    if ((alloc_attributes & (SEC_RESERVE | SECTION_NO_CHANGE)) ==
+        (SEC_RESERVE | SECTION_NO_CHANGE)) {
+        static std::atomic_flag reported = ATOMIC_FLAG_INIT;
+        if (!reported.test_and_set()) {
+            std::fprintf(stderr,
+                "[vitreo] UNIMPLEMENTED ntdll!NtCreateSection: "
+                "SEC_RESERVE | SEC_NO_CHANGE requires shared commitment "
+                "with immutable per-view protection\n");
+        }
+        m.set_return(nt_status::STATUS_NOT_SUPPORTED);
         return;
     }
 

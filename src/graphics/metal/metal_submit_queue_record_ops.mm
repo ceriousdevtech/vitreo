@@ -104,6 +104,14 @@ void MetalSubmitQueue::record_fill_buffer(void* dst, usize offset, usize size,
     append_blit(std::move(op));
 }
 
+void MetalSubmitQueue::record_encode(std::function<void(void*)> encode) {
+    if (!encode) return;
+    Op op{};
+    op.kind = OpKind::Encode;
+    op.encode = std::move(encode);
+    append(std::move(op));
+}
+
 void MetalSubmitQueue::record_upload_texture(void* staging, void* texture,
                                              usize bytes_per_row,
                                              usize bytes_per_image, u32 width,
@@ -242,6 +250,14 @@ void MetalSubmitQueue::record_tile_mapping(
 void MetalSubmitQueue::record_tiled_barrier() {
     Op op{};
     op.kind = OpKind::TiledBarrier;
+    append(std::move(op));
+}
+
+void MetalSubmitQueue::record_attachment_barrier(void* texture) {
+    Op op{};
+    op.kind = OpKind::AttachmentBarrier;
+    op.blit_src = texture;
+    retain(op.blit_src);
     append(std::move(op));
 }
 

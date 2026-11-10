@@ -90,13 +90,15 @@ protected:
         ASSERT_TRUE(m_memory->write_bytes(addr, code, len));
     }
 
-    BasicBlock decode_at(GuestAddr addr, const u8* code, usize len) {
+    BasicBlock decode_at(GuestAddr addr, const u8* code, usize len,
+                         DecodeMode mode = DecodeMode::Mode32) {
         BasicBlock block;
         block.start_addr = addr;
+        block.is_64bit = mode == DecodeMode::Mode64;
         MemoryByteReader reader(code, len);
         while (reader.remaining() > 0) {
             DecodedInstruction inst;
-            if (decode_instruction(reader, DecodeMode::Mode32, inst) !=
+            if (decode_instruction(reader, mode, inst) !=
                 DecodeError::Success) {
                 break;
             }
@@ -285,6 +287,226 @@ TEST_F(JitSharedTableTest, AdoptedBlockFindsProcessWideStubsInItsOwnContext) {
     ASSERT_TRUE(c.ok);
     EXPECT_EQ(c.code, a.code);
     EXPECT_EQ(c.eax, a.eax);
+}
+
+TEST_F(JitSharedTableTest, CarryCaptureMatchesUnsignedArithmetic) {
+    using F = CpuState::FlagOp;
+    constexpr u8 code[] = {0x11, 0xD8};  // ADC EAX, EBX
+    write(kAdcAddr, code, sizeof(code));
+    for (const bool long_mode : {false, true}) {
+        JitCompiler jit(*m_memory);
+        auto block = decode_at(kAdcAddr, code, sizeof(code),
+            long_mode ? DecodeMode::Mode64 : DecodeMode::Mode32);
+        auto* compiled = jit.compile(block);
+        ASSERT_NE(compiled, nullptr);
+        struct WidthCase { u32 width; F add; F sub; };
+        for (const auto& c : {
+                 WidthCase{8, F::Add8, F::Sub8},
+                 WidthCase{16, F::Add16, F::Sub16},
+                 WidthCase{32, F::Add32, F::Sub32},
+                 WidthCase{64, F::Add64, F::Sub64}}) {
+            const u32 width = c.width;
+            const u64 mask = width == 64 ? ~u64{0} : (u64{1} << width) - 1;
+            const u64 values[] = {0, 1, mask / 2, mask / 2 + 1,
+                                  mask - 1, mask};
+            for (const bool subtract : {false, true}) {
+                for (const u64 a : values) {
+                    for (const u64 b : values) {
+                        for (const u8 overlay : {u8{0}, u8{1}, u8{2}}) {
+                            for (const bool stale_cf : {false, true}) {
+                                SCOPED_TRACE(::testing::Message()
+                                    << "long=" << long_mode << " width=" << width
+                                    << " sub=" << subtract << " a=" << a
+                                    << " b=" << b << " overlay=" << +overlay
+                                    << " stale_cf=" << stale_cf);
+                                CpuState cpu;
+                                if (long_mode) cpu.init_long_mode();
+                                else cpu.init_protected_mode();
+                                cpu.rip = kAdcAddr;
+                                cpu.gpr.set32(ESP, 0x10000);
+                                cpu.gpr.set32(EAX, 0);
+                                cpu.gpr.set32(EBX, 0);
+                                cpu.flags.rflags = 0xAD6 | u64{stale_cf};
+                                cpu.flags.set_df(true);
+                                cpu.set_flag_op(subtract ? c.sub : c.add);
+                                // Upper bits are not part of a narrow record.
+                                cpu.flag_src =
+                                    (0xDEADBEEF12345678ull & ~u64{mask}) | b;
+                                cpu.flag_dst =
+                                    (0xABCDEF9876543210ull & ~u64{mask}) |
+                                    ((subtract ? a - b : a + b) & mask);
+                                cpu.cf_overlay = overlay;
+                                cpu.of_overlay = 2;
+                                // Intel SDM ADD/SUB: unsigned carry/borrow,
+                                // independent of signed overflow and stale CF.
+                                const bool arithmetic_cf = subtract
+                                    ? a < b : a > mask - b;
+                                const bool carry = overlay != 0
+                                    ? overlay == 2 : arithmetic_cf;
+                                ASSERT_EQ(test::execute_like_dispatcher(
+                                    jit, *compiled, cpu), JitExecResult::Continue);
+                                EXPECT_EQ(cpu.gpr.get32(EAX), u32{carry});
+                                cpu.materialize_lazy_flags();
+                                EXPECT_FALSE(cpu.flags.cf());
+                                EXPECT_FALSE(cpu.flags.of());
+                                EXPECT_EQ(cpu.flags.zf(), !carry);
+                                EXPECT_EQ(cpu.flags.pf(), !carry);
+                                EXPECT_FALSE(cpu.flags.sf());
+                                EXPECT_FALSE(cpu.flags.af());
+                                EXPECT_TRUE(cpu.flags.df());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+TEST_F(JitSharedTableTest, PartialFlagWritersPreserveCarryAcrossFullWriters) {
+    constexpr u8 reset[] = {0x01, 0xD8};  // ADD EAX, EBX
+    constexpr GuestAddr reset_addr = kAdcAddr + 0x100;
+    write(reset_addr, reset, sizeof(reset));
+    for (const bool long_mode : {false, true}) {
+        for (const u32 width : {8u, 16u, 32u, 64u}) {
+            if (width == 64 && !long_mode) continue;
+            for (const bool decrement : {false, true}) {
+                std::vector<u8> code;
+                if (width == 16) code.push_back(0x66);
+                if (width == 64) code.push_back(0x48);
+                code.push_back(width == 8 ? 0xFE : 0xFF);
+                code.push_back(decrement ? 0xC8 : 0xC0);
+                write(kAdcAddr, code.data(), code.size());
+                const auto mode = long_mode ? DecodeMode::Mode64 : DecodeMode::Mode32;
+                JitCompiler jit(*m_memory);
+                auto block = decode_at(kAdcAddr, code.data(), code.size(), mode);
+                auto reset_block = decode_at(reset_addr, reset, sizeof(reset), mode);
+                auto* compiled = jit.compile(block);
+                auto* compiled_reset = jit.compile(reset_block);
+                ASSERT_NE(compiled, nullptr);
+                ASSERT_NE(compiled_reset, nullptr);
+                for (const bool carry : {false, true}) {
+                    SCOPED_TRACE(::testing::Message()
+                        << "long=" << long_mode << " width=" << width
+                        << " decrement=" << decrement << " carry=" << carry);
+                    CpuState cpu;
+                    if (long_mode) cpu.init_long_mode();
+                    else cpu.init_protected_mode();
+                    cpu.gpr.set32(ESP, 0x10000);
+                    cpu.set_flag_op(CpuState::FlagOp::Sub16);
+                    cpu.flag_src = 1;
+                    cpu.flag_dst = carry ? 0xFFFF : 0;
+                    cpu.of_overlay = 2;
+                    const u64 sign = u64{1} << (width - 1);
+                    cpu.gpr.r[EAX] = decrement ? sign : sign - 1;
+                    cpu.rip = kAdcAddr;
+                    ASSERT_EQ(test::execute_like_dispatcher(jit, *compiled, cpu),
+                              JitExecResult::Continue);
+                    EXPECT_EQ(cpu.lazy_cf(), carry);
+                    EXPECT_EQ(cpu.of_overlay, 0);
+                    CpuState materialized = cpu;
+                    materialized.materialize_lazy_flags();
+                    EXPECT_EQ(materialized.flags.cf(), carry);
+                    EXPECT_TRUE(materialized.flags.of());
+                    EXPECT_EQ(materialized.flags.sf(), !decrement);
+                    EXPECT_FALSE(materialized.flags.zf());
+
+                    // A subsequent full writer must invalidate the memo.
+                    cpu.gpr.set32(EAX, 0);
+                    cpu.gpr.set32(EBX, 0);
+                    cpu.rip = reset_addr;
+                    ASSERT_EQ(test::execute_like_dispatcher(
+                        jit, *compiled_reset, cpu), JitExecResult::Continue);
+                    EXPECT_EQ(cpu.cf_overlay, 0);
+                    EXPECT_FALSE(cpu.lazy_cf());
+                    cpu.rip = kAdcAddr;
+                    ASSERT_EQ(test::execute_like_dispatcher(jit, *compiled, cpu),
+                              JitExecResult::Continue);
+                    EXPECT_FALSE(cpu.lazy_cf());
+                }
+            }
+        }
+    }
+}
+
+TEST_F(JitSharedTableTest, DISABLED_PreservedCarryCaptureBenchmark) {
+    constexpr u32 iterations = 5000000;
+    for (const u32 width : {8u, 16u, 32u, 64u}) {
+        for (const bool decrement : {false, true}) {
+            std::vector<u8> code;
+            if (width == 16) code.push_back(0x66);
+            if (width == 64) code.push_back(0x48);
+            code.push_back(width == 8 ? 0xFE : 0xFF);
+            code.push_back(decrement ? 0xC8 : 0xC0);
+            write(kAdcAddr, code.data(), code.size());
+            JitCompiler jit(*m_memory);
+            auto block = decode_at(kAdcAddr, code.data(), code.size(),
+                                   DecodeMode::Mode64);
+            auto* compiled = jit.compile(block);
+            ASSERT_NE(compiled, nullptr);
+            CpuState cpu;
+            cpu.init_long_mode();
+            cpu.gpr.set32(ESP, 0x10000);
+            cpu.flags.set_cf(true);
+            cpu.rip = kAdcAddr;
+            ASSERT_EQ(test::execute_like_dispatcher(jit, *compiled, cpu),
+                      JitExecResult::Continue);
+            const auto start = std::chrono::steady_clock::now();
+            for (u32 i = 0; i < iterations; ++i) {
+                cpu.rip = kAdcAddr;
+                if (test::execute_like_dispatcher(jit, *compiled, cpu) !=
+                    JitExecResult::Continue) {
+                    FAIL() << "preserved carry benchmark did not complete";
+                }
+            }
+            const double ns = std::chrono::duration<double, std::nano>(
+                std::chrono::steady_clock::now() - start).count() / iterations;
+            EXPECT_TRUE(cpu.lazy_cf());
+            std::printf("preserved-carry width=%u decrement=%u ns=%.3f checksum=%llu ir=%u\n",
+                        width, decrement, ns,
+                        static_cast<unsigned long long>(cpu.gpr.r[EAX]),
+                        jit.ir_emit_active());
+        }
+    }
+}
+
+TEST_F(JitSharedTableTest, DISABLED_NarrowCarryCaptureBenchmark) {
+    using F = CpuState::FlagOp;
+    constexpr u8 code[] = {0x11, 0xD8};  // ADC EAX, EBX
+    write(kAdcAddr, code, sizeof(code));
+    JitCompiler jit(*m_memory);
+    auto block = decode_at(kAdcAddr, code, sizeof(code), DecodeMode::Mode64);
+    auto* compiled = jit.compile(block);
+    ASSERT_NE(compiled, nullptr);
+    CpuState cpu;
+    cpu.init_long_mode();
+    cpu.gpr.set32(ESP, 0x10000);
+    cpu.gpr.set32(EBX, 0);
+    constexpr u32 iterations = 1000000;
+    for (const F op : {F::Add8, F::Sub8, F::Add16, F::Sub16,
+                       F::Add32, F::Sub32, F::Add64, F::Sub64,
+                       F::And32, F::And64, F::Inc32, F::Dec64,
+                       F::None, F::Shl32, F::Sbb32}) {
+        u64 sum = 0;
+        const auto start = std::chrono::steady_clock::now();
+        for (u32 i = 0; i < iterations; ++i) {
+            cpu.rip = kAdcAddr;
+            cpu.gpr.set32(EAX, 0);
+            cpu.set_flag_op(op);
+            cpu.flag_src = 1;
+            cpu.flag_dst = i & 0xFF;
+            if (test::execute_like_dispatcher(jit, *compiled, cpu) !=
+                JitExecResult::Continue) {
+                FAIL() << "carry benchmark did not complete";
+            }
+            sum += cpu.gpr.get32(EAX);
+        }
+        const double ns = std::chrono::duration<double, std::nano>(
+            std::chrono::steady_clock::now() - start).count() / iterations;
+        std::printf("carry-capture op=%u ns=%.3f checksum=%llu\n",
+                    static_cast<unsigned>(op), ns,
+                    static_cast<unsigned long long>(sum));
+    }
 }
 
 // (b) Cross-thread SMC. The guest bytes behind a published record change:

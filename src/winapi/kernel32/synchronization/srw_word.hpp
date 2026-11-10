@@ -48,6 +48,11 @@ struct Word {
 [[nodiscard]] bool resolve(GuestMemory& memory, GuestAddr addr, bool is_64bit,
                            Word& out) noexcept;
 
+/// Number of threads currently holding an exclusive-recursion entry (the
+/// tolerance for a re-entrant acquire). Native guest-side SRW stubs read this
+/// word and defer to the host whenever it is non-zero.
+[[nodiscard]] const std::atomic<u64>* threads_with_recursion() noexcept;
+
 void acquire_exclusive(const Word& w, u32 tid,
                        const std::atomic<bool>* shutdown = nullptr) noexcept;
 [[nodiscard]] bool try_acquire_exclusive(const Word& w, u32 tid) noexcept;

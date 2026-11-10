@@ -1,3 +1,4 @@
+#include "winapi/kernel32/synchronization/io_event_contract.generated.hpp"
 // SPDX-License-Identifier: LGPL-2.1-only
 
 /// @file file_io_ext.cpp
@@ -21,13 +22,17 @@
 #include "winapi/kernel32/thread/thread.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "core/memory/guest_memory.hpp"
+#include "core/sync/ntsync.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "winapi/system/ntdll/ntdll_ext.hpp"
 #include "winapi/kernel32/filesystem/file_search.hpp"
 #include "winapi/kernel32/synchronization/sync.hpp"
 #include "ipc/process_handle.hpp"
 
+#include "../../../../tools/oracle_probe/flush_buffers.generated.inc"
+
 #include <chrono>
+#include <mutex>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -44,54 +49,41 @@ namespace vitreo::winapi {
 // =============================================================================
 
 void Kernel32ExtManager::impl_FlushFileBuffers(Marshaler& m) {
-    // BOOL FlushFileBuffers(HANDLE hFile)
-    // Learn: needs GENERIC_WRITE; invalid/non-file handles fail
-    // ERROR_INVALID_HANDLE; read-only opens fail ERROR_ACCESS_DENIED
-    // (files_core_probe Flush_*).
+    // Learn fileapi/FlushFileBuffers; flush_buffers_probe{32,64}.expected:
+    // disk append access is sufficient; pipes require peer-consumption drain.
     const Handle h_file = static_cast<Handle>(m.arg(0));
-    constexpr u32 kGenericWrite = 0x40000000u;
-    constexpr u32 kFileWriteData = 0x0002u;
-    constexpr u32 kFileAppendData = 0x0004u;
-
-    if (m_file_manager == nullptr) {
-        set_last_error(error_codes::ERROR_INVALID_HANDLE);
-        m.set_return(0);
-        return;
-    }
+    const auto fail = [&](u32 error) { set_last_error(error); m.set_return(0); };
+    const auto unsupported = [&] {
+        static std::once_flag once;
+        std::call_once(once, [] { std::fprintf(stderr,
+            "[vitreo] UNIMPLEMENTED kernel32!FlushFileBuffers: pipe drain or unbacked file/device flush\n"); });
+        fail(error_codes::ERROR_CALL_NOT_IMPLEMENTED);
+    };
+    if (!m_file_manager) { fail(flush_buffers_sdk::ERROR_INVALID_HANDLE); return; }
     HandleTable& ht = m_file_manager->handle_table();
     const HandleType type = ht.get_type(h_file);
-    if (type == HandleType::Invalid || type == HandleType::Event ||
-        type == HandleType::Mutex || type == HandleType::Semaphore ||
-        type == HandleType::ConsoleOutput || type == HandleType::ConsoleInput) {
-        set_last_error(error_codes::ERROR_INVALID_HANDLE);
-        m.set_return(0);
-        return;
+    switch (type) {
+        case HandleType::File: case HandleType::Pipe: case HandleType::Mailslot:
+        case HandleType::Device: case HandleType::HidDevice: break;
+        default: fail(flush_buffers_sdk::ERROR_INVALID_HANDLE); return;
     }
-
     const u32 access = ht.get_access(h_file);
-    const bool can_write =
-        (access & (kGenericWrite | kFileWriteData | kFileAppendData)) != 0;
-    if (!can_write) {
-        set_last_error(error_codes::ERROR_ACCESS_DENIED);
-        m.set_return(0);
+    if (!(access & (flush_buffers_sdk::GENERIC_WRITE |
+                    flush_buffers_sdk::FILE_WRITE_DATA |
+                    flush_buffers_sdk::FILE_APPEND_DATA))) {
+        fail(flush_buffers_sdk::ERROR_ACCESS_DENIED);
         return;
     }
-
+    // Unix socket queues do not expose the Windows peer-consumption fence.
+    // An empty pipe is not a basis for claiming its drain contract succeeds.
+    if (type != HandleType::File) { unsupported(); return; }
     capsule::FileHandle vfs_h = m_file_manager->vfs_handle_for(h_file);
     if (vfs_h == capsule::INVALID_FILE_HANDLE && m_ntdll_ext_manager) {
-        auto nt = m_ntdll_ext_manager->vfs_handle_for(h_file);
-        if (nt.has_value()) vfs_h = nt.value();
+        if (const auto nt = m_ntdll_ext_manager->vfs_handle_for(h_file)) vfs_h = *nt;
     }
-    if (vfs_h != capsule::INVALID_FILE_HANDLE) {
-        (void)m_vfs.flush(vfs_h);
-    }
-    // Named-pipe write ends may not have a VFS handle; success is still
-    // required when GENERIC_WRITE was granted (Flush_pipe_write_end).
-    static const bool file_trace = std::getenv("VITREO_FILE_TRACE") != nullptr;
-    if (file_trace) {
-        VITREO_TRACE("[k32ext] FlushFileBuffers(handle=0x%x)\n",
-                     static_cast<unsigned>(h_file));
-    }
+    if (vfs_h == capsule::INVALID_FILE_HANDLE) { unsupported(); return; }
+    const auto result = m_vfs.flush(vfs_h);
+    if (result.is_err()) { fail(vfs_error_to_win32(result.error())); return; }
     m.set_return(1);
 }
 
@@ -307,14 +299,20 @@ void Kernel32ExtManager::impl_DeviceIoControl(Marshaler& m) {
     const GuestAddr output = m.arg_ptr(4);
     const u32 output_size = static_cast<u32>(m.arg(5));
     GuestAddr bytes_returned = m.arg_ptr(6);
-    (void)m.arg_ptr(7);
+    const GuestAddr overlapped=m.arg_ptr(7);
+    if(overlapped && m_handle_table && m_handle_table->get_type(handle)==HandleType::HidDevice) {
+        static std::once_flag once;
+        std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!DeviceIoControl: overlapped HID control request\n");});
+        set_last_error(error_codes::ERROR_NOT_SUPPORTED);m.set_return(0);return;
+    }
 
     u32 transferred = 0;
     const bool ok = m_file_manager != nullptr &&
         m_file_manager->device_io_control(
             handle, control_code, input, input_size, output, output_size,
             transferred);
-    if (bytes_returned != 0 &&
+    const bool hid_device=m_handle_table && m_handle_table->get_type(handle)==HandleType::HidDevice;
+    if (bytes_returned != 0 && (ok || !hid_device) &&
         m_memory.write_u32(bytes_returned, transferred).is_err()) {
         set_last_error(error_codes::ERROR_NOACCESS);
         m.set_return(0);
@@ -335,40 +333,32 @@ void Kernel32ExtManager::complete_overlapped_file_io(
 
     const GuestAddr internal_high = overlapped + (is_64bit ? 8u : 4u);
     const GuestAddr event_field = overlapped + (is_64bit ? 24u : 16u);
-    const auto status_write = is_64bit
-        ? m_memory.write_u64(overlapped, nt_status)
-        : m_memory.write_u32(overlapped, nt_status);
-    const auto count_write = is_64bit
-        ? m_memory.write_u64(internal_high, bytes_transferred)
-        : m_memory.write_u32(internal_high, bytes_transferred);
-    if (status_write.is_err() || count_write.is_err()) {
-        VITREO_TRACE("[iocp] completion file=0x%x has invalid OVERLAPPED=0x%llx\n",
-                     file_handle, static_cast<unsigned long long>(overlapped));
-        return;
-    }
-
-    u64 event_value = 0;
-    if (is_64bit) {
-        event_value = m_memory.read_u64(event_field).value_or(0);
-    } else {
-        event_value = m_memory.read_u32(event_field).value_or(0);
-    }
-
+    // The final Internal value publishes completion to polling guests. Read
+    // every guest input and write the count before making that status visible.
+    u64 event_value=0;bool event_prepared=false;std::shared_ptr<SyncEvent> event_reference;
+    auto hid_route=hid_completion_route(file_handle,false);
     std::shared_ptr<CompletionPort> port;
     u32 port_handle = 0;
     u64 completion_key = 0;
     u8 modes = 0;
+    std::shared_ptr<HidCompletionSignal> hid_signal;bool hid_synchronous=false;
     bool association_found = false;
     {
         std::lock_guard<std::mutex> lock(m_iocp_registry_mutex);
         if (auto pending = m_pending_file_completions.find(overlapped);
             pending != m_pending_file_completions.end()) {
             association_found = true;
+            event_prepared=pending->second.event_prepared;event_value=pending->second.event_value;event_reference=pending->second.event_reference;
+            hid_signal=pending->second.hid_signal;hid_synchronous=pending->second.hid_synchronous;
             port = pending->second.port;
             port_handle = pending->second.port_handle;
             completion_key = pending->second.completion_key;
             modes = pending->second.modes;
             m_pending_file_completions.erase(pending);
+        } else if(hid_route) {
+            hid_signal=hid_route->hid_signal;hid_synchronous=hid_route->hid_synchronous;
+            port=hid_route->port;port_handle=hid_route->port_handle;
+            completion_key=hid_route->completion_key;modes=hid_route->modes;association_found=bool(port);
         } else {
             if (auto mode = m_file_completion_modes.find(file_handle);
                 mode != m_file_completion_modes.end()) {
@@ -386,10 +376,47 @@ void Kernel32ExtManager::complete_overlapped_file_io(
             }
         }
     }
+    if(!event_prepared) event_value=is_64bit ? m_memory.read_u64(event_field).value_or(0) : m_memory.read_u32(event_field).value_or(0);
     record_completion_trace(
         OverlappedIoTraceStage::CompletionPrepared, file_handle, overlapped,
         bytes_transferred, port_handle, completion_key, event_value, modes,
         association_found, nt_status, win_error);
+
+    static const bool input_diag=[] {const char* p=std::getenv("VITREO_INPUT_DIAG");return p && *p && *p!='0';}();
+    auto log_hid_completion=[&](const char* phase,int set_result) {
+        if(!hid_signal || !input_diag) return;
+        static std::atomic<unsigned> logged{0};if(logged.fetch_add(1)>=96) return;
+        bool manual=false,signaled=false;const bool queried=event_reference && event_reference->query_for_io(manual,signaled);
+        const auto file_state=ntsync::global().snapshot(hid_signal->native_id());
+        std::fprintf(stderr,"[input-delivery] HID complete phase=%s file=0x%x ov=0x%llx status=0x%x error=%u bytes=%u event=0x%llx prepared=%u ref=%p set=%d queried=%u manual=%u signaled=%u file_signaled=%u modes=0x%x port=0x%x\n",
+            phase,file_handle,static_cast<unsigned long long>(overlapped),nt_status,win_error,bytes_transferred,static_cast<unsigned long long>(event_value),
+            unsigned(event_prepared),static_cast<void*>(event_reference.get()),set_result,unsigned(queried),unsigned(manual),unsigned(signaled),
+            unsigned(file_state && file_state->signaled),modes,port_handle);
+    };
+
+    const auto count_write = is_64bit
+        ? m_memory.write_u64(internal_high, bytes_transferred)
+        : m_memory.write_u32(internal_high, bytes_transferred);
+    if(count_write.is_err()) {
+        log_hid_completion("count-failed",-1);
+        VITREO_TRACE("[iocp] completion file=0x%x has invalid OVERLAPPED=0x%llx\n",
+                     file_handle,static_cast<unsigned long long>(overlapped));return;
+    }
+    std::atomic_thread_fence(std::memory_order_release);
+    const auto status_write = is_64bit
+        ? m_memory.write_u64(overlapped, nt_status)
+        : m_memory.write_u32(overlapped, nt_status);
+    if(status_write.is_err()) {
+        log_hid_completion("status-failed",-1);
+        VITREO_TRACE("[iocp] completion file=0x%x has invalid OVERLAPPED=0x%llx\n",
+                     file_handle,static_cast<unsigned long long>(overlapped));return;
+    }
+    // No guest memory access below this publication point: a polling caller
+    // may already have observed completion and released OVERLAPPED.
+
+    // Publish the file object's completion after Internal is final and before
+    // event/IOCP notification can permit the guest to release OVERLAPPED.
+    if(hid_signal && (modes & hid_sdk::kFILE_SKIP_SET_EVENT_ON_HANDLE)==0 && (!event_value || hid_synchronous)) hid_signal->signal();
 
     {
         // Internal/InternalHigh are final: wake GetOverlappedResult calls
@@ -404,9 +431,13 @@ void Kernel32ExtManager::complete_overlapped_file_io(
     // it is still signaled" (Learn, SetFileCompletionNotificationModes).
     // Skipping OVERLAPPED.hEvent here left libuv-style waiters on hEvent|1
     // blocked forever.
-    if (event_value != 0 && m_sync_manager) {
-        (void)m_sync_manager->set_event(static_cast<Handle>(event_value & ~u64{1}));
+    int event_set=-1;
+    if(event_prepared) {
+        if(event_reference) event_set=event_reference->signal_for_io() ? 1:0;
+    } else if (event_value != 0 && m_sync_manager) {
+        event_set=m_sync_manager->set_event(static_cast<Handle>(event_value & ~u64{1})) ? 1:0;
     }
+    log_hid_completion("notified",event_set);
 
     // FILE_SKIP_COMPLETION_PORT_ON_SUCCESS only suppresses packets for I/O that
     // completed inline (ReadFile/WriteFile returned TRUE). Async completions
@@ -545,7 +576,7 @@ void Kernel32ExtManager::impl_CreateIoCompletionPort(Marshaler& m) {
         // HTTP Server API request queue is one).
         const bool is_file_or_pipe =
             type == HandleType::File || type == HandleType::Pipe ||
-            type == HandleType::Device;
+            type == HandleType::Device || type == HandleType::HidDevice;
         // Vitreo sockets are ws2-managed IDs, not HandleTable File/Pipe
         // entries. Windows still allows CreateIoCompletionPort(SOCKET, …)
         // for overlapped Winsock. The caller associates the socket and does
@@ -563,6 +594,26 @@ void Kernel32ExtManager::impl_CreateIoCompletionPort(Marshaler& m) {
             return;
         }
         associate_type = is_socket ? "Socket" : handle_type_to_string(type);
+    }
+
+    if(auto route=hid_completion_route(file_handle,true)) {
+        // One association belongs to the shared file object. Creation and the
+        // first association serialize under the same completion registry lock.
+        std::lock_guard lock(m_iocp_registry_mutex);
+        if(route->port) {set_last_error(error_codes::ERROR_INVALID_PARAMETER);m.set_return(0);return;}
+        u32 port_handle=existing_port;
+        std::shared_ptr<CompletionPort> port;
+        if(existing_port) {
+            const auto found=m_iocp_ports.find(existing_port);
+            if(found==m_iocp_ports.end()) {set_last_error(error_codes::ERROR_INVALID_HANDLE);m.set_return(0);return;}
+            port=found->second;
+        } else {
+            const Handle allocated=m_handle_table->allocate(HandleType::IoCompletionPort,nullptr);
+            if(!allocated || allocated==INVALID_HANDLE) {set_last_error(error_codes::ERROR_NOT_ENOUGH_MEMORY);m.set_return(0);return;}
+            port_handle=allocated;port=std::make_shared<CompletionPort>();m_iocp_ports[port_handle]=port;
+        }
+        route->port=std::move(port);route->port_handle=port_handle;route->completion_key=completion_key;
+        m.set_return(port_handle);return;
     }
 
     std::shared_ptr<CompletionPort> port;
@@ -954,7 +1005,7 @@ void Kernel32ExtManager::impl_SetFileCompletionNotificationModes(Marshaler& m) {
         : HandleType::Invalid;
     const bool is_file_or_pipe =
         type == HandleType::File || type == HandleType::Pipe ||
-        type == HandleType::Device;
+        type == HandleType::Device || type == HandleType::HidDevice;
     // Winsock IFS sockets are file handles for overlapped-I/O notification
     // contracts even though Vitreo owns their values outside HandleTable.
     const bool is_socket =
@@ -978,11 +1029,24 @@ void Kernel32ExtManager::impl_SetFileCompletionNotificationModes(Marshaler& m) {
         m.set_return(0);
         return;
     }
+    if(type==HandleType::HidDevice && flags!=0) {
+        const auto file=m_handle_table->get_shared<HidOpenFile>(file_handle,HandleType::HidDevice);
+        if(file && !file->overlapped) {set_last_error(error_codes::ERROR_INVALID_PARAMETER);m.set_return(0);return;}
+    }
+    auto hid_route=hid_completion_route(file_handle,true);
+    u8 route_flags=flags;
+    if(type==HandleType::HidDevice) {
+        if(auto file=m_handle_table->get_shared<HidOpenFile>(file_handle,HandleType::HidDevice)) {
+            file->notification_modes.fetch_or(flags);
+            if(!file->overlapped) route_flags &= static_cast<u8>(~hid_sdk::kFILE_SKIP_COMPLETION_PORT_ON_SUCCESS);
+        }
+    }
     {
         std::lock_guard<std::mutex> lock(m_iocp_registry_mutex);
         // Learn: once enabled for a handle, notification modes cannot be
         // removed. Preserve prior bits across repeated calls.
-        m_file_completion_modes[file_handle] |= flags;
+        if(hid_route) hid_route->modes |= route_flags;
+        else m_file_completion_modes[file_handle] |= flags;
     }
     ipc::ipc_log("SetFileCompletionNotificationModes h=0x%x flags=0x%x -> TRUE",
                  static_cast<unsigned>(file_handle), flags);

@@ -50,8 +50,48 @@ bool DxbcTranslator::emit_geometry_expansion_buffers() {
 
     m_gs_in_var = storage_buffer_of(m_type_vec4, 16u, "vitreo_gs_in", 0u,
                                     /*read_only=*/true);
-    m_gs_out_var = storage_buffer_of(m_type_vec4, 16u, "vitreo_gs_out", 1u,
-                                     /*read_only=*/false);
+    // ---- WS5 begin ----
+    if (gs_as_mesh()) {
+        // The records and counts live in threadgroup memory for the mesh
+        // epilogue (WS5 D2/D4): invocation k of the group owns vertex slots
+        // [k * capacity, (k + 1) * capacity), as it owns a region of
+        // vitreo_gs_out in the compute lowering.
+        const u32 capacity = gs_vertices_per_invocation(
+            m_gs_output_topology, m_gs_max_output_vertices);
+        const u32 registers = static_cast<u32>(m_gs_emit_registers.size());
+        if (capacity == 0u || registers == 0u) {
+            return fail("geometry mesh lowering: the shader can emit nothing");
+        }
+        const u32 scratch_type = m_builder.emit_type_array(
+            m_type_vec4, m_builder.emit_constant_int(
+                             m_type_uint, m_gs_mesh_threads * capacity *
+                                              registers));
+        m_gs_out_var = m_builder.emit_variable(
+            m_builder.emit_type_pointer(SpvStorageClass::Workgroup,
+                                        scratch_type),
+            SpvStorageClass::Workgroup);
+        m_builder.emit_name(m_gs_out_var, "vitreo_gs_scratch");
+        const u32 counts_type = m_builder.emit_type_array(
+            m_type_uint,
+            m_builder.emit_constant_int(m_type_uint, m_gs_mesh_threads));
+        m_gs_mesh_counts_var = m_builder.emit_variable(
+            m_builder.emit_type_pointer(SpvStorageClass::Workgroup,
+                                        counts_type),
+            SpvStorageClass::Workgroup);
+        m_builder.emit_name(m_gs_mesh_counts_var, "vitreo_gs_tg_counts");
+        const u32 private_u32 =
+            m_builder.emit_type_pointer(SpvStorageClass::Private, m_type_uint);
+        m_gs_mesh_local_var =
+            m_builder.emit_variable(private_u32, SpvStorageClass::Private);
+        m_builder.emit_name(m_gs_mesh_local_var, "gs_mesh_local");
+        m_gs_mesh_invocation_var =
+            m_builder.emit_variable(private_u32, SpvStorageClass::Private);
+        m_builder.emit_name(m_gs_mesh_invocation_var, "gs_mesh_invocation");
+    } else {
+        m_gs_out_var = storage_buffer_of(m_type_vec4, 16u, "vitreo_gs_out",
+                                         1u, /*read_only=*/false);
+    }
+    // ---- WS5 end ----
     m_gs_counter_var = storage_buffer_of(m_type_uint, 4u, "vitreo_gs_counter",
                                          2u, /*read_only=*/false);
     // The guest's index buffer, read as 32-bit words. The host binds a
@@ -122,10 +162,20 @@ bool DxbcTranslator::emit_geometry_input_prologue() {
         return fail("geometry emulation: no dispatch thread id to derive the "
                     "primitive index from");
     }
+    // ---- WS5 begin ----
+    if (gs_as_mesh()) {
+        // main placed the invocation (payload base + group + thread) here.
+        m_gs_invocation_index =
+            m_builder.emit_load(m_type_uint, m_gs_mesh_invocation_var);
+    } else {
+    // ---- WS5 end ----
     const u32 thread_id =
         m_builder.emit_load(m_type_uvec3, m_dispatch_thread_id);
     m_gs_invocation_index =
         m_builder.emit_composite_extract(m_type_uint, thread_id, {0u});
+    // ---- WS5 begin ----
+    }
+    // ---- WS5 end ----
     if (hs_as_compute()) {
         m_gs_primitive_index = m_gs_invocation_index;
         // Control words 8-10 (an indirect draw's patches, counted by the GPU
@@ -216,6 +266,11 @@ bool DxbcTranslator::emit_geometry_input_prologue() {
             if (m_gs_stream_count_vars[stream] == 0) continue;
             m_builder.emit_store(m_gs_stream_count_vars[stream],
                                  m_builder.emit_constant_int(m_type_uint, 0u));
+            // ---- WS5 begin ----
+            // The mesh lowering's counts are threadgroup memory, zeroed by
+            // main before the body runs.
+            if (gs_as_mesh()) continue;
+            // ---- WS5 end ----
             const u32 slot = m_builder.emit_iadd(
                 m_type_uint,
                 m_builder.emit_iadd(
@@ -291,17 +346,21 @@ bool DxbcTranslator::emit_geometry_input_prologue() {
             ? m_gs_input_registers
             : m_options.gs_input_record_registers;
     const u32 record_vec4s = static_cast<u32>(layout.size());
-    std::vector<u32> record_slot(m_gs_input_registers.size());
+    // A register the previous stage does not write is not in its record:
+    // D3D11.3 4.4.3.2 leaves such "missing data" undefined; it reads 0
+    // here, deterministically, rather than refusing the pipeline.
+    constexpr u32 kNotWritten = ~0u;
+    std::vector<u32> record_slot(m_gs_input_registers.size(), kNotWritten);
     for (usize i = 0; i < m_gs_input_registers.size(); ++i) {
         const auto found = std::find(layout.begin(), layout.end(),
                                      m_gs_input_registers[i]);
-        if (found == layout.end()) {
-            return fail("geometry emulation: the vertex stage does not write "
-                        "v" + std::to_string(m_gs_input_registers[i]) +
-                        ", which this geometry shader reads");
+        if (found != layout.end()) {
+            record_slot[i] = static_cast<u32>(found - layout.begin());
         }
-        record_slot[i] = static_cast<u32>(found - layout.begin());
     }
+    const u32 zero_f = m_builder.emit_constant_float(m_type_float, 0.0f);
+    const u32 zero_vec4 = m_builder.emit_constant_composite(
+        m_type_vec4, {zero_f, zero_f, zero_f, zero_f});
 
     const u32 member = m_builder.emit_constant_int(m_type_uint, 0u);
     const u32 vec4_ptr = m_builder.emit_type_pointer(
@@ -402,13 +461,16 @@ bool DxbcTranslator::emit_geometry_input_prologue() {
                 value_type == m_input_value_types.end()) {
                 continue;
             }
-            const u32 slot = m_builder.emit_iadd(
-                m_type_uint, record_base,
-                m_builder.emit_constant_int(m_type_uint, record_slot[i]));
-            const u32 source = m_builder.emit_load(
-                m_type_vec4,
-                m_builder.emit_access_chain(vec4_ptr, m_gs_in_var,
-                                            {member, slot}));
+            u32 source = zero_vec4;
+            if (record_slot[i] != kNotWritten) {
+                const u32 slot = m_builder.emit_iadd(
+                    m_type_uint, record_base,
+                    m_builder.emit_constant_int(m_type_uint, record_slot[i]));
+                source = m_builder.emit_load(
+                    m_type_vec4,
+                    m_builder.emit_access_chain(vec4_ptr, m_gs_in_var,
+                                                {member, slot}));
+            }
             // The Private input is an array indexed by vertex, exactly as the
             // geometry-stage Input variable was, so the body's access chain on
             // the vertex index keeps working.
@@ -426,6 +488,54 @@ bool DxbcTranslator::emit_geometry_input_prologue() {
     }
     return true;
 }
+
+// ---- WS5 begin ----
+// The entry of a mesh-lowered geometry shader (WS5 D2): place this thread's
+// invocation, clear its count, run the translated program (`body`), wait for
+// the whole threadgroup, then hand the scratch to the mesh epilogue that
+// spirv_to_msl's mesh compiler writes for kMeshGsEpilogue.
+bool DxbcTranslator::emit_geometry_mesh_main(u32 body) {
+    m_main_func = m_builder.emit_function(m_type_void, m_func_type);
+    m_builder.emit_name(m_main_func, "main");
+    (void)m_builder.emit_label();
+    const u32 local = m_builder.emit_ext_inst(m_type_uint, m_gs_mesh_set,
+                                              kMeshGsLocalIndex, {});
+    const u32 invocation = m_builder.emit_ext_inst(
+        m_type_uint, m_gs_mesh_set, kMeshGsInvocationIndex, {});
+    m_builder.emit_store(m_gs_mesh_local_var, local);
+    m_builder.emit_store(m_gs_mesh_invocation_var, invocation);
+    m_builder.emit_store(
+        m_builder.emit_access_chain(
+            m_builder.emit_type_pointer(SpvStorageClass::Workgroup,
+                                        m_type_uint),
+            m_gs_mesh_counts_var, {local}),
+        m_builder.emit_constant_int(m_type_uint, 0u));
+    (void)m_builder.emit_function_call(m_type_void, body);
+    constexpr u32 kScopeWorkgroupId = 2u;
+    constexpr u32 kAcquireReleaseWorkgroupMemory = 0x8u | 0x100u;
+    m_builder.emit_control_barrier(
+        m_builder.emit_constant_int(m_type_uint, kScopeWorkgroupId),
+        m_builder.emit_constant_int(m_type_uint, kScopeWorkgroupId),
+        m_builder.emit_constant_int(m_type_uint,
+                                    kAcquireReleaseWorkgroupMemory));
+    // The clip-space depth offset (kFixedFunctionOffset), applied by the
+    // epilogue as every translated vertex stage applies it (G16).
+    const u32 depth_offset = m_builder.emit_load(
+        m_type_float,
+        m_builder.emit_access_chain(
+            m_type_ptr_push_float, push_block_var(),
+            {m_builder.emit_constant_int(m_type_uint,
+                                         kPushMemberDepthOffset)}));
+    (void)m_builder.emit_ext_inst(m_type_void, m_gs_mesh_set, kMeshGsEpilogue,
+                                  {m_gs_out_var, m_gs_mesh_counts_var,
+                                   depth_offset});
+    m_builder.emit_return();
+    m_builder.emit_function_end();
+    m_builder.emit_execution_mode(m_main_func, SpvExecutionMode::LocalSize,
+                                  m_gs_mesh_threads, 1u, 1u);
+    return true;
+}
+// ---- WS5 end ----
 
 void DxbcTranslator::emit_geometry_cut() {
     // `cut` ends the current strip. Because every primitive is written out
@@ -500,8 +610,11 @@ bool DxbcTranslator::emit_geometry_vertex(bool cut_after, u32 stream) {
 
     // This invocation's slot in the stream: s * stride + invocation, stride
     // being the control block's invocation slots per stream region.
-    const u32 invocation = m_builder.emit_load(m_type_uint, m_gs_invocation_var);
-    const u32 invocation_slot = m_builder.emit_iadd(
+    const u32 invocation = m_builder.emit_load(
+        m_type_uint,
+        gs_as_mesh() ? m_gs_mesh_local_var : m_gs_invocation_var);  // WS5
+    const u32 invocation_slot = gs_as_mesh() ? invocation :  // WS5
+        m_builder.emit_iadd(
         m_type_uint,
         m_builder.emit_imul(
             m_type_uint,
@@ -556,13 +669,32 @@ bool DxbcTranslator::emit_geometry_vertex(bool cut_after, u32 stream) {
                 const u32 slot = m_builder.emit_iadd(
                     m_type_uint, record_base,
                     m_builder.emit_constant_int(m_type_uint, i));
+                // WS5: the mesh lowering's records are a Workgroup array.
                 m_builder.emit_store(
-                    m_builder.emit_access_chain(vec4_ptr, m_gs_out_var,
-                                                {member, slot}),
+                    gs_as_mesh()
+                        ? m_builder.emit_access_chain(
+                              m_builder.emit_type_pointer(
+                                  SpvStorageClass::Workgroup, m_type_vec4),
+                              m_gs_out_var, {slot})
+                        : m_builder.emit_access_chain(vec4_ptr, m_gs_out_var,
+                                                      {member, slot}),
                     (*vertices[v])[i]);
             }
         }
         m_builder.emit_store(local_count, next);
+        // ---- WS5 begin ----
+        if (gs_as_mesh()) {
+            m_builder.emit_store(
+                m_builder.emit_access_chain(
+                    m_builder.emit_type_pointer(SpvStorageClass::Workgroup,
+                                                m_type_uint),
+                    m_gs_mesh_counts_var, {invocation_slot}),
+                next);
+            m_builder.emit_branch(done_block);
+            m_builder.emit_label_id(done_block);
+            return;
+        }
+        // ---- WS5 end ----
         m_builder.emit_store(
             m_builder.emit_access_chain(
                 uint_ptr, m_gs_counter_var,

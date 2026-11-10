@@ -111,7 +111,7 @@ void D3D9Manager::dispatch_device_state_blocks(Marshaler& m, usize slot,
     case 59: { // CreateStateBlock
         const u32 type = static_cast<u32>(m.arg(1));
         const GuestAddr out = m.arg_ptr(2);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         // D3DSBT_ALL=1, PIXELSTATE=2, VERTEXSTATE=3. Snapshot what we track.
         if (out == 0 || type < 1 || type > 3) {
             m.set_return(D3DERR_INVALIDCALL);
@@ -181,7 +181,7 @@ void D3D9Manager::dispatch_device_state_blocks(Marshaler& m, usize slot,
         block.has_scissor = true;
         block.scissor = state.scissor;
         diagnose_state_block("create", object, block);
-        if (m.write_u32(out, object).is_err()) {
+        if (m.write_ptr(out, object).is_err()) {
             destroy_object(object);
             m.set_return(E_POINTER_D3D);
             return;
@@ -204,7 +204,7 @@ void D3D9Manager::dispatch_device_state_blocks(Marshaler& m, usize slot,
     }
     case 61: { // EndStateBlock
         const GuestAddr out = m.arg_ptr(1);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         if (!state.recording_state_block || out == 0) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -248,7 +248,7 @@ void D3D9Manager::dispatch_device_state_blocks(Marshaler& m, usize slot,
             }
         }
         diagnose_state_block("end", object, block);
-        if (m.write_u32(out, object).is_err()) {
+        if (m.write_ptr(out, object).is_err()) {
             destroy_object(object);
             m.set_return(E_POINTER_D3D);
             return;
@@ -284,7 +284,7 @@ void D3D9Manager::dispatch_state_block(Marshaler& m, usize slot, u32 self) {
             return;
         }
         (void)add_ref(entry->device);
-        if (m.write_u32(out, entry->device).is_err()) {
+        if (m.write_ptr(out, entry->device).is_err()) {
             (void)release(entry->device);
             m.set_return(D3DERR_INVALIDCALL);
             return;

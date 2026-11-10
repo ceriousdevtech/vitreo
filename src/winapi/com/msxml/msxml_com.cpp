@@ -23,6 +23,8 @@
 
 namespace vitreo::winapi {
 
+#include "winapi/com/ole32/com_factory_contract.inc"
+
 // ole32's "{XXXXXXXX-...}" formatter (ole_guid_internal.hpp, whose IID
 // constants clash with this file's).
 [[nodiscard]] std::string format_guid(const Guid& g);
@@ -223,6 +225,7 @@ constexpr u32 kSchemaCollectionBytes[14] = {12,4,4,8,16,24,36,24,12,8,8,12,8,8};
         case MsxmlIface::NamedNodeMap:          return "Map";
         case MsxmlIface::ParseError:            return "Err";
         case MsxmlIface::SchemaCollection:      return "Schemas";
+        case MsxmlIface::ClassFactory:          return "Factory";
         case MsxmlIface::Count:                 break;
     }
     return "?";
@@ -307,12 +310,17 @@ u32 MsxmlManager::slot_count(MsxmlIface iface) {
         case MsxmlIface::NamedNodeMap:          return 17;
         case MsxmlIface::ParseError:            return 14;
         case MsxmlIface::SchemaCollection:      return 14;
+        case MsxmlIface::ClassFactory:          return 5;
         case MsxmlIface::Count:                 break;
     }
     return 0;
 }
 
 u32 MsxmlManager::slot_stdcall_bytes(MsxmlIface iface, u32 slot) {
+    if (iface == MsxmlIface::ClassFactory) {
+        const auto& bytes = com_factory_contract::factory_stdcall_bytes;
+        return slot < bytes.size() ? bytes[slot] : 0;
+    }
     switch (iface) {
         case MsxmlIface::NodeList:
             return slot < 12 ? kNodeListBytes[slot] : 4u;
@@ -622,6 +630,7 @@ bool MsxmlManager::is_unimplemented_msxml_clsid(const Guid& clsid) {
 
 u32 MsxmlManager::create_document(Marshaler& m, const Guid& clsid,
                                   const Guid& iid, GuestAddr ppv) {
+    std::lock_guard lock(m_mutex);
     if (ppv == 0) return E_POINTER_HR;
     const auto version = dom_document_version(clsid);
     if (!version) {
@@ -675,6 +684,48 @@ u32 MsxmlManager::create_document(Marshaler& m, const Guid& clsid,
     return S_OK_HR;
 }
 
+// SDK unknwn.h IID_IClassFactory; audited against the factory SDK packet.
+static constexpr Guid kFactoryIid = com_factory_contract::iid_class_factory;
+
+u32 MsxmlManager::get_class_object(Marshaler& m, const Guid& clsid,
+    const Guid& iid, GuestAddr ppv, std::optional<msxml::MsxmlVersion> server) {
+    std::lock_guard lock(m_mutex);
+    if (!ppv) return E_INVALIDARG_HR;
+    if (m.write_ptr(ppv, 0).is_err()) return E_INVALIDARG_HR;
+    const auto version = dom_document_version(clsid);
+    if (!version || (server && server != version)) {
+        if (is_unimplemented_msxml_clsid(clsid))
+            log_unimplemented("DllGetClassObject", "schema cache / XSLT class");
+        return com::CLASS_E_CLASSNOTAVAILABLE;
+    }
+    if (!guid_eq(iid, IID_IUNKNOWN) && !guid_eq(iid, kFactoryIid))
+        return E_NOINTERFACE_HR;
+    const GuestAddr factory = make_object(m, MsxmlIface::ClassFactory, {});
+    if (!factory) return E_OUTOFMEMORY_HR;
+    find(factory)->factory_class = clsid;
+    if (m.write_ptr(ppv, factory).is_err()) {
+        m_objects.erase(factory);
+        return E_POINTER_HR;
+    }
+    return S_OK_HR;
+}
+
+u32 MsxmlManager::can_unload_now(std::optional<msxml::MsxmlVersion> server) {
+    std::lock_guard lock(m_mutex);
+    const auto index = [](msxml::MsxmlVersion version) { return version == msxml::MsxmlVersion::V6 ? 1u : 0u; };
+    if (server ? m_server_locks[index(*server)] != 0 :
+                 (m_server_locks[0] != 0 || m_server_locks[1] != 0)) return S_FALSE_HR;
+    for (const auto& [address, object] : m_objects) {
+        (void)address;
+        if (!server) return S_FALSE_HR;
+        const auto version = object.iface == MsxmlIface::ClassFactory ?
+            dom_document_version(object.factory_class) :
+            object.doc ? std::optional{object.doc->settings().version} : std::nullopt;
+        if (!version || version == server) return S_FALSE_HR;
+    }
+    return S_OK_HR;
+}
+
 // ---------------------------------------------------------------------------
 // Dispatch
 // ---------------------------------------------------------------------------
@@ -691,7 +742,9 @@ u32 MsxmlManager::query_interface(Marshaler& m, Object& self) {
     }
     const Guid& want = iid.value();
 
-    bool ok = guid_eq(want, IID_IUNKNOWN) || guid_eq(want, IID_IDISPATCH);
+    bool ok = guid_eq(want, IID_IUNKNOWN) ||
+        (self.iface == MsxmlIface::ClassFactory
+            ? guid_eq(want, kFactoryIid) : guid_eq(want, IID_IDISPATCH));
     if (!ok) {
         switch (self.iface) {
             case MsxmlIface::Document: {
@@ -778,8 +831,9 @@ u32 MsxmlManager::query_interface(Marshaler& m, Object& self) {
     }
     // Every supported IID is served by this same object; QueryInterface must
     // AddRef the pointer it returns.
+    if (m.write_ptr(ppv, self_ptr).is_err()) return E_POINTER_HR;
     ++self.refs;
-    return m.write_ptr(ppv, self_ptr).is_ok() ? S_OK_HR : E_POINTER_HR;
+    return S_OK_HR;
 }
 
 u32 MsxmlManager::release(Marshaler& m, GuestAddr self_ptr) {
@@ -787,7 +841,9 @@ u32 MsxmlManager::release(Marshaler& m, GuestAddr self_ptr) {
     if (self == nullptr) return 0;
     if (self->refs > 0) --self->refs;
     const u32 remaining = self->refs;
-    if (remaining == 0) {
+    const bool locked_factory = self->iface == MsxmlIface::ClassFactory &&
+        m_server_locks[dom_document_version(self->factory_class) == msxml::MsxmlVersion::V6 ? 1u : 0u] != 0;
+    if (remaining == 0 && !locked_factory) {
         if (self->node) m_node_to_iface.erase(self->node.get());
         if (self->iface == MsxmlIface::SchemaCollection && self->doc) {
             m_namespace_collections.erase(self->doc.get());
@@ -799,6 +855,7 @@ u32 MsxmlManager::release(Marshaler& m, GuestAddr self_ptr) {
 }
 
 u32 MsxmlManager::dispatch(MsxmlIface iface, u32 slot, Marshaler& m) {
+    std::lock_guard lock(m_mutex);
     const GuestAddr self_ptr = m.arg_ptr(0);
     auto* self = find(self_ptr);
     // Per-call tracing: a DOM caller that gives up part-way through is far
@@ -808,11 +865,59 @@ u32 MsxmlManager::dispatch(MsxmlIface iface, u32 slot, Marshaler& m) {
                  self == nullptr ? " (unknown object)" : "");
     if (self == nullptr) return E_POINTER_HR;
 
+    if (self->iface == MsxmlIface::ClassFactory && slot >= 3) {
+        if (slot == 3) {
+            const GuestAddr ppv = m.arg_ptr(3);
+            if (!ppv) {
+                // Native MSXML3 faults for this invalid call. Until guest fault
+                // injection is available here, reject loudly instead.
+                if (dom_document_version(self->factory_class) == msxml::MsxmlVersion::V3)
+                    log_unimplemented("IClassFactory::CreateInstance", "MSXML3 NULL output access violation");
+                return E_POINTER_HR;
+            }
+            if (m.write_ptr(ppv, 0).is_err()) return E_POINTER_HR;
+            if (m.arg_ptr(1)) return com::CLASS_E_NOAGGREGATION;
+            auto iid = m.read_struct<Guid>(m.arg_ptr(2));
+            if (iid.is_err()) return E_INVALIDARG_HR;
+            const Guid clsid = self->factory_class;
+            return create_document(m, clsid, iid.value(), ppv);
+        }
+        if (slot == 4) {
+            const auto version = dom_document_version(self->factory_class);
+            const usize index = version == msxml::MsxmlVersion::V6 ? 1u : 0u;
+            auto& locks = m_server_locks[index];
+            if (m.arg32(1)) {
+                if (locks == UINT32_MAX) return E_OUTOFMEMORY_HR;
+                ++locks;
+            } else {
+                if (locks) --locks;
+                if (!locks) {
+                    for (auto it = m_objects.begin(); it != m_objects.end();) {
+                        if (it->second.iface == MsxmlIface::ClassFactory &&
+                            !it->second.refs && dom_document_version(it->second.factory_class) == version)
+                            it = m_objects.erase(it);
+                        else ++it;
+                    }
+                }
+            }
+            return S_OK_HR;
+        }
+        return E_NOTIMPL_HR;
+    }
+
     // IUnknown is common to every interface.
     switch (slot) {
         case 0: return query_interface(m, *self);
-        case 1: return ++self->refs;
-        case 2: return release(m, self_ptr);
+        case 1:
+            ++self->refs;
+            // MSXML's class factory reports 1 as its diagnostic count on
+            // Windows; retain the real ownership count independently.
+            return self->iface == MsxmlIface::ClassFactory ? 1u : self->refs;
+        case 2: {
+            const bool factory = self->iface == MsxmlIface::ClassFactory;
+            const u32 remaining = release(m, self_ptr);
+            return factory ? 1u : remaining;
+        }
         // IDispatch. Late binding would need the DISPID tables from
         // msxml2did.h; vtable callers never reach these.
         case 3: case 4: case 5: case 6:

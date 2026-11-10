@@ -1,0 +1,93 @@
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 21727514f54e8b10b0f05fa05c3c8853
+;
+; Pipeline Runtime Information: 
+;
+;PSVRuntimeInfo:
+; Amplification Shader
+; NumThreads=(1,1,1)
+; MinimumExpectedWaveLaneCount: 0
+; MaximumExpectedWaveLaneCount: 4294967295
+; UsesViewID: false
+; SigInputElements: 0
+; SigOutputElements: 0
+; SigPatchConstOrPrimElements: 0
+; SigInputVectors: 0
+; SigOutputVectors[0]: 0
+; SigOutputVectors[1]: 0
+; SigOutputVectors[2]: 0
+; SigOutputVectors[3]: 0
+; EntryFunctionName: as_vi
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; outbuf                                UAV    byte         r/w      U0             u1     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%struct.VIP = type { i32 }
+%dx.types.Handle = type { i8* }
+%struct.RWByteAddressBuffer = type { i32 }
+
+@"\01?g_payload@@3UVIP@@A" = external addrspace(3) global %struct.VIP, align 4
+
+define void @as_vi() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 1, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call i32 @dx.op.atomicBinOp.i32(i32 78, %dx.types.Handle %1, i32 0, i32 120, i32 undef, i32 undef, i32 1)  ; AtomicBinOp(handle,atomicOp,offset0,offset1,offset2,newValue)
+  store i32 0, i32 addrspace(3)* getelementptr inbounds (%struct.VIP, %struct.VIP addrspace(3)* @"\01?g_payload@@3UVIP@@A", i32 0, i32 0), align 4, !tbaa !11
+  call void @dx.op.dispatchMesh.struct.VIP(i32 173, i32 1, i32 1, i32 1, %struct.VIP addrspace(3)* nonnull @"\01?g_payload@@3UVIP@@A")  ; DispatchMesh(threadGroupCountX,threadGroupCountY,threadGroupCountZ,payload)
+  ret void
+}
+
+; Function Attrs: nounwind
+declare i32 @dx.op.atomicBinOp.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.dispatchMesh.struct.VIP(i32, i32, i32, i32, %struct.VIP addrspace(3)*) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #1
+
+attributes #0 = { nounwind }
+attributes #1 = { nounwind readonly }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!7}
+
+!0 = !{!"dxcoob 1.8.2502.11 (239921522)"}
+!1 = !{i32 1, i32 5}
+!2 = !{i32 1, i32 8}
+!3 = !{!"as", i32 6, i32 5}
+!4 = !{null, !5, null, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 1, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!7 = !{void ()* @as_vi, !"as_vi", null, !4, !8}
+!8 = !{i32 0, i64 16, i32 10, !9}
+!9 = !{!10, i32 4}
+!10 = !{i32 1, i32 1, i32 1}
+!11 = !{!12, !12, i64 0}
+!12 = !{!"int", !13, i64 0}
+!13 = !{!"omnipotent char", !14, i64 0}
+!14 = !{!"Simple C/C++ TBAA"}

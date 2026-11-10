@@ -80,13 +80,6 @@
     WindowPixelsPresenter m_window_pixels_presenter;
     WindowSurfacePresenter m_window_surface_presenter;
     WindowServices m_window_services;
-    /// The chain that owns exclusive full-screen (one per process: the
-    /// logical display mode is the process's single guest desktop).
-    GuestAddr m_exclusive_chain{0};
-    /// A full-screen / windowed transition is sending its window messages:
-    /// a SetFullscreenState or ResizeTarget re-entered from them reports
-    /// DXGI_STATUS_MODE_CHANGE_IN_PROGRESS.
-    std::atomic<bool> m_fullscreen_transition{false};
     SyncServices m_sync_services;
     struct PendingForeignSurface {
         u64 hwnd{0};
@@ -282,3 +275,11 @@
     /// Released 64 KiB recording chunks, reused before mapping new ones: a
     /// deferred context typically finishes a list every frame.
     std::vector<GuestAddr> m_arena_pool;
+    // WS6 begin
+    /// Zero-copy storage of DYNAMIC and STAGING buffers
+    /// (d3d11_buffer_ring.hpp): created on the first such CreateBuffer.
+    /// Every lease holds it too, so it outlives the buffers using it.
+    std::shared_ptr<D3D11BufferRing> m_buffer_ring;
+    /// WS6 tests read the ring through D3D11Ws6TestPeer.
+    friend struct D3D11Ws6TestPeer;
+    // WS6 end

@@ -73,10 +73,14 @@ struct DeltaWriter {
         entry(field, 0, &h, sizeof(h));
         if (owned) retain(h);
     }
-    void handle_offset(u16 field, void* h, u64 offset, u32 a = 0) {
+    void handle_offset(u16 field, void* h, u64 offset, void* previous,
+                       u32 a = 0) {
         const struct { void* h; u64 off; } p{h, offset};
         entry(field, a, &p, sizeof(p));
-        retain(h);
+        // The base handle is already owned by this recording. Offset-only
+        // changes need bytes, not another reference. Keyframes use a null
+        // base; generation/chain validation forces a keyframe or a retry.
+        if (h != previous) retain(h);
     }
 };
 
@@ -84,15 +88,28 @@ struct DeltaWriter {
 /// previous draw (or default_draw() for a keyframe). Push blocks are not
 /// written here: they are interned under the queue's lock first.
 void write_delta_fields(DeltaWriter& w, const CsDraw& cur, const CsDraw& base) {
+    if (cur.indirect_resources_read_only != base.indirect_resources_read_only) {
+        w.entry(kFIndirectReadOnly, cur.indirect_resources_read_only ? 1u : 0u,
+                nullptr, 0);
+    }
+    if (cur.resident_read_count != base.resident_read_count) {
+        w.entry(kFResidentReadCount, cur.resident_read_count, nullptr, 0);
+    }
     if (cur.pipeline != base.pipeline) w.handle(kFPipeline, cur.pipeline, true);
     if (cur.depth_stencil != base.depth_stencil ||
         cur.stencil_reference != base.stencil_reference ||
-        cur.writes_depth_stencil != base.writes_depth_stencil) {
+        cur.writes_depth_stencil != base.writes_depth_stencil ||
+        cur.writes_depth != base.writes_depth ||
+        cur.writes_stencil != base.writes_stencil ||
+        cur.writes_color != base.writes_color) {
         // Depth-stencil states live for the process (MetalPassStateCache),
         // so a draw holds no reference to them.
         const struct { void* h; u32 ref; u32 writes; } p{
             cur.depth_stencil, cur.stencil_reference,
-            cur.writes_depth_stencil ? 1u : 0u};
+            (cur.writes_depth_stencil ? 1u : 0u) |
+                (cur.writes_color ? 2u : 0u) |
+                (cur.writes_depth ? 4u : 0u) |
+                (cur.writes_stencil ? 8u : 0u)};
         w.entry(kFDepth, 0, &p, sizeof(p));
     }
     if (cur.vertex_stream_count != base.vertex_stream_count) {
@@ -103,24 +120,28 @@ void write_delta_fields(DeltaWriter& w, const CsDraw& cur, const CsDraw& base) {
             cur.vertex_offsets[i] != base.vertex_offsets[i] ||
             cur.vertex_slots[i] != base.vertex_slots[i]) {
             w.handle_offset(static_cast<u16>(kFStream + i), cur.vertex_buffers[i],
-                            cur.vertex_offsets[i], cur.vertex_slots[i]);
+                            cur.vertex_offsets[i], base.vertex_buffers[i],
+                            cur.vertex_slots[i]);
         }
     }
     if (cur.index_buffer != base.index_buffer ||
         cur.index_offset != base.index_offset ||
         cur.index_type != base.index_type || cur.indexed != base.indexed) {
         w.handle_offset(kFIndex, cur.index_buffer, cur.index_offset,
+                        base.index_buffer,
                         (cur.index_type & 0xFFFFu) |
                             (cur.indexed ? 0x10000u : 0u));
     }
     for (u16 i = 0; i < 16; ++i) {
         if (cur.vs_cbuffer[i] != base.vs_cbuffer[i] ||
             cur.vs_cbuffer_off[i] != base.vs_cbuffer_off[i]) {
-            w.handle_offset(static_cast<u16>(kFVsCb + i), cur.vs_cbuffer[i], cur.vs_cbuffer_off[i]);
+            w.handle_offset(static_cast<u16>(kFVsCb + i), cur.vs_cbuffer[i],
+                            cur.vs_cbuffer_off[i], base.vs_cbuffer[i]);
         }
         if (cur.ps_cbuffer[i] != base.ps_cbuffer[i] ||
             cur.ps_cbuffer_off[i] != base.ps_cbuffer_off[i]) {
-            w.handle_offset(static_cast<u16>(kFPsCb + i), cur.ps_cbuffer[i], cur.ps_cbuffer_off[i]);
+            w.handle_offset(static_cast<u16>(kFPsCb + i), cur.ps_cbuffer[i],
+                            cur.ps_cbuffer_off[i], base.ps_cbuffer[i]);
         }
         if (cur.textures[i] != base.textures[i]) {
             w.handle(static_cast<u16>(kFTex + i), cur.textures[i], true);
@@ -171,21 +192,22 @@ void write_delta_fields(DeltaWriter& w, const CsDraw& cur, const CsDraw& base) {
         if (cur.ps_uav_buffer[i] != base.ps_uav_buffer[i] ||
             cur.ps_uav_buffer_off[i] != base.ps_uav_buffer_off[i]) {
             w.handle_offset(static_cast<u16>(kFUav + i), cur.ps_uav_buffer[i],
-                            cur.ps_uav_buffer_off[i]);
+                            cur.ps_uav_buffer_off[i], base.ps_uav_buffer[i]);
         }
     }
     for (u16 i = 0; i < graphics::BACKEND_MAX_UAV_COUNTER_BINDINGS; ++i) {
         if (cur.ps_uav_counter[i] != base.ps_uav_counter[i] ||
             cur.ps_uav_counter_off[i] != base.ps_uav_counter_off[i]) {
             w.handle_offset(static_cast<u16>(kFCounter + i), cur.ps_uav_counter[i],
-                            cur.ps_uav_counter_off[i]);
+                            cur.ps_uav_counter_off[i], base.ps_uav_counter[i]);
         }
     }
     if (cur.ps_statistics != base.ps_statistics ||
         cur.ps_statistics_off != base.ps_statistics_off) {
-        w.handle_offset(kFStats, cur.ps_statistics, cur.ps_statistics_off);
+        w.handle_offset(kFStats, cur.ps_statistics, cur.ps_statistics_off,
+                        base.ps_statistics);
     }
-    for (u16 i = 0; i < 4; ++i) {
+    for (u16 i = 0; i < graphics::BACKEND_MAX_DESCRIPTOR_SETS; ++i) {
         if (cur.vs_descriptor_tables[i] != base.vs_descriptor_tables[i]) {
             w.handle(static_cast<u16>(kFVsTable + i), cur.vs_descriptor_tables[i], true);
         }
@@ -415,12 +437,14 @@ bool MetalSubmitQueue::record_draw_delta(u64 gen, u64 pass_id) {
                 end.pass_id = pass_id;
                 m_fold.ended = true;
                 m_fold.wrote = writes;
+                if (cur.writes_color) m_fold.color_dirty = true;
             }
         } else {
             if (m_fold.reopened && fold_draw_needs_split_locked(cur)) {
                 fold_split_locked(/*end_first=*/true);
             }
             if (draw_writes(cur)) m_fold.wrote = true;
+            if (cur.writes_color) m_fold.color_dirty = true;
             append_delta_locked(p.bytes.data(), p.bytes.size(), pass_id);
         }
     } else {

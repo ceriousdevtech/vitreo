@@ -1,5 +1,7 @@
 #pragma once
 
+#include "winapi/common/sxs/sxs_context.hpp"
+
 /// @file module.hpp
 /// @brief Module management for Windows API emulation (WIN32-033)
 ///
@@ -11,6 +13,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <condition_variable>
 #include <map>
 #include <mutex>
 #include <memory>
@@ -27,6 +30,7 @@
 #include "core/memory/guest_memory.hpp"
 #include "core/pe/loader/pe_loader.hpp"
 #include "core/pe/parser/pe_parser.hpp"
+#include "core/pe/loader/teb_setup.hpp"
 #include "core/sync/host_rwlock.hpp"
 
 namespace vitreo::winapi {
@@ -62,6 +66,14 @@ constexpr GuestAddr SYNTHETIC_MODULE_BASE_X86 = 0x7C000000;
 // or vitreo::memory::x64_synthetic_arena_base() before one exists.
 // See core/memory/x64_high_arena.hpp.
 constexpr GuestAddr SYNTHETIC_MODULE_SLOT_SIZE = 0x10000;
+// The synthetic WoW64 ntdll's `.text` ends with `ret N` for N = 0, 4, ...,
+// 0x100 at a 4-byte stride (`ret` for N = 0), the instruction a thread blocked
+// in an API is reported at and resumes from (thread_lifecycle_probe
+// BLOCKED_GET / BLOCKED_ROUNDTRIP). The WoW64 service stubs' own `ret N`
+// carries only their service's byte count.
+constexpr GuestAddr NTDLL_WOW64_API_RETURN_RVA =
+    SYNTHETIC_MODULE_SLOT_SIZE - 0x1000 - 0x200;
+constexpr u32 NTDLL_WOW64_API_RETURN_BYTES = 0x104;
 
 constexpr GuestAddr KERNEL32_BASE = SYNTHETIC_MODULE_BASE_X86 + 0x00000;
 constexpr GuestAddr NTDLL_BASE    = SYNTHETIC_MODULE_BASE_X86 + 0x10000;
@@ -196,6 +208,8 @@ struct ModuleInfo {
 /// name) and resolves GetProcAddress calls by delegating to ThunkRegistry.
 class ModuleManager {
 public:
+    /// The PEB loader-entry view of @p info (teb_setup.hpp).
+    static pe::TebModuleInfo loader_entry_info(const ModuleInfo& info);
     /// Synthetic base addresses exposed for tests / registration helpers
     static constexpr GuestAddr KERNEL32_BASE = vitreo::winapi::KERNEL32_BASE;
     static constexpr GuestAddr NTDLL_BASE    = vitreo::winapi::NTDLL_BASE;
@@ -237,6 +251,13 @@ public:
     /// at each implicit-path LoadLibrary: the last step of the standard DLL
     /// search order searches its directories.
     void set_path_variable_provider(std::function<std::string()> provider);
+
+    /// Side-by-side DLL redirection through the calling thread's active
+    /// activation context (or the process default): the first step of the
+    /// DLL search order for a module name (Learn "Dynamic-link library
+    /// search order", "Dynamic-Link Library Redirection").
+    void set_sxs_redirect_provider(
+        std::function<std::optional<std::string>(std::string_view)> provider);
 
     /// Look up a CRT data export by name, or 0 when there is no resolver or
     /// no such variable.
@@ -281,6 +302,28 @@ public:
     /// were loaded before m_guest_call was wired up (e.g. companion DLLs
     /// loaded during static import resolution).
     void call_deferred_dll_mains();
+
+    /// Process initialization includes all dependency DLL callbacks and the
+    /// executable's TLS callbacks. Even SKIP_THREAD_ATTACH threads wait for it.
+    class ProcessInitializationScope {
+    public:
+        explicit ProcessInitializationScope(ModuleManager& manager);
+        ~ProcessInitializationScope();
+        ProcessInitializationScope(const ProcessInitializationScope&) = delete;
+        ProcessInitializationScope& operator=(const ProcessInitializationScope&) = delete;
+    private:
+        ModuleManager& manager_;
+        std::unique_lock<std::recursive_mutex> loader_lock_;
+    };
+    [[nodiscard]] ProcessInitializationScope begin_process_initialization();
+    /// The control predicate runs without the initialization mutex held.
+    /// False cancels a worker whose termination/process exit was requested.
+    [[nodiscard]] bool wait_for_process_initialization(
+        const std::function<bool()>& continue_waiting);
+
+    /// Internal loader serialization shared by mapping and notifications.
+    std::recursive_mutex& loader_mutex() noexcept { return m_loader_mutex; }
+
 
     /// Deliver the Windows loader's per-thread initialization notifications
     /// on the newly-created guest thread, after its static TLS blocks exist
@@ -730,7 +773,16 @@ private:
     /// with ERROR_DLL_INIT_FAILED instead of silently stubbing imports.
     [[nodiscard]] pe::ImportCallback make_companion_resolver(
         std::string companion_dir,
-        bool* dep_failed = nullptr);
+        bool* dep_failed = nullptr,
+        std::shared_ptr<const sxs::ContextData> own_context = nullptr);
+
+    /// The activation context a DLL's own manifest (RT_MANIFEST
+    /// ISOLATIONAWARE_MANIFEST_RESOURCE_ID 2) generates; the loader resolves
+    /// that DLL's imports in it. nullptr: no such manifest. Sets @p failed
+    /// when the manifest exists but no context can be generated.
+    [[nodiscard]] std::shared_ptr<const sxs::ContextData> module_activation_context(
+        const std::string& win_path, std::span<const u8> image, const pe::ParsedPe& parsed,
+        bool& failed);
 
     // -------------------------------------------------------------------------
     // Import graph (circular static imports)
@@ -806,6 +858,9 @@ private:
     /// Project a host-side loaded module into the guest PEB loader list.
     /// Before the PEB exists, setup_teb() will publish the current module set.
     [[nodiscard]] bool publish_loader_entry(const ModuleInfo& info);
+    /// Republish @p info's DllMain / DisableThreadLibraryCalls / reference
+    /// state into its loader entry.
+    void sync_loader_entry(const ModuleInfo& info);
     void unpublish_loader_entry(const ModuleInfo& info);
 
     /// Fire the PE TLS callbacks for a freshly-loaded module with the given
@@ -889,6 +944,7 @@ private:
     std::string m_current_directory{"C:\\"};
     std::function<u64(std::string_view)> m_crt_data_resolver;
     std::function<std::string()> m_path_variable_provider;
+    std::function<std::optional<std::string>(std::string_view)> m_sxs_redirect_provider;
     // nullopt restores the default search order; an empty string explicitly
     // removes the current directory from that order.
     std::optional<std::string> m_dll_directory;
@@ -959,6 +1015,10 @@ private:
     /// process-wide recursive loader lock. Recursive acquisition permits
     /// dependency loads performed by the same loader thread.
     std::recursive_mutex m_loader_mutex;
+    std::mutex m_process_initialization_mutex;
+    std::condition_variable m_process_initialization_cv;
+    u32 m_process_initialization_depth{0};
+
     /// Table lock for modules_by_name_ / base_to_name_ / failed_modules_ /
     /// data_file_mappings_ / m_user_dll_directories (the loader's
     /// LdrpModuleDatatableLock). GetModuleHandle / GetProcAddress /

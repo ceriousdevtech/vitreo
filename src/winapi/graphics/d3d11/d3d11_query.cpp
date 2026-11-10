@@ -749,42 +749,7 @@ graphics::GpuOcclusionCounter* D3D11Manager::occlusion_counter_for_draw(
 graphics::StatsClipLayout stats_clip_layout(
     const std::vector<graphics::DxbcSignatureElement>& outputs,
     const std::vector<u32>& record_registers, u32 stream) {
-    graphics::StatsClipLayout layout{};
-    const auto slot_of = [&](u32 reg, u32& slot) {
-        const auto found =
-            std::find(record_registers.begin(), record_registers.end(), reg);
-        if (found == record_registers.end()) return false;
-        slot = static_cast<u32>(found - record_registers.begin());
-        return true;
-    };
-    // SV_ClipDistance components in clip-array order: by semantic index,
-    // then component (the rasterizer's order, D3D11.3 15.4.1).
-    std::vector<std::tuple<u32, u32, u32>> distances;
-    for (const auto& element : outputs) {
-        if (element.stream != stream) continue;
-        if (element.system_value_type == 1u) {  // D3D_NAME_POSITION
-            layout.valid = slot_of(element.register_num, layout.position_slot);
-        } else if (element.system_value_type == 2u) {  // CLIP_DISTANCE
-            for (u32 c = 0; c < 4; ++c) {
-                if ((element.component_mask & (1u << c)) != 0u) {
-                    distances.emplace_back(element.semantic_index,
-                                           element.register_num, c);
-                }
-            }
-        }
-    }
-    std::sort(distances.begin(), distances.end());
-    for (const auto& [index, reg, component] : distances) {
-        u32 slot = 0;
-        if (layout.distances >= 8 || !slot_of(reg, slot)) {
-            layout.valid = false;
-            break;
-        }
-        layout.distance_slot[layout.distances] = slot;
-        layout.distance_component[layout.distances] = component;
-        ++layout.distances;
-    }
-    return layout;
+    return graphics::stats_clip_layout_of(outputs, record_registers, stream);
 }
 
 bool D3D11Manager::pipeline_statistics_building(GuestAddr context) const {
@@ -1188,7 +1153,7 @@ void D3D11Manager::count_pipeline_draw(
         graphics::BackendComputePipelineDesc pd{};
         pd.compute_entry_point = graphics::kIaResolveEntryPoint;
         pd.compute_shader_msl = graphics::ia_resolve_msl();
-        pd.cache_key = 0x1A7E501Full;
+        pd.cache_key = 0x1A7E5020ull;  // cut_mode
         m_ia_resolve = m_backend.create_compute_pipeline(pd);
     }
     if (m_ia_resolve && m_ia_resolve->valid()) resolve_kernel = m_ia_resolve.get();

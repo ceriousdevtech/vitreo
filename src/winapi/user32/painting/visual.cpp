@@ -23,6 +23,7 @@
 #include "winapi/user32/messages/message_send.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
+#include "winapi/kernel32/locale/string_conv.hpp"
 #include "winapi/kernel32/memory/global_local.hpp"
 #include "winapi/kernel32/module/module.hpp"
 #include "winapi/kernel32/process/process.hpp"
@@ -202,7 +203,7 @@ void User32ExtManager::impl_LoadBitmapW(Marshaler& m) {
     m.set_return(handle);
 }
 
-void User32ExtManager::impl_LoadImageW(Marshaler& m) {
+void User32ExtManager::impl_LoadImageW(Marshaler& m, const std::u16string* converted_name) {
     u64 hInst = m.arg(0);
     GuestAddr name = m.arg_ptr(1);
     u32 type = static_cast<u32>(m.arg(2));
@@ -212,8 +213,22 @@ void User32ExtManager::impl_LoadImageW(Marshaler& m) {
 
     constexpr u32 kFileNotFound = 2;  // "LoadImageW(missing file)=NULL err=2"
     // A string name for a module resource, upper-cased as FindResource does.
+    // A string name as a path (UTF-8 for the VFS).
+    auto name_path = [&]() -> std::string {
+        if (converted_name != nullptr) {
+            return utf16_to_utf8(reinterpret_cast<const u16*>(converted_name->data()),
+                                 static_cast<int>(converted_name->size()));
+        }
+        return m.read_wide_string(name, 4096).value_or("");
+    };
     auto read_name = [&](GuestAddr p) {
         std::u16string text;
+        if (converted_name != nullptr) {
+            for (char16_t unit : *converted_name) {
+                text.push_back(unit >= u'a' && unit <= u'z' ? unit - 32 : unit);
+            }
+            return text;
+        }
         for (u32 i = 0; i < 256; ++i) {
             const auto r = m.read_u16(p + i * 2);
             if (r.is_err() || r.value() == 0) break;
@@ -227,8 +242,7 @@ void User32ExtManager::impl_LoadImageW(Marshaler& m) {
         constexpr u32 LR_LOADFROMFILE = 0x0010;
         u32 cursor = 0;
         if (fuLoad & LR_LOADFROMFILE) {
-            auto path = m.read_wide_string(name, 4096);
-            auto bytes = read_all_bytes(m_vfs, path.value_or(""));
+            auto bytes = read_all_bytes(m_vfs, name_path());
             if (bytes.is_err() || bytes.value().empty()) {
                 set_last_error(kFileNotFound);
                 m.set_return(0u);
@@ -311,8 +325,7 @@ void User32ExtManager::impl_LoadImageW(Marshaler& m) {
                 m.set_return(0);
                 return;
             }
-            auto path = m.read_wide_string(name, 4096);
-            source_description = path.value_or("");
+            source_description = name_path();
             if (!source_description.empty()) {
                 auto bytes = read_all_bytes(m_vfs, source_description);
                 if (bytes.is_ok()) {
@@ -384,8 +397,7 @@ void User32ExtManager::impl_LoadImageW(Marshaler& m) {
 
     bool is_resource_id = (name < 0x10000);
     if (!is_resource_id) {
-        auto s = m.read_wide_string(name, 4096);
-        std::string win_path = s.is_ok() ? s.value() : "";
+        std::string win_path = name_path();
 
         if ((fuLoad & LR_LOADFROMFILE) != 0 && !win_path.empty()) {
             u32 handle = 0;
@@ -631,6 +643,38 @@ void User32ExtManager::apply_cursor(u32 hcursor) {
         return;
     }
     set_native_cursor_visible(hcursor != 0 && m_cursor_display_count >= 0);
+}
+
+void User32ExtManager::refresh_current_cursor() {
+    const u32 current = m_current_cursor;
+    if (current == 0) return;
+    // apply_cursor returns early for an unchanged handle, and a custom
+    // shape it already installed is skipped; both must be redone because
+    // the handle now shows a different image.
+    m_current_cursor = 0;
+    if (m_last_custom_cursor == current) m_installed_custom_cursor = 0;
+    apply_cursor(current);
+}
+
+void User32ExtManager::impl_SetSystemCursor(Marshaler& m) {
+    // BOOL SetSystemCursor(HCURSOR hcur, DWORD id) — ResourceManager::
+    // set_system_cursor holds the measured contract.
+    const auto hcursor = static_cast<u32>(m.arg(0));
+    const auto id = static_cast<u32>(m.arg(1));
+    if (m_resource_mgr == nullptr) {
+        set_last_error(1402);  // ERROR_INVALID_CURSOR_HANDLE: no cursor table
+        m.set_return(0);
+        return;
+    }
+    u32 error = 0;
+    const bool ok = m_resource_mgr->set_system_cursor(hcursor, id, error);
+    if (!ok) {
+        if (error != 0) set_last_error(error);
+        m.set_return(0);
+        return;
+    }
+    refresh_current_cursor();
+    m.set_return(1);
 }
 
 void User32ExtManager::set_native_cursor_visible(bool visible) {

@@ -42,6 +42,14 @@ public:
         }
         // UAV buffers remain Storage; Metal doesn't require special usage bits
         // for unordered access - texture/buffer arguments default to read_write.
+        if (desc.window) {
+            // Storage arrives with set_window (BackendBufferDesc::window).
+            // Initial contents are the lender's to write into the window.
+            if (initial_data != nullptr) return;
+            m_buffer = std::make_unique<MetalBuffer>(
+                device, desc.byte_width, usage, MetalBuffer::WindowStorage{});
+            return;
+        }
         if (desc.shareable) {
             // A shared buffer's storage IS its store's memory, which every
             // opening in every process maps: no copies, only publication.
@@ -202,6 +210,12 @@ public:
     [[nodiscard]] usize native_offset() const noexcept {
         return m_buffer != nullptr ? m_buffer->gpu_offset() : 0;
     }
+    u64 device_address() const noexcept override {
+        void* handle = native_handle();
+        if (handle == nullptr) return 0;
+        return static_cast<u64>([(__bridge id<MTLBuffer>)handle gpuAddress]) +
+               static_cast<u64>(native_offset());
+    }
     void note_gpu_bind() const {
         if (m_buffer) m_buffer->note_gpu_bind();
     }
@@ -209,10 +223,28 @@ public:
     void note_gpu_bind_once(u64 gen) const {
         if (m_buffer) m_buffer->note_gpu_bind_once(gen);
     }
-    /// Before recording a GPU write (copy destination): see
-    /// MetalBuffer::note_gpu_write. Must precede native_handle()/offset.
-    void note_gpu_write() {
-        if (m_buffer) m_buffer->note_gpu_write();
+    /// A note_gpu_write range of unknown extent: treated as partial.
+    static constexpr usize kUnknownRange = ~usize{0};
+    /// Before recording a GPU write (copy destination) of @p length bytes
+    /// at @p offset: see MetalBuffer::note_gpu_write. Must precede
+    /// native_handle()/offset. A window buffer whose window recorded work
+    /// may still use first moves to a fresh window from its source
+    /// (BackendBufferWindowSource), keeping every byte outside the write
+    /// (CPU copy, or a queued blit while a GPU write into the old window is
+    /// pending), or, with no source or no fresh window, waits for that work:
+    /// the write must never land under work recorded before it.
+    void note_gpu_write(usize offset = 0, usize length = kUnknownRange);
+
+    bool set_window(const BackendBufferWindow& window) override;
+    void set_window_source(BackendBufferWindowSource* source) noexcept override {
+        m_source = source;
+    }
+    bool wait_storage_idle() override {
+        return m_buffer != nullptr && m_buffer->wait_until_storage_idle();
+    }
+    bool storage_in_use() const noexcept override {
+        if (m_buffer == nullptr || !m_buffer->has_storage()) return false;
+        return !m_buffer->window_storage() || m_buffer->storage_busy();
     }
 
 private:
@@ -242,6 +274,8 @@ private:
     BackendBufferDesc m_desc;
     std::unique_ptr<MetalBuffer> m_buffer;
     std::shared_ptr<MetalSharedLocal> m_shared;
+    /// Window buffers: supplies fresh windows (set_window_source).
+    BackendBufferWindowSource* m_source{nullptr};
 };
 
 [[nodiscard]] void* metal_heap_handle(const BackendHeap* heap);
@@ -250,9 +284,10 @@ private:
 /// storage as a 1D texture of a chosen pixel format, so the sampler hardware
 /// performs the format decode the shader cannot do for itself.
 ///
-/// Learn (D3D11_BUFFER_SRV / D3D11_BUFFER_UAV): FirstElement is any element,
-/// so the view's byte offset is only a multiple of the element size, while a
-/// linear texture's base must be a multiple of the device's
+/// Learn (D3D11_BUFFER_SRV / D3D11_BUFFER_UAV, and D3D12_BUFFER_SRV /
+/// D3D12_BUFFER_UAV where FirstElement is a UINT64): the view's byte offset
+/// is the element index times the element size, while a linear texture's
+/// base must be a multiple of the device's
 /// minimumLinearTextureAlignmentForPixelFormat. The alias therefore starts at
 /// the largest aligned offset at or below the view, element_bias() elements
 /// in front of FirstElement, and is element_bias() + NumElements texels wide:
@@ -274,7 +309,7 @@ private:
 class MetalBackendTextureBuffer final : public BackendTextureBuffer {
 public:
     MetalBackendTextureBuffer(void* device, const MetalBackendBuffer& buffer,
-                              PixelFormat pixel_format, unsigned first_element,
+                              PixelFormat pixel_format, u64 first_element,
                               unsigned num_elements, bool shader_write,
                               u16 component_mapping = 0)
         : m_component_mapping(component_mapping),
@@ -289,14 +324,22 @@ public:
           m_shader_write(shader_write) {
         if (m_device != nullptr && m_pixel_format != MTLPixelFormatInvalid &&
             m_texel_bytes != 0) {
+            // A 32-bit product of the element index and the texel size wraps
+            // onto byte 0 (element 0x40000000 of R32_FLOAT is byte 4 GiB).
+            if (m_first_element > (~u64{0}) / m_texel_bytes) {
+                report_unservable("its element index does not fit a byte "
+                                  "offset");
+                return;
+            }
+            const u64 byte_offset =
+                m_first_element * static_cast<u64>(m_texel_bytes);
             m_alignment = static_cast<usize>(
                 [(__bridge id<MTLDevice>)m_device
                     minimumLinearTextureAlignmentForPixelFormat:
                         m_pixel_format]);
-            const usize misalign =
+            const u64 misalign =
                 m_alignment > 1u
-                    ? (static_cast<usize>(m_first_element) * m_texel_bytes) %
-                          m_alignment
+                    ? byte_offset % static_cast<u64>(m_alignment)
                     : 0u;
             if (misalign % m_texel_bytes != 0) {
                 // An alignment that is not a multiple of the texel: no
@@ -305,7 +348,12 @@ public:
                                   "elements");
                 return;
             }
-            m_element_bias = static_cast<u32>(misalign / m_texel_bytes);
+            const u64 bias = misalign / m_texel_bytes;
+            if (bias > 0xFFFFFFFFull) {
+                report_unservable("its element bias does not fit 32 bits");
+                return;
+            }
+            m_element_bias = static_cast<u32>(bias);
         }
         (void)rebuild();
     }
@@ -363,11 +411,12 @@ private:
         static std::atomic<u32> s_reports{0};
         if (s_reports.fetch_add(1) < 8u) {
             std::fprintf(stderr,
-                         "[metal] typed buffer view fmt %lu first=%u n=%u "
+                         "[metal] typed buffer view fmt %lu first=%llu n=%u "
                          "write=%d cannot be aliased: %s (align %zu)\n",
                          static_cast<unsigned long>(m_pixel_format),
-                         m_first_element, m_num_elements,
-                         m_shader_write ? 1 : 0, why, m_alignment);
+                         static_cast<unsigned long long>(m_first_element),
+                         m_num_elements, m_shader_write ? 1 : 0, why,
+                         m_alignment);
         }
     }
 
@@ -385,18 +434,41 @@ private:
 
         id<MTLBuffer> mtl_buffer = (__bridge id<MTLBuffer>)buffer_handle;
         // The alias: element_bias() elements in front of the view, then the
-        // view's own elements.
-        const usize texels =
-            static_cast<usize>(m_element_bias) + m_num_elements;
-        const usize length = texels * m_texel_bytes;
-        const usize base =
-            m_source_offset +
-            (static_cast<usize>(m_first_element) - m_element_bias) *
-                m_texel_bytes;
-        if (base + length > [mtl_buffer length]) return false;
-        if (m_alignment > 1u && base % m_alignment != 0) {
+        // view's own elements. The products are 64-bit: a 32-bit multiply of
+        // element 0x40000000 by a 4-byte texel is 0, not byte 4 GiB.
+        if (m_texel_bytes == 0 || m_first_element < m_element_bias ||
+            m_first_element > (~u64{0}) / m_texel_bytes) {
+            return false;
+        }
+        const u64 texels64 = static_cast<u64>(m_element_bias) + m_num_elements;
+        if (texels64 > (~u64{0}) / m_texel_bytes) return false;
+        const u64 length64 = texels64 * m_texel_bytes;
+        const u64 byte_base =
+            (m_first_element - m_element_bias) * static_cast<u64>(m_texel_bytes);
+        const u64 source = static_cast<u64>(m_source_offset);
+        if (byte_base > ~u64{0} - source) return false;
+        const u64 base64 = source + byte_base;
+        const u64 buffer_length = static_cast<u64>([mtl_buffer length]);
+        if (base64 > buffer_length || length64 > buffer_length - base64) {
+            return false;
+        }
+        if (m_alignment > 1u &&
+            base64 % static_cast<u64>(m_alignment) != 0) {
             report_unservable("its storage moved to an offset the alignment "
                               "does not divide");
+            return false;
+        }
+        // newTextureWithDescriptor:offset: takes NSUInteger. A value that
+        // does not fit that parameter cannot name the element; narrowing it
+        // would alias the wrong texels.
+        const NSUInteger texels = static_cast<NSUInteger>(texels64);
+        const NSUInteger length = static_cast<NSUInteger>(length64);
+        const NSUInteger base = static_cast<NSUInteger>(base64);
+        if (static_cast<u64>(texels) != texels64 ||
+            static_cast<u64>(length) != length64 ||
+            static_cast<u64>(base) != base64) {
+            report_unservable("its element index does not fit the texture "
+                              "offset");
             return false;
         }
         MTLTextureDescriptor* td = [MTLTextureDescriptor
@@ -426,7 +498,7 @@ private:
     const MetalBackendBuffer* m_buffer{nullptr};
     MTLPixelFormat m_pixel_format{MTLPixelFormatInvalid};
     unsigned m_texel_bytes{0};
-    unsigned m_first_element{0};
+    u64 m_first_element{0};
     unsigned m_num_elements{0};
     bool m_shader_write{false};
     usize m_alignment{0};

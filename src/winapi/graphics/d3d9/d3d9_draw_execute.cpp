@@ -357,11 +357,43 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
     // per distinct violation so
     // a per-frame offender does not flood the log.
     static const bool decl_audit = std::getenv("VITREO_D3D9_DECL_AUDIT") != nullptr;
+    // VITREO_D3D9_LAYOUT_LOG: every distinct (vertex shader, vertex layout)
+    // pair once -- element format, usage, offset, stream stride and
+    // frequency -- so a draw seen on screen can be matched to the shader
+    // VITREO_D3D9_SHADER_DUMP wrote for that vertex-shader object.
+    static const bool layout_log = std::getenv("VITREO_D3D9_LAYOUT_LOG") != nullptr;
+    if (layout_log) {
+        static std::set<u64> logged;
+        u64 key = (static_cast<u64>(snap.vertex_shader) << 32) ^ snap.fvf;
+        for (const auto& element : snap.elements) {
+            key = key * 1099511628211ull ^
+                  ((static_cast<u64>(element.stream) << 40) |
+                   (static_cast<u64>(element.usage) << 32) |
+                   (static_cast<u64>(element.usage_index) << 24) |
+                   (static_cast<u64>(element.format) << 16) | element.offset);
+            key = key * 1099511628211ull ^
+                  ((static_cast<u64>(snap.streams[element.stream % D3D9_MAX_STREAMS].stride) << 32) |
+                   snap.streams[element.stream % D3D9_MAX_STREAMS].frequency);
+        }
+        if (logged.insert(key).second) {
+            std::fprintf(stderr, "[layout] vs=0x%08x ps=0x%08x fvf=0x%x indexed=%u prims=%u:",
+                         snap.vertex_shader, snap.pixel_shader, snap.fvf,
+                         snap.indexed ? 1u : 0u, snap.element_count);
+            for (const auto& element : snap.elements) {
+                const auto& stream = snap.streams[element.stream % D3D9_MAX_STREAMS];
+                std::fprintf(stderr, " [s%u u%u/%u fmt%u off%u stride%u freq0x%x]",
+                             element.stream, element.usage, element.usage_index,
+                             static_cast<unsigned>(element.format), element.offset,
+                             stream.stride, stream.frequency);
+            }
+            std::fprintf(stderr, "\n");
+        }
+    }
     if (decl_audit) {
         static std::set<u64> seen;
         for (const auto& element : snap.elements) {
             const u32 slot = element.stream;
-            if (slot >= graphics::BACKEND_MAX_VERTEX_BUFFERS) continue;
+            if (slot >= D3D9_MAX_STREAMS) continue;
             const auto& stream = snap.streams[slot];
             const u32 size = d3d9_vertex_format_size(element.format);
             const char* problem = nullptr;
@@ -388,14 +420,14 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
         }
     }
 
-    std::array<bool, graphics::BACKEND_MAX_VERTEX_BUFFERS>
+    std::array<bool, D3D9_MAX_STREAMS>
         vertex_buffer_per_instance{};
-    std::array<unsigned, graphics::BACKEND_MAX_VERTEX_BUFFERS>
+    std::array<unsigned, D3D9_MAX_STREAMS>
         vertex_buffer_step_rates{};
     unsigned instance_count = 1;
     constexpr u32 kStreamFreqMask =
         ~(D3DSTREAMSOURCE_INDEXEDDATA | D3DSTREAMSOURCE_INSTANCEDATA);
-    for (u32 slot = 0; slot < graphics::BACKEND_MAX_VERTEX_BUFFERS; ++slot) {
+    for (u32 slot = 0; slot < D3D9_MAX_STREAMS; ++slot) {
         const u32 frequency = snap.streams[slot].frequency;
         if ((frequency & D3DSTREAMSOURCE_INSTANCEDATA) != 0) {
             vertex_buffer_per_instance[slot] = true;
@@ -508,7 +540,7 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
             }
         }
     }
-    for (u32 slot = 0; slot < graphics::BACKEND_MAX_VERTEX_BUFFERS; ++slot) {
+    for (u32 slot = 0; slot < D3D9_MAX_STREAMS; ++slot) {
         mix(snap.stream_layout_strides[slot]);
         mix(vertex_buffer_per_instance[slot] ? 1u : 0u);
         mix(vertex_buffer_step_rates[slot]);
@@ -521,8 +553,23 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
     }
 
     std::array<u32, 8> sm1_stage_ttf{};
+    // ps_1_x samples each stage in the dimension of the texture bound there
+    // (D3DSTT_2D 2, CUBE 3, VOLUME 4); the create-time translation assumed 2D.
+    std::array<u8, 8> sm1_stage_dims{};
+    sm1_stage_dims.fill(2);
     bool sm1_projected = false;
+    bool sm1_non_2d = false;
     if (programmable_ps && pixel_shader->major == 1) {
+        for (u32 stage = 0; stage < sm1_stage_dims.size(); ++stage) {
+            const D3d9DrawSnapshot::TextureSnap& bound = snap.textures[stage];
+            if (bound.tex3d != nullptr) {
+                sm1_stage_dims[stage] = 4;
+            } else if (bound.tex2d != nullptr && bound.tex2d->desc().cube) {
+                sm1_stage_dims[stage] = 3;
+            }
+            sm1_non_2d |= sm1_stage_dims[stage] != 2;
+            mix(sm1_stage_dims[stage]);
+        }
         for (u32 stage = 0; stage < sm1_stage_ttf.size(); ++stage) {
             const auto& map = snap.tables->stage_states[stage];
             const auto found = map.find(D3DTSS_TEXTURETRANSFORMFLAGS);
@@ -560,12 +607,13 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
         };
         auto specialized_ps_msl = [&]() -> std::string {
             std::string msl = pixel_shader->msl;
-            if (sm1_projected && snap.ps_bytecode != nullptr &&
+            if ((sm1_projected || sm1_non_2d) && snap.ps_bytecode != nullptr &&
                 snap.ps_bytecode_size > 0) {
                 graphics::Sm3Shader specialized =
                     graphics::translate_sm3_to_msl(
                         snap.ps_bytecode, snap.ps_bytecode_size,
-                        sm1_stage_ttf.data(), sm1_stage_ttf.size());
+                        sm1_stage_ttf.data(), sm1_stage_ttf.size(),
+                        sm1_stage_dims.data());
                 if (specialized.ok && !specialized.msl.empty()) {
                     msl = std::move(specialized.msl);
                 }
@@ -644,7 +692,7 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
         }
         desc.vertex_attributes = attributes;
         desc.vertex_stride = snap.stream_layout_strides[0];
-        for (u32 slot = 0; slot < graphics::BACKEND_MAX_VERTEX_BUFFERS; ++slot) {
+        for (u32 slot = 0; slot < D3D9_MAX_STREAMS; ++slot) {
             desc.vertex_buffer_strides[slot] = snap.stream_layout_strides[slot];
             desc.vertex_buffer_per_instance[slot] =
                 vertex_buffer_per_instance[slot];
@@ -782,6 +830,38 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
                               pixel_shader->int_constant_count, snap.ps_const_b,
                               pixel_shader->bool_constant_count,
                               fragment_uniforms);
+        if (pixel_shader->uses_bump_env) {
+            // Sm3Shader::uses_bump_env: per stage, (BUMPENVMAT00, 01, 10, 11)
+            // then (BUMPENVLSCALE, BUMPENVLOFFSET, 0, 0); the states hold
+            // the floats' bits.
+            constexpr u32 kStates[] = {D3DTSS_BUMPENVMAT00, D3DTSS_BUMPENVMAT01,
+                                       D3DTSS_BUMPENVMAT10, D3DTSS_BUMPENVMAT11,
+                                       D3DTSS_BUMPENVLSCALE,
+                                       D3DTSS_BUMPENVLOFFSET};
+            float bump_env[16][4] = {};
+            for (u32 stage = 0; stage < 8; ++stage) {
+                const auto& map = snap.tables->stage_states[stage];
+                float values[6] = {};
+                for (u32 k = 0; k < 6; ++k) {
+                    const auto found = map.find(kStates[k]);
+                    const u32 bits = found != map.end()
+                                         ? found->second
+                                         : d3d9_default_texture_stage_state(
+                                               stage, kStates[k]);
+                    std::memcpy(&values[k], &bits, sizeof(float));
+                }
+                bump_env[2 * stage][0] = values[0];
+                bump_env[2 * stage][1] = values[1];
+                bump_env[2 * stage][2] = values[2];
+                bump_env[2 * stage][3] = values[3];
+                bump_env[2 * stage + 1][0] = values[4];
+                bump_env[2 * stage + 1][1] = values[5];
+            }
+            const usize offset = fragment_uniforms.size();
+            fragment_uniforms.resize(offset + sizeof(bump_env));
+            std::memcpy(fragment_uniforms.data() + offset, bump_env,
+                        sizeof(bump_env));
+        }
         if (ps_table_fog) {
             const float params[4] = {
                 ff.fog_start, ff.fog_end, ff.fog_density, 0.0f};
@@ -835,7 +915,7 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
     }
     call.vertex_buffer = snap.streams[0].backend;
     call.vertex_buffer_offset = snap.streams[0].offset;
-    for (u32 slot = 0; slot < graphics::BACKEND_MAX_VERTEX_BUFFERS; ++slot) {
+    for (u32 slot = 0; slot < D3D9_MAX_STREAMS; ++slot) {
         if (!snap.stream_used[slot] || snap.streams[slot].backend == nullptr) {
             continue;
         }
@@ -983,7 +1063,21 @@ void D3D9Manager::execute_recorded_draw(D3d9DrawSnapshot& snap) {
     const float rt_h_f = static_cast<float>(snap.color_height);
     if (vp_x + vp_w > rt_w_f) vp_w = std::max(0.0f, rt_w_f - vp_x);
     if (vp_y + vp_h > rt_h_f) vp_h = std::max(0.0f, rt_h_f - vp_y);
-    call.viewport = {vp_x, vp_y, vp_w, vp_h, min_z, max_z};
+    // D3D9 puts pixel centres on integer window coordinates; Metal puts them
+    // at +0.5 (Learn, "Directly Mapping Texels to Pixels (Direct3D 9)").
+    // Geometry that goes through the viewport transform therefore lands
+    // half a pixel further right and down on Windows: applications bake a
+    // -0.5 into full-screen quads for exactly this, and without the shift
+    // they lose the last row and column (D3D9OracleTest replay of a Sims 3
+    // frame: 529 of 674 draws one pixel up-left). Pretransformed positions
+    // (XYZRHW, a vertex shader's POSITIONT) already add the half pixel when
+    // mapped to clip space, so their viewport stays unshifted.
+    const bool pretransformed =
+        programmable_vs
+            ? vertex_shader != nullptr && vertex_shader->needs_viewport
+            : (ff.fvf_flags & D3DFVF_POSITION_MASK) == D3DFVF_XYZRHW;
+    const float half_pixel = pretransformed ? 0.0f : 0.5f;
+    call.viewport = {vp_x + half_pixel, vp_y + half_pixel, vp_w, vp_h, min_z, max_z};
     call.scissor_enabled = render_state(D3DRS_SCISSORTESTENABLE) != 0;
     if (call.scissor_enabled) {
         call.scissor = snap.scissor;

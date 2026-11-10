@@ -39,6 +39,8 @@
 
 namespace vitreo::cpu::jit {
 
+struct CompileFlightState;
+
 /// Self-modifying-code demotion accounting (defined in
 /// constructor_destructor.cpp). See the comment there for why the existing
 /// 32-message log cap left the size of the demoted set invisible.
@@ -140,6 +142,27 @@ public:
             return hash;
         }
     };
+    /// Coordinates only concurrent first misses. A completed wait does not
+    /// acquire leadership: the caller first re-probes the ordinary memo, so
+    /// every follower can adopt a successful publication in parallel.
+    class CompilationClaim {
+    public:
+        CompilationClaim() = default;
+        ~CompilationClaim();
+        CompilationClaim(const CompilationClaim&) = delete;
+        CompilationClaim& operator=(const CompilationClaim&) = delete;
+        void acquire(GuestMemory& memory, const CompiledKey& key,
+                     u32 instruction_count, u64 executable_generation);
+        [[nodiscard]] bool waited() const noexcept { return m_waited; }
+        [[nodiscard]] bool owns_claim() const noexcept { return m_state != nullptr; }
+    private:
+        std::shared_ptr<CompileFlightState> m_state;
+        bool m_waited{false};
+    };
+    /// Narrow synchronization aid for deterministic contention regressions.
+    /// Updated only when a caller actually waits, never on memo hits.
+    [[nodiscard]] static usize compile_waiters_for_test() noexcept;
+
     /// Bound local compilations without the memo, and actual shared-code
     /// rewrites with it. Ordinary memoized compilations need no counter entry.
     static constexpr u32 kChurnRecompileLimit = 8;
@@ -347,6 +370,10 @@ public:
         /// Records published in this shard. Written under the exclusive
         /// lock; read without it by compile_memo_size().
         std::atomic<usize> records{0};
+        /// Monotonic successful publications. Release-incremented only after
+        /// the full record/index is installed under lock. Never reset by
+        /// purge/clear: a late-probe snapshot must not suffer an ABA there.
+        std::atomic<u64> publication_sequence{0};
         /// smc_rewrites.size(). Written under the exclusive lock; read
         /// without it so the common "address never rewritten" answer takes
         /// no lock at all.

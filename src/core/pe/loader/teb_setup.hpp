@@ -31,6 +31,18 @@ struct TebModuleInfo {
     /// which holds only DLLs that have been initialized (measured against a
     /// real Windows loader).
     bool is_executable{false};
+    /// Loaded by LoadLibrary after process start rather than with the
+    /// startup set: LoadReason DynamicLoad, ObsoleteLoadCount 6 and a real
+    /// DdagNode->LoadCount instead of the static 0xFFFF / -1
+    /// (tools/oracle_probe/ldr_entry_contract_probe).
+    bool dynamic_load{false};
+    /// DllMain(DLL_PROCESS_ATTACH) has run: Flags.ProcessAttachCalled.
+    bool process_attach_called{false};
+    /// DisableThreadLibraryCalls succeeded: Flags.DontCallForThreads.
+    bool thread_calls_disabled{false};
+    /// LoadLibrary reference count, published as DdagNode->LoadCount for a
+    /// dynamically loaded module.
+    u32 load_count{1};
 };
 
 /// Primary-process layout used by `vitreo run`. CreateProcess metadata exposed
@@ -81,6 +93,14 @@ struct TebInfo {
 /// @return false when the PEB/Ldr projection is unavailable or guest memory
 ///         cannot hold another loader entry.
 [[nodiscard]] bool append_peb_loader_module(GuestMemory& memory,
+                                            u64 peb_address,
+                                            bool is_64bit,
+                                            const TebModuleInfo& module);
+
+/// Refresh the state-dependent fields of an existing entry (Flags, DdagNode
+/// LoadCount) after DllMain, DisableThreadLibraryCalls or a reference change.
+/// @return false when no entry has @p module's base.
+[[nodiscard]] bool update_peb_loader_module(GuestMemory& memory,
                                             u64 peb_address,
                                             bool is_64bit,
                                             const TebModuleInfo& module);

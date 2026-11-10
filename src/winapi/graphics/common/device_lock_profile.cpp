@@ -93,6 +93,9 @@ void maybe_close_window(u64 now_ticks) noexcept {
         return;
     }
     if (now_ticks < start) return;
+    const auto& tb = timebase();
+    if (!detail::ticks_reach_ns(now_ticks - start, kWindowNs,
+                               tb.numer, tb.denom)) return;
     const u64 elapsed_ns = ticks_to_ns(now_ticks - start);
     if (elapsed_ns < kWindowNs) return;
     if (!g_window_start.compare_exchange_strong(start, now_ticks,
@@ -161,8 +164,16 @@ void end_hold(const char* iface, u32 slot) noexcept {
     const u64 held_ticks =
         t_hold.held + (t_hold.suspended ? 0 : now - t_hold.start);
     t_hold.active = false;
-    const u64 held_ns = ticks_to_ns(held_ticks);
-    if (held_ns >= g_long_hold_ns.load(std::memory_order_relaxed)) {
+    const u64 long_hold_ns = g_long_hold_ns.load(std::memory_order_relaxed);
+    const auto& tb = timebase();
+    // Most entries are far below the reporting threshold. Avoid two 128-bit
+    // divisions per entry (here and the window check); convert only events
+    // that can actually be reported. Keep the original converted comparison
+    // as well, including its u64 behavior at extreme timer values.
+    const u64 held_ns =
+        detail::ticks_reach_ns(held_ticks, long_hold_ns, tb.numer, tb.denom)
+            ? ticks_to_ns(held_ticks) : 0;
+    if (held_ns >= long_hold_ns) {
         g_long_holds.fetch_add(1, std::memory_order_relaxed);
         if (g_lines.fetch_add(1, std::memory_order_relaxed) <
             kLinesPerWindow) {

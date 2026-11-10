@@ -195,8 +195,30 @@ public:
     };
 
     /// Shape for SetCursor. System IDC_* handles have is_system set; custom
-    /// handles carry tightly packed top-down RGBA8.
+    /// handles carry tightly packed top-down RGBA8. A system handle whose
+    /// cursor SetSystemCursor replaced answers the replacement.
     [[nodiscard]] std::optional<CursorImage> cursor_image(u32 handle) const;
+
+    /// SetSystemCursor(hcur, id). Learn: the system cursor @p id takes the
+    /// contents of @p hcur, which is then destroyed. Measured on Windows
+    /// (set_system_cursor_probe, interactive session, x86 = x64):
+    ///   - LoadCursor(NULL, IDC_*) keeps returning the same handle, which
+    ///     now shows the new image;
+    ///   - a system cursor passed as hcur swaps contents with @p id;
+    ///   - NULL hcur -> FALSE, ERROR_RESOURCE_NAME_NOT_FOUND (1814); a value
+    ///     that is no cursor -> FALSE, ERROR_INVALID_CURSOR_HANDLE (1402);
+    ///   - an id outside the replaceable set (OCR_SIZE, any non-OCR value)
+    ///     -> FALSE with the last error untouched and hcur still alive.
+    /// Returns TRUE/FALSE; @p error is the Win32 error to set, 0 for none.
+    /// The replacement lives in this process's cursor table: Windows makes
+    /// it session-wide, which other capsule processes do not see (no
+    /// cross-process cursor table exists yet).
+    [[nodiscard]] bool set_system_cursor(u32 hcursor, u32 id, u32& error);
+    /// SystemParametersInfo(SPI_SETCURSORS): every system cursor back to its
+    /// default image.
+    void restore_system_cursors();
+    /// The shared handle LoadCursor(NULL, @p id) answers, or 0.
+    [[nodiscard]] static u32 system_cursor_handle(u32 id);
 
     /// LoadIconW/A: stock IDI_* when instance is NULL; otherwise MAKEINTRESOURCE
     /// RT_GROUP_ICON from the module (shared, like Windows LoadIcon).
@@ -306,6 +328,8 @@ private:
     u32 m_next_icon_handle = DYNAMIC_ICON_HANDLE_BASE;
     mutable std::mutex m_cursor_mutex;
     std::unordered_map<u32, CursorState> m_cursors;
+    /// System cursor id -> its SetSystemCursor replacement.
+    std::unordered_map<u32, CursorImage> m_system_cursor_overrides;
     std::unordered_map<IconSourceKey, u32, IconSourceKeyHash>
         m_shared_cursors;
     u32 m_next_cursor_handle = DYNAMIC_CURSOR_HANDLE_BASE;

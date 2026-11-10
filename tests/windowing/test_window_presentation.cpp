@@ -239,3 +239,28 @@ TEST(WindowPresentationTest, NoActivateDisablesKey) {
     const auto r = recipe(s);
     EXPECT_FALSE(r.activating);
 }
+
+TEST(WindowPresentationTest, ExclusiveDisplayPlacementMapsThroughTheFit) {
+    // An 800x600 guest screen fitted onto 2560x1440 is shown 1920x1440 at
+    // x 320 (scale 2.4). A full-screen 800x600 dialog covers the fitted
+    // image; a 200x100 window at guest (100,50) lands at 320+240, 120.
+    ExclusiveDisplayPlacement p{};
+    ASSERT_TRUE(exclusive_display_placement({0, 0, 800, 600}, 320, 0, 1920, 1440,
+                                            {0, 0, 800, 600}, p));
+    EXPECT_DOUBLE_EQ(p.scale, 2.4);
+    EXPECT_DOUBLE_EQ(p.left, 320);
+    EXPECT_DOUBLE_EQ(p.top, 0);
+    EXPECT_DOUBLE_EQ(p.width, 1920);
+    EXPECT_DOUBLE_EQ(p.height, 1440);
+    ASSERT_TRUE(exclusive_display_placement({0, 0, 800, 600}, 320, 0, 1920, 1440,
+                                            {100, 50, 300, 150}, p));
+    EXPECT_DOUBLE_EQ(p.left, 320 + 240);
+    EXPECT_DOUBLE_EQ(p.top, 120);
+    EXPECT_DOUBLE_EQ(p.width, 480);
+    EXPECT_DOUBLE_EQ(p.height, 240);
+    // No mode, or an empty fit: no placement.
+    EXPECT_FALSE(exclusive_display_placement({0, 0, 0, 0}, 0, 0, 100, 100,
+                                             {0, 0, 10, 10}, p));
+    EXPECT_FALSE(exclusive_display_placement({0, 0, 800, 600}, 0, 0, 0, 0,
+                                             {0, 0, 10, 10}, p));
+}

@@ -155,43 +155,16 @@ DllExports create_oleaut32_thunks(OleAut32Manager& mgr) {
         12
     });
 
-    // GetErrorInfo (ordinal 200) — 2 args: ULONG dwReserved, IErrorInfo **pperrinfo
+    // GetErrorInfo (ordinal 200) / SetErrorInfo (ordinal 201): the calling
+    // thread's error object (oleaut32_dispatch.cpp).
     exports.entries.push_back(ExportEntry{
         "GetErrorInfo", 200,
-        [](Marshaler& m) {
-            // HRESULT GetErrorInfo(ULONG dwReserved, IErrorInfo **pperrinfo)
-            constexpr u32 S_FALSE = 0x00000001u;
-            constexpr u32 E_INVALIDARG = 0x80070057u;
-            const u32 reserved = static_cast<u32>(m.arg(0));
-            GuestAddr out = m.arg_ptr(1);
-            if (reserved != 0 || out == 0) {
-                m.set_return(E_INVALIDARG);
-                return;
-            }
-
-            // IErrorInfo* has the guest pointer width. Writing a host-sized
-            // eight-byte NULL into a PE32 caller's four-byte stack slot
-            // corrupts the adjacent word (often the saved frame pointer).
-            const auto write_result = m.cpu_is_64bit()
-                ? m.write_u64(out, 0)
-                : m.write_u32(out, 0);
-            if (write_result.is_err()) {
-                m.set_return(E_INVALIDARG);
-                return;
-            }
-            m.set_return(S_FALSE); // No thread error-info object is available.
-        },
+        [&mgr](Marshaler& m) { m.set_return(mgr.get_error_info(m)); },
         8
     });
-
-    // SetErrorInfo (ordinal 201) — 2 args: ULONG dwReserved, IErrorInfo *perrinfo
     exports.entries.push_back(ExportEntry{
         "SetErrorInfo", 201,
-        [](Marshaler& m) {
-            // HRESULT SetErrorInfo(ULONG dwReserved, IErrorInfo *perrinfo)
-            (void)m.arg(0); (void)m.arg(1);
-            m.set_return(0u); // S_OK
-        },
+        [&mgr](Marshaler& m) { m.set_return(mgr.set_error_info(m)); },
         8
     });
 
@@ -258,6 +231,14 @@ DllExports create_oleaut32_thunks(OleAut32Manager& mgr) {
     // #28 DispGetParam — imported by ordinal.
     exports.entries.push_back(ExportEntry{ "DispGetParam", 28,
         [&mgr](Marshaler& m){ m.set_return(mgr.disp_get_param(m)); }, 20 });
+
+    // #146 DispCallFunc and #30 DispInvoke: oleaut32.lib (SDK 10.0.26100.0)
+    // and System32/SysWOW64 oleaut32.dll export tables (dumpbin /exports):
+    // _DispCallFunc@32 / _DispInvoke@32 on x86.
+    exports.entries.push_back(ExportEntry{ "DispCallFunc", 146,
+        [&mgr](Marshaler& m){ m.set_return(mgr.disp_call_func(m)); }, 32 });
+    exports.entries.push_back(ExportEntry{ "DispInvoke", 30,
+        [&mgr](Marshaler& m){ m.set_return(mgr.disp_invoke(m)); }, 32 });
 
     // #40 SafeArrayRedim — imported by ordinal.
     exports.entries.push_back(ExportEntry{ "SafeArrayRedim", 40,

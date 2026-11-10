@@ -69,7 +69,7 @@ void add_gdi32_text_font_exports(DllExports& exports, GdiManager& mgr);
 
 /// BeginPath .. SetAbortProc (gdi32_path_print_exports.cpp).
 /// Friend of GdiManager: reads m_region_objects.
-void add_gdi32_path_print_exports(DllExports& exports, GdiManager& mgr);
+void add_gdi32_path_print_exports(DllExports& exports, GdiManager& mgr,bool guest_is_64bit);
 
 // =============================================================================
 // Helpers shared by more than one registrar

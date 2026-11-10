@@ -1,0 +1,44 @@
+cursorshadow.initial get ok=1 value=0 err=0x0
+cursorshadow.value_false set ok=1 err=0x0
+cursorshadow.value_false get ok=1 value=0 err=0x0
+cursorshadow.value_true set ok=1 err=0x0
+cursorshadow.value_true get ok=1 value=1 err=0x0
+cursorshadow.ptr_to_false set ok=1 err=0x0
+cursorshadow.ptr_to_false get ok=1 value=1 err=0x0
+cursorshadow.value_false2 set ok=1 err=0x0
+cursorshadow.value_false2 get ok=1 value=0 err=0x0
+cursorshadow.ptr_to_true set ok=1 err=0x0
+cursorshadow.ptr_to_true get ok=1 value=1 err=0x0
+cursorshadow.uiparam_true set ok=0 err=0x57
+cursorshadow.uiparam_true get ok=1 value=1 err=0x0
+cursorshadow.value_2 set ok=1 err=0x0
+cursorshadow.value_2 get ok=1 value=1 err=0x0
+cursorshadow.restored get ok=1 value=0 err=0x0
+mousesonar.initial get ok=1 value=0 err=0x0
+mousesonar.value_false set ok=1 err=0x0
+mousesonar.value_false get ok=1 value=0 err=0x0
+mousesonar.value_true set ok=1 err=0x0
+mousesonar.value_true get ok=1 value=1 err=0x0
+mousesonar.ptr_to_false set ok=1 err=0x0
+mousesonar.ptr_to_false get ok=1 value=1 err=0x0
+mousesonar.value_false2 set ok=1 err=0x0
+mousesonar.value_false2 get ok=1 value=0 err=0x0
+mousesonar.ptr_to_true set ok=1 err=0x0
+mousesonar.ptr_to_true get ok=1 value=1 err=0x0
+mousesonar.uiparam_true set ok=0 err=0x57
+mousesonar.uiparam_true get ok=1 value=1 err=0x0
+mousesonar.value_2 set ok=1 err=0x0
+mousesonar.value_2 get ok=1 value=1 err=0x0
+mousesonar.restored get ok=1 value=0 err=0x0
+mousetrails.initial get ok=1 value=0 err=0x0
+mousetrails.ui3 set ok=1 err=0x0
+mousetrails.ui3 get ok=1 value=3 err=0x0
+mousetrails.ui1 set ok=1 err=0x0
+mousetrails.ui1 get ok=1 value=0 err=0x0
+mousetrails.ui0 set ok=1 err=0x0
+mousetrails.ui0 get ok=1 value=0 err=0x0
+mousetrails.ui7_pv set ok=1 err=0x0
+mousetrails.ui7_pv get ok=1 value=7 err=0x0
+mousetrails.ui100 set ok=1 err=0x0
+mousetrails.ui100 get ok=1 value=100 err=0x0
+mousetrails.restored get ok=1 value=0 err=0x0

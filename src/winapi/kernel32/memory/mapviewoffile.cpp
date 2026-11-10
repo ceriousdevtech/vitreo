@@ -5,6 +5,7 @@
 
 #include "file_mapping.hpp"
 #include "file_mapping_internal.hpp"
+#include "section_no_change_contract.hpp"
 #include "winapi/kernel32/filesystem/file.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "memory.hpp"
@@ -1156,6 +1157,16 @@ ViewProtectResult FileMappingManager::virtual_protect_view(
         const u64 protect_size = page_end - page_base;
         if (protect_size > view.guest_mapped_size - begin_offset) {
             return ViewProtectResult::InvalidRange;
+        }
+
+        // Native nt_section_no_change_probe: each alias keeps the protection
+        // it was mapped with, even when the section itself permits RWX.
+        // Reapplying that protection succeeds; changing any bit fails before
+        // changing pages, with oldProtection=PAGE_NOACCESS.
+        if ((view.mapping->protection & SECTION_NO_CHANGE) != 0 &&
+            new_protect != view.allocation_protection) {
+            if (old_protect != nullptr) *old_protect = PAGE_NOACCESS;
+            return ViewProtectResult::InvalidProtection;
         }
 
         const u32 page_protect = new_protect & 0xFFu;

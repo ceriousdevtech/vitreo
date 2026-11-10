@@ -152,22 +152,9 @@ std::optional<bool> JitCompiler::compile_fpu_arith_reg(
             instr.opcode == Opcode::FDIVRP_STI;
         const u8 dest_logical = dest_sti ? sti : 0;
 
-        // Precision control governs these results (Intel SDM Vol. 1 8.1.5.2),
-        // but this path computes in ARM64 binary64 and cannot express a 24-bit
-        // significand. PC is runtime state — a guest can change it with FLDCW
-        // at any point, and D3D9's CreateDevice does exactly that — so the
-        // check has to be emitted rather than decided at compile time. When PC
-        // selects single precision, fall through to the same helper the
-        // Inf/NaN/subnormal cases already use, which rounds correctly.
-        // PC == 0 is Single, so a zero field takes the slow path.
-        constexpr u32 control_offset = static_cast<u32>(
-            offsetof(CpuState, fpu) + offsetof(FpuState, control_word));
-        emit(arm64::add_x_imm(REG_SCRATCH3, REG_CPU_STATE, control_offset));
-        emit(arm64::ldrh_reg(REG_SCRATCH2, REG_SCRATCH3, 31));
-        emit(arm64::movz_w(REG_SCRATCH4, 0x300));
-        emit(arm64::and_w(REG_SCRATCH2, REG_SCRATCH2, REG_SCRATCH4));
-        const usize pc_single_branch = m_code_buf.size();
-        emit(0);
+        // Precision control (Intel SDM Vol. 1 8.1.5.2) is handled by the
+        // compile_fpu guard -- PC = 64 goes to the helper -- and by
+        // emit_x87_pc24_narrow_d0 after the operation for PC = 24.
 
         usize forwarded_sources_branch = 0;
         if (consume_self_d0) {
@@ -225,6 +212,7 @@ std::optional<bool> JitCompiler::compile_fpu_arith_reg(
             break;
         }
 
+        emit_x87_pc24_narrow_d0();
         emit(arm64::fmov_x_from_d(REG_SCRATCH0, 0));
         emit(arm64::lsr_x_imm(REG_SCRATCH2, REG_SCRATCH0, 52));
         emit(arm64::movz_w(REG_SCRATCH4, 0x7FF));
@@ -305,9 +293,6 @@ std::optional<bool> JitCompiler::compile_fpu_arith_reg(
         }
 
         const usize done_pos = m_code_buf.size();
-        m_code_buf[pc_single_branch] = arm64::cbz_w(
-            REG_SCRATCH2,
-            static_cast<i32>(slow_pos - pc_single_branch) * 4);
         for (const usize branch : slow_below_branches) {
             m_code_buf[branch] = arm64::b_cond(
                 arm64::CC, static_cast<i32>(slow_pos - branch) * 4);

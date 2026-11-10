@@ -1156,14 +1156,8 @@ Result<void, VfsError> HostFileSystem::flush(FileHandle handle) {
         return Result<void, VfsError>::err(VfsError::InvalidHandle);
     }
 
-    // Win32 installers call FlushFileBuffers after every file copy. A host
-    // fsync per call dominates capsule install time on APFS. The default
-    // acknowledges success without a durable sync. Opt in with
-    // VITREO_FSYNC=1 when durability matters.
-    static const bool do_fsync = std::getenv("VITREO_FSYNC") != nullptr;
-    if (!do_fsync) {
-        return Result<void, VfsError>::ok();
-    }
+    // An explicit flush is a durability request. It cannot be acknowledged
+    // before the host filesystem reports that buffered data has been flushed.
 
     const bool stats = io_stats_enabled();
     auto start = std::chrono::steady_clock::time_point{};
@@ -1172,13 +1166,14 @@ Result<void, VfsError> HostFileSystem::flush(FileHandle handle) {
     }
 
     if (::fsync(state->fd) < 0) {
+        const int flush_errno = errno;
         if (stats) {
             g_io_stats.flush_calls.fetch_add(1, std::memory_order_relaxed);
             g_io_stats.flush_ns.fetch_add(
                 elapsed_ns(start, std::chrono::steady_clock::now()),
                 std::memory_order_relaxed);
         }
-        return Result<void, VfsError>::err(errno_to_vfs_error(errno));
+        return Result<void, VfsError>::err(errno_to_vfs_error(flush_errno));
     }
 
     if (stats) {

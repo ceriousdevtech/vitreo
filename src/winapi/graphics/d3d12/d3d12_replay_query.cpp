@@ -6,6 +6,8 @@
 #include "winapi/graphics/d3d12/d3d12_replay_internal.hpp"
 #include "winapi/graphics/common/gpu_event_signaler.hpp"
 
+#include <algorithm>
+#include <array>
 #include <cstring>
 #include <thread>
 
@@ -40,6 +42,8 @@ bool Replayer::gpu_read(Resource& r, u64 offset, void* out, usize bytes) {
                                         r.offset + offset, bytes)) {
         return false;
     }
+    g_replay_cpu_waits.fetch_add(1, std::memory_order_relaxed);
+    graphics::frame_profile::WaitScope profile_wait("replay:query-read");
     if (auto completion = f.m_backend.flush_completion()) {
         if (!completion->wait()) return false;
     } else if (!f.m_backend.wait_idle()) {
@@ -61,6 +65,33 @@ void Replayer::query(ReplayState& st, const cmd::Query& c) {
         if (!slot.timestamp) {
             unimplemented("ExecuteCommandLists", "timestamps on this backend");
         }
+        return;
+    }
+    if (c.type == D3D12_QUERY_TYPE_PIPELINE_STATISTICS ||
+        c.type == D3D12_QUERY_TYPE_PIPELINE_STATISTICS1 ||
+        (c.type >= D3D12_QUERY_TYPE_SO_STATISTICS_STREAM0 &&
+         c.type <= D3D12_QUERY_TYPE_SO_STATISTICS_STREAM3)) {
+        // Begin opens the query and End closes it; either starts a new
+        // interval, so every GPU record belongs to exactly the queries open
+        // over all of it.
+        st.statistics_interval.reset();
+        st.so_interval.reset();
+        auto& open = st.statistics;
+        const auto it = std::find_if(open.begin(), open.end(), [&](const auto& o) {
+            return o.heap == c.heap && o.index == c.index;
+        });
+        if (c.begin) {
+            if (it != open.end()) open.erase(it);
+            auto result = std::make_shared<StatisticsResult>();
+            result->type = c.type;
+            open.push_back({c.heap, c.index, std::move(result)});
+            return;
+        }
+        if (it == open.end()) return;
+        slot.statistics = std::move(it->result);
+        slot.occlusion.reset();
+        slot.timestamp.reset();
+        open.erase(it);
         return;
     }
     // OCCLUSION / BINARY_OCCLUSION: the samples that pass the depth and
@@ -92,19 +123,49 @@ void Replayer::resolve_query(const cmd::ResolveQuery& c) {
     struct Source {
         std::shared_ptr<graphics::GpuOcclusionCounter> occlusion;
         std::shared_ptr<graphics::GpuTimestamp> timestamp;
+        std::shared_ptr<const StatisticsResult> statistics;
     };
     std::vector<Source> sources;
     for (u32 index = 0; index < c.count; ++index) {
         const auto& slot = heap->slots[c.start + index];
-        sources.push_back({slot.occlusion, slot.timestamp});
+        sources.push_back({slot.occlusion, slot.timestamp, slot.statistics});
     }
-    const usize bytes = static_cast<usize>(c.count) * 8u;
+    // d3d12.h: UINT64 per occlusion / timestamp query;
+    // D3D12_QUERY_DATA_PIPELINE_STATISTICS 11 x UINT64,
+    // ..._PIPELINE_STATISTICS1 14 x UINT64, D3D12_QUERY_DATA_SO_STATISTICS
+    // 2 x UINT64.
+    const u32 words =
+        c.type == D3D12_QUERY_TYPE_PIPELINE_STATISTICS    ? 11u
+        : c.type == D3D12_QUERY_TYPE_PIPELINE_STATISTICS1 ? 14u
+        : (c.type >= D3D12_QUERY_TYPE_SO_STATISTICS_STREAM0 &&
+           c.type <= D3D12_QUERY_TYPE_SO_STATISTICS_STREAM3)
+            ? 2u
+            : 1u;
+    const usize bytes = static_cast<usize>(c.count) * words * 8u;
     graphics::BackendBuffer* staging = nullptr;
     u64 staging_offset = 0;
     u8* host = nullptr;
     graphics::BackendFence* fence = f.resolve_fence();
-    if (fence == nullptr || !reserve(bytes, staging, staging_offset, host)) {
-        d3d12_diag("ResolveQueryData: no upload space or fence");
+    // A resolve larger than the upload ring's share gets its own CPU-visible
+    // heap, kept alive until the CPU write is done (the GPU copy retains it).
+    std::shared_ptr<graphics::BackendHeap> large;
+    if (bytes > CONSTANT_CHUNK_BYTES / 4) {
+        graphics::BackendHeapDesc desc{};
+        desc.size = (bytes + 0xFFFFu) & ~u64{0xFFFFu};
+        desc.cpu_visible = true;
+        desc.buffers_only = true;
+        large = f.m_backend.create_heap(desc);
+        if (large && large->buffer() != nullptr &&
+            large->host_pointer() != nullptr) {
+            staging = large->buffer();
+            host = static_cast<u8*>(large->host_pointer());
+        }
+    } else {
+        (void)reserve(bytes, staging, staging_offset, host);
+    }
+    if (fence == nullptr || staging == nullptr || host == nullptr) {
+        unimplemented("ResolveQueryData",
+                      "no upload space or fence for the resolved values");
         return;
     }
     const u64 value = ++f.m_resolve_value;
@@ -113,8 +174,20 @@ void Replayer::resolve_query(const cmd::ResolveQuery& c) {
     std::shared_ptr<graphics::BackendFence> keep = f.m_resolve_fence;
     GpuEventSignaler::instance().run_after(
         std::move(completion),
-        [sources = std::move(sources), host, binary, keep, value]() {
+        [sources = std::move(sources), host, binary, keep, value, words,
+         large]() {
             for (usize index = 0; index < sources.size(); ++index) {
+                if (words != 1u) {
+                    // A statistics query never ended reads zeros (the
+                    // runtime's debug layer reports it; nothing was counted).
+                    std::array<u64, 14> values{};
+                    if (sources[index].statistics) {
+                        statistics_values(*sources[index].statistics, values);
+                    }
+                    std::memcpy(host + index * words * 8u, values.data(),
+                                words * 8u);
+                    continue;
+                }
                 u64 result = 0;
                 if (sources[index].occlusion) {
                     result = sources[index].occlusion->samples();
@@ -135,6 +208,9 @@ void Replayer::resolve_query(const cmd::ResolveQuery& c) {
         !f.m_backend.copy_buffer_region(dst->buffer(), dst->offset + c.offset,
                                         staging, staging_offset, bytes)) {
         d3d12_diag("ResolveQueryData: the backend refused the copy");
+    }
+    if (large) {
+        rr.scratch_heaps.push_back({large, f.m_backend.recording_generation()});
     }
 }
 

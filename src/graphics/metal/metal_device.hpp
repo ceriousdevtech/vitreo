@@ -25,12 +25,20 @@ using MTLCommandQueue = void;
 
 namespace vitreo::graphics {
 
+class MetalBackendTexture2D;
+/// A tiled texture's residency companion format and the 8-byte pattern that
+/// reads 1.0 in it (metal_backend_texture_2d.mm).
+[[nodiscard]] bool metal_residency_format(PixelFormat format,
+                                          PixelFormat& companion, u64& pattern);
+
 /// Singleton wrapper around MTLDevice and MTLCommandQueue.
 /// Provides GPU capability queries used by all frontends.
 class MetalDevice final : public GraphicsBackendDevice {
 public:
     /// Get the singleton instance (created on first call).
     static MetalDevice& instance();
+    [[nodiscard]] std::unique_ptr<BackendImmediateExecution>
+    begin_immediate_execution() override;
 
     // -- Device accessors (Objective-C callers cast to id<MTLDevice>) --------
     void* device_ptr() const;          // Returns id<MTLDevice> as void*
@@ -72,6 +80,11 @@ public:
                                             usize count,
                                             bool self_aliased) override;
     [[nodiscard]] bool tiled_resource_barrier() override;
+    void attachment_barrier(BackendTexture2D* texture = nullptr) override;
+    /// Give a tiled texture created with residency_companion its companion
+    /// (metal_backend_texture_2d.mm), or none when the backend cannot
+    /// match its tile grid.
+    void attach_residency_companion(MetalBackendTexture2D& texture);
     [[nodiscard]] bool copy_texture_buffer_region(
         BackendTexture2D* texture, unsigned level, unsigned slice, unsigned x,
         unsigned y, unsigned width, unsigned height, BackendBuffer* buffer,
@@ -104,6 +117,8 @@ public:
     [[nodiscard]] void* native_command_queue() const noexcept override {
         return m_command_queue;
     }
+    /// metal_raytracing.mm (null without MTLDevice.supportsRaytracing).
+    [[nodiscard]] BackendRaytracing* raytracing() noexcept override;
     [[nodiscard]] std::unique_ptr<BackendBuffer>
     create_buffer(const BackendBufferDesc& desc,
                   const void* initial_data) override;
@@ -116,6 +131,8 @@ public:
                       const void* initial_data, unsigned initial_row_pitch,
                       unsigned initial_slice_pitch) override;
     [[nodiscard]] u32 simd_group_width() const override;
+    [[nodiscard]] bool supports_raster_order_groups() const override;
+    [[nodiscard]] bool supports_read_write_texture_tier2() const override;
     [[nodiscard]] bool supports_placement_heaps() const noexcept override;
     [[nodiscard]] std::unique_ptr<BackendHeap> create_heap(
         const BackendHeapDesc& desc) override;
@@ -127,12 +144,12 @@ public:
         u64& alignment) override;
     [[nodiscard]] std::unique_ptr<BackendTextureBuffer>
     create_texture_buffer(const BackendBuffer& buffer, PixelFormat pixel_format,
-                          unsigned first_element, unsigned num_elements,
+                          u64 first_element, unsigned num_elements,
                           bool shader_write = false) override;
     [[nodiscard]] std::unique_ptr<BackendTextureBuffer>
     create_mapped_texture_buffer(const BackendBuffer& buffer,
-                                 PixelFormat pixel_format,
-                                 unsigned first_element, unsigned num_elements,
+                                 PixelFormat pixel_format, u64 first_element,
+                                 unsigned num_elements,
                                  u16 component_mapping) override;
     [[nodiscard]] std::unique_ptr<BackendTexture2D>
     open_shared_texture_2d(u64 handle) override;
@@ -167,8 +184,16 @@ public:
                          const std::string& entry_point,
                          BackendMathMode math_mode,
                          bool preserve_invariance) override;
+    void precompile_pipeline_functions(const BackendPipelineDesc& desc) override;
     [[nodiscard]] std::unique_ptr<BackendComputePipeline>
     create_compute_pipeline(const BackendComputePipelineDesc& desc) override;
+    // ---- WS5 begin ----
+    [[nodiscard]] bool supports_mesh_pipelines() const noexcept override {
+        return m_mesh_shaders;
+    }
+    [[nodiscard]] std::unique_ptr<BackendPipeline>
+    create_mesh_pipeline(const BackendMeshPipelineDesc& desc) override;
+    // ---- WS5 end ----
     [[nodiscard]] std::unique_ptr<BackendRenderPass>
     create_render_pass_standalone(const BackendRenderPassDesc& desc) override;
     [[nodiscard]] bool dispatch(const BackendDispatchCall& call) override;
@@ -191,6 +216,10 @@ public:
         BackendTexture2D* dst, unsigned dst_mip, unsigned dst_slice,
         const BackendTexture2D* src, unsigned src_mip,
         unsigned src_slice, PixelFormat resolve_format) override;
+    [[nodiscard]] bool resolve_depth_stencil_2d(
+        BackendTexture2D* dst, unsigned dst_mip, unsigned dst_slice,
+        const BackendTexture2D* src, unsigned src_mip, unsigned src_slice,
+        bool stencil) override;
     [[nodiscard]] bool copy_texture_2d_region(
         BackendTexture2D* dst, unsigned dst_x, unsigned dst_y,
         const BackendTexture2D* src, unsigned src_x, unsigned src_y,
@@ -272,6 +301,16 @@ public:
 private:
     MetalDevice();
     ~MetalDevice();
+
+    /// copy_texture_buffer_region / copy_texture_3d_buffer_region for a
+    /// decoded 4:2:2 texture (format_422.hpp): the guest blocks decode into
+    /// (or encode from) a scratch buffer of storage texels that the blit
+    /// moves. @p width is already cut at the level's edge.
+    [[nodiscard]] bool copy_422_buffer_region(
+        void* texture, PixelFormat format, unsigned level, unsigned slice,
+        unsigned x, unsigned y, unsigned z, unsigned width, unsigned height,
+        unsigned depth, BackendBuffer* buffer, u64 offset, u64 row_pitch,
+        u64 slice_pitch, bool to_texture);
 
     [[nodiscard]] bool ensure_stretch_blit(PixelFormat format,
                                            unsigned sample_count = 1);

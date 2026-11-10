@@ -27,9 +27,20 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
         // sampler's MipLODBias (22.4.20).
         const bool comparison = opcode == Sm4Opcode::SAMPLE_C ||
                                 opcode == Sm4Opcode::SAMPLE_C_LZ;
+        // VX_TEX SampleCmpGrad (dxbc_vitreo_ext.hpp): sample_c whose LOD
+        // comes from explicit gradients, decoded after the reference.
+        const bool compare_gradient =
+            opcode == Sm4Opcode::SAMPLE_C && m_vx_compare_gradient;
+        const bool gradients = opcode == Sm4Opcode::SAMPLE_D || compare_gradient;
+        // VX_TEX SampleCmpLevel (sample_c_lz + an LOD) and SampleCmpBias
+        // (sample_c + a bias): the operand follows the reference.
+        const bool compare_level =
+            opcode == Sm4Opcode::SAMPLE_C_LZ && m_vx_compare_level;
+        const bool compare_bias =
+            opcode == Sm4Opcode::SAMPLE_C && m_vx_compare_bias;
         const bool explicit_lod = opcode == Sm4Opcode::SAMPLE_L ||
                                   opcode == Sm4Opcode::SAMPLE_C_LZ ||
-                                  opcode == Sm4Opcode::SAMPLE_D;
+                                  gradients;
         // Learn (gather4_c / gather4_po / gather4_po_c, sm5):
         //   gather4_c    dst, address, resource, sampler, reference
         //   gather4_po   dst, address, offset, resource, sampler
@@ -49,7 +60,7 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
             return fail("implicit-LOD sampling requires a pixel shader");
         }
         Sm4Operand dst, address, offset_operand, resource, sampler;
-        if (!m_decoder.decode_operand(dst) ||
+        if (!m_decoder.decode_operand(dst) || !decode_tiled_status() ||
             !m_decoder.decode_operand(address) ||
             (programmable_offset &&
              !m_decoder.decode_operand(offset_operand)) ||
@@ -112,6 +123,37 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
                 return fail("sample offset on a cube map is not permitted");
             }
         }
+        // VX_TEX_OFFSET: this instruction's offsets are values (SM 6.7),
+        // the image operand Offset in place of ConstOffset.
+        const u32 dynamic_offset = m_vx_dynamic_offset;
+        m_vx_dynamic_offset = 0;
+        struct DynamicOffsetScope {
+            SpirvBuilder& builder;
+            ~DynamicOffsetScope() { builder.set_dynamic_offsets(false); }
+        } dynamic_scope{m_builder};
+        if (dynamic_offset != 0) {
+            if (sample_controls != 0 || gather) {
+                return fail("VX_TEX_OFFSET before an instruction with offsets of its own");
+            }
+            const SpvDim offset_dim = m_texture_dimensions.at(resource.index0);
+            if (offset_dim == SpvDim::Dim2D) {
+                immediate_offset = m_builder.emit_vector_shuffle(
+                    m_type_ivec2, dynamic_offset, dynamic_offset,
+                    {0u, m_texture_1d.contains(resource.index0) ? 4u : 1u});
+                if (m_texture_1d.contains(resource.index0)) {
+                    // A Texture1D has no v axis: (u, 0).
+                    immediate_offset = m_builder.emit_composite_insert(
+                        m_type_ivec2, m_builder.emit_constant_int(m_type_int, 0u),
+                        immediate_offset, {1});
+                }
+            } else if (offset_dim == SpvDim::Dim3D) {
+                immediate_offset = m_builder.emit_vector_shuffle(
+                    m_type_ivec3, dynamic_offset, dynamic_offset, {0u, 1u, 2u});
+            } else {
+                return fail("sample offset on a cube map is not permitted");
+            }
+            m_builder.set_dynamic_offsets(true);
+        }
 
         auto texture_it = m_texture_vars.find(resource.index0);
         auto sampler_it = m_sampler_vars.find(sampler.index0);
@@ -166,13 +208,31 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
 
         const bool uint_gather = gather && resource_return_type == 4u;
         const bool sint_gather = gather && resource_return_type == 3u;
-        if ((uint_gather || sint_gather) && (cube || volume)) {
-            return fail("integer GATHER4 currently requires a 2D texture");
+        // Learn (gather4, sm5) 22.4.2: Texture2D and TextureCube, including
+        // arrays. Texture1D and Texture3D already failed above. A cube
+        // gather is OpImageGather of the cube image: the direction selects
+        // the face and a footprint that crosses an edge reads the adjacent
+        // face (D3D11.3 7.18.12). A 2D gather is not that operation.
+        // 7.18.9.1's border is the same lo + (hi - lo) * border blend the
+        // integer path applies below, on those cube taps. gather4_c has no
+        // comparison on an integer texture (22.4.3). gather4_po is 2D-only
+        // (22.4.4). The gather names the cube image; it is not a 2D gather.
+        if ((uint_gather || sint_gather) && cube && gather_compare) {
+            return fail("GATHER4_C: integer textures have no comparison");
+        }
+        if ((uint_gather || sint_gather) && cube && programmable_offset) {
+            return fail("GATHER4_PO: only 2D textures take an offset");
         }
         const u32 image_type = uint_gather
-            ? (arrayed ? m_type_uimage_2d_array : m_type_uimage_2d)
+            ? (arrayed && cube ? m_type_uimage_cube_array
+               : arrayed ? m_type_uimage_2d_array
+               : cube ? m_type_uimage_cube
+                      : m_type_uimage_2d)
             : sint_gather
-                ? (arrayed ? m_type_iimage_2d_array : m_type_iimage_2d)
+                ? (arrayed && cube ? m_type_iimage_cube_array
+                   : arrayed ? m_type_iimage_2d_array
+                   : cube ? m_type_iimage_cube
+                          : m_type_iimage_2d)
                 : arrayed && cube ? m_type_image_cube_array
                 : arrayed ? m_type_image_2d_array
                 : cube ? m_type_image_cube
@@ -182,18 +242,28 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
         const u32 sampler_value = m_builder.emit_load(
             m_type_sampler, sampler_it->second);
         const u32 sampled_image_type = uint_gather
-            ? (arrayed ? m_type_sampled_uimage_2d_array
-                       : m_type_sampled_uimage_2d)
+            ? (arrayed && cube ? m_type_sampled_uimage_cube_array
+               : arrayed ? m_type_sampled_uimage_2d_array
+               : cube ? m_type_sampled_uimage_cube
+                      : m_type_sampled_uimage_2d)
             : sint_gather
-                ? (arrayed ? m_type_sampled_iimage_2d_array
-                           : m_type_sampled_iimage_2d)
+                ? (arrayed && cube ? m_type_sampled_iimage_cube_array
+                   : arrayed ? m_type_sampled_iimage_2d_array
+                   : cube ? m_type_sampled_iimage_cube
+                          : m_type_sampled_iimage_2d)
                 : arrayed && cube ? m_type_sampled_image_cube_array
                 : arrayed ? m_type_sampled_image_2d_array
                 : cube ? m_type_sampled_image_cube
                        : volume ? m_type_sampled_image_3d
                                 : m_type_sampled_image_2d;
-        const u32 sampled_image = m_builder.emit_sampled_image(
-            sampled_image_type, image, sampler_value);
+        // Built here only for the straight-line D3D11 path. A descriptor-table
+        // sample branches, and OpSampledImage cannot be consumed in another
+        // block, so those paths build it beside the sample.
+        u32 sampled_image = 0;
+        if (m_sampler_state_var == 0) {
+            sampled_image = m_builder.emit_sampled_image(
+                sampled_image_type, image, sampler_value);
+        }
 
         // gather4_po: the low 6 bits of offset.xy, signed ([-32, 31]). Only
         // a 2D texture takes one (Learn).
@@ -280,7 +350,7 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
         u32 lod_scalar = 0;
         u32 raw_lod_operand = 0;  // before any bias (minmax_samplers)
         if (opcode == Sm4Opcode::SAMPLE_B ||
-            opcode == Sm4Opcode::SAMPLE_L) {
+            opcode == Sm4Opcode::SAMPLE_L || compare_level || compare_bias) {
             Sm4Operand lod;
             if (!m_decoder.decode_operand(lod)) {
                 return fail(opcode == Sm4Opcode::SAMPLE_L
@@ -328,9 +398,15 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
                 sampler_lod_bias = m_builder.emit_load(m_type_float, chain);
             }
             if (opcode == Sm4Opcode::SAMPLE_B ||
-                opcode == Sm4Opcode::SAMPLE_L) {
+                opcode == Sm4Opcode::SAMPLE_L || compare_level) {
                 lod_scalar = m_builder.emit_fadd(
                     m_type_float, lod_scalar, sampler_lod_bias);
+            } else if (compare_bias) {
+                // The bias the comparison's implicit LOD takes: the
+                // instruction's plus the sampler's.
+                lod_scalar = m_builder.emit_fadd(
+                    m_type_float, lod_scalar, sampler_lod_bias);
+                sampler_lod_bias = lod_scalar;
             } else {
                 lod_scalar = sampler_lod_bias;
             }
@@ -401,7 +477,9 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
                 lod_scalar = m_builder.emit_select(m_type_float, point,
                                                    rounded, lod_scalar);
             }
-        } else if (opcode == Sm4Opcode::SAMPLE_C_LZ) {
+        } else if (compare_bias) {
+            sampler_lod_bias = lod_scalar;
+        } else if (opcode == Sm4Opcode::SAMPLE_C_LZ && !compare_level) {
             lod_scalar = m_builder.emit_constant_float(m_type_float, 0.0f);
         }
 
@@ -409,7 +487,7 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
         u32 gradient_y = 0;
         u32 raw_gradient_x = 0;
         u32 raw_gradient_y = 0;
-        if (opcode == Sm4Opcode::SAMPLE_D) {
+        if (gradients) {
             // Learn sample_d: explicit normalized-coordinate derivatives;
             // xyz carry du/dx,dv/dx,dw/dx and .w is ignored. Array indices
             // are never differentiated, so 2D arrays use vec2 gradients and
@@ -484,16 +562,124 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
             }
         }
 
+        // sample_cl / sample_b_cl / sample_d_cl / sample_c_cl: the MinLOD
+        // clamp, the last operand (D3D11.3 5.9.4.5.4). It bounds the LOD
+        // from below as the sampler's MinLOD does; Metal's min_lod_clamp.
+        u32 min_lod = 0;
+        if (!decode_tiled_clamp(min_lod)) return false;
+
+        // A descriptor-table sampler's border, reduction and non-normalized
+        // flag live in the record. The PSO cannot bake them.
+        const bool dynamic_state = m_sampler_state_var != 0;
+        u32 dynamic_flags = 0;
+        u32 custom_border = 0;
+        u32 reduce_flag = 0;
+        u32 non_norm_flag = 0;
+        u32 dynamic_border_colour = 0;
+        const auto flag_bit = [&](u32 flags_id, u32 bit) {
+            return m_builder.emit_inotequal(
+                m_type_bool,
+                m_builder.emit_bitwise_and(
+                    m_type_uint, flags_id,
+                    m_builder.emit_constant_int(m_type_uint, bit)),
+                m_const_u0);
+        };
+        if (dynamic_state) {
+            dynamic_flags =
+                sampler_state_word(sampler, kSamplerStateFlagsWord);
+            custom_border = flag_bit(dynamic_flags, kSamplerStateCustomBorder);
+            // The record's MINIMUM_ / MAXIMUM_ flag, and the process-wide
+            // switch spirv_to_msl compiles the reduction out with while no
+            // such sampler exists (graphics/shaders/minmax_reduction.hpp).
+            reduce_flag = m_builder.emit_logical(
+                SpvOp::OpLogicalAnd, m_type_bool, minmax_reduction_gate(),
+                flag_bit(dynamic_flags, kSamplerStateMinMax));
+            non_norm_flag = flag_bit(dynamic_flags, kSamplerStateNonNormalized);
+            std::array<u32, 4> channels{};
+            for (u32 c = 0; c < 4; ++c) {
+                channels[c] = m_builder.emit_bitcast(
+                    m_type_float,
+                    sampler_state_word(sampler, kSamplerStateBorderWord + c));
+            }
+            dynamic_border_colour = m_builder.emit_composite_construct(
+                m_type_vec4,
+                {channels[0], channels[1], channels[2], channels[3]});
+            // Texel coordinates (D3D12_SAMPLER_FLAG_NON_NORMALIZED_COORDINATES)
+            // on a 1D or 2D view. Cube and volume samplers are not a legal
+            // target of the flag; dividing those coordinates would invent a
+            // mapping the flag does not have.
+            if (!cube && !volume) {
+                m_builder.emit_capability(SpvCapability::ImageQuery);
+                const u32 size_type = arrayed ? m_type_ivec3 : m_type_ivec2;
+                const u32 size = m_builder.emit_image_query_size(
+                    size_type, image,
+                    m_builder.emit_constant_int(m_type_int, 0u));
+                const u32 sx = m_builder.emit_convert_s_to_f(
+                    m_type_float,
+                    m_builder.emit_composite_extract(m_type_int, size, {0}));
+                const u32 sy = m_builder.emit_convert_s_to_f(
+                    m_type_float,
+                    m_builder.emit_composite_extract(m_type_int, size, {1}));
+                const auto scale_vec = [&](u32 vec, u32 type) {
+                    const u32 x = m_builder.emit_composite_extract(
+                        m_type_float, vec, {0});
+                    const u32 y = m_builder.emit_composite_extract(
+                        m_type_float, vec, {1});
+                    const u32 nx = m_builder.emit_fdiv(m_type_float, x, sx);
+                    const u32 ny = m_builder.emit_fdiv(m_type_float, y, sy);
+                    if (type == m_type_vec2) {
+                        return m_builder.emit_composite_construct(
+                            m_type_vec2, {nx, ny});
+                    }
+                    if (type == m_type_vec4) {
+                        return m_builder.emit_composite_construct(
+                            m_type_vec4,
+                            {nx, ny,
+                             m_builder.emit_composite_extract(m_type_float, vec,
+                                                              {2}),
+                             m_builder.emit_composite_extract(m_type_float, vec,
+                                                              {3})});
+                    }
+                    return m_builder.emit_composite_construct(
+                        m_type_vec3,
+                        {nx, ny,
+                         m_builder.emit_composite_extract(m_type_float, vec,
+                                                          {2})});
+                };
+                const u32 coord_type = arrayed ? m_type_vec3 : m_type_vec2;
+                coordinate = m_builder.emit_select(
+                    coord_type, non_norm_flag,
+                    scale_vec(coordinate, coord_type), coordinate);
+                if (gradients && gradient_x != 0) {
+                    gradient_x = m_builder.emit_select(
+                        m_type_vec2, non_norm_flag,
+                        scale_vec(gradient_x, m_type_vec2), gradient_x);
+                    gradient_y = m_builder.emit_select(
+                        m_type_vec2, non_norm_flag,
+                        scale_vec(gradient_y, m_type_vec2), gradient_y);
+                    raw_gradient_x = m_builder.emit_select(
+                        m_type_vec4, non_norm_flag,
+                        scale_vec(raw_gradient_x, m_type_vec4), raw_gradient_x);
+                    raw_gradient_y = m_builder.emit_select(
+                        m_type_vec4, non_norm_flag,
+                        scale_vec(raw_gradient_y, m_type_vec4), raw_gradient_y);
+                }
+            }
+        }
+
         // Border twin: the same operation through s#'s opaque-white-border
         // twin. `twin_sampled_image` is 0 when this sampler has none.
+        // A descriptor-table translation's twins are loaded only on the
+        // branch that the record's custom-border flag takes.
         u32 twin_sampled_image = 0;
         u32 border_colour = 0;
+        if (!dynamic_state) {
         if (const auto twin = m_border_twin_vars.find(sampler.index0);
             twin != m_border_twin_vars.end()) {
-            if (uint_gather || sint_gather) {
-                // An integer view has no filtered border to blend.
-                return fail("SAMPLE: border twin on an integer gather");
-            }
+            // The push-block float is the border a sampler record stores.
+            // An integer gather converts it below (7.18.9.1, 3.2.2). A
+            // UINT border of (0,0,0,0), (0,0,0,1) or (1,1,1,1) is a Metal
+            // border and has no twin; any other UINT border is not stored.
             twin_sampled_image = m_builder.emit_sampled_image(
                 sampled_image_type, image,
                 m_builder.emit_load(m_type_sampler, twin->second));
@@ -506,6 +692,7 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
                          m_type_uint, sampler.index0 < 8 ? 1u : kPushMemberBorderHigh),
                      m_builder.emit_constant_int(m_type_uint,
                                                  sampler.index0 % 8u)}));
+        }
         }
         // A comparison through a twinned sampler: D3D11.3 7.18.9.1 compares
         // the reference against the border's red, any float (measured
@@ -577,6 +764,12 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
         if (!gather && !comparison && sampler.index0 < 16u &&
             (m_options.minmax_samplers & (1u << sampler.index0)) != 0 &&
             sampler_bias_bound()) {
+            if (min_lod != 0 || m_tiled.has_status) {
+                // The push-block reduction reads its MinLOD from the block;
+                // a D3D11 translation (tier 1) has neither instruction.
+                return fail("sample_cl / status through a push-block "
+                            "min/max sampler");
+            }
             MinMaxSample sample{};
             sample.image = image;
             sample.sampled_image = sampled_image;
@@ -596,6 +789,13 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
             sample.gradient_x = raw_gradient_x;
             sample.gradient_y = raw_gradient_y;
             sample.offset = offset_texels;
+            // SM 6.7: a Texture1D's v offset is 0 like aoffimmi's.
+            if (dynamic_offset != 0) {
+                sample.offset_id = texture_1d ? m_builder.emit_composite_insert(
+                                                    m_type_ivec4, m_builder.emit_constant_int(m_type_int, 0u),
+                                                    dynamic_offset, {1})
+                                              : dynamic_offset;
+            }
             if (texture_1d) sample.offset[1] = 0;
             const u32 reduced =
                 apply_swizzle(emit_minmax_sample(sample), resource.swizzle);
@@ -612,11 +812,150 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
                                     m_builder.emit_fsub(m_type_vec4, hi, lo),
                                     border));
         };
+        // D3D11.3 3.2.2: a float becomes an integer format by
+        // round-to-nearest-even, then clamps to the type. 7.18.9.1 clamps
+        // the border into the format before it is used as a texel; the
+        // gather return type is the 32-bit component. NaN has no integer
+        // encoding and is 0. ftou/ftoi round toward zero, so round first
+        // and then use their range selects (OpConvertFTo* is undefined
+        // outside the type).
+        const auto border_float_to_texel = [&](u32 blended) -> u32 {
+            const u32 rounded = m_builder.emit_ext_inst(
+                m_type_vec4, m_glsl_std450, kGlslStd450RoundEven, {blended});
+            const u32 zero_float = make_vec4_imm(0.0f, 0.0f, 0.0f, 0.0f);
+            const u32 is_nan = m_builder.emit_is_nan(m_type_bvec4, rounded);
+            if (uint_gather) {
+                // 2^32 is the first value outside uint32.
+                const u32 upper = make_vec4_imm(
+                    4294967296.0f, 4294967296.0f, 4294967296.0f, 4294967296.0f);
+                const u32 below =
+                    m_builder.emit_ford_lt(m_type_bvec4, rounded, zero_float);
+                const u32 above =
+                    m_builder.emit_ford_ge(m_type_bvec4, rounded, upper);
+                u32 safe = m_builder.emit_select(
+                    m_type_vec4, is_nan, zero_float, rounded);
+                safe = m_builder.emit_select(m_type_vec4, below, zero_float, safe);
+                safe = m_builder.emit_select(m_type_vec4, above, zero_float, safe);
+                u32 result = m_builder.emit_convert_f_to_u(m_type_uvec4, safe);
+                result = m_builder.emit_select(
+                    m_type_uvec4, above, m_const_u_ffff4, result);
+                result = m_builder.emit_select(
+                    m_type_uvec4, below, m_const_u_zero4, result);
+                return m_builder.emit_select(
+                    m_type_uvec4, is_nan, m_const_u_zero4, result);
+            }
+            // 2^31 and -2^31 bound int32; both are exact floats.
+            const u32 min_float = make_vec4_imm(
+                -2147483648.0f, -2147483648.0f, -2147483648.0f, -2147483648.0f);
+            const u32 upper_float = make_vec4_imm(
+                2147483648.0f, 2147483648.0f, 2147483648.0f, 2147483648.0f);
+            const u32 below =
+                m_builder.emit_ford_lt(m_type_bvec4, rounded, min_float);
+            const u32 above =
+                m_builder.emit_ford_ge(m_type_bvec4, rounded, upper_float);
+            u32 safe = m_builder.emit_select(
+                m_type_vec4, is_nan, zero_float, rounded);
+            safe = m_builder.emit_select(m_type_vec4, below, zero_float, safe);
+            safe = m_builder.emit_select(m_type_vec4, above, zero_float, safe);
+            const u32 converted =
+                m_builder.emit_convert_f_to_s(m_type_ivec4, safe);
+            const u32 int_zero = m_builder.emit_constant_int(m_type_int, 0u);
+            const u32 int_min =
+                m_builder.emit_constant_int(m_type_int, 0x80000000u);
+            const u32 int_max =
+                m_builder.emit_constant_int(m_type_int, 0x7FFFFFFFu);
+            const u32 zero4 = m_builder.emit_constant_composite(
+                m_type_ivec4, {int_zero, int_zero, int_zero, int_zero});
+            const u32 min4 = m_builder.emit_constant_composite(
+                m_type_ivec4, {int_min, int_min, int_min, int_min});
+            const u32 max4 = m_builder.emit_constant_composite(
+                m_type_ivec4, {int_max, int_max, int_max, int_max});
+            u32 result = m_builder.emit_select(m_type_ivec4, below, min4, converted);
+            result = m_builder.emit_select(m_type_ivec4, above, max4, result);
+            return m_builder.emit_select(m_type_ivec4, is_nan, zero4, result);
+        };
+        bool failed = false;
+        // The twin sampler for this instruction. An array element's index is
+        // the same one the record uses (binding + element).
+        const auto load_twin_image = [&]() -> u32 {
+            const auto twin = m_border_twin_vars.find(sampler.index0);
+            if (twin == m_border_twin_vars.end()) return 0;
+            u32 pointer = twin->second;
+            const ResourceRange* range =
+                find_range(DxbcRegisterClass::Sampler, sampler.index0);
+            if (range != nullptr && range->is_array) {
+                u32 element = m_const_u0;
+                if (const auto rec = m_sampler_record_index.find(sampler.index0);
+                    rec != m_sampler_record_index.end()) {
+                    element = m_builder.emit_isub(
+                        m_type_uint, rec->second,
+                        m_builder.emit_constant_int(
+                            m_type_uint, range->resolved.binding));
+                }
+                if (sampler.nonuniform && sampler.register_relative) {
+                    m_builder.emit_capability(
+                        SpvCapability::SampledImageArrayNonUniformIndexing);
+                    m_builder.emit_decorate(element, SpvDecoration::NonUniform);
+                }
+                pointer = m_builder.emit_access_chain(
+                    m_type_ptr_uniform_constant_sampler, twin->second,
+                    {element});
+                if (sampler.nonuniform && sampler.register_relative) {
+                    m_builder.emit_decorate(pointer, SpvDecoration::NonUniform);
+                }
+            }
+            return m_builder.emit_sampled_image(
+                sampled_image_type, image,
+                m_builder.emit_load(m_type_sampler, pointer));
+        };
+        // Both arms store into a private temporary so a nested reduction
+        // (which ends in its own merge block) can still join here.
+        const u32 result_ptr_type = m_builder.emit_type_pointer(
+            SpvStorageClass::Private, m_type_vec4);
+        const auto choose_vec4 = [&](u32 cond, auto&& yes, auto&& no) -> u32 {
+            const u32 slot = m_builder.emit_variable(
+                result_ptr_type, SpvStorageClass::Private);
+            // SPIR-V 1.4+ lists every global the entry point uses. The
+            // interface was collected before instructions ran.
+            m_entry_interface.push_back(slot);
+            const u32 merge = m_builder.allocate_id();
+            const u32 yes_block = m_builder.allocate_id();
+            const u32 no_block = m_builder.allocate_id();
+            m_builder.emit_selection_merge(merge);
+            m_builder.emit_branch_conditional(cond, yes_block, no_block);
+            m_builder.emit_label_id(yes_block);
+            const u32 yes_value = yes();
+            if (!failed) m_builder.emit_store(slot, yes_value);
+            m_builder.emit_branch(merge);
+            m_builder.emit_label_id(no_block);
+            const u32 no_value = no();
+            if (!failed) m_builder.emit_store(slot, no_value);
+            m_builder.emit_branch(merge);
+            m_builder.emit_label_id(merge);
+            if (failed) return 0;
+            return m_builder.emit_load(m_type_vec4, slot);
+        };
+        const auto with_dynamic_border =
+            [&](u32 plain, auto&& blend_with_twin) -> u32 {
+            // The record's custom-border flag selects the opaque-white
+            // twin. Callers that are not a descriptor-table sample keep
+            // plain: a border the record does not store is not invented.
+            if (!dynamic_state) return plain;
+            return choose_vec4(
+                custom_border,
+                [&] { return blend_with_twin(load_twin_image()); },
+                [&] { return plain; });
+        };
 
+        const auto emit_ordinary = [&]() -> u32 {
+        // OpSampledImage is only legal in the block that samples it.
+        const u32 sampled_image = m_builder.emit_sampled_image(
+            sampled_image_type, image, sampler_value);
         u32 sampled = 0;
         if (gather_compare) {
             if (uint_gather || sint_gather) {
-                return fail("GATHER4_C: integer textures have no comparison");
+                failed = !fail("GATHER4_C: integer textures have no comparison");
+                return 0u;
             }
             sampled = m_builder.emit_image_dref_gather(
                 m_type_vec4, sampled_image, coordinate, reference_scalar,
@@ -642,6 +981,84 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
                         m_type_vec4, {border_result, border_result,
                                       border_result, border_result}),
                     sampled);
+            } else if (dynamic_state) {
+                sampled = with_dynamic_border(sampled, [&](u32 twin_img) {
+                    // Same separator test as the static twin, against the
+                    // record's (red, comparison func).
+                    const u32 func = m_builder.emit_convert_f_to_u(
+                        m_type_uint,
+                        m_builder.emit_composite_extract(
+                            m_type_float, dynamic_border_colour, {1}));
+                    const u32 mask = m_builder.emit_isub(
+                        m_type_uint, func,
+                        m_builder.emit_constant_int(m_type_uint, 1u));
+                    const auto has = [&](u32 bit) {
+                        return m_builder.emit_inotequal(
+                            m_type_bool,
+                            m_builder.emit_bitwise_and(
+                                m_type_uint, mask,
+                                m_builder.emit_constant_int(m_type_uint, bit)),
+                            m_const_u0);
+                    };
+                    const u32 wants_less = has(1u);
+                    const u32 wants_equal = has(2u);
+                    const u32 wants_greater = has(4u);
+                    const u32 zero =
+                        m_builder.emit_constant_float(m_type_float, 0.0f);
+                    const u32 one =
+                        m_builder.emit_constant_float(m_type_float, 1.0f);
+                    const u32 red = m_builder.emit_composite_extract(
+                        m_type_float, dynamic_border_colour, {0});
+                    const auto cmp_one = [&](u32 x) {
+                        const u32 less = m_builder.emit_logical(
+                            SpvOp::OpLogicalAnd, m_type_bool, wants_less,
+                            m_builder.emit_ford_lt(m_type_bool,
+                                                   reference_scalar, x));
+                        const u32 equal = m_builder.emit_logical(
+                            SpvOp::OpLogicalAnd, m_type_bool, wants_equal,
+                            m_builder.emit_ford_eq(m_type_bool,
+                                                   reference_scalar, x));
+                        const u32 greater = m_builder.emit_logical(
+                            SpvOp::OpLogicalAnd, m_type_bool, wants_greater,
+                            m_builder.emit_ford_lt(m_type_bool, x,
+                                                   reference_scalar));
+                        const u32 pass = m_builder.emit_logical(
+                            SpvOp::OpLogicalOr, m_type_bool, less,
+                            m_builder.emit_logical(SpvOp::OpLogicalOr,
+                                                   m_type_bool, equal,
+                                                   greater));
+                        return m_builder.emit_select(m_type_float, pass, one,
+                                                     zero);
+                    };
+                    const u32 equality = m_builder.emit_logical(
+                        SpvOp::OpLogicalOr, m_type_bool,
+                        m_builder.emit_integer_compare(
+                            SpvOp::OpIEqual, m_type_bool, mask,
+                            m_builder.emit_constant_int(m_type_uint, 2u)),
+                        m_builder.emit_integer_compare(
+                            SpvOp::OpIEqual, m_type_bool, mask,
+                            m_builder.emit_constant_int(m_type_uint, 5u)));
+                    const u32 sep = m_builder.emit_select(
+                        m_type_float, equality, zero,
+                        m_builder.emit_constant_float(m_type_float, 0.5f));
+                    const u32 through_lo = m_builder.emit_image_dref_gather(
+                        m_type_vec4,
+                        m_builder.emit_sampled_image(sampled_image_type, image,
+                                                     sampler_value),
+                        coordinate, sep, immediate_offset, programmable);
+                    const u32 through_hi = m_builder.emit_image_dref_gather(
+                        m_type_vec4, twin_img, coordinate, sep,
+                        immediate_offset, programmable);
+                    const u32 border_lane = m_builder.emit_funord_ne(
+                        m_type_bvec4, through_lo, through_hi);
+                    const u32 border_result = cmp_one(red);
+                    return m_builder.emit_select(
+                        m_type_vec4, border_lane,
+                        m_builder.emit_composite_construct(
+                            m_type_vec4, {border_result, border_result,
+                                          border_result, border_result}),
+                        sampled);
+                });
             }
             sampled = apply_swizzle(sampled, resource.swizzle);
         } else if (gather) {
@@ -653,32 +1070,114 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
             sampled = m_builder.emit_image_gather(
                 gather_type, sampled_image, coordinate, component,
                 immediate_offset, programmable);
-            if (gather_type != m_type_vec4) {
-                sampled = m_builder.emit_bitcast(m_type_vec4, sampled);
-            }
-            if (twin_sampled_image != 0) {
-                // Gather returns one channel of four texels, so the border
-                // term is that channel of the colour, in every lane.
-                const u32 channel = m_builder.emit_composite_extract(
-                    m_type_float, border_colour, {sampler.swizzle & 0x3u});
-                const u32 twin = m_builder.emit_image_gather(
-                    m_type_vec4, twin_sampled_image, coordinate, component,
-                    immediate_offset, programmable);
-                sampled = blend_border(
-                    sampled, twin,
-                    m_builder.emit_composite_construct(
-                        m_type_vec4, {channel, channel, channel, channel}));
+            if (uint_gather || sint_gather) {
+                // D3D11.3 7.18.9.1 / 3.2.2 and gather4 (22.4.2). The border
+                // is a float4. lo is the gather through transparent black,
+                // hi through the opaque-white twin, blended as
+                // lo + (hi - lo) * border, then round-to-nearest-even into
+                // the 32-bit integer return (NaN becomes 0). A lane both
+                // gathers return alike keeps the texel's bits. The
+                // descriptor-table path reads the float from the sampler
+                // record when the custom-border flag is set. A shader-model
+                // 5.0 sampler reads the same float from the push-block twin.
+                // A UINT border of (0,0,0,0), (0,0,0,1) or (1,1,1,1) is
+                // applied by the Metal sampler, so this blend is not used
+                // for it and no other UINT border is stored.
+                const u32 lo = sampled;
+                const u32 plain = m_builder.emit_bitcast(m_type_vec4, lo);
+                const auto blend_integer_border =
+                    [&](u32 twin_img, u32 border_vec) {
+                        const u32 hi = m_builder.emit_image_gather(
+                            gather_type, twin_img, coordinate, component,
+                            immediate_offset, programmable);
+                        const u32 lo_f = uint_gather
+                            ? m_builder.emit_convert_u_to_f(m_type_vec4, lo)
+                            : m_builder.emit_convert_s_to_f(m_type_vec4, lo);
+                        const u32 hi_f = uint_gather
+                            ? m_builder.emit_convert_u_to_f(m_type_vec4, hi)
+                            : m_builder.emit_convert_s_to_f(m_type_vec4, hi);
+                        const u32 channel = m_builder.emit_composite_extract(
+                            m_type_float, border_vec, {sampler.swizzle & 0x3u});
+                        const u32 blended = blend_border(
+                            lo_f, hi_f,
+                            m_builder.emit_composite_construct(
+                                m_type_vec4,
+                                {channel, channel, channel, channel}));
+                        const u32 border_texel =
+                            border_float_to_texel(blended);
+                        const u32 same = m_builder.emit_integer_compare(
+                            SpvOp::OpIEqual, m_type_bvec4, lo, hi);
+                        return m_builder.emit_bitcast(
+                            m_type_vec4,
+                            m_builder.emit_select(
+                                gather_type, same, lo, border_texel));
+                    };
+                if (dynamic_state) {
+                    sampled = with_dynamic_border(
+                        plain, [&](u32 twin_img) {
+                            return blend_integer_border(
+                                twin_img, dynamic_border_colour);
+                        });
+                } else if (twin_sampled_image != 0) {
+                    sampled = blend_integer_border(twin_sampled_image,
+                                                   border_colour);
+                } else {
+                    sampled = plain;
+                }
+            } else {
+                if (twin_sampled_image != 0) {
+                    // Gather returns one channel of four texels, so the border
+                    // term is that channel of the colour, in every lane.
+                    const u32 channel = m_builder.emit_composite_extract(
+                        m_type_float, border_colour, {sampler.swizzle & 0x3u});
+                    const u32 twin = m_builder.emit_image_gather(
+                        m_type_vec4, twin_sampled_image, coordinate, component,
+                        immediate_offset, programmable);
+                    sampled = blend_border(
+                        sampled, twin,
+                        m_builder.emit_composite_construct(
+                            m_type_vec4, {channel, channel, channel, channel}));
+                } else if (dynamic_state) {
+                    sampled = with_dynamic_border(sampled, [&](u32 twin_img) {
+                        const u32 channel = m_builder.emit_composite_extract(
+                            m_type_float, dynamic_border_colour,
+                            {sampler.swizzle & 0x3u});
+                        const u32 hi = m_builder.emit_image_gather(
+                            m_type_vec4, twin_img, coordinate, component,
+                            immediate_offset, programmable);
+                        return blend_border(
+                            sampled, hi,
+                            m_builder.emit_composite_construct(
+                                m_type_vec4,
+                                {channel, channel, channel, channel}));
+                    });
+                }
             }
             sampled = apply_swizzle(sampled, resource.swizzle);
         } else if (comparison) {
             const auto compare = [&](u32 through, u32 reference) {
+                if (compare_gradient) {
+                    return m_builder.emit_image_sample_dref_grad(
+                        m_type_float, through, coordinate, reference,
+                        gradient_x, gradient_y, immediate_offset, min_lod);
+                }
+                // An immediate offset (aoffimmi) applies to comparisons too.
+                if (immediate_offset != 0) {
+                    return opcode == Sm4Opcode::SAMPLE_C_LZ
+                        ? m_builder.emit_image_sample_dref_lz_offset(
+                              m_type_float, through, coordinate, reference,
+                              lod_scalar, immediate_offset)
+                        : m_builder.emit_image_sample_dref_offset(
+                              m_type_float, through, coordinate, reference,
+                              sampler_lod_bias, immediate_offset);
+                }
                 return opcode == Sm4Opcode::SAMPLE_C_LZ
                     ? m_builder.emit_image_sample_dref_lz(
                           m_type_float, through, coordinate, reference,
                           lod_scalar)
                     : m_builder.emit_image_sample_dref(
                           m_type_float, through, coordinate, reference,
-                          sampler_lod_bias);
+                          sampler_lod_bias, min_lod);
             };
             u32 comparison_result = compare(sampled_image, reference_scalar);
             if (twin_sampled_image != 0) {
@@ -699,33 +1198,289 @@ bool DxbcTranslator::translate_sample_operation(u32 /*opcode_token*/,
                     m_type_float, comparison_result,
                     m_builder.emit_fmul(m_type_float, border_weight,
                                         correction));
+            } else if (dynamic_state) {
+                const u32 plain = m_builder.emit_composite_construct(
+                    m_type_vec4,
+                    {comparison_result, comparison_result, comparison_result,
+                     comparison_result});
+                sampled = with_dynamic_border(plain, [&](u32 twin_img) {
+                    const u32 func = m_builder.emit_convert_f_to_u(
+                        m_type_uint,
+                        m_builder.emit_composite_extract(
+                            m_type_float, dynamic_border_colour, {1}));
+                    const u32 mask = m_builder.emit_isub(
+                        m_type_uint, func,
+                        m_builder.emit_constant_int(m_type_uint, 1u));
+                    const auto has = [&](u32 bit) {
+                        return m_builder.emit_inotequal(
+                            m_type_bool,
+                            m_builder.emit_bitwise_and(
+                                m_type_uint, mask,
+                                m_builder.emit_constant_int(m_type_uint, bit)),
+                            m_const_u0);
+                    };
+                    const u32 wants_less = has(1u);
+                    const u32 wants_equal = has(2u);
+                    const u32 wants_greater = has(4u);
+                    const u32 zero =
+                        m_builder.emit_constant_float(m_type_float, 0.0f);
+                    const u32 one =
+                        m_builder.emit_constant_float(m_type_float, 1.0f);
+                    const auto cmp_one = [&](u32 x) {
+                        const u32 less = m_builder.emit_logical(
+                            SpvOp::OpLogicalAnd, m_type_bool, wants_less,
+                            m_builder.emit_ford_lt(m_type_bool,
+                                                   reference_scalar, x));
+                        const u32 equal = m_builder.emit_logical(
+                            SpvOp::OpLogicalAnd, m_type_bool, wants_equal,
+                            m_builder.emit_ford_eq(m_type_bool,
+                                                   reference_scalar, x));
+                        const u32 greater = m_builder.emit_logical(
+                            SpvOp::OpLogicalAnd, m_type_bool, wants_greater,
+                            m_builder.emit_ford_lt(m_type_bool, x,
+                                                   reference_scalar));
+                        const u32 pass = m_builder.emit_logical(
+                            SpvOp::OpLogicalOr, m_type_bool, less,
+                            m_builder.emit_logical(SpvOp::OpLogicalOr,
+                                                   m_type_bool, equal,
+                                                   greater));
+                        return m_builder.emit_select(m_type_float, pass, one,
+                                                     zero);
+                    };
+                    const u32 equality = m_builder.emit_logical(
+                        SpvOp::OpLogicalOr, m_type_bool,
+                        m_builder.emit_integer_compare(
+                            SpvOp::OpIEqual, m_type_bool, mask,
+                            m_builder.emit_constant_int(m_type_uint, 2u)),
+                        m_builder.emit_integer_compare(
+                            SpvOp::OpIEqual, m_type_bool, mask,
+                            m_builder.emit_constant_int(m_type_uint, 5u)));
+                    const u32 sep = m_builder.emit_select(
+                        m_type_float, equality, zero,
+                        m_builder.emit_constant_float(m_type_float, 0.5f));
+                    const auto compare_ref = [&](u32 through, u32 reference) {
+                        if (compare_gradient) {
+                            return m_builder.emit_image_sample_dref_grad(
+                                m_type_float, through, coordinate, reference,
+                                gradient_x, gradient_y, immediate_offset,
+                                min_lod);
+                        }
+                        if (immediate_offset != 0) {
+                            return opcode == Sm4Opcode::SAMPLE_C_LZ
+                                ? m_builder.emit_image_sample_dref_lz_offset(
+                                      m_type_float, through, coordinate,
+                                      reference, lod_scalar, immediate_offset)
+                                : m_builder.emit_image_sample_dref_offset(
+                                      m_type_float, through, coordinate,
+                                      reference, sampler_lod_bias,
+                                      immediate_offset);
+                        }
+                        return opcode == Sm4Opcode::SAMPLE_C_LZ
+                            ? m_builder.emit_image_sample_dref_lz(
+                                  m_type_float, through, coordinate, reference,
+                                  lod_scalar)
+                            : m_builder.emit_image_sample_dref(
+                                  m_type_float, through, coordinate, reference,
+                                  sampler_lod_bias, min_lod);
+                    };
+                    const u32 border_weight = m_builder.emit_ext_inst(
+                        m_type_float, m_glsl_std450, kGlslStd450FAbs,
+                        {m_builder.emit_fsub(
+                            m_type_float, compare_ref(twin_img, sep),
+                            compare_ref(m_builder.emit_sampled_image(
+                                            sampled_image_type, image,
+                                            sampler_value),
+                                        sep))});
+                    const u32 red = m_builder.emit_composite_extract(
+                        m_type_float, dynamic_border_colour, {0});
+                    const u32 correction = m_builder.emit_fsub(
+                        m_type_float, cmp_one(red), cmp_one(zero));
+                    const u32 corrected = m_builder.emit_fadd(
+                        m_type_float, comparison_result,
+                        m_builder.emit_fmul(m_type_float, border_weight,
+                                            correction));
+                    return m_builder.emit_composite_construct(
+                        m_type_vec4,
+                        {corrected, corrected, corrected, corrected});
+                });
             }
-            sampled = m_builder.emit_composite_construct(
-                m_type_vec4,
-                {comparison_result, comparison_result, comparison_result,
-                 comparison_result});
+            if (sampled == 0u) {
+                sampled = m_builder.emit_composite_construct(
+                    m_type_vec4,
+                    {comparison_result, comparison_result, comparison_result,
+                     comparison_result});
+            }
         } else {
             const auto sample = [&](u32 through) {
                 return opcode == Sm4Opcode::SAMPLE_D
                 ? m_builder.emit_image_sample_grad(
                       m_type_vec4, through, coordinate,
-                      gradient_x, gradient_y, immediate_offset)
+                      gradient_x, gradient_y, immediate_offset, min_lod)
                 : opcode == Sm4Opcode::SAMPLE_L
                 ? m_builder.emit_image_sample_explicit_lod(
                       m_type_vec4, through, coordinate, lod_scalar,
                       immediate_offset)
                 : m_builder.emit_image_sample(
                       m_type_vec4, through, coordinate, lod_scalar,
-                      immediate_offset);
+                      immediate_offset, min_lod);
             };
             sampled = sample(sampled_image);
             if (twin_sampled_image != 0) {
                 sampled = blend_border(sampled, sample(twin_sampled_image),
                                        border_colour);
+            } else if (dynamic_state) {
+                sampled = with_dynamic_border(sampled, [&](u32 twin_img) {
+                    return blend_border(sampled, sample(twin_img),
+                                       dynamic_border_colour);
+                });
             }
             sampled = apply_swizzle(sampled, resource.swizzle);
         }
-        if (!store_vec4(dst, sampled)) return false;
+        return sampled;
+        };
+
+        u32 produced = 0;
+        if (dynamic_state && !gather && !comparison) {
+            const auto reduced = [&](bool with_border) -> u32 {
+                MinMaxSample sample{};
+                sample.image = image;
+                sample.coordinate = coordinate;
+                sample.texture_1d = texture_1d;
+                sample.cube = cube;
+                sample.volume = volume;
+                sample.arrayed = arrayed;
+                sample.slot = sampler.index0;
+                sample.lod = opcode == Sm4Opcode::SAMPLE_L
+                    ? MinMaxSample::Lod::Explicit
+                    : opcode == Sm4Opcode::SAMPLE_D
+                        ? MinMaxSample::Lod::Gradient
+                        : MinMaxSample::Lod::Implicit;
+                sample.lod_operand = raw_lod_operand;
+                sample.gradient_x = raw_gradient_x;
+                sample.gradient_y = raw_gradient_y;
+                sample.offset = offset_texels;
+                // SM 6.7: a Texture1D's v offset is 0 like aoffimmi's.
+                if (dynamic_offset != 0) {
+                    sample.offset_id = texture_1d ? m_builder.emit_composite_insert(
+                                                        m_type_ivec4, m_builder.emit_constant_int(m_type_int, 0u),
+                                                        dynamic_offset, {1})
+                                                  : dynamic_offset;
+                }
+                if (texture_1d) sample.offset[1] = 0;
+                sample.sampler_id = sampler_value;
+                sample.sampled_image_type = sampled_image_type;
+                sample.filter_id = m_builder.emit_bitwise_and(
+                    m_type_uint,
+                    m_builder.emit_shift_right_logical(
+                        m_type_uint, dynamic_flags,
+                        m_builder.emit_constant_int(
+                            m_type_uint, kSamplerStateFilterShift)),
+                    m_builder.emit_constant_int(m_type_uint,
+                                                kSamplerStateFilterMask));
+                sample.min_lod_id = m_builder.emit_bitcast(
+                    m_type_float,
+                    sampler_state_word(sampler, kSamplerStateMinLodWord));
+                if (min_lod != 0) {
+                    // Both bound the LOD from below (D3D11.3 5.9.4.5.4):
+                    // the per-sample clamp joins the sampler's MinLOD.
+                    sample.min_lod_id = m_builder.emit_ext_inst(
+                        m_type_float, m_glsl_std450, kGlslStd450FMax,
+                        {sample.min_lod_id, min_lod});
+                }
+                sample.max_lod_id = m_builder.emit_bitcast(
+                    m_type_float,
+                    sampler_state_word(sampler, kSamplerStateMaxLodWord));
+                sample.max_aniso_id = m_builder.emit_convert_u_to_f(
+                    m_type_float,
+                    m_builder.emit_bitwise_and(
+                        m_type_uint,
+                        m_builder.emit_shift_right_logical(
+                            m_type_uint, dynamic_flags,
+                            m_builder.emit_constant_int(
+                                m_type_uint, kSamplerStateAnisoShift)),
+                        m_builder.emit_constant_int(
+                            m_type_uint, kSamplerStateAnisoMask)));
+                sample.bias_id = m_builder.emit_bitcast(
+                    m_type_float,
+                    sampler_state_word(sampler, kSamplerStateBiasWord));
+                if (with_border) {
+                    // The sampler load may dominate the fetch; OpSampledImage
+                    // is emitted beside the fetch.
+                    const auto twin = m_border_twin_vars.find(sampler.index0);
+                    if (twin != m_border_twin_vars.end()) {
+                        u32 pointer = twin->second;
+                        const ResourceRange* range = find_range(
+                            DxbcRegisterClass::Sampler, sampler.index0);
+                        if (range != nullptr && range->is_array) {
+                            u32 element = m_const_u0;
+                            if (const auto rec =
+                                    m_sampler_record_index.find(sampler.index0);
+                                rec != m_sampler_record_index.end()) {
+                                element = m_builder.emit_isub(
+                                    m_type_uint, rec->second,
+                                    m_builder.emit_constant_int(
+                                        m_type_uint, range->resolved.binding));
+                            }
+                            pointer = m_builder.emit_access_chain(
+                                m_type_ptr_uniform_constant_sampler,
+                                twin->second, {element});
+                        }
+                        sample.twin_sampler_id =
+                            m_builder.emit_load(m_type_sampler, pointer);
+                    }
+                    sample.border_colour = dynamic_border_colour;
+                }
+                return apply_swizzle(emit_minmax_sample_call(sample, image_type),
+                                     resource.swizzle);
+            };
+            produced = choose_vec4(
+                reduce_flag,
+                [&] {
+                    return choose_vec4(
+                        custom_border, [&] { return reduced(true); },
+                        [&] { return reduced(false); });
+                },
+                emit_ordinary);
+        } else {
+            produced = emit_ordinary();
+        }
+        if (failed) return false;
+        if (!store_vec4(dst, produced)) return false;
+        if (m_tiled.has_status) {
+            // The same access of the residency companion through s#'s
+            // status twin (DxbcTranslationOptions::tiled_status).
+            u32 sampled_type = 0;
+            bool multisampled = false;
+            const u32 companion =
+                tiled_companion(resource, false, sampled_type, multisampled);
+            if (companion == 0) return false;
+            if (multisampled || sampled_type == 0) {
+                return fail("tiled status: a multisampled texture is not sampled");
+            }
+            const u32 status_sampler = tiled_status_sampler(sampler);
+            if (status_sampler == 0) return false;
+            TiledStatus::Lod lod{};
+            if (gradients) {
+                lod.kind = TiledStatus::Lod::Kind::Gradient;
+                lod.grad_x = gradient_x;
+                lod.grad_y = gradient_y;
+            } else if (opcode == Sm4Opcode::SAMPLE_L ||
+                       opcode == Sm4Opcode::SAMPLE_C_LZ) {
+                lod.kind = TiledStatus::Lod::Kind::Explicit;
+                lod.lod = lod_scalar;
+            } else {
+                // sample, sample_b, sample_c: the bias the sample took.
+                lod.bias = opcode == Sm4Opcode::SAMPLE_C ? sampler_lod_bias
+                                                         : lod_scalar;
+            }
+            const u32 miss = TiledStatus::emit_texture_status(
+                m_builder, tiled_status_types(),
+                m_builder.emit_sampled_image(sampled_type, companion,
+                                             status_sampler),
+                coordinate, lod, immediate_offset, programmable, min_lod,
+                gather);
+            if (!store_tiled_status(miss)) return false;
+        }
         break;
     }
 

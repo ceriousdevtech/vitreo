@@ -1,0 +1,406 @@
+file.read.mode=0 low=0 before=0,0 after=0
+mode=0 rights=00000000 low=0 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=0 low=1 before=0,0 after=0
+mode=0 rights=00000000 low=1 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=0 low=2 before=0,0 after=0
+mode=0 rights=00000000 low=2 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=0 low=3 before=0,0 after=0
+mode=0 rights=00000000 low=3 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=1 low=0 before=0,0 after=0
+mode=1 rights=00100000 low=0 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=1 low=1 before=0,0 after=0
+mode=1 rights=00100000 low=1 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=1 low=2 before=0,0 after=0
+mode=1 rights=00100000 low=2 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=1 low=3 before=0,0 after=0
+mode=1 rights=00100000 low=3 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=2 low=0 before=0,0 after=258
+mode=2 rights=00000002 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=2 low=0 wait=258
+mode=2 rights=00000002 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=2 low=1 before=0,0 after=258
+mode=2 rights=00000002 low=1 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=2 low=1 wait=258
+mode=2 rights=00000002 low=1 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=2 low=2 before=0,0 after=258
+mode=2 rights=00000002 low=2 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=2 low=2 wait=258
+mode=2 rights=00000002 low=2 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=2 low=3 before=0,0 after=258
+mode=2 rights=00000002 low=3 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=2 low=3 wait=258
+mode=2 rights=00000002 low=3 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=3 low=0 before=0,0 after=258
+mode=3 rights=00100002 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=3 low=0 wait=258
+mode=3 rights=00100002 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=3 low=1 before=0,0 after=258
+mode=3 rights=00100002 low=1 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=3 low=1 wait=258
+mode=3 rights=00100002 low=1 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=3 low=2 before=0,0 after=258
+mode=3 rights=00100002 low=2 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=3 low=2 wait=258
+mode=3 rights=00100002 low=2 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=3 low=3 before=0,0 after=258
+mode=3 rights=00100002 low=3 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=3 low=3 wait=258
+mode=3 rights=00100002 low=3 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=4 low=0 before=0,0 after=258
+mode=4 rights=001f0003 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=4 low=0 wait=258
+mode=4 rights=001f0003 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=4 low=1 before=0,0 after=258
+mode=4 rights=001f0003 low=1 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=4 low=1 wait=258
+mode=4 rights=001f0003 low=1 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=4 low=2 before=0,0 after=258
+mode=4 rights=001f0003 low=2 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=4 low=2 wait=258
+mode=4 rights=001f0003 low=2 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=4 low=3 before=0,0 after=258
+mode=4 rights=001f0003 low=3 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=4 low=3 wait=258
+mode=4 rights=001f0003 low=3 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=5 low=0 before=0,0 after=0
+mode=5 rights=001f0003 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=5 low=1 before=0,0 after=0
+mode=5 rights=001f0003 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=5 low=2 before=0,0 after=0
+mode=5 rights=001f0003 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=5 low=3 before=0,0 after=0
+mode=5 rights=001f0003 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=6 low=0 before=0,0 after=0
+mode=6 rights=00000000 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=6 low=1 before=0,0 after=0
+mode=6 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=6 low=2 before=0,0 after=0
+mode=6 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=6 low=3 before=0,0 after=0
+mode=6 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=7 low=0 before=0,0 after=0
+mode=7 rights=00000000 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=7 low=1 before=0,0 after=0
+mode=7 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=7 low=2 before=0,0 after=0
+mode=7 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=7 low=3 before=0,0 after=0
+mode=7 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=8 low=0 before=0,0 after=0
+mode=8 rights=00000000 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=8 low=1 before=0,0 after=0
+mode=8 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=8 low=2 before=0,0 after=0
+mode=8 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=8 low=3 before=0,0 after=0
+mode=8 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=9 low=0 before=0,0 after=258
+mode=9 rights=00000000 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=0
+file.read.done.mode=9 low=0 wait=0
+mode=9 rights=00000000 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=9 low=1 before=0,0 after=0
+mode=9 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=9 low=2 before=0,0 after=0
+mode=9 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=9 low=3 before=0,0 after=0
+mode=9 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=10 low=0 before=0,0 after=0
+mode=10 rights=00000000 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=10 low=1 before=0,0 after=0
+mode=10 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=10 low=2 before=0,0 after=0
+mode=10 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=10 low=3 before=0,0 after=0
+mode=10 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.read.mode=11 low=0 before=0,0 after=258
+mode=11 rights=001f0003 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=11 low=0 wait=258
+mode=11 rights=001f0003 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=11 low=1 before=0,0 after=258
+mode=11 rights=001f0003 low=1 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=11 low=1 wait=258
+mode=11 rights=001f0003 low=1 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=11 low=2 before=0,0 after=258
+mode=11 rights=001f0003 low=2 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=11 low=2 wait=258
+mode=11 rights=001f0003 low=2 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.read.mode=11 low=3 before=0,0 after=258
+mode=11 rights=001f0003 low=3 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.read.done.mode=11 low=3 wait=258
+mode=11 rights=001f0003 low=3 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+named.submit=0 error=997
+named.open_after_last_handle=0 error=2
+named.recreate=1 error=0 reused_handle=1
+named.complete=1 error=0 count=1 recreated_wait=258
+file.write.mode=0 low=0 before=0,0 after=0
+write.mode=0 rights=00000000 low=0 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=0 low=1 before=0,0 after=0
+write.mode=0 rights=00000000 low=1 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=0 low=2 before=0,0 after=0
+write.mode=0 rights=00000000 low=2 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=0 low=3 before=0,0 after=0
+write.mode=0 rights=00000000 low=3 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=1 low=0 before=0,0 after=0
+write.mode=1 rights=00100000 low=0 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=1 low=1 before=0,0 after=0
+write.mode=1 rights=00100000 low=1 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=1 low=2 before=0,0 after=0
+write.mode=1 rights=00100000 low=2 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=1 low=3 before=0,0 after=0
+write.mode=1 rights=00100000 low=3 submit=0 error=5 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=2 low=0 before=0,0 after=258
+write.mode=2 rights=00000002 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=2 low=0 wait=258
+write.mode=2 rights=00000002 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=2 low=1 before=0,0 after=258
+write.mode=2 rights=00000002 low=1 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=2 low=1 wait=258
+write.mode=2 rights=00000002 low=1 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=2 low=2 before=0,0 after=258
+write.mode=2 rights=00000002 low=2 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=2 low=2 wait=258
+write.mode=2 rights=00000002 low=2 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=2 low=3 before=0,0 after=258
+write.mode=2 rights=00000002 low=3 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=2 low=3 wait=258
+write.mode=2 rights=00000002 low=3 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=3 low=0 before=0,0 after=258
+write.mode=3 rights=00100002 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=3 low=0 wait=258
+write.mode=3 rights=00100002 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=3 low=1 before=0,0 after=258
+write.mode=3 rights=00100002 low=1 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=3 low=1 wait=258
+write.mode=3 rights=00100002 low=1 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=3 low=2 before=0,0 after=258
+write.mode=3 rights=00100002 low=2 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=3 low=2 wait=258
+write.mode=3 rights=00100002 low=2 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=3 low=3 before=0,0 after=258
+write.mode=3 rights=00100002 low=3 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=3 low=3 wait=258
+write.mode=3 rights=00100002 low=3 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=4 low=0 before=0,0 after=258
+write.mode=4 rights=001f0003 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=4 low=0 wait=258
+write.mode=4 rights=001f0003 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=4 low=1 before=0,0 after=258
+write.mode=4 rights=001f0003 low=1 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=4 low=1 wait=258
+write.mode=4 rights=001f0003 low=1 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=4 low=2 before=0,0 after=258
+write.mode=4 rights=001f0003 low=2 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=4 low=2 wait=258
+write.mode=4 rights=001f0003 low=2 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=4 low=3 before=0,0 after=258
+write.mode=4 rights=001f0003 low=3 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=4 low=3 wait=258
+write.mode=4 rights=001f0003 low=3 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=5 low=0 before=0,0 after=0
+write.mode=5 rights=001f0003 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=5 low=1 before=0,0 after=0
+write.mode=5 rights=001f0003 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=5 low=2 before=0,0 after=0
+write.mode=5 rights=001f0003 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=5 low=3 before=0,0 after=0
+write.mode=5 rights=001f0003 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=6 low=0 before=0,0 after=0
+write.mode=6 rights=00000000 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=6 low=1 before=0,0 after=0
+write.mode=6 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=6 low=2 before=0,0 after=0
+write.mode=6 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=6 low=3 before=0,0 after=0
+write.mode=6 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=7 low=0 before=0,0 after=0
+write.mode=7 rights=00000000 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=7 low=1 before=0,0 after=0
+write.mode=7 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=7 low=2 before=0,0 after=0
+write.mode=7 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=7 low=3 before=0,0 after=0
+write.mode=7 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=8 low=0 before=0,0 after=0
+write.mode=8 rights=00000000 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=8 low=1 before=0,0 after=0
+write.mode=8 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=8 low=2 before=0,0 after=0
+write.mode=8 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=8 low=3 before=0,0 after=0
+write.mode=8 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=9 low=0 before=0,0 after=258
+write.mode=9 rights=00000000 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=0
+file.write.done.mode=9 low=0 wait=0
+write.mode=9 rights=00000000 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=9 low=1 before=0,0 after=0
+write.mode=9 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=9 low=2 before=0,0 after=0
+write.mode=9 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=9 low=3 before=0,0 after=0
+write.mode=9 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=10 low=0 before=0,0 after=0
+write.mode=10 rights=00000000 low=0 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=10 low=1 before=0,0 after=0
+write.mode=10 rights=00000000 low=1 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=10 low=2 before=0,0 after=0
+write.mode=10 rights=00000000 low=2 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=10 low=3 before=0,0 after=0
+write.mode=10 rights=00000000 low=3 submit=0 error=6 count=0 internal=00000103 high=48879 initialwait=0
+file.write.mode=11 low=0 before=0,0 after=258
+write.mode=11 rights=001f0003 low=0 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=11 low=0 wait=258
+write.mode=11 rights=001f0003 low=0 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=11 low=1 before=0,0 after=258
+write.mode=11 rights=001f0003 low=1 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=11 low=1 wait=258
+write.mode=11 rights=001f0003 low=1 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=11 low=2 before=0,0 after=258
+write.mode=11 rights=001f0003 low=2 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=11 low=2 wait=258
+write.mode=11 rights=001f0003 low=2 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.write.mode=11 low=3 before=0,0 after=258
+write.mode=11 rights=001f0003 low=3 submit=0 error=997 count=0 internal=00000103 high=48879 initialwait=258
+file.write.done.mode=11 low=3 wait=258
+write.mode=11 rights=001f0003 low=3 complete=1 error=0 count=1 internal=00000000 finalwait=0 byte=5a
+file.connect.mode=0 low=0 before=0,0 after=0
+connect.mode=0 rights=00000000 low=0 submit=0 error=5 internal=00000103 high=48879 initialwait=0
+file.connect.mode=0 low=1 before=0,0 after=0
+connect.mode=0 rights=00000000 low=1 submit=0 error=5 internal=00000103 high=48879 initialwait=0
+file.connect.mode=0 low=2 before=0,0 after=0
+connect.mode=0 rights=00000000 low=2 submit=0 error=5 internal=00000103 high=48879 initialwait=0
+file.connect.mode=0 low=3 before=0,0 after=0
+connect.mode=0 rights=00000000 low=3 submit=0 error=5 internal=00000103 high=48879 initialwait=0
+file.connect.mode=1 low=0 before=0,0 after=0
+connect.mode=1 rights=00100000 low=0 submit=0 error=5 internal=00000103 high=48879 initialwait=0
+file.connect.mode=1 low=1 before=0,0 after=0
+connect.mode=1 rights=00100000 low=1 submit=0 error=5 internal=00000103 high=48879 initialwait=0
+file.connect.mode=1 low=2 before=0,0 after=0
+connect.mode=1 rights=00100000 low=2 submit=0 error=5 internal=00000103 high=48879 initialwait=0
+file.connect.mode=1 low=3 before=0,0 after=0
+connect.mode=1 rights=00100000 low=3 submit=0 error=5 internal=00000103 high=48879 initialwait=0
+file.connect.mode=2 low=0 before=0,0 after=258
+connect.mode=2 rights=00000002 low=0 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=2 low=0 wait=258
+connect.mode=2 low=0 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=2 low=1 before=0,0 after=258
+connect.mode=2 rights=00000002 low=1 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=2 low=1 wait=258
+connect.mode=2 low=1 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=2 low=2 before=0,0 after=258
+connect.mode=2 rights=00000002 low=2 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=2 low=2 wait=258
+connect.mode=2 low=2 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=2 low=3 before=0,0 after=258
+connect.mode=2 rights=00000002 low=3 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=2 low=3 wait=258
+connect.mode=2 low=3 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=3 low=0 before=0,0 after=258
+connect.mode=3 rights=00100002 low=0 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=3 low=0 wait=258
+connect.mode=3 low=0 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=3 low=1 before=0,0 after=258
+connect.mode=3 rights=00100002 low=1 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=3 low=1 wait=258
+connect.mode=3 low=1 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=3 low=2 before=0,0 after=258
+connect.mode=3 rights=00100002 low=2 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=3 low=2 wait=258
+connect.mode=3 low=2 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=3 low=3 before=0,0 after=258
+connect.mode=3 rights=00100002 low=3 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=3 low=3 wait=258
+connect.mode=3 low=3 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=4 low=0 before=0,0 after=258
+connect.mode=4 rights=001f0003 low=0 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=4 low=0 wait=258
+connect.mode=4 low=0 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=4 low=1 before=0,0 after=258
+connect.mode=4 rights=001f0003 low=1 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=4 low=1 wait=258
+connect.mode=4 low=1 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=4 low=2 before=0,0 after=258
+connect.mode=4 rights=001f0003 low=2 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=4 low=2 wait=258
+connect.mode=4 low=2 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=4 low=3 before=0,0 after=258
+connect.mode=4 rights=001f0003 low=3 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=4 low=3 wait=258
+connect.mode=4 low=3 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=5 low=0 before=0,0 after=0
+connect.mode=5 rights=001f0003 low=0 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=5 low=1 before=0,0 after=0
+connect.mode=5 rights=001f0003 low=1 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=5 low=2 before=0,0 after=0
+connect.mode=5 rights=001f0003 low=2 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=5 low=3 before=0,0 after=0
+connect.mode=5 rights=001f0003 low=3 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=6 low=0 before=0,0 after=0
+connect.mode=6 rights=00000000 low=0 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=6 low=1 before=0,0 after=0
+connect.mode=6 rights=00000000 low=1 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=6 low=2 before=0,0 after=0
+connect.mode=6 rights=00000000 low=2 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=6 low=3 before=0,0 after=0
+connect.mode=6 rights=00000000 low=3 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=7 low=0 before=0,0 after=0
+connect.mode=7 rights=00000000 low=0 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=7 low=1 before=0,0 after=0
+connect.mode=7 rights=00000000 low=1 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=7 low=2 before=0,0 after=0
+connect.mode=7 rights=00000000 low=2 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=7 low=3 before=0,0 after=0
+connect.mode=7 rights=00000000 low=3 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=8 low=0 before=0,0 after=0
+connect.mode=8 rights=00000000 low=0 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=8 low=1 before=0,0 after=0
+connect.mode=8 rights=00000000 low=1 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=8 low=2 before=0,0 after=0
+connect.mode=8 rights=00000000 low=2 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=8 low=3 before=0,0 after=0
+connect.mode=8 rights=00000000 low=3 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=9 low=0 before=0,0 after=258
+connect.mode=9 rights=00000000 low=0 submit=0 error=997 internal=00000103 high=48879 initialwait=0
+file.connect.done.mode=9 low=0 wait=0
+connect.mode=9 low=0 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=9 low=1 before=0,0 after=0
+connect.mode=9 rights=00000000 low=1 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=9 low=2 before=0,0 after=0
+connect.mode=9 rights=00000000 low=2 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=9 low=3 before=0,0 after=0
+connect.mode=9 rights=00000000 low=3 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=10 low=0 before=0,0 after=0
+connect.mode=10 rights=00000000 low=0 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=10 low=1 before=0,0 after=0
+connect.mode=10 rights=00000000 low=1 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=10 low=2 before=0,0 after=0
+connect.mode=10 rights=00000000 low=2 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=10 low=3 before=0,0 after=0
+connect.mode=10 rights=00000000 low=3 submit=0 error=6 internal=00000103 high=48879 initialwait=0
+file.connect.mode=11 low=0 before=0,0 after=258
+connect.mode=11 rights=001f0003 low=0 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=11 low=0 wait=258
+connect.mode=11 low=0 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=11 low=1 before=0,0 after=258
+connect.mode=11 rights=001f0003 low=1 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=11 low=1 wait=258
+connect.mode=11 low=1 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=11 low=2 before=0,0 after=258
+connect.mode=11 rights=001f0003 low=2 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=11 low=2 wait=258
+connect.mode=11 low=2 complete=1 error=0 count=0 internal=00000000 finalwait=0
+file.connect.mode=11 low=3 before=0,0 after=258
+connect.mode=11 rights=001f0003 low=3 submit=0 error=997 internal=00000103 high=48879 initialwait=258
+file.connect.done.mode=11 low=3 wait=258
+connect.mode=11 low=3 complete=1 error=0 count=0 internal=00000000 finalwait=0
+gorwait.mode=0 low=0 entry=00000103 before=258 after=0 result=1 error=0 count=1 return_internal=00000000
+gorwait.mode=0 low=1 entry=00000103 before=258 after=0 result=1 error=0 count=1 return_internal=00000000
+gorwait.mode=0 low=2 entry=00000103 before=258 after=0 result=1 error=0 count=1 return_internal=00000000
+gorwait.mode=0 low=3 entry=00000103 before=258 after=0 result=1 error=0 count=1 return_internal=00000000
+gorwait.mode=1 low=0 entry=00000103 before=0 after=0 result=0 error=5 count=57005 return_internal=00000103
+gorwait.mode=1 low=1 entry=00000103 before=0 after=0 result=0 error=5 count=57005 return_internal=00000103
+gorwait.mode=1 low=2 entry=00000103 before=0 after=0 result=0 error=5 count=57005 return_internal=00000103
+gorwait.mode=1 low=3 entry=00000103 before=0 after=0 result=0 error=5 count=57005 return_internal=00000103
+gorwait.mode=2 low=0 entry=00000103 before=0 after=0 result=0 error=6 count=57005 return_internal=00000103
+gorwait.mode=2 low=1 entry=00000103 before=0 after=0 result=0 error=6 count=57005 return_internal=00000103
+gorwait.mode=2 low=2 entry=00000103 before=0 after=0 result=0 error=6 count=57005 return_internal=00000103
+gorwait.mode=2 low=3 entry=00000103 before=0 after=0 result=0 error=6 count=57005 return_internal=00000103

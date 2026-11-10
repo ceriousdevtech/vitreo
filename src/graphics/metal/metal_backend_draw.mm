@@ -53,6 +53,7 @@
 #include "graphics/metal/metal_backend_descriptor_table.hpp"
 #include "graphics/metal/metal_backend_render_pass.hpp"
 #include "graphics/metal/metal_backend_pipeline.hpp"
+#include "graphics/metal/metal_mesh_pipeline.hpp"  // WS5
 
 using namespace vitreo;
 
@@ -120,12 +121,38 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
         }
         (void)gen;
     };
-    const auto* pipeline =
-        static_cast<const MetalBackendPipeline*>(call.pipeline);
-    if (pipeline == nullptr || !pipeline->valid()) {
+    if (call.pipeline == nullptr || !call.pipeline->valid()) {
         VITREO_TRACE("[metal] draw rejected: pipeline is missing/invalid\n");
         return false;
     }
+    // ---- WS5 begin ----
+    const bool mesh_draw = call.pipeline->is_mesh();
+    if (mesh_draw != call.mesh_active()) {
+        VITREO_TRACE(mesh_draw
+                         ? "[metal] draw rejected: mesh pipeline without mesh "
+                           "dispatch\n"
+                         : "[metal] draw rejected: mesh dispatch on a vertex "
+                           "pipeline\n");
+        return false;
+    }
+    void* const pipeline_state =
+        mesh_draw
+            ? static_cast<const MetalMeshPipeline*>(call.pipeline)->state()
+            : static_cast<const MetalBackendPipeline*>(call.pipeline)->state();
+    if (pipeline_state == nullptr) return false;
+    // ---- WS5 end ----
+    // A dynamic-stride pipeline: each stream it reads carries the draw's
+    // stride in its packed slot word's bits 8.. (encode_draw splits them).
+    const auto* const render_pipeline =
+        mesh_draw ? nullptr : static_cast<const MetalBackendPipeline*>(call.pipeline);
+    const auto stride_bits = [&](unsigned slot) -> u32 {
+        if (render_pipeline == nullptr || !render_pipeline->dynamic_vertex_strides() ||
+            slot >= BACKEND_MAX_VERTEX_BUFFERS ||
+            (render_pipeline->dynamic_stream_mask() & (1u << slot)) == 0) {
+            return 0u;
+        }
+        return call.vertex_buffer_strides[slot] << 8u;
+    };
     // A draw with no vertex buffer is legal, not a bad draw. Microsoft Learn
     // (SV_VertexID / Draw): a vertex shader may generate its positions from
     // the vertex index alone, with no input layout and nothing bound to the
@@ -153,7 +180,7 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
         VITREO_TRACE("[metal] draw rejected: bad patch draw\n");
         return false;
     }
-    if (!patches && call.indirect.buffer == nullptr &&
+    if (!patches && call.indirect.buffer == nullptr && !mesh_draw &&  // WS5
         ((indexed ? call.index_count == 0 : call.vertex_count == 0) ||
          call.instance_count == 0)) {
         VITREO_TRACE("[metal] draw rejected: zero vertex/index/instance "
@@ -209,11 +236,15 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
         // indirectBufferOffset, so a misaligned offset is a caller error, not
         // something to round.
         if ((call.indirect.offset % 4) != 0) {
-            VITREO_TRACE("[metal] draw rejected: indirect argument offset %u "
-                         "is not DWORD aligned\n", call.indirect.offset);
+            VITREO_TRACE("[metal] draw rejected: indirect argument offset %llu "
+                         "is not DWORD aligned\n",
+                         static_cast<unsigned long long>(call.indirect.offset));
             return false;
         }
-        indirect_offset = call.indirect.offset + args->native_offset();
+        if (!metal_buffer_offset(call.indirect.offset, args->native_offset(),
+                                 indirect_offset)) {
+            return false;
+        }
     }
 
     // native-state (R3c): the states the frontend built at creation, when it
@@ -225,7 +256,7 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
             ? call.native_states
             : nullptr;
     if (native_states && delta_record::verify()) verify_native_states(call);
-    draw.pipeline = pipeline->state();
+    draw.pipeline = pipeline_state;  // WS5: a vertex or a mesh pipeline
     keep(draw.pipeline);
     if (native_states != nullptr && has_depth &&
         native_states->depth_stencil != nullptr) {
@@ -236,22 +267,68 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
         draw.depth_stencil = cache.depth_stencil_state(call, has_depth);
     }
     keep(draw.depth_stencil);
+    draw.indirect_resources_read_only = call.indirect_resources_read_only;
     draw.stencil_reference = call.stencil_reference;
-    draw.writes_depth_stencil =
-        draw.depth_stencil != nullptr &&
-        (call.depth_write_enabled ||
-         (call.stencil_test_enabled && call.stencil_write_mask != 0));
-    if (vertex_handle != nullptr) {
-        draw.vertex_buffers[0] = vertex_handle;
-        keep(vertex_handle);
-        draw.vertex_offsets[0] =
-            call.vertex_buffer_offset + vertex->native_offset();
-        draw.vertex_slots[0] =
-            static_cast<u32>(MetalBackendPipeline::VERTEX_BUFFER_INDEX);
+    // With no depth-stencil state the pass has no such attachment to write.
+    const DepthStencilWrites ds_writes = depth_stencil_writes_of(call);
+    draw.writes_depth = draw.depth_stencil != nullptr && ds_writes.depth;
+    draw.writes_stencil = draw.depth_stencil != nullptr && ds_writes.stencil;
+    draw.writes_depth_stencil = draw.writes_depth || draw.writes_stencil;
+    draw.writes_color = call.writes_color;
+    const bool pulling = call.vertex_pull_table != nullptr;
+    if (pulling) {
+        // Vertex pulling: the shader reads every slot through the table's
+        // device addresses, so the slots' buffers are made resident (read)
+        // instead of bound, and the table takes the window's first index.
+        const auto* table =
+            static_cast<const MetalBackendBuffer*>(call.vertex_pull_table);
+        void* table_handle =
+            table->valid() ? table->native_handle() : nullptr;
+        usize table_off = 0;
+        if (table_handle == nullptr ||
+            !metal_buffer_offset(call.vertex_pull_table_offset,
+                                 table->native_offset(), table_off)) {
+            VITREO_TRACE("[metal] draw rejected: the vertex-pull table has "
+                         "no native handle\n");
+            return false;
+        }
+        draw.vertex_buffers[0] = table_handle;
+        keep(table_handle);
+        draw.vertex_offsets[0] = table_off;
+        draw.vertex_slots[0] = BACKEND_VERTEX_BUFFER_BASE;
         draw.vertex_stream_count = 1;
-        bind(vertex);
+        bind(table);
+        for (unsigned slot = 0; slot < BACKEND_MAX_VERTEX_BUFFERS; ++slot) {
+            const BackendBuffer* stream = call.vertex_buffers[slot];
+            if (stream == nullptr || !stream->valid()) continue;
+            const auto* metal_stream =
+                static_cast<const MetalBackendBuffer*>(stream);
+            void* handle = metal_stream->native_handle();
+            if (handle == nullptr) continue;
+            if (std::find(draw.resident.begin(), draw.resident.end(),
+                          handle) == draw.resident.end()) {
+                draw.resident.push_back(handle);
+            }
+            keep(handle);
+            bind(metal_stream);
+        }
     }
-    for (unsigned slot = 0; slot < BACKEND_MAX_VERTEX_BUFFERS; ++slot) {
+    if (!pulling && vertex_handle != nullptr) {
+        usize stream_off = 0;
+        if (metal_buffer_offset(call.vertex_buffer_offset, vertex->native_offset(),
+                                stream_off)) {
+            draw.vertex_buffers[0] = vertex_handle;
+            keep(vertex_handle);
+            draw.vertex_offsets[0] = stream_off;
+            draw.vertex_slots[0] =
+                static_cast<u32>(MetalBackendPipeline::VERTEX_BUFFER_INDEX) |
+                stride_bits(0);
+            draw.vertex_stream_count = 1;
+            bind(vertex);
+        }
+    }
+    for (unsigned slot = 0; slot < BACKEND_MAX_VERTEX_BUFFERS && !pulling;
+         ++slot) {
         const BackendBuffer* stream = call.vertex_buffers[slot];
         if (stream == nullptr || !stream->valid()) continue;
         if (slot == 0 && stream == call.vertex_buffer) continue;
@@ -259,22 +336,45 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
             static_cast<const MetalBackendBuffer*>(stream);
         void* handle = metal_stream->native_handle();
         if (handle == nullptr) continue;
+        if (!vertex_stream_bindable(slot)) {
+            static std::atomic<unsigned> logged{0};
+            if (logged.fetch_add(1, std::memory_order_relaxed) == 0) {
+                std::fprintf(stderr,
+                             "[vitreo] UNIMPLEMENTED metal!draw: input stream "
+                             "%u is past Metal's buffer argument table\n",
+                             slot);
+            }
+            return false;
+        }
         const u32 packed = draw.vertex_stream_count;
-        if (packed >= draw.vertex_buffers.size()) break;
+        if (packed >= draw.vertex_buffers.size()) {
+            static std::atomic<unsigned> logged{0};
+            if (logged.fetch_add(1, std::memory_order_relaxed) == 0) {
+                std::fprintf(stderr,
+                             "[vitreo] UNIMPLEMENTED metal!draw: no room to "
+                             "bind input stream %u\n",
+                             slot);
+            }
+            return false;
+        }
+        usize stream_off = 0;
+        if (!metal_buffer_offset(call.vertex_buffer_offsets[slot],
+                                 metal_stream->native_offset(), stream_off)) {
+            continue;
+        }
         draw.vertex_buffers[packed] = handle;
         keep(handle);
-        draw.vertex_offsets[packed] =
-            call.vertex_buffer_offsets[slot] + metal_stream->native_offset();
+        draw.vertex_offsets[packed] = stream_off;
         draw.vertex_slots[packed] =
-            static_cast<u32>(MetalBackendPipeline::VERTEX_BUFFER_BASE + slot);
+            static_cast<u32>(vertex_stream_buffer_index(slot)) | stride_bits(slot);
         ++draw.vertex_stream_count;
         bind(metal_stream);
     }
-    // The capture buffer rides the same packed stream list with its own slot,
-    // so it needs no second binding path. There is always room: the list holds
-    // 16 and the input-assembler streams are at most BACKEND_MAX_VERTEX_BUFFERS
-    // plus the slot-0 alias.
-    static_assert(BACKEND_MAX_VERTEX_BUFFERS + 2 <=
+    // The capture buffer rides the same packed stream list with its own slot.
+    // Only bindable streams are packed; a stream past Metal's table fails the
+    // draw above rather than being dropped. The slot-0 alias and the capture
+    // buffer need two extra entries.
+    static_assert(BACKEND_BINDABLE_VERTEX_STREAMS + 2 <=
                       std::tuple_size_v<decltype(draw.vertex_buffers)>,
                   "no room for the capture buffer in the packed streams");
     if (call.vertex_capture_buffer != nullptr &&
@@ -288,14 +388,163 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
             return false;
         }
         const u32 packed = draw.vertex_stream_count;
+        usize capture_off = 0;
+        if (!metal_buffer_offset(call.vertex_capture_buffer_offset,
+                                 capture->native_offset(), capture_off)) {
+            VITREO_TRACE("[metal] draw rejected: vertex capture offset does "
+                         "not fit\n");
+            return false;
+        }
         draw.vertex_buffers[packed] = handle;
         keep(handle);
-        draw.vertex_offsets[packed] =
-            call.vertex_capture_buffer_offset + capture->native_offset();
+        draw.vertex_offsets[packed] = capture_off;
         draw.vertex_slots[packed] = BACKEND_VERTEX_CAPTURE_BUFFER_INDEX;
         ++draw.vertex_stream_count;
         bind(capture);
     }
+    // ---- WS5 begin ----
+    // A mesh draw has no input assembler: its geometry comes from the object
+    // and mesh stages, which read the expansion buffers at their own window.
+    if (mesh_draw) {
+        if (draw.vertex_stream_count != 0 || indexed ||
+            call.indirect.buffer != nullptr || patches) {
+            VITREO_TRACE("[metal] draw rejected: a mesh draw with "
+                         "input-assembler state\n");
+            return false;
+        }
+        static_assert(BACKEND_MAX_GS_EXPANSION_BUFFERS <=
+                      std::tuple_size_v<decltype(draw.vertex_buffers)>);
+        for (unsigned i = 0; i < BACKEND_MAX_GS_EXPANSION_BUFFERS; ++i) {
+            const BackendBuffer* buffer = call.mesh->expansion_buffers[i];
+            if (buffer == nullptr) continue;
+            const auto* metal_buffer =
+                static_cast<const MetalBackendBuffer*>(buffer);
+            void* handle = buffer->valid() ? metal_buffer->native_handle()
+                                           : nullptr;
+            if (handle == nullptr) {
+                VITREO_TRACE("[metal] draw rejected: mesh expansion buffer "
+                             "has no native handle\n");
+                return false;
+            }
+            const u32 packed = draw.vertex_stream_count;
+            usize expansion_off = 0;
+            if (!metal_buffer_offset(call.mesh->expansion_offsets[i],
+                                     metal_buffer->native_offset(),
+                                     expansion_off)) {
+                VITREO_TRACE("[metal] draw rejected: mesh expansion offset "
+                             "does not fit\n");
+                return false;
+            }
+            draw.vertex_buffers[packed] = handle;
+            keep(handle);
+            draw.vertex_offsets[packed] = expansion_off;
+            draw.vertex_slots[packed] = BACKEND_GS_EXPANSION_BUFFER_BASE + i;
+            ++draw.vertex_stream_count;
+            bind(metal_buffer);
+        }
+        const auto* mesh =
+            static_cast<const MetalMeshPipeline*>(call.pipeline);
+        draw.mesh_object_groups = call.mesh->object_threadgroups;
+        draw.mesh_groups = call.mesh->mesh_groups;
+        draw.mesh_object_threads = mesh->threads_per_object_threadgroup();
+        draw.mesh_threads = mesh->threads_per_mesh_threadgroup();
+        draw.barrier_before_mesh = call.mesh->barrier_before_mesh;
+        if (call.mesh->d3d12_dispatch()) {
+            for (unsigned k = 0; k < 3; ++k) {
+                draw.mesh_grid[k] = call.mesh->grid[k];
+                draw.mesh_object_shape[k] = call.mesh->object_threads[k];
+                draw.mesh_shape[k] = call.mesh->mesh_threads[k];
+            }
+            if (call.mesh->indirect != nullptr) {
+                const auto* args = static_cast<const MetalBackendBuffer*>(call.mesh->indirect);
+                void* handle = args->valid() ? args->native_handle() : nullptr;
+                usize at = 0;
+                if (handle == nullptr ||
+                    !metal_buffer_offset(call.mesh->indirect_offset, args->native_offset(), at)) {
+                    VITREO_TRACE("[metal] draw rejected: mesh indirect arguments unusable\n");
+                    return false;
+                }
+                bind(args);
+                keep(handle);
+                draw.mesh_indirect = handle;
+                draw.mesh_indirect_offset = at;
+            }
+            copy_cs_constants(draw.os_const, call.mesh->object_constants,
+                              call.mesh->object_constants_size);
+            if (call.mesh->statistics != nullptr) {
+                const auto* record = static_cast<const MetalBackendBuffer*>(call.mesh->statistics);
+                void* handle = record->valid() ? record->native_handle() : nullptr;
+                if (handle == nullptr) {
+                    VITREO_TRACE("[metal] draw rejected: mesh statistics record unusable\n");
+                    return false;
+                }
+                bind(record);
+                keep(handle);
+                draw.mesh_statistics = handle;
+                draw.mesh_statistics_offset = record->native_offset();
+            }
+            if (call.mesh->scratch != nullptr) {
+                const auto* scratch = static_cast<const MetalBackendBuffer*>(call.mesh->scratch);
+                void* handle = scratch->valid() ? scratch->native_handle() : nullptr;
+                if (handle == nullptr) {
+                    VITREO_TRACE("[metal] draw rejected: mesh scratch unusable\n");
+                    return false;
+                }
+                bind(scratch);
+                keep(handle);
+                draw.mesh_scratch = handle;
+                draw.mesh_scratch_offset = scratch->native_offset();
+                for (unsigned k = 0; k < 4; ++k) draw.mesh_origin[k] = call.mesh->group_origin[k];
+                draw.mesh_serialize = call.mesh->serialize;
+                if (call.mesh->origin_buffer != nullptr) {
+                    const auto* origin = static_cast<const MetalBackendBuffer*>(call.mesh->origin_buffer);
+                    void* origin_handle = origin->valid() ? origin->native_handle() : nullptr;
+                    usize at = 0;
+                    if (origin_handle == nullptr ||
+                        !metal_buffer_offset(call.mesh->origin_offset, origin->native_offset(), at)) {
+                        VITREO_TRACE("[metal] draw rejected: mesh origin buffer unusable\n");
+                        return false;
+                    }
+                    bind(origin);
+                    keep(origin_handle);
+                    draw.mesh_origin_buffer = origin_handle;
+                    draw.mesh_origin_buffer_offset = at;
+                }
+            }
+            if (call.mesh->capture != nullptr) {
+                const auto* capture = static_cast<const MetalBackendBuffer*>(call.mesh->capture);
+                void* handle = capture->valid() ? capture->native_handle() : nullptr;
+                if (handle == nullptr) {
+                    VITREO_TRACE("[metal] draw rejected: mesh capture buffer unusable\n");
+                    return false;
+                }
+                bind(capture);
+                keep(handle);
+                draw.mesh_capture = handle;
+                draw.mesh_capture_offset = capture->native_offset();
+            }
+            // D3D12 view instancing (mesh_stage.hpp vi_capture) records.
+            const auto view_capture = [&](const BackendBuffer* buffer, void*& out, usize& offset) {
+                if (buffer == nullptr) return true;
+                const auto* records = static_cast<const MetalBackendBuffer*>(buffer);
+                void* handle = records->valid() ? records->native_handle() : nullptr;
+                if (handle == nullptr) return false;
+                bind(records);
+                keep(handle);
+                out = handle;
+                offset = records->native_offset();
+                return true;
+            };
+            if (!view_capture(call.mesh->object_capture, draw.object_view_capture,
+                              draw.object_view_capture_offset) ||
+                !view_capture(call.mesh->mesh_capture, draw.mesh_view_capture,
+                              draw.mesh_view_capture_offset)) {
+                VITREO_TRACE("[metal] draw rejected: mesh view-instancing records unusable\n");
+                return false;
+            }
+        }
+    }
+    // ---- WS5 end ----
 
     // push-intern (slim_record.hpp): hand record_draw the caller's bytes,
     // which it copies into the recording's arena under its lock; otherwise
@@ -327,12 +576,14 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
                 call.vertex_constant_buffers[i]);
             void* cb_handle = metal_cb->native_handle();
             if (cb_handle != nullptr) {
-                draw.vs_cbuffer[i] = cb_handle;
-                keep(cb_handle);
-                bind(metal_cb);
-                draw.vs_cbuffer_off[i] =
-                    call.vertex_constant_buffer_offsets[i] +
-                    metal_cb->native_offset();
+                usize cb_off = 0;
+                if (metal_buffer_offset(call.vertex_constant_buffer_offsets[i],
+                                        metal_cb->native_offset(), cb_off)) {
+                    draw.vs_cbuffer[i] = cb_handle;
+                    keep(cb_handle);
+                    bind(metal_cb);
+                    draw.vs_cbuffer_off[i] = cb_off;
+                }
             }
         }
         if (call.fragment_constant_buffers[i] != nullptr &&
@@ -341,12 +592,15 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
                 call.fragment_constant_buffers[i]);
             void* cb_handle = metal_cb->native_handle();
             if (cb_handle != nullptr) {
-                draw.ps_cbuffer[i] = cb_handle;
-                keep(cb_handle);
-                bind(metal_cb);
-                draw.ps_cbuffer_off[i] =
-                    call.fragment_constant_buffer_offsets[i] +
-                    metal_cb->native_offset();
+                usize cb_off = 0;
+                if (metal_buffer_offset(
+                        call.fragment_constant_buffer_offsets[i],
+                        metal_cb->native_offset(), cb_off)) {
+                    draw.ps_cbuffer[i] = cb_handle;
+                    keep(cb_handle);
+                    bind(metal_cb);
+                    draw.ps_cbuffer_off[i] = cb_off;
+                }
             }
         }
     }
@@ -365,12 +619,14 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
                 static_cast<const MetalBackendBuffer*>(vs_srv);
             void* srv_handle = metal_srv->native_handle();
             if (srv_handle != nullptr) {
-                draw.vs_cbuffer[entry] = srv_handle;
-                keep(srv_handle);
-                bind(metal_srv);
-                draw.vs_cbuffer_off[entry] =
-                    call.vertex_srv_buffer_offsets[slot] +
-                    metal_srv->native_offset();
+                usize srv_off = 0;
+                if (metal_buffer_offset(call.vertex_srv_buffer_offsets[slot],
+                                        metal_srv->native_offset(), srv_off)) {
+                    draw.vs_cbuffer[entry] = srv_handle;
+                    keep(srv_handle);
+                    bind(metal_srv);
+                    draw.vs_cbuffer_off[entry] = srv_off;
+                }
             }
         }
         const BackendBuffer* ps_srv = call.fragment_srv_buffers[slot];
@@ -379,12 +635,14 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
                 static_cast<const MetalBackendBuffer*>(ps_srv);
             void* srv_handle = metal_srv->native_handle();
             if (srv_handle != nullptr) {
-                draw.ps_cbuffer[entry] = srv_handle;
-                keep(srv_handle);
-                bind(metal_srv);
-                draw.ps_cbuffer_off[entry] =
-                    call.fragment_srv_buffer_offsets[slot] +
-                    metal_srv->native_offset();
+                usize srv_off = 0;
+                if (metal_buffer_offset(call.fragment_srv_buffer_offsets[slot],
+                                        metal_srv->native_offset(), srv_off)) {
+                    draw.ps_cbuffer[entry] = srv_handle;
+                    keep(srv_handle);
+                    bind(metal_srv);
+                    draw.ps_cbuffer_off[entry] = srv_off;
+                }
             }
         }
     }
@@ -451,6 +709,8 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
     }
     // Fragment-stage u# registers, from OMSetRenderTargetsAndUnorderedAccessViews.
     // A u# slot names a 2D texture, a volume, or a buffer -- never more than one.
+    // Their storage is appended after the read-only residency prefix.
+    std::vector<void*> uav_storage;
     for (unsigned slot = 0; slot < BACKEND_MAX_TEXTURE_SLOTS; ++slot) {
         const unsigned texture_index = BACKEND_UAV_TEXTURE_BASE + slot;
         if (texture_index < draw.textures.size()) {
@@ -483,7 +743,7 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
                     if (uav_handle != nullptr) {
                         bind(metal_typed);
                         if (void* storage = metal_typed->storage_handle()) {
-                            draw.resident.push_back(storage);
+                            uav_storage.push_back(storage);
                             keep(storage);
                         }
                     }
@@ -500,12 +760,15 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
                 static_cast<const MetalBackendBuffer*>(uav_buffer);
             void* handle = metal_uav->native_handle();
             if (handle != nullptr) {
+                usize uav_off = 0;
+                if (!metal_buffer_offset(call.fragment_uav_buffer_offsets[slot],
+                                         metal_uav->native_offset(), uav_off)) {
+                    continue;
+                }
                 bind(metal_uav);
                 draw.ps_uav_buffer[slot] = handle;
                 keep(handle);
-                draw.ps_uav_buffer_off[slot] =
-                    call.fragment_uav_buffer_offsets[slot] +
-                    metal_uav->native_offset();
+                draw.ps_uav_buffer_off[slot] = uav_off;
             }
         }
     }
@@ -516,10 +779,15 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
             static_cast<const MetalBackendBuffer*>(counter);
         void* handle = metal_counter->native_handle();
         if (handle == nullptr) continue;
+        usize counter_off = 0;
+        if (!metal_buffer_offset(call.fragment_uav_counter_offsets[k],
+                                 metal_counter->native_offset(), counter_off)) {
+            continue;
+        }
         bind(metal_counter);
         draw.ps_uav_counter[k] = handle;
         keep(handle);
-        draw.ps_uav_counter_off[k] = metal_counter->native_offset();
+        draw.ps_uav_counter_off[k] = counter_off;
     }
     if (call.fragment_statistics_buffer != nullptr &&
         call.fragment_statistics_buffer->valid()) {
@@ -670,8 +938,10 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
         bind(index);
         draw.index_buffer = index_handle;
         keep(index_handle);
-        draw.index_offset =
-            call.index_buffer_offset + index->native_offset();
+        if (!metal_buffer_offset(call.index_buffer_offset,
+                                 index->native_offset(), draw.index_offset)) {
+            return false;
+        }
         draw.index_type =
             call.index_32bit ? MTLIndexTypeUInt32 : MTLIndexTypeUInt16;
     }
@@ -693,26 +963,39 @@ bool fill_backend_draw(const BackendDrawCall& call, bool has_depth,
         draw.patch_count = call.patch_count;
         draw.patch_control_points = call.patch_control_points;
     }
-    if constexpr (kDelta) {
-        if (!publish_descriptor_tables_for(call.vertex_descriptor_tables,
-                                           draw.vs_descriptor_tables,
-                                           draw.resident, gen) ||
-            !publish_descriptor_tables_for(call.fragment_descriptor_tables,
-                                           draw.ps_descriptor_tables,
-                                           draw.resident, gen)) {
-            return false;
+    // b#, t# and s# are read-only views. Only the u# set is writable.
+    // Declaring a shader-resource view writable makes Metal hazard it
+    // against every later reader, including a tile that still holds it.
+    auto publish_sets = [&](unsigned first, unsigned last) {
+        if constexpr (kDelta) {
+            return publish_descriptor_tables_for(
+                       call.vertex_descriptor_tables, draw.vs_descriptor_tables,
+                       draw.resident, gen, first, last) &&
+                   publish_descriptor_tables_for(
+                       call.fragment_descriptor_tables, draw.ps_descriptor_tables,
+                       draw.resident, gen, first, last) &&
+                   publish_descriptor_tables_for(
+                       call.object_descriptor_tables(), draw.os_descriptor_tables,
+                       draw.resident, gen, first, last);
+        } else {
+            return publish_descriptor_tables(
+                       call.vertex_descriptor_tables, draw.vs_descriptor_tables,
+                       draw.resident, first, last, &draw.resident_logs) &&
+                   publish_descriptor_tables(
+                       call.fragment_descriptor_tables, draw.ps_descriptor_tables,
+                       draw.resident, first, last, &draw.resident_logs) &&
+                   publish_descriptor_tables(
+                       call.object_descriptor_tables(), draw.os_descriptor_tables,
+                       draw.resident, first, last, &draw.resident_logs);
         }
-    } else {
-        if (!publish_descriptor_tables(call.vertex_descriptor_tables,
-                                       draw.vs_descriptor_tables,
-                                       draw.resident) ||
-            !publish_descriptor_tables(call.fragment_descriptor_tables,
-                                       draw.ps_descriptor_tables,
-                                       draw.resident)) {
-            return false;
-        }
+    };
+    if (!publish_sets(0, BACKEND_DESCRIPTOR_SET_UAV)) return false;
+    draw.resident_read_count = static_cast<u32>(draw.resident.size());
+    draw.resident.insert(draw.resident.end(), uav_storage.begin(),
+                         uav_storage.end());
+    if (!publish_sets(BACKEND_DESCRIPTOR_SET_UAV, BACKEND_MAX_DESCRIPTOR_SETS)) {
+        return false;
     }
-
     return true;
 }
 
@@ -724,7 +1007,27 @@ bool record_backend_draw(const BackendDrawCall& call, bool has_depth,
     // delta-record (delta_record.hpp): resolve into this thread's scratch
     // draw and record what changed. A recording handed off meanwhile
     // (record_draw_delta false) resolves again under the new generation.
-    while (queue.delta_eligible() &&
+    // WS5: a mesh draw is recorded whole (CsDraw's mesh fields are not part
+    // of the delta encoding); the full record breaks the delta chain.
+    // A heap window (a persistent table) names its residency by a token,
+    // which the delta encoding does not carry: that draw is recorded whole.
+    // So is one binding an acceleration structure (its bottom levels'
+    // token, metal_rt_bottom_level_token).
+    const auto persistent = [](const auto& tables) {
+        for (const BackendDescriptorTable* table : tables) {
+            const auto* metal = static_cast<const MetalBackendDescriptorTable*>(table);
+            if (table != nullptr &&
+                (metal->persistent() || metal->holds_acceleration_structures())) {
+                return true;
+            }
+        }
+        return false;
+    };
+    const bool windowed = persistent(call.vertex_descriptor_tables) ||
+                          persistent(call.fragment_descriptor_tables) ||
+                          persistent(call.object_descriptor_tables());
+    while (!windowed && !call.mesh_active() &&
+           queue.delta_eligible() &&
            delta_record::active(delta_record::Part::DeltaRecord)) {
         const u64 gen = queue.recording_generation();
         CsDraw& draw = MetalSubmitQueue::delta_scratch();

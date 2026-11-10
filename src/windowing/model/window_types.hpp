@@ -159,6 +159,13 @@ struct WindowData {
     u64  wndproc     = 0;   // Guest function pointer
     u64  user_data   = 0;   // GWLP_USERDATA (application-defined)
     u64  msg_result  = 0;   // DWL_MSGRESULT (dialog message result)
+    /// DWLP_DLGPROC: the dialog procedure the predefined dialog window
+    /// procedure (DefDlgProc) calls. A dialog created by CreateDialog* also
+    /// has it as wndproc, which stands for that predefined procedure.
+    u64  dlgproc     = 0;
+    /// DM_SETDEFID's control id (0: none set; DM_GETDEFID then reports the
+    /// BS_DEFPUSHBUTTON child, measured defdlgproc_probe).
+    u32  dialog_default_id = 0;
     u32  ctrl_id     = 0;   // Control ID (hMenu for WS_CHILD, from dialog template id)
     bool visible     = false;
     bool hidden_by_owner = false; // hidden due to owner minimize/ShowOwnedPopups(FALSE)

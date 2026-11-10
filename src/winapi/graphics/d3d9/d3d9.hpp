@@ -33,6 +33,7 @@ struct FFPipelineState;
 namespace vitreo::winapi {
 
 class Marshaler;
+class GdiManager;
 struct D3d9DrawSnapshot;
 struct D3d9ClearSnapshot;
 struct D3d9ColorFillSnapshot;
@@ -44,9 +45,23 @@ class D3d9SubmitQueue;
 
 constexpr u32 D3D_SDK_VERSION = 32;
 
+/// Whether a Direct3DCreate9* SDKVersion argument is accepted: 32
+/// (D3D_SDK_VERSION) or 31 (D3D9b_SDK_VERSION), either optionally with the
+/// D3D_DEBUG_INFO bit 0x80000000 (shared\d3d9.h). Measured by
+/// tools/oracle_probe/d3d9_exports_probe.
+[[nodiscard]] constexpr bool d3d9_sdk_version_supported(u32 sdk_version) {
+    const u32 version = sdk_version & 0x7FFFFFFFu;
+    return version == D3D_SDK_VERSION || version == 31u;
+}
+
+/// One `[vitreo] UNIMPLEMENTED <api>: <what>` line per distinct pair.
+void d3d9_log_unimplemented_once(const char* api, const char* what);
+
 constexpr u32 D3D_OK = 0;
 constexpr u32 D3DERR_INVALIDCALL = 0x8876086C;
 constexpr u32 D3DERR_NOTAVAILABLE = 0x8876086A;
+/// Success code: the format is usable, without automatic mipmap generation.
+constexpr u32 D3DOK_NOAUTOGEN = 0x0876086F;
 constexpr u32 D3DERR_NOTFOUND_D3D = 0x88760866;
 constexpr u32 D3DERR_MOREDATA = 0x88760867;
 constexpr u32 D3DERR_DEVICELOST = 0x88760868;
@@ -328,6 +343,9 @@ public:
     /// Drive the host window into/out of borderless fullscreen covering the
     /// display (same contract DirectDraw exclusive mode uses).
     using FullscreenFn = std::function<void(u32 /*hwnd*/, bool /*enable*/)>;
+    /// Restyle the device window for exclusive mode and back (enter=true:
+    /// drop the overlapped frame, make it topmost; false: restore).
+    using DeviceWindowFn = std::function<void(u32 /*hwnd*/, bool /*enter*/)>;
     /// Publish the exclusive-mode logical resolution into user32/gdi metrics.
     using DisplayModeFn =
         std::function<void(u32 /*hwnd*/, u32 /*width*/, u32 /*height*/,
@@ -346,6 +364,9 @@ public:
     ~D3D9Manager();
     D3D9Manager(const D3D9Manager&) = delete;
     D3D9Manager& operator=(const D3D9Manager&) = delete;
+
+    /// gdi32, for the DCs IDirect3DSurface9::GetDC lends.
+    void set_gdi_manager(GdiManager* gdi) noexcept { m_gdi = gdi; }
 
     void set_memory(GuestMemory* mem, bool is_64bit) {
         m_memory = mem;
@@ -377,6 +398,15 @@ public:
     void set_display_mode_callback(DisplayModeFn cb) {
         m_display_mode_cb = std::move(cb);
     }
+    void set_device_window_callback(DeviceWindowFn cb) {
+        m_device_window_cb = std::move(cb);
+    }
+    /// An exclusive back buffer size the adapter enumerates (EnumAdapterModes
+    /// over the desktop mode). Windows refuses any other with INVALIDCALL.
+    [[nodiscard]] bool is_enumerated_fullscreen_size(u32 width, u32 height) const;
+    /// CreateDevice/Reset parameters pass the exclusive-mode size check
+    /// (always true for Windowed = TRUE). Logs the refusal once per size.
+    [[nodiscard]] bool exclusive_size_allowed(const u8* parameters) const;
     void set_cursor_visible_callback(CursorVisibleFn cb) {
         m_cursor_visible_cb = std::move(cb);
     }
@@ -386,6 +416,21 @@ public:
     void set_cursor_image_callback(CursorImageFn cb) {
         m_cursor_image_cb = std::move(cb);
     }
+    /// Called with every COM object's address as it is destroyed (its
+    /// reference count reached zero, or its owner tore it down). The D3D8
+    /// frontend, whose objects front D3D9 objects, drops its wrapper here.
+    using ObjectDestroyedFn = std::function<void(u32 /*object*/)>;
+    void set_object_destroyed_callback(ObjectDestroyedFn cb) {
+        m_object_destroyed_cb = std::move(cb);
+    }
+    /// Learn (EnumDisplaySettings): Windows 8 and later emulate display
+    /// modes below 32 bpp for an image whose manifest does not target
+    /// Windows 8 or later. Set from the process image at startup.
+    void set_low_color_modes_emulated(bool emulated) {
+        m_low_color_modes_emulated = emulated;
+    }
+    /// The interface of a live D3D9 COM object; false for unknown pointers.
+    [[nodiscard]] bool object_interface(u32 object, D3D9InterfaceId& iface);
 
     /// Publish the guest-callable thunk address of every slot of @p iface.
     /// A vtable is only mapped once all of its slots are known.
@@ -552,6 +597,33 @@ private:
                                        GuestAddr data, Marshaler& m);
 
     /// Submit the scene's render pass, if one is open.
+    /// End the open pass and start a new occlusion counter interval shared by
+    /// every building occlusion query (d3d9_query.cpp).
+    /// IDirect3DSurface9::UnlockRect's work (texture-level upload), shared
+    /// with ReleaseDC. Returns the HRESULT.
+    [[nodiscard]] u32 unlock_surface_rect(Marshaler& m, u32 self,
+                                          SurfaceState& surface);
+    /// A lockable back buffer or render target lives on the GPU; its Lock
+    /// reads that image into the guest-visible pixels and its Unlock
+    /// writes them back (d3d9_transfers.cpp). False when the surface has
+    /// no GPU colour image (its guest pixels are then the only copy).
+    bool read_render_target_to_guest(Marshaler& m, u32 self,
+                                     SurfaceState& surface);
+    bool write_render_target_from_guest(Marshaler& m, u32 self,
+                                        SurfaceState& surface);
+    /// IDirect3DSurface9::GetDC / ReleaseDC (d3d9_resources.cpp).
+    [[nodiscard]] u32 surface_get_dc(Marshaler& m, SurfaceState& surface,
+                                     GuestAddr hdc_out);
+    [[nodiscard]] u32 surface_release_dc(Marshaler& m, u32 self,
+                                         SurfaceState& surface, u32 hdc);
+    /// One-frame draw capture for oracle replay (d3d9_draw_capture.cpp):
+    /// armed by /tmp/vitreo-d3d9-capture, checked once per Present.
+    void draw_capture_on_present();
+    void draw_capture_record(Marshaler& m, DeviceState& state, bool indexed,
+                             u32 primitive_type, i32 base_vertex, u32 min_index,
+                             u32 num_vertices, u32 index_start,
+                             u32 primitive_count);
+    void restart_occlusion_interval(DeviceState& state);
     void flush_render_pass(DeviceState& state);
 
     /// Worker entry: pipeline / constant pack / BackendDrawCall. Must not
@@ -631,6 +703,7 @@ private:
 
     /// Shared IDirect3DDevice9 / IDirect3DSwapChain9::GetRasterStatus.
     void get_raster_status(Marshaler& m, u32 swap_chain_index, GuestAddr out);
+    void log_transfer(Marshaler& m, const char* name, u32 src_arg, u32 dst_arg);
     void stretch_rect(Marshaler& m, u32 device);
     void color_fill(Marshaler& m, u32 device);
 
@@ -705,6 +778,9 @@ private:
                                  std::array<u8, 16>& guid) const;
     [[nodiscard]] bool valid_adapter(u32 adapter, u32 device_type) const;
     [[nodiscard]] bool current_display_mode(std::array<u32, 4>& mode) const;
+    /// Desktop size the adapter mode list is built from; unaffected by an
+    /// exclusive mode in force.
+    [[nodiscard]] bool desktop_display_size(u32& width, u32& height) const;
 
     /// Resolve BackBufferWidth/Height/Format per D3DPRESENT_PARAMETERS:
     /// windowed zeros take the device/focus window client area; unknown
@@ -743,6 +819,7 @@ private:
 
     GuestMemory* m_memory = nullptr;
     bool m_is_64bit = false;
+    GdiManager* m_gdi{nullptr};
     graphics::GraphicsBackendDevice* m_backend = nullptr;
     DisplaySizeResolver m_display_size_resolver;
     ClientSizeResolver m_client_size_resolver;
@@ -751,9 +828,12 @@ private:
     GuestIUnknownReleaseFn m_guest_iunknown_release;
     FullscreenFn m_fullscreen_cb;
     DisplayModeFn m_display_mode_cb;
+    DeviceWindowFn m_device_window_cb;
     CursorVisibleFn m_cursor_visible_cb;
     CursorPositionFn m_cursor_position_cb;
     CursorImageFn m_cursor_image_cb;
+    ObjectDestroyedFn m_object_destroyed_cb;
+    bool m_low_color_modes_emulated{false};
     u32 m_fullscreen_hwnd{0};
     u32 m_exclusive_mode_width{0};
     u32 m_exclusive_mode_height{0};

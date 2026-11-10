@@ -6,6 +6,7 @@
 #include <core/cpu/state/cpu_state.hpp>
 #include <core/memory/guest_memory.hpp>
 #include <winapi/media/dinput/dinput.hpp>
+#include <windowing/cocoa/cocoa_bridge.hpp>
 #include <winapi/media/dinput8/dinput8.hpp>
 #include <winapi/core/marshaler.hpp>
 #include <winapi/core/thunk_registry.hpp>
@@ -291,3 +292,80 @@ TEST_F(Dinput8Test, RejectsUnknownIid) {
 }
 
 } // namespace
+
+TEST_F(Dinput8Test, NativeMouseButtonsRemainHeldAcrossImmediatePollsWithoutKeyboardEvents) {
+    // Microsoft Learn "Immediate Mouse Data": rgbButtons' high bit is the
+    // current held state, not a consumable click latch. Buffered down/up
+    // records are independent of GetDeviceState reads.
+    constexpr GuestAddr MOUSE_GUID = DATA_BASE + 0x200;
+    constexpr GuestAddr DEVICE_OUTPUT = DATA_BASE + 0x220;
+    constexpr GuestAddr DATA_FORMAT = DATA_BASE + 0x240;
+    constexpr GuestAddr STATE = DATA_BASE + 0x280;
+    constexpr GuestAddr PROP = DATA_BASE + 0x2A0;
+    constexpr GuestAddr COUNT = DATA_BASE + 0x2C0;
+    constexpr GuestAddr EVENTS = DATA_BASE + 0x300;
+    const std::array<u8, 16> guid = {
+        0x60, 0x2B, 0x1D, 0x6F, 0xA0, 0xD5, 0xCF, 0x11,
+        0xBF, 0xC7, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00};
+    ASSERT_TRUE(memory.write_bytes(MOUSE_GUID, guid.data(), guid.size()));
+    ASSERT_TRUE(memory.write_u32(PROP + 0, 20));
+    ASSERT_TRUE(memory.write_u32(PROP + 4, 16));
+    ASSERT_TRUE(memory.write_u32(PROP + 8, 0));
+    ASSERT_TRUE(memory.write_u32(PROP + 12, 0));
+    ASSERT_TRUE(memory.write_u32(PROP + 16, 8));
+    windowing::CocoaBridge bridge;
+    mgr.set_cocoa_bridge(&bridge);
+    struct ResetBridge {
+        DirectInputManager& manager;
+        ~ResetBridge() { manager.set_cocoa_bridge(nullptr); }
+    } reset{mgr};
+    u32 keyboard_events = 0, mouse_events = 0;
+    bridge.set_native_input_callbacks(
+        [&](u32, bool) { ++keyboard_events; },
+        [&](u32 button, bool down, windowing::HWND) {
+            ++mouse_events;
+            mgr.note_mouse_button(button, down);
+        }, {});
+    constexpr std::array<u32, 3> buttons = {0x01, 0x02, 0x04};
+    for (const bool wide : {false, true}) {
+        for (const u32 state_size : {16u, 20u}) {
+            SCOPED_TRACE(::testing::Message() << "wide=" << wide << " bytes=" << state_size);
+            ASSERT_EQ(mgr.direct_input8_create(0, 0x0800, IID_ADDR, OUTPUT, 0, wide), DI_OK);
+            const GuestAddr object = wide ? memory.read_u64(OUTPUT).value()
+                                          : memory.read_u32(OUTPUT).value();
+            ASSERT_EQ(mgr.create_device(object, MOUSE_GUID, DEVICE_OUTPUT, 0), DI_OK);
+            const GuestAddr device = wide ? memory.read_u64(DEVICE_OUTPUT).value()
+                                          : memory.read_u32(DEVICE_OUTPUT).value();
+            ASSERT_TRUE(memory.write_u32(DATA_FORMAT + 12, state_size));
+            ASSERT_EQ(mgr.device_set_data_format(device, DATA_FORMAT), DI_OK);
+            ASSERT_EQ(mgr.device_set_property(device, 1, PROP), DI_OK); // DIPROP_BUFFERSIZE
+            ASSERT_EQ(mgr.device_acquire(device), DI_OK);
+            for (usize button = 0; button < buttons.size(); ++button) {
+                SCOPED_TRACE(button);
+                bridge.note_native_mouse_button_transition(buttons[button], true, 0);
+                EXPECT_TRUE(bridge.native_key_is_down(buttons[button]));
+                for (int poll = 0; poll < 2; ++poll) {
+                    ASSERT_EQ(mgr.device_get_device_state(device, state_size, STATE), DI_OK);
+                    for (u32 i = 0; i < state_size - 12; ++i)
+                        EXPECT_EQ(memory.read_u8(STATE + 12 + i).value(), i == button ? 0x80u : 0u);
+                }
+                bridge.note_native_mouse_button_transition(buttons[button], false, 0);
+                EXPECT_FALSE(bridge.native_key_is_down(buttons[button]));
+                ASSERT_EQ(mgr.device_get_device_state(device, state_size, STATE), DI_OK);
+                for (u32 i = 0; i < state_size - 12; ++i)
+                    EXPECT_EQ(memory.read_u8(STATE + 12 + i).value(), 0u);
+                const u32 record_size = wide ? 24u : 20u;
+                ASSERT_TRUE(memory.write_u32(COUNT, 2));
+                ASSERT_EQ(mgr.device_get_device_data(device, record_size, EVENTS, COUNT, 0), DI_OK);
+                ASSERT_EQ(memory.read_u32(COUNT).value(), 2u);
+                EXPECT_EQ(memory.read_u32(EVENTS + 0).value(), 12u + button);
+                EXPECT_EQ(memory.read_u32(EVENTS + 4).value(), 0x80u);
+                EXPECT_EQ(memory.read_u32(EVENTS + record_size + 0).value(), 12u + button);
+                EXPECT_EQ(memory.read_u32(EVENTS + record_size + 4).value(), 0u);
+            }
+            ASSERT_EQ(mgr.device_unacquire(device), DI_OK);
+        }
+    }
+    EXPECT_EQ(mouse_events, 24u);
+    EXPECT_EQ(keyboard_events, 0u);
+}

@@ -91,7 +91,69 @@ u32 owner_draw_type(const windowing::WindowData& win) {
     return 0;
 }
 
+/// A STATIC whose host is a text label: SS_LEFT, SS_CENTER, SS_RIGHT,
+/// SS_SIMPLE, SS_LEFTNOWORDWRAP (Learn Static Control Styles).
+bool is_text_static(const windowing::WindowData& win) {
+    if (win.class_atom != kAtomStatic && win.native_control_class != L"Static") return false;
+    const u32 type = win.style & 0x1Fu;
+    return type == 0x0 || type == 0x1 || type == 0x2 || type == 0xB || type == 0xC;
+}
+constexpr u32 kWmCtlColorEdit    = 0x0133;
+constexpr u32 kWmCtlColorListBox = 0x0134;
+constexpr u32 kWmCtlColorStatic  = 0x0138;
+constexpr i32 kOpaque = 2;  // OPAQUE background mode
+constexpr u16 kAtomEdit    = 0x0081;
+constexpr u16 kAtomListBox = 0x0083;
+constexpr u32 kEsReadOnly  = 0x0800;
+
+/// The WM_CTLCOLOR* message a natively hosted control sends its parent
+/// when it draws, or 0. Learn WM_CTLCOLORSTATIC: read-only and disabled
+/// edit controls send it instead of WM_CTLCOLOREDIT; WM_CTLCOLORLISTBOX
+/// for a list box (an owner-drawn, no-string one is guest-painted).
+u32 control_color_message(const windowing::WindowData& win) {
+    if (is_text_static(win)) return kWmCtlColorStatic;
+    if (win.class_atom == kAtomEdit || win.native_control_class == L"Edit") {
+        return ((win.style & kEsReadOnly) != 0 || !win.enabled) ? kWmCtlColorStatic : kWmCtlColorEdit;
+    }
+    if (win.class_atom == kAtomListBox || win.native_control_class == L"ListBox") {
+        const bool guest_painted = (win.style & 0x30u) == 0x10u && (win.style & 0x40u) == 0;
+        return guest_painted ? 0u : kWmCtlColorListBox;
+    }
+    return 0;
+}
+
 } // namespace
+
+void User32ExtManager::request_control_colors(windowing::HWND hwnd) {
+    // A control asks its parent for its colours each time it is drawn
+    // (Learn WM_CTLCOLORSTATIC / WM_CTLCOLOREDIT / WM_CTLCOLORLISTBOX): the
+    // parent sets the text colour, background mode and colour on the DC it
+    // is handed and returns the brush the control fills its background with
+    // (a dialog procedure returns it directly). The host view draws the
+    // control, so the DC is a memory DC: a window DC on a native view flushes
+    // a blank overlay over it. A zero result is the default handling.
+    if (!m_gdi_mgr || !m_msgsend_mgr) return;
+    const auto* win = m_hwnd_mgr.find(hwnd);
+    if (!win || win->parent == windowing::NULL_HWND) return;
+    const u32 message = control_color_message(*win);
+    if (message == 0) return;
+    const Handle dc = m_gdi_mgr->create_compatible_dc(0);
+    if (dc == 0) return;
+    const u64 brush = m_msgsend_mgr->send_message(win->parent, message,
+                                                  static_cast<u64>(dc), static_cast<u64>(hwnd));
+    if (brush != 0 && m_hwnd_mgr.find(hwnd) != nullptr) {
+        windowing::ControlHost::ControlColors colors;
+        colors.text = m_gdi_mgr->get_text_color(dc);
+        u32 fill = 0;
+        if (m_gdi_mgr->lookup_brush_color(static_cast<Handle>(brush), &fill)) colors.fill = fill;
+        if (m_gdi_mgr->get_bk_mode(dc) == kOpaque) colors.text_background = m_gdi_mgr->get_bk_color(dc);
+        (void)m_host.set_control_colors(hwnd, colors);
+        VITREO_TRACE("[ctlcolor] WM_CTLCOLOR 0x%x hwnd=0x%x brush=0x%llx text=0x%06x fill=%s bk=%s\n",
+                     message, hwnd, static_cast<unsigned long long>(brush), colors.text,
+                     colors.fill ? "solid" : "none", colors.text_background ? "opaque" : "transparent");
+    }
+    (void)m_gdi_mgr->delete_dc(dc);
+}
 
 
 // ---------- Window procedure / class ----------
@@ -134,6 +196,12 @@ void User32ExtManager::impl_VitreoNativeControlProc(Marshaler& m) {
                             static_cast<windowing::HWND>(m.arg(0)),
                             static_cast<u32>(m.arg(1)), m.arg(2), m.arg(3),
                             /*ansi=*/false);
+}
+
+void User32ExtManager::native_control_proc(Marshaler& m, bool ansi) {
+    call_window_proc_values(m, static_cast<GuestAddr>(native_control_wndproc_address()),
+                            static_cast<windowing::HWND>(m.arg(0)),
+                            static_cast<u32>(m.arg(1)), m.arg(2), m.arg(3), ansi);
 }
 
 void User32ExtManager::impl_VitreoSystemControlProc(Marshaler& m,
@@ -329,6 +397,8 @@ void User32ExtManager::call_window_proc_values(
             m.set_return(static_cast<u64>(n));
             return;
         }
+        // Each time the control draws it asks its parent for its colours.
+        if (msg == windowing::WM::PAINT) request_control_colors(hwnd);
         // BS_OWNERDRAW / SS_OWNERDRAW: the class proc's WM_PAINT sends
         // WM_DRAWITEM to the parent, which does all of the drawing.
         if (msg == windowing::WM::PAINT && m_paint_mgr && m_msgsend_mgr) {
@@ -419,8 +489,15 @@ void User32ExtManager::call_window_proc_values(
         lParam
     };
 
+    // The procedure a subclassed dialog chains to (what GWLP_WNDPROC gave
+    // it) is the predefined dialog procedure around the DLGPROC.
+    const windowing::WindowData* target = m_hwnd_mgr.find(hwnd);
+    const bool dialog_procedure = target != nullptr && target->is_dialog && target->dlgproc != 0 &&
+                                  lpPrevWndFunc == static_cast<GuestAddr>(target->dlgproc) &&
+                                  static_cast<bool>(m_dialog_procedure);
     ++m_cwp_depth;
-    u64 result = m_guest_call(lpPrevWndFunc, args, 4, is_64bit);
+    u64 result = dialog_procedure ? m_dialog_procedure(hwnd, msg, wParam, lParam, lpPrevWndFunc, is_64bit)
+                                  : m_guest_call(lpPrevWndFunc, args, 4, is_64bit);
     --m_cwp_depth;
 
     // Trace CallWindowProc return value for WM_COMMAND
@@ -669,7 +746,7 @@ void User32ExtManager::window_long_get(Marshaler& m, bool ptr_api, bool ansi) {
         if (win->is_dialog && index == 0) {
             value = win->msg_result;                    // DWLP_MSGRESULT
         } else if (win->is_dialog && static_cast<u32>(index) == ptr) {
-            value = win->wndproc;                       // DWLP_DLGPROC
+            value = win->dlgproc;                       // DWLP_DLGPROC
         } else if (extra_in_range(*win, index, size)) {
             value = read_extra(*win, index, size);
         } else {
@@ -759,26 +836,26 @@ bool User32ExtManager::change_window_style(windowing::HWND hwnd, bool ex,
             if (ex) proposed &= ~kWsExDroppedOnSet;
         }
     }
-    u32 final_value = proposed;
-    if (ex) {
-        final_value = (final_value & ~kWsExTopmost) | (win->ex_style & kWsExTopmost);
-        final_value = derive_window_edge(win->style, final_value);
-        win->ex_style = final_value;
-    } else {
-        if (top_level_window(*win)) final_value |= windowing::WS::CLIPSIBLINGS;
-        win->style = final_value;
-        // Learn IsWindowVisible / IsWindowEnabled / IsIconic / IsZoomed: these
-        // read the style bits, so the shared state follows them.
-        const bool now_visible = (final_value & windowing::WS::VISIBLE) != 0;
-        if (win->visible != now_visible) {
-            win->visible = now_visible;
-            ipc::hwnd_registry_set_visible(static_cast<u32>(hwnd), now_visible);
+    u32 final_value=proposed;bool visibility_changed=false;
+    const auto geometry=m_hwnd_mgr.update_geometry(hwnd,[&](auto& data) {
+        if(ex) {
+            final_value=(final_value&~kWsExTopmost)|(data.ex_style&kWsExTopmost);
+            final_value=derive_window_edge(data.style,final_value);data.ex_style=final_value;
+        } else {
+            if(top_level_window(data))final_value|=windowing::WS::CLIPSIBLINGS;
+            data.style=final_value;
+            const bool now_visible=(final_value&windowing::WS::VISIBLE)!=0;
+            visibility_changed=data.visible!=now_visible;data.visible=now_visible;
+            data.enabled=(final_value&windowing::WS::DISABLED)==0;
+            data.minimized=(final_value&windowing::WS::MINIMIZE)!=0;
+            data.maximized=(final_value&windowing::WS::MAXIMIZE)!=0;
+            data.ex_style=derive_window_edge(final_value,data.ex_style);
         }
-        win->enabled = (final_value & windowing::WS::DISABLED) == 0;
-        win->minimized = (final_value & windowing::WS::MINIMIZE) != 0;
-        win->maximized = (final_value & windowing::WS::MAXIMIZE) != 0;
-        win->ex_style = derive_window_edge(final_value, win->ex_style);
-    }
+    });
+    if(!geometry)return true;
+    if(visibility_changed)ipc::hwnd_registry_set_visible(static_cast<u32>(hwnd),geometry->visible);
+    if(!ex)m_hwnd_mgr.child_style_changed(hwnd,previous);
+    ipc::hwnd_registry_scene_changed();
     // Learn (SetLayeredWindowAttributes): clearing WS_EX_LAYERED ends the
     // window's layering; setting it again starts from nothing.
     constexpr u32 kWsExLayered = 0x00080000u;
@@ -812,8 +889,11 @@ void User32ExtManager::window_long_set(Marshaler& m, bool ptr_api, bool ansi) {
             previous = win->msg_result;                 // DWLP_MSGRESULT
             win->msg_result = value;
         } else if (win->is_dialog && static_cast<u32>(index) == ptr) {
-            previous = win->wndproc;                    // DWLP_DLGPROC
-            win->wndproc = value;
+            previous = win->dlgproc;                    // DWLP_DLGPROC
+            // A window procedure still equal to the dialog procedure stands
+            // for the predefined dialog procedure: it calls the new one.
+            if (win->wndproc == win->dlgproc) win->wndproc = value;
+            win->dlgproc = value;
         } else if (extra_in_range(*win, index, size)) {
             previous = write_extra(*win, index, value, size);
         } else {

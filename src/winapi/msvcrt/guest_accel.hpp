@@ -47,6 +47,21 @@ class ThunkRegistry;
 constexpr GuestAddr CRT_ACCEL_BASE_X86 = 0x7D200000;
 constexpr usize CRT_ACCEL_SIZE = 0x1000;
 
+/// The tail of the x86 arena holds the vcruntime140 interposer's size-branch
+/// stubs (winapi/msvcrt/memory/vcruntime_interpose.hpp): 31 slots of 32 bytes
+/// from CRT_ACCEL_STUB_OFFSET_X86, then the fault-resume record (one 32-byte
+/// slot at CRT_ACCEL_RESUME_OFFSET_X86). The accelerator blob must end below
+/// the stubs. An x86 address space is 4 GiB, so every stub here reaches every
+/// vcruntime140 body with a rel32 branch.
+constexpr usize CRT_ACCEL_STUB_OFFSET_X86 = 0xC00;
+constexpr usize CRT_ACCEL_STUB_SLOT_X86 = 32;
+constexpr usize CRT_ACCEL_RESUME_OFFSET_X86 = 0xFE0;
+
+/// Map the x86 arena (readable + executable) if it is not mapped yet.
+/// Idempotent, and independent of install_guest_crt_accelerators, which can
+/// run before or after it: the interposer may need the stub region first.
+[[nodiscard]] bool ensure_crt_accel_arena_x86(GuestMemory& memory) noexcept;
+
 /// The emitted code plus the guest entry point of each function.
 struct CrtAccelBlob {
     std::vector<u8> code;
@@ -97,6 +112,27 @@ usize install_guest_crt_accelerators(GuestMemory& memory,
 /// region's own 4 GiB stride (x64_high_arena.hpp), past every thunk slot.
 constexpr GuestAddr X64_ACCEL_OFFSET = 0x10000000;
 constexpr usize X64_ACCEL_SIZE = 0x10000;
+
+/// The tail of the x64 arena (from X64_ACCEL_RESUME_OFFSET) holds the
+/// vcruntime140 interposer's fault-resume record; the accelerator blob must
+/// end below it. The x64 size-branch stubs do NOT live here: the arena sits
+/// in the high thunk stride, out of rel32 reach of an image, so each
+/// vcruntime140 image gets its own stub page within +-2 GiB
+/// (vcruntime_interpose.cpp), slots of X64_ACCEL_STUB_SLOT bytes.
+constexpr usize X64_ACCEL_RESUME_OFFSET = 0xF000;
+constexpr usize X64_ACCEL_STUB_SLOT = 64;
+
+/// Map the x64 arena at @p thunk_base + X64_ACCEL_OFFSET (readable +
+/// executable) if it is not mapped yet. Idempotent.
+[[nodiscard]] bool ensure_x64_accel_arena(GuestMemory& memory,
+                                          GuestAddr thunk_base) noexcept;
+
+/// Write @p bytes at @p addr inside an executable accelerator arena. The page
+/// goes RX -> RWX -> RX, so it is never non-executable while another thread
+/// runs code on it, and the return to executable notifies the JIT of the
+/// patched range.
+[[nodiscard]] bool write_accel_code(GuestMemory& memory, GuestAddr addr,
+                                    const u8* bytes, usize size) noexcept;
 
 /// Build the x64 accelerator code as if it were loaded at @p base. Exposed so
 /// the bytes can be executed and checked against the contracts they implement.

@@ -51,15 +51,41 @@ struct HwndRegistryEntry {
     u32 present_host_pid{0};
 };
 
+enum class ChildOrderAction { Append, Remove, First, Last, After };
+struct HwndChildOrder {
+    u64 generation{0};
+    // Top first within each parent. Handles remain capsule desktop identities.
+    std::vector<std::pair<u32,u32>> parent_child;
+};
+[[nodiscard]] bool hwnd_registry_update_child_order(ChildOrderAction action,
+    u32 hwnd, u32 parent, u32 after=0);
+[[nodiscard]] std::optional<HwndChildOrder> hwnd_registry_child_order();
+[[nodiscard]] std::optional<u64> hwnd_registry_scene_generation();
+void hwnd_registry_scene_changed();
+/// Failed publication invalidates scene snapshots for this process/capsule.
+[[nodiscard]] bool hwnd_registry_scene_publication_ok();
+
 /// Allocate an HWND value unique within the capsule's interactive desktop.
 /// Returns zero when no IPC scope is configured or allocation fails.
 [[nodiscard]] u32 hwnd_registry_allocate_handle();
 
-/// Allocate a guest thread ID unique within the capsule (Windows TIDs are
-/// system-wide). Returns zero when no IPC scope is configured; callers then
-/// keep a process-local counter in isolated tests. Runtime primary threads
-/// and worker threads use the same allocator.
+/// Allocate one Windows client ID. Process and thread IDs share the kernel
+/// CID namespace: the low two bits are clear (the same rule as a kernel
+/// handle), 0 is Idle, 4 is System, and every later ID is a multiple of 4.
+/// Capsule-wide when VITREO_IPC_SCOPE is set (`runtime/next-cid`); otherwise
+/// one process-local counter so a test process cannot hand the same ID to a
+/// process and a thread. Returns 0 when the namespace is exhausted or the
+/// counter file is damaged — live IDs are never recycled.
+[[nodiscard]] u32 allocate_client_id();
+
+/// Allocate a guest thread ID. Thread IDs are client IDs, so this is
+/// allocate_client_id().
 [[nodiscard]] u32 allocate_system_thread_id();
+
+/// Windows process ID of this host process. Adopts VITREO_GUEST_PROCESS_ID
+/// when the parent reserved one (must be a multiple of 4); otherwise
+/// allocates a client ID. Stable for the life of the process.
+[[nodiscard]] u32 guest_process_id();
 
 /// Publish or refresh a guest HWND owned by this host process.
 /// No-op when VITREO_IPC_SCOPE is unset or arguments are invalid.

@@ -10,6 +10,7 @@
 #include "winapi/com/oleaut32/typelib.hpp"
 #include "winapi/core/thunk_registry.hpp"
 
+#include <array>
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -209,6 +210,31 @@ public:
     using GuestCall = std::function<u64(GuestAddr, const u64*, usize, bool)>;
     void set_guest_call(GuestCall call) { m_guest_call = std::move(call); }
 
+    /// Return registers of a guest call for DispCallFunc: EDX:EAX / RAX,
+    /// XMM0, a popped x87 ST(0), and the x86 argument bytes the callee
+    /// removed (stdcall balance check).
+    struct GuestCallResult {
+        u64 rax{0};
+        u64 rdx{0};
+        u64 xmm0{0};
+        double st0{0.0};
+        u64 callee_popped{0};
+        bool completed{false};
+    };
+    using GuestCallEx = std::function<GuestCallResult(
+        GuestAddr, const u64*, usize, bool is_64bit, bool pop_st0)>;
+    void set_guest_call_ex(GuestCallEx call) { m_guest_call_ex = std::move(call); }
+
+    /// DispCallFunc(pvInstance, oVft, cc, vtReturn, cActuals, prgvt,
+    /// prgpvarg, pvargResult) -- oleaut32 ordinal 146.
+    [[nodiscard]] u32 disp_call_func(Marshaler& m);
+    /// DispInvoke(_this, ptinfo, dispidMember, wFlags, pparams, pvarResult,
+    /// pexcepinfo, puArgErr) -- oleaut32 ordinal 30.
+    [[nodiscard]] u32 disp_invoke(Marshaler& m);
+    /// SetErrorInfo / GetErrorInfo: the calling thread's error object.
+    [[nodiscard]] u32 set_error_info(Marshaler& m);
+    [[nodiscard]] u32 get_error_info(Marshaler& m);
+
     /// LoadTypeLib(szFile, ppTypeLib)
     [[nodiscard]] u32 load_type_lib(Marshaler& m);
 
@@ -308,6 +334,30 @@ private:
     [[nodiscard]] GuestAddr create_typeinfo_object(
         Marshaler& m, const std::shared_ptr<LoadedTypeLib>& parent, u32 index);
 
+    /// The DispCallFunc engine on host-side arguments (guest VARIANT
+    /// addresses). Shared by DispCallFunc and ITypeInfo::Invoke.
+    [[nodiscard]] u32 call_function(Marshaler& m, GuestAddr instance, u64 ovft,
+                                    u32 cc, u16 vt_return,
+                                    std::span<const u16> vts,
+                                    std::span<const GuestAddr> args,
+                                    GuestAddr result);
+    /// ITypeInfo::Invoke on `state` (shared by DispInvoke).
+    [[nodiscard]] u32 invoke_member(Marshaler& m, const LoadedTypeInfo& state,
+                                    GuestAddr instance, i32 memid, u32 flags,
+                                    GuestAddr params, GuestAddr result,
+                                    GuestAddr excepinfo, GuestAddr argerr);
+    /// Store the calling thread's error object in an EXCEPINFO (consuming
+    /// it, as GetErrorInfo does) after a member failed with `hr`.
+    void fill_excepinfo(Marshaler& m, GuestAddr excepinfo, u32 hr);
+    /// IUnknown::QueryInterface through the guest vtable.
+    [[nodiscard]] GuestAddr com_query_interface(Marshaler& m, GuestAddr punk,
+                                                const std::array<u8, 16>& iid);
+
+    /// VariantChangeType's conversion into a fresh (zeroed) result VARIANT;
+    /// variant_change_type_ex applies the ownership rules around it.
+    [[nodiscard]] u32 change_type_core(Marshaler& m, GuestAddr result,
+                                       GuestAddr src, u16 flags, u16 target_vt);
+
     /// Look up the state behind a guest ITypeLib pointer, or nullptr.
     [[nodiscard]] std::shared_ptr<LoadedTypeLib> find_typelib(GuestAddr object);
 
@@ -344,6 +394,7 @@ private:
     capsule::Registry* m_registry{nullptr};
     ThunkRegistry*     m_thunks{nullptr};
     GuestCall          m_guest_call;
+    GuestCallEx        m_guest_call_ex;
 
     std::mutex m_typelibs_mutex;
     std::unordered_map<GuestAddr, std::shared_ptr<LoadedTypeLib>> m_typelibs;

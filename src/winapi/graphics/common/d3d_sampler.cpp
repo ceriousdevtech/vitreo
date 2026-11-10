@@ -5,8 +5,11 @@
 
 #include "winapi/graphics/common/d3d_sampler.hpp"
 #include "graphics/shaders/dxbc_to_spirv.hpp"
+#include "graphics/shaders/compile_profile.hpp"
+#include "graphics/shaders/sampler_features.hpp"
 
 #include <algorithm>
+#include <cstring>
 #include <limits>
 
 namespace vitreo::winapi {
@@ -24,6 +27,46 @@ namespace {
     case 8: return graphics::BackendCompare::Always;
     default: return graphics::BackendCompare::LessEqual;
     }
+}
+
+[[nodiscard]] bool uses_border(const D3DSamplerFields& fields) {
+    return fields.address_u == 4u || fields.address_v == 4u ||
+           fields.address_w == 4u;
+}
+
+[[nodiscard]] bool comparison_filter(u32 filter) {
+    return (filter & 0x180u) == 0x80u;
+}
+
+[[nodiscard]] bool reducing_filter(u32 filter) {
+    return ((filter >> 7u) & 0x3u) >= 2u;
+}
+
+[[nodiscard]] u32 float_bits(float value) {
+    u32 bits = 0;
+    std::memcpy(&bits, &value, 4);
+    return bits;
+}
+
+[[nodiscard]] u32 border_bits(const D3DSamplerFields& fields, u32 channel) {
+    u32 bits = 0;
+    std::memcpy(&bits, &fields.border[channel], 4);
+    return bits;
+}
+
+/// (0,0,0,0), (0,0,0,1) or (1,1,1,1) as uints: Metal's three borders.
+[[nodiscard]] bool metal_uint_border(const u32 colour[4]) {
+    const bool rgb0 = colour[0] == 0u && colour[1] == 0u && colour[2] == 0u;
+    if (rgb0 && (colour[3] == 0u || colour[3] == 1u)) return true;
+    return colour[0] == 1u && colour[1] == 1u && colour[2] == 1u &&
+           colour[3] == 1u;
+}
+
+/// The power of two at or below MaxAnisotropy (WARP; 0 filters as 1).
+[[nodiscard]] u32 effective_anisotropy(u32 max_anisotropy) {
+    u32 aniso = 1u;
+    while (aniso * 2u <= max_anisotropy) aniso *= 2u;
+    return aniso;
 }
 
 }  // namespace
@@ -97,10 +140,24 @@ void d3d_backend_sampler(const D3DSamplerFields& fields,
     // other colour binds transparent black here and is completed in the
     // shader by the border twin (border_twin_mask). A comparison filter sees
     // only the red channel: 1 binds white, and any red but 0 and 1 binds 0
-    // and is compared in the shader.
+    // and is compared in the shader. A UINT border's bits are integers;
+    // (0,0,0,1) is Metal's opaque black and (1,1,1,1) its opaque white.
     const auto& border = fields.border;
-    const bool comparison = (fields.filter & 0x180u) == 0x80u;
-    if (comparison) {
+    const bool comparison = comparison_filter(fields.filter);
+    const bool uint_border = (fields.flags & kD3DSamplerFlagUintBorder) != 0;
+    if (uint_border) {
+        u32 u[4] = {};
+        for (u32 c = 0; c < 4; ++c) u[c] = border_bits(fields, c);
+        if (comparison) {
+            backend_sampler.border_color = u[0] == 1u ? 0xffffffffu : 0u;
+        } else if (u[0] == 1u && u[1] == 1u && u[2] == 1u && u[3] == 1u) {
+            backend_sampler.border_color = 0xffffffffu;
+        } else if (u[0] == 0u && u[1] == 0u && u[2] == 0u && u[3] == 1u) {
+            backend_sampler.border_color = 0xFF000000u;
+        } else {
+            backend_sampler.border_color = 0u;
+        }
+    } else if (comparison) {
         backend_sampler.border_color = border[0] == 1.0f ? 0xffffffffu : 0u;
     } else if (border[0] == 1.0f && border[1] == 1.0f &&
                border[2] == 1.0f && border[3] == 1.0f) {
@@ -118,8 +175,11 @@ void d3d_backend_sampler(const D3DSamplerFields& fields,
     float lod_max = std::max(fields.max_lod, lod_min);
     float lod_bias = fields.mip_lod_bias;
     // The point-mip tie nudge (d3d_point_mip_tie_nudged) shifts both clamps
-    // with the bias the shader adds.
-    if (d3d_point_mip_tie_nudged(fields.filter)) {
+    // with the bias the shader adds. A non-normalized sampler's LODs and
+    // bias are required to be 0; the nudge would move them.
+    const bool non_normalized =
+        (fields.flags & kD3DSamplerFlagNonNormalized) != 0;
+    if (!non_normalized && d3d_point_mip_tie_nudged(fields.filter)) {
         lod_min += graphics::kPointMipTieNudge;
         lod_max += graphics::kPointMipTieNudge;
         lod_bias += graphics::kPointMipTieNudge;
@@ -132,6 +192,139 @@ void d3d_backend_sampler(const D3DSamplerFields& fields,
     backend_sampler.lod_max_clamp = lod_max;
     backend_sampler.lod_bias = lod_bias;
     if (shader_lod_bias != nullptr) *shader_lod_bias = lod_bias;
+}
+
+bool d3d_sampler_non_normalized_legal(const D3DSamplerFields& fields) {
+    if ((fields.flags & kD3DSamplerFlagNonNormalized) == 0u) return true;
+    // The same restrictions static-sampler validation already applies
+    // (D3D12_SAMPLER_FLAG_NON_NORMALIZED_COORDINATES): MIN == MAG, MIP
+    // point, neither comparison nor anisotropic, zero LODs and bias, U and
+    // V clamp or border.
+    const u32 f = fields.filter;
+    const bool filter_ok = !comparison_filter(f) && (f & 0x40u) == 0u &&
+                           ((f >> 4) & 3u) == ((f >> 2) & 3u) && (f & 3u) == 0u;
+    if (!filter_ok) return false;
+    if (fields.min_lod != 0.0f || fields.max_lod != 0.0f ||
+        fields.mip_lod_bias != 0.0f) {
+        return false;
+    }
+    const auto clamp_or_border = [](u32 mode) {
+        return mode == 3u || mode == 4u;
+    };
+    return clamp_or_border(fields.address_u) &&
+           clamp_or_border(fields.address_v);
+}
+
+bool d3d_sampler_needs_border_twin(const D3DSamplerFields& fields) {
+    if (!uses_border(fields)) return false;
+    if ((fields.flags & kD3DSamplerFlagUintBorder) != 0u) {
+        // Integer borders that are not Metal's three have no float blend.
+        // Comparison uses the red alone; 0 and 1 are Metal borders.
+        u32 u[4] = {};
+        for (u32 c = 0; c < 4; ++c) u[c] = border_bits(fields, c);
+        if (comparison_filter(fields.filter)) {
+            return u[0] != 0u && u[0] != 1u;
+        }
+        return !metal_uint_border(u);
+    }
+    const float* c = fields.border.data();
+    if (comparison_filter(fields.filter)) {
+        return c[0] != 0.0f && c[0] != 1.0f;
+    }
+    const bool metal = (c[0] == 0.0f && c[1] == 0.0f && c[2] == 0.0f &&
+                        c[3] == 0.0f) ||
+                       (c[0] == 1.0f && c[1] == 1.0f && c[2] == 1.0f &&
+                        c[3] == 1.0f);
+    return !metal;
+}
+
+bool d3d_sampler_honoured(const D3DSamplerFields& fields) {
+    if ((fields.flags & ~0x3u) != 0u) return false;
+    if ((fields.flags & kD3DSamplerFlagUintBorder) == 0u) return true;
+    if (!uses_border(fields)) return true;
+    // A comparison border is one red. Any other UINT colour is not a Metal
+    // border and is not a float the twin blend can turn into an integer.
+    if (comparison_filter(fields.filter)) return true;
+    u32 u[4] = {};
+    for (u32 c = 0; c < 4; ++c) u[c] = border_bits(fields, c);
+    return metal_uint_border(u);
+}
+
+void d3d_write_sampler_state_record(const D3DSamplerFields& fields,
+                                    float shader_lod_bias, u32* words) {
+    for (u32 i = 0; i < graphics::kSamplerStateRecordWords; ++i) words[i] = 0u;
+    words[graphics::kSamplerStateBiasWord] = float_bits(shader_lod_bias);
+    u32 flags = 0;
+    const bool non_normalized =
+        (fields.flags & kD3DSamplerFlagNonNormalized) != 0u;
+    if (d3d_point_mip_filter(fields.filter)) {
+        flags |= graphics::kSamplerStatePointMip;
+    }
+    if (!non_normalized && d3d_point_mip_tie_nudged(fields.filter)) {
+        flags |= graphics::kSamplerStateBiasNudged;
+    }
+    if (non_normalized) {
+        graphics::enable_sampler_feature(graphics::SamplerFeature::NonNormalized);
+        graphics::compile_profile::note(graphics::compile_profile::SamplerRecordNonNormalized);
+        flags |= graphics::kSamplerStateNonNormalized;
+    }
+    if (d3d_sampler_needs_border_twin(fields)) {
+        flags |= graphics::kSamplerStateCustomBorder;
+        // Before this flag can be uploaded or read by a draw. Cached records
+        // therefore also imply that the feature was enabled already.
+        graphics::enable_sampler_feature(graphics::SamplerFeature::CustomBorder);
+        graphics::compile_profile::note(graphics::compile_profile::SamplerRecordBorderTwin);
+        if ((fields.flags & kD3DSamplerFlagUintBorder) != 0u &&
+            comparison_filter(fields.filter)) {
+            const float red = static_cast<float>(border_bits(fields, 0));
+            words[graphics::kSamplerStateBorderWord] = float_bits(red);
+            words[graphics::kSamplerStateBorderWord + 1] =
+                float_bits(static_cast<float>(fields.comparison_func));
+        } else if (comparison_filter(fields.filter)) {
+            words[graphics::kSamplerStateBorderWord] =
+                float_bits(fields.border[0]);
+            words[graphics::kSamplerStateBorderWord + 1] =
+                float_bits(static_cast<float>(fields.comparison_func));
+        } else {
+            for (u32 c = 0; c < 4; ++c) {
+                words[graphics::kSamplerStateBorderWord + c] =
+                    float_bits(fields.border[c]);
+            }
+        }
+    }
+    // Gather ignores the reduction and a comparison filter cannot be one.
+    // The shader still checks both; the flag is only set for a real one.
+    if (reducing_filter(fields.filter) &&
+        !comparison_filter(fields.filter)) {
+        flags |= graphics::kSamplerStateMinMax;
+    }
+    // Filter, anisotropy and the LOD clamps for every sampler: the min/max
+    // reduction reads them, and so does an LOD computed in the shader
+    // (VX_TEX LodGrad, D3D11.3 7.18.11: maxAniso, MinLOD, MaxLOD).
+    flags |= (fields.filter & graphics::kSamplerStateFilterMask)
+             << graphics::kSamplerStateFilterShift;
+    flags |= (effective_anisotropy(fields.max_anisotropy) &
+              graphics::kSamplerStateAnisoMask)
+             << graphics::kSamplerStateAnisoShift;
+    flags |= (std::min(16u, std::max(1u, fields.max_anisotropy)) &
+              graphics::kSamplerStateAnisoMask)
+             << graphics::kSamplerStateFlagsMaxAnisoShift;
+    words[graphics::kSamplerStateMinLodWord] = float_bits(fields.min_lod);
+    words[graphics::kSamplerStateMaxLodWord] = float_bits(fields.max_lod);
+    words[graphics::kSamplerStateFlagsWord] = flags;
+    // The whole filter state, for the sampler feedback writes.
+    const u32 aniso = std::min(fields.max_anisotropy, 16u);
+    words[graphics::kSamplerStateFilterStateWord] =
+        (fields.filter & graphics::kSamplerStateFilterMask) |
+        ((fields.address_u & graphics::kSamplerStateAddressMask)
+         << graphics::kSamplerStateAddressUShift) |
+        ((fields.address_v & graphics::kSamplerStateAddressMask)
+         << graphics::kSamplerStateAddressVShift) |
+        ((fields.address_w & graphics::kSamplerStateAddressMask)
+         << graphics::kSamplerStateAddressWShift) |
+        (aniso << graphics::kSamplerStateMaxAnisoShift);
+    words[graphics::kSamplerStateFullMinLodWord] = float_bits(fields.min_lod);
+    words[graphics::kSamplerStateFullMaxLodWord] = float_bits(fields.max_lod);
 }
 
 }  // namespace vitreo::winapi

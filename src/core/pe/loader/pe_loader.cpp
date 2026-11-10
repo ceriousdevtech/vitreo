@@ -79,6 +79,26 @@ Result<LoadedImage, Error> PeLoader::load(
     // Step 3: Map sections into guest memory
     SectionMapper mapper(m_memory);
     auto map_result = mapper.map(pe, pe_data, base_address);
+    // Host occupancy above the startup reservation is only discovered when a
+    // mapping meets it (a malloc zone at 0x1'8000'0000, MSVC's default x64
+    // DLL base). The failed attempt recorded the occupant as a reserved hole
+    // and left nothing mapped, so a relocatable image is placed again clear
+    // of it -- the Windows loader relocates whenever the preferred base is
+    // unavailable.
+    if (map_result.is_err() && map_result.error() == MapError::MemoryMapFailed &&
+        pe.has_relocations()) {
+        const auto retry = select_image_base(m_memory, pe, preferred_base);
+        if (retry.ok() && retry.base != base_address) {
+            std::fprintf(stderr,
+                         "[pe] image base 0x%llx is host-owned; relocating to "
+                         "0x%llx size=0x%x\n",
+                         static_cast<unsigned long long>(base_address),
+                         static_cast<unsigned long long>(retry.base),
+                         pe.size_of_image);
+            base_address = retry.base;
+            map_result = mapper.map(pe, pe_data, base_address);
+        }
+    }
     if (map_result.is_err()) {
         // Distinguish guest-region overlap (preferred-base collision, the
         // common case for dynamic DLL loads) from real host VM exhaustion.

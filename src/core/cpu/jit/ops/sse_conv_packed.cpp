@@ -116,7 +116,7 @@ std::optional<bool> JitCompiler::compile_sse_conv_packed(
             emit(arm64::movz_w(2, 4));
             emit(arm64::movz_w(3, dst_xmm));
             emit(arm64::mov_x(4, REG_SCRATCH4));
-            EMIT_SSE_OP_CALL();
+            EMIT_SSE_OP_MEM_CALL();
         }
         break;
     }
@@ -366,19 +366,36 @@ std::optional<bool> JitCompiler::compile_sse_conv_packed(
             emit(arm64::ldr_q_uoff(0, REG_CPU_STATE, src_lo >> 4));
             emit(arm64::ldr_q_uoff(5, REG_CPU_STATE, src_hi >> 4));
         } else {
-            // Legacy m128 (16-byte aligned, checked): both halves land in
-            // GPRs before V0 is built, for the same helper-clobber reason.
-            // The EA is parked in X21 (callee-saved) and EA+8 is formed from
-            // it after the first load: in long mode the region probe
-            // clobbers X4.
+            // Legacy m128 (Intel SDM Vol. 2 CVTPD2PS: 16-byte aligned). One
+            // guarded 16-byte load: an aligned operand cannot cross a page,
+            // and the 128-bit access checks addr and addr+15, so a fault
+            // still leaves DEST unwritten. Two separately guarded 8-byte
+            // loads were the whole extra cost of this form. V0 is the
+            // narrowing source; the cold stub never holds it across a
+            // helper (emit_guest_load128).
             emit_compute_ea(REG_CALL_TMP, op1.mem, next_rip);
             emit_m128_align_check_if_required(REG_CALL_TMP, instr, op1);
-            emit_guest_load64(REG_SCRATCH0, REG_CALL_TMP);
-            emit(arm64::add_x_imm(REG_SCRATCH4, REG_CALL_TMP, 8));
-            emit(arm64::mov_x(REG_CALL_TMP, REG_SCRATCH0));
-            emit_guest_load64(REG_SCRATCH1, REG_SCRATCH4);
-            emit(arm64::fmov_d_from_x(0, REG_CALL_TMP));
-            emit(arm64::ins_v_gpr(0, 1, REG_SCRATCH1, arm64::VS_D));
+            if (m_block_is_64bit) {
+                emit_guest_load128(0, REG_CALL_TMP);
+            } else if (m_cfg.linear_jit && m_memory.is_linear()) {
+                emit(arm64::mov_w(9, REG_CALL_TMP));
+                const u8 base = m_linear_base_pinned ? REG_LINEAR_BASE
+                                                    : REG_SCRATCH3;
+                if (!m_linear_base_pinned) {
+                    emit(arm64::ldr_x_uoff(REG_SCRATCH3, REG_JIT_CTX,
+                                           JIT_CTX_OFF_LINEAR_BASE >> 3));
+                }
+                emit(arm64::add_x_uxtw(REG_SCRATCH3, base, 9));
+                emit(arm64::ldr_q_uoff(0, REG_SCRATCH3, 0));
+                emit_vector_tso_fence();
+            } else {
+                emit_guest_load64(REG_SCRATCH0, REG_CALL_TMP);
+                emit(arm64::add_x_imm(REG_SCRATCH4, REG_CALL_TMP, 8));
+                emit(arm64::mov_x(REG_CALL_TMP, REG_SCRATCH0));
+                emit_guest_load64(REG_SCRATCH1, REG_SCRATCH4);
+                emit(arm64::fmov_d_from_x(0, REG_CALL_TMP));
+                emit(arm64::ins_v_gpr(0, 1, REG_SCRATCH1, arm64::VS_D));
+            }
         }
         emit(arm64::fcvtn_2s_2d(1, 0));
         emit(arm64::fcvtl_2d_2s(2, 1));

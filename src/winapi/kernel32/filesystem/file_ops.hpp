@@ -14,6 +14,7 @@
 #include "winapi/kernel32/handle.hpp"
 #include "core/memory/guest_memory.hpp"
 
+#include <functional>
 #include <memory>
 #include <mutex>
 #include <unordered_map>
@@ -39,6 +40,11 @@ public:
 
     /// Optionally attach a ModuleManager for LoadLibraryExW delegation
     void set_module_manager(ModuleManager* mm) noexcept { m_modules = mm; }
+
+    /// Guest CopyProgressRoutine for MoveFileWithProgress. Same signature as
+    /// Kernel32ExtManager's guest call.
+    using GuestCall = std::function<u64(GuestAddr, const u64*, usize, bool)>;
+    void set_guest_call(GuestCall call) { m_guest_call = std::move(call); }
 
     /// Drop directory-enumeration cursor state when a file handle closes
     /// (GetFileInformationByHandleEx #5).
@@ -90,7 +96,10 @@ public:
     /// MoveFileExW — stub, always returns TRUE
     void impl_MoveFileExW(Marshaler& m);
     void impl_MoveFileExA(Marshaler& m);
-    void move_file_ex_common(Marshaler& m, bool wide);
+    void impl_MoveFileWithProgressW(Marshaler& m);
+    void impl_MoveFileWithProgressA(Marshaler& m);
+    void move_file_with_progress(Marshaler& m, bool wide);
+    void move_file_ex_common(Marshaler& m, bool wide, u32 flags);
 
     // -------------------------------------------------------------------------
     // System Queries
@@ -161,6 +170,7 @@ private:
 
     GuestMemory& m_memory;
     capsule::Vfs& m_vfs;
+    GuestCall m_guest_call;
     ModuleManager* m_modules = nullptr;
     FileManager* m_file_manager = nullptr;
     RegistryThunks* m_registry = nullptr;

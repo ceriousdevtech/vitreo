@@ -4,11 +4,33 @@
 
 #include "sm3_to_msl_internal.hpp"
 
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+
 #include <algorithm>
 #include <sstream>
 #include <string>
 
 namespace vitreo::graphics::sm3_msl_detail {
+
+namespace {
+
+/// A def value as an MSL literal that reads back as exactly the same float:
+/// nine significant digits round-trip any IEEE single (the stream default
+/// of six turned 1/127 into 0.00787402).
+std::string float_literal(float value) {
+    if (std::isnan(value)) return "NAN";
+    if (std::isinf(value)) return value > 0 ? "INFINITY" : "(-INFINITY)";
+    char text[32];
+    std::snprintf(text, sizeof(text), "%.9g", static_cast<double>(value));
+    std::string literal = text;
+    if (literal.find_first_of(".en") == std::string::npos) literal += ".0";
+    return literal;
+}
+
+} // namespace
+
 
 std::string Translator::build_msl() const {
     std::ostringstream ss;
@@ -28,6 +50,9 @@ std::string Translator::build_msl() const {
     if (m_result.bool_constant_count > 0) {
         ss << "    int b[" << m_result.bool_constant_count << "];\n";
     }
+    if (m_result.uses_bump_env) {
+        ss << "    float4 bump_env[16];\n";
+    }
     if (m_result.stage == ShaderStage::Vertex && m_result.needs_viewport) {
         // Packed after the 16-byte-padded c/i/b file. See d3d9_draw.cpp.
         ss << "    float4 viewport;\n";
@@ -40,13 +65,64 @@ std::string Translator::build_msl() const {
         // sample a bone matrix / light the shader never addressed. The
         // subscript itself is still clamped: Metal may evaluate both sides
         // of a ternary, and an OOB `cb.c[i]` aborts the GPU.
-        ss << "float4 sm3_c(constant Sm3Constants& cb, int i) {\n"
-           << "    const int n = "
+        // Learn (def - vs/ps): a constant the shader defines replaces that
+        // register for the whole shader, relative reads included -- a
+        // c[a0.x + n] that lands on a def'd register returns the def.
+        // Full-render measurements justify LUTs for large DEF sets. Keep the
+        // switch through 95 definitions to avoid small-shader source/startup bloat.
+        // Only vertex shaders permit relative reads of the constant file.
+        const bool def_lut = m_result.stage == ShaderStage::Vertex &&
+                             m_defined_constants.size() >= 96u;
+        if (def_lut) {
+            std::array<u32, (SM3_MAX_FLOAT_CONSTANT_REGISTERS + 31u) / 32u> present{};
+            ss << "constant uint4 sm3_def_values[" << SM3_MAX_FLOAT_CONSTANT_REGISTERS << "] = {\n";
+            for (u32 i = 0; i < SM3_MAX_FLOAT_CONSTANT_REGISTERS; ++i) {
+                std::array<u32, 4> bits{};
+                const auto value = m_defined_constants.find(i);
+                if (value != m_defined_constants.end()) {
+                    present[i / 32u] |= 1u << (i % 32u);
+                    for (u32 lane = 0; lane < 4; ++lane)
+                        std::memcpy(&bits[lane], &value->second[lane], sizeof(u32));
+                }
+                ss << "    uint4(" << bits[0] << "u, " << bits[1] << "u, "
+                   << bits[2] << "u, " << bits[3] << "u),\n";
+            }
+            ss << "};\nconstant uint sm3_def_present[" << present.size() << "] = {";
+            for (u32 word : present) ss << word << "u,";
+            ss << "};\n\n";
+        }
+        ss << "float4 sm3_c(constant Sm3Constants& cb, int i) {\n";
+        if (!def_lut && !m_defined_constants.empty()) {
+            ss << "    switch (i) {\n";
+            for (const auto& [index, value] : m_defined_constants) {
+                ss << "    case " << index << ": return float4("
+                   << float_literal(value[0]) << ", " << float_literal(value[1]) << ", "
+                   << float_literal(value[2]) << ", " << float_literal(value[3]) << ");\n";
+            }
+            ss << "    default: break;\n    }\n";
+        }
+        if (def_lut) {
+            ss << "    const int n = " << SM3_MAX_FLOAT_CONSTANT_REGISTERS << ";\n"
+               << "    if (i < 0 || i >= n) return float4(0.0);\n"
+               << "    const uint idx = uint(max(min(i, n - 1), 0));\n"
+               << "    const bool defined = (sm3_def_present[idx >> 5u] & (1u << (idx & 31u))) != 0u;\n"
+               << "    return defined ? as_type<float4>(sm3_def_values[idx]) : cb.c[idx];\n"
+               << "}\n\n";
+        } else {
+        ss << "    const int n = "
            << std::max(m_result.float_constant_count, 1u) << ";\n"
            << "    const int idx = max(min(i, n - 1), 0);\n"
            << "    const float4 v = cb.c[idx];\n"
            << "    return (i < 0 || i >= n) ? float4(0.0) : v;\n"
            << "}\n\n";
+        }
+
+        // Check the signed offset before adding the nonnegative literal base.
+        // This avoids C++/MSL signed overflow for INT_MIN/INT_MAX offsets.
+        ss << "float4 sm3_c(constant Sm3Constants& cb, int offset, int base) {\n"
+           << "    if (offset < -base || offset >= " << SM3_MAX_FLOAT_CONSTANT_REGISTERS
+           << " - base) return float4(0.0);\n"
+           << "    return sm3_c(cb, offset + base);\n}\n\n";
     }
 
     const bool vertex = m_result.stage == ShaderStage::Vertex;
@@ -95,8 +171,9 @@ std::string Translator::build_msl() const {
 
     const auto emit_defined_constants = [&](std::ostringstream& out) {
         for (const auto& [index, value] : m_defined_constants) {
-            out << "    const float4 def" << index << " = float4(" << value[0]
-                << ", " << value[1] << ", " << value[2] << ", " << value[3]
+            out << "    const float4 def" << index << " = float4("
+                << float_literal(value[0]) << ", " << float_literal(value[1]) << ", "
+                << float_literal(value[2]) << ", " << float_literal(value[3])
                 << ");\n";
         }
         for (const auto& [index, value] : m_defined_int_constants) {
@@ -126,7 +203,10 @@ std::string Translator::build_msl() const {
         for (u32 sampler = 0; sampler < m_result.samplers_used.size();
              ++sampler) {
             if (!m_result.samplers_used[sampler]) continue;
-            const u8 dim = m_sampler_dim[sampler];
+            // ps_1_x declares no samplers: a stage takes the dimension of
+            // the texture bound to it.
+            const u8 dim = m_result.major == 1 ? m_stage_dim[sampler]
+                                               : m_sampler_dim[sampler];
             const char* texture_ty = "texture2d";
             if (dim == 3) {
                 texture_ty = "texturecube";

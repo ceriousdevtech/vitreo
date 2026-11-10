@@ -64,7 +64,8 @@ u32 RegistryThunks::reg_set_value_ex_w(u64 hkey, const std::wstring& value_name,
 
         case REG_BINARY: {
             val.type = capsule::RegType::Binary;
-            val.data = std::vector<u8>(data, data + data_size);
+            val.data = data_size == 0 ? std::vector<u8>{}
+                                     : std::vector<u8>(data, data + data_size);
             break;
         }
 
@@ -115,8 +116,8 @@ u32 RegistryThunks::reg_set_value_ex_w(u64 hkey, const std::wstring& value_name,
 
     // Windows stores exactly the caller's bytes and returns them unchanged
     // (Learn: RegSetValueExW, "Registry Value Types"). A typed form is kept
-    // only when it reproduces those bytes; REG_SZ/REG_EXPAND_SZ may also drop
-    // a missing terminator, which the typed store re-adds. Everything else —
+    // only when it reproduces those bytes. A missing string terminator must
+    // remain missing when queried. Everything else —
     // REG_NONE with data, BIG_ENDIAN/LINK/resource lists, other codes, a
     // DWORD/QWORD of the wrong size, a malformed MULTI_SZ — was previously
     // stored as an empty REG_NONE; it is now kept byte-exact.
@@ -126,12 +127,10 @@ u32 RegistryThunks::reg_set_value_ex_w(u64 hkey, const std::wstring& value_name,
         (void)serialise_value(val, round.data(), need);
         const bool exact = need == data_size &&
             std::memcmp(round.data(), data, data_size) == 0;
-        const bool string_without_nul =
-            (type == REG_SZ || type == REG_EXPAND_SZ) && need == data_size + 2 &&
-            std::memcmp(round.data(), data, data_size) == 0;
-        if (!exact && !string_without_nul) val.type = capsule::RegType::Raw;
+        if (!exact) val.type = capsule::RegType::Raw;
     } else if (val.type != capsule::RegType::Raw && data_size == 0 &&
-               (type == REG_DWORD || type == REG_QWORD || type == REG_MULTI_SZ)) {
+               (type == REG_DWORD || type == REG_QWORD || type == REG_MULTI_SZ ||
+                type == REG_SZ || type == REG_EXPAND_SZ)) {
         val.type = capsule::RegType::Raw;
     }
     if (val.type == capsule::RegType::Raw) {
@@ -140,7 +139,8 @@ u32 RegistryThunks::reg_set_value_ex_w(u64 hkey, const std::wstring& value_name,
             val.data = std::monostate{};
         } else {
             val.raw_type = type;
-            val.data = std::vector<u8>(data, data + data_size);
+            val.data = data_size == 0 ? std::vector<u8>{}
+                                     : std::vector<u8>(data, data + data_size);
         }
     }
 

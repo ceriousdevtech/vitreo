@@ -267,7 +267,7 @@ TEST(Sm3ToMslTest, DefinedConstantsBecomeLiteralsNotUniformReads) {
     };
     const Sm3Shader shader = translate(tokens);
     ASSERT_TRUE(shader.ok) << shader.failure;
-    EXPECT_NE(shader.msl.find("const float4 def3 = float4(0.25, 0.5, 0.75, 1)"),
+    EXPECT_NE(shader.msl.find("const float4 def3 = float4(0.25, 0.5, 0.75, 1.0)"),
               std::string::npos);
     EXPECT_NE(shader.msl.find("out.color = def3"), std::string::npos);
     // A defined constant must not also be read from the uniform buffer.
@@ -433,7 +433,7 @@ TEST(Sm3ToMslTest, LoopEndloopUsesALAndRelativeConstants) {
     EXPECT_NE(shader.msl.find("int aL = clamp(_li0.y, 0, 255);"),
               std::string::npos)
         << shader.msl;
-    EXPECT_NE(shader.msl.find("sm3_c(cb, aL + 2)"), std::string::npos)
+    EXPECT_NE(shader.msl.find("sm3_c(cb, aL, 2)"), std::string::npos)
         << shader.msl;
     EXPECT_NE(shader.msl.find("aL += _li0.z;"), std::string::npos) << shader.msl;
     EXPECT_EQ(shader.float_constant_count, 256u);
@@ -1251,7 +1251,7 @@ TEST(Sm3ToMslTest, VertexShaderAddressRegisterIndexesConstants) {
     EXPECT_NE(shader.msl.find("return (i < 0 || i >= n) ? float4(0.0) : v;"),
               std::string::npos)
         << shader.msl;
-    EXPECT_EQ(shader.float_constant_count, 96u);
+    EXPECT_EQ(shader.float_constant_count, 256u);
 }
 
 TEST(Sm3ToMslTest, ApplyFogMixesFogColorAndAddsVarying) {
@@ -1489,24 +1489,120 @@ TEST(Sm3ToMslTest, ShaderModelOneTexcoordCopiesTheVarying) {
     EXPECT_NE(shader.msl.find("t0 = in.texcoord0;"), std::string::npos);
 }
 
-TEST(Sm3ToMslTest, ShaderModelOneDependentCoordinatesUsePartialWrites) {
+// ps_1_x texture-matrix rows (Learn texm3x2pad / texm3x2tex): each row is
+// dot(texcoord(m).xyz, t(n).rgb), and the terminal op samples its stage at
+// the product. Rendering is checked against Windows by the D3D9 oracle
+// ps1x_* scenes; these pin the lowering and its refusals.
+// Learn (def - vs): a def'd register replaces the constant everywhere,
+// relative reads included (Sims 3 leaf cards read c[a0.z + 132] from defs).
+TEST(Sm3ToMslTest, RelativeConstantReadsReturnDefinedConstants) {
+    const std::vector<u32> tokens{
+        vs_version(3, 0),
+        instruction(81 /* DEF */, 5), dst(CONST, 132), float_token(-0.5f),
+        float_token(0.5f), float_token(1.0f / 127.0f), float_token(-1.0f),
+        instruction(31 /* DCL */, 2), 0, dst(INPUT, 0),
+        instruction(31 /* DCL */, 2), 0, 0xE00F0000u /* o0 */,
+        instruction(46 /* MOVA */, 2), dst(3 /* ADDR */, 0, 0x1), src(INPUT, 0, 0x00),
+        instruction(1 /* MOV */, 3), 0xE00F0000u /* o0 */, src(CONST, 132) | (1u << 13),
+        0xB0000000u,
+        END_TOKEN,
+    };
+    const Sm3Shader shader = translate(tokens);
+    ASSERT_TRUE(shader.ok) << shader.failure;
+    EXPECT_NE(shader.msl.find("case 132: return float4(-0.5, 0.5, 0.00787401572, -1.0);"),
+              std::string::npos)
+        << shader.msl;
+}
+
+TEST(Sm3ToMslTest, ShaderModelOneMatrixRowsSampleTheProduct) {
     const std::vector<u32> tokens{
         ps_version(1, 1),
-        instruction(71 /* TEXM3X2PAD */, 2), dst(TEXTURE, 1),
-        src(TEXTURE, 0),
-        instruction(73 /* TEXM3X3PAD */, 2), dst(TEXTURE, 2),
-        src(TEXTURE, 0),
+        instruction(66 /* TEX */, 1), dst(TEXTURE, 0),
+        instruction(71 /* TEXM3X2PAD */, 2), dst(TEXTURE, 1), src(TEXTURE, 0),
+        instruction(72 /* TEXM3X2TEX */, 2), dst(TEXTURE, 2), src(TEXTURE, 0),
         instruction(1 /* MOV */, 2), dst(TEMP, 0), src(TEXTURE, 2),
         END_TOKEN,
     };
     const Sm3Shader shader = translate(tokens);
     ASSERT_TRUE(shader.ok) << shader.failure;
-    EXPECT_NE(shader.msl.find("t1.xy = in.texcoord0.xy;"), std::string::npos)
+    EXPECT_NE(shader.msl.find("sm1_matrix1.x = dot(in.texcoord1.xyz"), std::string::npos)
         << shader.msl;
-    EXPECT_NE(shader.msl.find("t2.xyz = in.texcoord0.xyz;"), std::string::npos)
+    EXPECT_NE(shader.msl.find("sm1_matrix1.y = dot(in.texcoord2.xyz"), std::string::npos)
         << shader.msl;
-    EXPECT_EQ(shader.msl.find("t1 = in.texcoord0.xy;"), std::string::npos);
-    EXPECT_EQ(shader.msl.find("t2 = in.texcoord0.xyz;"), std::string::npos);
+    EXPECT_NE(shader.msl.find("tex2.sample(samp2, (float3(sm1_matrix1.xy, 0.0)).xy)"),
+              std::string::npos)
+        << shader.msl;
+    EXPECT_TRUE(shader.samplers_used[2]);
+    EXPECT_FALSE(shader.uses_bump_env);
+}
+
+TEST(Sm3ToMslTest, ShaderModelOneIncompleteMatrixSequencesAreRefused) {
+    // A pad row with no terminal op of its own size, and a 3x3 terminal op
+    // after a single pad, compute nothing defined.
+    const std::vector<u32> mixed{
+        ps_version(1, 1),
+        instruction(66, 1), dst(TEXTURE, 0),
+        instruction(71 /* TEXM3X2PAD */, 2), dst(TEXTURE, 1), src(TEXTURE, 0),
+        instruction(74 /* TEXM3X3TEX */, 2), dst(TEXTURE, 2), src(TEXTURE, 0),
+        END_TOKEN,
+    };
+    EXPECT_FALSE(translate(mixed).ok);
+    const std::vector<u32> too_many{
+        ps_version(1, 1),
+        instruction(66, 1), dst(TEXTURE, 0),
+        instruction(71, 2), dst(TEXTURE, 1), src(TEXTURE, 0),
+        instruction(71, 2), dst(TEXTURE, 2), src(TEXTURE, 0),
+        END_TOKEN,
+    };
+    EXPECT_FALSE(translate(too_many).ok);
+}
+
+TEST(Sm3ToMslTest, ShaderModelOneBumpOpsReadTheStageBumpEnvironment) {
+    const std::vector<u32> tokens{
+        ps_version(1, 1),
+        instruction(66, 1), dst(TEXTURE, 0),
+        instruction(68 /* TEXBEML */, 2), dst(TEXTURE, 1), src(TEXTURE, 0),
+        instruction(1, 2), dst(TEMP, 0), src(TEXTURE, 1),
+        END_TOKEN,
+    };
+    const Sm3Shader shader = translate(tokens);
+    ASSERT_TRUE(shader.ok) << shader.failure;
+    EXPECT_TRUE(shader.uses_bump_env);
+    EXPECT_NE(shader.msl.find("float4 bump_env[16];"), std::string::npos) << shader.msl;
+    // Stage 1's matrix and luminance: bump_env[2] and bump_env[3].
+    EXPECT_NE(shader.msl.find("cb.bump_env[2].x"), std::string::npos) << shader.msl;
+    EXPECT_NE(shader.msl.find("cb.bump_env[3].x"), std::string::npos) << shader.msl;
+}
+
+TEST(Sm3ToMslTest, ShaderModelOneCubeStageSamplesWithAVector) {
+    const std::vector<u32> tokens{
+        ps_version(1, 1),
+        instruction(66, 1), dst(TEXTURE, 0),
+        instruction(1, 2), dst(TEMP, 0), src(TEXTURE, 0),
+        END_TOKEN,
+    };
+    const u32 ttf[1] = {0};
+    const u8 dims[1] = {3};
+    const Sm3Shader shader =
+        translate_sm3_to_msl(tokens.data(), tokens.size(), ttf, 1, dims);
+    ASSERT_TRUE(shader.ok) << shader.failure;
+    EXPECT_NE(shader.msl.find("texturecube<float> tex0"), std::string::npos) << shader.msl;
+    EXPECT_NE(shader.msl.find("tex0.sample(samp0, (t0).xyz)"), std::string::npos)
+        << shader.msl;
+}
+
+TEST(Sm3ToMslTest, PhaseIsAcceptedOnlyInPs14) {
+    const std::vector<u32> ps14{
+        ps_version(1, 4),
+        instruction(1, 2), dst(TEMP, 0), src(TEXTURE, 0),
+        0x0000FFFDu,
+        instruction(1, 2), dst(TEMP, 0), src(TEMP, 0),
+        END_TOKEN,
+    };
+    EXPECT_TRUE(translate(ps14).ok) << translate(ps14).failure;
+    std::vector<u32> ps13 = ps14;
+    ps13[0] = ps_version(1, 3);
+    EXPECT_FALSE(translate(ps13).ok);
 }
 
 TEST(Sm3ToMslTest, ShaderModelOneTexldIntoTempWithCoordinateSource) {
@@ -1541,4 +1637,72 @@ TEST(Sm3ToMslTest, RefusesShaderModelsOutsideOneToThree) {
     const Sm3Shader shader = translate({vs_version(4, 0), END_TOKEN});
     EXPECT_FALSE(shader.ok);
     EXPECT_NE(shader.failure.find("shader model 4"), std::string::npos);
+}
+
+#include "sm3_def_test_fixture.hpp"
+
+TEST(Sm3ToMslTest, LargeVertexDefSetsUseRawGlobalLutAndPresenceBitmap) {
+    for (u32 model : {1u, 2u, 3u}) {
+        for (u32 count : {0u, 1u, 2u, 8u, 15u, 16u, 17u, 95u, 96u, 97u, 256u}) {
+            const auto tokens = sm3_def_test::vertex(model, count, true);
+            const auto shader = translate(tokens);
+            ASSERT_TRUE(shader.ok) << shader.failure;
+            EXPECT_EQ(shader.float_constant_count, 256u);
+            EXPECT_EQ(shader.msl.find("constant uint4 sm3_def_values[256]") != std::string::npos, count >= 96);
+            EXPECT_EQ(shader.msl.find("switch (i)") != std::string::npos, count > 0 && count < 96);
+            EXPECT_EQ(shader.msl.find("_array_copy"), std::string::npos);
+            if (count >= 96) {
+                EXPECT_NE(shader.msl.find("constant uint sm3_def_present[8]"), std::string::npos);
+                EXPECT_NE(shader.msl.find("1u << (idx & 31u)"), std::string::npos);
+                EXPECT_NE(shader.msl.find("as_type<float4>(sm3_def_values[idx]) : cb.c[idx]"), std::string::npos);
+                EXPECT_NE(shader.msl.find("2147483648u, 2143363909u"), std::string::npos);
+            }
+        }
+    }
+}
+
+TEST(Sm3ToMslTest, RelativeBaseIsCheckedBeforeSignedAdditionForAllVertexModels) {
+    for (u32 model : {1u, 2u, 3u}) {
+        const auto tokens = sm3_def_test::vertex(model, 16, true, 255, model == 1 ? 0 : 3, 0x1b, 1);
+        const auto shader = translate(tokens);
+        ASSERT_TRUE(shader.ok) << shader.failure;
+        EXPECT_NE(shader.msl.find("if (offset < -base || offset >= 256 - base)"), std::string::npos);
+        EXPECT_NE(shader.msl.find(model == 1 ? "sm3_c(cb, a0.x, 255)" : "sm3_c(cb, a0.w, 255)"), std::string::npos);
+        EXPECT_EQ(shader.msl.find("a0.w + 255"), std::string::npos);
+    }
+    for (u32 model : {2u, 3u}) {
+        const auto shader = translate(sm3_def_test::vertex(model, 16, true, 7, 0, 0xe4, 0, true));
+        ASSERT_TRUE(shader.ok) << shader.failure;
+        EXPECT_NE(shader.msl.find("sm3_c(cb, aL, 7)"), std::string::npos);
+    }
+}
+
+TEST(Sm3ToMslTest, PixelDefLastDefinitionPersistsAndPreconditionsAreValidated) {
+    for (u32 model : {1u, 2u, 3u}) {
+        const u32 version = ps_version(model, model == 1 ? 1 : 0);
+        const u32 output_type = model == 1 ? TEMP : COLOROUT;
+        std::vector<u32> tokens{version,
+            instruction(81, 5), dst(CONST, 0), float_token(1), float_token(1), float_token(1), float_token(1),
+            instruction(81, 5), dst(CONST, 0), float_token(0.25f), float_token(0.5f), float_token(0.75f), float_token(1.0f),
+            instruction(1, 2), dst(output_type, 0), src(CONST, 0), END_TOKEN};
+        const auto shader = translate(tokens);
+        ASSERT_TRUE(shader.ok) << shader.failure;
+        EXPECT_NE(shader.msl.find("def0 = float4(0.25, 0.5, 0.75, 1.0)"), std::string::npos);
+        EXPECT_EQ(shader.msl.find("sm3_def_values"), std::string::npos);
+        for (u32 bad_dst : {dst(TEMP, 0), dst(CONST, 0, 1), dst(CONST, model == 1 ? 8u : model == 2 ? 32u : 224u)}) {
+            auto invalid = tokens;
+            invalid[2] = bad_dst;
+            EXPECT_FALSE(translate(invalid).ok);
+        }
+        auto late = tokens;
+        late.insert(late.begin() + 1, {instruction(1, 2), dst(TEMP, 0), src(CONST, 1)});
+        const auto refused = translate(late);
+        EXPECT_FALSE(refused.ok);
+        EXPECT_NE(refused.failure.find("pixel DEF after"), std::string::npos);
+    }
+    auto invalid = sm3_def_test::vertex(3, 16, false);
+    invalid[2] = dst(CONST, 256);
+    const auto refused = translate(invalid);
+    EXPECT_FALSE(refused.ok);
+    EXPECT_NE(refused.failure.find("DEF constant register"), std::string::npos);
 }

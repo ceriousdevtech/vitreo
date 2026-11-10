@@ -8,6 +8,8 @@
 #include "ipc/hwnd_registry.hpp"
 #include "winapi/user32/messages/message_time.hpp"
 #include "winapi/user32/user32_ext.hpp"
+#include "winapi/user32/painting/painting.hpp"
+#include "winapi/graphics/gdi32/gdi32.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/thread/thread.hpp"
 #include "winapi/core/marshaler.hpp"
@@ -37,7 +39,7 @@ namespace vitreo::winapi {
 // dialog_box  — modal dialog (DialogBoxParamW)
 // =============================================================================
 
-i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
+i64 DialogManager::dialog_box(u64 hinstance, u64 template_id,
                               windowing::HWND parent,
                               u64 dlgproc, u64 init_param,
                               bool require_template) {
@@ -54,9 +56,9 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
         return -1;
     }
 
-    // Reset modal state
-    m_modal_ended  = false;
-    m_modal_result = 0;
+    // Nested DialogBox (opened from an outer DLGPROC) restores the outer
+    // dialog as the current modal one when it returns.
+    const windowing::HWND outer_modal = m_current_modal_hwnd;
 
     // Create the dialog (reuse CreateDialogParamW logic).
     // WM_INITDIALOG is sent synchronously by create_dialog (default),
@@ -77,7 +79,7 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
         const auto* win = m_hwnd_mgr.find(dlg_hwnd);
         std::fprintf(stderr, "[dlg-diag] modal hwnd=0x%x template=0x%llx parent=0x%x valid=%d ended=%d visible=%d style=0x%x rect=(%d,%d,%d,%d)\n",
             dlg_hwnd, static_cast<unsigned long long>(template_id), parent,
-            win != nullptr, m_modal_ended, win ? win->visible : false,
+            win != nullptr, dialog_ended(dlg_hwnd), win ? win->visible : false,
             win ? win->style : 0, win ? win->rect.left : 0, win ? win->rect.top : 0,
             win ? win->rect.right : 0, win ? win->rect.bottom : 0);
     }
@@ -87,11 +89,13 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
     // owner instead of enabling it unconditionally.
     bool restore_owner = false;
     u64 owner_wndproc = 0;
-    if (parent != windowing::NULL_HWND && parent != windowing::HWND_DESKTOP) {
+    if (parent != windowing::NULL_HWND && parent != windowing::HWND_DESKTOP &&
+        !dialog_ended(dlg_hwnd)) {
         if (windowing::WindowData* owner = m_hwnd_mgr.find(parent);
             owner != nullptr && owner->enabled) {
             restore_owner = true;
             owner_wndproc = owner->wndproc;
+            m_disabled_owners[dlg_hwnd] = DisabledOwner{parent, owner_wndproc};
             owner->enabled = false;
             (void)m_control_host.set_control_enabled(parent, false);
             if (owner_wndproc != 0) {
@@ -118,7 +122,7 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
         // External exit signal: e.g. the guest queued a chain-load via
         // ShellExecute/CreateProcess. In that model the current guest must
         // exit so the next executable can run, so we release the modal pump.
-        if (!m_modal_ended && m_modal_exit_predicate && m_modal_exit_predicate()) {
+        if (!dialog_ended(dlg_hwnd) && m_modal_exit_predicate && m_modal_exit_predicate()) {
             VITREO_TRACE("[dialog] modal pump: external exit signal, ending dialog\n");
             end_dialog(dlg_hwnd, 1 /*IDOK*/);
             break;
@@ -168,7 +172,7 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
 
         if (!got) {
             // Queue empty and no quit — check if EndDialog was called
-            if (m_modal_ended) {
+            if (dialog_ended(dlg_hwnd)) {
                 break;
             }
             if (m_queue.quit_posted(modal_thread_id)) {
@@ -184,11 +188,26 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
                     static_cast<int>(quit_msg.wParam), modal_thread_id);
                 break;
             }
-            // Synthesize WM_TIMER when the queue is empty — same contract as
+            // After everything queued, WM_PAINT for a window of this thread
+            // with an update region comes before WM_TIMER (Learn GetMessage;
+            // s2msg_queue_probe "order"). It stays pending until validated.
+            if (m_paint_mgr) {
+                const u64 paint_hwnd =
+                    m_paint_mgr->find_window_needing_paint(modal_thread_id, 0);
+                if (paint_hwnd != 0) {
+                    msg = {};
+                    msg.hwnd = static_cast<windowing::HWND>(paint_hwnd);
+                    msg.message = windowing::WM::PAINT;
+                    got = true;
+                    VITREO_TRACE("[dialog] modal synthesized WM_PAINT hwnd=0x%llx\n",
+                                 static_cast<unsigned long long>(paint_hwnd));
+                }
+            }
+            // Then synthesize WM_TIMER when the queue is empty — same contract as
             // GetMessage. A SetTimer armed from the dialog (for example
             // SetTimer(1, 1000) in WM_INITDIALOG) must fire here or the
             // dialog proc never sees it.
-            if (m_user32_ext_mgr) {
+            if (!got && m_user32_ext_mgr) {
                 windowing::HWND timer_hwnd = 0;
                 u64 timer_id = 0;
                 GuestAddr timer_callback = 0;
@@ -269,7 +288,15 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
                 bool is_notification = (msg.message == windowing::WM::COMMAND)
                                     || (msg.message == 0x004E); // WM_NOTIFY = 0x4E
                 if (!is_notification) {
-                    // Skip non-notification messages for child controls
+                    // Skip non-notification messages for child controls. A
+                    // native control is painted by the host, so its update
+                    // region is validated here or WM_PAINT would repeat.
+                    if (msg.message == windowing::WM::PAINT) {
+                        // The control draws: it asks its parent for its
+                        // colours as its class procedure would.
+                        if (m_user32_ext_mgr) m_user32_ext_mgr->request_control_colors(msg.hwnd);
+                        if (m_paint_mgr) m_paint_mgr->validate_rect(static_cast<u64>(msg.hwnd), nullptr);
+                    }
                     continue;
                 }
                 // Walk up parent chain to find dialog with a wndproc
@@ -316,18 +343,35 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
                     dispatch_hwnd,
                     static_cast<unsigned>(msg.wParam & 0xFFFF),
                     static_cast<unsigned long long>(result),
-                    m_modal_ended ? 1 : 0);
+                    dialog_ended(dlg_hwnd) ? 1 : 0);
             }
 
             // Default dialog behavior: if the window is asked to close and guest
             // doesn't end the modal loop itself, end with IDCANCEL.
-            if (msg.message == windowing::WM::CLOSE && !m_modal_ended) {
+            if (msg.message == windowing::WM::CLOSE && !dialog_ended(dlg_hwnd)) {
                 end_dialog(dlg_hwnd, 2 /*IDCANCEL*/);
             }
         }
 
+        // As DispatchMessage: present GDI drawing after paint and mouse
+        // messages, and validate a WM_PAINT whose procedure did not, so it
+        // is not retrieved again forever.
+        if (m_gdi_mgr && msg.hwnd != windowing::NULL_HWND) {
+            const u32 m = msg.message;
+            const bool paint_or_mouse =
+                m == windowing::WM::PAINT || m == 0x0014 /* WM_ERASEBKGND */ ||
+                m == 0x0085 /* WM_NCPAINT */ || m == 0x0088 /* WM_SYNCPAINT */ ||
+                (m >= windowing::WM::MOUSEMOVE && m <= 0x020E /* WM_MOUSEHWHEEL */);
+            if (paint_or_mouse && m_hwnd_mgr.is_valid(msg.hwnd)) {
+                m_gdi_mgr->flush_window(static_cast<u64>(msg.hwnd));
+            }
+        }
+        if (msg.message == windowing::WM::PAINT && m_paint_mgr) {
+            m_paint_mgr->validate_rect(static_cast<u64>(msg.hwnd), nullptr);
+        }
+
         // Check if EndDialog was called during dispatch
-        if (m_modal_ended) {
+        if (dialog_ended(dlg_hwnd)) {
             break;
         }
     }
@@ -351,25 +395,25 @@ i32 DialogManager::dialog_box(u64 hinstance, u64 template_id,
         m_hwnd_mgr.destroy(hwnd);
         ipc::hwnd_registry_unpublish(static_cast<u32>(hwnd));
     };
+    // A loop that ended without EndDialog (WM_QUIT) still gives the owner
+    // back before the dialog goes.
+    enable_disabled_owner(dlg_hwnd);
+    i64 modal_result = 0;
+    if (const auto ended = m_ended_dialogs.find(dlg_hwnd); ended != m_ended_dialogs.end()) {
+        modal_result = ended->second;
+        m_ended_dialogs.erase(ended);
+    }
     destroy_dialog_tree(destroy_dialog_tree, dlg_hwnd);
-    m_current_modal_hwnd = windowing::NULL_HWND;
+    m_current_modal_hwnd = m_hwnd_mgr.is_valid(outer_modal) ? outer_modal : windowing::NULL_HWND;
 
     if (restore_owner) {
-        if (windowing::WindowData* owner = m_hwnd_mgr.find(parent)) {
-            owner->enabled = true;
-            (void)m_control_host.set_control_enabled(parent, true);
-            if (owner_wndproc != 0) {
-                (void)m_dlgproc_callback(parent, windowing::WM::ENABLE, 1, 0,
-                                         owner_wndproc);
-            }
-            (void)m_control_host.activate_window(parent);
-        }
+        if (m_hwnd_mgr.find(parent) != nullptr) (void)m_control_host.activate_window(parent);
     }
 
-    VITREO_TRACE( "[dialog] DialogBoxParamW: modal loop ended, result=%d\n",
-                 m_modal_result);
+    VITREO_TRACE( "[dialog] DialogBoxParamW: modal loop ended, result=%lld\n",
+                 static_cast<long long>(modal_result));
 
-    return m_modal_result;
+    return modal_result;
 }
 
 } // namespace vitreo::winapi

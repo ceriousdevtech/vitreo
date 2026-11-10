@@ -506,27 +506,14 @@ void Kernel32ExtManager::impl_ConnectNamedPipe(Marshaler& m) {
     }
 
     if (overlapped != 0) {
-        constexpr u32 STATUS_PENDING = 0x00000103;
-        const GuestAddr internal_high =
-            overlapped + (is_64bit ? 8u : 4u);
-        const GuestAddr event_field =
-            overlapped + (is_64bit ? 24u : 16u);
-        const auto status_write = is_64bit
-            ? m_memory.write_u64(overlapped, STATUS_PENDING)
-            : m_memory.write_u32(overlapped, STATUS_PENDING);
-        const auto count_write = is_64bit
-            ? m_memory.write_u64(internal_high, 0)
-            : m_memory.write_u32(internal_high, 0);
-        if (status_write.is_err() || count_write.is_err()) {
-            set_last_error(error_codes::ERROR_NOACCESS);
-            m.set_return(0);
-            return;
-        }
+        const u32 preparation=m_file_manager->prepare_overlapped_io(h,overlapped,is_64bit);
+        if(preparation) {set_last_error(preparation);m.set_return(0);return;}
 
         u64 generation = 0;
         const PipeConnectResult start =
             m_file_manager->begin_async_named_pipe_connect(h, overlapped, &generation);
         if (start == PipeConnectResult::AlreadyConnected) {
+            m_file_manager->abandon_overlapped_io(h,overlapped,is_64bit,error_codes::ERROR_PIPE_CONNECTED);
             ipc::ipc_log(
                 "ConnectNamedPipe h=0x%x ovlp=0x%llx -> already connected",
                 static_cast<unsigned>(h),
@@ -536,27 +523,18 @@ void Kernel32ExtManager::impl_ConnectNamedPipe(Marshaler& m) {
             return;
         }
         if (start == PipeConnectResult::InvalidHandle) {
+            m_file_manager->abandon_overlapped_io(h,overlapped,is_64bit,error_codes::ERROR_INVALID_HANDLE);
             set_last_error(error_codes::ERROR_INVALID_HANDLE);
             m.set_return(0);
             return;
         }
         if (start != PipeConnectResult::Pending) {
+            m_file_manager->abandon_overlapped_io(h,overlapped,is_64bit,error_codes::ERROR_PIPE_LISTENING);
             set_last_error(error_codes::ERROR_PIPE_LISTENING);
             m.set_return(0);
             return;
         }
 
-        u64 event_value = is_64bit
-            ? m_memory.read_u64(event_field).value_or(0)
-            : m_memory.read_u32(event_field).value_or(0);
-        if (event_value != 0 && m_sync_manager) {
-            (void)m_sync_manager->reset_event(
-                static_cast<Handle>(event_value & ~u64{1}));
-        }
-
-        // The completion belongs to the request: record the handle's port
-        // now so a cancel caused by CloseHandle still reaches it.
-        snapshot_completion_route(h, overlapped);
         std::vector<PipeConnectWorker> finished;
         {
             std::lock_guard<std::mutex> lock(m_pipe_connect_workers_mutex);

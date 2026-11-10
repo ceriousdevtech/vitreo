@@ -46,6 +46,7 @@ static void note_first_top_level_window(windowing::HWND hwnd, u32 style) noexcep
 // pulling in user32_internal.hpp would collide with both.
 std::string wstring_to_utf8(const std::wstring& s);
 [[nodiscard]] u64 effective_wndproc(const windowing::WindowData& win) noexcept;
+[[nodiscard]] bool is_module_native_class_proc(u64 proc) noexcept;
 
 static std::wstring utf8_to_wstring(const std::string& s) {
     std::wstring result;
@@ -313,7 +314,11 @@ windowing::HWND WindowManager::create_window(
         class_name = cls->class_name;
         // The system control classes are presented by native controls; a
         // window of one keeps the native control path (no guest procedure).
-        if (cls->system) builtin_ord = builtin_control_ordinal(cls->class_name);
+        // So are the classes a host-implemented DLL registers for its native
+        // control (Msftedit.dll's RICHEDIT50W).
+        if (cls->system || is_module_native_class_proc(cls->wndproc)) {
+            builtin_ord = builtin_control_ordinal(cls->class_name);
+        }
     } else {
         // A system class the process unregistered (UnregisterClass(name,
         // NULL)) is gone: CreateWindowEx fails like for any unknown class
@@ -705,11 +710,11 @@ windowing::HWND WindowManager::create_window(
             data.rect.right = data.rect.left + w;
             data.rect.bottom = data.rect.top + h;
             data.client_rect = windowing::Rect{0, 0, std::max(0, w - nc_w), std::max(0, h - nc_h)};
-            if (windowing::WindowData* live = m_hwnd_mgr.find(hwnd)) {
-                live->rect = data.rect;
-                live->normal_rect = data.rect;
-                live->client_rect = data.client_rect;
-            }
+            if (!m_hwnd_mgr.update_geometry(hwnd, [&](windowing::WindowData& live) {
+                live.rect = data.rect;
+                live.normal_rect = data.rect;
+                live.client_rect = data.client_rect;
+            })) return windowing::NULL_HWND;
         }
     }
 
@@ -799,31 +804,40 @@ windowing::HWND WindowManager::create_window(
                 static_cast<i32>(right.value()),
                 static_cast<i32>(bottom.value())};
             if (client.right >= client.left && client.bottom >= client.top) {
-                if (windowing::WindowData* live = m_hwnd_mgr.find(hwnd)) {
-                    live->client_offset = {
-                        client.left - proposed.left,
-                        client.top - proposed.top};
-                    // Learn: an explicit 0×0 CreateWindow stays 0×0 after
-                    // WM_NCCALCSIZE. Coercing to 1×1 lied about GetClientRect
-                    // while Cocoa keeps a separate min native backing.
-                    live->client_rect = {
-                        0, 0, client.width(), client.height()};
-                    live->client_drawn_frame = windowing::nccalcsize_guest_owns_frame(
-                        proposed, client, live->style);
-                    if (!is_child) {
-                        m_bridge.set_client_drawn_frame(
-                            hwnd, live->client_drawn_frame);
-                        m_bridge.set_frame(hwnd, windowing::Rect{
-                            data.rect.left, data.rect.top,
-                            data.rect.left + live->client_rect.width(),
-                            data.rect.top + live->client_rect.height()});
-                    }
-                    ipc::hwnd_registry_publish(
-                        static_cast<u32>(hwnd), live->client_rect.width(),
-                        live->client_rect.height(), live->owner_thread_id,
-                        wstring_to_utf8(live->class_name),
-                        wstring_to_utf8(live->title));
+                bool client_drawn_frame = false;
+                u32 owner_thread = 0;
+                std::wstring published_class, published_title;
+                const auto copy_metadata = [&](windowing::WindowData& live) {
+                    client_drawn_frame = live.client_drawn_frame;
+                    owner_thread = live.owner_thread_id;
+                    published_class = live.class_name;
+                    published_title = live.title;
+                };
+                auto committed = m_hwnd_mgr.update_geometry(hwnd, [&](windowing::WindowData& live) {
+                    live.client_offset = {client.left - proposed.left, client.top - proposed.top};
+                    // Keep an explicitly empty client area; Cocoa's minimum
+                    // native backing is independent of guest geometry.
+                    live.client_rect = {0, 0, client.width(), client.height()};
+                    live.client_drawn_frame = windowing::nccalcsize_guest_owns_frame(
+                        proposed, client, live.style);
+                    copy_metadata(live);
+                });
+                if (!committed) return windowing::NULL_HWND;
+                if (!is_child) {
+                    m_bridge.set_client_drawn_frame(hwnd, client_drawn_frame);
+                    committed = m_hwnd_mgr.update_geometry(hwnd, copy_metadata);
+                    if (!committed) return windowing::NULL_HWND;
+                    m_bridge.set_frame(hwnd, windowing::Rect{
+                        data.rect.left, data.rect.top,
+                        data.rect.left + committed->client_rect.width(),
+                        data.rect.top + committed->client_rect.height()});
+                    committed = m_hwnd_mgr.update_geometry(hwnd, copy_metadata);
+                    if (!committed) return windowing::NULL_HWND;
                 }
+                ipc::hwnd_registry_publish(
+                    static_cast<u32>(hwnd), committed->client_rect.width(),
+                    committed->client_rect.height(), owner_thread,
+                    wstring_to_utf8(published_class), wstring_to_utf8(published_title));
             }
         }
     }
@@ -875,9 +889,9 @@ windowing::HWND WindowManager::create_window(
             const bool overlapped_window =
                 !is_child && (style & windowing::WS::POPUP) == 0;
             if (overlapped_window) {
-                if (windowing::WindowData* live = m_hwnd_mgr.find(hwnd)) {
-                    live->pending_size_move = true;
-                }
+                if (!m_hwnd_mgr.update_geometry(hwnd, [](windowing::WindowData& live) {
+                    live.pending_size_move = true;
+                })) return windowing::NULL_HWND;
             } else if (const windowing::WindowData* live = m_hwnd_mgr.find(hwnd)) {
                 const windowing::Rect client = live->client_rect;
                 const i32 mx = live->rect.left + live->client_offset.x;

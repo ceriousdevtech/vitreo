@@ -13,7 +13,7 @@
 namespace vitreo::cpu::jit {
 namespace {
 
-enum class Effect : u8 { Neutral = 0, FullWriter, Barrier };
+using Effect = FlagLivenessScratch::Effect;
 
 bool starts_with(const char* s, const char* pfx) noexcept {
     if (!s || !pfx) return false;
@@ -252,7 +252,7 @@ Effect classify(const DecodedInstruction& instr) noexcept {
 
 // Writer kinds that publish host NZCV (m_flags.nzcv != None). OR/XOR 32 and
 // CMP/SUB 16 do not — omitting those would starve a reconstruct.
-enum class PubKind : u8 { None, Sub, And, Add };
+using PubKind = FlagLivenessScratch::PubKind;
 
 PubKind publisher_kind(Opcode op) noexcept {
     if ((op >= Opcode::CMP_AL_IMM8 && op <= Opcode::CMP_R64_RM64) ||
@@ -945,7 +945,7 @@ void compute_omit_lazy_flags(
     const BasicBlock& block, std::vector<u8>& omit,
     std::vector<StencilFlagRecovery>* recovery,
     std::vector<u32>* elided_span,
-    bool cross_nzcv_readers) noexcept {
+    bool cross_nzcv_readers, FlagLivenessScratch* scratch) noexcept {
     const u32 n = block.instruction_count;
     omit.assign(n, 0);
     if (recovery != nullptr) recovery->clear();
@@ -1090,14 +1090,18 @@ void compute_omit_lazy_flags(
     }
 
 
-    std::vector<Effect> fx(n, Effect::Barrier);
+    FlagLivenessScratch local;
+    auto& work = scratch != nullptr ? *scratch : local;
+    auto& fx = work.effects;
+    fx.assign(n, Effect::Barrier);
     for (u32 i = 0; i < n; ++i) {
         fx[i] = classify(block.instructions[i]);
     }
 
     // Address of each instruction, and a map back from address to index, so a
     // branch target can be resolved to a position in this block.
-    std::vector<u64> addr(n, 0);
+    auto& addr = work.addresses;
+    addr.assign(n, 0);
     {
         u64 a = block.start_addr;
         for (u32 i = 0; i < n; ++i) {
@@ -1115,7 +1119,8 @@ void compute_omit_lazy_flags(
     // Instructions some direct in-block branch lands on. Such an instruction
     // has a second predecessor, so the NZCV live on entry is not necessarily
     // the one its textual predecessor left.
-    std::vector<bool> join(n, false);
+    auto& join = work.joins;
+    join.assign(n, false);
     for (u32 j = 0; j < n; ++j) {
         const DecodedInstruction& br = block.instructions[j];
         if (br.operand_count < 1) continue;
@@ -1133,7 +1138,8 @@ void compute_omit_lazy_flags(
     // carry chain: `add; adc; adc; sbb` keeps the carry in PSTATE the whole
     // way, so every link is a publisher for the link after it. Computed as a
     // forward pass because link k's status depends on link k-1's.
-    std::vector<PubKind> chain(n, PubKind::None);
+    auto& chain = work.publishers;
+    chain.assign(n, PubKind::None);
     for (u32 i = 0; i < n; ++i) {
         const DecodedInstruction& in = block.instructions[i];
         const PubKind own = (fx[i] == Effect::FullWriter)

@@ -59,7 +59,7 @@ const A09aOracleShader& shader(const char* name) {
 
 // Translate, compile under the production math mode, dispatch with the input
 // words at t0 and a 0xCD-filled u0, and return the u0 words.
-std::vector<std::uint32_t> run(const A09aOracleShader& entry) {
+std::vector<std::uint32_t> run(const A09aOracleShader& entry, bool safe = false) {
     auto& device = MetalDevice::instance();
     const auto container = parse_dxbc(entry.dxbc, entry.dxbc_size);
     EXPECT_TRUE(container.valid()) << entry.name;
@@ -79,7 +79,8 @@ std::vector<std::uint32_t> run(const A09aOracleShader& entry) {
     pd.math_mode = !contract.refactoring_allowed || contract.uses_precise
                        ? BackendMathMode::Safe
                        : BackendMathMode::Relaxed;
-    pd.cache_key = std::hash<std::string>{}(std::string("a09a:") + entry.name);
+    if (safe) pd.math_mode = BackendMathMode::Safe;
+    pd.cache_key = std::hash<std::string>{}(std::string(safe ? "a09a:safe:" : "a09a:") + entry.name);
     auto pipeline = device.create_compute_pipeline(pd);
     EXPECT_TRUE(pipeline && pipeline->valid()) << msl.msl_text();
     if (!pipeline || !pipeline->valid()) return {};
@@ -115,17 +116,18 @@ std::vector<std::uint32_t> run(const A09aOracleShader& entry) {
 enum class Rule {
     Exact,      // bit for bit
     Float,      // bit for bit, or both float NaN (3.1.3.2: NaN bits are free)
+    MinMax,     // 3.1.3: NaN payload, denormal output, and tied-zero latitude
     Half,       // bit for bit, or both a half NaN in the low 16 bits
     Ulp1,       // within 1 ulp of WARP (sqrt: "Precision is 1 ulp")
     NaNWhenNaN, // only: a NaN on WARP is a NaN here (sin/cos of INF/NaN)
 };
 
 void expect_columns(const char* name, unsigned columns,
-                    const std::vector<std::pair<unsigned, Rule>>& checks) {
+                    const std::vector<std::pair<unsigned, Rule>>& checks, bool safe = false) {
     auto& device = MetalDevice::instance();
     if (!device.available()) GTEST_SKIP() << "no Metal device";
     const auto& entry = shader(name);
-    const auto got = run(entry);
+    const auto got = run(entry, safe);
     ASSERT_EQ(got.size(), entry.words) << name;
     const unsigned threads = entry.words / columns;
     for (unsigned t = 0; t < threads; ++t) {
@@ -135,6 +137,13 @@ void expect_columns(const char* name, unsigned columns,
             bool ok = want == have;
             if (!ok && rule == Rule::Float) {
                 ok = is_nan32(want) && is_nan32(have);
+            } else if (!ok && rule == Rule::MinMax) {
+                const auto flush = [](std::uint32_t bits) {
+                    return (bits & 0x7F800000u) == 0 ? bits & 0x80000000u : bits;
+                };
+                const auto a = flush(want), b = flush(have);
+                ok = (is_nan32(want) && is_nan32(have)) || a == b ||
+                     ((a & 0x7FFFFFFFu) == 0 && (b & 0x7FFFFFFFu) == 0);
             } else if (!ok && rule == Rule::Half) {
                 ok = is_half_nan(want) && is_half_nan(have);
             } else if (!ok && rule == Rule::Ulp1) {
@@ -162,6 +171,18 @@ TEST(ShaderAluGpu, SelfComparesSeeNaNUnderRelaxedMath) {
     expect_columns("fself", 16,
                    {{0, Rule::Exact}, {1, Rule::Exact}, {3, Rule::Exact},
                     {11, Rule::Exact}, {9, Rule::Float}, {10, Rule::Float}});
+}
+
+// WARP corpus includes both NaNs (max(x,x)), one NaN against a numeric
+// operand, infinities, normal/subnormal values and signed zero. D3D11.3
+// 3.1.3 permits either tied-zero sign and flushed or unflushed denormal output.
+TEST(ShaderAluGpu, NativeMinMaxMatchWinoracleInSafeAndRelaxedMath) {
+    for (bool safe : {false, true}) {
+        SCOPED_TRACE(safe ? "Safe" : "production Relaxed");
+        expect_columns("fself", 16,
+            {{8, Rule::MinMax}, {12, Rule::MinMax},
+             {13, Rule::MinMax}, {15, Rule::MinMax}}, safe);
+    }
 }
 
 // frc (22.10.7): [0, 1), +-INF -> NaN; sqrt (22.10.21) within 1 ulp; sin and

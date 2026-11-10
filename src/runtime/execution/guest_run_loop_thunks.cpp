@@ -13,6 +13,7 @@
 #include "graphics/common/autorelease_scope.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/module/module.hpp"
+#include "winapi/kernel32/process/process.hpp"
 #include "core/memory/guest_memory.hpp"
 #include <vitreo/diagnostics.hpp>
 #include "runtime/diagnostics/hostcall_ring.hpp"
@@ -524,6 +525,64 @@ bool dispatch_guest_fault_native(
     return dispatch_x64_exception(
         cpu, memory, thunk_registry, process_mgr,
         status, /*raise_flags=*/0, nargs, args, cpu.rip, mods);
+}
+
+NativeTransferAction continue_control_transfer_native(
+    cpu::CpuState& cpu,
+    GuestMemory& memory,
+    winapi::ThunkRegistry& thunk_registry,
+    winapi::ProcessManager& process_mgr) {
+    if (process_mgr.has_exited()) return NativeTransferAction::Exit;
+    if (cpu.is_64bit() && cpu.pending_unwind.active) {
+        switch (apply_pending_unwind_64(cpu, memory, module_manager(),
+                                        process_mgr, /*in_callback=*/false)) {
+            case PendingUnwind64Action::Resume:
+            case PendingUnwind64Action::LeaveLevel:  // no level above this one
+                break;
+            case PendingUnwind64Action::Stop:
+                return NativeTransferAction::Exit;
+            case PendingUnwind64Action::Raise:
+                if (!dispatch_pending_raise_native(cpu, memory, thunk_registry,
+                                                   process_mgr)) {
+                    return process_mgr.has_exited()
+                               ? NativeTransferAction::Exit
+                               : NativeTransferAction::Unhandled;
+                }
+                break;
+        }
+    }
+    return process_mgr.has_exited() ? NativeTransferAction::Exit
+                                    : NativeTransferAction::Resume;
+}
+
+bool dispatch_pending_raise_native(
+    cpu::CpuState& cpu,
+    GuestMemory& memory,
+    winapi::ThunkRegistry& thunk_registry,
+    winapi::ProcessManager& process_mgr) {
+    auto* mods = module_manager();
+    if (mods == nullptr || !cpu.pending_raise.active) return false;
+
+    // The interpreter's x64 raise step (guest_run_loop.cpp): RIP is still at
+    // the RaiseException gateway, so leave the thunk the way its RET would.
+    // A JIT slow-path helper raise already holds the faulting RIP/RSP; native
+    // backends have no such helpers, but honour the flag the same way.
+    if (!cpu.pending_raise.from_helper) {
+        const auto ret = memory.read_u64(cpu.sp());
+        if (ret.is_err()) return false;
+        cpu.rip = ret.value();
+        cpu.set_sp(cpu.sp() + 8);
+    }
+
+    const u32 code = cpu.pending_raise.code;
+    const u32 flags = cpu.pending_raise.flags;
+    const u32 nargs = cpu.pending_raise.num_args;
+    u64 args[15] = {};
+    for (u32 i = 0; i < nargs && i < 15; ++i) args[i] = cpu.pending_raise.args[i];
+    cpu.pending_raise.clear();
+
+    return dispatch_x64_exception(cpu, memory, thunk_registry, process_mgr,
+                                  code, flags, nargs, args, cpu.rip, mods);
 }
 
 // ---------------------------------------------------------------------------

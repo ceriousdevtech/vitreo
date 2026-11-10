@@ -59,6 +59,14 @@ enum class RequestedExecutionLevel {
 [[nodiscard]] std::vector<std::string> parse_manifest_private_assemblies(
     std::span<const u8> manifest);
 
+/// The RT_MANIFEST resource with integer ID @p resource_id (Learn "Using
+/// Side-by-side Assemblies as a Resource": 1 = CREATEPROCESS_MANIFEST_RESOURCE_ID,
+/// 2 = ISOLATIONAWARE_MANIFEST_RESOURCE_ID), first language. Empty when absent.
+[[nodiscard]] std::span<const u8> pe_manifest_resource(
+    std::span<const u8> pe_data,
+    const ParsedPe& pe,
+    u16 resource_id) noexcept;
+
 [[nodiscard]] std::vector<std::string> pe_private_assemblies(
     std::span<const u8> pe_data,
     const ParsedPe& pe);

@@ -1,0 +1,823 @@
+abi ptr=8 variant=24 excepinfo=64
+load hr=00000000
+typeinfo hr=00000000
+iface hr=00000000
+view dispatch kind=4 funcs=31 impl=1 flags=1040 vft=56
+view dispatch func=0 "QueryInterface" memid=60000000 kind=4 inv=1 cc=4 params=2 opt=0 vft=0 ret=18 [1a:1] [1a:2]
+view dispatch func=1 "AddRef" memid=60000001 kind=4 inv=1 cc=4 params=0 opt=0 vft=4 ret=13
+view dispatch func=2 "Release" memid=60000002 kind=4 inv=1 cc=4 params=0 opt=0 vft=8 ret=13
+view dispatch func=3 "GetTypeInfoCount" memid=60010000 kind=4 inv=1 cc=4 params=1 opt=0 vft=12 ret=18 [1a:2]
+view dispatch func=4 "GetTypeInfo" memid=60010001 kind=4 inv=1 cc=4 params=3 opt=0 vft=16 ret=18 [17:1] [13:1] [1a:2]
+view dispatch func=5 "GetIDsOfNames" memid=60010002 kind=4 inv=1 cc=4 params=5 opt=0 vft=20 ret=18 [1a:1] [1a:1] [17:1] [13:1] [1a:2]
+view dispatch func=6 "Invoke" memid=60010003 kind=4 inv=1 cc=4 params=8 opt=0 vft=24 ret=18 [3:1] [1a:1] [13:1] [12:1] [1a:1] [1a:2] [1a:2] [1a:2]
+view dispatch func=7 "BaseM" memid=1e kind=4 inv=1 cc=4 params=0 opt=0 vft=56 ret=3
+view dispatch func=8 "M0" memid=1 kind=4 inv=1 cc=4 params=0 opt=0 vft=64 ret=18
+view dispatch func=9 "Ints" memid=2 kind=4 inv=1 cc=4 params=3 opt=0 vft=72 ret=3 [3:1] [2:1] [11:1]
+view dispatch func=10 "Floats" memid=3 kind=4 inv=1 cc=4 params=2 opt=0 vft=80 ret=5 [4:1] [5:1]
+view dispatch func=11 "Wide" memid=4 kind=4 inv=1 cc=4 params=4 opt=0 vft=88 ret=8 [6:1] [7:1] [14:1] [3:1]
+view dispatch func=12 "Str" memid=5 kind=4 inv=1 cc=4 params=1 opt=0 vft=96 ret=8 [8:1]
+view dispatch func=13 "Var" memid=6 kind=4 inv=1 cc=4 params=2 opt=0 vft=104 ret=c [c:1] [3:1]
+view dispatch func=14 "VarPtr" memid=7 kind=4 inv=1 cc=4 params=1 opt=0 vft=112 ret=18 [1a:3]
+view dispatch func=15 "OutLong" memid=8 kind=4 inv=1 cc=4 params=1 opt=0 vft=120 ret=18 [1a:3]
+view dispatch func=16 "Fail" memid=9 kind=4 inv=1 cc=4 params=1 opt=0 vft=128 ret=18 [3:1]
+view dispatch func=17 "Prop" memid=a kind=4 inv=2 cc=4 params=0 opt=0 vft=136 ret=3
+view dispatch func=18 "Prop" memid=a kind=4 inv=4 cc=4 params=1 opt=0 vft=144 ret=18 [3:1]
+view dispatch func=19 "Item" memid=b kind=4 inv=2 cc=4 params=1 opt=0 vft=152 ret=8 [8:1]
+view dispatch func=20 "Item" memid=b kind=4 inv=4 cc=4 params=2 opt=0 vft=160 ret=18 [8:1] [8:1]
+view dispatch func=21 "Obj" memid=c kind=4 inv=2 cc=4 params=0 opt=0 vft=168 ret=9
+view dispatch func=22 "Obj" memid=c kind=4 inv=8 cc=4 params=1 opt=0 vft=176 ret=18 [9:1]
+view dispatch func=23 "Opt" memid=d kind=4 inv=1 cc=4 params=4 opt=0 vft=184 ret=8 [3:1] [c:11] [3:31] [8:31]
+view dispatch func=24 "Named" memid=e kind=4 inv=1 cc=4 params=3 opt=0 vft=192 ret=3 [3:1] [3:1] [3:1]
+view dispatch func=25 "Lcid" memid=f kind=4 inv=1 cc=4 params=1 opt=0 vft=200 ret=3 [3:1]
+view dispatch func=26 "Arr" memid=10 kind=4 inv=1 cc=4 params=1 opt=0 vft=208 ret=3 [1b:1]
+view dispatch func=27 "Unk" memid=11 kind=4 inv=1 cc=4 params=1 opt=0 vft=216 ret=3 [d:1]
+view dispatch func=28 "Bool" memid=12 kind=4 inv=1 cc=4 params=1 opt=0 vft=224 ret=b [b:1]
+view dispatch func=29 "OutBstr" memid=13 kind=4 inv=1 cc=4 params=1 opt=0 vft=232 ret=18 [1a:2]
+view dispatch func=30 "OptDouble" memid=14 kind=4 inv=1 cc=4 params=2 opt=0 vft=240 ret=5 [5:31] [3:31]
+def param=0 flags=31 value=2:-3
+def param=1 flags=31 value=4:1.5/3fc00000
+def param=2 flags=31 value=b:-1
+def param=3 flags=31 value=13:70000
+def param=4 flags=31 value=3:-2
+def param=5 flags=31 value=11:5
+def param=6 flags=31 value=8:""
+def param=7 flags=31 value=3:0
+def param=8 flags=31 value=3:67108864
+def param=9 flags=31 value=3:67108863
+def param=10 flags=31 value=5:-1.25/bff4000000000000
+def param=11 flags=31 value=3:7
+def param=12 flags=31 value=8:"abc"
+view interface kind=3 funcs=23 impl=1 flags=1140 vft=248
+view interface func=0 "M0" memid=1 kind=1 inv=1 cc=4 params=0 opt=0 vft=64 ret=19
+view interface func=1 "Ints" memid=2 kind=1 inv=1 cc=4 params=4 opt=0 vft=72 ret=19 [3:1] [2:1] [11:1] [1a:a]
+view interface func=2 "Floats" memid=3 kind=1 inv=1 cc=4 params=3 opt=0 vft=80 ret=19 [4:1] [5:1] [1a:a]
+view interface func=3 "Wide" memid=4 kind=1 inv=1 cc=4 params=5 opt=0 vft=88 ret=19 [6:1] [7:1] [14:1] [3:1] [1a:a]
+view interface func=4 "Str" memid=5 kind=1 inv=1 cc=4 params=2 opt=0 vft=96 ret=19 [8:1] [1a:a]
+view interface func=5 "Var" memid=6 kind=1 inv=1 cc=4 params=3 opt=0 vft=104 ret=19 [c:1] [3:1] [1a:a]
+view interface func=6 "VarPtr" memid=7 kind=1 inv=1 cc=4 params=1 opt=0 vft=112 ret=19 [1a:3]
+view interface func=7 "OutLong" memid=8 kind=1 inv=1 cc=4 params=1 opt=0 vft=120 ret=19 [1a:3]
+view interface func=8 "Fail" memid=9 kind=1 inv=1 cc=4 params=1 opt=0 vft=128 ret=19 [3:1]
+view interface func=9 "Prop" memid=a kind=1 inv=2 cc=4 params=1 opt=0 vft=136 ret=19 [1a:a]
+view interface func=10 "Prop" memid=a kind=1 inv=4 cc=4 params=1 opt=0 vft=144 ret=19 [3:1]
+view interface func=11 "Item" memid=b kind=1 inv=2 cc=4 params=2 opt=0 vft=152 ret=19 [8:1] [1a:a]
+view interface func=12 "Item" memid=b kind=1 inv=4 cc=4 params=2 opt=0 vft=160 ret=19 [8:1] [8:1]
+view interface func=13 "Obj" memid=c kind=1 inv=2 cc=4 params=1 opt=0 vft=168 ret=19 [1a:a]
+view interface func=14 "Obj" memid=c kind=1 inv=8 cc=4 params=1 opt=0 vft=176 ret=19 [9:1]
+view interface func=15 "Opt" memid=d kind=1 inv=1 cc=4 params=5 opt=0 vft=184 ret=19 [3:1] [c:11] [3:31] [8:31] [1a:a]
+view interface func=16 "Named" memid=e kind=1 inv=1 cc=4 params=4 opt=0 vft=192 ret=19 [3:1] [3:1] [3:1] [1a:a]
+view interface func=17 "Lcid" memid=f kind=1 inv=1 cc=4 params=3 opt=0 vft=200 ret=19 [3:1] [3:5] [1a:a]
+view interface func=18 "Arr" memid=10 kind=1 inv=1 cc=4 params=2 opt=0 vft=208 ret=19 [1b:1] [1a:a]
+view interface func=19 "Unk" memid=11 kind=1 inv=1 cc=4 params=2 opt=0 vft=216 ret=19 [d:1] [1a:a]
+view interface func=20 "Bool" memid=12 kind=1 inv=1 cc=4 params=2 opt=0 vft=224 ret=19 [b:1] [1a:a]
+view interface func=21 "OutBstr" memid=13 kind=1 inv=1 cc=4 params=1 opt=0 vft=232 ret=19 [1a:2]
+view interface func=22 "OptDouble" memid=14 kind=1 inv=1 cc=4 params=3 opt=0 vft=240 ret=19 [5:31] [3:31] [1a:a]
+inv ti M0 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[M0] qi=[] rgvarg=[] errinfo_left=0
+inv ti M0.get hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv ti M0.methodget hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[M0] qi=[] rgvarg=[] errinfo_left=0
+inv ti M0.put hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv ti M0.flags0 hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv ti BaseM hr=00000000 argerr=untouched/deadbeef res=3:30 exc=[untouched] log=[BaseM] qi=[] rgvarg=[] errinfo_left=0
+inv ti missing hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv ti IDispatch.GetTypeInfoCount hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv ti M0.extra hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Ints hr=00000000 argerr=untouched/deadbeef res=3:70302 exc=[untouched] log=[Ints(7,3,2)] qi=[] rgvarg=[{2:2},{2:3},{3:7}] errinfo_left=0
+inv ti Ints.noresult hr=00000000 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[Ints(7,3,2)] qi=[] rgvarg=[{2:2},{2:3},{3:7}] errinfo_left=0
+inv ti Ints.coerce hr=00000000 argerr=untouched/deadbeef res=3:120404 exc=[untouched] log=[Ints(12,4,4)] qi=[] rgvarg=[{8:"4"},{5:3.6000000000000001/400ccccccccccccd},{8:"12"}] errinfo_left=0
+inv ti Ints.mismatch hr=80020005 argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{8:"abc"},{3:1}] errinfo_left=0
+inv ti Ints.overflow hr=8002000a argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{3:100000},{3:1}] errinfo_left=0
+inv ti Ints.fewer hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{3:1}] errinfo_left=0
+inv ti Ints.more hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:4},{2:3},{2:2},{3:1}] errinfo_left=0
+inv ti Ints.badvt hr=80020008 argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{7f:?},{3:1}] errinfo_left=0
+inv ti Ints.missingrequired hr=8002000f argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{a:80020004},{3:1}] errinfo_left=0
+inv ti Ints.emptynull hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{1},{0},{3:1}] errinfo_left=0
+inv ti Ints.byrefin hr=00000000 argerr=untouched/deadbeef res=3:50609 exc=[untouched] log=[Ints(5,6,9)] qi=[] rgvarg=[{2:9},{4002:*6},{4003:*5}] errinfo_left=0
+inv ti Ints.byrefvariant hr=00000000 argerr=untouched/deadbeef res=3:80101 exc=[untouched] log=[Ints(8,1,1)] qi=[] rgvarg=[{2:1},{2:1},{400c:*{3:8}}] errinfo_left=0
+inv ti Ints.nullargs.noparams hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv ti Floats hr=00000000 argerr=untouched/deadbeef res=5:1.75/3ffc000000000000 exc=[untouched] log=[Floats(1.5,0.25)] qi=[] rgvarg=[{5:0.25/3fd0000000000000},{4:1.5/3fc00000}] errinfo_left=0
+inv ti Floats.coerce hr=00000000 argerr=untouched/deadbeef res=5:5.5/4016000000000000 exc=[untouched] log=[Floats(3,2.5)] qi=[] rgvarg=[{8:"2.5"},{3:3}] errinfo_left=0
+inv ti Wide hr=00000000 argerr=untouched/deadbeef res=8:"wide" exc=[untouched] log=[Wide(123456,45000.5,4886718345,-9)] qi=[] rgvarg=[{3:-9},{14:4886718345},{7:45000.5/40e5f91000000000},{6:123456}] errinfo_left=0
+inv ti Wide.coerce hr=00000000 argerr=untouched/deadbeef res=8:"wide" exc=[untouched] log=[Wide(10000,2,3,4)] qi=[] rgvarg=[{3:4},{3:3},{5:2/4000000000000000},{3:1}] errinfo_left=0
+inv ti Str hr=00000000 argerr=untouched/deadbeef res=8:"hi!" exc=[untouched] log=[Str("hi")] qi=[] rgvarg=[{8:"hi"}] errinfo_left=0
+inv ti Str.fromint hr=00000000 argerr=untouched/deadbeef res=8:"42!" exc=[untouched] log=[Str("42")] qi=[] rgvarg=[{3:42}] errinfo_left=0
+inv ti Str.null hr=00000000 argerr=untouched/deadbeef res=8:"<null>!" exc=[untouched] log=[Str(null)] qi=[] rgvarg=[{8:null}] errinfo_left=0
+inv ti Str.byref hr=00000000 argerr=untouched/deadbeef res=8:"ref!" exc=[untouched] log=[Str("ref")] qi=[] rgvarg=[{4008:*"ref"}] errinfo_left=0
+inv ti Var hr=00000000 argerr=untouched/deadbeef res=3:5 exc=[untouched] log=[Var({3:5},-1)] qi=[] rgvarg=[{3:-1},{3:5}] errinfo_left=0
+inv ti Var.bstr hr=00000000 argerr=untouched/deadbeef res=8:"s" exc=[untouched] log=[Var({8:"s"},2)] qi=[] rgvarg=[{2:2},{8:"s"}] errinfo_left=0
+inv ti Var.missing hr=00000000 argerr=untouched/deadbeef res=a:80020004 exc=[untouched] log=[Var({a:80020004},3)] qi=[] rgvarg=[{3:3},{a:80020004}] errinfo_left=0
+inv ti Var.byref hr=00000000 argerr=untouched/deadbeef res=4003:*4 exc=[untouched] log=[Var({4003:*4},3)] qi=[] rgvarg=[{3:3},{4003:*4}] errinfo_left=0
+inv ti VarPtr.byref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({8:"in"})] qi=[] rgvarg=[{400c:*{3:77}}] errinfo_left=0
+inv ti VarPtr.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({3:3})] qi=[] rgvarg=[{3:3}] errinfo_left=0
+inv ti VarPtr.byrefi4 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({4003:*41})] qi=[] rgvarg=[{3:77}] errinfo_left=0
+inv ti OutLong hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(41)] qi=[] rgvarg=[{4003:*42}] errinfo_left=0
+inv ti OutLong.i2ref hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{4002:*41}] errinfo_left=0
+inv ti OutLong.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(41)] qi=[] rgvarg=[{3:41}] errinfo_left=0
+inv ti OutLong.bstrbyval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(5)] qi=[] rgvarg=[{8:"5"}] errinfo_left=0
+inv ti OutLong.i2byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(5)] qi=[] rgvarg=[{2:5}] errinfo_left=0
+inv ti OutLong.variantref hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{400c:*{3:41}}] errinfo_left=0
+inv ti Fail.efail hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv ti Fail.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv ti Fail.dispcode hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80020005] log=[Fail(80020005)] qi=[] rgvarg=[{3:-2147352571}] errinfo_left=0
+inv ti Fail.sfalse hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(00000001)] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Fail.success2 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(00040005)] qi=[] rgvarg=[{3:262149}] errinfo_left=0
+inv ti Fail.errinfo.nosei hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv ti Fail.errinfo.seifalse hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv ti Fail.errinfo.seiok hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv ti Fail.errinfo.seiok.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=1
+inv ti Fail.noerrinfo.seiok hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv ti Prop.get hr=00000000 argerr=untouched/deadbeef res=3:11 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv ti Prop.methodget hr=00000000 argerr=untouched/deadbeef res=3:11 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv ti Prop.method hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv ti Prop.put hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(5)] qi=[] rgvarg=[{3:5}] errinfo_left=0
+inv ti Prop.put.coerce hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(8)] qi=[] rgvarg=[{8:"8"}] errinfo_left=0
+inv ti Prop.put.unnamed hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv ti Prop.putref hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv ti Prop.putorputref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(6)] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv ti Prop.put.withget hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv ti Prop.get.after hr=00000000 argerr=untouched/deadbeef res=3:6 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv ti Prop.get.extra hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Obj.get.index hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Obj.get.index2 hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=2,cNamed=0,res=1,exc=1,argerr=1,{8:"two"},{3:1})] qi=[] rgvarg=[{8:"two"},{3:1}] errinfo_left=0
+inv ti Obj.get.index.methodget hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=3,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Obj.get.index.noresult hr=00000000 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Item.get.index hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3},{8:"set"}] errinfo_left=0
+inv ti Obj.get.index.named hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=2,cNamed=1,res=1,exc=1,argerr=1,{3:1},{3:2},n0)] qi=[] rgvarg=[{3:1},{3:2}] errinfo_left=0
+inv ti M0.extra.withget hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Item.get hr=00000000 argerr=untouched/deadbeef res=8:"value" exc=[untouched] log=[get_Item("set")] qi=[] rgvarg=[{8:"set"}] errinfo_left=0
+inv ti Item.get.unset hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[get_Item("unset")] qi=[] rgvarg=[{8:"unset"}] errinfo_left=0
+inv ti Item.get.unset.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[get_Item("unset")] qi=[] rgvarg=[{8:"unset"}] errinfo_left=0
+inv ti Item.put hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Item("k","v")] qi=[] rgvarg=[{8:"v"},{8:"k"}] errinfo_left=0
+inv ti Item.put.coerce hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Item("k","12")] qi=[] rgvarg=[{3:12},{8:"k"}] errinfo_left=0
+inv ti Item.put.toofew hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{8:"k"}] errinfo_left=0
+inv ti Obj.get hr=00000000 argerr=untouched/deadbeef res=9:obj exc=[untouched] log=[get_Obj] qi=[] rgvarg=[] errinfo_left=0
+inv ti Obj.putref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv ti Obj.put hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv ti Obj.putorputref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv ti Obj.putref.unk hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[disp,] rgvarg=[{d:obj}] errinfo_left=0
+inv ti Obj.putref.null hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(null)] qi=[] rgvarg=[{9:null}] errinfo_left=0
+inv ti Opt.one hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"dflt")] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Opt.two hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{3:2},5,"dflt")] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv ti Opt.all hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{3:2},3,"x")] qi=[] rgvarg=[{8:"x"},{3:3},{3:2},{3:1}] errinfo_left=0
+inv ti Opt.allmissing hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"dflt")] qi=[] rgvarg=[{a:80020004},{a:80020004},{a:80020004},{3:1}] errinfo_left=0
+inv ti Opt.toomany hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{8:"x"},{3:3},{3:2},{3:1}] errinfo_left=0
+inv ti Opt.none hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv ti Opt.requiredmissing hr=8002000f argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{a:80020004}] errinfo_left=0
+inv ti OptDouble.none hr=00000000 argerr=untouched/deadbeef res=5:-17.5/c031800000000000 exc=[untouched] log=[OptDouble(2.5,-7)] qi=[] rgvarg=[] errinfo_left=0
+inv ti OptDouble.one hr=00000000 argerr=untouched/deadbeef res=5:-28/c03c000000000000 exc=[untouched] log=[OptDouble(4,-7)] qi=[] rgvarg=[{5:4/4010000000000000}] errinfo_left=0
+inv ti OptDouble.firstmissing hr=00000000 argerr=untouched/deadbeef res=5:7.5/401e000000000000 exc=[untouched] log=[OptDouble(2.5,3)] qi=[] rgvarg=[{3:3},{a:80020004}] errinfo_left=0
+inv ti Named.two hr=00000000 argerr=untouched/deadbeef res=3:123 exc=[untouched] log=[Named(1,2,3)] qi=[] rgvarg=[{3:3},{3:2},{3:1}] errinfo_left=0
+inv ti Named.all hr=00000000 argerr=untouched/deadbeef res=3:756 exc=[untouched] log=[Named(7,5,6)] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv ti Named.unknown hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv ti Named.duplicate hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv ti Named.overlapspositional hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv ti Named.mismatch hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{8:"zz"},{3:6},{3:7}] errinfo_left=0
+inv ti Named.propputid.method hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv ti Named.missingrequired hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6}] errinfo_left=0
+inv ti Opt.named.c hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},3,"dflt")] qi=[] rgvarg=[{3:3},{3:1}] errinfo_left=0
+inv ti Opt.named.unknown hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3},{3:1}] errinfo_left=0
+inv ti Opt.named.dup hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:8},{3:9},{3:1}] errinfo_left=0
+inv ti Opt.named.overlap hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:7}] errinfo_left=0
+inv ti Opt.named.d.coerce hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"44")] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv ti Opt.named.retval hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv ti Opt.named.minus1 hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv ti Opt.named.nullarray hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Opt.named.countgtargs hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv ti Lcid hr=00000000 argerr=untouched/deadbeef res=3:1033 exc=[untouched] log=[Lcid(1,00000409)] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Lcid.extra hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv ti Arr hr=00000000 argerr=untouched/deadbeef res=3:60 exc=[untouched] log=[Arr(sa,1..3)] qi=[] rgvarg=[{2003:?}] errinfo_left=0
+inv ti Arr.byref hr=00000000 argerr=untouched/deadbeef res=3:60 exc=[untouched] log=[Arr(sa,1..3)] qi=[] rgvarg=[{6003:byref}] errinfo_left=0
+inv ti Arr.variantarray hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{200c:?}] errinfo_left=0
+inv ti Arr.scalar hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3}] errinfo_left=0
+inv ti Unk.fromdispatch hr=00000000 argerr=untouched/deadbeef res=3:1 exc=[untouched] log=[Unk(self)] qi=[unk,] rgvarg=[{9:obj}] errinfo_left=0
+inv ti Unk.null hr=00000000 argerr=untouched/deadbeef res=3:0 exc=[untouched] log=[Unk(null)] qi=[] rgvarg=[{d:null}] errinfo_left=0
+inv ti Unk.fromint hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv ti Bool.fromint hr=00000000 argerr=untouched/deadbeef res=b:-1 exc=[untouched] log=[Bool(0)] qi=[] rgvarg=[{3:0}] errinfo_left=0
+inv ti Bool.fromstr hr=00000000 argerr=untouched/deadbeef res=b:0 exc=[untouched] log=[Bool(-1)] qi=[] rgvarg=[{8:"True"}] errinfo_left=0
+inv ti OutBstr hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutBstr(in=null)] qi=[] rgvarg=[{4008:*"out"}] errinfo_left=0
+inv ti OutBstr.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutBstr(in=null)] qi=[] rgvarg=[{8:"x"}] errinfo_left=0
+inv ti Ints.mismatch.noargerr hr=00000000 argerr=untouched/deadbeef res=3:10203 exc=[untouched] log=[Ints(1,2,3)] qi=[] rgvarg=[{2:3},{2:2},{3:1}] errinfo_left=0
+inv ti Ints.mismatch.noargerr2 hr=80020005 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{8:"abc"},{3:1}] errinfo_left=0
+inv iface M0 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[M0] qi=[] rgvarg=[] errinfo_left=0
+inv iface M0.get hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv iface M0.methodget hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[M0] qi=[] rgvarg=[] errinfo_left=0
+inv iface M0.put hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv iface M0.flags0 hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv iface BaseM hr=00000000 argerr=untouched/deadbeef res=3:30 exc=[untouched] log=[BaseM] qi=[] rgvarg=[] errinfo_left=0
+inv iface missing hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv iface IDispatch.GetTypeInfoCount hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv iface M0.extra hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Ints hr=00000000 argerr=untouched/deadbeef res=3:70302 exc=[untouched] log=[Ints(7,3,2)] qi=[] rgvarg=[{2:2},{2:3},{3:7}] errinfo_left=0
+inv iface Ints.noresult hr=00000000 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[Ints(7,3,2)] qi=[] rgvarg=[{2:2},{2:3},{3:7}] errinfo_left=0
+inv iface Ints.coerce hr=00000000 argerr=untouched/deadbeef res=3:120404 exc=[untouched] log=[Ints(12,4,4)] qi=[] rgvarg=[{8:"4"},{5:3.6000000000000001/400ccccccccccccd},{8:"12"}] errinfo_left=0
+inv iface Ints.mismatch hr=80020005 argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{8:"abc"},{3:1}] errinfo_left=0
+inv iface Ints.overflow hr=8002000a argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{3:100000},{3:1}] errinfo_left=0
+inv iface Ints.fewer hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{3:1}] errinfo_left=0
+inv iface Ints.more hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:4},{2:3},{2:2},{3:1}] errinfo_left=0
+inv iface Ints.badvt hr=80020008 argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{7f:?},{3:1}] errinfo_left=0
+inv iface Ints.missingrequired hr=8002000f argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{a:80020004},{3:1}] errinfo_left=0
+inv iface Ints.emptynull hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{1},{0},{3:1}] errinfo_left=0
+inv iface Ints.byrefin hr=00000000 argerr=untouched/deadbeef res=3:50609 exc=[untouched] log=[Ints(5,6,9)] qi=[] rgvarg=[{2:9},{4002:*6},{4003:*5}] errinfo_left=0
+inv iface Ints.byrefvariant hr=00000000 argerr=untouched/deadbeef res=3:80101 exc=[untouched] log=[Ints(8,1,1)] qi=[] rgvarg=[{2:1},{2:1},{400c:*{3:8}}] errinfo_left=0
+inv iface Ints.nullargs.noparams hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv iface Floats hr=00000000 argerr=untouched/deadbeef res=5:1.75/3ffc000000000000 exc=[untouched] log=[Floats(1.5,0.25)] qi=[] rgvarg=[{5:0.25/3fd0000000000000},{4:1.5/3fc00000}] errinfo_left=0
+inv iface Floats.coerce hr=00000000 argerr=untouched/deadbeef res=5:5.5/4016000000000000 exc=[untouched] log=[Floats(3,2.5)] qi=[] rgvarg=[{8:"2.5"},{3:3}] errinfo_left=0
+inv iface Wide hr=00000000 argerr=untouched/deadbeef res=8:"wide" exc=[untouched] log=[Wide(123456,45000.5,4886718345,-9)] qi=[] rgvarg=[{3:-9},{14:4886718345},{7:45000.5/40e5f91000000000},{6:123456}] errinfo_left=0
+inv iface Wide.coerce hr=00000000 argerr=untouched/deadbeef res=8:"wide" exc=[untouched] log=[Wide(10000,2,3,4)] qi=[] rgvarg=[{3:4},{3:3},{5:2/4000000000000000},{3:1}] errinfo_left=0
+inv iface Str hr=00000000 argerr=untouched/deadbeef res=8:"hi!" exc=[untouched] log=[Str("hi")] qi=[] rgvarg=[{8:"hi"}] errinfo_left=0
+inv iface Str.fromint hr=00000000 argerr=untouched/deadbeef res=8:"42!" exc=[untouched] log=[Str("42")] qi=[] rgvarg=[{3:42}] errinfo_left=0
+inv iface Str.null hr=00000000 argerr=untouched/deadbeef res=8:"<null>!" exc=[untouched] log=[Str(null)] qi=[] rgvarg=[{8:null}] errinfo_left=0
+inv iface Str.byref hr=00000000 argerr=untouched/deadbeef res=8:"ref!" exc=[untouched] log=[Str("ref")] qi=[] rgvarg=[{4008:*"ref"}] errinfo_left=0
+inv iface Var hr=00000000 argerr=untouched/deadbeef res=3:5 exc=[untouched] log=[Var({3:5},-1)] qi=[] rgvarg=[{3:-1},{3:5}] errinfo_left=0
+inv iface Var.bstr hr=00000000 argerr=untouched/deadbeef res=8:"s" exc=[untouched] log=[Var({8:"s"},2)] qi=[] rgvarg=[{2:2},{8:"s"}] errinfo_left=0
+inv iface Var.missing hr=00000000 argerr=untouched/deadbeef res=a:80020004 exc=[untouched] log=[Var({a:80020004},3)] qi=[] rgvarg=[{3:3},{a:80020004}] errinfo_left=0
+inv iface Var.byref hr=00000000 argerr=untouched/deadbeef res=4003:*4 exc=[untouched] log=[Var({4003:*4},3)] qi=[] rgvarg=[{3:3},{4003:*4}] errinfo_left=0
+inv iface VarPtr.byref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({8:"in"})] qi=[] rgvarg=[{400c:*{3:77}}] errinfo_left=0
+inv iface VarPtr.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({3:3})] qi=[] rgvarg=[{3:3}] errinfo_left=0
+inv iface VarPtr.byrefi4 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({4003:*41})] qi=[] rgvarg=[{3:77}] errinfo_left=0
+inv iface OutLong hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(41)] qi=[] rgvarg=[{4003:*42}] errinfo_left=0
+inv iface OutLong.i2ref hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{4002:*41}] errinfo_left=0
+inv iface OutLong.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(41)] qi=[] rgvarg=[{3:41}] errinfo_left=0
+inv iface OutLong.bstrbyval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(5)] qi=[] rgvarg=[{8:"5"}] errinfo_left=0
+inv iface OutLong.i2byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(5)] qi=[] rgvarg=[{2:5}] errinfo_left=0
+inv iface OutLong.variantref hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{400c:*{3:41}}] errinfo_left=0
+inv iface Fail.efail hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv iface Fail.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv iface Fail.dispcode hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80020005] log=[Fail(80020005)] qi=[] rgvarg=[{3:-2147352571}] errinfo_left=0
+inv iface Fail.sfalse hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(00000001)] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Fail.success2 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(00040005)] qi=[] rgvarg=[{3:262149}] errinfo_left=0
+inv iface Fail.errinfo.nosei hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv iface Fail.errinfo.seifalse hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv iface Fail.errinfo.seiok hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv iface Fail.errinfo.seiok.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=1
+inv iface Fail.noerrinfo.seiok hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv iface Prop.get hr=00000000 argerr=untouched/deadbeef res=3:11 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv iface Prop.methodget hr=00000000 argerr=untouched/deadbeef res=3:11 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv iface Prop.method hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv iface Prop.put hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(5)] qi=[] rgvarg=[{3:5}] errinfo_left=0
+inv iface Prop.put.coerce hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(8)] qi=[] rgvarg=[{8:"8"}] errinfo_left=0
+inv iface Prop.put.unnamed hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv iface Prop.putref hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv iface Prop.putorputref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(6)] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv iface Prop.put.withget hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv iface Prop.get.after hr=00000000 argerr=untouched/deadbeef res=3:6 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv iface Prop.get.extra hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Obj.get.index hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Obj.get.index2 hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=2,cNamed=0,res=1,exc=1,argerr=1,{8:"two"},{3:1})] qi=[] rgvarg=[{8:"two"},{3:1}] errinfo_left=0
+inv iface Obj.get.index.methodget hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=3,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Obj.get.index.noresult hr=00000000 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Item.get.index hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3},{8:"set"}] errinfo_left=0
+inv iface Obj.get.index.named hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=2,cNamed=1,res=1,exc=1,argerr=1,{3:1},{3:2},n0)] qi=[] rgvarg=[{3:1},{3:2}] errinfo_left=0
+inv iface M0.extra.withget hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Item.get hr=00000000 argerr=untouched/deadbeef res=8:"value" exc=[untouched] log=[get_Item("set")] qi=[] rgvarg=[{8:"set"}] errinfo_left=0
+inv iface Item.get.unset hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[get_Item("unset")] qi=[] rgvarg=[{8:"unset"}] errinfo_left=0
+inv iface Item.get.unset.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[get_Item("unset")] qi=[] rgvarg=[{8:"unset"}] errinfo_left=0
+inv iface Item.put hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Item("k","v")] qi=[] rgvarg=[{8:"v"},{8:"k"}] errinfo_left=0
+inv iface Item.put.coerce hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Item("k","12")] qi=[] rgvarg=[{3:12},{8:"k"}] errinfo_left=0
+inv iface Item.put.toofew hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{8:"k"}] errinfo_left=0
+inv iface Obj.get hr=00000000 argerr=untouched/deadbeef res=9:obj exc=[untouched] log=[get_Obj] qi=[] rgvarg=[] errinfo_left=0
+inv iface Obj.putref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv iface Obj.put hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv iface Obj.putorputref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv iface Obj.putref.unk hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[disp,] rgvarg=[{d:obj}] errinfo_left=0
+inv iface Obj.putref.null hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(null)] qi=[] rgvarg=[{9:null}] errinfo_left=0
+inv iface Opt.one hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"dflt")] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Opt.two hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{3:2},5,"dflt")] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv iface Opt.all hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{3:2},3,"x")] qi=[] rgvarg=[{8:"x"},{3:3},{3:2},{3:1}] errinfo_left=0
+inv iface Opt.allmissing hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"dflt")] qi=[] rgvarg=[{a:80020004},{a:80020004},{a:80020004},{3:1}] errinfo_left=0
+inv iface Opt.toomany hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{8:"x"},{3:3},{3:2},{3:1}] errinfo_left=0
+inv iface Opt.none hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv iface Opt.requiredmissing hr=8002000f argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{a:80020004}] errinfo_left=0
+inv iface OptDouble.none hr=00000000 argerr=untouched/deadbeef res=5:-17.5/c031800000000000 exc=[untouched] log=[OptDouble(2.5,-7)] qi=[] rgvarg=[] errinfo_left=0
+inv iface OptDouble.one hr=00000000 argerr=untouched/deadbeef res=5:-28/c03c000000000000 exc=[untouched] log=[OptDouble(4,-7)] qi=[] rgvarg=[{5:4/4010000000000000}] errinfo_left=0
+inv iface OptDouble.firstmissing hr=00000000 argerr=untouched/deadbeef res=5:7.5/401e000000000000 exc=[untouched] log=[OptDouble(2.5,3)] qi=[] rgvarg=[{3:3},{a:80020004}] errinfo_left=0
+inv iface Named.two hr=00000000 argerr=untouched/deadbeef res=3:123 exc=[untouched] log=[Named(1,2,3)] qi=[] rgvarg=[{3:3},{3:2},{3:1}] errinfo_left=0
+inv iface Named.all hr=00000000 argerr=untouched/deadbeef res=3:756 exc=[untouched] log=[Named(7,5,6)] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv iface Named.unknown hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv iface Named.duplicate hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv iface Named.overlapspositional hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv iface Named.mismatch hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{8:"zz"},{3:6},{3:7}] errinfo_left=0
+inv iface Named.propputid.method hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv iface Named.missingrequired hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6}] errinfo_left=0
+inv iface Opt.named.c hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},3,"dflt")] qi=[] rgvarg=[{3:3},{3:1}] errinfo_left=0
+inv iface Opt.named.unknown hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3},{3:1}] errinfo_left=0
+inv iface Opt.named.dup hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:8},{3:9},{3:1}] errinfo_left=0
+inv iface Opt.named.overlap hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:7}] errinfo_left=0
+inv iface Opt.named.d.coerce hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"44")] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv iface Opt.named.retval hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv iface Opt.named.minus1 hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv iface Opt.named.nullarray hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Opt.named.countgtargs hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv iface Lcid hr=00000000 argerr=untouched/deadbeef res=3:1033 exc=[untouched] log=[Lcid(1,00000409)] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Lcid.extra hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv iface Arr hr=00000000 argerr=untouched/deadbeef res=3:60 exc=[untouched] log=[Arr(sa,1..3)] qi=[] rgvarg=[{2003:?}] errinfo_left=0
+inv iface Arr.byref hr=00000000 argerr=untouched/deadbeef res=3:60 exc=[untouched] log=[Arr(sa,1..3)] qi=[] rgvarg=[{6003:byref}] errinfo_left=0
+inv iface Arr.variantarray hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{200c:?}] errinfo_left=0
+inv iface Arr.scalar hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3}] errinfo_left=0
+inv iface Unk.fromdispatch hr=00000000 argerr=untouched/deadbeef res=3:1 exc=[untouched] log=[Unk(self)] qi=[unk,] rgvarg=[{9:obj}] errinfo_left=0
+inv iface Unk.null hr=00000000 argerr=untouched/deadbeef res=3:0 exc=[untouched] log=[Unk(null)] qi=[] rgvarg=[{d:null}] errinfo_left=0
+inv iface Unk.fromint hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv iface Bool.fromint hr=00000000 argerr=untouched/deadbeef res=b:-1 exc=[untouched] log=[Bool(0)] qi=[] rgvarg=[{3:0}] errinfo_left=0
+inv iface Bool.fromstr hr=00000000 argerr=untouched/deadbeef res=b:0 exc=[untouched] log=[Bool(-1)] qi=[] rgvarg=[{8:"True"}] errinfo_left=0
+inv iface OutBstr hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutBstr(in=null)] qi=[] rgvarg=[{4008:*"out"}] errinfo_left=0
+inv iface OutBstr.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutBstr(in=null)] qi=[] rgvarg=[{8:"x"}] errinfo_left=0
+inv iface Ints.mismatch.noargerr hr=00000000 argerr=untouched/deadbeef res=3:10203 exc=[untouched] log=[Ints(1,2,3)] qi=[] rgvarg=[{2:3},{2:2},{3:1}] errinfo_left=0
+inv iface Ints.mismatch.noargerr2 hr=80020005 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{8:"abc"},{3:1}] errinfo_left=0
+inv dispinvoke M0 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[M0] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke M0.get hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke M0.methodget hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[M0] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke M0.put hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke M0.flags0 hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke BaseM hr=00000000 argerr=untouched/deadbeef res=3:30 exc=[untouched] log=[BaseM] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke missing hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke IDispatch.GetTypeInfoCount hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke M0.extra hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Ints hr=00000000 argerr=untouched/deadbeef res=3:70302 exc=[untouched] log=[Ints(7,3,2)] qi=[] rgvarg=[{2:2},{2:3},{3:7}] errinfo_left=0
+inv dispinvoke Ints.noresult hr=00000000 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[Ints(7,3,2)] qi=[] rgvarg=[{2:2},{2:3},{3:7}] errinfo_left=0
+inv dispinvoke Ints.coerce hr=00000000 argerr=untouched/deadbeef res=3:120404 exc=[untouched] log=[Ints(12,4,4)] qi=[] rgvarg=[{8:"4"},{5:3.6000000000000001/400ccccccccccccd},{8:"12"}] errinfo_left=0
+inv dispinvoke Ints.mismatch hr=80020005 argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{8:"abc"},{3:1}] errinfo_left=0
+inv dispinvoke Ints.overflow hr=8002000a argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{3:100000},{3:1}] errinfo_left=0
+inv dispinvoke Ints.fewer hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{3:1}] errinfo_left=0
+inv dispinvoke Ints.more hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:4},{2:3},{2:2},{3:1}] errinfo_left=0
+inv dispinvoke Ints.badvt hr=80020008 argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{7f:?},{3:1}] errinfo_left=0
+inv dispinvoke Ints.missingrequired hr=8002000f argerr=1 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{a:80020004},{3:1}] errinfo_left=0
+inv dispinvoke Ints.emptynull hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{1},{0},{3:1}] errinfo_left=0
+inv dispinvoke Ints.byrefin hr=00000000 argerr=untouched/deadbeef res=3:50609 exc=[untouched] log=[Ints(5,6,9)] qi=[] rgvarg=[{2:9},{4002:*6},{4003:*5}] errinfo_left=0
+inv dispinvoke Ints.byrefvariant hr=00000000 argerr=untouched/deadbeef res=3:80101 exc=[untouched] log=[Ints(8,1,1)] qi=[] rgvarg=[{2:1},{2:1},{400c:*{3:8}}] errinfo_left=0
+inv dispinvoke Ints.nullargs.noparams hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke Floats hr=00000000 argerr=untouched/deadbeef res=5:1.75/3ffc000000000000 exc=[untouched] log=[Floats(1.5,0.25)] qi=[] rgvarg=[{5:0.25/3fd0000000000000},{4:1.5/3fc00000}] errinfo_left=0
+inv dispinvoke Floats.coerce hr=00000000 argerr=untouched/deadbeef res=5:5.5/4016000000000000 exc=[untouched] log=[Floats(3,2.5)] qi=[] rgvarg=[{8:"2.5"},{3:3}] errinfo_left=0
+inv dispinvoke Wide hr=00000000 argerr=untouched/deadbeef res=8:"wide" exc=[untouched] log=[Wide(123456,45000.5,4886718345,-9)] qi=[] rgvarg=[{3:-9},{14:4886718345},{7:45000.5/40e5f91000000000},{6:123456}] errinfo_left=0
+inv dispinvoke Wide.coerce hr=00000000 argerr=untouched/deadbeef res=8:"wide" exc=[untouched] log=[Wide(10000,2,3,4)] qi=[] rgvarg=[{3:4},{3:3},{5:2/4000000000000000},{3:1}] errinfo_left=0
+inv dispinvoke Str hr=00000000 argerr=untouched/deadbeef res=8:"hi!" exc=[untouched] log=[Str("hi")] qi=[] rgvarg=[{8:"hi"}] errinfo_left=0
+inv dispinvoke Str.fromint hr=00000000 argerr=untouched/deadbeef res=8:"42!" exc=[untouched] log=[Str("42")] qi=[] rgvarg=[{3:42}] errinfo_left=0
+inv dispinvoke Str.null hr=00000000 argerr=untouched/deadbeef res=8:"<null>!" exc=[untouched] log=[Str(null)] qi=[] rgvarg=[{8:null}] errinfo_left=0
+inv dispinvoke Str.byref hr=00000000 argerr=untouched/deadbeef res=8:"ref!" exc=[untouched] log=[Str("ref")] qi=[] rgvarg=[{4008:*"ref"}] errinfo_left=0
+inv dispinvoke Var hr=00000000 argerr=untouched/deadbeef res=3:5 exc=[untouched] log=[Var({3:5},-1)] qi=[] rgvarg=[{3:-1},{3:5}] errinfo_left=0
+inv dispinvoke Var.bstr hr=00000000 argerr=untouched/deadbeef res=8:"s" exc=[untouched] log=[Var({8:"s"},2)] qi=[] rgvarg=[{2:2},{8:"s"}] errinfo_left=0
+inv dispinvoke Var.missing hr=00000000 argerr=untouched/deadbeef res=a:80020004 exc=[untouched] log=[Var({a:80020004},3)] qi=[] rgvarg=[{3:3},{a:80020004}] errinfo_left=0
+inv dispinvoke Var.byref hr=00000000 argerr=untouched/deadbeef res=4003:*4 exc=[untouched] log=[Var({4003:*4},3)] qi=[] rgvarg=[{3:3},{4003:*4}] errinfo_left=0
+inv dispinvoke VarPtr.byref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({8:"in"})] qi=[] rgvarg=[{400c:*{3:77}}] errinfo_left=0
+inv dispinvoke VarPtr.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({3:3})] qi=[] rgvarg=[{3:3}] errinfo_left=0
+inv dispinvoke VarPtr.byrefi4 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[VarPtr({4003:*41})] qi=[] rgvarg=[{3:77}] errinfo_left=0
+inv dispinvoke OutLong hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(41)] qi=[] rgvarg=[{4003:*42}] errinfo_left=0
+inv dispinvoke OutLong.i2ref hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{4002:*41}] errinfo_left=0
+inv dispinvoke OutLong.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(41)] qi=[] rgvarg=[{3:41}] errinfo_left=0
+inv dispinvoke OutLong.bstrbyval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(5)] qi=[] rgvarg=[{8:"5"}] errinfo_left=0
+inv dispinvoke OutLong.i2byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutLong(5)] qi=[] rgvarg=[{2:5}] errinfo_left=0
+inv dispinvoke OutLong.variantref hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{400c:*{3:41}}] errinfo_left=0
+inv dispinvoke Fail.efail hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv dispinvoke Fail.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv dispinvoke Fail.dispcode hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80020005] log=[Fail(80020005)] qi=[] rgvarg=[{3:-2147352571}] errinfo_left=0
+inv dispinvoke Fail.sfalse hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(00000001)] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Fail.success2 hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(00040005)] qi=[] rgvarg=[{3:262149}] errinfo_left=0
+inv dispinvoke Fail.errinfo.nosei hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv dispinvoke Fail.errinfo.seifalse hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv dispinvoke Fail.errinfo.seiok hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src="ProbeSource" desc="ProbeDesc" help="probe.hlp" ctx=2a rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv dispinvoke Fail.errinfo.seiok.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=1
+inv dispinvoke Fail.noerrinfo.seiok hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[Fail(80004005)] qi=[] rgvarg=[{3:-2147467259}] errinfo_left=0
+inv dispinvoke Prop.get hr=00000000 argerr=untouched/deadbeef res=3:11 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke Prop.methodget hr=00000000 argerr=untouched/deadbeef res=3:11 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke Prop.method hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke Prop.put hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(5)] qi=[] rgvarg=[{3:5}] errinfo_left=0
+inv dispinvoke Prop.put.coerce hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(8)] qi=[] rgvarg=[{8:"8"}] errinfo_left=0
+inv dispinvoke Prop.put.unnamed hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv dispinvoke Prop.putref hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv dispinvoke Prop.putorputref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Prop(6)] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv dispinvoke Prop.put.withget hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[{3:6}] errinfo_left=0
+inv dispinvoke Prop.get.after hr=00000000 argerr=untouched/deadbeef res=3:6 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke Prop.get.extra hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Prop] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Obj.get.index hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Obj.get.index2 hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=2,cNamed=0,res=1,exc=1,argerr=1,{8:"two"},{3:1})] qi=[] rgvarg=[{8:"two"},{3:1}] errinfo_left=0
+inv dispinvoke Obj.get.index.methodget hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=3,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Obj.get.index.noresult hr=00000000 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=1,cNamed=0,res=1,exc=1,argerr=1,{3:1})] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Item.get.index hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3},{8:"set"}] errinfo_left=0
+inv dispinvoke Obj.get.index.named hr=00000000 argerr=untouched/deadbeef res=3:4242 exc=[untouched] log=[get_Obj IDispatch::Invoke(id=0,riidnull=1,lcid=409,flags=2,cArgs=2,cNamed=1,res=1,exc=1,argerr=1,{3:1},{3:2},n0)] qi=[] rgvarg=[{3:1},{3:2}] errinfo_left=0
+inv dispinvoke M0.extra.withget hr=80020011 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Item.get hr=00000000 argerr=untouched/deadbeef res=8:"value" exc=[untouched] log=[get_Item("set")] qi=[] rgvarg=[{8:"set"}] errinfo_left=0
+inv dispinvoke Item.get.unset hr=80020009 argerr=untouched/deadbeef res=0 exc=[w=0 res=0 src=null desc=null help=null ctx=0 rsv=0 defer=0 scode=80004005] log=[get_Item("unset")] qi=[] rgvarg=[{8:"unset"}] errinfo_left=0
+inv dispinvoke Item.get.unset.noexcep hr=80020009 argerr=untouched/deadbeef res=0 exc=[untouched] log=[get_Item("unset")] qi=[] rgvarg=[{8:"unset"}] errinfo_left=0
+inv dispinvoke Item.put hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Item("k","v")] qi=[] rgvarg=[{8:"v"},{8:"k"}] errinfo_left=0
+inv dispinvoke Item.put.coerce hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[put_Item("k","12")] qi=[] rgvarg=[{3:12},{8:"k"}] errinfo_left=0
+inv dispinvoke Item.put.toofew hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{8:"k"}] errinfo_left=0
+inv dispinvoke Obj.get hr=00000000 argerr=untouched/deadbeef res=9:obj exc=[untouched] log=[get_Obj] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke Obj.putref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv dispinvoke Obj.put hr=80020003 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv dispinvoke Obj.putorputref hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[] rgvarg=[{9:obj}] errinfo_left=0
+inv dispinvoke Obj.putref.unk hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(self)] qi=[disp,] rgvarg=[{d:obj}] errinfo_left=0
+inv dispinvoke Obj.putref.null hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[putref_Obj(null)] qi=[] rgvarg=[{9:null}] errinfo_left=0
+inv dispinvoke Opt.one hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"dflt")] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Opt.two hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{3:2},5,"dflt")] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv dispinvoke Opt.all hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{3:2},3,"x")] qi=[] rgvarg=[{8:"x"},{3:3},{3:2},{3:1}] errinfo_left=0
+inv dispinvoke Opt.allmissing hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"dflt")] qi=[] rgvarg=[{a:80020004},{a:80020004},{a:80020004},{3:1}] errinfo_left=0
+inv dispinvoke Opt.toomany hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{8:"x"},{3:3},{3:2},{3:1}] errinfo_left=0
+inv dispinvoke Opt.none hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke Opt.requiredmissing hr=8002000f argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{a:80020004}] errinfo_left=0
+inv dispinvoke OptDouble.none hr=00000000 argerr=untouched/deadbeef res=5:-17.5/c031800000000000 exc=[untouched] log=[OptDouble(2.5,-7)] qi=[] rgvarg=[] errinfo_left=0
+inv dispinvoke OptDouble.one hr=00000000 argerr=untouched/deadbeef res=5:-28/c03c000000000000 exc=[untouched] log=[OptDouble(4,-7)] qi=[] rgvarg=[{5:4/4010000000000000}] errinfo_left=0
+inv dispinvoke OptDouble.firstmissing hr=00000000 argerr=untouched/deadbeef res=5:7.5/401e000000000000 exc=[untouched] log=[OptDouble(2.5,3)] qi=[] rgvarg=[{3:3},{a:80020004}] errinfo_left=0
+inv dispinvoke Named.two hr=00000000 argerr=untouched/deadbeef res=3:123 exc=[untouched] log=[Named(1,2,3)] qi=[] rgvarg=[{3:3},{3:2},{3:1}] errinfo_left=0
+inv dispinvoke Named.all hr=00000000 argerr=untouched/deadbeef res=3:756 exc=[untouched] log=[Named(7,5,6)] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv dispinvoke Named.unknown hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv dispinvoke Named.duplicate hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv dispinvoke Named.overlapspositional hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv dispinvoke Named.mismatch hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{8:"zz"},{3:6},{3:7}] errinfo_left=0
+inv dispinvoke Named.propputid.method hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6},{3:7}] errinfo_left=0
+inv dispinvoke Named.missingrequired hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:6}] errinfo_left=0
+inv dispinvoke Opt.named.c hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},3,"dflt")] qi=[] rgvarg=[{3:3},{3:1}] errinfo_left=0
+inv dispinvoke Opt.named.unknown hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3},{3:1}] errinfo_left=0
+inv dispinvoke Opt.named.dup hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:8},{3:9},{3:1}] errinfo_left=0
+inv dispinvoke Opt.named.overlap hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:5},{3:7}] errinfo_left=0
+inv dispinvoke Opt.named.d.coerce hr=00000000 argerr=untouched/deadbeef res=8:"opt" exc=[untouched] log=[Opt(1,{a:80020004},5,"44")] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv dispinvoke Opt.named.retval hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv dispinvoke Opt.named.minus1 hr=80020004 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:44},{3:1}] errinfo_left=0
+inv dispinvoke Opt.named.nullarray hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Opt.named.countgtargs hr=80070057 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv dispinvoke Lcid hr=00000000 argerr=untouched/deadbeef res=3:1033 exc=[untouched] log=[Lcid(1,00000409)] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Lcid.extra hr=8002000e argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:2},{3:1}] errinfo_left=0
+inv dispinvoke Arr hr=00000000 argerr=untouched/deadbeef res=3:60 exc=[untouched] log=[Arr(sa,1..3)] qi=[] rgvarg=[{2003:?}] errinfo_left=0
+inv dispinvoke Arr.byref hr=00000000 argerr=untouched/deadbeef res=3:60 exc=[untouched] log=[Arr(sa,1..3)] qi=[] rgvarg=[{6003:byref}] errinfo_left=0
+inv dispinvoke Arr.variantarray hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{200c:?}] errinfo_left=0
+inv dispinvoke Arr.scalar hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:3}] errinfo_left=0
+inv dispinvoke Unk.fromdispatch hr=00000000 argerr=untouched/deadbeef res=3:1 exc=[untouched] log=[Unk(self)] qi=[unk,] rgvarg=[{9:obj}] errinfo_left=0
+inv dispinvoke Unk.null hr=00000000 argerr=untouched/deadbeef res=3:0 exc=[untouched] log=[Unk(null)] qi=[] rgvarg=[{d:null}] errinfo_left=0
+inv dispinvoke Unk.fromint hr=80020005 argerr=0 res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{3:1}] errinfo_left=0
+inv dispinvoke Bool.fromint hr=00000000 argerr=untouched/deadbeef res=b:-1 exc=[untouched] log=[Bool(0)] qi=[] rgvarg=[{3:0}] errinfo_left=0
+inv dispinvoke Bool.fromstr hr=00000000 argerr=untouched/deadbeef res=b:0 exc=[untouched] log=[Bool(-1)] qi=[] rgvarg=[{8:"True"}] errinfo_left=0
+inv dispinvoke OutBstr hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutBstr(in=null)] qi=[] rgvarg=[{4008:*"out"}] errinfo_left=0
+inv dispinvoke OutBstr.byval hr=00000000 argerr=untouched/deadbeef res=0 exc=[untouched] log=[OutBstr(in=null)] qi=[] rgvarg=[{8:"x"}] errinfo_left=0
+inv dispinvoke Ints.mismatch.noargerr hr=00000000 argerr=untouched/deadbeef res=3:10203 exc=[untouched] log=[Ints(1,2,3)] qi=[] rgvarg=[{2:3},{2:2},{3:1}] errinfo_left=0
+inv dispinvoke Ints.mismatch.noargerr2 hr=80020005 argerr=untouched/deadbeef res=2:4660 exc=[untouched] log=[] qi=[] rgvarg=[{2:2},{8:"abc"},{3:1}] errinfo_left=0
+dcf Ints hr=00000000 res=a:00000000 log=[Ints(7,3,2)] args=[{3:7},{2:3},{3:2},{4003:*70302}]
+dcf Ints.out r=70302
+dcf Ints.vtptr hr=80070057 res=2:4660 log=[] args=[{3:7},{2:3},{3:2},{4003:*70302}]
+dcf RetR8 hr=00000000 res=5:4.75/4013000000000000 log=[RetR8(1.25,0.5,3)] args=[{5:1.25/3ff4000000000000},{4:0.5/3f000000},{3:3}]
+dcf RetR4 hr=00000000 res=4:3.5/40600000 log=[RetR4(1.75)] args=[{4:1.75/3fe00000}]
+dcf RetI8 hr=00000000 res=14:4294967301 log=[RetI8(4294967296,5)] args=[{14:4294967296},{3:5}]
+dcf RetCYh hr=00000000 res=6:147 log=[RetCYh(21)] args=[{3:21}]
+dcf RetVar hr=00000000 res=3:18 log=[RetVar(6)] args=[{2:6}]
+dcf RetDec hr=00000000 res=e:0/0/0/17/17 log=[RetDec(17)] args=[{3:17}]
+dcf RetR8.asdate hr=00000000 res=7:6/4018000000000000 log=[RetR8(1,2,3)] args=[{5:1/3ff0000000000000},{4:2/40000000},{3:3}]
+dcf RetI8.asui8 hr=00000000 res=15:18446744073709551611 log=[RetI8(-2,-3)] args=[{14:-2},{3:-3}]
+dcf imbalance hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4},{2:5}]
+dcf RetVoid hr=00000000 res=0 log=[RetVoid(9)] args=[{3:9}]
+dcf RetVoid.vtvoid hr=80070057 res=2:4660 log=[] args=[{3:9}]
+dcf VarArg hr=00000000 res=a:00000000 log=[VarArg({3:5},-2)] args=[{3:5},{3:-2}]
+dcf RetI2 hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf RetI2.asi4 hr=00000000 res=3:5 log=[RetI2(4)] args=[{2:4}]
+dcf RetBstr hr=00000000 res=8:"rb" log=[RetBstr("q")] args=[{8:"q"}]
+dcf Many hr=00000000 res=3:128 log=[Many(1,2,3,4,5,6,7,100)] args=[{3:1},{3:2},{3:3},{3:4},{3:5},{3:6},{3:7},{5:100/4059000000000000}]
+dcf Floats4 hr=00000000 res=5:7.75/401f000000000000 log=[Floats4(1.5,2.25,4)] args=[{4:1.5/3fc00000},{5:2.25/4002000000000000},{4:4/40800000}]
+dcf free_cdecl hr=00000000 res=5:5.5/4016000000000000 log=[free_cdecl(5,0.5)] args=[{3:5},{5:0.5/3fe0000000000000}]
+dcf free_stdcall hr=00000000 res=3:2 log=[free_stdcall(5,3)] args=[{3:5},{3:3}]
+dcf free_stdcall.ascdecl hr=00000000 res=3:2 log=[free_stdcall(5,3)] args=[{3:5},{3:3}]
+dcf cc.fastcall hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf cc.pascal hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf cc.macpascal hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf cc.fpfastcall hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf cc.syscall hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf cc.mpwcdecl hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf cc.mpwpascal hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf cc.max hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf cc.big hr=00000000 res=2:5 log=[RetI2(4)] args=[{2:4}]
+dcf ret.24 hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.d hr=00000000 res=d:obj log=[RetI2(4)] args=[{2:4}]
+dcf ret.9 hr=00000000 res=9:obj log=[RetI2(4)] args=[{2:4}]
+dcf ret.b hr=00000000 res=b:5 log=[RetI2(4)] args=[{2:4}]
+dcf ret.10 hr=00000000 res=10:5 log=[RetI2(4)] args=[{2:4}]
+dcf ret.11 hr=00000000 res=11:5 log=[RetI2(4)] args=[{2:4}]
+dcf ret.12 hr=00000000 res=12:5 log=[RetI2(4)] args=[{2:4}]
+dcf ret.13 hr=00000000 res=13:5 log=[RetI2(4)] args=[{2:4}]
+dcf ret.16 hr=00000000 res=16:5 log=[RetI2(4)] args=[{2:4}]
+dcf ret.17 hr=00000000 res=17:5 log=[RetI2(4)] args=[{2:4}]
+dcf ret.1e hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.1f hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.1 hr=00000000 res=1 log=[RetI2(4)] args=[{2:4}]
+dcf ret.a hr=00000000 res=a:00000005 log=[RetI2(4)] args=[{2:4}]
+dcf ret.19 hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.1a hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.1b hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.1d hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.25 hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.26 hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.2003 hr=00000000 res=2003:? log=[RetI2(4)] args=[{2:4}]
+dcf ret.4003 hr=00000000 res=4003:byref log=[RetI2(4)] args=[{2:4}]
+dcf ret.48 hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.fff hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.7f hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf ret.fff hr=80070057 res=2:4660 log=[] args=[{2:4}]
+dcf arg.0 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.1 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.2 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.3 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.4 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.5 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.6 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.7 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.8 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.9 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.a hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.b hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.c hr=00000000 res=0 log=[raw &copy M] args=[]
+dcf arg.d hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.e hr=00000000 res=0 log=[raw *0e00aaaabbbbcccc1111111122222222 M] args=[]
+dcf arg.10 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.11 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.12 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.13 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.14 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.15 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.16 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.17 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.18 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.19 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.1a hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.1b hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.1c hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.1d hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.1e hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.1f hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.24 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.25 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.26 hr=00000000 res=0 log=[raw &copy M] args=[]
+dcf arg.40 hr=00000000 res=0 log=[raw &copy M] args=[]
+dcf arg.48 hr=00000000 res=0 log=[raw &copy M] args=[]
+dcf arg.2003 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.4003 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.400c hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.1003 hr=00000000 res=0 log=[raw 2222222211111111 M] args=[]
+dcf arg.7f hr=00000000 res=0 log=[raw &copy M] args=[]
+vct src=0 target=0 hr=00000000 dst=0
+vct src=0 target=1 hr=00000000 dst=1
+vct src=0 target=10 hr=00000000 dst=10:0
+vct src=0 target=11 hr=00000000 dst=11:0
+vct src=0 target=2 hr=00000000 dst=2:0
+vct src=0 target=12 hr=00000000 dst=12:0
+vct src=0 target=3 hr=00000000 dst=3:0
+vct src=0 target=13 hr=00000000 dst=13:0
+vct src=0 target=16 hr=00000000 dst=16:0
+vct src=0 target=17 hr=00000000 dst=17:0
+vct src=0 target=14 hr=00000000 dst=14:0
+vct src=0 target=15 hr=00000000 dst=15:0
+vct src=0 target=4 hr=00000000 dst=4:0/00000000
+vct src=0 target=5 hr=00000000 dst=5:0/0000000000000000
+vct src=0 target=6 hr=00000000 dst=6:0
+vct src=0 target=7 hr=00000000 dst=7:0/0000000000000000
+vct src=0 target=8 hr=00000000 dst=8:""
+vct src=0 target=b hr=00000000 dst=b:0
+vct src=0 target=9 hr=80020005 dst=2:4660
+vct src=0 target=d hr=80020005 dst=2:4660
+vct src=0 target=a hr=80020005 dst=2:4660
+vct src=0 target=c hr=80020005 dst=2:4660
+vct src=0 target=e hr=00000000 dst=e:0/0/0/0/0
+vct src=0 target=4003 hr=80020005 dst=2:4660
+vct src=0/byrefvariant target=0 hr=00000000 dst=0
+vct src=0/byrefvariant target=1 hr=00000000 dst=1
+vct src=0/byrefvariant target=10 hr=00000000 dst=10:0
+vct src=0/byrefvariant target=11 hr=00000000 dst=11:0
+vct src=0/byrefvariant target=2 hr=00000000 dst=2:0
+vct src=0/byrefvariant target=12 hr=00000000 dst=12:0
+vct src=0/byrefvariant target=3 hr=00000000 dst=3:0
+vct src=0/byrefvariant target=13 hr=00000000 dst=13:0
+vct src=0/byrefvariant target=16 hr=00000000 dst=16:0
+vct src=0/byrefvariant target=17 hr=00000000 dst=17:0
+vct src=0/byrefvariant target=14 hr=00000000 dst=14:0
+vct src=0/byrefvariant target=15 hr=00000000 dst=15:0
+vct src=0/byrefvariant target=4 hr=00000000 dst=4:0/00000000
+vct src=0/byrefvariant target=5 hr=00000000 dst=5:0/0000000000000000
+vct src=0/byrefvariant target=6 hr=00000000 dst=6:0
+vct src=0/byrefvariant target=7 hr=00000000 dst=7:0/0000000000000000
+vct src=0/byrefvariant target=8 hr=00000000 dst=8:""
+vct src=0/byrefvariant target=b hr=00000000 dst=b:0
+vct src=0/byrefvariant target=9 hr=80020005 dst=2:4660
+vct src=0/byrefvariant target=d hr=80020005 dst=2:4660
+vct src=0/byrefvariant target=a hr=80020005 dst=2:4660
+vct src=0/byrefvariant target=c hr=80020005 dst=2:4660
+vct src=0/byrefvariant target=e hr=00000000 dst=e:0/0/0/0/0
+vct src=0/byrefvariant target=4003 hr=80020005 dst=2:4660
+vct src=1 target=0 hr=80020005 dst=2:4660
+vct src=1 target=1 hr=00000000 dst=1
+vct src=1 target=10 hr=80020005 dst=2:4660
+vct src=1 target=11 hr=80020005 dst=2:4660
+vct src=1 target=2 hr=80020005 dst=2:4660
+vct src=1 target=12 hr=80020005 dst=2:4660
+vct src=1 target=3 hr=80020005 dst=2:4660
+vct src=1 target=13 hr=80020005 dst=2:4660
+vct src=1 target=16 hr=80020005 dst=2:4660
+vct src=1 target=17 hr=80020005 dst=2:4660
+vct src=1 target=14 hr=80020005 dst=2:4660
+vct src=1 target=15 hr=80020005 dst=2:4660
+vct src=1 target=4 hr=80020005 dst=2:4660
+vct src=1 target=5 hr=80020005 dst=2:4660
+vct src=1 target=6 hr=80020005 dst=2:4660
+vct src=1 target=7 hr=80020005 dst=2:4660
+vct src=1 target=8 hr=80020005 dst=2:4660
+vct src=1 target=b hr=80020005 dst=2:4660
+vct src=1 target=9 hr=80020005 dst=2:4660
+vct src=1 target=d hr=80020005 dst=2:4660
+vct src=1 target=a hr=80020005 dst=2:4660
+vct src=1 target=c hr=80020005 dst=2:4660
+vct src=1 target=e hr=80020005 dst=2:4660
+vct src=1 target=4003 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=0 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=1 hr=00000000 dst=1
+vct src=1/byrefvariant target=10 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=11 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=2 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=12 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=3 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=13 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=16 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=17 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=14 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=15 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=4 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=5 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=6 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=7 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=8 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=b hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=9 hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=d hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=a hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=c hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=e hr=80020005 dst=2:4660
+vct src=1/byrefvariant target=4003 hr=80020005 dst=2:4660
+own oop.bstr.bstr hr=00000000 dest=8:"abc" bstr=new src=8:"abc" qi=[] log=[] refs=[]
+own oop.disp.disp hr=00000000 dest=9:dpure src=9:dpure qi=[] log=[] refs=[dpure:+1]
+own oop.unk.unk hr=00000000 dest=d:plain src=d:plain qi=[] log=[] refs=[plain:+1]
+own oop.array.array hr=80020005 dest=0 src=2003:sa(vt=3,0..1) qi=[] log=[] refs=[]
+own oop.byrefbstr.bstr hr=00000000 dest=8:"ref" bstr=new src=4008:*"ref" qi=[] log=[] refs=[]
+own oop.byrefbstr.byrefbstr hr=80020005 dest=0 src=4008:*"ref" qi=[] log=[] refs=[]
+own oop.byrefi4.byrefi4 hr=80020005 dest=0 src=4003:*7 qi=[] log=[] refs=[]
+own oop.byrefi4.i4 hr=00000000 dest=3:7 src=4003:*7 qi=[] log=[] refs=[]
+own oop.byrefvariant.bstr hr=00000000 dest=8:"inner" src=400c:*{8:"inner"} qi=[] log=[] refs=[]
+own oop.byrefvariant.byrefvariant hr=80020005 dest=0 src=400c:*{8:"inner"} qi=[] log=[] refs=[]
+own oop.byrefvariant.variant hr=80020005 dest=0 src=400c:*{8:"inner"} qi=[] log=[] refs=[]
+own oop.byrefdisp.disp hr=00000000 dest=9:dpure src=4009:*dpure qi=[] log=[] refs=[dpure:+1]
+own oop.byrefvariantdisp.disp hr=00000000 dest=9:dpure src=400c:*{9:dpure} qi=[] log=[] refs=[dpure:+1]
+own oop.byrefarray.array hr=80020005 dest=0 src=6003:*sa(vt=3,0..1) qi=[] log=[] refs=[]
+own oop.disp.unk hr=00000000 dest=d:dpure src=9:dpure qi=[dpure:unk,] log=[] refs=[dpure:+1]
+own oop.disp.i4 hr=00000000 dest=3:9 src=9:dpure qi=[] log=[ dpure.Invoke(0,2,0)] refs=[]
+own oop.disp.bstr hr=00000000 dest=8:"9" src=9:dpure qi=[] log=[ dpure.Invoke(0,2,0)] refs=[]
+own oop.disp.bool hr=00000000 dest=b:-1 src=9:dpure qi=[] log=[ dpure.Invoke(0,2,0)] refs=[]
+own oop.nulldisp.i4 hr=80020005 dest=0 src=9:null qi=[] log=[] refs=[]
+own oop.nulldisp.bstr hr=80020005 dest=0 src=9:null qi=[] log=[] refs=[]
+own oop.unkdpure.bstr hr=80020005 dest=0 src=d:dpure qi=[] log=[] refs=[]
+own oop.unkdpure.i4 hr=80020005 dest=0 src=d:dpure qi=[] log=[] refs=[]
+own oop.nullunk.disp hr=00000000 dest=9:null src=d:null qi=[] log=[] refs=[]
+own oop.nulldisp.unk hr=00000000 dest=d:null src=9:null qi=[] log=[] refs=[]
+own oop.bstr.empty hr=00000000 dest=0 src=8:"x" qi=[] log=[] refs=[]
+own inplace.disp.empty hr=00000000 dest=0 src=(in-place) qi=[] log=[] refs=[dpure:-1]
+own inplace.byrefbstr.bstr hr=00000000 dest=8:"keep" bstr=new src=(in-place) qi=[] log=[] refs=[]
+own inplace.byrefbstr.bstr.referenced value="keep"
+own inplace.byrefdisp.disp hr=00000000 dest=9:dpure src=(in-place) qi=[] log=[] refs=[dpure:+1]
+own inplace.byrefdisp.disp.referenced value=dpure
+own inplace.byrefvariant.bstr hr=00000000 dest=8:"inner" src=(in-place) qi=[] log=[] refs=[]
+own inplace.byrefvariant.bstr.referenced value=8:"inner"
+own inplace.bstr.i4 hr=00000000 dest=3:12 src=(in-place) qi=[] log=[] refs=[]
+own inplace.bstr.i4.fail hr=80020005 dest=8:"abc" bstr=same src=(in-place) qi=[] log=[] refs=[]
+own inplace.bstr.bstr hr=00000000 dest=8:"same" bstr=new src=(in-place) qi=[] log=[] refs=[]
+own inplace.bstr.bstr.pointer=new
+own inplace.disp.disp hr=00000000 dest=9:dpure src=(in-place) qi=[] log=[] refs=[]
+own inplace.disp.i4 hr=00000000 dest=3:9 src=(in-place) qi=[] log=[ dpure.Invoke(0,2,0)] refs=[dpure:-1]
+own inplace.disp.unk hr=00000000 dest=d:dpure src=(in-place) qi=[dpure:unk,] log=[] refs=[]
+own inplace.unk.disp.fail hr=80004002 dest=d:plain src=(in-place) qi=[plain:disp,] log=[] refs=[]
+own inplace.unk.i4.fail hr=80020005 dest=d:plain src=(in-place) qi=[] log=[] refs=[]
+own inplace.unk.disp hr=00000000 dest=9:dpure src=(in-place) qi=[dpure:disp,] log=[] refs=[]
+own inplace.array.array hr=80020005 dest=2003:sa(vt=3,0..0) sa=same src=(in-place) qi=[] log=[] refs=[]
+own olddest.disp.success hr=00000000 dest=8:"5" src=3:5 qi=[] log=[] refs=[dpure:-1]
+own olddest.disp.fail hr=80020005 dest=9:dpure src=8:"abc" qi=[] log=[] refs=[]
+own olddest.unk.sametype hr=00000000 dest=3:5 src=3:5 qi=[] log=[] refs=[plain:-1]
+own olddest.unk.bstrsame hr=00000000 dest=8:"q" bstr=new src=8:"q" qi=[] log=[] refs=[plain:-1]
+own olddest.unk.dispsame hr=00000000 dest=9:dpure src=9:dpure qi=[] log=[] refs=[plain:-1,dpure:+1]
+own olddest.unk.badvt hr=80020008 dest=d:plain src=7f:? qi=[] log=[] refs=[]
+own olddest.unk.overflow hr=8002000a dest=d:plain src=3:70000 qi=[] log=[] refs=[]
+types typeinfo hr=00000000
+ty ti InDual.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[self,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty ti InDual.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[disp,self,] rgvarg=[{d:obj}] refs=[] refs_after_clear=[]
+ty ti InDual.wrongdisp hr=80020005 argerr=0 res=2:4660 log=[] qi=[dpure:probe,] rgvarg=[{9:dpure}] refs=[] refs_after_clear=[]
+ty ti InDual.wrongunk hr=80004002 argerr=0 res=2:4660 log=[] qi=[plain:disp,] rgvarg=[{d:plain}] refs=[] refs_after_clear=[]
+ty ti InDual.nulldisp hr=00000000 argerr=untouched/deadbeef res=3:0 log=[In(null)] qi=[] rgvarg=[{9:null}] refs=[] refs_after_clear=[]
+ty ti InDual.nullunk hr=00000000 argerr=untouched/deadbeef res=3:0 log=[In(null)] qi=[] rgvarg=[{d:null}] refs=[] refs_after_clear=[]
+ty ti InDual.i4 hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{3:1}] refs=[] refs_after_clear=[]
+ty ti InDual.empty hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{0}] refs=[] refs_after_clear=[]
+ty ti InDual.byrefdisp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[self,] rgvarg=[{4009:*obj}] refs=[] refs_after_clear=[]
+ty ti InDual.byrefvariant hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[self,] rgvarg=[{400c:*{9:obj}}] refs=[] refs_after_clear=[]
+ty ti InUnk.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(plain)] qi=[plain:plainunk,] rgvarg=[{d:plain}] refs=[] refs_after_clear=[]
+ty ti InUnk.disp hr=80020005 argerr=0 res=2:4660 log=[] qi=[unk,5b0f4a10,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty ti InUnk.unkobj hr=80020005 argerr=0 res=2:4660 log=[] qi=[5b0f4a10,] rgvarg=[{d:obj}] refs=[] refs_after_clear=[]
+ty ti InDisp.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(dpure)] qi=[dpure:dpure,] rgvarg=[{9:dpure}] refs=[] refs_after_clear=[]
+ty ti InDisp.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(dpure)] qi=[dpure:disp,dpure:dpure,] rgvarg=[{d:dpure}] refs=[] refs_after_clear=[]
+ty ti InDisp.wrong hr=80020005 argerr=0 res=2:4660 log=[] qi=[5b0f4a10,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty ti InDerived.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(derived)] qi=[derived:derived,] rgvarg=[{9:derived}] refs=[] refs_after_clear=[]
+ty ti InDerived.wrong hr=80020005 argerr=0 res=2:4660 log=[] qi=[dpure:derived,] rgvarg=[{9:dpure}] refs=[] refs_after_clear=[]
+ty ti InOutDual.byrefdisp hr=00000000 argerr=untouched/deadbeef res=0 log=[InOut(obj)] qi=[self,] rgvarg=[{4009:*obj}] refs=[] refs_after_clear=[]
+ty ti InOutDual.byrefnull hr=00000000 argerr=untouched/deadbeef res=0 log=[InOut(null)] qi=[] rgvarg=[{4009:*obj}] refs=[obj:+1] refs_after_clear=[obj:+1]
+ty ti InOutDual.byrefunk hr=00000000 argerr=untouched/deadbeef res=0 log=[InOut(obj)] qi=[self,unk,] rgvarg=[{400d:*obj}] refs=[] refs_after_clear=[]
+ty ti InOutDual.byval hr=00000000 argerr=untouched/deadbeef res=0 log=[InOut(obj)] qi=[self,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty ti OutDual.byrefset hr=80020005 argerr=0 res=2:4660 log=[] qi=[dpure:probe,] rgvarg=[{4009:*dpure}] refs=[] refs_after_clear=[]
+ty ti RetDual hr=00000000 argerr=untouched/deadbeef res=9:obj log=[Ret] qi=[] rgvarg=[] refs=[obj:+1] refs_after_clear=[]
+ty ti RetDual.noresult hr=00000000 argerr=untouched/deadbeef res=2:4660 log=[Ret] qi=[] rgvarg=[] refs=[] refs_after_clear=[]
+ty ti RetUnk hr=00000000 argerr=untouched/deadbeef res=d:plain log=[Ret] qi=[] rgvarg=[] refs=[plain:+1] refs_after_clear=[]
+ty ti RetDisp hr=00000000 argerr=untouched/deadbeef res=9:dpure log=[Ret] qi=[] rgvarg=[] refs=[dpure:+1] refs_after_clear=[]
+ty ti RetDerived hr=00000000 argerr=untouched/deadbeef res=9:derived log=[Ret] qi=[] rgvarg=[] refs=[derived:+1] refs_after_clear=[]
+ty ti InEnum.i4 hr=00000000 argerr=untouched/deadbeef res=3:3 log=[InEnum(2)] qi=[] rgvarg=[{3:2}] refs=[] refs_after_clear=[]
+ty ti InEnum.i2 hr=00000000 argerr=untouched/deadbeef res=3:3 log=[InEnum(2)] qi=[] rgvarg=[{2:2}] refs=[] refs_after_clear=[]
+ty ti InEnum.bstr hr=00000000 argerr=untouched/deadbeef res=3:3 log=[InEnum(2)] qi=[] rgvarg=[{8:"2"}] refs=[] refs_after_clear=[]
+ty ti InEnum.r8 hr=00000000 argerr=untouched/deadbeef res=3:4 log=[InEnum(3)] qi=[] rgvarg=[{5:2.6000000000000001/4004cccccccccccd}] refs=[] refs_after_clear=[]
+ty ti InEnum.big hr=00000000 argerr=untouched/deadbeef res=3:100 log=[InEnum(99)] qi=[] rgvarg=[{3:99}] refs=[] refs_after_clear=[]
+ty ti InAlias hr=00000000 argerr=untouched/deadbeef res=3:1 log=[InAlias(1,obj)] qi=[self,] rgvarg=[{9:obj},{3:1}] refs=[] refs_after_clear=[]
+ty ti InAlias.wrong hr=80004002 argerr=0 res=2:4660 log=[] qi=[plain:disp,] rgvarg=[{d:plain},{3:1}] refs=[] refs_after_clear=[]
+ty ti InImported.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(enumv)] qi=[enumv:enumvariant,] rgvarg=[{d:enumv}] refs=[] refs_after_clear=[]
+ty ti InImported.wrong hr=80020005 argerr=0 res=2:4660 log=[] qi=[unk,00020404,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty ti RetImported hr=00000000 argerr=untouched/deadbeef res=d:enumv log=[Ret] qi=[] rgvarg=[] refs=[enumv:+1] refs_after_clear=[]
+ty ti InFont.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(dpure)] qi=[dpure:fontdisp,] rgvarg=[{9:dpure}] refs=[] refs_after_clear=[]
+ty ti InFont.wrong hr=80020005 argerr=0 res=2:4660 log=[] qi=[bef6e003,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty ti InCoclass.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[self,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty ti InCoclass.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[disp,self,] rgvarg=[{d:obj}] refs=[] refs_after_clear=[]
+ty ti InCoclass.plain hr=80004002 argerr=0 res=2:4660 log=[] qi=[plain:disp,] rgvarg=[{d:plain}] refs=[] refs_after_clear=[]
+ty ti RetCoclass hr=00000000 argerr=untouched/deadbeef res=9:obj log=[Ret] qi=[] rgvarg=[] refs=[obj:+1] refs_after_clear=[]
+ty ti InSA hr=00000000 argerr=untouched/deadbeef res=3:2 log=[InSA(sa(vt=8,0..1,"a","b"))] qi=[] rgvarg=[{2008:sa(vt=8,0..1,"a","b")}] refs=[] refs_after_clear=[]
+ty ti InSA.byref hr=00000000 argerr=untouched/deadbeef res=3:2 log=[InSA(sa(vt=8,0..1,"a","b"))] qi=[] rgvarg=[{6008:*sa(vt=8,0..1,"a","b")}] refs=[] refs_after_clear=[]
+ty ti InSA.variantarray hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{200c:sa(vt=c,0..1,{0},{0})}] refs=[] refs_after_clear=[]
+ty ti InSA.null hr=00000000 argerr=untouched/deadbeef res=3:-1 log=[InSA(sa(null))] qi=[] rgvarg=[{2008:sa(null)}] refs=[] refs_after_clear=[]
+ty ti InSA.scalar hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{8:"x"}] refs=[] refs_after_clear=[]
+ty ti InSA.i4array hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{2003:sa(vt=3,0..0)}] refs=[] refs_after_clear=[]
+ty ti InOutSA.byref hr=00000000 argerr=untouched/deadbeef res=0 log=[InOutSA(sa(vt=c,0..0,{8:"q"}))] qi=[] rgvarg=[{600c:*sa(vt=c,0..0,{3:77})}] refs=[] refs_after_clear=[]
+ty ti InOutSA.byval hr=00000000 argerr=untouched/deadbeef res=0 log=[InOutSA(sa(vt=c,0..0,{0}))] qi=[] rgvarg=[{200c:sa(vt=c,0..0,{0})}] refs=[] refs_after_clear=[]
+ty ti InOutSA.wrongbyref hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{6008:*sa(vt=8,0..1,"a","b")}] refs=[] refs_after_clear=[]
+ty ti RetSA hr=00000000 argerr=untouched/deadbeef res=2008:sa(vt=8,0..1,"a","b") log=[RetSA] qi=[] rgvarg=[] refs=[] refs_after_clear=[]
+ty ti InOutEnum.byrefi4 hr=00000000 argerr=untouched/deadbeef res=0 log=[InOutEnum(1)] qi=[] rgvarg=[{4003:*3}] refs=[] refs_after_clear=[]
+ty ti InOutEnum.byrefi2 hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{4002:*1}] refs=[] refs_after_clear=[]
+ty ti RetAlias hr=00000000 argerr=untouched/deadbeef res=9:obj log=[Ret] qi=[] rgvarg=[] refs=[obj:+1] refs_after_clear=[]
+ty ti InUnkStd.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[unk,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty ti InUnkStd.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(plain)] qi=[] rgvarg=[{d:plain}] refs=[] refs_after_clear=[]
+ty ti InOutUnk.byrefunk hr=80020005 argerr=0 res=2:4660 log=[] qi=[5b0f4a10,] rgvarg=[{400d:*obj}] refs=[] refs_after_clear=[]
+ty ti RetSAVar hr=00000000 argerr=untouched/deadbeef res=200c:sa(vt=c,0..0,{3:5}) log=[RetSAVar] qi=[] rgvarg=[] refs=[] refs_after_clear=[]
+ty ti InSAUnk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[InSA(sa(vt=d,0..0,plain))] qi=[] rgvarg=[{200d:sa(vt=d,0..0,plain)}] refs=[] refs_after_clear=[]
+ty ti InSAUnk.disparray hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{2009:sa(vt=9,0..0,null)}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[self,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[disp,self,] rgvarg=[{d:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.wrongdisp hr=80020005 argerr=0 res=2:4660 log=[] qi=[dpure:probe,] rgvarg=[{9:dpure}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.wrongunk hr=80004002 argerr=0 res=2:4660 log=[] qi=[plain:disp,] rgvarg=[{d:plain}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.nulldisp hr=00000000 argerr=untouched/deadbeef res=3:0 log=[In(null)] qi=[] rgvarg=[{9:null}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.nullunk hr=00000000 argerr=untouched/deadbeef res=3:0 log=[In(null)] qi=[] rgvarg=[{d:null}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.i4 hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{3:1}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.empty hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{0}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.byrefdisp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[self,] rgvarg=[{4009:*obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InDual.byrefvariant hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[self,] rgvarg=[{400c:*{9:obj}}] refs=[] refs_after_clear=[]
+ty dispinvoke InUnk.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(plain)] qi=[plain:plainunk,] rgvarg=[{d:plain}] refs=[] refs_after_clear=[]
+ty dispinvoke InUnk.disp hr=80020005 argerr=0 res=2:4660 log=[] qi=[unk,5b0f4a10,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InUnk.unkobj hr=80020005 argerr=0 res=2:4660 log=[] qi=[5b0f4a10,] rgvarg=[{d:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InDisp.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(dpure)] qi=[dpure:dpure,] rgvarg=[{9:dpure}] refs=[] refs_after_clear=[]
+ty dispinvoke InDisp.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(dpure)] qi=[dpure:disp,dpure:dpure,] rgvarg=[{d:dpure}] refs=[] refs_after_clear=[]
+ty dispinvoke InDisp.wrong hr=80020005 argerr=0 res=2:4660 log=[] qi=[5b0f4a10,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InDerived.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(derived)] qi=[derived:derived,] rgvarg=[{9:derived}] refs=[] refs_after_clear=[]
+ty dispinvoke InDerived.wrong hr=80020005 argerr=0 res=2:4660 log=[] qi=[dpure:derived,] rgvarg=[{9:dpure}] refs=[] refs_after_clear=[]
+ty dispinvoke InOutDual.byrefdisp hr=00000000 argerr=untouched/deadbeef res=0 log=[InOut(obj)] qi=[self,] rgvarg=[{4009:*obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InOutDual.byrefnull hr=00000000 argerr=untouched/deadbeef res=0 log=[InOut(null)] qi=[] rgvarg=[{4009:*obj}] refs=[obj:+1] refs_after_clear=[obj:+1]
+ty dispinvoke InOutDual.byrefunk hr=00000000 argerr=untouched/deadbeef res=0 log=[InOut(obj)] qi=[self,unk,] rgvarg=[{400d:*obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InOutDual.byval hr=00000000 argerr=untouched/deadbeef res=0 log=[InOut(obj)] qi=[self,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke OutDual.byrefset hr=80020005 argerr=0 res=2:4660 log=[] qi=[dpure:probe,] rgvarg=[{4009:*dpure}] refs=[] refs_after_clear=[]
+ty dispinvoke RetDual hr=00000000 argerr=untouched/deadbeef res=9:obj log=[Ret] qi=[] rgvarg=[] refs=[obj:+1] refs_after_clear=[]
+ty dispinvoke RetDual.noresult hr=00000000 argerr=untouched/deadbeef res=2:4660 log=[Ret] qi=[] rgvarg=[] refs=[] refs_after_clear=[]
+ty dispinvoke RetUnk hr=00000000 argerr=untouched/deadbeef res=d:plain log=[Ret] qi=[] rgvarg=[] refs=[plain:+1] refs_after_clear=[]
+ty dispinvoke RetDisp hr=00000000 argerr=untouched/deadbeef res=9:dpure log=[Ret] qi=[] rgvarg=[] refs=[dpure:+1] refs_after_clear=[]
+ty dispinvoke RetDerived hr=00000000 argerr=untouched/deadbeef res=9:derived log=[Ret] qi=[] rgvarg=[] refs=[derived:+1] refs_after_clear=[]
+ty dispinvoke InEnum.i4 hr=00000000 argerr=untouched/deadbeef res=3:3 log=[InEnum(2)] qi=[] rgvarg=[{3:2}] refs=[] refs_after_clear=[]
+ty dispinvoke InEnum.i2 hr=00000000 argerr=untouched/deadbeef res=3:3 log=[InEnum(2)] qi=[] rgvarg=[{2:2}] refs=[] refs_after_clear=[]
+ty dispinvoke InEnum.bstr hr=00000000 argerr=untouched/deadbeef res=3:3 log=[InEnum(2)] qi=[] rgvarg=[{8:"2"}] refs=[] refs_after_clear=[]
+ty dispinvoke InEnum.r8 hr=00000000 argerr=untouched/deadbeef res=3:4 log=[InEnum(3)] qi=[] rgvarg=[{5:2.6000000000000001/4004cccccccccccd}] refs=[] refs_after_clear=[]
+ty dispinvoke InEnum.big hr=00000000 argerr=untouched/deadbeef res=3:100 log=[InEnum(99)] qi=[] rgvarg=[{3:99}] refs=[] refs_after_clear=[]
+ty dispinvoke InAlias hr=00000000 argerr=untouched/deadbeef res=3:1 log=[InAlias(1,obj)] qi=[self,] rgvarg=[{9:obj},{3:1}] refs=[] refs_after_clear=[]
+ty dispinvoke InAlias.wrong hr=80004002 argerr=0 res=2:4660 log=[] qi=[plain:disp,] rgvarg=[{d:plain},{3:1}] refs=[] refs_after_clear=[]
+ty dispinvoke InImported.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(enumv)] qi=[enumv:enumvariant,] rgvarg=[{d:enumv}] refs=[] refs_after_clear=[]
+ty dispinvoke InImported.wrong hr=80020005 argerr=0 res=2:4660 log=[] qi=[unk,00020404,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke RetImported hr=00000000 argerr=untouched/deadbeef res=d:enumv log=[Ret] qi=[] rgvarg=[] refs=[enumv:+1] refs_after_clear=[]
+ty dispinvoke InFont.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(dpure)] qi=[dpure:fontdisp,] rgvarg=[{9:dpure}] refs=[] refs_after_clear=[]
+ty dispinvoke InFont.wrong hr=80020005 argerr=0 res=2:4660 log=[] qi=[bef6e003,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InCoclass.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[self,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InCoclass.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[disp,self,] rgvarg=[{d:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InCoclass.plain hr=80004002 argerr=0 res=2:4660 log=[] qi=[plain:disp,] rgvarg=[{d:plain}] refs=[] refs_after_clear=[]
+ty dispinvoke RetCoclass hr=00000000 argerr=untouched/deadbeef res=9:obj log=[Ret] qi=[] rgvarg=[] refs=[obj:+1] refs_after_clear=[]
+ty dispinvoke InSA hr=00000000 argerr=untouched/deadbeef res=3:2 log=[InSA(sa(vt=8,0..1,"a","b"))] qi=[] rgvarg=[{2008:sa(vt=8,0..1,"a","b")}] refs=[] refs_after_clear=[]
+ty dispinvoke InSA.byref hr=00000000 argerr=untouched/deadbeef res=3:2 log=[InSA(sa(vt=8,0..1,"a","b"))] qi=[] rgvarg=[{6008:*sa(vt=8,0..1,"a","b")}] refs=[] refs_after_clear=[]
+ty dispinvoke InSA.variantarray hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{200c:sa(vt=c,0..1,{0},{0})}] refs=[] refs_after_clear=[]
+ty dispinvoke InSA.null hr=00000000 argerr=untouched/deadbeef res=3:-1 log=[InSA(sa(null))] qi=[] rgvarg=[{2008:sa(null)}] refs=[] refs_after_clear=[]
+ty dispinvoke InSA.scalar hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{8:"x"}] refs=[] refs_after_clear=[]
+ty dispinvoke InSA.i4array hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{2003:sa(vt=3,0..0)}] refs=[] refs_after_clear=[]
+ty dispinvoke InOutSA.byref hr=00000000 argerr=untouched/deadbeef res=0 log=[InOutSA(sa(vt=c,0..0,{8:"q"}))] qi=[] rgvarg=[{600c:*sa(vt=c,0..0,{3:77})}] refs=[] refs_after_clear=[]
+ty dispinvoke InOutSA.byval hr=00000000 argerr=untouched/deadbeef res=0 log=[InOutSA(sa(vt=c,0..0,{0}))] qi=[] rgvarg=[{200c:sa(vt=c,0..0,{0})}] refs=[] refs_after_clear=[]
+ty dispinvoke InOutSA.wrongbyref hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{6008:*sa(vt=8,0..1,"a","b")}] refs=[] refs_after_clear=[]
+ty dispinvoke RetSA hr=00000000 argerr=untouched/deadbeef res=2008:sa(vt=8,0..1,"a","b") log=[RetSA] qi=[] rgvarg=[] refs=[] refs_after_clear=[]
+ty dispinvoke InOutEnum.byrefi4 hr=00000000 argerr=untouched/deadbeef res=0 log=[InOutEnum(1)] qi=[] rgvarg=[{4003:*3}] refs=[] refs_after_clear=[]
+ty dispinvoke InOutEnum.byrefi2 hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{4002:*1}] refs=[] refs_after_clear=[]
+ty dispinvoke RetAlias hr=00000000 argerr=untouched/deadbeef res=9:obj log=[Ret] qi=[] rgvarg=[] refs=[obj:+1] refs_after_clear=[]
+ty dispinvoke InUnkStd.disp hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(obj)] qi=[unk,] rgvarg=[{9:obj}] refs=[] refs_after_clear=[]
+ty dispinvoke InUnkStd.unk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[In(plain)] qi=[] rgvarg=[{d:plain}] refs=[] refs_after_clear=[]
+ty dispinvoke InOutUnk.byrefunk hr=80020005 argerr=0 res=2:4660 log=[] qi=[5b0f4a10,] rgvarg=[{400d:*obj}] refs=[] refs_after_clear=[]
+ty dispinvoke RetSAVar hr=00000000 argerr=untouched/deadbeef res=200c:sa(vt=c,0..0,{3:5}) log=[RetSAVar] qi=[] rgvarg=[] refs=[] refs_after_clear=[]
+ty dispinvoke InSAUnk hr=00000000 argerr=untouched/deadbeef res=3:1 log=[InSA(sa(vt=d,0..0,plain))] qi=[] rgvarg=[{200d:sa(vt=d,0..0,plain)}] refs=[] refs_after_clear=[]
+ty dispinvoke InSAUnk.disparray hr=80020005 argerr=0 res=2:4660 log=[] qi=[] rgvarg=[{2009:sa(vt=9,0..0,null)}] refs=[] refs_after_clear=[]
+edge nullinstance hr=80070057 argerr=deadbeef
+edge nullparams hr=80070057 argerr=deadbeef
+done

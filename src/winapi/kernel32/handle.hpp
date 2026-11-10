@@ -47,6 +47,7 @@ enum class HandleType : u8 {
     Token,
     Job,
     Device,
+    HidDevice,
     IoCompletionPort,
     NetworkNotification,
     /// An NT handle to a DXGI shared resource (IDXGIResource1::
@@ -76,6 +77,7 @@ enum class HandleType : u8 {
         case HandleType::Token:         return "Token";
         case HandleType::Job:           return "Job";
         case HandleType::Device:        return "Device";
+        case HandleType::HidDevice:     return "HidDevice";
         case HandleType::IoCompletionPort: return "IoCompletionPort";
         case HandleType::NetworkNotification: return "NetworkNotification";
         case HandleType::SharedResource: return "SharedResource";

@@ -14,6 +14,7 @@
 #include "winapi/graphics/common/gpu_event_signaler.hpp"
 #include "winapi/graphics/common/shared_keyed_mutex.hpp"
 #include "winapi/common/virtual_display_modes.hpp"
+#include "windowing/model/diag_flags.hpp"
 
 #include "graphics/contracts/backend_device.hpp"
 #include "graphics/common/diagnostic_path.hpp"
@@ -24,6 +25,7 @@
 #include <vitreo/virtual_tsc.hpp>
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
 #include <array>
 #include <chrono>
@@ -205,16 +207,35 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
         // chain refuses the call outright (measured, TRUE and FALSE).
         const bool fullscreen = m.arg(1) != 0;
         const GuestAddr target = m.arg_ptr(2);
+        static std::atomic<unsigned> trace_count{0};
+        const bool trace = windowing::diag::input_diag() &&
+            trace_count.fetch_add(1, std::memory_order_relaxed) < 64;
+        const u64 trace_hwnd = chain.desc.output_window;
+        const auto finish = [&](u32 result) {
+            if (trace) {
+                const auto current = m_swap_chains.find(self);
+                std::fprintf(stderr,
+                    "[input] DXGI SetFullscreenState chain=0x%llx hwnd=0x%llx request=%d target=0x%llx actual=%d windowed=%u descFlags=0x%x result=0x%08x caller=0x%llx\n",
+                    static_cast<unsigned long long>(self),
+                    static_cast<unsigned long long>(trace_hwnd), fullscreen ? 1 : 0,
+                    static_cast<unsigned long long>(target),
+                    current != m_swap_chains.end() && current->second.exclusive.fullscreen ? 1 : 0,
+                    current != m_swap_chains.end() ? current->second.desc.windowed : 0,
+                    current != m_swap_chains.end() ? current->second.desc.flags : 0,
+                    result, static_cast<unsigned long long>(m.guest_return_address()));
+            }
+            m.set_return(result);
+        };
         if (waitable || chain.composition) {
-            m.set_return(DXGI_ERROR_INVALID_CALL);
+            finish(DXGI_ERROR_INVALID_CALL);
             return;
         }
         // "DXGI_STATUS_MODE_CHANGE_IN_PROGRESS is returned if a
         // fullscreen/windowed mode transition is occurring when this API is
         // called" (from a handler of the transition's own messages, or
         // another thread).
-        if (m_fullscreen_transition) {
-            m.set_return(d3d11::DXGI_STATUS_MODE_CHANGE_IN_PROGRESS);
+        if (m_dxgi.exclusive_fullscreen().transition) {
+            finish(d3d11::DXGI_STATUS_MODE_CHANGE_IN_PROGRESS);
             return;
         }
         relinquish_fullscreen_if_inactive(self);
@@ -224,11 +245,16 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
                        "chain=0x%llx -> 0x%08x",
                        static_cast<unsigned long long>(target),
                        static_cast<unsigned long long>(self), result);
-            m.set_return(result);
+            finish(result);
             return;
         }
-        // Learn: with FALSE pTarget "must" be NULL; measured
-        // (dxgi_exclusive_fullscreen_probe) an output is accepted, S_OK.
+        // Learn: with FALSE pTarget "must" be NULL; measured (a73) a
+        // non-NULL pTarget is INVALID_CALL on a full-screen chain and
+        // accepted (S_OK) on a windowed one.
+        if (dxgi::windowed_target_refused(chain.exclusive, target)) {
+            finish(DXGI_ERROR_INVALID_CALL);
+            return;
+        }
         //
         // The guest goes windowed either way. The host Space is left only
         // when the application is foreground: a FALSE issued while it is not
@@ -240,7 +266,7 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
             const auto& active = m_window_services.application_active;
             leave_exclusive_fullscreen(self, !active || active());
         }
-        m.set_return(d3d11::S_OK);
+        finish(d3d11::S_OK);
         return;
     }
     case 11: {
@@ -255,8 +281,8 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
             m.set_return(DXGI_ERROR_INVALID_CALL);
             return;
         }
-        const bool is_fullscreen = current->second.fullscreen;
-        const GuestAddr output = current->second.fullscreen_output;
+        const bool is_fullscreen = current->second.exclusive.fullscreen;
+        const GuestAddr output = current->second.exclusive.output;
         if (fullscreen_out != 0) {
             (void)m.write_u32(fullscreen_out, is_fullscreen ? 1u : 0u);
         }
@@ -283,6 +309,31 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
             self, static_cast<u32>(m.arg(1)), static_cast<u32>(m.arg(2)),
             static_cast<u32>(m.arg(3)), static_cast<u32>(m.arg(4)),
             static_cast<u32>(m.arg(5)));
+        if (live_diag::caps_log_enabled()) {
+            live_diag::emit("dxgi-mode", live_diag::strprintf(
+                "ResizeBuffers chain=0x%llx count=%u request=%ux%u format=%u flags=0x%x hr=0x%08x",
+                static_cast<unsigned long long>(self), static_cast<u32>(m.arg(1)),
+                static_cast<u32>(m.arg(2)), static_cast<u32>(m.arg(3)),
+                static_cast<u32>(m.arg(4)), static_cast<u32>(m.arg(5)), result));
+        }
+        static std::atomic<unsigned> trace_count{0};
+        if (windowing::diag::input_diag() &&
+            trace_count.fetch_add(1, std::memory_order_relaxed) < 96) {
+            const auto current = m_swap_chains.find(self);
+            const bool found = current != m_swap_chains.end();
+            std::fprintf(stderr,
+                "[input] DXGI ResizeBuffers chain=0x%llx hwnd=0x%llx count=%u request=%ux%u format=%u flags=0x%x applied=%ux%u fullscreen=%d windowed=%u descFlags=0x%x result=0x%08x caller=0x%llx\n",
+                static_cast<unsigned long long>(self),
+                static_cast<unsigned long long>(found ? current->second.desc.output_window : 0),
+                static_cast<u32>(m.arg(1)), static_cast<u32>(m.arg(2)),
+                static_cast<u32>(m.arg(3)), static_cast<u32>(m.arg(4)),
+                static_cast<u32>(m.arg(5)), found ? current->second.desc.width : 0,
+                found ? current->second.desc.height : 0,
+                found && current->second.exclusive.fullscreen ? 1 : 0,
+                found ? current->second.desc.windowed : 0,
+                found ? current->second.desc.flags : 0, result,
+                static_cast<unsigned long long>(m.guest_return_address()));
+        }
         m.set_return(result);
         return;
     }
@@ -291,29 +342,60 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
         // window so the CLIENT area is Width x Height (measured 320x240), the
         // window system clamping what it must (0x0 gave the minimum size).
         const GuestAddr mode = m.arg_ptr(1);
+        static std::atomic<unsigned> trace_count{0};
+        const bool trace = windowing::diag::input_diag() &&
+            trace_count.fetch_add(1, std::memory_order_relaxed) < 96;
+        u32 trace_width = 0, trace_height = 0;
+        bool trace_read = false;
+        const u64 trace_hwnd = chain.desc.output_window;
+        const auto finish = [&](u32 result) {
+            if (trace) {
+                const auto current = m_swap_chains.find(self);
+                std::fprintf(stderr,
+                    "[input] DXGI ResizeTarget chain=0x%llx hwnd=0x%llx mode=0x%llx readable=%d request=%ux%u fullscreen=%d windowed=%u descFlags=0x%x result=0x%08x caller=0x%llx\n",
+                    static_cast<unsigned long long>(self),
+                    static_cast<unsigned long long>(trace_hwnd),
+                    static_cast<unsigned long long>(mode), trace_read ? 1 : 0,
+                    trace_width, trace_height,
+                    current != m_swap_chains.end() && current->second.exclusive.fullscreen ? 1 : 0,
+                    current != m_swap_chains.end() ? current->second.desc.windowed : 0,
+                    current != m_swap_chains.end() ? current->second.desc.flags : 0,
+                    result, static_cast<unsigned long long>(m.guest_return_address()));
+            }
+            m.set_return(result);
+        };
         if (mode == 0 || chain.composition || chain.window_missing) {
-            m.set_return(DXGI_ERROR_INVALID_CALL);
+            finish(DXGI_ERROR_INVALID_CALL);
             return;
         }
         const auto width = m_memory.read_u32(mode + 0);
         const auto height = m_memory.read_u32(mode + 4);
         if (width.is_err() || height.is_err()) {
-            m.set_return(DXGI_ERROR_INVALID_CALL);
+            finish(DXGI_ERROR_INVALID_CALL);
             return;
+        }
+        trace_width = width.value();
+        trace_height = height.value();
+        trace_read = true;
+        if (live_diag::caps_log_enabled()) {
+            live_diag::emit("dxgi-mode", live_diag::strprintf(
+                "ResizeTarget chain=0x%llx request=%ux%u fullscreen=%d buffers=%ux%u",
+                static_cast<unsigned long long>(self), width.value(), height.value(),
+                chain.exclusive.fullscreen ? 1 : 0, chain.desc.width, chain.desc.height));
         }
         // Learn ResizeTarget: DXGI_STATUS_MODE_CHANGE_IN_PROGRESS during a
         // full-screen / windowed transition.
-        if (m_fullscreen_transition) {
-            m.set_return(d3d11::DXGI_STATUS_MODE_CHANGE_IN_PROGRESS);
+        if (m_dxgi.exclusive_fullscreen().transition) {
+            finish(d3d11::DXGI_STATUS_MODE_CHANGE_IN_PROGRESS);
             return;
         }
         const u64 output_window = chain.desc.output_window;
         relinquish_fullscreen_if_inactive(self);
         if (const auto current = m_swap_chains.find(self);
-            current != m_swap_chains.end() && current->second.fullscreen) {
+            current != m_swap_chains.end() && current->second.exclusive.fullscreen) {
             // "Changes the display mode on the target output when the swap
             // chain is in full-screen mode."
-            m.set_return(resize_exclusive_target(self, width.value(),
+            finish(resize_exclusive_target(self, width.value(),
                                                  height.value()));
             return;
         }
@@ -321,7 +403,7 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
             DXGI_UNIMPLEMENTED_ONCE(
                 "dxgi!IDXGISwapChain::ResizeTarget: no window services -> "
                 "DXGI_ERROR_INVALID_CALL");
-            m.set_return(DXGI_ERROR_INVALID_CALL);
+            finish(DXGI_ERROR_INVALID_CALL);
             return;
         }
         const bool resized = m_window_services.resize_client(
@@ -329,7 +411,7 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
         d3d11_diag("IDXGISwapChain::ResizeTarget chain=0x%llx %ux%u -> %s",
                    static_cast<unsigned long long>(self), width.value(),
                    height.value(), resized ? "ok" : "failed");
-        m.set_return(resized ? d3d11::S_OK : DXGI_ERROR_INVALID_CALL);
+        finish(resized ? d3d11::S_OK : DXGI_ERROR_INVALID_CALL);
         return;
     }
     case 15: {
@@ -430,7 +512,7 @@ void D3D11Manager::impl_SwapChainMethod(Marshaler& m, usize slot) {
                 .is_err() ||
             m_memory.write_u32(address + 8, desc.scanline_ordering).is_err() ||
             m_memory.write_u32(address + 12, desc.scaling).is_err() ||
-            m_memory.write_u32(address + 16, chain.fullscreen ? 0u : 1u)
+            m_memory.write_u32(address + 16, chain.exclusive.fullscreen ? 0u : 1u)
                 .is_err()) {
             m.set_return(d3d11::E_INVALIDARG);
             return;

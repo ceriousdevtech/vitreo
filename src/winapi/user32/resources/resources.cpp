@@ -310,25 +310,53 @@ bool ResourceManager::destroy_cursor(u32 cursor) {
     return true;
 }
 
+namespace {
+
+/// The system cursor a handle names (handle 1 is the arrow), or 0.
+u32 system_cursor_id_of(u32 handle, u32 base) {
+    if (handle == 1) return idc::IDC_ARROW;
+    if (handle >= base && idc::is_system_cursor(handle - base)) {
+        return handle - base;
+    }
+    return 0;
+}
+
+/// The ids SetSystemCursor replaces: Learn's OCR_* table, plus OCR_ICON
+/// (32641) and OCR_PEN (32631), which Windows also accepts; OCR_SIZE (32640)
+/// it refuses (set_system_cursor_probe).
+bool replaceable_system_cursor(u32 id) {
+    switch (id) {
+    case 32512: case 32513: case 32514: case 32515: case 32516:  // NORMAL..UP
+    case 32642: case 32643: case 32644: case 32645: case 32646:  // SIZE*
+    case 32648: case 32649: case 32650: case 32651:  // NO, HAND, APPSTARTING, HELP
+    case 32641: case 32631:  // ICON, PEN
+        return true;
+    default:
+        return false;
+    }
+}
+
+} // namespace
+
+u32 ResourceManager::system_cursor_handle(u32 id) {
+    return idc::is_system_cursor(id) ? CURSOR_HANDLE_BASE + id : 0;
+}
+
 std::optional<ResourceManager::CursorImage>
 ResourceManager::cursor_image(u32 handle) const {
     if (handle == 0) {
         return std::nullopt;
     }
-    if (handle == 1) {
+    if (const u32 system_id = system_cursor_id_of(handle, CURSOR_HANDLE_BASE); system_id != 0) {
+        std::scoped_lock lock(m_cursor_mutex);
+        if (const auto it = m_system_cursor_overrides.find(system_id);
+            it != m_system_cursor_overrides.end()) {
+            return it->second;
+        }
         CursorImage image;
         image.is_system = true;
-        image.system_id = idc::IDC_ARROW;
+        image.system_id = system_id;
         return image;
-    }
-    if (handle >= CURSOR_HANDLE_BASE) {
-        const u32 system_id = handle - CURSOR_HANDLE_BASE;
-        if (idc::is_system_cursor(system_id)) {
-            CursorImage image;
-            image.is_system = true;
-            image.system_id = system_id;
-            return image;
-        }
     }
     std::scoped_lock lock(m_cursor_mutex);
     const auto found = m_cursors.find(handle);
@@ -336,6 +364,52 @@ ResourceManager::cursor_image(u32 handle) const {
         return std::nullopt;
     }
     return found->second.image;
+}
+
+bool ResourceManager::set_system_cursor(u32 hcursor, u32 id, u32& error) {
+    error = 0;
+    if (hcursor == 0) {
+        error = 1814;  // ERROR_RESOURCE_NAME_NOT_FOUND
+        return false;
+    }
+    const std::optional<CursorImage> incoming = cursor_image(hcursor);
+    if (!incoming) {
+        error = 1402;  // ERROR_INVALID_CURSOR_HANDLE
+        return false;
+    }
+    if (!replaceable_system_cursor(id)) return false;
+    const u32 source_system_id = system_cursor_id_of(hcursor, CURSOR_HANDLE_BASE);
+    {
+        std::scoped_lock lock(m_cursor_mutex);
+        CursorImage outgoing;
+        if (const auto it = m_system_cursor_overrides.find(id);
+            it != m_system_cursor_overrides.end()) {
+            outgoing = it->second;
+        } else {
+            outgoing.is_system = true;
+            outgoing.system_id = id;
+        }
+        const auto store = [this](u32 slot, CursorImage image) {
+            if (image.is_system && image.system_id == slot) {
+                m_system_cursor_overrides.erase(slot);
+            } else {
+                m_system_cursor_overrides[slot] = std::move(image);
+            }
+        };
+        store(id, *incoming);
+        // A system cursor handed in as hcur cannot be destroyed: it ends up
+        // holding what id held.
+        if (source_system_id != 0 && source_system_id != id) {
+            store(source_system_id, std::move(outgoing));
+        }
+    }
+    if (source_system_id == 0) (void)destroy_icon_object(hcursor);
+    return true;
+}
+
+void ResourceManager::restore_system_cursors() {
+    std::scoped_lock lock(m_cursor_mutex);
+    m_system_cursor_overrides.clear();
 }
 
 u32 ResourceManager::load_icon(GuestAddr instance, u32 icon_id) {

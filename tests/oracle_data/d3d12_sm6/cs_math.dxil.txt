@@ -1,0 +1,231 @@
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: 8a03f9f4d24f14fe5a95ffa630956e4c
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; out_ops                               UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%struct.RWByteAddressBuffer = type { i32 }
+
+define void @cs_math() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %3 = uitofp i32 %2 to float
+  %4 = fadd fast float %3, -3.200000e+01
+  %5 = fmul fast float %4, 6.250000e-02
+  %6 = fadd fast float %5, 3.125000e-02
+  %7 = fmul fast float %4, 3.125000e-02
+  %8 = fadd fast float %7, 1.562500e-02
+  %9 = call float @dx.op.unary.f32(i32 14, float %8)  ; Tan(value)
+  %10 = bitcast float %9 to i32
+  %11 = call float @dx.op.unary.f32(i32 15, float %8)  ; Acos(value)
+  %12 = bitcast float %11 to i32
+  %13 = call float @dx.op.unary.f32(i32 16, float %8)  ; Asin(value)
+  %14 = bitcast float %13 to i32
+  %15 = call float @dx.op.unary.f32(i32 17, float %6)  ; Atan(value)
+  %16 = bitcast float %15 to i32
+  %17 = call float @dx.op.unary.f32(i32 19, float %6)  ; Hsin(value)
+  %18 = bitcast float %17 to i32
+  %19 = call float @dx.op.unary.f32(i32 18, float %6)  ; Hcos(value)
+  %20 = bitcast float %19 to i32
+  %21 = call float @dx.op.unary.f32(i32 20, float %6)  ; Htan(value)
+  %22 = bitcast float %21 to i32
+  %23 = fmul fast float %4, 0x3FB7154760000000
+  %24 = fadd fast float %23, 0x3FA7154760000000
+  %25 = call float @dx.op.unary.f32(i32 21, float %24)  ; Exp(value)
+  %26 = call float @dx.op.unary.f32(i32 6, float %6)  ; FAbs(value)
+  %27 = call float @dx.op.unary.f32(i32 23, float %26)  ; Log(value)
+  %28 = fmul fast float %27, 0x3FE62E4300000000
+  %29 = fadd fast float %28, %25
+  %30 = bitcast float %29 to i32
+  %31 = fadd fast float %7, -2.343750e-01
+  %32 = fdiv fast float %6, %31
+  %33 = call float @dx.op.unary.f32(i32 17, float %32)  ; Atan(value)
+  %34 = fadd fast float %33, 0x400921FB60000000
+  %35 = fadd fast float %33, 0xC00921FB60000000
+  %36 = fcmp fast olt float %31, 0.000000e+00
+  %37 = fcmp fast oeq float %31, 0.000000e+00
+  %38 = fcmp fast oge float %6, 0.000000e+00
+  %39 = fcmp fast olt float %6, 0.000000e+00
+  %40 = and i1 %36, %38
+  %41 = select i1 %40, float %34, float %33
+  %42 = and i1 %36, %39
+  %43 = select i1 %42, float %35, float %41
+  %44 = and i1 %37, %39
+  %45 = and i1 %37, %38
+  %46 = bitcast float %43 to i32
+  %47 = select i1 %44, i32 -1077342245, i32 %46
+  %48 = select i1 %45, i32 1070141403, i32 %47
+  %49 = call float @dx.op.unary.f32(i32 22, float %6)  ; Frc(value)
+  %50 = fmul fast float %4, 1.875000e-01
+  %51 = fadd fast float %50, 9.375000e-02
+  %52 = call float @dx.op.unary.f32(i32 26, float %51)  ; Round_ne(value)
+  %53 = fmul fast float %52, 1.600000e+01
+  %54 = fadd fast float %53, %49
+  %55 = call float @dx.op.unary.f32(i32 27, float %51)  ; Round_ni(value)
+  %56 = fmul fast float %55, 2.560000e+02
+  %57 = fadd fast float %54, %56
+  %58 = call float @dx.op.unary.f32(i32 28, float %51)  ; Round_pi(value)
+  %59 = fmul fast float %58, 4.096000e+03
+  %60 = fadd fast float %57, %59
+  %61 = bitcast float %60 to i32
+  %62 = call float @dx.op.unary.f32(i32 29, float %51)  ; Round_z(value)
+  %63 = call float @dx.op.tertiary.f32(i32 46, float %6, float 4.000000e+00, float 1.000000e+00)  ; FMad(a,b,c)
+  %64 = fmul fast float %63, 1.600000e+01
+  %65 = fadd fast float %64, %62
+  %66 = bitcast float %65 to i32
+  %67 = icmp eq i32 %2, 0
+  %68 = icmp eq i32 %2, 1
+  %69 = icmp eq i32 %2, 2
+  %70 = select i1 %69, float 0xFFF0000000000000, float %6
+  %71 = select i1 %68, float 0x7FF0000000000000, float %70
+  %72 = select i1 %67, float 0x7FF8000000000000, float %71
+  %73 = call i1 @dx.op.isSpecialFloat.f32(i32 8, float %72)  ; IsNaN(value)
+  %74 = zext i1 %73 to i32
+  %75 = call i1 @dx.op.isSpecialFloat.f32(i32 9, float %72)  ; IsInf(value)
+  %76 = select i1 %75, i32 2, i32 0
+  %77 = or i32 %76, %74
+  %78 = call i1 @dx.op.isSpecialFloat.f32(i32 10, float %72)  ; IsFinite(value)
+  %79 = select i1 %78, i32 4, i32 0
+  %80 = or i32 %77, %79
+  %81 = call float @dx.op.dot2.f32(i32 54, float %6, float %8, float 3.000000e+00, float 5.000000e+00)  ; Dot2(ax,ay,bx,by)
+  %82 = call float @dx.op.dot3.f32(i32 55, float %6, float %8, float 1.000000e+00, float 7.000000e+00, float 1.100000e+01, float 1.300000e+01)  ; Dot3(ax,ay,az,bx,by,bz)
+  %83 = fmul fast float %82, 2.000000e+00
+  %84 = fadd fast float %83, %81
+  %85 = call float @dx.op.dot4.f32(i32 56, float %6, float %8, float %6, float %8, float 1.000000e+00, float 2.000000e+00, float 3.000000e+00, float 4.000000e+00)  ; Dot4(ax,ay,az,aw,bx,by,bz,bw)
+  %86 = fmul fast float %85, 4.000000e+00
+  %87 = fadd fast float %84, %86
+  %88 = bitcast float %87 to i32
+  %89 = call float @dx.op.binary.f32(i32 36, float %6, float %8)  ; FMin(a,b)
+  %90 = fmul fast float %89, 1.600000e+01
+  %91 = call float @dx.op.binary.f32(i32 35, float %6, float %8)  ; FMax(a,b)
+  %92 = fadd fast float %90, %91
+  %93 = call float @dx.op.unary.f32(i32 7, float %6)  ; Saturate(value)
+  %94 = fmul fast float %93, 2.560000e+02
+  %95 = fadd fast float %92, %94
+  %96 = fmul fast float %26, 1.024000e+03
+  %97 = fadd fast float %95, %96
+  %98 = bitcast float %97 to i32
+  %99 = fmul fast float %4, 0x3FCAAAAAC0000000
+  %100 = fadd fast float %99, 0x3FBAAAAAC0000000
+  %101 = call float @dx.op.unary.f32(i32 29, float %100)  ; Round_z(value)
+  %102 = bitcast float %101 to i32
+  %103 = fcmp fast ogt float %6, 0.000000e+00
+  %104 = zext i1 %103 to i32
+  %105 = zext i1 %39 to i32
+  %106 = sub nsw i32 %104, %105
+  %107 = shl nsw i32 %106, 1
+  %108 = sitofp i32 %107 to float
+  %109 = select i1 %103, float 1.000000e+00, float 0.000000e+00
+  %110 = fadd fast float %108, %109
+  %111 = bitcast float %110 to i32
+  %112 = shl i32 %2, 6
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %112, i32 undef, i32 %10, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %113 = or i32 %112, 4
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %113, i32 undef, i32 %12, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %114 = or i32 %112, 8
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %114, i32 undef, i32 %14, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %115 = or i32 %112, 12
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %115, i32 undef, i32 %16, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %116 = or i32 %112, 16
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %116, i32 undef, i32 %18, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %117 = or i32 %112, 20
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %117, i32 undef, i32 %20, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %118 = or i32 %112, 24
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %118, i32 undef, i32 %22, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %119 = or i32 %112, 28
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %119, i32 undef, i32 %30, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %120 = or i32 %112, 32
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %120, i32 undef, i32 %48, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %121 = or i32 %112, 36
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %121, i32 undef, i32 %61, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %122 = or i32 %112, 40
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %122, i32 undef, i32 %66, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %123 = or i32 %112, 44
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %123, i32 undef, i32 %80, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %124 = or i32 %112, 48
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %124, i32 undef, i32 %88, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %125 = or i32 %112, 52
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %125, i32 undef, i32 %98, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %126 = or i32 %112, 56
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %126, i32 undef, i32 %102, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  %127 = or i32 %112, 60
+  call void @dx.op.bufferStore.i32(i32 69, %dx.types.Handle %1, i32 %127, i32 undef, i32 %111, i32 undef, i32 undef, i32 undef, i8 1)  ; BufferStore(uav,coord0,coord1,value0,value1,value2,value3,mask)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.unary.f32(i32, float) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.binary.f32(i32, float, float) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.tertiary.f32(i32, float, float, float) #0
+
+; Function Attrs: nounwind readnone
+declare i1 @dx.op.isSpecialFloat.f32(i32, float) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.dot2.f32(i32, float, float, float, float) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.dot3.f32(i32, float, float, float, float, float, float) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.dot4.f32(i32, float, float, float, float, float, float, float, float) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.bufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8) #2
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!7}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 0}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 0}
+!4 = !{null, !5, null, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!7 = !{void ()* @cs_math, !"cs_math", null, !4, !8}
+!8 = !{i32 0, i64 16, i32 4, !9}
+!9 = !{i32 64, i32 1, i32 1}

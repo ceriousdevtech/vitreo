@@ -2,8 +2,12 @@
 #include "dcomp.hpp"
 
 #include "graphics/contracts/backend_device.hpp"
+#include "graphics/contracts/format_converter.hpp"
 #include "core/memory/guest_memory.hpp"
 #include "winapi/graphics/d3d11/d3d11.hpp"
+#include "winapi/graphics/d3d12/d3d12.hpp"
+#include "winapi/graphics/d3d12/d3d12_constants.hpp"
+#include "winapi/graphics/d3d12/d3d12_internal.hpp"
 #include "winapi/core/marshaler.hpp"
 
 #include <algorithm>
@@ -78,6 +82,55 @@ constexpr std::array<u8, 16> IID_IDCOMPOSITIONCLIP{
 constexpr std::array<u8, 16> IID_IDCOMPOSITIONRECTANGLECLIP{
     0x7D, 0xAD, 0x42, 0x98, 0xCF, 0xD9, 0x08, 0x49,
     0xAE, 0xD7, 0x48, 0xB5, 0x1D, 0xA5, 0xE7, 0xC2};
+// dcomp.h IDCompositionSurface {bb8a4953-2c99-4f5a-96f5-4819027fa3ac}
+constexpr std::array<u8, 16> IID_IDCOMPOSITIONSURFACE{
+    0x53, 0x49, 0x8A, 0xBB, 0x99, 0x2C, 0x5A, 0x4F,
+    0x96, 0xF5, 0x48, 0x19, 0x02, 0x7F, 0xA3, 0xAC};
+// dcomp.h IDCompositionVirtualSurface {AE471C51-5F53-4A24-8D3E-D0C39C30B3F0}
+constexpr std::array<u8, 16> IID_IDCOMPOSITIONVIRTUALSURFACE{
+    0x51, 0x1C, 0x47, 0xAE, 0x53, 0x5F, 0x24, 0x4A,
+    0x8D, 0x3E, 0xD0, 0xC3, 0x9C, 0x30, 0xB3, 0xF0};
+// dxgi.h IDXGISurface {cafcb56c-6ac3-4889-bf47-9e23bbd260ec}
+constexpr std::array<u8, 16> IID_IDXGISURFACE{
+    0x6C, 0xB5, 0xFC, 0xCA, 0xC3, 0x6A, 0x89, 0x48,
+    0xBF, 0x47, 0x9E, 0x23, 0xBB, 0xD2, 0x60, 0xEC};
+// dxgi.h IDXGISurface1 {4ae63092-6327-4c1b-80ae-bfe12ea32b86}
+constexpr std::array<u8, 16> IID_IDXGISURFACE1{
+    0x92, 0x30, 0xE6, 0x4A, 0x27, 0x63, 0x1B, 0x4C,
+    0x80, 0xAE, 0xBF, 0xE1, 0x2E, 0xA3, 0x2B, 0x86};
+// d2d1_1.h ID2D1DeviceContext {e8f7fe7a-191c-466d-ad95-975678bda998}
+constexpr std::array<u8, 16> IID_ID2D1DEVICECONTEXT{
+    0x7A, 0xFE, 0xF7, 0xE8, 0x1C, 0x19, 0x6D, 0x46,
+    0xAD, 0x95, 0x97, 0x56, 0x78, 0xBD, 0xA9, 0x98};
+
+// dxgi1_2.h DXGI_ALPHA_MODE. UNSPECIFIED has the same effect as IGNORE
+// (Learn CreateSurface). STRAIGHT is not a CreateSurface alpha mode.
+constexpr u32 DXGI_ALPHA_MODE_UNSPECIFIED = 0;
+constexpr u32 DXGI_ALPHA_MODE_PREMULTIPLIED = 1;
+constexpr u32 DXGI_ALPHA_MODE_STRAIGHT = 2;
+constexpr u32 DXGI_ALPHA_MODE_IGNORE = 3;
+// dxgi.h DXGI_MAP flags (the D3D11 surface facet uses the same values).
+constexpr u32 DXGI_MAP_READ = 1;
+constexpr u32 DXGI_MAP_WRITE = 2;
+constexpr u32 DXGI_MAP_DISCARD = 4;
+// Learn CreateVirtualSurface / Resize: the edge fails when it exceeds this.
+constexpr u32 kVirtualSurfaceMaxEdge = 16777216u;
+// A realization larger than this is not stored as one texture. BeginDraw of
+// a bigger update, and a solid bounding box past this limit, return
+// E_OUTOFMEMORY. A non-rectangular realization is stored as one texture
+// per realized rectangle.
+constexpr u64 kRealizedByteLimit = 128ull * 1024ull * 1024ull;
+
+constexpr std::array<u32, dcomp::SURFACE_METHOD_COUNT> SURFACE_BYTES{
+    12, 4, 4, 20, 4, 4, 4, 20, 12, 12};
+constexpr std::array<u32, dcomp::UPDATE_OBJECT_METHOD_COUNT> UPDATE_BYTES{
+    12, 4, 4, 16, 12, 16, 12, 12, 8, 12, 4, 12, 8};
+
+void unimplemented_once(bool& logged, const char* api, const char* detail) {
+    if (logged) return;
+    logged = true;
+    std::fprintf(stderr, "[vitreo] UNIMPLEMENTED dcomp!%s: %s\n", api, detail);
+}
 
 bool guid_equal(const std::array<u8, 16>& lhs,
                 const std::array<u8, 16>& rhs) {
@@ -236,10 +289,26 @@ std::string dcomp_matrix_transform_method_export_name(usize slot) {
 std::string dcomp_rectangle_clip_method_export_name(usize slot) {
     return method_export_name("RectangleClip", slot);
 }
+std::string dcomp_surface_method_export_name(usize slot) {
+    return method_export_name("Surface", slot);
+}
+std::string dcomp_update_object_method_export_name(usize slot) {
+    return method_export_name("SurfaceUpdate", slot);
+}
 
 DcompManager::DcompManager(GuestMemory& memory, bool is_64bit,
                            D3D11Manager& d3d11_manager)
     : m_memory(memory), m_is_64bit(is_64bit), m_d3d11(d3d11_manager) {}
+
+DcompManager::~DcompManager() {
+    for (auto& entry : m_surfaces) {
+        auto& surface = entry.second;
+        if (surface.pixels != 0) {
+            (void)m_memory.unmap_region(surface.pixels, surface.pixels_mapped);
+            surface.pixels = 0;
+        }
+    }
+}
 
 void DcompManager::set_method_thunks(MethodThunks thunks) {
     m_method_thunks = std::move(thunks);
@@ -287,6 +356,8 @@ bool DcompManager::ensure_storage() {
             m_skew_transform_vtable = base + 0x800;
             m_matrix_transform_vtable = base + 0x880;
             m_rectangle_clip_vtable = base + 0x900;
+            m_surface_vtable = base + 0xA00;
+            m_update_vtable = base + 0xB00;
             m_next_object = base + 0x1000;
             break;
         }
@@ -294,35 +365,49 @@ bool DcompManager::ensure_storage() {
     }
     if (m_region_base == 0) return false;
     const usize pointer_size = m_is_64bit ? 8 : 4;
-    const auto write_vtable = [&](GuestAddr address, const auto& thunks) {
+    // Surfaces are optional at startup: a caller that has not published
+    // their thunks yet still builds the device and visual tables. Empty
+    // slots are zero, so a guest call fails closed instead of jumping
+    // through an uninitialised pointer.
+    const auto write_vtable = [&](GuestAddr address, const auto& thunks,
+                                  bool required) {
         for (usize slot = 0; slot < thunks.size(); ++slot) {
-            if (thunks[slot] == 0 ||
-                !write_pointer(address + slot * pointer_size,
-                               thunks[slot])) {
+            const GuestAddr thunk = thunks[slot];
+            if (thunk == 0 && !required) {
+                if (!write_pointer(address + slot * pointer_size, 0)) {
+                    return false;
+                }
+                continue;
+            }
+            if (thunk == 0 ||
+                !write_pointer(address + slot * pointer_size, thunk)) {
                 return false;
             }
         }
         return true;
     };
     m_storage_ready =
-        write_vtable(m_device_vtable, m_method_thunks.device) &&
-        write_vtable(m_device2_vtable, m_method_thunks.device2) &&
-        write_vtable(m_desktop_vtable, m_method_thunks.desktop_device) &&
-        write_vtable(m_device3_vtable, m_method_thunks.device3) &&
-        write_vtable(m_target_vtable, m_method_thunks.target) &&
-        write_vtable(m_visual_vtable, m_method_thunks.visual2) &&
+        write_vtable(m_device_vtable, m_method_thunks.device, true) &&
+        write_vtable(m_device2_vtable, m_method_thunks.device2, true) &&
+        write_vtable(m_desktop_vtable, m_method_thunks.desktop_device,
+                     true) &&
+        write_vtable(m_device3_vtable, m_method_thunks.device3, true) &&
+        write_vtable(m_target_vtable, m_method_thunks.target, true) &&
+        write_vtable(m_visual_vtable, m_method_thunks.visual2, true) &&
         write_vtable(m_translate_transform_vtable,
-                     m_method_thunks.translate_transform) &&
+                     m_method_thunks.translate_transform, true) &&
         write_vtable(m_scale_transform_vtable,
-                     m_method_thunks.scale_transform) &&
+                     m_method_thunks.scale_transform, true) &&
         write_vtable(m_rotate_transform_vtable,
-                     m_method_thunks.rotate_transform) &&
+                     m_method_thunks.rotate_transform, true) &&
         write_vtable(m_skew_transform_vtable,
-                     m_method_thunks.skew_transform) &&
+                     m_method_thunks.skew_transform, true) &&
         write_vtable(m_matrix_transform_vtable,
-                     m_method_thunks.matrix_transform) &&
+                     m_method_thunks.matrix_transform, true) &&
         write_vtable(m_rectangle_clip_vtable,
-                     m_method_thunks.rectangle_clip);
+                     m_method_thunks.rectangle_clip, true) &&
+        write_vtable(m_surface_vtable, m_method_thunks.surface, false) &&
+        write_vtable(m_update_vtable, m_method_thunks.update_object, false);
     return m_storage_ready;
 }
 
@@ -472,6 +557,37 @@ GuestAddr DcompManager::create_rectangle_clip(GuestAddr device_owner) {
     return address;
 }
 
+bool DcompManager::retain_rendering_device(GuestAddr address) {
+    if (m_d3d11.is_device_interface(address)) {
+        return m_d3d11.retain_device_reference(address);
+    }
+    // Learn (DCompositionCreateDevice2): the rendering device may be a
+    // Direct3D device or NULL. D3D12 publishes no IDXGIDevice; callers pass
+    // the ID3D12Device or the ID3D12CommandQueue (the object
+    // CreateSwapChainForComposition takes). DCompositionCreateDevice accepts
+    // those pointers too.
+    if (D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory)) {
+        if (!d3d12->is_device(address) && !d3d12->is_command_queue(address)) {
+            return false;
+        }
+        return d3d12->retain_rendering_device(address);
+    }
+    return false;
+}
+
+void DcompManager::release_rendering_device(GuestAddr address) {
+    if (address == 0) return;
+    if (m_d3d11.is_device_interface(address)) {
+        m_d3d11.release_device_interface_reference(address);
+        return;
+    }
+    if (D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory)) {
+        if (d3d12->is_device(address) || d3d12->is_command_queue(address)) {
+            d3d12->release_rendering_device(address);
+        }
+    }
+}
+
 void DcompManager::create_device_entry(Marshaler& m,
                                        DeviceInterface requested,
                                        const char* api) {
@@ -507,14 +623,9 @@ void DcompManager::create_device_entry(Marshaler& m,
         return;
     }
     if (rendering_device != 0 &&
-        !m_d3d11.is_device_interface(rendering_device)) {
+        !retain_rendering_device(rendering_device)) {
         dcomp_diag("%s rendering_device=0x%llx -> E_INVALIDARG",
                    api, static_cast<unsigned long long>(rendering_device));
-        m.set_return(dcomp::E_INVALIDARG);
-        return;
-    }
-    if (rendering_device != 0 &&
-        !m_d3d11.retain_device_reference(rendering_device)) {
         m.set_return(dcomp::E_INVALIDARG);
         return;
     }
@@ -523,7 +634,7 @@ void DcompManager::create_device_entry(Marshaler& m,
         if (device != 0) {
             (void)release_device(device);
         } else if (rendering_device != 0) {
-            m_d3d11.release_device_interface_reference(rendering_device);
+            release_rendering_device(rendering_device);
         }
         m.set_return(dcomp::E_POINTER);
         return;
@@ -630,7 +741,7 @@ u32 DcompManager::release_device(GuestAddr interface_address) {
     m_device_interfaces.erase(device->second.device3_interface);
     m_devices.erase(device);
     if (rendering_device != 0) {
-        m_d3d11.release_device_interface_reference(rendering_device);
+        release_rendering_device(rendering_device);
     }
     return 0;
 }
@@ -677,7 +788,7 @@ u32 DcompManager::release_visual(GuestAddr address) {
         if (child_visual != m_visuals.end()) child_visual->second.parent = 0;
         (void)release_visual(child);
     }
-    if (dead.content != 0) m_d3d11.release_swap_chain_reference(dead.content);
+    if (dead.content != 0) release_visual_content(dead.content);
     if (dead.transform != 0) (void)release_transform(dead.transform);
     if (dead.transform_parent != 0) (void)release_visual(dead.transform_parent);
     if (dead.clip != 0) (void)release_rectangle_clip(dead.clip);
@@ -809,6 +920,60 @@ bool DcompManager::transform_matrix(
                        [](float item) { return std::isfinite(item); });
 }
 
+bool DcompManager::content_is_swap_chain(GuestAddr content) const {
+    if (content == 0) return false;
+    if (m_d3d11.is_swap_chain_object(content)) return true;
+    if (D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory)) {
+        return d3d12->is_swap_chain(content);
+    }
+    return false;
+}
+
+bool DcompManager::retain_visual_content(GuestAddr content) {
+    if (const auto surface = m_surfaces.find(content);
+        surface != m_surfaces.end()) {
+        ++surface->second.ref_count;
+        return true;
+    }
+    if (m_d3d11.is_swap_chain_object(content)) {
+        return m_d3d11.retain_swap_chain_reference(content);
+    }
+    if (D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory)) {
+        return d3d12->retain_swap_chain_reference(content);
+    }
+    return false;
+}
+
+void DcompManager::release_visual_content(GuestAddr content) {
+    if (content == 0) return;
+    if (m_surfaces.contains(content)) {
+        (void)release_surface(content);
+        return;
+    }
+    if (m_d3d11.is_swap_chain_object(content)) {
+        m_d3d11.release_swap_chain_reference(content);
+        return;
+    }
+    if (D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory)) {
+        d3d12->release_swap_chain_reference(content);
+    }
+}
+
+bool DcompManager::bind_visual_content(
+    GuestAddr content, GuestAddr hwnd,
+    const graphics::BackendCompositionLayerDesc& layer) {
+    if (m_surfaces.contains(content)) {
+        return bind_composition_surface(content, hwnd, layer);
+    }
+    if (m_d3d11.is_swap_chain_object(content)) {
+        return m_d3d11.bind_composition_swap_chain(content, hwnd, layer);
+    }
+    if (D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory)) {
+        return d3d12->bind_composition_swap_chain(content, hwnd, layer);
+    }
+    return false;
+}
+
 bool DcompManager::bind_visual_tree(GuestAddr address, GuestAddr hwnd,
                                     bool above_window_children,
                                     std::vector<GuestAddr>& visiting) {
@@ -917,8 +1082,7 @@ bool DcompManager::bind_visual_tree(GuestAddr address, GuestAddr hwnd,
             layer.has_clip_rect = true;
         }
         if (visual->second.content != 0 &&
-            !m_d3d11.bind_composition_swap_chain(
-                visual->second.content, hwnd, layer)) {
+            !bind_visual_content(visual->second.content, hwnd, layer)) {
             dcomp_diag("bind-abort visual=0x%llx reason=content-bind "
                        "content=0x%llx hwnd=0x%llx",
                        static_cast<unsigned long long>(current),
@@ -947,6 +1111,1475 @@ bool DcompManager::bind_visual_tree(GuestAddr address, GuestAddr hwnd,
         return true;
     };
     return bind(address, {1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f}, std::nullopt);
+}
+
+graphics::GraphicsBackendDevice* DcompManager::graphics_backend() {
+    if (D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory)) {
+        return &d3d12->frontend().m_backend;
+    }
+    return nullptr;
+}
+
+void* DcompManager::presentation_view_for(GuestAddr hwnd) {
+    if (hwnd == 0) return nullptr;
+    D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory);
+    if (d3d12 == nullptr ||
+        !d3d12->frontend().m_presentation.presentation_view) {
+        return nullptr;
+    }
+    return d3d12->frontend().m_presentation.presentation_view(hwnd);
+}
+
+bool DcompManager::rendering_device_answers(GuestAddr device,
+                                           const GuidBytes& iid) {
+    if (device == 0) return false;
+    if (guid_equal(iid, IID_IUNKNOWN)) return true;
+    D3D12Manager* d3d12 = D3D12Manager::for_guest_memory(m_memory);
+    if (d3d12 == nullptr) return false;
+    if (d3d12->is_device(device) &&
+        guid_equal(iid, d3d12::IID_ID3D12DEVICE)) {
+        return true;
+    }
+    return d3d12->is_command_queue(device) &&
+           guid_equal(iid, d3d12::IID_ID3D12COMMANDQUEUE);
+}
+
+u32 DcompManager::release_surface(GuestAddr address) {
+    auto found = m_surfaces.find(address);
+    if (found == m_surfaces.end() || found->second.ref_count == 0) return 0;
+    const u32 count = --found->second.ref_count;
+    if (count != 0) return count;
+    Surface dead = std::move(found->second);
+    m_surfaces.erase(found);
+    if (auto device = m_devices.find(dead.device_owner);
+        device != m_devices.end() &&
+        device->second.drawing_surface == address) {
+        device->second.drawing_surface = 0;
+    }
+    for (auto& entry : m_update_objects) {
+        if (entry.second.surface == address) {
+            entry.second.surface = 0;
+            entry.second.live = false;
+        }
+    }
+    if (dead.pixels != 0) {
+        (void)m_memory.unmap_region(dead.pixels, dead.pixels_mapped);
+    }
+    release_device_owner(dead.device_owner);
+    return 0;
+}
+
+void DcompManager::create_composition_surface(Marshaler& m, GuestAddr owner,
+                                             bool virtual_surface) {
+    const u32 width = static_cast<u32>(m.arg(1));
+    const u32 height = static_cast<u32>(m.arg(2));
+    const u32 format = static_cast<u32>(m.arg(3));
+    const u32 alpha = static_cast<u32>(m.arg(4));
+    const GuestAddr output = m.arg_ptr(5);
+    if (output == 0) {
+        m.set_return(dcomp::E_INVALIDARG);
+        return;
+    }
+    (void)m.write_ptr(output, 0);
+    // Learn CreateSurface / CreateVirtualSurface: the out pointer must not
+    // be null, and only B8G8R8A8_UNORM, R8G8B8A8_UNORM and
+    // R16G16B16A16_FLOAT are surfaces. UNSPECIFIED alpha matches IGNORE.
+    // STRAIGHT is not in that list. A virtual surface fails when either
+    // edge exceeds 16,777,216. Zero is a valid empty virtual surface;
+    // CreateSurface still rejects it.
+    const bool format_ok =
+        format == d3d12::DXGI_FORMAT_B8G8R8A8_UNORM ||
+        format == d3d12::DXGI_FORMAT_R8G8B8A8_UNORM ||
+        format == d3d12::DXGI_FORMAT_R16G16B16A16_FLOAT;
+    const bool alpha_ok = alpha == DXGI_ALPHA_MODE_UNSPECIFIED ||
+                          alpha == DXGI_ALPHA_MODE_PREMULTIPLIED ||
+                          alpha == DXGI_ALPHA_MODE_IGNORE;
+    if (!format_ok || !alpha_ok ||
+        (!virtual_surface && (width == 0 || height == 0))) {
+        m.set_return(dcomp::E_INVALIDARG);
+        return;
+    }
+    if (virtual_surface && (width > kVirtualSurfaceMaxEdge ||
+                            height > kVirtualSurfaceMaxEdge)) {
+        m.set_return(dcomp::E_INVALIDARG);
+        return;
+    }
+    const graphics::PixelFormat pixel_format =
+        graphics::pixel_format_from_dxgi(format);
+    const graphics::FormatInfo info = graphics::format_table(pixel_format);
+    if (pixel_format == graphics::PixelFormat::Unknown ||
+        info.bytes_per_pixel == 0) {
+        m.set_return(dcomp::E_INVALIDARG);
+        return;
+    }
+    const u32 bpp = info.bytes_per_pixel;
+    // A virtual surface allocates nothing until BeginDraw. The logical
+    // size is not a texture.
+    u32 row_pitch = 0;
+    u32 byte_count = 0;
+    std::unique_ptr<graphics::BackendTexture2D> texture;
+    GuestAddr pixels = 0;
+    usize mapped = 0;
+    if (!virtual_surface) {
+        if (width > (0xFFFFFFFFu / bpp)) {
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+        row_pitch = width * bpp;
+        if (height > (0xFFFFFFFFu / row_pitch)) {
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+        byte_count = height * row_pitch;
+        graphics::GraphicsBackendDevice* backend = graphics_backend();
+        if (backend == nullptr) {
+            static bool logged = false;
+            unimplemented_once(logged, "IDCompositionDevice::CreateSurface",
+                               "no graphics backend can store the surface");
+            m.set_return(dcomp::E_NOTIMPL);
+            return;
+        }
+        graphics::BackendTexture2DDesc desc{};
+        desc.width = width;
+        desc.height = height;
+        desc.pixel_format = pixel_format;
+        desc.shader_resource = true;
+        texture = backend->create_texture_2d(desc, nullptr, 0);
+        if (!texture || !texture->valid()) {
+            static bool logged = false;
+            unimplemented_once(
+                logged, "IDCompositionDevice::CreateSurface",
+                "the graphics backend cannot store this format");
+            m.set_return(dcomp::E_NOTIMPL);
+            return;
+        }
+        if (!ensure_storage() ||
+            m_next_object + 0x40 > m_region_base + STORAGE_SIZE) {
+            m.set_return(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        mapped = (static_cast<usize>(byte_count) + 0xFFFu) & ~usize{0xFFFu};
+        pixels = m_memory.map_first_fit(
+            m_is_64bit ? 0x20000000ull : 0x12000000ull, mapped,
+            MemoryProtection::ReadWrite);
+        if (pixels == 0) {
+            m.set_return(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        std::array<u8, 4096> zeros{};
+        for (u32 done = 0; done < byte_count;) {
+            const u32 chunk = std::min<u32>(static_cast<u32>(zeros.size()),
+                                            byte_count - done);
+            if (m_memory.write_bytes(pixels + done, zeros.data(), chunk)
+                    .is_err()) {
+                (void)m_memory.unmap_region(pixels, mapped);
+                m.set_return(dcomp::E_OUTOFMEMORY);
+                return;
+            }
+            done += chunk;
+        }
+    } else if (!ensure_storage() ||
+               m_next_object + 0x40 > m_region_base + STORAGE_SIZE) {
+        m.set_return(dcomp::E_OUTOFMEMORY);
+        return;
+    }
+    const GuestAddr address = m_next_object;
+    m_next_object += 0x40;
+    if (!write_pointer(address, m_surface_vtable)) {
+        if (pixels != 0) (void)m_memory.unmap_region(pixels, mapped);
+        m.set_return(dcomp::E_OUTOFMEMORY);
+        return;
+    }
+    Surface surface{};
+    surface.interface_address = address;
+    surface.device_owner = owner;
+    surface.width = width;
+    surface.height = height;
+    surface.format = format;
+    surface.alpha = alpha;
+    surface.bpp = bpp;
+    surface.row_pitch = row_pitch;
+    surface.pixels = pixels;
+    surface.pixels_mapped = mapped;
+    surface.virtual_surface = virtual_surface;
+    if (byte_count != 0) surface.published.assign(byte_count, 0);
+    surface.texture = std::move(texture);
+    m_surfaces.emplace(address, std::move(surface));
+    ++m_devices.at(owner).ref_count;
+    if (m.write_ptr(output, address).is_err()) {
+        (void)release_surface(address);
+        m.set_return(dcomp::E_POINTER);
+        return;
+    }
+    dcomp_diag("%s %ux%u format=%u alpha=%u -> 0x%llx",
+               virtual_surface ? "CreateVirtualSurface" : "CreateSurface",
+               width, height, format, alpha,
+               static_cast<unsigned long long>(address));
+    m.set_return(dcomp::S_OK);
+}
+
+bool DcompManager::bind_composition_surface(
+    GuestAddr content, GuestAddr hwnd,
+    const graphics::BackendCompositionLayerDesc& layer) {
+    auto found = m_surfaces.find(content);
+    if (found == m_surfaces.end() || hwnd == 0) return false;
+    Surface& surface = found->second;
+    // A target whose HWND has no presentation view cannot be committed.
+    // An uninitialized surface (Learn: 100% transparent, no effect) still
+    // needs that view; with one, Commit succeeds and shows nothing.
+    void* view = presentation_view_for(hwnd);
+    if (view == nullptr) return false;
+    if (surface.virtual_surface) {
+        return bind_virtual_surface(surface, hwnd, view, layer);
+    }
+    if (!surface.initialized || !surface.texture) return true;
+    graphics::GraphicsBackendDevice* backend = graphics_backend();
+    if (backend == nullptr) return false;
+    if (!surface.presenter || surface.presenter_hwnd != hwnd ||
+        surface.presenter_view != view) {
+        graphics::BackendSwapChainDesc desc{};
+        desc.native_view = view;
+        desc.width = surface.width;
+        desc.height = surface.height;
+        desc.pixel_format = surface.texture->desc().pixel_format;
+        desc.buffer_count = 2;
+        desc.vsync = true;
+        desc.premultiplied_alpha =
+            surface.alpha == DXGI_ALPHA_MODE_PREMULTIPLIED;
+        std::unique_ptr<graphics::BackendSwapChain> created =
+            backend->create_swap_chain(desc);
+        if (!created || !created->valid()) return false;
+        surface.presenter = std::move(created);
+        surface.presenter_hwnd = hwnd;
+        surface.presenter_view = view;
+    }
+    if (!surface.presenter->configure_composition_layer(layer)) return false;
+    return surface.presenter->present_texture(surface.texture.get(), 0, 0);
+}
+
+namespace {
+
+[[nodiscard]] bool read_i32x4(const GuestMemory& memory, GuestAddr address,
+                              i32* values) {
+    std::array<u8, 16> bytes{};
+    if (address == 0 ||
+        memory.read_bytes(address, bytes.data(), bytes.size()).is_err()) {
+        return false;
+    }
+    std::memcpy(values, bytes.data(), bytes.size());
+    return true;
+}
+
+[[nodiscard]] bool write_i32x2(GuestMemory& memory, GuestAddr address,
+                               i32 x, i32 y) {
+    const i32 point[2] = {x, y};
+    return address != 0 &&
+           memory.write_bytes(address, reinterpret_cast<const u8*>(point),
+                              sizeof(point))
+               .is_ok();
+}
+
+}  // namespace
+
+bool DcompManager::read_surface_rect(GuestAddr address, IntRect& rect) const {
+    i32 values[4] = {};
+    if (!read_i32x4(m_memory, address, values)) return false;
+    rect = {values[0], values[1], values[2], values[3]};
+    return true;
+}
+
+bool DcompManager::rect_inside_surface(const Surface& surface,
+                                       const IntRect& rect) const {
+    if (rect.left < 0 || rect.top < 0 || rect.right < rect.left ||
+        rect.bottom < rect.top) {
+        return false;
+    }
+    return static_cast<u64>(rect.right) <= surface.width &&
+           static_cast<u64>(rect.bottom) <= surface.height;
+}
+
+bool DcompManager::ensure_update_pixels(Surface& surface, u32 bytes) {
+    if (bytes == 0) return true;
+    const usize need = (static_cast<usize>(bytes) + 0xFFFu) & ~usize{0xFFFu};
+    if (surface.pixels != 0 && surface.pixels_mapped >= need) return true;
+    if (surface.pixels != 0) {
+        (void)m_memory.unmap_region(surface.pixels, surface.pixels_mapped);
+        surface.pixels = 0;
+        surface.pixels_mapped = 0;
+    }
+    const GuestAddr pixels = m_memory.map_first_fit(
+        m_is_64bit ? 0x20000000ull : 0x12000000ull, need,
+        MemoryProtection::ReadWrite);
+    if (pixels == 0) return false;
+    surface.pixels = pixels;
+    surface.pixels_mapped = need;
+    return true;
+}
+
+void DcompManager::blit_realized(Surface& surface, i32 x, i32 y, u32 width,
+                                 u32 height, const u8* source,
+                                 u32 source_pitch) {
+    if (width == 0 || height == 0 || surface.bpp == 0 || source == nullptr) {
+        return;
+    }
+    const u32 bpp = surface.bpp;
+    std::vector<Surface::RealizedRect> next;
+    next.reserve(surface.realized.size() + 1);
+    const i32 hole_r = x + static_cast<i32>(width);
+    const i32 hole_b = y + static_cast<i32>(height);
+    for (auto& span : surface.realized) {
+        const i32 sl = span.x;
+        const i32 st = span.y;
+        const i32 sr = span.x + static_cast<i32>(span.width);
+        const i32 sb = span.y + static_cast<i32>(span.height);
+        const i32 il = std::max(sl, x);
+        const i32 it = std::max(st, y);
+        const i32 ir = std::min(sr, hole_r);
+        const i32 ib = std::min(sb, hole_b);
+        if (il >= ir || it >= ib) {
+            next.push_back(std::move(span));
+            continue;
+        }
+        const auto emit = [&](i32 px, i32 py, i32 rw, i32 rh) {
+            if (rw <= 0 || rh <= 0) return;
+            Surface::RealizedRect piece;
+            piece.x = px;
+            piece.y = py;
+            piece.width = static_cast<u32>(rw);
+            piece.height = static_cast<u32>(rh);
+            piece.pixels.resize(static_cast<usize>(rw) * static_cast<usize>(rh) *
+                                bpp);
+            for (i32 row = 0; row < rh; ++row) {
+                const usize src_off =
+                    (static_cast<usize>(py - st + row) * span.width +
+                     static_cast<usize>(px - sl)) *
+                    bpp;
+                const usize dst_off = static_cast<usize>(row) *
+                                      static_cast<usize>(rw) * bpp;
+                std::memcpy(piece.pixels.data() + dst_off,
+                            span.pixels.data() + src_off,
+                            static_cast<usize>(rw) * bpp);
+            }
+            next.push_back(std::move(piece));
+        };
+        emit(sl, st, sr - sl, it - st);
+        emit(sl, ib, sr - sl, sb - ib);
+        emit(sl, it, il - sl, ib - it);
+        emit(ir, it, sr - ir, ib - it);
+    }
+    Surface::RealizedRect piece;
+    piece.x = x;
+    piece.y = y;
+    piece.width = width;
+    piece.height = height;
+    piece.pixels.resize(static_cast<usize>(width) * height * bpp);
+    for (u32 row = 0; row < height; ++row) {
+        std::memcpy(piece.pixels.data() + static_cast<usize>(row) * width * bpp,
+                    source + static_cast<usize>(row) * source_pitch,
+                    static_cast<usize>(width) * bpp);
+    }
+    next.push_back(std::move(piece));
+    surface.realized = std::move(next);
+}
+
+void DcompManager::retain_realized(Surface& surface,
+                                   const std::vector<IntRect>& keep) {
+    std::vector<Surface::RealizedRect> snapshot = std::move(surface.realized);
+    surface.realized.clear();
+    const u32 bpp = surface.bpp;
+    if (bpp == 0) return;
+    for (const auto& span : snapshot) {
+        const i32 sl = span.x;
+        const i32 st = span.y;
+        const i32 sr = span.x + static_cast<i32>(span.width);
+        const i32 sb = span.y + static_cast<i32>(span.height);
+        for (const IntRect& rect : keep) {
+            const i32 left = std::max(sl, rect.left);
+            const i32 top = std::max(st, rect.top);
+            const i32 right = std::min(sr, rect.right);
+            const i32 bottom = std::min(sb, rect.bottom);
+            if (left >= right || top >= bottom) continue;
+            const u32 w = static_cast<u32>(right - left);
+            const u32 h = static_cast<u32>(bottom - top);
+            std::vector<u8> piece(static_cast<usize>(w) * h * bpp);
+            for (u32 row = 0; row < h; ++row) {
+                const usize src =
+                    (static_cast<usize>(top - st + static_cast<i32>(row)) *
+                         span.width +
+                     static_cast<usize>(left - sl)) *
+                    bpp;
+                std::memcpy(piece.data() + static_cast<usize>(row) * w * bpp,
+                            span.pixels.data() + src,
+                            static_cast<usize>(w) * bpp);
+            }
+            blit_realized(surface, left, top, w, h, piece.data(), w * bpp);
+        }
+    }
+}
+
+bool DcompManager::compose_scroll(const Surface& surface, const IntRect* scroll,
+                                  const IntRect* clip, i32 dx, i32 dy,
+                                  IntRect& source, IntRect& destination) const {
+    if (surface.width > 0x7FFFFFFFu || surface.height > 0x7FFFFFFFu) {
+        return false;
+    }
+    const IntRect whole{0, 0, static_cast<i32>(surface.width),
+                        static_cast<i32>(surface.height)};
+    const IntRect request = scroll != nullptr ? *scroll : whole;
+    // Learn Scroll: scrollRect must lie inside the surface. NULL scrolls
+    // the whole surface. clipRect is not required to.
+    if (!rect_inside_surface(surface, request)) return false;
+    source = request;
+    if (clip != nullptr) {
+        source.left = std::max(source.left, clip->left);
+        source.top = std::max(source.top, clip->top);
+        source.right = std::min(source.right, clip->right);
+        source.bottom = std::min(source.bottom, clip->bottom);
+    }
+    destination = {};
+    if (source.right <= source.left || source.bottom <= source.top) {
+        return true;
+    }
+    // Source bits are scrollRect ∩ clipRect. The destination is that
+    // rectangle shifted by the offset, then clipped again, and it cannot
+    // extend outside the surface.
+    i64 left = static_cast<i64>(source.left) + dx;
+    i64 top = static_cast<i64>(source.top) + dy;
+    i64 right = static_cast<i64>(source.right) + dx;
+    i64 bottom = static_cast<i64>(source.bottom) + dy;
+    if (clip != nullptr) {
+        left = std::max(left, static_cast<i64>(clip->left));
+        top = std::max(top, static_cast<i64>(clip->top));
+        right = std::min(right, static_cast<i64>(clip->right));
+        bottom = std::min(bottom, static_cast<i64>(clip->bottom));
+    }
+    left = std::max(left, static_cast<i64>(0));
+    top = std::max(top, static_cast<i64>(0));
+    right = std::min(right, static_cast<i64>(surface.width));
+    bottom = std::min(bottom, static_cast<i64>(surface.height));
+    if (right <= left || bottom <= top) return true;
+    destination = {static_cast<i32>(left), static_cast<i32>(top),
+                   static_cast<i32>(right), static_cast<i32>(bottom)};
+    return true;
+}
+
+void DcompManager::scroll_published(Surface& surface, IntRect source,
+                                    IntRect destination, i32 dx, i32 dy) {
+    if (surface.published.empty() || surface.bpp == 0 || surface.width == 0 ||
+        surface.height == 0) {
+        return;
+    }
+    std::vector<u8> next = surface.published;
+    std::vector<u8> written(static_cast<usize>(surface.width) * surface.height,
+                            0);
+    const u32 bpp = surface.bpp;
+    const u32 pitch = surface.row_pitch;
+    for (i32 y = destination.top; y < destination.bottom; ++y) {
+        for (i32 x = destination.left; x < destination.right; ++x) {
+            const i64 sx = static_cast<i64>(x) - dx;
+            const i64 sy = static_cast<i64>(y) - dy;
+            if (sx < source.left || sy < source.top || sx >= source.right ||
+                sy >= source.bottom || sx < 0 || sy < 0) {
+                continue;
+            }
+            const auto usx = static_cast<u32>(sx);
+            const auto usy = static_cast<u32>(sy);
+            if (usx >= surface.width || usy >= surface.height) continue;
+            std::memcpy(next.data() + static_cast<usize>(y) * pitch +
+                            static_cast<usize>(x) * bpp,
+                        surface.published.data() + static_cast<usize>(usy) * pitch +
+                            static_cast<usize>(usx) * bpp,
+                        bpp);
+            written[static_cast<usize>(y) * surface.width +
+                    static_cast<u32>(x)] = 1;
+        }
+    }
+    for (i32 y = source.top; y < source.bottom; ++y) {
+        for (i32 x = source.left; x < source.right; ++x) {
+            if (x < 0 || y < 0) continue;
+            const auto ux = static_cast<u32>(x);
+            const auto uy = static_cast<u32>(y);
+            if (ux >= surface.width || uy >= surface.height) continue;
+            const usize index = static_cast<usize>(uy) * surface.width + ux;
+            if (written[index] != 0) continue;
+            std::memset(next.data() + static_cast<usize>(uy) * pitch +
+                            static_cast<usize>(ux) * bpp,
+                        0, bpp);
+        }
+    }
+    surface.published.swap(next);
+}
+
+bool DcompManager::scroll_realized(Surface& surface, IntRect source,
+                                   IntRect destination, i32 dx, i32 dy) {
+    const auto hits = [](const Surface::RealizedRect& span, IntRect rect) {
+        if (rect.right <= rect.left || rect.bottom <= rect.top) return false;
+        const i32 sr = span.x + static_cast<i32>(span.width);
+        const i32 sb = span.y + static_cast<i32>(span.height);
+        return span.x < rect.right && sr > rect.left && span.y < rect.bottom &&
+               sb > rect.top;
+    };
+    bool any = false;
+    i32 min_x = 0;
+    i32 min_y = 0;
+    i32 max_x = 0;
+    i32 max_y = 0;
+    const auto include = [&](i32 left, i32 top, i32 right, i32 bottom) {
+        if (right <= left || bottom <= top) return;
+        if (!any) {
+            min_x = left;
+            min_y = top;
+            max_x = right;
+            max_y = bottom;
+            any = true;
+            return;
+        }
+        min_x = std::min(min_x, left);
+        min_y = std::min(min_y, top);
+        max_x = std::max(max_x, right);
+        max_y = std::max(max_y, bottom);
+    };
+    bool touched = false;
+    for (const auto& span : surface.realized) {
+        if (!hits(span, source) && !hits(span, destination)) continue;
+        touched = true;
+        include(span.x, span.y, span.x + static_cast<i32>(span.width),
+                span.y + static_cast<i32>(span.height));
+    }
+    include(destination.left, destination.top, destination.right,
+            destination.bottom);
+    if (!touched || !any) return true;
+    const u64 box_w = static_cast<u64>(max_x - min_x);
+    const u64 box_h = static_cast<u64>(max_y - min_y);
+    if (surface.bpp == 0 || box_w == 0 || box_h == 0) return true;
+    const u64 pixel_limit = kRealizedByteLimit / surface.bpp;
+    if (box_h > pixel_limit || box_w > pixel_limit / box_h) return false;
+
+    const u32 bw = static_cast<u32>(box_w);
+    const u32 bh = static_cast<u32>(box_h);
+    const u32 bpp = surface.bpp;
+    const auto index_of = [&](i32 x, i32 y) {
+        return static_cast<usize>(y - min_y) * bw +
+               static_cast<usize>(x - min_x);
+    };
+    std::vector<u8> pixels(static_cast<usize>(bw) * bh * bpp, 0);
+    std::vector<u8> mask(static_cast<usize>(bw) * bh, 0);
+    std::vector<Surface::RealizedRect> keep;
+    for (auto& span : surface.realized) {
+        if (!hits(span, source) && !hits(span, destination)) {
+            keep.push_back(std::move(span));
+            continue;
+        }
+        for (u32 row = 0; row < span.height; ++row) {
+            for (u32 col = 0; col < span.width; ++col) {
+                const i32 x = span.x + static_cast<i32>(col);
+                const i32 y = span.y + static_cast<i32>(row);
+                const usize at = index_of(x, y);
+                std::memcpy(pixels.data() + at * bpp,
+                            span.pixels.data() +
+                                (static_cast<usize>(row) * span.width + col) * bpp,
+                            bpp);
+                mask[at] = 1;
+            }
+        }
+    }
+    std::vector<u8> out_pixels = pixels;
+    std::vector<u8> out_mask = mask;
+    std::vector<u8> written(mask.size(), 0);
+    for (i32 y = destination.top; y < destination.bottom; ++y) {
+        for (i32 x = destination.left; x < destination.right; ++x) {
+            const i64 sx = static_cast<i64>(x) - dx;
+            const i64 sy = static_cast<i64>(y) - dy;
+            if (sx < source.left || sy < source.top || sx >= source.right ||
+                sy >= source.bottom) {
+                continue;
+            }
+            if (sx < min_x || sy < min_y || sx >= max_x || sy >= max_y ||
+                x < min_x || y < min_y || x >= max_x || y >= max_y) {
+                continue;
+            }
+            const usize from = index_of(static_cast<i32>(sx),
+                                        static_cast<i32>(sy));
+            if (mask[from] == 0) continue;
+            const usize to = index_of(x, y);
+            std::memcpy(out_pixels.data() + to * bpp, pixels.data() + from * bpp,
+                        bpp);
+            out_mask[to] = 1;
+            written[to] = 1;
+        }
+    }
+    for (i32 y = source.top; y < source.bottom; ++y) {
+        for (i32 x = source.left; x < source.right; ++x) {
+            if (x < min_x || y < min_y || x >= max_x || y >= max_y) continue;
+            const usize at = index_of(x, y);
+            if (mask[at] != 0 && written[at] == 0) out_mask[at] = 0;
+        }
+    }
+    for (u32 row = 0; row < bh; ++row) {
+        u32 run = 0;
+        bool open = false;
+        for (u32 col = 0; col <= bw; ++col) {
+            const bool on = col < bw && out_mask[static_cast<usize>(row) * bw + col] != 0;
+            if (on && !open) {
+                run = col;
+                open = true;
+            } else if (!on && open) {
+                Surface::RealizedRect piece;
+                piece.x = min_x + static_cast<i32>(run);
+                piece.y = min_y + static_cast<i32>(row);
+                piece.width = col - run;
+                piece.height = 1;
+                piece.pixels.resize(static_cast<usize>(piece.width) * bpp);
+                std::memcpy(piece.pixels.data(),
+                            out_pixels.data() +
+                                (static_cast<usize>(row) * bw + run) * bpp,
+                            piece.pixels.size());
+                keep.push_back(std::move(piece));
+                open = false;
+            }
+        }
+    }
+    surface.realized = std::move(keep);
+    return true;
+}
+
+u32 DcompManager::publish_virtual_surface(Surface& surface) {
+    if (surface.realized.empty()) {
+        surface.texture.reset();
+        surface.presenter.reset();
+        surface.pieces.clear();
+        surface.initialized = false;
+        surface.present_blocked = false;
+        surface.content_x = 0;
+        surface.content_y = 0;
+        surface.content_w = 0;
+        surface.content_h = 0;
+        return dcomp::S_OK;
+    }
+    i32 min_x = surface.realized.front().x;
+    i32 min_y = surface.realized.front().y;
+    i32 max_x = min_x;
+    i32 max_y = min_y;
+    u64 area = 0;
+    for (const auto& span : surface.realized) {
+        min_x = std::min(min_x, span.x);
+        min_y = std::min(min_y, span.y);
+        max_x = std::max(max_x, span.x + static_cast<i32>(span.width));
+        max_y = std::max(max_y, span.y + static_cast<i32>(span.height));
+        area += static_cast<u64>(span.width) * span.height;
+    }
+    const u64 box_w = static_cast<u64>(max_x - min_x);
+    const u64 box_h = static_cast<u64>(max_y - min_y);
+    const u64 box_area = box_w * box_h;
+    // Learn Trim: pixels outside the kept rectangles are no longer used for
+    // texturing. That hole is the absence of a rectangle, not a texel of a
+    // bounding box (transparent or otherwise). One covering rectangle is one
+    // texture; anything else is one texture per realized rectangle.
+    const bool rectangular = box_w != 0 && box_h != 0 && area == box_area;
+    const bool fits = rectangular && surface.bpp != 0 &&
+                      box_h <= (kRealizedByteLimit / surface.bpp) &&
+                      box_w <= (kRealizedByteLimit / surface.bpp) / box_h;
+    if (rectangular && !fits) {
+        return dcomp::E_OUTOFMEMORY;
+    }
+    if (!rectangular) {
+        if (surface.bpp == 0) return dcomp::E_OUTOFMEMORY;
+        graphics::GraphicsBackendDevice* backend = graphics_backend();
+        if (backend == nullptr) {
+            static bool logged = false;
+            unimplemented_once(logged, "IDCompositionVirtualSurface",
+                               "no graphics backend can store the realization");
+            return dcomp::E_NOTIMPL;
+        }
+        const u64 pixel_limit = kRealizedByteLimit / surface.bpp;
+        std::vector<Surface::PresentedPiece> built;
+        built.reserve(surface.realized.size());
+        for (const auto& span : surface.realized) {
+            if (span.width == 0 || span.height == 0) continue;
+            const u64 span_w = span.width;
+            const u64 span_h = span.height;
+            if (span_h > pixel_limit || span_w > pixel_limit / span_h) {
+                return dcomp::E_OUTOFMEMORY;
+            }
+            const usize need = static_cast<usize>(span_w) *
+                               static_cast<usize>(span_h) * surface.bpp;
+            if (span.pixels.size() < need) return dcomp::E_OUTOFMEMORY;
+            const u32 pitch = span.width * surface.bpp;
+            graphics::BackendTexture2DDesc desc{};
+            desc.width = span.width;
+            desc.height = span.height;
+            desc.pixel_format = graphics::pixel_format_from_dxgi(surface.format);
+            desc.shader_resource = true;
+            std::unique_ptr<graphics::BackendTexture2D> created =
+                backend->create_texture_2d(desc, nullptr, 0);
+            if (!created || !created->valid() ||
+                !created->update(0, span.pixels.data(), pitch)) {
+                static bool logged = false;
+                unimplemented_once(
+                    logged, "IDCompositionVirtualSurface",
+                    "the graphics backend cannot store this realization");
+                return dcomp::E_NOTIMPL;
+            }
+            Surface::PresentedPiece piece;
+            piece.x = span.x;
+            piece.y = span.y;
+            piece.width = span.width;
+            piece.height = span.height;
+            piece.texture = std::move(created);
+            built.push_back(std::move(piece));
+        }
+        surface.pieces = std::move(built);
+        surface.texture.reset();
+        surface.presenter.reset();
+        surface.present_blocked = false;
+        surface.initialized = !surface.pieces.empty();
+        surface.content_x = min_x;
+        surface.content_y = min_y;
+        surface.content_w = 0;
+        surface.content_h = 0;
+        return dcomp::S_OK;
+    }
+    const u32 bw = static_cast<u32>(box_w);
+    const u32 bh = static_cast<u32>(box_h);
+    const u32 bpp = surface.bpp;
+    const u32 pitch = bw * bpp;
+    std::vector<u8> image(static_cast<usize>(pitch) * bh, 0);
+    for (const auto& span : surface.realized) {
+        for (u32 row = 0; row < span.height; ++row) {
+            const usize src = static_cast<usize>(row) * span.width * bpp;
+            const usize dst =
+                (static_cast<usize>(span.y - min_y) * bw +
+                 static_cast<usize>(span.x - min_x)) *
+                bpp;
+            std::memcpy(image.data() + static_cast<usize>(row) * bw * bpp + dst,
+                        span.pixels.data() + src,
+                        static_cast<usize>(span.width) * bpp);
+        }
+    }
+    graphics::GraphicsBackendDevice* backend = graphics_backend();
+    if (backend == nullptr) {
+        static bool logged = false;
+        unimplemented_once(logged, "IDCompositionVirtualSurface",
+                           "no graphics backend can store the realization");
+        return dcomp::E_NOTIMPL;
+    }
+    const bool same =
+        surface.texture && surface.texture->valid() &&
+        surface.texture->desc().width == bw &&
+        surface.texture->desc().height == bh;
+    if (same) {
+        if (!surface.texture->update(0, image.data(), pitch)) {
+            static bool logged = false;
+            unimplemented_once(logged, "IDCompositionVirtualSurface",
+                               "the graphics backend refused the pixel upload");
+            return dcomp::E_NOTIMPL;
+        }
+    } else {
+        graphics::BackendTexture2DDesc desc{};
+        desc.width = bw;
+        desc.height = bh;
+        desc.pixel_format = graphics::pixel_format_from_dxgi(surface.format);
+        desc.shader_resource = true;
+        std::unique_ptr<graphics::BackendTexture2D> created =
+            backend->create_texture_2d(desc, nullptr, 0);
+        if (!created || !created->valid() ||
+            !created->update(0, image.data(), pitch)) {
+            static bool logged = false;
+            unimplemented_once(logged, "IDCompositionVirtualSurface",
+                               "the graphics backend cannot store this realization");
+            return dcomp::E_NOTIMPL;
+        }
+        surface.texture = std::move(created);
+        surface.presenter.reset();
+    }
+    surface.pieces.clear();
+    surface.content_x = min_x;
+    surface.content_y = min_y;
+    surface.content_w = bw;
+    surface.content_h = bh;
+    surface.present_blocked = false;
+    surface.initialized = true;
+    surface.row_pitch = pitch;
+    return dcomp::S_OK;
+}
+
+void DcompManager::end_virtual_draw(Marshaler& m, Surface& surface,
+                                    Device& device) {
+    const u32 update_bytes = surface.update_h * surface.update_pitch;
+    std::vector<u8> drawn(update_bytes);
+    if (surface.pixels == 0 ||
+        m_memory.read_bytes(surface.pixels, drawn.data(), drawn.size()).is_err()) {
+        m.set_return(dcomp::E_OUTOFMEMORY);
+        return;
+    }
+    auto saved = surface.realized;
+    blit_realized(surface, surface.origin_x, surface.origin_y, surface.update_w,
+                  surface.update_h, drawn.data(), surface.update_pitch);
+    const u32 hr = publish_virtual_surface(surface);
+    if (hr != dcomp::S_OK) {
+        surface.realized = std::move(saved);
+        m.set_return(hr);
+        return;
+    }
+    surface.draw = SurfaceDraw::Idle;
+    surface.mapped = false;
+    if (auto update = m_update_objects.find(surface.update_object);
+        update != m_update_objects.end()) {
+        update->second.live = false;
+    }
+    surface.update_object = 0;
+    if (device.drawing_surface == surface.interface_address) {
+        device.drawing_surface = 0;
+    }
+    m.set_return(dcomp::S_OK);
+}
+
+void DcompManager::scroll_surface(Marshaler& m, Surface& surface) {
+    // Learn Scroll: only before BeginDraw or after EndDraw. A suspended
+    // or resumed surface is still being updated.
+    if (surface.draw != SurfaceDraw::Idle) {
+        m.set_return(dcomp::DCOMPOSITION_ERROR_SURFACE_BEING_RENDERED);
+        return;
+    }
+    IntRect scroll{};
+    IntRect clip{};
+    const IntRect* scroll_ptr = nullptr;
+    const IntRect* clip_ptr = nullptr;
+    if (m.arg_ptr(1) != 0) {
+        if (!read_surface_rect(m.arg_ptr(1), scroll)) {
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+        scroll_ptr = &scroll;
+    }
+    if (m.arg_ptr(2) != 0) {
+        if (!read_surface_rect(m.arg_ptr(2), clip)) {
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+        clip_ptr = &clip;
+    }
+    const i32 dx = static_cast<i32>(m.arg(3));
+    const i32 dy = static_cast<i32>(m.arg(4));
+    IntRect source{};
+    IntRect destination{};
+    if (!compose_scroll(surface, scroll_ptr, clip_ptr, dx, dy, source,
+                        destination)) {
+        m.set_return(dcomp::E_INVALIDARG);
+        return;
+    }
+    if (surface.virtual_surface) {
+        auto saved = surface.realized;
+        if (!scroll_realized(surface, source, destination, dx, dy)) {
+            m.set_return(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        const u32 hr = publish_virtual_surface(surface);
+        if (hr != dcomp::S_OK) {
+            surface.realized = std::move(saved);
+            m.set_return(hr);
+            return;
+        }
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    auto saved = surface.published;
+    scroll_published(surface, source, destination, dx, dy);
+    if (surface.initialized && surface.texture) {
+        if (!surface.texture->update(0, surface.published.data(),
+                                     surface.row_pitch)) {
+            surface.published = std::move(saved);
+            static bool logged = false;
+            unimplemented_once(logged, "IDCompositionSurface::Scroll",
+                               "the graphics backend refused the pixel upload");
+            m.set_return(dcomp::E_NOTIMPL);
+            return;
+        }
+    }
+    m.set_return(dcomp::S_OK);
+}
+
+void DcompManager::resize_virtual_surface(Marshaler& m, Surface& surface) {
+    const u32 width = static_cast<u32>(m.arg(1));
+    const u32 height = static_cast<u32>(m.arg(2));
+    if (width > kVirtualSurfaceMaxEdge || height > kVirtualSurfaceMaxEdge) {
+        m.set_return(dcomp::E_INVALIDARG);
+        return;
+    }
+    const u32 old_width = surface.width;
+    const u32 old_height = surface.height;
+    auto saved = surface.realized;
+    surface.width = width;
+    surface.height = height;
+    const IntRect bounds{0, 0, static_cast<i32>(width),
+                         static_cast<i32>(height)};
+    retain_realized(surface, {bounds});
+    const u32 hr = publish_virtual_surface(surface);
+    if (hr != dcomp::S_OK) {
+        surface.realized = std::move(saved);
+        surface.width = old_width;
+        surface.height = old_height;
+        m.set_return(hr);
+        return;
+    }
+    m.set_return(dcomp::S_OK);
+}
+
+void DcompManager::trim_virtual_surface(Marshaler& m, Surface& surface) {
+    const GuestAddr rectangles = m.arg_ptr(1);
+    const u32 count = static_cast<u32>(m.arg(2));
+    // Learn Trim: a null rectangle pointer is legal only when count is 0,
+    // and count 0 releases every realized pixel. Trim is immediate.
+    if (count == 0) {
+        auto saved = surface.realized;
+        surface.realized.clear();
+        const u32 hr = publish_virtual_surface(surface);
+        if (hr != dcomp::S_OK) surface.realized = std::move(saved);
+        m.set_return(hr);
+        return;
+    }
+    if (rectangles == 0) {
+        m.set_return(dcomp::E_INVALIDARG);
+        return;
+    }
+    if (static_cast<u64>(count) > kRealizedByteLimit / 16u) {
+        m.set_return(dcomp::E_OUTOFMEMORY);
+        return;
+    }
+    std::vector<IntRect> keep(count);
+    for (u32 index = 0; index < count; ++index) {
+        if (!read_surface_rect(rectangles + static_cast<GuestAddr>(index) * 16u,
+                               keep[index])) {
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+    }
+    auto saved = surface.realized;
+    retain_realized(surface, keep);
+    const u32 hr = publish_virtual_surface(surface);
+    if (hr != dcomp::S_OK) surface.realized = std::move(saved);
+    m.set_return(hr);
+}
+
+bool DcompManager::bind_virtual_surface(
+    Surface& surface, GuestAddr hwnd, void* view,
+    const graphics::BackendCompositionLayerDesc& layer) {
+    if (!surface.initialized || surface.realized.empty()) return true;
+    if (surface.present_blocked ||
+        (surface.pieces.empty() && !surface.texture)) {
+        static bool logged = false;
+        unimplemented_once(logged, "IDCompositionVirtualSurface",
+                           "non-rectangular realization");
+        return false;
+    }
+    // The texture's origin is the realization, not the logical (0, 0).
+    // A clip is in surface space. One texture keeps the clip the layer
+    // already carries. Each piece's layer is only that rectangle, so the
+    // clip is translated into the piece.
+    const auto present_at = [&](graphics::BackendTexture2D* texture,
+                                std::unique_ptr<graphics::BackendSwapChain>&
+                                    presenter,
+                                GuestAddr& bound_hwnd, void*& bound_view,
+                                u32 width, u32 height, float origin_x,
+                                float origin_y, bool translate_clip) -> bool {
+        if (texture == nullptr || width == 0 || height == 0) return false;
+        graphics::BackendCompositionLayerDesc placed = layer;
+        placed.transform[4] = origin_x * layer.transform[0] +
+                              origin_y * layer.transform[2] +
+                              layer.transform[4];
+        placed.transform[5] = origin_x * layer.transform[1] +
+                              origin_y * layer.transform[3] +
+                              layer.transform[5];
+        if (translate_clip && placed.has_clip_rect) {
+            placed.clip_rect[0] -= origin_x;
+            placed.clip_rect[1] -= origin_y;
+            placed.clip_rect[2] -= origin_x;
+            placed.clip_rect[3] -= origin_y;
+        }
+        if (!presenter || bound_hwnd != hwnd || bound_view != view ||
+            presenter->desc().width != width ||
+            presenter->desc().height != height) {
+            graphics::GraphicsBackendDevice* backend = graphics_backend();
+            if (backend == nullptr) return false;
+            graphics::BackendSwapChainDesc desc{};
+            desc.native_view = view;
+            desc.width = width;
+            desc.height = height;
+            desc.pixel_format = texture->desc().pixel_format;
+            desc.buffer_count = 2;
+            desc.vsync = true;
+            desc.premultiplied_alpha =
+                surface.alpha == DXGI_ALPHA_MODE_PREMULTIPLIED;
+            // One realized rectangle of a virtual surface. Other rectangles
+            // on this HWND own their own layers and must stay visible.
+            desc.preserve_sibling_metal_layers = true;
+            std::unique_ptr<graphics::BackendSwapChain> created =
+                backend->create_swap_chain(desc);
+            if (!created || !created->valid()) return false;
+            presenter = std::move(created);
+            bound_hwnd = hwnd;
+            bound_view = view;
+        }
+        if (!presenter->configure_composition_layer(placed)) return false;
+        return presenter->present_texture(texture, 0, 0);
+    };
+    if (!surface.pieces.empty()) {
+        for (auto& piece : surface.pieces) {
+            if (!present_at(piece.texture.get(), piece.presenter,
+                            piece.presenter_hwnd, piece.presenter_view,
+                            piece.width, piece.height,
+                            static_cast<float>(piece.x),
+                            static_cast<float>(piece.y), true)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return present_at(surface.texture.get(), surface.presenter,
+                      surface.presenter_hwnd, surface.presenter_view,
+                      surface.content_w, surface.content_h,
+                      static_cast<float>(surface.content_x),
+                      static_cast<float>(surface.content_y), false);
+}
+
+void DcompManager::impl_SurfaceMethod(Marshaler& m, usize slot) {
+    const GuestAddr self = m.arg_ptr(0);
+    auto found = m_surfaces.find(self);
+    if (found == m_surfaces.end()) {
+        m.set_return(slot == 1 || slot == 2 ? 0 : dcomp::E_INVALIDARG);
+        return;
+    }
+    Surface& surface = found->second;
+    auto device = m_devices.find(surface.device_owner);
+    if (device == m_devices.end()) {
+        m.set_return(dcomp::E_INVALIDARG);
+        return;
+    }
+    switch (slot) {
+    case 0: {
+        const GuestAddr output = m.arg_ptr(2);
+        if (output == 0) { m.set_return(dcomp::E_POINTER); return; }
+        (void)m.write_ptr(output, 0);
+        GuidBytes iid{};
+        if (!read_guid(m.arg_ptr(1), iid) ||
+            (!guid_equal(iid, IID_IUNKNOWN) &&
+             !guid_equal(iid, IID_IDCOMPOSITIONSURFACE) &&
+             !(surface.virtual_surface &&
+               guid_equal(iid, IID_IDCOMPOSITIONVIRTUALSURFACE)))) {
+            m.set_return(dcomp::E_NOINTERFACE);
+            return;
+        }
+        ++surface.ref_count;
+        if (m.write_ptr(output, self).is_err()) {
+            --surface.ref_count;
+            m.set_return(dcomp::E_POINTER);
+            return;
+        }
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 1: m.set_return(++surface.ref_count); return;
+    case 2: m.set_return(release_surface(self)); return;
+    case 3: {
+        // Learn BeginDraw. The returned DXGI surface is a rectangle of the
+        // update's size (composition surface: DirectComposition allocates
+        // that rectangle). Its offset is that rectangle's upper left, which
+        // is (0, 0) for this allocation. The caller draws update-width by
+        // update-height at that offset. ID2D1DeviceContext is E_INVALIDARG
+        // unless the composition device was created with a Direct2D device;
+        // a D3D11, D3D12 or null rendering device is not one. Any other IID
+        // is not a surface we can hand back.
+        const GuestAddr rect_address = m.arg_ptr(1);
+        const GuestAddr iid_address = m.arg_ptr(2);
+        const GuestAddr object_out = m.arg_ptr(3);
+        const GuestAddr offset_out = m.arg_ptr(4);
+        if (object_out == 0 || offset_out == 0) {
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+        (void)m.write_ptr(object_out, 0);
+        if (iid_address == 0) {
+            (void)write_i32x2(m_memory, offset_out, 0, 0);
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+        const auto fail = [&](u32 hr) {
+            (void)write_i32x2(m_memory, offset_out, 0, 0);
+            m.set_return(hr);
+        };
+        GuidBytes iid{};
+        if (!read_guid(iid_address, iid)) {
+            fail(dcomp::E_INVALIDARG);
+            return;
+        }
+        if (guid_equal(iid, IID_ID2D1DEVICECONTEXT)) {
+            fail(dcomp::E_INVALIDARG);
+            return;
+        }
+        if (!guid_equal(iid, IID_IDXGISURFACE) &&
+            !guid_equal(iid, IID_IDXGISURFACE1)) {
+            fail(dcomp::E_NOINTERFACE);
+            return;
+        }
+        i32 left = 0;
+        i32 top = 0;
+        i32 right = static_cast<i32>(surface.width);
+        i32 bottom = static_cast<i32>(surface.height);
+        if (rect_address != 0) {
+            i32 rect[4] = {};
+            if (!read_i32x4(m_memory, rect_address, rect)) {
+                fail(dcomp::E_INVALIDARG);
+                return;
+            }
+            left = rect[0];
+            top = rect[1];
+            right = rect[2];
+            bottom = rect[3];
+        }
+        if (left < 0 || top < 0 || right <= left || bottom <= top ||
+            static_cast<u32>(right) > surface.width ||
+            static_cast<u32>(bottom) > surface.height) {
+            fail(dcomp::E_INVALIDARG);
+            return;
+        }
+        const bool full = left == 0 && top == 0 &&
+                          static_cast<u32>(right) == surface.width &&
+                          static_cast<u32>(bottom) == surface.height;
+        // Learn BeginDraw: the first update of a non-virtual surface must
+        // cover it. A virtual surface may start with any sub-rectangle.
+        if (!surface.virtual_surface && !surface.has_drawn && !full) {
+            fail(dcomp::E_INVALIDARG);
+            return;
+        }
+        if (surface.draw != SurfaceDraw::Idle ||
+            (device->second.drawing_surface != 0 &&
+             device->second.drawing_surface != self)) {
+            fail(dcomp::DCOMPOSITION_ERROR_SURFACE_BEING_RENDERED);
+            return;
+        }
+        if (!ensure_storage() ||
+            m_next_object + 0x40 > m_region_base + STORAGE_SIZE) {
+            fail(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        const u32 update_w = static_cast<u32>(right - left);
+        const u32 update_h = static_cast<u32>(bottom - top);
+        if (surface.virtual_surface &&
+            (surface.bpp == 0 || update_w > (0xFFFFFFFFu / surface.bpp))) {
+            fail(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        const u32 update_pitch = update_w * surface.bpp;
+        if (surface.virtual_surface && update_h != 0 &&
+            update_pitch > (0xFFFFFFFFu / update_h)) {
+            fail(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        const u32 update_bytes = update_h * update_pitch;
+        if (surface.virtual_surface &&
+            (static_cast<u64>(update_bytes) > kRealizedByteLimit ||
+             !ensure_update_pixels(surface, update_bytes))) {
+            fail(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        std::array<u8, 4096> zeros{};
+        for (u32 done = 0; done < update_bytes;) {
+            const u32 chunk = std::min<u32>(static_cast<u32>(zeros.size()),
+                                            update_bytes - done);
+            if (m_memory.write_bytes(surface.pixels + done, zeros.data(),
+                                    chunk).is_err()) {
+                fail(dcomp::E_OUTOFMEMORY);
+                return;
+            }
+            done += chunk;
+        }
+        const GuestAddr update = m_next_object;
+        m_next_object += 0x40;
+        if (!write_pointer(update, m_update_vtable)) {
+            fail(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        UpdateObject object{};
+        object.interface_address = update;
+        object.surface = self;
+        object.width = update_w;
+        object.height = update_h;
+        object.format = surface.format;
+        m_update_objects.emplace(update, object);
+        surface.draw = SurfaceDraw::Drawing;
+        surface.mapped = false;
+        surface.origin_x = left;
+        surface.origin_y = top;
+        surface.update_w = update_w;
+        surface.update_h = update_h;
+        surface.update_pitch = update_pitch;
+        surface.update_object = update;
+        device->second.drawing_surface = self;
+        if (m.write_ptr(object_out, update).is_err() ||
+            !write_i32x2(m_memory, offset_out, 0, 0)) {
+            surface.draw = SurfaceDraw::Idle;
+            surface.update_object = 0;
+            device->second.drawing_surface = 0;
+            m_update_objects.erase(update);
+            fail(dcomp::E_POINTER);
+            return;
+        }
+        surface.has_drawn = true;
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 4: {
+        // EndDraw completes a Drawing or Suspended update (Learn: EndDraw
+        // on a suspended surface is an implied resume/end) and publishes
+        // that rectangle. Commit before this keeps the previous contents.
+        if (surface.draw == SurfaceDraw::Idle) {
+            m.set_return(dcomp::DCOMPOSITION_ERROR_SURFACE_NOT_BEING_RENDERED);
+            return;
+        }
+        if (surface.virtual_surface) {
+            end_virtual_draw(m, surface, device->second);
+            return;
+        }
+        const u32 update_bytes = surface.update_h * surface.update_pitch;
+        std::vector<u8> drawn(update_bytes);
+        if (m_memory.read_bytes(surface.pixels, drawn.data(), drawn.size())
+                .is_err()) {
+            m.set_return(dcomp::E_OUTOFMEMORY);
+            return;
+        }
+        std::vector<u8> published = surface.published;
+        for (u32 row = 0; row < surface.update_h; ++row) {
+            const usize src = static_cast<usize>(row) * surface.update_pitch;
+            const usize dst =
+                (static_cast<usize>(surface.origin_y) + row) * surface.row_pitch +
+                static_cast<usize>(surface.origin_x) * surface.bpp;
+            std::memcpy(published.data() + dst, drawn.data() + src,
+                        surface.update_pitch);
+        }
+        if (!surface.texture ||
+            !surface.texture->update(0, published.data(),
+                                    surface.row_pitch)) {
+            static bool logged = false;
+            unimplemented_once(logged, "IDCompositionSurface::EndDraw",
+                               "the graphics backend refused the pixel upload");
+            m.set_return(dcomp::E_NOTIMPL);
+            return;
+        }
+        surface.published = std::move(published);
+        surface.initialized = true;
+        surface.draw = SurfaceDraw::Idle;
+        surface.mapped = false;
+        if (auto update = m_update_objects.find(surface.update_object);
+            update != m_update_objects.end()) {
+            update->second.live = false;
+        }
+        surface.update_object = 0;
+        if (device->second.drawing_surface == self) {
+            device->second.drawing_surface = 0;
+        }
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 5: {
+        if (surface.draw == SurfaceDraw::Idle) {
+            m.set_return(dcomp::DCOMPOSITION_ERROR_SURFACE_NOT_BEING_RENDERED);
+            return;
+        }
+        if (surface.draw == SurfaceDraw::Suspended) {
+            m.set_return(dcomp::DCOMPOSITION_ERROR_SURFACE_BEING_RENDERED);
+            return;
+        }
+        surface.draw = SurfaceDraw::Suspended;
+        if (device->second.drawing_surface == self) {
+            device->second.drawing_surface = 0;
+        }
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 6: {
+        if (surface.draw == SurfaceDraw::Idle) {
+            m.set_return(dcomp::DCOMPOSITION_ERROR_SURFACE_NOT_BEING_RENDERED);
+            return;
+        }
+        if (surface.draw == SurfaceDraw::Drawing ||
+            (device->second.drawing_surface != 0 &&
+             device->second.drawing_surface != self)) {
+            m.set_return(dcomp::DCOMPOSITION_ERROR_SURFACE_BEING_RENDERED);
+            return;
+        }
+        surface.draw = SurfaceDraw::Drawing;
+        device->second.drawing_surface = self;
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 7:
+        scroll_surface(m, surface);
+        return;
+    case 8:
+    case 9:
+        // Resize and Trim belong to IDCompositionVirtualSurface.
+        if (!surface.virtual_surface) {
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+        if (surface.draw != SurfaceDraw::Idle) {
+            m.set_return(dcomp::DCOMPOSITION_ERROR_SURFACE_BEING_RENDERED);
+            return;
+        }
+        if (slot == 8) resize_virtual_surface(m, surface);
+        else trim_virtual_surface(m, surface);
+        return;
+    default: m.set_return(dcomp::E_NOTIMPL); return;
+    }
+}
+
+void DcompManager::impl_UpdateObjectMethod(Marshaler& m, usize slot) {
+    const GuestAddr self = m.arg_ptr(0);
+    auto found = m_update_objects.find(self);
+    if (found == m_update_objects.end()) {
+        m.set_return(slot == 1 || slot == 2 ? 0 : dcomp::E_INVALIDARG);
+        return;
+    }
+    UpdateObject& object = found->second;
+    auto surface_entry = m_surfaces.find(object.surface);
+    Surface* surface = surface_entry == m_surfaces.end()
+                           ? nullptr
+                           : &surface_entry->second;
+    switch (slot) {
+    case 0: {
+        const GuestAddr output = m.arg_ptr(2);
+        if (output == 0) { m.set_return(dcomp::E_POINTER); return; }
+        (void)m.write_ptr(output, 0);
+        GuidBytes iid{};
+        if (!read_guid(m.arg_ptr(1), iid) ||
+            (!guid_equal(iid, IID_IUNKNOWN) &&
+             !guid_equal(iid, IID_IDXGISURFACE) &&
+             !guid_equal(iid, IID_IDXGISURFACE1))) {
+            m.set_return(dcomp::E_NOINTERFACE);
+            return;
+        }
+        ++object.ref_count;
+        if (m.write_ptr(output, self).is_err()) {
+            --object.ref_count;
+            m.set_return(dcomp::E_POINTER);
+            return;
+        }
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 1: m.set_return(++object.ref_count); return;
+    case 2: {
+        if (object.ref_count == 0) { m.set_return(0); return; }
+        const u32 count = --object.ref_count;
+        if (count == 0) {
+            if (surface != nullptr && surface->update_object == self) {
+                surface->mapped = false;
+                surface->update_object = 0;
+            }
+            m_update_objects.erase(found);
+        }
+        m.set_return(count);
+        return;
+    }
+    case 3:
+    case 4:
+    case 5: {
+        static bool logged = false;
+        unimplemented_once(logged, "IDXGISurface::SetPrivateData",
+                           "private data on a composition update surface");
+        m.set_return(dcomp::E_NOTIMPL);
+        return;
+    }
+    case 6:
+    case 7: {
+        const GuestAddr output = m.arg_ptr(2);
+        if (output == 0) { m.set_return(dcomp::E_POINTER); return; }
+        (void)m.write_ptr(output, 0);
+        if (surface == nullptr) {
+            m.set_return(dcomp::E_NOINTERFACE);
+            return;
+        }
+        const GuestAddr device =
+            m_devices.contains(surface->device_owner)
+                ? m_devices.at(surface->device_owner).rendering_device
+                : 0;
+        GuidBytes iid{};
+        if (device == 0 || !read_guid(m.arg_ptr(1), iid) ||
+            !rendering_device_answers(device, iid)) {
+            m.set_return(dcomp::E_NOINTERFACE);
+            return;
+        }
+        if (!retain_rendering_device(device)) {
+            m.set_return(dcomp::E_NOINTERFACE);
+            return;
+        }
+        if (m.write_ptr(output, device).is_err()) {
+            release_rendering_device(device);
+            (void)m.write_ptr(output, 0);
+            m.set_return(dcomp::E_POINTER);
+            return;
+        }
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 8: {
+        const GuestAddr output = m.arg_ptr(1);
+        if (output == 0) { m.set_return(dcomp::E_INVALIDARG); return; }
+        const std::array<u32, 5> words{object.width, object.height,
+                                       object.format, 1u, 0u};
+        if (m_memory.write_bytes(output,
+                                reinterpret_cast<const u8*>(words.data()),
+                                sizeof(words)).is_err()) {
+            m.set_return(dcomp::E_POINTER);
+            return;
+        }
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 9: {
+        const GuestAddr rect = m.arg_ptr(1);
+        const u32 flags = static_cast<u32>(m.arg(2));
+        const u32 known = DXGI_MAP_READ | DXGI_MAP_WRITE | DXGI_MAP_DISCARD;
+        const bool access = (flags & (DXGI_MAP_READ | DXGI_MAP_WRITE)) != 0;
+        const bool discard_alone =
+            (flags & DXGI_MAP_DISCARD) != 0 && (flags & DXGI_MAP_WRITE) == 0;
+        if (!object.live || surface == nullptr ||
+            surface->update_object != self) {
+            m.set_return(dcomp::DXGI_ERROR_INVALID_CALL);
+            return;
+        }
+        if (rect == 0 || (flags & ~known) != 0 || !access || discard_alone ||
+            surface->mapped) {
+            m.set_return(surface->mapped ? dcomp::DXGI_ERROR_INVALID_CALL
+                                        : dcomp::E_INVALIDARG);
+            return;
+        }
+        if (m.write_u32(rect, surface->update_pitch).is_err() ||
+            !write_pointer(rect + (m_is_64bit ? 8u : 4u), surface->pixels)) {
+            m.set_return(dcomp::E_POINTER);
+            return;
+        }
+        surface->mapped = true;
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 10: {
+        if (!object.live || surface == nullptr || !surface->mapped ||
+            surface->update_object != self) {
+            m.set_return(dcomp::DXGI_ERROR_INVALID_CALL);
+            return;
+        }
+        surface->mapped = false;
+        m.set_return(dcomp::S_OK);
+        return;
+    }
+    case 11:
+    case 12:
+        // Not a GDI-compatible surface. Leave the HDC output untouched.
+        m.set_return(dcomp::DXGI_ERROR_INVALID_CALL);
+        return;
+    default: m.set_return(dcomp::E_NOTIMPL); return;
+    }
 }
 
 void DcompManager::unsupported_device_method(Marshaler& m,
@@ -1187,6 +2820,17 @@ void DcompManager::impl_DeviceMethod(Marshaler& m,
             return;
         }
         m.set_return(dcomp::S_OK);
+        return;
+    }
+    // dcomp.h: CreateSurface is slot 8 on IDCompositionDevice and on
+    // IDCompositionDevice2 (which Device3 and the desktop device inherit).
+    // CreateVirtualSurface is the following slot.
+    if (slot == 8) {
+        create_composition_surface(m, owner, false);
+        return;
+    }
+    if (slot == 9) {
+        create_composition_surface(m, owner, true);
         return;
     }
     unsupported_device_method(m, interface, slot);
@@ -1444,10 +3088,17 @@ void DcompManager::impl_VisualMethod(Marshaler& m, usize slot) {
     }
     case 15: {
         const GuestAddr content = m.arg_ptr(1);
-        if (content != 0 && !m_d3d11.is_swap_chain_object(content)) {
+        const auto surface = m_surfaces.find(content);
+        const bool is_surface = content != 0 && surface != m_surfaces.end();
+        if (content != 0 && !is_surface && !content_is_swap_chain(content)) {
             dcomp_diag("SetContent visual=0x%llx content=0x%llx -> E_INVALIDARG",
                        static_cast<unsigned long long>(self),
                        static_cast<unsigned long long>(content));
+            m.set_return(dcomp::E_INVALIDARG);
+            return;
+        }
+        if (is_surface &&
+            surface->second.device_owner != visual->second.device_owner) {
             m.set_return(dcomp::E_INVALIDARG);
             return;
         }
@@ -1455,13 +3106,13 @@ void DcompManager::impl_VisualMethod(Marshaler& m, usize slot) {
             m.set_return(dcomp::S_OK);
             return;
         }
-        if (content != 0 && !m_d3d11.retain_swap_chain_reference(content)) {
+        if (content != 0 && !retain_visual_content(content)) {
             m.set_return(dcomp::E_INVALIDARG);
             return;
         }
         const GuestAddr old = visual->second.content;
         visual->second.content = content;
-        if (old != 0) m_d3d11.release_swap_chain_reference(old);
+        if (old != 0) release_visual_content(old);
         dcomp_diag("SetContent visual=0x%llx content=0x%llx -> S_OK",
                    static_cast<unsigned long long>(self),
                    static_cast<unsigned long long>(content));
@@ -1740,7 +3391,9 @@ DllExports create_dcomp_thunks(DcompManager& manager) {
                             dcomp::ROTATE_TRANSFORM_METHOD_COUNT +
                             dcomp::SKEW_TRANSFORM_METHOD_COUNT +
                             dcomp::MATRIX_TRANSFORM_METHOD_COUNT +
-                            dcomp::RECTANGLE_CLIP_METHOD_COUNT + 8);
+                            dcomp::RECTANGLE_CLIP_METHOD_COUNT +
+                            dcomp::SURFACE_METHOD_COUNT +
+                            dcomp::UPDATE_OBJECT_METHOD_COUNT + 8);
     exports.entries.push_back({"DCompositionCreateDevice", 0,
         [&manager](Marshaler& m) { manager.impl_DCompositionCreateDevice(m); },
         12});
@@ -1821,6 +3474,20 @@ DllExports create_dcomp_thunks(DcompManager& manager) {
             [&manager, slot](Marshaler& m) {
                 manager.impl_RectangleClipMethod(m, slot);
             }, bytes});
+    }
+    for (usize slot = 0; slot < dcomp::SURFACE_METHOD_COUNT; ++slot) {
+        exports.entries.push_back({
+            dcomp_surface_method_export_name(slot), 0,
+            [&manager, slot](Marshaler& m) {
+                manager.impl_SurfaceMethod(m, slot);
+            }, static_cast<u16>(SURFACE_BYTES[slot])});
+    }
+    for (usize slot = 0; slot < dcomp::UPDATE_OBJECT_METHOD_COUNT; ++slot) {
+        exports.entries.push_back({
+            dcomp_update_object_method_export_name(slot), 0,
+            [&manager, slot](Marshaler& m) {
+                manager.impl_UpdateObjectMethod(m, slot);
+            }, static_cast<u16>(UPDATE_BYTES[slot])});
     }
 
     // Publish the remaining documented dcomp.dll surface with exact x86

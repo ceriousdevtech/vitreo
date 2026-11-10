@@ -34,8 +34,72 @@
 #include <variant>
 
 namespace vitreo::winapi {
+#include "reg_rename_contract.inc"
 
 namespace {
+
+// RegQueryValueEx A/W share argument validation and output ownership. The
+// caller's capacity does not control a host allocation: size the stored value
+// first, then allocate only the bytes that can actually be returned.
+void reg_query_value_ex(RegistryThunks& thunks, Marshaler& m, bool wide) {
+    RegistryWindowTimer timer;
+    const u64 key = m.arg(0);
+    const GuestAddr name_ptr = m.arg_ptr(1), reserved = m.arg_ptr(2);
+    const GuestAddr type_ptr = m.arg_ptr(3), data_ptr = m.arg_ptr(4), size_ptr = m.arg_ptr(5);
+    if (reserved != 0 || (data_ptr != 0 && size_ptr == 0)) {
+        m.set_return(ERROR_INVALID_PARAMETER); return;
+    }
+    u32 capacity = 0;
+    if (size_ptr != 0) {
+        const auto size = m.read_u32(size_ptr);
+        if (size.is_err()) { m.set_return(ERROR_NOACCESS); return; }
+        capacity = size.value();
+    }
+    std::wstring wide_name;
+    std::string ansi_name;
+    if (name_ptr != 0) {
+        if (wide) {
+            for (usize index = 0; ; ++index) {
+                const auto unit = m.read_u16(name_ptr + index * sizeof(u16));
+                if (unit.is_err()) { m.set_return(ERROR_NOACCESS); return; }
+                if (unit.value() == 0) break;
+                wide_name.push_back(static_cast<wchar_t>(unit.value()));
+            }
+        } else {
+            const auto name = m.read_ansi_string(name_ptr, 0);
+            if (name.is_err()) { m.set_return(ERROR_NOACCESS); return; }
+            ansi_name = name.value();
+        }
+    }
+    u32 type = REG_NONE, required = capacity;
+    const auto query = [&](u8* data, u32* size) {
+        return wide ? thunks.reg_query_value_ex_w(key, wide_name, &type, data, size)
+                    : thunks.reg_query_value_ex_a(key, ansi_name, &type, data, size);
+    };
+    u32 error = query(nullptr, size_ptr != 0 ? &required : nullptr);
+    if (error == ERROR_SUCCESS && data_ptr != 0) {
+        if (capacity < required) error = ERROR_MORE_DATA;
+        else if (required != 0) {
+            std::vector<u8> data(required);
+            u32 available = required;
+            error = query(data.data(), &available);
+            required = available;
+            if (error == ERROR_SUCCESS && m.memory().write_bytes(data_ptr,
+                    reinterpret_cast<const Byte*>(data.data()), required).is_err())
+                error = ERROR_NOACCESS;
+        }
+    }
+    // Windows preserves outputs on invalid arguments/handles; a missing
+    // value or missing query access sets REG_NONE without changing size/data.
+    const bool type_written = error == ERROR_SUCCESS || error == ERROR_MORE_DATA ||
+                              error == ERROR_FILE_NOT_FOUND || error == ERROR_ACCESS_DENIED;
+    if (type_ptr != 0 && type_written && m.write_u32(type_ptr, type).is_err()) error = ERROR_NOACCESS;
+    if (size_ptr != 0 && (error == ERROR_SUCCESS || error == ERROR_MORE_DATA) &&
+        m.write_u32(size_ptr, required).is_err()) error = ERROR_NOACCESS;
+    log_registry_query(wide ? "RegQueryValueExW" : "RegQueryValueExA", key,
+                       wide ? wide_name : ansi_to_wide(ansi_name), error, type, required);
+    m.set_return(error);
+}
 
 /// RegEnumValueW / RegEnumValueA. Every rule below is measured on Windows 11,
 /// identical on x86 and x64 (tools/oracle_probe/s4_registry_probe.expected).
@@ -258,12 +322,13 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
             std::wstring subkey = read_guest_wstring(m.memory(), subkey_ptr);
             u64 result_handle = 0;
             u32 err = thunks.reg_open_key_ex_w(hkey, subkey, options, sam,
-                                               &result_handle);
-            if (err == ERROR_SUCCESS && result_ptr != 0) {
+                                               result_ptr ? &result_handle : nullptr);
+            if (result_ptr != 0) {
                 write_guest_hkey(m, result_ptr, result_handle);
             }
-            VITREO_TRACE( "[registry] RegOpenKeyExW(0x%llx, \"%ls\") -> %u\n",
-                         hkey, subkey.c_str(), err);
+            VITREO_TRACE( "[registry] RegOpenKeyExW(0x%llx, \"%ls\", sam=0x%x) -> %u handle=0x%llx\n",
+                         hkey, subkey.c_str(), sam, err,
+                         static_cast<unsigned long long>(result_handle));
             log_registry_open("RegOpenKeyExW", hkey, subkey, err);
             m.set_return(err);
         },
@@ -288,8 +353,8 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
             std::string subkey_a = read_guest_astring(m.memory(), subkey_ptr);
             u64 result_handle = 0;
             u32 err = thunks.reg_open_key_ex_a(hkey, subkey_a, options, sam,
-                                               &result_handle);
-            if (err == ERROR_SUCCESS && result_ptr != 0) {
+                                               result_ptr ? &result_handle : nullptr);
+            if (result_ptr != 0 && hkey != 0) {
                 write_guest_hkey(m, result_ptr, result_handle);
             }
             if (subkey_a.find("Internal") != std::string::npos) {
@@ -299,8 +364,9 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
                     subkey_a.c_str(), err,
                     static_cast<unsigned long long>(result_handle));
             }
-            VITREO_TRACE( "[registry] RegOpenKeyExA(0x%llx, \"%s\") -> %u\n",
-                         hkey, subkey_a.c_str(), err);
+            VITREO_TRACE( "[registry] RegOpenKeyExA(0x%llx, \"%s\", sam=0x%x) -> %u handle=0x%llx\n",
+                         hkey, subkey_a.c_str(), sam, err,
+                         static_cast<unsigned long long>(result_handle));
             log_registry_open("RegOpenKeyExA", hkey, ansi_to_wide(subkey_a), err);
             m.set_return(err);
         },
@@ -336,8 +402,8 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
             if (err == ERROR_SUCCESS && disp_ptr != 0) {
                 (void)m.write_u32(disp_ptr, disposition);
             }
-            VITREO_TRACE( "[registry] RegCreateKeyExW(0x%llx, \"%ls\") -> %u handle=0x%llx disp=%u\n",
-                         (unsigned long long)hkey, subkey.c_str(), err,
+            VITREO_TRACE( "[registry] RegCreateKeyExW(0x%llx, \"%ls\", sam=0x%x) -> %u handle=0x%llx disp=%u\n",
+                         (unsigned long long)hkey, subkey.c_str(), static_cast<u32>(m.arg(5)), err,
                          (unsigned long long)result_handle, disposition);
             m.set_return(err);
         },
@@ -381,69 +447,7 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
     // -------------------------------------------------------------------------
     exports.entries.push_back(ExportEntry{
         "RegQueryValueExW", 4,
-        [&thunks](Marshaler& m) {
-            RegistryWindowTimer window_timer;
-            u64 hkey             = m.arg(0);
-            GuestAddr name_ptr   = m.arg_ptr(1);
-            // arg(2) = lpReserved, ignored
-            GuestAddr type_ptr   = m.arg_ptr(3);
-            GuestAddr data_ptr   = m.arg_ptr(4);
-            GuestAddr size_ptr   = m.arg_ptr(5);
-
-            std::wstring value_name = read_guest_wstring(m.memory(), name_ptr);
-
-            // Read current buffer size from guest
-            u32 buf_size = 0;
-            if (size_ptr != 0) {
-                auto sr = m.read_u32(size_ptr);
-                if (sr.is_ok()) buf_size = sr.value();
-            }
-
-            const bool data_requested = data_ptr != 0;
-
-            // Preserve the distinction between lpData == NULL (a size-only
-            // query) and lpData != NULL with a zero-byte buffer. The latter
-            // must reach the registry implementation as a provided buffer so
-            // it can return ERROR_MORE_DATA and the required size without
-            // dereferencing the guest pointer.
-            std::vector<u8> host_buf(
-                data_requested ? std::max<u32>(buf_size, 1u) : 0u);
-            u32 type_out = 0;
-            u32 data_size = buf_size;
-
-            u32 err = thunks.reg_query_value_ex_w(
-                hkey, value_name,
-                &type_out,
-                data_requested ? host_buf.data() : nullptr,
-                &data_size);
-
-            // Write back type
-            if (type_ptr != 0) {
-                (void)m.write_u32(type_ptr, type_out);
-            }
-
-            // Write back data — fail honestly if the guest buffer is not writable.
-            if (err == ERROR_SUCCESS && data_requested && data_size > 0) {
-                u32 copy_len = (data_size <= buf_size) ? data_size : buf_size;
-                if (m.memory().write_bytes(
-                        data_ptr,
-                        reinterpret_cast<const Byte*>(host_buf.data()),
-                        copy_len)
-                        .is_err()) {
-                    err = ERROR_NOACCESS;
-                }
-            }
-
-            // Write back size
-            if (size_ptr != 0) {
-                (void)m.write_u32(size_ptr, data_size);
-            }
-
-            VITREO_TRACE( "[registry] RegQueryValueExW(0x%llx, \"%ls\") -> err=%u type=%u size=%u\n",
-                         (unsigned long long)hkey, value_name.c_str(), err, type_out, data_size);
-            log_registry_query("RegQueryValueExW", hkey, value_name, err,
-                               type_out, data_size);
-            m.set_return(err);
+        [&thunks](Marshaler& m) { reg_query_value_ex(thunks, m, true);
         },
         24
     });
@@ -557,79 +561,7 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
     // -------------------------------------------------------------------------
     exports.entries.push_back(ExportEntry{
         "RegQueryValueExA", 5,
-        [&thunks](Marshaler& m) {
-            RegistryWindowTimer window_timer;
-            u64 hkey             = m.arg(0);
-            GuestAddr name_ptr   = m.arg_ptr(1);
-            GuestAddr type_ptr   = m.arg_ptr(3);
-            GuestAddr data_ptr   = m.arg_ptr(4);
-            GuestAddr size_ptr   = m.arg_ptr(5);
-
-            std::string value_name = read_guest_astring(m.memory(), name_ptr);
-
-            u32 buf_size = 0;
-            if (size_ptr != 0) {
-                auto sr = m.read_u32(size_ptr);
-                if (sr.is_ok()) buf_size = sr.value();
-            }
-
-            std::vector<u8> host_buf(buf_size);
-            u32 type_out = 0;
-            u32 data_size = buf_size;
-
-            constexpr GuestAddr kMinUserDataPtr = 0x10000;
-            const bool data_requested = data_ptr != 0;
-            if (data_requested && data_ptr < kMinUserDataPtr) {
-                log_registry_query("RegQueryValueExA", hkey,
-                                   ansi_to_wide(value_name),
-                                   ERROR_NOACCESS, 0, buf_size);
-                m.set_return(ERROR_NOACCESS);
-                return;
-            }
-
-            u32 err = thunks.reg_query_value_ex_a(
-                hkey, value_name,
-                &type_out,
-                data_requested ? host_buf.data() : nullptr,
-                &data_size);
-
-            if (value_name == "Debug Memory" || value_name == "Protect Memory") {
-                u32 dword = 0;
-                if (err == ERROR_SUCCESS && data_size >= 4 && data_requested) {
-                    std::memcpy(&dword, host_buf.data(), sizeof(dword));
-                }
-                std::fprintf(stderr,
-                    "[registry] RegQueryValueExA(\"%s\") -> err=%u type=%u "
-                    "size=%u dword=%u\n",
-                    value_name.c_str(), err, type_out, data_size, dword);
-            }
-
-            if (type_ptr != 0) {
-                (void)m.write_u32(type_ptr, type_out);
-            }
-            if (err == ERROR_SUCCESS && data_requested && data_size > 0) {
-                u32 copy_len = (data_size <= buf_size) ? data_size : buf_size;
-                if (m.memory().write_bytes(
-                        data_ptr,
-                        reinterpret_cast<const Byte*>(host_buf.data()),
-                        copy_len)
-                        .is_err()) {
-                    err = ERROR_NOACCESS;
-                }
-            }
-            if (size_ptr != 0) {
-                (void)m.write_u32(size_ptr, data_size);
-            }
-
-            VITREO_TRACE(
-                "[registry] RegQueryValueExA(0x%llx, \"%s\") -> "
-                "err=%u type=%u size=%u\n",
-                static_cast<unsigned long long>(hkey), value_name.c_str(),
-                err, type_out, data_size);
-            log_registry_query("RegQueryValueExA", hkey,
-                               ansi_to_wide(value_name), err, type_out,
-                               data_size);
-            m.set_return(err);
+        [&thunks](Marshaler& m) { reg_query_value_ex(thunks, m, false);
         },
         24
     });
@@ -745,7 +677,7 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
         "RegCloseKey", 8,
         [&thunks](Marshaler& m) {
             u64 hkey = m.arg(0);
-            u32 err = thunks.reg_close_key(hkey);
+            u32 err = thunks.reg_close_key(hkey, m.cpu_is_64bit());
             m.set_return(err);
         },
         4
@@ -897,8 +829,9 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
             if (err == ERROR_SUCCESS && disp_ptr != 0) {
                 (void)m.write_u32(disp_ptr, disposition);
             }
-            VITREO_TRACE( "[registry] RegCreateKeyExA(0x%llx, \"%s\") -> %u\n",
-                         hkey, subkey.c_str(), err);
+            VITREO_TRACE( "[registry] RegCreateKeyExA(0x%llx, \"%s\", sam=0x%x) -> %u handle=0x%llx\n",
+                         hkey, subkey.c_str(), static_cast<u32>(m.arg(5)), err,
+                         static_cast<unsigned long long>(result_handle));
             m.set_return(err);
         },
         36
@@ -1114,6 +1047,29 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
             m.set_return(thunks.reg_delete_tree(m.arg(0), subkey));
         },
         8
+    });
+
+    // SDK/export metadata and same-binary Windows oracle, both ABIs.
+    exports.entries.push_back(ExportEntry{
+        "RegRenameKey", reg_rename_contract::reg_rename_ordinal64,
+        [&thunks](Marshaler& m) {
+            std::wstring names[2];
+            for (u32 arg = 1; arg <= 2; ++arg) {
+                const GuestAddr address = m.arg_ptr(arg);
+                if (!address && arg == 2) { m.set_return(ERROR_INVALID_PARAMETER); return; }
+                if (!address) continue;
+                const usize limit = arg == 2 ? reg_rename_contract::max_new_name_utf16_units + 1 : 32768;
+                bool terminated = false;
+                for (usize i = 0; i <= limit; ++i) {
+                    auto ch = m.read_u16(address + i * 2);
+                    if (ch.is_err()) { m.set_return(ERROR_NOACCESS); return; }
+                    if (!ch.value()) { terminated = true; break; }
+                    names[arg - 1].push_back(static_cast<wchar_t>(ch.value()));
+                }
+                if (!terminated) { m.set_return(ERROR_INVALID_PARAMETER); return; }
+            }
+            m.set_return(thunks.reg_rename_key(m.arg(0), names[0], names[1]));
+        }, reg_rename_contract::reg_rename_stdcall_bytes
     });
 
     // LONG RegDisableReflectionKey(HKEY hBase)
@@ -1410,7 +1366,8 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
             u64 result_handle = 0;
             u32 disposition = 0;
             u32 err = thunks.reg_create_key_ex_w(hkey, subkey,
-                                                  &result_handle, &disposition);
+                                                  &result_handle, &disposition,
+                                                  reg_rename_contract::MAXIMUM_ALLOWED);
             if (err == ERROR_SUCCESS && result_ptr != 0) {
                 write_guest_hkey(m, result_ptr, result_handle);
             }
@@ -1443,7 +1400,8 @@ DllExports create_advapi32_registry_thunks(RegistryThunks& thunks) {
             u64 result_handle = 0;
             u32 disposition = 0;
             u32 err = thunks.reg_create_key_ex_w(hkey, subkey,
-                                                  &result_handle, &disposition);
+                                                  &result_handle, &disposition,
+                                                  reg_rename_contract::MAXIMUM_ALLOWED);
             if (err == ERROR_SUCCESS && result_ptr != 0) {
                 write_guest_hkey(m, result_ptr, result_handle);
             }

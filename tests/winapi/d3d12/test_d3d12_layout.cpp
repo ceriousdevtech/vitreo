@@ -535,6 +535,33 @@ TEST_F(D3D12LayoutTest, LearnRowSizeExample) {
     EXPECT_EQ(total, 7u * 256u + 128u);
 }
 
+TEST_F(D3D12LayoutTest, UnorderedAccessFlagFollowsTheMeasuredFamilies) {
+    // d3d12_a41_format_sweep [create], WARP and RTX 4080: ALLOW_UNORDERED_
+    // ACCESS on B8G8R8X8_UNORM (88) and _UNORM_SRGB (93) is E_INVALIDARG, as
+    // for any family without a typed UAV, but B8G8R8X8_TYPELESS (92) is S_OK.
+    // B8G8R8A8_UNORM (87) has a typed UAV.
+    LayoutCaps caps = warp_caps();
+    caps.format_support1 = [](u32 format) {
+        return format == 87u ? FORMAT_SUPPORT1_TYPED_UNORDERED_ACCESS_VIEW | 0x20u : 0x20u;
+    };
+    ResourceDesc d;
+    d.dimension = RESOURCE_DIMENSION_TEXTURE2D;
+    d.width = 4;
+    d.height = 4;
+    d.depth_or_array_size = 1;
+    d.mip_levels = 1;
+    d.sample_count = 1;
+    d.flags = RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+    for (const u32 format : {88u, 93u}) {
+        d.format = format;
+        EXPECT_NE(resource_desc_violation(d, caps), nullptr) << format;
+    }
+    for (const u32 format : {87u, 92u}) {
+        d.format = format;
+        EXPECT_EQ(resource_desc_violation(d, caps), nullptr) << format;
+    }
+}
+
 TEST_F(D3D12LayoutTest, TextureAllocationTakesTheBackendRequirement) {
     LayoutCaps caps = warp_caps();
     ResourceDesc d;
@@ -569,6 +596,24 @@ TEST_F(D3D12LayoutTest, TextureAllocationTakesTheBackendRequirement) {
     };
     info = resource_allocation_info(0, {d}, {}, caps, &per);
     EXPECT_EQ(info.size, ~0ull);
+    // F-CL-10: a backend alignment above 64 KiB keeps the D3D12 alignment
+    // (Learn D3D12_RESOURCE_ALLOCATION_INFO: 4 KB, 64 KB or 4 MB) and sizes
+    // a range with room for the backend offset to round up inside it.
+    d.alignment = 0;
+    caps.texture_heap_requirement = [](const ResourceDesc&, u32) {
+        return TextureHeapRequirement{true, 300000, 262144};
+    };
+    info = resource_allocation_info(0, {d}, {}, caps, &per);
+    EXPECT_EQ(info.alignment, DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT);
+    EXPECT_EQ(info.size, 524288u);  // 300000 + 196608 slack, to 64 KiB
+    for (u64 offset = 0; offset < 8 * 65536ull; offset += 65536) {
+        const u64 at = placed_backend_offset(offset, 262144);
+        EXPECT_EQ(at % 262144, 0u);
+        EXPECT_GE(at, offset);
+        EXPECT_LE(at + 300000, offset + info.size) << offset;
+    }
+    EXPECT_EQ(placed_backend_offset(196608, 16384), 196608u);
+    EXPECT_EQ(texture_placement_size(~0ull - 10, 262144, 65536), 0u);
 }
 
 /// The vtable entry points read the SDK signature on each bitness: x64

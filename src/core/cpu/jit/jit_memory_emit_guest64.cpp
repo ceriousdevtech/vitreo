@@ -168,7 +168,10 @@ void JitCompiler::emit_linear64_load(u8 dst_arm_reg, u8 addr_arm_reg,
                          : (width == 4) ? JIT_CTX_OFF_READ32
                                         : JIT_CTX_OFF_READ64;
 
-    const bool access_proven = m_stack_entry_load_proof;
+    const bool access_proven = m_stack_entry_load_proof ||
+        (m_span_stack_proof && m_current_insn_index < 256 &&
+         (m_span_stack_load_bits[m_current_insn_index >> 6] &
+          (u64{1} << (m_current_insn_index & 63))) != 0);
 
     // Every inline path below is NZCV-clean; only the cold stub's helper call
     // destroys the flags, so the stub saves them when guest flags are live

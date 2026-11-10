@@ -47,6 +47,20 @@ bool Translator::parse_instruction(bool& finished) {
         m_position += length;
         return true;
     }
+    if (opcode == OPCODE_PHASE) {
+        // Learn "phase - ps": ps_1_4 only; it splits the shader into the
+        // phase 1 and phase 2 instruction groups, which execute in order.
+        // Temporary-register alpha does not persist across it and must be
+        // rewritten before it is read, so leaving it untouched is a valid
+        // realisation of that undefined value.
+        if (m_result.stage == ShaderStage::Vertex || m_result.major != 1 ||
+            m_result.minor != 4) {
+            return fail("the phase instruction outside ps_1_4");
+        }
+        return true;
+    }
+    if (m_result.stage == ShaderStage::Fragment && opcode == OP_DEF &&
+        (token & PREDICATED_BIT) != 0) return fail("predicated pixel DEF");
     if ((token & PREDICATED_BIT) != 0) {
         // Predicated instructions carry one extra source (the predicate)
         // after the normal operands. Parse the instruction into a side
@@ -154,14 +168,15 @@ Sm3Shader Translator::run() {
 } // namespace sm3_msl_detail
 
 Sm3Shader translate_sm3_to_msl(const u32* tokens, usize token_count,
-                               const u32* stage_ttf, usize stage_ttf_count) {
+                               const u32* stage_ttf, usize stage_ttf_count,
+                               const u8* stage_dims) {
     if (tokens == nullptr || token_count == 0) {
         Sm3Shader result;
         result.failure = "an empty token stream";
         return result;
     }
     sm3_msl_detail::Translator translator(tokens, token_count, stage_ttf,
-                                          stage_ttf_count);
+                                          stage_ttf_count, stage_dims);
     return translator.run();
 }
 

@@ -61,7 +61,9 @@ bool Translator::source_expression(const Parameter& p, u32 mask,
             // Relative constant indexing: c[a0.x + n] or c[aL + n] inside
             // loop…endloop (Learn: Address Register). Out-of-range reads
             // return (0,0,0,0), not the last in-range slot.
-            const u32 model_max = m_result.major >= 2 ? 256u : 96u;
+            // All supported VS versions use the advertised MaxVertexShaderConst
+            // (d3d9_defaults.cpp), not the VS1.1 minimum capability of 96.
+            const u32 model_max = SM3_MAX_FLOAT_CONSTANT_REGISTERS;
             if (m_result.float_constant_count < model_max) {
                 m_result.float_constant_count = model_max;
             }
@@ -71,16 +73,16 @@ bool Translator::source_expression(const Parameter& p, u32 mask,
                 if (!enclosing_loop_counter()) {
                     return fail("aL relative addressing outside a loop");
                 }
-                index_expr = "aL + " + std::to_string(static_cast<int>(index));
+                index_expr = "aL";
             } else {
                 m_address_register_used = true;
                 static constexpr char kComp[] = {'x', 'y', 'z', 'w'};
                 const char comp =
                     kComp[p.relative_component < 4 ? p.relative_component : 0];
-                index_expr = "a0." + std::string(1, comp) + " + " +
-                             std::to_string(static_cast<int>(index));
+                index_expr = "a0." + std::string(1, comp);
             }
-            base = "sm3_c(cb, " + index_expr + ")";
+            base = index == 0u ? "sm3_c(cb, " + index_expr + " + 0)"
+                : "sm3_c(cb, " + index_expr + ", " + std::to_string(index) + ")";
             break;
         }
         const auto defined = m_defined_constants.find(index);

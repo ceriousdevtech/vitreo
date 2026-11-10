@@ -18,7 +18,14 @@
 /// (`VITREO_INPUT_LATENCY_TRACE=1`) because a mouse-move flood writing a line
 /// each is exactly the kind of probe that slows the guest enough to hide the
 /// thing being measured — the tooltip stall was invisible under VITREO_TRACE
-/// for that reason. The summary path costs two clock reads and an array append.
+/// for that reason. The summary path stores samples without per-message output.
+///
+/// `VITREO_INPUT_LATENCY_ALL=1` also accounts for posted/system messages,
+/// without treating them as input actions. With TRACE enabled, non-input
+/// messages emit individual lines only for queue, dispatch, or paired total
+/// delays of 100 ms or more. These lines are flushed immediately so child teardown
+/// cannot discard them. Delivery lines include CLOCK_MONOTONIC timestamps and
+/// native thread IDs.
 ///
 /// The peek→dispatch handoff cannot ride on MSG: DispatchMessage reads the MSG
 /// back out of guest memory, and MSG::host_post_ns is host-side only. The
@@ -56,8 +63,8 @@ void note_action_event() noexcept;
 /// and it is exactly where a pump interval lands.
 void note_event_age(u64 age_ns) noexcept;
 
-/// True for the messages this probe accounts: keyboard (WM_KEYFIRST..
-/// WM_KEYLAST) and mouse (WM_MOUSEFIRST..WM_MOUSELAST).
+/// True only for keyboard (WM_KEYFIRST..WM_KEYLAST) and mouse
+/// (WM_MOUSEFIRST..WM_MOUSELAST) messages, including in ALL mode.
 [[nodiscard]] bool is_input_message(u32 message) noexcept;
 
 /// A PeekMessage/GetMessage removed `msg` from the queue. Records the queue

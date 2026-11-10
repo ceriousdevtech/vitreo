@@ -1072,6 +1072,51 @@ TEST_F(User32CpuzTest, SystemParametersInfoA_ReturnsTrue) {
     EXPECT_EQ(static_cast<u32>(cpu.gpr.rax), 1u);
 }
 
+// tests/oracle_data/spi_set_value_probe.x86.expected (interactive session):
+// the UI-effect setters take the BOOL in pvParam itself, any non-zero is TRUE
+// and stored as 1, a non-zero uiParam is ERROR_INVALID_PARAMETER; mouse
+// trails take the count in uiParam, 0 and 1 storing 0.
+TEST_F(User32CpuzTest, SystemParametersInfoSettersStoreWhatTheGettersReturn) {
+    constexpr GuestAddr out = DATA_BASE + 0x600;
+    auto spi = [&](u32 action, u32 ui, u32 pv) {
+        push_arg(0, action);
+        push_arg(1, ui);
+        push_arg(2, pv);
+        push_arg(3, 0);
+        mgr.impl_SystemParametersInfoW(marshaler);
+        return static_cast<u32>(cpu.gpr.rax);
+    };
+    auto get = [&](u32 action) {
+        (void)memory.write_u32(out, 0xCCCCCCCCu);
+        EXPECT_EQ(spi(action, 0, static_cast<u32>(out)), 1u);
+        return memory.read_u32(out).value();
+    };
+    for (const auto [get_action, set_action] : {std::pair<u32, u32>{0x101A, 0x101B}, {0x101C, 0x101D}}) {
+        SCOPED_TRACE(set_action);
+        EXPECT_EQ(spi(set_action, 0, 0), 1u);
+        EXPECT_EQ(get(get_action), 0u);
+        EXPECT_EQ(spi(set_action, 0, 1), 1u);
+        EXPECT_EQ(get(get_action), 1u);
+        EXPECT_EQ(spi(set_action, 0, 0), 1u);
+        EXPECT_EQ(spi(set_action, 0, static_cast<u32>(out)), 1u);  // a pointer is a non-zero value
+        EXPECT_EQ(get(get_action), 1u);
+        EXPECT_EQ(spi(set_action, 0, 2), 1u);
+        EXPECT_EQ(get(get_action), 1u);
+        set_last_error(0);
+        EXPECT_EQ(spi(set_action, 1, 0), 0u);
+        EXPECT_EQ(get_last_error(), error_codes::ERROR_INVALID_PARAMETER);
+        EXPECT_EQ(get(get_action), 1u);  // unchanged
+    }
+    EXPECT_EQ(spi(0x5D, 3, 0), 1u);
+    EXPECT_EQ(get(0x5E), 3u);
+    EXPECT_EQ(spi(0x5D, 1, 0), 1u);
+    EXPECT_EQ(get(0x5E), 0u);
+    EXPECT_EQ(spi(0x5D, 7, 1), 1u);
+    EXPECT_EQ(get(0x5E), 7u);
+    EXPECT_EQ(spi(0x5D, 0, 0), 1u);
+    EXPECT_EQ(get(0x5E), 0u);
+}
+
 TEST_F(User32CpuzTest, SystemParametersInfoWReturnsMouseWheelRouting) {
     constexpr GuestAddr routing = DATA_BASE + 0x600;
     ASSERT_TRUE(memory.write_u32(routing, 0xDEADBEEFu).is_ok());

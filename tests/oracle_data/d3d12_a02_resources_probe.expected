@@ -129,6 +129,15 @@ buffers riid=Fence: 0x80004002 E_NOINTERFACE out=NULL
 buffers ppvResource=NULL: 0x00000001 S_FALSE
 buffers ppvResource=NULL with bad state: 0x00000001 S_FALSE
 buffers end: GetDeviceRemovedReason 0x00000000 S_OK
+bc_unaligned BC1 6x6 mips=3: obj
+bc_unaligned BC1 6x6 mip 0 upload+readback: write=1 read=1 rows=2 row=16 same=1
+bc_unaligned BC1 6x6 mip 1 upload+readback: write=1 read=1 rows=1 row=8 same=1
+bc_unaligned BC1 6x6 mip 2 upload+readback: write=1 read=1 rows=1 row=8 same=1
+bc_unaligned BC7 6x6 mips=3: obj
+bc_unaligned BC7 6x6 mip 0 upload+readback: write=1 read=1 rows=2 row=32 same=1
+bc_unaligned BC7 6x6 mip 1 upload+readback: write=1 read=1 rows=1 row=16 same=1
+bc_unaligned BC7 6x6 mip 2 upload+readback: write=1 read=1 rows=1 row=16 same=1
+bc_unaligned end: GetDeviceRemovedReason 0x00000000 S_OK
 textures 2D 16x16 RGBA8: 0x00000000 S_OK out=obj desc-after: dim=3 align=65536 w=16 h=16 da=1 mips=1 fmt=RGBA8 ms=1/0 layout=0 flags=0x0
 textures 2D width=0: 0x80070057 E_INVALIDARG out=NULL
 textures 2D height=0: 0x80070057 E_INVALIDARG out=NULL
@@ -530,7 +539,7 @@ map UPLOAD -> READBACK copy of written bytes: 11223344 00000000
 map persistently mapped write seen by GPU copy: a7
 map CUSTOM WRITE_BACK buffer Map: 0x00000000 S_OK ptr=set
 map CUSTOM WRITE_BACK 8x8 texture: 0x00000000 S_OK
-map texture Map(0, NULL, &p): 0x80070057 E_INVALIDARG ptr=NULL
+map texture Map(0, NULL, &p): 0x00000000 S_OK ptr=set
 map WriteToSubresource before Map: 0x00000000 S_OK
 map texture Map(0, NULL, NULL): 0x00000000 S_OK
 map WriteToSubresource(sub 0, whole): 0x00000000 S_OK

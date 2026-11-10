@@ -3,6 +3,7 @@
 /// @file sync_wait_profile.cpp
 /// @brief Sync wait profiling and causal-trace context helpers.
 
+#include <pthread.h>
 #include "sync_internal.hpp"
 #include "winapi/core/marshaler.hpp"
 
@@ -66,6 +67,29 @@ SyncTraceContext make_sync_trace_context(
         frame_pointer = next.value();
     }
     return trace;
+}
+
+void log_long_wait(const char* api, u64 handle, u32 timeout_ms, u64 blocked_ns,
+                   u64 caller) {
+    static const u64 threshold_ns = [] {
+        const char* e = std::getenv("VITREO_LONG_WAITS");
+        if (e == nullptr) return ~u64{0};
+        const long ms = std::strtol(e, nullptr, 10);
+        return static_cast<u64>(ms > 1 ? ms : 20) * 1'000'000ULL;
+    }();
+    if (blocked_ns < threshold_ns) return;
+    static const auto start = std::chrono::steady_clock::now();
+    const double at = std::chrono::duration<double>(
+        std::chrono::steady_clock::now() - start).count();
+    u64 tid = 0;
+    pthread_threadid_np(nullptr, &tid);
+    std::fprintf(stderr,
+                 "[long-wait] t=%.3f tid=%llu %s handle=0x%llx timeout=%u "
+                 "blocked=%.1fms caller=0x%llx\n",
+                 at, static_cast<unsigned long long>(tid), api,
+                 static_cast<unsigned long long>(handle), timeout_ms,
+                 static_cast<double>(blocked_ns) / 1e6,
+                 static_cast<unsigned long long>(caller));
 }
 
 // =============================================================================

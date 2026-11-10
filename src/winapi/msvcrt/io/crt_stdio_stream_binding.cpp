@@ -152,16 +152,20 @@ i32 stdio_bind_stream_descriptor(capsule::Vfs& vfs, CrtMemoryManager& memory_man
 
     if (file.layout ==
         crt_stdio_buffer::Layout::LegacyIobuf32) {
+        // feof/ferror are _flag macros in the headers such images use.
+        file.status_memory = &m.memory();
         if (m.cpu_is_64bit()) {
             // x64 struct _iobuf: _flag at +24, _file at +28.
             (void)m.write_u32(stream + CrtDataBlock::LEGACY64_FLAG_OFFSET,
                               IOREAD | IOWRT);
+            file.status_flag = stream + CrtDataBlock::LEGACY64_FLAG_OFFSET;
             (void)m.write_u32(stream + CrtDataBlock::LEGACY64_FILE_OFFSET,
                               static_cast<u32>(fd));
         } else {
             const auto public_cells = crt_stdio_buffer::cells(file.layout);
             (void)m.write_u32(
                 stream + public_cells.flag, IOREAD | IOWRT);
+            file.status_flag = stream + public_cells.flag;
             (void)m.write_u32(
                 stream + public_cells.file, static_cast<u32>(fd));
         }

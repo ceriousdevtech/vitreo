@@ -24,6 +24,18 @@
 #include <cstring>
 
 namespace vitreo::winapi::d3d12 {
+
+/// Tile indexes GetResourceTiling reports (d3d12_queue.cpp). CopyTiles uses
+/// the same space as UpdateTileMappings, standard mips then each slice's
+/// packed tail.
+[[nodiscard]] bool guest_tile_region(const Resource& resource, u32 x, u32 y, u32 z,
+                                     u32 subresource, u32 num_tiles, bool use_box,
+                                     u32 width, u32 height, u32 depth, bool strict,
+                                     std::vector<u32>& out);
+[[nodiscard]] bool guest_copy_tile(const Resource& resource, u32 index, u32& level,
+                                   u32& slice, u32& texel_x, u32& texel_y,
+                                   u32& tile_width, u32& tile_height);
+
 namespace {
 
 [[nodiscard]] bool list_type_supported(u32 type) {
@@ -130,6 +142,8 @@ const char* transition_violation(const Resource& r, u32 subresource, u32 before,
         return type == D3D12_QUERY_TYPE_TIMESTAMP;
     case D3D12_QUERY_HEAP_TYPE_PIPELINE_STATISTICS:
         return type == D3D12_QUERY_TYPE_PIPELINE_STATISTICS;
+    case D3D12_QUERY_HEAP_TYPE_PIPELINE_STATISTICS1:
+        return type == D3D12_QUERY_TYPE_PIPELINE_STATISTICS1;
     case D3D12_QUERY_HEAP_TYPE_SO_STATISTICS:
         return type >= D3D12_QUERY_TYPE_SO_STATISTICS_STREAM0 &&
                type <= D3D12_QUERY_TYPE_SO_STATISTICS_STREAM3;
@@ -140,15 +154,198 @@ const char* transition_violation(const Resource& r, u32 subresource, u32 before,
 
 /// Bytes ResolveQueryData writes per query (d3d12.h: UINT64 for
 /// occlusion and timestamps, D3D12_QUERY_DATA_PIPELINE_STATISTICS 11 x
-/// UINT64, D3D12_QUERY_DATA_SO_STATISTICS 2 x UINT64).
+/// UINT64, D3D12_QUERY_DATA_PIPELINE_STATISTICS1 14 x UINT64,
+/// D3D12_QUERY_DATA_SO_STATISTICS 2 x UINT64).
 [[nodiscard]] u64 query_result_bytes(u32 type) {
     switch (type) {
     case D3D12_QUERY_TYPE_PIPELINE_STATISTICS: return 88;
+    case D3D12_QUERY_TYPE_PIPELINE_STATISTICS1: return 112;
     case D3D12_QUERY_TYPE_SO_STATISTICS_STREAM0:
     case D3D12_QUERY_TYPE_SO_STATISTICS_STREAM1:
     case D3D12_QUERY_TYPE_SO_STATISTICS_STREAM2:
     case D3D12_QUERY_TYPE_SO_STATISTICS_STREAM3: return 16;
     default: return 8;
+    }
+}
+
+// CopyTiles region walk. The coordinate and region structs are 16 bytes on
+// x86 and x64 (d3d12.h), the same layout UpdateTileMappings reads. Indexes
+// are the ones GetResourceTiling reports; packed ones are refused. A tile
+// outside its subresource is refused.
+struct TileCoordinate {
+    u32 x{0};
+    u32 y{0};
+    u32 z{0};
+    u32 subresource{0};
+};
+
+struct TileRegion {
+    u32 num_tiles{0};
+    bool use_box{false};
+    u32 width{0};
+    u32 height{0};
+    u32 depth{0};
+};
+
+bool read_tile_coordinate(GuestMemory& memory, GuestAddr address,
+                          TileCoordinate& out) {
+    std::array<u32, 4> words{};
+    for (usize i = 0; i < words.size(); ++i) {
+        const auto value = memory.read_u32(address + i * 4u);
+        if (value.is_err()) return false;
+        words[i] = value.value();
+    }
+    out = {words[0], words[1], words[2], words[3]};
+    return true;
+}
+
+bool read_tile_region(GuestMemory& memory, GuestAddr address, TileRegion& out) {
+    const auto tiles = memory.read_u32(address);
+    const auto box = memory.read_u32(address + 4);
+    const auto width = memory.read_u32(address + 8);
+    const auto extents = memory.read_u32(address + 12);
+    if (tiles.is_err() || box.is_err() || width.is_err() || extents.is_err()) {
+        return false;
+    }
+    out.num_tiles = tiles.value();
+    out.use_box = box.value() != 0;
+    out.width = width.value();
+    out.height = extents.value() & 0xFFFFu;
+    out.depth = extents.value() >> 16;
+    return true;
+}
+
+/// The linear-layout box of one mapped tile (Learn, CopyTiles remarks).
+/// False sets @p why to the UNIMPLEMENTED case.
+bool describe_copy_tile(const Resource& resource, u32 index, u64 buffer_offset,
+                        cmd::CopyTile& out, const char*& why) {
+    const ReservedTiles& tiles = *resource.tiles;
+    out = {};
+    out.index = index;
+    out.buffer_offset = buffer_offset;
+    if (tiles.buffer) {
+        const u64 begin = static_cast<u64>(index) * graphics::BACKEND_TILE_BYTES;
+        if (begin >= resource.desc.width) {
+            why = "tile the backend cannot copy";
+            return false;
+        }
+        out.tiled_offset = begin;
+        out.bytes = std::min(graphics::BACKEND_TILE_BYTES, resource.desc.width - begin);
+        return out.bytes != 0;
+    }
+    u32 level = 0;
+    u32 slice = 0;
+    u32 x = 0;
+    u32 y = 0;
+    u32 tile_w = 0;
+    u32 tile_h = 0;
+    // A standard mip's tile (the caller refused packed ones). A tile at the
+    // edge of a mip smaller than the tile is its clipped linear box.
+    if (!guest_copy_tile(resource, index, level, slice, x, y, tile_w, tile_h)) {
+        why = "tile the backend cannot copy";
+        return false;
+    }
+    if (resource.texture == nullptr) {
+        why = "tile the backend cannot copy";
+        return false;
+    }
+    const graphics::BackendTexture2DDesc& desc = resource.texture->desc();
+    const graphics::FormatInfo format = graphics::format_table(desc.pixel_format);
+    const u32 samples = std::max(1u, desc.sample_count);
+    if (level >= desc.mip_levels || level >= 31 ||
+        slice >= std::max(1u, desc.array_size) ||
+        (format.is_compressed && samples != 1)) {
+        why = "tile the backend cannot copy";
+        return false;
+    }
+    const u32 level_w = std::max(1u, desc.width >> level);
+    const u32 level_h = std::max(1u, desc.height >> level);
+    if (x >= level_w || y >= level_h || tile_w == 0 || tile_h == 0) {
+        why = "tile the backend cannot copy";
+        return false;
+    }
+    out.texture = true;
+    out.level = level;
+    out.slice = slice;
+    out.x = x;
+    out.y = y;
+    out.width = std::min(tile_w, level_w - x);
+    out.height = std::min(tile_h, level_h - y);
+    if (format.is_compressed) {
+        const u64 block = graphics::compressed_block_bytes(desc.pixel_format);
+        if (block == 0 || tile_w % 4u != 0 || tile_h % 4u != 0) {
+            why = "tile the backend cannot copy";
+            return false;
+        }
+        out.row_pitch = (static_cast<u64>(tile_w) / 4u) * block;
+    } else {
+        // A multisampled pixel is its samples in index order (Learn).
+        const u64 pixel = static_cast<u64>(format.bytes_per_pixel) * samples;
+        if (pixel == 0) {
+            why = "tile the backend cannot copy";
+            return false;
+        }
+        out.row_pitch = static_cast<u64>(tile_w) * pixel;
+    }
+    if (out.row_pitch == 0 || out.width == 0 || out.height == 0) {
+        why = "tile the backend cannot copy";
+        return false;
+    }
+    return true;
+}
+
+/// Which planes a depth-stencil view format actually stores. A depth-only
+/// view (D32_FLOAT, D16_UNORM) has no stencil plane, so a stencil
+/// NO_ACCESS beside it is not a separate bind.
+struct DepthStencilPlanes {
+    bool depth{true};
+    bool stencil{false};
+};
+
+[[nodiscard]] DepthStencilPlanes depth_stencil_planes(u32 format) {
+    switch (format) {
+    case DXGI_FORMAT_D24_UNORM_S8_UINT:
+    case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
+    case DXGI_FORMAT_R24G8_TYPELESS:
+    case DXGI_FORMAT_R32G8X24_TYPELESS:
+        return {true, true};
+    case DXGI_FORMAT_X24_TYPELESS_G8_UINT:
+    case DXGI_FORMAT_X32_TYPELESS_G8X24_UINT:
+        return {false, true};
+    default:
+        return {true, false};
+    }
+}
+
+/// DirectX-Specs "Render Passes", the disallowed-API list. Calling one
+/// inside BeginRenderPass removes the command list.
+[[nodiscard]] bool forbidden_during_render_pass(usize slot) {
+    using S = GraphicsCommandListSlot;
+    switch (slot) {
+    case S::ClearState:
+    case S::Dispatch:
+    case S::CopyBufferRegion:
+    case S::CopyTextureRegion:
+    case S::CopyResource:
+    case S::CopyTiles:
+    case S::ResolveSubresource:
+    case S::OMSetRenderTargets:
+    case S::ClearDepthStencilView:
+    case S::ClearRenderTargetView:
+    case S::ClearUnorderedAccessViewUint:
+    case S::ClearUnorderedAccessViewFloat:
+    case S::DiscardResource:
+    case S::ResolveQueryData:
+    case S::AtomicCopyBufferUINT:
+    case S::AtomicCopyBufferUINT64:
+    case S::ResolveSubresourceRegion:
+    case S::SetProtectedResourceSession:
+    case S::DispatchRays:
+    case S::DispatchMesh:
+    case S::DispatchGraph:
+        return true;
+    default:
+        return false;
     }
 }
 
@@ -333,8 +530,14 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
         list.closed = true;
         if (auto* allocator =
                 find<CommandAllocator>(list.allocator, Kind::CommandAllocator);
-            allocator != nullptr && allocator->recording_lists > 0) {
-            --allocator->recording_lists;
+            allocator != nullptr) {
+            // Under the shared lock: another list's Reset may claim the
+            // allocator as soon as this releases it.
+            u32 claimed = allocator->recording_lists.load();
+            while (claimed > 0 &&
+                   !allocator->recording_lists.compare_exchange_weak(claimed,
+                                                                     claimed - 1)) {
+            }
         }
         m.set_return(list.record_error != 0 ? list.record_error : S_OK);
         return;
@@ -372,6 +575,13 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
             }
             initial_serial = pso->serial;
         }
+        // Claim the allocator (under the shared lock another list's Reset
+        // may race for it: one wins, the other is E_INVALIDARG as above).
+        u32 unclaimed = 0;
+        if (!allocator->recording_lists.compare_exchange_strong(unclaimed, 1)) {
+            m.set_return(E_INVALIDARG);
+            return;
+        }
         // A fresh recording: an execution still waiting holds the old one.
         list.recording = std::make_shared<Recording>();
         list.recording->type = list.type;
@@ -380,11 +590,16 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
         list.allocator = allocator->address;
         list.closed = false;
         list.in_render_pass = false;
+        list.render_pass_suspending = false;
+        list.render_pass_allow_uav = false;
+        list.render_pass_surfaces.clear();
+        list.render_pass_suspend_open = false;
+        list.render_pass_suspend_uav = false;
+        list.render_pass_suspend_surfaces.clear();
         list.render_pass_resolves.clear();
         list.open_queries.clear();
         list.heaps = {};
         list.heaps_set = false;
-        ++allocator->recording_lists;
         m.set_return(S_OK);
         return;
     }
@@ -416,6 +631,13 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
         serial = resource != nullptr ? resource->serial : 0;
         return resource;
     };
+    // Learn (Close): E_FAIL when an invalid API was called during recording.
+    // DirectX-Specs "Render Passes" lists the calls the runtime removes the
+    // list for. BeginRenderPass's own nesting check keeps its message.
+    if (list.in_render_pass && forbidden_during_render_pass(slot)) {
+        record_error(list, E_FAIL, name, "not allowed during a render pass");
+        return;
+    }
 
     switch (slot) {
     case S::ClearState: {
@@ -488,7 +710,10 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
                 return false;
             }
             u64 serial = 0;
-            if (resource_ref(resource, serial) == nullptr) return false;
+            const Resource* r = resource_ref(resource, serial);
+            // DirectX-Specs "Sampler Feedback": "Copying feedback maps
+            // using CopyTextureRegion is not supported."
+            if (r == nullptr || r->feedback_map) return false;
             out.resource = resource;
             out.serial = serial;
             out.type = read_u32(at + l.Type);
@@ -539,7 +764,15 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
             d->desc.height != s->desc.height ||
             d->desc.depth_or_array_size != s->desc.depth_or_array_size ||
             d->desc.mip_levels != s->desc.mip_levels ||
-            d->desc.sample_count != s->desc.sample_count) {
+            d->desc.sample_count != s->desc.sample_count ||
+            // DirectX-Specs "Sampler Feedback": "Applications can copy
+            // feedback maps using CopyResource" -- between maps of one
+            // format and mip region.
+            d->feedback_map != s->feedback_map ||
+            (d->feedback_map &&
+             (d->desc.format != s->desc.format ||
+              d->desc.mip_region[0] != s->desc.mip_region[0] ||
+              d->desc.mip_region[1] != s->desc.mip_region[1]))) {
             record_error(list, E_INVALIDARG, name, "incompatible resources");
             return;
         }
@@ -647,9 +880,10 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
     case S::ResourceBarrier: {
         // ResourceBarrier(UINT NumBarriers, const D3D12_RESOURCE_BARRIER *).
         // The backend orders every read after every write it tracks (Metal's
-        // hazard tracking, tracked heaps included), which covers what a
-        // transition, aliasing and UAV barrier each promise. What remains is
-        // the runtime's validation of the description.
+        // hazard tracking, tracked heaps included). Attachment transitions
+        // and alias activation must also end a kept-open render pass: heap
+        // tracking between encoders cannot store its pending tile contents.
+        // Validate every description before recording the boundary.
         if (!require(!bundle)) return;
         const u32 count = m.arg32(1);
         const GuestAddr at = m.arg_ptr(2);
@@ -659,6 +893,9 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
         }
         const auto& l = layout::D3D12_RESOURCE_BARRIER[m_is_64bit];
         bool uav = false;
+        bool attachments = false;
+        bool full_attachment_scope = false;
+        std::vector<std::weak_ptr<graphics::BackendTexture2D>> attachment_textures;
         for (u32 index = 0; index < count; ++index) {
             const GuestAddr b = at + index * l.size;
             const u32 type = read_u32(b + l.Type);
@@ -688,6 +925,23 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
                     record_error(list, E_INVALIDARG, name, why);
                     return;
                 }
+                // A render target or depth buffer leaving its write state:
+                // what was rendered must be in the texture for what reads
+                // it next (a sampled view, perhaps through a heap window,
+                // or a read-only depth-stencil view of the same texture).
+                // A BEGIN_ONLY half orders nothing yet (Learn, split
+                // barriers); the END_ONLY half or a whole one does.
+                constexpr u32 kAttachmentWrites =
+                    D3D12_RESOURCE_STATE_RENDER_TARGET |
+                    D3D12_RESOURCE_STATE_DEPTH_WRITE;
+                if ((before & kAttachmentWrites) != 0 && after != before &&
+                    flags != D3D12_RESOURCE_BARRIER_FLAG_BEGIN_ONLY) {
+                    attachments = true;
+                    if ((r->committed || r->placed) && !r->reserved && r->texture)
+                        attachment_textures.emplace_back(r->texture);
+                    else
+                        full_attachment_scope = true;
+                }
             } else if (type == D3D12_RESOURCE_BARRIER_TYPE_UAV) {
                 // Learn (D3D12_RESOURCE_UAV_BARRIER): NULL for every UAV
                 // access, else a resource that can be one (measured, a04
@@ -709,24 +963,44 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
                 // Learn (D3D12_RESOURCE_ALIASING_BARRIER): placed or reserved
                 // resources, or NULL (measured, a04 close_rules "aliasing
                 // barrier committed/NULL").
+                bool known_alias_scope = true;
+                std::vector<std::weak_ptr<graphics::BackendTexture2D>> alias_textures;
                 for (const u32 offset : {l.Aliasing_pResourceBefore,
                                          l.Aliasing_pResourceAfter}) {
                     GuestAddr address = 0;
                     (void)read_pointer(b + offset, address);
-                    if (address == 0) continue;
+                    if (address == 0) {
+                        known_alias_scope = false;
+                        continue;
+                    }
                     const Resource* r = find<Resource>(address, Kind::Resource);
                     if (r == nullptr || r->committed) {
                         record_error(list, E_INVALIDARG, name,
                                      "aliasing barrier on a committed resource");
                         return;
                     }
+                    if (r->placed && !r->reserved && r->texture)
+                        alias_textures.emplace_back(r->texture);
+                    else
+                        known_alias_scope = false;
                 }
+                // NULL/unknown endpoints are wildcard boundaries. For two
+                // known placed textures, order the union of BOTH allocation
+                // ranges; different native roots alone do not prove safety.
+                attachments = true;
+                if (known_alias_scope)
+                    attachment_textures.insert(attachment_textures.end(),
+                                               alias_textures.begin(), alias_textures.end());
+                else
+                    full_attachment_scope = true;
             } else {
                 record_error(list, E_INVALIDARG, name, "invalid barrier type");
                 return;
             }
         }
-        if (count != 0) rec.commands.emplace_back(cmd::Barrier{uav});
+        if (full_attachment_scope) attachment_textures.clear();
+        if (count != 0)
+            rec.commands.emplace_back(cmd::Barrier{uav, attachments, std::move(attachment_textures)});
         return;
     }
     case S::ExecuteBundle: {
@@ -909,10 +1183,81 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
         return;
     }
     case S::SOSetTargets: {
-        // No pipeline state with stream output can be created
-        // (CreateGraphicsPipelineState refuses one), so targets set here are
-        // never written; binding them has no other effect.
+        // SOSetTargets(UINT StartSlot, UINT NumViews,
+        //     const D3D12_STREAM_OUTPUT_BUFFER_VIEW *pViews).
+        // Learn (D3D12_STREAM_OUTPUT_BUFFER_VIEW): BufferFilledSizeLocation
+        // is the GPU virtual address of a 32-bit byte count. It is not used
+        // when SizeInBytes is 0. A null view list unbinds from StartSlot.
+        // The debug layer (Learn, "Stream Output Counters") requires the
+        // filled-size offset to be a multiple of 4 and to lie in a buffer.
         if (!require(!bundle && !compute && !copy)) return;
+        const u32 start = m.arg32(1);
+        const u32 count = m.arg32(2);
+        const GuestAddr views = m.arg_ptr(3);
+        if (count > D3D12_SO_BUFFER_SLOT_COUNT ||
+            static_cast<u64>(start) + count > D3D12_SO_BUFFER_SLOT_COUNT) {
+            record_error(list, E_INVALIDARG, name, "stream-output slot");
+            return;
+        }
+        const auto in_buffer = [&](u64 va, u64 bytes) {
+            if (bytes == 0 || va > ~u64{0} - (bytes - 1)) return false;
+            for (const auto& [address, object] : m_objects) {
+                (void)address;
+                if (object->kind != Kind::Resource) continue;
+                const auto& resource = static_cast<const Resource&>(*object);
+                if (!resource.is_buffer() || resource.buffer() == nullptr) {
+                    continue;
+                }
+                const u64 base = resource.gpu_va();
+                const u64 width = resource.reserved_va
+                                      ? resource.reserved_va->resource_bytes
+                                      : resource.desc.width;
+                if (base == 0 || va < base || va - base > width ||
+                    bytes > width - (va - base)) {
+                    continue;
+                }
+                return true;
+            }
+            return false;
+        };
+        cmd::SetStreamOutput set{start, {}};
+        const auto& view_layout =
+            layout::D3D12_STREAM_OUTPUT_BUFFER_VIEW[m_is_64bit];
+        for (u32 index = 0; index < count; ++index) {
+            cmd::SetStreamOutput::View view{};
+            if (views != 0) {
+                const GuestAddr at = views + index * view_layout.size;
+                const u64 location = read_u64(at + view_layout.BufferLocation);
+                const u64 size = read_u64(at + view_layout.SizeInBytes);
+                const u64 filled =
+                    read_u64(at + view_layout.BufferFilledSizeLocation);
+                if (size != 0) {
+                    if ((location & 3u) != 0 || (filled & 3u) != 0) {
+                        record_error(list, E_INVALIDARG, name,
+                                     "stream-output location is not 4-byte "
+                                     "aligned");
+                        return;
+                    }
+                    if (!in_buffer(location, size)) {
+                        record_error(list, E_INVALIDARG, name,
+                                     "stream-output buffer is not a buffer");
+                        return;
+                    }
+                    if (filled == 0 || !in_buffer(filled, 4)) {
+                        record_error(list, E_INVALIDARG, name,
+                                     "BufferFilledSizeLocation is not in a "
+                                     "buffer");
+                        return;
+                    }
+                    view.bound = true;
+                    view.data_va = location;
+                    view.size = size;
+                    view.filled_va = filled;
+                }
+            }
+            set.views.push_back(view);
+        }
+        rec.commands.emplace_back(std::move(set));
         return;
     }
     case S::OMSetRenderTargets: {
@@ -1165,15 +1510,6 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
             record_error(list, E_INVALIDARG, name, "query heap / type");
             return;
         }
-        if (type == D3D12_QUERY_TYPE_PIPELINE_STATISTICS ||
-            (type >= D3D12_QUERY_TYPE_SO_STATISTICS_STREAM0 &&
-             type <= D3D12_QUERY_TYPE_SO_STATISTICS_STREAM3)) {
-            unimplemented(begin ? "ID3D12GraphicsCommandList::BeginQuery"
-                                : "ID3D12GraphicsCommandList::EndQuery",
-                          "pipeline / stream-output statistics queries");
-            record_error(list, E_INVALIDARG, name, "statistics queries");
-            return;
-        }
         if (!timestamp) {
             const std::pair<GuestAddr, u32> key{heap->address, index};
             auto& open = list.open_queries;
@@ -1214,12 +1550,6 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
             offset > d->desc.width ||
             static_cast<u64>(count) * element > d->desc.width - offset) {
             record_error(list, E_INVALIDARG, name, "invalid resolve");
-            return;
-        }
-        if (element != 8) {
-            unimplemented("ID3D12GraphicsCommandList::ResolveQueryData",
-                          "pipeline / stream-output statistics queries");
-            record_error(list, E_INVALIDARG, name, "statistics queries");
             return;
         }
         if (count == 0) return;
@@ -1264,12 +1594,116 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
             count_offset});
         return;
     }
-    case S::CopyTiles:
-        // Only a reserved resource has tiles, and none can be created
-        // (TiledResourcesTier NOT_SUPPORTED).
+    case S::CopyTiles: {
+        // CopyTiles(pTiledResource, pTileRegionStartCoordinate,
+        //     pTileRegionSize, pBuffer, UINT64 BufferStartOffsetInBytes,
+        //     Flags). void. Learn: copies bytes between a buffer and the
+        //     tiles of a reserved resource. The buffer holds each tile's
+        //     texels linear within 64 KiB, and exactly one direction flag
+        //     says which way (NO_HAZARD may be set with it). An invalid call
+        //     fails the list at Close with E_INVALIDARG, as does a region
+        //     reaching packed mips. Volume tiles (no tier 3) and a tile the
+        //     backend cannot copy stay UNIMPLEMENTED and fail the same way.
         if (!require(!bundle)) return;
-        record_error(list, E_INVALIDARG, name, "not a reserved resource");
+        const GuestAddr tiled_address = m.arg_ptr(1);
+        const GuestAddr coordinate = m.arg_ptr(2);
+        const GuestAddr size_address = m.arg_ptr(3);
+        const GuestAddr buffer_address = m.arg_ptr(4);
+        usize next = 0;
+        const u64 offset = read_arg_u64(m, m_is_64bit, 5, next);
+        const u32 flags = m.arg32(next);
+        u64 tiled_serial = 0;
+        Resource* tiled = resource_ref(tiled_address, tiled_serial);
+        if (tiled == nullptr || !tiled->reserved || tiled->tiles == nullptr) {
+            record_error(list, E_INVALIDARG, name, "not a reserved resource");
+            return;
+        }
+        constexpr u32 kToTiled =
+            D3D12_TILE_COPY_FLAG_LINEAR_BUFFER_TO_SWIZZLED_TILED_RESOURCE;
+        constexpr u32 kToLinear =
+            D3D12_TILE_COPY_FLAG_SWIZZLED_TILED_RESOURCE_TO_LINEAR_BUFFER;
+        const u32 direction = flags & (kToTiled | kToLinear);
+        if ((direction != kToTiled && direction != kToLinear) ||
+            (flags & ~(kToTiled | kToLinear | D3D12_TILE_COPY_FLAG_NO_HAZARD)) !=
+                0) {
+            record_error(list, E_INVALIDARG, name, "invalid CopyTiles flags");
+            return;
+        }
+        u64 buffer_serial = 0;
+        Resource* linear = resource_ref(buffer_address, buffer_serial);
+        if (linear == nullptr || !linear->is_buffer() || linear->reserved ||
+            linear->buffer() == nullptr) {
+            record_error(list, E_INVALIDARG, name, "not a linear buffer");
+            return;
+        }
+        if (tiled->desc.dimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D ||
+            tiled->texture3d != nullptr) {
+            unimplemented("ID3D12GraphicsCommandList::CopyTiles", "volume tiles");
+            record_error(list, E_INVALIDARG, name, "volume tiles");
+            return;
+        }
+        TileCoordinate at{};
+        TileRegion region{};
+        std::vector<u32> indices;
+        if (coordinate == 0 || size_address == 0 ||
+            !read_tile_coordinate(m_memory, coordinate, at) ||
+            !read_tile_region(m_memory, size_address, region) ||
+            !guest_tile_region(*tiled, at.x, at.y, at.z, at.subresource,
+                               region.num_tiles, region.use_box, region.width,
+                               region.height, region.depth, true, indices) ||
+            indices.size() > ~0ull / graphics::BACKEND_TILE_BYTES) {
+            record_error(list, E_INVALIDARG, name, "invalid tile region");
+            return;
+        }
+        const u64 span =
+            static_cast<u64>(indices.size()) * graphics::BACKEND_TILE_BYTES;
+        if (offset > linear->desc.width || span > linear->desc.width - offset) {
+            record_error(list, E_INVALIDARG, name, "linear buffer overrun");
+            return;
+        }
+        cmd::CopyTiles command{};
+        command.tiled = tiled_address;
+        command.tiled_serial = tiled_serial;
+        command.buffer = buffer_address;
+        command.buffer_serial = buffer_serial;
+        command.to_tiled = direction == kToTiled;
+        // D3D11.3 5.9.2.8.5: CopyTiles cannot reach packed mips; use the
+        // ordinary copies for them.
+        if (!tiled->tiles->buffer && tiled->tiles->packed_tiles != 0) {
+            const u32 per_slice = tiled->tiles->tiles_per_slice;
+            const u32 packed_start = per_slice - tiled->tiles->packed_tiles;
+            for (const u32 index : indices) {
+                if (per_slice != 0 && index % per_slice >= packed_start) {
+                    record_error(list, E_INVALIDARG, name, "packed mip tiles");
+                    return;
+                }
+            }
+        }
+        // Mappings are the queue's and may change before this list runs, so
+        // a tile unmapped now is still copied: a read of an unmapped tile
+        // gives zeros and a write to one is dropped (D3D11.3 5.9.4.1/5.9.4.2;
+        // the backend's blits do the same, test_tiled_resources_gpu).
+        const char* gap = nullptr;
+        for (usize i = 0; i < indices.size(); ++i) {
+            cmd::CopyTile piece{};
+            const char* why = nullptr;
+            if (!describe_copy_tile(
+                    *tiled, indices[i],
+                    offset + static_cast<u64>(i) * graphics::BACKEND_TILE_BYTES,
+                    piece, why)) {
+                gap = why != nullptr ? why : "tile the backend cannot copy";
+                break;
+            }
+            command.tiles.push_back(piece);
+        }
+        if (gap != nullptr) {
+            unimplemented("ID3D12GraphicsCommandList::CopyTiles", gap);
+            record_error(list, E_INVALIDARG, name, gap);
+            return;
+        }
+        rec.commands.emplace_back(std::move(command));
         return;
+    }
     case S::AtomicCopyBufferUINT:
     case S::AtomicCopyBufferUINT64: {
         // (pDstBuffer, UINT64 DstOffset, pSrcBuffer, UINT64 SrcOffset,
@@ -1342,6 +1776,17 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
             record_error(list, E_INVALIDARG, name, "invalid resolve");
             return;
         }
+        if (mode == D3D12_RESOLVE_MODE_ENCODE_SAMPLER_FEEDBACK ||
+            mode == D3D12_RESOLVE_MODE_DECODE_SAMPLER_FEEDBACK) {
+            record_feedback_transcode(list, rec, m, *d, dst_serial, *s, src_serial, mode);
+            return;
+        }
+        if (d->feedback_map || s->feedback_map) {
+            // DirectX-Specs "Sampler Feedback": feedback maps transcode
+            // only through the ENCODE / DECODE modes.
+            record_error(list, E_INVALIDARG, name, "a feedback map outside ENCODE / DECODE");
+            return;
+        }
         if (mode != D3D12_RESOLVE_MODE_AVERAGE) {
             // The backend resolves by averaging (MIN / MAX need
             // ProgrammableSamplePositions-era hardware support the caps pass
@@ -1412,7 +1857,22 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
             record_error(list, E_FAIL, name, "no render pass begun");
             return;
         }
+        // Learn: a suspending pass may be resumed, including a pass that is
+        // both. The ending resolve still runs (identical ending access on
+        // every segment). The local copy is the surfaces' contents, taken
+        // at replay after the draws in this segment.
+        if (list.render_pass_suspending) {
+            rec.commands.emplace_back(cmd::RenderPassSuspend{
+                list.render_pass_surfaces, list.render_pass_allow_uav});
+            list.render_pass_suspend_open = true;
+            list.render_pass_suspend_surfaces = list.render_pass_surfaces;
+            list.render_pass_suspend_uav = list.render_pass_allow_uav;
+        } else {
+            list.render_pass_suspend_open = false;
+        }
         list.in_render_pass = false;
+        list.render_pass_suspending = false;
+        list.render_pass_surfaces.clear();
         for (auto& resolve : list.render_pass_resolves) {
             rec.commands.emplace_back(resolve);
         }
@@ -1427,18 +1887,74 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
     case S::BuildRaytracingAccelerationStructure:
     case S::EmitRaytracingAccelerationStructurePostbuildInfo:
     case S::CopyRaytracingAccelerationStructure:
-    case S::SetPipelineState1:
-    case S::DispatchRays:
-        unimplemented((std::string("ID3D12GraphicsCommandList4::") + name).c_str(),
-                      "raytracing (tier NOT_SUPPORTED)");
-        record_error(list, E_INVALIDARG, name, "raytracing");
+        // Graphics and compute lists, not bundles (Raytracing.md).
+        if (!require(!bundle && !copy)) return;
+        (void)record_raytracing(m, list, slot, name);
         return;
+    case S::SetPipelineState1: {
+        // SetPipelineState1(ID3D12StateObject *): graphics and compute
+        // lists and bundles; a RAYTRACING_PIPELINE only (Raytracing.md).
+        if (!require(!copy)) return;
+        StateObject* so = find<StateObject>(m.arg_ptr(1), Kind::StateObject);
+        if (so == nullptr || so->type != 3) {
+            record_error(list, E_INVALIDARG, name, "not a raytracing pipeline state object");
+            return;
+        }
+        rec.commands.emplace_back(cmd::SetPipelineState1{so->address, so->serial});
+        return;
+    }
+    case S::DispatchRays: {
+        // DispatchRays(const D3D12_DISPATCH_RAYS_DESC *).
+        if (!require(!copy)) return;
+        const GuestAddr d = m.arg_ptr(1);
+        if (d == 0) {
+            record_error(list, E_INVALIDARG, name, "null description");
+            return;
+        }
+        const auto& l = layout::D3D12_DISPATCH_RAYS_DESC[m_is_64bit];
+        cmd::DispatchRays c{};
+        c.raygen = read_u64(d + l.RayGenerationShaderRecord_StartAddress);
+        c.raygen_size = read_u64(d + l.RayGenerationShaderRecord_SizeInBytes);
+        c.miss = read_u64(d + l.MissShaderTable_StartAddress);
+        c.miss_size = read_u64(d + l.MissShaderTable_SizeInBytes);
+        c.miss_stride = read_u64(d + l.MissShaderTable_StrideInBytes);
+        c.hit = read_u64(d + l.HitGroupTable_StartAddress);
+        c.hit_size = read_u64(d + l.HitGroupTable_SizeInBytes);
+        c.hit_stride = read_u64(d + l.HitGroupTable_StrideInBytes);
+        c.callable = read_u64(d + l.CallableShaderTable_StartAddress);
+        c.callable_size = read_u64(d + l.CallableShaderTable_SizeInBytes);
+        c.callable_stride = read_u64(d + l.CallableShaderTable_StrideInBytes);
+        c.width = read_u32(d + l.Width);
+        c.height = read_u32(d + l.Height);
+        c.depth = read_u32(d + l.Depth);
+        // Raytracing.md: tables D3D12_RAYTRACING_SHADER_TABLE_BYTE_ALIGNMENT
+        // (64) aligned, strides 32-byte aligned and at most 4096. The runtime
+        // does not refuse a table start off that alignment (measured,
+        // d3d12_a48 local "stride0": a hit-group table at a record 96 bytes
+        // into its buffer, Close S_OK and the rays run on the RTX 4080).
+        for (const u64 stride : {c.miss_stride, c.hit_stride, c.callable_stride}) {
+            if (stride % 32 != 0 || stride > 4096) {
+                record_error(list, E_INVALIDARG, name, "a shader record stride");
+                return;
+            }
+        }
+        rec.commands.emplace_back(c);
+        return;
+    }
     case S::RSSetShadingRate:
-        // (D3D12_SHADING_RATE, const D3D12_SHADING_RATE_COMBINER *):
-        // VariableShadingRateTier NOT_SUPPORTED; 1x1 with no combiners is
-        // the default and changes nothing.
+        // (D3D12_SHADING_RATE, const D3D12_SHADING_RATE_COMBINER[2]):
+        // VariableShadingRateTier NOT_SUPPORTED (d3d12_caps.cpp says why);
+        // 1x1 with no combiners or two PASSTHROUGH ones is the default
+        // state and changes nothing.
         if (!require(!compute && !copy)) return;
-        if (m.arg32(1) == 0 && m.arg_ptr(2) == 0) return;
+        if (m.arg32(1) == D3D12_SHADING_RATE_1X1) {
+            const GuestAddr combiners = m.arg_ptr(2);
+            if (combiners == 0 ||
+                (read_u32(combiners) == D3D12_SHADING_RATE_COMBINER_PASSTHROUGH &&
+                 read_u32(combiners + 4) == D3D12_SHADING_RATE_COMBINER_PASSTHROUGH)) {
+                return;
+            }
+        }
         unimplemented("ID3D12GraphicsCommandList5::RSSetShadingRate",
                       "variable-rate shading (tier NOT_SUPPORTED)");
         record_error(list, E_INVALIDARG, name, "variable-rate shading");
@@ -1451,17 +1967,101 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
         record_error(list, E_INVALIDARG, name, "variable-rate shading");
         return;
     case S::DispatchMesh:
-        unimplemented("ID3D12GraphicsCommandList6::DispatchMesh",
-                      "mesh shaders (tier NOT_SUPPORTED)");
-        record_error(list, E_INVALIDARG, name, "mesh shaders");
+        // (UINT ThreadGroupCountX, Y, Z): a graphics command; the bound
+        // pipeline's mesh (or amplification) shader runs at draw time.
+        if (!require(!compute && !copy)) return;
+        rec.commands.emplace_back(
+            cmd::DispatchMesh{m.arg32(1), m.arg32(2), m.arg32(3)});
         return;
-    case S::Barrier:
-        // ID3D12GraphicsCommandList7::Barrier: D3D12_OPTIONS12
-        // EnhancedBarriersSupported is FALSE on this device.
-        unimplemented("ID3D12GraphicsCommandList7::Barrier",
-                      "enhanced barriers (EnhancedBarriersSupported FALSE)");
-        record_error(list, E_INVALIDARG, name, "enhanced barriers");
+    case S::Barrier: {
+        // Barrier(UINT32 NumBarrierGroups, const D3D12_BARRIER_GROUP *).
+        // The runtime's checks are d3d12_barrier.cpp's (DirectX-Specs
+        // "Enhanced Barriers" and a07 enhanced_rules); ordering is the
+        // backend's hazard tracking, as for ResourceBarrier. Measured: a
+        // bundle fails Close with E_FAIL; zero groups, or a group of zero
+        // barriers, are no-ops.
+        if (!require(!bundle)) return;
+        const u32 groups = m.arg32(1);
+        const GuestAddr at = m.arg_ptr(2);
+        if (groups != 0 && at == 0) {
+            record_error(list, E_INVALIDARG, name, "null barrier group array");
+            return;
+        }
+        const auto& gl = layout::D3D12_BARRIER_GROUP[m_is_64bit];
+        const auto& glob = layout::D3D12_GLOBAL_BARRIER[m_is_64bit];
+        const auto& tex = layout::D3D12_TEXTURE_BARRIER[m_is_64bit];
+        const auto& buf = layout::D3D12_BUFFER_BARRIER[m_is_64bit];
+        bool any = false;
+        bool attachments = false;
+        for (u32 g = 0; g < groups; ++g) {
+            const GuestAddr group = at + static_cast<u64>(g) * gl.size;
+            const u32 type = read_u32(group + gl.Type);
+            const u32 count = read_u32(group + gl.NumBarriers);
+            GuestAddr barriers = 0;
+            (void)read_pointer(group + gl.pGlobalBarriers, barriers);
+            if (type > D3D12_BARRIER_TYPE_BUFFER) {
+                record_error(list, E_INVALIDARG, name, "invalid barrier type");
+                return;
+            }
+            if (count == 0) continue;
+            if (barriers == 0) {
+                record_error(list, E_INVALIDARG, name, "null barrier array");
+                return;
+            }
+            const u32 stride = type == D3D12_BARRIER_TYPE_GLOBAL    ? glob.size
+                               : type == D3D12_BARRIER_TYPE_TEXTURE ? tex.size
+                                                                    : buf.size;
+            for (u32 i = 0; i < count; ++i) {
+                const GuestAddr b = barriers + static_cast<u64>(i) * stride;
+                // The four sync / access words lead every barrier kind.
+                EnhancedBarrier e;
+                e.sync_before = read_u32(b + glob.SyncBefore);
+                e.sync_after = read_u32(b + glob.SyncAfter);
+                e.access_before = read_u32(b + glob.AccessBefore);
+                e.access_after = read_u32(b + glob.AccessAfter);
+                const char* why = nullptr;
+                if (type == D3D12_BARRIER_TYPE_GLOBAL) {
+                    why = barrier_sync_access_violation(e, list.type);
+                } else if (type == D3D12_BARRIER_TYPE_TEXTURE) {
+                    GuestAddr address = 0;
+                    (void)read_pointer(b + tex.pResource, address);
+                    e.layout_before = read_u32(b + tex.LayoutBefore);
+                    e.layout_after = read_u32(b + tex.LayoutAfter);
+                    e.index_or_first_mip =
+                        read_u32(b + tex.Subresources_IndexOrFirstMipLevel);
+                    e.num_mips = read_u32(b + tex.Subresources_NumMipLevels);
+                    e.first_slice = read_u32(b + tex.Subresources_FirstArraySlice);
+                    e.num_slices = read_u32(b + tex.Subresources_NumArraySlices);
+                    e.first_plane = read_u32(b + tex.Subresources_FirstPlane);
+                    e.num_planes = read_u32(b + tex.Subresources_NumPlanes);
+                    e.flags = read_u32(b + tex.Flags);
+                    why = texture_barrier_violation(
+                        e, find<Resource>(address, Kind::Resource), list.type);
+                } else {
+                    GuestAddr address = 0;
+                    (void)read_pointer(b + buf.pResource, address);
+                    e.offset = read_u64(b + buf.Offset);
+                    e.size = read_u64(b + buf.Size);
+                    why = buffer_barrier_violation(
+                        e, find<Resource>(address, Kind::Resource), list.type);
+                }
+                if (why != nullptr) {
+                    record_error(list, E_INVALIDARG, name, why);
+                    return;
+                }
+                // As ResourceBarrier's transition out of RENDER_TARGET /
+                // DEPTH_WRITE: what was rendered must reach the texture
+                // before a read the backend cannot see (a heap window's).
+                // Keep enhanced barriers conservative: their explicit
+                // SyncBefore/SyncAfter scopes are wider than allocation
+                // overlap and cannot use legacy transition elision alone.
+                attachments |= ends_attachment_writes(e, type);
+                any = true;
+            }
+        }
+        if (any) rec.commands.emplace_back(cmd::Barrier{true, attachments});
         return;
+    }
     case S::OMSetFrontAndBackStencilRef:
         // D3D12_OPTIONS14 IndependentFrontAndBackStencilRefMaskSupported is
         // FALSE; one reference for both faces is what OMSetStencilRef sets.
@@ -1497,10 +2097,11 @@ void Frontend::command_list_method(Marshaler& m, CommandList& list,
         if (m.arg_ptr(1) == 0) return;
         break;
     case S::SetViewInstanceMask:
-        // View instancing is reported unsupported (caps pass); mask 0 is the
-        // default and changes nothing.
-        if (m.arg32(1) == 0) return;
-        break;
+        // DirectX-Specs "View Instancing": bit i enables view instance i;
+        // honoured only by pipelines with ENABLE_VIEW_INSTANCE_MASKING.
+        if (!require(!compute && !copy)) return;
+        rec.commands.emplace_back(cmd::SetViewInstanceMask{m.arg32(1)});
+        return;
     default:
         break;
     }
@@ -1518,11 +2119,25 @@ void Frontend::begin_render_pass(Marshaler& m, CommandList& list,
     //     const D3D12_RENDER_PASS_RENDER_TARGET_DESC *pRenderTargets,
     //     const D3D12_RENDER_PASS_DEPTH_STENCIL_DESC *pDepthStencil,
     //     D3D12_RENDER_PASS_FLAGS Flags).
-    // D3D12_RENDER_PASS_TIER_0 (what the caps pass reports): the pass is
-    // what the runtime turns it into on such a device -- the CLEAR
-    // beginnings as clears, the targets bound, and the RESOLVE endings run
-    // at EndRenderPass. PRESERVE, DISCARD and NO_ACCESS keep the contents
-    // (a defined outcome of DISCARD's "undefined").
+    // D3D12_RENDER_PASS_TIER_0 (Learn, D3D12_RENDER_PASS_TIER; DirectX-Specs
+    // "Render Passes"): the runtime records the pass as non-render-pass
+    // commands. A CLEAR beginning is ClearRenderTargetView /
+    // ClearDepthStencilView. Surfaces the spec binds for raster (CLEAR,
+    // PRESERVE, and DISCARD) are one OMSetRenderTargets, with NO_ACCESS
+    // left out and the list packed. DISCARD may keep the previous contents
+    // (DirectX-Specs: "may return the previously-written contents, or it
+    // may return uninitialized data"), which is what this stream records,
+    // the same outcome as DiscardResource. A whole-subresource AVERAGE
+    // RESOLVE is ResolveSubresource at EndRenderPass.
+    // Learn (render passes, "Suspending-passes, and resuming-passes"): a
+    // suspending pass may be resumed, the two name identical views and
+    // access, and both lists run in one ExecuteCommandLists. The resume
+    // does not repeat the beginning clear: replay puts the suspending
+    // segment's local copy back first. A UAV write to those surfaces
+    // between the two is overwritten by that copy (the documented hazard;
+    // no GPU operation belongs in the gap). Tier stays 0: Learn assigns
+    // tier 1 to a driver implementation and tier 2 to efficient UAV writes
+    // inside a pass, which this emulation is not.
     if (list.type != D3D12_COMMAND_LIST_TYPE_DIRECT) {
         record_error(list, E_FAIL, name, "not callable on this list type");
         return;
@@ -1541,6 +2156,11 @@ void Frontend::begin_render_pass(Marshaler& m, CommandList& list,
                    D3D12_RENDER_PASS_FLAG_SUSPENDING_PASS |
                    D3D12_RENDER_PASS_FLAG_RESUMING_PASS)) != 0) {
         record_error(list, E_INVALIDARG, name, "invalid render pass");
+        return;
+    }
+    // DirectX-Specs: either list is optional, and at least one is named.
+    if (count == 0 && depth == 0) {
+        record_error(list, E_INVALIDARG, name, "no render target or depth stencil");
         return;
     }
     Recording& rec = *list.recording;
@@ -1579,15 +2199,25 @@ void Frontend::begin_render_pass(Marshaler& m, CommandList& list,
         }
         return true;
     };
-    cmd::SetRenderTargets bind{};
-    bind.count = count;
+    // Parsed first, recorded after every target validates, so a failure
+    // leaves the list's command stream unchanged.
+    struct PlannedTarget {
+        Descriptor desc{};
+        bool bind{false};
+        bool clear{false};
+        std::array<float, 4> color{};
+    };
+    std::vector<PlannedTarget> planned;
+    planned.reserve(count);
+    std::vector<cmd::RenderPassSurface> surfaces;
+    surfaces.reserve(count + 1);
     const auto& rt = layout::D3D12_RENDER_PASS_RENDER_TARGET_DESC[m_is_64bit];
     for (u32 index = 0; index < count; ++index) {
         const GuestAddr at = targets + index * rt.size;
+        PlannedTarget target{};
         GuestAddr handle = 0;
         (void)read_pointer(at + rt.cpuDescriptor_ptr, handle);
-        if (!snapshot_cpu_descriptor(handle, DescriptorType::Rtv,
-                                     bind.rtvs[index])) {
+        if (!snapshot_cpu_descriptor(handle, DescriptorType::Rtv, target.desc)) {
             record_error(list, E_INVALIDARG, name, "not an RTV descriptor");
             return;
         }
@@ -1598,14 +2228,19 @@ void Frontend::begin_render_pass(Marshaler& m, CommandList& list,
             record_error(list, E_INVALIDARG, name, "invalid access type");
             return;
         }
+        // DirectX-Specs, "Surfaces That BeginRenderPass Binds For Raster":
+        // DISCARD, PRESERVE and CLEAR are bound; NO_ACCESS is not, and the
+        // bound list has no gaps.
+        target.bind =
+            begin_type == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_DISCARD ||
+            begin_type == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_PRESERVE ||
+            begin_type == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
         if (begin_type == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR) {
-            cmd::ClearRenderTarget clear{};
-            clear.rtv = bind.rtvs[index];
+            target.clear = true;
             for (u32 c = 0; c < 4; ++c) {
-                clear.color[c] = read_f32(
+                target.color[c] = read_f32(
                     at + rt.BeginningAccess_Clear_ClearValue_Color + c * 4);
             }
-            rec.commands.emplace_back(std::move(clear));
         }
         if (end_type == D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_RESOLVE &&
             !add_resolves(at + rt.EndingAccess_Resolve_pSrcResource,
@@ -1623,57 +2258,199 @@ void Frontend::begin_render_pass(Marshaler& m, CommandList& list,
             record_error(list, E_INVALIDARG, name, "invalid resolve ending");
             return;
         }
+        cmd::RenderPassSurface surface{};
+        surface.resource = target.desc.resource;
+        surface.serial = target.desc.resource_serial;
+        surface.mip = target.desc.most_detailed_mip;
+        surface.slice = target.desc.first_slice;
+        surface.array_size = target.desc.array_size;
+        surface.format = target.desc.format;
+        surface.flags = target.desc.flags;
+        surface.beginning = begin_type;
+        surface.ending = end_type;
+        if (target.clear) surface.clear = target.color;
+        surfaces.push_back(surface);
+        planned.push_back(std::move(target));
     }
+    cmd::SetRenderTargets bind{};
+    bool clear_depth = false;
+    u32 depth_clear_flags = 0;
+    float depth_value = 0.0f;
+    u8 stencil_value = 0;
     if (depth != 0) {
         const auto& ds = layout::D3D12_RENDER_PASS_DEPTH_STENCIL_DESC[m_is_64bit];
         GuestAddr handle = 0;
         (void)read_pointer(depth + ds.cpuDescriptor_ptr, handle);
+        if (!snapshot_cpu_descriptor(handle, DescriptorType::Dsv, bind.dsv)) {
+            record_error(list, E_INVALIDARG, name, "not a DSV descriptor");
+            return;
+        }
         const u32 depth_begin = read_u32(depth + ds.DepthBeginningAccess_Type);
         const u32 stencil_begin =
             read_u32(depth + ds.StencilBeginningAccess_Type);
         const u32 depth_end = read_u32(depth + ds.DepthEndingAccess_Type);
         const u32 stencil_end = read_u32(depth + ds.StencilEndingAccess_Type);
-        const bool no_access =
-            depth_begin == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_NO_ACCESS &&
-            stencil_begin == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_NO_ACCESS;
-        if (!no_access) {
-            if (!snapshot_cpu_descriptor(handle, DescriptorType::Dsv, bind.dsv)) {
-                record_error(list, E_INVALIDARG, name, "not a DSV descriptor");
-                return;
-            }
-            bind.has_dsv = true;
-            u32 clear_flags = 0;
-            if (depth_begin == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR) {
-                clear_flags |= D3D12_CLEAR_FLAG_DEPTH;
-            }
-            if (stencil_begin == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR) {
-                clear_flags |= D3D12_CLEAR_FLAG_STENCIL;
-            }
-            if (clear_flags != 0) {
-                cmd::ClearDepthStencil clear{};
-                clear.dsv = bind.dsv;
-                clear.flags = clear_flags;
-                clear.depth = read_f32(
-                    depth +
-                    ds.DepthBeginningAccess_Clear_ClearValue_DepthStencil_Depth);
-                const auto stencil = m_memory.read_u8(
-                    depth +
-                    ds.StencilBeginningAccess_Clear_ClearValue_DepthStencil_Stencil);
-                clear.stencil = stencil.is_ok() ? stencil.value() : 0;
-                rec.commands.emplace_back(std::move(clear));
-            }
+        if (depth_begin > D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_NO_ACCESS ||
+            stencil_begin > D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_NO_ACCESS ||
+            depth_end > D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_NO_ACCESS ||
+            stencil_end > D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_NO_ACCESS) {
+            record_error(list, E_INVALIDARG, name, "invalid access type");
+            return;
         }
-        if (depth_end == D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_RESOLVE ||
-            stencil_end == D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_RESOLVE) {
+        const DepthStencilPlanes planes = depth_stencil_planes(bind.dsv.format);
+        const auto plane_end_resolve = [](bool exists, u32 ending) {
+            return exists &&
+                   ending == D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_RESOLVE;
+        };
+        if (plane_end_resolve(planes.depth, depth_end) ||
+            plane_end_resolve(planes.stencil, stencil_end)) {
             unimplemented("ID3D12GraphicsCommandList4::BeginRenderPass",
                           "depth / stencil resolve endings");
             record_error(list, E_INVALIDARG, name, "depth-stencil resolve");
             return;
         }
+        const auto accesses = [](bool exists, u32 beginning) {
+            return exists &&
+                   beginning != D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_NO_ACCESS;
+        };
+        const auto ignores = [](bool exists, u32 beginning) {
+            return exists &&
+                   beginning == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_NO_ACCESS;
+        };
+        // One DSV bind cannot hide a single plane. Depth-only views have no
+        // stencil plane, so stencil NO_ACCESS there is not this case.
+        if ((accesses(planes.depth, depth_begin) &&
+             ignores(planes.stencil, stencil_begin)) ||
+            (accesses(planes.stencil, stencil_begin) &&
+             ignores(planes.depth, depth_begin))) {
+            unimplemented("ID3D12GraphicsCommandList4::BeginRenderPass",
+                          "depth and stencil accessed independently");
+            record_error(list, E_FAIL, name,
+                         "depth and stencil accessed independently");
+            return;
+        }
+        bind.has_dsv = accesses(planes.depth, depth_begin) ||
+                       accesses(planes.stencil, stencil_begin);
+        if (planes.depth &&
+            depth_begin == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR) {
+            depth_clear_flags |= D3D12_CLEAR_FLAG_DEPTH;
+            depth_value = read_f32(
+                depth +
+                ds.DepthBeginningAccess_Clear_ClearValue_DepthStencil_Depth);
+        }
+        if (planes.stencil &&
+            stencil_begin == D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR) {
+            depth_clear_flags |= D3D12_CLEAR_FLAG_STENCIL;
+            const auto stencil = m_memory.read_u8(
+                depth +
+                ds.StencilBeginningAccess_Clear_ClearValue_DepthStencil_Stencil);
+            stencil_value = stencil.is_ok() ? stencil.value() : 0;
+        }
+        clear_depth = depth_clear_flags != 0;
+        cmd::RenderPassSurface surface{};
+        surface.depth_stencil = true;
+        surface.resource = bind.dsv.resource;
+        surface.serial = bind.dsv.resource_serial;
+        surface.mip = bind.dsv.most_detailed_mip;
+        surface.slice = bind.dsv.first_slice;
+        surface.array_size = bind.dsv.array_size;
+        surface.format = bind.dsv.format;
+        surface.flags = bind.dsv.flags;
+        surface.beginning = depth_begin;
+        surface.ending = depth_end;
+        surface.stencil_beginning = stencil_begin;
+        surface.stencil_ending = stencil_end;
+        if ((depth_clear_flags & D3D12_CLEAR_FLAG_DEPTH) != 0) {
+            surface.clear[0] = depth_value;
+        }
+        if ((depth_clear_flags & D3D12_CLEAR_FLAG_STENCIL) != 0) {
+            surface.stencil_clear = stencil_value;
+        }
+        surfaces.push_back(surface);
+    }
+    const bool resuming =
+        (flags & D3D12_RENDER_PASS_FLAG_RESUMING_PASS) != 0;
+    const bool suspending =
+        (flags & D3D12_RENDER_PASS_FLAG_SUSPENDING_PASS) != 0;
+    const bool allow_uav =
+        (flags & D3D12_RENDER_PASS_FLAG_ALLOW_UAV_WRITES) != 0;
+    // A resume on this list can be checked now. A resume of another list's
+    // suspend is checked when both execute, in that order.
+    if (resuming && list.render_pass_suspend_open &&
+        !cmd::same_render_pass(list.render_pass_suspend_surfaces,
+                               list.render_pass_suspend_uav, surfaces,
+                               allow_uav)) {
+        record_error(list, E_FAIL, name,
+                     "resuming pass does not match the suspended pass");
+        return;
+    }
+    u32 clear_count = clear_depth ? 1u : 0u;
+    for (const PlannedTarget& target : planned) {
+        if (target.clear) ++clear_count;
+    }
+    if (resuming) {
+        rec.commands.emplace_back(
+            cmd::RenderPassResume{surfaces, allow_uav, clear_count});
+    }
+    for (const PlannedTarget& target : planned) {
+        if (!target.clear) continue;
+        cmd::ClearRenderTarget clear{};
+        clear.rtv = target.desc;
+        clear.color = target.color;
+        rec.commands.emplace_back(std::move(clear));
+    }
+    if (clear_depth) {
+        cmd::ClearDepthStencil clear{};
+        clear.dsv = bind.dsv;
+        clear.flags = depth_clear_flags;
+        clear.depth = depth_value;
+        clear.stencil = stencil_value;
+        rec.commands.emplace_back(std::move(clear));
+    }
+    for (const PlannedTarget& target : planned) {
+        if (!target.bind) continue;
+        bind.rtvs[bind.count] = target.desc;
+        ++bind.count;
     }
     rec.commands.emplace_back(std::move(bind));
     list.in_render_pass = true;
+    list.render_pass_suspending = suspending;
+    list.render_pass_allow_uav = allow_uav;
+    list.render_pass_surfaces = std::move(surfaces);
     list.render_pass_resolves = std::move(resolves);
+}
+
+void Frontend::replay_copy_tiles(const cmd::CopyTiles& command) {
+    Resource* tiled =
+        find_serial<Resource>(command.tiled, command.tiled_serial, Kind::Resource);
+    Resource* linear = find_serial<Resource>(command.buffer, command.buffer_serial,
+                                             Kind::Resource);
+    if (tiled == nullptr || linear == nullptr || linear->buffer() == nullptr) {
+        return;
+    }
+    bool refused = false;
+    for (const cmd::CopyTile& tile : command.tiles) {
+        const u64 at = linear->offset + tile.buffer_offset;
+        bool ok = false;
+        if (tile.texture) {
+            ok = tiled->texture != nullptr &&
+                 m_backend.copy_texture_buffer_region(
+                     tiled->texture.get(), tile.level, tile.slice, tile.x, tile.y,
+                     tile.width, tile.height, linear->buffer(), at, tile.row_pitch,
+                     command.to_tiled);
+        } else if (graphics::BackendBuffer* sparse = tiled->buffer()) {
+            ok = command.to_tiled
+                     ? m_backend.copy_buffer_region(sparse, tile.tiled_offset,
+                                                    linear->buffer(), at, tile.bytes)
+                     : m_backend.copy_buffer_region(linear->buffer(), at, sparse,
+                                                    tile.tiled_offset, tile.bytes);
+        }
+        refused = refused || !ok;
+    }
+    if (refused) {
+        unimplemented("ID3D12GraphicsCommandList::CopyTiles",
+                      "tile the backend cannot copy");
+    }
 }
 
 }  // namespace vitreo::winapi::d3d12

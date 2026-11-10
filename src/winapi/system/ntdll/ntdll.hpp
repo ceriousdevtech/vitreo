@@ -88,6 +88,7 @@ public:
     struct ProcessIdentity {
         u64 peb_address;
         u64 process_id;
+        u64 parent_process_id;
     };
 
     /// Resolve a real process handle to the startup identity published when

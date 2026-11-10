@@ -42,15 +42,20 @@ extern "C" void jit_fxsave_fxrstor(CpuState* cpu, GuestMemory* mem, u64 ea,
     const ExecResult result = ::vitreo::cpu::ops::exec_sse_data(ctx, di);
     cpu->gpr.set64(kEaReg, saved);
 
+    // exec_sse_data recorded the parameters Windows reports: [0] = 1 for a
+    // FXSAVE and 0 for a FXRSTOR, [1] = the image's last byte when it is
+    // inaccessible, else its first inaccessible byte
+    // (check_xstate_image_access; fxsave_fault_probe.expected). The image
+    // check runs before any state or memory changes.
     if (result == ExecResult::Exception && !cpu->pending_raise.active) {
         auto& pending = cpu->pending_raise;
         pending.active = true;
         pending.from_helper = true;
-        pending.code = 0xC0000005u;  // STATUS_ACCESS_VIOLATION (#GP mapping)
+        pending.code = 0xC0000005u;  // STATUS_ACCESS_VIOLATION
         pending.flags = 0;
         pending.num_args = 2;
-        pending.args[0] = 0;
-        pending.args[1] = ea;
+        pending.args[0] = ctx.exception_error;
+        pending.args[1] = ctx.exception_addr;
     }
 }
 

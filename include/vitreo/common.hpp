@@ -39,8 +39,17 @@ namespace vitreo::detail {
 /// Trace configuration is process-wide and immutable after startup. An inline
 /// variable gives the program one pre-main environment lookup and leaves hot
 /// JIT, dispatch, and rendering call sites with only a load and branch.
-inline const bool g_trace_enabled =
-    (std::getenv("VITREO_TRACE") != nullptr);
+inline const bool g_trace_enabled = [] {
+    if (std::getenv("VITREO_TRACE") != nullptr) return true;
+    // A store-launched guest does not reliably inherit the environment, so
+    // one process can also be traced by name: touch
+    // /tmp/vitreo-trace-proc-<host process name>.
+    const char* name = ::getprogname();
+    if (name == nullptr || name[0] == '\0') return false;
+    char marker[256];
+    std::snprintf(marker, sizeof(marker), "/tmp/vitreo-trace-proc-%s", name);
+    return ::access(marker, F_OK) == 0;
+}();
 
 /// Process-wide diagnostic and JIT switches. Resolved once so hot dispatch,
 /// memory, and WinAPI paths do not call getenv.

@@ -81,6 +81,11 @@ void publish_gs_hooks(void* teb_base) noexcept;
 /// Push it as the return address before entering a guest call.
 [[nodiscard]] u64 sentinel_return_address() noexcept;
 
+/// Address standing in for the process-return sentinel (a thread's outermost
+/// return address). It enters the same capture as sentinel_return_address(),
+/// but an unwinder reads it as the end of the stack, not a callback boundary.
+[[nodiscard]] u64 process_sentinel_return_address() noexcept;
+
 /// Address of the shared thunk collector.
 [[nodiscard]] u64 collect_address() noexcept;
 
@@ -117,6 +122,34 @@ void emit_set_last_error_stub(u8* dest) noexcept;
 
 /// Offset of TEB.LastErrorValue, the field both stubs touch.
 inline constexpr u32 kTebLastErrorValue = 0x68;
+
+/// Offset of TEB ClientId.UniqueThread: the guest thread id every x64 TEB
+/// carries (teb_setup.cpp, guest_thread_context.cpp), which is what
+/// GetCurrentThreadId reports.
+inline constexpr u32 kTebClientIdThread = 0x48;
+
+/// Emit `mov eax, fs:[0x48]; ret` -- GetCurrentThreadId served in the guest
+/// thread. 9 bytes, inside the 16-byte thunk slot.
+void emit_get_current_thread_id_stub(u8* dest) noexcept;
+
+/// Emit `jmp qword [rip+0]; <target>` -- 14 bytes, so a thunk slot can hand
+/// off to a body anywhere in the address space.
+void emit_absolute_jump(u8* dest, u64 target) noexcept;
+
+/// Largest body either SRW emitter writes.
+inline constexpr usize kN64SrwBodyMax = 160;
+
+/// Emit the native body of TryAcquireSRWLockExclusive / ReleaseSRWLockExclusive
+/// for the thunk whose dispatch gateway is @p gateway (slot + 8). Each serves
+/// the uncontended in-word case exactly as srw_word does and otherwise enters
+/// the shared collector as the slot's own call would have, so the host sees an
+/// ordinary call of that thunk. @p recursion_threads is
+/// srw_word::threads_with_recursion(): non-zero sends every call to the host.
+/// Returns the bytes written (at most kN64SrwBodyMax).
+usize emit_srw_try_acquire_exclusive_body(u8* dest, u64 gateway,
+                                          const void* recursion_threads) noexcept;
+usize emit_srw_release_exclusive_body(u8* dest, u64 gateway,
+                                      const void* recursion_threads) noexcept;
 
 /// Address of the stub a faulting guest thread is redirected to.
 ///

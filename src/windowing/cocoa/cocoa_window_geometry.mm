@@ -188,6 +188,24 @@ void CocoaBridge::set_window_rgn(HWND hwnd, bool has_rgn, i32 left, i32 top,
     });
 }
 
+// Sets a content view's bounds to (0,0,size) and lays its full-cover
+// subviews (the guest pixel surface, presentation views) onto them. AppKit's
+// autoresizing works from frame-size deltas, so once the bounds are scaled
+// against the frame it moves those subviews off the client origin (a fitted
+// dialog showed only its top-left corner, near the screen's bottom right).
+void CocoaBridge::set_content_bounds(void* ns_view, double width, double height) {
+    auto* content = (__bridge NSView*)ns_view;
+    if (content == nil) return;
+    [content setBounds:NSMakeRect(0, 0, width, height)];
+    constexpr NSAutoresizingMaskOptions kFullCover =
+        NSViewWidthSizable | NSViewHeightSizable;
+    for (NSView* sub in [content subviews]) {
+        if (([sub autoresizingMask] & kFullCover) == kFullCover) {
+            [sub setFrame:[content bounds]];
+        }
+    }
+}
+
 void CocoaBridge::set_frame(HWND hwnd, const Rect& rect) {
     // An external resize invalidates the cached present size (ADR: see
     // m_peer_present_size).
@@ -206,10 +224,23 @@ void CocoaBridge::set_frame(HWND hwnd, const Rect& rect) {
     if (it->second.ns_window) {
         auto* win = reinterpret_cast<NSWindow*>(it->second.ns_window);
         sync_borderless_fullscreen(hwnd);
-        if (it->second.fullscreen) {
+        if (!it->second.fullscreen && !it->second.space_transition &&
+            !window_is_space_fullscreen(win) &&
+            place_in_exclusive_display(hwnd, win, rect)) {
+            return;
+        }
+        if (it->second.fullscreen || it->second.space_transition ||
+            window_is_space_fullscreen(win)) {
             // Guest SetWindowPos/MoveWindow still updates the Win32 logical
-            // rectangle above. AppKit owns the Space frame; do not pin a
-            // covering display rectangle over it.
+            // rectangle above. AppKit owns the frame of a window in a Space
+            // (or entering / leaving one); do not pin a guest rectangle over
+            // it. That includes a window whose exclusive owner has just let
+            // go but which AppKit has not taken out of the Space yet: an
+            // exclusive owner re-taking it at once (a game recreating its
+            // device) finds it still in the Space, and an 800x600 frame set
+            // in between would stay there. The guest rectangle is applied
+            // when the Space has been left
+            // (on_native_did_exit_space_fullscreen).
             return;
         }
         // rect represents the desired *content* area (Win32 client rect).
@@ -228,6 +259,13 @@ void CocoaBridge::set_frame(HWND hwnd, const Rect& rect) {
         CGFloat y = screenH - static_cast<CGFloat>(rect.top) * scale - h;
         NSRect contentRect = NSMakeRect(x, y, w, h);
         NSRect frame = [win frameRectForContentRect:contentRect];
+        // Out of an exclusive display: the content view is unscaled again.
+        if (NSView* content = [win contentView];
+            content != nil &&
+            !NSEqualSizes([content bounds].size, [content frame].size)) {
+            set_content_bounds((__bridge void*)content, [content frame].size.width,
+                               [content frame].size.height);
+        }
         // Programmatic guest SetWindowPos/MoveWindow must not feed back through
         // windowDidResize → WM_SIZE → another MoveWindow (a launcher login
         // grew 693→719 that way as Cocoa title chrome was re-applied).
@@ -262,6 +300,98 @@ void CocoaBridge::set_frame(HWND hwnd, const Rect& rect) {
     });
 }
 
+bool CocoaBridge::place_in_exclusive_display(HWND hwnd, void* ns_window,
+                                             const Rect& rect) {
+    // While a window of this process holds the exclusive display mode, the
+    // guest's whole screen is that mode (user32's virtual display, which
+    // update_cursor_clip_screen hands us), and it is aspect-fitted onto the
+    // Space exactly as the exclusive surface is (aspect_fit_rect, the
+    // swap-chain fit). Every other top-level window lives in the same guest
+    // screen, so it is placed through the same fit: its native frame is the
+    // fitted image of its guest rectangle, and its content view's bounds are
+    // its guest client size, so AppKit scales what it draws and the points
+    // its events carry by the same factor. A modal dialog the game draws
+    // its menu behind (Armada II) then receives the clicks the user aims at
+    // the fitted image.
+    HWND exclusive = NULL_HWND;
+    NSWindow* exclusive_window = nil;
+    for (const auto& [other_hwnd, other] : m_windows) {
+        if (other_hwnd == hwnd || !other.fullscreen || other.ns_window == nullptr) {
+            continue;
+        }
+        exclusive = other_hwnd;
+        exclusive_window = reinterpret_cast<NSWindow*>(other.ns_window);
+        break;
+    }
+    const Rect& screen_rect = m_guest_cursor_clip_screen;
+    const i32 guest_w = screen_rect.right - screen_rect.left;
+    const i32 guest_h = screen_rect.bottom - screen_rect.top;
+    if (exclusive == NULL_HWND || guest_w <= 0 || guest_h <= 0) return false;
+    NSScreen* screen = [exclusive_window screen] ?: [NSScreen mainScreen];
+    if (screen == nil) return false;
+    // Only a guest display mode makes a separate guest screen: a borderless
+    // window that merely covers the display (also held in a Space) leaves
+    // the guest screen the host's, and windows stay 1:1.
+    if (std::lround([screen frame].size.width) == guest_w &&
+        std::lround([screen frame].size.height) == guest_h) {
+        return false;
+    }
+    // The guest screen is shown where the exclusive surface is fitted: the
+    // exclusive window's content area once its Space has formed. On a display
+    // with a camera housing AppKit keeps that area below it (1800x1130 of an
+    // 1800x1169 panel), so fitting to the screen frame put windows larger
+    // and higher than the image they belong to. Before the Space forms the
+    // screen frame stands in; on_native_did_enter_space_fullscreen re-places.
+    NSRect host = [screen frame];
+    if (window_is_space_fullscreen(exclusive_window)) {
+        if (NSView* content = [exclusive_window contentView]; content != nil) {
+            const NSRect area = [exclusive_window
+                convertRectToScreen:[content convertRect:[content bounds] toView:nil]];
+            if (area.size.width >= 1.0 && area.size.height >= 1.0) host = area;
+        }
+    }
+    const auto fit = graphics::aspect_fit_rect(guest_w, guest_h, host.size.width,
+                                               host.size.height);
+    ExclusiveDisplayPlacement place{};
+    if (!exclusive_display_placement(screen_rect, fit.x, fit.y, fit.width,
+                                     fit.height, rect, place)) {
+        return false;
+    }
+    const double scale = place.scale;
+    const double client_w = place.width / scale;
+    const double client_h = place.height / scale;
+    // Guest top-down placement, then Cocoa's bottom-up screen space.
+    const double bottom_up_y =
+        host.origin.y + host.size.height - place.top - place.height;
+    auto* win = reinterpret_cast<NSWindow*>(ns_window);
+    const NSRect content_rect = NSMakeRect(host.origin.x + place.left, bottom_up_y,
+                                           place.width, place.height);
+    set_suppress_resize_notify(true);
+    [win setFrame:[win frameRectForContentRect:content_rect] display:YES];
+    if (NSView* content = [win contentView]; content != nil) {
+        set_content_bounds((__bridge void*)content, client_w, client_h);
+    }
+    set_suppress_resize_notify(false);
+    VITREO_TRACE("[cocoa] exclusive-display placement hwnd=0x%x guest=(%d,%d %dx%d) "
+                 "host=(%.0f,%.0f %.0fx%.0f) scale=%.3f\n",
+                 hwnd, rect.left, rect.top, rect.right - rect.left,
+                 rect.bottom - rect.top, content_rect.origin.x, content_rect.origin.y,
+                 content_rect.size.width, content_rect.size.height, scale);
+    return true;
+}
+
+void CocoaBridge::replace_windows_for_exclusive_display(HWND exclusive) {
+    // Entering or leaving the exclusive display re-places the process's other
+    // top-level windows: into the fitted guest screen, or back to 1:1.
+    std::vector<std::pair<HWND, Rect>> others;
+    for (const auto& [other_hwnd, other] : m_windows) {
+        if (other_hwnd != exclusive && other.ns_window != nullptr && !other.fullscreen) {
+            others.emplace_back(other_hwnd, other.frame);
+        }
+    }
+    for (const auto& [other_hwnd, frame] : others) set_frame(other_hwnd, frame);
+}
+
 Rect CocoaBridge::zoom_window(HWND hwnd) {
     __block Rect result{};
     vtr_run_on_main_sync(^{
@@ -294,6 +424,8 @@ void CocoaBridge::set_minimized(HWND hwnd, bool minimized) {
     vtr_run_on_main_sync(^{
         auto it = m_windows.find(hwnd);
         if (it == m_windows.end() || !it->second.ns_window) return;
+        it->second.requested_minimized = minimized;
+        if (!minimized) it->second.minimize_attempted = false;
 
         auto* win = reinterpret_cast<NSWindow*>(it->second.ns_window);
         if (minimized) {
@@ -312,6 +444,13 @@ void CocoaBridge::set_minimized(HWND hwnd, bool minimized) {
             }
         } else if ([win isMiniaturized]) {
             [win deminiaturize:nil];
+        }
+        // Do not treat an initially minimized HWND as a refused native
+        // request before its initial show/minimize has actually been tried.
+        if (auto current = m_windows.find(hwnd);
+            current != m_windows.end() && current->second.ns_window == win &&
+            current->second.requested_minimized) {
+            current->second.minimize_attempted = true;
         }
     });
 }

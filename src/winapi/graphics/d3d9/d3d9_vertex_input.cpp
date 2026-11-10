@@ -60,7 +60,7 @@ void D3D9Manager::dispatch_device_vertex_input(Marshaler& m, usize slot,
     case 86: { // CreateVertexDeclaration
         const GuestAddr elements_addr = m.arg_ptr(1);
         const GuestAddr out = m.arg_ptr(2);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         if (elements_addr == 0 || out == 0) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -121,7 +121,7 @@ void D3D9Manager::dispatch_device_vertex_input(Marshaler& m, usize slot,
         ComObject* decl_entry =
             find(object, D3D9InterfaceId::VertexDeclaration);
         decl_entry->vertex_declaration = std::move(decl);
-        if (m.write_u32(out, object).is_err()) {
+        if (m.write_ptr(out, object).is_err()) {
             destroy_object(object);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -166,7 +166,7 @@ void D3D9Manager::dispatch_device_vertex_input(Marshaler& m, usize slot,
         if (state.vertex_declaration != 0) {
             (void)add_ref(state.vertex_declaration);
         }
-        if (m.write_u32(out, state.vertex_declaration).is_err()) {
+        if (m.write_ptr(out, state.vertex_declaration).is_err()) {
             if (state.vertex_declaration != 0) {
                 (void)release(state.vertex_declaration);
             }
@@ -249,7 +249,7 @@ void D3D9Manager::dispatch_device_vertex_input(Marshaler& m, usize slot,
         }
         const DeviceState::StreamSource& source = state.streams[stream];
         if (source.buffer != 0) (void)add_ref(source.buffer);
-        if (m.write_u32(buffer_out, source.buffer).is_err() ||
+        if (m.write_ptr(buffer_out, source.buffer).is_err() ||
             m.write_u32(offset_out, source.offset).is_err() ||
             m.write_u32(stride_out, source.stride).is_err()) {
             if (source.buffer != 0) (void)release(source.buffer);
@@ -310,7 +310,7 @@ void D3D9Manager::dispatch_device_vertex_input(Marshaler& m, usize slot,
             return;
         }
         if (state.indices != 0) (void)add_ref(state.indices);
-        if (m.write_u32(out, state.indices).is_err()) {
+        if (m.write_ptr(out, state.indices).is_err()) {
             if (state.indices != 0) (void)release(state.indices);
             m.set_return(D3DERR_INVALIDCALL);
             return;

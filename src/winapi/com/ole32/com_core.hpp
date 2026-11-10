@@ -163,6 +163,8 @@ public:
 
     /// CoCreateInstance thunk path with guest marshaling support.
     [[nodiscard]] u32 co_create_instance(Marshaler& m);
+    [[nodiscard]] u32 co_get_class_object(Marshaler& m);
+    [[nodiscard]] static bool has_builtin_class(const Guid& clsid);
 
     /// Bind the in-process DirectInput8 COM class provider. Kept out-of-line
     /// so COM owns activation while the media subsystem owns the interface.
@@ -173,6 +175,12 @@ public:
     [[nodiscard]] u32 remote_proxy_query_interface(Marshaler& m);
     [[nodiscard]] u32 remote_proxy_add_ref(Marshaler& m);
     [[nodiscard]] u32 remote_proxy_release(Marshaler& m);
+    /// The process is ending: release the server reference every remote
+    /// proxy still holds. Windows reaches the same state through DCOM's
+    /// rundown of a client that is gone (Learn "Garbage Collection" / ping
+    /// timeout), which lets a local server whose last object was held only by
+    /// this process see its count reach zero and exit.
+    void release_remote_proxies_at_exit();
     [[nodiscard]] u32 remote_proxy_invoke(Marshaler& m);
     [[nodiscard]] u32 remote_dispatch_get_type_info_count(Marshaler& m);
     [[nodiscard]] u32 remote_dispatch_get_type_info(Marshaler& m);
@@ -303,6 +311,12 @@ public:
                            GuestAddr ppv)>;
     void set_external_class_factory(ExternalClassFactory factory) {
         m_external_class_factory = std::move(factory);
+    }
+
+    using ExternalClassObjectProvider = std::function<
+        std::optional<u32>(Marshaler&, const Guid&, const Guid&, GuestAddr)>;
+    void set_external_class_object_provider(ExternalClassObjectProvider provider) {
+        m_external_class_object_provider = std::move(provider);
     }
 
     using AutomationBstrAllocator = std::function<GuestAddr(
@@ -710,6 +724,9 @@ public:
     /// CoGetClassObject's in-process step: HKCR\CLSID\{clsid}\InprocServer32
     /// -> LoadLibrary -> DllGetClassObject(IClassFactory) -> CreateInstance.
     /// std::nullopt when no InprocServer32 is registered for the class.
+    [[nodiscard]] std::optional<u32> get_inproc_class_object(
+        Marshaler& m, const Guid& clsid, GuestAddr rclsid_ptr,
+        GuestAddr riid_ptr, GuestAddr ppv_ptr);
     [[nodiscard]] std::optional<u32> activate_inproc_server(
         Marshaler& m, const Guid& clsid, GuestAddr rclsid_ptr, GuestAddr outer,
         GuestAddr riid_ptr, GuestAddr ppv_ptr);
@@ -981,6 +998,9 @@ private:
         std::string item;
     };
 
+    struct ClassObjectBorrow {
+        bool release_pending{false}; // protected by m_class_objects_mutex
+    };
     struct ClassObjectRegistration {
         Guid clsid{};
         GuestAddr class_object{0};
@@ -989,6 +1009,7 @@ private:
         bool suspended{false};
         std::unique_ptr<ipc::ComClassRegistration> shared_registration;
         GuestAddr apartment{0}; ///< TEB of the registering thread
+        std::shared_ptr<ClassObjectBorrow> borrow{std::make_shared<ClassObjectBorrow>()};
     };
     /// CoLoadLibrary(bAutoFree=TRUE) modules per apartment (TEB): the final
     /// CoUninitialize of that thread unloads them (Learn CoUninitialize).
@@ -1820,6 +1841,7 @@ private:
     std::unordered_map<GuestAddr, AudioActivationState> m_audio_activations;
     [[nodiscard]] u32 release_audio_activation(Marshaler& m, GuestAddr operation);
     std::shared_ptr<WicContext> m_wic_context{create_wic_context()};
+    ExternalClassObjectProvider m_external_class_object_provider;
 };
 
 DllExports create_com_core_thunks(ComCoreManager& mgr);

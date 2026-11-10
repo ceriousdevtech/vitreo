@@ -32,6 +32,18 @@
     /// within-block liveness proved this full-flag writer's result is dead
     /// (overwritten by a later full-flag writer before any consumer).
     bool m_omit_lazy_current{false};
+    /// A live-out flag record proved dead at every direct successor. Armed
+    /// only while the terminator is being emitted. The patched hop skips
+    /// the store; every path back to the dispatcher emits it first.
+    struct LinkMissFlags {
+        bool armed{false};
+        FlagState::FlagOp op{FlagState::FlagOp::None};
+        u8 src{0};
+        u8 dst{0};
+        bool wide{false};
+    };
+    LinkMissFlags m_link_miss_flags{};
+    void emit_link_miss_flags();
     /// Set with m_omit_lazy_current when the omission was granted by the
     /// adjacent-ADC/SBB rule (flag_liveness marks it 2). The record itself is
     /// dead, but the CF/OF overlay clear that is normally part of publishing
@@ -44,6 +56,7 @@
     /// lazy-flag store on.
     bool m_internal_join_jcc_current{false};
     std::vector<u8> m_omit_lazy;
+    FlagLivenessScratch m_flag_liveness_scratch;
     std::vector<StencilFlagRecovery> m_stencil_flag_recovery;
     /// Per instruction: the owning publisher + 1 where an omitted publisher's
     /// record is absent from CpuState (compute_omit_lazy_flags). Emission
@@ -213,6 +226,11 @@
         const DecodedInstruction& instr, u64 next_rip, bool is_last);
     [[nodiscard]] std::optional<bool> compile_fpu_store(
         const DecodedInstruction& instr, u64 next_rip, bool is_last);
+    /// After a native x87 FADD/FSUB/FMUL/FDIV/FSQRT body computed D0 in
+    /// binary64: under FCW.PC = 24, round D0 to a 24-bit significand (or
+    /// mark it for the helper when the result leaves the binary32 normal
+    /// range). Clobbers W2/W4 and S0 only.
+    void emit_x87_pc24_narrow_d0();
     [[nodiscard]] std::optional<bool> compile_fpu_arith_reg(
         const DecodedInstruction& instr, u64 next_rip, bool is_last);
     [[nodiscard]] std::optional<bool> compile_fpu_arith_mem(
@@ -305,6 +323,23 @@
     /// the caller then emits its existing helper sequence unchanged.
     /// Emits nothing on a false return.
     bool emit_aes_direct(const DecodedInstruction& instr, u64 next_rip);
+
+    // WS3 begin — crypto lowerings on ARMv8 FEAT_AES/SHA1/SHA256/PMULL.
+    /// Stage the xmm2/m128 operand `src` of a 128-bit crypto instruction into
+    /// V<vreg>: LDR Q from the XMM slot, or a validated guest m128 load (with
+    /// the legacy 16-byte alignment #GP) that faults before any XMM write.
+    /// Must be the first emission of its caller. Emits nothing and returns
+    /// false when no inline load exists for this configuration.
+    bool emit_crypto_src128(u8 vreg, const DecodedInstruction& instr,
+                            const Operand& src, u64 next_rip);
+    /// WS3 entry point from compile_sse_crypto; false (nothing emitted) when
+    /// VITREO_WS3=0, a lane split, or a per-family decline.
+    bool emit_crypto_direct(const DecodedInstruction& instr, u64 next_rip);
+    bool emit_sha256_direct(const DecodedInstruction& instr, u64 next_rip);
+    bool emit_sha1_direct(const DecodedInstruction& instr, u64 next_rip);
+    bool emit_pclmul_direct(const DecodedInstruction& instr, u64 next_rip);
+    bool emit_aes_keygen_direct(const DecodedInstruction& instr, u64 next_rip);
+    // WS3 end
 
     /// ROUNDSS/ROUNDSD (Intel SDM Vol. 2) lowered inline: scalar FRINT*,
     /// MXCSR.PE/IE, and the DEST[127:32|64] merge from `src1_xmm` (the

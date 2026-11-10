@@ -22,6 +22,7 @@ namespace {
 
 constexpr i32 kIcerrOk = 0;
 constexpr i32 kIcerrUnsupported = -1;
+constexpr i32 kIcerrBadParam = -6;
 constexpr i32 kIcerrBadHandle = -8;
 constexpr u32 kIcversion = 0x0104;
 constexpr u32 kIcinfoSize = 568; // ICINFO: 6*DWORD + WCHAR[16+128+128]
@@ -34,6 +35,20 @@ constexpr u32 kDrvFree = 6;
 constexpr GuestAddr kSentinelDriverProc = 0xBEEF0001;
 constexpr u32 kIcopenSize32 = 36;
 constexpr u32 kIcopenSize64 = 56;
+// vfw.h: ICM_USER = DRV_USER (0x4000).
+constexpr u32 kIcmCompressQuery = 0x4000 + 6;
+constexpr u32 kIcmDecompressQuery = 0x4000 + 11;
+constexpr u32 kIcmDecompress = 0x4000 + 13;
+constexpr u32 kIcmDrawQuery = 0x4000 + 31;
+constexpr u32 kIcmodeCompress = 1;
+constexpr u32 kIcmodeDecompress = 2;
+constexpr u32 kIcmodeFastDecompress = 3;
+constexpr u32 kIcmodeFastCompress = 5;
+constexpr u32 kIcmodeDraw = 8;
+// ICDECOMPRESS {DWORD dwFlags; LPBITMAPINFOHEADER lpbiInput; LPVOID lpInput;
+// LPBITMAPINFOHEADER lpbiOutput; LPVOID lpOutput; DWORD ckid;}
+constexpr u32 kIcdecompressSize32 = 24;
+constexpr u32 kIcdecompressSize64 = 48;
 
 bool write_icopen(Marshaler& m, GuestAddr dest, u32 fcc_type, u32 fcc_handler,
                   u32 mode) {
@@ -86,6 +101,35 @@ bool write_icopen(Marshaler& m, GuestAddr dest, u32 fcc_type, u32 fcc_handler,
     }
     return true;
 }
+
+/// Guest stack bytes for a structure the driver reads during a guest call.
+/// A callback frame is built directly below the current stack pointer, so
+/// the structure is kept above it by lowering the stack pointer for the
+/// duration (restored on scope exit).
+class StackScratch {
+public:
+    StackScratch(Marshaler& m, u32 bytes) : m_(m) {
+        if (!m.has_cpu() || m.cpu()->sp() < bytes + 0x100) {
+            return;
+        }
+        saved_ = m.cpu()->sp();
+        addr_ = static_cast<GuestAddr>((saved_ - bytes) & ~u64{15});
+        m.cpu()->set_sp(addr_);
+    }
+    ~StackScratch() {
+        if (addr_ != 0) {
+            m_.cpu()->set_sp(saved_);
+        }
+    }
+    StackScratch(const StackScratch&) = delete;
+    StackScratch& operator=(const StackScratch&) = delete;
+    [[nodiscard]] GuestAddr addr() const noexcept { return addr_; }
+
+private:
+    Marshaler& m_;
+    u64 saved_{0};
+    GuestAddr addr_{0};
+};
 
 std::string fourcc_ascii(u32 fcc) {
     char buf[5] = {
@@ -326,13 +370,9 @@ u32 Msvfw32Manager::open_hic(Marshaler& m, u32 fcc_type, u32 fcc_handler,
         open_.emplace(hic, pending);
     }
 
-    if (!m.has_cpu() || m.cpu()->sp() < 0x80) {
-        abandon_open(hic, pending.dll_name);
-        return 0;
-    }
-
-    const GuestAddr icopen = static_cast<GuestAddr>(m.cpu()->sp() - 0x80);
-    if (!write_icopen(m, icopen, fcc_type, fcc_handler, mode)) {
+    StackScratch scratch(m, 0x80);
+    const GuestAddr icopen = scratch.addr();
+    if (icopen == 0 || !write_icopen(m, icopen, fcc_type, fcc_handler, mode)) {
         abandon_open(hic, pending.dll_name);
         return 0;
     }
@@ -408,9 +448,7 @@ void Msvfw32Manager::impl_ICOpen(Marshaler& m) {
     m.set_return(open_hic(m, fcc_type, fcc_handler, mode));
 }
 
-void Msvfw32Manager::impl_ICClose(Marshaler& m) {
-    // LRESULT ICClose(HIC hic) — ICERR_OK or error
-    const u32 hic = static_cast<u32>(m.arg(0));
+u32 Msvfw32Manager::close(Marshaler& m, u32 hic) {
     GuestCall call;
     OpenHic handle;
     bool last = false;
@@ -418,8 +456,7 @@ void Msvfw32Manager::impl_ICClose(Marshaler& m) {
         std::lock_guard lock(mutex_);
         auto it = open_.find(hic);
         if (it == open_.end()) {
-            m.set_return(static_cast<u32>(kIcerrBadHandle));
-            return;
+            return static_cast<u32>(kIcerrBadHandle);
         }
         call = guest_call_;
         handle = it->second;
@@ -449,15 +486,15 @@ void Msvfw32Manager::impl_ICClose(Marshaler& m) {
             }
         }
     }
-    m.set_return(static_cast<u32>(kIcerrOk));
+    return static_cast<u32>(kIcerrOk);
 }
 
-void Msvfw32Manager::impl_ICSendMessage(Marshaler& m) {
-    // LRESULT ICSendMessage(HIC, UINT msg, DWORD_PTR, DWORD_PTR)
-    const u32 hic = static_cast<u32>(m.arg(0));
-    const u32 msg = static_cast<u32>(m.arg(1));
-    const u64 dw1 = m.arg(2);
-    const u64 dw2 = m.arg(3);
+void Msvfw32Manager::impl_ICClose(Marshaler& m) {
+    // LRESULT ICClose(HIC hic) — ICERR_OK or error
+    m.set_return(close(m, static_cast<u32>(m.arg(0))));
+}
+
+u64 Msvfw32Manager::send(Marshaler& m, u32 hic, u32 msg, u64 dw1, u64 dw2) {
     GuestCall call;
     GuestAddr driver_proc = 0;
     u64 dw_id = 0;
@@ -465,29 +502,40 @@ void Msvfw32Manager::impl_ICSendMessage(Marshaler& m) {
         std::lock_guard lock(mutex_);
         auto it = open_.find(hic);
         if (it == open_.end()) {
-            m.set_return(static_cast<u32>(kIcerrBadHandle));
-            return;
+            return static_cast<u64>(static_cast<i64>(kIcerrBadHandle));
         }
         call = guest_call_;
         driver_proc = it->second.driver_proc;
         dw_id = it->second.dw_driver_id;
     }
     if (!call) {
-        m.set_return(static_cast<u32>(kIcerrUnsupported));
-        return;
+        return static_cast<u64>(static_cast<i64>(kIcerrUnsupported));
     }
-    m.set_return(call_driver_proc(call, driver_proc, dw_id, hic, msg, dw1, dw2,
-                                  m.cpu_is_64bit()));
+    return call_driver_proc(call, driver_proc, dw_id, hic, msg, dw1, dw2, m.cpu_is_64bit());
 }
 
-void Msvfw32Manager::impl_ICLocate(Marshaler& m) {
-    // HIC ICLocate(DWORD fccType, DWORD fccHandler, LPBITMAPINFOHEADER lpbiIn,
-    //              LPBITMAPINFOHEADER lpbiOut, WORD wFlags)
-    const u32 fcc_type = static_cast<u32>(m.arg(0));
-    u32 fcc_handler = static_cast<u32>(m.arg(1));
-    const GuestAddr bi_in = m.arg_ptr(2);
-    (void)m.arg_ptr(3);
-    (void)m.arg(4);
+void Msvfw32Manager::impl_ICSendMessage(Marshaler& m) {
+    // LRESULT ICSendMessage(HIC, UINT msg, DWORD_PTR, DWORD_PTR)
+    m.set_return(send(m, static_cast<u32>(m.arg(0)), static_cast<u32>(m.arg(1)), m.arg(2),
+                      m.arg(3)));
+}
+
+u32 Msvfw32Manager::locate(Marshaler& m, u32 fcc_type, u32 fcc_handler, GuestAddr bi_in,
+                           GuestAddr bi_out, u32 mode) {
+    // Learn, ICLocate: wFlags is ICMODE_COMPRESS, ICMODE_DECOMPRESS,
+    // ICMODE_FASTDECOMPRESS (or _FASTCOMPRESS) or ICMODE_DRAW; a candidate is
+    // accepted when it answers that mode's query for lpbiIn / lpbiOut.
+    u32 query = 0;
+    u64 q1 = bi_in, q2 = bi_out;
+    switch (mode) {
+    case kIcmodeCompress:
+    case kIcmodeFastCompress: query = kIcmCompressQuery; break;
+    case kIcmodeDecompress:
+    case kIcmodeFastDecompress: query = kIcmDecompressQuery; break;
+    case kIcmodeDraw: query = kIcmDrawQuery; q2 = 0; break;
+    default: return 0;
+    }
+    std::vector<u32> candidates;
     if (fcc_handler == 0 && bi_in != 0) {
         // BITMAPINFOHEADER.biCompression at offset 16.
         auto comp = m.read_u32(bi_in + 16);
@@ -495,15 +543,62 @@ void Msvfw32Manager::impl_ICLocate(Marshaler& m) {
             fcc_handler = comp.value();
         }
     }
-    if (fcc_handler == 0) {
-        auto drivers = collect_drivers(fcc_type);
-        if (drivers.empty()) {
-            m.set_return(0);
-            return;
-        }
-        fcc_handler = drivers.front().fcc_handler;
+    if (fcc_handler != 0) {
+        candidates.push_back(fcc_handler);
     }
-    m.set_return(open_hic(m, fcc_type, fcc_handler, 0));
+    for (const auto& d : collect_drivers(fcc_type)) {
+        if (std::find(candidates.begin(), candidates.end(), d.fcc_handler) == candidates.end()) {
+            candidates.push_back(d.fcc_handler);
+        }
+    }
+    for (u32 handler : candidates) {
+        const u32 hic = open_hic(m, fcc_type, handler, mode);
+        if (hic == 0) {
+            continue;
+        }
+        if (static_cast<i32>(send(m, hic, query, q1, q2)) == kIcerrOk) {
+            return hic;
+        }
+        (void)close(m, hic);
+    }
+    return 0;
+}
+
+void Msvfw32Manager::impl_ICLocate(Marshaler& m) {
+    // HIC ICLocate(DWORD fccType, DWORD fccHandler, LPBITMAPINFOHEADER lpbiIn,
+    //              LPBITMAPINFOHEADER lpbiOut, WORD wFlags)
+    m.set_return(locate(m, static_cast<u32>(m.arg(0)), static_cast<u32>(m.arg(1)),
+                        m.arg_ptr(2), m.arg_ptr(3), static_cast<u32>(m.arg(4) & 0xFFFF)));
+}
+
+void Msvfw32Manager::impl_ICDecompress(Marshaler& m) {
+    // DWORD WINAPIV ICDecompress(HIC hic, DWORD dwFlags, LPBITMAPINFOHEADER
+    //   lpbiFormat, LPVOID lpData, LPBITMAPINFOHEADER lpbi, LPVOID lpBits):
+    // ICM_DECOMPRESS with an ICDECOMPRESS built from the arguments.
+    const u32 hic = static_cast<u32>(m.arg(0));
+    const u32 flags = static_cast<u32>(m.arg(1));
+    const GuestAddr fmt_in = m.arg_ptr(2), data_in = m.arg_ptr(3);
+    const GuestAddr fmt_out = m.arg_ptr(4), bits_out = m.arg_ptr(5);
+    const bool is64 = m.cpu_is_64bit();
+    StackScratch scratch(m, 0x40);
+    const GuestAddr icd = scratch.addr();
+    if (icd == 0) {
+        m.set_return(static_cast<u32>(kIcerrBadParam));
+        return;
+    }
+    const u32 p = is64 ? 8u : 4u;
+    const u32 size = is64 ? kIcdecompressSize64 : kIcdecompressSize32;
+    bool ok = m.write_u32(icd, flags).is_ok();
+    if (is64) ok = ok && m.write_u32(icd + 4, 0).is_ok();
+    ok = ok && m.write_ptr(icd + p, fmt_in).is_ok() && m.write_ptr(icd + 2 * p, data_in).is_ok() &&
+         m.write_ptr(icd + 3 * p, fmt_out).is_ok() && m.write_ptr(icd + 4 * p, bits_out).is_ok() &&
+         m.write_u32(icd + 5 * p, 0).is_ok();
+    if (is64) ok = ok && m.write_u32(icd + 5 * p + 4, 0).is_ok();
+    if (!ok) {
+        m.set_return(static_cast<u32>(kIcerrBadParam));
+        return;
+    }
+    m.set_return(static_cast<u32>(send(m, hic, kIcmDecompress, icd, size)));
 }
 
 void Msvfw32Manager::impl_DrawDibOpen(Marshaler& m) {
@@ -530,6 +625,8 @@ DllExports create_msvfw32_thunks(Msvfw32Manager& mgr) {
     add("ICLocate", 20, [&mgr](Marshaler& m) { mgr.impl_ICLocate(m); });
     add("DrawDibOpen", 0, [&mgr](Marshaler& m) { mgr.impl_DrawDibOpen(m); });
     add("DrawDibClose", 4, [&mgr](Marshaler& m) { mgr.impl_DrawDibClose(m); });
+    // WINAPIV (cdecl): the caller pops the arguments.
+    add("ICDecompress", 0, [&mgr](Marshaler& m) { mgr.impl_ICDecompress(m); });
     return exports;
 }
 

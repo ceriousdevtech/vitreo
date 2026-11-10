@@ -20,6 +20,7 @@ constinit thread_local volatile vitreo::cpu::jit::JitCrashBreadcrumbs
     vitreo::cpu::jit::jit_crash_breadcrumbs{};
 
 #include "jit_compiler.hpp"
+#include "jit_compile_test_hooks.hpp"
 #include "jit_inval_stats.hpp"
 #include "jit_emit_internal.hpp"
 #include "jit_symbol_map.hpp"
@@ -32,6 +33,9 @@ constinit thread_local volatile vitreo::cpu::jit::JitCrashBreadcrumbs
 #include "flag_liveness.hpp"
 #include "jit_helpers.hpp"
 #include "idiom_detector.hpp"
+#include "loop_idiom_gate.hpp"        // WS2
+#include "loop_idiom_matcher.hpp"     // WS2
+#include "loop_idiom_thresholds.hpp"  // WS2
 #include "linear_fault.hpp"
 #include "hot_block_dump.hpp"
 #include "../../memory/jit_region_registry.hpp"
@@ -53,6 +57,7 @@ constinit thread_local volatile vitreo::cpu::jit::JitCrashBreadcrumbs
 #include <cstring>
 #include <limits>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <thread>
@@ -65,6 +70,71 @@ constinit thread_local volatile vitreo::cpu::jit::JitCrashBreadcrumbs
 
 namespace vitreo::cpu::jit {
 
+namespace {
+std::atomic<compile_test::BeforeBackendHook> g_before_backend_hook{nullptr};
+}
+
+void compile_test::set_before_backend_hook(BeforeBackendHook hook) noexcept {
+    g_before_backend_hook.store(hook, std::memory_order_release);
+}
+
+
+
+using namespace jit_detail;
+
+namespace {
+
+bool span_proof_stops(const DecodedInstruction& insn) noexcept {
+    const Opcode op = insn.opcode;
+    if (op >= Opcode::PUSH_R16 && op <= Opcode::PUSHFQ) return true;
+    if (op >= Opcode::POP_R16 && op <= Opcode::POPFQ) return true;
+    if (op >= Opcode::CALL_REL16 && op <= Opcode::CALL_M16_64) return true;
+    if (op == Opcode::RET_NEAR || op == Opcode::RET_NEAR_IMM16 ||
+        op == Opcode::RET_FAR || op == Opcode::RET_FAR_IMM16 ||
+        op == Opcode::LEAVE || op == Opcode::ENTER ||
+        op == Opcode::IRET || op == Opcode::IRETD || op == Opcode::IRETQ) {
+        return true;
+    }
+    const u8 rsp = static_cast<u8>(RegIndex::RSP);
+    for (u8 n = 0; n < insn.operand_count; ++n) {
+        const Operand& operand = insn.operands[n];
+        if ((operand.type == OperandType::Reg8 ||
+             operand.type == OperandType::Reg16 ||
+             operand.type == OperandType::Reg32 ||
+             operand.type == OperandType::Reg64) &&
+            operand.reg == rsp) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool span_stack_load(const DecodedInstruction& insn, i32& disp,
+                      i32& width) noexcept {
+    if (insn.operand_count != 2) return false;
+    const bool load64 = insn.opcode == Opcode::MOV_R64_RM64 &&
+                        insn.operands[0].type == OperandType::Reg64 &&
+                        insn.operands[1].type == OperandType::Mem64;
+    const bool load32 = insn.opcode == Opcode::MOV_R32_RM32 &&
+                        insn.operands[0].type == OperandType::Reg32 &&
+                        insn.operands[1].type == OperandType::Mem32;
+    if (!load64 && !load32) return false;
+    // MOV into RSP/ESP changes the base for every following stack load
+    // (Intel SDM Vol. 2B MOV). Let span_proof_stops end the proof here.
+    if (insn.operands[0].reg == static_cast<u8>(RegIndex::RSP)) return false;
+    width = load64 ? 8 : 4;
+    const MemoryOperand& mem = insn.operands[1].mem;
+    if (mem.base != static_cast<u8>(RegIndex::RSP) || mem.has_index() ||
+        mem.vsib || mem.has_absolute || mem.segment != SegReg::Default ||
+        insn.prefixes.address_size || mem.disp < 0 ||
+        mem.disp > 4096 - width) {
+        return false;
+    }
+    disp = mem.disp;
+    return true;
+}
+
+}  // namespace
 
 using namespace jit_detail;
 
@@ -146,6 +216,7 @@ CompiledBlock* JitCompiler::compile(const BasicBlock& source_block) {
     const bool ts_timing = tstats::measuring();
     const u64 ts_start = ts_timing ? tstats::now_ticks() : 0;
     m_ts_outcome = TranslationOutcome::None;
+    m_compile_source_changed = false;
     m_force_no_omit = false;
     m_retry_no_omit = false;
     m_force_no_elide = false;
@@ -440,7 +511,9 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
     if (have_compiled_key && memo_stats_enabled()) {
         memo_stats_arm_atexit();
     }
-    if (have_compiled_key) {
+    u64 observed_publications = 0;
+    auto adopt_memo = [&](bool compiler_lock_held = false) -> CompiledBlock* {
+        if (!have_compiled_key) return nullptr;
         g_memo_compile_probes.fetch_add(1, std::memory_order_relaxed);
         JitCompileMemo::Shard& shard = JitCompileMemo::shard_for(block.start_addr);
         std::shared_lock<JitMemoLock> rlock(shard.lock);
@@ -462,7 +535,8 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
             JitCompileMemo::CompiledRecord rec = entry->record;
             rlock.unlock();
             g_memo_compile_hits.fetch_add(1, std::memory_order_relaxed);
-            std::lock_guard<std::mutex> lock(m_compile_mutex);
+            std::unique_lock<std::mutex> lock(m_compile_mutex, std::defer_lock);
+            if (!compiler_lock_held) lock.lock();
             m_compiled_blocks.push_back(CompiledBlock{
                 rec.code,
                 rec.code_size,
@@ -500,6 +574,61 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
             m_ts_outcome = TranslationOutcome::MemoHit;
             return &m_compiled_blocks.back();
         }
+        // The read lock orders this miss against complete publications. A
+        // later identical sequence means no new adoption candidate exists.
+        observed_publications = shard.publication_sequence.load(std::memory_order_relaxed);
+        return nullptr;
+    };
+    if (auto* reused = adopt_memo()) return reused;
+
+    std::optional<JitCompileMemo::CompilationClaim> claim;
+    // The diagnostic control affects first misses only. Warm memo adoption
+    // above never allocates or locks the active-claim registry.
+    // Blocking coalescing reduces duplicate bytes but failed the latency
+    // gate. Keep it opt-in; the default late probe below never waits.
+    static const bool coalesce_compiles =
+        environment_flag_enabled("VITREO_JIT_COALESCE_COMPILES", false);
+    if (have_compiled_key && coalesce_compiles) {
+        const u64 source_executable_generation = m_memory.executable_generation();
+        const u64 source_backing_generation = m_memory.generation();
+        claim.emplace();
+        claim->acquire(m_memory, compiled_key, block.instruction_count,
+                       source_executable_generation);
+        if (claim->waited()) {
+            // The source BasicBlock predates the wait. Invalidation can
+            // cross both emission and wakeup; never reuse its old decode
+            // merely because the former owner published a pointer.
+            u64 current_hash = 14695981039346656037ull;
+            bool readable = true;
+            u8 bytes[64];
+            usize remaining = block.byte_length;
+            GuestAddr cursor = block.start_addr;
+            while (remaining != 0) {
+                const usize count = std::min(remaining, sizeof(bytes));
+                if (m_memory.read_bytes(cursor, bytes, count).is_err()) {
+                    readable = false;
+                    break;
+                }
+                for (usize i = 0; i < count; ++i) {
+                    current_hash ^= bytes[i];
+                    current_hash *= 1099511628211ull;
+                }
+                cursor += count;
+                remaining -= count;
+            }
+            if (!readable || current_hash != code_hash ||
+                m_memory.executable_generation() != source_executable_generation ||
+                m_memory.generation() != source_backing_generation) {
+                m_compile_source_changed = true;
+                m_compile_deferred = true;
+                return nullptr;
+            }
+        }
+        // Every woken follower can adopt concurrently. If the owner
+        // failed or could not publish (for example, the IR budget is
+        // full), compile privately instead of serializing repeated work
+        // behind a succession of claims. Never reuse an unowned result.
+        if (auto* reused = adopt_memo()) return reused;
     }
 
     std::lock_guard<std::mutex> lock(m_compile_mutex);
@@ -630,6 +759,9 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
     m_stack_proof_branch_pos.clear();
     m_stack_proof_mixed_branch_pos.clear();
     m_stack_entry_load_proof = false;
+    m_span_stack_proof = false;
+    m_span_stack_load_bits[0] = m_span_stack_load_bits[1] = 0;
+    m_span_stack_load_bits[2] = m_span_stack_load_bits[3] = 0;
     m_raise_branch_pos.clear();
     for (auto& branches : m_raise_restore_nzcv_branch_pos) branches.clear();
     m_direct_raise_branch_pos.clear();
@@ -693,9 +825,13 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
     m_omit_lazy_current = false;
     m_omit_lazy_keep_overlay = false;
     m_stencil_flag_recovery.clear();
+    // Diagnostic control for same-build cold-translation A/B measurements.
+    static const bool reuse_flag_scratch =
+        environment_flag_enabled("VITREO_JIT_REUSE_FLAG_SCRATCH", true);
     compute_omit_lazy_flags(block, m_omit_lazy, &m_stencil_flag_recovery,
                             &m_elided_span,
-                            /*cross_nzcv_readers=*/!m_force_no_omit);
+                            /*cross_nzcv_readers=*/!m_force_no_omit,
+                            reuse_flag_scratch ? &m_flag_liveness_scratch : nullptr);
     if (m_force_no_elide) {
         // Publishing every record is always sound: nothing is elided, so no
         // emitted read can find a stale one.
@@ -841,6 +977,21 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
         return nullptr;
     }
 
+    // Another compiler may have published while the liveness, join, pin and
+    // optional IR frontend analyses ran. Recheck before the first ARM word,
+    // preserving parallel backend work for independent misses. This compiler
+    // mutex is already held; no process-wide lock spans backend emission.
+    static const bool late_memo_recheck =
+        environment_flag_enabled("VITREO_JIT_LATE_MEMO_RECHECK", true);
+    if (have_compiled_key && late_memo_recheck) {
+        if (auto hook = g_before_backend_hook.load(std::memory_order_acquire))
+            hook(block.start_addr);
+        const auto& shard = JitCompileMemo::shard_for(block.start_addr);
+        if (shard.publication_sequence.load(std::memory_order_acquire) != observed_publications) {
+            if (auto* reused = adopt_memo(/*compiler_lock_held=*/true)) return reused;
+        }
+    }
+
     // Prologue: save LR so BLR calls inside JIT code don't lose it.
     // STR X30, [SP, #-16]!  (pre-index, 16-byte aligned)
     //
@@ -905,6 +1056,119 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
                                 insn.operands[1].type == OperandType::Mem32;
             if (!load64 && !load32) {
                 const u8 rsp = static_cast<u8>(RegIndex::RSP);
+                // Register ALU between the stack loads does not change RSP
+                // or guest memory, so the entry proof still covers every
+                // load. Intel SDM Vol. 2A: these forms write a register or
+                // flags only. A memory operand or RSP destination is not
+                // this case (the memory one falls through and rejects the
+                // block, the same as any other stack-relative store).
+                const auto register_alu = [&]() {
+                    switch (insn.opcode) {
+                    case Opcode::ADD_EAX_IMM32:
+                    case Opcode::ADD_RAX_IMM32:
+                    case Opcode::ADD_RM32_IMM32:
+                    case Opcode::ADD_RM64_IMM32:
+                    case Opcode::ADD_RM32_IMM8:
+                    case Opcode::ADD_RM64_IMM8:
+                    case Opcode::ADD_RM32_R32:
+                    case Opcode::ADD_RM64_R64:
+                    case Opcode::ADD_R32_RM32:
+                    case Opcode::ADD_R64_RM64:
+                    case Opcode::SUB_EAX_IMM32:
+                    case Opcode::SUB_RAX_IMM32:
+                    case Opcode::SUB_RM32_IMM32:
+                    case Opcode::SUB_RM64_IMM32:
+                    case Opcode::SUB_RM32_IMM8:
+                    case Opcode::SUB_RM64_IMM8:
+                    case Opcode::SUB_RM32_R32:
+                    case Opcode::SUB_RM64_R64:
+                    case Opcode::SUB_R32_RM32:
+                    case Opcode::SUB_R64_RM64:
+                    case Opcode::AND_EAX_IMM32:
+                    case Opcode::AND_RAX_IMM32:
+                    case Opcode::AND_RM32_IMM32:
+                    case Opcode::AND_RM64_IMM32:
+                    case Opcode::AND_RM32_IMM8:
+                    case Opcode::AND_RM64_IMM8:
+                    case Opcode::AND_RM32_R32:
+                    case Opcode::AND_RM64_R64:
+                    case Opcode::AND_R32_RM32:
+                    case Opcode::AND_R64_RM64:
+                    case Opcode::OR_EAX_IMM32:
+                    case Opcode::OR_RAX_IMM32:
+                    case Opcode::OR_RM32_IMM32:
+                    case Opcode::OR_RM64_IMM32:
+                    case Opcode::OR_RM32_IMM8:
+                    case Opcode::OR_RM64_IMM8:
+                    case Opcode::OR_RM32_R32:
+                    case Opcode::OR_RM64_R64:
+                    case Opcode::OR_R32_RM32:
+                    case Opcode::OR_R64_RM64:
+                    case Opcode::XOR_EAX_IMM32:
+                    case Opcode::XOR_RAX_IMM32:
+                    case Opcode::XOR_RM32_IMM32:
+                    case Opcode::XOR_RM64_IMM32:
+                    case Opcode::XOR_RM32_IMM8:
+                    case Opcode::XOR_RM64_IMM8:
+                    case Opcode::XOR_RM32_R32:
+                    case Opcode::XOR_RM64_R64:
+                    case Opcode::XOR_R32_RM32:
+                    case Opcode::XOR_R64_RM64:
+                    case Opcode::CMP_EAX_IMM32:
+                    case Opcode::CMP_RAX_IMM32:
+                    case Opcode::CMP_RM32_IMM32:
+                    case Opcode::CMP_RM64_IMM32:
+                    case Opcode::CMP_RM32_IMM8:
+                    case Opcode::CMP_RM64_IMM8:
+                    case Opcode::CMP_RM32_R32:
+                    case Opcode::CMP_RM64_R64:
+                    case Opcode::CMP_R32_RM32:
+                    case Opcode::CMP_R64_RM64:
+                    case Opcode::TEST_EAX_IMM32:
+                    case Opcode::TEST_RAX_IMM32:
+                    case Opcode::TEST_RM32_IMM32:
+                    case Opcode::TEST_RM64_IMM32:
+                    case Opcode::TEST_RM32_R32:
+                    case Opcode::TEST_RM64_R64:
+                    case Opcode::INC_R32:
+                    case Opcode::INC_RM32:
+                    case Opcode::INC_RM64:
+                    case Opcode::DEC_R32:
+                    case Opcode::DEC_RM32:
+                    case Opcode::DEC_RM64:
+                    case Opcode::NEG_RM32:
+                    case Opcode::NEG_RM64:
+                    case Opcode::NOT_RM32:
+                    case Opcode::NOT_RM64:
+                        return true;
+                    default:
+                        return false;
+                    }
+                };
+                if (register_alu()) {
+                    bool memory = false;
+                    bool rsp_write = false;
+                    for (u8 op_i = 0; op_i < insn.operand_count; ++op_i) {
+                        const auto& op = insn.operands[op_i];
+                        if (is_memory_operand(op.type)) {
+                            memory = true;
+                            break;
+                        }
+                        if ((op.type == OperandType::Reg8 ||
+                             op.type == OperandType::Reg16 ||
+                             op.type == OperandType::Reg32 ||
+                             op.type == OperandType::Reg64) &&
+                            op.reg == rsp) {
+                            rsp_write = true;
+                            break;
+                        }
+                    }
+                    if (rsp_write) {
+                        outcome = StackProofOutcome::RspWrite;
+                        break;
+                    }
+                    if (!memory) continue;
+                }
                 const bool mov64_imm =
                     insn.opcode == Opcode::MOV_R64_IMM64 &&
                     has_two_operands &&
@@ -999,9 +1263,50 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
                                    stack_load_count);
         assert(!m_stack_entry_load_proof ||
                stack_max - stack_min < (1 << kLinearHostPageShift));
+
+        // Loads the pure-block proof rejected because something else in the
+        // block touches memory. RSP is unchanged until a writer, so the
+        // same entry check covers every `[rsp+disp]` before that writer.
+        if (!m_stack_entry_load_proof && !m_residency_drop_proof) {
+            i32 span_min = 4095;
+            i32 span_max = 0;
+            u32 span_count = 0;
+            for (u32 i = 0; i < block.instruction_count; ++i) {
+                const DecodedInstruction& insn = block.instructions[i];
+                i32 width = 0;
+                i32 disp = 0;
+                if (span_stack_load(insn, disp, width)) {
+                    if (i < 256) {
+                        m_span_stack_load_bits[i >> 6] |= u64{1} << (i & 63);
+                    }
+                    span_min = std::min(span_min, disp);
+                    span_max = std::max(span_max, disp + width - 1);
+                    ++span_count;
+                    continue;
+                }
+                if (span_proof_stops(insn)) break;
+            }
+            if (span_count >= 2 &&
+                span_max - span_min < (1 << kLinearHostPageShift)) {
+                // On unless VITREO_JIT_SPAN_STACK=0. The lease is inline (no
+                // host call): a call there clobbers caller-saved state a
+                // linked guest RET still needs, and Steam branched to 0.
+                static const bool span_on = [] {
+                    const char* env = std::getenv("VITREO_JIT_SPAN_STACK");
+                    return env == nullptr || env[0] != '0' || env[1] != '\0';
+                }();
+                m_span_stack_proof = span_on;
+                stack_min = span_min;
+                stack_max = span_max;
+            } else {
+                m_span_stack_load_bits[0] = m_span_stack_load_bits[1] = 0;
+                m_span_stack_load_bits[2] = m_span_stack_load_bits[3] = 0;
+            }
+        }
     }
 
-    if (m_stack_entry_load_proof) {
+    if (m_stack_entry_load_proof || m_span_stack_proof) {
+        if (m_span_stack_proof) emit_span_proof_lease(true);
         if (stack_min == 0) {
             emit(arm64::mov_x(9, REG_PIN_ESP));
         } else {
@@ -1126,6 +1431,120 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
         m_code_buf[fallback_pos] = arm64::cbz_w(
             0, static_cast<i32>(ordinary_body_pos - fallback_pos) * 4);
     }
+    // ---- WS2 begin: loop-idiom prologue ----
+    // A self-looping copy/fill/scan/compare block (matched by decoded opcode,
+    // operand shape and register data flow) runs a bulk prefix of whole
+    // iterations in jit_loop_idiom, then re-enters at the loop head; the
+    // translated body below always runs the last iteration(s), so every flag,
+    // temp, exit RIP and fault is the ordinary path's. When the exit follows
+    // the bulk directly the block falls straight into that body for the
+    // tail; otherwise it re-dispatches. On decline (inline trip gate or
+    // W0 == 0) it falls into the unchanged body with NZCV restored and
+    // nothing else changed. Same position as the zero-fill hook:
+    // outside m_body_start_pos (not retried per iteration) and ahead of the
+    // Tier-1 body, so both tiers get it. VITREO_WS2=0 disables it.
+    else if (loop_idiom::enabled()) {
+        const loop_idiom::MatchConfig cfg{
+            m_cfg.tso_mode != TsoMode::Off,
+            tso_vector(),
+        };
+        const loop_idiom::MatchResult mr = loop_idiom::match_loop_idiom(block, cfg);
+        // Lowering policy (loop_idiom_thresholds.hpp): only gated shapes the
+        // measured table keeps; OnNoThreshold (tests) lowers every match.
+        const bool lower =
+            mr.match && (loop_idiom::thresholds_bypassed() ||
+                         loop_idiom::lowered(mr.match->desc.kind, mr.match->desc.elem_log2,
+                                             mr.match->gate.form !=
+                                                 loop_idiom::InlineGate::Form::None));
+        const std::optional<loop_idiom::Words> words =
+            lower ? loop_idiom::pack(mr.match->desc) : std::nullopt;
+        if (words) {
+            const loop_idiom::Desc& desc = mr.match->desc;
+            const loop_idiom::InlineGate& gate = mr.match->gate;
+            // Inline trip gate first, without touching NZCV (no CMP): a
+            // declined short loop pays a few moves and one TBNZ, and needs
+            // no NZCV spill or fill.
+            usize gate_branch = static_cast<usize>(-1);
+            if (gate.form != loop_idiom::InlineGate::Form::None &&
+                !loop_idiom::thresholds_bypassed()) {
+                // Remaining trip count >= the measured crossover (and >= 3:
+                // the body keeps two iterations, the bulk needs one).
+                const u32 need = std::max<u32>(
+                    loop_idiom::min_iters(desc.kind, desc.elem_log2), 3u);
+                const bool x = gate.wide;
+                if (x) emit_load_gpr64(0, gate.reg);
+                else emit_load_gpr32(0, gate.reg);
+                switch (gate.form) {
+                case loop_idiom::InlineGate::Form::NegIndexUp:
+                    emit(x ? arm64::sub_x(0, 31, 0) : arm64::sub_w(0, 31, 0));
+                    break;
+                case loop_idiom::InlineGate::Form::UpToBound:
+                    if (gate.bound_is_imm) {
+                        if (x) emit_mov_imm64(1, static_cast<i64>(gate.bound_imm));
+                        else emit_mov_imm32(1, static_cast<u32>(gate.bound_imm));
+                    } else if (x) {
+                        emit_load_gpr64(1, gate.bound_reg);
+                    } else {
+                        emit_load_gpr32(1, gate.bound_reg);
+                    }
+                    emit(x ? arm64::sub_x(0, 1, 0) : arm64::sub_w(0, 1, 0));
+                    if (gate.step_log2 != 0) {
+                        emit(x ? arm64::lsr_x_imm(0, 0, gate.step_log2)
+                               : arm64::lsr_w_imm(0, 0, gate.step_log2));
+                    }
+                    break;
+                default:
+                    break;
+                }
+                // X0 = remaining, zero-extended for a 32-bit counter (W
+                // writes clear the upper half). X0 - need < 0 (bit 63) is
+                // remaining < need; a 64-bit remaining >= 2^63 also declines,
+                // which is safe (the body runs it).
+                emit(arm64::sub_x_imm(0, 0, std::min<u32>(need, 4095u)));
+                gate_branch = m_code_buf.size();
+                emit(0);  // TBNZ X0, #63, body
+            }
+            emit_nzcv_spill();
+            emit(arm64::mov_x(0, REG_CPU_STATE));
+            emit(arm64::ldr_x_uoff(1, REG_JIT_CTX, JIT_CTX_OFF_MEMORY >> 3));
+            // Guest-only immediates: the block stays relocatable.
+            for (u8 i = 0; i < 6; ++i) {
+                emit_mov_imm64(static_cast<u8>(2 + i), static_cast<i64>((*words)[i]));
+            }
+            emit(arm64::ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_LOOP_IDIOM >> 3));
+            emit_helper_blr();  // BLR X16 (stores pins, reloads them after)
+            // W0: 0 declined; 2 ran and only the tail is left (continue into
+            // the body: the pins were reloaded from the CpuState the helper
+            // updated); 1 ran and more bulk may follow (re-dispatch).
+            const usize cbz_pos = m_code_buf.size();
+            emit(0);  // CBZ W0, body
+            const usize tail_pos = m_code_buf.size();
+            emit(0);  // TBNZ W0, #1, body
+            // Re-dispatch: restore the incoming flags raw (this path never
+            // reaches the body, so the hold depth stays with the body path),
+            // persist a carried NZCV for the dispatcher, re-dispatch at the
+            // loop head.
+            emit(arm64::ldr_x_uoff(11, 31, 1));
+            emit(arm64::msr_nzcv(11));
+            emit_persist_live_nzcv();
+            // DIAGNOSTIC: shared with WS2 loop idioms.
+            emit_exit_reason(JitExitReason::EpilogueZeroFillLoop);
+            emit_epilogue(JitExecResult::Continue, /*clear_kind=*/false);
+            const usize decline_pos = m_code_buf.size();
+            m_code_buf[cbz_pos] =
+                arm64::cbz_w(0, static_cast<i32>(decline_pos - cbz_pos) * 4);
+            m_code_buf[tail_pos] =
+                arm64::tbnz(0, 1, static_cast<i64>(decline_pos - tail_pos) * 4);
+            emit_nzcv_fill();
+            if (gate_branch != static_cast<usize>(-1)) {
+                // NZCV was never spilled on this path: land after the fill.
+                const usize body_pos = m_code_buf.size();
+                m_code_buf[gate_branch] = arm64::tbnz(
+                    0, 63, static_cast<i64>(body_pos - gate_branch) * 4);
+            }
+        }
+    }
+    // ---- WS2 end ----
 
     // Record the ordinary body start for loop-back branches. The zero-fill
     // prefix above is intentionally outside the loop: a rejected fast path
@@ -1139,7 +1558,7 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
     m_body_start_pos = static_cast<u32>(m_code_buf.size());
     // After the body start, which in-block loop-backs branch to, so a loop
     // iteration counts as an entry.
-    emit_tier_entry_counter();
+    emit_tier_entry_counter(/*scratch_x16=*/true);
     attr_set(EmitAttribution::Body);
     m_insn_pos_count = 0;
     // Recovery descriptors are per block; a stale one would tell the fault
@@ -1569,6 +1988,79 @@ CompiledBlock* JitCompiler::compile_attempt(const BasicBlock& source_block) {
         compile_timer.guest_insns = lowered_insn_count;
     }
     return compiled;
+}
+
+void JitCompiler::emit_span_proof_lease(bool enter) {
+    if (!m_span_stack_proof) return;
+    using namespace arm64;
+    // Same shard GuestMemory::linear_proof_lease_shard() picks, inlined.
+    // A host call is not usable here: it clobbers X0-X18, NZCV, X30 and
+    // the caller-saved vector file. A linked tail still needs X0 (the
+    // guest target), NZCV, the pins, and XMM. Darwin's pthread_self fast
+    // path returns TPIDRRO_EL0 - 0xe0; that is the pointer the C++ hash
+    // sees, so execute()'s lease drop meets this increment.
+    constexpr u32 kFlag = static_cast<u32>(offsetof(JitContext, linear_proof_lease_held));
+    constexpr u32 kShards = GuestMemory::linear_proof_shards_offset();
+    constexpr u32 kWriter = GuestMemory::linear_proof_writer_offset();
+    static_assert(GuestMemory::linear_proof_shard_stride() == 128);
+    static_assert(GuestMemory::linear_proof_shard_count() == 64);
+    static_assert(kFlag <= 0xFFFF);
+    static_assert(offsetof(JitContext, memory) == 0);
+    constexpr u8 kScratch = 16;
+    constexpr u8 kTmp = 17;
+    constexpr u32 kMrsTpidrroX16 = 0xD53BD070u;  // mrs x16, TPIDRRO_EL0
+    constexpr u32 kPthreadBias = 0xe0;
+
+    auto add_off = [this](u8 reg, u32 off) { emit_add_x_uimm24(reg, reg, off); };
+    auto shard_in_x16 = [&]() {
+        emit(kMrsTpidrroX16);
+        emit(sub_x_imm(kScratch, kScratch, kPthreadBias));
+        emit(lsr_x_imm(kScratch, kScratch, 12));
+        emit_mov_imm64(kTmp, static_cast<i64>(GuestMemory::kLinearProofLeaseHash));
+        emit(mul_x(kScratch, kScratch, kTmp));
+        emit(lsr_x_imm(kScratch, kScratch, 58));
+        emit(ldr_x_uoff(kTmp, REG_JIT_CTX, 0));
+        emit(add_x_lsl(kScratch, kTmp, kScratch, 7));
+        add_off(kScratch, kShards);
+    };
+
+    emit(movz_x(kScratch, kFlag, 0));
+    emit(ldrb_reg(kTmp, REG_JIT_CTX, kScratch));
+    const usize held_br = m_code_buf.size();
+    emit(0);
+    if (!enter) {
+        emit(strb_reg(31, REG_JIT_CTX, kScratch));
+        shard_in_x16();
+        emit(movn_x(kTmp, 0, 0));
+        emit(lse_al(LseOp::Add, 3, kTmp, kTmp, kScratch));
+        const usize skip = m_code_buf.size();
+        m_code_buf[held_br] = cbz_w(kTmp, static_cast<i64>(skip - held_br) * 4);
+        return;
+    }
+    shard_in_x16();
+    emit(movz_x(kTmp, 1, 0));
+    emit(lse_al(LseOp::Add, 3, kTmp, kTmp, kScratch));
+    emit(ldr_x_uoff(kTmp, REG_JIT_CTX, 0));
+    add_off(kTmp, kWriter);
+    emit(ldar_w(kTmp, kTmp));
+    const usize ok_br = m_code_buf.size();
+    emit(0);
+    emit(movn_x(kTmp, 0, 0));
+    emit(lse_al(LseOp::Add, 3, kTmp, kTmp, kScratch));
+    // As with the range/mixed-page entry deopt, no guest instruction ran.
+    // A linked predecessor need not have published this block's RIP, and
+    // its flag carrier must survive the return to the interpreter.
+    emit_persist_live_nzcv();
+    emit(str_w_uoff(31, REG_CPU_STATE, jit_iters_offset() >> 2));
+    emit_update_rip(m_block_start_addr);
+    emit_epilogue(JitExecResult::Unsupported, false);
+    const usize mark = m_code_buf.size();
+    m_code_buf[ok_br] = cbz_w(kTmp, static_cast<i64>(mark - ok_br) * 4);
+    emit(movz_x(kTmp, 1, 0));
+    emit(movz_x(kScratch, kFlag, 0));
+    emit(strb_reg(kTmp, REG_JIT_CTX, kScratch));
+    const usize done = m_code_buf.size();
+    m_code_buf[held_br] = cbnz_w(kTmp, static_cast<i64>(done - held_br) * 4);
 }
 
 } // namespace vitreo::cpu::jit

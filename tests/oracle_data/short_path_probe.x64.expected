@@ -1,0 +1,17 @@
+existing_file ret=36 err=3735928559 out=C:\probe\short\LONGDI~1\LONGFI~1.TXT
+existing_dir ret=23 err=3735928559 out=C:\probe\short\LONGDI~1
+existing_dir_trailing_slash ret=24 err=3735928559 out=C:\probe\short\LONGDI~1\
+missing_file ret=0 err=2 out=
+missing_dir_component ret=0 err=3 out=
+missing_drive_root_file ret=0 err=2 out=
+relative_existing ret=21 err=3735928559 out=LONGDI~1\LONGFI~1.TXT
+relative_missing ret=0 err=2 out=
+dot_relative ret=10 err=3735928559 out=.\LONGDI~1
+size_query_null ret=24 err=3735928559 out=
+size_small ret=24 err=3735928559 out=
+size_exact_len ret=23 err=3735928559 out=C:\probe\short\LONGDI~1
+missing_size_query ret=0 err=2 out=
+empty_string ret=0 err=3 out=
+null_long ret=0 err=87
+a_missing ret=0 err=2
+a_existing ret=23 err=3735928559 out=C:\probe\short\LONGDI~1

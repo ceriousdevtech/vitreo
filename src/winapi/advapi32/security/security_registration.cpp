@@ -71,6 +71,9 @@ DllExports create_advapi32_security_thunks(SecurityStubs& stubs,
     add_acl_api_exports(exports);
     add_access_check_export(exports, stubs);
     add_object_security_exports(exports, stubs);
+    add_shutdown_exports(exports);
+    // New exports append after all existing slots to preserve thunk addresses.
+    add_event_log_open_export(exports, true);
     return exports;
 }
 

@@ -13,6 +13,7 @@
 #include <cstring>
 #include <sys/mman.h>
 #include <mach/mach_vm.h>
+#include <mach/mach.h>
 #include "core/memory/guest_memory.hpp"
 
 using namespace vitreo;
@@ -166,6 +167,36 @@ TEST_F(LinearParityTest, NoAccessPreservesAdjacentGuestOwnerOnSharedHostPage) {
     EXPECT_EQ(observed, marker);
     EXPECT_FALSE(linear.read_bytes(second, &observed, 1))
         << "software permissions must still reject the PAGE_NOACCESS region";
+}
+
+TEST_F(LinearParityTest, CommittedNoAccessCanBecomeWritableInsideSharedHostPage) {
+    const GuestAddr base = 0x00100000;
+    ASSERT_TRUE(linear.map_region(base, 3 * GUEST_PAGE_SIZE,
+                                  MemoryProtection::None, /*committed=*/true));
+    const GuestAddr middle = base + GUEST_PAGE_SIZE;
+    ASSERT_TRUE(linear.protect_region(middle, GUEST_PAGE_SIZE,
+                                      MemoryProtection::ReadWrite));
+
+    // Check the host mapping before dereferencing, so a broken permission
+    // transition fails this test instead of killing the entire test process.
+    mach_vm_address_t address = reinterpret_cast<mach_vm_address_t>(linear.linear_base()) + middle;
+    mach_vm_size_t size = 0;
+    vm_region_basic_info_data_64_t info{};
+    mach_msg_type_number_t count = VM_REGION_BASIC_INFO_COUNT_64;
+    mach_port_t object = MACH_PORT_NULL;
+    const kern_return_t result = mach_vm_region(mach_task_self(), &address, &size,
+        VM_REGION_BASIC_INFO_64, reinterpret_cast<vm_region_info_t>(&info), &count, &object);
+    if (object != MACH_PORT_NULL) mach_port_deallocate(mach_task_self(), object);
+    ASSERT_EQ(result, KERN_SUCCESS);
+    ASSERT_EQ(info.protection & (VM_PROT_READ | VM_PROT_WRITE), VM_PROT_READ | VM_PROT_WRITE);
+
+    ASSERT_TRUE(linear.write_u32(middle + 16, 0x12345678));
+    const auto value = linear.read_u32(middle + 16);
+    ASSERT_TRUE(value);
+    EXPECT_EQ(value.value(), 0x12345678u);
+    u8 observed = 0;
+    EXPECT_FALSE(linear.read_bytes(base, &observed, 1));
+    EXPECT_FALSE(linear.read_bytes(base + 2 * GUEST_PAGE_SIZE, &observed, 1));
 }
 
 // PAGE_NOACCESS reserve-only mapping must not be readable/writable, in both

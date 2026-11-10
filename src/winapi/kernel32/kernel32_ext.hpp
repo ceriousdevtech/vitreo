@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-only
 #pragma once
 
+#include "winapi/common/sxs/sxs_section.hpp"
+
 /// @file kernel32_ext.hpp
 /// @brief Extended kernel32 API stubs for common Win32 applications
 ///
@@ -18,6 +20,7 @@
 #include "winapi/kernel32/handle.hpp"
 #include "core/memory/guest_memory.hpp"
 #include "ipc/process_registry.hpp"
+#include "ipc/process_handle.hpp"
 #include <array>
 #include <string>
 #include <unordered_map>
@@ -91,6 +94,7 @@ class GlobalLocalManager;
 class EnvironmentManager;
 class FileMappingManager;
 class FileManager;
+class HidCompletionSignal;
 struct OverlappedIoTraceEvent;
 enum class OverlappedIoTraceStage : u8;
 class FileSearchManager;
@@ -102,6 +106,7 @@ class SecurityStubs;
 class NtdllExtManager;
 class SysInfoManager;
 class SyncManager;
+struct SyncEvent;
 class CriticalSectionManager;
 class ThreadManager;
 class DirectoryChangeService;
@@ -220,6 +225,8 @@ public:
 
     /// CreateProcessW — launch a new guest worker in this process session.
     void impl_CreateProcessW(Marshaler& m);
+    /// Legacy ANSI launch, executable search, show state and startup wait.
+    void impl_WinExec(Marshaler& m);
     /// CreateProcessAsUserW — validate a primary token, then use the same
     /// process-creation contract with that token's modeled security state.
     void impl_CreateProcessAsUserW(Marshaler& m);
@@ -302,6 +309,8 @@ public:
     /// GetTempPath{A,W}: TMP, TEMP, USERPROFILE, then the Windows directory,
     /// backslash-terminated (Learn). Creates the directory in the capsule.
     [[nodiscard]] std::string resolve_temp_path();
+    /// The process's current directory (GetCurrentDirectory), a copy.
+    [[nodiscard]] std::string current_directory() const { return m_current_directory; }
 
     /// GetWindowsDirectoryW — write "C:\Windows" to buffer
     void impl_GetWindowsDirectoryW(Marshaler& m);
@@ -337,11 +346,23 @@ public:
     // INI / Profile
     // -------------------------------------------------------------------------
 
-    /// GetPrivateProfileStringW — return default value or empty string
+    /// The INI profile family, A and W, over the one INI model
+    /// (environment/ini_profile.hpp); implemented in environment/profile.cpp.
     void impl_GetPrivateProfileStringW(Marshaler& m);
-
-    /// WritePrivateProfileStringW — stub, return TRUE
     void impl_WritePrivateProfileStringW(Marshaler& m);
+    void impl_GetPrivateProfileSectionW(Marshaler& m);
+    void impl_GetPrivateProfileSectionNamesW(Marshaler& m);
+    void impl_WritePrivateProfileSectionW(Marshaler& m);
+    void impl_GetPrivateProfileStructA(Marshaler& m);
+    void impl_GetPrivateProfileStructW(Marshaler& m);
+    void impl_WritePrivateProfileStructA(Marshaler& m);
+    void impl_WritePrivateProfileStructW(Marshaler& m);
+    void impl_GetProfileSectionA(Marshaler& m);
+    void impl_GetProfileSectionW(Marshaler& m);
+    void impl_WriteProfileSectionA(Marshaler& m);
+    void impl_WriteProfileSectionW(Marshaler& m);
+    void impl_WriteProfileStringA(Marshaler& m);
+    void impl_WriteProfileStringW(Marshaler& m);
 
     // -------------------------------------------------------------------------
     // Math
@@ -385,6 +406,11 @@ public:
     /// process; a snapshot that omits the caller is not a snapshot Windows
     /// would ever produce.
     void set_process_manager(ProcessManager* mgr) { m_process_manager = mgr; }
+    /// Bitness, PEB and image base a process running @p windows_image_path
+    /// starts with (the facts CreateProcess publishes for its own children).
+    [[nodiscard]] std::optional<ipc::GuestProcessMetadata> guest_process_metadata_for(
+        const std::string& windows_image_path);
+
     void set_process_snapshot_provider(ProcessSnapshotProvider provider) {
         m_process_snapshot_provider = std::move(provider);
     }
@@ -425,6 +451,10 @@ public:
     [[nodiscard]] std::optional<u32> resume_external_primary_thread(
         Handle thread_handle);
     void forget_external_primary_thread(Handle thread_handle);
+    /// Get/SetThreadContext on the primary thread of a process this one
+    /// created suspended (ThreadManager::ExternalContextCallback contract).
+    [[nodiscard]] std::optional<u32> external_primary_context(
+        Handle thread_handle, bool set, bool is_64bit, std::vector<u8>& record);
     /// Drop IOCP associations and completion modes when a File/Pipe handle is
     /// closed so recycled handle values cannot deliver stale packets.
     void on_iocp_handle_close(Handle handle);
@@ -436,6 +466,7 @@ public:
     /// its packet is still delivered if the handle closes first (completion
     /// routing belongs to the request, not the handle).
     void snapshot_completion_route(Handle handle, GuestAddr overlapped);
+    [[nodiscard]] u32 prepare_file_completion(Handle handle,GuestAddr overlapped,bool is64);
     /// Tear down a completion port when its HandleTable entry is closed.
     bool on_iocp_port_close(Handle handle);
 
@@ -670,12 +701,6 @@ public:
     void impl_GetPrivateProfileIntA(Marshaler& m);
     void impl_GetPrivateProfileIntW(Marshaler& m);
 
-    /// Shared INI integer lookup used by GetPrivateProfileIntA/W.
-    [[nodiscard]] u32 lookup_profile_int(const std::string& app_name,
-                                         const std::string& key_name,
-                                         u32 n_default,
-                                         const std::string& file_name);
-
     // -------------------------------------------------------------------------
     // Module Loading
     // -------------------------------------------------------------------------
@@ -684,16 +709,28 @@ public:
     void impl_GetModuleHandleExA(Marshaler& m);
     void impl_GetModuleHandleExW(Marshaler& m);
 
-    // Activation contexts (CreateActCtx / ActivateActCtx). HANDLE lifetime
-    // and activate/deactivate pairing are tracked; SxS assembly probing is
-    // not yet redirected through the active context.
+    // Activation contexts (actctx.cpp; winapi/common/sxs builds them from
+    // manifests, .docs/contracts/sxs.md).
     void impl_CreateActCtxA(Marshaler& m);
     void impl_CreateActCtxW(Marshaler& m);
     void impl_ActivateActCtx(Marshaler& m);
     void impl_DeactivateActCtx(Marshaler& m);
+    void impl_AddRefActCtx(Marshaler& m);
     void impl_ReleaseActCtx(Marshaler& m);
     void impl_GetCurrentActCtx(Marshaler& m);
+    void impl_FindActCtxSectionStringA(Marshaler& m);
+    void impl_FindActCtxSectionStringW(Marshaler& m);
+    void impl_QueryActCtxW(Marshaler& m);
     void create_actctx(Marshaler& m, bool wide);
+    void short_path_name_common(Marshaler& m, bool wide);
+    void find_actctx_section_string(Marshaler& m, bool wide);
+
+    /// The process default activation context, generated by the loader from
+    /// the executable's manifest (Learn "Activation Contexts").
+    void set_process_default_activation_context(std::shared_ptr<const sxs::ContextData> context);
+    /// DLL redirection through the calling thread's active activation
+    /// context, or the process default when none is active.
+    [[nodiscard]] std::optional<std::string> sxs_redirect_dll(std::string_view base_name);
 
     // -------------------------------------------------------------------------
     // Memory
@@ -722,6 +759,7 @@ public:
     /// tools/oracle_probe/disk_free_probe.expected). @p path is null for a
     /// NULL lpRootPathName.
     void get_disk_free_space(Marshaler& m, const std::string* path);
+    void get_disk_free_space_ex(Marshaler& m, bool wide);
 
     // -------------------------------------------------------------------------
     // Time / Date
@@ -979,7 +1017,15 @@ private:
     std::atomic<u32> m_temp_counter{0};
     struct ActivationContext {
         u32 refs{1};
+        std::shared_ptr<const sxs::ContextData> data;
+        GuestAddr section{0};      ///< DLL redirection section, built on first lookup
+        u32 section_size{0};
+        u32 section_alloc{0};
+        std::map<std::string, sxs::SectionEntry> entries;
     };
+    /// Section memory for @p context (lazily built); false when it cannot be placed.
+    bool materialize_actctx_section(Marshaler& m, ActivationContext& context);
+    std::optional<ActivationContext> m_default_actctx;  ///< process default, no handle
     std::mutex m_actctx_mutex;
     std::unordered_map<u32, ActivationContext> m_actctxs;
     u32 m_next_actctx{1};
@@ -1110,8 +1156,14 @@ private:
         u32 port_handle;
         u64 completion_key;
         u8 modes;
+        std::shared_ptr<HidCompletionSignal> hid_signal;
+        bool hid_synchronous{false};
+        std::shared_ptr<SyncEvent> event_reference;
+        u64 event_value{0};
+        bool event_prepared{false};
     };
     std::unordered_map<GuestAddr, PendingFileCompletion> m_pending_file_completions;
+    [[nodiscard]] std::shared_ptr<PendingFileCompletion> hid_completion_route(Handle handle,bool create);
 
 
     /// HANDLE_FLAG_* for Winsock socket handles, which live outside HandleTable.
@@ -1256,6 +1308,7 @@ public:
     void impl_GetDiskFreeSpaceExA(Marshaler& m);
     void impl_GetVolumeInformationA(Marshaler& m);
     void impl_GetLogicalDriveStringsA(Marshaler& m);
+    void impl_GetVolumePathNameA(Marshaler& m);
     void impl_GetVolumePathNameW(Marshaler& m);
     void impl_GetVolumeNameForVolumeMountPointW(Marshaler& m);
 
@@ -1266,10 +1319,6 @@ public:
     /// GetProfileStringA/W: GetPrivateProfileString on C:\Windows\win.ini.
     void impl_GetProfileStringA(Marshaler& m);
     void impl_GetProfileStringW(Marshaler& m);
-    void private_profile_string_a(Marshaler& m, GuestAddr file_addr,
-                                  const std::string& file_override);
-    void private_profile_string_w(Marshaler& m, GuestAddr file_addr,
-                                  const std::string& file_override);
     void impl_GetPrivateProfileSectionA(Marshaler& m);
     void impl_GetPrivateProfileSectionNamesA(Marshaler& m);
     void impl_WritePrivateProfileStringA(Marshaler& m);
@@ -1471,6 +1520,10 @@ private:
         ipc::ProcessObject* process{nullptr};  ///< nullptr: this process
         bool exited{false};
         bool killed{false};  ///< ended by TerminateJobObject / job close
+        /// remote_link_job_kill_on_close descriptor while the job kills on
+        /// close; -1 otherwise (and for this process).
+        int kill_link_fd{-1};
+        bool linking{false};  ///< a link attempt is in flight
     };
     struct JobState {
         std::vector<u8> extended_limits;
@@ -1493,6 +1546,12 @@ private:
     void terminate_job_members(const std::shared_ptr<JobState>& job,
                                u32 exit_code, bool include_self);
     [[nodiscard]] bool job_kills_on_close(const JobState& job) const;
+    /// Bring every live remote member's kill-on-close link in line with the
+    /// job's current limit: link when it kills on close, release otherwise.
+    void sync_job_kill_on_close_links(const std::shared_ptr<JobState>& job);
+    /// The job's last handle closed: drop every link (a member still linked
+    /// was not killed by the caller only if the job did not kill on close).
+    void close_job_kill_on_close_links(JobState& job);
     [[nodiscard]] pid_t pid_for_process_handle(Handle process_handle) const;
     /// Notified after every overlapped completion is published
     /// (GetOverlappedResult with no hEvent waits on it).

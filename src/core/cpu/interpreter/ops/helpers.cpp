@@ -107,6 +107,27 @@ Result<u64, Error> maskmov_ds_edi_address(
     return Result<u64, Error>::ok(offset);
 }
 
+Result<u64, Error> read_memory_av(
+    ExecContext& ctx,
+    u64 addr,
+    u8 size
+) noexcept {
+    auto r = read_memory(ctx, addr, size);
+    if (!r) record_read_access_violation(ctx, addr, size);
+    return r;
+}
+
+VoidResult read_bytes_av(
+    ExecContext& ctx,
+    u64 addr,
+    void* dst,
+    u8 size
+) noexcept {
+    auto r = ctx.mem.read_bytes(addr, static_cast<Byte*>(dst), size);
+    if (!r) record_read_access_violation(ctx, addr, size);
+    return r;
+}
+
 Result<u64, Error> read_memory(
     ExecContext& ctx,
     u64 addr,

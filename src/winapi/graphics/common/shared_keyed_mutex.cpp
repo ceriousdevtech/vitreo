@@ -8,7 +8,7 @@
 #include "ipc/shared_memory.hpp"
 
 #include <libproc.h>
-#include <os/os_sync_wait_on_address.h>
+#include "platform/host_address_wait.hpp"
 #include <sys/proc.h>
 #include <sys/proc_info.h>
 
@@ -82,7 +82,7 @@ private:
 
 void wake(SharedKeyedMutex::Block& block) {
     block.wake_gen.fetch_add(1u, std::memory_order_acq_rel);
-    (void)os_sync_wake_by_address_all(&block.wake_gen, sizeof(u32),
+    (void)::vitreo::platform::address_wake_all(&block.wake_gen, sizeof(u32),
                                       OS_SYNC_WAKE_BY_ADDRESS_SHARED);
 }
 
@@ -207,7 +207,7 @@ SharedKeyedMutex::Result SharedKeyedMutex::acquire(u32 opening, u64 key,
                                      std::chrono::nanoseconds>(deadline - now)
                                      .count()));
         }
-        (void)os_sync_wait_on_address_with_timeout(
+        (void)::vitreo::platform::address_wait_with_timeout(
             &block.wake_gen, seen, sizeof(u32),
             m_shm != nullptr ? OS_SYNC_WAIT_ON_ADDRESS_SHARED
                              : OS_SYNC_WAIT_ON_ADDRESS_NONE,

@@ -19,6 +19,8 @@
 ///
 /// Split out of cocoa_bridge.mm. Both are declared in cocoa_bridge.hpp.
 
+#include <chrono>
+#include <pthread.h>
 #include "windowing/cocoa/cocoa_perf_overlay.h"
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/CATransaction.h>
@@ -47,6 +49,28 @@
 #include "windowing/cocoa/cocoa_bridge.hpp"
 
 namespace vitreo::windowing {
+
+namespace {
+// VITREO_LONG_WAITS (see winapi log_long_wait): host-side blocks over the
+// threshold, to place a frame hitch.
+inline void log_long_host_wait(const char* what,
+                               std::chrono::steady_clock::time_point t0) {
+    static const long long threshold_ns = [] {
+        const char* e = std::getenv("VITREO_LONG_WAITS");
+        if (e == nullptr) return -1LL;
+        const long ms = std::strtol(e, nullptr, 10);
+        return static_cast<long long>(ms > 1 ? ms : 20) * 1000000LL;
+    }();
+    if (threshold_ns < 0) return;
+    const long long ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+        std::chrono::steady_clock::now() - t0).count();
+    if (ns < threshold_ns) return;
+    unsigned long long tid = 0;
+    pthread_threadid_np(nullptr, &tid);
+    std::fprintf(stderr, "[long-wait] tid=%llu host:%s blocked=%.1fms\n", tid, what,
+                 static_cast<double>(ns) / 1e6);
+}
+}  // namespace
 
 namespace {
 // Only the main thread changes depth; signal producers read it to decide
@@ -625,6 +649,7 @@ void CocoaBridge::pump_events(MessageQueue& queue) {
         }
 
         // Drain all pending NSEvents and translate to WM_ messages (non-blocking).
+        bool saw_input = false;
         for (;;) {
             @autoreleasepool {
                 NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny
@@ -632,7 +657,15 @@ void CocoaBridge::pump_events(MessageQueue& queue) {
                                                        inMode:NSDefaultRunLoopMode
                                                       dequeue:YES];
                 if (!event) break;
-                if (vtr_consume_main_wake_event((__bridge void*)event)) continue;
+                if (vtr_consume_main_wake_event((__bridge void*)event)) {
+                    // The event only exists so this wait returns. The worker
+                    // that posted it is still on the queue; run it before
+                    // parking in nextEvent again. A queued event makes
+                    // nextEvent return without running perform-blocks.
+                    vtr_drain_main_work();
+                    continue;
+                }
+                saw_input = true;
 
                 // How stale is this event? AppKit timestamps it on arrival and
                 // CACurrentMediaTime shares that base, so this is exactly the
@@ -1058,13 +1091,22 @@ void CocoaBridge::pump_events(MessageQueue& queue) {
             }
         }
 
-        // Keep exclusive / ClipCursor confinement honest even if a mouse-moved
-        // monitor misses an event (fast multi-monitor flicks).
-        enforce_cursor_clip();
+        // ClipCursor is enforced from the mouse-move monitors. Doing it on
+        // every pump called CGWarpMouseCursorPosition on this thread, which
+        // blocked drawable recycle and every guest hop waiting here.
 
-        // In a normal AppKit app this happens each runloop iteration.
-        // Vitreo drives AppKit manually, so force a display/update tick.
-        [NSApp updateWindows];
+        // Window maintenance stays on the AppKit service loop, and only when
+        // something happened or the chrome has not been updated for a while.
+        // Doing it on every idle slice — and inside a worker hop — walks
+        // every NSWindow on the guest's frame thread.
+        if (!vtr_sync_main_hop_active()) {
+            static CFAbsoluteTime last_window_update = 0;
+            const CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
+            if (saw_input || now - last_window_update >= 0.1) {
+                last_window_update = now;
+                [NSApp updateWindows];
+            }
+        }
     };
     // Use dispatch_sync for minimum overhead — this fires every ~1000
     // instructions and must be fast.  We already early-return when
@@ -1083,7 +1125,9 @@ void CocoaBridge::pump_events(MessageQueue& queue) {
         // CFRunLoopPerformBlock + wake, with bailout on live-resize *or*
         // process teardown so a worker cannot deadlock against main-thread
         // wait_for_threads after guest ExitProcess/crash.
+        const auto hop_t0 = std::chrono::steady_clock::now();
         vtr_run_on_main_sync_bailout(blk, m_in_live_resize, &m_shutdown);
+        log_long_host_wait("pump-main-hop", hop_t0);
     }
 }
 
@@ -1172,7 +1216,12 @@ bool CocoaBridge::wait_events_impl(MessageQueue& queue, u32 timeout_ms,
                                             dequeue:YES];
             }
             // A wake event ends the wait; there is nothing to dispatch.
-            if (event != nil && vtr_consume_main_wake_event((__bridge void*)event)) event = nil;
+            if (event != nil && vtr_consume_main_wake_event((__bridge void*)event)) {
+                event = nil;
+                // Same as the pump: the wake is not the worker's block.
+                // Drain before this wait parks again.
+                vtr_drain_main_work();
+            }
             if (event != nil && vtr_perf_overlay_consume_key_event((__bridge void*)event)) {
                 event = nil;
             }

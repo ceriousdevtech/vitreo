@@ -6,11 +6,19 @@
 #include <atomic>
 #include <chrono>
 #include <cstdio>
+#include <cstring>
+#include <functional>
 #include <filesystem>
 #include <thread>
 
 #include <climits>
+#include <fcntl.h>
 #include <unistd.h>
+#include <csignal>
+#include <sys/socket.h>
+#include <sys/wait.h>
+#include <sys/un.h>
+#include <spawn.h>
 
 #include "winapi/kernel32/memory/remote_memory.hpp"
 #include "core/memory/guest_memory.hpp"
@@ -22,6 +30,8 @@
 #include "winapi/kernel32/memory/memory.hpp"
 #include "winapi/kernel32/synchronization/sync.hpp"
 #include "winapi/kernel32/memory/virtual_query.hpp"
+
+extern char** environ;
 
 using namespace vitreo;
 
@@ -56,6 +66,49 @@ TEST(RemoteMemory, ReadsAndWritesActualGuestMemory) {
     const auto stored = memory.read_u32(kBase + 0x20);
     ASSERT_TRUE(stored.is_ok());
     EXPECT_EQ(stored.value(), replacement);
+}
+
+// A worker spawn inherits every descriptor not marked close-on-exec. A child
+// holding a copy of this process's listener keeps the endpoint accepting
+// after this process exits, and a peer's request then waits forever (an
+// InstallShield engine hung in SelectClipRgn's window-scene snapshot of its
+// exited launcher). The listener must not reach a spawned child.
+TEST(RemoteMemory, ListenerDoesNotLeakIntoSpawnedChildren) {
+    GuestMemory memory;
+    winapi::VirtualMemoryManager virtual_memory(memory);
+    ipc::RemoteMemoryServer server(memory, virtual_memory);
+    ASSERT_TRUE(server.start(false));
+
+    const char* temp_dir = ::getenv("TMPDIR");
+    std::string path = temp_dir != nullptr && temp_dir[0] != '\0' ? temp_dir : "/tmp";
+    if (path.back() != '/') path.push_back('/');
+    path += "vitreo-rmem-" + std::to_string(static_cast<int>(::getuid())) + "-" +
+            std::to_string(static_cast<int>(::getpid())) + ".sock";
+
+    int listener = -1;
+    for (int fd = 0; fd < 4096 && listener < 0; ++fd) {
+        sockaddr_un address{};
+        socklen_t length = sizeof(address);
+        // Only the listener is bound to the endpoint path; client sockets
+        // are unbound. (Darwin rejects SO_ACCEPTCONN on AF_UNIX.)
+        if (::getsockname(fd, reinterpret_cast<sockaddr*>(&address), &length) == 0 &&
+            address.sun_family == AF_UNIX && path == address.sun_path) {
+            listener = fd;
+        }
+    }
+    ASSERT_GE(listener, 0) << "no listening socket bound to " << path;
+    EXPECT_NE(::fcntl(listener, F_GETFD) & FD_CLOEXEC, 0);
+
+    // Spawn as ProcessSession does (default inheritance) and ask the child
+    // whether it holds the descriptor.
+    const std::string probe = "test -e /dev/fd/" + std::to_string(listener);
+    const char* argv[] = {"/bin/sh", "-c", probe.c_str(), nullptr};
+    pid_t child = -1;
+    ASSERT_EQ(::posix_spawn(&child, "/bin/sh", nullptr, nullptr, const_cast<char* const*>(argv), ::environ), 0);
+    int status = 0;
+    ASSERT_EQ(::waitpid(child, &status, 0), child);
+    ASSERT_TRUE(WIFEXITED(status));
+    EXPECT_NE(WEXITSTATUS(status), 0) << "the child inherited the listener (fd " << listener << ")";
 }
 
 TEST(RemoteMemory, SuspendedPrimaryThreadWaitsForResumeRequest) {
@@ -667,6 +720,324 @@ TEST(RemoteMemory, PostsWindowMessageToPeerEndpoint) {
     EXPECT_EQ(received_lparam, 0x8877665544332211ull);
     EXPECT_FALSE(ipc::remote_post_message(::getpid(), 0x10044u, 0xC123u, 0, 0));
     EXPECT_FALSE(ipc::remote_post_message(::getpid(), 0, 0xC123u, 0, 0));
+}
+
+
+// The byte-response operation extends the existing one-request Unix transport.
+// These independent wire records let a fake peer send malformed responses;
+// magic/version are copied from the real client's request, not guessed.
+struct SnapshotWireRequest {
+    u32 magic, version, operation, argument1;
+    u64 address, size;
+    u32 argument2, reserved;
+};
+struct SnapshotWireResponse {
+    u32 magic, version, success, reserved;
+    u64 transferred, value;
+};
+
+std::string scene_test_socket_path() {
+    const char* directory=std::getenv("TMPDIR");
+    std::string path=directory&&*directory ? directory : "/tmp";
+    if(path.back()!='/') path.push_back('/');
+    return path+"vitreo-rmem-"+std::to_string(static_cast<int>(::getuid()))+
+        "-"+std::to_string(static_cast<int>(::getpid()))+".sock";
+}
+bool scene_test_io(int fd,void* data,usize size,bool send) {
+    auto* bytes=static_cast<Byte*>(data);
+    usize done=0;
+    while(done<size) {
+        const ssize_t count=send ? ::send(fd,bytes+done,size-done,MSG_NOSIGNAL)
+                                 : ::recv(fd,bytes+done,size-done,0);
+        if(count<0&&errno==EINTR) continue;
+        if(count<=0) return false;
+        done+=static_cast<usize>(count);
+    }
+    return true;
+}
+int connect_scene_test_endpoint() {
+    const int fd=::socket(AF_UNIX,SOCK_STREAM,0);
+    if(fd<0) return -1;
+    sockaddr_un address{};address.sun_family=AF_UNIX;
+    const auto path=scene_test_socket_path();
+    if(path.size()>=sizeof(address.sun_path)) {::close(fd);return -1;}
+    std::memcpy(address.sun_path,path.c_str(),path.size()+1);
+    if(::connect(fd,reinterpret_cast<sockaddr*>(&address),sizeof(address))!=0) {
+        ::close(fd);return -1;
+    }
+    return fd;
+}
+class FakeSceneEndpoint {
+public:
+    ~FakeSceneEndpoint() {
+        if(listener_>=0) {::shutdown(listener_,SHUT_RDWR);::close(listener_);}
+        if(worker_.joinable()) worker_.join();
+        if(!path_.empty()) ::unlink(path_.c_str());
+    }
+    bool start(std::function<SnapshotWireResponse(const SnapshotWireRequest&)> response,
+               std::vector<Byte> payload={}) {
+        path_=scene_test_socket_path();
+        listener_=::socket(AF_UNIX,SOCK_STREAM,0);
+        if(listener_<0) return false;
+        sockaddr_un address{};address.sun_family=AF_UNIX;
+        if(path_.size()>=sizeof(address.sun_path)) return false;
+        std::memcpy(address.sun_path,path_.c_str(),path_.size()+1);
+        if(::bind(listener_,reinterpret_cast<sockaddr*>(&address),sizeof(address))!=0 ||
+           ::listen(listener_,1)!=0) return false;
+        worker_=std::thread([this,response=std::move(response),payload=std::move(payload)]() mutable {
+            const int client=::accept(listener_,nullptr,nullptr);
+            if(client<0) return;
+            SnapshotWireRequest request{};
+            if(scene_test_io(client,&request,sizeof(request),false)) {
+                auto header=response(request);
+                (void)scene_test_io(client,&header,sizeof(header),true);
+                if(!payload.empty()) (void)scene_test_io(client,payload.data(),payload.size(),true);
+            }
+            ::close(client);
+        });
+        return true;
+    }
+private:
+    int listener_{-1};
+    std::string path_;
+    std::thread worker_;
+};
+
+TEST(RemoteMemory, WindowSceneSnapshotOwnsBytesAndDistinguishesEmptyFailure) {
+    GuestMemory memory;
+    winapi::VirtualMemoryManager virtual_memory(memory);
+    ipc::RemoteMemoryServer server(memory,virtual_memory);
+    const std::vector<Byte> expected{0,1,0xFF,0x32};
+    const auto caller=std::this_thread::get_id();
+    std::atomic<bool> ran_on_worker{false};
+    server.set_window_scene_snapshot_handler([&]() -> std::optional<std::vector<Byte>> {
+        ran_on_worker.store(std::this_thread::get_id()!=caller);
+        // Replacing the callback from itself proves invocation holds no
+        // callback-registration lock. Empty is a successful second response.
+        server.set_window_scene_snapshot_handler([]() -> std::optional<std::vector<Byte>> {
+            return std::vector<Byte>{};
+        });
+        return expected;
+    });
+    ASSERT_TRUE(server.start(false));
+    auto first=ipc::remote_window_scene_snapshot(::getpid());
+    ASSERT_TRUE(first.has_value());EXPECT_EQ(*first,expected);
+    EXPECT_TRUE(ran_on_worker.load());
+    (*first)[0]=0xAB;EXPECT_EQ(expected[0],0u);
+    const auto empty=ipc::remote_window_scene_snapshot(::getpid());
+    ASSERT_TRUE(empty.has_value());EXPECT_TRUE(empty->empty());
+    server.set_window_scene_snapshot_handler({});
+    EXPECT_FALSE(ipc::remote_window_scene_snapshot(::getpid()).has_value());
+    server.set_window_scene_snapshot_handler([]() -> std::optional<std::vector<Byte>> {
+        return std::nullopt;
+    });
+    EXPECT_FALSE(ipc::remote_window_scene_snapshot(::getpid()).has_value());
+    EXPECT_FALSE(ipc::remote_window_scene_snapshot(0).has_value());
+}
+
+TEST(RemoteMemory, WindowSceneSnapshotEnforcesTransferCap) {
+    constexpr usize limit=1024*1024; // Existing transport/user-specified cap.
+    GuestMemory memory;
+    winapi::VirtualMemoryManager virtual_memory(memory);
+    ipc::RemoteMemoryServer server(memory,virtual_memory);
+    server.set_window_scene_snapshot_handler([]() -> std::optional<std::vector<Byte>> {
+        return std::vector<Byte>(limit,0x7B);
+    });
+    ASSERT_TRUE(server.start(false));
+    const auto maximum=ipc::remote_window_scene_snapshot(::getpid());
+    ASSERT_TRUE(maximum.has_value());ASSERT_EQ(maximum->size(),limit);
+    EXPECT_EQ(maximum->front(),0x7Bu);EXPECT_EQ(maximum->back(),0x7Bu);
+    server.set_window_scene_snapshot_handler([]() -> std::optional<std::vector<Byte>> {
+        return std::vector<Byte>(limit+1,0x7B);
+    });
+    EXPECT_FALSE(ipc::remote_window_scene_snapshot(::getpid()).has_value());
+}
+
+TEST(RemoteMemory, WindowSceneSnapshotRejectsMalformedPeerResponses) {
+    constexpr u64 limit=1024*1024;
+    for(u32 mode=0;mode<8;++mode) {
+        SCOPED_TRACE(mode);
+        FakeSceneEndpoint peer;
+        ASSERT_TRUE(peer.start([mode](const SnapshotWireRequest& request) {
+            SnapshotWireResponse response{request.magic,request.version,1,0,0,0};
+            switch(mode) {
+                case 0: response.magic^=1;break;
+                case 1: response.version^=1;break;
+                case 2: response.success=0;break;
+                case 3: response.success=2;break;
+                case 4: response.reserved=1;break;
+                case 5: response.value=1;break;
+                case 6: response.transferred=limit+1;break;
+                case 7: response.transferred=8;break; // truncated payload below
+            }
+            return response;
+        },mode==7 ? std::vector<Byte>{1,2,3} : std::vector<Byte>{}));
+        EXPECT_FALSE(ipc::remote_window_scene_snapshot(::getpid()).has_value());
+    }
+}
+
+TEST(RemoteMemory, WindowSceneSnapshotRejectsBadRequestsBeforeCallingHandler) {
+    SnapshotWireRequest request{};
+    {
+        FakeSceneEndpoint capture;
+        ASSERT_TRUE(capture.start([&](const SnapshotWireRequest& incoming) {
+            request=incoming;
+            return SnapshotWireResponse{incoming.magic,incoming.version,0,0,0,0};
+        }));
+        EXPECT_FALSE(ipc::remote_window_scene_snapshot(::getpid()).has_value());
+    }
+    GuestMemory memory;
+    winapi::VirtualMemoryManager virtual_memory(memory);
+    ipc::RemoteMemoryServer server(memory,virtual_memory);
+    std::atomic<u32> calls{0};
+    server.set_window_scene_snapshot_handler([&]() -> std::optional<std::vector<Byte>> {
+        ++calls;return std::vector<Byte>{1,2,3};
+    });
+    ASSERT_TRUE(server.start(false));
+    for(u32 mode=0;mode<5;++mode) {
+        auto invalid=request;
+        switch(mode) {
+            case 0: invalid.size=request.size+1;break;
+            case 1: invalid.address=1;break;
+            case 2: invalid.argument1=1;break;
+            case 3: invalid.argument2=1;break;
+            case 4: invalid.reserved=1;break;
+        }
+        const int client=connect_scene_test_endpoint();ASSERT_GE(client,0);
+        ASSERT_TRUE(scene_test_io(client,&invalid,sizeof(invalid),true));
+        SnapshotWireResponse response{};
+        const bool received=scene_test_io(client,&response,sizeof(response),false);
+        ::close(client);
+        ASSERT_TRUE(received);EXPECT_EQ(response.success,0u);EXPECT_EQ(response.transferred,0u);
+    }
+    EXPECT_EQ(calls.load(),0u);
+    // A valid, smaller advertised capacity cannot receive a larger snapshot.
+    request.size=0;
+    const int client=connect_scene_test_endpoint();ASSERT_GE(client,0);
+    ASSERT_TRUE(scene_test_io(client,&request,sizeof(request),true));
+    SnapshotWireResponse response{};
+    const bool received=scene_test_io(client,&response,sizeof(response),false);
+    ::close(client);
+    ASSERT_TRUE(received);EXPECT_EQ(response.success,0u);EXPECT_EQ(response.transferred,0u);
+    EXPECT_EQ(calls.load(),1u);
+}
+
+// ---- JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE across host processes ----
+// s4_job_probe.expected: kill_on_close_last_handle wait=0 code=0 -- every
+// member ends with exit code 0 when the job's last handle closes. The owner
+// process ending by any path (TerminateProcess is a host SIGKILL here) closes
+// all of its handles, so its members must end even though no owner code runs.
+
+/// Fork a member: a process with a remote endpoint that otherwise idles.
+pid_t fork_job_member() {
+    const pid_t pid = ::fork();
+    if (pid != 0) return pid;
+    GuestMemory memory;
+    winapi::VirtualMemoryManager virtual_memory(memory);
+    ipc::RemoteMemoryServer server(memory, virtual_memory);
+    if (!server.start(false)) ::_exit(91);
+    for (int i = 0; i < 300; ++i) ::usleep(100 * 1000);
+    ::_exit(92);  // 30 s without being terminated
+}
+
+/// Wait up to @p timeout_ms for @p pid; true with its status once reaped.
+bool wait_exit(pid_t pid, int timeout_ms, int& status) {
+    for (int waited = 0; waited <= timeout_ms; waited += 10) {
+        const pid_t done = ::waitpid(pid, &status, WNOHANG);
+        if (done == pid) return true;
+        ::usleep(10 * 1000);
+    }
+    return false;
+}
+
+void reap(pid_t pid) {
+    (void)::kill(pid, SIGKILL);
+    int status = 0;
+    (void)::waitpid(pid, &status, 0);
+}
+
+/// Fork an owner that links to @p member, optionally releases the link, then
+/// reports through @p ready and idles until it is SIGKILLed.
+pid_t fork_job_owner(pid_t member, bool release, int ready_write) {
+    const pid_t pid = ::fork();
+    if (pid != 0) return pid;
+    const int link = ipc::remote_link_job_kill_on_close(member);
+    if (link >= 0 && release) ipc::release_job_kill_on_close_link(link);
+    const char ok = link >= 0 ? 'y' : 'n';
+    (void)::write(ready_write, &ok, 1);
+    for (;;) ::pause();
+}
+
+TEST(RemoteMemory, KillOnCloseMemberEndsWithCodeZeroWhenOwnerIsKilled) {
+    const pid_t member = fork_job_member();
+    ASSERT_GT(member, 0);
+    int ready[2];
+    ASSERT_EQ(::pipe(ready), 0);
+    const pid_t owner = fork_job_owner(member, /*release=*/false, ready[1]);
+    ASSERT_GT(owner, 0);
+    char linked = 0;
+    ASSERT_EQ(::read(ready[0], &linked, 1), 1);
+    EXPECT_EQ(linked, 'y');
+
+    int status = 0;
+    EXPECT_FALSE(wait_exit(member, 200, status))
+        << "member must live while the owner holds the job";
+
+    ::kill(owner, SIGKILL);  // TerminateProcess of the job owner
+    reap(owner);
+    const bool ended = wait_exit(member, 5000, status);
+    if (!ended) reap(member);
+    ASSERT_TRUE(ended) << "member outlived its kill-on-close job";
+    ASSERT_TRUE(WIFEXITED(status));
+    EXPECT_EQ(WEXITSTATUS(status), 0);
+    ::close(ready[0]);
+    ::close(ready[1]);
+}
+
+TEST(RemoteMemory, KillOnCloseLinkClosedInProcessEndsMember) {
+    // on_job_handle_close: the last handle closes in the owner, which then
+    // closes the link itself.
+    const pid_t member = fork_job_member();
+    ASSERT_GT(member, 0);
+    const int link = ipc::remote_link_job_kill_on_close(member);
+    ASSERT_GE(link, 0);
+    EXPECT_NE(::fcntl(link, F_GETFD) & FD_CLOEXEC, 0)
+        << "a launched child must not inherit the link";
+    int status = 0;
+    EXPECT_FALSE(wait_exit(member, 200, status));
+    ::close(link);
+    const bool ended = wait_exit(member, 5000, status);
+    if (!ended) reap(member);
+    ASSERT_TRUE(ended);
+    ASSERT_TRUE(WIFEXITED(status));
+    EXPECT_EQ(WEXITSTATUS(status), 0);
+}
+
+TEST(RemoteMemory, ReleasedKillOnCloseLinkLeavesMemberRunning) {
+    // The limit was cleared: the job no longer terminates its members, so the
+    // owner's death must not end them (a CreateProcess child outlives its
+    // creator).
+    const pid_t member = fork_job_member();
+    ASSERT_GT(member, 0);
+    int ready[2];
+    ASSERT_EQ(::pipe(ready), 0);
+    const pid_t owner = fork_job_owner(member, /*release=*/true, ready[1]);
+    ASSERT_GT(owner, 0);
+    char linked = 0;
+    ASSERT_EQ(::read(ready[0], &linked, 1), 1);
+    EXPECT_EQ(linked, 'y');
+    ::kill(owner, SIGKILL);
+    reap(owner);
+    int status = 0;
+    EXPECT_FALSE(wait_exit(member, 500, status));
+    reap(member);
+    ::close(ready[0]);
+    ::close(ready[1]);
+}
+
+TEST(RemoteMemory, KillOnCloseLinkFailsWithoutPeerEndpoint) {
+    EXPECT_EQ(ipc::remote_link_job_kill_on_close(0), -1);
+    EXPECT_EQ(ipc::remote_link_job_kill_on_close(::getpid()), -1);
 }
 
 } // namespace

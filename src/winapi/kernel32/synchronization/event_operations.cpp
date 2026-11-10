@@ -42,6 +42,55 @@
 
 namespace vitreo::winapi {
 
+SyncEvent::~SyncEvent() {
+    // Namespace ownership belongs to real handles, not pending references.
+    if(nt_id) ntsync::global().destroy(nt_id);
+}
+bool SyncEvent::reset_for_io() {
+    std::lock_guard lock(backend_mutex);
+    if(shared) {shared->reset_event();return true;}
+    return nt_id && ntsync::global().reset_event(nt_id);
+}
+bool SyncEvent::signal_for_io() {
+    std::lock_guard lock(backend_mutex);
+    if(shared) {shared->set_event();return true;}
+    return nt_id && ntsync::global().set_event(nt_id);
+}
+bool SyncEvent::query_for_io(bool& manual,bool& signaled) {
+    std::lock_guard lock(backend_mutex);
+    if(shared) {manual=shared->event_manual_reset();signaled=shared->event_is_signaled();return true;}
+    const auto state=ntsync::global().snapshot(nt_id);if(!state) return false;
+    manual=state->manual_reset;signaled=state->signaled;return true;
+}
+
+std::shared_ptr<SyncEvent> SyncManager::reference_event_for_io(Handle h,u32& error) {
+    std::shared_lock lock(m_mutex);
+    const auto found=m_events.find(h);
+    if(found==m_events.end() || found->second->waitable_timer) {error=error_codes::ERROR_INVALID_HANDLE;return {};}
+    if((m_handles.get_access(h)&sync_access::EVENT_MODIFY_STATE)==0) {error=error_codes::ERROR_ACCESS_DENIED;return {};}
+    auto event=found->second;
+    if(!event->reset_for_io()) {error=error_codes::ERROR_INVALID_HANDLE;return {};}
+    error=0;return event;
+}
+
+void SyncManager::release_event_handles() {
+    std::vector<std::shared_ptr<SyncEvent>> events;std::vector<std::string> names;
+    {
+        std::lock_guard lock(m_mutex);
+        for(const auto& entry:m_events) if(std::none_of(events.begin(),events.end(),[&](const auto& e){return e==entry.second;})) events.push_back(entry.second);
+        for(const auto& event:events) if(!event->name.empty()) {
+            const auto found=m_named_events.find(event->name);
+            if(found!=m_named_events.end() && found->second.lock()==event) names.push_back(event->name);
+        }
+        m_events.clear();m_named_events.clear();
+    }
+    for(const auto& name:names) named_object_unregister(name,NamedObjectKind::Event);
+    for(const auto& event:events) {
+        std::lock_guard backend_lock(event->backend_mutex);
+        if(event->shared) event->shared->release_handle_reference();
+    }
+}
+
 // =============================================================================
 // Event Operations
 // =============================================================================
@@ -404,6 +453,7 @@ std::optional<std::string> SyncManager::prepare_transferred_handle(
             return std::nullopt;
         }
         auto& event = *found->second;
+        std::lock_guard backend_lock(event.backend_mutex);
         kind = ipc::SyncKind::Event;
         visible_name = event.name;
         transfer_name = event.transfer_name;
@@ -625,13 +675,16 @@ bool SyncManager::on_handle_close(Handle h, HandleType type) noexcept {
             m_events.erase(it);
             // The local ntsync object belongs to the shared event wrapper,
             // not to any individual HANDLE.
-            if (event.use_count() == 1) {
-                nt_id = event->nt_id;
+            if (std::none_of(m_events.begin(),m_events.end(),[&](const auto& entry){return entry.second==event;})) {
                 if (!event->name.empty()) {
-                    named_object_unregister(event->name,
-                                            NamedObjectKind::Event);
-                    m_named_events.erase(event->name);
+                    const auto named=m_named_events.find(event->name);
+                    if(named!=m_named_events.end() && named->second.lock()==event) {
+                        named_object_unregister(event->name,NamedObjectKind::Event);
+                        m_named_events.erase(named);
+                    }
                 }
+                std::lock_guard backend_lock(event->backend_mutex);
+                if(event->shared) event->shared->release_handle_reference();
             }
         } else if (type == HandleType::Mutex) {
             auto it = m_mutexes.find(h);
@@ -751,16 +804,7 @@ bool SyncManager::query_event(Handle h, bool& manual_reset, bool& signaled) cons
         if (it == m_events.end() || it->second->waitable_timer) return false;
         event = it->second;
     }
-    if (event->shared) {
-        manual_reset = event->shared->event_manual_reset();
-        signaled = event->shared->event_is_signaled();
-        return true;
-    }
-    const auto object = ntsync::global().snapshot(event->nt_id);
-    if (!object) return false;
-    manual_reset = object->manual_reset;
-    signaled = object->signaled;
-    return true;
+    return event->query_for_io(manual_reset,signaled);
 }
 
 std::string SyncManager::object_name(Handle h) const {
@@ -790,6 +834,7 @@ bool SyncManager::set_event_state(Handle h, SyncTraceContext trace, bool timer,
     u64 nt_id = 0;
     std::shared_ptr<ipc::SharedSyncObject> shared;
     std::shared_ptr<SyncEvent> event;
+    std::unique_lock<std::mutex> backend_lock;
     std::string name;
     {
         std::shared_lock<HostRwLock> lock(m_mutex);
@@ -808,6 +853,7 @@ bool SyncManager::set_event_state(Handle h, SyncTraceContext trace, bool timer,
             return false;
         }
         event = it->second;
+        backend_lock=std::unique_lock(event->backend_mutex);
         shared = event->shared;
         nt_id = event->nt_id;
         name = event->name;
@@ -860,6 +906,7 @@ bool SyncManager::pulse_event(Handle h, SyncTraceContext trace, bool* previous_s
     // wake is lost and the waiter blocks forever.
     u64 nt_id = 0;
     std::shared_ptr<SyncEvent> event;
+    std::unique_lock<std::mutex> backend_lock;
     {
         std::shared_lock<HostRwLock> lock(m_mutex);
         auto it = m_events.find(h);
@@ -876,6 +923,7 @@ bool SyncManager::pulse_event(Handle h, SyncTraceContext trace, bool* previous_s
             return false;
         }
         event = it->second;
+        backend_lock=std::unique_lock(event->backend_mutex);
         nt_id = event->nt_id;
     }
     const bool result = ntsync::global().pulse_event(nt_id, previous_state);
@@ -903,6 +951,7 @@ bool SyncManager::reset_event_state(Handle h, SyncTraceContext trace,
     u64 nt_id = 0;
     std::shared_ptr<ipc::SharedSyncObject> shared;
     std::shared_ptr<SyncEvent> event;
+    std::unique_lock<std::mutex> backend_lock;
     {
         std::shared_lock<HostRwLock> lock(m_mutex);
         auto it = m_events.find(h);
@@ -919,6 +968,7 @@ bool SyncManager::reset_event_state(Handle h, SyncTraceContext trace,
             return false;
         }
         event = it->second;
+        backend_lock=std::unique_lock(event->backend_mutex);
         shared = event->shared;
         nt_id = event->nt_id;
     }

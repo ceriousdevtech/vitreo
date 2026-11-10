@@ -468,6 +468,11 @@ inline u64& mem_watch_cur_rip() noexcept;
     }
 }
 
+// Called after a watched write is reported, with its `who` tag. The runtime
+// installs one (VITREO_WATCH_DUMP_RING) to dump the PC-trace ring at the
+// moment of the write; null otherwise.
+inline std::atomic<void (*)(const char*)> g_mem_watch_hit_hook{nullptr};
+
 // Report a write if it overlaps the watched address. `value` is the low bytes
 // of the value written (enough for a lock byte/word).
 inline void mem_watch_check(GuestAddr addr, usize size, u64 value, const char* who) noexcept {
@@ -484,6 +489,9 @@ inline void mem_watch_check(GuestAddr addr, usize size, u64 value, const char* w
                 (unsigned long long)value, who,
                 (unsigned long long)mem_watch_cur_rip(),
                 r.eax, r.ecx, r.edx, r.ebx, r.esp, r.ebp, r.esi, r.edi);
+            if (auto hook = g_mem_watch_hit_hook.load(std::memory_order_acquire)) {
+                hook(who);
+            }
         }
     };
     for (u64 w : mem_watch_addrs()) {

@@ -684,6 +684,38 @@ TEST(IrPasses, RecordsThatRetireOverlaysOwnCfAndOfInTheMaterializer) {
     EXPECT_FALSE(record_owns_cf_and_of(F::Inc64));
 }
 
+TEST(IrPasses, OverlayNoOpPreservesScalarAndEmptyBlocksExactly) {
+    for (const bool wide : {false, true}) {
+        for (const u32 count : {0u, 1u, 8u}) {
+            IrBlock block;
+            block.entry_rip = kRip0;
+            block.is_64bit = wide;
+            IrBuilder b(block);
+            for (u32 i = 0; i < count; ++i) {
+                if (wide) emit_add64(b, kRip0 + i * 3);
+                else emit_alu(b, kRip0 + i * 3, FlagState::FlagOp::Add32);
+            }
+            const auto* const data = block.insts.data();
+            const usize size = block.insts.size();
+            const auto next_value = block.next_value;
+            // Snapshot the original storage, including every instruction field.
+            // No instruction is eligible for this transform.
+            const std::string before(size == 0 ? "" :
+                reinterpret_cast<const char*>(data), size * sizeof(Inst));
+            PassStats stats;
+            EXPECT_EQ(eliminate_dead_overlays(block, stats), 0u);
+            ASSERT_EQ(block.insts.size(), size);
+            EXPECT_EQ(block.insts.data(), data);
+            EXPECT_EQ(block.next_value, next_value);
+            EXPECT_EQ(std::string(size == 0 ? "" :
+                reinterpret_cast<const char*>(block.insts.data()),
+                size * sizeof(Inst)), before);
+            EXPECT_EQ(stats.overlays_killed, 0u);
+            EXPECT_EQ(stats.values_dce, 0u);
+        }
+    }
+}
+
 // `shl rax,5 ; add rax,rcx`: the ADD's record owns CF and OF, so the SHL's
 // overlay is dead, and so is the bit extraction that fed it.
 TEST(IrPasses, OverlayRetiredByAFullFlagWriterIsRemovedWithItsInputs) {
@@ -704,6 +736,33 @@ TEST(IrPasses, OverlayRetiredByAFullFlagWriterIsRemovedWithItsInputs) {
     EXPECT_EQ(block.insts.size(), before - 4);
     std::string why;
     EXPECT_TRUE(verify(block, &why)) << why;
+}
+
+TEST(IrPasses, OverlayMaskKeepsLiveEntriesBeforeAndAfterFirstRemoval) {
+    for (const bool live_first : {false, true}) {
+        IrBlock block;
+        block.entry_rip = kRip0;
+        block.is_64bit = true;
+        IrBuilder b(block);
+        emit_shl5(b, kRip0);
+        if (live_first) {
+            const auto c = b.eval_cc(last_flags(block), 0x2);
+            b.gpr_write(GuestReg{2, Type::I8}, c);
+        }
+        emit_add64(b, kRip1);
+        emit_shl5(b, kRip2);
+        if (live_first) emit_add64(b, kRip2 + 3);
+        const usize before = block.insts.size();
+
+        PassStats stats;
+        EXPECT_EQ(eliminate_dead_overlays(block, stats), 1u);
+        EXPECT_EQ(count_op(block, Op::SetCf), 1u);
+        EXPECT_EQ(stats.overlays_killed, 1u);
+        EXPECT_EQ(stats.values_dce, 3u);
+        EXPECT_EQ(block.insts.size(), before - 4);
+        std::string why;
+        EXPECT_TRUE(verify(block, &why)) << why;
+    }
 }
 
 // Anything that can observe CF in between keeps the overlay.

@@ -50,7 +50,7 @@ static Result<f32, Error> read_ss(ExecContext& ctx, const Operand& op) noexcept 
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<f32, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 4);
+    auto val = read_memory_av(ctx, addr.value(), 4);
     if (!val) return Result<f32, Error>::err(val.error());
     f32 f;
     u32 bits = static_cast<u32>(val.value());
@@ -65,7 +65,7 @@ static Result<f64, Error> read_sd(ExecContext& ctx, const Operand& op) noexcept 
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<f64, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 8);
+    auto val = read_memory_av(ctx, addr.value(), 8);
     if (!val) return Result<f64, Error>::err(val.error());
     f64 d;
     u64 bits = val.value();
@@ -83,11 +83,11 @@ static Result<XmmReg, Error> read_pack(ExecContext& ctx, const Operand& op,
     if (!addr) return Result<XmmReg, Error>::err(addr.error());
     if (aligned_form && op.type == OperandType::Mem128 &&
         (addr.value() & 0xF) != 0) {
-        ctx.exception = CpuException::GeneralProtection;
+        record_misaligned_operand_gp(ctx);
         return Result<XmmReg, Error>::err(Error::InvalidArgument);
     }
     XmmReg tmp{};
-    auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
+    auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
     if (!r) return Result<XmmReg, Error>::err(r.error());
     return Result<XmmReg, Error>::ok(tmp);
 }
@@ -100,7 +100,7 @@ static Result<XmmReg, Error> read_pack64(ExecContext& ctx, const Operand& op) no
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<XmmReg, Error>::err(addr.error());
     XmmReg tmp{};
-    auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 8);
+    auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&tmp), 8);
     if (!r) return Result<XmmReg, Error>::err(r.error());
     return Result<XmmReg, Error>::ok(tmp);
 }
@@ -114,7 +114,7 @@ static Result<u64, Error> read_mmm64(ExecContext& ctx, const Operand& op) noexce
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<u64, Error>::err(addr.error());
-    return read_memory(ctx, addr.value(), 8);
+    return read_memory_av(ctx, addr.value(), 8);
 }
 
 /// Write 64 bits to an MMX register (also sets the x87 "MMX in use" tag).
@@ -137,7 +137,7 @@ static Result<i32, Error> read_rm32(ExecContext& ctx, const Operand& op) noexcep
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<i32, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 4);
+    auto val = read_memory_av(ctx, addr.value(), 4);
     if (!val) return Result<i32, Error>::err(val.error());
     return Result<i32, Error>::ok(static_cast<i32>(static_cast<u32>(val.value())));
 }
@@ -150,7 +150,7 @@ static Result<i64, Error> read_rm64(ExecContext& ctx, const Operand& op) noexcep
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<i64, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 8);
+    auto val = read_memory_av(ctx, addr.value(), 8);
     if (!val) return Result<i64, Error>::err(val.error());
     return Result<i64, Error>::ok(static_cast<i64>(val.value()));
 }

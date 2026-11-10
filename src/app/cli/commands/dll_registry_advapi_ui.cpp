@@ -1,8 +1,11 @@
+#include "window_scene_capture.hpp"
 // SPDX-License-Identifier: LGPL-2.1-only
 // Vitreo - Windows Runtime Engine for macOS ARM64
 // DLL registry part: advapi32.dll, rpcrt4.dll, uiautomationcore.dll, gdi32.dll and user32.dll
 
 #include "dll_registry_internal.hpp"
+#include "ipc/hwnd_registry.hpp"
+#include <unistd.h>
 #include "winapi/user32/classes/system_classes.hpp"
 
 #include "winapi/kernel32/error.hpp"
@@ -233,7 +236,8 @@ void register_ui_core_dlls(RuntimeContext& ctx, bool guest_is_64bit, winapi::Dll
 
     // -- gdi32.dll --
     {
-        auto gdi_exports = winapi::make_gdi32_exports(ctx.gdi_mgr);
+        auto gdi_exports = winapi::make_gdi32_exports(ctx.gdi_mgr, {}, guest_is_64bit,
+            [&ctx] {return capture_system_region_scene(ctx);});
         (void)reg.register_dll("gdi32.dll", std::move(gdi_exports));
         // Map scratch buffer for DIB section pixel data
         ctx.vmm.virtual_alloc(winapi::GdiManager::GDI_DIB_SCRATCH_BASE,

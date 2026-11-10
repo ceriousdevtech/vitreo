@@ -78,6 +78,25 @@ bool FileManager::set_delete_disposition(Handle h, bool delete_on_close) {
 }
 
 bool FileManager::on_handle_close(Handle h, HandleType type, void* object) noexcept {
+    if (type == HandleType::HidDevice) {
+        auto* holder=static_cast<HidOpenFileHolder*>(object);
+        const auto file=holder ? *holder : HidOpenFileHolder{};
+        {
+            std::lock_guard lock(m_hid_io_mutex);
+            if(m_unregister_hid_waitable) m_unregister_hid_waitable(h);
+            m_hid_input_handles.erase(h);m_hid_open_files.erase(h);
+            const bool remaining=std::any_of(m_hid_open_files.begin(),m_hid_open_files.end(),
+                [&](const auto& entry){return entry.second==file;});
+            if(file && !remaining) {
+                // IRP_MJ_CLEANUP is issued on the last real file handle, not
+                // the last shared_ptr (pending I/O retains the file object).
+                {std::lock_guard file_lock(file->mutex);file->cleaned_up=true;file->reports.clear();}
+                for(auto& request:m_hid_reads) if(request.file==file) request.cancelled=true;
+            }
+            m_hid_io_cv.notify_one();
+        }
+        delete holder;return true;
+    }
     // File handles: close underlying VFS handle if we have a mapping.
     if (type == HandleType::File) {
         capsule::FileHandle vfs_handle = capsule::INVALID_FILE_HANDLE;

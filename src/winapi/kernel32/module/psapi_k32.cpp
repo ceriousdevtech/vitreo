@@ -21,6 +21,7 @@
 #include "winapi/kernel32/filesystem/file_search.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "winapi/kernel32/module/module.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "winapi/kernel32/process/process.hpp"
 #include "winapi/kernel32/synchronization/sync.hpp"
 #include "winapi/kernel32/synchronization/critical_section.hpp"
@@ -120,7 +121,7 @@ void Kernel32ExtManager::impl_K32EnumProcesses(Marshaler& m) {
         pids.push_back(4);
         const u32 self = m_process_manager
             ? m_process_manager->get_current_process_id()
-            : static_cast<u32>(::getpid());
+            : ipc::guest_process_id();
         if (self != 0 && self != 4) {
             pids.push_back(self);
         }
@@ -185,8 +186,7 @@ enum class PsapiProcess { Current, Other, Invalid, AccessDenied };
             return PsapiProcess::AccessDenied;
         }
     }
-    if (processes != nullptr &&
-        static_cast<u32>(process->pid) == processes->get_current_process_id()) {
+    if (process->pid == ::getpid()) {
         return PsapiProcess::Current;
     }
     return PsapiProcess::Other;
@@ -602,7 +602,7 @@ bool Kernel32ExtManager::write_next_module_entry(
     const auto& module = state.modules[state.next_module_index++];
     const u32 process_id = m_process_manager
         ? m_process_manager->get_current_process_id()
-        : static_cast<u32>(::getpid());
+        : ipc::guest_process_id();
     const u32 base_offset = is_64bit ? 24u : 20u;
     const u32 size_offset = is_64bit ? 32u : 24u;
     const u32 handle_offset = is_64bit ? 40u : 28u;

@@ -263,11 +263,18 @@ private:
 
 } // namespace
 
+std::unique_ptr<BackendImmediateExecution> MetalDevice::begin_immediate_execution() {
+    if (!available()) return nullptr;
+    return MetalSubmitQueue::instance().begin_immediate();
+}
+
 std::shared_ptr<GpuCompletion> MetalDevice::flush_completion() {
     if (!available()) {
         return nullptr;
     }
-    const u64 generation = MetalSubmitQueue::instance().submit();
+    auto& queue = MetalSubmitQueue::instance();
+    if (queue.immediate_on_this_thread()) return queue.flush_immediate();
+    const u64 generation = queue.submit();
     return std::make_shared<MetalGenerationCompletion>(generation);
 }
 

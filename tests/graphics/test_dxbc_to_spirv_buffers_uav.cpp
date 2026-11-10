@@ -19,6 +19,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iterator>
+#include <set>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -511,4 +512,251 @@ TEST(DxbcToSpirvTest, TranslatesStructuredGroupsharedMemoryAsAWordArray) {
     // barrier between the write and the read survives.
     EXPECT_NE(msl.find("threadgroup uint g0[8]"), std::string::npos) << msl;
     EXPECT_NE(msl.find("threadgroup_barrier"), std::string::npos) << msl;
+}
+
+namespace {
+
+struct SpvInst {
+    u32 block = 0;
+    std::vector<u32> words;
+};
+
+std::vector<SpvInst> spirv_instructions(const std::vector<u32>& spirv) {
+    std::vector<SpvInst> out;
+    u32 block = 0;
+    for (usize i = 5; i < spirv.size();) {
+        const u32 word_count = spirv[i] >> 16;
+        if (word_count == 0 || i + word_count > spirv.size()) break;
+        SpvInst inst;
+        inst.words.assign(spirv.begin() + static_cast<std::ptrdiff_t>(i),
+                          spirv.begin() + static_cast<std::ptrdiff_t>(i + word_count));
+        const u32 op = inst.words[0] & 0xFFFFu;
+        if (op == 248u && inst.words.size() >= 2u) block = inst.words[1];
+        inst.block = block;
+        out.push_back(std::move(inst));
+        i += word_count;
+    }
+    return out;
+}
+
+bool is_memory_atomic(u32 op) {
+    // SPIR-V opcodes audited in dxbc_to_spirv_spv_defs.hpp.
+    return op == 229u || op == 230u || (op >= 234u && op <= 242u);
+}
+
+// Every atomic stands in the true arm of a word < view-size compare, and the
+// false arm does not form a pointer or run an atomic. D3D11.3 22.17.8:
+// out-of-bounds addressing on u# writes nothing.
+bool atomics_are_bounds_guarded(const std::vector<u32>& spirv) {
+    const auto insts = spirv_instructions(spirv);
+    std::set<u32> less_than;
+    for (const auto& inst : insts) {
+        if ((inst.words[0] & 0xFFFFu) == 176u && inst.words.size() >= 3u) {
+            less_than.insert(inst.words[2]);
+        }
+    }
+    u32 atomics = 0;
+    u32 guarded = 0;
+    for (const auto& atomic : insts) {
+        const u32 op = atomic.words[0] & 0xFFFFu;
+        if (!is_memory_atomic(op)) continue;
+        ++atomics;
+        for (const auto& branch : insts) {
+            if ((branch.words[0] & 0xFFFFu) != 250u || branch.words.size() < 4u) {
+                continue;
+            }
+            if (!less_than.contains(branch.words[1]) ||
+                branch.words[2] != atomic.block) {
+                continue;
+            }
+            const u32 outside = branch.words[3];
+            bool clean = true;
+            for (const auto& other : insts) {
+                if (other.block != outside) continue;
+                const u32 other_op = other.words[0] & 0xFFFFu;
+                if (is_memory_atomic(other_op) || other_op == 65u) clean = false;
+            }
+            if (clean) ++guarded;
+            break;
+        }
+    }
+    return atomics > 0 && guarded == atomics;
+}
+
+// Push-block bounds compare word < select(size == 0, 0xFFFFFFFF, size):
+// a stored 0 means the size is unknown. A descriptor-table compare is
+// word < load(view size), and a loaded 0 is an empty view.
+bool bounds_limit_is_select_of_all_ones(const std::vector<u32>& spirv) {
+    std::set<u32> all_ones;
+    std::set<u32> selects_all_ones;
+    for (const auto& inst : spirv_instructions(spirv)) {
+        const u32 op = inst.words[0] & 0xFFFFu;
+        if (op == 43u && inst.words.size() >= 4u && inst.words[3] == 0xFFFFFFFFu) {
+            all_ones.insert(inst.words[2]);
+        }
+    }
+    for (const auto& inst : spirv_instructions(spirv)) {
+        const u32 op = inst.words[0] & 0xFFFFu;
+        // OpSelect: type, result, cond, a, b.
+        if (op != 169u || inst.words.size() < 6u) continue;
+        if (all_ones.contains(inst.words[4]) || all_ones.contains(inst.words[5])) {
+            selects_all_ones.insert(inst.words[2]);
+        }
+    }
+    for (const auto& inst : spirv_instructions(spirv)) {
+        const u32 op = inst.words[0] & 0xFFFFu;
+        if (op != 176u || inst.words.size() < 5u) continue;
+        if (selects_all_ones.contains(inst.words[3]) ||
+            selects_all_ones.contains(inst.words[4])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool bounds_limit_is_loaded_size(const std::vector<u32>& spirv) {
+    std::set<u32> loads;
+    std::set<u32> selects;
+    for (const auto& inst : spirv_instructions(spirv)) {
+        const u32 op = inst.words[0] & 0xFFFFu;
+        if (op == 61u && inst.words.size() >= 3u) loads.insert(inst.words[2]);
+        if (op == 169u && inst.words.size() >= 3u) selects.insert(inst.words[2]);
+    }
+    bool saw = false;
+    for (const auto& inst : spirv_instructions(spirv)) {
+        const u32 op = inst.words[0] & 0xFFFFu;
+        if (op != 176u || inst.words.size() < 5u) continue;
+        const bool loaded = loads.contains(inst.words[3]) ||
+                            loads.contains(inst.words[4]);
+        const bool selected = selects.contains(inst.words[3]) ||
+                              selects.contains(inst.words[4]);
+        if (!loaded || selected) return false;
+        saw = true;
+    }
+    return saw;
+}
+
+bool spirv_names(const std::vector<u32>& spirv, const char* text) {
+    const std::string bytes(reinterpret_cast<const char*>(spirv.data()),
+                            spirv.size() * sizeof(u32));
+    return bytes.find(text) != std::string::npos;
+}
+
+void expect_spirv_valid(const std::vector<u32>& spirv, const char* name) {
+    if (std::system("command -v spirv-val >/dev/null 2>&1") != 0) {
+        ADD_FAILURE() << "spirv-val not on PATH";
+        return;
+    }
+    const auto path =
+        std::filesystem::temp_directory_path() / (std::string(name) + ".spv");
+    {
+        std::ofstream out(path, std::ios::binary);
+        out.write(reinterpret_cast<const char*>(spirv.data()),
+                  static_cast<std::streamsize>(spirv.size() * sizeof(u32)));
+    }
+    const std::string command =
+        "spirv-val --target-env spv1.6 '" + path.string() + "'";
+    EXPECT_EQ(std::system(command.c_str()), 0) << "spirv-val rejects " << name;
+}
+
+DxbcContainer raw_and_structured_atomic_shader() {
+    // Opcode numbers 173 (atomic_iadd) and 180 (imm_atomic_iadd) are the
+    // measured values cited by TranslatesAtomicsOnARawUavAndGroupsharedMemory.
+    DxbcContainer container{};
+    container.shader_model_major = 5;
+    container.stage = ShaderStage::Compute;
+    const auto append_word = [&](u32 word) {
+        const auto* bytes = reinterpret_cast<const u8*>(&word);
+        container.bytecode.insert(container.bytecode.end(), bytes, bytes + 4);
+    };
+    append_word(0x00050050u);
+    append_word(31u);
+    append_word(0x0100086Au);
+    append_word(0x02000068u);
+    append_word(1u);
+    append_word(0x0400009Bu);
+    append_word(1u);
+    append_word(1u);
+    append_word(1u);
+    append_word(0x0300009Du);  // dcl_uav_raw u0
+    append_word(0x0011E000u);
+    append_word(0u);
+    append_word(0x0400009Eu);  // dcl_uav_structured u1, stride 16
+    append_word(0x0011E000u);
+    append_word(1u);
+    append_word(16u);
+    // atomic_iadd u0, vThreadID, l(1) — nothing returned to the shader.
+    append_word(173u | (6u << 24));
+    append_word(0x0011E012u);
+    append_word(0u);
+    append_word(0x00020E46u);
+    append_word(0x00004001u);
+    append_word(1u);
+    // imm_atomic_iadd r0.x, u1, vThreadID, l(1) — returns the prior value.
+    append_word(180u | (8u << 24));
+    append_word(0x00100012u);
+    append_word(0u);
+    append_word(0x0011E012u);
+    append_word(1u);
+    append_word(0x00020E46u);
+    append_word(0x00004001u);
+    append_word(1u);
+    append_word(0x0100003Eu);
+    return container;
+}
+
+}  // namespace
+
+// D3D11.3 22.17.8–22.17.16 and 22.17.19–22.17.28: an atomic whose word is
+// past a raw or structured view writes nothing. An immediate atomic's
+// destination is undefined ("an undefined result to be returned to the
+// shader in dst0"), so the out-of-range value is OpUndef. Push-block size
+// 0 means the size is unknown; a descriptor-table size of 0 is an empty
+// view (view_size_buffer). An in-bounds atomic still performs the operation.
+TEST(DxbcToSpirvTest, RawAndStructuredAtomicsStayInsideTheView) {
+    const auto container = raw_and_structured_atomic_shader();
+    const auto plain = translate_dxbc_to_spirv(container);
+    ASSERT_TRUE(plain.valid()) << plain.failure;
+    EXPECT_FALSE(atomics_are_bounds_guarded(plain.spirv));
+
+    DxbcTranslationOptions push{};
+    push.guard_buffer_bounds = true;
+    const auto pushed = translate_dxbc_to_spirv(container, push);
+    ASSERT_TRUE(pushed.valid()) << pushed.failure;
+    EXPECT_TRUE(atomics_are_bounds_guarded(pushed.spirv));
+    // buffer_word_in_bounds: a push-block 0 selects 0xFFFFFFFF, "size unknown".
+    EXPECT_TRUE(bounds_limit_is_select_of_all_ones(pushed.spirv));
+    EXPECT_FALSE(spirv_names(pushed.spirv, "vitreo_uav_view_sizes"));
+    EXPECT_TRUE(spirv_contains_opcode(pushed.spirv, /*OpUndef=*/1u));
+    EXPECT_TRUE(spirv_contains_opcode(pushed.spirv, /*OpAtomicIAdd=*/234u));
+    expect_spirv_valid(pushed.spirv, "raw_structured_atomic_push");
+
+    DxbcTranslationOptions table{};
+    table.register_remap.push_back(
+        {DxbcRegisterClass::UnorderedAccess, 0u, 0u, 2u, 3u, 0u});
+    table.view_size_buffer.enabled = true;
+    table.view_size_buffer.uav = true;
+    table.view_size_buffer.uav_set = 0;
+    table.view_size_buffer.uav_binding = 97;
+    const auto descriptor = translate_dxbc_to_spirv(container, table);
+    ASSERT_TRUE(descriptor.valid()) << descriptor.failure;
+    EXPECT_TRUE(atomics_are_bounds_guarded(descriptor.spirv));
+    // A descriptor-table 0 is an empty view, not "size unknown".
+    EXPECT_TRUE(bounds_limit_is_loaded_size(descriptor.spirv));
+    EXPECT_FALSE(bounds_limit_is_select_of_all_ones(descriptor.spirv));
+    EXPECT_TRUE(spirv_names(descriptor.spirv, "vitreo_uav_view_sizes"));
+    EXPECT_TRUE(spirv_contains_opcode(descriptor.spirv, /*OpUndef=*/1u));
+    EXPECT_TRUE(spirv_contains_opcode(descriptor.spirv, /*OpAtomicIAdd=*/234u));
+    expect_spirv_valid(descriptor.spirv, "raw_structured_atomic_table");
+
+    const auto count_atomic_add = [](const std::vector<u32>& spirv) {
+        u32 n = 0;
+        for (const auto& inst : spirv_instructions(spirv)) {
+            if ((inst.words[0] & 0xFFFFu) == 234u) ++n;
+        }
+        return n;
+    };
+    EXPECT_EQ(count_atomic_add(plain.spirv), 2u);
+    EXPECT_EQ(count_atomic_add(pushed.spirv), 2u);
+    EXPECT_EQ(count_atomic_add(descriptor.spirv), 2u);
 }

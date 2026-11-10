@@ -1,0 +1,26 @@
+mode=0 submit=0 error=997 count=0
+mode=0 pending_gor=0 error=996 count=57005
+mode=0 beforewritewait=258
+mode=0 result=1 error=0 count=1 internal=00000000
+mode=0 completed.CancelIoEx=0 error=1168
+mode=0 completed.CancelIo=1 error=57005
+mode=1 submit=0 error=997 count=0
+mode=1 pending_gor=0 error=996 count=57005
+alias.CancelIoEx=1 error=57005
+mode=1 beforewritewait=0
+mode=1 result=0 error=995 count=0 internal=c0000120
+mode=1 completed.CancelIoEx=0 error=1168
+mode=1 completed.CancelIo=1 error=57005
+mode=2 submit=0 error=997 count=0
+mode=2 pending_gor=0 error=996 count=57005
+alias.CancelIo=1 error=57005
+mode=2 beforewritewait=0
+mode=2 result=0 error=995 count=0 internal=c0000120
+mode=2 completed.CancelIoEx=0 error=1168
+mode=2 completed.CancelIo=1 error=57005
+mode=3 submit=0 error=997 count=0
+mode=3 pending_gor=0 error=996 count=57005
+mode=3 beforewritewait=258
+mode=3 result=1 error=0 count=1 internal=00000000
+mode=3 completed.CancelIoEx=0 error=1168
+mode=3 completed.CancelIo=1 error=57005

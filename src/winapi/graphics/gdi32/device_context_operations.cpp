@@ -215,7 +215,7 @@ i32 GdiManager::release_dc(Handle hwnd, Handle hdc) {
 void GdiManager::set_dc_clip(Handle hdc, const ClipRect& clip) {
     ApiLock api_lock(*this);
     const auto it = m_dc_states.find(hdc);
-    if (it != m_dc_states.end()) it->second.clip_rect = clip;
+    if (it != m_dc_states.end()) {it->second.app_clip = clip;refresh_dc_clip(it->second);}
 }
 
 Handle GdiManager::create_compatible_dc(Handle hdc) {

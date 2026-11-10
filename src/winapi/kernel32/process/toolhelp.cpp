@@ -29,6 +29,7 @@
 #include <vitreo/diagnostics.hpp>
 #include "winapi/system/ntdll/ntdll_ext.hpp"
 #include "winapi/core/marshaler.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "ipc/process_handle.hpp"
 #include "winapi/kernel32/memory/remote_memory.hpp"
@@ -120,7 +121,7 @@ void Kernel32ExtManager::impl_CreateToolhelp32Snapshot(Marshaler& m) {
     // live loader table during Module32First/Next.
     const u32 self_pid = m_process_manager
         ? m_process_manager->get_current_process_id()
-        : static_cast<u32>(::getpid());
+        : ipc::guest_process_id();
     if ((flags & 0x18u) != 0 &&
         (filter_pid == 0 || filter_pid == self_pid) &&
         m_module_manager != nullptr) {

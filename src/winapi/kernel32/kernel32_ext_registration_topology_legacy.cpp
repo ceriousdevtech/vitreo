@@ -454,15 +454,9 @@ void append_topology_legacy_exports(Kernel32ExtManager& mgr, DllExports& exports
         12
     });
 
-    // WinExec (2 args, stdcall_bytes=8) — stub, return 33 (success > 31)
     exports.entries.push_back(ExportEntry{
         "WinExec", 0,
-        [](Marshaler& m) {
-            if (m.arg(0) == 0) { set_last_error(error_codes::ERROR_INVALID_PARAMETER); m.set_return(0); return; }
-            (void)m.arg_ptr(0); (void)m.arg(1);
-            VITREO_TRACE("[k32ext] WinExec() → stub 33\n");
-            m.set_return(33u);
-        },
+        [&mgr](Marshaler& m) { mgr.impl_WinExec(m); },
         8
     });
 

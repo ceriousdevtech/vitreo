@@ -216,9 +216,10 @@ private:
     /// True when the caller should abandon this compile and retry it as
     /// tier 0 (`retry_possible`: the memo may hold the tier-0 translation).
     bool decline_tier1_compile(GuestAddr start, u64 code_hash, bool retry_possible);
-    /// Tier counter site: kTierSiteWords words, X30 clobbered, flags and
-    /// every other register preserved. Emitted only by a tier-0 compile.
-    void emit_tier_entry_counter();
+    /// X16 may be scratch only at the ordinary body head, where no
+    /// instruction temporaries are live. Mid-block sites preserve it.
+    /// X30 is always scratch; flags and all other registers are preserved.
+    void emit_tier_entry_counter(bool scratch_x16 = false);
     void emit_tier_counter_tail_body();
     /// Bind (or neutralize) every tier counter site in m_code_buf.
     void bind_tier_counter(GuestAddr start);

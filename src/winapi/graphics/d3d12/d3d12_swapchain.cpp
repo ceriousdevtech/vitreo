@@ -10,20 +10,33 @@
 /// buffers are ordinary committed ID3D12Resource textures of the queue's
 /// device; GetCurrentBackBufferIndex names the one to render next, and
 /// Present shows it on the window in the queue's order, after every command
-/// list executed on the queue before it.
+/// list executed on the queue before it. A composition chain has no HWND
+/// (Learn, CreateSwapChainForComposition): Present makes the current buffer
+/// available to the DirectComposition visual whose content it is. Until
+/// Commit binds that visual the frame is retained and the call still
+/// succeeds, matching the D3D11 composition chains; the index still advances
+/// because each buffer is its own resource.
 ///
 /// Every rule below is a line of tools/oracle_probe/d3d12_a08_swapchain_probe
-/// .expected (Windows 11, WARP) unless it cites Learn.
+/// .expected (Windows 11, WARP) unless it cites Learn. Exclusive full-screen
+/// (SetFullscreenState, GetFullscreenState, ResizeTarget, Windowed=FALSE
+/// creation and the Present / ResizeBuffers rules around a transition) is
+/// d3d12_a73_swapchain_fullscreen_probe (.winoracle-gpu.expected), on the
+/// state machine the D3D11 chains share (dxgi_exclusive_fullscreen.hpp): the
+/// display mode through user32's exclusive owner, the host as a macOS Space.
 
 #include "winapi/graphics/d3d12/d3d12_internal.hpp"
 #include "winapi/graphics/common/gpu_event_signaler.hpp"
 #include "winapi/graphics/dxgi/dxgi.hpp"
 #include "core/memory/guest_memory.hpp"
 #include "vitreo/virtual_tsc.hpp"
+#include "vitreo/ab_cycle.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <cstdlib>
+#include <pthread.h>
 
 namespace vitreo::winapi::d3d12 {
 namespace {
@@ -164,7 +177,7 @@ u32 Frontend::validate_swap_chain(const SwapChain& c, SwapChainApi api) const {
 }
 
 void Frontend::create_swap_chain(Marshaler& m, SwapChainApi api) {
-    std::lock_guard lock(m_mutex);
+    FrontendLock lock(*this);
     // CreateSwapChain(pDevice, DXGI_SWAP_CHAIN_DESC *, ppSwapChain);
     // CreateSwapChainForHwnd(pDevice, hWnd, DESC1 *, FULLSCREEN_DESC *,
     //     pRestrictToOutput, ppSwapChain);
@@ -303,7 +316,6 @@ void Frontend::create_swap_chain(Marshaler& m, SwapChainApi api) {
     }
     chain->device = queue->device;
     chain->queue = queue->address;
-    chain->windowed = true;
     // The chain holds the queue (measured: "swap chain holds the queue"),
     // its factory and restrict-to output.
     add_ref(*queue);
@@ -335,8 +347,108 @@ void Frontend::create_swap_chain(Marshaler& m, SwapChainApi api) {
     // Learn (CreateSwapChain): "If you attempt to create a swap chain in
     // full-screen mode, and full-screen mode is unavailable, the swap chain
     // will be created in windowed mode and DXGI_STATUS_OCCLUDED will be
-    // returned." The host has no exclusive full-screen.
-    m.set_return(fullscreen_requested ? DXGI_STATUS_OCCLUDED : S_OK);
+    // returned." Measured (a73 rules12, D3D12 ForHwnd and CreateSwapChain
+    // with Windowed=FALSE): S_OK and full-screen with the desktop's focus,
+    // DXGI_STATUS_OCCLUDED and windowed without it. The transition releases
+    // the locks, so the chain is looked up again after it.
+    if (!fullscreen_requested) {
+        m.set_return(S_OK);
+        return;
+    }
+    const u64 serial = raw->serial;
+    const bool entered = enter_fullscreen(address, 0) == S_OK;
+    // Buffers made at creation are the full-screen ones: no ResizeBuffers
+    // is owed (ExclusiveState::needs_resize_buffers).
+    if (SwapChain* created = find_serial<SwapChain>(address, serial, Kind::SwapChain)) {
+        created->exclusive.needs_resize_buffers = false;
+    }
+    m.set_return(entered ? S_OK : DXGI_STATUS_OCCLUDED);
+}
+
+// =============================================================================
+// Exclusive full-screen (dxgi_exclusive_fullscreen.hpp)
+// =============================================================================
+
+void Frontend::run_unlocked(const std::function<void()>& transition) {
+    // The frontend lock first, the DXGI API lock (held when the call came
+    // through an IDXGIFactory method) second, so they are taken back in the
+    // creation order: DXGI, then the frontend.
+    FrontendUnlock frontend(*this);
+    if (m_presentation.dxgi != nullptr) {
+        DxgiManager::ApiUnlock api(*m_presentation.dxgi);
+        transition();
+        return;
+    }
+    transition();
+}
+
+u32 Frontend::enter_fullscreen(GuestAddr address, GuestAddr target) {
+    SwapChain* chain = find<SwapChain>(address, Kind::SwapChain);
+    if (chain == nullptr) return DXGI_ERROR_INVALID_CALL;
+    if (m_presentation.dxgi == nullptr) return DXGI_ERROR_NOT_CURRENTLY_AVAILABLE;
+    DxgiManager& dxgi = *m_presentation.dxgi;
+    const u64 serial = chain->serial;
+    dxgi::ExclusiveRequest request;
+    request.hwnd = chain->hwnd;
+    request.buffer_width = chain->width;
+    request.buffer_height = chain->height;
+    request.flags = chain->flags;
+    request.flip_model = true;  // a D3D12 chain is always flip model
+    request.window_missing =
+        !(m_presentation.client_size &&
+          m_presentation.client_size(chain->hwnd).has_value());
+    // Every device is created on DXGI's one display adapter.
+    const GuestAddr adapter = dxgi.create_default_adapter();
+    request.adapter = adapter;
+    const u32 result = dxgi::enter_exclusive(
+        dxgi, m_presentation.exclusive, address, request, target,
+        [this, address, serial]() -> dxgi::ExclusiveState* {
+            SwapChain* c = find_serial<SwapChain>(address, serial, Kind::SwapChain);
+            return c != nullptr ? &c->exclusive : nullptr;
+        },
+        [this](const std::function<void()>& transition) {
+            run_unlocked(transition);
+        },
+        &d3d12_diag);
+    if (adapter != 0) dxgi.release_adapter(adapter);
+    return result;
+}
+
+void Frontend::leave_fullscreen(GuestAddr address, bool leave_host_space) {
+    SwapChain* chain = find<SwapChain>(address, Kind::SwapChain);
+    if (chain == nullptr || m_presentation.dxgi == nullptr) return;
+    const u64 serial = chain->serial;
+    dxgi::leave_exclusive(
+        *m_presentation.dxgi, m_presentation.exclusive, address, chain->hwnd,
+        true,
+        [this, address, serial]() -> dxgi::ExclusiveState* {
+            SwapChain* c = find_serial<SwapChain>(address, serial, Kind::SwapChain);
+            return c != nullptr ? &c->exclusive : nullptr;
+        },
+        leave_host_space,
+        [this](const std::function<void()>& transition) {
+            run_unlocked(transition);
+        },
+        &d3d12_diag);
+}
+
+u32 Frontend::resize_fullscreen_target(GuestAddr address, u32 width,
+                                       u32 height) {
+    SwapChain* chain = find<SwapChain>(address, Kind::SwapChain);
+    if (chain == nullptr) return DXGI_ERROR_INVALID_CALL;
+    if (m_presentation.dxgi == nullptr) return DXGI_ERROR_NOT_CURRENTLY_AVAILABLE;
+    const u64 serial = chain->serial;
+    return dxgi::resize_exclusive_target(
+        *m_presentation.dxgi, m_presentation.exclusive, address, chain->hwnd,
+        chain->flags, width, height,
+        [this, address, serial]() -> dxgi::ExclusiveState* {
+            SwapChain* c = find_serial<SwapChain>(address, serial, Kind::SwapChain);
+            return c != nullptr ? &c->exclusive : nullptr;
+        },
+        [this](const std::function<void()>& transition) {
+            run_unlocked(transition);
+        },
+        &d3d12_diag);
 }
 
 u32 Frontend::create_swap_chain_buffers(SwapChain& chain) {
@@ -402,11 +514,34 @@ u32 Frontend::present(SwapChain& chain, u32 sync_interval, u32 flags,
         (flags & (kPresentStereoPreferRight | kPresentStereoTemporaryMono)) != 0 ||
         ((flags & kPresentRestrictToOutput) != 0 && chain.restrict_output == 0) ||
         ((flags & kPresentAllowTearing) != 0 &&
-         ((chain.flags & kFlagAllowTearing) == 0 || sync_interval != 0)) ||
+         ((chain.flags & kFlagAllowTearing) == 0 || sync_interval != 0 ||
+          // Learn DXGI_PRESENT_ALLOW_TEARING: not in exclusive full-screen
+          // (measured a73: INVALID_CALL, Present and Present1).
+          chain.exclusive.fullscreen)) ||
         ((flags & kPresentTest) != 0 && flags != kPresentTest) ||
         ((flags & kPresentDoNotSequence) != 0 &&
          (flags & (kPresentRestart | kPresentDoNotWait)) != 0) ||
         chain.buffers.empty()) {
+        return DXGI_ERROR_INVALID_CALL;
+    }
+    // Learn SetFullscreenState: after a full-screen / windowed transition
+    // "you must call ResizeBuffers to ensure that your call to
+    // IDXGISwapChain1::Present1 succeeds" (measured a73: INVALID_CALL in both
+    // directions, DXGI_PRESENT_TEST included, until ResizeBuffers).
+    if (chain.exclusive.needs_resize_buffers) return DXGI_ERROR_INVALID_CALL;
+    // A full-screen chain keeps full-screen when another application takes
+    // the foreground (measured a73 focus12: GetFullscreenState TRUE); its
+    // Presents are DXGI_STATUS_OCCLUDED and DXGI_PRESENT_TEST is
+    // INVALID_CALL until it is foreground again. The host Space stays (a
+    // Cmd-Tab away from a Mac full-screen app); once the host shows the
+    // window again the chain is not occluded, even before the activation
+    // reaches the guest.
+    const auto& exclusive = m_presentation.exclusive;
+    const bool background =
+        chain.exclusive.fullscreen && exclusive.application_active &&
+        !exclusive.application_active() &&
+        (!exclusive.window_occluded || exclusive.window_occluded(chain.hwnd));
+    if (background && (flags & kPresentTest) != 0) {
         return DXGI_ERROR_INVALID_CALL;
     }
     if (dirty_count != 0) {
@@ -475,17 +610,148 @@ u32 Frontend::present(SwapChain& chain, u32 sync_interval, u32 flags,
         op.sync_interval = sync_interval;
         op.present_flags = flags;
         queue->pending.push_back(op);
+        m_exclusive_queue_ops.fetch_add(1);
     } else {
-        show(chain, buffer, buffer_serial, sync_interval, flags);
+        show(chain, buffer, buffer_serial, sync_interval, flags, true);
+        // A composition chain whose visual is bound but cannot be shown
+        // fails the present (D3D11: DXGI_ERROR_INVALID_CALL) and the ring
+        // does not move. An unbound chain deferred the frame and succeeded.
+        if (chain.composition_present_failed) {
+            chain.composition_present_failed = false;
+            return DXGI_ERROR_INVALID_CALL;
+        }
     }
     chain.current = (chain.current + 1) % static_cast<u32>(chain.buffers.size());
     ++chain.present_count;
     chain.last_present_qpc = virtual_qpc_ticks();
-    return window_missing ? DXGI_STATUS_OCCLUDED : S_OK;
+    return window_missing || background ? DXGI_STATUS_OCCLUDED : S_OK;
+}
+
+bool Frontend::present_swap_chain_texture(SwapChain& chain,
+                                         graphics::BackendTexture2D* texture,
+                                         u32 sync_interval, u32 flags) {
+    // The DXGI_PRESENT flags are this frontend's: Present validated and
+    // applied them (TEST, DO_NOT_WAIT, DO_NOT_SEQUENCE; ALLOW_TEARING is
+    // SyncInterval 0; RESTART, USE_DURATION and RESTRICT_TO_OUTPUT change
+    // nothing shown). None reach the backend, which refuses any (as for the
+    // D3D11 chains, BackendSwapChain::present_texture): passing them through
+    // dropped every ALLOW_TEARING or DO_NOT_WAIT frame while Present still
+    // reported S_OK.
+    (void)flags;
+    constexpr u32 kBackendFlags = 0;
+    // IDXGISwapChain2::SetSourceSize: only [0, 0, w, h] is shown.
+    const bool region = chain.source_width != 0 && chain.source_height != 0 &&
+                        (chain.source_width < chain.width ||
+                         chain.source_height < chain.height);
+    if (region) {
+        graphics::BackendSwapChain::PresentRegion r{};
+        r.width = chain.source_width;
+        r.height = chain.source_height;
+        return chain.backend->present_texture_region(texture, r, sync_interval,
+                                                      kBackendFlags);
+    }
+    return chain.backend->present_texture(texture, sync_interval, kBackendFlags);
+}
+
+bool Frontend::apply_composition_layer(SwapChain& chain) {
+    if (!chain.composition || !chain.composition_layer || !chain.backend) {
+        return false;
+    }
+    // IDXGISwapChain2::SetMatrixTransform scales and translates the chain's
+    // content inside its visual, before the visual's own transform. Both are
+    // Direct2D row-vector 3x2 matrices, so the combined transform is
+    // chain x visual (the D3D11 composition chains apply it the same way).
+    graphics::BackendCompositionLayerDesc layer = *chain.composition_layer;
+    const auto& a = chain.matrix;
+    const auto b = layer.transform;
+    layer.transform = {
+        a[0] * b[0] + a[1] * b[2],
+        a[0] * b[1] + a[1] * b[3],
+        a[2] * b[0] + a[3] * b[2],
+        a[2] * b[1] + a[3] * b[3],
+        a[4] * b[0] + a[5] * b[2] + b[4],
+        a[4] * b[1] + a[5] * b[3] + b[5],
+    };
+    return chain.backend->configure_composition_layer(layer);
+}
+
+bool Frontend::ensure_composition_backend(SwapChain& chain) {
+    if (chain.composition_hwnd == 0 || !chain.composition_layer) return false;
+    if (!chain.backend || !chain.backend->valid()) {
+        void* view = m_presentation.presentation_view
+                         ? m_presentation.presentation_view(chain.composition_hwnd)
+                         : nullptr;
+        if (view == nullptr) {
+            d3d12_diag("composition chain 0x%llx: no presentation view for "
+                       "hwnd 0x%llx",
+                       static_cast<unsigned long long>(chain.address),
+                       static_cast<unsigned long long>(chain.composition_hwnd));
+            return false;
+        }
+        graphics::BackendSwapChainDesc desc{};
+        desc.native_view = view;
+        desc.width = chain.width;
+        desc.height = chain.height;
+        desc.pixel_format = texture_format_for(
+            chain.format, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
+        desc.buffer_count = chain.buffer_count;
+        desc.vsync = true;
+        // DXGI_ALPHA_MODE_PREMULTIPLIED: the layer honours per-pixel alpha.
+        // Straight alpha is refused at creation, as on the D3D11 chains.
+        desc.premultiplied_alpha = chain.alpha_mode == kAlphaPremultiplied;
+        chain.backend = m_backend.create_swap_chain(desc);
+        if (!chain.backend || !chain.backend->valid()) {
+            chain.backend.reset();
+            return false;
+        }
+        apply_presentation_state(chain);
+    }
+    return apply_composition_layer(chain);
+}
+
+bool Frontend::bind_composition_swap_chain(
+    GuestAddr address, GuestAddr hwnd,
+    const graphics::BackendCompositionLayerDesc& layer) {
+    SwapChain* chain = find<SwapChain>(address, Kind::SwapChain);
+    if (chain == nullptr || !chain->composition || hwnd == 0) return false;
+    if (chain->composition_hwnd != hwnd) {
+        chain->backend.reset();
+        chain->composition_hwnd = hwnd;
+    }
+    chain->composition_layer =
+        std::make_shared<graphics::BackendCompositionLayerDesc>(layer);
+    if (!ensure_composition_backend(*chain)) return false;
+    if (!chain->deferred_present) return true;
+    const SwapChain::DeferredPresent deferred = *chain->deferred_present;
+    Resource* resource = find_serial<Resource>(deferred.buffer, deferred.serial,
+                                               Kind::Resource);
+    if (resource == nullptr || !resource->texture) {
+        chain->deferred_present.reset();
+        return true;
+    }
+    if (!present_swap_chain_texture(*chain, resource->texture.get(),
+                                    deferred.sync_interval, deferred.flags)) {
+        d3d12_diag("Present: the presenter refused the deferred composition "
+                   "frame");
+        return false;
+    }
+    chain->deferred_present.reset();
+    d3d12_diag("Flush deferred composition present chain=0x%llx",
+               static_cast<unsigned long long>(address));
+    return true;
 }
 
 void Frontend::show(SwapChain& chain, GuestAddr buffer, u64 buffer_serial,
-                    u32 sync_interval, u32 flags) {
+                    u32 sync_interval, u32 flags, bool immediate_present) {
+    // A bound composition chain whose presenter cannot be created has not
+    // accepted the frame (D3D11 returns DXGI_ERROR_INVALID_CALL and does not
+    // count it). Check that before recording a frame in flight.
+    if (chain.composition) chain.composition_present_failed = false;
+    if (chain.composition && chain.composition_hwnd != 0 &&
+        !ensure_composition_backend(chain)) {
+        chain.composition_present_failed = true;
+        return;
+    }
     // The frame is the GPU work queued before this present: a point after
     // it (the present queue DO_NOT_WAIT tests), submitted now.
     if (auto frame = m_backend.record_timestamp()) {
@@ -514,16 +780,24 @@ void Frontend::show(SwapChain& chain, GuestAddr buffer, u64 buffer_serial,
           m_presentation.client_size(chain.hwnd).has_value())) {
         return;
     }
-    Resource* resource = find_serial<Resource>(buffer, buffer_serial, Kind::Resource);
-    if (resource == nullptr || !resource->texture) return;
-    if (chain.composition) {
-        // A composition chain is shown by the DirectComposition visual whose
-        // content it is; that binding exists for D3D11 chains only.
-        unimplemented("IDXGISwapChain::Present",
-                      "showing a D3D12 composition swap chain");
+    // Learn (CreateSwapChainForComposition / DirectComposition): Present
+    // makes the buffer available to the visual. With no visual committed
+    // yet, keep this frame and succeed; Commit shows it.
+    if (chain.composition && chain.composition_hwnd == 0) {
+        chain.deferred_present = SwapChain::DeferredPresent{
+            buffer, buffer_serial, sync_interval, flags};
+        d3d12_diag("Queue deferred composition present chain=0x%llx sync=%u "
+                   "flags=0x%x",
+                   static_cast<unsigned long long>(chain.address),
+                   sync_interval, flags);
         return;
     }
-    if (!chain.backend) {
+    Resource* resource = find_serial<Resource>(buffer, buffer_serial, Kind::Resource);
+    if (resource == nullptr || !resource->texture) {
+        if (chain.composition) chain.composition_present_failed = true;
+        return;
+    }
+    if (!chain.composition && !chain.backend) {
         void* view = m_presentation.presentation_view
                          ? m_presentation.presentation_view(chain.hwnd)
                          : nullptr;
@@ -549,22 +823,42 @@ void Frontend::show(SwapChain& chain, GuestAddr buffer, u64 buffer_serial,
         chain.backend = std::move(backend);
         apply_presentation_state(chain);
     }
-    // IDXGISwapChain2::SetSourceSize: only [0, 0, w, h] is shown.
-    const bool region = chain.source_width != 0 && chain.source_height != 0 &&
-                        (chain.source_width < chain.width ||
-                         chain.source_height < chain.height);
+    // Keep the writer reservation: the chain, source resource, and backend
+    // cannot be resized or released while Present waits for GPU backpressure.
+    // Only independent command-list recording may overlap this call; replay
+    // remains excluded. Deferred/composition and main-run-loop paths retain
+    // full exclusion, as do nested frontend calls.
+    static const bool allow_recording = [] {
+        const char* value = std::getenv("VITREO_D3D12_PRESENT_RECORDING");
+        return value == nullptr || value[0] != '0';
+    }();
+    struct RecordingWindow {
+        FrontendRwLock& lock;
+        ~RecordingWindow() { lock.end_recording_window(); }
+    };
     bool shown = false;
-    if (region) {
-        graphics::BackendSwapChain::PresentRegion r{};
-        r.width = chain.source_width;
-        r.height = chain.source_height;
-        shown = chain.backend->present_texture_region(resource->texture.get(), r,
-                                                      sync_interval, flags);
-    } else {
-        shown = chain.backend->present_texture(resource->texture.get(),
-                                               sync_interval, flags);
+    {
+        RecordingWindow window{m_lock};
+        if (allow_recording && immediate_present && !chain.composition &&
+            pthread_main_np() == 0 &&
+            !diagnostics::ab_cycle_off("d3d12-present-recording")) {
+            const bool opened = m_lock.begin_recording_window();
+            static const bool diagnose =
+                std::getenv("VITREO_D3D12_PRESENT_RECORDING_DIAG") != nullptr;
+            static thread_local bool reported = false;
+            if (opened && diagnose && !reported) {
+                reported = true;
+                std::fprintf(stderr, "[d3d12-present-recording] recording window active\n");
+            }
+        }
+        shown = present_swap_chain_texture(
+            chain, resource->texture.get(), sync_interval, flags);
     }
     if (!shown) d3d12_diag("Present: the presenter refused the frame");
+    if (chain.composition) {
+        if (!shown) chain.composition_present_failed = true;
+        else chain.deferred_present.reset();
+    }
 }
 
 // =============================================================================
@@ -600,9 +894,24 @@ void Frontend::swap_chain_method(Marshaler& m, SwapChain& chain, usize slot) {
         add_ref(chain);
         m.set_return(chain.ref_count);
         return;
-    case S::Release:
-        m.set_return(release(chain.address));
+    case S::Release: {
+        // Learn (DXGI Overview, Destroying a Swap Chain) asks applications to
+        // leave full-screen before the last Release. One that does not still
+        // gets the desktop mode, its window and the host Space back.
+        const GuestAddr address = chain.address;
+        if (chain.ref_count == 1 &&
+            (chain.exclusive.fullscreen || chain.exclusive.host_space)) {
+            const u64 serial = chain.serial;
+            leave_fullscreen(address, true);
+            if (find_serial<SwapChain>(address, serial, Kind::SwapChain) ==
+                nullptr) {
+                m.set_return(0);
+                return;
+            }
+        }
+        m.set_return(release(address));
         return;
+    }
     case S::SetPrivateData:
         m.set_return(set_private_data(m, chain));
         return;
@@ -690,29 +999,74 @@ void Frontend::swap_chain_method(Marshaler& m, SwapChain& chain, usize slot) {
         return;
     }
     case S::SetFullscreenState: {
-        // Learn: S_OK, DXGI_ERROR_NOT_CURRENTLY_AVAILABLE or
-        // DXGI_STATUS_MODE_CHANGE_IN_PROGRESS; a waitable or composition
-        // chain refuses the call (as measured for D3D11 chains).
-        if (waitable || chain.composition) {
+        // SetFullscreenState(BOOL Fullscreen, IDXGIOutput *pTarget). Learn:
+        // S_OK, DXGI_ERROR_NOT_CURRENTLY_AVAILABLE or
+        // DXGI_STATUS_MODE_CHANGE_IN_PROGRESS; never on a composition chain.
+        // Unlike a D3D11 chain, a FRAME_LATENCY_WAITABLE_OBJECT D3D12 chain
+        // goes full-screen (DXGI_SWAP_CHAIN_FLAG: "unless the render API is
+        // Direct3D 12"; measured a73 for every flag set, both flip effects,
+        // pTarget NULL and an output).
+        const bool fullscreen = m.arg32(1) != 0;
+        const GuestAddr target = m.arg_ptr(2);
+        if (chain.composition) {
             m.set_return(DXGI_ERROR_INVALID_CALL);
             return;
         }
-        if (m.arg32(1) != 0) {
-            unimplemented("IDXGISwapChain::SetFullscreenState",
-                          "exclusive full-screen (the chain stays windowed)");
-            m.set_return(DXGI_ERROR_NOT_CURRENTLY_AVAILABLE);
+        if (m_presentation.dxgi != nullptr &&
+            m_presentation.dxgi->exclusive_fullscreen().transition) {
+            m.set_return(DXGI_STATUS_MODE_CHANGE_IN_PROGRESS);
             return;
         }
+        if (fullscreen) {
+            const GuestAddr address = chain.address;
+            const u32 result = enter_fullscreen(address, target);
+            d3d12_diag("IDXGISwapChain::SetFullscreenState(TRUE, 0x%llx) "
+                       "chain=0x%llx -> 0x%08x",
+                       static_cast<unsigned long long>(target),
+                       static_cast<unsigned long long>(address), result);
+            m.set_return(result);
+            return;
+        }
+        // Learn: with FALSE pTarget "must" be NULL (measured a73:
+        // INVALID_CALL on a full-screen chain, S_OK on a windowed one).
+        if (dxgi::windowed_target_refused(chain.exclusive, target)) {
+            m.set_return(DXGI_ERROR_INVALID_CALL);
+            return;
+        }
+        // The host Space is left only when the application is foreground: a
+        // FALSE issued from the background must not pull the window out of
+        // the Space the user Cmd-Tabbed away from (as for the D3D11 chains).
+        const auto& active = m_presentation.exclusive.application_active;
+        leave_fullscreen(chain.address, !active || active());
         m.set_return(S_OK);
         return;
     }
     case S::GetFullscreenState: {
-        if (const GuestAddr state = m.arg_ptr(1); state != 0) {
-            (void)m_memory.write_u32(state, 0);
+        // GetFullscreenState(BOOL *pFullscreen, IDXGIOutput **ppTarget),
+        // both optional: TRUE and the output (one new reference) while
+        // full-screen, else FALSE and NULL.
+        const GuestAddr state = m.arg_ptr(1);
+        const GuestAddr output = m.arg_ptr(2);
+        if (m_presentation.dxgi == nullptr) {
+            if (state != 0) (void)m_memory.write_u32(state, 0);
+            if (output != 0) (void)write_pointer(output, 0);
+            m.set_return(S_OK);
+            return;
         }
-        if (const GuestAddr output = m.arg_ptr(2); output != 0) {
-            (void)write_pointer(output, 0);
+        std::function<void(u32)> write_state;
+        if (state != 0) {
+            write_state = [this, state](u32 value) {
+                (void)m_memory.write_u32(state, value);
+            };
         }
+        std::function<bool(GuestAddr)> write_output;
+        if (output != 0) {
+            write_output = [this, output](GuestAddr value) {
+                return write_pointer(output, value);
+            };
+        }
+        dxgi::report_fullscreen_state(*m_presentation.dxgi, chain.exclusive,
+                                      write_state, write_output);
         m.set_return(S_OK);
         return;
     }
@@ -739,7 +1093,8 @@ void Frontend::swap_chain_method(Marshaler& m, SwapChain& chain, usize slot) {
         (void)m_memory.write_u32(desc + 36, chain.buffer_usage);
         (void)m_memory.write_u32(desc + 40, chain.buffer_count);
         (void)write_pointer(desc + window_offset, chain.hwnd);
-        (void)m_memory.write_u32(desc + after, 1);  // Windowed
+        (void)m_memory.write_u32(desc + after,  // Windowed
+                                 chain.exclusive.fullscreen ? 0u : 1u);
         (void)m_memory.write_u32(desc + after + 4, chain.swap_effect);
         (void)m_memory.write_u32(desc + after + 8, chain.flags);
         m.set_return(S_OK);
@@ -775,7 +1130,7 @@ void Frontend::swap_chain_method(Marshaler& m, SwapChain& chain, usize slot) {
         (void)m_memory.write_u32(desc + 4, chain.refresh_denominator);
         (void)m_memory.write_u32(desc + 8, chain.scanline_ordering);
         (void)m_memory.write_u32(desc + 12, chain.fullscreen_scaling);
-        (void)m_memory.write_u32(desc + 16, 1);
+        (void)m_memory.write_u32(desc + 16, chain.exclusive.fullscreen ? 0u : 1u);
         m.set_return(S_OK);
         return;
     }
@@ -870,6 +1225,9 @@ void Frontend::swap_chain_method(Marshaler& m, SwapChain& chain, usize slot) {
         chain.flags = flags;
         chain.source_width = 0;
         chain.source_height = 0;
+        // Resize releases the buffers, so a frame retained for a visual that
+        // is not bound yet no longer names a resource.
+        chain.deferred_present.reset();
         if (u32 error = create_swap_chain_buffers(chain); error != S_OK) {
             m.set_return(error);
             return;
@@ -880,12 +1238,32 @@ void Frontend::swap_chain_method(Marshaler& m, SwapChain& chain, usize slot) {
                                    count)) {
             chain.backend.reset();  // re-created at the next Present
         }
+        // The ResizeBuffers a full-screen transition asks for (Present).
+        chain.exclusive.needs_resize_buffers = false;
         m.set_return(S_OK);
         return;
     }
     case S::ResizeTarget: {
+        // ResizeTarget(const DXGI_MODE_DESC *): a windowed chain resizes its
+        // window's client area; a full-screen one "changes the display mode
+        // on the target output" (measured a73: without ALLOW_MODE_SWITCH
+        // S_OK and the desktop mode and window stay; NULL is INVALID_CALL).
         const GuestAddr mode = m.arg_ptr(1);
-        if (mode == 0 || chain.composition || !m_presentation.resize_client) {
+        if (mode == 0 || chain.composition) {
+            m.set_return(DXGI_ERROR_INVALID_CALL);
+            return;
+        }
+        if (m_presentation.dxgi != nullptr &&
+            m_presentation.dxgi->exclusive_fullscreen().transition) {
+            m.set_return(DXGI_STATUS_MODE_CHANGE_IN_PROGRESS);
+            return;
+        }
+        if (chain.exclusive.fullscreen) {
+            m.set_return(resize_fullscreen_target(chain.address, read_u32(mode),
+                                                  read_u32(mode + 4)));
+            return;
+        }
+        if (!m_presentation.resize_client) {
             m.set_return(DXGI_ERROR_INVALID_CALL);
             return;
         }
@@ -1117,6 +1495,7 @@ void Frontend::swap_chain_method(Marshaler& m, SwapChain& chain, usize slot) {
                 (void)m_memory.write_u32(matrix + i * 4u, bits);
             }
         }
+        if (slot == S::SetMatrixTransform) (void)apply_composition_layer(chain);
         m.set_return(S_OK);
         return;
     }

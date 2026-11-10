@@ -580,6 +580,8 @@ u32 jit_shrd32(CpuState* cpu, u32 dest, u32 src, u32 count);
 void jit_sse_op(CpuState* cpu, GuestMemory* mem,
                 u32 op_id, u32 xmm_dst, u64 addr_or_src);
 void jit_cmpxchg32(CpuState* cpu, GuestMemory* mem, u64 addr, u32 reg_val);
+void jit_cmpxchg16(CpuState* cpu, GuestMemory* mem, u64 addr, u32 reg_val);
+void jit_cmpxchg64(CpuState* cpu, GuestMemory* mem, u64 addr, u64 reg_val);
 void jit_atomic_xchg32(CpuState* cpu, GuestMemory* mem, u64 addr, u32 reg_idx);
 void jit_atomic_xchg64(CpuState* cpu, GuestMemory* mem, u64 addr, u32 reg_idx);
 void jit_lock_inc32(CpuState* cpu, GuestMemory* mem, u64 addr);

@@ -3,6 +3,7 @@
 // in dxgi_test_fixture.hpp.
 
 #include "dxgi_test_fixture.hpp"
+#include "winapi/graphics/common/adapter_device_presence.hpp"
 
 #include <array>
 #include <utility>
@@ -24,6 +25,8 @@ TEST_F(DxgiManagerTest, Adapter3QueryVideoMemoryInfoMatchesDiscreteProfile) {
     constexpr GuestAddr COOKIE_ADDRESS = DATA_BASE + 0x210;
     constexpr u64 kDedicated = 8ull * 1024 * 1024 * 1024;
 
+    // No D3D device on the adapter yet: reservations are refused.
+    graphics_common::reset_adapter_device_presence_for_testing();
     const GuestAddr adapter = enum_adapter(create_factory());
     write_guid(IID_ADDRESS, IID_IDXGIADAPTER3);
     cpu.gpr.rcx = adapter;
@@ -136,6 +139,7 @@ TEST_F(DxgiManagerTest, Adapter3QueryVideoMemoryInfoMatchesDiscreteProfile) {
 // 300. DXGI_QUERY_VIDEO_MEMORY_INFO is four UINT64s on both bitnesses
 // (dxgi1_4.h). The working set here fits a 32-bit SIZE_T.
 TEST_F(DxgiManagerTest, Adapter3QueryVideoMemoryInfoX86Layout) {
+    graphics_common::reset_adapter_device_presence_for_testing();
     constexpr Guid IID_IDXGIADAPTER3{
         0x645967A4u, 0x1392u, 0x4310u,
         {0xA7, 0x98, 0x80, 0x53, 0xCE, 0x3E, 0x93, 0xFD}};
@@ -315,6 +319,61 @@ TEST_F(DxgiManagerTest, Adapter3QueryVideoMemoryInfoX86Layout) {
     ASSERT_TRUE(memory.write_u32(cpu.sp() + 20, 0).is_ok());
     x86.impl_SetVideoMemoryReservation(marshaler);
     EXPECT_EQ(cpu.gpr.rax, dxgi::E_INVALIDARG);
+}
+
+
+// After a D3D device exists on the adapter (and even once it is released),
+// any reservation up to AvailableForReservation succeeds and is reported as
+// CurrentReservation; one byte more is refused and keeps the previous one;
+// 0 clears it. Both segment groups. Measured on an RTX 4080 SUPER, x64 and
+// x86: tools/oracle_probe/dxgi_reservation_probe.c.
+TEST_F(DxgiManagerTest, Adapter3ReservationFollowsAvailableOnceADeviceExists) {
+    constexpr Guid IID_IDXGIADAPTER3{
+        0x645967A4u, 0x1392u, 0x4310u,
+        {0xA7, 0x98, 0x80, 0x53, 0xCE, 0x3E, 0x93, 0xFD}};
+    constexpr GuestAddr INFO_ADDRESS = DESC_ADDRESS;
+    constexpr u64 kAvailable = 8ull * 1024 * 1024 * 1024 / 2;
+
+    graphics_common::reset_adapter_device_presence_for_testing();
+    const GuestAddr adapter = enum_adapter(create_factory());
+    write_guid(IID_ADDRESS, IID_IDXGIADAPTER3);
+    Marshaler marshaler(memory);
+    marshaler.attach_cpu(cpu);
+    const auto reserve = [&](u32 segment, u64 bytes) {
+        cpu.gpr.rcx = adapter;
+        cpu.gpr.rdx = 0;
+        cpu.gpr.r8 = segment;
+        cpu.gpr.r9 = bytes;
+        manager.impl_SetVideoMemoryReservation(marshaler);
+        return static_cast<u32>(cpu.gpr.rax);
+    };
+    const auto current = [&](u32 segment) {
+        cpu.gpr.rcx = adapter;
+        cpu.gpr.rdx = 0;
+        cpu.gpr.r8 = segment;
+        cpu.gpr.r9 = INFO_ADDRESS;
+        manager.impl_QueryVideoMemoryInfo(marshaler);
+        EXPECT_EQ(cpu.gpr.rax, dxgi::S_OK);
+        return memory.read_u64(INFO_ADDRESS + 24).value();
+    };
+
+    EXPECT_EQ(reserve(0, 0), dxgi::E_INVALIDARG) << "no device yet";
+    graphics_common::note_adapter_device_created();
+
+    EXPECT_EQ(reserve(0, 1), dxgi::S_OK);
+    EXPECT_EQ(current(0), 1u);
+    EXPECT_EQ(reserve(0, kAvailable), dxgi::S_OK);
+    EXPECT_EQ(current(0), kAvailable);
+    EXPECT_EQ(reserve(0, kAvailable + 1), dxgi::E_INVALIDARG);
+    EXPECT_EQ(current(0), kAvailable) << "a refused call keeps the reservation";
+    EXPECT_EQ(reserve(0, 0), dxgi::S_OK);
+    EXPECT_EQ(current(0), 0u);
+
+    // NON_LOCAL has no pool on the discrete profile: only 0 fits.
+    EXPECT_EQ(reserve(1, 0), dxgi::S_OK);
+    EXPECT_EQ(reserve(1, 1), dxgi::E_INVALIDARG);
+    EXPECT_EQ(current(1), 0u);
+    graphics_common::reset_adapter_device_presence_for_testing();
 }
 
 }  // namespace

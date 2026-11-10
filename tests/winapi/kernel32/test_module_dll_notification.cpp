@@ -166,5 +166,120 @@ TEST_P(DllNotificationDispatchTest,
     std::filesystem::remove_all(root_path);
 }
 
+
+namespace {
+// A self-contained PE with real function/DATA EAT entries. Addresses and names
+// are fixture choices; visibility/order expectations come from the identical
+// Windows ldr_visibility_probe{32,64}.expected measurements.
+std::vector<u8> build_visibility_test_dll(bool x64) {
+    auto bytes = build_notification_test_dll(x64);
+    constexpr u32 pe_offset = 0x80, raw = 0x200, section_rva = 0x1000;
+    constexpr u32 exports_rva = 0x1100;
+    const usize optional_offset = pe_offset + sizeof(u32) + sizeof(pe::CoffHeader);
+    auto* coff = reinterpret_cast<pe::CoffHeader*>(bytes.data() + pe_offset + sizeof(u32));
+    if (x64) {
+        auto* optional = reinterpret_cast<pe::OptionalHeader64*>(bytes.data() + optional_offset);
+        optional->AddressOfEntryPoint = section_rva;
+        optional->DataDirectory[pe::DIR_EXPORT] = {exports_rva, 0x100};
+    } else {
+        auto* optional = reinterpret_cast<pe::OptionalHeader32*>(bytes.data() + optional_offset);
+        optional->AddressOfEntryPoint = section_rva;
+        optional->DataDirectory[pe::DIR_EXPORT] = {exports_rva, 0x100};
+    }
+    auto* section = reinterpret_cast<pe::SectionHeader*>(bytes.data() + optional_offset + coff->SizeOfOptionalHeader);
+    section->VirtualSize = section->SizeOfRawData;
+    section->Characteristics |= pe::SCN_MEM_WRITE;
+    auto put = [&](u32 rva, const void* value, usize size) {
+        std::memcpy(bytes.data() + raw + rva - section_rva, value, size);
+    };
+    pe::ExportDirectory directory{};
+    directory.Name = 0x1180;
+    directory.Base = 1;
+    directory.NumberOfFunctions = 2;
+    directory.NumberOfNames = 2;
+    directory.AddressOfFunctions = 0x1130;
+    directory.AddressOfNames = 0x1138;
+    directory.AddressOfNameOrdinals = 0x1140;
+    put(exports_rva, &directory, sizeof directory);
+    const u32 functions[] = {section_rva, 0x1014};
+    const u32 names[] = {0x1144, 0x1154};
+    const u16 ordinals[] = {1, 0}; // Names are sorted: Constant, Function.
+    put(directory.AddressOfFunctions, functions, sizeof functions);
+    put(directory.AddressOfNames, names, sizeof names);
+    put(directory.AddressOfNameOrdinals, ordinals, sizeof ordinals);
+    constexpr char constant_name[] = "Constant", function_name[] = "Function", dll_name[] = "visibility.dll";
+    put(names[0], constant_name, sizeof constant_name);
+    put(names[1], function_name, sizeof function_name);
+    put(directory.Name, dll_name, sizeof dll_name);
+    constexpr u32 value = 0x13579bdf;
+    put(functions[1], &value, sizeof value);
+    return bytes;
+}
+} // namespace
+
+TEST_P(DllNotificationDispatchTest,
+       ExportsAndIdentityAreVisibleBeforeAttachAndThroughSuccessfulOrFailedUnload) {
+    const bool x64 = GetParam();
+    for (bool explicit_path : {false, true}) for (bool reject_attach : {false, true}) {
+        SCOPED_TRACE(std::string(explicit_path ? "explicit" : "search") + (reject_attach ? " rejected" : " accepted"));
+        char temporary[] = "/tmp/vitreo_ldr_visibility_XXXXXX";
+        const char* root = ::mkdtemp(temporary);
+        ASSERT_NE(root, nullptr);
+        const std::filesystem::path root_path(root);
+        write_test_file(root_path / "visibility.dll", build_visibility_test_dll(x64));
+        GuestMemory memory;
+        capsule::Vfs vfs;
+        ASSERT_TRUE(vfs.mount_drive('C', std::make_unique<capsule::HostFileSystem>(root)).is_ok());
+        ThunkRegistry registry(x64 ? 0x00007ffb00000000ull : 0x70000000ull);
+        ModuleManager modules(registry);
+        modules.attach_dynamic_loader(memory, vfs, x64);
+        modules.set_current_directory("C:\\");
+        constexpr GuestAddr callback = 0x1111;
+        GuestAddr cookie = 0, image = 0;
+        std::vector<u32> reasons;
+        ASSERT_EQ(modules.register_dll_notification(0, callback, 0, &cookie), 0u);
+        modules.set_guest_call([&](GuestAddr function, const u64* args, usize count, bool bits) -> u64 {
+            EXPECT_EQ(count, 3u);
+            EXPECT_EQ(bits, x64);
+            if (function != callback) {
+                // Existing test-dispatch seam drives the real PE's DllMain
+                // boundary. Oracle fixture measures actual Windows DllMain.
+                EXPECT_EQ(function, args[0] + 0x1000);
+                EXPECT_TRUE(memory.write_u32(args[0] + 0x1010, args[1] == 1 ? 1 : 2).is_ok());
+                return args[1] == 1 && reject_attach ? 0 : 1;
+            }
+            const GuestAddr pointer_width = x64 ? sizeof(u64) : sizeof(u32);
+            image = x64 ? memory.read_u64(args[1] + 3 * pointer_width).value()
+                        : memory.read_u32(args[1] + 3 * pointer_width).value();
+            reasons.push_back(static_cast<u32>(args[0]));
+            EXPECT_EQ(modules.get_module_handle("visibility.dll"), image);
+            EXPECT_EQ(modules.get_proc_address(image, "Function"), image + 0x1000);
+            EXPECT_EQ(modules.get_proc_address_by_ordinal(image, 1), image + 0x1000);
+            const GuestAddr constant = modules.get_proc_address(image, "Constant");
+            EXPECT_EQ(constant, image + 0x1014);
+            EXPECT_EQ(modules.get_proc_address_by_ordinal(image, 2), image + 0x1014);
+            if (constant) EXPECT_EQ(memory.read_u32(constant).value(), 0x13579bdfu);
+            EXPECT_EQ(memory.read_u32(image + 0x1010).value(), args[0] == 1 ? 0u : 2u);
+            char filename[260]{};
+            EXPECT_NE(modules.get_module_filename(image, filename, sizeof filename), 0u);
+            EXPECT_EQ(std::string(filename), "C:\\visibility.dll");
+            return 1;
+        });
+        const GuestAddr loaded = modules.load_library(explicit_path ? "C:\\visibility.dll" : "visibility.dll");
+        if (reject_attach) {
+            EXPECT_EQ(loaded, 0u);
+            EXPECT_EQ(get_last_error(), error_codes::ERROR_DLL_INIT_FAILED);
+        } else {
+            ASSERT_NE(loaded, 0u);
+            EXPECT_EQ(memory.read_u32(loaded + 0x1010).value(), 1u);
+            EXPECT_TRUE(modules.free_library(loaded));
+        }
+        EXPECT_EQ(reasons, (std::vector<u32>{1, 2}));
+        EXPECT_EQ(modules.get_module_handle("visibility.dll"), 0u);
+        EXPECT_EQ(modules.unregister_dll_notification(cookie), 0u);
+        std::filesystem::remove_all(root_path);
+    }
+}
+
 INSTANTIATE_TEST_SUITE_P(
     ProcessBitness, DllNotificationDispatchTest, ::testing::Values(false, true));

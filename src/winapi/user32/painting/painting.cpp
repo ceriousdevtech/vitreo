@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "winapi/user32/painting/sys_colors.hpp"
 #include "painting.hpp"
 #include "windowing/messages/message_queue.hpp"
@@ -101,7 +102,7 @@ u64 PaintingManager::begin_paint(u64 hwnd, PaintStruct& ps) {
     } else {
         ps.rcPaint = {region.left, region.top, region.right, region.bottom};
     }
-    if (m_gdi_mgr) m_gdi_mgr->set_dc_clip(static_cast<Handle>(hdc), region);
+    if (m_gdi_mgr) m_gdi_mgr->set_dc_paint_region(static_cast<Handle>(hdc), region);
     ps.fRestore = 0;
     ps.fIncUpdate = 0;
 
@@ -868,6 +869,18 @@ DllExports create_painting_thunks(PaintingManager& mgr) {
             }
             VITREO_TRACE( "[paint] GetClientRect(0x%llx) → {%d,%d,%d,%d}\n",
                          hwnd, r.left, r.top, r.right, r.bottom);
+            {
+                // VITREO_INPUT_DIAG: what the guest is told, on each change.
+                static const bool diag = std::getenv("VITREO_INPUT_DIAG") != nullptr;
+                static thread_local Rect last{};
+                if (diag && (r.left != last.left || r.top != last.top ||
+                             r.right != last.right || r.bottom != last.bottom)) {
+                    last = r;
+                    std::fprintf(stderr, "[input] GetClientRect(0x%llx) -> {%d,%d,%d,%d}\n",
+                                 static_cast<unsigned long long>(hwnd), r.left, r.top,
+                                 r.right, r.bottom);
+                }
+            }
             if (rect_ptr != 0) {
                 write_guest_rect(m, rect_ptr, r);
             }
@@ -890,6 +903,18 @@ DllExports create_painting_thunks(PaintingManager& mgr) {
                 set_last_error(error_codes::ERROR_INVALID_WINDOW_HANDLE);
                 m.set_return(0);
                 return;
+            }
+            {
+                // VITREO_INPUT_DIAG: what the guest is told, on each change.
+                static const bool diag = std::getenv("VITREO_INPUT_DIAG") != nullptr;
+                static thread_local Rect last{};
+                if (diag && (r.left != last.left || r.top != last.top ||
+                             r.right != last.right || r.bottom != last.bottom)) {
+                    last = r;
+                    std::fprintf(stderr, "[input] GetWindowRect(0x%llx) -> {%d,%d,%d,%d}\n",
+                                 static_cast<unsigned long long>(hwnd), r.left, r.top,
+                                 r.right, r.bottom);
+                }
             }
             if (rect_ptr != 0) {
                 write_guest_rect(m, rect_ptr, r);

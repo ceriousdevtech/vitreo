@@ -3,7 +3,7 @@
 #include "core/memory/guest_memory.hpp"
 #include <runtime/diagnostics/hang_dump.hpp>
 
-#include <os/os_sync_wait_on_address.h>
+#include "platform/host_address_wait.hpp"
 #include <cerrno>
 #include <chrono>
 #include <cstdio>
@@ -25,7 +25,31 @@ constexpr u64 kShift   = 2u;
 // tolerates it with a recursion count (emulation-induced re-entry such as
 // DllMain inside _initterm) instead of self-deadlocking; the count lives
 // with the thread, never in the word.
-thread_local std::unordered_map<GuestAddr, u32> t_exclusive_recursion;
+//
+// Native guest-side SRW stubs cannot see this per-thread map, so the number of
+// threads whose map is non-empty is published process-wide; the stubs fall
+// back to the host whenever it is non-zero (only this thread's own calls can
+// change its own map, so the gate is exact for the calling thread).
+std::atomic<u64> g_threads_with_recursion{0};
+
+struct RecursionMap {
+    std::unordered_map<GuestAddr, u32> map;
+    bool counted = false;
+    ~RecursionMap() {
+        if (counted) g_threads_with_recursion.fetch_sub(1, std::memory_order_relaxed);
+    }
+};
+thread_local RecursionMap t_recursion;
+thread_local std::unordered_map<GuestAddr, u32>& t_exclusive_recursion = t_recursion.map;
+
+/// Call after every insertion into or erasure from t_exclusive_recursion.
+void note_recursion_change() noexcept {
+    const bool nonempty = !t_recursion.map.empty();
+    if (nonempty == t_recursion.counted) return;
+    t_recursion.counted = nonempty;
+    if (nonempty) g_threads_with_recursion.fetch_add(1, std::memory_order_seq_cst);
+    else g_threads_with_recursion.fetch_sub(1, std::memory_order_seq_cst);
+}
 
 template <class T>
 [[nodiscard]] std::atomic<T>* as_atomic(const Word& w) noexcept {
@@ -47,12 +71,12 @@ template <class T>
 }
 
 void wake_all(const Word& w) noexcept {
-    (void)os_sync_wake_by_address_all(w.host, w.size,
+    (void)::vitreo::platform::address_wake_all(w.host, w.size,
                                       OS_SYNC_WAKE_BY_ADDRESS_NONE);
 }
 
 void wake_any(const Word& w) noexcept {
-    (void)os_sync_wake_by_address_any(w.host, w.size,
+    (void)::vitreo::platform::address_wake_any(w.host, w.size,
                                       OS_SYNC_WAKE_BY_ADDRESS_NONE);
 }
 
@@ -77,7 +101,10 @@ void wake_any(const Word& w) noexcept {
 /// matching release never consumed it, and would otherwise turn the NEXT
 /// release into a no-op that leaves the lock held forever.
 void drop_stale_recursion(const Word& w) noexcept {
-    if (!t_exclusive_recursion.empty()) t_exclusive_recursion.erase(w.guest);
+    if (!t_exclusive_recursion.empty()) {
+        t_exclusive_recursion.erase(w.guest);
+        note_recursion_change();
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -254,6 +281,10 @@ void wait_on(const Word& w, u64 observed,
 
 } // namespace
 
+const std::atomic<u64>* threads_with_recursion() noexcept {
+    return &g_threads_with_recursion;
+}
+
 bool resolve(GuestMemory& memory, GuestAddr addr, bool is_64bit,
              Word& out) noexcept {
     const u32 size = is_64bit ? 8u : 4u;
@@ -291,7 +322,7 @@ bool park_until_changed(const Word& w, u64 expected, u32 milliseconds,
             if (left <= 0) return load(w) != expected;
             if (static_cast<u64>(left) < park_ns) park_ns = static_cast<u64>(left);
         }
-        const int rc = os_sync_wait_on_address_with_timeout(
+        const int rc = ::vitreo::platform::address_wait_with_timeout(
             w.host, expected, w.size, OS_SYNC_WAIT_ON_ADDRESS_NONE,
             OS_CLOCK_MACH_ABSOLUTE_TIME, park_ns);
         if (rc >= 0) return true;                     // woken
@@ -318,6 +349,7 @@ void acquire_exclusive(const Word& w, u32 tid,
         }
         if ((word & kExcl) != 0 && owner_of(word) == owner_tid(w, tid)) {
             ++t_exclusive_recursion[w.guest];
+            note_recursion_change();
             return;
         }
         if (!parked) parked.emplace(ParkKind::Exclusive, w, tid);
@@ -355,6 +387,7 @@ void release_exclusive(const Word& w, u32 tid) noexcept {
                 g_stale_recursion.fetch_add(1, std::memory_order_relaxed);
             }
             t_exclusive_recursion.erase(it);
+            note_recursion_change();
         }
     }
     // Windows keeps no owner in an SRWLOCK: ReleaseSRWLockExclusive clears
@@ -394,6 +427,7 @@ void acquire_shared(const Word& w, u32 tid,
             // Shared inside our own exclusive hold: UB on Windows; count it
             // as exclusive recursion, which is what the managed path did.
             ++t_exclusive_recursion[w.guest];
+            note_recursion_change();
             return;
         }
         if (!parked) parked.emplace(ParkKind::Shared, w, tid);
@@ -450,6 +484,7 @@ bool cv_sleep_srw(const Word& cv, const Word& lock, bool shared,
             it != t_exclusive_recursion.end()) {
             saved_recursion = it->second;
             t_exclusive_recursion.erase(it);
+            note_recursion_change();
         }
     }
     ParkScope parked(ParkKind::CvSleep, cv, tid, &lock);
@@ -465,6 +500,7 @@ bool cv_sleep_srw(const Word& cv, const Word& lock, bool shared,
         });
     if (!shared && saved_recursion != 0) {
         t_exclusive_recursion[lock.guest] = saved_recursion;
+        note_recursion_change();
     }
     return woken;
 }

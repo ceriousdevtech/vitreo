@@ -58,6 +58,46 @@ void CocoaBridge::set_native_resize_callback(NativeResizeCallback cb) {
 }
 
 void CocoaBridge::on_native_move(HWND hwnd, void* ns_window) {
+    if (diag::input_diag()) {
+        NSWindow* window = (__bridge NSWindow*)ns_window;
+        NSEvent* event = [NSApp currentEvent];
+        const auto state = m_windows.find(hwnd);
+        const bool known = state != m_windows.end();
+        const Rect stored = known ? state->second.frame : Rect{};
+        const NSRect actual = window ? [window frame] : NSZeroRect;
+        const auto buttons = [NSEvent pressedMouseButtons];
+        const bool pointer_event = buttons != 0 ||
+            (event && ([event type] == NSEventTypeLeftMouseDown ||
+                       [event type] == NSEventTypeLeftMouseDragged));
+        // Startup/Space geometry must not spend the budget needed to observe
+        // a later click-and-hold movement after activation.
+        static std::atomic<unsigned> pointer_traces{0}, other_traces{0};
+        auto& budget = pointer_event ? pointer_traces : other_traces;
+        if (budget.fetch_add(1, std::memory_order_relaxed) <
+            (pointer_event ? 128u : 64u)) {
+            std::fprintf(stderr,
+                "[input] native-window-move hwnd=0x%x event=%llu "
+                "buttons=0x%llx mods=0x%llx native=(%.1f,%.1f %.1fx%.1f) "
+                "stored=(%d,%d)-(%d,%d) known=%d fullscreen=%d borderless=%d "
+                "transition=%d nativeSpace=%d style=0x%llx movable=%d background=%d "
+                "key=%d main=%d appActive=%d suppressed=%d\n",
+                hwnd, static_cast<unsigned long long>(event ? [event type] : 0),
+                static_cast<unsigned long long>(buttons),
+                static_cast<unsigned long long>(event ? [event modifierFlags] : 0),
+                actual.origin.x, actual.origin.y, actual.size.width, actual.size.height,
+                stored.left, stored.top, stored.right, stored.bottom, known ? 1 : 0,
+                known && state->second.fullscreen ? 1 : 0,
+                known && state->second.borderless_fullscreen ? 1 : 0,
+                known && state->second.space_transition ? 1 : 0,
+                window && window_is_space_fullscreen(window) ? 1 : 0,
+                static_cast<unsigned long long>(window ? [window styleMask] : 0),
+                window && [window isMovable] ? 1 : 0,
+                window && [window isMovableByWindowBackground] ? 1 : 0,
+                window && [window isKeyWindow] ? 1 : 0,
+                window && [window isMainWindow] ? 1 : 0,
+                [NSApp isActive] ? 1 : 0, resize_notify_suppressed() ? 1 : 0);
+        }
+    }
     // set_frame() (guest SetWindowPos/MoveWindow) already owns the geometry;
     // its synchronous windowDidMove must not feed back as a second guest move.
     if (resize_notify_suppressed() || ns_window == nullptr) return;
@@ -457,6 +497,13 @@ void CocoaBridge::on_native_show_state(HWND hwnd, bool minimized,
     if (resize_notify_suppressed()) {
         return;
     }
+    if (auto it = m_windows.find(hwnd);
+        it != m_windows.end() && minimized && it->second.requested_minimized) {
+        it->second.minimize_attempted = true;
+    }
+    // A native restore is an observation, not the owner-thread ShowWindow
+    // acknowledgement. Keep guest minimize intent until set_minimized(false)
+    // so a following became-key cannot activate a still-minimized HWND.
     if (m_show_state_callback) {
         m_show_state_callback(hwnd, minimized, maximized);
     }

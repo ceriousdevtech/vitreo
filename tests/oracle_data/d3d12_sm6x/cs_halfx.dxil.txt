@@ -1,0 +1,338 @@
+;
+; Note: shader requires additional functionality:
+;       Use native low precision
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: c46e2125cb6df7734032b9ce7a0e3327
+;
+; Pipeline Runtime Information: 
+;
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; src                               texture    byte         r/o      T0             t0     1
+; dst                                   UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:8-i16:16-i32:32-i64:64-f16:16-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%dx.types.ResRet.f16 = type { half, half, half, half, i32 }
+%dx.types.ResRet.i16 = type { i16, i16, i16, i16, i32 }
+%struct.ByteAddressBuffer = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+
+@"\01?g16@@3PA$f16@A" = external addrspace(3) global [64 x half], align 2
+
+define void @cs_halfx() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 1, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 0, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  %3 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %4 = shl i32 %3, 2
+  %5 = and i32 %4, 1020
+  %6 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %2, i32 %5, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %7 = extractvalue %dx.types.ResRet.i32 %6, 0
+  %8 = mul i32 %3, 12
+  %9 = and i32 %8, 508
+  %10 = or i32 %9, 2
+  %11 = call %dx.types.ResRet.f16 @dx.op.rawBufferLoad.f16(i32 139, %dx.types.Handle %2, i32 %10, i32 undef, i8 3, i32 2)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %12 = extractvalue %dx.types.ResRet.f16 %11, 0
+  %13 = extractvalue %dx.types.ResRet.f16 %11, 1
+  %14 = mul i32 %3, 14
+  %15 = and i32 %14, 510
+  %16 = call %dx.types.ResRet.i16 @dx.op.rawBufferLoad.i16(i32 139, %dx.types.Handle %2, i32 %15, i32 undef, i8 1, i32 2)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %17 = extractvalue %dx.types.ResRet.i16 %16, 0
+  %18 = lshr i32 %7, 3
+  %19 = trunc i32 %18 to i16
+  %20 = and i32 %7, 1023
+  %21 = uitofp i32 %20 to float
+  %22 = fmul fast float %21, 6.250000e-02
+  %23 = fptrunc float %22 to half
+  %24 = lshr i32 %7, 10
+  %25 = and i32 %24, 1023
+  %26 = uitofp i32 %25 to float
+  %27 = fmul fast float %26, 1.562500e-02
+  %28 = fadd fast float %27, 1.250000e-01
+  %29 = fptrunc float %28 to half
+  %30 = call half @dx.op.unary.f16(i32 24, half %23)  ; Sqrt(value)
+  %31 = fmul fast half %29, %29
+  %32 = fadd fast half %31, %30
+  %33 = bitcast half %32 to i16
+  %34 = zext i16 %33 to i32
+  %35 = call half @dx.op.binary.f16(i32 35, half %23, half %29)  ; FMax(a,b)
+  %36 = call half @dx.op.binary.f16(i32 36, half %23, half %29)  ; FMin(a,b)
+  %37 = fmul fast half %36, 0xH4200
+  %38 = fsub fast half %35, %37
+  %39 = bitcast half %38 to i16
+  %40 = zext i16 %39 to i32
+  %41 = uitofp i32 %7 to float
+  %42 = fmul fast float %41, 0x3D71979980000000
+  %43 = fptrunc float %42 to half
+  %44 = bitcast half %43 to i16
+  %45 = zext i16 %44 to i32
+  %46 = and i32 %7, 65535
+  %47 = uitofp i32 %46 to float
+  %48 = fmul fast float %47, 4.000000e+00
+  %49 = fptrunc float %48 to half
+  %50 = bitcast half %49 to i16
+  %51 = zext i16 %50 to i32
+  %52 = mul nsw i16 %19, 5
+  %53 = add nsw i16 %17, %52
+  %54 = sext i16 %53 to i32
+  %55 = fcmp fast olt half %23, %29
+  %56 = zext i1 %55 to i32
+  %57 = shl nuw i32 %56, 31
+  %58 = or i32 %57, %54
+  %59 = lshr i16 %17, 3
+  %60 = shl i16 %17, 5
+  %61 = xor i16 %59, %60
+  %62 = zext i16 %61 to i32
+  %63 = shl i32 %7, 2
+  %64 = and i32 %63, 1048576
+  %65 = or i32 %62, %64
+  %66 = srem i16 %19, 7
+  %67 = ashr i16 %19, 12
+  %68 = sub nsw i16 %66, %67
+  %69 = sext i16 %68 to i32
+  %70 = fmul fast half %12, %13
+  %71 = bitcast half %70 to i16
+  %72 = zext i16 %71 to i32
+  %73 = fadd fast half %12, %13
+  %74 = bitcast half %73 to i16
+  %75 = zext i16 %74 to i32
+  %76 = shl nuw i32 %75, 16
+  %77 = or i32 %76, %72
+  %78 = fptosi half %23 to i16
+  %79 = zext i16 %78 to i32
+  %80 = fmul fast half %29, 0xH5640
+  %81 = fptoui half %80 to i16
+  %82 = zext i16 %81 to i32
+  %83 = shl nuw i32 %82, 16
+  %84 = or i32 %83, %79
+  %85 = sitofp i16 %19 to half
+  %86 = bitcast half %85 to i16
+  %87 = zext i16 %86 to i32
+  %88 = uitofp i16 %17 to half
+  %89 = bitcast half %88 to i16
+  %90 = zext i16 %89 to i32
+  %91 = shl nuw i32 %90, 16
+  %92 = or i32 %91, %87
+  %93 = call i32 @dx.op.unaryBits.i16(i32 33, i16 %17)  ; FirstbitHi(value)
+  %94 = sub i32 15, %93
+  %95 = icmp eq i32 %93, -1
+  %96 = select i1 %95, i32 -1, i32 %94
+  %97 = call i32 @dx.op.unaryBits.i16(i32 31, i16 %17)  ; Countbits(value)
+  %98 = shl i32 %97, 8
+  %99 = or i32 %96, %98
+  %100 = call i32 @dx.op.unaryBits.i16(i32 32, i16 %19)  ; FirstbitLo(value)
+  %101 = shl i32 %100, 16
+  %102 = or i32 %99, %101
+  %103 = call i16 @dx.op.unary.i16(i32 30, i16 %17)  ; Bfrev(value)
+  %104 = zext i16 %103 to i32
+  %105 = shl i32 %104, 24
+  %106 = or i32 %102, %105
+  %107 = fmul fast half %29, %23
+  %108 = fpext half %107 to float
+  %109 = call i32 @dx.op.legacyF32ToF16(i32 130, float %108)  ; LegacyF32ToF16(value)
+  %110 = fmul fast half %23, 0xH34CD
+  %111 = fadd fast half %29, %110
+  %112 = bitcast half %111 to i16
+  %113 = zext i16 %112 to i32
+  %114 = shl nuw i32 %113, 16
+  %115 = or i32 %109, %114
+  %116 = and i32 %3, 7
+  %117 = uitofp i32 %116 to half
+  %118 = fmul fast half %23, %117
+  %119 = getelementptr [64 x half], [64 x half] addrspace(3)* @"\01?g16@@3PA$f16@A", i32 0, i32 %3
+  store half %118, half addrspace(3)* %119, align 2, !tbaa !12
+  call void @dx.op.barrier(i32 80, i32 9)  ; Barrier(barrierMode)
+  %120 = add i32 %3, 5
+  %121 = and i32 %120, 63
+  %122 = getelementptr [64 x half], [64 x half] addrspace(3)* @"\01?g16@@3PA$f16@A", i32 0, i32 %121
+  %123 = load half, half addrspace(3)* %122, align 2, !tbaa !12
+  %124 = xor i32 %3, 1
+  %125 = getelementptr [64 x half], [64 x half] addrspace(3)* @"\01?g16@@3PA$f16@A", i32 0, i32 %124
+  %126 = load half, half addrspace(3)* %125, align 2, !tbaa !12
+  %127 = fadd fast half %126, %123
+  %128 = bitcast half %127 to i16
+  %129 = zext i16 %128 to i32
+  %130 = fadd fast half %29, 0xHC400
+  %131 = call half @dx.op.unary.f16(i32 6, half %130)  ; FAbs(value)
+  %132 = call half @dx.op.unary.f16(i32 22, half %23)  ; Frc(value)
+  %133 = fmul fast half %132, %131
+  %134 = bitcast half %133 to i16
+  %135 = zext i16 %134 to i32
+  %136 = fdiv fast half %29, 0xH0000
+  %137 = fpext half %136 to float
+  %138 = call i1 @dx.op.isSpecialFloat.f32(i32 8, float %137)  ; IsNaN(value)
+  %139 = zext i1 %138 to i32
+  %140 = shl nuw nsw i32 %139, 16
+  %141 = or i32 %140, %135
+  %142 = call i1 @dx.op.isSpecialFloat.f32(i32 9, float %137)  ; IsInf(value)
+  %143 = zext i1 %142 to i32
+  %144 = shl nuw nsw i32 %143, 17
+  %145 = or i32 %141, %144
+  %146 = call i16 @dx.op.binary.i16(i32 38, i16 %19, i16 -7)  ; IMin(a,b)
+  %147 = zext i16 %146 to i32
+  %148 = call i16 @dx.op.binary.i16(i32 39, i16 %17, i16 900)  ; UMax(a,b)
+  %149 = zext i16 %148 to i32
+  %150 = shl nuw i32 %149, 16
+  %151 = or i32 %150, %147
+  %152 = fsub fast half %23, %29
+  %153 = call half @dx.op.unary.f16(i32 7, half %152)  ; Saturate(value)
+  %154 = bitcast half %153 to i16
+  %155 = zext i16 %154 to i32
+  %156 = fsub fast half 0xH8000, %23
+  %157 = bitcast half %156 to i16
+  %158 = zext i16 %157 to i32
+  %159 = shl nuw i32 %158, 16
+  %160 = or i32 %155, %159
+  %161 = shl i32 %3, 6
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %161, i32 undef, i32 %34, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %162 = or i32 %161, 4
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %162, i32 undef, i32 %40, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %163 = or i32 %161, 8
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %163, i32 undef, i32 %45, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %164 = or i32 %161, 12
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %164, i32 undef, i32 %51, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %165 = or i32 %161, 16
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %165, i32 undef, i32 %58, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %166 = or i32 %161, 20
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %166, i32 undef, i32 %65, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %167 = or i32 %161, 24
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %167, i32 undef, i32 %69, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %168 = or i32 %161, 28
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %168, i32 undef, i32 %77, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %169 = or i32 %161, 32
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %169, i32 undef, i32 %84, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %170 = or i32 %161, 36
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %170, i32 undef, i32 %92, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %171 = or i32 %161, 40
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %171, i32 undef, i32 %106, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %172 = or i32 %161, 44
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %172, i32 undef, i32 %115, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %173 = or i32 %161, 48
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %173, i32 undef, i32 %129, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %174 = or i32 %161, 52
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %174, i32 undef, i32 %145, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %175 = or i32 %161, 56
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %175, i32 undef, i32 %151, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %176 = or i32 %161, 60
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %1, i32 %176, i32 undef, i32 %160, i32 undef, i32 undef, i32 undef, i8 1, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  call void @dx.op.barrier(i32 80, i32 3)  ; Barrier(barrierMode)
+  %177 = and i32 %161, -128
+  %178 = and i32 %3, 1
+  %179 = icmp eq i32 %178, 0
+  br i1 %179, label %184, label %180
+
+; <label>:180                                     ; preds = %0
+  %181 = uitofp i32 %3 to half
+  %182 = fmul fast half %181, 0xH3800
+  %183 = or i32 %177, 62
+  call void @dx.op.rawBufferStore.f16(i32 140, %dx.types.Handle %1, i32 %183, i32 undef, half %182, half undef, half undef, half undef, i8 1, i32 2)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  br label %187
+
+; <label>:184                                     ; preds = %0
+  %185 = or i32 %177, 60
+  %186 = xor i16 %154, 23130
+  call void @dx.op.rawBufferStore.i16(i32 140, %dx.types.Handle %1, i32 %185, i32 undef, i16 %186, i16 undef, i16 undef, i16 undef, i8 1, i32 2)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  br label %187
+
+; <label>:187                                     ; preds = %184, %180
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32, %dx.types.Handle, i32, i32, i8, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.f16 @dx.op.rawBufferLoad.f16(i32, %dx.types.Handle, i32, i32, i8, i32) #1
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i16 @dx.op.rawBufferLoad.i16(i32, %dx.types.Handle, i32, i32, i8, i32) #1
+
+; Function Attrs: nounwind readnone
+declare half @dx.op.unary.f16(i32, half) #0
+
+; Function Attrs: nounwind readnone
+declare half @dx.op.binary.f16(i32, half, half) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.unaryBits.i16(i32, i16) #0
+
+; Function Attrs: nounwind readnone
+declare i16 @dx.op.unary.i16(i32, i16) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.legacyF32ToF16(i32, float) #0
+
+; Function Attrs: noduplicate nounwind
+declare void @dx.op.barrier(i32, i32) #2
+
+; Function Attrs: nounwind readnone
+declare i1 @dx.op.isSpecialFloat.f32(i32, float) #0
+
+; Function Attrs: nounwind readnone
+declare i16 @dx.op.binary.i16(i32, i16, i16) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #3
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.f16(i32, %dx.types.Handle, i32, i32, half, half, half, half, i8, i32) #3
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i16(i32, %dx.types.Handle, i32, i32, i16, i16, i16, i16, i8, i32) #3
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #1
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { noduplicate nounwind }
+attributes #3 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!9}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 2}
+!2 = !{i32 1, i32 6}
+!3 = !{!"cs", i32 6, i32 2}
+!4 = !{!5, !7, null, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i32 0, null}
+!7 = !{!8}
+!8 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!9 = !{void ()* @cs_halfx, !"cs_halfx", null, !4, !10}
+!10 = !{i32 0, i64 8388656, i32 4, !11}
+!11 = !{i32 64, i32 1, i32 1}
+!12 = !{!13, !13, i64 0}
+!13 = !{!"half", !14, i64 0}
+!14 = !{!"omnipotent char", !15, i64 0}
+!15 = !{!"Simple C/C++ TBAA"}

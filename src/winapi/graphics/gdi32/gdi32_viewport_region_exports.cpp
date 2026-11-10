@@ -231,6 +231,37 @@ void add_gdi32_viewport_region_exports(DllExports& exports, GdiManager& mgr) {
     // ---- Polygon(hdc, lppt, cCount) ----
     exports.entries.push_back({"Polygon", 0, [&mgr](Marshaler& m) { gdi_geometry_exports::poly_points(mgr, m, gdi_geometry_exports::PolyKind::Polygon); }, 12});
 
+    // The face-name argument of EnumFonts/EnumFontFamilies (A: ACP, W:
+    // UTF-16). False after setting the error and the 0 return for a name
+    // that cannot be read or converted. A present but empty name is not the
+    // NULL "one font per typeface" request: Windows makes no callback and
+    // returns 1 (enumfontfamilies_legacy*.expected "empty family"). An empty
+    // face would take the NULL path, so keep a name no family matches.
+    auto read_face = [](Marshaler& m, bool wide, GuestAddr name, std::u16string& face) {
+        const auto text = wide ? m.read_wide_string(name) : m.read_ansi_string(name);
+        if (!text.is_ok()) {
+            set_last_error(error_codes::ERROR_INVALID_PARAMETER);
+            m.set_return(0);
+            return false;
+        }
+        const auto& bytes = text.value();
+        std::vector<u16> wide_name(bytes.size() + 1);
+        const auto converted = codepage::multi_byte_to_wide(
+            wide ? codepage::kCpUtf8 : codepage::ansi_code_page(), 0,
+            reinterpret_cast<const u8*>(bytes.data()), bytes.size(),
+            wide_name.data(), wide_name.size());
+        if (!converted.ok()) {
+            set_last_error(converted.error);
+            m.set_return(0);
+            return false;
+        }
+        usize count = converted.count;
+        while (count > 0 && wide_name[count - 1] == 0) --count;
+        face.assign(wide_name.data(), wide_name.data() + count);
+        if (face.empty()) face.push_back(u'\uFFFF');
+        return true;
+    };
+
     // EnumFonts{A,W}(hdc, lpFaceName, lpProc, lParam). Learn: four arguments,
     // the callback receives a LOGFONT and TEXTMETRIC (the prefixes of the
     // structures EnumFontFamiliesEx already writes), and the return is the
@@ -238,34 +269,9 @@ void add_gdi32_viewport_region_exports(DllExports& exports, GdiManager& mgr) {
     // A NULL DC fails with ERROR_INVALID_HANDLE. The generic missing-export
     // stub pops nothing and returns 0xFFFFFFFF, which is not this contract.
     // https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-enumfontsw
-    auto enum_fonts = [&mgr](Marshaler& m, bool wide) {
+    auto enum_fonts = [&mgr, read_face](Marshaler& m, bool wide) {
         std::u16string face;
-        if (const GuestAddr name = m.arg_ptr(1)) {
-            const auto text = wide ? m.read_wide_string(name) : m.read_ansi_string(name);
-            if (!text.is_ok()) {
-                set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-                m.set_return(0);
-                return;
-            }
-            const auto& bytes = text.value();
-            std::vector<u16> wide_name(bytes.size() + 1);
-            const auto converted = codepage::multi_byte_to_wide(
-                wide ? codepage::kCpUtf8 : codepage::ansi_code_page(), 0,
-                reinterpret_cast<const u8*>(bytes.data()), bytes.size(),
-                wide_name.data(), wide_name.size());
-            if (!converted.ok()) {
-                set_last_error(converted.error);
-                m.set_return(0);
-                return;
-            }
-            usize count = converted.count;
-            while (count > 0 && wide_name[count - 1] == 0) --count;
-            // A present but empty name is not the NULL "one font per typeface"
-            // request. An empty face would take that path, so keep a name no
-            // family matches and return the documented no-callback result.
-            face.assign(wide_name.data(), wide_name.data() + count);
-            if (face.empty()) face.push_back(u'\uFFFF');
-        }
+        if (const GuestAddr name = m.arg_ptr(1); name != 0 && !read_face(m, wide, name, face)) return;
         // DEFAULT_CHARSET: every charset the face claims, matching the
         // enumeration EnumFontFamiliesEx uses for an unspecified charset.
         m.set_return(static_cast<u32>(mgr.enum_font_families_ex(
@@ -275,12 +281,30 @@ void add_gdi32_viewport_region_exports(DllExports& exports, GdiManager& mgr) {
     exports.entries.push_back({"EnumFontsW", 0, [enum_fonts](Marshaler& m) { enum_fonts(m, true); }, 16});
     exports.entries.push_back({"EnumFontsA", 0, [enum_fonts](Marshaler& m) { enum_fonts(m, false); }, 16});
 
-    // ---- EnumFontFamiliesW(hdc, lpszFamily, lpProc, lParam) ----
-    exports.entries.push_back({"EnumFontFamiliesW", 0, [](Marshaler& m) {
-        if (m.arg(0) == 0) { set_last_error(error_codes::ERROR_INVALID_HANDLE); m.set_return(0); return; }
-        (void)m.arg(0); (void)m.arg(1); (void)m.arg(2); (void)m.arg(3);
-        m.set_return(1);
-    }, 16});
+    // EnumFontFamilies{A,W}(hdc, lpLogfont, lpProc, lParam). Learn: despite
+    // its name lpLogfont is the family-name string; NULL enumerates one font
+    // of each family, a name every font of that family; the callback gets an
+    // ENUMLOGFONT and a NEWTEXTMETRIC (prefixes of the -Ex structures) and
+    // the font type, and the return is the last callback's value.
+    // https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-enumfontfamiliesw
+    // Measured on Windows 11, x86 and x64 alike
+    // (tools/oracle_probe/enumfontfamilies_legacy{32,64}.expected): each
+    // style once in its first charset (font_enum.cpp), a missing or empty
+    // family returns 1 with no calls, a callback's 0 stops with 0, a NULL or
+    // invalid DC returns 0 with ERROR_INVALID_HANDLE, and the W form with a
+    // NULL family clears the last error (A leaves it).
+    auto enum_font_families = [&mgr, read_face](Marshaler& m, bool wide) {
+        std::u16string face;
+        const GuestAddr name = m.arg_ptr(1);
+        if (name != 0 && !read_face(m, wide, name, face)) return;
+        const auto hdc = static_cast<Handle>(m.arg(0));
+        if (wide && name == 0 && mgr.has_dc(hdc)) set_last_error(error_codes::ERROR_SUCCESS);
+        m.set_return(static_cast<u32>(mgr.enum_font_families_ex(
+            hdc, face, 1, m.arg_ptr(2), m.arg(3), wide, m.cpu_is_64bit(),
+            /*one_charset_per_style=*/true)));
+    };
+    exports.entries.push_back({"EnumFontFamiliesW", 0, [enum_font_families](Marshaler& m) { enum_font_families(m, true); }, 16});
+    exports.entries.push_back({"EnumFontFamiliesA", 0, [enum_font_families](Marshaler& m) { enum_font_families(m, false); }, 16});
 
     // ---- GetTextCharsetInfo(hdc, lpSig, dwFlags) ----
     exports.entries.push_back({"TranslateCharsetInfo", 0, [](Marshaler& m) {

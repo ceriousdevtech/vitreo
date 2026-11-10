@@ -3,6 +3,9 @@
 ///        Part of the D3D9 frontend contract tests (see test_d3d9.cpp).
 
 #include "d3d9_test_fixture.hpp"
+#include "winapi/graphics/gdi32/gdi32.hpp"
+
+#include <memory>
 
 #include <array>
 #include <vector>
@@ -120,9 +123,15 @@ TEST_F(D3D9ManagerTest, UpdateSurfaceCopiesCompressedBlockRectangles) {
     const auto [factory, device] = create_device();
     for (u32 format : {0x31545844u, 0x35545844u}) {
         const u32 block_bytes = format == 0x31545844u ? 8u : 16u;
-        ASSERT_EQ(invoke(D3D9InterfaceId::Device, 36,
-                         {device, 16, 16, format, D3DPOOL_SYSTEMMEM,
-                          static_cast<u32>(SCRATCH_ADDR), 0}), D3D_OK);
+        // DXT offscreen plain surfaces do not exist (CheckDeviceFormat and
+        // CreateOffscreenPlainSurface refuse them on Windows); a SYSTEMMEM
+        // texture level is the compressed source surface.
+        ASSERT_EQ(invoke(D3D9InterfaceId::Device, 23,
+                         {device, 16, 16, 1, 0, format, D3DPOOL_SYSTEMMEM,
+                          static_cast<u32>(SCRATCH_ADDR + 0x40), 0}), D3D_OK);
+        ASSERT_EQ(invoke(D3D9InterfaceId::Texture, 18,
+                         {memory_.read_u32(SCRATCH_ADDR + 0x40).value(), 0,
+                          static_cast<u32>(SCRATCH_ADDR)}), D3D_OK);
         const u32 src = memory_.read_u32(SCRATCH_ADDR).value();
         ASSERT_EQ(invoke(D3D9InterfaceId::Device, 23,
                          {device, 16, 16, 1, 0, format, D3DPOOL_DEFAULT,
@@ -431,29 +440,157 @@ TEST_F(D3D9ManagerTest, GetRenderTargetDataReadsRtTextureLevel) {
     EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 14, {dest}), D3D_OK);
 }
 
-TEST_F(D3D9ManagerTest, SurfaceGetDCReturnsNotImplWithoutFakeHdc) {
-    // Learn: IDirect3DSurface9::GetDC is valid for offscreen plain surfaces in
-    // formats without alpha (e.g. X8R8G8B8). Vitreo has no GDI↔D3D9 surface
-    // DC path yet, so GetDC/ReleaseDC stay E_NOTIMPL and must not invent an HDC.
-    const auto [factory, device] = create_device();
-    ASSERT_NE(device, 0u);
+// IDirect3DSurface9::GetDC / ReleaseDC. Expected values from an RTX 4080
+// (tools/oracle_probe/d3d9_getdc_probe{32,64}.winoracle-gpu.expected).
+class D3D9SurfaceDcTest : public D3D9ManagerTest {
+protected:
+    void SetUp() override {
+        D3D9ManagerTest::SetUp();
+        ASSERT_TRUE(memory_.map_region(GdiManager::GDI_DIB_SCRATCH_BASE,
+                                       GdiManager::GDI_DIB_SCRATCH_SIZE,
+                                       MemoryProtection::ReadWrite).is_ok());
+        gdi_ = std::make_unique<GdiManager>(gdi_handles_);
+        gdi_->set_guest_memory(&memory_);
+        mgr_.set_gdi_manager(gdi_.get());
+    }
 
+    u32 offscreen(u32 device, u32 format, u32 pool) {
+        EXPECT_EQ(invoke(D3D9InterfaceId::Device, 36,
+                         {device, 16, 16, format, pool,
+                          static_cast<u32>(SCRATCH_ADDR), 0}),
+                  D3D_OK);
+        return memory_.read_u32(SCRATCH_ADDR).value();
+    }
+
+    /// LockRect the whole surface; returns pBits (pitch at +0x20).
+    u32 lock(u32 surface) {
+        EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 13,
+                         {surface, static_cast<u32>(SCRATCH_ADDR + 0x20), 0, 0}),
+                  D3D_OK);
+        return memory_.read_u32(SCRATCH_ADDR + 0x24).value();
+    }
+
+    HandleTable gdi_handles_;
+    std::unique_ptr<GdiManager> gdi_;
+};
+
+TEST_F(D3D9SurfaceDcTest, GdiDrawsOverTheSurfacePixelsAndLocksItMeanwhile) {
     constexpr u32 D3DFMT_X8R8G8B8 = 22;
-    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 36,
-                     {device, 16, 16, D3DFMT_X8R8G8B8, D3DPOOL_SYSTEMMEM,
+    const auto [factory, device] = create_device();
+    const u32 surface = offscreen(device, D3DFMT_X8R8G8B8, D3DPOOL_SYSTEMMEM);
+    u32 bits = lock(surface);
+    const u32 pitch = memory_.read_u32(SCRATCH_ADDR + 0x20).value();
+    for (u32 y = 0; y < 16; ++y) {
+        for (u32 x = 0; x < 16; ++x) {
+            ASSERT_TRUE(memory_.write_u32(bits + y * pitch + x * 4, 0xAA112233u).is_ok());
+        }
+    }
+    ASSERT_EQ(invoke(D3D9InterfaceId::Surface, 14, {surface}), D3D_OK);
+
+    const auto hdc_out = static_cast<u32>(SCRATCH_ADDR + 0x40);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Surface, 15, {surface, hdc_out}), D3D_OK);
+    const u32 hdc = memory_.read_u32(hdc_out).value();
+    ASSERT_NE(hdc, 0u);
+    // The DC starts with the surface's pixels (COLORREF 0x00BBGGRR).
+    EXPECT_EQ(gdi_->get_pixel(hdc, 3, 3), 0x00332211u);
+    // One DC at a time, and the surface is locked while it is out.
+    ASSERT_TRUE(memory_.write_u32(SCRATCH_ADDR + 0x44, 0x1u).is_ok());
+    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 15,
+                     {surface, static_cast<u32>(SCRATCH_ADDR + 0x44)}),
+              D3DERR_INVALIDCALL);
+    EXPECT_EQ(memory_.read_u32(SCRATCH_ADDR + 0x44).value(), 0x1u);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 13,
+                     {surface, static_cast<u32>(SCRATCH_ADDR + 0x20), 0, 0}),
+              D3DERR_INVALIDCALL);
+
+    ASSERT_TRUE(gdi_->fill_rect_gdi(hdc, 0, 0, 8, 16, 0x00C08040u));  // RGB(40,80,C0)
+    (void)gdi_->set_pixel(hdc, 15, 15, 0x00030201u);                     // RGB(1,2,3)
+
+    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 16, {surface, 0x12345u}),
+              D3DERR_INVALIDCALL);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 16, {surface, 0}), D3DERR_INVALIDCALL);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 16, {surface, hdc}), D3D_OK);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 16, {surface, hdc}), D3DERR_INVALIDCALL);
+
+    bits = lock(surface);
+    // GDI writes zero the X byte; pixels it did not touch keep theirs.
+    EXPECT_EQ(memory_.read_u32(bits + 3 * pitch + 2 * 4).value(), 0x004080C0u);
+    EXPECT_EQ(memory_.read_u32(bits + 3 * pitch + 12 * 4).value(), 0xAA112233u);
+    EXPECT_EQ(memory_.read_u32(bits + 15 * pitch + 15 * 4).value(), 0x00010203u);
+    // GetDC on a locked surface refuses.
+    ASSERT_TRUE(memory_.write_u32(hdc_out, 0x1u).is_ok());
+    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 15, {surface, hdc_out}),
+              D3DERR_INVALIDCALL);
+    EXPECT_EQ(memory_.read_u32(hdc_out).value(), 0x1u);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Surface, 14, {surface}), D3D_OK);
+}
+
+TEST_F(D3D9SurfaceDcTest, R5G6B5DrawsInTheSurfaceFormat) {
+    constexpr u32 D3DFMT_R5G6B5 = 23;
+    const auto [factory, device] = create_device();
+    const u32 surface = offscreen(device, D3DFMT_R5G6B5, D3DPOOL_SYSTEMMEM);
+    u32 bits = lock(surface);
+    const u32 pitch = memory_.read_u32(SCRATCH_ADDR + 0x20).value();
+    for (u32 y = 0; y < 16; ++y) {
+        for (u32 x = 0; x < 16; ++x) {
+            ASSERT_TRUE(memory_.write_u16(bits + y * pitch + x * 2, 0x1234u).is_ok());
+        }
+    }
+    ASSERT_EQ(invoke(D3D9InterfaceId::Surface, 14, {surface}), D3D_OK);
+    const auto hdc_out = static_cast<u32>(SCRATCH_ADDR + 0x40);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Surface, 15, {surface, hdc_out}), D3D_OK);
+    const u32 hdc = memory_.read_u32(hdc_out).value();
+    // Reads expand by bit replication; writes truncate.
+    EXPECT_EQ(gdi_->get_pixel(hdc, 1, 1), 0x00A54510u);
+    (void)gdi_->set_pixel(hdc, 0, 0, 0x00C58A47u);  // RGB(47,8A,C5)
+    ASSERT_EQ(invoke(D3D9InterfaceId::Surface, 16, {surface, hdc}), D3D_OK);
+    bits = lock(surface);
+    EXPECT_EQ(memory_.read_u16(bits).value(), 0x4458u);
+    EXPECT_EQ(memory_.read_u16(bits + 2).value(), 0x1234u);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Surface, 14, {surface}), D3D_OK);
+}
+
+TEST_F(D3D9SurfaceDcTest, GetDcRefusesScratchUnlockableAndNonGdiFormats) {
+    constexpr u32 D3DFMT_X8R8G8B8 = 22;
+    constexpr u32 D3DFMT_A4R4G4B4 = 26;
+    constexpr u32 D3DFMT_L8 = 50;
+    const auto [factory, device] = create_device();
+    const auto hdc_out = static_cast<u32>(SCRATCH_ADDR + 0x40);
+    const auto refuses = [&](u32 surface) {
+        ASSERT_TRUE(memory_.write_u32(hdc_out, 0x1u).is_ok());
+        EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 15, {surface, hdc_out}),
+                  D3DERR_INVALIDCALL);
+        EXPECT_EQ(memory_.read_u32(hdc_out).value(), 0x1u);
+    };
+    refuses(offscreen(device, D3DFMT_X8R8G8B8, D3DPOOL_SCRATCH));
+    refuses(offscreen(device, D3DFMT_A4R4G4B4, D3DPOOL_SYSTEMMEM));
+    refuses(offscreen(device, D3DFMT_L8, D3DPOOL_SCRATCH));
+    // A non-lockable render target refuses; a lockable one lends a DC.
+    for (const u32 lockable : {0u, 1u}) {
+        ASSERT_EQ(invoke(D3D9InterfaceId::Device, 28,
+                         {device, 16, 16, D3DFMT_X8R8G8B8, 0, 0, lockable,
+                          static_cast<u32>(SCRATCH_ADDR), 0}),
+                  D3D_OK);
+        const u32 target = memory_.read_u32(SCRATCH_ADDR).value();
+        if (lockable == 0) {
+            refuses(target);
+        } else {
+            ASSERT_EQ(invoke(D3D9InterfaceId::Surface, 15, {target, hdc_out}), D3D_OK);
+            EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 16,
+                             {target, memory_.read_u32(hdc_out).value()}),
+                      D3D_OK);
+        }
+    }
+    // A DEFAULT, non-dynamic texture level is not CPU-lockable.
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 23,
+                     {device, 16, 16, 1, 0, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT,
                       static_cast<u32>(SCRATCH_ADDR), 0}),
               D3D_OK);
-    const u32 surface = memory_.read_u32(SCRATCH_ADDR).value();
-    ASSERT_NE(surface, 0u);
-
-    constexpr u32 hdc_out = static_cast<u32>(SCRATCH_ADDR + 0x20);
-    ASSERT_TRUE(memory_.write_u32(hdc_out, 0xDEADBEEFu).is_ok());
-    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 15, {surface, hdc_out}),
-              E_NOTIMPL_D3D);
-    EXPECT_EQ(memory_.read_u32(hdc_out).value(), 0xDEADBEEFu);
-
-    EXPECT_EQ(invoke(D3D9InterfaceId::Surface, 16, {surface, 0}),
-              E_NOTIMPL_D3D);
+    const u32 texture = memory_.read_u32(SCRATCH_ADDR).value();
+    ASSERT_EQ(invoke(D3D9InterfaceId::Texture, 18,
+                     {texture, 0, static_cast<u32>(SCRATCH_ADDR + 4)}),
+              D3D_OK);
+    refuses(memory_.read_u32(SCRATCH_ADDR + 4).value());
 }
 
 TEST_F(D3D9ManagerTest, StaleReleaseKeepsIUnknownVtable) {

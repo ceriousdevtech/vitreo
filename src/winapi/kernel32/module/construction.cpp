@@ -86,6 +86,13 @@ bool ModuleManager::publish_loader_entry(const ModuleInfo& info) {
         return true;
     }
     if (m_memory == nullptr) return false;
+    pe::TebModuleInfo entry = loader_entry_info(info);
+    entry.dynamic_load = true;
+    return pe::append_peb_loader_module(
+        *m_memory, m_main_peb, m_is_64bit_process, entry);
+}
+
+pe::TebModuleInfo ModuleManager::loader_entry_info(const ModuleInfo& info) {
     pe::TebModuleInfo entry{info.base_address, info.path};
     entry.entry_point = info.entry_point;
     // Synthetic modules have no PE image, but they do own their slot; a zero
@@ -93,8 +100,18 @@ bool ModuleManager::publish_loader_entry(const ModuleInfo& info) {
     entry.size_of_image = info.image_end > info.base_address
         ? info.image_end - info.base_address
         : SYNTHETIC_MODULE_SLOT_SIZE;
-    return pe::append_peb_loader_module(
-        *m_memory, m_main_peb, m_is_64bit_process, entry);
+    // A thunk-backed module is initialized when it is registered; its Windows
+    // counterpart has run DllMain by the time the guest can see it.
+    entry.process_attach_called = info.dllmain_called || info.synthetic_image;
+    entry.thread_calls_disabled = info.thread_notifications_disabled;
+    entry.load_count = info.ref_count;
+    return entry;
+}
+
+void ModuleManager::sync_loader_entry(const ModuleInfo& info) {
+    if (m_main_peb == 0 || m_memory == nullptr) return;
+    (void)pe::update_peb_loader_module(*m_memory, m_main_peb, m_is_64bit_process,
+                                       loader_entry_info(info));
 }
 
 void ModuleManager::unpublish_loader_entry(const ModuleInfo& info) {
@@ -106,6 +123,11 @@ void ModuleManager::unpublish_loader_entry(const ModuleInfo& info) {
 void ModuleManager::set_path_variable_provider(
     std::function<std::string()> provider) {
     m_path_variable_provider = std::move(provider);
+}
+
+void ModuleManager::set_sxs_redirect_provider(
+    std::function<std::optional<std::string>(std::string_view)> provider) {
+    m_sxs_redirect_provider = std::move(provider);
 }
 
 void ModuleManager::set_current_directory(std::string_view directory) {

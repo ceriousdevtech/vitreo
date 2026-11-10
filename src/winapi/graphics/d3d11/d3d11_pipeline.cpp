@@ -4,6 +4,7 @@
 ///        translators it uses.
 
 #include "winapi/graphics/d3d11/d3d11.hpp"
+#include "winapi/graphics/d3d11/d3d11_read_only_resources.hpp"
 #include "winapi/graphics/d3d11/d3d11_pipeline_internal.hpp"
 #include "winapi/graphics/d3d11/d3d11_state_census.hpp"
 #include "winapi/graphics/d3d11/d3d11_stdcall.hpp"
@@ -288,6 +289,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         if (indirect_buffer == nullptr) return;
     } else if ((variant == nullptr ||
                 (variant->kind != DrawVariant::Kind::GeometryOutput &&
+                 variant->kind != DrawVariant::Kind::MeshGeometry &&  // WS5
                  variant->kind != DrawVariant::Kind::Tessellated)) &&
                (count == 0 || instance_count == 0)) {
         // Pass C of the geometry emulation carries its count in the variant
@@ -364,9 +366,21 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
 
     const bool is_capture =
         variant != nullptr && variant->kind == DrawVariant::Kind::Capture;
+    // ---- WS5 begin ----
+    // The mesh draw of a geometry program is a geometry-output draw in every
+    // respect but its pipeline (object+mesh) and its geometry-stage bindings.
+    const bool is_mesh_geometry =
+        variant != nullptr && variant->kind == DrawVariant::Kind::MeshGeometry;
+    // A capture in the guest's own pass keeps the pass exactly as the guest's
+    // draws describe it (targets, formats, samples, occlusion), so it and the
+    // mesh draw after it share their encoder; only the 1x1 capture replaces
+    // the output merger.
+    const bool capture_offscreen = is_capture && !variant->capture_in_pass;
+    // ---- WS5 end ----
     const bool is_geometry_output =
         variant != nullptr &&
-        variant->kind == DrawVariant::Kind::GeometryOutput;
+        (variant->kind == DrawVariant::Kind::GeometryOutput ||
+         is_mesh_geometry);
     const bool is_tessellated =
         variant != nullptr && variant->kind == DrawVariant::Kind::Tessellated;
     // Pass C drawing lines as the rectangles D3D rasterizes
@@ -540,7 +554,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     // The RTV's DXGI format per slot, for rules the host format cannot
     // express (render_target_has_no_alpha).
     std::array<u32, graphics::BACKEND_MAX_RENDER_TARGETS> color_view_formats{};
-    if (is_capture) {
+    if (capture_offscreen) {  // WS5: an in-pass capture keeps the guest's
         // Rasterization is off, so nothing reaches this target; it exists
         // because a pass needs one, and a streaming draw commonly binds no
         // render target at all.
@@ -555,7 +569,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     // RTVs and DSV resolve to, keyed by their stamps and the texture-backend
     // generation (a texture's backend object replaced under a live view).
     const bool om_memo =
-        !is_capture && memo_on(d3d11::draw_memo::Part::OmMemo);
+        !capture_offscreen && memo_on(d3d11::draw_memo::Part::OmMemo);  // WS5
     const bool om_verify = om_memo && d3d11::draw_memo::verify();
     OmMemo& om = m_om_memo;
     const bool om_keys_match =
@@ -594,7 +608,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     } else {
         if (om_memo) ++m_r4_om_misses;
         for (u32 slot = 0; slot < state.render_targets.size() &&
-                           !is_capture;
+                           !capture_offscreen;  // WS5
              ++slot) {
             if (state.render_targets[slot] == 0) continue;
             auto rtv = m_render_target_views.find(state.render_targets[slot]);
@@ -692,7 +706,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         depth_array_size = om.depth_array_size;
         depth_view_flags = om.depth_view_flags;
     } else {
-        if (state.depth_stencil_view != 0 && !is_capture) {
+        if (state.depth_stencil_view != 0 && !capture_offscreen) {  // WS5
             auto dsv = m_depth_stencil_views.find(state.depth_stencil_view);
             if (dsv != m_depth_stencil_views.end()) {
                 auto tex = m_textures.find(dsv->second.texture);
@@ -775,7 +789,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     static const bool no_attachmentless =
         std::getenv("VITREO_D3D11_NO_ATTACHMENTLESS") != nullptr;
     const bool attachmentless = !no_attachmentless &&
-        primary_target == nullptr && !any_color_bound && !is_capture;
+        primary_target == nullptr && !any_color_bound && !capture_offscreen;  // WS5
     if (primary_target == nullptr && !color0_bound && !attachmentless) {
         pipeline_diag("Draw skipped: no render or depth-stencil target");
         return;
@@ -1133,9 +1147,10 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     std::array<unsigned, graphics::BACKEND_MAX_VERTEX_BUFFERS> step_rates{};
     std::array<bool, graphics::BACKEND_MAX_VERTEX_BUFFERS> constant_slots{};
     // Backend stream -> IA slot. The input layout fixed this at creation
-    // (InputLayout::stream_slot): IA slots 8-31 ride on streams the layout's
-    // low slots leave free. A stream the layout does not claim is its own
-    // slot, which is also the whole mapping when no layout is bound.
+    // (InputLayout::stream_slot): a slot with a Metal buffer index keeps that
+    // stream, and a higher slot rides on a bindable stream the layout's own
+    // slots leave free. A stream the layout does not claim is its own slot,
+    // which is also the whole mapping when no layout is bound.
     const auto bound_layout = m_input_layouts.find(state.input_layout);
     const InputLayout* input_layout = bound_layout != m_input_layouts.end()
         ? &bound_layout->second : nullptr;
@@ -1209,10 +1224,10 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
                             std::fprintf(stderr,
                                          "[vitreo] UNIMPLEMENTED d3d11!Draw: input "
                                          "layout reads IA slot %u, but its slots "
-                                         "need more than %u backend vertex "
-                                         "streams\n",
+                                         "need more vertex streams than Metal "
+                                         "can bind (%u)\n",
                                          el.input_slot,
-                                         graphics::BACKEND_MAX_VERTEX_BUFFERS);
+                                         graphics::BACKEND_BINDABLE_VERTEX_STREAMS);
                         });
                         pipeline_diag("Draw skipped: IA slot %u has no backend "
                                       "vertex stream", el.input_slot);
@@ -1473,13 +1488,16 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         if (memo == 0) memo = std::hash<std::string>{}(msl);
         return memo;
     };
-    mix(is_geometry_output ? msl_hash(*variant->vertex_msl, false)
+    mix(is_geometry_output ? msl_hash(*variant->vertex_msl,
+                                      variant->vertex_msl_owned)
                            : own_hash(vs->second.msl_source,
                                       vs->second.msl_source_hash));
     mix(!pixel_shader_disabled && &fragment_source == &ps->second.msl_source
             ? own_hash(ps->second.msl_source, ps->second.msl_source_hash)
             : msl_hash(fragment_source, !fragment_source.empty()));
-    mix(is_capture ? (variant->capture_relative ? 0x5C4A8u : 0x5C4A7u)
+    mix(is_capture ? (variant->capture_relative ? 0x5C4A8u : 0x5C4A7u) +
+                         (variant->capture_in_pass ? 0x100u : 0u)  // WS5
+        : is_mesh_geometry   ? 0x6E5B0u  // WS5
         : is_geometry_output ? 0x6E0A7u
                              : 0u);
     // The vertex shader also captures its outputs (PIPELINE_STATISTICS).
@@ -1586,6 +1604,18 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         }
     }
     // ---- end R4
+    const bool pulling_layout = input_layout != nullptr &&
+                                input_layout->vertex_pulling &&
+                                !is_geometry_output;
+    const bool specialize_vertex_inputs = pulling_layout || std::any_of(
+        attributes_in_use->begin(), attributes_in_use->end(),
+        [](const auto& attr) {
+            return (attr.format == graphics::BackendVertexFormat::UInt1010102 &&
+                    attr.shader_location < 32) ||
+                   (attr.storage_component_type != attr.shader_component_type &&
+                    attr.shader_location <
+                        graphics::DxbcTranslationOptions{}.vertex_input_component_types.size());
+        });
     graphics::BackendPipeline* pipeline = nullptr;
     const auto cached = state.pipelines.find(pipeline_key);
     if (cached != state.pipelines.end()) {
@@ -1594,14 +1624,36 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         std::string vertex_source = is_geometry_output ? *variant->vertex_msl
                                                    : vs->second.msl_source;
         graphics::DxbcTranslationOptions translation_options{};
-        bool specialize_vertex_inputs = false;
+        // Vertex pulling: every element is fetched by the shader from the
+        // pull table (stream = slot), converted from its format.
+        bool pull_failed = false;
         for (const auto& attr : *attributes_in_use) {
+            if (!pulling_layout) break;
+            graphics::VertexPullElement pulled{};
+            if (attr.shader_location >= translation_options.vertex_pull.size() ||
+                !d3d11::vertex_pull_format_of_backend(attr.format, pulled)) {
+                pull_failed = true;
+                break;
+            }
+            pulled.slot = static_cast<u8>(attr.buffer_index);
+            pulled.offset = attr.offset;
+            pulled.per_instance = per_instance[attr.buffer_index];
+            pulled.step_rate =
+                pulled.per_instance ? step_rates[attr.buffer_index] : 0u;
+            translation_options.vertex_pulling = true;
+            translation_options.vertex_pull[attr.shader_location] = pulled;
+        }
+        if (pull_failed) {
+            pipeline_diag("Draw skipped: an element cannot be vertex-pulled");
+            return;
+        }
+        for (const auto& attr : *attributes_in_use) {
+            if (pulling_layout) break;
             // R10G10B10A2_UINT: fetched normalized, restored in the shader.
             if (attr.format == graphics::BackendVertexFormat::UInt1010102 &&
                 attr.shader_location < 32) {
                 translation_options.vertex_input_unpack_uint1010102 |=
                     1u << attr.shader_location;
-                specialize_vertex_inputs = true;
                 continue;
             }
             if (attr.storage_component_type == attr.shader_component_type ||
@@ -1609,7 +1661,6 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
                     translation_options.vertex_input_component_types.size()) {
                 continue;
             }
-            specialize_vertex_inputs = true;
             translation_options
                 .vertex_input_component_types[attr.shader_location] =
                 attr.storage_component_type ==
@@ -1678,7 +1729,10 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         // geometry pass-through, which is generated and does no arithmetic.
         if (!is_geometry_output && vs != m_vertex_shaders.end()) {
             desc.vertex_math_mode = math_mode_for_dxbc(vs->second.bytecode);
-            desc.preserve_invariance = dxbc_uses_precise(vs->second.bytecode);
+            // The position is [[invariant]] in every translated vertex
+            // function (dxbc_to_spirv_signature.cpp): a depth prepass and a
+            // later pass must agree bit for bit, as they do on D3D.
+            desc.preserve_invariance = true;
         }
         if (ps != m_pixel_shaders.end()) {
             desc.fragment_math_mode = math_mode_for_dxbc(ps->second.bytecode);
@@ -1687,7 +1741,8 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         desc.vertex_entry_point =
             is_geometry_output ? graphics::kGsPassthroughEntryPoint : "main0";
         desc.fragment_entry_point = "main0";
-        desc.vertex_attributes = *attributes_in_use;
+        // A pulling vertex shader has no stage-in.
+        if (!pulling_layout) desc.vertex_attributes = *attributes_in_use;
         desc.vertex_buffer_strides = strides;
         desc.vertex_buffer_per_instance = per_instance;
         desc.vertex_buffer_step_rates = step_rates;
@@ -1731,6 +1786,46 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         // go for it. Another thread's create may rehash a map meanwhile:
         // the shader iterators are taken again after.
         std::unique_ptr<graphics::BackendPipeline> created;
+        // ---- WS5 begin ----
+        if (is_mesh_geometry) {
+            // One library holds the object and mesh functions; no input
+            // assembler. A pipeline that cannot be built is remembered, and
+            // the draw falls back to three-pass (geometry_mesh_draw's caller).
+            if (m_gs_mesh_refused.contains(pipeline_key)) {
+                variant->mesh_refused = true;
+                return;
+            }
+            graphics::BackendMeshPipelineDesc mesh_desc{};
+            mesh_desc.render = desc;
+            mesh_desc.render.vertex_attributes.clear();
+            mesh_desc.render.vertex_stride = 0;
+            mesh_desc.render.vertex_buffer_strides = {};
+            mesh_desc.render.vertex_math_mode =
+                math_mode_for_dxbc(m_geometry_shaders.contains(state.geometry_shader)
+                                       ? m_geometry_shaders.at(state.geometry_shader).bytecode
+                                       : std::vector<u8>{});
+            mesh_desc.object_entry_point = graphics::kGsMeshObjectEntryPoint;
+            mesh_desc.mesh_entry_point = graphics::kGsMeshEntryPoint;
+            mesh_desc.threads_per_object_threadgroup = 1;
+            mesh_desc.threads_per_mesh_threadgroup = variant->mesh_threads;
+            mesh_desc.payload_bytes = graphics::kMeshPayloadBytes;
+            {
+                const PureWorkUnlock unlocked(
+                    *this, guest_draw && draw_compile_may_release_lock(context));
+                created = m_backend.create_mesh_pipeline(mesh_desc);
+            }
+            if (!created || !created->valid()) {
+                static std::atomic<bool> reported{false};
+                if (!reported.exchange(true)) {
+                    std::fprintf(stderr, "[vitreo] WS5 mesh pipeline refused: "
+                                         "geometry shader drawn three-pass\n");
+                }
+                m_gs_mesh_refused.insert(pipeline_key);
+                variant->mesh_refused = true;
+                return;
+            }
+        } else
+        // ---- WS5 end ----
         {
             const PureWorkUnlock unlocked(
                 *this, guest_draw && draw_compile_may_release_lock(context));
@@ -1799,6 +1894,11 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         /// MAXIMUM_ samplers' state (fill_minmax_samplers).
         std::array<std::array<u32, 4>, graphics::kMinMaxSamplerSlots>
             minmax_samplers{};
+        /// Member 14 (graphics::kLayerStateOffset): kLayerLimitKnown | the
+        /// bound views' slice count, for a shader-written
+        /// SV_RenderTargetArrayIndex (D3D11.3 17.18); then 0 (no view
+        /// instancing in D3D11) and padding.
+        std::array<u32, 4> layer_state{};
     };
     static_assert(offsetof(PushConstants, buffer_size_words) ==
                   graphics::kGuardSizeTableOffset);
@@ -1818,9 +1918,13 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
                   graphics::kConstantBufferLimitOffset);
     static_assert(offsetof(PushConstants, minmax_samplers) ==
                   graphics::kMinMaxSamplerOffset);
+    static_assert(offsetof(PushConstants, layer_state) ==
+                  graphics::kLayerStateOffset);
     static_assert(sizeof(PushConstants) == graphics::kPushBlockBytes);
     PushConstants fragment_push{};
     PushConstants vertex_push{};
+    std::vector<u32> mesh_push;  // WS5: the mesh stage's push block
+    graphics::BackendMeshDraw mesh_draw{};  // WS5: call.mesh, until the draw
     // D3D11.3 3.5.6.2-3 (D3D11_OPTIONS.MultisampleRTVWithForcedSampleCountOne):
     // ForcedSampleCount 1 on a multisampled target rasterizes the single
     // sample at the pixel centre -- "If a rendered primitive covers any
@@ -1831,7 +1935,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     // `rasterizer`, SV_Coverage). Measured: d3d11_fl111_probe
     // "forced rt forced=1 samples=4".
     const bool centre_forced_sample =
-        !attachmentless && !is_capture && forced_sample_count == 1 &&
+        !attachmentless && !capture_offscreen && forced_sample_count == 1 &&  // WS5
         sample_count > 1 && m_backend.supports_programmable_sample_positions();
     // Aliased lines (and WIREFRAME edges) and alpha-antialiased lines are
     // rasterized once per pixel, at its centre, writing every sample of a
@@ -1841,7 +1945,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     // centre each sample sees the one-sample answer. Quadrilateral lines
     // keep the standard pattern: they are ordinary triangles (3.4.5).
     bool per_pixel_lines = false;
-    if (!attachmentless && !is_capture && sample_count > 1 &&
+    if (!attachmentless && !capture_offscreen && sample_count > 1 &&  // WS5
         !centre_forced_sample &&
         m_backend.supports_programmable_sample_positions()) {
         if (line_quad_pass) {
@@ -1963,6 +2067,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     }
     for (u32 stream = 1; stream < graphics::BACKEND_MAX_VERTEX_BUFFERS;
          ++stream) {
+        if (!graphics::vertex_stream_bindable(stream)) break;
         const u32 slot = stream_slot[stream];
         if (state.vertex_buffers[slot] == 0) continue;
         if (vb_memo != nullptr) {  // R4c vb-memo
@@ -2141,32 +2246,51 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     const auto ia_scan = [&]() -> const Buffer::IndexScan* {
         if (!ia_indices_readable()) return nullptr;
         auto& scans = ia_index_buffer->index_scans;
-        for (const auto& scan : scans) {
-            if (scan.version == ia_index_buffer->shadow_version &&
-                scan.first == ia_first_index && scan.count == count &&
-                scan.wide == ia_wide) {
-                return &scan;
-            }
+        if (ia_index_buffer->index_scans_version !=
+            ia_index_buffer->shadow_version) {
+            scans.clear();
+            ia_index_buffer->index_scans_version =
+                ia_index_buffer->shadow_version;
         }
-        std::erase_if(scans, [&](const Buffer::IndexScan& scan) {
-            return scan.version != ia_index_buffer->shadow_version;
-        });
-        if (scans.size() >= 16) scans.erase(scans.begin());
+        // first < 2^32, count < 2^31 in practice; the stored fields decide.
+        const u64 key = (static_cast<u64>(ia_first_index) << 32) ^
+                        (static_cast<u64>(count) << 1) ^ (ia_wide ? 1u : 0u);
+        if (const auto hit = scans.find(key); hit != scans.end() &&
+            hit->second.first == ia_first_index &&
+            hit->second.count == count && hit->second.wide == ia_wide) {
+            return &hit->second;
+        }
+        constexpr usize kMaxScans = 1u << 16;
+        if (scans.size() >= kMaxScans) scans.clear();
         Buffer::IndexScan scan{};
         scan.version = ia_index_buffer->shadow_version;
         scan.first = ia_first_index;
         scan.count = count;
         scan.wide = ia_wide;
-        for (u32 i = 0; i < count; ++i) {
-            const u32 value = ia_index_at(i);
-            if (value == ia_cut) {
-                scan.has_cut = true;
-            } else {
-                scan.max_index = std::max(scan.max_index, value);
+        // Fixed-width loads: a width chosen per index is a memcpy call each.
+        const u8* base = ia_index_buffer->shadow.data() +
+                         static_cast<usize>(ia_first_index) *
+                             (ia_wide ? 4u : 2u);
+        u32 largest = 0;
+        bool cut = false;
+        if (ia_wide) {
+            for (u32 i = 0; i < count; ++i) {
+                u32 value;
+                std::memcpy(&value, base + usize{i} * 4u, 4);
+                cut |= value == 0xFFFFFFFFu;
+                largest = std::max(largest, value == 0xFFFFFFFFu ? 0u : value);
+            }
+        } else {
+            for (u32 i = 0; i < count; ++i) {
+                u16 value;
+                std::memcpy(&value, base + usize{i} * 2u, 2);
+                cut |= value == 0xFFFFu;
+                largest = std::max<u32>(largest, value == 0xFFFFu ? 0u : value);
             }
         }
-        scans.push_back(scan);
-        return &scans.back();
+        scan.has_cut = cut;
+        scan.max_index = largest;
+        return &(scans[key] = scan);
     };
     if (ia_adjacency && indirect && !is_capture &&
         !is_geometry_output && !is_tessellated) {
@@ -2445,6 +2569,59 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         }
     }
 
+    // Vertex pulling (InputLayout::vertex_pulling): the table of every
+    // slot's {device address, stride, bytes from the bound offset}; an
+    // unbound slot is all zero and reads 0 (D3D11.3 8.19.2). The slots'
+    // buffers are only made resident for the shader's own fetches.
+    if (input_layout != nullptr && input_layout->vertex_pulling &&
+        !is_geometry_output) {
+        std::array<u32, graphics::VERTEX_PULL_TABLE_ENTRIES *
+                            graphics::VERTEX_PULL_TABLE_ENTRY_WORDS>
+            table{};
+        // A capture of one instance at a time keeps the draw's first
+        // instance and biases SV_InstanceID; per-instance data steps by the
+        // same bias (VERTEX_PULL_TABLE_HEADER).
+        if (is_capture && variant != nullptr) {
+            table[graphics::VERTEX_PULL_TABLE_HEADER *
+                      graphics::VERTEX_PULL_TABLE_ENTRY_WORDS +
+                  2] = variant->instance_id_bias;
+        }
+        call.vertex_buffers.fill(nullptr);
+        call.vertex_buffer_offsets.fill(0);
+        call.vertex_buffer = nullptr;
+        call.vertex_buffer_offset = 0;
+        for (u32 slot = 0; slot < graphics::VERTEX_PULL_TABLE_SLOTS &&
+                           slot < state.vertex_buffers.size();
+             ++slot) {
+            if (state.vertex_buffers[slot] == 0) continue;
+            const auto guest = m_buffers.find(state.vertex_buffers[slot]);
+            if (guest == m_buffers.end() || !guest->second.backend) continue;
+            const u64 width = guest->second.desc.byte_width;
+            const u64 offset = state.vertex_buffer_offsets[slot];
+            const u64 address = guest->second.backend->device_address();
+            if (address == 0 || offset >= width) continue;
+            note_gpu_use(guest->second);
+            u32* entry = &table[slot * graphics::VERTEX_PULL_TABLE_ENTRY_WORDS];
+            entry[0] = static_cast<u32>(address + offset);
+            entry[1] = static_cast<u32>((address + offset) >> 32);
+            entry[2] = state.vertex_buffer_strides[slot];
+            entry[3] = static_cast<u32>(std::min<u64>(width - offset,
+                                                      0xFFFFFFFFull));
+            call.vertex_buffers[slot] = guest->second.backend.get();
+        }
+        graphics::BackendBufferDesc table_desc{};
+        table_desc.byte_width = sizeof(table);
+        table_desc.shader_resource = true;
+        auto table_buffer = m_backend.create_buffer(table_desc, table.data());
+        if (!table_buffer) {
+            pipeline_diag("Draw skipped: vertex-pull table allocation failed");
+            return;
+        }
+        call.vertex_pull_table = table_buffer.get();
+        call.vertex_pull_table_offset = 0;
+        ia_padded_streams.push_back(std::move(table_buffer));
+    }
+
     // Which binding mode each stage is in was decided when its shader was
     // compiled, from the registers the shader declares. The two modes want the
     // same Metal buffer indices, so a stage is in exactly one of them -- but the
@@ -2507,7 +2684,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
     };
     const auto bind_buffer_resource =
         [this](GuestAddr srv_address, const graphics::BackendBuffer*& out_buffer,
-               unsigned& out_offset,
+               u64& out_offset,
                const graphics::BackendTextureBuffer*& out_texture_buffer) {
         resolve_buffer_resource(srv_address, out_buffer, out_offset,
                                 out_texture_buffer);
@@ -3372,6 +3549,19 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
         call.depth_bias_slope_scale = metal_slope;
         call.depth_bias_clamp = metal_clamp;
     }
+    // D3D11.3 17.18: a vertex-stage SV_RenderTargetArrayIndex outside the
+    // bound views selects slice 0 (Metal clamps to the last); the shader
+    // applies it from the views' slice count (all bound views have one,
+    // checked above).
+    {
+        const u32 layers = color0_bound ? color_array_sizes[0]
+                           : depth != nullptr ? depth_array_size
+                                              : 0u;
+        vertex_push.layer_state = {};
+        if (layers != 0) {
+            vertex_push.layer_state[0] = graphics::kLayerLimitKnown | layers;
+        }
+    }
     // The pixel shader's fixed-function inputs: SampleMask (applied by a
     // coverage-writing variant, see ps_sample_mask above) and viewport 0's
     // depth range for the SV_Depth clamp.
@@ -3557,6 +3747,14 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
             call.indirect.offset = variant->indirect.offset;
         }
     }
+    // ---- WS5 begin ----
+    if (is_mesh_geometry && !bind_geometry_mesh_stage(context, *variant, call,
+                                                      vertex_push.depth_offset,
+                                                      mesh_push, mesh_draw)) {
+        pipeline_diag("Draw skipped: geometry-stage bindings for the mesh");
+        return;
+    }
+    // ---- WS5 end ----
     if (is_tessellated) {
         // The patch draw: no input assembler at all. The domain shader reads
         // the hull kernel's output buffers at the expansion window.
@@ -3611,7 +3809,7 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
                                         per_pixel_lines;
     // OCCLUSION queries building on this context count the samples this
     // draw passes (a capture draw rasterizes nothing).
-    if (!is_capture) {
+    if (!capture_offscreen) {  // WS5: an in-pass capture adds no samples
         pass_desc.occlusion_counter = occlusion_counter_for_draw(context);
     }
     // A buffer target's proxy takes the buffer's current contents, so the
@@ -3645,6 +3843,42 @@ void D3D11Manager::execute_draw(GuestAddr context, bool indexed,
                              sampler_memo && !d3d11::draw_memo::verify());
     }
     // ---- end R3c
+    // Certify descriptor-table resources from the original DXBC proofs.
+    // Vertex-input specialization and the dedicated statistics/capture
+    // buffers do not write those tables. useResource(Write) on a table the
+    // shader only reads makes Metal hazard every bound texture, which
+    // flushes tile memory between draws. Generated variants and real UAV
+    // shaders stay writable.
+    const bool fragment_is_original =
+        ps != m_pixel_shaders.end() && !pixel_shader_disabled &&
+        &fragment_source == &ps->second.msl_source;
+    const d3d11::ReadOnlyIndirectDrawProof read_only_proof{
+        vs != m_vertex_shaders.end() &&
+            vs->second.binding_layout.original_resources_read_only,
+        ps != m_pixel_shaders.end() &&
+            ps->second.binding_layout.original_resources_read_only,
+        d3d11::descriptor_table_matches_original_proof(
+            variant != nullptr, specialize_vertex_inputs, vs_twins, vs_rgb32,
+            vs_ms1, vs_minmax, pixel_shader_disabled, fragment_is_original),
+        state.geometry_shader == 0 && state.hull_shader == 0 &&
+            state.domain_shader == 0 && !is_capture && !is_geometry_output &&
+            !is_tessellated && !is_mesh_geometry,
+        std::all_of(state.stream_out_targets.begin(), state.stream_out_targets.end(),
+                    [](auto target) { return target == 0; }),
+        true,
+        call.tessellation_factors == nullptr &&
+            !call.mesh_active()};
+    call.indirect_resources_read_only = read_only_proof.valid();
+    {
+        bool any_mask = false;
+        for (unsigned mask : write_masks) {
+            if ((mask & 0xFu) != 0) any_mask = true;
+        }
+        // A disabled pixel shader, or a write mask of zero on every target,
+        // cannot change colour attachments. The pass merger keeps sampling
+        // those attachments in the same encoder until a draw can.
+        call.writes_color = !pixel_shader_disabled && any_mask;
+    }
     const bool drew = pass->draw(call);
     const bool ended = pass->end();
     for (const GuestAddr view : buffer_target_views) {

@@ -18,6 +18,7 @@ constexpr int kArmCc = 0x3;
 
 void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
     const ir::IrBlock& ir_block = m_ir_block;
+    m_link_miss_flags.armed = false;
 
     // Snapshot scalar inputs into scratch registers before committing any
     // pin. This preserves the original source for aliased ADD rax,rax and
@@ -73,6 +74,7 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
     // so a bump over the caller-saved V registers is the whole allocator.
     std::vector<u8> vloc(ir_block.next_value, 0xFF);
     u8 vnext = 0;
+    IrXmmReadCache xmm_reads;
     // CondExit taken edges, emitted after the body so the trace's hot
     // fall-through stays sequential (as the stencil path's cold Jcc
     // exits do). `arm` < 0: a CBNZ on the evaluated W0.
@@ -89,6 +91,9 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
         u8 dst{0};
         bool wide{false};
         ir::ValueId flags{ir::kInvalidValue};
+        /// Publish on a link miss only. The patched hop's successor
+        /// redefines the flags before it can read them.
+        bool link_miss{false};
     };
     struct ColdExit {
         usize branch_pos; u64 target; int arm; NzcvState carry;
@@ -474,6 +479,7 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
     usize op = 0;
     u64 rip = block.start_addr;
     for (u32 index = 0; index < block.instruction_count; ++index) {
+        m_current_insn_index = index;
         m_diagnostic_instruction_rip = rip;
         const auto& instr = block.instructions[index];
         const u32 arm_before = static_cast<u32>(m_code_buf.size());
@@ -525,6 +531,7 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
         }
         while (op < ir_block.insts.size() && ir_block.insts[op].guest_rip == rip) {
             const auto& in = ir_block.insts[op++];
+            const auto forwarded_xmm = xmm_reads.visit(in);
             const bool wide = in.type == ir::Type::I64;
             const usize at = op - 1;
             if (pending_record.valid) {
@@ -717,6 +724,10 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
                         target,
                         exit_carry_after_kind_clear(target, NzcvState::None),
                         edge)) {
+                    // No link tail was emitted, so this epilogue is the
+                    // only exit. The record has to be in CpuState before
+                    // the dispatcher can read it.
+                    emit_link_miss_flags();
                     emit(arm64::str_w_uoff(REG_LOOP_CTR, REG_CPU_STATE,
                                            jit_iters_offset() >> 2));
                     emit_epilogue(JitExecResult::Continue);
@@ -738,6 +749,22 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
                 m_flags.nzcv = nzcv_before;
                 break;
             case ir::Op::Jmp:
+                if (pending_record.valid && pending_record.link_miss &&
+                    in.branch.return_site == ir::kInvalidRip &&
+                    pending_record.src != REG_SCRATCH0 &&
+                    pending_record.dst != REG_SCRATCH0 &&
+                    pending_record.src != 17 && pending_record.dst != 17) {
+                    // emit_update_rip owns X0, and the direct-link slot
+                    // owns X17/W3/W4, all before the miss-path store.
+                    m_link_miss_flags.armed = true;
+                    m_link_miss_flags.op = pending_record.op;
+                    m_link_miss_flags.src = pending_record.src;
+                    m_link_miss_flags.dst = pending_record.dst;
+                    m_link_miss_flags.wide = pending_record.wide;
+                    pending_record = DeferredRecord{};
+                } else {
+                    flush_pending_record();
+                }
                 if (in.branch.return_site != ir::kInvalidRip &&
                     ir_block.is_64bit) {
                     // CALL rel32, as the x64 stencil lowers it: the native
@@ -865,7 +892,10 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
                 // exit falls into the ordinary taken-edge tail, which
                 // publishes the TARGET rip.
                 const auto loop_back = [&] {
-                    if (in.branch.target != m_block_start_addr) return;
+                    // The span may end before an RSP write in this body.
+                    // Its next iteration needs a fresh entry validation.
+                    if (in.branch.target != m_block_start_addr ||
+                        m_span_stack_proof) return;
                     static_assert(MAX_IN_BLOCK_LOOP_ITERS == 0xFFFFu);
                     emit(arm64::add_w_imm(REG_LOOP_CTR, REG_LOOP_CTR, 1));
                     emit(arm64::tbnz(REG_LOOP_CTR, 16, 8));
@@ -1247,29 +1277,9 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
                 break;
             }
             case ir::Op::XmmRead: {
-                // Forwarding: this register may already be in a vector
-                // register from a write earlier in the same block, which
-                // is the repeated-operation shape (`paddq xmm8,xmm9` four
-                // times) where the reload is pure waste.
-                //
-                // The scan stops at the first may-fault op: V0-V7 are
-                // caller-saved, so a helper a guest access can call
-                // destroys them, and reusing a value across one would be
-                // reading a register the callee owned.
                 const u8 idx = in.operands[0].reg_index;
-                ir::ValueId forwarded = ir::kInvalidValue;
-                for (usize back = at; back-- > 0; ) {
-                    const ir::Inst& prev = ir_block.insts[back];
-                    if (prev.may_fault) break;
-                    if (prev.op == ir::Op::XmmWrite &&
-                        prev.operands[0].reg_index == idx) {
-                        forwarded = prev.operands[1].as_value();
-                        break;
-                    }
-                }
-                if (forwarded != ir::kInvalidValue &&
-                    vloc[forwarded] != 0xFF) {
-                    vloc[in.result] = vloc[forwarded];
+                if (forwarded_xmm != ir::kInvalidValue) {
+                    vloc[in.result] = vloc[forwarded_xmm];
                     break;
                 }
                 const u8 v = vnext++;
@@ -1502,6 +1512,7 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
                 break;
             case ir::Op::FlagsInstall:
                 emit(arm64::mov_x(1, source(0)));
+                emit_mov_imm32(2, static_cast<u32>(in.operands[1].payload));
                 emit(arm64::mov_x(0, REG_CPU_STATE));
                 emit_host_addr_imm64(16, static_cast<i64>(
                     reinterpret_cast<uintptr_t>(&jit_ir_flags_install)));
@@ -1666,12 +1677,15 @@ void JitCompiler::ir_emit_snapshot_block(const BasicBlock& block) {
                     emit(arm64::mov_w(REG_SCRATCH4, source(0)));
                     emit_set_lazy_flags_preserve_cf(in.flags.record, REG_SCRATCH4,
                                                    source(1), REG_CALL_TMP);
-                } else if (in.flags.exit_deferred &&
+                } else if ((in.flags.exit_deferred || in.flags.link_miss_only) &&
                            exit_record_operand_safe(in, 0) &&
-                           exit_record_operand_safe(in, 1)) {
+                           exit_record_operand_safe(in, 1) &&
+                           source(0) != REG_SCRATCH0 && source(1) != REG_SCRATCH0 &&
+                           source(0) != 17 && source(1) != 17) {
                     pending_record = DeferredRecord{
                         true, in.flags.record, source(0), source(1),
-                        in.operands[0].type == ir::Type::I64, in.result};
+                        in.operands[0].type == ir::Type::I64, in.result,
+                        in.flags.link_miss_only && !in.flags.exit_deferred};
                 } else if (in.operands[0].type == ir::Type::I64)
                     emit_set_lazy_flags64(in.flags.record, source(0), source(1));
                 else emit_set_lazy_flags(in.flags.record, source(0), source(1));

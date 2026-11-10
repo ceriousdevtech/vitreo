@@ -216,7 +216,7 @@ ExecResult exec_f16c_adx(ExecContext& ctx, const DecodedInstruction& instr) noex
                     ctx.exception = CpuException::GeneralProtection;
                     return ExecResult::Exception;
                 }
-                auto rd = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(src), n * 2);
+                auto rd = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(src), n * 2);
                 if (!rd) {
                     ctx.exception = CpuException::GeneralProtection;
                     return ExecResult::Exception;

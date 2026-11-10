@@ -10,6 +10,7 @@
 // dispatch chain and the block tail.
 
 #include "../jit_helpers.hpp"
+#include "../jit_helpers_internal.hpp"
 #include "core/cpu/lock_prefix.hpp"
 
 #include <atomic>
@@ -19,33 +20,25 @@ namespace vitreo::cpu::jit {
 
 // Intel SDM Vol. 2 CMPXCHG16B: compare RDX:RAX with 16-byte-aligned m128.
 // Equal → ZF=1 and store RCX:RBX; unequal → ZF=0 and load m128 into RDX:RAX.
-// Unaligned m128 is #GP (STATUS_ACCESS_VIOLATION). LOCK BLR's
+// A misaligned m128 is #GP(0), which Windows reports as a READ of
+// 0xFFFFFFFFFFFFFFFF; a destination the guest may not write is a WRITE access
+// violation at its first such byte, raised before anything changes
+// (cmpxchg_fault_probe.expected, cmpxchg16b_align_probe.expected). LOCK BLR's
 // jit_lock_cmpxchg16b via immediate address — no extra JitContext slot.
 extern "C" void jit_cmpxchg16b(CpuState* cpu, GuestMemory* mem, u64 addr) {
     if (cpu == nullptr || mem == nullptr || cpu->pending_raise.active) {
         return;
     }
-
-    auto raise_gp = [&]() {
-        auto& pending = cpu->pending_raise;
-        pending.active = true;
-        pending.from_helper = true;
-        pending.code = 0xC0000005u;
-        pending.flags = 0;
-        pending.num_args = 2;
-        pending.args[0] = 0;
-        pending.args[1] = addr;
-    };
-
     if ((addr & 0xFu) != 0) {
-        raise_gp();
+        jit_raise_cmpxchg16b_misaligned(cpu);
         return;
     }
+    if (jit_cmpxchg_dest_faults(cpu, mem, addr, 16)) return;
 
     auto lo = mem->read_u64(addr);
     auto hi = mem->read_u64(addr + 8);
     if (!lo.is_ok() || !hi.is_ok()) {
-        raise_gp();
+        jit_raise_guest_av(cpu, mem, addr, 16, /*is_write=*/true);
         return;
     }
 
@@ -60,11 +53,8 @@ extern "C" void jit_cmpxchg16b(CpuState* cpu, GuestMemory* mem, u64 addr) {
         cpu->flags.set_zf(true);
         const u64 rbx = cpu->gpr.get64(static_cast<u8>(RegIndex::RBX));
         const u64 rcx = cpu->gpr.get64(static_cast<u8>(RegIndex::RCX));
-        auto r1 = mem->write_u64(addr, rbx);
-        auto r2 = mem->write_u64(addr + 8, rcx);
-        if (!r1.is_ok() || !r2.is_ok()) {
-            raise_gp();
-        }
+        (void)mem->write_u64(addr, rbx);
+        (void)mem->write_u64(addr + 8, rcx);
     } else {
         cpu->flags.set_zf(false);
         cpu->gpr.set64(static_cast<u8>(RegIndex::RAX), mem_lo);
@@ -290,6 +280,7 @@ std::optional<bool> JitCompiler::compile_memory_ops_xchg(
             emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                     JIT_CTX_OFF_CMPXCHG32 >> 3));
             emit_helper_blr();
+            emit_exit_if_pending_raise();
         }
         break;
     }
@@ -321,30 +312,20 @@ std::optional<bool> JitCompiler::compile_memory_ops_xchg(
             m_code_buf[b_done] = arm64::b_imm(
                 static_cast<i32>(done_pos - b_done) * 4);
         } else {
+            // jit_cmpxchg16: the destination check, compare, flags and
+            // exchange in one helper, so a faulting destination leaves AX,
+            // the flags and memory untouched (see jit_cmpxchg32).
+            emit_load_gpr16(REG_SCRATCH1, op1.reg);
+            emit(arm64::mov_w(10, REG_SCRATCH1));
             emit_compute_ea(REG_SCRATCH2, op0.mem, next_rip);
-            emit_guest_load16(REG_SCRATCH1, REG_SCRATCH2);
-            emit_load_gpr16(REG_SCRATCH0, static_cast<u8>(RegIndex::RAX));
-            // AX − rm; see the RM32 arm above for the measurement.
-            emit(arm64::sub_w(REG_SCRATCH2, REG_SCRATCH0, REG_SCRATCH1));
-            emit(arm64::uxth_w(REG_SCRATCH2, REG_SCRATCH2));
-            emit_set_lazy_flags(CpuState::FlagOp::Sub16,
-                                REG_SCRATCH1, REG_SCRATCH2);
-            emit(arm64::mov_w(REG_CALL_TMP, REG_SCRATCH1));
-            emit(arm64::subs_w(31, REG_SCRATCH0, REG_SCRATCH1));
-            usize bne_pos = m_code_buf.size();
-            emit(0);
-            emit_load_gpr16(REG_SCRATCH0, op1.reg);
-            emit_compute_ea(REG_SCRATCH2, op0.mem, next_rip);
-            emit_guest_store16(REG_SCRATCH0, REG_SCRATCH2);
-            usize b_done = m_code_buf.size();
-            emit(0);
-            usize ne_pos = m_code_buf.size();
-            emit_store_gpr16(REG_CALL_TMP, static_cast<u8>(RegIndex::RAX));
-            usize done_pos = m_code_buf.size();
-            m_code_buf[bne_pos] = arm64::b_cond(arm64::NE,
-                static_cast<i32>(ne_pos - bne_pos) * 4);
-            m_code_buf[b_done] = arm64::b_imm(
-                static_cast<i32>(done_pos - b_done) * 4);
+            emit(arm64::mov_x(0, REG_CPU_STATE));
+            emit(arm64::ldr_x_uoff(1, REG_JIT_CTX, JIT_CTX_OFF_MEMORY >> 3));
+            emit(arm64::mov_x(2, REG_SCRATCH2));
+            emit(arm64::mov_w(3, 10));
+            emit_host_addr_imm64(16, static_cast<i64>(
+                reinterpret_cast<uintptr_t>(&jit_cmpxchg16)));
+            emit_helper_blr();
+            emit_exit_if_pending_raise();
         }
         break;
     }
@@ -359,6 +340,7 @@ std::optional<bool> JitCompiler::compile_memory_ops_xchg(
         emit(arm64::ldr_x_uoff(16, REG_JIT_CTX,
                                 JIT_CTX_OFF_CMPXCHG8B >> 3));
         emit_helper_blr();
+        emit_exit_if_pending_raise();
         break;
     }
 

@@ -216,7 +216,10 @@ GuestAddr Frontend::publish(std::unique_ptr<Object> object) {
     if (address == 0) return 0;
     object->address = address;
     object->serial = m_next_serial++;
+    const bool queue = object->kind == Kind::CommandQueue;
+    const u64 serial = object->serial;
     m_objects.emplace(address, std::move(object));
+    if (queue) m_command_queues.emplace_back(address, serial);
     return address;
 }
 
@@ -232,6 +235,10 @@ u32 Frontend::release(GuestAddr address) {
     if (--object.ref_count > 0) return object.ref_count;
     std::unique_ptr<Object> owned = std::move(entry->second);
     m_objects.erase(entry);
+    if (owned->kind == Kind::CommandQueue) {
+        std::erase(m_command_queues, std::pair{address, owned->serial});
+    }
+    ++m_objects_released;
     destroy(std::move(owned));
     return 0;
 }
@@ -243,11 +250,22 @@ void Frontend::destroy(std::unique_ptr<Object> object) {
     case Kind::Device:
         if (m_device == address) m_device = 0;
         break;
-    case Kind::Fence: {
-        auto& fence = static_cast<Fence&>(*object);
-        GpuEventSignaler::instance().cancel(fence.backend.get());
+    case Kind::ShaderCacheSession:
+        release_shader_cache_session(static_cast<ShaderCacheSession&>(*object));
+        break;
+    case Kind::DredSettings: {
+        // A factory's settings object holds the factory.
+        const GuestAddr factory = static_cast<DredSettings&>(*object).factory;
+        if (factory != 0 &&
+            find<DeviceFactory>(factory, Kind::DeviceFactory) != nullptr) {
+            (void)release(factory);
+        }
         break;
     }
+    case Kind::Fence:
+        // The timeline's own destructor stops the event bridge watching it,
+        // once the last ID3D12Fence and NT handle sharing it are gone.
+        break;
     case Kind::CommandList: {
         auto& list = static_cast<CommandList&>(*object);
         // A list destroyed while recording releases its claim on the
@@ -276,6 +294,15 @@ void Frontend::destroy(std::unique_ptr<Object> object) {
         auto& chain = static_cast<SwapChain&>(*object);
         release_swap_chain_buffers(chain);
         chain.backend.reset();
+        // A dead chain holds no display mode (its last Release left it).
+        if (m_presentation.dxgi != nullptr) {
+            GuestAddr owner = address;
+            (void)m_presentation.dxgi->exclusive_fullscreen()
+                .owner.compare_exchange_strong(owner, 0);
+            if (chain.exclusive.output != 0) {
+                m_presentation.dxgi->release_dxgi_object(chain.exclusive.output);
+            }
+        }
         if (chain.latency) {
             std::lock_guard<std::mutex> hold(chain.latency->mutex);
             chain.latency->alive = false;
@@ -312,6 +339,16 @@ void Frontend::destroy(std::unique_ptr<Object> object) {
     if (object->notifier != 0) {
         m_tearoffs.erase(object->notifier);
         free_interface(object->notifier);
+    }
+    for (const auto& [table, pointer] : object->tearoff_pointers) {
+        m_tearoffs.erase(pointer);
+        free_interface(pointer);
+    }
+    if (object->kind == Kind::StateObject) {
+        auto& so = static_cast<StateObject&>(*object);
+        if (so.identifiers != 0 && !m_tearing_down) {
+            (void)m_memory.unmap_region(so.identifiers, so.identifier_bytes);
+        }
     }
     object.reset();
     free_interface(address);
@@ -354,6 +391,47 @@ bool Frontend::answers(const Object& object, const GuidBytes& iid) {
     case Kind::CommandSignature: return listed(SIGNATURE_IIDS, iid);
     case Kind::RootSignature: return listed(ROOT_IIDS, iid);
     case Kind::PipelineState: return listed(PSO_IIDS, iid);
+    case Kind::SdkConfiguration:
+        // Measured (a01c sdkconfig): QI(SDKConfiguration) is the same
+        // object; QI(Device) E_NOINTERFACE.
+        return guid_equal(iid, IID_IUNKNOWN) ||
+               guid_equal(iid, IID_ID3D12SDKCONFIGURATION) ||
+               guid_equal(iid, IID_ID3D12SDKCONFIGURATION1);
+    case Kind::DeviceFactory:
+        return guid_equal(iid, IID_IUNKNOWN) ||
+               guid_equal(iid, IID_ID3D12DEVICEFACTORY);
+    case Kind::PipelineLibrary:
+        // Measured (a01 qi_child pipeline-library): not ID3D12Pageable.
+        return guid_equal(iid, IID_IUNKNOWN) ||
+               guid_equal(iid, IID_ID3D12OBJECT) ||
+               guid_equal(iid, IID_ID3D12DEVICECHILD) ||
+               guid_equal(iid, IID_ID3D12PIPELINELIBRARY) ||
+               guid_equal(iid, IID_ID3D12PIPELINELIBRARY1);
+    case Kind::StateObject:
+        // Measured (a12 state_object): ID3D12Pageable.
+        return guid_equal(iid, IID_IUNKNOWN) ||
+               guid_equal(iid, IID_ID3D12OBJECT) ||
+               guid_equal(iid, IID_ID3D12DEVICECHILD) ||
+               guid_equal(iid, IID_ID3D12PAGEABLE) ||
+               guid_equal(iid, IID_ID3D12STATEOBJECT);
+    case Kind::LifetimeTracker:
+        // Measured (a12 lifetime): not ID3D12Pageable.
+        return guid_equal(iid, IID_IUNKNOWN) ||
+               guid_equal(iid, IID_ID3D12OBJECT) ||
+               guid_equal(iid, IID_ID3D12DEVICECHILD) ||
+               guid_equal(iid, IID_ID3D12LIFETIMETRACKER);
+    case Kind::ShaderCacheSession:
+        return guid_equal(iid, IID_IUNKNOWN) ||
+               guid_equal(iid, IID_ID3D12OBJECT) ||
+               guid_equal(iid, IID_ID3D12DEVICECHILD) ||
+               guid_equal(iid, IID_ID3D12SHADERCACHESESSION);
+    case Kind::DredSettings:
+        // Measured (a01c dred): QI(Settings) from Settings2 is the same
+        // object.
+        return guid_equal(iid, IID_IUNKNOWN) ||
+               guid_equal(iid, IID_ID3D12DEVICEREMOVEDEXTENDEDDATASETTINGS) ||
+               guid_equal(iid, IID_ID3D12DEVICEREMOVEDEXTENDEDDATASETTINGS1) ||
+               guid_equal(iid, IID_ID3D12DEVICEREMOVEDEXTENDEDDATASETTINGS2);
     case Kind::SwapChain:
         return guid_equal(iid, IID_IUNKNOWN) || guid_equal(iid, IID_IDXGIOBJECT) ||
                guid_equal(iid, IID_IDXGIDEVICESUBOBJECT) ||
@@ -458,9 +536,100 @@ GuestAddr Frontend::query_interface(Object& object, const GuidBytes& iid) {
         add_ref(object);
         return object.notifier;
     }
+    if (const usize table = tearoff_table(object, iid);
+        table != INTERFACE_TABLE_COUNT) {
+        const GuestAddr pointer = tearoff(object, table);
+        if (pointer == 0) return 0;
+        add_ref(object);
+        return pointer;
+    }
     if (!answers(object, iid)) return 0;
     add_ref(object);
     return object.address;
+}
+
+usize Frontend::tearoff_table(const Object& object, const GuidBytes& iid) {
+    // Interfaces measured as answered beside the object's own (a01 qi_device,
+    // qi_child; a01c factory QI(DeviceConfiguration)), served through a
+    // second pointer: their vtables are not the object's.
+    switch (object.kind) {
+    case Kind::Device:
+        if (guid_equal(iid, IID_ID3D12DEVICEREMOVEDEXTENDEDDATA) ||
+            guid_equal(iid, IID_ID3D12DEVICEREMOVEDEXTENDEDDATA1) ||
+            guid_equal(iid, IID_ID3D12DEVICEREMOVEDEXTENDEDDATA2)) {
+            return table_index("Dred");
+        }
+        if (guid_equal(iid, IID_ID3D12DEVICETOOLS) ||
+            guid_equal(iid, IID_ID3D12DEVICETOOLS1)) {
+            return table_index("DeviceTools");
+        }
+        if (guid_equal(iid, IID_ID3D12DEVICECONFIGURATION) ||
+            guid_equal(iid, IID_ID3D12DEVICECONFIGURATION1)) {
+            return table_index("DeviceConfiguration");
+        }
+        if (guid_equal(iid, IID_ID3D12COMPATIBILITYDEVICE)) {
+            return table_index("CompatibilityDevice");
+        }
+        break;
+    case Kind::DeviceFactory:
+        if (guid_equal(iid, IID_ID3D12DEVICECONFIGURATION) ||
+            guid_equal(iid, IID_ID3D12DEVICECONFIGURATION1)) {
+            return table_index("DeviceConfiguration");
+        }
+        break;
+    case Kind::Heap:
+    case Kind::Resource:
+        if (guid_equal(iid, IID_ID3D12PAGEABLETOOLS)) {
+            return table_index("PageableTools");
+        }
+        break;
+    case Kind::StateObject:
+        // Measured (a12 state_object): every state object answers it.
+        if (guid_equal(iid, IID_ID3D12STATEOBJECTPROPERTIES) ||
+            guid_equal(iid, IID_ID3D12STATEOBJECTPROPERTIES1)) {
+            return table_index("StateObjectProperties");
+        }
+        break;
+    default:
+        break;
+    }
+    return INTERFACE_TABLE_COUNT;
+}
+
+GuestAddr Frontend::tearoff(Object& object, usize table) {
+    for (const auto& [owned, pointer] : object.tearoff_pointers) {
+        if (owned == table) return pointer;
+    }
+    const GuestAddr pointer = allocate_interface(table);
+    if (pointer == 0) return 0;
+    object.tearoff_pointers.emplace_back(table, pointer);
+    m_tearoffs.emplace(pointer, object.address);
+    return pointer;
+}
+
+void Frontend::tearoff_method(Marshaler& m, Object& owner, usize table,
+                              usize slot) {
+    // IUnknown is the owner's: one identity, one reference count.
+    if (slot <= 2) {
+        (void)common_method(m, slot, owner);
+        return;
+    }
+    if (table == table_index("Dred")) {
+        dred_method(m, static_cast<Device&>(owner), slot);
+    } else if (table == table_index("DeviceTools")) {
+        device_tools_method(m, static_cast<Device&>(owner), slot);
+    } else if (table == table_index("DeviceConfiguration")) {
+        device_configuration_method(m, owner, slot);
+    } else if (table == table_index("CompatibilityDevice")) {
+        compatibility_device_method(m, static_cast<Device&>(owner), slot);
+    } else if (table == table_index("PageableTools")) {
+        pageable_tools_method(m, owner, slot);
+    } else if (table == table_index("StateObjectProperties")) {
+        state_object_properties_method(m, static_cast<StateObject&>(owner), slot);
+    } else {
+        unimplemented("tear-off", INTERFACE_TABLES[table].export_name);
+        m.set_return(E_NOTIMPL);
+    }
 }
 
 void Frontend::notifier_method(Marshaler& m, Object& owner, usize slot) {
@@ -663,16 +832,197 @@ u32 Frontend::set_name(Marshaler& m, Object& object) {
 // Dispatch
 // =============================================================================
 
+namespace {
+
+/// VITREO_D3D12_PROFILE: the API family a method belongs to.
+[[nodiscard]] graphics::frame_profile::Time api_family(Kind kind, usize slot) {
+    using T = graphics::frame_profile::Time;
+    switch (kind) {
+    case Kind::CommandList:
+    case Kind::CommandAllocator:
+        return T::ApiRecord;
+    case Kind::CommandQueue:
+        if (slot == CommandQueueSlot::ExecuteCommandLists) return T::ApiExecute;
+        if (slot == CommandQueueSlot::Signal || slot == CommandQueueSlot::Wait) {
+            return T::ApiSync;
+        }
+        return T::ApiOther;
+    case Kind::Fence:
+        return T::ApiSync;
+    case Kind::SwapChain:
+        return slot == SwapChainSlot::Present || slot == SwapChainSlot::Present1
+                   ? T::ApiPresent
+                   : T::ApiOther;
+    case Kind::PipelineLibrary:
+    case Kind::StateObject:
+        return T::ApiPso;
+    case Kind::Resource:
+    case Kind::Heap:
+    case Kind::DescriptorHeap:
+        return T::ApiResource;
+    case Kind::Device:
+        switch (slot) {
+        case DeviceSlot::CreateGraphicsPipelineState:
+        case DeviceSlot::CreateComputePipelineState:
+        case DeviceSlot::CreatePipelineState:
+        case DeviceSlot::CreatePipelineLibrary:
+        case DeviceSlot::CreateStateObject:
+        case DeviceSlot::AddToStateObject:
+        case DeviceSlot::CreateRootSignature:
+            return T::ApiPso;
+        case DeviceSlot::CreateConstantBufferView:
+        case DeviceSlot::CreateShaderResourceView:
+        case DeviceSlot::CreateUnorderedAccessView:
+        case DeviceSlot::CreateRenderTargetView:
+        case DeviceSlot::CreateDepthStencilView:
+        case DeviceSlot::CreateSampler:
+        case DeviceSlot::CopyDescriptors:
+        case DeviceSlot::CopyDescriptorsSimple:
+        case DeviceSlot::CreateCommittedResource:
+        case DeviceSlot::CreateHeap:
+        case DeviceSlot::CreatePlacedResource:
+        case DeviceSlot::CreateReservedResource:
+        case DeviceSlot::CreateDescriptorHeap:
+            return T::ApiResource;
+        case DeviceSlot::CreateCommandList:
+        case DeviceSlot::CreateCommandAllocator:
+            return T::ApiRecord;
+        case DeviceSlot::SetEventOnMultipleFenceCompletion:
+            return T::ApiSync;
+        default:
+            return T::ApiOther;
+        }
+    default:
+        return T::ApiOther;
+    }
+}
+
+/// The frontend lock mode a method takes (the lock map, d3d12_lock.hpp).
+/// Decided from the interface table and slot alone, before the object is
+/// looked up. A tear-off's table is never one of these, so tear-offs are
+/// exclusive.
+[[nodiscard]] FrontendRwLock::Mode lock_mode(usize table, usize slot) {
+    using Mode = FrontendRwLock::Mode;
+    // ID3D12Object / ID3D12DeviceChild slots (QueryInterface .. GetDevice)
+    // touch reference counts and private data: exclusive everywhere.
+    if (table == table_for(Kind::CommandList)) {
+        return slot >= GraphicsCommandListSlot::GetType ? Mode::Recording
+                                                        : Mode::Exclusive;
+    }
+    if (table == table_for(Kind::CommandAllocator)) {
+        return slot == CommandAllocatorSlot::Reset ? Mode::Recording
+                                                   : Mode::Exclusive;
+    }
+    if (table == table_for(Kind::DescriptorHeap)) {
+        return slot >= DescriptorHeapSlot::GetDesc ? Mode::Shared
+                                                   : Mode::Exclusive;
+    }
+    if (table == table_for(Kind::Resource)) {
+        // The description is immutable after resource creation. A shared
+        // hold protects its lifetime without draining recording/replay.
+        return slot == ResourceSlot::GetGPUVirtualAddress ||
+                       slot == ResourceSlot::GetDesc
+                   ? Mode::Shared : Mode::Exclusive;
+    }
+    if (table == table_for(Kind::Fence)) {
+        return slot == FenceSlot::GetCompletedValue ? Mode::Shared
+                                                    : Mode::Exclusive;
+    }
+    if (table == table_for(Kind::CommandQueue)) {
+        return slot == CommandQueueSlot::ExecuteCommandLists ||
+                       slot == CommandQueueSlot::Signal ||
+                       slot == CommandQueueSlot::Wait ||
+                       slot == CommandQueueSlot::GetTimestampFrequency
+                   ? Mode::Shared
+                   : Mode::Exclusive;
+    }
+    if (table == table_for(Kind::Device)) {
+        switch (slot) {
+        case DeviceSlot::GetDescriptorHandleIncrementSize:
+        case DeviceSlot::GetDeviceRemovedReason:
+        case DeviceSlot::CreateConstantBufferView:
+        case DeviceSlot::CreateShaderResourceView:
+        case DeviceSlot::CreateUnorderedAccessView:
+        case DeviceSlot::CreateRenderTargetView:
+        case DeviceSlot::CreateDepthStencilView:
+        case DeviceSlot::CreateSampler:
+        case DeviceSlot::CopyDescriptors:
+        case DeviceSlot::CopyDescriptorsSimple:
+        case DeviceSlot::CreateSamplerFeedbackUnorderedAccessView:
+        case DeviceSlot::CreateSampler2:
+            return Mode::Shared;
+        default:
+            return Mode::Exclusive;
+        }
+    }
+    return Mode::Exclusive;
+}
+
+/// Adds the call's whole duration (the lock wait included) to its family.
+struct ApiTimer {
+    u64 start{0};
+    const char* exclusive_name{nullptr};
+    graphics::frame_profile::Time family{graphics::frame_profile::Time::ApiOther};
+    ~ApiTimer() {
+        if (start == 0) return;
+        graphics::frame_profile::add(family, graphics::frame_profile::now_ns() - start);
+        if (exclusive_name != nullptr) {
+            graphics::frame_profile::note_exclusive_api(
+                exclusive_name, graphics::frame_profile::now_ns() - start);
+        }
+        graphics::frame_profile::add(graphics::frame_profile::Counter::ApiCalls);
+        if (family == graphics::frame_profile::Time::ApiPresent) {
+            graphics::frame_profile::tick();
+        }
+    }
+};
+
+}  // namespace
+
 void Frontend::method(Marshaler& m, usize table, usize slot) {
-    std::lock_guard lock(m_mutex);
+    ApiTimer timer;
+    if (graphics::frame_profile::enabled()) [[unlikely]] {
+        timer.start = graphics::frame_profile::now_ns();
+    }
+    // Queue Signal / Wait run queued work, shared unless a Present or a tile
+    // mapping is queued (those own exclusive state; m_exclusive_queue_ops
+    // only rises under the exclusive lock, so a recheck under the shared
+    // hold is final).
+    const bool queue_sync = table == table_for(Kind::CommandQueue) &&
+                            (slot == CommandQueueSlot::Signal ||
+                             slot == CommandQueueSlot::Wait);
+    FrontendRwLock::Mode mode = lock_mode(table, slot);
+    if (queue_sync && m_exclusive_queue_ops.load() != 0) {
+        mode = FrontendRwLock::Mode::Exclusive;
+    }
+    if (timer.start != 0 && mode == FrontendRwLock::Mode::Exclusive &&
+        table < INTERFACE_TABLE_COUNT && slot < INTERFACE_TABLES[table].method_count) {
+        timer.exclusive_name = INTERFACE_TABLES[table].method_names[slot];
+    }
+    std::optional<FrontendLock> lock;
+    lock.emplace(*this, mode);
+    if (queue_sync && mode == FrontendRwLock::Mode::Shared &&
+        m_exclusive_queue_ops.load() != 0) {
+        lock.reset();
+        lock.emplace(*this, FrontendRwLock::Mode::Exclusive);
+    }
     const GuestAddr self = m.arg_ptr(0);
     if (const auto tearoff = m_tearoffs.find(self);
-        tearoff != m_tearoffs.end() &&
-        table == table_index("DestructionNotifier")) {
+        tearoff != m_tearoffs.end()) {
         if (const auto owner = m_objects.find(tearoff->second);
             owner != m_objects.end()) {
-            notifier_method(m, *owner->second, slot);
-            return;
+            Object& object = *owner->second;
+            if (table == table_index("DestructionNotifier") &&
+                object.notifier == self) {
+                notifier_method(m, object, slot);
+                return;
+            }
+            for (const auto& [owned, pointer] : object.tearoff_pointers) {
+                if (owned == table && pointer == self) {
+                    tearoff_method(m, object, table, slot);
+                    return;
+                }
+            }
         }
     }
     const auto entry = m_objects.find(self);
@@ -692,15 +1042,37 @@ void Frontend::method(Marshaler& m, usize table, usize slot) {
         return;
     }
     Object& object = *entry->second;
+    if (timer.start != 0) timer.family = api_family(object.kind, slot);
     // IDXGISwapChain is an IDXGIObject, not an ID3D12Object: its slots 3-7
     // are DXGI's (SetPrivateData .. GetDevice).
     if (object.kind == Kind::SwapChain) {
         swap_chain_method(m, static_cast<SwapChain&>(object), slot);
         return;
     }
+    // The configuration objects are IUnknown-derived: no ID3D12Object slots.
+    switch (object.kind) {
+    case Kind::SdkConfiguration:
+        if (slot <= 2 && common_method(m, slot, object)) return;
+        sdk_configuration_method(m, static_cast<SdkConfiguration&>(object),
+                                 slot);
+        return;
+    case Kind::DeviceFactory:
+        if (slot <= 2 && common_method(m, slot, object)) return;
+        device_factory_method(m, static_cast<DeviceFactory&>(object), slot);
+        return;
+    case Kind::DredSettings:
+        if (slot <= 2 && common_method(m, slot, object)) return;
+        dred_settings_method(m, static_cast<DredSettings&>(object), slot);
+        return;
+    default:
+        break;
+    }
     if (common_method(m, slot, object)) return;
     switch (object.kind) {
     case Kind::SwapChain:
+    case Kind::SdkConfiguration:
+    case Kind::DeviceFactory:
+    case Kind::DredSettings:
         return;
     case Kind::Device:
         device_method(m, static_cast<Device&>(object), slot);
@@ -736,6 +1108,20 @@ void Frontend::method(Marshaler& m, usize table, usize slot) {
     case Kind::QueryHeap:
     case Kind::CommandSignature:
         simple_child_method(m, object, slot);
+        return;
+    case Kind::PipelineLibrary:
+        pipeline_library_method(m, static_cast<PipelineLibrary&>(object), slot);
+        return;
+    case Kind::ShaderCacheSession:
+        shader_cache_session_method(m, static_cast<ShaderCacheSession&>(object),
+                                    slot);
+        return;
+    case Kind::StateObject:
+        // ID3D12StateObject adds nothing to ID3D12Pageable.
+        simple_child_method(m, object, slot);
+        return;
+    case Kind::LifetimeTracker:
+        lifetime_tracker_method(m, static_cast<LifetimeTracker&>(object), slot);
         return;
     }
 }

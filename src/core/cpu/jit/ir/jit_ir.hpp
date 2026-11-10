@@ -791,6 +791,12 @@ struct FlagDef {
     /// on the fall-through it is dead, its killer later in the block and
     /// every fault before that covered by a recovery plan.
     bool exit_deferred{false};
+
+    /// The record stays live for a dispatcher exit, and is stored on that
+    /// path. A patched direct hop whose successor redefines every flag
+    /// before a read or a fault skips it. Not `Dead`: nothing inside this
+    /// block kills it, and a link miss must still publish it.
+    bool link_miss_only{false};
 };
 
 // =============================================================================
@@ -1140,7 +1146,7 @@ public:
     /// after any pending definition.
     [[nodiscard]] ValueId flags_image(ValueId flags);
     /// Install `value` into the architectural EFLAGS (`POPF`).
-    void flags_install(ValueId value);
+    void flags_install(ValueId value, u8 width);
     /// Force CF (`Op::SetCf`) or OF (`Op::SetOf`) from bit 0 of `bit`,
     /// leaving every other flag as the pending record left it.
     void set_flag_overlay(Op op, ValueId bit, Type type);

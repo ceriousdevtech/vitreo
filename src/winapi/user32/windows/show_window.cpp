@@ -111,38 +111,28 @@ void ShowWindowManager::invalidate_visible_descendants(
 void ShowWindowManager::update_owned_popups_for_owner(windowing::HWND owner, bool show) {
     auto top = m_hwnd_mgr.enum_children(windowing::HWND_DESKTOP);
     for (windowing::HWND hwnd : top) {
-        windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
-        if (!win || win->owner != owner) {
-            continue;
-        }
-
-        if (show) {
-            if (!win->hidden_by_owner) {
-                continue;
+        bool changed = false;
+        const auto committed = m_hwnd_mgr.update_geometry(hwnd, [&](windowing::WindowData& win) {
+            if (win.owner != owner) return;
+            if (show) {
+                if (!win.hidden_by_owner) return;
+                win.hidden_by_owner = false;
+                win.visible = true;
+            } else {
+                if (!win.visible) return;
+                win.hidden_by_owner = true;
+                win.visible = false;
             }
-            win->hidden_by_owner = false;
-            win->visible = true;
-            m_window_host->set_visible(hwnd, true);
-
-            windowing::MSG msg_show{};
-            msg_show.hwnd    = hwnd;
-            msg_show.message = windowing::WM::SHOWWINDOW;
-            msg_show.wParam  = 1;
-            m_queue.post(msg_show);
-        } else {
-            if (!win->visible) {
-                continue;
-            }
-            win->hidden_by_owner = true;
-            win->visible = false;
-            m_window_host->set_visible(hwnd, false);
-
-            windowing::MSG msg_show{};
-            msg_show.hwnd    = hwnd;
-            msg_show.message = windowing::WM::SHOWWINDOW;
-            msg_show.wParam  = 0;
-            m_queue.post(msg_show);
-        }
+            changed = true;
+        });
+        if (!committed || !changed) continue;
+        m_window_host->set_visible(hwnd, show);
+        if (!m_hwnd_mgr.update_geometry(hwnd, [](windowing::WindowData&) {})) continue;
+        windowing::MSG msg_show{};
+        msg_show.hwnd    = hwnd;
+        msg_show.message = windowing::WM::SHOWWINDOW;
+        msg_show.wParam  = show ? 1u : 0u;
+        m_queue.post(msg_show);
     }
 }
 
@@ -167,11 +157,20 @@ bool ShowWindowManager::show_window(windowing::HWND hwnd, int cmd_show) {
         (void)m_user32_ext_mgr->show_window_cmd(hwnd, cmd_show);
         return prev;
     }
-    windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
-    if (!win) {
-        return false;
-    }
 
+    // Keep only a committed local copy across host and guest callbacks. Every
+    // mutation reacquires the HWND and copies its resulting state under the
+    // owner lock; callbacks below never retain a live WindowData pointer.
+    windowing::WindowData state;
+    const auto commit = [&](const auto& update) {
+        return m_hwnd_mgr.update_geometry(hwnd, [&](windowing::WindowData& live) {
+            update(live);
+            state = live;
+        }).has_value();
+    };
+    const auto refresh = [&] { return commit([](windowing::WindowData&) {}); };
+    if (!refresh()) return false;
+    const auto* win = &state;
     const bool prev_visible = win->visible;
     const bool prev_minimized = win->minimized;
     const bool prev_maximized = win->maximized;
@@ -188,266 +187,202 @@ bool ShowWindowManager::show_window(windowing::HWND hwnd, int cmd_show) {
          win->parent == windowing::NULL_HWND);
 
     // AppKit may synchronously report windowDidBecomeKey while the native
-    // visibility operation below is still on the stack. USER32 owns the sent
-    // activation transition, so reserve it first and prevent that callback
-    // from turning WM_ACTIVATEAPP into delayed queue work.
+    // visibility operation below is still on the stack. Reserve activation
+    // first without holding the HWND owner lock across the host call.
     if (activating_top_level && m_user32_ext_mgr) {
         (void)m_window_host->exchange_app_active(true);
+        if (!refresh()) return false;
     }
 
     const auto set_visible_state = [&](bool visible) {
-        win->visible = visible;
-        if (visible) {
-            win->style |= windowing::WS::VISIBLE;
-        } else {
-            win->style &= ~windowing::WS::VISIBLE;
-        }
+        if (!commit([&](windowing::WindowData& live) {
+            live.visible = visible;
+            if (visible) live.style |= windowing::WS::VISIBLE;
+            else live.style &= ~windowing::WS::VISIBLE;
+        })) return false;
         m_window_host->set_visible(hwnd, visible);
+        return refresh();
     };
-
     const auto remember_normal_geometry = [&] {
-        if (!win->minimized && !win->maximized) {
-            win->normal_rect = win->rect;
-            win->normal_client_rect = win->client_rect;
-        }
+        return commit([](windowing::WindowData& live) {
+            if (!live.minimized && !live.maximized) {
+                live.normal_rect = live.rect;
+                live.normal_client_rect = live.client_rect;
+            }
+        });
     };
-
     const auto set_state_bits = [&](bool minimized, bool maximized) {
-        // Measured (winevent_sequence_probe): EVENT_SYSTEM_MINIMIZESTART when
-        // a window is minimized, EVENT_SYSTEM_MINIMIZEEND when it leaves the
-        // minimized state.
+        if (!refresh()) return false;
+        // Measured EVENT_SYSTEM_MINIMIZESTART/END ordering is retained; the
+        // notification can reenter USER32, so reacquire for the final commit.
         if (minimized != win->minimized && m_user32_ext_mgr != nullptr) {
             m_user32_ext_mgr->notify_win_event(minimized ? 0x0016u : 0x0017u, hwnd);
         }
-        win->minimized = minimized;
-        win->maximized = !minimized && maximized;
-        win->style &= ~(windowing::WS::MINIMIZE |
-                        windowing::WS::MAXIMIZE);
-        if (win->minimized) {
-            win->style |= windowing::WS::MINIMIZE;
-        } else if (win->maximized) {
-            win->style |= windowing::WS::MAXIMIZE;
-        }
+        return commit([&](windowing::WindowData& live) {
+            live.minimized = minimized;
+            live.maximized = !minimized && maximized;
+            live.style &= ~(windowing::WS::MINIMIZE | windowing::WS::MAXIMIZE);
+            if (live.minimized) live.style |= windowing::WS::MINIMIZE;
+            else if (live.maximized) live.style |= windowing::WS::MAXIMIZE;
+        });
     };
-
-    const auto size_lparam = [&] {
+    const auto send_size = [&](u64 size_type) {
+        if (!refresh()) return false;
         const i32 cw = win->client_rect.width();
         const i32 ch = win->client_rect.height();
-        return static_cast<u64>(
-            (cw & 0xFFFF) | ((ch & 0xFFFF) << 16));
+        const u64 size_lp = static_cast<u64>((cw & 0xFFFF) | ((ch & 0xFFFF) << 16));
+        send_or_post(hwnd, win->wndproc, windowing::WM::SIZE, size_type, size_lp);
+        return refresh();
     };
-
-    const auto send_size = [&](u64 size_type) {
-        send_or_post(hwnd, win->wndproc, windowing::WM::SIZE,
-                     size_type, size_lparam());
-    };
-
     const auto send_move = [&] {
+        if (!refresh()) return false;
         const u64 move_lp = static_cast<u64>(
-            (win->rect.left & 0xFFFF) |
-            ((win->rect.top & 0xFFFF) << 16));
+            (win->rect.left & 0xFFFF) | ((win->rect.top & 0xFFFF) << 16));
         send_or_post(hwnd, win->wndproc, windowing::WM::MOVE, 0, move_lp);
+        return refresh();
     };
-
     const auto restore_normal = [&] {
-        set_state_bits(false, false);
+        if (!set_state_bits(false, false)) return false;
         m_window_host->set_minimized(hwnd, false);
-        if (win->normal_rect.width() > 0 &&
-            win->normal_rect.height() > 0) {
-            win->rect = win->normal_rect;
-            if (win->normal_client_rect.width() > 0 &&
-                win->normal_client_rect.height() > 0) {
-                win->client_rect = win->normal_client_rect;
-            } else {
-                win->client_rect = windowing::Rect{
-                    0, 0, win->normal_rect.width(),
-                    win->normal_rect.height()};
+        std::optional<windowing::Rect> frame;
+        if (!commit([&](windowing::WindowData& live) {
+            if (live.normal_rect.width() > 0 && live.normal_rect.height() > 0) {
+                live.rect = live.normal_rect;
+                if (live.normal_client_rect.width() > 0 &&
+                    live.normal_client_rect.height() > 0) {
+                    live.client_rect = live.normal_client_rect;
+                } else {
+                    live.client_rect = {0, 0, live.normal_rect.width(), live.normal_rect.height()};
+                }
+                const i32 cx = live.rect.left + live.client_offset.x;
+                const i32 cy = live.rect.top + live.client_offset.y;
+                frame = windowing::Rect{cx, cy, cx + live.client_rect.width(), cy + live.client_rect.height()};
             }
-            const i32 client_w = win->client_rect.width();
-            const i32 client_h = win->client_rect.height();
-            // Client area in screen coordinates (outer + NC insets).
-            const i32 cx = win->rect.left + win->client_offset.x;
-            const i32 cy = win->rect.top + win->client_offset.y;
-            const windowing::Rect client_frame{cx, cy,
-                                               cx + client_w, cy + client_h};
-            m_window_host->set_frame(hwnd, client_frame);
-        }
-        win->restore_to_maximized = false;
+        })) return false;
+        if (frame) m_window_host->set_frame(hwnd, *frame);
+        return commit([](windowing::WindowData& live) { live.restore_to_maximized = false; });
     };
-
     const auto minimize = [&] {
-        remember_normal_geometry();
-        if (win->maximized) {
-            win->restore_to_maximized = true;
-        }
-        set_state_bits(true, false);
-        set_visible_state(true);
+        if (!remember_normal_geometry()) return false;
+        if (!commit([](windowing::WindowData& live) {
+            if (live.maximized) live.restore_to_maximized = true;
+        })) return false;
+        if (!set_state_bits(true, false) || !set_visible_state(true)) return false;
         m_window_host->set_minimized(hwnd, true);
-        if (!prev_minimized) {
-            send_size(1); // SIZE_MINIMIZED
-        }
+        if (!refresh()) return false;
+        if (!prev_minimized && !send_size(1)) return false;
         update_owned_popups_for_owner(hwnd, false);
+        return refresh();
     };
-
     const auto maximize = [&] {
-        remember_normal_geometry();
-        set_state_bits(false, true);
-        win->restore_to_maximized = false;
+        if (!remember_normal_geometry() || !set_state_bits(false, true)) return false;
+        if (!commit([](windowing::WindowData& live) { live.restore_to_maximized = false; })) return false;
         m_window_host->set_minimized(hwnd, false);
-        set_visible_state(true);
-
+        if (!refresh() || !set_visible_state(true)) return false;
         const windowing::Rect zoomed = m_window_host->zoom_window(hwnd);
         const i32 cw = zoomed.right - zoomed.left;
         const i32 ch = zoomed.bottom;
-        if (cw > 0 && ch > 0) {
-            win->rect = windowing::Rect{
-                zoomed.left, 0, zoomed.right, ch};
-            win->client_rect = windowing::Rect{0, 0, cw, ch};
-        }
+        if (!commit([&](windowing::WindowData& live) {
+            if (cw > 0 && ch > 0) {
+                live.rect = {zoomed.left, 0, zoomed.right, ch};
+                live.client_rect = {0, 0, cw, ch};
+            }
+        })) return false;
         if (!prev_maximized || prev_minimized) {
-            VITREO_TRACE(
-                "[show] SW_MAXIMIZE: zoomed hwnd=0x%x to %dx%d\n",
-                hwnd, win->client_rect.width(),
-                win->client_rect.height());
-            send_size(2); // SIZE_MAXIMIZED
+            VITREO_TRACE("[show] SW_MAXIMIZE: zoomed hwnd=0x%x to %dx%d\n",
+                hwnd, win->client_rect.width(), win->client_rect.height());
+            if (!send_size(2)) return false;
         }
         update_owned_popups_for_owner(hwnd, true);
+        return refresh();
     };
 
     switch (cmd_show) {
     case windowing::SW::HIDE:
         if (prev_visible) {
-            // Learn ShowWindow: SW_HIDE hides the window and activates
-            // another window.
             if (m_user32_ext_mgr) {
                 m_user32_ext_mgr->release_activation(hwnd, false);
-                win = m_hwnd_mgr.find(hwnd);
-                if (!win) return prev_visible;
+                if (!refresh()) return false;
             }
-            set_visible_state(false);
+            if (!set_visible_state(false)) return false;
             update_owned_popups_for_owner(hwnd, false);
+            if (!refresh()) return false;
         }
         break;
-
     case windowing::SW::SHOWNORMAL:
-    case windowing::SW::SHOWDEFAULT: {
-        const bool state_changed = win->minimized || win->maximized;
-        // SW_SHOWNORMAL restores original geometry only from a minimized,
-        // maximized, or arranged state. A hidden normal window is displayed
-        // at its current size and position; resetting it here can reapply
-        // stale creation geometry and duplicate native frame chrome.
-        if (state_changed) {
-            restore_normal();
-        }
-        set_visible_state(true);
-        if (state_changed || !prev_visible) {
-            send_size(0); // SIZE_RESTORED
-            send_move();
-        }
-        update_owned_popups_for_owner(hwnd, true);
-        break;
-    }
-
+    case windowing::SW::SHOWDEFAULT:
     case windowing::SW::SHOWNOACTIVATE: {
         const bool state_changed = win->minimized || win->maximized;
-        if (state_changed) {
-            restore_normal();
-        }
-        set_visible_state(true);
-        if (state_changed || !prev_visible) {
-            send_size(0);
-            send_move();
-        }
+        // A normal window retains its current frame; restore only from a
+        // minimized/maximized state, as before this ownership conversion.
+        if (state_changed && !restore_normal()) return false;
+        if (!set_visible_state(true)) return false;
+        if ((state_changed || !prev_visible) && (!send_size(0) || !send_move())) return false;
         update_owned_popups_for_owner(hwnd, true);
+        if (!refresh()) return false;
         break;
     }
-
     case windowing::SW::SHOW:
     case windowing::SW::SHOWNA:
-        set_visible_state(true);
-        if (!prev_visible) {
-            send_size(win->minimized ? 1u : win->maximized ? 2u : 0u);
-            send_move();
-        }
+        if (!set_visible_state(true)) return false;
+        if (!prev_visible && (!send_size(win->minimized ? 1u : win->maximized ? 2u : 0u) || !send_move())) return false;
         update_owned_popups_for_owner(hwnd, !win->minimized);
+        if (!refresh()) return false;
         break;
-
     case windowing::SW::MINIMIZE:
     case windowing::SW::FORCEMINIMIZE:
-        // Learn ShowWindow: SW_MINIMIZE activates the next top-level window
-        // in the z-order.
         if (m_user32_ext_mgr) {
             m_user32_ext_mgr->release_activation(hwnd, false);
-            win = m_hwnd_mgr.find(hwnd);
-            if (!win) return prev_visible;
+            if (!refresh()) return false;
         }
-        minimize();
+        if (!minimize()) return false;
         break;
-
     case windowing::SW::SHOWMINIMIZED:
     case windowing::SW::SHOWMINNOACTIVE:
-        minimize();
+        if (!minimize()) return false;
         break;
-
     case windowing::SW::SHOWMAXIMIZED:
-        maximize();
+        if (!maximize()) return false;
         break;
-
-    case windowing::SW::RESTORE: {
+    case windowing::SW::RESTORE:
         if (win->minimized && win->restore_to_maximized) {
-            maximize();
+            if (!maximize()) return false;
         } else {
             const bool state_changed = win->minimized || win->maximized;
-            restore_normal();
-            set_visible_state(true);
-            if (state_changed || !prev_visible) {
-                send_size(0);
-                send_move();
-            }
+            if (!restore_normal() || !set_visible_state(true)) return false;
+            if ((state_changed || !prev_visible) && (!send_size(0) || !send_move())) return false;
             update_owned_popups_for_owner(hwnd, true);
+            if (!refresh()) return false;
         }
         break;
-    }
-
     default:
-        // ShowWindow documents commands 0 through 11. Keep an unknown command
-        // from inventing a state transition; matching SW_SHOW is the narrowest
-        // historical fallback and preserves the current size/state.
-        set_visible_state(true);
+        if (!set_visible_state(true)) return false;
         break;
     }
 
     if (win->visible != prev_visible) {
-        // WM_SHOWWINDOW is sent to the WindowProc as part of the synchronous
-        // ShowWindow visibility transition.  Queue only when the runtime has
-        // no callback dispatcher (the unit-test/headless fallback).
-        send_or_post(hwnd, win->wndproc, windowing::WM::SHOWWINDOW,
-                     win->visible ? 1u : 0u, 0);
-
+        send_or_post(hwnd, win->wndproc, windowing::WM::SHOWWINDOW, win->visible ? 1u : 0u, 0);
+        if (!refresh()) return false;
         if (m_user32_ext_mgr != nullptr) {
             constexpr u32 EVENT_OBJECT_SHOW = 0x8002u;
             constexpr u32 EVENT_OBJECT_HIDE = 0x8003u;
-            m_user32_ext_mgr->notify_win_event(
-                win->visible ? EVENT_OBJECT_SHOW : EVENT_OBJECT_HIDE, hwnd);
+            m_user32_ext_mgr->notify_win_event(win->visible ? EVENT_OBJECT_SHOW : EVENT_OBJECT_HIDE, hwnd);
+            if (!refresh()) return false;
         }
-
         if (win->visible && m_paint_mgr) {
-            m_paint_mgr->invalidate_rect(
-                static_cast<u64>(hwnd), nullptr, true);
+            m_paint_mgr->invalidate_rect(static_cast<u64>(hwnd), nullptr, true);
             invalidate_visible_descendants(hwnd);
+            if (!refresh()) return false;
         }
     }
-
-    // Activating ShowWindow commands make a top-level window active before
-    // returning. Cocoa reports key-window changes asynchronously, so that
-    // callback cannot provide this synchronous Win32 state.
     if (activating_top_level) {
         m_window_host->set_active_hwnd(hwnd);
+        if (!refresh()) return false;
         if (m_user32_ext_mgr) {
             (void)m_user32_ext_mgr->activate_application(hwnd);
+            if (!refresh()) return false;
         }
     }
-
     return prev_visible;
 }
 
@@ -456,127 +391,65 @@ bool ShowWindowManager::set_window_placement(
     windowing::Point minimized_position,
     windowing::Point maximized_position,
     windowing::Rect normal_rect) {
-    windowing::WindowData* win = m_hwnd_mgr.find(hwnd);
-    if (!win) {
-        return false;
-    }
-
-    // Microsoft documents that SetWindowPlacement adjusts a placement that
-    // would leave the window completely off-screen. WINDOWPLACEMENT uses work-
-    // area coordinates for ordinary top-level windows and screen coordinates
-    // for tool/child windows.
-    constexpr u32 WS_EX_TOOLWINDOW = 0x00000080u;
+    if (!m_hwnd_mgr.update_geometry(hwnd, [](windowing::WindowData&) {})) return false;
     const auto monitor = m_window_host->get_primary_monitor_info();
-    windowing::Rect placement_bounds{
-        monitor.work_left,
-        monitor.work_top,
-        monitor.work_right,
-        monitor.work_bottom};
-    if ((win->parent == windowing::HWND_DESKTOP ||
-         win->parent == windowing::NULL_HWND) &&
-        (win->ex_style & WS_EX_TOOLWINDOW) == 0) {
-        placement_bounds = windowing::Rect{
-            0,
-            0,
-            monitor.work_right - monitor.work_left,
-            monitor.work_bottom - monitor.work_top};
-    }
-    const bool completely_offscreen =
-        normal_rect.right <= placement_bounds.left ||
-        normal_rect.left >= placement_bounds.right ||
-        normal_rect.bottom <= placement_bounds.top ||
-        normal_rect.top >= placement_bounds.bottom;
-    if (completely_offscreen && normal_rect.width() > 0 &&
-        normal_rect.height() > 0) {
-        const i32 width = normal_rect.width();
-        const i32 height = normal_rect.height();
-        const i32 max_left = std::max(
-            placement_bounds.left,
-            placement_bounds.right -
-                std::min(width, placement_bounds.width()));
-        const i32 max_top = std::max(
-            placement_bounds.top,
-            placement_bounds.bottom -
-                std::min(height, placement_bounds.height()));
-        const i32 adjusted_left = std::clamp(
-            normal_rect.left, placement_bounds.left, max_left);
-        const i32 adjusted_top = std::clamp(
-            normal_rect.top, placement_bounds.top, max_top);
-        normal_rect = windowing::Rect{
-            adjusted_left, adjusted_top,
-            adjusted_left + width, adjusted_top + height};
-    }
-
-    const i32 prior_normal_w = win->normal_rect.width();
-    const i32 prior_normal_h = win->normal_rect.height();
-    i32 normal_nc_width =
-        prior_normal_w - win->normal_client_rect.width();
-    i32 normal_nc_height =
-        prior_normal_h - win->normal_client_rect.height();
-    // A zero-sized CreateWindow leaves normal_rect/client both empty, so the
-    // NC delta is 0. Prefer the chrome budget recorded at create time.
-    if (normal_nc_width == 0 && normal_nc_height == 0 &&
-        (win->client_offset.x != 0 || win->client_offset.y != 0)) {
-        normal_nc_width = win->client_offset.x * 2;
-        normal_nc_height = win->client_offset.y + win->client_offset.x;
-    }
-    const windowing::Rect normal_client{
-        0,
-        0,
-        std::max(0, normal_rect.width() - normal_nc_width),
-        std::max(0, normal_rect.height() - normal_nc_height)};
-
-    win->minimized_position = minimized_position;
-    win->maximized_position = maximized_position;
-    win->normal_rect = normal_rect;
-    win->normal_client_rect = normal_client;
-    win->restore_to_maximized =
-        show_cmd == windowing::SW::SHOWMINIMIZED && (flags & 0x0002u) != 0;
-
-    // Learn (SetWindowPlacement): rcNormalPosition is the restored frame.
-    // ShowWindow(SW_SHOWNORMAL) intentionally keeps an already-normal window's
-    // live geometry (apps may have MoveWindow'd while hidden). Placement must
-    // still stamp that restored frame before the show transition. A window
-    // may be created at 0×0 and then placed with SetWindowPlacement.
+    windowing::Rect normal_client{};
+    std::optional<windowing::Rect> frame;
     const bool show_restored =
-        show_cmd == windowing::SW::SHOWNORMAL ||
-        show_cmd == windowing::SW::SHOWDEFAULT ||
-        show_cmd == windowing::SW::SHOW ||
-        show_cmd == windowing::SW::SHOWNA ||
-        show_cmd == windowing::SW::SHOWNOACTIVATE ||
-        show_cmd == windowing::SW::RESTORE;
-    if (show_restored && normal_rect.width() > 0 &&
-        normal_rect.height() > 0) {
-        win->rect = normal_rect;
-        win->client_rect = normal_client;
-        const i32 ncx = normal_rect.left + win->client_offset.x;
-        const i32 ncy = normal_rect.top + win->client_offset.y;
-        const windowing::Rect client_frame{
-            ncx, ncy,
-            ncx + normal_client.width(),
-            ncy + normal_client.height()};
-        m_window_host->set_frame(hwnd, client_frame);
-    }
-
+        show_cmd == windowing::SW::SHOWNORMAL || show_cmd == windowing::SW::SHOWDEFAULT ||
+        show_cmd == windowing::SW::SHOW || show_cmd == windowing::SW::SHOWNA ||
+        show_cmd == windowing::SW::SHOWNOACTIVATE || show_cmd == windowing::SW::RESTORE;
+    const auto committed = m_hwnd_mgr.update_geometry(hwnd, [&](windowing::WindowData& win) {
+        constexpr u32 WS_EX_TOOLWINDOW = 0x00000080u;
+        windowing::Rect bounds{monitor.work_left, monitor.work_top, monitor.work_right, monitor.work_bottom};
+        if ((win.parent == windowing::HWND_DESKTOP || win.parent == windowing::NULL_HWND) &&
+            (win.ex_style & WS_EX_TOOLWINDOW) == 0) {
+            bounds = {0, 0, monitor.work_right - monitor.work_left, monitor.work_bottom - monitor.work_top};
+        }
+        const bool offscreen = normal_rect.right <= bounds.left || normal_rect.left >= bounds.right ||
+                               normal_rect.bottom <= bounds.top || normal_rect.top >= bounds.bottom;
+        if (offscreen && normal_rect.width() > 0 && normal_rect.height() > 0) {
+            const i32 width = normal_rect.width(), height = normal_rect.height();
+            const i32 max_left = std::max(bounds.left, bounds.right - std::min(width, bounds.width()));
+            const i32 max_top = std::max(bounds.top, bounds.bottom - std::min(height, bounds.height()));
+            const i32 left = std::clamp(normal_rect.left, bounds.left, max_left);
+            const i32 top = std::clamp(normal_rect.top, bounds.top, max_top);
+            normal_rect = {left, top, left + width, top + height};
+        }
+        i32 nc_width = win.normal_rect.width() - win.normal_client_rect.width();
+        i32 nc_height = win.normal_rect.height() - win.normal_client_rect.height();
+        if (nc_width == 0 && nc_height == 0 && (win.client_offset.x != 0 || win.client_offset.y != 0)) {
+            nc_width = win.client_offset.x * 2;
+            nc_height = win.client_offset.y + win.client_offset.x;
+        }
+        normal_client = {0, 0, std::max(0, normal_rect.width() - nc_width),
+                              std::max(0, normal_rect.height() - nc_height)};
+        win.minimized_position = minimized_position;
+        win.maximized_position = maximized_position;
+        win.normal_rect = normal_rect;
+        win.normal_client_rect = normal_client;
+        win.restore_to_maximized = show_cmd == windowing::SW::SHOWMINIMIZED && (flags & 0x0002u) != 0;
+        if (show_restored && normal_rect.width() > 0 && normal_rect.height() > 0) {
+            win.rect = normal_rect;
+            win.client_rect = normal_client;
+            const i32 x = normal_rect.left + win.client_offset.x;
+            const i32 y = normal_rect.top + win.client_offset.y;
+            frame = windowing::Rect{x, y, x + normal_client.width(), y + normal_client.height()};
+        }
+    });
+    if (!committed) return false;
+    if (frame) m_window_host->set_frame(hwnd, *frame);
     (void)show_window(hwnd, show_cmd);
-
-    // Entering minimized/maximized state remembers the pre-transition rect.
-    // SetWindowPlacement's supplied restored geometry is authoritative, so
-    // retain it for the later SW_RESTORE/GetWindowPlacement round trip.
-    win = m_hwnd_mgr.find(hwnd);
-    if (!win) {
-        return false;
-    }
-    win->minimized_position = minimized_position;
-    win->maximized_position = maximized_position;
-    win->normal_rect = normal_rect;
-    win->normal_client_rect = normal_client;
-    if (win->minimized) {
-        win->restore_to_maximized =
-            show_cmd == windowing::SW::SHOWMINIMIZED &&
-            (flags & 0x0002u) != 0;
-    }
-    return true;
+    // The supplied restored frame remains authoritative after ShowWindow's
+    // callbacks and its normal/minimized/maximized geometry bookkeeping.
+    return m_hwnd_mgr.update_geometry(hwnd, [&](windowing::WindowData& win) {
+        win.minimized_position = minimized_position;
+        win.maximized_position = maximized_position;
+        win.normal_rect = normal_rect;
+        win.normal_client_rect = normal_client;
+        if (win.minimized) win.restore_to_maximized =
+            show_cmd == windowing::SW::SHOWMINIMIZED && (flags & 0x0002u) != 0;
+    }).has_value();
 }
 
 // -----------------------------------------------------------------------------

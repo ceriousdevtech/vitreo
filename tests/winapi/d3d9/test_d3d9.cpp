@@ -83,11 +83,22 @@ TEST(D3D9FrozenTables, FreezeIsSharedUntilInvalidated) {
     EXPECT_EQ(first, second);
     EXPECT_EQ(first->render_states.at(7), 1u);
 
+    // An invalidation from state outside the tables (a shader, a constant)
+    // leaves them equal, so the frozen copy is reused rather than copied.
     state.invalidate_draw_pipeline_reuse();
     const auto third = state.freeze_draw_tables();
     ASSERT_NE(third, nullptr);
-    EXPECT_NE(third, first);
-    EXPECT_EQ(third->render_states.at(7), 1u);
+    EXPECT_EQ(third, first);
+
+    // A table change freezes a new copy; the old one keeps the old value
+    // for draws already recorded with it.
+    state.render_states[7] = 2;
+    state.invalidate_draw_pipeline_reuse();
+    const auto fourth = state.freeze_draw_tables();
+    ASSERT_NE(fourth, nullptr);
+    EXPECT_NE(fourth, first);
+    EXPECT_EQ(fourth->render_states.at(7), 2u);
+    EXPECT_EQ(first->render_states.at(7), 1u);
 }
 
 TEST(D3D9BumpLuminanceFormatTest, ExpandsMixedSignedAndUnsignedChannels) {

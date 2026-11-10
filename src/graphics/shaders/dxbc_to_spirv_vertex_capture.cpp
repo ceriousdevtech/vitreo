@@ -68,15 +68,11 @@ u32 DxbcTranslator::builtin_input(SpvBuiltIn builtin, const char* name) {
     return var;
 }
 
-// Pass A epilogue: copy every output register into the capture buffer. Runs
-// once, at the end of the function, which is why an early return is refused
-// rather than tolerated -- a vertex that returned early would leave a stale
-// or zero record and the geometry pass would expand garbage for it.
+// Pass A epilogue: copy every output register into the capture buffer. It
+// runs at every return of main (emit_return_epilogue): the end of the
+// function and each early ret / retc, so a vertex that returns early is
+// recorded with the outputs it wrote by then, as its rasterized twin is.
 bool DxbcTranslator::emit_vertex_capture_epilogue() {
-    if (m_emitted_early_return) {
-        return fail("vertex capture: the shader returns early, so the capture "
-                    "would not run for every vertex");
-    }
     const u32 member = m_builder.emit_constant_int(m_type_uint, 0u);
     const u32 vec4_ptr = m_builder.emit_type_pointer(
         SpvStorageClass::StorageBuffer, m_type_vec4);

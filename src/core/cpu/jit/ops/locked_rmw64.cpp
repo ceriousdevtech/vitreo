@@ -122,6 +122,7 @@ std::optional<bool> JitCompiler::compile_locked_rmw64(
         emit_host_addr_imm64(16, static_cast<i64>(reinterpret_cast<uintptr_t>(
                               &jit_lock_cmpxchg64)));
         emit_helper_blr();
+        emit_exit_if_pending_raise();
         // The helper materialises RFLAGS; both arms now leave CMP's NZCV.
         emit_nzcv_sub_from_rflags();
         join_native_lock(nl);

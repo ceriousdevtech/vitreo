@@ -154,8 +154,9 @@ bool D3D9Manager::ensure_draw_render_pass(DeviceState& state,
             color_targets{};
         std::copy(snap.rt_colors.begin(), snap.rt_colors.end(),
                   color_targets.begin());
-        state.render_pass = state.swap_chain->begin_render_pass(
-            true, clear_depth, state.depth_clear_value, color_targets);
+        state.render_pass = state.swap_chain->begin_render_pass_counted(
+            true, clear_depth, state.depth_clear_value, color_targets,
+            state.occlusion_interval.get());
         state.render_pass_color = nullptr;
         if (clear_depth) {
             state.depth_pending_clear = false;
@@ -170,6 +171,7 @@ bool D3D9Manager::ensure_draw_render_pass(DeviceState& state,
         }
         pass_desc.preserve_color_contents = true;
         pass_desc.depth_stencil_target = snap.rt_depth;
+        pass_desc.occlusion_counter = state.occlusion_interval.get();
         if (snap.rt_depth != nullptr && state.depth_pending_clear &&
             !state.depth_pending_clear_back_buffer) {
             pass_desc.clear_depth = true;

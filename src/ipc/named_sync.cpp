@@ -2,7 +2,7 @@
 /// @file named_sync.cpp
 
 #include <cstdlib>
-#include <os/os_sync_wait_on_address.h>
+#include "platform/host_address_wait.hpp"
 #include "ipc/named_sync.hpp"
 #include "ipc/shared_memory.hpp"
 #include "core/sync/ntsync.hpp"
@@ -67,7 +67,7 @@ constexpr usize kBlockBytes = 4096;            // one page, room for the block
 
 void SharedSyncObject::wake_shared(ControlBlock* c) noexcept {
     c->wake_gen.fetch_add(1, std::memory_order_acq_rel);
-    (void)os_sync_wake_by_address_all(&c->wake_gen, sizeof(c->wake_gen),
+    (void)::vitreo::platform::address_wake_all(&c->wake_gen, sizeof(c->wake_gen),
                                       OS_SYNC_WAKE_BY_ADDRESS_SHARED);
 }
 
@@ -139,6 +139,12 @@ SharedSyncObject::~SharedSyncObject() {
     if (m_map != nullptr) {
         SharedMemory::unmap_view(m_map, m_map_len);
     }
+}
+
+void SharedSyncObject::release_handle_reference() {
+    // Apple mmap(2): closing the descriptor does not unmap pages. The Windows
+    // event oracle likewise separates last-handle name unlink from IRP refs.
+    m_shm.reset();
 }
 
 bool SharedSyncObject::set_event() {
@@ -340,7 +346,7 @@ std::uint32_t SharedSyncObject::wake_generation() const noexcept {
 void SharedSyncObject::park_until_changed(std::uint32_t seen,
                                           std::uint64_t max_ns) noexcept {
     ControlBlock* c = cb();
-    (void)os_sync_wait_on_address_with_timeout(
+    (void)::vitreo::platform::address_wait_with_timeout(
         &c->wake_gen, seen, sizeof(c->wake_gen),
         OS_SYNC_WAIT_ON_ADDRESS_SHARED, OS_CLOCK_MACH_ABSOLUTE_TIME, max_ns);
 }

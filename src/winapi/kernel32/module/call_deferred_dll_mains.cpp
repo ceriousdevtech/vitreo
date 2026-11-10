@@ -37,6 +37,7 @@ namespace vitreo::winapi {
 
 void ModuleManager::call_deferred_dll_mains() {
     if (!m_guest_call) return;
+    auto initialization = begin_process_initialization();
 
     // ------------------------------------------------------------------
     // Parse PE imports from the in-memory image so we can call dependency
@@ -177,6 +178,7 @@ void ModuleManager::call_deferred_dll_mains() {
         auto it3 = modules_by_name_.find(key);
         if (it3 != modules_by_name_.end()) {
             it3->second.dllmain_called = true;
+            sync_loader_entry(it3->second);
         }
         on_stack.erase(key);
     };

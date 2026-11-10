@@ -4,54 +4,54 @@ heaps Create CBV_SRV_UAV n=2048 cpu: 0x00000000 S_OK desc=0/2048/0x0/1 cpu-start
 heaps Create CBV_SRV_UAV n=2049 cpu: 0x00000000 S_OK desc=0/2049/0x0/1 cpu-start=nonzero gpu-start=nonzero
 heaps Create CBV_SRV_UAV n=1000000 cpu: 0x00000000 S_OK desc=0/1000000/0x0/1 cpu-start=nonzero gpu-start=nonzero
 heaps Create CBV_SRV_UAV n=1000001 cpu: 0x00000000 S_OK desc=0/1000001/0x0/1 cpu-start=nonzero gpu-start=nonzero
-heaps Create CBV_SRV_UAV n=0 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create CBV_SRV_UAV n=1 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create CBV_SRV_UAV n=2048 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create CBV_SRV_UAV n=2049 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create CBV_SRV_UAV n=1000000 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create CBV_SRV_UAV n=1000001 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=0 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=1 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=2048 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=2049 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=1000000 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=1000001 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=0 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=1 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=2048 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=2049 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=1000000 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create SAMPLER n=1000001 shader-visible: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create RTV n=0 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create RTV n=1 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create RTV n=2048 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create RTV n=2049 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create RTV n=1000000 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create RTV n=1000001 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+# heaps Create CBV_SRV_UAV n=0 shader-visible: skipped (WARP device removal, NVIDIA access violation)
+heaps Create CBV_SRV_UAV n=1 shader-visible: 0x00000000 S_OK desc=0/1/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=2048 shader-visible: 0x00000000 S_OK desc=0/2048/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=2049 shader-visible: 0x00000000 S_OK desc=0/2049/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=1000000 shader-visible: 0x00000000 S_OK desc=0/1000000/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create CBV_SRV_UAV n=1000001 shader-visible: 0x00000000 S_OK desc=0/1000001/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=0 cpu: 0x00000000 S_OK desc=1/0/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=1 cpu: 0x00000000 S_OK desc=1/1/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=2048 cpu: 0x00000000 S_OK desc=1/2048/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=2049 cpu: 0x00000000 S_OK desc=1/2049/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=1000000 cpu: 0x00000000 S_OK desc=1/1000000/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=1000001 cpu: 0x00000000 S_OK desc=1/1000001/0x0/1 cpu-start=nonzero gpu-start=nonzero
+# heaps Create SAMPLER n=0 shader-visible: skipped (WARP device removal, NVIDIA access violation)
+heaps Create SAMPLER n=1 shader-visible: 0x00000000 S_OK desc=1/1/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=2048 shader-visible: 0x00000000 S_OK desc=1/2048/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=2049 shader-visible: 0x00000000 S_OK desc=1/2049/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=1000000 shader-visible: 0x00000000 S_OK desc=1/1000000/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create SAMPLER n=1000001 shader-visible: 0x00000000 S_OK desc=1/1000001/0x1/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create RTV n=0 cpu: 0x00000000 S_OK desc=2/0/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create RTV n=1 cpu: 0x00000000 S_OK desc=2/1/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create RTV n=2048 cpu: 0x00000000 S_OK desc=2/2048/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create RTV n=2049 cpu: 0x00000000 S_OK desc=2/2049/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create RTV n=1000000 cpu: 0x00000000 S_OK desc=2/1000000/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create RTV n=1000001 cpu: 0x00000000 S_OK desc=2/1000001/0x0/1 cpu-start=nonzero gpu-start=nonzero
 heaps Create RTV n=0 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create RTV n=1 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create RTV n=2048 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create RTV n=2049 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create RTV n=1000000 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create RTV n=1000001 shader-visible: 0x80070057 E_INVALIDARG out=NULL
-heaps Create DSV n=0 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create DSV n=1 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create DSV n=2048 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create DSV n=2049 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create DSV n=1000000 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create DSV n=1000001 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create DSV n=0 cpu: 0x00000000 S_OK desc=3/0/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create DSV n=1 cpu: 0x00000000 S_OK desc=3/1/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create DSV n=2048 cpu: 0x00000000 S_OK desc=3/2048/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create DSV n=2049 cpu: 0x00000000 S_OK desc=3/2049/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create DSV n=1000000 cpu: 0x00000000 S_OK desc=3/1000000/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create DSV n=1000001 cpu: 0x00000000 S_OK desc=3/1000001/0x0/1 cpu-start=nonzero gpu-start=nonzero
 heaps Create DSV n=0 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create DSV n=1 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create DSV n=2048 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create DSV n=2049 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create DSV n=1000000 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create DSV n=1000001 shader-visible: 0x80070057 E_INVALIDARG out=NULL
-heaps Create type4 n=0 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create type4 n=1 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create type4 n=2048 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create type4 n=2049 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create type4 n=1000000 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
-heaps Create type4 n=1000001 cpu: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED out=NULL
+heaps Create type4 n=0 cpu: 0x00000000 S_OK desc=4/0/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create type4 n=1 cpu: 0x00000000 S_OK desc=4/1/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create type4 n=2048 cpu: 0x00000000 S_OK desc=4/2048/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create type4 n=2049 cpu: 0x00000000 S_OK desc=4/2049/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create type4 n=1000000 cpu: 0x00000000 S_OK desc=4/1000000/0x0/1 cpu-start=nonzero gpu-start=nonzero
+heaps Create type4 n=1000001 cpu: 0x00000000 S_OK desc=4/1000001/0x0/1 cpu-start=nonzero gpu-start=nonzero
 heaps Create type4 n=0 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create type4 n=1 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create type4 n=2048 shader-visible: 0x80070057 E_INVALIDARG out=NULL
@@ -59,10 +59,10 @@ heaps Create type4 n=2049 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create type4 n=1000000 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create type4 n=1000001 shader-visible: 0x80070057 E_INVALIDARG out=NULL
 heaps Create flags=0x2: 0x80070057 E_INVALIDARG
-heaps Create NodeMask=1: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+heaps Create NodeMask=1: 0x00000000 S_OK
 heaps Create NodeMask=2: 0x80070057 E_INVALIDARG
 heaps Create ppvHeap=NULL: 0x00000001 S_FALSE
-heaps Create riid=Resource: 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+heaps Create riid=Resource: 0x80004002 E_NOINTERFACE
 heaps GetDescriptorHandleIncrementSize(CBV_SRV_UAV): nonzero=1
 # heaps GetDescriptorHandleIncrementSize(CBV_SRV_UAV): 64 (WARP: 64/64/32/8 on x64, DSV 4 on x86)
 heaps GetDescriptorHandleIncrementSize(SAMPLER): nonzero=1
@@ -72,9 +72,11 @@ heaps GetDescriptorHandleIncrementSize(RTV): nonzero=1
 heaps GetDescriptorHandleIncrementSize(DSV): nonzero=1
 # heaps GetDescriptorHandleIncrementSize(DSV): 8 (WARP: 64/64/32/8 on x64, DSV 4 on x86)
 heaps GetDescriptorHandleIncrementSize(type4): 0
-heaps create: descriptor heap type=0 n=16 sv=1 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
-heaps create: descriptor heap type=0 n=16 sv=1 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
-heaps end: GetDeviceRemovedReason 0x887a0020 DXGI_ERROR_DRIVER_INTERNAL_ERROR
+heaps two visible heaps: cpu ranges disjoint: 1
+heaps two visible heaps: gpu ranges disjoint: 1
+heaps cpu start stable: 1
+heaps gpu start stable: 1
+heaps end: GetDeviceRemovedReason 0x00000000 S_OK
 srv base fbuf[0]: 40900000 40b00000 40d00000 40f00000
 srv base fbuf[1]: 41080000 41180000 41280000 41380000
 srv base ubuf[0]: 00000108 00000109 0000010a 0000010b
@@ -222,6 +224,23 @@ swizzle xxxx tex, y01w fbuf cb0: cb000100 cb000101 cb000102 cb000103
 swizzle xxxx tex, y01w fbuf cb1: 00000000 00000000 00000000 00000000
 swizzle xxxx tex, y01w fbuf dims fbuf,raw,struct n/stride: 00000004 00000040 00000005 00000008
 swizzle end: GetDeviceRemovedReason 0x00000000 S_OK
+tex3d NULL-desc dispatch: 0x00000000 S_OK
+tex3d NULL-desc dims w,h,d,mips: 00000001 00000001 00000002 00000001
+tex3d NULL-desc Load(0,0,0): 3f800000 40000000 40800000 41000000
+tex3d NULL-desc Load(0,0,1): 41800000 42000000 42800000 43000000
+tex3d identity dispatch: 0x00000000 S_OK
+tex3d identity dims w,h,d,mips: 00000001 00000001 00000002 00000001
+tex3d identity Load(0,0,0): 3f800000 40000000 40800000 41000000
+tex3d identity Load(0,0,1): 41800000 42000000 42800000 43000000
+tex3d wzyx dispatch: 0x00000000 S_OK
+tex3d wzyx dims w,h,d,mips: 00000001 00000001 00000002 00000001
+tex3d wzyx Load(0,0,0): 41000000 40800000 40000000 3f800000
+tex3d wzyx Load(0,0,1): 43000000 42800000 42000000 41800000
+tex3d gr01 dispatch: 0x00000000 S_OK
+tex3d gr01 dims w,h,d,mips: 00000001 00000001 00000002 00000001
+tex3d gr01 Load(0,0,0): 40000000 3f800000 00000000 3f800000
+tex3d gr01 Load(0,0,1): 42000000 41800000 00000000 3f800000
+tex3d end: GetDeviceRemovedReason 0x00000000 S_OK
 formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex fbuf[0]: 00000000 3f800000 3f008081 3e4ccccd
 formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex fbuf[1]: 3b808081 3efefeff 3f7efeff 3f40c0c1
 formats RGBA8 UNORM fbuf, RGBA8 UINT ubuf, SRGB tex ubuf[0]: 00000000 000000ff 00000080 00000033

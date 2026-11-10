@@ -54,9 +54,14 @@ bool Frontend::device_removed() const {
            static_cast<const Device&>(*it->second).removed_reason != S_OK;
 }
 
-void Frontend::remove_device(u32 reason, const char* why) {
-    Device* device = find<Device>(m_device, Kind::Device);
-    if (device == nullptr || device->removed_reason != S_OK) return;
+void Frontend::remove_device(u32 reason, const char* why, Device* which) {
+    Device* device =
+        which != nullptr ? which : find<Device>(m_device, Kind::Device);
+    if (device == nullptr) return;
+    // A descriptor write or a recording under the shared frontend lock may
+    // remove the device from several threads at once: one transition.
+    std::lock_guard<std::mutex> removing(m_remove_mutex);
+    if (device->removed_reason != S_OK) return;
     device->removed_reason = reason;
     std::fprintf(stderr, "[vitreo] d3d12: device removed (0x%08x): %s\n",
                  reason, why);
@@ -64,9 +69,13 @@ void Frontend::remove_device(u32 reason, const char* why) {
     // removed, the return value will be UINT64_MAX" -- and every event
     // waiting on a fence is set.
     for (auto& [address, object] : m_objects) {
-        if (object->kind != Kind::Fence) continue;
+        // (A device factory's devices are separate devices: only this one's
+        // fences.)
+        if (object->kind != Kind::Fence || object->device != device->address) {
+            continue;
+        }
         auto& fence = static_cast<Fence&>(*object);
-        if (fence.backend) (void)fence.backend->signal_cpu(~0ull);
+        if (fence.timeline->backend) (void)fence.timeline->backend->signal_cpu(~0ull);
     }
 }
 
@@ -209,59 +218,15 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
     case DeviceSlot::CreateReservedResource:
         create_reserved_resource(m, device, 0);
         return;
-    case DeviceSlot::CreateSharedHandle: {
-        // CreateSharedHandle(ID3D12DeviceChild *pObject, const
-        //     SECURITY_ATTRIBUTES *, DWORD Access, LPCWSTR Name,
-        //     HANDLE *pHandle). Learn: the object must have been created
-        //     shareable -- a heap or committed resource with
-        //     D3D12_HEAP_FLAG_SHARED, a fence with D3D12_FENCE_FLAG_SHARED;
-        //     anything else is E_INVALIDARG (measured, a01 misc
-        //     "CreateSharedHandle(non-shared heap)").
-        const GuestAddr object = m.arg_ptr(1);
-        const GuestAddr out = m.arg_ptr(5);
-        if (out != 0) (void)write_pointer(out, 0);
-        bool shareable = false;
-        if (const Heap* heap = find<Heap>(object, Kind::Heap)) {
-            shareable = (heap->flags & D3D12_HEAP_FLAG_SHARED) != 0;
-        } else if (const Resource* resource =
-                       find<Resource>(object, Kind::Resource)) {
-            shareable = resource->committed &&
-                        (resource->heap_flags & D3D12_HEAP_FLAG_SHARED) != 0;
-        } else if (const Fence* fence = find<Fence>(object, Kind::Fence)) {
-            shareable = (fence->flags & D3D12_FENCE_FLAG_SHARED) != 0;
-        }
-        if (!shareable || out == 0) {
-            m.set_return(E_INVALIDARG);
-            return;
-        }
-        unimplemented("ID3D12Device::CreateSharedHandle",
-                      "NT handles for shared heaps / resources / fences");
-        m.set_return(E_NOTIMPL);
+    case DeviceSlot::CreateSharedHandle:
+        create_shared_handle(m);  // d3d12_sharing.cpp
         return;
-    }
-    case DeviceSlot::OpenSharedHandle: {
-        // OpenSharedHandle(HANDLE NTHandle, REFIID riid, void **ppvObj). No
-        // D3D12 shared handle is ever created here, so a handle is not one
-        // this device can open (measured for a bogus handle, a01 misc:
-        // E_HANDLE); handles from other APIs or processes are the OPEN part.
-        const GuestAddr out = m.arg_ptr(3);
-        if (out != 0) (void)write_pointer(out, 0);
-        unimplemented("ID3D12Device::OpenSharedHandle",
-                      "handles shared by another device, API or process");
-        m.set_return(E_HANDLE);
+    case DeviceSlot::OpenSharedHandle:
+        open_shared_handle(m, device);
         return;
-    }
-    case DeviceSlot::OpenSharedHandleByName: {
-        // OpenSharedHandleByName(LPCWSTR Name, DWORD Access, HANDLE *): no
-        // named D3D12 object exists -- as a failed OpenEvent/OpenMutex
-        // reports, HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND).
-        const GuestAddr out = m.arg_ptr(3);
-        if (out != 0) (void)write_pointer(out, 0);
-        unimplemented("ID3D12Device::OpenSharedHandleByName",
-                      "named shared objects");
-        m.set_return(0x80070002u);
+    case DeviceSlot::OpenSharedHandleByName:
+        open_shared_handle_by_name(m);
         return;
-    }
     case DeviceSlot::MakeResident:
     case DeviceSlot::Evict: {
         // MakeResident / Evict(UINT NumObjects, ID3D12Pageable *const *).
@@ -289,7 +254,7 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
         create_fence(m, device);
         return;
     case DeviceSlot::GetDeviceRemovedReason:
-        m.set_return(device.removed_reason);
+        m.set_return(device.removed_reason.load());
         return;
     case DeviceSlot::GetCopyableFootprints:
         marshal_get_copyable_footprints(m, m_memory, layout(), m_is_64bit,
@@ -308,17 +273,24 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
         // clock control) here; measured on WARP outside developer mode
         // (a01 stablepower): E_FAIL and removal with DXGI_ERROR_INVALID_CALL.
         remove_device(DXGI_ERROR_INVALID_CALL,
-                      "SetStablePowerState outside developer mode");
+                      "SetStablePowerState outside developer mode", &device);
         m.set_return(E_FAIL);
         return;
     case DeviceSlot::CreateCommandSignature:
         create_command_signature(m, device);
         return;
     case DeviceSlot::GetResourceTiling: {
-        // GetResourceTiling(pTiledResource, ...): void. The layout pass
-        // answers from the resource's description; no reserved resource can
-        // exist yet (tiled tier NOT_SUPPORTED), so every resource is
-        // answered as a non-tiled one.
+        // GetResourceTiling(pTiledResource, pNumTilesForEntireResource,
+        //     pPackedMipDesc, pStandardTileShapeForNonPackedMips,
+        //     pNumSubresourceTilings, FirstSubresourceTilingToGet,
+        //     pSubresourceTilingsForNonPackedMips): void. Learn: how a
+        // reserved resource is divided into tiles. Measured on the reserved
+        // buffers and Texture2Ds this device creates (a02) and on WARP's
+        // tiling answers: the standard tile shape, every mip its own
+        // whole-tile subresource, NumPackedMips 0. A committed or placed
+        // resource answers all zero. A volume (tier 3) or a format with no
+        // standard shape is not given a tiling: the non-tiled answer, and
+        // one UNIMPLEMENTED line. Tier stays 0.
         Resource* resource = find<Resource>(m.arg_ptr(1), Kind::Resource);
         ResourceDesc desc{};
         if (resource != nullptr) {
@@ -335,9 +307,23 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
             desc.layout = d.layout;
             desc.flags = d.flags;
         }
-        marshal_get_resource_tiling(m, m_memory, desc,
-                                    resource != nullptr && resource->reserved,
-                                    TiledLayout{});
+        TiledLayout layout{};
+        bool reserved = false;
+        if (resource != nullptr && resource->reserved) {
+            // The standard shape and this device's own packed tail (D3D11.3
+            // 5.9.2.8.5: packing is the implementation's; WARP packs none,
+            // the Metal sparse texture packs the mips under one tile). Only
+            // resources CreateReservedResource made exist, so a layout is
+            // always found; an empty one must not be paired with reserved
+            // (the tile count divides by the shape).
+            if (reserved_tiled_layout(*resource, layout)) {
+                reserved = true;
+            } else {
+                unimplemented("ID3D12Device::GetResourceTiling",
+                              "reserved resource without a tiled layout");
+            }
+        }
+        marshal_get_resource_tiling(m, m_memory, desc, reserved, layout);
         return;
     }
     case DeviceSlot::GetAdapterLuid: {
@@ -358,11 +344,7 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
         //     REFIID riid, void **ppPipelineLibrary). Learn: "DXGI_ERROR_
         //     UNSUPPORTED: the driver doesn't support pipeline libraries" --
         //     D3D12_FEATURE_SHADER_CACHE reports no LIBRARY support here.
-        const GuestAddr out = m.arg_ptr(4);
-        if (out != 0) (void)write_pointer(out, 0);
-        unimplemented("ID3D12Device1::CreatePipelineLibrary",
-                      "pipeline libraries (SHADER_CACHE_SUPPORT_LIBRARY)");
-        m.set_return(DXGI_ERROR_UNSUPPORTED);
+        create_pipeline_library(m, device);
         return;
     }
     case DeviceSlot::SetEventOnMultipleFenceCompletion:
@@ -388,6 +370,18 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
                 m.set_return(E_INVALIDARG);
                 return;
             }
+            // Measured (d3d12_a20_tiled_probe [residency], WARP and an
+            // RTX 4080): a reserved resource has no residency of its own
+            // (its heaps do), so its priority is E_INVALIDARG and the device
+            // is removed with DXGI_ERROR_INVALID_CALL. MakeResident / Evict
+            // of one are S_OK.
+            if (const Resource* r = find<Resource>(pageable, Kind::Resource);
+                r != nullptr && r->reserved) {
+                remove_device(DXGI_ERROR_INVALID_CALL,
+                              "SetResidencyPriority of a reserved resource");
+                m.set_return(E_INVALIDARG);
+                return;
+            }
         }
         m.set_return(S_OK);
         return;
@@ -398,23 +392,14 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
         return;
     // ---- ID3D12Device3 ---------------------------------------------------
     case DeviceSlot::OpenExistingHeapFromAddress:
-    case DeviceSlot::OpenExistingHeapFromFileMapping:
-    case DeviceSlot::OpenExistingHeapFromAddress1: {
-        // D3D12_FEATURE_EXISTING_HEAPS reports Supported FALSE: the backend
-        // has no heap over memory it did not allocate.
-        const usize out_index =
-            slot == DeviceSlot::OpenExistingHeapFromAddress1 ? 4 : 3;
-        const GuestAddr out = m.arg_ptr(out_index);
-        if (out != 0) (void)write_pointer(out, 0);
-        unimplemented(slot == DeviceSlot::OpenExistingHeapFromFileMapping
-                          ? "ID3D12Device3::OpenExistingHeapFromFileMapping"
-                          : slot == DeviceSlot::OpenExistingHeapFromAddress
-                                ? "ID3D12Device3::OpenExistingHeapFromAddress"
-                                : "ID3D12Device13::OpenExistingHeapFromAddress1",
-                      "existing heaps (EXISTING_HEAPS Supported FALSE)");
-        m.set_return(DXGI_ERROR_UNSUPPORTED);
+        open_existing_heap(m, device, false);
         return;
-    }
+    case DeviceSlot::OpenExistingHeapFromAddress1:
+        open_existing_heap(m, device, true);
+        return;
+    case DeviceSlot::OpenExistingHeapFromFileMapping:
+        open_existing_heap_from_mapping(m, device);
+        return;
     case DeviceSlot::EnqueueMakeResident: {
         // EnqueueMakeResident(D3D12_RESIDENCY_FLAGS Flags, UINT NumObjects,
         //     ID3D12Pageable *const *, ID3D12Fence *pFenceToSignal,
@@ -456,14 +441,12 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
     case DeviceSlot::CreateProtectedResourceSession:
     case DeviceSlot::CreateProtectedResourceSession1: {
         // (desc, riid, ppSession). D3D12_FEATURE_PROTECTED_RESOURCE_SESSION_
-        // SUPPORT reports NONE: there is no protected content path.
+        // SUPPORT reports NONE and no session type: there is no protected
+        // content path. Windows' answer on such an adapter (WARP, a12
+        // protected), for every node and flag: E_INVALIDARG, *ppv NULL.
         const GuestAddr out = m.arg_ptr(3);
         if (out != 0) (void)write_pointer(out, 0);
-        unimplemented(slot == DeviceSlot::CreateProtectedResourceSession
-                          ? "ID3D12Device4::CreateProtectedResourceSession"
-                          : "ID3D12Device7::CreateProtectedResourceSession1",
-                      "protected resource sessions (support NONE)");
-        m.set_return(DXGI_ERROR_UNSUPPORTED);
+        m.set_return(E_INVALIDARG);
         return;
     }
     case DeviceSlot::CreateCommittedResource1:
@@ -477,20 +460,15 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
         return;
     // ---- ID3D12Device5 ---------------------------------------------------
     case DeviceSlot::CreateLifetimeTracker: {
-        // (ID3D12LifetimeOwner *, riid, ppvTracker): lifetime tracking of
-        // protected-session content, which does not exist here.
-        const GuestAddr out = m.arg_ptr(3);
-        if (out != 0) (void)write_pointer(out, 0);
-        unimplemented("ID3D12Device5::CreateLifetimeTracker",
-                      "protected content lifetime tracking");
-        m.set_return(DXGI_ERROR_UNSUPPORTED);
+        create_lifetime_tracker(m, device);
         return;
     }
     case DeviceSlot::RemoveDevice:
         // Learn (ID3D12Device5::RemoveDevice): the device is removed as if by
         // a hardware fault; GetDeviceRemovedReason reports
         // DXGI_ERROR_DEVICE_REMOVED and fences read UINT64_MAX.
-        remove_device(DXGI_ERROR_DEVICE_REMOVED, "ID3D12Device5::RemoveDevice");
+        remove_device(DXGI_ERROR_DEVICE_REMOVED, "ID3D12Device5::RemoveDevice",
+                      &device);
         m.set_return(0);
         return;
     case DeviceSlot::EnumerateMetaCommands: {
@@ -520,43 +498,14 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
         return;
     }
     case DeviceSlot::CreateStateObject:
-    case DeviceSlot::AddToStateObject: {
-        // State objects hold DXIL libraries (raytracing, work graphs,
-        // generic programs): RaytracingTier NOT_SUPPORTED and SM 5.1 here
-        // (PLAN decision 1).
-        const GuestAddr out =
-            m.arg_ptr(slot == DeviceSlot::CreateStateObject ? 3 : 4);
-        if (out != 0) (void)write_pointer(out, 0);
-        unimplemented(slot == DeviceSlot::CreateStateObject
-                          ? "ID3D12Device5::CreateStateObject"
-                          : "ID3D12Device7::AddToStateObject",
-                      "state objects (DXIL libraries)");
-        m.set_return(E_INVALIDARG);
+    case DeviceSlot::AddToStateObject:
+        create_state_object(m, device, slot == DeviceSlot::AddToStateObject);
         return;
-    }
-    case DeviceSlot::GetRaytracingAccelerationStructurePrebuildInfo: {
-        // void (const D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS *,
-        //     D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO *):
-        //     RaytracingTier NOT_SUPPORTED, so nothing can be built; the
-        //     three UINT64 sizes are zero.
-        const GuestAddr info = m.arg_ptr(2);
-        if (info != 0) {
-            for (u32 index = 0; index < 3; ++index) {
-                (void)m_memory.write_u64(info + index * 8, 0);
-            }
-        }
-        unimplemented(
-            "ID3D12Device5::GetRaytracingAccelerationStructurePrebuildInfo",
-            "raytracing (tier NOT_SUPPORTED)");
-        m.set_return(0);
+    case DeviceSlot::GetRaytracingAccelerationStructurePrebuildInfo:
+        prebuild_info(m);
         return;
-    }
     case DeviceSlot::CheckDriverMatchingIdentifier:
-        // (D3D12_SERIALIZED_DATA_TYPE, const
-        // D3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER *): the one
-        // serialized type is a raytracing acceleration structure, which this
-        // driver does not support.
-        m.set_return(D3D12_DRIVER_MATCHING_IDENTIFIER_UNSUPPORTED_TYPE);
+        check_driver_matching_identifier(m);
         return;
     // ---- ID3D12Device6 ---------------------------------------------------
     case DeviceSlot::SetBackgroundProcessingMode: {
@@ -565,18 +514,8 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
         //     BOOL *pbFurtherMeasurementsDesired). This driver does no
         //     background shader optimisation: there is nothing to wait for,
         //     so the event is set at once and no measurements are wanted.
-        const u32 mode = m.arg32(1);
-        const u32 action = m.arg32(2);
-        const GuestAddr event = m.arg_ptr(3);
-        const GuestAddr further = m.arg_ptr(4);
-        if (mode > D3D12_BACKGROUND_PROCESSING_MODE_DISABLE_PROFILING_BY_SYSTEM ||
-            action > D3D12_MEASUREMENTS_ACTION_DISCARD_PREVIOUS) {
-            m.set_return(E_INVALIDARG);
-            return;
-        }
-        if (further != 0) (void)m_memory.write_u32(further, 0);
-        if (event != 0) GpuEventSignaler::instance().signal_now(event);
-        m.set_return(S_OK);
+        m.set_return(set_background_processing_mode(
+            m.arg32(1), m.arg32(2), m.arg_ptr(3), m.arg_ptr(4)));
         return;
     }
     // ---- ID3D12Device8 ---------------------------------------------------
@@ -587,27 +526,18 @@ void Frontend::device_method(Marshaler& m, Device& device, usize slot) {
         create_placed_resource(m, device, 1);
         return;
     case DeviceSlot::CreateSamplerFeedbackUnorderedAccessView:
-        // void (pTargetedResource, pFeedbackResource, DestDescriptor):
-        // SamplerFeedbackTier NOT_SUPPORTED, so no feedback resource exists.
-        unimplemented("ID3D12Device8::CreateSamplerFeedbackUnorderedAccessView",
-                      "sampler feedback (tier NOT_SUPPORTED)");
-        m.set_return(0);
+        create_feedback_view(m);
         return;
     // ---- ID3D12Device9 ---------------------------------------------------
     case DeviceSlot::CreateShaderCacheSession: {
         // (const D3D12_SHADER_CACHE_SESSION_DESC *, riid, ppvSession).
-        const GuestAddr out = m.arg_ptr(3);
-        if (out != 0) (void)write_pointer(out, 0);
-        unimplemented("ID3D12Device9::CreateShaderCacheSession",
-                      "application shader cache sessions");
-        m.set_return(DXGI_ERROR_UNSUPPORTED);
+        create_shader_cache_session(m, device);
         return;
     }
     case DeviceSlot::ShaderCacheControl:
         // ShaderCacheControl(Kinds, Control): Learn -- "requires Developer
         // Mode"; there is none here, and no driver cache to control.
-        d3d12_diag("ID3D12Device9::ShaderCacheControl outside developer mode");
-        m.set_return(E_FAIL);
+        m.set_return(shader_cache_control(m.arg32(1), m.arg32(2)));
         return;
     case DeviceSlot::CreateCommandQueue1:
         create_command_queue(m, device, true);
@@ -660,6 +590,9 @@ const CapsContext& Frontend::caps() {
         // Only what this frontend serves. One ID3D12Heap holds buffers and
         // every texture kind (a Metal placement heap).
         context->resource_heap_tier = 2;
+        // Reserved resources on the backend's tiled memory
+        // (CapsContext::tiled_resources_tier says what each tier needs).
+        context->tiled_resources_tier = context->formats.tiled_resources ? 2u : 0u;
         // HIGH-priority queues are accepted; every queue shares the one
         // backend stream, so priority is the scheduling hint it is on
         // Windows and nothing more.
@@ -668,6 +601,39 @@ const CapsContext& Frontend::caps() {
         // Output-merger logic ops: a pixel-shader variant through framebuffer
         // fetch (d3d12_pipeline.cpp logic_op_variant), as D3D11 reports them.
         context->logic_ops = m_backend.supports_framebuffer_fetch();
+        // Learn (Typed unordered access view loads): the 18-format group is
+        // all or nothing. The translator's ld_uav_typed reads a read_write
+        // texture, and Metal's Tier-2 read/write set is exactly that group
+        // (d3d11::supports_typed_uav_load); FORMAT_SUPPORT's UAV_TYPED_LOAD
+        // bits come from the same table.
+        context->typed_uav_load_additional_formats =
+            m_backend.supports_read_write_texture_tier2();
+        // RasterizerOrdered* UAVs: raster order group 0 on each
+        // (compile_shader, MslCompileOptions::raster_ordered_bindings).
+        context->rovs = m_backend.supports_raster_order_groups();
+        // MINIMUM_ / MAXIMUM_ filters: the sampler-state record's reduction
+        // (dxbc_to_spirv_minmax_sample.cpp), for table and static samplers.
+        context->min_max_filtering = true;
+        // Target-independent and conservative rasterization: pass C and the
+        // pixel shader's own coverage test (graphics/shaders/
+        // raster_emulation.hpp), checked against both oracles by
+        // d3d12_a31_raster_probe. Tier 3: post-snap degenerates are drawn,
+        // the outer uncertainty region is 1/512 pixel, SV_InnerCoverage.
+        context->conservative_rasterization_tier = 3;
+        context->target_independent_rasterization = true;
+        // OPTIONS19 SupportedSampleCountsWithNoOutputs: UAV-only rendering
+        // at SampleDesc.Count 1, 2, 4, 8 and 16 (bit n = 2^n samples), the
+        // standard patterns through the same emulation (WARP: 0x1F).
+        context->sample_counts_with_no_outputs = 0x1Fu;
+        // D3D12_FEATURE_SHADER_CACHE: GetCachedBlob / CachedPSO (single
+        // PSO), ID3D12PipelineLibrary, and SetDeleteOnDestroy of application
+        // cache sessions (d3d12_library.cpp). Not SHADER_CONTROL_CLEAR:
+        // ShaderCacheControl needs developer mode, which never exists here;
+        // no automatic or driver-managed cache.
+        context->shader_cache_support =
+            D3D12_SHADER_CACHE_SUPPORT_SINGLE_PSO |
+            D3D12_SHADER_CACHE_SUPPORT_LIBRARY |
+            D3D12_SHADER_CACHE_SUPPORT_SHADER_SESSION_DELETE;
         // WriteBufferImmediate is a GPU copy from upload space on any list
         // (d3d12_replay.cpp write_immediate): D3D12_COMMAND_LIST_SUPPORT_FLAG
         // DIRECT | BUNDLE | COMPUTE | COPY (1 << D3D12_COMMAND_LIST_TYPE).
@@ -676,6 +642,16 @@ const CapsContext& Frontend::caps() {
             (1u << D3D12_COMMAND_LIST_TYPE_BUNDLE) |
             (1u << D3D12_COMMAND_LIST_TYPE_COMPUTE) |
             (1u << D3D12_COMMAND_LIST_TYPE_COPY);
+        // Learn, "Hardware Tiers": resource binding tier 3 (CBVs and UAVs
+        // of the full heap per stage, no descriptor needing initialization
+        // that a shader does not read) is a feature level 11.1+ tier. The
+        // heap windows give it on every Tier-2 argument-buffer device
+        // (CompiledShader::heap_window), so it follows the feature level
+        // the caps above reach. Last: every feature-level cap is set.
+        if (context->resource_binding_tier == 2u &&
+            max_feature_level(*context) >= D3D_FEATURE_LEVEL_11_1) {
+            context->resource_binding_tier = 3u;
+        }
         m_caps = std::move(context);
     }
     return *m_caps;
@@ -775,10 +751,13 @@ void Frontend::create_query_heap(Marshaler& m, Device& device) {
         m.set_return(E_INVALIDARG);
         return;
     }
-    if (type == D3D12_QUERY_HEAP_TYPE_VIDEO_DECODE_STATISTICS ||
-        type == D3D12_QUERY_HEAP_TYPE_PIPELINE_STATISTICS1) {
+    // Measured (a06 query_heap): WARP refuses VIDEO_DECODE_STATISTICS on a
+    // device without a video decoder (E_INVALIDARG) and creates
+    // PIPELINE_STATISTICS1, whose amplification and mesh counters this
+    // device reports as the 0 they are (no mesh shader can run here).
+    if (type == D3D12_QUERY_HEAP_TYPE_VIDEO_DECODE_STATISTICS) {
         unimplemented("ID3D12Device::CreateQueryHeap",
-                      "video decode / pipeline statistics 1 heaps");
+                      "video decode statistics heaps (no video decoder)");
         m.set_return(E_INVALIDARG);
         return;
     }
@@ -890,13 +869,15 @@ void Frontend::create_command_signature(Marshaler& m, Device& device) {
             bytes = 8;
             root_type = D3D12_ROOT_PARAMETER_TYPE_UAV;
             break;
-        case D3D12_INDIRECT_ARGUMENT_TYPE_DISPATCH_RAYS:
         case D3D12_INDIRECT_ARGUMENT_TYPE_DISPATCH_MESH:
-            // RaytracingTier / MeshShaderTier NOT_SUPPORTED (caps pass).
-            unimplemented("ID3D12Device::CreateCommandSignature",
-                          "DISPATCH_RAYS / DISPATCH_MESH arguments");
-            m.set_return(E_INVALIDARG);
-            return;
+            // D3D12_DISPATCH_MESH_ARGUMENTS: three UINTs (measured,
+            // d3d12_a40_mesh_probe "indirect": ByteStride 8 is refused).
+            bytes = 12;
+            break;
+        case D3D12_INDIRECT_ARGUMENT_TYPE_DISPATCH_RAYS:
+            // Raytracing tier 1.1: a D3D12_DISPATCH_RAYS_DESC per command.
+            bytes = layout::D3D12_DISPATCH_RAYS_DESC[m_is_64bit].size;
+            break;
         case D3D12_INDIRECT_ARGUMENT_TYPE_INCREMENTING_CONSTANT:
             // D3D12_OPTIONS21 ExecuteIndirectTier 1.1 only; this device
             // reports 1.0.

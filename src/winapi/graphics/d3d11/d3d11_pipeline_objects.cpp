@@ -127,12 +127,12 @@ GuestAddr D3D11Manager::create_vertex_shader(
     if (hidden) shader.public_refs = 0;
     // Start the backend compile now, on the creating thread (UE's loaders),
     // with the key the first draw will ask for (execute_draw: entry main0,
-    // the shader's math mode and precise flag) instead of on the RHI thread
-    // when that draw arrives.
+    // the shader's math mode, invariant position) instead of on the RHI
+    // thread when that draw arrives.
     if (!shader.msl_source.empty()) {
         m_backend.prefetch_shader(shader.msl_source, "main0",
                                   math_mode_for_dxbc(shader.bytecode),
-                                  dxbc_uses_precise(shader.bytecode));
+                                  /*preserve_invariance=*/true);
     }
     m_vertex_shaders.emplace(address, std::move(shader));
     // The application's creation reference holds the device.
@@ -308,35 +308,49 @@ GuestAddr D3D11Manager::create_input_layout(
     layout.interface_address = address;
     layout.device_owner = device_owner;
     layout.elements = elements;
-    // Map the IA slots this layout reads onto the backend's streams. A slot
-    // below the stream count keeps its own stream, so a layout that only uses
-    // slots 0-7 binds exactly as before; a higher slot takes the lowest stream
-    // no low slot of this layout claims. Stream 0 is never lent out: it is also
-    // the legacy single-stream binding. A slot that finds no free stream stays
-    // kNoBackendStream, and a draw with it fails loudly.
+    // Map each IA slot onto a backend stream. A slot whose own stream has a
+    // Metal buffer index keeps that stream. A higher slot takes the lowest
+    // bindable stream this layout has not claimed, starting at stream 1:
+    // stream 0 stays the legacy single-stream binding. A slot that finds no
+    // free stream stays kNoBackendStream, and a draw with it fails loudly.
+    static_assert(graphics::BACKEND_MAX_VERTEX_BUFFERS ==
+                  d3d11::VERTEX_BUFFER_SLOTS);
     layout.backend_stream.fill(InputLayout::kNoBackendStream);
     layout.stream_slot.fill(InputLayout::kNoBackendStream);
     for (const auto& element : elements) {
         const u32 slot = element.input_slot;
-        if (slot < graphics::BACKEND_MAX_VERTEX_BUFFERS) {
+        if (slot < layout.backend_stream.size() &&
+            graphics::vertex_stream_bindable(slot)) {
             layout.backend_stream[slot] = static_cast<u8>(slot);
             layout.stream_slot[slot] = static_cast<u8>(slot);
         }
     }
     for (const auto& element : elements) {
         const u32 slot = element.input_slot;
-        if (slot < graphics::BACKEND_MAX_VERTEX_BUFFERS ||
-            slot >= layout.backend_stream.size() ||
+        if (slot >= layout.backend_stream.size() ||
             layout.backend_stream[slot] != InputLayout::kNoBackendStream) {
             continue;
         }
         for (u32 stream = 1; stream < graphics::BACKEND_MAX_VERTEX_BUFFERS;
              ++stream) {
+            if (!graphics::vertex_stream_bindable(stream)) break;
             if (layout.stream_slot[stream] == InputLayout::kNoBackendStream) {
                 layout.stream_slot[stream] = static_cast<u8>(slot);
                 layout.backend_stream[slot] = static_cast<u8>(stream);
                 break;
             }
+        }
+        if (layout.backend_stream[slot] == InputLayout::kNoBackendStream) {
+            layout.vertex_pulling = true;
+        }
+    }
+    if (layout.vertex_pulling) {
+        // D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT (32) slots, more than
+        // the vertex window has Metal indices: the vertex shader fetches
+        // every input itself, so stream s is slot s.
+        for (u32 slot = 0; slot < layout.backend_stream.size(); ++slot) {
+            layout.backend_stream[slot] = static_cast<u8>(slot);
+            layout.stream_slot[slot] = static_cast<u8>(slot);
         }
     }
     m_input_layouts.emplace(address, std::move(layout));

@@ -54,6 +54,7 @@ enum class CpuException : u8 {
     FloatingPointInvalidOperation = 25,
     FloatingPointOverflow = 26,
     FloatingPointUnderflow = 27,
+    AssertionFailure = 28, // Virtual: Windows INT2C, normalized by runtime.
 };
 
 /// Execution context with state references
@@ -125,15 +126,46 @@ struct ExecContext {
 void record_read_access_violation(
     ExecContext& ctx,
     u64 addr,
-    u8 size
+    usize size
 ) noexcept;
+
+/// A misaligned legacy-SSE m128 operand: #GP(0), which Windows reports as
+/// STATUS_ACCESS_VIOLATION with [0] = 0 and [1] = 0xFFFFFFFFFFFFFFFF
+/// (0xFFFFFFFF in a 32-bit process) because a #GP supplies no CR2 -- the
+/// value jit_require_align16 raises (minmax memory oracle). Sets all three
+/// fields: the context outlives one instruction, so a stale write direction
+/// from an earlier fault must not leak into this one.
+inline void record_misaligned_operand_gp(ExecContext& ctx) noexcept {
+    ctx.exception = CpuException::GeneralProtection;
+    ctx.exception_error = 0;
+    ctx.exception_addr = ctx.cpu.is_64bit() ? ~u64{0} : u64{0xFFFFFFFFu};
+}
 
 /// The write twin of record_read_access_violation ([0] = 1), for an implicit
 /// stack write that does not go through push_value.
 void record_write_access_violation(
     ExecContext& ctx,
     u64 addr,
-    u8 size
+    usize size
+) noexcept;
+
+/// The processor-extended-state image of FXSAVE/FXRSTOR/XSAVE/XSAVEOPT/
+/// XRSTOR: true when every byte of [base, base+size) may be read (or, for
+/// @p is_write, written). Otherwise records STATUS_ACCESS_VIOLATION the way
+/// Windows reports it and returns false with nothing read or written. These
+/// instructions do not report the first inaccessible byte: measured on
+/// Windows 11 x64/x86 (tests/oracle_data/fxsave_fault_probe.expected), [1]
+/// is the image's LAST byte when that byte is inaccessible, otherwise the
+/// first inaccessible byte; XRSTOR (@p xrstor_header) checks the XSAVE
+/// header first and reports base+520 (XCOMP_BV) when the header is
+/// inaccessible. [0] is 1 for the saves and 0 for the restores, on a
+/// NOACCESS page as on a READONLY one.
+[[nodiscard]] bool check_xstate_image_access(
+    ExecContext& ctx,
+    u64 base,
+    usize size,
+    bool is_write,
+    bool xrstor_header
 ) noexcept;
 
 /// The CPU exception of a failed push_value/pop_value. Error::Overflow is

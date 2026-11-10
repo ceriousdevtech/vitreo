@@ -862,3 +862,249 @@ TEST(ShaderViewWindow, CubeArrayViewStartsAtAnyFace) {
         EXPECT_EQ(got[face], 101u + face) << "face " << face;
     }
 }
+
+/// A descriptor-table translation cannot take typed_buffer_bias (the push
+/// block is keyed by a D3D11 register). The same packed entry lives in
+/// typed_buffer_bias_buffer, one uint per table slot.
+DxbcTranslationOptions table_bias_options(bool srv, bool uav) {
+    using C = DxbcRegisterClass;
+    DxbcTranslationOptions options{};
+    if (srv) {
+        options.register_remap.push_back({C::ShaderResource, 0, 0, 2, 1, 0});
+        options.typed_buffer_bias_buffer.srv = true;
+        options.typed_buffer_bias_buffer.srv_set = 0;
+        options.typed_buffer_bias_buffer.srv_binding = 0;
+    }
+    options.register_remap.push_back(
+        {C::UnorderedAccess, 0, 0, srv ? 1u : 3u, 3, 0});
+    if (uav) {
+        options.typed_buffer_bias_buffer.uav = true;
+        options.typed_buffer_bias_buffer.uav_set = 0;
+        options.typed_buffer_bias_buffer.uav_binding = 0;
+    }
+    options.typed_buffer_bias_buffer.enabled = srv || uav;
+    return options;
+}
+
+// The push-block option is refused for a descriptor table. The side buffer
+// is declared instead, and a non-table translation still reads the push block.
+TEST(TypedBufferOffset, DescriptorTableBiasIsASideBuffer) {
+    const auto reads = parse_dxbc(tbo_cs_read_views, sizeof(tbo_cs_read_views));
+    ASSERT_TRUE(reads.valid());
+    auto refused = table_bias_options(true, false);
+    refused.typed_buffer_bias = true;
+    refused.typed_buffer_bias_buffer = {};
+    const auto rejected = translate_dxbc_to_spirv(reads, refused);
+    EXPECT_FALSE(rejected.valid());
+    EXPECT_NE(rejected.failure.find("keyed by D3D11 register"),
+              std::string::npos);
+
+    const auto table = translate_dxbc_to_spirv(reads, table_bias_options(true, false));
+    ASSERT_TRUE(table.valid()) << table.failure;
+    const std::string spirv(reinterpret_cast<const char*>(table.spirv.data()),
+                            table.spirv.size() * 4);
+    EXPECT_NE(spirv.find("vitreo_srv_typed_bias"), std::string::npos);
+    EXPECT_EQ(spirv.find("vitreo_uav_typed_bias"), std::string::npos);
+
+    MslCompileOptions msl{};
+    msl.argument_buffers = true;
+    msl.argument_buffer_sets[0] = {1, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE,
+                                   MslDescriptorClass::Buffer};
+    msl.argument_buffer_sets[1] = {2, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 1,
+                                   MslDescriptorClass::Texture};
+    msl.argument_buffer_sets[3] = {1, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 3,
+                                   MslDescriptorClass::Buffer};
+    const auto compiled = compile_spirv_to_msl(
+        table.spirv.data(), table.spirv.size(), ShaderStage::Compute, msl);
+    ASSERT_TRUE(compiled.valid());
+    EXPECT_NE(std::string(compiled.msl_text()).find("vitreo_srv_typed_bias"),
+              std::string::npos);
+
+    // Without the side buffer a table translation applies no bias.
+    DxbcTranslationOptions bare{};
+    bare.register_remap = table_bias_options(true, false).register_remap;
+    const auto plain = translate_dxbc_to_spirv(reads, bare);
+    ASSERT_TRUE(plain.valid()) << plain.failure;
+    const std::string plain_spirv(
+        reinterpret_cast<const char*>(plain.spirv.data()),
+        plain.spirv.size() * 4);
+    EXPECT_EQ(plain_spirv.find("vitreo_srv_typed_bias"), std::string::npos);
+
+    // RWBuffer stores and bufinfo read the UAV side buffer. The push-block
+    // form of the same shader is TypedBufferOffsetRecording's write test.
+    const auto writes =
+        parse_dxbc(tbo_cs_write_views, sizeof(tbo_cs_write_views));
+    ASSERT_TRUE(writes.valid());
+    const auto uav = translate_dxbc_to_spirv(writes, table_bias_options(false, true));
+    ASSERT_TRUE(uav.valid()) << uav.failure;
+    const std::string uav_spirv(
+        reinterpret_cast<const char*>(uav.spirv.data()), uav.spirv.size() * 4);
+    EXPECT_NE(uav_spirv.find("vitreo_uav_typed_bias"), std::string::npos);
+    EXPECT_TRUE(uav.uses_typed_uav_atomics);
+}
+
+// CSReadViews through a descriptor table: FirstElement 270 and 271 of R32
+// are not on the 16-byte texture alignment. The side buffer's per-slot
+// entry is the view's element_bias, and the shader addresses element
+// FirstElement + i of the buffer. bufinfo is NumElements, not the texture
+// width. A load at NumElements, and at NumElements + bias - 1, is
+// (0, 0, 0, 1) for R32_FLOAT (no alpha) and (0, 0, 0, 0) for RGBA8.
+TEST(TypedBufferOffset, DescriptorTableBiasAddressesFirstElement) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal";
+    if (!device.supports_descriptor_tables()) {
+        GTEST_SKIP() << "no Tier-2 argument buffers";
+    }
+    const auto container =
+        parse_dxbc(tbo_cs_read_views, sizeof(tbo_cs_read_views));
+    ASSERT_TRUE(container.valid());
+    const auto spirv =
+        translate_dxbc_to_spirv(container, table_bias_options(true, false));
+    ASSERT_TRUE(spirv.valid()) << spirv.failure;
+    MslCompileOptions msl{};
+    msl.argument_buffers = true;
+    msl.argument_buffer_sets[0] = {1, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE,
+                                   MslDescriptorClass::Buffer};
+    msl.argument_buffer_sets[1] = {2, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 1,
+                                   MslDescriptorClass::Texture};
+    msl.argument_buffer_sets[3] = {1, BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE + 3,
+                                   MslDescriptorClass::Buffer};
+    const auto compiled = compile_spirv_to_msl(
+        spirv.spirv.data(), spirv.spirv.size(), ShaderStage::Compute, msl);
+    ASSERT_TRUE(compiled.valid());
+    BackendComputePipelineDesc pd{};
+    pd.compute_entry_point = "main0";
+    pd.compute_shader_msl = compiled.msl_text();
+    pd.cache_key = 0x7B0FF5F5u;
+    auto pipeline = device.create_compute_pipeline(pd);
+    ASSERT_TRUE(pipeline && pipeline->valid()) << pd.compute_shader_msl;
+
+    constexpr u32 kThreads = 68;
+    constexpr u32 kViewElements = 8;
+    constexpr u32 kBytes = 4352;
+    BackendBufferDesc od{};
+    od.byte_width = kThreads * 48;
+    od.unordered_access = true;
+    od.shader_resource = true;
+    const std::vector<u8> fill(od.byte_width, 0xEEu);
+    auto out = device.create_buffer(od, fill.data());
+    ASSERT_TRUE(out);
+
+    struct Case {
+        const char* name;
+        PixelFormat format;
+        u32 element_bytes;
+        std::array<u32, 2> firsts;
+        bool has_alpha;
+    };
+    const std::array<Case, 2> cases{{
+        {"R32_FLOAT", PixelFormat::R32Float, 4, {270, 271}, false},
+        {"R8G8B8A8_UNORM", PixelFormat::RGBA8Unorm, 4, {270, 3}, true},
+    }};
+    for (const Case& test : cases) {
+        std::vector<u8> bytes(kBytes);
+        for (u32 k = 0; k < kBytes; ++k) bytes[k] = static_cast<u8>(k);
+        if (test.format == PixelFormat::R32Float) {
+            for (u32 w = 0; w < kBytes / 4; ++w) {
+                const float v = static_cast<float>(w);
+                std::memcpy(&bytes[w * 4], &v, 4);
+            }
+        }
+        BackendBufferDesc bd{};
+        bd.byte_width = kBytes;
+        bd.shader_resource = true;
+        auto data = device.create_buffer(bd, bytes.data());
+        ASSERT_TRUE(data);
+        auto v0 = device.create_texture_buffer(*data, test.format, test.firsts[0],
+                                               kViewElements, false);
+        auto v1 = device.create_texture_buffer(*data, test.format, test.firsts[1],
+                                               kViewElements, false);
+        ASSERT_TRUE(v0 && v0->valid() && v1 && v1->valid()) << test.name;
+        expect_bias_shape(*v0, test.firsts[0], test.element_bytes);
+        expect_bias_shape(*v1, test.firsts[1], test.element_bytes);
+        const u32 bias0 = v0->element_bias();
+        const u32 bias1 = v1->element_bias();
+        if (test.firsts[0] == 270 && test.element_bytes == 4) {
+            EXPECT_NE(bias0, 0u) << test.name;
+        }
+
+        const u32 alpha = test.has_alpha ? 0u : kTypedBufferAlphaMissing;
+        // kTypedBufferEntryWords per table slot: the packed entry in word 0
+        // (no kTypedBufferRaw: both views are textures).
+        std::array<u32, 2 * kTypedBufferEntryWords> entries{};
+        entries[0] = bias0 | alpha;
+        entries[kTypedBufferEntryWords] = bias1 | alpha;
+        BackendBufferDesc bias_desc{};
+        bias_desc.byte_width = sizeof(entries);
+        bias_desc.shader_resource = true;
+        auto bias_buf = device.create_buffer(bias_desc, entries.data());
+        ASSERT_TRUE(bias_buf);
+
+        auto cbv = device.create_descriptor_table(
+            {1, BackendDescriptorClass::Buffer});
+        auto srvs = device.create_descriptor_table(
+            {2, BackendDescriptorClass::Texture});
+        auto uavs = device.create_descriptor_table(
+            {1, BackendDescriptorClass::Buffer});
+        ASSERT_TRUE(cbv && srvs && uavs);
+        ASSERT_TRUE(cbv->set_buffer(0, bias_buf.get(), 0));
+        ASSERT_TRUE(srvs->set_texture_buffer(0, v0.get()));
+        ASSERT_TRUE(srvs->set_texture_buffer(1, v1.get()));
+        ASSERT_TRUE(uavs->set_buffer(0, out.get(), 0));
+
+        BackendDispatchCall call{};
+        call.pipeline = pipeline.get();
+        call.group_count_x = kThreads;
+        call.group_count_y = call.group_count_z = 1;
+        call.descriptor_tables[0] = cbv.get();
+        call.descriptor_tables[1] = srvs.get();
+        call.descriptor_tables[3] = uavs.get();
+        ASSERT_TRUE(device.dispatch(call)) << test.name;
+        ASSERT_TRUE(device.wait_idle());
+        std::vector<u32> words(kThreads * 12);
+        ASSERT_TRUE(out->read(0, words.data(), words.size() * 4));
+
+        const auto expected = [&](u32 first, u32 i) {
+            std::array<float, 4> v{0, 0, 0, test.has_alpha ? 0.0f : 1.0f};
+            if (i >= kViewElements) return v;
+            const u32 e = first + i;
+            if (test.format == PixelFormat::R32Float) {
+                v[0] = static_cast<float>(e);
+            } else {
+                for (u32 c = 0; c < 4; ++c) {
+                    v[c] = static_cast<float>((e * 4 + c) & 0xFF) / 255.0f;
+                }
+            }
+            return v;
+        };
+        const u32 biases[2] = {bias0, bias1};
+        const u32 firsts[2] = {test.firsts[0], test.firsts[1]};
+        for (u32 t = 0; t < kThreads; ++t) {
+            const u32 i = t < 64 ? t : 0xFFFFFFFFu - (t - 64);
+            for (u32 view = 0; view < 2; ++view) {
+                const auto want = expected(firsts[view], i);
+                for (u32 c = 0; c < 4; ++c) {
+                    float got = 0;
+                    std::memcpy(&got, &words[t * 12 + view * 4 + c], 4);
+                    EXPECT_NEAR(got, want[c], 1e-5f)
+                        << test.name << " t" << view << " thread " << t
+                        << " component " << c;
+                }
+            }
+            EXPECT_EQ(words[t * 12 + 8], kViewElements) << test.name;
+            EXPECT_EQ(words[t * 12 + 9], kViewElements) << test.name;
+        }
+        for (u32 view = 0; view < 2; ++view) {
+            for (const u32 i : {kViewElements, kViewElements + biases[view] - 1}) {
+                if (i < kViewElements || i >= 64) continue;
+                for (u32 c = 0; c < 4; ++c) {
+                    float got = 0;
+                    std::memcpy(&got, &words[i * 12 + view * 4 + c], 4);
+                    EXPECT_EQ(got, c == 3 && !test.has_alpha ? 1.0f : 0.0f)
+                        << test.name << " t" << view << " bias " << biases[view]
+                        << ": ld at index " << i << " component " << c;
+                }
+            }
+        }
+    }
+}

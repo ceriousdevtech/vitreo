@@ -5,6 +5,8 @@
 ///
 /// Closed cut from kernel32_ext.cpp — verified with plan_extraction.py.
 
+#include "winapi/kernel32/filesystem/drive_type.hpp"
+#include "winapi/kernel32/filesystem/disk_space.hpp"
 #include "winapi/kernel32/kernel32_ext.hpp"
 #include "winapi/kernel32/kernel32_ext_internal.hpp"
 #include "winapi/advapi32/security/security.hpp"
@@ -113,80 +115,7 @@ void Kernel32ExtManager::impl_RemoveDirectoryA(Marshaler& m) {
 }
 
 void Kernel32ExtManager::impl_GetDriveTypeW(Marshaler& m) {
-    // UINT GetDriveTypeW(LPCWSTR lpRootPathName)
-    // Learn + files_ns_probe: NULL / "X:" / "X:\" (and "X:\subdir\" with a
-    // trailing slash) report the mounted volume's type; unmounted letters and
-    // paths without the required trailing slash return DRIVE_NO_ROOT_DIR.
-    constexpr u32 DRIVE_NO_ROOT_DIR = 1;
-    constexpr u32 DRIVE_FIXED = 3;
-    constexpr u32 DRIVE_CDROM = 5;
-
-    GuestAddr path_ptr = m.arg_ptr(0);
-    std::string path;
-    if (path_ptr == 0) {
-        // Root of the current directory's drive.
-        path = m_current_directory;
-        if (path.size() >= 2 && path[1] == ':') {
-            path = path.substr(0, 2) + "\\";
-        } else {
-            path = "C:\\";
-        }
-    } else {
-        auto path_res = m.read_wide_string(path_ptr);
-        if (path_res.is_err()) {
-            m.set_return(DRIVE_NO_ROOT_DIR);
-            return;
-        }
-        path = path_res.value();
-    }
-
-    if (path.empty()) {
-        m.set_return(DRIVE_NO_ROOT_DIR);
-        return;
-    }
-
-    // "X:" alone is accepted (current directory on that drive). Any longer
-    // form needs a trailing separator (files_ns_probe GetDriveTypeW_subdir*).
-    const bool drive_only = path.size() == 2 && path[1] == ':';
-    const bool has_trailing =
-        !path.empty() && (path.back() == '\\' || path.back() == '/');
-    if (!drive_only && !has_trailing) {
-        m.set_return(DRIVE_NO_ROOT_DIR);
-        return;
-    }
-    // A directory below the root is probed as a volume mount point; not
-    // being one leaves ERROR_NOT_A_REPARSE_POINT behind while the drive's
-    // type is still returned (files_ns_probe GetDriveTypeW_subdir).
-    if (!drive_only && path.size() > 3) {
-        set_last_error(error_codes::ERROR_NOT_A_REPARSE_POINT);
-    }
-
-    if (path.size() < 2 || path[1] != ':') {
-        m.set_return(DRIVE_NO_ROOT_DIR);
-        return;
-    }
-    const char letter =
-        static_cast<char>(std::toupper(static_cast<unsigned char>(path[0])));
-    if (letter < 'A' || letter > 'Z') {
-        m.set_return(DRIVE_NO_ROOT_DIR);
-        return;
-    }
-
-    const auto drives = m_vfs.mounted_drives();
-    const bool mounted =
-        std::find(drives.begin(), drives.end(), letter) != drives.end();
-    if (!mounted) {
-        m.set_return(DRIVE_NO_ROOT_DIR);
-        return;
-    }
-
-    const std::string root = std::string(1, letter) + ":\\";
-    auto resolved = m_vfs.resolve_components(root);
-    if (resolved.is_ok() && resolved.value().first->is_optical()) {
-        m.set_return(DRIVE_CDROM);
-        return;
-    }
-    m.set_return(DRIVE_FIXED);
+    m.set_return(query_drive_type(m, m_vfs, m_current_directory, true));
 }
 
 void Kernel32ExtManager::get_disk_free_space(Marshaler& m,
@@ -214,75 +143,21 @@ void Kernel32ExtManager::get_disk_free_space(Marshaler& m,
         m.set_return(0);
     };
 
-    std::string path;
-    if (path_arg == nullptr) {
-        if (m_current_directory.size() >= 2 && m_current_directory[1] == ':') {
-            path = m_current_directory.substr(0, 2) + "\\";
-        }
-    } else {
-        if (path_arg->empty()) {
-            set_last_error(error_codes::ERROR_PATH_NOT_FOUND);
-            m.set_return(0);
-            return;
-        }
-        path = *path_arg;
-    }
-
-    char letter = 0;
-    if (path.size() >= 2 && path[1] == ':') {
-        letter = static_cast<char>(
-            std::toupper(static_cast<unsigned char>(path[0])));
-    } else if (m_current_directory.size() >= 2 && m_current_directory[1] == ':') {
-        letter = static_cast<char>(
-            std::toupper(static_cast<unsigned char>(m_current_directory[0])));
-    }
-    const auto drives = m_vfs.mounted_drives();
-    if (letter < 'A' || letter > 'Z' ||
-        std::find(drives.begin(), drives.end(), letter) == drives.end()) {
-        fail(error_codes::ERROR_PATH_NOT_FOUND);
+    const auto directory = query_disk_directory_volume(m_vfs, m_current_directory, path_arg, false);
+    if (directory.error) {
+        if (directory.preserve_outputs) { set_last_error(directory.error); m.set_return(0); }
+        else fail(directory.error);
         return;
     }
-    auto info = m_vfs.stat(path);
-    if (info.is_err()) {
-        fail(vfs_error_to_win32(info.error()));
-        return;
+    const auto& volume = directory.volume;
+    if (!volume.sectors_per_cluster || !volume.bytes_per_sector) {
+        fail(disk_space_unsupported()); return;
     }
-    if (!capsule::has_attribute(info.value().attributes,
-                                capsule::FileAttributes::Directory)) {
-        fail(error_codes::ERROR_DIRECTORY);
-        return;
-    }
-
-    // The volume's own geometry, else the host's totals in 4 KiB clusters.
-    u32 sectors_per_cluster = 8;
-    u32 bytes_per_sector = 512;
-    u32 free_cl = 0;
-    u32 total_cl = 0;
-    capsule::VolumeInfo volume;
-    auto resolved = m_vfs.resolve_components(std::string(1, letter) + ":\\");
-    if (resolved.is_ok() && resolved.value().first->volume_info(volume) &&
-        volume.sectors_per_cluster > 0 && volume.bytes_per_sector > 0) {
-        sectors_per_cluster = volume.sectors_per_cluster;
-        bytes_per_sector = volume.bytes_per_sector;
-        free_cl = volume.free_clusters;
-        total_cl = volume.total_clusters;
-    } else {
-        u64 total_bytes = 0, free_bytes = 0;
-        get_host_disk_stats(total_bytes, free_bytes);
-        const u64 cluster_size = static_cast<u64>(sectors_per_cluster) * bytes_per_sector;
-        free_cl = static_cast<u32>(std::min(free_bytes / cluster_size,
-                                            static_cast<u64>(0xFFFFFFFFu)));
-        total_cl = static_cast<u32>(std::min(total_bytes / cluster_size,
-                                             static_cast<u64>(0xFFFFFFFFu)));
-    }
-
-    if (spc_ptr != 0) (void)m_memory.write_u32(spc_ptr, sectors_per_cluster);
-    if (bps_ptr != 0) (void)m_memory.write_u32(bps_ptr, bytes_per_sector);
-    if (free_ptr != 0) (void)m_memory.write_u32(free_ptr, free_cl);
-    if (total_ptr != 0) (void)m_memory.write_u32(total_ptr, total_cl);
-    VITREO_TRACE("[k32ext] GetDiskFreeSpace('%s') -> spc=%u bps=%u free=%u total=%u\n",
-                 path.c_str(), sectors_per_cluster, bytes_per_sector, free_cl, total_cl);
-    m.set_return(1); // TRUE
+    if (spc_ptr != 0) (void)m_memory.write_u32(spc_ptr, volume.sectors_per_cluster);
+    if (bps_ptr != 0) (void)m_memory.write_u32(bps_ptr, volume.bytes_per_sector);
+    if (free_ptr != 0) (void)m_memory.write_u32(free_ptr, directory.optical ? 0 : volume.free_clusters);
+    if (total_ptr != 0) (void)m_memory.write_u32(total_ptr, volume.total_clusters);
+    m.set_return(1);
 }
 
 void Kernel32ExtManager::impl_GetDiskFreeSpaceA(Marshaler& m) {
@@ -291,120 +166,48 @@ void Kernel32ExtManager::impl_GetDiskFreeSpaceA(Marshaler& m) {
         get_disk_free_space(m, nullptr);
         return;
     }
-    auto value = m.read_ansi_string(path_ptr, 260);
-    if (value.is_err()) {
-        set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-        m.set_return(0);
-        return;
-    }
-    get_disk_free_space(m, &value.value());
+    std::string path;
+    if (!read_disk_space_path(m, false, path)) { m.set_return(0); return; }
+    get_disk_free_space(m, &path);
 }
 
 void Kernel32ExtManager::impl_GetDiskFreeSpaceExW(Marshaler& m) {
-    // BOOL GetDiskFreeSpaceExW(LPCWSTR lpDirectoryName,
-    //   PULARGE_INTEGER lpFreeBytesAvailableToCaller,
-    //   PULARGE_INTEGER lpTotalNumberOfBytes,
-    //   PULARGE_INTEGER lpTotalNumberOfFreeBytes)
-    // Learn + files_ns_probe: path must name an existing directory on a
-    // mounted volume; a file -> ERROR_DIRECTORY; missing/unmounted ->
-    // ERROR_PATH_NOT_FOUND. Optical volumes report 0 free bytes.
-    GuestAddr path_ptr = m.arg_ptr(0);
-    GuestAddr free_avail = m.arg_ptr(1);
-    GuestAddr total_bytes_ptr = m.arg_ptr(2);
-    GuestAddr total_free = m.arg_ptr(3);
+    get_disk_free_space_ex(m, true);
+}
 
+void Kernel32ExtManager::get_disk_free_space_ex(Marshaler& m, bool wide) {
     std::string path;
-    if (path_ptr == 0) {
-        path = m_current_directory;
-    } else {
-        auto path_res = m.read_wide_string(path_ptr);
-        if (path_res.is_err()) {
-            set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-            m.set_return(0);
-            return;
+    const std::string* path_arg = nullptr;
+    if (m.arg_ptr(0)) {
+        if (!read_disk_space_path(m, wide, path)) { m.set_return(0); return; }
+        path_arg = &path;
+    }
+    const auto directory = query_disk_directory_volume(m_vfs, m_current_directory, path_arg, true);
+    const auto fail = [&](u32 error) { set_last_error(error); m.set_return(0); };
+    if (directory.error) { fail(directory.error); return; }
+    const auto& volume = directory.volume;
+    u64 total_bytes = volume.total_bytes;
+    u64 free_bytes = volume.free_bytes;
+    u64 available = volume.available_bytes;
+    if (!total_bytes) {
+        // Geometry-only optical providers have known zero free counts. A
+        // nonoptical provider's caller-available clusters cannot establish
+        // the distinct all-users free-byte count required by Ex.
+        if (!directory.optical || !volume.sectors_per_cluster || !volume.bytes_per_sector) {
+            fail(disk_space_unsupported()); return;
         }
-        path = path_res.value();
+        const u64 cluster = static_cast<u64>(volume.sectors_per_cluster) * volume.bytes_per_sector;
+        total_bytes = cluster * volume.total_clusters;
+        free_bytes = cluster * volume.free_clusters;
+        available = free_bytes;
     }
-
-    // Resolve to a drive letter and check mount.
-    char letter = 0;
-    if (path.size() >= 2 && path[1] == ':') {
-        letter = static_cast<char>(
-            std::toupper(static_cast<unsigned char>(path[0])));
-    } else if (!m_current_directory.empty() && m_current_directory[1] == ':') {
-        letter = static_cast<char>(
-            std::toupper(static_cast<unsigned char>(m_current_directory[0])));
-    }
-    if (letter < 'A' || letter > 'Z') {
-        set_last_error(error_codes::ERROR_PATH_NOT_FOUND);
-        m.set_return(0);
-        return;
-    }
-    const auto drives = m_vfs.mounted_drives();
-    if (std::find(drives.begin(), drives.end(), letter) == drives.end()) {
-        set_last_error(error_codes::ERROR_PATH_NOT_FOUND);
-        m.set_return(0);
-        return;
-    }
-
-    auto info = m_vfs.stat(path);
-    if (info.is_err()) {
-        // GetDiskFreeSpaceExW reports PATH_NOT_FOUND for any missing path
-        // (files_ns_probe GetDiskFreeSpaceExW_missing_dir -> 3), not
-        // FILE_NOT_FOUND for a missing leaf.
-        using capsule::VfsError;
-        const auto err = info.error();
-        if (err == VfsError::FileNotFound || err == VfsError::PathNotFound) {
-            set_last_error(error_codes::ERROR_PATH_NOT_FOUND);
-        } else {
-            set_last_error(vfs_error_to_win32(err));
+    if (directory.optical) { free_bytes = 0; available = 0; }
+    for (const auto& [pointer, value] : {std::pair{m.arg_ptr(1), available},
+        std::pair{m.arg_ptr(2), total_bytes}, std::pair{m.arg_ptr(3), free_bytes}}) {
+        if (pointer && m.memory().write_u64(pointer, value).is_err()) {
+            fail(error_codes::ERROR_NOACCESS); return;
         }
-        m.set_return(0);
-        return;
     }
-    if (!capsule::has_attribute(info.value().attributes,
-                                capsule::FileAttributes::Directory)) {
-        set_last_error(error_codes::ERROR_DIRECTORY);
-        m.set_return(0);
-        return;
-    }
-
-    u64 total_bytes = 0, free_bytes = 0, avail_bytes = 0;
-    capsule::VolumeInfo volume{};
-    const std::string root = std::string(1, letter) + ":\\";
-    auto resolved = m_vfs.resolve_components(root);
-    const bool optical =
-        resolved.is_ok() && resolved.value().first->is_optical();
-    const bool has_volume =
-        resolved.is_ok() && resolved.value().first->volume_info(volume);
-    if (has_volume && volume.total_bytes > 0) {
-        // Exact counts (host volumes): all free bytes, and the caller's share.
-        total_bytes = volume.total_bytes;
-        free_bytes = volume.free_bytes;
-        avail_bytes = volume.available_bytes;
-    } else if (has_volume && volume.bytes_per_sector > 0 &&
-               volume.sectors_per_cluster > 0) {
-        const u64 cluster = static_cast<u64>(volume.bytes_per_sector) *
-                            static_cast<u64>(volume.sectors_per_cluster);
-        total_bytes = cluster * static_cast<u64>(volume.total_clusters);
-        free_bytes = cluster * static_cast<u64>(volume.free_clusters);
-        avail_bytes = free_bytes;
-    } else {
-        get_host_disk_stats(total_bytes, free_bytes);
-        avail_bytes = free_bytes;
-    }
-    if (optical) {
-        free_bytes = 0;
-        avail_bytes = 0;
-    }
-
-    auto write_u64 = [&](GuestAddr addr, u64 val) {
-        (void)m_memory.write_u32(addr,     static_cast<u32>(val & 0xFFFFFFFFu));
-        (void)m_memory.write_u32(addr + 4, static_cast<u32>(val >> 32));
-    };
-    if (free_avail != 0)      write_u64(free_avail, avail_bytes);
-    if (total_bytes_ptr != 0) write_u64(total_bytes_ptr, total_bytes);
-    if (total_free != 0)      write_u64(total_free, free_bytes);
     m.set_return(1);
 }
 

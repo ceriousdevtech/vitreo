@@ -10,8 +10,13 @@
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "windowing/model/hwnd_manager.hpp"
+#include "windowing/model/diag_flags.hpp"
+#include "windowing/model/cursor_confinement.hpp"
+#include "winapi/user32/input/cursor_clip_sdk.generated.hpp"
 
 #include <array>
+#include <atomic>
+#include <cstdio>
 #include <vector>
 
 namespace vitreo::winapi {
@@ -86,46 +91,102 @@ void User32ExtManager::impl_TrackMouseEvent(Marshaler& m) {
 }
 
 void User32ExtManager::impl_ClipCursor(Marshaler& m) {
-    GuestAddr lpRect = m.arg_ptr(0);
-    if (lpRect == 0) {
-        m_host.set_cursor_clip(false, 0, 0, 0, 0);
-        VITREO_TRACE("[u32ext] ClipCursor(NULL) -> TRUE\n");
-        m.set_return(1u);
+    const GuestAddr address = m.arg_ptr(0);
+    static std::atomic<unsigned> trace_count{0};
+    const bool trace = windowing::diag::input_diag() &&
+        trace_count.fetch_add(1, std::memory_order_relaxed) < 96;
+    std::optional<windowing::Rect> requested;
+    const auto finish = [&](bool success, u32 error) {
+        if (error) set_last_error(error);
+        if (trace) {
+            if (requested) {
+                std::fprintf(stderr,
+                    "[input] ClipCursor rect=0x%llx requested=(%d,%d)-(%d,%d) caller=0x%llx result=%d error=%u\n",
+                    static_cast<unsigned long long>(address), requested->left,
+                    requested->top, requested->right, requested->bottom,
+                    static_cast<unsigned long long>(m.guest_return_address()),
+                    success ? 1 : 0, error);
+            } else {
+                std::fprintf(stderr,
+                    "[input] ClipCursor rect=0x%llx request=%s caller=0x%llx result=%d error=%u\n",
+                    static_cast<unsigned long long>(address), address ? "unread" : "NULL",
+                    static_cast<unsigned long long>(m.guest_return_address()),
+                    success ? 1 : 0, error);
+            }
+        }
+        m.set_return(success ? 1u : 0u);
+    };
+    const windowing::Rect screen = guest_virtual_screen_rect();
+    if (!address) {
+        const bool applied = m_host.set_cursor_clip(false, 0, 0, 0, 0, screen);
+        finish(applied, applied ? 0 : error_codes::ERROR_GEN_FAILURE);
         return;
     }
-    const i32 left = static_cast<i32>(m_memory.read_u32(lpRect + 0).value_or(0));
-    const i32 top = static_cast<i32>(m_memory.read_u32(lpRect + 4).value_or(0));
-    const i32 right = static_cast<i32>(m_memory.read_u32(lpRect + 8).value_or(0));
-    const i32 bottom = static_cast<i32>(m_memory.read_u32(lpRect + 12).value_or(0));
-    m_host.set_cursor_clip(true, left, top, right, bottom);
-    VITREO_TRACE("[u32ext] ClipCursor (%d,%d)-(%d,%d) -> TRUE\n", left, top,
-                 right, bottom);
-    m.set_return(1u);
+    windowing::Rect previous{};
+    // Windows x86/x64 oracle: a currently degenerate clip rejects every
+    // non-NULL request with access denied BEFORE probing that request.
+    if (m_host.get_cursor_clip(previous.left, previous.top, previous.right,
+                               previous.bottom) &&
+        (previous.left == previous.right || previous.top == previous.bottom)) {
+        finish(false, error_codes::ERROR_ACCESS_DENIED);
+        return;
+    }
+    std::array<Byte, cursor_clip_sdk::kRectSize> bytes{};
+    if (m_memory.read_bytes(address, bytes.data(), bytes.size()).is_err()) {
+        finish(false, error_codes::ERROR_NOACCESS);
+        return;
+    }
+    std::array<i32, cursor_clip_sdk::kRectOffsets.size()> values{};
+    for (usize field = 0; field < values.size(); ++field) {
+        u32 value = 0;
+        for (usize byte = 0; byte < sizeof(value); ++byte)
+            value |= static_cast<u32>(bytes[cursor_clip_sdk::kRectOffsets[field] + byte]) << (byte * 8);
+        values[field] = static_cast<i32>(value);
+    }
+    requested = windowing::Rect{values[0], values[1], values[2], values[3]};
+    const auto effective = windowing::normalize_cursor_clip(*requested, screen);
+    const windowing::Rect clip = effective.value_or(windowing::Rect{});
+    const bool applied = m_host.set_cursor_clip(effective.has_value(), clip.left,
+        clip.top, clip.right, clip.bottom, screen);
+    finish(applied, applied ? 0 : error_codes::ERROR_GEN_FAILURE);
 }
 
 void User32ExtManager::impl_GetClipCursor(Marshaler& m) {
-    GuestAddr lpRect = m.arg_ptr(0);
-    if (lpRect == 0) {
+    const GuestAddr address = m.arg_ptr(0);
+    static std::atomic<unsigned> trace_count{0};
+    const bool trace = windowing::diag::input_diag() &&
+        trace_count.fetch_add(1, std::memory_order_relaxed) < 32;
+    const auto fail = [&] {
+        set_last_error(error_codes::ERROR_NOACCESS);
+        if (trace) std::fprintf(stderr,
+            "[input] GetClipCursor rect=0x%llx caller=0x%llx result=0 error=%u\n",
+            static_cast<unsigned long long>(address),
+            static_cast<unsigned long long>(m.guest_return_address()),
+            error_codes::ERROR_NOACCESS);
         m.set_return(0u);
-        return;
+    };
+    if (!address) { fail(); return; }
+    windowing::Rect clip{};
+    if (!m_host.get_cursor_clip(clip.left, clip.top, clip.right, clip.bottom))
+        clip = guest_virtual_screen_rect();
+    const std::array<i32, cursor_clip_sdk::kRectOffsets.size()> values{
+        clip.left, clip.top, clip.right, clip.bottom};
+    std::array<Byte, cursor_clip_sdk::kRectSize> bytes{};
+    for (usize field = 0; field < values.size(); ++field) {
+        const u32 value = static_cast<u32>(values[field]);
+        for (usize byte = 0; byte < sizeof(value); ++byte)
+            bytes[cursor_clip_sdk::kRectOffsets[field] + byte] =
+                static_cast<Byte>(value >> (byte * 8));
     }
-    i32 left = 0, top = 0, right = 0, bottom = 0;
-    if (!m_host.get_cursor_clip(left, top, right, bottom)) {
-        // Win32 returns the full virtual screen when unrestricted -- the
-        // same rectangle SetCursorPos confines to and SM_*VIRTUALSCREEN
-        // report (virtual full-screen included).
-        const windowing::Rect screen = guest_virtual_screen_rect();
-        left = screen.left;
-        top = screen.top;
-        right = screen.right;
-        bottom = screen.bottom;
+    // GuestMemory validates the entire span before any byte is written.
+    if (m_memory.write_bytes(address, bytes.data(), bytes.size()).is_err()) {
+        fail(); return;
     }
-    (void)m.write_u32(lpRect + 0, static_cast<u32>(left));
-    (void)m.write_u32(lpRect + 4, static_cast<u32>(top));
-    (void)m.write_u32(lpRect + 8, static_cast<u32>(right));
-    (void)m.write_u32(lpRect + 12, static_cast<u32>(bottom));
-    VITREO_TRACE("[u32ext] GetClipCursor -> (%d,%d)-(%d,%d)\n", left, top,
-                 right, bottom);
+    if (trace) std::fprintf(stderr,
+        "[input] GetClipCursor rect=0x%llx output=(%d,%d)-(%d,%d) caller=0x%llx result=1\n",
+        static_cast<unsigned long long>(address), clip.left, clip.top,
+        clip.right, clip.bottom,
+        static_cast<unsigned long long>(m.guest_return_address()));
     m.set_return(1u);
 }
 

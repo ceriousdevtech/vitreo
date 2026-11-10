@@ -14,6 +14,8 @@ namespace vitreo::cpu {
 // =============================================================================
 // Win32 STATUS codes (32-bit SEH)
 // =============================================================================
+// STATUS_SINGLE_STEP from mingw-w64 13.0.0 ntstatus.h; Windows oracle int1_record_probe.
+constexpr u32 STATUS_SINGLE_STEP            = 0x80000004;
 constexpr u32 STATUS_BREAKPOINT             = 0x80000003;
 constexpr u32 STATUS_ASSERTION_FAILURE      = 0xC0000420;
 constexpr u32 STATUS_ACCESS_VIOLATION       = 0xC0000005;

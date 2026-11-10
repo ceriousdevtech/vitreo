@@ -11,6 +11,7 @@
 
 #include "jit_helpers.hpp"
 #include "jit_helpers_lock_internal.hpp"
+#include "jit_helpers_internal.hpp"
 #include "../lock_prefix.hpp"
 #include "core/memory/write_watch_traps.hpp"
 
@@ -115,6 +116,9 @@ extern "C" void jit_lock_cmpxchg8(CpuState* cpu, GuestMemory* mem,
     Byte* host = mem->host_ptr_store(addr, sizeof(u8));
     LockPrefixGuard guard(host, sizeof(u8));
     if (host == nullptr) {
+        // The destination check first: a WRITE access violation with AL,
+        // the flags and memory untouched (jit_cmpxchg_dest_faults).
+        if (jit_cmpxchg_dest_faults(cpu, mem, addr, 1)) return;
         auto result = mem->read_u8(addr);
         if (!result.is_ok()) {
             jit_lock_raise_av(cpu, addr, true);
@@ -396,6 +400,9 @@ extern "C" void jit_atomic_xchg16(CpuState* cpu, GuestMemory* mem, u64 addr,
 // for every observer, as in jit_lock_cmpxchg8.
 extern "C" void jit_lock_cmpxchg16(CpuState* cpu, GuestMemory* mem, u64 addr,
                                    u32 reg_val) {
+    // The destination check first: a WRITE access violation at the first
+    // byte the guest may not write, AX, the flags and memory untouched.
+    if (jit_cmpxchg_dest_faults(cpu, mem, addr, 2)) return;
     const u16 desired = static_cast<u16>(reg_val);
     const u16 ax = cpu->gpr.get16(static_cast<u8>(RegIndex::RAX));
     const auto previous = lock_narrow_rmw<u16>(cpu, mem, addr, [&](u16 a) {

@@ -12,11 +12,13 @@
 #include "winapi/kernel32/filesystem/file_search.hpp"
 #include "winapi/kernel32/thread/thread.hpp"
 #include "winapi/kernel32/system/virtual_firmware.hpp"
+#include "platform/host_hardware.hpp"
 #include "winapi/core/thunk_registry.hpp"
 
 #include "capsule/vfs/filesystem.hpp"
 #include "winapi/common/write_sha1_debug.hpp"
 #include "ipc/ipc_gate.hpp"
+#include "ipc/process_registry.hpp"
 #include "ipc/ipc_name.hpp"
 #include "ipc/unix_pipe.hpp"
 
@@ -61,6 +63,9 @@ u32 FileManager::file_type(Handle handle) const {
     switch (m_handles.get_type(handle)) {
         case HandleType::File:
             return is_character_file(handle) ? kChar : kDisk;
+        case HandleType::HidDevice:
+            set_last_error(error_codes::ERROR_SUCCESS);
+            return kUnknown;
         case HandleType::Device:
             // Volume handles (`\\.\X:`) are FILE_TYPE_DISK
             // (files_core_probe GetFileType_volume).
@@ -112,6 +117,33 @@ Handle FileManager::create_file(
     u32 creation_disposition,
     u32 flags_and_attrs)
 {
+    // Original virtual TLC paths are resolved by the shared native catalog.
+    if (m_gamepad_catalog && ascii_lower(path).starts_with("\\\\?\\hid#vitreo_gamepad")) {
+        if (creation_disposition < CREATE_NEW || creation_disposition > TRUNCATE_EXISTING || (creation_disposition==TRUNCATE_EXISTING && (desired_access & (GENERIC_WRITE|GENERIC_ALL))==0) || (share_mode & ~(hid_sdk::kFILE_SHARE_READ|hid_sdk::kFILE_SHARE_WRITE|hid_sdk::kFILE_SHARE_DELETE)) != 0) {
+            set_last_error(error_codes::ERROR_INVALID_PARAMETER); return INVALID_HANDLE;
+        }
+        if(creation_disposition==TRUNCATE_EXISTING) {
+            static std::once_flag once;
+            std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!CreateFile: HID truncate disposition\n");});
+            set_last_error(error_codes::ERROR_NOT_SUPPORTED);return INVALID_HANDLE;
+        }
+        constexpr u32 supported_flags=hid_sdk::kFILE_FLAG_OVERLAPPED | hid_sdk::kFILE_ATTRIBUTE_NORMAL; // OVERLAPPED / NORMAL
+        if ((flags_and_attrs & ~supported_flags) != 0) {
+            static std::once_flag once;
+            std::call_once(once, [] { std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!CreateFile: HID flags\n"); });
+            set_last_error(error_codes::ERROR_NOT_SUPPORTED); return INVALID_HANDLE;
+        }
+        bool conflict=false,host_failed=false;
+        auto file=m_gamepad_catalog->open(path,desired_access,(flags_and_attrs & hid_sdk::kFILE_FLAG_OVERLAPPED)!=0,share_mode,&conflict,&host_failed);
+        if (!file) {set_last_error(host_failed ? error_codes::ERROR_GEN_FAILURE : conflict ? error_codes::ERROR_SHARING_VIOLATION : error_codes::ERROR_FILE_NOT_FOUND);return INVALID_HANDLE;}
+        auto* holder=new HidOpenFileHolder(file);
+        const Handle result=m_handles.allocate(HandleType::HidDevice,holder,0,desired_access);
+        if(result==NULL_HANDLE || result==INVALID_HANDLE) {
+            delete holder;set_last_error(error_codes::ERROR_NOT_ENOUGH_MEMORY);return INVALID_HANDLE;
+        }
+        initialize_hid_waitable(result,file);
+        set_last_error(error_codes::ERROR_SUCCESS);return result;
+    }
     // DOS reserves NUL (including extensions) independently of disk files.
     // Preserve real kernel I/O and descriptor inheritance using the host null
     // device; never create a capsule file named NUL.
@@ -220,6 +252,41 @@ Handle FileManager::create_file(
             return handle;
         }
 
+        // "\\.\PhysicalDriveN": the disk device itself. One disk backs the
+        // capsule, so only PhysicalDrive0 exists; others are
+        // ERROR_FILE_NOT_FOUND (physdrive_probe). Query-only access (0,
+        // FILE_READ_ATTRIBUTES, SYNCHRONIZE) is what fingerprinting opens use.
+        if (auto disk = physical_drive_number(*device)) {
+            const platform::HostDisk& host_disk = platform::host_hardware().disk;
+            if (*disk != 0 || host_disk.size_bytes == 0 || host_disk.block_bytes == 0) {
+                set_last_error(error_codes::ERROR_FILE_NOT_FOUND);
+                return INVALID_HANDLE;
+            }
+            constexpr u32 kQueryOnlyAccess = 0x00000080u /*FILE_READ_ATTRIBUTES*/ |
+                                             0x00100000u /*SYNCHRONIZE*/;
+            if ((desired_access & ~kQueryOnlyAccess) != 0) {
+                static std::once_flag logged;
+                std::call_once(logged, [] {
+                    std::fprintf(stderr, "[vitreo] UNIMPLEMENTED kernel32!CreateFile: "
+                                         "\\\\.\\PhysicalDrive data access (raw sectors)\n");
+                });
+                set_last_error(error_codes::ERROR_ACCESS_DENIED);
+                return INVALID_HANDLE;
+            }
+            // The disposition does not apply to the device: even CREATE_NEW
+            // opens it (disk_geometry_probe "open_create_new ok=1").
+            auto* object = new std::string("disk:0");
+            const Handle handle = m_handles.allocate(
+                HandleType::Device, object, 0, desired_access);
+            if (handle == NULL_HANDLE || handle == INVALID_HANDLE) {
+                delete object;
+                set_last_error(error_codes::ERROR_NOT_ENOUGH_MEMORY);
+                return INVALID_HANDLE;
+            }
+            set_last_error(error_codes::ERROR_SUCCESS);
+            return handle;
+        }
+
         std::lock_guard<std::mutex> lock(m_device_mutex);
         if (m_running_kernel_devices.contains(*device)) {
             auto* object = new std::string(*device);
@@ -273,7 +340,7 @@ Handle FileManager::create_file(
         // Windows always opens a local client in byte-read, blocking mode.
         ep->read_mode = PipeDataMode::Byte;
         ep->blocking = true;
-        ep->file_mode = (flags_and_attrs & 0x40000000u) ? 0 : 0x20;
+        ep->file_mode = (flags_and_attrs & hid_sdk::kFILE_FLAG_OVERLAPPED) ? 0 : 0x20;
         ep->input_buffer_size = config->input_buffer_size;
         ep->output_buffer_size = config->output_buffer_size;
         ep->max_instances = config->max_instances;
@@ -283,7 +350,10 @@ Handle FileManager::create_file(
         if (ep->conn) {
             const int peer = ep->conn->peer_pid();
             if (peer > 0) {
-                ep->server_process_id = static_cast<u32>(peer);
+                const u32 windows = ipc::windows_process_id_for_host(
+                    static_cast<u32>(peer));
+                ep->server_process_id = windows != 0 ? windows
+                                                     : static_cast<u32>(peer);
             }
         }
         // A pipe client is granted what it asked for plus
@@ -572,6 +642,7 @@ bool FileManager::is_append_only(Handle handle) const {
 }
 
 bool FileManager::is_overlapped_file(Handle handle) const {
+    if(auto file=m_handles.get_shared<HidOpenFile>(handle,HandleType::HidDevice)) return file->overlapped;
     std::lock_guard<std::mutex> lock(m_file_path_mutex);
     return m_overlapped_file_handles.count(handle) != 0;
 }

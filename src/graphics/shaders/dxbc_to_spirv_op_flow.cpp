@@ -86,12 +86,9 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
             break;
         }
         // A hull-shader phase keeps its registers function-local, so a
-        // subroutine is inlined there, and only at the phase's top level.
-        if (!m_if_stack.empty() || !m_loop_stack.empty() ||
-            !m_switch_stack.empty()) {
-            return fail("CALL: invocation inside structured flow of a hull "
-                        "shader phase is not implemented");
-        }
+        // subroutine is inlined there, at any depth of the phase's flow
+        // (D3D11.3 22.7.10: call may appear inside flow control). The body
+        // is balanced, so it nests in the enclosing construct.
         if (!translate_subroutine(label.index0)) return false;
         break;
     }
@@ -111,10 +108,6 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
         if (condition.modifier != 0u) {
             return fail("CALLC: source modifiers are not supported");
         }
-        if (hs_as_compute()) {
-            return fail("CALLC: conditional subroutine call in a hull shader "
-                        "phase is not implemented");
-        }
         u32 value = 0;
         if (!load_vec4(condition, value)) return false;
         const u32 lane = m_builder.emit_composite_extract(
@@ -129,7 +122,11 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
         m_builder.emit_selection_merge(merge_block);
         m_builder.emit_branch_conditional(taken, call_block, merge_block);
         m_builder.emit_label_id(call_block);
-        if (!emit_subroutine_call(label.index0)) return false;
+        // A hull-shader phase inlines the body in the taken block (CALL).
+        if (hs_as_compute() ? !translate_subroutine(label.index0)
+                            : !emit_subroutine_call(label.index0)) {
+            return false;
+        }
         m_builder.emit_branch(merge_block);
         m_builder.emit_label_id(merge_block);
         break;
@@ -248,6 +245,7 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
             frame.selector, frame.default_block, frame.targets);
         m_builder.emit_label_id(frame.merge_block);
         m_block_terminated = false;
+        emit_inline_return_propagation();
         break;
     }
 
@@ -331,6 +329,7 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
         m_builder.emit_branch(frame.header_block);
         m_builder.emit_label_id(frame.merge_block);
         m_block_terminated = false;
+        emit_inline_return_propagation();
         break;
     }
 
@@ -346,6 +345,16 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
         }
         if ((opcode_token & 0x00002000u) != 0u || sample_controls != 0u) {
             return fail("loop control: unsupported opcode modifier");
+        }
+        const bool is_break = opcode == Sm4Opcode::BREAK;
+        if (!m_inline_stack.empty() &&
+            (is_break ? m_breakable_stack.size() <=
+                            m_inline_stack.back().breakable_base
+                      : m_loop_stack.size() <= m_inline_stack.back().loop_base)) {
+            // 22.7.10: a subroutine's flow is balanced within its body; a
+            // break/continue cannot reach the caller's construct.
+            return fail("loop control: a break/continue in a subroutine "
+                        "body leaves the body");
         }
         const u32 target = opcode == Sm4Opcode::BREAK
             ? m_breakable_stack.back().merge_block
@@ -367,6 +376,16 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
         }
         if ((opcode_token & 0x00002000u) != 0u || sample_controls != 0u) {
             return fail("conditional loop control: unsupported modifier");
+        }
+        const bool is_break = opcode == Sm4Opcode::BREAKC;
+        if (!m_inline_stack.empty() &&
+            (is_break ? m_breakable_stack.size() <=
+                            m_inline_stack.back().breakable_base
+                      : m_loop_stack.size() <= m_inline_stack.back().loop_base)) {
+            // 22.7.10: a subroutine's flow is balanced within its body; a
+            // break/continue cannot reach the caller's construct.
+            return fail("loop control: a break/continue in a subroutine "
+                        "body leaves the body");
         }
         Sm4Operand source;
         if (!m_decoder.decode_operand(source)) {
@@ -477,10 +496,6 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
         // Microsoft Learn retc (sm4): conditionally return when the selected
         // lane is zero/nonzero at the bit level -- from main, or from the
         // subroutine function it appears in (22.7.17).
-        if (!m_call_stack.empty()) {
-            return fail("RETC: conditional return from a subroutine inlined "
-                        "into a hull shader phase is not implemented");
-        }
         if ((opcode_token & 0x00002000u) != 0u || sample_controls != 0u) {
             return fail("RETC: unsupported opcode modifier");
         }
@@ -519,9 +534,16 @@ bool DxbcTranslator::translate_flow_control_operation(u32 opcode_token,
         m_builder.emit_branch_conditional(
             condition, return_block, continue_block);
         m_builder.emit_label_id(return_block);
+        if (!m_inline_stack.empty()) {
+            // A subroutine a hull-shader phase inlines: return to the
+            // caller by leaving the inlined body (translate_subroutine).
+            if (!emit_inline_return()) return false;
+            m_builder.emit_label_id(continue_block);
+            break;
+        }
         if (!m_in_subroutine) {
             m_emitted_early_return = true;
-            if (!emit_system_value_epilogue()) return false;
+            if (!emit_return_epilogue()) return false;
         }
         m_builder.emit_return();
         m_builder.emit_label_id(continue_block);

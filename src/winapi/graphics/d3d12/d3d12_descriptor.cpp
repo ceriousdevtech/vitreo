@@ -13,6 +13,11 @@
 /// reads it executes.
 
 #include "winapi/graphics/d3d12/d3d12_internal.hpp"
+#include "winapi/graphics/common/d3d_sampler.hpp"
+#include "graphics/shaders/compile_profile.hpp"
+#include "graphics/shaders/minmax_reduction.hpp"
+
+#include <atomic>
 #include "core/memory/guest_memory.hpp"
 
 namespace vitreo::winapi::d3d12 {
@@ -76,9 +81,11 @@ void Frontend::create_descriptor_heap(Marshaler& m, Device& device) {
     // d12core_facts_probe rtv_heap_shader_visible), within the sizes Learn
     // gives for shader-visible heaps (resource binding tier 1/2).
     // Measured (a03 heaps): an empty heap is fine, and GetDesc reports a
-    // NodeMask of 0 as 1.
-    if (heap->type >= D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES ||
-        heap->node_mask > 1 ||
+    // NodeMask of 0 as 1. Measured (a03 heaps "type4", and types 5, 6,
+    // 0x7fffffff, 0xffffffff; WARP and NVIDIA x64): the runtime takes any
+    // Type past the defined ones for a heap that is not shader visible --
+    // its descriptors have increment 0 -- and refuses it shader visible.
+    if (heap->node_mask > 1 ||
         (heap->flags & ~D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE) != 0 ||
         (visible && heap->type != D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV &&
          heap->type != D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER) ||
@@ -249,6 +256,13 @@ void Frontend::create_view(Marshaler& m, DescriptorType type) {
         view.resource = resource->address;
         view.resource_serial = resource->serial;
     }
+    if (resource != nullptr && resource->feedback_map) {
+        // Learn (CreateSamplerFeedbackUnorderedAccessView): a feedback map
+        // is viewed only through that call.
+        d3d12_diag("%s: a sampler feedback map takes only "
+                   "CreateSamplerFeedbackUnorderedAccessView", api);
+        return;
+    }
     if (type == DescriptorType::Cbv) {
         if (desc == 0) return;
         const auto& l = layout::D3D12_CONSTANT_BUFFER_VIEW_DESC[m_is_64bit];
@@ -263,7 +277,7 @@ void Frontend::create_view(Marshaler& m, DescriptorType type) {
             d3d12_diag("%s: unaligned CBV", api);
             return;
         }
-        *record = view;
+        heap->write(record, view);
         return;
     }
     if (desc == 0) {
@@ -320,7 +334,7 @@ void Frontend::create_view(Marshaler& m, DescriptorType type) {
                                  : D3D12_DSV_DIMENSION_TEXTURE1D;
         }
         if (type != DescriptorType::Srv) view.mip_levels = 1;
-        *record = view;
+        heap->write(record, view);
         return;
     }
     // A described view (the resource may be null: a null descriptor of that
@@ -402,8 +416,15 @@ void Frontend::create_view(Marshaler& m, DescriptorType type) {
                 read_f32(desc + l.TextureCubeArray_ResourceMinLODClamp);
             break;
         case D3D12_SRV_DIMENSION_RAYTRACING_ACCELERATION_STRUCTURE:
-            unimplemented("ID3D12Device::CreateShaderResourceView",
-                          "raytracing acceleration structures");
+            // D3D12_RAYTRACING_ACCELERATION_STRUCTURE_SRV: the view is the
+            // structure's GPU VA (Location); pResource must be NULL.
+            if (resource != nullptr) {
+                d3d12_diag("%s: an acceleration-structure view names a resource", api);
+                return;
+            }
+            view.first_element =
+                read_u64(desc + l.RaytracingAccelerationStructure_Location);
+            heap->write(record, view);
             return;
         default:
             return;
@@ -594,7 +615,54 @@ void Frontend::create_view(Marshaler& m, DescriptorType type) {
                       "cast family");
         return;
     }
-    *record = view;
+    heap->write(record, view);
+}
+
+void Frontend::create_feedback_view(Marshaler& m) {
+    // void CreateSamplerFeedbackUnorderedAccessView(
+    //     ID3D12Resource *pTargetedResource, ID3D12Resource *pFeedbackResource,
+    //     D3D12_CPU_DESCRIPTOR_HANDLE DestDescriptor).
+    // DirectX-Specs "Sampler Feedback": the view pairs the feedback map with
+    // the texture whose sampling it records; a null feedback resource is a
+    // null descriptor. The map has the paired texture's width, height, mip
+    // count and array size. An invalid call leaves the destination as it
+    // was, as the other Create*View calls do.
+    m.set_return(0);
+    const char* api = "ID3D12Device8::CreateSamplerFeedbackUnorderedAccessView";
+    const GuestAddr paired_address = m.arg_ptr(1);
+    const GuestAddr feedback_address = m.arg_ptr(2);
+    DescriptorHeap* heap = nullptr;
+    Descriptor* record = cpu_descriptor(m.arg_ptr(3), &heap);
+    if (record == nullptr || heap->type != D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) {
+        d3d12_diag("%s: not a CBV_SRV_UAV descriptor", api);
+        return;
+    }
+    Descriptor view{};
+    view.type = DescriptorType::Uav;
+    if (feedback_address == 0) {
+        heap->write(record, view);
+        return;
+    }
+    Resource* feedback = find<Resource>(feedback_address, Kind::Resource);
+    Resource* paired = paired_address != 0 ? find<Resource>(paired_address, Kind::Resource) : nullptr;
+    if (feedback == nullptr || !feedback->feedback_map || paired == nullptr ||
+        paired->desc.dimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D || paired->feedback_map ||
+        paired->desc.width != feedback->desc.width || paired->desc.height != feedback->desc.height ||
+        paired->desc.mip_levels != feedback->desc.mip_levels ||
+        paired->desc.depth_or_array_size != feedback->desc.depth_or_array_size) {
+        d3d12_diag("%s: not a feedback map and its paired texture", api);
+        return;
+    }
+    view.resource = feedback->address;
+    view.resource_serial = feedback->serial;
+    view.dimension = D3D12_UAV_DIMENSION_BUFFER;
+    view.format = DXGI_FORMAT_R32_TYPELESS;
+    view.flags = D3D12_BUFFER_UAV_FLAG_RAW;
+    view.first_element = 0;
+    view.num_elements = static_cast<u32>(feedback->feedback.total_words());
+    view.mip_levels = feedback->desc.mip_levels;
+    view.array_size = feedback->array_size();
+    heap->write(record, view);
 }
 
 bool Frontend::read_sampler(GuestAddr address, bool desc2,
@@ -634,39 +702,54 @@ void Frontend::create_sampler(Marshaler& m, bool desc2) {
     Descriptor view{};
     view.type = DescriptorType::Sampler;
     if (!read_sampler(desc, desc2, view.sampler)) return;
-    // What a descriptor-table sampler cannot carry here (dxbc_to_spirv.hpp
-    // register_remap; D3D11 emulates both per s# register): a border colour
-    // other than Metal's three, and MINIMUM / MAXIMUM reduction. The
-    // sampler is kept -- the nearest Metal border / a standard filter -- and
-    // the gap reported where it is created.
+    // The descriptor is stored whole. Replay writes the sampler-state record
+    // the shader branches on (border twin, MINIMUM/MAXIMUM, non-normalized
+    // coordinates). A flag or border that cannot be applied is not stored:
+    // binding the nearest Metal sampler would sample the wrong colour.
     const SamplerState& state = view.sampler;
-    const bool border = state.address_u == D3D12_TEXTURE_ADDRESS_MODE_BORDER ||
-                        state.address_v == D3D12_TEXTURE_ADDRESS_MODE_BORDER ||
-                        state.address_w == D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-    if (border) {
-        std::array<float, 4> colour{};
-        for (u32 c = 0; c < 4; ++c) std::memcpy(&colour[c], &state.border[c], 4);
-        const bool uint_colour =
-            (state.flags & 0x1u) != 0;  // D3D12_SAMPLER_FLAG_UINT_BORDER_COLOR
-        const bool standard =
-            !uint_colour && colour[0] == colour[1] && colour[1] == colour[2] &&
-            (colour[0] == 0.0f || colour[0] == 1.0f) &&
-            (colour[3] == 0.0f || colour[3] == 1.0f) &&
-            !(colour[0] == 1.0f && colour[3] == 0.0f);
-        if (!standard) {
-            unimplemented("ID3D12Device::CreateSampler",
-                          "a border colour other than transparent black, "
-                          "opaque black or opaque white");
+    D3DSamplerFields fields{};
+    fields.filter = state.filter;
+    fields.address_u = state.address_u;
+    fields.address_v = state.address_v;
+    fields.address_w = state.address_w;
+    fields.mip_lod_bias = state.mip_lod_bias;
+    fields.max_anisotropy = state.max_anisotropy;
+    fields.comparison_func = state.comparison_func;
+    for (u32 c = 0; c < 4; ++c) {
+        std::memcpy(&fields.border[c], &state.border[c], 4);
+    }
+    fields.min_lod = state.min_lod;
+    fields.max_lod = state.max_lod;
+    fields.flags = state.flags;
+    if ((state.flags & kD3DSamplerFlagNonNormalized) != 0u &&
+        !d3d_sampler_non_normalized_legal(fields)) {
+        // The same restrictions a 1.2 static sampler is rejected for.
+        // CreateSampler is void; an illegal descriptor removes the device.
+        remove_device(DXGI_ERROR_INVALID_CALL,
+                      "non-normalized sampler constraints");
+        return;
+    }
+    if (!d3d_sampler_honoured(fields)) {
+        unimplemented("ID3D12Device::CreateSampler",
+                      "a UINT border colour other than (0,0,0,0), (0,0,0,1) "
+                      "or (1,1,1,1), or a sampler flag other than "
+                      "UINT_BORDER_COLOR or NON_NORMALIZED_COORDINATES");
+        return;
+    }
+    graphics::compile_profile::note(graphics::compile_profile::SamplerCreated);
+    if (d3d_minmax_reduction_filter(state.filter)) {
+        // How often apps use one (the sample instructions' reduction helper
+        // runs only for these): counted, and named once.
+        graphics::compile_profile::note(graphics::compile_profile::SamplerMinMax);
+        // Before the record exists: no draw can read its MINIMUM_/MAXIMUM_
+        // flag through a shader compiled without the reduction
+        // (graphics/shaders/minmax_reduction.hpp).
+        if (graphics::enable_minmax_reduction()) {
+            d3d12_diag("first MINIMUM_/MAXIMUM_ sampler created (filter 0x%x): table "
+                       "reductions compile in from now on", state.filter);
         }
     }
-    const u32 reduction = (state.filter >> D3D12_FILTER_REDUCTION_TYPE_SHIFT) &
-                          D3D12_FILTER_REDUCTION_TYPE_MASK;
-    if (reduction == D3D12_FILTER_REDUCTION_TYPE_MINIMUM ||
-        reduction == D3D12_FILTER_REDUCTION_TYPE_MAXIMUM) {
-        unimplemented("ID3D12Device::CreateSampler",
-                      "MINIMUM / MAXIMUM filter reduction in a descriptor heap");
-    }
-    *record = view;
+    heap->write(record, view);
 }
 
 void Frontend::copy_descriptors(Marshaler& m) {
@@ -716,7 +799,7 @@ void Frontend::copy_descriptors(Marshaler& m) {
                 start + static_cast<GuestAddr>(index) * descriptor_increment(),
                 &heap);
             if (record == nullptr || heap->type != heap_type) return;
-            *record = source[cursor++];
+            heap->write(record, source[cursor++]);
         }
     }
 }
@@ -740,13 +823,26 @@ void Frontend::copy_descriptors_simple(Marshaler& m) {
         if (record == nullptr || heap->type != heap_type) return;
         source.push_back(*record);
     }
+    if (count == 0) return;
+    // One contiguous run in one heap (the usual case): one write, one lock.
+    DescriptorHeap* first_heap = nullptr;
+    DescriptorHeap* last_heap = nullptr;
+    Descriptor* first = cpu_descriptor(dest, &first_heap);
+    const Descriptor* last = cpu_descriptor(
+        dest + static_cast<GuestAddr>(count - 1) * descriptor_increment(),
+        &last_heap);
+    if (first != nullptr && last != nullptr && first_heap == last_heap &&
+        first_heap->type == heap_type && last == first + (count - 1)) {
+        first_heap->write(first, source.data(), count);
+        return;
+    }
     for (u32 index = 0; index < count; ++index) {
         DescriptorHeap* heap = nullptr;
         Descriptor* record = cpu_descriptor(
             dest + static_cast<GuestAddr>(index) * descriptor_increment(),
             &heap);
         if (record == nullptr || heap->type != heap_type) return;
-        *record = source[index];
+        heap->write(record, source[index]);
     }
 }
 

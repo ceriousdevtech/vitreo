@@ -56,7 +56,10 @@ RecentGpuBusy recent_gpu_busy(double now_s) noexcept {
     recent.window_ms = kWindowS * 1000.0;
     recent.allocated_bytes = g_allocated.load(std::memory_order_relaxed);
     const double window_start = now_s - kWindowS;
-    static std::pair<double, double> scratch[kSlots];
+    // The overlay and frame profiler can sample concurrently. Only the
+    // interval snapshot is under g_mutex; sorting and merging must use
+    // private storage too (concurrent std::sort on one array is undefined).
+    thread_local std::pair<double, double> scratch[kSlots];
     usize n = 0;
     {
         std::lock_guard<std::mutex> lock(g_mutex);

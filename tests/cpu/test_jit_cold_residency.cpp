@@ -10,6 +10,7 @@
 // STATUS_ACCESS_VIOLATION with the faulting address).
 
 #include "jit_linear_fixture.hpp"
+#include "runtime/execution/block_decoder.hpp"
 
 #include <cstdlib>
 
@@ -233,6 +234,370 @@ TEST_F(JitColdResidencyTest, RecompiledStoreStillFaultsPrecisely) {
     EXPECT_EQ(rw.rip, kCode64 + 3);
     EXPECT_EQ(m_memory->read_u64(kData64 + 0x2000).value_or(0),
               0xFEEDFACEFEEDFACEull);
+}
+
+// mov rax,[rsp+8]; add rax,rbx; mov rcx,[rsp+16]. The add does not change
+// RSP or memory, so one entry check still covers both loads (Intel SDM Vol.
+// 2A ADD r64,r64: flags and the destination only).
+TEST_F(JitColdResidencyTest, StackProofCoversLoadsAroundRegisterArithmetic) {
+    const std::vector<u8> code = {0x48, 0x8B, 0x44, 0x24, 0x08,
+                                  0x48, 0x01, 0xD8,
+                                  0x48, 0x8B, 0x4C, 0x24, 0x10};
+    constexpr GuestAddr stack = kData64 + 0x1000;
+    ASSERT_TRUE(m_memory->write_u64(stack + 8, 10));
+    ASSERT_TRUE(m_memory->write_u64(stack + 16, 20));
+    CompiledBlock block{};
+    ASSERT_NE(publish(code, block), nullptr);
+    ASSERT_TRUE(block.requires_protection_lease);
+    CpuState cpu = cpu64(0);
+    cpu.gpr.rsp = stack;
+    cpu.gpr.rbx = 1;
+    ASSERT_EQ(test::execute_like_dispatcher(*m_jit, block, cpu),
+              JitExecResult::Continue);
+    EXPECT_FALSE(cpu.pending_raise.active);
+    EXPECT_EQ(cpu.gpr.rax, 11u);
+    EXPECT_EQ(cpu.gpr.rcx, 20u);
+
+    // add rsp, imm8 moves the frame. The proof must not apply.
+    const std::vector<u8> moves_rsp = {0x48, 0x8B, 0x44, 0x24, 0x08,
+                                       0x48, 0x83, 0xC4, 0x08,
+                                       0x48, 0x8B, 0x4C, 0x24, 0x10};
+    CompiledBlock shifted{};
+    ASSERT_NE(publish(moves_rsp, shifted), nullptr);
+    EXPECT_FALSE(shifted.requires_protection_lease);
+}
+
+// add rax,1; jmp to `xor ecx,ecx`. The successor redefines every flag
+// before any read or fault, so the add's flag record must not be required
+// for the result (Intel SDM Vol. 2A ADD/XOR).
+TEST_F(JitColdResidencyTest, SuccessorRewritingFlagsKeepsTheArithmetic) {
+    ResidencyOn on(*m_jit);
+    const u8 code[] = {
+        0x48, 0x83, 0xC0, 0x01,
+        0xE9, 0x07, 0x00, 0x00, 0x00,
+        0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+        0x31, 0xC9,
+    };
+    ASSERT_TRUE(m_memory->write_bytes(kCode64, code, sizeof(code)));
+    CpuState cpu = cpu64(0);
+    cpu.rip = kCode64;
+    cpu.gpr.rax = 5;
+    cpu.gpr.rcx = 99;
+    for (int step = 0; step < 3 && cpu.rip < kCode64 + sizeof(code); ++step) {
+        BasicBlock block = cli::decode_basic_block(*m_memory, cpu.rip, true);
+        ASSERT_GT(block.instruction_count, 0u);
+        CompiledBlock* compiled = m_jit->compile(block);
+        ASSERT_NE(compiled, nullptr);
+        m_jit->publish_compiled_block(block, *compiled);
+        ASSERT_EQ(test::execute_like_dispatcher(*m_jit, *compiled, cpu),
+                  JitExecResult::Continue);
+    }
+    EXPECT_EQ(cpu.gpr.rax, 6u);
+    EXPECT_EQ(cpu.gpr.rcx, 0u);
+}
+
+// xor rax,rax; add rax,1; jmp to `jz; mov ebx,7`. ZF after the add is 0,
+// so the branch falls through. Dropping the add's flags would be visible
+// here if the old xor ZF (1) were what jz read.
+TEST_F(JitColdResidencyTest, SuccessorThatReadsFlagsStillSeesThem) {
+    ResidencyOn on(*m_jit);
+    const u8 code[] = {
+        0x48, 0x31, 0xC0,
+        0x48, 0x83, 0xC0, 0x01,
+        0xE9, 0x14, 0x00, 0x00, 0x00,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0x74, 0x05,
+        0xBB, 0x07, 0x00, 0x00, 0x00,
+    };
+    ASSERT_EQ(12 + 20, 32);
+    ASSERT_TRUE(m_memory->write_bytes(kCode64, code, sizeof(code)));
+    CpuState cpu = cpu64(0);
+    cpu.rip = kCode64;
+    cpu.gpr.rax = 99;
+    cpu.gpr.rbx = 0;
+    for (int step = 0; step < 4 && cpu.rip < kCode64 + sizeof(code); ++step) {
+        BasicBlock block = cli::decode_basic_block(*m_memory, cpu.rip, true);
+        ASSERT_GT(block.instruction_count, 0u);
+        CompiledBlock* compiled = m_jit->compile(block);
+        ASSERT_NE(compiled, nullptr);
+        m_jit->publish_compiled_block(block, *compiled);
+        ASSERT_EQ(test::execute_like_dispatcher(*m_jit, *compiled, cpu),
+                  JitExecResult::Continue);
+    }
+    EXPECT_EQ(cpu.gpr.rax, 1u);
+    EXPECT_EQ(cpu.gpr.rbx, 7u);
+}
+
+// mov rax,[rsp+8]; mov rbx,[rcx]; mov rdx,[rsp+16]. The middle load is not
+// the stack, so this is not the pure entry proof. Both stack loads still
+// return the bytes at those addresses (Intel SDM Vol. 2A MOV).
+TEST_F(JitColdResidencyTest, StackLoadsBesideOtherMemoryKeepTheirValues) {
+    const std::vector<u8> code = {0x48, 0x8B, 0x44, 0x24, 0x08,
+                                  0x48, 0x8B, 0x19,
+                                  0x48, 0x8B, 0x54, 0x24, 0x10};
+    constexpr GuestAddr stack = kData64 + 0x3000;
+    ASSERT_TRUE(m_memory->write_u64(stack + 8, 10));
+    ASSERT_TRUE(m_memory->write_u64(stack + 16, 20));
+    ASSERT_TRUE(m_memory->write_u64(kData64 + 0x180, 7));
+    CompiledBlock block{};
+    ASSERT_NE(publish(code, block), nullptr);
+    EXPECT_FALSE(block.requires_protection_lease);
+    CpuState cpu = cpu64(0);
+    cpu.gpr.rsp = stack;
+    cpu.gpr.rcx = kData64 + 0x180;
+    ASSERT_EQ(test::execute_like_dispatcher(*m_jit, block, cpu),
+              JitExecResult::Continue);
+    EXPECT_FALSE(cpu.pending_raise.active);
+    EXPECT_EQ(cpu.gpr.rax, 10u);
+    EXPECT_EQ(cpu.gpr.rbx, 7u);
+    EXPECT_EQ(cpu.gpr.rdx, 20u);
+}
+
+// The same three loads, then a jump. The lease drop on that edge must not
+// replace the guest target, or control never reaches the mov.
+TEST_F(JitColdResidencyTest, StackLoadsJumpToTheNextBlock) {
+    const u8 code[] = {
+        0x48, 0x8B, 0x44, 0x24, 0x08,
+        0x48, 0x8B, 0x19,
+        0x48, 0x8B, 0x54, 0x24, 0x10,
+        0xE9, 0x00, 0x00, 0x00, 0x00,
+        0x49, 0xC7, 0xC0, 0x07, 0x00, 0x00, 0x00,
+        0xEB, 0xFE,
+    };
+    constexpr u32 kMovEnd = 24;
+    constexpr GuestAddr stack = kData64 + 0x3200;
+    ASSERT_TRUE(m_memory->write_bytes(kCode64, code, sizeof(code)));
+    ASSERT_TRUE(m_memory->write_u64(stack + 8, 10));
+    ASSERT_TRUE(m_memory->write_u64(stack + 16, 20));
+    ASSERT_TRUE(m_memory->write_u64(kData64 + 0x1A0, 7));
+    CpuState cpu = cpu64(0);
+    cpu.rip = kCode64;
+    cpu.gpr.rsp = stack;
+    cpu.gpr.rcx = kData64 + 0x1A0;
+    cpu.gpr.r8 = 0;
+    for (int step = 0; step < 4 && cpu.rip < kCode64 + kMovEnd; ++step) {
+        BasicBlock block = cli::decode_basic_block(*m_memory, cpu.rip, true);
+        ASSERT_GT(block.instruction_count, 0u);
+        CompiledBlock* compiled = m_jit->compile(block);
+        ASSERT_NE(compiled, nullptr);
+        m_jit->publish_compiled_block(block, *compiled);
+        ASSERT_EQ(test::execute_like_dispatcher(*m_jit, *compiled, cpu),
+                  JitExecResult::Continue)
+            << std::hex << "rip=" << cpu.rip
+            << " code=" << cpu.pending_raise.code
+            << " a0=" << cpu.pending_raise.args[0]
+            << " a1=" << cpu.pending_raise.args[1];
+    }
+    EXPECT_EQ(cpu.gpr.r8, 7u);
+    EXPECT_GE(cpu.rip, kCode64 + kMovEnd);
+    EXPECT_FALSE(cpu.pending_raise.active)
+        << std::hex << "rip=" << cpu.rip
+        << " code=" << cpu.pending_raise.code
+        << " a0=" << cpu.pending_raise.args[0]
+        << " a1=" << cpu.pending_raise.args[1]
+        << " rax=" << cpu.gpr.rax << " rbx=" << cpu.gpr.rbx
+        << " rdx=" << cpu.gpr.rdx << " r8=" << cpu.gpr.r8;
+}
+
+// Two [rsp+disp] loads make the span proof take its lease, then CALL/RET
+// must come back to the next instruction. A host call inside that lease
+// used to clobber the return target, so RET fetched address 0.
+TEST_F(JitColdResidencyTest, StackLoadsCallAndReturn) {
+    const u8 code[] = {
+        0x48, 0x8B, 0x44, 0x24, 0x08,              // mov rax, [rsp+8]
+        0x48, 0x8B, 0x4C, 0x24, 0x10,              // mov rcx, [rsp+0x10]
+        0xE8, 0x09, 0x00, 0x00, 0x00,              // call ret_insn
+        0x49, 0xC7, 0xC0, 0x07, 0x00, 0x00, 0x00,  // mov r8, 7
+        0xEB, 0xFE,                                // jmp $
+        0xC3,                                      // ret
+    };
+    constexpr u32 kAfterCall = 22;
+    constexpr GuestAddr stack = kData64 + 0x3300;
+    ASSERT_TRUE(m_memory->write_bytes(kCode64, code, sizeof(code)));
+    ASSERT_TRUE(m_memory->write_u64(stack + 8, 10));
+    ASSERT_TRUE(m_memory->write_u64(stack + 16, 20));
+    CpuState cpu = cpu64(0);
+    cpu.rip = kCode64;
+    cpu.gpr.rsp = stack;
+    cpu.gpr.r8 = 0;
+    for (int step = 0; step < 6 && cpu.gpr.r8 != 7; ++step) {
+        BasicBlock block = cli::decode_basic_block(*m_memory, cpu.rip, true);
+        ASSERT_GT(block.instruction_count, 0u);
+        CompiledBlock* compiled = m_jit->compile(block);
+        ASSERT_NE(compiled, nullptr);
+        m_jit->publish_compiled_block(block, *compiled);
+        ASSERT_EQ(test::execute_like_dispatcher(*m_jit, *compiled, cpu),
+                  JitExecResult::Continue)
+            << std::hex << "rip=" << cpu.rip
+            << " code=" << cpu.pending_raise.code
+            << " a1=" << cpu.pending_raise.args[1];
+    }
+    EXPECT_EQ(cpu.gpr.rax, 10u);
+    EXPECT_EQ(cpu.gpr.rcx, 20u);
+    EXPECT_EQ(cpu.gpr.r8, 7u);
+    EXPECT_GE(cpu.rip, kCode64 + kAfterCall);
+    EXPECT_FALSE(cpu.pending_raise.active)
+        << std::hex << "rip=" << cpu.rip
+        << " code=" << cpu.pending_raise.code
+        << " a1=" << cpu.pending_raise.args[1];
+}
+
+// add rsp, 8 changes later stack addresses. [rsp] after the add is the old
+// [rsp+8], not the qword that was at the entry RSP.
+TEST_F(JitColdResidencyTest, StackProofStopsWhenRspChanges) {
+    const std::vector<u8> code = {0x48, 0x8B, 0x44, 0x24, 0x08,
+                                  0x48, 0x83, 0xC4, 0x08,
+                                  0x48, 0x8B, 0x0C, 0x24};
+    constexpr GuestAddr stack = kData64 + 0x2100;
+    ASSERT_TRUE(m_memory->write_u64(stack, 99));
+    ASSERT_TRUE(m_memory->write_u64(stack + 8, 10));
+    CompiledBlock block{};
+    ASSERT_NE(publish(code, block), nullptr);
+    CpuState cpu = cpu64(0);
+    cpu.gpr.rsp = stack;
+    ASSERT_EQ(test::execute_like_dispatcher(*m_jit, block, cpu),
+              JitExecResult::Continue);
+    EXPECT_FALSE(cpu.pending_raise.active);
+    EXPECT_EQ(cpu.gpr.rax, 10u);
+    EXPECT_EQ(cpu.gpr.rcx, 10u);
+    EXPECT_EQ(cpu.gpr.rsp, stack + 8);
+}
+
+// Intel SDM Vol. 2B MOV: a memory load into RSP/ESP changes the base of
+// subsequent stack accesses. A proof for the old stack cannot authorize a
+// read from a denied guest page in an otherwise mapped host page.
+TEST_F(JitColdResidencyTest, StackPointerLoadCannotAuthorizeTheNewStack) {
+    constexpr GuestAddr new_stack = 0x05000000;
+    constexpr GuestAddr old_stack = kData64 + 0x3000;
+    ASSERT_TRUE(m_memory->map_region(new_stack, 0x4000,
+                                    MemoryProtection::ReadWrite));
+    ASSERT_TRUE(m_memory->write_u64(new_stack + 8, 42));
+    ASSERT_TRUE(m_memory->protect_region(new_stack, 0x1000,
+                                        MemoryProtection::None));
+    ASSERT_TRUE(m_memory->write_u64(old_stack + 8, 10));
+    ASSERT_TRUE(m_memory->write_u64(old_stack + 16, 20));
+    ASSERT_TRUE(m_memory->write_u64(old_stack + 24, new_stack));
+    for (bool wide : {true, false}) {
+        SCOPED_TRACE(wide ? "RSP" : "ESP");
+        std::vector<u8> code = {
+            0x48, 0x8B, 0x44, 0x24, 0x08, // mov rax,[rsp+8]
+            0x48, 0x8B, 0x54, 0x24, 0x10, // mov rdx,[rsp+16]
+        };
+        if (wide) code.push_back(0x48);
+        code.insert(code.end(), {0x8B, 0x64, 0x24, 0x18}); // mov rsp/esp,[rsp+24]
+        const u32 fault_offset = code.size();
+        code.insert(code.end(), {0x48, 0x8B, 0x4C, 0x24, 0x08}); // mov rcx,[rsp+8]
+        CompiledBlock block{};
+        ASSERT_NE(publish(code, block), nullptr);
+        CpuState cpu = cpu64(0);
+        cpu.gpr.rsp = old_stack;
+        EXPECT_EQ(test::execute_like_dispatcher(*m_jit, block, cpu),
+                  JitExecResult::Continue);
+        EXPECT_TRUE(cpu.pending_raise.active);
+        EXPECT_EQ(cpu.pending_raise.code, 0xC0000005u);
+        EXPECT_EQ(cpu.pending_raise.args[0], 0u);
+        EXPECT_EQ(cpu.pending_raise.args[1], new_stack + 8);
+        EXPECT_EQ(cpu.rip, kCode64 + fault_offset);
+        EXPECT_EQ(cpu.gpr.rsp, new_stack);
+        EXPECT_EQ(cpu.gpr.rax, 10u);
+        EXPECT_EQ(cpu.gpr.rdx, 20u);
+    }
+}
+
+TEST_F(JitColdResidencyTest, ContendedSpanEntryPublishesItsOwnRip) {
+    const std::vector<u8> code = {
+        0x48, 0x8B, 0x44, 0x24, 0x08, // mov rax,[rsp+8]
+        0x48, 0x8B, 0x19,             // mov rbx,[rcx]
+        0x48, 0x8B, 0x54, 0x24, 0x10, // mov rdx,[rsp+16]
+    };
+    CompiledBlock block{};
+    ASSERT_NE(publish(code, block), nullptr);
+    ASSERT_FALSE(block.requires_protection_lease);
+    CpuState cpu = cpu64(kData64);
+    cpu.gpr.rsp = kData64 + 0x3000;
+    // A direct linked hop leaves CpuState.rip at an earlier block. No
+    // instruction of this block may retire when its entry proof deopts.
+    cpu.rip = kCode64 - 16;
+    cpu.jit_iters = 7;
+    cpu.nzcv_kind = static_cast<u8>(ir::NzcvKind::Sub);
+    cpu.nzcv_bits = (1u << 30) | (1u << 29); // CMP of equal unsigned values
+    const u32 incoming_nzcv = cpu.nzcv_bits;
+    // Use the same published layout the inline lease reads, without a
+    // racing writer or a test-only production entry point.
+    auto* writer = reinterpret_cast<std::atomic<u32>*>(
+        reinterpret_cast<u8*>(m_memory.get()) +
+        GuestMemory::linear_proof_writer_offset());
+    writer->store(1, std::memory_order_seq_cst);
+    const auto result = test::execute_like_dispatcher(*m_jit, block, cpu);
+    writer->store(0, std::memory_order_seq_cst);
+    EXPECT_EQ(result, JitExecResult::Unsupported);
+    EXPECT_EQ(cpu.rip, kCode64);
+    EXPECT_EQ(cpu.jit_iters, 0u);
+    EXPECT_EQ(cpu.nzcv_kind, static_cast<u8>(ir::NzcvKind::Sub));
+    EXPECT_EQ(cpu.nzcv_bits, incoming_nzcv);
+    EXPECT_FALSE(cpu.pending_raise.active);
+}
+
+TEST_F(JitColdResidencyTest, PartialStackPointerWritesEndTheSpan) {
+    constexpr GuestAddr old_stack = kData64 + 0x3F00;
+    constexpr GuestAddr new_stack = kData64 + 0x3FF0;
+    ASSERT_TRUE(m_memory->map_region(kData64 + 0x4000, 0x4000,
+                                    MemoryProtection::ReadWrite));
+    ASSERT_TRUE(m_memory->write_u64(old_stack + 8, 10));
+    ASSERT_TRUE(m_memory->write_u64(old_stack + 16, 20));
+    ASSERT_TRUE(m_memory->protect_region(kData64 + 0x4000, 0x1000,
+                                        MemoryProtection::None));
+    for (bool word : {true, false}) {
+        SCOPED_TRACE(word ? "SP" : "SPL");
+        std::vector<u8> code = {
+            0x48, 0x8B, 0x44, 0x24, 0x08,
+            0x48, 0x8B, 0x54, 0x24, 0x10,
+        };
+        if (word) code.insert(code.end(), {0x66, 0xBC, 0xF0, 0x3F});
+        else code.insert(code.end(), {0x40, 0xB4, 0xF0});
+        const u32 fault_offset = code.size();
+        code.insert(code.end(), {0x48, 0x8B, 0x4C, 0x24, 0x20});
+        CompiledBlock block{};
+        ASSERT_NE(publish(code, block), nullptr);
+        CpuState cpu = cpu64(0);
+        cpu.gpr.rsp = old_stack;
+        EXPECT_EQ(test::execute_like_dispatcher(*m_jit, block, cpu),
+                  JitExecResult::Continue);
+        EXPECT_TRUE(cpu.pending_raise.active);
+        EXPECT_EQ(cpu.pending_raise.code, 0xC0000005u);
+        EXPECT_EQ(cpu.pending_raise.args[1], new_stack + 0x20);
+        EXPECT_EQ(cpu.rip, kCode64 + fault_offset);
+        EXPECT_EQ(cpu.gpr.rsp, new_stack);
+    }
+}
+
+TEST_F(JitColdResidencyTest, StackChangingLoopRechecksTheSpan) {
+    ASSERT_TRUE(m_memory->map_region(kData64 + 0x4000, 0x4000,
+                                    MemoryProtection::ReadWrite));
+    ASSERT_TRUE(m_memory->protect_region(kData64 + 0x4000, 0x1000,
+                                        MemoryProtection::None));
+    const std::vector<u8> code = {
+        0x48, 0x8B, 0x44, 0x24, 0x08, // mov rax,[rsp+8]
+        0x48, 0x8B, 0x54, 0x24, 0x10, // mov rdx,[rsp+16]
+        0x48, 0x83, 0xC4, 0x10,       // add rsp,16
+        0xFF, 0xC9,                   // dec ecx
+        0x75, 0xEE,                   // jnz start
+    };
+    CompiledBlock block{};
+    ASSERT_NE(publish(code, block), nullptr);
+    CpuState cpu = cpu64(0);
+    cpu.gpr.rsp = kData64 + 0x3FD0;
+    cpu.gpr.rcx = 3;
+    auto result = JitExecResult::Continue;
+    for (unsigned entry = 0; entry < 3 && cpu.gpr.rcx != 0 &&
+         !cpu.pending_raise.active && result == JitExecResult::Continue; ++entry) {
+        result = test::execute_like_dispatcher(*m_jit, block, cpu);
+    }
+    // The third iteration's second load is on the denied page. Either the
+    // entry proof rejects it or the access itself faults; it cannot finish.
+    EXPECT_TRUE(cpu.pending_raise.active || result == JitExecResult::Unsupported);
+    EXPECT_NE(cpu.gpr.rcx, 0u);
+    EXPECT_EQ(cpu.gpr.rsp, kData64 + 0x3FF0);
 }
 
 TEST_F(JitColdResidencyTest, RepeatedStackProofDeoptsDropTheProofOnce) {

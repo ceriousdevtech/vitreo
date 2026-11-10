@@ -59,6 +59,7 @@ struct ThreadTlb {
     u64 generation{0};
     u64 protect_seq{0};
     const void* owner{nullptr};
+    u8 alternate_page_hints[1024]{};
 };
 
 // initial-exec TLS model: on macOS arm64 the default ("global-dynamic")
@@ -175,11 +176,21 @@ inline TlbEntry* tlb_find(const GuestMemory* owner, u64 gen,
             return &last;
         }
         const GuestAddr page = addr >> 12;
-        auto& hint = tlb.page_hints[(page ^ (page >> 10) ^ (page >> 20)) & 1023];
+        const usize bucket = (page ^ (page >> 10) ^ (page >> 20)) & 1023;
+        auto& hint = tlb.page_hints[bucket];
         auto& predicted = tlb.entries[hint];
         if (tlb_entry_covers(predicted, addr, size)) {
             tlb.last = hint;
             return &predicted;
+        }
+        auto& alternate_hint = tlb.alternate_page_hints[bucket];
+        if (alternate_hint != hint) {
+            auto& alternate = tlb.entries[alternate_hint];
+            if (tlb_entry_covers(alternate, addr, size)) {
+                std::swap(hint, alternate_hint);
+                tlb.last = hint;
+                return &alternate;
+            }
         }
         for (int i = 0; i < tlb.filled; ++i) {
             if (i == tlb.last) {
@@ -187,6 +198,7 @@ inline TlbEntry* tlb_find(const GuestMemory* owner, u64 gen,
             }
             auto& e = tlb.entries[i];
             if (tlb_entry_covers(e, addr, size)) {
+                alternate_hint = hint;
                 hint = static_cast<u8>(i);
                 tlb.last = hint;
                 return &e;
@@ -800,8 +812,28 @@ ReadResult<u8> GuestMemory::fetch_u8(GuestAddr addr) const {
 
 bool GuestMemory::guest_can_write(GuestAddr addr, usize size) {
     bool writable = false;
-    return resolve_addr_mut(addr, size, &writable, nullptr) != nullptr &&
-           writable;
+    if (resolve_addr_mut(addr, size, &writable, nullptr) != nullptr) {
+        return writable;
+    }
+    // resolve_addr_mut resolves one mapping; a range that runs from one
+    // mapping into the next is writable when each page's piece is.
+    GuestAddr cursor = addr;
+    usize left = size;
+    while (left > 0) {
+        const GuestAddr next_page = (cursor | GuestAddr{0xFFF}) + 1;
+        const usize piece = (next_page == 0 || next_page - cursor >= left)
+            ? left : static_cast<usize>(next_page - cursor);
+        if (piece == size) return false;  // one page: already refused above
+        bool piece_writable = false;
+        if (resolve_addr_mut(cursor, piece, &piece_writable, nullptr) ==
+                nullptr ||
+            !piece_writable) {
+            return false;
+        }
+        cursor += piece;
+        left -= piece;
+    }
+    return true;
 }
 
 Byte* GuestMemory::host_ptr_store(GuestAddr addr, usize size) {

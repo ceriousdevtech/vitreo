@@ -85,9 +85,12 @@ public:
 
     /// Buffers larger than this are not kept: created and freed per draw.
     static constexpr usize kMaxBufferBytes = usize{32} << 20;
-    /// What the idle buffers may hold at most; the oldest go first.
+    /// What the idle buffers may hold at most; the oldest go first. Bytes are
+    /// the only budget: a count limit beside it (512 once) is reached by a
+    /// frame with a few hundred geometry draws -- each holds 2-4 buffers
+    /// until its submission completes -- and every buffer past it was freed
+    /// and created again, an IOGPUResourceCreate each, on every draw.
     static constexpr usize kMaxIdleBytes = usize{128} << 20;
-    static constexpr usize kMaxIdle = 512;
     /// An idle buffer not reused within this many submissions is freed.
     static constexpr u64 kStaleGenerations = 4096;
 
@@ -150,10 +153,10 @@ public:
             if (graphics::slim_record::count_tick(m_stats.reused)) {
                 std::fprintf(stderr,
                              "[wpr2] gs-ring reused=%llu created=%llu "
-                             "idle=%zu\n",
+                             "idle=%zu idle_mb=%zu\n",
                              static_cast<unsigned long long>(m_stats.reused),
                              static_cast<unsigned long long>(m_stats.created),
-                             m_stats.idle);
+                             m_stats.idle, m_stats.idle_bytes >> 20);
             }
             return Buffer(buffer, Return{this});
         }
@@ -216,7 +219,7 @@ private:
             std::unique_ptr<graphics::BackendBuffer>(buffer), generation});
         ++m_stats.idle;
         m_stats.idle_bytes += desc.byte_width;
-        while (m_stats.idle > kMaxIdle || m_stats.idle_bytes > kMaxIdleBytes) {
+        while (m_stats.idle_bytes > kMaxIdleBytes) {
             evict_oldest();
         }
     }

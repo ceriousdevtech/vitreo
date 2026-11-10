@@ -231,6 +231,22 @@ bool MetalDevice::supports_framebuffer_fetch() const {
     }
 }
 
+bool MetalDevice::supports_raster_order_groups() const {
+    if (m_device == nullptr) return false;
+    @autoreleasepool {
+        id<MTLDevice> device = (__bridge id<MTLDevice>)m_device;
+        return [device areRasterOrderGroupsSupported];
+    }
+}
+
+bool MetalDevice::supports_read_write_texture_tier2() const {
+    if (m_device == nullptr) return false;
+    @autoreleasepool {
+        id<MTLDevice> device = (__bridge id<MTLDevice>)m_device;
+        return [device readWriteTextureSupport] == MTLReadWriteTextureTier2;
+    }
+}
+
 bool MetalDevice::has_unified_memory() const {
     if (m_device == nullptr) return false;
     @autoreleasepool {
@@ -363,9 +379,77 @@ bool MetalDevice::update_tile_mappings(BackendTexture2D* texture,
     BackendTiledLayout layout{};
     if (!tiled_texture_layout(texture, layout)) return false;
     auto* metal = static_cast<MetalBackendTexture2D*>(texture);
+    if (!MetalTiled::instance().record_update(
+            metal->native_handle(), true, layout.first_packed_level, pool,
+            mappings, count, self_aliased)) {
+        return false;
+    }
+    MetalBackendTexture2D* companion = metal->residency_companion();
+    if (companion == nullptr || count == 0) return true;
+    // The residency companion mirrors the update in the same stream: each
+    // tile mapped here shows the companion's page of 1.0, each unmapped one
+    // nothing (reads 0). attach_residency_companion matched the tile grid
+    // and the packed tail, so the coordinates are the same.
+    PixelFormat format = PixelFormat::Unknown;
+    u64 pattern = 0;
+    BackendTilePool* ones = nullptr;
+    if (metal_residency_format(texture->desc().pixel_format, format, pattern)) {
+        ones = MetalTiled::instance().residency_pool(pattern);
+    }
+    if (ones == nullptr) return false;
+    BackendTiledLayout companion_layout{};
+    if (!tiled_texture_layout(companion, companion_layout)) return false;
+    std::vector<BackendTileMapping> mirrored;
+    mirrored.reserve(count);
+    // A slice's packed mips are one unit (D3D11.3 5.9.2.8.5 packs them
+    // together; the companion's tail may hold a different number of
+    // tiles): the companion's whole tail shows 1.0 while every tile of the
+    // texture's tail of that slice is mapped, else nothing.
+    const unsigned tail = layout.packed_tiles;
+    std::vector<u8>& state = metal->residency_tail_state();
+    const unsigned slices = std::max(1u, texture->desc().array_size) *
+                            (texture->desc().cube && texture->desc().array_size == 1 ? 6u : 1u);
+    if (tail != 0 && state.size() != static_cast<usize>(tail) * slices) {
+        state.assign(static_cast<usize>(tail) * slices, 0u);
+    }
+    const auto whole = [&](unsigned slice) {
+        for (unsigned j = 0; j < tail; ++j) {
+            if (state[static_cast<usize>(slice) * tail + j] == 0u) return false;
+        }
+        return true;
+    };
+    std::vector<std::pair<unsigned, bool>> tails_before;
+    for (usize i = 0; i < count; ++i) {
+        BackendTileMapping mapping = mappings[i];
+        const bool mapped = mapping.pool_tile != BACKEND_TILE_UNMAPPED;
+        if (!mapping.tile.packed) {
+            mapping.pool_tile = mapped ? 0u : BACKEND_TILE_UNMAPPED;
+            mirrored.push_back(mapping);
+            continue;
+        }
+        const unsigned slice = mapping.tile.slice;
+        if (tail == 0 || slice >= slices || mapping.tile.x >= tail) return false;
+        bool seen = false;
+        for (const auto& entry : tails_before) seen = seen || entry.first == slice;
+        if (!seen) tails_before.emplace_back(slice, whole(slice));
+        state[static_cast<usize>(slice) * tail + mapping.tile.x] = mapped ? 1u : 0u;
+    }
+    for (const auto& [slice, was] : tails_before) {
+        const bool now = whole(slice);
+        if (now == was) continue;
+        for (unsigned j = 0; j < companion_layout.packed_tiles; ++j) {
+            BackendTileMapping unit{};
+            unit.tile.packed = true;
+            unit.tile.slice = slice;
+            unit.tile.x = j;
+            unit.pool_tile = now ? 0u : BACKEND_TILE_UNMAPPED;
+            mirrored.push_back(unit);
+        }
+    }
+    if (mirrored.empty()) return true;
     return MetalTiled::instance().record_update(
-        metal->native_handle(), true, layout.first_packed_level, pool,
-        mappings, count, self_aliased);
+        companion->native_handle(), true, companion_layout.first_packed_level,
+        ones, mirrored.data(), mirrored.size(), false);
 }
 
 bool MetalDevice::update_tile_mappings(BackendBuffer* buffer,
@@ -381,6 +465,33 @@ bool MetalDevice::update_tile_mappings(BackendBuffer* buffer,
                                                 self_aliased);
 }
 
+void MetalDevice::attachment_barrier(BackendTexture2D* texture) {
+    void* scope = nullptr;
+    if (texture != nullptr && texture->valid()) {
+        auto* metal = static_cast<MetalBackendTexture2D*>(texture);
+        const auto& local = metal->local_texture();
+        const auto& desc = texture->desc();
+        id<MTLTexture> native = (__bridge id<MTLTexture>)metal->native_handle();
+        // Standalone private allocations and ordinary placement heaps have
+        // stable native allocation identities/ranges. Shared, sparse,
+        // linear and borrowed storage keep the unconditional boundary.
+        const bool known_storage = local &&
+            (native.heap != nil
+                 ? native.heap.type == MTLHeapTypePlacement
+                 : desc.heap == nullptr && !local->desc().heap_placed);
+        if (local && !metal->shared_local() && !desc.shareable &&
+            !desc.tiled && known_storage &&
+            [native respondsToSelector:@selector(isSparse)] && !native.isSparse &&
+            !local->desc().shareable &&
+            !local->desc().placement_sparse &&
+            native.storageMode == MTLStorageModePrivate &&
+            native.buffer == nil && native.iosurface == nullptr) {
+            scope = metal->native_handle();
+        }
+    }
+    MetalSubmitQueue::instance().record_attachment_barrier(scope);
+}
+
 bool MetalDevice::tiled_resource_barrier() {
     if (!supports_tiled_resources()) return false;
     MetalSubmitQueue::instance().record_tiled_barrier();
@@ -388,3 +499,11 @@ bool MetalDevice::tiled_resource_barrier() {
 }
 
 } // namespace vitreo::graphics
+
+#include "graphics/metal/metal_raytracing.hpp"
+
+namespace vitreo::graphics {
+BackendRaytracing* MetalDevice::raytracing() noexcept {
+    return m_device != nullptr ? metal_raytracing(m_device) : nullptr;
+}
+}  // namespace vitreo::graphics

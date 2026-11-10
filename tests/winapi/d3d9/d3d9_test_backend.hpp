@@ -21,11 +21,40 @@
 
 namespace vitreo::winapi::d3d9_test {
 
+/// A completion point whose readiness the test controls
+/// (BackendRecord::timestamps_ready); times advance by 1000 ns per point.
+class TestGpuTimestamp final : public graphics::GpuTimestamp {
+public:
+    TestGpuTimestamp(BackendRecord& record, u64 time_ns)
+        : m_record(record), m_time_ns(time_ns) {}
+    bool ready() const override { return m_record.timestamps_ready.load(); }
+    u64 gpu_time_ns() const override { return m_time_ns; }
+
+private:
+    BackendRecord& m_record;
+    u64 m_time_ns;
+};
+
+/// Counts BackendRecord::samples_per_draw for every draw of a pass bound to
+/// it. Untracked (generation 0): complete as soon as it is recorded.
+class TestOcclusionCounter final : public graphics::GpuOcclusionCounter {
+public:
+    u64 samples() const override { return m_samples; }
+    u64 recorded_generation() const override { return 0; }
+    void add(u64 samples) { m_samples += samples; }
+
+private:
+    u64 m_samples{0};
+};
+
 class TestBackendRenderPass final : public graphics::BackendRenderPass {
 public:
-    TestBackendRenderPass(BackendRecord& record, bool has_depth)
-        : m_record(record), m_has_depth(has_depth) {
+    TestBackendRenderPass(BackendRecord& record, bool has_depth,
+                          graphics::GpuOcclusionCounter* counter = nullptr)
+        : m_record(record), m_has_depth(has_depth),
+          m_counter(static_cast<TestOcclusionCounter*>(counter)) {
         ++m_record.render_passes_begun;
+        if (m_counter != nullptr) ++m_record.counted_passes;
     }
     bool valid() const noexcept override { return m_open; }
     bool draw(const graphics::BackendDrawCall& call) override {
@@ -41,6 +70,7 @@ public:
             std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         }
         ++m_record.draws;
+        if (m_counter != nullptr) m_counter->add(m_record.samples_per_draw);
         m_record.draw_calls.push_back(call);
         m_record.draw_vertex_constant_pointers.push_back(
             call.vertex_constants);
@@ -68,6 +98,7 @@ public:
 private:
     BackendRecord& m_record;
     bool m_has_depth{false};
+    TestOcclusionCounter* m_counter{nullptr};
     bool m_open{true};
 };
 
@@ -90,10 +121,20 @@ public:
         return true;
     }
     std::unique_ptr<graphics::BackendRenderPass> begin_render_pass(
-        bool, bool clear_depth, float depth_clear_value,
+        bool preserve, bool clear_depth, float depth_clear_value,
         const std::array<graphics::BackendTexture2D*,
                          graphics::BACKEND_MAX_RENDER_TARGETS>&
             color_targets) override {
+        return begin_render_pass_counted(preserve, clear_depth,
+                                         depth_clear_value, color_targets,
+                                         nullptr);
+    }
+    std::unique_ptr<graphics::BackendRenderPass> begin_render_pass_counted(
+        bool, bool clear_depth, float depth_clear_value,
+        const std::array<graphics::BackendTexture2D*,
+                         graphics::BACKEND_MAX_RENDER_TARGETS>&
+            color_targets,
+        graphics::GpuOcclusionCounter* counter) override {
         m_record.last_swapchain_color_target_count = 1;
         for (unsigned slot = 1; slot < color_targets.size(); ++slot) {
             if (color_targets[slot] != nullptr) {
@@ -104,8 +145,8 @@ public:
             ++m_record.depth_clearing_passes;
             m_record.last_depth_clear = depth_clear_value;
         }
-        return std::make_unique<TestBackendRenderPass>(m_record,
-                                                       m_desc.depth_stencil);
+        return std::make_unique<TestBackendRenderPass>(
+            m_record, m_desc.depth_stencil, counter);
     }
     bool resize(unsigned width, unsigned height,
                 graphics::PixelFormat format, unsigned count) override {
@@ -200,7 +241,20 @@ public:
         record.last_standalone_cleared_depth = desc.clear_depth;
         record.last_standalone_color_slice = desc.color_slices[0];
         return std::make_unique<TestBackendRenderPass>(
-            record, desc.depth_stencil_target != nullptr);
+            record, desc.depth_stencil_target != nullptr,
+            desc.occlusion_counter);
+    }
+    [[nodiscard]] std::shared_ptr<graphics::GpuTimestamp>
+    record_timestamp() override {
+        if (record.fail_timestamps) return nullptr;
+        record.timestamp_clock_ns += 1000;
+        return std::make_shared<TestGpuTimestamp>(record,
+                                                  record.timestamp_clock_ns);
+    }
+    [[nodiscard]] std::shared_ptr<graphics::GpuOcclusionCounter>
+    create_occlusion_counter() override {
+        if (record.fail_occlusion) return nullptr;
+        return std::make_shared<TestOcclusionCounter>();
     }
     [[nodiscard]] bool dispatch(const graphics::BackendDispatchCall&) override {
         return false;

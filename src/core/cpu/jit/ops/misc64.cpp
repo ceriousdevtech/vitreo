@@ -131,32 +131,24 @@ std::optional<bool> JitCompiler::compile_misc64(
             m_code_buf[b_done] = arm64::b_imm(
                 static_cast<i32>(done_pos - b_done) * 4);
         } else {
+            // jit_cmpxchg64: destination check, compare, flags and exchange
+            // in one helper, so a destination the guest may not write raises
+            // the WRITE access violation Windows reports with RAX, the flags
+            // and memory untouched (jit_cmpxchg_dest_faults). The inline
+            // load/store this replaces faulted as a READ on an unmapped page,
+            // never faulted on a read-only page when the compare failed, and
+            // had already committed the flags when the store faulted.
+            emit_load_gpr64(REG_SCRATCH1, op1.reg);
+            emit(arm64::mov_x(10, REG_SCRATCH1));
             emit_compute_ea64(REG_SCRATCH2, op0.mem, next_rip);
-            emit_m128_align_check_if_required(REG_SCRATCH2, instr, op0);
-            emit_guest_load64(REG_SCRATCH1, REG_SCRATCH2);
-            emit_load_gpr64(REG_SCRATCH0, rax);
-            // Result must not live in REG_SCRATCH3 — emit_set_lazy_flags64
-            // clobbers X3 while writing FlagOp before saving flag_dst.
-            emit(arm64::sub_x(REG_SCRATCH4, REG_SCRATCH0, REG_SCRATCH1));
-            emit_set_lazy_flags64(CpuState::FlagOp::Sub64,
-                                  REG_SCRATCH1, REG_SCRATCH4);
-            emit(arm64::mov_x(REG_CALL_TMP, REG_SCRATCH1));
-            emit(arm64::subs_x(31, REG_SCRATCH0, REG_SCRATCH1));
-            const usize bne_pos = m_code_buf.size();
-            emit(0);
-            emit_load_gpr64(REG_SCRATCH0, op1.reg);
-            emit_compute_ea64(REG_SCRATCH2, op0.mem, next_rip);
-            emit_m128_align_check_if_required(REG_SCRATCH2, instr, op0);
-            emit_guest_store64(REG_SCRATCH0, REG_SCRATCH2);
-            const usize b_done = m_code_buf.size();
-            emit(0);
-            const usize ne_pos = m_code_buf.size();
-            emit_store_gpr64(REG_CALL_TMP, rax);
-            const usize done_pos = m_code_buf.size();
-            m_code_buf[bne_pos] = arm64::b_cond(
-                arm64::NE, static_cast<i32>(ne_pos - bne_pos) * 4);
-            m_code_buf[b_done] = arm64::b_imm(
-                static_cast<i32>(done_pos - b_done) * 4);
+            emit(arm64::mov_x(0, REG_CPU_STATE));
+            emit(arm64::ldr_x_uoff(1, REG_JIT_CTX, JIT_CTX_OFF_MEMORY >> 3));
+            emit(arm64::mov_x(2, REG_SCRATCH2));
+            emit(arm64::mov_x(3, 10));
+            emit_host_addr_imm64(16, static_cast<i64>(
+                reinterpret_cast<uintptr_t>(&jit_cmpxchg64)));
+            emit_helper_blr();
+            emit_exit_if_pending_raise();
         }
         break;
     }

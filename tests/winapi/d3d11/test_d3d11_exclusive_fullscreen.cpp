@@ -312,8 +312,14 @@ TEST_F(DxgiExclusiveFullscreenTest, RefusalsAreTheDocumentedErrors) {
     EXPECT_EQ(enters.size(), 1u);
     const auto [fs, output] = fullscreen_state(chain);
     EXPECT_EQ(fs, 1u);
-    EXPECT_NE(output, target) << "full-screen creates a new output object";
+    // Measured (d3d12_a73_swapchain_fullscreen_probe m11_*_out, RTX 4080):
+    // GetFullscreenState hands back pTarget itself ("passed=1").
+    EXPECT_EQ(output, target);
+    // FALSE with a pTarget on a full-screen chain is refused (measured a73).
+    EXPECT_EQ(call(chain, 10, {0, target}), kIC);
+    EXPECT_EQ(fullscreen_state(chain).first, 1u);
     (void)output_method(output, 2, {});
+    (void)output_method(target, 2, {});
     (void)output_method(target, 2, {});
     // A second chain cannot take the display mode the first one holds.
     GuestAddr second = 0;
@@ -567,6 +573,48 @@ TEST_F(DxgiExclusiveFullscreenTest, WindowedFalseCreationEntersFullscreen) {
     (void)output_method(fullscreen_state(chain).second, 2, {});
     EXPECT_EQ(windowed_fields(chain).second, 0u);
     EXPECT_EQ(call(chain, 10, {0, 0}), d3d11::S_OK);
+    (void)call(chain, 2, {});
+}
+
+// A flip chain's transition, measured (d3d12_a73_swapchain_fullscreen_probe
+// m11_*, RTX 4080, x64 and x86): Present -- DXGI_PRESENT_TEST included -- is
+// DXGI_ERROR_INVALID_CALL after SetFullscreenState(TRUE) and after
+// SetFullscreenState(FALSE) until ResizeBuffers (Learn SetFullscreenState:
+// "you must call ResizeBuffers"); DXGI_PRESENT_ALLOW_TEARING is refused in
+// full-screen and accepted windowed; a repeated TRUE is no transition.
+TEST_F(DxgiExclusiveFullscreenTest, FlipChainPresentsAfterResizeBuffersOnly) {
+    constexpr u32 kTearing = 0x800;
+    constexpr u32 kPresentTest = 0x1;
+    constexpr u32 kPresentAllowTearing = 0x200;
+    GuestAddr chain = 0;
+    Desc d = chain_desc(2560, 1440, kTearing, 4);
+    ASSERT_EQ(create(d, &chain), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {0, 0}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 10, {0, 0}), d3d11::S_OK) << "FALSE while windowed";
+    EXPECT_EQ(call(chain, 8, {0, 0}), d3d11::S_OK) << "no transition";
+
+    ASSERT_EQ(call(chain, 10, {1, 0}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {0, 0}), kIC);
+    EXPECT_EQ(call(chain, 8, {0, kPresentTest}), kIC);
+    EXPECT_EQ(call(chain, 13, {0, 0, 0, 0, kTearing}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {0, 0}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {1, 0}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {0, kPresentAllowTearing}), kIC);
+    EXPECT_EQ(call(chain, 10, {1, 0}), d3d11::S_OK) << "TRUE again";
+    EXPECT_EQ(call(chain, 8, {0, 0}), d3d11::S_OK);
+
+    ASSERT_EQ(call(chain, 10, {0, 0}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {0, 0}), kIC);
+    EXPECT_EQ(call(chain, 8, {0, kPresentAllowTearing}), kIC);
+    EXPECT_EQ(call(chain, 13, {0, 0, 0, 0, kTearing}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {0, 0}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {0, kPresentAllowTearing}), d3d11::S_OK);
+    // TRUE then FALSE with no ResizeBuffers between: the buffers are the
+    // windowed ones again (a73 present12 resize=0).
+    ASSERT_EQ(call(chain, 10, {1, 0}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {1, 0}), kIC);
+    ASSERT_EQ(call(chain, 10, {0, 0}), d3d11::S_OK);
+    EXPECT_EQ(call(chain, 8, {1, 0}), d3d11::S_OK);
     (void)call(chain, 2, {});
 }
 

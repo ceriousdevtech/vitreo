@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "windowing/contracts/display_types.hpp"
 #include "windowing/model/window_types.hpp"
 
@@ -64,6 +66,22 @@ public:
         HWND hwnd, const u8* data, usize size) = 0;
     virtual bool set_control_font(
         HWND hwnd, float point_size, u16 weight, bool italic) = 0;
+    /// The colours a parent chose for a native STATIC in WM_CTLCOLORSTATIC
+    /// (Learn): the DC's text colour, the returned brush's fill (nullopt for
+    /// a hollow brush: the control paints no background) and, in OPAQUE
+    /// background mode, the DC's background colour behind the text cells.
+    /// COLORREFs (0x00BBGGRR).
+    struct ControlColors {
+        u32 text{0};
+        std::optional<u32> fill;
+        std::optional<u32> text_background;
+    };
+    /// Apply @p colors to a native label; false when the host has none.
+    virtual bool set_control_colors(HWND hwnd, const ControlColors& colors) {
+        (void)hwnd;
+        (void)colors;
+        return false;
+    }
     /// As set_control_font, in the guest's face: the native control must
     /// draw with the font GDI measured the guest's layout with.
     virtual bool set_control_font_face(HWND hwnd, const std::u16string& face,

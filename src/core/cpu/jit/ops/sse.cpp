@@ -100,16 +100,50 @@ bool is_full_width_move_store(Opcode op) {
 
 }  // namespace
 
+bool JitCompiler::emit_vex_bridge_source_probe(const DecodedInstruction& instr,
+                                               int mem_index, u64 next_rip) {
+    // Ascending order, as compile_vex256_lane_split probes an m256 before
+    // lane 0 writes: a straddling m128 reports the first inaccessible byte,
+    // exactly what the lowering's own read would have reported.
+    if (m_vex_bridge_source_proven) return true;
+    const Operand& mop = instr.operands[mem_index];
+    const u8 bytes = operand_size(mop.type);
+    if (bytes != 1 && bytes != 2 && bytes != 4 && bytes != 8 && bytes != 16) {
+        return false;
+    }
+    const bool hold = should_hold_nzcv();
+    if (hold) emit_nzcv_spill();
+    emit_compute_ea(REG_CALL_TMP, mop.mem, next_rip);
+    switch (bytes) {
+    case 1: emit_guest_load8(REG_SCRATCH0, REG_CALL_TMP); break;
+    case 2: emit_guest_load16(REG_SCRATCH0, REG_CALL_TMP); break;
+    case 4: emit_guest_load32(REG_SCRATCH0, REG_CALL_TMP); break;
+    case 16:
+        if (m_block_is_64bit) {
+            // One validated 128-bit access (long mode only); V5 is the
+            // bridge's own scratch, rewritten by the YMM[255:128] zero.
+            emit_guest_load128(5, REG_CALL_TMP);
+            break;
+        }
+        [[fallthrough]];
+    default:
+        emit_guest_load64(REG_SCRATCH0, REG_CALL_TMP);
+        if (bytes == 16) {
+            emit(arm64::add_x_imm(REG_SCRATCH4, REG_CALL_TMP, 8));
+            emit_guest_load64(REG_SCRATCH0, REG_SCRATCH4);
+        }
+        break;
+    }
+    if (hold) emit_nzcv_fill();
+    m_vex_bridge_source_proven = true;
+    return true;
+}
+
 bool JitCompiler::compile_sse(const DecodedInstruction& instr,
                                u64 instr_rip, u64 next_rip,
                                bool is_last) {
-    switch (instr.opcode) {
-    case Opcode::MINPS_XMM_XMMM128: case Opcode::MAXPS_XMM_XMMM128:
-    case Opcode::MINPD_XMM_XMMM128: case Opcode::MAXPD_XMM_XMMM128:
-    case Opcode::MINSS_XMM_XMMM32: case Opcode::MAXSS_XMM_XMMM32:
-    case Opcode::MINSD_XMM_XMMM64: case Opcode::MAXSD_XMM_XMMM64:
+    if (sse_minmax_lowers_vex(instr.opcode)) {
         return compile_sse_minmax(instr,instr_rip,next_rip,is_last);
-    default: break;
     }
     // A VEX-encoded SSE instruction reuses the legacy SSE Opcode with
     // prefixes.vex set, but it is NOT the legacy instruction: VEX.NDS makes it
@@ -513,6 +547,66 @@ bool JitCompiler::compile_sse(const DecodedInstruction& instr,
         DecodedInstruction legacy = instr;
         legacy.prefixes.vex = false;
         legacy.prefixes.vex_l = false;
+
+        int mem_index = -1;
+        for (u8 i = 0; i < instr.operand_count; ++i) {
+            if (is_memory_operand(instr.operands[i].type)) mem_index = i;
+        }
+        if (mem_index >= 0) {
+            // A memory source can fault, and a faulting instruction commits
+            // nothing (Intel SDM Vol. 3A 6.5): DEST and YMM[255:128] must
+            // still hold their old values when the read fails. So neither
+            // the merge copy nor the upper-half zero may run before the
+            // read. The lowering is emitted as a non-last instruction (it
+            // then emits no block exit), the zero follows it, and the block
+            // tail is emitted here. Register sources keep the prologue
+            // order below: they cannot fault, and it is what they always
+            // emitted.
+            usize mem_mark = m_code_buf.size();
+            bool ok = false;
+            if (merge && vex256_lane_split_allowed(instr.opcode)) {
+                // The lane-split allowlist lowerings take SRC1 from vvvv
+                // themselves and read both sources before their store (the
+                // alias path above relies on the same property), so with
+                // prefixes.vex kept there is no merge copy to order at all:
+                // the only access before the store is the read itself.
+                DecodedInstruction low = instr;
+                low.prefixes.vex_l = false;
+                m_vec_lane_split = true;
+                m_vec_hi_lane = false;
+                ok = compile_sse(low, instr_rip, next_rip, /*is_last=*/false);
+                m_vec_lane_split = false;
+            } else {
+                if (merge) {
+                    // The two-operand legacy lowering reads SRC1 from DEST,
+                    // so the merge copy must precede it: prove the source
+                    // readable first.
+                    if (!emit_vex_bridge_source_probe(instr, mem_index,
+                                                      next_rip)) {
+                        return false;
+                    }
+                    // A decline below drops only the merge copy: the probe
+                    // stays (see m_vex_bridge_source_proven).
+                    mem_mark = m_code_buf.size();
+                    emit(arm64::ldr_q_uoff(0, REG_CPU_STATE,
+                                           xmm_u64_off(vvvv, 0) >> 4));
+                    emit(arm64::str_q_uoff(0, REG_CPU_STATE,
+                                           xmm_u64_off(dst, 0) >> 4));
+                }
+                ok = compile_sse(legacy, instr_rip, next_rip, /*is_last=*/false);
+            }
+            if (!ok) {
+                m_code_buf.resize(mem_mark);
+                return false;
+            }
+            if (xmm_dst) {
+                // Intel SDM Vol. 2: a 128-bit VEX form zeroes YMM[255:128].
+                emit(arm64::eor_v16b(5, 5, 5));
+                emit(arm64::str_q_uoff(5, REG_CPU_STATE, dhi_off >> 4));
+            }
+            finish_vector_block(next_rip, is_last);
+            return true;
+        }
 
         // Both prologue steps run BEFORE the legacy lowering: on the block's
         // last instruction that lowering emits the block exit, so anything

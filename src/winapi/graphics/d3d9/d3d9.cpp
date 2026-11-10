@@ -311,6 +311,36 @@ constexpr StandardAdapterMode kStandardAdapterModes[] = {
     return false;
 }
 
+/// The Format EnumAdapterModes reports for a requested display format, or
+/// D3DFMT_UNKNOWN when the adapter has no modes of it.
+///
+/// Learn (IDirect3D9::EnumAdapterModes, and "Converting to Direct3D 9"):
+/// the allowed formats are A1R5G5B5, A2B10G10R10, A8R8G8B8, R5G6B5,
+/// X1R5G5B5 and X8R8G8B8; enumeration is equivalent for the alpha and
+/// non-alpha version of a format and reports the format supplied, and 565
+/// and 555 are one 16-bit mode set reported in the adapter's own version.
+/// The desktop is 32 bpp. Learn (EnumDisplaySettings): Windows 8 and later
+/// emulate the modes below 32 bpp for an application that does not target
+/// Windows 8 in its manifest, while the system stays in 32-bit colour; the
+/// emulated 16-bit modes are R5G6B5. There are no 10-bit display modes.
+[[nodiscard]] u32 adapter_mode_format(u32 requested, bool low_color_emulated) {
+    constexpr u32 D3DFMT_R5G6B5_ = 23;
+    constexpr u32 D3DFMT_X1R5G5B5_ = 24;
+    constexpr u32 D3DFMT_A1R5G5B5_ = 25;
+    switch (requested) {
+    case D3DFMT_X8R8G8B8:
+    case D3DFMT_A8R8G8B8:
+        return requested;
+    case D3DFMT_R5G6B5_:
+    case D3DFMT_X1R5G5B5_:
+        return low_color_emulated ? D3DFMT_R5G6B5_ : D3DFMT_UNKNOWN;
+    case D3DFMT_A1R5G5B5_:
+        return low_color_emulated ? D3DFMT_A1R5G5B5_ : D3DFMT_UNKNOWN;
+    default:
+        return D3DFMT_UNKNOWN;
+    }
+}
+
 [[nodiscard]] u32 count_adapter_modes(u32 screen_width, u32 screen_height) {
     u32 count = 0;
     u32 width = 0;
@@ -476,9 +506,22 @@ u32 D3D9Manager::release(u32 object) {
     return count;
 }
 
+bool D3D9Manager::object_interface(u32 object, D3D9InterfaceId& iface) {
+    std::lock_guard<std::recursive_mutex> lock(m_mutex);
+    const ComObject* entry = find_any(object);
+    if (entry == nullptr) return false;
+    iface = entry->iface;
+    return true;
+}
+
 void D3D9Manager::destroy_object(u32 object) {
     const auto found = m_objects.find(object);
     if (found == m_objects.end()) return;
+    if (m_object_destroyed_cb) m_object_destroyed_cb(object);
+    // CreateDevice took a reference on the IDirect3D9 that created the
+    // device; the device gives it back when it is destroyed.
+    const u32 parent_factory =
+        found->second.device_state ? found->second.device_state->parent_d3d9 : 0u;
 
     ComObject& entry = found->second;
 
@@ -494,6 +537,15 @@ void D3D9Manager::destroy_object(u32 object) {
     }
     if (entry.buffer && entry.buffer->storage != 0) {
         unmap_lock_region(entry.buffer->storage, entry.buffer->length);
+    }
+    if (entry.query && entry.device != 0) {
+        // A building occlusion query released mid-bracket stops counting.
+        if (ComObject* device = find(entry.device, D3D9InterfaceId::Device);
+            device != nullptr && device->device_state) {
+            auto& counting = device->device_state->counting_queries;
+            counting.erase(std::remove(counting.begin(), counting.end(), object),
+                           counting.end());
+        }
     }
     if (entry.device_state) {
         // Leaving exclusive mode before tearing down the swap chain restores
@@ -631,6 +683,7 @@ void D3D9Manager::destroy_object(u32 object) {
     m_objects.erase(object);
     m_free_obj_addrs.push_back(object);
     VITREO_TRACE("[d3d9] destroyed object=0x%08x\n", object);
+    if (parent_factory != 0) (void)release(parent_factory);
 }
 
 GuestAddr D3D9Manager::map_lock_region(usize bytes) {
@@ -738,6 +791,44 @@ bool D3D9Manager::valid_adapter(u32 adapter, u32 device_type) const {
         m_backend != nullptr && m_backend->available();
 }
 
+bool D3D9Manager::is_enumerated_fullscreen_size(u32 width, u32 height) const {
+    // Measured on an RTX 4080 (tools/oracle_probe/d3d9_fullscreen_mode_probe.c,
+    // x86): Windowed = FALSE with a size EnumAdapterModes does not list fails
+    // CreateDevice and Reset with D3DERR_INVALIDCALL, whether larger than
+    // every mode (3072x1696) or merely odd (1234x777). The list is built from
+    // the desktop mode, not from an exclusive mode already in force.
+    u32 desktop_width = 0;
+    u32 desktop_height = 0;
+    if (!desktop_display_size(desktop_width, desktop_height)) return true;
+    u32 mode_width = 0;
+    u32 mode_height = 0;
+    for (u32 index = 0; resolve_adapter_mode(desktop_width, desktop_height, index,
+                                             mode_width, mode_height);
+         ++index) {
+        if (mode_width == width && mode_height == height) return true;
+    }
+    return false;
+}
+
+bool D3D9Manager::desktop_display_size(u32& width, u32& height) const {
+    if (!m_display_size_resolver) return false;
+    return m_display_size_resolver(width, height) && width != 0 && height != 0;
+}
+
+bool D3D9Manager::exclusive_size_allowed(const u8* parameters) const {
+    u32 width = 0;
+    u32 height = 0;
+    u32 windowed = 0;
+    std::memcpy(&width, parameters + PP_BACK_BUFFER_WIDTH, 4);
+    std::memcpy(&height, parameters + PP_BACK_BUFFER_HEIGHT, 4);
+    std::memcpy(&windowed, parameters + PP_WINDOWED, 4);
+    if (windowed != 0 || is_enumerated_fullscreen_size(width, height)) return true;
+    std::fprintf(stderr,
+                 "[d3d9] exclusive %ux%u is not an adapter display mode -> "
+                 "D3DERR_INVALIDCALL\n", width, height);
+    return false;
+}
+
 bool D3D9Manager::current_display_mode(std::array<u32, 4>& mode) const {
     // Exclusive CreateDevice/Reset is the adapter's current mode. Returning
     // the host Retina framebuffer here made GetDisplayMode report 3600×2338
@@ -807,15 +898,26 @@ void D3D9Manager::get_raster_status(Marshaler& m, u32 swap_chain_index,
     m.set_return(D3D_OK);
 }
 
+void d3d9_log_unimplemented_once(const char* api, const char* what) {
+    static std::mutex mutex;
+    static std::map<std::string, bool> seen;
+    std::lock_guard<std::mutex> lock(mutex);
+    if (seen.emplace(std::string(api) + '|' + what, true).second) {
+        std::fprintf(stderr, "[vitreo] UNIMPLEMENTED %s: %s\n", api, what);
+    }
+}
+
 u32 D3D9Manager::direct3d_create9(u32 sdk_version) {
     std::lock_guard<std::recursive_mutex> lock(m_mutex);
     VITREO_TRACE("[d3d9] Direct3DCreate9(SDKVersion=%u)\n", sdk_version);
     // Arm here rather than at CreateDevice: a run that never reaches a
     // device still reports whether the dump is available.
     d3d9_frame_dump_init();
-    // D3D_SDK_VERSION is 32 in the final DirectX 9 SDK. Older headers pass
-    // 31. Accept both.
-    if (sdk_version != D3D_SDK_VERSION && sdk_version != 31u) {
+    // D3D_SDK_VERSION is 32 in the final DirectX 9 SDK and D3D9b_SDK_VERSION
+    // is 31; with D3D_DEBUG_INFO defined, shared\d3d9.h ORs 0x80000000 into
+    // both. Measured on Windows 11 (tools/oracle_probe/d3d9_exports_probe):
+    // 31, 32, 0x80000020 succeed; 0, 1, 30, 33, 0x80000021 return NULL.
+    if (!d3d9_sdk_version_supported(sdk_version)) {
         VITREO_TRACE("[d3d9] -> NULL (SDK version mismatch)\n");
         return 0;
     }
@@ -1077,15 +1179,20 @@ void D3D9Manager::dispatch_direct3d9(Marshaler& m, usize slot, u32 self) {
         return;
     }
     case 6: { // GetAdapterModeCount
-        std::array<u32, 4> desktop{};
+        // The list is the adapter's, built from the desktop: an exclusive
+        // 800x600 in force must not shrink it to the modes that fit 800x600,
+        // or a game can never pick a larger size again.
+        u32 desktop_width = 0;
+        u32 desktop_height = 0;
         const u32 adapter = static_cast<u32>(m.arg(1));
         const u32 format = static_cast<u32>(m.arg(2));
-        if (adapter != 0 || format != D3DFMT_X8R8G8B8 ||
-            !current_display_mode(desktop)) {
+        if (adapter != 0 ||
+            adapter_mode_format(format, m_low_color_modes_emulated) == D3DFMT_UNKNOWN ||
+            !desktop_display_size(desktop_width, desktop_height)) {
             m.set_return(0);
             return;
         }
-        m.set_return(count_adapter_modes(desktop[0], desktop[1]));
+        m.set_return(count_adapter_modes(desktop_width, desktop_height));
         return;
     }
     case 7: { // EnumAdapterModes
@@ -1093,17 +1200,20 @@ void D3D9Manager::dispatch_direct3d9(Marshaler& m, usize slot, u32 self) {
         const u32 format = static_cast<u32>(m.arg(2));
         const u32 mode_index = static_cast<u32>(m.arg(3));
         const GuestAddr mode_out = m.arg_ptr(4);
-        std::array<u32, 4> desktop{};
+        u32 desktop_width = 0;
+        u32 desktop_height = 0;
         u32 width = 0;
         u32 height = 0;
-        if (adapter != 0 || format != D3DFMT_X8R8G8B8 || mode_out == 0 ||
-            !current_display_mode(desktop) ||
-            !resolve_adapter_mode(desktop[0], desktop[1], mode_index, width,
-                                  height)) {
+        const u32 mode_format =
+            adapter_mode_format(format, m_low_color_modes_emulated);
+        if (adapter != 0 || mode_format == D3DFMT_UNKNOWN || mode_out == 0 ||
+            !desktop_display_size(desktop_width, desktop_height) ||
+            !resolve_adapter_mode(desktop_width, desktop_height, mode_index,
+                                  width, height)) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
-        const std::array<u32, 4> mode{width, height, 0, D3DFMT_X8R8G8B8};
+        const std::array<u32, 4> mode{width, height, 0, mode_format};
         if (m.memory()
                 .write_bytes(mode_out,
                              reinterpret_cast<const Byte*>(mode.data()),
@@ -1113,7 +1223,7 @@ void D3D9Manager::dispatch_direct3d9(Marshaler& m, usize slot, u32 self) {
             return;
         }
         VITREO_TRACE("[d3d9] EnumAdapterModes(%u) -> %ux%u fmt=%u\n",
-                     mode_index, width, height, D3DFMT_X8R8G8B8);
+                     mode_index, width, height, mode_format);
         m.set_return(D3D_OK);
         return;
     }
@@ -1173,17 +1283,75 @@ void D3D9Manager::dispatch_direct3d9(Marshaler& m, usize slot, u32 self) {
               check_format == 63 /* D3DFMT_Q8W8V8U8 */ ||
               check_format == 64 /* D3DFMT_V16U16 */ ||
               check_format == 117 /* D3DFMT_CxV8U8 */));
+        // Measured (d3d9_format_probe): DEPTHSTENCIL usage with a colour
+        // format is rejected as an invalid call, before support is
+        // considered.
+        const bool depth_enum =
+            check_format == 70 || check_format == 71 || check_format == 73 ||
+            check_format == 75 || check_format == 77 || check_format == 79 ||
+            check_format == 80 || check_format == 82 || check_format == 83 ||
+            check_format == 84 || check_format == 85;
+        // The FOURCCs the runtime itself defines (d3d9types.h: DXT1-5,
+        // R8G8_B8G8, G8R8_G8B8, UYVY, YUY2, MULTI2_ARGB8) count as colour
+        // formats; vendor FOURCCs (INTZ, ATI1, NULL, ...) are left to support.
+        constexpr auto fourcc = [](char a, char b, char c, char d) {
+            return static_cast<u32>(static_cast<u8>(a)) |
+                   (static_cast<u32>(static_cast<u8>(b)) << 8) |
+                   (static_cast<u32>(static_cast<u8>(c)) << 16) |
+                   (static_cast<u32>(static_cast<u8>(d)) << 24);
+        };
+        const bool runtime_colour_fourcc =
+            check_format == fourcc('D', 'X', 'T', '1') ||
+            check_format == fourcc('D', 'X', 'T', '2') ||
+            check_format == fourcc('D', 'X', 'T', '3') ||
+            check_format == fourcc('D', 'X', 'T', '4') ||
+            check_format == fourcc('D', 'X', 'T', '5') ||
+            check_format == fourcc('R', 'G', 'B', 'G') ||
+            check_format == fourcc('G', 'R', 'G', 'B') ||
+            check_format == fourcc('U', 'Y', 'V', 'Y') ||
+            check_format == fourcc('Y', 'U', 'Y', '2') ||
+            check_format == fourcc('M', 'E', 'T', '1');
+        if ((usage & 0x00000002u /* D3DUSAGE_DEPTHSTENCIL */) != 0 && !depth_enum &&
+            (check_format <= 0xFFu || runtime_colour_fourcc)) {
+            m.set_return(D3DERR_INVALIDCALL);
+            return;
+        }
+        if (check_format > 0xFFu && !runtime_colour_fourcc) {
+            // Vendor FOURCCs are how applications probe driver extensions
+            // (INTZ, NULL, ATOC, A2M1, ...): name each one once.
+            static std::mutex fourcc_mutex;
+            static std::map<u32, bool> fourcc_seen;
+            std::lock_guard<std::mutex> fourcc_lock(fourcc_mutex);
+            if (fourcc_seen.emplace(check_format, true).second) {
+                std::fprintf(stderr,
+                             "[d3d9] CheckDeviceFormat vendor FOURCC '%c%c%c%c' "
+                             "usage=0x%x rtype=%u\n",
+                             static_cast<char>(check_format & 0xFF),
+                             static_cast<char>((check_format >> 8) & 0xFF),
+                             static_cast<char>((check_format >> 16) & 0xFF),
+                             static_cast<char>((check_format >> 24) & 0xFF),
+                             usage, resource_type);
+            }
+        }
+        // Buffers keep the plain format check; images ask the table every
+        // Create* also enforces.
+        const bool buffer = resource_type == 6 || resource_type == 7;
+        const u32 resource_answer =
+            buffer ? (format_supported(check_format) ? D3D_OK
+                                                     : D3DERR_NOTAVAILABLE)
+                   : d3d9_check_format_usage(check_format, resource_type,
+                                             usage);
         const bool ok = valid_adapter(adapter, device_type) &&
                         format_supported(adapter_format) &&
                         resource_type >= 1 && resource_type <= 7 &&
-                        format_supported(check_format) &&
+                        resource_answer != D3DERR_NOTAVAILABLE &&
                         vertex_texture_compatible && legacy_bump_compatible;
         VITREO_TRACE("[d3d9] CheckDeviceFormat adapter=%u type=%u "
                      "afmt=0x%x usage=0x%x rtype=%u cfmt=0x%x -> %s\n",
                      adapter, device_type, adapter_format, usage,
                      resource_type, check_format,
                      ok ? "OK" : "NOTAVAILABLE");
-        m.set_return(ok ? D3D_OK : D3DERR_NOTAVAILABLE);
+        m.set_return(ok ? resource_answer : D3DERR_NOTAVAILABLE);
         return;
     }
     case 11: { // CheckDeviceMultiSampleType
@@ -1274,12 +1442,75 @@ static void impl_Direct3DCreate9(Marshaler& m, D3D9Manager& manager) {
 }
 
 static void impl_Direct3DCreate9Ex(Marshaler& m) {
+    const u32 sdk_version = static_cast<u32>(m.arg(0));
     const GuestAddr object_out = m.arg_ptr(1);
     if (object_out != 0) (void)m.write_ptr(object_out, 0);
+    // Measured: an unsupported SDK version is D3DERR_NOTAVAILABLE with the
+    // out pointer cleared, before any object is considered.
+    if (!d3d9_sdk_version_supported(sdk_version)) {
+        m.set_return(D3DERR_NOTAVAILABLE);
+        return;
+    }
     // IDirect3D9Ex adds the reset/lost-free presentation model, which needs
     // its own device interface; claiming it here would be a fabricated object.
-    VITREO_TRACE("[d3d9] Direct3DCreate9Ex -> E_NOTIMPL "
-                 "(IDirect3D9Ex not implemented)\n");
+    d3d9_log_unimplemented_once("d3d9!Direct3DCreate9Ex",
+                           "IDirect3D9Ex / IDirect3DDevice9Ex");
+    m.set_return(E_NOTIMPL_D3D);
+}
+
+/// `IDirect3D9* WINAPI Direct3DCreate9On12(UINT SDKVersion,
+///     D3D9ON12_ARGS* pOverrideList, UINT NumOverrideEntries)` (um\d3d9on12.h).
+/// D3D9ON12_ARGS is { BOOL Enable9On12; IUnknown* pD3D12Device;
+/// IUnknown* ppD3D12Queues[MAX_D3D9ON12_QUEUES = 2]; UINT NumQueues;
+/// UINT NodeMask; } -- 24 bytes on x86, 40 on x64.
+///
+/// Measured on Windows 11: a null list, a disabled entry, and an enabled
+/// entry with no device all return an ordinary working IDirect3D9 (9On12
+/// then creates its own D3D12 device, invisibly to the caller). The one case
+/// with observable interop is an entry that hands in the caller's own
+/// ID3D12Device: the caller will QueryInterface for IDirect3DDevice9On12 and
+/// share D3D12 resources, which this D3D9 (not layered on D3D12) cannot do.
+/// Returns false when the factory must refuse, else true to continue as
+/// Direct3DCreate9.
+static bool d3d9on12_overrides_supported(Marshaler& m, GuestAddr list,
+                                         u32 count) {
+    const usize stride = m.cpu_is_64bit() ? 40 : 24;
+    const usize device_offset = m.cpu_is_64bit() ? 8 : 4;
+    for (u32 index = 0; index < count; ++index) {
+        const GuestAddr entry = list + index * stride;
+        const auto enable = m.read_u32(entry);
+        const auto device = m.read_ptr(entry + device_offset);
+        if (enable.is_err() || device.is_err()) return false;
+        if (enable.value() != 0 && device.value() != 0) {
+            d3d9_log_unimplemented_once("d3d9!Direct3DCreate9On12",
+                                   "caller-supplied ID3D12Device interop");
+            return false;
+        }
+    }
+    return true;
+}
+
+static void impl_Direct3DCreate9On12(Marshaler& m, D3D9Manager& manager) {
+    const u32 sdk_version = static_cast<u32>(m.arg(0));
+    const GuestAddr list = m.arg_ptr(1);
+    const u32 count = static_cast<u32>(m.arg(2));
+    if (list != 0 && !d3d9on12_overrides_supported(m, list, count)) {
+        m.set_return(0);
+        return;
+    }
+    m.set_return(manager.direct3d_create9(sdk_version));
+}
+
+static void impl_Direct3DCreate9On12Ex(Marshaler& m) {
+    const u32 sdk_version = static_cast<u32>(m.arg(0));
+    const GuestAddr object_out = m.arg_ptr(3);
+    if (object_out != 0) (void)m.write_ptr(object_out, 0);
+    if (!d3d9_sdk_version_supported(sdk_version)) {
+        m.set_return(D3DERR_NOTAVAILABLE);
+        return;
+    }
+    d3d9_log_unimplemented_once("d3d9!Direct3DCreate9On12Ex",
+                           "IDirect3D9Ex / IDirect3DDevice9Ex");
     m.set_return(E_NOTIMPL_D3D);
 }
 
@@ -1291,36 +1522,79 @@ static void impl_DebugSetMute(Marshaler& m) {
 }
 
 /// `IDirect3DShaderValidator9* WINAPI Direct3DShaderValidatorCreate9(void)`.
-/// Retail d3d9.dll exports this but returns NULL — the shader validator only
-/// exists in the debug runtime (d3d9d.dll). Callers null-check the
-/// result and skip validation. Returning a resolvable export that yields NULL
-/// is the correct retail contract; a GetProcAddress miss was wrong, and
-/// fabricating a validator COM object would violate the contract.
+/// Measured on Windows 11 (d3d9_exports_probe): retail d3d9.dll returns a
+/// validator object, x86 and x64. IDirect3DShaderValidator9 is undocumented,
+/// so Vitreo returns NULL -- the factory's failure value, which callers
+/// null-check before skipping validation -- and says so once.
 static void impl_Direct3DShaderValidatorCreate9(Marshaler& m) {
+    d3d9_log_unimplemented_once("d3d9!Direct3DShaderValidatorCreate9",
+                           "IDirect3DShaderValidator9 (undocumented)");
+    m.set_return(0);
+}
+
+/// `void WINAPI DebugSetLevel(void)`: the retail prologue is the same no-op
+/// body as DebugSetMute with a plain `ret` (no argument bytes).
+static void impl_DebugSetLevel(Marshaler& m) {
+    m.set_return(0);
+}
+
+/// `Direct3D9EnableMaximizedWindowedModeShim(DWORD)`: undocumented, one
+/// DWORD argument (retail `ret 4`). Measured: returns 0 for 0, 1 and 2 and
+/// leaves last-error alone. It latches an application-compatibility shim
+/// for maximized windowed presentation; Vitreo's presentation has no such
+/// shim to switch, so nothing else is observable.
+static void impl_Direct3D9EnableMaximizedWindowedModeShim(Marshaler& m) {
+    (void)m.arg(0);
     m.set_return(0);
 }
 
 DllExports create_d3d9_thunks(D3D9Manager& manager) {
     DllExports exports;
+    // Ordinals from the Windows 11 SysWOW64 and System32 d3d9.dll export
+    // tables (tools/oracle_probe/d3d9_exports_probe{32,64}.winoracle-gpu
+    // .expected). Not exported here: PSGPError (25, throws a C++ exception
+    // carrying D3DERR_INVALIDCALL) and PSGPSampleTexture (26), private hooks
+    // of the old processor-specific geometry pipeline with no documented
+    // signature, and the unnamed private ordinals 16-19, 22 and 23.
     exports.entries.push_back(ExportEntry{
-        "Direct3DCreate9", 1,
-        [&manager](Marshaler& m) { impl_Direct3DCreate9(m, manager); },
-        4,
+        "Direct3DCreate9On12", 20,
+        [&manager](Marshaler& m) { impl_Direct3DCreate9On12(m, manager); },
+        12,
     });
     exports.entries.push_back(ExportEntry{
-        "Direct3DCreate9Ex", 2,
-        [](Marshaler& m) { impl_Direct3DCreate9Ex(m); },
-        8,
+        "Direct3DCreate9On12Ex", 21,
+        [](Marshaler& m) { impl_Direct3DCreate9On12Ex(m); },
+        16,
     });
     exports.entries.push_back(ExportEntry{
-        "DebugSetMute", 3,
+        "Direct3DShaderValidatorCreate9", 24,
+        [](Marshaler& m) { impl_Direct3DShaderValidatorCreate9(m); },
+        0,
+    });
+    exports.entries.push_back(ExportEntry{
+        "DebugSetLevel", 34,
+        [](Marshaler& m) { impl_DebugSetLevel(m); },
+        0,
+    });
+    exports.entries.push_back(ExportEntry{
+        "DebugSetMute", 35,
         [](Marshaler& m) { impl_DebugSetMute(m); },
         0,
     });
     exports.entries.push_back(ExportEntry{
-        "Direct3DShaderValidatorCreate9", 4,
-        [](Marshaler& m) { impl_Direct3DShaderValidatorCreate9(m); },
-        0,
+        "Direct3D9EnableMaximizedWindowedModeShim", 36,
+        [](Marshaler& m) { impl_Direct3D9EnableMaximizedWindowedModeShim(m); },
+        4,
+    });
+    exports.entries.push_back(ExportEntry{
+        "Direct3DCreate9", 37,
+        [&manager](Marshaler& m) { impl_Direct3DCreate9(m, manager); },
+        4,
+    });
+    exports.entries.push_back(ExportEntry{
+        "Direct3DCreate9Ex", 38,
+        [](Marshaler& m) { impl_Direct3DCreate9Ex(m); },
+        8,
     });
     // PIX markers (SDK shared\d3d9.h). Ordinals from the SysWOW64 and
     // System32 d3d9.dll export tables: 27 D3DPERF_BeginEvent, 28 EndEvent,

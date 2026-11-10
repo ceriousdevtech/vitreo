@@ -22,6 +22,7 @@
 #include "windowing/model/hwnd_manager.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "ipc/hwnd_registry.hpp"
+#include "ipc/process_registry.hpp"
 #include "windowing/resources/dialog_template.hpp"
 #include "windowing/resources/resource_walker.hpp"
 #include "winapi/user32/classes/window_class.hpp"
@@ -328,9 +329,13 @@ void User32ExtManager::impl_GetWindowThreadProcessId(Marshaler& m) {
         return;
     }
 
-    const u32 process_id = local != nullptr
-        ? m_process_mgr->get_current_process_id()
-        : foreign->owner_host_pid;
+    u32 process_id = 0;
+    if (local != nullptr) {
+        process_id = m_process_mgr->get_current_process_id();
+    } else {
+        // The registry records the macOS owner. The guest reads a client ID.
+        process_id = ipc::windows_process_id_for_host(foreign->owner_host_pid);
+    }
     u32 thread_id = local != nullptr
         ? local->owner_thread_id
         : foreign->owner_guest_thread_id;

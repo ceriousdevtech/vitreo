@@ -6,6 +6,9 @@
 #include "winapi/kernel32/environment/environment.hpp"
 #include "winapi/kernel32/synchronization/sync.hpp"
 #include "winapi/core/marshaler.hpp"
+#include "winapi/common/object_access.hpp"
+#include "winapi/kernel32/locale/codepage_convert.hpp"
+#include "../../../../tools/oracle_probe/reg_open_sdk.generated.inc"
 
 #include <algorithm>
 #include <cstdio>
@@ -16,6 +19,8 @@
 #include <variant>
 
 namespace vitreo::winapi {
+#include "reg_rename_contract.inc"
+bool registry_rename_security_supported(std::wstring_view path);
 
 // =============================================================================
 // Helpers
@@ -234,6 +239,48 @@ std::optional<std::wstring> RegistryThunks::key_path(u64 hkey) const {
     const capsule::RegHandle handle = resolve_hkey(hkey);
     if (handle == 0) return std::nullopt;
     return m_registry.canonical_key_path(handle);
+}
+
+u32 RegistryThunks::reg_rename_key(u64 hkey, const std::wstring& subkey,
+                                    const std::wstring& new_name) {
+    const auto unsupported = []() {
+        static std::once_flag once;
+        std::call_once(once, [] { std::fprintf(stderr,
+            "[vitreo] UNIMPLEMENTED advapi32!RegRenameKey: merged/root/custom-security or Unicode security-path rename\n"); });
+        return ERROR_CALL_NOT_IMPLEMENTED;
+    };
+    if (static_cast<u32>(hkey) == reg_rename_contract::HKEY_CURRENT_CONFIG &&
+        (hkey >> 32 == 0 || hkey >> 32 == 0xffffffffu)) return unsupported();
+    const auto handle = resolve_hkey(hkey);
+    if (!handle) return ERROR_INVALID_HANDLE;
+    if (!m_registry.canonical_key_path(handle)) return ERROR_INVALID_HANDLE;
+    if (new_name.empty() || new_name.size() > reg_rename_contract::max_new_name_utf16_units ||
+        new_name.find(L'\\') != std::wstring::npos) return ERROR_INVALID_PARAMETER;
+    const auto* entry = m_handles.get_entry(static_cast<Handle>(hkey));
+    if (subkey.empty() && entry && entry->type == HandleType::Registry &&
+        (entry->access & reg_rename_contract::KEY_WRITE) != reg_rename_contract::KEY_WRITE &&
+        !(entry->access & reg_rename_contract::MAXIMUM_ALLOWED))
+        return ERROR_ACCESS_DENIED;
+    // MAXIMUM_ALLOWED grants KEY_WRITE for the default NULL DACL. The security
+    // guard below refuses custom descriptors before this can mutate a tree.
+    auto target = m_registry.open_key(handle, subkey, false);
+    if (target.is_err()) return ERROR_FILE_NOT_FOUND;
+    auto path = m_registry.canonical_key_path(target.value());
+    m_registry.close_key(target.value());
+    if (!path || !registry_rename_security_supported(*path)) return unsupported();
+    const auto result = m_registry.rename_key(handle, subkey, new_name);
+    if (result.is_ok()) {
+        notify_registry_change(*path, 1, true);
+        log_registry_open("RegRenameKey", hkey, new_name, ERROR_SUCCESS);
+        return ERROR_SUCCESS;
+    }
+    switch (result.error()) {
+    case Error::InvalidHandle: return ERROR_INVALID_HANDLE;
+    case Error::NotFound: return ERROR_FILE_NOT_FOUND;
+    case Error::AccessDenied: return ERROR_ACCESS_DENIED;
+    case Error::InvalidArgument: return ERROR_INVALID_PARAMETER;
+    default: return unsupported();
+    }
 }
 
 u32 RegistryThunks::reg_delete_key(u64 hkey, const std::wstring& subkey,
@@ -488,44 +535,102 @@ u32 RegistryThunks::reg_type_to_win32(const capsule::RegValue& v) noexcept {
 // RegOpenKeyExW
 // =============================================================================
 
+namespace {
+bool open_predefined(u32 low) {
+    using namespace reg_open_sdk;
+    return low == HKEY_CLASSES_ROOT_LOW || low == HKEY_CURRENT_USER_LOW ||
+           low == HKEY_LOCAL_MACHINE_LOW || low == HKEY_USERS_LOW;
+}
+u32 open_unsupported() {
+    static std::once_flag once;
+    std::call_once(once, [] { std::fprintf(stderr,
+        "[vitreo] UNIMPLEMENTED advapi32!RegOpenKeyEx: custom security, merged classes security, unsupported root, symbolic link or Unicode security path\n"); });
+    return ERROR_CALL_NOT_IMPLEMENTED;
+}
+}
+
 u32 RegistryThunks::reg_open_key_ex_w(u64 hkey, const std::wstring& subkey,
                                        u32 /*options*/, u32 sam_desired,
                                        u64* result_handle) {
+    if (!result_handle) return ERROR_INVALID_PARAMETER;
+    *result_handle = 0;
     capsule::RegView view = capsule::RegView::Default;
     if (!wow64_view_from_sam(sam_desired, view)) return ERROR_INVALID_PARAMETER;
-    capsule::RegHandle parent = resolve_hkey(hkey);
-    auto res = m_registry.open_key(parent, subkey, /*create=*/false, view);
-
-    if (res.is_err()) {
-        if (res.error() == Error::NotFound) {
-            return ERROR_FILE_NOT_FOUND;
-        }
-        return ERROR_FILE_NOT_FOUND; // map all others to not-found for now
+    const u32 low = static_cast<u32>(hkey);
+    const bool predefined = open_predefined(low);
+    // Windows' Open predefined-key dispatch uses the low DWORD, unlike Close.
+    const capsule::RegHandle parent = predefined ? low : resolve_hkey(hkey);
+    if (!parent) {
+        if (low == reg_open_sdk::HKEY_CURRENT_CONFIG_LOW ||
+            low == reg_open_sdk::HKEY_PERFORMANCE_DATA_LOW ||
+            low == reg_open_sdk::HKEY_PERFORMANCE_TEXT_LOW ||
+            low == reg_open_sdk::HKEY_PERFORMANCE_NLSTEXT_LOW) return open_unsupported();
+        return ERROR_INVALID_HANDLE;
     }
-
-    capsule::RegHandle rh = res.value();
-
-    // Store in HandleTable so the guest can use it as an HKEY.
-    Handle h = m_handles.allocate(
-        HandleType::Registry,
-        reinterpret_cast<void*>(static_cast<uintptr_t>(rh)));
-
-    if (result_handle) {
-        *result_handle = static_cast<u64>(h);
+    if (predefined && subkey.empty() && view == capsule::RegView::Default) {
+        *result_handle = hkey;
+        return ERROR_SUCCESS;
     }
-
+    auto res = m_registry.open_key(parent, subkey, false, view);
+    if (res.is_err()) return res.error() == Error::InvalidHandle
+        ? ERROR_INVALID_HANDLE : ERROR_FILE_NOT_FOUND;
+    const auto rh = res.value();
+    const auto fail = [&](u32 status) { m_registry.close_key(rh); return status; };
+    const auto path = m_registry.canonical_key_path(rh);
+    // The capsule default descriptor has a NULL DACL. Do not silently apply
+    // that policy to keys with a stored descriptor (including inherited ones).
+    if (!path || path->starts_with(L"hkey_classes_root") ||
+        !registry_rename_security_supported(*path))
+        return fail(open_unsupported());
+    // Capsule has no registry-link object metadata. A persisted SymbolicLinkValue
+    // needs link-object classification before this route can open it safely.
+    if (m_registry.query_value(rh, L"SymbolicLinkValue").is_ok() ||
+        m_registry.query_value(parent, L"SymbolicLinkValue").is_ok())
+        return fail(open_unsupported());
+    for (usize end = subkey.find_first_of(L"\\/"); end != std::wstring::npos;
+         end = subkey.find_first_of(L"\\/", end + 1)) {
+        if (!end) continue;
+        const auto prefix = m_registry.open_key(parent, subkey.substr(0, end), false, view);
+        if (prefix.is_err()) continue;
+        const bool link = m_registry.query_value(prefix.value(), L"SymbolicLinkValue").is_ok();
+        m_registry.close_key(prefix.value());
+        if (link) return fail(open_unsupported());
+    }
+    const u32 requested = object_access::map_generic(
+        sam_desired & ~reg_open_sdk::KEY_WOW64_RES,
+        reg_open_sdk::KEY_ALL_ACCESS, reg_open_sdk::KEY_READ,
+        reg_open_sdk::KEY_WRITE, reg_open_sdk::KEY_EXECUTE);
+    if (requested & sync_access::ACCESS_SYSTEM_SECURITY)
+        return fail(open_unsupported());
+    if (!requested || (requested & ~(reg_open_sdk::KEY_ALL_ACCESS |
+                                     reg_open_sdk::MAXIMUM_ALLOWED)))
+        return fail(ERROR_ACCESS_DENIED);
+    const u32 granted = requested & reg_open_sdk::MAXIMUM_ALLOWED
+        ? reg_open_sdk::KEY_ALL_ACCESS : requested;
+    const Handle handle = m_handles.allocate(HandleType::Registry,
+        reinterpret_cast<void*>(static_cast<uintptr_t>(rh)), 0, granted);
+    *result_handle = static_cast<u64>(handle);
     return ERROR_SUCCESS;
 }
-
-// =============================================================================
-// RegOpenKeyExA
-// =============================================================================
 
 u32 RegistryThunks::reg_open_key_ex_a(u64 hkey, const std::string& subkey,
                                        u32 options, u32 sam_desired,
                                        u64* result_handle) {
-    return reg_open_key_ex_w(hkey, ansi_to_wide(subkey), options,
-                             sam_desired, result_handle);
+    if (!result_handle) return ERROR_INVALID_PARAMETER;
+    // The ANSI wrapper returns before touching phkResult for a NULL parent.
+    if (!hkey) return ERROR_INVALID_HANDLE;
+    std::wstring wide;
+    if (!subkey.empty()) {
+        const auto needed = codepage::multi_byte_to_wide(codepage::kCpAcp, 0,
+            reinterpret_cast<const u8*>(subkey.data()), subkey.size(), nullptr, 0);
+        if (!needed.ok()) { *result_handle = 0; return needed.error; }
+        std::vector<u16> units(needed.count);
+        const auto converted = codepage::multi_byte_to_wide(codepage::kCpAcp, 0,
+            reinterpret_cast<const u8*>(subkey.data()), subkey.size(), units.data(), units.size());
+        if (!converted.ok()) { *result_handle = 0; return converted.error; }
+        wide.assign(units.begin(), units.end());
+    }
+    return reg_open_key_ex_w(hkey, wide, options, sam_desired, result_handle);
 }
 
 u32 RegistryThunks::reg_connect_registry(u64 hkey, u64* result_handle) {
@@ -563,7 +668,7 @@ u32 RegistryThunks::reg_create_key_ex_w(u64 hkey, const std::wstring& subkey,
     capsule::RegHandle rh = res.value();
     Handle h = m_handles.allocate(
         HandleType::Registry,
-        reinterpret_cast<void*>(static_cast<uintptr_t>(rh)));
+        reinterpret_cast<void*>(static_cast<uintptr_t>(rh)), 0, sam_desired);
 
     if (result_handle) {
         *result_handle = static_cast<u64>(h);
@@ -598,7 +703,7 @@ u32 RegistryThunks::reg_create_key_ex_a(u64 hkey, const std::string& subkey,
 
 u32 RegistryThunks::reg_open_key_a(u64 hkey, const std::string& subkey,
                                     u64* result_handle) {
-    return reg_open_key_ex_a(hkey, subkey, 0, 0, result_handle);
+    return reg_open_key_ex_a(hkey, subkey, 0, reg_rename_contract::MAXIMUM_ALLOWED, result_handle);
 }
 
 
@@ -837,14 +942,15 @@ u32 RegistryThunks::reg_delete_key_value_w(u64 hkey,
 // RegCloseKey
 // =============================================================================
 
-u32 RegistryThunks::reg_close_key(u64 hkey) {
-    // Root constants — silently succeed.
-    if (hkey == capsule::HKEY_CLASSES_ROOT  ||
-        hkey == capsule::HKEY_CURRENT_USER  ||
-        hkey == capsule::HKEY_LOCAL_MACHINE ||
-        hkey == capsule::HKEY_USERS) {
-        return ERROR_SUCCESS;
-    }
+u32 RegistryThunks::reg_close_key(u64 hkey, bool guest_is_64bit) {
+    using namespace reg_open_sdk;
+    const u32 low = static_cast<u32>(hkey);
+    const bool root = open_predefined(low) || low == HKEY_CURRENT_CONFIG_LOW ||
+        low == HKEY_PERFORMANCE_DATA_LOW || low == HKEY_PERFORMANCE_TEXT_LOW ||
+        low == HKEY_PERFORMANCE_NLSTEXT_LOW;
+    const u64 native = guest_is_64bit
+        ? static_cast<u64>(static_cast<i64>(static_cast<i32>(low))) : low;
+    if (root && hkey == native) return ERROR_SUCCESS;
 
     // Remove from HandleTable.
     Handle h = static_cast<Handle>(hkey);
@@ -927,7 +1033,7 @@ u32 RegistryThunks::reg_enum_key_ex_a(u64 hkey, u32 index,
 
 u32 RegistryThunks::reg_open_key_w(u64 hkey, const std::wstring& subkey,
                                     u64* result_handle) {
-    return reg_open_key_ex_w(hkey, subkey, 0, 0, result_handle);
+    return reg_open_key_ex_w(hkey, subkey, 0, reg_rename_contract::MAXIMUM_ALLOWED, result_handle);
 }
 
 

@@ -9,6 +9,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "windowing/model/hwnd_manager.hpp"
+#include "windowing/model/cursor_confinement.hpp"
 #include "winapi/user32/user32_internal.hpp"
 #include "winapi/user32/windows/kbd_layout.hpp"
 #include "winapi/kernel32/system/time.hpp"
@@ -92,17 +93,25 @@ bool User32ExtManager::inject_mouse(i32 dx, i32 dy, u32 mouse_data, u32 flags, u
     i32 x = 0;
     i32 y = 0;
     cursor_host().get_native_cursor_pos(x, y);
-    if ((flags & MOVE) != 0) {
+    if ((flags & MOVE) != 0 && ((flags & ABSOLUTE) != 0 || dx != 0 || dy != 0)) {
+        const windowing::Rect screen = guest_virtual_screen_rect();
+        windowing::Rect clip{};
+        const bool clipped = cursor_host().get_cursor_clip(
+            clip.left, clip.top, clip.right, clip.bottom);
+        windowing::Point point{};
         if ((flags & ABSOLUTE) != 0) {
-            const windowing::Rect screen = guest_virtual_screen_rect();
             const i32 width = screen.right - screen.left;
             const i32 height = screen.bottom - screen.top;
             x = screen.left + static_cast<i32>((static_cast<i64>(dx) * width) / 65536);
             y = screen.top + static_cast<i32>((static_cast<i64>(dy) * height) / 65536);
+            point = windowing::confine_cursor_point({x, y}, screen, clipped ? &clip : nullptr);
         } else {
-            x += dx;
-            y += dy;
+            point = windowing::confine_cursor_coordinates(
+                static_cast<i64>(x) + dx, static_cast<i64>(y) + dy,
+                screen, clipped ? &clip : nullptr);
         }
+        x = point.x;
+        y = point.y;
         (void)cursor_host().set_native_cursor_pos(x, y);
     }
     windowing::HWND target = m_hwnd_mgr.get_capture();

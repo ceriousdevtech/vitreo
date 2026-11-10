@@ -6,6 +6,11 @@
 #include <gtest/gtest.h>
 #include "graphics/common/gpu_busy.hpp"
 
+#include <atomic>
+#include <barrier>
+#include <thread>
+#include <vector>
+
 using namespace vitreo;
 using namespace vitreo::graphics;
 
@@ -61,6 +66,36 @@ TEST_F(GpuBusyTest, ClockIsMonotonic) {
     const double b = gpu_busy_clock_s();
     EXPECT_GT(a, 0.0);
     EXPECT_GE(b, a);
+}
+
+TEST_F(GpuBusyTest, ConcurrentReadersUseIndependentWindows) {
+    // Fill the ring with two disjoint windows. Their unions are 300 ms
+    // and 600 ms regardless of ordering or the number of repeated intervals.
+    for (usize i = 0; i < 4096; ++i) {
+        note_gpu_interval(99.1, 99.4, 4096);
+        note_gpu_interval(199.2, 199.8, 4096);
+    }
+    constexpr usize readers = 8;
+    std::barrier start(static_cast<std::ptrdiff_t>(readers));
+    std::atomic<u32> wrong{0};
+    std::vector<std::thread> threads;
+    for (usize t = 0; t < readers; ++t) {
+        threads.emplace_back([&, t] {
+            start.arrive_and_wait();
+            for (usize i = 0; i < 100; ++i) {
+                const bool later = (t % 2) != 0;
+                const RecentGpuBusy busy = recent_gpu_busy(later ? 200.0 : 100.0);
+                const double expected = later ? 600.0 : 300.0;
+                if (busy.command_buffers != 4096 ||
+                    std::abs(busy.busy_ms - expected) > 1e-6 ||
+                    busy.allocated_bytes != 4096) {
+                    wrong.fetch_add(1, std::memory_order_relaxed);
+                }
+            }
+        });
+    }
+    for (auto& thread : threads) thread.join();
+    EXPECT_EQ(wrong.load(), 0u);
 }
 
 }  // namespace

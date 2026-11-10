@@ -26,6 +26,15 @@ namespace vitreo::platform {
 /// The responsible process of `pid`, or -1 when the host cannot say.
 [[nodiscard]] pid_t responsible_process(pid_t pid);
 
+/// Whether TCC can remember an answer for the code of this process across
+/// rebuilds: true when it is signed with a certificate (its designated
+/// requirement names an identifier and signer), false for ad-hoc or unsigned
+/// code, whose only requirement is its own cdhash. A consent recorded for
+/// ad-hoc code stops matching the next build ("Failed to match existing code
+/// requirement"), so a self-responsible ad-hoc build asks again for every
+/// protected resource after each rebuild.
+[[nodiscard]] bool running_code_has_stable_identity();
+
 /// Whether the host offers the disclaim spawn attribute.
 [[nodiscard]] bool can_disclaim_responsibility();
 

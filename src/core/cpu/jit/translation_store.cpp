@@ -116,12 +116,32 @@ bool env_excluded(std::string_view name) noexcept {
         "VITREO_SCOPED_ENV",
         "VITREO_SCOPED_ENV_REEXEC",
         "VITREO_PROCESS_MITIGATION_POLICY",
+        // Process identity and the security token a parent hands its child:
+        // unique per process (pid, grant) or per sandbox role, read only by
+        // the winapi/ipc layers. Keying on them gave every process of a
+        // multi-process guest its own store, so none was ever warm.
+        "VITREO_GUEST_PROCESS_ID",
+        "VITREO_FOREGROUND_GRANT",
+        "VITREO_CHILD_PROCESS_RESTRICTED",
+        // These change runtime reporting only, never emitted code. In
+        // particular, a new trace filename must not create a cold store.
+        "VITREO_INPUT_LATENCY",
+        "VITREO_INPUT_LATENCY_ALL",
+        "VITREO_INPUT_LATENCY_TRACE",
+        "VITREO_WAKE_LATENCY",
+        "VITREO_IOCP_DIAG",
+        "VITREO_IOCP_DIAG_POSTS",
+        "VITREO_IOCP_DIAG_PID",
+        "VITREO_IOCP_DIAG_OBJECT",
+        "VITREO_IOCP_DIAG_OV",
+        "VITREO_IOCP_DIAG_DUMP_PING_CALLBACK",
     };
     static constexpr std::string_view kPrefix[] = {
         "VITREO_MACOS_",
         "VITREO_STARTUP",
         "VITREO_PRIMARY_THREAD_",
         "VITREO_TRANSLATION_STORE",
+        "VITREO_TOKEN_",
     };
     for (std::string_view e : kExact) {
         if (name == e) return true;
@@ -210,7 +230,7 @@ const HostImage& host_image() noexcept {
 // ---------------------------------------------------------------------------
 
 constexpr u32 kRecordMagic = 0x31525354u;  // "TSR1"
-constexpr u32 kFormatVersion = 6;
+constexpr u32 kFormatVersion = 8;
 constexpr usize kMaxRecordBytes = 1u << 20;
 /// Compaction merges dead segments smaller than this into segments of at
 /// most this size; full ones are left alone, so a store at its cap is not
@@ -240,6 +260,26 @@ struct RecordHeader {
     // (padded to 8)
 };
 static_assert(sizeof(RecordHeader) == 112);
+
+/// Sidecar index `seg-*.tsi` beside each segment: one entry per record, in
+/// segment order, appended only after the record bytes are written. A new
+/// process reads these (16 bytes per record) instead of walking every
+/// record header of every segment (1.5 GB for one CEF guest). It is a hint:
+/// lookup re-checks bounds, header, key, guest bytes and MAC, and the part
+/// of a segment the sidecar does not cover is scanned as before.
+constexpr u32 kSidecarMagic = 0x31495354u;  // "TSI1"
+struct SidecarHeader {
+    u32 magic;
+    u32 version;      ///< kFormatVersion
+    u64 segment_mac;  ///< SegmentHeader::mac of the segment it indexes
+};
+static_assert(sizeof(SidecarHeader) == 16);
+struct SidecarEntry {
+    u64 tag;
+    u32 offset;     ///< record start within the segment
+    u32 total_len;  ///< RecordHeader::total_len
+};
+static_assert(sizeof(SidecarEntry) == 16);
 
 constexpr char kSegmentMagic[8] = {'V', 'T', 'S', 'S', 'E', 'G', '0', '1'};
 struct SegmentHeader {
@@ -296,6 +336,59 @@ bool write_exact(int fd, const void* data, usize n) noexcept {
     return true;
 }
 
+/// A record header that can be read whole inside [base, base + size): the
+/// shape checks the full scan applies, for records reached through a
+/// sidecar entry instead.
+bool record_in_bounds(const u8* rec, const u8* base, usize size) noexcept {
+    if (rec < base + sizeof(SegmentHeader) || rec + sizeof(RecordHeader) > base + size) {
+        return false;
+    }
+    RecordHeader h;
+    std::memcpy(&h, rec, sizeof h);
+    const usize need = sizeof(RecordHeader) + pad8(h.key.guest_size) + pad8(h.payload_len);
+    return h.magic == kRecordMagic && h.total_len == need && h.total_len <= kMaxRecordBytes &&
+           static_cast<usize>(rec - base) + h.total_len <= size &&
+           h.header_check == record_header_check(h) && h.tag == key_tag(h.key);
+}
+
+std::string sidecar_path(const std::string& segment_path) {
+    return segment_path.substr(0, segment_path.size() - 4) + ".tsi";
+}
+
+/// Entries for the records in @p body (well formed: built by append_record),
+/// which starts at @p at within its segment.
+void sidecar_entries(const u8* body, usize size, u64 at, std::vector<SidecarEntry>& out) {
+    usize off = 0;
+    while (off + sizeof(RecordHeader) <= size) {
+        RecordHeader h;
+        std::memcpy(&h, body + off, sizeof h);
+        if (h.total_len < sizeof(RecordHeader) || off + h.total_len > size) break;
+        out.push_back(SidecarEntry{h.tag, static_cast<u32>(at + off), h.total_len});
+        off += h.total_len;
+    }
+}
+
+/// Create the sidecar of @p segment_path (whose header MAC is @p segment_mac)
+/// and return its append descriptor, or -1.
+int create_sidecar(const std::string& segment_path, u64 segment_mac) {
+    const std::string path = sidecar_path(segment_path);
+    const int fd = ::open(path.c_str(),
+                          O_WRONLY | O_CREAT | O_EXCL | O_APPEND | O_CLOEXEC | O_NOFOLLOW, 0600);
+    if (fd < 0) return -1;
+    const SidecarHeader sh{kSidecarMagic, kFormatVersion, segment_mac};
+    if (!write_exact(fd, &sh, sizeof sh)) {
+        ::close(fd);
+        ::unlink(path.c_str());
+        return -1;
+    }
+    return fd;
+}
+
+void unlink_segment(const std::string& segment_path) {
+    ::unlink(segment_path.c_str());
+    ::unlink(sidecar_path(segment_path).c_str());
+}
+
 bool make_private_dir(const std::string& path) noexcept {
     if (::mkdir(path.c_str(), 0700) != 0 && errno != EEXIST) return false;
     struct stat sb{};
@@ -346,11 +439,15 @@ struct State {
     std::string root;
     std::string dir;
     std::string fingerprint_hex;
+    std::string build_tag;  ///< host LC_UUID hex: the build this store belongs to
     u8 mac_key[16]{};
     u8 fingerprint[16]{};
     int live_fd{-1};
 
-    // writer
+    // writer. io_mutex orders segment writes and is taken BEFORE `mutex`;
+    // `mutex` alone guards the buffer, so a compiling thread that offers a
+    // record never waits for a file write.
+    std::mutex io_mutex;
     int seg_fd{-1};
     std::string seg_path;
     std::vector<u8> buffer;
@@ -359,6 +456,8 @@ struct State {
     std::vector<std::vector<u8>> unchecked;
     u64 unchecked_bytes{0};
     u64 written{0};
+    int idx_fd{-1};    ///< the open segment's sidecar, -1 when not kept
+    u64 seg_bytes{0};  ///< bytes of the open segment written or claimed
     u64 existing_bytes{0};
     u64 cap_bytes{0};
     std::atomic<bool> producer_off{false};
@@ -418,6 +517,7 @@ const u8* find_valid_record(const State& s, const Index& index, const StoredKey&
         const Index::Slot& slot = index.slots[i];
         if (slot.rec == nullptr) return nullptr;
         if (slot.tag != tag) continue;
+        if (!record_in_bounds(slot.rec, slot.seg->base, slot.seg->size)) continue;
         RecordHeader h;
         std::memcpy(&h, slot.rec, sizeof h);
         if (std::memcmp(&h.key, &key, sizeof key) != 0) continue;
@@ -581,9 +681,38 @@ bool is_fingerprint_name(const std::string& n) {
                        [](char c) { return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'); });
 }
 
+/// The build a fingerprint directory belongs to (the host LC_UUID in hex),
+/// recorded in its `build` file so GC can tell another build's store from a
+/// sibling fingerprint of this build (another VITREO_* knob set).
+constexpr const char* kBuildFile = "/build";
+/// Dead same-build directories kept (newest first) besides the live ones.
+constexpr usize kMaxSameBuildDirs = 8;
+
+std::string read_build_tag(const std::string& dir) {
+    char buf[64]{};
+    const int fd = ::open((dir + kBuildFile).c_str(), O_RDONLY | O_CLOEXEC | O_NOFOLLOW);
+    if (fd < 0) return {};
+    const ssize_t n = ::read(fd, buf, sizeof buf - 1);
+    ::close(fd);
+    return n > 0 ? std::string(buf, static_cast<usize>(n)) : std::string{};
+}
+
+void write_build_tag(const std::string& dir, const std::string& tag) {
+    if (read_build_tag(dir) == tag) return;
+    const int fd =
+        ::open((dir + kBuildFile).c_str(), O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC | O_NOFOLLOW,
+               0600);
+    if (fd < 0) return;
+    (void)write_exact(fd, tag.data(), tag.size());
+    ::close(fd);
+}
+
 /// Eviction (design §3b, bounded): keep this fingerprint's directory under
 /// its cap by deleting the least recently used segments no live process is
-/// writing, and keep at most one directory of another (dead) fingerprint.
+/// writing; of the dead directories, keep the newest one of another build
+/// and the newest kMaxSameBuildDirs of this build. Same-build siblings are
+/// other processes of the same guest with a different knob set: evicting
+/// them made each process of a multi-process guest wipe the others' stores.
 void collect_garbage(State& s) {
     const std::string gc_path = s.root + "/gc.lock";
     const int gc = ::open(gc_path.c_str(), O_RDWR | O_CREAT | O_CLOEXEC, 0600);
@@ -603,11 +732,16 @@ void collect_garbage(State& s) {
     }
     std::sort(dead.begin(), dead.end(),
               [](const DirEntryInfo& a, const DirEntryInfo& b) { return a.mtime > b.mtime; });
-    for (usize i = 1; i < dead.size(); ++i) {
+    usize kept_other = 0;
+    usize kept_same = 0;
+    for (const DirEntryInfo& e : dead) {
+        const bool same_build = read_build_tag(e.path) == s.build_tag;
+        if (same_build ? kept_same++ < kMaxSameBuildDirs : kept_other++ < 1) continue;
         std::error_code ec;
-        std::filesystem::remove_all(dead[i].path, ec);
-        std::fprintf(stderr, "[tstore] evicted store of another build: %s\n",
-                     dead[i].name.c_str());
+        std::filesystem::remove_all(e.path, ec);
+        std::fprintf(stderr, "[tstore] evicted store of %s: %s\n",
+                     same_build ? "this build (over the sibling limit)" : "another build",
+                     e.name.c_str());
     }
 
     std::vector<DirEntryInfo> segs;
@@ -627,7 +761,7 @@ void collect_garbage(State& s) {
             const int fd = ::open(e.path.c_str(), O_RDONLY | O_CLOEXEC);
             if (fd < 0) continue;
             if (::flock(fd, LOCK_EX | LOCK_NB) == 0) {
-                ::unlink(e.path.c_str());
+                unlink_segment(e.path);
                 total -= e.size;
                 evicted += e.size;
             }
@@ -644,6 +778,14 @@ void collect_garbage(State& s) {
         if (fd < 0) continue;
         if (::flock(fd, LOCK_EX | LOCK_NB) == 0) ::unlink(e.path.c_str());
         ::close(fd);
+    }
+    // A sidecar whose segment was unlinked by an older build (or a crash
+    // between the two unlinks). Writers create the segment first.
+    for (const DirEntryInfo& e : list_dir(s.dir)) {
+        if (e.is_dir || !e.name.starts_with("seg-") || !e.name.ends_with(".tsi")) continue;
+        struct stat sb{};
+        const std::string seg = e.path.substr(0, e.path.size() - 4) + ".tss";
+        if (::stat(seg.c_str(), &sb) != 0 && errno == ENOENT) ::unlink(e.path.c_str());
     }
     if (!s.poisoned.load(std::memory_order_acquire)) compact_segments(s);
     total = 0;
@@ -663,6 +805,7 @@ void build_index(State& s) {
     u64 bytes = 0;
     u64 torn = 0;
     u64 foreign = 0;
+    u64 sidecar_records = 0;
     struct Found {
         u64 tag;
         const u8* rec;
@@ -713,6 +856,33 @@ void build_index(State& s) {
         seg->producer_base = sh.producer_host_base;
         seg->path = e.path;
         usize off = sizeof(SegmentHeader);
+        // The sidecar's contiguous prefix of entries, then a scan of the
+        // rest (a live writer's unflushed sidecar tail, or no sidecar).
+        if (const int idx = ::open(sidecar_path(e.path).c_str(), O_RDONLY | O_CLOEXEC | O_NOFOLLOW);
+            idx >= 0) {
+            struct stat ib{};
+            SidecarHeader ih{};
+            if (::fstat(idx, &ib) == 0 && ib.st_size >= static_cast<off_t>(sizeof ih) &&
+                read_exact(idx, &ih, sizeof ih) && ih.magic == kSidecarMagic &&
+                ih.version == kFormatVersion && ih.segment_mac == sh.mac) {
+                const usize n = (static_cast<usize>(ib.st_size) - sizeof ih) / sizeof(SidecarEntry);
+                std::vector<SidecarEntry> entries(n);
+                if (n == 0 || read_exact(idx, entries.data(), n * sizeof(SidecarEntry))) {
+                    for (const SidecarEntry& se : entries) {
+                        if (se.offset != off || se.total_len < sizeof(RecordHeader) ||
+                            se.total_len > kMaxRecordBytes || off + se.total_len > size) {
+                            break;
+                        }
+                        found.push_back(Found{se.tag, base + off, seg.get()});
+                        ++records;
+                        ++sidecar_records;
+                        bytes += se.total_len;
+                        off += se.total_len;
+                    }
+                }
+            }
+            ::close(idx);
+        }
         while (off + sizeof(RecordHeader) <= size) {
             RecordHeader h;
             std::memcpy(&h, base + off, sizeof h);
@@ -751,10 +921,11 @@ void build_index(State& s) {
                         std::chrono::steady_clock::now() - t0)
                         .count();
     std::fprintf(stderr,
-                 "[tstore] index pid=%d segments=%zu records=%llu bytes=%lluMB torn_tails=%llu "
-                 "foreign_segments=%llu ms=%lld\n",
+                 "[tstore] index pid=%d segments=%zu records=%llu (sidecar %llu) bytes=%lluMB "
+                 "torn_tails=%llu foreign_segments=%llu ms=%lld\n",
                  static_cast<int>(::getpid()), s.segments.size(),
                  static_cast<unsigned long long>(records),
+                 static_cast<unsigned long long>(sidecar_records),
                  static_cast<unsigned long long>(bytes >> 20),
                  static_cast<unsigned long long>(torn),
                  static_cast<unsigned long long>(foreign), static_cast<long long>(ms));
@@ -790,14 +961,34 @@ bool open_segment_locked(State& s) {
     }
     s.seg_fd = fd;
     s.written += sizeof sh;
+    s.seg_bytes = sizeof sh;
+    s.idx_fd = create_sidecar(s.seg_path, sh.mac);
     return true;
+}
+
+/// Append the sidecar entries for @p body, just written at @p at in the open
+/// segment. Past 4 GB (u32 offsets) or after a failed write the sidecar
+/// stops, so it always covers a contiguous prefix; the rest is scanned.
+void append_sidecar(int& idx_fd, const std::vector<u8>& body, u64 at) {
+    if (idx_fd < 0) return;
+    if (at + body.size() > 0xffffffffull) {
+        ::close(idx_fd);
+        idx_fd = -1;
+        return;
+    }
+    std::vector<SidecarEntry> entries;
+    sidecar_entries(body.data(), body.size(), at, entries);
+    if (!write_exact(idx_fd, entries.data(), entries.size() * sizeof(SidecarEntry))) {
+        ::close(idx_fd);
+        idx_fd = -1;
+    }
 }
 
 /// Write buffered records. Records offered before the index was ready are
 /// dropped when the index holds an authentic copy; with no index yet they
 /// wait, unless @p final (process end), when they are written and a later
 /// compaction removes any duplicate.
-void flush_locked(State& s, bool final) {
+void drain_unchecked_locked(State& s, bool final) {
     if (!s.unchecked.empty()) {
         const Index* index = s.index.load(std::memory_order_acquire);
         if (index != nullptr || final) {
@@ -815,6 +1006,11 @@ void flush_locked(State& s, bool final) {
             s.unchecked_bytes = 0;
         }
     }
+}
+
+/// Caller holds io_mutex and mutex (process end, tests).
+void flush_locked(State& s, bool final) {
+    drain_unchecked_locked(s, final);
     if (s.buffer.empty() || s.producer_off.load(std::memory_order_relaxed)) {
         s.buffer.clear();
         return;
@@ -830,9 +1026,49 @@ void flush_locked(State& s, bool final) {
         std::fprintf(stderr, "[tstore] segment write failed (%s); not storing\n",
                      std::strerror(errno));
         s.producer_off.store(true, std::memory_order_relaxed);
+    } else {
+        append_sidecar(s.idx_fd, s.buffer, s.seg_bytes);
     }
     s.written += s.buffer.size();
+    s.seg_bytes += s.buffer.size();
     s.buffer.clear();
+}
+
+/// The worker's periodic flush: take the buffer under `mutex`, write it
+/// after releasing it (io_mutex keeps segment writes in order).
+void flush_background(State& s) {
+    std::lock_guard<std::mutex> io(s.io_mutex);
+    std::vector<u8> out;
+    int fd = -1;
+    u64 at = 0;
+    {
+        std::lock_guard<std::mutex> lock(s.mutex);
+        drain_unchecked_locked(s, false);
+        if (s.buffer.empty() || s.producer_off.load(std::memory_order_relaxed)) {
+            s.buffer.clear();
+            return;
+        }
+        if (s.seg_fd < 0 && !open_segment_locked(s)) {
+            std::fprintf(stderr, "[tstore] cannot create a segment in %s (%s); not storing\n",
+                         s.dir.c_str(), std::strerror(errno));
+            s.producer_off.store(true, std::memory_order_relaxed);
+            s.buffer.clear();
+            return;
+        }
+        out.swap(s.buffer);
+        fd = s.seg_fd;
+        at = s.seg_bytes;
+        s.written += out.size();
+        s.seg_bytes += out.size();
+    }
+    if (!write_exact(fd, out.data(), out.size())) {
+        std::fprintf(stderr, "[tstore] segment write failed (%s); not storing\n",
+                     std::strerror(errno));
+        s.producer_off.store(true, std::memory_order_relaxed);
+        return;
+    }
+    // idx_fd is only touched under io_mutex once the segment is open.
+    append_sidecar(s.idx_fd, out, at);
 }
 
 void check_poison(State& s) {
@@ -861,15 +1097,11 @@ void worker_main(State* s) {
     s->index_cv.notify_all();
     collect_garbage(*s);
     s->gc_done.store(true, std::memory_order_release);
-    while (!s->stop.load(std::memory_order_acquire)) {
-        for (int i = 0; i < 10 && !s->stop.load(std::memory_order_acquire); ++i) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
-        {
-            std::lock_guard<std::mutex> lock(s->mutex);
-            flush_locked(*s, false);
-        }
-        check_poison(*s);
+    for (u32 tick = 0; !s->stop.load(std::memory_order_acquire); ++tick) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        if (s->stop.load(std::memory_order_acquire)) break;
+        flush_background(*s);
+        if (tick % 10 == 9) check_poison(*s);
     }
 }
 
@@ -918,6 +1150,8 @@ bool activate() {
         std::fprintf(stderr, "[tstore] inactive: cannot lock %s/live.lock\n", s.dir.c_str());
         return false;
     }
+    s.build_tag = hex(img.uuid, 16);
+    write_build_tag(s.dir, s.build_tag);
     u64 cap_mb = 2048;
     if (const char* v = std::getenv("VITREO_TRANSLATION_STORE_MAX_MB"); v != nullptr && *v) {
         char* end = nullptr;
@@ -1467,9 +1701,16 @@ bool write_compacted_segment(State& s, const std::vector<u8>& body) {
     std::snprintf(name, sizeof name, "/seg-%llu-%d-%08x.tss",
                   static_cast<unsigned long long>(realtime_ms()), static_cast<int>(::getpid()),
                   arc4random());
-    ok = ok && ::rename(tmp.c_str(), (s.dir + name).c_str()) == 0;
+    const std::string final_path = s.dir + name;
+    ok = ok && ::rename(tmp.c_str(), final_path.c_str()) == 0;
     if (!ok) ::unlink(tmp.c_str());
     ::close(fd);
+    if (ok) {
+        // A crash before this leaves a segment without a sidecar: scanned.
+        int idx = create_sidecar(final_path, sh.mac);
+        append_sidecar(idx, body, sizeof(SegmentHeader));
+        if (idx >= 0) ::close(idx);
+    }
     return ok;
 }
 
@@ -1596,7 +1837,7 @@ void compact_segments(State& s) {
     // Only after every output is in place: a crash before this leaves
     // duplicates, which the next compaction removes, never a lost record.
     if (ok) {
-        for (const CompactSource* src : merged) ::unlink(src->path.c_str());
+        for (const CompactSource* src : merged) unlink_segment(src->path);
     }
     release();
     const auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -1656,6 +1897,10 @@ bool TranslationStore::lookup(const StoredKey& key, const u8* guest_bytes,
         const Index::Slot& slot = index->slots[i];
         if (slot.rec == nullptr) break;
         if (slot.tag != tag) continue;
+        if (!record_in_bounds(slot.rec, slot.seg->base, slot.seg->size)) {
+            tstats::note(tstats::Event::RejectMac);
+            continue;
+        }
         RecordHeader h;
         std::memcpy(&h, slot.rec, sizeof h);
         if (std::memcmp(&h.key, &key, sizeof key) != 0) continue;
@@ -1748,30 +1993,35 @@ void TranslationStore::offer(const StoredKey& key, const u8* guest_bytes,
     const usize total = sizeof(RecordHeader) + pad8(key.guest_size) + pad8(payload.size());
     if (total > kMaxRecordBytes) return;
 
-    std::lock_guard<std::mutex> lock(s.mutex);
-    if (s.existing_bytes + s.written + s.buffer.size() + s.unchecked_bytes + total >
-        s.cap_bytes) {
-        tstats::note(tstats::Event::SkipFull);
-        return;
-    }
+    // The duplicate check and the record's MAC run before the lock: the
+    // index is immutable once published, and every compiling thread offers.
     // A lookup that ran before the index was ready, or before another
     // process's records were in it, missed a record the store may hold.
-    if (const Index* index = s.index.load(std::memory_order_acquire); index != nullptr) {
-        if (find_valid_record(s, *index, key, guest_bytes) != nullptr) {
-            tstats::note(tstats::Event::SkipDuplicate);
+    const Index* index = s.index.load(std::memory_order_acquire);
+    if (index != nullptr && find_valid_record(s, *index, key, guest_bytes) != nullptr) {
+        tstats::note(tstats::Event::SkipDuplicate);
+        return;
+    }
+    std::vector<u8> rec;
+    rec.reserve(total);
+    append_record(s.mac_key, key, guest_bytes, payload, rec);
+    {
+        std::lock_guard<std::mutex> lock(s.mutex);
+        if (s.existing_bytes + s.written + s.buffer.size() + s.unchecked_bytes + total >
+            s.cap_bytes) {
+            tstats::note(tstats::Event::SkipFull);
             return;
         }
-        append_record(s.mac_key, key, guest_bytes, payload, s.buffer);
-    } else {
-        std::vector<u8> rec;
-        append_record(s.mac_key, key, guest_bytes, payload, rec);
-        s.unchecked_bytes += rec.size();
-        s.unchecked.push_back(std::move(rec));
+        if (index != nullptr) {
+            s.buffer.insert(s.buffer.end(), rec.begin(), rec.end());
+        } else {
+            s.unchecked_bytes += rec.size();
+            s.unchecked.push_back(std::move(rec));
+        }
     }
     tstats::note(tstats::Event::Produced);
     tstats::note(tstats::Event::ProducedBytes, total);
     tstats::note(tstats::Event::ProducedRelocs, e.relocs.size());
-    if (s.buffer.size() >= (256u << 10)) flush_locked(s, false);
 }
 
 void TranslationStore::note_verification(const StoredKey& key, bool match) {
@@ -1858,6 +2108,7 @@ std::string TranslationStore::directory() {
 void TranslationStore::flush() {
     if (g_active.load(std::memory_order_acquire) != 1) return;
     State& s = *g_state;
+    std::lock_guard<std::mutex> io(s.io_mutex);
     std::lock_guard<std::mutex> lock(s.mutex);
     flush_locked(s, true);
 }
@@ -1868,10 +2119,12 @@ void TranslationStore::reset_for_test() {
     if (g_active.load(std::memory_order_acquire) == 1) {
         s.stop.store(true, std::memory_order_release);
         if (s.worker.joinable()) s.worker.join();
+        std::lock_guard<std::mutex> io(s.io_mutex);
         std::lock_guard<std::mutex> lock(s.mutex);
         flush_locked(s, true);
     }
     if (s.seg_fd >= 0) ::close(s.seg_fd);
+    if (s.idx_fd >= 0) ::close(s.idx_fd);
     if (s.live_fd >= 0) ::close(s.live_fd);
     // Readers may still hold record pointers in tests that misbehave; the old
     // mappings and index are intentionally leaked.

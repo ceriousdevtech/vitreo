@@ -6,6 +6,7 @@
 #include "winapi/core/marshaler.hpp"
 #include "winapi/core/thunk_registry.hpp"
 #include "winapi/kernel32/handle.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/process_handle.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "winapi/kernel32/synchronization/critical_section.hpp"
@@ -92,7 +93,8 @@ NtdllManager::process_identity(u64 process_handle) const {
     if (!process->guest_metadata(metadata)) return std::nullopt;
     return ProcessIdentity{
         metadata.peb_address,
-        static_cast<u64>(process->pid),
+        ipc::windows_process_id(*process),
+        process->parent_client_id.load(),
     };
 }
 
@@ -213,7 +215,7 @@ void impl_NtQueryInformationProcess(Marshaler& m, NtdllManager& nm) {
         u64 parent_process_id = 0;
         if (current_process) {
             peb_address = process_peb();
-            process_id = static_cast<u64>(::getpid());
+            process_id = ipc::guest_process_id();
             parent_process_id = nm.current_parent_process_id();
         } else {
             const auto identity = nm.process_identity(process_handle);
@@ -227,6 +229,7 @@ void impl_NtQueryInformationProcess(Marshaler& m, NtdllManager& nm) {
             }
             peb_address = identity->peb_address;
             process_id = identity->process_id;
+            parent_process_id = identity->parent_process_id;
             ipc::ipc_log(
                 "NtQueryInformationProcess(Basic) handle=0x%llx pid=%llu "
                 "peb=0x%llx",

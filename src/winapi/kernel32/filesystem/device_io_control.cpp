@@ -10,6 +10,7 @@
 #include "winapi/kernel32/filesystem/filepos.hpp"
 #include "winapi/kernel32/thread/thread.hpp"
 #include "winapi/kernel32/system/virtual_firmware.hpp"
+#include "platform/host_hardware.hpp"
 #include "winapi/core/thunk_registry.hpp"
 
 #include "capsule/vfs/filesystem.hpp"
@@ -23,6 +24,9 @@
 #include <array>
 #include <deque>
 #include <memory>
+#include <mutex>
+#include <unordered_set>
+#include <cstdio>
 #include <mutex>
 #include <atomic>
 #include <cerrno>
@@ -134,6 +138,87 @@ bool FileManager::device_io_control(
     Handle handle, u32 control_code, GuestAddr input, u32 input_size,
     GuestAddr output, u32 output_size, u32& bytes_returned) {
     bytes_returned = 0;
+    if(m_handles.get_type(handle)==HandleType::HidDevice) {
+        auto file=m_handles.get_shared<HidOpenFile>(handle,HandleType::HidDevice);
+        if(!file || !m_memory) {set_last_error(error_codes::ERROR_INVALID_HANDLE);return false;}
+        auto completed=[&] {
+            if(file->completion_signal) {
+                file->completion_signal->reset();
+                if((file->notification_modes.load() & hid_sdk::kFILE_SKIP_SET_EVENT_ON_HANDLE)==0) file->completion_signal->signal();
+            }
+            return true;
+        };
+        const auto& l=gamepad_hid::layout(false); // identical public HIDClass layout on x86/x64
+        gamepad_hid::Bytes bytes;
+        switch(control_code) {
+            case hid_sdk::kIOCTL_HID_GET_INPUT_REPORT: {
+                if(output_size<gamepad_hid::kReportBytes) {
+                    static std::once_flag once;std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!DeviceIoControl: undersized HID input snapshot error contract\n");});
+                    set_last_error(error_codes::ERROR_NOT_SUPPORTED);return false;
+                }
+                const auto id=m_memory->read_u8(output);
+                if(id.is_err()) {set_last_error(error_codes::ERROR_NOACCESS);return false;}
+                if(id.value()!=gamepad_hid::kReportId) {
+                    static std::once_flag once;std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!DeviceIoControl: unmatched HID snapshot report ID\n");});
+                    set_last_error(error_codes::ERROR_NOT_SUPPORTED);return false;
+                }
+                bool failed=false,unsupported=false;const auto report=m_gamepad_catalog ? m_gamepad_catalog->snapshot(file,&failed,&unsupported) : std::optional<gamepad_hid::Report>{};
+                if(unsupported) {
+                    static std::once_flag once;std::call_once(once,[]{std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!DeviceIoControl: native background HID monitoring unavailable\n");});
+                    set_last_error(error_codes::ERROR_NOT_SUPPORTED);return false;
+                }
+                if(!report) {set_last_error(failed ? error_codes::ERROR_GEN_FAILURE : error_codes::ERROR_DEVICE_NOT_CONNECTED);return false;}
+                if(m_memory->write_bytes(output+1,report->data()+1,report->size()-1).is_err()) {set_last_error(error_codes::ERROR_NOACCESS);return false;}
+                // HIDClass (not the minidriver) reports Information=0.
+                return completed();
+            }
+            case hid_sdk::kIOCTL_HID_GET_COLLECTION_INFORMATION:
+                bytes.resize(l.sizeof_HID_COLLECTION_INFORMATION);
+                gamepad_hid::store32(bytes,l.offsetof_HID_COLLECTION_INFORMATION_DescriptorSize,gamepad_hid::kPreparsedData.size());
+                bytes[l.offsetof_HID_COLLECTION_INFORMATION_Polled]=1;
+                gamepad_hid::store16(bytes,l.offsetof_HID_COLLECTION_INFORMATION_VersionNumber,1);
+                break;
+            case hid_sdk::kIOCTL_HID_GET_COLLECTION_DESCRIPTOR:
+                bytes.assign(gamepad_hid::kPreparsedData.begin(),gamepad_hid::kPreparsedData.end());break;
+            case hid_sdk::kIOCTL_GET_NUM_DEVICE_INPUT_BUFFERS: {
+                std::lock_guard lock(file->mutex);bytes.resize(sizeof(u32));gamepad_hid::store32(bytes,0,file->capacity);break;
+            }
+            case hid_sdk::kIOCTL_SET_NUM_DEVICE_INPUT_BUFFERS: {
+                if(input_size<sizeof(u32)) {set_last_error(error_codes::ERROR_INVALID_PARAMETER);return false;}
+                const auto count=m_memory->read_u32(input);
+                if(count.is_err() || count.value()<hid_sdk::kMinimumInputBuffers || count.value()>hid_sdk::kMaximumInputBuffers) {
+                    set_last_error(error_codes::ERROR_INVALID_PARAMETER);return false;
+                }
+                std::lock_guard lock(file->mutex);file->capacity=count.value();
+                while(file->reports.size()>file->capacity) file->reports.pop_front();return completed();
+            }
+            case hid_sdk::kIOCTL_HID_FLUSH_QUEUE: {
+                std::lock_guard lock(file->mutex);file->reports.clear();return completed();
+            }
+            default: {
+                static std::mutex mutex;static std::unordered_set<u32> logged;
+                std::lock_guard lock(mutex);
+                if(logged.insert(control_code).second) std::fprintf(stderr,"[vitreo] UNIMPLEMENTED kernel32!DeviceIoControl: HID code=0x%x\n",control_code);
+                set_last_error(error_codes::ERROR_NOT_SUPPORTED);return false;
+            }
+        }
+        if(control_code==hid_sdk::kIOCTL_HID_GET_COLLECTION_INFORMATION && (!output || !output_size)) {
+            set_last_error(error_codes::ERROR_INVALID_PARAMETER);return false;
+        }
+        if(control_code==hid_sdk::kIOCTL_HID_GET_COLLECTION_DESCRIPTOR) {
+            // Windows copies the entire available prefix before returning
+            // ERROR_INVALID_USER_BUFFER for an undersized descriptor buffer.
+            const usize copied=std::min<usize>(output_size,bytes.size());
+            if(!output || (copied && m_memory->write_bytes(output,bytes.data(),copied).is_err())) {
+                set_last_error(error_codes::ERROR_INVALID_USER_BUFFER);return false;
+            }
+            if(output_size<bytes.size()) {set_last_error(error_codes::ERROR_INVALID_USER_BUFFER);return false;}
+            bytes_returned=static_cast<u32>(bytes.size());return completed();
+        }
+        if(output_size<bytes.size()) {set_last_error(error_codes::ERROR_INVALID_USER_BUFFER);return false;}
+        if(m_memory->write_bytes(output,bytes.data(),bytes.size()).is_err()) {set_last_error(error_codes::ERROR_NOACCESS);return false;}
+        bytes_returned=static_cast<u32>(bytes.size());return completed();
+    }
     // An FSCTL is issued on a FILE handle, not a device one: Windows routes it
     // to the filesystem that owns the file. Rejecting every non-Device handle
     // made libuv's junction path fail with ERROR_INVALID_HANDLE, which Node
@@ -415,6 +500,146 @@ bool FileManager::device_io_control(
                 set_last_error(error_codes::ERROR_INVALID_FUNCTION);
                 return false;
         }
+    }
+
+    if (*device == "disk:0") {
+        // \\.\PhysicalDrive0 = the host's physical disk (HostDisk). Learn
+        // IOCTL_DISK_GET_DRIVE_GEOMETRY / DISK_GEOMETRY; values and failures
+        // measured by tools/oracle_probe/disk_geometry_probe.
+        constexpr u32 IOCTL_DISK_GET_DRIVE_GEOMETRY = 0x00070000;
+        constexpr u32 IOCTL_DISK_GET_LENGTH_INFO = 0x0007405C;
+        const platform::HostDisk& disk = platform::host_hardware().disk;
+        if (control_code == IOCTL_DISK_GET_DRIVE_GEOMETRY) {
+            constexpr u32 kDiskGeometryBytes = 24;
+            if (output == 0 || output_size < kDiskGeometryBytes || m_memory == nullptr) {
+                set_last_error(error_codes::ERROR_INSUFFICIENT_BUFFER);
+                return false;
+            }
+            // The BIOS-style translation Windows reports for fixed disks:
+            // 255 heads x 63 sectors, Cylinders = DiskSize / (255*63*BytesPerSector).
+            constexpr u32 kTracksPerCylinder = 255;
+            constexpr u32 kSectorsPerTrack = 63;
+            constexpr u32 kFixedMedia = 12;
+            const u64 cylinder_bytes =
+                u64{kTracksPerCylinder} * kSectorsPerTrack * disk.block_bytes;
+            u8 geometry[kDiskGeometryBytes] = {};
+            const u64 cylinders = cylinder_bytes ? disk.size_bytes / cylinder_bytes : 0;
+            std::memcpy(geometry + 0, &cylinders, 8);
+            std::memcpy(geometry + 8, &kFixedMedia, 4);
+            std::memcpy(geometry + 12, &kTracksPerCylinder, 4);
+            std::memcpy(geometry + 16, &kSectorsPerTrack, 4);
+            std::memcpy(geometry + 20, &disk.block_bytes, 4);
+            if (m_memory->write_bytes(output, geometry, kDiskGeometryBytes).is_err()) {
+                set_last_error(error_codes::ERROR_NOACCESS);
+                return false;
+            }
+            bytes_returned = kDiskGeometryBytes;
+            return true;
+        }
+        constexpr u32 IOCTL_STORAGE_QUERY_PROPERTY_DISK = 0x002D1400;
+        if (control_code == IOCTL_STORAGE_QUERY_PROPERTY_DISK) {
+            // Learn IOCTL_STORAGE_QUERY_PROPERTY / STORAGE_PROPERTY_QUERY;
+            // every failure and truncation rule below is measured
+            // (tools/oracle_probe/storage_property_probe{64,32}.expected).
+            constexpr u32 kQueryBytes = 12;  // PropertyId, QueryType, AdditionalParameters[1]
+            if (input == 0 || input_size < kQueryBytes || m_memory == nullptr) {
+                set_last_error(error_codes::ERROR_BAD_LENGTH);
+                return false;
+            }
+            const auto property_id = m_memory->read_u32(input);
+            const auto query_type = m_memory->read_u32(input + 4);
+            if (property_id.is_err() || query_type.is_err()) {
+                set_last_error(error_codes::ERROR_NOACCESS);
+                return false;
+            }
+            constexpr u32 kPropertyStandardQuery = 0;
+            constexpr u32 kPropertyExistsQuery = 1;
+            constexpr u32 kStorageDeviceProperty = 0;
+            if (query_type.value() != kPropertyStandardQuery &&
+                query_type.value() != kPropertyExistsQuery) {
+                set_last_error(error_codes::ERROR_NOT_SUPPORTED);
+                return false;
+            }
+            if (property_id.value() != kStorageDeviceProperty) {
+                // Windows also answers StorageAdapterProperty (1) and
+                // StorageDeviceIdProperty (2) here; Vitreo has no adapter or
+                // device-identification data for them.
+                static std::mutex logged_mutex;
+                static std::unordered_set<u32> logged;
+                std::lock_guard<std::mutex> lock(logged_mutex);
+                if (logged.insert(property_id.value()).second) {
+                    std::fprintf(stderr, "[vitreo] UNIMPLEMENTED kernel32!DeviceIoControl: "
+                                         "IOCTL_STORAGE_QUERY_PROPERTY PropertyId %u on a disk\n",
+                                 property_id.value());
+                }
+                set_last_error(error_codes::ERROR_INVALID_FUNCTION);
+                return false;
+            }
+            bytes_returned = 0;
+            if (query_type.value() == kPropertyExistsQuery) return true;
+
+            // STORAGE_DEVICE_DESCRIPTOR (Version 40 = the fixed part) followed
+            // by the NUL-terminated strings its offsets name; an empty string
+            // has offset 0 (not present).
+            constexpr u32 kDescriptorBytes = 40;
+            std::vector<u8> out(kDescriptorBytes, 0);
+            const auto put_u32 = [&](u32 off, u32 v) { std::memcpy(out.data() + off, &v, 4); };
+            const auto append = [&](u32 offset_field, const std::string& text) {
+                if (text.empty()) return;
+                put_u32(offset_field, static_cast<u32>(out.size()));
+                out.insert(out.end(), text.begin(), text.end());
+                out.push_back(0);
+            };
+            put_u32(0, kDescriptorBytes);       // Version
+            out[8] = 0;                         // DeviceType: DIRECT_ACCESS_DEVICE
+            out[9] = 0;                         // DeviceTypeModifier
+            out[10] = 0;                        // RemovableMedia: the internal disk
+            out[11] = 1;                        // CommandQueueing
+            append(12, disk.vendor);
+            append(16, disk.product);
+            append(20, disk.revision);
+            append(24, disk.serial);
+            // STORAGE_BUS_TYPE (winioctl.h).
+            u32 bus_type = 0;                   // BusTypeUnknown
+            switch (disk.bus) {
+                case platform::HostDiskBus::Nvme: bus_type = 0x11; break;
+                case platform::HostDiskBus::Sata: bus_type = 0x0B; break;
+                case platform::HostDiskBus::Usb: bus_type = 0x07; break;
+                case platform::HostDiskBus::SecureDigital: bus_type = 0x0C; break;
+                case platform::HostDiskBus::Unknown: break;
+            }
+            put_u32(28, bus_type);
+            put_u32(32, 0);                     // RawPropertiesLength
+            put_u32(4, static_cast<u32>(out.size()));  // Size
+            // A short buffer receives a prefix and still succeeds; 0 bytes too.
+            const u32 copy = std::min<u32>(output == 0 ? 0 : output_size,
+                                           static_cast<u32>(out.size()));
+            if (copy != 0 && m_memory->write_bytes(output, out.data(), copy).is_err()) {
+                set_last_error(error_codes::ERROR_NOACCESS);
+                return false;
+            }
+            bytes_returned = copy;
+            return true;
+        }
+        if (control_code == IOCTL_DISK_GET_LENGTH_INFO) {
+            // FILE_READ_ACCESS; every PhysicalDrive handle Vitreo opens is
+            // query-only (create_file.cpp), so this is always denied.
+            set_last_error(error_codes::ERROR_ACCESS_DENIED);
+            return false;
+        }
+        static std::mutex logged_mutex;
+        static std::unordered_set<u32> logged;
+        std::lock_guard<std::mutex> lock(logged_mutex);
+        const u32 in0 = input && input_size >= 4 && m_memory ? m_memory->read_u32(input).value_or(0) : 0;
+        const u32 in1 = input && input_size >= 8 && m_memory ? m_memory->read_u32(input + 4).value_or(0) : 0;
+        if (logged.insert(control_code ^ (in0 << 8) ^ (in1 << 20)).second) {
+            std::fprintf(stderr,
+                         "[vitreo] UNIMPLEMENTED kernel32!DeviceIoControl: "
+                         "\\\\.\\PhysicalDrive0 IOCTL 0x%08x (in=%u out=%u in0=%u in1=%u)\n",
+                         control_code, input_size, output_size, in0, in1);
+        }
+        set_last_error(error_codes::ERROR_INVALID_FUNCTION);
+        return false;
     }
 
     if (*device != "cpuz162" || m_memory == nullptr) {

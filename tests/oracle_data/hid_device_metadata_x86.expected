@@ -1,0 +1,170 @@
+dosmap.STATUS_DEVICE_NOT_CONNECTED=1167
+dosmap.STATUS_ACCESS_VIOLATION=998
+dosmap.STATUS_CANCELLED=995
+dosmap.STATUS_INVALID_BUFFER_SIZE=1784
+dosmap.STATUS_PENDING=997
+dosmap.STATUS_NOT_SUPPORTED=50
+ntstatus.STATUS_DEVICE_NOT_CONNECTED=3221225629
+ntstatus.STATUS_ACCESS_VIOLATION=3221225477
+ntstatus.STATUS_CANCELLED=3221225760
+ntstatus.STATUS_NOT_SUPPORTED=3221225659
+ntstatus.STATUS_INVALID_HANDLE=3221225480
+ntstatus.STATUS_ACCESS_DENIED=3221225506
+ntstatus.STATUS_PENDING=259
+ntstatus.STATUS_INVALID_USER_BUFFER=3221225704
+ntstatus.STATUS_INVALID_PARAMETER=3221225485
+fresh async=0 syncaccess=0 open=1 error=0 initial_wait=0 waiterror=57005 second_wait=0 waiterror=57005 after_attributes_wait=0 waiterror=57005
+fresh async=0 syncaccess=1 open=1 error=0 initial_wait=0 waiterror=57005 second_wait=0 waiterror=57005 after_attributes_wait=0 waiterror=57005
+fresh async=1 syncaccess=0 open=1 error=0 initial_wait=0 waiterror=57005 second_wait=0 waiterror=57005 after_attributes_wait=258 waiterror=57005
+fresh async=1 syncaccess=1 open=1 error=0 initial_wait=0 waiterror=57005 second_wait=0 waiterror=57005 after_attributes_wait=258 waiterror=57005
+metadatawait async=0 kind=0 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=1 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=2 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=3 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=4 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=5 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=6 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=7 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=8 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=9 initial=0 ok=1 after=0 error=57005
+metadatawait async=0 kind=10 initial=0 ok=1 after=0 error=57005 event=0
+metadatawait async=1 kind=0 initial=0 ok=1 after=258 error=57005
+metadatawait async=1 kind=1 initial=0 ok=1 after=258 error=57005
+metadatawait async=1 kind=2 initial=0 ok=1 after=258 error=57005
+metadatawait async=1 kind=3 initial=0 ok=1 after=258 error=57005
+metadatawait async=1 kind=4 initial=0 ok=1 after=258 error=57005
+metadatawait async=1 kind=5 initial=0 ok=1 after=258 error=57005
+metadatawait async=1 kind=6 initial=0 ok=1 after=258 error=57005
+metadatawait async=1 kind=7 initial=0 ok=1 after=258 error=57005
+metadatawait async=1 kind=8 initial=0 ok=1 after=0 error=57005
+metadatawait async=1 kind=9 initial=0 ok=1 after=0 error=57005
+metadatawait async=1 kind=10 initial=0 ok=1 after=258 error=57005 event=0
+iocp firstdup=0 first=1 sameport=1 error=57005
+iocp firstdup=0 repeat=0 error=87
+iocp firstdup=0 aliasdifferentkey=0 error=87
+iocp firstdup=0 aliasafterotherport=0 error=87
+iocp firstdup=0 afterboundclose=0 error=87
+iocp firstdup=0 setmodes=0 ok=1 error=57005
+iocp firstdup=0 setmodes=1 ok=1 error=57005
+iocp firstdup=0 setmodes=0 ok=1 error=57005
+iocp firstdup=0 setmodes=2 ok=1 error=57005
+iocp firstdup=0 setmodes=3 ok=1 error=57005
+iocp firstdup=0 setmodes=4 ok=0 error=87
+iocp firstdup=0 setmodes=255 ok=0 error=87
+iocp firstdup=1 first=1 sameport=1 error=57005
+iocp firstdup=1 repeat=0 error=87
+iocp firstdup=1 aliasdifferentkey=0 error=87
+iocp firstdup=1 aliasafterotherport=0 error=87
+iocp firstdup=1 afterboundclose=0 error=87
+iocp firstdup=1 setmodes=0 ok=1 error=57005
+iocp firstdup=1 setmodes=1 ok=1 error=57005
+iocp firstdup=1 setmodes=0 ok=1 error=57005
+iocp firstdup=1 setmodes=2 ok=1 error=57005
+iocp firstdup=1 setmodes=3 ok=1 error=57005
+iocp firstdup=1 setmodes=4 ok=0 error=87
+iocp firstdup=1 setmodes=255 ok=0 error=87
+modewait async=0 mode=1 initial=0 set=0 error=87 afterset=258 afterattrs=0
+modewait async=0 mode=2 initial=0 set=0 error=87 afterset=258 afterattrs=0
+modewait async=0 mode=3 initial=0 set=0 error=87 afterset=258 afterattrs=0
+modewait async=1 mode=1 initial=0 set=1 error=57005 afterset=0 afterattrs=258
+modewait async=1 mode=2 initial=0 set=1 error=57005 afterset=258 afterattrs=258
+modewait async=1 mode=3 initial=0 set=1 error=57005 afterset=258 afterattrs=258
+ioctl.info length=0 ok=0 error=87 returned=57005 changed=0
+ioctl.info length=1 ok=0 error=1784 returned=57005 changed=0
+ioctl.info length=11 ok=0 error=1784 returned=57005 changed=0
+ioctl.info length=12 ok=1 error=57005 returned=12 changed=12
+ioctl.info length=13 ok=1 error=57005 returned=12 changed=12
+ioctl.info length=32 ok=1 error=57005 returned=12 changed=12
+ioctl.info null length=0 ok=0 error=87 returned=57005
+ioctl.info null length=12 ok=0 error=87 returned=57005
+ioctl.descriptor required=596
+ioctl.descriptor length=0 ok=0 error=1784 returned=57005 changed=0
+ioctl.descriptor length=1 ok=0 error=1784 returned=57005 changed=1
+ioctl.descriptor length=595 ok=0 error=1784 returned=57005 changed=595
+ioctl.descriptor length=596 ok=1 error=57005 returned=596 changed=596
+ioctl.descriptor length=597 ok=1 error=57005 returned=596 changed=596
+ioctl.descriptor null length=0 ok=0 error=1784 returned=57005
+ioctl.descriptor null length=596 ok=0 error=1784 returned=57005
+null attributes ok=0 error=57005 exception=c0000005
+null inputbuffers ok=0 error=87 exception=00000000
+null preparsed ok=0 error=57005 exception=c0000005
+null manufacturer256 ok=0 error=998 exception=00000000
+null product256 ok=0 error=998 exception=00000000
+null serial256 ok=0 error=998 exception=00000000
+setbuffers value=0 ok=0 error=87 after=32
+setbuffers value=1 ok=0 error=87 after=32
+setbuffers value=2 ok=1 error=57005 after=2
+setbuffers value=32 ok=1 error=57005 after=32
+setbuffers value=512 ok=1 error=57005 after=512
+setbuffers value=513 ok=0 error=87 after=512
+setbuffers value=4294967295 ok=0 error=87 after=512
+ntioctl kind=0 length=0 status=c000000d ios=0000dead info=57005 changed=0
+ntioctl kind=0 length=1 status=c0000206 ios=0000dead info=57005 changed=0
+ntioctl kind=0 length=11 status=c0000206 ios=0000dead info=57005 changed=0
+ntioctl kind=0 length=12 status=00000000 ios=00000000 info=12 changed=12
+ntioctl kind=1 length=0 status=c0000206 ios=0000dead info=57005 changed=0
+ntioctl kind=1 length=1 status=c0000206 ios=0000dead info=57005 changed=1
+ntioctl kind=1 length=595 status=c0000206 ios=0000dead info=57005 changed=595
+ntioctl kind=1 length=596 status=00000000 ios=00000000 info=596 changed=596
+pointer_bytes=4 reports=7,0,0 usage=2 page=1
+filetype=0 error=0
+attributes size=0 ok=1 error=57005 changed=7 bytes=0c000000270601000000a5a5a5a5a5a5
+attributes size=4 ok=1 error=57005 changed=7 bytes=0c000000270601000000a5a5a5a5a5a5
+attributes size=11 ok=1 error=57005 changed=7 bytes=0c000000270601000000a5a5a5a5a5a5
+attributes size=12 ok=1 error=57005 changed=6 bytes=0c000000270601000000a5a5a5a5a5a5
+attributes size=13 ok=1 error=57005 changed=7 bytes=0c000000270601000000a5a5a5a5a5a5
+attributes size=4294967295 ok=1 error=57005 changed=10 bytes=0c000000270601000000a5a5a5a5a5a5
+getpp one=1 error=57005 two=1 error=57005 distinct=1
+freepp ok=1 error=57005
+second_after_free status=00110000
+inputbuffers ok=1 error=57005 count=32
+string manufacturer length=0 ok=0 error=1784 changed=0 written_extent=0
+string manufacturer length=1 ok=0 error=1784 changed=0 written_extent=0
+string manufacturer length=2 ok=0 error=1784 changed=0 written_extent=0
+string manufacturer length=4 ok=0 error=1784 changed=0 written_extent=0
+string manufacturer length=8 ok=0 error=1784 changed=0 written_extent=0
+string manufacturer length=16 ok=1 error=57005 changed=10 written_extent=10
+string manufacturer length=32 ok=1 error=57005 changed=10 written_extent=10
+string manufacturer length=256 ok=1 error=57005 changed=10 written_extent=10
+string manufacturer length=4093 ok=1 error=57005 changed=10 written_extent=10
+string manufacturer length=4094 ok=1 error=57005 changed=10 written_extent=10
+string product length=0 ok=0 error=1784 changed=0 written_extent=0
+string product length=1 ok=0 error=1784 changed=0 written_extent=0
+string product length=2 ok=0 error=1784 changed=0 written_extent=0
+string product length=4 ok=0 error=1784 changed=0 written_extent=0
+string product length=8 ok=0 error=1784 changed=0 written_extent=0
+string product length=16 ok=0 error=1784 changed=0 written_extent=0
+string product length=32 ok=1 error=57005 changed=32 written_extent=32
+string product length=256 ok=1 error=57005 changed=32 written_extent=32
+string product length=4093 ok=1 error=57005 changed=32 written_extent=32
+string product length=4094 ok=1 error=57005 changed=32 written_extent=32
+string serial length=0 ok=0 error=1784 changed=0 written_extent=0
+string serial length=1 ok=0 error=1784 changed=0 written_extent=0
+string serial length=2 ok=0 error=1784 changed=0 written_extent=0
+string serial length=4 ok=0 error=1784 changed=0 written_extent=0
+string serial length=8 ok=0 error=1784 changed=0 written_extent=0
+string serial length=16 ok=0 error=1784 changed=0 written_extent=0
+string serial length=32 ok=0 error=1784 changed=0 written_extent=0
+string serial length=256 ok=1 error=57005 changed=42 written_extent=42
+string serial length=4093 ok=1 error=57005 changed=42 written_extent=42
+string serial length=4094 ok=1 error=57005 changed=42 written_extent=42
+indexed index=0 ok=1 error=57005 changed=4
+indexed index=1 ok=1 error=57005 changed=10
+indexed index=2 ok=1 error=57005 changed=30
+indexed index=3 ok=1 error=57005 changed=32
+indexed index=4294967295 ok=1 error=57005 changed=2
+inputreport invalid_id=127 length=0 ok=0 error=1 changed=0
+inputreport invalid_id=127 length=1 ok=0 error=1 changed=0
+inputreport invalid_id=127 length=6 ok=0 error=1 changed=0
+feature length=0 ok=0 error=1 changed=0
+feature length=1 ok=0 error=1 changed=0
+feature length=7 ok=0 error=1 changed=0
+feature length=32 ok=0 error=1 changed=0
+open disposition=0 ok=0 error=87
+open disposition=1 ok=1 error=0
+open disposition=2 ok=1 error=0
+open disposition=3 ok=1 error=0
+open disposition=4 ok=1 error=0
+open disposition=5 ok=0 error=87
+open disposition=6 ok=0 error=87
+openread ok=0 error=5

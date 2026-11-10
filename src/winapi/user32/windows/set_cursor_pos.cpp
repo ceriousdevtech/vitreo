@@ -1,5 +1,6 @@
 #include "winapi/user32/windows/set_cursor_pos.hpp"
 #include "windowing/model/diag_flags.hpp"
+#include "windowing/model/cursor_confinement.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/kernel32/error.hpp"
 
@@ -9,27 +10,10 @@
 
 namespace vitreo::winapi {
 
-namespace {
-
-/// Clamp one axis into the half-open span [lo, hi). An empty span (hi <= lo)
-/// has no interior; pin to lo so the result is still deterministic.
-[[nodiscard]] i32 clamp_axis(i32 v, i32 lo, i32 hi) noexcept {
-    if (hi <= lo) return lo;
-    return std::clamp(v, lo, hi - 1);
-}
-
-} // namespace
-
 CursorPoint confine_cursor_point(i32 x, i32 y, const windowing::Rect& screen,
                                  const windowing::Rect* clip) noexcept {
-    CursorPoint p{x, y};
-    if (clip != nullptr) {
-        p.x = clamp_axis(p.x, clip->left, clip->right);
-        p.y = clamp_axis(p.y, clip->top, clip->bottom);
-    }
-    p.x = clamp_axis(p.x, screen.left, screen.right);
-    p.y = clamp_axis(p.y, screen.top, screen.bottom);
-    return p;
+    const auto point = windowing::confine_cursor_point({x, y}, screen, clip);
+    return {point.x, point.y};
 }
 
 void impl_SetCursorPos(Marshaler& m, windowing::CursorHost& cursor_host,

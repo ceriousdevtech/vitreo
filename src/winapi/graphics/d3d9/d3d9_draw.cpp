@@ -373,7 +373,7 @@ void D3D9Manager::draw_primitive(Marshaler& m, u32 self, bool indexed) {
     std::array<bool, D3D9_MAX_STREAMS> stream_used{};
     for (const FvfElement& element : elements) {
         if (element.stream >= D3D9_MAX_STREAMS ||
-            element.stream >= graphics::BACKEND_MAX_VERTEX_BUFFERS) {
+            !graphics::vertex_stream_bindable(element.stream)) {
             reject("a vertex declaration stream beyond the backend limit");
             return;
         }
@@ -389,7 +389,7 @@ void D3D9Manager::draw_primitive(Marshaler& m, u32 self, bool indexed) {
         }
     }
 
-    for (u32 slot = 0; slot < graphics::BACKEND_MAX_VERTEX_BUFFERS; ++slot) {
+    for (u32 slot = 0; slot < D3D9_MAX_STREAMS; ++slot) {
         if (!stream_used[slot]) {
             continue;
         }
@@ -655,6 +655,12 @@ void D3D9Manager::draw_primitive(Marshaler& m, u32 self, bool indexed) {
     ++state.diagnostic_draw;
 
     retain_guard.dismiss = true;
+    draw_capture_record(m, state, indexed, primitive_type, base_vertex,
+                        indexed && !state.up_override.has_value()
+                            ? static_cast<u32>(m.arg(3)) : 0u,
+                        indexed && !state.up_override.has_value()
+                            ? static_cast<u32>(m.arg(4)) : 0u,
+                        index_start, primitive_count);
     D3d9SubmitQueue::instance().enqueue_draw(std::move(snap));
     m.set_return(D3D_OK);
 }

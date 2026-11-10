@@ -1,0 +1,12 @@
+Source: Windows SDK 10.0.26100.0 shared/winerror.h (winoracle)
+279: #define ERROR_ACCESS_DENIED              5L
+7788: #define ERROR_EXTENDED_ERROR             1208L
+19394: #define ERROR_DS_SERVER_DOWN             8250L
+27019: #define ERROR_SXS_KEY_NOT_FOUND          14007L
+30462: #define E_POINTER                        _HRESULT_TYPEDEF_(0x80004003L)
+30489: #define E_FAIL                           _HRESULT_TYPEDEF_(0x80004005L)
+30544: #define E_POINTER                        _HRESULT_TYPEDEF_(0x80000005L)
+30571: #define E_FAIL                           _HRESULT_TYPEDEF_(0x80000008L)
+31199: #define S_OK                                   ((HRESULT)0L)
+30426: #define E_NOTIMPL                        _HRESULT_TYPEDEF_(0x80004001L)
+32025: #define MK_E_SYNTAX                      _HRESULT_TYPEDEF_(0x800401E4L)

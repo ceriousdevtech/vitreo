@@ -37,7 +37,10 @@
 
 namespace vitreo::memory {
 
-/// Claim [kLowReserveStart, 4GB) for the guest, PROT_NONE.
+/// Claim [kLowReserveStart, 8GB) for the guest, PROT_NONE: the low 4GB for
+/// 32-bit images, and 4GB-8GB where x64 EXEs (often without relocations)
+/// and DLLs load (0x1'0000'0000, 0x1'4000'0000, 0x1'8000'0000), so host
+/// malloc settles above them.
 ///
 /// Non-destructive: uses `mach_vm_allocate(VM_FLAGS_FIXED)`, which fails on an
 /// occupied range rather than evicting its owner the way `mmap(MAP_FIXED)`

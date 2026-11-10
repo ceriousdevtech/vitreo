@@ -558,14 +558,24 @@ bool Kernel32ExtManager::try_deliver_user_apcs() {
 
 void Kernel32ExtManager::impl_SwitchToThread(Marshaler& m) {
     // BOOL SwitchToThread(void)
-    // Learn: yields execution to another ready thread; returns zero when none
-    // are ready. A lone guest thread spinning on SwitchToThread must see FALSE
-    // so it can fall back to Sleep(0)/Sleep(1).
+    // Learn: yields execution to another ready thread on this processor and
+    // returns zero when none are ready. A lone guest thread spinning on
+    // SwitchToThread must see FALSE so it can fall back to Sleep(0)/Sleep(1).
+    //
+    // The return stays "another thread object is still alive", which is the
+    // stand-in for "someone could have run". The yield itself must not be
+    // thread_switch on every call: that reschedules the caller behind every
+    // runnable thread, and a render-thread poll of a completion flag then
+    // spends the frame inside the trap. A processor hint is the empty-queue
+    // case. One full timeslice yield out of every 1024 calls still lets a
+    // thread that is actually queued on this core run.
     const u32 self = ThreadManager::get_current_thread_id_static();
     const bool others =
         m_thread_manager != nullptr &&
         m_thread_manager->any_live_thread_except(self);
-    host_yield_timeslice();
+    thread_local u32 spins = 0;
+    if ((++spins & 1023u) == 0) host_yield_timeslice();
+    else host_yield_processor_hint();
     m.set_return(others ? 1u : 0u);
 }
 

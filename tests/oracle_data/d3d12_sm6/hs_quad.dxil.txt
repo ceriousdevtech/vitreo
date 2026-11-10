@@ -1,0 +1,249 @@
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; POSITION                 0   xyzw        0     NONE   float   xyzw
+; ATTR                     0   xyzw        1     NONE   float   xyzw
+;
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; POSITION                 0   xyzw        0     NONE   float   xyzw
+; ATTR                     0   xyzw        1     NONE   float   xyzw
+;
+;
+; Patch Constant signature signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; SV_TessFactor            0      w        0 QUADEDGE   float      w
+; SV_TessFactor            1      w        1 QUADEDGE   float      w
+; SV_TessFactor            2      w        2 QUADEDGE   float      w
+; SV_TessFactor            3      w        3 QUADEDGE   float      w
+; SV_InsideTessFactor      0      w        4  QUADINT   float      w
+; SV_InsideTessFactor      1      w        5  QUADINT   float      w
+; PCDATA                   0   xyzw        6     NONE   float   xyzw
+;
+; shader hash: 0a0b875caa124d3456c8da558e2ff845
+;
+; Pipeline Runtime Information: 
+;
+; Hull Shader
+; InputControlPointCount=4
+; OutputControlPointCount=4
+; Domain=quad
+; OutputPrimitive=triangle_ccw
+;
+;
+; Input signature:
+;
+; Name                 Index             InterpMode DynIdx
+; -------------------- ----- ---------------------- ------
+; POSITION                 0                 linear       
+; ATTR                     0                 linear       
+;
+; Output signature:
+;
+; Name                 Index             InterpMode DynIdx
+; -------------------- ----- ---------------------- ------
+; POSITION                 0                 linear       
+; ATTR                     0                 linear       
+;
+; Patch Constant signature:
+;
+; Name                 Index             InterpMode DynIdx
+; -------------------- ----- ---------------------- ------
+; SV_TessFactor            0                              
+; SV_InsideTessFactor      0                              
+; PCDATA                   0                              
+;
+; Buffer Definitions:
+;
+; cbuffer Root
+; {
+;
+;   struct Root
+;   {
+;
+;       uint k0;                                      ; Offset:    0
+;       uint k1;                                      ; Offset:    4
+;       uint k2;                                      ; Offset:    8
+;       uint k3;                                      ; Offset:   12
+;   
+;   } Root;                                           ; Offset:    0 Size:    16
+;
+; }
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; Root                              cbuffer      NA          NA     CB0            cb0     1
+;
+;
+; ViewId state:
+;
+; Number of inputs: 8, outputs: 8, patchconst: 28
+; Outputs dependent on ViewId: {  }
+; PCOutputs dependent on ViewId: {  }
+; Inputs contributing to computation of Outputs:
+;   output 0 depends on inputs: { 0 }
+;   output 1 depends on inputs: { 1 }
+;   output 2 depends on inputs: { 2 }
+;   output 3 depends on inputs: { 3 }
+;   output 4 depends on inputs: { 4 }
+;   output 5 depends on inputs: { 5 }
+;   output 6 depends on inputs: { 6 }
+;   output 7 depends on inputs: { 7 }
+; Inputs contributing to computation of PCOutputs:
+;   output 24 depends on inputs: { 4, 7 }
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.CBufRet.i32 = type { i32, i32, i32, i32 }
+%Root = type { i32, i32, i32, i32 }
+
+define void @"\01?hs_quad_pc@@YA?AUHsPc@@V?$InputPatch@UVsCp@@$03@@V?$OutputPatch@UHsCp@@$03@@I@Z"() {
+  %1 = call %dx.types.Handle @dx.op.createHandle(i32 57, i8 2, i32 0, i32 0, i1 false)  ; CreateHandle(resourceClass,rangeId,index,nonUniformIndex)
+  br label %2
+
+; <label>:2                                       ; preds = %2, %0
+  %3 = phi float [ 0.000000e+00, %0 ], [ %15, %2 ]
+  %4 = phi i32 [ 0, %0 ], [ %10, %2 ]
+  %5 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %1, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %6 = extractvalue %dx.types.CBufRet.i32 %5, 0
+  %7 = add i32 %6, %4
+  %8 = and i32 %7, 3
+  %9 = call float @dx.op.loadInput.f32(i32 4, i32 1, i32 0, i8 0, i32 %8)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  %10 = add nuw nsw i32 %4, 1
+  %11 = uitofp i32 %10 to float
+  %12 = fmul fast float %9, %11
+  %13 = call float @dx.op.loadOutputControlPoint.f32(i32 103, i32 1, i32 0, i8 3, i32 %4)  ; LoadOutputControlPoint(inputSigId,row,col,index)
+  %14 = fadd fast float %13, %3
+  %15 = fadd fast float %14, %12
+  %16 = icmp eq i32 %10, 4
+  br i1 %16, label %17, label %2, !llvm.loop !24
+
+; <label>:17                                      ; preds = %2
+  %18 = call i32 @dx.op.primitiveID.i32(i32 108)  ; PrimitiveID()
+  %19 = icmp eq i32 %18, 1
+  %20 = select i1 %19, float 0.000000e+00, float 3.000000e+00
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 0, i32 0, i8 0, float %20)  ; StorePatchConstant(outputSigID,row,col,value)
+  %21 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %1, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %22 = extractvalue %dx.types.CBufRet.i32 %21, 0
+  %23 = uitofp i32 %22 to float
+  %24 = fadd fast float %23, 2.000000e+00
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 0, i32 1, i8 0, float %24)  ; StorePatchConstant(outputSigID,row,col,value)
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 0, i32 2, i8 0, float 4.000000e+00)  ; StorePatchConstant(outputSigID,row,col,value)
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 0, i32 3, i8 0, float 1.000000e+00)  ; StorePatchConstant(outputSigID,row,col,value)
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 1, i32 0, i8 0, float 2.000000e+00)  ; StorePatchConstant(outputSigID,row,col,value)
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 1, i32 1, i8 0, float 3.000000e+00)  ; StorePatchConstant(outputSigID,row,col,value)
+  %25 = uitofp i32 %18 to float
+  %26 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %1, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %27 = extractvalue %dx.types.CBufRet.i32 %26, 1
+  %28 = uitofp i32 %27 to float
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 2, i32 0, i8 0, float %15)  ; StorePatchConstant(outputSigID,row,col,value)
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 2, i32 0, i8 1, float %25)  ; StorePatchConstant(outputSigID,row,col,value)
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 2, i32 0, i8 2, float %28)  ; StorePatchConstant(outputSigID,row,col,value)
+  call void @dx.op.storePatchConstant.f32(i32 106, i32 2, i32 0, i8 3, float 7.500000e-01)  ; StorePatchConstant(outputSigID,row,col,value)
+  ret void
+}
+
+define void @hs_quad() {
+  %1 = call i32 @dx.op.primitiveID.i32(i32 108)  ; PrimitiveID()
+  %2 = call i32 @dx.op.outputControlPointID.i32(i32 107)  ; OutputControlPointID()
+  %3 = call float @dx.op.loadInput.f32(i32 4, i32 0, i32 0, i8 0, i32 %2)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  %4 = call float @dx.op.loadInput.f32(i32 4, i32 0, i32 0, i8 1, i32 %2)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  %5 = call float @dx.op.loadInput.f32(i32 4, i32 0, i32 0, i8 2, i32 %2)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  %6 = call float @dx.op.loadInput.f32(i32 4, i32 0, i32 0, i8 3, i32 %2)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  call void @dx.op.storeOutput.f32(i32 5, i32 0, i32 0, i8 0, float %3)  ; StoreOutput(outputSigId,rowIndex,colIndex,value)
+  call void @dx.op.storeOutput.f32(i32 5, i32 0, i32 0, i8 1, float %4)  ; StoreOutput(outputSigId,rowIndex,colIndex,value)
+  call void @dx.op.storeOutput.f32(i32 5, i32 0, i32 0, i8 2, float %5)  ; StoreOutput(outputSigId,rowIndex,colIndex,value)
+  call void @dx.op.storeOutput.f32(i32 5, i32 0, i32 0, i8 3, float %6)  ; StoreOutput(outputSigId,rowIndex,colIndex,value)
+  %7 = call float @dx.op.loadInput.f32(i32 4, i32 1, i32 0, i8 0, i32 %2)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  %8 = call float @dx.op.loadInput.f32(i32 4, i32 1, i32 0, i8 1, i32 %2)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  %9 = call float @dx.op.loadInput.f32(i32 4, i32 1, i32 0, i8 2, i32 %2)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  %10 = call float @dx.op.loadInput.f32(i32 4, i32 1, i32 0, i8 3, i32 %2)  ; LoadInput(inputSigId,rowIndex,colIndex,gsVertexAxis)
+  %11 = fmul fast float %7, 2.000000e+00
+  %12 = fmul fast float %8, 2.000000e+00
+  %13 = fmul fast float %9, 2.000000e+00
+  %14 = fmul fast float %10, 2.000000e+00
+  %15 = uitofp i32 %2 to float
+  %16 = uitofp i32 %1 to float
+  %17 = fadd fast float %11, %15
+  %18 = fadd fast float %12, %16
+  call void @dx.op.storeOutput.f32(i32 5, i32 1, i32 0, i8 0, float %17)  ; StoreOutput(outputSigId,rowIndex,colIndex,value)
+  call void @dx.op.storeOutput.f32(i32 5, i32 1, i32 0, i8 1, float %18)  ; StoreOutput(outputSigId,rowIndex,colIndex,value)
+  call void @dx.op.storeOutput.f32(i32 5, i32 1, i32 0, i8 2, float %13)  ; StoreOutput(outputSigId,rowIndex,colIndex,value)
+  call void @dx.op.storeOutput.f32(i32 5, i32 1, i32 0, i8 3, float %14)  ; StoreOutput(outputSigId,rowIndex,colIndex,value)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.outputControlPointID.i32(i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.primitiveID.i32(i32) #0
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.loadInput.f32(i32, i32, i32, i8, i32) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.storeOutput.f32(i32, i32, i32, i8, float) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.storePatchConstant.f32(i32, i32, i32, i8, float) #1
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.loadOutputControlPoint.f32(i32, i32, i32, i8, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32, %dx.types.Handle, i32) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandle(i32, i8, i32, i32, i1) #2
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind }
+attributes #2 = { nounwind readonly }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.viewIdState = !{!7}
+!dx.entryPoints = !{!8}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 0}
+!2 = !{i32 1, i32 6}
+!3 = !{!"hs", i32 6, i32 0}
+!4 = !{null, null, !5, null}
+!5 = !{!6}
+!6 = !{i32 0, %Root* undef, !"", i32 0, i32 0, i32 1, i32 16, null}
+!7 = !{[19 x i32] [i32 8, i32 8, i32 1, i32 2, i32 4, i32 8, i32 16, i32 32, i32 64, i32 128, i32 28, i32 0, i32 0, i32 0, i32 0, i32 16777216, i32 0, i32 0, i32 16777216]}
+!8 = !{void ()* @hs_quad, !"hs_quad", !9, !4, !22}
+!9 = !{!10, !10, !15}
+!10 = !{!11, !14}
+!11 = !{i32 0, !"POSITION", i8 9, i8 0, !12, i8 2, i32 1, i8 4, i32 0, i8 0, !13}
+!12 = !{i32 0}
+!13 = !{i32 3, i32 15}
+!14 = !{i32 1, !"ATTR", i8 9, i8 0, !12, i8 2, i32 1, i8 4, i32 1, i8 0, !13}
+!15 = !{!16, !19, !21}
+!16 = !{i32 0, !"SV_TessFactor", i8 9, i8 25, !17, i8 0, i32 4, i8 1, i32 0, i8 3, !18}
+!17 = !{i32 0, i32 1, i32 2, i32 3}
+!18 = !{i32 3, i32 1}
+!19 = !{i32 1, !"SV_InsideTessFactor", i8 9, i8 26, !20, i8 0, i32 2, i8 1, i32 4, i8 3, !18}
+!20 = !{i32 0, i32 1}
+!21 = !{i32 2, !"PCDATA", i8 9, i8 0, !12, i8 0, i32 1, i8 4, i32 6, i8 0, !13}
+!22 = !{i32 3, !23}
+!23 = !{void ()* @"\01?hs_quad_pc@@YA?AUHsPc@@V?$InputPatch@UVsCp@@$03@@V?$OutputPatch@UHsCp@@$03@@I@Z", i32 4, i32 4, i32 3, i32 1, i32 4, float 1.600000e+01}
+!24 = distinct !{!24, !25}
+!25 = !{!"llvm.loop.unroll.disable"}

@@ -102,7 +102,7 @@ bool DxbcTranslator::translate_buffer_operation(u32 opcode_token,
         // matters for g#: unused components must not create extra OOB reads,
         // because an OOB groupshared read is explicitly undefined.
         Sm4Operand destination, byte_offset, memory;
-        if (!m_decoder.decode_operand(destination) ||
+        if (!m_decoder.decode_operand(destination) || !decode_tiled_status() ||
             !m_decoder.decode_operand(byte_offset) ||
             !m_decoder.decode_operand(memory)) {
             return fail("LD_RAW: bad operands");
@@ -158,38 +158,77 @@ bool DxbcTranslator::translate_buffer_operation(u32 opcode_token,
         const u32 base_word = m_builder.emit_shift_right_logical(
             m_type_uint, byte_index, shift);
         std::vector<u32> lanes(4u, m_const_u0);
-        for (u32 lane = 0; lane < 4u; ++lane) {
-            if ((destination.write_mask & (1u << lane)) == 0u) continue;
-            const u32 source_lane =
-                (memory.swizzle >> (lane * 2u)) & 0x3u;
-            const u32 word = source_lane == 0u ? base_word
-                : m_builder.emit_iadd(
-                      m_type_uint, base_word,
-                      m_builder.emit_constant_int(m_type_uint, source_lane));
-            if (guards_buffer(memory.type)) {
-                // Learn ld_raw: a word past the view reads as 0.
-                lanes[lane] = guarded_buffer_word_load(
-                    found_var, pointer_type, word,
-                    buffer_word_in_bounds(
-                        memory.type == Sm4OperandType::UnorderedAccessView,
-                        memory.index0, word));
-                continue;
+        if (guards_buffer(memory.type)) {
+            // Learn ld_raw: a word past the view reads as 0. The lanes in
+            // the mask are one span of the view: when the last of them fits,
+            // every earlier word does too, and the loads stay adjacent.
+            u32 min_src = 3u;
+            u32 max_src = 0u;
+            bool any = false;
+            for (u32 lane = 0; lane < 4u; ++lane) {
+                if ((destination.write_mask & (1u << lane)) == 0u) continue;
+                const u32 source_lane =
+                    (memory.swizzle >> (lane * 2u)) & 0x3u;
+                any = true;
+                if (source_lane < min_src) min_src = source_lane;
+                if (source_lane > max_src) max_src = source_lane;
             }
-            // A storage buffer wraps its word array in a Block struct, so the
-            // chain needs the member index first; groupshared memory is the
-            // bare array.
-            const u32 pointer = indexed_through_member
-                ? m_builder.emit_access_chain(
-                      pointer_type, found_var,
-                      {m_builder.emit_constant_int(m_type_uint, 0u), word})
-                : m_builder.emit_access_chain(pointer_type, found_var, {word});
-            lanes[lane] = m_builder.emit_load(m_type_uint, pointer);
+            if (any) {
+                u32 origin = base_word;
+                if (min_src != 0u) {
+                    origin = m_builder.emit_iadd(
+                        m_type_uint, base_word,
+                        m_builder.emit_constant_int(m_type_uint, min_src));
+                }
+                u32 span[4]{};
+                load_guarded_word_span(
+                    memory.type == Sm4OperandType::UnorderedAccessView,
+                    memory.index0, found_var, pointer_type,
+                    indexed_through_member, origin, max_src - min_src + 1u,
+                    span);
+                for (u32 lane = 0; lane < 4u; ++lane) {
+                    if ((destination.write_mask & (1u << lane)) == 0u) continue;
+                    const u32 source_lane =
+                        (memory.swizzle >> (lane * 2u)) & 0x3u;
+                    lanes[lane] = span[source_lane - min_src];
+                }
+            }
+        } else {
+            for (u32 lane = 0; lane < 4u; ++lane) {
+                if ((destination.write_mask & (1u << lane)) == 0u) continue;
+                const u32 source_lane =
+                    (memory.swizzle >> (lane * 2u)) & 0x3u;
+                const u32 word = source_lane == 0u ? base_word
+                    : m_builder.emit_iadd(
+                          m_type_uint, base_word,
+                          m_builder.emit_constant_int(m_type_uint, source_lane));
+                // A storage buffer wraps its word array in a Block struct, so
+                // the chain needs the member index first; groupshared memory
+                // is the bare array.
+                const u32 pointer = indexed_through_member
+                    ? m_builder.emit_access_chain(
+                          pointer_type, found_var,
+                          {m_builder.emit_constant_int(m_type_uint, 0u), word})
+                    : m_builder.emit_access_chain(pointer_type, found_var,
+                                                  {word});
+                lanes[lane] = m_builder.emit_load(m_type_uint, pointer);
+            }
         }
         const u32 bits = m_builder.emit_composite_construct(
             m_type_uvec4, lanes);
         if (!store_vec4(destination,
                         m_builder.emit_bitcast(m_type_vec4, bits))) {
             return false;
+        }
+        if (m_tiled.has_status) {
+            if (memory.type == Sm4OperandType::ThreadGroupSharedMemory) {
+                return fail("LD_RAW_S: groupshared memory has no residency");
+            }
+            const u32 miss = tiled_words_status(
+                memory.type == Sm4OperandType::UnorderedAccessView,
+                memory.index0, byte_index, destination.write_mask,
+                memory.swizzle);
+            if (miss == 0 || !store_tiled_status(miss)) return false;
         }
         break;
     }
@@ -292,7 +331,7 @@ bool DxbcTranslator::translate_buffer_operation(u32 opcode_token,
         // resource swizzle selects among them — the element type is opaque to
         // the ISA, which is why the buffer is modelled as an array of words.
         Sm4Operand destination, element, offset, resource;
-        if (!m_decoder.decode_operand(destination) ||
+        if (!m_decoder.decode_operand(destination) || !decode_tiled_status() ||
             !m_decoder.decode_operand(element) ||
             !m_decoder.decode_operand(offset) ||
             !m_decoder.decode_operand(resource)) {
@@ -339,31 +378,44 @@ bool DxbcTranslator::translate_buffer_operation(u32 opcode_token,
         const u32 member = m_builder.emit_constant_int(m_type_uint, 0u);
         std::vector<u32> words;
         words.reserve(4);
-        for (u32 i = 0; i < 4; ++i) {
-            const u32 word_index = m_builder.emit_iadd(
-                m_type_uint, base_word,
-                m_builder.emit_constant_int(m_type_uint, i));
-            if (guards_buffer(resource.type)) {
-                // Learn ld_structured: a word past the view reads as 0.
-                words.push_back(guarded_buffer_word_load(
-                    resource_var, word_pointer_type, word_index,
-                    buffer_word_in_bounds(
-                        resource.type == Sm4OperandType::UnorderedAccessView,
-                        resource.index0, word_index)));
-                continue;
+        if (guards_buffer(resource.type)) {
+            // Learn ld_structured: a word past the view reads as 0. The four
+            // words are consecutive; one span test covers them.
+            u32 span[4]{};
+            load_guarded_word_span(
+                resource.type == Sm4OperandType::UnorderedAccessView,
+                resource.index0, resource_var, word_pointer_type,
+                indexed_through_member, base_word, 4u, span);
+            for (u32 i = 0; i < 4u; ++i) words.push_back(span[i]);
+        } else {
+            for (u32 i = 0; i < 4; ++i) {
+                const u32 word_index = m_builder.emit_iadd(
+                    m_type_uint, base_word,
+                    m_builder.emit_constant_int(m_type_uint, i));
+                const u32 chain = indexed_through_member
+                    ? m_builder.emit_access_chain(
+                          word_pointer_type, resource_var, {member, word_index})
+                    : m_builder.emit_access_chain(
+                          word_pointer_type, resource_var, {word_index});
+                words.push_back(m_builder.emit_load(m_type_uint, chain));
             }
-            const u32 chain = indexed_through_member
-                ? m_builder.emit_access_chain(word_pointer_type, resource_var,
-                                              {member, word_index})
-                : m_builder.emit_access_chain(word_pointer_type, resource_var,
-                                              {word_index});
-            words.push_back(m_builder.emit_load(m_type_uint, chain));
         }
         const u32 packed =
             m_builder.emit_composite_construct(m_type_uvec4, words);
         const u32 value = apply_swizzle(
             m_builder.emit_bitcast(m_type_vec4, packed), resource.swizzle);
         if (!store_vec4(destination, value)) return false;
+        if (m_tiled.has_status) {
+            if (resource.type == Sm4OperandType::ThreadGroupSharedMemory) {
+                return fail("LD_STRUCTURED_S: groupshared memory has no "
+                            "residency");
+            }
+            const u32 miss = tiled_words_status(
+                resource.type == Sm4OperandType::UnorderedAccessView,
+                resource.index0, base_bytes, destination.write_mask,
+                resource.swizzle);
+            if (miss == 0 || !store_tiled_status(miss)) return false;
+        }
         break;
     }
 

@@ -1098,6 +1098,28 @@ private:
     static constexpr usize kLinearProofLeaseShards = 64;
     LinearProofLeaseShard m_linear_proof_lease_shards[kLinearProofLeaseShards];
     alignas(128) std::atomic<u32> m_linear_proof_writer{0};
+
+public:
+    // Same multiplier linear_proof_lease_shard() and the span-proof JIT
+    // inline both use. The JIT must not call out: a host call there
+    // clobbers the caller-saved file a linked guest RET still needs.
+    // pthread_self()'s fast path on Darwin arm64 is TPIDRRO_EL0 - 0xe0
+    // (measured); the JIT subtracts that bias, then hashes with this.
+    static constexpr u64 kLinearProofLeaseHash = 0x9E3779B97F4A7C15ull;
+    static constexpr u32 linear_proof_shard_stride() noexcept {
+        return static_cast<u32>(sizeof(LinearProofLeaseShard));
+    }
+    static constexpr u32 linear_proof_shard_count() noexcept {
+        return static_cast<u32>(kLinearProofLeaseShards);
+    }
+    static constexpr u32 linear_proof_shards_offset() noexcept {
+        return static_cast<u32>(offsetof(GuestMemory, m_linear_proof_lease_shards));
+    }
+    static constexpr u32 linear_proof_writer_offset() noexcept {
+        return static_cast<u32>(offsetof(GuestMemory, m_linear_proof_writer));
+    }
+
+private:
     [[nodiscard]] LinearProofLeaseShard& linear_proof_lease_shard() noexcept;
     static constexpr usize kProtectShootdownMask = kProtectShootdownLog - 1;
     static_assert((kProtectShootdownLog & kProtectShootdownMask) == 0,

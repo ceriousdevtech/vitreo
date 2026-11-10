@@ -1095,9 +1095,16 @@ u32 wic_dll_get_class_object(ComCoreManager& mgr, Marshaler& m) {
     if (rclsid == 0 || riid == 0 || clsid.is_err() || iid.is_err()) {
         return kEInvalidArg;
     }
-    if (!wic_is_imaging_factory_clsid(clsid.value())) return kClassENotAvailable;
-    if (!same_guid(iid.value(), kIidUnknown) &&
-        !same_guid(iid.value(), kIidClassFactory)) {
+    return wic_get_class_object(mgr, m, clsid.value(), iid.value(), ppv);
+}
+
+u32 wic_get_class_object(ComCoreManager& mgr, Marshaler& m,
+    const Guid& clsid, const Guid& iid, GuestAddr ppv) {
+    if (!ppv) return kEInvalidArg;
+    (void)m.write_ptr(ppv, 0);
+    if (!wic_is_imaging_factory_clsid(clsid)) return kClassENotAvailable;
+    if (!same_guid(iid, kIidUnknown) &&
+        !same_guid(iid, kIidClassFactory)) {
         return kENoInterface;
     }
     Object state;

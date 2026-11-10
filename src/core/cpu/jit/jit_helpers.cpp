@@ -23,6 +23,7 @@
 ///   - jit_helpers_delegate.cpp: the per-instruction interpreter delegate.
 
 #include "jit_helpers.hpp"
+#include "jit_helpers_internal.hpp"
 
 #include <chrono>
 
@@ -265,29 +266,17 @@ extern "C" u32 jit_cond_nle(CpuState* cpu) {
     return (zf | ne) ^ 1;
 }
 
-// Intel SDM Vol. 2 CMPXCHG8B / Vol. 3 paging: an unreadable m64 operand faults
-// (#PF/#GP), it does not complete. Raising through cpu->pending_raise is what
-// the LOCKed jit_lock_cmpxchg8b/jit_lock_cmpxchg16b helpers do; a silent return
-// here would leave ZF and EDX:EAX holding whatever the previous instruction put
-// there, so the guest's compare-and-swap loop reads a stale answer as if the
-// RMW had succeeded.
-static void jit_cmpxchg_raise_av(CpuState* cpu, u64 addr) noexcept {
-    if (cpu == nullptr || cpu->pending_raise.active) return;
-    auto& pr = cpu->pending_raise;
-    pr.active = true;
-    pr.from_helper = true;
-    pr.code = 0xC0000005u;  // STATUS_ACCESS_VIOLATION
-    pr.flags = 0;
-    pr.num_args = 2;
-    pr.args[0] = 1u;  // write attempted
-    pr.args[1] = addr;
-}
-
+// Intel SDM Vol. 2 CMPXCHG8B: the destination is always written back, so a
+// destination the guest may not write faults before anything is read or
+// changed -- a WRITE access violation even for an unmapped page
+// (jit_cmpxchg_dest_faults). A silent return would leave ZF and EDX:EAX
+// holding whatever the previous instruction put there.
 extern "C" void jit_cmpxchg8b(CpuState* cpu, GuestMemory* mem, u64 addr) {
+    if (jit_cmpxchg_dest_faults(cpu, mem, addr, 8)) return;
     auto lo = mem->read_u32(addr);
     auto hi = mem->read_u32(addr + 4);
     if (!lo.is_ok() || !hi.is_ok()) {
-        jit_cmpxchg_raise_av(cpu, addr);
+        jit_raise_guest_av(cpu, mem, addr, 8, /*is_write=*/true);
         return;
     }
 
@@ -397,15 +386,22 @@ extern "C" u32 jit_shrd32(CpuState* cpu, u32 dest, u32 src, u32 count) {
     return result;
 }
 
+// Unlocked CMPXCHG r/m16, r/m32, r/m64 with a memory destination. The
+// destination check comes first (jit_cmpxchg_dest_faults): on a fault the
+// accumulator, flags and memory are untouched and the call site exits on the
+// pending raise. Flags are `accumulator - DEST`, measured on real hardware:
+// tools/oracle_probe/cmpxchg_flag_probe.c and its recorded output.
 extern "C" void jit_cmpxchg32(CpuState* cpu, GuestMemory* mem, u64 addr, u32 reg_val) {
+    if (jit_cmpxchg_dest_faults(cpu, mem, addr, 4)) return;
     auto rm_result = mem->read_u32(addr);
-    if (!rm_result.is_ok()) return;
+    if (!rm_result.is_ok()) {
+        jit_raise_guest_av(cpu, mem, addr, 4, /*is_write=*/true);
+        return;
+    }
     u32 rm_val = rm_result.value();
     u32 eax = static_cast<u32>(cpu->gpr.get64(static_cast<u8>(RegIndex::RAX)));
 
     cpu->materialize_lazy_flags();
-    // Flags are `accumulator - DEST`, measured on real hardware:
-    // tools/oracle_probe/cmpxchg_flag_probe.c and its recorded output.
     u32 cmp_result = eax - rm_val;
     cpu->flags.update_flags_sub(eax, rm_val, cmp_result);
 
@@ -413,6 +409,48 @@ extern "C" void jit_cmpxchg32(CpuState* cpu, GuestMemory* mem, u64 addr, u32 reg
         (void)mem->write_u32(addr, reg_val);
     } else {
         cpu->gpr.set32(static_cast<u8>(RegIndex::RAX), rm_val);
+    }
+    cpu->set_flag_op(CpuState::FlagOp::None);
+}
+
+extern "C" void jit_cmpxchg16(CpuState* cpu, GuestMemory* mem, u64 addr, u32 reg_val) {
+    if (jit_cmpxchg_dest_faults(cpu, mem, addr, 2)) return;
+    auto rm_result = mem->read_u16(addr);
+    if (!rm_result.is_ok()) {
+        jit_raise_guest_av(cpu, mem, addr, 2, /*is_write=*/true);
+        return;
+    }
+    const u16 rm_val = rm_result.value();
+    const u16 ax = static_cast<u16>(cpu->gpr.get64(static_cast<u8>(RegIndex::RAX)));
+
+    cpu->materialize_lazy_flags();
+    cpu->flags.update_flags_sub(ax, rm_val, static_cast<u16>(ax - rm_val));
+
+    if (ax == rm_val) {
+        (void)mem->write_u16(addr, static_cast<u16>(reg_val));
+    } else {
+        cpu->gpr.set16(static_cast<u8>(RegIndex::RAX), rm_val);
+    }
+    cpu->set_flag_op(CpuState::FlagOp::None);
+}
+
+extern "C" void jit_cmpxchg64(CpuState* cpu, GuestMemory* mem, u64 addr, u64 reg_val) {
+    if (jit_cmpxchg_dest_faults(cpu, mem, addr, 8)) return;
+    auto rm_result = mem->read_u64(addr);
+    if (!rm_result.is_ok()) {
+        jit_raise_guest_av(cpu, mem, addr, 8, /*is_write=*/true);
+        return;
+    }
+    const u64 rm_val = rm_result.value();
+    const u64 rax = cpu->gpr.get64(static_cast<u8>(RegIndex::RAX));
+
+    cpu->materialize_lazy_flags();
+    cpu->flags.update_flags_sub(rax, rm_val, rax - rm_val);
+
+    if (rax == rm_val) {
+        (void)mem->write_u64(addr, reg_val);
+    } else {
+        cpu->gpr.set64(static_cast<u8>(RegIndex::RAX), rm_val);
     }
     cpu->set_flag_op(CpuState::FlagOp::None);
 }

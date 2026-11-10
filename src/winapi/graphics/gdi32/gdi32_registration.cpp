@@ -32,6 +32,7 @@
 #include <utility>
 
 namespace vitreo::winapi {
+#include "random_rgn_contract.inc"
 
 // =============================================================================
 // Thunk Registration
@@ -39,7 +40,8 @@ namespace vitreo::winapi {
 
 DllExports make_gdi32_exports(
     GdiManager& mgr,
-    std::function<std::string()> display_adapter_name_provider) {
+    std::function<std::string()> display_adapter_name_provider, bool guest_is_64bit,
+    std::function<GdiManager::SystemRegionState()> system_region_state_provider) {
     DllExports exports;
     if (!display_adapter_name_provider) {
         display_adapter_name_provider = [] {
@@ -61,9 +63,24 @@ DllExports make_gdi32_exports(
     add_gdi32_dc_attribute_exports(exports, mgr);
     add_gdi32_metafile_text_query_exports(exports, mgr);
     add_gdi32_text_font_exports(exports, mgr);
-    add_gdi32_path_print_exports(exports, mgr);
+    add_gdi32_path_print_exports(exports, mgr,guest_is_64bit);
 
     for (auto& entry : exports.entries) {
+        if(entry.name=="SelectClipRgn" || entry.name=="ExtSelectClipRgn" ||
+           entry.name=="ExcludeClipRect" || entry.name=="SelectClipPath") {
+            const auto name=entry.name;
+            entry.handler=[&mgr,name,provider=system_region_state_provider](Marshaler& m) {
+                const Handle dc=static_cast<Handle>(m.arg(0));GdiManager::SystemRegionState scene;
+                if(provider && mgr.window_from_dc(dc)!=0)scene=provider();
+                i32 result=0;
+                if(name=="SelectClipRgn")result=mgr.select_clip_rgn(dc,static_cast<Handle>(m.arg(1)),&scene);
+                else if(name=="ExtSelectClipRgn")result=mgr.ext_select_clip_rgn(dc,static_cast<Handle>(m.arg(1)),static_cast<i32>(m.arg32(2)),&scene);
+                else if(name=="ExcludeClipRect")result=mgr.exclude_clip_rect(dc,static_cast<i32>(m.arg32(1)),static_cast<i32>(m.arg32(2)),static_cast<i32>(m.arg32(3)),static_cast<i32>(m.arg32(4)),&scene);
+                else result=mgr.select_clip_path(dc,static_cast<i32>(m.arg32(1)),&scene)?1:0;
+                m.set_return(static_cast<u32>(result));pump_host_gui();
+            };
+            continue;
+        }
         auto handler = std::move(entry.handler);
         if (!handler) continue;
         entry.handler = [&mgr, handler = std::move(handler)](Marshaler& m) {
@@ -76,6 +93,28 @@ DllExports make_gdi32_exports(
             pump_host_gui();
         };
     }
+    // Shape snapshots must precede the GDI lock: USER32 never holds its state
+    // lock across a GDI call. This method owns its own GDI API lock.
+    exports.entries.push_back({"GetRandomRgn",
+        guest_is_64bit ? random_rgn_contract::ordinal64 : random_rgn_contract::ordinal32,
+        [&mgr,provider=std::move(system_region_state_provider)](Marshaler& m) {
+            GdiManager::SystemRegionState scene;
+            const Handle dc=static_cast<Handle>(m.arg(0));
+            if (provider && m.arg32(2)==random_rgn_contract::SYSRGN && mgr.window_from_dc(dc)!=0) scene=provider();
+            m.set_return(static_cast<u32>(mgr.get_random_region(dc,
+                static_cast<Handle>(m.arg(1)),static_cast<i32>(m.arg32(2)),
+                m.cpu_is_64bit(),&scene)));
+            pump_host_gui();
+        },random_rgn_contract::stdcall_bytes});
+    exports.entries.push_back({"GetMetaRgn",guest_is_64bit?
+        random_rgn_contract::GetMetaRgn_ordinal64:random_rgn_contract::GetMetaRgn_ordinal32,
+        [&mgr](Marshaler& m) {m.set_return(static_cast<u32>(mgr.get_random_region(
+            static_cast<Handle>(m.arg(0)),static_cast<Handle>(m.arg(1)),
+            random_rgn_contract::METARGN,m.cpu_is_64bit())));},random_rgn_contract::GetMetaRgn_stdcall_bytes});
+    exports.entries.push_back({"SetMetaRgn",guest_is_64bit?
+        random_rgn_contract::SetMetaRgn_ordinal64:random_rgn_contract::SetMetaRgn_ordinal32,
+        [&mgr](Marshaler& m) {m.set_return(static_cast<u32>(mgr.set_meta_region(
+            static_cast<Handle>(m.arg(0)))));},random_rgn_contract::SetMetaRgn_stdcall_bytes});
     return exports;
 }
 

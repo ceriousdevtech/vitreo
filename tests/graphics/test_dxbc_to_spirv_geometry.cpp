@@ -444,3 +444,114 @@ TEST(GeometryAdjacencyTest, PrimitiveAssemblyMatchesTheMeasuredStripOrder) {
                                           PrimitiveAssembly::List),
               flat({{6, 7, 8}}));
 }
+
+namespace {
+
+DxbcContainer container_of(ShaderStage stage, std::vector<u32> words,
+                           std::vector<DxbcSignatureElement> inputs,
+                           std::vector<DxbcSignatureElement> outputs) {
+    DxbcContainer container{};
+    container.shader_model_major = 4;
+    container.shader_model_minor = 0;
+    container.stage = stage;
+    container.input_signature = std::move(inputs);
+    container.output_signature = std::move(outputs);
+    words[1] = static_cast<u32>(words.size());
+    for (const u32 word : words) {
+        const auto* bytes = reinterpret_cast<const u8*>(&word);
+        container.bytecode.insert(container.bytecode.end(), bytes, bytes + 4);
+    }
+    return container;
+}
+
+[[nodiscard]] bool lowered_compiles(const DxbcToSpirvResult& result,
+                                    ShaderStage stage, std::string& msl) {
+    MslCompileOptions msl_options{};
+    msl_options.argument_buffers = false;
+    const auto compiled = compile_spirv_to_msl(
+        result.spirv.data(), result.spirv.size(), stage, msl_options);
+    if (!compiled.valid()) return false;
+    msl = compiled.msl_text();
+    return true;
+}
+
+}  // namespace
+
+TEST(DxbcToSpirvTest, VertexCaptureRecordsAVertexThatReturnsEarly) {
+    // D3D11.3 22.7.15 / 22.7.16: ret and retc end the invocation wherever
+    // they are. A capture pass writes the vertex's record at every return,
+    // so a vertex that returns early is recorded with what it wrote by then.
+    //   vs_4_0: mov o0, v0; retc_nz l(1); mov o0, l(0); ret
+    const auto container = container_of(
+        ShaderStage::Vertex,
+        {0x00010040u, 0u,
+         0x0300005Fu, 0x001010F2u, 0u,                 // dcl_input v0
+         0x04000067u, 0x001020F2u, 0u, 1u,             // dcl_output_siv o0
+         0x05000036u, 0x001020F2u, 0u, 0x00101E46u, 0u,
+         0x0304003Fu, 0x00004001u, 1u,                 // retc_nz l(1)
+         0x08000036u, 0x001020F2u, 0u, 0x00004002u, 0u, 0u, 0u, 0u,
+         0x0100003Eu},
+        {{"POSITION", 0, 0, 0xFu, 3}},
+        {{"SV_Position", 0, 0, 0xFu, 3, 1u}});
+    DxbcTranslationOptions options{};
+    options.capture_vertex_outputs_to_buffer = true;
+    const auto result = translate_dxbc_to_spirv(container, options);
+    ASSERT_TRUE(result.valid()) << result.failure;
+    EXPECT_TRUE(result.captures_vertex_outputs);
+    std::string msl;
+    ASSERT_TRUE(lowered_compiles(result, ShaderStage::Vertex, msl));
+    // The record store runs on the early path and at the end.
+    usize stores = 0;
+    for (usize at = msl.find("vitreo_gs_in"); at != std::string::npos;
+         at = msl.find("vitreo_gs_in", at + 1)) {
+        ++stores;
+    }
+    EXPECT_GE(stores, 3u) << msl;  // the declaration and two record writes
+}
+
+TEST(DxbcToSpirvTest, GeometryInputThePreviousStageLacksReadsZero) {
+    // D3D11.3 4.4.3.2: data a stage reads that the previous one did not
+    // write is undefined. The vertex record here holds o0 only; the
+    // geometry shader also reads v[n][1], which then reads 0, not a refusal.
+    DxbcTranslationOptions options{};
+    options.emulate_geometry_with_compute = true;
+    options.gs_input_record_registers = {0u};
+    const auto result = translate_dxbc_to_spirv(
+        create_fxc_strip_geometry_shader(3u, 5u), options);
+    ASSERT_TRUE(result.valid()) << result.failure;
+    EXPECT_TRUE(result.gs_lowered_to_compute);
+    std::string msl;
+    ASSERT_TRUE(lowered_compiles(result, ShaderStage::Compute, msl));
+}
+
+TEST(DxbcToSpirvTest, GeometryInputWithARelativeRegisterIndex) {
+    // v[0][r0.x + 0] (D3D11.3 4.4.3.2: input v# registers may be indexed
+    // as an array): r0.x = 1 selects v[0][1].
+    //   gs_4_0 point -> pointlist, maxout 1
+    const auto container = container_of(
+        ShaderStage::Geometry,
+        {0x00020040u, 0u,
+         0x05000061u, 0x002010F2u, 1u, 0u, 1u,         // dcl_input_siv v[1][0]
+         0x0400005Fu, 0x002010F2u, 1u, 1u,             // dcl_input v[1][1]
+         0x0100085Du,                                   // inputprimitive point
+         0x0100085Cu,                                   // outputtopology point
+         0x04000067u, 0x001020F2u, 0u, 1u,
+         0x03000065u, 0x001020F2u, 1u,
+         0x02000068u, 1u,                              // dcl_temps 1
+         0x0200005Eu, 1u,                              // dcl_maxout 1
+         0x05000036u, 0x00100012u, 0u, 0x00004001u, 1u, // mov r0.x, l(1)
+         0x06000036u, 0x001020F2u, 0u, 0x00201E46u, 0u, 0u,
+         // mov o1, v[0][r0.x + 0]
+         0x08000036u, 0x001020F2u, 1u, 0x06201E46u, 0u, 0u, 0x0010000Au, 0u,
+         0x01000013u,                                   // emit
+         0x0100003Eu},
+        {{"SV_Position", 0, 0, 0xFu, 3, 1u}, {"COLOR", 0, 1, 0xFu, 3}},
+        {{"SV_Position", 0, 0, 0xFu, 3, 1u}, {"COLOR", 0, 1, 0xFu, 3}});
+    DxbcTranslationOptions options{};
+    options.emulate_geometry_with_compute = true;
+    const auto result = translate_dxbc_to_spirv(container, options);
+    ASSERT_TRUE(result.valid()) << result.failure;
+    EXPECT_TRUE(result.gs_lowered_to_compute);
+    std::string msl;
+    ASSERT_TRUE(lowered_compiles(result, ShaderStage::Compute, msl));
+}

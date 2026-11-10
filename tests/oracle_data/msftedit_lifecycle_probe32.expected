@@ -1,0 +1,80 @@
+msftedit_lifecycle pointer_bytes=00000004
+before RICHEDIT50W found=00000000 error=00000583
+before RICHEDIT50A found=00000000 error=00000583
+before RICHEDIT60W found=00000000 error=00000583
+before RichEdit20W found=00000000 error=00000583
+before RichEdit20A found=00000000 error=00000583
+before RichEdit found=00000000 error=00000583
+before RichEditD2D found=00000000 error=00000583
+before RichEditD2DPT found=00000000 error=00000583
+handle_before loaded=00000000
+load ok=00000001 error=00000000
+loaded RICHEDIT50W found=00000001 error=00000000 style=00004088 cls_extra=00000000 wnd_extra=00000004 hbr=00000006 cursor_ibeam=00000000 cursor_arrow=00000000 cursor_null=00000001 icon_null=00000001 iconsm_null=00000001 menu_null=00000001 module_owner=00000000 hinst_null=00000001 hinst_eq_arg=00000001 proc_eq_RichEditWndProc=00000001 proc_eq_ANSIWndProc=00000000 proc_eq_10ANSIWndProc=00000000 a_proc_eq_W=00000000 a_proc_eq_RichEditWndProc=00000000 a_proc_eq_ANSIWndProc=00000000 a_proc_eq_10ANSIWndProc=00000000
+loaded RICHEDIT50A found=00000000 error=00000583
+loaded RICHEDIT60W found=00000000 error=00000583
+loaded RichEdit20W found=00000000 error=00000583
+loaded RichEdit20A found=00000000 error=00000583
+loaded RichEdit found=00000000 error=00000583
+loaded RichEditD2D found=00000000 error=00000583
+loaded RichEditD2DPT found=00000000 error=00000583
+loaded_by_module RICHEDIT50W found=00000001 error=00000000 style=00004088 cls_extra=00000000 wnd_extra=00000004 hbr=00000006 cursor_ibeam=00000000 cursor_arrow=00000000 cursor_null=00000001 icon_null=00000001 iconsm_null=00000001 menu_null=00000001 module_owner=00000001 hinst_null=00000000 hinst_eq_arg=00000001 proc_eq_RichEditWndProc=00000001 proc_eq_ANSIWndProc=00000000 proc_eq_10ANSIWndProc=00000000 a_proc_eq_W=00000000 a_proc_eq_RichEditWndProc=00000000 a_proc_eq_ANSIWndProc=00000000 a_proc_eq_10ANSIWndProc=00000000
+loaded_by_exe RICHEDIT50W found=00000001 error=00000000 style=00004088 cls_extra=00000000 wnd_extra=00000004 hbr=00000006 cursor_ibeam=00000000 cursor_arrow=00000000 cursor_null=00000001 icon_null=00000001 iconsm_null=00000001 menu_null=00000001 module_owner=00000000 hinst_null=00000000 hinst_eq_arg=00000001 proc_eq_RichEditWndProc=00000001 proc_eq_ANSIWndProc=00000000 proc_eq_10ANSIWndProc=00000000 a_proc_eq_W=00000000 a_proc_eq_RichEditWndProc=00000000 a_proc_eq_ANSIWndProc=00000000 a_proc_eq_10ANSIWndProc=00000000
+ordinal value=00000002
+ordinal value=00000003
+ordinal value=00000004
+ordinal value=00000005
+ordinal value=00000006
+ordinal value=00000007
+ordinal value=00000008
+ordinal value=00000009
+ordinal value=0000000a
+ordinal value=0000000b
+ordinal value=0000000c
+ordinal value=0000000d
+ordinal value=00000011
+ordinal value=00000012
+ordinal value=00000013
+ordinal value=00000015
+ordinal value=00000016
+ordinal value=00000018
+ordinal value=00000019
+ordinal value=0000001a
+ordinal value=00000020
+ordinal value=00000021
+ordinal value=00000023
+ordinal value=00000024
+ordinal value=00000025
+iid IID_IRichEditOle d1=00020d00 d2=00000000 d4a=c0000000 d4b=00000046
+iid IID_IRichEditOleCallback d1=00020d03 d2=00000000 d4a=c0000000 d4b=00000046
+iid IID_IRicheditUiaNotificationOverrides d1=a6bf39f8 d2=11de48ea d4a=87809950 d4b=bc13949d
+iid IID_IRicheditUiaOverrides d1=f2fb5cc0 d2=b5a9437f d4a=9ba24763 d4b=2082269f
+iid IID_IRicheditWindowlessAccessibility d1=983e572d d2=20cd460b d4a=91048311 d4b=1592dd10
+iid IID_ITextDocument2 d1=c241f5e0 d2=720611d8 d4a=a2c700a0 d4b=d1d6c6b3
+iid IID_ITextHost d1=13e670f4 d2=1a5a11cf d4a=abeb00aa d4b=00b65ea1
+iid IID_ITextHost2 d1=13e670f5 d2=1a5a11cf d4a=abeb00aa d4b=00b65ea1
+iid IID_ITextServices d1=8d33f740 d2=cf5811ce d4a=a89d00aa d4b=006cadc5
+iid IID_ITextServices2 d1=8d33f741 d2=cf5811ce d4a=a89d00aa d4b=006cadc5
+DllGetVersion cb20 hr=00000000 cb=00000014 major=0000000a minor=00000000 build=000065f4 platform=00000001
+DllGetVersion cb32 hr=80070057 cb=00000020 major=0000aaaa minor=0000bbbb build=0000cccc platform=0000dddd
+DllGetVersion cb0 hr=80070057 cb=00000000 major=0000aaaa minor=0000bbbb build=0000cccc platform=0000dddd
+DllGetVersion cb19 hr=80070057 cb=00000013 major=0000aaaa minor=0000bbbb build=0000cccc platform=0000dddd
+DllGetVersion null hr=80070057
+window RICHEDIT50W ok=00000001 error=00000000 unicode=00000001 wndproc_eq_RichEditWndProc=00000001 instance_eq_exe=00000001 dlgcode=0000008f
+window RichEdit20W ok=00000000 error=0000057f
+reload same2=00000001 same3=00000001
+free1 ok=00000001 loaded=00000001
+after_free1 RICHEDIT50W found=00000001 error=00000000
+free2 ok=00000001 loaded=00000001
+free3 ok=00000001 loaded=00000000
+after_free3 RICHEDIT50W found=00000000 error=00000583
+after_free3 RICHEDIT50A found=00000000 error=00000583
+after_free3 RICHEDIT60W found=00000000 error=00000583
+after_free3 RichEdit20W found=00000000 error=00000583
+after_free3 RichEdit20A found=00000000 error=00000583
+after_free3 RichEdit found=00000000 error=00000583
+after_free3 RichEditD2D found=00000000 error=00000583
+after_free3 RichEditD2DPT found=00000000 error=00000583
+free4 ok=00000000 error=0000007e
+load_again ok=00000001
+after_load_again RICHEDIT50W found=00000001 error=00000000
+done

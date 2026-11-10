@@ -429,6 +429,9 @@ vitreo_add_module(
         core/cpu/jit/flag_liveness.cpp
         core/cpu/jit/idiom_detector.cpp
         core/cpu/jit/jit_config.cpp
+        # ---- WS2 begin ----
+        core/cpu/jit/loop_idiom_matcher.cpp
+        # ---- WS2 end ----
     PUBLIC_DEPS
         vitreo_core
         vitreo_base
@@ -466,6 +469,11 @@ vitreo_add_module(
         core/cpu/jit/jit_helpers_delegate.cpp
         core/cpu/jit/jit_helpers_string.cpp
         core/cpu/jit/store_ring_trampoline.cpp
+        # ---- WS2 begin ----
+        core/cpu/jit/loop_idiom_trip.cpp
+        core/cpu/jit/loop_idiom_mem.cpp
+        core/cpu/jit/loop_idiom_runtime.cpp
+        # ---- WS2 end ----
     PUBLIC_DEPS
         vitreo_core
         vitreo_base
@@ -606,6 +614,10 @@ vitreo_add_module(
         core/cpu/jit/ops/sse_conv_scalar.cpp
         core/cpu/jit/ops/direct_armv8_sha_256_message.cpp
         core/cpu/jit/ops/direct_armv8_aes.cpp
+        # WS3 begin
+        core/cpu/jit/ops/direct_armv8_sha1.cpp
+        core/cpu/jit/ops/direct_armv8_pclmul.cpp
+        # WS3 end
         core/cpu/jit/ops/ops64.cpp
         core/cpu/jit/ops/align_checks.cpp
         core/cpu/jit/ops/mov64.cpp
@@ -865,6 +877,7 @@ target_link_libraries(vitreo_pe_loader PUBLIC
 add_library(vitreo_capsule_vfs STATIC
     capsule/vfs/vfs.cpp
     capsule/vfs/host_filesystem.cpp
+    capsule/vfs/cd_image.cpp
     capsule/vfs/iso_filesystem.cpp
     capsule/vfs/image_mount_store.cpp
     capsule/vfs/win_path.cpp
@@ -957,6 +970,8 @@ if(APPLE)
         "-framework CoreFoundation"
         # host_hardware.cpp reads the device tree, pmgr and the GPU driver.
         "-framework IOKit"
+        # tcc_responsibility.cpp reads the running code's signature.
+        "-framework Security"
     )
 endif()
 
@@ -1090,6 +1105,7 @@ add_library(vitreo_cli STATIC
     app/cli/commands/run_launch_setup.cpp
     app/cli/commands/run_process_setup.cpp
     app/cli/commands/run_remote_memory.cpp
+    app/cli/commands/window_scene_capture.cpp
     app/cli/commands/run_callbacks_window.cpp
     app/cli/commands/run_callbacks_thread.cpp
     app/cli/commands/run_callbacks_media.cpp
@@ -1141,6 +1157,7 @@ target_link_libraries(vitreo_cli PUBLIC
 
 add_library(vitreo_windowing STATIC
     windowing/model/hwnd_manager.cpp
+    windowing/model/window_scene.cpp
     windowing/messages/message_queue.cpp
     windowing/messages/input_latency.cpp
     windowing/cocoa/window_presentation.cpp
@@ -1353,6 +1370,9 @@ vitreo_add_module(
         winapi/common/timer_resolution.cpp
         winapi/common/c_specific_handler.cpp
         winapi/common/write_sha1_debug.cpp
+        winapi/common/sxs/sxs_manifest.cpp
+        winapi/common/sxs/sxs_context.cpp
+        winapi/common/sxs/sxs_section.cpp
         # Remote memory is the *server* answering cross-process memory requests:
         # it composes the IPC transport below it with this process's own kernel32
         # managers (handles, mappings, virtual memory), so it belongs at the guest
@@ -1379,6 +1399,7 @@ vitreo_add_module(
         winapi/kernel32/filesystem/create_file.cpp
         winapi/kernel32/filesystem/device_io_control.cpp
         winapi/kernel32/filesystem/file_thunks_and_pipes.cpp
+        winapi/kernel32/filesystem/hid_io.cpp
         winapi/kernel32/filesystem/filemanager_construction.cpp
         winapi/kernel32/filesystem/close_file.cpp
         winapi/kernel32/filesystem/readfile_writefile_setfilepointer_getfilesize_wi.cpp
@@ -1434,8 +1455,8 @@ vitreo_add_module(
         winapi/kernel32/environment/environment_ext.cpp
         winapi/system/userenv/profile_environment.cpp
         winapi/kernel32/environment/disk.cpp
+        winapi/kernel32/environment/ini_profile.cpp
         winapi/kernel32/environment/profile.cpp
-        winapi/kernel32/environment/profile_ansi.cpp
         winapi/kernel32/environment/profile_int.cpp
         winapi/kernel32/filesystem/pipe.cpp
         winapi/kernel32/process/job.cpp
@@ -1660,6 +1681,7 @@ vitreo_add_module(
     NAME vitreo_winapi_msvcrt
     SOURCES
         winapi/msvcrt/runtime/crt_data.cpp
+        winapi/msvcrt/runtime/crt_type_name.cpp
         winapi/msvcrt/runtime/crt_init.cpp
         winapi/msvcrt/runtime/crt_fpenv.cpp
         winapi/msvcrt/runtime/crt_init_registration.cpp
@@ -1708,8 +1730,10 @@ vitreo_add_module(
         winapi/msvcrt/memory/crt_aligned.cpp
         winapi/msvcrt/system/crt_environment.cpp
         winapi/msvcrt/text/crt_locale.cpp
+        winapi/msvcrt/text/crt_nls_helpers.cpp
         winapi/msvcrt/system/crt_time.cpp
         winapi/msvcrt/io/crt_filesystem.cpp
+        winapi/msvcrt/io/crt_find.cpp
         winapi/msvcrt/crt_ordinals.cpp
         winapi/msvcrt/runtime/cxx_eh.cpp
         winapi/msvcrt/runtime/crt_exception_class.cpp
@@ -1735,6 +1759,7 @@ vitreo_add_module(
         winapi/graphics/gdi32/bmp_decode.cpp
         winapi/graphics/gdi32/object_creation.cpp
         winapi/graphics/gdi32/palette_operations.cpp
+        winapi/graphics/gdi32/create_dib_bitmap.cpp
         winapi/graphics/gdi32/pen_line_operations.cpp
         winapi/graphics/gdi32/getobject_retrieve_information_about_gdi.cpp
         winapi/graphics/gdi32/setdibitstodevice_decode_windows_dib_write.cpp
@@ -1742,6 +1767,7 @@ vitreo_add_module(
         winapi/graphics/gdi32/patblt_fill_rectangle_current_brush.cpp
         winapi/graphics/gdi32/savedc_restoredc_dc_state_stack.cpp
         winapi/graphics/gdi32/clipping_region_operations.cpp
+        winapi/graphics/gdi32/system_region.cpp
         winapi/graphics/gdi32/flush_window_framebuffer_cocoa.cpp
         winapi/graphics/gdi32/gdi32_dib.cpp
         winapi/graphics/gdi32/dib_section_support.cpp
@@ -1811,7 +1837,13 @@ vitreo_add_module(
         winapi/graphics/ddraw/d3d7_device_draw.cpp
         winapi/graphics/ddraw/d3d7_state.cpp
         winapi/graphics/ddraw/d3d7_present.cpp
+        winapi/graphics/d3d8/d3d8.cpp
+        winapi/graphics/d3d8/d3d8_device.cpp
+        winapi/graphics/d3d8/d3d8_shaders.cpp
+        winapi/graphics/d3d8/d3d8_structs.cpp
         winapi/graphics/d3d9/d3d9.cpp
+        winapi/graphics/d3d9/d3d9_format_caps.cpp
+        winapi/graphics/d3d9/d3d9_draw_capture.cpp
         winapi/graphics/d3d9/construction.cpp
         winapi/graphics/d3d9/d3d9_interfaces.cpp
         winapi/graphics/d3d9/d3d9_defaults.cpp
@@ -1954,15 +1986,31 @@ vitreo_add_module(
         winapi/graphics/d3d12/d3d12_resource.cpp
         winapi/graphics/d3d12/d3d12_descriptor.cpp
         winapi/graphics/d3d12/d3d12_pipeline.cpp
+        winapi/graphics/d3d12/d3d12_barrier.cpp
+        winapi/graphics/d3d12/d3d12_sharing.cpp
+        winapi/graphics/d3d12/d3d12_config.cpp
+        winapi/graphics/d3d12/d3d12_library.cpp
+        winapi/graphics/d3d12/d3d12_shader_cache_disk.cpp
+        winapi/graphics/d3d12/d3d12_state_object.cpp
+        winapi/graphics/d3d12/d3d12_pipeline_mesh.cpp
+        winapi/graphics/d3d12/d3d12_pipeline_refusal.cpp
         winapi/graphics/d3d12/d3d12_command_list.cpp
         winapi/graphics/d3d12/d3d12_queue.cpp
         winapi/graphics/d3d12/d3d12_swapchain.cpp
         winapi/graphics/d3d12/d3d12_replay.cpp
         winapi/graphics/d3d12/d3d12_replay_bindings.cpp
+        winapi/graphics/d3d12/d3d12_typed_raw.cpp
+        winapi/graphics/d3d12/d3d12_lock.cpp
         winapi/graphics/d3d12/d3d12_replay_draw.cpp
+        winapi/graphics/d3d12/d3d12_replay_mesh.cpp
+        winapi/graphics/d3d12/d3d12_replay_view_mesh.cpp
         winapi/graphics/d3d12/d3d12_replay_copy.cpp
+        winapi/graphics/d3d12/d3d12_replay_feedback.cpp
         winapi/graphics/d3d12/d3d12_replay_clear.cpp
         winapi/graphics/d3d12/d3d12_replay_query.cpp
+        winapi/graphics/d3d12/d3d12_replay_statistics.cpp
+        winapi/graphics/d3d12/d3d12_replay_raytracing.cpp
+        winapi/graphics/d3d12/d3d12_raytracing.cpp
         winapi/graphics/dxgi/dxgi.cpp
         winapi/graphics/dxgi/dxgi_objects.cpp
         winapi/graphics/dxgi/dxgi_interop.cpp
@@ -1972,6 +2020,7 @@ vitreo_add_module(
         winapi/graphics/dxgi/dxgi_output.cpp
         winapi/graphics/dxgi/dxgi_output_methods.cpp
         winapi/graphics/dxgi/dxgi_adapter.cpp
+        winapi/graphics/dxgi/dxgi_exclusive_fullscreen.cpp
         winapi/graphics/vulkan/vulkan.cpp
         winapi/graphics/vulkan/logical_device.cpp
         winapi/graphics/d2d1/d2d1.cpp
@@ -2034,6 +2083,10 @@ vitreo_add_module(
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/src
 )
+# WS7: GDI raster on Accelerate/vImage
+target_sources(vitreo_winapi_graphics PRIVATE winapi/graphics/gdi32/gdi_vimage.cpp)
+target_link_libraries(vitreo_winapi_graphics PUBLIC "-framework Accelerate")
+# end WS7
 
 # --- vitreo_winapi_user32: windows, messages, menus, dialogs. Draws through gdi32.
 vitreo_add_module(
@@ -2154,6 +2207,7 @@ vitreo_add_module(
         winapi/ui/comctl32/comctl32.cpp
         winapi/ui/comctl32/task_dialog.cpp
         winapi/ui/riched20/riched20.cpp
+        winapi/ui/msftedit/msftedit.cpp
         winapi/ui/uxtheme/uxtheme.cpp
         winapi/ui/uxtheme/uxtheme_properties.cpp
         winapi/ui/uxtheme/uxtheme_draw.cpp
@@ -2202,6 +2256,7 @@ vitreo_add_module(
         winapi/media/winmm/winmm_wave_format.cpp
         winapi/media/winmm/winmm_playsound.cpp
         winapi/media/winmm/winmm_mmio.cpp
+        winapi/media/winmm/winmm_mci.cpp
         winapi/media/winmm/winmm_waveout.cpp
         winapi/media/winmm/winmm_wavein.cpp
         winapi/media/winmm/winmm_midi_mixer.cpp
@@ -2209,6 +2264,10 @@ vitreo_add_module(
         winapi/media/winmm/winmm_thunks.cpp
         winapi/media/winmm/timer_scheduler.cpp
         winapi/media/msvfw32/msvfw32.cpp
+        winapi/media/avifil32/avifil32.cpp
+        winapi/media/avifil32/avifil32_dib.cpp
+        winapi/media/avifil32/avifil32_riff.cpp
+        winapi/media/avifil32/avifil32_thunks.cpp
         winapi/media/inproc_servers/inproc_servers.cpp
     PUBLIC_DEPS
         vitreo_winapi_base
@@ -2282,6 +2341,7 @@ vitreo_add_module(
         winapi/com/oleaut32/oleaut32_wire_marshal.cpp
         winapi/com/oleaut32/oleaut32_registration.cpp
         winapi/com/oleaut32/oleaut32_typelib.cpp
+        winapi/com/oleaut32/oleaut32_dispatch.cpp
         winapi/com/oleaut32/typelib.cpp
         winapi/com/rpcrt4/ndr_proxy.cpp
         winapi/com/ole32/storage.cpp
@@ -2319,6 +2379,8 @@ vitreo_add_module(
 vitreo_add_module(
     NAME vitreo_winapi_system
     SOURCES
+        winapi/system/activeds/activeds.cpp
+        winapi/system/mscms/mscms.cpp
         winapi/system/setupapi/setupapi.cpp
         winapi/system/setupapi/setupapi_util.cpp
         winapi/system/setupapi/setupapi_device_tree.cpp
@@ -2421,6 +2483,9 @@ vitreo_add_module(
         ${CMAKE_SOURCE_DIR}/src
 )
 
+# ICC profiles and transforms delegate to the system ColorSync framework.
+target_link_libraries(vitreo_winapi_system PRIVATE "-framework ColorSync")
+
 # --- vitreo_winapi_networking: winsock, WinHTTP, WinINet, DNS, urlmon, secur32.
 # secur32 needs crypt32, which is why this sits above system.
 vitreo_add_module(
@@ -2484,6 +2549,7 @@ vitreo_add_module(
         winapi/networking/iphlpapi/host_interfaces.cpp
         winapi/networking/tapi32/tapi32.cpp
         winapi/networking/dnsapi/dnsapi.cpp
+        winapi/networking/wldap32/wldap32.cpp
         winapi/networking/secur32/secur32.cpp
         winapi/networking/secur32/schannel_tls.mm
     PUBLIC_DEPS
@@ -2500,6 +2566,9 @@ if(APPLE)
     # WinHTTP autoproxy: system proxy settings and PAC evaluation
     # (winapi/networking/winhttp/http_bridge.mm).
     target_link_libraries(vitreo_winapi_networking PUBLIC "-framework CFNetwork" "-framework JavaScriptCore")
+    # Wldap32 is backed by the system LDAP client (LDAP.framework, OpenLDAP)
+    # (winapi/networking/wldap32/wldap32.cpp).
+    target_link_libraries(vitreo_winapi_networking PUBLIC ldap)
 endif()
 
 if(APPLE)
@@ -2550,6 +2619,7 @@ add_library(vitreo_graphics_core STATIC
     graphics/common/surface_presenter.cpp
     graphics/common/present_rate.cpp
     graphics/common/gpu_busy.cpp
+    graphics/common/frame_profile.cpp
     # The fixed-function generator emits MSL from plain state; it has none of
     # the SPIRV-Cross/glslang dependencies the rest of the shader pipeline
     # carries, and every frontend that draws fixed-function geometry needs it.
@@ -2561,6 +2631,7 @@ add_library(vitreo_graphics_core STATIC
     graphics/shaders/sm3_to_msl_declarations.cpp
     graphics/shaders/sm3_to_msl_subroutines.cpp
     graphics/shaders/sm3_to_msl_instructions.cpp
+    graphics/shaders/sm3_to_msl_sm1.cpp
     graphics/shaders/sm3_to_msl_emit.cpp
     graphics/shaders/sm3_to_msl_state_folds.cpp
 )
@@ -2595,10 +2666,13 @@ add_library(vitreo_graphics_shader STATIC
     graphics/shaders/dxbc_to_spirv_resources.cpp
     graphics/shaders/dxbc_to_spirv_bindings.cpp
     graphics/shaders/dxbc_to_spirv_buffer_access.cpp
+    graphics/shaders/dxbc_to_spirv_typed_raw.cpp
+    graphics/shaders/dxbc_to_spirv_vertex_pull.cpp
     graphics/shaders/dxbc_to_spirv_geometry.cpp
     graphics/shaders/dxbc_to_spirv_vertex_capture.cpp
     graphics/shaders/dxbc_to_spirv_tessellation.cpp
     graphics/shaders/dxbc_to_spirv_pixel_stats.cpp
+    graphics/shaders/dxbc_to_spirv_raster.cpp
     graphics/shaders/dxbc_to_spirv_function.cpp
     graphics/shaders/dxbc_to_spirv_subroutines.cpp
     graphics/shaders/dxbc_to_spirv_class_linkage.cpp
@@ -2613,13 +2687,68 @@ add_library(vitreo_graphics_shader STATIC
     graphics/shaders/dxbc_to_spirv_op_buffer.cpp
     graphics/shaders/dxbc_to_spirv_op_atomic.cpp
     graphics/shaders/dxbc_to_spirv_op_sample.cpp
+    graphics/shaders/dxbc_to_spirv_tiled.cpp
+    graphics/shaders/dxbc_to_spirv_rayquery.cpp
     graphics/shaders/dxbc_to_spirv_double.cpp
+    graphics/shaders/dxbc_to_spirv_denorm.cpp
+    graphics/shaders/dxbc_to_spirv_vitreo_ext.cpp
+    graphics/shaders/dxbc_to_spirv_mesh.cpp
+    graphics/shaders/mesh_stage.cpp
+    graphics/shaders/dxbc_to_spirv_vitreo_tex.cpp
+    graphics/shaders/dxbc_to_spirv_vitreo_bary.cpp
     graphics/shaders/dxbc_to_spirv_float_rules.cpp
     graphics/shaders/dxbc_to_spirv_minmax_sample.cpp
+    graphics/shaders/msl_minmax_fence.cpp
     graphics/shaders/dxbc_to_spirv_operands.cpp
+    graphics/shaders/dxil_bitcode.cpp
+    graphics/shaders/dxil_container.cpp
+    graphics/shaders/dxil_emit.cpp
+    graphics/shaders/dxil_lower.cpp
+    graphics/shaders/dxil_subobjects.cpp
+    graphics/shaders/dxil_lower_wave.cpp
+    graphics/shaders/dxil_lower_feedback.cpp
+    graphics/shaders/dxil_lower_wide.cpp
+    graphics/shaders/dxil_module.cpp
     graphics/shaders/shader_cache.cpp
     graphics/shaders/shader_compiler.cpp
+    graphics/shaders/translation_cache.cpp
 )
+
+# graphics::TranslationCache's key: a hash of the shader translators'
+# sources and SPIRV-Cross's (cmake/TranslatorHash.cmake), regenerated
+# whenever one of them changes -- not the binary's LC_UUID, so unrelated
+# rebuilds keep the cache.
+file(GLOB VITREO_TRANSLATOR_SOURCES CONFIGURE_DEPENDS
+    ${CMAKE_SOURCE_DIR}/src/graphics/shaders/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/shaders/*.hpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/shaders/*.inc
+    ${CMAKE_SOURCE_DIR}/src/graphics/contracts/*.hpp
+    ${CMAKE_SOURCE_DIR}/include/vitreo/common.hpp
+    ${spirv_cross_SOURCE_DIR}/*.cpp
+    ${spirv_cross_SOURCE_DIR}/*.hpp
+    ${spirv_cross_SOURCE_DIR}/*.h)
+list(SORT VITREO_TRANSLATOR_SOURCES)
+set(VITREO_TRANSLATOR_GENERATED ${CMAKE_BINARY_DIR}/generated/translator)
+string(REPLACE ";" "\n" _vitreo_translator_list "${VITREO_TRANSLATOR_SOURCES}")
+file(MAKE_DIRECTORY ${VITREO_TRANSLATOR_GENERATED})
+file(CONFIGURE OUTPUT ${VITREO_TRANSLATOR_GENERATED}/sources.txt
+     CONTENT "${_vitreo_translator_list}\n")
+add_custom_command(
+    OUTPUT ${VITREO_TRANSLATOR_GENERATED}/hash.stamp
+           ${VITREO_TRANSLATOR_GENERATED}/vitreo_translator_hash.hpp
+    COMMAND ${CMAKE_COMMAND}
+        -DLIST=${VITREO_TRANSLATOR_GENERATED}/sources.txt
+        -DOUT=${VITREO_TRANSLATOR_GENERATED}/vitreo_translator_hash.hpp
+        -DSTAMP=${VITREO_TRANSLATOR_GENERATED}/hash.stamp
+        -P ${CMAKE_SOURCE_DIR}/cmake/TranslatorHash.cmake
+    DEPENDS ${VITREO_TRANSLATOR_SOURCES} ${CMAKE_SOURCE_DIR}/cmake/TranslatorHash.cmake
+            ${VITREO_TRANSLATOR_GENERATED}/sources.txt
+    COMMENT "Hashing the shader translator sources"
+    VERBATIM)
+target_sources(vitreo_graphics_shader PRIVATE
+    ${VITREO_TRANSLATOR_GENERATED}/hash.stamp
+    ${VITREO_TRANSLATOR_GENERATED}/vitreo_translator_hash.hpp)
+target_include_directories(vitreo_graphics_shader PRIVATE ${VITREO_TRANSLATOR_GENERATED})
 
 target_include_directories(vitreo_graphics_shader PUBLIC
     ${CMAKE_SOURCE_DIR}/include
@@ -2684,6 +2813,8 @@ add_library(vitreo_graphics_metal STATIC
     graphics/metal/metal_buffer_pool.mm
     graphics/metal/metal_texture.mm
     graphics/metal/metal_tiled.mm
+    graphics/metal/metal_raytracing.mm
+    graphics/metal/metal_transcode.mm
     graphics/metal/metal_shared_resource.mm
     graphics/metal/metal_pipeline.mm
     graphics/metal/metal_command.mm
@@ -2762,3 +2893,31 @@ target_link_libraries(vitreo_graphics INTERFACE
     vitreo_graphics_shader
     vitreo_graphics_metal
 )
+
+# WS6 begin: zero-copy D3D11 dynamic and staging buffers.
+target_sources(vitreo_winapi_graphics PRIVATE
+    winapi/graphics/d3d11/d3d11_buffer_ring.cpp
+)
+# WS6 end
+
+# --- WS1 (host vcruntime140 memory/string exports) ---------------------------
+target_sources(vitreo_winapi_core PRIVATE
+    winapi/msvcrt/memory/vcruntime_interpose.cpp
+)
+# --- end WS1 ------------------------------------------------------------------
+
+# ---- WS5 begin ----
+# Geometry shaders on Metal mesh pipelines
+# (host-offload plan WS5).
+target_sources(vitreo_graphics_shader PRIVATE
+    graphics/shaders/msl_mesh_emit.cpp
+)
+target_sources(vitreo_winapi_graphics PRIVATE
+    winapi/graphics/d3d11/d3d11_gs_mesh_select.cpp
+)
+if(APPLE)
+    target_sources(vitreo_graphics_metal PRIVATE
+        graphics/metal/metal_mesh_pipeline.mm
+    )
+endif()
+# ---- WS5 end ----

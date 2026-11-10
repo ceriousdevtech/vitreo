@@ -65,6 +65,58 @@ TEST_F(D3D9ManagerTest, ExclusiveCreateDeviceDrivesFullscreenCallbacks) {
     mgr_.set_display_mode_callback({});
 }
 
+TEST_F(D3D9ManagerTest, ExclusiveModeDoesNotShrinkAdapterModeList) {
+    // The adapter mode list is built from the desktop, not from an exclusive
+    // mode in force (tools/oracle_probe/d3d9_fullscreen_mode_probe.c); a game
+    // already at 800x600 must still be offered every larger mode.
+    const u32 factory = mgr_.direct3d_create9(D3D_SDK_VERSION);
+    ASSERT_NE(factory, 0u);
+    const u32 desktop_count = invoke_method(6, {factory, 0, 22});
+    ASSERT_GT(desktop_count, 2u);
+
+    std::array<u32, 14> pp{};
+    pp[0] = 800;
+    pp[1] = 600;
+    pp[2] = 22;
+    pp[3] = 1;
+    pp[6] = 1;
+    pp[7] = TEST_HWND;
+    pp[8] = 0;  // Windowed = FALSE (exclusive)
+    ASSERT_TRUE(memory_.write_bytes(
+        PRESENT_ADDR, reinterpret_cast<const Byte*>(pp.data()),
+        sizeof(pp)).is_ok());
+    ASSERT_EQ(invoke_method(
+                  16, {factory, 0, 1, TEST_HWND, 0x00000040,
+                       static_cast<u32>(PRESENT_ADDR),
+                       static_cast<u32>(SCRATCH_ADDR)}),
+              D3D_OK);
+
+    // GetAdapterDisplayMode reports the mode in force...
+    ASSERT_EQ(invoke_method(8, {factory, 0, static_cast<u32>(MODE_ADDR)}),
+              D3D_OK);
+    EXPECT_EQ(memory_.read_u32(MODE_ADDR + 0).value(), 800u);
+    EXPECT_EQ(memory_.read_u32(MODE_ADDR + 4).value(), 600u);
+
+    // ...while the mode list is unchanged and still reaches the desktop.
+    ASSERT_EQ(invoke_method(6, {factory, 0, 22}), desktop_count);
+    bool saw_desktop = false;
+    bool saw_1024x768 = false;
+    for (u32 i = 0; i < desktop_count; ++i) {
+        ASSERT_EQ(invoke_method(7, {factory, 0, 22, i,
+                                    static_cast<u32>(MODE_ADDR)}),
+                  D3D_OK);
+        const u32 width = memory_.read_u32(MODE_ADDR + 0).value();
+        const u32 height = memory_.read_u32(MODE_ADDR + 4).value();
+        if (width == 1920 && height == 1080) saw_desktop = true;
+        if (width == 1024 && height == 768) saw_1024x768 = true;
+    }
+    EXPECT_TRUE(saw_desktop);
+    EXPECT_TRUE(saw_1024x768);
+    EXPECT_EQ(invoke_method(7, {factory, 0, 22, desktop_count,
+                                static_cast<u32>(MODE_ADDR)}),
+              D3DERR_INVALIDCALL);
+}
+
 TEST_F(D3D9ManagerTest, HardwareCursorPropertiesPositionAndShowRoundTrip) {
     // Learn: SetCursorProperties keeps hotspot + A8R8G8B8 bitmap; ShowCursor
     // returns prior visibility; SetCursorPosition updates screen coords.

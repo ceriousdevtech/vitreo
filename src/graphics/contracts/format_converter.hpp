@@ -139,6 +139,21 @@ enum class PixelFormat : u32 {
     NV12,
     P010,
 
+    // DXGI R8G8_B8G8_UNORM (68) and G8R8_G8B8_UNORM (69): a 4-byte block
+    // holds two pixels that share R and B (Learn DXGI_FORMAT: "Each 32-bit
+    // block describes a pair of pixels: (R8, G8, B8) and (R8, G8, B8) where
+    // the R8/B8 values are repeated, and the G8 values are unique to each
+    // pixel"). Metal's BGRG422 / GBGR422 decode them with R and B swapped,
+    // but refuse mipmapped and odd-width textures (measured,
+    // tools/oracle_probe/metal/metal_422_facts.m), which DXGI allows. They
+    // are stored decoded instead: one RGBA8Unorm texel per pixel holding
+    // (R, G, B, G of the block's other pixel), so a block re-encodes from
+    // either pixel even where a level's odd width leaves only the first.
+    // Views read alpha 1 (an RGB1 swizzle); every upload decodes and every
+    // readback encodes (format_422.hpp).
+    RGBG422Unorm,  ///< R8G8_B8G8_UNORM: block bytes R, G0, B, G1
+    GRGB422Unorm,  ///< G8R8_G8B8_UNORM: block bytes G0, R, G1, B
+
     Count,
 };
 
@@ -275,6 +290,10 @@ inline constexpr FormatInfo format_table(PixelFormat fmt) {
     // Planar video formats: the luma plane (R8Unorm / R16Unorm).
     case PixelFormat::NV12:             return { 10,  1, 1, false, false, false };
     case PixelFormat::P010:             return { 20,  2, 1, false, false, false };
+
+    // Decoded 4:2:2 storage: RGBA8Unorm texels (see the PixelFormat entry).
+    case PixelFormat::RGBG422Unorm:     return { 70,  4, 3, false, false, false };
+    case PixelFormat::GRGB422Unorm:     return { 70,  4, 3, false, false, false };
 
     default:                            return { 0, 0, 0, false, false, false };
     }

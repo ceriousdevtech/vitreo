@@ -1,0 +1,118 @@
+library CreatePipelineLibrary(NULL, 0, ppv NULL): 0x00000001 S_FALSE
+library CreatePipelineLibrary(NULL, 0, IID Device): 0x80004002 E_NOINTERFACE out=NULL
+library CreatePipelineLibrary(NULL, 0): 0x00000000 S_OK out=obj
+library empty GetSerializedSize nonzero: 1
+library StorePipeline(cs): 0x00000000 S_OK pso refs +0
+library StorePipeline(cs) again: 0x80070057 E_INVALIDARG
+library StorePipeline(cs2 under "cs2"): 0x00000000 S_OK
+library StorePipeline(NULL name): 0x80070057 E_INVALIDARG
+library StorePipeline(gfx): 0x00000000 S_OK
+library StorePipeline(same pso, new name): 0x00000000 S_OK
+library GetSerializedSize grew: 1
+library LoadComputePipeline(cs): 0x00000000 S_OK out=obj same-as-stored=1
+library LoadComputePipeline(cs) again: 0x00000000 S_OK same-as-first=1
+library LoadComputePipeline(cs, other shader): 0x80070057 E_INVALIDARG out=NULL
+library LoadComputePipeline(missing): 0x80070057 E_INVALIDARG out=NULL
+library LoadGraphicsPipeline(cs name): 0x80070057 E_INVALIDARG out=NULL
+library LoadGraphicsPipeline(gfx): 0x00000000 S_OK out=obj
+library LoadGraphicsPipeline(gfx, other cull): 0x80070057 E_INVALIDARG out=NULL
+library LoadComputePipeline(cs, IID Device): 0x80004002 E_NOINTERFACE out=NULL
+library second root signature is a new object: 0
+library LoadComputePipeline(cs, equal root signature object): 0x00000000 S_OK out=obj
+library LoadComputePipeline(cs, other root signature): 0x80070057 E_INVALIDARG out=NULL
+library LoadPipeline(cs, stream): 0x80070057 E_INVALIDARG out=NULL
+library LoadPipeline(cs, stream with other shader): 0x80070057 E_INVALIDARG out=NULL
+library StorePipeline(stream-made pso): 0x00000000 S_OK
+library LoadComputePipeline(streamed): 0x80070057 E_INVALIDARG out=NULL
+library LoadPipeline(streamed, same stream): 0x00000000 S_OK out=obj same-as-stored=1
+library LoadPipeline(streamed, reordered stream): 0x00000000 S_OK out=obj
+library Serialize(size - 1): 0x80070057 E_INVALIDARG
+library Serialize(size + 16): 0x00000000 S_OK
+library Serialize(size): 0x00000000 S_OK
+library CreatePipelineLibrary(serialized): 0x00000000 S_OK out=obj
+library   GetSerializedSize same: 1
+library   LoadComputePipeline(cs): 0x00000000 S_OK out=obj new-object=1
+library   LoadComputePipeline(cs) again same object: 1
+library   LoadComputePipeline(cs, other shader): 0x80070057 E_INVALIDARG out=NULL
+library   LoadGraphicsPipeline(gfx): 0x00000000 S_OK out=obj
+library   StorePipeline(cs) (name taken): 0x80070057 E_INVALIDARG
+library   StorePipeline(new): 0x00000000 S_OK
+library   GetSerializedSize grew: 1
+library   Release: 0
+library CreatePipelineLibrary(first half): 0x80070057 E_INVALIDARG out=NULL
+library CreatePipelineLibrary(byte flipped mid-blob): 0x80070057 E_INVALIDARG out=NULL
+library CreatePipelineLibrary(first byte flipped): 0x80070057 E_INVALIDARG out=NULL
+library CreatePipelineLibrary(garbage): 0x80070057 E_INVALIDARG out=NULL
+library CreatePipelineLibrary(blob, 0): 0x00000000 S_OK out=obj
+library Release: 0
+library end: GetDeviceRemovedReason 0x00000000 S_OK
+cache CreateShaderCacheSession(ppv NULL): 0x00000001 S_FALSE
+cache CreateShaderCacheSession(desc NULL): 0x80070057 E_INVALIDARG out=NULL
+cache CreateShaderCacheSession(memory): 0x00000000 S_OK out=obj
+cache CreateShaderCacheSession(same identifier): 0x00000000 S_OK out=obj same=0
+cache CreateShaderCacheSession(mode 7): 0x80070057 E_INVALIDARG out=NULL
+cache CreateShaderCacheSession(flags 0x4): 0x80070057 E_INVALIDARG out=NULL
+cache CreateShaderCacheSession(DRIVER_VERSIONED, version 0): 0x00000000 S_OK out=obj
+cache CreateShaderCacheSession(DRIVER_VERSIONED, version 3): 0x00000000 S_OK out=obj
+cache CreateShaderCacheSession(memory, USE_WORKING_DIR): 0x00000000 S_OK out=obj
+cache GetDesc: ret=RetVal id-same=1 mode=0 flags=0x0 size=1048576 entries=128 file=0 version=0
+cache FindValue(missing): 0x887a0002 DXGI_ERROR_NOT_FOUND size=0xcdcd
+cache StoreValue: 0x00000000 S_OK
+cache StoreValue(same key): 0x887a0036 ?
+cache StoreValue(NULL key): 0x80070057 E_INVALIDARG
+cache StoreValue(empty value): 0x80070057 E_INVALIDARG
+cache FindValue(NULL, size): 0x00000000 S_OK size=10
+cache FindValue(4-byte buffer): 0x887a0003 DXGI_ERROR_MORE_DATA size=10 buf=
+cache FindValue(big buffer): 0x00000000 S_OK size=10 buf=value-one
+cache FindValue(size NULL): 0x80070057 E_INVALIDARG
+cache FindValue(key prefix): 0x887a0002 DXGI_ERROR_NOT_FOUND
+cache second session FindValue: 0x00000000 S_OK size=10
+cache limit-1 StoreValue a: 0x00000000 S_OK
+cache limit-1 StoreValue b: 0x00000000 S_OK
+cache limit-1 FindValue a: 0x00000000 S_OK
+cache limit-1 FindValue b: 0x00000000 S_OK
+cache CreateShaderCacheSession(16-byte memory): 0x80070057 E_INVALIDARG out=NULL
+cache CreateShaderCacheSession(memory size 1024, entries 1): 0x80070057 E_INVALIDARG
+cache CreateShaderCacheSession(memory size 32769, entries 0): 0x80070057 E_INVALIDARG
+cache CreateShaderCacheSession(memory size 33792, entries 0): 0x80070057 E_INVALIDARG
+cache CreateShaderCacheSession(memory size 34816, entries 0): 0x80070057 E_INVALIDARG
+cache CreateShaderCacheSession(memory size 35840, entries 0): 0x80070057 E_INVALIDARG
+cache CreateShaderCacheSession(memory size 36864, entries 0): 0x80070057 E_INVALIDARG
+cache CreateShaderCacheSession(memory size 36865, entries 0): 0x00000000 S_OK
+cache CreateShaderCacheSession(memory size 37888, entries 0): 0x00000000 S_OK
+cache CreateShaderCacheSession(memory size 38912, entries 0): 0x00000000 S_OK
+cache CreateShaderCacheSession(memory size 40000, entries 0): 0x00000000 S_OK
+cache CreateShaderCacheSession(other version, session open): 0x887a0036 ? out=NULL
+cache CreateShaderCacheSession(other version, none open): 0x00000000 S_OK FindValue=0x887a0002 DXGI_ERROR_NOT_FOUND
+cache CreateShaderCacheSession(first version again): 0x00000000 S_OK
+cache CreateShaderCacheSession(same id, other entry limit): 0x00000000 S_OK
+cache SetDeleteOnDestroy: returned
+cache Release: 0
+cache after delete-on-destroy FindValue: 0x887a0002 DXGI_ERROR_NOT_FOUND
+cache end: GetDeviceRemovedReason 0x00000000 S_OK
+control SHADER_CACHE: 0x00000000 S_OK flags=0x73
+control ShaderCacheControl(APPLICATION_MANAGED, CLEAR): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING
+control ShaderCacheControl(IMPLICIT_D3D_CACHE_FOR_DRIVER, DISABLE): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING
+control ShaderCacheControl(IMPLICIT_D3D_CACHE_FOR_DRIVER, ENABLE): 0x80070057 E_INVALIDARG
+control ShaderCacheControl(IMPLICIT_DRIVER_MANAGED, CLEAR): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING
+control ShaderCacheControl(0, CLEAR): 0x80070057 E_INVALIDARG
+control ShaderCacheControl(APPLICATION_MANAGED, 0): 0x80070057 E_INVALIDARG
+control ShaderCacheControl(APPLICATION_MANAGED, DISABLE|ENABLE): 0x80070057 E_INVALIDARG
+control ShaderCacheControl(kind 16, CLEAR): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING
+control SetBackgroundProcessingMode(ALLOWED, KEEP_ALL): 0x80070057 E_INVALIDARG further=untouched event=unset
+control SetBackgroundProcessingMode(ALLOW_INTRUSIVE_MEASUREMENTS, COMMIT_RESULTS): 0x00000000 S_OK further=TRUE event=set
+control SetBackgroundProcessingMode(DISABLE_BACKGROUND_WORK, COMMIT_RESULTS_HIGH_PRIORITY): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING further=untouched event=unset
+control SetBackgroundProcessingMode(DISABLE_PROFILING_BY_SYSTEM, DISCARD_PREVIOUS): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING further=untouched event=unset
+control SetBackgroundProcessingMode(mode 4): 0x80070057 E_INVALIDARG further=untouched event=unset
+control SetBackgroundProcessingMode(action 4): 0x80070057 E_INVALIDARG further=untouched event=unset
+control SetBackgroundProcessingMode(ALLOWED, COMMIT_RESULTS): 0x00000000 S_OK further=TRUE event=set
+control SetBackgroundProcessingMode(ALLOWED, COMMIT_RESULTS_HIGH_PRIORITY): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING further=untouched event=unset
+control SetBackgroundProcessingMode(ALLOWED, DISCARD_PREVIOUS): 0x80070057 E_INVALIDARG further=untouched event=unset
+control SetBackgroundProcessingMode(ALLOW_INTRUSIVE_MEASUREMENTS, KEEP_ALL): 0x80070057 E_INVALIDARG further=untouched event=unset
+control SetBackgroundProcessingMode(ALLOW_INTRUSIVE_MEASUREMENTS, DISCARD_PREVIOUS): 0x80070057 E_INVALIDARG further=untouched event=unset
+control SetBackgroundProcessingMode(ALLOWED, action 0, no event): 0x00000000 S_OK further=TRUE
+control SetBackgroundProcessingMode(ALLOWED, action 1, no event): 0x00000000 S_OK further=TRUE
+control SetBackgroundProcessingMode(ALLOWED, action 2, no event): 0x887a002d DXGI_ERROR_SDK_COMPONENT_MISSING further=untouched
+control SetBackgroundProcessingMode(ALLOWED, action 3, no event): 0x00000000 S_OK further=TRUE
+control SetBackgroundProcessingMode(no event, no out): 0x00000000 S_OK
+control end: GetDeviceRemovedReason 0x00000000 S_OK

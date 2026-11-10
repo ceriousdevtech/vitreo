@@ -49,27 +49,10 @@
         u32 present_count{0};
         u32 pending_sync_interval{0};
         u32 pending_present_flags{0};
-        /// IDXGISwapChain::GetFullscreenState: the chain owns the output in
-        /// exclusive full-screen.
-        bool fullscreen{false};
-        /// While fullscreen: the IDXGIOutput GetFullscreenState returns
-        /// (held, one reference), the mode the output is in, and whether that
-        /// mode was switched to (DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH) or
-        /// is the desktop's.
-        GuestAddr fullscreen_output{0};
-        u32 mode_width{0};
-        u32 mode_height{0};
-        bool mode_changed{false};
-        /// The window rectangle before full-screen, restored on leaving.
-        std::optional<std::array<i32, 4>> windowed_rect;
-        /// The host window is in a macOS Space for this chain. Losing
-        /// application focus relinquishes DXGI full-screen but keeps the
-        /// Space (Cmd-Tab leaves a Space like any Mac full-screen app); an
-        /// explicit SetFullscreenState(FALSE) or Release leaves it.
-        bool host_space{false};
-        /// Full-screen was relinquished because the application lost focus:
-        /// Present reports DXGI_STATUS_OCCLUDED until focus returns.
-        bool occluded_by_focus_loss{false};
+        /// Exclusive full-screen (IDXGISwapChain::SetFullscreenState /
+        /// GetFullscreenState), the state machine shared with the D3D12
+        /// chains (winapi/graphics/dxgi/dxgi_exclusive_fullscreen.hpp).
+        dxgi::ExclusiveState exclusive;
         bool composition{false};
         /// The factory that created the chain (IDXGISwapChain::GetParent),
         /// held as a reference for the chain's lifetime.

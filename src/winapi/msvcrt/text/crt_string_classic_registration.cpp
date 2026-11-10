@@ -13,7 +13,8 @@
 #include <cctype>
 #include <cstring>
 #include <string>
-#include <unistd.h>  // getpid for _mktemp
+#include "ipc/hwnd_registry.hpp"
+#include <unistd.h>
 
 namespace vitreo::winapi {
 
@@ -197,7 +198,7 @@ void add_crt_classic_string_exports(DllExports& exports) {
                 m.set_return(0);
                 return;
             }
-            unsigned pid = static_cast<unsigned>(::getpid());
+            unsigned pid = ipc::guest_process_id();
             for (usize i = 0; i < x_count; ++i) {
                 s[s.size() - 1 - i] =
                     static_cast<char>('0' + (pid % 10));

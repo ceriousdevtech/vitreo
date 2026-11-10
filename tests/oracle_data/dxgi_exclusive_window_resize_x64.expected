@@ -1,0 +1,71 @@
+dxgi_exclusive_fullscreen_probe x64
+
+[exclusive window resize]
+  CreateSwapChain hr=0x00000000
+  SetFullscreenState(TRUE) hr=0x00000000
+  lower mode state:
+    style=0x14000000 exstyle=0x00000008 iconic=0 zoomed=0 visible=1
+    window=0,0 1280x720 client=1280x720
+    metrics SM_CX/CYSCREEN=1280x720 virtual=1280x720
+    EnumDisplaySettings(CURRENT)=1280x720 bpp=32
+    GetMonitorInfo rcMonitor=0,0 1280x720 work=1280x672
+    foreground=self active=self focus=self topmost=1
+    GetFullscreenState hr=0x00000000 fs=1 target=set desk=0,0 1280x720 same_as_containing=1 refs_after_get=2
+    GetDesc buf=1280x720 windowed=0 flags=0x2
+    GetFullscreenDesc hr=0x00000000 windowed=0
+    containing output desk=0,0 1280x720
+  SetWindowPos(13,17,desk) ok=1
+  during SetWindowPos msgs:
+    WINDOWPOSCHANGING flags=0x0014 13,17 deskxdesk
+    GETMINMAXINFO
+    NCCALCSIZE 1
+    WINDOWPOSCHANGED flags=0x0014 13,17 1300x740
+    MOVE 13,17
+    SIZE type=0 1300x740
+  larger window before mode change state:
+    style=0x14000000 exstyle=0x00000008 iconic=0 zoomed=0 visible=1
+    window=13,17 1300x740 client=1300x740
+    metrics SM_CX/CYSCREEN=1280x720 virtual=1280x720
+    EnumDisplaySettings(CURRENT)=1280x720 bpp=32
+    GetMonitorInfo rcMonitor=0,0 1280x720 work=1280x672
+    foreground=self active=self focus=self topmost=1
+    GetFullscreenState hr=0x00000000 fs=1 target=set desk=0,0 1280x720 same_as_containing=1 refs_after_get=2
+    GetDesc buf=1280x720 windowed=0 flags=0x2
+    GetFullscreenDesc hr=0x00000000 windowed=0
+    containing output desk=0,0 1280x720
+  larger window after pump state:
+    style=0x14000000 exstyle=0x00000008 iconic=0 zoomed=0 visible=1
+    window=13,17 1300x740 client=1300x740
+    metrics SM_CX/CYSCREEN=1280x720 virtual=1280x720
+    EnumDisplaySettings(CURRENT)=1280x720 bpp=32
+    GetMonitorInfo rcMonitor=0,0 1280x720 work=1280x672
+    foreground=self active=self focus=self topmost=1
+    GetFullscreenState hr=0x00000000 fs=1 target=set desk=0,0 1280x720 same_as_containing=1 refs_after_get=2
+    GetDesc buf=1280x720 windowed=0 flags=0x2
+    GetFullscreenDesc hr=0x00000000 windowed=0
+    containing output desk=0,0 1280x720
+  SetWindowPos(13,17,desk), guest max track ok=1
+  guest approved larger window state:
+    style=0x14000000 exstyle=0x00000008 iconic=0 zoomed=0 visible=1
+    window=13,17 deskxdesk client=deskxdesk
+    metrics SM_CX/CYSCREEN=1280x720 virtual=1280x720
+    EnumDisplaySettings(CURRENT)=1280x720 bpp=32
+    GetMonitorInfo rcMonitor=0,0 1280x720 work=1280x672
+    foreground=self active=self focus=self topmost=1
+    GetFullscreenState hr=0x00000000 fs=1 target=set desk=0,0 1280x720 same_as_containing=1 refs_after_get=2
+    GetDesc buf=1280x720 windowed=0 flags=0x2
+    GetFullscreenDesc hr=0x00000000 windowed=0
+    containing output desk=0,0 1280x720
+  ResizeTarget(desk) hr=0x00000000
+  ResizeBuffers(0,0,0) hr=0x00000000
+  returned to desktop mode state:
+    style=0x14000000 exstyle=0x00000008 iconic=0 zoomed=0 visible=1
+    window=0,0 deskxdesk client=deskxdesk
+    metrics SM_CX/CYSCREEN=deskxdesk virtual=deskxdesk
+    EnumDisplaySettings(CURRENT)=deskxdesk bpp=32
+    GetMonitorInfo rcMonitor=0,0 deskxdesk work=deskx1032
+    foreground=self active=self focus=self topmost=1
+    GetFullscreenState hr=0x00000000 fs=1 target=set desk=0,0 deskxdesk same_as_containing=1 refs_after_get=3
+    GetDesc buf=deskxdesk windowed=0 flags=0x2
+    GetFullscreenDesc hr=0x00000000 windowed=0
+    containing output desk=0,0 deskxdesk

@@ -446,7 +446,7 @@ bool dispatch_pending_raise32(cpu::CpuState& cpu,
             }
         }
 
-        u64 disposition = invoke_seh32_frame_handler(
+        auto disposition = invoke_seh32_frame_handler(
             cpu, memory, thunk_registry, process_mgr,
             info.handler_addr, info.frame_addr,
             erec_addr, ctx_addr, disp_ctx_addr, scratch_esp);
@@ -455,9 +455,13 @@ bool dispatch_pending_raise32(cpu::CpuState& cpu,
         if (apply_pending_unwind_32(cpu, memory, ctx_addr, "native32")) {
             return true;
         }
-        if (disposition == cpu::ExceptionContinueExecution) {
-            (void)cli::resume_from_context_32(cpu, memory, thunk_registry, process_mgr,
-                                         erec_addr, ctx_addr, scratch_esp);
+        if (disposition.disposition == cpu::ExceptionContinueExecution) {
+            // A nonreturning handler already restored its continuation.
+            if (!disposition.transferred) {
+                (void)cli::resume_from_context_32(cpu, memory, thunk_registry,
+                                                  process_mgr, erec_addr, ctx_addr,
+                                                  scratch_esp);
+            }
             return true;
         }
         frame_addr = info.next_frame;

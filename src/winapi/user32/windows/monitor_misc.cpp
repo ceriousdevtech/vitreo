@@ -22,6 +22,7 @@
 #include "windowing/model/hwnd_manager.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "ipc/hwnd_registry.hpp"
+#include "ipc/process_registry.hpp"
 #include "windowing/resources/dialog_template.hpp"
 #include "windowing/resources/resource_walker.hpp"
 #include "winapi/user32/classes/window_class.hpp"
@@ -43,8 +44,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include <cerrno>
-#include <csignal>
 
 #include <unistd.h>
 
@@ -55,14 +54,23 @@ namespace vitreo::winapi {
 void User32ExtManager::impl_AllowSetForegroundWindow(Marshaler& m) {
     // BOOL AllowSetForegroundWindow(DWORD dwProcessId): ASFW_ANY or an
     // existing process; anything else fails with ERROR_INVALID_PARAMETER
-    // (s2msg_input_probe allowsetfg_zero / allowsetfg_bogus_pid). Guest
-    // process ids are host pids. The grant itself needs no bookkeeping:
-    // Vitreo does not refuse SetForegroundWindow to any guest process.
+    // (s2msg_input_probe allowsetfg_zero / allowsetfg_bogus_pid). The
+    // argument is a Windows client ID. The grant itself needs no
+    // bookkeeping: Vitreo does not refuse SetForegroundWindow to any guest.
     const u32 pid = static_cast<u32>(m.arg(0));
     constexpr u32 ASFW_ANY = 0xFFFFFFFFu;
-    bool exists = pid == ASFW_ANY;
-    if (!exists && pid != 0 && pid <= 0x7FFFFFFFu) {
-        exists = ::kill(static_cast<pid_t>(pid), 0) == 0 || errno == EPERM;
+    bool exists = pid == ASFW_ANY || pid == 4 ||
+                  pid == ipc::guest_process_id();
+    if (!exists && pid != 0) {
+        const char* scope = std::getenv("VITREO_IPC_SCOPE");
+        if (scope != nullptr && *scope != '\0') {
+            for (const auto& process : ipc::list_processes(scope)) {
+                if (process.pid == pid) {
+                    exists = true;
+                    break;
+                }
+            }
+        }
     }
     if (!exists) {
         set_last_error(error_codes::ERROR_INVALID_PARAMETER);

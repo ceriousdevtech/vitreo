@@ -64,6 +64,7 @@ CapsContext device_caps(bool is_64bit) {
     caps.cache_coherent_uma = true;
     caps.max_buffer_length = 1ull << 34;
     caps.simd_width = 32;
+    caps.highest_shader_model = 0x65;  // as backend_caps_context sets it
     return caps;
 }
 
@@ -325,7 +326,7 @@ TEST_F(D3D12CapsTest, InputRulesMatchWindows) {
                 ASSERT_TRUE(memory.write_u32(kData, in).is_ok());
                 EXPECT_EQ(check_feature_support(memory, caps, sm ? 7 : 12, kData, 4), hr) << line;
                 const u32 ours = memory.read_u32(kData).value();
-                const u32 device = sm ? 0x51u : 2u;  // SM 5.1, root signature 1.1
+                const u32 device = sm ? 0x65u : 2u;  // SM 6.5, root signature 1.1
                 EXPECT_EQ(ours, hr == S_OK ? std::min(in, device) : in) << line;
                 if (hr != S_OK || in <= device) EXPECT_EQ(ours, out) << line;
                 ++matched;
@@ -445,36 +446,83 @@ TEST_F(D3D12CapsTest, FormatQueriesFollowWindowsRules) {
 }
 
 TEST_F(D3D12CapsTest, FeatureLevelFollowsTheImplementedTiers) {
+    // Learn, Hardware feature levels: every non-optional row of a level.
     CapsContext caps = device_caps(true);
     EXPECT_EQ(max_feature_level(caps), 0xB000u);
     caps.logic_ops = true;
     caps.sample_counts_with_no_outputs = 0x1F;
+    EXPECT_EQ(max_feature_level(caps), 0xB000u);  // no target-independent rasterization
+    caps.target_independent_rasterization = true;
     EXPECT_EQ(max_feature_level(caps), 0xB100u);
+    caps.sample_counts_with_no_outputs = 0x0F;
+    EXPECT_EQ(max_feature_level(caps), 0xB000u);  // UAV-only rendering stops at 8
+    caps.sample_counts_with_no_outputs = 0x1F;
     caps.resource_binding_tier = 2;
     caps.tiled_resources_tier = 2;
+    caps.min_max_filtering = true;
+    caps.highest_shader_model = 0x60;
     EXPECT_EQ(max_feature_level(caps), 0xB100u);  // still no typed UAV load formats
     caps.typed_uav_load_additional_formats = true;
     EXPECT_EQ(max_feature_level(caps), 0xC000u);
+    caps.min_max_filtering = false;
+    EXPECT_EQ(max_feature_level(caps), 0xB100u);
+    caps.min_max_filtering = true;
+    caps.highest_shader_model = 0x51;
+    EXPECT_EQ(max_feature_level(caps), 0xB100u);  // 12_0 lists shader model 6.0
+    caps.highest_shader_model = 0x60;
+    caps.rovs = true;
+    EXPECT_EQ(max_feature_level(caps), 0xC000u);  // 12_1 also needs conservative raster
+    caps.conservative_rasterization_tier = 1;
+    EXPECT_EQ(max_feature_level(caps), 0xC100u);
+    caps.rovs = false;
+    EXPECT_EQ(max_feature_level(caps), 0xC000u);
 }
 
-TEST_F(D3D12CapsTest, ShaderModelIsFiveOneAndNoDxilFeatureIsClaimed) {
+TEST_F(D3D12CapsTest, TypedUavLoadBitsFollowTheAdditionalFormatsCap) {
+    // Learn (Typed unordered access view loads): R32_FLOAT/UINT/SINT always;
+    // the other formats only with TypedUAVLoadAdditionalFormats.
+    constexpr u32 kTypedLoad = 0x40;  // D3D12_FORMAT_SUPPORT2_UAV_TYPED_LOAD
+    CapsContext caps = device_caps(true);
+    for (const bool group : {false, true}) {
+        caps.typed_uav_load_additional_formats = group;
+        for (const u32 format : {41u, 42u, 43u}) {
+            EXPECT_NE(format_support(format, caps).support2 & kTypedLoad, 0u) << format;
+        }
+        // The group: R32G32B32A32 F/U/S, R16G16B16A16 F/U/S, R8G8B8A8
+        // UNORM/U/S, R16 F/U/S, R8 UNORM/U/S.
+        for (const u32 format : {2u, 3u, 4u, 10u, 12u, 14u, 28u, 30u, 32u, 54u, 57u, 59u, 61u,
+                                 62u, 64u}) {
+            EXPECT_EQ((format_support(format, caps).support2 & kTypedLoad) != 0, group) << format;
+        }
+    }
+}
+
+TEST_F(D3D12CapsTest, ShaderModelIsSixFiveAndNoUnbuiltFeatureIsClaimed) {
+    // 6.6 requires 64-bit atomics on raw buffers with Int64ShaderOps, which
+    // Metal cannot serve (d3d12_caps.cpp), so a 6.6 request answers 6.5.
     const CapsContext caps = device_caps(true);
     prep(7, true);
     ASSERT_TRUE(memory.write_u32(kData, 0x66).is_ok());
     EXPECT_EQ(check_feature_support(memory, caps, 7, kData, 4), S_OK);
-    EXPECT_EQ(memory.read_u32(kData).value(), 0x51u);
+    EXPECT_EQ(memory.read_u32(kData).value(), 0x65u);
     // OPTIONS5 RaytracingTier, OPTIONS6 VRS tier, OPTIONS7 mesh / sampler
     // feedback, OPTIONS21 work graphs: all NOT_SUPPORTED.
     const struct {
         u32 feature;
         u32 size;
         u32 offset;
-    } none[] = {{27, 12, 8}, {30, 20, 8}, {32, 8, 0}, {32, 8, 4}, {53, 16, 0}, {8, 24, 0}, {8, 24, 20}};
+    } none[] = {{27, 12, 8}, {30, 20, 8}, {32, 8, 0}, {32, 8, 4}, {53, 16, 0}};
     for (const auto& n : none) {
         prep(n.feature, true);
         ASSERT_EQ(check_feature_support(memory, caps, n.feature, kData, n.size), S_OK);
         EXPECT_EQ(memory.read_u32(kData + n.offset).value(), 0u) << n.feature << "@" << n.offset;
     }
+    // OPTIONS1 WaveOps (offset 0) and Int64ShaderOps (20) are built
+    // (dxil_lower_wave.cpp, dxil_lower_wide.cpp) and claimed.
+    prep(8, true);
+    ASSERT_EQ(check_feature_support(memory, caps, 8, kData, 24), S_OK);
+    EXPECT_EQ(memory.read_u32(kData).value(), 1u);
+    EXPECT_EQ(memory.read_u32(kData + 20).value(), 1u);
 }
 
 TEST_F(D3D12CapsTest, LayoutRulesUseTheDeviceFacts) {
@@ -608,7 +656,7 @@ TEST_F(D3D12CapsTest, MarshalEntryPointReadsTheSignature) {
         }
         marshal_check_feature_support(m, memory, caps);
         EXPECT_EQ(static_cast<u32>(cpu.gpr.rax), S_OK) << is_64bit;
-        EXPECT_EQ(memory.read_u32(kData).value(), 0x51u) << is_64bit;
+        EXPECT_EQ(memory.read_u32(kData).value(), 0x60u) << is_64bit;  // min(6.0 asked, 6.1)
     }
 }
 

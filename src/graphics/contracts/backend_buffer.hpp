@@ -33,6 +33,40 @@ struct BackendBufferDesc {
     /// update_tile_mappings points at tile-pool memory. Nothing is allocated
     /// for it, so `byte_width` is not bounded by the resource-size limit.
     bool tiled{false};
+    /// A window buffer: no storage of its own. Its bytes are a range of a
+    /// CPU-visible heap's buffer (BackendHeap::buffer()) that the frontend
+    /// lends it with BackendBuffer::set_window, and can move to another
+    /// range at any time (a DISCARD rename done by the frontend). valid() is
+    /// false until the first set_window. A backend that cannot lend windows
+    /// returns a buffer whose set_window fails.
+    bool window{false};
+};
+
+class BackendBuffer;
+
+/// Bytes [offset, offset + byte_width) of a CPU-visible heap's buffer
+/// (BackendHeap::buffer()), lent to a window buffer. `offset` is a multiple
+/// of 256 (constant-buffer binding and linear-texture alignment).
+struct BackendBufferWindow {
+    BackendBuffer* storage{nullptr};
+    usize offset{0};
+};
+
+/// Supplies fresh windows to a window buffer from inside the backend.
+class BackendBufferWindowSource {
+public:
+    virtual ~BackendBufferWindowSource() = default;
+    /// Called on the recording thread before the backend records a GPU write
+    /// into @p buffer (a copy destination) while its window may still be
+    /// read by recorded work. True: the source moved @p buffer to a fresh
+    /// window no recorded work uses (set_window succeeded) and reports it in
+    /// @p out; the backend then keeps every byte outside the write. False:
+    /// nothing changed -- no fresh window to be had, or set_window refused
+    /// it -- and the backend waits for the current window's work instead.
+    /// The move is atomic: the source's own view of the buffer's bytes and
+    /// the backend's window never disagree.
+    [[nodiscard]] virtual bool replace_window(BackendBuffer& buffer,
+                                              BackendBufferWindow& out) = 0;
 };
 
 class BackendBuffer {
@@ -55,6 +89,11 @@ public:
                                     usize /*length*/) {
         return false;
     }
+    /// The device address of byte 0 of the buffer's current storage (0 when
+    /// the backend has none). A shader that reads the bytes itself (a typed
+    /// view read as raw memory, graphics::kTypedBufferRaw) uses it; only
+    /// storage that is never renamed (heaps, reserved buffers) qualifies.
+    [[nodiscard]] virtual u64 device_address() const noexcept { return 0; }
     /// The global id of a shareable buffer's storage (0: not shared).
     [[nodiscard]] virtual u64 shared_handle() const noexcept { return 0; }
     /// The creator's BackendBufferDesc::shared_metadata.
@@ -63,6 +102,26 @@ public:
         static const std::vector<u8> none;
         return none;
     }
+    /// Window buffers (BackendBufferDesc::window): publish @p window as this
+    /// buffer's storage for every GPU use recorded from now on; work
+    /// recorded before keeps the storage it was recorded with. False: not a
+    /// window buffer, or the range does not fit the window's storage.
+    [[nodiscard]] virtual bool set_window(const BackendBufferWindow& window) {
+        (void)window;
+        return false;
+    }
+    /// Window buffers: who supplies a fresh window before a GPU write into
+    /// a window still in use (null: the backend waits instead).
+    virtual void set_window_source(BackendBufferWindowSource* source) noexcept {
+        (void)source;
+    }
+    /// Recorded GPU work may still read or write the storage published now.
+    /// Conservative default: true.
+    [[nodiscard]] virtual bool storage_in_use() const noexcept { return true; }
+    /// Block until no recorded GPU work uses the storage published now
+    /// (submitting the recording that holds it first). False: the backend
+    /// cannot wait (no completion tracking, or its queue shut down).
+    [[nodiscard]] virtual bool wait_storage_idle() { return false; }
 };
 
 /// A D3D typed buffer view (`Buffer<T>` / `RWBuffer<T>`) — a texture whose

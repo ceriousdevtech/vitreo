@@ -7,6 +7,101 @@
 #include <cstring>
 #include <vector>
 
+TEST_F(NtdllExtTest, NoChangeCommittedSectionLocksEachViewsOriginalProtection) {
+    // Native x86/x64 nt_section_no_change_probe{32,64}.expected: changed
+    // protection -> c0000045, old=PAGE_NOACCESS, input range untouched.
+    for (bool is64 : {false, true}) {
+        GuestMemory memory;
+        ASSERT_TRUE(memory.map_region(0x10000, 0x10000,
+            MemoryProtection::ReadWrite).is_ok());
+        HandleTable handles;
+        FileMappingManager mappings(handles, memory);
+        VirtualMemoryManager vmm(memory);
+        vmm.set_file_mapping_manager(&mappings);
+        mgr.set_file_mapping_manager(&mappings);
+        mgr.set_virtual_memory_manager(&vmm);
+        auto exports = make_ntdll_ext_exports(mgr);
+        auto create = std::find_if(exports.entries.begin(), exports.entries.end(),
+            [](const ExportEntry& e) { return e.name == "NtCreateSection"; });
+        auto protect = std::find_if(exports.entries.begin(), exports.entries.end(),
+            [](const ExportEntry& e) { return e.name == "NtProtectVirtualMemory"; });
+        ASSERT_NE(create, exports.entries.end());
+        ASSERT_NE(protect, exports.entries.end());
+        cpu::CpuState cpu;
+        if (is64) cpu.init_long_mode(); else cpu.init_protected_mode();
+        cpu.set_sp(0x1f000);
+        Marshaler m(memory);
+        m.attach_cpu(cpu);
+        const auto args = [&](std::initializer_list<u64> values) {
+            usize index = 0;
+            for (u64 value : values) {
+                if (is64 && index < 4) {
+                    constexpr u8 regs[]{1, 2, 8, 9};
+                    cpu.gpr.set64(regs[index], value);
+                } else if (is64) {
+                    EXPECT_TRUE(memory.write_u64(cpu.sp() + 8 + index * 8, value).is_ok());
+                } else {
+                    EXPECT_TRUE(memory.write_u32(cpu.sp() + 4 + index * 4,
+                        static_cast<u32>(value)).is_ok());
+                }
+                ++index;
+            }
+        };
+        ASSERT_TRUE(memory.write_u64(0x10100, 0x3000).is_ok());
+        args({0x10000, 0xf001f, 0, 0x10100, PAGE_EXECUTE_READWRITE,
+              0x08400000, 0});
+        create->handler(m);
+        ASSERT_EQ(cpu.gpr.rax, 0u);
+        const Handle section = memory.read_u32(0x10000).value();
+        ASSERT_NE(section, NULL_HANDLE);
+        for (u32 initial : {PAGE_READWRITE, PAGE_EXECUTE_READWRITE}) {
+            const u32 access = 2u | (initial == PAGE_EXECUTE_READWRITE ? 0x20u : 0u);
+            const GuestAddr view = mappings.map_view_of_file(section, access, 0, 0);
+            ASSERT_NE(view, 0u);
+            for (u32 target : {PAGE_NOACCESS, PAGE_READONLY, PAGE_READWRITE,
+                               PAGE_EXECUTE_READ, PAGE_EXECUTE_READWRITE,
+                               PAGE_READWRITE | PAGE_GUARD}) {
+                SCOPED_TRACE(std::to_string(is64) + "/" + std::to_string(initial) +
+                             "/" + std::to_string(target));
+                const auto put_size = [&](GuestAddr at, u64 value) {
+                    return is64 ? memory.write_u64(at, value)
+                                : memory.write_u32(at, static_cast<u32>(value));
+                };
+                ASSERT_TRUE(put_size(0x10200, view + 0x1001).is_ok());
+                ASSERT_TRUE(put_size(0x10210, 0x1000).is_ok());
+                ASSERT_TRUE(memory.write_u32(0x10220, 0xdeadbeef).is_ok());
+                args({is64 ? ~u64{0} : 0xffffffffu, 0x10200, 0x10210, target, 0x10220});
+                protect->handler(m);
+                const bool same = target == initial;
+                EXPECT_EQ(cpu.gpr.rax, same ? 0u : nt_status::STATUS_INVALID_PAGE_PROTECTION);
+                EXPECT_EQ(memory.read_u32(0x10220).value(), same ? initial : PAGE_NOACCESS);
+                const auto get_size = [&](GuestAddr at) -> u64 {
+                    return is64 ? memory.read_u64(at).value() : memory.read_u32(at).value();
+                };
+                EXPECT_EQ(get_size(0x10200), view + (same ? 0x1000 : 0x1001));
+                EXPECT_EQ(get_size(0x10210), same ? 0x2000u : 0x1000u);
+                u32 old = 0xdeadbeef;
+                EXPECT_EQ(vmm.virtual_protect(view + 0x1001, 0x1000, target, &old), same);
+                EXPECT_EQ(old, same ? initial : PAGE_NOACCESS);
+                if (!same) EXPECT_EQ(vmm.take_last_alloc_error(), error_codes::ERROR_INVALID_PARAMETER);
+            }
+            EXPECT_TRUE(mappings.unmap_view_of_file(view));
+        }
+        EXPECT_TRUE(mappings.on_handle_close(section, HandleType::FileMapping));
+        // Image combinations remain invalid on Windows. Valid reserved
+        // no-change sections are an explicit fail-loud runtime gap.
+        for (u32 attributes : {0x01400000u, 0x11400000u, 0x04400000u}) {
+            ASSERT_TRUE(memory.write_u64(0x10000, 0xdeadbeefdeadbeefULL).is_ok());
+            args({0x10000, 0xf001f, 0, 0x10100, PAGE_EXECUTE_READWRITE,
+                  attributes, 0});
+            create->handler(m);
+            EXPECT_EQ(cpu.gpr.rax, attributes == 0x04400000u
+                ? nt_status::STATUS_NOT_SUPPORTED : 0xc00000f4u);
+            EXPECT_EQ(memory.read_u64(0x10000).value(), 0xdeadbeefdeadbeefULL);
+        }
+    }
+}
+
 TEST_F(NtdllExtTest, QueryObjectNamesFileMappingAsSectionAtNativeWidth) {
     constexpr GuestAddr DATA_BASE = 0x1000;
     constexpr GuestAddr INFO_ADDRESS = DATA_BASE + 0x100;

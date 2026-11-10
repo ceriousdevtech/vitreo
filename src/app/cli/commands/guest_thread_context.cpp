@@ -304,14 +304,14 @@ cpu::CpuState make_guest_cpu_state(GuestMemory& memory,
     cpu::CpuState state{};
     if (is_64bit) {
         state.init_long_mode();
-        winapi::seed_windows_initial_fpu(state);
+        winapi::seed_windows_initial_cpu_state(state);
         state.seg.gs_desc.base = context.teb_addr;
         state.set_sp(context.stack_base + context.stack_size);
         return state;
     }
 
     state.init_protected_mode();
-    winapi::seed_windows_initial_fpu(state);
+    winapi::seed_windows_initial_cpu_state(state);
     state.seg.fs_desc.base = context.teb_addr;
 
     // Leave one page of headroom on 32-bit threads. Thread startup aligns a

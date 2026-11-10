@@ -106,6 +106,9 @@ void CocoaBridge::on_native_did_enter_space_fullscreen(HWND hwnd) {
                  fr.origin.x, fr.origin.y);
     sync_exclusive_space_system_ui();
     apply_host_cursor_visibility();
+    // The Space's content area is final now: windows beside the exclusive
+    // display are fitted to it, not to the screen frame used meanwhile.
+    if (it->second.fullscreen) replace_windows_for_exclusive_display(hwnd);
 }
 
 void CocoaBridge::on_native_did_exit_space_fullscreen(HWND hwnd) {
@@ -127,6 +130,11 @@ void CocoaBridge::on_native_did_exit_space_fullscreen(HWND hwnd) {
     // ends with the Space wanted again: enter it now. A user's own exit is
     // left alone.
     if (ours) reconcile_space_fullscreen(hwnd);
+    // Out of the Space for good: the window takes the guest rectangle that
+    // set_frame kept while AppKit owned the frame.
+    if (!it->second.fullscreen && !window_is_space_fullscreen(win)) {
+        set_frame(hwnd, it->second.frame);
+    }
 }
 
 // =============================================================================
@@ -446,6 +454,7 @@ void CocoaBridge::set_window_fullscreen(HWND hwnd, bool enable) {
             m_exclusive_cursor_confine_hwnd = hwnd;
             refresh_cursor_clip_state();
             enforce_cursor_clip();
+            replace_windows_for_exclusive_display(hwnd);
             VITREO_TRACE(
                 "[cocoa] set_window_fullscreen hwnd=0x%x ON space "
                 "%.0fx%.0f%+.0f%+.0f\n",
@@ -482,6 +491,7 @@ void CocoaBridge::set_window_fullscreen(HWND hwnd, bool enable) {
                 [win makeKeyAndOrderFront:nil];
             }
 
+            replace_windows_for_exclusive_display(hwnd);
             VITREO_TRACE("[cocoa] set_window_fullscreen hwnd=0x%x OFF space\n",
                          hwnd);
         }

@@ -267,13 +267,13 @@ TEST_F(D3D11ManagerTest, DrawPropagatesTexture2DMSShaderResourceViewWindows) {
     // buffer-view size per t# (128) and u# (8) slot for the bounds guard, the
     // capture SV_InstanceID bias padded to 16 bytes, the fixed-function word
     // quad (depth offset, SampleMask, viewport depth range), the border
-    // colours of s8..s15, the sixteen b# read limits, then the sixteen
-    // min/max sampler states.
+    // colours of s8..s15, the sixteen b# read limits, the sixteen min/max
+    // sampler states, then the render-target array index rule (member 14).
     EXPECT_EQ(backend.state.last_draw_fragment_constants_size,
               16u * sizeof(float) + 8u * 4u * sizeof(float) +
                   (128u + 8u) * sizeof(u32) + 16u + 16u +
                   8u * 4u * sizeof(float) + 16u * sizeof(u32) +
-                  16u * 4u * sizeof(u32));
+                  16u * 4u * sizeof(u32) + 4u * sizeof(u32));
     const auto& texture2dms = backend.state.last_texture_views[0];
     EXPECT_EQ(texture2dms.dimension,
               graphics::BackendTextureViewDimension::Texture2DMS);

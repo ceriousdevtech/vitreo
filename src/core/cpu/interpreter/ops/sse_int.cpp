@@ -47,11 +47,11 @@ static Result<XmmReg, Error> read_ps(ExecContext& ctx, const Operand& op,
     if (!addr) return Result<XmmReg, Error>::err(addr.error());
     if (aligned_form && op.type == OperandType::Mem128 &&
         (addr.value() & 0xF) != 0) {
-        ctx.exception = CpuException::GeneralProtection;
+        record_misaligned_operand_gp(ctx);
         return Result<XmmReg, Error>::err(Error::InvalidArgument);
     }
     XmmReg tmp{};
-    auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
+    auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
     if (!r) return Result<XmmReg, Error>::err(r.error());
     return Result<XmmReg, Error>::ok(tmp);
 }
@@ -509,7 +509,7 @@ ExecResult exec_sse_int(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto r = read_memory(ctx, addr.value(), 4);
+            auto r = read_memory_av(ctx, addr.value(), 4);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             src = static_cast<u32>(r.value());
         }
@@ -545,7 +545,7 @@ ExecResult exec_sse_int(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto r = read_memory(ctx, addr.value(), 8);
+            auto r = read_memory_av(ctx, addr.value(), 8);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             src = r.value();
         }
@@ -594,7 +594,7 @@ ExecResult exec_sse_int(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto r = read_memory(ctx, addr.value(), 8);
+            auto r = read_memory_av(ctx, addr.value(), 8);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             src = r.value();
         }
@@ -804,7 +804,7 @@ ExecResult exec_sse_int(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto r = read_memory(ctx, addr.value(), 2);
+            auto r = read_memory_av(ctx, addr.value(), 2);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             word = static_cast<u16>(r.value());
         }
@@ -824,7 +824,7 @@ ExecResult exec_sse_int(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto r = read_memory(ctx, addr.value(), 4);
+            auto r = read_memory_av(ctx, addr.value(), 4);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             dword = static_cast<u32>(r.value());
         }
@@ -918,7 +918,7 @@ ExecResult exec_sse_int(ExecContext& ctx, const DecodedInstruction& instr) noexc
         } else {
             auto addr = calc_effective_address(ctx, src_op.mem);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto r = read_memory(ctx, addr.value(), 8);
+            auto r = read_memory_av(ctx, addr.value(), 8);
             if (!r) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             qword = r.value();
         }

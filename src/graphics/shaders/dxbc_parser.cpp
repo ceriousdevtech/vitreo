@@ -4,6 +4,7 @@
 /// @brief DXBC shader bytecode container parser implementation.
 
 #include "dxbc_parser.hpp"
+#include "dxbc_vitreo_ext.hpp"
 #include <vitreo/common.hpp>
 #include <algorithm>
 #include <cctype>
@@ -277,6 +278,8 @@ constexpr u32 kDclUavTyped = 156;
 constexpr u32 kDclUavRaw = 157;
 constexpr u32 kDclUavStructured = 158;
 constexpr u32 kDclResourceRaw = 161;
+/// dxbc_vitreo_ext.hpp kOpDclAccelerationStructure (DXIL lowering only).
+constexpr u32 kDclAccelerationStructure = dxbc_vitreo_ext::kOpDclAccelerationStructure;
 constexpr u32 kDclResourceStructured = 162;
 constexpr u32 kCustomData = 53;
 
@@ -319,7 +322,8 @@ void parse_binding_declarations(DxbcContainer& container) {
             opcode == kDclResource || opcode == kDclConstantBuffer ||
             opcode == kDclSampler || opcode == kDclUavTyped ||
             opcode == kDclUavRaw || opcode == kDclUavStructured ||
-            opcode == kDclResourceRaw || opcode == kDclResourceStructured;
+            opcode == kDclResourceRaw || opcode == kDclResourceStructured ||
+            opcode == kDclAccelerationStructure;
         if (!declaration) {
             at += length;
             continue;
@@ -370,6 +374,7 @@ void parse_binding_declarations(DxbcContainer& container) {
             decl.return_type = next();
             break;
         case kDclResourceRaw:
+        case kDclAccelerationStructure:
             decl.register_class = DxbcRegisterClass::ShaderResource;
             break;
         case kDclResourceStructured:
@@ -533,6 +538,30 @@ DxbcContainer parse_dxbc(const u8* data, usize size) {
         case DxbcChunkType::IFCE:
             parse_ifce_chunk(chunk_data, chunk_size, result.class_linkage);
             result.has_class_linkage = true;
+            break;
+
+        case DxbcChunkType::VXMS:
+            if (chunk_size >= kDxbcMeshStateWords * 4u) {
+                u32 w[kDxbcMeshStateWords];
+                std::memcpy(w, chunk_data, sizeof(w));
+                DxbcMeshState& m = result.mesh;
+                m.kind = w[0];
+                m.threads[0] = w[1];
+                m.threads[1] = w[2];
+                m.threads[2] = w[3];
+                m.topology = w[4];
+                m.max_vertices = w[5];
+                m.max_primitives = w[6];
+                m.payload_bytes = w[7];
+                m.payload_words = w[8];
+                m.groupshared_bytes = w[9];
+                if (w[10] != 0 && w[10] <= (chunk_size / 4u) - kDxbcMeshStateWords) {
+                    m.payload_layout.resize(w[10]);
+                    std::memcpy(m.payload_layout.data(),
+                                static_cast<const u8*>(chunk_data) + kDxbcMeshStateWords * 4u,
+                                w[10] * 4u);
+                }
+            }
             break;
 
         case DxbcChunkType::VSLB: {

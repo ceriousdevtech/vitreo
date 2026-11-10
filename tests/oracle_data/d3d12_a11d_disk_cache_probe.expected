@@ -1,0 +1,93 @@
+disk1 CreateShaderCacheSession(disk, USE_WORKING_DIR): 0x00000000 S_OK out=obj
+disk1 GetDesc: id-same=1 mode=1 flags=0x2 size=1048576 entries=128 file=0 version=1
+# disk1 files after create: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache 4096 bytes
+# disk1 files after create: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache-shm 32768 bytes
+# disk1 files after create: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache-wal 74192 bytes
+disk1 files after create: files=yes
+# disk1 files after create: count=3 bytes=111056
+disk1 FindValue(missing): 0x887a0002 DXGI_ERROR_NOT_FOUND
+disk1 StoreValue(k1): 0x00000000 S_OK
+disk1 StoreValue(k1 again): 0x887a0036 ?
+disk1 StoreValue(k2): 0x00000000 S_OK
+# disk1 files after store: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache 4096 bytes
+# disk1 files after store: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache-shm 32768 bytes
+# disk1 files after store: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache-wal 74192 bytes
+disk1 files after store: files=yes
+# disk1 files after store: count=3 bytes=111056
+disk1 second session: 0x00000000 S_OK out=obj
+disk1 second session FindValue(k1): 0x00000000 S_OK size=10 buf=value-one
+disk1 same id, default location: 0x00000000 S_OK out=obj
+disk1 same id, default location FindValue(k1): 0x00000000 S_OK size=10 buf=value-one
+disk1 Release: 0
+# disk1 files after release: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache 40960 bytes
+disk1 files after release: files=yes
+# disk1 files after release: count=1 bytes=40960
+disk1 end: GetDeviceRemovedReason 0x00000000 S_OK
+disk2 reopen in new process: 0x00000000 S_OK out=obj
+disk2 FindValue(k1): 0x00000000 S_OK size=10 buf=value-one
+disk2 FindValue(k2): 0x00000000 S_OK size=7 buf=second
+disk2 StoreValue(k1 again): 0x887a0036 ?
+disk2 other version, session open: 0x887a0036 ? out=NULL
+disk2 other version, none open: 0x00000000 S_OK out=obj
+disk2 other version FindValue(k1): 0x887a0002 DXGI_ERROR_NOT_FOUND
+disk2 other version StoreValue(k3): 0x00000000 S_OK
+disk2 CreateShaderCacheSession(file size 4096): 0x80070057 E_INVALIDARG out=NULL
+disk2 CreateShaderCacheSession(file size 16384): 0x80070057 E_INVALIDARG out=NULL
+disk2 CreateShaderCacheSession(file size 65536): 0x00000000 S_OK out=obj
+disk2 file size 65536 GetDesc: size=1048576 entries=128 file=65536
+disk2 file size 65536 StoreValue(16384 bytes): 0x00000000 S_OK
+disk2 file size 65536 StoreValue(1000 bytes) until failure: stored-some=1 last=0x887a0034 ?
+# disk2 file size 65536 StoreValue(1000 bytes) until failure: stored=6
+disk2 file size 65536 FindValue(s0000): 0x887a0003 DXGI_ERROR_MORE_DATA
+disk2 file size 65536 after delete FindValue(s0000): 0x887a0002 DXGI_ERROR_NOT_FOUND
+disk2 CreateShaderCacheSession(file size 131072): 0x00000000 S_OK out=obj
+disk2 file size 131072 GetDesc: size=1048576 entries=128 file=131072
+disk2 file size 131072 StoreValue(16384 bytes): 0x00000000 S_OK
+disk2 file size 131072 StoreValue(1000 bytes) until failure: stored-some=1 last=0x887a0034 ?
+# disk2 file size 131072 StoreValue(1000 bytes) until failure: stored=70
+disk2 file size 131072 FindValue(s0000): 0x887a0003 DXGI_ERROR_MORE_DATA
+disk2 file size 131072 after delete FindValue(s0000): 0x887a0002 DXGI_ERROR_NOT_FOUND
+disk2 CreateShaderCacheSession(file size 262144): 0x00000000 S_OK out=obj
+disk2 file size 262144 GetDesc: size=1048576 entries=128 file=262144
+disk2 file size 262144 StoreValue(16384 bytes): 0x00000000 S_OK
+disk2 file size 262144 StoreValue(1000 bytes) until failure: stored-some=1 last=0x887a0034 ?
+# disk2 file size 262144 StoreValue(1000 bytes) until failure: stored=190
+disk2 file size 262144 FindValue(s0000): 0x887a0003 DXGI_ERROR_MORE_DATA
+disk2 file size 262144 after delete FindValue(s0000): 0x887a0002 DXGI_ERROR_NOT_FOUND
+disk2 CreateShaderCacheSession(file size 1048576): 0x00000000 S_OK out=obj
+disk2 file size 1048576 GetDesc: size=1048576 entries=128 file=1048576
+disk2 file size 1048576 StoreValue(16384 bytes): 0x00000000 S_OK
+disk2 file size 1048576 StoreValue(1000 bytes) until failure: stored-some=1 last=0x887a0034 ?
+# disk2 file size 1048576 StoreValue(1000 bytes) until failure: stored=902
+disk2 file size 1048576 FindValue(s0000): 0x887a0003 DXGI_ERROR_MORE_DATA
+disk2 file size 1048576 after delete FindValue(s0000): 0x887a0002 DXGI_ERROR_NOT_FOUND
+# disk2 refused-size leftover: 5E1D7A43-93C0-4B2F-A16D-0C389E512740.dxcache
+# disk2 refused-size leftover: 5E1D7A43-93C0-4B2F-A16D-0C389E512741.dxcache
+# disk2 files after the size sweep: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache 40960 bytes
+disk2 files after the size sweep: files=yes
+# disk2 files after the size sweep: count=1 bytes=40960
+disk2 CreateShaderCacheSession(disk, 16-byte memory): 0x00000000 S_OK out=obj
+disk2 CreateShaderCacheSession(disk, ppv NULL): 0x00000001 S_FALSE
+# disk2 files after the ppv-NULL create: 5E1D7A42-93C0-4B2F-A16D-0C389E5127B4.dxcache 40960 bytes
+disk2 files after the ppv-NULL create: files=yes
+# disk2 files after the ppv-NULL create: count=1 bytes=40960
+disk2 end: GetDeviceRemovedReason 0x00000000 S_OK
+disk3 reopen version 2 in new process: 0x00000000 S_OK out=obj
+disk3 FindValue(k1): 0x887a0002 DXGI_ERROR_NOT_FOUND
+disk3 FindValue(k3): 0x00000000 S_OK size=6 buf=third
+disk3 files after deleting the working-dir cache: files=none
+# disk3 files after deleting the working-dir cache: count=0 bytes=0
+disk3 CreateShaderCacheSession(disk, default location): 0x00000000 S_OK out=obj
+disk3 default location StoreValue: 0x00000000 S_OK
+disk3 working dir after default-location store: files=none
+# disk3 working dir after default-location store: count=0 bytes=0
+disk3 CreateShaderCacheSession(disk, DRIVER_VERSIONED): 0x00000000 S_OK out=obj
+disk3 DRIVER_VERSIONED StoreValue: 0x00000000 S_OK
+# disk3 files with DRIVER_VERSIONED: 5E1D7A45-93C0-4B2F-A16D-0C389E5127B4_VEN_1414&DEV_8C&SUBSYS_0&REV_0.dxcache 4096 bytes
+# disk3 files with DRIVER_VERSIONED: 5E1D7A45-93C0-4B2F-A16D-0C389E5127B4_VEN_1414&DEV_8C&SUBSYS_0&REV_0.dxcache-shm 32768 bytes
+# disk3 files with DRIVER_VERSIONED: 5E1D7A45-93C0-4B2F-A16D-0C389E5127B4_VEN_1414&DEV_8C&SUBSYS_0&REV_0.dxcache-wal 74192 bytes
+disk3 files with DRIVER_VERSIONED: files=yes
+# disk3 files with DRIVER_VERSIONED: count=3 bytes=111056
+disk3 files at end: files=none
+# disk3 files at end: count=0 bytes=0
+disk3 end: GetDeviceRemovedReason 0x00000000 S_OK

@@ -21,6 +21,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <CoreAudio/CoreAudio.h>
+#include <dispatch/dispatch.h>
 
 namespace vitreo::audio {
 namespace {
@@ -44,10 +45,16 @@ class CoreAudioVoice final : public IAudioVoice {
 public:
     CoreAudioVoice(const PcmFormat& format, const u8* ring, u32 ring_bytes)
         : m_format(format), m_ring(ring), m_ring_bytes(ring_bytes),
-          m_playback_rate(format.sample_rate) {}
+          m_playback_rate(format.sample_rate),
+          m_control(dispatch_queue_create("dev.vitreo.audio.voice",
+                                          DISPATCH_QUEUE_SERIAL)) {}
 
     ~CoreAudioVoice() override {
+        // Deferred queue operations capture this voice; let them finish
+        // before the queue and the voice go away.
+        dispatch_sync(m_control, ^{});
         teardown_queue();
+        dispatch_release(m_control);
     }
 
     [[nodiscard]] bool initialize() {
@@ -69,31 +76,27 @@ public:
             }
             return true;
         }
+        // Play changes the buffer's state now (GetStatus reports PLAYING on
+        // return) and never waits for the device: DirectSound mixes
+        // asynchronously. AudioQueueStart, a synchronous Stop and priming all
+        // block for up to an IO cycle, and a game calls Play from its frame
+        // loop for every sound effect, so they run on the voice's serial
+        // control queue in submission order.
+        const u64 gen = ++m_op_gen;
+        AudioQueueRef queue = m_queue;
         if (m_paused) {
             m_playing = true;
             m_paused = false;
             m_have_start_time = false;
-            if (AudioQueueStart(m_queue, nullptr) != noErr) {
-                m_playing = false;
-                m_paused = true;
-                return false;
-            }
-            capture_start_time_locked();
+            dispatch_async(m_control, ^{ deferred_resume(queue, gen); });
             return true;
         }
 
         // A prior Stop drains the committed write-ahead without Reset. Flush
         // that queue before re-priming so the new Play starts at the frozen
         // cursor instead of mixing with the leftover chunks.
-        if (m_flush_before_play && m_queue) {
-            AudioQueueRef queue = m_queue;
-            m_flush_before_play = false;
-            lock.unlock();
-            (void)AudioQueueStop(queue, true);
-            (void)AudioQueueReset(queue);
-            lock.lock();
-            if (m_queue != queue) return false;
-        }
+        const bool flush = m_flush_before_play;
+        m_flush_before_play = false;
 
         // A naturally completed buffer leaves its circular cursor at zero.
         // An explicitly stopped buffer resumes at m_position.
@@ -101,21 +104,27 @@ public:
             m_read_offset = m_position;
             m_remaining = m_ring_bytes - m_position;
         }
-        return prime_and_start_locked();
+        m_playing = true;
+        m_draining = false;
+        m_feed_pending = true;
+        m_have_start_time = false;
+        dispatch_async(m_control, ^{
+            deferred_start(queue, gen, flush, /*prime=*/true);
+        });
+        return true;
     }
 
     void pause() override {
-        std::unique_lock<std::mutex> lock(m_mutex);
+        std::lock_guard<std::mutex> lock(m_mutex);
         if (!m_queue || !m_playing) return;
-        AudioQueueRef queue = m_queue;
-        lock.unlock();
-        const OSStatus result = AudioQueuePause(queue);
-        lock.lock();
-        if (m_queue != queue || result != noErr) return;
         m_position = cursor_locked();
         m_playing = false;
         m_paused = true;
+        m_feed_pending = false;
         m_have_start_time = false;
+        ++m_op_gen;
+        AudioQueueRef queue = m_queue;
+        dispatch_async(m_control, ^{ (void)AudioQueuePause(queue); });
     }
 
     void stop() override {
@@ -132,17 +141,18 @@ public:
         m_playing = false;
         m_paused = false;
         m_draining = false;
+        m_feed_pending = false;
         m_flush_before_play = true;
+        ++m_op_gen;
         AudioQueueRef queue = m_queue;
-        // AudioQueueStop(synchronous) waits for the callback thread, which
-        // takes m_mutex. Release it first or the two deadlock.
         lock.unlock();
         // Play already committed the write-ahead (the play..write span).
         // Immediate stop+reset discards that region, so a static one-shot
         // that Play+Stops in one timeslice is silent. Drain queued buffers
-        // instead; GetStatus is already not PLAYING.
+        // instead; GetStatus is already not PLAYING. Ordered after any
+        // deferred start of this voice on its control queue.
         // https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee418744(v=vs.85)
-        (void)AudioQueueStop(queue, false);
+        dispatch_async(m_control, ^{ (void)AudioQueueStop(queue, false); });
     }
 
     [[nodiscard]] bool is_playing() const override {
@@ -174,24 +184,24 @@ public:
         const bool was_playing = m_playing;
         const bool was_paused = m_paused;
         AudioQueueRef queue = m_queue;
-        if ((was_playing || was_paused) && queue != nullptr) {
-            // SetCurrentPosition takes effect immediately. Discard native
-            // buffers copied from the old play position before re-priming.
-            m_playing = false;
-            m_paused = false;
-            m_draining = false;
-            lock.unlock();
-            (void)AudioQueueStop(queue, true);
-            (void)AudioQueueReset(queue);
-            lock.lock();
-            if (m_queue != queue) return;
-        }
         m_position = position;
         m_read_offset = m_position;
         m_have_start_time = false;
         m_src_phase = 0.0;
         if (!m_looping) m_remaining = m_ring_bytes - m_position;
-        if (was_playing) (void)prime_and_start_locked();
+        if ((was_playing || was_paused) && queue != nullptr) {
+            // SetCurrentPosition takes effect immediately: native buffers
+            // copied from the old play position are discarded (a deferred
+            // synchronous Stop + Reset) and a playing buffer re-primes from
+            // the new one. Paused becomes stopped, as before.
+            m_paused = false;
+            m_draining = false;
+            m_feed_pending = was_playing;
+            const u64 gen = ++m_op_gen;
+            dispatch_async(m_control, ^{
+                deferred_start(queue, gen, /*flush=*/true, /*prime=*/was_playing);
+            });
+        }
     }
 
     void set_volume(i32 hundredth_db) override {
@@ -252,7 +262,7 @@ private:
     [[nodiscard]] u32 cursor_locked() const {
         if (m_ring_bytes == 0) return 0;
         const u32 align = m_format.block_align();
-        if (align == 0 || !m_queue) return m_position;
+        if (align == 0 || !m_queue || m_feed_pending) return m_position;
 
         AudioTimeStamp now{};
         Boolean discontinuity = false;
@@ -295,26 +305,64 @@ private:
         }
     }
 
-    [[nodiscard]] bool prime_and_start_locked() {
-        m_draining = false;
-        m_have_start_time = false;
-        m_src_phase = 0.0;
+    /// Control-queue half of Play / SetCurrentPosition: flush, prime and
+    /// start @p queue without holding m_mutex across the calls that wait for
+    /// the device. @p gen is the operation that requested it; when a later
+    /// Stop/Pause/Play/SetCurrentPosition has superseded it, the queue
+    /// operations still run in order (so a Play+Stop one-shot drains its
+    /// primed write-ahead exactly as before) but the guest-visible state
+    /// belongs to the later operation.
+    void deferred_start(AudioQueueRef queue, u64 gen, bool flush, bool prime) {
+        if (flush) {
+            // A synchronous stop waits for the callback thread, which takes
+            // m_mutex; the mutex is not held here.
+            (void)AudioQueueStop(queue, true);
+            (void)AudioQueueReset(queue);
+        }
+        if (!prime) return;
+
+        std::unique_lock<std::mutex> lock(m_mutex);
+        if (m_queue != queue) return;
+        const bool latest = gen == m_op_gen;
+        if (latest) {
+            m_draining = false;
+            m_have_start_time = false;
+            m_src_phase = 0.0;
+        }
         for (u32 i = 0; i < QUEUE_BUFFERS; ++i) {
             if (!fill_buffer_locked(m_buffers[i])) break;
         }
-        // Set this before AudioQueueStart. The output callback can run as soon
-        // as Start hands the queue to CoreAudio.
-        m_playing = true;
-        if (AudioQueueStart(m_queue, nullptr) != noErr) {
+        // From here the output callback owns refilling (it runs as soon as
+        // Start hands the queue to CoreAudio).
+        if (latest) m_feed_pending = false;
+        lock.unlock();
+
+        const OSStatus started = AudioQueueStart(queue, nullptr);
+
+        lock.lock();
+        if (m_queue != queue || gen != m_op_gen) return;
+        if (started != noErr) {
             VITREO_TRACE("[audio] AudioQueueStart failed\n");
             m_playing = false;
-            return false;
+            return;
         }
         capture_start_time_locked();
         if (!m_looping && m_remaining == 0) {
-            schedule_drain_locked(m_queue);
+            schedule_drain_locked(queue);
         }
-        return true;
+    }
+
+    /// Control-queue half of Play on a paused buffer.
+    void deferred_resume(AudioQueueRef queue, u64 gen) {
+        const OSStatus started = AudioQueueStart(queue, nullptr);
+        std::lock_guard<std::mutex> lock(m_mutex);
+        if (m_queue != queue || gen != m_op_gen) return;
+        if (started != noErr) {
+            m_playing = false;
+            m_paused = true;
+            return;
+        }
+        capture_start_time_locked();
     }
 
     void schedule_drain_locked(AudioQueueRef queue) {
@@ -414,7 +462,9 @@ private:
                                 AudioQueueBufferRef buffer) {
         auto* voice = static_cast<CoreAudioVoice*>(user_data);
         std::lock_guard<std::mutex> lock(voice->m_mutex);
-        if (!voice->m_playing) return;
+        // A deferred start (re)primes from m_read_offset; a late callback of
+        // the queue it is about to flush must not consume the ring first.
+        if (!voice->m_playing || voice->m_feed_pending) return;
         if (!voice->fill_buffer_locked(buffer)) {
             voice->schedule_drain_locked(queue);
         }
@@ -527,6 +577,12 @@ private:
     bool m_looping{false};
     bool m_draining{false};
     bool m_flush_before_play{false};
+    /// A Play / SetCurrentPosition whose prime has not run yet on the
+    /// control queue: the feed and the cursor are still at m_position.
+    bool m_feed_pending{false};
+    /// Bumped by every guest control operation; a deferred operation applies
+    /// guest-visible state only while it is still the latest.
+    u64 m_op_gen{0};
     u32 m_position{0};      ///< play position as of the last start/stop
     u32 m_read_offset{0};   ///< next byte to hand to the device
     u32 m_remaining{0};     ///< bytes left to deliver for a non-looping voice
@@ -538,6 +594,9 @@ private:
 
     mutable bool m_have_start_time{false};
     mutable Float64 m_start_sample_time{0};
+
+    /// Serial queue for the AudioQueue calls that wait for the device.
+    dispatch_queue_t m_control;
 };
 
 /// Push-voice (WASAPI shared mode) host pipeline. Queue buffers are short so

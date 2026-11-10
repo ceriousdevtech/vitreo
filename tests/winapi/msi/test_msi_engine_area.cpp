@@ -15,6 +15,7 @@
 #include "capsule/vfs/host_filesystem.hpp"
 #include "capsule/vfs/vfs.hpp"
 #include "winapi/system/msi/msi_engine.hpp"
+#include "winapi/system/msi/msi_service.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -562,6 +563,38 @@ TEST(MsiexecCommandLineArea, ModesSwitchesAndQuotes) {
     EXPECT_FALSE(bad->invalid.empty());
     EXPECT_EQ(MsiManager{}.run_msiexec("msiexec /i p.msi /bogus"), 1639u);
     EXPECT_EQ(MsiManager{}.run_msiexec("msiexec /i C:\\missing.msi /qn"), 1619u);
+}
+
+TEST(MsiMsiexec, RelativePackageResolvesAgainstLiveCurrentDirectory) {
+    // Learn (Command-Line Options; GetFullPathNameW): `msiexec /i pkg.msi`
+    // names the package relative to the caller's current directory as it is
+    // when msiexec runs -- a self-extracting package extracts pkg.msi,
+    // SetCurrentDirectory's into that folder and runs `msiexec /i pkg.msi`.
+    MsiManager mgr;
+    msi::MachineState machine = msi::default_machine_state(nullptr, L"S-1-5-21-1");
+    std::string cwd = "C:\\Users\\Default\\AppData\\Local\\Temp\\IXP001.TMP";
+    machine.current_directory_source = [&cwd] { return cwd; };
+    mgr.set_machine_state(machine);
+
+    EXPECT_EQ(msi::absolute_package_path(mgr, "pkg.msi"),
+              "C:\\Users\\Default\\AppData\\Local\\Temp\\IXP001.TMP\\pkg.msi");
+    EXPECT_EQ(msi::absolute_package_path(mgr, ".\\sub\\p.msi"),
+              "C:\\Users\\Default\\AppData\\Local\\Temp\\IXP001.TMP\\sub\\p.msi");
+    EXPECT_EQ(msi::absolute_package_path(mgr, "..\\p.msi"),
+              "C:\\Users\\Default\\AppData\\Local\\Temp\\p.msi");
+    EXPECT_EQ(msi::absolute_package_path(mgr, "\\p.msi"), "C:\\p.msi");  // drive root
+    EXPECT_EQ(msi::absolute_package_path(mgr, "D:\\x\\p.msi"), "D:\\x\\p.msi");
+
+    // It follows SetCurrentDirectory: the value is read when used.
+    cwd = "C:\\Temp";
+    EXPECT_EQ(msi::absolute_package_path(mgr, "p.msi"), "C:\\Temp\\p.msi");
+    EXPECT_EQ(mgr.machine_state().current_dir(), "C:\\Temp");
+
+    // An install the service runs for a client keeps the client's directory.
+    machine.current_directory = "C:\\Client";
+    machine.current_directory_source = {};
+    mgr.set_machine_state(machine);
+    EXPECT_EQ(msi::absolute_package_path(mgr, "p.msi"), "C:\\Client\\p.msi");
 }
 
 }  // namespace

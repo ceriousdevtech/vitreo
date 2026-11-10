@@ -25,6 +25,8 @@
 
 #include <utility>
 #include <vector>
+#include <atomic>
+#include <cstdio>
 
 namespace vitreo::winapi {
 
@@ -458,6 +460,23 @@ void add_token_check_exports(DllExports& exports,
         [](Marshaler& m) {
             get_descriptor_principal(m, false);
         }, 12});
+}
+
+// Shutdown is privilege-controlled, but no capsule shutdown service exists.
+// Keep the unsupported boundary explicit rather than accepting the request.
+void add_shutdown_exports(DllExports& exports) {
+    exports.entries.push_back({"InitiateSystemShutdownExW", 0,
+        [](Marshaler& m) {
+            for (usize i = 0; i < 6; ++i) (void)m.arg(i);
+            static std::atomic<bool> logged{false};
+            if (!logged.exchange(true)) {
+                std::fprintf(stderr,
+                    "[vitreo] UNIMPLEMENTED advapi32!InitiateSystemShutdownExW: "
+                    "local and remote capsule shutdown service\n");
+            }
+            set_last_error(error_codes::ERROR_CALL_NOT_IMPLEMENTED);
+            m.set_return(0);
+        }, 24});
 }
 
 } // namespace vitreo::winapi

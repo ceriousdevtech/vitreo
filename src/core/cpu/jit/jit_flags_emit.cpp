@@ -156,6 +156,20 @@ void JitCompiler::emit_clear_cf_overlay() {
     emit(arm64::strh_uoff(31, REG_CPU_STATE, cf_overlay_offset() >> 1));
 }
 
+void JitCompiler::emit_link_miss_flags() {
+    if (!m_link_miss_flags.armed) return;
+    m_omit_lazy_current = false;
+    m_omit_lazy_keep_overlay = false;
+    if (m_link_miss_flags.wide) {
+        emit_set_lazy_flags64(m_link_miss_flags.op, m_link_miss_flags.src,
+                              m_link_miss_flags.dst);
+    } else {
+        emit_set_lazy_flags(m_link_miss_flags.op, m_link_miss_flags.src,
+                            m_link_miss_flags.dst);
+    }
+    m_link_miss_flags.armed = false;
+}
+
 void JitCompiler::emit_set_lazy_flags(CpuState::FlagOp op,
                                        u8 src_arm_reg,
                                        u8 dst_arm_reg) {

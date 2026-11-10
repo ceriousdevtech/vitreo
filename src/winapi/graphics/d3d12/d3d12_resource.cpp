@@ -15,13 +15,45 @@
 #include "winapi/graphics/d3d12/d3d12_internal.hpp"
 #include "winapi/graphics/d3d11/d3d11_format_caps.hpp"
 #include "graphics/contracts/format_converter.hpp"
+#include "graphics/contracts/format_422.hpp"
 #include "core/memory/guest_memory.hpp"
+#include "winapi/kernel32/memory/memory.hpp"
 
 #include <algorithm>
+#include <atomic>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <vector>
+
+#include <unistd.h>
 
 namespace vitreo::winapi::d3d12 {
 namespace {
+
+// Opt-in cache diagnostic, aggregated per replay thread once per second.
+// Measures rebuilding only; the lookup hot path gets no additional timer.
+void report_buffer_span_rebuild(u64 start, usize objects) {
+    if (start == 0) return;
+    struct Stats { u64 since{0}, count{0}, total{0}, maximum{0}; };
+    static thread_local Stats stats;
+    const u64 now = graphics::frame_profile::now_ns();
+    const u64 elapsed = now - start;
+    if (stats.since == 0) stats.since = start;
+    ++stats.count;
+    stats.total += elapsed;
+    stats.maximum = std::max(stats.maximum, elapsed);
+    if (now - stats.since >= 1000000000ull) {
+        std::fprintf(stderr,
+            "[d3d12-span-index] interval=%.3fs rebuilds=%llu rebuild_ms=%.3f max_ms=%.3f objects=%zu\n",
+            static_cast<double>(now - stats.since) / 1e9,
+            static_cast<unsigned long long>(stats.count),
+            static_cast<double>(stats.total) / 1e6,
+            static_cast<double>(stats.maximum) / 1e6, objects);
+        stats = {now, 0, 0, 0};
+    }
+}
 
 constexpr u64 KB64 = 64u * 1024u;
 
@@ -170,11 +202,26 @@ graphics::PixelFormat texture_format_for(u32 dxgi_format, u32 resource_flags) {
             break;
         }
     }
+    // R8G8_B8G8 / G8R8_G8B8: decoded RGBA8 storage (format_422.hpp). D3D12
+    // alone transcodes their uploads, copies and readbacks, so the shared
+    // D3D11 table keeps them storage-less.
+    if (dxgi_format == DXGI_FORMAT_R8G8_B8G8_UNORM) {
+        return graphics::PixelFormat::RGBG422Unorm;
+    }
+    if (dxgi_format == DXGI_FORMAT_G8R8_G8B8_UNORM) {
+        return graphics::PixelFormat::GRGB422Unorm;
+    }
     return d3d11::texture_storage_format(dxgi_format);
 }
 
 FormatBlock format_block_info(u32 dxgi_format) {
     FormatBlock block{};
+    if (dxgi_format == DXGI_FORMAT_R8G8_B8G8_UNORM ||
+        dxgi_format == DXGI_FORMAT_G8R8_G8B8_UNORM) {
+        block.width = 2;  // Learn DXGI_FORMAT: a 32-bit block per pixel pair
+        block.bytes = 4;
+        return block;
+    }
     const graphics::PixelFormat storage =
         d3d11::texture_storage_format(dxgi_format);
     const graphics::FormatInfo info = graphics::format_table(storage);
@@ -352,7 +399,8 @@ bool Frontend::cpu_visible(const HeapProperties& p) const {
 // =============================================================================
 
 std::shared_ptr<Memory> Frontend::allocate_memory(u64 size, bool cpu,
-                                                  bool buffers_only) {
+                                                  bool buffers_only,
+                                                  bool write_watch) {
     if (size == 0) return nullptr;
     graphics::BackendHeapDesc desc{};
     desc.size = round_up(size, KB64);
@@ -395,6 +443,20 @@ std::shared_ptr<Memory> Frontend::allocate_memory(u64 size, bool cpu,
         }
         memory->guest = base;
         memory->guest_size = bytes;
+        if (write_watch) {
+            // Learn (D3D12_HEAP_FLAG_ALLOW_WRITE_WATCH): GetWriteWatch works
+            // on the heap's CPU mapping as on VirtualAlloc(MEM_WRITE_WATCH)
+            // memory (measured, a12 write_watch: 4 KiB granularity, the
+            // written pages, reset). The mapping becomes such an allocation.
+            if (m_vmm == nullptr ||
+                !m_vmm->adopt_mapped_region(base, bytes, true)) {
+                unimplemented("D3D12_HEAP_FLAG_ALLOW_WRITE_WATCH",
+                              "no virtual memory manager to register the "
+                              "heap mapping with");
+                return nullptr;
+            }
+            memory->write_watched = true;
+        }
     }
     // VAs are 64 KiB aligned and never reused, with a 64 KiB gap between
     // allocations so a VA one past a buffer never names the next one.
@@ -404,13 +466,54 @@ std::shared_ptr<Memory> Frontend::allocate_memory(u64 size, bool cpu,
     return memory;
 }
 
+std::shared_ptr<Memory> Frontend::alias_memory(
+    const std::shared_ptr<Memory>& source) {
+    if (!source) return nullptr;
+    std::shared_ptr<Memory> memory(new Memory, [this](Memory* retired) {
+        retire_memory(retired);
+        delete retired;
+    });
+    memory->backend = source->backend;
+    memory->source = source->source ? source->source : source;
+    memory->size = source->size;
+    memory->cpu_visible = source->cpu_visible;
+    memory->guest = source->guest;
+    memory->guest_size = source->guest_size;
+    memory->va = m_next_va;
+    m_next_va += memory->size + KB64;
+    m_va_ranges.emplace(memory->va, memory.get());
+    return memory;
+}
+
 void Frontend::retire_memory(Memory* memory) {
     if (memory == nullptr) return;
     m_va_ranges.erase(memory->va);
-    if (memory->guest != 0 && !m_tearing_down) {
+    // Acceleration structures whose blobs lived in this memory go with it.
+    for (auto it = m_acceleration_structures.lower_bound(memory->va);
+         it != m_acceleration_structures.end() && it->first < memory->va + memory->size;) {
+        it = m_acceleration_structures.erase(it);
+        ++m_rt_generation;
+    }
+    // An alias's guest mapping is its source's.
+    if (memory->guest != 0 && !memory->source && !m_tearing_down &&
+        !memory->external_guest) {
+        if (memory->write_watched && m_vmm != nullptr) {
+            m_vmm->release_adopted_region(memory->guest);
+        }
         (void)m_memory.unmap_region(memory->guest, memory->guest_size);
         memory->guest = 0;
     }
+}
+
+const ReservedVa* Frontend::reserved_span(u64 va) const {
+    auto range = m_reserved_vas.upper_bound(va);
+    if (range == m_reserved_vas.begin()) return nullptr;
+    --range;
+    const ReservedVa* span = range->second;
+    if (span == nullptr || va < span->va || va - span->va >= span->bytes) {
+        return nullptr;
+    }
+    return span;
 }
 
 bool Frontend::resolve_va(u64 va, u64 bytes, graphics::BackendBuffer*& buffer,
@@ -418,27 +521,91 @@ bool Frontend::resolve_va(u64 va, u64 bytes, graphics::BackendBuffer*& buffer,
     buffer = nullptr;
     offset = 0;
     auto range = m_va_ranges.upper_bound(va);
-    if (range == m_va_ranges.begin()) return false;
+    if (range != m_va_ranges.begin()) {
+        --range;
+        const Memory* memory = range->second;
+        if (memory != nullptr && va >= memory->va &&
+            va - memory->va <= memory->size &&
+            bytes <= memory->size - (va - memory->va)) {
+            buffer = memory->backend->buffer();
+            offset = va - memory->va;
+            return buffer != nullptr;
+        }
+    }
+    if (const ReservedVa* span = reserved_span(va);
+        span != nullptr && span->buffer != nullptr &&
+        bytes <= span->bytes - (va - span->va)) {
+        buffer = span->buffer;
+        offset = va - span->va;
+        return true;
+    }
+    return false;
+}
+
+u32 Frontend::buffer_words_from_va(u64 va) const {
+    if (graphics::frame_profile::enabled()) [[unlikely]] {
+        graphics::frame_profile::add(graphics::frame_profile::Counter::RootCbvSizeScans);
+    }
+    if (const ReservedVa* span = reserved_span(va)) {
+        if (va - span->va >= span->resource_bytes) return 0;
+        return static_cast<u32>(std::min<u64>(
+            (span->va + span->resource_bytes - va) / 4u, 0xFFFFFFFFu));
+    }
+    auto range = m_va_ranges.upper_bound(va);
+    if (range == m_va_ranges.begin()) return 0;
     --range;
     const Memory* memory = range->second;
-    if (va < memory->va || va - memory->va > memory->size ||
-        bytes > memory->size - (va - memory->va)) {
-        return false;
+    if (memory == nullptr || va < memory->va ||
+        va - memory->va >= memory->size) {
+        return 0;
     }
-    buffer = memory->backend->buffer();
-    offset = va - memory->va;
-    return buffer != nullptr;
+    // The smallest end of a buffer resource of this memory whose span holds
+    // @p va, else the memory's own end (aliased placements may overlap).
+    const u64 generation = m_next_serial + m_objects_released;
+    if (m_buffer_spans_generation != generation) {
+        static const bool profile = [] {
+            const char* value = std::getenv("VITREO_D3D12_SPAN_PROFILE");
+            return value != nullptr && value[0] != '\0' && value[0] != '0';
+        }();
+        const u64 rebuild_start = profile ? graphics::frame_profile::now_ns() : 0;
+        m_buffer_spans.clear();
+        for (const auto& [address, object] : m_objects) {
+            (void)address;
+            if (object->kind != Kind::Resource) continue;
+            const auto& resource = static_cast<const Resource&>(*object);
+            if (!resource.is_buffer() || !resource.memory) continue;
+            const Memory* owner = resource.memory.get();
+            const u64 start = owner->va + resource.offset;
+            if (resource.desc.width == 0 || start > ~u64{0} - resource.desc.width) {
+                continue;
+            }
+            m_buffer_spans[owner].emplace_back(start, start + resource.desc.width);
+        }
+        m_buffer_spans_generation = generation;
+        report_buffer_span_rebuild(rebuild_start, m_objects.size());
+    }
+    u64 end = memory->va + memory->size;
+    if (const auto spans = m_buffer_spans.find(memory); spans != m_buffer_spans.end()) {
+        for (const auto& [start, resource_end] : spans->second) {
+            if (va >= start && va < resource_end && resource_end < end) end = resource_end;
+        }
+    }
+    return static_cast<u32>(std::min<u64>((end - va) / 4u, 0xFFFFFFFFu));
 }
 
 // =============================================================================
 // ID3D12Heap
 // =============================================================================
 
-void Frontend::create_heap(Marshaler& m, Device& device, bool heap1) {
+void Frontend::create_heap(Marshaler& m, Device& device, int variant) {
     // CreateHeap(const D3D12_HEAP_DESC *pDesc, REFIID riid, void **ppvHeap);
-    // CreateHeap1 inserts ID3D12ProtectedResourceSession *pProtectedSession.
+    // CreateHeap1 inserts ID3D12ProtectedResourceSession *pProtectedSession;
+    // ID3D12CompatibilityDevice::CreateSharedHeap inserts
+    // D3D12_COMPATIBILITY_SHARED_FLAGS CompatibilityFlags there.
+    const bool heap1 = variant == 1;
+    const bool compat = variant == 2;
     const GuestAddr desc = m.arg_ptr(1);
-    const usize riid_index = heap1 ? 3 : 2;
+    const usize riid_index = variant != 0 ? 3 : 2;
     const GuestAddr out = m.arg_ptr(riid_index + 1);
     if (out != 0) (void)write_pointer(out, 0);
     if (heap1 && m.arg_ptr(2) != 0) {
@@ -469,12 +636,22 @@ void Frontend::create_heap(Marshaler& m, Device& device, bool heap1) {
         m.set_return(E_INVALIDARG);
         return;
     }
-    if (u32 error = heap_flags_error(heap->flags, heap->properties, true,
-                                     heap1 ? "ID3D12Device4::CreateHeap1"
-                                           : "ID3D12Device::CreateHeap");
+    const char* api = compat ? "ID3D12CompatibilityDevice::CreateSharedHeap"
+                      : heap1 ? "ID3D12Device4::CreateHeap1"
+                              : "ID3D12Device::CreateHeap";
+    if (u32 error = heap_flags_error(heap->flags, heap->properties, true, api);
         error != S_OK) {
         m.set_return(error);
         return;
+    }
+    if (compat) {
+        heap->compatibility_flags = m.arg32(2);
+        if (u32 error = compatibility_flags_error(heap->compatibility_flags,
+                                                  heap->flags, api);
+            error != S_OK) {
+            m.set_return(error);
+            return;
+        }
     }
     // Measured (a02 heaps "flags=SHARED", "HARDWARE_PROTECTED",
     // "ALLOW_SHADER_ATOMICS"): accepted and reported. A SHARED heap is
@@ -500,13 +677,161 @@ void Frontend::create_heap(Marshaler& m, Device& device, bool heap1) {
         m.set_return(S_FALSE);
         return;
     }
-    heap->memory = allocate_memory(heap->size, cpu, buffers_only);
+    heap->memory = allocate_memory(
+        heap->size, cpu, buffers_only,
+        (heap->flags & D3D12_HEAP_FLAG_ALLOW_WRITE_WATCH) != 0);
     if (!heap->memory) {
         m.set_return(E_OUTOFMEMORY);
         return;
     }
+    heap->memory->upload = heap->properties.type == D3D12_HEAP_TYPE_UPLOAD;
     m.set_return(return_new_object(std::move(heap), m.arg_ptr(riid_index),
                                    out));
+}
+
+void Frontend::open_existing_heap(Marshaler& m, Device& device, bool sized) {
+    // OpenExistingHeapFromAddress(const void *pAddress, REFIID riid,
+    //     void **ppvHeap); OpenExistingHeapFromAddress1(pAddress, SIZE_T size,
+    //     riid, ppvHeap). Measured (a01 misc, a12 existing_heap, WARP and
+    //     NVIDIA): the base of a committed read-write VirtualAlloc region is
+    //     a heap of that region's size -- CUSTOM, WRITE_BACK, L0, flags
+    //     SHARED | SHARED_CROSS_ADAPTER | 0x400 -- whose placed buffers are
+    //     that memory (Map is the address; GPU writes reach it). Any other
+    //     address (inside a region, image data, NULL, read-only, reserved)
+    //     is E_INVALIDARG with *ppv NULL.
+    const char* api = sized ? "ID3D12Device13::OpenExistingHeapFromAddress1"
+                            : "ID3D12Device3::OpenExistingHeapFromAddress";
+    const GuestAddr address = m.arg_ptr(1);
+    const usize riid_index = sized ? 3 : 2;
+    const GuestAddr out = m.arg_ptr(riid_index + 1);
+    if (out != 0) (void)write_pointer(out, 0);
+    VirtualAllocationQuery region{};
+    if (address == 0 || m_vmm == nullptr ||
+        !m_vmm->virtual_query(address, region) ||
+        region.allocation_base != address || region.base_address != address ||
+        region.state != 0x1000 /* MEM_COMMIT */ ||
+        (region.protect & 0xFF) != 0x04 /* PAGE_READWRITE */) {
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    u64 size = region.region_size;
+    if (sized) {
+        const u64 asked = m.arg(2);
+        if (asked == 0 || asked > size) {
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+        size = asked;
+    }
+    open_existing_heap_over(m, device, api, address, size, riid_index, out, {});
+}
+
+void Frontend::open_existing_heap_from_mapping(Marshaler& m, Device& device) {
+    // OpenExistingHeapFromFileMapping(HANDLE hFileMapping, REFIID riid,
+    //     void **ppvHeap). Learn: a heap in system memory, CPU-accessible,
+    //     that "wraps the entire VirtualAlloc region" -- here a read-write
+    //     view of the whole section, which the heap holds until the GPU is
+    //     done with it. Measured (a12 existing_heap, WARP and NVIDIA): a 64
+    //     KiB section is a 65536-byte heap with the FromAddress properties
+    //     (flags 0x421); a handle that is not a section is E_INVALIDARG with
+    //     *ppv NULL.
+    const char* api = "ID3D12Device3::OpenExistingHeapFromFileMapping";
+    const GuestAddr out = m.arg_ptr(3);
+    if (out != 0) (void)write_pointer(out, 0);
+    if (!m_sections.map_whole_view || !m_sections.unmap_view) {
+        unimplemented(api, "no section services");
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    u64 size = 0;
+    const GuestAddr view = m_sections.map_whole_view(m.arg(1), size);
+    if (view == 0 || size == 0) {
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    auto unmap = m_sections.unmap_view;
+    open_existing_heap_over(m, device, api, view, size, 2, out,
+                            [unmap, view] { unmap(view); });
+}
+
+void Frontend::open_existing_heap_over(Marshaler& m, Device& device,
+                                       const char* api, GuestAddr address,
+                                       u64 size, usize riid_index,
+                                       GuestAddr out,
+                                       std::function<void()> release) {
+    // Metal wraps host memory in whole host pages (16 KiB on Apple
+    // silicon). The guest's allocation base is 64 KiB aligned (Windows
+    // allocation granularity), so the host pages that hold a smaller region
+    // lie inside that region's own 64 KiB granule, which no other
+    // allocation can share: the GPU buffer takes them in, the heap and its
+    // placed resources stay the region's size.
+    // The backend may run the release on another thread, and may or may
+    // not have run it when it fails: run it once.
+    std::function<void()> once;
+    if (release) {
+        auto flag = std::make_shared<std::atomic<bool>>(false);
+        once = [flag, release = std::move(release)] {
+            if (!flag->exchange(true)) release();
+        };
+    }
+    const u64 host_page = static_cast<u64>(::getpagesize());
+    const u64 wrapped = round_up(size, host_page);
+    if (address % host_page != 0 || wrapped > round_up(size, KB64)) {
+        unimplemented(api, "a region the host pages cannot wrap");
+        if (once) once();
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    // The guest bytes resolve as one host run; the host pages holding them
+    // are mapped whole (host protection is per host page).
+    Byte* host = m_memory.host_ptr_mut(address, static_cast<usize>(size));
+    if (host != nullptr && reinterpret_cast<uintptr_t>(host) % host_page != 0) {
+        host = nullptr;
+    }
+    graphics::BackendHeapDesc desc{};
+    desc.size = wrapped;
+    desc.cpu_visible = true;
+    desc.buffers_only = true;
+    desc.external_host = host;
+    desc.external_release = once;
+    auto backend = host != nullptr ? m_backend.create_heap(desc) : nullptr;
+    if (!backend || !backend->valid() || backend->buffer() == nullptr) {
+        backend.reset();
+        unimplemented(api, "host memory the GPU cannot wrap");
+        if (once) once();
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    std::shared_ptr<Memory> memory(new Memory, [this](Memory* retired) {
+        retire_memory(retired);
+        delete retired;
+    });
+    memory->size = size;
+    memory->cpu_visible = true;
+    memory->backend = std::move(backend);
+    memory->guest = address;
+    memory->guest_size = static_cast<usize>(size);
+    memory->external_guest = true;
+    memory->va = m_next_va;
+    m_next_va += round_up(size, KB64) + KB64;
+    m_va_ranges.emplace(memory->va, memory.get());
+    auto heap = std::make_unique<Heap>();
+    heap->device = device.address;
+    heap->size = size;
+    heap->alignment = D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT;
+    heap->properties.type = D3D12_HEAP_TYPE_CUSTOM;
+    heap->properties.cpu_page_property = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+    heap->properties.memory_pool_preference = D3D12_MEMORY_POOL_L0;
+    heap->properties.creation_node_mask = 1;
+    heap->properties.visible_node_mask = 1;
+    heap->flags = D3D12_HEAP_FLAG_SHARED | D3D12_HEAP_FLAG_SHARED_CROSS_ADAPTER |
+                  D3D12_HEAP_FLAG_ALLOW_SHADER_ATOMICS;
+    heap->memory = std::move(memory);
+    if (out == 0) {
+        m.set_return(E_POINTER);
+        return;
+    }
+    m.set_return(return_new_object(std::move(heap), m.arg_ptr(riid_index), out));
 }
 
 void Frontend::heap_method(Marshaler& m, Heap& heap, usize slot) {
@@ -561,6 +886,12 @@ u32 Frontend::heap_flags_error(u32 flags, const HeapProperties& props,
         (flags & D3D12_HEAP_FLAG_SHARED) == 0) {
         return E_INVALIDARG;
     }
+    // Measured (a04s resource, WARP and an RTX 4080): a SHARED heap or
+    // committed resource cannot have CPU pages -- UPLOAD, READBACK and a
+    // CUSTOM WRITE_BACK heap are all E_INVALIDARG.
+    if ((flags & D3D12_HEAP_FLAG_SHARED) != 0 && cpu_visible(props)) {
+        return E_INVALIDARG;
+    }
     if (heap_object && (flags & kDenyHeapFlags) == kDenyHeapFlags) {
         return E_INVALIDARG;
     }
@@ -568,13 +899,11 @@ u32 Frontend::heap_flags_error(u32 flags, const HeapProperties& props,
         (flags & (kDenyHeapFlags | D3D12_HEAP_FLAG_ALLOW_SHADER_ATOMICS)) != 0) {
         return E_INVALIDARG;
     }
-    if ((flags & D3D12_HEAP_FLAG_ALLOW_WRITE_WATCH) != 0) {
-        if (!cpu_visible(props)) return E_INVALIDARG;
-        // GetWriteWatch tracks VirtualAlloc(MEM_WRITE_WATCH) regions; the
-        // persistent mapping of a heap is not one, so a write-watched heap
-        // would report no writes.
-        unimplemented(api, "D3D12_HEAP_FLAG_ALLOW_WRITE_WATCH (GetWriteWatch "
-                           "over a heap mapping)");
+    if ((flags & D3D12_HEAP_FLAG_ALLOW_WRITE_WATCH) != 0 &&
+        !cpu_visible(props)) {
+        // Measured (a12 write_watch): DEFAULT and CUSTOM NOT_AVAILABLE are
+        // E_INVALIDARG; UPLOAD, READBACK, CUSTOM WRITE_BACK / WRITE_COMBINE
+        // are taken (allocate_memory registers the mapping).
         return E_INVALIDARG;
     }
     return S_OK;
@@ -589,6 +918,8 @@ u32 Frontend::validate_resource_desc(ResourceDescription& d,
     // RAYTRACING_ACCELERATION_STRUCTURE is an ordinary buffer whose GetDesc
     // no longer names the flag.
     if (is_buffer) {
+        d.acceleration_structure =
+            (d.flags & D3D12_RESOURCE_FLAG_RAYTRACING_ACCELERATION_STRUCTURE) != 0;
         d.flags &= ~D3D12_RESOURCE_FLAG_RAYTRACING_ACCELERATION_STRUCTURE;
     }
     if (const char* rule = resource_desc_violation(to_layout_desc(d), layout());
@@ -695,14 +1026,71 @@ u32 Frontend::validate_resource_desc(ResourceDescription& d,
                 ? d.depth_or_array_size
                 : 1u);
         if (d.mip_levels > full) {
-            unimplemented(api, "MipLevels beyond the full mip chain");
+            // Windows accepts it: up to D3D12_REQ_MIP_LEVELS (15), the levels
+            // past the chain are 1x1 (d3d12_a41_format_sweep_probe [create]
+            // mips, WARP and RTX 4080: 4x4 with 4..15 levels S_OK, GetDesc
+            // keeps the count). A Metal texture's levels stop at the full
+            // chain, so those extra levels have no storage here.
+            unimplemented(api, "MipLevels past the full mip chain (Windows "
+                               "makes the extra levels 1x1; Metal has no "
+                               "storage for them)");
             return E_INVALIDARG;
         }
-        if (texture_format_for(d.format, d.flags) ==
+        // A feedback map's storage is a buffer (create_feedback_map).
+        if (!is_feedback_format(d.format) &&
+            texture_format_for(d.format, d.flags) ==
             graphics::PixelFormat::Unknown) {
-            unimplemented(api, "a DXGI format with no backend storage");
+            // Windows makes these (d3d12_a41_format_sweep_probe [create]:
+            // R32G32B32_* 5-8, R8G8_B8G8 / G8R8_G8B8 68-69, A4B4G4R4 191
+            // and others); the backend has no texture storage for them.
+            const std::string what =
+                "a texture of DXGI format " + std::to_string(d.format) +
+                ", which has no backend storage";
+            unimplemented(api, what.c_str());
             return E_INVALIDARG;
         }
+    }
+    return S_OK;
+}
+
+u32 Frontend::layout_creation_error(const ResourceDescription& desc,
+                                    u32 initial_layout, u32 count,
+                                    GuestAddr formats, const char* api) {
+    if (const char* why = initial_layout_violation(desc, initial_layout)) {
+        d3d12_diag("%s: %s", api, why);
+        return E_INVALIDARG;
+    }
+    if (count == 0 || formats == 0) return S_OK;
+    CastableFormats castable;
+    castable.formats.reserve(count);
+    for (u32 i = 0; i < count; ++i) {
+        castable.formats.push_back(read_u32(formats + static_cast<u64>(i) * 4));
+    }
+    // A typeless resource can already be viewed as any member of its family,
+    // so a list of such members asks for nothing new (Learn, "Format
+    // casting"). Anything else is Relaxed Format Casting: measured on WARP
+    // (a07 enhanced_create), same-size formats of other families pass and
+    // another element size or a buffer fails -- the
+    // GetResourceAllocationInfo3 rule. A device without
+    // RelaxedFormatCastingSupported cannot view the resource that way, so
+    // the description is not created.
+    bool family_only = desc.dimension != D3D12_RESOURCE_DIMENSION_BUFFER &&
+                       texture_is_typeless(desc.format);
+    for (const u32 f : castable.formats) {
+        if (f == DXGI_FORMAT_UNKNOWN || !same_cast_family(f, desc.format)) {
+            family_only = false;
+        }
+    }
+    if (family_only) return S_OK;
+    if (desc.dimension != D3D12_RESOURCE_DIMENSION_BUFFER &&
+        !layout().relaxed_format_casting) {
+        unimplemented(api, "castable formats outside the resource's family "
+                           "(RelaxedFormatCastingSupported FALSE)");
+        return E_INVALIDARG;
+    }
+    if (!castable_formats_ok(to_layout_desc(desc), castable, layout())) {
+        d3d12_diag("%s: a castable format the resource cannot be cast to", api);
+        return E_INVALIDARG;
     }
     return S_OK;
 }
@@ -763,6 +1151,34 @@ u32 Frontend::create_resource_backend(Resource& resource,
     return resource.texture ? S_OK : E_OUTOFMEMORY;
 }
 
+u32 Frontend::create_feedback_map(Resource& resource,
+                                  std::shared_ptr<Memory> memory, u64 offset) {
+    namespace fb = graphics::sampler_feedback;
+    const ResourceDescription& d = resource.desc;
+    resource.feedback_map = true;
+    resource.feedback = fb::geometry(static_cast<u32>(d.width), d.height,
+                                     d.mip_levels, d.depth_or_array_size,
+                                     d.mip_region[0], d.mip_region[1]);
+    const u64 bytes = resource.feedback.total_words() * 4u;
+    if (!memory) {
+        memory = allocate_memory(bytes, false, false);
+        if (!memory) return E_OUTOFMEMORY;
+        offset = 0;
+    } else if (offset + bytes > memory->size) {
+        return E_INVALIDARG;
+    }
+    resource.memory = std::move(memory);
+    resource.offset = offset;
+    std::vector<u32> words(static_cast<usize>(resource.feedback.total_words()), 0u);
+    fb::write_header(resource.feedback, d.format, words.data());
+    graphics::BackendBuffer* buffer = resource.buffer();
+    if (buffer == nullptr ||
+        !buffer->update(static_cast<usize>(offset), words.data(), words.size() * 4u)) {
+        return E_OUTOFMEMORY;
+    }
+    return S_OK;
+}
+
 void Frontend::create_committed_resource(Marshaler& m, Device& device,
                                          int variant) {
     // variant 0: CreateCommittedResource(pHeapProperties, HeapFlags, pDesc,
@@ -774,27 +1190,50 @@ void Frontend::create_committed_resource(Marshaler& m, Device& device,
     // variant 3: CreateCommittedResource3(props, flags, DESC1*, InitialLayout,
     //     clear, pProtectedSession, NumCastableFormats, pCastableFormats,
     //     riid, ppv)
+    // variant 4: ID3D12CompatibilityDevice::CreateSharedResource(props, flags,
+    //     DESC*, state, clear, const D3D11_RESOURCE_FLAGS *pFlags11,
+    //     CompatibilityFlags, pLifetimeTracker, pOwningSwapchain, riid, ppv)
     const GuestAddr props_address = m.arg_ptr(1);
     const u32 heap_flags = m.arg32(2);
     const GuestAddr desc_address = m.arg_ptr(3);
     const u32 initial_state = m.arg32(4);
     const usize session_index = 6;
-    const usize riid_index = variant == 0 ? 6 : variant == 3 ? 9 : 7;
+    const usize riid_index = variant == 0   ? 6
+                             : variant == 3 ? 9
+                             : variant == 4 ? 10
+                                            : 7;
     const GuestAddr out = m.arg_ptr(riid_index + 1);
     if (out != 0) (void)write_pointer(out, 0);
     const char* api = variant == 0   ? "ID3D12Device::CreateCommittedResource"
                       : variant == 1 ? "ID3D12Device4::CreateCommittedResource1"
                       : variant == 2 ? "ID3D12Device8::CreateCommittedResource2"
-                                     : "ID3D12Device10::CreateCommittedResource3";
-    if (variant == 3) {
-        unimplemented(api, "enhanced-barrier initial layouts");
-        m.set_return(E_INVALIDARG);
-        return;
-    }
-    if (variant != 0 && m.arg_ptr(session_index) != 0) {
+                      : variant == 3 ? "ID3D12Device10::CreateCommittedResource3"
+                                     : "ID3D12CompatibilityDevice::CreateSharedResource";
+    if (variant != 0 && variant != 4 && m.arg_ptr(session_index) != 0) {
         unimplemented(api, "protected resource sessions");
         m.set_return(E_INVALIDARG);
         return;
+    }
+    if (variant == 4) {
+        if (u32 error = compatibility_flags_error(m.arg32(7), heap_flags, api);
+            error != S_OK) {
+            m.set_return(error);
+            return;
+        }
+        if (m.arg_ptr(6) != 0) {
+            // D3D11_RESOURCE_FLAGS make the resource a D3D11 one as well
+            // (bind, misc and CPU-access rules of D3D11): no D3D11 view of
+            // a D3D12 resource exists here. Windows refuses the measured
+            // case too (a01d compat: tex2d + BIND_SHADER_RESOURCE).
+            unimplemented(api, "pFlags11 (D3D11 resource flags)");
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+        if (m.arg_ptr(8) != 0 || m.arg_ptr(9) != 0) {
+            unimplemented(api, "lifetime tracker / owning swap chain");
+            m.set_return(E_NOTIMPL);
+            return;
+        }
     }
     HeapProperties props{};
     ResourceDescription desc{};
@@ -807,11 +1246,21 @@ void Frontend::create_committed_resource(Marshaler& m, Device& device,
         m.set_return(E_INVALIDARG);
         return;
     }
+    // Variant 3 takes an InitialLayout where the others take a state: the
+    // state rules give way to the layout rules (layout_creation_error).
     if (u32 error = validate_resource_desc(desc, props, initial_state,
-                                           m.arg_ptr(5), true, api);
+                                           m.arg_ptr(5), variant != 3, api);
         error != S_OK) {
         m.set_return(error);
         return;
+    }
+    if (variant == 3) {
+        if (u32 error = layout_creation_error(desc, initial_state, m.arg32(7),
+                                              m.arg_ptr(8), api);
+            error != S_OK) {
+            m.set_return(error);
+            return;
+        }
     }
     if (u32 error = heap_flags_error(heap_flags, props, false, api);
         error != S_OK) {
@@ -833,6 +1282,17 @@ void Frontend::create_committed_resource(Marshaler& m, Device& device,
                              ? D3D12_DEFAULT_MSAA_RESOURCE_PLACEMENT_ALIGNMENT
                              : D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT;
     }
+    if (desc.dimension == D3D12_RESOURCE_DIMENSION_BUFFER &&
+        device.next_allocation_va != 0) {
+        // Measured (a01d tools): with ID3D12DeviceTools::
+        // SetNextAllocationAddress pending, committed buffers are refused on
+        // WARP and NVIDIA alike, whatever the address.
+        d3d12_diag("%s: next allocation address 0x%llx pending -> "
+                   "E_INVALIDARG",
+                   api, static_cast<unsigned long long>(device.next_allocation_va));
+        m.set_return(E_INVALIDARG);
+        return;
+    }
     if (out == 0) {
         m.set_return(S_FALSE);
         return;
@@ -841,6 +1301,7 @@ void Frontend::create_committed_resource(Marshaler& m, Device& device,
     resource->device = device.address;
     resource->desc = desc;
     resource->committed = true;
+    if (variant == 4) resource->compatibility_flags = m.arg32(7);
     resource->heap_properties = props;
     if (resource->heap_properties.creation_node_mask == 0) {
         resource->heap_properties.creation_node_mask = 1;
@@ -859,15 +1320,25 @@ void Frontend::create_committed_resource(Marshaler& m, Device& device,
                               D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL)) != 0
                    ? D3D12_HEAP_FLAG_ALLOW_ONLY_RT_DS_TEXTURES
                    : D3D12_HEAP_FLAG_ALLOW_ONLY_NON_RT_DS_TEXTURES);
-    resource->initial_state = initial_state;
+    // (Variant 3's argument is a layout, not a state.)
+    resource->initial_state = variant == 3 ? D3D12_RESOURCE_STATE_COMMON
+                                           : initial_state;
     const bool cpu = cpu_visible(props);
     if (desc.dimension == D3D12_RESOURCE_DIMENSION_BUFFER) {
-        resource->memory = allocate_memory(desc.width, cpu, true);
+        resource->memory = allocate_memory(
+            desc.width, cpu, true,
+            (heap_flags & D3D12_HEAP_FLAG_ALLOW_WRITE_WATCH) != 0);
         if (!resource->memory) {
             m.set_return(E_OUTOFMEMORY);
             return;
         }
+        resource->memory->upload = props.type == D3D12_HEAP_TYPE_UPLOAD;
         resource->offset = 0;
+    } else if (is_feedback_format(desc.format)) {
+        if (u32 error = create_feedback_map(*resource, nullptr, 0); error != S_OK) {
+            m.set_return(error);
+            return;
+        }
     } else if (u32 error = create_resource_backend(*resource, nullptr, 0, cpu);
                error != S_OK) {
         m.set_return(error);
@@ -893,26 +1364,42 @@ void Frontend::create_placed_resource(Marshaler& m, Device& device,
     const usize riid_index = variant == 2 ? next + 5 : next + 3;
     const GuestAddr out = m.arg_ptr(riid_index + 1);
     if (out != 0) (void)write_pointer(out, 0);
-    if (variant == 2) {
-        unimplemented("ID3D12Device10::CreatePlacedResource2",
-                      "enhanced-barrier initial layouts");
-        m.set_return(E_INVALIDARG);
-        return;
-    }
     Heap* heap = find<Heap>(heap_address, Kind::Heap);
     ResourceDescription desc{};
     if (heap == nullptr || !read_resource_desc(desc_address, variant >= 1, desc)) {
         m.set_return(E_INVALIDARG);
         return;
     }
-    const char* api = variant == 0 ? "ID3D12Device::CreatePlacedResource"
-                                   : "ID3D12Device8::CreatePlacedResource1";
-    if (u32 error = validate_resource_desc(desc, heap->properties,
-                                           initial_state, m.arg_ptr(next + 2),
-                                           false, api);
-        error != S_OK) {
+    const char* api = variant == 0   ? "ID3D12Device::CreatePlacedResource"
+                      : variant == 1 ? "ID3D12Device8::CreatePlacedResource1"
+                                     : "ID3D12Device10::CreatePlacedResource2";
+    // An existing heap (OpenExistingHeapFromAddress) is SHARED_CROSS_ADAPTER:
+    // measured (a12 existing_heap), its buffers must be
+    // ALLOW_CROSS_ADAPTER -- a plain buffer is E_INVALIDARG -- and such a
+    // buffer is then an ordinary buffer over that memory.
+    const bool existing = heap->memory && heap->memory->external_guest;
+    const bool cross = (desc.flags & D3D12_RESOURCE_FLAG_ALLOW_CROSS_ADAPTER) != 0;
+    if (existing && (desc.dimension != D3D12_RESOURCE_DIMENSION_BUFFER || !cross)) {
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    if (existing) desc.flags &= ~D3D12_RESOURCE_FLAG_ALLOW_CROSS_ADAPTER;
+    const u32 validated = validate_resource_desc(desc, heap->properties,
+                                                 initial_state,
+                                                 m.arg_ptr(next + 2), false, api);
+    if (existing) desc.flags |= D3D12_RESOURCE_FLAG_ALLOW_CROSS_ADAPTER;
+    if (u32 error = validated; error != S_OK) {
         m.set_return(error);
         return;
+    }
+    if (variant == 2) {
+        if (u32 error = layout_creation_error(desc, initial_state,
+                                              m.arg32(next + 3),
+                                              m.arg_ptr(next + 4), api);
+            error != S_OK) {
+            m.set_return(error);
+            return;
+        }
     }
     if (desc.dimension != D3D12_RESOURCE_DIMENSION_BUFFER &&
         desc.mip_levels == 0) {
@@ -946,7 +1433,22 @@ void Frontend::create_placed_resource(Marshaler& m, Device& device,
                         : D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT;
     }
     u64 size = round_up(desc.width, KB64);
-    if (!is_buffer) {
+    u64 backend_offset = heap_offset;
+    const bool feedback = is_feedback_format(desc.format);
+    if (feedback) {
+        // Opaque storage in the heap's memory (create_feedback_map), in
+        // the texture category the heap must allow.
+        if (heap->memory->cpu_visible ||
+            (heap->flags & D3D12_HEAP_FLAG_ALLOW_ONLY_BUFFERS) ==
+                D3D12_HEAP_FLAG_ALLOW_ONLY_BUFFERS) {
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+        const auto g = graphics::sampler_feedback::geometry(
+            static_cast<u32>(desc.width), desc.height, desc.mip_levels,
+            desc.depth_or_array_size, desc.mip_region[0], desc.mip_region[1]);
+        size = round_up(g.total_words() * 4u, KB64);
+    } else if (!is_buffer) {
         if (heap->memory->cpu_visible) {
             unimplemented("ID3D12Device::CreatePlacedResource",
                           "textures in CPU-visible heaps");
@@ -970,13 +1472,22 @@ void Frontend::create_placed_resource(Marshaler& m, Device& device,
             m.set_return(E_INVALIDARG);
             return;
         }
-        if (backend_alignment > alignment) {
-            unimplemented("ID3D12Device::CreatePlacedResource",
-                          "backend placement alignment above D3D12's");
+        if (backend_alignment > alignment &&
+            alignment <= D3D12_SMALL_RESOURCE_PLACEMENT_ALIGNMENT) {
+            // GetResourceAllocationInfo answered "not small" for this
+            // description (texture_allocation); it cannot be placed at 4 KiB.
             m.set_return(E_INVALIDARG);
             return;
         }
-        size = round_up(backend_size, alignment);
+        // A Metal alignment above D3D12's is met inside the same slack
+        // range GetResourceAllocationInfo sized (texture_placement_size):
+        // the texture goes at the next backend-aligned offset in it.
+        size = texture_placement_size(backend_size, backend_alignment, alignment);
+        backend_offset = placed_backend_offset(heap_offset, backend_alignment);
+        if (size == 0) {
+            m.set_return(E_INVALIDARG);
+            return;
+        }
     }
     if (heap_offset % alignment != 0 || heap_offset >= heap->size ||
         size > heap->size - heap_offset) {
@@ -1000,12 +1511,19 @@ void Frontend::create_placed_resource(Marshaler& m, Device& device,
     resource->heap_object = heap->address;
     resource->heap_properties = heap->properties;
     resource->heap_flags = heap->flags;
-    resource->initial_state = initial_state;
+    resource->initial_state = variant == 2 ? D3D12_RESOURCE_STATE_COMMON
+                                           : initial_state;
     resource->memory = heap->memory;
     resource->offset = heap_offset;
-    if (!is_buffer) {
+    if (feedback) {
+        if (u32 error = create_feedback_map(*resource, heap->memory, heap_offset);
+            error != S_OK) {
+            m.set_return(error);
+            return;
+        }
+    } else if (!is_buffer) {
         if (u32 error = create_resource_backend(
-                *resource, heap->memory->backend.get(), heap_offset, false);
+                *resource, heap->memory->backend.get(), backend_offset, false);
             error != S_OK) {
             m.set_return(error);
             return;
@@ -1015,21 +1533,300 @@ void Frontend::create_placed_resource(Marshaler& m, Device& device,
                                    out));
 }
 
+bool Frontend::build_reserved_tiles(Resource& resource, const char* api) {
+    auto tiles = std::make_unique<ReservedTiles>();
+    const ResourceDescription& desc = resource.desc;
+    if (resource.is_buffer()) {
+        tiles->buffer = true;
+        tiles->tile_width = static_cast<u32>(KB64);
+        tiles->tile_height = 1;
+        tiles->mip_levels = 1;
+        tiles->array_size = 1;
+        tiles->standard_mips = 1;
+        const u64 count = (desc.width + KB64 - 1) / KB64;
+        if (count == 0 || count > 0xFFFFFFFEull) return false;
+        tiles->tiles_per_slice = static_cast<u32>(count);
+        tiles->total_tiles = tiles->tiles_per_slice;
+        tiles->mip_first = {0};
+        tiles->mip_tiles_x = {tiles->total_tiles};
+        tiles->mip_tiles_y = {1};
+        resource.tiles = std::move(tiles);
+        return true;
+    }
+    graphics::BackendTiledLayout layout{};
+    if (resource.texture == nullptr ||
+        !m_backend.tiled_texture_layout(resource.texture.get(), layout) ||
+        layout.tile_width == 0 || layout.tile_height == 0) {
+        unimplemented(api, "backend tiled layout");
+        return false;
+    }
+    tiles->tile_width = layout.tile_width;
+    tiles->tile_height = layout.tile_height;
+    tiles->mip_levels = std::max(1u, desc.mip_levels);
+    tiles->array_size = std::max(1u, desc.depth_or_array_size);
+    tiles->standard_mips = std::min(layout.first_packed_level, tiles->mip_levels);
+    tiles->packed_tiles = tiles->standard_mips < tiles->mip_levels
+                              ? layout.packed_tiles
+                              : 0u;
+    // Learn D3D12_TILED_RESOURCES_TIER_2: a mip at least one standard tile in
+    // every dimension is never packed (D3D11.3 5.9.2.8.5), which also gives
+    // tier 1's whole-multiple rule. The tile shape is the standard one (the
+    // format's TILED support compares them). A backend that packs such a mip
+    // cannot honour the reported tier.
+    for (u32 mip = tiles->standard_mips; mip < tiles->mip_levels; ++mip) {
+        const u64 w = std::max<u64>(1, desc.width >> mip);
+        const u32 h = std::max(1u, desc.height >> mip);
+        if (w >= tiles->tile_width && h >= tiles->tile_height) {
+            unimplemented(api, "backend packs a mip of at least one standard tile");
+            return false;
+        }
+    }
+    // Tiers 1-3: an array's mips are whole tiles, never a packed tail (the
+    // create rule above refuses the rest; tier 4 lifts it, D3D12 Tiled
+    // Resource Tier 4 spec).
+    if (tiles->array_size > 1 && tiles->packed_tiles != 0) {
+        unimplemented(api, "tiled array whose backend packs mips");
+        return false;
+    }
+    u64 first = 0;
+    for (u32 mip = 0; mip < tiles->standard_mips; ++mip) {
+        const u32 w = static_cast<u32>(std::max<u64>(1, desc.width >> mip));
+        const u32 h = std::max(1u, desc.height >> mip);
+        const u32 tx = (w + tiles->tile_width - 1) / tiles->tile_width;
+        const u32 ty = (h + tiles->tile_height - 1) / tiles->tile_height;
+        tiles->mip_first.push_back(static_cast<u32>(first));
+        tiles->mip_tiles_x.push_back(tx);
+        tiles->mip_tiles_y.push_back(ty);
+        first += static_cast<u64>(tx) * ty;
+    }
+    first += tiles->packed_tiles;
+    const u64 total = first * tiles->array_size;
+    if (first == 0 || total > 0xFFFFFFFEull) return false;
+    tiles->tiles_per_slice = static_cast<u32>(first);
+    tiles->total_tiles = static_cast<u32>(total);
+    resource.tiles = std::move(tiles);
+    return true;
+}
+
+void Frontend::assign_reserved_va(Resource& resource) {
+    // The VA is 64 KiB-aligned (m_next_va is) and covers every tile, with
+    // the same gap allocate_memory leaves so a VA one past this buffer does
+    // not name the next allocation. Measured (a02 reserved
+    // GetGPUVirtualAddress): nonzero and 64 KiB-aligned.
+    const u64 bytes = round_up(std::max<u64>(resource.desc.width, 1), KB64);
+    auto span = std::shared_ptr<ReservedVa>(new ReservedVa, [this](ReservedVa* retired) {
+        if (retired->va != 0) m_reserved_vas.erase(retired->va);
+        delete retired;
+    });
+    span->va = m_next_va;
+    span->bytes = bytes;
+    span->resource_bytes = resource.desc.width;
+    span->buffer = resource.tiled_buffer.get();
+    if (resource.tiles) span->resident = resource.tiles->resident;
+    m_next_va += bytes + KB64;
+    m_reserved_vas.emplace(span->va, span.get());
+    resource.reserved_va = std::move(span);
+}
+
+std::shared_ptr<graphics::BackendTilePool> Frontend::heap_tile_pool(Heap& heap) {
+    if (heap.tile_pool) return heap.tile_pool;
+    auto created = m_backend.create_tile_pool();
+    if (!created) return nullptr;
+    heap.tile_count = heap.size / KB64;
+    created->set_size(heap.tile_count);
+    heap.tile_pool = std::move(created);
+    return heap.tile_pool;
+}
+
 void Frontend::create_reserved_resource(Marshaler& m, Device& device,
                                         int variant) {
     // CreateReservedResource(pDesc, InitialState, pOptimizedClearValue, riid,
-    //     ppvResource); CreateReservedResource1 adds pProtectedSession;
-    //     CreateReservedResource2 takes a layout and castable formats.
-    (void)device;
+    //     ppvResource). CreateReservedResource1 adds pProtectedSession.
+    // CreateReservedResource2 takes a barrier layout and castable formats.
+    // Learn: virtual address space only, every tile NULL until
+    // UpdateTileMappings. ppvResource null is S_FALSE when the description
+    // is valid (capability test) and creates nothing.
+    const char* api = variant == 0 ? "ID3D12Device::CreateReservedResource"
+                      : variant == 1 ? "ID3D12Device4::CreateReservedResource1"
+                                     : "ID3D12Device10::CreateReservedResource2";
     const usize out_index = variant == 0 ? 5 : variant == 1 ? 6 : 8;
     const GuestAddr out = m.arg_ptr(out_index);
     if (out != 0) (void)write_pointer(out, 0);
-    // Reserved (tiled) resources are reported as
-    // D3D12_TILED_RESOURCES_TIER_NOT_SUPPORTED (caps pass); Learn: creating
-    // one on such a device fails.
-    unimplemented("ID3D12Device::CreateReservedResource",
-                  "tiled resources (tier NOT_SUPPORTED)");
-    m.set_return(E_INVALIDARG);
+    if (!m_backend.supports_tiled_resources()) {
+        // D3D12_TILED_RESOURCES_TIER_NOT_SUPPORTED: CreateReservedResource
+        // cannot be used, not even for buffers.
+        unimplemented(api, "tiled resources (tier NOT_SUPPORTED)");
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    // CreateReservedResource2(pDesc, InitialLayout, pOptimizedClearValue,
+    //     pProtectedSession, NumCastableFormats, pCastableFormats, riid, ppv).
+    if (variant != 0 && m.arg_ptr(4) != 0) {
+        unimplemented(api, "protected resource sessions");
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    ResourceDescription desc{};
+    if (!read_resource_desc(m.arg_ptr(1), false, desc)) {
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    const u32 initial_state = m.arg32(2);
+    const GuestAddr clear = m.arg_ptr(3);
+    // Reserved resources live in GPU memory. The committed state and clear
+    // rules apply; there is no upload or readback heap to check. Variant 2
+    // takes a layout instead of a state.
+    HeapProperties props{};
+    props.type = D3D12_HEAP_TYPE_DEFAULT;
+    if (u32 error = validate_resource_desc(desc, props, initial_state, clear,
+                                           variant != 2, api);
+        error != S_OK) {
+        m.set_return(error);
+        return;
+    }
+    if (variant == 2) {
+        if (u32 error = layout_creation_error(desc, initial_state, m.arg32(5),
+                                              m.arg_ptr(6), api);
+            error != S_OK) {
+            m.set_return(error);
+            return;
+        }
+    }
+    const bool is_buffer = desc.dimension == D3D12_RESOURCE_DIMENSION_BUFFER;
+    if (!is_buffer) {
+        // Learn D3D12_TEXTURE_LAYOUT_64KB_UNDEFINED_SWIZZLE: this is the
+        // layout CreateReservedResource requires. Measured (a02 reserved):
+        // UNKNOWN, ROW_MAJOR and 64KB_STANDARD_SWIZZLE are E_INVALIDARG;
+        // Texture1D is E_INVALIDARG.
+        if (desc.layout != D3D12_TEXTURE_LAYOUT_64KB_UNDEFINED_SWIZZLE ||
+            desc.dimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D) {
+            if (desc.dimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D &&
+                desc.layout == D3D12_TEXTURE_LAYOUT_64KB_UNDEFINED_SWIZZLE) {
+                // Tier 3. a02's 3D reserved create succeeds on WARP (tier 3).
+                unimplemented(api, "volume tiled resources (tiled resources tier 3)");
+            }
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+        const auto& formats = caps().formats;
+        const u32 samples = std::max(1u, desc.sample_count);
+        const bool shape_ok =
+            samples == 1
+                ? desc.format < formats.tiled_format.size() &&
+                      formats.tiled_format[desc.format]
+                : samples == 4 && desc.format < formats.tiled_format_4x.size() &&
+                      formats.tiled_format_4x[desc.format];
+        if (!shape_ok) {
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+        if (desc.mip_levels == 0) {
+            desc.mip_levels = full_mip_count(desc.width, desc.height, 1u);
+        }
+        // Tier 1: an array only when every mip is a whole number of standard
+        // tiles (D3D11.3 "Tiled resources with any mipmaps not a multiple of
+        // standard tile size ... are not allowed to have an array size
+        // larger than 1"; measured d3d11_tiled_probe [create]).
+        if (desc.depth_or_array_size > 1) {
+            u32 tile_w = 0;
+            u32 tile_h = 0;
+            if (!d3d11::standard_tile_shape(desc.format, samples, tile_w,
+                                            tile_h) ||
+                tile_w == 0 || tile_h == 0) {
+                m.set_return(E_INVALIDARG);
+                return;
+            }
+            for (u32 mip = 0; mip < desc.mip_levels; ++mip) {
+                const u32 w = static_cast<u32>(std::max<u64>(1, desc.width >> mip));
+                const u32 h = std::max(1u, desc.height >> mip);
+                if (w % tile_w != 0 || h % tile_h != 0) {
+                    m.set_return(E_INVALIDARG);
+                    return;
+                }
+            }
+        }
+    }
+    // Measured (a02 reserved, including the 4x RT): alignment 0 is reported
+    // back as 64 KiB, not the 4 MiB MSAA placement alignment.
+    if (desc.alignment == 0) {
+        desc.alignment = D3D12_DEFAULT_RESOURCE_PLACEMENT_ALIGNMENT;
+    }
+    if (out == 0) {
+        m.set_return(S_FALSE);
+        return;
+    }
+    auto resource = std::make_unique<Resource>();
+    resource->device = device.address;
+    resource->desc = desc;
+    resource->reserved = true;
+    resource->initial_state = variant == 2 ? D3D12_RESOURCE_STATE_COMMON : initial_state;
+    if (is_buffer) {
+        if (desc.width > static_cast<u64>(static_cast<usize>(-1))) {
+            m.set_return(E_OUTOFMEMORY);
+            return;
+        }
+        graphics::BackendBufferDesc backend_desc{};
+        backend_desc.byte_width = static_cast<usize>(desc.width);
+        backend_desc.tiled = true;
+        backend_desc.shader_resource =
+            (desc.flags & D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCE) == 0;
+        backend_desc.unordered_access =
+            (desc.flags & D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS) != 0;
+        resource->tiled_buffer = m_backend.create_buffer(backend_desc, nullptr);
+        if (!resource->tiled_buffer || !resource->tiled_buffer->valid()) {
+            // Measured (a02 "reserved buffer 64 GiB"): E_OUTOFMEMORY, no
+            // object. A sparse buffer the backend cannot address fails the
+            // same way.
+            m.set_return(E_OUTOFMEMORY);
+            return;
+        }
+        if (!build_reserved_tiles(*resource, api)) {
+            m.set_return(E_OUTOFMEMORY);
+            return;
+        }
+        assign_reserved_va(*resource);
+    } else {
+        resource->pixel_format = texture_format_for(desc.format, desc.flags);
+        graphics::BackendTexture2DDesc backend_desc{};
+        backend_desc.width = static_cast<unsigned>(desc.width);
+        backend_desc.height = desc.height;
+        backend_desc.mip_levels = desc.mip_levels;
+        backend_desc.array_size = desc.depth_or_array_size;
+        backend_desc.pixel_format = resource->pixel_format;
+        backend_desc.pixel_format_view = texture_is_typeless(desc.format);
+        backend_desc.shader_resource =
+            (desc.flags & D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCE) == 0;
+        backend_desc.render_target =
+            (desc.flags & D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET) != 0;
+        backend_desc.depth_stencil =
+            (desc.flags & D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL) != 0;
+        backend_desc.unordered_access =
+            (desc.flags & D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS) != 0;
+        backend_desc.sample_count = std::max(1u, desc.sample_count);
+        backend_desc.tiled = true;
+        // Tier 2: shaders read the tiles' residency (the status forms), so
+        // the backend keeps the texture's residency companion.
+        const bool tier2 = caps().tiled_resources_tier >= 2u;
+        backend_desc.residency_companion = tier2;
+        resource->texture = m_backend.create_texture_2d(backend_desc, nullptr, 0);
+        if (!resource->texture || !resource->texture->valid()) {
+            m.set_return(E_OUTOFMEMORY);
+            return;
+        }
+        if (tier2 && !resource->texture->has_residency_companion()) {
+            // The reported tier promises the status of every reserved
+            // texture the device creates.
+            unimplemented(api, "a residency companion for this format's tiles");
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+        if (!build_reserved_tiles(*resource, api)) {
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+    }
+    m.set_return(return_new_object(std::move(resource), m.arg_ptr(out_index - 1),
+                                   out));
 }
 
 // =============================================================================
@@ -1042,6 +1839,13 @@ void Frontend::resource_method(Marshaler& m, Resource& resource, usize slot) {
         // Map(UINT Subresource, const D3D12_RANGE *pReadRange, void **ppData).
         const u32 subresource = m.arg32(1);
         const GuestAddr data_out = m.arg_ptr(3);
+        // Measured (a02 reserved Map): E_INVALIDARG and *ppData NULL.
+        // A DEFAULT buffer's Map leaves *ppData untouched (a02 default_map).
+        if (resource.reserved) {
+            if (data_out != 0) (void)write_pointer(data_out, 0);
+            m.set_return(E_INVALIDARG);
+            return;
+        }
         const bool cpu = resource.memory ? resource.memory->cpu_visible
                                          : cpu_visible(resource.heap_properties);
         // Measured: Map of a DEFAULT buffer is E_INVALIDARG and leaves
@@ -1164,6 +1968,338 @@ namespace {
             format <= DXGI_FORMAT_BC7_UNORM_SRGB);
 }
 
+/// Depth-stencil families CopyTextureRegion splits into planes (DXGI
+/// R32G8X24 is 19-22, R24G8 is 44-47).
+[[nodiscard]] bool depth_stencil_planes(u32 format) {
+    return (format >= DXGI_FORMAT_R32G8X24_TYPELESS &&
+            format <= DXGI_FORMAT_X32_TYPELESS_G8X24_UINT) ||
+           (format >= DXGI_FORMAT_R24G8_TYPELESS &&
+            format <= DXGI_FORMAT_X24_TYPELESS_G8_UINT);
+}
+
+[[nodiscard]] bool d24_depth_plane(u32 format) {
+    return format >= DXGI_FORMAT_R24G8_TYPELESS &&
+           format <= DXGI_FORMAT_X24_TYPELESS_G8_UINT;
+}
+
+/// DXGI depth plane -> the backend's float32 depth. D24 is UNORM24 in the
+/// low 24 bits (measured, a05 clear "D24S8": 0.5 -> 0x800000, nearest
+/// even). D32 is the float bits unchanged. Same rule as CopyTextureRegion.
+void depth_to_backend(u32 format, const u8* dxgi, u8* backend) {
+    u32 stored = 0;
+    std::memcpy(&stored, dxgi, 4);
+    float depth = 0.0f;
+    if (d24_depth_plane(format)) {
+        depth = static_cast<float>(stored & 0xFFFFFFu) / 16777215.0f;
+    } else {
+        std::memcpy(&depth, &stored, 4);
+    }
+    std::memcpy(backend, &depth, 4);
+}
+
+void depth_from_backend(u32 format, const u8* backend, u8* dxgi) {
+    float depth = 0.0f;
+    std::memcpy(&depth, backend, 4);
+    u32 stored = 0;
+    if (d24_depth_plane(format)) {
+        const float scaled = std::clamp(depth, 0.0f, 1.0f) * 16777215.0f;
+        stored = static_cast<u32>(std::nearbyint(scaled));
+    } else {
+        std::memcpy(&stored, &depth, 4);
+    }
+    std::memcpy(dxgi, &stored, 4);
+}
+
+struct PlaneWindow {
+    u32 left{0};
+    u32 top{0};
+    u32 width{0};
+    u32 height{0};
+};
+
+enum class WindowStatus { Ok, Empty, Invalid };
+
+/// A 2D plane's box. An empty box copies nothing (Learn). A box that does
+/// not fit the plane is invalid. One slice deep: the array index is the
+/// subresource, not D3D12_BOX::front.
+[[nodiscard]] WindowStatus resolve_plane_window(GuestMemory& memory,
+                                                GuestAddr box, u32 level_w,
+                                                u32 level_h, PlaneWindow& out) {
+    out = {};
+    out.width = level_w;
+    out.height = level_h;
+    if (box == 0) return WindowStatus::Ok;
+    const auto ru = [&](u32 offset) -> u32 {
+        const auto value = memory.read_u32(box + offset);
+        return value.is_ok() ? value.value() : 0u;
+    };
+    const u32 left = ru(0);
+    const u32 top = ru(4);
+    const u32 front = ru(8);
+    const u32 right = ru(12);
+    const u32 bottom = ru(16);
+    const u32 back = ru(20);
+    if (right <= left || bottom <= top || back <= front) return WindowStatus::Empty;
+    if (front != 0 || back != 1 || right > level_w || bottom > level_h) {
+        return WindowStatus::Invalid;
+    }
+    out.left = left;
+    out.top = top;
+    out.width = right - left;
+    out.height = bottom - top;
+    return WindowStatus::Ok;
+}
+
+void refuse_plane(Marshaler& m, const char* api, const char* what) {
+    unimplemented(api, what);
+    m.set_return(E_INVALIDARG);
+}
+
+void finish_recorded_gpu(graphics::GraphicsBackendDevice& backend) {
+    graphics::frame_profile::WaitScope profile_wait("resource:finish-recorded-gpu");
+    if (auto completion = backend.flush_completion()) {
+        (void)completion->wait();
+    } else {
+        (void)backend.wait_idle();
+    }
+}
+
+/// Depth or stencil of a combined depth-stencil texture. The backend
+/// replaces one plane (update_depth_stencil_plane); a combined upload
+/// would clobber the other.
+void copy_depth_stencil_cpu(graphics::GraphicsBackendDevice& backend,
+                            GuestMemory& memory, Marshaler& m,
+                            Resource& resource, bool write, const char* api,
+                            GuestAddr data, GuestAddr box, u32 row_pitch,
+                            u32 mip, u32 slice, u32 plane) {
+    if (resource.texture == nullptr || plane > 1 ||
+        resource.desc.dimension == D3D12_RESOURCE_DIMENSION_TEXTURE3D) {
+        refuse_plane(m, api, "a depth-stencil plane the backend cannot address");
+        return;
+    }
+    const bool stencil = plane == 1;
+    const u32 texel = stencil ? 1u : 4u;
+    const ResourceDescription& d = resource.desc;
+    const u32 level_w = static_cast<u32>(std::max<u64>(1, d.width >> mip));
+    const u32 level_h =
+        d.dimension == D3D12_RESOURCE_DIMENSION_TEXTURE1D
+            ? 1u
+            : std::max(1u, d.height >> mip);
+    PlaneWindow window;
+    switch (resolve_plane_window(memory, box, level_w, level_h, window)) {
+    case WindowStatus::Empty:
+        m.set_return(S_OK);
+        return;
+    case WindowStatus::Invalid:
+        m.set_return(E_INVALIDARG);
+        return;
+    case WindowStatus::Ok:
+        break;
+    }
+    const usize row_bytes = static_cast<usize>(window.width) * texel;
+    if (row_pitch < row_bytes) {
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    const usize level_row = static_cast<usize>(level_w) * texel;
+    std::vector<u8> level(level_row * level_h);
+    const bool covers = window.left == 0 && window.top == 0 &&
+                        window.width == level_w && window.height == level_h;
+    // The plane read/write is whole (readback_ / update_depth_stencil_plane).
+    // A box copies through a CPU read-modify-write of this plane only.
+    finish_recorded_gpu(backend);
+    if (!write || !covers) {
+        if (!resource.texture->readback_depth_stencil_plane(
+                mip, slice, stencil, level.data(),
+                static_cast<unsigned>(level_row))) {
+            refuse_plane(m, api, stencil ? "a stencil plane the backend cannot read"
+                                         : "a depth plane the backend cannot read");
+            return;
+        }
+    }
+    if (!write) {
+        for (u32 y = 0; y < window.height; ++y) {
+            std::vector<u8> row(row_bytes);
+            for (u32 x = 0; x < window.width; ++x) {
+                const u8* from = level.data() +
+                                 ((static_cast<usize>(window.top + y) * level_w) +
+                                  window.left + x) *
+                                     texel;
+                u8* to = row.data() + static_cast<usize>(x) * texel;
+                if (stencil) {
+                    *to = *from;
+                } else {
+                    depth_from_backend(d.format, from, to);
+                }
+            }
+            if (memory
+                    .write_bytes(data + static_cast<u64>(y) * row_pitch, row.data(),
+                                 row_bytes)
+                    .is_err()) {
+                m.set_return(E_INVALIDARG);
+                return;
+            }
+        }
+        m.set_return(S_OK);
+        return;
+    }
+    std::vector<u8> tight(row_bytes * window.height);
+    for (u32 y = 0; y < window.height; ++y) {
+        if (memory
+                .read_bytes(data + static_cast<u64>(y) * row_pitch,
+                            tight.data() + static_cast<usize>(y) * row_bytes,
+                            row_bytes)
+                .is_err()) {
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+    }
+    for (u32 y = 0; y < window.height; ++y) {
+        for (u32 x = 0; x < window.width; ++x) {
+            const u8* from = tight.data() + (static_cast<usize>(y) * window.width + x) * texel;
+            u8* to = level.data() +
+                     ((static_cast<usize>(window.top + y) * level_w) + window.left + x) *
+                         texel;
+            if (stencil) {
+                *to = *from;
+            } else {
+                depth_to_backend(d.format, from, to);
+            }
+        }
+    }
+    if (!resource.texture->update_depth_stencil_plane(
+            mip, slice, stencil, level.data(), static_cast<unsigned>(level_row))) {
+        refuse_plane(m, api, stencil ? "a stencil plane the backend cannot write"
+                                     : "a depth plane the backend cannot write");
+        return;
+    }
+    m.set_return(S_OK);
+}
+
+/// One plane of NV12 / P010 / P016. Plane 0 is the full-size luma image
+/// (Learn DXGI_FORMAT: Y as R8 or R16). Plane 1 is the half-size chroma
+/// texture view_plane returns (R8G8 / R16G16). The planar texture's own
+/// upload writes both planes, so luma goes through luma_plane(), which
+/// addresses the Y texture alone. A format that cannot be split stays
+/// refused.
+void copy_planar_cpu(GuestMemory& memory, Marshaler& m, Resource& resource,
+                     bool write, const char* api, GuestAddr data, GuestAddr box,
+                     u32 row_pitch, u32 mip, u32 slice, u32 plane) {
+    const char* missing = plane == 0 ? "a planar luma plane"
+                                     : "a chroma plane the backend cannot address";
+    if (resource.texture == nullptr || plane > 1 ||
+        !graphics::is_planar_format(resource.texture->desc().pixel_format)) {
+        refuse_plane(m, api, missing);
+        return;
+    }
+    graphics::BackendTexture2D* image = nullptr;
+    if (plane == 0) {
+        image = resource.texture->luma_plane();
+    } else {
+        image = resource.texture->view_plane(graphics::planar_chroma_format(
+            resource.texture->desc().pixel_format));
+    }
+    const u32 element =
+        image == nullptr ? 0u
+                         : graphics::format_table(image->desc().pixel_format)
+                               .bytes_per_pixel;
+    // view_plane returns the parent for a format that is not chroma, and
+    // that parent's upload writes both planes. luma_plane() is null when
+    // the backend cannot split them. Either one stays refused.
+    if (image == nullptr || image == resource.texture.get() || element == 0) {
+        refuse_plane(m, api, missing);
+        return;
+    }
+    const u32 level_w = std::max(1u, image->desc().width >> mip);
+    const u32 level_h = std::max(1u, image->desc().height >> mip);
+    PlaneWindow window;
+    switch (resolve_plane_window(memory, box, level_w, level_h, window)) {
+    case WindowStatus::Empty:
+        m.set_return(S_OK);
+        return;
+    case WindowStatus::Invalid:
+        m.set_return(E_INVALIDARG);
+        return;
+    case WindowStatus::Ok:
+        break;
+    }
+    const usize row_bytes = static_cast<usize>(window.width) * element;
+    if (row_pitch < row_bytes) {
+        m.set_return(E_INVALIDARG);
+        return;
+    }
+    if (write) {
+        std::vector<u8> tight(row_bytes * window.height);
+        for (u32 y = 0; y < window.height; ++y) {
+            if (memory
+                    .read_bytes(data + static_cast<u64>(y) * row_pitch,
+                                tight.data() + static_cast<usize>(y) * row_bytes,
+                                row_bytes)
+                    .is_err()) {
+                m.set_return(E_INVALIDARG);
+                return;
+            }
+        }
+        if (!image->update_region(mip, slice, tight.data(),
+                                  static_cast<unsigned>(row_bytes), window.left,
+                                  window.top, window.width, window.height)) {
+            refuse_plane(m, api,
+                         plane == 0 ? "a planar luma plane the backend cannot write"
+                                    : "a chroma plane the backend cannot write");
+            return;
+        }
+        m.set_return(S_OK);
+        return;
+    }
+    const usize level_row = static_cast<usize>(level_w) * element;
+    std::vector<u8> level(level_row * level_h);
+    if (!image->readback_slice(mip, slice, level.data(),
+                               static_cast<unsigned>(level_row))) {
+        refuse_plane(m, api,
+                     plane == 0 ? "a planar luma plane the backend cannot read"
+                                : "a chroma plane the backend cannot read");
+        return;
+    }
+    const usize first = static_cast<usize>(window.left) * element;
+    for (u32 y = 0; y < window.height; ++y) {
+        if (memory
+                .write_bytes(data + static_cast<u64>(y) * row_pitch,
+                             level.data() +
+                                 (static_cast<usize>(window.top + y) * level_row) +
+                                 first,
+                             row_bytes)
+                .is_err()) {
+            m.set_return(E_INVALIDARG);
+            return;
+        }
+    }
+    m.set_return(S_OK);
+}
+
+/// True when this call was answered (success or a loud refusal).
+[[nodiscard]] bool copy_addressable_plane(graphics::GraphicsBackendDevice& backend,
+                                          GuestMemory& memory, Marshaler& m,
+                                          Resource& resource, bool write,
+                                          const char* api, GuestAddr data,
+                                          GuestAddr box, u32 row_pitch, u32 mip,
+                                          u32 slice, u32 plane) {
+    if (depth_stencil_planes(resource.desc.format)) {
+        copy_depth_stencil_cpu(backend, memory, m, resource, write, api, data,
+                               box, row_pitch, mip, slice, plane);
+        return true;
+    }
+    const graphics::PixelFormat storage =
+        resource.texture != nullptr ? resource.texture->desc().pixel_format
+                                    : resource.pixel_format;
+    if (graphics::is_planar_format(storage) ||
+        graphics::is_planar_format(resource.pixel_format)) {
+        copy_planar_cpu(memory, m, resource, write, api, data, box, row_pitch,
+                        mip, slice, plane);
+        return true;
+    }
+    return false;
+}
+
 }  // namespace
 
 void Frontend::cpu_subresource_copy(Marshaler& m, Resource& resource,
@@ -1191,15 +2327,33 @@ void Frontend::cpu_subresource_copy(Marshaler& m, Resource& resource,
     }
     const ResourceDescription& d = resource.desc;
     const u32 mips = std::max(1u, d.mip_levels);
+    const u32 slices = std::max(1u, resource.array_size());
+    // Learn (Subresources): MipSlice + ArraySlice * MipLevels +
+    // PlaneSlice * MipLevels * ArraySize. The same split CopyTextureRegion uses.
     const u32 mip = subresource % mips;
-    const u32 slice = (subresource / mips) % std::max(1u, resource.array_size());
+    const u32 slice = (subresource / mips) % slices;
+    const u32 plane = subresource / (mips * slices);
     if (plane_count(d.format) != 1) {
-        unimplemented(api, "multi-plane (depth-stencil / video) formats");
-        m.set_return(E_INVALIDARG);
+        // Depth, stencil, and each plane of NV12/P010/P016 go through the
+        // plane read/write. Anything the backend cannot split stays refused.
+        if (!copy_addressable_plane(m_backend, m_memory, m, resource, write, api,
+                                    data, box_address, row_pitch, mip, slice,
+                                    plane)) {
+            unimplemented(api, "multi-plane (depth-stencil / video) formats");
+            m.set_return(E_INVALIDARG);
+        }
         return;
     }
     const u32 element = format_element_bytes(d.format);
     const bool bc = block_compressed(d.format);
+    // R8G8_B8G8 / G8R8_G8B8: 2x1 blocks of 4 bytes, held as decoded RGBA8
+    // texels (graphics::format_422.hpp); the guest side is blocks.
+    const graphics::PixelFormat pair_storage =
+        resource.texture != nullptr ? resource.texture->desc().pixel_format
+        : resource.texture3d != nullptr
+            ? resource.texture3d->desc().pixel_format
+            : graphics::PixelFormat::Unknown;
+    const bool pair = graphics::is_422_storage(pair_storage);
     if (element == 0) {
         unimplemented(api, "a format with no element size");
         m.set_return(E_INVALIDARG);
@@ -1229,7 +2383,9 @@ void Frontend::cpu_subresource_copy(Marshaler& m, Resource& resource,
         if (right > level_w || bottom > level_h || back > level_d ||
             (bc && ((left % 4) != 0 || (top % 4) != 0 ||
                     ((right % 4) != 0 && right != level_w) ||
-                    ((bottom % 4) != 0 && bottom != level_h)))) {
+                    ((bottom % 4) != 0 && bottom != level_h))) ||
+            (pair && ((left % 2) != 0 ||
+                      ((right % 2) != 0 && right != level_w)))) {
             m.set_return(E_INVALIDARG);
             return;
         }
@@ -1239,7 +2395,13 @@ void Frontend::cpu_subresource_copy(Marshaler& m, Resource& resource,
     const u32 depth = back - front;
     const u32 rows = bc ? (height + 3) / 4 : height;
     const usize row_bytes =
-        static_cast<usize>(bc ? (width + 3) / 4 : width) * element;
+        static_cast<usize>(bc     ? (width + 3) / 4
+                           : pair ? (width + 1) / 2
+                                  : width) *
+        element;
+    // The storage rows of a decoded 4:2:2 box: one RGBA8 texel per pixel.
+    const usize texel_row_bytes = static_cast<usize>(width) * 4u;
+    std::vector<u8> texels(pair ? texel_row_bytes * height : 0u);
     if (row_pitch < row_bytes ||
         (depth > 1 && depth_pitch < static_cast<u64>(row_pitch) * (rows - 1) +
                                         row_bytes)) {
@@ -1260,17 +2422,26 @@ void Frontend::cpu_subresource_copy(Marshaler& m, Resource& resource,
                     return;
                 }
             }
+            const u8* upload = staging.data();
+            usize upload_row = row_bytes;
+            if (pair) {
+                graphics::decode_422_rows(pair_storage, staging.data(),
+                                          row_bytes, texels.data(),
+                                          texel_row_bytes, width, rows);
+                upload = texels.data();
+                upload_row = texel_row_bytes;
+            }
             const bool ok =
                 volume ? resource.texture3d != nullptr &&
                              resource.texture3d->update_region(
-                                 mip, staging.data(),
-                                 static_cast<unsigned>(row_bytes),
-                                 static_cast<unsigned>(row_bytes * rows), left,
+                                 mip, upload,
+                                 static_cast<unsigned>(upload_row),
+                                 static_cast<unsigned>(upload_row * rows), left,
                                  top, front + z, width, height, 1)
                        : resource.texture != nullptr &&
                              resource.texture->update_region(
-                                 mip, slice, staging.data(),
-                                 static_cast<unsigned>(row_bytes), left, top,
+                                 mip, slice, upload,
+                                 static_cast<unsigned>(upload_row), left, top,
                                  width, height);
             if (!ok) {
                 unimplemented(api, "a texture the backend cannot write");
@@ -1284,10 +2455,13 @@ void Frontend::cpu_subresource_copy(Marshaler& m, Resource& resource,
     // Read: the whole level slice, then the box out of it.
     const u32 level_rows = bc ? (level_h + 3) / 4 : level_h;
     const usize level_row_bytes =
-        static_cast<usize>(bc ? (level_w + 3) / 4 : level_w) * element;
+        pair ? static_cast<usize>(level_w) * 4u
+             : static_cast<usize>(bc ? (level_w + 3) / 4 : level_w) * element;
     std::vector<u8> level(level_row_bytes * level_rows);
     const u32 first_row = bc ? top / 4 : top;
-    const usize first_byte = static_cast<usize>(bc ? left / 4 : left) * element;
+    const usize first_byte =
+        pair ? static_cast<usize>(left) * 4u
+             : static_cast<usize>(bc ? left / 4 : left) * element;
     for (u32 z = 0; z < depth; ++z) {
         const bool ok =
             volume ? resource.texture3d != nullptr &&
@@ -1304,13 +2478,17 @@ void Frontend::cpu_subresource_copy(Marshaler& m, Resource& resource,
             return;
         }
         for (u32 y = 0; y < rows; ++y) {
+            const u8* row = level.data() + (first_row + y) * level_row_bytes +
+                            first_byte;
+            if (pair) {
+                graphics::encode_422_rows(pair_storage, row, level_row_bytes,
+                                          staging.data(), row_bytes, width, 1);
+                row = staging.data();
+            }
             if (m_memory
                     .write_bytes(data + static_cast<u64>(z) * depth_pitch +
                                      static_cast<u64>(y) * row_pitch,
-                                 level.data() +
-                                     (first_row + y) * level_row_bytes +
-                                     first_byte,
-                                 row_bytes)
+                                 row, row_bytes)
                     .is_err()) {
                 m.set_return(E_INVALIDARG);
                 return;

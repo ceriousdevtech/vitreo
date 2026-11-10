@@ -239,6 +239,7 @@ VoidResult CocoaBridge::create_window(HWND hwnd, const WindowData& data) {
         NativeWindowState state;
         state.hwnd        = hwnd;
         state.visible     = data.visible;
+        state.requested_minimized = data.minimized;
         state.is_dialog   = data.is_dialog;
         state.guest_style = data.style;
         state.guest_ex_style = data.ex_style;
@@ -374,12 +375,8 @@ void CocoaBridge::destroy_window(HWND hwnd) {
             }
             const HWND owner = it->second.owner;
             m_windows.erase(it);
-            if (owner != NULL_HWND) {
-                auto oit = m_windows.find(owner);
-                if (oit != m_windows.end()) {
-                    sync_native_window_visibility(oit->second);
-                }
-            }
+            (void)refresh_cursor_clip_state();
+            if (owner != NULL_HWND) owned_visibility_changed(owner, false, true);
             return;
         }
 
@@ -437,6 +434,7 @@ void CocoaBridge::destroy_window(HWND hwnd) {
             }
         }
         m_control_state.erase(hwnd);
+        m_control_colors.erase(hwnd);
         m_control_order.erase(hwnd);
         m_tab_order.erase(hwnd);
         m_pending_static_mnemonic.erase(hwnd);
@@ -465,6 +463,7 @@ void CocoaBridge::destroy_window(HWND hwnd) {
                 }
             }
             m_control_state.erase(child_hwnd);
+            m_control_colors.erase(child_hwnd);
             m_control_order.erase(child_hwnd);
             m_tab_order.erase(child_hwnd);
             m_pending_static_mnemonic.erase(child_hwnd);

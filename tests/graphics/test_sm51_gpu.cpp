@@ -15,7 +15,9 @@
 #include "graphics/metal/metal_device.hpp"
 #include "graphics/shaders/dxbc_parser.hpp"
 #include "graphics/shaders/dxbc_to_spirv.hpp"
+#include "graphics/shaders/shader_types.hpp"
 #include "graphics/shaders/spirv_to_msl.hpp"
+#include "graphics/shaders/sampler_features.hpp"
 
 #include "../oracle_data/d3d12_sm51/d3d12_sm51_shaders.h"
 
@@ -138,7 +140,6 @@ TEST(Sm51Gpu, EveryCorpusShaderCompilesToMetal) {
     std::vector<std::pair<std::string, std::string>> fragments;
     for (const auto& blob : kSm51Blobs) {
         const std::string name = blob.name;
-        if (name == "ps_rov") continue;
         const auto c = parse_dxbc(blob.code, blob.size);
         ASSERT_TRUE(c.valid()) << name;
         const PackedLayout layout = packed_layout(c);
@@ -149,9 +150,20 @@ TEST(Sm51Gpu, EveryCorpusShaderCompilesToMetal) {
         options.emulate_tessellation =
             c.stage == ShaderStage::Hull || c.stage == ShaderStage::Domain;
         options.domain_to_compute = c.stage == ShaderStage::Domain;
+        // ps_rov: an array of RasterizerOrderedTexture2D, ordered by Metal
+        // raster order group 0 (the D3D12 frontend's ROVsSupported path).
+        options.rasterizer_ordered_views = true;
         const auto spirv = translate_dxbc_to_spirv(c, options);
         ASSERT_TRUE(spirv.valid()) << name << ": " << spirv.failure;
         auto msl_options = table_options(layout.slots);
+        for (const auto& binding : spirv.bindings) {
+            if (binding.declaration.rasterizer_ordered) {
+                msl_options.raster_ordered_bindings.emplace_back(
+                    binding.descriptor_set, binding.binding);
+            }
+        }
+        EXPECT_EQ(msl_options.raster_ordered_bindings.empty(), name != "ps_rov")
+            << name;
         if (spirv.uses_typed_uav_atomics) {
             // As the frontends raise it (d3d11_pipeline.cpp): an atomic on a
             // storage image -- here an element of an array -- is native from
@@ -169,6 +181,9 @@ TEST(Sm51Gpu, EveryCorpusShaderCompilesToMetal) {
             spirv.spirv.data(), spirv.spirv.size(), spirv.stage, msl_options);
         ASSERT_TRUE(msl.valid()) << name;
         const std::string text = msl.msl_text();
+        EXPECT_EQ(text.find("raster_order_group(0)") != std::string::npos,
+                  name == "ps_rov")
+            << name << "\n" << text;
         if (spirv.stage == ShaderStage::Vertex) {
             vertex_msl = text;
             continue;
@@ -186,20 +201,140 @@ TEST(Sm51Gpu, EveryCorpusShaderCompilesToMetal) {
         EXPECT_TRUE(pipeline && pipeline->valid()) << name << "\n" << text;
     }
     ASSERT_FALSE(vertex_msl.empty());
-    ASSERT_EQ(fragments.size(), 2u);  // ps_arrays, ps_ops
+    ASSERT_EQ(fragments.size(), 3u);  // ps_arrays, ps_rov, ps_ops
+    // ps_rov reads `nointerpolation uint id : ID` (user(locn1)), which
+    // vs_arrays does not write: link it with a vertex function that does.
+    const std::string rov_vertex_msl =
+        "#include <metal_stdlib>\nusing namespace metal;\n"
+        "struct VOut { float4 pos [[position]]; uint4 id [[user(locn1)]]; };\n"
+        "vertex VOut main0(uint vid [[vertex_id]]) {\n"
+        "    VOut o; o.pos = float4(0.0, 0.0, 0.0, 1.0); o.id = uint4(vid);\n"
+        "    return o;\n}\n";
     for (const auto& [name, fragment_msl] : fragments) {
         BackendPipelineDesc desc{};
-        desc.vertex_shader_msl = vertex_msl;
+        desc.vertex_shader_msl = name == "ps_rov" ? rov_vertex_msl : vertex_msl;
         desc.fragment_shader_msl = fragment_msl;
         desc.vertex_entry_point = "main0";
         desc.fragment_entry_point = "main0";
         desc.color_format = PixelFormat::RGBA8Unorm;
-        desc.cache_key = std::hash<std::string>{}(vertex_msl + fragment_msl);
+        desc.cache_key =
+            std::hash<std::string>{}(desc.vertex_shader_msl + fragment_msl);
         auto pipeline = device.create_pipeline(desc);
         EXPECT_TRUE(pipeline && pipeline->valid())
-            << name << "\n--- vertex ---\n" << vertex_msl
+            << name << "\n--- vertex ---\n" << desc.vertex_shader_msl
             << "\n--- fragment ---\n" << fragment_msl;
     }
+}
+
+// Resource binding tiers 2 and 3: EVERY unbounded t#, u# and b# array of
+// each corpus shader read as a descriptor-heap window (DxbcTranslationOptions::
+// heap_window) -- texu[] (Texture2D), rb[] (ByteAddressBuffer), depth[]
+// (Texture2D<float>), the UAV and constant-buffer arrays -- each of them one
+// unbounded segment, with the view-size, null-flag, typed-bias and
+// constant-buffer-limit side lookups on. Its MSL is one argument buffer at the
+// window's Metal index that every window array aliases at id(0), and the
+// Metal compiler accepts it.
+TEST(Sm51Gpu, HeapWindowShadersCompileToMetal) {
+    auto& device = MetalDevice::instance();
+    if (!device.available()) GTEST_SKIP() << "no Metal device";
+    if (!device.supports_descriptor_tables()) {
+        GTEST_SKIP() << "no Tier-2 argument buffers";
+    }
+    u32 windowed = 0;
+    for (const auto& blob : kSm51Blobs) {
+        const std::string name = blob.name;
+        if (name == "ps_rov") continue;
+        const auto c = parse_dxbc(blob.code, blob.size);
+        ASSERT_TRUE(c.valid()) << name;
+        std::vector<const DxbcBindingDeclaration*> windows;
+        for (const auto& d : c.binding_declarations) {
+            if (d.unbounded() &&
+                d.register_class != DxbcRegisterClass::Sampler) {
+                windows.push_back(&d);
+            }
+        }
+        if (windows.empty()) continue;
+        ++windowed;
+        PackedLayout layout = packed_layout(c);
+        DxbcTranslationOptions options{};
+        options.register_remap = layout.remap;
+        for (u32 k = 0; k < windows.size(); ++k) {
+            const auto* window = windows[k];
+            options.register_remap.insert(
+                options.register_remap.begin(),
+                {window->register_class, window->space, window->lower,
+                 kDescriptorHeapWindowLength, SPIRV_HEAP_WINDOW_DESCRIPTOR_SET,
+                 k});
+            DxbcTranslationOptions::DescriptorHeapWindow::Array array{};
+            array.register_class = window->register_class;
+            array.space = window->space;
+            array.first_register = window->lower;
+            array.segments.push_back({0u, kDxbcUnboundedRange, 1u + k});
+            options.heap_window.arrays.push_back(array);
+        }
+        const u32 cbv_end = layout.slots[0];
+        options.heap_window.enabled = true;
+        options.heap_window.descriptor_set = SPIRV_HEAP_WINDOW_DESCRIPTOR_SET;
+        options.heap_window.params_binding = cbv_end;
+        options.heap_window.side_binding = cbv_end + 1;
+        options.view_size_buffer.enabled = true;
+        options.view_size_buffer.srv = true;
+        options.view_size_buffer.srv_binding = cbv_end + 2;
+        options.null_descriptors.enabled = true;
+        options.null_descriptors.srv = true;
+        options.null_descriptors.srv_binding = cbv_end + 3;
+        options.typed_buffer_bias_buffer.enabled = true;
+        options.typed_buffer_bias_buffer.srv = true;
+        options.typed_buffer_bias_buffer.srv_binding = cbv_end + 4;
+        options.view_size_buffer.uav = true;
+        options.view_size_buffer.uav_binding = cbv_end + 5;
+        options.null_descriptors.uav = true;
+        options.null_descriptors.uav_binding = cbv_end + 6;
+        options.typed_buffer_bias_buffer.uav = true;
+        options.typed_buffer_bias_buffer.uav_binding = cbv_end + 7;
+        options.constant_buffer_limits.enabled = true;
+        options.constant_buffer_limits.binding = cbv_end + 8;
+        options.emulate_geometry_with_compute =
+            c.stage == ShaderStage::Geometry;
+        options.emulate_tessellation =
+            c.stage == ShaderStage::Hull || c.stage == ShaderStage::Domain;
+        options.domain_to_compute = c.stage == ShaderStage::Domain;
+        const auto spirv = translate_dxbc_to_spirv(c, options);
+        ASSERT_TRUE(spirv.valid()) << name << ": " << spirv.failure;
+        std::array<u32, 4> slots = layout.slots;
+        slots[0] = std::max(slots[0], cbv_end + 9);
+        auto msl_options = table_options(slots);
+        msl_options.heap_window.enabled = true;
+        msl_options.heap_window.descriptor_set = SPIRV_HEAP_WINDOW_DESCRIPTOR_SET;
+        msl_options.heap_window.metal_buffer_index =
+            BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE +
+            BACKEND_DESCRIPTOR_SET_HEAP_WINDOW;
+        if (spirv.uses_typed_uav_atomics) msl_options.msl_version = 30100u;
+        const auto msl = compile_spirv_to_msl(
+            spirv.spirv.data(), spirv.spirv.size(), spirv.stage, msl_options);
+        ASSERT_TRUE(msl.valid()) << name;
+        const std::string text = msl.msl_text();
+        // A shader that may read the auxiliary region (tiled status, or a
+        // counter instruction) declares every window array at twice the
+        // length (kDescriptorHeapWindowAuxBinding).
+        EXPECT_TRUE(text.find(std::to_string(kDescriptorHeapWindowLength)) != std::string::npos ||
+                    text.find(std::to_string(2u * kDescriptorHeapWindowLength)) != std::string::npos)
+            << name << "\n" << text;
+        EXPECT_NE(text.find("[[buffer(" +
+                            std::to_string(BACKEND_DESCRIPTOR_TABLE_BUFFER_BASE +
+                                           BACKEND_DESCRIPTOR_SET_HEAP_WINDOW) +
+                            ")]]"),
+                  std::string::npos)
+            << name << "\n" << text;
+        if (spirv.stage != ShaderStage::Compute) continue;
+        BackendComputePipelineDesc pd{};
+        pd.compute_shader_msl = text;
+        pd.compute_entry_point = "main0";
+        pd.cache_key = std::hash<std::string>{}(text);
+        auto pipeline = device.create_compute_pipeline(pd);
+        EXPECT_TRUE(pipeline && pipeline->valid()) << name << "\n" << text;
+    }
+    EXPECT_GE(windowed, 2u);
 }
 
 // cs_exec through the backend's descriptor tables, laid out as a D3D12
@@ -403,9 +538,12 @@ TEST(Sm51Gpu, SamplerStateBufferAppliesBiasAndPointMip) {
         {C::Sampler, 1, 0, 2, 2, 4},
     };
     options.sampler_state_buffer = {true, 0, 3};
+    // Real samplers are bindings 4 and 5. Twins follow them (the D3D12
+    // frontend uses the same base: one past the real slots).
+    options.border_twin_binding_base = 6;
     const auto spirv = translate_dxbc_to_spirv(c, options);
     ASSERT_TRUE(spirv.valid()) << spirv.failure;
-    const std::array<u32, 4> slots{4, 1, 6, 1};
+    const std::array<u32, 4> slots{4, 1, 12, 1};
     const auto msl = compile_spirv_to_msl(spirv.spirv.data(),
                                           spirv.spirv.size(),
                                           ShaderStage::Compute,
@@ -495,4 +633,38 @@ TEST(Sm51Gpu, SamplerStateBufferAppliesBiasAndPointMip) {
         lines.emplace_back(line);
     }
     EXPECT_EQ(lines, expected_section("cs_bias"));
+
+    // VulkanOn12's non-normalized-coordinate contract: one-mip 2D SRV,
+    // point/clamp sampling, LOD clamps0. At coordinate(0.5,0.5), texel
+    // coordinates select the first texel; normalized coordinates do not.
+    // cs_bias threads0/1 both use explicit LOD0, so those two are valid in
+    // both modes. Changing the same records also tests returning to normal
+    // sampling after the process-wide feature has become enabled.
+    std::array<float, 16> spatial{};
+    spatial.fill(1.0f);
+    spatial[0] = 9.0f;
+    ASSERT_TRUE(texture->update(0, spatial.data(), 4u * sizeof(float)));
+    view.mip_levels = 1;
+    ASSERT_TRUE(srv_table->set_texture(0, texture.get(), view));
+    for (u32 k = 0; k < 2; ++k) {
+        records[(4 + k) * kSamplerStateRecordWords + kSamplerStateBiasWord] = 0;
+        BackendSamplerDesc sampler{};
+        sampler.min_filter = sampler.mag_filter = sampler.mip_filter = BackendFilter::Nearest;
+        sampler.address_u = sampler.address_v = sampler.address_w = BackendAddressMode::Clamp;
+        sampler.lod_max_clamp = 0;
+        ASSERT_TRUE(sampler_table->set_sampler(4 + k, sampler));
+    }
+    for (const bool non_normalized : {false, true, false}) {
+        if (non_normalized) enable_sampler_feature(SamplerFeature::NonNormalized);
+        for (u32 k = 0; k < 2; ++k)
+            records[(4 + k) * kSamplerStateRecordWords + kSamplerStateFlagsWord] =
+                kSamplerStatePointMip | (non_normalized ? kSamplerStateNonNormalized : 0u);
+        ASSERT_TRUE(state->update(0, records.data(), sizeof(records)));
+        ASSERT_TRUE(cb_table->set_buffer(3, state.get(), 0));
+        ASSERT_TRUE(device.dispatch(call));
+        ASSERT_TRUE(device.wait_idle());
+        ASSERT_TRUE(output->read(0, values.data(), sizeof(values)));
+        EXPECT_EQ(values[0], non_normalized ? 9.0f : 1.0f);
+        EXPECT_EQ(values[1], non_normalized ? 9.0f : 1.0f);
+    }
 }

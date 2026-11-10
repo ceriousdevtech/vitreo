@@ -6,9 +6,14 @@
 #include <vitreo/common.hpp>
 
 #include <array>
+#include <memory>
+#include <unordered_map>
 #include <vector>
 
 namespace vitreo::graphics {
+
+class MetalResidentLog;    // metal_submit_queue.hpp
+struct MetalResidentToken;
 
 /// Records Metal commands into a command buffer.
 /// All void* params are bridged Objective-C Metal objects.
@@ -26,6 +31,12 @@ public:
         return m_command_buffer != nullptr;
     }
     void* command_buffer() const { return m_command_buffer; }
+    /// The command buffer with no encoder open on it, for a caller that
+    /// encodes encoders of its own (MetalSubmitQueue::record_encode).
+    void* command_buffer_for_encoders() {
+        end_active_encoder();
+        return m_command_buffer;
+    }
     /// Recycle bump-allocated VS/PS constant slabs after a presented frame
     /// is committed. Mid-frame commits (encoder throttle, readback) must not
     /// call this: in-flight command buffers still read the current slot.
@@ -47,7 +58,9 @@ public:
     [[nodiscard]] bool has_render_encoder() const noexcept {
         return m_render_encoder != nullptr;
     }
-    void set_vertex_buffer(void* buffer, usize offset, u32 index);
+    /// @p stride non-zero: the bound pipeline takes this stream's stride
+    /// from the binding (BackendPipelineDesc::dynamic_vertex_strides).
+    void set_vertex_buffer(void* buffer, usize offset, u32 index, u32 stride = 0);
     void set_fragment_buffer(void* buffer, usize offset, u32 index);
     /// Bind small per-draw constants inline, without a GPU buffer.
     void set_vertex_bytes(const void* data, usize length, u32 index);
@@ -99,13 +112,62 @@ public:
     /// Mark resources reachable only through an argument buffer as resident.
     /// Metal makes a directly-bound resource resident implicitly; one reached
     /// through a descriptor table is not, and reading it without this either
-    /// faults or returns nothing.
-    void use_render_resources(const std::vector<void*>& resources);
-    void use_compute_resources(const std::vector<void*>& resources);
+    /// faults or returns nothing. @p resources may be null when @p count is 0.
+    void use_render_resources(void* const* resources, u32 count,
+                              bool read_only);
+    void use_render_resources(const std::vector<void*>& resources,
+                              bool read_only = false);
+
+    // ---- WS5 begin ----
+    /// Mesh-stage bindings (Metal keeps them apart from the vertex stage's,
+    /// so a mesh draw neither reads nor disturbs the vertex binding caches).
+    /// Uncached: each mesh draw binds what it reads.
+    void set_mesh_buffer(void* buffer, usize offset, u32 index);
+    void set_mesh_bytes(const void* data, usize length, u32 index);
+    /// nullptr binds the black dummy, as set_vertex_texture does.
+    void set_mesh_texture(void* texture, u32 index);
+    void set_mesh_sampler(void* sampler, u32 index);
+    void set_object_bytes(const void* data, usize length, u32 index);
+    /// memoryBarrierWithScope:Buffers afterStages:Vertex
+    /// beforeStages:Object|Mesh (Feature Set Tables fn 3: Apple3-10).
+    void memory_barrier_vertex_to_mesh();
+    /// Buffer writes of earlier object / mesh stages before this draw's
+    /// object and mesh stages read them (device-staging chunks sharing a
+    /// scratch; D3D12 view-instancing records).
+    void memory_barrier_mesh_to_mesh();
+    /// A fragment UAV or statistics write is visible to the next draw's
+    /// vertex and fragment stages without ending the render pass. Ending
+    /// the pass would load and store every attachment.
+    ///
+    /// The scope form waits for every texture, attachments included, so a
+    /// tile that still holds the colour and depth targets has to store and
+    /// reload them. Use it only when the written resources cannot be named.
+    void memory_barrier_fragment_writes();
+    /// The same ordering, for the named resources only. Attachments that
+    /// are not in the list stay in tile memory.
+    void memory_barrier_fragment_resources(void* const* resources, u32 count);
+    void draw_mesh(u32 object_threadgroups, u32 threads_per_object,
+                   u32 threads_per_mesh);
+    /// D3D12 DispatchMesh: drawMeshThreadgroups with a 3-D grid and shapes,
+    /// or its indirect form when `indirect` is set.
+    void draw_mesh_grid(const std::array<u32, 3>& grid, const std::array<u32, 3>& object_shape,
+                        const std::array<u32, 3>& mesh_shape, void* indirect, usize indirect_offset);
+    void set_object_buffer(void* buffer, usize offset, u32 index);
+    // ---- WS5 end ----
+    void use_compute_resources(const std::vector<void*>& resources,
+                               u32 read_count = 0);
+    /// A heap window's residency (MetalResidentToken): declares the log
+    /// entries this encoder has not declared yet, once each, so a draw
+    /// costs nothing once the encoder has seen its heap.
+    void use_render_resident_log(const MetalResidentToken& token);
+    void use_compute_resident_log(const MetalResidentToken& token);
 
     // -- Compute ---
     void begin_compute();
     void end_compute();
+    /// Complete prior dispatches and publish all buffer/texture side effects
+    /// before another dispatch in the same concurrent compute encoder.
+    void memory_barrier_compute();
     void set_compute_pipeline(void* pso);
     void set_compute_buffer(void* buffer, usize offset, u32 index);
     void set_compute_bytes(const void* data, usize length, u32 index);
@@ -219,6 +281,30 @@ private:
     /// VITREO_GPU_PROFILE: this command buffer's timestamped encoders.
     gpu_profile::RecordingPtr m_profile;
     void* m_render_encoder = nullptr;
+    /// Resources already declared on m_render_encoder, and the usage bits
+    /// given to useResource. Argument-buffer residency is per encoder, not
+    /// per draw: repeating it for every draw is a host call and a GPU hazard
+    /// update. Cleared with the render-state cache when the encoder ends.
+    void* m_resource_encoder = nullptr;
+    std::unordered_map<void*, unsigned> m_resource_usage;
+    /// Last use_render_resources list on this encoder. Grass and other
+    /// repeated draws name the same resources; the map lookup is the cost.
+    std::vector<void*> m_last_use;
+    unsigned m_last_use_need{0};
+    bool m_last_use_valid{false};
+    /// use_*_resident_log: per open encoder, how many entries of each log
+    /// it has declared. The log is held so its address cannot be reused by
+    /// a newer one while this encoder is open.
+    struct DeclaredLog {
+        std::shared_ptr<MetalResidentLog> log;
+        u32 count{0};
+        bool writable{false};
+    };
+    void* m_log_encoder = nullptr;
+    std::unordered_map<const MetalResidentLog*, DeclaredLog> m_declared_logs;
+    std::vector<void*> m_log_scratch;
+    void use_resident_log(const MetalResidentToken& token, void* encoder,
+                          bool render);
     void* m_compute_encoder = nullptr;
     void* m_blit_encoder = nullptr;
     /// The open debug groups, outermost first, and how many of them the
@@ -255,9 +341,14 @@ private:
     std::array<void*, kCachedBufferSlots> m_vertex_buffers{};
     std::array<usize, kCachedBufferSlots> m_vertex_buffer_offsets{};
     std::array<bool, kCachedBufferSlots> m_vertex_buffer_bound{};
+    std::array<u32, kCachedBufferSlots> m_vertex_buffer_strides{};
     std::array<void*, kCachedBufferSlots> m_fragment_buffers{};
     std::array<usize, kCachedBufferSlots> m_fragment_buffer_offsets{};
     std::array<bool, kCachedBufferSlots> m_fragment_buffer_bound{};
+    std::array<void*, kCachedTextureSlots> m_vertex_textures{};
+    std::array<bool, kCachedTextureSlots> m_vertex_texture_bound{};
+    std::array<void*, kCachedTextureSlots> m_vertex_samplers{};
+    std::array<bool, kCachedTextureSlots> m_vertex_sampler_bound{};
     std::array<void*, kCachedTextureSlots> m_fragment_textures{};
     std::array<bool, kCachedTextureSlots> m_fragment_texture_bound{};
     std::array<void*, kCachedTextureSlots> m_fragment_samplers{};

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-only
 #import <Cocoa/Cocoa.h>
+#import <objc/runtime.h>
 #include "cocoa_bridge_test_fixture.hpp"
 #include "ipc/macos_app_identity.hpp"
 #include <mach-o/dyld.h>
@@ -327,4 +328,83 @@ TEST_F(CocoaBridgeTest, DockSessionWorkerShutdownDetachesBeforeNativeCleanup) {
     EXPECT_FALSE(bridge.route_dock_session());
     run_for(0.1);
     EXPECT_EQ([NSApp activationPolicy], NSApplicationActivationPolicyAccessory);
+}
+
+// AppKit can refuse a minimize (notably around Space transitions). A later
+// activation of the still-visible, already-key window must restore the
+// guest's requested minimize state before its activation notification.
+TEST_F(CocoaBridgeTest, AppActivationRestoresARefusedMinimizeBeforeActivation) {
+    MessageQueue queue;
+    bridge.set_message_queue(queue);
+    auto data = session_window(0x8f1, L"Vitreo refused minimize regression");
+    ASSERT_TRUE(bridge.create_window(data.handle, data).is_ok());
+    NSWindow* window = nil;
+    for (NSWindow* candidate in [NSApp windows]) {
+        if ([[candidate title] isEqualToString:@"Vitreo refused minimize regression"]) window = candidate;
+    }
+    ASSERT_NE(window, nil);
+    [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+    [NSApp activateIgnoringOtherApps:YES];
+    [window makeKeyAndOrderFront:nil];
+    run_for(0.1);
+    ASSERT_TRUE([NSApp isActive]);
+    ASSERT_TRUE([window isKeyWindow]);
+
+    Class original = object_getClass(window);
+    Class refuses = objc_getClass("VtrRefusedMinimizeRegression");
+    if (refuses == Nil) {
+        refuses = objc_allocateClassPair(original, "VtrRefusedMinimizeRegression", 0);
+        ASSERT_NE(refuses, Nil);
+        const auto method = class_getInstanceMethod(original, @selector(miniaturize:));
+        ASSERT_TRUE(class_addMethod(refuses, @selector(miniaturize:),
+            reinterpret_cast<IMP>(+[](id, SEL, id) {}), method_getTypeEncoding(method)));
+        objc_registerClassPair(refuses);
+    }
+    struct RestoreClass {
+        NSWindow* window; Class original;
+        ~RestoreClass() { object_setClass(window, original); }
+    } restore{window, original};
+    object_setClass(window, refuses);
+    std::vector<std::string> events;
+    struct ClearCallbacks {
+        CocoaBridge& bridge;
+        ~ClearCallbacks() {
+            bridge.set_native_show_state_callback({});
+            bridge.set_native_application_activation_callback({});
+        }
+    } clear_callbacks{bridge};
+    bridge.set_native_show_state_callback([&](HWND hwnd, bool minimized, bool) {
+        if (hwnd == data.handle && !minimized) events.emplace_back("restore");
+    });
+    bridge.set_native_application_activation_callback([&](HWND hwnd, bool active, u32) -> u32 {
+        if (hwnd == data.handle && active) events.emplace_back("activate");
+        return 1u; // WM_MOUSEACTIVATE: MA_ACTIVATE
+    });
+    bridge.set_minimized(data.handle, true);
+    ASSERT_FALSE([window isMiniaturized]);
+    ASSERT_TRUE([window isVisible]);
+    ASSERT_TRUE([window isKeyWindow]);
+    events.clear();
+    bridge.on_app_did_become_active(); // no fresh became-key notification
+    EXPECT_EQ(events, (std::vector<std::string>{"restore"}));
+    // Model the normal ShowWindow(SW_RESTORE) acknowledgement. Until then,
+    // activation must not capture the guest's still-minimized state.
+    bridge.set_minimized(data.handle, false);
+    events.clear();
+    bridge.on_app_did_become_active();
+    EXPECT_EQ(events, (std::vector<std::string>{"activate"}));
+
+    // A native restore observation also queues owner-thread work. It must
+    // not acknowledge the guest's requested minimize before ShowWindow does.
+    bridge.set_minimized(data.handle, true);
+    events.clear();
+    bridge.on_native_show_state(data.handle, false, false);
+    EXPECT_EQ(events, (std::vector<std::string>{"restore"}));
+    events.clear();
+    bridge.on_app_did_become_active();
+    EXPECT_EQ(events, (std::vector<std::string>{"restore"}));
+    bridge.set_minimized(data.handle, false);
+    events.clear();
+    bridge.on_app_did_become_active();
+    EXPECT_EQ(events, (std::vector<std::string>{"activate"}));
 }

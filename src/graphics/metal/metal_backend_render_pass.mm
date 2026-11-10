@@ -430,6 +430,16 @@ private:
 
 } // namespace
 
+bool metal_occlusion_bind(GpuOcclusionCounter* counter, CsBeginPass& begin) {
+    return static_cast<MetalOcclusionCounter*>(counter)->bind(begin);
+}
+
+void metal_occlusion_recorded(GpuOcclusionCounter* counter) {
+    static_cast<MetalOcclusionCounter*>(counter)->recorded();
+}
+
+void metal_occlusion_pass_hook(bool after) { occlusion_pass_hook(after); }
+
 std::unique_ptr<BackendRenderPass> MetalDevice::create_render_pass_standalone(
     const BackendRenderPassDesc& desc) {
     if (!available()) return nullptr;

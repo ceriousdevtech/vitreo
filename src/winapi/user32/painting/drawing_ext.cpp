@@ -577,7 +577,7 @@ void User32ExtManager::impl_DrawFrameControl(Marshaler& m) {
 void User32ExtManager::impl_GetWindowDC(Marshaler& m) {
     u32 hwnd = static_cast<u32>(m.arg(0));
     if (m_gdi_mgr) {
-        auto h = m_gdi_mgr->get_dc(static_cast<Handle>(hwnd));
+        auto h = m_gdi_mgr->get_window_dc(static_cast<Handle>(hwnd));
         VITREO_TRACE("[u32ext] GetWindowDC hwnd=0x%x -> hdc=0x%x\n", hwnd, h);
         m.set_return(static_cast<u64>(h));
     } else {

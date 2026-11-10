@@ -60,7 +60,7 @@ inline void x87_record_rounding(FpuState& fpu, const Float80& source,
 /// values are exact in binary64 either way.
 inline Result<double, Error> read_f32_mem(
     ExecContext& ctx, u64 addr, bool* source_was_denormal = nullptr) noexcept {
-    auto r = read_memory(ctx, addr, 4);
+    auto r = read_memory_av(ctx, addr, 4);
     if (!r) return Result<double, Error>::err(r.error());
     const u32 bits = static_cast<u32>(r.value());
     const u32 exponent = (bits >> 23) & 0xFFu;
@@ -84,7 +84,7 @@ inline Result<double, Error> read_f32_mem(
 
 /// Read a 64-bit double from guest memory at addr
 inline Result<double, Error> read_f64_mem(ExecContext& ctx, u64 addr) noexcept {
-    auto r = read_memory(ctx, addr, 8);
+    auto r = read_memory_av(ctx, addr, 8);
     if (!r) return Result<double, Error>::err(r.error());
     u64 bits = r.value();
     double val;
@@ -340,8 +340,8 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
             // Load 80-bit extended precision (10 bytes: 8-byte mantissa + 2-byte exponent_sign)
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto lo = read_memory(ctx, addr.value(), 8);
-            auto hi = read_memory(ctx, addr.value() + 8, 2);
+            auto lo = read_memory_av(ctx, addr.value(), 8);
+            auto hi = lo ? read_memory_av(ctx, addr.value() + 8, 2) : lo;
             if (!lo || !hi) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             Float80 val;
             val.mantissa = lo.value();
@@ -381,7 +381,7 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
         case Opcode::FILD_M32: {
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto raw = read_memory(ctx, addr.value(), 4);
+            auto raw = read_memory_av(ctx, addr.value(), 4);
             if (!raw) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             i32 ival = static_cast<i32>(static_cast<u32>(raw.value()));
             fpu.push(Float80::from_i64(ival));
@@ -391,7 +391,7 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
         case Opcode::FILD_M64: {
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto raw = read_memory(ctx, addr.value(), 8);
+            auto raw = read_memory_av(ctx, addr.value(), 8);
             if (!raw) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             i64 ival = static_cast<i64>(raw.value());
             fpu.push(Float80::from_i64(ival));
@@ -401,7 +401,7 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
         case Opcode::FILD_M16: {
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto raw = read_memory(ctx, addr.value(), 2);
+            auto raw = read_memory_av(ctx, addr.value(), 2);
             if (!raw) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             i16 ival = static_cast<i16>(static_cast<u16>(raw.value()));
             fpu.push(Float80::from_i64(ival));
@@ -751,7 +751,7 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
                 instr.opcode == Opcode::FICOMP_M16;
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto raw = read_memory(ctx, addr.value(), is16 ? 2 : 4);
+            auto raw = read_memory_av(ctx, addr.value(), is16 ? 2 : 4);
             if (!raw) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             const double iv = is16
                 ? static_cast<double>(static_cast<i16>(static_cast<u16>(raw.value())))
@@ -1056,7 +1056,7 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
         case Opcode::FLDCW_M16: {
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto val = read_memory(ctx, addr.value(), 2);
+            auto val = read_memory_av(ctx, addr.value(), 2);
             if (!val) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             fpu.control_word =
                 FpuState::sanitize_control_word(static_cast<u16>(val.value()));
@@ -1105,9 +1105,9 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             GuestAddr base = addr.value();
-            auto cw = read_memory(ctx, base + 0, 2);
-            auto sw = read_memory(ctx, base + 4, 2);
-            auto tw = read_memory(ctx, base + 8, 2);
+            auto cw = read_memory_av(ctx, base + 0, 2);
+            auto sw = cw ? read_memory_av(ctx, base + 4, 2) : cw;
+            auto tw = sw ? read_memory_av(ctx, base + 8, 2) : sw;
             if (!cw || !sw || !tw) {
                 ctx.exception = CpuException::GeneralProtection;
                 return ExecResult::Exception;
@@ -1166,9 +1166,9 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             GuestAddr base = addr.value();
 
-            auto cw = read_memory(ctx, base + 0, 2);
-            auto sw = read_memory(ctx, base + 4, 2);
-            auto tw = read_memory(ctx, base + 8, 2);
+            auto cw = read_memory_av(ctx, base + 0, 2);
+            auto sw = cw ? read_memory_av(ctx, base + 4, 2) : cw;
+            auto tw = sw ? read_memory_av(ctx, base + 8, 2) : sw;
             if (!cw || !sw || !tw) {
                 ctx.exception = CpuException::GeneralProtection;
                 return ExecResult::Exception;
@@ -1182,8 +1182,8 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
 
             for (u8 i = 0; i < 8; ++i) {
                 const GuestAddr slot = base + 28 + i * 10;
-                auto mantissa = read_memory(ctx, slot, 8);
-                auto exponent = read_memory(ctx, slot + 8, 2);
+                auto mantissa = read_memory_av(ctx, slot, 8);
+                auto exponent = mantissa ? read_memory_av(ctx, slot + 8, 2) : mantissa;
                 if (!mantissa || !exponent) {
                     ctx.exception = CpuException::GeneralProtection;
                     return ExecResult::Exception;
@@ -1481,7 +1481,7 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
         case Opcode::FSUBR_M32: {
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto val = read_memory(ctx, addr.value(), 4);
+            auto val = read_memory_av(ctx, addr.value(), 4);
             if (!val) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             float f;
             u32 bits = static_cast<u32>(val.value());
@@ -1501,7 +1501,7 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
         case Opcode::FSUBR_M64: {
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
-            auto val = read_memory(ctx, addr.value(), 8);
+            auto val = read_memory_av(ctx, addr.value(), 8);
             if (!val) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             double d;
             u64 bits = val.value();
@@ -1540,7 +1540,7 @@ ExecResult exec_fpu(ExecContext& ctx, const DecodedInstruction& instr) noexcept 
             auto addr = get_mem_addr(ctx, instr, 0);
             if (!addr) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             u8 bcd[10]{};
-            auto rd = ctx.mem.read_bytes(addr.value(), bcd, 10);
+            auto rd = read_bytes_av(ctx, addr.value(), bcd, 10);
             if (!rd) { ctx.exception = CpuException::GeneralProtection; return ExecResult::Exception; }
             u64 mag = 0;
             for (int i = 8; i >= 0; --i) {

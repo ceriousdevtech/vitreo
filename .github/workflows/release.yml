@@ -106,8 +106,12 @@ jobs:
 
           The .sha256 file is the SHA-256 of the disk image.
           EOF
+          # A draft creates no tag: GitHub shows it as "untagged-<id>" and
+          # creates v${VERSION} on publish, at --target. Pin the target to the
+          # commit this DMG was built from, not the branch tip at publish time.
           gh release create "v${VERSION}" "${dmg}" "${sum}" \
             --draft \
+            --target "${GITHUB_SHA}" \
             ${prerelease_flag:+"${prerelease_flag}"} \
             --title "Vitreo ${VERSION}" \
             --notes-file dist/release-notes.txt

@@ -208,6 +208,40 @@ void CocoaBridge::on_native_window_became_key(HWND hwnd) {
         }
     }
 
+    // A Space/app transition can refuse miniaturize: and later reactivate
+    // the same, still-visible key window without a deminiaturize notification.
+    // Publish the observed restore before activation. USER32 routes it through
+    // SC_RESTORE/ShowWindow, including WM_QUERYOPEN, geometry and focus; do not
+    // synthesize keyboard focus or erase the guest's minimized flag here.
+    if (auto it = m_windows.find(hwnd);
+        it != m_windows.end() && it->second.requested_minimized &&
+        it->second.minimize_attempted && it->second.ns_window != nullptr) {
+        NSWindow* win = reinterpret_cast<NSWindow*>(it->second.ns_window);
+        if ([NSApp isActive] && [NSApp keyWindow] == win &&
+            [win isVisible] && ![win isMiniaturized]) {
+            // This is an observed key-window restore, not a geometry-derived
+            // zoom report suppressed by on_native_show_state's resize guard.
+            if (m_show_state_callback) {
+                id delegate = [win delegate];
+                const BOOL zoomed =
+                    [delegate isKindOfClass:[VtrWindowDelegate class]] &&
+                    [(VtrWindowDelegate*)delegate reportZoomed:win];
+                m_show_state_callback(hwnd, false, zoomed == YES);
+            } else if (m_queue) {
+                MSG restore{};
+                restore.hwnd = hwnd;
+                restore.message = WM::SYSCOMMAND;
+                restore.wParam = 0xF120; // SC_RESTORE, existing shell path
+                m_queue->post(restore);
+            }
+            // The callback queues SC_RESTORE on the owning guest thread.
+            // Let its normal ShowWindow restoration activate and focus the
+            // window. Activating now would capture a stale MINIMIZED bit.
+            // Keep intent until that restore is acknowledged by set_minimized.
+            return;
+        }
+    }
+
     // Pending-activation flushes and visibility sync can re-enter become-key
     // while this top-level is already active. Re-sending activation/focus
     // pairs with spurious resigns into a SetFocus/KillFocus thrash that drops
@@ -503,6 +537,15 @@ void CocoaBridge::on_app_did_become_active() {
             restore.wParam = 0xF120; // SC_RESTORE
             m_queue->post(restore);
         }
+    }
+    // App activation does not necessarily produce another became-key event:
+    // AppKit may keep its key NSWindow while another application is active.
+    // Reconcile only the actual visible key window; never raise a background
+    // window, restore an ordinary hidden helper, or steal focus from a dialog.
+    NSWindow* key = [NSApp keyWindow];
+    if ([NSApp isActive] && key != nil && [key isVisible] && ![key isMiniaturized]) {
+        const HWND hwnd = find_hwnd_for_window((__bridge void*)key);
+        if (hwnd != NULL_HWND) on_native_window_became_key(hwnd);
     }
 }
 

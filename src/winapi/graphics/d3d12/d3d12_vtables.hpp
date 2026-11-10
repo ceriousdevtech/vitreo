@@ -574,6 +574,363 @@ struct PipelineStateSlot {
     };
 };
 
+// ID3D12SDKConfiguration1Vtbl (d3d12.h), 6 slots.
+inline constexpr usize SDK_CONFIGURATION_METHOD_COUNT = 6;
+inline constexpr std::array<u16, SDK_CONFIGURATION_METHOD_COUNT>
+    SDK_CONFIGURATION_STDCALL_BYTES{{
+    12, 4, 4, 12, 20, 4
+}};
+inline constexpr std::array<const char*, SDK_CONFIGURATION_METHOD_COUNT>
+    SDK_CONFIGURATION_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "SetSDKVersion",
+    "CreateDeviceFactory", "FreeUnusedSDKs"
+}};
+struct SdkConfigurationSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        SetSDKVersion = 3,
+        CreateDeviceFactory = 4,
+        FreeUnusedSDKs = 5,
+    };
+};
+
+// ID3D12DeviceFactoryVtbl (d3d12.h), 10 slots.
+inline constexpr usize DEVICE_FACTORY_METHOD_COUNT = 10;
+inline constexpr std::array<u16, DEVICE_FACTORY_METHOD_COUNT>
+    DEVICE_FACTORY_STDCALL_BYTES{{
+    12, 4, 4, 4, 4, 8, 4, 16, 20, 20
+}};
+inline constexpr std::array<const char*, DEVICE_FACTORY_METHOD_COUNT>
+    DEVICE_FACTORY_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "InitializeFromGlobalState",
+    "ApplyToGlobalState", "SetFlags", "GetFlags",
+    "GetConfigurationInterface", "EnableExperimentalFeatures",
+    "CreateDevice"
+}};
+struct DeviceFactorySlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        InitializeFromGlobalState = 3,
+        ApplyToGlobalState = 4,
+        SetFlags = 5,
+        GetFlags = 6,
+        GetConfigurationInterface = 7,
+        EnableExperimentalFeatures = 8,
+        CreateDevice = 9,
+    };
+};
+
+// ID3D12DeviceConfiguration1Vtbl (d3d12.h), 8 slots.
+inline constexpr usize DEVICE_CONFIGURATION_METHOD_COUNT = 8;
+inline constexpr std::array<u16, DEVICE_CONFIGURATION_METHOD_COUNT>
+    DEVICE_CONFIGURATION_STDCALL_BYTES{{
+    12, 4, 4, 8, 12, 16, 20, 24
+}};
+inline constexpr std::array<const char*, DEVICE_CONFIGURATION_METHOD_COUNT>
+    DEVICE_CONFIGURATION_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetDesc",
+    "GetEnabledExperimentalFeatures", "SerializeVersionedRootSignature",
+    "CreateVersionedRootSignatureDeserializer",
+    "CreateVersionedRootSignatureDeserializerFromSubobjectInLibrary"
+}};
+struct DeviceConfigurationSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetDesc = 3,
+        GetEnabledExperimentalFeatures = 4,
+        SerializeVersionedRootSignature = 5,
+        CreateVersionedRootSignatureDeserializer = 6,
+        CreateVersionedRootSignatureDeserializerFromSubobjectInLibrary = 7,
+    };
+};
+
+// ID3D12DeviceRemovedExtendedDataSettings2Vtbl (d3d12.h), 8 slots.
+inline constexpr usize DRED_SETTINGS_METHOD_COUNT = 8;
+inline constexpr std::array<u16, DRED_SETTINGS_METHOD_COUNT>
+    DRED_SETTINGS_STDCALL_BYTES{{
+    12, 4, 4, 8, 8, 8, 8, 8
+}};
+inline constexpr std::array<const char*, DRED_SETTINGS_METHOD_COUNT>
+    DRED_SETTINGS_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "SetAutoBreadcrumbsEnablement",
+    "SetPageFaultEnablement", "SetWatsonDumpEnablement",
+    "SetBreadcrumbContextEnablement", "UseMarkersOnlyAutoBreadcrumbs"
+}};
+struct DredSettingsSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        SetAutoBreadcrumbsEnablement = 3,
+        SetPageFaultEnablement = 4,
+        SetWatsonDumpEnablement = 5,
+        SetBreadcrumbContextEnablement = 6,
+        UseMarkersOnlyAutoBreadcrumbs = 7,
+    };
+};
+
+// ID3D12DeviceRemovedExtendedData2Vtbl (d3d12.h), 9 slots.
+inline constexpr usize DRED_METHOD_COUNT = 9;
+inline constexpr std::array<u16, DRED_METHOD_COUNT>
+    DRED_STDCALL_BYTES{{
+    12, 4, 4, 8, 8, 8, 8, 8, 4
+}};
+inline constexpr std::array<const char*, DRED_METHOD_COUNT>
+    DRED_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetAutoBreadcrumbsOutput",
+    "GetPageFaultAllocationOutput", "GetAutoBreadcrumbsOutput1",
+    "GetPageFaultAllocationOutput1", "GetPageFaultAllocationOutput2",
+    "GetDeviceState"
+}};
+struct DredSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetAutoBreadcrumbsOutput = 3,
+        GetPageFaultAllocationOutput = 4,
+        GetAutoBreadcrumbsOutput1 = 5,
+        GetPageFaultAllocationOutput1 = 6,
+        GetPageFaultAllocationOutput2 = 7,
+        GetDeviceState = 8,
+    };
+};
+
+// ID3D12DeviceTools1Vtbl (d3d12.h), 6 slots.
+inline constexpr usize DEVICE_TOOLS_METHOD_COUNT = 6;
+inline constexpr std::array<u16, DEVICE_TOOLS_METHOD_COUNT>
+    DEVICE_TOOLS_STDCALL_BYTES{{
+    12, 4, 4, 12, 8, 4
+}};
+inline constexpr std::array<const char*, DEVICE_TOOLS_METHOD_COUNT>
+    DEVICE_TOOLS_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "SetNextAllocationAddress",
+    "GetApplicationSpecificDriverState",
+    "GetApplicationSpecificDriverBlobStatus"
+}};
+struct DeviceToolsSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        SetNextAllocationAddress = 3,
+        GetApplicationSpecificDriverState = 4,
+        GetApplicationSpecificDriverBlobStatus = 5,
+    };
+};
+
+// ID3D12CompatibilityDeviceVtbl (d3d12.h), 6 slots.
+inline constexpr usize COMPATIBILITY_DEVICE_METHOD_COUNT = 6;
+inline constexpr std::array<u16, COMPATIBILITY_DEVICE_METHOD_COUNT>
+    COMPATIBILITY_DEVICE_STDCALL_BYTES{{
+    12, 4, 4, 48, 20, 20
+}};
+inline constexpr std::array<const char*, COMPATIBILITY_DEVICE_METHOD_COUNT>
+    COMPATIBILITY_DEVICE_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "CreateSharedResource",
+    "CreateSharedHeap", "ReflectSharedProperties"
+}};
+struct CompatibilityDeviceSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        CreateSharedResource = 3,
+        CreateSharedHeap = 4,
+        ReflectSharedProperties = 5,
+    };
+};
+
+// ID3D12PageableToolsVtbl (d3d12.h), 4 slots.
+inline constexpr usize PAGEABLE_TOOLS_METHOD_COUNT = 4;
+inline constexpr std::array<u16, PAGEABLE_TOOLS_METHOD_COUNT>
+    PAGEABLE_TOOLS_STDCALL_BYTES{{
+    12, 4, 4, 8
+}};
+inline constexpr std::array<const char*, PAGEABLE_TOOLS_METHOD_COUNT>
+    PAGEABLE_TOOLS_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetAllocation"
+}};
+struct PageableToolsSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetAllocation = 3,
+    };
+};
+
+// ID3D12PipelineLibrary1Vtbl (d3d12.h), 14 slots.
+inline constexpr usize PIPELINE_LIBRARY_METHOD_COUNT = 14;
+inline constexpr std::array<u16, PIPELINE_LIBRARY_METHOD_COUNT>
+    PIPELINE_LIBRARY_STDCALL_BYTES{{
+    12, 4, 4, 16, 16, 12, 8, 12, 12, 20, 20, 4, 12, 20
+}};
+inline constexpr std::array<const char*, PIPELINE_LIBRARY_METHOD_COUNT>
+    PIPELINE_LIBRARY_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetPrivateData",
+    "SetPrivateData", "SetPrivateDataInterface", "SetName", "GetDevice",
+    "StorePipeline", "LoadGraphicsPipeline", "LoadComputePipeline",
+    "GetSerializedSize", "Serialize", "LoadPipeline"
+}};
+struct PipelineLibrarySlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetPrivateData = 3,
+        SetPrivateData = 4,
+        SetPrivateDataInterface = 5,
+        SetName = 6,
+        GetDevice = 7,
+        StorePipeline = 8,
+        LoadGraphicsPipeline = 9,
+        LoadComputePipeline = 10,
+        GetSerializedSize = 11,
+        Serialize = 12,
+        LoadPipeline = 13,
+    };
+};
+
+// ID3D12ShaderCacheSessionVtbl (d3d12.h), 12 slots.
+inline constexpr usize SHADER_CACHE_SESSION_METHOD_COUNT = 12;
+inline constexpr std::array<u16, SHADER_CACHE_SESSION_METHOD_COUNT>
+    SHADER_CACHE_SESSION_STDCALL_BYTES{{
+    12, 4, 4, 16, 16, 12, 8, 12, 20, 20, 4, 8
+}};
+inline constexpr std::array<const char*, SHADER_CACHE_SESSION_METHOD_COUNT>
+    SHADER_CACHE_SESSION_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetPrivateData",
+    "SetPrivateData", "SetPrivateDataInterface", "SetName", "GetDevice",
+    "FindValue", "StoreValue", "SetDeleteOnDestroy", "GetDesc"
+}};
+struct ShaderCacheSessionSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetPrivateData = 3,
+        SetPrivateData = 4,
+        SetPrivateDataInterface = 5,
+        SetName = 6,
+        GetDevice = 7,
+        FindValue = 8,
+        StoreValue = 9,
+        SetDeleteOnDestroy = 10,
+        GetDesc = 11,
+    };
+};
+
+// ID3D12LifetimeTrackerVtbl (d3d12.h), 9 slots.
+inline constexpr usize LIFETIME_TRACKER_METHOD_COUNT = 9;
+inline constexpr std::array<u16, LIFETIME_TRACKER_METHOD_COUNT>
+    LIFETIME_TRACKER_STDCALL_BYTES{{
+    12, 4, 4, 16, 16, 12, 8, 12, 8
+}};
+inline constexpr std::array<const char*, LIFETIME_TRACKER_METHOD_COUNT>
+    LIFETIME_TRACKER_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetPrivateData",
+    "SetPrivateData", "SetPrivateDataInterface", "SetName", "GetDevice",
+    "DestroyOwnedObject"
+}};
+struct LifetimeTrackerSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetPrivateData = 3,
+        SetPrivateData = 4,
+        SetPrivateDataInterface = 5,
+        SetName = 6,
+        GetDevice = 7,
+        DestroyOwnedObject = 8,
+    };
+};
+
+// ID3D12ProtectedResourceSession1Vtbl (d3d12.h), 12 slots.
+inline constexpr usize PROTECTED_RESOURCE_SESSION_METHOD_COUNT = 12;
+inline constexpr std::array<u16, PROTECTED_RESOURCE_SESSION_METHOD_COUNT>
+    PROTECTED_RESOURCE_SESSION_STDCALL_BYTES{{
+    12, 4, 4, 16, 16, 12, 8, 12, 12, 4, 8, 8
+}};
+inline constexpr std::array<const char*, PROTECTED_RESOURCE_SESSION_METHOD_COUNT>
+    PROTECTED_RESOURCE_SESSION_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetPrivateData",
+    "SetPrivateData", "SetPrivateDataInterface", "SetName", "GetDevice",
+    "GetStatusFence", "GetSessionStatus", "GetDesc", "GetDesc1"
+}};
+struct ProtectedResourceSessionSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetPrivateData = 3,
+        SetPrivateData = 4,
+        SetPrivateDataInterface = 5,
+        SetName = 6,
+        GetDevice = 7,
+        GetStatusFence = 8,
+        GetSessionStatus = 9,
+        GetDesc = 10,
+        GetDesc1 = 11,
+    };
+};
+
+// ID3D12StateObjectVtbl (d3d12.h), 8 slots.
+inline constexpr usize STATE_OBJECT_METHOD_COUNT = 8;
+inline constexpr std::array<u16, STATE_OBJECT_METHOD_COUNT>
+    STATE_OBJECT_STDCALL_BYTES{{
+    12, 4, 4, 16, 16, 12, 8, 12
+}};
+inline constexpr std::array<const char*, STATE_OBJECT_METHOD_COUNT>
+    STATE_OBJECT_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetPrivateData",
+    "SetPrivateData", "SetPrivateDataInterface", "SetName", "GetDevice"
+}};
+struct StateObjectSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetPrivateData = 3,
+        SetPrivateData = 4,
+        SetPrivateDataInterface = 5,
+        SetName = 6,
+        GetDevice = 7,
+    };
+};
+
+// ID3D12StateObjectProperties1Vtbl (d3d12.h), 8 slots.
+inline constexpr usize STATE_OBJECT_PROPERTIES_METHOD_COUNT = 8;
+inline constexpr std::array<u16, STATE_OBJECT_PROPERTIES_METHOD_COUNT>
+    STATE_OBJECT_PROPERTIES_STDCALL_BYTES{{
+    12, 4, 4, 8, 8, 4, 12, 12
+}};
+inline constexpr std::array<const char*, STATE_OBJECT_PROPERTIES_METHOD_COUNT>
+    STATE_OBJECT_PROPERTIES_METHOD_NAMES{{
+    "QueryInterface", "AddRef", "Release", "GetShaderIdentifier",
+    "GetShaderStackSize", "GetPipelineStackSize", "SetPipelineStackSize",
+    "GetProgramIdentifier"
+}};
+struct StateObjectPropertiesSlot {
+    enum : usize {
+        QueryInterface = 0,
+        AddRef = 1,
+        Release = 2,
+        GetShaderIdentifier = 3,
+        GetShaderStackSize = 4,
+        GetPipelineStackSize = 5,
+        SetPipelineStackSize = 6,
+        GetProgramIdentifier = 7,
+    };
+};
+
 // IDXGISwapChain4Vtbl (dxgi1_5.h), 41 slots.
 inline constexpr usize SWAP_CHAIN_METHOD_COUNT = 41;
 inline constexpr std::array<u16, SWAP_CHAIN_METHOD_COUNT>
@@ -672,7 +1029,7 @@ struct InterfaceTable {
     const u16* stdcall_bytes;
     const char* const* method_names;
 };
-inline constexpr usize INTERFACE_TABLE_COUNT = 14;
+inline constexpr usize INTERFACE_TABLE_COUNT = 28;
 inline constexpr std::array<InterfaceTable, INTERFACE_TABLE_COUNT>
     INTERFACE_TABLES{{
     {"Device", DEVICE_METHOD_COUNT, DEVICE_STDCALL_BYTES.data(), DEVICE_METHOD_NAMES.data()},
@@ -687,6 +1044,20 @@ inline constexpr std::array<InterfaceTable, INTERFACE_TABLE_COUNT>
     {"CommandSignature", COMMAND_SIGNATURE_METHOD_COUNT, COMMAND_SIGNATURE_STDCALL_BYTES.data(), COMMAND_SIGNATURE_METHOD_NAMES.data()},
     {"RootSignature", ROOT_SIGNATURE_METHOD_COUNT, ROOT_SIGNATURE_STDCALL_BYTES.data(), ROOT_SIGNATURE_METHOD_NAMES.data()},
     {"PipelineState", PIPELINE_STATE_METHOD_COUNT, PIPELINE_STATE_STDCALL_BYTES.data(), PIPELINE_STATE_METHOD_NAMES.data()},
+    {"SdkConfiguration", SDK_CONFIGURATION_METHOD_COUNT, SDK_CONFIGURATION_STDCALL_BYTES.data(), SDK_CONFIGURATION_METHOD_NAMES.data()},
+    {"DeviceFactory", DEVICE_FACTORY_METHOD_COUNT, DEVICE_FACTORY_STDCALL_BYTES.data(), DEVICE_FACTORY_METHOD_NAMES.data()},
+    {"DeviceConfiguration", DEVICE_CONFIGURATION_METHOD_COUNT, DEVICE_CONFIGURATION_STDCALL_BYTES.data(), DEVICE_CONFIGURATION_METHOD_NAMES.data()},
+    {"DredSettings", DRED_SETTINGS_METHOD_COUNT, DRED_SETTINGS_STDCALL_BYTES.data(), DRED_SETTINGS_METHOD_NAMES.data()},
+    {"Dred", DRED_METHOD_COUNT, DRED_STDCALL_BYTES.data(), DRED_METHOD_NAMES.data()},
+    {"DeviceTools", DEVICE_TOOLS_METHOD_COUNT, DEVICE_TOOLS_STDCALL_BYTES.data(), DEVICE_TOOLS_METHOD_NAMES.data()},
+    {"CompatibilityDevice", COMPATIBILITY_DEVICE_METHOD_COUNT, COMPATIBILITY_DEVICE_STDCALL_BYTES.data(), COMPATIBILITY_DEVICE_METHOD_NAMES.data()},
+    {"PageableTools", PAGEABLE_TOOLS_METHOD_COUNT, PAGEABLE_TOOLS_STDCALL_BYTES.data(), PAGEABLE_TOOLS_METHOD_NAMES.data()},
+    {"PipelineLibrary", PIPELINE_LIBRARY_METHOD_COUNT, PIPELINE_LIBRARY_STDCALL_BYTES.data(), PIPELINE_LIBRARY_METHOD_NAMES.data()},
+    {"ShaderCacheSession", SHADER_CACHE_SESSION_METHOD_COUNT, SHADER_CACHE_SESSION_STDCALL_BYTES.data(), SHADER_CACHE_SESSION_METHOD_NAMES.data()},
+    {"LifetimeTracker", LIFETIME_TRACKER_METHOD_COUNT, LIFETIME_TRACKER_STDCALL_BYTES.data(), LIFETIME_TRACKER_METHOD_NAMES.data()},
+    {"ProtectedResourceSession", PROTECTED_RESOURCE_SESSION_METHOD_COUNT, PROTECTED_RESOURCE_SESSION_STDCALL_BYTES.data(), PROTECTED_RESOURCE_SESSION_METHOD_NAMES.data()},
+    {"StateObject", STATE_OBJECT_METHOD_COUNT, STATE_OBJECT_STDCALL_BYTES.data(), STATE_OBJECT_METHOD_NAMES.data()},
+    {"StateObjectProperties", STATE_OBJECT_PROPERTIES_METHOD_COUNT, STATE_OBJECT_PROPERTIES_STDCALL_BYTES.data(), STATE_OBJECT_PROPERTIES_METHOD_NAMES.data()},
     {"SwapChain", SWAP_CHAIN_METHOD_COUNT, SWAP_CHAIN_STDCALL_BYTES.data(), SWAP_CHAIN_METHOD_NAMES.data()},
     {"DestructionNotifier", DESTRUCTION_NOTIFIER_METHOD_COUNT, DESTRUCTION_NOTIFIER_STDCALL_BYTES.data(), DESTRUCTION_NOTIFIER_METHOD_NAMES.data()},
 }};
@@ -899,6 +1270,94 @@ inline constexpr GuidBytes IID_ID3D12DEBUGDEVICE{
 inline constexpr GuidBytes IID_ID3D12INFOQUEUE{
     0x0B, 0xA9, 0x42, 0x07, 0x87, 0xC3, 0x3F, 0x48,
     0xB9, 0x46, 0x30, 0xA7, 0xE4, 0xE6, 0x14, 0x58};
+/// ID3D12SDKConfiguration {e9eb5314-33aa-42b2-a718-d77f58b1f1c7}
+inline constexpr GuidBytes IID_ID3D12SDKCONFIGURATION{
+    0x14, 0x53, 0xEB, 0xE9, 0xAA, 0x33, 0xB2, 0x42,
+    0xA7, 0x18, 0xD7, 0x7F, 0x58, 0xB1, 0xF1, 0xC7};
+/// ID3D12SDKConfiguration1 {8aaf9303-ad25-48b9-9a57-d9c37e009d9f}
+inline constexpr GuidBytes IID_ID3D12SDKCONFIGURATION1{
+    0x03, 0x93, 0xAF, 0x8A, 0x25, 0xAD, 0xB9, 0x48,
+    0x9A, 0x57, 0xD9, 0xC3, 0x7E, 0x00, 0x9D, 0x9F};
+/// ID3D12DeviceFactory {61f307d3-d34e-4e7c-8374-3ba4de23cccb}
+inline constexpr GuidBytes IID_ID3D12DEVICEFACTORY{
+    0xD3, 0x07, 0xF3, 0x61, 0x4E, 0xD3, 0x7C, 0x4E,
+    0x83, 0x74, 0x3B, 0xA4, 0xDE, 0x23, 0xCC, 0xCB};
+/// ID3D12DeviceConfiguration {78dbf87b-f766-422b-a61c-c8c446bdb9ad}
+inline constexpr GuidBytes IID_ID3D12DEVICECONFIGURATION{
+    0x7B, 0xF8, 0xDB, 0x78, 0x66, 0xF7, 0x2B, 0x42,
+    0xA6, 0x1C, 0xC8, 0xC4, 0x46, 0xBD, 0xB9, 0xAD};
+/// ID3D12DeviceConfiguration1 {ed342442-6343-4e16-bb82-a3a577874e56}
+inline constexpr GuidBytes IID_ID3D12DEVICECONFIGURATION1{
+    0x42, 0x24, 0x34, 0xED, 0x43, 0x63, 0x16, 0x4E,
+    0xBB, 0x82, 0xA3, 0xA5, 0x77, 0x87, 0x4E, 0x56};
+/// ID3D12DeviceRemovedExtendedDataSettings {82bc481c-6b9b-4030-aedb-7ee3d1df1e63}
+inline constexpr GuidBytes IID_ID3D12DEVICEREMOVEDEXTENDEDDATASETTINGS{
+    0x1C, 0x48, 0xBC, 0x82, 0x9B, 0x6B, 0x30, 0x40,
+    0xAE, 0xDB, 0x7E, 0xE3, 0xD1, 0xDF, 0x1E, 0x63};
+/// ID3D12DeviceRemovedExtendedDataSettings1 {dbd5ae51-3317-4f0a-adf9-1d7cedcaae0b}
+inline constexpr GuidBytes IID_ID3D12DEVICEREMOVEDEXTENDEDDATASETTINGS1{
+    0x51, 0xAE, 0xD5, 0xDB, 0x17, 0x33, 0x0A, 0x4F,
+    0xAD, 0xF9, 0x1D, 0x7C, 0xED, 0xCA, 0xAE, 0x0B};
+/// ID3D12DeviceRemovedExtendedDataSettings2 {61552388-01ab-4008-a436-83db189566ea}
+inline constexpr GuidBytes IID_ID3D12DEVICEREMOVEDEXTENDEDDATASETTINGS2{
+    0x88, 0x23, 0x55, 0x61, 0xAB, 0x01, 0x08, 0x40,
+    0xA4, 0x36, 0x83, 0xDB, 0x18, 0x95, 0x66, 0xEA};
+/// ID3D12DeviceTools {2ea68e9c-19c3-4e47-a109-6cdadff0aca9}
+inline constexpr GuidBytes IID_ID3D12DEVICETOOLS{
+    0x9C, 0x8E, 0xA6, 0x2E, 0xC3, 0x19, 0x47, 0x4E,
+    0xA1, 0x09, 0x6C, 0xDA, 0xDF, 0xF0, 0xAC, 0xA9};
+/// ID3D12DeviceTools1 {e30e9fc7-e641-4d6e-8a81-9dd9206ec47a}
+inline constexpr GuidBytes IID_ID3D12DEVICETOOLS1{
+    0xC7, 0x9F, 0x0E, 0xE3, 0x41, 0xE6, 0x6E, 0x4D,
+    0x8A, 0x81, 0x9D, 0xD9, 0x20, 0x6E, 0xC4, 0x7A};
+/// ID3D12PageableTools {8f1359db-d8d1-42f9-b5cf-79f4cbad0d3d}
+inline constexpr GuidBytes IID_ID3D12PAGEABLETOOLS{
+    0xDB, 0x59, 0x13, 0x8F, 0xD1, 0xD8, 0xF9, 0x42,
+    0xB5, 0xCF, 0x79, 0xF4, 0xCB, 0xAD, 0x0D, 0x3D};
+/// ID3D12CompatibilityDevice {8f1c0e3c-fae3-4a82-b098-bfe1708207ff}
+inline constexpr GuidBytes IID_ID3D12COMPATIBILITYDEVICE{
+    0x3C, 0x0E, 0x1C, 0x8F, 0xE3, 0xFA, 0x82, 0x4A,
+    0xB0, 0x98, 0xBF, 0xE1, 0x70, 0x82, 0x07, 0xFF};
+/// ID3D12ShaderCacheSession {28e2495d-0f64-4ae4-a6ec-129255dc49a8}
+inline constexpr GuidBytes IID_ID3D12SHADERCACHESESSION{
+    0x5D, 0x49, 0xE2, 0x28, 0x64, 0x0F, 0xE4, 0x4A,
+    0xA6, 0xEC, 0x12, 0x92, 0x55, 0xDC, 0x49, 0xA8};
+/// ID3D12LifetimeTracker {3fd03d36-4eb1-424a-a582-494ecb8ba813}
+inline constexpr GuidBytes IID_ID3D12LIFETIMETRACKER{
+    0x36, 0x3D, 0xD0, 0x3F, 0xB1, 0x4E, 0x4A, 0x42,
+    0xA5, 0x82, 0x49, 0x4E, 0xCB, 0x8B, 0xA8, 0x13};
+/// ID3D12LifetimeOwner {e667af9f-cd56-4f46-83ce-032e595d70a8}
+inline constexpr GuidBytes IID_ID3D12LIFETIMEOWNER{
+    0x9F, 0xAF, 0x67, 0xE6, 0x56, 0xCD, 0x46, 0x4F,
+    0x83, 0xCE, 0x03, 0x2E, 0x59, 0x5D, 0x70, 0xA8};
+/// ID3D12ProtectedSession {a1533d18-0ac1-4084-85b9-89a96116806b}
+inline constexpr GuidBytes IID_ID3D12PROTECTEDSESSION{
+    0x18, 0x3D, 0x53, 0xA1, 0xC1, 0x0A, 0x84, 0x40,
+    0x85, 0xB9, 0x89, 0xA9, 0x61, 0x16, 0x80, 0x6B};
+/// ID3D12ProtectedResourceSession {6cd696f4-f289-40cc-8091-5a6c0a099c3d}
+inline constexpr GuidBytes IID_ID3D12PROTECTEDRESOURCESESSION{
+    0xF4, 0x96, 0xD6, 0x6C, 0x89, 0xF2, 0xCC, 0x40,
+    0x80, 0x91, 0x5A, 0x6C, 0x0A, 0x09, 0x9C, 0x3D};
+/// ID3D12ProtectedResourceSession1 {d6f12dd6-76fb-406e-8961-4296eefc0409}
+inline constexpr GuidBytes IID_ID3D12PROTECTEDRESOURCESESSION1{
+    0xD6, 0x2D, 0xF1, 0xD6, 0xFB, 0x76, 0x6E, 0x40,
+    0x89, 0x61, 0x42, 0x96, 0xEE, 0xFC, 0x04, 0x09};
+/// ID3D12StateObject {47016943-fca8-4594-93ea-af258b55346d}
+inline constexpr GuidBytes IID_ID3D12STATEOBJECT{
+    0x43, 0x69, 0x01, 0x47, 0xA8, 0xFC, 0x94, 0x45,
+    0x93, 0xEA, 0xAF, 0x25, 0x8B, 0x55, 0x34, 0x6D};
+/// ID3D12StateObjectProperties {de5fa827-9bf9-4f26-89ff-d7f56fde3860}
+inline constexpr GuidBytes IID_ID3D12STATEOBJECTPROPERTIES{
+    0x27, 0xA8, 0x5F, 0xDE, 0xF9, 0x9B, 0x26, 0x4F,
+    0x89, 0xFF, 0xD7, 0xF5, 0x6F, 0xDE, 0x38, 0x60};
+/// ID3D12StateObjectProperties1 {460caac7-1d24-446a-a184-ca67db494138}
+inline constexpr GuidBytes IID_ID3D12STATEOBJECTPROPERTIES1{
+    0xC7, 0xAA, 0x0C, 0x46, 0x24, 0x1D, 0x6A, 0x44,
+    0xA1, 0x84, 0xCA, 0x67, 0xDB, 0x49, 0x41, 0x38};
+/// ID3D12Tools {7071e1f0-e84b-4b33-974f-12fa49de65c5}
+inline constexpr GuidBytes IID_ID3D12TOOLS{
+    0xF0, 0xE1, 0x71, 0x70, 0x4B, 0xE8, 0x33, 0x4B,
+    0x97, 0x4F, 0x12, 0xFA, 0x49, 0xDE, 0x65, 0xC5};
 /// IDXGIObject {aec22fb8-76f3-4639-9be0-28eb43a67a2e}
 inline constexpr GuidBytes IID_IDXGIOBJECT{
     0xB8, 0x2F, 0xC2, 0xAE, 0xF3, 0x76, 0x39, 0x46,

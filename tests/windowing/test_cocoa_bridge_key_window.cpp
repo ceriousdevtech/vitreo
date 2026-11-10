@@ -67,8 +67,9 @@ TEST_F(CocoaBridgeTest, ShowingAChildOfAHiddenTopLevelShowsAndActivatesNothing) 
     bridge.set_message_queue(queue);
     std::vector<std::pair<HWND, bool>> transitions;
     bridge.set_native_application_activation_callback(
-        [&](HWND hwnd, bool active, bool) {
+        [&](HWND hwnd, bool active, u32) -> u32 {
             transitions.emplace_back(hwnd, active);
+            return 0;
         });
 
     WindowData top;
@@ -150,8 +151,9 @@ TEST_F(CocoaBridgeTest,
     bridge.set_message_queue(queue);
     std::vector<std::pair<HWND, bool>> transitions;
     bridge.set_native_application_activation_callback(
-        [&](HWND hwnd, bool active, bool) {
+        [&](HWND hwnd, bool active, u32) -> u32 {
             transitions.emplace_back(hwnd, active);
+            return 0;
         });
     std::vector<std::pair<HWND, bool>> focus_transitions;
     bridge.set_native_keyboard_focus_callback(
@@ -175,8 +177,9 @@ TEST_F(CocoaBridgeTest, StaleResignIgnoredAfterSiblingClaimsKey) {
     bridge.set_message_queue(queue);
     std::vector<std::pair<HWND, bool>> transitions;
     bridge.set_native_application_activation_callback(
-        [&](HWND hwnd, bool active, bool) {
+        [&](HWND hwnd, bool active, u32) -> u32 {
             transitions.emplace_back(hwnd, active);
+            return 0;
         });
     std::vector<std::pair<HWND, bool>> focus_transitions;
     bridge.set_native_keyboard_focus_callback(

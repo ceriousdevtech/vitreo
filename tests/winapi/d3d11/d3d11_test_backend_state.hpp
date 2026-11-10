@@ -66,7 +66,7 @@ struct BackendState {
     unsigned draws_naming_sampler_state{0};
     unsigned native_state_mismatches{0};
     const graphics::BackendDepthStencilState* last_depth_stencil_state{nullptr};
-    unsigned last_capture_offset{0};
+    u64 last_capture_offset{0};
     unsigned last_capture_vertex_count{0};
     unsigned last_capture_first_instance{0};
     const graphics::BackendBuffer* last_capture_buffer{nullptr};
@@ -80,7 +80,7 @@ struct BackendState {
     std::array<const graphics::BackendBuffer*,
                graphics::BACKEND_MAX_VERTEX_BUFFERS>
         last_draw_vertex_buffers{};
-    std::array<unsigned, graphics::BACKEND_MAX_VERTEX_BUFFERS>
+    std::array<u64, graphics::BACKEND_MAX_VERTEX_BUFFERS>
         last_draw_vertex_buffer_offsets{};
     std::vector<graphics::BackendVertexAttribute> last_pipeline_attributes;
     std::array<unsigned, graphics::BACKEND_MAX_VERTEX_BUFFERS>
@@ -96,7 +96,7 @@ struct BackendState {
     /// (transient buffers can be gone by the time a test looks).
     std::array<std::vector<u8>, graphics::BACKEND_MAX_COMPUTE_BUFFERS>
         last_dispatch_buffer_bytes{};
-    std::array<unsigned, graphics::BACKEND_MAX_COMPUTE_BUFFERS>
+    std::array<u64, graphics::BACKEND_MAX_COMPUTE_BUFFERS>
         last_dispatch_buffer_offsets{};
     std::array<const graphics::BackendTextureBuffer*,
                graphics::BACKEND_MAX_COMPUTE_TEXTURES>
@@ -333,7 +333,7 @@ struct BackendState {
     bool shader_stencil_export{false};
     bool last_pass_center_sample_positions{false};
     usize last_capture_buffer_bytes{0};
-    std::array<unsigned, graphics::BACKEND_MAX_VERTEX_BUFFERS>
+    std::array<u64, graphics::BACKEND_MAX_VERTEX_BUFFERS>
         last_capture_vertex_offsets{};
     /// The last capture draw itself, its pipeline, and the first 16 bytes of
     /// its capture buffer as recorded (a draw-relative capture's header).
@@ -413,7 +413,7 @@ struct BackendState {
     /// Typed buffer views: the format and element window each was created for.
     struct TextureBufferCreation {
         graphics::PixelFormat pixel_format{graphics::PixelFormat::Unknown};
-        unsigned first_element{0};
+        u64 first_element{0};
         unsigned num_elements{0};
         bool shader_write{false};
     };
@@ -448,6 +448,19 @@ struct BackendState {
     std::vector<TileCopy> tile_copies;
     /// The backend object of the tiled resource created last.
     const void* last_tiled_object{nullptr};
+    // ---- WS5 begin ----
+    /// Mesh pipelines (GS on mesh): off unless a test turns it on, so every
+    /// other test keeps the three-pass path.
+    bool mesh_supported{false};
+    bool mesh_pipeline_fails{false};
+    unsigned mesh_pipelines_created{0};
+    unsigned mesh_draws{0};
+    unsigned last_mesh_groups{0};
+    bool last_mesh_barrier{false};
+    /// The last capture draw ran in a pass whose colour target is not the
+    /// 1x1 capture target.
+    bool last_capture_in_pass{false};
+    // ---- WS5 end ----
 };
 
 }  // namespace vitreo::winapi::d3d11_test

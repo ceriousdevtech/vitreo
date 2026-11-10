@@ -30,6 +30,9 @@ void register_all_dlls(RuntimeContext& ctx, GuestMemory& memory, bool guest_is_6
     // Wire cross-manager dependencies used by kernel32 extended APIs.
     ctx.k32_ext_mgr.set_module_manager(&ctx.module_mgr);
     // The DLL search order's last step reads the guest's current PATH.
+    ctx.module_mgr.set_sxs_redirect_provider([&ctx](std::string_view name) {
+        return ctx.k32_ext_mgr.sxs_redirect_dll(name);
+    });
     ctx.module_mgr.set_path_variable_provider([&ctx]() -> std::string {
         auto value = ctx.env_mgr.get_variable("PATH");
         return value.is_ok() ? value.value() : std::string{};

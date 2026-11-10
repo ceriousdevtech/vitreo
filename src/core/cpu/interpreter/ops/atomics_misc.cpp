@@ -12,6 +12,24 @@
 
 namespace vitreo::cpu::ops {
 
+namespace {
+
+/// The destination check every CMPXCHG form makes before it reads, compares
+/// or writes anything. Windows reports a faulting CMPXCHG m8/m16/m32/m64,
+/// CMPXCHG8B or CMPXCHG16B, LOCK or not, as a WRITE access violation at the
+/// first byte the guest may not write -- for an uncommitted or NOACCESS page
+/// too, not only a read-only one, and whether or not the compare would match
+/// -- with the accumulator, flags and memory unchanged
+/// (tests/oracle_data/cmpxchg_fault_probe.expected).
+bool cmpxchg_dest_faults(ExecContext& ctx, u64 ea, u8 size) noexcept {
+    if (ctx.mem.guest_can_write(ea, size)) return false;
+    record_write_access_violation(ctx, ea, size);
+    ctx.exception = CpuException::PageFault;
+    return true;
+}
+
+}  // namespace
+
 // ============================================================================
 // CMPXCHG - Compare and Exchange
 // ============================================================================
@@ -33,8 +51,7 @@ ExecResult exec_cmpxchg(ExecContext& ctx, const DecodedInstruction& instr) noexc
     // write-back, so write-watch and cache state are untouched.
     if (is_memory_operand(instr.operands[0].type)) {
         auto probe = calc_effective_address(ctx, instr.operands[0].mem);
-        if (probe && !ctx.mem.guest_can_write(probe.value(), size)) {
-            ctx.exception = CpuException::PageFault;
+        if (probe && cmpxchg_dest_faults(ctx, probe.value(), size)) {
             return ExecResult::Exception;
         }
     }
@@ -354,6 +371,8 @@ ExecResult exec_cmpxchg8b(ExecContext& ctx, const DecodedInstruction& instr) noe
         return ExecResult::Exception;
     }
 
+    if (cmpxchg_dest_faults(ctx, addr.value(), 8)) return ExecResult::Exception;
+
     // Read 8 bytes from memory (little-endian: low dword at addr, high at addr+4)
     auto lo = ctx.mem.read_u32(addr.value());
     auto hi = ctx.mem.read_u32(addr.value() + 4);
@@ -401,11 +420,14 @@ ExecResult exec_cmpxchg16b(ExecContext& ctx, const DecodedInstruction& instr) no
         return ExecResult::Exception;
     }
 
-    // Intel SDM Vol. 2 CMPXCHG16B: m128 must be 16-byte aligned (#GP otherwise).
+    // Intel SDM Vol. 2 CMPXCHG16B: m128 must be 16-byte aligned. #GP(0),
+    // which Windows reports as a read of 0xFFFFFFFFFFFFFFFF, plain or LOCK
+    // (tests/oracle_data/cmpxchg16b_align_probe.expected).
     if ((addr.value() & 0xFu) != 0) {
-        ctx.exception = CpuException::GeneralProtection;
+        record_misaligned_operand_gp(ctx);
         return ExecResult::Exception;
     }
+    if (cmpxchg_dest_faults(ctx, addr.value(), 16)) return ExecResult::Exception;
 
     if (instr.prefixes.lock) {
         // Intel SDM Vol. 2 CMPXCHG16B + LOCK: 128-bit host RMW. Compare

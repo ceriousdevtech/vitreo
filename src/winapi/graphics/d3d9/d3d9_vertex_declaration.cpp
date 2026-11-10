@@ -231,7 +231,7 @@ void D3D9Manager::dispatch_vertex_declaration(Marshaler& m, usize slot,
             return;
         }
         (void)add_ref(entry->device);
-        if (m.write_u32(out, entry->device).is_err()) {
+        if (m.write_ptr(out, entry->device).is_err()) {
             (void)release(entry->device);
             m.set_return(D3DERR_INVALIDCALL);
             return;

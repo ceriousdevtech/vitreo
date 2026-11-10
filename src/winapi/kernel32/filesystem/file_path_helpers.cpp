@@ -50,4 +50,18 @@ std::optional<std::string> dos_device_name(std::string_view path) {
     return ascii_lower(suffix);
 }
 
+std::optional<u32> physical_drive_number(std::string_view device) {
+    static constexpr std::string_view kPrefix = "physicaldrive";
+    if (!device.starts_with(kPrefix) || device.size() == kPrefix.size() ||
+        device.size() > kPrefix.size() + 9) {
+        return std::nullopt;
+    }
+    u32 number = 0;
+    for (const char c : device.substr(kPrefix.size())) {
+        if (c < '0' || c > '9') return std::nullopt;
+        number = number * 10 + static_cast<u32>(c - '0');
+    }
+    return number;
+}
+
 } // namespace vitreo::winapi

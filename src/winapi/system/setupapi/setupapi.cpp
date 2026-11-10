@@ -38,7 +38,7 @@ DllExports create_setupapi_thunks(
     capsule::Vfs* vfs,
     RegistryThunks* registry,
     const GuestElevationState* elevation,
-    const SetupapiGuestServices* services) {
+    const SetupapiGuestServices* services, std::shared_ptr<GamepadHidCatalog> gamepads) {
     display_name_provider = default_display_name_provider(std::move(display_name_provider));
     auto state = std::make_shared<SetupapiState>();
     state->display_name_provider = display_name_provider;
@@ -46,6 +46,7 @@ DllExports create_setupapi_thunks(
     state->registry = registry;
     state->elevation = elevation;
     state->services = services;
+    state->gamepads=gamepads;
 
     DllExports exports;
     auto add = [&exports, state](const char* name, u16 bytes, void (*fn)(Marshaler&, const StatePtr&)) {
@@ -322,7 +323,7 @@ DllExports create_setupapi_thunks(
 
     // setupapi.dll re-exports part of the cfgmgr32 CM_* surface; callers
     // GetProcAddress those names from the SetupAPI handle they just loaded.
-    auto cfgmgr = create_cfgmgr32_thunks(display_name_provider, registry, elevation);
+    auto cfgmgr = create_cfgmgr32_thunks(display_name_provider, registry, elevation,gamepads);
     for (auto& entry : cfgmgr.entries) {
         const bool forwarded = std::any_of(
             std::begin(kSetupapiCmForwards), std::end(kSetupapiCmForwards),

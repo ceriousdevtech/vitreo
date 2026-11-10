@@ -17,6 +17,7 @@
 #include <cstdlib>
 #include "metal_swapchain.hpp"
 
+#include "metal_command.hpp"
 #include "metal_submit_queue.hpp"
 #include "metal_device.hpp"
 #include "graphics/common/surface_presenter.hpp"
@@ -164,11 +165,15 @@ MetalSwapchain::MetalSwapchain(const SwapchainDesc& desc)
         CALayer* host_layer = [view layer];
         // Reset / CreateDevice builds a new CAMetalLayer. A leftover layer
         // from the previous swapchain sits on top and presents as a black
-        // (or stale-sized) plate.
-        NSArray<CALayer*>* existing = [host_layer.sublayers copy];
-        for (CALayer* sub in existing) {
-            if ([sub isKindOfClass:[CAMetalLayer class]]) {
-                [sub removeFromSuperlayer];
+        // (or stale-sized) plate. A composition layer is one rectangle on
+        // a shared view: sibling CAMetalLayers belong to other swapchains
+        // and stay. Destroy still removes only this swapchain's layer.
+        if (!desc.preserve_sibling_metal_layers) {
+            NSArray<CALayer*>* existing = [host_layer.sublayers copy];
+            for (CALayer* sub in existing) {
+                if ([sub isKindOfClass:[CAMetalLayer class]]) {
+                    [sub removeFromSuperlayer];
+                }
             }
         }
         // VtrMetalView is flipped (Win32 Y-down). Match the host layer so
@@ -240,6 +245,16 @@ MetalSwapchain::MetalSwapchain(const SwapchainDesc& desc)
 }
 
 MetalSwapchain::~MetalSwapchain() {
+    // No new acquire after this point (start_drawable_acquire checks it
+    // under the same lock it enqueues under), so the queue drain below is
+    // the last block that can reach this object.
+    {
+        std::lock_guard<std::mutex> lock(m_drawable_mu);
+        m_closing = true;
+    }
+    // Wake a worker blocked on a deferred blit before waiting for it. The
+    // acquire queue is synced below, after the worker has left present.
+    abandon_blits();
     // Present staging is owned per swapchain (DXGI: back buffers belong to the
     // swap chain). Release ours before the object goes away.
     MetalSubmitQueue::instance().forget_swapchain(this);
@@ -295,6 +310,13 @@ void MetalSwapchain::apply_layer_frame_on_main() {
         layer.magnificationFilter = filter;
         layer.minificationFilter = filter;
         [CATransaction commit];
+        VITREO_TRACE("[swapchain] refit layer %.0fx%.0f%+.0f%+.0f view=%.0fx%.0f "
+                     "window=%.0fx%.0f guest=%ux%u\n",
+                     frame.size.width, frame.size.height, frame.origin.x,
+                     frame.origin.y, bounds.size.width, bounds.size.height,
+                     view.window ? view.window.frame.size.width : 0.0,
+                     view.window ? view.window.frame.size.height : 0.0,
+                     m_width, m_height);
         static bool logged = false;
         if (!logged) {
             logged = true;
@@ -422,30 +444,137 @@ bool MetalSwapchain::configure_composition_layer(
     return configured;
 }
 
+void MetalSwapchain::abandon_blits() {
+    std::vector<LayerBlit> dropped;
+    {
+        std::lock_guard<std::mutex> lock(m_drawable_mu);
+        dropped.swap(m_blits);
+        for (LayerBlit& blit : dropped) {
+            if (blit.held != nullptr) *blit.held = 0;
+        }
+        m_drawable_cv.notify_all();
+    }
+    for (const LayerBlit& blit : dropped) {
+        if (blit.src != nullptr) CFRelease(blit.src);
+    }
+}
+
+void MetalSwapchain::wait_while_held(u8* held) {
+    if (held == nullptr) return;
+    std::unique_lock<std::mutex> lock(m_drawable_mu);
+    m_drawable_cv.wait(lock, [&] { return *held == 0; });
+}
+
+void MetalSwapchain::wait_for_blit_slot() {
+    std::unique_lock<std::mutex> lock(m_drawable_mu);
+    m_drawable_cv.wait(lock, [&] { return m_blits.size() < 2; });
+}
+
+void MetalSwapchain::note_acquired_drawable(void* drawable) {
+    {
+        std::lock_guard<std::mutex> lock(m_drawable_mu);
+        if (m_pending_drawable != nullptr) {
+            CFRelease(m_pending_drawable);
+            m_pending_drawable = nullptr;
+        }
+        m_pending_drawable = drawable;
+        m_acquire_in_flight = false;
+        m_drawable_cv.notify_all();
+    }
+    pump_blits();
+}
+
+void MetalSwapchain::pump_blits() {
+    std::lock_guard<std::mutex> commit(m_blit_commit_mu);
+    for (;;) {
+        LayerBlit blit{};
+        void* drawable = nullptr;
+        {
+            std::lock_guard<std::mutex> lock(m_drawable_mu);
+            if (m_blits.empty() || m_pending_drawable == nullptr) return;
+            drawable = m_pending_drawable;
+            m_pending_drawable = nullptr;
+            blit = m_blits.front();
+            m_blits.erase(m_blits.begin());
+            m_drawable_cv.notify_all();
+        }
+        commit_layer_blit(drawable, blit);
+    }
+}
+
+void MetalSwapchain::commit_layer_blit(void* drawable, LayerBlit blit) {
+    @autoreleasepool {
+        // The drawable stays this function's: m_current_drawable is the
+        // guest present thread's, and this runs on whichever thread pumped
+        // (often the acquire queue, concurrently with next_drawable). Sharing
+        // it released another thread's drawable, or CFRelease(NULL) -- the
+        // SIGTRAP in CoreFoundation the swap-chain probe's present hit.
+        void* queue = MetalDevice::instance().command_queue_ptr();
+        id<CAMetalDrawable> metal =
+            (__bridge id<CAMetalDrawable>)drawable;
+        const u32 dest_w =
+            metal != nil ? static_cast<u32>(metal.texture.width) : 0u;
+        const u32 dest_h =
+            metal != nil ? static_cast<u32>(metal.texture.height) : 0u;
+        const u32 blit_w = std::min(blit.width, dest_w);
+        const u32 blit_h = std::min(blit.height, dest_h);
+        if (queue != nullptr && blit.src != nullptr && metal != nil &&
+            blit_w > 0 && blit_h > 0) {
+            MetalCommandRecorder recorder(queue);
+            recorder.ensure_begun();
+            recorder.blit_copy_texture(
+                blit.src, (__bridge void*)metal.texture, blit_w, blit_h);
+            present_drawable(drawable, recorder.command_buffer(),
+                             blit.sync_interval);
+            recorder.commit();
+        }
+        if (drawable != nullptr) CFRelease(drawable);
+    }
+    if (blit.src != nullptr) CFRelease(blit.src);
+    {
+        std::lock_guard<std::mutex> lock(m_drawable_mu);
+        if (blit.held != nullptr) *blit.held = 0;
+        m_drawable_cv.notify_all();
+    }
+}
+
+bool MetalSwapchain::enqueue_layer_blit(void* src, u32 width, u32 height,
+                                        u32 sync_interval, u8* held) {
+    if (src == nullptr || held == nullptr) return false;
+    {
+        std::lock_guard<std::mutex> lock(m_drawable_mu);
+        if (m_blits.size() >= 2) return false;
+        *held = 1;
+        CFRetain(src);
+        m_blits.push_back(
+            LayerBlit{src, width, height, sync_interval, held});
+    }
+    pump_blits();
+    start_drawable_acquire();
+    return true;
+}
+
 void MetalSwapchain::start_drawable_acquire() {
     CAMetalLayer* layer = (__bridge CAMetalLayer*)m_layer;
     if (layer == nullptr) return;
-    {
-        std::lock_guard<std::mutex> lock(m_drawable_mu);
-        // Already have one waiting, or already asking for one.
-        if (m_pending_drawable != nullptr || m_acquire_in_flight) return;
-        m_acquire_in_flight = true;
+    // Enqueued while holding the lock the destructor marks m_closing under:
+    // a block is either ahead of the destructor's drain or never queued. A
+    // block queued after that drain ran note_acquired_drawable on a freed
+    // object (std::mutex::lock threw, SIGABRT, swap-chain probe resize).
+    std::lock_guard<std::mutex> lock(m_drawable_mu);
+    // Closing, already have one waiting, or already asking for one.
+    if (m_closing || m_pending_drawable != nullptr || m_acquire_in_flight) {
+        return;
     }
+    m_acquire_in_flight = true;
     dispatch_queue_t queue = (__bridge dispatch_queue_t)m_acquire_queue;
     if (queue == nullptr) {
         queue = dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0);
     }
     dispatch_async(queue, ^{
         id<CAMetalDrawable> drawable = [layer nextDrawable];
-        std::lock_guard<std::mutex> lock(m_drawable_mu);
-        if (m_pending_drawable) {
-            CFRelease(m_pending_drawable);
-            m_pending_drawable = nullptr;
-        }
-        if (drawable) {
-            m_pending_drawable = (__bridge_retained void*)drawable;
-        }
-        m_acquire_in_flight = false;
+        note_acquired_drawable(
+            drawable != nil ? (__bridge_retained void*)drawable : nullptr);
     });
 }
 
@@ -473,48 +602,20 @@ void* MetalSwapchain::next_drawable() {
         // blocking inside nextDrawable starves the guest. Acquire off-main.
         // INTERVAL_IMMEDIATE: drain pending sources (timeout 0) and skip the
         // frame if no drawable is ready. INTERVAL_ONE may wait one refresh.
-        // True mailbox off the main thread: take a drawable ONLY if the async
-        // acquisition has already produced one, otherwise start one and skip
-        // this frame immediately. No semaphore wait, and no CFRunLoop spin
-        // either -- the recycle is driven by the MAIN run loop, so draining
-        // the worker's own run loop cannot produce a drawable and only burns
-        // the time the guest is waiting on.
+        // Off the main thread, take a drawable only when one is already
+        // pending. Waiting here parks the present worker inside nextDrawable,
+        // and that wait backs up the guest's submit. The next frame is primed
+        // from present() via start_drawable_acquire.
         if (pthread_main_np() == 0) {
             if (void* pending = take_pending()) {
                 m_current_drawable = pending;
                 return pending;
             }
-            bool start = false;
-            {
-                std::lock_guard<std::mutex> lock(m_drawable_mu);
-                if (!m_acquire_in_flight) {
-                    m_acquire_in_flight = true;
-                    start = true;
-                }
-            }
-            if (start) {
-                dispatch_queue_t queue =
-                    (__bridge dispatch_queue_t)m_acquire_queue;
-                if (queue == nullptr) {
-                    queue = dispatch_get_global_queue(
-                        QOS_CLASS_USER_INITIATED, 0);
-                }
-                dispatch_async(queue, ^{
-                    id<CAMetalDrawable> drawable = [layer nextDrawable];
-                    std::lock_guard<std::mutex> lock(m_drawable_mu);
-                    if (m_pending_drawable) {
-                        CFRelease(m_pending_drawable);
-                        m_pending_drawable = nullptr;
-                    }
-                    if (drawable) {
-                        m_pending_drawable =
-                            (__bridge_retained void*)drawable;
-                    }
-                    m_acquire_in_flight = false;
-                });
-            }
+            // One acquire at a time, never after the destructor started
+            // (start_drawable_acquire).
+            start_drawable_acquire();
             vitreo::graphics::note_drawable_skip();
-            return nullptr;   // skipped frame; caller still returns D3D_OK
+            return nullptr;
         }
         if (pthread_main_np() != 0) {
             if (void* pending = take_pending()) {
@@ -522,37 +623,9 @@ void* MetalSwapchain::next_drawable() {
                 return pending;
             }
 
-            bool start_acquire = false;
-            {
-                std::lock_guard<std::mutex> lock(m_drawable_mu);
-                if (!m_acquire_in_flight) {
-                    m_acquire_in_flight = true;
-                    start_acquire = true;
-                }
-            }
-            if (start_acquire) {
-                dispatch_queue_t queue =
-                    (__bridge dispatch_queue_t)m_acquire_queue;
-                if (queue == nullptr) {
-                    // Not Present-skip; scheduling only so guest CPU can
-                    // compete during vsync-off load storms.
-                    queue = dispatch_get_global_queue(
-                        QOS_CLASS_USER_INITIATED, 0);
-                }
-                dispatch_async(queue, ^{
-                    id<CAMetalDrawable> drawable = [layer nextDrawable];
-                    std::lock_guard<std::mutex> lock(m_drawable_mu);
-                    if (m_pending_drawable) {
-                        CFRelease(m_pending_drawable);
-                        m_pending_drawable = nullptr;
-                    }
-                    if (drawable) {
-                        m_pending_drawable =
-                            (__bridge_retained void*)drawable;
-                    }
-                    m_acquire_in_flight = false;
-                });
-            }
+            // One acquire at a time, never after the destructor started
+            // (start_drawable_acquire).
+            start_drawable_acquire();
 
             // Drain already-queued sources so CA can recycle a drawable.
             // Timeout 0: do not park the guest here. Learn D3DPRESENT
@@ -590,37 +663,9 @@ void* MetalSwapchain::next_drawable() {
                 m_current_drawable = pending;
                 return pending;
             }
-            bool start_acquire = false;
-            {
-                std::lock_guard<std::mutex> lock(m_drawable_mu);
-                if (!m_acquire_in_flight) {
-                    m_acquire_in_flight = true;
-                    start_acquire = true;
-                }
-            }
-            if (start_acquire) {
-                dispatch_queue_t queue =
-                    (__bridge dispatch_queue_t)m_acquire_queue;
-                if (queue == nullptr) {
-                    // Not Present-skip; scheduling only so guest CPU can
-                    // compete during vsync-off load storms.
-                    queue = dispatch_get_global_queue(
-                        QOS_CLASS_USER_INITIATED, 0);
-                }
-                dispatch_async(queue, ^{
-                    id<CAMetalDrawable> drawable = [layer nextDrawable];
-                    std::lock_guard<std::mutex> lock(m_drawable_mu);
-                    if (m_pending_drawable) {
-                        CFRelease(m_pending_drawable);
-                        m_pending_drawable = nullptr;
-                    }
-                    if (drawable) {
-                        m_pending_drawable =
-                            (__bridge_retained void*)drawable;
-                    }
-                    m_acquire_in_flight = false;
-                });
-            }
+            // One acquire at a time, never after the destructor started
+            // (start_drawable_acquire).
+            start_drawable_acquire();
             return nullptr;
         }
 
@@ -668,14 +713,21 @@ void MetalSwapchain::request_layer_refit() {
 }
 
 void MetalSwapchain::present(void* cmd_buf, u32 sync_interval) {
-    @autoreleasepool {
-        if (!m_current_drawable || !cmd_buf) {
-            std::fprintf(stderr, "[swapchain] WARNING: present with null drawable or command buffer\n");
-            return;
-        }
+    if (!m_current_drawable || !cmd_buf) {
+        std::fprintf(stderr, "[swapchain] WARNING: present with null drawable or command buffer\n");
+        return;
+    }
+    void* current = m_current_drawable;
+    m_current_drawable = nullptr;
+    present_drawable(current, cmd_buf, sync_interval);
+    CFRelease(current);
+}
 
+void MetalSwapchain::present_drawable(void* drawable_ref, void* cmd_buf,
+                                      u32 sync_interval) {
+    @autoreleasepool {
         id<MTLCommandBuffer> buffer = (__bridge id<MTLCommandBuffer>)cmd_buf;
-        id<CAMetalDrawable> drawable = (__bridge id<CAMetalDrawable>)m_current_drawable;
+        id<CAMetalDrawable> drawable = (__bridge id<CAMetalDrawable>)drawable_ref;
 
         // Cap presentation by RATE, not by the panel.
         //
@@ -777,9 +829,6 @@ void MetalSwapchain::present(void* cmd_buf, u32 sync_interval) {
         // maximumDrawableCount is the swapchain's buffer count, so holding one
         // pending plus one current still leaves the pool a spare.
         start_drawable_acquire();
-
-        CFRelease(m_current_drawable);
-        m_current_drawable = nullptr;
     }
 }
 

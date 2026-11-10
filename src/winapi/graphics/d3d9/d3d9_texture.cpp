@@ -149,7 +149,7 @@ void D3D9Manager::dispatch_texture(Marshaler& m, usize slot, u32 self) {
     case 18: { // GetSurfaceLevel
         const u32 level = static_cast<u32>(m.arg(1));
         const GuestAddr out = m.arg_ptr(2);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         const u32 surface = level_surface(level);
         if (out == 0 || surface == 0) {
             m.set_return(D3DERR_INVALIDCALL);
@@ -166,7 +166,7 @@ void D3D9Manager::dispatch_texture(Marshaler& m, usize slot, u32 self) {
                          self, surface, level,
                          level_entry != nullptr ? level_entry->ref_count : 0u);
         }
-        if (m.write_u32(out, surface).is_err()) {
+        if (m.write_ptr(out, surface).is_err()) {
             (void)release(surface);
             m.set_return(D3DERR_INVALIDCALL);
             return;

@@ -1,0 +1,34 @@
+{
+  "bits": 32,
+  "source": [
+    "Windows SDK10.0.26100.0 um/wingdi.h; tests/oracle_data/get_random_rgn_sdk.txt",
+    "Windows real gdi32.dll export table; same excerpt",
+    "tools/oracle_probe/get_random_rgn_visible32.expected (selectors)"
+  ],
+  "selectors": {
+    "CLIPRGN": 1,
+    "METARGN": 2,
+    "APIRGN": 3,
+    "EARLY_NULL_SELECTOR": 5
+  },
+  "exports": {
+    "GetMetaRgn": {
+      "ordinal": 1714,
+      "stdcall_bytes": 8
+    },
+    "SetMetaRgn": {
+      "ordinal": 1939,
+      "stdcall_bytes": 4
+    }
+  },
+  "constants": {
+    "ERROR": 0,
+    "NULLREGION": 1,
+    "SIMPLEREGION": 2,
+    "COMPLEXREGION": 3,
+    "RGN_OR": 2,
+    "RGN_XOR": 3,
+    "RGN_COPY": 5,
+    "MM_ANISOTROPIC": 8
+  }
+}

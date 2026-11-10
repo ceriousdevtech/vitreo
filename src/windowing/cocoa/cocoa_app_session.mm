@@ -105,8 +105,8 @@ uint64_t process_birth(pid_t pid) {
     } else {
         members[pid] = {observed_birth,
             [info[@"active"] unsignedLongLongValue],
-            [info[@"hwnd"] unsignedIntValue], [info[@"root"] boolValue],
-            [info[@"tray"] boolValue], observed_group};
+            [info[@"hwnd"] unsignedIntValue], [info[@"root"] boolValue] == YES,
+            [info[@"tray"] boolValue] == YES, observed_group};
     }
     if (pid != getpid() && [kind isEqualToString:@"hello"])
         [self publish:@"state"];

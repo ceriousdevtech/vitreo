@@ -20,6 +20,9 @@ constexpr u32 SPIRV_BOUND_BASE = 1000; // ID allocation starts here
 // SPIR-V Opcodes (subset needed for basic shaders)
 enum class SpvOp : u16 {
     OpNop = 0,
+    // OpUndef: an out-of-bounds immediate atomic's result (D3D11.3
+    // 22.17.19–22.17.28). Value checked by tools/audit_spirv_constants.py.
+    OpUndef = 1,
     OpSource = 3,
     OpName = 5,
     OpMemberName = 6,
@@ -47,6 +50,7 @@ enum class SpvOp : u16 {
     OpTypeFunction = 33,
     OpConstant = 43,
     OpConstantComposite = 44,
+    OpSpecConstantFalse = 49,
     OpFunction = 54,
     OpFunctionParameter = 55,
     OpFunctionEnd = 56,
@@ -55,6 +59,7 @@ enum class SpvOp : u16 {
     OpLoad = 61,
     OpStore = 62,
     OpAccessChain = 65,
+    OpPtrAccessChain = 67,
     OpDecorate = 71,
     OpDecorateString = 5632,
     OpMemberDecorate = 72,
@@ -77,6 +82,8 @@ enum class SpvOp : u16 {
     OpConvertFToS = 110,
     OpConvertSToF = 111,
     OpConvertUToF = 112,
+    // Raster emulation's 64-bit edge functions (int32 -> int64).
+    OpSConvert = 114,
     OpBitcast = 124,
     OpSNegate = 126,
     OpFNegate = 127,
@@ -95,6 +102,7 @@ enum class SpvOp : u16 {
     OpMatrixTimesVector = 145,
     OpMatrixTimesMatrix = 146,
     OpDot = 148,
+    OpIAddCarry = 149,
     OpUMulExtended = 151,
     OpSMulExtended = 152,
     OpIsNan = 156,
@@ -146,6 +154,7 @@ enum class SpvOp : u16 {
     OpUGreaterThanEqual = 174,
     OpSGreaterThanEqual = 175,
     OpULessThan = 176,
+    OpSLessThanEqual = 179,
     OpSLessThan = 177,
     OpULessThanEqual = 178,
     OpFOrdEqual = 180,
@@ -167,8 +176,65 @@ enum class SpvOp : u16 {
     OpEndPrimitive = 219,
     OpGroupNonUniformBallot = 339,
     OpGroupNonUniformQuadBroadcast = 365,
+    // Shader model 6 wave and quad operations, 64-bit integers and halves
+    // (dxbc_to_spirv_vitreo_ext.cpp).
+    OpSDiv = 135,
+    OpSRem = 138,
+    OpUConvert = 113,
+    // OpSConvert = 114 is declared above (raster emulation shares it).
+    OpFConvert = 115,
+    OpSGreaterThan = 173,
+    // OpSLessThanEqual = 179 is declared above (the raw typed-buffer path
+    // shares it).
+    OpGroupNonUniformElect = 333,
+    OpGroupNonUniformAll = 334,
+    OpGroupNonUniformAny = 335,
+    OpGroupNonUniformAllEqual = 336,
+    OpGroupNonUniformBroadcast = 337,
+    OpGroupNonUniformBroadcastFirst = 338,
+    OpGroupNonUniformBallotBitCount = 342,
+    OpGroupNonUniformShuffle = 345,
+    OpGroupNonUniformIAdd = 349,
+    OpGroupNonUniformFAdd = 350,
+    OpGroupNonUniformIMul = 351,
+    OpGroupNonUniformFMul = 352,
+    OpGroupNonUniformSMin = 353,
+    OpGroupNonUniformUMin = 354,
+    OpGroupNonUniformFMin = 355,
+    OpGroupNonUniformSMax = 356,
+    OpGroupNonUniformUMax = 357,
+    OpGroupNonUniformFMax = 358,
+    OpGroupNonUniformBitwiseAnd = 359,
+    OpGroupNonUniformBitwiseOr = 360,
+    OpGroupNonUniformBitwiseXor = 361,
+    OpGroupNonUniformQuadSwap = 366,
     OpControlBarrier = 224,
     OpMemoryBarrier = 225,
+    // SPV_KHR_ray_query (inline ray tracing, DXR 1.1 RayQuery).
+    OpTypeRayQueryKHR = 4472,
+    OpRayQueryInitializeKHR = 4473,
+    OpRayQueryTerminateKHR = 4474,
+    OpRayQueryGenerateIntersectionKHR = 4475,
+    OpRayQueryConfirmIntersectionKHR = 4476,
+    OpRayQueryProceedKHR = 4477,
+    OpRayQueryGetIntersectionTypeKHR = 4479,
+    OpTypeAccelerationStructureKHR = 5341,
+    OpRayQueryGetRayTMinKHR = 6016,
+    OpRayQueryGetRayFlagsKHR = 6017,
+    OpRayQueryGetIntersectionTKHR = 6018,
+    OpRayQueryGetIntersectionInstanceCustomIndexKHR = 6019,
+    OpRayQueryGetIntersectionInstanceIdKHR = 6020,
+    OpRayQueryGetIntersectionGeometryIndexKHR = 6022,
+    OpRayQueryGetIntersectionPrimitiveIndexKHR = 6023,
+    OpRayQueryGetIntersectionBarycentricsKHR = 6024,
+    OpRayQueryGetIntersectionFrontFaceKHR = 6025,
+    OpRayQueryGetIntersectionCandidateAABBOpaqueKHR = 6026,
+    OpRayQueryGetIntersectionObjectRayDirectionKHR = 6027,
+    OpRayQueryGetIntersectionObjectRayOriginKHR = 6028,
+    OpRayQueryGetWorldRayDirectionKHR = 6029,
+    OpRayQueryGetWorldRayOriginKHR = 6030,
+    OpRayQueryGetIntersectionObjectToWorldKHR = 6031,
+    OpRayQueryGetIntersectionWorldToObjectKHR = 6032,
 };
 
 // GLSL.std.450 extended instructions used by this translator.
@@ -202,6 +268,9 @@ constexpr u32 kGlslStd450InterpolateAtSample = 77;
 constexpr u32 kGlslStd450InterpolateAtOffset = 78;
 
 enum class SpvCapability : u32 {
+    // SPV_KHR_physical_storage_buffer (typed buffer views read as raw
+    // memory, dxbc_to_spirv_typed_raw.cpp).
+    PhysicalStorageBufferAddresses = 5347,
     Shader = 1,
     Geometry = 2,
     Tessellation = 3,
@@ -209,18 +278,31 @@ enum class SpvCapability : u32 {
     ImageGatherExtended = 25,
     ClipDistance = 32,
     SampleRateShading = 35,
+    // Raster emulation's exact 16.8 edge functions (64-bit integers).
+    Int64 = 11,
+    Int8 = 39,
     MultiViewport = 57,
     Sampled1D = 43,
     SampledBuffer = 46,
     ImageBuffer = 47,
     ImageMSArray = 48,
     ImageQuery = 50,
+    // The MinLod image operand: sample_*_cl's per-sample LOD clamp.
+    MinLod = 42,
     DerivativeControl = 51,
     InterpolationFunction = 52,
     GroupNonUniform = 61,
     // PSInvocations counting: a subgroup ballot of the counted lanes.
     GroupNonUniformBallot = 64,
     GroupNonUniformQuad = 68,
+    // Shader model 6 waves (vote, arithmetic, shuffle), Int64ShaderOps and
+    // native 16-bit types.
+    GroupNonUniformVote = 62,
+    GroupNonUniformArithmetic = 63,
+    GroupNonUniformShuffle = 65,
+    Float16 = 9,
+    // Int64 = 11 is declared above (raster emulation shares it).
+    Int16 = 22,
     StorageImageReadWithoutFormat = 55,
     StorageImageWriteWithoutFormat = 56,
     // Framebuffer-fetch reads of render targets (the logic-op variant).
@@ -231,6 +313,7 @@ enum class SpvCapability : u32 {
     DrawParameters = 4427,
     StencilExportEXT = 5013,
     DemoteToHelperInvocationEXT = 5379,
+    FragmentBarycentricKHR = 5284,
     // Shader model 5.1 descriptor arrays (SPIR-V 1.5 core, from
     // SPV_EXT_descriptor_indexing): indexing an array of descriptors with a
     // dynamically uniform value, an unbounded (runtime) descriptor array,
@@ -249,6 +332,7 @@ enum class SpvCapability : u32 {
     StorageImageArrayNonUniformIndexing = 5309,
     UniformTexelBufferArrayNonUniformIndexing = 5311,
     StorageTexelBufferArrayNonUniformIndexing = 5312,
+    RayQueryKHR = 4472,
 };
 
 enum class SpvExecutionModel : u32 {
@@ -300,6 +384,9 @@ enum class SpvStorageClass : u32 {
     Image = 11,
     PushConstant = 9,
     StorageBuffer = 12,
+    // SPV_KHR_physical_storage_buffer: memory reached through a 64-bit
+    // device address (a typed buffer view read as raw memory).
+    PhysicalStorageBuffer = 5349,
 };
 
 enum class SpvDecoration : u32 {
@@ -312,6 +399,7 @@ enum class SpvDecoration : u32 {
     Location = 30,
     Binding = 33,
     DescriptorSet = 34,
+    SpecId = 1,
     BuiltIn = 11,
     Flat = 14,
     Block = 2,
@@ -346,12 +434,15 @@ enum class SpvBuiltIn : u32 {
     LocalInvocationId = 27,
     GlobalInvocationId = 28,
     LocalInvocationIndex = 29,
+    SubgroupSize = 36,
     SubgroupLocalInvocationId = 41,
     VertexIndex = 42,
     InstanceIndex = 43,
     BaseVertex = 4424,
     BaseInstance = 4425,
     FragStencilRefEXT = 5014,
+    BaryCoordKHR = 5286,
+    BaryCoordNoPerspKHR = 5287,
 };
 
 enum class SpvDim : u32 {

@@ -145,7 +145,7 @@ void add_gdi32_dc_state_palette_exports(DllExports& exports, GdiManager& mgr) {
         m.set_return(color);
     }, 4});
 
-    // --- Pinball.exe palette & DIB stubs ---
+    // --- Palette and DIB operations ---
 
     // CreatePalette(lpLogPalette) → HPALETTE
     exports.entries.push_back({"CreatePalette", 0, [&mgr](Marshaler& m) {
@@ -217,12 +217,11 @@ void add_gdi32_dc_state_palette_exports(DllExports& exports, GdiManager& mgr) {
 
     // GetSystemPaletteEntries(hdc, iStart, cEntries, pPE) → UINT
     exports.entries.push_back({"GetSystemPaletteEntries", 0, [&mgr](Marshaler& m) {
-        if (m.arg(0) == 0) { set_last_error(error_codes::ERROR_INVALID_HANDLE); m.set_return(0); return; }
         auto hdc = static_cast<Handle>(m.arg(0));
         auto iStart = static_cast<u32>(m.arg(1));
         auto cEntries = static_cast<u32>(m.arg(2));
         auto pPE = m.arg_ptr(3);
-        auto count = mgr.get_system_palette_entries(hdc, iStart, cEntries, pPE);
+        auto count = mgr.get_system_palette_entries(hdc, iStart, cEntries, pPE, &m);
         m.set_return(static_cast<u64>(count));
     }, 16});
 
@@ -248,46 +247,11 @@ void add_gdi32_dc_state_palette_exports(DllExports& exports, GdiManager& mgr) {
     // lpbInit leaves the HBITMAP empty, and BitBlt/flush presents a blank
     // window.
     exports.entries.push_back({"CreateDIBitmap", 0, [&mgr](Marshaler& m) {
-        auto hdc     = static_cast<Handle>(m.arg(0));
-        auto lpbmih  = m.arg_ptr(1);
-        auto fdwInit = static_cast<u32>(m.arg(2));
-        auto lpbInit = static_cast<GuestAddr>(m.arg(3));
-        auto lpbmi   = static_cast<GuestAddr>(m.arg(4));
-        auto fuUsage = static_cast<u32>(m.arg(5));
-        if (hdc == 0 && lpbmih == 0) {
-            set_last_error(error_codes::ERROR_INVALID_PARAMETER);
-            m.set_return(0);
-            return;
-        }
-        constexpr u32 CBM_INIT = 0x04;
-
-        // Read width and height from BITMAPINFOHEADER (biWidth at +4, biHeight at +8)
-        i32 width = 1, height = 1;
-        if (lpbmih) {
-            auto w_r = m.read_u32(lpbmih + 4);
-            auto h_r = m.read_u32(lpbmih + 8);
-            if (w_r.is_ok()) width = static_cast<i32>(w_r.value());
-            if (h_r.is_ok()) height = static_cast<i32>(h_r.value());
-            if (height < 0) height = -height; // top-down DIB
-            if (width < 0) width = -width;
-        }
-        if (width <= 0) width = 1;
-        if (height <= 0) height = 1;
-
-        auto h = mgr.create_compatible_bitmap(hdc, width, height);
-        if (h != 0 && (fdwInit & CBM_INIT) != 0 && lpbInit != 0 && lpbmi != 0) {
-            // Prefer full BITMAPINFO at lpbmi (color table + bpp); fall back to
-            // the info header alone when callers pass the same pointer twice.
-            const GuestAddr bmi = lpbmi != 0 ? lpbmi : lpbmih;
-            (void)mgr.set_dib_bits(hdc, h, 0, static_cast<u32>(height),
-                                   lpbInit, bmi, fuUsage);
-        }
-        VITREO_TRACE("[gdi] CreateDIBitmap %dx%d init=0x%x bits=0x%llx "
-                     "bmi=0x%llx -> 0x%x\n",
-                     width, height, fdwInit,
-                     static_cast<unsigned long long>(lpbInit),
-                     static_cast<unsigned long long>(lpbmi), h);
-        m.set_return(static_cast<u64>(h));
+        u32 error=0;
+        const Handle bitmap=mgr.create_dib_bitmap(static_cast<Handle>(m.arg(0)),
+            m.arg_ptr(1),m.arg32(2),m.arg_ptr(3),m.arg_ptr(4),m.arg32(5),&error);
+        if(error!=0)set_last_error(error);
+        m.set_return(bitmap);
     }, 24});
 
     // StretchDIBits(hdc,xD,yD,wD,hD,xS,yS,wS,hS,lpBits,lpBMI,iUsage,dwRop) → int

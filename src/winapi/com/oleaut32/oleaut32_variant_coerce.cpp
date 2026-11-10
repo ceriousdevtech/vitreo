@@ -10,6 +10,13 @@
 #include "winapi/com/oleaut32/oleaut32_shared_internal.hpp"
 #include "winapi/kernel32/memory/memory.hpp"
 #include "winapi/core/marshaler.hpp"
+#include <array>
+#include <cctype>
+#include <cerrno>
+#include <climits>
+#include <cmath>
+#include <cstdint>
+#include <mutex>
 
 #include <algorithm>
 #include <array>
@@ -26,6 +33,215 @@
 
 namespace vitreo::winapi {
 
+namespace {
+
+// VARTYPEs (wtypes.h) the numeric coercion core handles.
+constexpr u16 kVtCy = 6, kVtDate = 7, kVtError = 10,
+              kVtI8 = 20, kVtUi8 = 21, kVtInt = 22, kVtUint = 23;
+constexpr u32 kDispOverflow   = 0x8002000Au;
+constexpr u32 kDispBadVarType = 0x80020008u;
+
+/// A VARIANT value on its way between numeric types: an exact integer
+/// (signed, or unsigned above INT64_MAX), a floating value, or a currency
+/// (int64 scaled by 10,000).
+struct Number {
+    enum class Kind { Signed, Unsigned, Real, Currency } kind{Kind::Signed};
+    i64 s{0};
+    u64 u{0};
+    double d{0.0};
+};
+
+[[nodiscard]] bool numeric_vt(u16 vt) {
+    switch (vt) {
+    case VT_I1: case VT_UI1: case VT_I2: case VT_UI2: case VT_I4: case VT_UI4:
+    case kVtI8: case kVtUi8: case kVtInt: case kVtUint: case VT_R4: case VT_R8:
+    case kVtCy: case kVtDate: case VT_BOOL:
+        return true;
+    default:
+        return false;
+    }
+}
+
+/// VARTYPEs a VARIANT may hold (wtypes.h "V" entries) — anything else is
+/// DISP_E_BADVARTYPE (measured: Ints.badvt, vt 0x7F).
+[[nodiscard]] bool variant_vt_valid(u16 vt) {
+    const u16 base = static_cast<u16>(vt & 0x0FFF);
+    if ((vt & 0x8000) != 0 || (vt & 0x1000) != 0) return false;
+    if (base <= 14) return true;                 // EMPTY .. DECIMAL
+    if (base >= 16 && base <= 23) return true;   // I1 .. UINT
+    return base == 36 || base == 37 || base == 38; // RECORD, INT_PTR, UINT_PTR
+}
+
+[[nodiscard]] Number read_number(u16 vt, const u8* payload) {
+    Number n;
+    auto load = [&](auto value) { std::memcpy(&value, payload, sizeof value); return value; };
+    switch (vt) {
+    case VT_I1: n.s = load(i8{}); break;
+    case VT_UI1: n.s = load(u8{}); break;
+    case VT_I2: case VT_BOOL: n.s = load(i16{}); break;
+    case VT_UI2: n.s = load(u16{}); break;
+    case VT_I4: case kVtInt: n.s = load(i32{}); break;
+    case VT_UI4: case kVtUint: n.s = load(u32{}); break;
+    case kVtI8: n.s = load(i64{}); break;
+    case kVtUi8: {
+        const u64 v = load(u64{});
+        if (v > static_cast<u64>(INT64_MAX)) { n.kind = Number::Kind::Unsigned; n.u = v; }
+        else n.s = static_cast<i64>(v);
+        break;
+    }
+    case VT_R4: n.kind = Number::Kind::Real; n.d = load(float{}); break;
+    case VT_R8: case kVtDate: n.kind = Number::Kind::Real; n.d = load(double{}); break;
+    case kVtCy: n.kind = Number::Kind::Currency; n.s = load(i64{}); break;
+    default: break; // VT_EMPTY: zero
+    }
+    return n;
+}
+
+/// Round half to even (the Automation conversions' rounding).
+[[nodiscard]] double round_even(double v) { return std::nearbyint(v); }
+
+[[nodiscard]] double as_real(const Number& n) {
+    switch (n.kind) {
+    case Number::Kind::Signed: return static_cast<double>(n.s);
+    case Number::Kind::Unsigned: return static_cast<double>(n.u);
+    case Number::Kind::Real: return n.d;
+    case Number::Kind::Currency: return static_cast<double>(n.s) / 10000.0;
+    }
+    return 0.0;
+}
+
+/// Integer value of `n` rounded half-to-even into [lo, hi] (as __int128).
+[[nodiscard]] bool as_integer(const Number& n, __int128 lo, __int128 hi, __int128& out) {
+    __int128 v = 0;
+    switch (n.kind) {
+    case Number::Kind::Signed: v = n.s; break;
+    case Number::Kind::Unsigned: v = static_cast<__int128>(n.u); break;
+    case Number::Kind::Real: {
+        if (!std::isfinite(n.d)) return false;
+        const double r = round_even(n.d);
+        if (r < -1.8446744073709552e19 || r > 1.8446744073709552e19) return false;
+        v = static_cast<__int128>(r);
+        break;
+    }
+    case Number::Kind::Currency: {
+        i64 q = n.s / 10000;
+        const i64 rem = n.s % 10000;
+        const i64 mag = rem < 0 ? -rem : rem;
+        if (mag > 5000 || (mag == 5000 && (q & 1) != 0)) q += rem < 0 ? -1 : 1;
+        v = q;
+        break;
+    }
+    }
+    if (v < lo || v > hi) return false;
+    out = v;
+    return true;
+}
+
+/// Convert `n` to `target`, writing the payload into `dst` (16 bytes).
+/// Returns S_OK or DISP_E_OVERFLOW.
+[[nodiscard]] u32 write_number(const Number& n, u16 target, u8* dst) {
+    auto store = [&](auto value) { std::memcpy(dst, &value, sizeof value); return S_OK; };
+    __int128 v = 0;
+    auto range = [&](__int128 lo, __int128 hi) { return as_integer(n, lo, hi, v); };
+    switch (target) {
+    case VT_I1: return range(-128, 127) ? store(static_cast<i8>(v)) : kDispOverflow;
+    case VT_UI1: return range(0, 255) ? store(static_cast<u8>(v)) : kDispOverflow;
+    case VT_I2: return range(-32768, 32767) ? store(static_cast<i16>(v)) : kDispOverflow;
+    case VT_UI2: return range(0, 65535) ? store(static_cast<u16>(v)) : kDispOverflow;
+    case VT_I4: case kVtInt:
+        return range(INT32_MIN, INT32_MAX) ? store(static_cast<i32>(v)) : kDispOverflow;
+    case VT_UI4: case kVtUint:
+        return range(0, UINT32_MAX) ? store(static_cast<u32>(v)) : kDispOverflow;
+    case kVtI8: return range(INT64_MIN, INT64_MAX) ? store(static_cast<i64>(v)) : kDispOverflow;
+    case kVtUi8: return range(0, static_cast<__int128>(UINT64_MAX)) ? store(static_cast<u64>(v)) : kDispOverflow;
+    case VT_BOOL: {
+        bool nonzero = false;
+        switch (n.kind) {
+        case Number::Kind::Signed: case Number::Kind::Currency: nonzero = n.s != 0; break;
+        case Number::Kind::Unsigned: nonzero = true; break;
+        case Number::Kind::Real: nonzero = n.d != 0.0; break;
+        }
+        return store(static_cast<i16>(nonzero ? -1 : 0));
+    }
+    case VT_R4: {
+        const double d = as_real(n);
+        if (std::isfinite(d) && std::fabs(d) > 3.4028234663852886e38) return kDispOverflow;
+        return store(static_cast<float>(d));
+    }
+    case VT_R8: return store(as_real(n));
+    case kVtDate: {
+        // Learn DATE: valid range 1 January 100 .. 31 December 9999.
+        const double d = as_real(n);
+        if (!(d >= -657434.0 && d < 2958466.0)) return kDispOverflow;
+        return store(d);
+    }
+    case kVtCy: {
+        if (n.kind == Number::Kind::Currency) return store(n.s);
+        if (n.kind == Number::Kind::Real) {
+            if (!std::isfinite(n.d)) return kDispOverflow;
+            const double scaled = round_even(n.d * 10000.0);
+            if (scaled < -9.2233720368547758e18 || scaled >= 9.2233720368547758e18) return kDispOverflow;
+            return store(static_cast<i64>(scaled));
+        }
+        const __int128 base = n.kind == Number::Kind::Unsigned
+            ? static_cast<__int128>(n.u) : static_cast<__int128>(n.s);
+        const __int128 scaled = base * 10000;
+        if (scaled < INT64_MIN || scaled > INT64_MAX) return kDispOverflow;
+        return store(static_cast<i64>(scaled));
+    }
+    default:
+        return DISP_E_TYPEMISMATCH;
+    }
+}
+
+/// Parse an en-US numeric string the way VarParseNumFromStr reads plain
+/// decimal text: optional surrounding blanks, sign, digits, '.', exponent.
+/// Returns false when anything else is present.
+[[nodiscard]] bool parse_number(std::string text, Number& out) {
+    while (!text.empty() && std::isspace(static_cast<unsigned char>(text.back()))) text.pop_back();
+    usize start = 0;
+    while (start < text.size() && std::isspace(static_cast<unsigned char>(text[start]))) ++start;
+    text = text.substr(start);
+    if (text.empty()) return false;
+    usize i = 0;
+    if (text[i] == '+' || text[i] == '-') ++i;
+    usize digits = 0;
+    bool real = false;
+    while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) { ++i; ++digits; }
+    if (i < text.size() && text[i] == '.') {
+        real = true; ++i;
+        while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) { ++i; ++digits; }
+    }
+    if (digits == 0) return false;
+    if (i < text.size() && (text[i] == 'e' || text[i] == 'E')) {
+        real = true; ++i;
+        if (i < text.size() && (text[i] == '+' || text[i] == '-')) ++i;
+        usize exp_digits = 0;
+        while (i < text.size() && std::isdigit(static_cast<unsigned char>(text[i]))) { ++i; ++exp_digits; }
+        if (exp_digits == 0) return false;
+    }
+    if (i != text.size()) return false;
+    if (!real) {
+        errno = 0;
+        char* end = nullptr;
+        const long long v = std::strtoll(text.c_str(), &end, 10);
+        if (errno == 0) { out.kind = Number::Kind::Signed; out.s = v; return true; }
+    }
+    out.kind = Number::Kind::Real;
+    out.d = std::strtod(text.c_str(), nullptr);
+    return true;
+}
+
+/// VarBstrFromR8-style text: up to 15 significant digits, no trailing
+/// zeros (R4: 7 digits).
+[[nodiscard]] std::string format_real(double v, int digits) {
+    char buf[64];
+    std::snprintf(buf, sizeof buf, "%.*G", digits, v);
+    return buf;
+}
+
+} // namespace
+
 u32 OleAut32Manager::variant_change_type(Marshaler& m) {
     return variant_change_type_ex(m, m.arg_ptr(0), m.arg_ptr(1),
                                   static_cast<u16>(m.arg(2)),
@@ -35,8 +251,34 @@ u32 OleAut32Manager::variant_change_type(Marshaler& m) {
 u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
                                             GuestAddr pvarg_dest,
                                             GuestAddr pvar_src,
-                                            u16 /*wFlags*/,
+                                            u16 wFlags,
                                             u16 target_vt) {
+    // Ownership (measured, typeinfo_invoke_probe `own` rows, x86 = x64): the
+    // result is always the destination's own value -- a same-type BSTR is a
+    // new copy, an interface is AddRef'ed, a VT_BYREF source is copied out of
+    // its referent (which is never changed). On success the destination's
+    // previous content is cleared (in place: the source is); on failure
+    // neither is touched. So convert into a fresh temporary first.
+    if (pvarg_dest == 0 || pvar_src == 0) return 0x80070057u; // E_INVALIDARG
+    const u32 vsz = oleaut_variant_size(m.cpu_is_64bit());
+    const GuestAddr result = oa_alloc(m, vsz);
+    if (result == 0) return 0x8007000Eu;
+    const u32 hr = change_type_core(m, result, pvar_src, wFlags, target_vt);
+    if (hr == S_OK) {
+        (void)variant_clear_at(m, pvarg_dest);   // in place, this is the source
+        std::vector<Byte> bytes(vsz);
+        (void)m.memory().read_bytes(result, bytes.data(), vsz);
+        (void)m.memory().write_bytes(pvarg_dest, bytes.data(), vsz);
+    }
+    oa_free(result);
+    return hr;
+}
+
+u32 OleAut32Manager::change_type_core(Marshaler& m,
+                                      GuestAddr pvarg_dest,
+                                      GuestAddr pvar_src,
+                                      u16 wFlags,
+                                      u16 target_vt) {
     const u32 vsz = oleaut_variant_size(m.cpu_is_64bit());
     u8 src_buf[24] = {};
     (void)m.memory().read_bytes(pvar_src, src_buf, vsz);
@@ -68,10 +310,27 @@ u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
     VITREO_TRACE("[oleaut32] VariantChangeType dest=0x%x src=0x%x srcVT=%u targetVT=%u\n",
                  (unsigned)pvarg_dest, (unsigned)pvar_src, src_vt, target_vt);
 
-    // Same type → just copy
+    if (!variant_vt_valid(src_vt) || !variant_vt_valid(target_vt)) {
+        return kDispBadVarType;
+    }
+    // Measured: VT_ARRAY, VT_BYREF and VT_VARIANT targets are refused, same
+    // type included; any source but VT_NULL converts to VT_EMPTY.
+    if ((target_vt & (0x2000 | VT_BYREF)) != 0 || target_vt == VT_VARIANT) {
+        return DISP_E_TYPEMISMATCH;
+    }
+    if (target_vt == VT_EMPTY) {
+        u16 vt = src_vt;
+        if (vt == (VT_BYREF | VT_VARIANT)) {
+            const GuestAddr inner = static_cast<GuestAddr>(m.read_ptr(pvar_src + 8).value_or(0));
+            vt = inner == 0 ? 0 : m.read_u16(inner).value_or(0);
+        }
+        if ((vt & VT_TYPEMASK) == VT_NULL) return DISP_E_TYPEMISMATCH;
+        return S_OK;   // the zeroed result is VT_EMPTY
+    }
+
+    // Same type: the destination's own copy (VariantCopy semantics).
     if (src_vt == target_vt) {
-        (void)m.memory().write_bytes(pvarg_dest, src_buf, vsz);
-        return S_OK;
+        return variant_copy_at(m, pvarg_dest, pvar_src);
     }
 
     // VT_BYREF|T → dereference, then coerce the pointed-to value.
@@ -85,10 +344,15 @@ u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
             return DISP_E_TYPEMISMATCH;
         }
         if (base_vt == VT_VARIANT) {
-            return variant_change_type_ex(m, pvarg_dest, ptr, 0, target_vt);
+            return change_type_core(m, pvarg_dest, ptr, wFlags, target_vt);
         }
-        // Materialise a non-BYREF VARIANT in scratch and recurse once.
-        const GuestAddr tmp = scratch_alloc(vsz);
+        // Materialise a non-BYREF view of the referent and convert that; the
+        // conversion copies (BSTR) or AddRefs (interfaces) what it keeps.
+        struct Temp {
+            OleAut32Manager& owner; GuestAddr at;
+            ~Temp() { if (at != 0) owner.oa_free(at); }
+        } holder{*this, oa_alloc(m, vsz)};
+        const GuestAddr tmp = holder.at;
         if (tmp == 0) return 0x8007000Eu; // E_OUTOFMEMORY
         u8 tmp_buf[24]{};
         tmp_buf[0] = static_cast<u8>(base_vt & 0xFF);
@@ -100,7 +364,8 @@ u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
             const u16 v = m.read_u16(ptr).value_or(0);
             tmp_buf[8] = static_cast<u8>(v & 0xFF);
             tmp_buf[9] = static_cast<u8>(v >> 8);
-        } else if (base_vt == VT_R8) {
+        } else if (base_vt == VT_R8 || base_vt == kVtCy || base_vt == kVtDate ||
+                   base_vt == kVtI8 || base_vt == kVtUi8) {
             u8 eight[8]{};
             (void)m.memory().read_bytes(ptr, eight, 8);
             std::memcpy(&tmp_buf[8], eight, 8);
@@ -110,8 +375,9 @@ u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
             (void)m.write_u16(tmp, base_vt);
             (void)m.write_ptr(tmp + 8, static_cast<GuestAddr>(
                 m.read_ptr(ptr).value_or(0)));
-            return variant_change_type_ex(m, pvarg_dest, tmp, 0, target_vt);
-        } else if (base_vt == VT_I4 || base_vt == VT_UI4 || base_vt == VT_R4) {
+            return change_type_core(m, pvarg_dest, tmp, wFlags, target_vt);
+        } else if (base_vt == VT_I4 || base_vt == VT_UI4 || base_vt == VT_R4 ||
+                   base_vt == kVtInt || base_vt == kVtUint || base_vt == kVtError) {
             const u32 v = m.read_u32(ptr).value_or(0);
             tmp_buf[8]  = static_cast<u8>(v);
             tmp_buf[9]  = static_cast<u8>(v >> 8);
@@ -123,7 +389,100 @@ u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
             return DISP_E_TYPEMISMATCH;
         }
         (void)m.memory().write_bytes(tmp, tmp_buf, vsz);
-        return variant_change_type_ex(m, pvarg_dest, tmp, 0, target_vt);
+        return change_type_core(m, pvarg_dest, tmp, wFlags, target_vt);
+    }
+
+
+    // Numeric, currency, date and Boolean conversions: one table with the
+    // Automation range checks (DISP_E_OVERFLOW) and half-to-even rounding.
+    {
+        const bool src_numeric = numeric_vt(src_vt) || src_vt == VT_EMPTY;
+        if (numeric_vt(target_vt) && (src_numeric || src_vt == VT_BSTR)) {
+            Number number = read_number(src_vt, &src_buf[8]);
+            if (src_vt == VT_BSTR) {
+                GuestAddr bstr = 0;
+                std::memcpy(&bstr, &src_buf[8], oleaut_ptr_size(m.cpu_is_64bit()));
+                std::string text;
+                if (bstr != 0) {
+                    const u32 bytes = m.read_u32(bstr - 4).value_or(0);
+                    for (u32 i = 0; i + 1 < bytes; i += 2) {
+                        const u16 ch = m.read_u16(bstr + i).value_or(0);
+                        text.push_back(ch < 0x80 ? static_cast<char>(ch) : '\x7f');
+                    }
+                }
+                std::string lower;
+                for (char c : text) lower.push_back(static_cast<char>(std::tolower(static_cast<unsigned char>(c))));
+                if (target_vt == VT_BOOL && (lower == "true" || lower == "false")) {
+                    number = Number{};
+                    number.s = lower == "true" ? -1 : 0;
+                } else if (!parse_number(text, number)) {
+                    return DISP_E_TYPEMISMATCH;
+                }
+            }
+            u8 out[24] = {};
+            out[0] = static_cast<u8>(target_vt);
+            out[1] = static_cast<u8>(target_vt >> 8);
+            const u32 hr = write_number(number, target_vt, &out[8]);
+            if (hr != S_OK) return hr;
+            (void)m.memory().write_bytes(pvarg_dest, out, oleaut_variant_size(m.cpu_is_64bit()));
+            return S_OK;
+        }
+        // Measured (typeinfo_invoke_probe `vct` rows, x86 = x64): VT_NULL
+        // converts only to VT_NULL; VT_EMPTY to DECIMAL is a zero DECIMAL.
+        if (src_vt == VT_NULL && target_vt != VT_NULL) return DISP_E_TYPEMISMATCH;
+        if (src_vt == VT_EMPTY && target_vt == 14) {
+            u8 out[24] = {};
+            out[0] = 14;
+            (void)m.memory().write_bytes(pvarg_dest, out, oleaut_variant_size(m.cpu_is_64bit()));
+            return S_OK;
+        }
+        if (target_vt == VT_BSTR && src_vt != VT_BOOL &&
+            (numeric_vt(src_vt) || src_vt == VT_EMPTY)) {
+            const Number number = read_number(src_vt, &src_buf[8]);
+            std::string text;
+            if (src_vt == kVtDate) {
+                static std::once_flag once;
+                std::call_once(once, [] {
+                    std::fprintf(stderr, "[vitreo] UNIMPLEMENTED oleaut32!VariantChangeType: "
+                                         "VT_DATE to VT_BSTR\n");
+                });
+                return DISP_E_TYPEMISMATCH;
+            }
+            if (src_vt == VT_EMPTY) text.clear();
+            else if (src_vt == VT_R4) text = format_real(number.d, 7);
+            else if (src_vt == VT_R8) text = format_real(number.d, 15);
+            else if (src_vt == kVtCy) text = format_real(static_cast<double>(number.s) / 10000.0, 19);
+            else if (number.kind == Number::Kind::Unsigned) text = std::to_string(number.u);
+            else text = std::to_string(number.s);
+            std::vector<Byte> utf16;
+            for (char c : text) { utf16.push_back(static_cast<Byte>(c)); utf16.push_back(0); }
+            const GuestAddr bstr = allocate_bstr_bytes(m, utf16);
+            if (bstr == 0) return 0x8007000Eu;
+            u8 out[24] = {};
+            out[0] = static_cast<u8>(VT_BSTR);
+            std::memcpy(&out[8], &bstr, oleaut_ptr_size(m.cpu_is_64bit()));
+            (void)m.memory().write_bytes(pvarg_dest, out, oleaut_variant_size(m.cpu_is_64bit()));
+            return S_OK;
+        }
+        if (src_vt == VT_DISPATCH && target_vt == VT_UNKNOWN) {
+            // Measured (typeinfo_invoke_probe Unk.fromdispatch): the object
+            // is asked for IID_IUnknown.
+            GuestAddr punk = 0;
+            std::memcpy(&punk, &src_buf[8], oleaut_ptr_size(m.cpu_is_64bit()));
+            GuestAddr unk = 0;
+            if (punk != 0) {
+                static constexpr std::array<u8, 16> kIidUnknown{
+                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                    0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46};
+                unk = com_query_interface(m, punk, kIidUnknown);
+                if (unk == 0) return 0x80004002u; // E_NOINTERFACE
+            }
+            u8 out[24] = {};
+            out[0] = static_cast<u8>(VT_UNKNOWN);
+            std::memcpy(&out[8], &unk, oleaut_ptr_size(m.cpu_is_64bit()));
+            (void)m.memory().write_bytes(pvarg_dest, out, oleaut_variant_size(m.cpu_is_64bit()));
+            return S_OK;
+        }
     }
 
     // Prepare destination: zero it, set target vt
@@ -271,7 +630,6 @@ u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
             ok = true;
         } else if (target_vt == VT_BSTR) {
             // Check VARIANT_ALPHABOOL (0x02) in wFlags
-            u16 wFlags = static_cast<u16>(m.arg(2));
             std::string s;
             if (wFlags & 0x02) {
                 // VARIANT_ALPHABOOL: use "True"/"False"
@@ -399,110 +757,31 @@ u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
         break;
     case VT_DISPATCH:
     case VT_UNKNOWN: {
-        // IDispatch inherits IUnknown, so DISPATCH→UNKNOWN is a tag change.
-        // In-place (dest == src): only flip the VARTYPE — ownership stays.
-        // Out-of-place: copy the pointer and AddRef.
-        // UNKNOWN→DISPATCH needs QI for IID_IDispatch.
-        // Numeric coerce: null → 0, non-null → 1 (script engines probe
-        // "was an object returned?" this way when they lack a default prop).
+        // Measured (`own` rows): a non-interface target from VT_DISPATCH
+        // reads the object's DISPID_VALUE (IDispatch::Invoke, PROPERTYGET,
+        // no arguments) and converts that; a NULL VT_DISPATCH and any
+        // VT_UNKNOWN are DISP_E_TYPEMISMATCH.
         GuestAddr punk = 0;
         std::memcpy(&punk, &src_buf[8], oleaut_ptr_size(m.cpu_is_64bit()));
-        if (target_vt == VT_I4 || target_vt == VT_UI4 || target_vt == VT_BOOL) {
-            if (target_vt == VT_BOOL) {
-                write_dst_i16(punk != 0 ? static_cast<i16>(-1) : static_cast<i16>(0));
-            } else {
-                write_dst_i32(punk != 0 ? 1 : 0);
+        if (target_vt != VT_DISPATCH && target_vt != VT_UNKNOWN) {
+            if (src_vt != VT_DISPATCH || punk == 0 || !m_guest_call) break;
+            const u32 ps = oleaut_ptr_size(m.cpu_is_64bit());
+            const GuestAddr block = oa_alloc(m, 16 + 16 + vsz);
+            if (block == 0) return 0x8007000Eu;
+            const GuestAddr iid_null = block, params = block + 16, value = block + 32;
+            const GuestAddr vtbl = static_cast<GuestAddr>(m.read_ptr(punk).value_or(0));
+            const GuestAddr invoke = vtbl == 0 ? 0 : static_cast<GuestAddr>(
+                m.read_ptr(vtbl + 6 * ps).value_or(0));
+            u32 hr = DISP_E_TYPEMISMATCH;
+            if (invoke != 0) {
+                const u64 args[9] = {punk, 0 /*DISPID_VALUE*/, iid_null, 0 /*lcid*/,
+                                     2 /*DISPATCH_PROPERTYGET*/, params, value, 0, 0};
+                hr = static_cast<u32>(m_guest_call(invoke, args, 9, m.cpu_is_64bit()));
+                if (hr == S_OK) hr = change_type_core(m, pvarg_dest, value, wFlags, target_vt);
+                (void)variant_clear_at(m, value);
             }
-            ok = true;
-            break;
-        }
-        if (target_vt == VT_BSTR) {
-            // Fetch the object's default property (DISPID_VALUE) via
-            // IDispatch::Invoke(PROPERTYGET). Null → empty BSTR.
-            if (punk == 0) {
-                const GuestAddr bstr = alloc_bstr_from_str("");
-                write_dst_ptr(bstr);
-                ok = (bstr != 0);
-                break;
-            }
-            if (!m_guest_call) break;
-
-            GuestAddr disp = static_cast<GuestAddr>(punk);
-            if (src_vt == VT_UNKNOWN) {
-                constexpr std::array<u8, 16> iid_dispatch{
-                    0x00, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-                    0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46};
-                const GuestAddr iid = scratch_alloc(16);
-                const GuestAddr out = scratch_alloc(8);
-                if (iid == 0 || out == 0) break;
-                (void)m.memory().write_bytes(iid, iid_dispatch.data(), 16);
-                (void)m.write_ptr(out, 0);
-                auto vtable_r = m.read_ptr(static_cast<GuestAddr>(punk));
-                if (!vtable_r.is_ok() || vtable_r.value() == 0) break;
-                auto qi_r =
-                    m.read_ptr(static_cast<GuestAddr>(vtable_r.value()));
-                if (!qi_r.is_ok() || qi_r.value() == 0) break;
-                const u64 a[3] = {static_cast<u64>(punk),
-                                  static_cast<u64>(iid),
-                                  static_cast<u64>(out)};
-                if (static_cast<u32>(m_guest_call(
-                        static_cast<GuestAddr>(qi_r.value()), a, 3, m.cpu_is_64bit())) !=
-                    S_OK) {
-                    break;
-                }
-                disp = static_cast<GuestAddr>(m.read_ptr(out).value_or(0));
-                if (disp == 0) break;
-            }
-
-            // IDispatch::Invoke(DISPID_VALUE=0, IID_NULL, lcid=0,
-            //                   DISPATCH_PROPERTYGET=2, empty DISPPARAMS,
-            //                   &result, NULL, NULL)
-            const GuestAddr iid_null = scratch_alloc(16);
-            const GuestAddr params   = scratch_alloc(16);
-            const GuestAddr result   = scratch_alloc(24);
-            if (iid_null == 0 || params == 0 || result == 0) break;
-            u8 zeros16[16]{};
-            (void)m.memory().write_bytes(iid_null, zeros16, 16);
-            (void)m.memory().write_bytes(params, zeros16, 16);
-            (void)m.memory().write_bytes(result, zeros16, 16);
-            (void)m.memory().write_bytes(result + 16, zeros16, 8);
-
-            auto vt_r = m.read_ptr(disp);
-            if (!vt_r.is_ok() || vt_r.value() == 0) break;
-            // IDispatch vtable slot 6 = Invoke.
-            auto invoke_r = m.read_ptr(static_cast<GuestAddr>(vt_r.value()) +
-                                       6 * oleaut_ptr_size(m.cpu_is_64bit()));
-            if (!invoke_r.is_ok() || invoke_r.value() == 0) break;
-
-            const u64 args[9] = {
-                static_cast<u64>(disp),
-                0, // DISPID_VALUE
-                static_cast<u64>(iid_null),
-                0, // lcid
-                2, // DISPATCH_PROPERTYGET
-                static_cast<u64>(params),
-                static_cast<u64>(result),
-                0, // pExcepInfo
-                0, // puArgErr
-            };
-            const u32 hr = static_cast<u32>(m_guest_call(
-                static_cast<GuestAddr>(invoke_r.value()), args, 9, m.cpu_is_64bit()));
-            if (hr != S_OK) {
-                VITREO_TRACE("[oleaut32]   default-prop Invoke hr=0x%08x\n", hr);
-                break;
-            }
-            const u16 got_vt =
-                static_cast<u16>(m.read_u16(result).value_or(0));
-            if (got_vt == VT_BSTR) {
-                write_dst_ptr(static_cast<GuestAddr>(
-                    m.read_ptr(result + 8).value_or(0)));
-                ok = true;
-            } else {
-                // Recurse to coerce the default-prop result to BSTR.
-                return variant_change_type_ex(m, pvarg_dest, result, 0,
-                                              VT_BSTR);
-            }
-            break;
+            oa_free(block);
+            return hr;
         }
         if (src_vt == VT_DISPATCH && target_vt == VT_UNKNOWN) {
             write_dst_ptr(punk);
@@ -552,6 +831,10 @@ u32 OleAut32Manager::variant_change_type_ex(Marshaler& m,
                                 write_dst_ptr(static_cast<GuestAddr>(
                                     m.read_ptr(out).value_or(0)));
                                 ok = true;
+                            } else {
+                                // Measured (typeinfo_invoke_probe
+                                // InDual.wrongunk): E_NOINTERFACE.
+                                return 0x80004002u;
                             }
                         }
                     }

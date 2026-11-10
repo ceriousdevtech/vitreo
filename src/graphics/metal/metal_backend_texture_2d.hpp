@@ -97,6 +97,29 @@ public:
         return native_handle() != nullptr;
     }
 
+    /// The residency companion (BackendTexture2DDesc::residency_companion),
+    /// owned with this texture; null when it has none.
+    [[nodiscard]] MetalBackendTexture2D* residency_companion() const noexcept {
+        return m_residency.get();
+    }
+    void set_residency_companion(std::unique_ptr<MetalBackendTexture2D> c) {
+        m_residency = std::move(c);
+    }
+    [[nodiscard]] bool has_residency_companion() const noexcept override {
+        return m_residency != nullptr;
+    }
+    /// Which tiles of each slice's packed tail are mapped (slice-major,
+    /// tail_tiles per slice): the companion's tail is mapped while all are.
+    [[nodiscard]] std::vector<u8>& residency_tail_state() noexcept {
+        return m_residency_tail;
+    }
+    /// A 1x1 texture of @p dimension (multisampled when @p samples > 1) that
+    /// reads 1.0 everywhere: the companion of a texture that is not tiled.
+    [[nodiscard]] static MetalBackendTexture2D* residency_dummy(
+        BackendTextureViewDimension dimension, unsigned samples);
+    /// The same for a Texture3D slot (volumes are never tiled).
+    [[nodiscard]] static BackendTexture3D* residency_dummy_3d();
+
     const BackendTexture2DDesc& desc() const noexcept override {
         return m_desc;
     }
@@ -248,6 +271,24 @@ public:
     BackendTexture2D* view_plane(PixelFormat view_format) noexcept override {
         return chroma_view(view_format) ? m_plane1.get() : this;
     }
+    /// m_texture is the luma plane. The parent's update_region writes chroma
+    /// too (m_plane1); this wrapper has no sibling, so a region write, a
+    /// readback, and a copy touch luma bytes only (Learn DXGI_FORMAT NV12:
+    /// Y is its own plane).
+    BackendTexture2D* luma_plane() override {
+        if (m_plane1 == nullptr || m_texture == nullptr) return nullptr;
+        if (m_luma_view == nullptr) {
+            BackendTexture2DDesc luma = m_desc;
+            luma.shareable = false;
+            luma.shared_metadata.clear();
+            luma.heap = nullptr;
+            luma.heap_offset = 0;
+            luma.shared_mirror = false;
+            m_luma_view = std::make_unique<MetalBackendTexture2D>(
+                m_device, m_command_queue, m_texture, std::move(luma));
+        }
+        return m_luma_view->valid() ? m_luma_view.get() : nullptr;
+    }
     [[nodiscard]] MetalBackendTexture2D* chroma_plane() noexcept {
         return m_plane1.get();
     }
@@ -346,12 +387,18 @@ public:
             const BackendViewSwizzle requested_swizzle =
                 stencil_view ? BackendViewSwizzle::Identity
                              : requested.swizzle;
+            // A luminance render target is stored unswizzled (metal_texture
+            // .mm); every shader read goes through a view carrying it.
+            const bool deferred_luminance =
+                m_desc.render_target &&
+                m_desc.channel_swizzle !=
+                    BackendTexture2DDesc::ChannelSwizzle::Identity;
             if (pixel_format == texture.pixelFormat &&
                 texture_type == texture.textureType && mip_first == 0 &&
                 mip_count == texture.mipmapLevelCount && slice_first == 0 &&
                 slice_count == m_desc.array_size &&
                 requested_swizzle == BackendViewSwizzle::Identity &&
-                requested.component_mapping == 0) {
+                requested.component_mapping == 0 && !deferred_luminance) {
                 m_view_memo.remember(parent, requested, mipmaps_enabled,
                                      parent);
                 return parent;
@@ -401,6 +448,30 @@ public:
             }
             swizzle = metal_component_mapping(swizzle,
                                               requested.component_mapping);
+            if (deferred_luminance) {
+                // The view reads through the luminance mapping a swizzled
+                // texture would have applied first: final[c] = base[view[c]].
+                const MTLTextureSwizzle second =
+                    m_desc.channel_swizzle == BackendTexture2DDesc::
+                                                  ChannelSwizzle::LuminanceAlpha
+                        ? MTLTextureSwizzleGreen
+                        : MTLTextureSwizzleOne;
+                const auto through = [&](MTLTextureSwizzle c) {
+                    switch (c) {
+                    case MTLTextureSwizzleRed:
+                    case MTLTextureSwizzleGreen:
+                    case MTLTextureSwizzleBlue:
+                        return MTLTextureSwizzleRed;
+                    case MTLTextureSwizzleAlpha:
+                        return second;
+                    default:
+                        return c;
+                    }
+                };
+                swizzle = MTLTextureSwizzleChannelsMake(
+                    through(swizzle.red), through(swizzle.green),
+                    through(swizzle.blue), through(swizzle.alpha));
+            }
             id<MTLTexture> view = [texture
                 newTextureViewWithPixelFormat:pixel_format
                                   textureType:static_cast<MTLTextureType>(
@@ -435,6 +506,12 @@ private:
     std::shared_ptr<MetalSharedLocal> m_shared;
     /// A planar video format's chroma plane (m_texture is the luma plane).
     std::unique_ptr<MetalBackendTexture2D> m_plane1;
+    /// luma_plane(): m_texture again, without m_plane1, so planar uploads
+    /// that walk the sibling plane leave it alone.
+    std::unique_ptr<MetalBackendTexture2D> m_luma_view;
+    /// The tiled-resources residency companion (residency_companion()).
+    std::unique_ptr<MetalBackendTexture2D> m_residency;
+    std::vector<u8> m_residency_tail;
     void* m_borrowed_handle{nullptr};
     /// (view key, component mapping) -> retained id<MTLTexture>.
     mutable std::map<std::pair<u64, u16>, void*> m_shader_views;

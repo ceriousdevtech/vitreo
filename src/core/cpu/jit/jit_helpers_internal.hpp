@@ -25,4 +25,33 @@ void jit_raise_memory_av(JitContext* ctx, GuestAddr addr, usize width,
                          bool is_write);
 void jit_publish_mem_watch_cpu(CpuState* cpu);
 
+/// jit_raise_memory_av for a semantic helper that has CpuState and
+/// GuestMemory but no JitContext (jit_sse_op, jit_fpu_op): a failed
+/// @p width-byte guest access at @p addr becomes STATUS_ACCESS_VIOLATION with
+/// [0] = direction and [1] = the first inaccessible byte (0xFFFF...FFFF read
+/// for a non-canonical address), in cpu->pending_raise; first raise wins. The
+/// call site drains it with emit_exit_if_pending_raise, so the faulting
+/// instruction commits nothing and the block stops there.
+void jit_raise_guest_av(CpuState* cpu, GuestMemory* mem, GuestAddr addr,
+                        usize width, bool is_write) noexcept;
+
+/// The destination check every CMPXCHG helper (m8/m16/m32/m64, CMPXCHG8B,
+/// CMPXCHG16B; LOCK or not) makes before it reads, compares or writes. When
+/// the guest may not write all @p width bytes at @p addr it raises the
+/// access violation Windows reports -- [0] = 1 (WRITE) even for an
+/// uncommitted or NOACCESS page and whether or not the compare would match,
+/// [1] = the first byte the guest may not write
+/// (tests/oracle_data/cmpxchg_fault_probe.expected) -- and returns true; the
+/// helper must then return with registers, flags and memory untouched. Also
+/// true when a raise is already pending.
+/// CMPXCHG16B (plain or LOCK) with a misaligned m128: #GP(0), which Windows
+/// reports as STATUS_ACCESS_VIOLATION with [0] = 0 and [1] =
+/// 0xFFFFFFFFFFFFFFFF -- a #GP has no fault address
+/// (tests/oracle_data/cmpxchg16b_align_probe.expected). First raise wins.
+void jit_raise_cmpxchg16b_misaligned(CpuState* cpu) noexcept;
+
+[[nodiscard]] bool jit_cmpxchg_dest_faults(CpuState* cpu, GuestMemory* mem,
+                                           GuestAddr addr,
+                                           usize width) noexcept;
+
 } // namespace vitreo::cpu::jit

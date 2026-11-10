@@ -110,6 +110,37 @@ void add_crt_ansi_string_exports(DllExports& exports, CrtMemoryManager& mem_mgr)
         }
     });
 
+    // unsigned char* _mbsrchr(const unsigned char* str, unsigned int c)
+    // Learn: the last occurrence of c (the terminator when c is 0); NULL ->
+    // invalid-parameter + NULL + EINVAL. With msvcrt's single-byte multibyte
+    // code page it is strrchr on the low byte of c
+    // (crt_legacy_exports_probe mbsrchr: 0x162 and 0xffffff62 find 'b').
+    exports.entries.push_back(ExportEntry{
+        "_mbsrchr", 0,
+        [&mem_mgr](Marshaler& m) {
+            constexpr u32 EINVAL_VALUE = 22;
+            const GuestAddr s = m.arg_ptr(0);
+            const u8 ch = static_cast<u8>(m.arg(1) & 0xFF);
+            if (s == 0) {
+                mem_mgr.set_errno(EINVAL_VALUE);
+                (void)mem_mgr.invalid_parameter();
+                m.set_return(0);
+                return;
+            }
+            GuestAddr last = 0;
+            for (usize i = 0;; ++i) {
+                const auto c = m.read_u8(s + static_cast<GuestAddr>(i));
+                if (c.is_err()) {
+                    (void)m.raise_access_violation(false, s + static_cast<GuestAddr>(i));
+                    return;
+                }
+                if (c.value() == ch) last = s + static_cast<GuestAddr>(i);
+                if (c.value() == 0) break;
+            }
+            m.set_return(last);
+        }
+    });
+
     // unsigned char* _mbsnbcpy(unsigned char* dest, const unsigned char* src,
     //                          size_t count) — strncpy-style byte copy with
     // null padding to `count` (Learn _mbsnbcpy; maps to strncpy when !_MBCS).

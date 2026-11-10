@@ -252,9 +252,15 @@ bool DxbcTranslator::scan_tessellation_declarations() {
     const bool has_cp_phase = std::any_of(
         m_hs_phases.begin(), m_hs_phases.end(),
         [](const HsPhase& p) { return p.kind == HsPhaseKind::ControlPoint; });
-    if (!has_cp_phase && m_hs_out_cp > m_hs_in_cp) {
-        return fail("hull shader: a pass-through control-point phase with "
-                    "more outputs than inputs");
+    // D3D11.3 10.6: with no control-point phase the output control point
+    // count is 0 (the HS outputs none; its fork/join phases still read the
+    // inputs) or equal to the input count (a pass-through). "It is invalid
+    // for the output control point count to be more than 0 but not equal
+    // to the input control point count."
+    if (!has_cp_phase && m_hs_out_cp != 0u && m_hs_out_cp != m_hs_in_cp) {
+        return fail_invalid("hull shader: no control-point phase, and the "
+                            "output control point count is neither 0 nor "
+                            "the input count (D3D11.3 10.6)");
     }
     return true;
 }

@@ -29,6 +29,8 @@ inline thread_local bool t_template_name_ansi = false;
 
 class Marshaler;
 class User32ExtManager;
+class PaintingManager;
+class GdiManager;
 
 /// Callback for dispatching messages to a DLGPROC via the interpreter.
 /// Args: hwnd, message, wParam, lParam, dlgproc_addr
@@ -87,6 +89,14 @@ public:
     /// GetMessage does. Without this, SetTimer from WM_INITDIALOG never
     /// fires while the modal loop is running.
     void set_user32_ext_manager(User32ExtManager* mgr) { m_user32_ext_mgr = mgr; }
+    /// The modal pump retrieves like GetMessage: after posted and input
+    /// messages, WM_PAINT for a window of the thread with an update region,
+    /// then WM_TIMER (Learn GetMessage remarks). A dialog that invalidates
+    /// itself and paints in WM_PAINT stays unpainted without this.
+    void set_painting_manager(PaintingManager* mgr) { m_paint_mgr = mgr; }
+    /// Presents GDI drawing after paint and mouse messages, as
+    /// DispatchMessage does.
+    void set_gdi_manager(GdiManager* mgr) { m_gdi_mgr = mgr; }
 
     /// No copy / move (contains references)
     DialogManager(const DialogManager&) = delete;
@@ -114,7 +124,7 @@ public:
     /// Creates the dialog, runs a modal message loop dispatching to dlgproc,
     /// and returns when EndDialog is called.
     /// @return The result value passed to EndDialog, or -1 on failure
-    i32 dialog_box(u64 hinstance, u64 template_id,
+    i64 dialog_box(u64 hinstance, u64 template_id,
                    windowing::HWND parent,
                    u64 dlgproc, u64 init_param,
                    bool require_template = false);
@@ -123,7 +133,7 @@ public:
     /// @param dlg     Dialog HWND
     /// @param result  Value to return from DialogBox
     /// @return TRUE on success
-    bool end_dialog(windowing::HWND dlg, i32 result);
+    bool end_dialog(windowing::HWND dlg, i64 result);
 
     /// Get a child control by ID (MS Learn: NULL if the control does not exist).
     /// @param dlg        Dialog HWND
@@ -176,15 +186,26 @@ private:
 
     /// Optional: synthesize WM_TIMER when the modal queue is empty.
     User32ExtManager* m_user32_ext_mgr = nullptr;
+    PaintingManager* m_paint_mgr = nullptr;
+    GdiManager* m_gdi_mgr = nullptr;
 
     /// PE resource directory info
     GuestAddr m_image_base = 0;
     u32       m_rsrc_rva   = 0;
     u32       m_rsrc_size  = 0;
 
-    /// Modal dialog state: EndDialog sets these
-    bool m_modal_ended  = false;
-    i32  m_modal_result = 0;
+    /// Dialogs EndDialog has ended, with the result their DialogBox returns
+    /// (a later EndDialog replaces it). Each modal loop watches only its own
+    /// dialog: EndDialog on an outer dialog from inside a nested DialogBox
+    /// leaves the nested loop running (enddialog_nested_probe).
+    std::unordered_map<windowing::HWND, i64> m_ended_dialogs;
+    /// The owner each running DialogBox disabled, re-enabled by EndDialog.
+    struct DisabledOwner { windowing::HWND owner; u64 wndproc; };
+    std::unordered_map<windowing::HWND, DisabledOwner> m_disabled_owners;
+    [[nodiscard]] bool dialog_ended(windowing::HWND dlg) const {
+        return m_ended_dialogs.count(dlg) != 0;
+    }
+    void enable_disabled_owner(windowing::HWND dlg);
 
     /// Current modal dialog HWND (set by dialog_box, used as fallback for unknown HWNDs)
     windowing::HWND m_current_modal_hwnd = windowing::NULL_HWND;
@@ -210,7 +231,6 @@ private:
 
     /// Tracks the current inner page dialog per panel HWND so we can
     /// hide/destroy the previous page when a new one is created.
-    std::unordered_map<windowing::HWND, windowing::HWND> m_panel_page;
 
     /// Ensure the dialog class "#32770" is registered.
     void ensure_dialog_class();

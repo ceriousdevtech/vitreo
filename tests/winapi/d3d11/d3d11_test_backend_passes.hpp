@@ -17,6 +17,17 @@ private:
     graphics::BackendPipelineDesc m_desc;
 };
 
+// ---- WS5 begin ----
+class TestMeshPipeline final : public graphics::BackendPipeline {
+public:
+    explicit TestMeshPipeline(bool valid) : m_valid(valid) {}
+    bool valid() const noexcept override { return m_valid; }
+    bool is_mesh() const noexcept override { return true; }
+private:
+    bool m_valid;
+};
+// ---- WS5 end ----
+
 class TestBackendComputePipeline final
     : public graphics::BackendComputePipeline {
 public:
@@ -29,6 +40,15 @@ public:
 class TestBackendRenderPass final : public graphics::BackendRenderPass {
 public:
     explicit TestBackendRenderPass(BackendState& state) : m_state(state) {}
+    /// The draw's render pipeline, or null for none or a mesh pipeline: a
+    /// mesh draw names a TestMeshPipeline (create_mesh_pipeline), which has
+    /// no BackendPipelineDesc, exactly as the Metal backend's mesh pipeline
+    /// is a different class from its render pipeline.
+    static const TestBackendPipeline* render_pipeline_of(
+        const graphics::BackendDrawCall& call) {
+        if (call.pipeline == nullptr || call.pipeline->is_mesh()) return nullptr;
+        return static_cast<const TestBackendPipeline*>(call.pipeline);
+    }
     bool valid() const noexcept override { return m_open; }
     bool draw(const graphics::BackendDrawCall& call) override {
         // R3c: every native state a draw names was built from exactly the
@@ -84,6 +104,16 @@ public:
         m_state.last_draw_patch_count = call.patch_count;
         m_state.last_draw_patch_control_points = call.patch_control_points;
         m_state.last_draw_tess_factors = call.tessellation_factors;
+        // ---- WS5 begin ----
+        if (call.mesh_active()) {
+            ++m_state.mesh_draws;
+            m_state.last_mesh_groups = call.mesh->mesh_groups;
+            m_state.last_mesh_barrier = call.mesh->barrier_before_mesh;
+        }
+        if (call.vertex_capture_buffer != nullptr) {
+            m_state.last_capture_in_pass = m_state.last_pass_color0_desc.width > 1;
+        }
+        // ---- WS5 end ----
         if (call.vertex_capture_buffer != nullptr) {
             ++m_state.capture_draws;
             m_state.last_capture_buffer = call.vertex_capture_buffer;
@@ -96,10 +126,8 @@ public:
                 call.vertex_capture_buffer->desc().byte_width;
             m_state.last_capture_vertex_offsets = call.vertex_buffer_offsets;
             m_state.last_capture_call = call;
-            if (call.pipeline != nullptr) {
-                m_state.last_capture_pipeline_desc =
-                    static_cast<const TestBackendPipeline*>(call.pipeline)
-                        ->desc();
+            if (const auto* render = render_pipeline_of(call)) {
+                m_state.last_capture_pipeline_desc = render->desc();
             }
             const auto& bytes = static_cast<const TestBackendBuffer*>(
                                     call.vertex_capture_buffer)->live();
@@ -147,9 +175,8 @@ public:
                         call.vertex_buffers[slot])->contents();
             }
         }
-        if (call.pipeline != nullptr) {
-            m_state.last_draw_pipeline_desc =
-                static_cast<const TestBackendPipeline*>(call.pipeline)->desc();
+        if (const auto* render = render_pipeline_of(call)) {
+            m_state.last_draw_pipeline_desc = render->desc();
         }
         m_state.last_draw_lod_min_clamp = call.samplers[0].lod_min_clamp;
         m_state.last_draw_lod_max_clamp = call.samplers[0].lod_max_clamp;

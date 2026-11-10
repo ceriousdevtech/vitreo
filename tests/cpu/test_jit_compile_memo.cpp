@@ -3,6 +3,12 @@
 // JIT execution tests — compile memo and per-compile state isolation
 
 #include "jit_exec_test_fixture.hpp"
+#include "core/cpu/jit/jit_compile_test_hooks.hpp"
+
+#include <atomic>
+#include <condition_variable>
+#include <cstdlib>
+#include <mutex>
 
 TEST_F(JitExecTest, CompileMemoDistinguishesCodeAtSameAddress) {
     struct MemoGuard {
@@ -144,9 +150,9 @@ TEST_F(JitExecTest, CompileMemoSharesOneTranslationUnderConcurrentCompiles) {
     ASSERT_TRUE(wr);
 
     // Seed the memo first. Threads that reach an *uncompiled* block at the
-    // same instant legitimately each emit a copy — the memo dedupes the
-    // translation, it does not serialise first compiles behind a per-address
-    // lock, which is exactly the process-wide mutex this design avoids.
+    // same instant now coalesce before backend emission (covered separately
+    // below). This seeded case exercises the memo-hit path without any
+    // in-flight claim lookup.
     void* seeded = nullptr;
     {
         JitCompiler seed_jit(*m_memory);
@@ -338,4 +344,493 @@ TEST_F(JitExecTest, CompileSnapshotsCachedBlockBeforeReentrantGuiPump) {
     m_cpu->gpr.set32(EDX, 7);
     EXPECT_EQ(test::execute_like_dispatcher(*m_jit, *compiled, *m_cpu), JitExecResult::Continue);
     EXPECT_DOUBLE_EQ(m_cpu->sse.xmm[0].f64_[0], 42.0);
+}
+
+namespace {
+struct ColdCompileMemoGuard {
+    ColdCompileMemoGuard() {
+        JitCompileMemo::clear_compile_memo();
+        JitCompileMemo::enable_compile_memo();
+        JitCompileMemo::reset_compile_memo_stats();
+    }
+    ~ColdCompileMemoGuard() {
+        JitCompileMemo::disable_compile_memo();
+        JitCompileMemo::clear_compile_memo();
+    }
+};
+
+template<class Predicate>
+bool spin_until(Predicate ready) {
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while (!ready()) {
+        if (std::chrono::steady_clock::now() >= deadline) return false;
+        std::this_thread::yield();
+    }
+    return true;
+}
+
+bool coalescing_disabled() {
+    return !environment_flag_enabled("VITREO_JIT_COALESCE_COMPILES", false);
+}
+}
+
+TEST_F(JitExecTest, CompileMemoCoalescesColdNativeAndDelegateMissesInBothModes) {
+    if (coalescing_disabled()) GTEST_SKIP() << "coalescing diagnostic control disabled";
+    ColdCompileMemoGuard memo;
+    constexpr usize workers = 8;
+    for (const bool wide : {false, true}) {
+        for (const bool delegate : {false, true}) {
+            SCOPED_TRACE(::testing::Message() << "wide=" << wide << " delegate=" << delegate);
+            std::vector<u8> code;
+            for (int i = 0; i < 64; ++i) {
+                if (delegate) code.insert(code.end(), {0x0F, 0xA2});
+                else code.insert(code.end(), {0x83, 0xC0, 0x01});
+            }
+            auto source = build_block(code.data(), code.size());
+            source.is_64bit = wide;
+            JitCompileMemo::clear_compile_memo();
+            JitCompileMemo::reset_compile_memo_stats();
+            std::mutex gate_mutex;
+            std::condition_variable gate;
+            usize ready = 0;
+            bool go = false;
+            std::array<void*, workers> pointers{};
+            std::array<bool, workers> executed{};
+            std::array<u32, workers> results{};
+            std::array<bool, workers> owns_decode{};
+            std::vector<std::thread> threads;
+            for (usize t = 0; t < workers; ++t) {
+                threads.emplace_back([&, t] {
+                    JitCompiler compiler(*m_memory);
+                    BasicBlock block = source;
+                    {
+                        std::unique_lock lock(gate_mutex);
+                        ++ready;
+                        gate.notify_all();
+                        gate.wait(lock, [&] { return go; });
+                    }
+                    auto* compiled = compiler.compile(block);
+                    if (!compiled) return;
+                    pointers[t] = compiled->code;
+                    owns_decode[t] = compiled->delegate_insns != nullptr;
+                    CpuState cpu;
+                    if (wide) cpu.init_long_mode(); else cpu.init_protected_mode();
+                    cpu.gpr.set64(ESP, 0x10000);
+                    cpu.rip = source.start_addr;
+                    executed[t] = test::execute_like_dispatcher(compiler, *compiled, cpu) ==
+                                  JitExecResult::Continue;
+                    results[t] = cpu.gpr.get32(EAX);
+                    block.instructions.reset();
+                });
+            }
+            {
+                std::unique_lock lock(gate_mutex);
+                gate.wait(lock, [&] { return ready == workers; });
+                go = true;
+            }
+            gate.notify_all();
+            for (auto& thread : threads) thread.join();
+            for (usize t = 0; t < workers; ++t) {
+                ASSERT_NE(pointers[t], nullptr) << t;
+                EXPECT_EQ(pointers[t], pointers[0]) << t;
+                EXPECT_TRUE(executed[t]) << t;
+                EXPECT_EQ(results[t], results[0]) << t;
+                EXPECT_EQ(owns_decode[t], delegate) << t;
+            }
+            if (!delegate) EXPECT_EQ(results[0], 64u);
+            EXPECT_EQ(JitCompileMemo::compile_memo_stats().fresh_emits, 1u);
+            EXPECT_EQ(JitCompileMemo::compile_memo_size(), 1u);
+            EXPECT_EQ(JitCompileMemo::compile_waiters_for_test(), 0u);
+        }
+    }
+}
+
+TEST_F(JitExecTest, CompileClaimReleasesAbandonedWorkAndRejectsWaitedSourceChanges) {
+    if (coalescing_disabled()) GTEST_SKIP() << "coalescing diagnostic control disabled";
+    ColdCompileMemoGuard memo;
+    for (const bool change_source : {false, true}) {
+        SCOPED_TRACE(change_source);
+        const u8 code[] = {0xB8, 0x01, 0x00, 0x00, 0x00};
+        auto source = build_block(code, sizeof(code));
+        JitCompileMemo::clear_compile_memo();
+        JitCompiler seed(*m_memory);
+        ASSERT_NE(seed.compile(source), nullptr);
+        JitCompileMemo::CompiledKey key{};
+        {
+            auto& shard = JitCompileMemo::shard_for(source.start_addr);
+            std::shared_lock lock(shard.lock);
+            const auto found = shard.compiled.find(source.start_addr);
+            ASSERT_NE(found, shard.compiled.end());
+            found->second.for_each([&](const auto& entry) { key = entry.key; });
+        }
+        JitCompileMemo::clear_compile_memo();
+        JitCompileMemo::reset_compile_memo_stats();
+        auto abandoned = std::make_unique<JitCompileMemo::CompilationClaim>();
+        abandoned->acquire(*m_memory, key, source.instruction_count,
+                           m_memory->executable_generation());
+        ASSERT_TRUE(abandoned->owns_claim());
+        std::atomic<bool> returned{false};
+        bool succeeded = false, deferred = false, changed = false;
+        bool retry_succeeded = false, retry_cleared = false;
+        std::thread follower([&] {
+            JitCompiler compiler(*m_memory);
+            succeeded = compiler.compile(source) != nullptr;
+            deferred = compiler.compile_deferred();
+            changed = compiler.compile_source_changed();
+            if (changed) {
+                BasicBlock refreshed = source;
+                // MOV EAX,imm32 retains the same shape; decode its new bytes.
+                const u8 updated[] = {0xB8, 0x02, 0x00, 0x00, 0x00};
+                MemoryByteReader reader(updated, sizeof(updated));
+                DecodedInstruction instruction;
+                if (decode_instruction(reader, DecodeMode::Mode32, instruction) == DecodeError::Success) {
+                    refreshed.instructions.reset();
+                    refreshed.instructions.push_back(instruction);
+                    retry_succeeded = compiler.compile(refreshed) != nullptr;
+                    retry_cleared = !compiler.compile_source_changed() && !compiler.compile_deferred();
+                }
+            }
+            returned.store(true, std::memory_order_release);
+        });
+        const bool blocked = spin_until([&] {
+            return JitCompileMemo::compile_waiters_for_test() != 0 ||
+                   returned.load(std::memory_order_acquire);
+        }) && !returned.load(std::memory_order_acquire);
+        if (change_source && blocked) {
+            const u8 updated[] = {0xB8, 0x02, 0x00, 0x00, 0x00};
+            EXPECT_TRUE(m_memory->write_bytes(source.start_addr, updated, sizeof(updated)));
+            m_memory->notify_executable_write(0, 0);
+        }
+        abandoned.reset(); // No publication: a follower must become the owner.
+        follower.join();
+        ASSERT_TRUE(blocked);
+        EXPECT_EQ(succeeded, !change_source);
+        EXPECT_EQ(deferred, change_source);
+        EXPECT_EQ(changed, change_source);
+        if (change_source) {
+            EXPECT_TRUE(retry_succeeded);
+            EXPECT_TRUE(retry_cleared);
+        }
+        EXPECT_EQ(JitCompileMemo::compile_memo_stats().fresh_emits, 1u);
+        EXPECT_EQ(JitCompileMemo::compile_waiters_for_test(), 0u);
+    }
+}
+
+TEST_F(JitExecTest, CompileClaimsIsolateIdentityAndNeverWaitDuringNestedCompilation) {
+    JitCompileMemo::CompiledKey original{};
+    original.start_addr = 0x1000;
+    original.guest_size = 1;
+    original.code_hash = 1;
+    constexpr u64 generation = 7;
+    auto leader = std::make_unique<JitCompileMemo::CompilationClaim>();
+    leader->acquire(*m_memory, original, 1, generation);
+    ASSERT_TRUE(leader->owns_claim());
+    {
+        JitCompileMemo::CompilationClaim nested;
+        nested.acquire(*m_memory, original, 1, generation);
+        EXPECT_FALSE(nested.owns_claim());
+        EXPECT_FALSE(nested.waited());
+    }
+    for (int variant = 0; variant < 9; ++variant) {
+        auto key = original;
+        GuestMemory other_memory;
+        auto* memory = m_memory.get();
+        u64 epoch = generation;
+        u32 count = 1;
+        switch (variant) {
+        case 0: key.start_addr += 1; break; // Same registry shard, disjoint key.
+        case 1: key.is_64bit = true; break;
+        case 2: key.code_hash += 1; break;
+        case 3: memory = &other_memory; break;
+        case 4: ++epoch; break;
+        case 5: ++count; break;
+        case 6: ++key.ir_policy; break;
+        case 7: ++key.pin_layout; break;
+        case 8: ++key.guest_size; break;
+        }
+        std::atomic<bool> acquired{false};
+        std::thread independent([&] {
+            JitCompileMemo::CompilationClaim claim;
+            claim.acquire(*memory, key, count, epoch);
+            acquired.store(claim.owns_claim(), std::memory_order_release);
+        });
+        // These must finish while the original claim remains live. A broken
+        // identity would wait forever, so release it on timeout before join.
+        const bool progressed = spin_until([&] { return acquired.load(std::memory_order_acquire); });
+        if (!progressed) leader.reset();
+        independent.join();
+        ASSERT_TRUE(progressed) << "independent claim blocked for variant " << variant;
+    }
+}
+
+TEST_F(JitExecTest, CompileClaimFansOutUnshareableAndFailedBackendsWithoutLeakingClaims) {
+    if (coalescing_disabled()) GTEST_SKIP() << "coalescing diagnostic control disabled";
+    ColdCompileMemoGuard memo;
+    constexpr usize workers = 8;
+    for (const bool exhausted_budget : {true, false}) {
+        SCOPED_TRACE(exhausted_budget);
+        const std::vector<u8> code = exhausted_budget
+            ? std::vector<u8>{0x0F, 0xA2}
+            : std::vector<u8>{0x8B, 0x03, 0x90};
+        auto source = build_block(code.data(), code.size());
+        JitCompileMemo::clear_compile_memo();
+        JitCompiler seed(*m_memory);
+        ASSERT_NE(seed.compile(source), nullptr);
+        JitCompileMemo::CompiledKey key{};
+        {
+            auto& shard = JitCompileMemo::shard_for(source.start_addr);
+            std::shared_lock lock(shard.lock);
+            const auto found = shard.compiled.find(source.start_addr);
+            ASSERT_NE(found, shard.compiled.end());
+            found->second.for_each([&](const auto& entry) { key = entry.key; });
+        }
+        JitCompileMemo::clear_compile_memo();
+        struct BudgetReservation {
+            usize bytes{0};
+            void release() {
+                if (bytes) memo_ir_release(bytes);
+                bytes = 0;
+            }
+            ~BudgetReservation() { release(); }
+        } reservation;
+        if (exhausted_budget) {
+            ASSERT_EQ(memo_ir_bytes(), 0u);
+            // Reserve the exact configured capacity using its admission API.
+            // No guessed cap and no actual decoded-array allocation.
+            for (usize chunk = usize{1} << (std::numeric_limits<usize>::digits - 1);
+                 chunk != 0; chunk >>= 1) {
+                if (memo_ir_admit(chunk)) reservation.bytes += chunk;
+            }
+            ASSERT_FALSE(memo_ir_admit(1));
+        }
+        struct ReachLimit {
+            std::string fatal, words;
+            bool had_fatal, had_words;
+            explicit ReachLimit(bool enable) :
+                had_fatal(std::getenv("VITREO_JIT_TEST_BRANCH_REACH_FATAL") != nullptr),
+                had_words(std::getenv("VITREO_JIT_TEST_BRANCH_REACH_WORDS") != nullptr) {
+                if (had_fatal) fatal = std::getenv("VITREO_JIT_TEST_BRANCH_REACH_FATAL");
+                if (had_words) words = std::getenv("VITREO_JIT_TEST_BRANCH_REACH_WORDS");
+                if (enable) {
+                    ::setenv("VITREO_JIT_TEST_BRANCH_REACH_FATAL", "0", 1);
+                    ::setenv("VITREO_JIT_TEST_BRANCH_REACH_WORDS", "1", 1);
+                    JitCompiler::reload_branch_reach_test_knobs_for_test();
+                }
+            }
+            void restore() {
+                if (had_fatal) ::setenv("VITREO_JIT_TEST_BRANCH_REACH_FATAL", fatal.c_str(), 1);
+                else ::unsetenv("VITREO_JIT_TEST_BRANCH_REACH_FATAL");
+                if (had_words) ::setenv("VITREO_JIT_TEST_BRANCH_REACH_WORDS", words.c_str(), 1);
+                else ::unsetenv("VITREO_JIT_TEST_BRANCH_REACH_WORDS");
+                JitCompiler::reload_branch_reach_test_knobs_for_test();
+            }
+            ~ReachLimit() { restore(); }
+        } reach(!exhausted_budget);
+        JitCompileMemo::reset_compile_memo_stats();
+        auto abandoned = std::make_unique<JitCompileMemo::CompilationClaim>();
+        abandoned->acquire(*m_memory, key, source.instruction_count,
+                           m_memory->executable_generation());
+        ASSERT_TRUE(abandoned->owns_claim());
+        std::array<bool, workers> succeeded{}, owns_decode{}, deferred{};
+        std::array<void*, workers> codes{};
+        std::vector<std::thread> threads;
+        for (usize t = 0; t < workers; ++t) {
+            threads.emplace_back([&, t] {
+                JitCompiler compiler(*m_memory);
+                auto* compiled = compiler.compile(source);
+                succeeded[t] = compiled != nullptr;
+                deferred[t] = compiler.compile_deferred();
+                if (compiled) {
+                    codes[t] = compiled->code;
+                    owns_decode[t] = compiled->delegate_insns != nullptr;
+                }
+            });
+        }
+        const bool all_waiting = spin_until([&] {
+            return JitCompileMemo::compile_waiters_for_test() == workers;
+        });
+        abandoned.reset();
+        for (auto& thread : threads) thread.join();
+        ASSERT_TRUE(all_waiting);
+        for (usize t = 0; t < workers; ++t) {
+            EXPECT_EQ(succeeded[t], exhausted_budget) << t;
+            EXPECT_FALSE(deferred[t]) << t;
+            EXPECT_EQ(owns_decode[t], exhausted_budget) << t;
+            if (exhausted_budget) {
+                for (usize previous = 0; previous < t; ++previous)
+                    EXPECT_NE(codes[t], codes[previous]);
+            }
+        }
+        EXPECT_EQ(JitCompileMemo::compile_memo_size(), 0u);
+        EXPECT_EQ(JitCompileMemo::compile_waiters_for_test(), 0u);
+        EXPECT_EQ(JitCompileMemo::compile_memo_stats().fresh_emits,
+                  exhausted_budget ? workers : 0u);
+        reservation.release();
+        reach.restore();
+        EXPECT_EQ(memo_ir_bytes(), 0u);
+        JitCompiler retry(*m_memory);
+        EXPECT_NE(retry.compile(source), nullptr);
+        EXPECT_EQ(JitCompileMemo::compile_memo_size(), 1u);
+    }
+}
+
+TEST_F(JitExecTest, CompileClaimReusesIdentityWithoutResettingSurvivingWaiters) {
+    for (u64 round = 0; round < 16; ++round) {
+        JitCompileMemo::CompiledKey key{};
+        key.start_addr = 0x1000 + round * 0x1000;
+        if (round != 0) {
+            // Round transitions cross registry shards; immediate reacquisition
+            // below stays in one shard. Both cache-reuse paths must work.
+            ASSERT_NE(JitCompileMemo::shard_index(key.start_addr),
+                      JitCompileMemo::shard_index(key.start_addr - 0x1000));
+        }
+        key.code_hash = round;
+        key.pin_layout = round + 1;
+        key.guest_size = static_cast<u32>(round + 1);
+        key.ir_policy = static_cast<u32>(round);
+        key.is_64bit = (round & 1) != 0;
+        const u64 generation = round + 1;
+        const u32 count = static_cast<u32>(round + 1);
+        auto owner = std::make_unique<JitCompileMemo::CompilationClaim>();
+        owner->acquire(*m_memory, key, count, generation);
+        ASSERT_TRUE(owner->owns_claim());
+        std::atomic<bool> returned{false};
+        bool waited = false;
+        std::thread follower([&] {
+            JitCompileMemo::CompilationClaim claim;
+            claim.acquire(*m_memory, key, count, generation);
+            waited = claim.waited();
+            returned.store(true, std::memory_order_release);
+        });
+        const bool blocked = spin_until([&] {
+            return JitCompileMemo::compile_waiters_for_test() != 0 ||
+                   returned.load(std::memory_order_acquire);
+        }) && !returned.load(std::memory_order_acquire);
+        owner.reset();
+        // A new owner can arrive before the old waiter has reacquired its
+        // mutex. Reusing that waiter's state would erase its completed wakeup.
+        auto next = std::make_unique<JitCompileMemo::CompilationClaim>();
+        next->acquire(*m_memory, key, count, generation);
+        const bool next_owned = next->owns_claim();
+        const bool follower_progressed = spin_until([&] {
+            return returned.load(std::memory_order_acquire);
+        });
+        next.reset();
+        follower.join();
+        ASSERT_TRUE(blocked);
+        ASSERT_TRUE(next_owned);
+        ASSERT_TRUE(follower_progressed);
+        EXPECT_TRUE(waited);
+        EXPECT_EQ(JitCompileMemo::compile_waiters_for_test(), 0u);
+    }
+}
+
+namespace {
+struct LateMemoGate {
+    std::mutex mutex;
+    std::condition_variable cv;
+    std::atomic<bool> claimed{false};
+    bool entered{false};
+    bool released{false};
+};
+LateMemoGate* g_late_memo_gate = nullptr;
+
+void pause_first_late_probe(GuestAddr address) {
+    auto& gate = *g_late_memo_gate;
+    if (address != 0x1000 || gate.claimed.exchange(true)) return;
+    std::unique_lock lock(gate.mutex);
+    gate.entered = true;
+    gate.cv.notify_all();
+    gate.cv.wait(lock, [&] { return gate.released; });
+}
+}
+
+TEST_F(JitExecTest, LateMemoProbeAdoptsPublicationAfterFrontendBeforeAnyBackendEmission) {
+    if (!coalescing_disabled()) GTEST_SKIP() << "blocking coalescer owns the key before this boundary";
+    if (!environment_flag_enabled("VITREO_JIT_LATE_MEMO_RECHECK", true))
+        GTEST_SKIP() << "late memo diagnostic control disabled";
+    ColdCompileMemoGuard memo;
+    for (const bool wide : {false, true}) {
+        for (const bool delegate : {false, true}) {
+            SCOPED_TRACE(::testing::Message() << "wide=" << wide << " delegate=" << delegate);
+            const std::vector<u8> code = delegate
+                ? std::vector<u8>{0x0F, 0xA2}
+                : std::vector<u8>{0x83, 0xC0, 0x01};
+            auto source = build_block(code.data(), code.size());
+            source.is_64bit = wide;
+            JitCompileMemo::clear_compile_memo();
+            JitCompileMemo::reset_compile_memo_stats();
+            LateMemoGate gate;
+            g_late_memo_gate = &gate;
+            compile_test::set_before_backend_hook(&pause_first_late_probe);
+            void* first_code = nullptr;
+            bool first_owns_decode = false;
+            std::thread first([&] {
+                JitCompiler compiler(*m_memory);
+                if (auto* compiled = compiler.compile(source)) {
+                    first_code = compiled->code;
+                    first_owns_decode = compiled->delegate_insns != nullptr;
+                }
+            });
+            bool arrived;
+            {
+                std::unique_lock lock(gate.mutex);
+                arrived = gate.cv.wait_for(lock, std::chrono::seconds(5), [&] { return gate.entered; });
+            }
+            JitCompiler publisher(*m_memory);
+            CompiledBlock* published = arrived ? publisher.compile(source) : nullptr;
+            {
+                std::lock_guard lock(gate.mutex);
+                gate.released = true;
+            }
+            gate.cv.notify_all();
+            first.join();
+            compile_test::set_before_backend_hook(nullptr);
+            g_late_memo_gate = nullptr;
+            ASSERT_TRUE(arrived);
+            ASSERT_NE(published, nullptr);
+            EXPECT_EQ(first_code, published->code);
+            EXPECT_EQ(first_owns_decode, delegate);
+            EXPECT_EQ(JitCompileMemo::compile_memo_stats().fresh_emits, 1u);
+            EXPECT_EQ(JitCompileMemo::compile_memo_stats().compile_hits, 1u);
+            // First lookup + publisher lookup + the changed-sequence retry.
+            EXPECT_EQ(JitCompileMemo::compile_memo_stats().compile_probes, 3u);
+        }
+    }
+}
+
+TEST_F(JitExecTest, LateMemoProbeSkipsUnchangedSequenceAndClearNeverResetsIt) {
+    if (!coalescing_disabled()) GTEST_SKIP() << "blocking coalescer adds its own re-probe";
+    if (!environment_flag_enabled("VITREO_JIT_LATE_MEMO_RECHECK", true))
+        GTEST_SKIP() << "late memo diagnostic control disabled";
+    ColdCompileMemoGuard memo;
+    struct RestoreLockMode {
+        ~RestoreLockMode() { JitCompileMemo::set_legacy_memo_locking_for_test(-1); }
+    } restore;
+    for (const bool legacy : {false, true}) {
+        JitCompileMemo::set_legacy_memo_locking_for_test(legacy ? 1 : 0);
+        for (const bool wide : {false, true}) {
+            for (const bool delegate : {false, true}) {
+                SCOPED_TRACE(::testing::Message() << "legacy=" << legacy << " wide=" << wide
+                                                << " delegate=" << delegate);
+                const std::vector<u8> code = delegate
+                    ? std::vector<u8>{0x0F, 0xA2}
+                    : std::vector<u8>{0x83, 0xC0, 0x01};
+                auto source = build_block(code.data(), code.size());
+                source.is_64bit = wide;
+                JitCompileMemo::clear_compile_memo();
+                JitCompileMemo::reset_compile_memo_stats();
+                auto& shard = JitCompileMemo::shard_for(source.start_addr);
+                const u64 before = shard.publication_sequence.load(std::memory_order_acquire);
+                JitCompiler compiler(*m_memory);
+                ASSERT_NE(compiler.compile(source), nullptr);
+                EXPECT_EQ(JitCompileMemo::compile_memo_stats().fresh_emits, 1u);
+                EXPECT_EQ(JitCompileMemo::compile_memo_stats().compile_probes, 1u);
+                const u64 published = shard.publication_sequence.load(std::memory_order_acquire);
+                EXPECT_EQ(published, before + 1);
+                JitCompileMemo::clear_compile_memo();
+                EXPECT_EQ(shard.publication_sequence.load(std::memory_order_acquire), published);
+            }
+        }
+    }
 }

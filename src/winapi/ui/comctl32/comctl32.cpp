@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "comctl32.hpp"
 #include "winapi/user32/windows/sdk_creation_layouts.hpp"
 #include "winapi/kernel32/error.hpp"
@@ -407,6 +408,9 @@ u64 ComCtl32Manager::invoke_next(
         w_param,
         l_param,
     };
+    if (m_window_procedure_call) {
+        return m_window_procedure_call(hwnd, msg, w_param, l_param, frame.original_wndproc, frame.is_64bit);
+    }
     return m_guest_call(
         frame.original_wndproc, args, 4, frame.is_64bit);
 }
@@ -415,6 +419,15 @@ u64 ComCtl32Manager::dispatch_window_message(
     windowing::HWND hwnd, u32 msg, u64 w_param, u64 l_param,
     GuestAddr original_wndproc, bool is_64bit
 ) {
+    // VITREO_INPUT_DIAG: the geometry messages a window procedure receives.
+    static const bool geometry_diag = std::getenv("VITREO_INPUT_DIAG") != nullptr;
+    if (geometry_diag && (msg == 0x0005 || msg == 0x0003 || msg == 0x0047 ||
+                          msg == 0x0046 || msg == 0x007E || msg == 0x0024)) {
+        std::fprintf(stderr, "[input] wndproc hwnd=0x%llx msg=0x%04x wParam=0x%llx "
+                     "lParam=0x%llx\n", static_cast<unsigned long long>(hwnd), msg,
+                     static_cast<unsigned long long>(w_param),
+                     static_cast<unsigned long long>(l_param));
+    }
     DispatchFrame frame;
     frame.manager = this;
     frame.hwnd = hwnd;

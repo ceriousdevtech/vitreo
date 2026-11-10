@@ -17,6 +17,14 @@ u32 DxbcTranslator::push_block_var() {
 }
 
 u32 DxbcTranslator::typed_buffer_entry(bool uav, u32 slot) {
+    // Descriptor tables keep the packed entry in a per-slot side buffer
+    // (typed_buffer_bias_buffer). The index is the table slot, the same
+    // one view sizes and null flags use, so an array element reads its
+    // own view.
+    const u32 variable = uav ? m_uav_typed_bias_var : m_srv_typed_bias_var;
+    if (variable != 0) {
+        return typed_raw_word(uav, slot, 0);
+    }
     if (!m_options.typed_buffer_bias ||
         slot >= (uav ? kGuardSizeUavSlots : kGuardSizeSrvSlots)) {
         return 0;
@@ -123,19 +131,27 @@ u32 DxbcTranslator::load_rgb32_buffer_element(u32 image, u32 result_type,
 
 bool DxbcTranslator::guards_buffer(Sm4OperandType type) const {
     // The geometry/hull kernels and the stream-out repack are dispatched by
-    // paths that bind no push block, so an unset buffer 0 must not be read
-    // as sizes there.
-    return m_options.guard_buffer_bounds && !gs_as_compute() &&
-           !hs_as_compute() &&
-           (type == Sm4OperandType::Resource ||
-            type == Sm4OperandType::UnorderedAccessView);
+    // paths that bind no push block and no view-size buffer, so an unset
+    // buffer 0 must not be read as sizes there.
+    if (gs_as_compute() || hs_as_compute()) return false;
+    if (type != Sm4OperandType::Resource &&
+        type != Sm4OperandType::UnorderedAccessView) {
+        return false;
+    }
+    if (m_options.guard_buffer_bounds) return true;
+    // Descriptor-table sizes (view_size_buffer), indexed by table slot.
+    return type == Sm4OperandType::Resource ? m_srv_view_size_var != 0
+                                            : m_uav_view_size_var != 0;
 }
 
 u32 DxbcTranslator::volume_uav_window(u32 slot, u32 coordinate,
                                       u32& outside) {
     outside = 0;
+    // The W-slice window lives in the push block, not the descriptor-table
+    // view-size buffer. A table-mode shader must not grow a push block just
+    // because its raw views are guarded.
     if (!m_volume_uav_slots.contains(slot) ||
-        !guards_buffer(Sm4OperandType::UnorderedAccessView) ||
+        !m_options.guard_buffer_bounds || gs_as_compute() || hs_as_compute() ||
         slot >= kGuardSizeUavSlots) {
         return coordinate;
     }
@@ -164,6 +180,24 @@ u32 DxbcTranslator::volume_uav_window(u32 slot, u32 coordinate,
 }
 
 u32 DxbcTranslator::buffer_word_in_bounds(bool uav, u32 slot, u32 word) {
+    if ((uav ? m_uav_view_size_var : m_srv_view_size_var) != 0) {
+        // 0 words is an empty or null view: every word is out of bounds.
+        // (The push-block path below treats 0 as "size unknown".)
+        // SPIR-V 1.4 lists every global the entry point uses. The interface
+        // is collected before instructions run, and this load is the use.
+        const u32 variable = uav ? m_uav_view_size_var : m_srv_view_size_var;
+        if (std::find(m_entry_interface.begin(), m_entry_interface.end(),
+                      variable) == m_entry_interface.end()) {
+            m_entry_interface.push_back(variable);
+        }
+        const u32 size_words = view_size_words(uav, slot);
+        if (size_words == 0) {
+            return m_builder.emit_integer_compare(
+                SpvOp::OpIEqual, m_type_bool, m_const_u0, m_const_u0);
+        }
+        return m_builder.emit_integer_compare(SpvOp::OpULessThan, m_type_bool,
+                                              word, size_words);
+    }
     // Every slot has its own entry: t9 is never checked against t1's view.
     // A slot past the table (u8+ from an 11.1 shader) has no entry: no check.
     if (slot >= (uav ? kGuardSizeUavSlots : kGuardSizeSrvSlots)) {
@@ -184,6 +218,68 @@ u32 DxbcTranslator::buffer_word_in_bounds(bool uav, u32 slot, u32 word) {
         m_builder.emit_constant_int(m_type_uint, 0xFFFFFFFFu), size_words);
     return m_builder.emit_integer_compare(SpvOp::OpULessThan, m_type_bool,
                                           word, limit);
+}
+
+void DxbcTranslator::load_guarded_word_span(
+    bool uav, u32 slot, u32 variable, u32 pointer_type,
+    bool indexed_through_member, u32 base_word, u32 count, u32* out_words) {
+    if (count == 0u || out_words == nullptr) return;
+    if (count > 4u) count = 4u;
+    if (count == 1u) {
+        out_words[0] = guarded_buffer_word_load(
+            variable, pointer_type, base_word,
+            buffer_word_in_bounds(uav, slot, base_word));
+        return;
+    }
+    // Last word in bounds implies every earlier word is. The plain loads
+    // then have affine addresses (base, base+1, ...), which is what the
+    // Metal compiler widens into one vector load. The per-word select
+    // clamps each address to 0 and blocks that.
+    const u32 last = m_builder.emit_iadd(
+        m_type_uint, base_word,
+        m_builder.emit_constant_int(m_type_uint, count - 1u));
+    const u32 span_in = buffer_word_in_bounds(uav, slot, last);
+    const u32 read_block = m_builder.allocate_id();
+    const u32 slow_block = m_builder.allocate_id();
+    const u32 merge_block = m_builder.allocate_id();
+    m_builder.emit_selection_merge(merge_block);
+    m_builder.emit_branch_conditional(span_in, read_block, slow_block);
+
+    const auto word_at = [&](u32 i) {
+        return i == 0u ? base_word
+                       : m_builder.emit_iadd(
+                             m_type_uint, base_word,
+                             m_builder.emit_constant_int(m_type_uint, i));
+    };
+    const auto plain_load = [&](u32 word) {
+        const u32 member = m_builder.emit_constant_int(m_type_uint, 0u);
+        const u32 pointer = indexed_through_member
+            ? m_builder.emit_access_chain(pointer_type, variable,
+                                          {member, word})
+            : m_builder.emit_access_chain(pointer_type, variable, {word});
+        return m_builder.emit_load(m_type_uint, pointer);
+    };
+
+    m_builder.emit_label_id(read_block);
+    u32 fast[4]{};
+    for (u32 i = 0; i < count; ++i) fast[i] = plain_load(word_at(i));
+    m_builder.emit_branch(merge_block);
+
+    m_builder.emit_label_id(slow_block);
+    u32 slow[4]{};
+    for (u32 i = 0; i < count; ++i) {
+        const u32 word = word_at(i);
+        slow[i] = guarded_buffer_word_load(
+            variable, pointer_type, word,
+            buffer_word_in_bounds(uav, slot, word));
+    }
+    m_builder.emit_branch(merge_block);
+
+    m_builder.emit_label_id(merge_block);
+    for (u32 i = 0; i < count; ++i) {
+        out_words[i] = m_builder.emit_phi(
+            m_type_uint, {{fast[i], read_block}, {slow[i], slow_block}});
+    }
 }
 
 u32 DxbcTranslator::guarded_buffer_word_load(u32 variable, u32 pointer_type,

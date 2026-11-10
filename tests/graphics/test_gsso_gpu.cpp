@@ -18,6 +18,7 @@
 #include "graphics/shaders/dxbc_parser.hpp"
 #include "graphics/shaders/dxbc_to_spirv.hpp"
 #include "graphics/shaders/gs_passthrough.hpp"
+#include "graphics/shaders/ia_cut_rewrite.hpp"
 #include "graphics/shaders/ia_resolve.hpp"
 #include "graphics/shaders/spirv_to_msl.hpp"
 #include "graphics/shaders/stream_out_repack.hpp"
@@ -398,7 +399,7 @@ TEST_F(GssoGpuTest, StreamOutDrawAutoArguments) {
 // ---------------------------------------------------------------------------
 
 TEST_F(GssoGpuTest, IaResolveMatchesTheModel) {
-    auto kernel = pipeline(ia_resolve_msl(), kIaResolveEntryPoint, 0x1A7E5u);
+    auto kernel = pipeline(ia_resolve_msl(), kIaResolveEntryPoint, 0x1A7E6u);
     ASSERT_TRUE(kernel);
     struct Case {
         const char* label;
@@ -429,7 +430,23 @@ TEST_F(GssoGpuTest, IaResolveMatchesTheModel) {
     lines.primitive_capacity = 4096;
     IaResolveParams tight = lines;
     tight.record_capacity = 5;
+    // D3D12 IBStripCutValue (d3d12_a61_ia_probe): DISABLED keeps 0xFFFF as a
+    // vertex; a cut value matches by value, whatever the format.
+    IaResolveParams strip16_none = strip16;
+    strip16_none.cut_mode = ia_cut_mode({});
+    IaResolveParams strip32_ffff = strip16;
+    strip32_ffff.index_32bit = 1;
+    strip32_ffff.cut_mode = ia_cut_mode({true, 0xFFFFu});
+    IaResolveParams list16_32 = list32;
+    list16_32.index_32bit = 0;
+    list16_32.cut_mode = ia_cut_mode({true, 0xFFFFFFFFu});
     const std::vector<Case> cases{
+        {"R16 strip, cut DISABLED", strip16_none, {9, 1, 0, 0, 0},
+         {0, 1, 2, 3, 0xFFFF, 4, 5, 6, 7}},
+        {"R32 strip, cut 0xFFFF", strip32_ffff, {9, 1, 0, 0, 0},
+         {0, 1, 2, 0xFFFFFFFFu, 0xFFFF, 4, 5, 6, 7}},
+        {"R16 list, cut 0xFFFFFFFF", list16_32, {6, 1, 0, 0, 0},
+         {9, 4, 3, 0xFFFF, 2, 1, 0}},
         {"R16 strip with a cut, 2 instances", strip16, {9, 2, 0, 10, 3},
          {0, 1, 2, 3, 0xFFFF, 4, 5, 6, 7}},
         {"R32 list, cut value mid-primitive, start 1", list32, {6, 3, 1, 0, 0},
@@ -479,6 +496,99 @@ TEST_F(GssoGpuTest, IaResolveMatchesTheModel) {
         const auto header = read(capture.get(), 2);
         EXPECT_EQ(header[0], model[IA_RESOLVED_KEY_STRIDE]) << c.label;
         EXPECT_EQ(header[1], c.params.record_capacity) << c.label;
+    }
+}
+
+// D3D12 strip cuts Metal's restart cannot express (ia_cut_rewrite.hpp):
+// the kernel's stream and argument block against the CPU rewrite.
+TEST_F(GssoGpuTest, IaCutRewriteMatchesTheModel) {
+    auto kernel = pipeline(ia_cut_rewrite_msl(), kIaCutEntryPoint, 0x1AC07u);
+    ASSERT_TRUE(kernel);
+    struct Case {
+        const char* label;
+        bool strip;
+        bool index32;
+        u32 vpp;
+        IndexCut cut;
+        std::array<u32, 5> args;  ///< count, instances, start, base, first instance
+        std::vector<u32> indices;
+    };
+    std::vector<u32> long_strip(1000);
+    for (u32 i = 0; i < 1000; ++i) long_strip[i] = (i * 37u) % 0x10000u;
+    long_strip[500] = 0xFFFF;
+    const std::vector<Case> cases{
+        {"R16 strip, DISABLED: widened", true, false, 3, {}, {7, 2, 0, 5, 1},
+         {0, 1, 2, 0xFFFF, 4, 5, 6}},
+        {"R16 strip, cut 0xFFFFFFFF: widened, start 2", true, false, 3,
+         {true, 0xFFFFFFFFu}, {7, 1, 2, -3 & 0xFFFFFFFFu, 0}, {9, 9, 0, 1, 2, 0xFFFF, 4, 5, 6}},
+        {"R32 strip, DISABLED: expanded", true, true, 3, {}, {7, 1, 0, 0, 0},
+         {0, 1, 2, 0xFFFFFFFFu, 4, 5, 6}},
+        {"R32 line strip, DISABLED: expanded", true, true, 2, {}, {5, 1, 0, 0, 0},
+         {0, 1, 0xFFFFFFFFu, 3, 4}},
+        {"R32 strip, cut 0xFFFF: assembled", true, true, 3, {true, 0xFFFFu},
+         {9, 1, 0, 0, 0}, {0, 1, 2, 0xFFFF, 4, 5, 0xFFFFFFFFu, 7, 8}},
+        {"R32 strip, cut 0xFFFF absent: expanded", true, true, 3, {true, 0xFFFFu},
+         {6, 1, 0, 0, 0}, {0, 1, 2, 0xFFFFFFFFu, 4, 5}},
+        {"R16 list, cut 0xFFFF: assembled", false, false, 3, {true, 0xFFFFu},
+         {9, 1, 0, 0, 0}, {10, 11, 12, 0xFFFF, 14, 15, 16, 17, 18}},
+        {"R32 point list, cut 0xFFFFFFFF", false, true, 1, {true, 0xFFFFFFFFu},
+         {4, 3, 0, 0, 0}, {7, 0xFFFFFFFFu, 8, 9}},
+        {"R16 list, cut absent: copied", false, false, 3, {true, 0xFFFFu},
+         {6, 1, 0, 0, 0}, {3, 4, 5, 0xFFFE, 1, 2}},
+        {"R16 strip of 1000, DISABLED", true, false, 3, {}, {1000, 1, 0, 0, 0},
+         long_strip},
+    };
+    for (const auto& c : cases) {
+        const IaCutPlan plan = ia_cut_plan(c.strip, c.index32, c.cut);
+        ASSERT_NE(plan.rewrite, IaCutRewrite::Native) << c.label;
+        const std::vector<u32> drawn(c.indices.begin() + c.args[2],
+                                     c.indices.begin() + c.args[2] + c.args[0]);
+        // The kernel also runs for data the CPU never saw: a list without
+        // its cut value is copied unchanged.
+        if (std::string(c.label).find("cut absent: copied") == std::string::npos) {
+            EXPECT_TRUE(ia_cut_needed(plan, drawn)) << c.label;
+        }
+        const auto model = ia_cut_rewrite_indices(plan, c.cut, c.strip, c.vpp, drawn);
+        std::vector<u32> ib_words;
+        if (c.index32) {
+            ib_words = c.indices;
+        } else {
+            ib_words.assign((c.indices.size() + 1) / 2, 0);
+            for (usize i = 0; i < c.indices.size(); ++i) {
+                ib_words[i / 2] |= (c.indices[i] & 0xFFFFu) << ((i & 1) * 16);
+            }
+        }
+        ib_words.resize(ib_words.size() + 4, 0);
+        IaCutParams params{};
+        params.index_32bit = c.index32 ? 1 : 0;
+        params.index_elements = static_cast<u32>(c.indices.size());
+        params.vertices_per_primitive = c.vpp;
+        params.strip = c.strip ? 1 : 0;
+        params.rewrite = static_cast<u32>(plan.rewrite);
+        params.cut_active = c.cut.active ? 1 : 0;
+        params.cut_value = c.cut.value;
+        params.capacity = static_cast<u32>(
+            ia_cut_capacity(plan.rewrite, c.vpp, c.args[0]));
+        auto ib = buffer(ib_words);
+        auto args = buffer(std::vector<u32>(c.args.begin(), c.args.end()));
+        auto out = buffer(std::vector<u32>(params.capacity + 4, 0xEEu));
+        auto draw = buffer(std::vector<u32>(8, 0xEEu));
+        BackendDispatchCall call{};
+        call.pipeline = kernel.get();
+        call.threads_per_group_x = IA_CUT_THREADS;
+        call.group_count_x = call.group_count_y = call.group_count_z = 1;
+        call.constants = &params;
+        call.constants_size = sizeof(params);
+        call.buffers[IA_CUT_ARGS_INDEX] = args.get();
+        call.buffers[IA_CUT_INDICES_INDEX] = ib.get();
+        call.buffers[IA_CUT_OUT_INDEX] = out.get();
+        call.buffers[IA_CUT_DRAW_INDEX] = draw.get();
+        ASSERT_TRUE(device().dispatch(call));
+        const auto block = read(draw.get(), 5);
+        EXPECT_EQ(block, (std::vector<u32>{static_cast<u32>(model.size()), c.args[1],
+                                           0, c.args[3], c.args[4]}))
+            << c.label;
+        EXPECT_EQ(read(out.get(), model.size()), model) << c.label;
     }
 }
 

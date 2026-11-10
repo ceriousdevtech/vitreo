@@ -131,19 +131,56 @@ std::optional<std::string> known_windows_exe_path(
     const std::string abs_str =
         std::filesystem::absolute(resolved_path, ec).string();
     if (ec) return std::nullopt;
+
+    const auto under_drive = [](const std::string& path,
+                                const std::string& drive_root,
+                                char drive) -> std::optional<std::string> {
+        if (path != drive_root &&
+            !(path.rfind(drive_root, 0) == 0 &&
+              path.size() > drive_root.size() &&
+              path[drive_root.size()] == '/')) {
+            return std::nullopt;
+        }
+        std::string rel = path.substr(drive_root.size());
+        for (char& ch : rel) {
+            if (ch == '/') ch = '\\';
+        }
+        return std::string(1, static_cast<char>(std::toupper(drive))) + ":" +
+               rel;
+    };
+
     const std::string drives_root = capsule_root + "/drives/";
     for (char drive = 'a'; drive <= 'z'; ++drive) {
-        const std::string drive_root = drives_root + drive;
-        if (abs_str == drive_root ||
-            (abs_str.rfind(drive_root, 0) == 0 &&
-             abs_str.size() > drive_root.size() &&
-             abs_str[drive_root.size()] == '/')) {
-            std::string rel = abs_str.substr(drive_root.size());
-            for (char& ch : rel) {
-                if (ch == '/') ch = '\\';
-            }
-            return std::string(1, static_cast<char>(std::toupper(drive))) +
-                   ":" + rel;
+        if (auto win = under_drive(abs_str, drives_root + drive, drive)) {
+            return win;
+        }
+    }
+
+    // The same file can be named through a symlink on either side: a capsule
+    // root reached through a linked directory (~/.vitreo -> another folder),
+    // a home on a linked volume, /tmp vs /private/tmp. A textual mismatch
+    // there made an executable INSIDE the capsule look external, so it was
+    // republished under C:\Vitreo\Apps and ran from the wrong Windows path
+    // (Steam then started from C:\Vitreo\Apps\Steam instead of its install
+    // directory). Compare the resolved forms too. A drive whose directory is
+    // itself a symlink (a letter mapped onto some host folder) is skipped:
+    // resolving it would claim every path under that folder for the drive.
+    const std::string canon_path =
+        std::filesystem::weakly_canonical(abs_str, ec).string();
+    if (ec) return std::nullopt;
+    const std::string canon_drives =
+        std::filesystem::weakly_canonical(capsule_root + "/drives", ec).string();
+    if (ec) return std::nullopt;
+    for (char drive = 'a'; drive <= 'z'; ++drive) {
+        const std::filesystem::path drive_dir = drives_root + drive;
+        std::error_code drive_ec;
+        if (!std::filesystem::is_directory(drive_dir, drive_ec) ||
+            std::filesystem::is_symlink(drive_dir, drive_ec)) {
+            continue;
+        }
+        if (auto win = under_drive(canon_path,
+                                   canon_drives + "/" + drive, drive)) {
+            return win;
         }
     }
     return std::nullopt;

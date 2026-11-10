@@ -48,6 +48,7 @@
 #include <atomic>
 #include <array>
 #include <chrono>
+#include <thread>
 #include <cstdio>
 #include <limits>
 #include <cstdlib>
@@ -116,7 +117,8 @@ u64 run_guest_callback(cpu::CpuState& cpu,
                        bool* completed_normally,
                        GuestCallbackKind kind,
                        u32 seh_abandon_ctx_addr,
-                       u32 seh_abandon_esp_min) {
+                       u32 seh_abandon_esp_min,
+                       GuestCallbackReturnState* return_state) {
     ActiveGuestCpuScope active_cpu_scope(cpu);
     // Guest code is about to run under a host call: an in-chain API crossing
     // that made this call must resume through the dispatcher (thunk_inchain).
@@ -127,69 +129,11 @@ u64 run_guest_callback(cpu::CpuState& cpu,
     // point. This is where a ThreadEntry first has an active per-thread CPU,
     // so ModuleManager's guest-call bridge will execute the notifications on
     // the correct TEB/stack rather than the primary thread.
-    winapi::ModuleManager* thread_modules = nullptr;
     const bool enter_at_context =
         kind == GuestCallbackKind::ThreadEntryAtContext;
     // A thread created with SKIP_THREAD_ATTACH runs neither the attach nor
     // the detach notifications, TLS callbacks included
     // (skip_thread_attach_probe: tls_attach=0 tls_detach=0).
-    if (kind == GuestCallbackKind::ThreadEntry || enter_at_context) {
-        if (!winapi::ThreadManager::current_thread_skips_thread_attach()) {
-            thread_modules = module_manager();
-            if (thread_modules != nullptr) {
-                thread_modules->notify_thread_attach();
-            }
-        }
-        if (g_thread_start_hook) g_thread_start_hook();
-    }
-    struct ThreadDetachGuard {
-        winapi::ModuleManager* modules;
-        winapi::ProcessManager* process;
-        ~ThreadDetachGuard() {
-            // Windows sends DLL_PROCESS_DETACH, not one DLL_THREAD_DETACH per
-            // worker, when process termination is already in progress.
-            // Learn TerminateThread: DLLs are not notified.
-            if (modules != nullptr && process != nullptr &&
-                !process->has_exited() &&
-                !winapi::ThreadSuspendRegistry::instance().is_terminating(
-                    winapi::ThreadManager::get_current_thread_id_static())) {
-                modules->notify_thread_detach();
-            }
-        }
-    } thread_detach_guard{thread_modules, &process_mgr};
-
-    // Learn "Exception Dispatching" and SetUnhandledExceptionFilter, measured
-    // by tools/oracle_probe/unhandled_thread_probe on Windows, x64 and x86:
-    // an exception no handler takes on a thread's START ROUTINE -- once the
-    // top-level filter has run and not returned EXCEPTION_CONTINUE_EXECUTION
-    // -- ends the whole process, exit code the exception code, and delivers
-    // neither DLL_THREAD_DETACH nor DLL_PROCESS_DETACH (so exit_process, not
-    // the ExitProcess API). A Windows thread has no frame above its start
-    // routine to return to; returning here instead ran the thread's detach
-    // callbacks, freed its stack and let the process run on with whatever the
-    // dead thread had linked into shared state (a browser renderer then
-    // walked a list node on that freed stack, 2026-10-22). Declared after
-    // thread_detach_guard so it runs first, and that guard sees the exit.
-    // Other callback kinds (window procedures, DllMain, APCs) keep returning
-    // to their host call: their Windows behaviour is not this one.
-    struct UnhandledThreadEntryExit {
-        const bool thread_entry;
-        winapi::ProcessManager& process;
-        u32 code{0};
-        bool armed{false};
-        void arm(u32 exception_code) noexcept {
-            code = exception_code;
-            armed = true;
-        }
-        ~UnhandledThreadEntryExit() {
-            if (!thread_entry || !armed || process.has_exited()) return;
-            std::fprintf(stderr,
-                "[callback] exception 0x%08x left a thread's start routine "
-                "unhandled: terminating the process with it\n", code);
-            process.exit_process(code);
-        }
-    } unhandled_exit{kind == GuestCallbackKind::ThreadEntry || enter_at_context,
-                     process_mgr};
     // The top-level filter for a 32-bit start routine's exception when the
     // thread registered no SEH frame. The fs:[0] walks below build the
     // EXCEPTION_RECORD and CONTEXT -- and call the filter -- only for a
@@ -519,22 +463,26 @@ u64 run_guest_callback(cpu::CpuState& cpu,
         t_jit_enabled && cb_block_cache != nullptr;
     // Native callback JIT is the production default for both x86 and x64.
     // VITREO_CALLBACK_JIT=0 remains available for correctness bisection.
-    const char* cb_jit_env = std::getenv("VITREO_CALLBACK_JIT");
+    // The environment is read once: every guest callback enters here (a
+    // worker thread's task, a timer, a window procedure), and getenv walks
+    // the block under the C library's environment lock each time.
+    // -1: variable not set; 0 / 1: its stated value.
+    static const int cb_jit_env = [] {
+        const char* v = std::getenv("VITREO_CALLBACK_JIT");
+        if (v == nullptr) return -1;
+        return (std::strcmp(v, "0") == 0 || std::strcmp(v, "false") == 0 ||
+                std::strcmp(v, "FALSE") == 0 || std::strcmp(v, "off") == 0 ||
+                std::strcmp(v, "OFF") == 0 || std::strcmp(v, "no") == 0 ||
+                std::strcmp(v, "NO") == 0)
+                   ? 0
+                   : 1;
+    }();
+    static const bool jit_64bit_disabled =
+        std::getenv("VITREO_JIT_64BIT_DISABLE") != nullptr;
     bool cb_jit_requested = native_callback_jit_default(is_64bit, kind);
-    if (cb_jit_env != nullptr) {
-        cb_jit_requested = !(
-            std::strcmp(cb_jit_env, "0") == 0 ||
-            std::strcmp(cb_jit_env, "false") == 0 ||
-            std::strcmp(cb_jit_env, "FALSE") == 0 ||
-            std::strcmp(cb_jit_env, "off") == 0 ||
-            std::strcmp(cb_jit_env, "OFF") == 0 ||
-            std::strcmp(cb_jit_env, "no") == 0 ||
-            std::strcmp(cb_jit_env, "NO") == 0
-        );
-    }
+    if (cb_jit_env >= 0) cb_jit_requested = cb_jit_env != 0;
     bool  cb_jit_enabled  = cb_jit_requested && t_jit_enabled && cb_block_cache && cb_jit_compiler
-                            && !(is_64bit
-                                 && std::getenv("VITREO_JIT_64BIT_DISABLE") != nullptr);
+                            && !(is_64bit && jit_64bit_disabled);
                             // 64-bit blocks compile via universal interpreter-delegate
                             // stencil (see JitCompiler::compile_instruction). Set
                             // VITREO_JIT_64BIT_DISABLE=1 to force interpreter-only for
@@ -547,6 +495,99 @@ u64 run_guest_callback(cpu::CpuState& cpu,
     // register file so a peer's SuspendThread + GetThreadContext can capture it.
     auto suspend_guard = winapi::ThreadSuspendRegistry::instance().publish(
         winapi::ThreadManager::get_current_thread_id_static(), &cpu);
+    struct ThreadDetachGuard {
+        winapi::ModuleManager* modules;
+        winapi::ProcessManager* process;
+        winapi::ThreadSuspendRegistry::PublishGuard& control;
+        ~ThreadDetachGuard() {
+            // Windows sends DLL_PROCESS_DETACH, not one DLL_THREAD_DETACH per
+            // worker, when process termination is already in progress.
+            // Learn TerminateThread: DLLs are not notified.
+            if (modules != nullptr && process != nullptr &&
+                !process->has_exited() &&
+                !winapi::ThreadSuspendRegistry::instance().is_terminating(
+                    winapi::ThreadManager::get_current_thread_id_static())) {
+                std::unique_lock<std::recursive_mutex> loader_lock(
+                    modules->loader_mutex(), std::defer_lock);
+                for (;;) {
+                    control.checkpoint();
+                    if (control.terminate_requested() || process->has_exited()) return;
+                    if (loader_lock.try_lock()) {
+                        if (!control.suspend_pending()) break;
+                        loader_lock.unlock();
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                }
+                modules->notify_thread_detach();
+            }
+        }
+    } thread_detach_guard{nullptr, &process_mgr, suspend_guard};
+
+    // Learn "Exception Dispatching" and SetUnhandledExceptionFilter, measured
+    // by tools/oracle_probe/unhandled_thread_probe on Windows, x64 and x86:
+    // an exception no handler takes on a thread's START ROUTINE -- once the
+    // top-level filter has run and not returned EXCEPTION_CONTINUE_EXECUTION
+    // -- ends the whole process, exit code the exception code, and delivers
+    // neither DLL_THREAD_DETACH nor DLL_PROCESS_DETACH (so exit_process, not
+    // the ExitProcess API). A Windows thread has no frame above its start
+    // routine to return to; returning here instead ran the thread's detach
+    // callbacks, freed its stack and let the process run on with whatever the
+    // dead thread had linked into shared state (a browser renderer then
+    // walked a list node on that freed stack, 2026-10-22). Declared after
+    // thread_detach_guard so it runs first, and that guard sees the exit.
+    // Other callback kinds (window procedures, DllMain, APCs) keep returning
+    // to their host call: their Windows behaviour is not this one.
+    struct UnhandledThreadEntryExit {
+        const bool thread_entry;
+        winapi::ProcessManager& process;
+        u32 code{0};
+        bool armed{false};
+        void arm(u32 exception_code) noexcept {
+            code = exception_code;
+            armed = true;
+        }
+        ~UnhandledThreadEntryExit() {
+            if (!thread_entry || !armed || process.has_exited()) return;
+            std::fprintf(stderr,
+                "[callback] exception 0x%08x left a thread's start routine "
+                "unhandled: terminating the process with it\n", code);
+            process.exit_process(code);
+        }
+    } unhandled_exit{kind == GuestCallbackKind::ThreadEntry || enter_at_context,
+                     process_mgr};
+    if (kind == GuestCallbackKind::ThreadEntry || enter_at_context) {
+        auto continue_initialization = [&] {
+            suspend_guard.checkpoint();
+            return !suspend_guard.terminate_requested() && !process_mgr.has_exited();
+        };
+        if (auto* modules = module_manager()) {
+            // Publish the fully prepared entry context BEFORE blocking. Peer
+            // thread-control requests can then park or redirect it safely.
+            if (!modules->wait_for_process_initialization(continue_initialization))
+                return 0;
+            if (!winapi::ThreadManager::current_thread_skips_thread_attach()) {
+                std::unique_lock<std::recursive_mutex> loader_lock(
+                    modules->loader_mutex(), std::defer_lock);
+                for (;;) {
+                    if (!continue_initialization()) return 0;
+                    if (loader_lock.try_lock()) {
+                        // Never enter a suspension checkpoint with this lock
+                        // held merely because we were waiting to initialize.
+                        if (!suspend_guard.suspend_pending()) break;
+                        loader_lock.unlock();
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                }
+                thread_detach_guard.modules = modules;
+                modules->notify_thread_attach();
+            }
+            // SKIP_THREAD_ATTACH waits for process startup, but deliberately
+            // bypasses the loader lock during later dynamic DLL initialization.
+        }
+        if (!continue_initialization()) return 0;
+        if (g_thread_start_hook) g_thread_start_hook();
+    }
+
     // L3: this callback loop's own lend to an in-chain API crossing (the
     // enclosing loop's comes back when this one returns).
     InChainThunkEnv inchain_env{&thunk_registry, &memory, &marshaler,
@@ -555,7 +596,7 @@ u64 run_guest_callback(cpu::CpuState& cpu,
     inchain_env.process = &process_mgr;
     const cpu::jit::JitCompiler::InChainScope inchain_scope{
         cb_jit_compiler, &serve_in_chain_thunk, &inchain_env};
-    const bool callback_progress_diag =
+    static const bool callback_progress_diag =
         std::getenv("VITREO_CALLBACK_PROGRESS") != nullptr;
     auto callback_progress_last = std::chrono::steady_clock::now();
 
@@ -612,6 +653,30 @@ u64 run_guest_callback(cpu::CpuState& cpu,
                 std::fflush(stderr);
             }
         }
+        // Every callback level returns to the same sentinel. An x86 SEH
+        // handler's own return leaves ESP at or below its frame top (cdecl or
+        // stdcall). Reaching the sentinel above it is an enclosing level's
+        // return: the handler entered a continuation (MSVC's CallCatchBlock
+        // __except taking a rethrow) that ran out to a caller's callback
+        // without this loop observing ESP in between. It left the dispatcher.
+        if (cpu.rip == sentinel_check && seh_abandon_ctx_addr != 0 &&
+            !is_64bit && x86_callback_frame_top != 0 &&
+            cpu.sp() > x86_callback_frame_top) {
+            std::fprintf(stderr,
+                "[seh32] handler left dispatcher to an enclosing callback "
+                "return: func=0x%llx esp=0x%llx frame_top=0x%llx "
+                "-> ExceptionContinueExecution\n",
+                static_cast<unsigned long long>(func_addr),
+                static_cast<unsigned long long>(cpu.sp()),
+                static_cast<unsigned long long>(x86_callback_frame_top));
+            mark_seh32_handler_left_dispatcher();
+            result = cpu::ExceptionContinueExecution;
+            if (completed_normally != nullptr) {
+                *completed_normally = true;
+            }
+            break;
+        }
+
         // Check if we've returned to the sentinel
         if (cpu.rip == sentinel_check) {
             // Callback has returned — result is in RAX/EAX
@@ -619,6 +684,25 @@ u64 run_guest_callback(cpu::CpuState& cpu,
                               : cpu.gpr.get32(static_cast<u8>(cpu::RegIndex::RAX));
             if (completed_normally != nullptr) {
                 *completed_normally = true;
+            }
+            if (return_state != nullptr) {
+                return_state->rax = result;
+                return_state->rdx = is_64bit
+                    ? cpu.gpr.get64(static_cast<u8>(cpu::RegIndex::RDX))
+                    : cpu.gpr.get32(static_cast<u8>(cpu::RegIndex::RDX));
+                return_state->xmm0_low = cpu.sse.xmm[0].u64_[0];
+                if (!is_64bit && x86_callback_frame_top != 0) {
+                    // The sentinel RET left ESP just above the return
+                    // address; anything beyond that the callee removed.
+                    const u64 after_ret = x86_callback_frame_top -
+                        4 * static_cast<u64>(arg_count);
+                    return_state->callee_popped =
+                        cpu.sp() > after_ret ? cpu.sp() - after_ret : 0;
+                }
+                if (return_state->want_st0) {
+                    // The caller's FSTP: read ST(0) and pop it.
+                    return_state->st0 = cpu.fpu.pop_src().to_double();
+                }
             }
             VITREO_TRACE( "[callback] Callback returned: 0x%llx\n",
                          static_cast<unsigned long long>(result));
@@ -1891,6 +1975,8 @@ u64 run_guest_callback(cpu::CpuState& cpu,
             exec_result = interp.step();
             diagnostics::perf_add_interp_insns(1);
         }
+        normalize_windows_interrupt(interp.context(), exec_result);
+
         if (exec_result != cpu::ExecResult::Continue &&
             exec_result != cpu::ExecResult::Branch) {
             if (exec_result == cpu::ExecResult::Syscall) {
@@ -1929,18 +2015,6 @@ u64 run_guest_callback(cpu::CpuState& cpu,
                 interp.context().interrupt_num == 0x29) {
                 dump_fastfail_context(cpu, memory, cpu.gpr.rcx);
                 process_mgr.exit_process(cpu::STATUS_STACK_BUFFER_OVERRUN);
-                result = 0;
-                break;
-            }
-            if (exec_result == cpu::ExecResult::Interrupt &&
-                interp.context().interrupt_num == 0x2C && is_64bit) {
-                const u64 address = cpu.rip;
-                cpu.rip += 2;
-                if (dispatch_x64_exception(
-                        cpu, memory, thunk_registry, process_mgr,
-                        cpu::STATUS_ASSERTION_FAILURE, 0, 0, nullptr,
-                        address, module_manager())) continue;
-                process_mgr.exit_process(cpu::STATUS_ASSERTION_FAILURE);
                 result = 0;
                 break;
             }
@@ -2589,7 +2663,9 @@ u64 run_guest_callback(cpu::CpuState& cpu,
                 // process (see unhandled_exit), after the top-level filter:
                 // dispatch_x64_exception ran it on x64, the chain walk above
                 // on x86 when the thread registered a frame.
-                if (unhandled_exit.thread_entry &&
+                if ((unhandled_exit.thread_entry ||
+                     (interp.context().exception == cpu::CpuException::Debug ||
+                      interp.context().exception == cpu::CpuException::AssertionFailure)) &&
                     exec_result == cpu::ExecResult::Exception) {
                     const auto& cbctx = interp.context();
                     const u32 status_code =
@@ -2609,7 +2685,16 @@ u64 run_guest_callback(cpu::CpuState& cpu,
                             continue;
                         }
                     }
-                    unhandled_exit.arm(status_code);
+                    if (cbctx.exception == cpu::CpuException::Debug ||
+                        cbctx.exception == cpu::CpuException::AssertionFailure) {
+                        std::fprintf(stderr,
+                            "[callback] unhandled exception 0x%08x at rip=0x%llx "
+                            "— terminating process\n", status_code,
+                            static_cast<unsigned long long>(cpu.rip));
+                        process_mgr.exit_process(status_code);
+                    } else {
+                        unhandled_exit.arm(status_code);
+                    }
                 }
 
                 // Unhandled — dump instruction trace and break

@@ -572,6 +572,17 @@ DllExports create_crt_filesystem_thunks(capsule::Vfs& vfs,
         m.set_return(static_cast<u32>(letter - 'A' + 1));
     }});
 
+    // unsigned long _getdrives(void) (Learn): the bitmask of the available
+    // drives, bit 0 = A:, as GetLogicalDrives reports it (the same VFS list).
+    exports.entries.push_back({"_getdrives", 0, [&vfs](Marshaler& m) {
+        u32 mask = 0;
+        for (const char drive : vfs.mounted_drives()) {
+            const char upper = static_cast<char>(std::toupper(static_cast<unsigned char>(drive)));
+            if (upper >= 'A' && upper <= 'Z') mask |= 1u << static_cast<u32>(upper - 'A');
+        }
+        m.set_return(mask);
+    }});
+
     // ---- attributes ---------------------------------------------------------
 
     // int _wchmod(const wchar_t* path, int mode)

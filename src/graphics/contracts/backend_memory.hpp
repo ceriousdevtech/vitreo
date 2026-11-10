@@ -6,6 +6,7 @@
 
 #include "graphics/contracts/backend_buffer.hpp"
 #include <vitreo/common.hpp>
+#include <functional>
 #include <vector>
 
 namespace vitreo::graphics {
@@ -39,6 +40,18 @@ struct BackendHeapDesc {
     /// every committed buffer's implicit heap): the backend may back it with
     /// a plain buffer rather than a placement heap.
     bool buffers_only{false};
+    /// With cpu_visible: memory someone else owns to build the heap over
+    /// (D3D12 OpenExistingHeapFromAddress), not copied and never freed by
+    /// the backend; host-page aligned, @c size a whole number of host pages.
+    /// The owner keeps it mapped for the heap's life.
+    void* external_host{nullptr};
+    /// With external_host: called when the GPU's last use of the wrapped
+    /// memory is over (the buffer's deallocation, which waits for every
+    /// command buffer that still reads it). A section view the heap holds is
+    /// unmapped here (OpenExistingHeapFromFileMapping). May run on any
+    /// thread. When create_heap fails it may or may not have run, so the
+    /// creator makes it idempotent and calls it itself on failure.
+    std::function<void()> external_release;
 };
 
 class BackendHeap {

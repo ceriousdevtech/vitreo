@@ -32,6 +32,17 @@
 
 namespace vitreo::winapi::device_lock_profile {
 
+namespace detail {
+// Apple QA1398: nanoseconds = ticks * numer / denom. Compare the rational
+// duration before conversion; both products fit in 96 bits. This is a
+// necessary condition even when the converted u64 nanoseconds would wrap.
+[[nodiscard]] constexpr bool ticks_reach_ns(u64 ticks, u64 ns,
+                                           u32 numer, u32 denom) noexcept {
+    return static_cast<__uint128_t>(ticks) * numer >=
+           static_cast<__uint128_t>(ns) * denom;
+}
+}  // namespace detail
+
 /// False when VITREO_D3D11_LOCK_PROFILE is "0" (read once).
 [[nodiscard]] bool enabled() noexcept;
 

@@ -186,3 +186,36 @@ TEST_F(SyncTest, GuiThreadWaitParksOnlyAfterOnePumpSlice) {
     }
     m_mgr->set_thread_manager(nullptr);
 }
+
+// Learn WaitForSingleObject: the wait does not process messages; it ends when
+// the object is signaled or the interval elapses. The GUI-thread pump and park
+// exist only to keep host UI alive, so a process with none (a windowless
+// helper) must neither pump nor park: every park there ends at once and the
+// wait would loop through them thousands of times a second.
+TEST_F(SyncTest, GuiThreadWaitWithoutHostUiNeverPumpsOrParks) {
+    ThreadManager threads{*m_handles};
+    m_mgr->set_thread_manager(&threads);
+    ThreadManager::set_current_thread_id(threads.main_thread_id());
+    std::atomic<u32> pumps{0};
+    std::atomic<u32> parks{0};
+    m_mgr->set_wait_pump([&] { pumps.fetch_add(1, std::memory_order_relaxed); });
+    m_mgr->set_wait_park([&](u32) { parks.fetch_add(1, std::memory_order_relaxed); });
+    m_mgr->set_wait_park_arm([](bool) {});
+    m_mgr->set_wait_pump_needed([] { return false; });
+    const Handle ev = m_mgr->create_event(false, false, "");
+
+    const auto start = std::chrono::steady_clock::now();
+    EXPECT_EQ(m_mgr->wait_for_single_object(ev, 80), WAIT_TIMEOUT);
+    EXPECT_GE(std::chrono::duration_cast<std::chrono::milliseconds>(
+                  std::chrono::steady_clock::now() - start).count(), 78);
+
+    std::thread signaller([&] {
+        ThreadManager::set_current_thread_id(2);
+        std::this_thread::sleep_for(std::chrono::milliseconds(40));
+        EXPECT_TRUE(m_mgr->set_event(ev));
+    });
+    EXPECT_EQ(m_mgr->wait_for_single_object(ev, INFINITE_WAIT), WAIT_OBJECT_0);
+    signaller.join();
+    EXPECT_EQ(pumps.load(), 0u);
+    EXPECT_EQ(parks.load(), 0u);
+}

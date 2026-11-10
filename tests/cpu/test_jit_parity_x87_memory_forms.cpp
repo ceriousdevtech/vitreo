@@ -4,6 +4,7 @@
 //
 // Fixture and shared helpers: jit_parity_fixture.hpp.
 
+#include "core/math/host_fenv.hpp"
 #include "jit_parity_fixture.hpp"
 
 // ---------------------------------------------------------------------------
@@ -53,6 +54,9 @@ protected:
         CpuState cpu;
         init_cpu(cpu);
         cpu.fpu.control_word = cw;
+        // Start each engine from clean host flags; the JIT's native bodies
+        // leave theirs in the host accumulator until the guest reads FSW.
+        math::clear_host_fp_exceptions();
         if (use_jit) {
             JitCompiler jit(*m_memory);
             auto* compiled = jit.compile(block);
@@ -63,6 +67,10 @@ protected:
         } else {
             Interpreter interp(cpu, *m_memory);
             EXPECT_EQ(interp.run(block.instruction_count), ExecResult::Continue);
+        }
+        // What FNSTSW would observe: the host flags the native bodies left.
+        if (m_harvest_host_flags) {
+            cpu.fpu.record_exceptions(math::harvest_x87_exceptions());
         }
         FpuSnapshot s;
         s.status_word = cpu.fpu.status_word;
@@ -115,6 +123,10 @@ protected:
     static void append(std::vector<u8>& v, const std::vector<u8>& t) {
         v.insert(v.end(), t.begin(), t.end());
     }
+
+    /// Fold the host's accumulated flags into FSW before comparing, as a
+    /// guest FNSTSW would (only the arithmetic test opts in for now).
+    bool m_harvest_host_flags{false};
 };
 
 TEST_F(JitX87MemoryFormParityTest, LoadStoreM32CoversEveryBinary32Class) {
@@ -244,6 +256,50 @@ TEST_F(JitX87MemoryFormParityTest, StoreOfExtendedOnlyValuesMatchesInterpreter) 
             0x2048, reinterpret_cast<const u8*>(&c.exp), 2));
         for (u16 cw : control_words()) {
             expect_parity(c.name, code, cw, 0x2050, 16);
+        }
+    }
+}
+
+// Intel SDM Vol. 1 8.1.5.2: precision control rounds FADD/FSUB/FMUL/FDIV/
+// FSQRT results to 24 bits under PC = 24 while keeping the extended exponent.
+// Direct3D 9 runs every title in that mode, so the native bodies narrow their
+// binary64 result there instead of diverting to the helper; values outside the
+// binary32 normal range must still come out with the x87 exponent.
+TEST_F(JitX87MemoryFormParityTest, ArithmeticUnderEveryPrecisionControl) {
+    struct Case { const char* name; float a, b, c; };
+    const Case cases[] = {
+        {"inexact",         1.1f, 3.3f, 0.7f},
+        {"exact",           1.5f, 2.0f, 0.25f},
+        {"24-bit carry",    16777215.0f, 1.0000001f, 1.0f},
+        {"beyond binary32", 3.0e38f, 10.0f, 1.0e38f},
+        {"below binary32",  1.0e-30f, 1.0e-20f, 0.0f},
+        {"near 2^127",      1.7e38f, 1.0f, 1.0e30f},
+        {"cancellation",    1.0000001f, 1.0f, -1.0f},
+        {"negative",        -2.5f, 3.75f, -0.1f},
+    };
+    // fld dword[a] ; fmul dword[b] ; fadd dword[c] ; fld st0 ; fmulp st1
+    // fdiv dword[b] ; fld dword[c] ; fsubp st1 ; fild dword[n] ; faddp st1
+    // fsqrt ; fstp qword[dst]
+    std::vector<u8> code = mem_form(0xD9, 0x05, 0x2040);
+    append(code, mem_form(0xD8, 0x0D, 0x2044));
+    append(code, mem_form(0xD8, 0x05, 0x2048));
+    append(code, {0xD9, 0xC0, 0xDE, 0xC9});
+    append(code, mem_form(0xD8, 0x35, 0x2044));
+    append(code, mem_form(0xD9, 0x05, 0x2048));
+    append(code, {0xDE, 0xE9});
+    append(code, mem_form(0xDB, 0x05, 0x204C));
+    append(code, {0xDE, 0xC1, 0xD9, 0xFA});
+    append(code, mem_form(0xDD, 0x1D, 0x2050));
+
+    const i32 n = 7;
+    m_harvest_host_flags = true;
+    for (const Case& c : cases) {
+        ASSERT_TRUE(m_memory->write_bytes(0x2040, reinterpret_cast<const u8*>(&c.a), 4));
+        ASSERT_TRUE(m_memory->write_bytes(0x2044, reinterpret_cast<const u8*>(&c.b), 4));
+        ASSERT_TRUE(m_memory->write_bytes(0x2048, reinterpret_cast<const u8*>(&c.c), 4));
+        ASSERT_TRUE(m_memory->write_bytes(0x204C, reinterpret_cast<const u8*>(&n), 4));
+        for (u16 cw : control_words()) {
+            expect_parity(c.name, code, cw, 0x2050, 8);
         }
     }
 }

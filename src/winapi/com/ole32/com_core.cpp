@@ -331,7 +331,10 @@ void ComCoreManager::release_apartment_resources(Marshaler& m, GuestAddr key) {
         std::lock_guard lock(m_class_objects_mutex);
         for (auto it = m_class_objects.begin(); it != m_class_objects.end();) {
             if (it->second.apartment == key) {
-                class_objects.push_back(it->second.class_object);
+                if (it->second.borrow.use_count() > 1)
+                    it->second.borrow->release_pending = true;
+                else
+                    class_objects.push_back(it->second.class_object);
                 it = m_class_objects.erase(it);
             } else {
                 ++it;

@@ -21,6 +21,7 @@
 #include "stencils.hpp"
 #include "jit_helpers.hpp"
 #include "idiom_detector.hpp"
+#include "loop_idiom_runtime.hpp"  // WS2
 #include "linear_fault.hpp"
 #include "../../memory/jit_region_registry.hpp"
 #include "../../memory/mem_watch.hpp"
@@ -411,6 +412,7 @@ JitCompiler::JitCompiler(GuestMemory& memory) noexcept
     m_jit_ctx.materialize_flags = jit_materialize_flags;
     m_jit_ctx.capture_cf = jit_capture_cf;
     m_jit_ctx.zero_fill_loop = jit_zero_fill_loop;
+    m_jit_ctx.loop_idiom = jit_loop_idiom;  // WS2
     m_jit_ctx.cmpxchg8b = jit_cmpxchg8b;
     m_jit_ctx.fpu_op = jit_fpu_op;
     m_jit_ctx.sse_op = jit_sse_op;

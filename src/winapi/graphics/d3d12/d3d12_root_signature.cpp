@@ -925,6 +925,12 @@ u32 parse_root_signature_blob(const u8* data, usize size,
     return S_OK;
 }
 
+u32 parse_root_signature_part_for_device(const u8* part, usize size,
+                                         RootSignatureDesc& desc) {
+    if (part == nullptr || !parse_part(part, size, desc)) return E_INVALIDARG;
+    return validate_root_signature_for_device(desc);
+}
+
 u32 parse_root_signature_blob_for_device(const u8* data, usize size,
                                          RootSignatureDesc& desc) {
     const u8* part = nullptr;
@@ -1418,12 +1424,13 @@ void D3D12Manager::impl_D3D12SerializeVersionedRootSignature(Marshaler& m) {
 }
 
 void D3D12Manager::serialize_root_signature_export(Marshaler& m,
-                                                   bool versioned) {
+                                                   bool versioned,
+                                                   usize first) {
     // (pRootSignature, [Version,] ppBlob, ppErrorBlob)
-    const GuestAddr desc_address = m.arg_ptr(0);
-    const u32 requested = versioned ? 0 : m.arg32(1);
-    const GuestAddr blob_out = m.arg_ptr(versioned ? 1 : 2);
-    const GuestAddr error_out = m.arg_ptr(versioned ? 2 : 3);
+    const GuestAddr desc_address = m.arg_ptr(first);
+    const u32 requested = versioned ? 0 : m.arg32(first + 1);
+    const GuestAddr blob_out = m.arg_ptr(first + (versioned ? 1 : 2));
+    const GuestAddr error_out = m.arg_ptr(first + (versioned ? 2 : 3));
     // A NULL desc or ppBlob touches neither out-parameter ([null],
     // ok_null_blob_out*).
     if (desc_address == 0 || blob_out == 0) {
@@ -1496,13 +1503,14 @@ void D3D12Manager::impl_D3D12CreateVersionedRootSignatureDeserializer(
 }
 
 void D3D12Manager::create_root_signature_deserializer(Marshaler& m,
-                                                      bool versioned) {
+                                                      bool versioned,
+                                                      usize first_arg) {
     const std::lock_guard<std::recursive_mutex> lock(m_root_signature_mutex);
     // (pSrcData, SrcDataSizeInBytes, riid, ppRootSignatureDeserializer)
-    const GuestAddr data = m.arg_ptr(0);
-    const u64 size = m.arg(1);  // SIZE_T
-    const GuestAddr iid_address = m.arg_ptr(2);
-    const GuestAddr out = m.arg_ptr(3);
+    const GuestAddr data = m.arg_ptr(first_arg);
+    const u64 size = m.arg(first_arg + 1);  // SIZE_T
+    const GuestAddr iid_address = m.arg_ptr(first_arg + 2);
+    const GuestAddr out = m.arg_ptr(first_arg + 3);
     // Measured order ([ident]): a NULL out-pointer first, then the data, and
     // only then the interface; *ppv is NULL on every failure.
     if (out == 0) {

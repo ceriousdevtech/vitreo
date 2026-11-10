@@ -31,6 +31,7 @@
 #include "graphics/contracts/backend_texture_2d.hpp"
 #include "graphics/contracts/backend_texture_3d.hpp"
 #include "graphics/contracts/backend_swap_chain.hpp"
+#include "graphics/contracts/backend_raytracing.hpp"
 
 namespace vitreo::graphics {
 
@@ -92,6 +93,20 @@ public:
     /// Threads the GPU executes in lock step (a SIMD group; D3D's wave lane
     /// count). 0 when unknown.
     [[nodiscard]] virtual u32 simd_group_width() const { return 0; }
+    /// Whether fragment functions can put resources in raster order groups
+    /// (MTLDevice.rasterOrderGroupsSupported): accesses to them from
+    /// fragments covering one pixel are ordered by primitive submission.
+    /// D3D's rasterizer-ordered views are built on it.
+    [[nodiscard]] virtual bool supports_raster_order_groups() const {
+        return false;
+    }
+    /// Whether every format of the Tier-2 read/write texture set can be
+    /// bound read_write (MTLDevice.readWriteTextureSupport ==
+    /// MTLReadWriteTextureTier2): the D3D typed-UAV-load group of 18 formats
+    /// (d3d11::supports_typed_uav_load) loads through it.
+    [[nodiscard]] virtual bool supports_read_write_texture_tier2() const {
+        return false;
+    }
     /// Whether push_debug_group / pop_debug_group / insert_debug_signpost
     /// reach the GPU command stream, where GPU capture and profiling tools
     /// show them (Metal debug groups and signposts).
@@ -180,6 +195,20 @@ public:
     /// (ID3D11DeviceContext2::TiledResourceBarrier), which per-resource
     /// hazard tracking cannot see.
     [[nodiscard]] virtual bool tiled_resource_barrier() { return false; }
+    /// Render-target and depth-stencil writes recorded so far reach their
+    /// textures before any later work reads them: the next render pass
+    /// does not continue the open one in the same encoder. A D3D12
+    /// transition out of RENDER_TARGET / DEPTH_WRITE makes those writes
+    /// visible to the reads after it (Learn, "Using resource barriers"),
+    /// including reads a backend cannot see -- a texture sampled through a
+    /// descriptor-heap window, whose resources are not listed per draw. A
+    /// backend whose passes never share an encoder ignores it.
+    /// A non-null texture scopes the transition to that resource. A backend
+    /// may conservatively end the whole pass for storage with uncertain
+    /// aliases. Null retains the unconditional boundary (alias barriers).
+    virtual void attachment_barrier(BackendTexture2D* texture = nullptr) {
+        (void)texture;
+    }
     /// Copy a texel box of one subresource of a single-sample 2D texture to or
     /// from @p buffer at @p offset, rows @p row_pitch bytes apart (rows of 4x4
     /// blocks for a block-compressed format), in order with the recorded work.
@@ -249,10 +278,12 @@ public:
 
     /// Create a texture view over an existing buffer's storage, addressing
     /// `num_elements` texels of `pixel_format` starting `first_element` texels
-    /// in. Default returns null — a backend without buffer textures fails the
-    /// view creation honestly at the guest API rather than silently reading
-    /// the wrong element size. The view does not own the buffer and must not
-    /// outlive it.
+    /// in. `first_element` is a 64-bit element index (Learn, D3D12_BUFFER_SRV
+    /// / D3D12_BUFFER_UAV: FirstElement is a UINT64). Default returns null — a
+    /// backend without buffer textures, or one that cannot name that element,
+    /// fails the view creation honestly at the guest API rather than
+    /// truncating the index onto the wrong texels. The view does not own the
+    /// buffer and must not outlive it.
     ///
     /// `shader_write` asks for a view a shader may also write (a typed buffer
     /// UAV, `RWBuffer<T>`): its writes must land in the buffer's own storage.
@@ -261,7 +292,7 @@ public:
     /// start a texture reports BackendTextureBuffer::element_bias().
     [[nodiscard]] virtual std::unique_ptr<BackendTextureBuffer>
     create_texture_buffer(const BackendBuffer& buffer, PixelFormat pixel_format,
-                          unsigned first_element, unsigned num_elements,
+                          u64 first_element, unsigned num_elements,
                           bool shader_write = false) {
         (void)buffer;
         (void)pixel_format;
@@ -273,11 +304,12 @@ public:
 
     /// A read-only typed buffer view whose components are remapped by
     /// @p component_mapping (BackendTextureViewDesc::component_mapping's
-    /// encoding; 0 is the identity). Null when the backend cannot remap.
+    /// encoding; 0 is the identity). Null when the backend cannot remap, or
+    /// cannot name `first_element`.
     [[nodiscard]] virtual std::unique_ptr<BackendTextureBuffer>
     create_mapped_texture_buffer(const BackendBuffer& buffer,
-                                 PixelFormat pixel_format,
-                                 unsigned first_element, unsigned num_elements,
+                                 PixelFormat pixel_format, u64 first_element,
+                                 unsigned num_elements,
                                  u16 component_mapping) {
         if (component_mapping != 0) return nullptr;
         return create_texture_buffer(buffer, pixel_format, first_element,
@@ -501,10 +533,40 @@ public:
         (void)preserve_invariance;
     }
 
+    /// Compile, on the calling thread, the shader functions
+    /// create_pipeline(@p desc) will need, so a later create_pipeline of a
+    /// desc with the same shaders (any vertex layout or colour state) only
+    /// forms the pipeline state. For a frontend that knows a pipeline's
+    /// shaders on a loading thread (D3D12's CreateGraphicsPipelineState)
+    /// but forms the backend pipeline only at the first draw. Blocks until
+    /// done; never required for correctness.
+    virtual void precompile_pipeline_functions(const BackendPipelineDesc& desc) {
+        (void)desc;
+    }
+
     /// Compile a compute pipeline from MSL. Repeated calls with the same
     /// `cache_key` should return an object backed by one compilation.
     [[nodiscard]] virtual std::unique_ptr<BackendComputePipeline>
     create_compute_pipeline(const BackendComputePipelineDesc& desc) = 0;
+
+    /// Acceleration structures and their passes (backend_raytracing.hpp),
+    /// or null when the device has no ray tracing.
+    [[nodiscard]] virtual BackendRaytracing* raytracing() noexcept {
+        return nullptr;
+    }
+
+    // ---- WS5 begin ----
+    /// Whether create_mesh_pipeline can succeed (Metal: MTLGPUFamilyApple7).
+    [[nodiscard]] virtual bool supports_mesh_pipelines() const noexcept {
+        return false;
+    }
+    /// An object+mesh render pipeline, or null when the device has none or
+    /// the library or pipeline does not build (BackendMeshPipelineDesc).
+    [[nodiscard]] virtual std::unique_ptr<BackendPipeline>
+    create_mesh_pipeline(const BackendMeshPipelineDesc&) {
+        return nullptr;
+    }
+    // ---- WS5 end ----
 
     /// Create a render pass targeting explicit MRT + depth textures. Not tied
     /// to a swapchain; caller manages target lifetimes. Returns null if any
@@ -601,6 +663,29 @@ public:
         (void)src_mip;
         (void)src_slice;
         (void)resolve_format;
+        return false;
+    }
+
+    /// Average every sample of one multisampled depth or stencil plane into
+    /// the matching single-sample plane. Learn (ResolveSubresource,
+    /// D3D12_RESOLVE_MODE_AVERAGE): the resolve with no mode is the average
+    /// of the samples, and AVERAGE applies to the depth plane. @p stencil
+    /// selects the stencil plane of a combined depth-stencil texture and
+    /// averages the stored sample values the same way (DirectX-Specs:
+    /// a stencil resolve operates on the stored values). Returns false when
+    /// the plane is absent, the formats or sizes disagree, or the device
+    /// cannot read the samples. MIN and MAX are not this call.
+    [[nodiscard]] virtual bool resolve_depth_stencil_2d(
+        BackendTexture2D* dst, unsigned dst_mip, unsigned dst_slice,
+        const BackendTexture2D* src, unsigned src_mip, unsigned src_slice,
+        bool stencil) {
+        (void)dst;
+        (void)dst_mip;
+        (void)dst_slice;
+        (void)src;
+        (void)src_mip;
+        (void)src_slice;
+        (void)stencil;
         return false;
     }
 
@@ -730,6 +815,12 @@ public:
     /// MetalDevice::flush). A caller that must observe completion uses
     /// wait_idle() / wait_generation(), never flush().
     virtual void flush() = 0;
+
+    /// Optional direct encoding for a synchronous command-list replay. The
+    /// returned owner must remain on this thread and outlive every replayed
+    /// operation; null retains the ordinary backend recording path.
+    [[nodiscard]] virtual std::unique_ptr<BackendImmediateExecution>
+    begin_immediate_execution() { return nullptr; }
 
     /// Whether the GPU is about to run out of submitted work (at most one
     /// submission still unfinished), so that submitting what has been

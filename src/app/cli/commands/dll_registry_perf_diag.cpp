@@ -231,7 +231,7 @@ void register_mmcss_qos_probe_dlls(RuntimeContext& ctx) {
 
     // -- hid.dll -- (no HID devices on Vitreo; see winapi/system/hid/hid.hpp)
     {
-        (void)reg.register_dll("hid.dll", winapi::create_hid_thunks(&ctx.handle_table));
+        (void)reg.register_dll("hid.dll", winapi::create_hid_thunks(&ctx.handle_table,&ctx.file_mgr,&ctx.gl_mgr));
     }
 
     // -- ktmw32.dll --
@@ -274,9 +274,9 @@ void register_mmcss_qos_probe_dlls(RuntimeContext& ctx) {
         // CM_* names the real DLL forwards to cfgmgr32.
         (void)reg.register_dll("setupapi.dll", winapi::create_setupapi_thunks(
             {}, &ctx.vfs, &ctx.reg_thunks, &ctx.elevation_state,
-            &ctx.setupapi_services));
+            &ctx.setupapi_services,ctx.gamepad_catalog));
         (void)reg.register_dll("cfgmgr32.dll", winapi::create_cfgmgr32_thunks(
-            {}, &ctx.reg_thunks, &ctx.elevation_state));
+            {}, &ctx.reg_thunks, &ctx.elevation_state,ctx.gamepad_catalog));
     }
 }
 

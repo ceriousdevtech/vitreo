@@ -23,6 +23,7 @@
 #include <vector>
 
 namespace vitreo::winapi {
+#include "recording_creation_contract.inc"
 namespace {
 
 void gdi_log_unimplemented_once(bool& logged, const char* api, const char* why) {
@@ -33,7 +34,7 @@ void gdi_log_unimplemented_once(bool& logged, const char* api, const char* why) 
 
 }  // namespace
 
-void add_gdi32_path_print_exports(DllExports& exports, GdiManager& mgr) {
+void add_gdi32_path_print_exports(DllExports& exports, GdiManager& mgr,bool guest_is_64bit) {
     // ======================================================================
     // Audit completions: paths, enhanced metafiles, printing, and the few
     // DC/region queries printing and UI code reaches for.
@@ -167,14 +168,20 @@ void add_gdi32_path_print_exports(DllExports& exports, GdiManager& mgr) {
     // -- Enhanced metafiles. Recording needs a command journal; every entry
     // point reports the documented failure so a caller falls back to drawing
     // directly.
-    exports.entries.push_back({"CreateEnhMetaFileW", 0, [](Marshaler& m) {
-        // Recording needs a GDI command journal Vitreo does not have: NULL
-        // with ERROR_CALL_NOT_IMPLEMENTED (Windows records here).
-        static bool logged = false;
-        gdi_log_unimplemented_once(logged, "CreateEnhMetaFileW", "no metafile recorder");
-        set_last_error(error_codes::ERROR_CALL_NOT_IMPLEMENTED);
-        m.set_return(0u);
-    }, 16});
+    static std::array<std::once_flag,std::size(kRecordingCreationAbi)> recording_reported;
+    for(usize index=0;index<std::size(kRecordingCreationAbi);++index) {
+        const auto& abi=kRecordingCreationAbi[index];
+        exports.entries.push_back({abi.name,guest_is_64bit?abi.ordinal64:abi.ordinal32,
+            [index](Marshaler& m) {
+                std::call_once(recording_reported[index],[index] {
+                    std::fprintf(stderr,"[vitreo] UNIMPLEMENTED gdi32!%s: recording backend unavailable\n",kRecordingCreationAbi[index].name);
+                });
+                // Learn specifies NULL; LastError is unspecified. Error120 is
+                // Vitreo's explicit unsupported-policy diagnostic, not a
+                // claimed native failure mapping. Never fabricate a DC.
+                set_last_error(error_codes::ERROR_CALL_NOT_IMPLEMENTED);m.set_return(0u);
+            },abi.stdcall_bytes});
+    }
     exports.entries.push_back({"CloseEnhMetaFile", 0, [](Marshaler& m) {
         // No metafile DC can exist (CreateEnhMetaFileW fails), so there is
         // nothing to close.

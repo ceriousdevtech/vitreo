@@ -43,7 +43,11 @@ GuestAddr ModuleManager::get_module_handle(std::string_view name) const {
     }
 
     auto alive = [](const ModuleInfo& info) {
-        return info.state == ModuleInfo::State::Loaded && info.ref_count > 0;
+        // Windows exposes the mapped module during LOADED notification and
+        // initialization; failed/unmapped images remain invisible.
+        return (info.state == ModuleInfo::State::Mapping ||
+                info.state == ModuleInfo::State::Initializing ||
+                info.state == ModuleInfo::State::Loaded) && info.ref_count > 0;
     };
 
     // Every branch below only walks the tables and pure name helpers (no

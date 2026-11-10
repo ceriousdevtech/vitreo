@@ -58,6 +58,12 @@ thread_local u64 t_direct_crossings = 0;
 /// note_first_direct_crossing has been called (it prints once itself; this
 /// keeps the out-of-line call off every later crossing).
 std::atomic<bool> g_first_crossing_noted{false};
+const auto kNativeFpRestore = [] {
+    const char* eager = std::getenv("VITREO_NATIVE_FP_EAGER");
+    return eager != nullptr && eager[0] == '1'
+        ? math::HostFpEnvironmentScope::Restore::Immediately
+        : math::HostFpEnvironmentScope::Restore::OnGuestFpUse;
+}();
 
 /// The longest stack window taken. The largest COM method in the tables
 /// takes well under this; a longer window is simply not taken, and every
@@ -219,8 +225,11 @@ DirectThunkResult run_direct_thunk(
         // The host call's own autorelease pool (dispatch_slow_api_thunk).
         graphics::AutoreleaseScope host_call_pool;
         // ...and the host FP environment: native code runs under the
-        // platform default, the guest's mode is restored after it.
-        math::HostFpEnvironmentScope host_call_fp(cpu.fpu.control_word, cpu.sse.mxcsr);
+        // platform default. The next guest FP use installs its own mode;
+        // integer marshalling between calls needs no FPCR round trip.
+        math::HostFpEnvironmentScope host_call_fp(
+            cpu.fpu.control_word, cpu.sse.mxcsr,
+            kNativeFpRestore);
         direct.handler.fn(direct.handler.context, marshaler,
                           direct.handler.slot);
     }

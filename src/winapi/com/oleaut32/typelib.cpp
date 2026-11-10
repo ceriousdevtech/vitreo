@@ -40,6 +40,7 @@ constexpr usize SEGMENT_GUID     = 5;
 constexpr usize SEGMENT_NAME     = 7;
 constexpr usize SEGMENT_STRING   = 8;
 constexpr usize SEGMENT_TYPEDESC = 9;
+constexpr usize SEGMENT_CUSTDATA = 11;
 
 constexpr usize GUID_ENTRY_SIZE     = 24;
 constexpr usize NAME_ENTRY_HEADER   = 12;
@@ -59,6 +60,7 @@ constexpr u16 VT_ERROR         = 10;
 constexpr u16 VT_DISPATCH      = 9;
 constexpr u16 VT_UNKNOWN       = 13;
 constexpr u16 PARAMFLAG_FRETVAL = 0x0008;
+constexpr u16 PARAMFLAG_FHASDEFAULT = 0x0020;
 
 struct Segment {
     u32 offset{0};
@@ -208,6 +210,16 @@ class TypeRecords {
                     case 1: case 7: tag = VT_RECORD; break;
                     case 3: case 5: tag = VT_UNKNOWN; break;
                     case 4: tag = VT_DISPATCH; break;
+                    case 6: {
+                        // The description keeps the alias reference, as the
+                        // native FUNCDESC does; only the value type resolves
+                        // through the alias target.
+                        const auto target = alias_value_type(*index);
+                        if (!target) return {};
+                        result.value_type =
+                            static_cast<u16>(*target | (array ? 0x2000 : 0));
+                        return result;
+                    }
                     default: valid = false; return {};
                     }
                 }
@@ -221,6 +233,75 @@ class TypeRecords {
             return result;
         }
         return {};
+    }
+
+    /// Natural payload size of a default-value VARTYPE; 0 when unsupported.
+    static u32 default_size(u16 vt) {
+        switch (vt) {
+        case 16: case 17: return 1;                       // I1, UI1
+        case 2: case 18: case 11: return 2;               // I2, UI2, BOOL
+        case 3: case 19: case 22: case 23: case 4: case 10: return 4;
+        case 5: case 6: case 7: case 20: case 21: return 8; // R8 CY DATE I8 UI8
+        default: return 0;
+        }
+    }
+
+    std::optional<ParamDefault> default_value(u32 encoded) {
+        if (encoded == 0xFFFFFFFFu) return std::nullopt;
+        ParamDefault value;
+        if ((encoded & 0x80000000u) != 0) {
+            value.vt = static_cast<u16>((encoded >> 26) & 0x1Fu);
+            const u32 size = default_size(value.vt);
+            if (size == 0) return std::nullopt;
+            u64 raw = encoded & 0x03FFFFFFu;
+            if (size < 8) raw &= (1ull << (8 * size)) - 1;
+            value.bits = raw;
+            return value;
+        }
+        const Segment& custom = sections[SEGMENT_CUSTDATA];
+        if (!segment_contains(file, custom, encoded, 2)) return std::nullopt;
+        const std::optional<usize> pos = static_cast<usize>(custom.offset) + encoded;
+        value.vt = half(*pos);
+        const usize end = static_cast<usize>(custom.offset) + custom.length;
+        if (value.vt == 8) {
+            if (*pos + 6 > end) return std::nullopt;
+            const u32 count = word(*pos + 2);
+            if (count > end - (*pos + 6)) return std::nullopt;
+            value.text.assign(reinterpret_cast<const char*>(file.data() + *pos + 6), count);
+            return value;
+        }
+        const u32 size = default_size(value.vt);
+        if (size == 0 || *pos + 2 + size > end) return std::nullopt;
+        for (u32 i = 0; i < size; ++i)
+            value.bits |= static_cast<u64>(file[*pos + 2 + i]) << (8 * i);
+        return value;
+    }
+
+    // TKIND_ALIAS stores its target in datatype1 with the parameter TYPEDESC
+    // encoding. Targets may name further aliases; a chain that returns to an
+    // alias still being resolved is a damaged file.
+    enum class AliasState : u8 { Pending, Resolving, Resolved };
+    std::vector<AliasState> alias_states;
+    std::vector<u16> alias_values;
+
+    std::optional<u16> alias_value_type(usize index) {
+        if (alias_states[index] == AliasState::Resolved) return alias_values[index];
+        if (alias_states[index] == AliasState::Resolving) {
+            valid = false;
+            return std::nullopt;
+        }
+        alias_states[index] = AliasState::Resolving;
+        auto pos = address(0, locations[index], TYPEINFO_BASE_SIZE);
+        if (!pos) return std::nullopt;
+        Parameter target = parameter(word(*pos + 84));
+        if (!valid || target.description.tags.empty()) {
+            valid = false;
+            return std::nullopt;
+        }
+        types[index].alias_description = std::move(target.description);
+        alias_values[index] = target.value_type;
+        alias_states[index] = AliasState::Resolved;
+        return target.value_type;
     }
 
     void describe(usize index) {
@@ -265,15 +346,110 @@ class TypeRecords {
                 auto entry = address(3, reference, 16);
                 if (!entry) return;
                 type.impl_hrefs.push_back(word(*entry));
+                type.impl_flags.push_back(word(*entry + 4));
                 reference = word(*entry + 12);
             }
         } else if (type.c_impl_types) {
+            // A pure dispinterface's implied IDispatch base is not recorded
+            // (datatype1 = -1; measured on midl output).
+            if ((type.typekind & 0x0f) == 4 && static_cast<i32>(reference) < 0) return;
             if (type.c_impl_types != 1 || static_cast<i32>(reference) < 0) {
                 valid = false;
                 return;
             }
             type.impl_hrefs.push_back(reference);
         }
+    }
+
+    /// Imported types (segment 1, 12-byte MSFT import records): measured,
+    /// flags bits 24..27 are the TYPEKIND, word 2 the GUID-table offset; an
+    /// HREFTYPE names one as (record offset | 1).
+    struct Import { u32 href; u32 kind; TypeLibGuid guid; };
+    std::vector<Import> imports;
+    void load_imports() {
+        const Segment& seg = sections[1];
+        if (static_cast<i32>(seg.offset) < 0 || seg.length == 0 ||
+            static_cast<usize>(seg.offset) + seg.length > file.size()) return;
+        for (u32 off = 0; off + 12 <= seg.length; off += 12) {
+            const usize at = static_cast<usize>(seg.offset) + off;
+            Import entry{off | 1u, (word(at) >> 24) & 0x0f, {}};
+            const u32 guid = word(at + 8);
+            if (segment_contains(file, sections[SEGMENT_GUID], guid, 16))
+                std::copy_n(file.begin() + sections[SEGMENT_GUID].offset + guid, 16, entry.guid.begin());
+            imports.push_back(entry);
+        }
+    }
+
+    /// Expand a TYPEDESC into its Automation shape (see ParamShape).
+    ParamShape shape_of(const TypeDescription& description) {
+        ParamShape shape;
+        std::vector<u16> tags = description.tags;
+        u32 reference = description.reference;
+        u32 outer = 0, inner = 0;
+        bool array = false;
+        for (usize step = 0; step < tags.size() && step < 64; ++step) {
+            const u16 tag = tags[step];
+            if (tag == VT_PTR) { (array ? inner : outer) += 1; continue; }
+            if (tag == VT_SAFEARRAY) { array = true; continue; }
+            u16 vt = tag;
+            if (tag == VT_USERDEFINED) {
+                if (auto local = local_type(reference)) {
+                    const TypeInfoSummary& type = types[*local];
+                    const u32 kind = type.typekind & 0x0f;
+                    if (kind == 6) {                       // alias: expand
+                        tags.insert(tags.end(), type.alias_description.tags.begin(),
+                                    type.alias_description.tags.end());
+                        reference = type.alias_description.reference;
+                        continue;
+                    }
+                    if (kind == 0) { vt = VT_I4; }         // enum
+                    else if (kind == 3 || kind == 4 || kind == 5) {
+                        const TypeInfoSummary* target = &type;
+                        if (kind == 5) {                   // coclass: default interface
+                            target = nullptr;
+                            for (usize i = 0; i < type.impl_hrefs.size(); ++i) {
+                                const bool is_default = i < type.impl_flags.size() &&
+                                    (type.impl_flags[i] & 1u) != 0;
+                                if (!is_default && target != nullptr) continue;
+                                if (auto def = local_type(type.impl_hrefs[i])) target = &types[*def];
+                                if (is_default) break;
+                            }
+                            if (target == nullptr) return shape;
+                        }
+                        const u32 target_kind = target->typekind & 0x0f;
+                        // Measured: dispinterfaces, duals and interfaces
+                        // flagged TYPEFLAG_FDISPATCHABLE travel as VT_DISPATCH.
+                        vt = (target_kind == 4 || (target->type_flags & 0x1000u) != 0)
+                            ? VT_DISPATCH : VT_UNKNOWN;
+                        shape.has_iid = target->has_guid;
+                        shape.iid = target->guid;
+                        u32& level = array ? inner : outer;
+                        if (level == 0) return shape;      // interface by value
+                        level -= 1;
+                    } else {
+                        return shape;                       // record / union / module
+                    }
+                } else {
+                    const auto it = std::find_if(imports.begin(), imports.end(),
+                        [&](const Import& entry) { return entry.href == reference; });
+                    if (it == imports.end() || (it->kind != 3 && it->kind != 4)) return shape;
+                    vt = it->kind == 4 ? VT_DISPATCH : VT_UNKNOWN;
+                    shape.has_iid = true;
+                    shape.iid = it->guid;
+                    u32& level = array ? inner : outer;
+                    if (level == 0) return shape;
+                    level -= 1;
+                }
+            }
+            if (vt == VT_INT) vt = VT_I4;
+            if (vt == VT_UINT) vt = VT_UI4;
+            if (inner != 0 || outer > 0xff) return shape;
+            shape.vt = static_cast<u16>(vt | (array ? 0x2000 : 0));
+            shape.depth = static_cast<u8>(outer);
+            shape.valid = true;
+            return shape;
+        }
+        return shape;
     }
 
     void functions(usize index) {
@@ -310,17 +486,22 @@ class TypeRecords {
             function.optional_params = static_cast<i16>(half(record + 22));
             function.function_flags = half(record + 8);
             function.result_description = parameter(word(record + 4)).description;
+            function.result_shape = shape_of(function.result_description);
             if (function.c_params > (length - 24) / PARAM_INFO_SIZE) {
                 valid = false;
                 break;
             }
             const usize args = record + length - function.c_params * PARAM_INFO_SIZE;
+            const bool has_defaults = (flags & 0x1000u) != 0 &&
+                function.c_params <= (length - 24) / (PARAM_INFO_SIZE + 4);
+            const usize defaults = args - function.c_params * 4u;
             for (u16 arg = 0; arg < function.c_params && valid; ++arg) {
                 const usize entry = args + arg * PARAM_INFO_SIZE;
                 const auto resolved = parameter(word(entry));
                 const u16 direction = half(entry + 8);
                 function.param_vts.push_back(resolved.value_type);
                 function.param_descriptions.push_back(resolved.description);
+                function.param_shapes.push_back(shape_of(resolved.description));
                 function.param_flags.push_back(direction);
                 function.param_hrefs.push_back(resolved.reference);
                 TypeLibGuid guid{};
@@ -328,6 +509,10 @@ class TypeRecords {
                     guid = types[*local].guid;
                 function.param_iids.push_back(guid);
                 if (direction & PARAMFLAG_FRETVAL) function.retval_vt = resolved.value_type;
+                function.param_defaults.push_back(
+                    has_defaults && (direction & PARAMFLAG_FHASDEFAULT)
+                        ? default_value(word(defaults + 4u * arg))
+                        : std::nullopt);
             }
             type.funcs.push_back(std::move(function));
         }
@@ -343,7 +528,12 @@ public:
         types.resize(count);
         for (u32 index = 0; index < count; ++index)
             locations.push_back(word(HEADER_SIZE + ((word(20) & 0x100) ? 4 : 0) + index * 4));
+        alias_states.assign(count, AliasState::Pending);
+        alias_values.assign(count, 0);
         for (usize index = 0; index < count && valid; ++index) describe(index);
+        for (usize index = 0; index < count && valid; ++index)
+            if ((types[index].typekind & 0x0f) == 6) (void)alias_value_type(index);
+        load_imports();
         for (usize index = 0; index < count && valid; ++index) functions(index);
         return valid;
     }

@@ -32,6 +32,7 @@
 
 #include "../contracts/backend_device.hpp"
 #include "gs_passthrough.hpp"
+#include "ia_cut_rewrite.hpp"
 #include "stream_out_repack.hpp"
 
 #include <algorithm>
@@ -58,8 +59,27 @@ struct IaResolveParams {
     u32 record_capacity{0};
     /// Primitives (over all instances) the ids buffer and the passes hold.
     u32 primitive_capacity{0};
+    /// The cut value: 0 the format's maximum (D3D11), 1 none, 2 0xFFFF,
+    /// 3 0xFFFFFFFF (D3D12_INDEX_BUFFER_STRIP_CUT_VALUE + 1; ia_cut_mode).
+    u32 cut_mode{0};
+    u32 pad[3]{};
 };
-static_assert(sizeof(IaResolveParams) == 32);
+static_assert(sizeof(IaResolveParams) == 48);
+
+/// IaResolveParams::cut_mode of a cut value.
+[[nodiscard]] constexpr u32 ia_cut_mode(IndexCut cut) {
+    if (!cut.active) return 1u;
+    return cut.value == 0xFFFFu ? 2u : 3u;
+}
+/// The cut value IaResolveParams::cut_mode names.
+[[nodiscard]] constexpr IndexCut ia_cut_of(const IaResolveParams& p) {
+    switch (p.cut_mode) {
+    case 1u: return {};
+    case 2u: return {true, 0xFFFFu};
+    case 3u: return {true, 0xFFFFFFFFu};
+    default: return format_max_cut(p.index_32bit != 0);
+    }
+}
 
 /// Resolved block, u32 words.
 inline constexpr u32 IA_RESOLVED_PRIMITIVES = 0;           ///< all instances
@@ -121,21 +141,21 @@ inline constexpr u32 CAPTURE_HEADER_BYTES = 16;
         }
         stride = count;
     } else {
-        const u32 cut = p.index_32bit != 0 ? 0xFFFFFFFFu : 0xFFFFu;
+        const IndexCut cut = ia_cut_of(p);
         std::vector<u32> values;
         for (u32 i = 0; i < count; ++i) {
             const u64 at = static_cast<u64>(args[2]) + i;
             values.push_back(at < indices.size() ? indices[at] : 0u);
         }
         local = assemble_primitive_vertices(
-            values, true, cut, 0, vpp,
+            values, cut.active, cut.value, 0, vpp,
             p.assembly == 2   ? PrimitiveAssembly::StripAdjacency
             : p.assembly == 1 ? PrimitiveAssembly::Strip
                               : PrimitiveAssembly::List);
         u32 max_index = 0;
         bool any = false;
         for (const u32 v : values) {
-            if (v == cut) continue;
+            if (cut.active && v == cut.value) continue;
             max_index = std::max(max_index, v);
             any = true;
         }
@@ -177,6 +197,8 @@ struct IaResolveParams {
     uint assembly;
     uint record_capacity;
     uint primitive_capacity;
+    uint cut_mode;
+    uint pad0, pad1, pad2;
 };
 
 static uint ia_index(constant IaResolveParams& p, device const uint* ib,
@@ -238,7 +260,11 @@ kernel void %s(
             stride = count;
         } else {
             // Serial: cuts and strip restarts depend on every index before.
-            const uint cut = p.index_32bit != 0u ? 0xFFFFFFFFu : 0xFFFFu;
+            // IaResolveParams::cut_mode: 0 the format's maximum, 1 none.
+            const bool has_cut = p.cut_mode != 1u;
+            const uint cut = p.cut_mode == 2u ? 0xFFFFu
+                           : p.cut_mode == 3u ? 0xFFFFFFFFu
+                           : (p.index_32bit != 0u ? 0xFFFFFFFFu : 0xFFFFu);
             const uint start = args[2];
             uint max_index = 0u;
             bool any = false;
@@ -248,14 +274,15 @@ kernel void %s(
             const uint limit = p.primitive_capacity * vpp;
             for (uint i = 0u; i <= count; ++i) {
                 const bool end = i == count;
-                const uint v = end ? cut : ia_index(p, ib, start + i);
-                if (!end && v != cut) {
+                const uint v = end ? 0u : ia_index(p, ib, start + i);
+                const bool is_cut = !end && has_cut && v == cut;
+                if (!end && !is_cut) {
                     max_index = max(max_index, v);
                     any = true;
                 }
                 if (p.assembly == 0u) {
                     if (end) break;
-                    if (v == cut) { held = 0u; continue; }
+                    if (is_cut) { held = 0u; continue; }
                     if (held == 0u) begin = i;
                     if (++held < vpp) continue;
                     held = 0u;
@@ -268,7 +295,7 @@ kernel void %s(
                     continue;
                 }
                 // A strip segment ends at a cut or at the end.
-                if (!end && v != cut) continue;
+                if (!end && !is_cut) continue;
                 const uint length = i - begin;
                 if (p.assembly == 2u) {
                     const uint triangles = length >= 6u ? (length - 4u) / 2u : 0u;

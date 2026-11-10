@@ -440,25 +440,6 @@ void Kernel32ExtManager::impl_LoadStringW(Marshaler& m) {
     m.set_return(0);
 }
 
-void Kernel32ExtManager::impl_GetPrivateProfileIntW(Marshaler& m) {
-    // UINT GetPrivateProfileIntW(LPCWSTR lpAppName, LPCWSTR lpKeyName,
-    //   INT nDefault, LPCWSTR lpFileName)
-    GuestAddr app_ptr = m.arg_ptr(0);
-    GuestAddr key_ptr = m.arg_ptr(1);
-    u32 n_default = static_cast<u32>(m.arg(2));
-    GuestAddr file_ptr = m.arg_ptr(3);
-    std::string app_name, key_name, file_name;
-    if (auto r = m.read_wide_string(app_ptr); r.is_ok()) app_name = r.value();
-    if (auto r = m.read_wide_string(key_ptr); r.is_ok()) key_name = r.value();
-    if (auto r = m.read_wide_string(file_ptr); r.is_ok()) file_name = r.value();
-    const u32 value =
-        lookup_profile_int(app_name, key_name, n_default, file_name);
-    VITREO_TRACE("[k32ext] GetPrivateProfileIntW('%s','%s', default=%u, '%s') → %u\n",
-                 app_name.c_str(), key_name.c_str(), n_default, file_name.c_str(),
-                 value);
-    m.set_return(value);
-}
-
 namespace {
 
 /// Resource directory of @p hmodule: NULL or the main image's base is the

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-only
 #pragma once
+#include "winapi/common/gamepad_hid_catalog.hpp"
+#include <thread>
 /// @file user32_ext.hpp
 /// @brief Extended user32 API surface.
 
@@ -18,9 +20,11 @@
 #include <array>
 #include <atomic>
 #include <chrono>
+#include <condition_variable>
 #include <deque>
 #include <functional>
 #include <map>
+#include <set>
 #include <mutex>
 #include <optional>
 #include <string>
@@ -38,6 +42,7 @@ class Marshaler;
 class WindowClassManager;
 struct WindowClassData;
 class GdiManager;
+struct ClipRect;
 class PaintingManager;
 class MessageLoopManager;
 class MessageSendManager;
@@ -50,6 +55,11 @@ class ResourceManager;
 
 class User32ExtManager {
 public:
+    /// Immutable shape copy; release the USER32 state lock before entering GDI.
+    [[nodiscard]] std::vector<std::pair<u64,ClipRect>> window_region_snapshot() const;
+    // Initialized layered windows; bool is true for UpdateLayeredWindow mode.
+    [[nodiscard]] std::vector<std::pair<u64,bool>> layered_window_snapshot();
+
     using GuestCall = std::function<u64(GuestAddr, const u64*, usize, bool)>;
 
     User32ExtManager(GuestMemory& memory,
@@ -89,6 +99,9 @@ public:
     /// Body of the native-control wndproc, registered as a callable thunk so
     /// a subclassing guest can call the address GWLP_WNDPROC handed it.
     void impl_VitreoNativeControlProc(Marshaler& m);
+    /// The same body for a DLL's exported control procedure (a wndproc's
+    /// (hwnd, msg, wParam, lParam)); @p ansi selects ANSI message text.
+    void native_control_proc(Marshaler& m, bool ansi);
     void impl_VitreoSystemControlProc(Marshaler& m, std::wstring_view base_class, bool ansi);
     using SystemControlInitializer = std::function<bool(Marshaler&, windowing::HWND,
                                                        std::wstring_view, u64, bool)>;
@@ -276,7 +289,9 @@ public:
     void impl_IsWindow(Marshaler& m);
     void impl_IsWindowEnabled(Marshaler& m);
     void impl_LoadBitmapW(Marshaler& m);
-    void impl_LoadImageW(Marshaler& m);
+    /// LoadImageW. @p converted_name, when set, is the string name already in
+    /// UTF-16 (LoadImageA converts its ANSI name with CP_ACP and shares this).
+    void impl_LoadImageW(Marshaler& m, const std::u16string* converted_name = nullptr);
     void impl_GetPropA(Marshaler& m);
     void impl_GetPropW(Marshaler& m);
     void impl_SetPropA(Marshaler& m);
@@ -303,8 +318,17 @@ public:
     void impl_SetClipboardData(Marshaler& m);
     void impl_SetClipboardViewer(Marshaler& m);
     void impl_SetCursor(Marshaler& m);
+    void impl_SetSystemCursor(Marshaler& m);
+    /// A natively hosted STATIC, EDIT or LISTBOX drawing: send its parent
+    /// the WM_CTLCOLOR* message it sends on Windows and hand the colours to
+    /// the host view. Called from the class procedure's WM_PAINT and from
+    /// DialogBox's modal loop, which paints native controls itself.
+    void request_control_colors(windowing::HWND hwnd);
     /// Apply an HCURSOR to host visibility state (DefWindowProc WM_SETCURSOR).
     void apply_cursor(u32 hcursor);
+    /// Re-install the current cursor after its handle's image changed
+    /// (SetSystemCursor / SPI_SETCURSORS).
+    void refresh_current_cursor();
     /// Last HCURSOR passed to SetCursor; 0 means the guest asked to hide.
     u32 m_current_cursor{1};
     /// Last custom (non-stock) HCURSOR from CreateIconIndirect / CreateCursor.
@@ -897,6 +921,10 @@ public:
     /// Publish one physical keyboard transition to a registered raw-input
     /// consumer. The HRAWINPUT stored in WM_INPUT remains valid until the
     /// consumer removes the next message on that guest thread.
+    void set_gamepad_catalog(std::shared_ptr<GamepadHidCatalog> catalog);
+    void set_gamepad_foreground_state(std::shared_ptr<std::atomic<bool>> state);
+    void poll_raw_gamepads();
+    void impl_GetRegisteredRawInputDevices(Marshaler& m);
     void note_raw_keyboard_transition(u32 virtual_key, bool down);
     void note_removed_raw_input_message(const windowing::MSG& message);
     void discard_raw_input_for_thread(u32 tid);
@@ -951,6 +979,10 @@ public:
     bool wait_message();
 
     void set_guest_call(GuestCall call) { m_guest_call = std::move(call); }
+    /// The predefined dialog window procedure around a dialog's DLGPROC
+    /// (hwnd, msg, wParam, lParam, dlgproc, is_64bit).
+    using DialogProcedure = std::function<u64(windowing::HWND, u32, u64, u64, GuestAddr, bool)>;
+    void set_dialog_procedure(DialogProcedure fn) { m_dialog_procedure = std::move(fn); }
     void set_gdi_manager(GdiManager* mgr) { m_gdi_mgr = mgr; }
     void set_painting_manager(PaintingManager* mgr) { m_paint_mgr = mgr; }
     void set_message_loop_manager(MessageLoopManager* mgr) { m_msgloop_mgr = mgr; }
@@ -1044,6 +1076,7 @@ private:
 
     windowing::MessageQueue& m_queue;
     GuestCall m_guest_call;
+    DialogProcedure m_dialog_procedure;
     SystemControlInitializer m_system_control_initializer;
     GdiManager* m_gdi_mgr{nullptr};
     PaintingManager* m_paint_mgr{nullptr};
@@ -1059,12 +1092,21 @@ private:
     /// action), created from the measured defaults on first use.
     std::mutex m_spi_mutex;
     std::map<u32, std::vector<u8>> m_spi_structs;
+    std::map<u32, u32> m_spi_values;   ///< SET-able DWORD settings, by GET action
     i32 m_virtual_display_width{0};
     i32 m_virtual_display_height{0};
     /// Pieces of an exclusive display-mode change, shared by
     /// apply_virtual_display_mode and enter/leave_exclusive_display.
-    void size_window_to_display(windowing::HWND hwnd,
+    /// True when the window was moved with the SetWindowPos message sequence.
+    bool size_window_to_display(windowing::HWND hwnd,
                                 const windowing::Rect& rect);
+public:
+    /// Direct3D 9 exclusive mode: drop the device window's overlapped frame
+    /// and make it topmost (enter), or put its style back (leave).
+    void style_d3d9_device_window(windowing::HWND hwnd, bool enter);
+private:
+    struct SavedDeviceWindowStyle { u32 style; u32 ex_style; };
+    std::unordered_map<windowing::HWND, SavedDeviceWindowStyle> m_d3d9_device_window_styles;
     void broadcast_display_change(u32 bits_per_pixel, u32 width, u32 height);
     void post_display_size(windowing::HWND hwnd, u32 width, u32 height);
 
@@ -1170,7 +1212,8 @@ private:
     std::unordered_map<u32, std::vector<DeferredPos>> m_deferred;
     u32 m_next_dialog_handle{0xD1A00000};
     u32 m_active_window{0};
-    bool m_application_active{false};
+    std::atomic<bool> m_application_active{false};
+    std::shared_ptr<std::atomic<bool>> m_gamepad_foreground_state;
     std::mutex m_activation_mutex;
     std::atomic<u32> m_caret_blink_time_ms{530};
     std::function<std::string()> m_display_adapter_name_provider;
@@ -1189,6 +1232,9 @@ private:
     };
     struct RawKeyboardPacket {
         bool mouse{false};
+        bool hid{false};
+        u64 hid_device{};
+        gamepad_hid::Report hid_report{};
         u16 make_code{0};
         u16 flags{0};
         u16 virtual_key{0};
@@ -1199,9 +1245,30 @@ private:
         i32 last_y{0};
         bool is_64bit{false};
     };
+    std::shared_ptr<GamepadHidCatalog> m_gamepad_catalog;
+    std::optional<RawInputRegistration> m_raw_gamepad_registration;
+    std::map<u32,RawInputRegistration> m_raw_other_registrations;
+    std::unordered_map<u64,gamepad_hid::Report> m_raw_gamepad_previous;
+    std::unordered_set<u64> m_raw_gamepad_devices;
+    std::condition_variable m_raw_gamepad_cv;
     std::mutex m_raw_input_mutex;
     std::optional<RawInputRegistration> m_raw_keyboard_registration;
     std::optional<RawInputRegistration> m_raw_mouse_registration;
+    /// RIDEV_PAGEONLY registrations by usage page: "all devices whose top
+    /// level collection is from the specified usUsagePage" (Learn,
+    /// RAWINPUTDEVICE). A collection with its own registration uses that one.
+    std::map<u16, RawInputRegistration> m_raw_page_registrations;
+    /// RIDEV_EXCLUDE entries ((page << 16) | usage): collections a page
+    /// registration does not cover. An entry of its own, listed by
+    /// GetRegisteredRawInputDevices even with no page registered
+    /// (rawinput_pageonly_probe.expected).
+    std::set<u32> m_raw_excluded;
+    /// The registration that receives input from the collection
+    /// (@p page, @p usage): its own (@p own) when it has one, else its page's
+    /// unless excluded. Caller holds m_raw_input_mutex.
+    [[nodiscard]] std::optional<RawInputRegistration> raw_registration_locked(
+        const std::optional<RawInputRegistration>& own, u16 page,
+        u16 usage) const;
     std::unordered_map<u64, RawKeyboardPacket> m_raw_keyboard_packets;
     std::deque<u64> m_raw_keyboard_order;
     std::unordered_map<u32, u64> m_current_raw_input_by_thread;
@@ -1477,6 +1544,8 @@ private:
     std::vector<std::pair<u32, u32>> m_attached_inputs;
     std::unordered_map<windowing::HWND, windowing::HWND>
         m_saved_focus_by_top_level;
+    std::jthread m_raw_gamepad_worker;
+
 };
 
 [[nodiscard]] DllExports create_user32_ext_thunks(User32ExtManager& mgr);

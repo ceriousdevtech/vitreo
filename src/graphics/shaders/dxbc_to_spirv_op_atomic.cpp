@@ -7,6 +7,18 @@
 
 namespace vitreo::graphics::dxbc_spirv_detail {
 
+// D3D11.3 22.17.19–22.17.28 (Learn imm_atomic_*): "Out of bounds addressing
+// on u# or g# causes an undefined result to be returned to the shader in
+// dst0." No numeric value is stated, and tools/oracle_probe has no
+// measurement, so the result is OpUndef rather than a chosen constant.
+u32 emit_undefined(SpirvBuilder& builder, u32 type) {
+    builder.set_section(SpirvBuilder::Section::TypesGlobals);
+    const u32 id = builder.allocate_id();
+    builder.emit(SpvOp::OpUndef, {type, id});
+    builder.set_section(SpirvBuilder::Section::Functions);
+    return id;
+}
+
 bool DxbcTranslator::translate_atomic_operation(u32 /*opcode_token*/,
                                                 Sm4Opcode opcode,
                                                 u32 /*sample_controls*/) {
@@ -129,11 +141,10 @@ bool DxbcTranslator::translate_atomic_operation(u32 /*opcode_token*/,
         u32 typed_uav_image_var = 0;
         u32 typed_uav_scalar_type = 0;
         u32 typed_uav_pointer_type = 0;
-        // A typed buffer view's raw-index bounds test (typed_buffer_bias):
-        // a bool id, 0 when the access is not guarded here. Learn
-        // (imm_atomic_*): past the view "nothing [is] written to memory" and
-        // the returned value is undefined -- 0 here; D3D11.3 7.13: every
-        // atomic behaves alike.
+        // A bool id, 0 when this access is not bounds-checked. Typed buffer
+        // views set it from the element count (typed_buffer_bias). Raw and
+        // structured views set it from buffer_word_in_bounds, the same word
+        // test ld_raw / store_raw use.
         u32 atomic_in_view = 0;
         if (memory.type == Sm4OperandType::UnorderedAccessView) {
             const auto raw = m_raw_uav_vars.find(memory.index0);
@@ -154,6 +165,18 @@ bool DxbcTranslator::translate_atomic_operation(u32 /*opcode_token*/,
                                 std::to_string(memory.index0) +
                                 " is not an integer view; D3D allows typed "
                                 "atomics on R32_UINT/R32_SINT only");
+                }
+                if (m_uav_float_bits_slots.contains(memory.index0) &&
+                    opcode != Sm4Opcode::IMM_ATOMIC_EXCH &&
+                    opcode != Sm4Opcode::IMM_ATOMIC_CMP_EXCH &&
+                    opcode != Sm4Opcode::ATOMIC_CMP_STORE) {
+                    // A float view takes exchange and the bitwise compare
+                    // forms only (D3D12_FORMAT_SUPPORT2_UAV_ATOMIC_EXCHANGE
+                    // of R32_FLOAT; shader model 6.6 *FloatBitwise).
+                    return fail("ATOMIC: typed UAV u" +
+                                std::to_string(memory.index0) +
+                                " is a float view; only exchange and the "
+                                "bitwise compare forms apply to it");
                 }
                 typed_uav = true;
                 typed_uav_image_var = typed->second;
@@ -204,7 +227,83 @@ bool DxbcTranslator::translate_atomic_operation(u32 /*opcode_token*/,
         // uint; a typed UAV's pointee is the image's own sampled type, and a
         // SPIR-V atomic's result type must match the pointer it is given.
         const u32 atomic_type = typed_uav ? typed_uav_scalar_type : m_type_uint;
+        u32 operand = m_builder.emit_composite_extract(
+            m_type_uint, m_builder.emit_bitcast(m_type_uvec4, value_bits),
+            {0u});
+        // An imm_atomic_* outside the pixel's own invocation
+        // (m_uav_leader_var) applies the operation's identity, so it returns
+        // the location's value without changing it. exch has no identity and
+        // compare-exchange keeps its compare value; both are handled below.
+        const bool leader_gated = m_uav_leader_var != 0 && returns_original;
+        if (leader_gated && !compares &&
+            opcode != Sm4Opcode::IMM_ATOMIC_EXCH) {
+            const u32 identity =
+                opcode == Sm4Opcode::IMM_ATOMIC_AND ||
+                        opcode == Sm4Opcode::IMM_ATOMIC_UMIN
+                    ? 0xFFFFFFFFu
+                : opcode == Sm4Opcode::IMM_ATOMIC_IMAX ? 0x80000000u
+                : opcode == Sm4Opcode::IMM_ATOMIC_IMIN ? 0x7FFFFFFFu
+                                                       : 0u;
+            operand = m_builder.emit_select(
+                m_type_uint, load_uav_leader(), operand,
+                m_builder.emit_constant_int(m_type_uint, identity));
+        }
+
+        SpvOp atomic_op = SpvOp::OpAtomicIAdd;
+        switch (opcode) {
+        case Sm4Opcode::ATOMIC_AND:
+        case Sm4Opcode::IMM_ATOMIC_AND: atomic_op = SpvOp::OpAtomicAnd; break;
+        case Sm4Opcode::ATOMIC_OR:
+        case Sm4Opcode::IMM_ATOMIC_OR: atomic_op = SpvOp::OpAtomicOr; break;
+        case Sm4Opcode::ATOMIC_XOR:
+        case Sm4Opcode::IMM_ATOMIC_XOR: atomic_op = SpvOp::OpAtomicXor; break;
+        case Sm4Opcode::ATOMIC_IMAX:
+        case Sm4Opcode::IMM_ATOMIC_IMAX: atomic_op = SpvOp::OpAtomicSMax; break;
+        case Sm4Opcode::ATOMIC_IMIN:
+        case Sm4Opcode::IMM_ATOMIC_IMIN: atomic_op = SpvOp::OpAtomicSMin; break;
+        case Sm4Opcode::ATOMIC_UMAX:
+        case Sm4Opcode::IMM_ATOMIC_UMAX: atomic_op = SpvOp::OpAtomicUMax; break;
+        case Sm4Opcode::ATOMIC_UMIN:
+        case Sm4Opcode::IMM_ATOMIC_UMIN: atomic_op = SpvOp::OpAtomicUMin; break;
+        case Sm4Opcode::IMM_ATOMIC_EXCH:
+            atomic_op = SpvOp::OpAtomicExchange;
+            break;
+        default: atomic_op = SpvOp::OpAtomicIAdd; break;
+        }
+        // The compare value (compare forms): the memory is compared against
+        // it, and an invocation outside the leader writes it back, a read.
+        u32 comparator_uint = 0;
+        if (compares) {
+            comparator_uint = m_builder.emit_composite_extract(
+                m_type_uint,
+                m_builder.emit_bitcast(m_type_uvec4, compare_bits), {0u});
+            if (leader_gated) {
+                operand = m_builder.emit_select(m_type_uint, load_uav_leader(),
+                                                operand, comparator_uint);
+            }
+        }
+        const u32 operand_uint = operand;
+        u32 comparator = comparator_uint;
+        if (atomic_type != m_type_uint) {
+            // D3D's atomic operand is 32 raw bits; reinterpreting is correct
+            // where converting would not be.
+            operand = m_builder.emit_bitcast(atomic_type, operand);
+            if (compares) {
+                comparator = m_builder.emit_bitcast(atomic_type, comparator);
+            }
+        }
+        // Device scope, Relaxed semantics: D3D's atomics are globally atomic
+        // but impose no ordering on other memory operations.
+        const u32 scope = m_builder.emit_constant_int(m_type_uint, 1u);
+        const u32 semantics = m_builder.emit_constant_int(m_type_uint, 0u);
+        // A typed buffer view read as raw memory (kTypedBufferRaw) has no
+        // texture: its atomic runs on the element's word in the buffer.
+        TypedRawSplit raw_view;
         u32 pointer = 0;
+        u32 word_index = 0;
+        // The raw/structured access chain is emitted in the in-bounds block
+        // so an index past the view is never formed.
+        bool guard_word = false;
         if (typed_uav) {
             // The coordinate shape is the same one ld_uav_typed /
             // store_uav_typed use: one element index for a Dim=Buffer UAV, an
@@ -244,6 +343,17 @@ bool DxbcTranslator::translate_atomic_operation(u32 /*opcode_token*/,
                         m_builder.emit_composite_construct(
                             m_type_uvec3, {beyond, beyond, beyond}),
                         coordinate);
+                }
+            }
+            if (buffer_uav) {
+                raw_view = typed_raw_begin(true, memory.index0);
+                if (raw_view.active) {
+                    typed_raw_else(
+                        raw_view,
+                        typed_raw_atomic(memory.index0, coordinate, atomic_op,
+                                         compares, operand_uint,
+                                         comparator_uint, leader_gated,
+                                         scope, semantics));
                 }
             }
             if (buffer_uav) {
@@ -293,69 +403,37 @@ bool DxbcTranslator::translate_atomic_operation(u32 /*opcode_token*/,
                         m_builder.emit_constant_int(m_type_uint, stride)),
                     offset);
             }
-            const u32 word_index = m_builder.emit_shift_right_logical(
+            word_index = m_builder.emit_shift_right_logical(
                 m_type_uint, byte_index,
                 m_builder.emit_constant_int(m_type_uint, 2u));
-            const u32 member = m_builder.emit_constant_int(m_type_uint, 0u);
-            pointer = indexed_through_member
-                          ? m_builder.emit_access_chain(
-                                pointer_type, target_var, {member, word_index})
-                          : m_builder.emit_access_chain(pointer_type,
-                                                        target_var,
-                                                        {word_index});
+            // D3D11.3 7.13: every atomic has the same out-of-bounds behavior.
+            // 22.17.8–22.17.16 and 22.17.19–22.17.28: "Out of bounds addressing
+            // on u# causes nothing to be written to memory, except: If the u#
+            // is structured, and byte offset into the struct (second component
+            // of the address) is causing the out of bounds access, then the
+            // entire contents of the UAV become undefined." The word test is
+            // the one loads and stores already apply (buffer_word_in_bounds):
+            // a push-block size of 0 means the size is unknown, and a
+            // descriptor-table size of 0 is an empty view. A structured byte
+            // offset that lands on a word still inside the view is the spec's
+            // undefined-UAV case; the atomic runs, matching ld/store.
+            if (memory.type == Sm4OperandType::UnorderedAccessView &&
+                guards_buffer(memory.type)) {
+                atomic_in_view =
+                    buffer_word_in_bounds(true, memory.index0, word_index);
+                guard_word = true;
+            }
+            if (!guard_word) {
+                const u32 member = m_builder.emit_constant_int(m_type_uint, 0u);
+                pointer = indexed_through_member
+                              ? m_builder.emit_access_chain(
+                                    pointer_type, target_var,
+                                    {member, word_index})
+                              : m_builder.emit_access_chain(pointer_type,
+                                                            target_var,
+                                                            {word_index});
+            }
         }
-        u32 operand = m_builder.emit_composite_extract(
-            m_type_uint, m_builder.emit_bitcast(m_type_uvec4, value_bits),
-            {0u});
-        // An imm_atomic_* outside the pixel's own invocation
-        // (m_uav_leader_var) applies the operation's identity, so it returns
-        // the location's value without changing it. exch has no identity and
-        // compare-exchange keeps its compare value; both are handled below.
-        const bool leader_gated = m_uav_leader_var != 0 && returns_original;
-        if (leader_gated && !compares &&
-            opcode != Sm4Opcode::IMM_ATOMIC_EXCH) {
-            const u32 identity =
-                opcode == Sm4Opcode::IMM_ATOMIC_AND ||
-                        opcode == Sm4Opcode::IMM_ATOMIC_UMIN
-                    ? 0xFFFFFFFFu
-                : opcode == Sm4Opcode::IMM_ATOMIC_IMAX ? 0x80000000u
-                : opcode == Sm4Opcode::IMM_ATOMIC_IMIN ? 0x7FFFFFFFu
-                                                       : 0u;
-            operand = m_builder.emit_select(
-                m_type_uint, load_uav_leader(), operand,
-                m_builder.emit_constant_int(m_type_uint, identity));
-        }
-        if (atomic_type != m_type_uint) {
-            // D3D's atomic operand is 32 raw bits; reinterpreting is correct
-            // where converting would not be.
-            operand = m_builder.emit_bitcast(atomic_type, operand);
-        }
-
-        SpvOp atomic_op = SpvOp::OpAtomicIAdd;
-        switch (opcode) {
-        case Sm4Opcode::ATOMIC_AND:
-        case Sm4Opcode::IMM_ATOMIC_AND: atomic_op = SpvOp::OpAtomicAnd; break;
-        case Sm4Opcode::ATOMIC_OR:
-        case Sm4Opcode::IMM_ATOMIC_OR: atomic_op = SpvOp::OpAtomicOr; break;
-        case Sm4Opcode::ATOMIC_XOR:
-        case Sm4Opcode::IMM_ATOMIC_XOR: atomic_op = SpvOp::OpAtomicXor; break;
-        case Sm4Opcode::ATOMIC_IMAX:
-        case Sm4Opcode::IMM_ATOMIC_IMAX: atomic_op = SpvOp::OpAtomicSMax; break;
-        case Sm4Opcode::ATOMIC_IMIN:
-        case Sm4Opcode::IMM_ATOMIC_IMIN: atomic_op = SpvOp::OpAtomicSMin; break;
-        case Sm4Opcode::ATOMIC_UMAX:
-        case Sm4Opcode::IMM_ATOMIC_UMAX: atomic_op = SpvOp::OpAtomicUMax; break;
-        case Sm4Opcode::ATOMIC_UMIN:
-        case Sm4Opcode::IMM_ATOMIC_UMIN: atomic_op = SpvOp::OpAtomicUMin; break;
-        case Sm4Opcode::IMM_ATOMIC_EXCH:
-            atomic_op = SpvOp::OpAtomicExchange;
-            break;
-        default: atomic_op = SpvOp::OpAtomicIAdd; break;
-        }
-        // Device scope, Relaxed semantics: D3D's atomics are globally atomic
-        // but impose no ordering on other memory operations.
-        const u32 scope = m_builder.emit_constant_int(m_type_uint, 1u);
-        const u32 semantics = m_builder.emit_constant_int(m_type_uint, 0u);
         // An index past a typed buffer view runs no atomic (atomic_in_view).
         u32 guard_body_end = 0, guard_outside = 0, guard_merge = 0;
         if (atomic_in_view != 0) {
@@ -367,21 +445,19 @@ bool DxbcTranslator::translate_atomic_operation(u32 /*opcode_token*/,
             m_builder.emit_branch_conditional(atomic_in_view, body,
                                               guard_outside);
             m_builder.emit_label_id(body);
+            if (guard_word) {
+                const u32 member = m_builder.emit_constant_int(m_type_uint, 0u);
+                pointer = indexed_through_member
+                              ? m_builder.emit_access_chain(
+                                    pointer_type, target_var,
+                                    {member, word_index})
+                              : m_builder.emit_access_chain(pointer_type,
+                                                            target_var,
+                                                            {word_index});
+            }
         }
         u32 previous = 0;
         if (compares) {
-            u32 comparator = m_builder.emit_composite_extract(
-                m_type_uint,
-                m_builder.emit_bitcast(m_type_uvec4, compare_bits), {0u});
-            if (atomic_type != m_type_uint) {
-                comparator = m_builder.emit_bitcast(atomic_type, comparator);
-            }
-            // Writing the compare value back where it matched changes
-            // nothing: a read for the other invocations.
-            if (leader_gated) {
-                operand = m_builder.emit_select(atomic_type, load_uav_leader(),
-                                                operand, comparator);
-            }
             previous = m_builder.emit_atomic_compare_exchange(
                 atomic_type, pointer, scope, semantics, semantics, operand,
                 comparator);
@@ -420,15 +496,24 @@ bool DxbcTranslator::translate_atomic_operation(u32 /*opcode_token*/,
             m_builder.emit_label_id(guard_outside);
             m_builder.emit_branch(guard_merge);
             m_builder.emit_label_id(guard_merge);
+            // Typed buffer views keep the 0 this path already returned for
+            // the undefined immediate result. Raw and structured immediate
+            // atomics follow the sentence above: the result is undefined, so
+            // the out-of-bounds value is OpUndef. atomic_* returns nothing
+            // (22.17.8–22.17.16, "Nothing is returned to the shader"); that
+            // phi value is not stored.
+            const u32 outside_result =
+                typed_uav ? m_builder.emit_constant_int(atomic_type, 0u)
+                          : emit_undefined(m_builder, atomic_type);
             previous = m_builder.emit_phi(
                 atomic_type,
                 {{previous, guard_body_end},
-                 {m_builder.emit_constant_int(atomic_type, 0u),
-                  guard_outside}});
+                 {outside_result, guard_outside}});
         }
         if (atomic_type != m_type_uint) {
             previous = m_builder.emit_bitcast(m_type_uint, previous);
         }
+        previous = typed_raw_end(raw_view, m_type_uint, previous);
         if (returns_original) {
             const u32 splat = m_builder.emit_composite_construct(
                 m_type_uvec4, {previous, previous, previous, previous});

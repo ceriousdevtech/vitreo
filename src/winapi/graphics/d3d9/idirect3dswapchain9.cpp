@@ -170,14 +170,14 @@ void D3D9Manager::dispatch_swap_chain(Marshaler& m, usize slot, u32 self) {
         const u32 index = static_cast<u32>(m.arg(1));
         const u32 type = static_cast<u32>(m.arg(2));
         const GuestAddr out = m.arg_ptr(3);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         if (index != 0 || type != D3DBACKBUFFER_TYPE_MONO || out == 0 ||
             back_buffer == 0) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
         (void)add_ref(back_buffer);
-        if (m.write_u32(out, back_buffer).is_err()) {
+        if (m.write_ptr(out, back_buffer).is_err()) {
             (void)release(back_buffer);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -209,7 +209,7 @@ void D3D9Manager::dispatch_swap_chain(Marshaler& m, usize slot, u32 self) {
             return;
         }
         (void)add_ref(entry->device);
-        if (m.write_u32(out, entry->device).is_err()) {
+        if (m.write_ptr(out, entry->device).is_err()) {
             (void)release(entry->device);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -220,9 +220,7 @@ void D3D9Manager::dispatch_swap_chain(Marshaler& m, usize slot, u32 self) {
     case 9: { // GetPresentParameters
         const GuestAddr out = m.arg_ptr(1);
         if (out == 0 ||
-            m.memory().write_bytes(
-                out, present_parameters.data(),
-                present_parameters.size()).is_err()) {
+            !write_guest_present_parameters(m, out, present_parameters)) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }

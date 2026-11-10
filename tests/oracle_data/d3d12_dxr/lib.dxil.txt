@@ -1,0 +1,482 @@
+;
+; Note: shader requires additional functionality:
+;       UAVs at every shader stage
+;
+; shader hash: 08cc6a36dd03c0510321a768d539739d
+;
+; Buffer Definitions:
+;
+; cbuffer Frame
+; {
+;
+;   struct Frame
+;   {
+;
+;       uint frame_flags;                             ; Offset:    0
+;       uint frame_mask;                              ; Offset:    4
+;       uint grid;                                    ; Offset:    8
+;       uint frame_pad;                               ; Offset:   12
+;   
+;   } Frame;                                          ; Offset:    0 Size:    16
+;
+; }
+;
+; cbuffer Local
+; {
+;
+;   struct Local
+;   {
+;
+;       uint4 local_tag;                              ; Offset:    0
+;   
+;   } Local;                                          ; Offset:    0 Size:    16
+;
+; }
+;
+; Resource bind info for Out
+; {
+;
+;   uint4 $Element;                                   ; Offset:    0 Size:    16
+;
+; }
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; Frame                             cbuffer      NA          NA     CB0            cb0     1
+; Local                             cbuffer      NA          NA     CB1            cb1     1
+; Scene                             texture     i32         ras      T0             t0     1
+; Out                                   UAV  struct         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:32-i16:32-i32:32-i64:64-f16:32-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%struct.RaytracingAccelerationStructure = type { i32 }
+%"class.RWStructuredBuffer<vector<unsigned int, 4> >" = type { <4 x i32> }
+%Frame = type { i32, i32, i32, i32 }
+%Local = type { <4 x i32> }
+%struct.Payload = type { <4 x i32>, i32 }
+%struct.CallData = type { i32 }
+%dx.types.Handle = type { i8* }
+%dx.types.CBufRet.i32 = type { i32, i32, i32, i32 }
+%struct.BuiltInTriangleIntersectionAttributes = type { <2 x float> }
+%struct.SphereAttr = type { <3 x float> }
+
+@"\01?Scene@@3URaytracingAccelerationStructure@@A" = external constant %struct.RaytracingAccelerationStructure, align 4
+@"\01?Out@@3V?$RWStructuredBuffer@V?$vector@I$03@@@@A" = external constant %"class.RWStructuredBuffer<vector<unsigned int, 4> >", align 4
+@Frame = external constant %Frame
+@Local = external constant %Local
+
+; Function Attrs: nounwind
+define void @"\01?rg@@YAXXZ"() #0 {
+  %1 = load %struct.RaytracingAccelerationStructure, %struct.RaytracingAccelerationStructure* @"\01?Scene@@3URaytracingAccelerationStructure@@A", align 4
+  %2 = load %"class.RWStructuredBuffer<vector<unsigned int, 4> >", %"class.RWStructuredBuffer<vector<unsigned int, 4> >"* @"\01?Out@@3V?$RWStructuredBuffer@V?$vector@I$03@@@@A", align 4
+  %3 = load %Frame, %Frame* @Frame, align 4
+  %4 = alloca %struct.Payload, align 4
+  %5 = alloca %struct.CallData, align 4
+  %6 = call %dx.types.Handle @dx.op.createHandleForLib.Frame(i32 160, %Frame %3)  ; CreateHandleForLib(Resource)
+  %7 = call i32 @dx.op.dispatchRaysIndex.i32(i32 145, i8 0)  ; DispatchRaysIndex(col)
+  %8 = call i32 @dx.op.dispatchRaysIndex.i32(i32 145, i8 1)  ; DispatchRaysIndex(col)
+  %9 = call i32 @dx.op.dispatchRaysDimensions.i32(i32 146, i8 0)  ; DispatchRaysDimensions(col)
+  %10 = call i32 @dx.op.dispatchRaysDimensions.i32(i32 146, i8 1)  ; DispatchRaysDimensions(col)
+  %11 = uitofp i32 %7 to float
+  %12 = uitofp i32 %8 to float
+  %13 = fadd fast float %11, 5.000000e-01
+  %14 = fadd fast float %12, 5.000000e-01
+  %15 = uitofp i32 %9 to float
+  %16 = uitofp i32 %10 to float
+  %17 = fdiv fast float %13, %15
+  %18 = fdiv fast float %14, %16
+  %19 = fmul fast float %17, 6.000000e+00
+  %20 = fadd fast float %19, -3.000000e+00
+  %21 = fmul fast float %18, 5.000000e+00
+  %22 = fadd fast float %21, -2.000000e+00
+  %23 = getelementptr inbounds %struct.Payload, %struct.Payload* %4, i32 0, i32 0
+  store <4 x i32> zeroinitializer, <4 x i32>* %23, align 4, !tbaa !40
+  %24 = getelementptr inbounds %struct.Payload, %struct.Payload* %4, i32 0, i32 1
+  store i32 0, i32* %24, align 4, !tbaa !43
+  %25 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %6, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %26 = extractvalue %dx.types.CBufRet.i32 %25, 1
+  %27 = extractvalue %dx.types.CBufRet.i32 %25, 0
+  %28 = call %dx.types.Handle @dx.op.createHandleForLib.struct.RaytracingAccelerationStructure(i32 160, %struct.RaytracingAccelerationStructure %1)  ; CreateHandleForLib(Resource)
+  call void @dx.op.traceRay.struct.Payload(i32 157, %dx.types.Handle %28, i32 %27, i32 %26, i32 0, i32 1, i32 0, float %20, float %22, float -5.000000e+00, float 0.000000e+00, float 0.000000e+00, float 0.000000e+00, float 1.000000e+00, float 1.000000e+02, %struct.Payload* nonnull %4)  ; TraceRay(AccelerationStructure,RayFlags,InstanceInclusionMask,RayContributionToHitGroupIndex,MultiplierForGeometryContributionToShaderIndex,MissShaderIndex,Origin_X,Origin_Y,Origin_Z,TMin,Direction_X,Direction_Y,Direction_Z,TMax,payload)
+  %29 = load <4 x i32>, <4 x i32>* %23, align 4
+  %30 = extractelement <4 x i32> %29, i32 0
+  %31 = and i32 %30, 255
+  %32 = getelementptr inbounds %struct.CallData, %struct.CallData* %5, i32 0, i32 0
+  store i32 %31, i32* %32, align 4, !tbaa !43
+  call void @dx.op.callShader.struct.CallData(i32 159, i32 0, %struct.CallData* nonnull %5)  ; CallShader(ShaderIndex,Parameter)
+  %33 = load <4 x i32>, <4 x i32>* %23, align 4
+  %34 = extractelement <4 x i32> %33, i32 0
+  %35 = extractelement <4 x i32> %33, i32 1
+  %36 = extractelement <4 x i32> %33, i32 2
+  %37 = extractelement <4 x i32> %33, i32 3
+  %38 = shl i32 %37, 16
+  %39 = load i32, i32* %32, align 4, !tbaa !43
+  %40 = or i32 %38, %39
+  %41 = mul i32 %9, %8
+  %42 = add i32 %41, %7
+  %43 = call %dx.types.Handle @"dx.op.createHandleForLib.class.RWStructuredBuffer<vector<unsigned int, 4> >"(i32 160, %"class.RWStructuredBuffer<vector<unsigned int, 4> >" %2)  ; CreateHandleForLib(Resource)
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %43, i32 %42, i32 0, i32 %34, i32 %35, i32 %36, i32 %40, i8 15, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind
+define void @"\01?ms@@YAXUPayload@@@Z"(%struct.Payload* noalias nocapture %p) #0 {
+  %1 = load %Local, %Local* @Local, align 4
+  %2 = call %dx.types.Handle @dx.op.createHandleForLib.Local(i32 160, %Local %1)  ; CreateHandleForLib(Resource)
+  %3 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %2, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %4 = extractvalue %dx.types.CBufRet.i32 %3, 0
+  %5 = or i32 %4, -1442840576
+  %6 = extractvalue %dx.types.CBufRet.i32 %3, 1
+  %7 = insertelement <4 x i32> undef, i32 %5, i64 0
+  %8 = insertelement <4 x i32> %7, i32 0, i64 1
+  %9 = insertelement <4 x i32> %8, i32 %6, i64 2
+  %10 = insertelement <4 x i32> %9, i32 0, i64 3
+  %11 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0
+  store <4 x i32> %10, <4 x i32>* %11, align 4
+  ret void
+}
+
+; Function Attrs: nounwind
+define void @"\01?ms_shadow@@YAXUPayload@@@Z"(%struct.Payload* noalias nocapture %p) #0 {
+  %1 = load %Local, %Local* @Local, align 4
+  %2 = call %dx.types.Handle @dx.op.createHandleForLib.Local(i32 160, %Local %1)  ; CreateHandleForLib(Resource)
+  %3 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %2, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %4 = extractvalue %dx.types.CBufRet.i32 %3, 0
+  %5 = or i32 %4, 23248
+  %6 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 3
+  store i32 %5, i32* %6, align 4
+  ret void
+}
+
+; Function Attrs: nounwind
+define void @"\01?ch_tri@@YAXUPayload@@UBuiltInTriangleIntersectionAttributes@@@Z"(%struct.Payload* noalias nocapture %p, %struct.BuiltInTriangleIntersectionAttributes* nocapture readnone %a) #0 {
+  %1 = load %struct.RaytracingAccelerationStructure, %struct.RaytracingAccelerationStructure* @"\01?Scene@@3URaytracingAccelerationStructure@@A", align 4
+  %2 = load %Local, %Local* @Local, align 4
+  %3 = alloca %struct.Payload, align 4
+  %4 = call %dx.types.Handle @dx.op.createHandleForLib.Local(i32 160, %Local %2)  ; CreateHandleForLib(Resource)
+  %5 = call i32 @dx.op.instanceIndex.i32(i32 142)  ; InstanceIndex()
+  %6 = shl i32 %5, 24
+  %7 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %4, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %8 = extractvalue %dx.types.CBufRet.i32 %7, 2
+  %9 = shl i32 %8, 16
+  %10 = or i32 %9, %6
+  %11 = call i32 @dx.op.primitiveIndex.i32(i32 161)  ; PrimitiveIndex()
+  %12 = shl i32 %11, 8
+  %13 = or i32 %10, %12
+  %14 = call i32 @dx.op.hitKind.i32(i32 143)  ; HitKind()
+  %15 = or i32 %13, %14
+  %16 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 0
+  store i32 %15, i32* %16, align 4
+  %17 = call float @dx.op.rayTCurrent.f32(i32 154)  ; RayTCurrent()
+  %18 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 1
+  %19 = bitcast i32* %18 to float*
+  store float %17, float* %19, align 4
+  %20 = extractvalue %dx.types.CBufRet.i32 %7, 0
+  %21 = call i32 @dx.op.instanceID.i32(i32 141)  ; InstanceID()
+  %22 = shl i32 %21, 8
+  %23 = or i32 %22, %20
+  %24 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 2
+  store i32 %23, i32* %24, align 4
+  %25 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 3
+  store i32 0, i32* %25, align 4
+  %26 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 1
+  %27 = load i32, i32* %26, align 4, !tbaa !43
+  %28 = icmp eq i32 %27, 0
+  br i1 %28, label %29, label %53
+
+; <label>:29                                      ; preds = %0
+  %30 = getelementptr inbounds %struct.Payload, %struct.Payload* %3, i32 0, i32 0
+  store <4 x i32> zeroinitializer, <4 x i32>* %30, align 4, !tbaa !40
+  %31 = getelementptr inbounds %struct.Payload, %struct.Payload* %3, i32 0, i32 1
+  store i32 1, i32* %31, align 4, !tbaa !43
+  %32 = call float @dx.op.worldRayOrigin.f32(i32 147, i8 0)  ; WorldRayOrigin(col)
+  %33 = call float @dx.op.worldRayOrigin.f32(i32 147, i8 1)  ; WorldRayOrigin(col)
+  %34 = call float @dx.op.worldRayOrigin.f32(i32 147, i8 2)  ; WorldRayOrigin(col)
+  %35 = call float @dx.op.worldRayDirection.f32(i32 148, i8 0)  ; WorldRayDirection(col)
+  %36 = call float @dx.op.worldRayDirection.f32(i32 148, i8 1)  ; WorldRayDirection(col)
+  %37 = call float @dx.op.worldRayDirection.f32(i32 148, i8 2)  ; WorldRayDirection(col)
+  %38 = call float @dx.op.rayTCurrent.f32(i32 154)  ; RayTCurrent()
+  %39 = fmul fast float %38, %35
+  %40 = fmul fast float %38, %36
+  %41 = fmul fast float %38, %37
+  %42 = fadd fast float %39, %32
+  %43 = fadd fast float %40, %33
+  %44 = fadd fast float %41, %34
+  %45 = call %dx.types.Handle @dx.op.createHandleForLib.struct.RaytracingAccelerationStructure(i32 160, %struct.RaytracingAccelerationStructure %1)  ; CreateHandleForLib(Resource)
+  call void @dx.op.traceRay.struct.Payload(i32 157, %dx.types.Handle %45, i32 0, i32 255, i32 0, i32 1, i32 1, float %42, float %43, float %44, float 0x3F847AE140000000, float 0.000000e+00, float 0.000000e+00, float 1.000000e+00, float 1.000000e+02, %struct.Payload* nonnull %3)  ; TraceRay(AccelerationStructure,RayFlags,InstanceInclusionMask,RayContributionToHitGroupIndex,MultiplierForGeometryContributionToShaderIndex,MissShaderIndex,Origin_X,Origin_Y,Origin_Z,TMin,Direction_X,Direction_Y,Direction_Z,TMax,payload)
+  %46 = load <4 x i32>, <4 x i32>* %30, align 4
+  %47 = extractelement <4 x i32> %46, i32 3
+  %48 = icmp ne i32 %47, 0
+  %49 = extractelement <4 x i32> %46, i32 0
+  %50 = lshr i32 %49, 24
+  %51 = add nuw nsw i32 %50, 1
+  %52 = select i1 %48, i32 %47, i32 %51
+  store i32 %52, i32* %25, align 4
+  br label %53
+
+; <label>:53                                      ; preds = %29, %0
+  ret void
+}
+
+; Function Attrs: nounwind
+define void @"\01?ah_tri@@YAXUPayload@@UBuiltInTriangleIntersectionAttributes@@@Z"(%struct.Payload* noalias nocapture %p, %struct.BuiltInTriangleIntersectionAttributes* nocapture readnone %a) #0 {
+  %1 = load %Local, %Local* @Local, align 4
+  %2 = call %dx.types.Handle @dx.op.createHandleForLib.Local(i32 160, %Local %1)  ; CreateHandleForLib(Resource)
+  %3 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0
+  %4 = load <4 x i32>, <4 x i32>* %3, align 4
+  %5 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 1
+  %6 = load i32, i32* %5, align 4
+  %7 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %2, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %8 = extractvalue %dx.types.CBufRet.i32 %7, 2
+  %9 = icmp eq i32 %8, 0
+  %10 = call i32 @dx.op.primitiveIndex.i32(i32 161)  ; PrimitiveIndex()
+  %11 = icmp eq i32 %10, 1
+  %12 = and i1 %9, %11
+  br i1 %12, label %13, label %14
+
+; <label>:13                                      ; preds = %0
+  store <4 x i32> %4, <4 x i32>* %3, align 4
+  store i32 %6, i32* %5, align 4
+  call void @dx.op.ignoreHit(i32 155)  ; IgnoreHit()
+  unreachable
+
+; <label>:14                                      ; preds = %0
+  store <4 x i32> %4, <4 x i32>* %3, align 4
+  store i32 %6, i32* %5, align 4
+  ret void
+}
+
+; Function Attrs: nounwind
+define void @"\01?is_sphere@@YAXXZ"() #0 {
+  %1 = alloca %struct.SphereAttr, align 4
+  %2 = call float @dx.op.objectRayOrigin.f32(i32 149, i8 0)  ; ObjectRayOrigin(col)
+  %3 = call float @dx.op.objectRayOrigin.f32(i32 149, i8 1)  ; ObjectRayOrigin(col)
+  %4 = call float @dx.op.objectRayOrigin.f32(i32 149, i8 2)  ; ObjectRayOrigin(col)
+  %5 = call float @dx.op.objectRayDirection.f32(i32 150, i8 0)  ; ObjectRayDirection(col)
+  %6 = call float @dx.op.objectRayDirection.f32(i32 150, i8 1)  ; ObjectRayDirection(col)
+  %7 = call float @dx.op.objectRayDirection.f32(i32 150, i8 2)  ; ObjectRayDirection(col)
+  %8 = call float @dx.op.dot3.f32(i32 55, float %5, float %6, float %7, float %5, float %6, float %7)  ; Dot3(ax,ay,az,bx,by,bz)
+  %9 = call float @dx.op.dot3.f32(i32 55, float %2, float %3, float %4, float %5, float %6, float %7)  ; Dot3(ax,ay,az,bx,by,bz)
+  %10 = call float @dx.op.dot3.f32(i32 55, float %2, float %3, float %4, float %2, float %3, float %4)  ; Dot3(ax,ay,az,bx,by,bz)
+  %11 = fadd fast float %10, -2.500000e-01
+  %12 = fmul fast float %9, %9
+  %13 = fmul fast float %11, %8
+  %14 = fsub fast float %12, %13
+  %15 = fcmp fast olt float %14, 0.000000e+00
+  br i1 %15, label %43, label %16
+
+; <label>:16                                      ; preds = %0
+  %17 = fsub fast float -0.000000e+00, %9
+  %18 = call float @dx.op.unary.f32(i32 24, float %14)  ; Sqrt(value)
+  %19 = fsub fast float %17, %18
+  %20 = fdiv fast float %19, %8
+  %21 = call float @dx.op.rayTMin.f32(i32 153)  ; RayTMin()
+  %22 = fcmp fast olt float %20, %21
+  %23 = call float @dx.op.rayTCurrent.f32(i32 154)  ; RayTCurrent()
+  %24 = fcmp fast ogt float %20, %23
+  %25 = or i1 %22, %24
+  br i1 %25, label %43, label %26
+
+; <label>:26                                      ; preds = %16
+  %27 = fmul fast float %20, %5
+  %28 = fmul fast float %20, %6
+  %29 = fmul fast float %20, %7
+  %30 = fadd fast float %27, %2
+  %31 = fadd fast float %28, %3
+  %32 = fadd fast float %29, %4
+  %33 = call float @dx.op.dot3.f32(i32 55, float %30, float %31, float %32, float %30, float %31, float %32)  ; Dot3(ax,ay,az,bx,by,bz)
+  %34 = call float @dx.op.unary.f32(i32 25, float %33)  ; Rsqrt(value)
+  %35 = fmul fast float %34, %30
+  %36 = fmul fast float %34, %31
+  %37 = fmul fast float %34, %32
+  %38 = insertelement <3 x float> undef, float %35, i32 0
+  %39 = insertelement <3 x float> %38, float %36, i32 1
+  %40 = insertelement <3 x float> %39, float %37, i32 2
+  %41 = getelementptr inbounds %struct.SphereAttr, %struct.SphereAttr* %1, i32 0, i32 0
+  store <3 x float> %40, <3 x float>* %41, align 4, !tbaa !40
+  %42 = call i1 @dx.op.reportHit.struct.SphereAttr(i32 158, float %20, i32 5, %struct.SphereAttr* nonnull %1)  ; ReportHit(THit,HitKind,Attributes)
+  br label %43
+
+; <label>:43                                      ; preds = %26, %16, %0
+  ret void
+}
+
+; Function Attrs: nounwind
+define void @"\01?ch_sphere@@YAXUPayload@@USphereAttr@@@Z"(%struct.Payload* noalias nocapture %p, %struct.SphereAttr* nocapture readonly %a) #0 {
+  %1 = load %Local, %Local* @Local, align 4
+  %2 = call %dx.types.Handle @dx.op.createHandleForLib.Local(i32 160, %Local %1)  ; CreateHandleForLib(Resource)
+  %3 = call i32 @dx.op.instanceIndex.i32(i32 142)  ; InstanceIndex()
+  %4 = shl i32 %3, 8
+  %5 = call i32 @dx.op.hitKind.i32(i32 143)  ; HitKind()
+  %6 = or i32 %5, %4
+  %7 = or i32 %6, 1342177280
+  %8 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 0
+  store i32 %7, i32* %8, align 4
+  %9 = call float @dx.op.rayTCurrent.f32(i32 154)  ; RayTCurrent()
+  %10 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 1
+  %11 = bitcast i32* %10 to float*
+  store float %9, float* %11, align 4
+  %12 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %2, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %13 = extractvalue %dx.types.CBufRet.i32 %12, 0
+  %14 = getelementptr inbounds %struct.SphereAttr, %struct.SphereAttr* %a, i32 0, i32 0
+  %15 = load <3 x float>, <3 x float>* %14, align 4
+  %16 = extractelement <3 x float> %15, i32 2
+  %17 = fcmp fast olt float %16, -5.000000e-01
+  %18 = zext i1 %17 to i32
+  %19 = shl nuw nsw i32 %18, 8
+  %20 = or i32 %19, %13
+  %21 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 2
+  store i32 %20, i32* %21, align 4
+  %22 = getelementptr inbounds %struct.Payload, %struct.Payload* %p, i32 0, i32 0, i32 3
+  store i32 0, i32* %22, align 4
+  ret void
+}
+
+; Function Attrs: nounwind
+define void @"\01?cl@@YAXUCallData@@@Z"(%struct.CallData* noalias nocapture %c) #0 {
+  %1 = load %Local, %Local* @Local, align 4
+  %2 = call %dx.types.Handle @dx.op.createHandleForLib.Local(i32 160, %Local %1)  ; CreateHandleForLib(Resource)
+  %3 = getelementptr inbounds %struct.CallData, %struct.CallData* %c, i32 0, i32 0
+  %4 = load i32, i32* %3, align 4, !tbaa !43
+  %5 = mul i32 %4, 3
+  %6 = call %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32 59, %dx.types.Handle %2, i32 0)  ; CBufferLoadLegacy(handle,regIndex)
+  %7 = extractvalue %dx.types.CBufRet.i32 %6, 1
+  %8 = add i32 %7, %5
+  store i32 %8, i32* %3, align 4, !tbaa !43
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.dispatchRaysDimensions.i32(i32, i8) #1
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.dispatchRaysIndex.i32(i32, i8) #1
+
+; Function Attrs: nounwind
+declare void @dx.op.traceRay.struct.Payload(i32, %dx.types.Handle, i32, i32, i32, i32, i32, float, float, float, float, float, float, float, float, %struct.Payload*) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.callShader.struct.CallData(i32, i32, %struct.CallData*) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #0
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.instanceID.i32(i32) #1
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.hitKind.i32(i32) #1
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.primitiveIndex.i32(i32) #1
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.instanceIndex.i32(i32) #1
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.rayTMin.f32(i32) #1
+
+; Function Attrs: nounwind readonly
+declare float @dx.op.rayTCurrent.f32(i32) #2
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.objectRayDirection.f32(i32, i8) #1
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.objectRayOrigin.f32(i32, i8) #1
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.worldRayDirection.f32(i32, i8) #1
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.worldRayOrigin.f32(i32, i8) #1
+
+; Function Attrs: noreturn nounwind
+declare void @dx.op.ignoreHit(i32) #3
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.dot3.f32(i32, float, float, float, float, float, float) #1
+
+; Function Attrs: nounwind readnone
+declare float @dx.op.unary.f32(i32, float) #1
+
+; Function Attrs: nounwind
+declare i1 @dx.op.reportHit.struct.SphereAttr(i32, float, i32, %struct.SphereAttr*) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.CBufRet.i32 @dx.op.cbufferLoadLegacy.i32(i32, %dx.types.Handle, i32) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandleForLib.Frame(i32, %Frame) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandleForLib.Local(i32, %Local) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @dx.op.createHandleForLib.struct.RaytracingAccelerationStructure(i32, %struct.RaytracingAccelerationStructure) #2
+
+; Function Attrs: nounwind readonly
+declare %dx.types.Handle @"dx.op.createHandleForLib.class.RWStructuredBuffer<vector<unsigned int, 4> >"(i32, %"class.RWStructuredBuffer<vector<unsigned int, 4> >") #2
+
+attributes #0 = { nounwind }
+attributes #1 = { nounwind readnone }
+attributes #2 = { nounwind readonly }
+attributes #3 = { noreturn nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.typeAnnotations = !{!14}
+!dx.entryPoints = !{!22, !24, !27, !29, !31, !33, !35, !37, !38}
+
+!0 = !{!"clang version 3.7 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, i32 3}
+!2 = !{i32 1, i32 6}
+!3 = !{!"lib", i32 6, i32 3}
+!4 = !{!5, !8, !11, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.RaytracingAccelerationStructure* @"\01?Scene@@3URaytracingAccelerationStructure@@A", !"Scene", i32 0, i32 0, i32 1, i32 16, i32 0, !7}
+!7 = !{i32 0, i32 4}
+!8 = !{!9}
+!9 = !{i32 0, %"class.RWStructuredBuffer<vector<unsigned int, 4> >"* @"\01?Out@@3V?$RWStructuredBuffer@V?$vector@I$03@@@@A", !"Out", i32 0, i32 0, i32 1, i32 12, i1 false, i1 false, i1 false, !10}
+!10 = !{i32 1, i32 16}
+!11 = !{!12, !13}
+!12 = !{i32 0, %Frame* @Frame, !"Frame", i32 0, i32 0, i32 1, i32 16, null}
+!13 = !{i32 1, %Local* @Local, !"Local", i32 0, i32 1, i32 1, i32 16, null}
+!14 = !{i32 1, void ()* @"\01?rg@@YAXXZ", !15, void (%struct.Payload*)* @"\01?ms@@YAXUPayload@@@Z", !18, void (%struct.Payload*)* @"\01?ms_shadow@@YAXUPayload@@@Z", !18, void (%struct.Payload*, %struct.BuiltInTriangleIntersectionAttributes*)* @"\01?ch_tri@@YAXUPayload@@UBuiltInTriangleIntersectionAttributes@@@Z", !20, void (%struct.Payload*, %struct.BuiltInTriangleIntersectionAttributes*)* @"\01?ah_tri@@YAXUPayload@@UBuiltInTriangleIntersectionAttributes@@@Z", !20, void ()* @"\01?is_sphere@@YAXXZ", !15, void (%struct.Payload*, %struct.SphereAttr*)* @"\01?ch_sphere@@YAXUPayload@@USphereAttr@@@Z", !20, void (%struct.CallData*)* @"\01?cl@@YAXUCallData@@@Z", !18}
+!15 = !{!16}
+!16 = !{i32 1, !17, !17}
+!17 = !{}
+!18 = !{!16, !19}
+!19 = !{i32 2, !17, !17}
+!20 = !{!16, !19, !21}
+!21 = !{i32 0, !17, !17}
+!22 = !{null, !"", null, !4, !23}
+!23 = !{i32 0, i64 65552}
+!24 = !{void (%struct.Payload*, %struct.BuiltInTriangleIntersectionAttributes*)* @"\01?ah_tri@@YAXUPayload@@UBuiltInTriangleIntersectionAttributes@@@Z", !"\01?ah_tri@@YAXUPayload@@UBuiltInTriangleIntersectionAttributes@@@Z", null, null, !25}
+!25 = !{i32 8, i32 9, i32 6, i32 20, i32 7, i32 8, i32 5, !26}
+!26 = !{i32 0}
+!27 = !{void (%struct.Payload*, %struct.SphereAttr*)* @"\01?ch_sphere@@YAXUPayload@@USphereAttr@@@Z", !"\01?ch_sphere@@YAXUPayload@@USphereAttr@@@Z", null, null, !28}
+!28 = !{i32 8, i32 10, i32 6, i32 20, i32 7, i32 12, i32 5, !26}
+!29 = !{void (%struct.Payload*, %struct.BuiltInTriangleIntersectionAttributes*)* @"\01?ch_tri@@YAXUPayload@@UBuiltInTriangleIntersectionAttributes@@@Z", !"\01?ch_tri@@YAXUPayload@@UBuiltInTriangleIntersectionAttributes@@@Z", null, null, !30}
+!30 = !{i32 8, i32 10, i32 6, i32 20, i32 7, i32 8, i32 5, !26}
+!31 = !{void (%struct.CallData*)* @"\01?cl@@YAXUCallData@@@Z", !"\01?cl@@YAXUCallData@@@Z", null, null, !32}
+!32 = !{i32 8, i32 12, i32 6, i32 4, i32 5, !26}
+!33 = !{void ()* @"\01?is_sphere@@YAXXZ", !"\01?is_sphere@@YAXXZ", null, null, !34}
+!34 = !{i32 8, i32 8, i32 5, !26}
+!35 = !{void (%struct.Payload*)* @"\01?ms@@YAXUPayload@@@Z", !"\01?ms@@YAXUPayload@@@Z", null, null, !36}
+!36 = !{i32 8, i32 11, i32 6, i32 20, i32 5, !26}
+!37 = !{void (%struct.Payload*)* @"\01?ms_shadow@@YAXUPayload@@@Z", !"\01?ms_shadow@@YAXUPayload@@@Z", null, null, !36}
+!38 = !{void ()* @"\01?rg@@YAXXZ", !"\01?rg@@YAXXZ", null, null, !39}
+!39 = !{i32 8, i32 7, i32 5, !26}
+!40 = !{!41, !41, i64 0}
+!41 = !{!"omnipotent char", !42, i64 0}
+!42 = !{!"Simple C/C++ TBAA"}
+!43 = !{!44, !44, i64 0}
+!44 = !{!"int", !41, i64 0}

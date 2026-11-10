@@ -203,6 +203,17 @@
         /// Empty without an SV_Position (such a domain shader only streams).
         std::string passthrough_msl;
         bool writes_viewport_index{false};
+        /// SV_CullDistance in the output signature (D3D11.3 15.4.2): the
+        /// records are then drawn non-indexed, the pass-through reading the
+        /// tessellator's index list so each vertex sees its primitive; one
+        /// pass-through per output primitive size (the hull shader decides
+        /// it), built on first use from `passthrough_outputs`.
+        bool cull_distances{false};
+        std::vector<graphics::GsPassthroughOutput> passthrough_outputs;
+        std::map<u32, std::string> culling_passthrough_msl;
+        /// The pass-through for a hull shader's POINT output (it writes
+        /// Metal's [[point_size]]), built on first use; empty until then.
+        std::string point_passthrough_msl;
         ShaderLinkage linkage;
         /// Where its records hold SV_Position and the clip distances
         /// (PIPELINE_STATISTICS CPrimitives).
@@ -254,6 +265,20 @@
         std::map<std::vector<u32>,
                  std::shared_ptr<graphics::BackendComputePipeline>>
             kernels;
+        // ---- WS5 begin ----
+        /// Whether, and in what shape, this program can be drawn as a Metal
+        /// mesh (in-pass capture + mesh draw), decided at creation
+        /// (host-offload plan WS5).
+        gs_mesh::GsMeshStatic mesh{};
+        /// The object+mesh library per kernel_variant_key (vertex-shader
+        /// record layout, min/max samplers), as `kernels`; "" records a
+        /// failed build.
+        std::map<std::vector<u32>, std::string> mesh_msl;
+        /// Per pixel shader (its MSL hash): bit 0 known, bit 1 the PS reads
+        /// only inputs this program writes, bit 2 it reads SV_PrimitiveID,
+        /// bit 3 SV_RenderTargetArrayIndex / SV_ViewportArrayIndex.
+        std::unordered_map<u64, u8> mesh_ps_link;
+        // ---- WS5 end ----
         std::vector<StreamOutDeclEntry> stream_out;
         std::array<u32, 4> stream_out_strides{};
         /// Slots each stream's declaration writes (bit n = slot n; a slot
@@ -295,16 +320,21 @@
         u32 public_refs{1};
         std::vector<InputLayoutElement> elements;
         /// Which backend input stream serves each of the 32 IA slots, or
-        /// kNoBackendStream. A layout may name any slot 0-31, but the backend
-        /// has BACKEND_MAX_VERTEX_BUFFERS streams: slots below that keep their
-        /// own stream, and a higher slot takes a stream no lower slot of THIS
-        /// layout uses. Fixed at creation, so every draw with the layout maps
-        /// identically (the pipeline cache keys on the stream indices).
+        /// kNoBackendStream. A slot whose stream has a Metal buffer index
+        /// keeps that stream; a higher slot takes a bindable stream no lower
+        /// slot of THIS layout uses. Fixed at creation, so every draw with
+        /// the layout maps identically (the pipeline cache keys on the
+        /// stream indices).
         static constexpr u8 kNoBackendStream = 0xFF;
         std::array<u8, d3d11::VERTEX_BUFFER_SLOTS> backend_stream{};
         /// The inverse: the IA slot each backend stream reads, or
         /// kNoBackendStream for a stream the layout leaves unused.
         std::array<u8, graphics::BACKEND_MAX_VERTEX_BUFFERS> stream_slot{};
+        /// The layout reads more slots than Metal has vertex buffer
+        /// indices: every draw fetches through the vertex-pull table
+        /// (graphics::DxbcTranslationOptions::vertex_pulling), stream s =
+        /// slot s.
+        bool vertex_pulling{false};
         PrivateDataStore private_data;
         // ---- R4 ia-memo (d3d11_draw_memo.hpp)
         /// What execute_draw made of the elements against the input

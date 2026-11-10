@@ -130,7 +130,8 @@ public:
     u32 reg_delete_key_value_w(u64 hkey, const std::wstring& subkey,
                                const std::wstring& value_name);
 
-    u32 reg_close_key(u64 hkey);
+    u32 reg_close_key(u64 hkey, bool guest_is_64bit = false);
+    u32 reg_rename_key(u64 hkey, const std::wstring& subkey, const std::wstring& new_name);
 
     u32 reg_notify_change_key_value(u64 hkey, bool watch_subtree,
                                     u32 notify_filter, Handle event,
@@ -234,8 +235,12 @@ public:
                                              u8* out, u32 buf_size);
 
     [[nodiscard]] static u32 serialise_value_ansi(
-        const capsule::RegValue& val, u8* out, u32 buf_size);
+        const capsule::RegValue& val, u8* out, u32 buf_size,
+        u32* conversion_error = nullptr);
 private:
+
+    u32 query_value_ex(u64 hkey, const std::wstring& value_name, bool ansi,
+                       u32* type_out, u8* data_out, u32* data_size);
 
     u32 query_get_value(u64 hkey, const std::wstring& subkey,
                         const std::wstring& value_name, u32 flags,

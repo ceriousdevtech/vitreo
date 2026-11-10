@@ -5,6 +5,7 @@
 #include <array>
 #include <filesystem>
 #include <fstream>
+#include <span>
 #include <vector>
 
 using namespace vitreo;
@@ -281,5 +282,41 @@ TEST(IsoFileSystemTest, KeepsPrimaryTreeWhenNoJolietDescriptorExists) {
     ASSERT_TRUE(listing.is_ok());
     ASSERT_EQ(listing.value().size(), 1u);
     EXPECT_EQ(listing.value()[0].name, "HELLO.TXT");
+    std::filesystem::remove(path);
+}
+
+// tools/oracle_probe/cdfs_volume_serial_probe.winoracle-gpu.expected: the
+// serial Windows 11 CDFS reports for three images, each from the volume
+// descriptor CDFS mounts (fixtures/cdfs/*.vd: the Joliet supplementary
+// descriptor, else the primary).
+TEST(IsoFileSystemTest, CdfsVolumeSerialMatchesWindows) {
+    const auto dir = std::filesystem::path(__FILE__).parent_path() / "fixtures" / "cdfs";
+    const struct { const char* name; vitreo::u32 serial; } kRows[] = {
+        {"plain_a.vd", 0xc464e558u}, {"joliet_a.vd", 0x9554f2bbu}, {"joliet_b.vd", 0xa9def2a0u}};
+    for (const auto& row : kRows) {
+        std::ifstream in(dir / row.name, std::ios::binary);
+        std::vector<vitreo::u8> vd((std::istreambuf_iterator<char>(in)), {});
+        ASSERT_EQ(vd.size(), 2048u) << row.name;
+        EXPECT_EQ(vitreo::capsule::cdfs_volume_serial(vd), row.serial) << row.name;
+    }
+}
+
+// The same probe: a plain ISO 9660 volume reports maxlen 221 and flags
+// 0x1080001, and its files carry the CDFS serial as their volume id.
+TEST(IsoFileSystemTest, PlainIsoVolumeInfoMatchesWindowsCdfs) {
+    const auto path = make_test_iso();
+    IsoFileSystem fs(path.string());
+    VolumeInfo volume;
+    ASSERT_TRUE(fs.volume_info(volume));
+    EXPECT_EQ(volume.max_component_length, 221u);
+    EXPECT_EQ(volume.filesystem_flags, 0x01080001u);
+    auto st = fs.stat("\\");
+    ASSERT_TRUE(st.is_ok());
+    std::ifstream in(path, std::ios::binary);
+    std::vector<vitreo::u8> image((std::istreambuf_iterator<char>(in)), {});
+    ASSERT_GE(image.size(), 17u * 2048u);
+    EXPECT_EQ(st.value().volume_id,
+              vitreo::capsule::cdfs_volume_serial(
+                  std::span<const vitreo::u8>(image).subspan(16 * 2048, 2048)));
     std::filesystem::remove(path);
 }

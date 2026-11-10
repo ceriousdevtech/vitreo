@@ -49,8 +49,8 @@ void add_crt_stdio_position_exports(DllExports& exports, const StdioContext& ctx
             else if (whence == 2) origin = capsule::SeekOrigin::End;
             if (whence == 1 && it->second.pushback_valid) --offset;
             it->second.pushback_valid = false;
-            it->second.eof_flag = false;   // C: a successful seek clears EOF
-            it->second.error_flag = false;
+            set_stream_eof(it->second, false);   // C: a successful seek clears EOF
+            set_stream_error(it->second, false);
             it->second.has_read_character = false;
             auto res = vfs.seek(stream_handle(vfs, it->second), offset, origin);
             if (it->second.guest_buffer != 0) {
@@ -106,8 +106,8 @@ void add_crt_stdio_position_exports(DllExports& exports, const StdioContext& ctx
             if (it != stdio_arena().files.end()) {
                 it->second.pushback_valid = false;
                 it->second.has_read_character = false;
-                it->second.eof_flag = false;  // C: rewind also clears EOF/error
-                it->second.error_flag = false;
+                set_stream_eof(it->second, false);  // C: rewind also clears EOF/error
+                set_stream_error(it->second, false);
                 (void)vfs.seek(stream_handle(vfs, it->second), 0, capsule::SeekOrigin::Begin);
                 if (it->second.guest_buffer != 0) {
                     (void)m.write_u32(fp + crt_stdio_buffer::kHasRead, 0);
@@ -159,8 +159,8 @@ void add_crt_stdio_position_exports(DllExports& exports, const StdioContext& ctx
             }
             auto it = stdio_arena().files.find(fp);
             if (it == stdio_arena().files.end()) return;
-            it->second.eof_flag = false;
-            it->second.error_flag = false;
+            set_stream_eof(it->second, false);
+            set_stream_error(it->second, false);
             if (it->second.guest_buffer != 0) {
                 (void)m.write_u32(fp + crt_stdio_buffer::kEof, 0);
             }
@@ -261,8 +261,8 @@ void add_crt_stdio_seek64_exports(DllExports& exports, const StdioContext& ctx) 
             seek_origin = capsule::SeekOrigin::End;
         }
         it->second.pushback_valid = false;
-        it->second.eof_flag = false;
-        it->second.error_flag = false;
+        set_stream_eof(it->second, false);
+        set_stream_error(it->second, false);
         it->second.has_read_character = false;
         if (it->second.guest_buffer != 0) {
             (void)m.write_u32(fp + crt_stdio_buffer::kHasRead, 0);

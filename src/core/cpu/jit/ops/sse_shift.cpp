@@ -216,7 +216,8 @@ std::optional<bool> JitCompiler::compile_sse_shift(
             } else {
                 emit(arm64::mov_x(4, src_or_ea));
             }
-            EMIT_SSE_OP_CALL();
+            if (src_is_reg) EMIT_SSE_OP_CALL();
+            else EMIT_SSE_OP_MEM_CALL();
         };
 
         if (!fits_ldr_q_offset(off_d) || !fits_ldr_q_offset(off_1)) {

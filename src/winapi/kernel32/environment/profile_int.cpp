@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LGPL-2.1-only
 
 /// @file profile_int.cpp
-/// @brief GetProfileInt and FindResourceEx / EnumResourceLanguages stubs.
+/// @brief ConvertDefaultLocale and FindResourceEx / EnumResourceLanguages.
 ///
-/// CPU-Z Profile / Locale / Resource banner (win.ini GetProfileInt, not PrivateProfile).
+/// CPU-Z Profile / Locale / Resource banner (GetProfileInt moved to profile.cpp).
 ///
 /// Closed cut from kernel32_ext.cpp — verified closed with
 /// tools/architecture/plan_extraction.py before moving.
@@ -85,28 +85,7 @@ namespace vitreo::winapi {
 // CPU-Z: Profile / Locale / Resource
 // =============================================================================
 
-void Kernel32ExtManager::impl_GetProfileIntA(Marshaler& m) {
-    std::string app_name;
-    std::string key_name;
-    if (auto result = m.read_ansi_string(m.arg_ptr(0)); result.is_ok()) {
-        app_name = result.value();
-    }
-    if (auto result = m.read_ansi_string(m.arg_ptr(1)); result.is_ok()) {
-        key_name = result.value();
-    }
-    const u32 default_val = static_cast<u32>(m.arg(2));
-    VITREO_TRACE("[k32ext] GetProfileIntA('%s','%s', default=%u) -> %u\n",
-                 app_name.c_str(), key_name.c_str(), default_val, default_val);
-    m.set_return(default_val);
-}
-
-void Kernel32ExtManager::impl_GetProfileIntW(Marshaler& m) {
-    (void)m.arg_ptr(0); // lpAppName
-    (void)m.arg_ptr(1); // lpKeyName
-    u32 default_val = m.arg(2);
-    VITREO_TRACE("[k32ext] GetProfileIntW -> default %u\n", default_val);
-    m.set_return(default_val);
-}
+// GetProfileIntA/W live with the other profile exports in profile.cpp.
 
 void Kernel32ExtManager::impl_ConvertDefaultLocale(Marshaler& m) {
     u32 lcid = m.arg(0);

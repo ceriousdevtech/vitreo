@@ -11,11 +11,13 @@
 #include <vitreo/common.hpp>
 #include <winapi/com/oleaut32/typelib.hpp>
 
+#include <cctype>
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iterator>
+#include <optional>
 #include <vector>
 
 using namespace vitreo;
@@ -344,6 +346,45 @@ std::vector<u8> native_fixture(unsigned variant, unsigned bits) {
     std::ifstream input(path, std::ios::binary);
     return {(std::istreambuf_iterator<char>(input)), {}};
 }
+
+// The probe prints a VT_USERDEFINED as "29 ref=K[:K...][=VT]": the TYPEKIND
+// of each type named, following aliases, and an alias's scalar target.
+struct NativeReference {
+    std::vector<unsigned> kinds;
+    std::optional<unsigned> scalar_target;
+};
+std::optional<NativeReference> native_reference(const std::string& line) {
+    const auto at = line.find(" ref=");
+    if (at == std::string::npos) return std::nullopt;
+    NativeReference reference;
+    usize position = at + 5;
+    while (position < line.size() && std::isdigit(static_cast<unsigned char>(line[position]))) {
+        usize used = 0;
+        reference.kinds.push_back(static_cast<unsigned>(std::stoul(line.substr(position), &used)));
+        position += used;
+        if (position < line.size() && line[position] == ':') { ++position; continue; }
+        if (position < line.size() && line[position] == '=')
+            reference.scalar_target = static_cast<unsigned>(std::stoul(line.substr(position + 1)));
+        break;
+    }
+    return reference;
+}
+// Value VARTYPE the reader exposes for a native VT_USERDEFINED chain.
+unsigned native_reference_value_type(const NativeReference& reference) {
+    if (reference.scalar_target) return *reference.scalar_target;
+    switch (reference.kinds.back()) {
+    case 0: return 3;           // enum -> VT_I4
+    case 1: case 7: return 36;  // record/union -> VT_RECORD
+    case 3: case 5: return 13;  // interface/coclass -> VT_UNKNOWN
+    case 4: return 9;           // dispinterface -> VT_DISPATCH
+    default: return 0;
+    }
+}
+std::optional<usize> local_index(const TypeLibParseResult& parsed, u32 reference) {
+    for (usize index = 0; index < parsed.typeinfos.size(); ++index)
+        if (parsed.typeinfos[index].reference == reference) return index;
+    return std::nullopt;
+}
 }
 
 TEST(TypeLibParse, MatchesNativeWindowsDescriptionsForBothFileArchitectures) {
@@ -413,6 +454,21 @@ TEST(TypeLibParse, MatchesNativeWindowsDescriptionsForBothFileArchitectures) {
                 EXPECT_EQ(reader_vtable_bytes(function.o_vft, parsed.attributes->syskind, bits / 8), vft); EXPECT_EQ(function.c_params, params);
                 continue;
             }
+            unsigned alias_vartype;
+            if (std::sscanf(line.c_str(), "alias type=%u", &alias_vartype) == 1) {
+                const auto& info = parsed.typeinfos[type_index];
+                EXPECT_EQ(info.typekind & 15u, 6u);
+                ASSERT_EQ(info.alias_description.tags.size(), 1u);
+                EXPECT_EQ(info.alias_description.tags.front(), alias_vartype);
+                if (alias_vartype == 29) {
+                    const auto reference = native_reference(line);
+                    ASSERT_TRUE(reference.has_value());
+                    const auto named = local_index(parsed, info.alias_description.reference);
+                    ASSERT_TRUE(named.has_value());
+                    EXPECT_EQ(parsed.typeinfos[*named].typekind & 15u, reference->kinds.front());
+                }
+                continue;
+            }
             unsigned parameter_index, vartype;
             if (std::sscanf(line.c_str(), "param index=%u flags=%x type=%u", &parameter_index, &flags, &vartype) == 3) {
                 const auto& function = parsed.typeinfos[type_index].funcs[function_index];
@@ -435,7 +491,18 @@ TEST(TypeLibParse, MatchesNativeWindowsDescriptionsForBothFileArchitectures) {
                     unsigned element = static_cast<unsigned>(std::stoul(line.substr(paren + 1)));
                     vartype = vartype == 27 ? (element | 0x2000) : element;
                 }
-                if (vartype == 22 || vartype == 29) vartype = 3; // INT / fixture enum
+                if (vartype == 29) {
+                    // The description keeps the reference; its value type
+                    // follows the native alias chain.
+                    const auto reference = native_reference(line);
+                    ASSERT_TRUE(reference.has_value());
+                    EXPECT_EQ(description.tags.back(), 29u);
+                    const auto named = local_index(parsed, description.reference);
+                    ASSERT_TRUE(named.has_value());
+                    EXPECT_EQ(parsed.typeinfos[*named].typekind & 15u, reference->kinds.front());
+                    vartype = native_reference_value_type(*reference);
+                }
+                if (vartype == 22) vartype = 3; // INT
                 if (vartype == 23) vartype = 19; // UINT
                 if (vartype == 25) vartype = 10; // HRESULT
                 EXPECT_EQ(function.param_vts[parameter_index], vartype);
@@ -443,7 +510,7 @@ TEST(TypeLibParse, MatchesNativeWindowsDescriptionsForBothFileArchitectures) {
             }
         }
     }
-    EXPECT_EQ(checked, 40u);
+    EXPECT_EQ(checked, 44u);
 }
 
 TEST(TypeLibParse, RejectsBrokenNativeTypeAndDescriptorLinks) {
@@ -461,4 +528,27 @@ TEST(TypeLibParse, RejectsBrokenNativeTypeAndDescriptorLinks) {
         put_u32(malformed, link, link == descriptors + 4 ? 0u : 0x7fffffffu);
         EXPECT_FALSE(parse_typelib(malformed).ok()) << link;
     }
+}
+
+TEST(TypeLibParse, RejectsAliasCycle) {
+    // Native variant 10: types 2 (ResultAlias -> enum) and 3 (ChainAlias ->
+    // ResultAlias). Retarget ResultAlias at ChainAlias to close a cycle.
+    auto image = native_fixture(10, 32);
+    ASSERT_FALSE(image.empty());
+    auto read = [&](usize at) {
+        u32 word; std::memcpy(&word, image.data() + at, 4); return word;
+    };
+    ASSERT_TRUE(parse_typelib(image).ok());
+    const usize directory = 0x54 + 5 * 4; // five types, no help DLL
+    const usize type_base = read(directory);
+    const usize descriptors = read(directory + 9 * 16);
+    const u32 result_alias = read(0x54 + 2 * 4);
+    const u32 chain_alias = read(0x54 + 3 * 4);
+    const usize target = read(type_base + result_alias + 84);
+    ASSERT_EQ(target & 0x80000000u, 0u);
+    put_u32(image, descriptors + target + 4, chain_alias);
+
+    const auto parsed = parse_typelib(image);
+    EXPECT_FALSE(parsed.ok());
+    EXPECT_EQ(parsed.error, TypeLibParseError::Truncated);
 }

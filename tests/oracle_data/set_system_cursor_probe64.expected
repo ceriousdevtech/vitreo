@@ -1,0 +1,20 @@
+arrow_before	ok	1	hot	0,0
+cross	ok	1	hot	10,10
+copy_nonnull	1
+set_normal	1	dead
+arrow_handle_after	ok	1	hot	10,10
+loadcursor_same_handle	1
+destroy_hcur_after	0	57a
+hcur_after	ok	0	hot	0,0
+set_null	0	716
+set_bogus	0	57a
+set_badid	0	dead
+destroy_after_badid	1	dead
+set_ocr_size	0	dead
+set_ocr_icon	1	dead
+set_ocr_pen	1	dead
+set_shared_arrow_to_ibeam	1	dead
+arrow_after_shared_set	ok	1	hot	8,9
+spi_setcursors	1	0
+arrow_restored	ok	1	hot	0,0
+loadcursor_same_after_restore	1

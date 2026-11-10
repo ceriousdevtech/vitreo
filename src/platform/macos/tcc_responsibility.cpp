@@ -2,6 +2,7 @@
 #include "platform/macos/tcc_responsibility.hpp"
 
 #include <CoreFoundation/CoreFoundation.h>
+#include <Security/Security.h>
 #include <libproc.h>
 #include <spawn.h>
 
@@ -22,6 +23,36 @@ namespace vitreo::platform {
 pid_t responsible_process(pid_t pid) {
     if (responsibility_get_pid_responsible_for_pid == nullptr) return -1;
     return responsibility_get_pid_responsible_for_pid(pid);
+}
+
+bool running_code_has_stable_identity() {
+    SecCodeRef code = nullptr;
+    if (SecCodeCopySelf(kSecCSDefaultFlags, &code) != errSecSuccess || code == nullptr) {
+        return false;
+    }
+    SecStaticCodeRef static_code = nullptr;
+    const OSStatus copied = SecCodeCopyStaticCode(code, kSecCSDefaultFlags, &static_code);
+    CFRelease(code);
+    if (copied != errSecSuccess || static_code == nullptr) return false;
+    CFDictionaryRef info = nullptr;
+    const OSStatus read =
+        SecCodeCopySigningInformation(static_code, kSecCSSigningInformation, &info);
+    CFRelease(static_code);
+    if (read != errSecSuccess || info == nullptr) return false;
+    bool stable = false;
+    // Unsigned code has no flags entry; ad-hoc code carries
+    // kSecCodeSignatureAdhoc and no certificate chain.
+    const void* flags_value = CFDictionaryGetValue(info, kSecCodeInfoFlags);
+    const void* certificates = CFDictionaryGetValue(info, kSecCodeInfoCertificates);
+    uint32_t flags = 0;
+    if (flags_value != nullptr && CFGetTypeID(flags_value) == CFNumberGetTypeID() &&
+        CFNumberGetValue(static_cast<CFNumberRef>(flags_value), kCFNumberSInt32Type, &flags)) {
+        stable = (flags & kSecCodeSignatureAdhoc) == 0 && certificates != nullptr &&
+                 CFGetTypeID(certificates) == CFArrayGetTypeID() &&
+                 CFArrayGetCount(static_cast<CFArrayRef>(certificates)) > 0;
+    }
+    CFRelease(info);
+    return stable;
 }
 
 bool can_disclaim_responsibility() {

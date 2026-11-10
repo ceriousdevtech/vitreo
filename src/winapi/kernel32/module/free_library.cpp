@@ -138,13 +138,30 @@ bool ModuleManager::free_library(GuestAddr module_base) {
     }
     if (it->second.ref_count > 1) {
         --it->second.ref_count;
+        sync_loader_entry(it->second);
         return true;
     }
 
     // Thunk-backed system DLLs stay loaded for the process lifetime. FreeLibrary
     // succeeds but does not drop them below one reference (GetModuleHandle still
     // resolves kernel32 after FreeLibrary — FreeLibrarySystemDllStaysAlive).
+    // A DLL Windows does unload (DllLifecycle::unloads_on_last_free) is
+    // detached and removed: GetModuleHandle then fails and a further
+    // FreeLibrary fails with ERROR_MOD_NOT_FOUND (msftedit_lifecycle_probe
+    // free3/free4).
     if (!it->second.is_pe_backed()) {
+        const DllLifecycle* life = registry_.dll_lifecycle(it->second.name);
+        if (life == nullptr || !life->unloads_on_last_free) {
+            return true;
+        }
+        const GuestAddr base = it->second.base_address;
+        if (life->process_detach) life->process_detach(base);
+        if (m_memory != nullptr) {
+            (void)m_memory->unmap_region(base, SYNTHETIC_MODULE_SLOT_SIZE);
+        }
+        std::unique_lock<HostRwLock> tables(m_tables_mutex);
+        base_to_name_.erase(base);
+        modules_by_name_.erase(it);
         return true;
     }
 

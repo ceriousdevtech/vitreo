@@ -47,6 +47,10 @@ enum class DxbcChunkType : u32 {
     /// bound at each interface slot of a program specialised for one
     /// *SetShader binding (dxbc_with_slot_bindings).
     VSLB = 0x424C5356,
+    /// Vitreo's own chunk, written only by the DXIL lowering
+    /// (dxil_to_dxbc.hpp): the mesh / amplification state of a compute
+    /// program lowered from an ms_6_x / as_6_x shader (DxbcMeshState).
+    VXMS = 0x534D5856,
 };
 
 // =============================================================================
@@ -267,6 +271,39 @@ struct DxbcBindingDeclaration {
 // Parsed DXBC Container
 // =============================================================================
 
+/// The VXMS chunk: what a lowered mesh / amplification shader declared
+/// (DXIL kDxilMSStateTag / kDxilASStateTag; DirectX-Specs "Mesh Shader").
+/// Eleven u32s in this order.
+struct DxbcMeshState {
+    enum Kind : u32 { None = 0, Mesh = 1, Amplification = 2 };
+    u32 kind{None};
+    u32 threads[3]{1, 1, 1};
+    /// Mesh: DXIL output topology, 1 line or 2 triangle.
+    u32 topology{0};
+    u32 max_vertices{0};
+    u32 max_primitives{0};
+    /// The payload size the shader declares, in bytes (what the runtime
+    /// matches between AS and MS).
+    u32 payload_bytes{0};
+    /// The payload as the lowering lays it out: 32-bit words (an
+    /// amplification shader's payload groupshared object, a mesh shader's
+    /// GetMeshPayload pointee).
+    u32 payload_words{0};
+    /// Groupshared bytes the program declares (payload included for AS).
+    u32 groupshared_bytes{0};
+    /// Amplification: where each register-model scalar of the payload's
+    /// groupshared object goes in the payload's byte image (byte offset |
+    /// kDxbcPayload* kind << 16), present when that is not scalar k at
+    /// byte 4k. Its count is VXMS word 10, the entries follow.
+    std::vector<u32> payload_layout;
+    [[nodiscard]] bool is_mesh() const { return kind == Mesh; }
+    [[nodiscard]] bool is_amplification() const { return kind == Amplification; }
+};
+inline constexpr u32 kDxbcMeshStateWords = 11;
+/// The kinds of DxbcMeshState::payload_layout: a 32-bit word, an i16
+/// (zero-extended in its scalar), a half (held as its float32).
+inline constexpr u32 kDxbcPayloadWord = 0, kDxbcPayloadU16 = 1, kDxbcPayloadF16 = 2;
+
 struct DxbcContainer {
     u32 shader_model_major;
     u32 shader_model_minor;
@@ -296,6 +333,9 @@ struct DxbcContainer {
     /// for a class-instance binding; empty otherwise, and the translator
     /// then treats every slot as unbound.
     std::vector<DxbcSlotBinding> slot_bindings;
+    /// VXMS: set when this compute program is a lowered mesh or
+    /// amplification shader.
+    DxbcMeshState mesh;
     u8 checksum[16];
 
     [[nodiscard]] bool valid() const {

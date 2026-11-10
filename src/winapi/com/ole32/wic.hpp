@@ -51,6 +51,8 @@ namespace vitreo::winapi {
 
 /// windowscodecs.dll!DllGetClassObject: an IClassFactory for the imaging
 /// factory coclasses, CLASS_E_CLASSNOTAVAILABLE for any other CLSID.
+[[nodiscard]] u32 wic_get_class_object(ComCoreManager& mgr, Marshaler& m,
+    const Guid& clsid, const Guid& iid, GuestAddr ppv);
 [[nodiscard]] u32 wic_dll_get_class_object(ComCoreManager& mgr, Marshaler& m);
 [[nodiscard]] u32 wic_class_factory_create_instance(ComCoreManager& mgr,
                                                     Marshaler& m);

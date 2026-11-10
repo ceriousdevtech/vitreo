@@ -20,6 +20,10 @@
 #include "graphics/metal/metal_texture.hpp"
 
 #include <vitreo/present_cpu.hpp>
+#include <vitreo/ab_cycle.hpp>
+#include "graphics/common/gpu_busy.hpp"
+#include "graphics/shaders/compile_profile.hpp"
+#include "graphics/shaders/minmax_reduction.hpp"
 #include "graphics/contracts/delta_record.hpp"
 #include "graphics/contracts/slim_record.hpp"
 
@@ -169,14 +173,17 @@ bool MetalSubmitQueue::present_from_list(OpList& ops) {
             return true;
         }
         PresentStaging& staging_set = *m_staging_current;
-        void* staging = staging_set.textures[staging_set.slot]->handle();
+        const u32 written_slot = staging_set.slot;
+        void* staging = staging_set.textures[written_slot]->handle();
         void* present_src = staging;
         u32 present_src_x{0};
         u32 present_src_y{0};
         auto& metal = MetalDevice::instance();
         if (metal.present_gamma_active() && metal.present_gamma_lut() != nullptr &&
             metal.present_gamma_compute_pso() != nullptr) {
-            void* dest = staging_set.textures[staging_set.slot ^ 1u]->handle();
+            present->swapchain->wait_while_held(
+                &staging_set.held[written_slot ^ 1u]);
+            void* dest = staging_set.textures[written_slot ^ 1u]->handle();
             m_recorder->ensure_begun();
             m_recorder->begin_compute();
             m_recorder->set_compute_pipeline(metal.present_gamma_compute_pso());
@@ -191,7 +198,9 @@ bool MetalSubmitQueue::present_from_list(OpList& ops) {
             m_recorder->end_compute();
             present_src = dest;
         }
-        staging_set.slot ^= 1u;
+        const u32 image_slot =
+            present_src == staging ? written_slot : (written_slot ^ 1u);
+        staging_set.slot = written_slot ^ 1u;
         // Ready Present still refits. INTERVAL_IMMEDIATE must not park this
         // worker in nextDrawable — that backs up submit() via presents_inflight
         // and turns a vsync-off load loop into a ~1.5 ms Present tax. A missed
@@ -230,12 +239,34 @@ bool MetalSubmitQueue::present_from_list(OpList& ops) {
             if (now - last >= 1.0) {
                 u64 best = 0;
                 for (const auto& [chain, n] : per_chain) best = std::max(best, n);
+                const double seconds = now - last;
+                const double busiest =
+                    static_cast<double>(best) / seconds;
+                const auto gpu = recent_gpu_busy(gpu_busy_clock_s());
+                const double gpu_ms = busiest > 0.0 ? gpu.busy_ms / busiest : 0.0;
+                const auto shader_counts = compile_profile::snapshot();
                 std::fprintf(stderr,
                     "[present-rate] %.1f/s total over %zu chains, busiest %.1f/s "
-                    "t_ms=%.1f max_gap_ms=%.2f max_gap_at_ms=%.1f\n",
-                    static_cast<double>(total) / (now - last), per_chain.size(),
-                    static_cast<double>(best) / (now - last), now_ms, max_gap_ms,
-                    max_gap_at_ms);
+                    "t_ms=%.1f max_gap_ms=%.2f max_gap_at_ms=%.1f "
+                    "gpu_ms=%.1f gpu_busy_ms=%.1f minmax=%u "
+                    "sampler_minmax=%llu static_minmax=%llu border_records=%llu "
+                    "features=%u non_norm_records=%llu "
+                    "pso_builds=%llu pso_hits=%llu pso_misses=%llu ab=%s "
+                    "sampler_buf_hits=%llu sampler_buf_misses=%llu\n",
+                    static_cast<double>(total) / seconds, per_chain.size(),
+                    busiest, now_ms, max_gap_ms, max_gap_at_ms, gpu_ms,
+                    gpu.busy_ms, minmax_reduction_enabled() ? 1u : 0u,
+                    static_cast<unsigned long long>(shader_counts.samplers[compile_profile::SamplerMinMax]),
+                    static_cast<unsigned long long>(shader_counts.samplers[compile_profile::StaticSamplerMinMax]),
+                    static_cast<unsigned long long>(shader_counts.samplers[compile_profile::SamplerRecordBorderTwin]),
+                    enabled_sampler_features(),
+                    static_cast<unsigned long long>(shader_counts.samplers[compile_profile::SamplerRecordNonNormalized]),
+                    static_cast<unsigned long long>(shader_counts.count[compile_profile::MetalRenderState]),
+                    static_cast<unsigned long long>(shader_counts.cache[compile_profile::MetalRenderHit]),
+                    static_cast<unsigned long long>(shader_counts.cache[compile_profile::MetalRenderMiss]),
+                    diagnostics::ab_cycle_arm_name(),
+                    static_cast<unsigned long long>(shader_counts.cache[compile_profile::SamplerBufferHit]),
+                    static_cast<unsigned long long>(shader_counts.cache[compile_profile::SamplerBufferMiss]));
                 per_chain.clear();
                 if (chain_last_ms.size() > 64) chain_last_ms.clear();
                 total = 0;
@@ -293,6 +324,22 @@ bool MetalSubmitQueue::present_from_list(OpList& ops) {
                 present->swapchain->present(m_recorder->command_buffer(),
                                             present->sync_interval);
                 m_recorder->commit();
+            }
+        } else if (present_src != nullptr && present->width > 0 &&
+                   present->height > 0) {
+            // Gamma (when active) is on this recorder. Commit it before the
+            // deferred drawable blit so the GPU applies it first.
+            if (m_recorder != nullptr && m_recorder->has_command_buffer()) {
+                m_recorder->commit();
+            }
+            // The drawable was not waiting. Hold this staging texture and
+            // blit when the acquire completes, instead of dropping the frame.
+            // Two held textures is the staging depth: a third present waits,
+            // which is display backpressure, not a missed race.
+            while (!present->swapchain->enqueue_layer_blit(
+                present_src, present->width, present->height,
+                present->sync_interval, &staging_set.held[image_slot])) {
+                present->swapchain->wait_for_blit_slot();
             }
         }
     }

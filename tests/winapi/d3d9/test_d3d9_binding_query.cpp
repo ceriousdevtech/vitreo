@@ -186,65 +186,226 @@ TEST_F(D3D9ManagerTest, StreamSourceRequiresAStrideExactlyWhenABufferIsSet) {
     EXPECT_EQ(memory_.read_u32(SCRATCH_ADDR + 0x108).value(), 16u);
 }
 
-TEST_F(D3D9ManagerTest, CreateQueryEventIssueAndGetData) {
-    // Learn: CreateQuery(EVENT, NULL) probes support; Issue(END) + GetData
-    // returns BOOL TRUE when the GPU has finished work through the Issue.
+// Expected values: tools/oracle_probe/d3d9_query_probe{32,64}
+// .winoracle-gpu.expected (RTX 4080 HAL device) and Microsoft Learn
+// IDirect3DQuery9 / D3DQUERYTYPE.
+namespace {
+constexpr u32 D3DQUERYTYPE_VCACHE = 4;
+constexpr u32 D3DQUERYTYPE_EVENT = 8;
+constexpr u32 D3DQUERYTYPE_OCCLUSION = 9;
+constexpr u32 D3DQUERYTYPE_TIMESTAMP = 10;
+constexpr u32 D3DQUERYTYPE_TIMESTAMPDISJOINT = 11;
+constexpr u32 D3DQUERYTYPE_TIMESTAMPFREQ = 12;
+constexpr u32 D3DQUERYTYPE_MEMORYPRESSURE = 19;
+constexpr u32 D3DISSUE_END = 1u << 0;
+constexpr u32 D3DISSUE_BEGIN = 1u << 1;
+constexpr u32 D3DGETDATA_FLUSH = 1u << 0;
+constexpr u32 S_FALSE_TEST = 1;
+}  // namespace
+
+TEST_F(D3D9ManagerTest, CreateQuerySupportMatchesTheMeasuredTypes) {
     const auto [factory, device] = create_device();
-    constexpr u32 D3DQUERYTYPE_EVENT = 8;
-    constexpr u32 D3DISSUE_END = 1u << 0;
-
-    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
-                     {device, D3DQUERYTYPE_EVENT, 0}),
-              D3D_OK);
-
-    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
-                     {device, D3DQUERYTYPE_EVENT,
-                      static_cast<u32>(SCRATCH_ADDR)}),
-              D3D_OK);
-    const u32 query = memory_.read_u32(SCRATCH_ADDR).value();
-    ASSERT_NE(query, 0u);
-
-    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 4, {query}), D3DQUERYTYPE_EVENT);
-    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 5, {query}), 4u);
-
-    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 6, {query, D3DISSUE_END}),
-              D3D_OK);
-    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7,
-                     {query, static_cast<u32>(SCRATCH_ADDR + 0x10), 4, 1}),
-              D3D_OK);
-    EXPECT_EQ(memory_.read_u32(SCRATCH_ADDR + 0x10).value(), 1u);
-}
-
-TEST_F(D3D9ManagerTest, CreateQuerySupportsEventOnlyOcclusionUnavailable) {
-    // Learn (D3DQUERYTYPE): EVENT=8, OCCLUSION=9, VCACHE=4, TIMESTAMP=10.
-    // CreateQuery(Type, NULL) probes support. Vitreo only implements EVENT;
-    // occlusion stays D3DERR_NOTAVAILABLE rather than faking a pixel count.
-    const auto [factory, device] = create_device();
-    constexpr u32 D3DQUERYTYPE_VCACHE = 4;
-    constexpr u32 D3DQUERYTYPE_EVENT = 8;
-    constexpr u32 D3DQUERYTYPE_OCCLUSION = 9;
-    constexpr u32 D3DQUERYTYPE_TIMESTAMP = 10;
-
-    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
-                     {device, D3DQUERYTYPE_EVENT, 0}),
-              D3D_OK);
-
-    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
-                     {device, D3DQUERYTYPE_OCCLUSION, 0}),
-              D3DERR_NOTAVAILABLE);
-    memory_.write_u32(SCRATCH_ADDR, 0xDEADBEEFu);
-    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
-                     {device, D3DQUERYTYPE_OCCLUSION,
-                      static_cast<u32>(SCRATCH_ADDR)}),
-              D3DERR_NOTAVAILABLE);
-    EXPECT_EQ(memory_.read_u32(SCRATCH_ADDR).value(), 0u);
-
+    for (u32 type = 0; type <= 20; ++type) {
+        const bool supported =
+            type == D3DQUERYTYPE_EVENT || type == D3DQUERYTYPE_OCCLUSION ||
+            type == D3DQUERYTYPE_TIMESTAMP ||
+            type == D3DQUERYTYPE_TIMESTAMPDISJOINT ||
+            type == D3DQUERYTYPE_TIMESTAMPFREQ;
+        SCOPED_TRACE(type);
+        EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118, {device, type, 0}),
+                  supported ? D3D_OK : D3DERR_NOTAVAILABLE);
+        // A refused create leaves *ppQuery untouched (out_null=0).
+        ASSERT_TRUE(memory_.write_u32(SCRATCH_ADDR, 0x1u).is_ok());
+        EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
+                         {device, type, static_cast<u32>(SCRATCH_ADDR)}),
+                  supported ? D3D_OK : D3DERR_NOTAVAILABLE);
+        if (!supported) {
+            EXPECT_EQ(memory_.read_u32(SCRATCH_ADDR).value(), 0x1u);
+        }
+    }
+    // VCACHE and MEMORYPRESSURE are driver options Vitreo does not offer.
     EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
                      {device, D3DQUERYTYPE_VCACHE, 0}),
               D3DERR_NOTAVAILABLE);
     EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
-                     {device, D3DQUERYTYPE_TIMESTAMP, 0}),
+                     {device, D3DQUERYTYPE_MEMORYPRESSURE, 0}),
               D3DERR_NOTAVAILABLE);
+}
+
+TEST_F(D3D9ManagerTest, QueryTypesReportTheirResultSizesAndAcceptEveryIssueFlag) {
+    const auto [factory, device] = create_device();
+    const struct { u32 type; u32 size; } expected[] = {
+        {D3DQUERYTYPE_EVENT, 4}, {D3DQUERYTYPE_OCCLUSION, 4},
+        {D3DQUERYTYPE_TIMESTAMP, 8}, {D3DQUERYTYPE_TIMESTAMPDISJOINT, 4},
+        {D3DQUERYTYPE_TIMESTAMPFREQ, 8}};
+    for (const auto& e : expected) {
+        SCOPED_TRACE(e.type);
+        ASSERT_EQ(invoke(D3D9InterfaceId::Device, 118,
+                         {device, e.type, static_cast<u32>(SCRATCH_ADDR)}),
+                  D3D_OK);
+        const u32 query = memory_.read_u32(SCRATCH_ADDR).value();
+        EXPECT_EQ(invoke(D3D9InterfaceId::Query, 4, {query}), e.type);
+        EXPECT_EQ(invoke(D3D9InterfaceId::Query, 5, {query}), e.size);
+        // Signaled before any Issue.
+        EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7,
+                         {query, static_cast<u32>(SCRATCH_ADDR + 0x10), 8, 0}),
+                  D3D_OK);
+        for (const u32 flags : {0u, D3DISSUE_END, D3DISSUE_BEGIN, D3DISSUE_END,
+                                D3DISSUE_BEGIN | D3DISSUE_END}) {
+            EXPECT_EQ(invoke(D3D9InterfaceId::Query, 6, {query, flags}), D3D_OK)
+                << flags;
+        }
+        EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7,
+                         {query, static_cast<u32>(SCRATCH_ADDR + 0x10),
+                          e.size, D3DGETDATA_FLUSH}),
+                  D3D_OK);
+        EXPECT_EQ(invoke(D3D9InterfaceId::Query, 2, {query}), 0u);
+    }
+}
+
+TEST_F(D3D9ManagerTest, EventQueryCompletesWhenTheGpuPassesItsPoint) {
+    const auto [factory, device] = create_device();
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 118,
+                     {device, D3DQUERYTYPE_EVENT,
+                      static_cast<u32>(SCRATCH_ADDR)}),
+              D3D_OK);
+    const u32 query = memory_.read_u32(SCRATCH_ADDR).value();
+    const auto data = static_cast<u32>(SCRATCH_ADDR + 0x10);
+
+    backend_.record.timestamps_ready = false;
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {query, D3DISSUE_END}), D3D_OK);
+    ASSERT_TRUE(memory_.write_u32(data, 0xCCCCCCCCu).is_ok());
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {query, data, 4, D3DGETDATA_FLUSH}),
+              S_FALSE_TEST);
+    EXPECT_EQ(memory_.read_u32(data).value(), 0xCCCCCCCCu);
+
+    backend_.record.timestamps_ready = true;
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {query, data, 4, D3DGETDATA_FLUSH}),
+              D3D_OK);
+    EXPECT_EQ(memory_.read_u32(data).value(), 1u);  // TRUE
+    // NULL pData asks only whether the result is ready.
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {query, 0, 0, 0}), D3D_OK);
+}
+
+TEST_F(D3D9ManagerTest, OcclusionQueryCountsOnlyTheDrawsItBrackets) {
+    const auto [factory, device] = create_device();
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 118,
+                     {device, D3DQUERYTYPE_OCCLUSION,
+                      static_cast<u32>(SCRATCH_ADDR)}),
+              D3D_OK);
+    const u32 query = memory_.read_u32(SCRATCH_ADDR).value();
+    const auto data = static_cast<u32>(SCRATCH_ADDR + 0x10);
+    ASSERT_NE(bind_triangle_stream(device), 0u);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 41, {device}), D3D_OK);
+
+    // Outside the bracket: not counted.
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 81, {device, 4, 0, 1}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {query, D3DISSUE_BEGIN}), D3D_OK);
+    // Building: S_FALSE.
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {query, data, 4, 0}),
+              S_FALSE_TEST);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 81, {device, 4, 0, 1}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 81, {device, 4, 0, 1}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {query, D3DISSUE_END}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 81, {device, 4, 0, 1}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 42, {device}), D3D_OK);
+
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {query, data, 4, D3DGETDATA_FLUSH}),
+              D3D_OK);
+    EXPECT_EQ(memory_.read_u32(data).value(),
+              2 * backend_.record.samples_per_draw);
+    EXPECT_GE(backend_.record.counted_passes, 1u);
+    // The completed result is returned again.
+    ASSERT_TRUE(memory_.write_u32(data, 0).is_ok());
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {query, data, 4, 0}), D3D_OK);
+    EXPECT_EQ(memory_.read_u32(data).value(),
+              2 * backend_.record.samples_per_draw);
+
+    // END without BEGIN brackets nothing: a ready zero.
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {query, D3DISSUE_END}), D3D_OK);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {query, data, 4, 0}), D3D_OK);
+    EXPECT_EQ(memory_.read_u32(data).value(), 0u);
+}
+
+TEST_F(D3D9ManagerTest, OverlappingOcclusionQueriesEachSumTheirOwnIntervals) {
+    const auto [factory, device] = create_device();
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 118,
+                     {device, D3DQUERYTYPE_OCCLUSION,
+                      static_cast<u32>(SCRATCH_ADDR)}),
+              D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 118,
+                     {device, D3DQUERYTYPE_OCCLUSION,
+                      static_cast<u32>(SCRATCH_ADDR + 4)}),
+              D3D_OK);
+    const u32 outer = memory_.read_u32(SCRATCH_ADDR).value();
+    const u32 inner = memory_.read_u32(SCRATCH_ADDR + 4).value();
+    const auto data = static_cast<u32>(SCRATCH_ADDR + 0x10);
+    ASSERT_NE(bind_triangle_stream(device), 0u);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 41, {device}), D3D_OK);
+
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {outer, D3DISSUE_BEGIN}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 81, {device, 4, 0, 1}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {inner, D3DISSUE_BEGIN}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 81, {device, 4, 0, 1}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {inner, D3DISSUE_END}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 81, {device, 4, 0, 1}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {outer, D3DISSUE_END}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Device, 42, {device}), D3D_OK);
+
+    const u64 per_draw = backend_.record.samples_per_draw;
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {inner, data, 4, D3DGETDATA_FLUSH}),
+              D3D_OK);
+    EXPECT_EQ(memory_.read_u32(data).value(), per_draw);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {outer, data, 4, D3DGETDATA_FLUSH}),
+              D3D_OK);
+    EXPECT_EQ(memory_.read_u32(data).value(), 3 * per_draw);
+}
+
+TEST_F(D3D9ManagerTest, OcclusionIsUnavailableWhenTheBackendCannotCount) {
+    backend_.record.fail_occlusion = true;
+    const auto [factory, device] = create_device();
+    EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
+                     {device, D3DQUERYTYPE_OCCLUSION, 0}),
+              D3DERR_NOTAVAILABLE);
+}
+
+TEST_F(D3D9ManagerTest, TimestampQueriesAreMonotonicNanosecondsAtOneGigahertz) {
+    const auto [factory, device] = create_device();
+    const auto create = [&](u32 type, u32 at) {
+        EXPECT_EQ(invoke(D3D9InterfaceId::Device, 118,
+                         {device, type, static_cast<u32>(SCRATCH_ADDR + at)}),
+                  D3D_OK);
+        return memory_.read_u32(SCRATCH_ADDR + at).value();
+    };
+    const u32 disjoint = create(D3DQUERYTYPE_TIMESTAMPDISJOINT, 0);
+    const u32 t0 = create(D3DQUERYTYPE_TIMESTAMP, 4);
+    const u32 t1 = create(D3DQUERYTYPE_TIMESTAMP, 8);
+    const u32 freq = create(D3DQUERYTYPE_TIMESTAMPFREQ, 12);
+    const auto data = static_cast<u32>(SCRATCH_ADDR + 0x20);
+
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {disjoint, D3DISSUE_BEGIN}), D3D_OK);
+    EXPECT_EQ(invoke(D3D9InterfaceId::Query, 7, {disjoint, data, 4, 0}),
+              S_FALSE_TEST);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {t0, D3DISSUE_END}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {t1, D3DISSUE_END}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {disjoint, D3DISSUE_END}), D3D_OK);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 6, {freq, D3DISSUE_END}), D3D_OK);
+
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 7, {t0, data, 8, D3DGETDATA_FLUSH}), D3D_OK);
+    const u64 a = memory_.read_u64(data).value();
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 7, {t1, data, 8, D3DGETDATA_FLUSH}), D3D_OK);
+    const u64 b = memory_.read_u64(data).value();
+    EXPECT_GE(b, a);
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 7, {freq, data, 8, 0}), D3D_OK);
+    EXPECT_EQ(memory_.read_u64(data).value(), 1'000'000'000ull);
+    ASSERT_TRUE(memory_.write_u32(data, 2).is_ok());
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 7, {disjoint, data, 4, 0}), D3D_OK);
+    EXPECT_EQ(memory_.read_u32(data).value(), 0u);  // FALSE
+    // A short buffer receives only the bytes it has room for.
+    ASSERT_TRUE(memory_.write_u64(data, ~0ull).is_ok());
+    ASSERT_EQ(invoke(D3D9InterfaceId::Query, 7, {freq, data, 4, 0}), D3D_OK);
+    EXPECT_EQ(memory_.read_u64(data).value(),
+              0xFFFFFFFF00000000ull | (1'000'000'000ull & 0xFFFFFFFFull));
 }
 
 TEST_F(D3D9ManagerTest, ReleasingTheDeviceDestroysTheObjectsItOwns) {

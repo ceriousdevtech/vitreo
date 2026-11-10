@@ -18,6 +18,7 @@
 
 #include "capsule/vfs/filesystem.hpp"
 #include "winapi/common/write_sha1_debug.hpp"
+#include "ipc/hwnd_registry.hpp"
 #include "ipc/ipc_gate.hpp"
 #include "ipc/ipc_name.hpp"
 #include "ipc/unix_pipe.hpp"
@@ -138,8 +139,7 @@ Handle FileManager::create_named_pipe_server(const std::string& win_name,
     ep->output_buffer_size = config.output_buffer_size;
     ep->max_instances = config.max_instances;
     ep->default_timeout_ms = config.default_timeout_ms;
-    // GetCurrentProcessId is host getpid(); keep server identity consistent.
-    ep->server_process_id = static_cast<u32>(::getpid());
+    ep->server_process_id = ipc::guest_process_id();
     const u32 flags = inheritable ? HandleFlags::Inherit : 0;
     return allocate_pipe_endpoint(m_handles, std::move(ep), flags);
 }
@@ -566,6 +566,24 @@ Handle FileManager::duplicate_handle(Handle source, u32 flags, u32 access) {
         }
         return duplicate;
     }
+    if (type == HandleType::HidDevice) {
+        HidOpenFileHolder file;HidOpenFileHolder* holder=nullptr;Handle result=NULL_HANDLE;
+        {
+            // Last-handle cleanup and duplicate publication share this lock.
+            std::lock_guard lock(m_hid_io_mutex);
+            file=m_handles.get_shared<HidOpenFile>(source,HandleType::HidDevice);
+            if(!file) {set_last_error(error_codes::ERROR_INVALID_HANDLE);return NULL_HANDLE;}
+            if(!duplicate_access_allowed(m_handles.get_access(source),access)) {
+                set_last_error(error_codes::ERROR_ACCESS_DENIED);return NULL_HANDLE;
+            }
+            holder=new HidOpenFileHolder(file);
+            result=m_handles.allocate(type,holder,flags,access);
+            if(result==NULL_HANDLE || result==INVALID_HANDLE) {delete holder;set_last_error(error_codes::ERROR_NOT_ENOUGH_MEMORY);return NULL_HANDLE;}
+            m_hid_open_files[result]=file;
+            if(access & (GENERIC_READ|GENERIC_ALL|hid_sdk::kFILE_READ_DATA)) m_hid_input_handles.insert(result);
+        }
+        initialize_hid_waitable(result,file);return result;
+    }
     if (type != HandleType::Pipe) {
         set_last_error(error_codes::ERROR_INVALID_HANDLE);
         return NULL_HANDLE;
@@ -636,7 +654,7 @@ Handle FileManager::create_local_named_pipe(std::string win_name) {
     ep->writable = true;
     ep->win_name = std::move(win_name);
     ep->kind = PipeKind::NamedServer;
-    ep->server_process_id = static_cast<u32>(::getpid());
+    ep->server_process_id = ipc::guest_process_id();
     return allocate_pipe_endpoint(m_handles, std::move(ep));
 }
 

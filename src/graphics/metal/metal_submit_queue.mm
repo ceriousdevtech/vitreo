@@ -8,6 +8,8 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <pthread.h>
 
+#include <cstdlib>
+#include <pthread.h>
 #include <cmath>
 #include "graphics/metal/metal_submit_queue.hpp"
 #include "graphics/metal/metal_submit_queue_internal.hpp"
@@ -19,6 +21,7 @@
 #include "graphics/metal/metal_texture.hpp"
 
 #include <vitreo/present_cpu.hpp>
+#include <vitreo/ab_cycle.hpp>
 #include "graphics/contracts/delta_record.hpp"
 #include "graphics/contracts/slim_record.hpp"
 
@@ -33,10 +36,33 @@
 
 namespace vitreo::graphics {
 
+namespace {
+// VITREO_LONG_WAITS (see winapi log_long_wait): host-side blocks over the
+// threshold, to place a frame hitch.
+inline void log_long_host_wait(const char* what,
+                               std::chrono::steady_clock::time_point t0) {
+    static const long long threshold_ns = [] {
+        const char* e = std::getenv("VITREO_LONG_WAITS");
+        if (e == nullptr) return -1LL;
+        const long ms = std::strtol(e, nullptr, 10);
+        return static_cast<long long>(ms > 1 ? ms : 20) * 1000000LL;
+    }();
+    if (threshold_ns < 0) return;
+    const long long ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+        std::chrono::steady_clock::now() - t0).count();
+    if (ns < threshold_ns) return;
+    unsigned long long tid = 0;
+    pthread_threadid_np(nullptr, &tid);
+    std::fprintf(stderr, "[long-wait] tid=%llu host:%s blocked=%.1fms\n", tid, what,
+                 static_cast<double>(ns) / 1e6);
+}
+}  // namespace
+
 thread_local std::vector<MetalSubmitQueue::Op>* MetalSubmitQueue::t_capture =
     nullptr;
 thread_local MetalSubmitQueue::CommandListId MetalSubmitQueue::t_capture_id = 0;
 thread_local u64 MetalSubmitQueue::t_recorded_generation = 0;
+thread_local MetalSubmitQueue* MetalSubmitQueue::t_immediate = nullptr;
 
 namespace {
 /// MetalSubmitQueue::set_append_hook_for_test.
@@ -50,6 +76,11 @@ void MetalSubmitQueue::append(Op&& op) {
     if (t_capture != nullptr) {
         t_capture->push_back(std::move(op));
         t_recorded_generation = 0;  // runs when the list is executed
+        return;
+    }
+    if (immediate_on_this_thread()) {
+        note_shared_access(op);
+        encode_immediate(std::move(op));
         return;
     }
     note_shared_access(op);
@@ -184,6 +215,7 @@ void MetalSubmitQueue::signal_gpu_gen(u64 gen) {
 }
 
 u64 MetalSubmitQueue::recording_generation() {
+    if (immediate_on_this_thread()) return m_immediate_gen;
     // submit() pre-increments, so the list being recorded becomes gen+1.
     return m_submit_gen_published.load(std::memory_order_acquire) + 1;
 }
@@ -195,12 +227,12 @@ u64 MetalSubmitQueue::completed_generation() {
 void MetalSubmitQueue::wait_until_idle_encode() {
     std::unique_lock<std::mutex> lock(m_mu);
     while (m_running.load(std::memory_order_acquire) &&
-           (!m_pending.empty() || m_encode_busy || m_gpu_gen < m_submit_gen)) {
+           (!m_pending.empty() || m_encode_busy || m_immediate_active || m_gpu_gen < m_submit_gen)) {
         if (pthread_main_np() != 0) {
             lock.unlock();
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.0, true);
             lock.lock();
-            if (m_pending.empty() && !m_encode_busy &&
+            if (m_pending.empty() && !m_encode_busy && !m_immediate_active &&
                 m_gpu_gen >= m_submit_gen) {
                 break;
             }
@@ -212,13 +244,13 @@ void MetalSubmitQueue::wait_until_idle_encode() {
 void MetalSubmitQueue::wait_until_present_idle() {
     std::unique_lock<std::mutex> lock(m_mu);
     while (m_running.load(std::memory_order_acquire) &&
-           (!m_pending.empty() || m_encode_busy || m_presents_inflight != 0 ||
+           (!m_pending.empty() || m_encode_busy || m_immediate_active || m_presents_inflight != 0 ||
             m_gpu_gen < m_submit_gen)) {
         if (pthread_main_np() != 0) {
             lock.unlock();
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.0, true);
             lock.lock();
-            if (m_pending.empty() && !m_encode_busy &&
+            if (m_pending.empty() && !m_encode_busy && !m_immediate_active &&
                 m_presents_inflight == 0 && m_gpu_gen >= m_submit_gen) {
                 break;
             }
@@ -244,7 +276,24 @@ bool MetalSubmitQueue::submit_would_block() {
 }
 
 u64 MetalSubmitQueue::submit() {
+    if (immediate_on_this_thread()) {
+        (void)flush_immediate();
+        return m_submit_gen_published.load(std::memory_order_acquire);
+    }
     std::unique_lock<std::mutex> lock(m_mu);
+    if (m_running.load(std::memory_order_acquire) && m_recording.empty()) {
+        static const bool empty_submit_fast = [] {
+            const char* value = std::getenv("VITREO_METAL_EMPTY_SUBMIT");
+            return value == nullptr || value[0] != '0';
+        }();
+        if (empty_submit_fast && !diagnostics::ab_cycle_off("metal-empty-submit")) {
+            // Folding can owe an EndPass even when no operation is apparent.
+            // Settle it before deciding there is nothing to submit. No new
+            // generation or retained work means no capacity is required.
+            fold_settle_locked();
+            if (m_recording.empty()) return m_submit_gen;
+        }
+    }
     // A plain flush (GetData, Flush, a readback's hand-off) used to wait until
     // fewer than two lists were GPU-incomplete. A D3D11 renderer polls queries
     // between draws, each poll a flush, so the render thread ran in lockstep
@@ -252,6 +301,12 @@ u64 MetalSubmitQueue::submit() {
     // on GPU completion (completed_generation()), not on list counts, so
     // only the Present list needs to throttle -- by frames.
     const bool present = m_recording_has_present;
+    const auto throttle_t0 = std::chrono::steady_clock::now();
+    const bool throttled = submit_blocked_locked(present);
+    // Diagnostics distinguish encoder backlog, GPU-list capacity and frame
+    // latency. These are backpressure waits, not submission acknowledgments.
+    const unsigned initial_reason = m_pending.size() >= kMaxPendingLists ? 0u
+        : m_submit_gen - m_gpu_gen >= kMaxListsInFlight ? 1u : 2u;
     while (m_running.load(std::memory_order_acquire) &&
            submit_blocked_locked(present)) {
         if (pthread_main_np() != 0) {
@@ -262,6 +317,36 @@ u64 MetalSubmitQueue::submit() {
         }
         if (submit_blocked_locked(present)) {
             m_cv.wait_for(lock, std::chrono::milliseconds(1));
+        }
+    }
+    if (throttled) {
+        log_long_host_wait(present ? "metal-present-throttle" : "metal-submit-throttle",
+                           throttle_t0);
+    }
+    static const bool profile_submits = [] {
+        const char* value = std::getenv("VITREO_METAL_SUBMIT_PROFILE");
+        return value != nullptr && value[0] != '\0' && value[0] != '0';
+    }();
+    if (throttled && profile_submits) {
+        struct Stats {
+            std::chrono::steady_clock::time_point since{};
+            u64 count[3]{};
+            double ms[3]{};
+        };
+        static thread_local Stats stats;
+        const auto now = std::chrono::steady_clock::now();
+        if (stats.since == std::chrono::steady_clock::time_point{}) stats.since = throttle_t0;
+        ++stats.count[initial_reason];
+        stats.ms[initial_reason] += std::chrono::duration<double, std::milli>(now - throttle_t0).count();
+        const double interval = std::chrono::duration<double>(now - stats.since).count();
+        if (interval >= 1.0) {
+            std::fprintf(stderr,
+                "[metal-submit-profile] interval=%.3fs initial{pending=%llu/%.3fms gpu-lists=%llu/%.3fms present=%llu/%.3fms}\n",
+                interval, static_cast<unsigned long long>(stats.count[0]), stats.ms[0],
+                static_cast<unsigned long long>(stats.count[1]), stats.ms[1],
+                static_cast<unsigned long long>(stats.count[2]), stats.ms[2]);
+            stats = {};
+            stats.since = now;
         }
     }
     // pass-fold: the list ends here, so does the candidate (split first when
@@ -302,21 +387,51 @@ u64 MetalSubmitQueue::submit() {
 }
 
 bool MetalSubmitQueue::wait_for_generation(u64 generation) {
+    if (immediate_on_this_thread()) {
+        if (completed_generation() >= generation) return true;
+        return wait_immediate(generation);
+    }
     std::unique_lock<std::mutex> lock(m_mu);
-    m_cv.wait(lock, [this, generation] {
+    const auto done = [this, generation] {
         return m_gpu_gen >= generation ||
                !m_running.load(std::memory_order_acquire);
-    });
+    };
+    if (pthread_main_np() != 0) {
+        // A preceding queued Present may need the main loop before the
+        // encoder can reach this generation. Pump without either mutex.
+        while (!done()) {
+            lock.unlock();
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.0, true);
+            lock.lock();
+            if (!done()) m_cv.wait_for(lock, std::chrono::milliseconds(1));
+        }
+    } else {
+        m_cv.wait(lock, done);
+    }
     return m_gpu_gen >= generation;
 }
 
 void MetalSubmitQueue::drain() {
+    if (immediate_on_this_thread()) {
+        (void)wait_immediate();
+        return;
+    }
     // Synchronous readers (blit_to_host, readback_w_slice, ...) drain and
     // then read a texture on a command buffer of their own: newer shared
     // contents another process published must be pulled in first.
     MetalSharedRegistry::instance().acquire();
     (void)submit();
     wait_until_present_idle();
+}
+
+void MetalSubmitQueue::drain_for_readback() {
+    if (immediate_on_this_thread()) {
+        (void)wait_immediate();
+        return;
+    }
+    MetalSharedRegistry::instance().acquire();
+    (void)submit();
+    wait_until_idle_encode();
 }
 
 void MetalSubmitQueue::shutdown() {
@@ -337,6 +452,7 @@ void MetalSubmitQueue::thread_main() {
     // vsync-off load storms.
     pthread_set_qos_class_self_np(QOS_CLASS_USER_INITIATED, 0);
     for (;;) {
+        std::unique_lock<std::mutex> native(m_native_mutex, std::defer_lock);
         OpList ops;
         u64 gpu_gen = 0;
         // push-intern: the list's push blocks, given back once it is encoded.
@@ -347,6 +463,14 @@ void MetalSubmitQueue::thread_main() {
                 return !m_pending.empty() ||
                        !m_running.load(std::memory_order_acquire);
             });
+            // Wait above without native ownership, then take locks in their
+            // single order. A direct lease may have consumed the stream while
+            // we waited; check again after acquiring both locks.
+            lock.unlock();
+            native.lock();
+            lock.lock();
+            if (m_pending.empty() && m_running.load(std::memory_order_acquire))
+                continue;
             if (m_pending.empty()) {
                 for (Op& op : m_recording) {
                     release_op(op);
@@ -360,6 +484,25 @@ void MetalSubmitQueue::thread_main() {
             gpu_gen = m_pending.front().gen;
             arena = std::move(m_pending.front().arena);
             m_pending.pop_front();
+            // Optional queue-depth evidence uses the lock already held for
+            // this pop; unset adds no counters, atomics or extra locking.
+            static const bool depth_diag = [] {
+                const char* value = std::getenv("VITREO_COMPUTE_BATCH_DIAG");
+                return value != nullptr && value[0] == '1';
+            }();
+            if (depth_diag) {
+                struct Counts { u64 lists{0}, with_pending{0}; usize max_pending{0}; };
+                static thread_local Counts counts;
+                ++counts.lists;
+                counts.with_pending += m_pending.empty() ? 0u : 1u;
+                counts.max_pending = std::max(counts.max_pending, m_pending.size());
+                if (counts.lists <= 32768 && (counts.lists & (counts.lists - 1)) == 0) {
+                    std::fprintf(stderr, "[compute-queue] lists=%llu lists_with_pending=%llu max_pending_others=%zu\n",
+                                 static_cast<unsigned long long>(counts.lists),
+                                 static_cast<unsigned long long>(counts.with_pending),
+                                 counts.max_pending);
+                }
+            }
             m_encode_busy = true;
             m_cv.notify_all();   // a submit() waiting for queue room
         }

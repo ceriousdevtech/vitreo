@@ -449,12 +449,13 @@ ValueId IrBuilder::flags_image(ValueId flags) {
     return append(inst);
 }
 
-void IrBuilder::flags_install(ValueId value) {
+void IrBuilder::flags_install(ValueId value, u8 width) {
     Inst inst;
     inst.op = Op::FlagsInstall;
     inst.type = Type::Void;
-    inst.operand_count = 1;
+    inst.operand_count = 2;
     inst.operands[0] = Operand::value(value, Type::I64);
+    inst.operands[1] = Operand::imm(width, Type::I8);
     (void)append(inst);
 }
 
@@ -1068,9 +1069,11 @@ bool verify_op_shape(const IrBlock& block, const Inst& in, u32 i, Failer& fail) 
             break;
         }
         case Op::FlagsInstall: {
-            if (in.operand_count != 1 || !operand_is(0, OperandKind::Value) ||
-                in.operands[0].type != Type::I64)
-                return fail("op %u: flags.install takes one i64 value", i);
+            if (in.operand_count != 2 || !operand_is(0, OperandKind::Value) ||
+                in.operands[0].type != Type::I64 ||
+                !operand_is(1, OperandKind::Imm) || in.operands[1].type != Type::I8 ||
+                (in.operands[1].payload != sizeof(u16) && in.operands[1].payload != sizeof(u64)))
+                return fail("op %u: flags.install takes an i64 value and a 2/8-byte width", i);
             if (in.type != Type::Void)
                 return fail("op %u: flags.install defines no value", i);
             break;

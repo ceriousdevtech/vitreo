@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cd_image.hpp"
 #include "filesystem.hpp"
 
 #include <fstream>
@@ -8,9 +9,16 @@
 #include <unordered_map>
 #include <vector>
 
+#include <span>
+
 namespace vitreo::capsule {
 
-/// Read-only ISO9660 filesystem backed directly by an ISO or MODE1/2352 image.
+/// Read-only ISO9660 filesystem on track 1 of a CD image (cd_image.hpp: ISO,
+/// MODE1/2352, or a 2448-byte raw image with subchannel).
+/// The volume serial number Windows CDFS reports for a disc whose mounted
+/// volume descriptor is @p descriptor (2048 bytes).
+[[nodiscard]] u32 cdfs_volume_serial(std::span<const u8> descriptor) noexcept;
+
 class IsoFileSystem final : public IFileSystem {
 public:
     explicit IsoFileSystem(std::string image_path);
@@ -21,6 +29,7 @@ public:
 
     [[nodiscard]] bool valid() const noexcept { return valid_; }
     [[nodiscard]] bool is_optical() const noexcept override { return true; }
+    [[nodiscard]] CdImage* cd_image() noexcept override { return disc_.get(); }
     [[nodiscard]] bool volume_info(VolumeInfo& info) const noexcept override;
     [[nodiscard]] Result<usize, VfsError> read_volume(
         u64 offset, std::span<u8> buffer) override;
@@ -59,23 +68,23 @@ private:
     };
 
     [[nodiscard]] bool initialize();
-    [[nodiscard]] bool configure_image_layout();
     [[nodiscard]] bool parse_directory(const std::string& path, u32 extent, u32 size, u32 depth);
     [[nodiscard]] bool read_logical(u64 offset, std::span<u8> buffer);
     [[nodiscard]] std::string normalize_path(std::string_view path) const;
     [[nodiscard]] const Entry* find_entry(std::string_view path) const;
-    [[nodiscard]] static FileInfo entry_info(const Entry& entry);
+    [[nodiscard]] FileInfo entry_info(const Entry& entry) const;
 
     std::string image_path_;
-    std::ifstream image_;
-    u32 physical_sector_size_ = 2048;
-    u32 payload_offset_ = 0;
+    std::unique_ptr<CdImage> disc_;
     /// True when the disc carries a Joliet supplementary descriptor, whose
     /// tree is used instead of the 8.3 primary one.
     bool joliet_ = false;
     bool valid_ = false;
     std::string error_message_;
     VolumeInfo volume_info_;
+    /// CDFS volume serial number (GetVolumeInformation, BY_HANDLE_FILE_
+    /// INFORMATION.dwVolumeSerialNumber); see cdfs_volume_serial().
+    u32 volume_serial_ = 0;
     std::unordered_map<std::string, Entry> entries_;
     std::unordered_map<FileHandle, OpenState> open_files_;
     mutable std::mutex mutex_;

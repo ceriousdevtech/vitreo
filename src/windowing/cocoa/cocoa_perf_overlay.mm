@@ -5,7 +5,7 @@
 /// The overlay is a host view stacked above the guest's presentation view in
 /// the same window, so a window or screen recording captures it and the
 /// guest's frames are not touched. It has three modes: off, a compact bar,
-/// and the full HUD (frame-time graph, GPU/CPU/memory rows, host machine).
+/// and the full HUD (FPS line graph, GPU/CPU/memory rows, host machine).
 /// ⌥⌘P steps Off → Compact → Full → Off; View ▸ Performance Overlay picks
 /// one. The choice is remembered for later launches in ~/.vitreo/preferences
 /// (`perf_overlay=0|compact|full`; the older `1` reads as full).
@@ -57,8 +57,8 @@ constexpr CGFloat kPad = 12.0;
 constexpr CGFloat kGraphHeight = 56.0;
 constexpr CGFloat kRowHeight = 18.0;
 // The graphs are a time axis: the full HUD shows the last two seconds, the
-// compact bar the last one, each frame as wide as it took. A fixed bar count
-// would fill the width only at one frame rate.
+// compact bar the last one. Each sample sits where that frame was presented.
+// The line is FPS, with 0 on the bottom edge and higher rates toward the top.
 constexpr float kGraphWindowMs = 2000.0f;
 constexpr float kSparkWindowMs = 1000.0f;
 constexpr u_int64_t kGraphWindowNs = 2000000000ull;
@@ -263,26 +263,90 @@ std::string format_bytes(unsigned long long bytes) {
     return text;
 }
 
-/// Frame intervals as bars in @p rect (flipped): the newest at the right
-/// edge, each as wide as it lasted on a @p window_ms axis, so the width is
-/// always the same span of time and a stall is one wide bar.
-void draw_frame_bars(NSRect rect, const float* intervals, size_t count, float window_ms,
-                     float scale_ms) {
-    if (count == 0 || window_ms <= 0.0f) return;
+/// Y of @p fps in @p rect. The overlay view is flipped, so y grows downward:
+/// 0 is the bottom edge and @p scale_fps is the top edge.
+CGFloat fps_to_y(NSRect rect, float fps, float scale_fps) {
+    const float t = scale_fps > 0.0f ? std::clamp(fps / scale_fps, 0.0f, 1.0f) : 0.0f;
+    return NSMaxY(rect) - NSHeight(rect) * static_cast<CGFloat>(t);
+}
+
+float interval_fps(float interval_ms) {
+    return interval_ms > 0.0f ? 1000.0f / interval_ms : 0.0f;
+}
+
+/// Top of the FPS axis. 60 is the default, so a steady 60 sits on the top
+/// edge and 30 is the midline. The axis steps by 60 only once the 95th
+/// percentile is clearly above the current top.
+float fps_plot_scale(const float* intervals, size_t count) {
+    float samples[kMaxIntervals];
+    size_t n = 0;
+    for (size_t i = 0; i < count && n < kMaxIntervals; ++i) {
+        const float fps = interval_fps(intervals[i]);
+        if (fps <= 0.0f) continue;
+        samples[n++] = std::min(fps, 480.0f);
+    }
+    float need = 0.0f;
+    if (n > 0) {
+        const size_t k = std::min(n - 1, (n * 95) / 100);
+        std::nth_element(samples, samples + k, samples + n);
+        need = samples[k];
+    }
+    float scale = 60.0f;
+    while (need > scale * 1.1f && scale < 480.0f) scale += 60.0f;
+    return scale;
+}
+
+int fps_bucket(float fps) {
+    if (fps >= 55.0f) return 2;
+    if (fps >= 30.0f) return 1;
+    return 0;
+}
+
+/// FPS line in @p rect (flipped view). The newest sample is at the right edge;
+/// each sample's x is when that frame was presented, across @p window_ms.
+/// 0 FPS is the bottom edge and @p scale_fps is the top edge.
+void draw_fps_line(NSRect rect, const float* intervals, size_t count, float window_ms,
+                   float scale_fps, CGFloat line_width) {
+    if (count == 0 || window_ms <= 0.0f || scale_fps <= 0.0f || NSWidth(rect) <= 0.0) return;
     const CGFloat per_ms = NSWidth(rect) / window_ms;
-    CGFloat right = NSMaxX(rect);
-    for (size_t i = count; i > 0 && right > NSMinX(rect); --i) {
-        const float ms = intervals[i - 1];
-        const CGFloat width = static_cast<CGFloat>(ms) * per_ms;
-        const CGFloat left = std::max(NSMinX(rect), right - width);
-        const CGFloat h = std::max<CGFloat>(
-            1.0, NSHeight(rect) * std::min(1.0f, ms / scale_ms));
-        // A hairline gap between bars once they are wide enough to keep one.
-        const CGFloat gap = right - left >= 2.0 ? 0.5 : 0.0;
-        [interval_color(ms) setFill];
-        NSRectFill(NSMakeRect(left, NSMaxY(rect) - h,
-                              std::max<CGFloat>(0.5, right - left - gap), h));
-        right -= width;
+
+    struct Pt {
+        CGFloat x;
+        CGFloat y;
+        int bucket;
+    };
+    Pt pts[kMaxIntervals];
+    size_t n = 0;
+    CGFloat x = NSMaxX(rect);
+    for (size_t i = count; i > 0 && x >= NSMinX(rect) && n < kMaxIntervals; --i) {
+        const float fps = interval_fps(intervals[i - 1]);
+        pts[n++] = {x, fps_to_y(rect, fps, scale_fps), fps_bucket(fps)};
+        x -= static_cast<CGFloat>(std::max(intervals[i - 1], 0.0f)) * per_ms;
+    }
+    if (n == 0) return;
+    if (n == 1) {
+        pts[n] = pts[0];
+        pts[n].x = std::max(NSMinX(rect), pts[0].x - 2.0);
+        ++n;
+    }
+
+    // pts[0] is the newest sample. Stroke oldest to newest, one path per color,
+    // so a drop stays yellow or red only where the rate actually fell.
+    size_t i = n - 1;
+    while (i > 0) {
+        const int bucket = pts[i - 1].bucket;
+        NSBezierPath* path = [NSBezierPath bezierPath];
+        path.lineWidth = line_width;
+        path.lineJoinStyle = NSLineJoinStyleRound;
+        path.lineCapStyle = NSLineCapStyleRound;
+        [path moveToPoint:NSMakePoint(pts[i].x, pts[i].y)];
+        while (i > 0 && pts[i - 1].bucket == bucket) {
+            --i;
+            [path lineToPoint:NSMakePoint(pts[i].x, pts[i].y)];
+        }
+        const double swatch = bucket == 2 ? 60.0 : (bucket == 1 ? 30.0 : 0.0);
+        [rate_color(swatch) setStroke];
+        [path stroke];
     }
 }
 
@@ -429,7 +493,8 @@ NSString* host_line(int which) {
     const NSRect spark = NSMakeRect(x, 6.0, 52.0, 16.0);
     [rgba(255, 255, 255, 0.06) setFill];
     NSRectFill(spark);
-    draw_frame_bars(spark, s.intervals, s.interval_count, kSparkWindowMs, 50.0f);
+    const float spark_scale = fps_plot_scale(s.intervals, s.interval_count);
+    draw_fps_line(spark, s.intervals, s.interval_count, kSparkWindowMs, spark_scale, 1.25);
     x = NSMaxX(spark);
 
     for (NSString* field in [self compactFields]) {
@@ -496,28 +561,37 @@ NSString* host_line(int which) {
     }
     y += 30.0 + 6.0;
 
-    // Frame-time graph: the last two seconds, 60 and 30 FPS guides.
+    // FPS line: the last two seconds. 0 is the bottom; 60 is the default top.
     const NSRect graph = NSMakeRect(kPad, y, kFullWidth - 2 * kPad, kGraphHeight);
     [rgba(255, 255, 255, 0.05) setFill];
-    [[NSBezierPath bezierPathWithRoundedRect:graph xRadius:4 yRadius:4] fill];
-    float peak = 0.0f;
-    for (size_t i = 0; i < s.interval_count; ++i) peak = std::max(peak, s.intervals[i]);
-    const float scale_ms = std::clamp(peak * 1.15f, 40.0f, 120.0f);
-    draw_frame_bars(NSInsetRect(graph, 2.0, 2.0), s.intervals, s.interval_count,
-                    kGraphWindowMs, scale_ms);
-    for (const float guide : {1000.0f / 60.0f, 1000.0f / 30.0f}) {
-        const CGFloat gy = NSMaxY(graph) - 2.0 - (NSHeight(graph) - 4.0) * guide / scale_ms;
-        NSBezierPath* line = [NSBezierPath bezierPath];
-        const CGFloat dash[] = {3.0, 3.0};
-        [line setLineDash:dash count:2 phase:0];
-        line.lineWidth = 1.0;
-        [line moveToPoint:NSMakePoint(NSMinX(graph) + 2.0, std::floor(gy) + 0.5)];
-        [line lineToPoint:NSMakePoint(NSMaxX(graph) - 2.0, std::floor(gy) + 0.5)];
-        [rgba(255, 255, 255, 0.28) setStroke];
-        [line stroke];
-        draw_text(guide < 20.0f ? @"60" : @"30", NSMakePoint(NSMaxX(graph) - 17.0, gy - 12.0),
+    NSBezierPath* graph_path = [NSBezierPath bezierPathWithRoundedRect:graph xRadius:4 yRadius:4];
+    [graph_path fill];
+    const NSRect plot = NSInsetRect(graph, 2.0, 2.0);
+    const float scale_fps = fps_plot_scale(s.intervals, s.interval_count);
+    [NSGraphicsContext saveGraphicsState];
+    [graph_path addClip];
+    for (const float guide : {60.0f, 30.0f}) {
+        if (guide > scale_fps) continue;
+        const CGFloat gy = fps_to_y(plot, guide, scale_fps);
+        // The default top is the 60 edge itself, so it is labeled and not drawn again.
+        if (gy > NSMinY(plot) + 0.5) {
+            NSBezierPath* line = [NSBezierPath bezierPath];
+            const CGFloat dash[] = {3.0, 3.0};
+            [line setLineDash:dash count:2 phase:0];
+            line.lineWidth = 1.0;
+            [line moveToPoint:NSMakePoint(NSMinX(plot), gy)];
+            [line lineToPoint:NSMakePoint(NSMaxX(plot), gy)];
+            [rgba(255, 255, 255, 0.28) setStroke];
+            [line stroke];
+        }
+        const CGFloat label_y =
+            std::clamp(gy - 11.0, NSMinY(graph) + 1.0, NSMaxY(graph) - 11.0);
+        draw_text(guide >= 60.0f ? @"60" : @"30",
+                  NSMakePoint(NSMaxX(graph) - 18.0, label_y),
                   mono(9, NSFontWeightMedium), faint_color());
     }
+    draw_fps_line(plot, s.intervals, s.interval_count, kGraphWindowMs, scale_fps, 1.5);
+    [NSGraphicsContext restoreGraphicsState];
     y = NSMaxY(graph) + 10.0;
 
     // Rows.

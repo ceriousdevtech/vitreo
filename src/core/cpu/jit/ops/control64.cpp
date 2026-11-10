@@ -292,7 +292,10 @@ std::optional<bool> JitCompiler::compile_control64(
             vitreo::diagnostics::perf_note_jcc_emit_helper();
         }
 
-        if (is_loop_back) {
+        // A mixed-block stack proof may cover only the prefix before an
+        // RSP write. Re-enter through the normal tail so the next iteration
+        // validates its new stack rather than reusing that prefix's proof.
+        if (is_loop_back && !m_span_stack_proof) {
             // Intel SDM Vol. 2A, Jcc: a true condition transfers to the
             // relative target without changing flags. Keep backward x64
             // branches native, but use the same bounded-dispatch contract as

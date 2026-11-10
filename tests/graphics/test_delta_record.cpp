@@ -21,6 +21,7 @@
 #include "graphics/metal/metal_device.hpp"
 #include "graphics/metal/metal_submit_queue.hpp"
 
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <random>
@@ -202,6 +203,9 @@ protected:
         for (u32 n = 0; n < draws; ++n) {
             const bool textured_draw = pick(3) == 0;
             BackendDrawCall call{};
+            // Known read-only shaders: exercise true -> false -> true, on
+            // full draws, delta draws and recording/chain keyframes alike.
+            call.indirect_resources_read_only = n % 3 != 1;
             BackendNativeStates states{};
             call.native_states = &states;
             call.pipeline = textured_draw ? textured.get() : solid.get();
@@ -351,6 +355,116 @@ TEST_F(DeltaRecordTest, ARunOfDrawsTakesItsReferencesOnceAndOneOp) {
     for (const u32 pixel : image) EXPECT_EQ(pixel, 0xFF0000FFu);  // blue last
 }
 
+TEST_F(DeltaRecordTest, OffsetOnlyChangesReuseRecordingReferences) {
+    delta_record::force_all_for_test(delta_record::Force::On);
+    auto& q = MetalSubmitQueue::instance();
+    constexpr u32 kDraws = 64;
+    constexpr u32 kStride = 256;
+    constexpr const char* fragment = R"(
+        #include <metal_stdlib>
+        using namespace metal;
+        fragment float4 main0(constant float4& colour [[buffer(2)]]) {
+            return colour;
+        }
+    )";
+    auto buffered = pipeline(fragment, 3);
+    ASSERT_TRUE(buffered && buffered->valid());
+    for (const bool interrupt_chain : {false, true}) {
+        SCOPED_TRACE(interrupt_chain);
+        clear();
+        std::vector<float> positions(kDraws * 6);
+        std::vector<float> colours(kDraws * kStride / sizeof(float));
+        for (u32 n = 0; n < kDraws; ++n) {
+            const std::array<float, 6> triangle{-1, -1, 3, -1, -1, 3};
+            std::copy(triangle.begin(), triangle.end(), positions.begin() + n * 6);
+            colours[n * kStride / sizeof(float) + (n & 1)] = 1.0f;
+            colours[n * kStride / sizeof(float) + 3] = 1.0f;
+        }
+        BackendBufferDesc vb{};
+        vb.byte_width = static_cast<u32>(positions.size() * sizeof(float));
+        vb.vertex_buffer = true;
+        auto streams = device().create_buffer(vb, positions.data());
+        BackendBufferDesc cb{};
+        cb.byte_width = kDraws * kStride;
+        cb.constant_buffer = true;
+        auto constants = device().create_buffer(cb, colours.data());
+        ASSERT_TRUE(streams && constants);
+        const auto record = [&](delta_record::Force arm) {
+            delta_record::force_all_for_test(arm);
+            for (u32 n = 0; n < kDraws; ++n) {
+                if (interrupt_chain && n == kDraws / 2) {
+                    delta_record::force_for_test(delta_record::Part::DeltaRecord,
+                                                 delta_record::Force::Off);
+                    static const float blue[4]{0, 0, 1, 1};
+                    pass(solid_call(blue));
+                    delta_record::force_for_test(delta_record::Part::DeltaRecord,
+                                                 arm);
+                }
+                BackendDrawCall call{};
+                call.pipeline = buffered.get();
+                call.vertex_buffers[0] = streams.get();
+                call.vertex_buffer_offsets[0] = n * 6 * sizeof(float);
+                call.vertex_buffer_offset = call.vertex_buffer_offsets[0];
+                call.fragment_constant_buffers[0] = constants.get();
+                call.fragment_constant_buffer_offsets[0] = n * kStride;
+                pass(call);
+            }
+        };
+        std::vector<u64> full_hashes, delta_hashes;
+        MetalSubmitQueue::set_encode_hash_sink_for_test(&full_hashes);
+        record(delta_record::Force::Off);
+        const auto full_image = pixels();
+        MetalSubmitQueue::set_encode_hash_sink_for_test(nullptr);
+        clear();
+        MetalSubmitQueue::set_encode_hash_sink_for_test(&delta_hashes);
+        const auto before = q.delta_counters();
+        record(delta_record::Force::On);
+        // Only the recorded stream now owns the buffers needed by the GPU.
+        streams.reset();
+        constants.reset();
+        const auto after = q.delta_counters();
+        const u64 keyframes = interrupt_chain ? 2u : 1u;
+        EXPECT_EQ(after.draws - before.draws, kDraws);
+        EXPECT_EQ(after.keyframes - before.keyframes, keyframes);
+        EXPECT_EQ(after.retains - before.retains, 3u * keyframes)
+            << "pipeline, vertex buffer and constant buffer once per keyframe";
+        const auto image = pixels();
+        MetalSubmitQueue::set_encode_hash_sink_for_test(nullptr);
+        EXPECT_EQ(delta_hashes, full_hashes);
+        EXPECT_EQ(full_hashes.size(), kDraws + (interrupt_chain ? 1u : 0u));
+        EXPECT_EQ(image, full_image);
+        for (const u32 pixel : image) EXPECT_EQ(pixel, 0xFF00FF00u);
+    }
+}
+
+TEST_F(DeltaRecordTest, ReplacingABufferRetainsItsNewStorage) {
+    clear();
+    delta_record::force_all_for_test(delta_record::Force::On);
+    auto& q = MetalSubmitQueue::instance();
+    static const float positions[]{-1, -1, 3, -1, -1, 3};
+    BackendBufferDesc vb{};
+    vb.byte_width = sizeof(positions);
+    vb.vertex_buffer = true;
+    std::array<std::unique_ptr<BackendBuffer>, 2> streams{
+        device().create_buffer(vb, positions),
+        device().create_buffer(vb, positions)};
+    ASSERT_TRUE(streams[0] && streams[1]);
+    (void)q.submit();
+    const auto before = q.delta_counters();
+    static const float green[4]{0, 1, 0, 1};
+    for (auto& stream : streams) {
+        BackendDrawCall call = solid_call(green);
+        call.vertex_buffers[0] = stream.get();
+        pass(call);
+        stream.reset();
+    }
+    const auto after = q.delta_counters();
+    EXPECT_EQ(after.draws - before.draws, 2u);
+    EXPECT_EQ(after.keyframes - before.keyframes, 1u);
+    EXPECT_EQ(after.retains - before.retains, 3u);
+    for (const u32 pixel : pixels()) EXPECT_EQ(pixel, 0xFF00FF00u);
+}
+
 // The same run with pass-continue off records (and the fold drops) every
 // EndPass, and the pixels agree.
 TEST_F(DeltaRecordTest, PassContinueOffRecordsEveryEndPass) {
@@ -442,3 +556,43 @@ TEST_F(DeltaRecordTest, NativeStatesDrawWhatTheirDescsDraw) {
 }
 
 }  // namespace
+
+TEST(IndirectResourceCertificateState, DefaultsConservativeAndChangesHash) {
+    BackendDrawCall backend{};
+    EXPECT_FALSE(backend.indirect_resources_read_only);
+    CsDraw draw{};
+    EXPECT_FALSE(draw.indirect_resources_read_only);
+    const auto original = cs_draw_state_hash(draw);
+    draw.indirect_resources_read_only = true;
+    EXPECT_NE(cs_draw_state_hash(draw), original);
+    draw.indirect_resources_read_only = false;
+    EXPECT_EQ(cs_draw_state_hash(draw), original);
+}
+
+TEST_F(DeltaRecordTest, CapturedFullDrawKeepsResourceCertificate) {
+    clear();
+    auto* queue = &MetalSubmitQueue::instance();
+    ASSERT_NE(queue, nullptr);
+    const auto list = queue->create_command_list();
+    ASSERT_NE(list, 0u);
+    ASSERT_TRUE(queue->begin_capture(list));
+    const float colour[4] = {1, 0, 0, 1};
+    auto call = solid_call(colour);
+    call.indirect_resources_read_only = true;
+    pass(call, true);
+    ASSERT_TRUE(queue->end_capture(list));
+    std::vector<u64> hashes;
+    MetalSubmitQueue::set_encode_hash_sink_for_test(&hashes);
+    ASSERT_TRUE(queue->submit_command_list(list));
+    (void)pixels();
+    ASSERT_EQ(hashes.size(), 1u);
+    const auto certified = hashes.front();
+    hashes.clear();
+    call.indirect_resources_read_only = false;
+    pass(call, true);
+    (void)pixels();
+    ASSERT_EQ(hashes.size(), 1u);
+    EXPECT_NE(hashes.front(), certified);
+    MetalSubmitQueue::set_encode_hash_sink_for_test(nullptr);
+    queue->destroy_command_list(list);
+}

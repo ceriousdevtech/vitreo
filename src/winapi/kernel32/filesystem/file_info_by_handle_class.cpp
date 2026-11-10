@@ -920,20 +920,112 @@ bool FileOpsManager::record_pending_rename(const std::string& src_utf8, const st
     return true;
 }
 
-void FileOpsManager::impl_MoveFileExW(Marshaler& m) { move_file_ex_common(m, true); }
+void FileOpsManager::impl_MoveFileExW(Marshaler& m) {
+    move_file_ex_common(m, true, static_cast<u32>(m.arg(2)));
+}
 
 // MoveFileExA is the same contract with ANSI names (s4_movefile_probe a_*:
 // NULL names are ERROR_PATH_NOT_FOUND, REPLACE_EXISTING and COPY_ALLOWED are
 // honoured, unknown flag bits are ignored). It used to be a separate,
 // flag-blind implementation that always refused an existing destination.
-void FileOpsManager::impl_MoveFileExA(Marshaler& m) { move_file_ex_common(m, false); }
+void FileOpsManager::impl_MoveFileExA(Marshaler& m) {
+    move_file_ex_common(m, false, static_cast<u32>(m.arg(2)));
+}
 
-void FileOpsManager::move_file_ex_common(Marshaler& m, bool wide) {
+// MoveFileWithProgress is MoveFileEx plus an optional CopyProgressRoutine
+// (Learn MoveFileWithProgressW). A NULL routine is that move. A non-NULL
+// routine is a different measured callback sequence (CopyFileEx's is not
+// this one); fail it instead of pretending the move finished.
+void FileOpsManager::impl_MoveFileWithProgressW(Marshaler& m) {
+    move_file_with_progress(m, true);
+}
+void FileOpsManager::impl_MoveFileWithProgressA(Marshaler& m) {
+    move_file_with_progress(m, false);
+}
+
+namespace {
+
+// LPPROGRESS_ROUTINE, same register layout as CopyFileEx
+// (copy_file_engine.cpp). CALLBACK_STREAM_SWITCH is 1, CHUNK_FINISHED is 0.
+// PROGRESS_CANCEL and PROGRESS_STOP are 1 and 2.
+u32 move_progress(const FileOpsManager::GuestCall& call, Marshaler& m,
+                  GuestAddr routine, GuestAddr data, u64 size, u64 done,
+                  u32 reason) {
+    if (!call || routine == 0) return 0;
+    const bool is64 = m.cpu_is_64bit();
+    if (is64) {
+        const u64 args[9] = {size, done, size, done, 1, reason, 0, 0,
+                             static_cast<u64>(data)};
+        return static_cast<u32>(call(routine, args, 9, true));
+    }
+    const u64 args[13] = {
+        size & 0xFFFFFFFFu, size >> 32,
+        done & 0xFFFFFFFFu, done >> 32,
+        size & 0xFFFFFFFFu, size >> 32,
+        done & 0xFFFFFFFFu, done >> 32,
+        1, reason, 0, 0, static_cast<u64>(data) & 0xFFFFFFFFu};
+    return static_cast<u32>(call(routine, args, 13, false));
+}
+
+bool progress_aborted(u32 act) { return act == 1 || act == 2; }
+
+}  // namespace
+
+void FileOpsManager::move_file_with_progress(Marshaler& m, bool wide) {
+    const GuestAddr routine = m.arg_ptr(2);
+    const GuestAddr data = m.arg_ptr(3);
+    const u32 flags = static_cast<u32>(m.arg(4));
+    if (routine == 0) {
+        move_file_ex_common(m, wide, flags);
+        return;
+    }
+    if (!m_guest_call) {
+        static std::atomic<bool> logged{false};
+        if (!logged.exchange(true)) {
+            std::fprintf(stderr,
+                "[vitreo] UNIMPLEMENTED kernel32!MoveFileWithProgress%s: "
+                "progress callback\n",
+                wide ? "W" : "A");
+        }
+        set_last_error(error_codes::ERROR_CALL_NOT_IMPLEMENTED);
+        m.set_return(0);
+        return;
+    }
+
+    u64 size = 0;
+    const GuestAddr src_ptr = m.arg_ptr(0);
+    if (src_ptr != 0) {
+        auto src_res = wide ? m.read_wide_string(src_ptr)
+                            : m.read_ansi_string(src_ptr);
+        if (src_res.is_ok() && !src_res.value().empty()) {
+            const std::string utf8 = wide ? src_res.value()
+                                          : capsule::ansi_to_utf8(src_res.value());
+            auto info = m_vfs.stat(utf8);
+            if (info.is_ok()) size = info.value().size;
+        }
+    }
+    // One stream notification before the rename. CANCEL/STOP abort with the
+    // source left in place (Learn MoveFileWithProgressW).
+    const u32 started = move_progress(m_guest_call, m, routine, data, size, 0, 1);
+    if (progress_aborted(started)) {
+        set_last_error(error_codes::ERROR_REQUEST_ABORTED);
+        m.set_return(0);
+        return;
+    }
+    move_file_ex_common(m, wide, flags);
+    const bool quiet = started == 3;
+    u64 moved = 0;
+    if (auto* cpu = m.cpu()) moved = cpu->gpr.rax;
+    if (!quiet && moved != 0) {
+        (void)move_progress(m_guest_call, m, routine, data, size, size, 0);
+    }
+}
+
+void FileOpsManager::move_file_ex_common(Marshaler& m, bool wide, u32 flags) {
     // BOOL MoveFileEx(LPCTSTR lpExistingFileName, LPCTSTR lpNewFileName, DWORD dwFlags)
     // Contract from Learn + files_ns_probe MoveFileExW_* + s4_movefile_probe.
     const GuestAddr src_ptr = m.arg_ptr(0);
     const GuestAddr dst_ptr = m.arg_ptr(1);
-    const u32 flags = static_cast<u32>(m.arg(2));
     constexpr u32 kReplaceExisting = 0x1;
     constexpr u32 kCopyAllowed = 0x2;
     constexpr u32 kDelayUntilReboot = 0x4;

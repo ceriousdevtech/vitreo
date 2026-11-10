@@ -36,6 +36,10 @@ RunResult run_guest_primary_thread(
     // Windows leaves posted input queued until the guest calls GetMessage or
     // PeekMessage, and calls the wndproc only through DispatchMessage.
     auto event_pump = [&ctx]() {
+        // The main thread's service loop (below) is already translating
+        // native input. Hopping there from the guest timer blocks the
+        // thread that is trying to finish the frame.
+        if (host_runloop_service_active()) return;
         ctx.cocoa_bridge.begin_host_input_pump();
         struct HostPumpGuard {
             windowing::CocoaBridge& bridge;
@@ -108,50 +112,56 @@ RunResult run_guest_primary_thread(
             restored = true;
         }
 
-        // Call DllMain for any companion DLLs that were loaded during static
-        // import resolution (before m_guest_call was wired up).
-        if (!restored) {
-            ctx.module_mgr.call_deferred_dll_mains();
-        }
+        {
+            // Windows holds process initialization across dependency callbacks
+            // and executable TLS. Release before the executable entry point.
+            auto initialization = ctx.module_mgr.begin_process_initialization();
+            // Call DllMain for any companion DLLs that were loaded during static
+            // import resolution (before m_guest_call was wired up).
+            if (!restored) {
+                ctx.module_mgr.call_deferred_dll_mains();
+            }
 
-        if (!restored && pe_tls_callbacks_addr != 0 &&
-            !ctx.process_mgr.has_exited()) {
-            constexpr u64 DLL_PROCESS_ATTACH = 1;
-            constexpr usize MAX_TLS_CALLBACKS = 64;
-            for (usize index = 0; index < MAX_TLS_CALLBACKS; ++index) {
-                u64 callback = 0;
-                if (is_64bit) {
-                    auto callback_result =
-                        memory.read_u64(pe_tls_callbacks_addr + index * 8);
-                    if (callback_result.is_err()) {
+            if (!restored && pe_tls_callbacks_addr != 0 &&
+                !ctx.process_mgr.has_exited()) {
+                constexpr u64 DLL_PROCESS_ATTACH = 1;
+                constexpr usize MAX_TLS_CALLBACKS = 64;
+                for (usize index = 0; index < MAX_TLS_CALLBACKS; ++index) {
+                    u64 callback = 0;
+                    if (is_64bit) {
+                        auto callback_result =
+                            memory.read_u64(pe_tls_callbacks_addr + index * 8);
+                        if (callback_result.is_err()) {
+                            break;
+                        }
+                        callback = callback_result.value();
+                    } else {
+                        auto callback_result =
+                            memory.read_u32(pe_tls_callbacks_addr + index * 4);
+                        if (callback_result.is_err()) {
+                            break;
+                        }
+                        callback = callback_result.value();
+                    }
+
+                    if (callback == 0) {
                         break;
                     }
-                    callback = callback_result.value();
-                } else {
-                    auto callback_result =
-                        memory.read_u32(pe_tls_callbacks_addr + index * 4);
-                    if (callback_result.is_err()) {
+
+                    u64 args[3] = {
+                        static_cast<u64>(image.base_address),
+                        DLL_PROCESS_ATTACH,
+                        0,
+                    };
+                    (void)run_guest_callback(cpu, memory, ctx.thunk_registry,
+                                             ctx.process_mgr, callback, args, 3,
+                                             is_64bit);
+                    if (ctx.process_mgr.has_exited()) {
                         break;
                     }
-                    callback = callback_result.value();
-                }
-
-                if (callback == 0) {
-                    break;
-                }
-
-                u64 args[3] = {
-                    static_cast<u64>(image.base_address),
-                    DLL_PROCESS_ATTACH,
-                    0,
-                };
-                (void)run_guest_callback(cpu, memory, ctx.thunk_registry,
-                                         ctx.process_mgr, callback, args, 3,
-                                         is_64bit);
-                if (ctx.process_mgr.has_exited()) {
-                    break;
                 }
             }
+
         }
 
         diagnostics::phase_mark(diagnostics::LoadPhase::PeEntry);
@@ -243,6 +253,10 @@ RunResult run_guest_primary_thread(
             }
         } host_thread_id_guard{host_previous_tid};
         std::atomic<bool> finished{false};
+        // Publish before the guest starts so its first timer pump does not
+        // hop here. Cleared before join so a late pump during teardown still
+        // reaches AppKit and observes shutdown.
+        set_host_runloop_service_active(true);
         std::thread primary([&] {
             winapi::ThreadManager::set_current_thread_id(ctx.thread_mgr.main_thread_id());
             // DllMain and PE TLS callbacks execute before run_execution_loop
@@ -257,8 +271,15 @@ RunResult run_guest_primary_thread(
             ctx.cocoa_bridge.wake_main_runloop();
         });
         while (!finished.load(std::memory_order_acquire)) {
+            // Translate queued AppKit input on this thread. The guest used
+            // to do it, synchronously, every 16 ms, and waited out this
+            // slice (and updateWindows) on the frame's critical thread.
+            // RunInMode wakes for a window-server source; 16 ms is only the
+            // idle cap. CFRunLoopWakeUp from a worker hop interrupts it.
+            ctx.cocoa_bridge.pump_events(ctx.msg_queue);
             ctx.cocoa_bridge.service_main_runloop(16);
         }
+        set_host_runloop_service_active(false);
         primary.join();
     } else {
         result = run_primary();

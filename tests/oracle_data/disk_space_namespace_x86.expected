@@ -1,0 +1,498 @@
+layout.DWORD=00000004 ULARGE_INTEGER=00000008
+fixture.ready=1 literal_dot=1 literal_space=1 unicode=1
+GFS_A.null ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.null ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.null ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.null ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.empty ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.empty ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.empty ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.empty ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.drive_root ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.drive_root ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.drive_root ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.drive_root ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.drive_only ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.drive_only ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.drive_only ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.drive_only ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.relative ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.relative ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.relative ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.relative ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.drive_relative ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.drive_relative ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.drive_relative ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.drive_relative ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.root_relative ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.root_relative ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.root_relative ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.root_relative ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.dot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.dot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.dot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.dot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.dotdot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.dotdot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.dotdot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.dotdot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extended_dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extended_dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extended_dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.dir_slash ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.dir_slash ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.dir_slash ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.dir_slash ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_dir_slash ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extended_dir_slash ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extended_dir_slash ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extended_dir_slash ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.file ret=00000000 error=0000010b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.file ret=00000000 error=0000010b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.file ret=00000000 error=0000010b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.file ret=00000000 error=0000010b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_file ret=00000000 error=0000010b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_file ret=00000000 error=0000010b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_file ret=00000000 error=0000010b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_file ret=00000000 error=0000010b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.missing ret=00000000 error=00000002 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.missing ret=00000000 error=00000002 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.missing ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.missing ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_missing ret=00000000 error=00000002 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_missing ret=00000000 error=00000002 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_missing ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_missing ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.missing_parent ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.missing_parent ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.missing_parent ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.missing_parent ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_missing_parent ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_missing_parent ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_missing_parent ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_missing_parent ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.child_dot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.child_dot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.child_dot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.child_dot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_child_dot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_child_dot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_child_dot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_child_dot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.child_dotdot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.child_dotdot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.child_dotdot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.child_dotdot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_child_dotdot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_child_dotdot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_child_dotdot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_child_dotdot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.missing_dotdot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.missing_dotdot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.missing_dotdot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.missing_dotdot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_missing_dotdot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_missing_dotdot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_missing_dotdot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_missing_dotdot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.trailing_dot_collision ret=00000000 error=0000010b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.trailing_dot_collision ret=00000000 error=0000010b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.trailing_dot_collision ret=00000000 error=0000010b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.trailing_dot_collision ret=00000000 error=0000010b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_trailing_dot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extended_trailing_dot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extended_trailing_dot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extended_trailing_dot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.trailing_space_collision ret=00000000 error=0000010b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.trailing_space_collision ret=00000000 error=0000010b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.trailing_space_collision ret=00000000 error=0000010b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.trailing_space_collision ret=00000000 error=0000010b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_trailing_space ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extended_trailing_space ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extended_trailing_space ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extended_trailing_space ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.unicode ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.unicode ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.unicode ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.unicode ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_unicode ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extended_unicode ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extended_unicode ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extended_unicode ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.duplicates ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.duplicates ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.duplicates ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.duplicates ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_duplicates ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_duplicates ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_duplicates ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_duplicates ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.forward_slash ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.forward_slash ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.forward_slash ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.forward_slash ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_forward_slash ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_forward_slash ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_forward_slash ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_forward_slash ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.device_dos_dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.device_dos_dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.device_dos_dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.device_dos_dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_root ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extended_root ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extended_root ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extended_root ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extended_drive_only ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_drive_only ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_drive_only ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_drive_only ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_drive_relative ret=00000000 error=00000002 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_drive_relative ret=00000000 error=00000002 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_drive_relative ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_drive_relative ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_missing_drive ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_missing_drive ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_missing_drive ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_missing_drive ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.device_root ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.device_root ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.device_root ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.device_root ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.device_drive_only ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.device_drive_only ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.device_drive_only ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.device_drive_only ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.device_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.device_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.device_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.device_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.bare_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.bare_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.bare_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.bare_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.physical_drive ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.physical_drive ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.physical_drive ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.physical_drive ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.prefix_only ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.prefix_only ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.prefix_only ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.prefix_only ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.device_prefix_only ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.device_prefix_only ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.device_prefix_only ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.device_prefix_only ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.malformed_drive ret=00000000 error=00000002 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.malformed_drive ret=00000000 error=00000002 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.malformed_drive ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.malformed_drive ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.malformed_drive_sep ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.malformed_drive_sep ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.malformed_drive_sep ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.malformed_drive_sep ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.malformed_forward_prefix ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.malformed_forward_prefix ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.malformed_forward_prefix ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.malformed_forward_prefix ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.nt_dos ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.nt_dos ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.nt_dos ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.nt_dos ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.unc_missing_share ret=00000000 error=00000043 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.unc_missing_share ret=00000000 error=00000043 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.unc_missing_share ret=00000000 error=00000043 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.unc_missing_share ret=00000000 error=00000043 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_unc_missing_share ret=00000000 error=00000043 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_unc_missing_share ret=00000000 error=00000043 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_unc_missing_share ret=00000000 error=00000043 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_unc_missing_share ret=00000000 error=00000043 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_unc_bare ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_unc_bare ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_unc_bare ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_unc_bare ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extended_unc_server_only ret=00000000 error=000000a1 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extended_unc_server_only ret=00000000 error=000000a1 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extended_unc_server_only ret=00000000 error=000000a1 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extended_unc_server_only ret=00000000 error=000000a1 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.guid_malformed ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.guid_malformed ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.guid_malformed ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.guid_malformed ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.guid_unmounted ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.guid_unmounted ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.guid_unmounted ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.guid_unmounted ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+volume_guid.available=1
+GFS_A.guid_root ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.guid_root ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.guid_root ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.guid_root ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.guid_dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.guid_dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.guid_dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.guid_dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.globalroot_bare ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.globalroot_bare ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.globalroot_bare ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.globalroot_bare ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.globalroot_dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.globalroot_dir ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.globalroot_dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.globalroot_dir ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.long_normal ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.long_normal ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.long_normal ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.long_normal ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.long_extended ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.long_extended ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.long_extended ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.long_extended ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.all_outputs_null ret=00000001 error=0000dead changed=0 geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.all_outputs_null ret=00000001 error=0000dead changed=0 geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.all_outputs_null ret=00000001 error=0000dead changed=0 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.all_outputs_null ret=00000001 error=0000dead changed=0 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_terminal_dot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_terminal_dot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_terminal_dot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_terminal_dot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_terminal_dot_slash ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_terminal_dot_slash ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_terminal_dot_slash ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_terminal_dot_slash ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_terminal_dotdot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_terminal_dotdot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_terminal_dotdot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_terminal_dotdot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_nonterminal_dotdot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_nonterminal_dotdot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_nonterminal_dotdot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_nonterminal_dotdot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_missing_terminal_dot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_missing_terminal_dot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_missing_terminal_dot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_missing_terminal_dot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_missing_terminal_dotdot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_missing_terminal_dotdot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_missing_terminal_dotdot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_missing_terminal_dotdot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_extended_root_dot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_extended_root_dot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_extended_root_dot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_extended_root_dot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_extended_root_dotdot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_extended_root_dotdot ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_extended_root_dotdot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_extended_root_dotdot ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_extended_root_escape ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_extended_root_escape ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_extended_root_escape ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_extended_root_escape ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_normal_root_escape ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_normal_root_escape ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_normal_root_escape ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_normal_root_escape ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_extended_double_root_sep ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_extended_double_root_sep ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_extended_double_root_sep ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_extended_double_root_sep ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_extended_triple_root_sep ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_extended_triple_root_sep ret=00000000 error=0000007b changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_extended_triple_root_sep ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_extended_triple_root_sep ret=00000000 error=0000007b changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_triple_leading_prefix ret=00000000 error=000000a1 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_triple_leading_prefix ret=00000000 error=000000a1 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_triple_leading_prefix ret=00000000 error=000000a1 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_triple_leading_prefix ret=00000000 error=000000a1 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+extra_fixture.children dot=1 space=1 nul=1 con=1
+GFS_A.extra_inner_trailing_dot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_inner_trailing_dot ret=00000000 error=00000003 changed=2 a=a5a5a5a5a5a5a5a5 b=a5a5a5a500000000 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_inner_trailing_dot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_inner_trailing_dot ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_extended_inner_dot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_extended_inner_dot ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_extended_inner_dot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_extended_inner_dot ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_inner_trailing_space ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_inner_trailing_space ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_inner_trailing_space ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_inner_trailing_space ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_extended_inner_space ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_extended_inner_space ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_extended_inner_space ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_extended_inner_space ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_component_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_component_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_component_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_component_nul ret=00000000 error=00000001 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_extended_component_nul ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_extended_component_nul ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_extended_component_nul ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_extended_component_nul ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_component_con ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_component_con ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_component_con ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_component_con ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_extended_component_con ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_extended_component_con ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_extended_component_con ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_extended_component_con ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+extra_boundary.acp=000004e4
+GFS_A.extra_boundary_ascii_255 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_255 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_255 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_255 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_ext_255 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_ext_255 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_ext_255 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_ext_255 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_normalized_ascii_255 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_normalized_ascii_255 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_normalized_ascii_255 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_normalized_ascii_255 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_ascii_256 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_256 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_256 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_256 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_ext_256 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_ext_256 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_ext_256 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_ext_256 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_257 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_257 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_257 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_257 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_ext_257 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_ext_257 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_ext_257 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_ext_257 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_ext_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_ext_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_ext_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_ext_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_slash_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_slash_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_slash_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_slash_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_259 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_259 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_259 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_259 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_ext_259 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_ext_259 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_ext_259 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_ext_259 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_slash_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_boundary_ascii_slash_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_boundary_ascii_slash_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_boundary_ascii_slash_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_normalized_ascii_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_normalized_ascii_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_normalized_ascii_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_normalized_ascii_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_ascii_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_boundary_ascii_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_boundary_ascii_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_boundary_ascii_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_ascii_ext_260 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_ext_260 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_ext_260 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_ext_260 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_ascii_slash_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_boundary_ascii_slash_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_boundary_ascii_slash_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_boundary_ascii_slash_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_ascii_261 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_boundary_ascii_261 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_boundary_ascii_261 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_boundary_ascii_261 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_ascii_ext_261 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_ascii_ext_261 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_ascii_ext_261 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_ascii_ext_261 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_255 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_255 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_255 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_255 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_ext_255 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_ext_255 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_ext_255 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_ext_255 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_normalized_bmp_255 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_normalized_bmp_255 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_normalized_bmp_255 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_normalized_bmp_255 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_bmp_256 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_256 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_256 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_256 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_ext_256 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_ext_256 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_ext_256 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_ext_256 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_257 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_257 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_257 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_257 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_ext_257 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_ext_257 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_ext_257 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_ext_257 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_ext_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_ext_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_ext_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_ext_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_slash_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_slash_258 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_slash_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_slash_258 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_259 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_259 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_259 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_259 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_ext_259 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_ext_259 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_ext_259 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_ext_259 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_slash_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_boundary_bmp_slash_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_boundary_bmp_slash_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_boundary_bmp_slash_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_normalized_bmp_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_normalized_bmp_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_normalized_bmp_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_normalized_bmp_259 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_bmp_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_boundary_bmp_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_boundary_bmp_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_boundary_bmp_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_bmp_ext_260 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_ext_260 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_ext_260 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_ext_260 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFS_A.extra_boundary_bmp_slash_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_boundary_bmp_slash_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_boundary_bmp_slash_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_boundary_bmp_slash_260 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_bmp_261 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFS_W.extra_boundary_bmp_261 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5 d=a5a5a5a5a5a5a5a5
+GFSEx_A.extra_boundary_bmp_261 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFSEx_W.extra_boundary_bmp_261 ret=00000000 error=00000003 changed=0 a=a5a5a5a5a5a5a5a5 b=a5a5a5a5a5a5a5a5 c=a5a5a5a5a5a5a5a5
+GFS_A.extra_boundary_bmp_ext_261 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFS_W.extra_boundary_bmp_ext_261 ret=00000001 error=0000dead changed=f geometry_nonzero=1 total_nonzero=1 free_le_total=1 high_untouched=f
+GFSEx_A.extra_boundary_bmp_ext_261 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+GFSEx_W.extra_boundary_bmp_ext_261 ret=00000001 error=0000dead changed=7 total_nonzero=1 avail_le_free=1 free_le_total=1
+fixture.cleaned=1

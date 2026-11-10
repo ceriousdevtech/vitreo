@@ -11,6 +11,7 @@
 #import <Cocoa/Cocoa.h>
 #include "windowing/cocoa/objc_helpers.h"
 #include "windowing/cocoa/cocoa_bridge.hpp"
+#include "windowing/cocoa/cocoa_bridge_internal.h"
 
 #include <algorithm>
 #include <cmath>
@@ -107,6 +108,46 @@ void CocoaBridge::edit_set_read_only(HWND hwnd, bool read_only) {
             [(NSTextField*)view setEditable:!read_only];
         }
     });
+}
+
+u32 CocoaBridge::edit_typing_text_color(HWND hwnd) const {
+    __block u32 color = 0xFFFFFFFFu;
+    vtr_run_on_main_sync(^{
+        NSTextView* tv = vtr_document_text_view(control_view(m_controls, hwnd));
+        NSColor* c = tv ? [tv typingAttributes][NSForegroundColorAttributeName] : nil;
+        NSColor* rgb = [c colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
+        if (rgb == nil) return;
+        const auto ch = [](CGFloat v) { return static_cast<u32>(std::lround(std::clamp(v, 0.0, 1.0) * 255.0)); };
+        color = ch(rgb.redComponent) | (ch(rgb.greenComponent) << 8) | (ch(rgb.blueComponent) << 16);
+    });
+    return color;
+}
+
+bool CocoaBridge::edit_shows_unfocused_selection(HWND hwnd) const {
+    __block bool shows = false;
+    vtr_run_on_main_sync(^{
+        NSTextView* tv = vtr_document_text_view(control_view(m_controls, hwnd));
+        if (tv == nil) return;
+        [tv setSelectedRange:NSMakeRange(0, [[tv string] length])];
+        if ([tv window] != nil && [[tv window] firstResponder] == tv) [[tv window] makeFirstResponder:nil];
+        shows = [tv isKindOfClass:[VtrEditTextView class]]
+            ? [(VtrEditTextView*)tv vtrShowsSelectionHighlight]
+            : [[tv selectedTextAttributes] objectForKey:NSBackgroundColorAttributeName] != nil;
+    });
+    return shows;
+}
+
+bool CocoaBridge::edit_is_read_only(HWND hwnd) const {
+    __block bool read_only = false;
+    vtr_run_on_main_sync(^{
+        NSView* view = control_view(m_controls, hwnd);
+        if (NSTextView* tv = vtr_document_text_view(view)) {
+            read_only = ![tv isEditable];
+        } else if ([view isKindOfClass:[NSTextField class]]) {
+            read_only = ![(NSTextField*)view isEditable];
+        }
+    });
+    return read_only;
 }
 
 void CocoaBridge::edit_set_cue_banner(HWND hwnd, const std::wstring& cue) {

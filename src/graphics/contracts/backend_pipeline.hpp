@@ -16,6 +16,11 @@ constexpr unsigned BACKEND_MAX_RENDER_TARGETS = 8;
 /// Viewports (and scissor rects) a draw may index: D3D11's
 /// D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE, and Metal's.
 constexpr unsigned BACKEND_MAX_VIEWPORTS = 16;
+/// Input-assembler slots. mingw-w64 13.0.0 `d3d12.h` and `d3d11.h`:
+/// `D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT` / 
+/// `D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT` are `(32)`. A stream past
+/// Metal's buffer table is not bindable (`vertex_stream_bindable`).
+constexpr unsigned BACKEND_MAX_VERTEX_BUFFERS = 32;
 
 /// Floating-point optimisation contract a translated shader is compiled
 /// under. Fast is Metal's default (no INF/NaN, reassociation); Relaxed allows
@@ -26,6 +31,7 @@ constexpr unsigned BACKEND_MAX_VIEWPORTS = 16;
 enum class BackendMathMode : u8 { Fast, Relaxed, Safe };
 
 struct BackendPipelineDesc {
+    bool operator==(const BackendPipelineDesc&) const = default;
     std::string vertex_shader_msl;
     std::string fragment_shader_msl;
     BackendMathMode vertex_math_mode{BackendMathMode::Fast};
@@ -37,23 +43,33 @@ struct BackendPipelineDesc {
     std::string fragment_entry_point{"fragment_main"};
 
     std::vector<BackendVertexAttribute> vertex_attributes;
-    /// Stride per D3D input slot (index = BackendVertexAttribute::buffer_index).
-    std::array<unsigned, 8> vertex_buffer_strides{};
+    /// Stride per input-assembler stream (index =
+    /// BackendVertexAttribute::buffer_index). One entry per Windows slot.
+    std::array<unsigned, BACKEND_MAX_VERTEX_BUFFERS> vertex_buffer_strides{};
     /// Per-input-slot fetch classification. False advances per vertex; true
     /// advances once per `vertex_buffer_step_rates[slot]` instances. A step
     /// rate of 0 never advances: every instance reads the element at
     /// StartInstanceLocation (D3D11.3 8.3.1 pseudocode; measured,
     /// tools/oracle_probe/d3d11_a07_ia_probe.expected `B step=0`).
-    std::array<bool, 8> vertex_buffer_per_instance{};
-    std::array<unsigned, 8> vertex_buffer_step_rates{};
+    std::array<bool, BACKEND_MAX_VERTEX_BUFFERS> vertex_buffer_per_instance{};
+    std::array<unsigned, BACKEND_MAX_VERTEX_BUFFERS> vertex_buffer_step_rates{};
     /// The guest bound this slot with stride 0: every vertex AND every
     /// instance fetches the element at the binding offset, whatever the
     /// slot's classification, step rate or StartInstanceLocation (measured,
     /// tools/oracle_probe/d3d11_instance_id_probe.expected). Overrides the
     /// slot's stride and step function.
-    std::array<bool, 8> vertex_buffer_constant{};
+    std::array<bool, BACKEND_MAX_VERTEX_BUFFERS> vertex_buffer_constant{};
     /// Legacy single-stream stride (slot 0). Prefer vertex_buffer_strides[0].
     unsigned vertex_stride{0};
+    /// Every stream an attribute reads takes its stride from the draw
+    /// (BackendDrawCall::vertex_buffer_strides) instead of the pipeline:
+    /// Metal's MTLBufferLayoutStrideDynamic with setVertexBuffer:offset:
+    /// attributeStride:atIndex: (macOS 14). vertex_buffer_strides and
+    /// vertex_buffer_constant are ignored; a draw with a stride-0 stream
+    /// needs a static pipeline. The pipeline is invalid where the OS has no
+    /// dynamic strides (BackendPipeline::dynamic_vertex_strides then false).
+    /// Vary `cache_key` with it.
+    bool dynamic_vertex_strides{false};
 
     /// False builds a pipeline whose vertex stage runs but whose primitives
     /// are discarded before rasterization. Pass A of the geometry-shader
@@ -114,6 +130,14 @@ struct BackendPipelineDesc {
     /// compiled pipeline instead of recompiling shaders every draw.
     u64 cache_key{0};
 
+    /// When false, a pipeline whose shaders or Metal state are not compiled
+    /// yet is returned invalid immediately. The compile continues in the
+    /// background and a later create of the same key succeeds. A draw must
+    /// not wait on newLibraryWithSource or pipeline-state creation: that
+    /// wait is a hitch on the first frames after a load. Tests and one-shot
+    /// callers leave this true so create returns a finished pipeline.
+    bool synchronous_compile{true};
+
     /// Raster sample count. Must match the color attachment (`1` = no MSAA).
     unsigned sample_count{1};
 
@@ -138,7 +162,40 @@ class BackendPipeline {
 public:
     virtual ~BackendPipeline() = default;
     [[nodiscard]] virtual bool valid() const noexcept = 0;
+    // ---- WS5 begin ----
+    /// An object+mesh pipeline (GraphicsBackendDevice::create_mesh_pipeline):
+    /// drawn only by a BackendDrawCall carrying a BackendMeshDraw.
+    [[nodiscard]] virtual bool is_mesh() const noexcept { return false; }
+    // ---- WS5 end ----
+    /// Built with BackendPipelineDesc::dynamic_vertex_strides: its draws
+    /// bind each stream with BackendDrawCall::vertex_buffer_strides.
+    [[nodiscard]] virtual bool dynamic_vertex_strides() const noexcept { return false; }
 };
+
+// ---- WS5 begin ----
+/// A render pipeline whose geometry comes from an object and a mesh function
+/// instead of a vertex function (Metal 3, MTLMeshRenderPipelineDescriptor;
+/// mesh shading needs MTLGPUFamilyApple7, Metal Feature Set Tables).
+struct BackendMeshPipelineDesc {
+    /// Render-target, blend, depth, sample, alpha-to-coverage, fragment and
+    /// cache_key fields are used as for a vertex pipeline. vertex_shader_msl
+    /// holds the ONE library with both the object and the mesh function
+    /// (compiled with vertex_math_mode); vertex_attributes must be empty,
+    /// tessellation false and rasterization_enabled true.
+    BackendPipelineDesc render;
+    /// Empty: no object function (a D3D12 mesh pipeline without an
+    /// amplification shader).
+    std::string object_entry_point{"vitreo_gs_object"};
+    /// Non-empty: the object function's own library (compiled with
+    /// object_math_mode); else it is in render.vertex_shader_msl.
+    std::string object_shader_msl;
+    BackendMathMode object_math_mode{BackendMathMode::Fast};
+    std::string mesh_entry_point{"main0"};
+    unsigned threads_per_object_threadgroup{1};
+    unsigned threads_per_mesh_threadgroup{1};
+    unsigned payload_bytes{16};
+};
+// ---- WS5 end ----
 
 enum class BackendTextureViewDimension : u8 {
     Automatic,
@@ -197,5 +254,14 @@ public:
     virtual ~BackendComputePipeline() = default;
     [[nodiscard]] virtual bool valid() const noexcept = 0;
 };
+
+/// The backend's text for the last pipeline it failed to create on this
+/// thread (the Metal compiler's or pipeline-state error), so a frontend can
+/// name it in its refusal. A frontend clears it before a creation it wants
+/// the reason of; a create_* that fails sets it.
+[[nodiscard]] inline std::string& last_pipeline_failure() {
+    thread_local std::string text;
+    return text;
+}
 
 } // namespace vitreo::graphics

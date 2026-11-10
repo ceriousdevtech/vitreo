@@ -1,0 +1,760 @@
+support format 1: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 2: support S_OK s1=0x02f4d3fb s2=0x000002c0 planes=1
+support format 3: support S_OK s1=0x027051fb s2=0x000003c0 planes=1
+support format 4: support S_OK s1=0x027051fb s2=0x000002c0 planes=1
+support format 5: support S_OK s1=0x001010f0 s2=0x00000000 planes=1
+support format 6: support S_OK s1=0x00f4d3fb s2=0x00000000 planes=1
+support format 7: support S_OK s1=0x007051fb s2=0x00000100 planes=1
+support format 8: support S_OK s1=0x007051fb s2=0x00000000 planes=1
+support format 9: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 10: support S_OK s1=0x02fcd3f3 s2=0x000002c0 planes=1
+support format 11: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 12: support S_OK s1=0x027051f3 s2=0x000003c0 planes=1
+support format 13: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 14: support S_OK s1=0x027051f3 s2=0x000002c0 planes=1
+support format 15: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 16: support S_OK s1=0x02f4d3fb s2=0x000002c0 planes=1
+support format 17: support S_OK s1=0x027051fb s2=0x000003c0 planes=1
+support format 18: support S_OK s1=0x027051fb s2=0x000002c0 planes=1
+support format 19: support S_OK s1=0x001010b0 s2=0x00000000 planes=2
+support format 20: support S_OK s1=0x003110b0 s2=0x00000000 planes=2
+support format 21: support S_OK s1=0x04d017b0 s2=0x00000000 planes=2
+support format 22: support S_OK s1=0x005011b0 s2=0x00000000 planes=2
+support format 23: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 24: support S_OK s1=0x03fcd3f3 s2=0x000002c0 planes=1
+support format 25: support S_OK s1=0x027051f3 s2=0x000003c0 planes=1
+support format 26: support S_OK s1=0x02e4d3f3 s2=0x000002c0 planes=1
+support format 27: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 28: support S_OK s1=0x03fcd3f3 s2=0x000002c0 planes=1
+support format 29: support S_OK s1=0x01fcd3f0 s2=0x00000200 planes=1
+support format 30: support S_OK s1=0x027051f3 s2=0x000003c0 planes=1
+support format 31: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 32: support S_OK s1=0x027051f3 s2=0x000002c0 planes=1
+support format 33: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 34: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 35: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 36: support S_OK s1=0x027051f3 s2=0x000003c0 planes=1
+support format 37: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 38: support S_OK s1=0x027051f3 s2=0x000002c0 planes=1
+support format 39: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 40: support S_OK s1=0x003110b0 s2=0x00000200 planes=1
+support format 41: support S_OK s1=0x06f4d7fb s2=0x000002c8 planes=1
+support format 42: support S_OK s1=0x027051ff s2=0x000003ff planes=1
+support format 43: support S_OK s1=0x027051fb s2=0x000002ff planes=1
+support format 44: support S_OK s1=0x001010b0 s2=0x00000000 planes=2
+support format 45: support S_OK s1=0x003110b0 s2=0x00000000 planes=2
+support format 46: support S_OK s1=0x04d017b0 s2=0x00000000 planes=2
+support format 47: support S_OK s1=0x005011b0 s2=0x00000000 planes=2
+support format 48: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 49: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 50: support S_OK s1=0x027051f3 s2=0x000003c0 planes=1
+support format 51: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 52: support S_OK s1=0x027051f3 s2=0x000002c0 planes=1
+support format 53: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 54: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 55: support S_OK s1=0x003110b0 s2=0x00000200 planes=1
+support format 56: support S_OK s1=0x06f4d7f3 s2=0x000002c0 planes=1
+support format 57: support S_OK s1=0x027051f7 s2=0x000003c0 planes=1
+support format 58: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 59: support S_OK s1=0x027051f3 s2=0x000002c0 planes=1
+support format 60: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 61: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 62: support S_OK s1=0x027051f3 s2=0x000003c0 planes=1
+support format 63: support S_OK s1=0x02f4d3f3 s2=0x000002c0 planes=1
+support format 64: support S_OK s1=0x027051f3 s2=0x000002c0 planes=1
+support format 65: support S_OK s1=0x02e4d3f0 s2=0x000002c0 planes=1
+support format 66: support fail s1=0x00000000 s2=0x00000000 planes=0
+support format 67: support S_OK s1=0x02ecd3f1 s2=0x000002c0 planes=1
+support format 68: support S_OK s1=0x008013f0 s2=0x00000000 planes=1
+support format 69: support S_OK s1=0x008013f0 s2=0x00000000 planes=1
+support format 70: support S_OK s1=0x001010e0 s2=0x00000200 planes=1
+support format 71: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 72: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 73: support S_OK s1=0x001010e0 s2=0x00000200 planes=1
+support format 74: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 75: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 76: support S_OK s1=0x001010e0 s2=0x00000200 planes=1
+support format 77: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 78: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 79: support S_OK s1=0x001010e0 s2=0x00000200 planes=1
+support format 80: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 81: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 82: support S_OK s1=0x001010e0 s2=0x00000200 planes=1
+support format 83: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 84: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 85: support S_OK s1=0x02e4d3f3 s2=0x000002c0 planes=1
+support format 86: support S_OK s1=0x02e4d3f3 s2=0x000002c0 planes=1
+support format 87: support S_OK s1=0x03fcd3f3 s2=0x000002c0 planes=1
+support format 88: support S_OK s1=0x00f4d3f3 s2=0x00000200 planes=1
+support format 89: support S_OK s1=0x01180020 s2=0x00000200 planes=1
+support format 90: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 91: support S_OK s1=0x01fcd3f0 s2=0x00000200 planes=1
+support format 92: support S_OK s1=0x001010f0 s2=0x00000200 planes=1
+support format 93: support S_OK s1=0x00f4d3f0 s2=0x00000200 planes=1
+support format 94: support S_OK s1=0x001010e0 s2=0x00000200 planes=1
+support format 95: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 96: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 97: support S_OK s1=0x001010e0 s2=0x00000200 planes=1
+support format 98: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 99: support S_OK s1=0x009013e0 s2=0x00000200 planes=1
+support format 100: support S_OK s1=0x0280d320 s2=0x00000080 planes=1
+support format 101: support S_OK s1=0x02800320 s2=0x00000080 planes=1
+support format 102: support S_OK s1=0x02801320 s2=0x00000080 planes=1
+support format 103: support S_OK s1=0x0280c320 s2=0x00000080 planes=2
+support format 104: support S_OK s1=0x0280c320 s2=0x00000080 planes=2
+support format 105: support S_OK s1=0x0280c320 s2=0x00000080 planes=2
+support format 106: support S_OK s1=0x00000020 s2=0x00000000 planes=1
+support format 107: support S_OK s1=0x02800320 s2=0x00000080 planes=1
+support format 108: support S_OK s1=0x02800320 s2=0x00000080 planes=1
+support format 109: support S_OK s1=0x02800320 s2=0x00000080 planes=1
+support format 110: support fail s1=0x00000000 s2=0x00000000 planes=2
+support format 111: support fail s1=0x00000000 s2=0x00000000 planes=1
+support format 112: support fail s1=0x00000000 s2=0x00000000 planes=1
+support format 113: support S_OK s1=0x00000020 s2=0x00000000 planes=1
+support format 114: support S_OK s1=0x00000020 s2=0x00000000 planes=1
+support format 115: support S_OK s1=0x02e4d3f3 s2=0x000002c0 planes=1
+support format 130: support fail s1=0x00000000 s2=0x00000000 planes=0
+support format 131: support fail s1=0x00000000 s2=0x00000000 planes=0
+support format 132: support fail s1=0x00000000 s2=0x00000000 planes=0
+support format 189: support S_OK s1=0x00001020 s2=0x00008000 planes=1
+support format 190: support S_OK s1=0x00001020 s2=0x00008000 planes=1
+support format 191: support S_OK s1=0x02e4d3f3 s2=0x000002c0 planes=1
+support end: GetDeviceRemovedReason 0x00000000 S_OK
+create format 1: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 2: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 3: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 4: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 5: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x80070057 E_INVALIDARG
+create format 6: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x80070057 E_INVALIDARG
+create format 7: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x80070057 E_INVALIDARG
+create format 8: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x80070057 E_INVALIDARG
+create format 9: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 10: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 11: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 12: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 13: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 14: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 15: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 16: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 17: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 18: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 19: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 20: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 21: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 22: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 23: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 24: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 25: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 26: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 27: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 28: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 29: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 30: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 31: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 32: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 33: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 34: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 35: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 36: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 37: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 38: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 39: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 40: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 41: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 42: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 43: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 44: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 45: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 46: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 47: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 48: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 49: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 50: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 51: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 52: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 53: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 54: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 55: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 56: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 57: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 58: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 59: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 60: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 61: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 62: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 63: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 64: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 65: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 66: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 67: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 68: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 69: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 70: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 71: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 72: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 73: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 74: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 75: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 76: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 77: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 78: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 79: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 80: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 81: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 82: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 83: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 84: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 85: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 86: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 87: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 88: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x80070057 E_INVALIDARG
+create format 89: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 90: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 91: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 92: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 93: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x80070057 E_INVALIDARG
+create format 94: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 95: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 96: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 97: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 98: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 99: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 100: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 101: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x00000000 S_OK
+create format 102: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x00000000 S_OK
+create format 103: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 104: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 105: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 106: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 107: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x00000000 S_OK
+create format 108: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x00000000 S_OK
+create format 109: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x00000000 S_OK
+create format 110: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 111: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 112: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 113: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 114: plain 0x00000000 S_OK rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 115: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create format 130: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 131: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 132: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 189: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 190: plain 0x80070057 E_INVALIDARG rt 0x80070057 E_INVALIDARG uav 0x80070057 E_INVALIDARG
+create format 191: plain 0x00000000 S_OK rt 0x00000000 S_OK uav 0x00000000 S_OK
+create mips: 4x4 MipLevels 3 (full chain) 0x00000000 S_OK
+create mips: 4x4 MipLevels 4 0x00000000 S_OK desc.MipLevels=4 last=1x1 rows=1 row=4 alloc=65536
+create mips: 4x4 MipLevels 5 0x00000000 S_OK desc.MipLevels=5 last=1x1 rows=1 row=4 alloc=65536
+create mips: 4x4 MipLevels 8 0x00000000 S_OK desc.MipLevels=8 last=1x1 rows=1 row=4 alloc=65536
+create mips: 4x4 MipLevels 15 0x00000000 S_OK desc.MipLevels=15 last=1x1 rows=1 row=4 alloc=65536
+create mips: 7x3 MipLevels 4 (full 3) 0x00000000 S_OK
+create mips: 1x1 MipLevels 2 (full 1) 0x00000000 S_OK
+create mips: 4x4 MipLevels 0 (the full chain) 0x00000000 S_OK mips=3
+create end: GetDeviceRemovedReason 0x00000000 S_OK
+# rtv format 2: start
+rtv format 2: clear read texel0 0000803e 0000003f 0000403f 0000803f
+# rtv format 3: start
+rtv format 3: clear read texel0 00000000 00000000 00000000 01000000
+# rtv format 4: start
+rtv format 4: clear read texel0 00000000 00000000 00000000 01000000
+# rtv format 6: start
+rtv format 6: clear read texel0 0000803e 0000003f 0000403f
+# rtv format 7: start
+rtv format 7: clear read texel0 00000000 00000000 00000000
+# rtv format 8: start
+rtv format 8: clear read texel0 00000000 00000000 00000000
+# rtv format 10: start
+rtv format 10: clear read texel0 00340038 003a003c
+# rtv format 11: start
+rtv format 11: clear read texel0 00400080 ffbfffff
+# rtv format 12: start
+rtv format 12: clear read texel0 00000000 00000100
+# rtv format 13: start
+rtv format 13: clear read texel0 00200040 ff5fff7f
+# rtv format 14: start
+rtv format 14: clear read texel0 00000000 00000100
+# rtv format 16: start
+rtv format 16: clear read texel0 0000803e 0000003f
+# rtv format 17: start
+rtv format 17: clear read texel0 00000000 00000000
+# rtv format 18: start
+rtv format 18: clear read texel0 00000000 00000000
+# rtv format 24: start
+rtv format 24: clear read texel0 0001f8ef
+# rtv format 25: start
+rtv format 25: clear read texel0 00000040
+# rtv format 26: start
+rtv format 26: clear read texel0 40031c74
+# rtv format 28: start
+rtv format 28: clear read texel0 4080bfff
+# rtv format 29: start
+rtv format 29: clear read texel0 89bce1ff
+# rtv format 30: start
+rtv format 30: clear read texel0 00000001
+# rtv format 31: start
+rtv format 31: clear read texel0 20405f7f
+# rtv format 32: start
+rtv format 32: clear read texel0 00000001
+# rtv format 34: start
+rtv format 34: clear read texel0 00340038
+# rtv format 35: start
+rtv format 35: clear read texel0 00400080
+# rtv format 36: start
+rtv format 36: clear read texel0 00000000
+# rtv format 37: start
+rtv format 37: clear read texel0 00200040
+# rtv format 38: start
+rtv format 38: clear read texel0 00000000
+# rtv format 41: start
+rtv format 41: clear read texel0 0000803e
+# rtv format 42: start
+rtv format 42: clear read texel0 00000000
+# rtv format 43: start
+rtv format 43: clear read texel0 00000000
+# rtv format 49: start
+rtv format 49: clear read texel0 4080
+# rtv format 50: start
+rtv format 50: clear read texel0 0000
+# rtv format 51: start
+rtv format 51: clear read texel0 2040
+# rtv format 52: start
+rtv format 52: clear read texel0 0000
+# rtv format 54: start
+rtv format 54: clear read texel0 0034
+# rtv format 56: start
+rtv format 56: clear read texel0 0040
+# rtv format 57: start
+rtv format 57: clear read texel0 0000
+# rtv format 58: start
+rtv format 58: clear read texel0 0020
+# rtv format 59: start
+rtv format 59: clear read texel0 0000
+# rtv format 61: start
+rtv format 61: clear read texel0 40
+# rtv format 62: start
+rtv format 62: clear read texel0 00
+# rtv format 63: start
+rtv format 63: clear read texel0 20
+# rtv format 64: start
+rtv format 64: clear read texel0 00
+# rtv format 65: start
+rtv format 65: clear read texel0 ff
+# rtv format 67: start
+rtv format 67: clear read texel0 8000027e
+# rtv format 85: start
+rtv format 85: clear read texel0 1744
+# rtv format 86: start
+rtv format 86: clear read texel0 17a2
+# rtv format 87: start
+rtv format 87: clear read texel0 bf8040ff
+# rtv format 88: start
+rtv format 88: clear read texel0 bf8040ff
+# rtv format 91: start
+rtv format 91: clear read texel0 e1bc89ff
+# rtv format 93: start
+rtv format 93: clear read texel0 e1bc8900
+# rtv format 191: start
+rtv format 191: clear read texel0 bf48
+rtv end: GetDeviceRemovedReason 0x00000000 S_OK
+uavtex format 2 float: clear read texel0 0000803e 0000003f 0000403f 0000803f
+uavtex format 2 uint: clear read texel0 01000000 02000000 03000000 78563412
+uavtex format 3 float: clear read texel0 00000000 00000000 00000000 01000000
+uavtex format 3 uint: clear read texel0 01000000 02000000 03000000 78563412
+uavtex format 4 float: clear read texel0 00000000 00000000 00000000 01000000
+uavtex format 4 uint: clear read texel0 01000000 02000000 03000000 78563412
+uavtex format 10 float: clear read texel0 00340038 003a003c
+uavtex format 10 uint: clear read texel0 01000200 03007856
+uavtex format 11 float: clear read texel0 00400080 ffbfffff
+uavtex format 11 uint: clear read texel0 01000200 03007856
+uavtex format 12 float: clear read texel0 00000000 00000100
+uavtex format 12 uint: clear read texel0 01000200 03007856
+uavtex format 13 float: clear read texel0 00200040 ff5fff7f
+uavtex format 13 uint: clear read texel0 01000200 03007856
+uavtex format 14 float: clear read texel0 00000000 00000100
+uavtex format 14 uint: clear read texel0 01000200 03007856
+uavtex format 16 float: clear read texel0 0000803e 0000003f
+uavtex format 16 uint: clear read texel0 01000000 02000000
+uavtex format 17 float: clear read texel0 00000000 00000000
+uavtex format 17 uint: clear read texel0 01000000 02000000
+uavtex format 18 float: clear read texel0 00000000 00000000
+uavtex format 18 uint: clear read texel0 01000000 02000000
+uavtex format 24 float: clear read texel0 0001f8ef
+uavtex format 24 uint: clear read texel0 01083000
+uavtex format 25 float: clear read texel0 00000040
+uavtex format 25 uint: clear read texel0 01083000
+uavtex format 26 float: clear read texel0 40031c74
+uavtex format 26 uint: clear read texel0 0110c000
+uavtex format 28 float: clear read texel0 4080bfff
+uavtex format 28 uint: clear read texel0 01020378
+uavtex format 30 float: clear read texel0 00000001
+uavtex format 30 uint: clear read texel0 01020378
+uavtex format 31 float: clear read texel0 20405f7f
+uavtex format 31 uint: clear read texel0 01020378
+uavtex format 32 float: clear read texel0 00000001
+uavtex format 32 uint: clear read texel0 01020378
+uavtex format 34 float: clear read texel0 00340038
+uavtex format 34 uint: clear read texel0 01000200
+uavtex format 35 float: clear read texel0 00400080
+uavtex format 35 uint: clear read texel0 01000200
+uavtex format 36 float: clear read texel0 00000000
+uavtex format 36 uint: clear read texel0 01000200
+uavtex format 37 float: clear read texel0 00200040
+uavtex format 37 uint: clear read texel0 01000200
+uavtex format 38 float: clear read texel0 00000000
+uavtex format 38 uint: clear read texel0 01000200
+uavtex format 41 float: clear read texel0 0000803e
+uavtex format 41 uint: clear read texel0 01000000
+uavtex format 42 float: clear read texel0 00000000
+uavtex format 42 uint: clear read texel0 01000000
+uavtex format 43 float: clear read texel0 00000000
+uavtex format 43 uint: clear read texel0 01000000
+uavtex format 49 float: clear read texel0 4080
+uavtex format 49 uint: clear read texel0 0102
+uavtex format 50 float: clear read texel0 0000
+uavtex format 50 uint: clear read texel0 0102
+uavtex format 51 float: clear read texel0 2040
+uavtex format 51 uint: clear read texel0 0102
+uavtex format 52 float: clear read texel0 0000
+uavtex format 52 uint: clear read texel0 0102
+uavtex format 54 float: clear read texel0 0034
+uavtex format 54 uint: clear read texel0 0100
+uavtex format 56 float: clear read texel0 0040
+uavtex format 56 uint: clear read texel0 0100
+uavtex format 57 float: clear read texel0 0000
+uavtex format 57 uint: clear read texel0 0100
+uavtex format 58 float: clear read texel0 0020
+uavtex format 58 uint: clear read texel0 0100
+uavtex format 59 float: clear read texel0 0000
+uavtex format 59 uint: clear read texel0 0100
+uavtex format 61 float: clear read texel0 40
+uavtex format 61 uint: clear read texel0 01
+uavtex format 62 float: clear read texel0 00
+uavtex format 62 uint: clear read texel0 01
+uavtex format 63 float: clear read texel0 20
+uavtex format 63 uint: clear read texel0 01
+uavtex format 64 float: clear read texel0 00
+uavtex format 64 uint: clear read texel0 01
+uavtex format 65 float: clear read texel0 ff
+uavtex format 65 uint: clear read texel0 78
+uavtex format 67 float: clear read texel0 8000027e
+uavtex format 67 uint: clear read texel0 00000000
+uavtex format 85 float: clear read texel0 1744
+uavtex format 85 uint: clear read texel0 4308
+uavtex format 86 float: clear read texel0 17a2
+uavtex format 86 uint: clear read texel0 4304
+uavtex format 87 float: clear read texel0 bf8040ff
+uavtex format 87 uint: clear read texel0 03020178
+uavtex create: buffer 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 100 float: clear unread texel0 cd
+uavtex format 100 uint: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 101 float: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 101 uint: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 102 float: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 102 uint: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 107 float: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 107 uint: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 108 float: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 108 uint: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 109 float: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 109 uint: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 115 float: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 115 uint: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 191 float: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex format 191 uint: create 0x887a0005 DXGI_ERROR_DEVICE_REMOVED
+uavtex end: GetDeviceRemovedReason 0x887a0001 DXGI_ERROR_INVALID_CALL
+uavbuf format 2 float: clear read bytes 00000000 00000000 00000000 00000000 0000803e 0000003f 0000403f 0000803f 0000803e 0000003f 0000403f 0000803f 0000803e 0000003f 0000403f 0000803f 0000803e 0000003f 0000403f 0000803f 00000000 00000000 00000000 00000000
+uavbuf format 2 uint: clear read bytes 00000000 00000000 00000000 00000000 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 00000000 00000000 00000000 00000000
+uavbuf format 3 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 01000000 00000000 00000000 00000000 01000000 00000000 00000000 00000000 01000000 00000000 00000000 00000000 01000000 00000000 00000000 00000000 00000000
+uavbuf format 3 uint: clear read bytes 00000000 00000000 00000000 00000000 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 00000000 00000000 00000000 00000000
+uavbuf format 4 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 01000000 00000000 00000000 00000000 01000000 00000000 00000000 00000000 01000000 00000000 00000000 00000000 01000000 00000000 00000000 00000000 00000000
+uavbuf format 4 uint: clear read bytes 00000000 00000000 00000000 00000000 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 01000000 02000000 03000000 78563412 00000000 00000000 00000000 00000000
+uavbuf format 10 float: clear read bytes 00000000 00000000 00340038 003a003c 00340038 003a003c 00340038 003a003c 00340038 003a003c 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 10 uint: clear read bytes 00000000 00000000 01000200 03007856 01000200 03007856 01000200 03007856 01000200 03007856 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 11 float: clear read bytes 00000000 00000000 00400080 ffbfffff 00400080 ffbfffff 00400080 ffbfffff 00400080 ffbfffff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 11 uint: clear read bytes 00000000 00000000 01000200 03007856 01000200 03007856 01000200 03007856 01000200 03007856 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 12 float: clear read bytes 00000000 00000000 00000000 00000100 00000000 00000100 00000000 00000100 00000000 00000100 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 12 uint: clear read bytes 00000000 00000000 01000200 03007856 01000200 03007856 01000200 03007856 01000200 03007856 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 13 float: clear read bytes 00000000 00000000 00200040 ff5fff7f 00200040 ff5fff7f 00200040 ff5fff7f 00200040 ff5fff7f 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 13 uint: clear read bytes 00000000 00000000 01000200 03007856 01000200 03007856 01000200 03007856 01000200 03007856 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 14 float: clear read bytes 00000000 00000000 00000000 00000100 00000000 00000100 00000000 00000100 00000000 00000100 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 14 uint: clear read bytes 00000000 00000000 01000200 03007856 01000200 03007856 01000200 03007856 01000200 03007856 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 16 float: clear read bytes 00000000 00000000 0000803e 0000003f 0000803e 0000003f 0000803e 0000003f 0000803e 0000003f 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 16 uint: clear read bytes 00000000 00000000 01000000 02000000 01000000 02000000 01000000 02000000 01000000 02000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 17 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 17 uint: clear read bytes 00000000 00000000 01000000 02000000 01000000 02000000 01000000 02000000 01000000 02000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 18 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 18 uint: clear read bytes 00000000 00000000 01000000 02000000 01000000 02000000 01000000 02000000 01000000 02000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 24 float: clear read bytes 00000000 0001f8ef 0001f8ef 0001f8ef 0001f8ef 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 24 uint: clear read bytes 00000000 01083000 01083000 01083000 01083000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 25 float: clear read bytes 00000000 00000040 00000040 00000040 00000040 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 25 uint: clear read bytes 00000000 01083000 01083000 01083000 01083000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 26 float: clear read bytes 00000000 40031c74 40031c74 40031c74 40031c74 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 26 uint: clear read bytes 00000000 0110c000 0110c000 0110c000 0110c000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 28 float: clear read bytes 00000000 4080bfff 4080bfff 4080bfff 4080bfff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 28 uint: clear read bytes 00000000 01020378 01020378 01020378 01020378 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 30 float: clear read bytes 00000000 00000001 00000001 00000001 00000001 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 30 uint: clear read bytes 00000000 01020378 01020378 01020378 01020378 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 31 float: clear read bytes 00000000 20405f7f 20405f7f 20405f7f 20405f7f 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 31 uint: clear read bytes 00000000 01020378 01020378 01020378 01020378 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 32 float: clear read bytes 00000000 00000001 00000001 00000001 00000001 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 32 uint: clear read bytes 00000000 01020378 01020378 01020378 01020378 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 34 float: clear read bytes 00000000 00340038 00340038 00340038 00340038 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 34 uint: clear read bytes 00000000 01000200 01000200 01000200 01000200 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 35 float: clear read bytes 00000000 00400080 00400080 00400080 00400080 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 35 uint: clear read bytes 00000000 01000200 01000200 01000200 01000200 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 36 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 36 uint: clear read bytes 00000000 01000200 01000200 01000200 01000200 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 37 float: clear read bytes 00000000 00200040 00200040 00200040 00200040 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 37 uint: clear read bytes 00000000 01000200 01000200 01000200 01000200 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 38 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 38 uint: clear read bytes 00000000 01000200 01000200 01000200 01000200 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 41 float: clear read bytes 00000000 0000803e 0000803e 0000803e 0000803e 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 41 uint: clear read bytes 00000000 01000000 01000000 01000000 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 42 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 42 uint: clear read bytes 00000000 01000000 01000000 01000000 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 43 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 43 uint: clear read bytes 00000000 01000000 01000000 01000000 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 49 float: clear read bytes 00004080 40804080 40800000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 49 uint: clear read bytes 00000102 01020102 01020000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 50 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 50 uint: clear read bytes 00000102 01020102 01020000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 51 float: clear read bytes 00002040 20402040 20400000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 51 uint: clear read bytes 00000102 01020102 01020000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 52 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 52 uint: clear read bytes 00000102 01020102 01020000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 54 float: clear read bytes 00000034 00340034 00340000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 54 uint: clear read bytes 00000100 01000100 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 56 float: clear read bytes 00000040 00400040 00400000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 56 uint: clear read bytes 00000100 01000100 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 57 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 57 uint: clear read bytes 00000100 01000100 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 58 float: clear read bytes 00000020 00200020 00200000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 58 uint: clear read bytes 00000100 01000100 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 59 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 59 uint: clear read bytes 00000100 01000100 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 61 float: clear read bytes 00404040 40000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 61 uint: clear read bytes 00010101 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 62 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 62 uint: clear read bytes 00010101 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 63 float: clear read bytes 00202020 20000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 63 uint: clear read bytes 00010101 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 64 float: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 64 uint: clear read bytes 00010101 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 67 float: clear read bytes 00000000 8000027e 8000027e 8000027e 8000027e 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 67 uint: clear read bytes 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 85 float: clear read bytes 00001744 17441744 17440000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 85 uint: clear read bytes 00004308 43084308 43080000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 86 float: clear read bytes 000017a2 17a217a2 17a20000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 86 uint: clear read bytes 00004304 43044304 43040000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 87 float: clear read bytes 00000000 bf8040ff bf8040ff bf8040ff bf8040ff 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 87 uint: clear read bytes 00000000 03020178 03020178 03020178 03020178 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 115 float: clear read bytes 00008bf4 8bf48bf4 8bf40000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 115 uint: clear read bytes 00002381 23812381 23810000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 191 float: clear read bytes 0000bf48 bf48bf48 bf480000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf format 191 uint: clear read bytes 00003812 38123812 38120000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+uavbuf end: GetDeviceRemovedReason 0x00000000 S_OK
+# copy format 1: start
+copy format 1: row=64 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 2: start
+copy format 2: row=64 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 3: start
+copy format 3: row=64 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 4: start
+copy format 4: row=64 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 5: start
+copy format 5: row=48 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 6: start
+copy format 6: row=48 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 7: start
+copy format 7: row=48 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 8: start
+copy format 8: row=48 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 9: start
+copy format 9: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 10: start
+copy format 10: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 11: start
+copy format 11: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 12: start
+copy format 12: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 13: start
+copy format 13: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 14: start
+copy format 14: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 15: start
+copy format 15: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 16: start
+copy format 16: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 17: start
+copy format 17: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 18: start
+copy format 18: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 23: start
+copy format 23: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 24: start
+copy format 24: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 25: start
+copy format 25: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 26: start
+copy format 26: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 27: start
+copy format 27: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 28: start
+copy format 28: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 29: start
+copy format 29: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 30: start
+copy format 30: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 31: start
+copy format 31: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 32: start
+copy format 32: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 33: start
+copy format 33: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 34: start
+copy format 34: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 35: start
+copy format 35: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 36: start
+copy format 36: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 37: start
+copy format 37: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 38: start
+copy format 38: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 39: start
+copy format 39: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 40: start
+copy format 40: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 41: start
+copy format 41: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 42: start
+copy format 42: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 43: start
+copy format 43: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 48: start
+copy format 48: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 49: start
+copy format 49: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 50: start
+copy format 50: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 51: start
+copy format 51: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 52: start
+copy format 52: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 53: start
+copy format 53: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 54: start
+copy format 54: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 55: start
+copy format 55: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 56: start
+copy format 56: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 57: start
+copy format 57: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 58: start
+copy format 58: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 59: start
+copy format 59: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 60: start
+copy format 60: row=4 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 61: start
+copy format 61: row=4 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 62: start
+copy format 62: row=4 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 63: start
+copy format 63: row=4 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 64: start
+copy format 64: row=4 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 65: start
+copy format 65: row=4 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 67: start
+copy format 67: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 68: start
+copy format 68: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 69: start
+copy format 69: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 70: start
+copy format 70: row=8 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 71: start
+copy format 71: row=8 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 72: start
+copy format 72: row=8 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 73: start
+copy format 73: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 74: start
+copy format 74: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 75: start
+copy format 75: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 76: start
+copy format 76: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 77: start
+copy format 77: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 78: start
+copy format 78: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 79: start
+copy format 79: row=8 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 80: start
+copy format 80: row=8 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 81: start
+copy format 81: row=8 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 82: start
+copy format 82: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 83: start
+copy format 83: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 84: start
+copy format 84: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 85: start
+copy format 85: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 86: start
+copy format 86: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 87: start
+copy format 87: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 88: start
+copy format 88: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 89: start
+copy format 89: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 90: start
+copy format 90: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 91: start
+copy format 91: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 92: start
+copy format 92: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 93: start
+copy format 93: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 94: start
+copy format 94: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 95: start
+copy format 95: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 96: start
+copy format 96: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 97: start
+copy format 97: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 98: start
+copy format 98: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 99: start
+copy format 99: row=16 rows=1 write=1 copy=1 read=1 whole equal
+# copy format 100: start
+copy format 100: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 101: start
+copy format 101: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 102: start
+copy format 102: row=32 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 107: start
+copy format 107: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 108: start
+copy format 108: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 109: start
+copy format 109: row=16 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 113: start
+copy format 113: row=4 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 114: start
+copy format 114: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 115: start
+copy format 115: row=8 rows=4 write=1 copy=1 read=1 whole equal
+# copy format 189: start
+copy format 189: create 0x80070057 E_INVALIDARG 0x80070057 E_INVALIDARG
+# copy format 190: start
+copy format 190: create 0x80070057 E_INVALIDARG 0x80070057 E_INVALIDARG
+# copy format 191: start
+copy format 191: row=8 rows=4 write=1 copy=1 read=1 whole equal
+copy buffer: CopyBufferRegion 128 bytes at 16: copy=1 read=1 equal
+copy end: GetDeviceRemovedReason 0x00000000 S_OK

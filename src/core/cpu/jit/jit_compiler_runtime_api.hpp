@@ -259,10 +259,15 @@ public:
     /// change.
     bool synchronize_arena_generation();
 
-    /// True when the most recent compile() returned null only because the
-    /// arena could not hand out space right then — the current ring slot is
-    /// full, or its replacement is being armed. The block is compilable and
-    /// the caller must retry it later rather than record a permanent failure.
+    /// A first-miss wait crossed a guest-code change. The caller must discard
+    /// the old decoded array before falling back to interpreted execution.
+    [[nodiscard]] bool compile_source_changed() const noexcept {
+        return m_compile_source_changed;
+    }
+
+    /// The last compile returned null for a transient condition (arena pressure
+    /// or source bytes changing during a wait), rather than permanent failure.
+    /// Retry later; if compile_source_changed(), first refresh the old decode.
     [[nodiscard]] bool compile_deferred() const noexcept {
         return m_compile_deferred;
     }

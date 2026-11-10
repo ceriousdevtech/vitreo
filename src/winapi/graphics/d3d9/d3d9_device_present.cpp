@@ -65,7 +65,7 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
         // device (the implicit one). pPresentationParameters is in/out.
         const GuestAddr parameters_in = m.arg_ptr(1);
         const GuestAddr out = m.arg_ptr(2);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         if (parameters_in == 0 || out == 0) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -86,8 +86,7 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
         }
 
         std::array<u8, D3DPRESENT_PARAMETERS_SIZE> parameters{};
-        if (m.memory().read_bytes(parameters_in, parameters.data(),
-                                  parameters.size()).is_err()) {
+        if (!read_guest_present_parameters(m, parameters_in, parameters)) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
@@ -199,6 +198,8 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
             back != nullptr && back->surface) {
             back->surface->swap_chain_color =
                 chain_state->swap_chain->color_target();
+            back->surface->lockable_target =
+                (read_pp(PP_FLAGS) & D3DPRESENTFLAG_LOCKABLE_BACKBUFFER) != 0;
         }
         if (read_pp(PP_ENABLE_AUTO_DEPTH_STENCIL) != 0) {
             const u32 depth_format = read_pp(PP_AUTO_DEPTH_STENCIL_FORMAT);
@@ -219,7 +220,7 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
 
         if (m.memory().write_bytes(parameters_in, parameters.data(),
                                    parameters.size()).is_err() ||
-            m.write_u32(out, chain).is_err()) {
+            m.write_ptr(out, chain).is_err()) {
             // Roll back the published chain on a guest write failure.
             state.additional_swap_chains.pop_back();
             destroy_object(chain);
@@ -240,14 +241,14 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
         // CreateAdditionalSwapChain and are not GetSwapChain-enumerable.
         const u32 index = static_cast<u32>(m.arg(1));
         const GuestAddr out = m.arg_ptr(2);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         if (out == 0 || index != 0 || state.implicit_swap_chain == 0) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
         const u32 chain = state.implicit_swap_chain;
         (void)add_ref(chain);
-        if (m.write_u32(out, chain).is_err()) {
+        if (m.write_ptr(out, chain).is_err()) {
             (void)release(chain);
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -282,8 +283,11 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
             return;
         }
         std::array<u8, D3DPRESENT_PARAMETERS_SIZE> parameters{};
-        if (m.memory().read_bytes(parameters_in, parameters.data(),
-                                  parameters.size()).is_err()) {
+        if (!read_guest_present_parameters(m, parameters_in, parameters)) {
+            m.set_return(D3DERR_INVALIDCALL);
+            return;
+        }
+        if (!exclusive_size_allowed(parameters.data())) {
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
@@ -341,10 +345,8 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
             m.set_return(D3DERR_INVALIDCALL);
             return;
         }
-        if (m.memory()
-                .write_bytes(parameters_in, state.present_parameters.data(),
-                             state.present_parameters.size())
-                .is_err()) {
+        if (!write_guest_present_parameters(m, parameters_in,
+                                            state.present_parameters)) {
             state.lost = true;
             m.set_return(D3DERR_INVALIDCALL);
             return;
@@ -359,6 +361,7 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
     }
 
     case 17: { // Present
+        draw_capture_on_present();
         if (state.lost) {
             VITREO_TRACE("[d3d9] Present -> DEVICELOST (device already lost)\n");
             m.set_return(D3DERR_DEVICELOST);
@@ -474,7 +477,7 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
         const u32 back_buffer = static_cast<u32>(m.arg(2));
         const u32 type = static_cast<u32>(m.arg(3));
         const GuestAddr out = m.arg_ptr(4);
-        if (out != 0) (void)m.write_u32(out, 0);
+        if (out != 0) (void)m.write_ptr(out, 0);
         if (swap_chain != 0 || back_buffer != 0 ||
             type != D3DBACKBUFFER_TYPE_MONO || out == 0 ||
             state.back_buffer_surface == 0) {
@@ -482,7 +485,7 @@ void D3D9Manager::dispatch_device_swap_chain(Marshaler& m, usize slot,
             return;
         }
         (void)add_ref(state.back_buffer_surface);
-        if (m.write_u32(out, state.back_buffer_surface).is_err()) {
+        if (m.write_ptr(out, state.back_buffer_surface).is_err()) {
             (void)release(state.back_buffer_surface);
             m.set_return(D3DERR_INVALIDCALL);
             return;

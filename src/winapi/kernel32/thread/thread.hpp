@@ -321,6 +321,23 @@ public:
         m_external_resume_callback = std::move(callback);
     }
 
+    /// Get/SetThreadContext on a thread of another process -- the primary
+    /// thread CreateProcess(CREATE_SUSPENDED) returned. @p record is the
+    /// caller's CONTEXT bytes for @p is_64bit (read for set, filled for get);
+    /// an empty @p record only asks whether @p handle names such a thread.
+    /// nullopt when @p handle is not such a thread; otherwise the NTSTATUS.
+    using ExternalContextCallback = std::function<std::optional<u32>(
+        Handle, bool set, bool is_64bit, std::vector<u8>& record)>;
+    void set_external_context_callback(ExternalContextCallback callback) {
+        m_external_context_callback = std::move(callback);
+    }
+    [[nodiscard]] std::optional<u32> external_thread_context(
+        Handle handle, bool set, bool is_64bit, std::vector<u8>& record) const {
+        return m_external_context_callback
+            ? m_external_context_callback(handle, set, is_64bit, record)
+            : std::nullopt;
+    }
+
     /// Windows caps a thread's suspend count at MAXIMUM_SUSPEND_COUNT (127)
     /// and refuses to suspend a thread that has already run to completion.
     /// Both cases are how a caller's suspend loop terminates, so they must be
@@ -773,7 +790,6 @@ private:
     std::atomic<bool> m_primary_exit_pending{false};
     u32 m_primary_exit_code{0};
     std::atomic<u32> m_last_exit_code{0};
-    std::atomic<u32> m_next_tid{1};
     /// Round-robin source of new threads' ideal processors.
     std::atomic<u32> m_next_ideal_processor{1};
     std::atomic<bool> m_shutdown{false};
@@ -792,6 +808,7 @@ private:
     GuestAddr m_exit_user_thread{0};
     ThreadExitCallback m_thread_exit_callback;
     ExternalResumeCallback m_external_resume_callback;
+    ExternalContextCallback m_external_context_callback;
 
     /// Per-host-thread guest TID.
     static inline thread_local u32 t_current_guest_tid = 1;

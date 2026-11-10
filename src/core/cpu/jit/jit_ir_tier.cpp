@@ -240,30 +240,52 @@ void print_ir_tier_stats() {
                  static_cast<unsigned long long>(s.parked));
 }
 
-/// The inline tier site. Flag-neutral, X30 clobbered, every other register
-/// preserved (X16 through JitContext::cold_counter_save[0]); `slot` 0 is the
-/// unbound form a translation-store record carries.
-void write_tier_site(u32* w, u32 slot, u32 tail_word) noexcept {
+bool tier_entry_scratch_enabled() noexcept {
+    static const bool enabled =
+        environment_flag_enabled("VITREO_JIT_TIER_ENTRY_SCRATCH", true);
+    return enabled;
+}
+
+bool scratch_tier_site(const u32* w) noexcept {
+    return w[0] == arm64::ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_TIER_COUNTERS >> 3) &&
+           w[5] == arm64::tbz(30, 31, 6 * sizeof(u32)) &&
+           w[6] == arm64::nop() && w[7] == arm64::nop();
+}
+
+/// Flag-neutral; X30 is scratch. Only the ordinary body-head variant may
+/// also clobber X16. Keep the tail/data positions for stored translations.
+void write_tier_site(u32* w, u32 slot, u32 tail_word, bool scratch_x16) noexcept {
     using namespace arm64;
     constexpr u32 save = JIT_CTX_OFF_COLD_COUNTER_SAVE >> 3;
     const u64 off = u64{slot} * sizeof(u32);
-    w[0] = str_x_uoff(16, REG_JIT_CTX, save);
-    w[1] = ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_TIER_COUNTERS >> 3);
-    w[2] = add_x_imm_lsl12(16, 16, off >> 12);
-    w[3] = ldr_w_uoff(30, 16, (off & 0xFFF) >> 2);
-    w[4] = sub_w_imm(30, 30, 1);
-    w[5] = str_w_uoff(30, 16, (off & 0xFFF) >> 2);
-    w[6] = ldr_x_uoff(16, REG_JIT_CTX, save);
-    // Past the threshold the counter is negative: call the request tail.
-    w[7] = tbz(30, 31, 4 * sizeof(u32));
+    if (scratch_x16) {
+        w[0] = ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_TIER_COUNTERS >> 3);
+        w[1] = add_x_imm_lsl12(16, 16, off >> 12);
+        w[2] = ldr_w_uoff(30, 16, (off & 0xFFF) >> 2);
+        w[3] = sub_w_imm(30, 30, 1);
+        w[4] = str_w_uoff(30, 16, (off & 0xFFF) >> 2);
+        w[5] = tbz(30, 31, 6 * sizeof(u32));
+        w[6] = nop();
+        w[7] = nop();
+    } else {
+        w[0] = str_x_uoff(16, REG_JIT_CTX, save);
+        w[1] = ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_TIER_COUNTERS >> 3);
+        w[2] = add_x_imm_lsl12(16, 16, off >> 12);
+        w[3] = ldr_w_uoff(30, 16, (off & 0xFFF) >> 2);
+        w[4] = sub_w_imm(30, 30, 1);
+        w[5] = str_w_uoff(30, 16, (off & 0xFFF) >> 2);
+        w[6] = ldr_x_uoff(16, REG_JIT_CTX, save);
+        w[7] = tbz(30, 31, 4 * sizeof(u32));
+    }
     w[8] = tail_word;
     w[9] = kBlrX30;
     w[10] = slot;
 }
 
 bool is_tier_site(const u32* w, u32 tail_word) noexcept {
-    return w[0] == arm64::str_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_COLD_COUNTER_SAVE >> 3) &&
-           w[1] == arm64::ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_TIER_COUNTERS >> 3) &&
+    return ((w[0] == arm64::str_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_COLD_COUNTER_SAVE >> 3) &&
+             w[1] == arm64::ldr_x_uoff(16, REG_JIT_CTX, JIT_CTX_OFF_TIER_COUNTERS >> 3)) ||
+            scratch_tier_site(w)) &&
            w[8] == tail_word && w[9] == kBlrX30;
 }
 
@@ -401,7 +423,7 @@ bool JitCompiler::decline_tier1_compile(GuestAddr start, u64 code_hash,
     return retry_possible;
 }
 
-void JitCompiler::emit_tier_entry_counter() {
+void JitCompiler::emit_tier_entry_counter(bool scratch_x16) {
     if (!m_tier_stencil) return;
     // Unconditionally: materialize_dispatch_tail also notes the tail in the
     // translation-store record, which a restoring process publishes.
@@ -418,7 +440,8 @@ void JitCompiler::emit_tier_entry_counter() {
     // it), so a stored record always carries the site.
     const usize at = m_code_buf.size();
     m_code_buf.resize(at + kTierSiteWords);
-    write_tier_site(&m_code_buf[at], 0, tier_counter_site_word());
+    write_tier_site(&m_code_buf[at], 0, tier_counter_site_word(),
+                    scratch_x16 && tier_entry_scratch_enabled());
 }
 
 void JitCompiler::emit_tier_counter_tail_body() {
@@ -491,7 +514,8 @@ void JitCompiler::bind_tier_counter(GuestAddr start) {
         u32* w = &m_code_buf[i];
         if (!is_tier_site(w, tail_word)) continue;
         if (slot != 0) {
-            write_tier_site(w, slot, tail_word);
+            write_tier_site(w, slot, tail_word,
+                            scratch_tier_site(w) && tier_entry_scratch_enabled());
         } else {
             w[0] = arm64::b_imm(kTierSiteWords * sizeof(u32));
             w[8] = arm64::nop();

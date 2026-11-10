@@ -166,6 +166,7 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
             return 0;
         }
         ++it->second.ref_count;
+        sync_loader_entry(it->second);
         set_last_error(entry_last_error);
         return it->second.base_address;
     }
@@ -184,6 +185,7 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
                     return 0;
                 }
                 ++info.ref_count;
+                sync_loader_entry(info);
                 set_last_error(entry_last_error);
                 return info.base_address;
             }
@@ -205,6 +207,7 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
                     return 0;
                 }
                 ++info.ref_count;
+                sync_loader_entry(info);
                 set_last_error(entry_last_error);
                 return info.base_address;
             }
@@ -339,20 +342,31 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
                 auto notify_loaded = make_pre_import_callback(win_path, module_leaf);
                 auto pre_import = [&](GuestAddr image_base, usize image_size,
                                       bool is_64bit) {
-                    notify_loaded(image_base, image_size, is_64bit);
                     register_mapping_module(
                         cache_key, module_leaf, win_path, parsed,
                         std::span<const u8>(data.data(), data.size()),
                         image_base, image_size);
                     registered = true;
+                    // The mapped image and its exports are visible inside the
+                    // LOADED notification, before import binding or DllMain.
+                    notify_loaded(image_base, image_size, is_64bit);
                 };
+                // A DLL's own manifest (resource 2) generates the activation context
+                // its imports resolve in; Windows fails the load when it cannot.
+                bool sxs_failed = false;
+                const auto own_context = module_activation_context(
+                    win_path, std::span<const u8>(data.data(), data.size()), parsed, sxs_failed);
+                if (sxs_failed) {
+                    set_last_error(sxs::kErrorSxsCantGenActCtx);
+                    return 0;
+                }
                 for (int attempt = 0; attempt < 3; ++attempt) {
                     load_res = m_pe_loader->load(
                         std::span<const u8>(data.data(), data.size()),
                         preferred,
                         resolve_refs
                             ? make_companion_resolver(parent_windows_dir(win_path),
-                                                      &dep_failed)
+                                                      &dep_failed, own_context)
                             : pe::ImportCallback{},
                         pre_import,
                         resolve_refs);
@@ -567,6 +581,7 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
                             vitreo::diagnostics::leave_module_init();
                         }
                         modules_by_name_[cache_key].dllmain_called = true;
+                        sync_loader_entry(modules_by_name_[cache_key]);
 
                         // Per MSDN: if the DllMain entry-point returns FALSE
                         // for DLL_PROCESS_ATTACH, LoadLibraryEx must fail and
@@ -587,6 +602,8 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
                                 (void)m_guest_call(failed.entry_point, dargs, 3,
                                                    failed.bitness == 64);
                             }
+                            notify_dll(2, failed.path, failed.name, failed.base_address,
+                                           static_cast<usize>(failed.image_end - failed.base_address));
                             unpublish_loader_entry(failed);
                             if (m_pe_loader) {
                                 pe::LoadedImage unload_img{};
@@ -700,20 +717,31 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
         auto notify_loaded = make_pre_import_callback(win_path, dll_with_ext);
         auto pre_import = [&](GuestAddr image_base, usize image_size,
                               bool is_64bit) {
-            notify_loaded(image_base, image_size, is_64bit);
             register_mapping_module(
                 cache_key, dll_with_ext, win_path, parsed,
                 std::span<const u8>(data.data(), data.size()),
                 image_base, image_size);
             registered = true;
+            // The mapped image and its exports are visible inside the
+            // LOADED notification, before import binding or DllMain.
+            notify_loaded(image_base, image_size, is_64bit);
         };
+        // A DLL's own manifest (resource 2) generates the activation context
+        // its imports resolve in; Windows fails the load when it cannot.
+        bool sxs_failed = false;
+        const auto own_context = module_activation_context(
+            win_path, std::span<const u8>(data.data(), data.size()), parsed, sxs_failed);
+        if (sxs_failed) {
+            set_last_error(sxs::kErrorSxsCantGenActCtx);
+            return 0;
+        }
         for (int attempt = 0; attempt < 3; ++attempt) {
             load_res = m_pe_loader->load(
                 std::span<const u8>(data.data(), data.size()),
                 preferred,
                 resolve_refs
                     ? make_companion_resolver(parent_windows_dir(win_path),
-                                              &dep_failed)
+                                              &dep_failed, own_context)
                     : pe::ImportCallback{},
                 pre_import,
                 resolve_refs);
@@ -887,6 +915,7 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
                         static_cast<unsigned long long>(dllmain_ret));
             }
             modules_by_name_[cache_key].dllmain_called = true;
+            sync_loader_entry(modules_by_name_[cache_key]);
 
             if (dllmain_ret == 0) {
                 fprintf(stderr,
@@ -901,6 +930,8 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
                     (void)m_guest_call(failed.entry_point, dargs, 3,
                                        failed.bitness == 64);
                 }
+                notify_dll(2, failed.path, failed.name, failed.base_address,
+                           static_cast<usize>(failed.image_end - failed.base_address));
                 unpublish_loader_entry(failed);
                 if (m_pe_loader) {
                     pe::LoadedImage unload_img{};
@@ -930,6 +961,17 @@ GuestAddr ModuleManager::load_library(std::string_view name, u32 flags) {
     };
 
     if (!is_explicit_path) {
+        // Learn "Dynamic-link library search order": side-by-side manifest
+        // redirection (the active activation context) comes before every
+        // search directory for a module name.
+        if (!is_relative_path && m_sxs_redirect_provider) {
+            if (const auto redirected = m_sxs_redirect_provider(dll_with_ext)) {
+                if (auto base = try_load_pe_from_vfs(*redirected);
+                    base != 0 || machine_mismatch || dll_init_failed) {
+                    return base;
+                }
+            }
+        }
         auto try_dir = [&](std::string_view directory) -> GuestAddr {
             if (directory.empty()) return 0;
             std::string candidate(directory);
@@ -1144,6 +1186,7 @@ GuestAddr ModuleManager::load_as_data_file(std::string_view name, u32 flags) {
             return 0;
         }
         ++info.ref_count;
+        sync_loader_entry(info);
         set_last_error(entry_last_error);
         return info.base_address;
     }
@@ -1293,7 +1336,20 @@ GuestAddr ModuleManager::synthesize_thunk_module(const std::string& dll_base) {
     }
 
     // Register under the normalized base name key (no path) so GetModuleHandle works.
+    const bool already_loaded = base_to_name_.count(base) != 0;
     register_module(dll_with_ext, base, std::string("C:\\Windows\\System32\\") + dll_with_ext);
+    // The host side of DLL_PROCESS_ATTACH, once per load of the module.
+    if (!already_loaded) {
+        if (const DllLifecycle* life = registry_.dll_lifecycle(dll_with_ext);
+            life != nullptr && life->process_attach) {
+            life->process_attach(base);
+        }
+        // A runtime LoadLibrary of a system DLL appears in the PEB loader
+        // lists like any other load (ldr_entry_contract_probe "dynamic").
+        if (const ModuleInfo* info = get_module_info_by_handle(base)) {
+            (void)publish_loader_entry(*info);
+        }
+    }
     return base;
 }
 

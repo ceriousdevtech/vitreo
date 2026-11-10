@@ -151,9 +151,7 @@ void Kernel32ExtManager::impl_SetPriorityClass(Marshaler& m) {
             m.set_return(0);
             return;
         }
-        if (m_process_manager != nullptr &&
-            process->pid == static_cast<pid_t>(
-                m_process_manager->get_current_process_id())) {
+        if (process->pid == ::getpid()) {
             is_self = true;
         }
     }
@@ -262,9 +260,7 @@ void Kernel32ExtManager::impl_GetPriorityClass(Marshaler& m) {
         m.set_return(0);
         return;
     }
-    if (m_process_manager != nullptr &&
-        process->pid == static_cast<pid_t>(
-            m_process_manager->get_current_process_id())) {
+    if (process->pid == ::getpid()) {
         m.set_return(m_process_manager->priority_class());
         return;
     }

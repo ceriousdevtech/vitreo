@@ -60,15 +60,16 @@ void User32ExtManager::impl_DialogBoxIndirectParamW(Marshaler& m) {
         static_cast<unsigned long long>(dlgproc),
         static_cast<unsigned long long>(init_param));
 
-    const i32 result = m_dialog_mgr->dialog_box(
+    const i64 result = m_dialog_mgr->dialog_box(
         hinstance,
         static_cast<u64>(template_ptr),
         parent,
         dlgproc,
         init_param,
         true);
-    VITREO_TRACE("[u32ext] DialogBoxIndirectParam -> %d\n", result);
-    m.set_return(static_cast<u64>(static_cast<i64>(result)));
+    VITREO_TRACE("[u32ext] DialogBoxIndirectParam -> %lld\n", static_cast<long long>(result));
+    m.set_return(m.cpu_is_64bit() ? static_cast<u64>(result)
+                                  : static_cast<u64>(static_cast<u32>(result)));
 }
 
 } // namespace vitreo::winapi

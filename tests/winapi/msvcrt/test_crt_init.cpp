@@ -15,6 +15,7 @@
 #include <winapi/kernel32/process/process.hpp>
 #include <winapi/kernel32/thread/thread.hpp>
 #include <winapi/kernel32/error.hpp>
+#include <winapi/kernel32/locale/codepage_convert.hpp>
 
 namespace {
 /// create_crt_init_thunks gained a CrtEnvironmentManager parameter. The
@@ -39,6 +40,93 @@ class CrtInitTest : public ::testing::Test {
 protected:
     CrtInitManager mgr;
 };
+
+TEST_F(CrtInitTest, CommandLineCellsPreserveCompleteUnicodeBothAbis) {
+    // SDK corecrt_startup.h defines _acmdln / _wcmdln as dereferences of
+    // these cdecl accessors. The Windows crt_winmain_probe replaces both
+    // cell values before every case; accessors must never republish over it.
+    // Narrow best-fit values: Windows cp1252_bestfit_probe, also covered in
+    // test_string_conv.cpp (U+0100 -> A, U+03B1 -> a, U+4E00 -> ?, euro ->80).
+    struct RestoreCodePage {
+        u32 saved{codepage::ansi_code_page()};
+        ~RestoreCodePage() { codepage::set_ansi_code_page(saved); }
+    } restore_code_page;
+    for (const u32 acp : {codepage::kAnsiCodePage, codepage::kCpUtf8}) {
+        codepage::set_ansi_code_page(acp);
+        for (const bool x64 : {false, true}) {
+            SCOPED_TRACE(::testing::Message() << "acp=" << acp << " x64=" << x64);
+            const std::string prefix = "game.exe \xC4\x80\xCE\xB1\xE4\xB8\x80\xE2\x82\xAC ";
+            std::string original = prefix;
+            std::string expected_a = acp == codepage::kCpUtf8
+                ? prefix : std::string("game.exe Aa?\x80 ");
+            std::u16string expected_w = u"game.exe \u0100\u03B1\u4E00\u20AC ";
+            if (acp == codepage::kCpUtf8) {
+                original += "\xF0\x9F\x98\x80 ";
+                expected_a += "\xF0\x9F\x98\x80 ";
+                expected_w += u"\U0001F600 ";
+            }
+            original.append(10000, 'x');
+            expected_a.append(10000, 'x');
+            expected_w.append(10000, u'x');
+
+            GuestMemory memory;
+            CrtDataBlock data;
+            data.set_guest_64bit(x64);
+            const GuestAddr base = x64 ? 0x16FF00000ull : CrtDataBlock::DEFAULT_BASE;
+            ASSERT_TRUE(data.initialize(memory, base, original));
+            CrtEnvFixture environment(memory);
+            auto exports = create_crt_init_thunks(mgr, data, environment.crt_env);
+            cpu::CpuState cpu;
+            if (x64) cpu.init_long_mode(); else cpu.init_protected_mode();
+            Marshaler m(memory);
+            m.attach_cpu(cpu);
+            const GuestAddr narrow = m.read_ptr(data.acmdln_addr()).value_or(0);
+            const GuestAddr wide = m.read_ptr(data.wcmdln_addr()).value_or(0);
+            ASSERT_NE(narrow, 0u);
+            ASSERT_NE(wide, 0u);
+            std::string actual_a(expected_a.size() + 1, '\0');
+            ASSERT_TRUE(memory.read_bytes(narrow,
+                reinterpret_cast<Byte*>(actual_a.data()), actual_a.size()).is_ok());
+            EXPECT_EQ(actual_a, expected_a + '\0');
+            std::u16string actual_w(expected_w.size() + 1, u'\0');
+            for (usize i = 0; i < actual_w.size(); ++i) {
+                const auto unit = memory.read_u16(wide + i * sizeof(u16));
+                ASSERT_TRUE(unit.is_ok());
+                actual_w[i] = static_cast<char16_t>(unit.value());
+            }
+            EXPECT_EQ(actual_w, expected_w + u'\0');
+            EXPECT_EQ(data.command_line(), expected_a);
+            EXPECT_EQ(data.wide_command_line(), expected_w);
+
+            // An eight-byte native command-line cell must not overwrite the
+            // neighboring x86 stdio area, even when a guest rewrites it.
+            const GuestAddr legacy_iob = base + CrtDataBlock::IOB_OFFSET;
+            ASSERT_TRUE(memory.write_u32(legacy_iob, 0x12345678u).is_ok());
+            for (const auto& name_and_cell : {
+                    std::pair{"__p__acmdln", data.acmdln_addr()},
+                    std::pair{"__p__wcmdln", data.wcmdln_addr()}}) {
+                const auto found = std::find_if(exports.entries.begin(), exports.entries.end(),
+                    [&](const ExportEntry& entry) { return entry.name == name_and_cell.first; });
+                ASSERT_NE(found, exports.entries.end());
+                EXPECT_EQ(found->stdcall_bytes, 0u);
+                set_last_error(0xdead);
+                found->handler(m);
+                EXPECT_EQ(cpu.gpr.rax, name_and_cell.second);
+                EXPECT_EQ(get_last_error(), 0xdeadu);
+                const GuestAddr replacement = base + CrtDataBlock::EMPTY_WSTRING_OFFSET;
+                ASSERT_TRUE(m.write_ptr(name_and_cell.second, replacement).is_ok());
+                found->handler(m);
+                EXPECT_EQ(cpu.gpr.rax, name_and_cell.second);
+                EXPECT_EQ(m.read_ptr(name_and_cell.second).value(), replacement);
+                ASSERT_TRUE(m.write_ptr(name_and_cell.second, 0).is_ok());
+                found->handler(m);
+                EXPECT_EQ(m.read_ptr(name_and_cell.second).value(), 0u);
+                EXPECT_EQ(get_last_error(), 0xdeadu);
+            }
+            EXPECT_EQ(memory.read_u32(legacy_iob).value(), 0x12345678u);
+        }
+    }
+}
 
 namespace {
 #include "crt_winmain_oracle.inc"

@@ -61,6 +61,9 @@ void CocoaBridge::set_visible(HWND hwnd, bool visible) {
                         hwnd, visible ? 1 : 0, it->second.ns_window);
             }
             const HWND owner = it->second.owner;
+            // The owner may be a composition host that presents only while
+            // none of its owned windows is visible.
+            if (owner != NULL_HWND) owned_visibility_changed(owner, visible, false);
             if (it->second.is_dialog && owner != NULL_HWND &&
                 should_embed_owned_dialog(hwnd, it->second.guest_style, owner)) {
                 adopt_extra_family_dialog(hwnd);
@@ -168,6 +171,16 @@ bool CocoaBridge::native_window_is_visible(HWND hwnd) const {
         visible = [win isVisible];
     });
     return visible;
+}
+
+bool CocoaBridge::control_view_is_hidden(HWND hwnd) const {
+    __block bool hidden = false;
+    vtr_run_on_main_sync(^{
+        auto it = m_controls.find(hwnd);
+        if (it == m_controls.end() || it->second == nullptr) return;
+        hidden = [(__bridge NSView*)it->second isHidden];
+    });
+    return hidden;
 }
 
 bool CocoaBridge::native_window_is_resizable(HWND hwnd) const {

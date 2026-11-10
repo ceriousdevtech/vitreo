@@ -1,0 +1,185 @@
+;
+; Note: shader requires additional functionality:
+;       Use native low precision
+;
+;
+; Input signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+;
+; Output signature:
+;
+; Name                 Index   Mask Register SysValue  Format   Used
+; -------------------- ----- ------ -------- -------- ------- ------
+; no parameters
+; shader hash: a33644f03b47a68b886b244106e11156
+;
+; Pipeline Runtime Information: 
+;
+;PSVRuntimeInfo:
+; Compute Shader
+; NumThreads=(1,1,1)
+; MinimumExpectedWaveLaneCount: 0
+; MaximumExpectedWaveLaneCount: 4294967295
+; UsesViewID: false
+; SigInputElements: 0
+; SigOutputElements: 0
+; SigPatchConstOrPrimElements: 0
+; SigInputVectors: 0
+; SigOutputVectors[0]: 0
+; SigOutputVectors[1]: 0
+; SigOutputVectors[2]: 0
+; SigOutputVectors[3]: 0
+; EntryFunctionName: main
+;
+;
+; Buffer Definitions:
+;
+;
+; Resource Bindings:
+;
+; Name                                 Type  Format         Dim      ID      HLSL Bind  Count
+; ------------------------------ ---------- ------- ----------- ------- -------------- ------
+; inputs                            texture    byte         r/o      T0             t0     1
+; outputs                               UAV    byte         r/w      U0             u0     1
+;
+target datalayout = "e-m:e-p:32:32-i1:32-i8:8-i16:16-i32:32-i64:64-f16:16-f32:32-f64:64-n8:16:32:64"
+target triple = "dxil-ms-dx"
+
+%dx.types.Handle = type { i8* }
+%dx.types.ResBind = type { i32, i32, i32, i8 }
+%dx.types.ResourceProperties = type { i32, i32 }
+%dx.types.ResRet.i32 = type { i32, i32, i32, i32, i32 }
+%dx.types.fouri16 = type { i16, i16, i16, i16 }
+%struct.ByteAddressBuffer = type { i32 }
+%struct.RWByteAddressBuffer = type { i32 }
+
+define void @main() {
+  %1 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind { i32 0, i32 0, i32 0, i8 1 }, i32 0, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %2 = call %dx.types.Handle @dx.op.createHandleFromBinding(i32 217, %dx.types.ResBind zeroinitializer, i32 0, i1 false)  ; CreateHandleFromBinding(bind,index,nonUniformIndex)
+  %3 = call i32 @dx.op.threadId.i32(i32 93, i32 0)  ; ThreadId(component)
+  %4 = mul i32 %3, 80
+  %5 = mul i32 %3, 48
+  %6 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 11, i32 0 })  ; AnnotateHandle(res,props)  resource: ByteAddressBuffer
+  %7 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %6, i32 %4, i32 undef, i8 15, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %8 = extractvalue %dx.types.ResRet.i32 %7, 0
+  %9 = extractvalue %dx.types.ResRet.i32 %7, 1
+  %10 = extractvalue %dx.types.ResRet.i32 %7, 2
+  %11 = extractvalue %dx.types.ResRet.i32 %7, 3
+  %12 = trunc i32 %8 to i16
+  %13 = trunc i32 %9 to i16
+  %14 = trunc i32 %10 to i16
+  %15 = trunc i32 %11 to i16
+  %16 = add i32 %4, 16
+  %17 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %6, i32 %16, i32 undef, i8 15, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %18 = extractvalue %dx.types.ResRet.i32 %17, 0
+  %19 = extractvalue %dx.types.ResRet.i32 %17, 1
+  %20 = extractvalue %dx.types.ResRet.i32 %17, 2
+  %21 = extractvalue %dx.types.ResRet.i32 %17, 3
+  %22 = trunc i32 %18 to i16
+  %23 = trunc i32 %19 to i16
+  %24 = trunc i32 %20 to i16
+  %25 = trunc i32 %21 to i16
+  %26 = add i32 %4, 32
+  %27 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %6, i32 %26, i32 undef, i8 15, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %28 = extractvalue %dx.types.ResRet.i32 %27, 0
+  %29 = extractvalue %dx.types.ResRet.i32 %27, 1
+  %30 = extractvalue %dx.types.ResRet.i32 %27, 2
+  %31 = extractvalue %dx.types.ResRet.i32 %27, 3
+  %32 = trunc i32 %28 to i16
+  %33 = trunc i32 %29 to i16
+  %34 = trunc i32 %30 to i16
+  %35 = trunc i32 %31 to i16
+  %36 = add i32 %4, 48
+  %37 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %6, i32 %36, i32 undef, i8 15, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %38 = extractvalue %dx.types.ResRet.i32 %37, 0
+  %39 = extractvalue %dx.types.ResRet.i32 %37, 1
+  %40 = extractvalue %dx.types.ResRet.i32 %37, 2
+  %41 = extractvalue %dx.types.ResRet.i32 %37, 3
+  %42 = trunc i32 %38 to i16
+  %43 = trunc i32 %39 to i16
+  %44 = trunc i32 %40 to i16
+  %45 = trunc i32 %41 to i16
+  %46 = call i32 @dx.op.pack4x8.i16(i32 220, i8 0, i16 %12, i16 %13, i16 %14, i16 %15)  ; Pack4x8(packMode,x,y,z,w)
+  %47 = call i32 @dx.op.pack4x8.i16(i32 220, i8 0, i16 %22, i16 %23, i16 %24, i16 %25)  ; Pack4x8(packMode,x,y,z,w)
+  %48 = call i32 @dx.op.pack4x8.i16(i32 220, i8 1, i16 %32, i16 %33, i16 %34, i16 %35)  ; Pack4x8(packMode,x,y,z,w)
+  %49 = call i32 @dx.op.pack4x8.i16(i32 220, i8 2, i16 %42, i16 %43, i16 %44, i16 %45)  ; Pack4x8(packMode,x,y,z,w)
+  %50 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %50, i32 %5, i32 undef, i32 %46, i32 %47, i32 %48, i32 %49, i8 15, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %51 = add i32 %4, 64
+  %52 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %2, %dx.types.ResourceProperties { i32 11, i32 0 })  ; AnnotateHandle(res,props)  resource: ByteAddressBuffer
+  %53 = call %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32 139, %dx.types.Handle %52, i32 %51, i32 undef, i8 1, i32 4)  ; RawBufferLoad(srv,index,elementOffset,mask,alignment)
+  %54 = extractvalue %dx.types.ResRet.i32 %53, 0
+  %55 = call %dx.types.fouri16 @dx.op.unpack4x8.i16(i32 219, i8 0, i32 %54)  ; Unpack4x8(unpackMode,pk)
+  %56 = extractvalue %dx.types.fouri16 %55, 0
+  %57 = extractvalue %dx.types.fouri16 %55, 1
+  %58 = extractvalue %dx.types.fouri16 %55, 2
+  %59 = extractvalue %dx.types.fouri16 %55, 3
+  %60 = call %dx.types.fouri16 @dx.op.unpack4x8.i16(i32 219, i8 1, i32 %54)  ; Unpack4x8(unpackMode,pk)
+  %61 = extractvalue %dx.types.fouri16 %60, 0
+  %62 = extractvalue %dx.types.fouri16 %60, 1
+  %63 = extractvalue %dx.types.fouri16 %60, 2
+  %64 = extractvalue %dx.types.fouri16 %60, 3
+  %65 = zext i16 %56 to i32
+  %66 = zext i16 %57 to i32
+  %67 = zext i16 %58 to i32
+  %68 = zext i16 %59 to i32
+  %69 = add i32 %5, 16
+  %70 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %70, i32 %69, i32 undef, i32 %65, i32 %66, i32 %67, i32 %68, i8 15, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  %71 = sext i16 %61 to i32
+  %72 = sext i16 %62 to i32
+  %73 = sext i16 %63 to i32
+  %74 = sext i16 %64 to i32
+  %75 = add i32 %5, 32
+  %76 = call %dx.types.Handle @dx.op.annotateHandle(i32 216, %dx.types.Handle %1, %dx.types.ResourceProperties { i32 4107, i32 0 })  ; AnnotateHandle(res,props)  resource: RWByteAddressBuffer
+  call void @dx.op.rawBufferStore.i32(i32 140, %dx.types.Handle %76, i32 %75, i32 undef, i32 %71, i32 %72, i32 %73, i32 %74, i8 15, i32 4)  ; RawBufferStore(uav,index,elementOffset,value0,value1,value2,value3,mask,alignment)
+  ret void
+}
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.threadId.i32(i32, i32) #0
+
+; Function Attrs: nounwind readonly
+declare %dx.types.ResRet.i32 @dx.op.rawBufferLoad.i32(i32, %dx.types.Handle, i32, i32, i8, i32) #1
+
+; Function Attrs: nounwind readnone
+declare i32 @dx.op.pack4x8.i16(i32, i8, i16, i16, i16, i16) #0
+
+; Function Attrs: nounwind
+declare void @dx.op.rawBufferStore.i32(i32, %dx.types.Handle, i32, i32, i32, i32, i32, i32, i8, i32) #2
+
+; Function Attrs: nounwind readnone
+declare %dx.types.fouri16 @dx.op.unpack4x8.i16(i32, i8, i32) #0
+
+; Function Attrs: nounwind readnone
+declare %dx.types.Handle @dx.op.annotateHandle(i32, %dx.types.Handle, %dx.types.ResourceProperties) #0
+
+; Function Attrs: nounwind readnone
+declare %dx.types.Handle @dx.op.createHandleFromBinding(i32, %dx.types.ResBind, i32, i1) #0
+
+attributes #0 = { nounwind readnone }
+attributes #1 = { nounwind readonly }
+attributes #2 = { nounwind }
+
+!llvm.ident = !{!0}
+!dx.version = !{!1}
+!dx.valver = !{!2}
+!dx.shaderModel = !{!3}
+!dx.resources = !{!4}
+!dx.entryPoints = !{!9}
+
+!0 = !{!"dxc(private) 1.9.0.5399 (a107ba613)"}
+!1 = !{i32 1, i32 6}
+!2 = !{i32 1, i32 9}
+!3 = !{!"cs", i32 6, i32 6}
+!4 = !{!5, !7, null, null}
+!5 = !{!6}
+!6 = !{i32 0, %struct.ByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i32 0, null}
+!7 = !{!8}
+!8 = !{i32 0, %struct.RWByteAddressBuffer* undef, !"", i32 0, i32 0, i32 1, i32 11, i1 false, i1 false, i1 false, null}
+!9 = !{void ()* @main, !"main", null, !4, !10}
+!10 = !{i32 0, i64 8388656, i32 4, !11}
+!11 = !{i32 1, i32 1, i32 1}

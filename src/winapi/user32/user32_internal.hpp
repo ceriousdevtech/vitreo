@@ -104,6 +104,16 @@ void set_native_control_wndproc_address(u64 address) noexcept;
 /// callable thunk once registered; kNativeControlWndProc before that.
 [[nodiscard]] u64 native_control_wndproc_address() noexcept;
 
+/// A window class a host-implemented DLL registers whose windows are native
+/// controls, with that DLL's exported procedure as the class procedure
+/// (Msftedit.dll's RICHEDIT50W -> RichEditWndProc). CreateWindowEx keeps the
+/// native-control path for it, and GWLP_WNDPROC reports @p proc.
+void set_module_native_class(std::wstring_view class_name, u64 proc);
+/// Remove the record set_module_native_class() made (the DLL unloaded).
+void clear_module_native_class(std::wstring_view class_name);
+/// True when @p proc is a procedure set_module_native_class() recorded.
+[[nodiscard]] bool is_module_native_class_proc(u64 proc) noexcept;
+
 [[nodiscard]] bool is_native_host_control(const windowing::WindowData& win) noexcept;
 [[nodiscard]] u64 effective_wndproc(const windowing::WindowData& win) noexcept;
 [[nodiscard]] bool is_native_control_wndproc(u64 proc) noexcept;

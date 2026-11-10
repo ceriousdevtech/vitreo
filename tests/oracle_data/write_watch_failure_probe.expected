@@ -1,0 +1,50 @@
+--- x64
+plain alloc: rc=4294967295 gle=87 count=16 gran=7
+null base: rc=4294967295 gle=87 count=16 gran=7
+zero size: rc=4294967295 gle=87 count=16 gran=7
+past end: rc=4294967295 gle=87 count=16 gran=7
+bad flags 2: rc=4294967295 gle=87 count=16 gran=7
+null addrs: rc=4294967295 gle=998 count=16 gran=7
+null addrs count 0: rc=4294967295 gle=87 count=0 gran=7
+count 0: rc=4294967295 gle=87 count=0 gran=7
+null addrs plain alloc: rc=4294967295 gle=998 count=16 gran=7
+null addrs bad flags: rc=4294967295 gle=87 count=16 gran=7
+count 0 plain alloc: rc=4294967295 gle=87 count=0 gran=7
+null addrs clean range: rc=4294967295 gle=998 count=16 gran=7
+clean range: rc=0 gle=57005 count=0 gran=4096
+count 1 of 3: rc=0 gle=57005 count=1 gran=4096
+ok: rc=0 gle=57005 count=3 gran=4096
+reset count 1 of 3: rc=0 gle=57005 count=1 gran=4096
+  first=+0
+after truncated reset: rc=0 gle=57005 count=2 gran=4096
+  first=+8192
+Reset plain: rc=4294967295 gle=57005
+Reset null: rc=4294967295 gle=57005
+Reset zero: rc=4294967295 gle=57005
+Reset past end: rc=4294967295 gle=57005
+Reset ok: rc=0 gle=57005
+--- x32
+plain alloc: rc=4294967295 gle=87 count=16 gran=7
+null base: rc=4294967295 gle=87 count=16 gran=7
+zero size: rc=4294967295 gle=87 count=16 gran=7
+past end: rc=4294967295 gle=87 count=16 gran=7
+bad flags 2: rc=4294967295 gle=87 count=16 gran=7
+null addrs: rc=4294967295 gle=998 count=16 gran=7
+null addrs count 0: rc=4294967295 gle=87 count=0 gran=7
+count 0: rc=4294967295 gle=87 count=0 gran=7
+null addrs plain alloc: rc=4294967295 gle=998 count=16 gran=7
+null addrs bad flags: rc=4294967295 gle=87 count=16 gran=7
+count 0 plain alloc: rc=4294967295 gle=87 count=0 gran=7
+null addrs clean range: rc=4294967295 gle=998 count=16 gran=7
+clean range: rc=0 gle=57005 count=0 gran=4096
+count 1 of 3: rc=0 gle=57005 count=1 gran=4096
+ok: rc=0 gle=57005 count=3 gran=4096
+reset count 1 of 3: rc=0 gle=57005 count=1 gran=4096
+  first=+0
+after truncated reset: rc=0 gle=57005 count=2 gran=4096
+  first=+8192
+Reset plain: rc=4294967295 gle=57005
+Reset null: rc=4294967295 gle=57005
+Reset zero: rc=4294967295 gle=57005
+Reset past end: rc=4294967295 gle=57005
+Reset ok: rc=0 gle=57005

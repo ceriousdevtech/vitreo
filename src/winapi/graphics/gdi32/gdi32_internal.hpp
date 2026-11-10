@@ -58,7 +58,7 @@ namespace gdi_text_exports {
 
 void text_out(GdiManager& mgr, Marshaler& m, bool wide);
 void ext_text_out(GdiManager& mgr, Marshaler& m, bool wide);
-void get_text_extent_point(GdiManager& mgr, Marshaler& m, bool wide);
+void get_text_extent_point(GdiManager& mgr, Marshaler& m, bool wide, bool point32 = false);
 void get_text_extent_ex_point(GdiManager& mgr, Marshaler& m, bool wide);
 void get_text_extent_point_i(GdiManager& mgr, Marshaler& m);
 void get_text_metrics(GdiManager& mgr, Marshaler& m, bool wide);

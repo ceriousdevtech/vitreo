@@ -776,6 +776,47 @@ TEST_F(InterpreterTest, RunUntilHalt) {
     EXPECT_EQ(interp.instruction_count(), 4);
 }
 
+TEST_F(InterpreterTest, FailedInstructionByteFetchIsExecutePageFault) {
+    // Native instruction_fetch_probe{32,64}.expected: instruction IP stays
+    // at its start, while ExceptionInformation[1] names the missing byte.
+    for (bool is64 : {false, true}) {
+        for (bool crossing : {false, true}) {
+            if (is64) m_cpu->init_long_mode(); else m_cpu->init_protected_mode();
+            const u64 ip = crossing ? 0x10fffu : 0u;
+            if (crossing) {
+                // MOV EAX,imm32 requires bytes on the inaccessible next page.
+                ASSERT_TRUE(m_memory->write_u8(ip, 0xb8).is_ok());
+            }
+            m_cpu->rip = ip;
+            Interpreter interpreter(*m_cpu, *m_memory);
+            EXPECT_EQ(interpreter.step(), ExecResult::Exception);
+            EXPECT_EQ(interpreter.context().exception, CpuException::PageFault);
+            EXPECT_EQ(interpreter.context().exception_error, 8u);
+            EXPECT_EQ(interpreter.context().exception_num_params, 2u);
+            EXPECT_EQ(interpreter.context().exception_addr, crossing ? 0x11000u : 0u);
+            EXPECT_EQ(m_cpu->rip, ip);
+
+            // Invalid Group-5 /7 is a fetched invalid encoding, not another
+            // fetch fault, and must not inherit the previous AV parameters.
+            ASSERT_TRUE(m_memory->write_u16(0x1000, 0xffff).is_ok());
+            m_cpu->rip = 0x1000;
+            EXPECT_EQ(interpreter.step(), ExecResult::Exception);
+            EXPECT_EQ(interpreter.context().exception, CpuException::InvalidOpcode);
+            EXPECT_EQ(interpreter.context().exception_num_params, 0u);
+        }
+        // Prefetching 15 bytes past a valid final-byte RET is speculative;
+        // only the one byte required by the decoder may affect execution.
+        ASSERT_TRUE(m_memory->write_u8(0x10fff, 0xc3).is_ok());
+        m_cpu->rip = 0x10fff;
+        m_cpu->set_sp(0x8000);
+        if (is64) ASSERT_TRUE(m_memory->write_u64(0x8000, 0x1000).is_ok());
+        else ASSERT_TRUE(m_memory->write_u32(0x8000, 0x1000).is_ok());
+        Interpreter final_byte(*m_cpu, *m_memory);
+        EXPECT_EQ(final_byte.step(), ExecResult::Branch);
+        EXPECT_EQ(m_cpu->rip, 0x1000u);
+    }
+}
+
 TEST_F(InterpreterTest, RunWithMaxInstructions) {
     // Infinite loop: JMP -2
     u8 code[] = { 0xEB, 0xFE };

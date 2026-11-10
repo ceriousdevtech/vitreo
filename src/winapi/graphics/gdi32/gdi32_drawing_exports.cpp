@@ -72,7 +72,7 @@ void add_gdi32_drawing_exports(DllExports& exports, GdiManager& mgr) {
     }, 16});
 
     // ---- GetTextExtentPoint32W(hdc, string, count, size_ptr) ----
-    exports.entries.push_back({"GetTextExtentPoint32W", 22, [&mgr](Marshaler& m) { gdi_text_exports::get_text_extent_point(mgr, m, true); }, 16});
+    exports.entries.push_back({"GetTextExtentPoint32W", 22, [&mgr](Marshaler& m) { gdi_text_exports::get_text_extent_point(mgr, m, true, true); }, 16});
 
     // ---- RemoveFontMemResourceEx(handle) ----
     exports.entries.push_back({"RemoveFontMemResourceEx", 23, [&mgr](Marshaler& m) { gdi_text_exports::remove_font_mem_resource_ex(mgr, m); }, 4});

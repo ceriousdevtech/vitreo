@@ -4,6 +4,7 @@
 /// @brief PostQuitMessage/PostMessageW/SendMessageW implementation (WIN32-055)
 
 #include "message_send.hpp"
+#include "static_image_layout.hpp"
 #include "winapi/kernel32/error.hpp"
 #include "winapi/core/marshaler.hpp"
 #include "winapi/graphics/gdi32/gdi32.hpp"
@@ -34,6 +35,27 @@ bool MessageSendManager::show_static_icon(windowing::HWND hwnd, u64 icon) {
     std::vector<u8> rgba;
     if (!m_icon_rgba_query || !m_icon_rgba_query(icon, w, h, rgba)) return false;
     return m_bridge.set_control_image_rgba(hwnd, w, h, rgba);
+}
+
+void MessageSendManager::size_static_to_image(windowing::HWND hwnd, i32 image_w,
+                                              i32 image_h) {
+    auto* win = m_hwnd_mgr.find(hwnd);
+    if (!win) return;
+    const windowing::Rect next = static_image_window_rect(
+        win->rect, win->client_rect, win->style, image_w, image_h);
+    if (next.left == win->rect.left && next.top == win->rect.top &&
+        next.right == win->rect.right && next.bottom == win->rect.bottom) {
+        return;
+    }
+    const i32 border_w = win->rect.width() - win->client_rect.width();
+    const i32 border_h = win->rect.height() - win->client_rect.height();
+    win->rect = next;
+    win->client_rect.right = win->client_rect.left + next.width() - border_w;
+    win->client_rect.bottom = win->client_rect.top + next.height() - border_h;
+    VITREO_TRACE("[send] static 0x%x sized to its %dx%d image -> (%d,%d,%d,%d)\n",
+                 hwnd, image_w, image_h, next.left, next.top, next.right,
+                 next.bottom);
+    (void)m_bridge.set_control_frame(hwnd, next);
 }
 
 bool MessageSendManager::handle_control_message(
@@ -195,7 +217,12 @@ bool MessageSendManager::handle_control_message(
         }
         VITREO_TRACE("[send] STM_SETICON hwnd=0x%x handle=0x%x\n",
                      hwnd, handle);
-        if (handle != 0 && !show_static_icon(hwnd, handle)) {
+        if (handle != 0 && show_static_icon(hwnd, handle)) {
+            i32 cx = 0, cy = 0;
+            if (m_icon_size_query && m_icon_size_query(handle, cx, cy)) {
+                size_static_to_image(hwnd, cx, cy);
+            }
+        } else if (handle != 0) {
             (void)m_bridge.set_control_bitmap(hwnd, handle);
         }
         result = prev_handle;
@@ -230,8 +257,14 @@ bool MessageSendManager::handle_control_message(
                 result = prev_handle;
                 return true;
             }
-            std::lock_guard lock(m_control_state_mutex);
-            m_static_image_state[hwnd].bitmap = handle;
+            {
+                std::lock_guard lock(m_control_state_mutex);
+                m_static_image_state[hwnd].bitmap = handle;
+            }
+            windowing::CocoaBridge::BitmapDims dims;
+            if (m_bridge.get_bitmap_dims(handle, dims)) {
+                size_static_to_image(hwnd, dims.width, dims.height);
+            }
         } else if (image_type == 1) {
             {
                 std::lock_guard lock(m_control_state_mutex);
@@ -239,8 +272,11 @@ bool MessageSendManager::handle_control_message(
             }
             if (handle == 0) {
                 (void)m_bridge.set_control_image_rgba(hwnd, 0, 0, {});
-            } else {
-                (void)show_static_icon(hwnd, handle);
+            } else if (show_static_icon(hwnd, handle)) {
+                i32 cx = 0, cy = 0;
+                if (m_icon_size_query && m_icon_size_query(handle, cx, cy)) {
+                    size_static_to_image(hwnd, cx, cy);
+                }
             }
         }
 

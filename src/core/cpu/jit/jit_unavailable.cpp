@@ -25,6 +25,7 @@
 ///
 
 #include "core/cpu/jit/jit_compiler.hpp"
+#include "core/cpu/jit/jit_helpers.hpp"
 #include "core/cpu/jit/linear_fault.hpp"
 #include "core/cpu/state/flag_state.hpp"
 
@@ -211,6 +212,12 @@ usize JitCodeArena::sweep_retired_chunks(bool) { return 0; }
 void JitCompiler::maybe_pump_gui() {}
 void JitCompiler::maybe_pump_gui_after_execute() {}
 
+// Cold-residency counters, tier/deopt requests and eager cold arms are all
+// raised by emitted code. None is emitted here, so no request is ever
+// pending; servicing one would have nothing to act on.
+void JitCompiler::service_cold_residency_slow() {}
+void JitCompiler::service_cold_eager_pending() { m_cold_eager_pending.clear(); }
+
 // ---------------------------------------------------------------------------
 // Linear fault handler
 //
@@ -238,6 +245,15 @@ void dump_stack_proof_stats() noexcept {}
 
 LinearReservationRegistration::~LinearReservationRegistration() = default;
 bool LinearReservationRegistration::acquire(u8*, usize) { return false; }
+// No JIT view exists to register, and acquire() never succeeds first.
+bool LinearReservationRegistration::acquire_jit_view(u8*, usize) { return false; }
 void LinearReservationRegistration::reset() noexcept {}
 
+// The fault handler is never installed, so no linear fault is ever recorded.
+bool jit_last_linear_fault(LinearFaultDetail&) { return false; }
+
 } // namespace vitreo::cpu::jit
+
+// Fatal-context diagnostic: tallies call-site alignment in emitted ARM64
+// code. Nothing is emitted here, so there is no tally to print.
+extern "C" void jit_dump_call_alignment_tally() {}

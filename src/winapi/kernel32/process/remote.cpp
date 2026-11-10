@@ -78,6 +78,48 @@ std::optional<u32> Kernel32ExtManager::resume_external_primary_thread(
     return previous;
 }
 
+std::optional<u32> Kernel32ExtManager::external_primary_context(
+    Handle thread_handle, bool set, bool is_64bit, std::vector<u8>& record) {
+    constexpr u32 STATUS_SUCCESS = 0x00000000u;
+    constexpr u32 STATUS_INVALID_HANDLE = 0xC0000008u;
+    constexpr u32 STATUS_ACCESS_VIOLATION = 0xC0000005u;
+    pid_t pid = 0;
+    {
+        std::lock_guard lock(m_external_thread_mutex);
+        const auto handle_it = m_external_primary_handles.find(thread_handle);
+        if (handle_it == m_external_primary_handles.end()) return std::nullopt;
+        const auto found = m_external_primary_by_tid.find(handle_it->second);
+        if (found != m_external_primary_by_tid.end() &&
+            found->second.process != nullptr) {
+            pid = found->second.process->pid;
+        }
+    }
+    if (record.empty()) return STATUS_SUCCESS;  // "is it external?" probe
+    if (pid <= 0) return STATUS_INVALID_HANDLE;
+
+    // The CONTEXT is applied in the target, where the thread lives: stage the
+    // caller's record there, run the operation, and read the result back.
+    constexpr u32 MEM_COMMIT_RESERVE = 0x3000u;
+    constexpr u32 PAGE_READWRITE = 0x04u;
+    constexpr u32 MEM_RELEASE = 0x8000u;
+    const GuestAddr staged = ipc::remote_virtual_alloc(
+        pid, 0, record.size(), MEM_COMMIT_RESERVE, PAGE_READWRITE);
+    if (staged == 0) return STATUS_INVALID_HANDLE;
+    std::optional<u32> status;
+    if (ipc::remote_write_process_memory(pid, staged, record)) {
+        status = ipc::remote_primary_thread_context(pid, set, staged, is_64bit);
+        if (status.has_value() && *status == STATUS_SUCCESS && !set &&
+            !ipc::remote_read_process_memory(pid, staged, record)) {
+            status = STATUS_ACCESS_VIOLATION;
+        }
+    }
+    (void)ipc::remote_virtual_free(pid, staged, 0, MEM_RELEASE);
+    ipc::ipc_log("%sThreadContext external h=0x%x pid=%d -> 0x%x",
+            set ? "Set" : "Get", static_cast<unsigned>(thread_handle),
+            static_cast<int>(pid), status.value_or(STATUS_INVALID_HANDLE));
+    return status.value_or(STATUS_INVALID_HANDLE);
+}
+
 void Kernel32ExtManager::forget_external_primary_thread(
     Handle thread_handle) {
     std::lock_guard lock(m_external_thread_mutex);
@@ -1136,9 +1178,7 @@ void Kernel32ExtManager::impl_SetProcessInformation(Marshaler& m) {
         auto* process = static_cast<ipc::ProcessObject*>(
             m_handle_table->get(process_handle, HandleType::Process));
         if (process == nullptr) return error_codes::ERROR_INVALID_HANDLE;
-        self = m_process_manager != nullptr &&
-               process->pid == static_cast<pid_t>(
-                   m_process_manager->get_current_process_id());
+        self = process->pid == ::getpid();
         return 0;
     };
     auto remote_unimplemented = [&](const char* what) {

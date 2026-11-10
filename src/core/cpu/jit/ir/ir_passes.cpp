@@ -514,8 +514,10 @@ u32 eliminate_dead_flags(IrBlock& block, PassStats& stats,
         if (def.flags.repr == FlagRepr::Dead) continue;  // already killed
 
         // The killer: the next definition of the architectural flags. Without
-        // one this definition is live-out of the block — a successor may read
-        // it, and this IR has no cross-block flag liveness yet.
+        // one this definition is live-out of the block. A successor may read
+        // it. Cross-block omission of that one record, when every successor
+        // redefines the flags before a read or a fault, is applied later in
+        // `ir_measure_cross_block_flags`.
         u32 killer = n;
         for (u32 j = i + 1; j < n; ++j) {
             // A by-CL shift publishes its record only when the masked count
@@ -768,7 +770,9 @@ namespace {
 u32 eliminate_dead_overlays(IrBlock& block, PassStats& stats) {
     if (!block.is_64bit) return 0;
     const u32 n = static_cast<u32>(block.insts.size());
-    std::vector<u8> drop(n, 0);
+    // Ordinary scalar blocks have no dead overlay. Materialize the mask only
+    // after proving a removal, so a no-op pass needs no allocation or clearing.
+    std::vector<u8> drop;
     u32 killed = 0;
     for (u32 i = 0; i < n; ++i) {
         const Inst& overlay = block.insts[i];
@@ -814,6 +818,7 @@ u32 eliminate_dead_overlays(IrBlock& block, PassStats& stats) {
             break;
         }
         if (!dead) continue;
+        if (drop.empty()) drop.assign(n, 0);
         drop[i] = 1;
         ++killed;
     }

@@ -37,7 +37,7 @@ targets:
           ENGINE="${SRCROOT}/../build/src/vitreo"
           HELPERS="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Helpers"
           RESOURCES="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
-          SWIFTC="${SWIFT_EXEC:-${TOOLCHAIN_DIR}/usr/bin/swiftc}"
+          SWIFTC="${SWIFT_EXEC:-$(xcrun --find swiftc)}"
           mkdir -p "${HELPERS}"
           if [ -x "${ENGINE}" ]; then
             cp "${ENGINE}" "${HELPERS}/vitreo"

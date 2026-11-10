@@ -26,7 +26,7 @@ static Result<f32, Error> read_ss(ExecContext& ctx, const Operand& op) noexcept 
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<f32, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 4);
+    auto val = read_memory_av(ctx, addr.value(), 4);
     if (!val) {
         ctx.exception = CpuException::PageFault;
         ctx.exception_addr = addr.value();
@@ -45,7 +45,7 @@ static Result<f64, Error> read_sd(ExecContext& ctx, const Operand& op) noexcept 
     }
     auto addr = calc_effective_address(ctx, op.mem);
     if (!addr) return Result<f64, Error>::err(addr.error());
-    auto val = read_memory(ctx, addr.value(), 8);
+    auto val = read_memory_av(ctx, addr.value(), 8);
     if (!val) {
         ctx.exception = CpuException::PageFault;
         ctx.exception_addr = addr.value();
@@ -77,11 +77,11 @@ static Result<XmmReg, Error> read_ps(ExecContext& ctx, const Operand& op,
     if (!addr) return Result<XmmReg, Error>::err(addr.error());
     if (aligned_form && op.type == OperandType::Mem128 &&
         (addr.value() & 0xF) != 0) {
-        ctx.exception = CpuException::GeneralProtection;
+        record_misaligned_operand_gp(ctx);
         return Result<XmmReg, Error>::err(Error::InvalidArgument);
     }
     XmmReg tmp{};
-    auto r = ctx.mem.read_bytes(addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
+    auto r = read_bytes_av(ctx, addr.value(), reinterpret_cast<Byte*>(&tmp), 16);
     if (!r) {
         ctx.exception = CpuException::PageFault;
         ctx.exception_addr = addr.value();

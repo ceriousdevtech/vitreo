@@ -171,7 +171,7 @@ void DialogManager::ensure_dialog_class() {
 // end_dialog
 // =============================================================================
 
-bool DialogManager::end_dialog(windowing::HWND dlg, i32 result) {
+bool DialogManager::end_dialog(windowing::HWND dlg, i64 result) {
     // Measured (s1win_misc_probe enddialog_*): an invalid window is
     // ERROR_INVALID_WINDOW_HANDLE, a window that is not a dialog
     // ERROR_WINDOW_NOT_DIALOG; a second EndDialog replaces the result.
@@ -185,19 +185,39 @@ bool DialogManager::end_dialog(windowing::HWND dlg, i32 result) {
         return false;
     }
     if (diag_logs_enabled()) {
-        std::fprintf(stderr, "[btn-diag] EndDialog(hwnd=0x%x, result=%d)\n", dlg, result);
+        std::fprintf(stderr, "[btn-diag] EndDialog(hwnd=0x%x, result=%lld)\n", dlg, static_cast<long long>(result));
     }
-    VITREO_TRACE( "[dialog] EndDialog(hwnd=0x%x, result=%d)\n",
-                 dlg, result);
+    VITREO_TRACE( "[dialog] EndDialog(hwnd=0x%x, result=%lld)\n",
+                 dlg, static_cast<long long>(result));
 
-    // Store the result and flag so the modal loop exits.
-    // Don't post WM_CLOSE or WM_QUIT — the modal loop checks m_modal_ended
-    // directly. Posting WM_CLOSE/WM_QUIT can corrupt state if the DlgProc
-    // receives them before the loop naturally exits.
-    m_modal_ended  = true;
-    m_modal_result = result;
-
+    // Measured (enddialog_nested_probe, x86 and x64): EndDialog hides the
+    // dialog and re-enables the owner its DialogBox disabled at once; the
+    // window is destroyed when that dialog's own modal loop returns, with the
+    // latest result. Only that loop ends: a nested DialogBox keeps running.
+    m_ended_dialogs[dlg] = result;
+    if (windowing::WindowData* ended = m_hwnd_mgr.find(dlg);
+        ended != nullptr && ended->visible) {
+        ended->visible = false;
+        ended->style &= ~windowing::WS::VISIBLE;
+        m_control_host.set_visible(dlg, false);
+    }
+    enable_disabled_owner(dlg);
     return true;
+}
+
+void DialogManager::enable_disabled_owner(windowing::HWND dlg) {
+    const auto it = m_disabled_owners.find(dlg);
+    if (it == m_disabled_owners.end()) return;
+    const DisabledOwner disabled = it->second;
+    m_disabled_owners.erase(it);
+    if (windowing::WindowData* owner = m_hwnd_mgr.find(disabled.owner)) {
+        owner->enabled = true;
+        (void)m_control_host.set_control_enabled(disabled.owner, true);
+        if (disabled.wndproc != 0 && m_dlgproc_callback) {
+            (void)m_dlgproc_callback(disabled.owner, windowing::WM::ENABLE, 1, 0,
+                                     disabled.wndproc);
+        }
+    }
 }
 
 
@@ -369,17 +389,19 @@ static void impl_DialogBoxParamW(Marshaler& m, DialogManager& mgr) {
                  static_cast<unsigned long long>(template_id), parent,
                  static_cast<unsigned long long>(dlgproc));
 
-    i32 result = mgr.dialog_box(hinstance, template_id,
+    const i64 result = mgr.dialog_box(hinstance, template_id,
                                  parent, dlgproc, init_param);
 
-    VITREO_TRACE( "[hwnd-trace] DialogBoxParamW EXIT result=%d\n", result);
-    m.set_return(static_cast<u64>(static_cast<u32>(result)));
+    VITREO_TRACE( "[hwnd-trace] DialogBoxParamW EXIT result=%lld\n", static_cast<long long>(result));
+    m.set_return(m.cpu_is_64bit() ? static_cast<u64>(result)
+                                  : static_cast<u64>(static_cast<u32>(result)));
 }
 
 static void impl_EndDialog(Marshaler& m, DialogManager& mgr) {
     auto dlg    = static_cast<windowing::HWND>(m.arg(0));
-    auto result = static_cast<i32>(m.arg(1));
-    VITREO_TRACE( "[hwnd-trace] EndDialog dlg=0x%x result=%d\n", dlg, result);
+    const i64 result = m.cpu_is_64bit() ? static_cast<i64>(m.arg(1))
+                                          : static_cast<i64>(static_cast<i32>(m.arg32(1)));
+    VITREO_TRACE( "[hwnd-trace] EndDialog dlg=0x%x result=%lld\n", dlg, static_cast<long long>(result));
     bool ok = mgr.end_dialog(dlg, result);
     m.set_return(ok ? 1u : 0u);
 }

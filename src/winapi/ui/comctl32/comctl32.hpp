@@ -61,6 +61,12 @@ public:
                                   GuestAddr instruction, GuestAddr content,
                                   u32 common_buttons, GuestAddr icon,
                                   GuestAddr out_button);
+    /// Calls a window's own procedure once the subclass chain is done
+    /// (hwnd, msg, wParam, lParam, procedure, is_64bit). USER32 supplies it:
+    /// a dialog's procedure is the predefined dialog procedure around its
+    /// DLGPROC. Without it the procedure is called as guest code.
+    using WindowProcedureCall = std::function<u64(windowing::HWND, u32, u64, u64, GuestAddr, bool)>;
+    void set_window_procedure_call(WindowProcedureCall call) { m_window_procedure_call = std::move(call); }
     void set_guest_call(GuestCall call) {
         m_guest_call = std::move(call);
     }
@@ -168,6 +174,7 @@ private:
     ResourceManager* m_resource_mgr = nullptr;
     windowing::HwndManager* m_hwnd_mgr = nullptr;
     GuestCall m_guest_call;
+    WindowProcedureCall m_window_procedure_call;
     mutable std::mutex m_subclass_mutex;
     std::unordered_map<windowing::HWND, std::vector<SubclassEntry>>
         m_subclasses;

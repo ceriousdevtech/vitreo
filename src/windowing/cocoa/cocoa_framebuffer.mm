@@ -239,8 +239,16 @@ void CocoaBridge::update_window_pixels(HWND hwnd, const u8* rgba, i32 width,
             } else if ([child_view isKindOfClass:[NSButton class]]) {
                 native_text = [(NSButton*)child_view title];
             }
+            // A RichEdit is an NSScrollView; a progress well is a plain
+            // NSView (SS_BLACKFRAME). An all-white GetDC/ReleaseDC flush on
+            // either covers the warning text or the dialog's StretchBlt.
+            const bool native_keeps_text =
+                [child_view isKindOfClass:[NSScrollView class]] ||
+                [child_view isKindOfClass:[NSTextView class]] ||
+                [child_view class] == [NSView class];
             const bool native_labeled =
-                native_text != nil && [native_text length] > 0;
+                (native_text != nil && [native_text length] > 0) ||
+                native_keeps_text;
             if (native_labeled) {
                 bool all_white = true;
                 const size_t npx = static_cast<size_t>(width) * height;

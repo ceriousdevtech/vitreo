@@ -282,7 +282,7 @@ FamilyVerdict try_long_mode_stack(
                              kMemFaultState);
             builder.gpr_write(rsp, slot_lea(rsp0, slot));
             builder.flags_install(narrow ? builder.zext(Type::I64, popped)
-                                         : popped);
+                                         : popped, slot);
             // Whatever value named the block's flags is dead: POPF replaced
             // the architectural state wholesale, so a later consumer has to
             // read it back rather than reuse a definition from before.

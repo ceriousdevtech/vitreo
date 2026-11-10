@@ -58,16 +58,127 @@ bool DxbcTranslator::translate_subroutine(u32 label) {
         m_call_stack.end()) {
         return fail("CALL: recursion is not permitted");
     }
+    // Does a `ret`/`retc` sit inside a loop or switch of this body? Then a
+    // return breaks out of several constructs and needs a flag.
+    bool needs_flag = false;
+    {
+        DxbcDecoder scan(m_container.bytecode.data(),
+                         m_container.bytecode.size());
+        scan.set_position(found->second);
+        std::vector<Sm4Opcode> open;
+        u32 breakable = 0;
+        while (scan.has_tokens(1)) {
+            const usize start = scan.position();
+            const u32 token = scan.read_token();
+            const Sm4Opcode opcode = scan.decode_opcode(token);
+            if (static_cast<u32>(opcode) == 53u) {
+                if (!scan.has_tokens(1)) break;
+                const u32 block_length = scan.read_token();
+                if (block_length < 2u) break;
+                scan.set_position(start + block_length);
+                continue;
+            }
+            const u32 length = scan.decode_instruction_length(token);
+            if (length == 0u || opcode == Sm4Opcode::LABEL) break;
+            if (opcode == Sm4Opcode::IF || opcode == Sm4Opcode::LOOP ||
+                opcode == Sm4Opcode::SWITCH) {
+                open.push_back(opcode);
+                if (opcode != Sm4Opcode::IF) ++breakable;
+            } else if ((opcode == Sm4Opcode::ENDIF ||
+                        opcode == Sm4Opcode::ENDLOOP ||
+                        opcode == Sm4Opcode::ENDSWITCH) && !open.empty()) {
+                if (open.back() != Sm4Opcode::IF) --breakable;
+                open.pop_back();
+            } else if (opcode == Sm4Opcode::RET && open.empty()) {
+                break;
+            } else if ((opcode == Sm4Opcode::RET ||
+                        opcode == Sm4Opcode::RETC) && breakable != 0u) {
+                needs_flag = true;
+            }
+            scan.set_position(start + length);
+        }
+    }
+
+    // The body nests in the caller's construct as a loop that runs once:
+    //   br header; header: LoopMerge merge continue; br body
+    //   body: ... (every return: br merge); continue: br header; merge:
+    // so a return from anywhere in it is a structured break.
+    InlineFrame frame{};
+    frame.merge_block = m_builder.allocate_id();
+    frame.breakable_base = m_breakable_stack.size();
+    frame.loop_base = m_loop_stack.size();
+    if (needs_flag) {
+        frame.returned_var = m_builder.emit_variable(
+            m_builder.emit_type_pointer(SpvStorageClass::Private,
+                                        m_type_uint),
+            SpvStorageClass::Private);
+        // A Private per-invocation variable the entry interface lists,
+        // like the loop guards.
+        m_loop_guard_vars.push_back(frame.returned_var);
+        m_builder.emit_store(frame.returned_var,
+                             m_builder.emit_constant_int(m_type_uint, 0u));
+    }
+    const u32 header_block = m_builder.allocate_id();
+    const u32 body_block = m_builder.allocate_id();
+    const u32 continue_block = m_builder.allocate_id();
+    m_builder.emit_branch(header_block);
+    m_builder.emit_label_id(header_block);
+    m_builder.emit_loop_merge(frame.merge_block, continue_block);
+    m_builder.emit_branch(body_block);
+    m_builder.emit_label_id(body_block);
+    m_block_terminated = false;
+    m_inline_stack.push_back(frame);
+
     DxbcDecoder caller = m_decoder;
     m_decoder.set_position(found->second);
     m_call_stack.push_back(label);
+    // The body's own flow constructs nest on top of the caller's.
+    const usize if_depth = m_if_stack.size();
+    const usize loop_depth = m_loop_stack.size();
+    const usize switch_depth = m_switch_stack.size();
     bool ok = false;
     while (m_decoder.has_tokens(1)) {
+        const usize instruction_start = m_decoder.position();
         const u32 opcode_token = m_decoder.read_token();
         const Sm4Opcode opcode = m_decoder.decode_opcode(opcode_token);
+        if (static_cast<u32>(opcode) == 53u) {
+            // CUSTOMDATA: its length is the next DWORD.
+            if (!m_decoder.has_tokens(1)) {
+                (void)fail("CUSTOMDATA truncated");
+                break;
+            }
+            const u32 block_length = m_decoder.read_token();
+            if (block_length < 2u) {
+                (void)fail("CUSTOMDATA invalid length");
+                break;
+            }
+            m_decoder.set_position(instruction_start + block_length);
+            continue;
+        }
         const u32 length = m_decoder.decode_instruction_length(opcode_token);
         const usize operands_begin = m_decoder.position();
         if (opcode == Sm4Opcode::RET) {
+            if (m_if_stack.size() != if_depth ||
+                m_loop_stack.size() != loop_depth ||
+                m_switch_stack.size() != switch_depth) {
+                // D3D11.3 22.7.15: a ret nested in the body's flow returns
+                // to the caller -- out of every construct of the body.
+                if (!emit_inline_return()) break;
+                // A case label next: the ret ended that case's body, as a
+                // break does (no fallthrough). Otherwise what follows goes
+                // to a block no path reaches.
+                const Sm4Opcode next =
+                    m_decoder.has_tokens(1)
+                        ? m_decoder.decode_opcode(m_decoder.peek_token())
+                        : Sm4Opcode::RET;
+                if (next == Sm4Opcode::CASE || next == Sm4Opcode::DEFAULT) {
+                    m_block_terminated = true;
+                } else {
+                    m_builder.emit_label_id(m_builder.allocate_id());
+                    m_block_terminated = false;
+                }
+                continue;
+            }
             ok = true;
             break;
         }
@@ -95,11 +206,65 @@ bool DxbcTranslator::translate_subroutine(u32 label) {
         if (consumed < length) m_decoder.skip_tokens(length - consumed);
     }
     m_call_stack.pop_back();
+    m_inline_stack.pop_back();
     m_decoder = caller;
     if (!ok && m_result.failure.empty()) {
         return fail("CALL: subroutine is missing RET");
     }
-    return ok;
+    if (!ok) return false;
+    // The body's final `ret` leaves the construct; then its continue target
+    // (no path reaches it) and the merge block the caller resumes in.
+    if (!m_block_terminated) m_builder.emit_branch(frame.merge_block);
+    m_builder.emit_label_id(continue_block);
+    m_builder.emit_branch(header_block);
+    m_builder.emit_label_id(frame.merge_block);
+    m_block_terminated = false;
+    return true;
+}
+
+bool DxbcTranslator::emit_inline_return() {
+    if (m_inline_stack.empty()) {
+        return fail("RET: no inlined subroutine to return from");
+    }
+    const InlineFrame& frame = m_inline_stack.back();
+    if (m_breakable_stack.size() > frame.breakable_base) {
+        // Inside a loop or switch of the body: break it, flagged so each
+        // enclosing construct of the body is left after its end as well
+        // (emit_inline_return_propagation).
+        if (frame.returned_var == 0u) {
+            return fail("RET: nested return without a return flag");
+        }
+        m_builder.emit_store(frame.returned_var,
+                             m_builder.emit_constant_int(m_type_uint, 1u));
+        m_builder.emit_branch(m_breakable_stack.back().merge_block);
+    } else {
+        // Only selections between here and the body: a break of the
+        // single-iteration loop construct.
+        m_builder.emit_branch(frame.merge_block);
+    }
+    return true;
+}
+
+void DxbcTranslator::emit_inline_return_propagation() {
+    if (m_inline_stack.empty()) return;
+    const InlineFrame& frame = m_inline_stack.back();
+    // Only after a construct of the body itself (already popped here).
+    if (frame.returned_var == 0u ||
+        m_breakable_stack.size() < frame.breakable_base) {
+        return;
+    }
+    const u32 returned = m_builder.emit_inotequal(
+        m_type_bool, m_builder.emit_load(m_type_uint, frame.returned_var),
+        m_builder.emit_constant_int(m_type_uint, 0u));
+    const u32 leave_block = m_builder.allocate_id();
+    const u32 stay_block = m_builder.allocate_id();
+    m_builder.emit_selection_merge(stay_block);
+    m_builder.emit_branch_conditional(returned, leave_block, stay_block);
+    m_builder.emit_label_id(leave_block);
+    m_builder.emit_branch(m_breakable_stack.size() > frame.breakable_base
+                              ? m_breakable_stack.back().merge_block
+                              : frame.merge_block);
+    m_builder.emit_label_id(stay_block);
 }
 
 // D3D11.3 22.7.10-17: `label l#` starts a subroutine that runs to its
@@ -202,7 +367,7 @@ bool DxbcTranslator::emit_subroutine_functions() {
     }
 
     m_temps_private = true;
-    declare_function_temps(2);
+    if (!declare_function_temps(2)) return false;
     for (const auto& [label, _] : m_subroutine_labels) {
         m_subroutine_functions[label] = m_builder.allocate_id();
     }

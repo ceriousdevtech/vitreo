@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-only
 #pragma once
+#include "winapi/common/gamepad_hid_catalog.hpp"
 
 /// @file setupapi_internal.hpp
 /// @brief Private surface shared by the setupapi_*.cpp parts and the cfgmgr32
@@ -189,7 +190,7 @@ struct NodeRecord {
 // ---- the modelled device tree (setupapi_device_tree.cpp) ---------------------
 
 [[nodiscard]] std::string display_hardware_id();
-[[nodiscard]] std::vector<NodeRecord> device_nodes(const std::string& display_name);
+[[nodiscard]] std::vector<NodeRecord> device_nodes(const std::string& display_name, const std::shared_ptr<GamepadHidCatalog>& gamepads = {});
 [[nodiscard]] const NodeRecord* find_node(const std::vector<NodeRecord>& nodes,
                                           std::string_view id);
 [[nodiscard]] std::string interface_path(std::string_view instance_id,
@@ -341,6 +342,7 @@ struct DefaultQueueContext {
 struct OpenInf;
 
 struct SetupapiState {
+    std::shared_ptr<GamepadHidCatalog> gamepads;
     std::function<std::string()> display_name_provider;
     capsule::Vfs* vfs{nullptr};
     RegistryThunks* registry{nullptr};
@@ -365,7 +367,7 @@ struct SetupapiState {
         return display_name_provider ? display_name_provider() : std::string{};
     }
     [[nodiscard]] std::vector<NodeRecord> nodes() const {
-        return device_nodes(display_name());
+        return device_nodes(display_name(),gamepads);
     }
     [[nodiscard]] bool elevated() const {
         return elevation != nullptr && elevation->is_elevated();

@@ -36,7 +36,7 @@ void D3D9Manager::create_buffer(Marshaler& m, u32 device, bool index_buffer) {
     const GuestAddr out = m.arg_ptr(5);
     const GuestAddr shared_handle = m.arg_ptr(6);
 
-    if (out != 0) (void)m.write_u32(out, 0);
+    if (out != 0) (void)m.write_ptr(out, 0);
     if (length == 0 || out == 0) {
         std::fprintf(stderr,
                      "[d3d9] Create%sBuffer FAILED INVALIDCALL "
@@ -122,7 +122,7 @@ void D3D9Manager::create_buffer(Marshaler& m, u32 device, bool index_buffer) {
         return;
     }
 
-    if (m.write_u32(out, object).is_err()) {
+    if (m.write_ptr(out, object).is_err()) {
         destroy_object(object);
         m.set_return(E_POINTER_D3D);
         return;

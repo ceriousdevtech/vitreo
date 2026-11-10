@@ -264,7 +264,7 @@ TEST_F(VirtualMemoryTest, GetWriteWatchIgnoresLinearMarkOnReservedPage) {
     EXPECT_TRUE(pages.empty());
 }
 
-TEST_F(VirtualMemoryTest, GetWriteWatchFailsWhenCallerArrayIsTooSmall) {
+TEST_F(VirtualMemoryTest, GetWriteWatchTruncatesToCallerArray) {
     u64 watched = vmm.virtual_alloc(0, 0x4000,
                                     MEM_COMMIT | MEM_RESERVE | MEM_WRITE_WATCH,
                                     PAGE_READWRITE);
@@ -275,19 +275,29 @@ TEST_F(VirtualMemoryTest, GetWriteWatchFailsWhenCallerArrayIsTooSmall) {
                         .is_ok());
     }
 
-    // Four dirty pages reported into a two-element array: truncating would
-    // hide written pages, so the call has to fail instead.
+    // Windows (winoracle, tools/oracle_probe/write_watch_failure_probe.c):
+    // four dirty pages into a two-element array SUCCEED with the first two;
+    // with WRITE_WATCH_FLAG_RESET only those two are reset, so a
+    // `while (count == capacity)` drain loop collects the rest next call.
     u64 count = 2;
     u32 granularity = 0;
     std::vector<u64> pages;
-    EXPECT_NE(vmm.get_write_watch(watched, 0x4000, count, granularity, pages),
+    EXPECT_EQ(vmm.get_write_watch(watched, 0x4000, count, granularity, pages),
               0u);
-    EXPECT_TRUE(pages.empty());
+    EXPECT_EQ(count, 2u);
+    EXPECT_EQ(pages, (std::vector<u64>{watched, watched + 0x1000}));
+
+    count = 2;
+    EXPECT_EQ(vmm.get_write_watch(watched, 0x4000, count, granularity, pages,
+                                  WRITE_WATCH_FLAG_RESET),
+              0u);
+    EXPECT_EQ(count, 2u);
 
     count = 4;
     EXPECT_EQ(vmm.get_write_watch(watched, 0x4000, count, granularity, pages),
               0u);
-    EXPECT_EQ(count, 4u);
+    EXPECT_EQ(count, 2u);
+    EXPECT_EQ(pages, (std::vector<u64>{watched + 0x2000, watched + 0x3000}));
 }
 
 TEST_F(VirtualMemoryTest, GetWriteWatchFlagResetClearsDirtySet) {

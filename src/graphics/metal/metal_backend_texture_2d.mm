@@ -676,7 +676,126 @@ std::unique_ptr<BackendTexture2D> MetalDevice::create_texture_2d(
     auto texture = std::make_unique<MetalBackendTexture2D>(
         m_device, m_command_queue, desc, initial_data, initial_row_pitch);
     if (!texture->valid()) return nullptr;
+    if (desc.tiled && desc.residency_companion) {
+        attach_residency_companion(*texture);
+    }
     return texture;
+}
+
+bool metal_residency_format(PixelFormat format, PixelFormat& companion,
+                            u64& pattern) {
+    // A filterable format of the same bits per texel (per block for BC):
+    // the same 64 KiB tile shape (checked by the caller), and an 8-byte
+    // pattern that reads 1.0 in its first channel.
+    constexpr u64 kHalfOnes = 0x3C003C003C003C00ull;   // f16 1.0
+    constexpr u64 kFloatOnes = 0x3F8000003F800000ull;  // f32 1.0
+    // BC4 block FF FF 00..: red0 = red1 = 255, every index 0 -> 1.0.
+    constexpr u64 kBc4Ones = 0x000000000000FFFFull;
+    const FormatInfo info = format_table(format);
+    if (info.is_compressed) {
+        const u32 block = compressed_block_bytes(format);
+        if (block != 8u && block != 16u) return false;
+        companion = block == 8u ? PixelFormat::BC4_RUnorm : PixelFormat::BC5_RGUnorm;
+        pattern = kBc4Ones;  // BC5 is two BC4 blocks
+        return true;
+    }
+    switch (info.bytes_per_pixel) {
+    case 1: companion = PixelFormat::R8Unorm; pattern = ~0ull; return true;
+    case 2: companion = PixelFormat::R16Float; pattern = kHalfOnes; return true;
+    case 4: companion = PixelFormat::R32Float; pattern = kFloatOnes; return true;
+    case 8: companion = PixelFormat::RG32Float; pattern = kFloatOnes; return true;
+    case 16: companion = PixelFormat::RGBA32Float; pattern = kFloatOnes; return true;
+    default: return false;
+    }
+}
+
+void MetalDevice::attach_residency_companion(MetalBackendTexture2D& texture) {
+    const BackendTexture2DDesc& desc = texture.desc();
+    PixelFormat format = PixelFormat::Unknown;
+    u64 pattern = 0;
+    if (!metal_residency_format(desc.pixel_format, format, pattern)) return;
+    BackendTexture2DDesc cd{};
+    cd.width = desc.width;
+    cd.height = desc.height;
+    cd.mip_levels = desc.mip_levels;
+    cd.array_size = desc.array_size;
+    cd.cube = desc.cube;
+    cd.sample_count = desc.sample_count;
+    cd.pixel_format = format;
+    cd.shader_resource = true;
+    cd.tiled = true;
+    auto companion = std::make_unique<MetalBackendTexture2D>(
+        m_device, m_command_queue, cd, nullptr, 0u);
+    if (!companion->valid()) return;
+    // The companion must divide into the texture's tiles: the same tile
+    // shape and the same first packed mip. Its packed tail may take a
+    // different number of tiles (Metal sizes a tail by format, not only by
+    // bits per texel); update_tile_mappings maps it as one unit.
+    BackendTiledLayout mine{};
+    BackendTiledLayout theirs{};
+    if (!tiled_texture_layout(&texture, mine) ||
+        !tiled_texture_layout(companion.get(), theirs) ||
+        mine.tile_width != theirs.tile_width ||
+        mine.tile_height != theirs.tile_height ||
+        mine.first_packed_level != theirs.first_packed_level ||
+        MetalTiled::instance().residency_pool(pattern) == nullptr) {
+        return;
+    }
+    texture.set_residency_companion(std::move(companion));
+}
+
+MetalBackendTexture2D* MetalBackendTexture2D::residency_dummy(
+    BackendTextureViewDimension dimension, unsigned samples) {
+    // One 1x1 R8 texture of six slices reads as 2D, 2D array, cube and cube
+    // array views; multisampled slots get their own render targets.
+    static std::mutex mutex;
+    static auto* dummies = new std::map<int, std::unique_ptr<BackendTexture2D>>();
+    const bool ms = samples > 1u;
+    const bool ms_array =
+        dimension == BackendTextureViewDimension::Texture2DMSArray;
+    const int key = !ms ? 0 : ms_array ? 2 : 1;
+    std::lock_guard<std::mutex> lock(mutex);
+    auto& slot = (*dummies)[key];
+    if (!slot) {
+        auto& device = MetalDevice::instance();
+        BackendTexture2DDesc d{};
+        d.width = d.height = 1;
+        d.mip_levels = 1;
+        d.pixel_format = PixelFormat::R8Unorm;
+        d.shader_resource = true;
+        if (!ms) {
+            d.array_size = 6;
+            const std::array<u8, 6> white{0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+            slot = device.create_texture_2d(d, white.data(), 1u);
+        } else {
+            d.array_size = ms_array ? 2u : 1u;
+            d.sample_count = samples;
+            d.render_target = true;
+            slot = device.create_texture_2d(d, nullptr, 0u);
+            if (slot && !slot->clear_render_target_level(
+                            {1.0f, 1.0f, 1.0f, 1.0f}, 0, 0, d.array_size)) {
+                slot.reset();
+            }
+        }
+        if (!slot) return nullptr;
+    }
+    return static_cast<MetalBackendTexture2D*>(slot.get());
+}
+
+BackendTexture3D* MetalBackendTexture2D::residency_dummy_3d() {
+    static std::mutex mutex;
+    static auto* dummy = new std::unique_ptr<BackendTexture3D>();
+    std::lock_guard<std::mutex> lock(mutex);
+    if (!*dummy) {
+        BackendTexture3DDesc d{};
+        d.width = d.height = d.depth = 1;
+        d.mip_levels = 1;
+        d.pixel_format = PixelFormat::R8Unorm;
+        d.shader_resource = true;
+        const u8 white = 0xFF;
+        *dummy = MetalDevice::instance().create_texture_3d(d, &white, 1u, 1u);
+    }
+    return dummy->get();
 }
 
 bool MetalDevice::heap_texture_placement(const BackendTexture2DDesc& desc,

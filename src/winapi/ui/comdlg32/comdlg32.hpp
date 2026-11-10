@@ -1,6 +1,7 @@
 #pragma once
 
 #include "winapi/core/thunk_registry.hpp"
+#include <vitreo/common.hpp>
 #include <functional>
 #include <optional>
 #include <string>
@@ -25,6 +26,9 @@ struct FileDialogRequest {
     std::string title;
 };
 using FileDialogPresenter = std::function<std::optional<std::string>(const FileDialogRequest&)>;
+/// ChooseColor's panel: takes the initial COLORREF, answers the chosen one or
+/// nullopt for Cancel. Tests inject one; production uses CocoaBridge.
+using ColorDialogPresenter = std::function<std::optional<u32>(u32 initial_colorref)>;
 
 /// The guest path (drive-letter form) of a host path inside a mounted capsule
 /// drive, or nullopt when it lies outside every drive. Shared by the
@@ -34,6 +38,6 @@ using FileDialogPresenter = std::function<std::optional<std::string>(const FileD
 
 [[nodiscard]] DllExports create_comdlg32_thunks(
     windowing::CocoaBridge* bridge = nullptr, capsule::Vfs* vfs = nullptr,
-    FileDialogPresenter presenter = {});
+    FileDialogPresenter presenter = {}, ColorDialogPresenter color_presenter = {});
 
 } // namespace vitreo::winapi
