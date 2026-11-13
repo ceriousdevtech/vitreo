@@ -6,6 +6,8 @@
 
 The product site is [vitreo.dev](https://vitreo.dev/). To beta test and help with compatibility, use [beta.vitreo.dev](https://beta.vitreo.dev/).
 
+Join us on Discord: https://discord.gg/kE3PqQ9U8
+
 ---
 
 ## Help with compatibility testing
